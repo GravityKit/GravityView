@@ -176,7 +176,7 @@ class GravityView_Widget {
 	function add_shortcode( $run_on_singular = true ) {
 		global $post;
 
-		if ( function_exists( 'gravityview' ) && gravityview()->request->is_admin() ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && gravityview()->request->is_admin() ) {
 			return;
 			/** Deprecated in favor of gravityview()->request->is_admin(). */
 		} else if ( GravityView_Plugin::is_admin() ) {

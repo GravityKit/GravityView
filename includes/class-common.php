@@ -484,11 +484,22 @@ class GVCommon {
 			}
 		}
 
+		if ( ! GravityView_frontend::getInstance()->getSingleEntry() ) {
+			/** GravityView_View_Data::getInstance() has a side-effect :( and not one, so we can't let it run under some circumstances. */
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+				$multiple_original = gravityview()->views->count() > 1;
+				GravityView_View_Data::getInstance(); /** Yes, those side-effects have to kick in. */
+				/** This weird state only happens in tests, when we play around and reset the $instance... */
+			} else {
+				/** Deprecated, do not use has_multiple_views() anymore. Thanks. */
+				$multiple_original = class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance() && GravityView_View_Data::getInstance()->has_multiple_views();
+			}
+		}
 
 		// Calculate the context view id and send it to the advanced filter
-		if( GravityView_frontend::getInstance()->getSingleEntry() ) {
+		if ( GravityView_frontend::getInstance()->getSingleEntry() ) {
 			$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
-		} elseif ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance() && GravityView_View_Data::getInstance()->has_multiple_views() ) {
+		} elseif ( $multiple_original ) {
 			$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
 		} elseif ( 'delete' === GFForms::get( 'action' ) ) {
 			$criteria['context_view_id'] = isset( $_GET['view_id'] ) ? intval( $_GET['view_id'] ) : null;
@@ -1109,7 +1120,7 @@ class GVCommon {
 	/**
 	 * Get all the settings for a View
 	 *
-	 * @uses  GravityView_View_Data::get_default_args() Parses the settings with the plugin defaults as backups.
+	 * @uses  \GV\View_Settings::defaults() Parses the settings with the plugin defaults as backups.
 	 * @param  int $post_id View ID
 	 * @return array          Associative array of settings with plugin defaults used if not set by the View
 	 */
@@ -1119,7 +1130,7 @@ class GVCommon {
 
 		if ( class_exists( 'GravityView_View_Data' ) ) {
 
-			$defaults = GravityView_View_Data::get_default_args();
+			$defaults = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? \GV\View_Settings::defaults() : GravityView_View_Data::get_default_args();
 
 			return wp_parse_args( (array)$settings, $defaults );
 

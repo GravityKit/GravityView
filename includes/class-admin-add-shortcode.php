@@ -121,7 +121,7 @@ class GravityView_Admin_Add_Shortcode {
 
 						<?php
 
-						$settings = GravityView_View_Data::get_default_args( true );
+						$settings = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? \GV\View_Settings::defaults( true ) : GravityView_View_Data::get_default_args( true );
 
 						foreach ( $settings as $key => $setting ) {
 

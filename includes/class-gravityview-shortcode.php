@@ -61,7 +61,7 @@ class GravityView_Shortcode {
 	/**
 	 * Validate attributes passed to the [gravityview] shortcode. Supports {get} Merge Tags values.
 	 *
-	 * Attributes passed to the shortcode are compared to registered attributes {@see GravityView_View_Data::get_default_args}
+	 * Attributes passed to the shortcode are compared to registered attributes {@see \GV\View_Settings::defaults}
 	 * Only attributes that are defined will be allowed through.
 	 *
 	 * Then, {get} merge tags are replaced with their $_GET values, if passed
@@ -70,7 +70,7 @@ class GravityView_Shortcode {
 	 *
 	 * @since 1.15.1
 	 *
-	 * @see GravityView_View_Data::get_default_args Only attributes defined in get_default_args() are valid to be passed via the shortcode
+	 * @see \GV\View_Settings::defaults() Only attributes defined in default() are valid to be passed via the shortcode
 	 *
 	 * @param array $passed_atts Attribute pairs defined to render the View
 	 *
@@ -78,7 +78,7 @@ class GravityView_Shortcode {
 	 */
 	private function parse_and_sanitize_atts( $passed_atts ) {
 
-		$defaults = GravityView_View_Data::get_default_args( true );
+		$defaults = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? \GV\View_Settings::defaults( true ) : GravityView_View_Data::get_default_args( true );
 
 		$supported_atts = array_fill_keys( array_keys( $defaults ), '' );
 

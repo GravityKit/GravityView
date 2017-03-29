@@ -2,15 +2,36 @@
 namespace GV;
 
 /** If this file is called directly, abort. */
-if ( ! defined( 'GRAVITYVIEW_DIR' ) )
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
+}
 
 /**
- * The base Entry class.
+ * The base \GV\Entry class.
  *
  * Contains all entry data and some processing and logic rules.
  */
-class Entry {
+abstract class Entry {
+
+	/**
+	 * @var string The identifier of the backend used for this entry.
+	 * @api
+	 * @since future
+	 */
+	public static $backend = null;
+
+	/**
+	 * @var int The ID for this entry.
+	 *
+	 * @api
+	 * @since future
+	 */
+	public $ID = null;
+
+	/**
+	 * @var mixed The backing entry.
+	 */
+	protected $entry;
 	
 	/**
 	 * Adds the necessary rewrites for single Entries.
@@ -24,8 +45,9 @@ class Entry {
 		$endpoint = self::get_endpoint_name();
 
 		/** Let's make sure the endpoint array is not polluted. */
-		if ( in_array( array( EP_ALL, $endpoint, $endpoint ), $wp_rewrite->endpoints ) )
+		if ( in_array( array( EP_ALL, $endpoint, $endpoint ), $wp_rewrite->endpoints ) ) {
 			return;
+		}
 
 		add_rewrite_endpoint( $endpoint, EP_ALL );
 	}
@@ -46,5 +68,25 @@ class Entry {
 		$endpoint = apply_filters( 'gravityview_directory_endpoint', 'entry' );
 
 		return sanitize_title( $endpoint );
+	}
+
+	/**
+	 * Construct a \GV\Entry instance by ID.
+	 *
+	 * @param int|string $entry_id The internal entry ID.
+	 *
+	 * @api
+	 * @since future
+	 * @return \GV\Entry|null An instance of this entry or null if not found.
+	 */
+	abstract public static function by_id( $entry_id );
+
+	/**
+	 * Return the backing entry object.
+	 *
+	 * @return array The backing entry object.
+	 */
+	public function as_entry() {
+		return $this->entry;
 	}
 }

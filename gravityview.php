@@ -215,19 +215,19 @@ final class GravityView_Plugin {
 		self::require_files();
 
 		/** Deprecate in favor of \GV\View::register_post_type. */
-		if ( ! function_exists( 'gravityview' ) ) {
+		if ( ! defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			// register post types
 			GravityView_Post_Types::init_post_types();
 		}
 
 		/** Deprecate in favor of \GV\View::add_rewrite_endpoint. */
-		if ( ! function_exists( 'gravityview' ) ) {
+		if ( ! defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			// register rewrite rules
 			GravityView_Post_Types::init_rewrite();
 		}
 
 		/** Deprecate. Handled in \GV\Plugin::activate now. */
-		if ( ! function_exists( 'gravityview' ) ) {
+		if ( ! defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			flush_rewrite_rules();
 
 			// Update the current GV version
@@ -252,7 +252,7 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public static function deactivate() {
-		if ( ! function_exists( 'gravityview' ) ) {
+		if ( ! defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			flush_rewrite_rules();
 		}
 	}
@@ -312,7 +312,7 @@ final class GravityView_Plugin {
 	 */
 	public static function is_admin() {
 
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			return gravityview()->request->is_admin();
 		}
 

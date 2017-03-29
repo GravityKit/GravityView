@@ -355,7 +355,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$second_current_views = gravityview_get_current_views();
 
 		// Check to make sure add_view worked properly
-		$this->assertEquals( $second_view_post_type_id, $second_current_views[ $second_view_post_type_id ]['id'] );
+		$this->assertEquals( $second_view_post_type_id, $second_current_views[ $second_view_post_type_id ]['view_id'] );
 
 		// Now two Views
 		$this->assertEquals( 2, count( $second_current_views ) );
@@ -533,8 +533,9 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	 * @group ajax
 	 */
 	public function test_directory_link_ajax() {
-		if ( ! defined( 'DOING_AJAX' ) )
+		if ( ! defined( 'DOING_AJAX' ) ) {
 			define( 'DOING_AJAX', true );
+		}
 
 		$post_array = array(
 			'post_content' => 'asdasdsd',

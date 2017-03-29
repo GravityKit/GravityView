@@ -208,7 +208,7 @@ function gravityview_get_template_id( $post_id ) {
 /**
  * Get all the settings for a View
  *
- * @uses  GravityView_View_Data::get_default_args() Parses the settings with the plugin defaults as backups.
+ * @uses  \GV\View_Settings::defaults() Parses the settings with the plugin defaults as backups.
  * @param  int $post_id View ID
  * @return array          Associative array of settings with plugin defaults used if not set by the View
  */
@@ -344,7 +344,7 @@ function gravityview_get_field_type(  $form = null , $field_id = '' ) {
 function get_gravityview( $view_id = '', $atts = array() ) {
 	if( !empty( $view_id ) ) {
 		$atts['id'] = $view_id;
-		$args = wp_parse_args( $atts, GravityView_View_Data::get_default_args() );
+		$args = wp_parse_args( $atts, defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? \GV\View_Settings::defaults() : GravityView_View_Data::get_default_args() );
 		$GravityView_frontend = GravityView_frontend::getInstance();
 		$GravityView_frontend->setGvOutputData( GravityView_View_Data::getInstance( $view_id ) );
 		$GravityView_frontend->set_context_view_id( $view_id );
