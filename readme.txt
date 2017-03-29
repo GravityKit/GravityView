@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 1.21 =
 
+* Fixed: Edit Entry compatibility with Gravity Forms 2.2
 * Fixed: Single Entry not accessible when filtering a View by Gravity Flow's "Final Status" field
 
 __Developer Updates:__
