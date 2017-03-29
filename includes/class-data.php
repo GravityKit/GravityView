@@ -393,7 +393,7 @@ class GravityView_View_Data {
 			$args = shortcode_parse_atts( $shortcode[3] );
 
 			if( empty( $args['id'] ) ) {
-				do_action('gravityview_log_error', sprintf( 'GravityView_View_Data[parse_post_content] Returning; no ID defined in shortcode atts for Post #%s (Atts)', $post->ID ), $shortcode );
+				do_action('gravityview_log_error', 'GravityView_View_Data[parse_post_content] Returning; no ID defined in shortcode atts', $shortcode );
 				continue;
 			}
 
