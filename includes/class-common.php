@@ -781,7 +781,7 @@ class GVCommon {
 	 * @since 1.7.4
 	 *
 	 * @param array $entry Gravity Forms Entry object
-	 * @return bool|array Returns 'false' if entry is not valid according to the view search filters (Adv Filter)
+	 * @return WP_Error|array Returns WP_Error if entry is not valid according to the view search filters (Adv Filter). Returns original $entry value if passes.
 	 */
 	public static function check_entry_display( $entry ) {
 
