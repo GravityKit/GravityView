@@ -16,7 +16,7 @@ class GravityView_Post_Types {
 
 	function __construct() {
 		/** Deprecated. Handled by \GV\Core from here on after. */
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			return;
 		}
 
@@ -39,7 +39,7 @@ class GravityView_Post_Types {
 	 */
 	public static function init_post_types() {
 
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			return \GV\View::register_post_type();
 		}
 
@@ -141,7 +141,7 @@ class GravityView_Post_Types {
 	 */
 	public static function init_rewrite() {
 
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			return \GV\Entry::add_rewrite_endpoint();
 		}
 
@@ -160,7 +160,7 @@ class GravityView_Post_Types {
 	 * @return string Default: "entry"
 	 */
 	public static function get_entry_var_name() {
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			return \GV\Entry::get_endpoint_name();
 		}
 

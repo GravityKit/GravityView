@@ -91,7 +91,7 @@ class GravityView_Compatibility {
 	 * @return bool
 	 */
 	public static function is_valid() {
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			return gravityview()->plugin->is_compatible();
 		}
 
@@ -106,7 +106,7 @@ class GravityView_Compatibility {
 	 * @see \GV\Plugin::is_compatible_wordpress() accessible via gravityview()->plugin->is_compatible_wordpress()
 	 */
 	private static function is_valid_wordpress() {
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			return gravityview()->plugin->is_compatible_wordpress();
 		}
 
@@ -122,7 +122,7 @@ class GravityView_Compatibility {
 	 * @return bool
 	 */
 	private static function is_valid_gravity_forms() {
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			return gravityview()->plugin->is_compatible_gravityforms();
 		}
 
@@ -138,7 +138,7 @@ class GravityView_Compatibility {
 	 * @return bool
 	 */
 	private static function is_valid_php() {
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			return gravityview()->plugin->is_compatible_php();
 		}
 
@@ -210,7 +210,7 @@ class GravityView_Compatibility {
 	public static function check_php() {
 
 		if (
-			( function_exists( 'gravityview' ) && ! gravityview()->plugin->is_compatible_php() )
+			( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && ! gravityview()->plugin->is_compatible_php() )
 			|| ( false === version_compare( phpversion(), GV_MIN_PHP_VERSION , '>=' ) )
 		) {
 
@@ -251,7 +251,7 @@ class GravityView_Compatibility {
 		global $wp_version;
 
 		if (
-			( function_exists( 'gravityview' ) && ! gravityview()->plugin->is_compatible_wordpress() )
+			( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && ! gravityview()->plugin->is_compatible_wordpress() )
 			|| ( false === version_compare( $wp_version, GV_MIN_WP_VERSION, '>=' ) )
 		) {
 
@@ -288,7 +288,7 @@ class GravityView_Compatibility {
 			}
 
 			// Does it meet minimum requirements?
-			if ( function_exists( 'gravityview' ) ) {
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 				$meets_minimum = gravityview()->plugin->is_compatible_gravityforms();
 			} else {
 				$meets_minimum = ( true === version_compare( GFCommon::$version, GV_MIN_GF_VERSION, ">=" ) );

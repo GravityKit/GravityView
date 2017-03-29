@@ -267,6 +267,23 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.21 on March 29, 2017</h3>
+
+                <ul>
+                    <li>Fixed: Edit Entry compatibility with Gravity Forms 2.2</li>
+                    <li>Fixed: Single Entry not accessible when filtering a View by Gravity Flow&#39;s &quot;Final Status&quot; field</li>
+                    <li>Fixed: Needed to re-save permalink settings for Single Entry and Edit Entry to work</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Modified: <code>GVCommon::check_entry_display()</code> now returns WP_Error instead of <code>false</code> when an error occurs. This allows for additional information to be passed.</li>
+                    <li>Added: <code>gravityview/search-all-split-words</code> filter to change search behavior for the &quot;Search All&quot; search input. Default (<code>true</code>) converts words separated by spaces into separate search terms. <code>false</code> will search whole word.</li>
+                    <li>Much progress has been made on the <code>gravityview()</code> wrapper function behind the scenes. Getting closer to parity all the time.</li>
+                </ul>
+
+
                 <h3>1.20.1 on March 1, 2017</h3>
 
                 <ul>

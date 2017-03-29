@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.7.2
+Tested up to: 4.7.3
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -19,6 +19,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 1.21 on March 29, 2017 =
+
+* Fixed: Edit Entry compatibility with Gravity Forms 2.2
+* Fixed: Single Entry not accessible when filtering a View by Gravity Flow's "Final Status" field
+* Fixed: Needed to re-save permalink settings for Single Entry and Edit Entry to work
+
+__Developer Updates:__
+
+* Modified: `GVCommon::check_entry_display()` now returns WP_Error instead of `false` when an error occurs. This allows for additional information to be passed.
+* Added: `gravityview/search-all-split-words` filter to change search behavior for the "Search All" search input. Default (`true`) converts words separated by spaces into separate search terms. `false` will search whole word.
+* Much progress has been made on the `gravityview()` wrapper function behind the scenes. Getting closer to parity all the time.
 
 = 1.20.1 on March 1, 2017 =
 

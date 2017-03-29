@@ -2,8 +2,9 @@
 namespace GV;
 
 /** If this file is called directly, abort. */
-if ( ! defined( 'GRAVITYVIEW_DIR' ) )
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
+}
 
 /**
  * A generic Collection base class.
@@ -23,8 +24,32 @@ class Collection {
 	 * @since future
 	 * @return void
 	 */
-	public function append( $value ) {
+	public function add( $value ) {
 		$this->storage []= $value;
+	}
+
+	/**
+	 * Clear this collection.
+	 *
+	 * @api
+	 * @since future
+	 * @return void
+	 */
+	public function clear() {
+		$this->count() && ( $this->storage = array() );
+	}
+
+	/**
+	 * Merge another collection into here.
+	 *
+	 * @param \GV\Collection $collection The collection to be merged.
+	 *
+	 * @api
+	 * @since future
+	 * @return void
+	 */
+	public function merge( \GV\Collection $collection ) {
+		array_map( array( $this, 'add'), $collection->all() );
 	}
 
 	/**
@@ -36,6 +61,17 @@ class Collection {
 	 */
 	public function all() {
 		return $this->storage;
+	}
+
+	/**
+	 * Get the last added object.
+	 *
+	 * @api
+	 * @since future
+	 * @return mixed|null The last item in here, or null if there are none.
+	 */
+	public function last() {
+		return end( $this->storage );
 	}
 
 	/**

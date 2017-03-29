@@ -2,8 +2,9 @@
 namespace GV;
 
 /** If this file is called directly, abort. */
-if ( ! defined( 'GRAVITYVIEW_DIR' ) )
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
+}
 
 /**
  * A collection of \GV\View objects.
@@ -12,7 +13,7 @@ class View_Collection extends Collection {
 	/**
 	 * Add a \GV\View to this collection.
 	 *
-	 * @param \GV\View $view The view to append to the internal array.
+	 * @param \GV\View $view The view to add to the internal array.
 	 *
 	 * @throws \InvalidArgumentException if $view is not of type \GV\View.
 	 *
@@ -20,11 +21,11 @@ class View_Collection extends Collection {
 	 * @since future
 	 * @return void
 	 */
-	public function append( $view ) {
+	public function add( $view ) {
 		if ( ! $view instanceof View ) {
 			throw new \InvalidArgumentException( 'View_Collections can only contain objects of type \GV\View.' );
 		}
-		parent::append( $view );
+		parent::add( $view );
 	}
 
 	/**
@@ -39,10 +40,25 @@ class View_Collection extends Collection {
 	 */
 	public function get( $view_id ) {
 		foreach ( $this->all() as $view ) {
-			if ( $view->ID == $view_id )
+			if ( $view->ID == $view_id ) {
 				return $view;
+			}
 		}
 		return null;
+	}
+
+	/**
+	 * Check whether \GV\View with an ID is already here.
+	 *
+	 * @param int $view_id The ID of the view to check.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @return boolean Whether it exists or not.
+	 */
+	public function contains( $view_id ) {
+		return ! is_null( $this->get( $view_id ) );
 	}
 
 	/**
@@ -63,23 +79,9 @@ class View_Collection extends Collection {
 
 		if ( get_post_type( $post ) == 'gravityview' ) {
 			/** A straight up gravityview post. */
-			$views->append( View::from_post( $post ) );
+			$views->add( View::from_post( $post ) );
 		} else {
-			/** Let's find us some [gravityview] shortcodes perhaps. */
-			foreach ( Shortcode::parse( $post->post_content ) as $shortcode ) {
-				if ( $shortcode->name != 'gravityview' ) {
-					continue;
-				}
-
-				if ( ! isset( $shortcode->atts['id'] ) ) {
-					do_action( 'gravityview_log_error', __METHOD__ . ': [gravityview] shortcode has no `id` attribute' );
-					continue;
-				}
-
-				if ( is_numeric( $shortcode->atts['id'] ) ) {
-					$views->append( View::by_id( $shortcode->atts['id'] ) );
-				}
-			}
+			$views->merge( self::from_content( $post->post_content ) );
 
 			/**
 			 * @filter `gravityview/view_collection/from_post/meta_keys` Define meta keys to parse to check for GravityView shortcode content.
@@ -102,15 +104,43 @@ class View_Collection extends Collection {
 
 			/** What about inside post meta values? */
 			foreach ( $meta_keys as $meta_key ) {
-				foreach ( Shortcode::parse( $post->$meta_key ) as $shortcode ) {
-					if ( ! $shortcode instanceof Shortcodes\gravityview ) {
-						continue;
-					}
-
-					if ( is_numeric( $shortcode->atts['id'] ) ) {
-						$views->append( View::by_id( $shortcode->atts['id'] ) );
-					}
+				if ( is_string( $meta_key ) ) {
+					$views->merge( self::from_content( $post->$meta_key ) );
 				}
+			}
+		}
+
+		return $views;
+	}
+
+	/**
+	 * Get a list of detected \GV\View objects inside the supplied content.
+	 *
+	 * The content can have a shortcode, this is the simplest case.
+	 *
+	 * @param string $content The content to look into.
+	 *
+	 * @api
+	 * @since future
+	 * @return \GV\View_Collection A \GV\View_Collection instance contanining the views inside the supplied \WP_Post.
+	 */
+	public static function from_content( $content ) {
+		$views = new self();
+
+		/** Let's find us some [gravityview] shortcodes perhaps. */
+		foreach ( Shortcode::parse( $content ) as $shortcode ) {
+			if ( $shortcode->name != 'gravityview' || empty( $shortcode->atts['id'] ) ) {
+				continue;
+			}
+
+			if ( is_numeric( $shortcode->atts['id'] ) ) {
+				$view = View::by_id( $shortcode->atts['id'] );
+				if ( ! $view ) {
+					continue;
+				}
+				
+				$view->settings->update( $shortcode->atts );
+				$views->add( $view );
 			}
 		}
 

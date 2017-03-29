@@ -227,23 +227,214 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$this->assertEquals( array(), $empty_product_field_types, 'The gform_product_field_types filter did not work' );
 	}
 
+	/**
+	 * @since 1.21
+	 * @covers GVCommon::check_entry_display
+	 * @group check_entry_display
+	 */
 	public function test_check_entry_display() {
 
-		$form = $this->factory->form->create();
+		$form = $this->factory->form->create_and_get();
+		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
-		$entry = $this->factory->entry->create( array( 'form_id' => $form['id'] ) );
+		// Entry is empty
+		/** @var WP_Error $empty_array */
+		$empty_array = GVCommon::check_entry_display( array() );
+		$this->assertWPError( $empty_array );
+		$this->assertEquals( 'entry_not_found', $empty_array->get_error_code() );
 
-		GVCommon::check_entry_display( $entry );
+		// Entry is WP_Error
+		$wp_error_entry = GVCommon::check_entry_display( new WP_Error('example', 'example!') );
+		$this->assertWPError( $wp_error_entry );
+		$this->assertEquals( 'entry_not_found', $wp_error_entry->get_error_code() );
 
-		// If `context_view_id`
+		// Empty $entry['form_id'] should return false
+		$form_id_not_set = GVCommon::check_entry_display( array( 'not_empty' => true, 'doesnt_have_form_id' => true ) );
+		$this->assertWPError( $form_id_not_set );
+		$this->assertEquals( 'form_id_not_set', $form_id_not_set->get_error_code() );
 
-		//Make sure the current View is connected to the same form as the Entry
+		$search_criteria = array(
+			'search_criteria' => null,
+			'sorting' => null,
+			'paging' => null,
+			'cache' => true,
+			'context_view_id' => null,
+		);
+
+
+		// Test empty( $criteria['search_criteria'] )
+		add_filter( 'gravityview_search_criteria', function() { return array( 'search_criteria' => null ); } );
+		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry ), 'Empty search criteria should have returned original entry' );
+		remove_all_filters( 'gravityview_search_criteria' );
+
+		// Test ! is_array( $criteria['search_criteria'] )
+		add_filter( 'gravityview_search_criteria', function() { return array( 'search_criteria' => 1 ); } );
+		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry ), 'Search criteria not being an array should have returned original entry' );
+		remove_all_filters( 'gravityview_search_criteria' );
+
+		// Test whether the current View is connected to the same form as the Entry
+		add_filter( 'gravityview_search_criteria', function() use ( $view ) {
+			return array(
+				'search_criteria' => array( 'example' => 'not_empty'),
+			    'context_view_id' => ( $view->ID + 1 ) // Anything but the View ID
+			);
+		} );
+		$view_id_not_match = GVCommon::check_entry_display( $entry );
+		$this->assertWPError( $view_id_not_match );
+		$this->assertEquals( 'view_id_not_match', $view_id_not_match->get_error_code() );
+		remove_all_filters( 'gravityview_search_criteria' );
+
+
+		// Test whether the current View is connected to the same form as the Entry
+		add_filter( 'gravityview_search_criteria', function() use ( $view ) {
+			return array(
+				'search_criteria' => array(
+					'status' => 'asdsadasdsad' // some crazy status
+				),
+				'context_view_id' => $view->ID,
+			);
+		} );
+		$status_not_valid = GVCommon::check_entry_display( $entry );
+		$this->assertWPError( $status_not_valid );
+		$this->assertEquals( 'status_not_valid', $status_not_valid->get_error_code() );
+		remove_all_filters( 'gravityview_search_criteria' );
+
+
+		// Test field_filters not array
+		add_filter( 'gravityview_search_criteria', function() use ( $view, $entry ) {
+			return array(
+				'search_criteria' => array(
+					'status' => $entry['status'],
+				    'field_filters' => 1,
+				),
+				'context_view_id' => $view->ID,
+			);
+		} );
+		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry ) );
+		remove_all_filters( 'gravityview_search_criteria' );
+
+
+		// Test empty field_filters
+		add_filter( 'gravityview_search_criteria', function() use ( $view, $entry ) {
+			return array(
+				'search_criteria' => array(
+					'status' => $entry['status'],
+					'field_filters' => array(),
+				),
+				'context_view_id' => $view->ID,
+			);
+		} );
+		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry ) );
+		remove_all_filters( 'gravityview_search_criteria' );
+
+		// Test PASS ALL
+		add_filter( 'gravityview_search_criteria', function() use ( $view, $entry ) {
+			return array(
+				'search_criteria' => array(
+					'status' => $entry['status'],
+					'field_filters' => array(
+						'mode' => 'all',
+						array(
+							'key' => 'user_agent',
+							'value' => $entry['user_agent'],
+						),
+						array(
+							'key' => 'transaction_id',
+							'value' => $entry['transaction_id'],
+						),
+					),
+				),
+				'context_view_id' => $view->ID,
+			);
+		} );
+		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry ), 'Should have passed ALL' );
+		remove_all_filters( 'gravityview_search_criteria' );
+
+
+		// Test PASS any
+		add_filter( 'gravityview_search_criteria', function() use ( $view, $entry ) {
+			return array(
+				'search_criteria' => array(
+					'status' => $entry['status'],
+					'field_filters' => array(
+						'mode' => 'any',
+						array(
+							'key' => 'user_agent',
+							'value' => $entry['user_agent'],
+						),
+						array(
+							'key' => 'transaction_id',
+							'value' => $entry['transaction_id'] . 'asdasdasdas', // DON'T PASS
+						),
+					),
+				),
+				'context_view_id' => $view->ID,
+			);
+		} );
+		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry ), 'Should have passed ANY' );
+		remove_all_filters( 'gravityview_search_criteria' );
+
+
+		// Test FAIL ALL
+		add_filter( 'gravityview_search_criteria', function() use ( $view, $entry ) {
+			return array(
+				'search_criteria' => array(
+					'status' => $entry['status'],
+					'field_filters' => array(
+						'mode' => 'all',
+						array(
+							'key' => 'user_agent',
+							'value' => $entry['user_agent'],
+						),
+						array(
+							'key' => 'transaction_id',
+							'value' => $entry['transaction_id'] . 'asdasdasdas', // DON'T PASS
+						),
+					),
+				),
+				'context_view_id' => $view->ID,
+			);
+		} );
+		$failed_criteria = GVCommon::check_entry_display( $entry );
+		$this->assertWPError( $failed_criteria );
+		$this->assertEquals( 'failed_criteria', $failed_criteria->get_error_code() );
+		remove_all_filters( 'gravityview_search_criteria' );
+
+
+		// Test FAIL ALL
+		add_filter( 'gravityview_search_criteria', function() use ( $view, $entry ) {
+			return array(
+				'search_criteria' => array(
+					'status' => $entry['status'],
+					'field_filters' => array(
+						'mode' => 'all',
+						array(
+							'key' => 'user_agent',
+							'value' => $entry['user_agent'],
+						),
+						array(
+							'key' => 'transaction_id',
+							'value' => $entry['transaction_id'] . 'asdasdasdas', // DON'T PASS
+						),
+					),
+				),
+				'context_view_id' => $view->ID,
+			);
+		} );
+		$failed_criteria = GVCommon::check_entry_display( $entry );
+		$this->assertWPError( $failed_criteria );
+		$this->assertEquals( 'failed_criteria', $failed_criteria->get_error_code() );
+		remove_all_filters( 'gravityview_search_criteria' );
+
 	}
 
 	/**
 	 * @since 1.20
 	 * @covers GVCommon::calculate_get_entries_criteria()
 	 * @covers GravityView_frontend::set_context_view_id()
+	 * @covers GVCommon::check_entry_display()
+	 *
 	 * @group calculate_get_entries_criteria
 	 */
 	function test_calculate_get_entries_criteria() {
@@ -325,6 +516,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 		GravityView_frontend::$instance = null;
 		GravityView_View_Data::$instance = null;
 		unset( $_GET['action'] );
+		unset( $_GET['view_id'] );
 	}
 
 	/**

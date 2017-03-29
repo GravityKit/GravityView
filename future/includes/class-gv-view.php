@@ -2,20 +2,65 @@
 namespace GV;
 
 /** If this file is called directly, abort. */
-if ( ! defined( 'GRAVITYVIEW_DIR' ) )
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
+}
 
 /**
  * The default GravityView View class.
  *
  * Houses all base View functionality.
+ *
+ * Can be accessed as an array for old compatibility's sake
+ *  in line with the elements inside the \GravityView_View_Data::$views array.
  */
-class View {
+class View implements \ArrayAccess {
 
 	/**
-	 * @var The backing \WP_Post instance.
+	 * @var \WP_Post The backing post instance.
 	 */
 	private $post;
+
+	/**
+	 * @var \GV\View_Settings The settings.
+	 *
+	 * @api
+	 * @since future
+	 */
+	public $settings;
+
+	/**
+	 * @var \GV\Form The backing form for this view.
+	 *
+	 * Contains the form that is sourced for entries in this view.
+	 *
+	 * @api
+	 * @since future
+	 */
+	public $form;
+
+	/**
+	 * @var \GV\Field_Collection The fields for this view.
+	 *
+	 * Contains all the fields that are attached to this view.
+	 *
+	 * @api
+	 * @since future
+	 */
+	public $fields;
+
+	/**
+	 * @var \GV\View_Template The template attached to this view.
+	 */
+	public $template;
+
+	/**
+	 * The constructor.
+	 */
+	public function __construct() {
+		$this->settings = new View_Settings();
+		$this->fields = new Field_Collection();
+	}
 
 	/**
 	 * Register the gravityview WordPress Custom Post Type.
@@ -26,8 +71,9 @@ class View {
 	public static function register_post_type() {
 
 		/** Register only once */
-		if ( post_type_exists( 'gravityview' ) )
+		if ( post_type_exists( 'gravityview' ) ) {
 			return;
+		}
 
 		/**
 		 * @filter `gravityview_is_hierarchical` Make GravityView Views hierarchical by returning TRUE
@@ -146,6 +192,89 @@ class View {
 		$view = new self();
 		$view->post = $post;
 
+		/** Get connected form. */
+		$view->form = GF_Form::by_id( $view->_gravityview_form_id );
+		if ( ! $view->form ) {
+			gravityview()->log->error( 'View #{view_id} tried attaching non-existent Form #{form_id} to it.', array(
+				'view_id' => $view->ID,
+				'form_id' => $view->_gravityview_form_id ? : 0,
+			) );
+		}
+
+		/**
+		* @filter `gravityview/configuration/fields` Filter the View fields' configuration array
+		* @since 1.6.5
+		*
+		* @param $fields array Multi-array of fields with first level being the field zones
+		* @param $view_id int The View the fields are being pulled for
+		*/
+		$configuration = apply_filters( 'gravityview/configuration/fields', (array)$view->_gravityview_directory_fields, $view->ID );
+
+		/** Get all fields. */
+		$view->fields = Field_Collection::from_configuration( $configuration );
+
+		/** The settings. */
+		$view->settings->update( gravityview_get_template_settings( $view->ID ) );
+
+		/** Set the template. */
+		$view->template = new \GV\View_Template( $view->_gravityview_directory_template );
+
+		/**
+		 * @deprecated
+		 *
+		 * The data here has been moved to various keys in a \GV\View instance.
+		 * As a compatibilty layer we allow array access over any \GV\View instance with these keys.
+		 *
+		 * This data is immutable (for now).
+		 *
+		 * @see \GV\View::offsetGet() for internal mappings.
+		 */
+		$view->_data = array(
+			/**
+			 * @deprecated
+			 * @see \GV\View::$ID
+			 */
+			// 'id' => $view->ID,
+
+			/**
+			 * @deprecated
+			 * @see \GV\View::$ID
+			 */
+			// 'view_id' => $view->ID,
+
+			/**
+			 * @deprecated
+			 * @see \GV\View::$form
+			 */
+			// 'form' => gravityview_get_form( $view->_gravityview_form_id ),
+
+			/**
+			 * @deprecated
+			 * @see \GV\View::$form::$ID
+			 */
+			// 'form_id' => $view->_gravityview_form_id,
+
+			/**
+			 * @deprecated
+			 * @see \GV\View::$settings
+			 */
+			// 'atts' => $view->settings->as_atts(),
+
+			/**
+			 * @deprecated
+			 * @see \GV\View::$fields
+			 */
+			// 'fields' => \GravityView_View_Data::getInstance()->get_fields( $view->ID ),
+
+			/**
+			 * @deprecated
+			 * @see \GV\View::$template::$ID
+			 */
+			// 'template_id' => gravityview_get_template_id( $view->ID ),
+
+			'widgets' => gravityview_get_directory_widgets( $view->ID ),
+		);
+
 		return $view;
 	}
 
@@ -164,6 +293,146 @@ class View {
 			return null;
 		}
 		return self::from_post( $post );
+	}
+
+	/**
+	 * Determines if a view exists to begin with.
+	 *
+	 * @param int|\WP_Post|null $view_id The WordPress post ID, a \WP_Post object or null for global $post;
+	 *
+	 * @api
+	 * @since future
+	 * @return bool Whether the post exists or not.
+	 */
+	public static function exists( $view ) {
+		return get_post_type( $view ) == 'gravityview';
+	}
+
+	/**
+	 * ArrayAccess compatibility layer with GravityView_View_Data::$views
+	 *
+	 * @internal
+	 * @deprecated
+	 * @since future
+	 * @return bool Whether the offset exists or not, limited to GravityView_View_Data::$views element keys.
+	 */
+	public function offsetExists( $offset ) {
+		$data_keys = array( 'id', 'view_id', 'form_id', 'template_id', 'atts', 'fields', 'widgets', 'form' );
+		return in_array( $offset, $data_keys );
+	}
+
+	/**
+	 * ArrayAccess compatibility layer with GravityView_View_Data::$views
+	 *
+	 * Maps the old keys to the new data;
+	 *
+	 * @internal
+	 * @deprecated
+	 * @since future
+	 *
+	 * @throws \RuntimeException during tests if called outside of whiteliested cases.
+	 *
+	 * @return mixed The value of the requested view data key limited to GravityView_View_Data::$views element keys.
+	 */
+	public function offsetGet( $offset ) {
+		
+		/**
+		 * Moving towards deprecation, let's ensure we never
+		 * trigger this from core and tests unless we really want to.
+		 */
+		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
+
+			if ( ! in_array( $offset, array( 'id', 'view_id', 'form', 'form_id' ) ) ) {
+				/**
+				 * Do not throw an exception for keys that we've yet to move around.
+				 * Add the other keys as they are moved out to ensure we're not using them in core.
+				 */
+
+			} else if ( ! empty( $GLOBALS['GRAVITYVIEW_TESTS_VIEW_ARRAY_ACCESS_OVERRIDE'] ) ) {
+				/**
+				 * Suppress exception if specifically testing for array acess.
+				 */
+
+			} else {
+				/**
+				 * No code should be coming into here unless we're specifically testing for deprecated array access.
+				 */
+				throw new \RuntimeException( 'This is a \GV\View object should not be accessed as an array.' );
+			}
+		}
+
+		if ( ! isset( $this[$offset] ) ) {
+			return null;
+		}
+
+		switch ( $offset ) {
+			case 'id':
+			case 'view_id':
+				return $this->ID;
+			case 'form':
+				return $this->form;
+			case 'form_id':
+				return $this->form ? $this->form->ID : null;
+			case 'atts':
+				return $this->as_atts();
+			case 'template_id':
+				return $this->template ? $this->template->ID : null;
+			default:
+				/** @todo move the rest out and get rid of _data completely! */
+				return $this->_data[$offset];
+		}
+	}
+
+	/**
+	 * ArrayAccess compatibility layer with GravityView_View_Data::$views
+	 *
+	 * @internal
+	 * @deprecated
+	 * @since future
+	 *
+	 * @throws \RuntimeException The old view data is now immutable.
+	 *
+	 * @return void
+	 */
+	public function offsetSet( $offset, $value ) {
+		throw new \RuntimeException( 'The old view data is no longer mutable. This is a \GV\View object should not be accessed as an array.' );
+	}
+
+	/**
+	 * ArrayAccess compatibility layer with GravityView_View_Data::$views
+	 *
+	 * @internal
+	 * @deprecated
+	 * @since future
+	 * @return void
+	 */
+	public function offsetUnset( $offset ) {
+		throw new \RuntimeException( 'The old view data is no longer mutable. This is a \GV\View object should not be accessed as an array.' );
+	}
+
+	/**
+	 * Be compatible with the old data object.
+	 *
+	 * Some external code expects an array (doing things like foreach on this, or array_keys)
+	 *  so let's return an array in the old format for such cases. Do not use unless using
+	 *  for back-compatibility.
+	 *
+	 * @internal
+	 * @deprecated
+	 * @since future
+	 * @return array
+	 */
+	public function as_data() {
+		return array_merge(
+			array( 'id' => $this->ID ),
+			array( 'view_id' => $this->ID ),
+			array( 'form_id' => $this->form ? $this->form->ID : null ),
+			array( 'form' => $this->form ? gravityview_get_form( $this->form->ID ) : null ),
+			array( 'atts' => $this->settings->as_atts() ),
+			array( 'fields' => $this->fields->by_visible()->as_configuration() ),
+			array( 'template_id' => $this->template? $this->template->ID : null ),
+			$this->_data
+		);
 	}
 
 	public function __get( $key ) {

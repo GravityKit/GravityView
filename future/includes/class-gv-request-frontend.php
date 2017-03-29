@@ -2,23 +2,24 @@
 namespace GV;
 
 /** If this file is called directly, abort. */
-if ( ! defined( 'GRAVITYVIEW_DIR' ) )
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
+}
 
 /**
  * The default Request class.
  *
- * Parses and transforms an end-request for a view to a View
- *  in a default frontend, WP_Query-based WordPress context.
+ * Finds out what Views are being requested.
  */
-final class Frontend_Request extends Request {
+class Frontend_Request extends Request {
 	/**
 	 * Bootstrap.
 	 *
 	 * @return void
 	 */
 	public function __construct() {
-		add_action( 'wp', array( $this, 'parse' ) );
+		add_action( 'wp', array( $this, 'parse' ), 12 );
+		parent::__construct();
 	}
 
 	/**

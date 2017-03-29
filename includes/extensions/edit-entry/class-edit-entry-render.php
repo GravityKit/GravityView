@@ -163,6 +163,7 @@ class GravityView_Edit_Entry_Render {
 
         if( $this->is_edit_entry_submission() ) {
             remove_action( 'wp',  array( 'RGForms', 'maybe_process_form'), 9 );
+	        remove_action( 'wp',  array( 'GFForms', 'maybe_process_form'), 9 );
         }
     }
 
@@ -222,7 +223,8 @@ class GravityView_Edit_Entry_Render {
         $this->setup_vars();
 
         // Multiple Views embedded, don't proceed if nonce fails
-        if( $gv_data->has_multiple_views() && ! wp_verify_nonce( $_GET['edit'], self::$nonce_key ) ) {
+		$multiple_views = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? gravityview()->views->count() > 1 : $gv_data->has_multiple_views();
+        if( $multiple_views && ! wp_verify_nonce( $_GET['edit'], self::$nonce_key ) ) {
             do_action('gravityview_log_error', __METHOD__ . ': Nonce validation failed for the Edit Entry request; returning' );
             return;
         }
@@ -1541,7 +1543,15 @@ class GravityView_Edit_Entry_Render {
     private function get_configured_edit_fields( $form, $view_id ) {
 
         // Get all fields for form
-        $properties = GravityView_View_Data::getInstance()->get_fields( $view_id );
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+			if ( \GV\View::exists( $view_id ) ) {
+				$view = \GV\View::by_id( $view_id );
+				$properties = $view->fields->as_configuration();
+			}
+		} else {
+			/** GravityView_View_Data is deprecated. */
+			$properties = GravityView_View_Data::getInstance()->get_fields( $view_id );
+		}
 
         // If edit tab not yet configured, show all fields
         $edit_fields = !empty( $properties['edit_edit-fields'] ) ? $properties['edit_edit-fields'] : NULL;

@@ -660,7 +660,7 @@ class GravityView_API {
 			return '';
 		}
 
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			$query_arg_name = \GV\Entry::get_endpoint_name();
 		} else {
 			/** Deprecated. Use \GV\Entry::get_endpoint_name instead. */
@@ -712,8 +712,15 @@ class GravityView_API {
 		 * has the view id so that Advanced Filters can be applied correctly when rendering the single view
 		 * @see GravityView_frontend::get_context_view_id()
 		 */
-		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() ) {
-			$args['gvid'] = gravityview_get_view_id();
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+			if ( gravityview()->views->count() > 1 ) {
+				$args['gvid'] = gravityview_get_view_id();
+			}
+		} else {
+			/** Deprecated, do not use has_multiple_views(), please. */
+			if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() ) {
+				$args['gvid'] = gravityview_get_view_id();
+			}
 		}
 
 		return add_query_arg( $args, $directory_link );
@@ -972,6 +979,16 @@ function gravityview_get_current_views() {
 		return array();
 	}
 
+	if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+		if ( ! gravityview()->views->count() ) {
+			return array();
+		}
+		return array_combine(
+			array_map( function ( $view ) { return $view->ID; }, gravityview()->views->all() ),
+			array_map( function ( $view ) { return $view->as_data(); }, gravityview()->views->all() )
+		);
+	}
+	/** \GravityView_View_Data::get_views is deprecated. */
 	return $fe->getGvOutputData()->get_views();
 }
 
@@ -985,14 +1002,24 @@ function gravityview_get_current_view_data( $view_id = 0 ) {
 
 	$fe = GravityView_frontend::getInstance();
 
-	if( ! $fe->getGvOutputData() ) { return array(); }
-
 	// If not set, grab the current view ID
-	if( empty( $view_id ) ) {
+	if ( empty( $view_id ) ) {
 		$view_id = $fe->get_context_view_id();
 	}
 
-	return $fe->getGvOutputData()->get_view( $view_id );
+	if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+		$view = gravityview()->views->get( $view_id );
+		if ( ! $view ) {
+			/** Emulate the weird behavior of \GravityView_View_Data::get_view adding a view which wasn't there to begin with. */
+			gravityview()->views->add( \GV\View::by_id( $view_id ) );
+			$view = gravityview()->views->get( $view_id );
+		}
+		return $view ? $view->as_data() : array();
+	} else {
+		if ( ! $fe->getGvOutputData() ) { return array(); }
+
+		return $fe->getGvOutputData()->get_view( $view_id );
+	}
 }
 
 // Templates' hooks

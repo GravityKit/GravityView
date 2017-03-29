@@ -231,23 +231,29 @@ class GravityView_frontend {
 	 * @param null $view_id
 	 */
 	public function set_context_view_id( $view_id = null ) {
+		$multiple_views = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? gravityview()->views->count() > 1 : ( $this->getGvOutputData() && $this->getGvOutputData()->has_multiple_views() );
 
 		if ( ! empty( $view_id ) ) {
 
 			$this->context_view_id = $view_id;
 
-		} elseif ( isset( $_GET['gvid'] ) && $this->getGvOutputData()->has_multiple_views() ) {
+		} elseif ( isset( $_GET['gvid'] ) && $multiple_views ) {
 			/**
 			 * used on a has_multiple_views context
 			 * @see GravityView_API::entry_link
-			 * @see GravityView_View_Data::getInstance()->has_multiple_views()
 			 */
 			$this->context_view_id = $_GET['gvid'];
 
-		} elseif ( ! $this->getGvOutputData()->has_multiple_views() )  {
-			$array_keys = array_keys( $this->getGvOutputData()->get_views() );
-			$this->context_view_id = array_pop( $array_keys );
-			unset( $array_keys );
+		} elseif ( ! $multiple_views ) {
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+				$view = gravityview()->views->last();
+				$this->context_view_id = $view ? $view->ID : null;
+			} else {
+				/** GravityView_View_Data::get_views is deprecated. */
+				$array_keys = array_keys( $this->getGvOutputData()->get_views() );
+				$this->context_view_id = array_pop( $array_keys );
+				unset( $array_keys );
+			}
 		}
 
 	}
@@ -338,7 +344,7 @@ class GravityView_frontend {
 		global $post;
 
 		// If in admin and NOT AJAX request, get outta here.
-		if ( function_exists( 'gravityview' ) && gravityview()->request->is_admin() ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && gravityview()->request->is_admin() ) {
 			return;
 			/** Deprecated in favor of gravityview()->request->is_admin(). */
 		} else if ( GravityView_Plugin::is_admin() ) {
@@ -464,26 +470,61 @@ class GravityView_frontend {
 
 		$context_view_id = $this->get_context_view_id();
 
-		if ( $this->getGvOutputData()->has_multiple_views() && ! empty( $context_view_id ) ) {
-			$view_meta = $this->getGvOutputData()->get_view( $context_view_id );
+		$multiple_views = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? gravityview()->views->count() > 1 : $this->getGvOutputData()->has_multiple_views();
+
+		if ( $multiple_views && ! empty( $context_view_id ) ) {
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+				$view = gravityview()->views->get( $context_view_id );
+				if ( ! $view ) {
+					/** Emulate the weird behavior of \GravityView_View_Data::get_view adding a view which wasn't there to begin with. */
+					gravityview()->views->add( \GV\View::by_id( $context_view_id ) );
+					$view = gravityview()->views->get( $context_view_id );
+				}
+			} else {
+				/** Deprecated. Use gravityview()->views->get() or gravityview()->request->get() */
+				$view_meta = $this->getGvOutputData()->get_view( $context_view_id );
+			}
 		} else {
-			foreach ( $this->getGvOutputData()->get_views() as $view_id => $view_data ) {
-				if ( intval( $view_data['form_id'] ) === intval( $entry['form_id'] ) ) {
-					$view_meta = $view_data;
-					break;
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+				foreach ( gravityview()->views->all() as $_view ) {
+					if ( intval( $_view->form->ID ) === intval( $entry['form_id'] ) ) {
+						$view = $_view;
+						break;
+					}
+				}
+
+				/** No matching form sources were found, happens when requesting an entry from a different form . */
+				if ( ! isset( $view ) )
+					return $title;
+			} else {
+				/** Deprecated. Use gravityview()->views->all() or gravityview()->request->all() */
+				foreach ( $this->getGvOutputData()->get_views() as $view_id => $view_data ) {
+					if ( intval( $view_data['form_id'] ) === intval( $entry['form_id'] ) ) {
+						$view_meta = $view_data;
+						break;
+					}
 				}
 			}
 		}
 
-		if ( ! empty( $view_meta['atts']['single_title'] ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+			if ( $title = $view->settings->get( 'single_title' ) ) {
+				$title = GravityView_API::replace_variables( $title, $view->form, $entry );
+				$title = do_shortcode( $title );
+			}
+		} else {
+			/** Deprecated stuff in the future. See the branch above. */
+			if ( ! empty( $view_meta['atts']['single_title'] ) ) {
 
-			$title = $view_meta['atts']['single_title'];
+				$title = $view_meta['atts']['single_title'];
 
-			// We are allowing HTML in the fields, so no escaping the output
-			$title = GravityView_API::replace_variables( $title, $view_meta['form'], $entry );
+				// We are allowing HTML in the fields, so no escaping the output
+				$title = GravityView_API::replace_variables( $title, $view_meta['form'], $entry );
 
-			$title = do_shortcode( $title );
+				$title = do_shortcode( $title );
+			}
 		}
+
 
 		return $title;
 	}
@@ -526,8 +567,15 @@ class GravityView_frontend {
 			if ( is_preview() && ! gravityview_get_form_id( $this->post_id ) ) {
 				$content .= __( 'When using a preset template, you must save the View before a Preview is available.', 'gravityview' );
 			} else {
-				foreach ( $this->getGvOutputData()->get_views() as $view_id => $data ) {
-					$content .= $this->render_view( array( 'id' => $view_id ) );
+				if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+					foreach ( gravityview()->views->all() as $view ) {
+						$content .= $this->render_view( array( 'id' => $view->ID ) );
+					}
+				} else {
+					/** The \GravityView_View_Data::get_views method is depreacted. */
+					foreach ( $this->getGvOutputData()->get_views() as $view_id => $data ) {
+						$content .= $this->render_view( array( 'id' => $view_id ) );
+					}
 				}
 			}
 		}
@@ -657,20 +705,33 @@ class GravityView_frontend {
 
 		$view_id = $passed_args['id'];
 
-		$view_data = $this->getGvOutputData()->get_view( $view_id, $passed_args );
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+			$view = gravityview()->views->get( $view_id );
+			if ( ! $view ) {
+				/** Emulate the weird behavior of \GravityView_View_Data::get_view adding a view which wasn't there to begin with. */
+				gravityview()->views->add( \GV\View::by_id( $view_id ) );
+				$view = gravityview()->views->get( $view_id );
+			}
 
-		do_action( 'gravityview_log_debug', '[render_view] View Data: ', $view_data );
+			/** Update the view settings with the requested arguments. */
+			$view->settings->update( $passed_args );
+		} else {
+			/** \GravityView_View_Data::get_view is deprecated. */
+			$view_data = $this->getGvOutputData()->get_view( $view_id, $passed_args );
 
-		do_action( 'gravityview_log_debug', '[render_view] Init View. Arguments: ', $passed_args );
+			do_action( 'gravityview_log_debug', '[render_view] View Data: ', $view_data );
 
-		// The passed args were always winning, even if they were NULL.
-		// This prevents that. Filters NULL, FALSE, and empty strings.
-		$passed_args = array_filter( $passed_args, 'strlen' );
+			do_action( 'gravityview_log_debug', '[render_view] Init View. Arguments: ', $passed_args );
 
-		//Override shortcode args over View template settings
-		$atts = wp_parse_args( $passed_args, $view_data['atts'] );
+			// The passed args were always winning, even if they were NULL.
+			// This prevents that. Filters NULL, FALSE, and empty strings.
+			$passed_args = array_filter( $passed_args, 'strlen' );
 
-		do_action( 'gravityview_log_debug', '[render_view] Arguments after merging with View settings: ', $atts );
+			//Override shortcode args over View template settings
+			$atts = wp_parse_args( $passed_args, $view_data['atts'] );
+
+			do_action( 'gravityview_log_debug', '[render_view] Arguments after merging with View settings: ', $atts );
+		}
 
 		// It's password protected and you need to log in.
 		if ( post_password_required( $view_id ) ) {
@@ -710,7 +771,12 @@ class GravityView_frontend {
 			 */
 			$direct_access = apply_filters( 'gravityview_direct_access', true, $view_id );
 
-			$embed_only = ! empty( $atts['embed_only'] );
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+				$embed_only = $view->settings->get( 'embed_only' );
+			} else {
+				/** Deprecated. View attributes moved to \GV\View::$settings. */
+				$embed_only = ! empty( $atts['embed_only'] );
+			}
 
 			if( ! $direct_access || ( $embed_only && ! GVCommon::has_cap( 'read_private_gravityviews' ) ) ) {
 				return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -725,9 +791,17 @@ class GravityView_frontend {
 		 */
 		global $gravityview_view;
 
-		$gravityview_view = new GravityView_View( $view_data );
-
-		$post_id = ! empty( $atts['post_id'] ) ? intval( $atts['post_id'] ) : get_the_ID();
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+			$view_data = $view->as_data();
+			$gravityview_view = new GravityView_View( $view_data );
+			$post_id = intval( $view->settings->get( 'post_id' ) ? : get_the_ID() );
+			$template_id = $view->template ? $view->template->ID : null;
+		} else {
+			/** These constructs are deprecated. Use the new gravityview() wrapper. */
+			$gravityview_view = new GravityView_View( $view_data );
+			$post_id = ! empty( $atts['post_id'] ) ? intval( $atts['post_id'] ) : get_the_ID();
+			$template_id = $view_data['template_id'];
+		}
 
 		$gravityview_view->setPostId( $post_id );
 
@@ -737,7 +811,7 @@ class GravityView_frontend {
 			do_action( 'gravityview_log_debug', '[render_view] Executing Directory View' );
 
 			//fetch template and slug
-			$view_slug = apply_filters( 'gravityview_template_slug_'. $view_data['template_id'], 'table', 'directory' );
+			$view_slug = apply_filters( 'gravityview_template_slug_'. $template_id, 'table', 'directory' );
 
 			do_action( 'gravityview_log_debug', '[render_view] View template slug: ', $view_slug );
 
@@ -746,24 +820,43 @@ class GravityView_frontend {
 			 */
 			$get_entries = apply_filters( 'gravityview_get_view_entries_'.$view_slug, true );
 
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+				$hide_until_searched = $view->settings->get( 'hide_until_searched' );
+			} else {
+				/** $atts is deprecated, use \GV\View:$settings */
+				$hide_until_searched = ! empty( $atts['hide_until_searched'] );
+			}
+
 			/**
 			 * Hide View data until search is performed
 			 * @since 1.5.4
 			 */
-			if ( ! empty( $atts['hide_until_searched'] ) && ! $this->isSearch() ) {
+			if ( $hide_until_searched && ! $this->isSearch() ) {
 				$gravityview_view->setHideUntilSearched( true );
 				$get_entries = false;
 			}
 
-
 			if ( $get_entries ) {
 
-				if ( ! empty( $atts['sort_columns'] ) ) {
+				if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+					$sort_columns = $view->settings->get( 'sort_columns' );
+				} else {
+					/** $atts is deprecated, use \GV\View:$settings */
+					$sort_columns = ! empty( $atts['sort_columns'] );
+				}
+
+				if ( $sort_columns ) {
 					// add filter to enable column sorting
 					add_filter( 'gravityview/template/field_label', array( $this, 'add_columns_sort_links' ) , 100, 3 );
 				}
 
-				$view_entries = self::get_view_entries( $atts, $view_data['form_id'] );
+				if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+					$view_entries = self::get_view_entries( $view->settings->as_atts(), $view->form->ID );
+				} else {
+					/** $atts is deprecated, use \GV\View:$settings */
+					/** $view_data is depreacted, use \GV\View properties */
+					$view_entries = self::get_view_entries( $atts, $view_data['form_id'] );
+				}
 
 				do_action( 'gravityview_log_debug', sprintf( '[render_view] Get Entries. Found %s entries total, showing %d entries', $view_entries['count'], sizeof( $view_entries['entries'] ) ) );
 
@@ -783,17 +876,21 @@ class GravityView_frontend {
 			// user requested Single Entry View
 			do_action( 'gravityview_log_debug', '[render_view] Executing Single View' );
 
-
 			/**
 			 * @action `gravityview_render_entry_{View ID}` Before rendering a single entry for a specific View ID
 			 * @since 1.17
 			 */
-			do_action( 'gravityview_render_entry_'.$view_data['id'] );
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+				do_action( 'gravityview_render_entry_' . $view->ID );
+			} else {
+				/** $view_data is depreacted, use \GV\View properties */
+				do_action( 'gravityview_render_entry_'.$view_data['id'] );
+			}
 
 			$entry = $this->getEntry();
 
 			// You are not permitted to view this entry.
-			if ( empty( $entry ) || ! self::is_entry_approved( $entry, $atts ) ) {
+			if ( empty( $entry ) || ! self::is_entry_approved( $entry, defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? $view->settings->as_atts() : $atts ) ) {
 
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.' );
 
@@ -821,14 +918,15 @@ class GravityView_frontend {
 
 			// We're in single view, but the view being processed is not the same view the single entry belongs to.
 			// important: do not remove this as it prevents fake attempts of displaying entries from other views/forms
-			if ( $this->getGvOutputData()->has_multiple_views() && $view_id != $this->get_context_view_id() ) {
+			$multiple_views = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? gravityview()->views->count() > 1 : $this->getGvOutputData()->has_multiple_views();
+			if ( $multiple_views && $view_id != $this->get_context_view_id() ) {
 				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '. $view_id );
 				ob_end_clean();
 				return null;
 			}
 
 			//fetch template and slug
-			$view_slug = apply_filters( 'gravityview_template_slug_' . $view_data['template_id'], 'table', 'single' );
+			$view_slug = apply_filters( 'gravityview_template_slug_' . $template_id, 'table', 'single' );
 			do_action( 'gravityview_log_debug', '[render_view] View single template slug: ', $view_slug );
 
 			//fetch entry detail
@@ -836,7 +934,11 @@ class GravityView_frontend {
 			$view_entries['entries'][] = $entry;
 			do_action( 'gravityview_log_debug', '[render_view] Get single entry: ', $view_entries['entries'] );
 
-			$back_link_label = isset( $atts['back_link_label'] ) ? $atts['back_link_label'] : null;
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+				$back_link_label = $view->settings->get( 'back_link_label', null );
+			} else {
+				$back_link_label = isset( $atts['back_link_label'] ) ? $atts['back_link_label'] : null;
+			}
 
 			// set back link label
 			$gravityview_view->setBackLinkLabel( $back_link_label );
@@ -846,7 +948,7 @@ class GravityView_frontend {
 		}
 
 		// add template style
-		self::add_style( $view_data['template_id'] );
+		self::add_style( $template_id );
 
 		// Prepare to render view and set vars
 		$gravityview_view->setEntries( $view_entries['entries'] );
@@ -863,7 +965,7 @@ class GravityView_frontend {
 
 		} else {
 			// finaly we'll render some html
-			$sections = apply_filters( 'gravityview_render_view_sections', $sections, $view_data['template_id'] );
+			$sections = apply_filters( 'gravityview_render_view_sections', $sections, $template_id );
 
 			do_action( 'gravityview_log_debug', '[render_view] Sections to render: ', $sections );
 			foreach ( $sections as $section ) {
@@ -1130,10 +1232,39 @@ class GravityView_frontend {
 
 		$parameters = self::get_view_entries_parameters( $args, $form_id );
 
+
 		$count = 0; // Must be defined so that gravityview_get_entries can use by reference
 
 		//fetch entries
-		$entries = gravityview_get_entries( $form_id, $parameters, $count );
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+			$form = \GV\GF_Form::by_id( $form_id );
+
+			$entries = $form->entries
+				->filter( \GV\GF_Entry_Filter::from_search_criteria( $parameters['search_criteria'] ) )
+				->offset( $args['offset'] )
+				->limit( $parameters['paging']['page_size'] )
+				->page( ( ( $parameters['paging']['offset'] - $args['offset'] ) / $parameters['paging']['page_size'] ) + 1 );
+
+			if ( ! empty( $parameters['sorting'] ) ) {
+				$field = new \GV\Field();
+				$field->ID = $parameters['sorting']['key'];
+				$direction = strtolower( $parameters['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
+				$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction ) );
+			}
+
+			$parameters['paging'] = array(
+				'offset' => ( $entries->current_page - 1 ) * $entries->limit,
+				'page_size' => $entries->limit,
+			);
+			$count = $entries->total();
+			$entries = array_map( function( $e ) { return $e->as_entry(); }, $entries->all() );
+		} else {
+			/** Deprecated, use $form->entries instead. */
+			$entries = gravityview_get_entries( $form_id, $parameters, $count );
+
+			/** Adjust count by defined offset. */
+			$count = max( 0, ( $count - rgar( $args, 'offset', 0 ) ) );
+		}
 
 		do_action( 'gravityview_log_debug', sprintf( '%s: Get Entries. Found: %s entries', __METHOD__, $count ), $entries );
 
@@ -1150,7 +1281,7 @@ class GravityView_frontend {
 			'entries' => $entries,
 			'paging' => rgar( $parameters, 'paging' ),
 		);
-
+		
 		/**
 		 * @filter `gravityview/view/entries` Filter the entries output to the View
 		 * @param array $criteria associative array containing count, entries & paging
@@ -1170,9 +1301,9 @@ class GravityView_frontend {
 	 *
 	 * @since 1.20
 	 *
-	 * @see GravityView_View_Data::get_default_args For $args options
+	 * @see \GV\View_Settings::defaults For $args options
 	 *
-	 * @param array $args Array of View settings, as structured in GravityView_View_Data::get_default_args
+	 * @param array $args Array of View settings, as structured in \GV\View_Settings::defaults
 	 * @param int $form_id Gravity Forms form ID to search
 	 *
 	 * @return array With `search_criteria`, `sorting`, `paging`, `cache` keys
@@ -1415,7 +1546,7 @@ class GravityView_frontend {
 	 */
 	public static function is_single_entry() {
 
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			$var_name = \GV\Entry::get_endpoint_name();
 		} else {
 			/** Deprecated. Use \GV\Entry::get_endpoint_name instead. */
@@ -1451,9 +1582,22 @@ class GravityView_frontend {
 		// enqueue template specific styles
 		if ( $this->getGvOutputData() ) {
 
-			$views = $this->getGvOutputData()->get_views();
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+				$views = gravityview()->views->all();
+			} else {
+				/** \GravityView_View_Data::get_view is no more... */
+				$views = $this->getGvOutputData()->get_views();
+			}
 
 			foreach ( $views as $view_id => $data ) {
+				if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+					$view = $data;
+					$view_id = $view->ID;
+					$template_id = $view->template ? $view->template->ID : null;
+					$data = $view->as_data();
+				} else {
+					$template_id = $data['template_id'];
+				}
 
 				/**
 				 * Don't enqueue the scripts or styles if it's not going to be displayed.
@@ -1467,8 +1611,15 @@ class GravityView_frontend {
 				$js_dependencies = array( 'jquery', 'gravityview-jquery-cookie' );
 				$css_dependencies = array();
 
+				if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+					$lightbox = $view->settings->get( 'lightbox' );
+				} else {
+					/** View data attributes are now stored in \GV\View::$settings */
+					$lightbox = ! empty( $data['atts']['lightbox'] );
+				}
+
 				// If the thickbox is enqueued, add dependencies
-				if ( ! empty( $data['atts']['lightbox'] ) ) {
+				if ( $lightbox ) {
 
 					/**
 					 * @filter `gravity_view_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
@@ -1506,7 +1657,7 @@ class GravityView_frontend {
 
 				$this->enqueue_default_style( $css_dependencies );
 
-				self::add_style( $data['template_id'] );
+				self::add_style( $template_id );
 			}
 
 			if ( 'wp_print_footer_scripts' === current_filter() ) {
