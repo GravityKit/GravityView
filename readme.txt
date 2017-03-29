@@ -23,6 +23,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = 1.21 =
 
 * Fixed: Single Entry not accessible when filtering a View by Gravity Flow's "Final Status" field
+
+__Developer Updates:__
+
+* Modified: `GVCommon::check_entry_display()` now returns WP_Error instead of `false` when an error occurs. This allows for additional information to be passed.
+
 = 1.20.1 on March 1, 2017 =
 
 * Added: Support for comma-separated email addresses when adding a note and using "Other email address"

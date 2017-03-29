@@ -682,8 +682,12 @@ class GVCommon {
 				$entry = self::check_entry_display( $entry );
 			}
 
-			return is_wp_error( $entry ) ? false : $entry;
+			if( is_wp_error( $entry ) ) {
+				do_action( 'gravityview_log_error', __METHOD__ . ': ' . $entry->get_error_message() );
+				return false;
+			}
 
+			return $entry;
 		}
 
 		return false;
@@ -764,7 +768,6 @@ class GVCommon {
 	 * @see GFFormsModel::is_value_match()
 	 *
 	 * @since 1.7.4
-	 * @todo Return WP_Error instead of boolean
 	 *
 	 * @param array $entry Gravity Forms Entry object
 	 * @return bool|array Returns 'false' if entry is not valid according to the view search filters (Adv Filter)
@@ -772,39 +775,34 @@ class GVCommon {
 	public static function check_entry_display( $entry ) {
 
 		if ( ! $entry || is_wp_error( $entry ) ) {
-			do_action( 'gravityview_log_debug', __METHOD__ . ' Entry was not found.', $entry );
-			return false;
+			return new WP_Error('entry_not_found', 'Entry was not found.', $entry );
 		}
 
 		if ( empty( $entry['form_id'] ) ) {
-			do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry is empty! Entry:', $entry );
-			return false;
+			return new WP_Error( 'form_id_not_set', '[apply_filters_to_entry] Entry is empty!', $entry );
 		}
 
 		$criteria = self::calculate_get_entries_criteria();
-
-		// Make sure the current View is connected to the same form as the Entry
-		if( ! empty( $criteria['context_view_id'] ) ) {
-			$context_view_id = intval( $criteria['context_view_id'] );
-			$context_form_id = gravityview_get_form_id( $context_view_id );
-			if( intval( $context_form_id ) !== intval( $entry['form_id'] ) ) {
-				do_action( 'gravityview_log_debug', sprintf( '[apply_filters_to_entry] Entry form ID does not match current View connected form ID:', $entry['form_id'] ), $criteria['context_view_id'] );
-				return false;
-			}
-		}
 
 		if ( empty( $criteria['search_criteria'] ) || ! is_array( $criteria['search_criteria'] ) ) {
 			do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry approved! No search criteria found:', $criteria );
 			return $entry;
 		}
 
+		// Make sure the current View is connected to the same form as the Entry
+		if( ! empty( $criteria['context_view_id'] ) ) {
+			$context_view_id = intval( $criteria['context_view_id'] );
+			$context_form_id = gravityview_get_form_id( $context_view_id );
+			if( intval( $context_form_id ) !== intval( $entry['form_id'] ) ) {
+				return new WP_Error( 'view_id_not_match', sprintf( '[apply_filters_to_entry] Entry form ID does not match current View connected form ID:', $entry['form_id'] ), $criteria['context_view_id'] );
+			}
+		}
+
 		$search_criteria = $criteria['search_criteria'];
-		unset( $criteria );
 
 		// check entry status
 		if ( array_key_exists( 'status', $search_criteria ) && $search_criteria['status'] != $entry['status'] ) {
-			do_action( 'gravityview_log_debug', sprintf( '[apply_filters_to_entry] Entry status - %s - is not valid according to filter:', $entry['status'] ), $search_criteria );
-			return false;
+			return new WP_Error( 'status_not_valid', sprintf( '[apply_filters_to_entry] Entry status - %s - is not valid according to filter:', $entry['status'] ), $search_criteria );
 		}
 
 		// check entry date
@@ -817,10 +815,8 @@ class GVCommon {
 		}
 
 		$filters = $search_criteria['field_filters'];
-		unset( $search_criteria );
 
 		$mode = array_key_exists( 'mode', $filters ) ? strtolower( $filters['mode'] ) : 'all';
-		unset( $filters['mode'] );
 
 		$form = self::get_form( $entry['form_id'] );
 
@@ -847,22 +843,24 @@ class GVCommon {
 
 			$is_value_match = GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field );
 
-			// verify if we are already free to go!
-			if ( ! $is_value_match && 'all' === $mode ) {
-				do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry cannot be displayed. Failed one criteria for ALL mode', $filter );
-				return false;
-			} elseif ( $is_value_match && 'any' === $mode ) {
+			// Any match is all we need to know
+			if ( $is_value_match && 'any' === $mode ) {
 				return $entry;
+			}
+
+			// Any failed match is a total fail
+			if ( ! $is_value_match && 'all' === $mode ) {
+				return new WP_Error('failed_criteria', '[apply_filters_to_entry] Entry cannot be displayed. Failed a criterium for ALL mode', $filter );
 			}
 		}
 
 		// at this point, if in ALL mode, then entry is approved - all conditions were met.
 		// Or, for ANY mode, means none of the conditions were satisfied, so entry is not approved
 		if ( 'all' === $mode ) {
+			do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry approved: all conditions were met' );
 			return $entry;
 		} else {
-			do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry cannot be displayed. Failed all the criteria for ANY mode', $filters );
-			return false;
+			return new WP_Error('failed_any_criteria', '[apply_filters_to_entry] Entry cannot be displayed. Failed all the criteria for ANY mode', $filters );
 		}
 
 	}
