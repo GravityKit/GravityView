@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.21 =
+
+* Fixed: Single Entry not accessible when filtering a View by Gravity Flow's "Final Status" field
 = 1.20.1 on March 1, 2017 =
 
 * Added: Support for comma-separated email addresses when adding a note and using "Other email address"

@@ -833,11 +833,11 @@ class GVCommon {
 
 			$k = $filter['key'];
 
-			if ( in_array( $k, array( 'created_by', 'payment_status' ) ) ) {
-				$field_value = $entry[ $k ];
-				$field = null;
+			$field = self::get_field( $form, $k );
+
+			if ( is_null( $field ) ) {
+				$field_value = isset( $entry[ $k ] ) ? $entry[ $k ] : null;
 			} else {
-				$field = self::get_field( $form, $k );
 				$field_value  = GFFormsModel::get_lead_field_value( $entry, $field );
 				 // If it's a complex field, then fetch the input's value, if exists at the current key. Otherwise, let GF handle it
 				$field_value = ( is_array( $field_value ) && isset( $field_value[ $k ] ) ) ? rgar( $field_value, $k ) : $field_value;
