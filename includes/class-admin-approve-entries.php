@@ -450,9 +450,9 @@ class GravityView_Admin_ApproveEntries {
 
 	function add_scripts_and_styles( $hook ) {
 
-		if( ! class_exists( 'RGForms' ) ) {
+		if( ! class_exists( 'GFForms' ) ) {
 
-			do_action( 'gravityview_log_error', 'GravityView_Admin_ApproveEntries[add_scripts_and_styles] RGForms does not exist.' );
+			do_action( 'gravityview_log_error', 'GravityView_Admin_ApproveEntries[add_scripts_and_styles] GFForms does not exist.' );
 
 			return;
 		}
