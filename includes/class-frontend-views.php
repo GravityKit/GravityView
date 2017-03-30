@@ -1235,36 +1235,11 @@ class GravityView_frontend {
 
 		$count = 0; // Must be defined so that gravityview_get_entries can use by reference
 
-		//fetch entries
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			$form = \GV\GF_Form::by_id( $form_id );
+		/** Deprecated, use $form->entries instead. */
+		$entries = gravityview_get_entries( $form_id, $parameters, $count );
 
-			$entries = $form->entries
-				->filter( \GV\GF_Entry_Filter::from_search_criteria( $parameters['search_criteria'] ) )
-				->offset( $args['offset'] )
-				->limit( $parameters['paging']['page_size'] )
-				->page( ( ( $parameters['paging']['offset'] - $args['offset'] ) / $parameters['paging']['page_size'] ) + 1 );
-
-			if ( ! empty( $parameters['sorting'] ) ) {
-				$field = new \GV\Field();
-				$field->ID = $parameters['sorting']['key'];
-				$direction = strtolower( $parameters['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
-				$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction ) );
-			}
-
-			$parameters['paging'] = array(
-				'offset' => ( $entries->current_page - 1 ) * $entries->limit,
-				'page_size' => $entries->limit,
-			);
-			$count = $entries->total();
-			$entries = array_map( function( $e ) { return $e->as_entry(); }, $entries->all() );
-		} else {
-			/** Deprecated, use $form->entries instead. */
-			$entries = gravityview_get_entries( $form_id, $parameters, $count );
-
-			/** Adjust count by defined offset. */
-			$count = max( 0, ( $count - rgar( $args, 'offset', 0 ) ) );
-		}
+		/** Adjust count by defined offset. */
+		$count = max( 0, ( $count - rgar( $args, 'offset', 0 ) ) );
 
 		do_action( 'gravityview_log_debug', sprintf( '%s: Get Entries. Found: %s entries', __METHOD__, $count ), $entries );
 
@@ -1281,7 +1256,7 @@ class GravityView_frontend {
 			'entries' => $entries,
 			'paging' => rgar( $parameters, 'paging' ),
 		);
-		
+
 		/**
 		 * @filter `gravityview/view/entries` Filter the entries output to the View
 		 * @param array $criteria associative array containing count, entries & paging
