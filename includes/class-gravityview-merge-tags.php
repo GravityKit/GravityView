@@ -164,14 +164,20 @@ class GravityView_Merge_Tags {
 	 * @since 1.8.4 - Moved to GravityView_Merge_Tags
 	 * @since 1.15.1 - Add support for $url_encode and $esc_html arguments
 	 *
-	 * @param  string      $text       Text to replace variables in
-	 * @param  array      $form        GF Form array
-	 * @param  array      $entry        GF Entry array
-	 * @param  bool       $url_encode   Pass return value through `url_encode()`
-	 * @param  bool       $esc_html     Pass return value through `esc_html()`
-	 * @return string                  Text with variables maybe replaced
+	 * @param  string           $text       Text to replace variables in
+	 * @param  array|\GV\Form   $form        GF Form array
+	 * @param  array            $entry        GF Entry array
+	 * @param  bool             $url_encode   Pass return value through `url_encode()`
+	 * @param  bool             $esc_html     Pass return value through `esc_html()`
+	 * @return string           Text with variables maybe replaced
 	 */
 	public static function replace_variables($text, $form = array(), $entry = array(), $url_encode = false, $esc_html = true ) {
+
+		// TODO: This needs to be fixed in `/future/` branch
+		if ( is_a( $form, '\GV\Form' ) ) {
+			/** @var GV\Form $form */
+			$form = $form->form;
+		}
 
 		/**
 		 * @filter `gravityview_do_replace_variables` Turn off merge tag variable replacements.\n
@@ -193,7 +199,8 @@ class GravityView_Merge_Tags {
 		 * Make sure the required keys are set for GFCommon::replace_variables
 		 *
 		 * @internal Reported to GF Support on 12/3
-		 * @internal Fixed in Gravity Forms
+		 * @internal Fixed $form['title'] in Gravity Forms
+		 * @see      https://github.com/gravityforms/gravityforms/pull/27/files
 		 */
 		$form['title']  = isset( $form['title'] ) ? $form['title'] : '';
 		$form['id']     = isset( $form['id'] ) ? $form['id'] : '';

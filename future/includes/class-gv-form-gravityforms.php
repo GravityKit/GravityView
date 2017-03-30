@@ -143,7 +143,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 * @deprecated
 	 * @since future
 	 *
-	 * @throws \RuntimeException during tests if called outside of whiteliested cases.
+	 * @throws \RuntimeException during tests if called outside of whitelisted cases.
 	 *
 	 * @return mixed The value of the requested form data.
 	 */

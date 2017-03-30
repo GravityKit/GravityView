@@ -267,12 +267,22 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.21.1 on March 30, 2017</h3>
+
+                <ul>
+                    <li>Fixed: Advanced Filters no longer filtered 😕</li>
+                    <li>Fixed: Fatal error when viewing Single Entry with a Single Entry Title setting that included Merge Tags</li>
+                    <li>Fixed: Cache wasn&#39;t cleared when an entry was created using Gravity Forms API (thanks Steve with Gravity Flow!)</li>
+                </ul>
+
+
                 <h3>1.21 on March 29, 2017</h3>
 
                 <ul>
                     <li>Fixed: Edit Entry compatibility with Gravity Forms 2.2</li>
                     <li>Fixed: Single Entry not accessible when filtering a View by Gravity Flow&#39;s &quot;Final Status&quot; field</li>
                     <li>Fixed: Needed to re-save permalink settings for Single Entry and Edit Entry to work</li>
+                    <li>Fixed: Incorrect pagination calculations when passing <code>offset</code> via the <code>[gravityview]</code> shortcode</li>
                 </ul>
 
                 <p><strong>Developer Updates:</strong></p>
@@ -787,7 +797,7 @@ class GravityView_Welcome {
 						<li class="wp-person">Chinese translation by <a href="https://www.transifex.com/user/profile/michaeledi/">@michaeledi</a></li>
 						<li class="wp-person">Persian translation by <a href="https://www.transifex.com/user/profile/azadmojtaba/">@azadmojtaba</a></li>
 						<li class="wp-person">Russian translation by <a href="https://www.transifex.com/user/profile/gkovaleff/">@gkovaleff</a></li>
-						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, and <a href="https://github.com/mgratch">@mgratch</a></li>
+						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, <a href="https://github.com/mgratch">@mgratch</a>, and <a href="https://github.com/stevehenty">@stevehenty</a></li>
 					</ul>
 
 					<h4><?php esc_attr_e( 'Want to contribute?', 'gravityview' ); ?></h4>

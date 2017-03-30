@@ -20,11 +20,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.21.1 on March 30, 2017 =
+
+* Fixed: Advanced Filters no longer filtered 😕
+* Fixed: Fatal error when viewing Single Entry with a Single Entry Title setting that included Merge Tags
+* Fixed: Cache wasn't cleared when an entry was created using Gravity Forms API (thanks Steve with Gravity Flow!)
+
 = 1.21 on March 29, 2017 =
 
 * Fixed: Edit Entry compatibility with Gravity Forms 2.2
 * Fixed: Single Entry not accessible when filtering a View by Gravity Flow's "Final Status" field
 * Fixed: Needed to re-save permalink settings for Single Entry and Edit Entry to work
+* Fixed: Incorrect pagination calculations when passing `offset` via the `[gravityview]` shortcode
 
 __Developer Updates:__
 
