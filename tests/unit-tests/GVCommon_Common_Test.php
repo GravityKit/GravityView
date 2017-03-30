@@ -348,9 +348,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 				'context_view_id' => $view->ID,
 			);
 		} );
-		$pass_all = GVCommon::check_entry_display( $entry );
-		$this->assertNotWPError( $pass_all, 'Failed ALL check: ' . $pass_all->get_error_message() . print_r( $pass_all->get_error_data() ) );
-		$this->assertEquals( $entry, $pass_all, 'Should have passed ALL' );
+		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry ), 'Should have passed ALL' );
 		remove_all_filters( 'gravityview_search_criteria' );
 
 

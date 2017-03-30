@@ -829,6 +829,9 @@ class GVCommon {
 
 		$mode = array_key_exists( 'mode', $filters ) ? strtolower( $filters['mode'] ) : 'all';
 
+		// Prevent the mode from being processed below
+		unset( $filters['mode'] );
+
 		$form = self::get_form( $entry['form_id'] );
 
 		foreach ( $filters as $filter ) {
