@@ -267,6 +267,13 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.20.2 on March 30, 2017</h3>
+
+                <ul>
+                    <li>Fixed: Edit Entry compatibility with Gravity Forms 2.2</li>
+                </ul>
+
+
                 <h3>1.20.1 on March 1, 2017</h3>
 
                 <ul>
