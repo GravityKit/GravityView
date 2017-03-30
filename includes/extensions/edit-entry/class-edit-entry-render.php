@@ -163,6 +163,7 @@ class GravityView_Edit_Entry_Render {
 
         if( $this->is_edit_entry_submission() ) {
             remove_action( 'wp',  array( 'RGForms', 'maybe_process_form'), 9 );
+	        remove_action( 'wp',  array( 'GFForms', 'maybe_process_form'), 9 );
         }
     }
 

@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.7.2
+Tested up to: 4.7.3
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -19,6 +19,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 1.20.2 on March 30, 2017 =
+
+* Fixed: Edit Entry compatibility with Gravity Forms 2.2
 
 = 1.20.1 on March 1, 2017 =
 
