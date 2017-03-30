@@ -1235,7 +1235,7 @@ class GravityView_frontend {
 
 		$count = 0; // Must be defined so that gravityview_get_entries can use by reference
 
-		/** Deprecated, use $form->entries instead. */
+		//fetch entries
 		$entries = gravityview_get_entries( $form_id, $parameters, $count );
 
 		/** Adjust count by defined offset. */
