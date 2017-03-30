@@ -330,7 +330,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 
 		// Test PASS ALL
 		add_filter( 'gravityview_search_criteria', function() use ( $view, $entry ) {
-			return array(
+			$updated_criteria = array(
 				'search_criteria' => array(
 					'status' => $entry['status'],
 					'field_filters' => array(
@@ -347,6 +347,10 @@ class GVCommon_Test extends GV_UnitTestCase {
 				),
 				'context_view_id' => $view->ID,
 			);
+
+			print_r( $updated_criteria );
+			
+			return $updated_criteria;
 		} );
 		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry ), 'Should have passed ALL' . print_r( $entry, true ) );
 		remove_all_filters( 'gravityview_search_criteria' );
