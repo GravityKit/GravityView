@@ -651,9 +651,10 @@ class GravityView_frontend {
 		$action_text = sprintf( esc_html__('Add fields to %s', 'gravityview' ), $tab );
 		$message = esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
 
+		$image =  sprintf( '<img alt="%s" src="%s" style="margin-top: 10px;" />', $tab, esc_url(plugins_url( sprintf( 'assets/images/tab-%s.png', $context ), GRAVITYVIEW_FILE ) ) );
 		$output = sprintf( '<h3>%s <strong><a href="%s">%s</a></strong></h3><p>%s</p>', $title, esc_url( $edit_link ), $action_text, $message );
 
-		echo GVCommon::generate_notice( $output, 'gv-error error', 'edit_gravityview', $view_id );
+		echo GVCommon::generate_notice( $output . $image, 'gv-error error', 'edit_gravityview', $view_id );
 	}
 
 
