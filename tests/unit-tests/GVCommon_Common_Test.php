@@ -348,7 +348,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 				'context_view_id' => $view->ID,
 			);
 		} );
-		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry ), 'Should have passed ALL' );
+		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry ), 'Should have passed ALL' . print_r( $entry, true ) );
 		remove_all_filters( 'gravityview_search_criteria' );
 
 
