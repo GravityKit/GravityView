@@ -79,7 +79,9 @@ abstract class Entry {
 	 * @since future
 	 * @return \GV\Entry|null An instance of this entry or null if not found.
 	 */
-	abstract public static function by_id( $entry_id );
+	public static function by_id( $entry_id ) {
+		return null;
+	}
 
 	/**
 	 * Return the backing entry object.
