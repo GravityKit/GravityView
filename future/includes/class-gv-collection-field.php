@@ -114,6 +114,11 @@ class Field_Collection extends Collection {
 	public static function from_configuration( $configuration ) {
 		$fields = new self();
 		foreach ( $configuration as $position => $_fields ) {
+
+			if ( empty( $_fields ) ) {
+				continue;
+			}
+
 			foreach ( $_fields as $uid => $_field ) {
 				$field = new \GV\Field();
 				$field->UID = $uid;
@@ -133,6 +138,10 @@ class Field_Collection extends Collection {
 	 */
 	public function as_configuration() {
 		$configuration = array();
+
+		/**
+		 * @var \GV\Field $field
+		 */
 		foreach ( $this->all() as $field ) {
 			if ( empty( $configuration[ $field->position ] ) ) {
 				$configuration[ $field->position ] = array();
