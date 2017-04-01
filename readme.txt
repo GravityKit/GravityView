@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+
+* Added: Support for embedding `[gravityview]` shortcodes in Advanced Custom Fields (ACF) fields
 = 1.21.1 on March 30, 2017 =
 
 * Fixed: Advanced Filters no longer filtered 😕
