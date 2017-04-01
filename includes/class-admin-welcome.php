@@ -267,6 +267,14 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.21.2 on March 31, 2017</h3>
+
+                <ul>
+                    <li>Added: Support for embedding <code>[gravityview]</code> shortcodes in Advanced Custom Fields (ACF) fields</li>
+                    <li>Fixed: PHP warnings and notices</li>
+                </ul>
+
+                
                 <h3>1.21.1 on March 30, 2017</h3>
 
                 <ul>
