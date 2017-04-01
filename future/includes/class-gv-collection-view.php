@@ -22,9 +22,16 @@ class View_Collection extends Collection {
 	 * @return void
 	 */
 	public function add( $view ) {
+
+		// TODO: @soulseekah
+		if ( is_null( $view ) ) {
+			return null;
+		}
+
 		if ( ! $view instanceof View ) {
 			throw new \InvalidArgumentException( 'View_Collections can only contain objects of type \GV\View.' );
 		}
+
 		parent::add( $view );
 	}
 
