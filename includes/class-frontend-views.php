@@ -712,6 +712,11 @@ class GravityView_frontend {
 				/** Emulate the weird behavior of \GravityView_View_Data::get_view adding a view which wasn't there to begin with. */
 				gravityview()->views->add( \GV\View::by_id( $view_id ) );
 				$view = gravityview()->views->get( $view_id );
+
+				if ( ! $view ) {
+					do_action( 'gravityview_log_debug', sprintf( 'GravityView_View_Data[add_view] Returning; View #%s does not exist.', $view_id ) );
+					return null;
+				}
 			}
 
 			/** Update the view settings with the requested arguments. */

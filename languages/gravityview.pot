@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 1.21.1\n"
+"Project-Id-Version: GravityView 1.21.2\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
 "MIME-Version: 1.0\n"
@@ -106,12 +106,12 @@ msgid "Sort by field"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:129
-#: includes/class-common.php:1222 includes/class-data.php:813
+#: includes/class-common.php:1225 includes/class-data.php:813
 msgid "Default"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:130
-#: includes/class-common.php:1265 includes/class-data.php:814
+#: includes/class-common.php:1268 includes/class-data.php:814
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
 msgstr ""
@@ -1131,13 +1131,13 @@ msgstr ""
 msgid "Post ID"
 msgstr ""
 
-#: includes/class-common.php:928
+#: includes/class-common.php:931
 #. translators: %s: relative time from now, used for generic date comparisons.
 #. "1 day ago", or "20 seconds ago"
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1375
+#: includes/class-common.php:1378
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -1194,11 +1194,11 @@ msgstr ""
 msgid "You can only see this message because you are able to edit this View."
 msgstr ""
 
-#: includes/class-frontend-views.php:783
+#: includes/class-frontend-views.php:788
 msgid "You are not allowed to view this content."
 msgstr ""
 
-#: includes/class-frontend-views.php:909
+#: includes/class-frontend-views.php:914
 msgid "You have attempted to view an entry that is not visible or may not exist."
 msgstr ""
 
@@ -3135,12 +3135,12 @@ msgctxt "Displayed when a View is not configured. %s is replaced by the tab labe
 msgid "The %s layout has not been configured."
 msgstr ""
 
-#: includes/class-frontend-views.php:1643
+#: includes/class-frontend-views.php:1648
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-frontend-views.php:1644
+#: includes/class-frontend-views.php:1649
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""

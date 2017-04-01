@@ -80,6 +80,11 @@ add_filter( 'gravityview/configuration/fields', function( $fields ) {
 	 */
 
 	foreach ( $fields as $position => &$_fields ) {
+
+		if ( empty( $_fields ) ) {
+			continue;
+		}
+
 		foreach ( $_fields as $uid => &$_field ) {
 			if ( ! isset( $_field['only_loggedin'] ) ) {
 				continue;

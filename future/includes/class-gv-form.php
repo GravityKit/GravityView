@@ -35,7 +35,9 @@ abstract class Form extends Source {
 	 * @since future
 	 * @return \GV\Form|null An instance of this form or null if not found.
 	 */
-	abstract public static function by_id( $form_id );
+	public static function by_id( $form_id ) {
+		return null;
+	}
 
 	/**
 	 * Get all entries for this form.
