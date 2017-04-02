@@ -1432,6 +1432,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers GravityView_frontend::get_view_entries()
+	 * @covers \GV\Mocks\GravityView_frontend_get_view_entries()
 	 */
 	public function test_get_view_entries_compat() {
 		$this->_reset_context();

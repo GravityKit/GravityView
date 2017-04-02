@@ -1242,61 +1242,8 @@ class GravityView_frontend {
 
 		// fetch entries
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			/** @todo move to \GV\Mocks */
-			$form = \GV\GF_Form::by_id( $form_id );
-
-			/**
-			 * Kick off all advanced filters.
-			 *
-			 * Parameters and criteria are pretty much the same thing here, just
-			 *  different naming, where `$parameters` are the initial parameters
-			 *  calculated for hte view, and `$criteria` are the filtered ones
-			 *  retrieved via `GVCommon::calculate_get_entries_criteria`.
-			 */
-			$criteria = GVCommon::calculate_get_entries_criteria( $parameters, $form->ID );
-
-			/** ...and all the (now deprectated) filters that usually follow `gravityview_get_entries` */
-
-			/**
-			 * @deprecated
-			 * Do not use this filter anymore.
-			 */
-			$entries = apply_filters( 'gravityview_before_get_entries', null, $criteria, $parameters, $count );
-			if ( ! is_null( $entries ) ) {
-				/**
-				 * We've been given an entries result that we can return,
-				 *  just set the paging and we're good to go.
-				 */
-				$paging = rgar( $parameters, 'paging' );
-			} else {
-				$entries = $form->entries
-					->filter( \GV\GF_Entry_Filter::from_search_criteria( $criteria['search_criteria'] ) )
-					->offset( $args['offset'] )
-					->limit( $criteria['paging']['page_size'] )
-					->page( ( ( $criteria['paging']['offset'] - $args['offset'] ) / $criteria['paging']['page_size'] ) + 1 );
-				if ( ! empty( $criteria['sorting'] ) ) {
-					$field = new \GV\Field();
-					$field->ID = $criteria['sorting']['key'];
-					$direction = strtolower( $criteria['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
-					$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction ) );
-				}
-
-				/** Set paging, count and unwrap the entries. */
-				$paging = array(
-					'offset' => ( $entries->current_page - 1 ) * $entries->limit,
-					'page_size' => $entries->limit,
-				);
-				$count = $entries->total();
-				$entries = array_map( function( $e ) { return $e->as_entry(); }, $entries->all() );
-			}
-
-			/** Just one more filter, for compatibility's sake! */
-
-			/**
-			 * @deprecated
-			 * Do not use this filter anymore.
-			 */
-			$entries = apply_filters( 'gravityview_entries', $entries, $criteria, $parameters, $count );
+			list( $entries, $paging, $count ) =
+				\GV\Mocks\GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $count );
 		} else {
 			/** Deprecated, use $form->entries instead. */
 			$entries = gravityview_get_entries( $form_id, $parameters, $count );

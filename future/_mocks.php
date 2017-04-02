@@ -57,6 +57,74 @@ function GravityView_View_Data_add_view( $view_id, $atts ) {
 	return $view->as_data();
 }
 
+/**
+ * @see \GravityView_frontend::get_view_entries
+ * @internal
+ * @since future
+ *
+ * @return array The old associative array data as returned by
+ *  \GravityView_frontend::get_view_entries(), the paging parameters
+ *  and a total count of all entries.
+ */
+function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $count ) {
+	$form = \GV\GF_Form::by_id( $form_id );
+
+	/**
+	 * Kick off all advanced filters.
+	 *
+	 * Parameters and criteria are pretty much the same thing here, just
+	 *  different naming, where `$parameters` are the initial parameters
+	 *  calculated for hte view, and `$criteria` are the filtered ones
+	 *  retrieved via `GVCommon::calculate_get_entries_criteria`.
+	 */
+	$criteria = \GVCommon::calculate_get_entries_criteria( $parameters, $form->ID );
+
+	/** ...and all the (now deprectated) filters that usually follow `gravityview_get_entries` */
+
+	/**
+	 * @deprecated
+	 * Do not use this filter anymore.
+	 */
+	$entries = apply_filters( 'gravityview_before_get_entries', null, $criteria, $parameters, $count );
+	if ( ! is_null( $entries ) ) {
+		/**
+		 * We've been given an entries result that we can return,
+		 *  just set the paging and we're good to go.
+		 */
+		$paging = rgar( $parameters, 'paging' );
+	} else {
+		$entries = $form->entries
+			->filter( \GV\GF_Entry_Filter::from_search_criteria( $criteria['search_criteria'] ) )
+			->offset( $args['offset'] )
+			->limit( $criteria['paging']['page_size'] )
+			->page( ( ( $criteria['paging']['offset'] - $args['offset'] ) / $criteria['paging']['page_size'] ) + 1 );
+		if ( ! empty( $criteria['sorting'] ) ) {
+			$field = new \GV\Field();
+			$field->ID = $criteria['sorting']['key'];
+			$direction = strtolower( $criteria['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
+			$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction ) );
+		}
+
+		/** Set paging, count and unwrap the entries. */
+		$paging = array(
+			'offset' => ( $entries->current_page - 1 ) * $entries->limit,
+			'page_size' => $entries->limit,
+		);
+		$count = $entries->total();
+		$entries = array_map( function( $e ) { return $e->as_entry(); }, $entries->all() );
+	}
+
+	/** Just one more filter, for compatibility's sake! */
+
+	/**
+	 * @deprecated
+	 * Do not use this filter anymore.
+	 */
+	$entries = apply_filters( 'gravityview_entries', $entries, $criteria, $parameters, $count );
+
+	return array( $entries, $paging, $count );
+}
+
 /** Add some global fix for field capability discrepancies. */
 add_filter( 'gravityview/configuration/fields', function( $fields ) {
 	if ( empty( $fields  ) ) {
