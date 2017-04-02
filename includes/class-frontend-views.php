@@ -509,7 +509,7 @@ class GravityView_frontend {
 
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			if ( $title = $view->settings->get( 'single_title' ) ) {
-				$title = GravityView_API::replace_variables( $title, $view->form, $entry );
+				$title = GravityView_API::replace_variables( $title, $view->form->form, $entry );
 				$title = do_shortcode( $title );
 			}
 		} else {

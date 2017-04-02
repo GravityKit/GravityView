@@ -624,6 +624,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		gravityview()->views->get( $another_view->ID )->settings->set( 'single_title', 'bye, world' );
 		$this->assertEquals( $fe->single_entry_title( 'sentinel', $another_view->ID ), 'bye, world' );
 
+		/** Test merge tags */
+		gravityview()->views->get( $another_view->ID )->settings->set( 'single_title', '{entry_id}' );
+		$this->assertEquals( $fe->single_entry_title( 'sentinel', $another_view->ID ), $another_entry['id'] );
+
 		remove_all_filters( 'gravityview/single/title/out_loop' );
 		unset( $GLOBALS['post'] );
 		unset( $_GET['gvid'] );
