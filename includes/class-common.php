@@ -580,6 +580,8 @@ class GVCommon {
 				if ( is_wp_error( $entries ) ) {
 					do_action( 'gravityview_log_error', $entries->get_error_message(), $entries );
 
+					/** Remove filter added above */
+					remove_filter( 'gform_is_encrypted_field', '__return_false' );
 					return false;
 				}
 			}
