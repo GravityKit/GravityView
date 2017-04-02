@@ -568,6 +568,7 @@ class GVCommon {
 			 * @param  array $criteria The final search criteria used to generate the request to `GFAPI::get_entries()`
 			 * @param array $passed_criteria The original search criteria passed to `GVCommon::get_entries()`
 			 * @param  int|null $total Optional. An output parameter containing the total number of entries. Pass a non-null value to generate
+			 * @deprecated
 			 */
 			$entries = apply_filters( 'gravityview_before_get_entries', null, $criteria, $passed_criteria, $total );
 

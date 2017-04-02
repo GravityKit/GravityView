@@ -1434,10 +1434,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers GravityView_frontend::get_view_entries()
 	 */
 	public function test_get_view_entries_compat() {
-
-		// Temporarily disabling this test, since I removed the `/future/` code.
-		return;
-
 		$this->_reset_context();
 
 		$form = $this->factory->form->import_and_get( 'simple.json' );
@@ -1484,6 +1480,34 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entries = GravityView_frontend::get_view_entries( $view->settings->as_atts(), $form->ID );
 		$this->assertEquals( 2, $entries['count'] );
 		$this->assertEquals( $entry_1['id'], $entries['entries'][0]['id'] );
+
+		/** Test back-compatible filters */
+		add_filter( 'gravityview_search_criteria', function( $criteria ) {
+			$criteria['search_criteria']['field_filters'] []= array(
+				'key' => '1',
+				'value' => 'goes',
+				'operator' => 'contains',
+			);
+			return $criteria;
+		} );
+		$entries = GravityView_frontend::get_view_entries( $view->settings->as_atts(), $form->ID );
+		$this->assertEquals( 1, $entries['count'] );
+		$this->assertEquals( $entry_2['id'], $entries['entries'][0]['id'] );
+		remove_all_filters( 'gravityview_search_criteria' );
+
+		add_filter( 'gravityview_before_get_entries', function( $entries ) {
+			return array( 1 );
+		} );
+		$entries = GravityView_frontend::get_view_entries( $view->settings->as_atts(), $form->ID );
+		$this->assertEquals( array( 1 ), $entries['entries'] );
+		remove_all_filters( 'gravityview_before_get_entries' );
+
+		add_filter( 'gravityview_entries', function( $entries ) {
+			return array( 2 );
+		} );
+		$entries = GravityView_frontend::get_view_entries( $view->settings->as_atts(), $form->ID );
+		$this->assertEquals( array( 2 ), $entries['entries'] );
+		remove_all_filters( 'gravityview_entries' );
 
 		$this->_reset_context();
 	}
