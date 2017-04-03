@@ -282,14 +282,14 @@ class View implements \ArrayAccess {
 	 * Construct a \GV\View instance from a post ID.
 	 *
 	 * @param int|string $post_id The post ID.
-	 * @throws \InvalidArgumentException if $post is not of 'gravityview' type.
+	 * @throws \InvalidArgumentException if $post_id does not resolve to a post of non-'gravityview' type.
 	 *
 	 * @api
 	 * @since future
 	 * @return \GV\View|null An instance around this \WP_Post or null if not found.
 	 */
 	public static function by_id( $post_id ) {
-		if ( ! $post = get_post( $post_id ) ) {
+		if ( ! $post_id || ! $post = get_post( $post_id ) ) {
 			return null;
 		}
 		return self::from_post( $post );
