@@ -229,6 +229,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$expectedException = $e;
 		}
 		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
+
+		/** Disregard global state with a null passed */
+		global $post;
+		$post = $this->factory->post->create_and_get();
+
+		$this->assertNull( \GV\View::by_id( null ) );
+
+		unset( $post );
 	}
 
 	/**
