@@ -57,15 +57,14 @@ class Entry_Collection extends Collection {
 	 *
 	 * @param \GV\Entry $entry The entry to add to the internal array.
 	 *
-	 * @throws \InvalidArgumentException if $field is not of type \GV\Entry.
-	 *
 	 * @api
 	 * @since future
 	 * @return void
 	 */
 	public function add( $entry ) {
 		if ( ! $entry instanceof Entry ) {
-			throw new \InvalidArgumentException( 'Entry_Collections can only contain objects of type \GV\Entry.' );
+			gravityview()->log->error( 'Entry_Collections can only contain objects of type \GV\Entry.' );
+			return;
 		}
 		parent::add( $entry );
 	}

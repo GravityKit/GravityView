@@ -15,21 +15,15 @@ class View_Collection extends Collection {
 	 *
 	 * @param \GV\View $view The view to add to the internal array.
 	 *
-	 * @throws \InvalidArgumentException if $view is not of type \GV\View.
-	 *
 	 * @api
 	 * @since future
 	 * @return void
 	 */
 	public function add( $view ) {
 
-		// TODO: @soulseekah
-		if ( is_null( $view ) ) {
-			return null;
-		}
-
 		if ( ! $view instanceof View ) {
-			throw new \InvalidArgumentException( 'View_Collections can only contain objects of type \GV\View.' );
+			gravityview()->log->error( 'View_Collections can only contain objects of type \GV\View.' );
+			return;
 		}
 
 		parent::add( $view );
