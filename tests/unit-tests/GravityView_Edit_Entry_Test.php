@@ -841,6 +841,68 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 	}
 
+	public function test_edit_entry_post_image() {
+		/** Create a user */
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$filename = site_url( '/tmp/noexist-9f9a9291490_001/upload.png' );
+
+		/** Create the form, entry and view */
+		$form = $this->factory->form->import_and_get( 'post_image.json' );
+		$post = $this->factory->view->create_and_get();
+		$input = "input_{$form['id']}";
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'created_by' => $administrator,
+			'form_id' => $form['id'],
+			'post_id' => $post->ID,
+			'1' => "$filename|:|this is a title|:|this is a caption|:|this is a description",
+			/**
+			 * The entry goes through an empty state when
+			 * saving, so we need to have a non-empty field
+			 * present all the time. This is a bug that may
+			 * pop up one day in the edit entry extension.
+			 *
+			 * Hopefully, we'd have rewritten it by then.
+			 */
+			'2' => 'oh wow',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		/** Request the rendered form */
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertContains( 'gform_submit', $output );
+		$this->assertContains( "{$input}_1", $output );
+		$this->assertContains( 'upload.png', $output );
+		$this->assertContains( "{$input}_1_1", $output );
+		$this->assertContains( 'this is a title', $output );
+		$this->assertContains( "{$input}_1_4", $output );
+		$this->assertContains( 'this is a caption', $output );
+		$this->assertContains( "{$input}_1_7", $output );
+		$this->assertContains( 'this is a description', $output );
+
+		/** Try saving a change, but not touching the image upload field. */
+		$_POST = array(
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+
+			'input_1' => $filename,
+			'input_2' => 'wut',
+			'input_1_1' => 'this is a title',
+			'input_1_4' => 'this is another caption',
+			'input_1_7' => 'this is another description',
+
+			'gform_uploaded_files' => json_encode( array( 'input_1' => $entry['1'] ) ),
+		);
+		$_FILES['input_1'] = array( 'name' => '', 'type' => '', 'size' => 0, 'tmp_name' => '', 'error' => UPLOAD_ERR_NO_FILE );
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertEquals( "$filename|:|this is a title|:|this is another caption|:|this is another description", $entry['1'], 'Post image data got erased!' );
+
+		$this->_reset_context();
+	}
+
 	/**
 	 * @since 1.20
 	 * @covers GravityView_Edit_Entry_User_Registration::restore_display_name()

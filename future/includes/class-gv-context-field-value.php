@@ -27,25 +27,26 @@ class Field_Value_Context extends Context {
 	 * @api
 	 * @since future
 	 *
-	 * @throws \InvalidArgumentException If key type conditions are not met.
-	 *
 	 * @return void
 	 */
 	public function __set( $key, $value ) {
 		switch ( $key ):
 			case 'view':
 				if ( ! $value instanceof \GV\View ) {
-					throw new \InvalidArgumentException( '\GV\Field_Value_Context::$view has to be of type \GV\View' );
+					gravityview()->log->error( '\GV\Field_Value_Context::$view has to be of type \GV\View' );
+					return;
 				}
 				break;
 			case 'form':
 				if ( ! $value instanceof \GV\Form ) {
-					throw new \InvalidArgumentException( '\GV\Field_Value_Context::$form has to be of type \GV\Form' );
+					gravityview()->log->error( '\GV\Field_Value_Context::$form has to be of type \GV\Form' );
+					return;
 				}
 				break;
 			case 'entry':
 				if ( ! $value instanceof \GV\Entry ) {
-					throw new \InvalidArgumentException( '\GV\Field_Value_Context::$entry has to be of type \GV\Entry' );
+					gravityview()->log->error( '\GV\Field_Value_Context::$entry has to be of type \GV\Entry' );
+					return;
 				}
 				break;
 		endswitch;

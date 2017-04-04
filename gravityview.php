@@ -70,9 +70,9 @@ register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' ) );
 
 /**
- * The future is here and now.
+ * The future is here and now... perhaps.
  */
-require GRAVITYVIEW_DIR . '/future/gravityview.php';
+require GRAVITYVIEW_DIR . '/future/loader.php';
 
 /**
  * GravityView_Plugin main class.

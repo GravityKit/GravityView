@@ -49,16 +49,16 @@ class Shortcode {
 	/**
 	 * Register this shortcode class with the WordPress Shortcode API.
 	 *
-	 * @throws \ErrorException if shortcode with this name has already been registered elsewhere.
 	 * @internal
 
-	 * @return \GV\Shortcode The only internally registered instance of this shortcode.
+	 * @return \GV\Shortcode|null The only internally registered instance of this shortcode, or null on error.
 	 */
 	public static function add() {
 		$shortcode = new static();
 		if ( shortcode_exists( $shortcode->name ) ) {
 			if ( empty( self::$shortcodes[$shortcode->name] ) ) {
-				throw new \ErrorException( sprintf( 'Shortcode [%s] has already been registered elsewhere.', $shortcode->name ) );
+				gravityview()->log->error( 'Shortcode [{shortcode}] has already been registered elsewhere.', array( 'shortcode' => $shortcode->name ) );
+				return null;
 			}
 		} else {
 			add_shortcode( $shortcode->name, array( get_class( $shortcode ), 'callback' ) );
