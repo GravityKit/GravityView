@@ -509,7 +509,7 @@ class GravityView_frontend {
 
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			if ( $title = $view->settings->get( 'single_title' ) ) {
-				$title = GravityView_API::replace_variables( $title, $view->form, $entry );
+				$title = GravityView_API::replace_variables( $title, $view->form->form, $entry );
 				$title = do_shortcode( $title );
 			}
 		} else {
@@ -1177,6 +1177,9 @@ class GravityView_frontend {
 				'value' => _wp_specialchars( $args['search_value'] ), // The value to search. Encode ampersands but not quotes.
 				'operator' => $operator,
 			);
+
+			// Lock search mode to "all" with implicit presearch filter.
+			$search_criteria['field_filters']['mode'] = 'all';
 		}
 
 		if( $search_criteria !== $original_search_criteria ) {
@@ -1238,14 +1241,22 @@ class GravityView_frontend {
 
 		$parameters = self::get_view_entries_parameters( $args, $form_id );
 
-
 		$count = 0; // Must be defined so that gravityview_get_entries can use by reference
 
-		//fetch entries
-		$entries = gravityview_get_entries( $form_id, $parameters, $count );
+		// fetch entries
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+			list( $entries, $paging, $count ) =
+				\GV\Mocks\GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $count );
+		} else {
+			/** Deprecated, use $form->entries instead. */
+			$entries = gravityview_get_entries( $form_id, $parameters, $count );
 
-		/** Adjust count by defined offset. */
-		$count = max( 0, ( $count - rgar( $args, 'offset', 0 ) ) );
+			/** Set paging. */
+			$paging = rgar( $parameters, 'paging' );
+
+			/** Adjust count by defined offset. */
+			$count = max( 0, ( $count - rgar( $args, 'offset', 0 ) ) );
+		}
 
 		do_action( 'gravityview_log_debug', sprintf( '%s: Get Entries. Found: %s entries', __METHOD__, $count ), $entries );
 
@@ -1260,7 +1271,7 @@ class GravityView_frontend {
 		$return = array(
 			'count' => $count,
 			'entries' => $entries,
-			'paging' => rgar( $parameters, 'paging' ),
+			'paging' => $paging,
 		);
 
 		/**

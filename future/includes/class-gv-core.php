@@ -189,7 +189,8 @@ final class Core {
 	public function __set( $key, $value ) {
 		switch ( $key ) {
 			case 'views':
-				throw new \RuntimeException( __CLASS__ . '::$views is an immutable reference to ' . __CLASS__ . '::$request::$views.' );
+				gravityview()->log->error( __CLASS__ . '::$views is an immutable reference to ' . __CLASS__ . '::$request::$views.' );
+				return;
 		}
 	}
 }
