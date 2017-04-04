@@ -105,7 +105,7 @@ class View_Collection extends Collection {
 
 			/** What about inside post meta values? */
 			foreach ( $meta_keys as $meta_key ) {
-				if ( is_string( $meta_key ) ) {
+				if ( is_string( $post->$meta_key ) ) {
 					$views->merge( self::from_content( $post->$meta_key ) );
 				}
 			}

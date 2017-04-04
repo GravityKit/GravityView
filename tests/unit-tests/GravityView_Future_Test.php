@@ -463,6 +463,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		update_post_meta( $with_shortcodes_in_meta->ID, 'meta_test', sprintf( '[gravityview id="%d"]', $post->ID ) );
 		update_post_meta( $with_shortcodes_in_meta->ID, 'another_meta_test', sprintf( '[gravityview id="%d"]', $another_post->ID ) );
 
+		/** And make sure arrays don't break things. */
+		update_post_meta( $with_shortcodes_in_meta->ID, 'invalid_meta_test', array( 'do not even try to parse this' ) );
+
 		$views = \GV\View_Collection::from_post( $with_shortcodes_in_meta );
 		$this->assertEmpty( $views->all() );
 
@@ -470,7 +473,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/view_collection/from_post/meta_keys', function( $meta_keys, $post ) use ( $with_shortcodes_in_meta, $test ) {
 			$test->assertSame( $post, $with_shortcodes_in_meta );
-			return array( 'meta_test' );
+			return array( 'meta_test', 'invalid_meta_test' );
 		}, 10, 2 );
 
 		$views = \GV\View_Collection::from_post( $with_shortcodes_in_meta );
