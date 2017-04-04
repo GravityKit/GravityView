@@ -1177,6 +1177,9 @@ class GravityView_frontend {
 				'value' => _wp_specialchars( $args['search_value'] ), // The value to search. Encode ampersands but not quotes.
 				'operator' => $operator,
 			);
+
+			// Lock search mode to "all" with implicit presearch filter.
+			$search_criteria['field_filters']['mode'] = 'all';
 		}
 
 		if( $search_criteria !== $original_search_criteria ) {
