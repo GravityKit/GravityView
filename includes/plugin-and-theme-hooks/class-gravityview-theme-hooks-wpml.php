@@ -103,7 +103,9 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 			return;
 		}
 
-		$wpml_url_filters->remove_global_hooks();
+		if( method_exists( $wpml_url_filters, 'remove_global_hooks' ) ) {
+			$wpml_url_filters->remove_global_hooks();
+		}
 
 		if ( $wpml_url_filters->frontend_uses_root() === true ) {
 			remove_filter( 'page_link', array( $wpml_url_filters, 'page_link_filter_root' ), 1 );
