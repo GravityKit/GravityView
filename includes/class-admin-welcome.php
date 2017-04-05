@@ -267,6 +267,26 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.21.3 on April 4, 2017</h3>
+
+                <ul>
+                    <li>Fixed: Post Images stopped working in Edit Entry</li>
+                    <li>Fixed: Conflict with our Social Sharing &amp; SEO Extension</li>
+                    <li>Fixed: Unable to search for a value of <code>0</code></li>
+                    <li>Fixed: Inaccurate search results when using the <code>search_field</code> and <code>search_value</code> settings in the <code>[gravityview]</code> shortcode
+
+                        <ul>
+                            <li>The search mode will now always be set to <code>all</code> when using these settings</li>
+                        </ul></li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>We decided to not throw exceptions in the new <code>gravityview()</code> wrapper function. Instead, we will log errors via Gravity Forms logging.</li>
+                </ul>
+
+
                 <h3>1.21.2 on March 31, 2017</h3>
 
                 <ul>
