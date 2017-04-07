@@ -83,11 +83,11 @@ final class Core {
 	 * @return void
 	 */
 	private function init() {
+		$this->plugin = Plugin::get();
+
 		/** Enable logging. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-logger.php' );
 		$this->log = new WP_Action_Logger();
-
-		$this->plugin = Plugin::get();
 
 		/**
 		 * Stop all further functionality from loading if the WordPress
