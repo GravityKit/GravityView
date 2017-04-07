@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 1.21.2\n"
+"Project-Id-Version: GravityView 1.21.3\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
 "MIME-Version: 1.0\n"
@@ -106,12 +106,12 @@ msgid "Sort by field"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:129
-#: includes/class-common.php:1225 includes/class-data.php:813
+#: includes/class-common.php:1228 includes/class-data.php:813
 msgid "Default"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:130
-#: includes/class-common.php:1268 includes/class-data.php:814
+#: includes/class-common.php:1271 includes/class-data.php:814
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
 msgstr ""
@@ -562,7 +562,7 @@ msgstr ""
 #: includes/class-gravityview-entry-link-shortcode.php:208
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:876
+#: includes/extensions/edit-entry/class-edit-entry-render.php:865
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
 msgstr ""
@@ -962,19 +962,19 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:754
+#: includes/class-admin-welcome.php:782
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:778
+#: includes/class-admin-welcome.php:806
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:803
+#: includes/class-admin-welcome.php:831
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:804
+#: includes/class-admin-welcome.php:832
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1131,13 +1131,13 @@ msgstr ""
 msgid "Post ID"
 msgstr ""
 
-#: includes/class-common.php:931
+#: includes/class-common.php:934
 #. translators: %s: relative time from now, used for generic date comparisons.
 #. "1 day ago", or "20 seconds ago"
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1378
+#: includes/class-common.php:1381
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -1365,7 +1365,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:140
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1877
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1866
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
@@ -1834,39 +1834,39 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:929
+#: includes/extensions/edit-entry/class-edit-entry-render.php:918
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:929
+#: includes/extensions/edit-entry/class-edit-entry-render.php:918
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:935
+#: includes/extensions/edit-entry/class-edit-entry-render.php:924
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1073
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1062
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1080
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1069
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1433
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1422
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1871
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1860
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1881
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1870
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1921
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1910
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -3135,12 +3135,12 @@ msgctxt "Displayed when a View is not configured. %s is replaced by the tab labe
 msgid "The %s layout has not been configured."
 msgstr ""
 
-#: includes/class-frontend-views.php:1648
+#: includes/class-frontend-views.php:1659
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-frontend-views.php:1649
+#: includes/class-frontend-views.php:1660
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""
@@ -3211,7 +3211,7 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1897
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1886
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""

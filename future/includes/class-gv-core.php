@@ -85,6 +85,10 @@ final class Core {
 	private function init() {
 		$this->plugin = Plugin::get();
 
+		/** Enable logging. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-logger.php' );
+		$this->log = new WP_Action_Logger();
+
 		/**
 		 * Stop all further functionality from loading if the WordPress
 		 * plugin is incompatible with the current environment.
@@ -92,10 +96,6 @@ final class Core {
 		if ( ! $this->plugin->is_compatible() ) {
 			return;
 		}
-
-		/** Enable logging. */
-		require_once $this->plugin->dir( 'future/includes/class-gv-logger.php' );
-		$this->log = new WP_Action_Logger();
 
 		/** Templating. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-template.php' );
