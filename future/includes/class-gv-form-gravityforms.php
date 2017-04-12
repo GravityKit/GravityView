@@ -84,6 +84,7 @@ class GF_Form extends Form implements \ArrayAccess {
 				$sorting = array(
 					'key' => $sort->field->ID,
 					'direction' => $sort->direction,
+					'is_numeric' => $sort->mode == Entry_Sort::NUMERIC,
 				);
 			}
 

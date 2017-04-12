@@ -102,7 +102,8 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 			$field = new \GV\Field();
 			$field->ID = $criteria['sorting']['key'];
 			$direction = strtolower( $criteria['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
-			$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction ) );
+			$mode = $criteria['sorting']['is_numeric'] ? \GV\Entry_Sort::NUMERIC : \GV\Entry_Sort::ALPHA;
+			$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction, $mode ) );
 		}
 
 		/** Set paging, count and unwrap the entries. */
