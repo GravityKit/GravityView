@@ -136,7 +136,7 @@ final class Plugin {
 	 * @since future
 	 *
 	 * @param string $path Optional. Extra path appended to the URL.
-	 * @return The URL to this plugin, with trailing slash.
+	 * @return string The URL to this plugin, with trailing slash.
 	 */
 	public function url( $path = '/' ) {
 		return plugins_url( $path, $this->dir( 'gravityview.php' ) );

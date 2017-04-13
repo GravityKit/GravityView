@@ -13,6 +13,8 @@
  */
 
 /**
+ * Requires WPML 3.6.2 or newer
+ *
  * @inheritDoc
  */
 class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {

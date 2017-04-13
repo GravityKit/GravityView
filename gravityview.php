@@ -31,7 +31,7 @@ define( 'GRAVITYVIEW_FILE', __FILE__ );
 define( 'GRAVITYVIEW_URL', plugin_dir_url( __FILE__ ) );
 
 
-/** @define "GRAVITYVIEW_DIR" "./" The absolute path to the plugin directory */
+/** @define "GRAVITYVIEW_DIR" "./" The absolute path to the plugin directory, with trailing slash */
 define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
 
 /**
@@ -72,7 +72,7 @@ register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' 
 /**
  * The future is here and now... perhaps.
  */
-require GRAVITYVIEW_DIR . '/future/loader.php';
+require GRAVITYVIEW_DIR . 'future/loader.php';
 
 /**
  * GravityView_Plugin main class.
@@ -121,7 +121,7 @@ final class GravityView_Plugin {
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-compatibility.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-roles-capabilities.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-notices.php' );
-		require_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-admin.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
 		require_once( GRAVITYVIEW_DIR . 'includes/class-cache.php');
 	}

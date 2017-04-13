@@ -20,5 +20,6 @@ if ( version_compare( phpversion(), '5.3' , '<' ) ) {
 
 /** All looks fine. */
 } else {
+	/** @define "GRAVITYVIEW_DIR" "../" */
 	require GRAVITYVIEW_DIR . 'future/gravityview.php';
 }
