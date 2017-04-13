@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: "Enable sorting by column" not visible when using table-based View Presets
 * Tweak: When using `?cache` to disable entries caching, cached data is removed
 
 = 1.21.3 on April 4, 2017 =

@@ -835,7 +835,7 @@ class GravityView_View_Data {
 				'group'	=> 'sort',
 				'tooltip' => NULL,
 				'show_in_shortcode' => true,
-				'show_in_template' => array( 'default_table' ),
+				'show_in_template' => array( 'default_table', 'preset_business_data', 'preset_issue_tracker', 'preset_resume_board', 'preset_job_board' ),
 			),
 			'start_date' => array(
 				'label' 	=> __('Filter by Start Date', 'gravityview'),
