@@ -527,7 +527,7 @@ class GravityView_Cache {
 		}
 
 		// Has the form been flagged as having changed items in it?
-		if ( $this->in_blacklist() ) {
+		if ( $this->in_blacklist() || ! $use_cache ) {
 
 			// Delete caches for all items with form IDs XYZ
 			$this->delete( $this->form_ids );
@@ -536,8 +536,6 @@ class GravityView_Cache {
 			$this->blacklist_remove( $this->form_ids );
 
 		}
-
-		// Check the blacklist
 
 		/**
 		 * @filter `gravityview_use_cache` Modify whether to use the cache or not

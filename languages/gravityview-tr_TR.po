@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
-"PO-Revision-Date: 2017-03-29 18:04+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2017-04-10 08:41+0000\n"
+"Last-Translator: Süha Karalar <suhakaralar@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/katzwebservices/gravityview/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -108,12 +108,12 @@ msgid "Sort by field"
 msgstr "Alana göre sırala"
 
 #: future/includes/class-gv-settings-view.php:129
-#: includes/class-common.php:1222 includes/class-data.php:813
+#: includes/class-common.php:1228 includes/class-data.php:813
 msgid "Default"
 msgstr "Varsayılan"
 
 #: future/includes/class-gv-settings-view.php:130
-#: includes/class-common.php:1265 includes/class-data.php:814
+#: includes/class-common.php:1271 includes/class-data.php:814
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
 msgstr "Oluşturulma Tarihi"
@@ -564,7 +564,7 @@ msgstr "Çoklu Kayıt"
 #: includes/class-gravityview-entry-link-shortcode.php:208
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:876
+#: includes/extensions/edit-entry/class-edit-entry-render.php:865
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
 msgstr "Kaydı Düzenle"
@@ -964,19 +964,19 @@ msgstr "Değişiklik Listesi"
 msgid "What&rsquo;s New"
 msgstr "Yenilikler"
 
-#: includes/class-admin-welcome.php:744
+#: includes/class-admin-welcome.php:782
 msgid "GravityView is brought to you by:"
 msgstr "GravityView'i çıkaranlar:"
 
-#: includes/class-admin-welcome.php:768
+#: includes/class-admin-welcome.php:806
 msgid "Contributors"
 msgstr "Katkıda Bulunanlar"
 
-#: includes/class-admin-welcome.php:793
+#: includes/class-admin-welcome.php:831
 msgid "Want to contribute?"
 msgstr "Katkıda bulunmak istermisiniz?"
 
-#: includes/class-admin-welcome.php:794
+#: includes/class-admin-welcome.php:832
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1125,11 +1125,11 @@ msgstr "Yazı NO"
 
 #. translators: %s: relative time from now, used for generic date comparisons.
 #. "1 day ago", or "20 seconds ago"
-#: includes/class-common.php:928
+#: includes/class-common.php:934
 msgid "%s ago"
 msgstr "%s önce"
 
-#: includes/class-common.php:1375
+#: includes/class-common.php:1381
 msgid "Email hidden; Javascript is required."
 msgstr "Eposta gizlenmiş; Javascript etkin olmalı."
 
@@ -1186,11 +1186,11 @@ msgstr ""
 msgid "You can only see this message because you are able to edit this View."
 msgstr ""
 
-#: includes/class-frontend-views.php:782
+#: includes/class-frontend-views.php:788
 msgid "You are not allowed to view this content."
 msgstr "Bu içeriği görmeye yetkiniz yok."
 
-#: includes/class-frontend-views.php:908
+#: includes/class-frontend-views.php:914
 msgid ""
 "You have attempted to view an entry that is not visible or may not exist."
 msgstr "Görünür olmayan yada var olmayan bir kaydı görüntülemek istediniz."
@@ -1357,7 +1357,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr "İstek geçersiz oldu. Sayfayı yenileyin ve tekrar deneyin."
 
 #: includes/class-gravityview-entry-approval.php:140
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1877
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1866
 msgid "You do not have permission to edit this entry."
 msgstr "Bu kaydı düzenleme yetkiniz yok."
 
@@ -1827,39 +1827,39 @@ msgstr "Bağlantı yeni sekmede mi yoksa pencerede mi açılsın?"
 msgid "Make field editable to:"
 msgstr "Alanı şunlar için düzenlenebilir yap:"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:929
+#: includes/extensions/edit-entry/class-edit-entry-render.php:918
 msgid "There was a problem with your submission."
 msgstr "Gönderinizle ilgili bir sorun oluştu."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:929
+#: includes/extensions/edit-entry/class-edit-entry-render.php:918
 msgid "Errors have been highlighted below."
 msgstr "Hatalar aşağıda belirtilmiştir."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:935
+#: includes/extensions/edit-entry/class-edit-entry-render.php:924
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "Kayıt güncellendi. %sKayda Dön%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1073
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1062
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr "Bu yazıyı düzenleme yetkiniz yok."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1080
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1069
 msgid "This field is not editable; the post no longer exists."
 msgstr "Bu alan düzenlenebilir değil; yazı silinmiş olabilir."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1433
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1422
 msgid "Maximum number of files reached"
 msgstr "Azami dosya erişim sayısı"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1871
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1860
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "Bu kaydı düzenleyecek bağlantı geçerli değil, zamanaşımına uğramış olabilir."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1881
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1870
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "Bu kaydı düzenleyemezsiniz; çünnkü çöp kutusunda."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1921
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1910
 msgid "You do not have permission to edit this field."
 msgstr "Bu alanı düzenleme yetkiniz yok."
 
@@ -3134,12 +3134,12 @@ msgctxt ""
 msgid "The %s layout has not been configured."
 msgstr ""
 
-#: includes/class-frontend-views.php:1667
+#: includes/class-frontend-views.php:1659
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr "Temizle"
 
-#: includes/class-frontend-views.php:1668
+#: includes/class-frontend-views.php:1660
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr "Sıfırla"
@@ -3213,7 +3213,7 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr "Kayıt Sahibi"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1897
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1886
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr "Geri dön."
