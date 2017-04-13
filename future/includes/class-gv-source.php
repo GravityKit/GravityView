@@ -38,4 +38,16 @@ abstract class Source {
 	 * @since future
 	 */
 	public static $backend = null;
+
+	/**
+	 * Get a \GV\Field instance by ID.
+	 *
+	 * Accepts a variable number of arguments, see implementations.
+	 *
+	 * @return \GV\Field|null A \GV\Field instance.
+	 */
+	public static function get_field( /** varargs */ ) {
+		gravityview()->log->error( '{source}::get_field not implemented in {source}', array( 'source' => get_called_class() ) );
+		return null;
+	}
 }

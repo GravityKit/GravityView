@@ -133,6 +133,29 @@ class Field {
 	}
 
 	/**
+	 * An alias for \GV\Source::get_field()
+	 *
+	 * @see \GV\Source::get_field()
+	 * @param string $source A \GV\Source class as string this field is tied to.
+	 * @param array $args The arguments required for the backend to fetch the field (usually just the ID).
+	 *
+	 * @return \GV\Field|null A \GV\Field instance or null if not found.
+	 */
+	final public static function get( $source, $args ) {
+		if ( ! class_exists( $source ) ) {
+			gravityview()->log->error( '{source} class not found', array( 'source' => $source ) );
+			return null;
+		}
+
+		if ( ! method_exists( $source, 'get_field' ) ) {
+			gravityview()->log->error( '{source} does not appear to be a valid \GV\Source subclass (get_field method missing)', array( 'source' => $source ) );
+			return null;
+		}
+
+		return call_user_func_array( array( $source, 'get_field' ), is_array( $args ) ? $args : array( $args ) );
+	}
+
+	/**
 	 * Update self from a configuration array.
 	 *
 	 * @see \GV\Field::as_configuration()
@@ -175,8 +198,11 @@ class Field {
 	 * @return mixed|null The value for the given configuration key, null if doesn't exist.
 	 */
 	public function __get( $key ) {
-		if ( isset( $this->configuration[ $key ] ) ) {
-			return $this->configuration[ $key ];
-		}
+		switch( $key ):
+			default:
+				if ( isset( $this->configuration[ $key ] ) ) {
+					return $this->configuration[ $key ];
+				}
+		endswitch;
 	}
 }

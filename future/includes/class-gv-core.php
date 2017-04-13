@@ -131,8 +131,9 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry-gravityforms.php' );
 
-		/** Our Field generic. */
+		/** Our Field generic and implementations. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-field.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-field-gravityforms.php' );
 
 		/** Get the collections ready. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-collection.php' );

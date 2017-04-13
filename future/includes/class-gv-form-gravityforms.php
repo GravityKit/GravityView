@@ -121,6 +121,29 @@ class GF_Form extends Form implements \ArrayAccess {
 	}
 
 	/**
+	 * Get a \GV\Field by Form and Field ID for this data source.
+	 *
+	 * @param \GV\GF_Form $form The Gravity Form form ID.
+	 * @param int $field_id The Gravity Form field ID for the $form_id.
+	 *
+	 * @return \GV\Field|null The requested field or null if not found.
+	 */
+	public static function get_field( /** varargs */ ) {
+		$args = func_get_args();
+
+		if ( ! is_array( $args ) || count( $args ) != 2 ) {
+			gravityview()->log->error( '{source} expects 2 arguments for ::get_field ($form, $field_id)', array( 'source' => __CLASS__ ) );
+			return null;
+		}
+
+		/** Unwrap the arguments. */
+		list( $form, $field_id ) = $args;
+
+		/** Wrap it up into a \GV\Field. */
+		return \GV\GF_Field::by_id( $form, $field_id );
+	}
+
+	/**
 	 * ArrayAccess compatibility layer with a Gravity Forms form array.
 	 *
 	 * @internal

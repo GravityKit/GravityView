@@ -1187,6 +1187,32 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\Field::get()
+	 * @covers \GV\Internal_Source::get_field()
+	 * @covers \GV\GF_Form::get_field()
+	 */
+	public function test_get_field() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => 'set all the fields!',
+			'2' => -100,
+		) );
+
+		/** Invalid cases should not fatal. */
+		$this->assertNull( \GV\Field::get( '\GV\No_No_No', '1' ) );
+		$this->assertNull( \GV\Field::get( '\GV\Core', array( '1' ) ) );
+		$this->assertNull( \GV\GF_Form::get_field() );
+		$this->assertNull( \GV\GF_Form::get_field( $form, '1010' ) );
+
+		$field = \GV\GF_Field::get( '\GV\GF_Form', array( $form, '1' ) );
+		$this->assertInstanceOf( '\GV\GF_Field', $field );
+
+		$this->assertEquals( 'text', $field->field->type );
+	}
+
+	/**
 	 * @covers \GV\Context::__set()
 	 * @covers \GV\Context::__get()
 	 *
