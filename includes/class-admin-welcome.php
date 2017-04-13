@@ -267,6 +267,16 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.21.4 on April 13, 2017</h3>
+
+                <ul>
+                    <li>Fixed: &quot;Enable sorting by column&quot; not visible when using table-based View Presets</li>
+                    <li>Fixed: Error activating the plugin when Gravity Forms is not active</li>
+                    <li>Fixed: Numeric sorting</li>
+                    <li>Fixed: Compatibility issue with WPML 3.6.1 and lower</li>
+                    <li>Tweak: When using <code>?cache</code> to disable entries caching, cached data is removed</li>
+                </ul>
+
                 <h3>1.21.3 on April 4, 2017</h3>
 
                 <ul>
