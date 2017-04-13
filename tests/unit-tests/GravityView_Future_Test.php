@@ -1190,6 +1190,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Field::get()
 	 * @covers \GV\Internal_Source::get_field()
 	 * @covers \GV\GF_Form::get_field()
+	 * @covers \GV\GF_Field::by_id()
+	 * @covers \GV\Internal_Source::by_id()
 	 */
 	public function test_get_field() {
 		$form = $this->factory->form->import_and_get( 'simple.json' );
@@ -1210,6 +1212,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertInstanceOf( '\GV\GF_Field', $field );
 
 		$this->assertEquals( 'text', $field->field->type );
+
+		$field = \GV\Internal_Source::get_field( 'custom' );
+		$this->assertInstanceOf( '\GV\Internal_Field', $field );
+		$this->assertEquals( 'custom', $field->ID );
 	}
 
 	/**
