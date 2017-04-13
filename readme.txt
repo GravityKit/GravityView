@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Tweak: When using `?cache` to disable entries caching, cached data is removed
+
 = 1.21.3 on April 4, 2017 =
 
 * Fixed: Post Images stopped working in Edit Entry
