@@ -31,7 +31,7 @@ class GF_Field extends Field {
 		}
 
 
-		$gv_field = \GFFormsModel::get_field( $form, $field_id );
+		$gv_field = \GFFormsModel::get_field( $form->form, $field_id );
 
 		if ( ! $gv_field ) {
 			gravityview()->log->error( 'Invalid $field_id #{field_id} for current source' );
@@ -43,5 +43,27 @@ class GF_Field extends Field {
 		$field->field = $gv_field;
 
 		return $field;
+	}
+
+	/**
+	 * Retrieve the value for this field.
+	 *
+	 * @param \GV\Field_Value_Context $context Provides some context on where to get the value for this field from.
+	 *  Requires the \GV\Entry in the context.
+	 *
+	 * @return mixed The value for this field.
+	 */
+	public function get_value( \GV\Field_Value_Context $context ) {
+		$entry = $context->entry;
+
+		if ( ! $entry || ! is_object( $entry ) || ! is_a( $entry, '\GV\Entry' ) ) {
+			gravityview()->log->error( '$entry is not a valid \GV\GF_Entry instance' );
+			return null;
+		}
+
+		$value = \RGFormsModel::get_lead_field_value( $context->entry->as_entry(), $this->field );
+		
+		/** Apply parent filters. */
+		return $this->get_value_filters( $value, $context );
 	}
 }

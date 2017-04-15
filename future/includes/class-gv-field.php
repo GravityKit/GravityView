@@ -142,7 +142,7 @@ class Field {
 	 * @return \GV\Field|null A \GV\Field instance or null if not found.
 	 */
 	final public static function get( $source, $args ) {
-		if ( ! class_exists( $source ) ) {
+		if ( ! is_string( $source ) || ! class_exists( $source ) ) {
 			gravityview()->log->error( '{source} class not found', array( 'source' => $source ) );
 			return null;
 		}
@@ -188,6 +188,37 @@ class Field {
 				$this->configuration[ $key ] = $value;
 			}
 		}
+	}
+
+	/**
+	 * Retrieve the value for this field.
+	 *
+	 * Returns null in this implementation (or, rather, lack thereof).
+	 *
+	 * @param \GV\Field_Value_Context $context Provides some context on where to get the value for this field from.
+	 *
+	 * @return mixed The value for this field.
+	 */
+	public function get_value( \GV\Field_Value_Context $context ) {
+		return $this->get_value_filters( null, $context );
+	}
+	
+	/**
+	 * Apply all the required filters after get_value() was called.
+	 *
+	 * @param mixed $value The value that will be filtered.
+	 * @param \GV\Field_Value_Context $context The context.
+	 *
+	 * This is in its own function since \GV\Field subclasses have to call it.
+	 */
+	protected function get_value_filters( $value, $context ) {
+		/**
+		 * @filter `gravityview/field/value` What to display if field value is empty.
+		 * @param string $value The value.
+		 * @param \GV\Field The field we're doing this for.
+		 * @param \GV\Context The context we're doing this for.
+		 */
+		return apply_filters( 'gravityview/field/value', $value, $this, $context );
 	}
 
 	/**

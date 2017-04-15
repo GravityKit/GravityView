@@ -1062,6 +1062,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GravityView_View_Data::get_fields()
 	 * @covers ::gravityview_get_directory_fields()
 	 * @covers \GVCommon::get_directory_fields()
+	 * @covers \GV\Field::get_value()
 	 */
 	public function test_field_and_field_collection() {
 		$fields = new \GV\Field_Collection();
@@ -1183,15 +1184,60 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gravityview/configuration/fields' );
 
+		/** Some values, shall we? */
+		$fields = $view->fields->by_position( 'directory_table-columns' )->all();
+
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $view->form->ID,
+			'1' => 'Monsters, Inc.',
+			'4' => 'International',
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		/** Uninitialized */
+		$context = new \GV\Field_Value_Context();
+		$field = new \GV\Field();
+
+		$this->assertNull( $field->get_value( $context ) );
+
+		add_filter( 'gravityview/field/value', function( $value ) {
+			return 'sentinel-2';
+		} );
+		$this->assertEquals( 'sentinel-2', $field->get_value( $context ) );
+		remove_all_filters( 'gravityview/field/value' );
+
+		$this->assertNull( $field->get_value( $context ) );
+
+		/** Gravity Forms values, please. */
+		$field = \GV\GF_Field::by_id( $view->form, '4' );
+		$context->entry = $entry;
+		$this->assertEquals( 'International', $field->get_value( $context ) );
+
+		add_filter( 'gravityview/field/value', function( $value ) {
+			return 'sentinel-4';
+		} );
+		$this->assertEquals( 'sentinel-4', $field->get_value( $context ) );
+		remove_all_filters( 'gravityview/field/value' );
+
+		/** How about internal fields? */
+		$field = \GV\Internal_Field::by_id( 'id' );
+		$this->assertEquals( $entry->ID, $field->get_value( $context ) );
+
+		add_filter( 'gravityview/field/value', function( $value ) {
+			return 'sentinel-6';
+		} );
+		$this->assertEquals( 'sentinel-6', $field->get_value( $context ) );
+		remove_all_filters( 'gravityview/field/value' );
+
 		$this->_reset_context();
 	}
 
 	/**
 	 * @covers \GV\Field::get()
-	 * @covers \GV\Internal_Source::get_field()
 	 * @covers \GV\GF_Form::get_field()
+	 * @covers \GV\Internal_Source::get_field()
 	 * @covers \GV\GF_Field::by_id()
-	 * @covers \GV\Internal_Source::by_id()
+	 * @covers \GV\Internal_Field::by_id()
 	 */
 	public function test_get_field() {
 		$form = $this->factory->form->import_and_get( 'simple.json' );
