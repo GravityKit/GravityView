@@ -1233,6 +1233,45 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\Mocks\GravityView_API_field_value()
+	 * @covers \GravityView_API::field_value()
+	 */
+	public function test_field_value_compat() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => 'set all the fields!',
+			'2' => -100,
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+
+		$field_settings = array(
+			'id' => '1',
+		);
+
+		$GLOBALS['GravityView_API_field_value_override'] = true;
+		$this->assertEquals( 'set all the fields!', GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
+		unset( $GLOBALS['GravityView_API_field_value_override'] );
+		$this->assertEquals( 'set all the fields!', GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
+
+		$field_settings = array(
+			'id' => 'custom',
+			'content' => 'this is it',
+			'wpautop' => true,
+		);
+		$GLOBALS['GravityView_API_field_value_override'] = true;
+		$this->assertEquals( "<p>this is it</p>\n", GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
+		unset( $GLOBALS['GravityView_API_field_value_override'] );
+		$this->assertEquals( "<p>this is it</p>\n", GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
+
+		$this->_reset_context();
+	}
+
+	/**
 	 * @covers \GV\Field::get()
 	 * @covers \GV\GF_Form::get_field()
 	 * @covers \GV\Internal_Source::get_field()

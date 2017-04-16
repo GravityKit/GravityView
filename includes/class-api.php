@@ -219,7 +219,15 @@ class GravityView_API {
 	 */
 	public static function field_value( $entry, $field_settings, $format = 'html' ) {
 
-		if( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+			if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && empty( $GLOBALS['GravityView_API_field_value_override'] ) ) {
+				/** Allow to fall through for back compatibility testing purposes. */
+			} else {
+				return \GV\Mocks\GravityView_API_field_value( $entry, $field_settings, $format );
+			}
+		}
+
+		if ( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
 			return NULL;
 		}
 
