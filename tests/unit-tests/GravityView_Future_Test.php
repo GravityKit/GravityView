@@ -1443,6 +1443,38 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entries = $page_2->page( 3 )->all();
 		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '102', '103' ) );
 
+		/** Numeric sorting, please. */
+		$this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => "this is the floaty-numbered entry",
+			'2' => 1.3,
+		) );
+
+		$this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => "this is the floaty-numbered entry",
+			'2' => 13,
+		) );
+
+		$this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => "this is the floaty-numbered entry",
+			'2' => 0.13,
+		) );
+
+		$entries = $form->entries->filter( \GV\GF_Entry_Filter::from_search_criteria( array( 'field_filters' => array(
+			'mode' => 'all',
+			array( 'key' => '1', 'value' => 'floaty-numbered', 'operator' => 'contains' ),
+		) ) ) );
+
+		$field->ID = '2';
+		$sort = new \GV\Entry_Sort( $field, \GV\Entry_Sort::ASC, \GV\Entry_Sort::NUMERIC );
+		$entries = $entries->sort( $sort )->all();
+
+		$this->assertEquals( '0.13', $entries[0]['2'] );
+		$this->assertEquals( '1.3', $entries[1]['2'] );
+		$this->assertEquals( '13', $entries[2]['2'] );
+
 		$this->_reset_context();
 	}
 

@@ -20,6 +20,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.21.4 on April 13, 2017 =
+
+* Fixed: "Enable sorting by column" not visible when using table-based View Presets
+* Fixed: Error activating the plugin when Gravity Forms is not active
+* Fixed: Numeric sorting
+* Fixed: Compatibility issue with WPML 3.6.1 and lower
+* Tweak: When using `?cache` to disable entries caching, cached data is removed
+
 = 1.21.3 on April 4, 2017 =
 
 * Fixed: Post Images stopped working in Edit Entry
