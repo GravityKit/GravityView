@@ -81,10 +81,10 @@ class GravityView_Edit_Entry {
     private function add_hooks() {
 
         // Add front-end access to Gravity Forms delete file action
-        add_action( 'wp_ajax_nopriv_rg_delete_file', array( 'RGForms', 'delete_file') );
+        add_action( 'wp_ajax_nopriv_rg_delete_file', array( 'GFForms', 'delete_file') );
 
         // Make sure this hook is run for non-admins
-        add_action( 'wp_ajax_rg_delete_file', array( 'RGForms', 'delete_file') );
+        add_action( 'wp_ajax_rg_delete_file', array( 'GFForms', 'delete_file') );
 
         add_filter( 'gravityview_blacklist_field_types', array( $this, 'modify_field_blacklist' ), 10, 2 );
 

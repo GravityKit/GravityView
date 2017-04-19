@@ -12,15 +12,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * Houses all base Form functionality and provides a uniform
  *  API to various form backends via \GV\Form implementations.
  */
-abstract class Form {
-
-	/**
-	 * @var string The identifier of the backend used for this form.
-	 * @api
-	 * @since future
-	 */
-	public static $backend = null;
-
+abstract class Form extends Source {
 	/**
 	 * @var int The ID for this form.
 	 *
@@ -43,7 +35,9 @@ abstract class Form {
 	 * @since future
 	 * @return \GV\Form|null An instance of this form or null if not found.
 	 */
-	abstract public static function by_id( $form_id );
+	public static function by_id( $form_id ) {
+		return null;
+	}
 
 	/**
 	 * Get all entries for this form.

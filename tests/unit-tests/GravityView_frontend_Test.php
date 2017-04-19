@@ -62,4 +62,20 @@ class GravityView_frontend_Test extends GV_UnitTestCase {
 
 	}
 
+	/**
+	 * @covers GravityView_frontend::get_search_criteria()
+	 */
+	public function test_get_search_criteria() {
+
+		/** Just an empty test. */
+		$this->assertEquals( array(
+			'field_filters' => array(), 'status' => 'active'
+		), GravityView_frontend::get_search_criteria( array(), 1 ) );
+
+		/** Make sure searching is locked if implicit search_value is given. */
+		$criteria = GravityView_frontend::get_search_criteria( array( 'search_value' => 'hello', 'search_field' => '1' ), 1 );
+
+		$this->assertEquals( 'all', $criteria['field_filters']['mode'] );
+	}
+
 }

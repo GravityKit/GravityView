@@ -15,15 +15,14 @@ class Field_Collection extends Collection {
 	 *
 	 * @param \GV\Field $field The field to add to the internal array.
 	 *
-	 * @throws \InvalidArgumentException if $field is not of type \GV\Field.
-	 *
 	 * @api
 	 * @since future
 	 * @return void
 	 */
 	public function add( $field ) {
 		if ( ! $field instanceof Field ) {
-			throw new \InvalidArgumentException( 'Field_Collections can only contain objects of type \GV\Field.' );
+			gravityview()->log->error( 'Field_Collections can only contain objects of type \GV\Field.' );
+			return;
 		}
 		parent::add( $field );
 	}
@@ -114,6 +113,11 @@ class Field_Collection extends Collection {
 	public static function from_configuration( $configuration ) {
 		$fields = new self();
 		foreach ( $configuration as $position => $_fields ) {
+
+			if ( empty( $_fields ) ) {
+				continue;
+			}
+
 			foreach ( $_fields as $uid => $_field ) {
 				$field = new \GV\Field();
 				$field->UID = $uid;
@@ -133,6 +137,10 @@ class Field_Collection extends Collection {
 	 */
 	public function as_configuration() {
 		$configuration = array();
+
+		/**
+		 * @var \GV\Field $field
+		 */
 		foreach ( $this->all() as $field ) {
 			if ( empty( $configuration[ $field->position ] ) ) {
 				$configuration[ $field->position ] = array();

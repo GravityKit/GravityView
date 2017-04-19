@@ -219,7 +219,15 @@ class GravityView_API {
 	 */
 	public static function field_value( $entry, $field_settings, $format = 'html' ) {
 
-		if( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+			if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && empty( $GLOBALS['GravityView_API_field_value_override'] ) ) {
+				/** Allow to fall through for back compatibility testing purposes. */
+			} else {
+				return \GV\Mocks\GravityView_API_field_value( $entry, $field_settings, $format );
+			}
+		}
+
+		if ( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
 			return NULL;
 		}
 
@@ -309,6 +317,17 @@ class GravityView_API {
 		 * @param array  $field Field array, as fetched from GravityView_View::getCurrentField()
 		 */
 		$output = apply_filters( 'gravityview_field_entry_value_' . $field_type . '_pre_link', $output, $entry, $field_settings, $gravityview_view->getCurrentField() );
+
+		/**
+		 * @filter `gravityview_field_entry_value_pre_link` Modify the field value output for a field before Show As Link setting is applied. Example: `gravityview_field_entry_value_pre_link`
+		 * @since 1.21.4
+		 * @used-by GV_Inline_Edit
+		 * @param string $output HTML value output
+		 * @param array  $entry The GF entry array
+		 * @param array  $field_settings Settings for the particular GV field
+		 * @param array  $field Field array, as fetched from GravityView_View::getCurrentField()
+		 */
+		$output = apply_filters( 'gravityview_field_entry_value_pre_link', $output, $entry, $field_settings, $gravityview_view->getCurrentField() );
 
 		/**
 		 * Link to the single entry by wrapping the output in an anchor tag

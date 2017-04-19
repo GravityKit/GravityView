@@ -523,7 +523,7 @@ class GravityView_View_Data {
 			$args = shortcode_parse_atts( $shortcode[3] );
 
 			if( empty( $args['id'] ) ) {
-				do_action('gravityview_log_error', sprintf( 'GravityView_View_Data[parse_post_content] Returning; no ID defined in shortcode atts for Post #%s (Atts)', $post->ID ), $shortcode );
+				do_action('gravityview_log_error', 'GravityView_View_Data[parse_post_content] Returning; no ID defined in shortcode atts', $shortcode );
 				continue;
 			}
 
@@ -835,7 +835,7 @@ class GravityView_View_Data {
 				'group'	=> 'sort',
 				'tooltip' => NULL,
 				'show_in_shortcode' => true,
-				'show_in_template' => array( 'default_table' ),
+				'show_in_template' => array( 'default_table', 'preset_business_data', 'preset_issue_tracker', 'preset_resume_board', 'preset_job_board' ),
 			),
 			'start_date' => array(
 				'label' 	=> __('Filter by Start Date', 'gravityview'),

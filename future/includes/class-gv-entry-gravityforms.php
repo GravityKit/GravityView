@@ -22,12 +22,10 @@ class GF_Entry extends Entry implements \ArrayAccess {
 
 	/**
 	 * Initialization.
-	 *
-	 * @throws \RuntimeException if the Gravity Forms plugin is not active.
 	 */
 	private function __construct() {
 		if ( ! class_exists( 'GFAPI' ) ) {
-			throw new \RuntimeException( 'Gravity Forms plugin not active.' );
+			gravityview()->log->error( 'Gravity Forms plugin not active.' );
 		}
 	}
 
@@ -75,8 +73,6 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 * @deprecated
 	 * @since future
 	 *
-	 * @throws \RuntimeException during tests if called outside of whiteliested cases.
-	 *
 	 * @return mixed The value of the requested entry data.
 	 */
 	public function offsetGet( $offset ) {
@@ -90,12 +86,10 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 * @deprecated
 	 * @since future
 	 *
-	 * @throws \RuntimeException The underlying entry data is immutable.
-	 *
 	 * @return void
 	 */
 	public function offsetSet( $offset, $value ) {
-		throw new \RuntimeException( 'The underlying Gravity Forms entry is immutable. This is a \GV\Entry object and should not be accessed as an array.' );
+		gravityview()->log->error( 'The underlying Gravity Forms entry is immutable. This is a \GV\Entry object and should not be accessed as an array.' );
 	}
 
 	/**
@@ -107,6 +101,6 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 * @return void
 	 */
 	public function offsetUnset( $offset ) {
-		throw new \RuntimeException( 'The underlying Gravity Forms entry is immutable. This is a \GV\Entry object and should not be accessed as an array.' );
+		gravityview()->log->error( 'The underlying Gravity Forms entry is immutable. This is a \GV\Entry object and should not be accessed as an array.' );
 	}
 }

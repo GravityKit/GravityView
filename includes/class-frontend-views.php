@@ -509,7 +509,7 @@ class GravityView_frontend {
 
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			if ( $title = $view->settings->get( 'single_title' ) ) {
-				$title = GravityView_API::replace_variables( $title, $view->form, $entry );
+				$title = GravityView_API::replace_variables( $title, $view->form->form, $entry );
 				$title = do_shortcode( $title );
 			}
 		} else {
@@ -651,9 +651,10 @@ class GravityView_frontend {
 		$action_text = sprintf( esc_html__('Add fields to %s', 'gravityview' ), $tab );
 		$message = esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
 
+		$image =  sprintf( '<img alt="%s" src="%s" style="margin-top: 10px;" />', $tab, esc_url(plugins_url( sprintf( 'assets/images/tab-%s.png', $context ), GRAVITYVIEW_FILE ) ) );
 		$output = sprintf( '<h3>%s <strong><a href="%s">%s</a></strong></h3><p>%s</p>', $title, esc_url( $edit_link ), $action_text, $message );
 
-		echo GVCommon::generate_notice( $output, 'gv-error error', 'edit_gravityview', $view_id );
+		echo GVCommon::generate_notice( $output . $image, 'gv-error error', 'edit_gravityview', $view_id );
 	}
 
 
@@ -711,6 +712,11 @@ class GravityView_frontend {
 				/** Emulate the weird behavior of \GravityView_View_Data::get_view adding a view which wasn't there to begin with. */
 				gravityview()->views->add( \GV\View::by_id( $view_id ) );
 				$view = gravityview()->views->get( $view_id );
+
+				if ( ! $view ) {
+					do_action( 'gravityview_log_debug', sprintf( 'GravityView_View_Data[add_view] Returning; View #%s does not exist.', $view_id ) );
+					return null;
+				}
 			}
 
 			/** Update the view settings with the requested arguments. */
@@ -1171,6 +1177,9 @@ class GravityView_frontend {
 				'value' => _wp_specialchars( $args['search_value'] ), // The value to search. Encode ampersands but not quotes.
 				'operator' => $operator,
 			);
+
+			// Lock search mode to "all" with implicit presearch filter.
+			$search_criteria['field_filters']['mode'] = 'all';
 		}
 
 		if( $search_criteria !== $original_search_criteria ) {
@@ -1232,35 +1241,18 @@ class GravityView_frontend {
 
 		$parameters = self::get_view_entries_parameters( $args, $form_id );
 
-
 		$count = 0; // Must be defined so that gravityview_get_entries can use by reference
 
-		//fetch entries
+		// fetch entries
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			$form = \GV\GF_Form::by_id( $form_id );
-
-			$entries = $form->entries
-				->filter( \GV\GF_Entry_Filter::from_search_criteria( $parameters['search_criteria'] ) )
-				->offset( $args['offset'] )
-				->limit( $parameters['paging']['page_size'] )
-				->page( ( ( $parameters['paging']['offset'] - $args['offset'] ) / $parameters['paging']['page_size'] ) + 1 );
-
-			if ( ! empty( $parameters['sorting'] ) ) {
-				$field = new \GV\Field();
-				$field->ID = $parameters['sorting']['key'];
-				$direction = strtolower( $parameters['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
-				$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction ) );
-			}
-
-			$parameters['paging'] = array(
-				'offset' => ( $entries->current_page - 1 ) * $entries->limit,
-				'page_size' => $entries->limit,
-			);
-			$count = $entries->total();
-			$entries = array_map( function( $e ) { return $e->as_entry(); }, $entries->all() );
+			list( $entries, $paging, $count ) =
+				\GV\Mocks\GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $count );
 		} else {
 			/** Deprecated, use $form->entries instead. */
 			$entries = gravityview_get_entries( $form_id, $parameters, $count );
+
+			/** Set paging. */
+			$paging = rgar( $parameters, 'paging' );
 
 			/** Adjust count by defined offset. */
 			$count = max( 0, ( $count - rgar( $args, 'offset', 0 ) ) );
@@ -1279,9 +1271,9 @@ class GravityView_frontend {
 		$return = array(
 			'count' => $count,
 			'entries' => $entries,
-			'paging' => rgar( $parameters, 'paging' ),
+			'paging' => $paging,
 		);
-		
+
 		/**
 		 * @filter `gravityview/view/entries` Filter the entries output to the View
 		 * @param array $criteria associative array containing count, entries & paging

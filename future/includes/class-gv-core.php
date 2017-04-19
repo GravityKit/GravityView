@@ -85,6 +85,10 @@ final class Core {
 	private function init() {
 		$this->plugin = Plugin::get();
 
+		/** Enable logging. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-logger.php' );
+		$this->log = new WP_Action_Logger();
+
 		/**
 		 * Stop all further functionality from loading if the WordPress
 		 * plugin is incompatible with the current environment.
@@ -93,10 +97,6 @@ final class Core {
 			return;
 		}
 
-		/** Enable logging. */
-		require_once $this->plugin->dir( 'future/includes/class-gv-logger.php' );
-		$this->log = new WP_Action_Logger();
-
 		/** Templating. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-template.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-template-view.php' );
@@ -104,6 +104,9 @@ final class Core {
 		/** Register the gravityview post type upon WordPress core init. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
 		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
+
+		/** The Contexts. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-context.php' );
 
 		/** The Settings. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-settings.php' );
@@ -118,7 +121,9 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gravityview.php' );
 		// add_action( 'init', array( '\GV\Shortcodes\gravityview', 'add' ) ); // @todo uncomment when original is stubbed
 
-		/** Our Form generic and beloved form backend implementations. */
+		/** Our Source generic and beloved source and form backend implementations. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-source.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-source-internal.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-form.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-form-gravityforms.php' );
 
@@ -126,8 +131,10 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry-gravityforms.php' );
 
-		/** Our Field generic. */
+		/** Our Field generic and implementations. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-field.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-field-gravityforms.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-field-internal.php' );
 
 		/** Get the collections ready. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-collection.php' );
@@ -186,7 +193,8 @@ final class Core {
 	public function __set( $key, $value ) {
 		switch ( $key ) {
 			case 'views':
-				throw new \RuntimeException( __CLASS__ . '::$views is an immutable reference to ' . __CLASS__ . '::$request::$views.' );
+				gravityview()->log->error( __CLASS__ . '::$views is an immutable reference to ' . __CLASS__ . '::$request::$views.' );
+				return;
 		}
 	}
 }

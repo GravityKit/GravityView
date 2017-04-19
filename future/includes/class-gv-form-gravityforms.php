@@ -18,16 +18,14 @@ class GF_Form extends Form implements \ArrayAccess {
 	 * @api
 	 * @since future
 	 */
-	public static $backend = 'gravityforms';
+	public static $backend = self::BACKEND_GRAVITYFORMS;
 
 	/**
 	 * Initialization.
-	 *
-	 * @throws \RuntimeException if the Gravity Forms plugin is not active.
 	 */
 	private function __construct() {
 		if ( ! class_exists( 'GFAPI' ) ) {
-			throw new \RuntimeException( 'Gravity Forms plugin not active.' );
+			gravityview()->log->error( 'Gravity Forms plugin is not active.' );
 		}
 	}
 
@@ -86,6 +84,7 @@ class GF_Form extends Form implements \ArrayAccess {
 				$sorting = array(
 					'key' => $sort->field->ID,
 					'direction' => $sort->direction,
+					'is_numeric' => $sort->mode == Entry_Sort::NUMERIC,
 				);
 			}
 
@@ -123,6 +122,29 @@ class GF_Form extends Form implements \ArrayAccess {
 	}
 
 	/**
+	 * Get a \GV\Field by Form and Field ID for this data source.
+	 *
+	 * @param \GV\GF_Form $form The Gravity Form form ID.
+	 * @param int $field_id The Gravity Form field ID for the $form_id.
+	 *
+	 * @return \GV\Field|null The requested field or null if not found.
+	 */
+	public static function get_field( /** varargs */ ) {
+		$args = func_get_args();
+
+		if ( ! is_array( $args ) || count( $args ) != 2 ) {
+			gravityview()->log->error( '{source} expects 2 arguments for ::get_field ($form, $field_id)', array( 'source' => __CLASS__ ) );
+			return null;
+		}
+
+		/** Unwrap the arguments. */
+		list( $form, $field_id ) = $args;
+
+		/** Wrap it up into a \GV\Field. */
+		return \GV\GF_Field::by_id( $form, $field_id );
+	}
+
+	/**
 	 * ArrayAccess compatibility layer with a Gravity Forms form array.
 	 *
 	 * @internal
@@ -143,8 +165,6 @@ class GF_Form extends Form implements \ArrayAccess {
 	 * @deprecated
 	 * @since future
 	 *
-	 * @throws \RuntimeException during tests if called outside of whiteliested cases.
-	 *
 	 * @return mixed The value of the requested form data.
 	 */
 	public function offsetGet( $offset ) {
@@ -158,12 +178,10 @@ class GF_Form extends Form implements \ArrayAccess {
 	 * @deprecated
 	 * @since future
 	 *
-	 * @throws \RuntimeException The underlying form data is immutable.
-	 *
 	 * @return void
 	 */
 	public function offsetSet( $offset, $value ) {
-		throw new \RuntimeException( 'The underlying Gravity Forms form is immutable. This is a \GV\Form object and should not be accessed as an array.' );
+		gravityview()->log->error( 'The underlying Gravity Forms form is immutable. This is a \GV\Form object and should not be accessed as an array.' );
 	}
 
 	/**
@@ -175,6 +193,6 @@ class GF_Form extends Form implements \ArrayAccess {
 	 * @return void
 	 */
 	public function offsetUnset( $offset ) {
-		throw new \RuntimeException( 'The underlying Gravity Forms form is immutable. This is a \GV\Form object and should not be accessed as an array.' );
+		gravityview()->log->error( 'The underlying Gravity Forms form is immutable. This is a \GV\Form object and should not be accessed as an array.' );
 	}
 }

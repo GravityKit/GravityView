@@ -76,6 +76,8 @@ class GravityView_Cache {
 
 		add_action( 'gform_entry_created', array( $this, 'entry_created' ), 10, 2 );
 
+		add_action( 'gform_post_add_entry', array( $this, 'entry_added' ), 10, 2 );
+
 		/**
 		 * @see RGFormsModel::update_lead_property() Trigger when any entry property changes
 		 */
@@ -113,7 +115,7 @@ class GravityView_Cache {
 		}
 
 		do_action( 'gravityview_log_debug', __METHOD__ . ' adding form ' . $entry['form_id'] . ' to blacklist because entry #' . $lead_id . ' was deleted', array( 'value' => $property_value, 'previous' => $previous_value ) );
-		
+
 		$this->blacklist_add( $entry['form_id'] );
 	}
 
@@ -145,6 +147,24 @@ class GravityView_Cache {
 	public function entry_created( $entry, $form ) {
 
 		do_action( 'gravityview_log_debug', 'GravityView_Cache[entry_created] adding form ' . $form['id'] . ' to blacklist because entry #' . $entry['id'] . ' was created' );
+
+		$this->blacklist_add( $form['id'] );
+	}
+
+	/**
+	 * Clear the cache when entries are added via GFAPI::add_entry().
+	 *
+	 * @param array $entry The GF Entry array
+	 * @param array $form  The GF Form array
+	 *
+	 * @return void
+	 */
+	public function entry_added( $entry, $form ) {
+		if ( is_wp_error( $entry ) ) {
+			return;
+		}
+
+		do_action( 'gravityview_log_debug', 'GravityView_Cache[entry_added] adding form ' . $form['id'] . ' to blacklist because entry #' . $entry['id'] . ' was added' );
 
 		$this->blacklist_add( $form['id'] );
 	}
@@ -507,7 +527,7 @@ class GravityView_Cache {
 		}
 
 		// Has the form been flagged as having changed items in it?
-		if ( $this->in_blacklist() ) {
+		if ( $this->in_blacklist() || ! $use_cache ) {
 
 			// Delete caches for all items with form IDs XYZ
 			$this->delete( $this->form_ids );
@@ -516,8 +536,6 @@ class GravityView_Cache {
 			$this->blacklist_remove( $this->form_ids );
 
 		}
-
-		// Check the blacklist
 
 		/**
 		 * @filter `gravityview_use_cache` Modify whether to use the cache or not

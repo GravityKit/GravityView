@@ -463,13 +463,35 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		$get = gv_map_deep( $get, 'rawurldecode' );
 
+		// Make sure array key is set up
+		$search_criteria['field_filters'] = rgar( $search_criteria, 'field_filters', array() );
+
 		// add free search
 		if ( ! empty( $get['gv_search'] ) ) {
 
-			// Search for a piece
-			$words = explode( ' ', $get['gv_search'] );
+			$search_all_value = trim( $get['gv_search'] );
 
-			$words = array_filter( $words );
+			/**
+			 * @filter `gravityview/search-all-split-words` Search for each word separately or the whole phrase?
+			 * @since 1.20.2
+			 * @param bool $split_words True: split a phrase into words; False: search whole word only [Default: true]
+			 */
+			$split_words = apply_filters( 'gravityview/search-all-split-words', true );
+
+			if( $split_words ) {
+
+				// Search for a piece
+				$words = explode( ' ', $search_all_value );
+
+				$words = array_filter( $words );
+
+			} else {
+
+				// Replace multiple spaces with one space
+				$search_all_value = preg_replace( '/\s+/ism', ' ', $search_all_value );
+
+				$words = array( $search_all_value );
+			}
 
 			foreach ( $words as $word ) {
 				$search_criteria['field_filters'][] = array(
@@ -529,7 +551,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// get the other search filters
 		foreach ( $get as $key => $value ) {
 
-			if ( 0 !== strpos( $key, 'filter_' ) || empty( $value ) || ( is_array( $value ) && count( $value ) === 1 && empty( $value[0] ) ) ) {
+			if ( 0 !== strpos( $key, 'filter_' ) || gv_empty( $value, false ) || ( is_array( $value ) && count( $value ) === 1 && gv_empty( $value[0], false ) ) ) {
 				continue;
 			}
 

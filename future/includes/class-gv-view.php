@@ -177,16 +177,16 @@ class View implements \ArrayAccess {
 	/**
 	 * Construct a \GV\View instance from a \WP_Post.
 	 *
-	 * @param \WP_Post $post The \WP_Post instance to wrap.
-	 * @throws \InvalidArgumentException if $post is not of 'gravityview' type.
+	 * @param $post The \WP_Post instance to wrap.
 	 *
 	 * @api
 	 * @since future
-	 * @return \GV\View An instance around this \WP_Post.
+	 * @return \GV\View|null An instance around this \WP_Post if valid, null otherwise.
 	 */
-	public static function from_post( \WP_Post $post ) {
-		if ( get_post_type( $post ) != 'gravityview' ) {
-			throw new \InvalidArgumentException( 'Only gravityview post types can be \GV\View instances.' );
+	public static function from_post( $post ) {
+		if ( ! $post || get_post_type( $post ) != 'gravityview' ) {
+			gravityview()->log->error( 'Only gravityview post types can be \GV\View instances.' );
+			return null;
 		}
 
 		$view = new self();
@@ -279,14 +279,13 @@ class View implements \ArrayAccess {
 	 * Construct a \GV\View instance from a post ID.
 	 *
 	 * @param int|string $post_id The post ID.
-	 * @throws \InvalidArgumentException if $post is not of 'gravityview' type.
 	 *
 	 * @api
 	 * @since future
 	 * @return \GV\View|null An instance around this \WP_Post or null if not found.
 	 */
 	public static function by_id( $post_id ) {
-		if ( ! $post = get_post( $post_id ) ) {
+		if ( ! $post_id || ! $post = get_post( $post_id ) ) {
 			return null;
 		}
 		return self::from_post( $post );
@@ -327,36 +326,11 @@ class View implements \ArrayAccess {
 	 * @deprecated
 	 * @since future
 	 *
-	 * @throws \RuntimeException during tests if called outside of whiteliested cases.
-	 *
 	 * @return mixed The value of the requested view data key limited to GravityView_View_Data::$views element keys.
 	 */
 	public function offsetGet( $offset ) {
 		
-		/**
-		 * Moving towards deprecation, let's ensure we never
-		 * trigger this from core and tests unless we really want to.
-		 */
-		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
-
-			if ( ! in_array( $offset, array( 'id', 'view_id', 'form', 'form_id' ) ) ) {
-				/**
-				 * Do not throw an exception for keys that we've yet to move around.
-				 * Add the other keys as they are moved out to ensure we're not using them in core.
-				 */
-
-			} else if ( ! empty( $GLOBALS['GRAVITYVIEW_TESTS_VIEW_ARRAY_ACCESS_OVERRIDE'] ) ) {
-				/**
-				 * Suppress exception if specifically testing for array acess.
-				 */
-
-			} else {
-				/**
-				 * No code should be coming into here unless we're specifically testing for deprecated array access.
-				 */
-				throw new \RuntimeException( 'This is a \GV\View object should not be accessed as an array.' );
-			}
-		}
+		gravityview()->log->notice( 'This is a \GV\View object should not be accessed as an array.' );
 
 		if ( ! isset( $this[$offset] ) ) {
 			return null;
@@ -385,12 +359,10 @@ class View implements \ArrayAccess {
 	 * @deprecated
 	 * @since future
 	 *
-	 * @throws \RuntimeException The old view data is now immutable.
-	 *
 	 * @return void
 	 */
 	public function offsetSet( $offset, $value ) {
-		throw new \RuntimeException( 'The old view data is no longer mutable. This is a \GV\View object should not be accessed as an array.' );
+		gravityview()->log->error( 'The old view data is no longer mutable. This is a \GV\View object should not be accessed as an array.' );
 	}
 
 	/**
@@ -402,7 +374,7 @@ class View implements \ArrayAccess {
 	 * @return void
 	 */
 	public function offsetUnset( $offset ) {
-		throw new \RuntimeException( 'The old view data is no longer mutable. This is a \GV\View object should not be accessed as an array.' );
+		gravityview()->log->error( 'The old view data is no longer mutable. This is a \GV\View object should not be accessed as an array.' );
 	}
 
 	/**

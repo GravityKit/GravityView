@@ -236,6 +236,8 @@ abstract class GravityView_Field {
 	 *
 	 * @since 1.8.4
 	 *
+	 * @see GFCommon::replace_variables()
+	 *
 	 * @param array $matches Array of Merge Tag matches found in text by preg_match_all
 	 * @param string $text Text to replace
 	 * @param array|bool $form Gravity Forms form array. When called inside {@see GFCommon::replace_variables()} (now deprecated), `false`

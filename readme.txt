@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.7.2
+Tested up to: 4.7.3
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -19,6 +19,50 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 1.21.4 on April 13, 2017 =
+
+* Fixed: "Enable sorting by column" not visible when using table-based View Presets
+* Fixed: Error activating the plugin when Gravity Forms is not active
+* Fixed: Numeric sorting
+* Fixed: Compatibility issue with WPML 3.6.1 and lower
+* Tweak: When using `?cache` to disable entries caching, cached data is removed
+
+= 1.21.3 on April 4, 2017 =
+
+* Fixed: Post Images stopped working in Edit Entry
+* Fixed: Conflict with our Social Sharing & SEO Extension
+* Fixed: Unable to search for a value of `0`
+* Fixed: Inaccurate search results when using the `search_field` and `search_value` settings in the `[gravityview]` shortcode
+    - The search mode will now always be set to `all` when using these settings
+
+__Developer Updates:__
+
+* We decided to not throw exceptions in the new `gravityview()` wrapper function. Instead, we will log errors via Gravity Forms logging.
+
+= 1.21.2 on March 31, 2017 =
+
+* Added: Support for embedding `[gravityview]` shortcodes in Advanced Custom Fields (ACF) fields
+* Fixed: PHP warnings and notices
+
+= 1.21.1 on March 30, 2017 =
+
+* Fixed: Advanced Filters no longer filtered 😕
+* Fixed: Fatal error when viewing Single Entry with a Single Entry Title setting that included Merge Tags
+* Fixed: Cache wasn't cleared when an entry was created using Gravity Forms API (thanks Steve with Gravity Flow!)
+
+= 1.21 on March 29, 2017 =
+
+* Fixed: Edit Entry compatibility with Gravity Forms 2.2
+* Fixed: Single Entry not accessible when filtering a View by Gravity Flow's "Final Status" field
+* Fixed: Needed to re-save permalink settings for Single Entry and Edit Entry to work
+* Fixed: Incorrect pagination calculations when passing `offset` via the `[gravityview]` shortcode
+
+__Developer Updates:__
+
+* Modified: `GVCommon::check_entry_display()` now returns WP_Error instead of `false` when an error occurs. This allows for additional information to be passed.
+* Added: `gravityview/search-all-split-words` filter to change search behavior for the "Search All" search input. Default (`true`) converts words separated by spaces into separate search terms. `false` will search whole word.
+* Much progress has been made on the `gravityview()` wrapper function behind the scenes. Getting closer to parity all the time.
 
 = 1.20.1 on March 1, 2017 =
 

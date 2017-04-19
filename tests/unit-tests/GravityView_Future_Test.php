@@ -153,14 +153,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$views->add( $view );
 		$this->assertContains( $view, $views->all() );
 
-		$expectedException = null;
-		try {
-			/** Make sure we can only add \GV\View objects into the \GV\View_Collection. */
-			$views->add( new stdClass() );
-		} catch ( \InvalidArgumentException $e ) {
-			$expectedException = $e;
-		}
-		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
+		/** Make sure we can only add \GV\View objects into the \GV\View_Collection. */
+		$views->add( new stdClass() );
 		$this->assertCount( 1, $views->all() );
 
 		$more_views = new \GV\View_Collection();
@@ -189,24 +183,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** A post of a different post type. */
 		$post = $this->factory->post->create_and_get();
-		$expectedException = null;
-		try {
-			$view = \GV\View::from_post( $post );
-		} catch ( \InvalidArgumentException $e ) {
-			$expectedException = $e;
-		}
-		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
+		$view = \GV\View::from_post( $post );
+		$this->assertNull( $view );
 
-		/** Test raised \TypeError in PHP7 when post is not a \WP_Post */
-		if ( version_compare( phpversion(), '7.0.x' , '>=' ) ) {
-			$expectedException = null;
-			try {
-				$view = \GV\View::from_post( null );
-			} catch ( \TypeError $e ) {
-				$expectedException = $e;
-			}
-			$this->assertInstanceOf( '\TypeError', $expectedException );
-		}
+		$view = \GV\View::from_post( null );
+		$this->assertNull( $view );
 	}
 
 	/**
@@ -222,13 +203,15 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** A post of a different post type. */
 		$post = $this->factory->post->create_and_get();
-		$expectedException = null;
-		try {
-			$view = \GV\View::by_id( $post->ID );
-		} catch ( \InvalidArgumentException $e ) {
-			$expectedException = $e;
-		}
-		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
+		$this->assertNull( \GV\View::by_id( $post->ID ) );
+
+		/** Disregard global state with a null passed */
+		global $post;
+		$post = $this->factory->post->create_and_get();
+
+		$this->assertNull( \GV\View::by_id( null ) );
+
+		unset( $post );
 	}
 
 	/**
@@ -257,7 +240,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 */
 	function test_view_data_compat() {
 		$this->_reset_context();
-		$GLOBALS['GRAVITYVIEW_TESTS_VIEW_ARRAY_ACCESS_OVERRIDE'] = 1; /** Suppress test array access test exceptions. */
 
 		$post = $this->factory->view->create_and_get();
 		$view = \GV\View::by_id( $post->ID );
@@ -274,22 +256,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $post->_gravityview_directory_template, $view['template_id'] );
 
 		/** Immutable! */
-		$expectedException = null;
-		try {
-			$view['id'] = 9;
-		} catch ( \RuntimeException $e ) {
-			$expectedException = $e;
-		}
-		$this->assertInstanceOf( '\RuntimeException', $expectedException );
+		$view['id'] = 9;
 		$this->assertEquals( $post->ID, $view['id'] );
 
-		$expectedException = null;
-		try {
-			unset( $view['id'] );
-		} catch ( \RuntimeException $e ) {
-			$expectedException = $e;
-		}
-		$this->assertInstanceOf( '\RuntimeException', $expectedException );
+		unset( $view['id'] );
 		$this->assertEquals( $post->ID, $view['id'] );
 
 		/** Deprecation regressions. */
@@ -493,6 +463,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		update_post_meta( $with_shortcodes_in_meta->ID, 'meta_test', sprintf( '[gravityview id="%d"]', $post->ID ) );
 		update_post_meta( $with_shortcodes_in_meta->ID, 'another_meta_test', sprintf( '[gravityview id="%d"]', $another_post->ID ) );
 
+		/** And make sure arrays don't break things. */
+		update_post_meta( $with_shortcodes_in_meta->ID, 'invalid_meta_test', array( 'do not even try to parse this' ) );
+
 		$views = \GV\View_Collection::from_post( $with_shortcodes_in_meta );
 		$this->assertEmpty( $views->all() );
 
@@ -500,7 +473,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/view_collection/from_post/meta_keys', function( $meta_keys, $post ) use ( $with_shortcodes_in_meta, $test ) {
 			$test->assertSame( $post, $with_shortcodes_in_meta );
-			return array( 'meta_test' );
+			return array( 'meta_test', 'invalid_meta_test' );
 		}, 10, 2 );
 
 		$views = \GV\View_Collection::from_post( $with_shortcodes_in_meta );
@@ -624,6 +597,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		gravityview()->views->get( $another_view->ID )->settings->set( 'single_title', 'bye, world' );
 		$this->assertEquals( $fe->single_entry_title( 'sentinel', $another_view->ID ), 'bye, world' );
 
+		/** Test merge tags */
+		gravityview()->views->get( $another_view->ID )->settings->set( 'single_title', '{entry_id}' );
+		$this->assertEquals( $fe->single_entry_title( 'sentinel', $another_view->ID ), $another_entry['id'] );
+
 		remove_all_filters( 'gravityview/single/title/out_loop' );
 		unset( $GLOBALS['post'] );
 		unset( $_GET['gvid'] );
@@ -646,6 +623,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Array access. */
 		$this->assertEquals( $form['id'], $_form['id'] );
+		$form['hello'] = 'one';
+		$this->assertTrue( ! isset( $form['hello'] ) );
 
 		/** Invalid ID. */
 		$this->assertNull( \GV\GF_Form::by_id( false ) );
@@ -683,14 +662,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertNull( $forms->get( 'this was not added' ) );
 
-		$expectedException = null;
-		try {
-			/** Make sure we can only add \GV\View objects into the \GV\View_Collection. */
-			$forms->add( 'this is not a form' );
-		} catch ( \InvalidArgumentException $e ) {
-			$expectedException = $e;
-		}
-		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
+		/** Make sure we can only add \GV\View objects into the \GV\View_Collection. */
+		$forms->add( 'this is not a form' );
 		$this->assertCount( 6, $forms->all() );
 
 		$this->assertSame( $forms->get( $last_form->ID ), $forms->last() );
@@ -713,13 +686,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		add_shortcode( 'gravityview', '__return_false' );
 
-		$expectedException = null;
-		try {
-			$shortcode = \GV\Shortcodes\gravityview::add();
-		} catch ( \ErrorException $e ) {
-			$expectedException = $e;
-		}
-		$this->assertInstanceOf( '\ErrorException', $expectedException );
+		$shortcode = \GV\Shortcodes\gravityview::add();
+		$this->assertNull( $shortcode );
 
 		$GLOBALS['shortcode_tags']['gravityview'] = $original_shortcode;
 	}
@@ -803,14 +771,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEmpty( gravityview()->views->all() );
 
 		/** Can't mutate gravityview()->views */
-		$expectedException = null;
-		try {
-			/** Make sure we can only add \GV\View objects into the \GV\View_Collection. */
-			gravityview()->views = null;
-		} catch ( \RuntimeException $e ) {
-			$expectedException = $e;
-		}
-		$this->assertInstanceOf( '\RuntimeException', $expectedException );
+		gravityview()->views = null;
 		$this->assertSame( gravityview()->views, gravityview()->request->views );
 		$this->assertEmpty( gravityview()->views->all() );
 	}
@@ -1108,6 +1069,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GravityView_View_Data::get_fields()
 	 * @covers ::gravityview_get_directory_fields()
 	 * @covers \GVCommon::get_directory_fields()
+	 * @covers \GV\Field::get_value()
 	 */
 	public function test_field_and_field_collection() {
 		$fields = new \GV\Field_Collection();
@@ -1116,14 +1078,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$fields->add( $field );
 		$this->assertContains( $field, $fields->all() );
 
-		$expectedException = null;
-		try {
-			/** Make sure we can only add \GV\Field objects into the \GV\Field_Collection. */
-			$fields->add( new stdClass() );
-		} catch ( \InvalidArgumentException $e ) {
-			$expectedException = $e;
-		}
-		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
+		/** Make sure we can only add \GV\Field objects into the \GV\Field_Collection. */
+		$fields->add( new stdClass() );
 		$this->assertCount( 1, $fields->all() );
 
 		$this->assertEquals( array( 'id', 'label', 'show_label', 'custom_label', 'custom_class', 'only_loggedin', 'only_loggedin_cap', 'search_filter', 'show_as_link' ),
@@ -1196,6 +1152,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$view = \GV\View::from_post( $post );
 		$this->assertEquals( $view->fields->as_configuration(), gravityview_get_directory_fields( $view->ID ) );
 
+		/** Test custom getters */
+		foreach( $view->fields->by_position( 'directory_table-columns' )->all() as $field ) {
+			if ( $field->label == 'Business Name' ) {
+				$this->assertEquals( '9148', $field->sentinel );
+			}
+		}
+
 		/** Regression on \GravityView_View_Data::get_fields() */
 		$this->assertEquals( $view->fields->as_configuration(), \GravityView_View_Data::getInstance()->get_fields( $view->ID ) );
 
@@ -1227,6 +1190,90 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $non_logged_in_count, $view->fields->by_visible()->count() );
 
 		remove_all_filters( 'gravityview/configuration/fields' );
+
+		/** Some values, shall we? */
+		$fields = $view->fields->by_position( 'directory_table-columns' )->all();
+
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $view->form->ID,
+			'1' => 'Monsters, Inc.',
+			'4' => 'International',
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		/** Uninitialized */
+		$context = new \GV\Field_Value_Context();
+		$field = new \GV\Field();
+
+		$this->assertNull( $field->get_value( $context ) );
+
+		add_filter( 'gravityview/field/value', function( $value ) {
+			return 'sentinel-2';
+		} );
+		$this->assertEquals( 'sentinel-2', $field->get_value( $context ) );
+		remove_all_filters( 'gravityview/field/value' );
+
+		$this->assertNull( $field->get_value( $context ) );
+
+		/** Gravity Forms values, please. */
+		$field = \GV\GF_Field::by_id( $view->form, '4' );
+		$context->entry = $entry;
+		$this->assertEquals( 'International', $field->get_value( $context ) );
+
+		add_filter( 'gravityview/field/value', function( $value ) {
+			return 'sentinel-4';
+		} );
+		$this->assertEquals( 'sentinel-4', $field->get_value( $context ) );
+		remove_all_filters( 'gravityview/field/value' );
+
+		/** How about internal fields? */
+		$field = \GV\Internal_Field::by_id( 'id' );
+		$this->assertEquals( $entry->ID, $field->get_value( $context ) );
+
+		add_filter( 'gravityview/field/value', function( $value ) {
+			return 'sentinel-6';
+		} );
+		$this->assertEquals( 'sentinel-6', $field->get_value( $context ) );
+		remove_all_filters( 'gravityview/field/value' );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @covers \GV\Mocks\GravityView_API_field_value()
+	 * @covers \GravityView_API::field_value()
+	 */
+	public function test_field_value_compat() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => 'set all the fields!',
+			'2' => -100,
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+
+		$field_settings = array(
+			'id' => '1',
+		);
+
+		$GLOBALS['GravityView_API_field_value_override'] = true;
+		$this->assertEquals( 'set all the fields!', GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
+		unset( $GLOBALS['GravityView_API_field_value_override'] );
+		$this->assertEquals( 'set all the fields!', GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
+
+		$field_settings = array(
+			'id' => 'custom',
+			'content' => 'this is it',
+			'wpautop' => true,
+		);
+		$GLOBALS['GravityView_API_field_value_override'] = true;
+		$this->assertEquals( "<p>this is it</p>\n", GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
+		unset( $GLOBALS['GravityView_API_field_value_override'] );
+		$this->assertEquals( "<p>this is it</p>\n", GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
 
 		$this->_reset_context();
 	}
@@ -1370,6 +1417,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'1' => 'set all the fields!',
 			'2' => -100,
 		) );
+
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form->ID ) );
 
 		foreach ( range( 1, 10 ) as $i ) {
@@ -1417,6 +1465,69 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( '<tr class="hello-button" data-row="1" onclick="alert(&quot;hello :)&quot;);">', $output );
 
 		$this->_reset_context();
+	}
+
+	/**
+	 * @covers \GV\Field::get()
+	 * @covers \GV\GF_Form::get_field()
+	 * @covers \GV\Internal_Source::get_field()
+	 * @covers \GV\GF_Field::by_id()
+	 * @covers \GV\Internal_Field::by_id()
+	 */
+	public function test_get_field() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => 'set all the fields!',
+			'2' => -100,
+		) );
+
+		/** Invalid cases should not fatal. */
+		$this->assertNull( \GV\Field::get( '\GV\No_No_No', '1' ) );
+		$this->assertNull( \GV\Field::get( '\GV\Core', array( '1' ) ) );
+		$this->assertNull( \GV\GF_Form::get_field() );
+		$this->assertNull( \GV\GF_Form::get_field( $form, '1010' ) );
+
+		$field = \GV\GF_Field::get( '\GV\GF_Form', array( $form, '1' ) );
+		$this->assertInstanceOf( '\GV\GF_Field', $field );
+
+		$this->assertEquals( 'text', $field->field->type );
+
+		$field = \GV\Internal_Source::get_field( 'custom' );
+		$this->assertInstanceOf( '\GV\Internal_Field', $field );
+		$this->assertEquals( 'custom', $field->ID );
+	}
+
+	/**
+	 * @covers \GV\Context::__set()
+	 * @covers \GV\Context::__get()
+	 *
+	 * @covers \GV\Field_Value_Context::__set()
+	 * @covers \GV\Field_Value_Context::__get()
+	 */
+	public function test_contexts() {
+		$context = new \GV\Context();
+
+		$context->space = 'is the place';
+		$this->assertEquals( 'is the place', $context->space );
+
+		$context = new \GV\Field_Value_Context();
+
+		$context->place = 'is the space';
+		$this->assertEquals( 'is the space', $context->place );
+
+		/** Make sure we can only set the view to a \GV\View instance. */
+		$context->view = 'hello';
+		$this->assertNull( $context->view );
+
+		/** Make sure we can only set the form to a \GV\Form instance. */
+		$context->form = 'hello';
+		$this->assertNull( $context->form );
+
+		/** Make sure we can only set the entry to a \GV\Entry instance. */
+		$context->entry = 'hello';
+		$this->assertNull( $context->entry );
 	}
 
 	/**
@@ -1528,6 +1639,38 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entries = $page_2->page( 3 )->all();
 		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '102', '103' ) );
 
+		/** Numeric sorting, please. */
+		$this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => "this is the floaty-numbered entry",
+			'2' => 1.3,
+		) );
+
+		$this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => "this is the floaty-numbered entry",
+			'2' => 13,
+		) );
+
+		$this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => "this is the floaty-numbered entry",
+			'2' => 0.13,
+		) );
+
+		$entries = $form->entries->filter( \GV\GF_Entry_Filter::from_search_criteria( array( 'field_filters' => array(
+			'mode' => 'all',
+			array( 'key' => '1', 'value' => 'floaty-numbered', 'operator' => 'contains' ),
+		) ) ) );
+
+		$field->ID = '2';
+		$sort = new \GV\Entry_Sort( $field, \GV\Entry_Sort::ASC, \GV\Entry_Sort::NUMERIC );
+		$entries = $entries->sort( $sort )->all();
+
+		$this->assertEquals( '0.13', $entries[0]['2'] );
+		$this->assertEquals( '1.3', $entries[1]['2'] );
+		$this->assertEquals( '13', $entries[2]['2'] );
+
 		$this->_reset_context();
 	}
 
@@ -1570,6 +1713,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers GravityView_frontend::get_view_entries()
+	 * @covers \GV\Mocks\GravityView_frontend_get_view_entries()
 	 */
 	public function test_get_view_entries_compat() {
 		$this->_reset_context();
@@ -1618,6 +1762,34 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entries = GravityView_frontend::get_view_entries( $view->settings->as_atts(), $form->ID );
 		$this->assertEquals( 2, $entries['count'] );
 		$this->assertEquals( $entry_1['id'], $entries['entries'][0]['id'] );
+
+		/** Test back-compatible filters */
+		add_filter( 'gravityview_search_criteria', function( $criteria ) {
+			$criteria['search_criteria']['field_filters'] []= array(
+				'key' => '1',
+				'value' => 'goes',
+				'operator' => 'contains',
+			);
+			return $criteria;
+		} );
+		$entries = GravityView_frontend::get_view_entries( $view->settings->as_atts(), $form->ID );
+		$this->assertEquals( 1, $entries['count'] );
+		$this->assertEquals( $entry_2['id'], $entries['entries'][0]['id'] );
+		remove_all_filters( 'gravityview_search_criteria' );
+
+		add_filter( 'gravityview_before_get_entries', function( $entries ) {
+			return array( 1 );
+		} );
+		$entries = GravityView_frontend::get_view_entries( $view->settings->as_atts(), $form->ID );
+		$this->assertEquals( array( 1 ), $entries['entries'] );
+		remove_all_filters( 'gravityview_before_get_entries' );
+
+		add_filter( 'gravityview_entries', function( $entries ) {
+			return array( 2 );
+		} );
+		$entries = GravityView_frontend::get_view_entries( $view->settings->as_atts(), $form->ID );
+		$this->assertEquals( array( 2 ), $entries['entries'] );
+		remove_all_filters( 'gravityview_entries' );
 
 		$this->_reset_context();
 	}

@@ -267,6 +267,71 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.21.4 on April 13, 2017</h3>
+
+                <ul>
+                    <li>Fixed: &quot;Enable sorting by column&quot; not visible when using table-based View Presets</li>
+                    <li>Fixed: Error activating the plugin when Gravity Forms is not active</li>
+                    <li>Fixed: Numeric sorting</li>
+                    <li>Fixed: Compatibility issue with WPML 3.6.1 and lower</li>
+                    <li>Tweak: When using <code>?cache</code> to disable entries caching, cached data is removed</li>
+                </ul>
+
+                <h3>1.21.3 on April 4, 2017</h3>
+
+                <ul>
+                    <li>Fixed: Post Images stopped working in Edit Entry</li>
+                    <li>Fixed: Conflict with our Social Sharing &amp; SEO Extension</li>
+                    <li>Fixed: Unable to search for a value of <code>0</code></li>
+                    <li>Fixed: Inaccurate search results when using the <code>search_field</code> and <code>search_value</code> settings in the <code>[gravityview]</code> shortcode
+
+                        <ul>
+                            <li>The search mode will now always be set to <code>all</code> when using these settings</li>
+                        </ul></li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>We decided to not throw exceptions in the new <code>gravityview()</code> wrapper function. Instead, we will log errors via Gravity Forms logging.</li>
+                </ul>
+
+
+                <h3>1.21.2 on March 31, 2017</h3>
+
+                <ul>
+                    <li>Added: Support for embedding <code>[gravityview]</code> shortcodes in Advanced Custom Fields (ACF) fields</li>
+                    <li>Fixed: PHP warnings and notices</li>
+                </ul>
+
+                
+                <h3>1.21.1 on March 30, 2017</h3>
+
+                <ul>
+                    <li>Fixed: Advanced Filters no longer filtered 😕</li>
+                    <li>Fixed: Fatal error when viewing Single Entry with a Single Entry Title setting that included Merge Tags</li>
+                    <li>Fixed: Cache wasn&#39;t cleared when an entry was created using Gravity Forms API (thanks Steve with Gravity Flow!)</li>
+                </ul>
+
+
+                <h3>1.21 on March 29, 2017</h3>
+
+                <ul>
+                    <li>Fixed: Edit Entry compatibility with Gravity Forms 2.2</li>
+                    <li>Fixed: Single Entry not accessible when filtering a View by Gravity Flow&#39;s &quot;Final Status&quot; field</li>
+                    <li>Fixed: Needed to re-save permalink settings for Single Entry and Edit Entry to work</li>
+                    <li>Fixed: Incorrect pagination calculations when passing <code>offset</code> via the <code>[gravityview]</code> shortcode</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Modified: <code>GVCommon::check_entry_display()</code> now returns WP_Error instead of <code>false</code> when an error occurs. This allows for additional information to be passed.</li>
+                    <li>Added: <code>gravityview/search-all-split-words</code> filter to change search behavior for the &quot;Search All&quot; search input. Default (<code>true</code>) converts words separated by spaces into separate search terms. <code>false</code> will search whole word.</li>
+                    <li>Much progress has been made on the <code>gravityview()</code> wrapper function behind the scenes. Getting closer to parity all the time.</li>
+                </ul>
+
+
                 <h3>1.20.1 on March 1, 2017</h3>
 
                 <ul>
@@ -770,7 +835,7 @@ class GravityView_Welcome {
 						<li class="wp-person">Chinese translation by <a href="https://www.transifex.com/user/profile/michaeledi/">@michaeledi</a></li>
 						<li class="wp-person">Persian translation by <a href="https://www.transifex.com/user/profile/azadmojtaba/">@azadmojtaba</a></li>
 						<li class="wp-person">Russian translation by <a href="https://www.transifex.com/user/profile/gkovaleff/">@gkovaleff</a></li>
-						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, and <a href="https://github.com/mgratch">@mgratch</a></li>
+						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, <a href="https://github.com/mgratch">@mgratch</a>, and <a href="https://github.com/stevehenty">@stevehenty</a></li>
 					</ul>
 
 					<h4><?php esc_attr_e( 'Want to contribute?', 'gravityview' ); ?></h4>

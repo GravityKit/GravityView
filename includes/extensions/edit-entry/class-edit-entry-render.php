@@ -163,6 +163,7 @@ class GravityView_Edit_Entry_Render {
 
         if( $this->is_edit_entry_submission() ) {
             remove_action( 'wp',  array( 'RGForms', 'maybe_process_form'), 9 );
+	        remove_action( 'wp',  array( 'GFForms', 'maybe_process_form'), 9 );
         }
     }
 
@@ -592,37 +593,26 @@ class GravityView_Edit_Entry_Render {
 
         } elseif ( !empty( $_POST[ $input_name ] ) && is_array( $value ) ) {
 
-            // Same image although the image title, caption or description might have changed
+            $img_url = $_POST[ $input_name ];
 
-            $ary = array();
-            if( ! empty( $entry[ $field_id ] ) ) {
-                $ary = is_array( $entry[ $field_id ] ) ? $entry[ $field_id ] : explode( '|:|', $entry[ $field_id ] );
-            }
-            $img_url = rgar( $ary, 0 );
+			$img_title       = rgar( $_POST, $input_name.'_1' );
+			$img_caption     = rgar( $_POST, $input_name .'_4' );
+			$img_description = rgar( $_POST, $input_name .'_7' );
 
-            // is this really the same image or something went wrong ?
-            if( $img_url === $_POST[ $input_name ] ) {
+			$value = ! empty( $img_url ) ? $img_url . "|:|" . $img_title . "|:|" . $img_caption . "|:|" . $img_description : '';
 
-                $img_title       = rgar( $value, $field_id .'.1' );
-                $img_caption     = rgar( $value, $field_id .'.4' );
-                $img_description = rgar( $value, $field_id .'.7' );
+			if ( $field->postFeaturedImage ) {
 
-                $value = ! empty( $img_url ) ? $img_url . "|:|" . $img_title . "|:|" . $img_caption . "|:|" . $img_description : '';
+				$image_meta = array(
+					'ID' => get_post_thumbnail_id( $post_id ),
+					'post_title' => $img_title,
+					'post_excerpt' => $img_caption,
+					'post_content' => $img_description,
+				);
 
-                if ( $field->postFeaturedImage ) {
-
-                    $image_meta = array(
-                        'ID' => get_post_thumbnail_id( $post_id ),
-                        'post_title' => $img_title,
-                        'post_excerpt' => $img_caption,
-                        'post_content' => $img_description,
-                    );
-
-                    // update image title, caption or description
-                    wp_update_post( $image_meta );
-                }
-            }
-
+				// update image title, caption or description
+				wp_update_post( $image_meta );
+			}
         } else {
 
             // if we get here, image was removed or not set.
