@@ -33,6 +33,11 @@ abstract class View_Template extends Template {
 	public $entries;
 
 	/**
+	 * @var \GV\Request The request context.
+	 */
+	public $request;
+
+	/**
 	 * @var string The template slug to be loaded (like "table", "list")
 	 */
 	public static $slug;
@@ -41,10 +46,13 @@ abstract class View_Template extends Template {
 	 * Initializer.
 	 *
 	 * @param \GV\View $view The View connected to this template.
+	 * @param \GV\Entry_Collection $entries A collection of entries for this view.
+	 * @param \GV\Request $request The request context.
 	 */
-	public function __construct( View $view, Entry_Collection $entries ) {
+	public function __construct( View $view, Entry_Collection $entries, Request $request ) {
 		$this->view = $view;
 		$this->entries = $entries;
+		$this->request = $request;
 
 		/** Add granular overrides. */
 		add_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ), 10, 3 );
@@ -113,7 +121,6 @@ abstract class View_Template extends Template {
 			'view' => $this->view,
 			'fields' => $this->view->fields->by_visible(),
 			'entries' => $this->entries->fetch(),
-			'form' => $this->view->form,
 
 		) ), 'gravityview' );
 
