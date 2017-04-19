@@ -11,7 +11,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  *
  * Houses some preliminary \GV\View rendering functionality.
  */
-class View_Renderer {
+class View_Renderer extends Renderer {
 
 	/**
 	 * Renders a \GV\View instance.
