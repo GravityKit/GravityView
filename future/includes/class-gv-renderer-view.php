@@ -110,7 +110,7 @@ class View_Renderer extends Renderer {
 		* @param \GV\View $view The view about to be rendered.
 		*/
 		$class = apply_filters( 'gravityview/template/view/class', sprintf( '\GV\View_%s_Template', ucfirst( $template_slug ) ), $view );
-		$template = new $class( $view, $entries );
+		$template = new $class( $view, $entries, $request );
 
 		ob_start();
 		$template->render();

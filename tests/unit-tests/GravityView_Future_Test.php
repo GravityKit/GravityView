@@ -1443,7 +1443,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$view = \GV\View::by_id( $view->ID );
 		remove_all_filters( 'gravityview/configuration/fields' );
 
-		$template = new \GV\View_Table_Template( $view, $view->form->entries );
+		$template = new \GV\View_Table_Template( $view, $view->form->entries, new \GV\Frontend_Request() );
 
 		/** Test the column ouput. */
 		$expected = sprintf( '<th id="gv-field-%1$d-1" class="gv-field-%1$d-1"><span class="gv-field-label">This is field one</span></th><th id="gv-field-%1$d-2" class="gv-field-%1$d-2"><span class="gv-field-label">This is field two</span></th>', $view->form->ID );

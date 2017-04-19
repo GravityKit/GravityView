@@ -149,7 +149,9 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-collection-entry-offset.php' );
 
 		/** The Renderers. */
-		require_once $this->plugin->dir( 'future/includes/class-gv-view-renderer.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-renderer.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-renderer-view.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-renderer-field.php' );
 
 		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );
 

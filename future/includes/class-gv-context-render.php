@@ -7,9 +7,9 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 }
 
 /**
- * The \GV\Renderer class.
+ * The \GV\Render_Context class.
  *
- * The base for all renderers.
+ * Houses context related to rendering of views, fields.
  */
-class Renderer {
+class Render_Context extends Context {
 }
