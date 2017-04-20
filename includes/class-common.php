@@ -1,4 +1,5 @@
 <?php
+namespace Gravity;
 /**
  * Set of common functions to separate main plugin from Gravity Forms API and other cross-plugin methods
  *
