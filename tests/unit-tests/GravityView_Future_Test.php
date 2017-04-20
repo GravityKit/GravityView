@@ -1321,6 +1321,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\Field_Renderer::render()
+	 */
+	public function test_frontend_field_renderer() {
+	}
+
+	/**
 	 * @covers \GV\Frontend_Request::output()
 	 * @covers \GV\Frontend_Request::is_view()
 	 */
