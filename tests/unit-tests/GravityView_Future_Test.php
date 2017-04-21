@@ -1059,6 +1059,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Field_Collection::by_visible()
 	 * @covers \GV\Field::as_configuration()
 	 * @covers \GV\Field::from_configuration()
+	 * @covers \GV\Field::update_configuration()
 	 * @covers \GravityView_View_Data::get_fields()
 	 * @covers ::gravityview_get_directory_fields()
 	 * @covers \GVCommon::get_directory_fields()
@@ -1078,6 +1079,24 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( array( 'id', 'label', 'show_label', 'custom_label', 'custom_class', 'only_loggedin', 'only_loggedin_cap', 'search_filter', 'show_as_link' ),
 			array_keys( $field->as_configuration() ) );
 
+		/** Field configuration and update configuration. */
+		$field = \GV\Field::from_configuration(
+			array( 'id' => 'custom', 'label' => 'Custom', 'content' => 'Wow!' )
+		);
+
+		$this->assertEquals( 'custom', $field->ID );
+
+		$field->update_configuration( array() );
+
+		$this->assertEquals( 'custom', $field->ID );
+		$this->assertEquals( 'Wow!', $field->content );
+
+		$field->update_configuration( array( 'update' => 'Now!', 'id' => 4 ) );
+
+		$this->assertEquals( 4, $field->ID );
+		$this->assertEquals( 'Wow!', $field->content );
+
+		/** Mass configuration. */
 		$fields = \GV\Field_Collection::from_configuration( array(
 			'directory_list-title' => array(
 				'ffff0001' => array( 'id' => 1, 'label' => 'Hi there :)' ),

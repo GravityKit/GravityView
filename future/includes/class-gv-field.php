@@ -156,15 +156,31 @@ class Field {
 	}
 
 	/**
-	 * Update self from a configuration array.
+	 * Create self from a configuration array.
 	 *
+	 * @param array $configuration The configuration array.
 	 * @see \GV\Field::as_configuration()
 	 * @internal
 	 * @since future
 	 *
+	 * @return \GV\Field The field from configuration.
+	 */
+	public static function from_configuration( $configuration ) {
+		$field = new self();
+		$field->update_configuration( $configuration );
+		return $field;
+	}
+
+	/**
+	 * Update configuration.
+	 *
+	 * @param array $configuration The configuration array.
+	 * @see \GV\Field::as_configuration()
+	 * @since future
+	 *
 	 * @return void
 	 */
-	public function from_configuration( $configuration ) {
+	public function update_configuration( $configuration ) {
 		$configuration = wp_parse_args( $configuration, $this->as_configuration() );
 
 		$this->ID = $configuration['id'];

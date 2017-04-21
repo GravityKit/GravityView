@@ -122,7 +122,7 @@ class Field_Collection extends Collection {
 				$field = new \GV\Field();
 				$field->UID = $uid;
 				$field->position = $position;
-				$field->from_configuration( $_field );
+				$field->update_configuration( $_field );
 
 				$fields->add( $field );
 			}
