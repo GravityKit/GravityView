@@ -1248,6 +1248,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
+		GravityView_View::getInstance()->setForm( $form->form );
 
 		$field_settings = array(
 			'id' => '1',
@@ -1267,6 +1268,24 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( "<p>this is it</p>\n", GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
 		unset( $GLOBALS['GravityView_API_field_value_override'] );
 		$this->assertEquals( "<p>this is it</p>\n", GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
+
+		/** A more complicated form */
+		$form = $this->factory->form->create_and_get();
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = $this->factory->entry->import_and_get( 'standard_entry.json', array(
+			'form_id' => $form->ID,
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		GravityView_View::getInstance()->setForm( $form->form );
+
+		$field_settings = array(
+			'id' => '14',
+		);
+		$GLOBALS['GravityView_API_field_value_override'] = true;
+		$expected = GravityView_API::field_value( $entry->as_entry(), $field_settings );
+		unset( $GLOBALS['GravityView_API_field_value_override'] );
+		$this->assertEquals( "$expected", GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
 
 		$this->_reset_context();
 	}

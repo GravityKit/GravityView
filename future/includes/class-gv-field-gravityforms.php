@@ -10,6 +10,12 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * The Gravity Forms \GF_Field field object wrapper.
  */
 class GF_Field extends Field {
+	
+	/**
+	 * @var \GF_Field The backing Gravity Forms field.
+	 */
+	public $field;
+
 	/**
 	 * Get a \GV\GF_Field by \GV\GF_Form and Field ID.
 	 *
@@ -65,5 +71,18 @@ class GF_Field extends Field {
 		
 		/** Apply parent filters. */
 		return $this->get_value_filters( $value, $context );
+	}
+
+	/**
+	 * A proxy getter for the backing Gravity View field.
+	 *
+	 * @param string $key The property to get.
+	 *
+	 * @return mixed The value of the Gravity View field property, or null if not exists.
+	 */
+	public function __get( $key ) {
+		if ( $this->field ) {
+			return $this->field->$key;
+		}
 	}
 }
