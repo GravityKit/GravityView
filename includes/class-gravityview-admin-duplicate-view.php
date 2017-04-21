@@ -87,6 +87,10 @@ class GravityView_Admin_Duplicate_View {
 	 * Test if the user is allowed to copy Views
 	 *
 	 * @since 1.6
+	 *
+	 * @param WP_Post|int Post ID or Post object
+	 *
+	 * @return bool True: user can copy the View; false: nope.
 	 */
 	private function current_user_can_copy( $post ) {
 
