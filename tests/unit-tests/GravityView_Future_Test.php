@@ -1117,9 +1117,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** Mass configuration. */
 		$fields = \GV\Field_Collection::from_configuration( array(
 			'directory_list-title' => array(
-				'ffff0001' => array( 'id' => 1, 'label' => 'Hi there :)' ),
-				'ffff0002' => array( 'id' => 2, 'label' => 'Hi there, too :)' ),
-				'ffff0003' => array( 'id' => 5, 'only_loggedin_cap' => 'read' ),
+				'ffff0001' => array( 'id' => 1, 'form_id' => $form['id'], 'label' => 'Hi there :)' ),
+				'ffff0002' => array( 'id' => 2, 'form_id' => $form['id'], 'label' => 'Hi there, too :)' ),
+				'ffff0003' => array( 'id' => 'custom', 'only_loggedin_cap' => 'read' ),
 			),
 			'single_list-title' => array(
 				'ffff0004' => array( 'id' => 1, 'label' => 'Hi there :)', 'custom_class' => 'red' ),
@@ -1132,6 +1132,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertCount( 0, $fields->by_position( 'nope' )->all() );
 		$this->assertCount( 1, $fields->by_position( 'single_list-title' )->all() );
 		$this->assertNull( $fields->by_position( 'nope' )->get( 'ffff0001' ) );
+		$this->assertInstanceOf( '\GV\GF_Field', $fields->get( 'ffff0001' ) );
+		$this->assertInstanceOf( '\GV\GF_Field', $fields->get( 'ffff0002' ) );
+		$this->assertInstanceOf( '\GV\Internal_Field', $fields->get( 'ffff0003' ) );
+		$this->assertInstanceOf( '\GV\Field', $fields->get( 'ffff0004' ) );
 
 		$this->assertEquals( array( 'directory_list-title', 'single_list-title' ), array_keys( $fields->as_configuration() ) );
 

@@ -118,11 +118,10 @@ class Field_Collection extends Collection {
 				continue;
 			}
 
-			foreach ( $_fields as $uid => $_field ) {
-				$field = new \GV\Field();
+			foreach ( $_fields as $uid => $_configuration ) {
+				$field = Field::from_configuration( $_configuration );
 				$field->UID = $uid;
 				$field->position = $position;
-				$field->update_configuration( $_field );
 
 				$fields->add( $field );
 			}
