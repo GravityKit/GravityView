@@ -17,6 +17,32 @@ class GF_Field extends Field {
 	public $field;
 
 	/**
+	 * Create self from a configuration array.
+	 *
+	 * @param array $configuration The configuration array.
+	 * @see \GV\Field::as_configuration()
+	 * @internal
+	 * @since future
+	 *
+	 * @return \GV\GF_Field|null The field implementation or null on error.
+	 */
+	public static function from_configuration( $configuration ) {
+		if ( empty( $configuration['id'] ) || ! is_numeric( $configuration['id'] ) ) {
+			gravityview()->log->error( 'Invalid configuration[id] supplied.' );
+			return null;
+		}
+
+		if ( empty( $configuration['form_id'] ) || ! $form = \GV\GF_Form::by_id( $configuration['form_id'] )  ) {
+			gravityview()->log->error( 'Invalid configuration[form_id] supplied.' );
+			return null;
+		}
+
+		$field = self::by_id( $form, $configuration['id'] );
+		$field->update_configuration( $configuration );
+		return $field;
+	}
+
+	/**
 	 * Get a \GV\GF_Field by \GV\GF_Form and Field ID.
 	 *
 	 * @param \GV\GF_Form $form The Gravity Form form.

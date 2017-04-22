@@ -1059,6 +1059,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Field_Collection::by_visible()
 	 * @covers \GV\Field::as_configuration()
 	 * @covers \GV\Field::from_configuration()
+	 * @covers \GV\GF_Field::from_configuration()
+	 * @covers \GV\Internal_Field::from_configuration()
 	 * @covers \GV\Field::update_configuration()
 	 * @covers \GravityView_View_Data::get_fields()
 	 * @covers ::gravityview_get_directory_fields()
@@ -1095,6 +1097,22 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( 4, $field->ID );
 		$this->assertEquals( 'Wow!', $field->content );
+
+		/** Configuration implementations: \GV\Internal_Field */
+		$field = \GV\Field::from_configuration( array( 'id' => 'custom' ) );
+		$this->assertInstanceOf( '\GV\Internal_Field', $field );
+		$this->assertEquals( 'custom', $field->ID );
+
+		/** Configuration implementations: \GV\GF_Field */
+		$field = \GV\Field::from_configuration( array( 'id' => 499 ) );
+		$this->assertInstanceOf( '\GV\Field', $field );
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$field = \GV\Field::from_configuration( array( 'id' => 1, 'form_id' => $form['id'] ) );
+		$this->assertInstanceOf( '\GV\GF_Field', $field );
+		$this->assertEquals( 'text', $field->type );
+		$field = \GV\Field::from_configuration( array( 'id' => 2, 'form_id' => $form['id'] ) );
+		$this->assertInstanceOf( '\GV\GF_Field', $field );
+		$this->assertEquals( 'number', $field->type );
 
 		/** Mass configuration. */
 		$fields = \GV\Field_Collection::from_configuration( array(
