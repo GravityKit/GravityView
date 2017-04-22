@@ -193,6 +193,13 @@ class Field {
 		 */
 		$field_class = apply_filters( 'gravityview/field/class', $field_class, $configuration );
 
+		if ( ! class_exists( $field_class ) || ! method_exists( $field_class, 'from_configuration' ) ) {
+			$field = new self();
+			gravityview()->log->error( 'Class {field_class}::from_configuration does not exist.', array( 'field_class' => $field_class ) );
+			$field->update_configuration( $configuration );
+			return $field;
+		}
+
 		$field = $field_class::from_configuration( $configuration );
 
 		if ( ! $field ) {

@@ -1114,6 +1114,21 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertInstanceOf( '\GV\GF_Field', $field );
 		$this->assertEquals( 'number', $field->type );
 
+		/** Test filter and error condition. */
+		add_filter( 'gravityview/field/class', function( $class ) {
+			return 'NoExist_ForSure_Really';
+		} );
+		$field = \GV\Field::from_configuration( array( 'id' => 1 ) );
+		$this->assertInstanceOf( '\GV\Field', $field );
+		remove_all_filters( 'gravityview/field/class' );
+
+		add_filter( 'gravityview/field/class', function( $class ) {
+			return 'stdClass';
+		} );
+		$field = \GV\Field::from_configuration( array( 'id' => 1 ) );
+		$this->assertInstanceOf( '\GV\Field', $field );
+		remove_all_filters( 'gravityview/field/class' );
+
 		/** Mass configuration. */
 		$fields = \GV\Field_Collection::from_configuration( array(
 			'directory_list-title' => array(
