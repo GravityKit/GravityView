@@ -1066,6 +1066,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Field_Collection::by_visible()
 	 * @covers \GV\Field::as_configuration()
 	 * @covers \GV\Field::from_configuration()
+	 * @covers \GV\GF_Field::from_configuration()
+	 * @covers \GV\Internal_Field::from_configuration()
+	 * @covers \GV\Field::update_configuration()
 	 * @covers \GravityView_View_Data::get_fields()
 	 * @covers ::gravityview_get_directory_fields()
 	 * @covers \GVCommon::get_directory_fields()
@@ -1085,11 +1088,60 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( array( 'id', 'label', 'show_label', 'custom_label', 'custom_class', 'only_loggedin', 'only_loggedin_cap', 'search_filter', 'show_as_link' ),
 			array_keys( $field->as_configuration() ) );
 
+		/** Field configuration and update configuration. */
+		$field = \GV\Field::from_configuration(
+			array( 'id' => 'custom', 'label' => 'Custom', 'content' => 'Wow!' )
+		);
+
+		$this->assertEquals( 'custom', $field->ID );
+
+		$field->update_configuration( array() );
+
+		$this->assertEquals( 'custom', $field->ID );
+		$this->assertEquals( 'Wow!', $field->content );
+
+		$field->update_configuration( array( 'update' => 'Now!', 'id' => 4 ) );
+
+		$this->assertEquals( 4, $field->ID );
+		$this->assertEquals( 'Wow!', $field->content );
+
+		/** Configuration implementations: \GV\Internal_Field */
+		$field = \GV\Field::from_configuration( array( 'id' => 'custom' ) );
+		$this->assertInstanceOf( '\GV\Internal_Field', $field );
+		$this->assertEquals( 'custom', $field->ID );
+
+		/** Configuration implementations: \GV\GF_Field */
+		$field = \GV\Field::from_configuration( array( 'id' => 499 ) );
+		$this->assertInstanceOf( '\GV\Field', $field );
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$field = \GV\Field::from_configuration( array( 'id' => 1, 'form_id' => $form['id'] ) );
+		$this->assertInstanceOf( '\GV\GF_Field', $field );
+		$this->assertEquals( 'text', $field->type );
+		$field = \GV\Field::from_configuration( array( 'id' => 2, 'form_id' => $form['id'] ) );
+		$this->assertInstanceOf( '\GV\GF_Field', $field );
+		$this->assertEquals( 'number', $field->type );
+
+		/** Test filter and error condition. */
+		add_filter( 'gravityview/field/class', function( $class ) {
+			return 'NoExist_ForSure_Really';
+		} );
+		$field = \GV\Field::from_configuration( array( 'id' => 1 ) );
+		$this->assertInstanceOf( '\GV\Field', $field );
+		remove_all_filters( 'gravityview/field/class' );
+
+		add_filter( 'gravityview/field/class', function( $class ) {
+			return 'stdClass';
+		} );
+		$field = \GV\Field::from_configuration( array( 'id' => 1 ) );
+		$this->assertInstanceOf( '\GV\Field', $field );
+		remove_all_filters( 'gravityview/field/class' );
+
+		/** Mass configuration. */
 		$fields = \GV\Field_Collection::from_configuration( array(
 			'directory_list-title' => array(
-				'ffff0001' => array( 'id' => 1, 'label' => 'Hi there :)' ),
-				'ffff0002' => array( 'id' => 2, 'label' => 'Hi there, too :)' ),
-				'ffff0003' => array( 'id' => 5, 'only_loggedin_cap' => 'read' ),
+				'ffff0001' => array( 'id' => 1, 'form_id' => $form['id'], 'label' => 'Hi there :)' ),
+				'ffff0002' => array( 'id' => 2, 'form_id' => $form['id'], 'label' => 'Hi there, too :)' ),
+				'ffff0003' => array( 'id' => 'custom', 'only_loggedin_cap' => 'read' ),
 			),
 			'single_list-title' => array(
 				'ffff0004' => array( 'id' => 1, 'label' => 'Hi there :)', 'custom_class' => 'red' ),
@@ -1102,6 +1154,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertCount( 0, $fields->by_position( 'nope' )->all() );
 		$this->assertCount( 1, $fields->by_position( 'single_list-title' )->all() );
 		$this->assertNull( $fields->by_position( 'nope' )->get( 'ffff0001' ) );
+		$this->assertInstanceOf( '\GV\GF_Field', $fields->get( 'ffff0001' ) );
+		$this->assertInstanceOf( '\GV\GF_Field', $fields->get( 'ffff0002' ) );
+		$this->assertInstanceOf( '\GV\Internal_Field', $fields->get( 'ffff0003' ) );
+		$this->assertInstanceOf( '\GV\Field', $fields->get( 'ffff0004' ) );
 
 		$this->assertEquals( array( 'directory_list-title', 'single_list-title' ), array_keys( $fields->as_configuration() ) );
 
@@ -1255,6 +1311,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
+		GravityView_View::getInstance()->setForm( $form->form );
 
 		$field_settings = array(
 			'id' => '1',
@@ -1274,6 +1331,24 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( "<p>this is it</p>\n", GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
 		unset( $GLOBALS['GravityView_API_field_value_override'] );
 		$this->assertEquals( "<p>this is it</p>\n", GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
+
+		/** A more complicated form */
+		$form = $this->factory->form->create_and_get();
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = $this->factory->entry->import_and_get( 'standard_entry.json', array(
+			'form_id' => $form->ID,
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		GravityView_View::getInstance()->setForm( $form->form );
+
+		$field_settings = array(
+			'id' => '14',
+		);
+		$GLOBALS['GravityView_API_field_value_override'] = true;
+		$expected = GravityView_API::field_value( $entry->as_entry(), $field_settings );
+		unset( $GLOBALS['GravityView_API_field_value_override'] );
+		$this->assertEquals( "$expected", GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
 
 		$this->_reset_context();
 	}

@@ -156,16 +156,77 @@ class Field {
 	}
 
 	/**
-	 * Update self from a configuration array.
+	 * Create self from a configuration array.
 	 *
+	 * @param array $configuration The configuration array.
 	 * @see \GV\Field::as_configuration()
 	 * @internal
 	 * @since future
 	 *
+	 * @return \GV\Field The field implementation from configuration (\GV\GF_Field, \GV\Internal_Field).
+	 */
+	public static function from_configuration( $configuration ) {
+		if ( empty( $configuration['id'] ) ) {
+			$field = new self();
+			gravityview()->log->error( 'Trying to get field from configuration without a field ID.', array( 'data' => $configuration ) );
+			$field->update_configuration( $configuration );
+			return $field;
+		}
+
+		/** Prevent infinte loops here from unimplemented children. */
+		$trace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 2 );
+		$trace = $trace[1];
+		if ( $trace['function'] == 'from_configuration' && $trace['class'] == __CLASS__ ) {
+			$field = new self();
+			gravityview()->log->error( 'Infinite loop protection tripped. Returning default class here.' );
+			$field->update_configuration( $configuration );
+			return $field;
+		}
+
+		/** Determine the field implementation to use, and try to use. */
+		$field_class = is_numeric( $configuration['id'] ) ? '\GV\GF_Field' : '\GV\Internal_Field';
+
+		/**
+		 * @filter `gravityview/field/class` Filter the field class about to be created from the configuration.
+		 * @param string $field_class The field class about to be used.
+		 * @param array $configuration The configuration as per \GV\Field::as_configuration()
+		 */
+		$field_class = apply_filters( 'gravityview/field/class', $field_class, $configuration );
+
+		if ( ! class_exists( $field_class ) || ! method_exists( $field_class, 'from_configuration' ) ) {
+			$field = new self();
+			gravityview()->log->error( 'Class {field_class}::from_configuration does not exist.', array( 'field_class' => $field_class ) );
+			$field->update_configuration( $configuration );
+			return $field;
+		}
+
+		$field = $field_class::from_configuration( $configuration );
+
+		if ( ! $field ) {
+			$field = new self();
+			gravityview()->log->error( 'Could not configure {field_class} with given configuration.', array( 'field_class' => __CLASS__, 'data' => $configuration ) );
+			$field->update_configuration( $configuration );
+		}
+
+		return $field;
+	}
+
+	/**
+	 * Update configuration.
+	 *
+	 * @param array $configuration The configuration array.
+	 * @see \GV\Field::as_configuration()
+	 * @since future
+	 *
 	 * @return void
 	 */
-	public function from_configuration( $configuration ) {
+	public function update_configuration( $configuration ) {
 		$configuration = wp_parse_args( $configuration, $this->as_configuration() );
+
+		if ( $this->ID != $configuration['id'] ) {
+			/** Smelling trouble here... */
+			gravityview()->log->warning( 'ID is being changed for {field_class} instance, but implementation is not. Use ::from_configuration instead', array( 'field_class', __CLASS__ ) );
+		}
 
 		$this->ID = $configuration['id'];
 		$this->label = $configuration['label'];

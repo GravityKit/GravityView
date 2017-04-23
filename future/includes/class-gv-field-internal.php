@@ -13,6 +13,29 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  */
 class Internal_Field extends Field {
 	/**
+	 * Create self from a configuration array.
+	 *
+	 * @param array $configuration The configuration array.
+	 * @see \GV\Field::as_configuration()
+	 * @internal
+	 * @since future
+	 *
+	 * @return \GV\internal_Field|null The field implementation or null on error.
+	 */
+	public static function from_configuration( $configuration ) {
+		if ( empty( $configuration['id'] ) || ! is_string( $configuration['id'] ) ) {
+			gravityview()->log->error( 'Invalid configuration[id] supplied.' );
+			return null;
+		}
+
+		$field = new self();
+		$field->ID = $configuration['id'];
+		$field->update_configuration( $configuration );
+
+		return $field;
+	}
+
+	/**
 	 * Get a \GV\GF_Field from an internal Gravity View ID.
 	 *
 	 * @param int $field_id The internal Gravity View ID.

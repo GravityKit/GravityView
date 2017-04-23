@@ -10,6 +10,38 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * The Gravity Forms \GF_Field field object wrapper.
  */
 class GF_Field extends Field {
+	
+	/**
+	 * @var \GF_Field The backing Gravity Forms field.
+	 */
+	public $field;
+
+	/**
+	 * Create self from a configuration array.
+	 *
+	 * @param array $configuration The configuration array.
+	 * @see \GV\Field::as_configuration()
+	 * @internal
+	 * @since future
+	 *
+	 * @return \GV\GF_Field|null The field implementation or null on error.
+	 */
+	public static function from_configuration( $configuration ) {
+		if ( empty( $configuration['id'] ) || ! is_numeric( $configuration['id'] ) ) {
+			gravityview()->log->error( 'Invalid configuration[id] supplied.' );
+			return null;
+		}
+
+		if ( empty( $configuration['form_id'] ) || ! $form = \GV\GF_Form::by_id( $configuration['form_id'] )  ) {
+			gravityview()->log->error( 'Invalid configuration[form_id] supplied.' );
+			return null;
+		}
+
+		$field = self::by_id( $form, $configuration['id'] );
+		$field->update_configuration( $configuration );
+		return $field;
+	}
+
 	/**
 	 * Get a \GV\GF_Field by \GV\GF_Form and Field ID.
 	 *
@@ -65,5 +97,18 @@ class GF_Field extends Field {
 		
 		/** Apply parent filters. */
 		return $this->get_value_filters( $value, $context );
+	}
+
+	/**
+	 * A proxy getter for the backing Gravity View field.
+	 *
+	 * @param string $key The property to get.
+	 *
+	 * @return mixed The value of the Gravity View field property, or null if not exists.
+	 */
+	public function __get( $key ) {
+		if ( $this->field ) {
+			return $this->field->$key;
+		}
 	}
 }

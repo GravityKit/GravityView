@@ -193,7 +193,7 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
 	endswitch;
 
 	/** Add the field settings. */
-	$field->from_configuration( $field_settings );
+	$field->update_configuration( $field_settings );
 
 	/** Get the value. */
 	$display_value = $value = $field->get_value( $context );
