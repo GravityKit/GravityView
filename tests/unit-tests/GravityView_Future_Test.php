@@ -181,6 +181,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** Check forms initialization. */
 		$this->assertNotNull( $view->form );
 
+		/** Check fields initialization. */
+		foreach ( $view->fields->all() as $field ) {
+			$this->assertInstanceOf( '\GV\GF_Field', $field );
+			$this->assertEquals( $view->form->ID, $field->form_id );
+		}
+
 		/** A post of a different post type. */
 		$post = $this->factory->post->create_and_get();
 		$view = \GV\View::from_post( $post );
