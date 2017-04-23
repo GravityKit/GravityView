@@ -1202,7 +1202,7 @@ class GVCommon {
 	public static function get_directory_fields( $post_id, $apply_filter = true ) {
 		$fields = get_post_meta( $post_id, '_gravityview_directory_fields', true );
 
-		if( $apply_filter ) {
+		if ( $apply_filter ) {
 			/**
 			 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array
 			 * @since 1.6.5
@@ -1211,6 +1211,17 @@ class GVCommon {
 			 * @param $post_id int Post ID
 			 */
 			$fields = apply_filters( 'gravityview/configuration/fields', $fields, $post_id );
+
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+				/**
+				 * @filter `gravityview/view/configuration/fields` Filter the View fields' configuration array.
+				 * @since future
+				 *
+				 * @param array $fields Multi-array of fields with first level being the field zones.
+				 * @param \GV\View $view The View the fields are being pulled for.
+				 */
+				$fields = apply_filters( 'gravityview/view/fields/configuration', $fields, \GV\View::by_id( $post_id ) );
+			}
 		}
 
 		return $fields;

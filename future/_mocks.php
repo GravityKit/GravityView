@@ -334,3 +334,36 @@ add_filter( 'gravityview/configuration/fields', function( $fields ) {
 	}
 	return $fields;
 } );
+
+
+/** Add a future fix to make sure field configurations include the form ID. */
+add_filter( 'gravityview/view/fields/configuration', function( $fields, $view ) {
+	if ( ! $view || empty( $fields ) ) {
+		return $fields;
+	}
+
+	if ( ! $view->form || ! $view->form->ID ) {
+		return $fields;
+	}
+
+	/**
+	 * In order to instantiate the correct \GV\Field implementation
+	 *  we need to provide a form_id inside the configuration.
+	 *
+	 * @todo Make sure this actually happens in the admin side
+	 *  when saving the views.
+	 */
+	foreach ( $fields as $position => &$_fields ) {
+		if ( empty( $_fields ) ) {
+			continue;
+		}
+
+		foreach ( $_fields as $uid => &$_field ) {
+			if ( ! empty( $_field['id'] ) && is_numeric( $_field['id'] ) && empty( $_field['form_id'] ) ) {
+				$_field['form_id'] = $view->form->ID;
+			}
+		}
+	}
+
+	return $fields;
+}, 10, 2 );

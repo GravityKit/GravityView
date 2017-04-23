@@ -38,6 +38,12 @@ class GF_Field extends Field {
 		}
 
 		$field = self::by_id( $form, $configuration['id'] );
+
+		if ( ! $field ) {
+			gravityview()->log->error( 'Invalid configuration[id] supplied.' );
+			return null;
+		}
+
 		$field->update_configuration( $configuration );
 		return $field;
 	}
@@ -66,7 +72,7 @@ class GF_Field extends Field {
 		$gv_field = \GFFormsModel::get_field( $form->form, $field_id );
 
 		if ( ! $gv_field ) {
-			gravityview()->log->error( 'Invalid $field_id #{field_id} for current source' );
+			gravityview()->log->error( 'Invalid $field_id #{field_id} for current source', array( 'field_id' => $field_id ) );
 			return null;
 		}
 
@@ -102,11 +108,17 @@ class GF_Field extends Field {
 	/**
 	 * A proxy getter for the backing Gravity View field.
 	 *
+	 * The view field configuration is checked first, though.
+	 *
 	 * @param string $key The property to get.
 	 *
 	 * @return mixed The value of the Gravity View field property, or null if not exists.
 	 */
 	public function __get( $key ) {
+		if ( $value = parent::__get( $key ) ) {
+			return $value;
+		}
+
 		if ( $this->field ) {
 			return $this->field->$key;
 		}

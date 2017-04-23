@@ -202,16 +202,31 @@ class View implements \ArrayAccess {
 		}
 
 		/**
-		* @filter `gravityview/configuration/fields` Filter the View fields' configuration array
-		* @since 1.6.5
-		*
-		* @param $fields array Multi-array of fields with first level being the field zones
-		* @param $view_id int The View the fields are being pulled for
-		*/
+		 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array.
+		 * @since 1.6.5
+		 *
+		 * @param $fields array Multi-array of fields with first level being the field zones.
+		 * @param $view_id int The View the fields are being pulled for.
+		 */
 		$configuration = apply_filters( 'gravityview/configuration/fields', (array)$view->_gravityview_directory_fields, $view->ID );
 
-		/** Get all fields. */
-		$view->fields = Field_Collection::from_configuration( $configuration );
+		/**
+		 * @filter `gravityview/view/configuration/fields` Filter the View fields' configuration array.
+		 * @since future
+		 *
+		 * @param array $fields Multi-array of fields with first level being the field zones.
+		 * @param \GV\View $view The View the fields are being pulled for.
+		 */
+		$configuration = apply_filters( 'gravityview/view/fields/configuration', $configuration, $view );
+
+		/**
+		 * @filter `gravityview/view/fields` Filter the Field Collection for this View.
+		 * @since future
+		 *
+		 * @param \GV\Field_Collection $fields A collection of fields.
+		 * @param \GV\View $view The View the fields are being pulled for.
+		 */
+		$view->fields = apply_filters( 'gravityview/view/fields', Field_Collection::from_configuration( $configuration ), $view );
 
 		/** The settings. */
 		$view->settings->update( gravityview_get_template_settings( $view->ID ) );
