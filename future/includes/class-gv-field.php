@@ -174,7 +174,11 @@ class Field {
 		}
 
 		/** Prevent infinte loops here from unimplemented children. */
-		$trace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 2 );
+		if ( version_compare( phpversion(), '5.4', '>=' ) ) {
+			$trace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 2 );
+		} else {
+			$trace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS );
+		}
 		$trace = $trace[1];
 		if ( $trace['function'] == 'from_configuration' && $trace['class'] == __CLASS__ ) {
 			$field = new self();
