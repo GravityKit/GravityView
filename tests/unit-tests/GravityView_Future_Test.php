@@ -1264,38 +1264,36 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
 		/** Uninitialized */
-		$context = new \GV\Field_Value_Context();
 		$field = new \GV\Field();
 
-		$this->assertNull( $field->get_value( $context ) );
+		$this->assertNull( $field->get_value() );
 
 		add_filter( 'gravityview/field/value', function( $value ) {
 			return 'sentinel-2';
 		} );
-		$this->assertEquals( 'sentinel-2', $field->get_value( $context ) );
+		$this->assertEquals( 'sentinel-2', $field->get_value() );
 		remove_all_filters( 'gravityview/field/value' );
 
-		$this->assertNull( $field->get_value( $context ) );
+		$this->assertNull( $field->get_value() );
 
 		/** Gravity Forms values, please. */
 		$field = \GV\GF_Field::by_id( $view->form, '4' );
-		$context->entry = $entry;
-		$this->assertEquals( 'International', $field->get_value( $context ) );
+		$this->assertEquals( 'International', $field->get_value( $view, $view->form, $entry ) );
 
 		add_filter( 'gravityview/field/value', function( $value ) {
 			return 'sentinel-4';
 		} );
-		$this->assertEquals( 'sentinel-4', $field->get_value( $context ) );
+		$this->assertEquals( 'sentinel-4', $field->get_value( $view, null /** \GV\Source */, $entry ) );
 		remove_all_filters( 'gravityview/field/value' );
 
 		/** How about internal fields? */
 		$field = \GV\Internal_Field::by_id( 'id' );
-		$this->assertEquals( $entry->ID, $field->get_value( $context ) );
+		$this->assertEquals( $entry->ID, $field->get_value( $view, $view->form, $entry ) );
 
 		add_filter( 'gravityview/field/value', function( $value ) {
 			return 'sentinel-6';
 		} );
-		$this->assertEquals( 'sentinel-6', $field->get_value( $context ) );
+		$this->assertEquals( 'sentinel-6', $field->get_value( $view, null /** \GV\Source */, $entry ) );
 		remove_all_filters( 'gravityview/field/value' );
 
 		$this->_reset_context();
@@ -1584,37 +1582,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field = \GV\Internal_Source::get_field( 'custom' );
 		$this->assertInstanceOf( '\GV\Internal_Field', $field );
 		$this->assertEquals( 'custom', $field->ID );
-	}
-
-	/**
-	 * @covers \GV\Context::__set()
-	 * @covers \GV\Context::__get()
-	 *
-	 * @covers \GV\Field_Value_Context::__set()
-	 * @covers \GV\Field_Value_Context::__get()
-	 */
-	public function test_contexts() {
-		$context = new \GV\Context();
-
-		$context->space = 'is the place';
-		$this->assertEquals( 'is the place', $context->space );
-
-		$context = new \GV\Field_Value_Context();
-
-		$context->place = 'is the space';
-		$this->assertEquals( 'is the space', $context->place );
-
-		/** Make sure we can only set the view to a \GV\View instance. */
-		$context->view = 'hello';
-		$this->assertNull( $context->view );
-
-		/** Make sure we can only set the form to a \GV\Form instance. */
-		$context->form = 'hello';
-		$this->assertNull( $context->form );
-
-		/** Make sure we can only set the entry to a \GV\Entry instance. */
-		$context->entry = 'hello';
-		$this->assertNull( $context->entry );
 	}
 
 	/**

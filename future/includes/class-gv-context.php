@@ -48,6 +48,3 @@ class Context {
 		return isset( $this->_context[$key] ) ? $this->_context[$key] : null;
 	}
 }
-
-/** Load implementations. */
-require gravityview()->plugin->dir( 'future/includes/class-gv-context-field-value.php' );

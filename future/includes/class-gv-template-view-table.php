@@ -100,6 +100,11 @@ class View_Table_Template extends View_Template {
 		}
 		$attributes = implode( ' ', $attributes );
 
+		/** 
+		 * Initialize the Field_Renderer.
+		 */
+		$renderer = new Field_Renderer();
+
 		printf( '<td%s>%s</td>', $attributes, \gv_value( $entry->as_entry(), $field->as_configuration() ) );
 	}
 }

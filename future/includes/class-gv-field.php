@@ -260,30 +260,39 @@ class Field {
 	 *
 	 * Returns null in this implementation (or, rather, lack thereof).
 	 *
-	 * @param \GV\Field_Value_Context $context Provides some context on where to get the value for this field from.
+	 * @param \GV\View $view The view for this context if applicable.
+	 * @param \GV\Source $source The source (form) for this context if applicable.
+	 * @param \GV\Entry $entry The entry for this context if applicable.
+	 * @param \GV\Request $request The request for this context if applicable.
 	 *
 	 * @return mixed The value for this field.
 	 */
-	public function get_value( \GV\Field_Value_Context $context ) {
-		return $this->get_value_filters( null, $context );
+	public function get_value( View $view = null, Source $source = null, Entry $entry = null, Request $request = null ) {
+		return $this->get_value_filters( null, $view, $source, $entry, $request );
 	}
 	
 	/**
 	 * Apply all the required filters after get_value() was called.
 	 *
 	 * @param mixed $value The value that will be filtered.
-	 * @param \GV\Field_Value_Context $context The context.
+	 * @param \GV\View $view The view for this context if applicable.
+	 * @param \GV\Source $source The source (form) for this context if applicable.
+	 * @param \GV\Entry $entry The entry for this context if applicable.
+	 * @param \GV\Request $request The request for this context if applicable.
 	 *
 	 * This is in its own function since \GV\Field subclasses have to call it.
 	 */
-	protected function get_value_filters( $value, $context ) {
+	protected function get_value_filters( $value, View $view = null, Source $source = null, Entry $entry = null, Request $request = null ) {
 		/**
-		 * @filter `gravityview/field/value` What to display if field value is empty.
+		 * @filter `gravityview/field/value` Override the displayed value here.
 		 * @param string $value The value.
 		 * @param \GV\Field The field we're doing this for.
-		 * @param \GV\Context The context we're doing this for.
+		 * @param \GV\View $view The view for this context if applicable.
+		 * @param \GV\Source $source The source (form) for this context if applicable.
+		 * @param \GV\Entry $entry The entry for this context if applicable.
+		 * @param \GV\Request $request The request for this context if applicable.
 		 */
-		return apply_filters( 'gravityview/field/value', $value, $this, $context );
+		return apply_filters( 'gravityview/field/value', $value, $this, $view, $source, $entry, $request );
 	}
 
 	/**
