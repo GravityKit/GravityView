@@ -86,23 +86,25 @@ class GF_Field extends Field {
 	/**
 	 * Retrieve the value for this field.
 	 *
-	 * @param \GV\Field_Value_Context $context Provides some context on where to get the value for this field from.
-	 *  Requires the \GV\Entry in the context.
+	 * Requires a \GV\GF_Entry in this implementation.
+	 *
+	 * @param \GV\View $view The view for this context if applicable.
+	 * @param \GV\Source $source The source (form) for this context if applicable.
+	 * @param \GV\Entry $entry The entry for this context if applicable.
+	 * @param \GV\Request $request The request for this context if applicable.
 	 *
 	 * @return mixed The value for this field.
 	 */
-	public function get_value( \GV\Field_Value_Context $context ) {
-		$entry = $context->entry;
-
-		if ( ! $entry || ! is_object( $entry ) || ! is_a( $entry, '\GV\Entry' ) ) {
+	public function get_value( View $view = null, Source $source = null, Entry $entry = null, Request $request = null ) {
+		if ( ! $entry || ! is_object( $entry ) || ! is_a( $entry, '\GV\GF_Entry' ) ) {
 			gravityview()->log->error( '$entry is not a valid \GV\GF_Entry instance' );
 			return null;
 		}
 
-		$value = \RGFormsModel::get_lead_field_value( $context->entry->as_entry(), $this->field );
+		$value = \RGFormsModel::get_lead_field_value( $entry->as_entry(), $this->field );
 		
 		/** Apply parent filters. */
-		return $this->get_value_filters( $value, $context );
+		return $this->get_value_filters( $value, $view, $source, $entry, $request );
 	}
 
 	/**

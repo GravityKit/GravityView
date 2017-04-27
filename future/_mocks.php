@@ -150,10 +150,6 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
 		return null;
 	}
 
-	/** Setup the field value context. */
-	$context = new \GV\Field_Value_Context();
-	$context->entry = $entry;
-
 	/**
 	 * Determine the source backend.
 	 *
@@ -196,7 +192,7 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
 	$field->update_configuration( $field_settings );
 
 	/** Get the value. */
-	$display_value = $value = $field->get_value( $context );
+	$display_value = $value = $field->get_value( /** View */ null, /** Source */ null, $entry );
 
 	/** Alter the display value according to Gravity Forms. */
 	if ( $source == \GV\Source::BACKEND_GRAVITYFORMS ) {
