@@ -1399,6 +1399,42 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\Template::push_template_data()
+	 * @covers \GV\Template::pop_template_data()
+	 */
+	public function test_template_push_pop() {
+		$template_a = new \GV\Field_HTML_Template( new \GV\Internal_Field() );
+		$template_b = new \GV\Field_HTML_Template( new \GV\Internal_Field() );
+
+		global $wp_query;
+
+		$template_a->push_template_data( array( 'hello' => 'world' ) );
+		$this->assertEquals( 'world', $wp_query->query_vars['data']->hello );
+
+		$template_b->push_template_data( array( 'bye' => 'moon' ) );
+		$this->assertEquals( 'moon', $wp_query->query_vars['data']->bye );
+
+		$template_b->pop_template_data();
+		$this->assertEquals( 'world', $wp_query->query_vars['data']->hello );
+
+		$template_a->pop_template_data();
+		$this->assertEquals( 'world', $wp_query->query_vars['data']->hello );
+
+		$template_b->push_template_data( array( 'one' => 'of these days' ), 'custom' );
+		$template_a->push_template_data( array( 'how' => 'about this' ), 'custom' );
+
+		$this->assertEquals( 'about this', $wp_query->query_vars['custom']->how );
+
+		/** Emulate a destruct */
+		unset( $wp_query->query_vars['custom'] );
+		unset( $template_a );
+
+		$template_b->pop_template_data( 'custom' );
+
+		$this->assertEquals( 'of these days', $wp_query->query_vars['custom']->one );
+	}
+
+	/**
 	 * @covers \GV\Frontend_Request::output()
 	 * @covers \GV\Frontend_Request::is_view()
 	 */
