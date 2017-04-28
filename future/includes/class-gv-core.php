@@ -97,10 +97,6 @@ final class Core {
 			return;
 		}
 
-		/** Templating. */
-		require_once $this->plugin->dir( 'future/includes/class-gv-template.php' );
-		require_once $this->plugin->dir( 'future/includes/class-gv-template-view.php' );
-
 		/** Register the gravityview post type upon WordPress core init. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
 		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
@@ -152,6 +148,11 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-renderer.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-renderer-view.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-renderer-field.php' );
+
+		/** Templating. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-template.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-template-view.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-template-field.php' );
 
 		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );
 

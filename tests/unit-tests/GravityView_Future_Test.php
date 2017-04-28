@@ -1384,14 +1384,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$view = \GV\View::from_post( $post );
 
 		$renderer = new \GV\View_Renderer();
-
-		$expectedException = null;
-		try {
-			$renderer->render( $view, new \GV\Dummy_Request() );
-		} catch ( \RuntimeException $e ) {
-			$expectedException = $e;
-		}
-		$this->assertInstanceOf( '\RuntimeException', $expectedException );
+		$this->assertNull( $renderer->render( $view, new \GV\Dummy_Request() ) );
 
 		/** Password protection. */
 		wp_update_post( array( 'ID' => $view->ID, 'post_password' => '123' ) );

@@ -21,6 +21,23 @@ if ( ! class_exists( 'Gamajo_Template_Loader' ) ) {
  * Attached to a \GV\View and used by a \GV\View_Renderer.
  */
 abstract class View_Template extends Template {
+	/**
+	 * Prefix for filter names.
+	 * @var string
+	 */
+	protected $filter_prefix = 'gravityview/future/template/views';
+
+	/**
+	 * Directory name where custom templates for this plugin should be found in the theme.
+	 * @var string
+	 */
+	protected $theme_template_directory = 'gravityview/future/views/';
+
+	/**
+	 * Direcotory name where the default templates for this plugin are found.
+	 * @var string
+	 */
+	protected $plugin_template_directory = 'future/templates/views/';
 
 	/**
 	 * @var \GV\View The view connected to this template.
@@ -57,7 +74,8 @@ abstract class View_Template extends Template {
 		/** Add granular overrides. */
 		add_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ), 10, 3 );
 
-		parent::__construct();
+		/** Set plugin directory. */
+		$this->plugin_directory = gravityview()->plugin->dir();
 	}
 
 	/**
@@ -86,7 +104,7 @@ abstract class View_Template extends Template {
 
 		global $post;
 
-		if ( ! gravityview()->request->is_view() && $post ) {
+		if ( ! $this->request->is_view() && $post ) {
 			$specifics []= sprintf( '%spost-%d-view-%d-%s', $slug_dir, $post->ID, $this->view->ID, $slug_name );
 			$specifics []= sprintf( '%spost-%d-%s', $slug_dir, $post->ID, $slug_name );
 		}
@@ -111,6 +129,7 @@ abstract class View_Template extends Template {
 		 *
 		 * @filter `gravityview/template/view/data`
 		 * @param array $data The default data available to all View templates.
+		 * @param \GV\View_Template $template The current template.
 		 * @since future
 		 */
 		$this->set_template_data( apply_filters( 'gravityview/template/view/data', array(
@@ -122,7 +141,7 @@ abstract class View_Template extends Template {
 			'fields' => $this->view->fields->by_visible(),
 			'entries' => $this->entries->fetch(),
 
-		) ), 'gravityview' );
+		), $this ), 'gravityview' );
 
 		/** Load the template. */
 		$this->get_template_part( static::$slug );

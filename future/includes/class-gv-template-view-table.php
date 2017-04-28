@@ -65,7 +65,7 @@ class View_Table_Template extends View_Template {
 		?>
 			<tr<?php echo $attributes ? " $attributes" : ''; ?>>
 				<?php foreach ( $fields->all() as $field ) {
-					$this->the_field( $entry, $field );
+					$this->the_field( $field, $entry );
 				} ?>
 			</tr>
 		<?php
@@ -74,12 +74,12 @@ class View_Table_Template extends View_Template {
 	/**
 	 * Output a field cell.
 	 *
-	 * @param \GV\Field $entry The entry this field is for.
 	 * @param \GV\Field $field The field to be ouput.
+	 * @param \GV\Field $entry The entry this field is for.
 	 *
 	 * @return void
 	 */
-	public function the_field( \GV\Entry $entry, \GV\Field $field ) {
+	public function the_field( \GV\Field $field, \GV\Entry $entry ) {
 		$attributes = array();
 
 		/**

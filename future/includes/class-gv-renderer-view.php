@@ -19,8 +19,6 @@ class View_Renderer extends Renderer {
 	 * @param \GV\View $view The View instance to render.
 	 * @param \GV\Request $request The request context we're currently in. Default: `gravityview()->request`
 	 *
-	 * @throws \RuntimeException if this renderer is unable to work with the $request type.
-	 *
 	 * @api
 	 * @since future
 	 *
@@ -35,7 +33,8 @@ class View_Renderer extends Renderer {
 		 * For now we only know how to render views in a Frontend_Request context.
 		 */
 		if ( get_class( $request ) != 'GV\Frontend_Request' ) {
-			throw new \RuntimeException( 'Renderer unable to render View in ' . get_class( $request ) . ' context.' );
+			gravityview()->log->error( 'Renderer unable to render View in {request_class} context', array( 'request_class' => get_class( $request ) ) );
+			return null;
 		}
 
 		/**
@@ -104,12 +103,16 @@ class View_Renderer extends Renderer {
 		}
 
 		/**
-		* @filter `gravityview/template/view/class` Filter the template class that is about to be used to render the view.
-		* @since future
-		* @param string $class The chosen class - Default: \GV\View_Table_Template.
-		* @param \GV\View $view The view about to be rendered.
-		*/
+		 * @filter `gravityview/template/view/class` Filter the template class that is about to be used to render the view.
+		 * @since future
+		 * @param string $class The chosen class - Default: \GV\View_Table_Template.
+		 * @param \GV\View $view The view about to be rendered.
+		 */
 		$class = apply_filters( 'gravityview/template/view/class', sprintf( '\GV\View_%s_Template', ucfirst( $template_slug ) ), $view );
+		if ( ! $class || ! class_exists( $class ) ) {
+			gravityview()->log->error( '{template_class} not found', array( 'template_class' => $class ) );
+			return null;
+		}
 		$template = new $class( $view, $entries, $request );
 
 		ob_start();
