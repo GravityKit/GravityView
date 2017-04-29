@@ -30,6 +30,7 @@ class Internal_Field extends Field {
 
 		$field = new self();
 		$field->ID = $configuration['id'];
+		$field->type = $configuration['id'];
 		$field->update_configuration( $configuration );
 
 		return $field;
@@ -45,6 +46,7 @@ class Internal_Field extends Field {
 	public static function by_id( $field_id ) {
 		$field = new self();
 		$field->ID = $field_id;
+		$field->type = $field->ID;
 
 		return $field;
 	}

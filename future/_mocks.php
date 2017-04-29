@@ -170,7 +170,6 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
 				return null;
 			}
 
-			$field_type = $field->type;
 			break;
 
 		/** Our internal backend. */
@@ -179,7 +178,6 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
 				return null;
 			}
 
-			$field_type = $field->ID;
 			break;
 
 		/** An unidentified backend. */
@@ -187,6 +185,8 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
 			gravityview()->log->error( 'Could not determine source for entry', array( 'data' => array( func_get_args() ) ) );
 			return null;
 	endswitch;
+
+	$field_type = $field->type;
 
 	/** Add the field settings. */
 	$field->update_configuration( $field_settings );
