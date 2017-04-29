@@ -129,7 +129,7 @@ class GravityView_Field_List extends GravityView_Field {
 		// Each list row
 		foreach ( $list_rows as $list_row ) {
 			$current_column = 0;
-			foreach ( $list_row as $column_key => $column_value ) {
+			foreach ( (array) $list_row as $column_key => $column_value ) {
 
 				// If the label of the column matches $column_id, or the numeric key value matches, add the value
 				if( (string)$column_key === (string)$column_id || ( is_numeric( $column_id ) && (int)$column_id === $current_column ) ) {
