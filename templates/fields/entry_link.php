@@ -17,4 +17,10 @@ $link_text = empty( $field_settings['entry_link_text'] ) ? __('View Details', 'g
 
 $output = apply_filters( 'gravityview_entry_link', GravityView_API::replace_variables( $link_text, $form, $entry ) );
 
-echo GravityView_API::entry_link_html( $entry, $output, array(), $field_settings );
+$tag_atts = array();
+
+if ( ! empty( $field_settings['new_window'] ) ) {
+	$tag_atts['target'] = '_blank';
+}
+
+echo GravityView_API::entry_link_html( $entry, $output, $tag_atts, $field_settings );
