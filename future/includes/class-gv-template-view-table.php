@@ -105,6 +105,7 @@ class View_Table_Template extends View_Template {
 		 */
 		$renderer = new Field_Renderer();
 
-		printf( '<td%s>%s</td>', $attributes, \gv_value( $entry->as_entry(), $field->as_configuration() ) );
+		// printf( '<td%s>%s</td>', $attributes, \gv_value( $entry->as_entry(), $field->as_configuration() ) );
+		printf( '<td%s>%s</td>', $attributes, $renderer->render( $field, $this->view, $this->view->form, $entry, $this->request ) );
 	}
 }

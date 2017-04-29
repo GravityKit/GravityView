@@ -34,7 +34,7 @@ abstract class View_Template extends Template {
 	protected $theme_template_directory = 'gravityview/future/views/';
 
 	/**
-	 * Direcotory name where the default templates for this plugin are found.
+	 * Directory name where the default templates for this plugin are found.
 	 * @var string
 	 */
 	protected $plugin_template_directory = 'future/templates/views/';
@@ -74,8 +74,7 @@ abstract class View_Template extends Template {
 		/** Add granular overrides. */
 		add_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ), 10, 3 );
 
-		/** Set plugin directory. */
-		$this->plugin_directory = gravityview()->plugin->dir();
+		parent::__construct();
 	}
 
 	/**
@@ -83,7 +82,7 @@ abstract class View_Template extends Template {
 	 *
 	 * The loading order is:
 	 *
-	 * - post-[ID of post or page where view is embedded]-[View ID]-table-footer.php
+	 * - post-[ID of post or page where view is embedded]-view-[View ID]-table-footer.php
 	 * - post-[ID of post or page where view is embedded]-table-footer.php
 	 * - view-[View ID]-table-footer.php
 	 * - form-[Form ID]-table-footer.php
@@ -105,13 +104,13 @@ abstract class View_Template extends Template {
 		global $post;
 
 		if ( ! $this->request->is_view() && $post ) {
-			$specifics []= sprintf( '%spost-%d-view-%d-%s', $slug_dir, $post->ID, $this->view->ID, $slug_name );
-			$specifics []= sprintf( '%spost-%d-%s', $slug_dir, $post->ID, $slug_name );
+			$specifics []= sprintf( '%spost-%d-view-%d-%s.php', $slug_dir, $post->ID, $this->view->ID, $slug_name );
+			$specifics []= sprintf( '%spost-%d-%s.php', $slug_dir, $post->ID, $slug_name );
 		}
 
 		
-		$specifics []= sprintf( '%sview-%d-%s', $slug_dir, $this->view->ID, $slug_name );
-		$specifics []= sprintf( '%sform-%d-%s', $slug_dir, $this->view->form->ID, $slug_name );
+		$specifics []= sprintf( '%sview-%d-%s.php', $slug_dir, $this->view->ID, $slug_name );
+		$specifics []= sprintf( '%sform-%d-%s.php', $slug_dir, $this->view->form->ID, $slug_name );
 
 		return array_merge( $specifics, $templates );
 	}
@@ -132,7 +131,7 @@ abstract class View_Template extends Template {
 		 * @param \GV\View_Template $template The current template.
 		 * @since future
 		 */
-		$this->set_template_data( apply_filters( 'gravityview/template/view/data', array(
+		$this->push_template_data( apply_filters( 'gravityview/template/view/data', array(
 
 			'template' => $this,
 
@@ -145,6 +144,7 @@ abstract class View_Template extends Template {
 
 		/** Load the template. */
 		$this->get_template_part( static::$slug );
+		$this->pop_template_data( 'gravityview' );
 	}
 }
 

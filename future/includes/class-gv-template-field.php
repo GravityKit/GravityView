@@ -22,9 +22,22 @@ if ( ! class_exists( 'Gamajo_Template_Loader' ) ) {
  */
 abstract class Field_Template extends Template {
 	/**
-	 * @var string The template directory.
+	 * Prefix for filter names.
+	 * @var string
 	 */
-	protected $plugin_template_directory = 'templatesdfj/';
+	protected $filter_prefix = 'gravityview/future/template/fields';
+
+	/**
+	 * Directory name where custom templates for this plugin should be found in the theme.
+	 * @var string
+	 */
+	protected $theme_template_directory = 'gravityview/future/fields/';
+
+	/**
+	 * Directory name where the default templates for this plugin are found.
+	 * @var string
+	 */
+	protected $plugin_template_directory = 'future/templates/fields/';
 
 	/**
 	 * @var \GV\Field The field connected to this template.
@@ -75,16 +88,37 @@ abstract class Field_Template extends Template {
 		/** Add granular overrides. */
 		add_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ), 10, 3 );
 
-		// parent::__construct();
+		parent::__construct();
 	}
 
 	/**
 	 * Enable granular template overrides based on current post, view, form, field types, etc.
 	 *
+	 * The hierarchy is as follows:
+	 *
+	 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field type]-html.php
+	 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-html.php
+	 * - post-[ID of post of page where view is embedded]-field-[Field type]-html.php
+	 * - post-[ID of post of page where view is embedded]-field-html.php
+	 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field type].php
+	 * - post-[ID of post of page where view is embedded]-view-[View ID]-field.php
+	 * - post-[ID of post of page where view is embedded]-field-[Field type].php
+	 * - post-[ID of post of page where view is embedded]-field.php
+	 * - form-[Form ID]-field-[Field ID]-html.php
+	 * - form-[Form ID]-field-[Field ID].php
+	 * - form-[Form ID]-field-[Field type]-html.php
+	 * - form-[Form ID]-field-[Field type].php
+	 * - view-[View ID]-field-[Field type]-html.php
+	 * - view-[View ID]-field-[Field type].php
+	 * - field-[Field type]-html.php
+	 * - field-[Field type].php
+	 * - field-html.php
+	 * - field.php
+	 *
 	 * @see  Gamajo_Template_Loader::get_template_file_names() Where the filter is
 	 * @param array $templates Existing list of templates.
-	 * @param string $slug      Name of the template base, example: `table`, `list`, `datatables`, `map`
-	 * @param string $name      Name of the template part, example: `body`, `footer`, `head`, `single`
+	 * @param string $slug      Name of the template base, example: `html`, `json`, `xml`
+	 * @param string $name      Name of the template part.
 	 *
 	 * @return array $templates Modified template array, merged with existing $templates values
 	 */
@@ -98,47 +132,47 @@ abstract class Field_Template extends Template {
 
 		if ( ! $this->request->is_view() && $post ) {
 			if ( $this->field && $this->field->type ) {
-				$specifics []= sprintf( '%spost-%d-view-%d-field-%s-%s', $slug_dir, $post->ID, $this->view->ID, $this->field->type, $slug_name );
-				$specifics []= sprintf( '%spost-%d-view-%d-field-%s', $slug_dir, $post->ID, $this->view->ID, $this->field->type );
-				$specifics []= sprintf( '%spost-%d-field-%s-%s', $slug_dir, $post->ID, $this->field->type, $slug_name );
-				$specifics []= sprintf( '%spost-%d-field-%s', $slug_dir, $post->ID, $this->field->type );
+				$specifics []= sprintf( '%spost-%d-view-%d-field-%s-%s.php', $slug_dir, $post->ID, $this->view->ID, $this->field->type, $slug_name );
+				$specifics []= sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $this->view->ID, $this->field->type );
+				$specifics []= sprintf( '%spost-%d-field-%s-%s.php', $slug_dir, $post->ID, $this->field->type, $slug_name );
+				$specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $this->field->type );
 			}
 
-			$specifics []= sprintf( '%spost-%d-view-%d-field-%s', $slug_dir, $post->ID, $this->view->ID, $slug_name );
-			$specifics []= sprintf( '%spost-%d-view-%d-field', $slug_dir, $post->ID, $this->view->ID );
-			$specifics []= sprintf( '%spost-%d-field-%s', $slug_dir, $post->ID, $slug_name );
-			$specifics []= sprintf( '%spost-%d-field', $slug_dir, $post->ID );
+			$specifics []= sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $this->view->ID, $slug_name );
+			$specifics []= sprintf( '%spost-%d-view-%d-field.php', $slug_dir, $post->ID, $this->view->ID );
+			$specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $slug_name );
+			$specifics []= sprintf( '%spost-%d-field.php', $slug_dir, $post->ID );
 		}
 		
 		/** Field-specific */
 		if ( $this->field ) {
 
 			if ( $this->field->ID ) {
-				$specifics []= sprintf( '%sform-%d-field-%d-%s', $slug_dir, $this->view->form->ID, $this->field->ID, $slug_name );
-				$specifics []= sprintf( '%sform-%d-field-%d', $slug_dir, $this->view->form->ID, $this->field->ID );
+				$specifics []= sprintf( '%sform-%d-field-%d-%s.php', $slug_dir, $this->view->form->ID, $this->field->ID, $slug_name );
+				$specifics []= sprintf( '%sform-%d-field-%d.php', $slug_dir, $this->view->form->ID, $this->field->ID );
 			}
 
 			if ( $this->field->type ) {
-				$specifics []= sprintf( '%sform-%d-field-%s-%s', $slug_dir, $this->view->form->ID, $this->field->type, $slug_name );
-				$specifics []= sprintf( '%sform-%d-field-%s', $slug_dir, $this->view->form->ID, $this->field->type );
+				$specifics []= sprintf( '%sform-%d-field-%s-%s.php', $slug_dir, $this->view->form->ID, $this->field->type, $slug_name );
+				$specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $this->view->form->ID, $this->field->type );
 
-				$specifics []= sprintf( '%sview-%d-field-%s-%s', $slug_dir, $this->view->ID, $this->field->type, $slug_name );
-				$specifics []= sprintf( '%sview-%d-field-%s', $slug_dir, $this->view->ID, $this->field->type );
+				$specifics []= sprintf( '%sview-%d-field-%s-%s.php', $slug_dir, $this->view->ID, $this->field->type, $slug_name );
+				$specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $this->view->ID, $this->field->type );
 
-				$specifics []= sprintf( '%sfield-%s-%s', $slug_dir, $this->field->type, $slug_name );
-				$specifics []= sprintf( '%sfield-%s', $slug_dir, $this->field->type );
+				$specifics []= sprintf( '%sfield-%s-%s.php', $slug_dir, $this->field->type, $slug_name );
+				$specifics []= sprintf( '%sfield-%s.php', $slug_dir, $this->field->type );
 			}
 		}
 
 		/** Generic field templates */
-		$specifics []= sprintf( '%sview-%d-field-%s', $slug_dir, $this->view->ID, $slug_name );
-		$specifics []= sprintf( '%sform-%d-field-%s', $slug_dir, $this->view->form->ID, $slug_name );
+		$specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $this->view->ID, $slug_name );
+		$specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $this->view->form->ID, $slug_name );
 
-		$specifics []= sprintf( '%sview-%d-field', $slug_dir, $this->view->ID );
-		$specifics []= sprintf( '%sform-%d-field', $slug_dir, $this->view->form->ID );
+		$specifics []= sprintf( '%sview-%d-field.php', $slug_dir, $this->view->ID );
+		$specifics []= sprintf( '%sform-%d-field.php', $slug_dir, $this->view->form->ID );
 
-		$specifics []= sprintf( '%sfield-%s', $slug_dir, $slug_name );
-		$specifics []= sprintf( '%sfield', $slug_dir );
+		$specifics []= sprintf( '%sfield-%s.php', $slug_dir, $slug_name );
+		$specifics []= sprintf( '%sfield.php', $slug_dir );
 
 
 		return array_merge( $specifics, $templates );
@@ -151,6 +185,9 @@ abstract class Field_Template extends Template {
 	 */
 	public function render() {
 
+		$value = $this->field->get_value( $this->view, $this->source, $this->entry );
+		$display_value = $value;
+
 		/**
 		 * Make various pieces of data available to the template
 		 *  under the $gravityview scoped variable.
@@ -160,18 +197,25 @@ abstract class Field_Template extends Template {
 		 * @param \GV\Field_Template $template The current template.
 		 * @since future
 		 */
-		$this->set_template_data( apply_filters( 'gravityview/template/field/data', array(
+		$this->push_template_data( apply_filters( 'gravityview/template/field/data', array(
 
 			'template' => $this,
 
+			'value' => $value,
+			'display_value' => $display_value,
+
 			/** Shortcuts */
 			'field' => $this->field,
+			'view' => $this->view,
+			'source' => $this->source,
 			'entry' => $this->entry,
+			'request' => $this->request,
 
 		), $this ), 'gravityview' );
 
 		/** Load the template. */
 		$this->get_template_part( static::$slug );
+		$this->pop_template_data( 'gravityview' );
 	}
 }
 
