@@ -181,12 +181,53 @@ abstract class Field_Template extends Template {
 	/**
 	 * Output some HTML.
 	 *
+	 * @todo Move to \GV\Field_HTML_Template, but call filters here?
+	 *
 	 * @return void
 	 */
 	public function render() {
 
-		$value = $this->field->get_value( $this->view, $this->source, $this->entry );
-		$display_value = $value;
+		/** Retrieve the value. */
+		$display_value = $value = $this->field->get_value( $this->view, $this->source, $this->entry );
+
+		if ( empty( $value ) ) {
+			/**
+			 * @filter `gravityview_empty_value` What to display when a field is empty
+			 * @deprecated Use the `gravityview/field/value/empty` filter instead
+			 * @param string $value (empty string)
+			 */
+			$value = apply_filters( 'gravityview_empty_value', '' );
+
+			/**
+			 * @filter `gravityview/field/value/empty` What to display when this field is empty.
+			 * @param string $value The value to display (Default: empty string)
+			 * @param \GV\Field_Template The template this is being called from.
+			 */
+			$value = apply_filters( 'gravityview/field/value/empty', $value, $this );
+		}
+
+		$source = $this->source;
+		$source_backend = $source ? $source::$backend : null;
+
+		/** Alter the display value according to Gravity Forms. */
+		if ( $source_backend == \GV\Source::BACKEND_GRAVITYFORMS ) {
+			/** Prevent any PHP warnings that may be generated. */
+			ob_start();
+
+			$display_value = \GFCommon::get_lead_field_display( $this->field->field, $value, $this->entry['currency'], false, 'html' );
+
+			if ( $errors = ob_get_clean() ) {
+				gravityview()->log->error( 'Errors when calling GFCommon::get_lead_field_display()', array( 'data' => $errors ) );
+			}
+
+			/** Call the Gravity Forms field value filter. */
+			$display_value = apply_filters( 'gform_entry_field_value', $display_value, $this->field->field, $this->entry->as_entry(), $this->source->form );
+
+			/** Replace merge tags for admin-only fields. */
+			if ( ! empty( $this->field->field->adminOnly ) ) {
+				$display_value = \GravityView_API::replace_variables( $display_value, $this->form->form, $this->entry->as_entry() );
+			}
+		}
 
 		/**
 		 * Make various pieces of data available to the template
@@ -213,9 +254,134 @@ abstract class Field_Template extends Template {
 
 		), $this ), 'gravityview' );
 
-		/** Load the template. */
-		$this->get_template_part( static::$slug );
+		/** Bake the template. */
+		ob_start();
+		$located_template = $this->get_template_part( static::$slug );
+		$output = ob_get_clean();
+
 		$this->pop_template_data( 'gravityview' );
+
+		/** A compatibility array that's required by some of the deprecated filters. */
+		$field_compat = array(
+			'form' => $source_backend == \GV\Source::BACKEND_GRAVITYFORMS ? $this->source->form : null,
+			'field_id' => $this->field->ID,
+			'field' => $this->field->field,
+			'field_settings' => $this->field->as_configuration(),
+			'value' => $value,
+			'display_value' => $display_value,
+			'format' => 'html',
+			'entry' => $this->entry->as_entry(),
+			'field_type' => $this->field->type,
+			'field_path' => $located_template,
+		);
+
+		$pre_link_compat_callback = function( $output, $template ) use ( $field_compat ) {
+			$field = $template->field;
+
+			/**
+			 * @filter `gravityview_field_entry_value_{$field_type}_pre_link` Modify the field value output for a field type before Show As Link setting is applied. Example: `gravityview_field_entry_value_number_pre_link`
+			 * @since 1.16
+			 * @param string $output HTML value output
+			 * @param array  $entry The GF entry array
+			 * @param array  $field_settings Settings for the particular GV field
+			 * @param array  $field Field array, as fetched from GravityView_View::getCurrentField()
+			 *
+			 * @deprecated Use the `gravityview/field/{$field_type}/output` or `gravityview/field/output` filters instead.
+			 */
+			$output = apply_filters( "gravityview_field_entry_value_{$field->type}_pre_link", $output, $template->entry->as_entry(), $field->as_configuration(), $field_compat );
+
+			/**
+			 * Link to the single entry by wrapping the output in an anchor tag
+			 *
+			 * Fields can override this by modifying the field data variable inside the field. See /templates/fields/post_image.php for an example.
+			 */
+			if ( ! empty( $field->show_as_link ) && ! \gv_empty( $output, false, false ) ) {
+				$link_atts = empty( $field->new_window ) ? array() : array( 'target' => '_blank' );
+
+				$permalink = $template->entry->get_permalink( $template->view, $template->request );
+				$output = \gravityview_get_link( $permalink, $output, $link_atts );
+				
+				/**
+				 * @filter `gravityview_field_entry_link` Modify the link HTML
+				 * @param string $link HTML output of the link
+				 * @param string $href URL of the link
+				 * @param array  $entry The GF entry array
+				 * @param  array $field_settings Settings for the particular GV field
+				 */
+				$output = apply_filters( 'gravityview_field_entry_link', $output, $permalink, $template->entry->as_entry(), $field->as_configuration() );
+			}
+
+			return $output;
+		};
+
+		$post_link_compat_callback = function( $output, $template ) use ( $field_compat ) {
+			$field = $template->field;
+
+			/**
+			 * @filter `gravityview_field_entry_value_{$field_type}` Modify the field value output for a field type. Example: `gravityview_field_entry_value_number`
+			 * @since 1.6
+			 * @param string $output HTML value output
+			 * @param array  $entry The GF entry array
+			 * @param  array $field_settings Settings for the particular GV field
+			 * @param array $field Current field being displayed
+			 *
+			 * @deprecated Use the `gravityview/field/{$field_type}/output` or `gravityview/field/output` filters instead.
+			 */
+			$output = apply_filters( "gravityview_field_entry_value_{$field->type}", $output, $template->entry->as_entry(), $field->as_configuration(), $field_compat );
+
+			/**
+			 * @filter `gravityview_field_entry_value` Modify the field value output for all field types
+			 * @param string $output HTML value output
+			 * @param array  $entry The GF entry array
+			 * @param  array $field_settings Settings for the particular GV field
+			 * @param array $field_data  {@since 1.6}
+			 *
+			 * @deprecated Use the `gravityview/field/{$field_type}/output` or `gravityview/field/output` filters instead.
+			 */
+			$output = apply_filters( 'gravityview_field_entry_value', $output, $template->entry->as_entry(), $field->as_configuration(), $field_compat );
+
+			/**
+			 * @filter `gravityview/field/{$field_type}/output` Modify the field output for a field type.
+			 *
+			 * @since future
+			 *
+			 * @param string $output The current output.
+			 * @param \GV\Field_Template The template this is being called from.
+			 */
+			return apply_filters( "gravityview/field/{$field->type}/output", $output, $template );
+		};
+
+		/**
+		 * Okay, what's this whole pre/post_link compat deal, huh?
+		 *
+		 * Well, the `gravityview_field_entry_value_{$field_type}_pre_link` filter
+		 *  is expected to be applied before the value is turned into an entry link.
+		 *
+		 * And then `gravityview_field_entry_value_{$field_type}` and `gravityview_field_entry_value`
+		 *  are called afterwards.
+		 *
+		 * So we're going to use filter priorities to make sure this happens inline with
+		 *  our new filters, in the correct sequence. Pre-link called with priority 5 and
+		 *  post-link called with priority 9. Then everything else.
+		 *
+		 * If a new code wants to alter the value before it is hyperlinked (hyperlinkified?),
+		 *  it should hook into a priority between -inf. and 8. Afterwards: 10 to +inf.
+		 */
+		add_filter( 'gravityview/field/output', $pre_link_compat_callback, 5, 2 );
+		add_filter( 'gravityview/field/output', $post_link_compat_callback, 9, 2 );
+
+		/**
+		 * @filter `gravityview/field/output` Modify the field output for a field.
+		 *
+		 * @since future
+		 *
+		 * @param string $output The current output.
+		 * @param \GV\Field_Template The template this is being called from.
+		 */
+		echo apply_filters( "gravityview/field/output", $output, $this );
+
+		remove_filter( 'gravityview/field/output', $pre_link_compat_callback, 5 );
+		remove_filter( 'gravityview/field/output', $post_link_compat_callback, 9 );
 	}
 }
 

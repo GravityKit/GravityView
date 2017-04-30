@@ -212,6 +212,8 @@ class GravityView_API {
 	/**
 	 * Given an entry and a form field id, calculate the entry value for that field.
 	 *
+	 * @deprecated Use \GV\Field_Template::render()
+	 *
 	 * @access public
 	 * @param array $entry
 	 * @param array $field
@@ -805,6 +807,9 @@ function gv_container_class( $passed_css_class = '', $echo = true ) {
 	return $css_class;
 }
 
+/**
+ * @deprecated Use \GV\Field_Template::render()
+ */
 function gv_value( $entry, $field ) {
 
 	$value = GravityView_API::field_value( $entry, $field );

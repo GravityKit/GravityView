@@ -133,13 +133,13 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
  *  our field renderers are ready.
  *
  * @see \GravityView_API::field_value
+ * @deprecated Use \GV\Field_Template::render()
  * @internal
  * @since future
  *
  * @return null|string The value of a field in an entry.
  */
 function GravityView_API_field_value( $entry, $field_settings, $format ) {
-
 	if ( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
 		gravityview()->log->error( 'No entry or field_settings[id] supplied', array( 'data' => array( func_get_args() ) ) );
 		return null;

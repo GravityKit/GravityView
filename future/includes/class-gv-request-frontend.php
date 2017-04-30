@@ -114,7 +114,7 @@ class Frontend_Request extends Request {
 				 * @param \GV\View $view The View we're trying to directly render here.
 				 * @param \GV\Request $request The current request.
 				 */
-				if ( ! apply_filters( 'gravityview/request/output/direct', $direct_access, $view, $request ) ) {
+				if ( ! apply_filters( 'gravityview/request/output/direct', $direct_access, $view, $this ) ) {
 					$content .= __( 'You are not allowed to view this content.', 'gravityview' );
 					continue;
 				}

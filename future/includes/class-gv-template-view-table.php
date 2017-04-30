@@ -100,12 +100,11 @@ class View_Table_Template extends View_Template {
 		}
 		$attributes = implode( ' ', $attributes );
 
-		/** 
-		 * Initialize the Field_Renderer.
-		 */
-		$renderer = new Field_Renderer();
 
-		// printf( '<td%s>%s</td>', $attributes, \gv_value( $entry->as_entry(), $field->as_configuration() ) );
-		printf( '<td%s>%s</td>', $attributes, $renderer->render( $field, $this->view, $this->view->form, $entry, $this->request ) );
+		$renderer = new Field_Renderer();
+		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
+
+		/** Output. */
+		printf( '<td%s>%s</td>', $attributes, $renderer->render( $field, $this->view, $source, $entry, $this->request ) );
 	}
 }
