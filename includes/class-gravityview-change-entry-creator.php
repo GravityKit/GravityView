@@ -73,6 +73,15 @@ class GravityView_Change_Entry_Creator {
 
     	do_action( 'gravityview_log_debug', 'GravityView_Change_Entry_Creator[assign_new_user_to_lead] - '.$note );
 
+	    /**
+	     * @filter `gravityview_disable_change_entry_creator_note` Disable adding a note when changing the entry creator
+	     * @since 1.21.5
+	     * @param boolean $disable Disable the Change Entry Creator note. Default: false.
+	     */
+	    if( apply_filters('gravityview_disable_change_entry_creator_note', false ) ) {
+		    return;
+	    }
+
         GravityView_Entry_Notes::add_note( $entry['id'], -1, 'GravityView', $note, 'gravityview' );
 
     }

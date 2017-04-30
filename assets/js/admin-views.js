@@ -686,13 +686,18 @@
 
 			// get selected template
 			vcfg.wantedTemplate = $( this );
-			var currTemplateId = $( "#gravityview_directory_template" ).val();
-			var selectedTemplateId = vcfg.wantedTemplate.attr( "data-templateid" );
+			var currTemplateId = $( "#gravityview_directory_template" ).val(),
+			selectedTemplateId = vcfg.wantedTemplate.attr( "data-templateid" ),
+			regexMatch = /(.*?)_(.*?)$/i,
+			currTemplateIdSlug = currTemplateId.replace( regexMatch, '$2' ),
+			selectedTemplateIdSlug = selectedTemplateId.replace( regexMatch, '$2' ),
+			slugmatch = ( selectedTemplateIdSlug === currTemplateIdSlug ),
+			has_fields = $( '#directory-fields, #single-fields' ).find('.gv-droppable-area .gv-fields').length;
 
 			// check if template is being changed
-			if ( currTemplateId === '' ) {
+			if ( currTemplateId === '' || slugmatch || 0 === has_fields ) {
 				$( "#gravityview_select_template" ).slideUp( 150 );
-				vcfg.selectTemplateContinue();
+				vcfg.selectTemplateContinue( slugmatch );
 			} else if ( currTemplateId !== selectedTemplateId ) {
 				vcfg.showDialog( '#gravityview_switch_template_dialog' );
 			} else {
@@ -702,7 +707,7 @@
 			}
 		},
 
-		selectTemplateContinue: function () {
+		selectTemplateContinue: function ( slugmatch ) {
 
 			var vcfg = viewConfiguration, selectedTemplateId = vcfg.wantedTemplate.attr( "data-templateid" );
 
@@ -729,8 +734,13 @@
 				vcfg.getSortableFields( 'preset', selectedTemplateId );
 
 			} else {
-				//change view configuration active areas
-				vcfg.updateActiveAreas( selectedTemplateId );
+
+				if( ! slugmatch ) {
+					//change view configuration active areas
+					vcfg.updateActiveAreas( selectedTemplateId );
+				} else {
+					vcfg.waiting('stop');
+				}
 
 				vcfg.gvSwitchView.fadeIn( 150 );
 				vcfg.toggleViewTypeMetabox();
