@@ -39,7 +39,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Plugin::dir()
 	 * @covers \GV\Plugin::url()
 	 */
-	function test_plugin_dir_and_url() {
+	public function test_plugin_dir_and_url() {
 		$this->assertEquals( GRAVITYVIEW_DIR, gravityview()->plugin->dir() );
 		$this->assertStringEndsWith( '/gravityview/test/this.php', strtolower( gravityview()->plugin->dir( 'test/this.php' ) ) );
 		$this->assertStringEndsWith( '/gravityview/and/this.php', strtolower( gravityview()->plugin->dir( '/and/this.php' ) ) );
@@ -57,7 +57,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Plugin::is_compatible_gravityforms()
 	 * @covers \GV\Plugin::is_compatible_php()
 	 */
-	function test_plugin_is_compatible() {
+	public function test_plugin_is_compatible() {
 		/** Under normal testing conditions this should pass. */
 		$this->assertTrue( gravityview()->plugin->is_compatible_php() );
 		$this->assertTrue( gravityview()->plugin->is_compatible_wordpress() );
@@ -109,7 +109,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Entry::add_rewrite_endpoint()
 	 * @covers \GV\Entry::get_endpoint_name()
 	 */
-	function test_entry_endpoint_rewrite_name() {
+	public function test_entry_endpoint_rewrite_name() {
 		$entry_enpoint = array_filter( $GLOBALS['wp_rewrite']->endpoints, function( $endpoint ) {
 			return $endpoint === array( EP_ALL, 'entry', 'entry' );
 		} );
@@ -131,9 +131,62 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\Entry::get_permalink()
+	 */
+	public function test_entry_get_permalink() {
+		$form = $this->factory->form->create_and_get();
+		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Dummy_Request();
+
+		global $post;
+
+		/** A standalone View. */
+		$post = get_post( $view->ID );
+		$expected_url = add_query_arg( array( 'entry' => $entry->ID ), get_permalink( $view->ID ) );
+		$this->assertEquals( $expected_url, $entry->get_permalink( $view, $request ) );
+
+		/** With tracking. */
+		$_GET = array( 'pagenum' => 1, 'sort' => '4', 'dir' => 'rand' );
+
+		$this->assertEquals( add_query_arg( $_GET, $expected_url ), $entry->get_permalink( $view, $request ) );
+
+		$_GET = array();
+
+		/** An embedded View, sort of. */
+		$post = $this->factory->post->create_and_get();
+
+		$expected_url = add_query_arg( array( 'gvid' => $view->ID, 'entry' => $entry->ID ), get_permalink( $post->ID ) );
+		$this->assertEquals( $expected_url, $entry->get_permalink( $view, $request ) );
+
+		/** Filters. */
+		add_filter( 'gravityview_directory_link', function( $directory ) {
+			return 'ooh';
+		} );
+
+		$this->assertEquals( add_query_arg( array( 'gvid' => $view->ID, 'entry' => $entry->ID ), 'ooh' ), $entry->get_permalink( $view, $request ) );
+
+		add_filter( 'gravityview/entry/permalink', function( $permalink ) {
+			return 'ha';
+		} );
+
+		$this->assertEquals( 'ha', $entry->get_permalink( $view, $request ) );
+
+		remove_all_filters( 'gravityview_directory_link' );
+		remove_all_filters( 'gravityview/entry/permalink' );
+
+		unset( $post );
+	}
+
+	/**
 	 * @covers \GV\Plugin::activate()
 	 */
-	function test_plugin_activate() {
+	public function test_plugin_activate() {
 		/** Trigger an activation. By default, during tests these are not triggered. */
 		GravityView_Plugin::activate();
 		gravityview()->plugin->activate(); /** Deprecated. */
@@ -146,7 +199,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\View_Collection::clear()
 	 * @covers \GV\View_Collection::merge()
 	 */
-	function test_view_collection_add() {
+	public function test_view_collection_add() {
 		$views = new \GV\View_Collection();
 		$view = new \GV\View();
 
@@ -173,7 +226,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\View::from_post()
 	 */
-	function test_view_from_post() {
+	public function test_view_from_post() {
 		$post = $this->factory->view->create_and_get();
 		$view = \GV\View::from_post( $post );
 		$this->assertEquals( $view->ID, $post->ID );
@@ -199,7 +252,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\View::by_id()
 	 */
-	function test_view_by_id() {
+	public function test_view_by_id() {
 		$post = $this->factory->view->create_and_get();
 		$view = \GV\View::by_id( $post->ID );
 		$this->assertEquals( $view->ID, $post->ID );
@@ -224,7 +277,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\View::exists()
 	 * @covers \GravityView_View_Data::view_exists()
 	 */
-	function test_view_exists() {
+	public function test_view_exists() {
 		$data = GravityView_View_Data::getInstance();
 		$post = $this->factory->view->create_and_get();
 
@@ -244,7 +297,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\View::offsetGet()
 	 * @covers \GV\View::as_data()
 	 */
-	function test_view_data_compat() {
+	public function test_view_data_compat() {
 		$this->_reset_context();
 
 		$post = $this->factory->view->create_and_get();
@@ -283,7 +336,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 *
 	 * @covers \GravityView_frontend::set_context_view_id()
 	 */
-	function test_data_has_multiple_views() {
+	public function test_data_has_multiple_views() {
 		$this->_reset_context();
 
 		$post = $this->factory->view->create_and_get();
@@ -330,7 +383,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GravityView_frontend::add_scripts_and_styles()
 	 * @covers \GravityView_frontend::render_view()
 	 */
-	function test_data_get_views() {
+	public function test_data_get_views() {
 		$this->_reset_context();
 
 		$post = $this->factory->view->create_and_get();
@@ -435,7 +488,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GravityView_View_Data::is_valid_embed_id()
 	 * @covers \GravityView_oEmbed::set_vars()
 	 */
-	function test_view_collection_from_post() {
+	public function test_view_collection_from_post() {
 		$original_shortcode = $GLOBALS['shortcode_tags']['gravityview'];
 		remove_shortcode( 'gravityview' ); /** Conflicts with existing shortcode right now. */
 		\GV\Shortcodes\gravityview::add();
@@ -563,7 +616,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 *
 	 * @covers GravityView_frontend::single_entry_title()
 	 */
-	function test_view_compat() {
+	public function test_view_compat() {
 		$this->_reset_context();
 
 		$form = $this->factory->form->create_and_get();
@@ -616,7 +669,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\GF_Form::by_id()
 	 */
-	function test_form_gravityforms() {
+	public function test_form_gravityforms() {
 		$_form = $this->factory->form->create_and_get();
 		$_view = $this->factory->view->create_and_get( array( 'form_id' => $_form['id'] ) );
 
@@ -641,7 +694,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Form_Collection::get()
 	 * @covers \GV\Form_Collection::last()
 	 */
-	function test_form_collection() {
+	public function test_form_collection() {
 		$forms = new \GV\Form_Collection();
 		$this->assertEmpty( $forms->all() );
 
@@ -679,7 +732,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Shortcode::add()
 	 * @covers \GV\Shortcode::remove()
 	 */
-	function test_shortcode_add() {
+	public function test_shortcode_add() {
 		$original_shortcode = $GLOBALS['shortcode_tags']['gravityview'];
 		remove_shortcode( 'gravityview' ); /** Conflicts with existing shortcode right now. */
 		$shortcode = \GV\Shortcodes\gravityview::add();
@@ -702,7 +755,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Shortcode::callback()
 	 * @expectedException \BadMethodCallException
 	 */
-	function test_shortcode_do_not_implemented() {
+	public function test_shortcode_do_not_implemented() {
 		\GV\Shortcode::callback( array( 'id' => 1 ) );
 	}
 
@@ -710,7 +763,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Shortcode::parse()
 	 * @covers \GravityView_View_Data::parse_post_content()
 	 */
-	function test_shortcode_parse() {
+	public function test_shortcode_parse() {
 		$this->_reset_context();
 
 		$original_shortcode = $GLOBALS['shortcode_tags']['gravityview'];
@@ -768,7 +821,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\Core::init()
 	 */
-	function test_core_init() {
+	public function test_core_init() {
 		gravityview()->request = new \GV\Frontend_Request();
 
 		/** Make sure the main \GV\View_Collection is available in both places. */
@@ -785,7 +838,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\Frontend_Request::is_admin()
 	 */
-	function test_default_request_is_admin() {
+	public function test_default_request_is_admin() {
 		$this->assertFalse( gravityview()->request->is_admin() );
 
 		set_current_screen( 'dashboard' );
@@ -848,7 +901,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Frontend_Request::is_admin()
 	 * @group ajax
 	 */
-	function test_default_request_is_admin_ajax() {
+	public function test_default_request_is_admin_ajax() {
 		if ( ! defined( 'DOING_AJAX' ) ) {
 			define( 'DOING_AJAX', true );
 		}
@@ -868,7 +921,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GravityView_View_Data::get_views()
 	 * @covers \GravityView_View_Data::has_multiple_views()
 	 */
-	function test_frontend_request_add_view() {
+	public function test_frontend_request_add_view() {
 		$this->_reset_context();
 
 		/** Try to add a non-existing view. */
