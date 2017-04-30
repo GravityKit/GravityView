@@ -55,9 +55,10 @@ class Frontend_Request extends Request {
 
 		/**
 		 * @filter `gravityview/request/output/views` Views about to be rendered during request output.
-		 * @param[in,out] \GV\View_Collection $views View_Collection to be rendered during request output.
+		 * @param \GV\View_Collection $views View_Collection to be rendered during request output.
+		 * @param \GV\Request $request The current request.
 		 */
-		$views = apply_filters( 'gravityview/request/output/views', $views );
+		$views = apply_filters( 'gravityview/request/output/views', $views, $this );
 
 		/**
 		 * We can render a gravityview single post directly here.
@@ -111,8 +112,9 @@ class Frontend_Request extends Request {
 				 * @since future
 				 * @param[in,out] boolean Accessible or not. Default: accessbile.
 				 * @param \GV\View $view The View we're trying to directly render here.
+				 * @param \GV\Request $request The current request.
 				 */
-				if ( ! apply_filters( 'gravityview/request/output/direct', $direct_access, $view ) ) {
+				if ( ! apply_filters( 'gravityview/request/output/direct', $direct_access, $view, $request ) ) {
 					$content .= __( 'You are not allowed to view this content.', 'gravityview' );
 					continue;
 				}
