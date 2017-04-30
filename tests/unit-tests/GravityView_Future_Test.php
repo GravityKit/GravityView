@@ -180,7 +180,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_all_filters( 'gravityview_directory_link' );
 		remove_all_filters( 'gravityview/entry/permalink' );
 
+		/** With nice permastruct :) */
+		update_option( 'permalink_structure', '/%postname%' );
+		$this->assertEquals( get_permalink( $post->ID ) . '/entry/' . $entry->ID . '/?gvid=' . $view->ID, $entry->get_permalink( $view, $request ) );
+
 		unset( $post );
+		update_option( 'permalink_structure', '' );
 	}
 
 	/**

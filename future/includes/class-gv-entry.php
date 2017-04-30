@@ -143,8 +143,6 @@ abstract class Entry {
 
 		/** Assemble the permalink. */
 		if ( get_option( 'permalink_structure' ) && ! is_preview() ) {
-			$args = array();
-
 			/**
 			 * Make sure the $directory_link doesn't contain any query otherwise it will break when adding the entry slug.
 			 * @since 1.16.5
@@ -153,7 +151,7 @@ abstract class Entry {
 
 			$query = ! empty( $link_parts[1] ) ? '?' . $link_parts[1] : '';
 
-			$permalink = trailingslashit( $link_parts[0] ) . $query_endpoint_name . '/'. $entry_slug .'/' . $query;
+			$permalink = trailingslashit( $link_parts[0] ) . $entry_endpoint_name . '/'. $entry_slug .'/' . $query;
 		} else {
 			$args[ $entry_endpoint_name ] = $entry_slug;
 		}
