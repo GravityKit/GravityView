@@ -897,7 +897,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers \GV\Frontend_Request::is_search()
-	 * @group current
 	 */
 	function test_frontend_request_is_search() {
 	}
@@ -1559,6 +1558,43 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_all_filters( 'gravityview_field_entry_link' );
 		remove_all_filters( 'gravityview/entry/permalink' );
 		remove_all_filters( 'gravityview/field/output' );
+	}
+
+	/**
+	 * @group current
+	 */
+	public function test_frontend_field_html_address() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'1.1' => 'Address 1<careful>',
+			'1.2' => 'Address 2',
+			'1.3' => 'City',
+			'1.4' => 'State',
+			'1.5' => 'ZIP',
+			'1.6' => 'Country',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '1.1' );
+		$this->assertEquals( 'Address 1&lt;careful&gt;', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '1' );
+		$this->assertRegExp( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country<br/><a href='http://maps.google.com/maps\?q=.*' target='_blank' class='map-it-link'>Map It</a>$#", $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'show_map_link' => false ) );
+		$this->assertRegExp( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country$#", $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$this->_reset_context();
 	}
 
 	/**

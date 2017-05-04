@@ -259,6 +259,8 @@ abstract class Field_Template extends Template {
 		$located_template = $this->get_template_part( static::$slug );
 		$output = ob_get_clean();
 
+		gravityview()->log->info( 'Field template for field #{field_id} loaded: {located_template}', array( 'field_id' => $this->field->ID, 'located_template' => $located_template ) );
+
 		$this->pop_template_data( 'gravityview' );
 
 		/** A compatibility array that's required by some of the deprecated filters. */

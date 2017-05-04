@@ -418,6 +418,9 @@ class View implements \ArrayAccess {
 	}
 
 	public function __get( $key ) {
-		return $this->post->$key;
+		if ( $this->post ) {
+			return $this->post->$key;
+		}
+		return isset( $this->$key ) ? $this->$key : null;
 	}
 }
