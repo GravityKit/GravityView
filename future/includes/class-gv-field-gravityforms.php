@@ -84,6 +84,39 @@ class GF_Field extends Field {
 	}
 
 	/**
+	 * Retrieve the label for this field.
+	 *
+	 * Requires a \GV\GF_Form in this implementation.
+	 *
+	 * @param \GV\View $view The view for this context if applicable.
+	 * @param \GV\Source $source The source (form) for this context if applicable.
+	 * @param \GV\Entry $entry The entry for this context if applicable.
+	 * @param \GV\Request $request The request for this context if applicable.
+	 *
+	 * @return string The label for this Gravity Forms field.
+	 */
+	public function get_label( View $view = null, Source $source = null, Entry $entry = null, Request $request = null ) {
+		if ( $label = parent::get_label( $view, $source, $entry, $request ) ) {
+			return $label;
+		}
+
+		if ( ! $source || ! is_object( $source ) || ! is_a( $source, '\GV\GF_Form' ) ) {
+			gravityview()->log->error( '$source is not a valid \GV\GF_Form instance' );
+			return null;
+		}
+
+		/** This is a complex Gravity Forms input. */
+		if ( $input = \GFFormsModel::get_input( $this->field, $this->ID ) ) {
+			$label = ! empty( $input['customLabel'] ) ? $input['customLabel'] : $input['label'];
+		} else {
+			/** This is a field with one label. */
+			$label = $this->field->get_field_label( true, $this->label );
+		}
+
+		return $label;
+	}
+
+	/**
 	 * Retrieve the value for this field.
 	 *
 	 * Requires a \GV\GF_Entry in this implementation.

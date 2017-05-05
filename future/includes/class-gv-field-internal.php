@@ -13,6 +13,11 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  */
 class Internal_Field extends Field {
 	/**
+	 * @var \GravityView_Field The backing GravityView field (old).
+	 */
+	public $field;
+
+	/**
 	 * Create self from a configuration array.
 	 *
 	 * @param array $configuration The configuration array.
@@ -46,7 +51,31 @@ class Internal_Field extends Field {
 		$field = new self();
 		$field->ID = $field_id;
 
+		/**
+		 * Retrieve the internal backing field (old for now)
+		 * @todo switch to future subclasses
+		 */
+		$field->field = \GravityView_Fields::get_instance( $field_id );
+
 		return $field;
+	}
+
+	/**
+	 * Retrieve the label for this field.
+	 *
+	 * @param \GV\View $view The view for this context if applicable.
+	 * @param \GV\Source $source The source (form) for this context if applicable.
+	 * @param \GV\Entry $entry The entry for this context if applicable.
+	 * @param \GV\Request $request The request for this context if applicable.
+	 *
+	 * @return string The label for this field. Nothing here.
+	 */
+	public function get_label( View $view = null, Source $source = null, Entry $entry = null, Request $request = null ) {
+		if ( $label = parent::get_label( $view, $source, $entry, $request ) ) {
+			return $label;
+		}
+
+		return $this->field ? $this->field->label : $this->label;
 	}
 
 	/**

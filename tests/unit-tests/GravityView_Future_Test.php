@@ -1125,6 +1125,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers ::gravityview_get_directory_fields()
 	 * @covers \GVCommon::get_directory_fields()
 	 * @covers \GV\Field::get_value()
+	 * @covers \GV\Field::get_label()
 	 */
 	public function test_field_and_field_collection() {
 		$fields = new \GV\Field_Collection();
@@ -1341,6 +1342,32 @@ class GVFuture_Test extends GV_UnitTestCase {
 		} );
 		$this->assertEquals( 'sentinel-6', $field->get_value( $view, null /** \GV\Source */, $entry ) );
 		remove_all_filters( 'gravityview/field/value' );
+
+		/** How about labels? Uninitialized first. */
+		$field = new \GV\Field();
+
+		$this->assertEmpty( $field->get_label() );
+
+		/** Initialized override. */
+		$field->update_configuration( array( 'custom_label' => 'This is a custom label' ) );
+		$this->assertEquals( 'This is a custom label', $field->get_label() );
+
+		/** Gravity Forms values, please. */
+		$field = \GV\GF_Field::by_id( $view->form, '4' );
+		$this->assertEquals( 'Multi select', $field->get_label( $view, $view->form, $entry ) );
+
+		/** Custom label override and merge tags. */
+		$field->update_configuration( array( 'custom_label' => 'This is {entry_id}' ) );
+		$this->assertEquals( 'This is ' . $entry->ID, $field->get_label( $view, $view->form, $entry ) );
+
+		/** Internal fields. */
+		$field = \GV\Internal_Field::by_id( 'id' );
+		$field->update_configuration( array( 'label' => 'ID' ) );
+		$this->assertEquals( 'ID', $field->get_label() );
+
+		/** Custom label override and merge tags. */
+		$field->update_configuration( array( 'custom_label' => 'This is {entry_id}' ) );
+		$this->assertEquals( 'This is ' . $entry->ID, $field->get_label( $view, $view->form, $entry ) );
 
 		$this->_reset_context();
 	}
