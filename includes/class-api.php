@@ -16,6 +16,8 @@ class GravityView_API {
 	/**
 	 * Fetch Field Label
 	 *
+	 * @deprecated Use \GV\Field::get_label()
+	 *
 	 * @access public
 	 * @static
 	 * @param array $field GravityView field array
@@ -24,9 +26,18 @@ class GravityView_API {
 	 * @return string
 	 */
 	public static function field_label( $field, $entry = array(), $force_show_label = false ) {
+
 		$gravityview_view = GravityView_View::getInstance();
 
 		$form = $gravityview_view->getForm();
+
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+			if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && ! empty( $GLOBALS['GravityView_API_field_label_override'] ) ) {
+				/** Allow to fall through for back compatibility testing purposes. */
+			} else {
+				return \GV\Mocks\GravityView_API_field_label( $form, $field, $entry, $force_show_label );
+			}
+		}
 
 		$label = '';
 
@@ -752,6 +763,9 @@ class GravityView_API {
 
 // inside loop functions
 
+/**
+ * @deprecated Use \GV\Field::get_label()
+ */
 function gv_label( $field, $entry = NULL ) {
 	return GravityView_API::field_label( $field, $entry );
 }

@@ -1431,6 +1431,105 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\Mocks\GravityView_API_field_label()
+	 * @covers \GravityView_API::field_label()
+	 */
+	public function test_field_label_compat() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => 'set all the fields!',
+			'2' => -100,
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		GravityView_View::getInstance()->setForm( $form->form );
+
+		$field_settings = array(
+			'id' => '1',
+			'show_label' => false,
+			'label' => 'what?',
+		);
+
+		$GLOBALS['GravityView_API_field_label_override'] = true;
+		$expected = GravityView_API::field_label( $field_settings, $entry->as_entry() /** no force */ );
+		unset( $GLOBALS['GravityView_API_field_label_override'] );
+		$this->assertEquals( $expected, GravityView_API::field_label( $field_settings, $entry->as_entry() /** no force */ ) );
+		$this->assertEquals( '', $expected );
+
+		$GLOBALS['GravityView_API_field_label_override'] = true;
+		$expected = GravityView_API::field_label( $field_settings, $entry->as_entry(), true );
+		unset( $GLOBALS['GravityView_API_field_label_override'] );
+		$this->assertEquals( $expected, GravityView_API::field_label( $field_settings, $entry->as_entry(), true ) );
+		$this->assertEquals( 'A Text Field', $expected );
+
+		$field_settings = array(
+			'id' => '1',
+			'show_label' => true,
+			'label' => 'what?',
+		);
+
+		$GLOBALS['GravityView_API_field_label_override'] = true;
+		$expected = GravityView_API::field_label( $field_settings, $entry->as_entry() /** no force */ );
+		unset( $GLOBALS['GravityView_API_field_label_override'] );
+		$this->assertEquals( $expected, GravityView_API::field_label( $field_settings, $entry->as_entry() /** no force */ ) );
+		$this->assertEquals( 'A Text Field', $expected );
+
+		$field_settings = array(
+			'id' => '1',
+			'show_label' => true,
+			'custom_label' => 'The Real Slim Label',
+			'label' => 'what?',
+		);
+
+		$GLOBALS['GravityView_API_field_label_override'] = true;
+		$expected = GravityView_API::field_label( $field_settings, $entry->as_entry() );
+		unset( $GLOBALS['GravityView_API_field_label_override'] );
+		$this->assertEquals( $expected, GravityView_API::field_label( $field_settings, $entry->as_entry() ) );
+		$this->assertEquals( 'The Real Slim Label', $expected );
+
+		/** The filters. */
+		add_filter( 'gravityview_render_after_label', function( $after ) {
+			return ', all the other labels are just';
+		} );
+
+		add_filter( 'gravityview/template/field_label', function( $label ) {
+			return $label . ' imitating';
+		} );
+
+		$GLOBALS['GravityView_API_field_label_override'] = true;
+		$expected = GravityView_API::field_label( $field_settings, $entry->as_entry() );
+		unset( $GLOBALS['GravityView_API_field_label_override'] );
+		$this->assertEquals( $expected, GravityView_API::field_label( $field_settings, $entry->as_entry() ) );
+		$this->assertEquals( 'The Real Slim Label, all the other labels are just imitating', $expected );
+
+		remove_all_filters( 'gravityview_render_after_label' );
+		remove_all_filters( 'gravityview/template/field_label' );
+
+		/** A bail condition. */
+		$field_settings = array( 'custom_label' => 'space is the place' );
+		$entry = array();
+
+		$this->assertEquals( 'space is the place', GravityView_API::field_label( $field_settings, $entry, true ) );
+
+		/** The filters. */
+		add_filter( 'gravityview_render_after_label', function( $after ) {
+			return ', okay?';
+		} );
+
+		add_filter( 'gravityview/template/field_label', function( $label ) {
+			return 'Look, '. $label;
+		} );
+
+		$this->assertEquals( 'Look, space is the place, okay?', GravityView_API::field_label( $field_settings, $entry, true ) );
+
+		$this->_reset_context();
+	}
+
+	/**
 	 * @covers \GV\Field::get()
 	 * @covers \GV\GF_Form::get_field()
 	 * @covers \GV\Internal_Source::get_field()
