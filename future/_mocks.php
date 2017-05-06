@@ -291,6 +291,129 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
 	return $output;
 }
 
+/**
+ * Mock out the \GravityView_API::field_label method
+ *
+ * Uses the new \GV\Field::get_label methods
+ *
+ * @see \GravityView_API::field_label
+ * @internal
+ * @since future
+ *
+ * @return string The label of a field in an entry.
+ */
+function GravityView_API_field_label( $form, $field_settings, $entry, $force_show_label = false ) {
+
+	/** A bail condition. */
+	$bail = function( $label, $field_settings, $entry, $force_show_label, $form ) {
+		if ( ! empty( $field_settings['show_label'] ) || $force_show_label ) {
+
+			$label = isset( $field_settings['label'] ) ? $field_settings['label'] : '';
+
+			// Use Gravity Forms label by default, but if a custom label is defined in GV, use it.
+			if ( ! empty( $field_settings['custom_label'] ) ) {
+				$label = \GravityView_API::replace_variables( $field_settings['custom_label'], $form, $entry );
+			}
+
+			/**
+			 * @filter `gravityview_render_after_label` Append content to a field label
+			 * @param[in,out] string $appended_content Content you can add after a label. Empty by default.
+			 * @param[in] array $field GravityView field array
+			 */
+			$label .= apply_filters( 'gravityview_render_after_label', '', $field_settings );
+		}
+
+		/**
+		 * @filter `gravityview/template/field_label` Modify field label output
+		 * @since 1.7
+		 * @param[in,out] string $label Field label HTML
+		 * @param[in] array $field GravityView field array
+		 * @param[in] array $form Gravity Forms form array
+		 * @param[in] array $entry Gravity Forms entry array
+		 */
+		$label = apply_filters( 'gravityview/template/field_label', $label, $field_settings, $form, $entry );
+
+		return $label;
+	};
+
+	$label = '';
+
+	if ( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
+		gravityview()->log->error( 'No entry or field_settings[id] supplied', array( 'data' => array( func_get_args() ) ) );
+		return $bail( $label, $field_settings, $entry, $force_show_label, $form );
+	}
+
+	if ( empty( $entry['id'] ) || ! $gv_entry = \GV\GF_Entry::by_id( $entry['id'] ) ) {
+		gravityview()->log->error( 'Invalid \GV\GF_Entry supplied', array( 'data' => $entry ) );
+		return $bail( $label, $field_settings, $entry, $force_show_label, $form );
+	}
+
+	$entry = $gv_entry;
+
+	/**
+	 * Determine the source backend.
+	 *
+	 * Fields with a numeric ID are Gravity Forms ones.
+	 */
+	$source = is_numeric( $field_settings['id'] ) ? \GV\Source::BACKEND_GRAVITYFORMS : \GV\Source::BACKEND_INTERNAL;;
+
+	/** Initialize the future field. */
+	switch ( $source ):
+		/** The Gravity Forms backend. */
+		case \GV\Source::BACKEND_GRAVITYFORMS:
+			if ( ! $gf_form = \GV\GF_Form::by_id( $entry['form_id'] ) ) {
+				gravityview()->log->error( 'No form Gravity Form found for entry', array( 'data' => $entry ) );
+				return $bail( $label, $field_settings, $entry->as_entry(), $force_show_label, $form );
+			}
+
+			$form = $gf_form;
+
+			if ( ! $field = $form::get_field( $form, $field_settings['id'] ) ) {
+				return $bail( $label, $field_settings, $entry->as_entry(), $force_show_label, $form->form );
+			}
+			break;
+
+		/** Our internal backend. */
+		case \GV\Source::BACKEND_INTERNAL:
+			if ( ! $field = \GV\Internal_Source::get_field( $field_settings['id'] ) ) {
+				return $bail( $label, $field_settings, $entry->as_entry(), $force_show_label, $form->form );
+			}
+			break;
+
+		/** An unidentified backend. */
+		default:
+			gravityview()->log->error( 'Could not determine source for entry. Using empty field.', array( 'data' => array( func_get_args() ) ) );
+			$field = new \GV\Field();
+			break;
+	endswitch;
+
+	/** Add the field settings. */
+	$field->update_configuration( $field_settings );
+
+	if ( ! empty( $field->show_label ) || $force_show_label ) {
+
+		$label = $field->get_label( null, isset( $form ) ? $form : null, $entry );
+
+		/**
+		 * @filter `gravityview_render_after_label` Append content to a field label
+		 * @param[in,out] string $appended_content Content you can add after a label. Empty by default.
+		 * @param[in] array $field GravityView field array
+		 */
+		$label .= apply_filters( 'gravityview_render_after_label', '', $field->as_configuration() );
+
+	}
+
+	/**
+	 * @filter `gravityview/template/field_label` Modify field label output
+	 * @since 1.7
+	 * @param[in,out] string $label Field label HTML
+	 * @param[in] array $field GravityView field array
+	 * @param[in] array $form Gravity Forms form array
+	 * @param[in] array $entry Gravity Forms entry array
+	 */
+	return apply_filters( 'gravityview/template/field_label', $label, $field->as_configuration(), $form ? $form->form : array(), $entry->as_entry() );
+}
+
 
 /** Add some global fix for field capability discrepancies. */
 add_filter( 'gravityview/configuration/fields', function( $fields ) {

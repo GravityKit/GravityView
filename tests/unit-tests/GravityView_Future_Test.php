@@ -1136,6 +1136,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers ::gravityview_get_directory_fields()
 	 * @covers \GVCommon::get_directory_fields()
 	 * @covers \GV\Field::get_value()
+	 * @covers \GV\Field::get_label()
 	 */
 	public function test_field_and_field_collection() {
 		$fields = new \GV\Field_Collection();
@@ -1353,6 +1354,32 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'sentinel-6', $field->get_value( $view, null /** \GV\Source */, $entry ) );
 		remove_all_filters( 'gravityview/field/value' );
 
+		/** How about labels? Uninitialized first. */
+		$field = new \GV\Field();
+
+		$this->assertEmpty( $field->get_label() );
+
+		/** Initialized override. */
+		$field->update_configuration( array( 'custom_label' => 'This is a custom label' ) );
+		$this->assertEquals( 'This is a custom label', $field->get_label() );
+
+		/** Gravity Forms values, please. */
+		$field = \GV\GF_Field::by_id( $view->form, '4' );
+		$this->assertEquals( 'Multi select', $field->get_label( $view, $view->form, $entry ) );
+
+		/** Custom label override and merge tags. */
+		$field->update_configuration( array( 'custom_label' => 'This is {entry_id}' ) );
+		$this->assertEquals( 'This is ' . $entry->ID, $field->get_label( $view, $view->form, $entry ) );
+
+		/** Internal fields. */
+		$field = \GV\Internal_Field::by_id( 'id' );
+		$field->update_configuration( array( 'label' => 'ID' ) );
+		$this->assertEquals( 'ID', $field->get_label() );
+
+		/** Custom label override and merge tags. */
+		$field->update_configuration( array( 'custom_label' => 'This is {entry_id}' ) );
+		$this->assertEquals( 'This is ' . $entry->ID, $field->get_label( $view, $view->form, $entry ) );
+
 		$this->_reset_context();
 	}
 
@@ -1551,7 +1578,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			return 'ha';
 		} );
 
-		$this->assertEquals( 'Hi! Click: <a href="http://ha" rel="noopener noreferrer" target="_blank">Yo, click me now, please</a> now!', $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertEquals( 'Hi! Click: <a href="http://ha" rel="noopener noreferrer" target="_blank">Yo, click me now, please</a> now!', $renderer->render( $field, $view, null, $entry, $request ) );
 
 		remove_all_filters( 'gravityview_field_entry_value_custom_pre_link' );
 		remove_all_filters( 'gravityview_field_entry_value_custom' );
@@ -1776,6 +1803,105 @@ class GVFuture_Test extends GV_UnitTestCase {
 		ob_start(); $template->the_entry( $entries[1], $attributes );
 		$output = ob_get_clean();
 		$this->assertContains( '<tr class="hello-button" data-row="1" onclick="alert(&quot;hello :)&quot;);">', $output );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @covers \GV\Mocks\GravityView_API_field_label()
+	 * @covers \GravityView_API::field_label()
+	 */
+	public function test_field_label_compat() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => 'set all the fields!',
+			'2' => -100,
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		GravityView_View::getInstance()->setForm( $form->form );
+
+		$field_settings = array(
+			'id' => '1',
+			'show_label' => false,
+			'label' => 'what?',
+		);
+
+		$GLOBALS['GravityView_API_field_label_override'] = true;
+		$expected = GravityView_API::field_label( $field_settings, $entry->as_entry() /** no force */ );
+		unset( $GLOBALS['GravityView_API_field_label_override'] );
+		$this->assertEquals( $expected, GravityView_API::field_label( $field_settings, $entry->as_entry() /** no force */ ) );
+		$this->assertEquals( '', $expected );
+
+		$GLOBALS['GravityView_API_field_label_override'] = true;
+		$expected = GravityView_API::field_label( $field_settings, $entry->as_entry(), true );
+		unset( $GLOBALS['GravityView_API_field_label_override'] );
+		$this->assertEquals( $expected, GravityView_API::field_label( $field_settings, $entry->as_entry(), true ) );
+		$this->assertEquals( 'A Text Field', $expected );
+
+		$field_settings = array(
+			'id' => '1',
+			'show_label' => true,
+			'label' => 'what?',
+		);
+
+		$GLOBALS['GravityView_API_field_label_override'] = true;
+		$expected = GravityView_API::field_label( $field_settings, $entry->as_entry() /** no force */ );
+		unset( $GLOBALS['GravityView_API_field_label_override'] );
+		$this->assertEquals( $expected, GravityView_API::field_label( $field_settings, $entry->as_entry() /** no force */ ) );
+		$this->assertEquals( 'A Text Field', $expected );
+
+		$field_settings = array(
+			'id' => '1',
+			'show_label' => true,
+			'custom_label' => 'The Real Slim Label',
+			'label' => 'what?',
+		);
+
+		$GLOBALS['GravityView_API_field_label_override'] = true;
+		$expected = GravityView_API::field_label( $field_settings, $entry->as_entry() );
+		unset( $GLOBALS['GravityView_API_field_label_override'] );
+		$this->assertEquals( $expected, GravityView_API::field_label( $field_settings, $entry->as_entry() ) );
+		$this->assertEquals( 'The Real Slim Label', $expected );
+
+		/** The filters. */
+		add_filter( 'gravityview_render_after_label', function( $after ) {
+			return ', all the other labels are just';
+		} );
+
+		add_filter( 'gravityview/template/field_label', function( $label ) {
+			return $label . ' imitating';
+		} );
+
+		$GLOBALS['GravityView_API_field_label_override'] = true;
+		$expected = GravityView_API::field_label( $field_settings, $entry->as_entry() );
+		unset( $GLOBALS['GravityView_API_field_label_override'] );
+		$this->assertEquals( $expected, GravityView_API::field_label( $field_settings, $entry->as_entry() ) );
+		$this->assertEquals( 'The Real Slim Label, all the other labels are just imitating', $expected );
+
+		remove_all_filters( 'gravityview_render_after_label' );
+		remove_all_filters( 'gravityview/template/field_label' );
+
+		/** A bail condition. */
+		$field_settings = array( 'custom_label' => 'space is the place' );
+		$entry = array();
+
+		$this->assertEquals( 'space is the place', GravityView_API::field_label( $field_settings, $entry, true ) );
+
+		/** The filters. */
+		add_filter( 'gravityview_render_after_label', function( $after ) {
+			return ', okay?';
+		} );
+
+		add_filter( 'gravityview/template/field_label', function( $label ) {
+			return 'Look, '. $label;
+		} );
+
+		$this->assertEquals( 'Look, space is the place, okay?', GravityView_API::field_label( $field_settings, $entry, true ) );
 
 		$this->_reset_context();
 	}
