@@ -1587,6 +1587,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_all_filters( 'gravityview/field/output' );
 	}
 
+	/**
+	 * @group field_html
+	 */
 	public function test_frontend_field_html_address() {
 		$this->_reset_context();
 
@@ -1621,6 +1624,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 	}
 
+	/**
+	 * @group field_html
+	 */
 	public function test_frontend_field_html_checkbox() {
 		$this->_reset_context();
 
@@ -1678,7 +1684,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @group current
+	 * @group field_html
 	 */
 	public function test_frontend_field_html_created_by() {
 		$this->_reset_context();
@@ -1714,6 +1720,62 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field->update_configuration( array( 'name_display' => 'custom_field_1' ) );
 		$this->assertEquals( esc_html( $user->custom_field_1 ), $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 */
+	public function test_frontend_field_html_custom() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'1.1' => '_',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\Internal_Field::by_id( 'custom' );
+		$this->assertEquals( '', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field->update_configuration( array(
+			'content' => 'this is some content <danger>',
+		) );
+		$this->assertEquals( 'this is some content <danger>', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field->update_configuration( array(
+			'wpautop' => true,
+		) );
+		$this->assertEquals( "<p>this is some content <danger></p>\n", $renderer->render( $field, $view, null, $entry, $request ) );
+
+		/** Test filters. */
+		add_shortcode( 'gvtest_filters_c1', function( $atts ) {
+			return 'w00t';
+		} );
+
+		add_filter( 'gravityview/fields/custom/content_before', function( $content ) {
+			return "uh, $content, right? {entry_id} [gvtest_filters_c1]";
+		} );
+		$this->assertEquals( "<p>uh, this is some content <danger>, right? {$entry->ID} w00t</p>\n", $renderer->render( $field, $view, null, $entry, $request ) );
+
+		add_filter( 'gravityview/fields/custom/content_after', function( $content ) {
+			return "{$content}Wrong {entry_id}!";
+		} );
+		$this->assertEquals( "<p>uh, this is some content <danger>, right? {$entry->ID} w00t</p>\nWrong {entry_id}!", $renderer->render( $field, $view, null, $entry, $request ) );
+
+		remove_all_filters( 'gravityview/fields/custom/content_before' );
+		remove_all_filters( 'gravityview/fields/custom/content_after' );
+
+		$this->_reset_context();
 	}
 
 	/**
