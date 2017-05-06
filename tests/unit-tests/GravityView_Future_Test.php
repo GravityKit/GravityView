@@ -1152,6 +1152,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( 'custom', $field->ID );
 		$this->assertEquals( 'Wow!', $field->content );
+		$this->assertTrue( isset( $field->content ) );
+		$this->assertNotEmpty( $field->content );
+		$this->assertEmpty( $field->noexists_here_now_then );
 
 		$field->update_configuration( array( 'update' => 'Now!', 'id' => 4 ) );
 
