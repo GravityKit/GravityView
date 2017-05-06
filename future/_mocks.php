@@ -366,17 +366,15 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 				return $bail( $label, $field_settings, $entry->as_entry(), $force_show_label, $form );
 			}
 
-			$form = $gf_form;
-
-			if ( ! $field = $form::get_field( $form, $field_settings['id'] ) ) {
-				return $bail( $label, $field_settings, $entry->as_entry(), $force_show_label, $form->form );
+			if ( ! $field = $gf_form::get_field( $form, $field_settings['id'] ) ) {
+				return $bail( $label, $field_settings, $entry->as_entry(), $force_show_label, $gf_form->form );
 			}
 			break;
 
 		/** Our internal backend. */
 		case \GV\Source::BACKEND_INTERNAL:
 			if ( ! $field = \GV\Internal_Source::get_field( $field_settings['id'] ) ) {
-				return $bail( $label, $field_settings, $entry->as_entry(), $force_show_label, $form->form );
+				return $bail( $label, $field_settings, $entry->as_entry(), $force_show_label, $form );
 			}
 			break;
 
@@ -392,7 +390,7 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 
 	if ( ! empty( $field->show_label ) || $force_show_label ) {
 
-		$label = $field->get_label( null, isset( $form ) ? $form : null, $entry );
+		$label = $field->get_label( null, isset( $gf_form ) ? $gf_form : null, $entry );
 
 		/**
 		 * @filter `gravityview_render_after_label` Append content to a field label
@@ -411,7 +409,7 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 	 * @param[in] array $form Gravity Forms form array
 	 * @param[in] array $entry Gravity Forms entry array
 	 */
-	return apply_filters( 'gravityview/template/field_label', $label, $field->as_configuration(), $form ? $form->form : array(), $entry->as_entry() );
+	return apply_filters( 'gravityview/template/field_label', $label, $field->as_configuration(), isset( $gf_form ) ? $gf_form->form : $form, $entry->as_entry() );
 }
 
 
