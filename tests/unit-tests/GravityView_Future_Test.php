@@ -1621,9 +1621,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 	}
 
-	/**
-	 * @group current
-	 */
 	public function test_frontend_field_html_checkbox() {
 		$this->_reset_context();
 
@@ -1678,6 +1675,45 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'Much Better', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$this->_reset_context();
+	}
+
+	/**
+	 * @group current
+	 */
+	public function test_frontend_field_html_created_by() {
+		$this->_reset_context();
+
+		$user = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'display_name' => 'John John',
+		) );
+		update_user_meta( $user, 'custom_field_1', '<oh onload="!">okay</oh>' );
+		$user = get_user_by( 'ID', $user );
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'1.1' => 'Whatever',
+			'created_by' => $user->ID,
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\Internal_Field::by_id( 'created_by' );
+		$this->assertEquals( $user->display_name, $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field->update_configuration( array( 'name_display' => 'ID' ) );
+		$this->assertEquals( $user->ID, $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field->update_configuration( array( 'name_display' => 'custom_field_1' ) );
+		$this->assertEquals( esc_html( $user->custom_field_1 ), $renderer->render( $field, $view, null, $entry, $request ) );
 	}
 
 	/**
