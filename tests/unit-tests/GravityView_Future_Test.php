@@ -1587,9 +1587,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_all_filters( 'gravityview/field/output' );
 	}
 
-	/**
-	 * @group current
-	 */
 	public function test_frontend_field_html_address() {
 		$this->_reset_context();
 
@@ -1620,6 +1617,65 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field->update_configuration( array( 'show_map_link' => false ) );
 		$this->assertRegExp( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country$#", $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group current
+	 */
+	public function test_frontend_field_html_checkbox() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'2.1' => 'Much Better',
+			'2.4' => 'yes <careful>',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '2' );
+		/**
+		 * @todo Not really sure what to do about the XSS here,
+		 * as it stems from Gravity Forms, they clean the value up
+		 * before saving it into the db but allow HTML through... */
+		$this->assertEquals( "<ul class='bulleted'><li>Much Better</li><li>yes <careful></li></ul>", $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '2.1' );
+		$this->assertEquals( '<span class="dashicons dashicons-yes"></span>', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		add_filter( 'gravityview_field_tick', function( $tick ) {
+			return '[absofrutely]';
+		} );
+
+		$field = \GV\GF_Field::by_id( $form, '2.4' );
+		$this->assertEquals( '[absofrutely]', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		remove_all_filters( 'gravityview_field_tick' );
+
+		$field = \GV\GF_Field::by_id( $form, '2.2' );
+		$this->assertEquals( '', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		/** Change the display type for partial values. */
+		$field = \GV\GF_Field::by_id( $form, '2.2' );
+		$field->update_configuration( array( 'choice_display' => 'value' ) );
+		$this->assertEquals( '', $renderer->render( $field, $view, $form, $entry, $request ) );
+		$field->update_configuration( array( 'choice_display' => 'label' ) );
+		$this->assertEquals( '', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '2.1' );
+		$field->update_configuration( array( 'choice_display' => 'value' ) );
+		$this->assertEquals( 'Much Better', $renderer->render( $field, $view, $form, $entry, $request ) );
+		$field->update_configuration( array( 'choice_display' => 'label' ) );
+		$this->assertEquals( 'Much Better', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$this->_reset_context();
 	}
