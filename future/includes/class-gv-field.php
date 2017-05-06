@@ -331,4 +331,18 @@ class Field {
 				}
 		endswitch;
 	}
+
+	/**
+	 * Is this set?
+	 *
+	 * @param string $key The key to get.
+	 *
+	 * @return boolean Whether this $key is set or not.
+	 */
+	public function __isset( $key ) {
+		switch( $key ):
+			default:
+				return isset( $this->configuration[ $key ] );
+		endswitch;
+	}
 }
