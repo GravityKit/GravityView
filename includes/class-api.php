@@ -223,7 +223,7 @@ class GravityView_API {
 	/**
 	 * Given an entry and a form field id, calculate the entry value for that field.
 	 *
-	 * @deprecated Use \GV\Field_Template::render()
+	 * @deprecated Use \GV\Field_Template::render() or the more low-level \GV\Field::get_value()
 	 *
 	 * @access public
 	 * @param array $entry

@@ -26,6 +26,7 @@ class View_Table_Template extends View_Template {
 		$fields = $this->view->fields->by_position( 'directory_table-columns' );
 		$form = $this->view->form;
 
+		/** @todo Add class filters from the old code. */
 		foreach ( $fields->by_visible()->all() as $field ) {
 			printf( '<th id="gv-field-%d-%s" class="gv-field-%d-%s"%s><span class="gv-field-label">%s</span></th>',
 				esc_attr( $form->ID ), esc_attr( $field->ID ), esc_attr( $form->ID ), esc_attr( $field->ID ),

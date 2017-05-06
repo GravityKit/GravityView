@@ -137,7 +137,7 @@ abstract class View_Template extends Template {
 
 			/** Shortcuts */
 			'view' => $this->view,
-			'fields' => $this->view->fields->by_visible(),
+			'fields' => $this->view->fields->by_position( 'directory_table-columns' )->by_visible(),
 			'entries' => $this->entries->fetch(),
 
 		), $this ), 'gravityview' );
