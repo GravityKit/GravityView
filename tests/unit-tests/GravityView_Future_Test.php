@@ -1811,6 +1811,63 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @group field_html
 	 */
+	public function test_frontend_field_html_email() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'3' => '_',
+			'4' => 'support@gravityview.co',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		add_shortcode( 'gvtest_filters_e1', function( $atts ) {
+			return 'short';
+		} );
+
+		$field = \GV\GF_Field::by_id( $form, '4' );
+		$this->assertEquals( '<a href="mailto:support@gravityview.co">support@gravityview.co</a>', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'emailsubject' => 'su<script>bject[gvtest_filters_e1]' ) );
+		$this->assertEquals( '<a href="mailto:support@gravityview.co?subject=subjectshort">support@gravityview.co</a>', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'emailbody' => 'su<script>bject[gvtest_filters_e1] space' ) );
+		$this->assertEquals( '<a href="mailto:support@gravityview.co?subject=subjectshort&amp;body=subjectshort%20space">support@gravityview.co</a>', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'emailmailto' => false ) );
+		$this->assertEquals( 'support@gravityview.co', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		add_filter( 'gravityview_email_prevent_encrypt', '__return_true' );
+
+		$field->update_configuration( array( 'emailencrypt' => true ) );
+		$this->assertEquals( 'support@gravityview.co', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		remove_filter( 'gravityview_email_prevent_encrypt', '__return_true' );
+
+		add_filter( 'gravityview/fields/email/prevent_encrypt', '__return_true' );
+
+		$field->update_configuration( array( 'emailencrypt' => true ) );
+		$this->assertEquals( 'support@gravityview.co', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		remove_filter( 'gravityview/fields/email/prevent_encrypt', '__return_true' );
+
+		$this->assertContains( 'Email hidden; Javascript is required.', $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertNotContains( 'support@gravityview.co', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 */
 	public function test_frontend_field_html_custom() {
 		$this->_reset_context();
 
