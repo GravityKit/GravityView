@@ -1730,6 +1730,40 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @group field_html
 	 */
+	public function test_frontend_field_html_date_created() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'1.1' => 'Whatever',
+			'date_created' => '2099-10-11 21:00:12',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\Internal_Field::by_id( 'date_created' );
+		$this->assertEquals( 'October 11, 2099', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field->update_configuration( array( 'date_display' => 'Y-m-d H:i:s' ) );
+		$this->assertEquals( '2099-10-11 21:00:12', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field->update_configuration( array( 'date_display' => '<\d\a\n\g\e\r>Y-m-d H:i:s' ) );
+		/** This is fine, I guess, as the display format is set by the admin. */
+		$this->assertEquals( '<danger>2099-10-11 21:00:12', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 */
 	public function test_frontend_field_html_custom() {
 		$this->_reset_context();
 
