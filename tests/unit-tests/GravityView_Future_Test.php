@@ -1764,6 +1764,53 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @group field_html
 	 */
+	public function test_frontend_field_html_date() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'3' => '2017-05-07',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '3' );
+		$this->assertEquals( '05/07/2017', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'date_display' => 'Y-m-d H:i:s' ) );
+		$this->assertEquals( '2017-05-07 00:00:00', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'date_display' => '<\d\a\n\g\e\r>Y-m-d H:i:s' ) );
+		/** This is fine, I guess, as the display format is set by the admin. */
+		$this->assertEquals( '<danger>2017-05-07 00:00:00', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'3' => date( 'Y-m-d', 0 ), /** The beginning. */
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		/** Test filters. */
+		$this->assertEquals( '', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		add_filter( 'gravityview/fields/date/hide_epoch', '__return_false' );
+		$this->assertEquals( '<danger>1970-01-01 00:00:00', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		remove_filter( 'gravityview/fields/date/hide_epoch', '__return_false' );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 */
 	public function test_frontend_field_html_custom() {
 		$this->_reset_context();
 
