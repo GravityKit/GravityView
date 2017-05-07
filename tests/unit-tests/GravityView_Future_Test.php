@@ -1867,6 +1867,35 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @group field_html
+	 * @group current
+	 */
+	public function test_frontend_field_html_entry_approval() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'3' => '_',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\Internal_Field::by_id( 'entry_approval' );
+		$this->assertEquals( '<a href="#" aria-role="button" aria-live="polite" aria-busy="false" class="gv-approval-toggle gv-approval-unapproved" title="Entry not yet reviewed. Click to approve this entry." data-current-status="3" data-entry-slug="' . $entry->ID . '" data-form-id="' . $form->ID . '"><span class="screen-reader-text">Unapproved</span></a>', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$this->assertEquals( 1, did_action( 'gravityview/field/approval/load_scripts' ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
 	 */
 	public function test_frontend_field_html_custom() {
 		$this->_reset_context();
