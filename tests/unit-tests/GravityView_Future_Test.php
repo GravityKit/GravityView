@@ -1883,7 +1883,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @group field_html
-	 * @group current
 	 */
 	public function test_frontend_field_html_entry_approval() {
 		$this->_reset_context();
@@ -1906,6 +1905,54 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( '<a href="#" aria-role="button" aria-live="polite" aria-busy="false" class="gv-approval-toggle gv-approval-unapproved" title="Entry not yet reviewed. Click to approve this entry." data-current-status="3" data-entry-slug="' . $entry->ID . '" data-form-id="' . $form->ID . '"><span class="screen-reader-text">Unapproved</span></a>', $renderer->render( $field, $view, null, $entry, $request ) );
 
 		$this->assertEquals( 1, did_action( 'gravityview/field/approval/load_scripts' ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 * @group current
+	 */
+	public function test_frontend_field_html_entry_link() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'3' => '_',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		/** Old contexts are still haunting us... */
+		GravityView_View::getInstance()->setViewId( $view->ID );
+
+		$field = \GV\Internal_Field::by_id( 'entry_link' );
+		$expected = sprintf( '<a href="%s">View Details</a>', esc_attr( $entry->get_permalink( $view, $request ) ) );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field->update_configuration( array( 'entry_link_text' => 'Details View' ) );
+		$expected = sprintf( '<a href="%s">Details View</a>', esc_attr( $entry->get_permalink( $view, $request ) ) );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, null, $entry, $request ) );
+
+		add_filter( 'gravityview_entry_link', function( $output ) {
+			return $output . ' &lt; click it!';
+		} );
+
+		$expected = sprintf( '<a href="%s">Details View &lt; click it!</a>', esc_attr( $entry->get_permalink( $view, $request ) ) );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field->update_configuration( array( 'new_window' => true ) );
+		$expected = sprintf( '<a href="%s" rel="noopener noreferrer" target="_blank">Details View &lt; click it!</a>', esc_attr( $entry->get_permalink( $view, $request ) ) );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, null, $entry, $request ) );
+
+		remove_all_filters( 'gravityview_entry_link' );
 
 		$this->_reset_context();
 	}
