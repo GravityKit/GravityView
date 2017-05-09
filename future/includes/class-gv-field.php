@@ -316,6 +316,16 @@ class Field {
 		return apply_filters( 'gravityview/field/value', $value, $this, $view, $source, $entry, $request );
 	}
 
+	public function is_visible() {
+		/**
+		 * @filter `gravityview/field/is_visible` Should this field be visible?
+		 *
+		 * @param boolean $visible Visible or not, defaults to the set field capability requirement if defined.
+		 * @param \GV\Field $field The field we're looking at.
+		 */
+		return apply_filters( 'gravityview/field/is_visible', ( ! $this->cap || \GVCommon::has_cap( $this->cap ) ), $this );
+	}
+
 	/**
 	 * Get one of the extra configuration keys via property accessors.
 	 *
