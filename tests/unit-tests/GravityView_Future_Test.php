@@ -32,6 +32,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	private function _reset_context() {
 		\GravityView_View_Data::$instance = null;
 		\GravityView_frontend::$instance = null;
+		\GravityView_View::$instance = null;
 		gravityview()->request = new \GV\Frontend_Request();
 	}
 
@@ -1911,7 +1912,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @group field_html
-	 * @group current
 	 */
 	public function test_frontend_field_html_entry_link() {
 		$this->_reset_context();
@@ -2007,6 +2007,65 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gravityview/fields/custom/content_before' );
 		remove_all_filters( 'gravityview/fields/custom/content_after' );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 * @group current
+	 */
+	public function test_frontend_field_html_fileupload() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'3' => '_',
+			'4' => '_', /** @todo figure out the bug where we need to supply the previous entry input */
+			'5' => json_encode( array( 'https://one.jpg', 'https://two.mp3' ) ),
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+
+		$field = \GV\GF_Field::by_id( $form, '5' );
+
+		/** Still haunted by good ol' global state :( */
+		GravityView_View::getInstance()->setCurrentField( array(
+			'field' => $field->field,
+			'field_settings' => $field->as_configuration(),
+			'entry' => $entry->as_entry(),
+			'field_value' => $field->get_value( $view, $form, $entry ),
+		) );
+
+		$expected = "<ul class='gv-field-file-uploads gv-field-{$form->ID}-5'>";
+		$expected .= '<li><a href="http://one.jpg" rel="noopener noreferrer" target="_blank"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a></li>';
+		$expected .= '<li><!--[if lt IE 9]><script>document.createElement(\'audio\');</script><![endif]-->' . "\n" . '<audio class="wp-audio-shortcode gv-audio gv-field-id-5" id="audio-0-1" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="http://two.mp3?_=1" /><a href="http://two.mp3">http://two.mp3</a></audio></li>';
+		$expected .= '</ul>';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		/** No fancy rendering, just links, please? */
+
+		$field->update_configuration( array( 'link_to_file' => true ) );
+
+		/** Still haunted by good ol' global state :( */
+		GravityView_View::getInstance()->setCurrentField( array(
+			'field' => $field->field,
+			'field_settings' => $field->as_configuration(),
+			'entry' => $entry->as_entry(),
+			'field_value' => $field->get_value( $view, $form, $entry ),
+		) );
+
+		$expected = "<ul class='gv-field-file-uploads gv-field-{$form->ID}-5'>";
+		$expected .= '<li><a href="http://one.jpg" rel="noopener noreferrer" target="_blank">one.jpg</a></li><li><a href="http://two.mp3" rel="noopener noreferrer" target="_blank">two.mp3</a></li></ul>';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$this->_reset_context();
 	}
