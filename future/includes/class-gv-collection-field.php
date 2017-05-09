@@ -78,7 +78,7 @@ class Field_Collection extends Collection {
 		$fields = new self();
 
 		foreach ( $this->all() as $field ) {
-			if ( ! $field->cap || \GVCommon::has_cap( $field->cap ) ) {
+			if ( $field->is_visible() ) {
 				$fields->add( $field );
 			}
 		}

@@ -1116,6 +1116,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Field_Collection::get()
 	 * @covers \GV\Field_Collection::by_position()
 	 * @covers \GV\Field_Collection::by_visible()
+	 * @covers \GV\Field::is_visible()
 	 * @covers \GV\Field::as_configuration()
 	 * @covers \GV\Field::from_configuration()
 	 * @covers \GV\GF_Field::from_configuration()
@@ -1241,6 +1242,21 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertCount( 2, $visible->all() );
 		$this->assertNotNull( $visible->get( '000c' ) );
 		$this->assertNotNull( $visible->get( '000b' ) );
+
+		add_filter( 'gravityview/field/is_visible', function( $visible, $field ) {
+			if ( $field->UID == '000c' )
+				return false;
+			return $visible;
+		}, 10, 2 );
+
+		$visible = $fields->by_visible();
+		$this->assertCount( 1, $visible->all() );
+		$this->assertNull( $visible->get( '000c' ) );
+		$this->assertNotNull( $visible->get( '000b' ) );
+
+		remove_all_filters( 'gravityview/field/is_visible' );
+
+		$user = wp_get_current_user();
 
 		$user = wp_get_current_user();
 		$user->add_cap( 'manage_options' );
