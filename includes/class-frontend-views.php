@@ -477,7 +477,7 @@ class GravityView_frontend {
 				$view = gravityview()->views->get( $context_view_id );
 				if ( ! $view ) {
 					/** Emulate the weird behavior of \GravityView_View_Data::get_view adding a view which wasn't there to begin with. */
-					gravityview()->views->add( \GV\View::by_id( $context_view_id ) );
+					gravityview()->views->add( gv_shim_GV_View_by_id( $context_view_id ) );
 					$view = gravityview()->views->get( $context_view_id );
 				}
 			} else {
@@ -710,7 +710,7 @@ class GravityView_frontend {
 			$view = gravityview()->views->get( $view_id );
 			if ( ! $view ) {
 				/** Emulate the weird behavior of \GravityView_View_Data::get_view adding a view which wasn't there to begin with. */
-				gravityview()->views->add( \GV\View::by_id( $view_id ) );
+				gravityview()->views->add( gv_shim_GV_View_by_id( $view_id ) );
 				$view = gravityview()->views->get( $view_id );
 
 				if ( ! $view ) {
@@ -800,7 +800,7 @@ class GravityView_frontend {
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			$view_data = $view->as_data();
 			$gravityview_view = new GravityView_View( $view_data );
-			$post_id = intval( $view->settings->get( 'post_id' ) ? : get_the_ID() );
+			$post_id = intval( $view->settings->get( 'post_id' ) ? $view->settings->get( 'post_id' ) : get_the_ID() );
 			$template_id = $view->template ? $view->template->ID : null;
 		} else {
 			/** These constructs are deprecated. Use the new gravityview() wrapper. */
@@ -1246,7 +1246,7 @@ class GravityView_frontend {
 		// fetch entries
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			list( $entries, $paging, $count ) =
-				\GV\Mocks\GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $count );
+				gv_shim_GV_Mocks_GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $count );
 		} else {
 			/** Deprecated, use $form->entries instead. */
 			$entries = gravityview_get_entries( $form_id, $parameters, $count );
@@ -1539,7 +1539,7 @@ class GravityView_frontend {
 	public static function is_single_entry() {
 
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			$var_name = \GV\Entry::get_endpoint_name();
+			$var_name = gv_shim_GV_Entry_get_endpoint_name();
 		} else {
 			/** Deprecated. Use \GV\Entry::get_endpoint_name instead. */
 			$var_name = GravityView_Post_Types::get_entry_var_name();
