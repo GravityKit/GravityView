@@ -1136,7 +1136,7 @@ class GVCommon {
 
 		if ( class_exists( 'GravityView_View_Data' ) ) {
 
-			$defaults = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? \GV\View_Settings::defaults() : GravityView_View_Data::get_default_args();
+			$defaults = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? gv_shim_GV_View_Settings_defaults() : GravityView_View_Data::get_default_args();
 
 			return wp_parse_args( (array)$settings, $defaults );
 

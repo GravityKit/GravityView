@@ -231,7 +231,7 @@ class GravityView_Admin_Views {
 		$gv_tooltips = array();
 
 		// Generate tooltips for View settings
-		$default_args = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? \GV\View_Settings::defaults( true ) : GravityView_View_Data::get_default_args( true );
+		$default_args = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? gv_shim_GV_View_Settings_defaults( true ) : GravityView_View_Data::get_default_args( true );
 
 		foreach ( $default_args as $key => $arg ) {
 
