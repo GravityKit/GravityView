@@ -35,7 +35,7 @@ class GravityView_API {
 			if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && ! empty( $GLOBALS['GravityView_API_field_label_override'] ) ) {
 				/** Allow to fall through for back compatibility testing purposes. */
 			} else {
-				return \GV\Mocks\GravityView_API_field_label( $form, $field, $entry, $force_show_label );
+				return gv_shim_GV_Mocks_GravityView_API_field_label( $form, $field, $entry, $force_show_label );
 			}
 		}
 
@@ -234,7 +234,7 @@ class GravityView_API {
 			if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && ! empty( $GLOBALS['GravityView_API_field_value_override'] ) ) {
 				/** Allow to fall through for back compatibility testing purposes. */
 			} else {
-				return \GV\Mocks\GravityView_API_field_value( $entry, $field_settings, $format );
+				return gv_shim_GV_Mocks_GravityView_API_field_value( $entry, $field_settings, $format );
 			}
 		}
 

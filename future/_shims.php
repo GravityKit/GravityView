@@ -65,3 +65,11 @@ function gv_shim_GV_Mocks_GravityView_View_Data_add_view( $view_id, $atts ) {
 function gv_shim_new_GV_View_Settings() {
 	return new \GV\View_Settings();
 }
+
+function gv_shim_GV_Mocks_GravityView_API_field_label( $form, $field, $entry, $force_show_label ) {
+	return \GV\Mocks\GravityView_API_field_label( $form, $field, $entry, $force_show_label );
+}
+
+function gv_shim_GV_Mocks_GravityView_API_field_value( $entry, $field_settings, $format ) {
+	return \GV\Mocks\GravityView_API_field_value( $entry, $field_settings, $format );
+}
