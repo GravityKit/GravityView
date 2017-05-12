@@ -75,7 +75,7 @@ class GravityView_oEmbed {
 	private function get_handler_regex() {
 
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			$entry_var_name = gv_shim_GV_Entry_get_endpoint_name();
+			$entry_var_name = \GV\Entry::get_endpoint_name();
 		} else {
 			/** Deprecated. Use \GV\Entry::get_endpoint_name instead. */
 			$entry_var_name = GravityView_Post_Types::get_entry_var_name();
@@ -229,12 +229,12 @@ class GravityView_oEmbed {
 			do_action('gravityview_log_debug', 'GravityView_oEmbed[render_handler] Embedding an entry inside a post or page', $matches );
 
 			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && $post = get_post( $post_id ) ) {
-				$views = gv_shim_GV_View_Collection_from_post( $post );
+				$views = \GV\View_Collection::from_post( $post );
 				$views = $views->all();
 				if ( ! empty( $views ) ) {
 					/** maybe_get_view_id has a side-effect that adds retrieved views to the global scope */
 					foreach ( $views as $view ) {
-						if ( gv_shim_GV_View_exists( $view->ID ) && ! gravityview()->views->contains( $view->ID ) ) {
+						if ( \GV\View::exists( $view->ID ) && ! gravityview()->views->contains( $view->ID ) ) {
 							gravityview()->views->add( $view );
 						}
 					}

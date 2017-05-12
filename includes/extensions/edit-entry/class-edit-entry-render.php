@@ -1533,8 +1533,8 @@ class GravityView_Edit_Entry_Render {
 
         // Get all fields for form
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			if ( gv_shim_GV_View_exists( $view_id ) ) {
-				$view = gv_shim_GV_View_by_id( $view_id );
+			if ( \GV\View::exists( $view_id ) ) {
+				$view = \GV\View::by_id( $view_id );
 				$properties = $view->fields->as_configuration();
 			}
 		} else {

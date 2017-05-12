@@ -7,7 +7,6 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 /** Require core and mocks */
 
 /** @define "GRAVITYVIEW_DIR" "../" */
-require GRAVITYVIEW_DIR . 'future/_shims.php';
 require GRAVITYVIEW_DIR . 'future/_mocks.php';
 require GRAVITYVIEW_DIR . 'future/includes/class-gv-core.php';
 
