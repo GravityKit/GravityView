@@ -40,7 +40,7 @@ class GravityView_Post_Types {
 	public static function init_post_types() {
 
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			return gv_shim_GV_View_register_post_type();
+			return \GV\View::register_post_type();
 		}
 
 		/**
@@ -142,7 +142,7 @@ class GravityView_Post_Types {
 	public static function init_rewrite() {
 
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			return gv_shim_GV_Entry_add_rewrite_endpoint();
+			return \GV\Entry::add_rewrite_endpoint();
 		}
 
 		$endpoint = self::get_entry_var_name();
@@ -161,7 +161,7 @@ class GravityView_Post_Types {
 	 */
 	public static function get_entry_var_name() {
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			return gv_shim_GV_Entry_get_endpoint_name();
+			return \GV\Entry::get_endpoint_name();
 		}
 
 		/**

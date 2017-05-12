@@ -35,7 +35,7 @@ class GravityView_API {
 			if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && ! empty( $GLOBALS['GravityView_API_field_label_override'] ) ) {
 				/** Allow to fall through for back compatibility testing purposes. */
 			} else {
-				return gv_shim_GV_Mocks_GravityView_API_field_label( $form, $field, $entry, $force_show_label );
+				return \GV\Mocks\GravityView_API_field_label( $form, $field, $entry, $force_show_label );
 			}
 		}
 
@@ -236,7 +236,7 @@ class GravityView_API {
 			if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && ! empty( $GLOBALS['GravityView_API_field_value_override'] ) ) {
 				/** Allow to fall through for back compatibility testing purposes. */
 			} else {
-				return gv_shim_GV_Mocks_GravityView_API_field_value( $entry, $field_settings, $format );
+				return \GV\Mocks\GravityView_API_field_value( $entry, $field_settings, $format );
 			}
 		}
 
@@ -693,7 +693,7 @@ class GravityView_API {
 		}
 
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			$query_arg_name = gv_shim_GV_Entry_get_endpoint_name();
+			$query_arg_name = \GV\Entry::get_endpoint_name();
 		} else {
 			/** Deprecated. Use \GV\Entry::get_endpoint_name instead. */
 			$query_arg_name = GravityView_Post_Types::get_entry_var_name();
@@ -1022,8 +1022,8 @@ function gravityview_get_current_views() {
 			return array();
 		}
 		return array_combine(
-			array_map( 'gv_shim_view_ID_getter', gravityview()->views->all() ),
-			array_map( 'gv_shim_view_as_data_caller', gravityview()->views->all() )
+			array_map( function ( $view ) { return $view->ID; }, gravityview()->views->all() ),
+			array_map( function ( $view ) { return $view->as_data(); }, gravityview()->views->all() )
 		);
 	}
 	/** \GravityView_View_Data::get_views is deprecated. */
@@ -1049,7 +1049,7 @@ function gravityview_get_current_view_data( $view_id = 0 ) {
 		$view = gravityview()->views->get( $view_id );
 		if ( ! $view ) {
 			/** Emulate the weird behavior of \GravityView_View_Data::get_view adding a view which wasn't there to begin with. */
-			gravityview()->views->add( gv_shim_GV_View_by_id( $view_id ) );
+			gravityview()->views->add( \GV\View::by_id( $view_id ) );
 			$view = gravityview()->views->get( $view_id );
 		}
 		return $view ? $view->as_data() : array();
