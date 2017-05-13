@@ -335,6 +335,58 @@
                 "disableQuantity": false,
                 "displayAllCategories": false,
                 "useRichTextEditor": false
+            },
+            {
+                "type": "list",
+                "id": 7,
+                "label": "List",
+                "adminLabel": "",
+                "isRequired": false,
+                "size": "medium",
+                "errorMessage": "",
+                "inputs": null,
+                "formId": 17,
+                "description": "",
+                "allowsPrepopulate": false,
+                "inputMask": false,
+                "inputMaskValue": "",
+                "inputType": "",
+                "labelPlacement": "",
+                "descriptionPlacement": "",
+                "subLabelPlacement": "",
+                "placeholder": "",
+                "cssClass": "",
+                "inputName": "",
+                "visibility": "visible",
+                "noDuplicates": false,
+                "defaultValue": "",
+                "choices": [
+                    {
+                        "text": "Column 1",
+                        "value": "Column 1",
+                        "isSelected": false,
+                        "price": ""
+                    },
+                    {
+                        "text": "Column 2",
+                        "value": "Column 2",
+                        "isSelected": false,
+                        "price": ""
+                    }
+                ],
+                "conditionalLogic": "",
+                "maxRows": 0,
+                "productField": "",
+                "multipleFiles": false,
+                "maxFiles": "",
+                "calculationFormula": "",
+                "calculationRounding": "",
+                "enableCalculation": "",
+                "disableQuantity": false,
+                "displayAllCategories": false,
+                "useRichTextEditor": false,
+                "displayOnly": "",
+                "enableColumns": true
             }
         ],
         "version": "2.1.3.10",
