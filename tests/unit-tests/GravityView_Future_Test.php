@@ -1705,7 +1705,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @group field_html
-	 * @group current
 	 */
 	public function test_frontend_field_html_name() {
 		$this->_reset_context();
@@ -1746,6 +1745,48 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field = \GV\GF_Field::by_id( $form, '8.5' );
 		$this->assertEquals( '', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 * @group current
+	 */
+	public function test_frontend_field_html_number() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'3' => '_',
+			'4' => '_',
+			'5' => '_',
+			'6' => '_',
+			'7' => '_', /** @todo figure out the bug where we need to supply the previous entry inputs */
+			'8' => '_',
+			'9' => '7982489.23929',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '9' );
+
+		$this->assertEquals( '$7,982,489.24', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'number_format' => true ) );
+
+		$this->assertEquals( '7,982,489.23929', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'decimals' => 3 ) );
+
+		$this->assertEquals( '7,982,489.239', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$this->_reset_context();
 	}
