@@ -1707,6 +1707,52 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @group field_html
 	 * @group current
 	 */
+	public function test_frontend_field_html_name() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'3' => '_',
+			'4' => '_',
+			'5' => '_',
+			'6' => '_',
+			'7' => '_', /** @todo figure out the bug where we need to supply the previous entry inputs */
+			'8.2' => 'Mr.',
+			'8.3' => 'O\'',
+			'8.6' => 'Harry <script>1</script>',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '8' );
+
+		$this->assertEquals( 'Mr. O&#039; Harry &lt;script&gt;1&lt;/script&gt;', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '8.2' );
+		$this->assertEquals( 'Mr.', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '8.3' );
+		$this->assertEquals( 'O&#039;', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '8.6' );
+		$this->assertEquals( 'Harry &lt;script&gt;1&lt;/script&gt;', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '8.5' );
+		$this->assertEquals( '', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 */
 	public function test_frontend_field_html_list() {
 		$this->_reset_context();
 

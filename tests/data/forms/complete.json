@@ -387,6 +387,118 @@
                 "useRichTextEditor": false,
                 "displayOnly": "",
                 "enableColumns": true
+            },
+            {
+                "type": "name",
+                "id": 8,
+                "label": "Name",
+                "adminLabel": "",
+                "isRequired": false,
+                "size": "medium",
+                "errorMessage": "",
+                "nameFormat": "advanced",
+                "inputs": [
+                    {
+                        "id": "8.2",
+                        "label": "Prefix",
+                        "name": "",
+                        "choices": [
+                            {
+                                "text": "Mr.",
+                                "value": "Mr.",
+                                "isSelected": false,
+                                "price": ""
+                            },
+                            {
+                                "text": "Mrs.",
+                                "value": "Mrs.",
+                                "isSelected": false,
+                                "price": ""
+                            },
+                            {
+                                "text": "Miss",
+                                "value": "Miss",
+                                "isSelected": false,
+                                "price": ""
+                            },
+                            {
+                                "text": "Ms.",
+                                "value": "Ms.",
+                                "isSelected": false,
+                                "price": ""
+                            },
+                            {
+                                "text": "Dr.",
+                                "value": "Dr.",
+                                "isSelected": false,
+                                "price": ""
+                            },
+                            {
+                                "text": "Prof.",
+                                "value": "Prof.",
+                                "isSelected": false,
+                                "price": ""
+                            },
+                            {
+                                "text": "Rev.",
+                                "value": "Rev.",
+                                "isSelected": false,
+                                "price": ""
+                            }
+                        ],
+                        "isHidden": false,
+                        "inputType": "radio"
+                    },
+                    {
+                        "id": "8.3",
+                        "label": "First",
+                        "name": ""
+                    },
+                    {
+                        "id": "8.4",
+                        "label": "Middle",
+                        "name": "",
+                        "isHidden": false,
+                        "customLabel": "Patronym"
+                    },
+                    {
+                        "id": "8.6",
+                        "label": "Last",
+                        "name": ""
+                    },
+                    {
+                        "id": "8.8",
+                        "label": "Suffix",
+                        "name": "",
+                        "isHidden": false
+                    }
+                ],
+                "formId": 17,
+                "description": "",
+                "allowsPrepopulate": false,
+                "inputMask": false,
+                "inputMaskValue": "",
+                "inputType": "",
+                "labelPlacement": "",
+                "descriptionPlacement": "",
+                "subLabelPlacement": "",
+                "placeholder": "",
+                "cssClass": "",
+                "inputName": "",
+                "visibility": "visible",
+                "noDuplicates": false,
+                "defaultValue": "",
+                "choices": "",
+                "conditionalLogic": "",
+                "productField": "",
+                "multipleFiles": false,
+                "maxFiles": "",
+                "calculationFormula": "",
+                "calculationRounding": "",
+                "enableCalculation": "",
+                "disableQuantity": false,
+                "displayAllCategories": false,
+                "useRichTextEditor": false
             }
         ],
         "version": "2.1.3.10",
