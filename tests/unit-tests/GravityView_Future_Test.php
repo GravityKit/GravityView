@@ -2252,7 +2252,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 						'id' => 1, 'label' => 'This is field one',
 					),
 					array(
-						'id' => 2, 'label' => 'This is field two',
+						'id' => 2, 'custom_label' => 'This is field two',
 					),
 				),
 			);
@@ -2263,7 +2263,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$template = new \GV\View_Table_Template( $view, $view->form->entries, new \GV\Frontend_Request() );
 
 		/** Test the column ouput. */
-		$expected = sprintf( '<th id="gv-field-%1$d-1" class="gv-field-%1$d-1"><span class="gv-field-label">This is field one</span></th><th id="gv-field-%1$d-2" class="gv-field-%1$d-2"><span class="gv-field-label">This is field two</span></th>', $view->form->ID );
+		$expected = sprintf( '<th id="gv-field-%1$d-1" class="gv-field-%1$d-1"><span class="gv-field-label">A Text Field</span></th><th id="gv-field-%1$d-2" class="gv-field-%1$d-2"><span class="gv-field-label">This is field two</span></th>', $view->form->ID );
 
 		ob_start(); $template->the_columns();
 		$this->assertEquals( $expected, ob_get_clean() );
