@@ -675,6 +675,64 @@
                 "disableQuantity": false,
                 "displayAllCategories": false,
                 "useRichTextEditor": false
+            },
+            {
+                "type": "select",
+                "id": 13,
+                "label": "Select",
+                "adminLabel": "",
+                "isRequired": false,
+                "size": "medium",
+                "errorMessage": "",
+                "inputs": null,
+                "choices": [
+                    {
+                        "text": "Male",
+                        "value": "m",
+                        "isSelected": false,
+                        "price": ""
+                    },
+                    {
+                        "text": "Female",
+                        "value": "f",
+                        "isSelected": false,
+                        "price": ""
+                    },
+                    {
+                        "text": "Prefer Not to Answer",
+                        "value": "-",
+                        "isSelected": false,
+                        "price": ""
+                    }
+                ],
+                "formId": 17,
+                "description": "",
+                "allowsPrepopulate": false,
+                "inputMask": false,
+                "inputMaskValue": "",
+                "inputType": "",
+                "labelPlacement": "",
+                "descriptionPlacement": "",
+                "subLabelPlacement": "",
+                "placeholder": "",
+                "cssClass": "",
+                "inputName": "",
+                "visibility": "visible",
+                "noDuplicates": false,
+                "defaultValue": "",
+                "conditionalLogic": "",
+                "productField": "",
+                "enablePrice": "",
+                "multipleFiles": false,
+                "maxFiles": "",
+                "calculationFormula": "",
+                "calculationRounding": "",
+                "enableCalculation": "",
+                "disableQuantity": false,
+                "displayAllCategories": false,
+                "useRichTextEditor": false,
+                "displayOnly": "",
+                "enableChoiceValue": true
             }
         ],
         "version": "2.1.3.10",

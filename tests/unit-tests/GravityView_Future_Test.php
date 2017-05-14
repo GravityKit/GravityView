@@ -1977,6 +1977,54 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @group field_html
+	 * @group current
+	 */
+	public function test_frontend_field_html_select() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'3' => '_',
+			'4' => '_',
+			'5' => '_',
+			'6' => '_', /** @todo figure out the bug where we need to supply the previous entry inputs */
+			'7' => '_',
+			'8' => '_',
+			'9' => '_',
+			'10' => '_',
+			'11' => '_',
+			'12' => '_',
+			'13' => 'f',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '13' );
+
+		$this->assertEquals( 'f', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'choice_display' => 'label' ) );
+
+		$this->assertEquals( 'Female', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		add_filter( 'gravityview/fields/select/output_label', '__return_false' );
+
+		$this->assertEquals( 'f', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		remove_all_filters( 'gravityview/fields/select/output_label' );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
 	 */
 	public function test_frontend_field_html_created_by() {
 		$this->_reset_context();
@@ -2374,7 +2422,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @group field_html
-	 * @group current
 	 */
 	public function test_frontend_field_html_section() {
 		$this->_reset_context();
