@@ -1941,7 +1941,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @group field_html
-	 * @group current
 	 */
 	public function test_frontend_field_html_radio() {
 		$this->_reset_context();
@@ -2368,6 +2367,38 @@ class GVFuture_Test extends GV_UnitTestCase {
 		} );
 
 		$expected = "This is some content :) {$entry->ID} [gvtest_shortcode_h1]";
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 * @group current
+	 */
+	public function test_frontend_field_html_section() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '12' );
+
+		add_shortcode( 'gvtest_shortcode_s1', function( $atts ) {
+			return 'this should not work...';
+		} );
+
+		$expected = "Let's see what is up :) {$entry->ID} [gvtest_shortcode_s1]";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$this->_reset_context();
