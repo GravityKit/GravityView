@@ -592,19 +592,19 @@
                 "choices": [
                     {
                         "text": "First Choice",
-                        "value": "First Choice",
+                        "value": "1",
                         "isSelected": false,
                         "price": ""
                     },
                     {
                         "text": "Second Choice",
-                        "value": "Second Choice",
+                        "value": "2",
                         "isSelected": false,
                         "price": ""
                     },
                     {
                         "text": "Third Choice",
-                        "value": "Third Choice",
+                        "value": "3",
                         "isSelected": false,
                         "price": ""
                     }
@@ -637,7 +637,7 @@
                 "displayAllCategories": false,
                 "useRichTextEditor": false,
                 "displayOnly": "",
-                "enableChoiceValue": false
+                "enableChoiceValue": true
             },
             {
                 "type": "section",

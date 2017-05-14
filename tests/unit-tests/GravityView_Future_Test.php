@@ -1956,7 +1956,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'8' => '_',
 			'9' => '_',
 			'10' => '_',
-			'11' => 'oh no <b>one</b>',
+			'11' => '1',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
@@ -1969,15 +1969,19 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field = \GV\GF_Field::by_id( $form, '11' );
 
-		/** Gravity Forms allows some tags, not sure why, we'll obey. */
-		$this->assertEquals( 'oh no <b>one</b>', $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertEquals( '1', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'choice_display' => 'label' ) );
+
+		$this->assertEquals( 'First Choice', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		/** @todo There seems to be partial choice support, but not exposed to the UI. Tried testing partial inputs, nada. */
 
 		$this->_reset_context();
 	}
 
 	/**
 	 * @group field_html
-	 * @group current
 	 */
 	public function test_frontend_field_html_select() {
 		$this->_reset_context();
