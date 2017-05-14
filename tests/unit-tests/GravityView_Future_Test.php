@@ -1751,7 +1751,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @group field_html
-	 * @group current
 	 */
 	public function test_frontend_field_html_number() {
 		$this->_reset_context();
@@ -1787,6 +1786,75 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( 'decimals' => 3 ) );
 
 		$this->assertEquals( '7,982,489.239', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 * @group current
+	 */
+	public function test_frontend_field_html_other_entries() {
+		$this->_reset_context();
+
+		$user_1 = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'display_name' => 'John John',
+		) );
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $user_1,
+			'status' => 'active',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\Internal_Field::by_id( 'other_entries' );
+
+		$this->assertEquals( "<div class=\"gv-no-results\"><p>No entries match your request.</p>\n</div>", $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$entry_anon = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => 0,
+			'status' => 'active',
+		) );
+		$entry_anon = \GV\GF_Entry::by_id( $entry_anon['id'] );
+
+		$this->assertEmpty( $renderer->render( $field, $view, null, $entry_anon, $request ) );
+
+		$field->update_configuration( array( 'no_entries_hide' => true ) );
+		$this->assertEmpty( $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$entry_2 = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $user_1,
+			'status' => 'active',
+		) );
+		$entry_2 = \GV\GF_Entry::by_id( $entry_2['id'] );
+
+		$entry_3 = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $user_1,
+			'status' => 'active',
+		) );
+		$entry_3 = \GV\GF_Entry::by_id( $entry_3['id'] );
+
+		$GLOBALS['post'] = get_post( $view->ID );
+
+		$field->update_configuration( array( 'link_format' => 'Entry #{entry_id}', 'page_size' => 1, 'after_link' => 'wut' ) );
+		$expected = sprintf( '<ul><li><a href="%s">Entry #%d</a><div>wut</div></li></ul>', esc_attr( $entry_3->get_permalink( $view, $request ) ), $entry_3->ID );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, null, $entry, $request ) );
+
+		unset( $GLOBALS['post'] );
 
 		$this->_reset_context();
 	}
