@@ -1792,7 +1792,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @group field_html
-	 * @group current
 	 */
 	public function test_frontend_field_html_other_entries() {
 		$this->_reset_context();
@@ -1898,6 +1897,81 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field = \GV\GF_Field::by_id( $form, '7.1' );
 		$this->assertEquals( "<ul class='bulleted'><li>two</li><li>four</li></ul>", $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 */
+	public function test_frontend_field_html_phone() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'3' => '_',
+			'4' => '_',
+			'5' => '_',
+			'6' => '_', /** @todo figure out the bug where we need to supply the previous entry inputs */
+			'7' => '_',
+			'8' => '_',
+			'9' => '_',
+			'10' => '93 43A99-392<script>1</script>',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '10' );
+
+		$this->assertEquals( '93 43A99-392&lt;script&gt;1&lt;/script&gt;', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'link_phone' => true ) );
+
+		$this->assertEquals( '<a href="tel:93%2043A99-392&lt;script&gt;1&lt;/script&gt;">93 43A99-392&lt;script&gt;1&lt;/script&gt;</a>', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 * @group current
+	 */
+	public function test_frontend_field_html_radio() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'3' => '_',
+			'4' => '_',
+			'5' => '_',
+			'6' => '_', /** @todo figure out the bug where we need to supply the previous entry inputs */
+			'7' => '_',
+			'8' => '_',
+			'9' => '_',
+			'10' => '_',
+			'11' => 'oh no <b>one</b>',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '11' );
+
+		/** Gravity Forms allows some tags, not sure why, we'll obey. */
+		$this->assertEquals( 'oh no <b>one</b>', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$this->_reset_context();
 	}
