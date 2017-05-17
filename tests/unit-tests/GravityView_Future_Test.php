@@ -2066,6 +2066,66 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @group field_html
 	 */
+	public function test_frontend_field_html_textarea() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'3' => '_',
+			'4' => '_',
+			'5' => '_',
+			'6' => '_', /** @todo figure out the bug where we need to supply the previous entry inputs */
+			'7' => '_',
+			'8' => '_',
+			'9' => '_',
+			'10' => '_',
+			'11' => '_',
+			'12' => '_',
+			'13' => '_',
+			'14' => '_',
+			'15' => '_',
+			'16' => 'okay <so> {entry_id} what happens [gvtest_shortcode_t1] here? <script>huh()</script> http://gravityview.co/',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '16' );
+
+		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; http://gravityview.co/</p>' . "\n";
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'trim_words' => 4 ) );
+		/** This is a bad test, no entry link can be determined and the space is trimmed from the &hellip; */
+		$this->assertEquals( '<p>okay &lt;so&gt; {entry_id} what&hellip;</p>' . "\n", $renderer->render( $field, $view, $form, $entry, $request ) );
+		GravityView_View::getInstance()->setViewId( $view->ID );
+		$expected = sprintf( '<p>okay &lt;so&gt; {entry_id} what<a href="%s"> &hellip;</a></p>' . "\n", esc_attr( $entry->get_permalink( $view, $request ) ) );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'new_window' => true ) );
+		$expected = sprintf( '<p>okay &lt;so&gt; {entry_id} what<a href="%s" target="_blank"> &hellip;</a></p>' . "\n", esc_attr( $entry->get_permalink( $view, $request ) ) );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'trim_words' => false, 'make_clickable' => true, 'new_window' => false ) );
+		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; <a href="http://gravityview.co/" rel="nofollow">http://gravityview.co/</a></p>' . "\n";
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'new_window' => true ) );
+		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; <a href="http://gravityview.co/" rel="nofollow" target="_blank">http://gravityview.co/</a></p>' . "\n";
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 */
 	public function test_frontend_field_html_created_by() {
 		$this->_reset_context();
 

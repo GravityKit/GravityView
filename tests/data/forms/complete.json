@@ -733,6 +733,203 @@
                 "useRichTextEditor": false,
                 "displayOnly": "",
                 "enableChoiceValue": true
+            },
+            {
+                "type": "signature",
+                "id": 14,
+                "label": "Signature",
+                "adminLabel": "",
+                "isRequired": false,
+                "size": "medium",
+                "errorMessage": "",
+                "inputs": null,
+                "formId": 17,
+                "description": "",
+                "allowsPrepopulate": false,
+                "inputMask": false,
+                "inputMaskValue": "",
+                "inputType": "",
+                "labelPlacement": "",
+                "descriptionPlacement": "",
+                "subLabelPlacement": "",
+                "placeholder": "",
+                "cssClass": "",
+                "inputName": "",
+                "visibility": "visible",
+                "noDuplicates": false,
+                "defaultValue": "",
+                "choices": "",
+                "conditionalLogic": "",
+                "productField": "",
+                "penSize": "",
+                "boxWidth": "",
+                "borderWidth": "",
+                "multipleFiles": false,
+                "maxFiles": "",
+                "calculationFormula": "",
+                "calculationRounding": "",
+                "enableCalculation": "",
+                "disableQuantity": false,
+                "displayAllCategories": false,
+                "useRichTextEditor": false,
+                "displayOnly": ""
+            },
+            {
+                "type": "survey",
+                "id": 15,
+                "label": "Survey Field",
+                "adminLabel": "",
+                "isRequired": false,
+                "size": "medium",
+                "errorMessage": "",
+                "inputs": [
+                    {
+                        "id": "15.1",
+                        "label": "First row",
+                        "name": "glikertrow2bae8410"
+                    },
+                    {
+                        "id": "15.2",
+                        "label": "Second row",
+                        "name": "glikertrow3b378749"
+                    },
+                    {
+                        "id": "15.3",
+                        "label": "Third row",
+                        "name": "glikertrow8a31395c"
+                    },
+                    {
+                        "id": "15.4",
+                        "label": "Fourth row",
+                        "name": "glikertrowf83e0f38"
+                    },
+                    {
+                        "id": "15.5",
+                        "label": "Fifth row",
+                        "name": "glikertrow4fa918a8"
+                    }
+                ],
+                "enableChoiceValue": true,
+                "enablePrice": false,
+                "gsurveyLikertEnableMultipleRows": true,
+                "gsurveyLikertEnableScoring": true,
+                "choices": [
+                    {
+                        "text": "Strongly disagree",
+                        "value": "glikertcol1536b0949e",
+                        "isSelected": false,
+                        "score": 1
+                    },
+                    {
+                        "text": "Disagree",
+                        "value": "glikertcol153684c7c8",
+                        "isSelected": false,
+                        "score": 2
+                    },
+                    {
+                        "text": "Neutral",
+                        "value": "glikertcol15d14d5f5b",
+                        "isSelected": false,
+                        "score": 3
+                    },
+                    {
+                        "text": "Agree",
+                        "value": "glikertcol1525c9722c",
+                        "isSelected": false,
+                        "score": 4
+                    },
+                    {
+                        "text": "Strongly agree",
+                        "value": "glikertcol150283f4d6",
+                        "isSelected": false,
+                        "score": 5
+                    }
+                ],
+                "gsurveyLikertRows": [
+                    {
+                        "text": "First row",
+                        "value": "glikertrow2bae8410"
+                    },
+                    {
+                        "text": "Second row",
+                        "value": "glikertrow3b378749"
+                    },
+                    {
+                        "text": "Third row",
+                        "value": "glikertrow8a31395c"
+                    },
+                    {
+                        "text": "Fourth row",
+                        "value": "glikertrowf83e0f38"
+                    },
+                    {
+                        "text": "Fifth row",
+                        "value": "glikertrow4fa918a8"
+                    }
+                ],
+                "inputType": "likert",
+                "formId": 17,
+                "description": "",
+                "allowsPrepopulate": false,
+                "inputMask": false,
+                "inputMaskValue": "",
+                "labelPlacement": "",
+                "descriptionPlacement": "",
+                "subLabelPlacement": "",
+                "placeholder": "",
+                "cssClass": "",
+                "inputName": "",
+                "visibility": "visible",
+                "noDuplicates": false,
+                "defaultValue": "",
+                "conditionalLogic": "",
+                "productField": "",
+                "multipleFiles": false,
+                "maxFiles": "",
+                "calculationFormula": "",
+                "calculationRounding": "",
+                "enableCalculation": "",
+                "disableQuantity": false,
+                "displayAllCategories": false,
+                "useRichTextEditor": false,
+                "displayOnly": ""
+            },
+            {
+                "type": "textarea",
+                "id": 16,
+                "label": "Textarea",
+                "adminLabel": "",
+                "isRequired": false,
+                "size": "medium",
+                "errorMessage": "",
+                "inputs": null,
+                "formId": 17,
+                "description": "",
+                "allowsPrepopulate": false,
+                "inputMask": false,
+                "inputMaskValue": "",
+                "inputType": "",
+                "labelPlacement": "",
+                "descriptionPlacement": "",
+                "subLabelPlacement": "",
+                "placeholder": "",
+                "cssClass": "",
+                "inputName": "",
+                "visibility": "visible",
+                "noDuplicates": false,
+                "defaultValue": "",
+                "choices": "",
+                "conditionalLogic": "",
+                "productField": "",
+                "form_id": "",
+                "useRichTextEditor": false,
+                "multipleFiles": false,
+                "maxFiles": "",
+                "calculationFormula": "",
+                "calculationRounding": "",
+                "enableCalculation": "",
+                "disableQuantity": false,
+                "displayAllCategories": false
             }
         ],
         "version": "2.1.3.10",
