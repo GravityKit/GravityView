@@ -1861,6 +1861,42 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @group field_html
 	 */
+	public function test_frontend_field_html_source_url() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'source_url' => 'http://gravity<view>.tests/?do<danger>&out=d<anger>',
+			'status' => 'active',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\Internal_Field::by_id( 'source_url' );
+
+		$this->assertEquals( 'http://gravityview.tests/?dodanger&out=danger', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field->update_configuration( array( 'link_to_source' => true ) );
+		$this->assertEquals( '<a href="http://gravityview.tests/?dodanger&amp;out=danger">http://gravity&lt;view&gt;.tests/?do&lt;danger&gt;&amp;out=d&lt;anger&gt;</a>', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field->update_configuration( array( 'source_link_text' => '<danger> click' ) );
+
+		/** The danger here is fine, since we support HTML in there. */
+		$this->assertEquals( '<a href="http://gravityview.tests/?dodanger&amp;out=danger"><danger> click</a>', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 */
 	public function test_frontend_field_html_list() {
 		$this->_reset_context();
 
