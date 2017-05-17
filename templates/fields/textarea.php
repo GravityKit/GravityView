@@ -12,6 +12,9 @@ $gravityview_view = GravityView_View::getInstance();
 
 extract( $gravityview_view->getCurrentField() );
 
+/** Escape! */
+$value = esc_html( $value );
+
 if( !empty( $field_settings['trim_words'] ) ) {
 
 	/**
