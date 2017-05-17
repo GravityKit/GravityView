@@ -494,6 +494,10 @@ class GravityView_API {
 		// @since 1.3
 		$link = wp_cache_get( 'gv_directory_link_'.$post_id );
 
+		if( $post_id === get_option( 'page_on_front' ) ) {
+			$link = home_url();
+		}
+		
 		if( empty( $link ) ) {
 
 			$link = get_permalink( $post_id );
