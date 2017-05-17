@@ -1886,10 +1886,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( 'link_to_source' => true ) );
 		$this->assertEquals( '<a href="http://gravityview.tests/?dodanger&amp;out=danger">http://gravity&lt;view&gt;.tests/?do&lt;danger&gt;&amp;out=d&lt;anger&gt;</a>', $renderer->render( $field, $view, null, $entry, $request ) );
 
-		$field->update_configuration( array( 'source_link_text' => '<danger> click' ) );
+		$field->update_configuration( array( 'source_link_text' => '<danger> click {entry_id}' ) );
 
 		/** The danger here is fine, since we support HTML in there. */
-		$this->assertEquals( '<a href="http://gravityview.tests/?dodanger&amp;out=danger"><danger> click</a>', $renderer->render( $field, $view, null, $entry, $request ) );
+		$this->assertEquals( '<a href="http://gravityview.tests/?dodanger&amp;out=danger"><danger> click ' . $entry->ID . '</a>', $renderer->render( $field, $view, null, $entry, $request ) );
 
 		$this->_reset_context();
 	}
