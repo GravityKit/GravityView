@@ -79,6 +79,8 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 	 */
 	$criteria = \GVCommon::calculate_get_entries_criteria( $parameters, $form->ID );
 
+	do_action( 'gravityview_log_debug', '[gravityview_get_entries] Final Parameters', $criteria );
+
 	/** ...and all the (now deprectated) filters that usually follow `gravityview_get_entries` */
 
 	/**
