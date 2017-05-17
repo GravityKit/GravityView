@@ -30,7 +30,7 @@ if( !empty( $field_settings['link_to_source'] ) ) {
 } else {
 
 	// Otherwise, it's just the URL
-	$output = $value;
+	$output = esc_url_raw( $value );
 
 }
 
