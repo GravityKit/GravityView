@@ -128,6 +128,8 @@ class GravityView_Edit_Entry_Render {
         // Add fields expected by GFFormDisplay::validate()
         add_filter( 'gform_pre_validation', array( $this, 'gform_pre_validation') );
 
+		// Fix multiselect value for GF 2.2
+		add_filter( 'gravityview/edit_entry/field_value_multiselect', array( $this, 'fix_multiselect_value_serialization' ), 10, 3 );
     }
 
     /**
@@ -1982,6 +1984,20 @@ class GravityView_Edit_Entry_Render {
 
         return $valid;
     }
+
+
+	/**
+	 * Multiselect in GF 2.2 became a json_encoded value. Fix it.
+	 *
+	 * As a hack for now we'll implode it back.
+	 */
+	public function fix_multiselect_value_serialization( $field_value, $field, $_this ) {
+		$maybe_json = @json_decode( $field_value, true );
+		if ( $maybe_json ) {
+			return implode( ',', $maybe_json );
+		}
+		return $field_value;
+	}
 
 
 
