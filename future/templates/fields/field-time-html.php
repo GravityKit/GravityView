@@ -1,0 +1,32 @@
+<?php
+/**
+ * The default checkbox field output template.
+ *
+ * @since future
+ */
+$field_id = $gravityview->field->ID;
+$field = $gravityview->field->field;
+$value = $gravityview->value;
+$form = $gravityview->view->form->form;
+$display_value = $gravityview->display_value;
+$entry = $gravityview->entry->as_entry();
+$field_settings = $gravityview->field->as_configuration();
+
+$output = '';
+
+if ( '' !== $value ) {
+
+	$format = $gravityview->field->date_display;
+
+	if ( empty( $format ) ) {
+
+		$field->sanitize_settings();
+
+		$format = GravityView_Field_Time::date_format( $field->timeFormat, $field_id );
+	}
+
+	// If there is a custom PHP date format passed via the date_display setting, use PHP's date format
+	$output = date_i18n( $format, strtotime( $value ) );
+}
+
+echo $output;

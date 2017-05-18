@@ -2126,6 +2126,61 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @group field_html
 	 */
+	public function test_frontend_field_html_time() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'3' => '_',
+			'4' => '_',
+			'5' => '_',
+			'6' => '_', /** @todo figure out the bug where we need to supply the previous entry inputs */
+			'7' => '_',
+			'8' => '_',
+			'9' => '_',
+			'10' => '_',
+			'11' => '_',
+			'12' => '_',
+			'13' => '_',
+			'14' => '_',
+			'15' => '_',
+			'16' => '_',
+			'17' => '3:12 pm',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '17' );
+		$this->assertEquals( '03:12 PM', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'date_display' => 'H:i:s' ) );
+		$this->assertEquals( '15:12:00', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '17.1' );
+		$this->assertEquals( '03', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '17.2' );
+		$this->assertEquals( '12', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '17.3' );
+		$this->assertEquals( 'PM', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'date_display' => 'a' ) );
+		$this->assertEquals( 'pm', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 */
 	public function test_frontend_field_html_created_by() {
 		$this->_reset_context();
 
