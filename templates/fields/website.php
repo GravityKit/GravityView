@@ -30,5 +30,5 @@ if( !empty( $value ) && function_exists( 'gravityview_format_link' ) ) {
 	echo gravityview_get_link( $value, $anchor_text, $attributes );
 
 } else {
-	echo $display_value;
+	echo esc_html( esc_url_raw( $value ) );
 }
