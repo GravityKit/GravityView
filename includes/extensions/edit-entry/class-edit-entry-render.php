@@ -1992,10 +1992,16 @@ class GravityView_Edit_Entry_Render {
 	 * As a hack for now we'll implode it back.
 	 */
 	public function fix_multiselect_value_serialization( $field_value, $field, $_this ) {
+		if ( empty ( $field->storageType ) || $field->storageType != 'json' ) {
+			return $field_value;
+		}
+
 		$maybe_json = @json_decode( $field_value, true );
+
 		if ( $maybe_json ) {
 			return implode( ',', $maybe_json );
 		}
+
 		return $field_value;
 	}
 
