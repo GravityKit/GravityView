@@ -34,6 +34,35 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @since 1.21.4
+	 * @covers GravityView_Merge_Tags::replace_current_post()
+	 * @todo Needs test for archive page
+	 */
+	function test_replace_current_post() {
+		global $post;
+
+		$user  = $this->factory->user->create_and_get();
+		$post  = $this->factory->post->create_and_get();
+		$form  = $this->factory->form->create_and_get();
+		$entry = $this->factory->entry->create_and_get( array(
+			'created_by' => $user->ID,
+			'form_id'    => $form['id'],
+		) );
+
+		$tests = array(
+			'{current_post:ID}'         => $post->ID,
+			'{current_post:post_title}' => $post->post_title,
+			'{current_post:permalink}'  => get_permalink( $post ),
+		);
+
+		foreach ( $tests as $merge_tag => $expected ) {
+			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ), 'Merge tag does not match: ' . $merge_tag );
+		}
+
+		wp_reset_postdata();
+	}
+
+	/**
 	 * @since 1.17
 	 * @covers GravityView_Merge_Tags::process_modifiers()
 	 */
