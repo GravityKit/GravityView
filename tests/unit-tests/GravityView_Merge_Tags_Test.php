@@ -42,7 +42,9 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		global $post;
 
 		$user  = $this->factory->user->create_and_get();
-		$post  = $this->factory->post->create_and_get();
+		$post  = $this->factory->post->create_and_get(array(
+			'post_title' => 'HTML sanitize me! &<>'
+		));
 		$form  = $this->factory->form->create_and_get();
 		$entry = $this->factory->entry->create_and_get( array(
 			'created_by' => $user->ID,
@@ -56,7 +58,26 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		);
 
 		foreach ( $tests as $merge_tag => $expected ) {
-			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ), 'Merge tag does not match: ' . $merge_tag );
+			$expected = esc_html( $expected ); // By default, esc_html() is enabled
+			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry, false, true ), 'Merge tag does not match: ' . $merge_tag );
+		}
+
+		// URL encoded
+		foreach ( $tests as $merge_tag => $expected ) {
+			$expected = urlencode( $expected );
+			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry, true, false ), 'Merge tag does not match: ' . $merge_tag );
+		}
+
+		// HTML sanitization AND URL encoded
+		foreach ( $tests as $merge_tag => $expected ) {
+			$expected = esc_html( $expected );
+			$expected = urlencode( $expected );
+			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry, true, true ), 'Merge tag does not match: ' . $merge_tag );
+		}
+
+		// HTML sanitization turned off
+		foreach ( $tests as $merge_tag => $expected ) {
+			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry, false, false ), 'Merge tag does not match: ' . $merge_tag );
 		}
 
 		wp_reset_postdata();
