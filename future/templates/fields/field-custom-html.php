@@ -57,7 +57,6 @@ if ( apply_filters( 'gravityview/fields/custom/decode_shortcodes', false, $conte
 // Add paragraphs?
 if ( ! empty( $gravityview->field->wpautop ) ) {
 	$content = wpautop( $content );
-	logit( $content );
 }
 
 /**
