@@ -19,7 +19,7 @@ class Frontend_Request extends Request {
 	 */
 	public function __construct() {
 		// add_action( 'wp', array( $this, 'process' ), 10 );
-		add_action( 'the_content', array( $this, 'output' ), 11 );
+		add_filter( 'the_content', array( $this, 'output' ), 11 );
 		parent::__construct();
 	}
 
