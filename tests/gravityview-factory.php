@@ -191,7 +191,11 @@ class GV_UnitTest_Factory_For_Entry extends GF_UnitTest_Factory_For_Entry {
 
 	function create_object( $args ) {
 
-		$args = wp_parse_args( $args, $this->default_generation_definitions );
+		foreach ( $this->default_generation_definitions as $key => $value ) {
+			if ( ! isset( $args[ $key ] ) ) {
+				$args[ $key ] = $this->default_generation_definitions[ $key ];
+			}
+		}
 
 		if( !isset( $args['form_id'] ) ) {
 			$form = $this->factory->form->create();
