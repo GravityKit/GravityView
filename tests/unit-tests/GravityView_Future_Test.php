@@ -2662,6 +2662,251 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @group field_html
+	 */
+	public function test_frontend_field_html_post() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$cat_1 = wp_create_category( 'Category 1 <script>2</script>' );
+		$cat_2 = wp_create_category( 'Category 6 [gvtest_shortcode_p1] <b>5</b>' );
+
+		foreach ( $form['fields'] as &$field ) {
+			/** The post categories is a multi-select thing that needs inputs set. */
+			if ( $field->type == 'post_category' ) {
+				$field = GFCommon::add_categories_as_choices( $field, '' );
+			}
+		}
+
+		/** Hack in a jpeg. */
+		$filename = tempnam( '/tmp/', 'gvtest_' ). '.jpg';
+		$image = "$filename|:|<script>TITLE</script> huh, <b>wut</b>|:|cap<script>tion</script>|:|de's<script>tion</script>";
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'19' => 'What is this? <script>some sort of XSS</script>? :) [gvtest_shortcode_p1]',
+			'20' => 'This is some content <script>1</script> <b>who</b> [gvtest_shortcode_p1]',
+			'21' => 'This is an excerpt <script>ooh();</script> <b>okay</b> [gvtest_shortcode_p1]',
+			'22' => 'tag 1, oh no, <script>1</script>, <b>hi</b>, [gvtest_shortcode_p1]',
+			'23.1' => "Be<script>f</script>ore category:$cat_1",
+			'23.2' => "Categorized <b>4</b> [gvtest_shortcode_p1]:$cat_2",
+			'24' => $image,
+			'25' => 'wu<script>t</script> <b>how can this be true?</b> [gvtest_shortcode_p1]',
+		) );
+
+		/** From http://web.archive.org/web/20111224041840/http://www.techsupportteam.org/forum/digital-imaging-photography/1892-worlds-smallest-valid-jpeg.html */
+		file_put_contents( $filename, implode( '', array_map( 'chr', array_map( 'hexdec', explode( ' ', 'FF D8 FF E0 00 10 4A 46 49 46 00 01 01 01 00 48 00 48 00 00 FF DB 00 43 00 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF C2 00 0B 08 00 01 00 01 01 01 11 00 FF C4 00 14 10 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 FF DA 00 08 01 01 00 01 3F 10' ) ) ) ) );
+
+		global $wpdb;
+
+		$wpdb->insert( GFFormsModel::get_lead_details_table_name(), array(
+			'lead_id' => $entry['id'], 'form_id' => $form['id'],
+			'field_number' => '24', 'value' => $image
+		) );
+
+		$entry['24'] = $image;
+
+		$post = get_post( GFCommon::create_post( $form, $entry ) );
+
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		/** Post ID */
+		$field = \GV\Internal_Field::by_id( 'post_id' );
+		$this->assertEquals( $post->ID, $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field->update_configuration( array( 'link_to_post' => true ) );
+		$expected = sprintf( '<a href="%s">%d</a>', get_permalink( $post->ID ), $post->ID );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, null, $entry, $request ) );
+
+		update_option( 'permalink_structure', '/%postname%' );
+		$post->post_name = 'hello-привет';
+		$post->post_status = 'publish';
+		wp_update_post( $post );
+		$expected = sprintf( '<a href="%s">%d</a>', get_permalink( $post->ID ), $post->ID );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, null, $entry, $request ) );
+		update_option( 'permalink_structure', '' );
+
+		/** Post title */
+		$post->post_title .= ' realllly';
+		wp_update_post( $post );
+
+		add_shortcode( 'gvtest_shortcode_p1', function( $atts ) {
+			return 'no no no no no nononon';
+		} );
+
+		$the_title_filter = function( $title ) {
+			return $title . ' heh';
+		};
+		add_filter( 'the_title', $the_title_filter );
+
+		$field = \GV\GF_Field::by_id( $form, '19' );
+		/** Note: we allow HTML output, filtering the HTML is up to Gravity Forms. */
+		$expected = 'What is this? <script>some sort of XSS</script>? :) [gvtest_shortcode_p1]';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'dynamic_data' => true ) );
+		/** Note: Gravity Forms saves the data in a filtered way. */
+		$expected = 'What is this? some sort of XSS? :) &#091;gvtest_shortcode_p1&#093; realllly heh';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		remove_filter( 'the_title', $the_title_filter );
+
+		/** Post content */
+		$post->post_content .= ' are you sure?';
+		wp_update_post( $post );
+
+		$the_content_filter = function( $content ) {
+			return $content . ' okay';
+		};
+		add_filter( 'the_content', $the_content_filter );
+
+		$field = \GV\GF_Field::by_id( $form, '20' );
+		/** Note: we allow HTML output, filtering the HTML is up to Gravity Forms. */
+		$expected = "<p>This is some content <script>1</script> <b>who</b> [gvtest_shortcode_p1]</p>\n";
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'dynamic_data' => true ) );
+		/** Note: Gravity Forms saves the data in a filtered way. */
+		$expected = "<p>This is some content 1 <b>who</b> &#091;gvtest_shortcode_p1&#093; are you sure?</p>\n okay";
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		remove_filter( 'the_content', $the_content_filter );
+
+		/** Post excerpt */
+		$post->post_excerpt .= ' add this';
+		wp_update_post( $post );
+
+		$the_excerpt_filter = function( $excerpt ) {
+			return $excerpt . ' tack this on';
+		};
+		add_filter( 'the_excerpt', $the_excerpt_filter );
+		$field = \GV\GF_Field::by_id( $form, '21' );
+		/** Note: we allow HTML output, filtering the HTML is up to Gravity Forms. */
+		$expected = 'This is an excerpt <script>ooh();</script> <b>okay</b> [gvtest_shortcode_p1]';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'dynamic_data' => true ) );
+		/** Note: Gravity Forms saves the data in a filtered way. */
+		$expected = "<p>This is an excerpt ooh(); <b>okay</b> &#091;gvtest_shortcode_p1&#093; add this</p>\n tack this on";
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		/** Post tags */
+		wp_set_post_tags( $post->ID, 'some,more', true );
+
+		$field = \GV\GF_Field::by_id( $form, '22' );
+		/** Note: we do not allow HTML output here, they're tags. */
+		$expected = 'tag 1, oh no, &lt;script&gt;1&lt;/script&gt;, &lt;b&gt;hi&lt;/b&gt;, [gvtest_shortcode_p1]';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'link_to_term' => true ) );
+		$expected = array(
+			sprintf( '<a href="%s">tag 1</a>, ', esc_url( get_term_link( 'tag 1', 'post_tag' ) ) ),
+			sprintf( '<a href="%s">oh no</a>, ', esc_url( get_term_link( 'oh no', 'post_tag' ) ) ),
+			sprintf( '<a href="%s"></a>, ', esc_url( get_term_link( get_term_by( 'name', '<script>1</script>', 'post_tag' ), 'post_tag' ) ) ),
+			sprintf( '<a href="%s">hi</a>, ', esc_url( get_term_link( get_term_by( 'name', '<b>hi</b>', 'post_tag' ), 'post_tag' ) ) ),
+			sprintf( '<a href="%s">[gvtest_shortcode_p1]</a>', esc_url( get_term_link( '[gvtest_shortcode_p1]', 'post_tag' ) ) ),
+		);
+		foreach ( $expected as $_expected ) {
+			$this->assertContains( $_expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+		}
+		$this->assertEquals( strlen( implode( '', $expected ) ), strlen( $renderer->render( $field, $view, $form, $entry, $request ) ) );
+
+		$field->update_configuration( array( 'dynamic_data' => true ) );
+		$expected = array(
+			sprintf( '<a href="%s" rel="tag">[gvtest_shortcode_p1]</a>, ', esc_url( get_term_link( '[gvtest_shortcode_p1]', 'post_tag' ) ) ),
+			sprintf( '<a href="%s" rel="tag">hi</a>, ', esc_url( get_term_link( get_term_by( 'name', '<b>hi</b>', 'post_tag' ), 'post_tag' ) ) ),
+			sprintf( '<a href="%s" rel="tag">more</a>, ', esc_url( get_term_link( 'more', 'post_tag' ) ) ),
+			sprintf( '<a href="%s" rel="tag">oh no</a>, ', esc_url( get_term_link( 'oh no', 'post_tag' ) ) ),
+			sprintf( '<a href="%s" rel="tag">some</a>, ', esc_url( get_term_link( 'some', 'post_tag' ) ) ),
+			sprintf( '<a href="%s" rel="tag">tag 1</a>', esc_url( get_term_link( 'tag 1', 'post_tag' ) ) ),
+		);
+		foreach ( $expected as $_expected ) {
+			$this->assertContains( $_expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+		}
+		$this->assertEquals( strlen( implode( '', $expected ) ), strlen( $renderer->render( $field, $view, $form, $entry, $request ) ) );
+
+		$field->update_configuration( array( 'link_to_term' => false ) );
+		$expected = '[gvtest_shortcode_p1], hi, more, oh no, some, tag 1';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		/** Post categories */
+		$field = \GV\GF_Field::by_id( $form, '23' );
+		/** Note: GF does escape category names, but they can come from anywhere. We must escape. */
+		$expected = array(
+			"<ul class='bulleted'>",
+			'<li>Before category</li>',
+			'<li>Categorized 4 [gvtest_shortcode_p1]</li>',
+			'</ul>',
+		);
+		foreach ( $expected as $_expected ) {
+			$this->assertContains( $_expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+		}
+		$this->assertEquals( strlen( implode( '', $expected ) ), strlen( $renderer->render( $field, $view, $form, $entry, $request ) ) );
+
+		$field->update_configuration( array( 'link_to_term' => true ) );
+		$expected = array(
+			sprintf( '<a href="%s">Category 1</a>', esc_url( get_term_link( $cat_1 ) ) ),
+			sprintf( '<a href="%s">Category 6 [gvtest_shortcode_p1] 5</a>', esc_url( get_term_link( $cat_2 ) ) ),
+		);
+		foreach ( $expected as $_expected ) {
+			$this->assertContains( $_expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+		}
+		$this->assertEquals( strlen( implode( ', ', $expected ) ), strlen( $renderer->render( $field, $view, $form, $entry, $request ) ) );
+
+		$field->update_configuration( array( 'dynamic_data' => true ) );
+		$expected = array(
+			sprintf( '<a href="%s" rel="tag">Category 1</a>', esc_url( get_term_link( $cat_1 ) ) ),
+			sprintf( '<a href="%s" rel="tag">Category 6 [gvtest_shortcode_p1] 5</a>', esc_url( get_term_link( $cat_2 ) ) ),
+		);
+		foreach ( $expected as $_expected ) {
+			$this->assertContains( $_expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+		}
+		$this->assertEquals( strlen( implode( ', ', $expected ) ), strlen( $renderer->render( $field, $view, $form, $entry, $request ) ) );
+
+		$field->update_configuration( array( 'link_to_term' => false ) );
+		$expected = array(
+			'Category 1',
+			'Category 6 [gvtest_shortcode_p1] 5',
+		);
+		foreach ( $expected as $_expected ) {
+			$this->assertContains( $_expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+		}
+		$this->assertEquals( strlen( implode( ', ', $expected ) ), strlen( $renderer->render( $field, $view, $form, $entry, $request ) ) );
+
+		/** Post Image */
+		$field = \GV\GF_Field::by_id( $form, '24' );
+		$expected = '<div class="gv-image"><a class="thickbox" href="' . $filename . '" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $filename . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <div class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</div></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></div>';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'link_to_post' => true ) );
+		$expected = '<div class="gv-image"><a href="' . get_permalink( $post->ID ) . '" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $filename . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <div class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</div></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></div>';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'dynamic_data' => true, 'link_to_post' => false, 'show_as_link' => true ) );
+		$images = wp_get_attachment_image_src( get_post_thumbnail_id( $entry['post_id'] ), 'large' );
+		$expected = '<a href="' . esc_attr( $entry->get_permalink( $view, $request ) ) . '"><div class="gv-image"><a href="" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $images[0] . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <div class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</div></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></div></a>';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		/** @todo: When there's not much else to do, test all the filters in the template! */
+
+		/** Post custom */
+		$field = \GV\GF_Field::by_id( $form, '25' );
+		$expected = 'wu&lt;script&gt;t&lt;/script&gt; &lt;b&gt;how can this be true?&lt;/b&gt; [gvtest_shortcode_p1]';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+		/** Note: */
+
+		$this->_reset_context();
+	}
+
+	/**
 	 * @covers \GV\Template::push_template_data()
 	 * @covers \GV\Template::pop_template_data()
 	 */
