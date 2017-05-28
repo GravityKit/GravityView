@@ -1712,11 +1712,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'3' => '_',
-			'4' => '_',
-			'5' => '_',
-			'6' => '_',
-			'7' => '_', /** @todo figure out the bug where we need to supply the previous entry inputs */
 			'8.2' => 'Mr.',
 			'8.3' => 'O\'',
 			'8.6' => 'Harry <script>1</script>',
@@ -1758,12 +1753,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'3' => '_',
-			'4' => '_',
-			'5' => '_',
-			'6' => '_',
-			'7' => '_', /** @todo figure out the bug where we need to supply the previous entry inputs */
-			'8' => '_',
 			'9' => '7982489.23929',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
@@ -1903,10 +1892,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'3' => '_',
-			'4' => '_',
-			'5' => '_',
-			'6' => '_', /** @todo figure out the bug where we need to supply the previous entry inputs */
 			'7' => serialize( array(
 				array( 'Column 1' => 'one', 'Column 2' => 'two' ),
 				array( 'Column 1' => 'three', 'Column 2' => 'four' ),
@@ -1946,13 +1931,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'3' => '_',
-			'4' => '_',
-			'5' => '_',
-			'6' => '_', /** @todo figure out the bug where we need to supply the previous entry inputs */
-			'7' => '_',
-			'8' => '_',
-			'9' => '_',
 			'10' => '93 43A99-392<script>1</script>',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
@@ -1984,14 +1962,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'3' => '_',
-			'4' => '_',
-			'5' => '_',
-			'6' => '_', /** @todo figure out the bug where we need to supply the previous entry inputs */
-			'7' => '_',
-			'8' => '_',
-			'9' => '_',
-			'10' => '_',
 			'11' => '1',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
@@ -2025,16 +1995,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'3' => '_',
-			'4' => '_',
-			'5' => '_',
-			'6' => '_', /** @todo figure out the bug where we need to supply the previous entry inputs */
-			'7' => '_',
-			'8' => '_',
-			'9' => '_',
-			'10' => '_',
-			'11' => '_',
-			'12' => '_',
 			'13' => 'f',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
@@ -2072,19 +2032,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'3' => '_',
-			'4' => '_',
-			'5' => '_',
-			'6' => '_', /** @todo figure out the bug where we need to supply the previous entry inputs */
-			'7' => '_',
-			'8' => '_',
-			'9' => '_',
-			'10' => '_',
-			'11' => '_',
-			'12' => '_',
-			'13' => '_',
-			'14' => '_',
-			'15' => '_',
 			'16' => 'okay <so> {entry_id} what happens [gvtest_shortcode_t1] here? <script>huh()</script> http://gravityview.co/',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
@@ -2132,20 +2079,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'3' => '_',
-			'4' => '_',
-			'5' => '_',
-			'6' => '_', /** @todo figure out the bug where we need to supply the previous entry inputs */
-			'7' => '_',
-			'8' => '_',
-			'9' => '_',
-			'10' => '_',
-			'11' => '_',
-			'12' => '_',
-			'13' => '_',
-			'14' => '_',
-			'15' => '_',
-			'16' => '_',
 			'17' => '3:12 pm',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
@@ -2187,21 +2120,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'3' => '_',
-			'4' => '_',
-			'5' => '_',
-			'6' => '_', /** @todo figure out the bug where we need to supply the previous entry inputs */
-			'7' => '_',
-			'8' => '_',
-			'9' => '_',
-			'10' => '_',
-			'11' => '_',
-			'12' => '_',
-			'13' => '_',
-			'14' => '_',
-			'15' => '_',
-			'16' => '_',
-			'17' => '_',
 			'18' => 'https://gravityview.co/?<script>a</script>=<script>b</script>&1',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
@@ -2364,7 +2282,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'3' => '_',
 			'4' => 'support@gravityview.co',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
@@ -2421,7 +2338,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'3' => '_',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
@@ -2449,7 +2365,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'3' => '_',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
@@ -2496,7 +2411,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'1.1' => '_',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
@@ -2550,8 +2464,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'3' => '_',
-			'4' => '_', /** @todo figure out the bug where we need to supply the previous entry input */
 			'5' => json_encode( array( 'https://one.jpg', 'https://two.mp3' ) ),
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
