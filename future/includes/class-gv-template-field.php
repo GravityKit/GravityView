@@ -97,21 +97,31 @@ abstract class Field_Template extends Template {
 	 * The hierarchy is as follows:
 	 *
 	 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field type]-html.php
+	 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field inputType]-html.php
 	 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-html.php
 	 * - post-[ID of post of page where view is embedded]-field-[Field type]-html.php
+	 * - post-[ID of post of page where view is embedded]-field-[Field inputType]-html.php
 	 * - post-[ID of post of page where view is embedded]-field-html.php
 	 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field type].php
+	 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field inputType].php
 	 * - post-[ID of post of page where view is embedded]-view-[View ID]-field.php
 	 * - post-[ID of post of page where view is embedded]-field-[Field type].php
+	 * - post-[ID of post of page where view is embedded]-field-[Field inputType].php
 	 * - post-[ID of post of page where view is embedded]-field.php
 	 * - form-[Form ID]-field-[Field ID]-html.php
 	 * - form-[Form ID]-field-[Field ID].php
 	 * - form-[Form ID]-field-[Field type]-html.php
+	 * - form-[Form ID]-field-[Field inputType]-html.php
 	 * - form-[Form ID]-field-[Field type].php
+	 * - form-[Form ID]-field-[Field inputType].php
 	 * - view-[View ID]-field-[Field type]-html.php
+	 * - view-[View ID]-field-[Field inputType]-html.php
 	 * - view-[View ID]-field-[Field type].php
+	 * - view-[View ID]-field-[Field inputType].php
 	 * - field-[Field type]-html.php
+	 * - field-[Field inputType]-html.php
 	 * - field-[Field type].php
+	 * - field-[Field inputType].php
 	 * - field-html.php
 	 * - field.php
 	 *
@@ -133,9 +143,13 @@ abstract class Field_Template extends Template {
 		if ( ! $this->request->is_view() && $post ) {
 			if ( $this->field && $this->field->type ) {
 				$specifics []= sprintf( '%spost-%d-view-%d-field-%s-%s.php', $slug_dir, $post->ID, $this->view->ID, $this->field->type, $slug_name );
+				$this->field->inputType && $specifics []= sprintf( '%spost-%d-view-%d-field-%s-%s.php', $slug_dir, $post->ID, $this->view->ID, $this->field->inputType, $slug_name );
 				$specifics []= sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $this->view->ID, $this->field->type );
+				$this->field->inputType && $specifics []= sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $this->view->ID, $this->field->inputType );
 				$specifics []= sprintf( '%spost-%d-field-%s-%s.php', $slug_dir, $post->ID, $this->field->type, $slug_name );
+				$this->field->inputType && $specifics []= sprintf( '%spost-%d-field-%s-%s.php', $slug_dir, $post->ID, $this->field->inputType, $slug_name );
 				$specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $this->field->type );
+				$this->field->inputType &&  $specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $this->field->inputType );
 			}
 
 			$specifics []= sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $this->view->ID, $slug_name );
@@ -154,13 +168,19 @@ abstract class Field_Template extends Template {
 
 			if ( $this->field->type ) {
 				$specifics []= sprintf( '%sform-%d-field-%s-%s.php', $slug_dir, $this->view->form->ID, $this->field->type, $slug_name );
+				$this->field->inputType && $specifics []= sprintf( '%sform-%d-field-%s-%s.php', $slug_dir, $this->view->form->ID, $this->field->inputType, $slug_name );
 				$specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $this->view->form->ID, $this->field->type );
+				$this->field->inputType && $specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $this->view->form->ID, $this->field->inputType );
 
 				$specifics []= sprintf( '%sview-%d-field-%s-%s.php', $slug_dir, $this->view->ID, $this->field->type, $slug_name );
+				$this->field->inputType && $specifics []= sprintf( '%sview-%d-field-%s-%s.php', $slug_dir, $this->view->ID, $this->field->inputType, $slug_name );
 				$specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $this->view->ID, $this->field->type );
+				$this->field->inputType && $specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $this->view->ID, $this->field->inputType );
 
 				$specifics []= sprintf( '%sfield-%s-%s.php', $slug_dir, $this->field->type, $slug_name );
+				$this->field->inputType && $specifics []= sprintf( '%sfield-%s-%s.php', $slug_dir, $this->field->inputType, $slug_name );
 				$specifics []= sprintf( '%sfield-%s.php', $slug_dir, $this->field->type );
+				$this->field->inputType && $specifics []= sprintf( '%sfield-%s.php', $slug_dir, $this->field->inputType );
 			}
 		}
 
