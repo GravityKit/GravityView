@@ -937,8 +937,6 @@ function gravityview_convert_value_to_term_list( $value, $taxonomy = 'post_tag' 
 		$terms = explode( ', ', $value );
 	}
 
-	logit( $terms );
-
 	foreach ($terms as $term_name ) {
 
 		// If we're processing a category,

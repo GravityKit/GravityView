@@ -218,7 +218,11 @@ class GravityView_Merge_Tags {
 	 *
 	 * @return mixed
 	 */
-	public static function replace_gv_merge_tags(  $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
+	public static function replace_gv_merge_tags( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
+
+		if( '' === $text ) {
+			return $text;
+		}
 
 		/**
 		 * This prevents the gform_replace_merge_tags filter from being called twice, as defined in:
@@ -231,6 +235,8 @@ class GravityView_Merge_Tags {
 		}
 
 		$text = self::replace_get_variables( $text, $form, $entry, $url_encode );
+
+		$text = self::replace_current_post( $text, $form, $entry, $url_encode, $esc_html );
 
 		return $text;
 	}
@@ -295,6 +301,77 @@ class GravityView_Merge_Tags {
 	}
 
 	/**
+	 * Add a {current_post} Merge Tag for information about the current post (in the loop or singular)
+	 *
+	 * {current_post} is replaced with the current post's permalink by default, when no modifiers are passed.
+	 * Pass WP_Post properties as :modifiers to access.
+	 *
+	 * {current_post} is the same as {embed_post}, except:
+	 *
+	 * - Adds support for {current_post:permalink}
+	 * - Works on post archives, as well as singular
+	 *
+	 * @see https://www.gravityhelp.com/documentation/article/merge-tags/#embed-post for examples
+	 * @see GFCommon::replace_variables_prepopulate - Code is there for {custom_field} and {embed_post} Merge Tags
+	 *
+	 * @param string $original_text Text to replace
+	 * @param array $form Gravity Forms form array
+	 * @param array $entry Entry array
+	 * @param bool $url_encode Whether to URL-encode output
+	 * @param bool $esc_html Indicates if the esc_html function should be applied.
+	 *
+	 * @return string Original text, if no {current_post} Merge Tags found, otherwise text with Merge Tags replaced
+	 */
+	public static function replace_current_post( $original_text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
+
+		$return = $original_text;
+
+		// Is there a {current_post} or {current_post:[xyz]} merge tag?
+		preg_match_all( "/{current_post(:(.*?))?}/ism", $original_text, $matches, PREG_SET_ORDER );
+
+		// If there are no matches OR the Entry `created_by` isn't set or is 0 (no user)
+		if ( empty( $matches ) ) {
+			return $original_text;
+		}
+
+		$current_post = get_post();
+
+		// WP_Error, arrays and NULL aren't welcome here.
+		if ( ! $current_post || ! is_a( $current_post, 'WP_Post' ) ) {
+			return $original_text;
+		}
+
+		foreach ( (array) $matches as $match ) {
+			$full_tag = $match[0];
+			$modifier = rgar( $match, 2, 'permalink' );
+
+			$replacement = false;
+
+			if ( 'permalink' === $modifier ) {
+				$replacement = get_permalink( $current_post );
+			} elseif ( isset( $current_post->{$modifier} ) ) {
+				/** @see WP_Post Post properties */
+				$replacement = $current_post->{$modifier};
+			}
+
+			if ( $replacement ) {
+
+				if ( $esc_html ) {
+					$replacement = esc_html( $replacement );
+				}
+
+				if( $url_encode ) {
+					$replacement = urlencode( $replacement );
+				}
+
+				$return = str_replace( $full_tag, $replacement, $return );
+			}
+		}
+
+		return $return;
+	}
+
+	/**
 	 * Allow passing variables via URL to be displayed in Merge Tags
 	 *
 	 * Works with `[gvlogic]`:
@@ -314,6 +391,8 @@ class GravityView_Merge_Tags {
 	 * @param array $form Gravity Forms form array
 	 * @param array $entry Entry array
 	 * @param bool $url_encode Whether to URL-encode output
+	 *
+	 * @return string Original text, if no Merge Tags found, otherwise text with Merge Tags replaced
 	 */
 	public static function replace_get_variables( $text, $form = array(), $entry = array(), $url_encode = false ) {
 
