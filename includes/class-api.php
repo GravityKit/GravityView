@@ -926,7 +926,11 @@ function gravityview_convert_value_to_term_list( $value, $taxonomy = 'post_tag' 
 
 	$output = array();
 
-	$terms = explode( ', ', $value );
+	if ( is_array( $value ) ) {
+		$terms = array_filter( array_values( $value ), 'strlen' );
+	} else {
+		$terms = explode( ', ', $value );
+	}
 
 	foreach ($terms as $term_name ) {
 
@@ -934,7 +938,7 @@ function gravityview_convert_value_to_term_list( $value, $taxonomy = 'post_tag' 
 		if( $taxonomy === 'category' ) {
 
 			// Use rgexplode to prevent errors if : doesn't exist
-			list( $term_name, $term_id ) = rgexplode( ':', $value, 2 );
+			list( $term_name, $term_id ) = rgexplode( ':', $term_name, 2 );
 
 			// The explode was succesful; we have the category ID
 			if( !empty( $term_id )) {
