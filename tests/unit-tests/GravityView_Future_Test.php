@@ -2819,6 +2819,82 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @group field_html
+	 */
+	public function test_frontend_field_html_product() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'26' => 'productname<script>o</script>|48|30',
+			'27' => '4949399',
+			'28.1' => 'Op<script>1</script>|48',
+			'28.3' => 'Op<script>3</script>|3',
+			'29' => '$0.01<script>4</script>',
+			'30' => '-32923932',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '26' );
+		$expected = 'productname&lt;script&gt;o&lt;/script&gt; ($48.00)';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '26.1' );
+		$expected = 'productname&lt;script&gt;o&lt;/script&gt;';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '26.2' );
+		$expected = '$48.00';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '26.3' );
+		$expected = '30';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		/** Quantity */
+		$field = \GV\GF_Field::by_id( $form, '27' );
+		$field->update_configuration( array( 'number_format' => true ) );
+		$expected = '4,949,399';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		/** Options (checkbox) */
+		$field = \GV\GF_Field::by_id( $form, '28' );
+		$expected = "<ul class='bulleted'><li>Op<script>1</script> ($48.00)</li><li>Op<script>3</script> ($3.00)</li></ul>";
+		/**
+		 * @todo Not really sure what to do about the XSS here,
+		 * as it stems from Gravity Forms, they clean the value up
+		 * before saving it into the db but allow HTML through... */
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '28.1' );
+		$expected = '<span class="dashicons dashicons-yes"></span>';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '28.2' );
+		$this->assertEmpty( $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		/** Shipping */
+		$field = \GV\GF_Field::by_id( $form, '29' );
+		$expected = '$0.01';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		/** Total */
+		$field = \GV\GF_Field::by_id( $form, '30' );
+		$expected = '-$32,923,932.00';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$this->_reset_context();
+	}
+
+	/**
 	 * @covers \GV\Template::push_template_data()
 	 * @covers \GV\Template::pop_template_data()
 	 */
