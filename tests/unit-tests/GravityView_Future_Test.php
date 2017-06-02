@@ -2926,14 +2926,21 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field = \GV\Internal_Field::by_id( 'is_fulfilled' );
 		$this->assertEquals( 'Not Fulfilled', $renderer->render( $field, $view, null, $entry, $request ) );
 
+		$field = \GV\Internal_Field::by_id( 'transaction_type' );
+		$this->assertEquals( 'One-Time Payment', $renderer->render( $field, $view, null, $entry, $request ) );
+
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'is_fulfilled' => 1
+			'is_fulfilled' => 1,
+			'transaction_type' => 2,
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
 		$field = \GV\Internal_Field::by_id( 'is_fulfilled' );
 		$this->assertEquals( 'Fulfilled', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field = \GV\Internal_Field::by_id( 'transaction_type' );
+		$this->assertEquals( 'Subscription', $renderer->render( $field, $view, null, $entry, $request ) );
 
 		$this->_reset_context();
 	}
