@@ -2905,6 +2905,40 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @group field_html
+	 */
+	public function test_frontend_field_html_payment() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\Internal_Field::by_id( 'is_fulfilled' );
+		$this->assertEquals( 'Not Fulfilled', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'is_fulfilled' => 1
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$field = \GV\Internal_Field::by_id( 'is_fulfilled' );
+		$this->assertEquals( 'Fulfilled', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$this->_reset_context();
+	}
+
+	/**
 	 * @covers \GV\Template::push_template_data()
 	 * @covers \GV\Template::pop_template_data()
 	 */
