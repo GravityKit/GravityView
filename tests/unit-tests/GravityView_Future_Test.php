@@ -2958,6 +2958,18 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field = \GV\Internal_Field::by_id( 'payment_method' );
 		$this->assertEquals( '&lt;ha&gt;1&lt;/ha&gt;', $renderer->render( $field, $view, null, $entry, $request ) );
 
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'is_fulfilled' => 1,
+			'transaction_type' => 2,
+			'currency' => 'EUR',
+			'payment_amount' => '-10329.8',
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$field = \GV\Internal_Field::by_id( 'payment_amount' );
+		$this->assertEquals( '-10.329,80 &#8364;', $renderer->render( $field, $view, null, $entry, $request ) );
+
 		$this->_reset_context();
 	}
 

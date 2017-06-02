@@ -70,7 +70,7 @@ class GravityView_Field_Is_Fulfilled extends GravityView_Field {
 	 *
 	 * @since future
 	 *
-	 * @param string $value The value in.
+	 * @param mixed $value The value in.
 	 *
 	 * @return mixed The value out.
 	 */

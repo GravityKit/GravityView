@@ -27,6 +27,7 @@ class GravityView_Field_Payment_Amount extends GravityView_Field {
 		$this->label = esc_html__( 'Payment Amount', 'gravityview' );
 
 		add_filter( 'gravityview_field_entry_value_' . $this->name . '_pre_link', array( $this, 'get_content' ), 10, 4 );
+		add_filter( 'gravityview/field/payment_amount/value', array( $this, 'get_value' ), 10, 6 );
 
 		parent::__construct();
 	}
@@ -54,6 +55,24 @@ class GravityView_Field_Payment_Amount extends GravityView_Field {
 		$return = GFCommon::to_money( $amount, rgar( $entry, 'currency' ) );
 
 		return $return;
+	}
+
+	/**
+	 * Filter the value of the field, future.
+	 *
+	 * @since future
+	 *
+	 * @param mixed			$value	The value of the field.
+	 * @param \GV\Field		$field	The field as seen by future.
+	 * @param \GV\View		$view	The view requested in.
+	 * @param \GV\Source	$source The data source (form).
+	 * @param \GV\Entry		$entry	The entry.
+	 * @param \GV\Request	$request The request context.
+	 *
+	 * @return mixed $value The filtered value.
+	 */
+	public function get_value( $value, $field, $view, $source, $entry, $request ) {
+		return $this->get_content( $value, $entry->as_entry(), $field->as_configuration() );
 	}
 
 	/**
