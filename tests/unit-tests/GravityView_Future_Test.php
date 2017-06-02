@@ -2964,11 +2964,18 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'transaction_type' => 2,
 			'currency' => 'EUR',
 			'payment_amount' => '-10329.8',
+			'payment_date' => '2017-06-02 12:05:00',
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
 		$field = \GV\Internal_Field::by_id( 'payment_amount' );
 		$this->assertEquals( '-10.329,80 &#8364;', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field = \GV\Internal_Field::by_id( 'payment_date' );
+		$this->assertEquals( 'June 2, 2017', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field->update_configuration( array( 'date_display' => 'Y-m-d\TH:i:s\Z' ) );
+		$this->assertEquals( '2017-06-02T12:05:00Z', $renderer->render( $field, $view, null, $entry, $request ) );
 
 		$this->_reset_context();
 	}
