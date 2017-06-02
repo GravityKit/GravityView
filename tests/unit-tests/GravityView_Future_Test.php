@@ -1374,6 +1374,16 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'sentinel-6', $field->get_value( $view, null /** \GV\Source */, $entry ) );
 		remove_all_filters( 'gravityview/field/value' );
 
+		/** By type? */
+		$field = \GV\Internal_Field::by_id( 'id' );
+		$this->assertEquals( $entry->ID, $field->get_value( $view, $view->form, $entry ) );
+
+		add_filter( 'gravityview/field/id/value', function( $value ) {
+			return 'sentinel-7';
+		} );
+		$this->assertEquals( 'sentinel-7', $field->get_value( $view, null /** \GV\Source */, $entry ) );
+		remove_all_filters( 'gravityview/field/id/value' );
+
 		/** How about labels? Uninitialized first. */
 		$field = new \GV\Field();
 

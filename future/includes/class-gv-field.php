@@ -304,6 +304,19 @@ class Field {
 	 * This is in its own function since \GV\Field subclasses have to call it.
 	 */
 	protected function get_value_filters( $value, View $view = null, Source $source = null, Entry $entry = null, Request $request = null ) {
+		if ( $this->type ) {
+			/**
+			 * @filter `gravityview/field/$type/value` Override the displayed value here.
+			 * @param string $value The value.
+			 * @param \GV\Field The field we're doing this for.
+			 * @param \GV\View $view The view for this context if applicable.
+			 * @param \GV\Source $source The source (form) for this context if applicable.
+			 * @param \GV\Entry $entry The entry for this context if applicable.
+			 * @param \GV\Request $request The request for this context if applicable.
+			 */
+			$value = apply_filters( "gravityview/field/{$this->type}/value", $value, $this, $view, $source, $entry, $request );
+		}
+
 		/**
 		 * @filter `gravityview/field/value` Override the displayed value here.
 		 * @param string $value The value.
