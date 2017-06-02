@@ -2933,6 +2933,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'is_fulfilled' => 1,
 			'transaction_type' => 2,
+			'currency' => '<b>1',
+			'transaction_id' => 'SA-<script>danger</script>',
+			'payment_status' => '<b>sorry</b>',
+			'payment_method' => '<ha>1</ha>',
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
@@ -2941,6 +2945,18 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field = \GV\Internal_Field::by_id( 'transaction_type' );
 		$this->assertEquals( 'Subscription', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field = \GV\Internal_Field::by_id( 'currency' );
+		$this->assertEquals( '&lt;b&gt;1', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field = \GV\Internal_Field::by_id( 'transaction_id' );
+		$this->assertEquals( 'SA-&lt;script&gt;danger&lt;/script&gt;', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field = \GV\Internal_Field::by_id( 'payment_status' );
+		$this->assertEquals( '&lt;b&gt;sorry&lt;/b&gt;', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field = \GV\Internal_Field::by_id( 'payment_method' );
+		$this->assertEquals( '&lt;ha&gt;1&lt;/ha&gt;', $renderer->render( $field, $view, null, $entry, $request ) );
 
 		$this->_reset_context();
 	}
