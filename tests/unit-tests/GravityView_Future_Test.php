@@ -2965,6 +2965,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'currency' => 'EUR',
 			'payment_amount' => '-10329.8',
 			'payment_date' => '2017-06-02 12:05:00',
+			'31.1' => 'XXXXXX2923<script>3</script>',
+			'31.2' => 'this should not be shown or stored',
+			'31.3' => 'this should not be shown or stored',
+			'31.4' => 'Visa<script>44</script>',
+			'31.5' => 'this should not be shown or stored',
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
@@ -2976,6 +2981,27 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field->update_configuration( array( 'date_display' => 'Y-m-d\TH:i:s\Z' ) );
 		$this->assertEquals( '2017-06-02T12:05:00Z', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		/** Credit card */
+		$field = \GV\GF_Field::by_id( $form, '31' );
+		$expected = 'Visa44<br />XXXXXX29233';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '31.1' );
+		$expected = 'XXXXXX2923&lt;script&gt;3&lt;/script&gt;';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '31.4' );
+		$expected = 'Visa&lt;script&gt;44&lt;/script&gt;';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		/** For security reasons no other fields are shown */
+		$field = \GV\GF_Field::by_id( $form, '31.2' );
+		$this->assertEmpty( $renderer->render( $field, $view, $form, $entry, $request ) );
+		$field = \GV\GF_Field::by_id( $form, '31.3' );
+		$this->assertEmpty( $renderer->render( $field, $view, $form, $entry, $request ) );
+		$field = \GV\GF_Field::by_id( $form, '31.5' );
+		$this->assertEmpty( $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$this->_reset_context();
 	}
