@@ -2083,6 +2083,33 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @group field_html
 	 */
+	public function test_frontend_field_html_hidden() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'33' => 'this is <script>hidden</script>',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, 33 );
+		$expected = 'this is &lt;script&gt;hidden&lt;/script&gt;';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 */
 	public function test_frontend_field_html_time() {
 		$this->_reset_context();
 
