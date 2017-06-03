@@ -2106,8 +2106,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
-	/**
 
+	/**
 	 * @group field_html
 	 */
 	public function test_frontend_field_html_password() {
@@ -2461,6 +2461,47 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $expected, $renderer->render( $field, $view, null, $entry, $request ) );
 
 		remove_all_filters( 'gravityview_entry_link' );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 */
+	public function test_frontend_field_html_delete_link() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		/** Old contexts are still haunting us... */
+		GravityView_View::getInstance()->setViewId( $view->ID );
+
+		/** No permissions */
+		$field = \GV\Internal_Field::by_id( 'delete_link' );
+		$expected = sprintf( '<a href="%s">View Details</a>', esc_attr( $entry->get_permalink( $view, $request ) ) );
+		$this->assertEmpty( $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$administrator = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'administrator' )
+		);
+		wp_set_current_user( $administrator );
+
+		$field = \GV\Internal_Field::by_id( 'delete_link' );
+		$expected = sprintf( '<a href="%s" onclick="%s">Delete Entry</a>', esc_attr( GravityView_Delete_Entry::get_delete_link( $entry->as_entry(), $view->ID ) ), esc_attr( GravityView_Delete_Entry::get_confirm_dialog() ) );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, null, $entry, $request ) );
 
 		$this->_reset_context();
 	}
