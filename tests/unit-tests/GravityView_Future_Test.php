@@ -2106,6 +2106,32 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+	/**
+
+	 * @group field_html
+	 */
+	public function test_frontend_field_html_password() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'34' => 'if this is ever <script>stored</script>',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, 34 );
+		$this->assertEmpty( $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$this->_reset_context();
+	}
 
 	/**
 	 * @group field_html
