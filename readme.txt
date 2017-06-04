@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = 1.21.5 =
 
 * Fixed: Saving an entry could strip the entry creator information. Now, when the entry creator is not in the "Change Entry Creator" users list, we add them back in to the list.
+* Added: Beta Tester setting. Opt-in for access to pre-release versions of GravityView.
 
 = 1.21.4 on April 13, 2017 =
 

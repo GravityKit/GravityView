@@ -772,6 +772,7 @@ class GravityView_Settings extends GFAddOn {
 			'no-conflict-mode' => '1',
 			'support_port' => '1',
 			'flexbox_search' => '1',
+			'beta' => '0',
 		);
 
 		return $defaults;
@@ -912,6 +913,21 @@ class GravityView_Settings extends GFAddOn {
 					),
 				),
 				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ) . ' ' . __('If your Edit View tabs are ugly, enable this setting.', 'gravityview'),
+			),
+			array(
+				'name'       => 'beta',
+				'type'       => 'checkbox',
+				'label'      => __( 'Become a Beta Tester', 'gravityview' ),
+				'default_value'    => $default_settings['beta'],
+				'horizontal' => 1,
+				'choices'    => array(
+					array(
+						'label' => _x('Show me beta versions if they are available.', 'gravityview'),
+						'value' => '1',
+                        'name'  => 'beta',
+					),
+				),
+				'description'   => __( 'You will have early access to the latest GravityView features and improvements. There may be bugs! If you encounter an issue, help make GravityView better by reporting it!', 'gravityview'),
 			),
 		) );
 
