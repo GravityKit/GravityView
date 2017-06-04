@@ -1,6 +1,6 @@
 <?php
 /**
- * The default delete link field output template.
+ * The default edit link field output template.
  *
  * @since future
  */

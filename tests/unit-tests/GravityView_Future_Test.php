@@ -2556,6 +2556,56 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @group field_html
 	 */
+	public function test_frontend_field_html_notes() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		/** No permissions */
+		$field = \GV\Internal_Field::by_id( 'notes' );
+		$this->assertEmpty( $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field->update_configuration( array( 'notes' => array( 'view' => true, 'view_loggedout' => true ) ) );
+		$this->assertContains( 'There are no notes.', $renderer->render( $field, $view, null, $entry, $request ) );
+		$this->assertContains( 'gv-show-notes', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$administrator = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'administrator' )
+		);
+		wp_set_current_user( $administrator );
+
+		GravityView_Entry_Notes::add_note( $entry->ID, $administrator, 'administrator', 'this <script>1</script> is a note :) {entry_id}' );
+
+		$field = \GV\Internal_Field::by_id( 'notes' );
+		$field->update_configuration( array( 'notes' => array( 'view' => true ) ) );
+		$this->assertContains( 'gv-has-notes', $renderer->render( $field, $view, null, $entry, $request ) );
+		$this->assertContains( 'this &lt;script&gt;1&lt;/script&gt; is a note :) {entry_id}', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field->update_configuration( array( 'notes' => array( 'view' => true, 'add' => true ) ) );
+		$this->assertContains( 'gv-add-note-submit', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$field->update_configuration( array( 'notes' => array( 'view' => true, 'delete' => true ) ) );
+		$this->assertContains( 'gv-notes-delete', $renderer->render( $field, $view, null, $entry, $request ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 */
 	public function test_frontend_field_html_custom() {
 		$this->_reset_context();
 
