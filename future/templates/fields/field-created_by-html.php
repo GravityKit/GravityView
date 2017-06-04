@@ -15,6 +15,10 @@ if ( empty( $value ) ) {
 // Get the user data for the passed User ID
 $user = get_userdata( $value );
 
+if ( ! $user ) {
+	return;
+}
+
 // Display the user data, based on the settings `id`, `username`, or `display_name`
 $name_display = empty( $field_settings['name_display'] ) ? 'display_name' : $field_settings['name_display'];
 

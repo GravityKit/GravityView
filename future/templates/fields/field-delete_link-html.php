@@ -4,14 +4,9 @@
  *
  * @since future
  */
-$field_id = $gravityview->field->ID;
-$field = $gravityview->field->field;
-$value = $gravityview->value;
 $form = $gravityview->view->form->form;
-$display_value = $gravityview->display_value;
 $entry = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();
-$view_id = $gravityview->view->ID;
 
 if ( ! class_exists( 'GravityView_Delete_Entry' ) ) {
 	return;
@@ -26,7 +21,7 @@ $link_text = empty( $field_settings['delete_link'] ) ? __( 'Delete Entry', 'grav
 
 $link_text = apply_filters( 'gravityview_entry_link', GravityView_API::replace_variables( $link_text, $form, $entry ) );
 
-$href = GravityView_Delete_Entry::get_delete_link( $entry, $view_id );
+$href = GravityView_Delete_Entry::get_delete_link( $entry, $gravityview->view->ID );
 
 $attributes = array(
 	'onclick' => GravityView_Delete_Entry::get_confirm_dialog()

@@ -1,6 +1,6 @@
 <?php
 /**
- * The default address field output template.
+ * The default entry approval field output template.
  *
  * This field will only render for users with the `gravityview_moderate_entries` capability.
  *
@@ -10,13 +10,7 @@
  *
  * @since future
  */
-
-$field_id = $gravityview->field->ID;
-$field = $gravityview->field->field;
-$value = $gravityview->value;
-$display_value = $gravityview->display_value;
 $entry = $gravityview->entry->as_entry();
-$field_settings = $gravityview->field->as_configuration();
 
 /**
  * @action `gravityview/field/approval/load_scripts` Trigger loading the field approval javascript

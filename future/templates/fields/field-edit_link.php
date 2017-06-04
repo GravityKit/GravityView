@@ -4,14 +4,9 @@
  *
  * @since future
  */
-$field_id = $gravityview->field->ID;
-$field = $gravityview->field->field;
-$value = $gravityview->value;
 $form = $gravityview->view->form->form;
-$display_value = $gravityview->display_value;
 $entry = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();
-$view_id = $gravityview->view->ID;
 
 if ( ! class_exists( 'GravityView_Edit_Entry' ) ) {
 	return;
@@ -31,6 +26,6 @@ if ( ! empty( $field_settings['new_window'] ) ) {
 
 $output = apply_filters( 'gravityview_entry_link', GravityView_API::replace_variables( $link_text, $form, $entry ) );
 
-$href = GravityView_Edit_Entry::get_edit_link( $entry, $view_id );
+$href = GravityView_Edit_Entry::get_edit_link( $entry, $gravityview->view->ID );
 
 echo gravityview_get_link( $href, $output, $link_atts );

@@ -4,7 +4,6 @@
  *
  * @since future
  */
-$value = $gravityview->value;
 $display_value = $gravityview->display_value;
 $entry = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();

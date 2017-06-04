@@ -4,7 +4,6 @@
  *
  * @since future
  */
-$value = $gravityview->value;
 $display_value = $gravityview->display_value;
 
 // If there's no grade, don't continue
