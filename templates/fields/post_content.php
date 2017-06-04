@@ -14,6 +14,9 @@ if( !empty( $field_settings['dynamic_data'] ) && !empty( $entry['post_id'] ) ) {
 
 	global $post;
 
+	/** Backup! */
+	$_the_post = $post;
+
 	$post = get_post( $entry['post_id'] );
 
 	if( empty( $post ) ) {
@@ -25,6 +28,9 @@ if( !empty( $field_settings['dynamic_data'] ) && !empty( $entry['post_id'] ) ) {
 	setup_postdata( $post );
 	the_content();
 	wp_reset_postdata();
+
+	/** Restore! */
+	$post = $_the_post;
 
 } else {
 	echo $display_value;
