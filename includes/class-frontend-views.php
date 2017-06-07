@@ -540,6 +540,14 @@ class GravityView_frontend {
 	 */
 	public function insert_view_in_content( $content ) {
 
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_LOADED' ) ) {
+			/**
+			 * Future rendering is handled by \GV\Frontend_Request::output()
+			 * So there's not much to do here anymore.
+			 */
+			return $content;
+		}
+
 		// Plugins may run through the content in the header. WP SEO does this for its OpenGraph functionality.
 		if ( ! did_action( 'loop_start' ) ) {
 
@@ -619,6 +627,14 @@ class GravityView_frontend {
 	 * @return void
 	 */
 	public function context_not_configured_warning( $view_id = 0 ) {
+
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_LOADED' ) ) {
+			/**
+			 * Future rendering is handled by \GV\Frontend_Request::output()
+			 * So there's not much to do here anymore.
+			 */
+			return;
+		}
 
 		if ( ! class_exists( 'GravityView_View' ) ) {
 			return;

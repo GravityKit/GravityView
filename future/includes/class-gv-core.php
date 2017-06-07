@@ -180,6 +180,12 @@ final class Core {
 		}
 
 		define( 'GRAVITYVIEW_FUTURE_CORE_LOADED', true );
+
+		/**
+		 * Enable this for more aggressive mocking and destruction of the old core.
+		 * Do not define, if you're not ready to get your mind blown!
+		 */
+		define( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_LOADED', true );
 	}
 
 	private function __clone() { }

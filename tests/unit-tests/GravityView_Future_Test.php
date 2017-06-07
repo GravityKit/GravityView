@@ -390,6 +390,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GravityView_frontend::render_view()
 	 */
 	public function test_data_get_views() {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_LOADED' ) ) {
+			$this->markTestSkipped( 'The alpha future does no longer care' );
+		}
+
 		$this->_reset_context();
 
 		$post = $this->factory->view->create_and_get();
@@ -2438,9 +2442,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$request = new \GV\Frontend_Request();
 		$renderer = new \GV\Field_Renderer();
 
-		/** Old contexts are still haunting us... */
-		GravityView_View::getInstance()->setViewId( $view->ID );
-
 		$field = \GV\Internal_Field::by_id( 'entry_link' );
 		$expected = sprintf( '<a href="%s">View Details</a>', esc_attr( $entry->get_permalink( $view, $request ) ) );
 		$this->assertEquals( $expected, $renderer->render( $field, $view, null, $entry, $request ) );
@@ -2484,9 +2485,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$request = new \GV\Frontend_Request();
 		$renderer = new \GV\Field_Renderer();
 
-		/** Old contexts are still haunting us... */
-		GravityView_View::getInstance()->setViewId( $view->ID );
-
 		/** No permissions */
 		$field = \GV\Internal_Field::by_id( 'delete_link' );
 		$this->assertEmpty( $renderer->render( $field, $view, null, $entry, $request ) );
@@ -2527,9 +2525,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$request = new \GV\Frontend_Request();
 		$renderer = new \GV\Field_Renderer();
-
-		/** Old contexts are still haunting us... */
-		GravityView_View::getInstance()->setViewId( $view->ID );
 
 		/** No permissions */
 		$field = \GV\Internal_Field::by_id( 'edit_link' );
