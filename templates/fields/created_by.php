@@ -21,4 +21,4 @@ $User = get_userdata($value);
 // Display the user data, based on the settings `id`, `username`, or `display_name`
 $name_display = empty( $field_settings['name_display'] ) ? 'display_name' : $field_settings['name_display'];
 
-echo $User->{$name_display};
+echo esc_html( $User->{$name_display} );
