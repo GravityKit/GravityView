@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.7.3
+Tested up to: 4.8
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
