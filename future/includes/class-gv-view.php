@@ -50,11 +50,6 @@ class View implements \ArrayAccess {
 	public $fields;
 
 	/**
-	 * @var \GV\View_Template The template attached to this view.
-	 */
-	public $template;
-
-	/**
 	 * The constructor.
 	 */
 	public function __construct() {
@@ -278,10 +273,6 @@ class View implements \ArrayAccess {
 			 */
 			// 'fields' => \GravityView_View_Data::getInstance()->get_fields( $view->ID ),
 
-			/**
-			 * @deprecated
-			 * @see \GV\View::$template::$ID
-			 */
 			'template_id' => gravityview_get_template_id( $view->ID ),
 
 			'widgets' => gravityview_get_directory_widgets( $view->ID ),

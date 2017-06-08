@@ -817,7 +817,7 @@ class GravityView_frontend {
 			$view_data = $view->as_data();
 			$gravityview_view = new GravityView_View( $view_data );
 			$post_id = intval( $view->settings->get( 'post_id' ) ? : get_the_ID() );
-			$template_id = $view->template ? $view->template->ID : null;
+			$template_id = gravityview_get_template_id( $view->ID );
 		} else {
 			/** These constructs are deprecated. Use the new gravityview() wrapper. */
 			$gravityview_view = new GravityView_View( $view_data );
@@ -1601,7 +1601,7 @@ class GravityView_frontend {
 				if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 					$view = $data;
 					$view_id = $view->ID;
-					$template_id = $view->template ? $view->template->ID : null;
+					$template_id = gravityview_get_template_id( $view->ID );
 					$data = $view->as_data();
 				} else {
 					$template_id = $data['template_id'];

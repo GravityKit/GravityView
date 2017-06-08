@@ -147,11 +147,13 @@ final class Core {
 		/** The Renderers. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-renderer.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-renderer-view.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-renderer-entry.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-renderer-field.php' );
 
 		/** Templating. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-template.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-template-view.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-template-entry.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-template-field.php' );
 
 		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );

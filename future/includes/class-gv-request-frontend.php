@@ -133,11 +133,15 @@ class Frontend_Request extends Request {
 				 */
 				if ( $this->is_edit_entry() ) {
 					throw new Exception( 'Not implemented yet.' );
+
 				/**
 				 * Viewing a single entry.
 				 */
 				} else if ( $this->is_entry() ) {
-					throw new Exception( 'Not implemented yet.' );
+					if ( $entry = \GV\GF_Entry::by_id( get_query_var( \GV\Entry::get_endpoint_name() ) ) ) {
+						$renderer = new Entry_Renderer();
+						$content .= $renderer->render( $entry, $view, $this );
+					}
 
 				/**
 				 * Plain old View.
@@ -183,7 +187,7 @@ class Frontend_Request extends Request {
 	 * @return boolean True if this is an entry request.
 	 */
 	public function is_entry() {
-		return $this->is_view() && false;
+		return $this->is_view() && get_query_var( \GV\Entry::get_endpoint_name() );
 	}
 
 	/**

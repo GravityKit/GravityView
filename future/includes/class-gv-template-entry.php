@@ -16,38 +16,38 @@ if ( ! class_exists( 'Gamajo_Template_Loader' ) ) {
 }
 
 /**
- * The View Template class .
+ * The Entry Template class .
  *
- * Renders a \GV\View and a \GV\Entry_Collection via a \GV\View_Renderer.
+ * Renders a \GV\Entry using a \GV\Entry_Renderer.
  */
-abstract class View_Template extends Template {
+abstract class Entry_Template extends Template {
 	/**
 	 * Prefix for filter names.
 	 * @var string
 	 */
-	protected $filter_prefix = 'gravityview/future/template/views';
+	protected $filter_prefix = 'gravityview/future/template/entries/';
 
 	/**
 	 * Directory name where custom templates for this plugin should be found in the theme.
 	 * @var string
 	 */
-	protected $theme_template_directory = 'gravityview/future/views/';
+	protected $theme_template_directory = 'gravityview/future/entries/';
 
 	/**
 	 * Directory name where the default templates for this plugin are found.
 	 * @var string
 	 */
-	protected $plugin_template_directory = 'future/templates/views/';
+	protected $plugin_template_directory = 'future/templates/entries/';
 
 	/**
-	 * @var \GV\View The view connected to this template.
+	 * @var \GV\Entry The entry that need to be rendered.
+	 */
+	public $entry;
+
+	/**
+	 * @var \GV\View The view context.
 	 */
 	public $view;
-
-	/**
-	 * @var \GV\Entry_Collection The entries that need to be rendered.
-	 */
-	public $entries;
 
 	/**
 	 * @var \GV\Request The request context.
@@ -66,9 +66,9 @@ abstract class View_Template extends Template {
 	 * @param \GV\Entry_Collection $entries A collection of entries for this view.
 	 * @param \GV\Request $request The request context.
 	 */
-	public function __construct( View $view, Entry_Collection $entries, Request $request ) {
+	public function __construct( Entry $entry, View $view, Request $request ) {
+		$this->entry = $entry;
 		$this->view = $view;
-		$this->entries = $entries;
 		$this->request = $request;
 
 		/** Add granular overrides. */
@@ -82,10 +82,15 @@ abstract class View_Template extends Template {
 	 *
 	 * The loading order is:
 	 *
+	 * - post-[ID of post or page where view is embedded]-view-[View ID]-entry-[Entry ID]-table-footer.php
+	 * - post-[ID of post or page where view is embedded]-entry-[Entry ID]-table-footer.php
 	 * - post-[ID of post or page where view is embedded]-view-[View ID]-table-footer.php
 	 * - post-[ID of post or page where view is embedded]-table-footer.php
+	 * - view-[View ID]-entry-[Entry ID]-table-footer.php
+	 * - form-[Form ID]-entry-[Entry ID]-table-footer.php
 	 * - view-[View ID]-table-footer.php
 	 * - form-[Form ID]-table-footer.php
+	 * - entry-[Entry ID]-table-footer.php
 	 * - table-footer.php
 	 *
 	 * @see  Gamajo_Template_Loader::get_template_file_names() Where the filter is
@@ -104,13 +109,18 @@ abstract class View_Template extends Template {
 		global $post;
 
 		if ( ! $this->request->is_view() && $post ) {
+			$specifics []= sprintf( '%spost-%d-view-%d-entry-%d-%s.php', $slug_dir, $post->ID, $this->view->ID, $this->entry->ID, $slug_name );
+			$specifics []= sprintf( '%spost-%d-entry-%d-%s.php', $slug_dir, $post->ID, $this->entry->ID, $slug_name );
 			$specifics []= sprintf( '%spost-%d-view-%d-%s.php', $slug_dir, $post->ID, $this->view->ID, $slug_name );
 			$specifics []= sprintf( '%spost-%d-%s.php', $slug_dir, $post->ID, $slug_name );
 		}
 
-		
+		$specifics []= sprintf( '%sview-%d-entry-%d-%s.php', $slug_dir, $this->view->ID, $this->entry->ID, $slug_name );
+		$specifics []= sprintf( '%sform-%d-entry-%d-%s.php', $slug_dir, $this->view->form->ID, $this->entry->ID, $slug_name );
 		$specifics []= sprintf( '%sview-%d-%s.php', $slug_dir, $this->view->ID, $slug_name );
 		$specifics []= sprintf( '%sform-%d-%s.php', $slug_dir, $this->view->form->ID, $slug_name );
+
+		$specifics []= sprintf( '%sentry-%d-%s.php', $slug_dir, $this->entry->ID, $slug_name );
 
 		return array_merge( $specifics, $templates );
 	}
@@ -126,19 +136,19 @@ abstract class View_Template extends Template {
 		 * Make various pieces of data available to the template
 		 *  under the $gravityview scoped variable.
 		 *
-		 * @filter `gravityview/template/view/data`
-		 * @param array $data The default data available to all View templates.
-		 * @param \GV\View_Template $template The current template.
+		 * @filter `gravityview/template/entry/data`
+		 * @param array $data The default data available to all Entry templates.
+		 * @param \GV\Entry_Template $template The current template.
 		 * @since future
 		 */
-		$this->push_template_data( apply_filters( 'gravityview/template/view/data', array(
+		$this->push_template_data( apply_filters( 'gravityview/template/entry/data', array(
 
 			'template' => $this,
 
 			/** Shortcuts */
+			'entry' => $this->entry,
 			'view' => $this->view,
-			'fields' => $this->view->fields->by_position( 'directory_table-columns' )->by_visible(),
-			'entries' => $this->entries->fetch(),
+			'fields' => $this->view->fields->by_position( 'single_table-columns' )->by_visible(),
 
 		), $this ), 'gravityview' );
 
@@ -149,4 +159,4 @@ abstract class View_Template extends Template {
 }
 
 /** Load implementations. */
-require gravityview()->plugin->dir( 'future/includes/class-gv-template-view-table.php' );
+require gravityview()->plugin->dir( 'future/includes/class-gv-template-entry-table.php' );

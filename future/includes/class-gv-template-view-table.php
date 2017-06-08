@@ -9,7 +9,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 /**
  * The View Table Template class .
  *
- * Attached to a \GV\View and used by a \GV\View_Renderer.
+ * Renders a \GV\View and a \GV\Entry_Collection via a \GV\View_Renderer.
  */
 class View_Table_Template extends View_Template {
 	/**
