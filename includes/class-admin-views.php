@@ -1066,9 +1066,7 @@ class GravityView_Admin_Views {
 		    $scripts[] = 'jquery-touch-punch';
 		}
 
-		foreach ($scripts as $script) {
-			wp_enqueue_script( $script );
-		}
+		wp_enqueue_script( $scripts );
 	}
 
 	/**
