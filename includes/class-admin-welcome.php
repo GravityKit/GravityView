@@ -270,6 +270,18 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.21.5 on June 8, 2017</h3>
+
+                <ul>
+                    <li>Added: The <code>{current_post}</code> Merge Tag adds information about the current post. <a href="http://docs.gravityview.co/article/412-currentpost-merge-tag">Read more about it</a>.</li>
+                    <li>Added: <code>gravityview/gvlogic/parse_atts/after</code> action to modify <code>[gvlogic]</code> shortcode attributes after it&#39;s been parsed</li>
+                    <li>Added: A new setting to opt-in for access to the latest pre-release versions of GravityView (in <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ) ); ?>">Views &gt; Settings)</a></li>
+                    <li>Added: Support for Restrict Content Pro when in &quot;No-Conflict Mode&quot;</li>
+                    <li>Fixed: Saving an entry could strip the entry creator information. Now, when the entry creator is not in the &quot;Change Entry Creator&quot; users list, we add them back in to the list.</li>
+                    <li>Fixed: Multiple notifications could sometimes be sent when editing an entry in GravityView.</li>
+                    <li>Fixed: Gravity Forms tooltip scripts being loaded admin-wide.</li>
+                </ul>
+
                 <h3>1.21.4 on April 13, 2017</h3>
 
                 <ul>

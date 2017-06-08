@@ -20,11 +20,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.21.5 =
+= 1.21.5 on June 8, 2017 =
 
 * Added: The `{current_post}` Merge Tag adds information about the current post. [Read more about it](http://docs.gravityview.co/article/412-currentpost-merge-tag).
 * Added: `gravityview/gvlogic/parse_atts/after` action to modify `[gvlogic]` shortcode attributes after it's been parsed
-* Added: Beta Tester setting. Opt-in for access to pre-release versions of GravityView.
+* Added: A new setting to opt-in for access to the latest pre-release versions of GravityView (in Views > Settings)
 * Added: Support for Restrict Content Pro when in "No-Conflict Mode"
 * Fixed: Saving an entry could strip the entry creator information. Now, when the entry creator is not in the "Change Entry Creator" users list, we add them back in to the list.
 * Fixed: Multiple notifications could sometimes be sent when editing an entry in GravityView.
