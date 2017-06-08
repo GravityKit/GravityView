@@ -178,12 +178,15 @@ class GravityView_Welcome {
 
 		<div class="wrap">
 
-			<div style="text-align:center; padding-top: 1em;">
-				<h2>Read more articles on using GravityView</h2>
-				<p><a class="button button-primary button-hero" href="http://docs.gravityview.co/category/24-category">Getting Started Articles</a></p>
-			</div>
+			<div class="about-wrap">
+                <h2 class="about-headline-callout">Configuring a View</h2>
 
-			<div class="about-wrap"><h2 class="about-headline-callout">Configuring a View</h2></div>
+                <div class="feature-video"  style="text-align:center;">
+                    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/WrXsZhqKRY8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+
+                    <p style="text-align:center; padding-top: 1em;"><a class="button button-primary button-hero" href="http://docs.gravityview.co/category/24-category">Read more: Setting Up Your First View</a></p>
+                </div>
+            </div>
 
 			<div class="feature-section col two-col" style="margin-top:1em;">
 
