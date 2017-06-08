@@ -308,7 +308,7 @@ class GravityView_Admin {
 	 * @param string $hook
 	 * @param null|string $page Optional. String return value of page to compare against.
 	 *
-	 * @return bool|string|void If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
+	 * @return bool|string If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
 	 */
 	static function is_admin_page( $hook = '', $page = NULL ) {
 		global $current_screen, $plugin_page, $pagenow, $post;
@@ -369,7 +369,7 @@ new GravityView_Admin;
  * @param string $hook
  * @param null|string $page Optional. String return value of page to compare against.
  *
- * @return bool|string|void If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
+ * @return bool|string If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
  */
 function gravityview_is_admin_page($hook = '', $page = NULL) {
 	return GravityView_Admin::is_admin_page( $hook, $page );
