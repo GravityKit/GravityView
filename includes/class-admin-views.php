@@ -1015,40 +1015,38 @@ class GravityView_Admin_Views {
 		wp_register_script( 'gravityview-jquery-cookie', plugins_url('assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
 
 		// Don't process any scripts below here if it's not a GravityView page.
-		if( !gravityview_is_admin_page($hook) && !$is_widgets_page ) { return; }
+		if( ! gravityview_is_admin_page( $hook, 'single' ) && ! $is_widgets_page ) {
+		    return;
+		}
 
-		// Only enqueue the following on single pages
-		if( gravityview_is_admin_page($hook, 'single') || $is_widgets_page ) {
+        wp_enqueue_script( 'jquery-ui-datepicker' );
+        wp_enqueue_style( 'gravityview_views_datepicker', plugins_url('assets/css/admin-datepicker.css', GRAVITYVIEW_FILE), GravityView_Plugin::version );
 
-			wp_enqueue_script( 'jquery-ui-datepicker' );
-			wp_enqueue_style( 'gravityview_views_datepicker', plugins_url('assets/css/admin-datepicker.css', GRAVITYVIEW_FILE), GravityView_Plugin::version );
+        $script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
-			$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
+        //enqueue scripts
+        wp_enqueue_script( 'gravityview_views_scripts', plugins_url( 'assets/js/admin-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie', 'jquery-ui-datepicker', 'underscore' ), GravityView_Plugin::version );
 
-			//enqueue scripts
-			wp_enqueue_script( 'gravityview_views_scripts', plugins_url( 'assets/js/admin-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie', 'jquery-ui-datepicker', 'underscore' ), GravityView_Plugin::version );
+        wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
+            'cookiepath' => COOKIEPATH,
+            'passed_form_id' => (bool) rgget( 'form_id' ),
+            'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ),
+            'label_viewname' => __( 'Enter View name here', 'gravityview' ),
+            'label_close' => __( 'Close', 'gravityview' ),
+            'label_cancel' => __( 'Cancel', 'gravityview' ),
+            'label_continue' => __( 'Continue', 'gravityview' ),
+            'label_ok' => __( 'Ok', 'gravityview' ),
+            'label_publisherror' => __( 'Error while creating the View for you. Check the settings or contact GravityView support.', 'gravityview' ),
+            'loading_text' => esc_html__( 'Loading&hellip;', 'gravityview' ),
+            'loading_error' => esc_html__( 'There was an error loading dynamic content.', 'gravityview' ),
+            'field_loaderror' => __( 'Error while adding the field. Please try again or contact GravityView support.', 'gravityview' ),
+            'remove_all_fields' => __( 'Would you like to remove all fields in this zone? (You are seeing this message because you were holding down the ALT key)', 'gravityview' ),
+        ));
 
-			wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
-				'cookiepath' => COOKIEPATH,
-                'passed_form_id' => (bool) rgget( 'form_id' ),
-				'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ),
-				'label_viewname' => __( 'Enter View name here', 'gravityview' ),
-				'label_close' => __( 'Close', 'gravityview' ),
-				'label_cancel' => __( 'Cancel', 'gravityview' ),
-				'label_continue' => __( 'Continue', 'gravityview' ),
-				'label_ok' => __( 'Ok', 'gravityview' ),
-				'label_publisherror' => __( 'Error while creating the View for you. Check the settings or contact GravityView support.', 'gravityview' ),
-				'loading_text' => esc_html__( 'Loading&hellip;', 'gravityview' ),
-				'loading_error' => esc_html__( 'There was an error loading dynamic content.', 'gravityview' ),
-				'field_loaderror' => __( 'Error while adding the field. Please try again or contact GravityView support.', 'gravityview' ),
-				'remove_all_fields' => __( 'Would you like to remove all fields in this zone? (You are seeing this message because you were holding down the ALT key)', 'gravityview' ),
-			));
+        wp_enqueue_style( 'gravityview_views_styles', plugins_url( 'assets/css/admin-views.css', GRAVITYVIEW_FILE ), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );
 
-			wp_enqueue_style( 'gravityview_views_styles', plugins_url( 'assets/css/admin-views.css', GRAVITYVIEW_FILE ), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );
-
-			self::enqueue_gravity_forms_scripts();
-
-		} // End single page
+        // Enqueue scripts needed for merge tags
+        self::enqueue_gravity_forms_scripts();
 	}
 
 	static function enqueue_gravity_forms_scripts() {
