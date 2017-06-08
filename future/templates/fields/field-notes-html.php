@@ -20,6 +20,7 @@ if ( ! GVCommon::has_cap( array( 'gravityview_view_entry_notes', 'gravityview_ad
 
 /** State, state, state... :( */
 $_instance = GravityView_View::getInstance();
+$_instance->setForm( $gravityview->view->form->form );
 $_instance->setCurrentEntry( $entry );
 $_instance->setCurrentField( array( 'field_settings' => $field_settings ) );
 
