@@ -24,11 +24,6 @@ class GravityView_Admin {
 		// Migrate Class
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-migrate.php' );
 
-		// Don't load tooltips if on Gravity Forms, otherwise it overrides translations
-		if( class_exists( 'GFCommon' ) && class_exists( 'GFForms' ) && !GFForms::is_gravity_page() ) {
-			require_once( GFCommon::get_base_path() . '/tooltips.php' );
-		}
-
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes/class-gravityview-admin-metaboxes.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/entry-list.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-change-entry-creator.php' );

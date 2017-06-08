@@ -1049,6 +1049,13 @@ class GravityView_Admin_Views {
         self::enqueue_gravity_forms_scripts();
 	}
 
+	/**
+	 * Enqueue Gravity Forms scripts, needed for Merge Tags
+     *
+     * @since 1.0.5-beta
+     *
+     * @return void
+	 */
 	static function enqueue_gravity_forms_scripts() {
 		GFForms::register_scripts();
 

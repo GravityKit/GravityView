@@ -491,6 +491,30 @@ class GravityView_Settings extends GFAddOn {
 	}
 
 	/**
+     * Add tooltip script to app settings page. Not enqueued by Gravity Forms for some reason.
+     *
+     * @since 1.21.5
+     *
+     * @see GFAddOn::scripts()
+     *
+	 * @return array Array of scripts
+	 */
+	public function scripts() {
+		$scripts = parent::scripts();
+
+		$scripts[] = array(
+			'handle'  => 'gform_tooltip_init',
+			'enqueue' => array(
+                array(
+			        'admin_page' => array( 'app_settings' )
+                )
+            )
+		);
+
+		return $scripts;
+	}
+
+	/**
 	 * Register styles in the app admin page
 	 * @return array
 	 */
@@ -503,11 +527,13 @@ class GravityView_Settings extends GFAddOn {
 			'src'     => plugins_url( 'assets/css/admin-settings.css', GRAVITYVIEW_FILE ),
 			'version' => GravityView_Plugin::version,
 			"deps" => array(
-				'gaddon_form_settings_css'
+				'gaddon_form_settings_css',
+                'gform_tooltip',
+                'gform_font_awesome',
 			),
 			'enqueue' => array(
 				array( 'admin_page' => array(
-					'app_settings'
+					'app_settings',
 				) ),
 			)
 		);

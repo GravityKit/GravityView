@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: `gravityview/gvlogic/parse_atts/after` action to modify `[gvlogic]` shortcode attributes after it's been parsed
 * Fixed: Saving an entry could strip the entry creator information. Now, when the entry creator is not in the "Change Entry Creator" users list, we add them back in to the list.
 * Fixed: Multiple notifications could sometimes be sent when editing an entry in GravityView.
+* Fixed: Gravity Forms tooltip scripts being loaded admin-wide.
 * Added: Beta Tester setting. Opt-in for access to pre-release versions of GravityView.
 
 = 1.21.4 on April 13, 2017 =
