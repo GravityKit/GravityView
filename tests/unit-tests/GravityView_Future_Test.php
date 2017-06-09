@@ -30,9 +30,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * Resets the GravityView context, both old and new.
 	 */
 	private function _reset_context() {
-		\GravityView_View_Data::$instance = null;
-		\GravityView_frontend::$instance = null;
-		\GravityView_View::$instance = null;
+		\GV\Mocks\Legacy_Context::reset();
 		gravityview()->request = new \GV\Frontend_Request();
 	}
 
@@ -2288,6 +2286,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field = \GV\Internal_Field::by_id( 'delete_link' );
 		$expected = sprintf( '<a href="%s" onclick="%s">Delete Entry</a>', esc_attr( GravityView_Delete_Entry::get_delete_link( $entry->as_entry(), $view->ID ) ), esc_attr( GravityView_Delete_Entry::get_confirm_dialog() ) );
 		$this->assertEquals( $expected, $renderer->render( $field, $view, null, $entry, $request ) );
+		$this->assertContains( 'action=delete', $expected );
 
 		$field->update_configuration( array( 'delete_link' => 'Deletes les Entrios' ) );
 		$expected = sprintf( '<a href="%s" onclick="%s">Deletes les Entrios</a>', esc_attr( GravityView_Delete_Entry::get_delete_link( $entry->as_entry(), $view->ID ) ), esc_attr( GravityView_Delete_Entry::get_confirm_dialog() ) );
@@ -2329,6 +2328,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field = \GV\Internal_Field::by_id( 'edit_link' );
 		$expected = sprintf( '<a href="%s">Edit Entry</a>', esc_attr( GravityView_Edit_Entry::get_edit_link( $entry->as_entry(), $view->ID ) ) );
 		$this->assertEquals( $expected, $renderer->render( $field, $view, null, $entry, $request ) );
+		$this->assertContains( 'edit=', $expected );
 
 		$field->update_configuration( array( 'edit_link' => 'Editoriales los Entries', 'new_window' => true ) );
 		$expected = sprintf( '<a href="%s" rel="noopener noreferrer" target="_blank">Editoriales los Entries</a>', esc_attr( GravityView_Edit_Entry::get_edit_link( $entry->as_entry(), $view->ID ) ) );
@@ -3557,5 +3557,48 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_all_filters( 'gravityview_entries' );
 
 		$this->_reset_context();
+	}
+
+	public function test_mocks_legacy_context() {
+		\GV\Mocks\Legacy_Context::reset();
+
+		$this->assertNull( GravityView_frontend::$instance );
+		$this->assertNull( GravityView_View_Data::$instance );
+		$this->assertNull( GravityView_View::$instance );
+
+		\GV\Mocks\Legacy_Context::pop();
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => 'set all the fields!',
+			'2' => -100,
+		) );
+		$view = \GV\View::by_id( $this->factory->view->create( array( 'form_id' => $form->ID ) ) );
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'view' => $view,
+		) );
+
+		$this->assertEquals( array(
+			'\GravityView_View::atts' => $view->settings->as_atts(),
+			'\GravityView_View::view_id' => $view->ID,
+			'\GravityView_View::back_link_label' => '',
+		), \GV\Mocks\Legacy_Context::freeze() );
+
+		$view->settings->update( array( 'back_link_label' => 'Back to #{entry_id}' ) );
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'view' => $view,
+		) );
+
+		$this->assertEquals( "Back to #{entry_id}", GravityView_View::getInstance()->getBackLinkLabel( false ) );
+
+		\GV\Mocks\Legacy_Context::pop();
+
+		$this->assertEmpty( GravityView_View::getInstance()->getBackLinkLabel() );
+
+		\GV\Mocks\Legacy_Context::reset();
 	}
 }

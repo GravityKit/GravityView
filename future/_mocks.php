@@ -416,6 +416,149 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 }
 
 
+/**
+ * A manager of legacy global states and contexts.
+ *
+ * Handles mocking of:
+ * - \GravityView_View_Data
+ * - \GravityView_View
+ * - \GravityView_frontend
+ *
+ * Allows us to set a specific state globally using the old
+ *  containers, then reset it. Useful for legacy code that keeps
+ *  on depending on these variables.
+ *
+ * Some examples right now include template files, utility functions,
+ *  some actions and filters that expect the old contexts to be set.
+ */
+final class Legacy_Context {
+	private static $stack = array();
+
+	/**
+	 * Set the state depending on the provided configuration.
+	 *
+	 * Saves current global state and context.
+	 *
+	 * Configuration keys:
+	 * 
+	 * - \GV\View	view:		sets \GravityView_View::atts, \GravityView_View::view_id,
+	 *								 \GravityView_View::back_link_label
+	 *								 \GravityView_frontend::context_view_id
+	 * - \GV\Form	form:		sets \GravityView_View::form, \GravityView_View::form_id
+	 * - \GV\Field	field:		sets \GravityView_View::_current_field, \GravityView_View::field_data, 
+	 * - \GV\Entry	entry:		sets \GravityView_View::_current_entry, \GravityView_frontend::single_entry,
+	 *								 \GravityView_frontend::entry
+	 * - \WP_Post	post:		sets \GravityView_View::post_id, \GravityView_View::back_link_label,
+	 *								 \GravityView_frontend::post_id, \GravityView_frontend::is_gravityview_post_type,
+	 *								 \GravityView_frontend::post_has_shortcode
+	 * - string		context:	sets \GravityView_View::context
+	 * - array		paging:		sets \GravityView_View::paging
+	 * - array		sorting:	sets \GravityView_View::sorting
+	 * - array		template:	sets \GravityView_View::template_part_slug, \GravityView_View::template_part_name
+	 * - boolean	is_search:	sets \GravityView_frontend::is_search
+	 * - boolean	is_single:	sets \GravityView_frontend::single_entry
+	 *
+	 * also:
+	 *
+	 * - \GV\View_Collection	views:		sets \GravityView_View_Data::views
+	 * - \GV\Field_Collection	fields:		sets \GravityView_View::fields
+	 * - \GV\Entry_Collection	entries:	sets \GravityView_View::entries, \GravityView_View::total_entries
+	 *
+	 * and automagically:
+	 *
+	 * - \GravityView_View		data:		sets \GravityView_frontend::gv_output_data
+	 *
+	 * @param array $configuration The configuration.
+	 *
+	 * @return void
+	 */
+	public static function push( $configuration ) {
+		array_push( self::$stack, self::freeze() );
+		self::load( $configuration );
+	}
+
+	/**
+	 * Restores last saved state and context.
+	 *
+	 * @return void
+	 */
+	public static function pop() {
+		self::thaw( array_pop( self::$stack ) );
+	}
+
+	/**
+	 * Serializes the current configuration as needed.
+	 *
+	 * @return array The configuration.
+	 */
+	public static function freeze() {
+		return array(
+			'\GravityView_View::atts' => \GravityView_View::getInstance()->getAtts(),
+			'\GravityView_View::view_id' => \GravityView_View::getInstance()->getViewId(),
+			'\GravityView_View::back_link_label' => \GravityView_View::getInstance()->getBackLinkLabel( false ),
+		);
+	}
+
+	/**
+	 * Unserializes a saved configuration. Modifies the global state.
+	 *
+	 * @param array $data Saved configuration from self::freeze()
+	 */
+	public static function thaw( $data ) {
+		foreach ( (array)$data as $key => $value ) {
+			switch ( $key ):
+				case '\GravityView_View::atts':
+					\GravityView_View::getInstance()->setAtts( $value );
+					break;
+				case '\GravityView_View::view_id':
+					\GravityView_View::getInstance()->setViewId( $value );
+					break;
+				case '\GravityView_View::back_link_label':
+					\GravityView_View::getInstance()->setBackLinkLabel( $value );
+					break;
+			endswitch;
+		}
+	}
+
+	/**
+	 * Hydrates the legacy context globals as needed.
+	 *
+	 * @see self::push() for format.
+	 *
+	 * @return void
+	 */
+	public static function load( $configuration ) {
+		foreach ( (array)$configuration as $key => $value ) {
+			switch ( $key ):
+				case 'view':
+					self::thaw( array(
+						'\GravityView_View::atts' => $value->settings->as_atts(),
+						'\GravityView_View::view_id' => $value->ID,
+						'\GravityView_View::back_link_label' => $value->settings->get( 'back_link_label', null ),
+					) );
+					break;
+			endswitch;
+		}
+	}
+
+	/**
+	 * Resets the global state completely.
+	 *
+	 * Use with utmost care, as filter and action callbacks
+	 *  may be added again.
+	 *
+	 * Does not touch the context stack.
+	 *
+	 * @return void
+	 */
+	public static function reset() {
+		\GravityView_View::$instance = null;
+		\GravityView_frontend::$instance = null;
+		\GravityView_View_Data::$instance = null;
+	}
+}
+
+
 /** Add some global fix for field capability discrepancies. */
 add_filter( 'gravityview/configuration/fields', function( $fields ) {
 	if ( empty( $fields  ) ) {

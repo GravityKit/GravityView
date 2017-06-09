@@ -13,8 +13,9 @@ if ( ! class_exists( 'GravityView_Edit_Entry' ) ) {
 }
 
 /** The state still haunts us... BOO! */
-$_restore = GravityView_View::getInstance()->getViewId();
-GravityView_View::getInstance()->setViewId( $gravityview->view->ID );
+\GV\Mocks\Legacy_Context::push( array(
+	'view' => $gravityview->view,
+) );
 
 // Only show the link to logged-in users.
 if ( ! GravityView_Edit_Entry::check_user_cap_edit_entry( $entry ) ) {
@@ -34,4 +35,4 @@ $href = GravityView_Edit_Entry::get_edit_link( $entry, $gravityview->view->ID );
 
 echo gravityview_get_link( $href, $output, $link_atts );
 
-GravityView_View::getInstance()->setViewId( $_restore );
+\GV\Mocks\Legacy_Context::pop();

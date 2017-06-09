@@ -13,8 +13,9 @@ if ( ! class_exists( 'GravityView_Delete_Entry' ) ) {
 }
 
 /** The state still haunts us... BOO! */
-$_restore = GravityView_View::getInstance()->getViewId();
-GravityView_View::getInstance()->setViewId( $gravityview->view->ID );
+\GV\Mocks\Legacy_Context::push( array(
+	'view' => $gravityview->view,
+) );
 
 // Only show the link to logged-in users with the right caps.
 if ( ! GravityView_Delete_Entry::check_user_cap_delete_entry( $entry, $field_settings ) ) {
@@ -33,4 +34,4 @@ $attributes = array(
 
 echo gravityview_get_link( $href, $link_text, $attributes );
 
-GravityView_View::getInstance()->setViewId( $_restore );
+\GV\Mocks\Legacy_Context::pop();

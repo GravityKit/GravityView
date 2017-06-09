@@ -4,8 +4,13 @@
  *
  * @global array $gravityview
  */
+
+\GV\Mocks\Legacy_Context::push( array( 'view' => $gravityview->view ) )
+
 ?>
+
 <?php gravityview_before(); ?>
+
 
 <p class="gv-back-link"><?php echo gravityview_back_link(); ?></p>
 
@@ -25,3 +30,7 @@
 	</table>
 </div>
 <?php gravityview_after(); ?>
+
+<?php
+
+\GV\Mocks\Legacy_Context::pop();
