@@ -158,27 +158,9 @@ final class Core {
 
 		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );
 
-		/**
-		 * Use this for global state tracking in the old code.
-		 *
-		 * We're in a tricky situation now, where we're putting our
-		 *  Frontend_Request to work. But the old code is relying on
-		 *  it to keep track of views state and whatnot. Ugh.
-		 *
-		 * More importantly GravityView_View_Data is resetting it every
-		 *  time the class instantiates! This conflicts with adding filters,
-		 *  actions, and other global initialization for the real request.
-		 *
-		 * Let's give them a Dummy_Request to work with. They're using it
-		 *  as a container for views either way. And for the is_admin()
-		 *  function, which will be available once GravityView_View_Data
-		 *  is removed.
-		 */
-		$this->request = new Dummy_Request();
-
-		if ( ! $this->request->is_admin() ) {
+		if ( ! Request::is_admin() ) {
 			/** The main frontend request. */
-			new Frontend_Request();
+			$this->request = new Frontend_Request();
 		}
 
 		define( 'GRAVITYVIEW_FUTURE_CORE_LOADED', true );
@@ -195,17 +177,8 @@ final class Core {
 	private function __wakeup() { }
 
 	public function __get( $key ) {
-		switch ( $key ) {
-			case 'views':
-				return $this->request->views;
-		}
 	}
 
 	public function __set( $key, $value ) {
-		switch ( $key ) {
-			case 'views':
-				gravityview()->log->error( __CLASS__ . '::$views is an immutable reference to ' . __CLASS__ . '::$request::$views.' );
-				return;
-		}
 	}
 }

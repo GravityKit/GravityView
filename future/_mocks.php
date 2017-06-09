@@ -12,25 +12,25 @@ namespace GV\Mocks;
  *
  * @return array|false The old array data, or false on error.
  */
-function GravityView_View_Data_add_view( $view_id, $atts ) {
+function GravityView_View_Data_add_view( $view_id, $atts, $_this ) {
 	/** Handle array of IDs. */
 	if ( is_array( $view_id ) ) {
 		foreach ( $view_id as $id ) {
-			call_user_func( __FUNCTION__, $id, $atts );
+			call_user_func( __FUNCTION__, $id, $atts, $_this );
 		}
 
-		if ( ! gravityview()->request->views->count() ) {
+		if ( ! $_this->views->count() ) {
 			return array();
 		}
 
 		return array_combine(
-			array_map( function( $view ) { return $view->ID; }, gravityview()->request->views->all() ),
-			array_map( function( $view ) { return $view->as_data(); }, gravityview()->request->views->all() )
+			array_map( function( $view ) { return $view->ID; }, $_this->views->all() ),
+			array_map( function( $view ) { return $view->as_data(); }, $_this->views->all() )
 		);
 	}
 
 	/** View has been set already. */
-	if ( $view = gravityview()->request->views->get( $view_id ) ) {
+	if ( $view = $_this->views->get( $view_id ) ) {
 		do_action( 'gravityview_log_debug', sprintf( 'GravityView_View_Data[add_view] Returning; View #%s already exists.', $view_id ) );
 		return $view->as_data();
 	}
@@ -52,7 +52,7 @@ function GravityView_View_Data_add_view( $view_id, $atts ) {
 		$view->settings->update( $atts );
 	}
 
-	gravityview()->request->views->add( $view );
+	$_this->views->add( $view );
 
 	return $view->as_data();
 }

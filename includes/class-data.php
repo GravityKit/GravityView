@@ -9,7 +9,7 @@ class GravityView_View_Data {
 
 	static $instance = NULL;
 
-	protected $views = array();
+	public $views = array();
 
 	/**
 	 *
@@ -17,8 +17,7 @@ class GravityView_View_Data {
 	 */
 	private function __construct( $passed_post = NULL ) {
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			/** Reset the new frontend request views, since we now have duplicate state. */
-			gravityview()->request = new \GV\Dummy_Request();
+			$this->views = new \GV\View_Collection();
 		}
 
 		if( !empty( $passed_post ) ) {
@@ -27,8 +26,8 @@ class GravityView_View_Data {
 
 			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 				foreach( is_array( $id_or_id_array ) ? $id_or_id_array : array( $id_or_id_array ) as $view_id ) {
-					if ( \GV\View::exists( $view_id ) && ! gravityview()->views->contains( $view_id ) ) {
-						gravityview()->views->add( \GV\View::by_id( $view_id ) );
+					if ( \GV\View::exists( $view_id ) && ! $this->views->contains( $view_id ) ) {
+						$this->views->add( \GV\View::by_id( $view_id ) );
 					}
 				}
 			} else if ( ! empty( $id_or_id_array ) ) {
@@ -40,12 +39,12 @@ class GravityView_View_Data {
 
 	/**
 	 * @deprecated
-	 * @see \GV\View_Collection::count via `gravityview()->request->views->count()` or `gravityview()->views->count()`
+	 * @see \GV\View_Collection::count
 	 * @return boolean
 	 */
 	public function has_multiple_views() {
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			return gravityview()->views->count() > 1;
+			return $this->views->count() > 1;
 		}
 
 		//multiple views
@@ -93,8 +92,8 @@ class GravityView_View_Data {
 							$ids []= $view->ID;
 
 							/** And as a side-effect... add each view to the global scope. */
-							if ( ! gravityview()->views->contains( $view->ID ) ) {
-								gravityview()->views->add( $view );
+							if ( ! $this->views->contains( $view->ID ) ) {
+								$this->views->add( $view );
 							}
 						}
 					} else {
@@ -129,8 +128,8 @@ class GravityView_View_Data {
 								$ids []= $shortcode->atts['id'];
 
 								/** And as a side-effect... add each view to the global scope. */
-								if ( ! gravityview()->views->contains( $shortcode->atts['id'] ) && \GV\View::exists( $shortcode->atts['id'] ) ) {
-									gravityview()->views->add( $shortcode->atts['id'] );
+								if ( ! $this->views->contains( $shortcode->atts['id'] ) && \GV\View::exists( $shortcode->atts['id'] ) ) {
+									$this->views->add( $shortcode->atts['id'] );
 								}
 							}
 						}
@@ -172,16 +171,16 @@ class GravityView_View_Data {
 
 	/**
 	 * @deprecated
-	 * @see \GV\View_Collection::all() via `gravityview()->views` or `gravityview()->request->views`.
+	 * @see \GV\View_Collection::all()
 	 */
 	function get_views() {
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			if ( ! gravityview()->views->count() ) {
+			if ( ! $this->views->count() ) {
 				return array();
 			}
 			return array_combine(
-				array_map( function ( $view ) { return $view->ID; }, gravityview()->views->all() ),
-				array_map( function ( $view ) { return $view->as_data(); }, gravityview()->views->all() )
+				array_map( function ( $view ) { return $view->ID; }, $this->views->all() ),
+				array_map( function ( $view ) { return $view->as_data(); }, $this->views->all() )
 			);
 		}
 		return $this->views;
@@ -189,11 +188,11 @@ class GravityView_View_Data {
 
 	/**
 	 * @deprecated
-	 * @see \GV\View_Collection::get() via `gravityview()->views` or `gravityview()->request->views`.
+	 * @see \GV\View_Collection::get()
 	 */
 	function get_view( $view_id, $atts = NULL ) {
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			if ( ! $view = gravityview()->views->get( $view_id ) ) {
+			if ( ! $view = $this->views->get( $view_id ) ) {
 				if ( ! \GV\View::exists( $view_id ) ) {
 					return false;
 				}
@@ -203,7 +202,9 @@ class GravityView_View_Data {
 				if ( $atts ) {
 					$view->settings->update( $atts );
 				}
-				gravityview()->views->add( $view );
+				$this->views->add( $view );
+			} elseif ( $atts ) {
+				$view->settings->update( $atts );
 			}
 			return $view->as_data();
 		}
@@ -252,8 +253,7 @@ class GravityView_View_Data {
 	 * @param array|string $atts Combine other attributes (eg. from shortcode) with the view settings (optional)
 	 *
 	 * @deprecated
-	 * @see \GV\View_Collection::append with the request \GV\View_Collection available via `gravityview()->request->views`
-	 *  or the `gravityview()->views` shortcut.
+	 * @see \GV\View_Collection::append
 	 *
 	 * @return array|false All views if $view_id is array, a view data array if $view_id is an int, false on errors.
 	 */
@@ -261,7 +261,7 @@ class GravityView_View_Data {
 
 		/** Deprecated. Do not edit. */
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			return \GV\Mocks\GravityView_View_Data_add_view( $view_id, $atts );
+			return \GV\Mocks\GravityView_View_Data_add_view( $view_id, $atts, $this );
 		}
 
 		// Handle array of IDs
@@ -481,8 +481,8 @@ class GravityView_View_Data {
 			$ids = array();
 			foreach ( \GV\Shortcode::parse( $content ) as $shortcode ) {
 				if ( $shortcode->name == 'gravityview' && is_numeric( $shortcode->atts['id'] ) ) {
-					if ( \GV\View::exists( $shortcode->atts['id'] ) && ! gravityview()->views->contains( $shortcode->atts['id'] ) ) {
-						gravityview()->views->add( \GV\View::by_id( $shortcode->atts['id'] ) );
+					if ( \GV\View::exists( $shortcode->atts['id'] ) && ! $this->views->contains( $shortcode->atts['id'] ) ) {
+						$this->views->add( \GV\View::by_id( $shortcode->atts['id'] ) );
 					}
 					/**
 					 * The original function outputs the ID even though it wasn't added by ::add_view()

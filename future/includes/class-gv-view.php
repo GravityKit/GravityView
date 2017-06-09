@@ -351,7 +351,7 @@ class View implements \ArrayAccess {
 			case 'form_id':
 				return $this->form ? $this->form->ID : null;
 			case 'atts':
-				return $this->as_atts();
+				return $this->settings->as_atts();
 			default:
 				/** @todo move the rest out and get rid of _data completely! */
 				return $this->_data[$offset];

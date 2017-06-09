@@ -248,19 +248,4 @@ class Frontend_Request extends Request {
 			return;
 		}
 	}
-
-	/**
-	 * Check if WordPress is_admin(), and make sure not DOING_AJAX.
-	 *
-	 * @todo load-(scripts|styles).php return true for \is_admin()!
-	 *
-	 * @api
-	 * @since future
-	 *
-	 * @return bool Pure is_admin or not?
-	 */
-	public function is_admin() {
-		$doing_ajax = defined( 'DOING_AJAX' ) ? DOING_AJAX : false;
-		return is_admin() && ! $doing_ajax;
-	}
 }

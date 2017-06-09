@@ -12,20 +12,24 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * Parses and transforms an end-request for views to View objects.
  */
 abstract class Request {
+	public function __construct() {
+	}
+
 	/**
-	 * @var \GV\View_Collection The views attached to the current request.
+	 * Check if WordPress is_admin(), and make sure not DOING_AJAX.
+	 *
+	 * @todo load-(scripts|styles).php return true for \is_admin()!
 	 *
 	 * @api
 	 * @since future
+	 *
+	 * @return bool Pure is_admin or not?
 	 */
-	public $views;
-
-	public function __construct() {
-		/** Initialize with an empty \GV\View_Collection */
-		$this->views = new \GV\View_Collection();
+	public static function is_admin() {
+		$doing_ajax = defined( 'DOING_AJAX' ) ? DOING_AJAX : false;
+		return is_admin() && ! $doing_ajax;
 	}
 }
 
 /** Load implementations. */
 require gravityview()->plugin->dir( 'future/includes/class-gv-request-frontend.php' );
-require gravityview()->plugin->dir( 'future/includes/class-gv-request-dummy.php' );

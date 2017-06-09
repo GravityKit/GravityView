@@ -228,23 +228,7 @@ class GravityView_oEmbed {
 
 			do_action('gravityview_log_debug', 'GravityView_oEmbed[render_handler] Embedding an entry inside a post or page', $matches );
 
-			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && $post = get_post( $post_id ) ) {
-				$views = \GV\View_Collection::from_post( $post );
-				$views = $views->all();
-				if ( ! empty( $views ) ) {
-					/** maybe_get_view_id has a side-effect that adds retrieved views to the global scope */
-					foreach ( $views as $view ) {
-						if ( \GV\View::exists( $view->ID ) && ! gravityview()->views->contains( $view->ID ) ) {
-							gravityview()->views->add( $view );
-						}
-					}
-
-					$this->view_id = $views[0]->ID;
-				}
-			} else {
-				/** Deprecated. */
-				$this->view_id = GravityView_View_Data::getInstance()->maybe_get_view_id( $post_id );
-			}
+			$this->view_id = GravityView_View_Data::getInstance()->maybe_get_view_id( $post_id );
 
 		} else {
 
