@@ -111,7 +111,7 @@ class GravityView_Welcome {
 		if( !$this->is_dashboard_page() ) { return; }
 
 		?>
-		<style type="text/css" media="screen">
+        <style type="text/css" media="screen" xmlns="http://www.w3.org/1999/html">
 		/*<![CDATA[*/
 
 		.update-nag { display: none; }
@@ -257,12 +257,16 @@ class GravityView_Welcome {
 
 				<div class="feature-section col two-col" style="margin:0; padding: 0;">
 					<div class="col col-1">
-						<div class="media-container"><img alt="Pricing fields? Check." src="<?php echo plugins_url( 'assets/images/screenshots/edit-product-fields.jpg', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
+                        <div class="media-container"><img alt="{current_post}" src="<?php echo plugins_url( 'assets/images/screenshots/current_post.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
+                        <h4 class="higher">New <code>{current_post}</code> Merge Tag</h4>
+                        <p>It may not sound like much, but it's powerful! Use it together with the <code>[gvlogic]</code> shortcode to show or hide content based on the page your View is embedded on. Use with the Advanced Filter Extension.</p>
+                        <p><a href="https://docs.gravityview.co/article/412-currentpost-merge-tag" class="button-primary button button-large">Learn more about using the Merge Tag</a></p>
                     </div>
-                    <div class="col col-2 last-col">
-                        <h4 class="higher">Edit Pricing Fields</h4>
-                        <p>You can now edit product fields when an entry does not have transaction data. If you manage products internally, you'll love this feature!</p>
-                        <p><a href="https://docs.gravityview.co/article/406-editing-product-and-pricing-fields" class="button-primary button button-large">Learn more about editing Pricing Fields</a></p>
+                    <div class="col col-2">
+                        <div class="media-container"><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ) ); ?>"><img alt="Beta!" src="<?php echo plugins_url( 'assets/images/screenshots/beta-program.jpg', GRAVITYVIEW_FILE ); ?>" style="border: none"></a></div>
+                        <h4 class="higher">Beta Program</h4>
+                        <p>We have a new Beta Program that gives you access to the latest pre-release versions of GravityView. We&rsquo;ve got big updates coming, and by opting-in, you&rsquo;ll get access early.</p>
+                        <p><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ) ); ?>" class="button button-primary button-large">Turn on &ldquo;Become a Beta Tester&rdquo; in Settings</a></p>
 					</div>
 				</div>
 
