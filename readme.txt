@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Potential security issue
 * Fixed: Multiple notifications could sometimes be sent when editing an entry in GravityView.
 * Fixed: Gravity Forms tooltip scripts being loaded admin-wide.
+* Updated: Dutch translations (thanks, Thom!)
 
 = 1.21.4 on April 13, 2017 =
 
