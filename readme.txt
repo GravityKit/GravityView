@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.7.3
+Tested up to: 4.8
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -19,6 +19,17 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 1.21.5 on June 8, 2017 =
+
+* Added: The `{current_post}` Merge Tag adds information about the current post. [Read more about it](http://docs.gravityview.co/article/412-currentpost-merge-tag).
+* Added: `gravityview/gvlogic/parse_atts/after` action to modify `[gvlogic]` shortcode attributes after it's been parsed
+* Added: A new setting to opt-in for access to the latest pre-release versions of GravityView (in Views > Settings)
+* Added: Support for Restrict Content Pro when in "No-Conflict Mode"
+* Fixed: Saving an entry could strip the entry creator information. Now, when the entry creator is not in the "Change Entry Creator" users list, we add them back in to the list.
+* Fixed: Potential security issue
+* Fixed: Multiple notifications could sometimes be sent when editing an entry in GravityView.
+* Fixed: Gravity Forms tooltip scripts being loaded admin-wide.
 
 = 1.21.4 on April 13, 2017 =
 

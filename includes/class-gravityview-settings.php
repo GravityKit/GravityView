@@ -491,6 +491,30 @@ class GravityView_Settings extends GFAddOn {
 	}
 
 	/**
+     * Add tooltip script to app settings page. Not enqueued by Gravity Forms for some reason.
+     *
+     * @since 1.21.5
+     *
+     * @see GFAddOn::scripts()
+     *
+	 * @return array Array of scripts
+	 */
+	public function scripts() {
+		$scripts = parent::scripts();
+
+		$scripts[] = array(
+			'handle'  => 'gform_tooltip_init',
+			'enqueue' => array(
+                array(
+			        'admin_page' => array( 'app_settings' )
+                )
+            )
+		);
+
+		return $scripts;
+	}
+
+	/**
 	 * Register styles in the app admin page
 	 * @return array
 	 */
@@ -503,11 +527,13 @@ class GravityView_Settings extends GFAddOn {
 			'src'     => plugins_url( 'assets/css/admin-settings.css', GRAVITYVIEW_FILE ),
 			'version' => GravityView_Plugin::version,
 			"deps" => array(
-				'gaddon_form_settings_css'
+				'gaddon_form_settings_css',
+                'gform_tooltip',
+                'gform_font_awesome',
 			),
 			'enqueue' => array(
 				array( 'admin_page' => array(
-					'app_settings'
+					'app_settings',
 				) ),
 			)
 		);
@@ -772,6 +798,7 @@ class GravityView_Settings extends GFAddOn {
 			'no-conflict-mode' => '1',
 			'support_port' => '1',
 			'flexbox_search' => '1',
+			'beta' => '0',
 		);
 
 		return $defaults;
@@ -892,7 +919,7 @@ class GravityView_Settings extends GFAddOn {
 						'value' => '0',
 					),
 				),
-				'tooltip' => '<p><img src="' . esc_url_raw( plugins_url('assets/images/screenshots/beacon.png', GRAVITYVIEW_FILE ) ) . '" alt="' . esc_attr__( 'The Support Port looks like this.', 'gravityview' ) . '" class="alignright" style="max-width:40px; margin:.5em;" />' . esc_html__('The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support.', 'gravityview') . '</p>',
+				'tooltip' => '<p><img src="' . esc_url_raw( plugins_url('assets/images/beacon.png', GRAVITYVIEW_FILE ) ) . '" alt="' . esc_attr__( 'The Support Port looks like this.', 'gravityview' ) . '" class="alignright" style="max-width:40px; margin:.5em;" />' . esc_html__('The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support.', 'gravityview') . '</p>',
 				'description'   => __( 'Show the Support Port on GravityView pages?', 'gravityview' ),
 			),
 			array(
@@ -912,6 +939,21 @@ class GravityView_Settings extends GFAddOn {
 					),
 				),
 				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ) . ' ' . __('If your Edit View tabs are ugly, enable this setting.', 'gravityview'),
+			),
+			array(
+				'name'       => 'beta',
+				'type'       => 'checkbox',
+				'label'      => __( 'Become a Beta Tester', 'gravityview' ),
+				'default_value'    => $default_settings['beta'],
+				'horizontal' => 1,
+				'choices'    => array(
+					array(
+						'label' => _x('Show me beta versions if they are available.', 'gravityview'),
+						'value' => '1',
+                        'name'  => 'beta',
+					),
+				),
+				'description'   => __( 'You will have early access to the latest GravityView features and improvements. There may be bugs! If you encounter an issue, help make GravityView better by reporting it!', 'gravityview'),
 			),
 		) );
 

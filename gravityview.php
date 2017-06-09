@@ -3,7 +3,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	https://gravityview.co
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:          	1.21.4
+ * Version:          	1.21.5
  * Author:            	GravityView
  * Author URI:        	https://gravityview.co
  * Text Domain:       	gravityview
@@ -79,7 +79,7 @@ require GRAVITYVIEW_DIR . 'future/loader.php';
  */
 final class GravityView_Plugin {
 
-	const version = '1.21.4';
+	const version = '1.21.5';
 
 	private static $instance;
 
@@ -211,6 +211,26 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public static function activate() {
+
+		/**
+		 * Do not allow activation if PHP version is lower than 5.3.
+		 */
+		$version = phpversion();
+		if ( version_compare( $version, '5.3', '<' ) ) {
+
+			if ( php_sapi_name() == 'cli' ) {
+				printf( __( "GravityView requires PHP Version %s or newer. You're using Version %s. Please ask your host to upgrade your server's PHP.", 'gravityview' ),
+					GV_FUTURE_MIN_PHP_VERSION , phpversion() );
+			} else {
+				printf( '<body style="padding: 0; margin: 0; font-family: sans-serif;">' );
+				printf( '<img src="' . plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ) . '" alt="The GravityView Astronaut Says:" style="float: left; height: 100%%; margin-right : 10px;" />' );
+				printf( __( "%sGravityView requires PHP Version %s or newer.%s \n\nYou're using Version %s. Please ask your host to upgrade your server's PHP.", 'gravityview' ),
+					'<h3 style="margin-bottom: 0">', GV_FUTURE_MIN_PHP_VERSION , "</h3>\n\n", $version );
+				printf( '</body>' );
+			}
+
+			exit; /** Die without activating. Sorry. */
+		}
 
 		self::require_files();
 

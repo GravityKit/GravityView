@@ -11,6 +11,7 @@ $gravityview_view = GravityView_View::getInstance();
 extract( $gravityview_view->getCurrentField() );
 
 if( !empty( $value ) && function_exists( 'gravityview_format_link' ) ) {
+	$value = esc_url_raw( $value );
 
 	/** @since 1.8 */
 	$anchor_text = !empty( $field_settings['anchor_text'] ) ? trim( rtrim( $field_settings['anchor_text'] ) ) : false;
@@ -30,5 +31,5 @@ if( !empty( $value ) && function_exists( 'gravityview_format_link' ) ) {
 	echo gravityview_get_link( $value, $anchor_text, $attributes );
 
 } else {
-	echo $display_value;
+	echo esc_html( esc_url_raw( $value ) );
 }
