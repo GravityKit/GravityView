@@ -278,6 +278,7 @@ class GravityView_Welcome {
                     <li>Added: A new setting to opt-in for access to the latest pre-release versions of GravityView (in <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ) ); ?>">Views &gt; Settings)</a></li>
                     <li>Added: Support for Restrict Content Pro when in &quot;No-Conflict Mode&quot;</li>
                     <li>Fixed: Saving an entry could strip the entry creator information. Now, when the entry creator is not in the &quot;Change Entry Creator&quot; users list, we add them back in to the list.</li>
+                    <li>Fixed: Potential security issue</li>
                     <li>Fixed: Multiple notifications could sometimes be sent when editing an entry in GravityView.</li>
                     <li>Fixed: Gravity Forms tooltip scripts being loaded admin-wide.</li>
                 </ul>
