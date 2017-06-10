@@ -224,6 +224,10 @@ class GravityView_Edit_Entry_Render {
 
         $this->setup_vars();
 
+		if ( ! $gv_data ) {
+			$gv_data = GravityView_View_Data::getInstance();
+		}
+
         // Multiple Views embedded, don't proceed if nonce fails
 		if ( $gv_data->has_multiple_views() && ! wp_verify_nonce( $_GET['edit'], self::$nonce_key ) ) {
             do_action('gravityview_log_error', __METHOD__ . ': Nonce validation failed for the Edit Entry request; returning' );

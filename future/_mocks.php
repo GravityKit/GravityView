@@ -443,8 +443,8 @@ final class Legacy_Context {
 	 * 
 	 * - \GV\View	view:		sets \GravityView_View::atts, \GravityView_View::view_id,
 	 *								 \GravityView_View::back_link_label
-	 *								 \GravityView_frontend::context_view_id
-	 * - \GV\Form	form:		sets \GravityView_View::form, \GravityView_View::form_id
+	 *								 \GravityView_frontend::context_view_id,
+	 *								 \GravityView_View::form, \GravityView_View::form_id
 	 * - \GV\Field	field:		sets \GravityView_View::_current_field, \GravityView_View::field_data, 
 	 * - \GV\Entry	entry:		sets \GravityView_View::_current_entry, \GravityView_frontend::single_entry,
 	 *								 \GravityView_frontend::entry
@@ -496,6 +496,9 @@ final class Legacy_Context {
 			'\GravityView_View::atts' => \GravityView_View::getInstance()->getAtts(),
 			'\GravityView_View::view_id' => \GravityView_View::getInstance()->getViewId(),
 			'\GravityView_View::back_link_label' => \GravityView_View::getInstance()->getBackLinkLabel( false ),
+			'\GravityView_View::entries' => \GravityView_View::getInstance()->getEntries(),
+			'\GravityView_View::form' => \GravityView_View::getInstance()->getForm(),
+			'\GravityView_View::form_id' => \GravityView_View::getInstance()->getFormId(),
 		);
 	}
 
@@ -516,6 +519,15 @@ final class Legacy_Context {
 				case '\GravityView_View::back_link_label':
 					\GravityView_View::getInstance()->setBackLinkLabel( $value );
 					break;
+				case '\GravityView_View::entries':
+					\GravityView_View::getInstance()->setEntries( $value );
+					break;
+				case '\GravityView_View::form':
+					\GravityView_View::getInstance()->setForm( $value );
+					break;
+				case '\GravityView_View::form_id':
+					\GravityView_View::getInstance()->setFormId( $value );
+					break;
 			endswitch;
 		}
 	}
@@ -535,6 +547,13 @@ final class Legacy_Context {
 						'\GravityView_View::atts' => $value->settings->as_atts(),
 						'\GravityView_View::view_id' => $value->ID,
 						'\GravityView_View::back_link_label' => $value->settings->get( 'back_link_label', null ),
+						'\GravityView_View::form' => $value->form ? $value->form->form : null,
+						'\GravityView_View::form_id' => $value->form ? $value->form->ID : null,
+					) );
+					break;
+				case 'entries':
+					self::thaw( array(
+						'\GravityView_View::entries' => array_map( function( $e ) { return $e->as_entry(); }, $value->all() ),
 					) );
 					break;
 			endswitch;

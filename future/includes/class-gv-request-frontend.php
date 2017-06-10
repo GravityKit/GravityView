@@ -132,7 +132,20 @@ class Frontend_Request extends Request {
 				 * Entry editing, huh?
 				 */
 				if ( $this->is_edit_entry() ) {
-					throw new Exception( 'Not implemented yet.' );
+					if ( $entry = \GV\GF_Entry::by_id( get_query_var( \GV\Entry::get_endpoint_name() ) ) ) {
+
+						$entries = new \GV\Entry_Collection();
+						$entries->add( $entry );
+
+						\GV\Mocks\Legacy_Context::push( array(
+							'view' => $view,
+							'entries' => $entries,
+						) );
+
+						do_action( 'gravityview_edit_entry', null );
+
+						\GV\Mocks\Legacy_Context::pop();
+					}
 
 				/**
 				 * Viewing a single entry.
@@ -201,7 +214,12 @@ class Frontend_Request extends Request {
 	 * @return boolean True if this is an edit entry request.
 	 */
 	public function is_edit_entry() {
-		return $this->is_entry() && false;
+		/**
+		* @filter `gravityview_is_edit_entry` Whether we're currently on the Edit Entry screen \n
+		* The Edit Entry functionality overrides this value.
+		* @param boolean $is_edit_entry
+		*/
+		return $this->is_entry() && apply_filters( 'gravityview_is_edit_entry', false );
 	}
 
 	/**
