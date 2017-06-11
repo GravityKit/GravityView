@@ -158,10 +158,9 @@ final class Core {
 
 		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );
 
-		if ( ! Request::is_admin() ) {
-			/** The main frontend request. */
-			$this->request = new Frontend_Request();
-		}
+		/** The main frontend request. */
+		$this->request = new Frontend_Request();
+		/** For now it is the only request type we have. */
 
 		define( 'GRAVITYVIEW_FUTURE_CORE_LOADED', true );
 
@@ -177,6 +176,10 @@ final class Core {
 	private function __wakeup() { }
 
 	public function __get( $key ) {
+		switch ( $key ) {
+			case 'request':
+				return new Frontend_Request();
+		}
 	}
 
 	public function __set( $key, $value ) {
