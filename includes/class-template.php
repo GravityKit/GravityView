@@ -835,7 +835,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 		$view_data = gravityview_get_current_view_data( $view_id );
 
 		// get View widget configuration
-		$widgets = (array)$view_data['widgets'];
+		$widgets = isset( $view_data['widgets'] ) ? (array)$view_data['widgets'] : array();
 
 		switch( current_filter() ) {
 			default:

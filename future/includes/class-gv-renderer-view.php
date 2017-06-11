@@ -116,8 +116,17 @@ class View_Renderer extends Renderer {
 		}
 		$template = new $class( $view, $entries, $request );
 
+		/** Mock the legacy state for the widgets and whatnot */
+		\GV\Mocks\Legacy_Context::push( array(
+			'view' => $view,
+			'entries' => $entries,
+			'context' => 'directory'
+		) );
+
 		ob_start();
 		$template->render();
+
+		\GV\Mocks\Legacy_Context::pop();
 		return ob_get_clean();
 	}
 }

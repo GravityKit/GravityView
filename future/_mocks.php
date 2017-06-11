@@ -499,6 +499,8 @@ final class Legacy_Context {
 			'\GravityView_View::entries' => \GravityView_View::getInstance()->getEntries(),
 			'\GravityView_View::form' => \GravityView_View::getInstance()->getForm(),
 			'\GravityView_View::form_id' => \GravityView_View::getInstance()->getFormId(),
+			'\GravityView_View::context' => \GravityView_View::getInstance()->getContext(),
+			'\GravityView_View::total_entries' => \GravityView_View::getInstance()->getTotalEntries(),
 		);
 	}
 
@@ -528,6 +530,12 @@ final class Legacy_Context {
 				case '\GravityView_View::form_id':
 					\GravityView_View::getInstance()->setFormId( $value );
 					break;
+				case '\GravityView_View::context':
+					\GravityView_View::getInstance()->setContext( $value );
+					break;
+				case '\GravityView_View::total_entries':
+					\GravityView_View::getInstance()->setTotalEntries( $value );
+					break;
 			endswitch;
 		}
 	}
@@ -554,8 +562,13 @@ final class Legacy_Context {
 				case 'entries':
 					self::thaw( array(
 						'\GravityView_View::entries' => array_map( function( $e ) { return $e->as_entry(); }, $value->all() ),
+						'\GravityView_View::total_entries' => $value->total(),
 					) );
 					break;
+				case 'context':
+					self::thaw( array(
+						'\GravityView_View::context' => $value,
+					) );
 			endswitch;
 		}
 	}

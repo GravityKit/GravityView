@@ -3588,6 +3588,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'\GravityView_View::form' => $view->form->form,
 			'\GravityView_View::form_id' => $view->form->ID,
 			'\GravityView_View::entries' => array(),
+			'\GravityView_View::context' => 'directory',
+			'\GravityView_View::total_entries' => 0,
 		), \GV\Mocks\Legacy_Context::freeze() );
 
 		$view->settings->update( array( 'back_link_label' => 'Back to #{entry_id}' ) );
