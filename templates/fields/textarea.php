@@ -12,8 +12,19 @@ $gravityview_view = GravityView_View::getInstance();
 
 extract( $gravityview_view->getCurrentField() );
 
-/** Escape! */
-$value = esc_html( $value );
+/**
+ * @filter `gravityview/fields/textarea/allowed_kses` Allow the following HTML tags and strip everything else.
+ * @since 1.21.5.1
+ * @param array $allowed_html The allowed tags. Default: p, a, b, em, u
+ */
+$allowed_html = add_filter( 'gravityview/fields/textarea/allowed_kses', array(
+	'p' => array(),
+	'a' => array( 'href' ),
+	'b' => array(),
+	'em' => array(),
+	'u' => array()
+) );
+$value = wp_kses( $value, $allowed_html );
 
 if( !empty( $field_settings['trim_words'] ) ) {
 
