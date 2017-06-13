@@ -20,6 +20,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.21.5.1 on June 13, 2017 =
+
+* Modified: We stopped allowing any HTML in Paragraph Text fields in 1.21.5, but this functionality was used by lots of people. We now use a different function to allow safe HTML by default.
+* Added: `gravityview/fields/textarea/allowed_kses` filter to modify the allowed HTML to be displayed.
+
 = 1.21.5 on June 8, 2017 =
 
 * Added: The `{current_post}` Merge Tag adds information about the current post. [Read more about it](http://docs.gravityview.co/article/412-currentpost-merge-tag).

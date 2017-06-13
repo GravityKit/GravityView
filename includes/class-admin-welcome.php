@@ -274,6 +274,14 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.21.5.1 on June 13, 2017</h3>
+
+                <ul>
+                    <li>Modified: We stopped allowing any HTML in Paragraph Text fields in 1.21.5, but this functionality was used by lots of people. We now use a different function to allow safe HTML by default.</li>
+                    <li>Added: `gravityview/fields/textarea/allowed_kses` filter to modify the allowed HTML to be displayed.</li>
+                </ul>
+
+                
                 <h3>1.21.5 on June 8, 2017</h3>
 
                 <ul>
