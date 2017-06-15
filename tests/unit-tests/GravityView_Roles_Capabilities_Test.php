@@ -281,19 +281,23 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 
 		$this->assertTrue( is_user_logged_in() );
 		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
 
 		$has_cap = function( $caps ) {
-			return $caps []= 'gv_custom_test_cap';
+			$caps['gv_custom_test_cap'] = true;
+			return $caps;
 		};
 		add_filter( 'user_has_cap', $has_cap );
 
 		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
 
 		wp_set_current_user( 0 );
 
 		$this->assertFalse( is_user_logged_in() );
 
 		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
 
 		$allow = function( $login ) {
 			return true;
@@ -301,13 +305,16 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 		add_filter( 'gravityview/capabilities/allow_logged_out', $allow );
 
 		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
 
 		remove_filter( 'user_has_cap', $has_cap );
 
 		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
 
 		remove_filter( 'gravityview/capabilities/allow_logged_out', $allow );
 
 		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
 	}
 }
