@@ -137,7 +137,7 @@ abstract class View_Template extends Template {
 
 			/** Shortcuts */
 			'view' => $this->view,
-			'fields' => $this->view->fields->by_position( 'directory_table-columns' )->by_visible(),
+			'fields' => $this->view->fields,
 			'entries' => $this->entries->fetch(),
 
 		), $this ), 'gravityview' );
@@ -150,3 +150,4 @@ abstract class View_Template extends Template {
 
 /** Load implementations. */
 require gravityview()->plugin->dir( 'future/includes/class-gv-template-view-table.php' );
+require gravityview()->plugin->dir( 'future/includes/class-gv-template-view-list.php' );

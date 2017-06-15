@@ -109,6 +109,6 @@ class View_Table_Template extends View_Template {
 		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
 
 		/** Output. */
-		printf( '<td%s>%s</td>', $attributes, $renderer->render( $field, $this->view, $source, $entry, $this->request ) );
+		printf( '<td %s>%s</td>', $attributes, $renderer->render( $field, $this->view, $source, $entry, $this->request ) );
 	}
 }

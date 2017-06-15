@@ -721,6 +721,25 @@ class GravityView_frontend {
 			return null;
 		}
 
+		/**
+		 * Set globals for templating
+		 * @deprecated 1.6.2
+		 */
+		global $gravityview_view;
+
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+			$gravityview_view = new GravityView_View( $view_data );
+			$view = \GV\View::by_id( $view_data['id'] );
+			$view->settings->update( $atts );
+			$post_id = intval( $view->settings->get( 'post_id' ) ? : get_the_ID() );
+			$template_id = gravityview_get_template_id( $view->ID );
+		} else {
+			/** These constructs are deprecated. Use the new gravityview() wrapper. */
+			$gravityview_view = new GravityView_View( $view_data );
+			$post_id = ! empty( $atts['post_id'] ) ? intval( $atts['post_id'] ) : get_the_ID();
+			$template_id = $view_data['template_id'];
+		}
+
 		if( $this->isGravityviewPostType() ) {
 
 			/**
@@ -746,25 +765,6 @@ class GravityView_frontend {
 		}
 
 		ob_start();
-
-		/**
-		 * Set globals for templating
-		 * @deprecated 1.6.2
-		 */
-		global $gravityview_view;
-
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			$gravityview_view = new GravityView_View( $view_data );
-			$view = \GV\View::by_id( $view_data['id'] );
-			$view->settings->update( $atts );
-			$post_id = intval( $view->settings->get( 'post_id' ) ? : get_the_ID() );
-			$template_id = gravityview_get_template_id( $view->ID );
-		} else {
-			/** These constructs are deprecated. Use the new gravityview() wrapper. */
-			$gravityview_view = new GravityView_View( $view_data );
-			$post_id = ! empty( $atts['post_id'] ) ? intval( $atts['post_id'] ) : get_the_ID();
-			$template_id = $view_data['template_id'];
-		}
 
 		$gravityview_view->setPostId( $post_id );
 
