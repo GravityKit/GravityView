@@ -104,11 +104,10 @@ final class GravityView_Logging {
 
 		$function = self::get_print_function();
 
-		$data['backtrace'] = function_exists('wp_debug_backtrace_summary') ? wp_debug_backtrace_summary( null, 3 ) : '';
-
 		$error = array(
 			'message' => $message,
 			'data' => $data,
+		    'backtrace' => function_exists('wp_debug_backtrace_summary') ? wp_debug_backtrace_summary( null, 3 ) : '',
 		);
 
 		if( !in_array( $error, self::$errors ) ) {
@@ -117,7 +116,7 @@ final class GravityView_Logging {
 
 		if ( class_exists("GFLogging") ) {
 		    GFLogging::include_logger();
-		    GFLogging::log_message( 'gravityview', $function ( $message, true ) . $function ($data, true), KLogger::ERROR );
+		    GFLogging::log_message( 'gravityview', $function ( $message, true ) . $function ( $error, true), KLogger::ERROR );
 		}
 	}
 
