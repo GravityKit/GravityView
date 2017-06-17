@@ -177,7 +177,9 @@ module.exports = function(grunt) {
 
 			// Create a ZIP file
 			zip: {
-				cmd: function( filename = 'gravityview' ) {
+				cmd: function( version = '' ) {
+
+					var filename = ( version === '' ) ? 'gravityview' : 'gravityview-' + version;
 
 					// First, create the full archive
 					var command = 'git-archive-all gravityview.zip &&';

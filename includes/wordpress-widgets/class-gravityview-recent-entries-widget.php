@@ -72,8 +72,6 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 			$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
-			GravityView_Admin_Views::enqueue_gravity_forms_scripts();
-
 			wp_enqueue_script( 'gravityview_widgets', plugins_url('assets/js/admin-widgets'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery', 'gform_gravityforms' ), GravityView_Plugin::version );
 
 			wp_localize_script( 'gravityview_widgets', 'GVWidgets', array(

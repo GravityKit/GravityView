@@ -123,7 +123,7 @@ class View_Collection extends Collection {
 	 *
 	 * @api
 	 * @since future
-	 * @return \GV\View_Collection A \GV\View_Collection instance contanining the views inside the supplied \WP_Post.
+	 * @return \GV\View_Collection A \GV\View_Collection instance containing the views inside the supplied \WP_Post.
 	 */
 	public static function from_content( $content ) {
 		$views = new self();

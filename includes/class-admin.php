@@ -24,11 +24,6 @@ class GravityView_Admin {
 		// Migrate Class
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-migrate.php' );
 
-		// Don't load tooltips if on Gravity Forms, otherwise it overrides translations
-		if( class_exists( 'GFCommon' ) && class_exists( 'GFForms' ) && !GFForms::is_gravity_page() ) {
-			require_once( GFCommon::get_base_path() . '/tooltips.php' );
-		}
-
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes/class-gravityview-admin-metaboxes.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/entry-list.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-change-entry-creator.php' );
@@ -313,7 +308,7 @@ class GravityView_Admin {
 	 * @param string $hook
 	 * @param null|string $page Optional. String return value of page to compare against.
 	 *
-	 * @return bool|string|void If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
+	 * @return bool|string If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
 	 */
 	static function is_admin_page( $hook = '', $page = NULL ) {
 		global $current_screen, $plugin_page, $pagenow, $post;
@@ -374,7 +369,7 @@ new GravityView_Admin;
  * @param string $hook
  * @param null|string $page Optional. String return value of page to compare against.
  *
- * @return bool|string|void If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
+ * @return bool|string If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
  */
 function gravityview_is_admin_page($hook = '', $page = NULL) {
 	return GravityView_Admin::is_admin_page( $hook, $page );

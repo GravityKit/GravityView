@@ -62,8 +62,8 @@ class GV_Unit_Tests_Bootstrap {
 
 		// Log debug if passed to `phpunit` like: `phpunit --debug --verbose`
 		if( in_array( '--debug', (array)$_SERVER['argv'], true ) && in_array( '--verbose', (array)$_SERVER['argv'], true ) ) {
-			tests_add_filter( 'gravityview_log_error', array( $this, 'test_print_log'), 10, 3 );
-			tests_add_filter( 'gravityview_log_debug', array( $this, 'test_print_log' ), 10, 3 );
+			tests_add_filter( 'gravityview_log_error', array( $this, 'test_print_log'), 10, 2 );
+			tests_add_filter( 'gravityview_log_debug', array( $this, 'test_print_log_backtrace' ), 10, 2 );
 		}
 
 		// load the WP testing environment
@@ -79,12 +79,26 @@ class GV_Unit_Tests_Bootstrap {
 		$this->install();
 	}
 
-	public function test_print_log(  $message = '', $data = null  ) {
+	/**
+	 * Alias of test_print_log, with backtrace
+	 * @since 1.21.6
+	 * @param $message
+	 * @param $data
+	 */
+	public function test_print_log_backtrace( $message, $data ) {
+		$this->test_print_log( $message, $data, true );
+	}
+
+	public function test_print_log(  $message = '', $data = null, $backtrace = false  ) {
 		$error = array(
 			'message' => $message,
 			'data' => $data,
-			'backtrace' => function_exists('wp_debug_backtrace_summary') ? wp_debug_backtrace_summary( null, 3 ) : '',
 		);
+
+		if( $backtrace ) {
+			$error['backtrace'] = function_exists('wp_debug_backtrace_summary') ? wp_debug_backtrace_summary( null, 3 ) : '';
+		}
+
 		fwrite( STDERR, print_r( $error, true ) );
 		fflush( STDERR );
 	}
