@@ -309,6 +309,14 @@ class GVLogic_Shortcode {
 		// Strip whitespace if it's not default false
 		$this->if = ( isset( $this->atts['if'] ) && is_string( $this->atts['if'] ) ) ? trim( $this->atts['if'] ) : false;
 
+		/**
+		 * @action `gravityview/gvlogic/parse_atts/after` Modify shortcode attributes after it's been parsed
+		 * @see https://gist.github.com/zackkatz/def9b295b80c4ae109760ffba200f498 for an example
+		 * @since 1.21.5
+		 * @param GVLogic_Shortcode $this The GVLogic_Shortcode instance
+		 */
+		do_action( 'gravityview/gvlogic/parse_atts/after', $this );
+
 		// Make sure the "if" isn't processed in self::setup_operation_and_comparison()
 		unset( $this->atts['if'] );
 	}

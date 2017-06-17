@@ -33,6 +33,7 @@ class GV_License_Handler {
 	 */
 	const related_plugins_key = 'gravityview_related_plugins';
 
+	/** @var EDD_SL_Plugin_Updater */
 	private $EDD_SL_Plugin_Updater;
 
 	/**
@@ -384,6 +385,7 @@ class GV_License_Handler {
 			'author'    => self::author,
 			'language'  => get_locale(),
 			'url'       => home_url(),
+		    'beta'      => $this->Addon->get_app_setting( 'beta' ),
 		);
 
 		if( !empty( $action ) ) {

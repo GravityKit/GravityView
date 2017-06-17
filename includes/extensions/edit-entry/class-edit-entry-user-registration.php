@@ -117,6 +117,8 @@ class GravityView_Edit_Entry_User_Registration {
         remove_filter( 'send_password_change_email', '__return_false', 3 );
         remove_filter( 'send_email_change_email', '__return_false', 3 );
 
+        // Prevent double-triggering by removing the hook
+	    remove_action( 'gravityview/edit_entry/after_update' , array( $this, 'update_user' ), 10 );
     }
 
 	/**

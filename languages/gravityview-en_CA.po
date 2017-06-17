@@ -8,11 +8,11 @@ msgstr ""
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
 "PO-Revision-Date: 2017-06-09 04:57+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
-"Language-Team: Dutch (http://www.transifex.com/katzwebservices/gravityview/language/nl/)\n"
+"Language-Team: English (Canada) (http://www.transifex.com/katzwebservices/gravityview/language/en_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: nl\n"
+"Language: en_CA\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: grunt-wp-i18n 0.5.4\n"
 "X-Poedit-Basepath: ../\n"
@@ -1261,7 +1261,7 @@ msgstr ""
 #: includes/class-gravityview-change-entry-creator.php:67
 #: includes/lib/EDD_SL_Plugin_Updater.php:396
 msgid "Error"
-msgstr "Fout"
+msgstr ""
 
 #: includes/class-gravityview-change-entry-creator.php:69
 msgid "Success"
@@ -1411,11 +1411,11 @@ msgstr ""
 
 #: includes/class-gravityview-extension.php:351
 msgid "Could not activate the %s Extension; GravityView is not active."
-msgstr "Kon %s Extensie niet activeren; GravityView is niet actief. "
+msgstr ""
 
 #: includes/class-gravityview-extension.php:355
 msgid "The %s Extension requires GravityView Version %s or newer."
-msgstr "De %s Extensie heeft GravityView versie %s nodig of nieuwer. "
+msgstr ""
 
 #: includes/class-gravityview-extension.php:359
 msgid ""
@@ -2612,7 +2612,7 @@ msgstr ""
 
 #: includes/lib/EDD_SL_Plugin_Updater.php:396
 msgid "You do not have permission to install plugin updates"
-msgstr "Je hebt geen toestemming om plugin updates te installeren. "
+msgstr ""
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:54
 msgid "Quiz Score Total"

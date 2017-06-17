@@ -271,4 +271,50 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 		// With GV full access, $zero is a $hero
 		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'edit_gravityview', $admin_private_view_id ) );
 	}
+
+	public function test_non_logged_in_override() {
+		// Create a user with no capabilities
+		$zero = $this->factory->user->create_and_set( array(
+			'user_login' => 'zero',
+			'role' => 'zero',
+		) );
+
+		$this->assertTrue( is_user_logged_in() );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
+
+		$has_cap = function( $caps ) {
+			$caps['gv_custom_test_cap'] = true;
+			return $caps;
+		};
+		add_filter( 'user_has_cap', $has_cap );
+
+		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
+
+		wp_set_current_user( 0 );
+
+		$this->assertFalse( is_user_logged_in() );
+
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
+
+		$allow = function( $login ) {
+			return true;
+		};
+		add_filter( 'gravityview/capabilities/allow_logged_out', $allow );
+
+		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
+
+		remove_filter( 'user_has_cap', $has_cap );
+
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
+
+		remove_filter( 'gravityview/capabilities/allow_logged_out', $allow );
+
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
+	}
 }
