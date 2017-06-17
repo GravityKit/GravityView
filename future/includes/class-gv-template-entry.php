@@ -148,7 +148,7 @@ abstract class Entry_Template extends Template {
 			/** Shortcuts */
 			'entry' => $this->entry,
 			'view' => $this->view,
-			'fields' => $this->view->fields->by_position( 'single_table-columns' )->by_visible(),
+			'fields' => $this->view->fields,
 
 		), $this ), 'gravityview' );
 
@@ -160,3 +160,4 @@ abstract class Entry_Template extends Template {
 
 /** Load implementations. */
 require gravityview()->plugin->dir( 'future/includes/class-gv-template-entry-table.php' );
+require gravityview()->plugin->dir( 'future/includes/class-gv-template-entry-list.php' );
