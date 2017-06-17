@@ -8,8 +8,16 @@ $value = $gravityview->value;
 $entry = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();
 
-/** Escape! */
-$value = esc_html( $value );
+/**
+ * @filter `gravityview/fields/textarea/allowed_kses` Allow the following HTML tags and strip everything else.
+ * @since 1.21.5.1
+ * @see $allowedposttags global in kses.php for an example of the format for passing an array of allowed tags and atts
+ * @see wp_kses_allowed_html() For allowed contexts
+ * @param array|string $allowed_html Context string (allowed strings are post, strip, data, entities, or the name of a field filter such as pre_user_description) or allowed tags array (see above). [Default: 'post']
+ */
+$allowed_html = apply_filters( 'gravityview/fields/textarea/allowed_kses', 'post' );
+
+$value = wp_kses( $value, $allowed_html );
 
 if ( ! empty( $field_settings['trim_words'] ) ) {
 
@@ -34,4 +42,3 @@ if ( ! empty( $field_settings['new_window'] ) ) {
 }
 
 echo wpautop( $value );
-

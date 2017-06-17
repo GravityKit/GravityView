@@ -1833,7 +1833,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'16' => 'okay <so> {entry_id} what happens [gvtest_shortcode_t1] here? <script>huh()</script> http://gravityview.co/',
+			'16' => 'okay <so> {entry_id} what happens [gvtest_shortcode_t1] here? <script>huh()</script> http://gravityview.co/ <b>beep, I allow it!</b>',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
@@ -1846,27 +1846,36 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field = \GV\GF_Field::by_id( $form, '16' );
 
-		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; http://gravityview.co/</p>' . "\n";
+		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() http://gravityview.co/ <b>beep, I allow it!</b></p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'trim_words' => 4 ) );
 		/** This is a bad test, no entry link can be determined and the space is trimmed from the &hellip; */
-		$this->assertEquals( '<p>okay &lt;so&gt; {entry_id} what&hellip;</p>' . "\n", $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertEquals( '<p>okay {entry_id} what happens&hellip;</p>' . "\n", $renderer->render( $field, $view, $form, $entry, $request ) );
 		GravityView_View::getInstance()->setViewId( $view->ID );
-		$expected = sprintf( '<p>okay &lt;so&gt; {entry_id} what<a href="%s"> &hellip;</a></p>' . "\n", esc_attr( $entry->get_permalink( $view, $request ) ) );
+		$expected = sprintf( '<p>okay {entry_id} what happens<a href="%s"> &hellip;</a></p>' . "\n", esc_attr( $entry->get_permalink( $view, $request ) ) );
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'new_window' => true ) );
-		$expected = sprintf( '<p>okay &lt;so&gt; {entry_id} what<a href="%s" target="_blank"> &hellip;</a></p>' . "\n", esc_attr( $entry->get_permalink( $view, $request ) ) );
+		$expected = sprintf( '<p>okay {entry_id} what happens<a href="%s" target="_blank"> &hellip;</a></p>' . "\n", esc_attr( $entry->get_permalink( $view, $request ) ) );
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'trim_words' => false, 'make_clickable' => true, 'new_window' => false ) );
-		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; <a href="http://gravityview.co/" rel="nofollow">http://gravityview.co/</a></p>' . "\n";
+		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://gravityview.co/" rel="nofollow">http://gravityview.co/</a> <b>beep, I allow it!</b></p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'new_window' => true ) );
-		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; <a href="http://gravityview.co/" rel="nofollow" target="_blank">http://gravityview.co/</a></p>' . "\n";
+		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://gravityview.co/" rel="nofollow" target="_blank">http://gravityview.co/</a> <b>beep, I allow it!</b></p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		add_filter( 'gravityview/fields/textarea/allowed_kses', function( $kses ) {
+			return array( 'so' => array() );
+		} );
+
+		$expected = '<p>okay <so> {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://gravityview.co/" rel="nofollow" target="_blank">http://gravityview.co/</a> beep, I allow it!</p>' . "\n";
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		remove_all_filters( 'gravityview/fields/textarea/allowed_kses' );
 
 		$this->_reset_context();
 	}
