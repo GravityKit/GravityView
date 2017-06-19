@@ -44,6 +44,21 @@ class GF_Entry extends Entry implements \ArrayAccess {
 			return null;
 		}
 
+		return self::from_entry( $entry );
+	}
+
+	/**
+	 * Construct a \GV\Entry instance from a Gravity Forms entry array.
+	 *
+	 * @param array $entry The array ID.
+	 *
+	 * @return \GV\Entry|null An instance of this entry or null if not found.
+	 */
+	public static function from_entry( $entry ) {
+		if ( empty( $entry['id'] ) ) {
+			return null;
+		}
+
 		$self = new self();
 		$self->entry = $entry;
 
