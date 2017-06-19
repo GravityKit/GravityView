@@ -64,15 +64,18 @@ $list = new GravityView_Entry_List(
 	'other_entries' // Context
 );
 
-/** Ugh, getCurrentEntry() called by GravityView_Entry_List... @todo remove after refactor! */
-$_current_entry = GravityView_View::getInstance()->getCurrentEntry();
-GravityView_View::getInstance()->setCurrentEntry( $gravityview->entry->ID );
+/** The state still haunts us... BOO! */
+\GV\Mocks\Legacy_Context::push( array(
+	'view' => $gravityview->view,
+	'entry' => $gravityview->entry,
+	'entres' => $entries,
+) );
 
 /** Generate and echo the output. */
 $list->output();
 
 /** Restore global state. */
-GravityView_View::getInstance()->setCurrentEntry( $_current_entry );
+\GV\Mocks\Legacy_Context::pop();
 
 /**
  * @since 1.7.6

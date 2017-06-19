@@ -345,7 +345,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GravityView_frontend::render_view()
 	 */
 	public function test_data_get_views() {
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_LOADED' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED' ) ) {
 			$this->markTestSkipped( 'The alpha future does no longer care' );
 		}
 
@@ -1278,23 +1278,306 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\View_Renderer::render()
 	 */
-	public function test_frontend_view_renderer() {
-		$form = $this->factory->form->import_and_get( 'simple.json' );
-		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+	public function test_frontend_view_renderer_table() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		global $post;
+
+		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			/** Fields, more complex entries may have hundreds of fields defined in the JSON file. */
-			'1' => 'this is field one',
-			'2' => 102,
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+					wp_generate_password( 4 ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+				),
+			),
 		) );
-		$post = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 		$view = \GV\View::from_post( $post );
+		$view->settings->update( array( 'page_size' => 3 ) );
+
+		$entries = new \GV\Entry_Collection();
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entries' => $entries,
+			'in_the_loop' => true,
+		) );
 
 		$renderer = new \GV\View_Renderer();
 
-		/** Password protection. */
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		/** No matching entries... */
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'No entries match your request', $future );
+
+		/** Some entries */
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => sprintf( 'Some text in a textarea (%s)', wp_generate_password( 12 ) ),
+		) );
+		$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entries' => $entries,
+			'in_the_loop' => true,
+		) );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		/** One entry */
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'Some text in a textarea', $future );
+
+		/** Some more */
+		foreach ( range( 1, 5 ) as $i ) {
+			$entry = $this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'status' => 'active',
+				'16' => sprintf( '[%d] Some text in a textarea (%s)', $i, wp_generate_password( 12 ) ),
+			) );
+			$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
+		}
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entries' => $entries,
+			'in_the_loop' => true,
+		) );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		/** Page one */
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( '[5] Some text in a textarea', $future );
+		$this->assertNotContains( '[1] Some text in a textarea', $future );
+
+		/** Page two? */
+		$_GET = array( 'pagenum' => 2 );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( '[1] Some text in a textarea', $future );
+
+		/** Some more */
+		foreach ( range( 1, 5 ) as $i ) {
+			$entry = $this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'status' => 'active',
+				'16' => sprintf( '[%d] thisissomemoretext, search me (%s)', $i, wp_generate_password( 12 ) ),
+			) );
+			$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
+		}
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entries' => $entries,
+			'in_the_loop' => true,
+			'request' => new \GV\Frontend_Request(),
+		) );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		/** Page two */
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( '[5] Some text in a textarea', $future );
+		$this->assertNotContains( '[1] Some text in a textarea', $future );
+
+		/** Search */
+		$_GET = array( 'pagenum' => 1, 'gv_search' => 'thisissomemoretext' );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( '[5] thisissomemoretext', $future );
+		$this->assertNotContains( 'Some text', $future );
+
+		$_GET = array( 'pagenum' => 2, 'gv_search' => 'thisissomemoretext' );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( '[1] thisissomemoretext', $future );
+		$this->assertNotContains( 'Some text', $future );
+
+		$_GET = array( 'pagenum' => 3, 'gv_search' => 'thisissomemoretext' );
+
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		$this->assertContains( 'No entries match your request.', $future );
+
+		/** Hide until searched */
+		$view->settings->update( array( 'hide_until_searched' => true ) );
+
+		$_GET = array( 'pagenum' => 1 );
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entries' => $entries,
+			'in_the_loop' => true,
+			'request' => new \GV\Frontend_Request(),
+		) );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'No entries match your request.', $future );
+
+		$_GET = array( 'pagenum' => 2, 'gv_search' => 'thisissomemoretext' );
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entries' => $entries,
+			'in_the_loop' => true,
+			'request' => new \GV\Frontend_Request(),
+		) );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( '[1] thisissomemoretext', $future );
+
+		$_GET = array();
+
+		$view->settings->update( array( 'hide_until_searched' => false, 'show_only_approved' => true ) );
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entries' => $entries,
+			'in_the_loop' => true,
+			'request' => new \GV\Frontend_Request(),
+		) );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		/** No matching entries... */
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'No entries match your request.', $future );
+
+		$_entries = $entries->all();
+		foreach ( array_rand( $_entries, 5 ) as $entry_num ) {
+			gform_update_meta( $_entries[ $entry_num ]->ID, \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+		}
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entries' => $entries,
+			'in_the_loop' => true,
+			'request' => new \GV\Frontend_Request(),
+		) );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		/** No matching entries... */
+		$this->assertEquals( $legacy, $future );
+		$this->assertNotContains( 'No entries match your request.', $future );
+
+		/** widgets */
+		/** private */
+		/** not configured */
+		/** not embeddable */
+
+		/** Check your privilege! Password protection. */
 		wp_update_post( array( 'ID' => $view->ID, 'post_password' => '123' ) );
-		$this->assertContains( 'content is password protected', $renderer->render( $view, new \GV\Frontend_Request() ) );
-		wp_update_post( array( 'ID' => $view->ID, 'post_password' => '' ) );
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entries' => $entries,
+			'in_the_loop' => true,
+			'request' => new \GV\Frontend_Request(),
+		) );
+
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+		$this->assertContains( 'content is password protected', $future );
+
+		$this->_reset_context();
 	}
 
 	/**
@@ -1639,8 +1922,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$GLOBALS['post'] = get_post( $view->ID );
 
-		$field->update_configuration( array( 'link_format' => 'Entry #{entry_id}', 'page_size' => 1, 'after_link' => 'wut' ) );
-		$expected = sprintf( '<ul><li><a href="%s">Entry #%d</a><div>wut</div></li></ul>', esc_attr( $entry_3->get_permalink( $view, $request ) ), $entry_3->ID );
+		$field->update_configuration( array( 'link_format' => 'Entry #{entry_id}', 'after_link' => 'wut' ) );
+		$expected = sprintf( '<ul><li><a href="%s">Entry #%d</a><div>wut</div></li><li><a href="%s">Entry #%d</a><div>wut</div></li></ul>',
+			esc_attr( $entry_3->get_permalink( $view, $request ) ), $entry_3->ID,
+			esc_attr( $entry_2->get_permalink( $view, $request ) ), $entry_2->ID );
 		$this->assertEquals( $expected, $renderer->render( $field, $view, null, $entry, $request ) );
 
 		unset( $GLOBALS['post'] );
@@ -3586,11 +3871,34 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::by_id( $this->factory->view->create( array( 'form_id' => $form->ID ) ) );
 
+		$entries = new \GV\Entry_Collection();
+		$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
+
+		$views = new \GV\View_Collection();
+		$views->add( $view );
+
+		$post = get_post( $view->ID );
 		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
 			'view' => $view,
+			'entry' => \GV\GF_Entry::by_id( $entry ),
+			'entries' => $entries,
 		) );
 
 		$this->assertEquals( array(
+			'\GravityView_View::post_id' => $post->ID,
+			'\GravityView_frontend::is_gravityview_post_type' => true,
+			'\GravityView_frontend::post_has_shortcode' => false,
+			'\GravityView_frontend::is_search' => false,
+			'\GravityView_frontend::single_entry' => $entry['id'],
+			'\GravityView_frontend::entry' => $entry,
+			'\GravityView_View::_current_entry' => $entry,
+			'\GravityView_frontend::gv_output_data' => \GravityView_View_Data::getInstance(),
+			'\GravityView_View::paging' => array( 'offset' => 0, 'page_size' => 20 ),
+			'\GravityView_View::sorting' => array( 'sort_field' => 'date_created', 'sort_direction' => 'ASC', 'is_numeric' => false ),
+			'wp_actions[loop_start]' => 0,
+			'wp_query::in_the_loop' => false,
+			'\GravityView_frontend::post_id' => $post->ID,
 			'\GravityView_View::atts' => $view->settings->as_atts(),
 			'\GravityView_View::view_id' => $view->ID,
 			'\GravityView_View::back_link_label' => '',
@@ -3598,7 +3906,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'\GravityView_View::form_id' => $view->form->ID,
 			'\GravityView_View::entries' => array(),
 			'\GravityView_View::context' => 'directory',
-			'\GravityView_View::total_entries' => 0,
+			'\GravityView_View::total_entries' => 1,
+			'\GravityView_View::entries' => array_map( function( $e ) { return $e->as_entry(); }, $entries->all() ),
+			'\GravityView_View_Data::views' => $views,
 		), \GV\Mocks\Legacy_Context::freeze() );
 
 		$view->settings->update( array( 'back_link_label' => 'Back to #{entry_id}' ) );

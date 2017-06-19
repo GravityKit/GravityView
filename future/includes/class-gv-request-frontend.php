@@ -18,8 +18,16 @@ class Frontend_Request extends Request {
 	 * @return void
 	 */
 	public function __construct() {
-		// add_action( 'wp', array( $this, 'process' ), 10 );
-		add_filter( 'the_content', array( $this, 'output' ), 11 );
+
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED' ) ) {
+			// add_action( 'wp', array( $this, 'process' ), 10 );
+			add_filter( 'the_content', array( $this, 'output' ), 11 );
+
+			/** Remove old renderers */
+			remove_filter( 'the_content', array( \GravityView_frontend::getInstance(), 'insert_view_in_content' ) );
+			remove_action( 'gravityview_after', array( \GravityView_frontend::getInstance(), 'context_not_configured_warning' ) );
+		}
+
 		parent::__construct();
 	}
 
@@ -233,7 +241,7 @@ class Frontend_Request extends Request {
 	 * @return boolean True if this is a search request.
 	 */
 	public function is_search() {
-		return is_view() && false;
+		return $this->is_view() && ! empty ( $_GET['gv_search'] );
 	}
 
 	/**

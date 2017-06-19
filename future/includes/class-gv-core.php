@@ -97,6 +97,12 @@ final class Core {
 			return;
 		}
 
+		/**
+		 * Enable this for more aggressive mocking and destruction of the old core.
+		 * Do not define, if you're not ready to get your mind blown!
+		 */
+		define( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED', true );
+
 		/** Register the gravityview post type upon WordPress core init. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
 		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
@@ -163,12 +169,6 @@ final class Core {
 		/** For now it is the only request type we have. */
 
 		define( 'GRAVITYVIEW_FUTURE_CORE_LOADED', true );
-
-		/**
-		 * Enable this for more aggressive mocking and destruction of the old core.
-		 * Do not define, if you're not ready to get your mind blown!
-		 */
-		define( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_LOADED', true );
 	}
 
 	private function __clone() { }

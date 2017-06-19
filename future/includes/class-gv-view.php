@@ -226,6 +226,9 @@ class View implements \ArrayAccess {
 		/** View configuration. */
 		$view->settings->update( gravityview_get_template_settings( $view->ID ) );
 
+		/** Add the template name into the settings. */
+		$view->settings->update( array( 'template' => gravityview_get_template_id( $view->ID ) ) );
+
 		/**
 		 * @deprecated
 		 *
@@ -273,7 +276,11 @@ class View implements \ArrayAccess {
 			 */
 			// 'fields' => \GravityView_View_Data::getInstance()->get_fields( $view->ID ),
 
-			'template_id' => gravityview_get_template_id( $view->ID ),
+			/**
+			 * @deprecated
+			 * @see \GV\View::$settings['template']
+			 */
+			// 'template_id' => gravityview_get_template_id( $view->ID ),
 
 			'widgets' => gravityview_get_directory_widgets( $view->ID ),
 		);
@@ -352,6 +359,8 @@ class View implements \ArrayAccess {
 				return $this->form ? $this->form->ID : null;
 			case 'atts':
 				return $this->settings->as_atts();
+			case 'template_id':
+				return $this->settings->get( 'template' );
 			default:
 				/** @todo move the rest out and get rid of _data completely! */
 				return $this->_data[$offset];

@@ -56,7 +56,7 @@ class View_Renderer extends Renderer {
 		 * @param string $slug Default: 'table'
 		 * @param string $view The current view context: directory.
 		 */
-		$template_slug = apply_filters( 'gravityview_template_slug_' . gravityview_get_template_id( $view->ID ), 'table', 'directory' );
+		$template_slug = apply_filters( 'gravityview_template_slug_' . $view->settings->get( 'template' ), 'table', 'directory' );
 
 		/**
 		 * Figure out whether to get the entries or not.
@@ -99,7 +99,7 @@ class View_Renderer extends Renderer {
 				$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction ) );
 			}
 		} else {
-			$entries = new \GV\Enty_Collection();
+			$entries = new \GV\Entry_Collection();
 		}
 
 		/**
@@ -117,14 +117,19 @@ class View_Renderer extends Renderer {
 		$template = new $class( $view, $entries, $request );
 
 		/** Mock the legacy state for the widgets and whatnot */
-		\GV\Mocks\Legacy_Context::push( array(
+		\GV\Mocks\Legacy_Context::push( array_merge( array(
 			'view' => $view,
 			'entries' => $entries,
-			'context' => 'directory'
-		) );
+			'request' => $request,
+		), empty( $parameters ) ? array() : array(
+			'paging' => $parameters['paging'],
+			'sorting' => $parameters['sorting'],
+		) ) );
 
 		ob_start();
 		$template->render();
+
+		printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $view->ID );
 
 		\GV\Mocks\Legacy_Context::pop();
 		return ob_get_clean();

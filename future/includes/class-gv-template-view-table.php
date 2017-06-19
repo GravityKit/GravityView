@@ -84,7 +84,10 @@ class View_Table_Template extends View_Template {
 	 * @return void
 	 */
 	public function the_field( \GV\Field $field, \GV\Entry $entry ) {
-		$attributes = array();
+		$attributes = array(
+			'id' => sprintf( 'gv-field-%d-%s', $this->view->form ? $this->view->form->ID : 0, $field->ID ),
+			'class' => sprintf( 'gv-field-%d-%s', $this->view->form ? $this->view->form->ID : 0, $field->ID ),
+		);
 
 		/**
 		 * @filter `gravityview/entry/cell/attributes` Filter the row attributes for the row in table view.
@@ -103,12 +106,14 @@ class View_Table_Template extends View_Template {
 			$attributes[$attribute] = sprintf( "$attribute=\"%s\"", esc_attr( $value) );
 		}
 		$attributes = implode( ' ', $attributes );
-
+		if ( $attributes ) {
+			$attributes = " $attributes";
+		}
 
 		$renderer = new Field_Renderer();
 		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
 
 		/** Output. */
-		printf( '<td %s>%s</td>', $attributes, $renderer->render( $field, $this->view, $source, $entry, $this->request ) );
+		printf( '<td%s>%s</td>', $attributes, $renderer->render( $field, $this->view, $source, $entry, $this->request ) );
 	}
 }

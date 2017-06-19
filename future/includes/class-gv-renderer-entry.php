@@ -88,7 +88,7 @@ class Entry_Renderer extends Renderer {
 		 * @param string $slug Default: 'table'
 		 * @param string $view The current view context: single
 		 */
-		$template_slug = apply_filters( 'gravityview_template_slug_' . gravityview_get_template_id( $view->ID ), 'table', 'single' );
+		$template_slug = apply_filters( 'gravityview_template_slug_' . $view->settings->get( 'template' ), 'table', 'single' );
 
 		/**
 		 * @filter `gravityview/template/edit/class` Filter the template class that is about to be used to render the entry.

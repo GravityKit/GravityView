@@ -448,17 +448,19 @@ final class Legacy_Context {
 	 * - \GV\Field	field:		sets \GravityView_View::_current_field, \GravityView_View::field_data, 
 	 * - \GV\Entry	entry:		sets \GravityView_View::_current_entry, \GravityView_frontend::single_entry,
 	 *								 \GravityView_frontend::entry
-	 * - \WP_Post	post:		sets \GravityView_View::post_id, \GravityView_View::back_link_label,
-	 *								 \GravityView_frontend::post_id, \GravityView_frontend::is_gravityview_post_type,
+	 * - \WP_Post	post:		sets \GravityView_View::post_id, \GravityView_frontend::post_id,
+	 *								 \GravityView_frontend::is_gravityview_post_type,
 	 *								 \GravityView_frontend::post_has_shortcode
-	 * - string		context:	sets \GravityView_View::context
 	 * - array		paging:		sets \GravityView_View::paging
 	 * - array		sorting:	sets \GravityView_View::sorting
 	 * - array		template:	sets \GravityView_View::template_part_slug, \GravityView_View::template_part_name
-	 * - boolean	is_search:	sets \GravityView_frontend::is_search
-	 * - boolean	is_single:	sets \GravityView_frontend::single_entry
+	 *
+	 * - boolean	in_the_loop sets $wp_actions['loop_start'] and $wp_query::in_the_loop
 	 *
 	 * also:
+	 *
+	 * - \GV\Request	request:	sets \GravityView_frontend::is_search, \GravityView_frontend::single_entry,
+	 *									 \GravityView_View::context, \GravityView_frontend::entry
 	 *
 	 * - \GV\View_Collection	views:		sets \GravityView_View_Data::views
 	 * - \GV\Field_Collection	fields:		sets \GravityView_View::fields
@@ -492,15 +494,31 @@ final class Legacy_Context {
 	 * @return array The configuration.
 	 */
 	public static function freeze() {
+		global $wp_actions, $wp_query;
+
 		return array(
 			'\GravityView_View::atts' => \GravityView_View::getInstance()->getAtts(),
 			'\GravityView_View::view_id' => \GravityView_View::getInstance()->getViewId(),
 			'\GravityView_View::back_link_label' => \GravityView_View::getInstance()->getBackLinkLabel( false ),
+			'\GravityView_View_Data::views' => \GravityView_View_Data::getInstance()->views,
 			'\GravityView_View::entries' => \GravityView_View::getInstance()->getEntries(),
 			'\GravityView_View::form' => \GravityView_View::getInstance()->getForm(),
 			'\GravityView_View::form_id' => \GravityView_View::getInstance()->getFormId(),
 			'\GravityView_View::context' => \GravityView_View::getInstance()->getContext(),
 			'\GravityView_View::total_entries' => \GravityView_View::getInstance()->getTotalEntries(),
+			'\GravityView_View::post_id' => \GravityView_View::getInstance()->getPostId(),
+			'\GravityView_frontend::post_id' => \GravityView_frontend::getInstance()->getPostId(),
+			'\GravityView_frontend::is_gravityview_post_type' => \GravityView_frontend::getInstance()->isGravityviewPostType(),
+			'\GravityView_frontend::post_has_shortcode' => \GravityView_frontend::getInstance()->isPostHasShortcode(),
+			'\GravityView_frontend::gv_output_data' => \GravityView_frontend::getInstance()->getGvOutputData(),
+			'\GravityView_View::paging' => \GravityView_View::getInstance()->getPaging(),
+			'\GravityView_View::sorting' => \GravityView_View::getInstance()->getSorting(),
+			'\GravityView_frontend::is_search' => \GravityView_frontend::getInstance()->isSearch(),
+			'\GravityView_frontend::single_entry' => \GravityView_frontend::getInstance()->getSingleEntry(),
+			'\GravityView_frontend::entry' => \GravityView_frontend::getInstance()->getEntry(),
+			'\GravityView_View::_current_entry' => \GravityView_View::getInstance()->getCurrentEntry(),
+			'wp_actions[loop_start]' => empty( $wp_actions['loop_start'] ) ? 0 : $wp_actions['loop_start'],
+			'wp_query::in_the_loop' => $wp_query->in_the_loop,
 		);
 	}
 
@@ -521,6 +539,9 @@ final class Legacy_Context {
 				case '\GravityView_View::back_link_label':
 					\GravityView_View::getInstance()->setBackLinkLabel( $value );
 					break;
+				case '\GravityView_View_Data::views':
+					\GravityView_View_Data::getInstance()->views = $value;
+					break;
 				case '\GravityView_View::entries':
 					\GravityView_View::getInstance()->setEntries( $value );
 					break;
@@ -535,6 +556,47 @@ final class Legacy_Context {
 					break;
 				case '\GravityView_View::total_entries':
 					\GravityView_View::getInstance()->setTotalEntries( $value );
+					break;
+				case '\GravityView_View::post_id':
+					\GravityView_View::getInstance()->setPostId( $value );
+					break;
+				case '\GravityView_frontend::post_id':
+					\GravityView_frontend::getInstance()->setPostId( $value );
+					break;
+				case '\GravityView_frontend::is_gravityview_post_type':
+					\GravityView_frontend::getInstance()->setIsGravityviewPostType( $value );
+					break;
+				case '\GravityView_frontend::post_has_shortcode':
+					\GravityView_frontend::getInstance()->setPostHasShortcode( $value );
+					break;
+				case '\GravityView_frontend::gv_output_data':
+					\GravityView_frontend::getInstance()->setGvOutputData( $value );
+					break;
+				case '\GravityView_View::paging':
+					\GravityView_View::getInstance()->setPaging( $value );
+					break;
+				case '\GravityView_View::sorting':
+					\GravityView_View::getInstance()->setSorting( $value );
+					break;
+				case '\GravityView_frontend::is_search':
+					\GravityView_frontend::getInstance()->setIsSearch( $value );
+					break;
+				case '\GravityView_frontend::single_entry':
+					\GravityView_frontend::getInstance()->setSingleEntry( $value );
+					break;
+				case '\GravityView_frontend::entry':
+					\GravityView_frontend::getInstance()->setEntry( $value );
+					break;
+				case '\GravityView_View::_current_entry':
+					\GravityView_View::getInstance()->setCurrentEntry( $value );
+					break;
+				case 'wp_actions[loop_start]':
+					global $wp_actions;
+					$wp_actions['loop_start'] = $value;
+					break;
+				case 'wp_query::in_the_loop':
+					global $wp_query;
+					$wp_query->in_the_loop = $value;
 					break;
 			endswitch;
 		}
@@ -551,12 +613,33 @@ final class Legacy_Context {
 		foreach ( (array)$configuration as $key => $value ) {
 			switch ( $key ):
 				case 'view':
+					$views = new \GV\View_Collection();
+					$views->add( $value );
+
 					self::thaw( array(
 						'\GravityView_View::atts' => $value->settings->as_atts(),
 						'\GravityView_View::view_id' => $value->ID,
 						'\GravityView_View::back_link_label' => $value->settings->get( 'back_link_label', null ),
 						'\GravityView_View::form' => $value->form ? $value->form->form : null,
 						'\GravityView_View::form_id' => $value->form ? $value->form->ID : null,
+
+						'\GravityView_View_Data::views' => $views,
+						'\GravityView_frontend::gv_output_data' => \GravityView_View_Data::getInstance(),
+					) );
+					break;
+				case 'post':
+					$has_shortcode = false;
+					foreach ( \GV\Shortcode::parse( $value->post_content ) as $shortcode ) {
+						if ( $shortcode->name == 'gravityview' ) {
+							$has_shortcode = true;
+							break;;
+						}
+					}
+					self::thaw( array(
+						'\GravityView_View::post_id' => $value->ID,
+						'\GravityView_frontend::post_id' => $value->ID,
+						'\GravityView_frontend::is_gravityview_post_type' => $value->post_type == 'gravityview',
+						'\GravityView_frontend::post_has_shortcode' => $has_shortcode,
 					) );
 					break;
 				case 'entries':
@@ -565,10 +648,46 @@ final class Legacy_Context {
 						'\GravityView_View::total_entries' => $value->total(),
 					) );
 					break;
-				case 'context':
+				case 'entry':
 					self::thaw( array(
-						'\GravityView_View::context' => $value,
+						'\GravityView_frontend::single_entry' => $value->ID,
+						'\GravityView_frontend::entry' => $value->ID,
+						'\GravityView_View::_current_entry' => $value->as_entry(),
 					) );
+					break;
+				case 'request':
+					self::thaw( array(
+						'\GravityView_View::context' => (
+							$value->is_entry() ? 'single' :
+								$value->is_edit_entry() ? 'edit' :
+									$value->is_view() ? 'directory': null
+						),
+						'\GravityView_frontend::is_search' => $value->is_search(),
+					) );
+
+					if ( ! $value->is_entry() ) {
+						self::thaw( array(
+							'\GravityView_frontend::single_entry' => 0,
+							'\GravityView_frontend::entry' => 0
+						) );
+					}
+					break;
+				case 'paging':
+					self::thaw( array(
+						'\GravityView_View::paging' => $value,
+					) );
+					break;
+				case 'sorting':
+					self::thaw( array(
+						'\GravityView_View::sorting' => $value,
+					) );
+					break;
+				case 'in_the_loop':
+					self::thaw( array(
+						'wp_query::in_the_loop' => $value,
+						'wp_actions[loop_start]' => $value ? 1 : 0,
+					) );
+					break;
 			endswitch;
 		}
 	}
@@ -587,6 +706,11 @@ final class Legacy_Context {
 		\GravityView_View::$instance = null;
 		\GravityView_frontend::$instance = null;
 		\GravityView_View_Data::$instance = null;
+
+		global $wp_query, $wp_actions;
+
+		$wp_query->in_the_loop = false;
+		$wp_actions['loop_start'] = 0;
 	}
 }
 

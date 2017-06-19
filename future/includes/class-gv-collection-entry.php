@@ -109,6 +109,10 @@ class Entry_Collection extends Collection {
 			$total += $callback[1]( $this->filters );
 		}
 
+		if ( ! $total ) {
+			$total = parent::count();
+		}
+
 		return $total - $this->offset;
 	}
 
