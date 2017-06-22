@@ -102,6 +102,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertFalse( GravityView_Compatibility::check_php() );
 		$GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] = '3.0';
 		$this->assertFalse( GravityView_Compatibility::check_wordpress() );
+
+		unset( $GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] );
+		unset( $GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] );
+		unset( $GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] );
 	}
 
 	/**
@@ -2765,10 +2769,18 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'field_value' => $field->get_value( $view, $form, $entry ),
 		) );
 
+		static $instance = 0;
+		$instance++;
+
 		$expected = "<ul class='gv-field-file-uploads gv-field-{$form->ID}-5'>";
 		$expected .= '<li><a href="http://one.jpg" rel="noopener noreferrer" target="_blank"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a></li>';
-		$expected .= '<li><!--[if lt IE 9]><script>document.createElement(\'audio\');</script><![endif]-->' . "\n" . '<audio class="wp-audio-shortcode gv-audio gv-field-id-5" id="audio-0-1" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="http://two.mp3?_=1" /><a href="http://two.mp3">http://two.mp3</a></audio></li>';
+		$expected .= '<li>';
+		if ( $instance < 2 ) {
+			$expected .= "<!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->\n";
+		}
+		$expected .= '<audio class="wp-audio-shortcode gv-audio gv-field-id-5" id="audio-0-' . $instance . '" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="http://two.mp3?_=' . $instance . '" /><a href="http://two.mp3">http://two.mp3</a></audio></li>';
 		$expected .= '</ul>';
+
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		/** No fancy rendering, just links, please? */
@@ -2782,6 +2794,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'entry' => $entry->as_entry(),
 			'field_value' => $field->get_value( $view, $form, $entry ),
 		) );
+
+		$instance++;
 
 		$expected = "<ul class='gv-field-file-uploads gv-field-{$form->ID}-5'>";
 		$expected .= '<li><a href="http://one.jpg" rel="noopener noreferrer" target="_blank">one.jpg</a></li><li><a href="http://two.mp3" rel="noopener noreferrer" target="_blank">two.mp3</a></li></ul>';

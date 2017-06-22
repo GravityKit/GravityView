@@ -1127,7 +1127,7 @@ function gravityview_get_files_array( $value, $gv_class = '' ) {
 	}
 
 	if( !class_exists( 'GravityView_Field_FileUpload' ) ) {
-		include_once( GRAVITYVIEW_DIR .'includes/fields/fileupload.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/class-gravityview-field-fileupload.php' );
 	}
 
 	return GravityView_Field_FileUpload::get_files_array( $value, $gv_class );

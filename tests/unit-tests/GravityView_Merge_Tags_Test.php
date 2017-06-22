@@ -332,7 +332,9 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		remove_filter( 'gravityview/merge_tags/get/esc_html/string', '__return_false' );
 
 		## TEST merge_tags/get/value/string FILTER
-		function __return_example() { return 'example'; }
+		if ( ! function_exists( '__return_example' ) ) {
+			function __return_example() { return 'example'; }
+		}
 		add_filter('gravityview/merge_tags/get/value/string', '__return_example' );
 		$this->assertEquals( 'example', GravityView_Merge_Tags::replace_variables( '{get:string}' ) );
 		remove_filter('gravityview/merge_tags/get/value/string', '__return_example' );

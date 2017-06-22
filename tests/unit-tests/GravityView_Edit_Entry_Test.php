@@ -553,6 +553,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 		GravityView_View_Data::$instance = null;
 		GravityView_View::$instance = null;
+		GravityView_oEmbed::$instance = null;
 		$data = GravityView_View_Data::getInstance( $view );
 		$template = GravityView_View::getInstance( array(
 			'form' => $form,
