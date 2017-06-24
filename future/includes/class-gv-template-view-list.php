@@ -22,32 +22,87 @@ class View_List_Template extends View_Template {
 	 *
 	 * @param \GV\Field $field The field to output.
 	 * @param \GV\Entry $entry The entry.
-	 * @param array $wrap Wrap the value in some markup. array( $tag => array( $attribute => $value, ... ) );
+	 * @param array $extras Extra stuff, like wpautop, etc.
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function the_field( \GV\Field $field, \GV\Entry $entry, $wrap = null ) {
+	public function the_field( \GV\Field $field, \GV\Entry $entry, $extras = null ) {
+		$form = $this->view->form;
+
 		$renderer = new Field_Renderer();
 		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
 		
 		$output = $renderer->render( $field, $this->view, $source, $entry, $this->request );
-		
-		if ( count( $wrap ) ) {
-			$wraps = array_keys( $wrap );
-			$tag = array_pop( $wraps );
-			$attributes = $wrap[ $tag ];
 
-			/** Glue the attributes together. */
-			foreach ( (array)$attributes as $attribute => $value ) {
-				$attributes[$attribute] = sprintf( "$attribute=\"%s\"", esc_attr( $value) );
-			}
-			$attributes = implode( ' ', $attributes );
-
-			printf( '<%s %s>%s</%s>', $tag, $attributes, $output, $tag );
+		/** No value? don't output anything. */
+		if ( ! $output ) {
 			return;
 		}
+
+		/** Auto paragraph the value. */
+		if ( ! empty( $extras['wpautop'] ) ) {
+			$output = wpautop( $output );
+		}
+
+		$label = apply_filters( 'gravityview/template/field_label', $field->get_label( $this->view, $form ), $field->as_configuration(), $form->form ? $form->form : null, null );
+
+		/** Wrap the label as needed */
+		$label = $this->wrap( $label, array( 'span' => array( 'class' => 'gv-field-label' ) ) );
+		if ( !empty( $extras['label_tag'] ) ) {
+			$label = $this->wrap( $label, array( $extras['label_tag'] => array() ) );
+		}
 		
-		echo $output;
+		return $label . $output;
+	}
+
+	/**
+	 * Generate the default field attributes.
+	 *
+	 * @param \GV\Field $field The field.
+	 * @param array $attributes Optional overrides.
+	 *
+	 * @return array An array of attributes.
+	 */
+	public function the_field_attributes( $field, $attributes = array() ) {
+		return wp_parse_args( $attributes, array(
+			'id' => sprintf( 'gv-field-%d-%s', $this->view->form ? $this->view->form->ID : 0, $field->ID ),
+			'class' => sprintf( 'gv-field-%d-%s', $this->view->form ? $this->view->form->ID : 0, $field->ID ),
+		) );
+	}
+
+	/**
+	 * Wrap content into some tags.
+	 *
+	 * @param string $content The content to wrap.
+	 * @param array $wrap The wrapper in the form of array( $tag => array( $attribute => $value, .. ) )
+	 *
+	 * @todo reuse
+	 *
+	 * @return string The wrapped string
+	 */
+	public function wrap( $content, $wrap ) {
+		if ( ! is_array( $wrap ) || ! count( $wrap ) ) {
+			return $content;
+		}
+
+		$wraps = array_keys( $wrap );
+		$tag = array_pop( $wraps );
+		$attributes = $wrap[ $tag ];
+
+		/** Glue the attributes together. */
+		foreach ( (array)$attributes as $attribute => $value ) {
+			if ( $value ) {
+				$attributes[ $attribute ] = sprintf( "$attribute=\"%s\"", esc_attr( $value) );
+			} else {
+				unset( $attributes[ $attribute ] );
+			}
+		}
+		$attributes = implode( ' ', $attributes );
+		if ( $attributes ) {
+			$attributes = " $attributes";
+		}
+
+		return sprintf( '<%s%s>%s</%s>', $tag, $attributes, $content, $tag );
 	}
 
 	/**

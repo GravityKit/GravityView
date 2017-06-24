@@ -1286,6 +1286,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers \GV\View_Renderer::render()
+	 * @covers \GV\View_Table_Template::render()
+	 * @covers \GV\Frontend_Request::output()
 	 */
 	public function test_frontend_view_renderer_table() {
 		$this->_reset_context();
@@ -1303,11 +1305,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 						'id' => '16',
 						'label' => 'Textarea',
 					),
-					wp_generate_password( 4 ) => array(
+					wp_generate_password( 4, false ) => array(
 						'id' => 'id',
 						'label' => 'Entry ID',
 					),
-					wp_generate_password( 4 ) => array(
+					wp_generate_password( 4, false ) => array(
 						'id' => '1.6',
 						'label' => 'Country <small>(Address)</small>',
 						'only_loggedin_cap' => 'read',
@@ -1643,6 +1645,176 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertNotContains( 'Textarea', $future );
 
 		$this->_reset_context();
+	}
+
+	/**
+	 * @covers \GV\View_Renderer::render()
+	 * @covers \GV\View_List_Template::render()
+	 * @covers \GV\Frontend_Request::output()
+	 */
+	public function test_frontend_view_renderer_list() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		global $post;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'preset_business_listings',
+			'fields' => array(
+				'directory_list-title' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '8',
+						'label' => 'Name',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'content',
+						'label' => 'Content',
+					),
+				),
+				'directory_list-subtitle' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1.6',
+						'label' => 'Country <small>(Address)</small>',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '10',
+						'label' => 'Phone',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'content',
+						'label' => 'Content',
+					),
+				),
+				'directory_list-image' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '8',
+						'label' => 'Name',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'content',
+						'label' => 'Content',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '10',
+						'label' => 'Phone',
+					),
+				),
+				'directory_list-description' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'content',
+						'label' => 'Content',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+				),
+				'directory_list-footer-left' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '8',
+						'label' => 'Name',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'content',
+						'label' => 'Content',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+				),
+				'directory_list-footer-right' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '10',
+						'label' => 'Phone',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'content',
+						'label' => 'Content',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '1.6',
+						'label' => 'Country <small>(Address)</small>',
+					),
+				)
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$view->settings->update( array( 'page_size' => 3 ) );
+
+		$entries = new \GV\Entry_Collection();
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entries' => $entries,
+			'in_the_loop' => true,
+		) );
+
+		$renderer = new \GV\View_Renderer();
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		/** No matching entries... */
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'No entries match your request', $future );
+
+		/** Some entries */
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'8.1' => 'Mr.',
+			'8.2' => 'Floaty',
+		) );
+		$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'10' => '483828428248',
+		) );
+		$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entries' => $entries,
+			'in_the_loop' => true,
+		) );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		$this->assertEquals( $legacy, $future );
 	}
 
 	/** password protection, embed only */
