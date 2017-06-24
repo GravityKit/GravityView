@@ -1193,14 +1193,19 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field = \GV\GF_Field::by_id( $view->form, '4' );
 		$this->assertEquals( 'Multi select', $field->get_label( $view, $view->form, $entry ) );
 
+		/** Gravity Forms values, with field from view override. */
+		$field = \GV\GF_Field::by_id( $view->form, '4' );
+		$field->update_configuration( array( 'label' => 'Hobbies <small>Multiselect</small>' ) );
+		$this->assertEquals( 'Hobbies <small>Multiselect</small>', $field->get_label( $view, $view->form, $entry ) );
+
 		/** Custom label override and merge tags. */
 		$field->update_configuration( array( 'custom_label' => 'This is {entry_id}' ) );
 		$this->assertEquals( 'This is ' . $entry->ID, $field->get_label( $view, $view->form, $entry ) );
 
 		/** Internal fields. */
 		$field = \GV\Internal_Field::by_id( 'id' );
-		$field->update_configuration( array( 'label' => 'ID' ) );
-		$this->assertEquals( 'ID', $field->get_label() );
+		$field->update_configuration( array( 'label' => 'ID <small>Entry</small>' ) );
+		$this->assertEquals( 'ID <small>Entry</small>', $field->get_label() );
 
 		/** Custom label override and merge tags. */
 		$field->update_configuration( array( 'custom_label' => 'This is {entry_id}' ) );
@@ -1301,6 +1306,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 					wp_generate_password( 4 ) => array(
 						'id' => 'id',
 						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4 ) => array(
+						'id' => '1.6',
+						'label' => 'Country <small>(Address)</small>',
+						'only_loggedin_cap' => 'read',
+						'only_loggedin' => true,
 					),
 				),
 			),
@@ -1512,6 +1523,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( '[1] thisissomemoretext', $future );
+		$this->assertNotContains( 'Country', $future );
 
 		$_GET = array();
 
@@ -1580,6 +1592,33 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$future = $renderer->render( $view, new \GV\Frontend_Request() );
 		$this->assertContains( 'content is password protected', $future );
+
+		wp_update_post( array( 'ID' => $view->ID, 'post_password' => '' ) );
+
+		$administrator = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'administrator' )
+		);
+
+		wp_set_current_user( $administrator );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		var_dump( $legacy );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		/** No matching entries... */
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'Country', $future );
+
+		/** logged in filter */
+		/** not configured */
 
 		$this->_reset_context();
 	}

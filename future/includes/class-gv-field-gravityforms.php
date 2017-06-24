@@ -105,6 +105,13 @@ class GF_Field extends Field {
 			return null;
 		}
 
+		/**
+		 * From configuration
+		 */
+		if ( ! empty( $this->label ) ) {
+			return $this->label;
+		}
+
 		/** This is a complex Gravity Forms input. */
 		if ( $input = \GFFormsModel::get_input( $this->field, $this->ID ) ) {
 			$label = ! empty( $input['customLabel'] ) ? $input['customLabel'] : $input['label'];

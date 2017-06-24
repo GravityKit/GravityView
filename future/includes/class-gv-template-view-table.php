@@ -33,7 +33,7 @@ class View_Table_Template extends View_Template {
 
 			printf( '<th id="gv-field-%d-%s" class="gv-field-%d-%s"%s><span class="gv-field-label">%s</span></th>',
 				esc_attr( $form->ID ), esc_attr( $field->ID ), esc_attr( $form->ID ), esc_attr( $field->ID ),
-				$field->width ? sprintf( ' style="width: %d%%"', $field->width ) : '', esc_html( $column_label )
+				$field->width ? sprintf( ' style="width: %d%%"', $field->width ) : '', $column_label
 			);
 		}
 	}
