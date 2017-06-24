@@ -1195,7 +1195,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Gravity Forms values, with field from view override. */
 		$field = \GV\GF_Field::by_id( $view->form, '4' );
-		$field->update_configuration( array( 'label' => 'Hobbies <small>Multiselect</small>' ) );
+		$field->update_configuration( array( 'custom_label' => 'Hobbies <small>Multiselect</small>' ) );
 		$this->assertEquals( 'Hobbies <small>Multiselect</small>', $field->get_label( $view, $view->form, $entry ) );
 
 		/** Custom label override and merge tags. */
@@ -1606,12 +1606,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
 		$future = $renderer->render( $view, new \GV\Frontend_Request() );
 
-		var_dump( $legacy );
-
 		/** Clean up the differences a bit */
 		$legacy = str_replace( ' style=""', '', $legacy );
 		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
 		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		/** A bug in the old renderer. */
+		$legacy = str_replace( 'Country</span>', 'Country <small>(Address)</small></span>', $legacy );
 
 		/** No matching entries... */
 		$this->assertEquals( $legacy, $future );
@@ -3490,7 +3491,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$template = new \GV\View_Table_Template( $view, $view->form->entries, new \GV\Frontend_Request() );
 
 		/** Test the column ouput. */
-		$expected = sprintf( '<th id="gv-field-%1$d-1" class="gv-field-%1$d-1"><span class="gv-field-label">A Text Field</span></th><th id="gv-field-%1$d-2" class="gv-field-%1$d-2"><span class="gv-field-label">This is field two</span></th>', $view->form->ID );
+		$expected = sprintf( '<th id="gv-field-%1$d-1" class="gv-field-%1$d-1"><span class="gv-field-label">This is field one</span></th><th id="gv-field-%1$d-2" class="gv-field-%1$d-2"><span class="gv-field-label">This is field two</span></th>', $view->form->ID );
 
 		ob_start(); $template->the_columns();
 		$this->assertEquals( $expected, ob_get_clean() );
@@ -3518,21 +3519,21 @@ class GVFuture_Test extends GV_UnitTestCase {
 	public function test_field_label_compat() {
 		$this->_reset_context();
 
-		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$form = \GV\GF_Form::by_id( $form['id'] );
-		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
-			'form_id' => $form->ID,
-			'1' => 'set all the fields!',
-			'2' => -100,
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => sprintf( 'Some text in a textarea (%s)', wp_generate_password( 12 ) ),
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
 		GravityView_View::getInstance()->setForm( $form->form );
 
 		$field_settings = array(
-			'id' => '1',
+			'id' => '1.6',
 			'show_label' => false,
-			'label' => 'what?',
+			'label' => 'Country <small>(Address)</small>'
 		);
 
 		$GLOBALS['GravityView_API_field_label_override'] = true;
@@ -3545,10 +3546,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$expected = GravityView_API::field_label( $field_settings, $entry->as_entry(), true );
 		unset( $GLOBALS['GravityView_API_field_label_override'] );
 		$this->assertEquals( $expected, GravityView_API::field_label( $field_settings, $entry->as_entry(), true ) );
-		$this->assertEquals( 'A Text Field', $expected );
+		$this->assertEquals( 'Country', $expected );
 
 		$field_settings = array(
-			'id' => '1',
+			'id' => 'id',
 			'show_label' => true,
 			'label' => 'what?',
 		);
@@ -3557,7 +3558,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$expected = GravityView_API::field_label( $field_settings, $entry->as_entry() /** no force */ );
 		unset( $GLOBALS['GravityView_API_field_label_override'] );
 		$this->assertEquals( $expected, GravityView_API::field_label( $field_settings, $entry->as_entry() /** no force */ ) );
-		$this->assertEquals( 'A Text Field', $expected );
+		$this->assertEquals( 'what?', $expected );
 
 		$field_settings = array(
 			'id' => '1',

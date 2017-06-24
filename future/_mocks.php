@@ -372,6 +372,8 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 				gravityview()->log->error( 'No field found for specified form and field ID #{field_id}', array( 'field_id' => $field_settings['id'], 'data' => $form ) );
 				return $bail( $label, $field_settings, $entry->as_entry(), $force_show_label, $gf_form->form );
 			}
+			/** The label never wins... */
+			$field_settings['label'] = '';
 			break;
 
 		/** Our internal backend. */
