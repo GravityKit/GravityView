@@ -25,7 +25,6 @@ class Frontend_Request extends Request {
 
 			/** Remove old renderers */
 			remove_filter( 'the_content', array( \GravityView_frontend::getInstance(), 'insert_view_in_content' ) );
-			remove_action( 'gravityview_after', array( \GravityView_frontend::getInstance(), 'context_not_configured_warning' ) );
 		}
 
 		parent::__construct();

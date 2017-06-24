@@ -1574,11 +1574,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $legacy, $future );
 		$this->assertNotContains( 'No entries match your request.', $future );
 
-		/** widgets */
-		/** private */
-		/** not configured */
-		/** not embeddable */
-
 		/** Check your privilege! Password protection. */
 		wp_update_post( array( 'ID' => $view->ID, 'post_password' => '123' ) );
 
@@ -1601,6 +1596,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'role' => 'administrator' )
 		);
 
+		/** Log in and find our hidden column there... */
 		wp_set_current_user( $administrator );
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
@@ -1618,11 +1614,39 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( 'Country', $future );
 
-		/** logged in filter */
-		/** not configured */
+		/** No configuration */
+		$view->fields = new \GV\Field_Collection();
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'The Multiple Entries layout has not been configured.', $future );
+
+		wp_set_current_user( -1 );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		$this->assertEquals( $legacy, $future );
+		$this->assertNotContains( 'The Multiple Entries layout has not been configured.', $future );
+		$this->assertNotContains( 'Textarea', $future );
 
 		$this->_reset_context();
 	}
+
+	/** password protection, embed only */
+	/** widgets */
 
 	/**
 	 * @covers \GV\Field_Renderer::render()
