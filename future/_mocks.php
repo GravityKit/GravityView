@@ -567,7 +567,8 @@ final class Legacy_Context {
 					\GravityView_frontend::getInstance()->setPostId( $value );
 					break;
 				case '\GravityView_frontend::context_view_id':
-					(\GravityView_frontend::getInstance())->context_view_id = $value;
+					$frontend = \GravityView_frontend::getInstance();
+					$frontend->context_view_id = $value;
 					break;
 				case '\GravityView_frontend::is_gravityview_post_type':
 					\GravityView_frontend::getInstance()->setIsGravityviewPostType( $value );
