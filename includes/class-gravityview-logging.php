@@ -107,7 +107,7 @@ final class GravityView_Logging {
 		$error = array(
 			'message' => $message,
 			'data' => $data,
-		    'backtrace' => function_exists('wp_debug_backtrace_summary') ? wp_debug_backtrace_summary( null, 3 ) : '',
+			'backtrace' => function_exists( 'wp_debug_backtrace_summary' ) ? wp_debug_backtrace_summary( null, 3 ) : '',
 		);
 
 		if( !in_array( $error, self::$errors ) ) {
