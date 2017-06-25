@@ -1285,6 +1285,69 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\Frontend_Request::output()
+	 */
+	public function test_frontend_output_permissions() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		global $post;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'embed_only' => true
+			),
+		) );
+
+		$view = \GV\View::from_post( $post );
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entries' => new \GV\Entry_Collection(),
+			'in_the_loop' => true,
+		) );
+
+		$renderer = new \GV\View_Renderer();
+		$request = new \GV\Frontend_Request();
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $request->output( '' );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		/** Disallow direct access. */
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'are not allowed to view this content', $future );
+
+		/** Password protection */
+		$post = get_post( wp_update_post( array( 'ID' => $view->ID, 'post_password' => '123' ) ) );
+
+		$renderer = new \GV\View_Renderer();
+		$request = new \GV\Frontend_Request();
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '<h2>Hello</h2>' );
+		$future = $request->output( '<h2>Hello</h2>' );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		/** Disallow direct access. */
+		$this->assertEquals( $legacy, $future );
+		$this->assertEquals( '<h2>Hello</h2>', $future );
+
+		$this->_reset_context();
+	}
+
+	/**
 	 * @covers \GV\View_Renderer::render()
 	 * @covers \GV\View_Table_Template::render()
 	 * @covers \GV\Frontend_Request::output()
@@ -1817,7 +1880,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $legacy, $future );
 	}
 
-	/** password protection, embed only */
 	/** widgets */
 
 	/**
