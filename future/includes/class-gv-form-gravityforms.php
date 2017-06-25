@@ -98,7 +98,7 @@ class GF_Form extends Form implements \ArrayAccess {
 			}
 
 			foreach ( \GFAPI::get_entries( $form->ID, $search_criteria, $sorting, $paging ) as $entry ) {
-				$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
+				$entries->add( \GV\GF_Entry::from_entry( $entry ) );
 			}
 
 			return $entries;
