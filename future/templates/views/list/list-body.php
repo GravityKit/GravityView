@@ -100,7 +100,7 @@ if ( ! $gravityview->entries->count() ) {
 					}
 
 					if ( $has_content_attributes ) {
-						?><div class="gv-grid-col-2-3 gv-list-view-content-attributes"><?php
+						?><div class="gv-grid-col-3-3 gv-list-view-content-attributes"><?php
 						$extras = array( 'label_tag' => 'h4', 'wpautop' => true );
 						foreach ( $attributes->all() as $i => $field ) {
 							if ( $output = $gravityview->template->the_field( $field, $entry, $extras ) ) {

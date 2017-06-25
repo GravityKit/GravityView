@@ -16,17 +16,19 @@
 
 <div class="gv-table-view gv-container gv-table-single-container">
 	<table class="gv-table-view-content">
-		<thead>
-			<?php gravityview_header(); ?>
-		</thead>
-		<tbody>
-			<?php
-				$gravityview->template->the_entry();
-			?>
-		</tbody>
-		<tfoot>
-			<?php gravityview_footer(); ?>
-		</tfoot>
+		<?php if ( $gravityview->fields->by_position( 'single_table-columns' )->by_visible()->count() ): ?>
+			<thead>
+				<?php gravityview_header(); ?>
+			</thead>
+			<tbody>
+				<?php
+					$gravityview->template->the_entry();
+				?>
+			</tbody>
+			<tfoot>
+				<?php gravityview_footer(); ?>
+			</tfoot>
+		<?php endif; ?>
 	</table>
 </div>
 <?php gravityview_after(); ?>

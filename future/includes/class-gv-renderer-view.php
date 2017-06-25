@@ -38,10 +38,6 @@ class View_Renderer extends Renderer {
 		}
 
 		/**
-		 * @todo If not configured, output a warning here...
-		 */
-
-		/**
 		 * This View is password protected. Output the form.
 		 */
 		if ( post_password_required( $view->ID ) ) {

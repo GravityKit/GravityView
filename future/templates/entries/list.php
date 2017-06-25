@@ -12,6 +12,8 @@ $entry = $gravityview->entry;
 $entry_slug = GravityView_API::get_entry_slug( $entry->ID, $entry->as_entry() );
 
 extract( $gravityview->template->extract_zone_vars( array( 'title', 'subtitle' ) ) );
+extract( $gravityview->template->extract_zone_vars( array( 'image', 'description', 'content-attributes' ) ) );
+extract( $gravityview->template->extract_zone_vars( array( 'footer-left', 'footer-right' ) ) );
 
 ?>
 
@@ -21,90 +23,128 @@ extract( $gravityview->template->extract_zone_vars( array( 'title', 'subtitle' )
 
 	<p class="gv-back-link"><?php echo gravityview_back_link(); ?></p>
 
-	<div id="gv_list_<?php echo esc_attr( $entry_slug ); ?>" class="gv-list-view">
+	<?php if ( $has_title || $has_subtitle || $has_image || $has_description || $has_content_attributes || $has_footer_left || $has_footer_right ): ?>
+		<div id="gv_list_<?php echo esc_attr( $entry_slug ); ?>" class="gv-list-view">
 
-	<?php if ( $has_title || $has_title ) { ?>
+		<?php if ( $has_title || $has_subtitle ) { ?>
 
-		<div class="gv-list-view-title">
+			<div class="gv-list-view-title">
 
-			<?php
-				foreach ( $title->all() as $i => $field ) {
-					// The first field in the title zone is the main
-					if ( $i == 0 ) {
-						$wrap = array( 'h3' => array() );
-					} else {
-						$wrap = array( 'p' => array() );
+				<?php
+					$did_main = 0;
+					foreach ( $title->all() as $i => $field ) {
+						// The first field in the title zone is the main
+						if ( $did_main == 0 ) {
+							$extras = array();
+							$wrap = array( 'h3' => $gravityview->template->the_field_attributes( $field ) );
+						} else {
+							$wrap = array( 'div' => $gravityview->template->the_field_attributes( $field ) );
+							$extras = array( 'wpautop' => true );
+						}
+
+						if ( $output = $gravityview->template->the_field( $field, $entry, $extras ) ) {
+							$did_main = 1;
+							echo $gravityview->template->wrap( $output, $wrap );
+						}
 					}
-					$gravityview->template->the_field( $field, $entry, $wrap );
-				}
 
-				foreach ( $subtitle->all() as $i => $field ) {
-					// The first field in the subtitle zone is the main
-					if ( $i == 0 ) {
-						$wrap = array( 'h4' => array( 'class' => 'gv-list-view-subtitle' ) );
-					} else {
-						$wrap = array( 'p' => array( 'class' => 'gv-list-view-subtitle' ) );
+					if ( $has_subtitle ) {
+						?><div class="gv-list-view-subtitle"><?php
+							$did_main = 0;
+							foreach ( $subtitle->all() as $i => $field ) {
+								// The first field in the subtitle zone is the main
+								if ( $did_main == 0 ) {
+									$wrap = array( 'h4' => $gravityview->template->the_field_attributes( $field ) );
+								} else {
+									$wrap = array( 'p' => $gravityview->template->the_field_attributes( $field ) );
+								}
+
+								if ( $output = $gravityview->template->the_field( $field, $entry, $wrap, $extras ) ) {
+									$did_main = 1;
+									echo $gravityview->template->wrap( $output, $wrap );
+								}
+							}
+						?></div><?php
 					}
-					$gravityview->template->the_field( $field, $entry, $wrap );
-				}
+				?>
+			</div>
+		<?php }
+
+		if ( $has_image || $has_description || $has_content_attributes ) {
 			?>
-		</div>
-	<?php }
+            <div class="gv-list-view-content">
 
-	extract( $gravityview->template->extract_zone_vars( array( 'image', 'description', 'content-attributes' ) ) );
+				<?php
+					if ( $has_image ) {
+						?><div class="gv-list-view-content-image gv-grid-col-1-3"><?php
+						foreach ( $image->all() as $i => $field ) {
+							if ( $output = $gravityview->template->the_field( $field, $entry ) ) {
+								echo $gravityview->template->wrap( $output, array( 'div' => $gravityview->template->the_field_attributes( $field ) ) );
+							}
+						}
+						?></div><?php
+					}
 
-	if ( $has_image || $has_description || $has_content_attributes ) {
-		?>
-		<div class="gv-grid gv-list-view-content">
+					if ( $has_description ) {
+						?><div class="gv-list-view-content-description"><?php
+						$extras = array( 'label_tag' => 'h4', 'wpautop' => true );
+						foreach ( $description->all() as $i => $field ) {
+							if ( $output = $gravityview->template->the_field( $field, $entry, $extras ) ) {
+								echo $gravityview->template->wrap( $output, array( 'div' => $gravityview->template->the_field_attributes( $field ) ) );
+							}
+						}
+						?></div><?php
+					}
+
+					if ( $has_content_attributes ) {
+						?><div class="gv-list-view-content-attributes"><?php
+						$extras = array( 'label_tag' => 'h4', 'wpautop' => true );
+						foreach ( $attributes->all() as $i => $field ) {
+							if ( $output = $gravityview->template->the_field( $field, $entry, $extras ) ) {
+								echo $gravityview->template->wrap( $output, array( 'div' => $gravityview->template->the_field_attributes( $field ) ) );
+							}
+						}
+						?></div><?php
+					}
+			?>
+
+            </div>
 
 			<?php
-				foreach ( $image->all() as $i => $field ) {
-					$gravityview->template->the_field( $field, $entry, array( 'div' => array( 'class' => 'gv-grid-col-1-3 gv-list-view-content-image' ) ) );
-				}
+		}
 
-				foreach ( $description->all() as $i => $field ) {
-					$gravityview->template->the_field( $field, $entry, array( 'h4' => array( 'class' => 'gv-grid-col-2-3 gv-list-view-content-description' ) ) );
-				}
+		// Is the footer configured?
+		if ( $has_footer_left || $has_footer_right ) {
+			?>
 
-				foreach ( $content_attributes->all() as $i => $field ) {
-					$gravityview->template->the_field( $field, $entry, array( 'p' => array( 'class' => 'gv-list-view-content-attributes' ) ) );
-				}
-		?>
+			<div class="gv-grid gv-list-view-footer">
+				<div class="gv-grid-col-1-2 gv-left">
+					<?php
+						foreach ( $footer_left->all() as $i => $field ) {
+							if ( $output = $gravityview->template->the_field( $field, $entry ) ) {
+								echo $gravityview->template->wrap( $output, array( 'div' => $gravityview->template->the_field_attributes( $field ) ) );
+							}
+						}
+					?>
+				</div>
 
-		</div>
-
-		<?php
-	}
-
-	extract( $gravityview->template->extract_zone_vars( array( 'footer-left', 'footer-right' ) ) );
-
-	// Is the footer configured?
-	if ( $has_footer_left || $has_footer_right ) {
-		?>
-
-		<div class="gv-grid gv-list-view-footer">
-			<div class="gv-grid-col-1-2 gv-left">
-				<?php
-					foreach ( $footer_left->all() as $i => $field ) {
-						$gravityview->template->the_field( $field, $entry );
-					}
-				?>
+				<div class="gv-grid-col-1-2 gv-right">
+					<?php
+						foreach ( $footer_right->all() as $i => $field ) {
+							if ( $output = $gravityview->template->the_field( $field, $entry ) ) {
+								echo $gravityview->template->wrap( $output, array( 'div' => $gravityview->template->the_field_attributes( $field ) ) );
+							}
+						}
+					?>
+				</div>
 			</div>
 
-			<div class="gv-grid-col-1-2 gv-right">
-				<?php
-					foreach ( $footer_right->all() as $i => $field ) {
-						$gravityview->template->the_field( $field, $entry );
-					}
-				?>
-			</div>
+			<?php
+		} // End if footer is configured
+
+	?>
 		</div>
-
-		<?php
-	} // End if footer is configured
-
-?>
-	</div>
+	<?php endif; ?>
 </div>
 
 <?php

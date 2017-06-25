@@ -26,11 +26,6 @@ class Entry_Table_Template extends Entry_Template {
 	 * @return void
 	 */
 	public function the_field( \GV\Field $field ) {
-		$attributes = array(
-			'id' => sprintf( 'gv-field-%d-%s', $this->view->form ? $this->view->form->ID : 0, $field->ID ),
-			'class' => sprintf( 'gv-field-%d-%s', $this->view->form ? $this->view->form->ID : 0, $field->ID ),
-		);
-
 		/**
 		 * @filter `gravityview/entry/cell/attributes` Filter the row attributes for the row in table view.
 		 *
@@ -41,7 +36,7 @@ class Entry_Table_Template extends Entry_Template {
 		 *
 		 * @since future
 		 */
-		$attributes = apply_filters( 'gravityview/entry/cell/attributes', $attributes, $field, $this->entry, $this );
+		$attributes = apply_filters( 'gravityview/entry/cell/attributes', array(), $field, $this->entry, $this );
 
 		/** Glue the attributes together. */
 		foreach ( $attributes as $attribute => $value ) {
@@ -72,7 +67,7 @@ class Entry_Table_Template extends Entry_Template {
 		foreach ( $fields->by_visible()->all() as $field ) {
 			$column_label = apply_filters( 'gravityview/template/field_label', $field->get_label( $this->view, $form ), $field->as_configuration(), $form->form ? $form->form : null, null );
 			printf( '<tr id="gv-field-%d-%s" class="gv-field-%d-%s">', $form->ID, $field->ID, $form->ID, $field->ID );
-				printf( '<th scope="row"><span class="gv-field-label">%s</span></th>', esc_html( $column_label ) );
+				printf( '<th scope="row"><span class="gv-field-label">%s</span></th>', $column_label );
 				$this->the_field( $field );
 			printf( '</tr>' );
 		}

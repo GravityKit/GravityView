@@ -1744,6 +1744,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 					wp_generate_password( 4, false ) => array(
 						'id' => '1.6',
 						'label' => 'Country <small>(Address)</small>',
+						'only_loggedin_cap' => 'read',
+						'only_loggedin' => true,
 					),
 					wp_generate_password( 4, false ) => array(
 						'id' => '10',
@@ -1816,6 +1818,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 					wp_generate_password( 4, false ) => array(
 						'id' => '1.6',
 						'label' => 'Country <small>(Address)</small>',
+						'only_loggedin_cap' => 'read',
+						'only_loggedin' => true,
 					),
 				)
 			),
@@ -1962,6 +1966,374 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( 'Here we go again! <b>Now</b>', $future );
 
 		$this->_reset_context();
+	}
+
+	/**
+	 * @covers \GV\Entry_Renderer::render()
+	 * @covers \GV\Entry_Table_Template::render()
+	 */
+	public function test_entry_renderer_table() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		global $post;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => sprintf( 'Some text in a textarea (%s)', wp_generate_password( 12 ) ),
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entry' => $entry,
+			'in_the_loop' => true,
+		) );
+
+		$administrator = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'administrator' )
+		);
+
+		wp_set_current_user( $administrator );
+
+		$renderer = new \GV\Entry_Renderer();
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $entry, $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
+		$future = trim( preg_replace( '#>\s*<#', '><', $future ) );
+
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'The Single Entry layout has not been configured', $future );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '1.6',
+						'label' => 'Country <small>(Address)</small>',
+						'only_loggedin_cap' => 'read',
+						'only_loggedin' => true,
+					),
+				),
+			),
+			'settings' => array(
+				'single_title' => 'Entry ~@{entry_id}@~',
+				'back_link_label' => "Let's go back!",
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1.6' => 'Mexico',
+			'16' => sprintf( 'Some text in a textarea (%s)', wp_generate_password( 12 ) ),
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entry' => $entry,
+			'in_the_loop' => true,
+		) );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $entry, $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
+		$future = trim( preg_replace( '#>\s*<#', '><', $future ) );
+
+		$future = str_replace( ' <small>(Address)</small>', '', $future ); /** Quirk/bug in legacy */
+
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'text in a textarea', $future );
+
+		wp_set_current_user( -1 );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $entry, $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
+		$future = trim( preg_replace( '#>\s*<#', '><', $future ) );
+
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'text in a textarea', $future );
+		$this->assertContains( 'Let&#039;s go back!', $future );
+		$this->assertNotContains( 'Country', $future );
+
+		$view->settings->update( array( 'show_only_approved' => true ) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1.6' => 'Mexico',
+			'16' => sprintf( 'Some text in a textarea (%s)', wp_generate_password( 12 ) ),
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'entry' => $entry,
+		) );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $entry, $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
+		$future = trim( preg_replace( '#>\s*<#', '><', $future ) );
+
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'You have attempted to view an entry that is not visible or may not exist', $future );
+	}
+
+	/**
+	 * @covers \GV\Entry_Renderer::render()
+	 * @covers \GV\Entry_List_Template::render()
+	 */
+	public function test_entry_renderer_list() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		global $post;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'preset_business_listings',
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => sprintf( 'Some text in a textarea (%s)', wp_generate_password( 12 ) ),
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entry' => $entry,
+			'in_the_loop' => true,
+		) );
+
+		$administrator = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'administrator' )
+		);
+
+		wp_set_current_user( $administrator );
+
+		$renderer = new \GV\Entry_Renderer();
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $entry, $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
+		$future = trim( preg_replace( '#>\s*<#', '><', $future ) );
+
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'The Single Entry layout has not been configured', $future );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'preset_business_listings',
+			'fields' => array(
+				'single_list-title' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '8',
+						'label' => 'Name',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'content',
+						'label' => 'Content',
+					),
+				),
+				'single_list-subtitle' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1.6',
+						'label' => 'Country <small>(Address)</small>',
+						'only_loggedin_cap' => 'read',
+						'only_loggedin' => true,
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '10',
+						'label' => 'Phone',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'content',
+						'label' => 'Content',
+					),
+				),
+				'single_list-image' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '8',
+						'label' => 'Name',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'content',
+						'label' => 'Content',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '10',
+						'label' => 'Phone',
+					),
+				),
+				'single_list-description' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'content',
+						'label' => 'Content',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+				),
+				'single_list-footer-left' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '8',
+						'label' => 'Name',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'content',
+						'label' => 'Content',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+				),
+				'single_list-footer-right' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'content',
+						'label' => 'Content',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '1.6',
+						'label' => 'Country <small>(Address)</small>',
+						'only_loggedin_cap' => 'read',
+						'only_loggedin' => true,
+					),
+				)
+			),
+			'settings' => array(
+				'single_title' => 'Entry ~@{entry_id}@~',
+				'back_link_label' => "Let's go back!",
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1.6' => 'Mexico',
+			'16' => sprintf( 'Some text in a textarea (%s)', wp_generate_password( 12 ) ),
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entry' => $entry,
+			'in_the_loop' => true,
+		) );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $entry, $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
+		$future = trim( preg_replace( '#>\s*<#', '><', $future ) );
+		$future = str_replace( ' <small>(Address)</small>', '', $future ); /** Quirk/bug in legacy */
+
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'Country', $future );
+
+		wp_set_current_user( -1 );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $entry, $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
+		$future = trim( preg_replace( '#>\s*<#', '><', $future ) );
+		$future = str_replace( ' <small>(Address)</small>', '', $future ); /** Quirk/bug in legacy */
+
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'Let&#039;s go back!', $future );
+		$this->assertContains( 'text in a textarea', $future );
+		$this->assertNotContains( 'Country', $future );
+
+		$view->settings->update( array( 'show_only_approved' => true ) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1.6' => 'Mexico',
+			'16' => sprintf( 'Some text in a textarea (%s)', wp_generate_password( 12 ) ),
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'entry' => $entry,
+		) );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $entry, $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
+		$future = trim( preg_replace( '#>\s*<#', '><', $future ) );
+
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'You have attempted to view an entry that is not visible or may not exist', $future );
 	}
 
 	/**
@@ -4293,6 +4665,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'wp_actions[loop_start]' => 0,
 			'wp_query::in_the_loop' => false,
 			'\GravityView_frontend::post_id' => $post->ID,
+			'\GravityView_frontend::context_view_id' => $view->ID,
 			'\GravityView_View::atts' => $view->settings->as_atts(),
 			'\GravityView_View::view_id' => $view->ID,
 			'\GravityView_View::back_link_label' => '',

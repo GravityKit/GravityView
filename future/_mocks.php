@@ -510,6 +510,7 @@ final class Legacy_Context {
 			'\GravityView_View::total_entries' => \GravityView_View::getInstance()->getTotalEntries(),
 			'\GravityView_View::post_id' => \GravityView_View::getInstance()->getPostId(),
 			'\GravityView_frontend::post_id' => \GravityView_frontend::getInstance()->getPostId(),
+			'\GravityView_frontend::context_view_id' => \GravityView_frontend::getInstance()->get_context_view_id(),
 			'\GravityView_frontend::is_gravityview_post_type' => \GravityView_frontend::getInstance()->isGravityviewPostType(),
 			'\GravityView_frontend::post_has_shortcode' => \GravityView_frontend::getInstance()->isPostHasShortcode(),
 			'\GravityView_frontend::gv_output_data' => \GravityView_frontend::getInstance()->getGvOutputData(),
@@ -564,6 +565,9 @@ final class Legacy_Context {
 					break;
 				case '\GravityView_frontend::post_id':
 					\GravityView_frontend::getInstance()->setPostId( $value );
+					break;
+				case '\GravityView_frontend::context_view_id':
+					(\GravityView_frontend::getInstance())->context_view_id = $value;
 					break;
 				case '\GravityView_frontend::is_gravityview_post_type':
 					\GravityView_frontend::getInstance()->setIsGravityviewPostType( $value );
@@ -627,6 +631,7 @@ final class Legacy_Context {
 
 						'\GravityView_View_Data::views' => $views,
 						'\GravityView_frontend::gv_output_data' => \GravityView_View_Data::getInstance(),
+						'\GravityView_frontend::context_view_id' => $value->ID,
 					) );
 					break;
 				case 'post':

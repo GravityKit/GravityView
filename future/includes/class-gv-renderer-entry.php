@@ -39,10 +39,6 @@ class Entry_Renderer extends Renderer {
 		}
 
 		/**
-		 * @todo If not configured, output a warning here...
-		 */
-
-		/**
 		 * This View is password protected. Output the form.
 		 */
 		if ( post_password_required( $view->ID ) ) {
@@ -107,6 +103,7 @@ class Entry_Renderer extends Renderer {
 
 		ob_start();
 		$template->render();
+		printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $view->ID );
 		return ob_get_clean();
 	}
 }

@@ -860,8 +860,7 @@ class GravityView_frontend {
 				 */
 				echo esc_attr( $message );
 
-				ob_end_clean();
-				return null;
+				return ob_get_clean();
 			}
 
 			// We're in single view, but the view being processed is not the same view the single entry belongs to.
