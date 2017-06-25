@@ -527,6 +527,7 @@ class GravityView_Settings extends GFAddOn {
 			'src'     => plugins_url( 'assets/css/admin-settings.css', GRAVITYVIEW_FILE ),
 			'version' => GravityView_Plugin::version,
 			"deps" => array(
+                'gform_admin',
 				'gaddon_form_settings_css',
                 'gform_tooltip',
                 'gform_font_awesome',
