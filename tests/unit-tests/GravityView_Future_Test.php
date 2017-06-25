@@ -1880,7 +1880,89 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $legacy, $future );
 	}
 
-	/** widgets */
+	public function test_frontend_widgets() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		global $post;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+					),
+				),
+				'header_left' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'page_info',
+					),
+				),
+				'footer_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom_content',
+						'content' => 'Here we go again! <b>Now</b>',
+					),
+				),
+				'footer_right' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'page_links',
+					),
+				),
+			),
+		) );
+
+		$view = \GV\View::from_post( $post );
+		$view->settings->update( array( 'page_size' => 3 ) );
+
+		$entries = new \GV\Entry_Collection();
+
+		foreach ( range( 1, 5 ) as $i ) {
+			$entry = $this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'status' => 'active',
+				'16' => wp_generate_password( 12 ),
+			) );
+			$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
+		}
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entries' => $entries,
+			'in_the_loop' => true,
+		) );
+
+		$renderer = new \GV\View_Renderer();
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+
+		/** Clean up the differences a bit */
+		$legacy = str_replace( ' style=""', '', $legacy );
+		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
+		$future = preg_replace( '#>\s*<#', '><', $future );
+
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'Search Entries', $future );
+		$this->assertContains( 'Displaying 1 - 3 of 5', $future );
+		$this->assertContains( "class='page-numbers'", $future );
+		$this->assertContains( 'Here we go again! <b>Now</b>', $future );
+
+		$this->_reset_context();
+	}
 
 	/**
 	 * @covers \GV\Field_Renderer::render()
