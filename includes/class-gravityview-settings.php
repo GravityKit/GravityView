@@ -422,11 +422,6 @@ class GravityView_Settings extends GFAddOn {
 	 */
 	function license_key_notice() {
 
-		// Only show on GravityView pages
-		if( ! gravityview_is_admin_page() ) {
-			return;
-		}
-
 		$license_status = self::getSetting('license_key_status');
 		$license_key = self::getSetting('license_key');
 		if( '' === $license_key ) {
@@ -445,7 +440,8 @@ class GravityView_Settings extends GFAddOn {
 		$status = '';
 		$update_below = false;
 		$primary_button_link = admin_url( 'edit.php?post_type=gravityview&amp;page=gravityview_settings' );
-		switch ( $license_status ) {
+
+        switch ( $license_status ) {
 			/** @since 1.17 */
 			case 'expired':
 				$title = __('Expired License', 'gravityview');
@@ -482,11 +478,11 @@ class GravityView_Settings extends GFAddOn {
 		if( !empty( $status ) ) {
 			GravityView_Admin_Notices::add_notice( array(
 				'message' => $message,
-				'class'	=> 'updated',
-				'title' => $title,
-				'cap' => 'gravityview_edit_settings',
-				'dismiss' => sha1( $license_status.'_'.$license_id ),
-			));
+				'class'   => 'updated',
+				'title'   => $title,
+				'cap'     => 'gravityview_edit_settings',
+				'dismiss' => sha1( $license_status . '_' . $license_id . '_' . date( 'z' ) ), // Show every day, instead of every 8 weeks (which is the default)
+			) );
 		}
 	}
 
