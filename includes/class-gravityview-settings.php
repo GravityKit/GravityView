@@ -762,6 +762,29 @@ class GravityView_Settings extends GFAddOn {
 
 
 	/**
+     * Keep GravityView styling for `$field['description']`, even though Gravity Forms added support for it
+     *
+     * Converts `$field['description']` to `$field['gv_description']`
+     * Converts `$field['subtitle']` to `$field['description']`
+     *
+     * @see GravityView_Settings::single_setting_label Converts `gv_description` back to `description`
+     * @see http://share.gravityview.co/P28uGp/2OIRKxog for image that shows subtitle vs description
+     *
+     * @since 1.21.5.2
+     *
+	 * @param array $field
+     *
+     * @return void
+	 */
+	public function single_setting_row( $field ) {
+
+		$field['gv_description'] = rgar( $field, 'description' );
+		$field['description']    = rgar( $field, 'subtitle' );
+
+		parent::single_setting_row( $field );
+	}
+
+	/**
 	 * The same as the parent, except added support for field descriptions
 	 * @inheritDoc
 	 * @param $field array
@@ -770,11 +793,9 @@ class GravityView_Settings extends GFAddOn {
 
 		parent::single_setting_label( $field );
 
-		// Added by GravityView
-		if ( isset( $field['description'] ) ) {
-			echo '<span class="description">'. $field['description'] .'</span>';
+		if ( $description = rgar( $field, 'gv_description' ) ) {
+			echo '<span class="description">'. $description .'</span>';
 		}
-
 	}
 
 	/**
