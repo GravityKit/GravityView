@@ -2,15 +2,15 @@
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # Süha Karalar <suhakaralar@gmail.com>, 2014
-# Süha Karalar <suhakaralar@gmail.com>, 2014-2016
+# Süha Karalar <suhakaralar@gmail.com>, 2014-2017
 # Zachary Katz <zack@katz.co>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
-"PO-Revision-Date: 2017-06-09 04:57+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2017-06-26 19:45+0000\n"
+"Last-Translator: Süha Karalar <suhakaralar@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/katzwebservices/gravityview/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,7 +36,7 @@ msgstr "Sayfa başına gösterilecek kayıt sayısı"
 
 #: future/includes/class-gv-settings-view.php:58 includes/class-data.php:742
 msgid "Offset entries starting from"
-msgstr ""
+msgstr "Şu sayıdan itibaren başlayan kayıtları kaydır"
 
 #: future/includes/class-gv-settings-view.php:66 includes/class-data.php:750
 msgid "Enable lightbox for images"
@@ -48,18 +48,18 @@ msgstr "Sadece onaylı kayıtları göster"
 
 #: future/includes/class-gv-settings-view.php:81 includes/class-data.php:765
 msgid "Show all entries to administrators"
-msgstr ""
+msgstr "Yönetici yetkisindeki herkese tüm kayıtları göster"
 
 #: future/includes/class-gv-settings-view.php:82 includes/class-data.php:766
 msgid "Administrators will be able to see entries with any approval status."
-msgstr ""
+msgstr "Yöneticiler tüm kayıtları görebilecektir."
 
 #: future/includes/class-gv-settings-view.php:83 includes/class-data.php:767
 msgid ""
 "Logged-out visitors and non-administrators will only see approved entries, "
 "while administrators will see entries with all statuses. This makes it "
 "easier for administrators to moderate entries from a View."
-msgstr ""
+msgstr "Oturumu kapatmış ziyaretçiler ve yönetici olmayanlar sadece onaylanmış kayıtları görüntüleyebilir, fakat yöneticiler tüm kayıtları görüntüleyebilirler. Bu sayede yöneticiler kayıtları Görünüm'ler içinde kolayca düzenleyebilirler."
 
 #: future/includes/class-gv-settings-view.php:91 includes/class-data.php:775
 msgid "Hide View data until search is performed"
@@ -261,11 +261,11 @@ msgstr "Görünüm listesi"
 
 #: future/includes/class-gv-view.php:119 includes/class-post-types.php:87
 msgid "See Views"
-msgstr ""
+msgstr "Görünümleri Göster"
 
 #: future/includes/class-gv-view.php:120 includes/class-post-types.php:88
 msgid "View Attributes"
-msgstr ""
+msgstr "Görünüm Öznitelikleri"
 
 #: future/includes/class-gv-view.php:123 includes/class-post-types.php:91
 msgid "view"
@@ -279,7 +279,7 @@ msgstr "Gravity Forms temelli yeni Görünümler oluştur"
 msgid ""
 "GravityView requires PHP Version %s or newer. You're using Version %s. "
 "Please ask your host to upgrade your server's PHP."
-msgstr ""
+msgstr "GravityView  PHP %s ve üzeri sürümleri gerektirir. Kullandığınız sürüm %s. Lütfen hosting firmanızla iletişime geçerek güncelleme talep ediniz."
 
 #: gravityview.php:227 includes/class-gravityview-compatibility.php:219
 msgid ""
@@ -505,7 +505,7 @@ msgstr "Bu Görünüm için verinin hangi kaynaktan gelmesini istersiniz?"
 
 #: includes/admin/metaboxes/views/data-source.php:29
 msgid "Use a Form Preset"
-msgstr ""
+msgstr "Önayarlı Form Kullan"
 
 #: includes/admin/metaboxes/views/data-source.php:32
 msgid "or use an existing form"
@@ -719,7 +719,7 @@ msgstr "%s onaylandı."
 
 #: includes/class-admin-approve-entries.php:335
 msgid "%s unapproved."
-msgstr ""
+msgstr "%s onaylanmayan."
 
 #: includes/class-admin-approve-entries.php:339
 msgid "%s disapproved."
@@ -735,11 +735,11 @@ msgstr "Tüm formlar"
 
 #: includes/class-admin-views.php:140 includes/class-admin-views.php:171
 msgid "Create a View"
-msgstr ""
+msgstr "Görünüm Oluştur"
 
 #: includes/class-admin-views.php:142 includes/class-admin-views.php:173
 msgid "Create a View using this form as a data source"
-msgstr ""
+msgstr "Bu formu veri kaynağı olarak kullan ve yeni bir Görünüm oluştur"
 
 #: includes/class-admin-views.php:159
 msgid "No Title (View #%d)"
@@ -979,7 +979,7 @@ msgstr "Yenilikler"
 
 #: includes/class-admin-welcome.php:355
 msgid "View change history"
-msgstr ""
+msgstr "Görünüm değişiklik geçmişi"
 
 #: includes/class-admin-welcome.php:376
 msgid "GravityView is brought to you by:"
@@ -1001,7 +1001,7 @@ msgstr "Kodlara katkı yapmak isterseniz, %sGithub üzerinden yapabilirsiniz%s. 
 
 #: includes/class-admin.php:69
 msgid "No Views found."
-msgstr ""
+msgstr "Görünüm bulunamadı."
 
 #: includes/class-admin.php:76
 msgid ""
@@ -1016,23 +1016,23 @@ msgstr "Etkin Görünüm mevcut değil"
 
 #: includes/class-admin.php:104
 msgid "The form connected to this View no longer exists."
-msgstr ""
+msgstr "Bu Görünüme bağlanan forma artık erişilemiyor."
 
 #: includes/class-admin.php:105
 msgid "Select another form as the data source for this View."
-msgstr ""
+msgstr "Bu Görünüm'ü başka forma bağla."
 
 #: includes/class-admin.php:107
 msgid "The connected form is in the trash."
-msgstr ""
+msgstr "Bağlı form şu an çöp kutusunda bulunuyor."
 
 #: includes/class-admin.php:108
 msgid "Restore the form from the trash"
-msgstr ""
+msgstr "Formu çöpten kurtar"
 
 #: includes/class-admin.php:109
 msgid "or select another form."
-msgstr ""
+msgstr "yada başka bir form seçin."
 
 #: includes/class-admin.php:167
 msgid "Support"
@@ -1193,15 +1193,15 @@ msgstr "Kütükler"
 msgid ""
 "When using a preset template, you must save the View before a Preview is "
 "available."
-msgstr ""
+msgstr "Önayarlı bir tema kullanırken önizleme yapabilmek için öncelikle Görünüm'ü kaydetmelisiniz."
 
 #: includes/class-frontend-views.php:652
 msgid "Add fields to %s"
-msgstr ""
+msgstr "%s alan ekle"
 
 #: includes/class-frontend-views.php:653
 msgid "You can only see this message because you are able to edit this View."
-msgstr ""
+msgstr "Bu Görünüm'ü düzenleme yetkiniz olduğu için bu yazıyı görebiliyorsunuz."
 
 #: includes/class-frontend-views.php:789
 msgid "You are not allowed to view this content."
@@ -1277,7 +1277,7 @@ msgstr "Kayıt Sahibini Değiştir:"
 msgid ""
 "The displayed list of users has been trimmed due to the large number of "
 "users. %sLearn how to remove this limit%s."
-msgstr ""
+msgstr "Çok fazla kullanıcı olduğu için listedeki kullanıcılar sadeleştirilmiştir.  %s Bu kısıtlamayı nasıl kaldırabilirim?%s"
 
 #: includes/class-gravityview-compatibility.php:192
 msgid ""
@@ -1290,7 +1290,7 @@ msgid ""
 "%sGravityView will soon require PHP Version %s.%s \n"
 "\n"
 "You're using Version %s. Please ask your host to upgrade your server's PHP."
-msgstr ""
+msgstr "GravityView çok yakında PHP %s ve üzeri sürümleri gerektirecek şekilde güncellenecektir%s.%s\n\nKullandığınız sürüm %s. Lütfen hosting firmanızla iletişime geçerek güncelleme talep ediniz."
 
 #: includes/class-gravityview-compatibility.php:260
 msgid ""
@@ -1355,15 +1355,15 @@ msgstr "Kayıt dizin görüntülemesi için onaylanmış. Onayı geri almak içi
 
 #: includes/class-gravityview-entry-approval-status.php:68
 msgid "Unapproved"
-msgstr ""
+msgstr "Onaylanmamış"
 
 #: includes/class-gravityview-entry-approval-status.php:69
 msgid "Reset Approval"
-msgstr ""
+msgstr "Onaylamayı Sıfırla"
 
 #: includes/class-gravityview-entry-approval-status.php:70
 msgid "Entry not yet reviewed. Click to approve this entry."
-msgstr ""
+msgstr "Kayıt denetlenmemiş. Bu kaydı onaylamak için tıklayın."
 
 #: includes/class-gravityview-entry-approval.php:113
 #: includes/class-gravityview-entry-approval.php:122
@@ -1385,7 +1385,7 @@ msgstr "GravityView için kaydı onayla"
 
 #: includes/class-gravityview-entry-approval.php:342
 msgid "Reset Entry approval for GravityView"
-msgstr ""
+msgstr "GravityView kayıt onaylamayı sıfırla"
 
 #: includes/class-gravityview-entry-approval.php:345
 #: includes/class-gravityview-uninstall.php:64
@@ -1432,71 +1432,71 @@ msgid ""
 "Delete all Views, GravityView entry approval status, GravityView-generated "
 "entry notes (including approval and entry creator changes), and GravityView "
 "plugin settings."
-msgstr ""
+msgstr "Tüm Görünümleri, GravityView onay durumlarını, GravityView notlarını (onaylama ve kayıt sahibi düzenlemeleri dahil) ve GravityView eklenti ayarlarını silin."
 
 #: includes/class-gravityview-settings.php:160
 msgid "I am going to continue using GravityView"
-msgstr ""
+msgstr "GravityView'i kullanmaya devam edeceğim"
 
 #: includes/class-gravityview-settings.php:163
 msgid "I no longer need GravityView"
-msgstr ""
+msgstr "GravityView eklentisine artık ihtiyacım yok"
 
 #: includes/class-gravityview-settings.php:166
 msgid "The plugin doesn't work"
-msgstr ""
+msgstr "Eklenti çalışmıyor"
 
 #: includes/class-gravityview-settings.php:169
 msgid "I found a better plugin"
-msgstr ""
+msgstr "Daha iyi bir eklenti buldum"
 
 #: includes/class-gravityview-settings.php:170
 msgid "What plugin you are using, and why?"
-msgstr ""
+msgstr "Hangi eklentiyi kullanıyorsunuz ve neden?"
 
 #: includes/class-gravityview-settings.php:173
 msgid "Other"
-msgstr ""
+msgstr "Diğer"
 
 #: includes/class-gravityview-settings.php:257
 msgid ""
 "There was an error sharing your feedback. Sorry! Please email us at "
 "support@gravityview.co"
-msgstr ""
+msgstr "Geribildiriminiz gönderilirken hata oluştu. Çok üzgünüz lütfen support@gravityview.co adresine eposta gönderin."
 
 #: includes/class-gravityview-settings.php:263
 msgid "Why did you uninstall GravityView?"
-msgstr ""
+msgstr "GravitView'i neden kaldırdığınızı bizimle paylaşırmısınız?"
 
 #: includes/class-gravityview-settings.php:273
 msgid "Comments"
-msgstr ""
+msgstr "Yorumlar"
 
 #: includes/class-gravityview-settings.php:274
 msgid "Please share your thoughts about GravityView"
-msgstr ""
+msgstr "Lütfen GravityView hakkındaki görüşlerinizi bizimle paylaşın"
 
 #: includes/class-gravityview-settings.php:277
 msgid "How likely are you to recommend GravityView?"
-msgstr ""
+msgstr "GravityView eklentisini tavsiye edermisiniz?"
 
 #: includes/class-gravityview-settings.php:291
 msgid "Please follow up with me about my feedback"
-msgstr ""
+msgstr "Lütfen geribildirim hakkında benimle iletişime geçin"
 
 #: includes/class-gravityview-settings.php:298
 msgid "Send Us Your Feedback"
-msgstr ""
+msgstr "Geribildirim Gönderin"
 
 #: includes/class-gravityview-settings.php:303
 msgid "Thank you for using GravityView!"
-msgstr ""
+msgstr "GravityView kullandığınız için teşekkürler!"
 
 #: includes/class-gravityview-settings.php:305
 msgid ""
 "Your feedback helps us improve GravityView. If you have any questions or "
 "comments, email us: support@gravityview.co"
-msgstr ""
+msgstr "Geribildirimleriniz bu eklentiyi daha fazla geliştirmemizde bize ışık tutacaktır. Soru ve önerilerinizi support@gravityview.co adresine gönderebilirsiniz."
 
 #: includes/class-gravityview-settings.php:346
 msgid "Delete all GravityView content and settings"
@@ -1504,7 +1504,7 @@ msgstr "Tüm GravityView içeriği ve ayarlarını sil"
 
 #: includes/class-gravityview-settings.php:354
 msgid "Uninstall %s"
-msgstr ""
+msgstr "%s Kaldır"
 
 #: includes/class-gravityview-settings.php:393
 msgid "GravityView Settings"
@@ -1627,14 +1627,14 @@ msgstr "Eğer Görünüm Düzenle sekmeleri çirkin görünüyorsa bu ayarı etk
 
 #: includes/class-gravityview-settings.php:946
 msgid "Become a Beta Tester"
-msgstr ""
+msgstr "Beta Test Kullanıcısı olmak istermisiniz"
 
 #: includes/class-gravityview-settings.php:956
 msgid ""
 "You will have early access to the latest GravityView features and "
 "improvements. There may be bugs! If you encounter an issue, help make "
 "GravityView better by reporting it!"
-msgstr ""
+msgstr "GravityView yeni özelliklerine ve geliştirmelere erken erişim sağlayacaksınız. Bu sürümlerde Hatalar olabilir! Eğer bir sorunla karşılaşırsanız bizimle iletişime geçebilirsiniz."
 
 #: includes/class-gravityview-settings.php:980
 msgid "You are running GravityView version %s"
@@ -1982,7 +1982,7 @@ msgstr "Yeni kayıt notu"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:424
 msgid "This note was sent from {url}"
-msgstr ""
+msgstr "Bu not {url} adresinden gönderilmiştir"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:425
 msgid "Also email this note to"
@@ -2022,11 +2022,11 @@ msgstr "\"Haritada Bul\" bağlantısını  adresin altında göster."
 
 #: includes/fields/class-gravityview-field-approval.php:25
 msgid "Approve Entries"
-msgstr ""
+msgstr "Kayıtları Onayla"
 
 #: includes/fields/class-gravityview-field-approval.php:27
 msgid "Approve and reject entries from the View."
-msgstr ""
+msgstr "Görünüm'e ait kayıtları onaylayın yada reddedin."
 
 #: includes/fields/class-gravityview-field-calculation.php:23
 msgid "Calculation"
@@ -2231,40 +2231,40 @@ msgstr "HTML"
 #: includes/fields/class-gravityview-field-is-approved.php:40
 #: includes/fields/class-gravityview-field-is-approved.php:120
 msgid "Approval Status"
-msgstr ""
+msgstr "Onay Durumu"
 
 #: includes/fields/class-gravityview-field-is-approved.php:41
 msgid "Display the entry's current approval status."
-msgstr ""
+msgstr "Kaydın mevcut onay durumunu görüntüleyin."
 
 #: includes/fields/class-gravityview-field-is-approved.php:42
 msgid "Approval:"
-msgstr ""
+msgstr "Onay:"
 
 #: includes/fields/class-gravityview-field-is-approved.php:173
 msgid "Approved Label"
-msgstr ""
+msgstr "Onaylanmış Kayıt Etiketi"
 
 #: includes/fields/class-gravityview-field-is-approved.php:174
 msgid "If the entry is approved, display this value"
-msgstr ""
+msgstr "Eğer kayıt onaylanmışsa bu değeri göster"
 
 #: includes/fields/class-gravityview-field-is-approved.php:180
 msgid "Disapproved Label"
-msgstr ""
+msgstr "Onaylanmamış Etiketi"
 
 #: includes/fields/class-gravityview-field-is-approved.php:181
 msgid "If the entry is not approved, display this value"
-msgstr ""
+msgstr "Eğer kayıt onaylanmamışsa bu değeri göster"
 
 #: includes/fields/class-gravityview-field-is-approved.php:187
 msgid "Unapproved Label"
-msgstr ""
+msgstr "Onaylanmamış Etiketi"
 
 #: includes/fields/class-gravityview-field-is-approved.php:188
 msgid ""
 "If the entry has not yet been approved or disapproved, display this value"
-msgstr ""
+msgstr "Eğer kayıt denetlenmemişse bu değeri göster"
 
 #: includes/fields/class-gravityview-field-is-fulfilled.php:37
 msgid "Is Fulfilled"
@@ -2469,7 +2469,7 @@ msgstr "Kaynak URL ye bağlantı olarak göster"
 
 #: includes/fields/class-gravityview-field-source-url.php:46
 msgid "Customize the link text. If empty, the link text will be the the URL."
-msgstr "Bağlantı yazısını özelleştirin. Boş bırakırsanız, bağlantı yazısı URL nin kendisi olacaktır."
+msgstr "Bağlantı yazısını özelleştirin. Boş bırakırsanız, bağlantı yazısı URL adresinin kendisi olacaktır."
 
 #: includes/fields/class-gravityview-field-text.php:21
 msgid "Single Line Text"
@@ -2503,7 +2503,7 @@ msgstr "Zaman"
 
 #: includes/fields/class-gravityview-field-total.php:25
 msgid "Total"
-msgstr ""
+msgstr "Toplam"
 
 #: includes/fields/class-gravityview-field-transaction-id.php:27
 msgid "Transaction ID"
@@ -2600,13 +2600,13 @@ msgstr "Tarih biçimini belirleyin (%sPHP date format kullanarak%s)"
 #: includes/lib/EDD_SL_Plugin_Updater.php:201
 msgid ""
 "There is a new version of %1$s available. %2$sView version %3$s details%4$s."
-msgstr ""
+msgstr "Yeni bir  %1$s sürümü mevcut. %2$sSürümü ayrıntılarını %3$s görüntüle%4$s."
 
 #: includes/lib/EDD_SL_Plugin_Updater.php:209
 msgid ""
 "There is a new version of %1$s available. %2$sView version %3$s details%4$s "
 "or %5$supdate now%6$s."
-msgstr ""
+msgstr "Yeni bir %1$s sürümü mevcut. %2$sSürüm ayrıntılarını %3$s görüntüleyin%4$s yada %5$shemen güncelleyin%6$s."
 
 #: includes/lib/EDD_SL_Plugin_Updater.php:396
 msgid "You do not have permission to install plugin updates"
@@ -3159,7 +3159,7 @@ msgstr "Boş"
 msgctxt ""
 "Displayed when a View is not configured. %s is replaced by the tab label"
 msgid "The %s layout has not been configured."
-msgstr ""
+msgstr "%s arayüzü ayarlanmamış."
 
 #: includes/class-frontend-views.php:1660
 msgctxt "Clear all data from the form"
@@ -3202,7 +3202,7 @@ msgstr "Kullanıcı Yok"
 #: includes/class-gravityview-settings.php:287
 msgctxt "A scale from 0 (bad) to 10 (good)"
 msgid "%s (\"Not at all likely\") to %s (\"Extremely likely\")"
-msgstr ""
+msgstr "%s (\"Çok fazla değil\") ile %s (\"Kesinlikle evet\") arası bir değer"
 
 #: includes/class-gravityview-settings.php:914
 msgctxt "Setting: Show or Hide"
@@ -3227,7 +3227,7 @@ msgstr "Kapalı"
 #: includes/class-gravityview-settings.php:951
 msgctxt "gravityview"
 msgid "Show me beta versions if they are available."
-msgstr ""
+msgstr "Beta sürümler yauınlandığında bana göster"
 
 #: includes/class-gv-license-handler.php:525
 msgctxt "1: Customer name; 2: Customer email"
@@ -3270,7 +3270,7 @@ msgstr "Not boş olamaz."
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:90
 msgctxt "Gravity Flow Workflow Step Status"
 msgid "Status: %s"
-msgstr ""
+msgstr "Durum: %s"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:26
 msgctxt "The string placeholders are for emphasis HTML"
