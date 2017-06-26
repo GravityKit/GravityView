@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.21.5.2 on June 26, 2017 =
+
 * Tweak: Improved plugin speed by reducing amount of information logged
 * Fixed: Duplicate descriptions on the settings screen
 * Fixed: Our "No-Conflict Mode" made the settings screen look bad. Yes, we recognize the irony.
