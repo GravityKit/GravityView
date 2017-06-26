@@ -3,14 +3,14 @@
 # Translators:
 # Süha Karalar <suhakaralar@gmail.com>, 2014
 # Süha Karalar <suhakaralar@gmail.com>, 2014-2017
-# Zachary Katz <zack@katz.co>, 2014-2015
+# Zachary Katz <zack@katz.co>, 2014-2015,2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
-"PO-Revision-Date: 2017-06-26 19:45+0000\n"
-"Last-Translator: Süha Karalar <suhakaralar@gmail.com>\n"
+"PO-Revision-Date: 2017-06-26 21:17+0000\n"
+"Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/katzwebservices/gravityview/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -781,8 +781,8 @@ msgid "Entries"
 msgstr "Kayıtlar"
 
 #: includes/class-admin-views.php:381 includes/class-admin.php:163
-#: includes/class-gravityview-settings.php:551
-#: includes/class-gravityview-settings.php:577
+#: includes/class-gravityview-settings.php:548
+#: includes/class-gravityview-settings.php:574
 msgid "Settings"
 msgstr "Ayarlar"
 
@@ -977,23 +977,23 @@ msgstr "Değişiklik Listesi"
 msgid "What&rsquo;s New"
 msgstr "Yenilikler"
 
-#: includes/class-admin-welcome.php:355
+#: includes/class-admin-welcome.php:363
 msgid "View change history"
 msgstr "Görünüm değişiklik geçmişi"
 
-#: includes/class-admin-welcome.php:376
+#: includes/class-admin-welcome.php:384
 msgid "GravityView is brought to you by:"
 msgstr "GravityView'i çıkaranlar:"
 
-#: includes/class-admin-welcome.php:400
+#: includes/class-admin-welcome.php:408
 msgid "Contributors"
 msgstr "Katkıda Bulunanlar"
 
-#: includes/class-admin-welcome.php:425
+#: includes/class-admin-welcome.php:433
 msgid "Want to contribute?"
 msgstr "Katkıda bulunmak istermisiniz?"
 
-#: includes/class-admin-welcome.php:426
+#: includes/class-admin-welcome.php:434
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1510,143 +1510,143 @@ msgstr "%s Kaldır"
 msgid "GravityView Settings"
 msgstr "GravityView Ayarları"
 
-#: includes/class-gravityview-settings.php:437
+#: includes/class-gravityview-settings.php:432
 msgid ""
 "Your GravityView license %s. This means you&rsquo;re missing out on updates "
 "and support! %sActivate your license%s or %sget a license here%s."
 msgstr "GravityView lisansınızın durumu: %s. Bunun anlamı güncelleme ve destekten mahrum kalıyorsunuz demektir! %sLisansınızı etkinleştirin%s yada %shemen bir lisans alın%s."
 
-#: includes/class-gravityview-settings.php:444
+#: includes/class-gravityview-settings.php:439
 msgid "Inactive License"
 msgstr "Pasif Lisans"
 
-#: includes/class-gravityview-settings.php:451
+#: includes/class-gravityview-settings.php:447
 msgid "Expired License"
 msgstr "Zamanı Geçmiş Lisans"
 
-#: includes/class-gravityview-settings.php:456
+#: includes/class-gravityview-settings.php:452
 msgid "Invalid License"
 msgstr "Geçersiz Lisans"
 
-#: includes/class-gravityview-settings.php:457
+#: includes/class-gravityview-settings.php:453
 msgid "is invalid"
 msgstr "geçersiz"
 
-#: includes/class-gravityview-settings.php:460
+#: includes/class-gravityview-settings.php:456
 msgid "is inactive"
 msgstr "pasif"
 
-#: includes/class-gravityview-settings.php:461
-#: includes/class-gravityview-settings.php:470
+#: includes/class-gravityview-settings.php:457
+#: includes/class-gravityview-settings.php:466
 msgid "Activate your license key below."
 msgstr "Lisans anahtarınızı aşağıdan etkinleştirin."
 
-#: includes/class-gravityview-settings.php:469
+#: includes/class-gravityview-settings.php:465
 msgid "has not been activated"
 msgstr "etkinleştirilmedi"
 
-#: includes/class-gravityview-settings.php:717
-#: includes/class-gravityview-settings.php:750
+#: includes/class-gravityview-settings.php:714
+#: includes/class-gravityview-settings.php:747
 msgid "Update Settings"
 msgstr "Ayarları Güncelle"
 
-#: includes/class-gravityview-settings.php:819
-#: includes/class-gv-license-handler.php:723
+#: includes/class-gravityview-settings.php:837
+#: includes/class-gv-license-handler.php:726
 msgid "You don't have the ability to edit plugin settings."
 msgstr "Eklenti ayarlarını düzenleme yetkiniz yok."
 
-#: includes/class-gravityview-settings.php:845
+#: includes/class-gravityview-settings.php:863
 msgid ""
 "The license key you entered has been saved, but not activated. Please "
 "activate the license."
 msgstr "Girdiğiniz lisans anahtarı kaydedildi fakat etkinleştirilmedi. Lütfen etkinleştirin."
 
-#: includes/class-gravityview-settings.php:860
+#: includes/class-gravityview-settings.php:878
 msgid "Required"
 msgstr "Zorunlu"
 
-#: includes/class-gravityview-settings.php:877
+#: includes/class-gravityview-settings.php:895
 msgid "License Key"
 msgstr "Lisans Anahtarı"
 
-#: includes/class-gravityview-settings.php:878
+#: includes/class-gravityview-settings.php:896
 msgid ""
 "Enter the license key that was sent to you on purchase. This enables plugin "
 "updates &amp; support."
 msgstr "Satın alma esnasında size gönderilen lisans anahtarını giriniz. Bu sayede eklenti güncellemeleri ve desteği alabilirsiniz."
 
-#: includes/class-gravityview-settings.php:880
+#: includes/class-gravityview-settings.php:898
 #: includes/class-gv-license-handler.php:302
 #: includes/class-gv-license-handler.php:316
-#: includes/class-gv-license-handler.php:725
+#: includes/class-gv-license-handler.php:728
 msgid "Verifying license&hellip;"
 msgstr "Lisans anahtarı doğrulanıyor&hellip;"
 
-#: includes/class-gravityview-settings.php:899
+#: includes/class-gravityview-settings.php:917
 msgid "Support Email"
 msgstr "Destek Eposta Adresi"
 
-#: includes/class-gravityview-settings.php:900
+#: includes/class-gravityview-settings.php:918
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
 msgstr "Destek taleplerinize yanıt verebilmemiz için lütfen eposta adresinizi yazınız."
 
-#: includes/class-gravityview-settings.php:909
+#: includes/class-gravityview-settings.php:927
 msgid "Show Support Port?"
 msgstr "Destek Portalını Göster?"
 
-#: includes/class-gravityview-settings.php:922
+#: includes/class-gravityview-settings.php:940
 msgid "The Support Port looks like this."
 msgstr "Destek Portalı böyle birşey."
 
-#: includes/class-gravityview-settings.php:922
+#: includes/class-gravityview-settings.php:940
 msgid ""
 "The Support Port provides quick access to how-to articles and tutorials. For"
 " administrators, it also makes it easy to contact support."
 msgstr "Destek Portalı eğitici içerik ve nasıl yapılır makalelerine kestirmeden erişmenizi sağlar. Ayrıca yönetici yetkisine sahip kullanıcıların destek birimiyle iletişime geçmesini kolaylaştırır."
 
-#: includes/class-gravityview-settings.php:923
+#: includes/class-gravityview-settings.php:941
 msgid "Show the Support Port on GravityView pages?"
 msgstr "Destek Portalı GravityView sayfalarında görünsün mü?"
 
-#: includes/class-gravityview-settings.php:928
+#: includes/class-gravityview-settings.php:946
 msgid "No-Conflict Mode"
 msgstr "Çakışmasız Durum"
 
-#: includes/class-gravityview-settings.php:941
+#: includes/class-gravityview-settings.php:959
 msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
 "themes."
 msgstr "Arkaplanda farklı betik ve sitil dosyalarının GravityView yönetim sayfasında yüklenmesini istemiyorsanız bu ayarı kullanmalısınız. Bu sayede diğer eklenti ve temalarla yaşanabilecek çakışmalar asgariye indirilmiş olur."
 
-#: includes/class-gravityview-settings.php:941
+#: includes/class-gravityview-settings.php:959
 msgid "If your Edit View tabs are ugly, enable this setting."
 msgstr "Eğer Görünüm Düzenle sekmeleri çirkin görünüyorsa bu ayarı etkinleştirin."
 
-#: includes/class-gravityview-settings.php:946
+#: includes/class-gravityview-settings.php:964
 msgid "Become a Beta Tester"
 msgstr "Beta Test Kullanıcısı olmak istermisiniz"
 
-#: includes/class-gravityview-settings.php:956
+#: includes/class-gravityview-settings.php:974
 msgid ""
 "You will have early access to the latest GravityView features and "
 "improvements. There may be bugs! If you encounter an issue, help make "
 "GravityView better by reporting it!"
 msgstr "GravityView yeni özelliklerine ve geliştirmelere erken erişim sağlayacaksınız. Bu sürümlerde Hatalar olabilir! Eğer bir sorunla karşılaşırsanız bizimle iletişime geçebilirsiniz."
 
-#: includes/class-gravityview-settings.php:980
+#: includes/class-gravityview-settings.php:998
 msgid "You are running GravityView version %s"
 msgstr "GravityView sürüm %s kullanıyorsunuz"
 
 #: includes/class-gv-license-handler.php:301
-#: includes/class-gv-license-handler.php:726
+#: includes/class-gv-license-handler.php:729
 msgid "Activate License"
 msgstr "Lisansı Etkinleştir"
 
 #: includes/class-gv-license-handler.php:308
-#: includes/class-gv-license-handler.php:727
+#: includes/class-gv-license-handler.php:730
 msgid "Deactivate License"
 msgstr "Lisansı İptal Et"
 
@@ -1694,61 +1694,61 @@ msgstr "Uzantılara erişin"
 msgid "Get access to Entry Importer and other Premium plugins"
 msgstr "Kayıt Aktarıcı ve diğer özel eklentilere erişim sağlayın"
 
-#: includes/class-gv-license-handler.php:711
+#: includes/class-gv-license-handler.php:714
 msgid "Status"
 msgstr "Durum"
 
-#: includes/class-gv-license-handler.php:712
+#: includes/class-gv-license-handler.php:715
 msgid "There was an error processing the request."
 msgstr "Talep işlenirken hata oluştu."
 
-#: includes/class-gv-license-handler.php:713
+#: includes/class-gv-license-handler.php:716
 msgid ""
 "Could not deactivate the license. The license key you attempted to "
 "deactivate may not be active or valid."
 msgstr "Lisans pasif hale getirilemedi. İptal etmeye çalıştığınız lisans anahtarı etkin yada geçerli olmayabilir."
 
-#: includes/class-gv-license-handler.php:714
-#: includes/class-gv-license-handler.php:715
+#: includes/class-gv-license-handler.php:717
+#: includes/class-gv-license-handler.php:718
 msgid "The license key is valid, but it has not been activated for this site."
 msgstr "Lisans anahtarı geçerli, fakat bu site için etkinleştirilemedi."
 
-#: includes/class-gv-license-handler.php:716
+#: includes/class-gv-license-handler.php:719
 msgid "Invalid: this license has reached its activation limit."
 msgstr "Geçersiz: bu lisans anahtarı etkinleştirme haddine ulaştı."
 
-#: includes/class-gv-license-handler.php:716
+#: includes/class-gv-license-handler.php:719
 msgid ""
 "You can manage license activations %son your GravityView account page%s."
 msgstr "Lisans etkinleştirmelerini %s GravityView hesap sayfanızdan %s yönetebilirsiniz."
 
-#: includes/class-gv-license-handler.php:717
+#: includes/class-gv-license-handler.php:720
 msgid "The license has been deactivated."
 msgstr "Lisans iptal edildi."
 
-#: includes/class-gv-license-handler.php:718
+#: includes/class-gv-license-handler.php:721
 msgid "The license key is valid and active."
 msgstr "Lisans anahtarı etkin ve geçerli."
 
-#: includes/class-gv-license-handler.php:719
+#: includes/class-gv-license-handler.php:722
 msgid "The license key entered is invalid."
 msgstr "Girilen lisans anahtarı geçersiz."
 
-#: includes/class-gv-license-handler.php:720
+#: includes/class-gv-license-handler.php:723
 msgid "Invalid license key."
 msgstr "Geçersiz Lisans anahtarı"
 
-#: includes/class-gv-license-handler.php:721
+#: includes/class-gv-license-handler.php:724
 msgid "This license key has been revoked."
 msgstr "Lisans anahtarı iptal edilmiştir."
 
-#: includes/class-gv-license-handler.php:722
+#: includes/class-gv-license-handler.php:725
 msgid ""
 "This license key has expired. %sRenew your license on the GravityView "
 "website%s to receive updates and support."
 msgstr "Bu lisans anahtarının süresi doldu. %sGravityView web sitesi%s üzerinden lisans güncellemeleri ve destek alabilrsiniz."
 
-#: includes/class-gv-license-handler.php:728
+#: includes/class-gv-license-handler.php:731
 msgid "Verify License"
 msgstr "Lisansı Doğrula"
 
@@ -2468,7 +2468,7 @@ msgid "Display as a link to the Source URL"
 msgstr "Kaynak URL ye bağlantı olarak göster"
 
 #: includes/fields/class-gravityview-field-source-url.php:46
-msgid "Customize the link text. If empty, the link text will be the the URL."
+msgid "Customize the link text. If empty, the link text will be the URL."
 msgstr "Bağlantı yazısını özelleştirin. Boş bırakırsanız, bağlantı yazısı URL adresinin kendisi olacaktır."
 
 #: includes/fields/class-gravityview-field-text.php:21
@@ -3204,27 +3204,27 @@ msgctxt "A scale from 0 (bad) to 10 (good)"
 msgid "%s (\"Not at all likely\") to %s (\"Extremely likely\")"
 msgstr "%s (\"Çok fazla değil\") ile %s (\"Kesinlikle evet\") arası bir değer"
 
-#: includes/class-gravityview-settings.php:914
+#: includes/class-gravityview-settings.php:932
 msgctxt "Setting: Show or Hide"
 msgid "Show"
 msgstr "Göster"
 
-#: includes/class-gravityview-settings.php:918
+#: includes/class-gravityview-settings.php:936
 msgctxt "Setting: Show or Hide"
 msgid "Hide"
 msgstr "Gizle"
 
-#: includes/class-gravityview-settings.php:933
+#: includes/class-gravityview-settings.php:951
 msgctxt "Setting: On or off"
 msgid "On"
 msgstr "Açık"
 
-#: includes/class-gravityview-settings.php:937
+#: includes/class-gravityview-settings.php:955
 msgctxt "Setting: On or off"
 msgid "Off"
 msgstr "Kapalı"
 
-#: includes/class-gravityview-settings.php:951
+#: includes/class-gravityview-settings.php:969
 msgctxt "gravityview"
 msgid "Show me beta versions if they are available."
 msgstr "Beta sürümler yauınlandığında bana göster"
