@@ -116,7 +116,7 @@ final class GravityView_Logging {
 
 		if ( class_exists("GFLogging") ) {
 		    GFLogging::include_logger();
-		    GFLogging::log_message( 'gravityview', $function ( $message, true ) . $function ($data, true), KLogger::ERROR );
+		    GFLogging::log_message( 'gravityview', $function ( $message, true ) . $function ( $error, true), KLogger::ERROR );
 		}
 	}
 

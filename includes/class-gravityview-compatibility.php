@@ -299,7 +299,7 @@ class GravityView_Compatibility {
 			// Show the notice even if the future version requirements aren't met
 			self::$notices['gf_version'] = array(
 				'class' => $class,
-				'message' => sprintf( __( "%sGravityView requires Gravity Forms Version %s or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', GV_FUTURE_MIN_GF_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.GFCommon::$version.'</span>', "\n\n".'<a href="https://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
+				'message' => sprintf( __( "%sGravityView requires Gravity Forms Version %s or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', GV_FUTURE_MIN_GF_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.GFCommon::$version.'</span>', "\n\n".'<a href="https://gravityview.co/gravityforms/" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
 				'cap' => 'update_plugins',
 				'dismiss' => 'gf_version_' . GV_FUTURE_MIN_GF_VERSION,
 			);

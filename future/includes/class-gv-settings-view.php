@@ -219,6 +219,7 @@ class View_Settings extends Settings {
 				'desc'	=> __('Only allow access to this View when embedded using the shortcode.', 'gravityview'),
 				'type'	=> 'checkbox',
 				'value'	=> '',
+				'tooltip' => false,
 				'show_in_shortcode' => false,
 				'full_width' => true,
 			),

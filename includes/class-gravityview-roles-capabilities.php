@@ -334,7 +334,27 @@ class GravityView_Roles_Capabilities {
 	 */
 	public static function has_cap( $caps_to_check = '', $object_id = null, $user_id = null ) {
 
-		if( ! is_user_logged_in() || empty( $caps_to_check ) ) {
+		/**
+		 * @filter `gravityview/capabilities/allow_logged_out` Shall we allow a cap check for non-logged in users?
+		 *
+		 * There are use-cases, albeit strange ones, where we'd like to check and override capabilities for
+		 *  for a non-logged in user.
+		 *
+		 * Examples, you ask? https://github.com/gravityview/GravityView/issues/826
+		 *
+		 * @param boolean $allow_logged_out Allow the capability check or bail without even checking. Default: false. Do not allow. Do not pass Go. Do not collect $200.
+		 * @param int|null $object_id (optional) Parameter can be used to check for capabilities against a specific object, such as a post or us.
+		 * @param int|null $user_id (optional) Check the capabilities for a user who is not necessarily the currently logged-in user.
+		 */
+		$allow_logged_out = apply_filters( 'gravityview/capabilities/allow_logged_out', false, $caps_to_check, $object_id, $user_id );
+
+		/**
+		 * We bail with a negative response without even checking if:
+		 *
+		 * 1. The current user is not logged in and non-logged in users are considered unprivileged (@see `gravityview/capabilities/allow_logged_out` filter).
+		 * 2. If the caps to check are empty.
+		 */
+		if ( ( ! is_user_logged_in() && ! $allow_logged_out ) || empty( $caps_to_check ) ) {
 			return false;
 		}
 

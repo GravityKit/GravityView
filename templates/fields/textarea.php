@@ -24,7 +24,7 @@ extract( $gravityview_view->getCurrentField() );
  * @see wp_kses_allowed_html() For allowed contexts
  * @param array|string $allowed_html Context string (allowed strings are post, strip, data, entities, or the name of a field filter such as pre_user_description) or allowed tags array (see above). [Default: 'post']
  */
-$allowed_html = add_filter( 'gravityview/fields/textarea/allowed_kses', 'post' );
+$allowed_html = apply_filters( 'gravityview/fields/textarea/allowed_kses', 'post' );
 
 $value = wp_kses( $value, $allowed_html );
 
@@ -51,4 +51,3 @@ if( ! empty( $field_settings['new_window'] ) ) {
 }
 
 echo wpautop( $value );
-
