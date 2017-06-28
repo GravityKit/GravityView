@@ -1540,7 +1540,7 @@ class GravityView_Edit_Entry_Render {
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			if ( \GV\View::exists( $view_id ) ) {
 				$view = \GV\View::by_id( $view_id );
-				$properties = $view->fields->as_configuration();
+				$properties = $view->fields ? $view->fields->as_configuration() : array();
 			}
 		} else {
 			/** GravityView_View_Data is deprecated. */

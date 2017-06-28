@@ -1277,69 +1277,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers \GV\Frontend_Request::output()
-	 */
-	public function test_frontend_output_permissions() {
-		$this->_reset_context();
-
-		$form = $this->factory->form->import_and_get( 'complete.json' );
-
-		global $post;
-
-		$post = $this->factory->view->create_and_get( array(
-			'form_id' => $form['id'],
-			'template_id' => 'table',
-			'settings' => array(
-				'embed_only' => true
-			),
-		) );
-
-		$view = \GV\View::from_post( $post );
-
-		\GV\Mocks\Legacy_Context::push( array(
-			'post' => $post,
-			'view' => $view,
-			'entries' => new \GV\Entry_Collection(),
-			'in_the_loop' => true,
-		) );
-
-		$renderer = new \GV\View_Renderer();
-		$request = new \GV\Frontend_Request();
-
-		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $request->output( '' );
-
-		/** Clean up the differences a bit */
-		$legacy = str_replace( ' style=""', '', $legacy );
-		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
-		$future = preg_replace( '#>\s*<#', '><', $future );
-
-		/** Disallow direct access. */
-		$this->assertEquals( $legacy, $future );
-		$this->assertContains( 'are not allowed to view this content', $future );
-
-		/** Password protection */
-		$post = get_post( wp_update_post( array( 'ID' => $view->ID, 'post_password' => '123' ) ) );
-
-		$renderer = new \GV\View_Renderer();
-		$request = new \GV\Frontend_Request();
-
-		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '<h2>Hello</h2>' );
-		$future = $request->output( '<h2>Hello</h2>' );
-
-		/** Clean up the differences a bit */
-		$legacy = str_replace( ' style=""', '', $legacy );
-		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
-		$future = preg_replace( '#>\s*<#', '><', $future );
-
-		/** Disallow direct access. */
-		$this->assertEquals( $legacy, $future );
-		$this->assertEquals( '<h2>Hello</h2>', $future );
-
-		$this->_reset_context();
-	}
-
-	/**
 	 * @covers \GV\View_Renderer::render()
 	 * @covers \GV\View_Table_Template::render()
 	 * @covers \GV\Frontend_Request::output()
@@ -4074,86 +4011,20 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers \GV\Frontend_Request::output()
 	 * @covers \GV\Frontend_Request::is_view()
 	 */
-	public function test_frontend_request() {
+	public function test_frontend_request_is() {
 		$request = new \GV\Frontend_Request();
 
 		global $post;
-
-		$this->assertEquals( $request->output( 'just some regular content' ), 'just some regular content' );
-
-		$_this = &$this;
-		add_filter( 'gravityview/request/output/views', function( $views ) use ( $_this ) {
-			$_this->assertCount( 0, $views->all() );
-			return $views;
-		} );
-
 		$this->assertFalse( $request->is_view() );
-		$request->output( '' );
-
-		remove_all_filters( 'gravityview/request/output/views' );
 
 		$view = $this->factory->view->create_and_get();
-		$with_shortcode = $this->factory->post->create_and_get( array(
-			'post_content' => '[gravityview id="' . $view->ID . '"]'
-		) );
-
-		add_filter( 'gravityview/request/output/views', function( $views ) use ( $_this, $view ) {
-			$_this->assertCount( 1, $views->all() );
-			$_this->assertEquals( $view->ID, $views->last()->ID );
-			return $views;
-		} );
-
-		$post = $with_shortcode;
-		$this->assertFalse( $request->is_view() );
-		$request->output( '' );
 
 		$post = $view;
-		$this->assertTrue( $request->is_view() );
-		$request->output( '' );
+		$this->assertInstanceOf( '\GV\View', $request->is_view() );
 
 		$post = null;
-		$request->output( '[gravityview id="' . $view->ID . '"]' );
-
-		remove_all_filters( 'gravityview/request/output/views' );
-
-		/** A post password is required. */
-		$post = get_post( wp_update_post( array( 'ID' => $view->ID, 'post_password' => '123' ) ) );
-		$this->assertEquals( $request->output( 'sentinel_1' ), 'sentinel_1' );
-		$post = get_post( wp_update_post( array( 'ID' => $view->ID, 'post_password' => null ) ) );
-
-		/** Not directly accessible. */
-		add_filter( 'gravityview_direct_access', '__return_false' );
-		$this->assertContains( 'not allowed to view this', $request->output( '' ) );
-		remove_all_filters( 'gravityview_direct_access' );
-
-		add_filter( 'gravityview/request/output/direct', '__return_false' );
-		$this->assertContains( 'not allowed to view this', $request->output( '' ) );
-		remove_all_filters( 'gravityview/request/output/direct' );
-
-		/** Embed-only */
-		add_filter( 'gravityview/request/output/views', function( $views ) use ( $_this, $view ) {
-			$views->get( $view->ID )->settings->set( 'embed_only', true );
-			return $views;
-		} );
-		$this->assertContains( 'not allowed to view this', $request->output( '' ) );
-		remove_all_filters( 'gravityview/request/output/views' );
-
-		/** A broken view with no form. */
-		delete_post_meta( $post->ID, '_gravityview_form_id' );
-		$this->assertEquals( $request->output( 'sentinel' ), 'sentinel' );
-
-		$administrator = $this->factory->user->create( array(
-			'user_login' => md5( microtime() ),
-			'user_email' => md5( microtime() ) . '@gravityview.tests',
-			'role' => 'administrator' )
-		);
-		wp_set_current_user( $administrator );
-		$this->assertContains( 'View is not configured properly', $request->output( '' ) );
-
-		$this->_reset_context();
 	}
 
 	/**
@@ -4697,6 +4568,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 
 		$form = $this->factory->form->import_and_get( 'complete.json' );
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
@@ -4802,11 +4674,22 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Clean up the differences a bit */
 		$legacy_output = str_replace( ' style=""', '', $legacy_output );
-		$legacy_output = preg_replace( '#>\s*<#', '><', $legacy_output );
-		$future_output = preg_replace( '#>\s*<#', '><', $future_output );
+		$legacy_output = trim( preg_replace( '#>\s*<#', '><', $legacy_output ) );
+		$future_output = trim( preg_replace( '#>\s*<#', '><', $future_output ) );
 
 		$this->assertEquals( $legacy_output, $future_output );
 		$this->assertContains( '] Entry ', $future_output );
+
+		/** Password protection */
+		wp_update_post( array( 'ID' => $view->ID, 'post_password' => '123' ) );
+
+		$this->assertContains( 'content is password protected', $legacy->shortcode( $args ) );
+		$this->assertContains( 'content is password protected', $future->callback( $args ) );
+
+		/** Status */
+		// wp_update_post( array( 'ID' => $view->ID, 'post_password' => '', 'post_status' => 'draft' ) );
+		// $this->assertNotContains( '] Entry', $legacy->shortcode( $args ) );
+		// $this->assertNotContains( '] Entry', $future->callback( $args ) );
 
 		$this->_reset_context();
 	}

@@ -107,9 +107,6 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
 		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
 
-		/** The Contexts. */
-		require_once $this->plugin->dir( 'future/includes/class-gv-context.php' );
-
 		/** The Settings. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-settings.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-settings-view.php' );
@@ -121,7 +118,8 @@ final class Core {
 		/** Shortcodes */
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gravityview.php' );
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED' ) ) {
+			remove_shortcode( 'gravityview' );
 			add_action( 'init', array( '\GV\Shortcodes\gravityview', 'add' ) );
 		}
 
@@ -156,6 +154,7 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-renderer.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-renderer-view.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-renderer-entry.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-renderer-entry-edit.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-renderer-field.php' );
 
 		/** Templating. */

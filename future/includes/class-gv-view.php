@@ -55,6 +55,13 @@ class View implements \ArrayAccess {
 	public function __construct() {
 		$this->settings = new View_Settings();
 		$this->fields = new Field_Collection();
+
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED' ) ) {
+			add_filter( 'the_content', array( $this, 'content' ), 11 );
+
+			/** Remove old renderers */
+			remove_filter( 'the_content', array( \GravityView_frontend::getInstance(), 'insert_view_in_content' ) );
+		}
 	}
 
 	/**
@@ -166,6 +173,111 @@ class View implements \ArrayAccess {
 		);
 
 		register_post_type( 'gravityview', $args );
+	}
+
+	/**
+	 * A renderer filter for the View post type content.
+	 *
+	 * @param string $content Should be empty, as we don't store anything there.
+	 *
+	 * @return string $content The view content as output by the renderers.
+	 */
+	public static function content( $content ) {
+		$request = gravityview()->request;
+
+		/**
+		 * This is not a View. Bail.
+		 *
+		 * Shortcodes and oEmbeds and whatnot will be handled
+		 *  elsewhere.
+		 */
+		if ( ! $view = $request->is_view() ) {
+			return $content;
+		}
+
+		/**
+		 * This View is password protected. Nothing to do here.
+		 * WordPress outputs the form automagically inside `get_the_content`.
+		 */
+		if ( post_password_required( $view ) ) {
+			return $content;
+		}
+
+		if ( ! $view->form  ) {
+			gravityview()->log->notice( 'View #{id} has no form attached to it.', array( 'id' => $view->ID ) );
+
+			/**
+			 * This View has no data source. There's nothing to show really.
+			 * ...apart from a nice message if the user can do anything about it.
+			 */
+			if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
+				return __( sprintf( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
+			}
+
+			return $content;
+		}
+
+		/**
+		 * Is this View directly accessible via a post URL?
+		 *
+		 * @see https://codex.wordpress.org/Function_Reference/register_post_type#public
+		 */
+
+		/**
+		 * @filter `gravityview_direct_access` Should Views be directly accessible, or only visible using the shortcode?
+		 * @deprecated
+		 * @param[in,out] boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded. Default: `true`
+		 * @param int $view_id The ID of the View currently being requested. `0` for general setting
+		 */
+		$direct_access = apply_filters( 'gravityview_direct_access', true, $view->ID );
+
+		/**
+		 * @filter `gravityview/request/output/direct` Should this View be directly accessbile?
+		 * @since future
+		 * @param[in,out] boolean Accessible or not. Default: accessbile.
+		 * @param \GV\View $view The View we're trying to directly render here.
+		 * @param \GV\Request $request The current request.
+		 */
+		if ( ! apply_filters( 'gravityview/view/output/direct', $direct_access, $view, $request ) ) {
+			return __( 'You are not allowed to view this content.', 'gravityview' );
+		}
+
+		/**
+		 * Is this View an embed-only View? If so, don't allow rendering here,
+		 *  as this is a direct request.
+		 */
+		if ( $view->settings->get( 'embed_only' ) && ! \GVCommon::has_cap( 'read_private_gravityviews' ) ) {
+			return __( 'You are not allowed to view this content.', 'gravityview' );
+		}
+
+		/** @todo protection! */
+
+		/**
+		 * Editing a single entry.
+		 */
+		if ( $entry = $request->is_edit_entry() ) {
+			/** @todo protection! */
+			$renderer = new Edit_Entry_Renderer();
+			return $renderer->render( $entry, $view, $request );
+
+		/**
+		 * Viewing a single entry.
+		 */
+		} else if ( $entry = $request->is_entry() ) {
+			/** @todo protection! */
+			$renderer = new Entry_Renderer();
+			return $renderer->render( $entry, $view, $request );
+
+		/**
+		 * Plain old View.
+		 */
+		} else {
+			/** @todo protection! */
+			$renderer = new View_Renderer();
+			return $renderer->render( $view, $request );
+		}
+		
+		return $content;
 	}
 
 

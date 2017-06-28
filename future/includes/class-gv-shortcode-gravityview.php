@@ -47,12 +47,38 @@ class gravityview extends \GV\Shortcode {
 		$view->settings->update( $atts );
 		$entries = $view->get_entries( $request );
 
+		/** @todo protection! */
+
+		/**
+		 * View details.
+		 */
 		if ( $atts['detail'] ) {
 			return $this->detail( $view, $entries, $atts );
-		}
 
-		$renderer = new \GV\View_Renderer();
-		return $renderer->render( $view, $request );
+		/**
+		 * Editing a single entry.
+		 */
+		} else if (  $entry = $request->is_edit_entry() ) {
+			/** @todo protection! */
+			$renderer = new \GV\Edit_Entry_Renderer();
+			return $renderer->render( $entry, $view, $request );
+
+		/**
+		 * Viewing a single entry.
+		 */
+		} else if ( $entry = $request->is_entry() ) {
+			/** @todo protection! */
+			$renderer = new \GV\Entry_Renderer();
+			return $renderer->render( $entry, $view, $request );
+
+		/**
+		 * Just this view.
+		 */
+		} else {
+			/** @todo protection! */
+			$renderer = new \GV\View_Renderer();
+			return $renderer->render( $view, $request );
+		}
 	}
 
 	/**
