@@ -75,25 +75,7 @@ class View_Renderer extends Renderer {
 		 * Fetch entries for this View.
 		 */
 		if ( $get_entries ) {
-
-			/**
-			 * @todo: Stop using _frontend and use something like $request->get_search_criteria() instead
-			 */
-			$parameters = \GravityView_frontend::get_view_entries_parameters( $view->settings->as_atts(), $view->form->ID );
-
-			$entries = $view->form->entries
-				->filter( \GV\GF_Entry_Filter::from_search_criteria( $parameters['search_criteria'] ) )
-				->offset( $view->settings->get( 'offset' ) )
-				->limit( $parameters['paging']['page_size'] )
-				/** @todo: Get the page from the request instead! */
-				->page( ( ( $parameters['paging']['offset'] - $view->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
-
-			if ( ! empty( $parameters['sorting'] ) ) {
-				$field = new \GV\Field();
-				$field->ID = $parameters['sorting']['key'];
-				$direction = strtolower( $parameters['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
-				$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction ) );
-			}
+			$entries = $view->get_entries( $request );
 		} else {
 			$entries = new \GV\Entry_Collection();
 		}

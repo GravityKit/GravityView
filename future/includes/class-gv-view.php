@@ -417,6 +417,38 @@ class View implements \ArrayAccess {
 		);
 	}
 
+	/** 
+	 * Retrieve the entries for the current view and request.
+	 *
+	 * @param \GV\Request The request. Usued for now.
+	 *
+	 * @return \GV\Entry_Collection The entries.
+	 */
+	public function get_entries( $request ) {
+		if ( ! $this->form ) {
+			return new \GV\Entry_Collection();
+		}
+
+		/**
+		 * @todo: Stop using _frontend and use something like $request->get_search_criteria() instead
+		 */
+		$parameters = \GravityView_frontend::get_view_entries_parameters( $this->settings->as_atts(), $this->form->ID );
+		$entries = $this->form->entries
+			->filter( \GV\GF_Entry_Filter::from_search_criteria( $parameters['search_criteria'] ) )
+			->offset( $this->settings->get( 'offset' ) )
+			->limit( $parameters['paging']['page_size'] )
+			/** @todo: Get the page from the request instead! */
+			->page( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
+		if ( ! empty( $parameters['sorting'] ) ) {
+			$field = new \GV\Field();
+			$field->ID = $parameters['sorting']['key'];
+			$direction = strtolower( $parameters['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
+			$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction ) );
+		}
+
+		return $entries;
+	}
+
 	public function __get( $key ) {
 		if ( $this->post ) {
 			return $this->post->$key;
