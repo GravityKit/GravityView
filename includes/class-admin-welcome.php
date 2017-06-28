@@ -273,6 +273,20 @@ class GravityView_Welcome {
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
+                
+                <h3>1.21.5.2 on June 26, 2017</h3>
+
+                <ul>
+                    <li>Tweak: Improved plugin speed by reducing amount of information logged</li>
+                    <li>Fixed: Duplicate descriptions on the settings screen</li>
+                    <li>Fixed: Our &quot;No-Conflict Mode&quot; made the settings screen look bad. Yes, we recognize the irony.</li>
+                    <li>Updated: Translations - thank you, translators!
+
+                        <ul>
+                            <li>Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
+                            <li>Dutch translations by Thom</li>
+                        </ul></li>
+                </ul>
 
                 <h3>1.21.5.1 on June 13, 2017</h3>
 
