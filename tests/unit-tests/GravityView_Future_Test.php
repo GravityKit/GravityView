@@ -652,13 +652,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers \GV\Shortcode::callback()
-	 */
-	public function test_shortcode_do_not_implemented() {
-		$this->assertEmpty( \GV\Shortcode::callback( array( 'id' => 1 ) ) );
-	}
-
-	/**
 	 * @covers \GV\Shortcode::parse()
 	 * @covers \GravityView_View_Data::parse_post_content()
 	 */
