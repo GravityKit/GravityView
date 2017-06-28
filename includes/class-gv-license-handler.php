@@ -647,11 +647,14 @@ class GV_License_Handler {
 
 			$is_check_action_button = ( 'check_license' === $data['edd_action'] && defined( 'DOING_AJAX' ) && DOING_AJAX );
 
+			if( $is_check_action_button ) {
+				delete_transient( self::status_transient_key );
+			}
 			// Failed is the response from trying to de-activate a license and it didn't work.
 			// This likely happened because people entered in a different key and clicked "Deactivate",
 			// meaning to deactivate the original key. We don't want to save this response, since it is
 			// most likely a mistake.
-			if ( $license_data->license !== 'failed' && ! $is_check_action_button && $update_license ) {
+			else if ( $license_data->license !== 'failed' && $update_license ) {
 
 				if ( ! empty( $data['field_id'] ) ) {
 					set_transient( self::status_transient_key, $license_data, DAY_IN_SECONDS );

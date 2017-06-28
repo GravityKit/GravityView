@@ -422,11 +422,6 @@ class GravityView_Settings extends GFAddOn {
 	 */
 	function license_key_notice() {
 
-		// Only show on GravityView pages
-		if( ! gravityview_is_admin_page() ) {
-			return;
-		}
-
 		$license_status = self::getSetting('license_key_status');
 		$license_key = self::getSetting('license_key');
 		if( '' === $license_key ) {
@@ -445,7 +440,8 @@ class GravityView_Settings extends GFAddOn {
 		$status = '';
 		$update_below = false;
 		$primary_button_link = admin_url( 'edit.php?post_type=gravityview&amp;page=gravityview_settings' );
-		switch ( $license_status ) {
+
+        switch ( $license_status ) {
 			/** @since 1.17 */
 			case 'expired':
 				$title = __('Expired License', 'gravityview');
@@ -482,11 +478,11 @@ class GravityView_Settings extends GFAddOn {
 		if( !empty( $status ) ) {
 			GravityView_Admin_Notices::add_notice( array(
 				'message' => $message,
-				'class'	=> 'updated',
-				'title' => $title,
-				'cap' => 'gravityview_edit_settings',
-				'dismiss' => sha1( $license_status.'_'.$license_id ),
-			));
+				'class'   => 'updated',
+				'title'   => $title,
+				'cap'     => 'gravityview_edit_settings',
+				'dismiss' => sha1( $license_status . '_' . $license_id . '_' . date( 'z' ) ), // Show every day, instead of every 8 weeks (which is the default)
+			) );
 		}
 	}
 
@@ -527,6 +523,7 @@ class GravityView_Settings extends GFAddOn {
 			'src'     => plugins_url( 'assets/css/admin-settings.css', GRAVITYVIEW_FILE ),
 			'version' => GravityView_Plugin::version,
 			"deps" => array(
+                'gform_admin',
 				'gaddon_form_settings_css',
                 'gform_tooltip',
                 'gform_font_awesome',
@@ -765,6 +762,29 @@ class GravityView_Settings extends GFAddOn {
 
 
 	/**
+     * Keep GravityView styling for `$field['description']`, even though Gravity Forms added support for it
+     *
+     * Converts `$field['description']` to `$field['gv_description']`
+     * Converts `$field['subtitle']` to `$field['description']`
+     *
+     * @see GravityView_Settings::single_setting_label Converts `gv_description` back to `description`
+     * @see http://share.gravityview.co/P28uGp/2OIRKxog for image that shows subtitle vs description
+     *
+     * @since 1.21.5.2
+     *
+	 * @param array $field
+     *
+     * @return void
+	 */
+	public function single_setting_row( $field ) {
+
+		$field['gv_description'] = rgar( $field, 'description' );
+		$field['description']    = rgar( $field, 'subtitle' );
+
+		parent::single_setting_row( $field );
+	}
+
+	/**
 	 * The same as the parent, except added support for field descriptions
 	 * @inheritDoc
 	 * @param $field array
@@ -773,11 +793,9 @@ class GravityView_Settings extends GFAddOn {
 
 		parent::single_setting_label( $field );
 
-		// Added by GravityView
-		if ( isset( $field['description'] ) ) {
-			echo '<span class="description">'. $field['description'] .'</span>';
+		if ( $description = rgar( $field, 'gv_description' ) ) {
+			echo '<span class="description">'. $description .'</span>';
 		}
-
 	}
 
 	/**

@@ -3,13 +3,13 @@
 # Translators:
 # Md Akter Hosen <tareqhi@gmail.com>, 2014-2016
 # Md Akter Hosen <tareqhi@gmail.com>, 2014
-# Zachary Katz <zack@katz.co>, 2014-2015
+# Zachary Katz <zack@katz.co>, 2014-2015,2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
-"PO-Revision-Date: 2017-06-09 04:57+0000\n"
+"PO-Revision-Date: 2017-06-26 21:12+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Bengali (http://www.transifex.com/katzwebservices/gravityview/language/bn/)\n"
 "MIME-Version: 1.0\n"
@@ -781,8 +781,8 @@ msgid "Entries"
 msgstr "এন্ট্রিসমূহ"
 
 #: includes/class-admin-views.php:381 includes/class-admin.php:163
-#: includes/class-gravityview-settings.php:551
-#: includes/class-gravityview-settings.php:577
+#: includes/class-gravityview-settings.php:548
+#: includes/class-gravityview-settings.php:574
 msgid "Settings"
 msgstr "বিন্যাস"
 
@@ -977,23 +977,23 @@ msgstr "পরিবর্তনের লিস্ট"
 msgid "What&rsquo;s New"
 msgstr "নতুন &rsquo; কি"
 
-#: includes/class-admin-welcome.php:355
+#: includes/class-admin-welcome.php:363
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:376
+#: includes/class-admin-welcome.php:384
 msgid "GravityView is brought to you by:"
 msgstr "গ্রাভিটি ভিউ আপনার জন্য নিয়ে এল:"
 
-#: includes/class-admin-welcome.php:400
+#: includes/class-admin-welcome.php:408
 msgid "Contributors"
 msgstr "সহযোগী যারা"
 
-#: includes/class-admin-welcome.php:425
+#: includes/class-admin-welcome.php:433
 msgid "Want to contribute?"
 msgstr "সহযোগীতা করতে চান?"
 
-#: includes/class-admin-welcome.php:426
+#: includes/class-admin-welcome.php:434
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1515,143 +1515,143 @@ msgstr ""
 msgid "GravityView Settings"
 msgstr "গ্রাভিটি ভিউ এর বিন্যাস"
 
-#: includes/class-gravityview-settings.php:437
+#: includes/class-gravityview-settings.php:432
 msgid ""
 "Your GravityView license %s. This means you&rsquo;re missing out on updates "
 "and support! %sActivate your license%s or %sget a license here%s."
 msgstr "আপনার গ্রাভিটি ভিউ লাইসেন্স %s । এর মানে আপনি হালনাগাদ এবং সহয়তা থেকে বঞ্চিত হচ্ছেন! %sআপনার লাইসেন্স সক্রিয় করুন%s অথবা %sনতুন একটি লাইসেন্স নিন%s।"
 
-#: includes/class-gravityview-settings.php:444
+#: includes/class-gravityview-settings.php:439
 msgid "Inactive License"
 msgstr "লাইসেন্স নিস্ক্রিয়"
 
-#: includes/class-gravityview-settings.php:451
+#: includes/class-gravityview-settings.php:447
 msgid "Expired License"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:456
+#: includes/class-gravityview-settings.php:452
 msgid "Invalid License"
 msgstr "অকার্যকর লাইসেন্স"
 
-#: includes/class-gravityview-settings.php:457
+#: includes/class-gravityview-settings.php:453
 msgid "is invalid"
 msgstr "অকার্যকর"
 
-#: includes/class-gravityview-settings.php:460
+#: includes/class-gravityview-settings.php:456
 msgid "is inactive"
 msgstr "নিস্ক্রিয়"
 
-#: includes/class-gravityview-settings.php:461
-#: includes/class-gravityview-settings.php:470
+#: includes/class-gravityview-settings.php:457
+#: includes/class-gravityview-settings.php:466
 msgid "Activate your license key below."
 msgstr "নিচে আপনার লাইসেন্স কী সক্রিয় করুন।"
 
-#: includes/class-gravityview-settings.php:469
+#: includes/class-gravityview-settings.php:465
 msgid "has not been activated"
 msgstr "সক্রিয় করা হয়নি"
 
-#: includes/class-gravityview-settings.php:717
-#: includes/class-gravityview-settings.php:750
+#: includes/class-gravityview-settings.php:714
+#: includes/class-gravityview-settings.php:747
 msgid "Update Settings"
 msgstr "আপডেট সেটিং"
 
-#: includes/class-gravityview-settings.php:819
-#: includes/class-gv-license-handler.php:723
+#: includes/class-gravityview-settings.php:837
+#: includes/class-gv-license-handler.php:726
 msgid "You don't have the ability to edit plugin settings."
 msgstr "আপনি প্লাগ সেটিংস সম্পাদনা করার ক্ষমতা নেই।"
 
-#: includes/class-gravityview-settings.php:845
+#: includes/class-gravityview-settings.php:863
 msgid ""
 "The license key you entered has been saved, but not activated. Please "
 "activate the license."
 msgstr "আপনি প্রবেশ লাইসেন্স কী সংরক্ষিত, কিন্তু সক্রিয় না করা হয়েছে. লাইসেন্স সক্রিয় করুন।"
 
-#: includes/class-gravityview-settings.php:860
+#: includes/class-gravityview-settings.php:878
 msgid "Required"
 msgstr "প্রয়োজনীয়"
 
-#: includes/class-gravityview-settings.php:877
+#: includes/class-gravityview-settings.php:895
 msgid "License Key"
 msgstr "লাইসেন্স নম্বর"
 
-#: includes/class-gravityview-settings.php:878
+#: includes/class-gravityview-settings.php:896
 msgid ""
 "Enter the license key that was sent to you on purchase. This enables plugin "
 "updates &amp; support."
 msgstr "ক্রয়ের সময় যে লাইসেন্স নম্বর দেয়া হয়েছে সেটি প্রবেশ করান। এটি প্লাগইন্স হালনাগাদ এবং সহায়তা সক্রিয় করবে।"
 
-#: includes/class-gravityview-settings.php:880
+#: includes/class-gravityview-settings.php:898
 #: includes/class-gv-license-handler.php:302
 #: includes/class-gv-license-handler.php:316
-#: includes/class-gv-license-handler.php:725
+#: includes/class-gv-license-handler.php:728
 msgid "Verifying license&hellip;"
 msgstr "&hellip;লাইসেন্স যাছাই করা হচ্ছে"
 
-#: includes/class-gravityview-settings.php:899
+#: includes/class-gravityview-settings.php:917
 msgid "Support Email"
 msgstr "সাপোর্ট ইমেইল"
 
-#: includes/class-gravityview-settings.php:900
+#: includes/class-gravityview-settings.php:918
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
 msgstr "আপনার আবেদন গ্রহন করতে দয়া করে আপনার ইমেইল ঠিকানা দিন।"
 
-#: includes/class-gravityview-settings.php:909
+#: includes/class-gravityview-settings.php:927
 msgid "Show Support Port?"
 msgstr "সাপোর্ট পোর্ট দেখান?"
 
-#: includes/class-gravityview-settings.php:922
+#: includes/class-gravityview-settings.php:940
 msgid "The Support Port looks like this."
 msgstr "সাপোর্ট পোর্ট ভালো দেখায়।"
 
-#: includes/class-gravityview-settings.php:922
+#: includes/class-gravityview-settings.php:940
 msgid ""
 "The Support Port provides quick access to how-to articles and tutorials. For"
 " administrators, it also makes it easy to contact support."
 msgstr "সাপোর্ট পোর্ট প্রবন্ধ এবং টিউটোরিয়াল কিভাবে টু দ্রুত অ্যাক্সেস প্রদান করে। প্রশাসকদের জন্য, এছাড়াও এটি সহজ সমর্থনের সাথে যোগাযোগ করে তোলে।"
 
-#: includes/class-gravityview-settings.php:923
+#: includes/class-gravityview-settings.php:941
 msgid "Show the Support Port on GravityView pages?"
 msgstr "মাধ্যাকর্ষণ দেখুন পাতায় সমর্থন পোর্ট দেখান?"
 
-#: includes/class-gravityview-settings.php:928
+#: includes/class-gravityview-settings.php:946
 msgid "No-Conflict Mode"
 msgstr "সংঘাতহীন মোড"
 
-#: includes/class-gravityview-settings.php:941
+#: includes/class-gravityview-settings.php:959
 msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
 "themes."
 msgstr "অন্যান্য প্লাগিন ও থিম সহ দ্বন্দ্ব হ্রাস গ্রাভিটি ভিউ অ্যাডমিন পাতায় ছাপা হওয়া থেকে বিদেশী স্ক্রিপ্ট এবং শৈলী প্রতিরোধ চালু করার জন্য এই সেট করুন -অসম্পূর্ণ"
 
-#: includes/class-gravityview-settings.php:941
+#: includes/class-gravityview-settings.php:959
 msgid "If your Edit View tabs are ugly, enable this setting."
 msgstr "আপনার দৃশ্য সম্পাদনা ট্যাব কুশ্রী হন, তাহলে এই সেটিংটি সক্ষম।"
 
-#: includes/class-gravityview-settings.php:946
+#: includes/class-gravityview-settings.php:964
 msgid "Become a Beta Tester"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:956
+#: includes/class-gravityview-settings.php:974
 msgid ""
 "You will have early access to the latest GravityView features and "
 "improvements. There may be bugs! If you encounter an issue, help make "
 "GravityView better by reporting it!"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:980
+#: includes/class-gravityview-settings.php:998
 msgid "You are running GravityView version %s"
 msgstr "আপনি ‍%s এর গ্রাভিটি ভিউ দেখুন সংস্করণ দৌড়াচ্ছে"
 
 #: includes/class-gv-license-handler.php:301
-#: includes/class-gv-license-handler.php:726
+#: includes/class-gv-license-handler.php:729
 msgid "Activate License"
 msgstr "লাইসেন্স সক্রিয় করুন"
 
 #: includes/class-gv-license-handler.php:308
-#: includes/class-gv-license-handler.php:727
+#: includes/class-gv-license-handler.php:730
 msgid "Deactivate License"
 msgstr "লাইসেন্স নিস্ক্রিয় করুন"
 
@@ -1699,61 +1699,61 @@ msgstr ""
 msgid "Get access to Entry Importer and other Premium plugins"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:711
+#: includes/class-gv-license-handler.php:714
 msgid "Status"
 msgstr "অবস্থা"
 
-#: includes/class-gv-license-handler.php:712
+#: includes/class-gv-license-handler.php:715
 msgid "There was an error processing the request."
 msgstr "অনুরোধ প্রক্রিয়াকরণে সমস্যা হচ্ছে।"
 
-#: includes/class-gv-license-handler.php:713
+#: includes/class-gv-license-handler.php:716
 msgid ""
 "Could not deactivate the license. The license key you attempted to "
 "deactivate may not be active or valid."
 msgstr "লাইসেন্স সমূহ নিষ্ক্রিয় করবেন গেল. লাইসেন্স কী আপনি সক্রিয় অথবা বৈধ নাও হতে পারে নিষ্ক্রিয় করার চেষ্টা করে."
 
-#: includes/class-gv-license-handler.php:714
-#: includes/class-gv-license-handler.php:715
+#: includes/class-gv-license-handler.php:717
+#: includes/class-gv-license-handler.php:718
 msgid "The license key is valid, but it has not been activated for this site."
 msgstr "লাইসেন্স কী বৈধ, কিন্তু এটা এই সাইটের জন্য সক্রিয় করা হয় নি."
 
-#: includes/class-gv-license-handler.php:716
+#: includes/class-gv-license-handler.php:719
 msgid "Invalid: this license has reached its activation limit."
 msgstr "অকার্যকর: এই লাইসেন্স তার অ্যাক্টিভেশন সীমায় পৌঁছেছে."
 
-#: includes/class-gv-license-handler.php:716
+#: includes/class-gv-license-handler.php:719
 msgid ""
 "You can manage license activations %son your GravityView account page%s."
 msgstr "আপনি%s ছেলে আপনার গ্রাভিটি ভিউ অ্যাকাউন্ট পাতা% এর লাইসেন্স সক্রিয়করণব্যবস্থা পরিচালনা করতে পারেন."
 
-#: includes/class-gv-license-handler.php:717
+#: includes/class-gv-license-handler.php:720
 msgid "The license has been deactivated."
 msgstr "লাইসেন্স নিষ্ক্রিয় করা হয়েছে."
 
-#: includes/class-gv-license-handler.php:718
+#: includes/class-gv-license-handler.php:721
 msgid "The license key is valid and active."
 msgstr "লাইসেন্স কী বৈধ এবং সক্রিয়."
 
-#: includes/class-gv-license-handler.php:719
+#: includes/class-gv-license-handler.php:722
 msgid "The license key entered is invalid."
 msgstr "প্রবেশ লাইসেন্স কী অবৈধ."
 
-#: includes/class-gv-license-handler.php:720
+#: includes/class-gv-license-handler.php:723
 msgid "Invalid license key."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:721
+#: includes/class-gv-license-handler.php:724
 msgid "This license key has been revoked."
 msgstr "এই লাইসেন্স কী প্রত্যাহার করা হয়েছে."
 
-#: includes/class-gv-license-handler.php:722
+#: includes/class-gv-license-handler.php:725
 msgid ""
 "This license key has expired. %sRenew your license on the GravityView "
 "website%s to receive updates and support."
 msgstr "এই লাইসেন্স কী মেয়াদ শেষ হয়ে গেছে. % এর আপডেট এবং সমর্থন পেতে গ্রাভিটি ভিউ দেখুন ওয়েবসাইটে%s এর উপর আপনার লাইসেন্স পুনর্নবীকরণ।"
 
-#: includes/class-gv-license-handler.php:728
+#: includes/class-gv-license-handler.php:731
 msgid "Verify License"
 msgstr "লাইসেন্স যাছাই করুন"
 
@@ -2473,7 +2473,7 @@ msgid "Display as a link to the Source URL"
 msgstr "উত্স ইউআরএল- এ একটি লিঙ্ক হিসাবে প্রদর্শন"
 
 #: includes/fields/class-gravityview-field-source-url.php:46
-msgid "Customize the link text. If empty, the link text will be the the URL."
+msgid "Customize the link text. If empty, the link text will be the URL."
 msgstr "টেক্সট লিঙ্ক কাস্টমাইজ করুন. খালি হলে, টেক্সট লিঙ্ক ইউআরএল টি হবে।"
 
 #: includes/fields/class-gravityview-field-text.php:21
@@ -3209,27 +3209,27 @@ msgctxt "A scale from 0 (bad) to 10 (good)"
 msgid "%s (\"Not at all likely\") to %s (\"Extremely likely\")"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:914
+#: includes/class-gravityview-settings.php:932
 msgctxt "Setting: Show or Hide"
 msgid "Show"
 msgstr "প্রদর্শনী"
 
-#: includes/class-gravityview-settings.php:918
+#: includes/class-gravityview-settings.php:936
 msgctxt "Setting: Show or Hide"
 msgid "Hide"
 msgstr "লুকান"
 
-#: includes/class-gravityview-settings.php:933
+#: includes/class-gravityview-settings.php:951
 msgctxt "Setting: On or off"
 msgid "On"
 msgstr "উপর"
 
-#: includes/class-gravityview-settings.php:937
+#: includes/class-gravityview-settings.php:955
 msgctxt "Setting: On or off"
 msgid "Off"
 msgstr "বন্ধ"
 
-#: includes/class-gravityview-settings.php:951
+#: includes/class-gravityview-settings.php:969
 msgctxt "gravityview"
 msgid "Show me beta versions if they are available."
 msgstr ""

@@ -2,12 +2,13 @@
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # michael edi <michaeledi@163.com>, 2016-2017
+# Zachary Katz <zack@katz.co>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
-"PO-Revision-Date: 2017-06-09 04:57+0000\n"
+"PO-Revision-Date: 2017-06-26 21:12+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/katzwebservices/gravityview/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -779,8 +780,8 @@ msgid "Entries"
 msgstr "条目"
 
 #: includes/class-admin-views.php:381 includes/class-admin.php:163
-#: includes/class-gravityview-settings.php:551
-#: includes/class-gravityview-settings.php:577
+#: includes/class-gravityview-settings.php:548
+#: includes/class-gravityview-settings.php:574
 msgid "Settings"
 msgstr "设置"
 
@@ -975,23 +976,23 @@ msgstr "更改列表"
 msgid "What&rsquo;s New"
 msgstr "新鲜事"
 
-#: includes/class-admin-welcome.php:355
+#: includes/class-admin-welcome.php:363
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:376
+#: includes/class-admin-welcome.php:384
 msgid "GravityView is brought to you by:"
 msgstr "重力视图由以下团队呈现："
 
-#: includes/class-admin-welcome.php:400
+#: includes/class-admin-welcome.php:408
 msgid "Contributors"
 msgstr "贡献者"
 
-#: includes/class-admin-welcome.php:425
+#: includes/class-admin-welcome.php:433
 msgid "Want to contribute?"
 msgstr "想要贡献?"
 
-#: includes/class-admin-welcome.php:426
+#: includes/class-admin-welcome.php:434
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1508,143 +1509,143 @@ msgstr "卸载 %s"
 msgid "GravityView Settings"
 msgstr "GravityView设置"
 
-#: includes/class-gravityview-settings.php:437
+#: includes/class-gravityview-settings.php:432
 msgid ""
 "Your GravityView license %s. This means you&rsquo;re missing out on updates "
 "and support! %sActivate your license%s or %sget a license here%s."
 msgstr "您的GravityView注册码 %s。这意味着您将得不到更新和技术支持！%s激活您的注册码%s 或 %s在这里获取一个注册码%s。"
 
-#: includes/class-gravityview-settings.php:444
+#: includes/class-gravityview-settings.php:439
 msgid "Inactive License"
 msgstr "非活跃的许可证"
 
-#: includes/class-gravityview-settings.php:451
+#: includes/class-gravityview-settings.php:447
 msgid "Expired License"
 msgstr "过期的许可证"
 
-#: includes/class-gravityview-settings.php:456
+#: includes/class-gravityview-settings.php:452
 msgid "Invalid License"
 msgstr "无效的许可证"
 
-#: includes/class-gravityview-settings.php:457
+#: includes/class-gravityview-settings.php:453
 msgid "is invalid"
 msgstr "无效"
 
-#: includes/class-gravityview-settings.php:460
+#: includes/class-gravityview-settings.php:456
 msgid "is inactive"
 msgstr "未启用"
 
-#: includes/class-gravityview-settings.php:461
-#: includes/class-gravityview-settings.php:470
+#: includes/class-gravityview-settings.php:457
+#: includes/class-gravityview-settings.php:466
 msgid "Activate your license key below."
 msgstr "激活您的许可证密钥下面。"
 
-#: includes/class-gravityview-settings.php:469
+#: includes/class-gravityview-settings.php:465
 msgid "has not been activated"
 msgstr "未激活"
 
-#: includes/class-gravityview-settings.php:717
-#: includes/class-gravityview-settings.php:750
+#: includes/class-gravityview-settings.php:714
+#: includes/class-gravityview-settings.php:747
 msgid "Update Settings"
 msgstr "更新设置"
 
-#: includes/class-gravityview-settings.php:819
-#: includes/class-gv-license-handler.php:723
+#: includes/class-gravityview-settings.php:837
+#: includes/class-gv-license-handler.php:726
 msgid "You don't have the ability to edit plugin settings."
 msgstr "您没有编辑插件设置的能力。"
 
-#: includes/class-gravityview-settings.php:845
+#: includes/class-gravityview-settings.php:863
 msgid ""
 "The license key you entered has been saved, but not activated. Please "
 "activate the license."
 msgstr "您输入的许可证密钥已保存，但未激活。请激活许可证。"
 
-#: includes/class-gravityview-settings.php:860
+#: includes/class-gravityview-settings.php:878
 msgid "Required"
 msgstr "必填"
 
-#: includes/class-gravityview-settings.php:877
+#: includes/class-gravityview-settings.php:895
 msgid "License Key"
 msgstr "许可证密钥"
 
-#: includes/class-gravityview-settings.php:878
+#: includes/class-gravityview-settings.php:896
 msgid ""
 "Enter the license key that was sent to you on purchase. This enables plugin "
 "updates &amp; support."
 msgstr "输入发送到您购买上的的许可证密钥。这个将开启插件自动更新 &amp; 支持。"
 
-#: includes/class-gravityview-settings.php:880
+#: includes/class-gravityview-settings.php:898
 #: includes/class-gv-license-handler.php:302
 #: includes/class-gv-license-handler.php:316
-#: includes/class-gv-license-handler.php:725
+#: includes/class-gv-license-handler.php:728
 msgid "Verifying license&hellip;"
 msgstr "验证许可证&hellip;"
 
-#: includes/class-gravityview-settings.php:899
+#: includes/class-gravityview-settings.php:917
 msgid "Support Email"
 msgstr "支持电子邮件"
 
-#: includes/class-gravityview-settings.php:900
+#: includes/class-gravityview-settings.php:918
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
 msgstr "为了提供对您的支持请求的响应，请提供您的电子邮件地址。"
 
-#: includes/class-gravityview-settings.php:909
+#: includes/class-gravityview-settings.php:927
 msgid "Show Support Port?"
 msgstr "显示帮助小工具？"
 
-#: includes/class-gravityview-settings.php:922
+#: includes/class-gravityview-settings.php:940
 msgid "The Support Port looks like this."
 msgstr "支持端口看起来像这样。"
 
-#: includes/class-gravityview-settings.php:922
+#: includes/class-gravityview-settings.php:940
 msgid ""
 "The Support Port provides quick access to how-to articles and tutorials. For"
 " administrators, it also makes it easy to contact support."
 msgstr "支持端口提供快速访问的文章和教程。对于管理员来说，它也很容易联系支持。"
 
-#: includes/class-gravityview-settings.php:923
+#: includes/class-gravityview-settings.php:941
 msgid "Show the Support Port on GravityView pages?"
 msgstr "在GravityView页面上显示帮助按钮？"
 
-#: includes/class-gravityview-settings.php:928
+#: includes/class-gravityview-settings.php:946
 msgid "No-Conflict Mode"
 msgstr "无冲突模式"
 
-#: includes/class-gravityview-settings.php:941
+#: includes/class-gravityview-settings.php:959
 msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
 "themes."
 msgstr "设为开启后，可以防止外部脚本在GravityView管理页面上生成样式，减少与其他插件和主题的冲突。"
 
-#: includes/class-gravityview-settings.php:941
+#: includes/class-gravityview-settings.php:959
 msgid "If your Edit View tabs are ugly, enable this setting."
 msgstr "如果您的编辑视图选项卡显示异常，启用此设置。"
 
-#: includes/class-gravityview-settings.php:946
+#: includes/class-gravityview-settings.php:964
 msgid "Become a Beta Tester"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:956
+#: includes/class-gravityview-settings.php:974
 msgid ""
 "You will have early access to the latest GravityView features and "
 "improvements. There may be bugs! If you encounter an issue, help make "
 "GravityView better by reporting it!"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:980
+#: includes/class-gravityview-settings.php:998
 msgid "You are running GravityView version %s"
 msgstr "您正在运行的GravityView版本 %s"
 
 #: includes/class-gv-license-handler.php:301
-#: includes/class-gv-license-handler.php:726
+#: includes/class-gv-license-handler.php:729
 msgid "Activate License"
 msgstr "激活软件"
 
 #: includes/class-gv-license-handler.php:308
-#: includes/class-gv-license-handler.php:727
+#: includes/class-gv-license-handler.php:730
 msgid "Deactivate License"
 msgstr "无效的许可证"
 
@@ -1692,61 +1693,61 @@ msgstr "获取扩展插件"
 msgid "Get access to Entry Importer and other Premium plugins"
 msgstr "获取条目导出器和其他高级插件"
 
-#: includes/class-gv-license-handler.php:711
+#: includes/class-gv-license-handler.php:714
 msgid "Status"
 msgstr "状态"
 
-#: includes/class-gv-license-handler.php:712
+#: includes/class-gv-license-handler.php:715
 msgid "There was an error processing the request."
 msgstr "处理请求时出错。"
 
-#: includes/class-gv-license-handler.php:713
+#: includes/class-gv-license-handler.php:716
 msgid ""
 "Could not deactivate the license. The license key you attempted to "
 "deactivate may not be active or valid."
 msgstr "无法停用许可证。你试图停用可能不活跃或有效的许可证密钥。"
 
-#: includes/class-gv-license-handler.php:714
-#: includes/class-gv-license-handler.php:715
+#: includes/class-gv-license-handler.php:717
+#: includes/class-gv-license-handler.php:718
 msgid "The license key is valid, but it has not been activated for this site."
 msgstr "许可证密钥是有效的，但它并没有被激活。"
 
-#: includes/class-gv-license-handler.php:716
+#: includes/class-gv-license-handler.php:719
 msgid "Invalid: this license has reached its activation limit."
 msgstr "无效的：这个许可证已达到其激活限制。"
 
-#: includes/class-gv-license-handler.php:716
+#: includes/class-gv-license-handler.php:719
 msgid ""
 "You can manage license activations %son your GravityView account page%s."
 msgstr "你可以在 %s您的GravityView账户页面%s 上管理许可证激活。"
 
-#: includes/class-gv-license-handler.php:717
+#: includes/class-gv-license-handler.php:720
 msgid "The license has been deactivated."
 msgstr "许可证已被停用。"
 
-#: includes/class-gv-license-handler.php:718
+#: includes/class-gv-license-handler.php:721
 msgid "The license key is valid and active."
 msgstr "许可证密钥有效，已激活。"
 
-#: includes/class-gv-license-handler.php:719
+#: includes/class-gv-license-handler.php:722
 msgid "The license key entered is invalid."
 msgstr "输入的许可证密钥是无效的。"
 
-#: includes/class-gv-license-handler.php:720
+#: includes/class-gv-license-handler.php:723
 msgid "Invalid license key."
 msgstr "无效的许可证。"
 
-#: includes/class-gv-license-handler.php:721
+#: includes/class-gv-license-handler.php:724
 msgid "This license key has been revoked."
 msgstr "这个许可证密钥已被撤销。"
 
-#: includes/class-gv-license-handler.php:722
+#: includes/class-gv-license-handler.php:725
 msgid ""
 "This license key has expired. %sRenew your license on the GravityView "
 "website%s to receive updates and support."
 msgstr "这个许可证密钥已过期。%s在 FROSTNT 网站更新您的许可证%s来获得更新和支持。"
 
-#: includes/class-gv-license-handler.php:728
+#: includes/class-gv-license-handler.php:731
 msgid "Verify License"
 msgstr "验证许可证"
 
@@ -2466,7 +2467,7 @@ msgid "Display as a link to the Source URL"
 msgstr "显示为一个连接到源地址的链接"
 
 #: includes/fields/class-gravityview-field-source-url.php:46
-msgid "Customize the link text. If empty, the link text will be the the URL."
+msgid "Customize the link text. If empty, the link text will be the URL."
 msgstr "自定义链接文本。如果留空，链接文本将是网址。"
 
 #: includes/fields/class-gravityview-field-text.php:21
@@ -3202,27 +3203,27 @@ msgctxt "A scale from 0 (bad) to 10 (good)"
 msgid "%s (\"Not at all likely\") to %s (\"Extremely likely\")"
 msgstr "%s （\"绝不可能\"） 到 %s（\"极有可能\"）"
 
-#: includes/class-gravityview-settings.php:914
+#: includes/class-gravityview-settings.php:932
 msgctxt "Setting: Show or Hide"
 msgid "Show"
 msgstr "显示"
 
-#: includes/class-gravityview-settings.php:918
+#: includes/class-gravityview-settings.php:936
 msgctxt "Setting: Show or Hide"
 msgid "Hide"
 msgstr "隐藏"
 
-#: includes/class-gravityview-settings.php:933
+#: includes/class-gravityview-settings.php:951
 msgctxt "Setting: On or off"
 msgid "On"
 msgstr "开"
 
-#: includes/class-gravityview-settings.php:937
+#: includes/class-gravityview-settings.php:955
 msgctxt "Setting: On or off"
 msgid "Off"
 msgstr "关闭"
 
-#: includes/class-gravityview-settings.php:951
+#: includes/class-gravityview-settings.php:969
 msgctxt "gravityview"
 msgid "Show me beta versions if they are available."
 msgstr ""
