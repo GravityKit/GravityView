@@ -653,10 +653,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers \GV\Shortcode::callback()
-	 * @expectedException \BadMethodCallException
 	 */
 	public function test_shortcode_do_not_implemented() {
-		\GV\Shortcode::callback( array( 'id' => 1 ) );
+		$this->assertEmpty( \GV\Shortcode::callback( array( 'id' => 1 ) ) );
 	}
 
 	/**
@@ -4695,5 +4694,127 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEmpty( GravityView_View::getInstance()->getBackLinkLabel() );
 
 		\GV\Mocks\Legacy_Context::reset();
+	}
+
+	/**
+	 * @covers \GV\Shortcodes\gravityview::callback()
+	 * @covers \GravityView_Shortcode::shortcode()
+	 */
+	public function test_shortcodes_gravityview() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'page_size' => 33,
+			),
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+				),
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+				)
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+					),
+				),
+				'header_left' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'page_info',
+					),
+				),
+				'footer_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom_content',
+						'content' => 'Here we go again! <b>Now</b>',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entries = array();
+		foreach ( range( 1, 8 ) as $i ) {
+			$entry = $this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'status' => 'active',
+				'16' => sprintf( '[%d] Entry %s', $i, wp_generate_password( 12 ) ),
+			) );
+			$entries []= \GV\GF_Entry::by_id( $entry['id'] );
+		}
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'post' => $post,
+			'view' => $view,
+			'entries' => $view->get_entries( new \GV\Frontend_Request() ),
+			'paging' => array(
+				'page_size' => 3,
+			)
+		) );
+
+		$legacy = new GravityView_Shortcode();
+		$future = new \GV\Shortcodes\gravityview();
+
+		$args = array(
+			'id' => $view->ID,
+			'detail' => 'total_entries',
+			'page_size' => 3,
+		);
+
+		$_GET = array( 'pagenum' => 2 );
+
+		$this->assertEquals( $legacy->shortcode( $args ), $output = $future->callback( $args ) );
+		$this->assertEquals( '8', $output );
+
+		$args['detail'] = 'first_entry';
+
+		$this->assertEquals( $legacy->shortcode( $args ), $output = $future->callback( $args ) );
+		$this->assertEquals( '1', $output );
+
+		$args['detail'] = 'last_entry';
+
+		$this->assertEquals( $legacy->shortcode( $args ), $output = $future->callback( $args ) );
+		$this->assertEquals( '3', $output );
+
+		$args['detail'] = 'page_size';
+
+		$this->assertEquals( $legacy->shortcode( $args ), $output = $future->callback( $args ) );
+		$this->assertEquals( '3', $output );
+
+		unset( $args['detail'] );
+
+		$legacy_output = $legacy->shortcode( $args );
+		$future_output = $future->callback( $args );
+
+		/** Clean up the differences a bit */
+		$legacy_output = str_replace( ' style=""', '', $legacy_output );
+		$legacy_output = preg_replace( '#>\s*<#', '><', $legacy_output );
+		$future_output = preg_replace( '#>\s*<#', '><', $future_output );
+
+		$this->assertEquals( $legacy_output, $future_output );
+		$this->assertContains( '] Entry ', $future_output );
+
+		$this->_reset_context();
 	}
 }

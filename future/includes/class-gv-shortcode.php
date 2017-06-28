@@ -38,12 +38,11 @@ class Shortcode {
 	 * @param array $atts The callback shortcode attributes.
 	 * @param string|null $content The wrapped content. Default: null.
 	 *
-	 * @throws \BadMethodCallException in base class.
-	 *
 	 * @return string The result of the shortcode logic.
 	 */
-	public static function callback( $atts, $content = null ) {
-		throw new \BadMethodCallException( 'Callback not implemented in base \GV\Shortcode class.' );
+	public function callback( $atts, $content = null ) {
+		gravityview()->log->error( '[{shortcode}] shortcode {class}::callback method not implemented.', array( 'shortcode' => $this->name, 'class' => get_class( $this ) ) );
+		return '';
 	}
 
 	/**
@@ -56,16 +55,16 @@ class Shortcode {
 	public static function add() {
 		$shortcode = new static();
 		if ( shortcode_exists( $shortcode->name ) ) {
-			if ( empty( self::$shortcodes[$shortcode->name] ) ) {
+			if ( empty( self::$shortcodes[ $shortcode->name ] ) ) {
 				gravityview()->log->error( 'Shortcode [{shortcode}] has already been registered elsewhere.', array( 'shortcode' => $shortcode->name ) );
 				return null;
 			}
 		} else {
-			add_shortcode( $shortcode->name, array( get_class( $shortcode ), 'callback' ) );
-			self::$shortcodes[$shortcode->name] = $shortcode;
+			add_shortcode( $shortcode->name, array( $shortcode, 'callback' ) );
+			self::$shortcodes[ $shortcode->name ] = $shortcode;
 		}
 
-		return self::$shortcodes[$shortcode->name];
+		return self::$shortcodes[ $shortcode->name ];
 	}
 
 	/**

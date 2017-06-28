@@ -640,7 +640,7 @@ final class Legacy_Context {
 					foreach ( \GV\Shortcode::parse( $value->post_content ) as $shortcode ) {
 						if ( $shortcode->name == 'gravityview' ) {
 							$has_shortcode = true;
-							break;;
+							break;
 						}
 					}
 					self::thaw( array(
