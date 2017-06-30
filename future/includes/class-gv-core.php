@@ -122,6 +122,12 @@ final class Core {
 			remove_shortcode( 'gravityview' );
 			add_action( 'init', array( '\GV\Shortcodes\gravityview', 'add' ) );
 		}
+		
+		/** oEmbed */
+		require_once $this->plugin->dir( 'future/includes/class-gv-oembed.php' );
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED' ) ) {
+			add_action( 'init', array( '\GV\oEmbed', 'init' ), 11 );
+		}
 
 		/** Our Source generic and beloved source and form backend implementations. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-source.php' );
@@ -165,9 +171,11 @@ final class Core {
 
 		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );
 
-		/** The main frontend request. */
-		$this->request = new Frontend_Request();
-		/** For now it is the only request type we have. */
+		if ( Request::is_admin() ) {
+			$this->request = new Admin_Request();
+		} else {
+			$this->request = new Frontend_Request();
+		}
 
 		define( 'GRAVITYVIEW_FUTURE_CORE_LOADED', true );
 	}

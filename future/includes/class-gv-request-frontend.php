@@ -7,9 +7,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 }
 
 /**
- * The default Request class.
- *
- * Finds out what Views are being requested.
+ * The default frontend Request class.
  */
 class Frontend_Request extends Request {
 	/**

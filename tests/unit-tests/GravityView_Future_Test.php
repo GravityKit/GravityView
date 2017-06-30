@@ -4686,11 +4686,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( 'content is password protected', $legacy->shortcode( $args ) );
 		$this->assertContains( 'content is password protected', $future->callback( $args ) );
 
-		/** Status */
-		// wp_update_post( array( 'ID' => $view->ID, 'post_password' => '', 'post_status' => 'draft' ) );
-		// $this->assertNotContains( '] Entry', $legacy->shortcode( $args ) );
-		// $this->assertNotContains( '] Entry', $future->callback( $args ) );
-
 		$this->_reset_context();
+	}
+
+	public function test_oembed_single() {
 	}
 }
