@@ -149,6 +149,7 @@ abstract class Entry_Template extends Template {
 			'entry' => $this->entry,
 			'view' => $this->view,
 			'fields' => $this->view->fields,
+			'request' => $this->request,
 
 		), $this ), 'gravityview' );
 

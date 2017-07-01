@@ -800,3 +800,16 @@ add_filter( 'gravityview/view/fields/configuration', function( $fields, $view ) 
 
 	return $fields;
 }, 10, 2 );
+
+
+/** Make sure the non-configured notice is not output twice. */
+add_action( 'gravityview/template/after', function( $gravityview = null ) {
+	if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED' ) && class_exists( '\GravityView_frontend' ) ) {
+		global $wp_filter;
+		foreach ( $wp_filter['gravityview_after']->callbacks[10] as $function_key => $callback ) {
+			if ( strpos( $function_key, 'context_not_configured_warning' ) ) {
+				unset( $wp_filter['gravityview_after']->callbacks[10][ $function_key ] );
+			}
+		}
+	}
+} );

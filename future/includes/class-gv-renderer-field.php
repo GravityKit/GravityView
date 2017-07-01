@@ -35,7 +35,7 @@ class Field_Renderer extends Renderer {
 		/**
 		 * For now we only know how to render views in a Frontend_Request context.
 		 */
-		if ( get_class( $request ) != 'GV\Frontend_Request' ) {
+		if ( ! in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request' ) ) ) {
 			gravityview()->log->error( 'Renderer unable to render View in {request_class} context', array( 'request_class' => get_class( $request ) ) );
 			return null;
 		}

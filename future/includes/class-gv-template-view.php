@@ -139,6 +139,7 @@ abstract class View_Template extends Template {
 			'view' => $this->view,
 			'fields' => $this->view->fields,
 			'entries' => $this->entries->fetch(),
+			'request' => $this->request,
 
 		), $this ), 'gravityview' );
 

@@ -1939,7 +1939,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$renderer = new \GV\Entry_Renderer();
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $entry, $view, new \GV\Frontend_Request() );
+
+		$request = new \GV\Mock_Request();
+		$request->returns['is_entry'] = true;
+
+		$future = $renderer->render( $entry, $view, $request );
 
 		/** Clean up the differences a bit */
 		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
@@ -1992,7 +1996,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $entry, $view, new \GV\Frontend_Request() );
+		$future = $renderer->render( $entry, $view, $request );
 
 		/** Clean up the differences a bit */
 		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
@@ -2082,8 +2086,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		wp_set_current_user( $administrator );
 
 		$renderer = new \GV\Entry_Renderer();
+		$request = new \GV\Mock_Request();
+
+		$request->returns['is_entry'] = true;
+
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $entry, $view, new \GV\Frontend_Request() );
+		$future = $renderer->render( $entry, $view, $request );
 
 		/** Clean up the differences a bit */
 		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
@@ -2216,7 +2224,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $entry, $view, new \GV\Frontend_Request() );
+		$future = $renderer->render( $entry, $view, $request );
 
 		/** Clean up the differences a bit */
 		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
@@ -2229,7 +2237,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		wp_set_current_user( -1 );
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $entry, $view, new \GV\Frontend_Request() );
+		$future = $renderer->render( $entry, $view, $request );
 
 		/** Clean up the differences a bit */
 		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
@@ -4695,6 +4703,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GravityView_oEmbed::render_handler()
 	 */
 	public function test_oembed_entry() {
+		$this->_reset_context();
+
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 
 		$post = $this->factory->view->create_and_get( array(
@@ -4709,6 +4719,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 					wp_generate_password( 4, false ) => array(
 						'id' => 'id',
 						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'edit_link',
+						'label' => 'Edit',
 					),
 				),
 			)
@@ -4734,6 +4748,16 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'rawattr' => '',
 		);
 
+		$administrator = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'administrator' )
+		);
+		wp_set_current_user( $administrator );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_entry'] = true;
+
 		$legacy_output = call_user_func_array( $legacy, $args );
 		$future_output = call_user_func_array( $future, $args );
 
@@ -4744,5 +4768,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$future_output = preg_replace( '#<input type="hidden" class="gravityview-view-id" value="\d+">#', '', $future_output );
 
 		$this->assertEquals( $legacy_output, $future_output );
+
+		wp_set_current_user( 0 );
+		gravityview()->request = new \GV\Frontend_Request();
+
+		$this->_reset_context();
 	}
 }

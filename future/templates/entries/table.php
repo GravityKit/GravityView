@@ -31,7 +31,7 @@
 		<?php endif; ?>
 	</table>
 </div>
-<?php gravityview_after(); ?>
+<?php gravityview_after( $gravityview ); ?>
 
 <?php
 

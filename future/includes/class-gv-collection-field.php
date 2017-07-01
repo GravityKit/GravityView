@@ -50,6 +50,7 @@ class Field_Collection extends Collection {
 	 * Get a copy of this \GV\Field_Collection filtered by position.
 	 *
 	 * @param string $position The position to get the fields for.
+	 *  Can be a wildcard *
 	 *
 	 * @api
 	 * @since
@@ -58,8 +59,11 @@ class Field_Collection extends Collection {
 	 */
 	public function by_position( $position ) {
 		$fields = new self();
+
+		$search = implode( '.*', array_map( 'preg_quote', explode( '*', $position ) ) );
+
 		foreach ( $this->all() as $field ) {
-			if ( $field->position == $position ) {
+			if ( preg_match( "#^{$search}$#", $field->position ) ) {
 				$fields->add( $field );
 			}
 		}

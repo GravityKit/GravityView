@@ -149,6 +149,6 @@ extract( $gravityview->template->extract_zone_vars( array( 'footer-left', 'foote
 
 <?php
 
-gravityview_after();
+gravityview_after( $gravityview );
 
 \GV\Mocks\Legacy_Context::pop();
