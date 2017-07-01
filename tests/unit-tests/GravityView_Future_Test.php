@@ -4690,6 +4690,59 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 	}
 
-	public function test_oembed_single() {
+	/**
+	 * @covers \GV\oEmbed::render()
+	 * @covers \GravityView_oEmbed::render_handler()
+	 */
+	public function test_oembed_entry() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+				),
+			)
+		) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => sprintf( 'Entry %s', wp_generate_password( 12 ) ),
+		) );
+
+		$legacy = array( \GravityView_oEmbed::getInstance(), 'render_handler' );
+		$future = array( '\GV\oEmbed', 'render' );
+
+		$args = array(
+			'matches' => array(
+				'slug' => $post->post_name,
+				'is_cpt' => 'gravityview',
+				'entry_slug' => $entry['id'],
+			),
+			'attr' => '',
+			'url' => add_query_arg( 'entry', $entry['id'], get_permalink( $post->ID ) ),
+			'rawattr' => '',
+		);
+
+		$legacy_output = call_user_func_array( $legacy, $args );
+		$future_output = call_user_func_array( $future, $args );
+
+		/** Clean up the differences a bit */
+		$legacy_output = str_replace( ' style=""', '', $legacy_output );
+		$legacy_output = trim( preg_replace( '#>\s*<#', '><', $legacy_output ) );
+		$future_output = trim( preg_replace( '#>\s*<#', '><', $future_output ) );
+		$future_output = preg_replace( '#<input type="hidden" class="gravityview-view-id" value="\d+">#', '', $future_output );
+
+		$this->assertEquals( $legacy_output, $future_output );
 	}
 }
