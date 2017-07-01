@@ -86,6 +86,13 @@ class GravityView_oEmbed {
 	 * @return void
 	 */
 	function render_provider_request() {
+		/**
+		 * Deprecated, \GV\oEmbed is handling this.
+		 */
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED' ) ) {
+			return;
+		}
+
 		if ( ! empty( $_GET['url'] ) ) {
 			$url = $_GET['url'];
 		} else {
