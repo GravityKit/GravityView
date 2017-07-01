@@ -101,7 +101,9 @@ final class Core {
 		 * Enable this for more aggressive mocking and destruction of the old core.
 		 * Do not define, if you're not ready to get your mind blown!
 		 */
-		define( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED', true );
+		if ( ! getenv( 'GV_NO_FUTURE_RENDER' ) ) {
+			define( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED', true );
+		}
 
 		/** Register the gravityview post type upon WordPress core init. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );

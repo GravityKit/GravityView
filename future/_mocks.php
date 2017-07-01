@@ -650,6 +650,12 @@ final class Legacy_Context {
 						'\GravityView_frontend::post_has_shortcode' => $has_shortcode,
 					) );
 					break;
+				case 'views':
+					self::thaw( array(
+						'\GravityView_View_Data::views' => $value,
+						'\GravityView_frontend::gv_output_data' => \GravityView_View_Data::getInstance(),
+					) );
+					break;
 				case 'entries':
 					self::thaw( array(
 						'\GravityView_View::entries' => array_map( function( $e ) { return $e->as_entry(); }, $value->all() ),

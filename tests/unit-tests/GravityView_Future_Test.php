@@ -349,10 +349,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GravityView_frontend::render_view()
 	 */
 	public function test_data_get_views() {
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED' ) ) {
-			$this->markTestSkipped( 'The alpha future does no longer care' );
-		}
-
 		$this->_reset_context();
 
 		$post = $this->factory->view->create_and_get();
@@ -360,6 +356,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$another_post = $this->factory->view->create_and_get();
 		$another_view = \GV\View::by_id( $another_post->ID );
+
+		$views = new \GV\View_Collection();
+		$views->add( $view );
+		$views->add( $another_view );
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'views' => $views,
+		) );
 
 		{
 			global $wp_admin_bar;
@@ -389,23 +393,20 @@ class GVFuture_Test extends GV_UnitTestCase {
 			);
 			wp_set_current_user( $administrator );
 
-			$this->assertNull( $admin_bar->add_links() ); /** Non-admin, so meh... */
-
-			$user = wp_get_current_user();
-			$user->add_cap( 'gravityview_full_access' );
-			$user->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
-
 			$admin_bar->add_links();
 
 			wp_set_current_user( 0 );
 		}
 
 		{
+			\GV\Mocks\Legacy_Context::push( array(
+				'post' => $post,
+				'view' => $view,
+				'in_the_loop' => true,
+			) );
+
 			$fe = \GravityView_frontend::getInstance();
-			global $wp_actions, $wp_query;
-			$wp_actions['loop_start'] = 1;
-			$wp_query->in_the_loop = true;
-			$fe->setIsGravityviewPostType( true );
+
 			$this->assertContains( '<table', $fe->insert_view_in_content( '' ) );
 
 			$fe->add_scripts_and_styles();
@@ -543,7 +544,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 		$post = $this->factory->post->create_and_get( array( 'post_content' => sprintf( '[gravityview id="%d"]', $view->ID ) ) );
 
-		$embed_content = sprintf( "\n%s\n", add_query_arg( 'entry', $entry['id'], get_permalink( $post->ID ) ) );
+		$embed_content = sprintf( "\n%s\n", add_query_arg( 'entry', $entry['id'], get_permalink( $view->ID ) ) );
 		$this->assertContains( 'table class="gv-table-view-content"', $GLOBALS['wp_embed']->autoembed( $embed_content ) );
 
 		/** Test GravityView_View_Data::is_valid_embed_id regression. */
