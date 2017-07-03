@@ -40,7 +40,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 */
 	public static function by_id( $entry_id ) {
 		$entry = \GFAPI::get_entry( $entry_id );
-		if ( !$entry ) {
+		if ( is_wp_error( $entry ) ) {
 			return null;
 		}
 
