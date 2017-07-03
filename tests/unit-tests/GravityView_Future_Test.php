@@ -131,6 +131,47 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\GF_Entry::by_id()
+	 * @covers \GV\GF_Entry::by_slug()
+	 */
+	public function test_entry_by_slug() {
+
+		$form = $this->factory->form->create_and_get();
+		$_entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$entry_id = $_entry['id'];
+
+		$entry = \GV\GF_Entry::by_id( 'uno' );
+		$this->assertNull( $entry );
+
+		$entry = \GV\GF_Entry::by_id( $entry_id );
+		$this->assertEquals( $entry_id, $entry->ID );
+
+		add_filter( 'gravityview_custom_entry_slug', '__return_true' );
+
+		$random = wp_generate_password( 8, false );
+		add_filter( 'gravityview_entry_slug', function( $slug ) use ( $random ) {
+			return "sentinel-$random";
+		}, 10 );
+
+		/** Updates the slug as a side-effect :( */
+		\GravityView_API::get_entry_slug( $entry_id, $_entry );
+
+		$entry = \GV\GF_Entry::by_id( 'uno' );
+		$this->assertNull( $entry );
+
+		$entry = \GV\GF_Entry::by_id( "sentinel-$random" );
+		$this->assertEquals( $entry_id, $entry->ID );
+
+		$entry = \GV\GF_Entry::by_slug( "sentinel-$random" );
+		$this->assertEquals( $entry_id, $entry->ID );
+
+		$entry = \GV\GF_Entry::by_slug( $entry_id );
+		$this->assertNull( $entry );
+	}
+
+	/**
 	 * @covers \GV\Entry::get_permalink()
 	 */
 	public function test_entry_get_permalink() {
