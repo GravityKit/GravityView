@@ -39,12 +39,55 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 * @return \GV\Entry|null An instance of this entry or null if not found.
 	 */
 	public static function by_id( $entry_id ) {
-		$entry = \GFAPI::get_entry( $entry_id );
-		if ( is_wp_error( $entry ) ) {
+		$entry = null;
+
+		/** Always try to grab by numeric ID first. */
+		if ( is_numeric( $entry_id ) ) {
+			$entry = \GFAPI::get_entry( $entry_id );
+		}
+
+		if ( ! $entry || is_wp_error( $entry ) ) {
+			/** Hmm, slugs? Must be. */
+			if ( apply_filters( 'gravityview_custom_entry_slug', false ) ) {
+				return self::by_slug( $entry_id );
+			}
+
 			return null;
 		}
 
 		return self::from_entry( $entry );
+	}
+
+	/**
+	 * Construct a \GV\Entry instance by slug name.
+	 *
+	 * @param int|string $entry_slug The registered slug for the entry.
+	 * @param int $form_id The form ID, since slugs can be non-unique. Default: 0.
+	 *
+	 * @api
+	 * @since future
+	 * @return \GV\Entry|null An instance of this entry or null if not found.
+	 */
+	public static function by_slug( $entry_slug, $form_id = 0 ) {
+		global $wpdb;
+
+		$lead_meta = \GFFormsModel::get_lead_meta_table_name();
+
+		$sql = "SELECT lead_id FROM $lead_meta WHERE meta_key = 'gravityview_unique_id' AND";
+
+		if ( $form_id = apply_filters( 'gravityview/common/get_entry_id_from_slug/form_id', $form_id ) ) {
+			$sql = $wpdb->prepare( "$sql meta_value = %s AND form_id = %s", $entry_slug, $form_id );
+		} else {
+			$sql = $wpdb->prepare( "$sql meta_value = %s", $entry_slug );
+		}
+
+		$entry_id = $wpdb->get_var( $sql );
+
+		if ( ! is_numeric( $entry_id ) ) {
+			return null;
+		}
+
+		return self::by_id( $entry_id );
 	}
 
 	/**

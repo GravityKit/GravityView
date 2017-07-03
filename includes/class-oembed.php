@@ -321,7 +321,7 @@ class GravityView_oEmbed {
 		// Floaty the astronaut
 		$image = GravityView_Admin::get_floaty();
 
-		$embed_heading = sprintf( esc_html__('Embed Entry %d', 'gravityview'), $this->entry_id );
+		$embed_heading = sprintf( esc_html__( 'Embed Entry %s', 'gravityview'), $this->entry_id );
 
 		$embed_text = sprintf( esc_html__('This entry will be displayed as it is configured in View %d', 'gravityview'), $this->view_id );
 
