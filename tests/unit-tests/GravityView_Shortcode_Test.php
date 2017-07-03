@@ -20,9 +20,11 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 
 		$view_id = $this->factory->view->create();
 
-		\GV\Mocks\Legacy_Context::push( array(
-			'view' => \GV\View::by_id( $view_id ),
-		) );
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
+			\GV\Mocks\Legacy_Context::push( array(
+				'view' => \GV\View::by_id( $view_id ),
+			) );
+		}
 
 		$value = do_shortcode( '[gravityview id="'.$view_id.'" hoolo="3"]' );
 		$this->assertNotEmpty( $value );
