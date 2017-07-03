@@ -17,6 +17,13 @@ if ( ! class_exists( 'GravityView_Delete_Entry' ) ) {
 	'view' => $gravityview->view,
 ) );
 
+global $post;
+
+/** Set the containing post ID if available. */
+$post && \GV\Mocks\Legacy_Context::push( array(
+	'post' => $post,
+) );
+
 // Only show the link to logged-in users with the right caps.
 if ( ! GravityView_Delete_Entry::check_user_cap_delete_entry( $entry, $field_settings ) ) {
 	return;

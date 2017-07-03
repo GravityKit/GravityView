@@ -17,6 +17,13 @@ if ( ! class_exists( 'GravityView_Edit_Entry' ) ) {
 	'view' => $gravityview->view,
 ) );
 
+global $post;
+
+/** Set the containing post ID if available. */
+$post && \GV\Mocks\Legacy_Context::push( array(
+	'post' => $post,
+) );
+
 // Only show the link to logged-in users.
 if ( ! GravityView_Edit_Entry::check_user_cap_edit_entry( $entry ) ) {
 	return;
