@@ -96,8 +96,8 @@ class Entry_Renderer extends Renderer {
 		 */
 		$class = apply_filters( 'gravityview/template/edit/class', sprintf( '\GV\Entry_%s_Template', ucfirst( $template_slug ) ), $entry, $view, $request );
 		if ( ! $class || ! class_exists( $class ) ) {
-			gravityview()->log->error( '{template_class} not found', array( 'template_class' => $class ) );
-			return null;
+			gravityview()->log->notice( '{template_class} not found, falling back to legacy', array( 'template_class' => $class ) );
+			$class = '\GV\Entry_Legacy_Template';
 		}
 		$template = new $class( $entry, $view, $request );
 

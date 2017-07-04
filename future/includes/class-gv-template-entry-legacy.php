@@ -7,11 +7,11 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 }
 
 /**
- * A legacy fallback View template.
+ * The Legacy Entry Template class .
  *
- * Can be used to render old templates as needed.
+ * A back-compatibility layer for old templates to work.
  */
-class View_Legacy_Template extends View_Template {
+class Entry_Legacy_Template extends Entry_Template {
 	/**
 	 * Render an old template.
 	 */
@@ -20,10 +20,14 @@ class View_Legacy_Template extends View_Template {
 			return;
 		}
 
+		$entries = new \GV\Entry_Collection();
+		$entries->add( $this->entry );
+
 		$context = array(
 			'view' => $this->view,
 			'fields' => $this->view->fields->by_visible(),
-			'entries' => $this->entries,
+			'entries' => $entries,
+			'entry' => $this->entry,
 			'request' => $this->request,
 		);
 
@@ -35,7 +39,7 @@ class View_Legacy_Template extends View_Template {
 
 		\GV\Mocks\Legacy_Context::push( $context );
 
-		$sections = array( 'header', 'body', 'footer' );
+		$sections = array( 'single' );
 
 		$sections = apply_filters( 'gravityview_render_view_sections', $sections, $this->view->settings->get( 'template' ) );
 

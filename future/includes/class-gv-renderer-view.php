@@ -89,6 +89,7 @@ class View_Renderer extends Renderer {
 		 */
 		$class = apply_filters( 'gravityview/template/view/class', sprintf( '\GV\View_%s_Template', ucfirst( $template_slug ) ), $view, $request );
 		if ( ! $class || ! class_exists( $class ) ) {
+			gravityview()->log->notice( '{template_class} not found, falling back to legacy', array( 'template_class' => $class ) );
 			$class = '\GV\View_Legacy_Template';
 		}
 		$template = new $class( $view, $entries, $request );

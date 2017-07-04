@@ -162,3 +162,4 @@ abstract class Entry_Template extends Template {
 /** Load implementations. */
 require gravityview()->plugin->dir( 'future/includes/class-gv-template-entry-table.php' );
 require gravityview()->plugin->dir( 'future/includes/class-gv-template-entry-list.php' );
+require gravityview()->plugin->dir( 'future/includes/class-gv-template-entry-legacy.php' );
