@@ -199,7 +199,7 @@ class View implements \ArrayAccess {
 		 * This View is password protected. Nothing to do here.
 		 * WordPress outputs the form automagically inside `get_the_content`.
 		 */
-		if ( post_password_required( $view ) ) {
+		if ( post_password_required( $view->ID ) ) {
 			return $content;
 		}
 
@@ -524,7 +524,7 @@ class View implements \ArrayAccess {
 			array( 'form' => $this->form ? gravityview_get_form( $this->form->ID ) : null ),
 			array( 'atts' => $this->settings->as_atts() ),
 			array( 'fields' => $this->fields->by_visible()->as_configuration() ),
-			array( 'template_id' => $this->template? $this->template->ID : null ),
+			array( 'template_id' => $this->settings->get( 'template' ) ),
 			$this->_data
 		);
 	}

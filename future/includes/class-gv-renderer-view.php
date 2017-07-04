@@ -85,12 +85,11 @@ class View_Renderer extends Renderer {
 		 * @since future
 		 * @param string $class The chosen class - Default: \GV\View_Table_Template.
 		 * @param \GV\View $view The view about to be rendered.
-		 * @param \GV\Request $reqeust The associated request.
+		 * @param \GV\Request $request The associated request.
 		 */
 		$class = apply_filters( 'gravityview/template/view/class', sprintf( '\GV\View_%s_Template', ucfirst( $template_slug ) ), $view, $request );
 		if ( ! $class || ! class_exists( $class ) ) {
-			gravityview()->log->error( '{template_class} not found', array( 'template_class' => $class ) );
-			return null;
+			$class = '\GV\View_Legacy_Template';
 		}
 		$template = new $class( $view, $entries, $request );
 

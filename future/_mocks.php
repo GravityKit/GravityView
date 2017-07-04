@@ -520,6 +520,7 @@ final class Legacy_Context {
 			'\GravityView_frontend::single_entry' => \GravityView_frontend::getInstance()->getSingleEntry(),
 			'\GravityView_frontend::entry' => \GravityView_frontend::getInstance()->getEntry(),
 			'\GravityView_View::_current_entry' => \GravityView_View::getInstance()->getCurrentEntry(),
+			'\GravityView_View::fields' => \GravityView_View::getInstance()->getFields(),
 			'wp_actions[loop_start]' => empty( $wp_actions['loop_start'] ) ? 0 : $wp_actions['loop_start'],
 			'wp_query::in_the_loop' => $wp_query->in_the_loop,
 		);
@@ -597,6 +598,9 @@ final class Legacy_Context {
 				case '\GravityView_View::_current_entry':
 					\GravityView_View::getInstance()->setCurrentEntry( $value );
 					break;
+				case '\GravityView_View::fields':
+					\GravityView_View::getInstance()->setFields( $value );
+					break;
 				case 'wp_actions[loop_start]':
 					global $wp_actions;
 					$wp_actions['loop_start'] = $value;
@@ -669,6 +673,11 @@ final class Legacy_Context {
 						'\GravityView_View::_current_entry' => $value->as_entry(),
 					) );
 					break;
+				case 'fields':
+					self::thaw( array(
+						'\GravityView_View::fields' => $value->as_configuration(),
+					) );
+					break;
 				case 'request':
 					self::thaw( array(
 						'\GravityView_View::context' => (
@@ -704,6 +713,9 @@ final class Legacy_Context {
 					break;
 			endswitch;
 		}
+
+		global $gravityview_view;
+		$gravityview_view = \GravityView_View::getInstance();
 	}
 
 	/**
