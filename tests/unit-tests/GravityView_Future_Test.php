@@ -4566,6 +4566,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'view' => $view,
 			'entry' => \GV\GF_Entry::by_id( $entry['id'] ),
 			'entries' => $entries,
+			'fields'=> $view->fields->by_visible(),
 		) );
 
 		$this->assertEquals( array(
@@ -4589,6 +4590,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'\GravityView_View::form' => $view->form->form,
 			'\GravityView_View::form_id' => $view->form->ID,
 			'\GravityView_View::entries' => array(),
+			'\GravityView_View::fields' => $view->fields->by_visible()->as_configuration(),
 			'\GravityView_View::context' => 'directory',
 			'\GravityView_View::total_entries' => 1,
 			'\GravityView_View::entries' => array_map( function( $e ) { return $e->as_entry(); }, $entries->all() ),
