@@ -4847,7 +4847,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 
 		$atts = array(
-			'view_id' => 3,
+			'view_id' => $view->ID,
 			'entry_id' => $entry['id'],
 			'field_id' => '16',
 		);
