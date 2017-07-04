@@ -120,9 +120,11 @@ final class Core {
 		/** Shortcodes */
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gravityview.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gvfield.php' );
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED' ) ) {
 			remove_shortcode( 'gravityview' );
 			add_action( 'init', array( '\GV\Shortcodes\gravityview', 'add' ) );
+			add_action( 'init', array( '\GV\Shortcodes\gvfield', 'add' ) );
 		}
 		
 		/** oEmbed */

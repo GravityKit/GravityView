@@ -4817,4 +4817,43 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	/**
+	 * @covers \GV\Shortcodes\gvfield::callback()
+	 */
+	public function test_shortcodes_gvfield() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $view );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello'
+		) );
+
+		$atts = array(
+			'view_id' => 3,
+			'entry_id' => $entry['id'],
+			'field_id' => '16',
+		);
+
+		$gvfield = new \GV\Shortcodes\gvfield();
+
+		$this->assertEquals( wpautop( 'hello' ), $gvfield->callback( $atts ) );
+	}
 }

@@ -1,0 +1,74 @@
+<?php
+namespace GV\Shortcodes;
+
+/** If this file is called directly, abort. */
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
+	die();
+}
+
+/**
+ * The [gvfield] shortcode.
+ */
+class gvfield extends \GV\Shortcode {
+	/**
+	 * {@inheritDoc}
+	 */
+	public $name = 'gvfield';
+
+	/**
+	 * Process and output the [gvfield] shortcode.
+	 *
+	 * @param array $atts The attributes passed.
+	 * @param string $content The content inside the shortcode.
+	 *
+	 * @return string The output.
+	 */
+	public function callback( $atts, $content = null ) {
+
+		$atts = wp_parse_args( $atts, array(
+			'view_id' => null,
+			'entry_id' => null,
+			'field_id' => null,
+		) );
+
+		/**
+		 * @filter `gravityview/shortcodes/gvfield/atts` Filter the [gvfield] shortcode attributes.
+		 * @param array $atts The initial attributes.
+		 * @since future-render
+		 */
+		$atts = apply_filters( 'gravityview/shortcodes/gvfield/atts', $atts );
+
+		if ( ! $view = \GV\View::by_id( $atts['view_id'] ) ) {
+			gravityview()->log->error( 'View #{view_id} not found', array( 'view_id' => $atts['view_id'] ) );
+			return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, null, null, $atts );
+		}
+
+		if ( ! $entry = \GV\GF_Entry::by_id( $atts['entry_id'] ) ) {
+			gravityview()->log->error( 'Entry #{entry_id} not found', array( 'view_id' => $atts['view_id'] ) );
+			return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, $entry, null, $atts );
+		}
+
+		$field = is_numeric( $atts['field_id'] ) ? \GV\GF_Field::by_id( $view->form, $atts['field_id'] ) : \GV\Internal_Field::by_id( $atts['field_id'] );
+
+		if ( ! $field ) {
+			gravityview()->log->error( 'Field #{field_id} not found', array( 'view_id' => $atts['field_id'] ) );
+			return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, $entry, $field, $atts );
+		}
+
+		/** @todo Protection! */
+
+		$renderer = new \GV\Field_Renderer();
+		$output = $renderer->render( $field, $view, is_numeric( $field->ID ) ? $view->form : new \GV\Internal_Source(), $entry, gravityview()->request );
+
+		/**
+		 * @filter `gravityview/shortcodes/gvfield/output` Filter the [gvfield] output.
+		 * @param string $output The output.
+		 * @param \GV\View|null $view The View detected or null.
+		 * @param \GV\Entry|null $entry The Entry or null.
+		 * @param \GV\Field|null $field The Field or null.
+		 *
+		 * @since future-render
+		 */
+		return apply_filters( 'gravityview/shortcodes/gvfield/output', $output, $view, $entry, $field, $atts );
+	}
+}

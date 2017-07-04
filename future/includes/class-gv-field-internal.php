@@ -42,9 +42,9 @@ class Internal_Field extends Field {
 	}
 
 	/**
-	 * Get a \GV\GF_Field from an internal Gravity View ID.
+	 * Get a \GV\GF_Field from an internal Gravity Forms field ID.
 	 *
-	 * @param int $field_id The internal Gravity View ID.
+	 * @param int $field_id The internal Gravity Forms field ID.
 	 *
 	 * @return \GV\Field|null The requested field or null if not found.
 	 */

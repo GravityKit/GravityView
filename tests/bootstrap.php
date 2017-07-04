@@ -85,7 +85,7 @@ class GV_Unit_Tests_Bootstrap {
 	 * @param $message
 	 * @param $data
 	 */
-	public function test_print_log_backtrace( $message, $data ) {
+	public function test_print_log_backtrace( $message, $data = null ) {
 		$this->test_print_log( $message, $data, true );
 	}
 
