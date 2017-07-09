@@ -25,12 +25,12 @@ class Entry_Collection extends Collection {
 	/**
 	 * @var \GV\Entry_Filter[] Filtering criteria.
 	 */
-	private $filters = array();
+	public $filters = array();
 
 	/**
 	 * @var \GV\Entry_Sort[] Sorting criteria.
 	 */
-	private $sorts = array();
+	public $sorts = array();
 
 	/**
 	 * @var int The offset.
@@ -144,6 +144,21 @@ class Entry_Collection extends Collection {
 			return parent::last();
 		}
 		return $this->fetch()->last();
+	}
+
+	/**
+	 * Get the first \GV\Entry in this collection.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @return \GV\Entry|null The first entry or null.
+	 */
+	public function first() {
+		if ( $this->fetched >= 0 || parent::count() ) {
+			return parent::first();
+		}
+		return $this->fetch()->first();
 	}
 
 	/**

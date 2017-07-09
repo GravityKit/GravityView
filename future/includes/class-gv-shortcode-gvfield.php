@@ -43,10 +43,33 @@ class gvfield extends \GV\Shortcode {
 			return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, null, null, $atts );
 		}
 
-		if ( ! $entry = \GV\GF_Entry::by_id( $atts['entry_id'] ) ) {
-			gravityview()->log->error( 'Entry #{entry_id} not found', array( 'view_id' => $atts['view_id'] ) );
-			return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, $entry, null, $atts );
-		}
+		switch( $atts['entry_id'] ):
+			case 'last':
+				$entries = $view->get_entries( null );
+
+				/** If a sort already exists, reverse it. */
+				if ( $sort = end( $entries->sorts ) ) {
+					$entries = $entries->sort( new \GV\Entry_Sort( $sort->field, $sort->direction == \GV\Entry_Sort::RAND ? : \GV\Entry_Sort::ASC ? : \GV\Entry_Sort::DESC ), $sort->mode );
+				} else {
+					/** Otherwise, sort by date_created */
+					$entries = $entries->sort( new \GV\Entry_Sort( \GV\Internal_Field::by_id( 'id' ), \GV\Entry_Sort::ASC ), \GV\Entry_Sort::NUMERIC );
+				}
+
+				if ( ! $entry = $entries->first() ) {
+					return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, $entry, null, $atts );
+				}
+				break;
+			case 'first':
+				if ( ! $entry = $view->get_entries( null )->first() ) {
+					return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, $entry, null, $atts );
+				}
+				break;
+			default:
+				if ( ! $entry = \GV\GF_Entry::by_id( $atts['entry_id'] ) ) {
+					gravityview()->log->error( 'Entry #{entry_id} not found', array( 'view_id' => $atts['view_id'] ) );
+					return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, $entry, null, $atts );
+				}
+		endswitch;
 
 		$field = is_numeric( $atts['field_id'] ) ? \GV\GF_Field::by_id( $view->form, $atts['field_id'] ) : \GV\Internal_Field::by_id( $atts['field_id'] );
 
@@ -56,6 +79,8 @@ class gvfield extends \GV\Shortcode {
 		}
 
 		/** @todo Protection! */
+
+		$field->update_configuration( $atts );
 
 		$renderer = new \GV\Field_Renderer();
 		$output = $renderer->render( $field, $view, is_numeric( $field->ID ) ? $view->form : new \GV\Internal_Source(), $entry, gravityview()->request );

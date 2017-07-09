@@ -4855,5 +4855,50 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$gvfield = new \GV\Shortcodes\gvfield();
 
 		$this->assertEquals( wpautop( 'hello' ), $gvfield->callback( $atts ) );
+
+		$another_entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'well, o!'
+		) );
+
+		/** Test the filters */
+		$_this = &$this;
+		add_filter( 'gravityview/shortcodes/gvfield/atts', function( $atts ) use ( $_this, $another_entry, $entry ) {
+			$_this->assertEquals( $entry['id'], $atts['entry_id'] );
+			$atts['entry_id'] = $another_entry['id'];
+			return $atts;
+		} );
+
+		$this->assertEquals( wpautop( 'well, o!' ), $gvfield->callback( $atts ) );
+
+		add_filter( 'gravityview/shortcodes/gvfield/output', function( $output ) {
+			return 'heh, o!';
+		} );
+
+		$this->assertEquals( 'heh, o!', $gvfield->callback( $atts ) );
+
+		remove_all_filters( 'gravityview/shortcodes/gvfield/atts' );
+		remove_all_filters( 'gravityview/shortcodes/gvfield/output' );
+
+		$atts['field_id'] = 'id';
+		$atts['show_as_link'] = true;
+		$expected = sprintf( '<a href="%s">%s</a>', esc_attr( \GV\GF_Entry::by_id( $entry['id'] )->get_permalink( $view, new \GV\Mock_Request() ) ), $entry['id'] );
+		$this->assertEquals( $expected, $gvfield->callback( $atts ) );
+
+		$and_another_entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16', 'zzzZzz :)',
+		) );
+
+		/** Last/first tests */
+		$atts['show_as_link'] = false;
+
+		$atts['entry_id'] = 'first';
+		$this->assertEquals( $and_another_entry['id'], $gvfield->callback( $atts ) );
+
+		$atts['entry_id'] = 'last';
+		$this->assertEquals( $entry['id'], $gvfield->callback( $atts ) );
 	}
 }

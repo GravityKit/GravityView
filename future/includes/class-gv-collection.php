@@ -75,6 +75,17 @@ class Collection {
 	}
 
 	/**
+	 * Get the first added object.
+	 *
+	 * @api
+	 * @since future
+	 * @return mixed|null The first item in here, or null if there are none.
+	 */
+	public function first() {
+		return reset( $this->storage );
+	}
+
+	/**
 	 * Returns the count of the objects in this collection.
 	 *
 	 * @api
