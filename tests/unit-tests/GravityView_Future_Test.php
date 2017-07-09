@@ -32,6 +32,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 	private function _reset_context() {
 		\GV\Mocks\Legacy_Context::reset();
 		gravityview()->request = new \GV\Frontend_Request();
+
+		global $wp_query;
+		$wp_query = new WP_Query();
 	}
 
 	/**
@@ -1610,9 +1613,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $legacy, $future );
 		$this->assertNotContains( 'No entries match your request.', $future );
 
-		/** Check your privilege! Password protection. */
-		wp_update_post( array( 'ID' => $view->ID, 'post_password' => '123' ) );
-
 		\GV\Mocks\Legacy_Context::push( array(
 			'post' => $post,
 			'view' => $view,
@@ -1620,11 +1620,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'in_the_loop' => true,
 			'request' => new \GV\Frontend_Request(),
 		) );
-
-		$future = $renderer->render( $view, new \GV\Frontend_Request() );
-		$this->assertContains( 'content is password protected', $future );
-
-		wp_update_post( array( 'ID' => $view->ID, 'post_password' => '' ) );
 
 		$administrator = $this->factory->user->create( array(
 			'user_login' => md5( microtime() ),
@@ -4732,12 +4727,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $legacy_output, $future_output );
 		$this->assertContains( '] Entry ', $future_output );
 
-		/** Password protection */
-		wp_update_post( array( 'ID' => $view->ID, 'post_password' => '123' ) );
-
-		$this->assertContains( 'content is password protected', $legacy->shortcode( $args ) );
-		$this->assertContains( 'content is password protected', $future->callback( $args ) );
-
 		$this->_reset_context();
 	}
 
@@ -4900,5 +4889,244 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$atts['entry_id'] = 'last';
 		$this->assertEquals( $entry['id'], $gvfield->callback( $atts ) );
+	}
+
+	public function test_protection_view_content_directory() {
+		$this->_reset_context();
+
+		$post = $this->factory->view->create_and_get();
+		$view = \GV\View::by_id( $post->ID );
+
+		$request = new \GV\Mock_Request();
+		gravityview()->request = $request;
+		$request->returns['is_view'] = $view;
+
+		/** Post password */
+		wp_update_post( array( 'ID' => $post->ID, 'post_password' => '123' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+
+		/** Private */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'private', 'post_password' => '' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+
+		/** Pending */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'pending' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+
+		/** Draft */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'draft' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+
+		/** Trash */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'trash' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+
+		/** Scheduled */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'future', 'post_date_gmt' => '2117-11-10 18:02:56' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+
+		/** Regular */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'publish', 'post_date_gmt' => '2017-07-09 00:00:00' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertNotContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+
+		/** embed_only */
+		$view->settings->update( array( 'embed_only' => true ) );
+		$request->returns['is_view'] = $view;
+		$this->assertContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+
+		$this->_reset_context();
+	}
+
+	public function test_protection_gravityview_shortcode_directory() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$args = array(
+			'id' => $view->ID,
+			'detail' => 'total_entries',
+			'page_size' => 3,
+		);
+
+		$future = new \GV\Shortcodes\gravityview();
+
+		/** Post password */
+		wp_update_post( array( 'ID' => $post->ID, 'post_password' => '123' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'content is password protected', $future->callback( $args ) );
+
+		/** Private */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'private', 'post_password' => '' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'not allowed to view', $future->callback( $args ) );
+
+		/** Pending */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'pending' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'not allowed to view', $future->callback( $args ) );
+
+		/** Draft */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'draft' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'not allowed to view', $future->callback( $args ) );
+
+		/** Trash */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'trash' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'not allowed to view', $future->callback( $args ) );
+
+		/** Scheduled */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'future', 'post_date_gmt' => '2117-11-10 18:02:56' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'not allowed to view', $future->callback( $args ) );
+
+		/** Regular */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'publish', 'post_date_gmt' => '2017-07-09 00:00:00' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertNotContains( 'not allowed to view', $future->callback( $args ) );
+
+		$this->_reset_context();
+	}
+
+	public function test_protection_view_content_single() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+		) );
+		$view = \GV\View::from_post( $post );
+
+		/** Trash */
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'trash',
+			'16' => 'hello'
+		) );
+
+		$request = new \GV\Mock_Request();
+		gravityview()->request = $request;
+		$request->returns['is_view'] = $view;
+		$request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$this->assertContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+
+		/** Not approved */
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello'
+		) );
+
+		$request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$this->assertContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+
+		/** Approve */
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
+		$this->assertNotContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+
+		/** Slug */
+		global $wp_query;
+		$wp_query->set( \GV\Entry::get_endpoint_name(), $entry['id'] );
+
+		add_filter( 'gravityview_custom_entry_slug', '__return_true' );
+
+		$request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$this->assertContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+
+		/** Good slug */
+		$wp_query->set( \GV\Entry::get_endpoint_name(), gform_get_meta( $entry['id'], 'gravityview_unique_id' ) );
+
+		$this->assertNotContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+
+		remove_all_filters( 'gravityview_custom_entry_slug' );
+
+		$this->_reset_context();
+	}
+
+	public function test_protection_gravityview_shortcode_single() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$future = new \GV\Shortcodes\gravityview();
+
+		/** Trash */
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'trash',
+			'16' => 'hello'
+		) );
+
+		$request = new \GV\Mock_Request();
+		gravityview()->request = $request;
+		$request->returns['is_view'] = $view;
+		$request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$args = array(
+			'id' => $view->ID,
+			'page_size' => 3,
+		);
+
+		$this->assertContains( 'not allowed to view', $future->callback( $args ) );
+
+		/** Not approved */
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello'
+		) );
+
+		$request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$this->assertContains( 'not allowed to view', $future->callback( $args ) );
+
+		/** Approve */
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
+		$this->assertNotContains( 'not allowed to view', $future->callback( $args ) );
+
+		/** Slug */
+		global $wp_query;
+		$wp_query->set( \GV\Entry::get_endpoint_name(), $entry['id'] );
+
+		add_filter( 'gravityview_custom_entry_slug', '__return_true' );
+
+		$request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$this->assertContains( 'not allowed to view', $future->callback( $args ) );
+
+		/** Good slug */
+		$wp_query->set( \GV\Entry::get_endpoint_name(), gform_get_meta( $entry['id'], 'gravityview_unique_id' ) );
+
+		$this->assertNotContains( 'not allowed to view', $future->callback( $args ) );
+
+		remove_all_filters( 'gravityview_custom_entry_slug' );
+
+		$this->_reset_context();
 	}
 }

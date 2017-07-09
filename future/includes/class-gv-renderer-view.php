@@ -38,13 +38,6 @@ class View_Renderer extends Renderer {
 		}
 
 		/**
-		 * This View is password protected. Output the form.
-		 */
-		if ( post_password_required( $view->ID ) ) {
-			return get_the_password_form( $view->ID );
-		}
-
-		/**
 		 * @filter `gravityview_template_slug_{$template_id}` Modify the template slug about to be loaded in directory views.
 		 * @since 1.6
 		 * @param deprecated

@@ -200,7 +200,8 @@ class View implements \ArrayAccess {
 		 * WordPress outputs the form automagically inside `get_the_content`.
 		 */
 		if ( post_password_required( $view->ID ) ) {
-			return $content;
+			gravityview()->log->notice( 'Post password is required for View #{view_id}', array( 'view_id' => $view->ID ) );
+			return __( 'You are not allowed to view this content.', 'gravityview' );
 		}
 
 		if ( ! $view->form  ) {
@@ -250,13 +251,32 @@ class View implements \ArrayAccess {
 			return __( 'You are not allowed to view this content.', 'gravityview' );
 		}
 
-		/** @todo protection! */
+		/** Private, pending, draft, etc. */
+		$public_states = get_post_stati( array( 'public' => true ) );
+		if ( ! in_array( $view->post_status, $public_states ) && ! \GVCommon::has_cap( 'read_gravityview', $view->ID ) ) {
+			gravityview()->log->notice( 'The current user cannot access this View #{view_id}', array( 'view_id' => $view->ID ) );
+			return __( 'You are not allowed to view this content.', 'gravityview' );
+		}
 
 		/**
 		 * Editing a single entry.
 		 */
 		if ( $entry = $request->is_edit_entry() ) {
-			/** @todo protection! */
+			if ( $entry['status'] != 'active' ) {
+				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
+				return __( 'You are not allowed to view this content.', 'gravityview' );
+			}
+
+			if ( is_numeric( get_query_var( \GV\Entry::get_endpoint_name() ) ) && apply_filters( 'gravityview_custom_entry_slug', false ) ) {
+				gravityview()->log->error( 'Entry ID #{entry_id} can only be accessed via slug', array( 'entry_id' => $entry->ID ) );
+				return __( 'You are not allowed to view this content.', 'gravityview' );
+			}
+
+			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
+				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
+				return __( 'You are not allowed to view this content.', 'gravityview' );
+			}
+
 			$renderer = new Edit_Entry_Renderer();
 			return $renderer->render( $entry, $view, $request );
 
@@ -264,7 +284,21 @@ class View implements \ArrayAccess {
 		 * Viewing a single entry.
 		 */
 		} else if ( $entry = $request->is_entry() ) {
-			/** @todo protection! */
+			if ( $entry['status'] != 'active' ) {
+				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
+				return __( 'You are not allowed to view this content.', 'gravityview' );
+			}
+
+			if ( is_numeric( get_query_var( \GV\Entry::get_endpoint_name() ) ) && apply_filters( 'gravityview_custom_entry_slug', false ) ) {
+				gravityview()->log->error( 'Entry ID #{entry_id} can only be accessed via slug', array( 'entry_id' => $entry->ID ) );
+				return __( 'You are not allowed to view this content.', 'gravityview' );
+			}
+
+			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
+				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
+				return __( 'You are not allowed to view this content.', 'gravityview' );
+			}
+
 			$renderer = new Entry_Renderer();
 			return $renderer->render( $entry, $view, $request );
 
@@ -272,7 +306,6 @@ class View implements \ArrayAccess {
 		 * Plain old View.
 		 */
 		} else {
-			/** @todo protection! */
 			$renderer = new View_Renderer();
 			return $renderer->render( $view, $request );
 		}
