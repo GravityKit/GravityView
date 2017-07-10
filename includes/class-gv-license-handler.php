@@ -413,6 +413,9 @@ class GV_License_Handler {
 		));
 
 		if ( is_wp_error( $response ) ) {
+
+			do_action( 'gravityview_log_error', 'WP_Error response from license check. API params:', $api_params );
+
 			return array();
 		}
 
@@ -420,6 +423,8 @@ class GV_License_Handler {
 
 		// Not JSON
 		if ( empty( $license_data ) ) {
+
+			do_action( 'gravityview_log_error', 'Empty license data response from license check', compact( 'response', 'url', 'api_params', 'data' ) );
 
 			delete_transient( self::status_transient_key );
 
