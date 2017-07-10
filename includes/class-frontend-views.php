@@ -715,13 +715,20 @@ class GravityView_frontend {
 				$view = gravityview()->views->get( $view_id );
 
 				if ( ! $view ) {
-					do_action( 'gravityview_log_debug', sprintf( 'GravityView_View_Data[add_view] Returning; View #%s does not exist.', $view_id ) );
+					do_action( 'gravityview_log_debug', sprintf( 'GravityView_frontend[render_view] Returning; View #%s does not have a form tied to it.', $view_id ) );
 					return null;
 				}
+
 			}
 
 			/** Update the view settings with the requested arguments. */
 			$view->settings->update( $passed_args );
+
+			/** Form is not valid. */
+			if ( ! $view->form ) {
+				do_action( 'gravityview_log_debug', sprintf( 'GravityView_frontend[render_view] Returning; View #%s does not exist.', $view_id ) );
+				return null;
+			}
 		} else {
 			/** \GravityView_View_Data::get_view is deprecated. */
 			$view_data = $this->getGvOutputData()->get_view( $view_id, $passed_args );
