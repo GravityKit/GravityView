@@ -695,8 +695,19 @@ class GV_License_Handler {
 	 * @return string Renewal or account URL
 	 */
 	private function get_license_renewal_url( $license_data ) {
+
 		$license_data = is_array( $license_data ) ? (object)$license_data : $license_data;
-		$renew_license_url = ( ! empty( $license_data ) && !empty( $license_data->license_key ) ) ? sprintf( 'https://gravityview.co/checkout/?download_id=17&edd_license_key=%s&utm_source=admin_notice&utm_medium=admin&utm_content=expired&utm_campaign=Activation&force_login=1', $license_data->license_key ) : 'https://gravityview.co/account/';
+
+		if( ! empty( $license_data->renewal_url ) ) {
+			$renew_license_url = $license_data->renewal_url;
+		} elseif( ! empty( $license_data->license_key ) ) {
+			$renew_license_url = sprintf( 'https://gravityview.co/checkout/?download_id=17&edd_license_key=%s', $license_data->license_key );
+		} else {
+			$renew_license_url = 'https://gravityview.co/account/';
+		}
+
+		$renew_license_url = add_query_arg( wp_parse_args( 'utm_source=admin_notice&utm_medium=admin&utm_content=expired&utm_campaign=Activation&force_login=1' ), $renew_license_url );
+
 		return $renew_license_url;
 	}
 
