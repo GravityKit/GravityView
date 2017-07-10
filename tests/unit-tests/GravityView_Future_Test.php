@@ -5196,6 +5196,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
 		$this->assertContains( 'content is password protected', call_user_func_array( $future, $args ) );
 
+		/** Trash */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'trash' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'not allowed to view', call_user_func_array( $future, $args ) );
+
 		/** Private */
 		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'private', 'post_password' => '' ) );
 		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
@@ -5205,11 +5210,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'draft' ) );
 		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
 		$this->assertContains( 'not allowed to view', call_user_func_array( $future, $args ) );
-
-		/** Trash */
-		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'trash' ) );
-		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
-		$this->assertEmpty( call_user_func_array( $future, $args ) );
 
 		/** Pending */
 		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'pending' ) );
