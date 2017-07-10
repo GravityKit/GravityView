@@ -584,10 +584,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 		$form = $this->factory->form->create_and_get();
-		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
+		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'], 'status' => 'active' ) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 		$post = $this->factory->post->create_and_get( array( 'post_content' => sprintf( '[gravityview id="%d"]', $view->ID ) ) );
 
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
 		$embed_content = sprintf( "\n%s\n", add_query_arg( 'entry', $entry['id'], get_permalink( $view->ID ) ) );
 		$this->assertContains( 'table class="gv-table-view-content"', $GLOBALS['wp_embed']->autoembed( $embed_content ) );
 
@@ -4766,6 +4767,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'16' => sprintf( 'Entry %s', wp_generate_password( 12 ) ),
 		) );
 
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
 		$legacy = array( \GravityView_oEmbed::getInstance(), 'render_handler' );
 		$future = array( '\GV\oEmbed', 'render' );
 
@@ -5126,6 +5129,102 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertNotContains( 'not allowed to view', $future->callback( $args ) );
 
 		remove_all_filters( 'gravityview_custom_entry_slug' );
+
+		$this->_reset_context();
+	}
+
+	public function test_protection_oembed() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$future = array( '\GV\oEmbed', 'render' );
+
+		/** Trash */
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'trash',
+			'16' => 'hello'
+		) );
+
+		$args = array(
+			'matches' => array(
+				'slug' => $post->post_name,
+				'is_cpt' => 'gravityview',
+				'entry_slug' => $entry['id'],
+			),
+			'attr' => '',
+			'url' => add_query_arg( 'entry', $entry['id'], get_permalink( $post->ID ) ),
+			'rawattr' => '',
+		);
+
+		$this->assertContains( 'not allowed to view', call_user_func_array( $future, $args ) );
+
+		/** Not approved */
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello'
+		) );
+
+		$args = array(
+			'matches' => array(
+				'slug' => $post->post_name,
+				'is_cpt' => 'gravityview',
+				'entry_slug' => $entry['id'],
+			),
+			'attr' => '',
+			'url' => add_query_arg( 'entry', $entry['id'], get_permalink( $post->ID ) ),
+			'rawattr' => '',
+		);
+
+		$this->assertContains( 'not allowed to view', call_user_func_array( $future, $args ) );
+
+		/** Approve */
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
+		$this->assertNotContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+
+		/** Post password */
+		wp_update_post( array( 'ID' => $post->ID, 'post_password' => '123' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'content is password protected', call_user_func_array( $future, $args ) );
+
+		/** Private */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'private', 'post_password' => '' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'not allowed to view', call_user_func_array( $future, $args ) );
+
+		/** Draft */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'draft' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'not allowed to view', call_user_func_array( $future, $args ) );
+
+		/** Trash */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'trash' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertEmpty( call_user_func_array( $future, $args ) );
+
+		/** Pending */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'pending' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'not allowed to view', call_user_func_array( $future, $args ) );
+
+		/** Scheduled */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'future', 'post_date_gmt' => '2117-11-10 18:02:56' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'not allowed to view', call_user_func_array( $future, $args ) );
+
+		/** Regular */
+		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'publish', 'post_date_gmt' => '2017-07-09 00:00:00' ) );
+		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
+		$this->assertContains( 'gravityview-oembed-entry', call_user_func_array( $future, $args ) );
 
 		$this->_reset_context();
 	}
