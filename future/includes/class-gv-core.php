@@ -175,6 +175,9 @@ final class Core {
 
 		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );
 
+		/** Magic. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-wrappers.php' );
+
 		if ( Request::is_admin() ) {
 			$this->request = new Admin_Request();
 		} else {
@@ -188,10 +191,19 @@ final class Core {
 
 	private function __wakeup() { }
 
+	/**
+	 * Wrapper magic.
+	 *
+	 * Making developers happy, since 2017.
+	 */
 	public function __get( $key ) {
 		switch ( $key ) {
 			case 'request':
 				return new Frontend_Request();
+			case 'views':
+				return new \GV\Wrappers\views();
+			case 'render':
+				return new \GV\Wrappers\render();
 		}
 	}
 

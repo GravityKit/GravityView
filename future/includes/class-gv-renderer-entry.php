@@ -87,14 +87,14 @@ class Entry_Renderer extends Renderer {
 		$template_slug = apply_filters( 'gravityview_template_slug_' . $view->settings->get( 'template' ), 'table', 'single' );
 
 		/**
-		 * @filter `gravityview/template/edit/class` Filter the template class that is about to be used to render the entry.
+		 * @filter `gravityview/template/entry/class` Filter the template class that is about to be used to render the entry.
 		 * @since future
 		 * @param string $class The chosen class - Default: \GV\Entry_Table_Template.
 		 * @param \GV\Entry $entry The entry about to be rendered.
 		 * @param \GV\View $view The view connected to it.
 		 * @param \GV\Request $request The associated request.
 		 */
-		$class = apply_filters( 'gravityview/template/edit/class', sprintf( '\GV\Entry_%s_Template', ucfirst( $template_slug ) ), $entry, $view, $request );
+		$class = apply_filters( 'gravityview/template/entry/class', sprintf( '\GV\Entry_%s_Template', ucfirst( $template_slug ) ), $entry, $view, $request );
 		if ( ! $class || ! class_exists( $class ) ) {
 			gravityview()->log->notice( '{template_class} not found, falling back to legacy', array( 'template_class' => $class ) );
 			$class = '\GV\Entry_Legacy_Template';

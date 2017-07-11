@@ -5228,4 +5228,38 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	/**
+	 * @covers \GV\Wrappers\views::get()
+	 */
+	public function test_magic_wrappers_views() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+		$view = \GV\View::from_post( $post );
+
+		/** By ID */
+		$this->assertEquals( $view, gravityview()->views->get( $view->ID ) );
+
+		/** From post */
+		$this->assertEquals( $view, gravityview()->views->get( $post ) );
+
+		/** From configuration */
+		$this->assertEquals( $view, gravityview()->views->get( $view->as_data() ) );
+
+		/** From itself */
+		$this->assertEquals( $view, gravityview()->views->get( $view ) );
+
+		/** From context */
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$this->assertEquals( $view, gravityview()->views->get() );
+
+		$this->_reset_context();
+	}
 }
