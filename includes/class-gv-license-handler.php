@@ -57,12 +57,11 @@ class GV_License_Handler {
 
 		$this->Addon = $GFAddOn;
 
-		$this->setup_edd();
-		
 		$this->add_hooks();
 	}
 
 	private function add_hooks() {
+		add_action( 'admin_init', array( $this, 'setup_edd' ), 0 );
 		add_action( 'wp_ajax_gravityview_license', array( $this, 'license_call' ) );
 		add_action( 'admin_init', array( $this, 'refresh_license_status' ) );
 		add_action( 'admin_init', array( $this, 'check_license' ) );
@@ -345,10 +344,13 @@ class GV_License_Handler {
 
 	/**
 	 * Include the EDD plugin updater class, if not exists
+	 *
 	 * @since 1.7.4
+	 * @since 1.21.5.3 Changed visibility of method to public
+	 *
 	 * @return void
 	 */
-	private function setup_edd() {
+	public function setup_edd() {
 
 		if( !class_exists('EDD_SL_Plugin_Updater') ) {
 			require_once( GRAVITYVIEW_DIR . 'includes/lib/EDD_SL_Plugin_Updater.php');
