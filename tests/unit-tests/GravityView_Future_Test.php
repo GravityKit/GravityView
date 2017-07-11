@@ -152,11 +152,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertNull( $entry );
 
 		$entry = \GV\GF_Entry::by_id( $entry_id );
+		$this->assertEquals( $entry->slug, $entry_id );
 		$this->assertEquals( $entry_id, $entry->ID );
 
 		add_filter( 'gravityview_custom_entry_slug', '__return_true' );
 
-		$random = wp_generate_password( 8, false );
+		$random = strtolower( wp_generate_password( 8, false ) );
 		add_filter( 'gravityview_entry_slug', function( $slug ) use ( $random ) {
 			return "sentinel-$random";
 		}, 10 );
@@ -168,9 +169,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertNull( $entry );
 
 		$entry = \GV\GF_Entry::by_id( "sentinel-$random" );
+		$this->assertEquals( $entry->slug, "sentinel-$random" );
 		$this->assertEquals( $entry_id, $entry->ID );
 
 		$entry = \GV\GF_Entry::by_slug( "sentinel-$random" );
+		$this->assertEquals( $entry->slug, "sentinel-$random" );
 		$this->assertEquals( $entry_id, $entry->ID );
 
 		$entry = \GV\GF_Entry::by_slug( $entry_id );

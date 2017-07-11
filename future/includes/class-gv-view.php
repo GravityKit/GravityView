@@ -267,8 +267,8 @@ class View implements \ArrayAccess {
 				return __( 'You are not allowed to view this content.', 'gravityview' );
 			}
 
-			if ( is_numeric( get_query_var( \GV\Entry::get_endpoint_name() ) ) && apply_filters( 'gravityview_custom_entry_slug', false ) ) {
-				gravityview()->log->error( 'Entry ID #{entry_id} can only be accessed via slug', array( 'entry_id' => $entry->ID ) );
+			if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $entry->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
+				gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gravityview' );
 			}
 
@@ -289,8 +289,8 @@ class View implements \ArrayAccess {
 				return __( 'You are not allowed to view this content.', 'gravityview' );
 			}
 
-			if ( is_numeric( get_query_var( \GV\Entry::get_endpoint_name() ) ) && apply_filters( 'gravityview_custom_entry_slug', false ) ) {
-				gravityview()->log->error( 'Entry ID #{entry_id} can only be accessed via slug', array( 'entry_id' => $entry->ID ) );
+			if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $entry->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
+				gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gravityview' );
 			}
 
