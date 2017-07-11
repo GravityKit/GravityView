@@ -167,6 +167,11 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 
 		if ( $entry_slug = GravityView_frontend::getInstance()->getSingleEntry() ) {
 
+			if ( ! method_exists( $sitepress, 'get_setting' ) ) {
+				do_action( 'gravityview_log_error', __METHOD__ . ': This version of WPML is outdated and does not include the required method get_setting().' );
+				return $languages;
+			}
+
 			$trid         = $sitepress->get_element_trid( $post->ID );
 			$translations = $sitepress->get_element_translations( $trid );
 			$language_url_setting = $sitepress->get_setting( 'language_negotiation_type' );
