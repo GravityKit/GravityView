@@ -1167,8 +1167,9 @@ class GravityView_frontend {
 		 * @see GravityView_Widget_Search::filter_entries Adds the default search criteria
 		 * @param array $search_criteria Empty `field_filters` key
 		 * @param int $form_id ID of the Gravity Forms form that is being searched
+		 * @param array $args The View settings.
 		 */
-		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ), $form_id );
+		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ), $form_id, $args );
 
 		$original_search_criteria = $search_criteria;
 

@@ -25,7 +25,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		$gravityview_widget = GravityView_Widget_Search::getInstance();
 
 		// frontend - filter entries
-		add_filter( 'gravityview_fe_search_criteria', array( $gravityview_widget, 'filter_entries' ), 10, 1 );
+		add_filter( 'gravityview_fe_search_criteria', array( $gravityview_widget, 'filter_entries' ), 10, 3 );
 
 		// frontend - add template path
 		add_filter( 'gravityview_template_paths', array( $gravityview_widget, 'add_template_path' ) );
