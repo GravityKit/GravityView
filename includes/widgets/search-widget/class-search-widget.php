@@ -471,10 +471,22 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		 */
 		$searchable_fields = array();
 		if ( ! empty( $args['id'] ) ) {
+
+			/**
+			 * Include the sidebar Widgets.
+			 */
+			foreach ( (array)get_option( 'widget_gravityview_search' ) as $widget ) {
+				if ( ! empty( $widget['view_id'] ) && $widget['view_id'] == $args['id'] ) {
+					foreach ( json_decode( $widget['search_fields'], true ) as $field ) {
+						$searchable_fields []= $field['field'];
+					}
+				}
+			}
+
 			foreach ( gravityview_get_directory_widgets( $args['id'] ) as $position ) {
 				foreach ( $position as $widget ) {
 					if ( $widget['id'] == 'search_bar' ) {
-						foreach( json_decode( $widget['search_fields'], true ) as $field ) {
+						foreach ( json_decode( $widget['search_fields'], true ) as $field ) {
 							$searchable_fields []= $field['field'];
 						}
 					}
