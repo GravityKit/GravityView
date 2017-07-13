@@ -1277,9 +1277,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'id' => '1',
 		);
 
-		$GLOBALS['GravityView_API_field_value_override'] = true;
-		$this->assertEquals( 'set all the fields!', GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
-		unset( $GLOBALS['GravityView_API_field_value_override'] );
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = gravityview()->views->get( $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) ) );
+
 		$this->assertEquals( 'set all the fields!', GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
 
 		$field_settings = array(
@@ -1287,9 +1287,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'content' => 'this is it',
 			'wpautop' => true,
 		);
-		$GLOBALS['GravityView_API_field_value_override'] = true;
-		$this->assertEquals( "<p>this is it</p>\n", GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
-		unset( $GLOBALS['GravityView_API_field_value_override'] );
 		$this->assertEquals( "<p>this is it</p>\n", GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
 
 		/** A more complicated form */
@@ -1305,10 +1302,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field_settings = array(
 			'id' => '14',
 		);
-		$GLOBALS['GravityView_API_field_value_override'] = true;
-		$expected = GravityView_API::field_value( $entry->as_entry(), $field_settings );
-		unset( $GLOBALS['GravityView_API_field_value_override'] );
-		$this->assertEquals( "$expected", GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
+		$this->assertEquals( '<a href="http://apple.com" rel="noopener noreferrer" target="_blank">http://apple.com</a>', GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
 
 		$this->_reset_context();
 	}
