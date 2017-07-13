@@ -56,12 +56,7 @@ class View implements \ArrayAccess {
 		$this->settings = new View_Settings();
 		$this->fields = new Field_Collection();
 
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED' ) ) {
-			add_filter( 'the_content', array( $this, 'content' ), 11 );
-
-			/** Remove old renderers */
-			remove_filter( 'the_content', array( \GravityView_frontend::getInstance(), 'insert_view_in_content' ) );
-		}
+		add_filter( 'the_content', array( $this, 'content' ), 11 );
 	}
 
 	/**

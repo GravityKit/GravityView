@@ -452,6 +452,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 				'in_the_loop' => true,
 			) );
 
+			gravityview()->request = new \GV\Mock_Request();
+			gravityview()->request->returns['is_view'] = $view;
+
 			$fe = \GravityView_frontend::getInstance();
 
 			$this->assertContains( '<table', $fe->insert_view_in_content( '' ) );
@@ -466,7 +469,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 			 */
 			$and_another_post = $this->factory->view->create_and_get();
 			$and_another_view = \GV\View::by_id( $and_another_post->ID );
-			$and_another_entry = $this->factory->entry->create_and_get( array( 'form_id' => $and_another_view->form->ID ) );
+			$and_another_entry = $this->factory->entry->create_and_get( array( 'form_id' => $and_another_view->form->ID, 'status' => 'active' ) );
+
+			gravityview()->request->returns['is_view'] = $and_another_view;
 
 			$fe->setIsGravityviewPostType( true );
 			$this->assertContains( 'not allowed to view this content', $fe->render_view( array(
@@ -479,9 +484,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 				'embed_only' => false, /** Check propagation of $passed_args */
 			) ) );
 
-			$fe->set_context_view_id( $and_another_view->ID );
-			$fe->setSingleEntry( $and_another_view->ID );
-			$fe->setEntry( $and_another_entry['id'] );
+			gform_update_meta( $and_another_entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+			gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $and_another_entry['id'] );
 
 			$this->assertContains( sprintf( 'data-viewid="%d"', $and_another_view->ID ), $fe->render_view( array(
 				'id' => $and_another_view->ID,
