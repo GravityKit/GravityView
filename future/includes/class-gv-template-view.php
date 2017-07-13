@@ -25,19 +25,19 @@ abstract class View_Template extends Template {
 	 * Prefix for filter names.
 	 * @var string
 	 */
-	protected $filter_prefix = 'gravityview/future/template/views';
+	protected $filter_prefix = 'gravityview/template/views';
 
 	/**
 	 * Directory name where custom templates for this plugin should be found in the theme.
 	 * @var string
 	 */
-	protected $theme_template_directory = 'gravityview/future/views/';
+	protected $theme_template_directory = 'future/views/';
 
 	/**
 	 * Directory name where the default templates for this plugin are found.
 	 * @var string
 	 */
-	protected $plugin_template_directory = 'future/templates/views/';
+	protected $plugin_template_directory = 'templates/views/';
 
 	/**
 	 * @var \GV\View The view connected to this template.

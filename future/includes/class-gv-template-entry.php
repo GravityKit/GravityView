@@ -25,19 +25,19 @@ abstract class Entry_Template extends Template {
 	 * Prefix for filter names.
 	 * @var string
 	 */
-	protected $filter_prefix = 'gravityview/future/template/entries/';
+	protected $filter_prefix = 'gravityview/template/entries/';
 
 	/**
 	 * Directory name where custom templates for this plugin should be found in the theme.
 	 * @var string
 	 */
-	protected $theme_template_directory = 'gravityview/future/entries/';
+	protected $theme_template_directory = 'gravityview/entries/';
 
 	/**
 	 * Directory name where the default templates for this plugin are found.
 	 * @var string
 	 */
-	protected $plugin_template_directory = 'future/templates/entries/';
+	protected $plugin_template_directory = 'templates/entries/';
 
 	/**
 	 * @var \GV\Entry The entry that need to be rendered.

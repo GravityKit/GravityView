@@ -25,19 +25,19 @@ abstract class Field_Template extends Template {
 	 * Prefix for filter names.
 	 * @var string
 	 */
-	protected $filter_prefix = 'gravityview/future/template/fields';
+	protected $filter_prefix = 'gravityview/template/fields';
 
 	/**
 	 * Directory name where custom templates for this plugin should be found in the theme.
 	 * @var string
 	 */
-	protected $theme_template_directory = 'gravityview/future/fields/';
+	protected $theme_template_directory = 'gravityview/fields/';
 
 	/**
 	 * Directory name where the default templates for this plugin are found.
 	 * @var string
 	 */
-	protected $plugin_template_directory = 'future/templates/fields/';
+	protected $plugin_template_directory = 'templates/fields/';
 
 	/**
 	 * @var \GV\Field The field connected to this template.

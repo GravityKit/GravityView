@@ -188,109 +188,11 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
 			return null;
 	endswitch;
 
-	$field_type = $field->type;
-
 	/** Add the field settings. */
 	$field->update_configuration( $field_settings );
 
-	/** Get the value. */
-	$display_value = $value = $field->get_value( /** View */ null, /** Source */ null, $entry );
-
-	/** Alter the display value according to Gravity Forms. */
-	if ( $source == \GV\Source::BACKEND_GRAVITYFORMS ) {
-		// Prevent any PHP warnings that may be generated
-		ob_start();
-
-		$display_value = \GFCommon::get_lead_field_display( $field->field, $value, $entry['currency'], false, $format );
-
-		if ( $errors = ob_get_clean() ) {
-			gravityview()->log->error( 'Errors when calling GFCommon::get_lead_field_display()', array( 'data' => $errors ) );
-		}
-
-		$display_value = apply_filters( 'gform_entry_field_value', $display_value, $field->field, $entry->as_entry(), $form->form );
-
-		// prevent the use of merge_tags for non-admin fields
-		if ( !empty( $field->field->adminOnly ) ) {
-			$display_value = \GravityView_API::replace_variables( $display_value, $form->form, $entry->as_entry() );
-		}
-	}
-
-	$gravityview_view = \GravityView_View::getInstance();
-
-	// Check whether the field exists in /includes/fields/{$field_type}.php
-	// This can be overridden by user template files.
-	$field_path = $gravityview_view->locate_template("fields/{$field_type}.php");
-
-	// Set the field data to be available in the templates
-	$gravityview_view->setCurrentField( array(
-		'form' => isset( $form ) ? $form->form : $gravityview_view->getForm(),
-		'field_id' => $field->ID,
-		'field' => $field->field,
-		'field_settings' => $field->as_configuration(),
-		'value' => $value,
-		'display_value' => $display_value,
-		'format' => $format,
-		'entry' => $entry->as_entry(),
-		'field_type' => $field_type, /** {@since 1.6} */
-		'field_path' => $field_path, /** {@since 1.16} */
-	) );
-
-	if ( ! empty( $field_path ) ) {
-		gravityview()->log->debug( 'Rendering {template}', array( 'template' => $field_path ) );
-
-		ob_start();
-		load_template( $field_path, false );
-		$output = ob_get_clean();
-	} else {
-		// Backup; the field template doesn't exist.
-		$output = $display_value;
-	}
-
-	// Get the field settings again so that the field template can override the settings
-	$field_settings = $gravityview_view->getCurrentField( 'field_settings' );
-
-	/**
-	 * @filter `gravityview_field_entry_value_{$field_type}_pre_link` Modify the field value output for a field type before Show As Link setting is applied. Example: `gravityview_field_entry_value_number_pre_link`
-	 * @since 1.16
-	 * @param string $output HTML value output
-	 * @param array  $entry The GF entry array
-	 * @param array  $field_settings Settings for the particular GV field
-	 * @param array  $field Field array, as fetched from GravityView_View::getCurrentField()
-	 */
-	$output = apply_filters( "gravityview_field_entry_value_{$field_type}_pre_link", $output, $entry->as_entry(), $field_settings, $gravityview_view->getCurrentField() );
-
-	/**
-	 * Link to the single entry by wrapping the output in an anchor tag
-	 *
-	 * Fields can override this by modifying the field data variable inside the field. See /templates/fields/post_image.php for an example.
-	 *
-	 */
-	if ( ! empty( $field_settings['show_as_link'] ) && ! \gv_empty( $output, false, false ) ) {
-
-		$link_atts = empty( $field_settings['new_window'] ) ? array() : array( 'target' => '_blank' );
-		$output = \GravityView_API::entry_link_html( $entry->as_entry(), $output, $link_atts, $field_settings );
-	}
-
-	/**
-	 * @filter `gravityview_field_entry_value_{$field_type}` Modify the field value output for a field type. Example: `gravityview_field_entry_value_number`
-	 * @since 1.6
-	 * @param string $output HTML value output
-	 * @param array  $entry The GF entry array
-	 * @param  array $field_settings Settings for the particular GV field
-	 * @param array $field Current field being displayed
-	 */
-	$output = apply_filters( "gravityview_field_entry_value_$field_type", $output, $entry->as_entry(), $field_settings, $gravityview_view->getCurrentField() );
-
-	/**
-	 * @filter `gravityview_field_entry_value` Modify the field value output for all field types
-	 * @param string $output HTML value output
-	 * @param array  $entry The GF entry array
-	 * @param  array $field_settings Settings for the particular GV field
-	 * @param array $field_data  {@since 1.6}
-	 */
-	$output = apply_filters( 'gravityview_field_entry_value', $output, $entry->as_entry(), $field_settings, $gravityview_view->getCurrentField() );
-
-	return $output;
+	$renderer = new \GV\Field_Renderer();
+	return $renderer->render( $field, gravityview()->views->get(), $source == \GV\Source::BACKEND_GRAVITYFORMS ? $form : null, $entry, gravityview()->request );
 }
 
 /**
