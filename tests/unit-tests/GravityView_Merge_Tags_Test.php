@@ -361,7 +361,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 			'{form_title}' => $form['title'],
 			'{form_id}' => $form['id'],
 			'{entry_id}' => $entry['id'],
-			'{entry_url}' => get_bloginfo( 'wpurl' ) . '/wp-admin/admin.php?page=gf_entries&view=entry&id=' . $form['id'] . '&lid=' . rgar( $entry, 'id' ),
+			'{entry_url}' => esc_url( get_bloginfo( 'wpurl' ) . '/wp-admin/admin.php?page=gf_entries&view=entry&id=' . $form['id'] . '&lid=' . rgar( $entry, 'id' ) ),
 			'{admin_email}' => get_bloginfo( 'admin_email' ),
 			'{post_id}' => $post->ID,
 		);
