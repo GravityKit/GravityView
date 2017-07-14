@@ -11,8 +11,7 @@ branches:
   only:
     - master
     - develop
-    - future
-    - future-render
+    - 2.0
 
 php:
   - 5.3
