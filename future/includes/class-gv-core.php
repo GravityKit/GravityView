@@ -94,6 +94,7 @@ final class Core {
 		 * plugin is incompatible with the current environment.
 		 */
 		if ( ! $this->plugin->is_compatible() ) {
+			$this->log->error( 'GravityView 2.0 is not compatible with this environment. Stopped loading.' );
 			return;
 		}
 
@@ -101,9 +102,7 @@ final class Core {
 		 * Enable this for more aggressive mocking and destruction of the old core.
 		 * Do not define, if you're not ready to get your mind blown!
 		 */
-		if ( ! getenv( 'GV_NO_FUTURE_RENDER' ) ) {
-			define( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED', true );
-		}
+		define( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED', true );
 
 		/** Register the gravityview post type upon WordPress core init. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
