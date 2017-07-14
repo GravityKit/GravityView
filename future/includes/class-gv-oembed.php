@@ -202,9 +202,11 @@ class oEmbed {
 			return __( 'You are not allowed to view this content.', 'gravityview' );
 		}
 
-		if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
-			gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
-			return __( 'You are not allowed to view this content.', 'gravityview' );
+		if ( $view->settings->get( 'show_only_approved' ) ) {
+			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
+				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
+				return __( 'You are not allowed to view this content.', 'gravityview' );
+			}
 		}
 
 		$renderer = new \GV\Entry_Renderer();
