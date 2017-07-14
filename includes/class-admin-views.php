@@ -70,7 +70,9 @@ class GravityView_Admin_Views {
 			return;
 		}
 
-		if( 'edit.php' !== $pagenow || ! rgget( 'gravityview_form_id' ) || ! isset( $query->query_vars[ 'post_type' ] ) ) {
+		$form_id = isset( $_GET['gravityview_form_id'] ) ? (int) $_GET['gravityview_form_id'] : false;
+
+		if( 'edit.php' !== $pagenow || ! $form_id || ! isset( $query->query_vars[ 'post_type' ] ) ) {
 			return;
 		}
 
@@ -78,7 +80,7 @@ class GravityView_Admin_Views {
 			$query->set( 'meta_query', array(
 				array(
 					'key' => '_gravityview_form_id',
-					'value' => rgget( 'gravityview_form_id' ),
+					'value' => $form_id,
 				)
 			) );
 		}

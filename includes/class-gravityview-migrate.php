@@ -55,6 +55,11 @@ class GravityView_Migrate {
 	private function update_approved_meta() {
 		global $wpdb;
 
+		if ( ! class_exists( 'GFFormsModel' ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ': GFFormsModel does not exist.' );
+			return;
+		}
+
 		$table_name = GFFormsModel::get_lead_meta_table_name();
 
 		$sql = "UPDATE {$table_name} SET `meta_value` = %s WHERE `meta_key` = 'is_approved' AND `meta_value` = %s";
