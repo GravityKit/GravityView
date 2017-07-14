@@ -62,20 +62,6 @@ class Entry_Renderer extends Renderer {
 			return null;
 		}
 
-		if ( ! \GravityView_frontend::is_entry_approved( $entry->as_entry(), $view->settings->as_atts() ) ) {
-			/**
-			 * @filter `gravityview/render/entry/not_visible` Modify the message shown to users when the entry doesn't exist or they aren't allowed to view it.
-			 * @since 1.6
-			 * @param string $message Default: "You have attempted to view an entry that is not visible or may not exist."
-			 */
-			$message = apply_filters( 'gravityview/render/entry/not_visible', __( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview' ) );
-
-			/**
-			 * @since 1.6
-			 */
-			return esc_attr( $message );
-		}
-
 		/**
 		 * @filter `gravityview_template_slug_{$template_id}` Modify the template slug about to be loaded in directory views.
 		 * @since 1.6

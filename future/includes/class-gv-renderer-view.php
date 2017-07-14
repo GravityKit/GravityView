@@ -87,6 +87,9 @@ class View_Renderer extends Renderer {
 		}
 		$template = new $class( $view, $entries, $request );
 
+		/** @todo Deprecate this! */
+		$parameters = \GravityView_frontend::get_view_entries_parameters( $view->settings->as_atts(), $view->form->ID );
+
 		/** Mock the legacy state for the widgets and whatnot */
 		\GV\Mocks\Legacy_Context::push( array_merge( array(
 			'view' => $view,

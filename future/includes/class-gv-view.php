@@ -384,48 +384,6 @@ class View implements \ArrayAccess {
 		 * @see \GV\View::offsetGet() for internal mappings.
 		 */
 		$view->_data = array(
-			/**
-			 * @deprecated
-			 * @see \GV\View::$ID
-			 */
-			// 'id' => $view->ID,
-
-			/**
-			 * @deprecated
-			 * @see \GV\View::$ID
-			 */
-			// 'view_id' => $view->ID,
-
-			/**
-			 * @deprecated
-			 * @see \GV\View::$form
-			 */
-			// 'form' => gravityview_get_form( $view->_gravityview_form_id ),
-
-			/**
-			 * @deprecated
-			 * @see \GV\View::$form::$ID
-			 */
-			// 'form_id' => $view->_gravityview_form_id,
-
-			/**
-			 * @deprecated
-			 * @see \GV\View::$settings
-			 */
-			// 'atts' => $view->settings->as_atts(),
-
-			/**
-			 * @deprecated
-			 * @see \GV\View::$fields
-			 */
-			// 'fields' => \GravityView_View_Data::getInstance()->get_fields( $view->ID ),
-
-			/**
-			 * @deprecated
-			 * @see \GV\View::$settings['template']
-			 */
-			// 'template_id' => gravityview_get_template_id( $view->ID ),
-
 			'widgets' => gravityview_get_directory_widgets( $view->ID ),
 		);
 

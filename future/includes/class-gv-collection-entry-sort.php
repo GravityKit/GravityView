@@ -68,4 +68,20 @@ class Entry_Sort {
 		$this->direction = $direction;
 		$this->mode = $mode;
 	}
+
+	/**
+	 * Return search_criteria-compatible array.
+	 *
+	 * @return array [`key`, `direction`, `is_numeric`]
+	 */
+	public function to_sorting() {
+		if ( $this->field ) {
+			return array(
+				'key' => $this->field->ID,
+				'direction' => $this->direction ? : self::ASC,
+				'is_numeric' => self::ALPHA ? true : false,
+			);
+		}
+		return array();
+	}
 }

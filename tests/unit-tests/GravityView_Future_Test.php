@@ -1359,25 +1359,15 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $post );
 		$view->settings->update( array( 'page_size' => 3 ) );
-
 		$entries = new \GV\Entry_Collection();
-
-		\GV\Mocks\Legacy_Context::push( array(
-			'post' => $post,
-			'view' => $view,
-			'entries' => $entries,
-			'in_the_loop' => true,
-		) );
 
 		$renderer = new \GV\View_Renderer();
 
-		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
 
-		/** Clean up the differences a bit */
-		$legacy = str_replace( ' style=""', '', $legacy );
-		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
-		$future = preg_replace( '#>\s*<#', '><', $future );
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view );
 
 		/** No matching entries... */
 		$this->assertEquals( $legacy, $future );
@@ -1391,20 +1381,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 		$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
 
-		\GV\Mocks\Legacy_Context::push( array(
-			'post' => $post,
-			'view' => $view,
-			'entries' => $entries,
-			'in_the_loop' => true,
-		) );
-
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $view, new \GV\Frontend_Request() );
-
-		/** Clean up the differences a bit */
-		$legacy = str_replace( ' style=""', '', $legacy );
-		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
-		$future = preg_replace( '#>\s*<#', '><', $future );
+		$future = $renderer->render( $view );
 
 		/** One entry */
 		$this->assertEquals( $legacy, $future );
@@ -1420,20 +1398,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
 		}
 
-		\GV\Mocks\Legacy_Context::push( array(
-			'post' => $post,
-			'view' => $view,
-			'entries' => $entries,
-			'in_the_loop' => true,
-		) );
-
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $view, new \GV\Frontend_Request() );
-
-		/** Clean up the differences a bit */
-		$legacy = str_replace( ' style=""', '', $legacy );
-		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
-		$future = preg_replace( '#>\s*<#', '><', $future );
+		$future = $renderer->render( $view );
 
 		/** Page one */
 		$this->assertEquals( $legacy, $future );
@@ -1444,12 +1410,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$_GET = array( 'pagenum' => 2 );
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $view, new \GV\Frontend_Request() );
-
-		/** Clean up the differences a bit */
-		$legacy = str_replace( ' style=""', '', $legacy );
-		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
-		$future = preg_replace( '#>\s*<#', '><', $future );
+		$future = $renderer->render( $view );
 
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( '[1] Some text in a textarea', $future );
@@ -1464,21 +1425,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
 		}
 
-		\GV\Mocks\Legacy_Context::push( array(
-			'post' => $post,
-			'view' => $view,
-			'entries' => $entries,
-			'in_the_loop' => true,
-			'request' => new \GV\Frontend_Request(),
-		) );
-
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $view, new \GV\Frontend_Request() );
-
-		/** Clean up the differences a bit */
-		$legacy = str_replace( ' style=""', '', $legacy );
-		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
-		$future = preg_replace( '#>\s*<#', '><', $future );
+		$future = $renderer->render( $view );
 
 		/** Page two */
 		$this->assertEquals( $legacy, $future );
@@ -1489,12 +1437,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$_GET = array( 'pagenum' => 1, 'gv_search' => 'thisissomemoretext' );
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $view, new \GV\Frontend_Request() );
-
-		/** Clean up the differences a bit */
-		$legacy = str_replace( ' style=""', '', $legacy );
-		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
-		$future = preg_replace( '#>\s*<#', '><', $future );
+		$future = $renderer->render( $view );
 
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( '[5] thisissomemoretext', $future );
@@ -1503,12 +1446,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$_GET = array( 'pagenum' => 2, 'gv_search' => 'thisissomemoretext' );
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $view, new \GV\Frontend_Request() );
-
-		/** Clean up the differences a bit */
-		$legacy = str_replace( ' style=""', '', $legacy );
-		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
-		$future = preg_replace( '#>\s*<#', '><', $future );
+		$future = $renderer->render( $view );
 
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( '[1] thisissomemoretext', $future );
@@ -1516,7 +1454,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$_GET = array( 'pagenum' => 3, 'gv_search' => 'thisissomemoretext' );
 
-		$future = $renderer->render( $view, new \GV\Frontend_Request() );
+		$future = $renderer->render( $view );
 
 		$this->assertContains( 'No entries match your request.', $future );
 
@@ -1525,66 +1463,29 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$_GET = array( 'pagenum' => 1 );
 
-		\GV\Mocks\Legacy_Context::push( array(
-			'post' => $post,
-			'view' => $view,
-			'entries' => $entries,
-			'in_the_loop' => true,
-			'request' => new \GV\Frontend_Request(),
-		) );
-
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $view, new \GV\Frontend_Request() );
-
-		/** Clean up the differences a bit */
-		$legacy = str_replace( ' style=""', '', $legacy );
-		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
-		$future = preg_replace( '#>\s*<#', '><', $future );
+		$future = $renderer->render( $view );
 
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( 'No entries match your request.', $future );
 
 		$_GET = array( 'pagenum' => 2, 'gv_search' => 'thisissomemoretext' );
-
-		\GV\Mocks\Legacy_Context::push( array(
-			'post' => $post,
-			'view' => $view,
-			'entries' => $entries,
-			'in_the_loop' => true,
-			'request' => new \GV\Frontend_Request(),
-		) );
+		gravityview()->request->returns['is_search'] = true;
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $view, new \GV\Frontend_Request() );
-
-		/** Clean up the differences a bit */
-		$legacy = str_replace( ' style=""', '', $legacy );
-		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
-		$future = preg_replace( '#>\s*<#', '><', $future );
+		$future = $renderer->render( $view );
 
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( '[1] thisissomemoretext', $future );
 		$this->assertNotContains( 'Country', $future );
 
 		$_GET = array();
+		gravityview()->request->returns['is_search'] = false;
 
 		$view->settings->update( array( 'hide_until_searched' => false, 'show_only_approved' => true ) );
 
-		\GV\Mocks\Legacy_Context::push( array(
-			'post' => $post,
-			'view' => $view,
-			'entries' => $entries,
-			'in_the_loop' => true,
-			'request' => new \GV\Frontend_Request(),
-		) );
-
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $view, new \GV\Frontend_Request() );
-
-		/** Clean up the differences a bit */
-		$legacy = str_replace( ' style=""', '', $legacy );
-		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
-		$future = preg_replace( '#>\s*<#', '><', $future );
+		$future = $renderer->render( $view );
 
 		/** No matching entries... */
 		$this->assertEquals( $legacy, $future );
@@ -1595,33 +1496,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 			gform_update_meta( $_entries[ $entry_num ]->ID, \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
 		}
 
-		\GV\Mocks\Legacy_Context::push( array(
-			'post' => $post,
-			'view' => $view,
-			'entries' => $entries,
-			'in_the_loop' => true,
-			'request' => new \GV\Frontend_Request(),
-		) );
-
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
 		$future = $renderer->render( $view, new \GV\Frontend_Request() );
-
-		/** Clean up the differences a bit */
-		$legacy = str_replace( ' style=""', '', $legacy );
-		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
-		$future = preg_replace( '#>\s*<#', '><', $future );
 
 		/** No matching entries... */
 		$this->assertEquals( $legacy, $future );
 		$this->assertNotContains( 'No entries match your request.', $future );
-
-		\GV\Mocks\Legacy_Context::push( array(
-			'post' => $post,
-			'view' => $view,
-			'entries' => $entries,
-			'in_the_loop' => true,
-			'request' => new \GV\Frontend_Request(),
-		) );
 
 		$administrator = $this->factory->user->create( array(
 			'user_login' => md5( microtime() ),
@@ -1633,15 +1513,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		wp_set_current_user( $administrator );
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $view, new \GV\Frontend_Request() );
-
-		/** Clean up the differences a bit */
-		$legacy = str_replace( ' style=""', '', $legacy );
-		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
-		$future = preg_replace( '#>\s*<#', '><', $future );
-
-		/** A bug in the old renderer. */
-		$legacy = str_replace( 'Country</span>', 'Country <small>(Address)</small></span>', $legacy );
+		$future = $renderer->render( $view );
 
 		/** No matching entries... */
 		$this->assertEquals( $legacy, $future );
@@ -1651,12 +1523,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$view->fields = new \GV\Field_Collection();
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $view, new \GV\Frontend_Request() );
-
-		/** Clean up the differences a bit */
-		$legacy = str_replace( ' style=""', '', $legacy );
-		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
-		$future = preg_replace( '#>\s*<#', '><', $future );
+		$future = $renderer->render( $view );
 
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( 'The Multiple Entries layout has not been configured.', $future );
@@ -1664,12 +1531,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		wp_set_current_user( -1 );
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $view, new \GV\Frontend_Request() );
-
-		/** Clean up the differences a bit */
-		$legacy = str_replace( ' style=""', '', $legacy );
-		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
-		$future = preg_replace( '#>\s*<#', '><', $future );
+		$future = $renderer->render( $view );
 
 		$this->assertEquals( $legacy, $future );
 		$this->assertNotContains( 'The Multiple Entries layout has not been configured.', $future );
@@ -1910,22 +1772,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
 		}
 
-		\GV\Mocks\Legacy_Context::push( array(
-			'post' => $post,
-			'view' => $view,
-			'entries' => $entries,
-			'in_the_loop' => true,
-		) );
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
 
 		$renderer = new \GV\View_Renderer();
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $view, new \GV\Frontend_Request() );
-
-		/** Clean up the differences a bit */
-		$legacy = str_replace( ' style=""', '', $legacy );
-		$legacy = preg_replace( '#>\s*<#', '><', $legacy );
-		$future = preg_replace( '#>\s*<#', '><', $future );
+		$future = $renderer->render( $view );
 
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( 'Search Entries', $future );
@@ -1960,12 +1813,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
-		\GV\Mocks\Legacy_Context::push( array(
-			'post' => $post,
-			'view' => $view,
-			'entry' => $entry,
-			'in_the_loop' => true,
-		) );
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+		gravityview()->request->returns['is_entry'] = $entry;
 
 		$administrator = $this->factory->user->create( array(
 			'user_login' => md5( microtime() ),
@@ -1977,15 +1827,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$renderer = new \GV\Entry_Renderer();
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-
-		$request = new \GV\Mock_Request();
-		$request->returns['is_entry'] = true;
-
-		$future = $renderer->render( $entry, $view, $request );
-
-		/** Clean up the differences a bit */
-		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
-		$future = trim( preg_replace( '#>\s*<#', '><', $future ) );
+		$future = $renderer->render( $entry, $view );
 
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( 'The Single Entry layout has not been configured', $future );
@@ -2026,21 +1868,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
-		\GV\Mocks\Legacy_Context::push( array(
-			'post' => $post,
-			'view' => $view,
-			'entry' => $entry,
-			'in_the_loop' => true,
-		) );
+		gravityview()->request->returns['is_view'] = $view;
+		gravityview()->request->returns['is_entry'] = $entry;
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $entry, $view, $request );
-
-		/** Clean up the differences a bit */
-		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
-		$future = trim( preg_replace( '#>\s*<#', '><', $future ) );
-
-		$future = str_replace( ' <small>(Address)</small>', '', $future ); /** Quirk/bug in legacy */
+		$future = $renderer->render( $entry, $view );
 
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( 'text in a textarea', $future );
@@ -2048,40 +1880,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		wp_set_current_user( -1 );
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $entry, $view, new \GV\Frontend_Request() );
-
-		/** Clean up the differences a bit */
-		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
-		$future = trim( preg_replace( '#>\s*<#', '><', $future ) );
+		$future = $renderer->render( $entry, $view );
 
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( 'text in a textarea', $future );
 		$this->assertContains( 'Let&#039;s go back!', $future );
 		$this->assertNotContains( 'Country', $future );
-
-		$view->settings->update( array( 'show_only_approved' => true ) );
-
-		$entry = $this->factory->entry->create_and_get( array(
-			'form_id' => $form['id'],
-			'status' => 'active',
-			'1.6' => 'Mexico',
-			'16' => sprintf( 'Some text in a textarea (%s)', wp_generate_password( 12 ) ),
-		) );
-		$entry = \GV\GF_Entry::by_id( $entry['id'] );
-
-		\GV\Mocks\Legacy_Context::push( array(
-			'entry' => $entry,
-		) );
-
-		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $entry, $view, new \GV\Frontend_Request() );
-
-		/** Clean up the differences a bit */
-		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
-		$future = trim( preg_replace( '#>\s*<#', '><', $future ) );
-
-		$this->assertEquals( $legacy, $future );
-		$this->assertContains( 'You have attempted to view an entry that is not visible or may not exist', $future );
 	}
 
 	/**
@@ -2108,13 +1912,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
-		\GV\Mocks\Legacy_Context::push( array(
-			'post' => $post,
-			'view' => $view,
-			'entry' => $entry,
-			'in_the_loop' => true,
-		) );
-
 		$administrator = $this->factory->user->create( array(
 			'user_login' => md5( microtime() ),
 			'user_email' => md5( microtime() ) . '@gravityview.tests',
@@ -2123,17 +1920,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		wp_set_current_user( $administrator );
 
-		$renderer = new \GV\Entry_Renderer();
-		$request = new \GV\Mock_Request();
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+		gravityview()->request->returns['is_entry'] = $entry;
 
-		$request->returns['is_entry'] = true;
+		$renderer = new \GV\Entry_Renderer();
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $entry, $view, $request );
-
-		/** Clean up the differences a bit */
-		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
-		$future = trim( preg_replace( '#>\s*<#', '><', $future ) );
+		$future = $renderer->render( $entry, $view );
 
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( 'The Single Entry layout has not been configured', $future );
@@ -2254,20 +2048,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
-		\GV\Mocks\Legacy_Context::push( array(
-			'post' => $post,
-			'view' => $view,
-			'entry' => $entry,
-			'in_the_loop' => true,
-		) );
+		gravityview()->request->returns['is_view'] = $view;
+		gravityview()->request->returns['is_entry'] = $entry;
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $entry, $view, $request );
-
-		/** Clean up the differences a bit */
-		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
-		$future = trim( preg_replace( '#>\s*<#', '><', $future ) );
-		$future = str_replace( ' <small>(Address)</small>', '', $future ); /** Quirk/bug in legacy */
+		$future = $renderer->render( $entry, $view );
 
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( 'Country', $future );
@@ -2275,41 +2060,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		wp_set_current_user( -1 );
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $entry, $view, $request );
-
-		/** Clean up the differences a bit */
-		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
-		$future = trim( preg_replace( '#>\s*<#', '><', $future ) );
-		$future = str_replace( ' <small>(Address)</small>', '', $future ); /** Quirk/bug in legacy */
+		$future = $renderer->render( $entry, $view );
 
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( 'Let&#039;s go back!', $future );
 		$this->assertContains( 'text in a textarea', $future );
 		$this->assertNotContains( 'Country', $future );
-
-		$view->settings->update( array( 'show_only_approved' => true ) );
-
-		$entry = $this->factory->entry->create_and_get( array(
-			'form_id' => $form['id'],
-			'status' => 'active',
-			'1.6' => 'Mexico',
-			'16' => sprintf( 'Some text in a textarea (%s)', wp_generate_password( 12 ) ),
-		) );
-		$entry = \GV\GF_Entry::by_id( $entry['id'] );
-
-		\GV\Mocks\Legacy_Context::push( array(
-			'entry' => $entry,
-		) );
-
-		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
-		$future = $renderer->render( $entry, $view, new \GV\Frontend_Request() );
-
-		/** Clean up the differences a bit */
-		$legacy = trim( preg_replace( '#>\s*<#', '><', $legacy ) );
-		$future = trim( preg_replace( '#>\s*<#', '><', $future ) );
-
-		$this->assertEquals( $legacy, $future );
-		$this->assertContains( 'You have attempted to view an entry that is not visible or may not exist', $future );
 	}
 
 	/**
