@@ -4763,6 +4763,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'template_id' => 'table',
 		) );
 		$view = \GV\View::from_post( $post );
+		$view->settings->update( array( 'show_only_approved' => true ) );
 
 		/** Trash */
 		$entry = $this->factory->entry->create_and_get( array(
@@ -4822,6 +4823,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
+			'settings' => array(
+				'show_only_approved' => true,
+			),
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -4890,6 +4894,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
+			'settings' => array(
+				'show_only_approved' => true,
+			),
 		) );
 		$view = \GV\View::from_post( $post );
 
