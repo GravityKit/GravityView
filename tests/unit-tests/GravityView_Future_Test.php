@@ -4490,7 +4490,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers \GV\oEmbed::render()
-	 * @covers \GravityView_oEmbed::render_handler()
 	 */
 	public function test_oembed_entry() {
 		$this->_reset_context();
@@ -4523,10 +4522,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'status' => 'active',
 			'16' => sprintf( 'Entry %s', wp_generate_password( 12 ) ),
 		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
 		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
 
-		$legacy = array( \GravityView_oEmbed::getInstance(), 'render_handler' );
 		$future = array( '\GV\oEmbed', 'render' );
 
 		$args = array(
@@ -4548,18 +4547,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		wp_set_current_user( $administrator );
 
 		gravityview()->request = new \GV\Mock_Request();
-		gravityview()->request->returns['is_entry'] = true;
+		gravityview()->request->returns['is_entry'] = $entry;
 
-		$legacy_output = call_user_func_array( $legacy, $args );
 		$future_output = call_user_func_array( $future, $args );
 
-		/** Clean up the differences a bit */
-		$legacy_output = str_replace( ' style=""', '', $legacy_output );
-		$legacy_output = trim( preg_replace( '#>\s*<#', '><', $legacy_output ) );
-		$future_output = trim( preg_replace( '#>\s*<#', '><', $future_output ) );
-		$future_output = preg_replace( '#<input type="hidden" class="gravityview-view-id" value="\d+">#', '', $future_output );
-
-		$this->assertEquals( $legacy_output, $future_output );
+		$this->assertContains( 'gravityview-oembed gravityview-oembed-entry gravityview-oembed-entry-' . $entry->ID, $future_output );
 
 		wp_set_current_user( 0 );
 		gravityview()->request = new \GV\Frontend_Request();

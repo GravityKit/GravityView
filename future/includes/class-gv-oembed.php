@@ -23,8 +23,6 @@ class oEmbed {
 	public static function init() {
 		self::$provider_url = add_query_arg( 'gv_oembed_provider', '1', site_url() );
 
-		wp_embed_unregister_handler( 'gravityview_entry', 20000 );
-
 		wp_embed_register_handler( 'gravityview_entry', self::get_entry_regex(), array( __CLASS__, 'render' ), 20000 );
 		wp_oembed_add_provider( self::get_entry_regex(), self::$provider_url, true );
 

@@ -129,9 +129,7 @@ final class Core {
 		
 		/** oEmbed */
 		require_once $this->plugin->dir( 'future/includes/class-gv-oembed.php' );
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED' ) ) {
-			add_action( 'init', array( '\GV\oEmbed', 'init' ), 11 );
-		}
+		add_action( 'init', array( '\GV\oEmbed', 'init' ), 11 );
 
 		/** Our Source generic and beloved source and form backend implementations. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-source.php' );
