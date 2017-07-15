@@ -55,8 +55,6 @@ class View implements \ArrayAccess {
 	public function __construct() {
 		$this->settings = new View_Settings();
 		$this->fields = new Field_Collection();
-
-		add_filter( 'the_content', array( $this, 'content' ), 11 );
 	}
 
 	/**

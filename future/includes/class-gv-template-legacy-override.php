@@ -131,6 +131,35 @@ class Legacy_Override_Template extends \Gamajo_Template_Loader {
 
 		$request = new Mock_Request();
 		$request->returns['is_view'] = $this->view;
+
+		/**
+		 * You got one shot. One opportunity. To render all the widgets you have ever wanted.
+		 *
+		 * Since we're overriding the singleton we need to remove the widget actions since they can only
+		 *  be called once in a request (did_action/do_action mutex).
+		 *
+		 * Oh, and Mom's spaghetti.
+		 */
+		global $wp_filter;
+		foreach ( array( 'gravityview_before', 'gravityview_after' ) as $hook ) {
+			/** WordPress 4.6 and lower compatibility, when WP_Hook classes were still absent. */
+			if ( is_array( $wp_filter[ $hook ] ) ) {
+				if ( ! empty( $wp_filter[ $hook ][10] ) ) {
+					foreach ( $wp_filter[ $hook ][10] as $function_key => $callback ) {
+						if ( strpos( $function_key, 'render_widget_hooks' ) ) {
+							unset( $wp_filter[ $hook ][10][ $function_key ] );
+						}
+					}
+				}
+				return;
+			}
+
+			foreach ( $wp_filter[ $hook ]->callbacks[10] as $function_key => $callback ) {
+				if ( strpos( $function_key, 'render_widget_hooks' ) ) {
+					unset( $wp_filter[ $hook ]->callbacks[10][ $function_key ] );
+				}
+			}
+		}
 		
 		/**
 		 * Single entry view.
@@ -155,6 +184,7 @@ class Legacy_Override_Template extends \Gamajo_Template_Loader {
 
 			\GravityView_View::getInstance()->setTemplatePartSlug( $slug );
 			\GravityView_View::getInstance()->setTemplatePartName( 'single' );
+
 			\GravityView_View::getInstance()->_include( $this->get_template_part( $slug, 'single' ) );
 
 			Mocks\Legacy_Context::pop();
@@ -181,6 +211,9 @@ class Legacy_Override_Template extends \Gamajo_Template_Loader {
 			), $post ? array() : array(
 				'post' => $post,
 			) ) );
+
+			add_action( 'gravityview_before', array( \GravityView_View::getInstance(), 'render_widget_hooks' ) );
+			add_action( 'gravityview_after', array( \GravityView_View::getInstance(), 'render_widget_hooks' ) );
 
 			foreach ( array( 'header', 'body', 'footer' ) as $part ) {
 				\GravityView_View::getInstance()->setTemplatePartSlug( $slug );

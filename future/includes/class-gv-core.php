@@ -107,6 +107,7 @@ final class Core {
 		/** Register the gravityview post type upon WordPress core init. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
 		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
+		add_action( 'the_content', array( '\GV\View', 'content' ) );
 
 		/** The Settings. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-settings.php' );
