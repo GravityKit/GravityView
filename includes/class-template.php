@@ -930,5 +930,16 @@ class GravityView_View extends Gamajo_Template_Loader {
 		}
 	}
 
+	/**
+	 * Include a file inside this context.
+	 *
+	 * @param string $path A path to the legacy template to include.
+	 *
+	 * @return void
+	 */
+	public function _include( $path ) {
+		require $path;
+	}
+
 }
 

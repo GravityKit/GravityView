@@ -31,7 +31,7 @@ abstract class View_Template extends Template {
 	 * Directory name where custom templates for this plugin should be found in the theme.
 	 * @var string
 	 */
-	protected $theme_template_directory = 'future/views/';
+	protected $theme_template_directory = 'gravityview/views/';
 
 	/**
 	 * Directory name where the default templates for this plugin are found.

@@ -584,8 +584,9 @@ final class Legacy_Context {
 					self::thaw( array(
 						'\GravityView_View::context' => (
 							$value->is_entry() ? 'single' :
-								$value->is_edit_entry() ? 'edit' :
-									$value->is_view() ? 'directory': null
+								( $value->is_edit_entry() ? 'edit' :
+									( $value->is_view() ? 'directory': null )
+								)
 						),
 						'\GravityView_frontend::is_search' => $value->is_search(),
 					) );

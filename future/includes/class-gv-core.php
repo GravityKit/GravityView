@@ -169,6 +169,7 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-template-view.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-template-entry.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-template-field.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-template-legacy-override.php' );
 
 		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );
 

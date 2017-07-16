@@ -74,6 +74,20 @@ class View_Renderer extends Renderer {
 		}
 
 		/**
+		 * Load a legacy override template if exists.
+		 */
+		$override = new \GV\Legacy_Override_Template( $view, null, null, $request );
+		foreach ( array( 'header', 'body', 'footer' ) as $part ) {
+			if ( strpos( $path = $override->get_template_part( $template_slug, $part ), '/deprecated' ) === false ) {
+				/**
+				 * We have to bail and call the legacy renderer. Crap!
+				 */
+				gravityview()->log->notice( 'Legacy templates detected in theme {path}', array( 'path' => $path ) );
+				return $override->render( $template_slug );
+			}
+		}
+
+		/**
 		 * @filter `gravityview/template/view/class` Filter the template class that is about to be used to render the view.
 		 * @since future
 		 * @param string $class The chosen class - Default: \GV\View_Table_Template.

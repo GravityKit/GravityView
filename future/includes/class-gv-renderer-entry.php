@@ -73,6 +73,20 @@ class Entry_Renderer extends Renderer {
 		$template_slug = apply_filters( 'gravityview_template_slug_' . $view->settings->get( 'template' ), 'table', 'single' );
 
 		/**
+		 * Load a legacy override template if exists.
+		 */
+		$override = new \GV\Legacy_Override_Template( $view, $entry, null, $request );
+		foreach ( array( 'single' ) as $part ) {
+			if ( strpos( $path = $override->get_template_part( $template_slug, $part ), '/deprecated' ) === false ) {
+				/**
+				 * We have to bail and call the legacy renderer. Crap!
+				 */
+				gravityview()->log->notice( 'Legacy templates detected in theme {path}', array( 'path' => $path ) );
+				return $override->render( $template_slug );
+			}
+		}
+
+		/**
 		 * @filter `gravityview/template/entry/class` Filter the template class that is about to be used to render the entry.
 		 * @since future
 		 * @param string $class The chosen class - Default: \GV\Entry_Table_Template.
