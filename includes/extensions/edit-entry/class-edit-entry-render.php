@@ -703,6 +703,10 @@ class GravityView_Edit_Entry_Render {
                     case 'post_category':
                         break;
                     case 'post_custom_field':
+						if ( is_array( $value ) && ( floatval( $field_id ) !== floatval( $field->id ) ) ) {
+							$value = $value[ $field_id ];
+						}
+
                         if( ! empty( $field->customFieldTemplateEnabled ) ) {
                             $value = $this->fill_post_template( $field->customFieldTemplate, $form, $entry_tmp, true );
                         }

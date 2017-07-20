@@ -110,7 +110,7 @@ class GravityView_Shortcode {
 
 				// Checkboxes should be 1 or 0
 				case 'checkbox':
-					$atts[ $key ] = gv_empty( $passed_value ) ? 0 : 1;
+					$atts[ $key ] = gv_empty( $passed_value, true, false ) ? 0 : 1;
 					break;
 
 				/**

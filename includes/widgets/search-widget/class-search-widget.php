@@ -551,7 +551,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// get the other search filters
 		foreach ( $get as $key => $value ) {
 
-			if ( 0 !== strpos( $key, 'filter_' ) || gv_empty( $value, false ) || ( is_array( $value ) && count( $value ) === 1 && gv_empty( $value[0], false ) ) ) {
+			if ( 0 !== strpos( $key, 'filter_' ) || gv_empty( $value, false, false ) || ( is_array( $value ) && count( $value ) === 1 && gv_empty( $value[0], false, false ) ) ) {
 				continue;
 			}
 
