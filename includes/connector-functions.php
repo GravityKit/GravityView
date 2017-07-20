@@ -386,7 +386,7 @@ function gravityview_is_single_entry() {
  */
 function gravityview_view_has_single_checkbox_or_radio( $form, $view_fields ) {
 
-	if( $form_fields = GFFormsModel::get_fields_by_type( $form, array( 'checkbox', 'radio' ) ) ) {
+	if( class_exists('GFFormsModel') && $form_fields = GFFormsModel::get_fields_by_type( $form, array( 'checkbox', 'radio' ) ) ) {
 
 		/** @var GF_Field_Radio|GF_Field_Checkbox $form_field */
 		foreach( $form_fields as $form_field ) {
