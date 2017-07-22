@@ -544,7 +544,7 @@ class GravityView_Settings extends GFAddOn {
 	 * @return void
 	 */
 	public function add_network_menu() {
-		if( GravityView_Plugin::is_network_activated() ) {
+		if ( gravityview()->plugin->is_network_activated() ) {
 			add_menu_page( __( 'Settings', 'gravityview' ), __( 'GravityView', 'gravityview' ), $this->_capabilities_app_settings, "{$this->_slug}_settings", array( $this, 'app_tab_page' ), 'none' );
 		}
 	}
@@ -561,7 +561,7 @@ class GravityView_Settings extends GFAddOn {
 		 * If multisite and not network admin, we don't want the settings to show.
 		 * @since 1.7.6
 		 */
-		$show_submenu = !is_multisite() ||  is_main_site() || !GravityView_Plugin::is_network_activated() || ( is_network_admin() && GravityView_Plugin::is_network_activated() );
+		$show_submenu = !is_multisite() ||  is_main_site() || !gravityview()->plugin->is_network_activated() || ( is_network_admin() && GravityView_Plugin::is_network_activated() );
 
 		/**
 		 * Override whether to show the Settings menu on a per-blog basis.

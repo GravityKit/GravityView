@@ -116,6 +116,22 @@ class GravityView_Widget {
 		return $settings;
 	}
 
+	/**
+	 *
+	 */
+	public static function get_default_widget_areas() {
+		$default_areas = array(
+			array( '1-1' => array( array( 'areaid' => 'top', 'title' => __('Top', 'gravityview' ) , 'subtitle' => '' ) ) ),
+			array( '1-2' => array( array( 'areaid' => 'left', 'title' => __('Left', 'gravityview') , 'subtitle' => '' ) ), '2-2' => array( array( 'areaid' => 'right', 'title' => __('Right', 'gravityview') , 'subtitle' => '' ) ) ),
+		);
+
+		/**
+		 * @filter `gravityview_widget_active_areas` Array of zones available for widgets to be dropped into
+		 * @param array $default_areas Definition for default widget areas
+		 */
+		return apply_filters( 'gravityview_widget_active_areas', $default_areas );
+	}
+
     /**
      * @return string
      */

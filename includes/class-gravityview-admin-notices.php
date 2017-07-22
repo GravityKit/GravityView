@@ -119,7 +119,7 @@ class GravityView_Admin_Notices {
 	/**
 	 * Handle whether to display notices in Multisite based on plugin activation status
 	 *
-	 * @uses GravityView_Plugin::is_network_activated
+	 * @uses \GV\Plugin::is_network_activated
 	 *
 	 * @since 1.12
 	 *
@@ -132,7 +132,7 @@ class GravityView_Admin_Notices {
 		}
 
 		// It's network activated but the user can't manage network plugins; they can't do anything about it.
-		if( GravityView_Plugin::is_network_activated() && ! is_main_site() ) {
+		if ( gravityview()->plugin->is_network_activated() && ! is_main_site() ) {
 			return false;
 		}
 

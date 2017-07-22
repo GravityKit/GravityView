@@ -21,7 +21,7 @@ final class Plugin {
 	 * @api
 	 * @since future
 	 */
-	public $version = 'future';
+	public $version = GV_PLUGIN_VERSION;
 
 	/**
 	 * @var string Minimum WordPress version.
@@ -75,6 +75,133 @@ final class Plugin {
 		return self::$__instance;
 	}
 
+
+	private function __construct() {
+		/**
+		 * Load translations.
+		 */
+		add_action( 'init', array( $this, 'load_textdomain' ) );
+
+		/**
+		 * Load some frontend-related legacy files.
+		 */
+		add_action( 'init', array( $this, 'include_legacy_frontend' ) );
+	}
+	
+	/**
+	 * Check whether GravityView is network activated.
+	 *
+	 * @return bool Whether it's network activated or not.
+	 */
+	public static function is_network_activated() {
+		return is_multisite() && ( function_exists( 'is_plugin_active_for_network' ) && is_plugin_active_for_network( 'gravityview/gravityview.php' ) );
+	}
+
+	/**
+	 * Include more legacy stuff.
+	 *
+	 * @param boolean $force Whether to force the includes.
+	 *
+	 * @return void
+	 */
+	public function include_legacy_frontend( $force = false ) {
+		if ( gravityview()->request->is_admin() && ! $force ) {
+			return;
+		}
+
+		include_once $this->dir( 'includes/class-gravityview-image.php' );
+		include_once $this->dir( 'includes/class-template.php' );
+		include_once $this->dir( 'includes/class-api.php' );
+		include_once $this->dir( 'includes/class-frontend-views.php' );
+		include_once $this->dir( 'includes/class-gravityview-change-entry-creator.php' );
+
+		/**
+		 * @action `gravityview_include_frontend_actions` Triggered after all GravityView frontend files are loaded
+		 *
+		 * @deprecated Use `gravityview/loaded` along with \GV\Request::is_admin(), etc.
+		 *
+		 * Nice place to insert extensions' frontend stuff
+		 */
+		do_action( 'gravityview_include_frontend_actions' );
+	}
+
+	/**
+	 * Load more legacy core files.
+	 *
+	 * @return void
+	 */
+	public function include_legacy_core() {
+		// Load fields
+		include_once $this->dir( 'includes/fields/class-gravityview-fields.php' );
+		include_once $this->dir( 'includes/fields/class-gravityview-field.php' );
+
+		// Load all field files automatically
+		foreach ( glob( $this->dir( 'includes/fields/class-gravityview-field*.php' ) ) as $gv_field_filename ) {
+			include_once $gv_field_filename;
+		}
+
+		include_once $this->dir( 'includes/class-gravityview-entry-approval-status.php' );
+		include_once $this->dir( 'includes/class-gravityview-entry-approval.php' );
+
+		include_once $this->dir( 'includes/class-gravityview-entry-notes.php' );
+		include_once $this->dir( 'includes/load-plugin-and-theme-hooks.php' );
+
+		// Load Extensions
+		// @todo: Convert to a scan of the directory or a method where this all lives
+		include_once $this->dir( 'includes/extensions/edit-entry/class-edit-entry.php' );
+		include_once $this->dir( 'includes/extensions/delete-entry/class-delete-entry.php' );
+		include_once $this->dir( 'includes/extensions/entry-notes/class-gravityview-field-notes.php' );
+
+		// Load WordPress Widgets
+		include_once $this->dir( 'includes/wordpress-widgets/register-wordpress-widgets.php' );
+
+		// Load GravityView Widgets
+		include_once $this->dir( 'includes/widgets/register-gravityview-widgets.php' );
+
+		// Add oEmbed
+		include_once $this->dir( 'includes/class-oembed.php' );
+
+		// Add logging
+		include_once $this->dir( 'includes/class-gravityview-logging.php' );
+
+		include_once $this->dir( 'includes/class-ajax.php' );
+		include_once $this->dir( 'includes/class-gravityview-settings.php' );
+		include_once $this->dir( 'includes/class-frontend-views.php' );
+		include_once $this->dir( 'includes/class-gravityview-admin-bar.php' );
+		include_once $this->dir( 'includes/class-gravityview-entry-list.php' );
+		include_once $this->dir( 'includes/class-gravityview-merge-tags.php'); /** @since 1.8.4 */
+		include_once $this->dir( 'includes/class-data.php' );
+		include_once $this->dir( 'includes/class-gravityview-shortcode.php' );
+		include_once $this->dir( 'includes/class-gravityview-entry-link-shortcode.php' );
+		include_once $this->dir( 'includes/class-gvlogic-shortcode.php' );
+		include_once $this->dir( 'includes/presets/register-default-templates.php' );
+
+		if ( ! class_exists( '\GravityView_Extension' ) ) {
+			include_once $this->dir( 'includes/class-gravityview-extension.php' );
+		}
+	}
+
+	/**
+	 * Load the translations.
+	 *
+	 * @return void
+	 */
+	public function load_textdomain() {
+		$loaded = load_plugin_textdomain( 'gravityview', false, $this->dir( 'languages' ) );
+		
+		if ( ! $loaded ) {
+			$loaded = load_muplugin_textdomain( 'gravityview', '/languages/' );
+		}
+		if ( ! $loaded ) {
+			$loaded = load_theme_textdomain( 'gravityview', '/languages/' );
+		}
+		if ( ! $loaded ) {
+			$locale = apply_filters( 'plugin_locale', get_locale(), 'gravityview' );
+			$mofile = $this->dir( 'languages' ) . '/gravityview-'. $locale .'.mo';
+			load_textdomain( 'gravityview', $mofile );
+		}
+	}
+
 	/**
 	 * Register hooks that are fired when the plugin is activated and deactivated.
 	 *
@@ -92,6 +219,8 @@ final class Plugin {
 	 * @return void
 	 */
 	public function activate() {
+		gravityview();
+
 		/** Register the gravityview post type upon WordPress core init. */
 		require_once $this->dir( 'future/includes/class-gv-view.php' );
 		View::register_post_type();
@@ -104,6 +233,14 @@ final class Plugin {
 		flush_rewrite_rules();
 
 		update_option( 'gv_version', \GravityView_Plugin::version );
+
+		/** Add the transient to redirect to configuration page. */
+		set_transient( '_gv_activation_redirect', true, 60 );
+
+		/** Clear settings transient. */
+		delete_transient( 'gravityview_edd-activate_valid' );
+
+		\GravityView_Roles_Capabilities::get_instance()->add_caps();
 	}
 
 	/**
@@ -117,7 +254,7 @@ final class Plugin {
 	}
 
 	/**
-	 * Retrieve an absolute  path within the Gravity Forms plugin directory.
+	 * Retrieve an absolute path within the Gravity Forms plugin directory.
 	 *
 	 * @api
 	 * @since future

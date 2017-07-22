@@ -719,7 +719,7 @@ add_filter( 'gravityview/view/fields/configuration', function( $fields, $view ) 
 
 /** Make sure the non-configured notice is not output twice. */
 add_action( 'gravityview/template/after', function( $gravityview = null ) {
-	if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED' ) && class_exists( '\GravityView_frontend' ) ) {
+	if ( class_exists( '\GravityView_frontend' ) ) {
 		global $wp_filter;
 
 		if ( empty( $wp_filter['gravityview_after'] ) ) {

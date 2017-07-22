@@ -89,6 +89,17 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-logger.php' );
 		$this->log = new WP_Action_Logger();
 
+		/** Require critical legacy core files. @todo Deprecate */
+		require_once $this->plugin->dir( 'includes/helper-functions.php' );
+		require_once $this->plugin->dir( 'includes/class-common.php');
+		require_once $this->plugin->dir( 'includes/connector-functions.php');
+		require_once $this->plugin->dir( 'includes/class-gravityview-compatibility.php' );
+		require_once $this->plugin->dir( 'includes/class-gravityview-roles-capabilities.php' );
+		require_once $this->plugin->dir( 'includes/class-gravityview-admin-notices.php' );
+		require_once $this->plugin->dir( 'includes/class-admin.php' );
+		require_once $this->plugin->dir( 'includes/class-post-types.php');
+		require_once $this->plugin->dir( 'includes/class-cache.php');
+
 		/**
 		 * Stop all further functionality from loading if the WordPress
 		 * plugin is incompatible with the current environment.
@@ -98,11 +109,8 @@ final class Core {
 			return;
 		}
 
-		/**
-		 * Enable this for more aggressive mocking and destruction of the old core.
-		 * Do not define, if you're not ready to get your mind blown!
-		 */
-		define( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED', true );
+		/** More legacy core. @todo Deprecate */
+		$this->plugin->include_legacy_core();
 
 		/** Register the gravityview post type upon WordPress core init. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
@@ -117,15 +125,15 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );
 		add_action( 'init', array( '\GV\Entry', 'add_rewrite_endpoint' ) );
 
+		/** Generate custom slugs on entry save. @todo Deprecate. */
+		add_action( 'gform_entry_created', array( '\GravityView_API', 'entry_create_custom_slug' ), 10, 2 );
+
 		/** Shortcodes */
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gravityview.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gvfield.php' );
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED' ) ) {
-			remove_shortcode( 'gravityview' );
-			add_action( 'init', array( '\GV\Shortcodes\gravityview', 'add' ) );
-			add_action( 'init', array( '\GV\Shortcodes\gvfield', 'add' ) );
-		}
+		add_action( 'init', array( '\GV\Shortcodes\gravityview', 'add' ) );
+		add_action( 'init', array( '\GV\Shortcodes\gvfield', 'add' ) );
 		
 		/** oEmbed */
 		require_once $this->plugin->dir( 'future/includes/class-gv-oembed.php' );
@@ -183,7 +191,16 @@ final class Core {
 			$this->request = new Frontend_Request();
 		}
 
+		/**
+		 * @action `gravityview/loaded` The core has been loaded.
+		 *
+		 * Note: this is a very early load hook, not all of WordPress core has been loaded here.
+		 *  `init` hasn't been called yet.
+		 */
+		do_action( 'gravityview/loaded' );
+
 		define( 'GRAVITYVIEW_FUTURE_CORE_LOADED', true );
+
 	}
 
 	private function __clone() { }

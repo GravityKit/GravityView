@@ -40,12 +40,12 @@ abstract class GravityView_Extension {
 	/**
 	 * @var string Minimum version of GravityView the Extension requires
 	 */
-	protected $_min_gravityview_version = '1.1.5';
+	protected $_min_gravityview_version = '2.0';
 
 	/**
 	 * @var string Minimum version of GravityView the Extension requires
 	 */
-	protected $_min_php_version = '5.2.4';
+	protected $_min_php_version = '5.3';
 
 	/**
 	 * @var string The URL to fetch license info from. Do not change unless you know what you're doing.

@@ -915,13 +915,11 @@ function gravityview_footer() {
 }
 
 function gravityview_after() {
-	if ( defined( 'GRAVITYVIEW_FUTURE_CORE_ALPHA_ENABLED' ) ) {
-		/**
-		 * @action `gravityview/template/after` Append content to the view.
-		 * @param object $gravityview The $gravityview object available in templates.
-		 */
-		 do_action_ref_array( 'gravityview/template/after', func_get_args() );
-	}
+	/**
+	 * @action `gravityview/template/after` Append content to the view.
+	 * @param object $gravityview The $gravityview object available in templates.
+	 */
+	 do_action_ref_array( 'gravityview/template/after', func_get_args() );
 
 	/**
 	 * @action `gravityview_after` Append content to the View container `<div>`

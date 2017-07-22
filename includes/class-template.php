@@ -873,7 +873,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 			return;
 		}
 
-		$rows = GravityView_Plugin::get_default_widget_areas();
+		$rows = GravityView_Widget::get_default_widget_areas();
 
 		// TODO: Move to sep. method, use an action instead
 		wp_enqueue_style( 'gravityview_default_style' );
