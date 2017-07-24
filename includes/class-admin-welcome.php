@@ -113,16 +113,7 @@ class GravityView_Welcome {
 		?>
         <style type="text/css" media="screen" xmlns="http://www.w3.org/1999/html">
 		/*<![CDATA[*/
-
 		.update-nag { display: none; }
-		.clear { clear: both; display: block; width: 100%; }
-		.gv-welcome-screenshots {
-			float: right;
-			clear:right;
-			max-width:50%;
-			border: 1px solid #ccc;
-			margin: 0 10px 10px 1.25rem!important;
-		}
 		/*]]>*/
 		</style>
 		<?php
@@ -176,25 +167,21 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 		</div>
 
-		<div class="wrap">
+		<div class="about-wrap">
 
-			<div class="about-wrap">
-                <h2 class="about-headline-callout">Configuring a View</h2>
+            <h2 class="about-headline-callout">Configuring a View</h2>
 
-                <div class="feature-video"  style="text-align:center;">
-                    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/WrXsZhqKRY8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            <div class="feature-video"  style="text-align:center;">
+                <iframe height="315" src="https://www.youtube-nocookie.com/embed/WrXsZhqKRY8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
 
-                    <p style="text-align:center; padding-top: 1em;"><a class="button button-primary button-hero" href="http://docs.gravityview.co/category/24-category">Read more: Setting Up Your First View</a></p>
-                </div>
+                <p style="text-align:center; padding-top: 1em;"><a class="button button-primary button-hero" href="http://docs.gravityview.co/category/24-category">Read more: Setting Up Your First View</a></p>
             </div>
 
-			<div class="feature-section col two-col" style="margin-top:1em;">
+			<div class="feature-section two-col">
+				<div class="col">
+					<h3>Create a View</h3>
 
-				<div>
-
-					<h2>Create a View</h2>
-
-					<ol class="ol-decimal">
+                    <ol class="ol-decimal">
 						<li>Go to <a href="<?php echo admin_url('post-new.php?post_type=gravityview'); ?>">Views &gt; New View</a></li>
 						<li>If you want to <strong>create a new form</strong>, click the "Use a Form Preset" button</li>
 						<li>If you want to <strong>use an existing form&rsquo;s entries</strong>, select from the dropdown.</li>
@@ -207,33 +194,43 @@ class GravityView_Welcome {
                         <li>On the View Configuration metabox, click on the "+Add Field" button to add form fields to the active areas of your View. These are the fields that will be displayed in the frontend.</li>
 					</ol>
 				</div>
-
-				<div class="last-feature">
-				<h2>Embed Views in Posts &amp; Pages</h2>
-					<p><img src="<?php echo plugins_url( 'assets/images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" class="gv-welcome-screenshots" />Views don&rsquo;t need to be embedded in a post or page, but you can if you want. Embed Views using the "Add View" button above your content editor.</p>
-				</div>
+                <div class="col">
+                    <h4>What is a View?</h4>
+                    <p>When a form is submitted in Gravity Forms, an entry is created. Without GravityView, Gravity Forms entries are visible only in the WordPress dashboard, and only to users with permission.</p>
+                    <p>GravityView allows you to display entries on the front of your site. In GravityView, when you arrange the fields you want displayed and save the configuration, it's called a "View".</p>
+                </div>
 			</div>
 
-			<div class="feature-section clear">
-				<h2>Configure Multiple Entry, Single Entry, and Edit Entry Layouts</h2>
+            <hr />
 
-                <p><img src="<?php echo plugins_url( 'assets/images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" class="gv-welcome-screenshots" />
-                    You can configure what fields are displayed in <strong>Multiple Entry</strong>, <strong>Single Entry</strong>, and <strong>Edit Entry</strong> modes. These can be configured by clicking on the tabs in "View Configuration."
-                </p>
+            <div class="feature-section two-col">
+                <div class="col">
+                    <h3>Embed Views in Posts &amp; Pages</h3>
+                    <p>Views don&rsquo;t need to be embedded in a post or page, but you can if you want. Embed Views using the "Add View" button above your content editor.</p>
+                </div>
+                <div class="col">
+                    <img src="<?php echo plugins_url( 'assets/images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" />
+                </div>
+            </div>
 
-				<ul class="ul-disc">
-					<li>Click "+ Add Field" to add a field to a zone</li>
-                    <li>Click the name of the field you want to display</li>
-					<li>Once added, fields can be dragged and dropped to be re-arranged. Hover over the field until you see a cursor with four arrows, then drag the field.</li>
-					<li>Click the <a href="#" style="text-decoration:none;"><i class="dashicons dashicons-admin-generic"></i></a> gear icon on each field to configure the <strong>Field Settings</strong></li>
-				</ul>
-			</div>
+            <hr />
 
-			<div class="clear">
-				<h2>What is a View?</h2>
-				<p>When a form is submitted in Gravity Forms, an entry is created. Without GravityView, Gravity Forms entries are visible only in the WordPress dashboard, and only to users with permission.</p>
+			<div class="feature-section two-col">
+                <div class="col">
+                    <h3>Configure Multiple Entry, Single Entry, and Edit Entry Layouts</h3>
 
-				<p>GravityView allows you to display entries on the front of your site. In GravityView, when you arrange the fields you want displayed and save the configuration, it's called a "View".</p>
+                    <p>You can configure what fields are displayed in <strong>Multiple Entry</strong>, <strong>Single Entry</strong>, and <strong>Edit Entry</strong> modes. These can be configured by clicking on the tabs in "View Configuration."</p>
+
+                    <ul class="ul-disc">
+                        <li>Click "+ Add Field" to add a field to a zone</li>
+                        <li>Click the name of the field you want to display</li>
+                        <li>Once added, fields can be dragged and dropped to be re-arranged. Hover over the field until you see a cursor with four arrows, then drag the field.</li>
+                        <li>Click the <a href="#" style="text-decoration:none;"><i class="dashicons dashicons-admin-generic"></i></a> gear icon on each field to configure the <strong>Field Settings</strong></li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <img src="<?php echo plugins_url( 'assets/images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" />
+                </div>
 			</div>
 		</div>
 		<?php

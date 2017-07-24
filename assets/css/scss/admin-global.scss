@@ -29,8 +29,24 @@
 }
 
 // Prevent borders on images in the Getting Started, What's New screens
-.post-type-gravityview .about-wrap img {
-	border: none;
+.post-type-gravityview .about-wrap {
+
+	.feature-video {
+		iframe {
+			width: 100%;
+			max-width: 560px;
+		}
+		.button-hero {
+			font-size: 22px;
+			max-width: 100%;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+	}
+	.feature-section img {
+		border: 1px solid #ccc;
+		max-width: 99%; // Allow for border on the right
+	}
 }
 
 // Form Toolbar for connected views
