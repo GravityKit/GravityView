@@ -273,7 +273,18 @@ class GravityView_Welcome {
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
-                
+
+                <h3>1.21.5.3 on July 24, 2017</h3>
+
+                <ul>
+                    <li>Fixed: For some field types, the value &quot;No&quot; would be interpreted as <code>false</code></li>
+                    <li>Fixed: In Edit Entry, when editing a form that has a Post Custom Field field type—configured as checkboxes—file upload fields would not be saved</li>
+                    <li>Fixed: If a form connected to a View is in the trash, there will be an error when editing the View</li>
+                    <li>Fixed: Embedding single entries with WordPress 4.8</li>
+                    <li>Fixed: Fatal error when using older version of WPML</li>
+                </ul>
+
+
                 <h3>1.21.5.2 on June 26, 2017</h3>
 
                 <ul>
