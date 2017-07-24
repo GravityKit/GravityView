@@ -78,7 +78,7 @@ class View_Renderer extends Renderer {
 		 */
 		$override = new \GV\Legacy_Override_Template( $view, null, null, $request );
 		foreach ( array( 'header', 'body', 'footer' ) as $part ) {
-			if ( strpos( $path = $override->get_template_part( $template_slug, $part ), '/deprecated' ) === false ) {
+			if ( ( $path = $override->get_template_part( $template_slug, $part ) ) && strpos( $path, '/deprecated' ) === false ) {
 				/**
 				 * We have to bail and call the legacy renderer. Crap!
 				 */

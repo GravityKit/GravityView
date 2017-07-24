@@ -51,7 +51,8 @@ class Renderer {
 		}
 
 		$cls = $gravityview->template;
-		if ( $gravityview->fields->by_position( sprintf( '%s_%s-*', $context, $cls::$slug ) )->by_visible()->count() ) {
+		$slug = property_exists( $cls, '_configuration_slug' ) ? $cls::$_configuration_slug : $cls::$slug;
+		if ( $gravityview->fields->by_position( sprintf( '%s_%s-*', $context, $slug ) )->by_visible()->count() ) {
 			return;
 		}
 		

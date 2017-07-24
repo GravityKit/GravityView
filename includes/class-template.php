@@ -938,7 +938,9 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 * @return void
 	 */
 	public function _include( $path ) {
-		require $path;
+		if ( file_exists( $path ) ) {
+			include $path;
+		}
 	}
 
 }

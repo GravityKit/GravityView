@@ -197,7 +197,7 @@ class View implements \ArrayAccess {
 			return __( 'You are not allowed to view this content.', 'gravityview' );
 		}
 
-		if ( ! $view->form  ) {
+		if ( ! $view->form ) {
 			gravityview()->log->notice( 'View #{id} has no form attached to it.', array( 'id' => $view->ID ) );
 
 			/**

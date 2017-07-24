@@ -64,10 +64,6 @@ class Legacy_Override_Template extends \Gamajo_Template_Loader {
 	}
 
 	/**
-	 * In order to improve lookup times, we store located templates in a local array.
-	 *
-	 * This improves performance by up to 1/2 second on a 250 entry View with 7 columns showing
-	 *
 	 * @inheritdoc
 	 * @see Gamajo_Template_Loader::locate_template()
 	 * @return null|string NULL: Template not found; String: path to template
