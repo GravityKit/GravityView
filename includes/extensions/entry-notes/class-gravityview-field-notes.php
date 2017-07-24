@@ -169,8 +169,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 		}
 
 		if( ! isset( $_POST['action'] ) ) {
-		    return;
-        }
+			return;
+		}
 
 		if( 'gv_note_add' === $_POST['action'] ) {
 

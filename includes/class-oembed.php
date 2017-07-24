@@ -70,6 +70,8 @@ class GravityView_oEmbed {
 	/**
 	 * Become an oEmbed provider for GravityView.
 	 *
+	 * @since 1.21.5.3
+	 *
 	 * @return void
 	 */
 	function add_provider() {
@@ -82,6 +84,8 @@ class GravityView_oEmbed {
 	 * For now we only output the JSON format and don't care about the size (width, height).
 	 * Our only current use-case is for it to provide output to the Add Media / From URL box
 	 *  in WordPress 4.8.
+	 *
+	 * @since 1.21.5.3
 	 *
 	 * @return void
 	 */
