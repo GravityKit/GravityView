@@ -247,6 +247,9 @@ class GravityView_Cache {
 		// Don't duplicate
 		$blacklist = array_unique( $blacklist );
 
+		// Remove empty items from blacklist
+		$blacklist = array_filter( $blacklist );
+
 		return update_option( self::BLACKLIST_OPTION_NAME, $blacklist );
 
 	}

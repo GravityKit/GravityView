@@ -20,6 +20,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.21.5.3 on July 24, 2017 =
+
+* Fixed: For some field types, the value "No" would be interpreted as `false`
+* Fixed: In Edit Entry, when editing a form that has a Post Custom Field field type—configured as checkboxes—file upload fields would not be saved
+* Fixed: If a form connected to a View is in the trash, there will be an error when editing the View
+* Fixed: Embedding single entries with WordPress 4.8
+* Fixed: Fatal error when using older version of WPML
+
 = 1.21.5.2 on June 26, 2017 =
 
 * Tweak: Improved plugin speed by reducing amount of information logged

@@ -33,7 +33,11 @@ class GravityView_oEmbed {
 	private function initialize() {
 
 		add_action( 'init', array( $this, 'register_handler' ) );
+		add_action( 'init', array( $this, 'add_provider' ) );
 
+		if ( ! empty( $_GET['gv_oembed_provider'] ) && ! empty( $_GET['url'] ) ) {
+			add_action( 'template_redirect', array( $this, 'render_provider_request' ) );
+		}
 	}
 
 	/**
@@ -61,6 +65,65 @@ class GravityView_oEmbed {
 
 		wp_embed_register_handler( 'gravityview_entry', $this->get_handler_regex(), array( $this, 'render_handler' ), 20000 );
 
+	}
+
+	/**
+	 * Become an oEmbed provider for GravityView.
+	 *
+	 * @since 1.21.5.3
+	 *
+	 * @return void
+	 */
+	function add_provider() {
+		wp_oembed_add_provider( $this->get_handler_regex(), add_query_arg( 'gv_oembed_provider', '1', site_url() ), true );
+	}
+
+	/**
+	 * Output a response as a provider for an entry oEmbed URL.
+	 *
+	 * For now we only output the JSON format and don't care about the size (width, height).
+	 * Our only current use-case is for it to provide output to the Add Media / From URL box
+	 *  in WordPress 4.8.
+	 *
+	 * @since 1.21.5.3
+	 *
+	 * @return void
+	 */
+	function render_provider_request() {
+		if ( ! empty( $_GET['url'] ) ) {
+			$url = $_GET['url'];
+		} else {
+			header( 'HTTP/1.0 404 Not Found' );
+			exit;
+		}
+
+		preg_match( $this->get_handler_regex(), $url, $matches );
+
+		// If not using permalinks, re-assign values for matching groups
+		if ( ! empty( $matches['entry_slug2'] ) ) {
+			$matches['is_cpt'] = $matches['is_cpt2'];
+			$matches['slug'] = $matches['slug2'];
+			$matches['entry_slug'] = $matches['entry_slug2'];
+			unset( $matches['is_cpt2'], $matches['slug2'], $matches['entry_slug2'] );
+		}
+
+		// No Entry was found
+		if ( empty( $matches['entry_slug'] ) ) {
+			do_action('gravityview_log_error', 'GravityView_oEmbed[render_handler] $entry_slug not parsed by regex.', $matches );
+			header( 'HTTP/1.0 404 Not Found' );
+			exit;
+		}
+
+		// Setup the data used
+		$this->set_vars( $matches, null, $url, null );
+
+		echo json_encode( array(
+			'version' => '1.0',
+			'provider_name' => 'gravityview',
+			'provider_url' => add_query_arg( 'gv_oembed_provider', '1', site_url() ),
+			'html' => $this->generate_preview_notice() . $this->render_frontend( null, null, null, null ),
+		) );
+		exit;
 	}
 
 	/**

@@ -168,7 +168,11 @@ class GravityView_Field_Notes extends GravityView_Field {
 			return;
 		}
 
-		if( 'gv_note_add' === rgpost('action') ) {
+		if( ! isset( $_POST['action'] ) ) {
+			return;
+		}
+
+		if( 'gv_note_add' === $_POST['action'] ) {
 
 			$post = wp_unslash( $_POST );
 
