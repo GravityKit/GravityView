@@ -417,15 +417,18 @@ class GravityView_Cache {
 				$key = like_escape( $key );
 			}
 
-			$key = "%" . $key . "%";
+			// Find the transients under this key
+			$key = "_transient_" . $key . "%";
+			$sql = $wpdb->prepare( "SELECT option_name FROM {$wpdb->options} WHERE `option_name` LIKE %s", $key );
 
-			$sql = $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE `option_name` LIKE %s", $key );
-
-			$result = $wpdb->query( $sql );
+			foreach ( ( $transients = $wpdb->get_col( $sql ) ) as $transient ) {
+				// We have to delete it via the API to make sure the object cache is updated appropriately
+				delete_transient( preg_replace( '#^_transient_#', '', $transient ) );
+			}
 
 			do_action( 'gravityview_log_debug', 'GravityView_Cache[delete] Deleting cache for form #' . $form_id, array(
 				$sql,
-				sprintf( 'Deleted results: %d', $result )
+				sprintf( 'Deleted results: %d', count( $transients ) )
 			) );
 		}
 
