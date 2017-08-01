@@ -82,6 +82,8 @@ class GravityView_oEmbed {
 	 * Our only current use-case is for it to provide output to the Add Media / From URL box
 	 *  in WordPress 4.8.
 	 *
+	 * @since 1.21.5.3
+	 *
 	 * @return void
 	 */
 	function render_provider_request() {

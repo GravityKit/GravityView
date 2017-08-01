@@ -113,16 +113,7 @@ class GravityView_Welcome {
 		?>
         <style type="text/css" media="screen" xmlns="http://www.w3.org/1999/html">
 		/*<![CDATA[*/
-
 		.update-nag { display: none; }
-		.clear { clear: both; display: block; width: 100%; }
-		.gv-welcome-screenshots {
-			float: right;
-			clear:right;
-			max-width:50%;
-			border: 1px solid #ccc;
-			margin: 0 10px 10px 1.25rem!important;
-		}
 		/*]]>*/
 		</style>
 		<?php
@@ -176,25 +167,21 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 		</div>
 
-		<div class="wrap">
+		<div class="about-wrap">
 
-			<div class="about-wrap">
-                <h2 class="about-headline-callout">Configuring a View</h2>
+            <h2 class="about-headline-callout">Configuring a View</h2>
 
-                <div class="feature-video"  style="text-align:center;">
-                    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/WrXsZhqKRY8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            <div class="feature-video"  style="text-align:center;">
+                <iframe height="315" src="https://www.youtube-nocookie.com/embed/WrXsZhqKRY8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
 
-                    <p style="text-align:center; padding-top: 1em;"><a class="button button-primary button-hero" href="http://docs.gravityview.co/category/24-category">Read more: Setting Up Your First View</a></p>
-                </div>
+                <p style="text-align:center; padding-top: 1em;"><a class="button button-primary button-hero" href="http://docs.gravityview.co/category/24-category">Read more: Setting Up Your First View</a></p>
             </div>
 
-			<div class="feature-section col two-col" style="margin-top:1em;">
+			<div class="feature-section two-col">
+				<div class="col">
+					<h3>Create a View</h3>
 
-				<div>
-
-					<h2>Create a View</h2>
-
-					<ol class="ol-decimal">
+                    <ol class="ol-decimal">
 						<li>Go to <a href="<?php echo admin_url('post-new.php?post_type=gravityview'); ?>">Views &gt; New View</a></li>
 						<li>If you want to <strong>create a new form</strong>, click the "Use a Form Preset" button</li>
 						<li>If you want to <strong>use an existing form&rsquo;s entries</strong>, select from the dropdown.</li>
@@ -207,33 +194,43 @@ class GravityView_Welcome {
                         <li>On the View Configuration metabox, click on the "+Add Field" button to add form fields to the active areas of your View. These are the fields that will be displayed in the frontend.</li>
 					</ol>
 				</div>
-
-				<div class="last-feature">
-				<h2>Embed Views in Posts &amp; Pages</h2>
-					<p><img src="<?php echo plugins_url( 'assets/images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" class="gv-welcome-screenshots" />Views don&rsquo;t need to be embedded in a post or page, but you can if you want. Embed Views using the "Add View" button above your content editor.</p>
-				</div>
+                <div class="col">
+                    <h4>What is a View?</h4>
+                    <p>When a form is submitted in Gravity Forms, an entry is created. Without GravityView, Gravity Forms entries are visible only in the WordPress dashboard, and only to users with permission.</p>
+                    <p>GravityView allows you to display entries on the front of your site. In GravityView, when you arrange the fields you want displayed and save the configuration, it's called a "View".</p>
+                </div>
 			</div>
 
-			<div class="feature-section clear">
-				<h2>Configure Multiple Entry, Single Entry, and Edit Entry Layouts</h2>
+            <hr />
 
-                <p><img src="<?php echo plugins_url( 'assets/images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" class="gv-welcome-screenshots" />
-                    You can configure what fields are displayed in <strong>Multiple Entry</strong>, <strong>Single Entry</strong>, and <strong>Edit Entry</strong> modes. These can be configured by clicking on the tabs in "View Configuration."
-                </p>
+            <div class="feature-section two-col">
+                <div class="col">
+                    <h3>Embed Views in Posts &amp; Pages</h3>
+                    <p>Views don&rsquo;t need to be embedded in a post or page, but you can if you want. Embed Views using the "Add View" button above your content editor.</p>
+                </div>
+                <div class="col">
+                    <img src="<?php echo plugins_url( 'assets/images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" />
+                </div>
+            </div>
 
-				<ul class="ul-disc">
-					<li>Click "+ Add Field" to add a field to a zone</li>
-                    <li>Click the name of the field you want to display</li>
-					<li>Once added, fields can be dragged and dropped to be re-arranged. Hover over the field until you see a cursor with four arrows, then drag the field.</li>
-					<li>Click the <a href="#" style="text-decoration:none;"><i class="dashicons dashicons-admin-generic"></i></a> gear icon on each field to configure the <strong>Field Settings</strong></li>
-				</ul>
-			</div>
+            <hr />
 
-			<div class="clear">
-				<h2>What is a View?</h2>
-				<p>When a form is submitted in Gravity Forms, an entry is created. Without GravityView, Gravity Forms entries are visible only in the WordPress dashboard, and only to users with permission.</p>
+			<div class="feature-section two-col">
+                <div class="col">
+                    <h3>Configure Multiple Entry, Single Entry, and Edit Entry Layouts</h3>
 
-				<p>GravityView allows you to display entries on the front of your site. In GravityView, when you arrange the fields you want displayed and save the configuration, it's called a "View".</p>
+                    <p>You can configure what fields are displayed in <strong>Multiple Entry</strong>, <strong>Single Entry</strong>, and <strong>Edit Entry</strong> modes. These can be configured by clicking on the tabs in "View Configuration."</p>
+
+                    <ul class="ul-disc">
+                        <li>Click "+ Add Field" to add a field to a zone</li>
+                        <li>Click the name of the field you want to display</li>
+                        <li>Once added, fields can be dragged and dropped to be re-arranged. Hover over the field until you see a cursor with four arrows, then drag the field.</li>
+                        <li>Click the <a href="#" style="text-decoration:none;"><i class="dashicons dashicons-admin-generic"></i></a> gear icon on each field to configure the <strong>Field Settings</strong></li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <img src="<?php echo plugins_url( 'assets/images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" />
+                </div>
 			</div>
 		</div>
 		<?php
@@ -273,7 +270,18 @@ class GravityView_Welcome {
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
-                
+
+                <h3>1.21.5.3 on July 24, 2017</h3>
+
+                <ul>
+                    <li>Fixed: For some field types, the value &quot;No&quot; would be interpreted as <code>false</code></li>
+                    <li>Fixed: In Edit Entry, when editing a form that has a Post Custom Field field type—configured as checkboxes—file upload fields would not be saved</li>
+                    <li>Fixed: If a form connected to a View is in the trash, there will be an error when editing the View</li>
+                    <li>Fixed: Embedding single entries with WordPress 4.8</li>
+                    <li>Fixed: Fatal error when using older version of WPML</li>
+                </ul>
+
+
                 <h3>1.21.5.2 on June 26, 2017</h3>
 
                 <ul>
@@ -397,22 +405,33 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 			<p class="about-description"><?php _e( 'GravityView is brought to you by:', 'gravityview' ); ?></p>
 
-			<div class="feature-section col two-col">
+            <style>
+                .feature-section h3 a {
+                    text-decoration: none;
+                    display: inline-block;
+                    margin-left: .2em;
+                    line-height: 1em;
+                }
+            </style>
+			<div class="feature-section col three-col">
 
 				<div class="col">
-					<h3>Zack Katz</h3>
+					<h3>Zack Katz <a href="https://twitter.com/zackkatz"><span class="dashicons dashicons-twitter" title="Follow Zack on Twitter"></span></a> <a href="https://katz.co" title="View Zack&rsquo;s website"><span class="dashicons dashicons-admin-site"></span></a></h3>
 					<h4 style="font-weight:0; margin-top:0">Project Lead &amp; Developer</h4>
-					<p></p>
-					<p><img style="float:left; margin: 0 15px 10px 0;" src="<?php echo plugins_url( 'assets/images/zack.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Zack has been developing integrations with Gravity Forms since 2009. He is the President of Katz Web Services and lives with his wife (and cat) in Denver, Colorado.</p>
-					<p><a href="https://katz.co">View Zack&rsquo;s website</a></p>
+					<p><img style="float:left; margin: 0 15px 10px 0;" src="<?php echo plugins_url( 'assets/images/zack.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Zack has been developing integrations with Gravity Forms since 2009. He runs GravityView and lives with his wife (and cat) in <a href="https://wikipedia.org/wiki/Denver">Denver, Colorado</a>.</p>
 				</div>
 
-				<div class="col last-feature">
-					<h3>Rafael Ehlers</h3>
-					<h4 style="font-weight:0; margin-top:0">Project Manager, Support Lead &amp; Customer Advocate</h4>
-					<p><img style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/rafael.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Rafael helps guide GravityView development priorities and keep us on track. He&rsquo;s the face of our customer support and helps customers get the most out of the product. Rafael hails from Porto Alegre, Brazil.</p>
-					<p><a href="http://heropress.com/essays/journey-resilience/">View Rafael&rsquo;s WordPress Journey</a></p>
+                <div class="col">
+					<h3>Rafael Ehlers <a href="https://twitter.com/rafaehlers" title="Follow Rafael on Twitter"><span class="dashicons dashicons-twitter"></span></a> <a href="https://heropress.com/essays/journey-resilience/" title="View Rafael&rsquo;s WordPress Journey"><span class="dashicons dashicons-admin-site"></span></a></p></h3>
+					<h4 style="font-weight:0; margin-top:0">Project Manager, Support Lead &amp; Customer&nbsp;Advocate</h4>
+					<p><img style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/rafael.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Rafael helps guide GravityView development priorities and keep us on track. He&rsquo;s the face of our customer support and helps customers get the most out of the product. Rafael hails from <a href="https://wikipedia.org/wiki/Porto_Alegre">Porto Alegre, Brazil</a>.</p>
 				</div>
+
+                <div class="col last-feature">
+                    <h3>Gennady Kovshenin <a href="https://twitter.com/soulseekah" title="Follow Gennady on Twitter"><span class="dashicons dashicons-twitter"></span></a> <a href="https://codeseekah.com" title="View Gennady&rsquo;s Blog"><span class="dashicons dashicons-admin-site"></span></a></h3>
+                    <h4 style="font-weight:0; margin-top:0">Core Developer</h4>
+                    <p><img style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/gennady.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Gennady works on the GravityView core, improving everything behind the scenes. He is an active member of the WordPress community and loves exotic tea. Gennady lives and runs long distances in <a href="https://wikipedia.org/wiki/Magnitogorsk" rel="external">Magnitogorsk, Russia</a>.</p>
+                </div>
 			</div>
 
 			<hr class="clear" />
