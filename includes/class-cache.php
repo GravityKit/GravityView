@@ -184,11 +184,11 @@ class GravityView_Cache {
 
 		// Normally just one form, but supports multiple forms
 		//
-		// Array of IDs 12, 5, 14 would result in `f-12f-5f-14`
-		$forms = 'f:' . implode( '&f:', (array) $form_ids );
+		// Array of IDs 12, 5, 14 would result in `f:12-f:5-f:14`
+		$forms = 'f:' . implode( '-f:', (array) $form_ids );
 
 		// Prefix for transient keys
-		// Now the prefix would be: `gv-cache-f-12f-5f-14`
+		// Now the prefix would be: `gv-cache-f:12-f:5-f:14-`
 		return 'gv-cache-' . $forms . '-';
 
 	}
@@ -408,7 +408,7 @@ class GravityView_Cache {
 
 		foreach ( (array) $form_ids as $form_id ) {
 
-			$key = $this->get_cache_key_prefix( $form_id );
+			$key = '_transient_gv-cache-';
 
 			// WordPress 4.0+
 			if ( is_callable( array( $wpdb, 'esc_like' ) ) ) {
@@ -417,8 +417,10 @@ class GravityView_Cache {
 				$key = like_escape( $key );
 			}
 
-			// Find the transients under this key
-			$key = "_transient_" . $key . "%";
+			$form_id = intval( $form_id );
+
+			// Find the transients containing this form
+			$key = "$key%f:$form_id-%"; // \_transient\_gv-cache-%f:1-% for example
 			$sql = $wpdb->prepare( "SELECT option_name FROM {$wpdb->options} WHERE `option_name` LIKE %s", $key );
 
 			foreach ( ( $transients = $wpdb->get_col( $sql ) ) as $transient ) {
