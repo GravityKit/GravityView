@@ -23,7 +23,7 @@ class Entry_Table_Template extends Entry_Template {
 	 * @param \GV\Field $field The field to be ouput.
 	 * @param \GV\Field $entry The entry this field is for.
 	 *
-	 * @return void
+	 * @return string|false The field output or false if "hide_empty" is set.
 	 */
 	public function the_field( \GV\Field $field ) {
 		/**
@@ -50,8 +50,17 @@ class Entry_Table_Template extends Entry_Template {
 		$renderer = new Field_Renderer();
 		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
 
+		$output = $renderer->render( $field, $this->view, $source, $this->entry, $this->request );
+
+		/**
+		 * Hide empty if nothing to show.
+		 */
+		if ( $this->view->settings->get( 'hide_empty' ) && gv_empty( $output, false, false ) ) {
+			return false;
+		}
+
 		/** Output. */
-		printf( '<td%s>%s</td>', $attributes, $renderer->render( $field, $this->view, $source, $this->entry, $this->request ) );
+		return sprintf( '<td%s>%s</td>', $attributes, $output );
 	}
 
 	/**
@@ -67,42 +76,12 @@ class Entry_Table_Template extends Entry_Template {
 		/** @todo add filters from old code */
 		foreach ( $fields->all() as $field ) {
 			$column_label = apply_filters( 'gravityview/template/field_label', $field->get_label( $this->view, $form ), $field->as_configuration(), $form->form ? $form->form : null, null );
-			printf( '<tr id="gv-field-%d-%s" class="gv-field-%d-%s">', $form->ID, $field->ID, $form->ID, $field->ID );
-				printf( '<th scope="row"><span class="gv-field-label">%s</span></th>', $column_label );
-				$this->the_field( $field );
-			printf( '</tr>' );
+			if ( $field_output = $this->the_field( $field ) ) {
+				printf( '<tr id="gv-field-%d-%s" class="gv-field-%d-%s">', $form->ID, $field->ID, $form->ID, $field->ID );
+					printf( '<th scope="row"><span class="gv-field-label">%s</span></th>', $column_label );
+					echo $field_output;
+				printf( '</tr>' );
+			}
 		}
-	}
-
-	public function render() {
-		/**
-		 * Hide rows the fields of which are "gvempty".
-		 */
-		add_filter( 'gravityview/field/is_visible', array( $this, 'hide_empty_rows' ), 10, 2 );
-
-		parent::render();
-
-		/**
-		 * Do only in this context.
-		 */
-		remove_filter( 'gravityview/field/is_visible', array( $this, 'hide_empty_rows' ), 10, 2 );
-	}
-
-	/**
-	 * Hide rows the fields of which are "gvempty".
-	 *
-	 * Called on the `gravityview/field/is_visible` filter.
-	 *
-	 * @param boolean $visible This field is visible... or not.
-	 * @param \GV\Field $field The field.
-	 *
-	 * @return boolean Visible or not.
-	 */
-	public function hide_empty_rows( $visible, $field ) {
-		if ( $visible ) {
-			$value = $field->get_value( $this->view, is_numeric( $field->ID ) ? $this->view->form : new Internal_Source(), $this->entry, $this->request );
-			return ! gv_empty( $value, false, false );
-		}
-		return $visible;
 	}
 }
