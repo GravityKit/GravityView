@@ -1886,6 +1886,66 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( 'text in a textarea', $future );
 		$this->assertContains( 'Let&#039;s go back!', $future );
 		$this->assertNotContains( 'Country', $future );
+
+		$this->_reset_context();
+	}
+
+	public function test_entry_renderer_table_hide_empty() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		global $post;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '26',
+						'label' => 'Product',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '1.6',
+						'label' => 'Country <small>(Address)</small>',
+					),
+				),
+			),
+			'settings' => array(
+				'single_title' => 'Entry ~@{entry_id}@~',
+				'back_link_label' => "Let's go back!",
+				'hide_empty' => true,
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1.6' => 'Mexico',
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		gravityview()->request->returns['is_view'] = $view;
+		gravityview()->request->returns['is_entry'] = $entry;
+
+		$renderer = new \GV\Entry_Renderer();
+
+		$future = $renderer->render( $entry, $view );
+
+		$this->assertNotContains( 'Textarea', $future, 'This field is empty and should not be displayed.' );
+		$this->assertNotContains( 'Product', $future, 'This field is empty and should not be displayed.' );
+
+		$this->_reset_context();
 	}
 
 	/**

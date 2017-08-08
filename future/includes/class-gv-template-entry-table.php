@@ -60,16 +60,49 @@ class Entry_Table_Template extends Entry_Template {
 	 * @return void
 	 */
 	public function the_entry() {
-		$fields = $this->view->fields->by_position( 'single_table-columns' );
+
+		$fields = $this->view->fields->by_position( 'single_table-columns' )->by_visible();
 		$form = $this->view->form;
 
 		/** @todo add filters from old code */
-		foreach ( $fields->by_visible()->all() as $field ) {
+		foreach ( $fields->all() as $field ) {
 			$column_label = apply_filters( 'gravityview/template/field_label', $field->get_label( $this->view, $form ), $field->as_configuration(), $form->form ? $form->form : null, null );
 			printf( '<tr id="gv-field-%d-%s" class="gv-field-%d-%s">', $form->ID, $field->ID, $form->ID, $field->ID );
 				printf( '<th scope="row"><span class="gv-field-label">%s</span></th>', $column_label );
 				$this->the_field( $field );
 			printf( '</tr>' );
 		}
+	}
+
+	public function render() {
+		/**
+		 * Hide rows the fields of which are "gvempty".
+		 */
+		add_filter( 'gravityview/field/is_visible', array( $this, 'hide_empty_rows' ), 10, 2 );
+
+		parent::render();
+
+		/**
+		 * Do only in this context.
+		 */
+		remove_filter( 'gravityview/field/is_visible', array( $this, 'hide_empty_rows' ), 10, 2 );
+	}
+
+	/**
+	 * Hide rows the fields of which are "gvempty".
+	 *
+	 * Called on the `gravityview/field/is_visible` filter.
+	 *
+	 * @param boolean $visible This field is visible... or not.
+	 * @param \GV\Field $field The field.
+	 *
+	 * @return boolean Visible or not.
+	 */
+	public function hide_empty_rows( $visible, $field ) {
+		if ( $visible ) {
+			$value = $field->get_value( $this->view, is_numeric( $field->ID ) ? $this->view->form : new Internal_Source(), $this->entry, $this->request );
+			return ! gv_empty( $value, false, false );
+		}
+		return $visible;
 	}
 }
