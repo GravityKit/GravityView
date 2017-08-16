@@ -71,9 +71,16 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	public static function by_slug( $entry_slug, $form_id = 0 ) {
 		global $wpdb;
 
-		$lead_meta = \GFFormsModel::get_lead_meta_table_name();
+		if ( method_exists( '\GFFormsModel', 'get_entry_meta_table_name' ) ) {
+			$entry_meta = \GFFormsModel::get_entry_meta_table_name();
+			$sql = "SELECT entry_id FROM $entry_meta";
+		} else {
+			$lead_meta = \GFFormsModel::get_lead_meta_table_name();
+			$sql = "SELECT lead_id FROM $lead_meta";
+		}
 
-		$sql = "SELECT lead_id FROM $lead_meta WHERE meta_key = 'gravityview_unique_id' AND";
+		$sql = "$sql WHERE meta_key = 'gravityview_unique_id' AND";
+
 
 		if ( $form_id = apply_filters( 'gravityview/common/get_entry_id_from_slug/form_id', $form_id ) ) {
 			$sql = $wpdb->prepare( "$sql meta_value = %s AND form_id = %s", $entry_slug, $form_id );
