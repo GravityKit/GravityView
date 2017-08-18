@@ -83,8 +83,7 @@ class GravityView_Entry_List {
 		$this->link_format = $link_format;
 		$this->after_link = $after_link;
 		$this->context = $context;
-		$this->empty_message = gv_no_results();
-
+		$this->empty_message = function_exists( 'gv_no_results' ) ? gv_no_results() : __('No entries match your request.', 'gravityview');
 	}
 
 	/**
