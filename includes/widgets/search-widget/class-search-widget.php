@@ -75,7 +75,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		parent::__construct( esc_html__( 'Search Bar', 'gravityview' ), 'search_bar', $default_values, $settings );
 
 		// frontend - filter entries
-		add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ), 10, 1 );
+		add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ), 10, 3 );
 
 		// frontend - add template path
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
@@ -445,7 +445,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * @param  array $search_criteria
 	 * @return array
 	 */
-	public function filter_entries( $search_criteria ) {
+	public function filter_entries( $search_criteria, $form_id = null, $args = array() ) {
 
 		if( 'post' === $this->search_method ) {
 			$get = $_POST;
@@ -466,8 +466,51 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// Make sure array key is set up
 		$search_criteria['field_filters'] = rgar( $search_criteria, 'field_filters', array() );
 
+		/**
+		 * Find all search widgets on the view and get the searchable fields settings.
+		 */
+		$searchable_fields = array();
+		if ( ! empty( $args['id'] ) ) {
+
+			/**
+			 * Include the sidebar Widgets.
+			 */
+			$widgets = (array)get_option( 'widget_gravityview_search', array() );
+			foreach ( $widgets as $widget ) {
+				if ( ! empty( $widget['view_id'] ) && $widget['view_id'] == $args['id'] ) {
+					foreach ( json_decode( $widget['search_fields'], true ) as $field ) {
+						$searchable_fields []= $field['field'];
+					}
+				}
+			}
+
+			$directory_widgets = gravityview_get_directory_widgets( $args['id'] );
+			foreach ( $directory_widgets as $position ) {
+				foreach ( $position as $widget ) {
+					if ( $widget['id'] == 'search_bar' ) {
+						foreach ( json_decode( $widget['search_fields'], true ) as $field ) {
+							$searchable_fields []= $field['field'];
+						}
+					}
+				}
+			}
+		}
+
+		/**
+		 * Find all visible fields on the view.
+		 */
+		$visible_fields = array();
+		if ( ! empty( $args['id'] ) ) {
+			$fields = GravityView_View_Data::getInstance()->get_fields( $args['id'] );
+			foreach ( $fields as $position ) {
+				foreach ( $position as $field ) {
+					$visible_fields []= $field['id'];
+				}
+			}
+		}
+
 		// add free search
-		if ( ! empty( $get['gv_search'] ) ) {
+		if ( ! empty( $get['gv_search'] ) && in_array( 'search_all', $searchable_fields ) ) {
 
 			$search_all_value = trim( $get['gv_search'] );
 
@@ -478,7 +521,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			 */
 			$split_words = apply_filters( 'gravityview/search-all-split-words', true );
 
-			if( $split_words ) {
+			if ( $split_words ) {
 
 				// Search for a piece
 				$words = explode( ' ', $search_all_value );
@@ -502,32 +545,49 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			}
 		}
 
-		//start date & end date
-		$curr_start = !empty( $get['gv_start'] ) ? $get['gv_start'] : '';
-		$curr_end = !empty( $get['gv_start'] ) ? $get['gv_end'] : '';
+		// start date & end date
+		if ( in_array( 'entry_date', $searchable_fields ) ) {
+			$curr_start = !empty( $get['gv_start'] ) ? $get['gv_start'] : '';
+			$curr_end = !empty( $get['gv_start'] ) ? $get['gv_end'] : '';
 
-		/**
-		 * @filter `gravityview_date_created_adjust_timezone` Whether to adjust the timezone for entries. \n
-		 * date_created is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php)
-		 * @since 1.12
-		 * @param[out,in] boolean $adjust_tz  Use timezone-adjusted datetime? If true, adjusts date based on blog's timezone setting. If false, uses UTC setting. Default: true
-		 * @param[in] string $context Where the filter is being called from. `search` in this case.
-		 */
-		$adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', true, 'search' );
+			$settings = gravityview_get_template_settings( $args['id'] );
 
+			/**
+			 * Override start and end dates if View is limited to some already.
+			 */
+			if ( ! empty( $settings['start_date'] ) ) {
+				if ( $start_timestamp = strtotime( $curr_start ) ) {
+					$curr_start = $start_timestamp < strtotime( $settings['start_date'] ) ? $settings['start_date'] : $curr_start;
+				}
+			}
+			if ( ! empty( $settings['end_date'] ) ) {
+				if ( $end_timestamp = strtotime( $curr_end ) ) {
+					$curr_end = $end_timestamp > strtotime( $settings['end_date'] ) ? $settings['end_date'] : $curr_end;
+				}
+			}
 
-		/**
-		 * Don't set $search_criteria['start_date'] if start_date is empty as it may lead to bad query results (GFAPI::get_entries)
-		 */
-		if( !empty( $curr_start ) ) {
-			$search_criteria['start_date'] = $adjust_tz ? get_gmt_from_date( $curr_start ) : $curr_start;
-		}
-		if( !empty( $curr_end ) ) {
-			$search_criteria['end_date'] = $adjust_tz ? get_gmt_from_date( $curr_end ) : $curr_end;
+			/**
+			 * @filter `gravityview_date_created_adjust_timezone` Whether to adjust the timezone for entries. \n
+			 * date_created is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php)
+			 * @since 1.12
+			 * @param[out,in] boolean $adjust_tz  Use timezone-adjusted datetime? If true, adjusts date based on blog's timezone setting. If false, uses UTC setting. Default: true
+			 * @param[in] string $context Where the filter is being called from. `search` in this case.
+			 */
+			$adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', true, 'search' );
+
+			/**
+			 * Don't set $search_criteria['start_date'] if start_date is empty as it may lead to bad query results (GFAPI::get_entries)
+			 */
+			if ( !empty( $curr_start ) ) {
+				$search_criteria['start_date'] = $adjust_tz ? get_gmt_from_date( $curr_start ) : $curr_start;
+			}
+			if ( !empty( $curr_end ) ) {
+				$search_criteria['end_date'] = $adjust_tz ? get_gmt_from_date( $curr_end ) : $curr_end;
+			}
 		}
 
 		// search for a specific entry ID
-		if ( ! empty( $get[ 'gv_id' ] ) ) {
+		if ( ! empty( $get[ 'gv_id' ] ) && in_array( 'entry_id', $searchable_fields ) ) {
 			$search_criteria['field_filters'][] = array(
 				'key' => 'id',
 				'value' => absint( $get[ 'gv_id' ] ),
@@ -536,7 +596,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		}
 
 		// search for a specific Created_by ID
-		if ( ! empty( $get[ 'gv_by' ] ) ) {
+		if ( ! empty( $get[ 'gv_by' ] ) && in_array( 'entry_creator', $searchable_fields ) ) {
 			$search_criteria['field_filters'][] = array(
 				'key' => 'created_by',
 				'value' => absint( $get['gv_by'] ),
@@ -556,6 +616,10 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			}
 
 			// could return simple filter or multiple filters
+			if ( ! in_array( str_replace( array( 'filter_', '_' ), array( '', '.' ), $key ), $searchable_fields ) ) {
+				continue;
+			}
+
 			$filter = $this->prepare_field_filter( $key, $value );
 
 			if ( isset( $filter[0]['value'] ) ) {
