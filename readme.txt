@@ -20,6 +20,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0 Beta =
+
+The changelog will not be maintained for beta versions. __For information about the Beta, please [read up here](https://github.com/gravityview/GravityView/wiki/The-Future-of-GravityView)__.
+
 = 1.21.5.3 on July 24, 2017 =
 
 * Fixed: For some field types, the value "No" would be interpreted as `false`
