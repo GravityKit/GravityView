@@ -371,6 +371,11 @@ class View implements \ArrayAccess {
 		/** Add the template name into the settings. */
 		$view->settings->update( array( 'template' => gravityview_get_template_id( $view->ID ) ) );
 
+		/** View basics. */
+		$view->settings->update( array(
+			'id' => $view->ID,
+		) );
+
 		/**
 		 * @deprecated
 		 *
