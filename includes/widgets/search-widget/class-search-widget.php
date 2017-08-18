@@ -475,7 +475,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			/**
 			 * Include the sidebar Widgets.
 			 */
-			foreach ( (array)get_option( 'widget_gravityview_search' ) as $widget ) {
+			$widgets = (array)get_option( 'widget_gravityview_search', array() );
+			foreach ( $widgets as $widget ) {
 				if ( ! empty( $widget['view_id'] ) && $widget['view_id'] == $args['id'] ) {
 					foreach ( json_decode( $widget['search_fields'], true ) as $field ) {
 						$searchable_fields []= $field['field'];
@@ -483,7 +484,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 				}
 			}
 
-			foreach ( gravityview_get_directory_widgets( $args['id'] ) as $position ) {
+			$directory_widgets = gravityview_get_directory_widgets( $args['id'] );
+			foreach ( $directory_widgets as $position ) {
 				foreach ( $position as $widget ) {
 					if ( $widget['id'] == 'search_bar' ) {
 						foreach ( json_decode( $widget['search_fields'], true ) as $field ) {
@@ -499,7 +501,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		 */
 		$visible_fields = array();
 		if ( ! empty( $args['id'] ) ) {
-			foreach ( GravityView_View_Data::getInstance()->get_fields( $args['id'] ) as $position ) {
+			$fields = GravityView_View_Data::getInstance()->get_fields( $args['id'] );
+			foreach ( $fields as $position ) {
 				foreach ( $position as $field ) {
 					$visible_fields []= $field['id'];
 				}
