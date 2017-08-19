@@ -39,16 +39,28 @@ class GravityView_Uninstall {
 	private function delete_entry_meta() {
 		global $wpdb;
 
-		$meta_table = class_exists( 'GFFormsModel' ) ? GFFormsModel::get_lead_meta_table_name() : $wpdb->prefix . 'rg_lead_meta';
+		$tables = array();
 
-		$sql = "
-			DELETE FROM $meta_table
-			WHERE (
-				`meta_key` = 'is_approved'
-			);
-		";
+		if ( method_exists( 'GFFormsModel', 'get_entry_meta_table_name' ) ) {
+			$tables []= GFFormsModel::get_entry_meta_table_name();
+		} else if ( method_exists( 'GFFormsModel', 'get_lead_meta_table_name' ) ) {
+			$tables []= GFFormsModel::get_lead_meta_table_name();
+		} else {
+			$tables []= $wpdb->prefix . 'rg_lead_meta';
+			$tables []= $wpdb->prefix . 'gf_entry_meta';
+		}
 
-		$wpdb->query( $sql );
+		$suppress = $wpdb->suppress_errors();
+		foreach ( $tables as $meta_table ) {
+			$sql = "
+				DELETE FROM $meta_table
+				WHERE (
+					`meta_key` = 'is_approved'
+				);
+			";
+			$wpdb->query( $sql );
+		}
+		$wpdb->suppress_errors( $suppress );
 	}
 
 	/**
@@ -59,21 +71,33 @@ class GravityView_Uninstall {
 	private function delete_entry_notes() {
 		global $wpdb;
 
-		$notes_table = class_exists( 'GFFormsModel' ) ? GFFormsModel::get_lead_notes_table_name() : $wpdb->prefix . 'rg_lead_notes';
+		$tables = array();
+
+		if ( method_exists( 'GFFormsModel', 'get_entry_notes_table_name' ) ) {
+			$tables []= GFFormsModel::get_entry_notes_table_name();
+		} else if ( method_exists( 'GFFormsModel', 'get_lead_notes_table_name' ) ) {
+			$tables []= GFFormsModel::get_lead_notes_table_name();
+		} else {
+			$tables []= $wpdb->prefix . 'rg_lead_notes';
+			$tables []= $wpdb->prefix . 'gf_entry_notes';
+		}
 
 		$disapproved = __('Disapproved the Entry for GravityView', 'gravityview');
 		$approved = __('Approved the Entry for GravityView', 'gravityview');
 
-		$sql = $wpdb->prepare( "
-			DELETE FROM $notes_table
-            WHERE (
-                `note_type` = 'gravityview' OR
-				`value` = %s OR
-				`value` = %s
-            );
-        ", $approved, $disapproved );
-
-		$wpdb->query( $sql );
+		$suppress = $wpdb->suppress_errors();
+		foreach ( $tables as $notes_table ) {
+			$sql = $wpdb->prepare( "
+				DELETE FROM $notes_table
+				WHERE (
+					`note_type` = 'gravityview' OR
+					`value` = %s OR
+					`value` = %s
+				);
+			", $approved, $disapproved );
+			$wpdb->query( $sql );
+		}
+		$wpdb->suppress_errors( $suppress );
 	}
 
 	/**
