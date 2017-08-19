@@ -567,6 +567,18 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			}
 
 			/**
+			 * WordPress <= 4.3 expects a format with H:i:s for get_gmt_from_date
+			 * Make sure it's always complete.
+			 */
+			if ( $curr_start ) {
+				$curr_start = date( 'Y-m-d H:i:s', strtotime( $curr_start ) );
+			}
+
+			if ( $curr_end ) {
+				$curr_end = date( 'Y-m-d H:i:s', strtotime( $curr_end ) );
+			}
+
+			/**
 			 * @filter `gravityview_date_created_adjust_timezone` Whether to adjust the timezone for entries. \n
 			 * date_created is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php)
 			 * @since 1.12

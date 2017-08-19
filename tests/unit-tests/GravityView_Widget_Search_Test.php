@@ -130,8 +130,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( $search_criteria_with_more_params, $this->widget->filter_entries( array(), null, $args ) );
 
 
-		$start = '03-28-1997';
-		$end = '10-03-2017'; // Test mm-dd consistency
+		$start = '1997-03-28';
+		$end = '2017-10-03';
 
 		// Test dates
 		$_GET = array(
@@ -140,8 +140,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		);
 
 		$search_criteria_dates = array(
-			'start_date' => get_gmt_from_date( $start ),
-			'end_date' => get_gmt_from_date( $end ),
+			'start_date' => get_gmt_from_date( "$start 00:00:00" ),
+			'end_date' => get_gmt_from_date( "$end 00:00:00" ),
 			'field_filters' => array(
 				'mode' => 'any',
 			),
