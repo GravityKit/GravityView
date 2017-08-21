@@ -12,6 +12,7 @@ branches:
     - master
     - develop
     - 2.0
+    - test
 
 php:
   - 5.3
