@@ -121,7 +121,11 @@ class GV_Unit_Tests_Bootstrap {
 		remove_all_filters( 'query', 10 );
 
 		// set up Gravity Forms database
-		@GFForms::setup( true );
+		if ( function_exists( 'gf_upgrade' ) ) {
+			gf_upgrade()->maybe_upgrade();
+		} else {
+			@GFForms::setup( true );
+		}
 
 		$this->create_stubs();
 	}
