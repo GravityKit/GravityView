@@ -3454,10 +3454,17 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		global $wpdb;
 
-		$wpdb->insert( GFFormsModel::get_lead_details_table_name(), array(
-			'lead_id' => $entry['id'], 'form_id' => $form['id'],
-			'field_number' => '24', 'value' => $image
-		) );
+		if ( method_exists( 'GFFormsModel', 'get_entry_meta_table_name' ) ) {
+			$wpdb->insert( GFFormsModel::get_entry_meta_table_name(), array(
+				'entry_id' => $entry['id'], 'form_id' => $form['id'],
+				'meta_key' => '24', 'meta_value' => $image
+			) );
+		} else {
+			$wpdb->insert( GFFormsModel::get_lead_details_table_name(), array(
+				'lead_id' => $entry['id'], 'form_id' => $form['id'],
+				'field_number' => '24', 'value' => $image
+			) );
+		}
 
 		$entry['24'] = $image;
 
