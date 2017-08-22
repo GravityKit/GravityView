@@ -17,9 +17,15 @@ class GV_UnitTestCase extends WP_UnitTestCase {
 		remove_all_filters( 'query', 10 );
 
 		/* Ensure the database is correctly set up */
-		@GFForms::setup_database();
+		if ( function_exists( 'gf_upgrade' ) ) {
+			gf_upgrade()->upgrade_schema();
+		}
 
 		$this->factory = new GV_UnitTest_Factory( $this );
+
+		if ( version_compare( GFForms::$version, '2.2', '<' ) ) {
+			@GFForms::setup_database();
+		}
 	}
 
 	/**

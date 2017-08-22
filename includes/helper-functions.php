@@ -393,7 +393,7 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
 	if ( is_array( $value ) ) {
 		$values = array();
 		foreach ( $value as $v ) {
-			if ( ! gv_empty( $values, $zero_is_empty, $allow_string_booleans ) ) {
+			if ( ! gv_empty( $v, $zero_is_empty, $allow_string_booleans ) ) {
 				return false;
 			}
 		}
