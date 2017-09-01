@@ -22,10 +22,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 1.22 =
 
-* Changed:
-* Fixed: When `GRAVITYVIEW_LICENSE_KEY` constant is defined, it will always be used, and the license field will be disabled
 * Fixed: Inline Edit plugin not working when displaying a single entry
-* Fixed: Featured Entries plugin not adding `gv-featured-entry` CSS selector to a single entry container
+* Fixed: Featured Entries plugin not adding correct CSS selector to the single entry container
+
+__Developer Updates:__
+
+* Fixed: When `GRAVITYVIEW_LICENSE_KEY` constant is defined, it will always be used, and the license field will be disabled
 * Fixed: List View and Table View templates have more standardized CSS selectors for single & multiple contexts ([Learn more](http://docs.gravityview.co/article/63-css-guide))
 
 = 1.21.5.3 on July 24, 2017 =
