@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 1.22 =
 
+* Fixed: Fatal error when Divi (and other Elegant Themes) try to load GravityView widgets while editing a post with a sidebar block in it—now the sidebar block will not be rendered
 * Fixed: Inline Edit plugin not working when displaying a single entry
 * Fixed: Featured Entries plugin not adding correct CSS selector to the single entry container
 
