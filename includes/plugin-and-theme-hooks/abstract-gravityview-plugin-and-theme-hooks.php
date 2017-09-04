@@ -76,6 +76,16 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	 * @return void
 	 */
 	public function __construct() {
+		add_action( 'wp_loaded', array( $this, '_wp_loaded' ) );
+	}
+
+	/**
+	 * Fired when all themes and plugins have been loaded.
+	 * This makes sure we can reliably detect functions and classes.
+	 * @internal
+	 * @return void
+	 */
+	public function _wp_loaded() {
 		$this->maybe_add_hooks();
 	}
 
