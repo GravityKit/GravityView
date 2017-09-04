@@ -674,7 +674,7 @@ class GravityView_Settings extends GFAddOn {
 	 */
 	protected function settings_edd_license( $field, $echo = true ) {
 
-	    if( defined('GRAVITYVIEW_LICENSE_KEY') && ! empty( GRAVITYVIEW_LICENSE_KEY ) ) {
+	    if ( defined( 'GRAVITYVIEW_LICENSE_KEY' ) && GRAVITYVIEW_LICENSE_KEY ) {
 		    $field['input_type'] = 'password';
         }
 
@@ -906,7 +906,7 @@ class GravityView_Settings extends GFAddOn {
 				'label'             => __( 'License Key', 'gravityview' ),
 				'description'          => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ) . $this->get_license_handler()->license_details( $this->get_app_setting( 'license_key_response' ) ),
 				'type'              => 'edd_license',
-				'disabled'          => ( defined('GRAVITYVIEW_LICENSE_KEY')  && ! empty( GRAVITYVIEW_LICENSE_KEY ) ),
+				'disabled'          => ( defined( 'GRAVITYVIEW_LICENSE_KEY' )  && GRAVITYVIEW_LICENSE_KEY ),
 				'data-pending-text' => __('Verifying license&hellip;', 'gravityview'),
 				'default_value'           => $default_settings['license_key'],
 				'class'             => ( '' == $this->get_app_setting( 'license_key' ) ) ? 'activate code regular-text edd-license-key' : 'deactivate code regular-text edd-license-key',
