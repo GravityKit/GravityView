@@ -385,7 +385,22 @@ function _gravityview_strip_subdomain( $string_maybe_has_subdomain ) {
  */
 function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true ) {
 
-	if(
+	/**
+	 * Arrays with empty values are empty.
+	 *
+	 * Consider the a missing product field.
+	 */
+	if ( is_array( $value ) ) {
+		$values = array();
+		foreach ( $value as $v ) {
+			if ( ! gv_empty( $v, $zero_is_empty, $allow_string_booleans ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	if (
 		! isset( $value ) // If it's not set, it's empty!
 		|| false === $value
 		|| null === $value
@@ -396,7 +411,7 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
 		return true;
 	}
 
-	if( is_string( $value ) && $allow_string_booleans ) {
+	if ( is_string( $value ) && $allow_string_booleans ) {
 
 		$value = trim( $value );
 		$value = strtolower( $value );
@@ -409,7 +424,7 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
 	}
 
 	// If zero isn't empty, then if $value is a number and it's empty, it's zero. Thus, return false.
-	if( ! $zero_is_empty && is_numeric( $value ) && empty( $value ) ) {
+	if ( ! $zero_is_empty && is_numeric( $value ) && empty( $value ) ) {
 		return false;
 	}
 

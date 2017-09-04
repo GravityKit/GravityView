@@ -271,6 +271,26 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.22 on September 4, 2017</h3>
+
+                <ul>
+                    <li>Added: Support for Gravity Forms 2.3</li>
+                    <li>Fixed: Inline Edit plugin not working when displaying a single entry</li>
+                    <li>Fixed: Featured Entries plugin not adding correct CSS selector to the single entry container</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Modified: Template files <code>list-header.php</code>, <code>list-single.php</code>, <code>table-header.php</code>, <code>table-single.php</code></li>
+                    <li>Fixed: When <code>GRAVITYVIEW_LICENSE_KEY</code> constant is defined, it will always be used, and the license field will be disabled</li>
+                    <li>Fixed: List View and Table View templates have more standardized CSS selectors for single &amp; multiple contexts (<a href="http://docs.gravityview.co/article/63-css-guide">Learn more</a>)</li>
+                    <li>Fixed: Permalink issue when embedding a View on a page, then making it the site&#39;s Front Page</li>
+                    <li>Fixed: Transient cache issues when invalidating cache</li>
+                    <li>Fixed: <code>gv_empty()</code> now returns false for an array with all empty values</li>
+                    <li>Fixed: Delay plugin compatibility checks until <code>plugins_loaded</code></li>
+                </ul>
+
                 <h3>1.21.5.3 on July 24, 2017</h3>
 
                 <ul>

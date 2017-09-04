@@ -184,11 +184,11 @@ class GravityView_Cache {
 
 		// Normally just one form, but supports multiple forms
 		//
-		// Array of IDs 12, 5, 14 would result in `f-12f-5f-14`
-		$forms = 'f:' . implode( '&f:', (array) $form_ids );
+		// Array of IDs 12, 5, 14 would result in `f:12-f:5-f:14`
+		$forms = 'f:' . implode( '-f:', (array) $form_ids );
 
 		// Prefix for transient keys
-		// Now the prefix would be: `gv-cache-f-12f-5f-14`
+		// Now the prefix would be: `gv-cache-f:12-f:5-f:14-`
 		return 'gv-cache-' . $forms . '-';
 
 	}
@@ -408,7 +408,7 @@ class GravityView_Cache {
 
 		foreach ( (array) $form_ids as $form_id ) {
 
-			$key = $this->get_cache_key_prefix( $form_id );
+			$key = '_transient_gv-cache-';
 
 			// WordPress 4.0+
 			if ( is_callable( array( $wpdb, 'esc_like' ) ) ) {
@@ -417,15 +417,20 @@ class GravityView_Cache {
 				$key = like_escape( $key );
 			}
 
-			$key = "%" . $key . "%";
+			$form_id = intval( $form_id );
 
-			$sql = $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE `option_name` LIKE %s", $key );
+			// Find the transients containing this form
+			$key = "$key%f:$form_id-%"; // \_transient\_gv-cache-%f:1-% for example
+			$sql = $wpdb->prepare( "SELECT option_name FROM {$wpdb->options} WHERE `option_name` LIKE %s", $key );
 
-			$result = $wpdb->query( $sql );
+			foreach ( ( $transients = $wpdb->get_col( $sql ) ) as $transient ) {
+				// We have to delete it via the API to make sure the object cache is updated appropriately
+				delete_transient( preg_replace( '#^_transient_#', '', $transient ) );
+			}
 
 			do_action( 'gravityview_log_debug', 'GravityView_Cache[delete] Deleting cache for form #' . $form_id, array(
 				$sql,
-				sprintf( 'Deleted results: %d', $result )
+				sprintf( 'Deleted results: %d', count( $transients ) )
 			) );
 		}
 

@@ -10,7 +10,7 @@
 ?>
 <?php gravityview_before(); ?>
 
-<div class="gv-container gv-list-single-container gv-list-container">
+<div class="<?php gv_container_class( 'gv-list-container gv-list-single-container' ); ?>">
 	<p class="gv-back-link"><?php echo gravityview_back_link(); ?></p>
 	<?php
     if( $this->getContextFields() ) {

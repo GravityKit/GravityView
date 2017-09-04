@@ -98,8 +98,12 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 		$entries = $form->entries
 			->filter( \GV\GF_Entry_Filter::from_search_criteria( $criteria['search_criteria'] ) )
 			->offset( $args['offset'] )
-			->limit( $criteria['paging']['page_size'] )
-			->page( ( ( $criteria['paging']['offset'] - $args['offset'] ) / $criteria['paging']['page_size'] ) + 1 );
+			->limit( $criteria['paging']['page_size'] );
+
+		if ( $criteria['paging']['page_size'] ) {
+			$entries = $entries->page( ( ( $criteria['paging']['offset'] - $args['offset'] ) / $criteria['paging']['page_size'] ) + 1 );
+		}
+
 		if ( ! empty( $criteria['sorting'] ) ) {
 			$field = new \GV\Field();
 			$field->ID = $criteria['sorting']['key'];

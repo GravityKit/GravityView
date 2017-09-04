@@ -357,8 +357,13 @@ class GravityView_Edit_Entry_Render {
     private function unset_hidden_field_values() {
 	    global $wpdb;
 
-	    $lead_detail_table      = GFFormsModel::get_lead_details_table_name();
-	    $current_fields   = $wpdb->get_results( $wpdb->prepare( "SELECT id, field_number FROM $lead_detail_table WHERE lead_id=%d", $this->entry['id'] ) );
+		if ( method_exists( 'GFFormsModel', 'get_entry_meta_table_name' ) ) {
+			$entry_meta_table = GFFormsModel::get_entry_meta_table_name();
+			$current_fields = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key, meta_value FROM $entry_meta_table WHERE entry_id=%d", $this->entry['id'] ) );
+		} else {
+			$lead_detail_table = GFFormsModel::get_lead_details_table_name();
+			$current_fields = $wpdb->get_results( $wpdb->prepare( "SELECT id, field_number FROM $lead_detail_table WHERE lead_id=%d", $this->entry['id'] ) );
+		}
 
 	    foreach ( $this->entry as $input_id => $field_value ) {
 
@@ -831,11 +836,13 @@ class GravityView_Edit_Entry_Render {
 
         $entry = GFFormsModel::set_entry_meta( $entry, $this->form );
 
-        // We need to clear the cache because Gravity Forms caches the field values, which
-        // we have just updated.
-        foreach ($this->form['fields'] as $key => $field) {
-            GFFormsModel::refresh_lead_field_value( $entry['id'], $field->id );
-        }
+		if ( ! method_exists( 'GFFormsModel', 'get_entry_meta_table_name' ) ) {
+			// We need to clear the cache because Gravity Forms caches the field values, which
+			// we have just updated.
+			foreach ($this->form['fields'] as $key => $field) {
+				GFFormsModel::refresh_lead_field_value( $entry['id'], $field->id );
+			}
+		}
 
         $this->entry = $entry;
     }

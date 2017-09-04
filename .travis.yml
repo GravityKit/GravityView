@@ -14,7 +14,6 @@ branches:
     - master
     - develop
     - 2.0
-    - test
 
 php:
   - 5.3
@@ -24,6 +23,7 @@ php:
 
 env:
   - WP_VERSION=latest WP_MULTISITE=0
+  - WP_VERSION=latest WP_MULTISITE=0 GF_VERSION=2.3
   - WP_VERSION=4.0 WP_MULTISITE=0
 
 matrix:

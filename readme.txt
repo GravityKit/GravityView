@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.8
+Tested up to: 4.8.1
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -19,6 +19,23 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 1.22 on September 4, 2017=
+
+* Added: Support for Gravity Forms 2.3
+* Fixed: Fatal error when Divi (and other Elegant Themes) try to load GravityView widgets while editing a post with a sidebar block in it—now the sidebar block will not be rendered
+* Fixed: Inline Edit plugin not working when displaying a single entry
+* Fixed: Featured Entries plugin not adding correct CSS selector to the single entry container
+
+__Developer Updates:__
+
+* Modified: Template files `list-header.php`, `list-single.php`, `table-header.php`, `table-single.php`
+* Fixed: When `GRAVITYVIEW_LICENSE_KEY` constant is defined, it will always be used, and the license field will be disabled
+* Fixed: List View and Table View templates have more standardized CSS selectors for single & multiple contexts ([Learn more](http://docs.gravityview.co/article/63-css-guide))
+* Fixed: Permalink issue when embedding a View on a page, then making it the site's Front Page
+* Fixed: Transient cache issues when invalidating cache
+* Fixed: `gv_empty()` now returns false for an array with all empty values
+* Fixed: Delay plugin compatibility checks until `plugins_loaded`
 
 = 1.21.5.3 on July 24, 2017 =
 

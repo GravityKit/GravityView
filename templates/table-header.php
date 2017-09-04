@@ -9,7 +9,7 @@
  */
 ?>
 <?php gravityview_before(); ?>
-<div class="<?php gv_container_class('gv-table-container'); ?>">
+<div class="<?php gv_container_class('gv-table-container gv-table-multiple-container'); ?>">
 <table class="gv-table-view">
 	<thead>
 		<?php gravityview_header(); ?>
