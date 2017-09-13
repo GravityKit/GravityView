@@ -66,4 +66,23 @@ class Renderer {
 
 		echo \GVCommon::generate_notice( $output . $image, 'gv-error error', 'edit_gravityview', $gravityview->view->ID );
 	}
+
+	/**
+	 * Warn about legacy template being used.
+	 *
+	 * Generate a callback that shows which legacy template was at fault.
+	 * Used in gravityview_before.
+	 *
+	 * @param \GV\View $view The view we're looking at.
+	 * @param string $path The path of the offending template.
+	 *
+	 * @return \Callable A closure used in the filter.
+	 */
+	public function legacy_template_warning( $view, $path ) {
+		return function() use ( $view, $path ) {
+			if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
+				echo \GVCommon::generate_notice( sprintf( 'We have detected some legacy template overrides in your theme\'s gravityview/ directory. We urge you to port them over to their 2.0 versions as soon as possible. <p><em>%s</em></p>', esc_html( $path ) ) );
+			}
+		};
+	}
 }

@@ -82,6 +82,12 @@ class Entry_Renderer extends Renderer {
 				 * We have to bail and call the legacy renderer. Crap!
 				 */
 				gravityview()->log->notice( 'Legacy templates detected in theme {path}', array( 'path' => $path ) );
+
+				/**
+				 * Show a warning at the top, if View is editable by the user.
+				 */
+				add_action( 'gravityview_before', $this->legacy_template_warning( $view, $path ) );
+
 				return $override->render( $template_slug );
 			}
 		}

@@ -121,10 +121,6 @@ class Legacy_Override_Template extends \Gamajo_Template_Loader {
 	public function render( $slug ) {
 		ob_start();
 
-		if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $this->view->ID ) ) {
-			echo \GVCommon::generate_notice( 'We have detected some legacy template overrides in your theme\'s gravityview/ directory. We urge you to port them over to their 2.0 versions as soon as possible.' );
-		}
-
 		$request = new Mock_Request();
 		$request->returns['is_view'] = $this->view;
 
