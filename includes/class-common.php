@@ -710,9 +710,10 @@ class GVCommon {
 	/**
 	 * Wrapper for the GFFormsModel::matches_operation() method that adds additional comparisons, including:
 	 * 'equals', 'greater_than_or_is', 'greater_than_or_equals', 'less_than_or_is', 'less_than_or_equals',
-	 * and 'not_contains'
+	 * 'not_contains', 'in', and 'not_in'
 	 *
 	 * @since 1.13 You can define context, which displays/hides based on what's being displayed (single, multiple, edit)
+	 * @since 1.22.1 Added 'in' and 'not_in' for JSON-encoded array values, serialized non-strings
 	 *
 	 * @see http://docs.gravityview.co/article/252-gvlogic-shortcode
 	 * @uses GFFormsModel::matches_operation
@@ -725,6 +726,12 @@ class GVCommon {
 	 * @return bool True: matches, false: not matches
 	 */
 	public static function matches_operation( $val1, $val2, $operation ) {
+
+		$json_function = function_exists('wp_json_encode') ? 'wp_json_encode' : 'json_encode';
+
+		// Only process strings
+		$val1 = ! is_string( $val1 ) ? $json_function( $val1 ) : $val1;
+		$val2 = ! is_string( $val2 ) ? $json_function( $val2 ) : $val2;
 
 		$value = false;
 
@@ -766,6 +773,35 @@ class GVCommon {
 			case 'not_contains':
 				$contains = GFFormsModel::matches_operation( $val1, $val2, 'contains' );
 				$value    = ! $contains;
+				break;
+			/**
+			 * @since 1.22.1 Handle JSON-encoded comparisons
+			 */
+			case 'in':
+			case 'not_in':
+
+				$json_val_1 = json_decode( $val1, true );
+				$json_val_2 = json_decode( $val2, true );
+
+				if( ! empty( $json_val_1 ) || ! empty( $json_val_2 ) ) {
+
+					$json_in = false;
+					$json_val_1 = $json_val_1 ? $json_val_1 : array( $val1 );
+					$json_val_2 = $json_val_2 ? $json_val_2 : array( $val2 );
+
+					// For JSON, we want to compare as "in" or "not in" rather than "contains"
+					foreach ( $json_val_1 as $item_1 ) {
+						foreach ( $json_val_2 as $item_2 ) {
+							$json_in = GFFormsModel::matches_operation( $item_1, $item_2, 'is' );
+
+							if( $json_in ) {
+								break 2;
+							}
+						}
+					}
+
+					$value = ( $operation === 'in' ) ? $json_in : ! $json_in;
+				}
 				break;
 			default:
 				$value = GFFormsModel::matches_operation( $val1, $val2, $operation );
