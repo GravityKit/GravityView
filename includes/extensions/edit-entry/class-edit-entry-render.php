@@ -511,22 +511,39 @@ class GravityView_Edit_Entry_Render {
         // get the most up to date entry values
         $entry = GFAPI::get_entry( $this->entry['id'] );
 
-        if( !empty( $this->fields_with_calculation ) ) {
-            $update = true;
-            foreach ( $this->fields_with_calculation as $calc_field ) {
-                $inputs = $calc_field->get_entry_inputs();
-                if ( is_array( $inputs ) ) {
-                    foreach ( $inputs as $input ) {
-                        $input_name = 'input_' . str_replace( '.', '_', $input['id'] );
-                        $entry[ strval( $input['id'] ) ] = RGFormsModel::prepare_value( $form, $calc_field, '', $input_name, $entry['id'], $entry );
-                    }
-                } else {
-                    $input_name = 'input_' . str_replace( '.', '_', $calc_field->id);
-                    $entry[ strval( $calc_field->id ) ] = RGFormsModel::prepare_value( $form, $calc_field, '', $input_name, $entry['id'], $entry );
-                }
-            }
+		if( !empty( $this->fields_with_calculation ) ) {
+			$update = true;
+			foreach ( $this->fields_with_calculation as $calc_field ) {
+				$inputs = $calc_field->get_entry_inputs();
+				if ( is_array( $inputs ) ) {
+					foreach ( $inputs as $input ) {
+						$input_name = 'input_' . str_replace( '.', '_', $input['id'] );
+						list( $prefix, $field_id, $input_id ) = rgexplode( '_', $input_name, 3 );
 
-        }
+						switch ( $input_id ) {
+							case 1:
+								/** Never void the labels. */
+								$value = $entry[ $input['id'] ];
+								break;
+							case 2:
+								/** Always recalcualte the final price. */
+								$value = '';
+								break;
+							case 3:
+								/** Fetch the quantity form the request. */
+								$value = rgpost( $input_name, $entry[ $input['id'] ] );
+								break;
+						}
+
+						$entry[ strval( $input['id'] ) ] = RGFormsModel::prepare_value( $form, $calc_field, $value, $input_name, $entry['id'], $entry );
+					}
+				} else {
+					$input_name = 'input_' . str_replace( '.', '_', $calc_field->id);
+					$entry[ strval( $calc_field->id ) ] = RGFormsModel::prepare_value( $form, $calc_field, '', $input_name, $entry['id'], $entry );
+				}
+			}
+
+		}
 
         if( $update ) {
 
