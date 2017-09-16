@@ -4245,6 +4245,40 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\Multi_Entry::offsetGet
+	 */
+	public function test_entry_multi() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => 'set all the fields!',
+			'2' => -100,
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$form2 = $this->factory->form->import_and_get( 'simple.json' );
+		$form2 = \GV\GF_Form::by_id( $form2['id'] );
+		$entry2 = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form2->ID,
+			'1' => 'set all the fields!',
+			'2' => -100,
+		) );
+		$entry2 = \GV\GF_Entry::by_id( $entry2['id'] );
+
+		$multi_entry = \GV\Multi_Entry::from_entries( array(
+			$entry, $entry2
+		) );
+
+		$this->assertNull( $multi_entry[-1] );
+
+		$this->assertEquals( $entry2, $multi_entry[ $form2->ID ] );
+		$this->assertEquals( $entry, $multi_entry[ $form->ID ] );
+	}
+
+	/**
 	 * @covers \GV\GF_Entry_Filter::as_search_criteria()
 	 * @covers \GV\GF_Entry_Filter::merge_search_criteria()
 	 */
