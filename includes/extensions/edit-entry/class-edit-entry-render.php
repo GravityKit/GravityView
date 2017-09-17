@@ -1365,6 +1365,11 @@ class GravityView_Edit_Entry_Render {
 		 */
 		if ( class_exists( 'GF_User_Registration' ) ) {
 			remove_filter( 'gform_validation', array( GF_User_Registration::get_instance(), 'validate' ) );
+			/**
+			 * Add some custom validation either way.
+			 * https://secure.helpscout.net/conversation/430858351/10957/?folderId=1210164
+			 */
+			add_filter( 'gform_validation_' . $this->form_id, array( $this, 'user_registration_validation' ), 10, 4 );
 		} else  if ( class_exists( 'GFUser' ) ) {
 			remove_filter( 'gform_validation', array( 'GFUser', 'user_registration_validation' ) );
 		}
@@ -1391,8 +1396,53 @@ class GravityView_Edit_Entry_Render {
 		$this->is_valid = GFFormDisplay::validate( $this->form, $field_values, 1, $failed_validation_page );
 
 		remove_filter( 'gform_validation_'. $this->form_id, array( $this, 'custom_validation' ), 10 );
+		remove_filter( 'gform_validation_' . $this->form_id, array( $this, 'user_registration_validation' ), 10 );
 	}
 
+	/**
+	 * Make validation work for User Registration feeds.
+	 *
+	 * The default validation does a bit too much for our liking.
+	 * Email, username validation should work. Called on the `gform_validation` filter.
+	 *
+	 * @param array $validation_results The validation results.
+	 * @return array The modified validation results.
+	 */
+	public function user_registration_validation( $validation_results ) {
+		$user_registration = GF_User_Registration::get_instance();
+
+		$entry = $this->get_entry();
+		$form = $validation_results['form'];
+
+		if ( ! $feed = $user_registration->get_single_submission_feed( $entry, $form ) ) {
+			return $validation_results;
+		}
+
+		$username_field = GFFormsModel::get_field( $form, rgars( $feed, 'meta/username' ) );
+		$email_field    = GFFormsModel::get_field( $form, rgars( $feed, 'meta/email' ) );
+
+		$username   = $user_registration->get_meta_value( 'username', $feed, $form, $entry );
+		$user_email = $user_registration->get_meta_value( 'email', $feed, $form, $entry );
+
+		$value = RGFormsModel::get_field_value( $email_field );
+		if ( $user_email != $value && email_exists( $value ) ) {
+			$email_field->failed_validation = 1;
+			$email_field->validation_message = __( 'This email is already in use', 'gravityview' );
+			$validation_results['is_valid'] = false;
+		}
+
+		$value = RGFormsModel::get_field_value( $username_field );
+		if ( $username != $value ) {
+			$username_field->failed_validation = 1;
+			$username_field->validation_message = __( 'Usernames cannot be changed', 'gravityview' );
+			$validation_results['is_valid'] = false;
+		}
+
+		// We'll need this result when rendering the form ( on GFFormDisplay::get_form )
+		$this->form_after_validation = $validation_results['form'];
+
+		return $validation_results;
+	}
 
 	/**
 	 * Make validation work for Edit Entry
