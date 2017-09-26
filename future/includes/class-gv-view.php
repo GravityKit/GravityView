@@ -628,7 +628,8 @@ class View implements \ArrayAccess {
 
 	public function __get( $key ) {
 		if ( $this->post ) {
-			return $this->post->$key;
+			$post = $this->post->filter('raw');
+			return $post->{$key};
 		}
 		return isset( $this->$key ) ? $this->$key : null;
 	}
