@@ -322,7 +322,7 @@ class View implements \ArrayAccess {
 	/**
 	 * Construct a \GV\View instance from a \WP_Post.
 	 *
-	 * @param $post The \WP_Post instance to wrap.
+	 * @param \WP_Post $post The \WP_Post instance to wrap.
 	 *
 	 * @api
 	 * @since future
@@ -366,8 +366,8 @@ class View implements \ArrayAccess {
 		 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array.
 		 * @since 1.6.5
 		 *
-		 * @param $fields array Multi-array of fields with first level being the field zones.
-		 * @param $view_id int The View the fields are being pulled for.
+		 * @param array $fields Multi-array of fields with first level being the field zones.
+		 * @param int $view_id The View the fields are being pulled for.
 		 */
 		$configuration = apply_filters( 'gravityview/configuration/fields', (array)$view->_gravityview_directory_fields, $view->ID );
 
@@ -627,10 +627,12 @@ class View implements \ArrayAccess {
 	}
 
 	public function __get( $key ) {
+
 		if ( $this->post ) {
 			$post = $this->post->filter('raw');
 			return $post->{$key};
 		}
-		return isset( $this->$key ) ? $this->$key : null;
+
+		return isset( $this->{$key} ) ? $this->{$key} : null;
 	}
 }
