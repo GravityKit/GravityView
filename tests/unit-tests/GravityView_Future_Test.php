@@ -3454,7 +3454,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		global $wpdb;
 
-		if ( method_exists( 'GFFormsModel', 'get_entry_meta_table_name' ) ) {
+		if ( version_compare( GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) ) {
 			$wpdb->insert( GFFormsModel::get_entry_meta_table_name(), array(
 				'entry_id' => $entry['id'], 'form_id' => $form['id'],
 				'meta_key' => '24', 'meta_value' => $image

@@ -71,7 +71,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	public static function by_slug( $entry_slug, $form_id = 0 ) {
 		global $wpdb;
 
-		if ( method_exists( '\GFFormsModel', 'get_entry_meta_table_name' ) ) {
+		if ( version_compare( \GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) ) {
 			$entry_meta = \GFFormsModel::get_entry_meta_table_name();
 			$sql = "SELECT entry_id FROM $entry_meta";
 		} else {
