@@ -43,8 +43,11 @@ $forms = gravityview_get_forms('any');
 		</select>
 
 		<?php
+
+		    $view = \GV\View::from_post( $post );
+
 			// Join forms but only if there are more of them to join on.
-			if ( ( $view = \GV\View::from_post( $post ) ) && $view->form ) {
+			if ( $view && $view->form ) {
 				?>
 					<p>Use joins to combine data from several forms into one longer entry. Join on quote ID fields, custom ID fields, anything you like!</p>
 				<?php
