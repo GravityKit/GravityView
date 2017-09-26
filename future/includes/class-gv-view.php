@@ -50,6 +50,14 @@ class View implements \ArrayAccess {
 	public $fields;
 
 	/**
+	 * @var \GV\Join[] The joins for all sources in this view.
+	 *
+	 * @api
+	 * @since future
+	 */
+	public $joins;
+
+	/**
 	 * The constructor.
 	 */
 	public function __construct() {
@@ -336,6 +344,22 @@ class View implements \ArrayAccess {
 				'view_id' => $view->ID,
 				'form_id' => $view->_gravityview_form_id ? : 0,
 			) );
+		} else {
+			/** And the connected joins. */
+			foreach( (array)get_post_meta( $view->ID, '_gravityview_form_joins', true ) as $_join ) {
+				if ( count( $_join ) != 4 ) {
+					continue;
+				}
+				list( $join, $join_column, $join_on, $join_on_column ) = $_join;
+
+				$join = GF_Form::by_id( $join );
+				$join_on = GF_Form::by_id( $join_on );
+
+				$join_column = is_numeric( $join_column ) ? GF_Field::by_id( $join, $join_column ) : Internal_Field( $join_column );
+				$join_on_column = is_numeric( $join_on_column ) ? GF_Field::by_id( $join_on, $join_on_column ) : Internal_Field( $join_on_column );
+
+				$view->joins []= new Join( $join, $join_column, $join_on, $join_on_column );
+			}
 		}
 
 		/**
@@ -537,17 +561,59 @@ class View implements \ArrayAccess {
 			 * @todo: Stop using _frontend and use something like $request->get_search_criteria() instead
 			 */
 			$parameters = \GravityView_frontend::get_view_entries_parameters( $this->settings->as_atts(), $this->form->ID );
-			$entries = $this->form->entries
-				->filter( \GV\GF_Entry_Filter::from_search_criteria( $parameters['search_criteria'] ) )
-				->offset( $this->settings->get( 'offset' ) )
-				->limit( $parameters['paging']['page_size'] )
-				/** @todo: Get the page from the request instead! */
-				->page( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
-			if ( ! empty( $parameters['sorting'] ) ) {
-				$field = new \GV\Field();
-				$field->ID = $parameters['sorting']['key'];
-				$direction = strtolower( $parameters['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
-				$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction ) );
+
+			/** @todo: Get the page from the request instead! */
+			$page = ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1;
+
+			if ( class_exists( '\GV\Query' ) ) {
+				/**
+				 * New \GV\Query stuff :)
+				 */
+				$query = new \GV\Query();
+				$query->from( $this->form )
+					->limit( $parameters['paging']['page_size'] )
+					->page( $page );
+
+				/**
+				 * @todo Provide a search_criteria converter for this!
+				 */
+				if ( ! empty( $parameters['search_criteria']['field_filters'] ) ) {
+					foreach( $parameters['search_criteria']['field_filters'] as $filter ) {
+						$query->where(
+								/**
+								 * @todo Use the lightweight API.
+								 */
+								new Query\Condition(
+										GF_Field::by_id( $this->form, $filter['key'] ),
+										Query\Condition::EQ,
+										new Query\Literal( $filter['value'] )
+								)
+						);
+					}
+				}
+
+				/**
+				 * The joins!
+				 */
+				if ( count( $this->joins ) ) {
+					foreach ( $this->joins as $join ) {
+							$query = $join->as_query_join( $query );
+					}
+				}
+
+				$entries = $query->get();
+			} else {
+				$entries = $this->form->entries
+					->filter( \GV\GF_Entry_Filter::from_search_criteria( $parameters['search_criteria'] ) )
+					->offset( $this->settings->get( 'offset' ) )
+					->limit( $parameters['paging']['page_size'] )
+					->page( $page );
+				if ( ! empty( $parameters['sorting'] ) ) {
+					$field = new \GV\Field();
+					$field->ID = $parameters['sorting']['key'];
+					$direction = strtolower( $parameters['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
+					$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction ) );
+				}
 			}
 		}
 

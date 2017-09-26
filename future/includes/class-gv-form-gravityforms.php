@@ -141,7 +141,38 @@ class GF_Form extends Form implements \ArrayAccess {
 		list( $form, $field_id ) = $args;
 
 		/** Wrap it up into a \GV\Field. */
-		return \GV\GF_Field::by_id( $form, $field_id );
+		return GF_Field::by_id( $form, $field_id );
+	}
+
+	public function get_fields() {
+		$fields = array();
+		foreach ( $this['fields'] as $field ) {
+			foreach ( empty( $field['inputs'] ) ? array( $field['id'] ) : wp_list_pluck( $field['inputs'], 'id' ) as $id ) {
+				if ( is_numeric( $id ) ) {
+					$fields[ $id ] = self::get_field( $this, $id );
+				} else {
+					$fields[ $id ] = Internal_Field::by_id( $id );
+				}
+			}
+		}
+
+		return $fields;
+	}
+
+	/**
+	 * Proxies.
+	 *
+	 * @param string $key The property to get.
+	 *
+	 * @return mixed
+	 */
+	public function __get( $key ) {
+		switch ( $key ) {
+			case 'fields':
+				return $this->get_fields();
+			default:
+				return parent::__get( $key );
+		}
 	}
 
 	/**

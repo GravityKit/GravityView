@@ -41,6 +41,141 @@ $forms = gravityview_get_forms('any');
 				<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current_form, true ); ?>><?php echo esc_html( $form['title'] ); ?></option>
 			<?php } ?>
 		</select>
+
+		<?php
+			// Join forms but only if there are more of them to join on.
+			if ( ( $view = \GV\View::from_post( $post ) ) && $view->form ) {
+				?>
+					<p>Use joins to combine data from several forms into one longer entry. Join on quote ID fields, custom ID fields, anything you like!</p>
+				<?php
+
+				/**
+				 * Joins can only be done on existing ones.
+				 *
+				 * Add the source form as the original one.
+				 * No join column and on column since it's not joined to anything.
+				 */
+				$existing_joins = $view->joins;
+
+				/**
+				 * Joins that have been listed out in clauses. Cannot be reused.
+				 */
+				$known_joins = array();
+
+				/**
+				 * List out the current joins and let them be edited.
+				 * + add an empty one for additions.
+				 */
+				foreach ( array_merge( $existing_joins, array( null ) ) as $join ) {
+					if ( $join && $join->join ) {
+						/** Joiner and joinee. This is getting confusing. */
+						$known_joins = array_merge( $known_joins, array( $join->join->ID, $join->join_on->ID ) );
+					}
+					?>
+						<div>
+							<span>Join</span>
+							<select name="gravityview_form_join[]" class="gravityview_form_join">
+								<option>(no join)</option>
+								<?php foreach ( $forms as $form ) {
+									if ( in_array( $form['id'], $known_joins ) ) {
+										printf( '<option value="%d" %s>%s</option>', $form['id'], selected( $form['id'], $join ? $join->join->ID : -1, false ), esc_html( $form['title'] ) );
+									}
+								} ?>
+							</select>
+							<select name="gravityview_form_join_column[]" class="gravityview_form_join_column" data-selected="<?php echo esc_attr( $join ? $join->join_column->ID : null ); ?>">
+								<!-- Loaded dynamically -->
+							</select>
+							<span>with</span>
+							<select name="gravityview_form_join_on[]" class="gravityview_form_join_on">
+								<option>(no join)</option>
+								<?php foreach ( $forms as $form ) {
+									if ( ! in_array( $form['id'], $knows_joins ) ) {
+										printf( '<option value="%d" %s>%s</option>', $form['id'], selected( $form['id'], $join ? $join->join_on->ID : -1, false ), esc_html( $form['title'] ) );
+									}
+								} ?>
+							</select>
+							<select name="gravityview_form_join_on_column[]" class="gravityview_form_join_on_column" data-selected="<?php echo esc_attr( $join ? $join->join_on_column->ID : null ); ?>">
+								<!-- Loaded dynamically -->
+							</select>
+						</div>
+					<?php
+				}
+
+				?>
+					<script type="text/javascript">
+						var fields = <?php
+							$fields = array();
+
+							foreach ( $forms as $form ) {
+								if ( $_form = \GV\GF_Form::by_id( $form['id'] ) ) {
+									$fields[ $_form->ID ] = array();
+									foreach ( $_form->fields as $field ) {
+										$fields[ $_form->ID ] []= array(
+											'id' => $field->ID,
+											'label' => $field->get_label( $view, $_form ),
+										);
+									}
+								}
+							}
+
+							/**
+							 * A map of form_id -> fields_array
+							 * (where fields_array -> id, label)
+							 */
+							echo json_encode( $fields );
+						?>;
+
+						jQuery( '.gravityview_form_join' ).on( 'change', function( e ) {
+							var t = jQuery( e.currentTarget );
+							var form_id = t.val();
+
+							// Reset the field options for this form
+							t.parent().find( '.gravityview_form_join_column option' ).remove();
+							if ( fields[ form_id ] ) {
+								var f = t.parent().find( '.gravityview_form_join_column' );
+								// Add an empty one
+								f.append( '<option></option>' );
+								// Add every field, selecting if this is a saved join
+								jQuery( fields[ form_id ] ).each( function( id, field ) {
+									var field_node = jQuery( '<option></option>' );
+									field_node.attr( 'value', field.id );
+									field_node.html( field.label + ' (' + field.id + ')' );
+									if ( field.id == f.attr( 'data-selected' ) ) {
+										field_node.attr( 'selected', 'selected' );
+									}
+									t.parent().find( '.gravityview_form_join_column' ).append( field_node );
+								} );
+							}
+						} ).trigger( 'change' );
+
+						jQuery( '.gravityview_form_join_on' ).on( 'change', function( e ) {
+							var t = jQuery( e.currentTarget );
+							var form_id = t.val();
+
+							// Reset the field options for this form
+							t.parent().find( '.gravityview_form_join_on_column option' ).remove();
+							if ( fields[ form_id ] ) {
+								var f = t.parent().find( '.gravityview_form_join_on_column' );
+								// Add an empty one
+								f.append( '<option></option>' );
+								// Add every field, selecting if this is a saved join
+								jQuery( fields[ form_id ] ).each( function( id, field ) {
+									var field_node = jQuery( '<option></option>' );
+									field_node.attr( 'value', field.id );
+									field_node.html( field.label + ' (' + field.id + ')' );
+									if ( field.id == f.attr( 'data-selected' ) ) {
+										field_node.attr( 'selected', 'selected' );
+									}
+									t.parent().find( '.gravityview_form_join_on_column' ).append( field_node );
+								} );
+							}
+						} ).trigger( 'change' );
+					</script>
+					<hr />
+				<?php
+			}
+		?>
+
 	<?php } else { ?>
 		<select name="gravityview_form_id" id="gravityview_form_id" class="hidden"><option selected="selected" value=""></option></select>
 	<?php } ?>

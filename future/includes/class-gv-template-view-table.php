@@ -24,10 +24,10 @@ class View_Table_Template extends View_Template {
 	 */
 	public function the_columns() {
 		$fields = $this->view->fields->by_position( 'directory_table-columns' );
-		$form = $this->view->form;
 
 		/** @todo Add class filters from the old code. */
 		foreach ( $fields->by_visible()->all() as $field ) {
+			$form = $field->form_id ? GF_Form::by_id( $field->form_id ) : $this->view->form;
 
 			$column_label = apply_filters( 'gravityview/template/field_label', $field->get_label( $this->view, $form ), $field->as_configuration(), $form->form ? $form->form : null, null );
 
@@ -84,9 +84,14 @@ class View_Table_Template extends View_Template {
 	 * @return void
 	 */
 	public function the_field( \GV\Field $field, \GV\Entry $entry ) {
+		$form = GF_Form::by_id( $field->form_id );
+		if ( $entry instanceof Multi_Entry ) {
+			$entry = $entry->entries[ $form->ID ];
+		}
+
 		$attributes = array(
-			'id' => sprintf( 'gv-field-%d-%s', $this->view->form ? $this->view->form->ID : 0, $field->ID ),
-			'class' => sprintf( 'gv-field-%d-%s', $this->view->form ? $this->view->form->ID : 0, $field->ID ),
+			'id' => sprintf( 'gv-field-%d-%s', $form ? $form->ID : 0, $field->ID ),
+			'class' => sprintf( 'gv-field-%d-%s', $form ? $form->ID : 0, $field->ID ),
 		);
 
 		/**
@@ -111,7 +116,7 @@ class View_Table_Template extends View_Template {
 		}
 
 		$renderer = new Field_Renderer();
-		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
+		$source = is_numeric( $field->ID ) ? $form : new Internal_Source();
 
 		/** Output. */
 		printf( '<td%s>%s</td>', $attributes, $renderer->render( $field, $this->view, $source, $entry, $this->request ) );

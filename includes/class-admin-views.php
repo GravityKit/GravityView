@@ -489,6 +489,27 @@ class GravityView_Admin_Views {
 			$statii['start_fresh'] = delete_post_meta( $post_id, '_gravityview_start_fresh' );
 		}
 
+		// Save joins
+		if ( ! empty( $_POST['gravityview_form_join'] ) && is_array( $_POST['gravityview_form_join'] ) ) {
+			$joins = array();
+
+			foreach ( $_POST['gravityview_form_join'] as $number => $join ) {
+				$_join = array( $join );
+
+				foreach( array( 'join_column', 'join_on', 'join_on_column' ) as $var ) {
+					if ( ( $var = rgpost( 'gravityview_form_' . $var ) ) && ! empty( $var[ $number ] ) ) {
+						$_join []= $var[ $number ];
+					}
+				}
+
+				if ( count( $_join ) == 4 ) {
+					$joins []= $_join;
+				}
+			}
+
+			update_post_meta( $post_id, '_gravityview_form_joins', $joins );
+		}
+
 		// Check if we have a template id
 		if ( isset( $_POST['gravityview_select_template_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_template_nonce'], 'gravityview_select_template' ) ) {
 
@@ -825,6 +846,8 @@ class GravityView_Admin_Views {
 
 		$available_items = array();
 
+		$view = \GV\View::from_post( $post );
+
 		// if saved values, get available fields to label everyone
 		if( !empty( $values ) && ( !empty( $post->ID ) || !empty( $_POST['template_id'] ) ) ) {
 
@@ -873,8 +896,11 @@ class GravityView_Admin_Views {
 
 										}
 
+										// Maybe has a form ID
+										$form_id = empty( $field['form_id'] ) ? null : $field['form_id'];
+
 										// Field options dialog box
-										$field_options = GravityView_Render_Settings::render_field_options( $type, $template_id, $field['id'], $original_item['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone, $original_item );
+										$field_options = GravityView_Render_Settings::render_field_options( $form_id, $type, $template_id, $field['id'], $original_item['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone, $original_item );
 
 										$item = array(
 											'input_type' => $input_type,
@@ -905,7 +931,35 @@ class GravityView_Admin_Views {
 								<span class="drop-message"><?php echo sprintf(esc_attr__('"+ %s" or drag existing %ss here.', 'gravityview'), $button_label, $type ); ?></span>
 							</div>
 							<div class="gv-droppable-area-action">
-								<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>"><?php echo '+ '.esc_html( $button_label ); ?></a>
+								<?php
+									if ( $type == 'field' && count( $view->joins ) ) {
+										?>
+											<?php
+												$known_joins = array();
+												foreach ( $view->joins as $join ) {
+													if ( ! in_array( $join->join->ID, $known_joins ) ) {
+														$known_joins []= $join->join->ID;
+														?>
+															<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>" data-formid="<?php echo esc_attr( $join->join->ID ); ?>"><?php echo '+ '.esc_html( $button_label ); ?> from Form #<?php echo esc_html( $join->join->ID ); ?></a>
+														<?php
+													}
+
+													if ( ! in_array( $join->join_on->ID, $known_joins ) ) {
+														$known_joins []= $join->join_on->ID;
+														?>
+															<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>" data-formid="<?php echo esc_attr( $join->join_on->ID ); ?>"><?php echo '+ '.esc_html( $button_label ); ?> from Form #<?php echo esc_html( $join->join_on->ID ); ?></a>
+														<?php
+													}
+												}
+											?>
+										<?php
+									} else {
+										?>
+											<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>"><?php echo '+ '.esc_html( $button_label ); ?></a>
+										<?php
+									}
+								?>
+
 								<p class="gv-droppable-area-title"><strong><?php echo esc_html( $area['title'] ); ?></strong><?php if( !empty( $area['subtitle'] ) ) { ?><span class="gv-droppable-area-subtitle"> &ndash; <?php echo esc_html( $area['subtitle'] ); ?></span><?php } ?></p>
 							</div>
 						</div>
@@ -957,14 +1011,13 @@ class GravityView_Admin_Views {
 	 * @return string HTML of the active areas
 	 */
 	function render_directory_active_areas( $template_id = '', $context = 'single', $post_id = '', $echo = false ) {
-
 		if( empty( $template_id ) ) {
 			do_action( 'gravityview_log_debug', '[render_directory_active_areas] $template_id is empty' );
 			return '';
 		}
 
 		/**
-		 * @filter `gravityview_template_active_areas` 
+		 * @filter `gravityview_template_active_areas`
 		 * @see GravityView_Template::assign_active_areas()
 		 * @param array $template_areas Empty array, to be filled in by the template class
 		 * @param string $template_id Template ID, like `default_list`, `default_table`, `preset_business_data`, etc. {@see GravityView_Template::__construct()}

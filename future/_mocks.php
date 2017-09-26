@@ -348,12 +348,12 @@ final class Legacy_Context {
 	 * Saves current global state and context.
 	 *
 	 * Configuration keys:
-	 * 
+	 *
 	 * - \GV\View	view:		sets \GravityView_View::atts, \GravityView_View::view_id,
 	 *								 \GravityView_View::back_link_label
 	 *								 \GravityView_frontend::context_view_id,
 	 *								 \GravityView_View::form, \GravityView_View::form_id
-	 * - \GV\Field	field:		sets \GravityView_View::_current_field, \GravityView_View::field_data, 
+	 * - \GV\Field	field:		sets \GravityView_View::_current_field, \GravityView_View::field_data,
 	 * - \GV\Entry	entry:		sets \GravityView_View::_current_entry, \GravityView_frontend::single_entry,
 	 *								 \GravityView_frontend::entry
 	 * - \WP_Post	post:		sets \GravityView_View::post_id, \GravityView_frontend::post_id,
