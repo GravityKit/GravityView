@@ -144,6 +144,11 @@ class GF_Form extends Form implements \ArrayAccess {
 		return GF_Field::by_id( $form, $field_id );
 	}
 
+	/**
+	 * Get an array of GV Fields for this data source
+	 *
+	 * @return \GV\Field[]|array Empty array if no fields
+	 */
 	public function get_fields() {
 		$fields = array();
 		foreach ( $this['fields'] as $field ) {
