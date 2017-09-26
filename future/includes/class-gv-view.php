@@ -55,7 +55,7 @@ class View implements \ArrayAccess {
 	 * @api
 	 * @since future
 	 */
-	public $joins;
+	public $joins = array();
 
 	/**
 	 * The constructor.
