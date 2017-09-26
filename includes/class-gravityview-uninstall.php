@@ -41,14 +41,10 @@ class GravityView_Uninstall {
 
 		$tables = array();
 
-		if ( method_exists( 'GFFormsModel', 'get_entry_meta_table_name' ) ) {
+		if ( version_compare( self::get_database_version(), '2.3-dev-1', '>=' ) ) {
 			$tables []= GFFormsModel::get_entry_meta_table_name();
-		} else if ( method_exists( 'GFFormsModel', 'get_lead_meta_table_name' ) ) {
-			$tables []= GFFormsModel::get_lead_meta_table_name();
-		} else {
-			$tables []= $wpdb->prefix . 'rg_lead_meta';
-			$tables []= $wpdb->prefix . 'gf_entry_meta';
 		}
+		$tables []= GFFormsModel::get_lead_meta_table_name();
 
 		$suppress = $wpdb->suppress_errors();
 		foreach ( $tables as $meta_table ) {
@@ -73,14 +69,10 @@ class GravityView_Uninstall {
 
 		$tables = array();
 
-		if ( method_exists( 'GFFormsModel', 'get_entry_notes_table_name' ) ) {
+		if ( version_compare( self::get_database_version(), '2.3-dev-1', '>=' ) ) {
 			$tables []= GFFormsModel::get_entry_notes_table_name();
-		} else if ( method_exists( 'GFFormsModel', 'get_lead_notes_table_name' ) ) {
-			$tables []= GFFormsModel::get_lead_notes_table_name();
-		} else {
-			$tables []= $wpdb->prefix . 'rg_lead_notes';
-			$tables []= $wpdb->prefix . 'gf_entry_notes';
 		}
+		$tables []= GFFormsModel::get_lead_notes_table_name();
 
 		$disapproved = __('Disapproved the Entry for GravityView', 'gravityview');
 		$approved = __('Approved the Entry for GravityView', 'gravityview');
