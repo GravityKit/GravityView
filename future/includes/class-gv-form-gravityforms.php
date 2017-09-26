@@ -161,7 +161,7 @@ class GF_Form extends Form implements \ArrayAccess {
 			}
 		}
 
-		return $fields;
+		return array_filter( $fields );
 	}
 
 	/**

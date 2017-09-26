@@ -115,6 +115,11 @@ $forms = gravityview_get_forms('any');
 
 									/** @var \GV\Field $field */
 									foreach ( $_form->get_fields() as $field ) {
+
+										if ( ! $field ) {
+                                            continue;
+										}
+
 										$fields[ $_form->ID ] []= array(
 											'id' => $field->ID,
 											'label' => $field->get_label( $view, $_form ),
