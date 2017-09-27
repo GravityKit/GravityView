@@ -63,13 +63,13 @@ $forms = gravityview_get_forms('any');
 				/**
 				 * Joins that have been listed out in clauses. Cannot be reused.
 				 */
-				$known_joins = array();
+				$known_joins = array( $view->form->ID );
 
 				/**
 				 * List out the current joins and let them be edited.
 				 * + add an empty one for additions.
 				 */
-				foreach ( array_merge( $existing_joins, array( null ) ) as $join ) {
+				foreach ( array_merge( $existing_joins, array( null /** the create a new join line */ ) ) as $join ) {
 					if ( $join && $join->join ) {
 						/** Joiner and joinee. This is getting confusing. */
 						$known_joins = array_merge( $known_joins, array( $join->join->ID, $join->join_on->ID ) );
