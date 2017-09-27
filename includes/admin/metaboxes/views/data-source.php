@@ -92,7 +92,7 @@ $forms = gravityview_get_forms('any');
 							<select name="gravityview_form_join_on[]" class="gravityview_form_join_on">
 								<option>(no join)</option>
 								<?php foreach ( $forms as $form ) {
-									if ( ! in_array( $form['id'], $known_joins ) ) {
+									if ( ( $join && $form['id'] == $join->join_on->ID ) || ! in_array( $form['id'], $known_joins ) ) {
 										printf( '<option value="%d" %s>%s</option>', $form['id'], selected( $form['id'], $join ? $join->join_on->ID : -1, false ), esc_html( $form['title'] ) );
 									}
 								} ?>
