@@ -50,7 +50,7 @@ class GF_Form extends Form implements \ArrayAccess {
 			return null;
 		}
 
-		wp_cache_set( 'gf_form' . $form_id, $form, 'gravityview' );
+		wp_cache_set( 'gf_form_' . $form_id, $form, 'gravityview' );
 
 		$self = new self();
 		$self->form = $form;
