@@ -85,7 +85,14 @@ class View_Table_Template extends View_Template {
 	 */
 	public function the_field( \GV\Field $field, \GV\Entry $entry ) {
 		$form = GF_Form::by_id( $field->form_id );
+
 		if ( $entry instanceof Multi_Entry ) {
+
+			if ( ! isset( $entry->entries[ $form->ID ] ) ) {
+			    gravityview()->log->error('Sub-entry not defined for form #'. $form->ID, $entry->entries );
+                return;
+			}
+
 			$entry = $entry->entries[ $form->ID ];
 		}
 
