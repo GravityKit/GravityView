@@ -19,7 +19,7 @@ class GF_Entry_Filter extends Entry_Filter {
 	private $search_criteria = array();
 
 	/**
-	 * Creater a filter from this criteria.
+	 * Create a filter from this criteria.
 	 *
 	 * @param array $search_criteria The Gravity Forms search criteria.
 	 * @see GFAPI::search_entries
