@@ -181,7 +181,9 @@ class GravityView_oEmbed {
 
 		$post_id = url_to_postid( $url );
 
-		if( empty( $post_id ) ) {
+		$page_on_front = get_option( 'page_on_front' );
+
+		if( (int) $post_id === (int) $page_on_front || empty( $post_id ) ) {
 
 			$args = array(
 				'post_status' => 'publish',

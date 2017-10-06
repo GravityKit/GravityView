@@ -22,6 +22,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 1.22.1 =
 
+* Fixed: Entry oEmbeds not working when using "Plain" URL formats to embed
+
 __Developer Updates:__
 
 * Added: Way to disable front-end cookies ([see code here](https://gist.github.com/zackkatz/354a71dc47ffef072ed725706cf455ed))
