@@ -357,7 +357,7 @@ class GravityView_Edit_Entry_Render {
 	private function unset_hidden_field_values() {
 		global $wpdb;
 
-		if ( method_exists( 'GFFormsModel', 'get_entry_meta_table_name' ) ) {
+		if ( version_compare( GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) ) {
 			$entry_meta_table = GFFormsModel::get_entry_meta_table_name();
 			$current_fields = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key, meta_value FROM $entry_meta_table WHERE entry_id=%d", $this->entry['id'] ) );
 		} else {
@@ -853,7 +853,7 @@ class GravityView_Edit_Entry_Render {
 
 		$entry = GFFormsModel::set_entry_meta( $entry, $this->form );
 
-		if ( ! method_exists( 'GFFormsModel', 'get_entry_meta_table_name' ) ) {
+		if ( version_compare( GFFormsModel::get_database_version(), '2.3-dev-1', '<' ) ) {
 			// We need to clear the cache because Gravity Forms caches the field values, which
 			// we have just updated.
 			foreach ($this->form['fields'] as $key => $field) {
