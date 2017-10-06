@@ -20,6 +20,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.22.1 =
+
+__Developer Updates:__
+
+* Added: `gravityview/metaboxes/data-source/before` and `gravityview/metaboxes/data-source/after` hooks
+
 = 1.22 on September 4, 2017=
 
 * Added: Support for Gravity Forms 2.3
