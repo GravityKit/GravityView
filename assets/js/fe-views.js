@@ -12,14 +12,16 @@
  * globals jQuery
  */
 
-
 jQuery(document).ready( function( $ ) {
 
 	var gvFront = {
 
 		init: function () {
 
-			this.cookies();
+			if( gvGlobals.hasOwnProperty('cookiepath') ) {
+				this.cookies();
+			}
+
 			this.datepicker();
 
 			$( '.gv-widget-search' ).on( 'keypress change', this.form_changed );
@@ -139,10 +141,18 @@ jQuery(document).ready( function( $ ) {
 		},
 
 		cookies: function () {
+
 			if ( $( "#gravityview_back_link" ).length > 0 ) {
+
 				gvFront.backGetCookie();
-			} else if ( $( ".gravityview-view-id" ).length > 0 ) {
-				$( ".gravityview-view-id" ).each( gvFront.backSetCookie );
+
+			} else {
+
+				var $view_ids = $( ".gravityview-view-id" );
+
+				if ( $view_ids.length > 0 ) {
+					$view_ids.each( gvFront.backSetCookie );
+				}
 			}
 		},
 
