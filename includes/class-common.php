@@ -828,25 +828,6 @@ class GVCommon {
 	}
 
 	/**
-	 * @see GFFormsModel::try_convert_float() Alias of private method
-	 *
-	 * @since 1.22.1
-	 *
-	 * @param $text
-	 *
-	 * @return int|string
-	 */
-	private static function try_convert_float( $text ) {
-
-		$number_format = 'decimal_dot';
-		if ( GFCommon::is_numeric( $text, $number_format ) ) {
-			return GFCommon::clean_number( $text, $number_format );
-		}
-
-		return 0;
-	}
-
-	/**
 	 *
 	 * Checks if a certain entry is valid according to the View search filters (specially the Adv Filters)
 	 *
