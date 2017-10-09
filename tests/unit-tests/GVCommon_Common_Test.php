@@ -59,6 +59,24 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$this->assertTrue( GVCommon::matches_operation( '"BMW", "Audi"', 'Audi', 'contains' ) );
 		$this->assertFalse( GVCommon::matches_operation( '"BMW", "Audi"', 'Audi', 'in' ) );
 
+		// Test string comparisons
+		/**
+		 * @see https://github.com/gravityforms/gravityforms/commit/9d37fee852fe9946f030938bfa231e762f687728
+		 * @see https://github.com/gravityview/GravityView-Advanced-Filter-Extension/issues/45
+		 */
+		$this->assertTrue( GVCommon::matches_operation( 1, 'b', 'less_than' ) );
+		$this->assertTrue( GVCommon::matches_operation( 1, 'a', 'less_than' ) );
+		$this->assertTrue( GVCommon::matches_operation( 2, 'a', 'less_than' ) );
+		$this->assertTrue( GVCommon::matches_operation( 2, 'a', '<' ) );
+		$this->assertTrue( GVCommon::matches_operation( 'a', 'b', 'less_than' ) );
+		$this->assertTrue( GVCommon::matches_operation( 'c', 'z', 'less_than' ) );
+		$this->assertTrue( GVCommon::matches_operation( 'z', '1', '>' ) );
+		$this->assertTrue( GVCommon::matches_operation( 'z', '1', 'greater_than' ) );
+		$this->assertTrue( GVCommon::matches_operation( 'z', 1, 'greater_than' ) );
+		$this->assertFalse( GVCommon::matches_operation( 1, 'b', 'greater_than' ) );
+		$this->assertTrue( GVCommon::matches_operation( '4.1E+6', '4100000', 'is' ) );
+		$this->assertTrue( GVCommon::matches_operation( '4.1E+6', 4100000, 'is' ) );
+
 		/**
 		 * Handle JSON-encoded values
 		 * @since 1.22.1
