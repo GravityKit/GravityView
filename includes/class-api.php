@@ -896,6 +896,14 @@ function gravityview_get_current_view_data( $view_id = 0 ) {
 // Templates' hooks
 function gravityview_before() {
 	/**
+	 * @action `gravityview/template/before` Append content to the view.
+	 * @param object $gravityview The $gravityview object available in templates.
+	 */
+	if ( count( $args = func_get_args() ) ) {
+		do_action( 'gravityview/template/before', reset( $args ) );
+	}
+
+	/**
 	 * @action `gravityview_before` Display content before a View. Used to render widget areas. Rendered outside the View container `<div>`
 	 * @param int $view_id The ID of the View being displayed
 	 */
@@ -923,7 +931,9 @@ function gravityview_after() {
 	 * @action `gravityview/template/after` Append content to the view.
 	 * @param object $gravityview The $gravityview object available in templates.
 	 */
-	 do_action_ref_array( 'gravityview/template/after', func_get_args() );
+	if ( count( $args = func_get_args() ) ) {
+		do_action( 'gravityview/template/after', reset( $args ) );
+	}
 
 	/**
 	 * @action `gravityview_after` Append content to the View container `<div>`
