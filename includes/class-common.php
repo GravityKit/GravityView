@@ -1396,7 +1396,7 @@ class GVCommon {
 	 * @param string $content Content to encrypt
 	 * @param string $message Message shown if Javascript is disabled
 	 *
-	 * @see  https://github.com/jnicol/standalone-phpenkoder StandalonePHPEnkoder on Github
+	 * @see  https://github.com/katzwebservices/standalone-phpenkoder StandalonePHPEnkoder on Github
 	 *
 	 * @since 1.7
 	 *
@@ -1407,7 +1407,7 @@ class GVCommon {
 		$output = $content;
 
 		if ( ! class_exists( 'StandalonePHPEnkoder' ) ) {
-			include_once( GRAVITYVIEW_DIR . 'includes/lib/standalone-phpenkoder/StandalonePHPEnkoder.php' );
+			include_once( GRAVITYVIEW_DIR . 'vendor/katzwebservices/standalone-phpenkoder/StandalonePHPEnkoder.php' );
 		}
 
 		if ( class_exists( 'StandalonePHPEnkoder' ) ) {
