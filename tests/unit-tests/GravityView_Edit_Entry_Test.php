@@ -1167,6 +1167,10 @@ if ( ! class_exists( 'GF_User_Registration' ) ) {
 					),
 				);
 			}
+
+			public function get_meta_value( $key, $feed, $form, $entry ) {
+				return '';
+			}
 		}
 	}
 }
