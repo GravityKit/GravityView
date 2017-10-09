@@ -72,22 +72,22 @@ class GravityView_View_Data {
 	 */
 	public function maybe_get_view_id( $passed_post ) {
 		$ids = array();
-
 		if( ! empty( $passed_post ) ) {
 
 			if( is_numeric( $passed_post ) ) {
 				$passed_post = get_post( $passed_post );
 			}
 
-			// Convert WP_Posts into WP_Posts[] array
-			if( $passed_post instanceof WP_Post ) {
+			// Convert WP_Posts-like objects into WP_Posts[] array
+			if ( is_object( $passed_post ) && ! array_diff( array( 'ID', 'post_type' ), array_keys( get_object_vars( $passed_post ) ) ) ) {
 				$passed_post = array( $passed_post );
 			}
 
 			if( is_array( $passed_post ) ) {
 
 				foreach ( $passed_post as &$post) {
-					if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && $post instanceof WP_Post ) {
+					if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && is_object( $post ) && property_exists( $post, 'ID' ) ) {
+						$post = get_post( $post ); // Convert into real WP_Post, thanks globals
 						$views = \GV\View_Collection::from_post( $post );
 						foreach ( $views->all() as $view ) {
 							$ids []= $view->ID;
