@@ -169,7 +169,7 @@ class GV_License_Handler {
 
 		$license_call = GravityView_Settings::get_instance()->get_license_handler()->license_call( $data );
 
-		do_action( 'gravityview_log_debug', __METHOD__ . ': Refreshed the license.', $license_call );
+		gravityview()->log->debug( 'Refreshed the license.', array( 'data' => $license_call ) );
 	}
 
 	/**
@@ -417,7 +417,7 @@ class GV_License_Handler {
 
 		if ( is_wp_error( $response ) ) {
 
-			do_action( 'gravityview_log_error', 'WP_Error response from license check. API params:', $api_params );
+			gravityview()->log->error( 'WP_Error response from license check. API params:', array( 'data' => $api_params ) );
 
 			return array();
 		}
@@ -427,7 +427,7 @@ class GV_License_Handler {
 		// Not JSON
 		if ( empty( $license_data ) ) {
 
-			do_action( 'gravityview_log_error', 'Empty license data response from license check', compact( 'response', 'url', 'api_params', 'data' ) );
+			gravityview()->log->error( 'Empty license data response from license check', array( 'data' => compact( 'response', 'url', 'api_params', 'data' ) ) );
 
 			delete_transient( self::status_transient_key );
 

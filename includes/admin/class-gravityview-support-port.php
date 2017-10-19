@@ -50,7 +50,7 @@ class GravityView_Support_Port {
 		$display_support_port = apply_filters( 'gravityview/support_port/display', self::show_for_user() );
 
 		if ( empty( $display_support_port ) ) {
-			do_action( 'gravityview_log_debug', __METHOD__ . ' - Not showing Support Port' );
+			gravityview()->log->debug( 'Not showing Support Port' );
 
 			return;
 		}

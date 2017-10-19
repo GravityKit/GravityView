@@ -53,7 +53,7 @@ class GravityView_Field_Post_Custom_Field extends GravityView_Field {
 			$field_value = is_string( $field_value ) ? json_decode( $field_value, true ) : $field_value;
 
 			if ( ! is_array( $field_value ) ) {
-				do_action( 'gravityview_log_error', __METHOD__ . ': "List" Custom Field value not an array or string.', compact( 'field_value', 'field' ) );
+				gravityview()->log->error( '"List" Custom Field value not an array or string.', array( 'data' => compact( 'field_value', 'field' ) ) );
 			}
 		}
 

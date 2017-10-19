@@ -66,7 +66,7 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 			$class = gravityview_sanitize_html_class( 'gv-widget-page-links ' . $class );
 			echo '<div class="'.$class.'">'. $page_links .'</div>';
 		} else {
-			do_action( 'gravityview_log_debug', 'GravityView_Widget_Page_Links[render_frontend] No page links; paginate_links() returned empty response.' );
+			gravityview()->log->debug( 'No page links; paginate_links() returned empty response.' );
 		}
 
 	}

@@ -144,7 +144,7 @@ class GVLogic_Shortcode {
 		$operators = $this->get_operators( false );
 
 		if( !in_array( $operation, $operators ) ) {
-			do_action( 'gravityview_log_debug', __METHOD__ .' Attempted to add invalid operation type.', $operation );
+			gravityview()->log->debug( ' Attempted to add invalid operation type. {operation}', array( 'operation' => $operation ) );
 			return false;
 		}
 
@@ -195,7 +195,7 @@ class GVLogic_Shortcode {
 		}
 
 		if( empty( $atts ) ) {
-			do_action( 'gravityview_log_error', __METHOD__.' $atts are empty.', $atts );
+			gravityview()->log->error( '$atts are empty.', array( 'data' => $atts ) );
 			return null;
 		}
 
@@ -207,7 +207,7 @@ class GVLogic_Shortcode {
 
 		// We need an "if"
 		if( false === $this->if ) {
-			do_action( 'gravityview_log_error', __METHOD__.' $atts->if is empty.', $this->passed_atts );
+			gravityview()->log->error( '$atts->if is empty.', array( 'data' => $this->passed_atts ) );
 			return null;
 		}
 
@@ -215,7 +215,7 @@ class GVLogic_Shortcode {
 
 		// We need an operation and comparison value
 		if( ! $setup ) {
-			do_action( 'gravityview_log_error', __METHOD__.' No valid operators were passed.', $this->atts );
+			gravityview()->log->error( 'No valid operators were passed.', array( 'data' => $this->atts ) );
 			return null;
 		}
 
@@ -264,7 +264,7 @@ class GVLogic_Shortcode {
 		 */
 		$output = apply_filters('gravityview/gvlogic/output', $output, $this );
 
-		do_action( 'gravityview_log_debug', __METHOD__ .' Output: ', $output );
+		gravityview()->log->debug( 'Output: ', array( 'data' => $output ) );
 
 		return $output;
 	}

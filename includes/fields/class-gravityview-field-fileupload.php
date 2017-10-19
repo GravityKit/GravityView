@@ -97,7 +97,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		}
 
 		if ( ! is_array( $file_paths ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ': Field does not have a valid image array. JSON decode may have failed.', array( '$value' => $value, '$field_value' => $field_value ) );
+			gravityview()->log->error( 'Field does not have a valid image array. JSON decode may have failed.', array( 'data' => array( '$value' => $value, '$field_value' => $field_value ) ) );
 			return $output_arr;
 		}
 

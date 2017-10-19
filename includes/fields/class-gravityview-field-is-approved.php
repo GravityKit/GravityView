@@ -154,7 +154,7 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 		foreach ( $matches as $match ) {
 
 			if ( empty( $entry ) ) {
-				do_action( 'gravityview_log_error', __METHOD__ . ': No entry data available. Returning empty string.' );
+				gravityview()->log->error( 'No entry data available. Returning empty string.' );
 				$replacement = '';
 			} else {
 				$replacement = GravityView_Entry_Approval::get_entry_status( $entry, $match[1] );

@@ -160,7 +160,7 @@ class GravityView_Edit_Entry_Render {
     public function prevent_maybe_process_form() {
 
         if( ! empty( $_POST ) ) {
-	        do_action( 'gravityview_log_debug', 'GravityView_Edit_Entry[prevent_maybe_process_form] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
+	        gravityview()->log->debug( 'GravityView_Edit_Entry[prevent_maybe_process_form] $_POSTed data (sanitized): ', array( 'data' => esc_html( print_r( $_POST, true ) ) ) );
         }
 
         if( $this->is_edit_entry_submission() ) {
@@ -230,13 +230,13 @@ class GravityView_Edit_Entry_Render {
 
         // Multiple Views embedded, don't proceed if nonce fails
 		if ( $gv_data->has_multiple_views() && ! wp_verify_nonce( $_GET['edit'], self::$nonce_key ) ) {
-            do_action('gravityview_log_error', __METHOD__ . ': Nonce validation failed for the Edit Entry request; returning' );
+            gravityview()->log->error( 'Nonce validation failed for the Edit Entry request; returning' );
             return;
         }
 
         // Sorry, you're not allowed here.
         if( false === $this->user_can_edit_entry( true ) ) {
-            do_action('gravityview_log_error', __METHOD__ . ': User is not allowed to edit this entry; returning', $this->entry );
+            gravityview()->log->error( 'User is not allowed to edit this entry; returning', array( 'data' => $this->entry ) );
             return;
         }
 
@@ -278,16 +278,16 @@ class GravityView_Edit_Entry_Render {
         $valid = $this->verify_nonce();
 
         if( !$valid ) {
-            do_action('gravityview_log_error', __METHOD__ . ' Nonce validation failed.' );
+            gravityview()->log->error( 'Nonce validation failed.' );
             return;
         }
 
         if( $this->entry['id'] !== $_POST['lid'] ) {
-            do_action('gravityview_log_error', __METHOD__ . ' Entry ID did not match posted entry ID.' );
+            gravityview()->log->error( 'Entry ID did not match posted entry ID.' );
             return;
         }
 
-        do_action('gravityview_log_debug', __METHOD__ . ': $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
+        gravityview()->log->debug( '$_POSTed data (sanitized): ', array( 'data' => esc_html( print_r( $_POST, true ) ) ) );
 
         $this->process_save_process_files( $this->form_id );
 
@@ -295,7 +295,7 @@ class GravityView_Edit_Entry_Render {
 
         if( $this->is_valid ) {
 
-            do_action('gravityview_log_debug', __METHOD__ . ': Submission is valid.' );
+            gravityview()->log->debug( 'Submission is valid.' );
 
             /**
              * @hack This step is needed to unset the adminOnly from form fields, to add the calculation fields
@@ -343,7 +343,7 @@ class GravityView_Edit_Entry_Render {
             do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'], $this );
 
         } else {
-            do_action('gravityview_log_error', __METHOD__ . ': Submission is NOT valid.', $this->entry );
+            gravityview()->log->error( 'Submission is NOT valid.', array( 'entry' => $this->entry ) );
         }
 
     } // process_save
@@ -536,9 +536,9 @@ class GravityView_Edit_Entry_Render {
             $return_entry = GFAPI::update_entry( $entry );
 
             if( is_wp_error( $return_entry ) ) {
-                do_action( 'gravityview_log_error', 'Updating the entry calculation fields failed', $return_entry );
+                gravityview()->log->error( 'Updating the entry calculation fields failed', array( 'data' => $return_entry ) );
             } else {
-                do_action( 'gravityview_log_debug', 'Updating the entry calculation fields succeeded' );
+                gravityview()->log->debug( 'Updating the entry calculation fields succeeded' );
             }
         }
     }
@@ -646,7 +646,7 @@ class GravityView_Edit_Entry_Render {
     private function maybe_update_post_fields( $form ) {
 
         if( empty( $this->entry['post_id'] ) ) {
-	        do_action( 'gravityview_log_debug', __METHOD__ . ': This entry has no post fields. Continuing...' );
+	        gravityview()->log->debug( 'This entry has no post fields. Continuing...' );
             return;
         }
 
@@ -654,7 +654,7 @@ class GravityView_Edit_Entry_Render {
 
         // Security check
         if( false === GVCommon::has_cap( 'edit_post', $post_id ) ) {
-            do_action( 'gravityview_log_error', 'The current user does not have the ability to edit Post #'.$post_id );
+            gravityview()->log->error( 'The current user does not have the ability to edit Post #{post_id}', array( 'post_id' => $post_id ) );
             return;
         }
 
@@ -744,9 +744,9 @@ class GravityView_Edit_Entry_Render {
             $return_entry = GFAPI::update_entry( $this->entry );
 
             if( is_wp_error( $return_entry ) ) {
-               do_action( 'gravityview_log_error', 'Updating the entry post fields failed', array( '$this->entry' => $this->entry, '$return_entry' => $return_entry ) );
+				gravityview()->log->error( 'Updating the entry post fields failed', array( 'data' => array( '$this->entry' => $this->entry, '$return_entry' => $return_entry ) ) );
             } else {
-                do_action( 'gravityview_log_debug', 'Updating the entry post fields for post #'.$post_id.' succeeded' );
+                gravityview()->log->debug( 'Updating the entry post fields for post #{post_id} succeeded', array( 'post_id' => $post_id ) );
             }
 
         }
@@ -755,9 +755,9 @@ class GravityView_Edit_Entry_Render {
 
         if( is_wp_error( $return_post ) ) {
             $return_post->add_data( $updated_post, '$updated_post' );
-            do_action( 'gravityview_log_error', 'Updating the post content failed', compact( 'updated_post', 'return_post' ) );
+            gravityview()->log->error( 'Updating the post content failed', array( 'data' => compact( 'updated_post', 'return_post' ) ) );
         } else {
-            do_action( 'gravityview_log_debug', 'Updating the post content for post #'.$post_id.' succeeded', $updated_post );
+            gravityview()->log->debug( 'Updating the post content for post #{post_id} succeeded', array( 'post_id' => $post_id, 'data' => $updated_post ) );
         }
     }
 
@@ -1142,7 +1142,7 @@ class GravityView_Edit_Entry_Render {
 	    $warnings = ob_get_clean();
 
 	    if( !empty( $warnings ) ) {
-		    do_action( 'gravityview_log_error', __METHOD__ . $warnings, $field_value );
+		    gravityview()->log->error( '{warning}', array( 'warning' => $warnings, 'data' => $field_value ) );
 	    }
 
         return $return;
@@ -1393,9 +1393,9 @@ class GravityView_Edit_Entry_Render {
      */
     public function custom_validation( $validation_results ) {
 
-        do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Validation results: ', $validation_results );
+        gravityview()->log->debug( 'GravityView_Edit_Entry[custom_validation] Validation results: ', array( 'data' => $validation_results ) );
 
-        do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
+        gravityview()->log->debug( 'GravityView_Edit_Entry[custom_validation] $_POSTed data (sanitized): ', array( 'data' => esc_html( print_r( $_POST, true ) ) ) );
 
         $gv_valid = true;
 
@@ -1453,7 +1453,7 @@ class GravityView_Edit_Entry_Render {
             // This field has failed validation.
             if( !empty( $field->failed_validation ) ) {
 
-                do_action( 'gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Field is invalid.', array( 'field' => $field, 'value' => $value ) );
+                gravityview()->log->debug( 'GravityView_Edit_Entry[custom_validation] Field is invalid.', array( 'data' => array( 'field' => $field, 'value' => $value ) ) );
 
                 switch ( $field_type ) {
 
@@ -1487,7 +1487,7 @@ class GravityView_Edit_Entry_Render {
 
                         unset( $field->validation_message );
 
-                        do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Field not a duplicate; it is the same entry.', $entry );
+                        gravityview()->log->debug( 'GravityView_Edit_Entry[custom_validation] Field not a duplicate; it is the same entry.', array( 'data' => $entry ) );
 
                         continue;
                     }
@@ -1508,7 +1508,7 @@ class GravityView_Edit_Entry_Render {
 
         $validation_results['is_valid'] = $gv_valid;
 
-        do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Validation results.', $validation_results );
+        gravityview()->log->debug( 'GravityView_Edit_Entry[custom_validation] Validation results.', array( 'data' => $validation_results ) );
 
         // We'll need this result when rendering the form ( on GFFormDisplay::get_form )
         $this->form_after_validation = $validation_results['form'];
@@ -1905,7 +1905,7 @@ class GravityView_Edit_Entry_Render {
             echo GVCommon::generate_notice( wpautop( $error ), 'gv-error error');
         }
 
-        do_action('gravityview_log_error', 'GravityView_Edit_Entry[user_can_edit_entry]' . $error );
+        gravityview()->log->error( '{error}', array( 'error' => $error ) );
 
         return false;
     }
@@ -1935,7 +1935,7 @@ class GravityView_Edit_Entry_Render {
             echo GVCommon::generate_notice( wpautop( esc_html( $error ) ), 'gv-error error');
         }
 
-        do_action('gravityview_log_error', 'GravityView_Edit_Entry[user_can_edit_field]' . $error );
+        gravityview()->log->error( '{error}', array( 'error' => $error ) );
 
         return false;
 

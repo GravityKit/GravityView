@@ -46,7 +46,7 @@ class GravityView_Shortcode {
 			return null;
 		}
 
-		do_action( 'gravityview_log_debug', __FUNCTION__ . ' $passed_atts: ', $passed_atts );
+		gravityview()->log->debug( '$passed_atts: ', array( 'data' => $passed_atts ) );
 
 		// Get details about the current View
 		if( !empty( $passed_atts['detail'] ) ) {

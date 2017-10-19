@@ -292,7 +292,7 @@ class GravityView_Admin_ApproveEntries {
 			list( $approved_status, $form_id ) = explode( '-', $bulk_action );
 
 			if ( empty( $form_id ) ) {
-				do_action( 'gravityview_log_error', '[process_bulk_action] Form ID is empty from parsing bulk action.', $bulk_action );
+				gravityview()->log->error( 'Form ID is empty from parsing bulk action.', array( 'data' => $bulk_action ) );
 				return false;
 			}
 
@@ -319,7 +319,7 @@ class GravityView_Admin_ApproveEntries {
 			}
 
 			if ( empty( $entries ) ) {
-				do_action( 'gravityview_log_error', '[process_bulk_action] Entries are empty' );
+				gravityview()->log->error( 'Entries are empty' );
 				return false;
 			}
 
@@ -436,7 +436,7 @@ class GravityView_Admin_ApproveEntries {
 		$forms = RGFormsModel::get_forms( null, 'title' );
 
 		if( ! isset( $forms[0] ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ': No forms were found' );
+			gravityview()->log->error( 'No forms were found' );
 			return 0;
 		}
 
@@ -451,9 +451,7 @@ class GravityView_Admin_ApproveEntries {
 	function add_scripts_and_styles( $hook ) {
 
 		if( ! class_exists( 'GFForms' ) ) {
-
-			do_action( 'gravityview_log_error', 'GravityView_Admin_ApproveEntries[add_scripts_and_styles] GFForms does not exist.' );
-
+			gravityview()->log->error( 'GFForms does not exist.' );
 			return;
 		}
 

@@ -164,7 +164,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 	function maybe_add_note() {
 
 		if( ! GVCommon::has_cap( 'gravityview_add_entry_notes' ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ': The user isnt allowed to add entry notes.' );
+			gravityview()->log->error( 'The user isnt allowed to add entry notes.' );
 			return;
 		}
 
@@ -212,7 +212,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		if( empty( $data['entry-slug'] ) ) {
 
 			$error = self::strings('error-invalid');
-			do_action( 'gravityview_log_error', __METHOD__ . ': The note is missing an Entry ID.' );
+			gravityview()->log->error( 'The note is missing an Entry ID.' );
 
 		} else {
 
@@ -222,7 +222,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 			if( ! $has_cap ) {
 				$error = self::strings( 'error-cap-add' );
-				do_action( 'gravityview_log_error', __METHOD__ . ': Adding a note failed: the user does not have the "gravityview_add_entry_notes" capability.' );
+				gravityview()->log->error( 'Adding a note failed: the user does not have the "gravityview_add_entry_notes" capability.' );
 			} elseif ( $valid ) {
 
 				$entry = gravityview_get_entry( $data['entry-slug'], true, false );
@@ -244,15 +244,15 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 					if ( $note ) {
 						$success = self::display_note( $note, ! empty( $data['show-delete'] ) );
-						do_action( 'gravityview_log_debug', __METHOD__ . ': The note was successfully created', compact('note', 'data') );
+						gravityview()->log->debug( 'The note was successfully created', array( 'data' => compact( 'note', 'data' ) ) );
 					} else {
 						$error = self::strings('error-add-note');
-						do_action( 'gravityview_log_error', __METHOD__ . ': The note was not successfully created', compact('note', 'data') );
+						gravityview()->log->error( 'The note was not successfully created', array( 'data' => compact( 'note', 'data' ) ) );
 					}
 				}
 			} else {
 				$error = self::strings('error-invalid');
-				do_action( 'gravityview_log_error', __METHOD__ . ': Nonce validation failed; the note was not created' );
+				gravityview()->log->error( 'Nonce validation failed; the note was not created' );
 			}
 		}
 
@@ -556,7 +556,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 	public static function get_add_note_part() {
 
 		if( ! GVCommon::has_cap( 'gravityview_add_entry_notes' ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ': User does not have permission to add entry notes ("gravityview_add_entry_notes").' );
+			gravityview()->log->error( 'User does not have permission to add entry notes ("gravityview_add_entry_notes").' );
 			return '';
 		}
 
@@ -638,7 +638,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 	private static function get_note_email_fields( $entry_slug = '' ) {
 
 		if( ! GVCommon::has_cap( 'gravityview_email_entry_notes' ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ': User does not have permission to email entry notes ("gravityview_email_entry_notes").' );
+			gravityview()->log->error( 'User does not have permission to email entry notes ("gravityview_email_entry_notes").' );
 			return '';
 		}
 
@@ -703,11 +703,11 @@ class GravityView_Field_Notes extends GravityView_Field {
 	private function maybe_send_entry_notes( $note = false, $entry, $data ) {
 
 		if( ! $note || ! GVCommon::has_cap('gravityview_email_entry_notes') ) {
-			do_action( 'gravityview_log_debug', __METHOD__ . ': User doesnt have "gravityview_email_entry_notes" cap, or $note is empty', $note );
+			gravityview()->log->debug( 'User doesn\'t have "gravityview_email_entry_notes" cap, or $note is empty', array( 'data' => $note ) );
 			return;
 		}
 
-		do_action( 'gravityview_log_debug', __METHOD__ . ': $data', $data );
+		gravityview()->log->debug( '$data', array( 'data' => $data ) );
 
 		//emailing notes if configured
 		if ( ! empty( $data['gv-note-to'] ) ) {
@@ -734,11 +734,11 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 			if( 'custom' === $to && $include_custom ) {
 				$to = $email_data['gv-note-to-custom'];
-				do_action( 'gravityview_log_debug', __METHOD__ . ': Sending note to a custom email address: ' . $to );
+				gravityview()->log->debug( 'Sending note to a custom email address: {to}' . array( 'to' => $to ) );
 			}
 
 			if ( ! GFCommon::is_valid_email_list( $to ) ) {
-				do_action( 'gravityview_log_error', __METHOD__ . ': $to not a valid email or email list (CSV of emails): ' . print_r( $to, true ), $email_data );
+				gravityview()->log->error( '$to not a valid email or email list (CSV of emails): {to}', array( 'to' => print_r( $to, true ), 'data' => $email_data ) );
 				return;
 			}
 

@@ -210,18 +210,18 @@ class GravityView_View_Data {
 		}
 
 		if( ! is_numeric( $view_id) ) {
-			do_action('gravityview_log_error', sprintf('GravityView_View_Data[get_view] $view_id passed is not numeric.', $view_id) );
+			gravityview()->log->error( '$view_id passed is not numeric.', array( 'data' => $view_id ) );
 			return false;
 		}
 
 		// Backup: the view hasn't been fetched yet. Doing it now.
 		if ( ! isset( $this->views[ $view_id ] ) ) {
-			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[get_view] View #%s not set yet.', $view_id) );
+			gravityview()->log->debug( 'View #{view_id} not set yet.', array( 'view_id' => $view_id ) );
 			return $this->add_view( $view_id, $atts );
 		}
 
 		if ( empty( $this->views[ $view_id ] ) ) {
-			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[get_view] Returning; View #%s was empty.', $view_id) );
+			gravityview()->log->debug( 'Returning; View #{view_id} was empty.', array( 'view_id' => $view_id ) );
 			return false;
 		}
 
@@ -276,12 +276,12 @@ class GravityView_View_Data {
 
 		// The view has been set already; returning stored view.
 		if ( !empty( $this->views[ $view_id ] ) ) {
-			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] Returning; View #%s already exists.', $view_id) );
+			gravityview()->log->debug( 'Returning; View #{view_id} already exists.', array( 'view_id' => $view_id ) );
 			return $this->views[ $view_id ];
 		}
 
 		if( ! $this->view_exists( $view_id ) ) {
-			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] Returning; View #%s does not exist.', $view_id) );
+			gravityview()->log->debug( 'Returning; View #{view_id} does not exist.', array( 'view_id' => $view_id ) );
 			return false;
 		}
 
@@ -289,7 +289,7 @@ class GravityView_View_Data {
 
 		if( empty( $form_id ) ) {
 
-			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] Returning; Post ID #%s does not have a connected form.', $view_id) );
+			gravityview()->log->debug( 'Returning; Post ID #{view_id} does not have a connected form.', array( 'view_id' => $view_id ) );
 
 			return false;
 		}
@@ -297,21 +297,21 @@ class GravityView_View_Data {
 		// Get the settings for the View ID
 		$view_settings = gravityview_get_template_settings( $view_id );
 
-		do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] Settings pulled in from View #%s', $view_id), $view_settings );
+		gravityview()->log->debug( 'Settings pulled in from View #{view_id}', array( 'view_id' => $view_id, 'data' => $view_settings ) );
 
 		// Merge the view settings with the defaults
 		$view_defaults = wp_parse_args( $view_settings, defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? \GV\View_Settings::defaults() : self::get_default_args() );
 
-		do_action('gravityview_log_debug', 'GravityView_View_Data[add_view] View Defaults after merging View Settings with the default args.', $view_defaults );
+		gravityview()->log->debug( 'View Defaults after merging View Settings with the default args.', array( 'data' => $view_defaults ) );
 
 		if( ! empty( $atts ) && is_array( $atts ) ) {
 
-			do_action('gravityview_log_debug', 'GravityView_View_Data[add_view] $atts before merging  with the $view_defaults', $atts );
+			gravityview()->log->debug( '$atts before merging  with the $view_defaults', array( 'data' => $atts ) );
 
 			// Get the settings from the shortcode and merge them with defaults.
 			$atts = shortcode_atts( $view_defaults, $atts );
 
-			do_action('gravityview_log_debug', 'GravityView_View_Data[add_view] $atts after merging  with the $view_defaults', $atts );
+			gravityview()->log->debug( '$atts after merging  with the $view_defaults', array( 'data' => $atts ) );
 
 		} else {
 
@@ -333,7 +333,7 @@ class GravityView_View_Data {
 			'form' => gravityview_get_form( $form_id ),
 		);
 
-		do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] View #%s being added.', $view_id), $data );
+		gravityview()->log->debug( 'View #{view_id} being added.', array( 'view_id' => $view_id, 'data' => $data ) );
 
 		$this->views[ $view_id ] = $data;
 
@@ -353,7 +353,7 @@ class GravityView_View_Data {
 	 */
 	function get_fields( $view_id ) {
 		$dir_fields = gravityview_get_directory_fields( $view_id );
-		do_action( 'gravityview_log_debug', '[render_view] Fields: ', $dir_fields );
+		gravityview()->log->debug( 'Fields: ', array( 'data' => $dir_fields ) );
 
 		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			if ( \GV\View::exists( $view_id ) ) {
@@ -364,7 +364,7 @@ class GravityView_View_Data {
 
 		// remove fields according to visitor visibility permissions (if logged-in)
 		$dir_fields = $this->filter_fields( $dir_fields );
-		do_action( 'gravityview_log_debug', '[render_view] Fields after visibility filter: ', $dir_fields );
+		gravityview()->log->debug( 'Fields after visibility filter: ', array( 'data' => $dir_fields ) );
 
 		return $dir_fields;
 	}
@@ -456,7 +456,7 @@ class GravityView_View_Data {
 		}
 
 		if( empty( $view_id ) ) {
-			do_action('gravityview_log_error', 'GravityView_View_Data[get_id_from_atts] Returning; no ID defined (Atts)', $atts );
+			gravityview()->log->error( 'Returning; no ID defined (Atts)', array( 'data' => $atts ) );
 			return;
 		}
 
@@ -512,7 +512,7 @@ class GravityView_View_Data {
 			return NULL;
 		}
 
-		do_action('gravityview_log_debug', 'GravityView_View_Data[parse_post_content] Parsing content, found shortcodes:', $shortcodes );
+		gravityview()->log->debug( 'Parsing content, found shortcodes:', array( 'data' => $shortcodes ) );
 
 		$ids = array();
 
@@ -523,11 +523,11 @@ class GravityView_View_Data {
 			$args = shortcode_parse_atts( $shortcode[3] );
 
 			if( empty( $args['id'] ) ) {
-				do_action('gravityview_log_error', 'GravityView_View_Data[parse_post_content] Returning; no ID defined in shortcode atts', $shortcode );
+				gravityview()->log->error( 'Returning; no ID defined in shortcode atts', array( 'data' => $shortcode ) );
 				continue;
 			}
 
-			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[parse_post_content] Adding view #%s with shortcode args', $args['id']), $args );
+			gravityview()->log->debug( 'Adding view #{view_id} with shortcode args', array( 'view_id' => $args['id'], 'data' => $args ) );
 
 			// Store the View to the object for later fetching.
 			$this->add_view( $args['id'], $args );
@@ -574,7 +574,7 @@ class GravityView_View_Data {
 			return NULL;
 		}
 
-		do_action( 'gravityview_log_debug', 'GravityView_View_Data[parse_post_meta] Search for GravityView shortcodes on the following custom fields keys:', $meta_keys );
+		gravityview()->log->debug( 'Search for GravityView shortcodes on the following custom fields keys:', array( 'data' => $meta_keys ) );
 
 		$meta_content = '';
 
@@ -587,11 +587,11 @@ class GravityView_View_Data {
 		}
 
 		if( empty( $meta_content ) ) {
-			do_action('gravityview_log_error', sprintf( 'GravityView_View_Data[parse_post_meta] Returning; Empty custom fields for Post #%s (Custom fields keys:)', $post_id ), $meta_keys );
+			gravityview()->log->error( 'Returning; Empty custom fields for Post #{post_id} (Custom fields keys:)', array( 'post_id' => $post_id, 'data' => $meta_keys ) );
 			return NULL;
 		}
 
-		do_action( 'gravityview_log_debug', 'GravityView_View_Data[parse_post_meta] Combined content retrieved from custom fields:', $meta_content );
+		gravityview()->log->debug( 'Combined content retrieved from custom fields:', array( 'data' => $meta_content ) );
 
 		return $this->parse_post_content( $meta_content );
 

@@ -161,7 +161,7 @@ class GravityView_Ajax {
 
 		$response = array_map( 'gravityview_strip_whitespace', $response );
 
-		do_action( 'gravityview_log_debug', '[get_preset_fields_config] AJAX Response', $response );
+		gravityview()->log->debug( '[get_preset_fields_config] AJAX Response', array( 'data' => $response ) );
 
 		$this->_exit( json_encode( $response ) );
 	}
@@ -176,7 +176,7 @@ class GravityView_Ajax {
 		$this->check_ajax_nonce();
 
 		if( empty( $_POST['template_id'] ) ) {
-			do_action( 'gravityview_log_error', '[create_preset_form] Cannot create preset form; the template_id is empty.' );
+			gravityview()->log->error( 'Cannot create preset form; the template_id is empty.' );
 			$this->_exit( false );
 		}
 
@@ -189,7 +189,7 @@ class GravityView_Ajax {
 		// get the form ID
 		if( false === $form ) {
 			// send error to user
-			do_action( 'gravityview_log_error', '[create_preset_form] Error importing form for template id: ' . (int) $_POST['template_id'] );
+			gravityview()->log->error( 'Error importing form for template id: {template_id}', array( 'template_id' => (int) $_POST['template_id'] ) );
 
 			$this->_exit( false );
 		}
@@ -206,10 +206,10 @@ class GravityView_Ajax {
 	 */
 	function import_form( $xml_or_json_path = '' ) {
 
-		do_action( 'gravityview_log_debug', '[import_form] Import Preset Form. (File)', $xml_or_json_path );
+		gravityview()->log->debug( '[import_form] Import Preset Form. (File) {path}', array( 'path' => $xml_or_json_path ) );
 
 		if( empty( $xml_or_json_path ) || !class_exists('GFExport') || !file_exists( $xml_or_json_path ) ) {
-			do_action( 'gravityview_log_error', '[import_form] Class GFExport or file not found. file: ', $xml_or_json_path );
+			gravityview()->log->error( 'Class GFExport or file not found. file: {path}', array( 'path' => $xml_or_json_path ) );
 			return false;
 		}
 
@@ -217,11 +217,11 @@ class GravityView_Ajax {
 		$forms = '';
 		$count = GFExport::import_file( $xml_or_json_path, $forms );
 
-		do_action( 'gravityview_log_debug', '[import_form] Importing form (Result)', $count );
-		do_action( 'gravityview_log_debug', '[import_form] Importing form (Form) ', $forms );
+		gravityview()->log->debug( '[import_form] Importing form (Result) {count}', array( 'count' => $count ) );
+		gravityview()->log->debug( '[import_form] Importing form (Form) ', array( 'data' => $forms ) );
 
 		if( $count != 1 || empty( $forms[0]['id'] ) ) {
-			do_action( 'gravityview_log_error', '[import_form] Form Import Failed!' );
+			gravityview()->log->error( 'Form Import Failed!' );
 			return false;
 		}
 
@@ -241,7 +241,7 @@ class GravityView_Ajax {
 		$this->check_ajax_nonce();
 
 		if( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) ) {
-			do_action( 'gravityview_log_error', '[get_field_options] Required fields were not set in the $_POST request. ' );
+			gravityview()->log->error( 'Required fields were not set in the $_POST request. ' );
 			$this->_exit( false );
 		}
 
@@ -303,12 +303,12 @@ class GravityView_Ajax {
 	static function pre_get_form_fields( $template_id = '') {
 
 		if( empty( $template_id ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' - Template ID not set.' );
+			gravityview()->log->error( 'Template ID not set.' );
 			return false;
 		} else {
 			$form_file = apply_filters( 'gravityview_template_formxml', '', $template_id );
 			if( !file_exists( $form_file )  ) {
-				do_action( 'gravityview_log_error', __METHOD__ . ' - Importing Form Fields for preset ['. $template_id .']. File not found. file: ' . $form_file );
+				gravityview()->log->error( 'Importing Form Fields for preset [{template_id}]. File not found. file: {path}', array( 'template_id' => $template_id, 'path' => $form_file ) );
 				return false;
 			}
 		}
@@ -323,7 +323,7 @@ class GravityView_Ajax {
 		if( file_exists( $xml_parser ) ) {
 			require_once( $xml_parser );
 		} else {
-			do_action( 'gravityview_log_debug', __METHOD__ . ' - Gravity Forms XML Parser not found.', $xml_parser );
+			gravityview()->log->debug( ' - Gravity Forms XML Parser not found {path}.', array( 'path' => $xml_parser ) );
 			return false;
 		}
 
@@ -348,7 +348,7 @@ class GravityView_Ajax {
         $forms = $xml->unserialize($xmlstr);
 
         if( !$forms ) {
-        	do_action( 'gravityview_log_error', '[pre_get_available_fields] Importing Form Fields for preset ['. $template_id .']. Error importing file. (File)', $form_file );
+        	gravityview()->log->error( 'Importing Form Fields for preset [{template_id}]. Error importing file. (File) {path}', array( 'template_id' => $template_id, 'path' => $form_file ) );
         	return false;
         }
 
@@ -357,11 +357,11 @@ class GravityView_Ajax {
         }
 
         if( empty( $form ) ) {
-        	do_action( 'gravityview_log_error', '[pre_get_available_fields] $form not set.', $forms );
+        	gravityview()->log->error( '$form not set.', array( 'data' => $forms ) );
         	return false;
         }
 
-        do_action( 'gravityview_log_debug', '[pre_get_available_fields] Importing Form Fields for preset ['. $template_id .']. (Form)', $form );
+        gravityview()->log->debug( '[pre_get_available_fields] Importing Form Fields for preset [{template_id}]. (Form)', array( 'template_id' => $template_id, 'data' => $form ) );
 
         return $form;
 
@@ -376,7 +376,7 @@ class GravityView_Ajax {
 	function import_fields( $file ) {
 
 		if( empty( $file ) || !file_exists(  $file ) ) {
-			do_action( 'gravityview_log_error', '[import_fields] Importing Preset Fields. File not found. (File)', $file );
+			gravityview()->log->error( 'Importing Preset Fields. File not found. (File) {path}', array( 'path' => $file ) );
 			return false;
 		}
 
@@ -388,16 +388,16 @@ class GravityView_Ajax {
 		$presets = $parser->parse( $file );
 
 		if(is_wp_error( $presets )) {
-			do_action( 'gravityview_log_error', '[import_fields] Importing Preset Fields failed. Threw WP_Error.', $presets );
+			gravityview()->log->error( 'Importing Preset Fields failed. Threw WP_Error.', array( 'data' => $presets ) );
 			return false;
 		}
 
 		if( empty( $presets['posts'][0]['postmeta'] ) && !is_array( $presets['posts'][0]['postmeta'] ) ) {
-			do_action( 'gravityview_log_error', '[import_fields] Importing Preset Fields failed. Meta not found in file.', $file );
+			gravityview()->log->error( 'Importing Preset Fields failed. Meta not found in file. {path}', array( 'path' => $file ) );
 			return false;
 		}
 
-		do_action( 'gravityview_log_debug', '[import_fields] postmeta', $presets['posts'][0]['postmeta'] );
+		gravityview()->log->debug( '[import_fields] postmeta', array( 'data' => $presets['posts'][0]['postmeta'] ) );
 
 		$fields = $widgets = array();
 		foreach( $presets['posts'][0]['postmeta'] as $meta ) {
@@ -411,8 +411,8 @@ class GravityView_Ajax {
 			}
 		}
 
-		do_action( 'gravityview_log_debug', '[import_fields] Imported Preset (Fields)', $fields );
-		do_action( 'gravityview_log_debug', '[import_fields] Imported Preset (Widgets)', $widgets );
+		gravityview()->log->debug( '[import_fields] Imported Preset (Fields)', array( 'data' => $fields ) );
+		gravityview()->log->debug( '[import_fields] Imported Preset (Widgets)', array( 'data' => $widgets ) );
 
 		return array(
 			'fields' => $fields,

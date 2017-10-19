@@ -244,13 +244,13 @@ class GravityView_Edit_Entry {
         // Then we're good.
         if( GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_others_entries' ), $entry['id'] ) ) {
 
-            do_action('gravityview_log_debug', __METHOD__ . ' - User has ability to edit all entries.');
+            gravityview()->log->debug( 'User has ability to edit all entries.' );
 
             $user_can_edit = true;
 
         } else if( !isset( $entry['created_by'] ) ) {
 
-            do_action('gravityview_log_error', 'GravityView_Edit_Entry[check_user_cap_edit_entry] Entry `created_by` doesn\'t exist.');
+            gravityview()->log->error( 'Entry `created_by` doesn\'t exist.');
 
             $user_can_edit = false;
 
@@ -270,7 +270,7 @@ class GravityView_Edit_Entry {
             // User edit is disabled
             if( empty( $user_edit ) ) {
 
-                do_action('gravityview_log_debug', 'GravityView_Edit_Entry[check_user_cap_edit_entry] User Edit is disabled. Returning false.' );
+                gravityview()->log->debug( 'User Edit is disabled. Returning false.' );
 
                 $user_can_edit = false;
             }
@@ -278,13 +278,13 @@ class GravityView_Edit_Entry {
             // User edit is enabled and the logged-in user is the same as the user who created the entry. We're good.
             else if( is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
 
-                do_action('gravityview_log_debug', sprintf( 'GravityView_Edit_Entry[check_user_cap_edit_entry] User %s created the entry.', $current_user->ID ) );
+                gravityview()->log->debug( 'User {user_id} created the entry.', array( 'user_id', $current_user->ID ) );
 
                 $user_can_edit = true;
 
             } else if( ! is_user_logged_in() ) {
 
-                do_action( 'gravityview_log_debug', __METHOD__ . ' No user defined; edit entry requires logged in user' );
+                gravityview()->log->debug( 'No user defined; edit entry requires logged in user' );
             }
 
         }

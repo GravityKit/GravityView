@@ -367,7 +367,7 @@ abstract class GravityView_Field {
 			$entry_meta["{$this->entry_meta_key}"] = $added_meta;
 
 		} else {
-			do_action( 'gravityview_log_error', __METHOD__ . ' Entry meta already set: ' . $this->entry_meta_key, $entry_meta["{$this->entry_meta_key}"] );
+			gravityview()->log->error( 'Entry meta already set: {meta_key}', array( 'meta_key' => $this->entry_meta_key, 'data' =>  $entry_meta["{$this->entry_meta_key}"] ) );
 		}
 
 		return $entry_meta;
@@ -490,14 +490,14 @@ abstract class GravityView_Field {
 		}
 
 		if( empty( $connected_form ) ) {
-			do_action( 'gravityview_log_error', sprintf( '%s: Form not found for form ID "%s"', __METHOD__, $connected_form ) );
+			gravityview()->log->error( 'Form not found for form ID "{form_id}"', array( 'form_id' => $connected_form ) );
 			return false;
 		}
 
 		$form = GFAPI::get_form( $connected_form );
 
 		if ( ! $form ) {
-			do_action( 'gravityview_log_error', sprintf( '%s: Form not found for field ID of "%s", when checking for a form with ID of "%s"', __METHOD__, $this->_field_id, $connected_form ) );
+			gravityview()->log->error( 'Form not found for field ID of "{field_id}", when checking for a form with ID of "{form_id}"', array( 'field_id' => $this->_field_id, 'form_id' => $connected_form ) );
 			return false;
 		}
 

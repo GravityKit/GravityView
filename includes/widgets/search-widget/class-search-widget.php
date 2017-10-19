@@ -453,7 +453,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			$get = $_GET;
 		}
 
-		do_action( 'gravityview_log_debug', sprintf( '%s[filter_entries] Requested $_%s: ', get_class( $this ), $this->search_method ), $get );
+		gravityview()->log->debug( 'Requested $_{method}: ', array( 'method' => $this->search_method, 'data' => $get ) );
 
 		if ( empty( $get ) || ! is_array( $get ) ) {
 			return $search_criteria;
@@ -653,7 +653,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		 */
 		$search_criteria['field_filters']['mode'] = apply_filters( 'gravityview/search/mode', $mode );
 
-		do_action( 'gravityview_log_debug', sprintf( '%s[filter_entries] Returned Search Criteria: ', get_class( $this ) ), $search_criteria );
+		gravityview()->log->debug( 'Returned Search Criteria: ', array( 'data' => $search_criteria ) );
 
 		unset( $get );
 
@@ -859,7 +859,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	public static function get_formatted_date( $value = '', $format = 'Y-m-d' ) {
 		$date = date_create( $value );
 		if ( empty( $date ) ) {
-			do_action( 'gravityview_log_debug', sprintf( '%s[get_formatted_date] Date format not valid: ', get_class( self::$instance ) ), $value );
+			gravityview()->log->debug( 'Date format not valid: {value}', array( 'value' => $value ) );
 			return '';
 		}
 		return $date->format( $format );
@@ -914,7 +914,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$gravityview_view = GravityView_View::getInstance();
 
 		if ( empty( $gravityview_view ) ) {
-			do_action( 'gravityview_log_debug', sprintf( '%s[render_frontend]: $gravityview_view not instantiated yet.', get_class( $this ) ) );
+			gravityview()->log->debug( '$gravityview_view not instantiated yet.' );
 			return;
 		}
 
@@ -922,7 +922,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$search_fields = ! empty( $widget_args['search_fields'] ) ? json_decode( $widget_args['search_fields'], true ) : '';
 
 		if ( empty( $search_fields ) || ! is_array( $search_fields ) ) {
-			do_action( 'gravityview_log_debug', sprintf( '%s[render_frontend] No search fields configured for widget:', get_class( $this ) ), $widget_args );
+			gravityview()->log->debug( 'No search fields configured for widget:', array( 'data' => $widget_args ) );
 			return;
 		}
 
@@ -968,7 +968,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			$search_fields[ $k ] = $updated_field;
 		}
 
-		do_action( 'gravityview_log_debug', sprintf( '%s[render_frontend] Calculated Search Fields: ', get_class( $this ) ), $search_fields );
+		gravityview()->log->debug( 'Calculated Search Fields: ', array( 'data' => $search_fields ) );
 
 		/**
 		 * @filter `gravityview_widget_search_filters` Modify what fields are shown. The order of the fields in the $search_filters array controls the order as displayed in the search bar widget.

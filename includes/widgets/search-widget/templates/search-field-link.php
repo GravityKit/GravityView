@@ -14,7 +14,7 @@ $base_url = GravityView_Widget_Search::get_search_form_action();
 
 // Make sure that there are choices to display
 if ( empty( $search_field['choices'] ) ) {
-	do_action( 'gravityview_log_debug', 'search-field-link.php - No choices for field' );
+	gravityview()->log->debug( 'search-field-link.php - No choices for field' );
 	return;
 }
 

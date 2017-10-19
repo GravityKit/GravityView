@@ -56,7 +56,7 @@ class GravityView_Migrate {
 		global $wpdb;
 
 		if ( ! class_exists( 'GFFormsModel' ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ': GFFormsModel does not exist.' );
+			gravityview()->log->error( 'GFFormsModel does not exist.' );
 			return;
 		}
 
@@ -69,7 +69,7 @@ class GravityView_Migrate {
 		$disapproved_result = $wpdb->query( $wpdb->prepare( $sql, GravityView_Entry_Approval_Status::DISAPPROVED, '0' ) );
 
 		if( false === $approved_result || false === $disapproved_result ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ': There was an error processing the query.', $wpdb->last_error );
+			gravityview()->log->error( 'There was an error processing the query. {error}', array( 'error' => $wpdb->last_error ) );
 		} else {
 			// All done: Meta values are migrated
 			update_option( 'gv_migrated_approved_meta', true );
@@ -218,7 +218,7 @@ class GravityView_Migrate {
 
 			if( empty( $widgets ) || !is_array( $widgets ) ) { continue; }
 
-			do_action( 'gravityview_log_debug', '[GravityView_Migrate/update_search_on_views] Loading View ID: ', $view->ID );
+			gravityview()->log->debug( '[GravityView_Migrate/update_search_on_views] Loading View ID: {view_id}', array( 'view_id' => $view->ID ) );
 
 			foreach( $widgets as $area => $ws ) {
 				foreach( $ws as $k => $widget ) {
@@ -251,7 +251,7 @@ class GravityView_Migrate {
 					$widgets[ $area ][ $k ]['search_fields'] = $search_config;
 					$widgets[ $area ][ $k ]['search_layout'] = 'horizontal';
 
-					do_action( 'gravityview_log_debug', '[GravityView_Migrate/update_search_on_views] Updated Widget: ', $widgets[ $area ][ $k ] );
+					gravityview()->log->debug( '[GravityView_Migrate/update_search_on_views] Updated Widget: ', array( 'data' => $widgets[ $area ][ $k ] ) );
 				}
 			}
 
@@ -263,7 +263,7 @@ class GravityView_Migrate {
 		// all done! enjoy the new Search Widget!
 		update_option( 'gv_migrate_searchwidget', true );
 
-		do_action( 'gravityview_log_debug', '[GravityView_Migrate/update_search_on_views] All done! enjoy the new Search Widget!' );
+		gravityview()->log->debug( '[GravityView_Migrate/update_search_on_views] All done! enjoy the new Search Widget!' );
 	}
 
 

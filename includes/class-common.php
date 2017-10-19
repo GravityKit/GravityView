@@ -476,7 +476,7 @@ class GVCommon {
 					// Gravity Forms wants dates in the `Y-m-d H:i:s` format.
 					$criteria['search_criteria'][ $key ] = $date->format( 'Y-m-d H:i:s' );
 				} else {
-					do_action( 'gravityview_log_error', '[filter_get_entries_criteria] '.$key.' Date format not valid:', $criteria['search_criteria'][ $key ] );
+					gravityview()->log->error( '{key} Date format not valid:', array( 'key' => $key, $criteria['search_criteria'][ $key ] ) );
 
 					// If it's an invalid date, unset it. Gravity Forms freaks out otherwise.
 					unset( $criteria['search_criteria'][ $key ] );
@@ -528,7 +528,7 @@ class GVCommon {
 		// Filter the criteria before query (includes Adv Filter)
 		$criteria = self::calculate_get_entries_criteria( $passed_criteria, $form_ids );
 
-		do_action( 'gravityview_log_debug', '[gravityview_get_entries] Final Parameters', $criteria );
+		gravityview()->log->debug( '[gravityview_get_entries] Final Parameters', array( 'data' => $criteria ) );
 
 		// Return value
 		$return = null;
@@ -570,7 +570,7 @@ class GVCommon {
 				$entries = GFAPI::get_entries( $form_ids, $criteria['search_criteria'], $criteria['sorting'], $criteria['paging'], $total );
 
 				if ( is_wp_error( $entries ) ) {
-					do_action( 'gravityview_log_error', $entries->get_error_message(), $entries );
+					gravityview()->log->error( '{error}', array( 'error' => $entries->get_error_message(), 'data' => $entries ) );
 
 					/** Remove filter added above */
 					remove_filter( 'gform_is_encrypted_field', '__return_false' );
@@ -689,7 +689,7 @@ class GVCommon {
 			}
 
 			if( is_wp_error( $entry ) ) {
-				do_action( 'gravityview_log_error', __METHOD__ . ': ' . $entry->get_error_message() );
+				gravityview()->log->error( '{error}', array( 'error' => $entry->get_error_message() ) );
 				return false;
 			}
 
@@ -827,7 +827,7 @@ class GVCommon {
 		$criteria = self::calculate_get_entries_criteria();
 
 		if ( empty( $criteria['search_criteria'] ) || ! is_array( $criteria['search_criteria'] ) ) {
-			do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry approved! No search criteria found:', $criteria );
+			gravityview()->log->debug( '[apply_filters_to_entry] Entry approved! No search criteria found:', array( 'data' => $criteria ) );
 			return $entry;
 		}
 
@@ -852,7 +852,7 @@ class GVCommon {
 
 		// field_filters
 		if ( empty( $search_criteria['field_filters'] ) || ! is_array( $search_criteria['field_filters'] ) ) {
-			do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry approved! No field filters criteria found:', $search_criteria );
+			gravityview()->log->debug( '[apply_filters_to_entry] Entry approved! No field filters criteria found:', array( 'data' => $search_criteria ) );
 			return $entry;
 		}
 
@@ -868,7 +868,7 @@ class GVCommon {
 		foreach ( $filters as $filter ) {
 
 			if ( ! isset( $filter['key'] ) ) {
-				do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Filter key not set', $filter );
+				gravityview()->log->debug( '[apply_filters_to_entry] Filter key not set: {filter}', array( 'filter' => $filter ) );
 				continue;
 			}
 
@@ -902,7 +902,7 @@ class GVCommon {
 		// at this point, if in ALL mode, then entry is approved - all conditions were met.
 		// Or, for ANY mode, means none of the conditions were satisfied, so entry is not approved
 		if ( 'all' === $mode ) {
-			do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry approved: all conditions were met' );
+			gravityview()->log->debug( '[apply_filters_to_entry] Entry approved: all conditions were met' );
 			return $entry;
 		} else {
 			return new WP_Error('failed_any_criteria', '[apply_filters_to_entry] Entry cannot be displayed. Failed all the criteria for ANY mode', $filters );

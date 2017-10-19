@@ -120,7 +120,7 @@ class GravityView_Field_List extends GravityView_Field {
 		$list_rows = maybe_unserialize( $field_value );
 
 		if( ! is_array( $list_rows ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' - $field_value did not unserialize', $field_value );
+			gravityview()->log->error( '$field_value did not unserialize', array( 'data' => $field_value ) );
 			return null;
 		}
 
