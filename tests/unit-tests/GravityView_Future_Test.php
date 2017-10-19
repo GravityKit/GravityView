@@ -487,6 +487,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 			gform_update_meta( $and_another_entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
 			gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $and_another_entry['id'] );
 
+			/**
+			 * The back link.
+			 */
 			$this->assertContains( sprintf( 'data-viewid="%d"', $and_another_view->ID ), $fe->render_view( array(
 				'id' => $and_another_view->ID,
 				'debug' => true,
@@ -5124,6 +5127,16 @@ class GVFuture_Test extends GV_UnitTestCase {
 		gravityview()->request->returns['is_view'] = $view;
 
 		$this->assertEquals( $view, gravityview()->views->get() );
+
+		$this->_reset_context();
+	}
+
+	public function test_mock_request() {
+		$this->_reset_context();
+
+		$request = new \GV\Mock_Request();
+		$request->returns['is_view'] = 9;
+		$this->assertEquals( 9, $request->is_view() );
 
 		$this->_reset_context();
 	}

@@ -15,18 +15,25 @@ class Mock_Request extends Request {
 	 */
 	public $returns = array(
 		'is_view' => false,
+		'is_entry' => false,
 		'is_edit_entry' => false,
-		'is_edit' => false,
 		'is_search' => false,
 	);
 
-	/**
-	 * Bootstrap.
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
+	public function is_view() {
+		return $this->__call( __FUNCTION__, func_get_args() );
+	}
+
+	public function is_entry() {
+		return $this->__call( __FUNCTION__, func_get_args() );
+	}
+
+	public function is_edit_entry() {
+		return $this->__call( __FUNCTION__, func_get_args() );
+	}
+
+	public function is_search() {
+		return $this->__call( __FUNCTION__, func_get_args() );
 	}
 
 	public function __call( $function, $args ) {

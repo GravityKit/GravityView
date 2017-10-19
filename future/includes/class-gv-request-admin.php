@@ -10,12 +10,4 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * The default Dashboard Request class.
  */
 class Admin_Request extends Request {
-	/**
-	 * Bootstrap.
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
 }
