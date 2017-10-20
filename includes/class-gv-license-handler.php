@@ -212,10 +212,10 @@ class GV_License_Handler {
 		// Form counts
 		if ( class_exists( 'GFFormsModel' ) ) {
 			$form_data = GFFormsModel::get_form_count();
-			$data['forms_total'] = rgar( $form_data, 'total', 0 );
-			$data['forms_active'] = rgar( $form_data, 'active', 0 );
-			$data['forms_inactive'] = rgar( $form_data, 'inactive', 0 );
-			$data['forms_trash'] = rgar( $form_data, 'inactive', 0 );
+			$data['forms_total'] = \GV\Utils::get( $form_data, 'total', 0 );
+			$data['forms_active'] = \GV\Utils::get( $form_data, 'active', 0 );
+			$data['forms_inactive'] = \GV\Utils::get( $form_data, 'inactive', 0 );
+			$data['forms_trash'] = \GV\Utils::get( $form_data, 'inactive', 0 );
 		}
 
 		// Retrieve current plugin information
@@ -509,7 +509,7 @@ class GV_License_Handler {
 
 			$return .= '<h3>' . esc_html__( 'License Details:', 'gravityview' ) . '</h3>';
 
-			if ( in_array( rgar( $response, 'license' ), array( 'invalid', 'deactivated' ) ) ) {
+			if ( in_array( \GV\Utils::get( $response, 'license' ), array( 'invalid', 'deactivated' ) ) ) {
 				$return .= $this->strings( $response['license'], $response );
 			} elseif ( ! empty( $response['license_name'] ) ) {
 
@@ -634,7 +634,7 @@ class GV_License_Handler {
 			$json = json_encode( $license_data );
 		} else {
 
-			$license      = esc_attr( rgget( 'license', $data ) );
+			$license      = esc_attr( \GV\Utils::_GET( 'license', \GV\Utils::get( $data, 'license' ) ) );
 			$license_data = $this->_license_get_remote_response( $data, $license );
 
 			// Empty is returned when there's an error.
@@ -675,7 +675,7 @@ class GV_License_Handler {
 		if ( $is_ajax ) {
 			exit( $json );
 		} else { // Non-ajax call
-			return ( rgget('format', $data ) === 'object' ) ? $license_data : $json;
+			return ( \GV\Utils::_GET( 'format', \GV\Utils::get( $data, 'format' ) ) === 'object' ) ? $license_data : $json;
 		}
 	}
 

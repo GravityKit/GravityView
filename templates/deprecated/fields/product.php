@@ -32,7 +32,7 @@ if ( !empty( $value ) ) {
 
 	switch ( $input_id ) {
 		case 2:
-			$output = GFCommon::to_money( $output, rgar( $entry, 'currency' ) );
+			$output = GFCommon::to_money( $output, \GV\Utils::get( $entry, 'currency' ) );
 			break;
 		case 3:
 			$output = GFCommon::to_number( $output );

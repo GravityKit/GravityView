@@ -203,7 +203,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	public static function get_search_input_label( $input_type ) {
 		$labels = self::get_search_input_labels();
 
-		return rgar( $labels, $input_type, false );
+		return \GV\Utils::get( $labels, $input_type, false );
 	}
 
 	/**
@@ -464,7 +464,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$get = gv_map_deep( $get, 'rawurldecode' );
 
 		// Make sure array key is set up
-		$search_criteria['field_filters'] = rgar( $search_criteria, 'field_filters', array() );
+		$search_criteria['field_filters'] = \GV\Utils::get( $search_criteria, 'field_filters', array() );
 
 		/**
 		 * Find all search widgets on the view and get the searchable fields settings.
@@ -1053,9 +1053,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 */
 	private static function get_field_label( $field, $form_field = array() ) {
 
-		$label = rgget( 'label', $field );
+		$label = \GV\Utils::_GET( 'label', \GV\Utils::get( $field, 'label' ) );
 
-		if( '' === $label ) {
+		if ( ! $label ) {
 
 			$label = isset( $form_field['label'] ) ? $form_field['label'] : '';
 
@@ -1198,7 +1198,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * @return mixed|string Value of request at $name key. Empty string if empty.
 	 */
 	private function rgget_or_rgpost( $name ) {
-		$value = 'get' === $this->search_method ? rgget( $name ) : rgpost( $name );
+		$value = \GV\Utils::_REQUEST( $name );
 
 		$value = stripslashes_deep( $value );
 

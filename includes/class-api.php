@@ -391,13 +391,13 @@ class GravityView_API {
 
 			$args = array();
 
-			if( $pagenum = rgget('pagenum') ) {
+			if( $pagenum = \GV\Utils::_GET( 'pagenum' ) ) {
 				$args['pagenum'] = intval( $pagenum );
 			}
 
-			if( $sort = rgget('sort') ) {
+			if( $sort = \GV\Utils::_GET( 'sort' ) ) {
 				$args['sort'] = $sort;
-				$args['dir'] = rgget('dir');
+				$args['dir'] = \GV\Utils::_GET( 'dir' );
 			}
 
 			$link = add_query_arg( $args, $link );
@@ -484,7 +484,7 @@ class GravityView_API {
 			// gravityview_entry_hash filter and have the old hashes expire.
 			if( empty( $value ) || $value !== $hash ) {
 				gravityview()->log->debug( 'Setting hash for entry {entry}: {hash}', array( 'entry' => $id_or_string, 'hash' => $hash ) );
-				gform_update_meta( $id_or_string, 'gravityview_unique_id', $hash, rgar( $entry, 'form_id' ) );
+				gform_update_meta( $id_or_string, 'gravityview_unique_id', $hash, \GV\Utils::get( $entry, 'form_id' ) );
 			}
 
 			$slug = $hash;
@@ -517,7 +517,7 @@ class GravityView_API {
 
 	        gravityview()->log->debug( 'Setting hash for entry {entry_id}: {hash}', array( 'entry_id' => $entry['id'], 'hash' => $hash ) );
 
-            gform_update_meta( $entry['id'], 'gravityview_unique_id', $hash, rgar( $entry, 'form_id' ) );
+            gform_update_meta( $entry['id'], 'gravityview_unique_id', $hash, \GV\Utils::get( $entry, 'form_id' ) );
 
         }
     }
@@ -593,9 +593,9 @@ class GravityView_API {
 			/**
 			 * @since 1.7
 			 */
-			if( $sort = rgget('sort') ) {
+			if( $sort = \GV\Utils::_GET( 'sort' ) ) {
 				$args['sort'] = $sort;
-				$args['dir'] = rgget('dir');
+				$args['dir'] = \GV\Utils::_GET( 'dir' );
 			}
 
 		}

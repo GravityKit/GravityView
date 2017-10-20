@@ -93,17 +93,17 @@ class GravityView_Entry_Approval {
 	 */
 	public function ajax_update_approved() {
 		
-		$form_id = intval( rgpost('form_id') );
+		$form_id = intval( \GV\Utils::_POST( 'form_id' ) );
 
 		// We always want requests from the admin to allow entry IDs, but not from the frontend
 		// There's another nonce sent when approving entries in the admin that we check
-		$force_entry_ids = rgpost( 'admin_nonce' ) && wp_verify_nonce( rgpost( 'admin_nonce' ), 'gravityview_admin_entry_approval' );
+		$force_entry_ids = \GV\Utils::_POST( 'admin_nonce' ) && wp_verify_nonce( \GV\Utils::_POST( 'admin_nonce' ), 'gravityview_admin_entry_approval' );
 		
-		$entry_id = GVCommon::get_entry_id( rgpost('entry_slug'), $force_entry_ids );
+		$entry_id = GVCommon::get_entry_id( \GV\Utils::_POST( 'entry_slug' ), $force_entry_ids );
 
-		$approval_status = rgpost('approved');
+		$approval_status = \GV\Utils::_POST( 'approved' );
 
-		$nonce = rgpost('nonce');
+		$nonce = \GV\Utils::_POST( 'nonce' );
 
 		// Valid status
 		if( ! GravityView_Entry_Approval_Status::is_valid( $approval_status ) ) {
@@ -196,7 +196,7 @@ class GravityView_Entry_Approval {
 		$entry = GFAPI::get_entry( $entry_id );
 
 		// If the checkbox is blank, it's disapproved, regardless of the label
-		if ( '' === rgar( $entry, $approved_column ) ) {
+		if ( '' === \GV\Utils::get( $entry, $approved_column ) ) {
 			$value = GravityView_Entry_Approval_Status::DISAPPROVED;
 		} else {
 			// If the checkbox is not blank, it's approved

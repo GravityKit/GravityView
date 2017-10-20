@@ -116,9 +116,9 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 		add_filter( 'gform_is_form_editor', '__return_false' );
 
 		$input_value = array(
-			"{$id}.1" => rgar( $img_array, 'title' ),
-			"{$id}.4" => rgar( $img_array, 'caption' ),
-			"{$id}.7" => rgar( $img_array, 'description' ),
+			"{$id}.1" => \GV\Utils::get( $img_array, 'title' ),
+			"{$id}.4" => \GV\Utils::get( $img_array, 'caption' ),
+			"{$id}.7" => \GV\Utils::get( $img_array, 'description' ),
 		);
 
 		// Get the field HTML output

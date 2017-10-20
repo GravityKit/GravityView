@@ -247,10 +247,10 @@ class GravityView_Admin_ApproveEntries {
 		$gv_bulk_action = false;
 
 		if( version_compare( GFForms::$version, '2.0', '>=' ) ) {
-			$bulk_action = ( '-1' !== rgpost('action') ) ? rgpost('action') : rgpost('action2');
+			$bulk_action = ( '-1' !== \GV\Utils::_POST( 'action' ) ) ? \GV\Utils::_POST( 'action' ) : \GV\Utils::_POST( 'action2' );
 		} else {
 			// GF 1.9.x - Bulk action 2 is the bottom bulk action select form.
-			$bulk_action = rgpost('bulk_action') ? rgpost('bulk_action') : rgpost('bulk_action2');
+			$bulk_action = \GV\Utils::_POST( 'bulk_action' ) ? \GV\Utils::_POST( 'bulk_action' ) : \GV\Utils::_POST( 'bulk_action2' );
 		}
 
 		// Check the $bulk_action value against GV actions, see if they're the same. I hate strpos().
@@ -279,7 +279,7 @@ class GravityView_Admin_ApproveEntries {
 		
 		// gforms_entry_list is the nonce that confirms we're on the right page
 		// gforms_update_note is sent when bulk editing entry notes. We don't want to process then.
-		if ( $bulk_action && rgpost('gforms_entry_list') && empty( $_POST['gforms_update_note'] ) ) {
+		if ( $bulk_action && \GV\Utils::_POST( 'gforms_entry_list' ) && empty( $_POST['gforms_update_note'] ) ) {
 
 			check_admin_referer( 'gforms_entry_list', 'gforms_entry_list' );
 
@@ -512,7 +512,7 @@ class GravityView_Admin_ApproveEntries {
 		    return '';
         }
 
-	    $order = ( 'desc' === rgget('order') ) ? 'asc' : 'desc';
+	    $order = ( 'desc' === \GV\Utils::_GET( 'order' ) ) ? 'asc' : 'desc';
 
 	    $args = array(
 		    'orderby' => $approved_column_id,

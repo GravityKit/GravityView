@@ -96,12 +96,12 @@ class GravityView_Edit_Entry_User_Registration {
 	    $config = $this->get_feed_configuration( $entry, $form );
 
         // Make sure the feed is active
-	    if ( ! rgar( $config, 'is_active', false ) ) {
+	    if ( ! \GV\Utils::get( $config, 'is_active', false ) ) {
 			return;
 	    }
 
 	    // If an Update feed, make sure the conditions are met.
-	    if( rgars( $config, 'meta/feedType' ) === 'update' ) {
+	    if ( \GV\Utils::get( $config, 'meta/feedType' ) === 'update' ) {
 	    	if( ! $gf_user_registration->is_feed_condition_met( $config, $form, $entry ) ) {
 			    return;
 		    }
@@ -261,7 +261,7 @@ class GravityView_Edit_Entry_User_Registration {
          */
         $restore_display_name = apply_filters( 'gravityview/edit_entry/restore_display_name', true );
 
-        $is_update_feed = ( $config && rgars( $config, 'meta/feed_type') === 'update' );
+        $is_update_feed = ( $config && \GV\Utils::get( $config, 'meta/feed_type' ) === 'update' );
 
         /**
          * Don't restore display name:

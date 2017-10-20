@@ -169,7 +169,7 @@ abstract class GravityView_Template {
 
 			foreach ( $this->field_options as $key => $field_option ) {
 
-				$field_context = rgar( $field_option, 'context' );
+				$field_context = \GV\Utils::get( $field_option, 'context' );
 
 				// Does the field option only apply to a certain context?
 				// You can define multiple contexts as an array:  `context => array("directory", "single")`

@@ -161,9 +161,9 @@ abstract class Entry {
 				$args['pagenum'] = intval( $_GET['pagenum'] );
 			}
 
-			if ( $sort = rgget( 'sort' ) ) {
+			if ( $sort = Utils::_GET( 'sort' ) ) {
 				$args['sort'] = $sort;
-				$args['dir'] = rgget( 'dir' );
+				$args['dir'] = Utils::_GET( 'dir' );
 			}
 		}
 

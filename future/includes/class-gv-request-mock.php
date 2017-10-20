@@ -37,6 +37,6 @@ class Mock_Request extends Request {
 	}
 
 	public function __call( $function, $args ) {
-		return rgar( $this->returns, $function, null );
+		return Utils::get( $this->returns, $function, null );
 	}
 }

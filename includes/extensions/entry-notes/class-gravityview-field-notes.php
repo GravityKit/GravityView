@@ -808,7 +808,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 	    $output = '';
 
 		if( ! empty( $email_footer ) ) {
-		    $url = rgar( $email_data, 'current-url' );
+		    $url = \GV\Utils::get( $email_data, 'current-url' );
 			$url = html_entity_decode( $url );
 			$url = site_url( $url );
 

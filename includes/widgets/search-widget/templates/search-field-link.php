@@ -41,7 +41,7 @@ $links_sep = apply_filters( 'gravityview/extension/search/links_sep', '&nbsp;|&n
 
         <?php
 
-        $search_value = rgget( $search_field['name'] );
+        $search_value = \GV\Utils::_GET( $search_field['name'] );
 
         foreach ( $search_field['choices'] as $k => $choice ) {
 

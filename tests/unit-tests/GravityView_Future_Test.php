@@ -781,6 +781,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		set_current_screen( 'dashboard' );
 		$this->assertTrue( gravityview()->request->is_admin() );
+		$_script_name = $_SERVER['SCRIPT_NAME'];
+		$_SERVER['SCRIPT_NAME'] = '/wp-admin/load-scripts.php';
+		$this->assertFalse( gravityview()->request->is_admin() );
+		$_SERVER['SCRIPT_NAME'] = $_script_name;
 		set_current_screen( 'front' );
 
 		/** Now make sure old code stubs behave in the same way. */
@@ -5139,5 +5143,34 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( 9, $request->is_view() );
 
 		$this->_reset_context();
+	}
+
+	public function test_utils_get() {
+		$a = array( 'hello' => 'world', 'who/is' => 'here', 'who' => array( 'is' => array( 'that' => 'coder' ) ) );
+		$this->assertEquals( 'world', \GV\Utils::get( $a, 'hello' ) );
+		$this->assertEquals( 'world', \GV\Utils::get( $a, 'hello', 'what?' ) );
+		$this->assertEquals( 'what?', \GV\Utils::get( $a, 'world', 'what?' ) );
+
+		/**
+		 * Nested.
+		 */
+		$this->assertEquals( 'here', \GV\Utils::get( $a, 'who/is' ) );
+		$this->assertEquals( 'coder', \GV\Utils::get( $a, 'who/is/that' ) );
+
+		/**
+		 * Object-like ArrayAccess.
+		 */
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => 'set all the fields!',
+			'2' => -100,
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$multi = \GV\Multi_Entry::from_entries( array( $entry ) );
+
+		$this->assertEquals( $entry->ID, \GV\Utils::get( $multi, $form->ID )->ID );
 	}
 }

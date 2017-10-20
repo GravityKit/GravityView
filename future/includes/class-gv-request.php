@@ -18,13 +18,13 @@ abstract class Request {
 	/**
 	 * Check if WordPress is_admin(), and make sure not DOING_AJAX.
 	 *
-	 * @todo load-(scripts|styles).php return true for \is_admin()!
-	 *
 	 * @return boolean
 	 */
 	public static function is_admin() {
 		$doing_ajax = defined( 'DOING_AJAX' ) ? DOING_AJAX : false;
-		return is_admin() && ! $doing_ajax;
+		$load_scripts_styles = preg_match( '#^/wp-admin/load-(scripts|styles).php$#', Utils::_SERVER( 'SCRIPT_NAME' ) );
+
+		return is_admin() && ! ( $doing_ajax || $load_scripts_styles );
 	}
 
 	/**

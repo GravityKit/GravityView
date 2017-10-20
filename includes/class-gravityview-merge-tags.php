@@ -343,7 +343,7 @@ class GravityView_Merge_Tags {
 
 		foreach ( (array) $matches as $match ) {
 			$full_tag = $match[0];
-			$modifier = rgar( $match, 2, 'permalink' );
+			$modifier = \GV\Utils::get( $match, 2, 'permalink' );
 
 			$replacement = false;
 
@@ -409,7 +409,7 @@ class GravityView_Merge_Tags {
 			$full_tag = $match[0];
 			$property = $match[1];
 
-			$value = stripslashes_deep( rgget( $property ) );
+			$value = stripslashes_deep( \GV\Utils::_GET( $property ) );
 
 			/**
 			 * @filter `gravityview/merge_tags/get/glue/` Modify the glue used to convert an array of `{get}` values from an array to string

@@ -74,12 +74,12 @@ class GravityView_Field_List extends GravityView_Field {
 				$input_id = sprintf( '%d.%d', $list_field->id, $key ); // {field_id}.{column_key}
 
 				$list_columns[ $input_id ] = array(
-					'label'       => rgar( $input, 'text' ),
+					'label'       => \GV\Utils::get( $input, 'text' ),
 					'customLabel' => '',
 					'parent'      => $list_field,
-					'type'        => rgar( $list_field, 'type' ),
-					'adminLabel'  => rgar( $list_field, 'adminLabel' ),
-					'adminOnly'   => rgar( $list_field, 'adminOnly' ),
+					'type'        => \GV\Utils::get( $list_field, 'type' ),
+					'adminLabel'  => \GV\Utils::get( $list_field, 'adminLabel' ),
+					'adminOnly'   => \GV\Utils::get( $list_field, 'adminOnly' ),
 				);
 			}
 

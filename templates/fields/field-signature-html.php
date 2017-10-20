@@ -17,7 +17,7 @@ if ( ! class_exists( 'GFSignature' ) ) {
 
 $image_atts = array(
 	'src' => GFSignature::get_instance()->get_signature_url( $value ),
-	'width' => ( rgblank( rgget( "boxWidth", $field ) ) ? '300' : rgar( $field, "boxWidth" ) ), // Taken from signature addon signature_input() method
+	'width' => \GV\Utils::_GET( 'boxWidth', \GV\Utils::get( $field, 'boxWidth', 300 ) ), // Taken from signature addon signature_input() method
 	'height' => '180', // Always 180
 	'validate_src' => false, // Don't check if there's a valid image extension
 	'alt' => '',

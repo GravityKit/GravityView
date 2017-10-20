@@ -121,6 +121,11 @@ final class Core {
 		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
 		add_action( 'the_content', array( '\GV\View', 'content' ) );
 
+		/**
+		 * Utilities.
+		 */
+		require_once $this->plugin->dir( 'future/includes/class-gv-utils.php' );
+
 		/** The Settings. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-settings.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-settings-view.php' );

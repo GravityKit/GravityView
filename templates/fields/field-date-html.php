@@ -38,7 +38,7 @@ if ( ! empty( $field_settings ) && ! empty( $field_settings['date_display'] ) &&
 
 } else {
 
-	$output = GravityView_Field_Date::date_display( $value, rgar( $field, "dateFormat" ), $field_id );
+	$output = GravityView_Field_Date::date_display( $value, \GV\Utils::get( $field, "dateFormat" ), $field_id );
 
 }
 

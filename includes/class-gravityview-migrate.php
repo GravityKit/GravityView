@@ -136,7 +136,7 @@ class GravityView_Migrate {
 
 		$data = array(
 			'edd_action' => 'check_license',
-			'license' => rgget('license_key', $redux_settings ),
+			'license' => \GV\Utils::_GET( 'license_key', \GV\Utils::get( $redux_settings, 'license_key' ) ),
 			'update' => false,
 			'format' => 'object',
 		);
@@ -168,25 +168,25 @@ class GravityView_Migrate {
 
 
 		$redux_settings = array(
-			'support-email' => rgget( 'support-email', $redux_option ),
-			'no-conflict-mode' => ( rgget( 'no-conflict-mode', $redux_option ) ? '1' : '0' ),
+			'support-email' => \GV\Utils::_GET( 'support-email', \GV\Utils::get( $redux_option, 'support-email' ) ),
+			'no-conflict-mode' => ( \GV\Utils::_GET( 'no-conflict-mode', \GV\Utils::get( $redux_option, 'no-conflict-mode' ) ) ? '1' : '0' ),
 		);
 
-		if( $license_array = rgget( 'license', $redux_option ) ) {
+		if( $license_array = \GV\Utils::_GET( 'license', \GV\Utils::get( $redux_option, 'license' ) ) ) {
 
-			$redux_settings['license_key'] = $license_key = rgget( 'license', $license_array );
+			$redux_settings['license_key'] = $license_key = \GV\Utils::_GET( 'license', \GV\Utils::get( $license_array, 'license' ) );
 
 			$redux_last_changed_values = get_option('gravityview_settings-transients');
 
 			// This contains the last response for license validation
-			if( !empty( $redux_last_changed_values ) && $saved_values = rgget( 'changed_values', $redux_last_changed_values ) ) {
+			if( !empty( $redux_last_changed_values ) && $saved_values = \GV\Utils::_GET( 'changed_values', \GV\Utils::get( $redux_last_changed_values, 'changed_values' ) ) ) {
 
-				$saved_license = rgget('license', $saved_values );
+				$saved_license = \GV\Utils::_GET( 'license', \GV\Utils::get( $saved_values, 'license' ) );
 
 				// Only use the last-saved values if they are for the same license
-				if( $saved_license && rgget( 'license', $saved_license ) === $license_key ) {
-					$redux_settings['license_key_status'] = rgget( 'status', $saved_license );
-					$redux_settings['license_key_response'] = rgget( 'response', $saved_license );
+				if( $saved_license && \GV\Utils::_GET( 'license', \GV\Utils::get( $saved_license, 'license' ) ) === $license_key ) {
+					$redux_settings['license_key_status'] = \GV\Utils::_GET( 'status', \GV\Utils::get( $saved_license, 'status' ) );
+					$redux_settings['license_key_response'] = \GV\Utils::_GET( 'response', \GV\Utils::get( $saved_license, 'response' ) );
 				}
 			}
 		}

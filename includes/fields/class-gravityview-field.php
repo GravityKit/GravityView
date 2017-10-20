@@ -482,7 +482,7 @@ abstract class GravityView_Field {
 	protected function is_choice_value_enabled() {
 
 		// If "Add Field" button is processing, get the Form ID
-		$connected_form = rgpost( 'form_id' );
+		$connected_form = \GV\Utils::_POST( 'form_id' );
 
 		// Otherwise, get the Form ID from the Post page
 		if( empty( $connected_form ) ) {

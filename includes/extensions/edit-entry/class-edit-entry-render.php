@@ -573,7 +573,7 @@ class GravityView_Edit_Entry_Render {
             $value = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'] );
 
             $ary = ! empty( $value ) ? explode( '|:|', $value ) : array();
-            $img_url = rgar( $ary, 0 );
+            $img_url = \GV\Utils::get( $ary, 0 );
 
             $img_title       = count( $ary ) > 1 ? $ary[1] : '';
             $img_caption     = count( $ary ) > 2 ? $ary[2] : '';
@@ -605,9 +605,9 @@ class GravityView_Edit_Entry_Render {
 
             $img_url = $_POST[ $input_name ];
 
-			$img_title       = rgar( $_POST, $input_name.'_1' );
-			$img_caption     = rgar( $_POST, $input_name .'_4' );
-			$img_description = rgar( $_POST, $input_name .'_7' );
+			$img_title       = \GV\Utils::_POST( $input_name . '_1' );
+			$img_caption     = \GV\Utils::_POST( $input_name . '_4' );
+			$img_description = \GV\Utils::_POST( $input_name . '_7' );
 
 			$value = ! empty( $img_url ) ? $img_url . "|:|" . $img_title . "|:|" . $img_caption . "|:|" . $img_description : '';
 
@@ -683,7 +683,7 @@ class GravityView_Edit_Entry_Render {
 
                     case 'post_title':
                         $post_title = $value;
-                        if( rgar( $form, 'postTitleTemplateEnabled' ) ) {
+                        if ( \GV\Utils::get( $form, 'postTitleTemplateEnabled' ) ) {
                             $post_title = $this->fill_post_template( $form['postTitleTemplate'], $form, $entry_tmp );
                         }
                         $updated_post->post_title = $post_title;
@@ -693,7 +693,7 @@ class GravityView_Edit_Entry_Render {
 
                     case 'post_content':
                         $post_content = $value;
-                        if( rgar( $form, 'postContentTemplateEnabled' ) ) {
+                        if ( \GV\Utils::get( $form, 'postContentTemplateEnabled' ) ) {
                             $post_content = $this->fill_post_template( $form['postContentTemplate'], $form, $entry_tmp, true );
                         }
                         $updated_post->post_content = $post_content;
@@ -924,7 +924,7 @@ class GravityView_Edit_Entry_Render {
      */
     private function maybe_print_message() {
 
-        if( rgpost('action') === 'update' ) {
+        if ( \GV\Utils::_POST( 'action' ) === 'update' ) {
 
             $back_link = esc_url( remove_query_arg( array( 'page', 'view', 'edit' ) ) );
 
@@ -1298,7 +1298,7 @@ class GravityView_Edit_Entry_Render {
 
                     }
 
-                    if( rgar($field, "multipleFiles") ) {
+                    if ( \GV\Utils::get( $field, "multipleFiles" ) ) {
 
                         // If there are fresh uploads, process and merge them.
                         // Otherwise, use the passed values, which should be json-encoded array of URLs
@@ -1742,7 +1742,7 @@ class GravityView_Edit_Entry_Render {
                 foreach ( $field->get_entry_inputs() as $key => $input ) {
                     $input_id = $input['id'];
                     $choice = $field->choices[ $key ];
-                    $value = rgar( $this->entry, $input_id );
+                    $value = \GV\Utils::get( $this->entry, $input_id );
                     $match = RGFormsModel::choice_value_match( $field, $choice, $value );
                     if( $match ) {
                         $field->choices[ $key ]['isSelected'] = true;

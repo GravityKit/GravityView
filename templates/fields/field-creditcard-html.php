@@ -17,7 +17,7 @@ if ( ! $is_single_input ) {
 	switch ( gravityview_get_input_id_from_id( $field_id ) ) {
 		case 1:
 		case 4:
-			$output = esc_html( rgar( $gravityview->value, $field_id ) );
+			$output = esc_html( \GV\Utils::get( $gravityview->value, $field_id ) );
 		default:
 			/** For security reasons only masked number and type are shown. */
 			break;

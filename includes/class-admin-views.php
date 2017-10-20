@@ -94,7 +94,7 @@ class GravityView_Admin_Views {
 		}
 
 		$forms = gravityview_get_forms();
-		$current_form = rgget( 'gravityview_form_id' );
+		$current_form = \GV\Utils::_GET( 'gravityview_form_id' );
 		// If there are no forms to select, show no forms.
 		if( !empty( $forms ) ) { ?>
 			<select name="gravityview_form_id" id="gravityview_form_id">
@@ -1031,7 +1031,7 @@ class GravityView_Admin_Views {
 
         wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
             'cookiepath' => COOKIEPATH,
-            'passed_form_id' => (bool) rgget( 'form_id' ),
+            'passed_form_id' => (bool) \GV\Utils::_GET( 'form_id' ),
             'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ),
             'label_viewname' => __( 'Enter View name here', 'gravityview' ),
             'label_close' => __( 'Close', 'gravityview' ),

@@ -154,15 +154,15 @@ class GravityView_Shortcode {
 				break;
 			case 'first_entry':
 				$paging = $gravityview_view->getPaginationCounts();
-				$return = empty( $paging ) ? '' : number_format_i18n( rgar( $paging, 'first', 0 ) );
+				$return = empty( $paging ) ? '' : number_format_i18n( \GV\Utils::get( $paging, 'first', 0 ) );
 				break;
 			case 'last_entry':
 				$paging = $gravityview_view->getPaginationCounts();
-				$return = empty( $paging ) ? '' : number_format_i18n( rgar( $paging, 'last', 0 ) );
+				$return = empty( $paging ) ? '' : number_format_i18n( \GV\Utils::get( $paging, 'last', 0 ) );
 				break;
 			case 'page_size':
 				$paging = $gravityview_view->getPaging();
-				$return = number_format_i18n( rgar( $paging, 'page_size', 0 ) );
+				$return = number_format_i18n( \GV\Utils::get( $paging, 'page_size', 0 ) );
 				break;
 		}
 

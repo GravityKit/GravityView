@@ -191,7 +191,7 @@ class GVCommon {
 
 		foreach ( $payment_meta as $meta ) {
 
-			$has_transaction_data = rgar( $entry, $meta, false );
+			$has_transaction_data = \GV\Utils::get( $entry, $meta, false );
 
 			if( ! empty( $has_transaction_data ) ) {
 				break;
@@ -290,11 +290,11 @@ class GVCommon {
 			foreach ( $form['fields'] as $field ) {
 				if ( $include_parent_field || empty( $field['inputs'] ) ) {
 					$fields["{$field['id']}"] = array(
-						'label' => rgar( $field, 'label' ),
+						'label' => \GV\Utils::get( $field, 'label' ),
 						'parent' => null,
-						'type' => rgar( $field, 'type' ),
-						'adminLabel' => rgar( $field, 'adminLabel' ),
-						'adminOnly' => rgar( $field, 'adminOnly' ),
+						'type' => \GV\Utils::get( $field, 'type' ),
+						'adminLabel' => \GV\Utils::get( $field, 'adminLabel' ),
+						'adminOnly' => \GV\Utils::get( $field, 'adminOnly' ),
 					);
 				}
 
@@ -313,12 +313,12 @@ class GVCommon {
                             continue;
                         }
 						$fields["{$input['id']}"] = array(
-							'label' => rgar( $input, 'label' ),
-							'customLabel' => rgar( $input, 'customLabel' ),
+							'label' => \GV\Utils::get( $input, 'label' ),
+							'customLabel' => \GV\Utils::get( $input, 'customLabel' ),
 							'parent' => $field,
-							'type' => rgar( $field, 'type' ),
-							'adminLabel' => rgar( $field, 'adminLabel' ),
-							'adminOnly' => rgar( $field, 'adminOnly' ),
+							'type' => \GV\Utils::get( $field, 'type' ),
+							'adminLabel' => \GV\Utils::get( $field, 'adminLabel' ),
+							'adminOnly' => \GV\Utils::get( $field, 'adminOnly' ),
 						);
 					}
 				}
@@ -881,7 +881,7 @@ class GVCommon {
 			} else {
 				$field_value  = GFFormsModel::get_lead_field_value( $entry, $field );
 				 // If it's a complex field, then fetch the input's value, if exists at the current key. Otherwise, let GF handle it
-				$field_value = ( is_array( $field_value ) && isset( $field_value[ $k ] ) ) ? rgar( $field_value, $k ) : $field_value;
+				$field_value = ( is_array( $field_value ) && isset( $field_value[ $k ] ) ) ? \GV\Utils::get( $field_value, $k ) : $field_value;
 			}
 
 			$operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
@@ -949,7 +949,7 @@ class GVCommon {
 		$date_gmt_time   = mysql2date( 'G', $date_string );
 		$date_local_timestamp = GFCommon::get_local_timestamp( $date_gmt_time );
 
-		$format  = rgar( $atts, 'format' );
+		$format  = \GV\Utils::get( $atts, 'format' );
 		$is_human  = ! empty( $atts['human'] );
 		$is_diff  = ! empty( $atts['diff'] );
 		$is_raw = ! empty( $atts['raw'] );
@@ -997,7 +997,7 @@ class GVCommon {
 
 		$field = self::get_field( $form, $field_id );
 
-		$label = rgar( $field, 'label' );
+		$label = \GV\Utils::get( $field, 'label' );
 
 		if( floor( $field_id ) !== floatval( $field_id ) ) {
 			$label = GFFormsModel::get_choice_text( $field, $field_value, $field_id );
@@ -1542,8 +1542,8 @@ class GVCommon {
 		 * Fix potential security issue with target=_blank
 		 * @see https://dev.to/ben/the-targetblank-vulnerability-by-example
 		 */
-		if( '_blank' === rgar( $final_atts, 'target' ) ) {
-			$final_atts['rel'] = trim( rgar( $final_atts, 'rel', '' ) . ' noopener noreferrer' );
+		if( '_blank' === \GV\Utils::get( $final_atts, 'target' ) ) {
+			$final_atts['rel'] = trim( \GV\Utils::get( $final_atts, 'rel', '' ) . ' noopener noreferrer' );
 		}
 
 		// Sort the attributes alphabetically, to help testing

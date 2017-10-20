@@ -108,7 +108,7 @@ class Internal_Field extends Field {
 		 *
 		 * A TEMPLATE :)
 		 */
-		$value = \rgar( $entry->as_entry(), $this->ID );
+		$value = Utils::get( $entry->as_entry(), $this->ID );
 		
 		/** Apply parent filters. */
 		return $this->get_value_filters( $value, $view, $source, $entry, $request );

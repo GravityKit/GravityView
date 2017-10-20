@@ -813,7 +813,7 @@ class GravityView_frontend {
 			$operator = ! empty( $args['search_operator'] ) && in_array( $args['search_operator'], array( 'is', 'isnot', '>', '<', 'contains' ) ) ? $args['search_operator'] : 'contains';
 
 			$search_criteria['field_filters'][] = array(
-				'key' => rgget( 'search_field', $args ), // The field ID to search
+				'key' => \GV\Utils::_GET( 'search_field', \GV\Utils::get( $args, 'search_field' ) ), // The field ID to search
 				'value' => _wp_specialchars( $args['search_value'] ), // The value to search. Encode ampersands but not quotes.
 				'operator' => $operator,
 			);
@@ -892,10 +892,10 @@ class GravityView_frontend {
 			$entries = gravityview_get_entries( $form_id, $parameters, $count );
 
 			/** Set paging. */
-			$paging = rgar( $parameters, 'paging' );
+			$paging = \GV\Utils::get( $parameters, 'paging' );
 
 			/** Adjust count by defined offset. */
-			$count = max( 0, ( $count - rgar( $args, 'offset', 0 ) ) );
+			$count = max( 0, ( $count - \GV\Utils::get( $args, 'offset', 0 ) ) );
 		}
 
 		gravityview()->log->debug( 'Get Entries. Found: {count} entries', array( 'count' => $count, 'data' => $entries ) );
@@ -1048,8 +1048,8 @@ class GravityView_frontend {
 	 */
 	public static function updateViewSorting( $args, $form_id ) {
 		$sorting = array();
-		$sort_field_id = isset( $_GET['sort'] ) ? $_GET['sort'] : rgar( $args, 'sort_field' );
-		$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : rgar( $args, 'sort_direction' );
+		$sort_field_id = isset( $_GET['sort'] ) ? $_GET['sort'] : \GV\Utils::get( $args, 'sort_field' );
+		$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : \GV\Utils::get( $args, 'sort_direction' );
 
 		$sort_field_id = self::_override_sorting_id_by_field_type( $sort_field_id, $form_id );
 
