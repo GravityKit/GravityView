@@ -207,9 +207,6 @@ final class Core {
 		 *  `init` hasn't been called yet.
 		 */
 		do_action( 'gravityview/loaded' );
-
-		define( 'GRAVITYVIEW_FUTURE_CORE_LOADED', true );
-
 	}
 
 	private function __clone() { }

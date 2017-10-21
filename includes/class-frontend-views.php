@@ -338,10 +338,7 @@ class GravityView_frontend {
 		global $post;
 
 		// If in admin and NOT AJAX request, get outta here.
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && gravityview()->request->is_admin() ) {
-			return;
-			/** Deprecated in favor of gravityview()->request->is_admin(). */
-		} else if ( GravityView_Plugin::is_admin() ) {
+		if ( gravityview()->request->is_admin() ) {
 			return;
 		}
 
@@ -884,19 +881,8 @@ class GravityView_frontend {
 		$count = 0; // Must be defined so that gravityview_get_entries can use by reference
 
 		// fetch entries
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			list( $entries, $paging, $count ) =
-				\GV\Mocks\GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $count );
-		} else {
-			/** Deprecated, use $form->entries instead. */
-			$entries = gravityview_get_entries( $form_id, $parameters, $count );
-
-			/** Set paging. */
-			$paging = \GV\Utils::get( $parameters, 'paging' );
-
-			/** Adjust count by defined offset. */
-			$count = max( 0, ( $count - \GV\Utils::get( $args, 'offset', 0 ) ) );
-		}
+		list( $entries, $paging, $count ) =
+			\GV\Mocks\GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $count );
 
 		gravityview()->log->debug( 'Get Entries. Found: {count} entries', array( 'count' => $count, 'data' => $entries ) );
 
@@ -1178,12 +1164,7 @@ class GravityView_frontend {
 	 */
 	public static function is_single_entry() {
 
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			$var_name = \GV\Entry::get_endpoint_name();
-		} else {
-			/** Deprecated. Use \GV\Entry::get_endpoint_name instead. */
-			$var_name = GravityView_Post_Types::get_entry_var_name();
-		}
+		$var_name = \GV\Entry::get_endpoint_name();
 
 		$single_entry = get_query_var( $var_name );
 
@@ -1217,14 +1198,10 @@ class GravityView_frontend {
 			$views = $this->getGvOutputData()->get_views();
 
 			foreach ( $views as $view_id => $data ) {
-				if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-					$view = \GV\View::by_id( $data['id'] );
-					$view_id = $view->ID;
-					$template_id = gravityview_get_template_id( $view->ID );
-					$data = $view->as_data();
-				} else {
-					$template_id = $data['template_id'];
-				}
+				$view = \GV\View::by_id( $data['id'] );
+				$view_id = $view->ID;
+				$template_id = gravityview_get_template_id( $view->ID );
+				$data = $view->as_data();
 
 				/**
 				 * Don't enqueue the scripts or styles if it's not going to be displayed.
@@ -1238,12 +1215,7 @@ class GravityView_frontend {
 				$js_dependencies = array( 'jquery', 'gravityview-jquery-cookie' );
 				$css_dependencies = array();
 
-				if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-					$lightbox = $view->settings->get( 'lightbox' );
-				} else {
-					/** View data attributes are now stored in \GV\View::$settings */
-					$lightbox = ! empty( $data['atts']['lightbox'] );
-				}
+				$lightbox = $view->settings->get( 'lightbox' );
 
 				// If the thickbox is enqueued, add dependencies
 				if ( $lightbox ) {

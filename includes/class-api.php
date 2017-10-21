@@ -31,12 +31,10 @@ class GravityView_API {
 
 		$form = $gravityview_view->getForm();
 
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && ! empty( $GLOBALS['GravityView_API_field_label_override'] ) ) {
-				/** Allow to fall through for back compatibility testing purposes. */
-			} else {
-				return \GV\Mocks\GravityView_API_field_label( $form, $field, $entry, $force_show_label );
-			}
+		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && ! empty( $GLOBALS['GravityView_API_field_label_override'] ) ) {
+			/** Allow to fall through for back compatibility testing purposes. */
+		} else {
+			return \GV\Mocks\GravityView_API_field_label( $form, $field, $entry, $force_show_label );
 		}
 
 		$label = '';
@@ -534,14 +532,14 @@ class GravityView_API {
 	 */
 	public static function entry_link( $entry, $post_id = NULL, $add_directory_args = true ) {
 
-		if( ! empty( $entry ) && ! is_array( $entry ) ) {
+		if ( ! empty( $entry ) && ! is_array( $entry ) ) {
 			$entry = GVCommon::get_entry( $entry );
 		} else if( empty( $entry ) ) {
 			$entry = GravityView_frontend::getInstance()->getEntry();
 		}
 
 		// Second parameter used to be passed as $field; this makes sure it's not an array
-		if( !is_numeric( $post_id ) ) {
+		if ( ! is_numeric( $post_id ) ) {
 			$post_id = NULL;
 		}
 
@@ -549,20 +547,15 @@ class GravityView_API {
 		$directory_link = self::directory_link( $post_id, false );
 
 		// No post ID? Get outta here.
-		if( empty( $directory_link ) ) {
+		if ( empty( $directory_link ) ) {
 			return '';
 		}
 
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			$query_arg_name = \GV\Entry::get_endpoint_name();
-		} else {
-			/** Deprecated. Use \GV\Entry::get_endpoint_name instead. */
-			$query_arg_name = GravityView_Post_Types::get_entry_var_name();
-		}
+		$query_arg_name = \GV\Entry::get_endpoint_name();
 
 		$entry_slug = self::get_entry_slug( $entry['id'], $entry );
 
-		if( get_option('permalink_structure') && !is_preview() ) {
+		if ( get_option('permalink_structure') && !is_preview() ) {
 
 			$args = array();
 
@@ -584,16 +577,16 @@ class GravityView_API {
 		/**
 		 * @since 1.7.3
 		 */
-		if( $add_directory_args ) {
+		if ( $add_directory_args ) {
 
-			if( !empty( $_GET['pagenum'] ) ) {
+			if ( ! empty( $_GET['pagenum'] ) ) {
 				$args['pagenum'] = intval( $_GET['pagenum'] );
 			}
 
 			/**
 			 * @since 1.7
 			 */
-			if( $sort = \GV\Utils::_GET( 'sort' ) ) {
+			if ( $sort = \GV\Utils::_GET( 'sort' ) ) {
 				$args['sort'] = $sort;
 				$args['dir'] = \GV\Utils::_GET( 'dir' );
 			}

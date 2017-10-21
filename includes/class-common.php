@@ -1164,9 +1164,8 @@ class GVCommon {
 
 		if ( class_exists( 'GravityView_View_Data' ) ) {
 
-			$defaults = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? \GV\View_Settings::defaults() : GravityView_View_Data::get_default_args();
 
-			return wp_parse_args( (array)$settings, $defaults );
+			return wp_parse_args( (array)$settings, \GV\View_Settings::defaults() );
 
 		}
 
@@ -1240,16 +1239,14 @@ class GVCommon {
 			 */
 			$fields = apply_filters( 'gravityview/configuration/fields', $fields, $post_id );
 
-			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-				/**
-				 * @filter `gravityview/view/configuration/fields` Filter the View fields' configuration array.
-				 * @since future
-				 *
-				 * @param array $fields Multi-array of fields with first level being the field zones.
-				 * @param \GV\View $view The View the fields are being pulled for.
-				 */
-				$fields = apply_filters( 'gravityview/view/fields/configuration', $fields, \GV\View::by_id( $post_id ) );
-			}
+			/**
+			 * @filter `gravityview/view/configuration/fields` Filter the View fields' configuration array.
+			 * @since future
+			 *
+			 * @param array $fields Multi-array of fields with first level being the field zones.
+			 * @param \GV\View $view The View the fields are being pulled for.
+			 */
+			$fields = apply_filters( 'gravityview/view/fields/configuration', $fields, \GV\View::by_id( $post_id ) );
 		}
 
 		return $fields;

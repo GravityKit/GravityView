@@ -91,11 +91,7 @@ class GravityView_Compatibility {
 	 * @return bool
 	 */
 	public static function is_valid() {
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			return gravityview()->plugin->is_compatible();
-		}
-
-		return ( self::is_valid_gravity_forms() && self::is_valid_wordpress() && self::is_valid_php() );
+		return gravityview()->plugin->is_compatible();
 	}
 
 	/**
@@ -106,11 +102,7 @@ class GravityView_Compatibility {
 	 * @see \GV\Plugin::is_compatible_wordpress() accessible via gravityview()->plugin->is_compatible_wordpress()
 	 */
 	private static function is_valid_wordpress() {
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			return gravityview()->plugin->is_compatible_wordpress();
-		}
-
-		return self::$valid_wordpress;
+		return gravityview()->plugin->is_compatible_wordpress();
 	}
 
 	/**
@@ -122,11 +114,7 @@ class GravityView_Compatibility {
 	 * @return bool
 	 */
 	private static function is_valid_gravity_forms() {
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			return gravityview()->plugin->is_compatible_gravityforms();
-		}
-
-		return self::$valid_gravity_forms;
+		return gravityview()->plugin->is_compatible_gravityforms();
 	}
 
 	/**
@@ -138,11 +126,7 @@ class GravityView_Compatibility {
 	 * @return bool
 	 */
 	private static function is_valid_php() {
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			return gravityview()->plugin->is_compatible_php();
-		}
-
-		return self::$valid_php;
+		return gravityview()->plugin->is_compatible_php();
 	}
 
 	/**
@@ -209,10 +193,7 @@ class GravityView_Compatibility {
 	 */
 	public static function check_php() {
 
-		if (
-			( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && ! gravityview()->plugin->is_compatible_php() )
-			|| ( false === version_compare( phpversion(), GV_MIN_PHP_VERSION , '>=' ) )
-		) {
+		if ( ! gravityview()->plugin->is_compatible_php() ) {
 
 			self::$notices['php_version'] = array(
 				'class' => 'error',
@@ -222,20 +203,6 @@ class GravityView_Compatibility {
 			);
 
 			return false;
-		}
-
-		if( false === version_compare( phpversion(), GV_FUTURE_MIN_PHP_VERSION , '>=' ) ) {
-
-			// Show the notice on every update. Yes, annoying, but not as annoying as a plugin breaking.
-			$key = sprintf('php_%s_%s', GV_FUTURE_MIN_PHP_VERSION, GravityView_Plugin::version );
-
-			self::$notices[ $key ] = array(
-				'class' => 'error',
-				'message' => sprintf( __( "%sGravityView will soon require PHP Version %s.%s \n\nYou're using Version %s. Please ask your host to upgrade your server's PHP.", 'gravityview' ), '<h3>', GV_FUTURE_MIN_PHP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.phpversion().'</span>' ),
-				'cap' => 'manage_options',
-				'dismiss' => $key,
-			);
-
 		}
 
 		return true;
@@ -250,10 +217,7 @@ class GravityView_Compatibility {
 	public static function check_wordpress() {
 		global $wp_version;
 
-		if (
-			( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && ! gravityview()->plugin->is_compatible_wordpress() )
-			|| ( false === version_compare( $wp_version, GV_MIN_WP_VERSION, '>=' ) )
-		) {
+		if ( ! gravityview()->plugin->is_compatible_wordpress() ) {
 
 			self::$notices['wp_version'] = array(
 				'class' => 'error',
@@ -288,11 +252,7 @@ class GravityView_Compatibility {
 			}
 
 			// Does it meet minimum requirements?
-			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-				$meets_minimum = gravityview()->plugin->is_compatible_gravityforms();
-			} else {
-				$meets_minimum = ( true === version_compare( GFCommon::$version, GV_MIN_GF_VERSION, ">=" ) );
-			}
+			$meets_minimum = gravityview()->plugin->is_compatible_gravityforms();
 
 			$class = $meets_minimum ? 'notice-warning' : 'error';
 

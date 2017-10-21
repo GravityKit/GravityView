@@ -133,17 +133,9 @@ class GravityView_Admin_Bar {
 				$added_views = array();
 
 				foreach ( $views as $view ) {
-
-					if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-						/** `$view` is now a \GV\View object, not an array. */
-						$view = \GV\View::by_id( $view['id'] );
-						$view_id = $view->ID;
-						$form_id = $view->form ? $view->form->ID : null;
-					} else {
-						/** Deprecated. */
-						$view_id = $view['id'];
-						$form_id = $view['form_id'];
-					}
+					$view = \GV\View::by_id( $view['id'] );
+					$view_id = $view->ID;
+					$form_id = $view->form ? $view->form->ID : null;
 
 					$edit_view_title = __( 'Edit View', 'gravityview' );
 					$edit_form_title = __( 'Edit Form', 'gravityview' );

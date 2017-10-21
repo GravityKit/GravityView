@@ -18,12 +18,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$this->markTestSkipped( 'The future code requires PHP 5.3+' );
 			return;
 		}
-
-		/** Not being loaded by the plugin yet. */
-		if ( ! defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			$this->markTestSkipped( 'gravityview() is not being loaded by plugin yet' );
-			return;
-		}
 	}
 
 	/**
