@@ -52,6 +52,7 @@ class GravityView_Admin {
 
 		add_action( 'plugins_loaded', array( $this, 'backend_actions' ), 100 );
 
+		add_action( 'gravityview/metaboxes/data-source/before', array( 'GravityView_Admin', 'connected_form_warning' ) );
 	}
 
 	/**
