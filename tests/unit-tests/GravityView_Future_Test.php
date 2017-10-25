@@ -947,20 +947,32 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertInstanceOf( '\GV\WP_Action_Logger', gravityview()->log );
 
 		$_this = &$this;
-		add_action( 'gravityview_log_debug_test', function( $message, $data ) use ( $_this ) {
-			$_this->assertEquals( "[info, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
-			$_this->assertEquals( $data, array( 'a' => 'b' ) );
-		}, 10, 2 );
-		gravityview()->log->info( 'Hello, {world}!', array( 'world' => 'TRAPPIST-1', 'data' => array( 'a' => 'b' ) ) );
-		remove_all_actions( 'gravityview_log_debug_test' );
+		if ( version_compare( phpversion(), '5.4', '>=' ) ) {
+			add_action( 'gravityview_log_debug_test', function( $message, $data ) use ( $_this ) {
+				$_this->assertEquals( "[info, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
+				$_this->assertEquals( $data, array( 'a' => 'b' ) );
+			}, 10, 2 );
+			gravityview()->log->info( 'Hello, {world}!', array( 'world' => 'TRAPPIST-1', 'data' => array( 'a' => 'b' ) ) );
+			remove_all_actions( 'gravityview_log_debug_test' );
+
+			add_action( 'gravityview_log_error_test', function( $message, $data ) use ( $_this ) {
+				$_this->assertEquals( "[critical, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
+				$_this->assertEquals( $data, array( 'a' => 'b' ) );
+			}, 10, 2 );
+			gravityview()->log->critical( 'Hello, {world}!', array( 'world' => 'TRAPPIST-1', 'data' => array( 'a' => 'b' ) ) );
+			remove_all_actions( 'gravityview_log_error_test' );
+		}
+
+		$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] = '5.3';
 
 		add_action( 'gravityview_log_error_test', function( $message, $data ) use ( $_this ) {
-			$_this->assertEquals( "[critical, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
+			$_this->assertEquals( "[critical] Hello, TRAPPIST-1!", $message );
 			$_this->assertEquals( $data, array( 'a' => 'b' ) );
 		}, 10, 2 );
 		gravityview()->log->critical( 'Hello, {world}!', array( 'world' => 'TRAPPIST-1', 'data' => array( 'a' => 'b' ) ) );
-
 		remove_all_actions( 'gravityview_log_error_test' );
+
+		unset( $GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] );
 	}
 
 	/**
