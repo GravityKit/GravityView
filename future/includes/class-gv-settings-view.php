@@ -10,6 +10,20 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * The View Settings class.
  */
 class View_Settings extends Settings {
+	/**
+	 * Retrieve an instance of the settings with default values.
+	 * @param bool $detailed Whether to return detailed setting meta information or just the value.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @return \GV\View_Settings
+	 */
+	public static function with_defaults( $detailed = false ) {
+		$settings = new self();
+		$settings->update( self::defaults( $detailed ) );
+		return $settings;
+	}
 
 	/**
 	 * Retrieve the default View settings.
@@ -267,12 +281,13 @@ class View_Settings extends Settings {
 	 * @since future
 	 *
 	 * @param array An array of settings to update.
-	 * @return void
+	 * @return \GV\View_Settings self chain.
 	 */
 	public function update( $settings ) {
 		foreach ( $settings as $key => $value ) {
 			$this->set( $key, $value );
 		}
+		return $this;
 	}
 
 	/**
