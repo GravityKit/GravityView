@@ -34,7 +34,7 @@ function gravityview_css_url( $css_file = '', $dir_path = '' ) {
 
 	if( file_exists( $template_css_path ) ) {
 		$path = trailingslashit( get_stylesheet_directory_uri() ) . 'gravityview/css/' . $css_file;
-		do_action( 'gravityview_log_debug', __FUNCTION__ . ': Stylesheet override ('. esc_attr( $css_file ) .')' );
+		gravityview()->log->debug( 'Stylesheet override ({css_file})', array( 'css_file' => esc_attr( $css_file ) ) );
 	} else {
 		// Default: use GravityView CSS file
 
@@ -186,7 +186,7 @@ function gravityview_strip_whitespace( $string ) {
  */
 function gravityview_ob_include( $file_path, $object = NULL ) {
 	if( ! file_exists( $file_path ) ) {
-		do_action( 'gravityview_log_error', __FUNCTION__ . ': File path does not exist. ', $file_path );
+		gravityview()->log->error( 'File path does not exist. {path}', array( 'path' => $file_path ) );
 		return '';
 	}
 	ob_start();
@@ -506,7 +506,7 @@ function gravityview_is_valid_datetime( $datetime, $expected_format = 'Y-m-d' ) 
 function gravityview_get_input_id_from_id( $field_id = '' ) {
 
 	if ( ! is_numeric( $field_id ) ) {
-		do_action( 'gravityview_log_error', __FUNCTION__ . ': $field_id not numeric', $field_id );
+		gravityview()->log->error( '$field_id not numeric', array( 'data' => $field_id ) );
 		return false;
 	}
 
@@ -593,7 +593,7 @@ function _gravityview_process_posted_fields() {
 			if ( isset( $fields_holder['fields'] ) ) {
 				$fields = $fields_holder['fields'];
 			} else {
-				do_action( 'gravityview_log_error', '[save_postdata] No `fields` key was found after parsing $fields string', $fields_holder );
+				gravityview()->log->error( 'No `fields` key was found after parsing $fields string', array( 'data' => $fields_holder ) );
 			}
 
 		} else {

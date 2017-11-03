@@ -174,12 +174,12 @@ class GravityView_Admin_Notices {
 
 			// If the user doesn't have the capability to see the warning
 			if( isset( $notice['cap'] ) && false === GVCommon::has_cap( $notice['cap'] ) ) {
-				do_action( 'gravityview_log_debug', 'Notice not shown because user does not have the capability to view it.', $notice );
+				gravityview()->log->debug( 'Notice not shown because user does not have the capability to view it.', array( 'data' => $notice ) );
 				continue;
 			}
 
 			if( true === $this->is_notice_dismissed( $notice ) ) {
-				do_action( 'gravityview_log_debug', 'Notice not shown because the notice has already been dismissed.', $notice );
+				gravityview()->log->debug( 'Notice not shown because the notice has already been dismissed.', array( 'data' => $notice ) );
 				continue;
 			}
 
@@ -234,7 +234,7 @@ class GravityView_Admin_Notices {
 	public static function add_notice( $notice = array() ) {
 
 		if( !isset( $notice['message'] ) ) {
-			do_action( 'gravityview_log_error', 'GravityView_Admin[add_notice] Notice not set', $notice );
+			gravityview()->log->error( 'Notice not set', array( 'data' => $notice ) );
 			return;
 		}
 

@@ -192,10 +192,7 @@ class GravityView_Widget {
 	function add_shortcode( $run_on_singular = true ) {
 		global $post;
 
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && gravityview()->request->is_admin() ) {
-			return;
-			/** Deprecated in favor of gravityview()->request->is_admin(). */
-		} else if ( GravityView_Plugin::is_admin() ) {
+		if ( gravityview()->request->is_admin() ) {
 			return;
 		}
 
@@ -203,7 +200,7 @@ class GravityView_Widget {
 
 		// If the widget shouldn't output on single entries, don't show it
 		if( empty( $this->show_on_single ) && class_exists('GravityView_frontend') && GravityView_frontend::is_single_entry() ) {
-			do_action('gravityview_log_debug', sprintf( '%s[add_shortcode]: Skipping; set to not run on single entry.', get_class($this)) );
+			gravityview()->log->debug( 'Skipping; set to not run on single entry.' );
 
 			add_shortcode( $this->shortcode_name, '__return_null' );
 			return;
@@ -212,7 +209,7 @@ class GravityView_Widget {
 
 		if( !has_gravityview_shortcode( $post ) ) {
 
-			do_action('gravityview_log_debug', sprintf( '%s[add_shortcode]: No shortcode present; not adding render_frontend shortcode.', get_class($this)) );
+			gravityview()->log->debug( 'No shortcode present; not adding render_frontend shortcode.' );
 
 			add_shortcode( $this->shortcode_name, '__return_null' );
 			return;
@@ -273,7 +270,7 @@ class GravityView_Widget {
 		$gravityview_view = GravityView_View::getInstance();
 
 		if( empty( $gravityview_view ) ) {
-			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: $gravityview_view not instantiated yet.', get_class($this)) );
+			gravityview()->log->debug( '$gravityview_view not instantiated yet.' );
 			return false;
 		}
 
@@ -285,7 +282,7 @@ class GravityView_Widget {
 		$hide_until_search = apply_filters( 'gravityview/widget/hide_until_searched', $gravityview_view->hide_until_searched, $this );
 
 		if( $hide_until_search ) {
-			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: Hide View data until search is performed', get_class($this)) );
+			gravityview()->log->debug( 'Hide View data until search is performed' );
 			return false;
 		}
 

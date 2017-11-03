@@ -87,7 +87,11 @@ final class Core {
 
 		/** Enable logging. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-logger.php' );
-		$this->log = new WP_Action_Logger();
+		/**
+		 * @filter `gravityview/logger` Filter the logger instance being used for logging.
+		 * @param \GV\Logger $logger The logger instance.
+		 */
+		$this->log = apply_filters( 'gravityview/logger', new WP_Action_Logger() );
 
 		/** Require critical legacy core files. @todo Deprecate */
 		require_once $this->plugin->dir( 'includes/helper-functions.php' );
@@ -116,6 +120,11 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
 		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
 		add_action( 'the_content', array( '\GV\View', 'content' ) );
+
+		/**
+		 * Utilities.
+		 */
+		require_once $this->plugin->dir( 'future/includes/class-gv-utils.php' );
 
 		/** The Settings. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-settings.php' );
@@ -201,9 +210,6 @@ final class Core {
 		 *  `init` hasn't been called yet.
 		 */
 		do_action( 'gravityview/loaded' );
-
-		define( 'GRAVITYVIEW_FUTURE_CORE_LOADED', true );
-
 	}
 
 	private function __clone() { }

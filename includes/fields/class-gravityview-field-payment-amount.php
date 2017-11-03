@@ -51,8 +51,8 @@ class GravityView_Field_Payment_Amount extends GravityView_Field {
 		/** Overridden by a template. */
 		if( ! empty( $field['field_path'] ) ) { return $output; }
 
-		$amount = rgar( $entry, 'payment_amount' );
-		$return = GFCommon::to_money( $amount, rgar( $entry, 'currency' ) );
+		$amount = \GV\Utils::get( $entry, 'payment_amount' );
+		$return = GFCommon::to_money( $amount, \GV\Utils::get( $entry, 'currency' ) );
 
 		return $return;
 	}
@@ -97,9 +97,9 @@ class GravityView_Field_Payment_Amount extends GravityView_Field {
 			$full_tag = $match[0];
 			$modifier = isset( $match[1] ) ? $match[1] : false;
 
-			$amount = rgar( $entry, 'payment_amount' );
+			$amount = \GV\Utils::get( $entry, 'payment_amount' );
 
-			$formatted_amount = ( 'raw' === $modifier ) ? $amount : GFCommon::to_money( $amount, rgar( $entry, 'currency' ) );
+			$formatted_amount = ( 'raw' === $modifier ) ? $amount : GFCommon::to_money( $amount, \GV\Utils::get( $entry, 'currency' ) );
 
 			$return = str_replace( $full_tag, $formatted_amount, $return );
 		}

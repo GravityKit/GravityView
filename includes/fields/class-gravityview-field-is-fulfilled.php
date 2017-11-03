@@ -124,7 +124,7 @@ class GravityView_Field_Is_Fulfilled extends GravityView_Field {
 
 			$full_tag = $match[0];
 
-			$fulfilled = rgar( $entry, 'is_fulfilled' );
+			$fulfilled = \GV\Utils::get( $entry, 'is_fulfilled' );
 
 			$value = $this->get_string_from_value( $fulfilled );
 

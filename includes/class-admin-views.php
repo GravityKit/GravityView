@@ -94,7 +94,7 @@ class GravityView_Admin_Views {
 		}
 
 		$forms = gravityview_get_forms();
-		$current_form = rgget( 'gravityview_form_id' );
+		$current_form = \GV\Utils::_GET( 'gravityview_form_id' );
 		// If there are no forms to select, show no forms.
 		if( !empty( $forms ) ) { ?>
 			<select name="gravityview_form_id" id="gravityview_form_id">
@@ -233,7 +233,7 @@ class GravityView_Admin_Views {
 		$gv_tooltips = array();
 
 		// Generate tooltips for View settings
-		$default_args = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? \GV\View_Settings::defaults( true ) : GravityView_View_Data::get_default_args( true );
+		$default_args = \GV\View_Settings::defaults( true );
 
 		foreach ( $default_args as $key => $arg ) {
 
@@ -301,7 +301,7 @@ class GravityView_Admin_Views {
 
 				// All Views should have a connected form. If it doesn't, that's not right.
 				if ( empty( $template_id ) ) {
-					do_action( 'gravityview_log_error', sprintf( __METHOD__ . ' View ID %s does not have a connected template.', $post_id ) );
+					gravityview()->log->error( 'View ID {view_id} does not have a connected template.', array( 'view_id' => $post_id ) );
 					break;
 				}
 
@@ -322,7 +322,7 @@ class GravityView_Admin_Views {
 
 				// All Views should have a connected form. If it doesn't, that's not right.
 				if ( empty( $form_id ) ) {
-					do_action( 'gravityview_log_error', sprintf( '[add_data_source_column_content] View ID %s does not have a connected GF form.', $post_id ) );
+					gravityview()->log->error( 'View ID {view_id} does not have a connected GF form.', array( 'view_id' => $post_id ) );
 					$output = __( 'Not connected.', 'gravityview' );
 					break;
 				}
@@ -330,7 +330,7 @@ class GravityView_Admin_Views {
 				$form = gravityview_get_form( $form_id );
 
 				if ( ! $form ) {
-					do_action( 'gravityview_log_error', sprintf( '[add_data_source_column_content] Connected form not found: Form #%d', $form_id ) );
+					gravityview()->log->error( 'Connected form not found: Form #{form_id}', array( 'form_id' => $form_id ) );
 
 					$output = __( 'The connected form can not be found; it may no longer exist.', 'gravityview' );
 				} else {
@@ -460,11 +460,11 @@ class GravityView_Admin_Views {
 
 		// validate user can edit and save View
 		if ( ! GVCommon::has_cap( 'edit_gravityview', $post_id ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' - Current user does not have the capability to edit View #' . $post_id, wp_get_current_user() );
+			gravityview()->log->error( 'Current user does not have the capability to edit View {view_id}', array( 'view_id' => $post_id, 'data' => wp_get_current_user() ) );
 			return;
 		}
 
-		do_action( 'gravityview_log_debug', '[save_postdata] Saving View post type.', $_POST );
+		gravityview()->log->debug( '[save_postdata] Saving View post type.', array( 'data' => $_POST ) );
 
 		$statii = array();
 
@@ -478,7 +478,7 @@ class GravityView_Admin_Views {
 		}
 
 		if( false === GVCommon::has_cap( 'gravityforms_create_form' ) && empty( $statii['form_id'] ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' - Current user does not have the capability to create a new Form.', wp_get_current_user() );
+			gravityview()->log->error( 'Current user does not have the capability to create a new Form.', array( 'data' => wp_get_current_user() ) );
 			return;
 		}
 
@@ -558,7 +558,7 @@ class GravityView_Admin_Views {
 		 */
 		do_action('gravityview_view_saved', $post_id, $statii );
 
-		do_action('gravityview_log_debug', '[save_postdata] Update Post Meta Statuses (also returns false if nothing changed)', array_map( 'intval', $statii ) );
+		gravityview()->log->debug( '[save_postdata] Update Post Meta Statuses (also returns false if nothing changed)', array( 'data' => array_map( 'intval', $statii ) ) );
 	}
 
 	/**
@@ -591,7 +591,7 @@ class GravityView_Admin_Views {
 
 		if ( ! is_array( $blacklist_field_types ) ) {
 
-		    do_action( 'gravityview_log_error', __METHOD__ . ': $blacklist_field_types is not an array', print_r( $blacklist_field_types, true ) );
+		    gravityview()->log->error( '$blacklist_field_types is not an array', array( 'data' => print_r( $blacklist_field_types, true ) ) );
 
 			$blacklist_field_types = array();
 		}
@@ -768,7 +768,7 @@ class GravityView_Admin_Views {
 	function get_available_fields( $form = '', $zone = NULL ) {
 
 		if( empty( $form ) ) {
-			do_action( 'gravityview_log_error', '[get_available_fields] $form is empty' );
+			gravityview()->log->error( '$form is empty' );
 			return array();
 		}
 
@@ -887,7 +887,7 @@ class GravityView_Admin_Views {
 
 										if( !$original_item ) {
 
-											do_action('gravityview_log_error', 'An item was not available when rendering the output; maybe it was added by a plugin that is now de-activated.', array('available_items' => $available_items, 'field' => $field ));
+											gravityview()->log->error( 'An item was not available when rendering the output; maybe it was added by a plugin that is now de-activated.', array(' data' => array('available_items' => $available_items, 'field' => $field ) ) );
 
 											$original_item = $field;
 										} else {
@@ -1012,7 +1012,7 @@ class GravityView_Admin_Views {
 	 */
 	function render_directory_active_areas( $template_id = '', $context = 'single', $post_id = '', $echo = false ) {
 		if( empty( $template_id ) ) {
-			do_action( 'gravityview_log_debug', '[render_directory_active_areas] $template_id is empty' );
+			gravityview()->log->debug( '[render_directory_active_areas] {template_id} is empty', array( 'template_id' => $template_id ) );
 			return '';
 		}
 
@@ -1027,7 +1027,7 @@ class GravityView_Admin_Views {
 
 		if( empty( $template_areas ) ) {
 
-			do_action( 'gravityview_log_debug', '[render_directory_active_areas] No areas defined. Maybe template %s is disabled.', $template_id );
+			gravityview()->log->debug( '[render_directory_active_areas] No areas defined. Maybe template {template_id} is disabled.', array( 'data' => $template_id ) );
 			$output = '<div>';
 			$output .= '<h2 class="description" style="font-size: 16px; margin:0">'. sprintf( esc_html__( 'This View is configured using the %s View type, which is disabled.', 'gravityview' ), '<em>'.$template_id.'</em>' ) .'</h2>';
 			$output .= '<p class="description" style="font-size: 14px; margin:0 0 1em 0;padding:0">'.esc_html__('The data is not lost; re-activate the associated plugin and the configuration will re-appear.', 'gravityview').'</p>';
@@ -1084,7 +1084,7 @@ class GravityView_Admin_Views {
 
         wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
             'cookiepath' => COOKIEPATH,
-            'passed_form_id' => (bool) rgget( 'form_id' ),
+            'passed_form_id' => (bool) \GV\Utils::_GET( 'form_id' ),
             'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ),
             'label_viewname' => __( 'Enter View name here', 'gravityview' ),
             'label_close' => __( 'Close', 'gravityview' ),

@@ -98,7 +98,7 @@ class GravityView_Entry_Notes {
 
 		if( !is_array( $note_ids ) ) {
 
-			do_action( 'gravityview_log_error', __METHOD__ . ' - Note IDs not an array. Not processing delete request.', $note_ids );
+			gravityview()->log->error( 'Note IDs not an array. Not processing delete request.', array( 'data' => $note_ids ) );
 
 			return;
 		}

@@ -88,7 +88,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 		) );
 
-		$date_created = rgar( $entry, 'date_created' );
+		$date_created = \GV\Utils::get( $entry, 'date_created' );
 
 		/**
 		 * adjusting date to local configured Time Zone

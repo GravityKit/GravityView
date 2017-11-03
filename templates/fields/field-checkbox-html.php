@@ -20,7 +20,7 @@ if ( ! $is_single_input ) {
 	$output = gravityview_get_field_value( $entry, $field_id, $display_value );
 } else {
 
-	$display_type = rgar( $field_settings, 'choice_display' );
+	$display_type = \GV\Utils::get( $field_settings, 'choice_display' );
 
 	$field_value = gravityview_get_field_value( $entry, $field_id, $display_value );
 

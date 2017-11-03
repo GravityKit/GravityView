@@ -10,7 +10,7 @@ $gravityview_view = GravityView_View::getInstance();
 
 $field = $gravityview_view->getCurrentField();
 
-$created_by = rgar( $field['entry'], 'created_by' );
+$created_by = \GV\Utils::get( $field, 'entry/created_by' );
 
 // There was no logged in user who created this entry.
 if( empty( $created_by ) ) {

@@ -161,7 +161,7 @@ abstract class GravityView_Extension {
 	public function load_plugin_textdomain() {
 
 		if( empty( $this->_text_domain ) ) {
-			do_action( 'gravityview_log_debug', __METHOD__ . ': Extension translation cannot be loaded; the `_text_domain` variable is not defined', $this );
+			gravityview()->log->debug( 'Extension translation cannot be loaded; the `_text_domain` variable is not defined', array( 'data' => $this ) );
 			return;
 		}
 
@@ -283,7 +283,7 @@ abstract class GravityView_Extension {
 	public static function add_notice( $notice = array() ) {
 
 		if( is_array( $notice ) && !isset( $notice['message'] ) ) {
-			do_action( 'gravityview_log_error', __CLASS__.'[add_notice] Notice not set', $notice );
+			gravityview()->log->error( 'Notice not set', array( 'data' => $notice ) );
 			return;
 		} else if( is_string( $notice ) ) {
 			$notice = array( 'message' => $notice );
@@ -368,7 +368,7 @@ abstract class GravityView_Extension {
 
 			self::add_notice( $message );
 
-			do_action( 'gravityview_log_error', __METHOD__. ' ' . $message );
+			gravityview()->log->error( '{message}', array( 'message' => $message ) );
 
 			self::$is_compatible = false;
 		}

@@ -93,7 +93,7 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 		 * We've been given an entries result that we can return,
 		 *  just set the paging and we're good to go.
 		 */
-		$paging = rgar( $parameters, 'paging' );
+		$paging = \GV\Utils::get( $parameters, 'paging' );
 	} else {
 		$entries = $form->entries
 			->filter( \GV\GF_Entry_Filter::from_search_criteria( $criteria['search_criteria'] ) )

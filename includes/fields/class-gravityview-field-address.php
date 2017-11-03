@@ -58,7 +58,7 @@ class GravityView_Field_Address extends GravityView_Field {
 
 		foreach ( $search_fields as & $search_field ) {
 
-			if ( 'address' === rgar( $search_field, 'type' ) ) {
+			if ( 'address' === \GV\Utils::get( $search_field, 'type' ) ) {
 
 				$field_id = intval( floor( $search_field['key'] ) );
 				$input_id = gravityview_get_input_id_from_id( $search_field['key'] );
@@ -80,7 +80,7 @@ class GravityView_Field_Address extends GravityView_Field {
 
 				if( ! empty( $choices ) ) {
 					$search_field['choices'] = $choices;
-					$search_field['type'] = rgar( $search_field, 'input');
+					$search_field['type'] = \GV\Utils::get( $search_field, 'input');
 				} else {
 					$search_field['type'] = 'text';
 					$search_field['input'] = 'input_text';
@@ -171,7 +171,7 @@ class GravityView_Field_Address extends GravityView_Field {
 	public function input_types( $input_types ) {
 
 		// Use the same inputs as the "text" input type allows
-		$text_inputs = rgar( $input_types, 'text' );
+		$text_inputs = \GV\Utils::get( $input_types, 'text' );
 
 		$input_types['street'] = $text_inputs;
 		$input_types['street2'] = $text_inputs;

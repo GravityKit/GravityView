@@ -106,7 +106,7 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 
 			$return = false;
 
-			do_action( 'gravityview_log_error', 'Poll Widget not displayed; the Poll Addon is not loaded' );
+			gravityview()->log->error( 'Poll Widget not displayed; the Poll Addon is not loaded' );
 
 		} else {
 
@@ -115,7 +115,7 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 			$poll_fields = GFCommon::get_fields_by_type( GravityView_View::getInstance()->getForm(), array( 'poll' ) );
 
 			if ( empty ( $poll_fields ) ) {
-				do_action( 'gravityview_log_error', 'Poll Widget not displayed; there are no poll fields for the form' );
+				gravityview()->log->error( 'Poll Widget not displayed; there are no poll fields for the form' );
 				$return = false;
 			}
 		}

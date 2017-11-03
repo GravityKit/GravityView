@@ -73,10 +73,10 @@ class GravityView_Edit_Entry_User_Registration {
     public function update_user( $form = array(), $entry_id = 0 ) {
 
         if( ! class_exists( 'GFAPI' ) || ! class_exists( 'GF_User_Registration' ) ) {
-	        do_action( 'gravityview_log_error', __METHOD__ . ': GFAPI or User Registration class not found; not updating the user' );
+	        gravityview()->log->error( 'GFAPI or User Registration class not found; not updating the user' );
 	        return;
         } elseif( empty( $entry_id ) ) {
-        	do_action( 'gravityview_log_error', __METHOD__ . ': Entry ID is empty; not updating the user', $entry_id );
+        	gravityview()->log->error( 'Entry ID is empty [{entry_id}]; not updating the user', array( 'entry_id' => $entry_id ) );
 	        return;
         }
 
@@ -96,12 +96,12 @@ class GravityView_Edit_Entry_User_Registration {
 	    $config = $this->get_feed_configuration( $entry, $form );
 
         // Make sure the feed is active
-	    if ( ! rgar( $config, 'is_active', false ) ) {
+	    if ( ! \GV\Utils::get( $config, 'is_active', false ) ) {
 			return;
 	    }
 
 	    // If an Update feed, make sure the conditions are met.
-	    if( rgars( $config, 'meta/feedType' ) === 'update' ) {
+	    if ( \GV\Utils::get( $config, 'meta/feedType' ) === 'update' ) {
 	    	if( ! $gf_user_registration->is_feed_condition_met( $config, $form, $entry ) ) {
 			    return;
 		    }
@@ -261,7 +261,7 @@ class GravityView_Edit_Entry_User_Registration {
          */
         $restore_display_name = apply_filters( 'gravityview/edit_entry/restore_display_name', true );
 
-        $is_update_feed = ( $config && rgars( $config, 'meta/feed_type') === 'update' );
+        $is_update_feed = ( $config && \GV\Utils::get( $config, 'meta/feed_type' ) === 'update' );
 
         /**
          * Don't restore display name:
@@ -278,7 +278,7 @@ class GravityView_Edit_Entry_User_Registration {
 
         // User not found
 	    if ( ! $user_after_update ) {
-	    	do_action('gravityview_log_error', __METHOD__ . sprintf( ' - User not found at $user_id #%d', $user_id ) );
+	    	gravityview()->log->error( 'User not found at $user_id #{user_id}', array( 'user_id' => $user_id ) );
 		    return false;
 	    }
 
@@ -303,9 +303,9 @@ class GravityView_Edit_Entry_User_Registration {
         $updated = wp_update_user( $restored_user );
 
         if( is_wp_error( $updated ) ) {
-            do_action('gravityview_log_error', __METHOD__ . sprintf( ' - There was an error updating user #%d details', $user_id ), $updated );
+            gravityview()->log->error( 'There was an error updating user #{user_id} details', array( 'user_id' => $user_id, 'data' => $updated ) );
         } else {
-            do_action('gravityview_log_debug', __METHOD__ . sprintf( ' - User #%d details restored', $user_id ) );
+            gravityview()->log->debug( 'User #{user_id} details restored', array( 'user_id' => $user_id ) );
         }
 
         $this->_user_before_update = null;

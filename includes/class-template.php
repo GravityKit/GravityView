@@ -483,7 +483,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 		$total = $this->getTotalEntries();
 
 		if ( empty( $total ) ) {
-			do_action( 'gravityview_log_debug', __METHOD__ . ': No entries. Returning empty array.' );
+			gravityview()->log->debug( 'No entries. Returning empty array.' );
 
 			return array();
 		}
@@ -642,7 +642,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 	public function renderZone( $zone = '', $atts = array(), $echo = true ) {
 
 		if( empty( $zone ) ) {
-			do_action('gravityview_log_error', 'GravityView_View[renderZone] No zone defined.');
+			gravityview()->log->error( 'No zone defined.');
 			return NULL;
 		}
 
@@ -674,7 +674,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		if( empty( $fields ) ) {
 
-			do_action('gravityview_log_error', 'GravityView_View[renderZone] Empty View configuration for this context.', $fields );
+			gravityview()->log->error( 'Empty View configuration for this context.', array( 'data' => $fields ) );
 
 			return NULL;
 		}
@@ -794,7 +794,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 		// Combine with existing table-body.php and table.php
 		$templates = array_merge( $additional, $templates );
 
-		do_action( 'gravityview_log_debug', '[add_id_specific_templates] List of Template Files', $templates );
+		gravityview()->log->debug( 'List of Template Files', array( 'data' => $templates ) );
 
 		return $templates;
 	}
@@ -808,7 +808,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 		
 		$template_file = $this->get_template_part( $slug, $name, false );
 
-		do_action( 'gravityview_log_debug', '[render] Rendering Template File', $template_file );
+		gravityview()->log->debug( 'Rendering Template File: {path}', array( 'path' => $template_file ) );
 
 		if( !empty( $template_file) ) {
 
@@ -828,7 +828,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 	public function render_widget_hooks( $view_id ) {
 
 		if( empty( $view_id ) || 'single' == gravityview_get_context() ) {
-			do_action( 'gravityview_log_debug', __METHOD__ . ' - Not rendering widgets; single entry' );
+			gravityview()->log->debug( 'Not rendering widgets; single entry' );
 			return;
 		}
 
@@ -863,13 +863,13 @@ class GravityView_View extends Gamajo_Template_Loader {
 		 * @since 1.16
 		 */
 		if ( empty( $widgets ) ) {
-			do_action( 'gravityview_log_debug', sprintf( 'No widgets for View #%s', $view_id ) );
+			gravityview()->log->debug( 'No widgets for View #{view_id}', array( 'view_id' => $view_id ) );
 			return;
 		}
 
 		// Prevent being called twice
 		if( did_action( $zone.'_'.$view_id.'_widgets' ) ) {
-			do_action( 'gravityview_log_debug', sprintf( '%s - Not rendering %s; already rendered', __METHOD__ , $zone.'_'.$view_id.'_widgets' ) );
+			gravityview()->log->debug( 'Not rendering {zone}; already rendered', array( 'zone' => $zone.'_'.$view_id.'_widgets' ) );
 			return;
 		}
 

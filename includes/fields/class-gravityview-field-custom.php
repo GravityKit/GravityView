@@ -97,12 +97,12 @@ class GravityView_Field_Custom extends GravityView_Field {
 		// TODO: Make this available to other custom GV field types
 		foreach ( (array) $edit_fields as $edit_field ) {
 
-			if( 'custom' === rgar( $edit_field, 'id') ) {
+			if( 'custom' === \GV\Utils::get( $edit_field, 'id') ) {
 
 				$field_data = array(
-					'label' => rgar( $edit_field, 'custom_label' ),
-					'customLabel' => rgar( $edit_field, 'custom_label' ),
-				    'content' => rgar( $edit_field, 'content' ),
+					'label' => \GV\Utils::get( $edit_field, 'custom_label' ),
+					'customLabel' => \GV\Utils::get( $edit_field, 'custom_label' ),
+				    'content' => \GV\Utils::get( $edit_field, 'content' ),
 				);
 
 				// Replace merge tags in the content
@@ -110,7 +110,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 					$field_data[ $key ] = GravityView_Merge_Tags::replace_variables( $field_datum, $form, $entry, false, false );
 				}
 
-				$field_data['cssClass'] = rgar( $edit_field, 'custom_class' );
+				$field_data['cssClass'] = \GV\Utils::get( $edit_field, 'custom_class' );
 
 				$new_fields[] = new GF_Field_HTML( $field_data );
 

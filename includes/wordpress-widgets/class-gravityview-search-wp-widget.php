@@ -55,7 +55,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		// Don't show unless a View ID has been set.
 		if( empty( $instance['view_id'] ) ) {
 
-			do_action('gravityview_log_debug', sprintf( '%s[widget]: No View ID has been defined. Not showing the widget.', get_class($this)), $instance );
+			gravityview()->log->debug( 'No View ID has been defined. Not showing the widget.', array( 'data' => $instance ) );
 
 			return;
 		}

@@ -91,9 +91,9 @@ class GravityView_Field_Total extends GravityView_Field {
 			$return_entry = GFAPI::update_entry( $entry );
 
 			if( is_wp_error( $return_entry ) ) {
-				do_action( 'gravityview_log_error', __METHOD__ . ': Updating the entry total fields failed', $return_entry );
+				gravityview()->log->error( 'Updating the entry total fields failed', array( 'data' => $return_entry ) );
 			} else {
-				do_action( 'gravityview_log_debug', __METHOD__ . ': Updating the entry total fields succeeded' );
+				gravityview()->log->debug( 'Updating the entry total fields succeeded' );
 			}
 		}
 	}

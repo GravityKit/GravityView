@@ -63,7 +63,7 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 		/** Overridden by a template. */
 		if( ! empty( $field['field_path'] ) ) { return $output; }
 
-		return GVCommon::format_date( $field['value'], 'format='.rgar( $field_settings, 'date_display' ) );
+		return GVCommon::format_date( $field['value'], 'format=' . \GV\Utils::get( $field_settings, 'date_display' ) );
 	}
 
 	/**
@@ -86,7 +86,7 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 		$return = $text;
 
 		/** Use $this->name instead of date_created because Payment Date uses this as well*/
-		$date_created = rgar( $entry, $this->name );
+		$date_created = \GV\Utils::get( $entry, $this->name );
 
 		foreach ( $matches as $match ) {
 

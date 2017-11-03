@@ -21,7 +21,7 @@ if ( ! class_exists( 'GFQuiz' ) ) {
 }
 
 // Get the setting for show/hide explanation
-$show_answer = rgars( $field_settings, 'quiz_show_explanation' );
+$show_answer = \GV\Utils::get( $field_settings, 'quiz_show_explanation' );
 
 // Update the quiz field so GF generates the output properly
 $field->gquizShowAnswerExplanation = ! empty( $show_answer );

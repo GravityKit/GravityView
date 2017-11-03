@@ -6,7 +6,7 @@
  * @since future
  */
 
-$created_by = rgar( $gravityview->entry, 'created_by' );
+$created_by = \GV\Utils::get( $gravityview->entry, 'created_by' );
 
 /** There was no logged in user who created this entry. */
 if ( empty( $created_by ) ) {

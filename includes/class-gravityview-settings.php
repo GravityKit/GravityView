@@ -265,7 +265,7 @@ class GravityView_Settings extends GFAddOn {
 				<?php
                 $reasons = $this->get_uninstall_reasons();
 				foreach ( $reasons as $reason ) {
-					printf( '<li><label><input name="reason" type="radio" value="other" data-followup="%s"> %s</label></li>', rgar( $reason, 'followup' ), rgar( $reason, 'label' ) );
+					printf( '<li><label><input name="reason" type="radio" value="other" data-followup="%s"> %s</label></li>', \GV\Utils::get( $reason, 'followup' ), \GV\Utils::get( $reason, 'label' ) );
 				}
 				?>
             </ul>
@@ -714,7 +714,7 @@ class GravityView_Settings extends GFAddOn {
 		$field['type']  = ( isset($field['type']) && in_array( $field['type'], array('submit','reset','button') ) ) ? $field['type'] : 'submit';
 
 		$attributes    = $this->get_field_attributes( $field );
-		$default_value = rgar( $field, 'value' ) ? rgar( $field, 'value' ) : rgar( $field, 'default_value' );
+		$default_value = \GV\Utils::get( $field, 'value', \GV\Utils::get( $field, 'default_value' ) );
 		$value         = $this->get_setting( $field['name'], $default_value );
 
 
@@ -754,7 +754,7 @@ class GravityView_Settings extends GFAddOn {
 		$field['name']  = 'gform-settings-save';
 		$field['class'] = isset( $field['class'] ) ? $field['class'] : 'button-primary gfbutton';
 
-		if ( ! rgar( $field, 'value' ) ) {
+		if ( ! \GV\Utils::get( $field, 'value' ) ) {
 			$field['value'] = __( 'Update Settings', 'gravityview' );
 		}
 
@@ -789,8 +789,8 @@ class GravityView_Settings extends GFAddOn {
 	 */
 	public function single_setting_row( $field ) {
 
-		$field['gv_description'] = rgar( $field, 'description' );
-		$field['description']    = rgar( $field, 'subtitle' );
+		$field['gv_description'] = \GV\Utils::get( $field, 'description' );
+		$field['description']    = \GV\Utils::get( $field, 'subtitle' );
 
 		parent::single_setting_row( $field );
 	}
@@ -804,7 +804,7 @@ class GravityView_Settings extends GFAddOn {
 
 		parent::single_setting_label( $field );
 
-		if ( $description = rgar( $field, 'gv_description' ) ) {
+		if ( $description = \GV\Utils::get( $field, 'gv_description' ) ) {
 			echo '<span class="description">'. $description .'</span>';
 		}
 	}
@@ -862,8 +862,8 @@ class GravityView_Settings extends GFAddOn {
 
 		$posted_settings = parent::get_posted_settings();
 
-		$local_key = rgar( $posted_settings, 'license_key' );
-		$response_key = rgars( $posted_settings, 'license_key_response/license_key' );
+		$local_key = \GV\Utils::get( $posted_settings, 'license_key' );
+		$response_key = \GV\Utils::get( $posted_settings, 'license_key_response/license_key' );
 
 		// If the posted key doesn't match the activated/deactivated key (set using the Activate License button, AJAX response),
 		// then we assume it's changed. If it's changed, unset the status and the previous response.
@@ -994,10 +994,10 @@ class GravityView_Settings extends GFAddOn {
 		 * @since 1.7.4
 		 */
 		foreach ( $fields as &$field ) {
-			$field['name']          = isset( $field['name'] ) ? $field['name'] : rgget('id', $field );
-			$field['label']         = isset( $field['label'] ) ? $field['label'] : rgget('title', $field );
-			$field['default_value'] = isset( $field['default_value'] ) ? $field['default_value'] : rgget('default', $field );
-			$field['description']   = isset( $field['description'] ) ? $field['description'] : rgget('subtitle', $field );
+			$field['name']          = isset( $field['name'] ) ? $field['name'] : \GV\Utils::_GET( 'id', \GV\Utils::get( $field, 'id' ) );
+			$field['label']         = isset( $field['label'] ) ? $field['label'] : \GV\Utils::_GET( 'title', \GV\Utils::get( $field, 'title' ) );
+			$field['default_value'] = isset( $field['default_value'] ) ? $field['default_value'] : \GV\Utils::_GET( 'default', \GV\Utils::get( $field, 'default' ) );
+			$field['description']   = isset( $field['description'] ) ? $field['description'] : \GV\Utils::_GET( 'subtitle', \GV\Utils::get( $field, 'subtitle' ) );
 
 			if( $disabled_attribute ) {
 				$field['disabled']  = $disabled_attribute;

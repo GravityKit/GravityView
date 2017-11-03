@@ -65,7 +65,7 @@ class GravityView_Widget_Custom_Content extends GravityView_Widget {
 
 		// No custom content
 		if( empty( $widget_args['content'] ) ) {
-			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: No content.', get_class($this)) );
+			gravityview()->log->debug( 'No content.' );
 			return;
 		}
 

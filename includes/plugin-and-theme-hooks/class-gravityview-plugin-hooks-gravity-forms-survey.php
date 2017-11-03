@@ -124,7 +124,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Survey extends GravityView_Plugin_a
 					continue;
 				}
 
-				if( rgar( $field, 'gsurveyLikertEnableMultipleRows' ) ) {
+				if ( \GV\Utils::get( $field, 'gsurveyLikertEnableMultipleRows' ) ) {
 					list( $row_val, $col_val ) = explode( ':', $field_value, 2 );
 
 					// If the $name matches the $row_val, we are processing the correct row
