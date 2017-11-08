@@ -43,7 +43,7 @@ define( 'GV_MIN_GF_VERSION', '1.9.14' );
  * GravityView requires at least this version of WordPress to function properly.
  * @since 1.12
  */
-define( 'GV_MIN_WP_VERSION', '4.0' );
+define( 'GV_MIN_WP_VERSION', '4.4' );
 
 /**
  * GravityView requires at least this version of PHP to function properly.
