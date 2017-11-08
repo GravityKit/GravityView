@@ -31,12 +31,12 @@ matrix:
     - php: 5.3
       env: WP_VERSION=latest WP_MULTISITE=1
     - php: 5.3
-      env: WP_VERSION=4.0 WP_MULTISITE=0 GV_NO_FUTURE=1
+      env: WP_VERSION=4.4 WP_MULTISITE=0 GV_NO_FUTURE=1
     - php: 7.0
       env: WP_VERSION=latest WP_MULTISITE=0 GV_NO_FUTURE=1
   exclude:
       - php: 7.0
-        env: WP_VERSION=4.0 WP_MULTISITE=0
+        env: WP_VERSION=4.4 WP_MULTISITE=0
 
 install:
   - curl -s https://getcomposer.org/installer | php
