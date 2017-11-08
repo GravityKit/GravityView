@@ -813,10 +813,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** \GVLogic_Shortcode::shortcode short circuits as well. */
 		set_current_screen( 'front' );
-		$logic_shortocde = \GVLogic_Shortcode::get_instance();
-		$this->assertEquals( $logic_shortocde->shortcode( array( 'if' => 'true', 'is' => 'true' ), 'sentinel' ), 'sentinel' );
+		$logic_shortcode = \GVLogic_Shortcode::get_instance();
+		$this->assertEquals( $logic_shortcode->shortcode( array( 'if' => 'true', 'is' => 'true' ), 'sentinel' ), 'sentinel' );
 		set_current_screen( 'dashboard' );
-		$this->assertNull( $logic_shortocde->shortcode( array( 'if' => 'true', 'is' => 'true' ), 'sentinel' ), 'sentinel' );
+		$this->assertNull( $logic_shortcode->shortcode( array( 'if' => 'true', 'is' => 'true' ), 'sentinel' ), 'sentinel' );
 
 		/** \GravityView_Widget::add_shortcode short circuits and adds no tags if is_admin() */
 		set_current_screen( 'front' );
