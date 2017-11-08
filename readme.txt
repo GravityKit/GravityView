@@ -1,6 +1,6 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
-Requires at least: 3.3
+Requires at least: 4.4
 Tested up to: 4.8.1
 Stable tag: trunk
 Contributors: The GravityView Team
