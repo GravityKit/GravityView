@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 1.22.1 =
 
+* Moved "Custom Content" field to top of field picker, in what Rafael calls the "Best idea of 2017 🏆"
 * Fixed: Entry oEmbeds not working when using "Plain" URL formats to embed
 * Fixed: Only published Views showing in Gravity Forms "Connected Views" menu
 

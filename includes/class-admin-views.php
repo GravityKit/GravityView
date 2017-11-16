@@ -767,6 +767,9 @@ class GravityView_Admin_Views {
 		//merge without loosing the keys
 		$fields = $fields + $meta_fields + $default_fields;
 
+		// Move Custom Content to top
+		$fields = array( 'custom' => $fields['custom'] ) + $fields;
+
 		return $fields;
 	}
 
