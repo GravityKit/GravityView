@@ -23,11 +23,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = 1.22.1 =
 
 * Fixed: Entry oEmbeds not working when using "Plain" URL formats to embed
+* Fixed: Only published Views showing in Gravity Forms "Connected Views" menu
 
 __Developer Updates:__
 
 * Added: Way to disable front-end cookies ([see code here](https://gist.github.com/zackkatz/354a71dc47ffef072ed725706cf455ed))
 * Added: `gravityview/metaboxes/data-source/before` and `gravityview/metaboxes/data-source/after` hooks
+* Added: Second `$args` param added to `gravityview_get_connected_views()` function
 
 = 1.22 on September 4, 2017=
 
