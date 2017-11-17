@@ -79,7 +79,7 @@ require GRAVITYVIEW_DIR . 'future/loader.php';
  */
 final class GravityView_Plugin {
 
-	const version = '1.22';
+	const version = '1.22.1';
 
 	private static $instance;
 
