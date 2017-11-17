@@ -1718,8 +1718,6 @@ class GravityView_frontend {
 			wp_enqueue_style( 'gravityview_style_' . $template_id );
 		} elseif ( empty( $template_id ) ) {
 			do_action( 'gravityview_log_error', '[add_style] Cannot add template style; template_id is empty' );
-		} else {
-			do_action( 'gravityview_log_error', sprintf( '[add_style] Cannot add template style; %s is not registered', 'gravityview_style_'.$template_id ) );
 		}
 
 	}
