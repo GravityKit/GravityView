@@ -47,7 +47,6 @@
  *  stopImmediatePropagation: function
  * }} jQueryEvent
  */
-
 (function( $ ) {
 
 	var viewConfiguration, viewGeneralSettings;
@@ -147,7 +146,7 @@
 			// End bind to $('body')
 
 			if( gvGlobals.passed_form_id ) {
-				$( '#gravityview_form_id' ).trigger( 'change' );
+				vcfg.gvSelectForm.trigger( 'change' );
 			}
 		},
 
@@ -170,7 +169,7 @@
 		 * @since 1.19
 		 */
 		zebraStripeSettings: function() {
-			$( '#gravityview_settings table').find('tr').removeClass('alternate').filter(':visible:even' ).addClass( 'alternate' );
+			$( '#gravityview_settings').find('table').find('tr').removeClass('alternate').filter(':visible:even' ).addClass( 'alternate' );
 		},
 
 		/**
@@ -1086,6 +1085,8 @@
 
 				// append the new field to the active drop
 				$( 'a[data-tooltip-id="' + areaId + '"]' ).parents( '.gv-droppable-area' ).find( '.active-drop' ).append( newField ).end().attr( 'data-tooltip-id', '' );
+
+				$('body').trigger( 'gravityview/field-added', newField );
 
 				// Show the new field
 				newField.fadeIn( 100, function () {
