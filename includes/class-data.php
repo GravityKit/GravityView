@@ -715,13 +715,7 @@ class GravityView_View_Data {
 			return \GV\View_Settings::defaults( $with_details, $group );
 		}
 
-		/**
-		 * @filter `gravityview_default_args` Modify the default settings for new Views
-		 * @param[in,out] array $default_args Array of default args.
-		 * @deprecated
-		 * @see filter `gravityview/view/settings/defaults`
-		 */
-		$default_settings = apply_filters( 'gravityview_default_args', array(
+		$default_settings = array(
 			'id' => array(
 				'label' => __('View ID', 'gravityview'),
 				'type' => 'number',
@@ -823,7 +817,6 @@ class GravityView_View_Data {
 				'options' => array(
 					'ASC' => __('ASC', 'gravityview'),
 					'DESC' => __('DESC', 'gravityview'),
-					//'RAND' => __('Random', 'gravityview'),
 				),
 				'show_in_shortcode' => true,
 			),
@@ -912,7 +905,14 @@ class GravityView_View_Data {
 				'value' => '',
 				'show_in_shortcode' => false,
 			),
-		));
+		);
+		/**
+		 * @filter `gravityview_default_args` Modify the default settings for new Views
+		 * @param[in,out] array $default_args Array of default args.
+		 * @deprecated
+		 * @see filter `gravityview/view/settings/defaults`
+		 */
+		$default_settings = apply_filters( 'gravityview_default_args', $default_settings );
 
 		// By default, we only want the key => value pairing, not the whole array.
 		if( empty( $with_details ) ) {

@@ -671,7 +671,7 @@ class GravityView_frontend {
 	 *      @type int $id View id
 	 *      @type int $page_size Number of entries to show per page
 	 *      @type string $sort_field Form field id to sort
-	 *      @type string $sort_direction Sorting direction ('ASC' or 'DESC')
+	 *      @type string $sort_direction Sorting direction ('ASC', 'DESC', or 'RAND')
 	 *      @type string $start_date - Ymd
 	 *      @type string $end_date - Ymd
 	 *      @type string $class - assign a html class to the view
@@ -868,7 +868,7 @@ class GravityView_frontend {
 					$view_entries = self::get_view_entries( $view->settings->as_atts(), $view->form->ID );
 				} else {
 					/** $atts is deprecated, use \GV\View:$settings */
-					/** $view_data is depreacted, use \GV\View properties */
+					/** $view_data is deprecated, use \GV\View properties */
 					$view_entries = self::get_view_entries( $atts, $view_data['form_id'] );
 				}
 
@@ -1342,7 +1342,7 @@ class GravityView_frontend {
 		 *      @type int $id View id
 		 *      @type int $page_size Number of entries to show per page
 		 *      @type string $sort_field Form field id to sort
-		 *      @type string $sort_direction Sorting direction ('ASC' or 'DESC')
+		 *      @type string $sort_direction Sorting direction ('ASC', 'DESC', or 'RAND')
 		 *      @type string $start_date - Ymd
 		 *      @type string $end_date - Ymd
 		 *      @type string $class - assign a html class to the view
@@ -1427,6 +1427,31 @@ class GravityView_frontend {
 				'direction' => strtolower( $sort_direction ),
 				'is_numeric' => GVCommon::is_field_numeric( $form_id, $sort_field_id )
 			);
+		}
+
+		if ( 'RAND' === $sort_direction ) {
+
+			$form = GFAPI::get_form( $form_id );
+
+			// Get the first GF_Field field ID, set as the key for entry randomization
+			if( ! empty( $form['fields'] ) ) {
+
+				/** @var GF_Field $field */
+				foreach ( $form['fields'] as $field ) {
+
+					if( ! is_a( $field, 'GF_Field' ) ) {
+						continue;
+					}
+
+					$sorting = array(
+						'key'        => $field->id,
+						'is_numeric' => false,
+						'direction'  => 'RAND',
+					);
+
+					break;
+				}
+			}
 		}
 
 		GravityView_View::getInstance()->setSorting( $sorting );
