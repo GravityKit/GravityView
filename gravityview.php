@@ -117,6 +117,7 @@ final class GravityView_Plugin {
 	private static function require_files() {
 		require_once( GRAVITYVIEW_DIR . 'includes/helper-functions.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-common.php');
+		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-html-elements.php');
 		require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-compatibility.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-roles-capabilities.php' );

@@ -32,6 +32,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 __Developer Updates:__
 
 * Added: Way to disable front-end cookies ([see code here](https://gist.github.com/zackkatz/354a71dc47ffef072ed725706cf455ed))
+* Added: `GravityView_HTML_Elements` class for generating commonly-used HTML elements
 * Added: `gravityview/metaboxes/data-source/before` and `gravityview/metaboxes/data-source/after` hooks
 * Added: Second `$args` param added to `gravityview_get_connected_views()` function
 * Modified: Pass fifth parameter `$input_type` to `GravityView_Template::assign_field_options` method
