@@ -224,6 +224,10 @@ class View_Settings extends Settings {
 			),
 		);
 
+		if ( version_compare( \GFFormsModel::get_database_version(), '2.3-beta-4', '>=' ) ) {
+			$default_settings['sort_direction']['options']['RAND'] = __( 'Random', 'gravityview' );
+		}
+
 		/**
 		 * @filter `gravityview_default_args` Modify the default settings for new Views
 		 * @param[in,out] array $default_args Array of default args.
