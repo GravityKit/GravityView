@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = 1.22.1 =
 
 * Moved "Custom Content" field to top of field picker, in what Rafael calls the "Best idea of 2017 🏆"
+* Added: When Gravity Forms 2.3 is released, support for "Random" entry order will be enabled
 * Fixed: Entry oEmbeds not working when using "Plain" URL formats to embed
 * Fixed: Only published Views showing in Gravity Forms "Connected Views" menu
 * Fixed: Deleting entries can cause entries to be displayed from a different View when Advanced Filters is activated and multiple Views are embedded on a page
