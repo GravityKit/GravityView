@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Only published Views showing in Gravity Forms "Connected Views" menu
 * Fixed: Deleting entries can cause entries to be displayed from a different View when Advanced Filters is activated and multiple Views are embedded on a page
 * Fixed: Infinite loop when using `[gravityview]` shortcode inside ACF fields
+* Added: Support for Merge Tag changes in Gravity Forms 2.3
 
 __Developer Updates:__
 
