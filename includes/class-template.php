@@ -782,8 +782,10 @@ class GravityView_View extends Gamajo_Template_Loader {
 		// form-19-table-body.php
 		$additional[] = sprintf( 'form-%d-%s-%s.php', $this->getFormId(), $slug, $name );
 
-		// view-3-table-body.php
-		$additional[] = sprintf( 'view-%d-%s-%s.php', $this->getViewId(), $slug, $name );
+		if( $view_id = $this->getViewId() ) {
+			// view-3-table-body.php
+			$additional[] = sprintf( 'view-%d-%s-%s.php', $view_id, $slug, $name );
+		}
 
 		if( $this->getPostId() ) {
 
