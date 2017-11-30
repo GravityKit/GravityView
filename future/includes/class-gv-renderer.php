@@ -81,7 +81,7 @@ class Renderer {
 	public function legacy_template_warning( $view, $path ) {
 		return function() use ( $view, $path ) {
 			if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-				echo \GVCommon::generate_notice( sprintf( 'We have detected some legacy template overrides in your theme\'s gravityview/ directory. We urge you to port them over to their 2.0 versions as soon as possible. <p><em>%s</em></p>', esc_html( $path ) ) );
+				echo \GVCommon::generate_notice( sprintf( 'We have detected some legacy templates. We urge you to port them over to their 2.0 versions as soon as possible. <p><code>%s</code></p>', esc_html( $path ) ) );
 			}
 		};
 	}
