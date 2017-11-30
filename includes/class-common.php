@@ -1424,7 +1424,7 @@ class GVCommon {
 		$output = $content;
 
 		if ( ! class_exists( 'StandalonePHPEnkoder' ) ) {
-			include_once( GRAVITYVIEW_DIR . 'vendor/katzwebservices/standalone-phpenkoder/StandalonePHPEnkoder.php' );
+			include_once( GRAVITYVIEW_DIR . 'includes/lib/StandalonePHPEnkoder.php' );
 		}
 
 		if ( class_exists( 'StandalonePHPEnkoder' ) ) {

@@ -20,6 +20,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.22.1.1 on November 30, 2017 =
+
+* Fixed: When displaying Email fields, PHP warning about `StandalonePHPEnkoder.php`
+
 = 1.22.1 on November 29, 2017 =
 
 * Moved "Custom Content" field to top of field picker, in what Rafael calls the "Best idea of 2017 🏆"
