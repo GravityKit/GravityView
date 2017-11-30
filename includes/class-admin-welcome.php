@@ -271,6 +271,12 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.22.1.1 on November 29, 2017</h3>
+
+                <ul>
+                    <li>Fixed: When displaying Email fields, PHP warning about <code>StandalonePHPEnkoder.php</code></li>
+                </ul>
+
                 <h3>1.22.1 on November 29, 2017</h3>
 
                 <ul>
