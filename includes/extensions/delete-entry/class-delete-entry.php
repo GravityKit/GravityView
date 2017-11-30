@@ -370,7 +370,7 @@ final class GravityView_Delete_Entry {
 				);
 			}
 
-			$redirect_to_base = esc_url_raw( remove_query_arg( array( 'action' ) ) );
+			$redirect_to_base = esc_url_raw( remove_query_arg( array( 'action', 'gvid' ) ) );
 			$redirect_to = add_query_arg( $messages, $redirect_to_base );
 
 			wp_safe_redirect( $redirect_to );

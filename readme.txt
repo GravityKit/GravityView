@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
-Requires at least: 3.3
-Tested up to: 4.8.1
+Requires at least: 4.4
+Tested up to: 4.9.1
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -20,7 +20,24 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.22 on September 4, 2017 =
+= 1.22.1 on November 29, 2017 =
+
+* Moved "Custom Content" field to top of field picker, in what Rafael calls the "Best idea of 2017 🏆"
+* Added: When Gravity Forms 2.3 is released, support for "Random" entry order will be enabled
+* Fixed: Entry oEmbeds not working when using "Plain" URL formats to embed
+* Fixed: Only published Views showing in Gravity Forms "Connected Views" menu
+* Fixed: Deleting entries can cause entries to be displayed from a different View when Advanced Filters is activated and multiple Views are embedded on a page
+* Fixed: Infinite loop when using `[gravityview]` shortcode inside ACF fields
+
+__Developer Updates:__
+
+* Added: `GravityView_HTML_Elements` class for generating commonly-used HTML elements
+* Added: Way to disable front-end cookies for our friends in Europe ([see code here](https://gist.github.com/zackkatz/354a71dc47ffef072ed725706cf455ed))
+* Added: `gravityview/metaboxes/data-source/before` and `gravityview/metaboxes/data-source/after` hooks
+* Added: Second `$args` param added to `gravityview_get_connected_views()` function
+* Modified: Pass fifth parameter `$input_type` to `GravityView_Template::assign_field_options` method
+
+= 1.22 on September 4, 2017=
 
 * Added: Support for Gravity Forms 2.3
 * Fixed: Fatal error when Divi (and other Elegant Themes) try to load GravityView widgets while editing a post with a sidebar block in it—now the sidebar block will not be rendered

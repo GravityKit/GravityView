@@ -3,7 +3,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	https://gravityview.co
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:          	1.22
+ * Version:          	1.22.1
  * Author:            	GravityView
  * Author URI:        	https://gravityview.co
  * Text Domain:       	gravityview
@@ -43,7 +43,7 @@ define( 'GV_MIN_GF_VERSION', '1.9.14' );
  * GravityView requires at least this version of WordPress to function properly.
  * @since 1.12
  */
-define( 'GV_MIN_WP_VERSION', '4.0' );
+define( 'GV_MIN_WP_VERSION', '4.4' );
 
 /**
  * GravityView requires at least this version of PHP to function properly.
@@ -79,7 +79,7 @@ require GRAVITYVIEW_DIR . 'future/loader.php';
  */
 final class GravityView_Plugin {
 
-	const version = '1.22';
+	const version = '1.22.1';
 
 	private static $instance;
 
@@ -117,6 +117,7 @@ final class GravityView_Plugin {
 	private static function require_files() {
 		require_once( GRAVITYVIEW_DIR . 'includes/helper-functions.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-common.php');
+		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-html-elements.php');
 		require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-compatibility.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-roles-capabilities.php' );

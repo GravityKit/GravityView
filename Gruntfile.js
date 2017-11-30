@@ -205,7 +205,7 @@ module.exports = function(grunt) {
 					type: 'wp-plugin',
 					domainPath: '/languages',
 					updateTimestamp: false,
-					exclude: ['node_modules/.*', 'assets/.*', 'tmp/.*', 'vendor/.*', 'includes/lib/xml-parsers/.*', 'includes/lib/jquery-cookie/.*', 'includes/lib/standalone-phpenkoder/.*' ],
+					exclude: ['node_modules/.*', 'assets/.*', 'tmp/.*', 'vendor/.*', 'includes/lib/xml-parsers/.*', 'includes/lib/jquery-cookie/.*' ],
 					potHeaders: {
 						poedit: true,
 						'x-poedit-keywordslist': true
@@ -254,9 +254,9 @@ module.exports = function(grunt) {
 						'!node_modules/**',
 						'!tests/**',
 						'!tmp/**',
+						'!vendor/**',
 						'!includes/lib/xml-parsers/**',
 						'!includes/lib/jquery-cookie/**',
-						'!includes/lib/standalone-phpenkoder/**'
 					]
 				}
 			}

@@ -21,6 +21,19 @@ class GravityView_Post_Excerpt extends GravityView_Field {
 		$this->label = esc_html__( 'Post Excerpt', 'gravityview' );
 		parent::__construct();
 	}
+
+	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+
+		unset( $field_options['show_as_link'] );
+
+		if( 'edit' === $context ) {
+			return $field_options;
+		}
+
+		$this->add_field_support('dynamic_data', $field_options );
+
+		return $field_options;
+	}
 }
 
 new GravityView_Post_Excerpt;

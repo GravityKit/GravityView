@@ -271,6 +271,27 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.22.1 on November 29, 2017</h3>
+
+                <ul>
+                    <li>Moved &quot;Custom Content&quot; field to top of field picker, in what Rafael calls the &quot;Best idea of 2017 🏆&quot;</li>
+                    <li>Added: When Gravity Forms 2.3 is released, support for &quot;Random&quot; entry order will be enabled</li>
+                    <li>Fixed: Entry oEmbeds not working when using &quot;Plain&quot; URL formats to embed</li>
+                    <li>Fixed: Only published Views showing in Gravity Forms &quot;Connected Views&quot; menu</li>
+                    <li>Fixed: Deleting entries can cause entries to be displayed from a different View when Advanced Filters is activated and multiple Views are embedded on a page</li>
+                    <li>Fixed: Infinite loop when using <code>[gravityview]</code> shortcode inside ACF fields</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Added: <code>GravityView_HTML_Elements</code> class for generating commonly-used HTML elements</li>
+                    <li>Added: Way to disable front-end cookies for our friends in Europe (<a href="https://gist.github.com/zackkatz/354a71dc47ffef072ed725706cf455ed">see code here</a>)</li>
+                    <li>Added: <code>gravityview/metaboxes/data-source/before</code> and <code>gravityview/metaboxes/data-source/after</code> hooks</li>
+                    <li>Added: Second <code>$args</code> param added to <code>gravityview_get_connected_views()</code> function</li>
+                    <li>Modified: Pass fifth parameter <code>$input_type</code> to <code>GravityView_Template::assign_field_options</code> method</li>
+                </ul>
+
                 <h3>1.22 on September 4, 2017</h3>
 
                 <ul>

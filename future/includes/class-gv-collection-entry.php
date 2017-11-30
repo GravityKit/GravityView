@@ -185,7 +185,7 @@ class Entry_Collection extends Collection {
 	 * @return \GV\Entry_Collection A copy of the this collection with the filter applied.
 	 */
 	public function filter( \GV\Entry_Filter $filter ) {
-		$collection = clone( $this );
+		$collection = clone $this;
 		$collection->clear();
 
 		array_push( $collection->filters, $filter );
@@ -204,7 +204,7 @@ class Entry_Collection extends Collection {
 	 * @return \GV\Entry_Collection A copy of the this collection with the sort applied.
 	 */
 	public function sort( $sort ) {
-		$collection = clone( $this );
+		$collection = clone $this;
 		$collection->clear();
 
 		array_push( $collection->sorts, $sort );
@@ -223,7 +223,7 @@ class Entry_Collection extends Collection {
 	 * @return \GV\Entry_Collection A copy of the this collection with the limit applied.
 	 */
 	public function limit( $limit ) {
-		$collection = clone( $this );
+		$collection = clone $this;
 		$collection->clear();
 		$collection->limit = $limit;
 		return $collection;
@@ -244,7 +244,7 @@ class Entry_Collection extends Collection {
 	 * @return \GV\Entry_Collection A copy of the this collection with the offset applied.
 	 */
 	public function offset( $offset ) {
-		$collection = clone( $this );
+		$collection = clone $this;
 		$collection->clear();
 		$collection->offset = $offset;
 		return $collection;
@@ -258,7 +258,7 @@ class Entry_Collection extends Collection {
 	 * @return \GV\Entry_Collection A copy of the this collection with the offset applied.
 	 */
 	public function page( $page ) {
-		$collection = clone( $this );
+		$collection = clone $this;
 		$collection->clear();
 		$collection->current_page = $page;
 		return $collection;

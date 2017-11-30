@@ -72,22 +72,22 @@ class GravityView_View_Data {
 	 */
 	public function maybe_get_view_id( $passed_post ) {
 		$ids = array();
-
 		if( ! empty( $passed_post ) ) {
 
 			if( is_numeric( $passed_post ) ) {
 				$passed_post = get_post( $passed_post );
 			}
 
-			// Convert WP_Posts into WP_Posts[] array
-			if( $passed_post instanceof WP_Post ) {
+			// Convert WP_Posts-like objects into WP_Posts[] array
+			if ( is_object( $passed_post ) && ! array_diff( array( 'ID', 'post_type' ), array_keys( get_object_vars( $passed_post ) ) ) ) {
 				$passed_post = array( $passed_post );
 			}
 
 			if( is_array( $passed_post ) ) {
 
 				foreach ( $passed_post as &$post) {
-					if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && $post instanceof WP_Post ) {
+					if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && is_object( $post ) && property_exists( $post, 'ID' ) ) {
+						$post = get_post( $post ); // Convert into real WP_Post, thanks globals
 						$views = \GV\View_Collection::from_post( $post );
 						foreach ( $views->all() as $view ) {
 							$ids []= $view->ID;
@@ -715,13 +715,7 @@ class GravityView_View_Data {
 			return \GV\View_Settings::defaults( $with_details, $group );
 		}
 
-		/**
-		 * @filter `gravityview_default_args` Modify the default settings for new Views
-		 * @param[in,out] array $default_args Array of default args.
-		 * @deprecated
-		 * @see filter `gravityview/view/settings/defaults`
-		 */
-		$default_settings = apply_filters( 'gravityview_default_args', array(
+		$default_settings = array(
 			'id' => array(
 				'label' => __('View ID', 'gravityview'),
 				'type' => 'number',
@@ -823,7 +817,6 @@ class GravityView_View_Data {
 				'options' => array(
 					'ASC' => __('ASC', 'gravityview'),
 					'DESC' => __('DESC', 'gravityview'),
-					//'RAND' => __('Random', 'gravityview'),
 				),
 				'show_in_shortcode' => true,
 			),
@@ -912,7 +905,19 @@ class GravityView_View_Data {
 				'value' => '',
 				'show_in_shortcode' => false,
 			),
-		));
+		);
+
+		if ( version_compare( \GFFormsModel::get_database_version(), '2.3-beta-4', '>=' ) ) {
+			$default_settings['sort_direction']['options']['RAND'] = __( 'Random', 'gravityview' );
+		}
+
+		/**
+		 * @filter `gravityview_default_args` Modify the default settings for new Views
+		 * @param[in,out] array $default_args Array of default args.
+		 * @deprecated
+		 * @see filter `gravityview/view/settings/defaults`
+		 */
+		$default_settings = apply_filters( 'gravityview_default_args', $default_settings );
 
 		// By default, we only want the key => value pairing, not the whole array.
 		if( empty( $with_details ) ) {

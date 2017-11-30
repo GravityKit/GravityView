@@ -23,6 +23,76 @@ class GVCommon_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers GVCommon::matches_operation()
+	 * @since 1.22.1
+	 */
+	function test_matches_operation() {
+
+		$this->assertTrue( GVCommon::matches_operation( 'example', 'example', 'equals' ) );
+		$this->assertFalse( GVCommon::matches_operation( 'bad example', 'example', 'equals' ) );
+		$this->assertTrue( GVCommon::matches_operation( 'example', 'EXAMPLE', 'equals' ), 'Not lowercased as expected' );
+
+		$this->assertTrue( GVCommon::matches_operation( array('json', 'encoded' ), '["json","encoded"]', 'equals' ) );
+
+		$this->assertTrue( GVCommon::matches_operation( '12', '12', 'greater_than_or_is' ) );
+		$this->assertTrue( GVCommon::matches_operation( '15', '12', 'greater_than_or_is' ) );
+		$this->assertFalse( GVCommon::matches_operation( '10', '12', 'greater_than_or_is' ) );
+		$this->assertTrue( GVCommon::matches_operation( '12', '12', 'greater_than_or_equals' ) );
+		$this->assertTrue( GVCommon::matches_operation( '15', '12', 'greater_than_or_equals' ) );
+		$this->assertFalse( GVCommon::matches_operation( '10', '12', 'greater_than_or_equals' ) );
+
+		$this->assertTrue( GVCommon::matches_operation( '12', '12', 'less_than_or_is' ) );
+		$this->assertTrue( GVCommon::matches_operation( '10', '12', 'less_than_or_is' ) );
+		$this->assertFalse( GVCommon::matches_operation( '15', '12', 'less_than_or_is' ) );
+		$this->assertTrue( GVCommon::matches_operation( '12', '12', 'less_than_or_equals' ) );
+		$this->assertTrue( GVCommon::matches_operation( '10', '12', 'less_than_or_equals' ) );
+		$this->assertFalse( GVCommon::matches_operation( '15', '12', 'less_than_or_equals' ) );
+
+		$this->assertTrue( GVCommon::matches_operation( 'Fiona Apple', 'Apple', 'contains' ) );
+		$this->assertTrue( GVCommon::matches_operation( 'Fiona Apple', 'Happy Melodies', 'not_contains' ) );
+
+		// Does an empty string contains emptiness? Yes.
+		$this->assertFalse( GVCommon::matches_operation( '', '', 'contains' ) );
+		$this->assertFalse( GVCommon::matches_operation( 'Not Empty', '', 'contains' ) );
+
+		// "contains" is not "in"
+		$this->assertTrue( GVCommon::matches_operation( '"BMW", "Audi"', 'Audi', 'contains' ) );
+		$this->assertFalse( GVCommon::matches_operation( '"BMW", "Audi"', 'Audi', 'in' ) );
+
+		// Test string comparisons
+		/**
+		 * @see https://github.com/gravityforms/gravityforms/commit/9d37fee852fe9946f030938bfa231e762f687728
+		 * @see https://github.com/gravityview/GravityView-Advanced-Filter-Extension/issues/45
+		 */
+		$this->assertTrue( GVCommon::matches_operation( 1, 'b', 'less_than' ) );
+		$this->assertTrue( GVCommon::matches_operation( 1, 'a', 'less_than' ) );
+		$this->assertTrue( GVCommon::matches_operation( 2, 'a', 'less_than' ) );
+		$this->assertTrue( GVCommon::matches_operation( 2, 'a', '<' ) );
+		$this->assertTrue( GVCommon::matches_operation( 'a', 'b', 'less_than' ) );
+		$this->assertTrue( GVCommon::matches_operation( 'c', 'z', 'less_than' ) );
+		$this->assertTrue( GVCommon::matches_operation( 'z', '1', '>' ) );
+		$this->assertTrue( GVCommon::matches_operation( 'z', '1', 'greater_than' ) );
+		$this->assertTrue( GVCommon::matches_operation( 'z', 1, 'greater_than' ) );
+		$this->assertFalse( GVCommon::matches_operation( 1, 'b', 'greater_than' ) );
+		$this->assertTrue( GVCommon::matches_operation( '4.1E+6', '4100000', 'is' ) );
+		$this->assertTrue( GVCommon::matches_operation( '4.1E+6', 4100000, 'is' ) );
+
+		/**
+		 * Handle JSON-encoded values
+		 * @since 1.22.1
+		 */
+		$this->assertTrue( GVCommon::matches_operation( '["BMW", "Audi"]', 'Audi', 'in' ), 'JSON vs String' );
+		$this->assertTrue( GVCommon::matches_operation( 'Audi', '["BMW", "Audi"]', 'in' ), 'String vs JSON' );
+		$this->assertTrue( GVCommon::matches_operation( '["BMW", "Audi"]', '["Audi"]', 'in' ), 'JSON vs JSON' );
+		$this->assertTrue( GVCommon::matches_operation( '["BMW", "Audi"]', '["BMW", "Audi"]', 'in' ), 'JSON vs JSON exact match' );
+		$this->assertTrue( GVCommon::matches_operation( '["BMW", "Audi"]', '["BMW not exact match", "Audi"]', 'in' ), 'Should match one' );
+		$this->assertTrue( GVCommon::matches_operation( '["BMW not exact match", "Audi"]', '["BMW", "Audi"]', 'in' ), 'Should match one' );
+		$this->assertFalse( GVCommon::matches_operation( '["BMW", "Audi"]', '["BMW not exact match", "Audi not exact match"]', 'in' ), 'Should not match, even though strings match' );
+		$this->assertTrue( GVCommon::matches_operation( '["BMW", "Audi"]', '["Volkswagen"]', 'not_in' ) );
+		$this->assertTrue( GVCommon::matches_operation( '["BMW", "Audi"]', '["BM"]', 'not_in' ) );
+	}
+
+	/**
 	 * @since 1.16
 	 * @covers GravityView_Field_Date_Created::replace_merge_tag
 	 * @covers GVCommon::format_date

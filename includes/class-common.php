@@ -710,9 +710,10 @@ class GVCommon {
 	/**
 	 * Wrapper for the GFFormsModel::matches_operation() method that adds additional comparisons, including:
 	 * 'equals', 'greater_than_or_is', 'greater_than_or_equals', 'less_than_or_is', 'less_than_or_equals',
-	 * and 'not_contains'
+	 * 'not_contains', 'in', and 'not_in'
 	 *
 	 * @since 1.13 You can define context, which displays/hides based on what's being displayed (single, multiple, edit)
+	 * @since 1.22.1 Added 'in' and 'not_in' for JSON-encoded array values, serialized non-strings
 	 *
 	 * @see http://docs.gravityview.co/article/252-gvlogic-shortcode
 	 * @uses GFFormsModel::matches_operation
@@ -725,6 +726,12 @@ class GVCommon {
 	 * @return bool True: matches, false: not matches
 	 */
 	public static function matches_operation( $val1, $val2, $operation ) {
+
+		$json_function = function_exists('wp_json_encode') ? 'wp_json_encode' : 'json_encode';
+
+		// Only process strings
+		$val1 = ! is_string( $val1 ) ? $json_function( $val1 ) : $val1;
+		$val2 = ! is_string( $val2 ) ? $json_function( $val2 ) : $val2;
 
 		$value = false;
 
@@ -749,23 +756,69 @@ class GVCommon {
 
 		switch ( $operation ) {
 			case 'equals':
-				$value = GFFormsModel::matches_operation( $val1, $val2, 'is' );
+				$value = self::matches_operation( $val1, $val2, 'is' );
 				break;
 			case 'greater_than_or_is':
 			case 'greater_than_or_equals':
-				$is    = GFFormsModel::matches_operation( $val1, $val2, 'is' );
-				$gt    = GFFormsModel::matches_operation( $val1, $val2, 'greater_than' );
+				$is    = self::matches_operation( $val1, $val2, 'is' );
+				$gt    = self::matches_operation( $val1, $val2, 'greater_than' );
 				$value = ( $is || $gt );
 				break;
 			case 'less_than_or_is':
 			case 'less_than_or_equals':
-				$is    = GFFormsModel::matches_operation( $val1, $val2, 'is' );
-				$gt    = GFFormsModel::matches_operation( $val1, $val2, 'less_than' );
+				$is    = self::matches_operation( $val1, $val2, 'is' );
+				$gt    = self::matches_operation( $val1, $val2, 'less_than' );
 				$value = ( $is || $gt );
 				break;
 			case 'not_contains':
-				$contains = GFFormsModel::matches_operation( $val1, $val2, 'contains' );
+				$contains = self::matches_operation( $val1, $val2, 'contains' );
 				$value    = ! $contains;
+				break;
+			/**
+			 * @since 1.22.1 Handle JSON-encoded comparisons
+			 */
+			case 'in':
+			case 'not_in':
+
+				$json_val_1 = json_decode( $val1, true );
+				$json_val_2 = json_decode( $val2, true );
+
+				if( ! empty( $json_val_1 ) || ! empty( $json_val_2 ) ) {
+
+					$json_in = false;
+					$json_val_1 = $json_val_1 ? $json_val_1 : array( $val1 );
+					$json_val_2 = $json_val_2 ? $json_val_2 : array( $val2 );
+
+					// For JSON, we want to compare as "in" or "not in" rather than "contains"
+					foreach ( $json_val_1 as $item_1 ) {
+						foreach ( $json_val_2 as $item_2 ) {
+							$json_in = self::matches_operation( $item_1, $item_2, 'is' );
+
+							if( $json_in ) {
+								break 2;
+							}
+						}
+					}
+
+					$value = ( $operation === 'in' ) ? $json_in : ! $json_in;
+				}
+				break;
+
+			case 'less_than':
+			case '<' :
+				if ( is_string( $val1 ) && is_string( $val2 ) ) {
+					$value = $val1 < $val2;
+				} else {
+					$value = GFFormsModel::matches_operation( $val1, $val2, $operation );
+				}
+				break;
+			case 'greater_than':
+			case '>' :
+				if ( is_string( $val1 ) && is_string( $val2 ) ) {
+					$value = $val1 > $val2;
+				} else {
+					$value = GFFormsModel::matches_operation( $val1, $val2, $operation );
+				}
 				break;
 			default:
 				$value = GFFormsModel::matches_operation( $val1, $val2, $operation );
@@ -1360,7 +1413,7 @@ class GVCommon {
 	 * @param string $content Content to encrypt
 	 * @param string $message Message shown if Javascript is disabled
 	 *
-	 * @see  https://github.com/jnicol/standalone-phpenkoder StandalonePHPEnkoder on Github
+	 * @see  https://github.com/katzwebservices/standalone-phpenkoder StandalonePHPEnkoder on Github
 	 *
 	 * @since 1.7
 	 *
@@ -1371,7 +1424,7 @@ class GVCommon {
 		$output = $content;
 
 		if ( ! class_exists( 'StandalonePHPEnkoder' ) ) {
-			include_once( GRAVITYVIEW_DIR . 'includes/lib/standalone-phpenkoder/StandalonePHPEnkoder.php' );
+			include_once( GRAVITYVIEW_DIR . 'vendor/katzwebservices/standalone-phpenkoder/StandalonePHPEnkoder.php' );
 		}
 
 		if ( class_exists( 'StandalonePHPEnkoder' ) ) {

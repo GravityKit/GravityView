@@ -134,7 +134,7 @@ class GravityView_Admin_Views {
 	 */
 	static function gform_toolbar_menu( $menu_items = array(), $id = NULL ) {
 
-		$connected_views = gravityview_get_connected_views( $id );
+		$connected_views = gravityview_get_connected_views( $id, array( 'post_status' => 'any' ) );
 
 		if( empty( $connected_views ) ) {
 
@@ -766,6 +766,9 @@ class GravityView_Admin_Views {
 
 		//merge without loosing the keys
 		$fields = $fields + $meta_fields + $default_fields;
+
+		// Move Custom Content to top
+		$fields = array( 'custom' => $fields['custom'] ) + $fields;
 
 		return $fields;
 	}
