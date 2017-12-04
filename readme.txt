@@ -21,6 +21,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 == Changelog ==
 
 * Fixed: Fatal error when running Ultimate Member 2.0 beta
+* Fixed: Issue deleting entries when Advanced Filter rules don't match
+* Fixed: Delete Entry messages not displaying when entry is deleted
 
 __Developer Updates:__
 
