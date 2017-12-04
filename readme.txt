@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: Fatal error when running Ultimate Member 2.0 beta
+
 = 1.22.1.1 on November 30, 2017 =
 
 * Fixed: When displaying Email fields, PHP warning about `StandalonePHPEnkoder.php`
