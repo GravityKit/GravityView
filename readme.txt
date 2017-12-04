@@ -22,6 +22,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Fixed: Fatal error when running Ultimate Member 2.0 beta
 
+__Developer Updates:__
+
+* Added: `gravityview/edit_entry/unset_hidden_field_values` filter to prevent deleting values for fields hidden by Conditional Logic
+
 = 1.22.1.1 on November 30, 2017 =
 
 * Fixed: When displaying Email fields, PHP warning about `StandalonePHPEnkoder.php`
