@@ -157,10 +157,10 @@ final class GravityView_Plugin {
 		}
 
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-entry-approval-status.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/class-gravityview-entry-approval.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-entry-approval.php' );
 
-		include_once( GRAVITYVIEW_DIR .'includes/class-gravityview-entry-notes.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/load-plugin-and-theme-hooks.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-entry-notes.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/load-plugin-and-theme-hooks.php' );
 
 		// Load Extensions
 		// @todo: Convert to a scan of the directory or a method where this all lives
@@ -170,10 +170,10 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/entry-notes/class-gravityview-field-notes.php' );
 
 		// Load WordPress Widgets
-		include_once( GRAVITYVIEW_DIR .'includes/wordpress-widgets/register-wordpress-widgets.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/wordpress-widgets/register-wordpress-widgets.php' );
 
 		// Load GravityView Widgets
-		include_once( GRAVITYVIEW_DIR .'includes/widgets/register-gravityview-widgets.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/widgets/register-gravityview-widgets.php' );
 
 		// Add oEmbed
 		include_once( GRAVITYVIEW_DIR . 'includes/class-oembed.php' );

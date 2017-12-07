@@ -69,10 +69,11 @@ class GravityView_Uninstall {
 
 		$tables = array();
 
-			$tables []= GFFormsModel::get_entry_notes_table_name();
 		if ( version_compare( GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) && method_exists( 'GFFormsModel', 'get_entry_notes_table_name' ) ) {
+			$tables[] = GFFormsModel::get_entry_notes_table_name();
 		}
-		$tables []= GFFormsModel::get_lead_notes_table_name();
+
+		$tables[] = GFFormsModel::get_lead_notes_table_name();
 
 		$disapproved = __('Disapproved the Entry for GravityView', 'gravityview');
 		$approved = __('Approved the Entry for GravityView', 'gravityview');
