@@ -41,7 +41,7 @@ class GravityView_Uninstall {
 
 		$tables = array();
 
-		if ( version_compare( GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) ) {
+		if ( version_compare( GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) ) {
 			$tables []= GFFormsModel::get_entry_meta_table_name();
 		}
 		$tables []= GFFormsModel::get_lead_meta_table_name();
@@ -69,8 +69,8 @@ class GravityView_Uninstall {
 
 		$tables = array();
 
-		if ( version_compare( GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) ) {
 			$tables []= GFFormsModel::get_entry_notes_table_name();
+		if ( version_compare( GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) && method_exists( 'GFFormsModel', 'get_entry_notes_table_name' ) ) {
 		}
 		$tables []= GFFormsModel::get_lead_notes_table_name();
 

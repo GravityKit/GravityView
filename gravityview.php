@@ -164,6 +164,7 @@ final class GravityView_Plugin {
 
 		// Load Extensions
 		// @todo: Convert to a scan of the directory or a method where this all lives
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-gfformsmodel.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/edit-entry/class-edit-entry.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/delete-entry/class-delete-entry.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/entry-notes/class-gravityview-field-notes.php' );

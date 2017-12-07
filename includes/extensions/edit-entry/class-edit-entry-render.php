@@ -369,7 +369,7 @@ class GravityView_Edit_Entry_Render {
 			return;
 		}
 
-		if ( version_compare( GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) ) {
+        if ( version_compare( GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) && method_exists( 'GFFormsModel', 'get_entry_meta_table_name' ) ) {
 			$entry_meta_table = GFFormsModel::get_entry_meta_table_name();
 			$current_fields = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key, meta_value FROM $entry_meta_table WHERE entry_id=%d", $this->entry['id'] ) );
 		} else {
@@ -619,7 +619,6 @@ class GravityView_Edit_Entry_Render {
 			 * todo: As soon as \GFFormsModel::media_handle_upload becomes a public method, move this call to \GFFormsModel::media_handle_upload and remove the hack from this class.
 			 * Note: the method became public in GF 1.9.17.7, but we don't require that version yet.
 			 */
-			require_once GRAVITYVIEW_DIR . 'includes/class-gravityview-gfformsmodel.php';
 			$media_id = GravityView_GFFormsModel::media_handle_upload( $img_url, $post_id, $image_meta );
 
 			// is this field set as featured image?
@@ -865,7 +864,7 @@ class GravityView_Edit_Entry_Render {
 
 		$entry = GFFormsModel::set_entry_meta( $entry, $this->form );
 
-		if ( version_compare( GFFormsModel::get_database_version(), '2.3-dev-1', '<' ) ) {
+		if ( version_compare( GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '<' ) ) {
 			// We need to clear the cache because Gravity Forms caches the field values, which
 			// we have just updated.
 			foreach ($this->form['fields'] as $key => $field) {
