@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Fatal error when running Ultimate Member 2.0 beta
 * Fixed: Issue deleting entries when Advanced Filter rules don't match
 * Fixed: Delete Entry messages not displaying when entry is deleted
+* Fixed: ACF shortcodes in WYSIWYG fields no longer processed since 1.22.1
 
 __Developer Updates:__
 
