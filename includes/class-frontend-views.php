@@ -433,6 +433,7 @@ class GravityView_frontend {
 	/**
 	 * Filter the title for the single entry view
 	 *
+	 *
 	 * @param  string $title   current title
 	 * @param  int $passed_post_id Post ID
 	 * @return string          (modified) title
@@ -1758,6 +1759,7 @@ class GravityView_frontend {
 	 *
 	 * @param string $label Field label
 	 * @param array $field Field settings
+	 * @param array $form Form object
 	 *
 	 * @return string Field Label
 	 */
