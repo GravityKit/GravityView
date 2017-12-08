@@ -42,26 +42,20 @@ class GravityView_Plugin_Hooks_ACF extends GravityView_Plugin_and_Theme_Hooks {
 	 * @return array
 	 */
 	function add_meta_keys_from_post( $meta_keys = array(), $post_id = 0 ) {
-		global $wp_filter;
 
 		// Can never be too careful: double-check that ACF is active and the function exists
-		if ( ! function_exists( 'get_field_objects' ) ) {
+		if ( ! function_exists( 'get_field_objects' ) || ! class_exists('acf_field_functions' ) ) {
 			return $meta_keys;
 		}
 
-		if( isset( $wp_filter['acf/format_value/type=wysiwyg'] ) && is_object( $wp_filter['acf/format_value/type=wysiwyg'] ) ) {
-			$backup_filters = clone( $wp_filter['acf/format_value/type=wysiwyg'] );
-		}
+		$acf_field_functions = new acf_field_functions;
 
-		// Prevent infinite loop by removing filters
-		remove_all_filters( 'acf/format_value/type=wysiwyg' );
+		remove_action('acf/format_value', array( $acf_field_functions, 'format_value'), 5 );
 
 		$acf_keys = get_field_objects( $post_id, array( 'load_value' => false ) );
 
-		// Restore existing filters
-		if( ! empty( $backup_filters ) ) {
-			$wp_filter['acf/format_value/type=wysiwyg'] = $backup_filters;
-		}
+		// Restore existing filters added by format_value
+		add_action('acf/format_value', array( $acf_field_functions, 'format_value'), 5, 3 );
 
 		if( $acf_keys ) {
 			return array_merge( array_keys( $acf_keys ), $meta_keys );

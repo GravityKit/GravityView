@@ -325,7 +325,7 @@ final class GravityView_Delete_Entry {
 			$entry_slug = esc_attr( $_GET['entry_id'] );
 
 			// See if there's an entry there
-			$entry = gravityview_get_entry( $entry_slug );
+			$entry = gravityview_get_entry( $entry_slug, true, false );
 
 			if( $entry ) {
 
@@ -698,7 +698,7 @@ final class GravityView_Delete_Entry {
 		}
 
 		// Entry wasn't deleted from current View
-		if( intval( $_GET['gvid'] ) !== intval( $current_view_id ) ) {
+		if( isset( $_GET['view_id'] ) && intval( $_GET['view_id'] ) !== intval( $current_view_id ) ) {
 			return;
 		}
 

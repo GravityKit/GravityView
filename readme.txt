@@ -20,6 +20,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.22.2 on December 7, 2017 =
+
+* Fixed: Fatal error when running Ultimate Member 2.0 beta
+* Fixed: Issue deleting entries when Advanced Filter rules don't match
+* Fixed: Delete Entry messages not displaying when entry is deleted
+* Fixed: ACF shortcodes in WYSIWYG fields no longer processed since 1.22.1
+* Fixed: Fatal error when using old installations of Gravity Forms
+
+__Developer Updates:__
+
+* Added: `gravityview/edit_entry/unset_hidden_field_values` filter to prevent deleting values for fields hidden by Conditional Logic
+
 = 1.22.1.1 on November 30, 2017 =
 
 * Fixed: When displaying Email fields, PHP warning about `StandalonePHPEnkoder.php`

@@ -7,7 +7,23 @@
 
 class GravityView_GFFormsModel extends GFFormsModel {
 
-    /**
+	/**
+	 * Make sure the method exists, regardless of GF version
+	 *
+	 * @since 1.22.2
+	 *
+	 * @return string|false False if not set, version string otherwise
+	 */
+	public static function get_database_version() {
+
+		if ( is_callable( 'parent::get_database_version' ) ) {
+			return parent::get_database_version();
+		}
+
+		return get_option( 'gf_db_version' );
+	}
+
+	/**
      * Given information provided in an entry, get array of media IDs
      *
      * This is necessary because GF doesn't expect to need to update post images, only to create them.
