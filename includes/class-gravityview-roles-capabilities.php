@@ -343,10 +343,15 @@ class GravityView_Roles_Capabilities {
 		 * Examples, you ask? https://github.com/gravityview/GravityView/issues/826
 		 *
 		 * @param boolean $allow_logged_out Allow the capability check or bail without even checking. Default: false. Do not allow. Do not pass Go. Do not collect $200.
+		 * @param string|array $caps_to_check Single capability or array of capabilities to check against
 		 * @param int|null $object_id (optional) Parameter can be used to check for capabilities against a specific object, such as a post or us.
 		 * @param int|null $user_id (optional) Check the capabilities for a user who is not necessarily the currently logged-in user.
 		 */
 		$allow_logged_out = apply_filters( 'gravityview/capabilities/allow_logged_out', false, $caps_to_check, $object_id, $user_id );
+
+		if ( true === $allow_logged_out ) {
+			return true;
+		}
 
 		/**
 		 * We bail with a negative response without even checking if:

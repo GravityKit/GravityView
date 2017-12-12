@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: `gravityview/capabilities/allow_logged_out` filter wasn't living up to its name (allowing logged-out visitors to edit entries)
 * Replace Merge Tags inside [gvlogic] shortcodes outside of Views
 
 = 1.22.2 on December 7, 2017 =
