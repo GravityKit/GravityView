@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Replace Merge Tags inside [gvlogic] shortcodes outside of Views
+
 = 1.22.2 on December 7, 2017 =
 
 * Fixed: Fatal error when running Ultimate Member 2.0 beta
