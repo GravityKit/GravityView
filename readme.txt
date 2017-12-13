@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: Filtering by date in Advanced Filters prevented single entries from being visible
 * Fixed: `gravityview/capabilities/allow_logged_out` filter wasn't living up to its name (allowing logged-out visitors to edit entries)
 * Replace Merge Tags inside [gvlogic] shortcodes outside of Views
 
