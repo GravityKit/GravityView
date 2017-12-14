@@ -1567,7 +1567,16 @@ class GVCommon {
 		// For each attribute, generate the code
 		$output = '';
 		foreach ( $final_atts as $attr => $value ) {
-			$output .= sprintf( ' %s="%s"', $attr, esc_attr( $value ) );
+
+			// Don't use esc_attr() for JS atts because it will escape single quotes, which prevents inline JS
+			if( in_array( $attr, array( 'onclick', 'onchange', 'onkeyup' ) ) ) {
+				$safe_text = wp_check_invalid_utf8( $value );
+				$safe_text = _wp_specialchars( $safe_text, ENT_COMPAT );
+			} else {
+				$safe_text = esc_attr( $value );
+			}
+
+			$output .= sprintf( ' %s="%s"', $attr, $safe_text );
 		}
 
 		if( '' !== $output ) {
