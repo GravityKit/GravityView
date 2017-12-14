@@ -335,7 +335,11 @@ class GravityView_Roles_Capabilities {
 	public static function has_cap( $caps_to_check = '', $object_id = null, $user_id = null ) {
 
 		/**
-		 * @filter `gravityview/capabilities/allow_logged_out` Shall we allow a cap check for non-logged in users?
+		 * @filter `gravityview/capabilities/allow_logged_out` Shall we allow a cap check for non-logged in users? USE WITH CAUTION!
+		 *
+		 * WARNING: This allows anyone to edit and delete entries, add notes, delete notes, etc!
+		 *
+		 * If you use this filter, at least check against certain capabilities and $object_ids.
 		 *
 		 * There are use-cases, albeit strange ones, where we'd like to check and override capabilities for
 		 *  for a non-logged in user.
