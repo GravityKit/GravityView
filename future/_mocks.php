@@ -168,7 +168,7 @@ add_filter( 'gravityview/configuration/fields', function( $fields ) {
 
 	foreach ( $fields as $position => &$_fields ) {
 
-		if ( empty( $_fields ) ) {
+		if ( empty( $_fields ) || ! is_array( $_fields ) ) {
 			continue;
 		}
 

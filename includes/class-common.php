@@ -903,6 +903,7 @@ class GVCommon {
 
 			if ( is_null( $field ) ) {
 				$field_value = isset( $entry[ $k ] ) ? $entry[ $k ] : null;
+				$field = $k;
 			} else {
 				$field_value  = GFFormsModel::get_lead_field_value( $entry, $field );
 				 // If it's a complex field, then fetch the input's value, if exists at the current key. Otherwise, let GF handle it
@@ -911,7 +912,7 @@ class GVCommon {
 
 			$operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
 
-			$is_value_match = GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field );
+			$is_value_match = GravityView_GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field );
 
 			// Any match is all we need to know
 			if ( $is_value_match && 'any' === $mode ) {

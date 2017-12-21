@@ -114,7 +114,7 @@ class Field_Collection extends Collection {
 		$fields = new self();
 		foreach ( $configuration as $position => $_fields ) {
 
-			if ( empty( $_fields ) ) {
+			if ( empty( $_fields ) || ! is_array( $_fields ) ) {
 				continue;
 			}
 

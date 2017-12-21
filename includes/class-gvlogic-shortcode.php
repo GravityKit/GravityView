@@ -261,6 +261,10 @@ class GVLogic_Shortcode {
 		// Get recursive!
 		$output = do_shortcode( $output );
 
+		if ( class_exists( 'GFCommon' ) ) {
+			$output = GFCommon::replace_variables( $output, array(), array() );
+		}
+
 		/**
 		 * @filter `gravityview/gvlogic/output` Modify the [gvlogic] output
 		 * @param string $output HTML/text output
