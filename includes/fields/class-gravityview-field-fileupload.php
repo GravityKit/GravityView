@@ -113,6 +113,14 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			// If the field is set to link to the single entry, link to it.
 			$link = !empty( $field_settings['show_as_link'] ) ? GravityView_API::entry_link( $entry, $field ) : $file_path;
 
+			/**
+			 * @filter `gravityview/fields/fileupload/file_path` Modify the file path before generating a link to it
+			 * @since 1.22.3
+			 * @param string $file_path Path to the file uploaded by Gravity Forms
+			 * @param array  $field_settings Array of GravityView field settings
+			 */
+			$file_path = apply_filters( 'gravityview/fields/fileupload/file_path', $file_path, $field_settings );
+
 			// Get file path information
 			$file_path_info = pathinfo($file_path);
 
