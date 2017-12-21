@@ -254,10 +254,11 @@ class GravityView_Welcome {
 
 				<div class="feature-section col two-col" style="margin:0; padding: 0;">
 					<div class="col col-1">
-                        <div class="media-container"><img alt="{current_post}" src="<?php echo plugins_url( 'assets/images/screenshots/current_post.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
-                        <h4 class="higher">New <code>{current_post}</code> Merge Tag</h4>
-                        <p>It may not sound like much, but it's powerful! Use it together with the <code>[gvlogic]</code> shortcode to show or hide content based on the page your View is embedded on. Use with the Advanced Filter Extension.</p>
-                        <p><a href="https://docs.gravityview.co/article/412-currentpost-merge-tag" class="button-primary button button-large">Learn more about using the Merge Tag</a></p>
+                        <div class="media-container"><img alt="[else if]" src="<?php echo plugins_url( 'assets/images/screenshots/else-if.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
+                        <h4 class="higher">The <code>[else]</code> shortcode now supports additional logic!</h4>
+                        <p>Before, you would have to use multiple <code>[gvlogic]</code> shortcodes in your <a href="https://docs.gravityview.co/article/111-using-the-custom-content-field">Custom Content fields</a>.</p>
+                        <p>Now, you can use the <code>[else]</code> shortcode like this: <code>[else if="{Field Value:1}" is="Example"]</code>.</p>
+                        <p><a href="https://docs.gravityview.co/article/252-gvlogic-shortcode" class="button-primary button button-large">Read more about the <code>[gvlogic]</code> shortcode</a></p>
                     </div>
                     <div class="col col-2">
                         <div class="media-container"><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ) ); ?>"><img alt="Beta!" src="<?php echo plugins_url( 'assets/images/screenshots/beta-program.jpg', GRAVITYVIEW_FILE ); ?>" style="border: none"></a></div>
@@ -270,6 +271,39 @@ class GravityView_Welcome {
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
+
+                <h3>1.22.3 on December 21, 2017</h3>
+
+                <ul>
+                    <li>Added: Support for displaying files uploaded using the Gravity Forms Dropbox Addon (thanks, @mgratch and @ViewFromTheBox!)</li>
+                    <li>Added: Merge Tags now are replaced when in <code>[gvlogic]</code> shortcodes not in a View</li>
+                    <li>Fixed: Filtering by date in Advanced Filters prevented single entries from being visible</li>
+                    <li>Fixed: <code>gravityview/capabilities/allow_logged_out</code> filter wasn&#39;t living up to its name (allowing logged-out visitors to edit entries)</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Modified: We&#39;re reverting changes made to Advanced Custom Field plugin compatibility</li>
+                    <li>Added: <code>gravityview/fields/fileupload/file_path</code> filter in <code>class-gravityview-field-fileupload.php</code></li>
+                    <li>Modified: Removed <code>!important</code> from the CSS height rule for the <code>.gv-notes .gv-note-add textarea</code> rule</li>
+                </ul>
+
+                <h3>1.22.2 on December 7, 2017</h3>
+
+                <ul>
+                    <li>Fixed: Fatal error when running Ultimate Member 2.0 beta</li>
+                    <li>Fixed: Issue deleting entries when Advanced Filter rules don&#39;t match</li>
+                    <li>Fixed: Delete Entry messages not displaying when entry is deleted</li>
+                    <li>Fixed: ACF shortcodes in WYSIWYG fields no longer processed since 1.22.1</li>
+                    <li>Fixed: Fatal error when using old installations of Gravity Forms</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Added: <code>gravityview/edit_entry/unset_hidden_field_values</code> filter to prevent deleting values for fields hidden by Conditional Logic</li>
+                </ul>
 
                 <h3>1.22.1.1 on November 29, 2017</h3>
 
@@ -507,7 +541,7 @@ class GravityView_Welcome {
 						<li class="wp-person">Chinese translation by <a href="https://www.transifex.com/user/profile/michaeledi/">@michaeledi</a></li>
 						<li class="wp-person">Persian translation by <a href="https://www.transifex.com/user/profile/azadmojtaba/">@azadmojtaba</a></li>
 						<li class="wp-person">Russian translation by <a href="https://www.transifex.com/user/profile/gkovaleff/">@gkovaleff</a></li>
-						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, <a href="https://github.com/mgratch">@mgratch</a>, and <a href="https://github.com/stevehenty">@stevehenty</a></li>
+						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, <a href="https://github.com/mgratch">@mgratch</a>, <a href="https://github.com/ViewFromTheBox">@ViewFromTheBox</a>, and <a href="https://github.com/stevehenty">@stevehenty</a></li>
 					</ul>
 
 					<h4><?php esc_attr_e( 'Want to contribute?', 'gravityview' ); ?></h4>

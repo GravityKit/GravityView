@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 1.22.2\n"
+"Project-Id-Version: GravityView 1.22.3\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
 "MIME-Version: 1.0\n"
@@ -106,12 +106,12 @@ msgid "Sort by field"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:124
-#: includes/class-common.php:1281 includes/class-data.php:807
+#: includes/class-common.php:1282 includes/class-data.php:807
 msgid "Default"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:125
-#: includes/class-common.php:1324 includes/class-data.php:808
+#: includes/class-common.php:1325 includes/class-data.php:808
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
 msgstr ""
@@ -277,28 +277,28 @@ msgstr ""
 msgid "Create views based on a Gravity Forms form"
 msgstr ""
 
-#: gravityview.php:223
+#: gravityview.php:224
 msgid ""
 "GravityView requires PHP Version %s or newer. You're using Version %s. "
 "Please ask your host to upgrade your server's PHP."
 msgstr ""
 
-#: gravityview.php:228 includes/class-gravityview-compatibility.php:219
+#: gravityview.php:229 includes/class-gravityview-compatibility.php:219
 msgid ""
 "%sGravityView requires PHP Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please ask your host to upgrade your server's PHP."
 msgstr ""
 
-#: gravityview.php:388
+#: gravityview.php:389
 msgid "Top"
 msgstr ""
 
-#: gravityview.php:389
+#: gravityview.php:390
 msgid "Left"
 msgstr ""
 
-#: gravityview.php:389
+#: gravityview.php:390
 msgid "Right"
 msgstr ""
 
@@ -580,7 +580,7 @@ msgstr ""
 #: includes/class-gravityview-entry-link-shortcode.php:208
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:907
+#: includes/extensions/edit-entry/class-edit-entry-render.php:906
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
 msgstr ""
@@ -976,27 +976,27 @@ msgstr ""
 msgid "List of Changes"
 msgstr ""
 
-#: includes/class-admin-welcome.php:271
+#: includes/class-admin-welcome.php:272
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:432
+#: includes/class-admin-welcome.php:466
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:453
+#: includes/class-admin-welcome.php:487
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:488
+#: includes/class-admin-welcome.php:522
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:513
+#: includes/class-admin-welcome.php:547
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:514
+#: includes/class-admin-welcome.php:548
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1153,13 +1153,13 @@ msgstr ""
 msgid "Post ID"
 msgstr ""
 
-#: includes/class-common.php:987
+#: includes/class-common.php:988
 #. translators: %s: relative time from now, used for generic date comparisons.
 #. "1 day ago", or "20 seconds ago"
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1434
+#: includes/class-common.php:1435
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -1386,12 +1386,12 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:140
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1958
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1957
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:339
-#: includes/class-gravityview-uninstall.php:78
+#: includes/class-gravityview-uninstall.php:79
 #: tests/unit-tests/GravityView_Uninstall_Test.php:192
 msgid "Approved the Entry for GravityView"
 msgstr ""
@@ -1401,7 +1401,7 @@ msgid "Reset Entry approval for GravityView"
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:345
-#: includes/class-gravityview-uninstall.php:77
+#: includes/class-gravityview-uninstall.php:78
 #: tests/unit-tests/GravityView_Uninstall_Test.php:191
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
@@ -1870,47 +1870,47 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:960
+#: includes/extensions/edit-entry/class-edit-entry-render.php:959
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:960
+#: includes/extensions/edit-entry/class-edit-entry-render.php:959
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:966
+#: includes/extensions/edit-entry/class-edit-entry-render.php:965
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1104
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1103
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1111
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1110
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1442
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1441
 msgid "This email is already in use"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1449
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1448
 msgid "Usernames cannot be changed"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1514
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1513
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1952
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1951
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1962
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1961
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2002
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2001
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -3270,7 +3270,7 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1978
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1977
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""

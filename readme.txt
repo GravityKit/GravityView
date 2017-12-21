@@ -20,13 +20,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.22.3 on December 21, 2017 =
+
 * Added: Support for displaying files uploaded using the Gravity Forms Dropbox Addon (thanks, @mgratch and @ViewFromTheBox!)
+* Added: Merge Tags now are replaced when in `[gvlogic]` shortcodes not in a View
 * Fixed: Filtering by date in Advanced Filters prevented single entries from being visible
+* Fixed: `gravityview/capabilities/allow_logged_out` filter wasn't living up to its name (allowing logged-out visitors to edit entries)
+
+__Developer Updates:__
+
+* Modified: We're reverting changes made to Advanced Custom Field plugin compatibility
 * Added: `gravityview/fields/fileupload/file_path` filter in `class-gravityview-field-fileupload.php`
 * Modified: Removed `!important` from the CSS height rule for the `.gv-notes .gv-note-add textarea` rule
-* Fixed: `gravityview/capabilities/allow_logged_out` filter wasn't living up to its name (allowing logged-out visitors to edit entries)
-* Replace Merge Tags inside [gvlogic] shortcodes outside of Views
-* Modified: We're reverting changes to Advanced Custom Field plugin compatibility
 
 = 1.22.2 on December 7, 2017 =
 
