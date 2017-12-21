@@ -110,6 +110,13 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			// This is from Gravity Forms's code
 			$file_path = esc_attr(str_replace(" ", "%20", $file_path));
 
+            $display_dropbox_link = apply_filters( 'gravityview_display_dropbox_link', true, $file_path );
+
+            if ( !$display_dropbox_link  && empty( $field_settings['link_to_file'] ) ){
+                $file_path = false !== strpos($file_path, 'www.dropbox') ? str_replace("www.dropbox","dl.dropboxusercontent",$file_path) : $file_path;
+                $file_path = false !== strpos($file_path, '?dl=0') ? str_replace("?dl=0","",$file_path) : $file_path;
+            }
+
 			// If the field is set to link to the single entry, link to it.
 			$link = !empty( $field_settings['show_as_link'] ) ? GravityView_API::entry_link( $entry, $field ) : $file_path;
 
