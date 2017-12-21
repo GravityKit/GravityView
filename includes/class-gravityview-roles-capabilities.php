@@ -354,7 +354,12 @@ class GravityView_Roles_Capabilities {
 		$allow_logged_out = apply_filters( 'gravityview/capabilities/allow_logged_out', false, $caps_to_check, $object_id, $user_id );
 
 		if ( true === $allow_logged_out ) {
-			return true;
+
+			$all_caps = self::all_caps('editor');
+
+			if( array_intersect( $all_caps, (array) $caps_to_check ) ) {
+				return true;
+			}
 		}
 
 		/**
