@@ -176,6 +176,8 @@ final class Plugin {
 		include_once $this->dir( 'includes/class-gvlogic-shortcode.php' );
 		include_once $this->dir( 'includes/presets/register-default-templates.php' );
 
+		include_once $this->dir( 'includes/class-gravityview-gfformsmodel.php' );
+
 		if ( ! class_exists( '\GravityView_Extension' ) ) {
 			include_once $this->dir( 'includes/class-gravityview-extension.php' );
 		}
