@@ -113,7 +113,11 @@ class GV_Unit_Tests_Bootstrap {
 	 */
 	public function load() {
 
-		require_once '/tmp/gravityforms/gravityforms.php';
+		if( file_exists( $this->plugin_dir . '/tmp/gravityforms/gravityforms.php' ) ) {
+			require_once $this->plugin_dir . '/tmp/gravityforms/gravityforms.php';
+		} else {
+			require_once '/tmp/gravityforms/gravityforms.php';
+		}
 
 		require_once $this->plugin_dir . '/gravityview.php';
 

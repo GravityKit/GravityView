@@ -8,22 +8,6 @@ If you are using the plugin on a live site, please purchase a valid license from
 
 ----------
 
-### Installing GravityView from GitHub
-
-The plugin includes Git submodules that need to be included in the download for the plugin to be functional. In order to create a proper `.zip` file:
-
-1. Clone the GravityView repo on your computer using the GitHub app
-2. [Install Homebrew](http://brew.sh)
-3. Run `brew install git-archive-all`
-3. Use the following command in the Terminal:
-
-```
-cd /path/to/gravityview/
-git-archive-all ../gravityview.zip
-```
-
-This will create a `gravityview.zip` file in the directory above the cloned GravityView plugin on your computer, which includes the submodules.
-
 #### Run Unit Tests
 
 The plugin uses PHPUnit as part of development process. Installing the testing environment is best done using a flavor of Vagrant (try [Varying Vagrant Vagrants](https://github.com/Varying-Vagrant-Vagrants/VVV)).

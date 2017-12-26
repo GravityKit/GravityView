@@ -45,13 +45,8 @@ class View_Settings extends Settings {
 	 *      @param[out] boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
 	 */
 	public static function defaults( $detailed = false, $group = null ) {
-		/**
-		 * @filter `gravityview_default_args` Modify the default settings for new Views
-		 * @param[in,out] array $default_settings Array of default settings.
-		 * @deprecated
-		 * @see filter `gravityview/view/settings/defaults`
-		 */
-		$default_settings = apply_filters( 'gravityview_default_args', array(
+
+		$default_settings = array(
 			'id' => array(
 				'label' => __('View ID', 'gravityview'),
 				'type' => 'number',
@@ -153,7 +148,6 @@ class View_Settings extends Settings {
 				'options' => array(
 					'ASC' => __('ASC', 'gravityview'),
 					'DESC' => __('DESC', 'gravityview'),
-					//'RAND' => __('Random', 'gravityview'),
 				),
 				'show_in_shortcode' => true,
 			),
@@ -242,7 +236,19 @@ class View_Settings extends Settings {
 				'value' => '',
 				'show_in_shortcode' => false,
 			),
-		) );
+		);
+
+		if ( version_compare( \GFCommon::$version, '2.3-beta-4', '>=' ) ) {
+			$default_settings['sort_direction']['options']['RAND'] = __( 'Random', 'gravityview' );
+		}
+
+		/**
+		 * @filter `gravityview_default_args` Modify the default settings for new Views
+		 * @param[in,out] array $default_args Array of default args.
+		 * @deprecated
+		 * @see filter `gravityview/view/settings/defaults`
+		 */
+		$default_settings = apply_filters( 'gravityview_default_args', $default_settings );
 
 		/**
 		 * @filter `gravityview/view/defaults` Modify the default settings for new Views

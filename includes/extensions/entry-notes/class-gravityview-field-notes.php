@@ -174,6 +174,11 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		if( 'gv_note_add' === $_POST['action'] ) {
 
+            if( ! GVCommon::has_cap( 'gravityview_add_entry_notes' ) ) {
+                do_action( 'gravityview_log_error', __METHOD__ . ': The user isnt allowed to add entry notes.' );
+                return;
+            }
+
 			$post = wp_unslash( $_POST );
 
 			if( $this->doing_ajax ) {

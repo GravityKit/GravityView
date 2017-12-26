@@ -302,19 +302,28 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 		$allow = function( $login ) {
 			return true;
 		};
+
 		add_filter( 'gravityview/capabilities/allow_logged_out', $allow );
 
 		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
 		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
+		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( array( 'gv_custom_test_cap', 'gv_custom_test_nocap' ) ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( array( 'gv_custom_test_nocap', 'gv_custom_test_nocap_two' ) ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap('gravityview_full_access') );
 
 		remove_filter( 'user_has_cap', $has_cap );
 
 		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
 		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( array( 'gv_custom_test_cap', 'gv_custom_test_nocap' ) ) );
+		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( array( 'gravityview_edit_others_entries', 'gv_custom_test_nocap' ) ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap('gravityview_full_access') );
 
 		remove_filter( 'gravityview/capabilities/allow_logged_out', $allow );
 
 		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
 		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( array( 'gravityview_edit_others_entries', 'gv_custom_test_nocap' ) ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap('gravityview_full_access') );
 	}
 }

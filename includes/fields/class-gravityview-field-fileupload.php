@@ -105,16 +105,25 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		foreach( $file_paths as $file_path ) {
 
 			// If the site is HTTPS, use HTTPS
-			if(function_exists('set_url_scheme')) { $file_path = set_url_scheme($file_path); }
+			if(function_exists('set_url_scheme')) { $file_path = set_url_scheme( $file_path ); }
 
 			// This is from Gravity Forms's code
-			$file_path = esc_attr(str_replace(" ", "%20", $file_path));
+			$file_path = esc_attr( str_replace( " ", "%20", $file_path ) );
+
+
+			/**
+			 * @filter `gravityview/fields/fileupload/file_path` Modify the file path before generating a link to it
+			 * @since 1.22.3
+			 * @param string $file_path Path to the file uploaded by Gravity Forms
+			 * @param array  $field_settings Array of GravityView field settings
+			 */
+			$file_path = apply_filters( 'gravityview/fields/fileupload/file_path', $file_path, $field_settings );
+
+			// Get file path information
+			$file_path_info = pathinfo( $file_path );
 
 			// If the field is set to link to the single entry, link to it.
 			$link = !empty( $field_settings['show_as_link'] ) ? GravityView_API::entry_link( $entry, $field ) : $file_path;
-
-			// Get file path information
-			$file_path_info = pathinfo($file_path);
 
 			$html_format = NULL;
 
@@ -127,7 +136,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				'src' => $file_path,
 				'class' => 'gv-image gv-field-id-'.$field_settings['id'],
 				'alt' => $field_settings['label'],
-				'width' => (gravityview_get_context() === 'single' ? NULL : 250)
+				'width' => ( gravityview_get_context() === 'single' ? NULL : 250 )
 			));
 
 			$content = $image->html();

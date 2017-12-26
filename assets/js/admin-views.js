@@ -47,7 +47,6 @@
  *  stopImmediatePropagation: function
  * }} jQueryEvent
  */
-
 (function( $ ) {
 
 	var viewConfiguration, viewGeneralSettings;
@@ -147,7 +146,7 @@
 			// End bind to $('body')
 
 			if( gvGlobals.passed_form_id ) {
-				$( '#gravityview_form_id' ).trigger( 'change' );
+				vcfg.gvSelectForm.trigger( 'change' );
 			}
 		},
 
@@ -170,7 +169,7 @@
 		 * @since 1.19
 		 */
 		zebraStripeSettings: function() {
-			$( '#gravityview_settings table').find('tr').removeClass('alternate').filter(':visible:even' ).addClass( 'alternate' );
+			$( '#gravityview_settings').find('table').find('tr').removeClass('alternate').filter(':visible:even' ).addClass( 'alternate' );
 		},
 
 		/**
@@ -1087,22 +1086,11 @@
 				// append the new field to the active drop
 				$( 'a[data-tooltip-id="' + areaId + '"]' ).parents( '.gv-droppable-area' ).find( '.active-drop' ).append( newField ).end().attr( 'data-tooltip-id', '' );
 
+				$('body').trigger( 'gravityview/field-added', newField );
+
 				// Show the new field
 				newField.fadeIn( 100, function () {
-
-					// Remove existing merge tags, since otherwise GF will add another
-					$( '.all-merge-tags' ).remove();
-
-					// Only init merge tags if the View has been saved and the form hasn't been changed.
-					if ( typeof(
-							form
-						) !== 'undefined' && $( 'body' ).not( '.gv-form-changed' ) ) {
-
-						// Re-init merge tag dropdowns
-						window.gfMergeTags = new gfMergeTagsObj( form );
-
-					}
-
+					vcfg.refresh_merge_tags();
 				} );
 
 				// refresh the little help tooltips
@@ -1124,6 +1112,40 @@
 
 			} );
 
+		},
+
+		/**
+		 * Re-initialize Merge Tags
+		 *
+		 * @since 1.22.1
+		 */
+		refresh_merge_tags: function() {
+
+			// Remove existing merge tags, since otherwise GF will add another
+			$( '.all-merge-tags' ).remove();
+
+			$merge_tag_supported = $('.merge-tag-support');
+
+			// Only init merge tags if the View has been saved and the form hasn't been changed.
+			if ( 'undefined' !== typeof( form ) && $( 'body' ).not( '.gv-form-changed' ) && $merge_tag_supported.length >= 0 ) {
+
+				if ( window.gfMergeTags ) {
+
+					if ( gfMergeTags.hasOwnProperty('destroy') ) {
+
+						// 2.3 re-init
+						$merge_tag_supported.each( function () {
+							new gfMergeTagsObj( form, $( this ) );
+						});
+
+					} else {
+
+						// Re-init merge tag dropdowns, pre-2.3
+						window.gfMergeTags = new gfMergeTagsObj( form );
+
+					}
+				}
+			}
 		},
 
 		/**

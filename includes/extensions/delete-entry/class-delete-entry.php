@@ -325,7 +325,7 @@ final class GravityView_Delete_Entry {
 			$entry_slug = esc_attr( $_GET['entry_id'] );
 
 			// See if there's an entry there
-			$entry = gravityview_get_entry( $entry_slug );
+			$entry = gravityview_get_entry( $entry_slug, true, false );
 
 			if( $entry ) {
 
@@ -370,7 +370,7 @@ final class GravityView_Delete_Entry {
 				);
 			}
 
-			$redirect_to_base = esc_url_raw( remove_query_arg( array( 'action' ) ) );
+			$redirect_to_base = esc_url_raw( remove_query_arg( array( 'action', 'gvid' ) ) );
 			$redirect_to = add_query_arg( $messages, $redirect_to_base );
 
 			wp_safe_redirect( $redirect_to );
@@ -698,7 +698,7 @@ final class GravityView_Delete_Entry {
 		}
 
 		// Entry wasn't deleted from current View
-		if( intval( $_GET['gvid'] ) !== intval( $current_view_id ) ) {
+		if( isset( $_GET['view_id'] ) && intval( $_GET['view_id'] ) !== intval( $current_view_id ) ) {
 			return;
 		}
 
