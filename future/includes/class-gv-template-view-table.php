@@ -84,9 +84,10 @@ class View_Table_Template extends View_Template {
 	 * @return void
 	 */
 	public function the_field( \GV\Field $field, \GV\Entry $entry ) {
-		$attributes = array(
-			'id' => sprintf( 'gv-field-%d-%s', $this->view->form ? $this->view->form->ID : 0, $field->ID ),
-			'class' => sprintf( 'gv-field-%d-%s', $this->view->form ? $this->view->form->ID : 0, $field->ID ),
+
+	    $attributes = array(
+			'id' => \GravityView_API::field_html_attr_id( $field->as_configuration(), $this->view->form, $entry->as_entry() ),
+			'class' => gv_class( $field->as_configuration(), $this->view->form, $entry->as_entry() ),
 		);
 
 		/**

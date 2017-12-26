@@ -314,7 +314,7 @@ class View implements \ArrayAccess {
 	/**
 	 * Construct a \GV\View instance from a \WP_Post.
 	 *
-	 * @param $post The \WP_Post instance to wrap.
+	 * @param \WP_Post $post The \WP_Post instance to wrap.
 	 *
 	 * @api
 	 * @since future
@@ -412,7 +412,7 @@ class View implements \ArrayAccess {
 	/**
 	 * Determines if a view exists to begin with.
 	 *
-	 * @param int|\WP_Post|null $view_id The WordPress post ID, a \WP_Post object or null for global $post;
+	 * @param int|\WP_Post|null $view The WordPress post ID, a \WP_Post object or null for global $post;
 	 *
 	 * @api
 	 * @since future
