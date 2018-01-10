@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 == Changelog ==
 
 * Tweak: Show "Embed Shortcode" helper if a View has widgets configured but not Fields
+* Fixed: `tabindex` not properly set for Update/Cancel/Delete buttons in Edit Entry
 
 = 1.22.3 on December 21, 2017 =
 
