@@ -254,11 +254,10 @@ class GravityView_Welcome {
 
 				<div class="feature-section col two-col" style="margin:0; padding: 0;">
 					<div class="col col-1">
-                        <div class="media-container"><img alt="[else if]" src="<?php echo plugins_url( 'assets/images/screenshots/else-if.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
-                        <h4 class="higher">The <code>[else]</code> shortcode now supports additional logic!</h4>
-                        <p>Before, you would have to use multiple <code>[gvlogic]</code> shortcodes in your <a href="https://docs.gravityview.co/article/111-using-the-custom-content-field">Custom Content fields</a>.</p>
-                        <p>Now, you can use the <code>[else]</code> shortcode like this: <code>[else if="{Field Value:1}" is="Example"]</code>.</p>
-                        <p><a href="https://docs.gravityview.co/article/252-gvlogic-shortcode" class="button-primary button button-large">Read more about the <code>[gvlogic]</code> shortcode</a></p>
+                        <div class="media-container"><iframe width="489" height="275" src="https://www.youtube-nocookie.com/embed/ANEiBP1tON0?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+                        <h4 class="higher"><abbr title="Do It Yourself">DIY</abbr> Layout</h4>
+                        <p>The View layout tool for designers &amp; developers. Included in Galactic licenses. DIY allows you to define your own CSS and HTML structure instead of needing to modify our predefined layouts to fit your needs.</p>
+                        <p><a href="https://gravityview.co/extensions/diy-layout/?utm_source=admin-welcome&utm_medium=plugin&utm_campaign=whats-new&utm_content=button" class="button-primary button button-large">Learn More &amp; Get DIY Now</a></p>
                     </div>
                     <div class="col col-2">
                         <div class="media-container"><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ) ); ?>"><img alt="Beta!" src="<?php echo plugins_url( 'assets/images/screenshots/beta-program.jpg', GRAVITYVIEW_FILE ); ?>" style="border: none"></a></div>
@@ -271,6 +270,21 @@ class GravityView_Welcome {
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
+
+                <h3>1.22.4 on January 16, 2018</h3>
+
+                <ul>
+                    <li>Adds support for <a href="https://gravityview.co/extensions/diy-layout/">DIY Layout</a>, a layout for designers &amp; developers to take full advantage of GravityView</li>
+                    <li>Tweak: Show &quot;Embed Shortcode&quot; helper if a View has widgets configured but not Fields</li>
+                    <li>Fixed: <code>tabindex</code> not properly set for Update/Cancel/Delete buttons in Edit Entry</li>
+                    <li>Fixed: Hide Yoast SEO Content &amp; SEO Analysis functionality when editing a View</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Add <code>$nl2br</code>, <code>$format</code>, <code>$aux_data</code> parameters to <code>GravityView_API::replace_variables()</code> to be consistent with <code>GFCommon::replace_variables()</code></li>
+                </ul>
 
                 <h3>1.22.3 on December 21, 2017</h3>
 
