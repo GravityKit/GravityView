@@ -1,14 +1,14 @@
-# Copyright (C) 2017 GravityView
+# Copyright (C) 2018 GravityView
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 1.22.3\n"
+"Project-Id-Version: GravityView 1.22.4\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Katz Web Services, Inc. <support@katz.co>\n"
 "Language-Team: Katz Web Services, Inc. <support@katz.co>\n"
 "X-Generator: grunt-wp-i18n 0.5.4\n"
@@ -1132,19 +1132,19 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-api.php:415
+#: includes/class-api.php:421
 msgid "This search returned no results."
 msgstr ""
 
-#: includes/class-api.php:417 includes/class-gravityview-entry-list.php:86
+#: includes/class-api.php:423 includes/class-gravityview-entry-list.php:86
 msgid "No entries match your request."
 msgstr ""
 
-#: includes/class-api.php:853
+#: includes/class-api.php:859
 msgid "&larr; Go back"
 msgstr ""
 
-#: includes/class-api.php:1163
+#: includes/class-api.php:1169
 msgid "Map It"
 msgstr ""
 

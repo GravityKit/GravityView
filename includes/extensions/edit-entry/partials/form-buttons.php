@@ -42,10 +42,12 @@
 	 */
 	$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $object->form, $object->entry, $object->view_id );
 
+	$update_tabindex  = GFCommon::get_tabindex();
+	$cancel_tabindex  = GFCommon::get_tabindex();
 	?>
-	<input id="gform_submit_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-update" type="submit" tabindex="4" value="<?php echo esc_attr( $labels['submit'] ); ?>" name="save" />
+	<input id="gform_submit_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-update" type="submit" <?php echo $update_tabindex; ?> value="<?php echo esc_attr( $labels['submit'] ); ?>" name="save" />
 
-	<a class="btn btn-sm button button-small gv-button-cancel" tabindex="5" href="<?php echo esc_url( $back_link ); ?>"><?php echo esc_attr( $labels['cancel'] ); ?></a>
+	<a class="btn btn-sm button button-small gv-button-cancel" <?php echo $cancel_tabindex; ?> href="<?php echo esc_url( $back_link ); ?>"><?php echo esc_attr( $labels['cancel'] ); ?></a>
 	<?php
 
 	/**

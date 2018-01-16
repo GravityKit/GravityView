@@ -20,6 +20,17 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.22.4 on January 16, 2018 =
+
+* Adds support for [DIY Layout](https://gravityview.co/extensions/diy-layout/), a layout for designers & developers to take full advantage of GravityView
+* Tweak: Show "Embed Shortcode" helper if a View has widgets configured but not Fields
+* Fixed: `tabindex` not properly set for Update/Cancel/Delete buttons in Edit Entry
+* Fixed: Hide Yoast SEO Content & SEO Analysis functionality when editing a View
+
+__Developer Updates:__
+
+* Add `$nl2br`, `$format`, `$aux_data` parameters to `GravityView_API::replace_variables()` to be consistent with `GFCommon::replace_variables()`
+
 = 1.22.3 on December 21, 2017 =
 
 * Added: Support for displaying files uploaded using the Gravity Forms Dropbox Addon (thanks, @mgratch and @ViewFromTheBox!)
