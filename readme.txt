@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Add Note support for Gravity Forms 2.3 (it's coming soon)
 * Fixed: `tabindex` not properly set for Update/Cancel/Delete buttons in Edit Entry
 * Fixed: Hide Yoast SEO Content & SEO Analysis functionality when editing a View
+* Fixed: Line breaks were being added to Custom Content fields and widgets, even when "Automatically add paragraphs to content" wasn't checked
 
 __Developer Updates:__
 
