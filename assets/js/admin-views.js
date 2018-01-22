@@ -546,6 +546,10 @@
 				},
 				open: function () {
 					$( '<div class="gv-overlay" />' ).prependTo( '#wpwrap' );
+
+					$('textarea.code', thisDialog).each( function (  ) {
+						wp.codeEditor.initialize( $(this), { viewportMargin: 'Infinity', height: 'dynamic', minHeight: 200 } );
+					});
 					return true;
 				},
 				close: function ( e ) {

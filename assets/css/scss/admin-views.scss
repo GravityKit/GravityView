@@ -331,8 +331,13 @@ $gv-overlay-index: 10000;
 }
 
 // Fix issue with theme conflicts where .gv-overlay gets in the way
-.ui-front {
+.ui-front,
+.CodeMirror-hints,
+.CodeMirror-lint-tooltip {
   z-index: $gv-overlay-index + 1 !important;
+}
+.CodeMirror {
+	height: auto;
 }
 
 /** View configuration tabs */

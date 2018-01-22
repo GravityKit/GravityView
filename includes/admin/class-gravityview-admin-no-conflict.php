@@ -75,6 +75,12 @@ class GravityView_Admin_No_Conflict {
 			'media-upload',
 			'thickbox',
 			'wp-color-picker',
+			'code-editor',
+			'htmlhint',
+			'htmlhint-kses',
+			'jshint',
+			'csslint',
+			'jsonlint',
 
 			// Settings
 			'gv-admin-edd-license',
@@ -141,6 +147,7 @@ class GravityView_Admin_No_Conflict {
 			'dashicons',
 			'wp-jquery-ui-dialog',
 			'jquery-ui-sortable',
+			'code-editor',
 
 			// Settings
 			'gravityview_settings',
