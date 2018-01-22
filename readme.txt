@@ -20,9 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.22.4 on January 16, 2018 =
+= 1.22.5 on January 22, 2018 =
 
-* Adds support for [DIY Layout](https://gravityview.co/extensions/diy-layout/), a layout for designers & developers to take full advantage of GravityView
+* Improves support for [DIY Layout](https://gravityview.co/extensions/diy-layout/), a layout for designers & developers to take full advantage of GravityView
 * Tweak: Show "Embed Shortcode" helper if a View has widgets configured but not Fields
 * Fixed: Add Note support for Gravity Forms 2.3 (it's coming soon)
 * Fixed: `tabindex` not properly set for Update/Cancel/Delete buttons in Edit Entry
