@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Adds support for [DIY Layout](https://gravityview.co/extensions/diy-layout/), a layout for designers & developers to take full advantage of GravityView
 * Tweak: Show "Embed Shortcode" helper if a View has widgets configured but not Fields
+* Fixed: Add Note support for Gravity Forms 2.3 (it's coming soon)
 * Fixed: `tabindex` not properly set for Update/Cancel/Delete buttons in Edit Entry
 * Fixed: Hide Yoast SEO Content & SEO Analysis functionality when editing a View
 
