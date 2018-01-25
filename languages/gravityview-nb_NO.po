@@ -1,4 +1,4 @@
-# Copyright (C) 2017 GravityView
+# Copyright (C) 2018 GravityView
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # Aleksander Espegard <alek.esp@gmail.com>, 2015
@@ -108,12 +108,12 @@ msgid "Sort by field"
 msgstr "Sorter etter felt"
 
 #: future/includes/class-gv-settings-view.php:124
-#: includes/class-common.php:1281 includes/class-data.php:807
+#: includes/class-common.php:1282 includes/class-data.php:807
 msgid "Default"
 msgstr "Standard"
 
 #: future/includes/class-gv-settings-view.php:125
-#: includes/class-common.php:1324 includes/class-data.php:808
+#: includes/class-common.php:1325 includes/class-data.php:808
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
 msgstr "Dato opprettet"
@@ -279,28 +279,28 @@ msgstr "vis:"
 msgid "Create views based on a Gravity Forms form"
 msgstr "Opprett visninger basert på et Gravity Forms-skjema"
 
-#: gravityview.php:223
+#: gravityview.php:224
 msgid ""
 "GravityView requires PHP Version %s or newer. You're using Version %s. "
 "Please ask your host to upgrade your server's PHP."
 msgstr ""
 
-#: gravityview.php:228 includes/class-gravityview-compatibility.php:219
+#: gravityview.php:229 includes/class-gravityview-compatibility.php:219
 msgid ""
 "%sGravityView requires PHP Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please ask your host to upgrade your server's PHP."
 msgstr "%sGravityView krever PHP Versjon %s eller nyere.%s \n\nDu bruker Versjon %s. Spør verten for å oppgradere PHP på serveren din."
 
-#: gravityview.php:388
+#: gravityview.php:389
 msgid "Top"
 msgstr "Topp"
 
-#: gravityview.php:389
+#: gravityview.php:390
 msgid "Left"
 msgstr "Venstre"
 
-#: gravityview.php:389
+#: gravityview.php:390
 msgid "Right"
 msgstr "Høyre"
 
@@ -490,7 +490,7 @@ msgstr "Vis innstillinger"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:132
 #: includes/admin/metaboxes/views/view-configuration.php:5
-#: includes/class-frontend-views.php:645
+#: includes/class-frontend-views.php:646
 msgid "Single Entry"
 msgstr "Enkeltoppføring"
 
@@ -572,17 +572,17 @@ msgid "Add this shortcode to a post or page to embed this view."
 msgstr "Bruk denne kortkoden til en oppføring eller side for å bygge inn denne visningen."
 
 #: includes/admin/metaboxes/views/view-configuration.php:4
-#: includes/class-frontend-views.php:638
+#: includes/class-frontend-views.php:639
 msgid "Multiple Entries"
 msgstr "Flera oppføringer"
 
 #: includes/admin/metaboxes/views/view-configuration.php:6
-#: includes/class-frontend-views.php:641
+#: includes/class-frontend-views.php:642
 #: includes/class-gravityview-admin-bar.php:111
 #: includes/class-gravityview-entry-link-shortcode.php:208
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:895
+#: includes/extensions/edit-entry/class-edit-entry-render.php:906
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
 msgstr "Rediger oppføring"
@@ -982,23 +982,23 @@ msgstr "Liste over endringer"
 msgid "What&rsquo;s New"
 msgstr "Nyheter"
 
-#: includes/class-admin-welcome.php:405
+#: includes/class-admin-welcome.php:486
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:426
+#: includes/class-admin-welcome.php:507
 msgid "GravityView is brought to you by:"
 msgstr "GravityView utvikles av:"
 
-#: includes/class-admin-welcome.php:461
+#: includes/class-admin-welcome.php:542
 msgid "Contributors"
 msgstr "Bidragsytere"
 
-#: includes/class-admin-welcome.php:486
+#: includes/class-admin-welcome.php:567
 msgid "Want to contribute?"
 msgstr "Vil du bidra?"
 
-#: includes/class-admin-welcome.php:487
+#: includes/class-admin-welcome.php:568
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1129,19 +1129,19 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] "%s Visning gjenopprettet fra papirkurven."
 msgstr[1] "%s Visninger gjenopprettet fra papirkurven."
 
-#: includes/class-api.php:415
+#: includes/class-api.php:421
 msgid "This search returned no results."
 msgstr "Søket ga ingen resultater."
 
-#: includes/class-api.php:417 includes/class-gravityview-entry-list.php:86
+#: includes/class-api.php:423 includes/class-gravityview-entry-list.php:86
 msgid "No entries match your request."
 msgstr "Ditt søk ga ingen resultat."
 
-#: includes/class-api.php:853
+#: includes/class-api.php:859
 msgid "&larr; Go back"
 msgstr "&larr; Tilbake"
 
-#: includes/class-api.php:1163
+#: includes/class-api.php:1169
 msgid "Map It"
 msgstr "Kartlegg det"
 
@@ -1152,11 +1152,11 @@ msgstr "Post ID"
 
 #. translators: %s: relative time from now, used for generic date comparisons.
 #. "1 day ago", or "20 seconds ago"
-#: includes/class-common.php:987
+#: includes/class-common.php:988
 msgid "%s ago"
 msgstr "%s siden"
 
-#: includes/class-common.php:1434
+#: includes/class-common.php:1435
 msgid "Email hidden; Javascript is required."
 msgstr "E-post skjult; Javascript kreves."
 
@@ -1199,25 +1199,25 @@ msgstr "Advarsler"
 msgid "Logs"
 msgstr "Logger"
 
-#: includes/class-frontend-views.php:569
+#: includes/class-frontend-views.php:570
 msgid ""
 "When using a preset template, you must save the View before a Preview is "
 "available."
 msgstr ""
 
-#: includes/class-frontend-views.php:652
+#: includes/class-frontend-views.php:653
 msgid "Add fields to %s"
 msgstr "Legg til felt til %s"
 
-#: includes/class-frontend-views.php:653
+#: includes/class-frontend-views.php:654
 msgid "You can only see this message because you are able to edit this View."
 msgstr "Du ser bare denne meldingen fordi du er i stand til å redigere denne Visningen."
 
-#: includes/class-frontend-views.php:796
+#: includes/class-frontend-views.php:797
 msgid "You are not allowed to view this content."
 msgstr "Du har ikke tillatelse til å vise dette innholdet."
 
-#: includes/class-frontend-views.php:922
+#: includes/class-frontend-views.php:923
 msgid ""
 "You have attempted to view an entry that is not visible or may not exist."
 msgstr "Du har forsøkt å se på en oppføring som ikke er synlig eller ikke eksisterer."
@@ -1383,12 +1383,12 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr "Forespørselen er ugyldig. Oppdater siden og prøv igjen."
 
 #: includes/class-gravityview-entry-approval.php:140
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1946
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1957
 msgid "You do not have permission to edit this entry."
 msgstr "Du har ikke tillatelse til å redigere denne oppføringen."
 
 #: includes/class-gravityview-entry-approval.php:339
-#: includes/class-gravityview-uninstall.php:78
+#: includes/class-gravityview-uninstall.php:79
 #: tests/unit-tests/GravityView_Uninstall_Test.php:192
 msgid "Approved the Entry for GravityView"
 msgstr "Godkjente oppføringen for GravityView"
@@ -1398,7 +1398,7 @@ msgid "Reset Entry approval for GravityView"
 msgstr "Nullstill godkjenning av oppføringen for GravityView"
 
 #: includes/class-gravityview-entry-approval.php:345
-#: includes/class-gravityview-uninstall.php:77
+#: includes/class-gravityview-uninstall.php:78
 #: tests/unit-tests/GravityView_Uninstall_Test.php:191
 msgid "Disapproved the Entry for GravityView"
 msgstr "Ikke godkjente oppføringen for GravityView"
@@ -1868,47 +1868,47 @@ msgstr "Åpne kobling i ny fane eller vindu?"
 msgid "Make field editable to:"
 msgstr "Gjør feltet redigerbart for:"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:948
+#: includes/extensions/edit-entry/class-edit-entry-render.php:959
 msgid "There was a problem with your submission."
 msgstr "Det var et problem med innsendingen din."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:948
+#: includes/extensions/edit-entry/class-edit-entry-render.php:959
 msgid "Errors have been highlighted below."
 msgstr "Feil har blitt markert nedenfor."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:954
+#: includes/extensions/edit-entry/class-edit-entry-render.php:965
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "Oppføring oppdatert. %sGå tilbake til Oppføring%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1092
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1103
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr "Du har ikke tillatelse til å redigere denne oppføringen."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1099
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1110
 msgid "This field is not editable; the post no longer exists."
 msgstr "Dette feltet kan ikke redigeres; posten eksisterer ikke lenger."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1430
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1441
 msgid "This email is already in use"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1437
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1448
 msgid "Usernames cannot be changed"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1502
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1513
 msgid "Maximum number of files reached"
 msgstr "Maksimalt antall filer nådde"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1940
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1951
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "Linken til å redigere denne posten er ikke gyldig; den kan ha utløpt."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1950
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1961
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "Du kan ikke redigere oppføringen: Den ligger i søppelkurven"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1990
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2001
 msgid "You do not have permission to edit this field."
 msgstr "Du har ikke tillatelse til å redigere dette feltet."
 
@@ -3177,18 +3177,18 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "Tom"
 
-#: includes/class-frontend-views.php:650
+#: includes/class-frontend-views.php:651
 msgctxt ""
 "Displayed when a View is not configured. %s is replaced by the tab label"
 msgid "The %s layout has not been configured."
 msgstr "Denne %s layout er ikke konfigurert."
 
-#: includes/class-frontend-views.php:1692
+#: includes/class-frontend-views.php:1693
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr "Fjern"
 
-#: includes/class-frontend-views.php:1693
+#: includes/class-frontend-views.php:1694
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr "Tilbakestill"
@@ -3277,7 +3277,7 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr "Skapere av oppføringen"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1966
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1977
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr "Tilbake"
