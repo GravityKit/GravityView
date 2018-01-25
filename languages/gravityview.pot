@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 1.22.4\n"
+"Project-Id-Version: GravityView 1.22.5\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
 "MIME-Version: 1.0\n"
@@ -976,27 +976,27 @@ msgstr ""
 msgid "List of Changes"
 msgstr ""
 
-#: includes/class-admin-welcome.php:272
+#: includes/class-admin-welcome.php:271
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:466
+#: includes/class-admin-welcome.php:486
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:487
+#: includes/class-admin-welcome.php:507
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:522
+#: includes/class-admin-welcome.php:542
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:547
+#: includes/class-admin-welcome.php:567
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:548
+#: includes/class-admin-welcome.php:568
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."

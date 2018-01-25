@@ -20,16 +20,22 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.22.4 on January 16, 2018 =
+= 1.22.5 on January 25, 2018 =
 
-* Adds support for [DIY Layout](https://gravityview.co/extensions/diy-layout/), a layout for designers & developers to take full advantage of GravityView
+* Improves support for [DIY Layout](https://gravityview.co/extensions/diy-layout/), a layout for designers & developers to take full advantage of GravityView
 * Tweak: Show "Embed Shortcode" helper if a View has widgets configured but not Fields
+* Fixed: Add Note support for Gravity Forms 2.3 (it's coming soon)
 * Fixed: `tabindex` not properly set for Update/Cancel/Delete buttons in Edit Entry
 * Fixed: Hide Yoast SEO Content & SEO Analysis functionality when editing a View
+* Fixed: Line breaks were being added to Custom Content fields and widgets, even when "Automatically add paragraphs to content" wasn't checked
 
 __Developer Updates:__
 
 * Add `$nl2br`, `$format`, `$aux_data` parameters to `GravityView_API::replace_variables()` to be consistent with `GFCommon::replace_variables()`
+
+= 1.22.4? =
+
+Yes, we skipped a minor release (1.22.4 exists only in our hearts). Thanks for noticing!
 
 = 1.22.3 on December 21, 2017 =
 

@@ -140,7 +140,12 @@ class GravityView_Entry_Notes {
 	public static function get_note( $note_id ) {
 		global $wpdb;
 
-		$notes_table = GFFormsModel::get_lead_notes_table_name();
+		if ( version_compare( GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '>=' )
+		     && method_exists( 'GFFormsModel', 'get_entry_notes_table_name' ) ) {
+			$notes_table = GFFormsModel::get_entry_notes_table_name();
+		} else {
+			$notes_table = GFFormsModel::get_lead_notes_table_name();
+		}
 
 		$results = $wpdb->get_results(
 			$wpdb->prepare(
