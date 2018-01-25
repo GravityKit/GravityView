@@ -271,13 +271,15 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
-                <h3>1.22.4 on January 16, 2018</h3>
+                <h3>1.22.5 on January 25, 2018</h3>
 
                 <ul>
-                    <li>Adds support for <a href="https://gravityview.co/extensions/diy-layout/">DIY Layout</a>, a layout for designers &amp; developers to take full advantage of GravityView</li>
+                    <li>Improves support for <a href="https://gravityview.co/extensions/diy-layout/">DIY Layout</a>, a layout for designers &amp; developers to take full advantage of GravityView</li>
                     <li>Tweak: Show &quot;Embed Shortcode&quot; helper if a View has widgets configured but not Fields</li>
+                    <li>Fixed: Add Note support for Gravity Forms 2.3 (it&#39;s coming soon)</li>
                     <li>Fixed: <code>tabindex</code> not properly set for Update/Cancel/Delete buttons in Edit Entry</li>
                     <li>Fixed: Hide Yoast SEO Content &amp; SEO Analysis functionality when editing a View</li>
+                    <li>Fixed: Line breaks were being added to Custom Content fields and widgets, even when &quot;Automatically add paragraphs to content&quot; wasn&#39;t checked</li>
                 </ul>
 
                 <p><strong>Developer Updates:</strong></p>
@@ -285,6 +287,10 @@ class GravityView_Welcome {
                 <ul>
                     <li>Add <code>$nl2br</code>, <code>$format</code>, <code>$aux_data</code> parameters to <code>GravityView_API::replace_variables()</code> to be consistent with <code>GFCommon::replace_variables()</code></li>
                 </ul>
+
+                <h3>1.22.4?</h3>
+
+                <p>Yes, we skipped a minor release (1.22.4 exists only in our hearts). Thanks for noticing!</p>
 
                 <h3>1.22.3 on December 21, 2017</h3>
 

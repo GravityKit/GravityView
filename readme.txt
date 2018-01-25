@@ -20,7 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.22.5 on January 22, 2018 =
+= 1.22.5 on January 25, 2018 =
 
 * Improves support for [DIY Layout](https://gravityview.co/extensions/diy-layout/), a layout for designers & developers to take full advantage of GravityView
 * Tweak: Show "Embed Shortcode" helper if a View has widgets configured but not Fields
@@ -32,6 +32,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 __Developer Updates:__
 
 * Add `$nl2br`, `$format`, `$aux_data` parameters to `GravityView_API::replace_variables()` to be consistent with `GFCommon::replace_variables()`
+
+= 1.22.4? =
+
+Yes, we skipped a minor release (1.22.4 exists only in our hearts). Thanks for noticing!
 
 = 1.22.3 on December 21, 2017 =
 
