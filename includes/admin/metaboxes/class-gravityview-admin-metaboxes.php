@@ -297,10 +297,14 @@ class GravityView_Admin_Metaboxes {
 		global $post;
 
 		// Only show this on GravityView post types.
-		if( false === gravityview_is_admin_page() ) { return; }
+		if( false === gravityview_is_admin_page() ) {
+			return;
+		}
 
 		// If the View hasn't been configured yet, don't show embed shortcode
-		if( !gravityview_get_directory_fields( $post->ID ) ) { return; }
+		if( ! gravityview_get_directory_fields( $post->ID ) && ! gravityview_get_directory_widgets( $post->ID ) ) {
+			return;
+		}
 
 		include self::$metaboxes_dir . 'views/shortcode-hint.php';
 	}

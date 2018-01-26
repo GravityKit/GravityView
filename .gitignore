@@ -86,3 +86,5 @@ docs/html
 
 # VIM
 *.swp
+
+.idea/php.xml

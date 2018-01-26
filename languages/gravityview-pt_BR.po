@@ -1,4 +1,4 @@
-# Copyright (C) 2017 GravityView
+# Copyright (C) 2018 GravityView
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # Marlos Piccinelli <marlosvinicius.info@gmail.com>, 2015
@@ -109,12 +109,12 @@ msgid "Sort by field"
 msgstr "Ordenar por campo"
 
 #: future/includes/class-gv-settings-view.php:124
-#: includes/class-common.php:1281 includes/class-data.php:807
+#: includes/class-common.php:1282 includes/class-data.php:807
 msgid "Default"
 msgstr "Padrão"
 
 #: future/includes/class-gv-settings-view.php:125
-#: includes/class-common.php:1324 includes/class-data.php:808
+#: includes/class-common.php:1325 includes/class-data.php:808
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
 msgstr "Data Criada"
@@ -280,28 +280,28 @@ msgstr "visualizar"
 msgid "Create views based on a Gravity Forms form"
 msgstr "Criar Visualizações baseadas em um formulário do Gravity Forms"
 
-#: gravityview.php:223
+#: gravityview.php:224
 msgid ""
 "GravityView requires PHP Version %s or newer. You're using Version %s. "
 "Please ask your host to upgrade your server's PHP."
 msgstr ""
 
-#: gravityview.php:228 includes/class-gravityview-compatibility.php:219
+#: gravityview.php:229 includes/class-gravityview-compatibility.php:219
 msgid ""
 "%sGravityView requires PHP Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please ask your host to upgrade your server's PHP."
 msgstr "%sO GravityView requer a versão do PHP %s ou mais nova.%s\n\nVocê está usando a versão %s. Peça ao seu host para fazer o upgrade da versão do seu PHP."
 
-#: gravityview.php:388
+#: gravityview.php:389
 msgid "Top"
 msgstr "Em cima"
 
-#: gravityview.php:389
+#: gravityview.php:390
 msgid "Left"
 msgstr "Esquerda"
 
-#: gravityview.php:389
+#: gravityview.php:390
 msgid "Right"
 msgstr "Direita"
 
@@ -491,7 +491,7 @@ msgstr "Visualizar configurações"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:132
 #: includes/admin/metaboxes/views/view-configuration.php:5
-#: includes/class-frontend-views.php:645
+#: includes/class-frontend-views.php:646
 msgid "Single Entry"
 msgstr "Entrada única"
 
@@ -573,17 +573,17 @@ msgid "Add this shortcode to a post or page to embed this view."
 msgstr "Adicionar esse shortcode no post ou página para exibir essa visualização"
 
 #: includes/admin/metaboxes/views/view-configuration.php:4
-#: includes/class-frontend-views.php:638
+#: includes/class-frontend-views.php:639
 msgid "Multiple Entries"
 msgstr "Várias entradas"
 
 #: includes/admin/metaboxes/views/view-configuration.php:6
-#: includes/class-frontend-views.php:641
+#: includes/class-frontend-views.php:642
 #: includes/class-gravityview-admin-bar.php:111
 #: includes/class-gravityview-entry-link-shortcode.php:208
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:895
+#: includes/extensions/edit-entry/class-edit-entry-render.php:906
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
 msgstr "Editar"
@@ -983,23 +983,23 @@ msgstr "Lista de Alterações"
 msgid "What&rsquo;s New"
 msgstr "What&rsquo;s Novo"
 
-#: includes/class-admin-welcome.php:405
+#: includes/class-admin-welcome.php:486
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:426
+#: includes/class-admin-welcome.php:507
 msgid "GravityView is brought to you by:"
 msgstr "GravityView é trazido a você por:"
 
-#: includes/class-admin-welcome.php:461
+#: includes/class-admin-welcome.php:542
 msgid "Contributors"
 msgstr "Contribuintes"
 
-#: includes/class-admin-welcome.php:486
+#: includes/class-admin-welcome.php:567
 msgid "Want to contribute?"
 msgstr "Quer contribuir?"
 
-#: includes/class-admin-welcome.php:487
+#: includes/class-admin-welcome.php:568
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1130,19 +1130,19 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] "%s Visualizações restauradas a partir da lixeira."
 msgstr[1] "%s Visualizações restauradas a partir da lixeira."
 
-#: includes/class-api.php:415
+#: includes/class-api.php:421
 msgid "This search returned no results."
 msgstr "Esta busca não teve resultados."
 
-#: includes/class-api.php:417 includes/class-gravityview-entry-list.php:86
+#: includes/class-api.php:423 includes/class-gravityview-entry-list.php:86
 msgid "No entries match your request."
 msgstr "Nenhuma entrada corresponder ao seu pedido."
 
-#: includes/class-api.php:853
+#: includes/class-api.php:859
 msgid "&larr; Go back"
 msgstr "&larr; Volte"
 
-#: includes/class-api.php:1163
+#: includes/class-api.php:1169
 msgid "Map It"
 msgstr "Mapeá-lo"
 
@@ -1153,11 +1153,11 @@ msgstr "Publicar ID"
 
 #. translators: %s: relative time from now, used for generic date comparisons.
 #. "1 day ago", or "20 seconds ago"
-#: includes/class-common.php:987
+#: includes/class-common.php:988
 msgid "%s ago"
 msgstr "%s atrás"
 
-#: includes/class-common.php:1434
+#: includes/class-common.php:1435
 msgid "Email hidden; Javascript is required."
 msgstr "Email escondido; Javascript é necessário."
 
@@ -1200,25 +1200,25 @@ msgstr "Avisos"
 msgid "Logs"
 msgstr "Logs"
 
-#: includes/class-frontend-views.php:569
+#: includes/class-frontend-views.php:570
 msgid ""
 "When using a preset template, you must save the View before a Preview is "
 "available."
 msgstr ""
 
-#: includes/class-frontend-views.php:652
+#: includes/class-frontend-views.php:653
 msgid "Add fields to %s"
 msgstr "Adicionar campo a %s"
 
-#: includes/class-frontend-views.php:653
+#: includes/class-frontend-views.php:654
 msgid "You can only see this message because you are able to edit this View."
 msgstr "Você só pode ver esta mensagem porque você esta habilitado a editar esta Visualização."
 
-#: includes/class-frontend-views.php:796
+#: includes/class-frontend-views.php:797
 msgid "You are not allowed to view this content."
 msgstr "Você não tem permissão para visualizar este conteúdo."
 
-#: includes/class-frontend-views.php:922
+#: includes/class-frontend-views.php:923
 msgid ""
 "You have attempted to view an entry that is not visible or may not exist."
 msgstr "Você tentou ver uma entrada que não é visível ou pode não existir."
@@ -1384,12 +1384,12 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr "A requisição foi inválida. Recarregue a página e tente novamente."
 
 #: includes/class-gravityview-entry-approval.php:140
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1946
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1957
 msgid "You do not have permission to edit this entry."
 msgstr "Você não tem permissão para editar esta entrada."
 
 #: includes/class-gravityview-entry-approval.php:339
-#: includes/class-gravityview-uninstall.php:78
+#: includes/class-gravityview-uninstall.php:79
 #: tests/unit-tests/GravityView_Uninstall_Test.php:192
 msgid "Approved the Entry for GravityView"
 msgstr "Entrada aprovada para GravityView"
@@ -1399,7 +1399,7 @@ msgid "Reset Entry approval for GravityView"
 msgstr "Resetar a aprovação da entrada para o GravityView"
 
 #: includes/class-gravityview-entry-approval.php:345
-#: includes/class-gravityview-uninstall.php:77
+#: includes/class-gravityview-uninstall.php:78
 #: tests/unit-tests/GravityView_Uninstall_Test.php:191
 msgid "Disapproved the Entry for GravityView"
 msgstr "Rejeitar entrada para Gravity View"
@@ -1869,47 +1869,47 @@ msgstr "Abrir o link em uma nova aba ou janela?"
 msgid "Make field editable to:"
 msgstr "Tornar o campo editável para:"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:948
+#: includes/extensions/edit-entry/class-edit-entry-render.php:959
 msgid "There was a problem with your submission."
 msgstr "Houve um problema com a sua submissão."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:948
+#: includes/extensions/edit-entry/class-edit-entry-render.php:959
 msgid "Errors have been highlighted below."
 msgstr "Os erros foram realçados abaixo."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:954
+#: includes/extensions/edit-entry/class-edit-entry-render.php:965
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "Entrada alterada. %sRetornar a entrada%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1092
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1103
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr "Você não possui permissão para editar este post."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1099
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1110
 msgid "This field is not editable; the post no longer exists."
 msgstr "Este campo não é editável, o post não existe mais."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1430
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1441
 msgid "This email is already in use"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1437
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1448
 msgid "Usernames cannot be changed"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1502
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1513
 msgid "Maximum number of files reached"
 msgstr "Número máximo de arquivos atingido"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1940
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1951
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "O link para editar esta entrada não é válido. Ele pode ter expirado."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1950
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1961
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "Você não pode editar esta entrada. Ela está na lixeira."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1990
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2001
 msgid "You do not have permission to edit this field."
 msgstr "Você não tem permissão para editar esta entrada."
 
@@ -3178,18 +3178,18 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "Vazio"
 
-#: includes/class-frontend-views.php:650
+#: includes/class-frontend-views.php:651
 msgctxt ""
 "Displayed when a View is not configured. %s is replaced by the tab label"
 msgid "The %s layout has not been configured."
 msgstr "O layout %s não foi configurado."
 
-#: includes/class-frontend-views.php:1692
+#: includes/class-frontend-views.php:1693
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr "Limpar"
 
-#: includes/class-frontend-views.php:1693
+#: includes/class-frontend-views.php:1694
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr "Resetar"
@@ -3278,7 +3278,7 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr "Criador da entrada"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1966
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1977
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr "Voltar"
