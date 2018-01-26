@@ -36,10 +36,6 @@ register_activation_hook( GRAVITYVIEW_DIR . 'gravityview.php', function() {
 if ( version_compare( phpversion(), '5.3' , '<' ) ) {
 	return false;
 
-/** Tests with a suppressed future. */
-} else if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && getenv( 'GV_NO_FUTURE' ) ) {
-	return false;
-
 /** All looks fine. */
 } else {
 	/** @define "GRAVITYVIEW_DIR" "../" */
