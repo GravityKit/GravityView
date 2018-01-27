@@ -13,7 +13,8 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 /**
  * Do not allow activation if PHP version is lower than 5.3.
  */
-register_activation_hook( GRAVITYVIEW_DIR . 'gravityview.php', function() {
+register_activation_hook( GRAVITYVIEW_DIR . 'gravityview.php', 'gravityview_lock_version' );
+function gravityview_lock_version() {
 	$version = phpversion();
 	if ( version_compare( $version, '5.3', '<' ) ) {
 
@@ -30,7 +31,7 @@ register_activation_hook( GRAVITYVIEW_DIR . 'gravityview.php', function() {
 
 		exit; /** Die without activating. Sorry. */
 	}
-} );
+}
 
 /** The future branch of GravityView requires PHP 5.3+ namespaces and SPL. */
 if ( version_compare( phpversion(), '5.3' , '<' ) ) {
