@@ -196,10 +196,10 @@ install_gravity_forms_23(){
         rsync -ar --exclude=.git "$GRAVITY_FORMS_DL_PATH_OR_URL" /tmp/gravityforms/
 
     # Otherwise,
-    elif [[ $TRAVIS_GRAVITY_FORMS_2_3_BETA_2_DL_URL != '' ]]; then
+    elif [[ $TRAVIS_GRAVITY_FORMS_2_3_RC_3_DL_URL != '' ]]; then
 
         # Pull from remote
-	    curl -L "$TRAVIS_GRAVITY_FORMS_2_3_BETA_2_DL_URL" --output /tmp/gravityforms.zip
+	    curl -L "$TRAVIS_GRAVITY_FORMS_2_3_RC_3_DL_URL" --output /tmp/gravityforms.zip
 
 	    # -o will overwrite files. -q is quiet mode
 	    unzip -o -q /tmp/gravityforms.zip -d /tmp/
