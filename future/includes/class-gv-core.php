@@ -36,7 +36,7 @@ final class Core {
 	public $request;
 
 	/**
-	 * @var \GV\Logger;
+	 * @var \GV\Logger
 	 *
 	 * @api
 	 * @since future
@@ -112,6 +112,8 @@ final class Core {
 			$this->log->error( 'GravityView 2.0 is not compatible with this environment. Stopped loading.' );
 			return;
 		}
+
+		require_once $this->plugin->dir( 'future/includes/class-gv-extension.php' );
 
 		/** More legacy core. @todo Deprecate */
 		$this->plugin->include_legacy_core();

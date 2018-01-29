@@ -142,7 +142,7 @@ class GravityView_Support_Port {
 			'PHP Version'           => phpversion(),
 			'GravityView Version'   => GravityView_Plugin::version,
 			'Gravity Forms Version' => GFForms::$version,
-			'Plugins & Extensions'  => GV_License_Handler::get_related_plugins_and_extensions(),
+			'Plugins & Extensions'  => \GV\License_Handler::get_related_plugins_and_extensions(),
 		);
 
 		$localization_data = array(

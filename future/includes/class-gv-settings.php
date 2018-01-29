@@ -11,7 +11,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  */
 class Settings {
 	/**
-	 * @var array Main storage for key-avlues in this collection.
+	 * @var array Main storage for key-values in this collection.
 	 */
 	private $settings = array();
 

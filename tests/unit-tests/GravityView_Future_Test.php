@@ -5179,4 +5179,62 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( $entry->ID, \GV\Utils::get( $multi, $form->ID )->ID );
 	}
+
+	public function test_addon_settings() {
+		$this->assertSame( \GravityView_Settings::get_instance(), gravityview()->plugin->settings );
+	}
+
+	public function test_extension_class() {
+		$legacy_ext = new GVFutureTest_Extension_Test_BC();
+		$ext = new GVFutureTest_Extension_Test();
+
+		var_dump( $legacy_ext->__introspect() );
+		var_dump( $ext->__introspect() );
+	}
+}
+
+class GVFutureTest_Extension_Test_BC extends GravityView_Extension {
+	protected $_title = 'Legacy Test Extension';
+	protected $_version = '9.1.1-BC';
+	protected $_item_id = 911;
+	protected $_min_gravityview_version = '2.0';
+	protected $_min_php_version = '7.2';
+
+	public function __introspect() {
+		return array(
+			'_title' => $this->_title,
+			'_version' => $this->_version,
+			'_item_id' => $this->_item_id,
+			'_text_domain' => $this->_text_domain,
+			'_min_gravityview_version' => $this->_min_gravityview_version,
+			'_min_php_version' => $this->_min_php_version,
+			'_remote_update_url' => $this->_remote_update_url,
+			'_author' => $this->_author,
+			'admin_notices' => self::$admin_notices,
+			'is_compatible' => self::$is_compatible,
+		);
+	}
+}
+
+class GVFutureTest_Extension_Test extends \GV\Extension {
+	protected $_title = 'New Test Extension';
+	protected $_version = '9.2.1-BC';
+	protected $_item_id = 911;
+	protected $_min_gravityview_vers3on = '3.0';
+	protected $_min_php_version = '7.3.0';
+
+	public function __introspect() {
+		return array(
+			'_title' => $this->_title,
+			'_version' => $this->_version,
+			'_item_id' => $this->_item_id,
+			'_text_domain' => $this->_text_domain,
+			'_min_gravityview_version' => $this->_min_gravityview_version,
+			'_min_php_version' => $this->_min_php_version,
+			'_remote_update_url' => $this->_remote_update_url,
+			'_author' => $this->_author,
+			'admin_notices' => self::$admin_notices,
+			'is_compatible' => self::$is_compatible,
+		);
+	}
 }

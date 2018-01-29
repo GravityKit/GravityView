@@ -21,7 +21,7 @@ final class Plugin {
 	 * @api
 	 * @since future
 	 */
-	public $version = GV_PLUGIN_VERSION;
+	public static $version = GV_PLUGIN_VERSION;
 
 	/**
 	 * @var string Minimum WordPress version.
@@ -35,7 +35,7 @@ final class Plugin {
 	 *
 	 * GravityView requires at least this version of Gravity Forms to function properly.
 	 */
-	private static $min_gf_version = '1.9.14';
+	public static $min_gf_version = '1.9.14';
 
 	/**
 	 * @var string Minimum PHP version.
@@ -64,6 +64,14 @@ final class Plugin {
 	private static $__instance = null;
 
 	/**
+	 * @var \GV\Addon_Settings The plugin "addon" settings.
+	 *
+	 * @api
+	 * @since future
+	 */
+	public $settings;
+
+	/**
 	 * Get the global instance of \GV\Plugin.
 	 *
 	 * @return \GV\Plugin The global instance of GravityView Plugin.
@@ -86,6 +94,13 @@ final class Plugin {
 		 * Load some frontend-related legacy files.
 		 */
 		add_action( 'init', array( $this, 'include_legacy_frontend' ) );
+
+		/**
+		 * GFAddOn-backed settings, licensing.
+		 */
+		require_once $this->dir( 'future/includes/class-gv-license-handler.php' );
+		require_once $this->dir( 'future/includes/class-gv-settings-addon.php' );
+		$this->settings = new Addon_Settings();
 	}
 	
 	/**
@@ -234,7 +249,7 @@ final class Plugin {
 		/** Flush all URL rewrites. */
 		flush_rewrite_rules();
 
-		update_option( 'gv_version', \GravityView_Plugin::version );
+		update_option( 'gv_version', self::$version );
 
 		/** Add the transient to redirect to configuration page. */
 		set_transient( '_gv_activation_redirect', true, 60 );
@@ -372,6 +387,95 @@ final class Plugin {
 
 		return ! empty( $GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] ) ?
 			$GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] : \GFCommon::$version;
+	}
+
+	/**
+	 * Delete GravityView Views, settings, roles, caps, etc.
+	 *
+	 * @return void
+	 */
+	public function uninstall() {
+		global $wpdb;
+
+		$suppress = $wpdb->suppress_errors();
+
+		/**
+		 * Posts.
+		 */
+		$items = get_posts( array(
+			'post_type' => 'gravityview',
+			'post_status' => 'any',
+			'numberposts' => -1,
+			'fields' => 'ids'
+		) );
+
+		foreach ( $items as $item ) {
+			wp_delete_post( $item, true );
+		}
+
+		/**
+		 * Meta.
+		 */
+		$tables = array();
+
+		if ( version_compare( \GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) ) {
+			$tables []= \GFFormsModel::get_entry_meta_table_name();
+		}
+		$tables []= \GFFormsModel::get_lead_meta_table_name();
+
+		foreach ( $tables as $meta_table ) {
+			$sql = "
+				DELETE FROM $meta_table
+				WHERE (
+					`meta_key` = 'is_approved'
+				);
+			";
+			$wpdb->query( $sql );
+		}
+
+		/**
+		 * Notes.
+		 */
+		$tables = array();
+
+		if ( version_compare( \GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) && method_exists( 'GFFormsModel', 'get_entry_notes_table_name' ) ) {
+			$tables[] = \GFFormsModel::get_entry_notes_table_name();
+		}
+
+		$tables[] = \GFFormsModel::get_lead_notes_table_name();
+
+		$disapproved = __('Disapproved the Entry for GravityView', 'gravityview');
+		$approved = __('Approved the Entry for GravityView', 'gravityview');
+
+		$suppress = $wpdb->suppress_errors();
+		foreach ( $tables as $notes_table ) {
+			$sql = $wpdb->prepare( "
+				DELETE FROM $notes_table
+				WHERE (
+					`note_type` = 'gravityview' OR
+					`value` = %s OR
+					`value` = %s
+				);
+			", $approved, $disapproved );
+			$wpdb->query( $sql );
+		}
+
+		$wpdb->suppress_errors( $suppress );
+
+		/**
+		 * Capabilities.
+		 */
+		\GravityView_Roles_Capabilities::get_instance()->remove_caps();
+
+		/**
+		 * Options.
+		 */
+		delete_option( 'gravityview_cache_blacklist' );
+		delete_option( 'gv_version_upgraded_from' );
+		delete_transient( 'gravityview_edd-activate_valid' );
+		delete_transient( 'gravityview_edd-deactivate_valid' );
+		delete_transient( 'gravityview_dismissed_notices' );
+		delete_site_transient( 'gravityview_related_plugins' );
 	}
 
 	private function __clone() { }
