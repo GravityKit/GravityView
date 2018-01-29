@@ -269,8 +269,15 @@ class GravityView_Admin_Views {
 		/**
 		 * @filter `gravityview_tooltips` The tooltips GravityView adds to the Gravity Forms tooltip array
 		 * @param array $gv_tooltips Associative array with unique keys containing array of `title` and `value` keys, as expected by `gform_tooltips` filter
+		 * @deprecated Renamed to `gravityview/metaboxes/tooltips`
 		 */
 		$gv_tooltips = apply_filters( 'gravityview_tooltips', $gv_tooltips );
+
+		/**
+		 * @filter `gravityview/metaboxes/tooltips` The tooltips GravityView adds to the Gravity Forms tooltip array
+		 * @param array $gv_tooltips Associative array with unique keys containing array of `title` and `value` keys, as expected by `gform_tooltips` filter
+		 */
+		$gv_tooltips = apply_filters( 'gravityview/metaboxes/tooltips', $gv_tooltips );
 
 		foreach ( $gv_tooltips as $key => $tooltip ) {
 
