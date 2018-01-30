@@ -49,7 +49,7 @@ class License_Handler {
 
 	private function __construct( $settings ) {
 
-		$this->settings = $setting;
+		$this->settings = $settings;
 		
 		if ( ! $this->settings instanceof Addon_Settings ) {
 			$this->settings = gravityview()->settings;
@@ -115,8 +115,8 @@ class License_Handler {
 	 * @return void
 	 */
 	public function setup_edd() {
-		if ( ! class_exists('EDD_SL_Plugin_Updater' ) ) {
-			require_once( GRAVITYVIEW_DIR . 'includes/lib/EDD_SL_Plugin_Updater.php' );
+		if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
+			require_once gravityview()->plugin->dir( 'includes/lib/EDD_SL_Plugin_Updater.php' );
 		}
 
 		// setup the updater
@@ -139,27 +139,35 @@ class License_Handler {
 	 * @type boolean $update Whether to update plugin settings. Prevent updating the data by setting an `update` key to false
 	 * @type string $format If `object`, return the object of the license data. Else, return the JSON-encoded object
 	 * }
+	 * @param boolean $cap_check Require `gravityview_edit_settings` capability from current user.
 	 *
 	 * @return mixed|string|void
 	 */
-	public function license_call( $array = array() ) {
+	public function license_call( $array = array(), $cap_check = true ) {
 
 		$is_ajax = ( defined( 'DOING_AJAX' ) && DOING_AJAX );
 		$data = empty( $array ) ? Utils::_POST( 'data', array() ) : $array;
-		$has_cap = \GVCommon::has_cap( 'gravityview_edit_settings' );
+
+		$data = wp_parse_args( $data, array(
+			'license' => '',
+			'edd_action' => '',
+			'field_id' => '',
+			'update' => '',
+			'format' => 'json',
+		) );
 
 		if ( $is_ajax && empty( $data['license'] ) ) {
-			die( - 1 );
+			die( -1 );
 		}
 
 		// If the user isn't allowed to edit settings, show an error message
-		if( ! $has_cap && empty( $data['all_caps'] ) ) {
-			$license_data = new stdClass();
+		if ( $cap_check && ! \GVCommon::has_cap( 'gravityview_edit_settings' ) ) {
+			$license_data = new \stdClass();
 			$license_data->error = 'capability';
 			$license_data->message = $this->get_license_message( $license_data );
 			$json = json_encode( $license_data );
 		} else {
-			$license      = esc_attr( Utils::_GET( 'license', Utils::get( $data, 'license' ) ) );
+			$license      = esc_attr( Utils::get( $data, 'license' ) );
 			$license_data = $this->_license_get_remote_response( $data, $license );
 
 			// Empty is returned when there's an error.
@@ -176,9 +184,9 @@ class License_Handler {
 
 			$json = json_encode( $license_data );
 
-			$update_license = ( ! isset( $data['update'] ) || ! empty( $data['update'] ) );
+			$update_license = Utils::get( $data, 'update' );
 
-			$is_check_action_button = ( 'check_license' === $data['edd_action'] && defined( 'DOING_AJAX' ) && DOING_AJAX );
+			$is_check_action_button = ( 'check_license' === Utils::get( $data, 'edd_action' ) && defined( 'DOING_AJAX' ) && DOING_AJAX );
 
 			if ( $is_check_action_button ) {
 				delete_transient( self::status_transient_key );
@@ -195,7 +203,7 @@ class License_Handler {
 
 				$this->license_call_update_settings( $license_data, $data );
 			}
-		} // End $has_cap
+		}
 
 		if ( $is_ajax ) {
 			exit( $json );
@@ -549,11 +557,10 @@ class License_Handler {
 			'license' => trim( $this->settings->get( 'license_key' ) ),
 			'update' => true,
 			'format' => 'object',
-			'all_caps' => true,
 			'field_id' => 'refresh_license_status', // Required to set the `status_transient_key` transient
 		);
 
-		$license_call = $this->license_call( $data );
+		$license_call = $this->license_call( $data, false );
 
 		gravityview()->log->debug( 'Refreshed the license.', array( 'data' => $license_call ) );
 	}
@@ -643,17 +650,16 @@ class License_Handler {
 		// View Data
 		$gravityview_posts = wp_count_posts( 'gravityview', 'readable' );
 
-		if ( $gravityview_posts ) {
-			$data['view_count'] = $gravityview_posts;
+		if ( $gravityview_posts->publish ) {
+			$data['view_count'] = $gravityview_posts->publish;
 
-			$first = array_shift( get_posts( 'numberposts=1&post_type=gravityview&post_status=publish&order=ASC' ) );
-			$latest = array_pop( get_posts( 'numberposts=1&post_type=gravityview&post_status=publish&order=DESC' ) );
+			$first = get_posts( 'numberposts=1&post_type=gravityview&post_status=publish&order=ASC' );
+			$latest = get_posts( 'numberposts=1&post_type=gravityview&post_status=publish&order=DESC' );
 
-			if ( $first ) {
+			if ( $first = array_shift( $first ) ) {
 				$data['view_first'] = $first->post_date;
 			}
-
-			if ( $latest ) {
+			if ( $latest = array_pop( $latest ) ) {
 				$data['view_latest'] = $latest->post_date;
 			}
 		}

@@ -5180,6 +5180,91 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $entry->ID, \GV\Utils::get( $multi, $form->ID )->ID );
 	}
 
+	public function test_license_handler() {
+		require_once gravityview()->plugin->dir( 'includes/class-gv-license-handler.php' );
+
+		$settings = $this->getMockBuilder( '\GV\Addon_Settings' )
+			->setMethods( array( 'get', 'update' ) )->getMock();
+
+		$settings->method( 'get' )->will( $this->returnValueMap( array(
+			array( 'license_key', 'TEST123' ),
+		) ) );
+
+		$this->assertSame( \GV_License_Handler::get_instance( $settings ), $handler = \GV\License_Handler::get() );
+
+		$handler->setup_edd();
+
+		add_filter( 'pre_http_request', $callback = function() {
+			return array( 'body' => json_encode( array(
+				'license' => 'invalid',
+				'license_key' => 'TEST',
+			) ) );
+		} );
+
+		$this->assertEquals( json_decode( $handler->license_call(), true )['error'], 'capability' );
+		$this->assertEquals( json_decode( $handler->license_call( array( 'license' => 'TEST' ), false ), true )['license'], 'invalid' );
+
+		remove_filter( 'pre_http_request', $callback );
+		add_filter( 'pre_http_request', $callback = function() {
+			return array( 'body' => json_encode( array(
+				'license' => 'valid',
+				'license_key' => 'TEST',
+				'license_name' => 'Test Suite License',
+				'upgrades' => array( 'one' => array( 'name' => 'what', 'price' => 10, 'price_id' => 1, 'url' => 'https://gravityview.co', 'description' => 'testing' ) ),
+			) ) );
+		} );
+
+		$this->assertContains( 'Test Suite License', json_decode( $handler->license_call( array( 'license' => 'TEST' ), false ), true )['details'] );
+
+		remove_filter( 'pre_http_request', $callback );
+		add_filter( 'pre_http_request', $callback = function() {
+			return array( 'body' => json_encode( array() ) );
+		} );
+
+		$this->assertEquals( array(), json_decode( $handler->license_call( array( 'license' => 'TEST' ), false ), true ) );
+
+		remove_filter( 'pre_http_request', $callback );
+		add_filter( 'pre_http_request', $callback = function() {
+			return array( 'body' => json_encode( array(
+				'license' => 'valid',
+				'license_key' => 'TEST!THIS',
+			) ) );
+		} );
+		$handler->license_call( array( 'license' => 'TEST', 'field_id' => 1, 'update' => 1 ), false );
+
+		remove_filter( 'pre_http_request', $callback );
+		add_filter( 'pre_http_request', $callback = function() {
+			return array( 'body' => json_encode( array() ) );
+		} );
+
+		delete_transient( $handler::status_transient_key );
+		$handler->refresh_license_status();
+
+		delete_transient( $handler::status_transient_key );
+		delete_transient( 'gv_license_check' );
+		$handler->flush_related_plugins_transient();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		remove_filter( 'pre_http_request', $callback );
+		$test = &$this;
+		add_filter( 'pre_http_request', $callback = function() use ( $test ) {
+			$args = func_get_args()[0]['body'];
+			$test->assertEquals( $args['item_name'], 'GravityView' );
+			$test->assertEquals( $args['site_data']['php_version'], phpversion() );
+			$test->assertEquals( $args['site_data']['view_count'], wp_count_posts( 'gravityview', 'readable' )->publish );
+			$test->assertEquals( $args['site_data']['forms_total'], GFFormsModel::get_form_count()['total'] );
+			return array( 'body' => json_encode( array() ) );
+		} );
+
+		$handler->check_license();
+		remove_filter( 'pre_http_request', $callback );
+
+		$this->assertContains( 'Verifying license', $handler->settings_edd_license_activation( false, false ) );
+	}
+
 	public function test_addon_settings() {
 		$this->assertSame( \GravityView_Settings::get_instance(), gravityview()->plugin->settings );
 	}

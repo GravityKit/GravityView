@@ -541,5 +541,3 @@ class GravityView_Settings {
 	}
 
 }
-
-GravityView_Settings::get_instance();
