@@ -9,7 +9,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  */
 class GV_License_Handler extends \GV\License_Handler {
 	/**
-	 * @param GravityView_Settings $GFAddOn
+	 * @param \GV\Addon_Settings $GFAddOn
 	 *
 	 * @deprecated Use \GV\License_Handler::get instead
 	 *

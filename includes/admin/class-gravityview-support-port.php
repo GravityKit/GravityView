@@ -91,7 +91,7 @@ class GravityView_Support_Port {
 			'contactSuccessDescription' => __( 'Thanks for reaching out! Someone from the GravityView team will get back to you soon.', 'gravityview' ),
 		);
 
-		$response = GravityView_Settings::getSetting( 'license_key_response' );
+		$response = gravityview()->settings::get( 'license_key_response' );
 
 		$response = wp_parse_args( $response, array(
 			'license'          => '',
@@ -124,13 +124,13 @@ class GravityView_Support_Port {
 		}
 
 		$data = array(
-			'email'                 => GravityView_Settings::getSetting( 'support-email' ),
+			'email'                 => gravityview()->settings->get( 'support-email' ),
 			'name'                  => $response['customer_name'],
 			'Valid License?'        => ucwords( $response['license'] ),
 			'License Key'           => $response['license_key'],
 			'License Level'         => $package,
 			'Site Admin Email'      => get_bloginfo( 'admin_email' ),
-			'Support Email'         => GravityView_Settings::getSetting( 'support-email' ),
+			'Support Email'         => gravityview()->settings->get( 'support-email' ),
 			'License Limit'         => $response['license_limit'],
 			'Site Count'            => $response['site_count'],
 			'License Expires'       => $response['expires'],
@@ -177,7 +177,7 @@ class GravityView_Support_Port {
 			return false;
 		}
 
-		$global_setting = GravityView_Settings::getSetting( 'support_port' );
+		$global_setting = gravityview()->settings->get( 'support_port' );
 
 		if ( empty( $global_setting ) ) {
             return false;
@@ -224,7 +224,7 @@ class GravityView_Support_Port {
 	 */
 	public function user_field( $user ) {
 
-		$global_setting = GravityView_Settings::getSetting( 'support_port' );
+		$global_setting = gravityview()->settings->get( 'support_port' );
 
 		if ( empty( $global_setting ) ) {
             return;

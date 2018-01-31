@@ -110,13 +110,13 @@ class GravityView_Migrate {
 		}
 
 		// Get the current app settings (just defaults)
-		$current = GravityView_Settings::get_instance()->get_app_settings();
+		$current = gravityview()->settings->all();
 
 		// Merge the redux settings with the defaults
 		$updated_settings = wp_parse_args( $redux_settings, $current );
 
 		// Update the defaults to the new merged
-		GravityView_Settings::get_instance()->update_app_settings( $updated_settings );
+		gravityview()->settings->update( $updated_settings );
 
 		// And now remove the previous option, so this is a one-time thing.
 		delete_option('gravityview_settings');
@@ -141,7 +141,7 @@ class GravityView_Migrate {
 			'format' => 'object',
 		);
 
-		$license_call = GravityView_Settings::get_instance()->get_license_handler()->license_call( $data );
+		$license_call = \GV\License_Handler::get()->license_call( $data );
 
 		if( is_object( $license_call ) && isset( $license_call->license ) ) {
 			$redux_settings['license_key_status'] = $license_call->license;
@@ -168,25 +168,25 @@ class GravityView_Migrate {
 
 
 		$redux_settings = array(
-			'support-email' => \GV\Utils::_GET( 'support-email', \GV\Utils::get( $redux_option, 'support-email' ) ),
-			'no-conflict-mode' => ( \GV\Utils::_GET( 'no-conflict-mode', \GV\Utils::get( $redux_option, 'no-conflict-mode' ) ) ? '1' : '0' ),
+			'support-email' => \GV\Utils::get( $redux_option, 'support-email' ),
+			'no-conflict-mode' => \GV\Utils::get( $redux_option, 'no-conflict-mode' ) ? '1' : '0',
 		);
 
-		if( $license_array = \GV\Utils::_GET( 'license', \GV\Utils::get( $redux_option, 'license' ) ) ) {
+		if ( $license_array = \GV\Utils::get( $redux_option, 'license' ) ) {
 
-			$redux_settings['license_key'] = $license_key = \GV\Utils::_GET( 'license', \GV\Utils::get( $license_array, 'license' ) );
+			$redux_settings['license_key'] = $license_key = \GV\Utils::get( $license_array, 'license' );
 
 			$redux_last_changed_values = get_option('gravityview_settings-transients');
 
 			// This contains the last response for license validation
-			if( !empty( $redux_last_changed_values ) && $saved_values = \GV\Utils::_GET( 'changed_values', \GV\Utils::get( $redux_last_changed_values, 'changed_values' ) ) ) {
+			if( !empty( $redux_last_changed_values ) && $saved_values = \GV\Utils::get( $redux_last_changed_values, 'changed_values' ) ) {
 
-				$saved_license = \GV\Utils::_GET( 'license', \GV\Utils::get( $saved_values, 'license' ) );
+				$saved_license = \GV\Utils::get( $saved_values, 'license' );
 
 				// Only use the last-saved values if they are for the same license
-				if( $saved_license && \GV\Utils::_GET( 'license', \GV\Utils::get( $saved_license, 'license' ) ) === $license_key ) {
-					$redux_settings['license_key_status'] = \GV\Utils::_GET( 'status', \GV\Utils::get( $saved_license, 'status' ) );
-					$redux_settings['license_key_response'] = \GV\Utils::_GET( 'response', \GV\Utils::get( $saved_license, 'response' ) );
+				if( $saved_license && \GV\Utils::get( $saved_license, 'license' ) === $license_key ) {
+					$redux_settings['license_key_status'] = \GV\Utils::get( $saved_license, 'status' );
+					$redux_settings['license_key_response'] = \GV\Utils::get( $saved_license, 'response' );
 				}
 			}
 		}

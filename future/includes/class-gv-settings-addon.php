@@ -1000,7 +1000,7 @@ class Addon_Settings extends \GFAddOn {
      * Converts `$field['description']` to `$field['gv_description']`
      * Converts `$field['subtitle']` to `$field['description']`
      *
-     * @see GravityView_Settings::single_setting_label Converts `gv_description` back to `description`
+     * @see \GV\Addon_Settings::single_setting_label Converts `gv_description` back to `description`
      * @see http://share.gravityview.co/P28uGp/2OIRKxog for image that shows subtitle vs description
      *
      * @since 1.21.5.2
