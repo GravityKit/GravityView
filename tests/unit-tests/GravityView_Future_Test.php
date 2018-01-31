@@ -5201,8 +5201,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 			) ) );
 		} );
 
-		$this->assertEquals( json_decode( $handler->license_call(), true )['error'], 'capability' );
-		$this->assertEquals( json_decode( $handler->license_call( array( 'license' => 'TEST' ), false ), true )['license'], 'invalid' );
+		$result = json_decode( $handler->license_call(), true );
+		$this->assertEquals( $result['error'], 'capability' );
+		$result = json_decode( $handler->license_call( array( 'license' => 'TEST' ), false ), true );
+		$this->assertEquals( $result['license'], 'invalid' );
 
 		remove_filter( 'pre_http_request', $callback );
 		add_filter( 'pre_http_request', $callback = function() {
@@ -5214,7 +5216,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 			) ) );
 		} );
 
-		$this->assertContains( 'Test Suite License', json_decode( $handler->license_call( array( 'license' => 'TEST' ), false ), true )['details'] );
+		$result = json_decode( $handler->license_call( array( 'license' => 'TEST' ), false ), true );
+		$this->assertContains( 'Test Suite License', $result['details'] );
 
 		remove_filter( 'pre_http_request', $callback );
 		add_filter( 'pre_http_request', $callback = function() {
@@ -5251,11 +5254,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_filter( 'pre_http_request', $callback );
 		$test = &$this;
 		add_filter( 'pre_http_request', $callback = function() use ( $test ) {
-			$args = func_get_args()[0]['body'];
+			$args = func_get_args();
+			$args = $args[0]['body'];
 			$test->assertEquals( $args['item_name'], 'GravityView' );
 			$test->assertEquals( $args['site_data']['php_version'], phpversion() );
 			$test->assertEquals( $args['site_data']['view_count'], wp_count_posts( 'gravityview', 'readable' )->publish );
-			$test->assertEquals( $args['site_data']['forms_total'], GFFormsModel::get_form_count()['total'] );
+			$form_counts = \GFFormsModel::get_form_count();
+			$test->assertEquals( $args['site_data']['forms_total'], $form_counts['total'] );
 			return array( 'body' => json_encode( array() ) );
 		} );
 
