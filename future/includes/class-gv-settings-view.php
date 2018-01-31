@@ -266,7 +266,7 @@ class View_Settings extends Settings {
 
 		// But sometimes, we want all the details.
 		} else {
-			foreach ($default_settings as $key => $value) {
+			foreach ( $default_settings as $key => $value ) {
 
 				// If the $group argument is set for the method,
 				// ignore any settings that aren't in that group.

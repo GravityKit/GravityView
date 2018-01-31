@@ -81,7 +81,7 @@ class Addon_Settings extends \GFAddOn {
 	 *
 	 * @return void
 	 */
-	function init_admin() {
+	public function init_admin() {
 		$this->_load_license_handler();
 		$this->license_key_notice();
 
@@ -414,22 +414,91 @@ class Addon_Settings extends \GFAddOn {
 		return '&nbsp;';
 	}
 
+	/**
+	 * Retrieve a setting.
+	 *
+	 * @deprecated Use \GV\Addon_Settings::get
+	 * @param string $setting_name The setting key.
+	 *
+	 * @return mixed The setting or null
+	 */
 	public function get_app_setting( $setting_name ) {
+		return $this->get( $setting_name );
+	}
+
+	/**
+	 * Retrieve a setting.
+	 *
+	 * @param string $key The setting key.
+	 * @param string $default A default if not found.
+	 *
+	 * @return mixed The setting value.
+	 */
+	public function get( $key, $default = null ) {
 		/**
 		 * Backward compatibility with Redux
 		 */
 		if ( $setting_name === 'license' ) {
 			return array(
-				'license' => parent::get_app_setting( 'license_key' ),
-				'status' => parent::get_app_setting( 'license_key_status' ),
-				'response' => parent::get_app_setting( 'license_key_response' ),
+				'license' => $this->get( 'license_key' ),
+				'status' => $this->get( 'license_key_status' ),
+				'response' => $this->get( 'license_key_response' ),
 			);
 		}
-
-		return parent::get_app_setting( $setting_name );
+		return Utils::get( $this->all(), $key, $default );
 	}
 
+	/**
+	 * Get the setting for GravityView by name
+	 *
+	 * @deprecated Use gravityview()->settings->get()
+	 * @param  string $key     Option key to fetch
+	 *
+	 * @return mixed
+	 */
+	static public function getSetting( $key ) {
+		if ( gravityview()->settings instanceof Addon_Settings ) {
+			return gravityview()->settings->get( $key );
+		}
+	}
+
+	/**
+	 * Get all settings.
+	 *
+	 * @deprecated Use \GV\Addon_Settings::all() or \GV\Addon_Settings::get()
+	 *
+	 * @return array The settings.
+	 */
 	public function get_app_settings() {
+		return $this->all();
+	}
+
+	/**
+	 * Get all the settings.
+	 *
+	 * @return array The settings.
+	 */
+	public function all() {
+	    return wp_parse_args( get_option( 'gravityformsaddon_' . $this->_slug . '_app_settings', array() ), $this->defaults() );
+	}
+
+	/**
+	 * Default settings.
+	 *
+	 * @deprecated Use \GV\Addon_Settings::defaults()
+	 *
+	 * @return array The defaults.
+	 */
+	public function get_default_settings() {
+		return $this->defaults();
+	}
+
+	/**
+	 * Default settings.
+	 *
+	 * @return array The defaults.
+	 */
+	private function defaults() {
 		$defaults = array(
 			// Set the default license in wp-config.php
 			'license_key' => defined( 'GRAVITYVIEW_LICENSE_KEY' ) ? GRAVITYVIEW_LICENSE_KEY : '',
@@ -441,8 +510,7 @@ class Addon_Settings extends \GFAddOn {
 			'flexbox_search' => '1',
 			'beta' => '0',
 		);
-
-	    return wp_parse_args( get_option( 'gravityformsaddon_' . $this->_slug . '_app_settings', array() ), $defaults );
+		return $defaults;
 	}
 
 	/***
@@ -490,5 +558,512 @@ class Addon_Settings extends \GFAddOn {
 	public function settings_submit( $field, $echo = true ) {
 		gravityview()->log->warning( '\GV\Addon_Settings::settings_submit has been deprecated for \GV\Addon_Settings::as_html' );
 		return $this->as_html( $field, $echo );
+	}
+
+	/**
+	 * Display a notice if the plugin is inactive.
+	 *
+	 * @return void
+	 */
+	public function license_key_notice() {
+		$license_status = $this->get( 'license_key_status' );
+		$license_key = $this->get( 'license_key' );
+		if( '' === $license_key ) {
+			$license_status = 'inactive';
+        }
+		$license_id = empty( $license_key ) ? 'license' : $license_key;
+
+		$message = esc_html__( 'Your GravityView license %s. This means you&rsquo;re missing out on updates and support! %sActivate your license%s or %sget a license here%s.', 'gravityview' );
+
+		/**
+		 * I wanted to remove the period from after the buttons in the string,
+		 * but didn't want to mess up the translation strings for the translators.
+		 */
+		$message = mb_substr( $message, 0, mb_strlen( $message ) - 1 );
+		$title = __ ( 'Inactive License', 'gravityview');
+		$status = '';
+		$update_below = false;
+		$primary_button_link = admin_url( 'edit.php?post_type=gravityview&amp;page=gravityview_settings' );
+
+        switch ( $license_status ) {
+			/** @since 1.17 */
+			case 'expired':
+				$title = __( 'Expired License', 'gravityview' );
+				$status = 'expired';
+				$message = $this->get_license_handler()->strings( 'expired', $this->get( 'license_key_response' ) );
+				break;
+			case 'invalid':
+				$title = __( 'Invalid License', 'gravityview' );
+				$status = __( 'is invalid', 'gravityview' );
+				break;
+			case 'deactivated':
+				$status = __( 'is inactive', 'gravityview' );
+				$update_below = __( 'Activate your license key below.', 'gravityview' );
+				break;
+			/** @noinspection PhpMissingBreakStatementInspection */
+			case '':
+				$license_status = 'site_inactive';
+				// break intentionally left blank
+			case 'inactive':
+			case 'site_inactive':
+				$status = __( 'has not been activated', 'gravityview' );
+				$update_below = __( 'Activate your license key below.', 'gravityview' );
+				break;
+		}
+		$url = 'https://gravityview.co/pricing/?utm_source=admin_notice&utm_medium=admin&utm_content='.$license_status.'&utm_campaign=Admin%20Notice';
+
+		// Show a different notice on settings page for inactive licenses (hide the buttons)
+		if ( $update_below && gravityview_is_admin_page( '', 'settings' ) ) {
+			$message = sprintf( $message, $status, '<div class="hidden">', '', '', '</div><a href="#" onclick="jQuery(\'#license_key\').focus(); return false;">' . $update_below . '</a>' );
+		} else {
+			$message = sprintf( $message, $status, "\n\n" . '<a href="' . esc_url( $primary_button_link ) . '" class="button button-primary">', '</a>', '<a href="' . esc_url( $url ) . '" class="button button-secondary">', '</a>' );
+		}
+
+		if ( ! empty( $status ) ) {
+			\GravityView_Admin_Notices::add_notice( array(
+				'message' => $message,
+				'class'   => 'updated',
+				'title'   => $title,
+				'cap'     => 'gravityview_edit_settings',
+				'dismiss' => sha1( $license_status . '_' . $license_id . '_' . date( 'z' ) ), // Show every day, instead of every 8 weeks (which is the default)
+			) );
+		}
+	}
+
+	/**
+	 * Allow public access to the GV\License_Handler class
+	 * @since 1.7.4
+	 *
+	 * @return \GV\License_Handler
+	 */
+	public function get_license_handler() {
+		return $this->License_Handler;
+	}
+
+	/**
+     * Add tooltip script to app settings page. Not enqueued by Gravity Forms for some reason.
+     *
+     * @since 1.21.5
+     *
+     * @see GFAddOn::scripts()
+     *
+	 * @return array Array of scripts
+	 */
+	public function scripts() {
+		$scripts = parent::scripts();
+
+		$scripts[] = array(
+			'handle'  => 'gform_tooltip_init',
+			'enqueue' => array(
+                array(
+			        'admin_page' => array( 'app_settings' )
+                )
+            )
+		);
+
+		return $scripts;
+	}
+
+	/**
+	 * Register styles in the app admin page
+	 * @return array
+	 */
+	public function styles() {
+		$styles = parent::styles();
+
+		$styles[] = array(
+			'handle'  => 'gravityview_settings',
+			'src'     => plugins_url( 'assets/css/admin-settings.css', GRAVITYVIEW_FILE ),
+			'version' => Plugin::$version,
+			'deps' => array(
+                'gform_admin',
+				'gaddon_form_settings_css',
+                'gform_tooltip',
+                'gform_font_awesome',
+			),
+			'enqueue' => array(
+				array( 'admin_page' => array(
+					'app_settings',
+				) ),
+			)
+		);
+
+		return $styles;
+	}
+
+	/**
+	 * Add Settings link to GravityView menu
+	 * @return void
+	 */
+	public function create_app_menu() {
+		/**
+		 * If not multisite, always show.
+		 * If multisite and the plugin is network activated, show; we need to register the submenu page for the Network Admin settings to work.
+		 * If multisite and not network admin, we don't want the settings to show.
+		 * @since 1.7.6
+		 */
+		$show_submenu = ( ! is_multisite() ) ||  is_main_site() || ( ! gravityview()->plugin->is_network_activated() ) || ( is_network_admin() && gravityview()->plugin->is_network_activated() );
+
+		/**
+		 * Override whether to show the Settings menu on a per-blog basis.
+		 * @since 1.7.6
+		 * @param bool $hide_if_network_activated Default: true
+		 */
+		$show_submenu = apply_filters( 'gravityview/show-settings-menu', $show_submenu );
+
+		if ( $show_submenu ) {
+			add_submenu_page( 'edit.php?post_type=gravityview', __( 'Settings', 'gravityview' ), __( 'Settings', 'gravityview' ), $this->_capabilities_app_settings, $this->_slug . '_settings', array( $this, 'app_tab_page' ) );
+		}
+	}
+
+	/**
+	 * Gets the required indicator
+	 * Gets the markup of the required indicator symbol to highlight fields that are required
+	 *
+	 * @param $field - The field meta.
+	 *
+	 * @return string - Returns markup of the required indicator symbol
+	 */
+	public function get_required_indicator( $field ) {
+		return '<span class="required" title="' . esc_attr__( 'Required', 'gravityview' ) . '">*</span>';
+	}
+
+	/**
+	 * Specify the settings fields to be rendered on the plugin settings page
+	 *
+	 * @return array
+	 */
+	public function app_settings_fields() {
+		$default_settings = $this->defaults();
+
+		$disabled_attribute = GVCommon::has_cap( 'gravityview_edit_settings' ) ? false : 'disabled';
+
+		$fields = array(
+			array(
+				'name' => 'license_key',
+				'required' => true,
+				'label' => __( 'License Key', 'gravityview' ),
+				'description' => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ) . $this->get_license_handler()->license_details( $this->get_app_setting( 'license_key_response' ) ),
+				'type' => 'edd_license',
+				'disabled' => ( defined( 'GRAVITYVIEW_LICENSE_KEY' )  && GRAVITYVIEW_LICENSE_KEY ),
+				'data-pending-text' => __( 'Verifying license&hellip;', 'gravityview' ),
+				'default_value' => $default_settings['license_key'],
+				'class' => ( '' == $this->get( 'license_key' ) ) ? 'activate code regular-text edd-license-key' : 'deactivate code regular-text edd-license-key',
+			),
+			array(
+				'name' => 'license_key_response',
+				'default_value' => $default_settings['license_key_response'],
+				'type' => 'hidden',
+			),
+			array(
+				'name' => 'license_key_status',
+				'default_value' => $default_settings['license_key_status'],
+				'type' => 'hidden',
+			),
+			array(
+				'name' => 'support-email',
+				'type' => 'text',
+				'validate' => 'email',
+				'default_value' => $default_settings['support-email'],
+				'label' => __( 'Support Email', 'gravityview' ),
+				'description' => __( 'In order to provide responses to your support requests, please provide your email address.', 'gravityview' ),
+				'class' => 'code regular-text',
+			),
+			/**
+			 * @since 1.15 Added Support Port support
+			 */
+			array(
+				'name' => 'support_port',
+				'type' => 'radio',
+				'label' => __( 'Show Support Port?', 'gravityview' ),
+				'default_value' => $default_settings['support_port'],
+				'horizontal' => 1,
+				'choices' => array(
+					array(
+						'label' => _x( 'Show', 'Setting: Show or Hide', 'gravityview' ),
+						'value' => '1',
+					),
+					array(
+						'label' => _x( 'Hide', 'Setting: Show or Hide', 'gravityview' ),
+						'value' => '0',
+					),
+				),
+				'tooltip' => '<p><img src="' . esc_url_raw( plugins_url( 'assets/images/beacon.png', GRAVITYVIEW_FILE ) ) . '" alt="' . esc_attr__( 'The Support Port looks like this.', 'gravityview' ) . '" class="alignright" style="max-width:40px; margin:.5em;" />' . esc_html__( 'The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support.', 'gravityview' ) . '</p>',
+				'description' => __( 'Show the Support Port on GravityView pages?', 'gravityview' ),
+			),
+			array(
+				'name' => 'no-conflict-mode',
+				'type' => 'radio',
+				'label' => __( 'No-Conflict Mode', 'gravityview' ),
+				'default_value' => $default_settings['no-conflict-mode'],
+				'horizontal' => 1,
+				'choices' => array(
+					array(
+						'label' => _x( 'On', 'Setting: On or off', 'gravityview' ),
+						'value' => '1',
+					),
+					array(
+						'label' => _x( 'Off', 'Setting: On or off', 'gravityview' ),
+						'value' => '0',
+					),
+				),
+				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ) . ' ' . __( 'If your Edit View tabs are ugly, enable this setting.', 'gravityview' ),
+			),
+			array(
+				'name' => 'beta',
+				'type' => 'checkbox',
+				'label' => __( 'Become a Beta Tester', 'gravityview' ),
+				'default_value' => $default_settings['beta'],
+				'horizontal' => 1,
+				'choices' => array(
+					array(
+						'label' => _x( 'Show me beta versions if they are available.', 'gravityview' ),
+						'value' => '1',
+                        'name'  => 'beta',
+					),
+				),
+				'description'   => __( 'You will have early access to the latest GravityView features and improvements. There may be bugs! If you encounter an issue, help make GravityView better by reporting it!', 'gravityview' ),
+			),
+		);
+
+		/**
+		 * @filter `gravityview_settings_fields` Filter the settings fields.
+		 * @param array $fields The fields to filter.
+		 * @deprecated Use `gravityview/settings/fields`.
+		 */
+		$fields = apply_filters( 'gravityview_settings_fields', $fields );
+
+		/**
+		 * @filter `gravityview/settings/fields` Filter the settings fields.
+		 * @param array $fields The fields to filter.
+		 */
+		$fields = apply_filters( 'gravityview/settings/fields', $fields );
+
+		/**
+		 * Redux backward compatibility
+		 * @since 1.7.4
+		 */
+		foreach ( $fields as &$field ) {
+			$field['name']          = isset( $field['name'] ) ? $field['name'] : Utils::get( $field, 'id' );
+			$field['label']         = isset( $field['label'] ) ? $field['label'] : Utils::get( $field, 'title' );
+			$field['default_value'] = isset( $field['default_value'] ) ? $field['default_value'] : Utils::get( $field, 'default' );
+			$field['description']   = isset( $field['description'] ) ? $field['description'] : Utils::get( $field, 'subtitle' );
+
+			if ( $disabled_attribute ) {
+				$field['disabled']  = $disabled_attribute;
+			}
+
+			if ( empty( $field['disabled'] ) ) {
+				unset( $field['disabled'] );
+            }
+		}
+
+        $sections = array(
+            array(
+                'description' => sprintf( '<span class="version-info description">%s</span>', sprintf( __( 'You are running GravityView version %s', 'gravityview' ), Plugin::$version ) ),
+                'fields'      => $fields,
+            )
+        );
+
+        // custom 'update settings' button
+        $button = array(
+            'class' => 'button button-primary button-hero',
+            'type' => 'save',
+        );
+
+		if ( $disabled_attribute ) {
+			$button['disabled'] = $disabled_attribute;
+		}
+
+        /**
+         * @filter `gravityview/settings/extension/sections` Modify the GravityView settings page
+         * Extensions can tap in here to insert their own section and settings.
+         * <code>
+         *   $sections[] = array(
+         *      'title' => __( 'GravityView My Extension Settings', 'gravityview' ),
+         *      'fields' => $settings,
+         *   );
+         * </code>
+         * @param array $extension_settings Empty array, ready for extension settings!
+         */
+        $extension_sections = apply_filters( 'gravityview/settings/extension/sections', array() );
+
+		// If there are extensions, add a section for them
+		if ( ! empty( $extension_sections ) ) {
+
+			if( $disabled_attribute ) {
+				foreach ( $extension_sections as &$section ) {
+					foreach ( $section['fields'] as &$field ) {
+						$field['disabled'] = $disabled_attribute;
+					}
+				}
+			}
+
+            $k = count( $extension_sections ) - 1 ;
+            $extension_sections[ $k ]['fields'][] = $button;
+			$sections = array_merge( $sections, $extension_sections );
+		} else {
+            // add the 'update settings' button to the general section
+            $sections[0]['fields'][] = $button;
+        }
+
+		return $sections;
+	}
+
+	/**
+	 * Updates app settings with the provided settings
+	 *
+	 * Same as the GFAddon, except it returns the value from update_option()
+	 *
+	 * @param array $settings - App settings to be saved
+	 *
+	 * @deprecated Use \GV\Addon_Settings::set or \GV\Addon_Settings::update
+	 *
+	 * @return boolean False if value was not updated and true if value was updated.
+	 */
+	public function update_app_settings( $settings ) {
+		return $this->set( $settings );
+	}
+
+	public function set( $settings ) {
+		return update_option( 'gravityformsaddon_' . $this->_slug . '_app_settings', $settings );
+	}
+
+	/**
+	 * Updates settings.
+	 *
+	 * @param array $settings The settings to update. Other settings are left untouched.
+	 *
+	 * @return boolean False if value was not updated and true if value was updated.
+	 */
+	public function update( $settings ) {
+		$settings = wp_parse_args( $settings, $this->all() );
+		return update_option( 'gravityformsaddon_' . $this->_slug . '_app_settings', $settings );
+	}
+
+	/**
+	 * Register the settings field for the EDD License field type
+	 * @param array $field
+	 * @param bool $echo Whether to echo the
+	 *
+	 * @return string
+	 */
+	protected function settings_edd_license( $field, $echo = true ) {
+
+	    if ( defined( 'GRAVITYVIEW_LICENSE_KEY' ) && GRAVITYVIEW_LICENSE_KEY ) {
+		    $field['input_type'] = 'password';
+        }
+
+		$text = $this->settings_text( $field, false );
+
+		$activation = $this->License_Handler->settings_edd_license_activation( $field, false );
+
+		$return = $text . $activation;
+
+		if ( $echo ) {
+			echo $return;
+		}
+
+		return $return;
+	}
+
+	/**
+	 * Allow customizing the Save field parameters
+	 *
+	 * @param array $field
+	 * @param bool $echo
+	 *
+	 * @return string
+	 */
+	public function settings_save( $field, $echo = true ) {
+		$field['type']  = 'submit';
+		$field['name']  = 'gform-settings-save';
+		$field['class'] = isset( $field['class'] ) ? $field['class'] : 'button-primary gfbutton';
+		$field['value'] = Utils::get( $field, 'value', __( 'Update Settings', 'gravityview' ) );
+
+		$output = $this->settings_submit( $field, false );
+
+		ob_start();
+		$this->app_settings_uninstall_tab();
+		$output .= ob_get_clean();
+
+		if ( $echo ) {
+			echo $output;
+		}
+
+		return $output;
+	}
+
+	/**
+     * Keep GravityView styling for `$field['description']`, even though Gravity Forms added support for it
+     *
+     * Converts `$field['description']` to `$field['gv_description']`
+     * Converts `$field['subtitle']` to `$field['description']`
+     *
+     * @see GravityView_Settings::single_setting_label Converts `gv_description` back to `description`
+     * @see http://share.gravityview.co/P28uGp/2OIRKxog for image that shows subtitle vs description
+     *
+     * @since 1.21.5.2
+     *
+	 * @param array $field
+     *
+     * @return void
+	 */
+	public function single_setting_row( $field ) {
+		$field['gv_description'] = Utils::get( $field, 'description' );
+		$field['description']    = Utils::get( $field, 'subtitle' );
+		parent::single_setting_row( $field );
+	}
+
+	/**
+	 * The same as the parent, except added support for field descriptions
+	 * @inheritDoc
+	 * @param $field array
+	 */
+	public function single_setting_label( $field ) {
+		parent::single_setting_label( $field );
+		if ( $description = Utils::get( $field, 'gv_description' ) ) {
+			echo '<span class="description">'. $description .'</span>';
+		}
+	}
+
+	/**
+	 * Check for the `gravityview_edit_settings` capability before saving plugin settings.
+	 * Gravity Forms says you're able to edit if you're able to view settings. GravityView allows two different permissions.
+	 *
+	 * @since 1.15
+	 * @return void
+	 */
+	public function maybe_save_app_settings() {
+
+		if ( $this->is_save_postback() ) {
+			if ( ! \GVCommon::has_cap( 'gravityview_edit_settings' ) ) {
+				$_POST = array(); // If you don't reset the $_POST array, it *looks* like the settings were changed, but they weren't
+				GFCommon::add_error_message( __( 'You don\'t have the ability to edit plugin settings.', 'gravityview' ) );
+				return;
+			}
+		}
+		parent::maybe_save_app_settings();
+	}
+
+	/**
+	 * When the settings are saved, make sure the license key matches the previously activated key
+	 *
+	 * @return array settings from parent::get_posted_settings(), with `license_key_response` and `license_key_status` potentially unset
+	 */
+	public function get_posted_settings() {
+		$posted_settings = parent::get_posted_settings();
+
+		$local_key = Utils::get( $posted_settings, 'license_key' );
+		$response_key = Utils::get( $posted_settings, 'license_key_response/license_key' );
+
+		// If the posted key doesn't match the activated/deactivated key (set using the Activate License button, AJAX response),
+		// then we assume it's changed. If it's changed, unset the status and the previous response.
+		if ( $local_key !== $response_key ) {
+			unset( $posted_settings['license_key_response'] );
+			unset( $posted_settings['license_key_status'] );
+			GFCommon::add_error_message( __('The license key you entered has been saved, but not activated. Please activate the license.', 'gravityview' ) );
+		}
+		return $posted_settings;
 	}
 }

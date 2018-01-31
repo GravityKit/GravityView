@@ -26,7 +26,7 @@ class Settings {
 	 * @return void
 	 */
 	public function set( $key, $value ) {
-		$this->settings[$key] = $value;
+		$this->settings[ $key ] = $value;
 	}
 
 	/**
@@ -40,7 +40,7 @@ class Settings {
 	 * @return mixed|null
 	 */
 	public function get( $key, $default = null ) {
-		return isset( $this->settings[$key] ) ? $this->settings[$key] : $default;
+		return Utils::get( $this->settings, $key, $default );
 	}
 
 	/**
