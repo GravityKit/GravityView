@@ -181,6 +181,10 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 			if( $translations ) {
 				foreach ( $languages as $lang_code => $language ) {
 
+					if( ! isset( $translations[ $lang_code ] ) || ! is_object( $translations[ $lang_code ] ) ) {
+						continue;
+					}
+
 					$lang_post_id = $translations[ $lang_code ]->element_id;
 
 					$entry_link = GravityView_API::entry_link( $entry_slug, $lang_post_id );
