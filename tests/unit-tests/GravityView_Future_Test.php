@@ -5309,6 +5309,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'user_email' => md5( microtime() ) . '@gravityview.tests',
 			'role' => 'administrator' )
 		);
+		grant_super_admin( $administrator );
 		wp_set_current_user( $administrator );
 
 		ob_start();
