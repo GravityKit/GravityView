@@ -14,7 +14,6 @@ class GravityView_Settings extends \GV\Addon_Settings {
 	 * @deprecated Use gravityview()->plugin->settings
 	 * @return \GV\Global_Settings
 	 */
-	private function __construct() {}
 	private function __wakeup() {}
 	private function __clone() {}
 
