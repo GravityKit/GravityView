@@ -123,7 +123,7 @@ class Addon_Settings extends \GFAddOn {
 		if ( ! empty( $this->License_Handler ) ) {
 			return;
 		}
-		$this->License_Handler = License_Handler::get();
+		$this->License_Handler = License_Handler::get( $this );
 	}
 
 	/**
@@ -438,7 +438,7 @@ class Addon_Settings extends \GFAddOn {
 		/**
 		 * Backward compatibility with Redux
 		 */
-		if ( $setting_name === 'license' ) {
+		if ( $key === 'license' ) {
 			return array(
 				'license' => $this->get( 'license_key' ),
 				'status' => $this->get( 'license_key_status' ),
@@ -457,8 +457,8 @@ class Addon_Settings extends \GFAddOn {
 	 * @return mixed
 	 */
 	static public function getSetting( $key ) {
-		if ( gravityview()->settings instanceof Addon_Settings ) {
-			return gravityview()->settings->get( $key );
+		if ( gravityview()->plugin->settings instanceof Addon_Settings ) {
+			return gravityview()->plugin->settings->get( $key );
 		}
 	}
 
@@ -736,7 +736,7 @@ class Addon_Settings extends \GFAddOn {
 	public function app_settings_fields() {
 		$default_settings = $this->defaults();
 
-		$disabled_attribute = GVCommon::has_cap( 'gravityview_edit_settings' ) ? false : 'disabled';
+		$disabled_attribute = \GVCommon::has_cap( 'gravityview_edit_settings' ) ? false : 'disabled';
 
 		$fields = array(
 			array(
@@ -922,22 +922,31 @@ class Addon_Settings extends \GFAddOn {
 	 * @return boolean False if value was not updated and true if value was updated.
 	 */
 	public function update_app_settings( $settings ) {
-		return $this->set( $settings );
+		return $this->update( $settings );
 	}
 
-	public function set( $settings ) {
+	/**
+	 * Sets a subset of settings.
+	 *
+	 * @param array|string An array of settings to update, or string (key) and $value to update one setting.
+	 * @param mixed $value A value if $settings is string (key). Default: null.
+	 */
+	public function set( $settings, $value = null ) {
+		if ( is_string( $settings ) ) {
+			$settings = array( $settings => $value );
+		}
+		$settings = wp_parse_args( $settings, $this->all() );
 		return update_option( 'gravityformsaddon_' . $this->_slug . '_app_settings', $settings );
 	}
 
 	/**
 	 * Updates settings.
 	 *
-	 * @param array $settings The settings to update. Other settings are left untouched.
+	 * @param array $settings The settings array.
 	 *
 	 * @return boolean False if value was not updated and true if value was updated.
 	 */
 	public function update( $settings ) {
-		$settings = wp_parse_args( $settings, $this->all() );
 		return update_option( 'gravityformsaddon_' . $this->_slug . '_app_settings', $settings );
 	}
 

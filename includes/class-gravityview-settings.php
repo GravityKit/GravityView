@@ -9,7 +9,7 @@ if ( ! class_exists( 'GFAddOn' ) ) {
  * @since 1.7.4 (Before, used the Redux Framework)
  * @deprecated Use gravityview()->plugin->settings
  */
-class GravityView_Settings {
+class GravityView_Settings extends \GV\Addon_Settings {
 	/**
 	 * @deprecated Use gravityview()->plugin->settings
 	 * @return \GV\Global_Settings

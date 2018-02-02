@@ -500,7 +500,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\View_Collection::contains()
 	 * @covers \GravityView_View_Data::maybe_get_view_id()
 	 * @covers \GravityView_View_Data::is_valid_embed_id()
-	 * @covers \GravityView_oEmbed::set_vars()
 	 */
 	public function test_view_collection_from_post() {
 		$original_shortcode = $GLOBALS['shortcode_tags']['gravityview'];
@@ -1339,7 +1338,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\View_Renderer::render()
 	 * @covers \GV\View_Table_Template::render()
-	 * @covers \GV\Frontend_Request::output()
 	 */
 	public function test_frontend_view_renderer_table() {
 		$this->_reset_context();
@@ -1564,7 +1562,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\View_Renderer::render()
 	 * @covers \GV\View_List_Template::render()
-	 * @covers \GV\Frontend_Request::output()
 	 */
 	public function test_frontend_view_renderer_list() {
 		$this->_reset_context();
@@ -5271,7 +5268,66 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	public function test_addon_settings() {
-		$this->assertSame( \GravityView_Settings::get_instance(), gravityview()->plugin->settings );
+		$this->assertSame( \GravityView_Settings::get_instance(), $settings = gravityview()->plugin->settings );
+		$this->assertEquals( array_keys( $settings->get_default_settings() ), array( 'license_key', 'license_key_response', 'license_key_status', 'support-email', 'no-conflict-mode', 'support_port', 'flexbox_search', 'beta' ) );
+
+		$this->assertNull( $settings->get( 'not' ) );
+		$this->assertEquals( $settings->get( 'not', 'default' ), 'default' );
+		$this->assertEquals( $settings->get( 'beta' ), '0' );
+		$this->assertEquals( $settings->get_app_settings(), $settings->all() );
+
+		$settings->set( 'beta', '1' );
+		$this->assertEquals( $settings->get( 'beta' ), '1' );
+		$this->assertEquals( $settings->get( 'license' ), array( 'license' => '', 'status' => '', 'response' => '' ) );
+
+		$settings->set( array(
+			'beta' => '3',
+			'alpha' => '16'
+		) );
+
+		$this->assertEquals( $settings->get( 'beta' ), '3' );
+		$this->assertEquals( $settings->get( 'alpha' ), '16' );
+		$this->assertEquals( $settings->get( 'support-email' ), get_bloginfo( 'admin_email' ) );
+
+		$settings->update( $expected = array( 'wub' => 'dub' ) );
+		$this->assertEquals( $settings->all(), wp_parse_args( $expected, $settings->get_default_settings() ) );
+
+		$this->assertEquals( \GravityView_Settings::getSetting( 'wub' ), 'dub' );
+
+		$settings = new \GV\Addon_Settings();
+		$settings->init_admin();
+		$settings->init_ajax();
+		$settings->add_network_menu();
+		$this->assertEquals( $settings->modify_app_settings_menu_title( array( array() ) ), array( array( 'label' => 'GravityView Settings' ) ) );
+		$this->assertFalse( $settings->current_user_can_any( array( 'oops' ) ) );
+
+		$this->assertContains( 'delete then', $settings->uninstall_warning_message() );
+		$this->assertContains( 'gv-uninstall-form-wrapper', $settings->uninstall_form() );
+
+		$administrator = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'administrator' )
+		);
+		wp_set_current_user( $administrator );
+
+		ob_start();
+		$settings->app_settings_uninstall_tab();
+		$this->assertContains( 'ALL GravityView settings will be deleted', ob_get_clean() );
+
+		ob_start();
+		$settings->app_settings_tab();
+		$this->assertContains( '_gravityview_save_settings_nonce', $tab = ob_get_clean() );
+		$this->assertContains( 'Uninstall GravityView', $tab );
+		$this->assertNull( $settings->app_settings_title() );
+		$this->assertEquals( $settings->app_settings_icon(), '&nbsp;' );
+
+		$settings->scripts();
+		$settings->styles();
+
+		$settings->create_app_menu();
+
+		wp_set_current_user( 0 );
 	}
 
 	public function test_extension_class() {
