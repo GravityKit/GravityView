@@ -489,27 +489,6 @@ class GravityView_Admin_Views {
 			$statii['start_fresh'] = delete_post_meta( $post_id, '_gravityview_start_fresh' );
 		}
 
-		// Save joins
-		if ( ! empty( $_POST['gravityview_form_join'] ) && is_array( $_POST['gravityview_form_join'] ) ) {
-			$joins = array();
-
-			foreach ( $_POST['gravityview_form_join'] as $number => $join ) {
-				$_join = array( $join );
-
-				foreach( array( 'join_column', 'join_on', 'join_on_column' ) as $var ) {
-					if ( ( $var = rgpost( 'gravityview_form_' . $var ) ) && ! empty( $var[ $number ] ) ) {
-						$_join []= $var[ $number ];
-					}
-				}
-
-				if ( count( $_join ) == 4 ) {
-					$joins []= $_join;
-				}
-			}
-
-			update_post_meta( $post_id, '_gravityview_form_joins', $joins );
-		}
-
 		// Check if we have a template id
 		if ( isset( $_POST['gravityview_select_template_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_template_nonce'], 'gravityview_select_template' ) ) {
 
