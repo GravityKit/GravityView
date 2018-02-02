@@ -43,12 +43,12 @@ class Join {
 	/**
 	 * Inject this join into the query.
 	 *
-	 * @param \GV\Query $query The \GV\Query instance.
+	 * @param \GF_Query $query The \GF_Query instance.
 	 *
-	 * @return \GV\Query The $query
+	 * @return \GF_Query The $query
 	 */
 	public function as_query_join( $query ) {
-		if ( ! class_exists( '\GV\Query' ) || ! $query instanceof Query ) {
+		if ( ! class_exists( '\GF_Query' ) || ! $query instanceof \GF_Query ) {
 				return null;
 		}
 		return $query->join(

@@ -10,7 +10,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * The multi-entry Entry implementation.
  *
  * An entry that is really a join of 2+ entries.
- * Used for JOINS in the \GV\Query component.
+ * Used for JOINS in the \GF_Query component.
  */
 class Multi_Entry extends Entry implements \ArrayAccess {
 	/**
@@ -34,7 +34,7 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 	/**
 	 * Construct a multientry from an array of entries.
 	 *
-	 * @param \GV\Entry $entries The entries.
+	 * @param \GV\Entry[] $entries The entries.
 	 *
 	 * @return \GV\Multi_Entry A multientry object.
 	 */

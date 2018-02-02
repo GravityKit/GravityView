@@ -30,7 +30,7 @@ class View implements \ArrayAccess {
 	public $settings;
 
 	/**
-	 * @var \GV\Form The backing form for this view.
+	 * @var \GV\Form|\GV\GF_Form The backing form for this view.
 	 *
 	 * Contains the form that is sourced for entries in this view.
 	 *
@@ -565,12 +565,13 @@ class View implements \ArrayAccess {
 			/** @todo: Get the page from the request instead! */
 			$page = ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1;
 
-			if ( class_exists( '\GV\Query' ) ) {
+			if ( class_exists( '\GF_Query' ) ) {
 				/**
-				 * New \GV\Query stuff :)
+				 * New \GF_Query stuff :)
 				 */
-				$query = new \GV\Query();
-				$query->from( $this->form )
+				$query = new \GF_Query();
+
+				$query->from( $this->form->get_form() )
 					->limit( $parameters['paging']['page_size'] )
 					->page( $page );
 
@@ -583,8 +584,8 @@ class View implements \ArrayAccess {
 								/**
 								 * @todo Use the lightweight API.
 								 */
-								new Query\Condition(
-										GF_Field::by_id( $this->form, $filter['key'] ),
+								new \GF_Query_Condition(
+										GF_Field::by_id( $this->form->get_form(), $filter['key'] ),
 										Query\Condition::EQ,
 										new Query\Literal( $filter['value'] )
 								)
@@ -597,11 +598,20 @@ class View implements \ArrayAccess {
 				 */
 				if ( count( $this->joins ) ) {
 					foreach ( $this->joins as $join ) {
-							$query = $join->as_query_join( $query );
+						$query = $join->as_query_join( $query );
 					}
 				}
 
-				$entries = $query->get();
+				/** @todo Gennady please review */
+				$gf_entries = $query->get();
+				$entries = new Entry_Collection();
+
+				foreach ( $gf_entries as $gf_entry ) {
+					$entry = GF_Entry::from_entry( $gf_entry );
+					$entries->add( $entry );
+				}
+
+				Multi_Entry::from_entries( $entries );
 			} else {
 				$entries = $this->form->entries
 					->filter( \GV\GF_Entry_Filter::from_search_criteria( $parameters['search_criteria'] ) )
