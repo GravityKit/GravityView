@@ -165,6 +165,7 @@ final class Plugin {
 		include_once $this->dir( 'includes/class-gravityview-logging.php' );
 
 		include_once $this->dir( 'includes/class-ajax.php' );
+		include_once $this->dir( 'includes/class-gravityview-html-elements.php' );
 		include_once $this->dir( 'includes/class-gravityview-settings.php' );
 		include_once $this->dir( 'includes/class-frontend-views.php' );
 		include_once $this->dir( 'includes/class-gravityview-admin-bar.php' );
