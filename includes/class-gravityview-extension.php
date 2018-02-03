@@ -10,11 +10,7 @@
 /**
  * Extend this class to create a GravityView extension that gets updates from GravityView.co
  *
- * @since 1.1
- *
  * @deprecated Use \GV\Extension instead
- *
- * @version 1.1.2 Fixed `/lib/` include path for EDDSL
  */
 abstract class GravityView_Extension extends \GV\Extension {
 	public function __construct() {
