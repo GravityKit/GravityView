@@ -451,7 +451,7 @@ class Addon_Settings extends \GFAddOn {
 	/**
 	 * Get the setting for GravityView by name
 	 *
-	 * @deprecated Use gravityview()->settings->get()
+	 * @deprecated Use gravityview()->plugin->settings->get()
 	 * @param  string $key     Option key to fetch
 	 *
 	 * @return mixed
