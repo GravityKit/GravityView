@@ -828,7 +828,34 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\Frontend_Request::is_search()
 	 */
-	function test_frontend_request_is_search() {
+	public function test_frontend_request_is_search() {
+	}
+
+	public function test_admin_request_is_admin_page() {
+		$this->assertFalse( gravityview_is_admin_page() );
+
+		set_current_screen( 'dashboard' );
+		$this->assertTrue( \GravityView_Admin::is_admin_page( 'what', 'when' ) );
+
+		$_request = gravityview()->request;
+		gravityview()->request = new \GV\Admin_Request();
+
+		$this->assertTrue( gravityview()->request->is_admin() );
+
+		$this->assertFalse( \GravityView_Admin::is_admin_page() );
+		$this->assertFalse( \GravityView_Admin::is_admin_page( 'edit.php', 'single' ) );
+
+		$_id = get_current_screen()->id;
+		$_post_type = get_current_screen()->post_type;
+		get_current_screen()->id = 'gravityview_page_gravityview_settings';
+		get_current_screen()->post_type = 'gravityview';
+
+		$this->assertEquals( 'settings', \GravityView_Admin::is_admin_page( 'edit.php', '' ) );
+
+		gravityview()->request = $_request;
+		get_current_screen()->id = $_id;
+		get_current_screen()->post_type = $_post_type;
+		set_current_screen( 'frontend' );
 	}
 
 	/**
