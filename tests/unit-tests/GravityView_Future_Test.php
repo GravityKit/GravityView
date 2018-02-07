@@ -852,6 +852,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( 'settings', \GravityView_Admin::is_admin_page( 'edit.php', '' ) );
 
+		$this->assertTrue( gravityview()->request->is_admin( 'edit.php', 'settings' ) );
+		$this->assertFalse( gravityview()->request->is_admin( 'edit.php', 'zettingz' ) );
+
 		gravityview()->request = $_request;
 		get_current_screen()->id = $_id;
 		get_current_screen()->post_type = $_post_type;
@@ -5380,6 +5383,51 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$ext->tooltips();
 		$ext->add_metabox_tab();
 	}
+
+	public function test_widget_class() {
+		add_filter( 'gravityview/widget/enable_custom_class', '__return_true' );
+
+		$legacy_w = new GVFutureTest_Widget_Test_BC( 'What is this', 'old-widget', array(), array( 'what' => 'heh' ) );
+		$w = new GVFutureTest_Widget_Test( 'This is New', 'new-widget' );
+
+		$this->assertEquals( $legacy_w->get_widget_id(), 'old-widget' );
+		$this->assertEquals( $legacy_w->get_setting( 'what' ), 'heh' );
+		$this->assertNotEmpty( $w->get_settings() );
+
+		remove_filter( 'gravityview/widget/enable_custom_class', '__return_true' );
+
+		$this->assertNotEmpty( \GV\Widget::get_default_widget_areas() );
+
+		add_filter( 'gravityview_widget_active_areas', $callback = function() { return array( '1' ); } );
+
+		$this->assertEquals( \GV\Widget::get_default_widget_areas(), array( '1' ) );
+
+		add_filter( 'gravityview/widget/active_areas', $callback2 = function() { return array( '2' ); } );
+
+		$this->assertEquals( \GV\Widget::get_default_widget_areas(), array( '2' ) );
+
+		remove_filter( 'gravityview_widget_active_areas', $callback );
+		remove_filter( 'gravityview/widget/active_areas', $callback2 );
+
+		$widgets = array_keys( apply_filters( 'gravityview_register_directory_widgets', array() ) );
+		$this->assertContains( 'old-widget', $widgets );
+		$this->assertContains( 'new-widget', $widgets );
+
+		$this->assertEmpty( apply_filters( 'gravityview_template_widget_options', array() ) );
+		$this->assertNotEmpty( apply_filters( 'gravityview_template_widget_options', array(), null, 'old-widget' ) );
+
+		$form = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view = \GV\View::from_post( $view );
+
+		global $post;
+
+		$post = $this->factory->post->create_and_get();
+		$post->post_content = sprintf( '[gravityview id="%d"]', $view->ID );
+
+		$w->add_shortcode();
+		$this->assertContains( '<strong class="floaty">GravityView</strong>', $w->maybe_do_shortcode( 'okay [gvfuturetest_widget_test] okay' ) );
+	}
 }
 
 class GVFutureTest_Extension_Test_BC extends GravityView_Extension {
@@ -5401,5 +5449,16 @@ class GVFutureTest_Extension_Test extends \GV\Extension {
 		return array(
 			'id' => 'test_settings',
 		);
+	}
+}
+
+class GVFutureTest_Widget_Test_BC extends GravityView_Widget {
+}
+
+class GVFutureTest_Widget_Test extends \GV\Widget {
+	public function render_frontend( $widget_args, $content = '', $context = '' ) {
+		?>
+			<strong class="floaty">GravityView</strong>
+		<?php
 	}
 }

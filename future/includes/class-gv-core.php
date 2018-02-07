@@ -113,7 +113,11 @@ final class Core {
 			return;
 		}
 
+		/**
+		 * GravityView extensions and widgets.
+		 */
 		require_once $this->plugin->dir( 'future/includes/class-gv-extension.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-widget.php' );
 
 		/** More legacy core. @todo Deprecate */
 		$this->plugin->include_legacy_core();
@@ -222,12 +226,8 @@ final class Core {
 	 */
 	public function __get( $key ) {
 		switch ( $key ) {
-			case 'request':
-				return new Frontend_Request();
 			case 'views':
 				return new \GV\Wrappers\views();
-			case 'render':
-				return new \GV\Wrappers\render();
 		}
 	}
 

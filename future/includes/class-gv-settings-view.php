@@ -281,22 +281,6 @@ class View_Settings extends Settings {
 	}
 
 	/**
-	 * Mass update values from the allowed ones.
-	 *
-	 * @api
-	 * @since future
-	 *
-	 * @param array An array of settings to update.
-	 * @return \GV\View_Settings self chain.
-	 */
-	public function update( $settings ) {
-		foreach ( $settings as $key => $value ) {
-			$this->set( $key, $value );
-		}
-		return $this;
-	}
-
-	/**
 	 * Turn to an $atts array as used around the old codebase.
 	 *
 	 * @internal

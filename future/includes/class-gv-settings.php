@@ -16,6 +16,22 @@ class Settings {
 	private $settings = array();
 
 	/**
+	 * Mass update values from the allowed ones.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @param array An array of settings to update.
+	 * @return \GV\Settings self chain.
+	 */
+	public function update( $settings ) {
+		foreach ( $settings as $key => $value ) {
+			$this->set( $key, $value );
+		}
+		return $this;
+	}
+
+	/**
 	 * Set a setting.
 	 *
 	 * @param mixed $key The key the value should be added under.
