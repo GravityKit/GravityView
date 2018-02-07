@@ -7,7 +7,7 @@
  *
  * @extends GravityView_Widget
  */
-class GravityView_Widget_Custom_Content extends GravityView_Widget {
+class GravityView_Widget_Custom_Content extends \GV\Widget {
 
 	/**
 	 * Does this get displayed on a single entry?

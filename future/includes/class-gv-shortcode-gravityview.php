@@ -21,7 +21,7 @@ class gravityview extends \GV\Shortcode {
 	 * @param array $atts The attributes passed.
 	 * @param string $content The content inside the shortcode.
 	 *
-	 * @return string The output.
+	 * @return string|null The output.
 	 */
 	public function callback( $atts, $content = null ) {
 

@@ -13,7 +13,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-class GravityView_Widget_Search extends GravityView_Widget {
+class GravityView_Widget_Search extends \GV\Widget {
 
 	public static $file;
 	public static $instance;

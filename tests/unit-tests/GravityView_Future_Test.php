@@ -27,8 +27,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		\GV\Mocks\Legacy_Context::reset();
 		gravityview()->request = new \GV\Frontend_Request();
 
-		global $wp_query;
+		global $wp_query, $post;
+
 		$wp_query = new WP_Query();
+		$post = null;
+
+		set_current_screen( 'front' );
 	}
 
 	/**
@@ -4861,6 +4865,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'detail' => 'total_entries',
 			'page_size' => 3,
 		);
+
+		$request = new \GV\Mock_Request();
+		gravityview()->request = $request;
 
 		$future = new \GV\Shortcodes\gravityview();
 

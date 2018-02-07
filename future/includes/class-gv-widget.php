@@ -238,17 +238,11 @@ abstract class Widget {
 	 * @return void
 	 */
 	public function add_shortcode() {
-		global $post;
-
-		if ( ! is_object( $post ) || empty( $post->post_content ) ) {
+		if ( empty( $this->shortcode_name ) ) {
 			return;
 		}
 
 		if ( gravityview()->request->is_admin() ) {
-			return;
-		}
-
-		if ( empty( $this->shortcode_name ) ) {
 			return;
 		}
 
@@ -259,7 +253,9 @@ abstract class Widget {
 			return;
 		}
 
-		if ( ! Shortcode::parse( $post->post_content ) ) {
+		global $post;
+
+		if ( ! is_object( $post ) || empty( $post->post_content ) || ! Shortcode::parse( $post->post_content ) ) {
 			gravityview()->log->debug( 'No shortcode present; not adding render_frontend shortcode.' );
 			add_shortcode( $this->shortcode_name, '__return_null' );
 			return;
