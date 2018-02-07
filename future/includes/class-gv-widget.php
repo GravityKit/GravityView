@@ -281,23 +281,11 @@ abstract class Widget {
 	/**
 	 * General validations when rendering the widget
 	 *
-	 * @deprecated Not used. Hide until searched moved to the render_shortcode method.
+	 * Always call this from your `render_frontend()` override!
 	 *
 	 * @return boolean True: render frontend; False: don't render frontend
 	 */
 	public function pre_render_frontend() {
-	}
-
-	/**
-	 * Shortcode.
-	 *
-	 * @param array $atts The Widget shortcode args.
-	 * @param string $content The content.
-	 * @param string $context The context, if available.
-	 *
-	 * @return string Whatever the widget echoed.
-	 */
-	public function render_shortcode( $atts, $content = '', $context = '' ) {
 		if ( $view = gravityview()->views->get() ) {
 			$hide_until_searched = $view->settings->get( 'hide_until_searched' );
 		} else {
@@ -313,9 +301,22 @@ abstract class Widget {
 
 		if ( $hide_until_search ) {
 			gravityview()->log->debug( 'Hide View data until search is performed' );
-			return;
+			return false;
 		}
 
+		return true;
+	}
+
+	/**
+	 * Shortcode.
+	 *
+	 * @param array $atts The Widget shortcode args.
+	 * @param string $content The content.
+	 * @param string $context The context, if available.
+	 *
+	 * @return string Whatever the widget echoed.
+	 */
+	public function render_shortcode( $atts, $content = '', $context = '' ) {
 		ob_start();
 		$this->render_frontend( $atts, $content, $context );
 		return ob_get_clean();
