@@ -315,7 +315,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'created_by' => array(
 				'text' => esc_html__( 'Entry Creator', 'gravityview' ),
 				'type' => 'select',
-			)
+			),
+			'is_starred' => array(
+				'text' => esc_html__( 'Is Starred', 'gravityview' ),
+				'type' => 'boolean',
+			),
 		);
 
 		foreach( $custom_fields as $custom_field_key => $custom_field ) {
