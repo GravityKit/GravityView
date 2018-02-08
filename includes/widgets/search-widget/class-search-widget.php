@@ -631,12 +631,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 				continue;
 			}
 
+			$filter_key = $this->convert_request_key_to_filter_key( $key );
+
 			// could return simple filter or multiple filters
-			if ( ! in_array( str_replace( array( 'filter_', '_' ), array( '', '.' ), $key ), $searchable_fields ) ) {
+			if ( ! in_array( $filter_key , $searchable_fields ) ) {
 				continue;
 			}
 
-			$filter = $this->prepare_field_filter( $key, $value );
+			$filter = $this->prepare_field_filter( $filter_key, $value );
 
 			if ( isset( $filter[0]['value'] ) ) {
 				$search_criteria['field_filters'] = array_merge( $search_criteria['field_filters'], $filter );
@@ -665,18 +667,20 @@ class GravityView_Widget_Search extends \GV\Widget {
 	}
 
 	/**
-	 * Prepare the field filters to GFAPI
+	 * Convert $_GET/$_POST key to the field/meta ID
 	 *
-	 * The type post_category, multiselect and checkbox support multi-select search - each value needs to be separated in an independent filter so we could apply the ANY search mode.
+	 * Examples:
+	 * - `filter_is_starred` => `is_starred`
+	 * - `filter_1_2` => `1.2`
+	 * - `filter_5` => `5`
 	 *
-	 * Format searched values
-	 * @param  string $key   $_GET/$_POST search key
-	 * @param  string $value $_GET/$_POST search value
-	 * @return array        1 or 2 deph levels
+	 * @since 2.0
+	 *
+	 * @param string $key $_GET/_$_POST search key
+	 *
+	 * @return string
 	 */
-	public function prepare_field_filter( $key, $value ) {
-
-		$gravityview_view = GravityView_View::getInstance();
+	private function convert_request_key_to_filter_key( $key ) {
 
 		$field_id = str_replace( 'filter_', '', $key );
 
@@ -685,13 +689,32 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$field_id = str_replace( '_', '.', $field_id );
 		}
 
+		return $field_id;
+	}
+
+	/**
+	 * Prepare the field filters to GFAPI
+	 *
+	 * The type post_category, multiselect and checkbox support multi-select search - each value needs to be separated in an independent filter so we could apply the ANY search mode.
+	 *
+	 * Format searched values
+	 *
+	 * @param  string $filter_key ID of the field, or entry meta key
+	 * @param  string $value $_GET/$_POST search value
+	 *
+	 * @return array        1 or 2 deph levels
+	 */
+	public function prepare_field_filter( $filter_key, $value ) {
+
+		$gravityview_view = GravityView_View::getInstance();
+
 		// get form field array
 		$form = $gravityview_view->getForm();
-		$form_field = gravityview_get_field( $form, $field_id );
+		$form_field = gravityview_get_field( $form, $filter_key );
 
 		// default filter array
 		$filter = array(
-			'key' => $field_id,
+			'key'   => $filter_key,
 			'value' => $value,
 		);
 
@@ -714,8 +737,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 				foreach ( $value as $val ) {
 					$cat = get_term( $val, 'category' );
 					$filter[] = array(
-						'key' => $field_id,
-						'value' => esc_attr( $cat->name ) . ':' . $val,
+						'key'      => $filter_key,
+						'value'    => esc_attr( $cat->name ) . ':' . $val,
 						'operator' => 'is',
 					);
 				}
@@ -732,16 +755,16 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$filter = array();
 
 				foreach ( $value as $val ) {
-					$filter[] = array( 'key' => $field_id, 'value' => $val );
+					$filter[] = array( 'key' => $filter_key, 'value' => $val );
 				}
 
 				break;
 
 			case 'checkbox':
 				// convert checkbox on/off into the correct search filter
-				if ( false !== strpos( $field_id, '.' ) && ! empty( $form_field['inputs'] ) && ! empty( $form_field['choices'] ) ) {
+				if ( false !== strpos( $filter_key, '.' ) && ! empty( $form_field['inputs'] ) && ! empty( $form_field['choices'] ) ) {
 					foreach ( $form_field['inputs'] as $k => $input ) {
-						if ( $input['id'] == $field_id ) {
+						if ( $input['id'] == $filter_key ) {
 							$filter['value'] = $form_field['choices'][ $k ]['value'];
 							$filter['operator'] = 'is';
 							break;
@@ -754,8 +777,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 					foreach ( $value as $val ) {
 						$filter[] = array(
-							'key'   => $field_id,
-							'value' => $val,
+							'key'      => $filter_key,
+							'value'    => $val,
 							'operator' => 'is',
 						);
 					}
@@ -766,7 +789,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			case 'name':
 			case 'address':
 
-				if ( false === strpos( $field_id, '.' ) ) {
+				if ( false === strpos( $filter_key, '.' ) ) {
 
 					$words = explode( ' ', $value );
 
@@ -809,8 +832,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 						}
 
 						$filter[] = array(
-							'key' => $field_id,
-							'value' => self::get_formatted_date( $date, 'Y-m-d' ),
+							'key'      => $filter_key,
+							'value'    => self::get_formatted_date( $date, 'Y-m-d' ),
 							'operator' => $operator,
 						);
 					}
