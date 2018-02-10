@@ -110,6 +110,11 @@ class GravityView_Field_Is_Starred extends GravityView_Field {
 		}
 
 		?>
+<style>
+    .gv-star-image[data-entry-id] {
+        cursor: pointer;
+    }
+</style>
 <script>
 	jQuery( document ).ready( function ( $ ) {
 		$('[class*=is_starred] img.gv-star-image[data-entry-id]').on('click', function() {
