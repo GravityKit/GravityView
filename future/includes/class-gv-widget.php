@@ -235,7 +235,7 @@ abstract class Widget {
 	}
 
 	/**
-	 * Assign template specific field options
+	 * Assign template specific widget options
 	 *
 	 * @access protected
 	 *
@@ -391,7 +391,7 @@ abstract class Widget {
 	 * Return an array of the old format.
 	 *
 	 *  		'id' => string
-	 *			+ whatever else specific field types may have
+	 *			+ whatever else specific fields may have
 	 *
 	 * @internal
 	 * @since future

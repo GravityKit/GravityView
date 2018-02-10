@@ -701,7 +701,7 @@ add_filter( 'gravityview/configuration/fields', function( $fields ) {
 
 
 /** Add a future fix to make sure field configurations include the form ID. */
-add_filter( 'gravityview/view/fields/configuration', function( $fields, $view ) {
+add_filter( 'gravityview/view/configuration/fields', function( $fields, $view ) {
 	if ( ! $view || empty( $fields ) ) {
 		return $fields;
 	}

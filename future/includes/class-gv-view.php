@@ -351,6 +351,8 @@ class View implements \ArrayAccess {
 		 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array.
 		 * @since 1.6.5
 		 *
+		 * @deprecated Use `gravityview/view/configuration/fields` or `gravityview/view/fields` filters.
+		 *
 		 * @param $fields array Multi-array of fields with first level being the field zones.
 		 * @param $view_id int The View the fields are being pulled for.
 		 */
@@ -363,7 +365,7 @@ class View implements \ArrayAccess {
 		 * @param array $fields Multi-array of fields with first level being the field zones.
 		 * @param \GV\View $view The View the fields are being pulled for.
 		 */
-		$configuration = apply_filters( 'gravityview/view/fields/configuration', $configuration, $view );
+		$configuration = apply_filters( 'gravityview/view/configuration/fields', $configuration, $view );
 
 		/**
 		 * @filter `gravityview/view/fields` Filter the Field Collection for this View.
@@ -373,6 +375,24 @@ class View implements \ArrayAccess {
 		 * @param \GV\View $view The View the fields are being pulled for.
 		 */
 		$view->fields = apply_filters( 'gravityview/view/fields', Field_Collection::from_configuration( $configuration ), $view );
+
+		/**
+		 * @filter `gravityview/view/configuration/widgets` Filter the View widgets' configuration array.
+		 * @since future
+		 *
+		 * @param array $fields Multi-array of widgets with first level being the field zones.
+		 * @param \GV\View $view The View the widgets are being pulled for.
+		 */
+		$configuration = apply_filters( 'gravityview/view/configuration/widgets', (array)$view->_gravityview_directory_widgets, $view );
+
+		/**
+		 * @filter `gravityview/view/widgets` Filter the Widget Collection for this View.
+		 * @since future
+		 *
+		 * @param \GV\Widget_Collection $widgets A collection of widgets.
+		 * @param \GV\View $view The View the widgets are being pulled for.
+		 */
+		$view->widgets = apply_filters( 'gravityview/view/widgets', Widget_Collection::from_configuration( $configuration ), $view );
 
 		/** View configuration. */
 		$view->settings->update( gravityview_get_template_settings( $view->ID ) );
@@ -461,9 +481,8 @@ class View implements \ArrayAccess {
 				return $this->settings->as_atts();
 			case 'template_id':
 				return $this->settings->get( 'template' );
-			default:
-				/** @todo move the rest out and get rid of _data completely! */
-				return $this->_data[$offset];
+			case 'widgets':
+				return $this->widgets->to_configuration();
 		}
 	}
 
