@@ -30,6 +30,14 @@ class View implements \ArrayAccess {
 	public $settings;
 
 	/**
+	 * @var \GV\Widget_Collection The widets attached here.
+	 *
+	 * @api
+	 * @since future
+	 */
+	public $widgets;
+
+	/**
 	 * @var \GV\Form The backing form for this view.
 	 *
 	 * Contains the form that is sourced for entries in this view.
@@ -55,6 +63,7 @@ class View implements \ArrayAccess {
 	public function __construct() {
 		$this->settings = new View_Settings();
 		$this->fields = new Field_Collection();
+		$this->widgets = new Widget_Collection();
 	}
 
 	/**
@@ -376,20 +385,6 @@ class View implements \ArrayAccess {
 			'id' => $view->ID,
 		) );
 
-		/**
-		 * @deprecated
-		 *
-		 * The data here has been moved to various keys in a \GV\View instance.
-		 * As a compatibilty layer we allow array access over any \GV\View instance with these keys.
-		 *
-		 * This data is immutable (for now).
-		 *
-		 * @see \GV\View::offsetGet() for internal mappings.
-		 */
-		$view->_data = array(
-			'widgets' => gravityview_get_directory_widgets( $view->ID ),
-		);
-
 		return $view;
 	}
 
@@ -450,7 +445,7 @@ class View implements \ArrayAccess {
 		
 		gravityview()->log->notice( 'This is a \GV\View object should not be accessed as an array.' );
 
-		if ( ! isset( $this[$offset] ) ) {
+		if ( ! isset( $this[ $offset ] ) ) {
 			return null;
 		}
 
@@ -510,15 +505,15 @@ class View implements \ArrayAccess {
 	 * @return array
 	 */
 	public function as_data() {
-		return array_merge(
-			array( 'id' => $this->ID ),
-			array( 'view_id' => $this->ID ),
-			array( 'form_id' => $this->form ? $this->form->ID : null ),
-			array( 'form' => $this->form ? gravityview_get_form( $this->form->ID ) : null ),
-			array( 'atts' => $this->settings->as_atts() ),
-			array( 'fields' => $this->fields->by_visible()->as_configuration() ),
-			array( 'template_id' => $this->settings->get( 'template' ) ),
-			$this->_data
+		return array(
+			'id' => $this->ID,
+			'view_id' => $this->ID,
+			'form_id' => $this->form ? $this->form->ID : null,
+			'form' => $this->form ? gravityview_get_form( $this->form->ID ) : null,
+			'atts' => $this->settings->as_atts(),
+			'fields' => $this->fields->by_visible()->as_configuration(),
+			'template_id' => $this->settings->get( 'template' ),
+			'widgets' => $this->widgets->as_configuration(),
 		);
 	}
 

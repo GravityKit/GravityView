@@ -1008,6 +1008,47 @@ class GVFuture_Test extends GV_UnitTestCase {
 		unset( $GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] );
 	}
 
+	public function test_widget_collection() {
+		$this->assertCount( 4, \GV\Widget::registered() );
+
+		$configuration = array(
+			'header_top' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => 'search_bar',
+					'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+				),
+			),
+			'header_left' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => 'page_info',
+				),
+			),
+			'footer_top' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => 'custom_content',
+					'content' => 'Here we go again! <b>Now</b>',
+				),
+			),
+			'footer_right' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => 'page_links',
+				),
+			),
+		);
+
+		$widgets = \GV\Widget_Collection::from_configuration( $configuration );
+
+		$this->assertEquals( 4, $widgets->count() );
+
+		$footer_widgets = $widgets->by_position( 'footer_*' );
+		$this->assertEquals( 2, $footer_widgets->count() );
+
+		$this->assertEquals( 0, $widgets->by_id( 'custom_conten' )->count() );
+		$this->assertEquals( 1, $widgets->by_id( 'custom_content' )->count() );
+
+		$this->assertEquals( $configuration, $widgets->as_configuration() );
+	}
+
 	/**
 	 * @covers \GV\Field_Collection::add()
 	 * @covers \GV\Field_Collection::from_configuration()
@@ -5416,7 +5457,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_filter( 'gravityview_widget_active_areas', $callback );
 		remove_filter( 'gravityview/widget/active_areas', $callback2 );
 
-		$widgets = array_keys( apply_filters( 'gravityview_register_directory_widgets', array() ) );
+		$widgets = array_keys( apply_filters( 'gravityview/widgets/register', array() ) );
 		$this->assertContains( 'old-widget', $widgets );
 		$this->assertContains( 'new-widget', $widgets );
 
@@ -5464,6 +5505,9 @@ class GVFutureTest_Widget_Test_BC extends GravityView_Widget {
 
 class GVFutureTest_Widget_Test extends \GV\Widget {
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
+		if ( ! $this->pre_render_frontend() ) {
+			return;
+		}
 		?>
 			<strong class="floaty">GravityView</strong>
 		<?php
