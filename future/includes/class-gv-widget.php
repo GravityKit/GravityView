@@ -110,6 +110,11 @@ abstract class Widget {
 		// Make sure every widget has a title, even if empty
 		$this->settings = wp_parse_args( $settings, $this->get_default_settings() );
 
+		// Hook once per unique ID
+		if ( $this->is_registered() ) {
+			return;
+		}
+
 		// register widgets to be listed in the View Configuration
 		add_filter( 'gravityview/widgets/register', array( $this, 'register_widget' ) );
 
@@ -425,5 +430,17 @@ abstract class Widget {
 		 * @param array $registered_widgets Empty array
 		 */
 		return apply_filters( 'gravityview/widgets/register', $registered_widgets );
+	}
+
+	/**
+	 * Whether this Widget's been registered already or not.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @return bool
+	 */
+	public function is_registered() {
+		return in_array( $this->get_widget_id(), array_keys( self::registered() ) );
 	}
 }

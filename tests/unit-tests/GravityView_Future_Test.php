@@ -5476,6 +5476,69 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$w->add_shortcode();
 		$this->assertContains( '<strong class="floaty">GravityView</strong>', $w->maybe_do_shortcode( 'okay [gvfuturetest_widget_test] okay' ) );
 	}
+
+	public function test_widget_render() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		global $post;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '1.6',
+						'label' => 'Country <small>(Address)</small>',
+						'only_loggedin_cap' => 'read',
+						'only_loggedin' => true,
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => $widget_id = wp_generate_password( 4, false ) . '-widget',
+						'test' => 'foo',
+					),
+				),
+				'footer_right' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => $widget_id,
+						'test' => 'bar',
+					),
+				),
+			),
+		) );
+
+		/** Trigger registration under this ID */
+		new GVFutureTest_Widget_Test( 'Widget', $widget_id );
+
+		$view = \GV\View::from_post( $post );
+
+
+		$renderer = new \GV\View_Renderer();
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$future = $renderer->render( $view );
+
+		$this->assertContains( '<strong class="floaty">GravityViewfoo</strong>', $future );
+		$this->assertContains( '<strong class="floaty">GravityViewbar</strong>', $future );
+
+		$this->_reset_context();
+	}
 }
 
 class GVFutureTest_Extension_Test_BC extends GravityView_Extension {
@@ -5509,7 +5572,7 @@ class GVFutureTest_Widget_Test extends \GV\Widget {
 			return;
 		}
 		?>
-			<strong class="floaty">GravityView</strong>
+			<strong class="floaty">GravityView<?php echo \GV\Utils::get( $widget_args, 'test' ); ?></strong>
 		<?php
 	}
 }
