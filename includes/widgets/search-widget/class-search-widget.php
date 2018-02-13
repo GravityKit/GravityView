@@ -72,7 +72,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 				),
 			),
 		);
-		parent::__construct( esc_html__( 'Search Bar', 'gravityview' ), 'search_bar', $default_values, $settings );
 
 		if ( ! $this->is_registered() ) {
 			// frontend - filter entries
@@ -93,9 +92,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 			add_action( 'wp_ajax_gv_searchable_fields', array( 'GravityView_Widget_Search', 'get_searchable_fields' ) );
 		}
 
+		parent::__construct( esc_html__( 'Search Bar', 'gravityview' ), 'search_bar', $default_values, $settings );
+
 		// calculate the search method (POST / GET)
 		$this->set_search_method();
-
 	}
 
 	/**

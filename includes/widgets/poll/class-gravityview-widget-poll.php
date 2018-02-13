@@ -57,13 +57,12 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 			)
 		);
 
-		parent::__construct( __( 'Poll Results', 'gravityview' ) , 'poll', $default_values, $settings );
-
 		if ( ! $this->is_registered() ) {
 			// frontend - add template path
 			add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
 		}
 
+		parent::__construct( __( 'Poll Results', 'gravityview' ) , 'poll', $default_values, $settings );
 	}
 
 	/**
