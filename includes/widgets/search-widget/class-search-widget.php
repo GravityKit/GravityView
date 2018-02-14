@@ -29,6 +29,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	public function __construct() {
 
+		$this->widget_id = 'search_bar';
 		$this->widget_description = esc_html__( 'Search form for searching entries.', 'gravityview' );
 
 		self::$instance = &$this;
@@ -92,7 +93,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			add_action( 'wp_ajax_gv_searchable_fields', array( 'GravityView_Widget_Search', 'get_searchable_fields' ) );
 		}
 
-		parent::__construct( esc_html__( 'Search Bar', 'gravityview' ), 'search_bar', $default_values, $settings );
+		parent::__construct( esc_html__( 'Search Bar', 'gravityview' ), null, $default_values, $settings );
 
 		// calculate the search method (POST / GET)
 		$this->set_search_method();

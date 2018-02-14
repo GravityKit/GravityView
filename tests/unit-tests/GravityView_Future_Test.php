@@ -900,6 +900,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $settings->get( 'no no no no', $default ), $default );
 
 		$this->assertCount( 1, $settings->all() );
+
+		$settings = new \GV\Settings( array( 'one' => 'six' ) );
+		$this->assertEquals( $settings->get( 'one' ), 'six' );
 	}
 
 	/**

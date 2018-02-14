@@ -82,9 +82,9 @@ abstract class Widget {
 	 *
 	 * @api
 	 * @since future
-	 * @var array
+	 * @var \GV\Settings
 	 */
-	public $configuration = array();
+	public $configuration;
 
 	/**
 	 * Constructor.
@@ -103,8 +103,11 @@ abstract class Widget {
 		 */
 		$this->shortcode_name = empty( $this->shortcode_name ) ? strtolower( get_called_class() ) : $this->shortcode_name;
 
+		if ( $id ) {
+			$this->widget_id = $id;
+		}
+
 		$this->widget_label = $label;
-		$this->widget_id = $id;
 		$this->defaults = array_merge( array( 'header' => 0, 'footer' => 0 ), $defaults );
 
 		// Make sure every widget has a title, even if empty
@@ -115,20 +118,21 @@ abstract class Widget {
 			return;
 		}
 
-		// register widgets to be listed in the View Configuration
-		add_filter( 'gravityview/widgets/register', array( $this, 'register_widget' ) );
-
 		// widget options
 		add_filter( 'gravityview_template_widget_options', array( $this, 'assign_widget_options' ), 10, 3 );
 
 		// frontend logic
-		add_action( "gravityview_render_widget_{$id}", array( $this, 'render_frontend' ), 10, 1 );
+		add_action( sprintf( 'gravityview_render_widget_%s', $this->get_widget_id() ), array( $this, 'render_frontend' ), 10, 1 );
 
 		// register shortcodes
 		add_action( 'wp', array( $this, 'add_shortcode' ) );
 
 		// Use shortcodes in text widgets.
 		add_filter( 'widget_text', array( $this, 'maybe_do_shortcode' ) );
+
+		// register widgets to be listed in the View Configuration
+		// Important: this has to be the last filter/action added in the constructor.
+		add_filter( 'gravityview/widgets/register', array( $this, 'register_widget' ) );
 	}
 
 	/**
@@ -387,7 +391,7 @@ abstract class Widget {
 		}
 
 		$w = new $class( Utils::get( $widget, 'label' ), $id );
-		$w->configuration = $configuration;
+		$w->configuration = new Settings( $configuration );
 
 		return $w;
 	}
@@ -406,7 +410,7 @@ abstract class Widget {
 	public function as_configuration() {
 		return array_merge( array(
 			'id' => $this->get_widget_id(),
-		), $this->configuration );
+		), $this->configuration->all() );
 	}
 
 	/**

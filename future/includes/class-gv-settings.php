@@ -16,6 +16,21 @@ class Settings {
 	private $settings = array();
 
 	/**
+	 * Create with new.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @param array $settings Initial settings. Default: none.
+	 * @return \GV\Settings
+	 */
+	public function __construct( $settings = array() ) {
+		if ( is_array( $settings ) && ! empty( $settings ) ) {
+			$this->update( $settings );
+		}
+	}
+
+	/**
 	 * Mass update values from the allowed ones.
 	 *
 	 * @api
