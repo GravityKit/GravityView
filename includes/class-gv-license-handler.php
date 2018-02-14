@@ -153,8 +153,12 @@ class GV_License_Handler {
 			return;
 		}
 
+		global $pagenow;
+
+		$is_force_check = ( isset( $pagenow ) && 'update-core.php' === $pagenow && isset( $_REQUEST['force-check'] ) && '1' === $_REQUEST['force-check'] );
+
 		// The transient is fresh; don't fetch.
-		if( $status = get_transient( self::status_transient_key ) ) {
+		if( $status = get_transient( self::status_transient_key ) && ! $is_force_check ) {
 			return;
 		}
 
