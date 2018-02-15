@@ -122,7 +122,7 @@ abstract class Widget {
 		add_filter( 'gravityview_template_widget_options', array( $this, 'assign_widget_options' ), 10, 3 );
 
 		// frontend logic
-		add_action( sprintf( 'gravityview_render_widget_%s', $this->get_widget_id() ), array( $this, 'render_frontend' ), 10, 1 );
+		add_action( sprintf( 'gravityview/widgets/%s/render', $this->get_widget_id() ), array( $this, 'render_frontend' ), 10, 3 );
 
 		// register shortcodes
 		add_action( 'wp', array( $this, 'add_shortcode' ) );
@@ -445,6 +445,10 @@ abstract class Widget {
 	 * @return bool
 	 */
 	public function is_registered() {
-		return in_array( $this->get_widget_id(), array_keys( self::registered() ) );
+		if ( ! $widget_id = $this->get_widget_id() ) {
+			gravityview()->log->warning( 'Widget ID not set before calling Widget::is_registered', array( 'data' => $this ) );
+			return false;
+		}
+		return in_array( $widget_id, array_keys( self::registered() ) );
 	}
 }

@@ -5,6 +5,6 @@
  * @global \GV\Template_Context $gravityview
  */
 ?>
-<?php gravityview_before(); ?>
+<?php gravityview_before( $gravityview ); ?>
 <div class="<?php gv_container_class('gv-list-container gv-list-view gv-list-multiple-container'); ?>">
 	<?php gravityview_header(); ?>

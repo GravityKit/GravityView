@@ -2256,9 +2256,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		} );
 		$this->assertEquals( 'sentinel-1', $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		add_filter( 'gravityview/template/field/data', function( $data ) {
-			$data['value'] = $data['display_value'] = 'This <script> is it';
-			return $data;
+		add_filter( 'gravityview/template/field/context', function( $context ) {
+			$context->value = $context->display_value = 'This <script> is it';
+			return $context;
 		} );
 		$this->assertEquals( 'This &lt;script&gt; is it', $renderer->render( $field, $view, $form, $entry, $request ) );
 
@@ -2289,7 +2289,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gravityview_empty_value' );
 		remove_all_filters( 'gravityview/field/value/empty' );
-		remove_all_filters( 'gravityview/template/field/data' );
+		remove_all_filters( 'gravityview/template/field/context' );
 		remove_all_filters( 'gravityview_field_entry_value_this-does-not-exist_pre_link' );
 		remove_all_filters( 'gravityview_field_entry_value_this-does-not-exist' );
 		remove_all_filters( 'gravityview_field_entry_value' );
