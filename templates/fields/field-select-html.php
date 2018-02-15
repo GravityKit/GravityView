@@ -2,6 +2,7 @@
 /**
  * The default select field output template.
  *
+ * @global \GV\Template_Context $gravityview
  * @since future
  */
 $field = $gravityview->field->field;

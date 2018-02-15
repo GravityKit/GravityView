@@ -164,6 +164,10 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry-gravityforms.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry-multi.php' );
 
+		/** Context is everything. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-context.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-context-template.php' );
+
 		/** Our Field generic and implementations. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-field.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-field-gravityforms.php' );

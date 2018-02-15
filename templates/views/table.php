@@ -2,7 +2,7 @@
 /**
  * The table layout template
  *
- * @global stdClass $gravityview (\GV\View $gravityview::$view, \GV\View_Template $gravityview::$template)
+ * @global \GV\Template_Context $gravityview
  */
 	$gravityview->template->get_template_part( 'table/table', 'header' );
 	$gravityview->template->get_template_part( 'table/table', 'body' );

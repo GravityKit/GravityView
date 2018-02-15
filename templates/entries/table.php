@@ -2,7 +2,7 @@
 /**
  * Display a single entry when using a table template
  *
- * @global array $gravityview
+ * @global \GV\Template_Context $gravityview
  */
 
 \GV\Mocks\Legacy_Context::push( array( 'view' => $gravityview->view ) )

@@ -249,30 +249,21 @@ abstract class Field_Template extends Template {
 			}
 		}
 
+		$context = Template_Context::from_template( $this, array(
+			'display_value' => $display_value,
+			'value' => $value,
+		) );
+
 		/**
 		 * Make various pieces of data available to the template
 		 *  under the $gravityview scoped variable.
 		 *
-		 * @filter `gravityview/template/field/data`
-		 * @param array $data The default data available to all Field templates.
+		 * @filter `gravityview/template/field/context`
+		 * @param \GV\Template_Context $context The context for this template.
 		 * @param \GV\Field_Template $template The current template.
 		 * @since future
 		 */
-		$this->push_template_data( apply_filters( 'gravityview/template/field/data', array(
-
-			'template' => $this,
-
-			'value' => $value,
-			'display_value' => $display_value,
-
-			/** Shortcuts */
-			'field' => $this->field,
-			'view' => $this->view,
-			'source' => $this->source,
-			'entry' => $this->entry,
-			'request' => $this->request,
-
-		), $this ), 'gravityview' );
+		$this->push_template_data( apply_filters( 'gravityview/template/field/context', $context, $this ), 'gravityview' );
 
 		/** Bake the template. */
 		ob_start();

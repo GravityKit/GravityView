@@ -2,7 +2,7 @@
 /**
  * Display a single entry when using a list template
  *
- * @global array $gravityview
+ * @global \GV\Template_Context $gravityview
  */
 
 $entry = $gravityview->entry;

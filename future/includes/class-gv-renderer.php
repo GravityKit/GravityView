@@ -24,12 +24,12 @@ class Renderer {
 	/**
 	 * Print unconfigured notices to admins.
 	 *
-	 * @param object $gravityview The $gravityview template object.
+	 * @param \GV\Template_Context $gravityview The $gravityview template object.
 	 *
 	 * @return void
 	 */
 	public static function maybe_print_notices( $gravityview = null ) {
-		if ( ! $gravityview ) {
+		if ( ! $gravityview instanceof \GV\Template_Context ) {
 			/** Call the legacy code. */
 			\GravityView_frontend::getInstance()->context_not_configured_warning( gravityview_get_view_id() );
 			return;

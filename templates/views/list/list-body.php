@@ -2,11 +2,7 @@
 /**
  * The entry loop for the list output.
  *
- * @global stdClass $gravityview
- *  \GV\View $gravityview::$view
- *  \GV\View_Template $gravityview::$template
- *  \GV\Field_Collection $gravityview::$fields
- *  \GV\Entry_Collection $gravityview::$entries
+ * @global \GV\Template_Context $gravityview
  */
 
 // There are no entries.

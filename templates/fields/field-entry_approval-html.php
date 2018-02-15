@@ -8,6 +8,7 @@
  * @subpackage GravityView/templates/fields
  * @since 1.19
  *
+ * @global \GV\Template_Context $gravityview
  * @since future
  */
 $entry = $gravityview->entry->as_entry();

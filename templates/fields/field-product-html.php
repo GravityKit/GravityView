@@ -2,6 +2,7 @@
 /**
  * The default product field output template.
  *
+ * @global \GV\Template_Context $gravityview
  * @since future
  */
 $field_id = $gravityview->field->ID;

@@ -131,27 +131,18 @@ abstract class Entry_Template extends Template {
 	 * @return void
 	 */
 	public function render() {
+		$context = Template_Context::from_template( $this );
 
 		/**
 		 * Make various pieces of data available to the template
 		 *  under the $gravityview scoped variable.
 		 *
-		 * @filter `gravityview/template/entry/data`
-		 * @param array $data The default data available to all Entry templates.
+		 * @filter `gravityview/template/entry/context`
+		 * @param \GV\Template_Context $context The context for this template.
 		 * @param \GV\Entry_Template $template The current template.
 		 * @since future
 		 */
-		$this->push_template_data( apply_filters( 'gravityview/template/entry/data', array(
-
-			'template' => $this,
-
-			/** Shortcuts */
-			'entry' => $this->entry,
-			'view' => $this->view,
-			'fields' => $this->view->fields,
-			'request' => $this->request,
-
-		), $this ), 'gravityview' );
+		$this->push_template_data( apply_filters( 'gravityview/template/entry/context', $context, $this ), 'gravityview' );
 
 		/** Load the template. */
 		$this->get_template_part( static::$slug );

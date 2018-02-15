@@ -2,6 +2,7 @@
 /**
  * The default notes field output template.
  *
+ * @global \GV\Template_Context $gravityview
  * @since future
  */
 $entry = $gravityview->entry->as_entry();
