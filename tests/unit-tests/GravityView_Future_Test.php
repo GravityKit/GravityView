@@ -5256,6 +5256,22 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$multi = \GV\Multi_Entry::from_entries( array( $entry ) );
 
 		$this->assertEquals( $entry->ID, \GV\Utils::get( $multi, $form->ID )->ID );
+
+		/**
+		 * Object property access.
+		 */
+		$o = (object)$a;
+		$o->who = (object)$o->who;
+		$o->who->is = (object)$o->who->is;
+		$this->assertEquals( 'world', \GV\Utils::get( $o, 'hello' ) );
+		$this->assertEquals( 'world', \GV\Utils::get( $o, 'hello', 'what?' ) );
+		$this->assertEquals( 'what?', \GV\Utils::get( $o, 'world', 'what?' ) );
+
+		/**
+		 * Nested.
+		 */
+		$this->assertEquals( 'here', \GV\Utils::get( $o, 'who/is' ) );
+		$this->assertEquals( 'coder', \GV\Utils::get( $o, 'who/is/that' ) );
 	}
 
 	public function test_license_handler() {

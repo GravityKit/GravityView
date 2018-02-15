@@ -59,25 +59,37 @@ class Utils {
 	}
 
 	/**
-	 * Grab a value from an array or default.
+	 * Grab a value from an array or an object or default.
 	 *
-	 * Supports nested arrays via / key delimiters.
+	 * Supports nested arrays, objects via / key delimiters.
 	 *
-	 * @param array $array The array.
+	 * @param array|object $array The array (or object)
 	 * @param string $key The key.
 	 * @param mixed $default The default value. Default: null
 	 *
 	 * @return mixed  The value or $default if not found.
 	 */
 	public static function get( $array, $key, $default = null ) {
-		if ( ! is_array( $array ) && ! ( is_object( $array ) && $array instanceof \ArrayAccess ) ) {
+		if ( ! is_array( $array ) && ! is_object( $array ) ) {
 			return $default;
 		}
 
-		if ( isset( $array[ $key ] ) ) {
-			return $array[ $key ];
+		/**
+		 * Try direct key.
+		 */
+		if ( is_array( $array ) || $array instanceof \ArrayAccess ) {
+			if ( isset( $array[ $key ] ) ) {
+				return $array[ $key ];
+			}
+		} else if ( is_object( $array ) ) {
+			if ( property_exists( $array, $key ) ) {
+				return $array->$key;
+			}
 		}
 
+		/**
+		 * Try subkeys after split.
+		 */
 		if ( count( $parts = explode( '/', $key, 2 ) ) > 1 ) {
 			return self::get( self::get( $array, $parts[0] ), $parts[1], $default );
 		}
