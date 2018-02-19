@@ -718,7 +718,8 @@ add_filter( 'gravityview/view/configuration/fields', function( $fields, $view ) 
 	 *  when saving the views.
 	 */
 	foreach ( $fields as $position => &$_fields ) {
-		if ( empty( $_fields ) ) {
+
+		if ( empty( $_fields ) || ! is_array( $_fields ) ) {
 			continue;
 		}
 
