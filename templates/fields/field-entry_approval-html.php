@@ -17,9 +17,9 @@ $entry = $gravityview->entry->as_entry();
  * @action `gravityview/field/approval/load_scripts` Trigger loading the field approval javascript
  * @see GravityView_Field_Approval::enqueue_and_localize_script
  * @since 1.19
+ * @since 2.0 Updated second param to use \GV\Template_Context
  *
- * @param object $gravityview The $gravityview field template context object.
- * @since future
+ * @param \GV\Template_Context The $gravityview field template context object.
  */
 do_action( 'gravityview/field/approval/load_scripts', $gravityview );
 

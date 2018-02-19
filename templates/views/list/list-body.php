@@ -20,6 +20,12 @@ if ( ! $gravityview->entries->count() ) {
 
 		$entry_slug = GravityView_API::get_entry_slug( $entry->ID, $entry->as_entry() );
 
+		/**
+         * @var bool $has_title
+         * @var bool $has_subtitle
+         * @var \GV\Field_Collection $title
+         * @var \GV\Field_Collection $subtitle
+         */
 		extract( $gravityview->template->extract_zone_vars( array( 'title', 'subtitle' ) ) );
 	?>
 		<div id="gv_list_<?php echo esc_attr( $entry_slug ); ?>" class="gv-list-view">
@@ -67,6 +73,16 @@ if ( ! $gravityview->entries->count() ) {
 			</div>
 		<?php }
 
+        }
+
+		/**
+		 * @var bool $has_image
+		 * @var bool $has_description
+         * @var bool $has_content_attributes
+		 * @var \GV\Field_Collection $image
+		 * @var \GV\Field_Collection $description
+         * @var \GV\Field_Collection $attributes
+		 */
 		extract( $gravityview->template->extract_zone_vars( array( 'image', 'description', 'content-attributes' ) ) );
 
 		if ( $has_image || $has_description || $has_content_attributes ) {
@@ -112,6 +128,12 @@ if ( ! $gravityview->entries->count() ) {
 			<?php
 		}
 
+		/**
+		 * @var bool $has_footer_left
+		 * @var bool $has_footer_right
+		 * @var \GV\Field_Collection $footer_left
+		 * @var \GV\Field_Collection $footer_right
+		 */
 		extract( $gravityview->template->extract_zone_vars( array( 'footer-left', 'footer-right' ) ) );
 
 		// Is the footer configured?

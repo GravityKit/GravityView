@@ -25,7 +25,7 @@
 				 * @filter `gravityview_entry_class` Modify the class applied to the entry row
 				 * @param string $alt Existing class. Default: if odd row, `alt`, otherwise empty string.
 				 * @param array $entry Current entry being displayed
-				 * @param object $gravityview Current $gravityview state
+				 * @param \GV\Template_Context $gravityview Current $gravityview state
 				 */
 				$class = apply_filters( 'gravityview_entry_class', $alt, $entry, $gravityview );
 
