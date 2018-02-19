@@ -50,6 +50,7 @@ if ( ! $gravityview->entries->count() ) {
 
 		/**
 		 * @action `gravityview_entry_before` Tap in before the the entry is displayed, inside the entry container
+         * @since 2.0 Updated second parameter to pass \GV\Template_Context instead of \GravityView_View
 		 * @param array $entry Gravity Forms Entry array
 		 * @param \GV\Template_Context $gravityview Current $gravityview state
 		 */

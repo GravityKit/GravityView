@@ -47,6 +47,9 @@ class View_Table_Template extends View_Template {
 	 * @return void
 	 */
 	public function the_entry( \GV\Entry $entry, $attributes ) {
+
+		$context = Template_Context::from_template( $this );
+
 		/**
 		 * @filter `gravityview/entry/row/attributes` Filter the row attributes for the row in table view.
 		 *
@@ -54,7 +57,7 @@ class View_Table_Template extends View_Template {
 		 * @param \GV\Entry $entry The entry this is being called for.
 		 * @param \GV\View_Template This template.
 		 *
-		 * @since future
+		 * @since 2.0
 		 */
 		$attributes = apply_filters( 'gravityview/entry/row/attributes', $attributes, $entry, $this );
 
@@ -68,9 +71,29 @@ class View_Table_Template extends View_Template {
 
 		?>
 			<tr<?php echo $attributes ? " $attributes" : ''; ?>>
-				<?php foreach ( $fields->all() as $field ) {
+                <?php
+
+                /**
+                 * @action `gravityview_table_cells_before` Inside the `tr` while rendering each entry in the loop. Can be used to insert additional table cells.
+                 * @since 1.0.7
+                 * @since 2.0 Updated to pass \GV\Template_Context instead of \GravityView_View
+                 * @param \GV\Template_Context $context Current $gravityview state
+                 */
+                do_action('gravityview_table_cells_before', $context );
+
+                foreach ( $fields->all() as $field ) {
 					$this->the_field( $field, $entry );
-				} ?>
+				}
+
+                /**
+                 * @action `gravityview_table_cells_after` Inside the `tr` while rendering each entry in the loop. Can be used to insert additional table cells.
+                 * @since 1.0.7
+                 * @since 2.0 Updated to pass \GV\Template_Context instead of \GravityView_View
+                 * @param \GV\Template_Context $context Current $gravityview state
+                 */
+                do_action('gravityview_table_cells_after', $context );
+
+				?>
 			</tr>
 		<?php
 	}
