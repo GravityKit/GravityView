@@ -38,7 +38,7 @@ class View implements \ArrayAccess {
 	public $widgets;
 
 	/**
-	 * @var \GV\Form The backing form for this view.
+	 * @var \GV\GF_Form|\GV\Form The backing form for this view.
 	 *
 	 * Contains the form that is sourced for entries in this view.
 	 *
