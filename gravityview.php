@@ -42,7 +42,7 @@ define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
 /**
  * GravityView requires at least this version of Gravity Forms to function properly.
  */
-define( 'GV_MIN_GF_VERSION', '1.9.14' );
+define( 'GV_MIN_GF_VERSION', '2.1' );
 
 /**
  * GravityView requires at least this version of WordPress to function properly.
