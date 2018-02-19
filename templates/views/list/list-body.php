@@ -34,8 +34,17 @@ if ( ! $gravityview->entries->count() ) {
          * @var \GV\Field_Collection $subtitle
          */
 		extract( $gravityview->template->extract_zone_vars( array( 'title', 'subtitle' ) ) );
+
+		/**
+		 * @filter `gravityview_entry_class` Modify the class applied to the entry row
+         * @since 2.0 Updated third parameter to pass \GV\Template_Context instead of \GravityView_View
+		 * @param string $entry_class Existing class. Default: `gv-list-view`
+		 * @param array $entry Current entry being displayed
+		 * @param \GV\Template_Context $gravityview Current $gravityview state
+		 */
+		$entry_class = apply_filters( 'gravityview_entry_class', 'gv-list-view', $entry->as_entry(), $gravityview );
 	?>
-		<div id="gv_list_<?php echo esc_attr( $entry_slug ); ?>" class="gv-list-view">
+        <div id="gv_list_<?php echo esc_attr( $entry_slug ); ?>" class="<?php echo gravityview_sanitize_html_class( $entry_class ); ?>">
 
 		<?php
 
