@@ -54,7 +54,7 @@ define( 'GV_MIN_WP_VERSION', '4.4' );
  * GravityView requires at least this version of PHP to function properly.
  * @since 1.12
  */
-define( 'GV_MIN_PHP_VERSION', '5.3' );
+define( 'GV_MIN_PHP_VERSION', '5.3.0' );
 
 /**
  * GravityView will require this version of PHP soon. False if no future PHP version changes are planned.
