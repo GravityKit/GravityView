@@ -36,7 +36,7 @@ if ( empty( $content ) ) {
 }
 
 // Replace the variables
-$content = GravityView_API::replace_variables( $content, $form, $entry );
+$content = GravityView_API::replace_variables( $content, $form, $entry, false, true, false );
 
 /**
  * @filter `gravityview/fields/custom/decode_shortcodes` Decode brackets in shortcodes
