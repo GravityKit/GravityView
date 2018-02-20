@@ -102,14 +102,20 @@ class GravityView_API {
 	 * Alias for GravityView_Merge_Tags::replace_variables()
 	 *
 	 * @see GravityView_Merge_Tags::replace_variables() Moved in 1.8.4
+	 * @since 1.22.4 - Added $nl2br, $format, $aux_data args
 	 *
-	 * @param  string      $text       Text to replace variables in
-	 * @param  array      $form        GF Form array
+	 * @param  string     $text         Text to replace variables in
+	 * @param  array      $form         GF Form array
 	 * @param  array      $entry        GF Entry array
-	 * @return string                  Text with variables maybe replaced
+	 * @param  bool       $url_encode   Pass return value through `url_encode()`
+	 * @param  bool       $esc_html     Pass return value through `esc_html()`
+	 * @param  bool       $nl2br        Convert newlines to <br> HTML tags
+	 * @param  string     $format       The format requested for the location the merge is being used. Possible values: html, text or url.
+	 * @param  array      $aux_data     Additional data to be used to replace merge tags {@see https://www.gravityhelp.com/documentation/article/gform_merge_tag_data/}
+	 * @return string                   Text with variables maybe replaced
 	 */
-	public static function replace_variables( $text, $form = array(), $entry = array() ) {
-		return GravityView_Merge_Tags::replace_variables( $text, $form, $entry );
+	public static function replace_variables( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = true, $nl2br = true, $format = 'html', $aux_data = array() ) {
+		return GravityView_Merge_Tags::replace_variables( $text, $form, $entry, $url_encode, $esc_html, $nl2br, $format, $aux_data );
 	}
 
 	/**
@@ -893,11 +899,24 @@ function gravityview_before() {
 	 * @param object $gravityview The $gravityview object available in templates.
 	 */
 	if ( count( $args = func_get_args() ) ) {
-		do_action( 'gravityview/template/before', reset( $args ) );
+		$gravityview = reset( $args );
+		if ( $gravityview instanceof \GV\Template_Context ) {
+			/**
+			 * @action `gravityview/template/before` Prepend content to the view.
+			 * @param \GV\Template_Context $gravityview The $gravityview object available in templates.
+			 */
+			do_action( 'gravityview/template/before', $gravityview );
+
+			/**
+			 * @deprecated Use `gravityview/template/before`
+			 */
+			return do_action( 'gravityview_before', $gravityview->view->ID );
+		}
 	}
 
 	/**
-	 * @action `gravityview_before` Display content before a View. Used to render widget areas. Rendered outside the View container `<div>`
+	 * @action `gravityview_before` Prepend content to the View container `<div>`
+	 * @deprecated Use `gravityview/template/before`.
 	 * @param int $view_id The ID of the View being displayed
 	 */
 	do_action( 'gravityview_before', gravityview_get_view_id() );
@@ -920,16 +939,25 @@ function gravityview_footer() {
 }
 
 function gravityview_after() {
-	/**
-	 * @action `gravityview/template/after` Append content to the view.
-	 * @param object $gravityview The $gravityview object available in templates.
-	 */
 	if ( count( $args = func_get_args() ) ) {
-		do_action( 'gravityview/template/after', reset( $args ) );
+		$gravityview = reset( $args );
+		if ( $gravityview instanceof \GV\Template_Context ) {
+			/**
+			 * @action `gravityview/template/after` Append content to the view.
+			 * @param \GV\Template_Context $gravityview The $gravityview object available in templates.
+			 */
+			do_action( 'gravityview/template/after', $gravityview );
+
+			/**
+			 * @deprecated Use `gravityview/template/after`
+			 */
+			return do_action( 'gravityview_after', $gravityview->view->ID );
+		}
 	}
 
 	/**
 	 * @action `gravityview_after` Append content to the View container `<div>`
+	 * @deprecated Use `gravityview/template/after`
 	 * @param int $view_id The ID of the View being displayed
 	 */
 	do_action( 'gravityview_after', gravityview_get_view_id() );

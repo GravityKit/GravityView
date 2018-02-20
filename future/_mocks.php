@@ -107,7 +107,19 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 		if ( ! empty( $criteria['sorting'] ) ) {
 			$field = new \GV\Field();
 			$field->ID = $criteria['sorting']['key'];
-			$direction = strtolower( $criteria['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
+			switch( strtolower( $criteria['sorting']['direction'] ) ) {
+				case 'asc':
+					$direction = \GV\Entry_Sort::ASC;
+					break;
+				case 'rand':
+					$direction = \GV\Entry_Sort::RAND;
+					break;
+				default:
+				case 'desc':
+					$direction = \GV\Entry_Sort::DESC;
+					break;
+			}
+
 			$mode = $criteria['sorting']['is_numeric'] ? \GV\Entry_Sort::NUMERIC : \GV\Entry_Sort::ALPHA;
 			$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction, $mode ) );
 		}
@@ -672,7 +684,7 @@ add_filter( 'gravityview/configuration/fields', function( $fields ) {
 
 	foreach ( $fields as $position => &$_fields ) {
 
-		if ( empty( $_fields ) ) {
+		if ( empty( $_fields ) || ! is_array( $_fields ) ) {
 			continue;
 		}
 
@@ -689,7 +701,7 @@ add_filter( 'gravityview/configuration/fields', function( $fields ) {
 
 
 /** Add a future fix to make sure field configurations include the form ID. */
-add_filter( 'gravityview/view/fields/configuration', function( $fields, $view ) {
+add_filter( 'gravityview/view/configuration/fields', function( $fields, $view ) {
 	if ( ! $view || empty( $fields ) ) {
 		return $fields;
 	}
@@ -706,7 +718,8 @@ add_filter( 'gravityview/view/fields/configuration', function( $fields, $view ) 
 	 *  when saving the views.
 	 */
 	foreach ( $fields as $position => &$_fields ) {
-		if ( empty( $_fields ) ) {
+
+		if ( empty( $_fields ) || ! is_array( $_fields ) ) {
 			continue;
 		}
 

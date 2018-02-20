@@ -1,11 +1,18 @@
 {
   "name": "gravityview/GravityView",
-  "type": "project",
+  "type": "wordpress-plugin",
   "description": "The best way to display Gravity Forms entries on your website.",
   "keywords": ["gravityview", "gravity view", "gravity forms directory", "gravity forms"],
   "homepage": "https://gravityview.co/",
   "license": "GPL-2.0+",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/katzwebservices/standalone-phpenkoder"
+    }
+  ],
   "require": {
-    "php": ">=5.2.4"
+    "php": ">=5.2.4",
+    "katzwebservices/standalone-phpenkoder": "dev-master"
   }
 }

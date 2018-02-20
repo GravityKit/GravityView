@@ -20,11 +20,13 @@ php:
   - 5.4
   - 5.6
   - 7.0
+  - 7.1
+  - 7.2
 
 env:
   - WP_VERSION=latest WP_MULTISITE=0
   - WP_VERSION=latest WP_MULTISITE=0 GF_VERSION=2.3
-  - WP_VERSION=4.0 WP_MULTISITE=0
+  - WP_VERSION=4.4 WP_MULTISITE=0
 
 matrix:
   include:
@@ -32,7 +34,11 @@ matrix:
       env: WP_VERSION=latest WP_MULTISITE=1
   exclude:
       - php: 7.0
-        env: WP_VERSION=4.0 WP_MULTISITE=0
+        env: WP_VERSION=4.4 WP_MULTISITE=0
+      - php: 7.1
+        env: WP_VERSION=4.4 WP_MULTISITE=0
+      - php: 7.2
+        env: WP_VERSION=4.4 WP_MULTISITE=0
 
 install:
   - curl -s https://getcomposer.org/installer | php

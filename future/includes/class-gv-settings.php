@@ -11,9 +11,40 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  */
 class Settings {
 	/**
-	 * @var array Main storage for key-avlues in this collection.
+	 * @var array Main storage for key-values in this collection.
 	 */
 	private $settings = array();
+
+	/**
+	 * Create with new.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @param array $settings Initial settings. Default: none.
+	 * @return \GV\Settings
+	 */
+	public function __construct( $settings = array() ) {
+		if ( is_array( $settings ) && ! empty( $settings ) ) {
+			$this->update( $settings );
+		}
+	}
+
+	/**
+	 * Mass update values from the allowed ones.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @param array An array of settings to update.
+	 * @return \GV\Settings self chain.
+	 */
+	public function update( $settings ) {
+		foreach ( $settings as $key => $value ) {
+			$this->set( $key, $value );
+		}
+		return $this;
+	}
 
 	/**
 	 * Set a setting.
@@ -26,7 +57,7 @@ class Settings {
 	 * @return void
 	 */
 	public function set( $key, $value ) {
-		$this->settings[$key] = $value;
+		$this->settings[ $key ] = $value;
 	}
 
 	/**
@@ -40,7 +71,7 @@ class Settings {
 	 * @return mixed|null
 	 */
 	public function get( $key, $default = null ) {
-		return isset( $this->settings[$key] ) ? $this->settings[$key] : $default;
+		return Utils::get( $this->settings, $key, $default );
 	}
 
 	/**

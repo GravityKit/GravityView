@@ -2,6 +2,7 @@
 /**
  * The default post_content field output template.
  *
+ * @global \GV\Template_Context $gravityview
  * @since future
  */
 $display_value = $gravityview->display_value;

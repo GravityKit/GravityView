@@ -2,6 +2,7 @@
 /**
  * The default post ID field output template.
  *
+ * @global \GV\Template_Context $gravityview
  * @since future
  */
 $display_value = $gravityview->display_value;

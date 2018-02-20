@@ -163,15 +163,19 @@ class GravityView_Merge_Tags {
 	 * to disable or enable replacements.
 	 * @since 1.8.4 - Moved to GravityView_Merge_Tags
 	 * @since 1.15.1 - Add support for $url_encode and $esc_html arguments
+	 * @since 1.22.4 - Added $nl2br, $format, $aux_data args
 	 *
 	 * @param  string           $text       Text to replace variables in
 	 * @param  array            $form        GF Form array
 	 * @param  array            $entry        GF Entry array
 	 * @param  bool             $url_encode   Pass return value through `url_encode()`
 	 * @param  bool             $esc_html     Pass return value through `esc_html()`
+	 * @param  bool             $nl2br        Convert newlines to <br> HTML tags
+	 * @param  string           $format       The format requested for the location the merge is being used. Possible values: html, text or url.
+	 * @param  array            $aux_data     Additional data to be used to replace merge tags {@see https://www.gravityhelp.com/documentation/article/gform_merge_tag_data/}
 	 * @return string           Text with variables maybe replaced
 	 */
-	public static function replace_variables($text, $form = array(), $entry = array(), $url_encode = false, $esc_html = true ) {
+	public static function replace_variables($text, $form = array(), $entry = array(), $url_encode = false, $esc_html = true, $nl2br = true, $format = 'html', $aux_data = array() ) {
 
 		/**
 		 * @filter `gravityview_do_replace_variables` Turn off merge tag variable replacements.\n
@@ -192,7 +196,7 @@ class GravityView_Merge_Tags {
 		/**
 		 * Make sure the required keys are set for GFCommon::replace_variables
 		 *
-		 * @internal Reported to GF Support on 12/3
+		 * @internal Reported to GF Support on 12/3/2016
 		 * @internal Fixed $form['title'] in Gravity Forms
 		 * @see      https://github.com/gravityforms/gravityforms/pull/27/files
 		 */
@@ -200,7 +204,7 @@ class GravityView_Merge_Tags {
 		$form['id']     = isset( $form['id'] ) ? $form['id'] : '';
 		$form['fields'] = isset( $form['fields'] ) ? $form['fields'] : array();
 
-		return GFCommon::replace_variables( $text, $form, $entry, $url_encode, $esc_html );
+		return GFCommon::replace_variables( $text, $form, $entry, $url_encode, $esc_html, $nl2br, $format, $aux_data );
 	}
 
 	/**

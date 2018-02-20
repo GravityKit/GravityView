@@ -5,7 +5,7 @@
  *
  * @extends GravityView_Widget
  */
-class GravityView_Widget_Page_Links extends GravityView_Widget {
+class GravityView_Widget_Page_Links extends \GV\Widget {
 
 	protected $show_on_single = false;
 

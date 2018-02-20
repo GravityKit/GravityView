@@ -55,7 +55,7 @@ class GravityView_Admin_No_Conflict {
 			return;
 		}
 
-		$no_conflict_mode = GravityView_Settings::getSetting('no-conflict-mode');
+		$no_conflict_mode = gravityview()->plugin->settings->get( 'no-conflict-mode' );
 
 		if( empty( $no_conflict_mode ) ) {
 			return;
@@ -124,7 +124,7 @@ class GravityView_Admin_No_Conflict {
 			}
 		}
 
-		$no_conflict_mode = GravityView_Settings::getSetting('no-conflict-mode');
+		$no_conflict_mode = gravityview()->plugin->settings->get( 'no-conflict-mode' );
 
 		// If no conflict is off, jQuery will suffice.
 		if( empty( $no_conflict_mode ) ) {

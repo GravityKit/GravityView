@@ -121,27 +121,18 @@ abstract class View_Template extends Template {
 	 * @return void
 	 */
 	public function render() {
+		$context = Template_Context::from_template( $this );
 
 		/**
 		 * Make various pieces of data available to the template
 		 *  under the $gravityview scoped variable.
 		 *
-		 * @filter `gravityview/template/view/data`
-		 * @param array $data The default data available to all View templates.
+		 * @filter `gravityview/template/view/context`
+		 * @param \GV\Template_Context $context The context for this template.
 		 * @param \GV\View_Template $template The current template.
 		 * @since future
 		 */
-		$this->push_template_data( apply_filters( 'gravityview/template/view/data', array(
-
-			'template' => $this,
-
-			/** Shortcuts */
-			'view' => $this->view,
-			'fields' => $this->view->fields,
-			'entries' => $this->entries->fetch(),
-			'request' => $this->request,
-
-		), $this ), 'gravityview' );
+		$this->push_template_data( apply_filters( 'gravityview/template/view/context', $context, $this ), 'gravityview' );
 
 		/** Load the template. */
 		$this->get_template_part( static::$slug );

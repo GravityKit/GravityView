@@ -75,9 +75,27 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 			// Prevent the SEO from being checked. Eesh.
 			add_filter( 'wpseo_use_page_analysis', '__return_false' );
 
+			add_filter( 'option_wpseo', array( $this, 'disable_content_analysis' ) );
+
 			// WordPress SEO Plugin
 			add_filter( 'option_wpseo_titles', array( $this, 'hide_wordpress_seo_metabox' ) );
 		}
+	}
+
+	/**
+	 * Don't try to analyze content for Views
+	 *
+	 * @since  1.22.4
+	 * @param  array $options Existing WPSEO options array
+	 *
+	 * @return array
+	 */
+	public function disable_content_analysis( $options ) {
+
+		$options['keyword_analysis_active'] = false;
+		$options['content_analysis_active'] = false;
+
+		return $options;
 	}
 
 	/**
@@ -90,7 +108,7 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 	 * @param  array       $options WP SEO options array
 	 * @return array               Modified array if on post-new.php
 	 */
-	function hide_wordpress_seo_metabox( $options = array() ) {
+	public function hide_wordpress_seo_metabox( $options = array() ) {
 		global $pagenow;
 
 		// New View page

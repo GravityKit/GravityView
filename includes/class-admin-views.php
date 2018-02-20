@@ -134,7 +134,7 @@ class GravityView_Admin_Views {
 	 */
 	static function gform_toolbar_menu( $menu_items = array(), $id = NULL ) {
 
-		$connected_views = gravityview_get_connected_views( $id );
+		$connected_views = gravityview_get_connected_views( $id, array( 'post_status' => 'any' ) );
 
 		if( empty( $connected_views ) ) {
 
@@ -269,8 +269,15 @@ class GravityView_Admin_Views {
 		/**
 		 * @filter `gravityview_tooltips` The tooltips GravityView adds to the Gravity Forms tooltip array
 		 * @param array $gv_tooltips Associative array with unique keys containing array of `title` and `value` keys, as expected by `gform_tooltips` filter
+		 * @deprecated Renamed to `gravityview/metaboxes/tooltips`
 		 */
 		$gv_tooltips = apply_filters( 'gravityview_tooltips', $gv_tooltips );
+
+		/**
+		 * @filter `gravityview/metaboxes/tooltips` The tooltips GravityView adds to the Gravity Forms tooltip array
+		 * @param array $gv_tooltips Associative array with unique keys containing array of `title` and `value` keys, as expected by `gform_tooltips` filter
+		 */
+		$gv_tooltips = apply_filters( 'gravityview/metaboxes/tooltips', $gv_tooltips );
 
 		foreach ( $gv_tooltips as $key => $tooltip ) {
 
@@ -767,6 +774,9 @@ class GravityView_Admin_Views {
 		//merge without loosing the keys
 		$fields = $fields + $meta_fields + $default_fields;
 
+		// Move Custom Content to top
+		$fields = array( 'custom' => $fields['custom'] ) + $fields;
+
 		return $fields;
 	}
 
@@ -792,17 +802,12 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Get the list of registered widgets. Each item is used to instantiate a GravityView_Admin_View_Widget object
+	 * @deprecated Use \GV\Widget::registered()
 	 * @since 1.13.1
 	 * @return array
 	 */
 	function get_registered_widgets() {
-		/**
-		 * @filter `gravityview_register_directory_widgets` Get the list of registered widgets. Each item is used to instantiate a GravityView_Admin_View_Widget object
-		 * @param array $registered_widgets Empty array
-		 */
-		$registered_widgets = apply_filters( 'gravityview_register_directory_widgets', array() );
-
-		return $registered_widgets;
+		return \GV\Widget::registered();
 	}
 
 	/**

@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
-Requires at least: 3.3
-Tested up to: 4.8.1
+Requires at least: 4.4
+Tested up to: 4.9.4
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -24,7 +24,70 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 The changelog will not be maintained for beta versions. __For information about the Beta, please [read up here](https://github.com/gravityview/GravityView/wiki/The-Future-of-GravityView)__.
 
-= 1.22 on September 4, 2017 =
+= 1.22.5 on January 25, 2018 =
+
+* Improves support for [DIY Layout](https://gravityview.co/extensions/diy-layout/), a layout for designers & developers to take full advantage of GravityView
+* Tweak: Show "Embed Shortcode" helper if a View has widgets configured but not Fields
+* Fixed: Add Note support for Gravity Forms 2.3 (it's coming soon)
+* Fixed: `tabindex` not properly set for Update/Cancel/Delete buttons in Edit Entry
+* Fixed: Hide Yoast SEO Content & SEO Analysis functionality when editing a View
+* Fixed: Line breaks were being added to Custom Content fields and widgets, even when "Automatically add paragraphs to content" wasn't checked
+
+__Developer Updates:__
+
+* Add `$nl2br`, `$format`, `$aux_data` parameters to `GravityView_API::replace_variables()` to be consistent with `GFCommon::replace_variables()`
+
+= 1.22.4? =
+
+Yes, we skipped a minor release (1.22.4 exists only in our hearts). Thanks for noticing!
+
+= 1.22.3 on December 21, 2017 =
+
+* Added: Support for displaying files uploaded using the Gravity Forms Dropbox Addon (thanks, @mgratch and @ViewFromTheBox!)
+* Added: Merge Tags now are replaced when in `[gvlogic]` shortcodes not in a View
+* Fixed: Filtering by date in Advanced Filters prevented single entries from being visible
+* Fixed: `gravityview/capabilities/allow_logged_out` filter wasn't living up to its name (allowing logged-out visitors to edit entries)
+
+__Developer Updates:__
+
+* Modified: We're reverting changes made to Advanced Custom Field plugin compatibility
+* Added: `gravityview/fields/fileupload/file_path` filter in `class-gravityview-field-fileupload.php`
+* Modified: Removed `!important` from the CSS height rule for the `.gv-notes .gv-note-add textarea` rule
+
+= 1.22.2 on December 7, 2017 =
+
+* Fixed: Fatal error when running Ultimate Member 2.0 beta
+* Fixed: Issue deleting entries when Advanced Filter rules don't match
+* Fixed: Delete Entry messages not displaying when entry is deleted
+* Fixed: ACF shortcodes in WYSIWYG fields no longer processed since 1.22.1
+* Fixed: Fatal error when using old installations of Gravity Forms
+
+__Developer Updates:__
+
+* Added: `gravityview/edit_entry/unset_hidden_field_values` filter to prevent deleting values for fields hidden by Conditional Logic
+
+= 1.22.1.1 on November 30, 2017 =
+
+* Fixed: When displaying Email fields, PHP warning about `StandalonePHPEnkoder.php`
+
+= 1.22.1 on November 29, 2017 =
+
+* Moved "Custom Content" field to top of field picker, in what Rafael calls the "Best idea of 2017 🏆"
+* Added: When Gravity Forms 2.3 is released, support for "Random" entry order will be enabled
+* Fixed: Entry oEmbeds not working when using "Plain" URL formats to embed
+* Fixed: Only published Views showing in Gravity Forms "Connected Views" menu
+* Fixed: Deleting entries can cause entries to be displayed from a different View when Advanced Filters is activated and multiple Views are embedded on a page
+* Fixed: Infinite loop when using `[gravityview]` shortcode inside ACF fields
+
+__Developer Updates:__
+
+* Added: `GravityView_HTML_Elements` class for generating commonly-used HTML elements
+* Added: Way to disable front-end cookies for our friends in Europe ([see code here](https://gist.github.com/zackkatz/354a71dc47ffef072ed725706cf455ed))
+* Added: `gravityview/metaboxes/data-source/before` and `gravityview/metaboxes/data-source/after` hooks
+* Added: Second `$args` param added to `gravityview_get_connected_views()` function
+* Modified: Pass fifth parameter `$input_type` to `GravityView_Template::assign_field_options` method
+
+= 1.22 on September 4, 2017=
 
 * Added: Support for Gravity Forms 2.3
 * Fixed: Fatal error when Divi (and other Elegant Themes) try to load GravityView widgets while editing a post with a sidebar block in it—now the sidebar block will not be rendered

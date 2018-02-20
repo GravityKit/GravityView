@@ -22,7 +22,7 @@ abstract class Form extends Source {
 	public $ID = null;
 
 	/**
-	 * @var mixed The backing form.
+	 * @var array The backing form.
 	 */
 	private $form;
 

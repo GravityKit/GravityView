@@ -254,10 +254,10 @@ class GravityView_Welcome {
 
 				<div class="feature-section col two-col" style="margin:0; padding: 0;">
 					<div class="col col-1">
-                        <div class="media-container"><img alt="{current_post}" src="<?php echo plugins_url( 'assets/images/screenshots/current_post.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
-                        <h4 class="higher">New <code>{current_post}</code> Merge Tag</h4>
-                        <p>It may not sound like much, but it's powerful! Use it together with the <code>[gvlogic]</code> shortcode to show or hide content based on the page your View is embedded on. Use with the Advanced Filter Extension.</p>
-                        <p><a href="https://docs.gravityview.co/article/412-currentpost-merge-tag" class="button-primary button button-large">Learn more about using the Merge Tag</a></p>
+                        <div class="media-container"><iframe width="489" height="275" src="https://www.youtube-nocookie.com/embed/ANEiBP1tON0?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+                        <h4 class="higher"><abbr title="Do It Yourself">DIY</abbr> Layout</h4>
+                        <p>The View layout tool for designers &amp; developers. Included in Galactic licenses. DIY allows you to define your own CSS and HTML structure instead of needing to modify our predefined layouts to fit your needs.</p>
+                        <p><a href="https://gravityview.co/extensions/diy-layout/?utm_source=admin-welcome&utm_medium=plugin&utm_campaign=whats-new&utm_content=button" class="button-primary button button-large">Learn More &amp; Get DIY Now</a></p>
                     </div>
                     <div class="col col-2">
                         <div class="media-container"><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ) ); ?>"><img alt="Beta!" src="<?php echo plugins_url( 'assets/images/screenshots/beta-program.jpg', GRAVITYVIEW_FILE ); ?>" style="border: none"></a></div>
@@ -270,6 +270,87 @@ class GravityView_Welcome {
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
+
+                <h3>1.22.5 on January 25, 2018</h3>
+
+                <ul>
+                    <li>Improves support for <a href="https://gravityview.co/extensions/diy-layout/">DIY Layout</a>, a layout for designers &amp; developers to take full advantage of GravityView</li>
+                    <li>Tweak: Show &quot;Embed Shortcode&quot; helper if a View has widgets configured but not Fields</li>
+                    <li>Fixed: Add Note support for Gravity Forms 2.3 (it&#39;s coming soon)</li>
+                    <li>Fixed: <code>tabindex</code> not properly set for Update/Cancel/Delete buttons in Edit Entry</li>
+                    <li>Fixed: Hide Yoast SEO Content &amp; SEO Analysis functionality when editing a View</li>
+                    <li>Fixed: Line breaks were being added to Custom Content fields and widgets, even when &quot;Automatically add paragraphs to content&quot; wasn&#39;t checked</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Add <code>$nl2br</code>, <code>$format</code>, <code>$aux_data</code> parameters to <code>GravityView_API::replace_variables()</code> to be consistent with <code>GFCommon::replace_variables()</code></li>
+                </ul>
+
+                <h3>1.22.4?</h3>
+
+                <p>Yes, we skipped a minor release (1.22.4 exists only in our hearts). Thanks for noticing!</p>
+
+                <h3>1.22.3 on December 21, 2017</h3>
+
+                <ul>
+                    <li>Added: Support for displaying files uploaded using the Gravity Forms Dropbox Addon (thanks, @mgratch and @ViewFromTheBox!)</li>
+                    <li>Added: Merge Tags now are replaced when in <code>[gvlogic]</code> shortcodes not in a View</li>
+                    <li>Fixed: Filtering by date in Advanced Filters prevented single entries from being visible</li>
+                    <li>Fixed: <code>gravityview/capabilities/allow_logged_out</code> filter wasn&#39;t living up to its name (allowing logged-out visitors to edit entries)</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Modified: We&#39;re reverting changes made to Advanced Custom Field plugin compatibility</li>
+                    <li>Added: <code>gravityview/fields/fileupload/file_path</code> filter in <code>class-gravityview-field-fileupload.php</code></li>
+                    <li>Modified: Removed <code>!important</code> from the CSS height rule for the <code>.gv-notes .gv-note-add textarea</code> rule</li>
+                </ul>
+
+                <h3>1.22.2 on December 7, 2017</h3>
+
+                <ul>
+                    <li>Fixed: Fatal error when running Ultimate Member 2.0 beta</li>
+                    <li>Fixed: Issue deleting entries when Advanced Filter rules don&#39;t match</li>
+                    <li>Fixed: Delete Entry messages not displaying when entry is deleted</li>
+                    <li>Fixed: ACF shortcodes in WYSIWYG fields no longer processed since 1.22.1</li>
+                    <li>Fixed: Fatal error when using old installations of Gravity Forms</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Added: <code>gravityview/edit_entry/unset_hidden_field_values</code> filter to prevent deleting values for fields hidden by Conditional Logic</li>
+                </ul>
+
+                <h3>1.22.1.1 on November 29, 2017</h3>
+
+                <ul>
+                    <li>Fixed: When displaying Email fields, PHP warning about <code>StandalonePHPEnkoder.php</code></li>
+                </ul>
+
+                <h3>1.22.1 on November 29, 2017</h3>
+
+                <ul>
+                    <li>Moved &quot;Custom Content&quot; field to top of field picker, in what Rafael calls the &quot;Best idea of 2017 🏆&quot;</li>
+                    <li>Added: When Gravity Forms 2.3 is released, support for &quot;Random&quot; entry order will be enabled</li>
+                    <li>Fixed: Entry oEmbeds not working when using &quot;Plain&quot; URL formats to embed</li>
+                    <li>Fixed: Only published Views showing in Gravity Forms &quot;Connected Views&quot; menu</li>
+                    <li>Fixed: Deleting entries can cause entries to be displayed from a different View when Advanced Filters is activated and multiple Views are embedded on a page</li>
+                    <li>Fixed: Infinite loop when using <code>[gravityview]</code> shortcode inside ACF fields</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Added: <code>GravityView_HTML_Elements</code> class for generating commonly-used HTML elements</li>
+                    <li>Added: Way to disable front-end cookies for our friends in Europe (<a href="https://gist.github.com/zackkatz/354a71dc47ffef072ed725706cf455ed">see code here</a>)</li>
+                    <li>Added: <code>gravityview/metaboxes/data-source/before</code> and <code>gravityview/metaboxes/data-source/after</code> hooks</li>
+                    <li>Added: Second <code>$args</code> param added to <code>gravityview_get_connected_views()</code> function</li>
+                    <li>Modified: Pass fifth parameter <code>$input_type</code> to <code>GravityView_Template::assign_field_options</code> method</li>
+                </ul>
 
                 <h3>1.22 on September 4, 2017</h3>
 
@@ -480,7 +561,7 @@ class GravityView_Welcome {
 						<li class="wp-person">Chinese translation by <a href="https://www.transifex.com/user/profile/michaeledi/">@michaeledi</a></li>
 						<li class="wp-person">Persian translation by <a href="https://www.transifex.com/user/profile/azadmojtaba/">@azadmojtaba</a></li>
 						<li class="wp-person">Russian translation by <a href="https://www.transifex.com/user/profile/gkovaleff/">@gkovaleff</a></li>
-						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, <a href="https://github.com/mgratch">@mgratch</a>, and <a href="https://github.com/stevehenty">@stevehenty</a></li>
+						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, <a href="https://github.com/mgratch">@mgratch</a>, <a href="https://github.com/ViewFromTheBox">@ViewFromTheBox</a>, and <a href="https://github.com/stevehenty">@stevehenty</a></li>
 					</ul>
 
 					<h4><?php esc_attr_e( 'Want to contribute?', 'gravityview' ); ?></h4>

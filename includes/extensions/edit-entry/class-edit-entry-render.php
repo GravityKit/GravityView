@@ -360,7 +360,19 @@ class GravityView_Edit_Entry_Render {
     private function unset_hidden_field_values() {
 	    global $wpdb;
 
-		if ( version_compare( GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) ) {
+		/**
+		 * @filter `gravityview/edit_entry/unset_hidden_field_values` Whether to delete values of fields hidden by conditional logic
+         * @since 1.22.2
+         * @param bool $unset_hidden_field_values Default: true
+         * @param GravityView_Edit_Entry_Render $this This object
+		 */
+		$unset_hidden_field_values = apply_filters( 'gravityview/edit_entry/unset_hidden_field_values', true, $this );
+
+		if( ! $unset_hidden_field_values ) {
+			return;
+		}
+
+        if ( version_compare( GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) && method_exists( 'GFFormsModel', 'get_entry_meta_table_name' ) ) {
 			$entry_meta_table = GFFormsModel::get_entry_meta_table_name();
 			$current_fields = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key, meta_value FROM $entry_meta_table WHERE entry_id=%d", $this->entry['id'] ) );
 		} else {

@@ -10,6 +10,20 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * The View Settings class.
  */
 class View_Settings extends Settings {
+	/**
+	 * Retrieve an instance of the settings with default values.
+	 * @param bool $detailed Whether to return detailed setting meta information or just the value.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @return \GV\View_Settings
+	 */
+	public static function with_defaults( $detailed = false ) {
+		$settings = new self();
+		$settings->update( self::defaults( $detailed ) );
+		return $settings;
+	}
 
 	/**
 	 * Retrieve the default View settings.
@@ -31,13 +45,8 @@ class View_Settings extends Settings {
 	 *      @param[out] boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
 	 */
 	public static function defaults( $detailed = false, $group = null ) {
-		/**
-		 * @filter `gravityview_default_args` Modify the default settings for new Views
-		 * @param[in,out] array $default_settings Array of default settings.
-		 * @deprecated
-		 * @see filter `gravityview/view/settings/defaults`
-		 */
-		$default_settings = apply_filters( 'gravityview_default_args', array(
+
+		$default_settings = array(
 			'id' => array(
 				'label' => __('View ID', 'gravityview'),
 				'type' => 'number',
@@ -139,7 +148,6 @@ class View_Settings extends Settings {
 				'options' => array(
 					'ASC' => __('ASC', 'gravityview'),
 					'DESC' => __('DESC', 'gravityview'),
-					//'RAND' => __('Random', 'gravityview'),
 				),
 				'show_in_shortcode' => true,
 			),
@@ -228,7 +236,19 @@ class View_Settings extends Settings {
 				'value' => '',
 				'show_in_shortcode' => false,
 			),
-		) );
+		);
+
+		if ( version_compare( \GFCommon::$version, '2.3-beta-4', '>=' ) ) {
+			$default_settings['sort_direction']['options']['RAND'] = __( 'Random', 'gravityview' );
+		}
+
+		/**
+		 * @filter `gravityview_default_args` Modify the default settings for new Views
+		 * @param[in,out] array $default_args Array of default args.
+		 * @deprecated
+		 * @see filter `gravityview/view/settings/defaults`
+		 */
+		$default_settings = apply_filters( 'gravityview_default_args', $default_settings );
 
 		/**
 		 * @filter `gravityview/view/defaults` Modify the default settings for new Views
@@ -246,7 +266,7 @@ class View_Settings extends Settings {
 
 		// But sometimes, we want all the details.
 		} else {
-			foreach ($default_settings as $key => $value) {
+			foreach ( $default_settings as $key => $value ) {
 
 				// If the $group argument is set for the method,
 				// ignore any settings that aren't in that group.
@@ -257,21 +277,6 @@ class View_Settings extends Settings {
 				}
 			}
 			return $default_settings;
-		}
-	}
-
-	/**
-	 * Mass update values from the allowed ones.
-	 *
-	 * @api
-	 * @since future
-	 *
-	 * @param array An array of settings to update.
-	 * @return void
-	 */
-	public function update( $settings ) {
-		foreach ( $settings as $key => $value ) {
-			$this->set( $key, $value );
 		}
 	}
 

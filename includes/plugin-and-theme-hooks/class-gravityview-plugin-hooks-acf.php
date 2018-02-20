@@ -25,6 +25,11 @@ class GravityView_Plugin_Hooks_ACF extends GravityView_Plugin_and_Theme_Hooks {
 	protected $function_name = 'acf';
 
 	/**
+	 * @since 1.22.2.1
+	 */
+	protected $class_name = 'acf';
+
+	/**
 	 * @since 1.16.5
 	 */
 	protected function add_hooks() {
@@ -43,12 +48,14 @@ class GravityView_Plugin_Hooks_ACF extends GravityView_Plugin_and_Theme_Hooks {
 	 */
 	function add_meta_keys_from_post( $meta_keys = array(), $post_id = 0 ) {
 
-		// Can never be too careful
+		// Can never be too careful: double-check that ACF is active and the function exists
 		if ( ! function_exists( 'get_field_objects' ) ) {
 			return $meta_keys;
 		}
 
-		if( $acf_keys = get_field_objects( $post_id, array( 'load_value' => false ) ) ) {
+		$acf_keys = get_field_objects( $post_id, array( 'load_value' => false ) );
+
+		if( $acf_keys ) {
 			return array_merge( array_keys( $acf_keys ), $meta_keys );
 		}
 

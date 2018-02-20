@@ -99,7 +99,7 @@ abstract class Entry {
 	 * @since future
 	 *
 	 * @param \GV\View $view The View context.
-	 * @param \GV\Ruquest $request The Request (current if null).
+	 * @param \GV\Request $request The Request (current if null).
 	 * @param boolean $track_directory Keep the housing directory arguments intact (used for breadcrumbs, for example). Default: true.
 	 *
 	 * @return string The permalink to this entry.
@@ -117,8 +117,8 @@ abstract class Entry {
 
 		/** This is not a regular view. */
 		if ( ! $request->is_view() ) {
+
 			/** Must be an embed of some sort. */
-			
 			if ( is_object( $post ) && is_numeric( $post->ID ) ) {
 				$permalink = get_permalink( $post->ID );
 				$args['gvid'] = $view->ID;

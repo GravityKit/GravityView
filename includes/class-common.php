@@ -748,22 +748,22 @@ class GVCommon {
 
 		switch ( $operation ) {
 			case 'equals':
-				$value = GFFormsModel::matches_operation( $val1, $val2, 'is' );
+				$value = self::matches_operation( $val1, $val2, 'is' );
 				break;
 			case 'greater_than_or_is':
 			case 'greater_than_or_equals':
-				$is    = GFFormsModel::matches_operation( $val1, $val2, 'is' );
-				$gt    = GFFormsModel::matches_operation( $val1, $val2, 'greater_than' );
+				$is    = self::matches_operation( $val1, $val2, 'is' );
+				$gt    = self::matches_operation( $val1, $val2, 'greater_than' );
 				$value = ( $is || $gt );
 				break;
 			case 'less_than_or_is':
 			case 'less_than_or_equals':
-				$is    = GFFormsModel::matches_operation( $val1, $val2, 'is' );
-				$gt    = GFFormsModel::matches_operation( $val1, $val2, 'less_than' );
+				$is    = self::matches_operation( $val1, $val2, 'is' );
+				$gt    = self::matches_operation( $val1, $val2, 'less_than' );
 				$value = ( $is || $gt );
 				break;
 			case 'not_contains':
-				$contains = GFFormsModel::matches_operation( $val1, $val2, 'contains' );
+				$contains = self::matches_operation( $val1, $val2, 'contains' );
 				$value    = ! $contains;
 				break;
 			/**
@@ -784,7 +784,7 @@ class GVCommon {
 					// For JSON, we want to compare as "in" or "not in" rather than "contains"
 					foreach ( $json_val_1 as $item_1 ) {
 						foreach ( $json_val_2 as $item_2 ) {
-							$json_in = GFFormsModel::matches_operation( $item_1, $item_2, 'is' );
+							$json_in = self::matches_operation( $item_1, $item_2, 'is' );
 
 							if( $json_in ) {
 								break 2;
@@ -793,6 +793,23 @@ class GVCommon {
 					}
 
 					$value = ( $operation === 'in' ) ? $json_in : ! $json_in;
+				}
+				break;
+
+			case 'less_than':
+			case '<' :
+				if ( is_string( $val1 ) && is_string( $val2 ) ) {
+					$value = $val1 < $val2;
+				} else {
+					$value = GFFormsModel::matches_operation( $val1, $val2, $operation );
+				}
+				break;
+			case 'greater_than':
+			case '>' :
+				if ( is_string( $val1 ) && is_string( $val2 ) ) {
+					$value = $val1 > $val2;
+				} else {
+					$value = GFFormsModel::matches_operation( $val1, $val2, $operation );
 				}
 				break;
 			default:
@@ -878,6 +895,7 @@ class GVCommon {
 
 			if ( is_null( $field ) ) {
 				$field_value = isset( $entry[ $k ] ) ? $entry[ $k ] : null;
+				$field = $k;
 			} else {
 				$field_value  = GFFormsModel::get_lead_field_value( $entry, $field );
 				 // If it's a complex field, then fetch the input's value, if exists at the current key. Otherwise, let GF handle it
@@ -886,7 +904,7 @@ class GVCommon {
 
 			$operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
 
-			$is_value_match = GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field );
+			$is_value_match = GravityView_GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field );
 
 			// Any match is all we need to know
 			if ( $is_value_match && 'any' === $mode ) {
@@ -1246,7 +1264,7 @@ class GVCommon {
 			 * @param array $fields Multi-array of fields with first level being the field zones.
 			 * @param \GV\View $view The View the fields are being pulled for.
 			 */
-			$fields = apply_filters( 'gravityview/view/fields/configuration', $fields, \GV\View::by_id( $post_id ) );
+			$fields = apply_filters( 'gravityview/view/configuration/fields', $fields, \GV\View::by_id( $post_id ) );
 		}
 
 		return $fields;
@@ -1396,7 +1414,7 @@ class GVCommon {
 	 * @param string $content Content to encrypt
 	 * @param string $message Message shown if Javascript is disabled
 	 *
-	 * @see  https://github.com/jnicol/standalone-phpenkoder StandalonePHPEnkoder on Github
+	 * @see  https://github.com/katzwebservices/standalone-phpenkoder StandalonePHPEnkoder on Github
 	 *
 	 * @since 1.7
 	 *
@@ -1407,7 +1425,7 @@ class GVCommon {
 		$output = $content;
 
 		if ( ! class_exists( 'StandalonePHPEnkoder' ) ) {
-			include_once( GRAVITYVIEW_DIR . 'includes/lib/standalone-phpenkoder/StandalonePHPEnkoder.php' );
+			include_once( GRAVITYVIEW_DIR . 'includes/lib/StandalonePHPEnkoder.php' );
 		}
 
 		if ( class_exists( 'StandalonePHPEnkoder' ) ) {

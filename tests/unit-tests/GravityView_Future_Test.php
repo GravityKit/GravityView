@@ -27,8 +27,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		\GV\Mocks\Legacy_Context::reset();
 		gravityview()->request = new \GV\Frontend_Request();
 
-		global $wp_query;
+		global $wp_query, $post;
+
 		$wp_query = new WP_Query();
+		$post = null;
+
+		set_current_screen( 'front' );
 	}
 
 	/**
@@ -500,7 +504,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\View_Collection::contains()
 	 * @covers \GravityView_View_Data::maybe_get_view_id()
 	 * @covers \GravityView_View_Data::is_valid_embed_id()
-	 * @covers \GravityView_oEmbed::set_vars()
 	 */
 	public function test_view_collection_from_post() {
 		$original_shortcode = $GLOBALS['shortcode_tags']['gravityview'];
@@ -808,10 +811,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** \GVLogic_Shortcode::shortcode short circuits as well. */
 		set_current_screen( 'front' );
-		$logic_shortocde = \GVLogic_Shortcode::get_instance();
-		$this->assertEquals( $logic_shortocde->shortcode( array( 'if' => 'true', 'is' => 'true' ), 'sentinel' ), 'sentinel' );
+		$logic_shortcode = \GVLogic_Shortcode::get_instance();
+		$this->assertEquals( $logic_shortcode->shortcode( array( 'if' => 'true', 'is' => 'true' ), 'sentinel' ), 'sentinel' );
 		set_current_screen( 'dashboard' );
-		$this->assertNull( $logic_shortocde->shortcode( array( 'if' => 'true', 'is' => 'true' ), 'sentinel' ), 'sentinel' );
+		$this->assertNull( $logic_shortcode->shortcode( array( 'if' => 'true', 'is' => 'true' ), 'sentinel' ), 'sentinel' );
 
 		/** \GravityView_Widget::add_shortcode short circuits and adds no tags if is_admin() */
 		set_current_screen( 'front' );
@@ -829,7 +832,37 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\Frontend_Request::is_search()
 	 */
-	function test_frontend_request_is_search() {
+	public function test_frontend_request_is_search() {
+	}
+
+	public function test_admin_request_is_admin_page() {
+		$this->assertFalse( gravityview_is_admin_page() );
+
+		set_current_screen( 'dashboard' );
+		$this->assertTrue( \GravityView_Admin::is_admin_page( 'what', 'when' ) );
+
+		$_request = gravityview()->request;
+		gravityview()->request = new \GV\Admin_Request();
+
+		$this->assertTrue( gravityview()->request->is_admin() );
+
+		$this->assertFalse( \GravityView_Admin::is_admin_page() );
+		$this->assertFalse( \GravityView_Admin::is_admin_page( 'edit.php', 'single' ) );
+
+		$_id = get_current_screen()->id;
+		$_post_type = get_current_screen()->post_type;
+		get_current_screen()->id = 'gravityview_page_gravityview_settings';
+		get_current_screen()->post_type = 'gravityview';
+
+		$this->assertEquals( 'settings', \GravityView_Admin::is_admin_page( 'edit.php', '' ) );
+
+		$this->assertTrue( gravityview()->request->is_admin( 'edit.php', 'settings' ) );
+		$this->assertFalse( gravityview()->request->is_admin( 'edit.php', 'zettingz' ) );
+
+		gravityview()->request = $_request;
+		get_current_screen()->id = $_id;
+		get_current_screen()->post_type = $_post_type;
+		set_current_screen( 'frontend' );
 	}
 
 	/**
@@ -867,6 +900,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $settings->get( 'no no no no', $default ), $default );
 
 		$this->assertCount( 1, $settings->all() );
+
+		$settings = new \GV\Settings( array( 'one' => 'six' ) );
+		$this->assertEquals( $settings->get( 'one' ), 'six' );
 	}
 
 	/**
@@ -947,20 +983,73 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertInstanceOf( '\GV\WP_Action_Logger', gravityview()->log );
 
 		$_this = &$this;
-		add_action( 'gravityview_log_debug_test', function( $message, $data ) use ( $_this ) {
-			$_this->assertEquals( "[info, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
-			$_this->assertEquals( $data, array( 'a' => 'b' ) );
-		}, 10, 2 );
-		gravityview()->log->info( 'Hello, {world}!', array( 'world' => 'TRAPPIST-1', 'data' => array( 'a' => 'b' ) ) );
-		remove_all_actions( 'gravityview_log_debug_test' );
+		if ( version_compare( phpversion(), '5.4', '>=' ) ) {
+			add_action( 'gravityview_log_debug_test', function( $message, $data ) use ( $_this ) {
+				$_this->assertEquals( "[info, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
+				$_this->assertEquals( $data, array( 'a' => 'b' ) );
+			}, 10, 2 );
+			gravityview()->log->info( 'Hello, {world}!', array( 'world' => 'TRAPPIST-1', 'data' => array( 'a' => 'b' ) ) );
+			remove_all_actions( 'gravityview_log_debug_test' );
+
+			add_action( 'gravityview_log_error_test', function( $message, $data ) use ( $_this ) {
+				$_this->assertEquals( "[critical, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
+				$_this->assertEquals( $data, array( 'a' => 'b' ) );
+			}, 10, 2 );
+			gravityview()->log->critical( 'Hello, {world}!', array( 'world' => 'TRAPPIST-1', 'data' => array( 'a' => 'b' ) ) );
+			remove_all_actions( 'gravityview_log_error_test' );
+		}
+
+		$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] = '5.3';
 
 		add_action( 'gravityview_log_error_test', function( $message, $data ) use ( $_this ) {
-			$_this->assertEquals( "[critical, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
+			$_this->assertEquals( "[critical] Hello, TRAPPIST-1!", $message );
 			$_this->assertEquals( $data, array( 'a' => 'b' ) );
 		}, 10, 2 );
 		gravityview()->log->critical( 'Hello, {world}!', array( 'world' => 'TRAPPIST-1', 'data' => array( 'a' => 'b' ) ) );
-
 		remove_all_actions( 'gravityview_log_error_test' );
+
+		unset( $GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] );
+	}
+
+	public function test_widget_collection() {
+		$this->assertCount( 4, \GV\Widget::registered() );
+
+		$configuration = array(
+			'header_top' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => 'search_bar',
+					'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+				),
+			),
+			'header_left' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => 'page_info',
+				),
+			),
+			'footer_top' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => 'custom_content',
+					'content' => 'Here we go again! <b>Now</b>',
+				),
+			),
+			'footer_right' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => 'page_links',
+				),
+			),
+		);
+
+		$widgets = \GV\Widget_Collection::from_configuration( $configuration );
+
+		$this->assertEquals( 4, $widgets->count() );
+
+		$footer_widgets = $widgets->by_position( 'footer_*' );
+		$this->assertEquals( 2, $footer_widgets->count() );
+
+		$this->assertEquals( 0, $widgets->by_id( 'custom_conten' )->count() );
+		$this->assertEquals( 1, $widgets->by_id( 'custom_content' )->count() );
+
+		$this->assertEquals( $configuration, $widgets->as_configuration() );
 	}
 
 	/**
@@ -1327,7 +1416,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\View_Renderer::render()
 	 * @covers \GV\View_Table_Template::render()
-	 * @covers \GV\Frontend_Request::output()
 	 */
 	public function test_frontend_view_renderer_table() {
 		$this->_reset_context();
@@ -1552,7 +1640,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\View_Renderer::render()
 	 * @covers \GV\View_List_Template::render()
-	 * @covers \GV\Frontend_Request::output()
 	 */
 	public function test_frontend_view_renderer_list() {
 		$this->_reset_context();
@@ -2169,9 +2256,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		} );
 		$this->assertEquals( 'sentinel-1', $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		add_filter( 'gravityview/template/field/data', function( $data ) {
-			$data['value'] = $data['display_value'] = 'This <script> is it';
-			return $data;
+		add_filter( 'gravityview/template/field/context', function( $context ) {
+			$context->value = $context->display_value = 'This <script> is it';
+			return $context;
 		} );
 		$this->assertEquals( 'This &lt;script&gt; is it', $renderer->render( $field, $view, $form, $entry, $request ) );
 
@@ -2202,7 +2289,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gravityview_empty_value' );
 		remove_all_filters( 'gravityview/field/value/empty' );
-		remove_all_filters( 'gravityview/template/field/data' );
+		remove_all_filters( 'gravityview/template/field/context' );
 		remove_all_filters( 'gravityview_field_entry_value_this-does-not-exist_pre_link' );
 		remove_all_filters( 'gravityview_field_entry_value_this-does-not-exist' );
 		remove_all_filters( 'gravityview_field_entry_value' );
@@ -4823,6 +4910,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'page_size' => 3,
 		);
 
+		$request = new \GV\Mock_Request();
+		gravityview()->request = $request;
+
 		$future = new \GV\Shortcodes\gravityview();
 
 		/** Post password */
@@ -5166,5 +5256,342 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$multi = \GV\Multi_Entry::from_entries( array( $entry ) );
 
 		$this->assertEquals( $entry->ID, \GV\Utils::get( $multi, $form->ID )->ID );
+
+		/**
+		 * Object property access.
+		 */
+		$o = (object)$a;
+		$o->who = (object)$o->who;
+		$o->who->is = (object)$o->who->is;
+		$this->assertEquals( 'world', \GV\Utils::get( $o, 'hello' ) );
+		$this->assertEquals( 'world', \GV\Utils::get( $o, 'hello', 'what?' ) );
+		$this->assertEquals( 'what?', \GV\Utils::get( $o, 'world', 'what?' ) );
+
+		/**
+		 * Nested.
+		 */
+		$this->assertEquals( 'here', \GV\Utils::get( $o, 'who/is' ) );
+		$this->assertEquals( 'coder', \GV\Utils::get( $o, 'who/is/that' ) );
+	}
+
+	public function test_license_handler() {
+		require_once gravityview()->plugin->dir( 'includes/class-gv-license-handler.php' );
+
+		$settings = $this->getMockBuilder( '\GV\Addon_Settings' )
+			->setMethods( array( 'get', 'update' ) )->getMock();
+
+		$settings->method( 'get' )->will( $this->returnValueMap( array(
+			array( 'license_key', 'TEST123' ),
+		) ) );
+
+		$this->assertSame( \GV_License_Handler::get_instance( $settings ), $handler = \GV\License_Handler::get() );
+
+		$handler->setup_edd();
+
+		add_filter( 'pre_http_request', $callback = function() {
+			return array( 'body' => json_encode( array(
+				'license' => 'invalid',
+				'license_key' => 'TEST',
+			) ) );
+		} );
+
+		$result = json_decode( $handler->license_call(), true );
+		$this->assertEquals( $result['error'], 'capability' );
+		$result = json_decode( $handler->license_call( array( 'license' => 'TEST' ), false ), true );
+		$this->assertEquals( $result['license'], 'invalid' );
+
+		remove_filter( 'pre_http_request', $callback );
+		add_filter( 'pre_http_request', $callback = function() {
+			return array( 'body' => json_encode( array(
+				'license' => 'valid',
+				'license_key' => 'TEST',
+				'license_name' => 'Test Suite License',
+				'upgrades' => array( 'one' => array( 'name' => 'what', 'price' => 10, 'price_id' => 1, 'url' => 'https://gravityview.co', 'description' => 'testing' ) ),
+			) ) );
+		} );
+
+		$result = json_decode( $handler->license_call( array( 'license' => 'TEST' ), false ), true );
+		$this->assertContains( 'Test Suite License', $result['details'] );
+
+		remove_filter( 'pre_http_request', $callback );
+		add_filter( 'pre_http_request', $callback = function() {
+			return array( 'body' => json_encode( array() ) );
+		} );
+
+		$this->assertEquals( array(), json_decode( $handler->license_call( array( 'license' => 'TEST' ), false ), true ) );
+
+		remove_filter( 'pre_http_request', $callback );
+		add_filter( 'pre_http_request', $callback = function() {
+			return array( 'body' => json_encode( array(
+				'license' => 'valid',
+				'license_key' => 'TEST!THIS',
+			) ) );
+		} );
+		$handler->license_call( array( 'license' => 'TEST', 'field_id' => 1, 'update' => 1 ), false );
+
+		remove_filter( 'pre_http_request', $callback );
+		add_filter( 'pre_http_request', $callback = function() {
+			return array( 'body' => json_encode( array() ) );
+		} );
+
+		delete_transient( $handler::status_transient_key );
+		$handler->refresh_license_status();
+
+		delete_transient( $handler::status_transient_key );
+		delete_transient( 'gv_license_check' );
+		$handler->flush_related_plugins_transient();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		remove_filter( 'pre_http_request', $callback );
+		$test = &$this;
+		add_filter( 'pre_http_request', $callback = function() use ( $test ) {
+			$args = func_get_args();
+			$args = $args[0]['body'];
+			$test->assertEquals( $args['item_name'], 'GravityView' );
+			$test->assertEquals( $args['site_data']['php_version'], phpversion() );
+			$test->assertEquals( $args['site_data']['view_count'], wp_count_posts( 'gravityview', 'readable' )->publish );
+			$form_counts = \GFFormsModel::get_form_count();
+			$test->assertEquals( $args['site_data']['forms_total'], $form_counts['total'] );
+			return array( 'body' => json_encode( array() ) );
+		} );
+
+		$handler->check_license();
+		remove_filter( 'pre_http_request', $callback );
+
+		$this->assertContains( 'Verifying license', $handler->settings_edd_license_activation( false, false ) );
+	}
+
+	public function test_addon_settings() {
+		$this->assertSame( \GravityView_Settings::get_instance(), $settings = gravityview()->plugin->settings );
+		$this->assertEquals( array_keys( $settings->get_default_settings() ), array( 'license_key', 'license_key_response', 'license_key_status', 'support-email', 'no-conflict-mode', 'support_port', 'flexbox_search', 'beta' ) );
+
+		$this->assertNull( $settings->get( 'not' ) );
+		$this->assertEquals( $settings->get( 'not', 'default' ), 'default' );
+		$this->assertEquals( $settings->get( 'beta' ), '0' );
+		$this->assertEquals( $settings->get_app_settings(), $settings->all() );
+
+		$settings->set( 'beta', '1' );
+		$this->assertEquals( $settings->get( 'beta' ), '1' );
+		$this->assertEquals( $settings->get( 'license' ), array( 'license' => '', 'status' => '', 'response' => '' ) );
+
+		$settings->set( array(
+			'beta' => '3',
+			'alpha' => '16'
+		) );
+
+		$this->assertEquals( $settings->get( 'beta' ), '3' );
+		$this->assertEquals( $settings->get( 'alpha' ), '16' );
+		$this->assertEquals( $settings->get( 'support-email' ), get_bloginfo( 'admin_email' ) );
+
+		$settings->update( $expected = array( 'wub' => 'dub' ) );
+		$this->assertEquals( $settings->all(), wp_parse_args( $expected, $settings->get_default_settings() ) );
+
+		$this->assertEquals( \GravityView_Settings::getSetting( 'wub' ), 'dub' );
+
+		$settings = new \GV\Addon_Settings();
+		$settings->init_admin();
+		$settings->init_ajax();
+		$settings->add_network_menu();
+		$this->assertEquals( $settings->modify_app_settings_menu_title( array( array() ) ), array( array( 'label' => 'GravityView Settings' ) ) );
+		$this->assertFalse( $settings->current_user_can_any( array( 'oops' ) ) );
+
+		$this->assertContains( 'delete then', $settings->uninstall_warning_message() );
+		$this->assertContains( 'gv-uninstall-form-wrapper', $settings->uninstall_form() );
+
+		$administrator = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'administrator' )
+		);
+
+		if ( function_exists( 'grant_super_admin' ) ) {
+			grant_super_admin( $administrator );
+		}
+		wp_set_current_user( $administrator );
+
+		ob_start();
+		$settings->app_settings_uninstall_tab();
+		$this->assertContains( 'ALL GravityView settings will be deleted', ob_get_clean() );
+
+		ob_start();
+		$settings->app_settings_tab();
+		$this->assertContains( '_gravityview_save_settings_nonce', $tab = ob_get_clean() );
+		$this->assertContains( 'Uninstall GravityView', $tab );
+		$this->assertNull( $settings->app_settings_title() );
+		$this->assertEquals( $settings->app_settings_icon(), '&nbsp;' );
+
+		$settings->scripts();
+		$settings->styles();
+
+		$settings->create_app_menu();
+
+		wp_set_current_user( 0 );
+	}
+
+	public function test_extension_class() {
+		$legacy_ext = new GVFutureTest_Extension_Test_BC();
+		$ext = new GVFutureTest_Extension_Test();
+
+		$this->assertFalse( $ext::is_compatible() );
+		$this->assertTrue( $legacy_ext::is_compatible() );
+
+		ob_start(); $legacy_ext->admin_notice();
+		$this->assertContains( 'requires GravityView Version', ob_get_clean() );
+
+		set_current_screen( 'dashboard' );
+		gravityview()->plugin->settings->set( 'license_key_status', 'valid' );
+		$ext->settings();
+		set_current_screen( 'front' );
+
+		$ext->load_plugin_textdomain();
+		$ext->tooltips();
+		$ext->add_metabox_tab();
+	}
+
+	public function test_widget_class() {
+		add_filter( 'gravityview/widget/enable_custom_class', '__return_true' );
+
+		$legacy_w = new GVFutureTest_Widget_Test_BC( 'What is this', 'old-widget', array(), array( 'what' => 'heh' ) );
+		$w = new GVFutureTest_Widget_Test( 'This is New', 'new-widget' );
+
+		$this->assertEquals( $legacy_w->get_widget_id(), 'old-widget' );
+		$this->assertEquals( $legacy_w->get_setting( 'what' ), 'heh' );
+		$this->assertNotEmpty( $w->get_settings() );
+
+		remove_filter( 'gravityview/widget/enable_custom_class', '__return_true' );
+
+		$this->assertNotEmpty( \GV\Widget::get_default_widget_areas() );
+
+		add_filter( 'gravityview_widget_active_areas', $callback = function() { return array( '1' ); } );
+
+		$this->assertEquals( \GV\Widget::get_default_widget_areas(), array( '1' ) );
+
+		add_filter( 'gravityview/widget/active_areas', $callback2 = function() { return array( '2' ); } );
+
+		$this->assertEquals( \GV\Widget::get_default_widget_areas(), array( '2' ) );
+
+		remove_filter( 'gravityview_widget_active_areas', $callback );
+		remove_filter( 'gravityview/widget/active_areas', $callback2 );
+
+		$widgets = array_keys( apply_filters( 'gravityview/widgets/register', array() ) );
+		$this->assertContains( 'old-widget', $widgets );
+		$this->assertContains( 'new-widget', $widgets );
+
+		$this->assertEmpty( apply_filters( 'gravityview_template_widget_options', array() ) );
+		$this->assertNotEmpty( apply_filters( 'gravityview_template_widget_options', array(), null, 'old-widget' ) );
+
+		$form = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view = \GV\View::from_post( $view );
+
+		global $post;
+
+		$post = $this->factory->post->create_and_get();
+		$post->post_content = sprintf( '[gravityview id="%d"]', $view->ID );
+
+		$w->add_shortcode();
+		$this->assertContains( '<strong class="floaty">GravityView</strong>', $w->maybe_do_shortcode( 'okay [gvfuturetest_widget_test] okay' ) );
+	}
+
+	public function test_widget_render() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		global $post;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '1.6',
+						'label' => 'Country <small>(Address)</small>',
+						'only_loggedin_cap' => 'read',
+						'only_loggedin' => true,
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => $widget_id = wp_generate_password( 4, false ) . '-widget',
+						'test' => 'foo',
+					),
+				),
+				'footer_right' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => $widget_id,
+						'test' => 'bar',
+					),
+				),
+			),
+		) );
+
+		/** Trigger registration under this ID */
+		new GVFutureTest_Widget_Test( 'Widget', $widget_id );
+
+		$view = \GV\View::from_post( $post );
+
+
+		$renderer = new \GV\View_Renderer();
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$future = $renderer->render( $view );
+
+		$this->assertContains( '<strong class="floaty">GravityViewfoo</strong>', $future );
+		$this->assertContains( '<strong class="floaty">GravityViewbar</strong>', $future );
+
+		$this->_reset_context();
+	}
+}
+
+class GVFutureTest_Extension_Test_BC extends GravityView_Extension {
+	protected $_title = 'Legacy Test Extension';
+	protected $_version = '9.1.1-BC';
+	protected $_item_id = 911;
+	protected $_min_gravityview_version = '2.0-dev';
+	protected $_min_php_version = '5.3';
+}
+
+class GVFutureTest_Extension_Test extends \GV\Extension {
+	protected $_title = 'New Test Extension';
+	protected $_version = '9.2.1-BC';
+	protected $_item_id = 911;
+	protected $_min_gravityview_version = '3.0';
+	protected $_min_php_version = '7.3.0';
+
+	protected function tab_settings() {
+		return array(
+			'id' => 'test_settings',
+		);
+	}
+}
+
+class GVFutureTest_Widget_Test_BC extends GravityView_Widget {
+}
+
+class GVFutureTest_Widget_Test extends \GV\Widget {
+	public function render_frontend( $widget_args, $content = '', $context = '' ) {
+		if ( ! $this->pre_render_frontend() ) {
+			return;
+		}
+		?>
+			<strong class="floaty">GravityView<?php echo \GV\Utils::get( $widget_args, 'test' ); ?></strong>
+		<?php
 	}
 }

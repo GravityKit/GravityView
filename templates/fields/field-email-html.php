@@ -2,6 +2,7 @@
 /**
  * The default email field output template.
  *
+ * @global \GV\Template_Context $gravityview
  * @since future
  */
 $value = $gravityview->value;
@@ -70,7 +71,7 @@ $prevent_encrypt = apply_filters( 'gravityview_email_prevent_encrypt', false );
  * @since future
  *
  * @param boolean $prevent_encrypt Whether to prevent encryption or not. Default: false.
- * @param object $gravityview The $gravityview template context object.
+ * @param @param \GV\Template_Context The $gravityview template context object.
  */
 $prevent_encrypt = apply_filters( 'gravityview/fields/email/prevent_encrypt', $prevent_encrypt, $gravityview );
 

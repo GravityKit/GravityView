@@ -49,7 +49,7 @@ class GravityView_Admin_ApproveEntries {
 		// add hidden field with approve status
 		add_action( 'gform_entries_first_column_actions', array( $this, 'add_entry_approved_hidden_input' ), 1, 5 );
 
-		add_filter( 'gravityview_tooltips', array( $this, 'tooltips' ) );
+		add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'tooltips' ) );
 
 		// adding styles and scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles') );

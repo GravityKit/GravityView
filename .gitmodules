@@ -1,3 +1,0 @@
-[submodule "includes/lib/standalone-phpenkoder"]
-	path = includes/lib/standalone-phpenkoder
-	url = git://github.com/jnicol/standalone-phpenkoder.git

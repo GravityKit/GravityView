@@ -91,7 +91,7 @@ class GravityView_Support_Port {
 			'contactSuccessDescription' => __( 'Thanks for reaching out! Someone from the GravityView team will get back to you soon.', 'gravityview' ),
 		);
 
-		$response = GravityView_Settings::getSetting( 'license_key_response' );
+		$response = gravityview()->plugin->settings->get( 'license_key_response' );
 
 		$response = wp_parse_args( $response, array(
 			'license'          => '',
@@ -124,13 +124,13 @@ class GravityView_Support_Port {
 		}
 
 		$data = array(
-			'email'                 => GravityView_Settings::getSetting( 'support-email' ),
+			'email'                 => gravityview()->plugin->settings->get( 'support-email' ),
 			'name'                  => $response['customer_name'],
 			'Valid License?'        => ucwords( $response['license'] ),
 			'License Key'           => $response['license_key'],
 			'License Level'         => $package,
 			'Site Admin Email'      => get_bloginfo( 'admin_email' ),
-			'Support Email'         => GravityView_Settings::getSetting( 'support-email' ),
+			'Support Email'         => gravityview()->plugin->settings->get( 'support-email' ),
 			'License Limit'         => $response['license_limit'],
 			'Site Count'            => $response['site_count'],
 			'License Expires'       => $response['expires'],
@@ -142,7 +142,7 @@ class GravityView_Support_Port {
 			'PHP Version'           => phpversion(),
 			'GravityView Version'   => GravityView_Plugin::version,
 			'Gravity Forms Version' => GFForms::$version,
-			'Plugins & Extensions'  => GV_License_Handler::get_related_plugins_and_extensions(),
+			'Plugins & Extensions'  => \GV\License_Handler::get_related_plugins_and_extensions(),
 		);
 
 		$localization_data = array(
@@ -177,7 +177,7 @@ class GravityView_Support_Port {
 			return false;
 		}
 
-		$global_setting = GravityView_Settings::getSetting( 'support_port' );
+		$global_setting = gravityview()->plugin->settings->get( 'support_port' );
 
 		if ( empty( $global_setting ) ) {
             return false;
@@ -224,7 +224,7 @@ class GravityView_Support_Port {
 	 */
 	public function user_field( $user ) {
 
-		$global_setting = GravityView_Settings::getSetting( 'support_port' );
+		$global_setting = gravityview()->plugin->settings->get( 'support_port' );
 
 		if ( empty( $global_setting ) ) {
             return;

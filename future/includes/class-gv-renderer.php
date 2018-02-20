@@ -24,12 +24,12 @@ class Renderer {
 	/**
 	 * Print unconfigured notices to admins.
 	 *
-	 * @param object $gravityview The $gravityview template object.
+	 * @param \GV\Template_Context $gravityview The $gravityview template object.
 	 *
 	 * @return void
 	 */
 	public static function maybe_print_notices( $gravityview = null ) {
-		if ( ! $gravityview ) {
+		if ( ! $gravityview instanceof \GV\Template_Context ) {
 			/** Call the legacy code. */
 			\GravityView_frontend::getInstance()->context_not_configured_warning( gravityview_get_view_id() );
 			return;
@@ -80,9 +80,7 @@ class Renderer {
 	 */
 	public function legacy_template_warning( $view, $path ) {
 		return function() use ( $view, $path ) {
-			if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-				echo \GVCommon::generate_notice( sprintf( 'We have detected some legacy template overrides in your theme\'s gravityview/ directory. We urge you to port them over to their 2.0 versions as soon as possible. <p><em>%s</em></p>', esc_html( $path ) ) );
-			}
+			// Do not panic for now...
 		};
 	}
 }

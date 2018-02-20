@@ -47,6 +47,11 @@ class GravityView_Theme_Hooks_Ultimate_Member extends GravityView_Plugin_and_The
 			return;
 		}
 
+		// @todo Support Ultimate Member 2.0 - for now, prevent fatal error
+		if( ! isset( $ultimatemember->profile ) ) {
+			return;
+		}
+
 		$active_tab_args = array(
 			'name'        => $ultimatemember->profile->active_tab(),
 			'post_type'   => 'um_tab',

@@ -423,6 +423,7 @@ class GravityView_frontend {
 	/**
 	 * Filter the title for the single entry view
 	 *
+	 *
 	 * @param  string $title   current title
 	 * @param  int $passed_post_id Post ID
 	 * @return string          (modified) title
@@ -589,7 +590,7 @@ class GravityView_frontend {
 	 *      @type int $id View id
 	 *      @type int $page_size Number of entries to show per page
 	 *      @type string $sort_field Form field id to sort
-	 *      @type string $sort_direction Sorting direction ('ASC' or 'DESC')
+	 *      @type string $sort_direction Sorting direction ('ASC', 'DESC', or 'RAND')
 	 *      @type string $start_date - Ymd
 	 *      @type string $end_date - Ymd
 	 *      @type string $class - assign a html class to the view
@@ -960,7 +961,7 @@ class GravityView_frontend {
 		 *      @type int $id View id
 		 *      @type int $page_size Number of entries to show per page
 		 *      @type string $sort_field Form field id to sort
-		 *      @type string $sort_direction Sorting direction ('ASC' or 'DESC')
+		 *      @type string $sort_direction Sorting direction ('ASC', 'DESC', or 'RAND')
 		 *      @type string $start_date - Ymd
 		 *      @type string $end_date - Ymd
 		 *      @type string $class - assign a html class to the view
@@ -1045,6 +1046,31 @@ class GravityView_frontend {
 				'direction' => strtolower( $sort_direction ),
 				'is_numeric' => GVCommon::is_field_numeric( $form_id, $sort_field_id )
 			);
+		}
+
+		if ( 'RAND' === $sort_direction ) {
+
+			$form = GFAPI::get_form( $form_id );
+
+			// Get the first GF_Field field ID, set as the key for entry randomization
+			if( ! empty( $form['fields'] ) ) {
+
+				/** @var GF_Field $field */
+				foreach ( $form['fields'] as $field ) {
+
+					if( ! is_a( $field, 'GF_Field' ) ) {
+						continue;
+					}
+
+					$sorting = array(
+						'key'        => $field->id,
+						'is_numeric' => false,
+						'direction'  => 'RAND',
+					);
+
+					break;
+				}
+			}
 		}
 
 		GravityView_View::getInstance()->setSorting( $sorting );
@@ -1334,6 +1360,7 @@ class GravityView_frontend {
 	 *
 	 * @param string $label Field label
 	 * @param array $field Field settings
+	 * @param array $form Form object
 	 *
 	 * @return string Field Label
 	 */

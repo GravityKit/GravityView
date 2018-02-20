@@ -36,7 +36,7 @@ final class Core {
 	public $request;
 
 	/**
-	 * @var \GV\Logger;
+	 * @var \GV\Logger
 	 *
 	 * @api
 	 * @since future
@@ -113,6 +113,12 @@ final class Core {
 			return;
 		}
 
+		/**
+		 * GravityView extensions and widgets.
+		 */
+		require_once $this->plugin->dir( 'future/includes/class-gv-extension.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-widget.php' );
+
 		/** More legacy core. @todo Deprecate */
 		$this->plugin->include_legacy_core();
 
@@ -161,6 +167,10 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry-gravityforms.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry-multi.php' );
 
+		/** Context is everything. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-context.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-context-template.php' );
+
 		/** Our Field generic and implementations. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-field.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-field-gravityforms.php' );
@@ -171,6 +181,7 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-collection-form.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-collection-field.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-collection-entry.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-widget.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-collection-view.php' );
 
 		/** The sorting, filtering and paging classes. */
@@ -223,12 +234,8 @@ final class Core {
 	 */
 	public function __get( $key ) {
 		switch ( $key ) {
-			case 'request':
-				return new Frontend_Request();
 			case 'views':
 				return new \GV\Wrappers\views();
-			case 'render':
-				return new \GV\Wrappers\render();
 		}
 	}
 
