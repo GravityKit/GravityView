@@ -39,7 +39,7 @@ class License_Handler {
 	 */
 	const related_plugins_key = 'gravityview_related_plugins';
 
-	/** @var EDD_SL_Plugin_Updater */
+	/** @var \GV\EDD_SL_Plugin_Updater */
 	private $EDD_SL_Plugin_Updater;
 
 	/**
@@ -115,12 +115,12 @@ class License_Handler {
 	 * @return void
 	 */
 	public function setup_edd() {
-		if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-			require_once gravityview()->plugin->dir( 'includes/lib/EDD_SL_Plugin_Updater.php' );
+		if ( ! class_exists( '\GV\EDD_SL_Plugin_Updater' ) ) {
+			require_once gravityview()->plugin->dir( 'future/lib/EDD_SL_Plugin_Updater.php' );
 		}
 
 		// setup the updater
-		$this->EDD_SL_Plugin_Updater = new \EDD_SL_Plugin_Updater(
+		$this->EDD_SL_Plugin_Updater = new EDD_SL_Plugin_Updater(
 			self::url,
 			GRAVITYVIEW_FILE,
 			$this->_get_edd_settings()
