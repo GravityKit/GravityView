@@ -575,9 +575,14 @@ class View implements \ArrayAccess {
 	}
 
 	public function __get( $key ) {
+
+		$return = isset( $this->$key ) ? $this->$key : null;
+
 		if ( $this->post ) {
-			return $this->post->$key;
+			$raw_post = $this->post->filter('raw');
+			$return = $raw_post->$key;
 		}
-		return isset( $this->$key ) ? $this->$key : null;
+
+		return $return;
 	}
 }
