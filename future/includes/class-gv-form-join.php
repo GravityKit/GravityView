@@ -52,8 +52,8 @@ class Join {
 				return null;
 		}
 		return $query->join(
-			new Query\Column( $this->join_on_column, $this->join_on ),
-			new Query\Column( $this->join_column, $this->join )
+			new \GF_Query_Column( $this->join_on_column, $this->join_on ),
+			new \GF_Query_Column( $this->join_column, $this->join )
 		);
 	}
 }
