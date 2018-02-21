@@ -100,7 +100,9 @@ final class Plugin {
 		 */
 		require_once $this->dir( 'future/includes/class-gv-license-handler.php' );
 		require_once $this->dir( 'future/includes/class-gv-settings-addon.php' );
-		$this->settings = new Addon_Settings();
+		if ( class_exists( '\GV\Addon_Settings' ) ) {
+			$this->settings = new Addon_Settings();
+		}
 	}
 	
 	/**
