@@ -313,7 +313,7 @@ class GravityView_Admin {
 	 */
 	static function is_admin_page( $hook = '', $page = NULL ) {
 		gravityview()->log->warning( 'The \GravityView_Admin::is_admin_page() method is deprecated. Use gravityview()->request->is_admin' );
-		return gravityview()->request->is_admin( $hook, $page );
+		return gravityview()->request && gravityview()->request->is_admin( $hook, $page );
 	}
 }
 
@@ -331,5 +331,5 @@ new GravityView_Admin;
  */
 function gravityview_is_admin_page( $hook = '', $page = NULL ) {
 	gravityview()->log->warning( 'The gravityview_is_admin_page() function is deprecated. Use gravityview()->request->is_admin' );
-	return gravityview()->request->is_admin( $hook, $page );
+	return gravityview()->request && gravityview()->request->is_admin( $hook, $page );
 }

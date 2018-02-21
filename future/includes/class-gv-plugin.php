@@ -122,7 +122,7 @@ final class Plugin {
 	 * @return void
 	 */
 	public function include_legacy_frontend( $force = false ) {
-		if ( gravityview()->request->is_admin() && ! $force ) {
+		if ( ! gravityview()->request || ( gravityview()->request->is_admin() && ! $force ) ) {
 			return;
 		}
 
