@@ -802,17 +802,12 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Get the list of registered widgets. Each item is used to instantiate a GravityView_Admin_View_Widget object
+	 * @deprecated Use \GV\Widget::registered()
 	 * @since 1.13.1
 	 * @return array
 	 */
 	function get_registered_widgets() {
-		/**
-		 * @filter `gravityview_register_directory_widgets` Get the list of registered widgets. Each item is used to instantiate a GravityView_Admin_View_Widget object
-		 * @param array $registered_widgets Empty array
-		 */
-		$registered_widgets = apply_filters( 'gravityview_register_directory_widgets', array() );
-
-		return $registered_widgets;
+		return \GV\Widget::registered();
 	}
 
 	/**

@@ -2,6 +2,7 @@
 /**
  * The default custom content field output template.
  *
+ * @global \GV\Template_Context $gravityview
  * @since future
  */
 $form = $gravityview->view->form->form;
@@ -35,7 +36,7 @@ if ( empty( $content ) ) {
 }
 
 // Replace the variables
-$content = GravityView_API::replace_variables( $content, $form, $entry );
+$content = GravityView_API::replace_variables( $content, $form, $entry, false, true, false );
 
 /**
  * @filter `gravityview/fields/custom/decode_shortcodes` Decode brackets in shortcodes

@@ -899,11 +899,24 @@ function gravityview_before() {
 	 * @param object $gravityview The $gravityview object available in templates.
 	 */
 	if ( count( $args = func_get_args() ) ) {
-		do_action( 'gravityview/template/before', reset( $args ) );
+		$gravityview = reset( $args );
+		if ( $gravityview instanceof \GV\Template_Context ) {
+			/**
+			 * @action `gravityview/template/before` Prepend content to the view.
+			 * @param \GV\Template_Context $gravityview The $gravityview object available in templates.
+			 */
+			do_action( 'gravityview/template/before', $gravityview );
+
+			/**
+			 * @deprecated Use `gravityview/template/before`
+			 */
+			return do_action( 'gravityview_before', $gravityview->view->ID );
+		}
 	}
 
 	/**
-	 * @action `gravityview_before` Display content before a View. Used to render widget areas. Rendered outside the View container `<div>`
+	 * @action `gravityview_before` Prepend content to the View container `<div>`
+	 * @deprecated Use `gravityview/template/before`.
 	 * @param int $view_id The ID of the View being displayed
 	 */
 	do_action( 'gravityview_before', gravityview_get_view_id() );
@@ -926,16 +939,25 @@ function gravityview_footer() {
 }
 
 function gravityview_after() {
-	/**
-	 * @action `gravityview/template/after` Append content to the view.
-	 * @param object $gravityview The $gravityview object available in templates.
-	 */
 	if ( count( $args = func_get_args() ) ) {
-		do_action( 'gravityview/template/after', reset( $args ) );
+		$gravityview = reset( $args );
+		if ( $gravityview instanceof \GV\Template_Context ) {
+			/**
+			 * @action `gravityview/template/after` Append content to the view.
+			 * @param \GV\Template_Context $gravityview The $gravityview object available in templates.
+			 */
+			do_action( 'gravityview/template/after', $gravityview );
+
+			/**
+			 * @deprecated Use `gravityview/template/after`
+			 */
+			return do_action( 'gravityview_after', $gravityview->view->ID );
+		}
 	}
 
 	/**
 	 * @action `gravityview_after` Append content to the View container `<div>`
+	 * @deprecated Use `gravityview/template/after`
 	 * @param int $view_id The ID of the View being displayed
 	 */
 	do_action( 'gravityview_after', gravityview_get_view_id() );

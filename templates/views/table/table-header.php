@@ -2,10 +2,10 @@
 /**
  * The header for the output table.
  *
- * @global stdClass $gravityview (\GV\View $gravityview::$view, \GV\View_Template $gravityview::$template)
+ * @global \GV\Template_Context $gravityview
  */
 ?>
-<?php gravityview_before(); ?>
+<?php gravityview_before( $gravityview ); ?>
 <div class="<?php gv_container_class('gv-table-view gv-table-container gv-table-multiple-container'); ?>">
 <table class="gv-table-view">
 	<thead>

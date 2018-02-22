@@ -3,6 +3,7 @@
  * The default field output template displaying
  *  entries created by same author.
  *
+ * @global \GV\Template_Context $gravityview
  * @since future
  */
 

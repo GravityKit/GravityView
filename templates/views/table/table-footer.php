@@ -2,7 +2,7 @@
 /**
  * The footer for the output table.
  *
- * @global stdClass $gravityview (\GV\View $gravityview::$view, \GV\View_Template $gravityview::$template)
+ * @global \GV\Template_Context $gravityview
  */
 ?>
 	<tfoot>

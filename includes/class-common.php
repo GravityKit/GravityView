@@ -1264,7 +1264,7 @@ class GVCommon {
 			 * @param array $fields Multi-array of fields with first level being the field zones.
 			 * @param \GV\View $view The View the fields are being pulled for.
 			 */
-			$fields = apply_filters( 'gravityview/view/fields/configuration', $fields, \GV\View::by_id( $post_id ) );
+			$fields = apply_filters( 'gravityview/view/configuration/fields', $fields, \GV\View::by_id( $post_id ) );
 		}
 
 		return $fields;

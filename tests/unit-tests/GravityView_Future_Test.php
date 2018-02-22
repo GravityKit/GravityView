@@ -900,6 +900,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $settings->get( 'no no no no', $default ), $default );
 
 		$this->assertCount( 1, $settings->all() );
+
+		$settings = new \GV\Settings( array( 'one' => 'six' ) );
+		$this->assertEquals( $settings->get( 'one' ), 'six' );
 	}
 
 	/**
@@ -1006,6 +1009,47 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_all_actions( 'gravityview_log_error_test' );
 
 		unset( $GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] );
+	}
+
+	public function test_widget_collection() {
+		$this->assertCount( 4, \GV\Widget::registered() );
+
+		$configuration = array(
+			'header_top' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => 'search_bar',
+					'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+				),
+			),
+			'header_left' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => 'page_info',
+				),
+			),
+			'footer_top' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => 'custom_content',
+					'content' => 'Here we go again! <b>Now</b>',
+				),
+			),
+			'footer_right' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => 'page_links',
+				),
+			),
+		);
+
+		$widgets = \GV\Widget_Collection::from_configuration( $configuration );
+
+		$this->assertEquals( 4, $widgets->count() );
+
+		$footer_widgets = $widgets->by_position( 'footer_*' );
+		$this->assertEquals( 2, $footer_widgets->count() );
+
+		$this->assertEquals( 0, $widgets->by_id( 'custom_conten' )->count() );
+		$this->assertEquals( 1, $widgets->by_id( 'custom_content' )->count() );
+
+		$this->assertEquals( $configuration, $widgets->as_configuration() );
 	}
 
 	/**
@@ -2212,9 +2256,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		} );
 		$this->assertEquals( 'sentinel-1', $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		add_filter( 'gravityview/template/field/data', function( $data ) {
-			$data['value'] = $data['display_value'] = 'This <script> is it';
-			return $data;
+		add_filter( 'gravityview/template/field/context', function( $context ) {
+			$context->value = $context->display_value = 'This <script> is it';
+			return $context;
 		} );
 		$this->assertEquals( 'This &lt;script&gt; is it', $renderer->render( $field, $view, $form, $entry, $request ) );
 
@@ -2245,7 +2289,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gravityview_empty_value' );
 		remove_all_filters( 'gravityview/field/value/empty' );
-		remove_all_filters( 'gravityview/template/field/data' );
+		remove_all_filters( 'gravityview/template/field/context' );
 		remove_all_filters( 'gravityview_field_entry_value_this-does-not-exist_pre_link' );
 		remove_all_filters( 'gravityview_field_entry_value_this-does-not-exist' );
 		remove_all_filters( 'gravityview_field_entry_value' );
@@ -5212,6 +5256,22 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$multi = \GV\Multi_Entry::from_entries( array( $entry ) );
 
 		$this->assertEquals( $entry->ID, \GV\Utils::get( $multi, $form->ID )->ID );
+
+		/**
+		 * Object property access.
+		 */
+		$o = (object)$a;
+		$o->who = (object)$o->who;
+		$o->who->is = (object)$o->who->is;
+		$this->assertEquals( 'world', \GV\Utils::get( $o, 'hello' ) );
+		$this->assertEquals( 'world', \GV\Utils::get( $o, 'hello', 'what?' ) );
+		$this->assertEquals( 'what?', \GV\Utils::get( $o, 'world', 'what?' ) );
+
+		/**
+		 * Nested.
+		 */
+		$this->assertEquals( 'here', \GV\Utils::get( $o, 'who/is' ) );
+		$this->assertEquals( 'coder', \GV\Utils::get( $o, 'who/is/that' ) );
 	}
 
 	public function test_license_handler() {
@@ -5416,7 +5476,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_filter( 'gravityview_widget_active_areas', $callback );
 		remove_filter( 'gravityview/widget/active_areas', $callback2 );
 
-		$widgets = array_keys( apply_filters( 'gravityview_register_directory_widgets', array() ) );
+		$widgets = array_keys( apply_filters( 'gravityview/widgets/register', array() ) );
 		$this->assertContains( 'old-widget', $widgets );
 		$this->assertContains( 'new-widget', $widgets );
 
@@ -5434,6 +5494,69 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$w->add_shortcode();
 		$this->assertContains( '<strong class="floaty">GravityView</strong>', $w->maybe_do_shortcode( 'okay [gvfuturetest_widget_test] okay' ) );
+	}
+
+	public function test_widget_render() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		global $post;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '1.6',
+						'label' => 'Country <small>(Address)</small>',
+						'only_loggedin_cap' => 'read',
+						'only_loggedin' => true,
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => $widget_id = wp_generate_password( 4, false ) . '-widget',
+						'test' => 'foo',
+					),
+				),
+				'footer_right' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => $widget_id,
+						'test' => 'bar',
+					),
+				),
+			),
+		) );
+
+		/** Trigger registration under this ID */
+		new GVFutureTest_Widget_Test( 'Widget', $widget_id );
+
+		$view = \GV\View::from_post( $post );
+
+
+		$renderer = new \GV\View_Renderer();
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$future = $renderer->render( $view );
+
+		$this->assertContains( '<strong class="floaty">GravityViewfoo</strong>', $future );
+		$this->assertContains( '<strong class="floaty">GravityViewbar</strong>', $future );
+
+		$this->_reset_context();
 	}
 }
 
@@ -5464,8 +5587,11 @@ class GVFutureTest_Widget_Test_BC extends GravityView_Widget {
 
 class GVFutureTest_Widget_Test extends \GV\Widget {
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
+		if ( ! $this->pre_render_frontend() ) {
+			return;
+		}
 		?>
-			<strong class="floaty">GravityView</strong>
+			<strong class="floaty">GravityView<?php echo \GV\Utils::get( $widget_args, 'test' ); ?></strong>
 		<?php
 	}
 }

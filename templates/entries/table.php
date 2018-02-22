@@ -2,15 +2,12 @@
 /**
  * Display a single entry when using a table template
  *
- * @global array $gravityview
+ * @global \GV\Template_Context $gravityview
  */
 
-\GV\Mocks\Legacy_Context::push( array( 'view' => $gravityview->view ) )
+\GV\Mocks\Legacy_Context::push( array( 'view' => $gravityview->view ) );
 
-?>
-
-<?php gravityview_before(); ?>
-
+gravityview_before( $gravityview ); ?>
 
 <p class="gv-back-link"><?php echo gravityview_back_link(); ?></p>
 

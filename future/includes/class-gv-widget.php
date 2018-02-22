@@ -55,8 +55,36 @@ abstract class Widget {
 	 */
 	protected $shortcode_name;
 
-	// hold widget View options
-	private $widget_options;
+	/**
+	 * Hold the widget options.
+	 * @var array()
+	 */
+	private $widget_options = array();
+
+	/**
+	 * The position of the widget.
+	 * @api
+	 * @since future
+	 * @var string
+	 */
+	public $position = '';
+
+	/**
+	 * A unique ID for this widget.
+	 * @api
+	 * @since future
+	 * @var string
+	 */
+	public $UID = '';
+
+	/**
+	 * The actual configuration for this widget instance.
+	 *
+	 * @api
+	 * @since future
+	 * @var \GV\Settings
+	 */
+	public $configuration;
 
 	/**
 	 * Constructor.
@@ -75,27 +103,36 @@ abstract class Widget {
 		 */
 		$this->shortcode_name = empty( $this->shortcode_name ) ? strtolower( get_called_class() ) : $this->shortcode_name;
 
+		if ( $id ) {
+			$this->widget_id = $id;
+		}
+
 		$this->widget_label = $label;
-		$this->widget_id = $id;
 		$this->defaults = array_merge( array( 'header' => 0, 'footer' => 0 ), $defaults );
 
 		// Make sure every widget has a title, even if empty
 		$this->settings = wp_parse_args( $settings, $this->get_default_settings() );
 
-		// register widgets to be listed in the View Configuration
-		add_filter( 'gravityview_register_directory_widgets', array( $this, 'register_widget' ) );
+		// Hook once per unique ID
+		if ( $this->is_registered() ) {
+			return;
+		}
 
 		// widget options
 		add_filter( 'gravityview_template_widget_options', array( $this, 'assign_widget_options' ), 10, 3 );
 
 		// frontend logic
-		add_action( "gravityview_render_widget_{$id}", array( $this, 'render_frontend' ), 10, 1 );
+		add_action( sprintf( 'gravityview/widgets/%s/render', $this->get_widget_id() ), array( $this, 'render_frontend' ), 10, 3 );
 
 		// register shortcodes
 		add_action( 'wp', array( $this, 'add_shortcode' ) );
 
 		// Use shortcodes in text widgets.
 		add_filter( 'widget_text', array( $this, 'maybe_do_shortcode' ) );
+
+		// register widgets to be listed in the View Configuration
+		// Important: this has to be the last filter/action added in the constructor.
+		add_filter( 'gravityview/widgets/register', array( $this, 'register_widget' ) );
 	}
 
 	/**
@@ -185,23 +222,29 @@ abstract class Widget {
 	}
 
 	/**
-	 * Register widget to become available in admin.
+	 * Register widget to become available in admin. And for lookup.
 	 *
-	 * @param  array $widgets
+	 * @param  array $widgets Usually just empty. Used to gather them all up.
 	 *
 	 * @return array $widgets
 	 */
 	public function register_widget( $widgets ) {
+		if ( ! is_array( $widgets ) ) {
+			$widgets = array();
+		}
+
 		$widgets[ $this->get_widget_id() ] = array(
 			'label' => $this->widget_label ,
 			'description' => $this->widget_description,
 			'subtitle' => $this->widget_subtitle,
+			'class' => get_called_class(),
 		);
+
 		return $widgets;
 	}
 
 	/**
-	 * Assign template specific field options
+	 * Assign template specific widget options
 	 *
 	 * @access protected
 	 *
@@ -271,7 +314,7 @@ abstract class Widget {
 	 *
 	 * @param array $widget_args The Widget shortcode args.
 	 * @param string $content The content.
-	 * @param string $context The context, if available.
+	 * @param string|\GV\Template_Context $context The context, if available.
 	 *
 	 * @return void
 	 */
@@ -320,5 +363,92 @@ abstract class Widget {
 		ob_start();
 		$this->render_frontend( $atts, $content, $context );
 		return ob_get_clean();
+	}
+
+	/**
+	 * Create the needed widget from a configuration array.
+	 *
+	 * @param array $configuration The configuration array.
+	 * @see \GV\Widget::as_configuration()
+	 * @internal
+	 * @since future
+	 *
+	 * @return \GV\Widget|null The widget implementation from configuration or none.
+	 */
+	public static function from_configuration( $configuration ) {
+		$registered_widgets = self::registered();
+
+		if ( ! $id = Utils::get( $configuration, 'id' ) ) {
+			return null;
+		}
+
+		if ( ! $widget = Utils::get( $registered_widgets, $id ) ) {
+			return null;
+		}
+
+		if ( ! class_exists( $class = Utils::get( $widget, 'class' ) ) ) {
+			return null;
+		}
+
+		$w = new $class( Utils::get( $widget, 'label' ), $id );
+		$w->configuration = new Settings( $configuration );
+
+		return $w;
+	}
+
+	/**
+	 * Return an array of the old format.
+	 *
+	 *  		'id' => string
+	 *			+ whatever else specific fields may have
+	 *
+	 * @internal
+	 * @since future
+	 *
+	 * @return array
+	 */
+	public function as_configuration() {
+		return array_merge( array(
+			'id' => $this->get_widget_id(),
+		), $this->configuration->all() );
+	}
+
+	/**
+	 * Return all registered widgets.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @return array
+	 */
+	public static function registered() {
+		/**
+		 * @filter `gravityview_register_directory_widgets` Get the list of registered widgets. Each item is used to instantiate a GravityView_Admin_View_Widget object
+		 * @deprecated Use `gravityview/widgets/register`
+		 * @param array $registered_widgets Empty array
+		 */
+		$registered_widgets = apply_filters( 'gravityview_register_directory_widgets', array() );
+
+		/**
+		 * @filter `gravityview/widgets/register` Each item is used to instantiate a GravityView_Admin_View_Widget object
+		 * @param array $registered_widgets Empty array
+		 */
+		return apply_filters( 'gravityview/widgets/register', $registered_widgets );
+	}
+
+	/**
+	 * Whether this Widget's been registered already or not.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @return bool
+	 */
+	public function is_registered() {
+		if ( ! $widget_id = $this->get_widget_id() ) {
+			gravityview()->log->warning( 'Widget ID not set before calling Widget::is_registered', array( 'data' => $this ) );
+			return false;
+		}
+		return in_array( $widget_id, array_keys( self::registered() ) );
 	}
 }

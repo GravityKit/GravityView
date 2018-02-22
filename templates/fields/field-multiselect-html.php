@@ -6,7 +6,6 @@
  * @since future
  */
 $field = $gravityview->field->field;
-$display_value = $gravityview->display_value;
 $entry = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();
 
@@ -19,10 +18,6 @@ $field_settings = $gravityview->field->as_configuration();
  */
 $show_label = apply_filters( 'gravityview/fields/select/output_label', ( 'label' === \GV\Utils::get( $field_settings, 'choice_display' ) ), $entry, $field );
 
-if ( $show_label && ! empty( $field->choices ) && is_array( $field->choices ) && '' !== $display_value ) {
-	$output = RGFormsModel::get_choice_text( $field, $display_value );
-} else {
-	$output = $display_value;
-}
+$output = $field->get_value_entry_detail( $gravityview->value, '', $show_label );
 
 echo $output;

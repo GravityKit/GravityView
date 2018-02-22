@@ -294,7 +294,7 @@ class GravityView_Render_Settings {
 	 */
 	public static function render_setting_row( $key = '', $current_settings = array(), $override_input = null, $name = 'template_settings[%s]', $id = 'gravityview_se_%s' ) {
 
-		$settings = \GV\View_Settings::with_defaults();
+		$settings = \GV\View_Settings::with_defaults( true );
 
 		// If the key doesn't exist, there's something wrong.
 		if ( ! $setting = $settings->get( $key ) ) {

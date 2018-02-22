@@ -30,7 +30,15 @@ class View implements \ArrayAccess {
 	public $settings;
 
 	/**
-	 * @var \GV\Form The backing form for this view.
+	 * @var \GV\Widget_Collection The widets attached here.
+	 *
+	 * @api
+	 * @since future
+	 */
+	public $widgets;
+
+	/**
+	 * @var \GV\GF_Form|\GV\Form The backing form for this view.
 	 *
 	 * Contains the form that is sourced for entries in this view.
 	 *
@@ -55,6 +63,7 @@ class View implements \ArrayAccess {
 	public function __construct() {
 		$this->settings = new View_Settings();
 		$this->fields = new Field_Collection();
+		$this->widgets = new Widget_Collection();
 	}
 
 	/**
@@ -342,6 +351,8 @@ class View implements \ArrayAccess {
 		 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array.
 		 * @since 1.6.5
 		 *
+		 * @deprecated Use `gravityview/view/configuration/fields` or `gravityview/view/fields` filters.
+		 *
 		 * @param $fields array Multi-array of fields with first level being the field zones.
 		 * @param $view_id int The View the fields are being pulled for.
 		 */
@@ -354,7 +365,7 @@ class View implements \ArrayAccess {
 		 * @param array $fields Multi-array of fields with first level being the field zones.
 		 * @param \GV\View $view The View the fields are being pulled for.
 		 */
-		$configuration = apply_filters( 'gravityview/view/fields/configuration', $configuration, $view );
+		$configuration = apply_filters( 'gravityview/view/configuration/fields', $configuration, $view );
 
 		/**
 		 * @filter `gravityview/view/fields` Filter the Field Collection for this View.
@@ -364,6 +375,24 @@ class View implements \ArrayAccess {
 		 * @param \GV\View $view The View the fields are being pulled for.
 		 */
 		$view->fields = apply_filters( 'gravityview/view/fields', Field_Collection::from_configuration( $configuration ), $view );
+
+		/**
+		 * @filter `gravityview/view/configuration/widgets` Filter the View widgets' configuration array.
+		 * @since future
+		 *
+		 * @param array $fields Multi-array of widgets with first level being the field zones.
+		 * @param \GV\View $view The View the widgets are being pulled for.
+		 */
+		$configuration = apply_filters( 'gravityview/view/configuration/widgets', (array)$view->_gravityview_directory_widgets, $view );
+
+		/**
+		 * @filter `gravityview/view/widgets` Filter the Widget Collection for this View.
+		 * @since future
+		 *
+		 * @param \GV\Widget_Collection $widgets A collection of widgets.
+		 * @param \GV\View $view The View the widgets are being pulled for.
+		 */
+		$view->widgets = apply_filters( 'gravityview/view/widgets', Widget_Collection::from_configuration( $configuration ), $view );
 
 		/** View configuration. */
 		$view->settings->update( gravityview_get_template_settings( $view->ID ) );
@@ -375,20 +404,6 @@ class View implements \ArrayAccess {
 		$view->settings->update( array(
 			'id' => $view->ID,
 		) );
-
-		/**
-		 * @deprecated
-		 *
-		 * The data here has been moved to various keys in a \GV\View instance.
-		 * As a compatibilty layer we allow array access over any \GV\View instance with these keys.
-		 *
-		 * This data is immutable (for now).
-		 *
-		 * @see \GV\View::offsetGet() for internal mappings.
-		 */
-		$view->_data = array(
-			'widgets' => gravityview_get_directory_widgets( $view->ID ),
-		);
 
 		return $view;
 	}
@@ -450,7 +465,7 @@ class View implements \ArrayAccess {
 		
 		gravityview()->log->notice( 'This is a \GV\View object should not be accessed as an array.' );
 
-		if ( ! isset( $this[$offset] ) ) {
+		if ( ! isset( $this[ $offset ] ) ) {
 			return null;
 		}
 
@@ -466,9 +481,8 @@ class View implements \ArrayAccess {
 				return $this->settings->as_atts();
 			case 'template_id':
 				return $this->settings->get( 'template' );
-			default:
-				/** @todo move the rest out and get rid of _data completely! */
-				return $this->_data[$offset];
+			case 'widgets':
+				return $this->widgets->to_configuration();
 		}
 	}
 
@@ -510,15 +524,15 @@ class View implements \ArrayAccess {
 	 * @return array
 	 */
 	public function as_data() {
-		return array_merge(
-			array( 'id' => $this->ID ),
-			array( 'view_id' => $this->ID ),
-			array( 'form_id' => $this->form ? $this->form->ID : null ),
-			array( 'form' => $this->form ? gravityview_get_form( $this->form->ID ) : null ),
-			array( 'atts' => $this->settings->as_atts() ),
-			array( 'fields' => $this->fields->by_visible()->as_configuration() ),
-			array( 'template_id' => $this->settings->get( 'template' ) ),
-			$this->_data
+		return array(
+			'id' => $this->ID,
+			'view_id' => $this->ID,
+			'form_id' => $this->form ? $this->form->ID : null,
+			'form' => $this->form ? gravityview_get_form( $this->form->ID ) : null,
+			'atts' => $this->settings->as_atts(),
+			'fields' => $this->fields->by_visible()->as_configuration(),
+			'template_id' => $this->settings->get( 'template' ),
+			'widgets' => $this->widgets->as_configuration(),
 		);
 	}
 

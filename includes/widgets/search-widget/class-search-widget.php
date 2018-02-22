@@ -29,6 +29,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	public function __construct() {
 
+		$this->widget_id = 'search_bar';
 		$this->widget_description = esc_html__( 'Search form for searching entries.', 'gravityview' );
 
 		self::$instance = &$this;
@@ -72,28 +73,30 @@ class GravityView_Widget_Search extends \GV\Widget {
 				),
 			),
 		);
-		parent::__construct( esc_html__( 'Search Bar', 'gravityview' ), 'search_bar', $default_values, $settings );
 
-		// frontend - filter entries
-		add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ), 10, 3 );
+		if ( ! $this->is_registered() ) {
+			// frontend - filter entries
+			add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ), 10, 3 );
 
-		// frontend - add template path
-		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
+			// frontend - add template path
+			add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
 
-		// Add hidden fields for "Default" permalink structure
-		add_filter( 'gravityview_widget_search_filters', array( $this, 'add_no_permalink_fields' ), 10, 3 );
+			// Add hidden fields for "Default" permalink structure
+			add_filter( 'gravityview_widget_search_filters', array( $this, 'add_no_permalink_fields' ), 10, 3 );
 
-		// admin - add scripts - run at 1100 to make sure GravityView_Admin_Views::add_scripts_and_styles() runs first at 999
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 1100 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts') );
-		add_filter( 'gravityview_noconflict_scripts', array( $this, 'register_no_conflict' ) );
+			// admin - add scripts - run at 1100 to make sure GravityView_Admin_Views::add_scripts_and_styles() runs first at 999
+			add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 1100 );
+			add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts') );
+			add_filter( 'gravityview_noconflict_scripts', array( $this, 'register_no_conflict' ) );
 
-		// ajax - get the searchable fields
-		add_action( 'wp_ajax_gv_searchable_fields', array( 'GravityView_Widget_Search', 'get_searchable_fields' ) );
+			// ajax - get the searchable fields
+			add_action( 'wp_ajax_gv_searchable_fields', array( 'GravityView_Widget_Search', 'get_searchable_fields' ) );
+		}
+
+		parent::__construct( esc_html__( 'Search Bar', 'gravityview' ), null, $default_values, $settings );
 
 		// calculate the search method (POST / GET)
 		$this->set_search_method();
-
 	}
 
 	/**

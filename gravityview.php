@@ -3,7 +3,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	https://gravityview.co
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:          	2.0-beta.1
+ * Version:          	2.0-beta.2
  * Author:            	GravityView
  * Author URI:        	https://gravityview.co
  * Text Domain:       	gravityview
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * The plugin version.
  */
-define( 'GV_PLUGIN_VERSION', '2.0-beta.1' );
+define( 'GV_PLUGIN_VERSION', '2.0-beta.2' );
 
 /**
  * Full path to the GravityView file
@@ -42,7 +42,7 @@ define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
 /**
  * GravityView requires at least this version of Gravity Forms to function properly.
  */
-define( 'GV_MIN_GF_VERSION', '1.9.14' );
+define( 'GV_MIN_GF_VERSION', '2.1' );
 
 /**
  * GravityView requires at least this version of WordPress to function properly.
@@ -54,7 +54,7 @@ define( 'GV_MIN_WP_VERSION', '4.4' );
  * GravityView requires at least this version of PHP to function properly.
  * @since 1.12
  */
-define( 'GV_MIN_PHP_VERSION', '5.3' );
+define( 'GV_MIN_PHP_VERSION', '5.3.0' );
 
 /**
  * GravityView will require this version of PHP soon. False if no future PHP version changes are planned.
@@ -67,7 +67,7 @@ define( 'GV_FUTURE_MIN_PHP_VERSION', '5.4' );
  * GravityView will soon require at least this version of Gravity Forms to function properly.
  * @since 1.19.4
  */
-define( 'GV_FUTURE_MIN_GF_VERSION', '2.1' );
+define( 'GV_FUTURE_MIN_GF_VERSION', '2.2.5.22' );
 
 /**
  * The future is here and now.

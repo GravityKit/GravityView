@@ -28,35 +28,35 @@ final class Plugin {
 	 *
 	 * GravityView requires at least this version of WordPress to function properly.
 	 */
-	private static $min_wp_version = '4.0';
+	private static $min_wp_version = GV_MIN_WP_VERSION;
 
 	/**
 	 * @var string Minimum Gravity Forms version.
 	 *
 	 * GravityView requires at least this version of Gravity Forms to function properly.
 	 */
-	public static $min_gf_version = '1.9.14';
+	public static $min_gf_version = GV_MIN_GF_VERSION;
 
 	/**
 	 * @var string Minimum PHP version.
 	 *
 	 * GravityView requires at least this version of PHP to function properly.
 	 */
-	private static $min_php_version = '5.3.0';
+	private static $min_php_version = GV_MIN_PHP_VERSION;
 
 	/**
 	 * @var string|bool Minimum future PHP version.
 	 *
 	 * GravityView will require this version of PHP soon. False if no future PHP version changes are planned.
 	 */
-	private static $future_min_php_version = false;
+	private static $future_min_php_version = GV_FUTURE_MIN_PHP_VERSION;
 
 	/**
 	 * @var string|bool Minimum future Gravity Forms version.
 	 *
 	 * GravityView will require this version of Gravity Forms soon. False if no future Gravity Forms version changes are planned.
 	 */
-	private static $future_min_gf_version = false;
+	private static $future_min_gf_version = GV_FUTURE_MIN_GF_VERSION;
 
 	/**
 	 * @var \GV\Plugin The \GV\Plugin static instance.
@@ -100,7 +100,9 @@ final class Plugin {
 		 */
 		require_once $this->dir( 'future/includes/class-gv-license-handler.php' );
 		require_once $this->dir( 'future/includes/class-gv-settings-addon.php' );
-		$this->settings = new Addon_Settings();
+		if ( class_exists( '\GV\Addon_Settings' ) ) {
+			$this->settings = new Addon_Settings();
+		}
 	}
 	
 	/**

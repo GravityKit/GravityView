@@ -280,8 +280,8 @@ abstract class Extension {
 
 		$license = $this->get_license();
 
-		if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-			require_once gravityview()->plugin->dir( 'includes/lib/EDD_SL_Plugin_Updater.php' );
+		if ( ! class_exists( '\GV\EDD_SL_Plugin_Updater' ) ) {
+			require_once gravityview()->plugin->dir( 'future/lib/EDD_SL_Plugin_Updater.php' );
 		}
 
 		// Don't update if invalid license.
@@ -289,7 +289,7 @@ abstract class Extension {
 			return;
 		}
 
-		new \EDD_SL_Plugin_Updater(
+		new EDD_SL_Plugin_Updater(
 			$this->_remote_update_url,
 			$this->_path,
 			array(
