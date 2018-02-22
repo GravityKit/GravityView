@@ -35,8 +35,8 @@ class GravityView_Field_Is_Starred extends GravityView_Field {
 	}
 
 	private function add_hooks() {
-		add_filter( 'gravityview_field_entry_value_' . $this->name . '_pre_link', array( $this, 'get_content' ), 10, 4 );
-		add_action( 'gravityview_after', array( $this, 'print_script') );
+		add_filter( "gravityview/field/{$this->name}/output", array( $this, 'get_content' ), 4 /** pre_link */, 2 );
+		add_action( 'gravityview/template/after', array( $this, 'print_script'), 10, 1 );
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ), 10, 3 );
 	}
 
@@ -68,20 +68,19 @@ class GravityView_Field_Is_Starred extends GravityView_Field {
 	 * @since 2.0
 	 *
 	 * @param string $output HTML value output
-	 * @param array  $entry The GF entry array
-	 * @param array  $field_settings Settings for the particular GV field
-	 * @param array  $field Current field being displayed
+	 * @param \GV\Field_Template $template The field template being rendered
 	 *
 	 * @return string Image of the star
 	 */
-	public function get_content( $output = '', $entry = array(), $field_settings = array(), $field = array() ) {
+	public function get_content( $output, $template ) {
+		$entry = $template->entry;
 
 	    $star_url = GFCommon::get_base_url() .'/images/star' . intval( $entry['is_starred'] ) .'.png';
 
 		$entry_id = '';
 
 		if ( GravityView_Roles_Capabilities::has_cap( 'gravityview_edit_entries' ) ) {
-			$entry_id = "data-entry-id='{$entry['id']}'";
+			$entry_id = "data-entry-id='{$entry->ID}'";
 		}
 
 		// if( $show_as_star )
@@ -95,11 +94,12 @@ class GravityView_Field_Is_Starred extends GravityView_Field {
 	/**
 	 * Add JS to the bottom of the View if there is a star field and user has `gravityview_edit_entries` cap
      *
+	 * @param \GV\Template_Context $context The template context
      * @since 2.0
      *
      * @return void
 	 */
-	public function print_script() {
+	public function print_script( $context ) {
 
 		if( ! self::$has_star_field ) {
 			return;
