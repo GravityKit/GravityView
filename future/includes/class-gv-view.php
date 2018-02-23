@@ -597,6 +597,10 @@ class View implements \ArrayAccess {
 				}
 
 				/**
+				 * @todo Add filter.
+				 */
+
+				/**
 				 * Map from Gravity Forms entries arrays to an Entry_Collection.
 				 */
 				array_map( array( $entries, 'add' ), array_map( '\GV\GF_Entry::from_entry', $query->get() ) );
