@@ -568,9 +568,8 @@ class View implements \ArrayAccess {
 	 * @return \GV\Entry_Collection The entries.
 	 */
 	public function get_entries( $request ) {
-		if ( ! $this->form ) {
-			$entries = new \GV\Entry_Collection();
-		} else {
+		$entries = new \GV\Entry_Collection();
+		if ( $this->form ) {
 			/**
 			 * @todo: Stop using _frontend and use something like $request->get_search_criteria() instead
 			 */
@@ -583,32 +582,13 @@ class View implements \ArrayAccess {
 				/**
 				 * New \GF_Query stuff :)
 				 */
-				$query = new \GF_Query();
+				$query = new \GF_Query( $this->form->ID, $parameters['search_criteria'], $parameters['sorting'] );
 
-				$query->from( $this->form->get_form() )
-					->limit( $parameters['paging']['page_size'] )
+				$query->limit( $parameters['paging']['page_size'] )
 					->page( $page );
 
 				/**
-				 * @todo Provide a search_criteria converter for this!
-				 */
-				if ( ! empty( $parameters['search_criteria']['field_filters'] ) ) {
-					foreach( $parameters['search_criteria']['field_filters'] as $filter ) {
-						$query->where(
-								/**
-								 * @todo Use the lightweight API.
-								 */
-								new \GF_Query_Condition(
-										GF_Field::by_id( $this->form->get_form(), $filter['key'] ),
-										Query\Condition::EQ,
-										new Query\Literal( $filter['value'] )
-								)
-						);
-					}
-				}
-
-				/**
-				 * The joins!
+				 * Any joins?
 				 */
 				if ( count( $this->joins ) ) {
 					foreach ( $this->joins as $join ) {
@@ -616,16 +596,7 @@ class View implements \ArrayAccess {
 					}
 				}
 
-				/** @todo Gennady please review */
-				$gf_entries = $query->get();
-				$entries = new Entry_Collection();
-
-				foreach ( $gf_entries as $gf_entry ) {
-					$entry = GF_Entry::from_entry( $gf_entry );
-					$entries->add( $entry );
-				}
-
-				Multi_Entry::from_entries( $entries );
+				array_map( array( $entries, 'add' ), array_map( '\GV\GF_Entry::from_entry', $query->get() ) );
 			} else {
 				$entries = $this->form->entries
 					->filter( \GV\GF_Entry_Filter::from_search_criteria( $parameters['search_criteria'] ) )
