@@ -67,6 +67,7 @@ class Entry_Collection extends Collection {
 			return;
 		}
 		parent::add( $entry );
+		$this->fetched = min( 1, $this->fetched + 1 );
 	}
 
 	/**
@@ -170,6 +171,10 @@ class Entry_Collection extends Collection {
 	 * @return \GV\Entry_Collection This collection, now hydrated.
 	 */
 	public function fetch() {
+		if ( $this->fetched >= 0 ) {
+			return $this;
+		}
+
 		$this->clear();
 
 		/** Calculate the offsets. */
