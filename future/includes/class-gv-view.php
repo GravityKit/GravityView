@@ -356,7 +356,7 @@ class View implements \ArrayAccess {
 		} else {
 			/** And the connected joins. */
 			foreach( (array)get_post_meta( $view->ID, '_gravityview_form_joins', true ) as $_join ) {
-				if ( count( $_join ) != 4 ) {
+				if ( ! is_array( $_join ) || count( $_join ) != 4 ) {
 					continue;
 				}
 				list( $join, $join_column, $join_on, $join_on_column ) = $_join;
