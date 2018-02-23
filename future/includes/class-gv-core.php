@@ -98,6 +98,10 @@ final class Core {
 		 */
 		require_once $this->plugin->dir( 'future/includes/class-gv-utils.php' );
 
+		/** The Settings. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-settings.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-settings-view.php' );
+
 		/** Request. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );
 
@@ -142,10 +146,6 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
 		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
 		add_action( 'the_content', array( '\GV\View', 'content' ) );
-
-		/** The Settings. */
-		require_once $this->plugin->dir( 'future/includes/class-gv-settings.php' );
-		require_once $this->plugin->dir( 'future/includes/class-gv-settings-view.php' );
 
 		/** Add rewrite endpoint for single-entry URLs. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );
