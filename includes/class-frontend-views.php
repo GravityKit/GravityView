@@ -338,7 +338,7 @@ class GravityView_frontend {
 		global $post;
 
 		// If in admin and NOT AJAX request, get outta here.
-		if ( gravityview()->request->is_admin() ) {
+		if ( ! gravityview()->request || gravityview()->request->is_admin() ) {
 			return;
 		}
 

@@ -163,11 +163,11 @@ final class GravityView_Plugin {
 	 * Include the extension class
 	 *
 	 * @deprecated The extension framework is included by default now.
-	 *
+	 * @see \GV\Plugin
 	 * @since 1.5.1
 	 * @return void
 	 */
-	public static function include_extension_framework() {
+	protected static function include_extension_framework() {
 		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
 	}
 
