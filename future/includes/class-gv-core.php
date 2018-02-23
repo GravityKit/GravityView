@@ -93,6 +93,24 @@ final class Core {
 		 */
 		$this->log = apply_filters( 'gravityview/logger', new WP_Action_Logger() );
 
+		/**
+		 * Utilities.
+		 */
+		require_once $this->plugin->dir( 'future/includes/class-gv-utils.php' );
+
+		/** The Settings. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-settings.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-settings-view.php' );
+
+		/** Request. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );
+
+		if ( Request::is_admin() ) {
+			$this->request = new Admin_Request();
+		} else {
+			$this->request = new Frontend_Request();
+		}
+
 		/** Require critical legacy core files. @todo Deprecate */
 		require_once $this->plugin->dir( 'includes/helper-functions.php' );
 		require_once $this->plugin->dir( 'includes/class-common.php');
@@ -105,15 +123,6 @@ final class Core {
 		require_once $this->plugin->dir( 'includes/class-cache.php');
 
 		/**
-		 * Stop all further functionality from loading if the WordPress
-		 * plugin is incompatible with the current environment.
-		 */
-		if ( ! $this->plugin->is_compatible() ) {
-			$this->log->error( 'GravityView 2.0 is not compatible with this environment. Stopped loading.' );
-			return;
-		}
-
-		/**
 		 * GravityView extensions and widgets.
 		 */
 		require_once $this->plugin->dir( 'future/includes/class-gv-extension.php' );
@@ -122,19 +131,21 @@ final class Core {
 		/** More legacy core. @todo Deprecate */
 		$this->plugin->include_legacy_core();
 
+		/**
+		 * Stop all further functionality from loading if the WordPress
+		 * plugin is incompatible with the current environment.
+		 *
+		 * Saves some time and memory.
+		 */
+		if ( ! $this->plugin->is_compatible() ) {
+			$this->log->error( 'GravityView 2.0 is not compatible with this environment. Stopped loading.' );
+			return;
+		}
+
 		/** Register the gravityview post type upon WordPress core init. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
 		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
 		add_action( 'the_content', array( '\GV\View', 'content' ) );
-
-		/**
-		 * Utilities.
-		 */
-		require_once $this->plugin->dir( 'future/includes/class-gv-utils.php' );
-
-		/** The Settings. */
-		require_once $this->plugin->dir( 'future/includes/class-gv-settings.php' );
-		require_once $this->plugin->dir( 'future/includes/class-gv-settings-view.php' );
 
 		/** Add rewrite endpoint for single-entry URLs. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );
@@ -203,16 +214,8 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-template-field.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-template-legacy-override.php' );
 
-		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );
-
 		/** Magic. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-wrappers.php' );
-
-		if ( Request::is_admin() ) {
-			$this->request = new Admin_Request();
-		} else {
-			$this->request = new Frontend_Request();
-		}
 
 		/**
 		 * @action `gravityview/loaded` The core has been loaded.

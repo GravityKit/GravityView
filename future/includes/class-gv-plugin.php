@@ -93,15 +93,22 @@ final class Plugin {
 		/**
 		 * Load some frontend-related legacy files.
 		 */
-		add_action( 'init', array( $this, 'include_legacy_frontend' ) );
+		add_action( 'gravityview/loaded', array( $this, 'include_legacy_frontend' ) );
 
 		/**
 		 * GFAddOn-backed settings, licensing.
 		 */
+		add_action( 'plugins_loaded', array( $this, 'load_license_settings' ) );
+	}
+
+	public function load_license_settings() {
 		require_once $this->dir( 'future/includes/class-gv-license-handler.php' );
 		require_once $this->dir( 'future/includes/class-gv-settings-addon.php' );
 		if ( class_exists( '\GV\Addon_Settings' ) ) {
 			$this->settings = new Addon_Settings();
+			include_once $this->dir( 'includes/class-gravityview-settings.php' );
+		} else {
+			gravityview()->log->notice( '\GV\Addon_Settings not loaded. Missing \GFAddOn.' );
 		}
 	}
 	
@@ -183,7 +190,6 @@ final class Plugin {
 
 		include_once $this->dir( 'includes/class-ajax.php' );
 		include_once $this->dir( 'includes/class-gravityview-html-elements.php' );
-		include_once $this->dir( 'includes/class-gravityview-settings.php' );
 		include_once $this->dir( 'includes/class-frontend-views.php' );
 		include_once $this->dir( 'includes/class-gravityview-admin-bar.php' );
 		include_once $this->dir( 'includes/class-gravityview-entry-list.php' );
@@ -194,7 +200,9 @@ final class Plugin {
 		include_once $this->dir( 'includes/class-gvlogic-shortcode.php' );
 		include_once $this->dir( 'includes/presets/register-default-templates.php' );
 
-		include_once $this->dir( 'includes/class-gravityview-gfformsmodel.php' );
+		if ( class_exists( '\GFFormsModel' ) ) {
+			include_once $this->dir( 'includes/class-gravityview-gfformsmodel.php' );
+		}
 
 		if ( ! class_exists( '\GravityView_Extension' ) ) {
 			include_once $this->dir( 'includes/class-gravityview-extension.php' );

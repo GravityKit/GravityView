@@ -135,7 +135,7 @@ class View_Table_Template extends View_Template {
 		}
 
 		$renderer = new Field_Renderer();
-		$source = is_numeric( $field->ID ) ? $form : new Internal_Source();
+		$source = is_numeric( $field->ID ) ? \GV\GF_Form::by_id( $field->formId ) : new Internal_Source();
 
 		/** Output. */
 		printf( '<td%s>%s</td>', $attributes, $renderer->render( $field, $this->view, $source, $entry, $this->request ) );

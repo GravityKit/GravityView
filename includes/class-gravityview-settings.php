@@ -1,6 +1,6 @@
 <?php
 
-if ( ! class_exists( 'GFAddOn' ) ) {
+if ( ! class_exists( '\GV\Addon_Settings' ) ) {
 	return;
 }
 
