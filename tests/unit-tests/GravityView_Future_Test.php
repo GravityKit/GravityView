@@ -4830,7 +4830,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'16', 'zzzZzz :)',
 		) );
 
-		/** Last/first tests */
+		/**
+		 * Last/first tests.
+		 *
+		 * Note to self: first means the latest entry (topmost, first in the list of entries)
+		 * last means the other way around.
+		 */
 		$atts['show_as_link'] = false;
 
 		$atts['entry_id'] = 'first';

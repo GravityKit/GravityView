@@ -596,7 +596,21 @@ class View implements \ArrayAccess {
 					}
 				}
 
+				/**
+				 * @todo Add filter.
+				 */
+
+				/**
+				 * Map from Gravity Forms entries arrays to an Entry_Collection.
+				 */
 				array_map( array( $entries, 'add' ), array_map( '\GV\GF_Entry::from_entry', $query->get() ) );
+
+				/**
+				 * Add total count callback.
+				 */
+				$entries->add_count_callback( function() use ( $query ) {
+					return $query->total_found;
+				} );
 			} else {
 				$entries = $this->form->entries
 					->filter( \GV\GF_Entry_Filter::from_search_criteria( $parameters['search_criteria'] ) )
