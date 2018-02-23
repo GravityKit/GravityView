@@ -93,7 +93,7 @@ final class Plugin {
 		/**
 		 * Load some frontend-related legacy files.
 		 */
-		add_action( 'init', array( $this, 'include_legacy_frontend' ) );
+		add_action( 'gravityview/loaded', array( $this, 'include_legacy_frontend' ) );
 
 		/**
 		 * GFAddOn-backed settings, licensing.
@@ -193,7 +193,9 @@ final class Plugin {
 		include_once $this->dir( 'includes/class-gvlogic-shortcode.php' );
 		include_once $this->dir( 'includes/presets/register-default-templates.php' );
 
-		include_once $this->dir( 'includes/class-gravityview-gfformsmodel.php' );
+		if ( class_exists( '\GFFormsModel' ) ) {
+			include_once $this->dir( 'includes/class-gravityview-gfformsmodel.php' );
+		}
 
 		if ( ! class_exists( '\GravityView_Extension' ) ) {
 			include_once $this->dir( 'includes/class-gravityview-extension.php' );
