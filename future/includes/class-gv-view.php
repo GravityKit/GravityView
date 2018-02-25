@@ -597,8 +597,12 @@ class View implements \ArrayAccess {
 				}
 
 				/**
-				 * @todo Add filter.
+				 * @action `gravityview/view/query` Override the \GF_Query before the get() call.
+				 * @param \GF_Query $query The current query object
+				 * @param \GV\View $this The current view object
+				 * @param \GV\Request $request The request object
 				 */
+				do_action( 'gravityview/view/query', $query, $this, $request );
 
 				/**
 				 * Map from Gravity Forms entries arrays to an Entry_Collection.
