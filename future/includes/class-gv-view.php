@@ -353,7 +353,7 @@ class View implements \ArrayAccess {
 				'view_id' => $view->ID,
 				'form_id' => $view->_gravityview_form_id ? : 0,
 			) );
-		} else {
+		} else if ( gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
 			/** And the connected joins. */
 			foreach( (array)get_post_meta( $view->ID, '_gravityview_form_joins', true ) as $_join ) {
 				if ( ! is_array( $_join ) || count( $_join ) != 4 ) {
@@ -578,7 +578,7 @@ class View implements \ArrayAccess {
 			/** @todo: Get the page from the request instead! */
 			$page = ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1;
 
-			if ( class_exists( '\GF_Query' ) ) {
+			if ( gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
 				/**
 				 * New \GF_Query stuff :)
 				 */

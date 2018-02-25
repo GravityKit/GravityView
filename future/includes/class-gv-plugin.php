@@ -72,6 +72,11 @@ final class Plugin {
 	public $settings;
 
 	/**
+	 * @var string The joins functionality identifier.
+	 */
+	const FEATURE_JOINS = 'joins';
+
+	/**
 	 * Get the global instance of \GV\Plugin.
 	 *
 	 * @return \GV\Plugin The global instance of GravityView Plugin.
@@ -398,6 +403,22 @@ final class Plugin {
 
 		return ! empty( $GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] ) ?
 			$GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] : \GFCommon::$version;
+	}
+
+	/**
+	 * Feature support detection.
+	 *
+	 * @param string $feature Feature name. Check FEATURE_* class constants.
+	 *
+	 * @return boolean
+	 */
+	public function supports( $feature ) {
+		switch ( $feature ):
+				case self::FEATURE_JOINS:
+					return class_exists( '\GF_Query' );
+			default:
+				return false;
+		endswitch;
 	}
 
 	/**
