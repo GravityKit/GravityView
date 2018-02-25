@@ -53,8 +53,8 @@ class Join {
 		}
 
 		return $query->join(
-			new \GF_Query_Column( $this->join_on_column, $this->join_on ),
-			new \GF_Query_Column( $this->join_column, $this->join )
+			new \GF_Query_Column( $this->join_on_column->ID, $this->join_on->ID ),
+			new \GF_Query_Column( $this->join_column->ID, $this->join->ID )
 		);
 	}
 }
