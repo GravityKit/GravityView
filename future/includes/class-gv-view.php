@@ -607,7 +607,16 @@ class View implements \ArrayAccess {
 				/**
 				 * Map from Gravity Forms entries arrays to an Entry_Collection.
 				 */
-				array_map( array( $entries, 'add' ), array_map( '\GV\GF_Entry::from_entry', $query->get() ) );
+				if ( count( $this->joins ) ) {
+					foreach ( $query->get() as $entry ) {
+						$entries->add(
+							Multi_Entry::from_entries( array_map( '\GV\GF_Entry::from_entry', $entry ) )
+						);
+					}
+					var_dump( $entries );
+				} else {
+					array_map( array( $entries, 'add' ), array_map( '\GV\GF_Entry::from_entry', $query->get() ) );
+				}
 
 				/**
 				 * Add total count callback.
