@@ -63,11 +63,12 @@ class Entry_Collection extends Collection {
 	 */
 	public function add( $entry ) {
 		if ( ! $entry instanceof Entry ) {
+			$this->fetched = max( 0, $this->fetched );
 			gravityview()->log->error( 'Entry_Collections can only contain objects of type \GV\Entry.' );
 			return;
 		}
 		parent::add( $entry );
-		$this->fetched = min( 1, $this->fetched + 1 );
+		$this->fetched = max( 1, $this->fetched + 1 );
 	}
 
 	/**

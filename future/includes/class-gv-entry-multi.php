@@ -41,7 +41,7 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 	public static function from_entries( $entries ) {
 		$_entry = new self();
 		foreach ( $entries as &$entry ) {
-			if ( empty( $entry['form_id'] ) ) {
+			if ( ! $entry instanceof Entry ) {
 				continue;
 			}
 			$_entry->entries[ $entry['form_id'] ]  = &$entry;

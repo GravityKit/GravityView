@@ -107,10 +107,18 @@ class View_Table_Template extends View_Template {
 	 * @return void
 	 */
 	public function the_field( \GV\Field $field, \GV\Entry $entry ) {
+		$form = $this->view->form;
+
+		if ( $entry instanceof Multi_Entry ) {
+			if ( ! $entry = Utils::get( $entry, $field->form_id ) ) {
+				return;
+			}
+			$form = GF_Form::by_id( $field->form_id );
+		}
 
 	    $attributes = array(
-			'id' => \GravityView_API::field_html_attr_id( $field->as_configuration(), $this->view->form, $entry->as_entry() ),
-			'class' => gv_class( $field->as_configuration(), $this->view->form, $entry->as_entry() ),
+			'id' => \GravityView_API::field_html_attr_id( $field->as_configuration(), $form, $entry->as_entry() ),
+			'class' => gv_class( $field->as_configuration(), $form, $entry->as_entry() ),
 		);
 
 		/**
@@ -135,7 +143,7 @@ class View_Table_Template extends View_Template {
 		}
 
 		$renderer = new Field_Renderer();
-		$source = is_numeric( $field->ID ) ? \GV\GF_Form::by_id( $field->formId ) : new Internal_Source();
+		$source = is_numeric( $field->ID ) ? \GV\GF_Form::by_id( $field->form_id ) : new Internal_Source();
 
 		/** Output. */
 		printf( '<td%s>%s</td>', $attributes, $renderer->render( $field, $this->view, $source, $entry, $this->request ) );
