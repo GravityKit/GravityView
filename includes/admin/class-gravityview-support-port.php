@@ -142,7 +142,7 @@ class GravityView_Support_Port {
 			'Payment Email'         => $response['customer_email'],
 			'WordPress Version'     => get_bloginfo( 'version', 'display' ),
 			'PHP Version'           => phpversion(),
-			'GravityView Version'   => GravityView_Plugin::version,
+			'GravityView Version'   => \GV\Plugin::$version,
 			'Gravity Forms Version' => GFForms::$version,
 			'Plugins & Extensions'  => \GV\License_Handler::get_related_plugins_and_extensions(),
 		);
