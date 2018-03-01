@@ -36,7 +36,7 @@
 						$form_ids []= $join->join_on->ID;
 					}
 				}
-				foreach ( array_unique( $form_ids ) as $form_id ) {
+				foreach ( array_filter( array_unique( $form_ids ) ) as $form_id ) {
 					?>
 						<div id="directory-available-fields-<?php echo esc_attr( $form_id ); ?>" class="hide-if-js gv-tooltip" data-formid="<?php echo esc_attr( $form_id ); ?>">
 							<span class="close"><i class="dashicons dashicons-dismiss"></i></span>

@@ -939,7 +939,7 @@ class GravityView_Admin_Views {
 										<?php
 									} else {
 										?>
-											<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>"><?php echo '+ '.esc_html( $button_label ); ?></a>
+											<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>" data-formid="<?php echo esc_attr( $view->form ? $view->form->ID : '' ); ?>"><?php echo '+ '.esc_html( $button_label ); ?></a>
 										<?php
 									}
 								?>
