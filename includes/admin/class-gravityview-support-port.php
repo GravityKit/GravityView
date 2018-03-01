@@ -149,7 +149,20 @@ class GravityView_Support_Port {
 			'contactEnabled' => (int)GVCommon::has_cap( 'gravityview_contact_support' ),
 			'data' => $data,
 			'translation' => $translation,
+            'suggest' => array(),
 		);
+
+		/**
+         * @filter `gravityview/support_port/localization_data` Filter data passed to the Support Port, before localize_script is run
+		 * @since 2.0
+         * @param array $localization_data {
+         *   @type int $contactEnabled Can the user contact support?
+         *   @type array $data Support/license info
+         *   @type array $translation i18n strings
+         *   @type array $suggest Article IDs to recommend to the user (per page in the admin
+         * }
+		 */
+		$localization_data = apply_filters( 'gravityview/support_port/localization_data', $localization_data );
 
 		wp_localize_script( 'gravityview-support', 'gvSupport', $localization_data );
 
