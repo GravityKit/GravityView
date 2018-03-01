@@ -109,18 +109,20 @@ class GravityView_Support_Port {
 		// This is just HTML we don't need.
 		unset( $response['message'] );
 
-		switch ( intval( $response['license_limit'] ) ) {
+		switch ( intval( $response['price_id'] ) ) {
+			default:
 			case 1:
 				$package = 'Sol';
 				break;
-			case 100:
-				$package = 'Galactic';
-				break;
-			case 3:
+			case 2:
 				$package = 'Interstellar';
 				break;
-			default:
-				$package = sprintf( '%d-Site License', $response['license_limit'] );
+			case 3:
+				$package = 'Galactic';
+				break;
+            case 4:
+                $package = 'Lifetime';
+                break;
 		}
 
 		$data = array(
