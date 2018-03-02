@@ -50,6 +50,29 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 	}
 
 	/**
+	 * Fake legacy template support.
+	 *
+	 * Take the first entry and set it as the current entry.
+	 * But support nesting.
+	 *
+	 * @return array See \GV\Entry::as_entry()
+	 */
+	public function as_entry() {
+		$_entry = array();
+
+		if ( $entry = reset( $this->entries ) ) {
+			$_entry = $entry->as_entry();
+
+			foreach ( $this->entries as $entry ) {
+				$entry = $entry->as_entry();
+				$_entry['_multi'][ $entry['form_id'] ] = $entry;
+			}
+		}
+
+		return $_entry;
+	}
+
+	/**
 	 * ArrayAccess compatibility layer with a Gravity Forms entry array.
 	 *
 	 * @internal

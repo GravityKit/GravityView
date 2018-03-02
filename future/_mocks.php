@@ -163,6 +163,10 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
 		return null;
 	}
 
+	if ( ! empty( $entry['_multi'] ) && ! empty( $field_settings['form_id'] ) && ! empty( $entry['_multi'][ $field_settings['form_id'] ] ) ) {
+		$entry = $entry['_multi'][ $field_settings['form_id'] ];
+	}
+
 	if ( empty( $entry['id'] ) || ! $entry = \GV\GF_Entry::by_id( $entry['id'] ) ) {
 		gravityview()->log->error( 'Invalid \GV\GF_Entry supplied', array( 'data' => $entry ) );
 		return null;
@@ -258,6 +262,13 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 
 	$label = '';
 
+	if ( ! empty( $entry['_multi'] ) && ! empty( $field_settings['form_id'] ) && ! empty( $entry['_multi'][ $field_settings['form_id'] ] ) ) {
+		$entry = $entry['_multi'][ $field_settings['form_id'] ];
+		if ( $_form = \GV\GF_Form::by_id( $field_settings['form_id'] ) ) {
+			$form = $_form->form;
+		}
+	}
+
 	if ( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
 		gravityview()->log->error( 'No entry or field_settings[id] supplied', array( 'data' => array( func_get_args() ) ) );
 		return $bail( $label, $field_settings, $entry, $force_show_label, $form );
@@ -275,7 +286,7 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 	 *
 	 * Fields with a numeric ID are Gravity Forms ones.
 	 */
-	$source = is_numeric( $field_settings['id'] ) ? \GV\Source::BACKEND_GRAVITYFORMS : \GV\Source::BACKEND_INTERNAL;;
+	$source = is_numeric( $field_settings['id'] ) ? \GV\Source::BACKEND_GRAVITYFORMS : \GV\Source::BACKEND_INTERNAL;
 
 	/** Initialize the future field. */
 	switch ( $source ):
@@ -290,8 +301,11 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 				gravityview()->log->error( 'No field found for specified form and field ID #{field_id}', array( 'field_id' => $field_settings['id'], 'data' => $form ) );
 				return $bail( $label, $field_settings, $entry->as_entry(), $force_show_label, $gf_form->form );
 			}
-			/** The label never wins... */
-			$field_settings['label'] = '';
+			if ( empty( $field_settings['show_label'] ) ) {
+				/** The label never wins... */
+				$field_settings['label'] = '';
+			}
+
 			break;
 
 		/** Our internal backend. */

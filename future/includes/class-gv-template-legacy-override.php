@@ -44,7 +44,7 @@ class Legacy_Override_Template extends \Gamajo_Template_Loader {
 	private $entry;
 
 	/**
-	 * Catch deprecated theme loads.
+	 * Catch deprecated template loads.
 	 *
 	 * @param \GV\View $view The View.
 	 * @param \GV\Entry $entry The Entry.
@@ -191,30 +191,31 @@ class Legacy_Override_Template extends \Gamajo_Template_Loader {
 
 			global $post;
 
-			\GV\Mocks\Legacy_Context::push( array_merge( array(
-				'view' => $this->view,
-				'entries' => $entries,
-				'request' => $request,
-				'fields' => $this->view->fields->by_visible(),
-				'in_the_loop' => true,
-			), empty( $parameters ) ? array() : array(
-				'paging' => $parameters['paging'],
-				'sorting' => $parameters['sorting'],
-			), $post ? array() : array(
-				'post' => $post,
-			) ) );
-
 			add_action( 'gravityview_before', array( \GravityView_View::getInstance(), 'render_widget_hooks' ) );
 			add_action( 'gravityview_after', array( \GravityView_View::getInstance(), 'render_widget_hooks' ) );
 
 			foreach ( array( 'header', 'body', 'footer' ) as $part ) {
+				\GV\Mocks\Legacy_Context::push( array_merge( array(
+					'view' => $this->view,
+					'entries' => $entries,
+					'request' => $request,
+					'fields' => $this->view->fields->by_visible(),
+					'in_the_loop' => true,
+				), empty( $parameters ) ? array() : array(
+					'paging' => $parameters['paging'],
+					'sorting' => $parameters['sorting'],
+				), $post ? array() : array(
+					'post' => $post,
+				) ) );
+
 				\GravityView_View::getInstance()->setTemplatePartSlug( $slug );
+
 				\GravityView_View::getInstance()->setTemplatePartName( $part );
+
 				\GravityView_View::getInstance()->_include( $this->get_template_part( $slug, $part ) );
+
+				Mocks\Legacy_Context::pop();
 			}
-
-			Mocks\Legacy_Context::pop();
-
 		}
 
 		printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $this->view->ID );
