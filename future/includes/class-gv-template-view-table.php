@@ -140,4 +140,143 @@ class View_Table_Template extends View_Template {
 		/** Output. */
 		printf( '<td%s>%s</td>', $attributes, $renderer->render( $field, $this->view, $source, $entry, $this->request ) );
 	}
+
+	/**
+	 * `gravityview_table_body_before` and `gravityview/template/table/body/before` actions.
+	 *
+	 * Output inside the `tbody` of the table.
+	 *
+	 * @param $context \GV\Template_Context The 2.0 context.
+	 *
+	 * @return void
+	 */
+	public static function body_before( $context ) {
+		/**
+		 * @action `gravityview/template/table/body/before` Output inside the `tbody` of the table.
+		 * @since future
+		 * @param \GV\Template_Context $context The template context.
+		 */
+		do_action( 'gravityview/template/table/body/before', $context );
+
+		/**
+		* @action `gravityview_table_body_before` Inside the `tbody`, before any rows are rendered. Can be used to insert additional rows.
+		* @deprecated Use `gravityview/template/table/body/before`
+		* @since 1.0.7
+		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		*/
+		do_action( 'gravityview_table_body_before', \GravityView_View::getInstance() /** ugh! */ );
+	}
+
+	/**
+	 * `gravityview_table_body_after` and `gravityview/template/table/body/after` actions.
+	 *
+	 * Output inside the `tbody` of the table.
+	 *
+	 * @param $context \GV\Template_Context The 2.0 context.
+	 *
+	 * @return void
+	 */
+	public static function body_after( $context ) {
+		/**
+		 * @action `gravityview/template/table/body/after` Output inside the `tbody` of the table at the end.
+		 * @since future
+		 * @param \GV\Template_Context $context The template context.
+		 */
+		do_action( 'gravityview/template/table/body/after', $context );
+
+		/**
+		* @action `gravityview_table_body_after` Inside the `tbody`, after any rows are rendered. Can be used to insert additional rows.
+		* @deprecated Use `gravityview/template/table/body/after`
+		* @since 1.0.7
+		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		*/
+		do_action( 'gravityview_table_body_after', \GravityView_View::getInstance() /** ugh! */ );
+	}
+
+	/**
+	 * `gravityview_table_tr_before` and `gravityview/template/table/tr/after` actions.
+	 *
+	 * Output inside the `tr` of the table.
+	 *
+	 * @param $context \GV\Template_Context The 2.0 context.
+	 *
+	 * @return void
+	 */
+	public static function tr_before( $context ) {
+		/**
+		 * @action `gravityview/template/table/tr/before` Output inside the `tr` of the table when there are no results.
+		 * @since future
+		 * @param \GV\Template_Context $context The template context.
+		 */
+		do_action( 'gravityview/template/table/tr/before', $context );
+
+		/**
+		 * @action `gravityview_table_tr_before` Before the `tr` while rendering each entry in the loop. Can be used to insert additional table rows.
+		 * @since 1.0.7
+		 * @deprecated USe `gravityview/template/table/tr/before`
+		 * @param GravityView_View $gravityview_view Current GraivtyView_View object.
+		 */
+		do_action( 'gravityview_table_tr_before', \GravityView_View::getInstance() /** ugh! */ );
+	}
+
+	/**
+	 * `gravityview_table_tr_after` and `gravityview/template/table/tr/after` actions.
+	 *
+	 * Output inside the `tr` of the table.
+	 *
+	 * @param $context \GV\Template_Context The 2.0 context.
+	 *
+	 * @return void
+	 */
+	public static function tr_after( $context ) {
+		/**
+		 * @action `gravityview/template/table/tr/after` Output inside the `tr` of the table when there are no results.
+		 * @since future
+		 * @param \GV\Template_Context $context The template context.
+		 */
+		do_action( 'gravityview/template/table/tr/after', $context );
+
+		/**
+		 * @action `gravityview_table_tr_after` Inside the `tr` while rendering each entry in the loop. Can be used to insert additional table cells.
+		 * @since 1.0.7
+		 * @deprecated USe `gravityview/template/table/tr/after`
+		 * @param GravityView_View $gravityview_view Current GraivtyView_View object.
+		 */
+		do_action( 'gravityview_table_tr_after', \GravityView_View::getInstance() /** ugh! */ );
+	}
+
+	/**
+	 * `gravityview_entry_class` and `gravityview/template/table/entry/class` filters.
+	 *
+	 * Modify of the class of a row.
+	 *
+	 * @param string $class The class.
+	 * @param \GV\Entry $entry The entry.
+	 * @param \GV\Template_Context The context.
+	 *
+	 * @return string The classes.
+	 */
+	public static function entry_class( $class, $entry, $context ) {
+		/**
+		 * @filter `gravityview_entry_class` Modify the class applied to the entry row.
+		 * @param string $class Existing class.
+		 * @param array $entry Current entry being displayed
+		 * @param GravityView_View $this Current GravityView_View object
+		 * @deprecated Use `gravityview/template/table/entry/class`
+		 * @return string The modified class.
+		 */
+		$class = apply_filters( 'gravityview_entry_class', $class, $entry->as_entry(), \GravityView_View::getInstance() );
+
+		/**
+		 * @filter `gravityview/template/table/entry/class` Modify the class aplied to the entry row.
+		 * @param string $class The existing class.
+		 * @param \GV\Entry $entry The entry.
+		 * @param \GV\Template_Context The context.
+		 * @return string The modified class.
+		 */
+		return apply_filters( 'gravityview/template/table/entry/class', $class, $entry, $context );
+	}
 }
+
+
+
