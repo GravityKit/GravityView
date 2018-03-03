@@ -4045,7 +4045,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$attributes = array( 'class' => 'hello-button', 'data-row' => '1' );
 
-		add_filter( 'gravityview/entry/row/attributes', function( $attributes ) {
+		add_filter( 'gravityview/template/table/entry/row/attributes', function( $attributes ) {
 			$attributes['onclick'] = 'alert("hello :)");';
 			return $attributes;
 		} );
@@ -5631,32 +5631,58 @@ class GVFuture_Test extends GV_UnitTestCase {
 		} );
 
 		add_action( 'gravityview_table_body_before', $callbacks []= function( $gravityview_view ) use ( $view, $test ) {
-			$this->assertEquals( $gravityview_view->getViewId(), $view->ID );
+			$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
 			echo '{{ gravityview_table_body_before }}';
 		} );
 
 		add_action( 'gravityview/template/table/body/before', $callbacks []= function( $context ) use ( $view, $test ) {
-			$this->assertSame( $view, $context->view );
+			$test->assertSame( $view, $context->view );
 			echo '{{ gravityview/template/table/body/before }}';
 		} );
 
 		add_action( 'gravityview_table_body_after', $callbacks []= function( $gravityview_view ) use ( $view, $test ) {
-			$this->assertEquals( $gravityview_view->getViewId(), $view->ID );
+			$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
 			echo '{{ gravityview_table_body_after }}';
 		} );
 
 		add_action( 'gravityview/template/table/body/after', $callbacks []= function( $context ) use ( $view, $test ) {
-			$this->assertSame( $view, $context->view );
+			$test->assertSame( $view, $context->view );
 			echo '{{ gravityview/template/table/body/after }}';
 		} );
 
-		add_filter( 'gravityview_entry_class', $callbacks []= function( $class, $entry, $gravityview_view ) use ( $view, $test ) {
+		add_filter( 'gravityview_entry_class', $callbacks []= function( $class, $entry, $gravityview_view ) use ( $view, $form, $test ) {
+			$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
+			$test->assertEquals( $entry['form_id'], $form['id'] );
 			return "$class gravityview_entry_class";
 		}, 10, 3 );
 
-		add_filter( 'gravityview/template/table/entry/class', $callbacks []= function( $class, $entry, $context ) use ( $view, $test ) {
+		add_filter( 'gravityview/template/table/entry/class', $callbacks []= function( $class, $context ) use ( $view, $form, $test ) {
+			$test->assertSame( $context->view, $view );
+			$test->assertEquals( $context->entry['form_id'], $form['id'] );
 			return "$class gravityview/template/table/entry/class";
-		}, 10, 3 );
+		}, 10, 2 );
+
+		add_action( 'gravityview/template/table/cells/before', $callbacks []= function( $context ) use ( $view, $form, $test ) {
+			$test->assertSame( $context->view, $view );
+			$test->assertEquals( $context->entry['form_id'], $form['id'] );
+			echo '{{ gravityview/template/table/cells/before }}';
+		} );
+
+		add_action( 'gravityview_table_cells_before', $callbacks []= function( $gravityview_view ) use ( $view, $test ) {
+			$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
+			echo '{{ gravityview_table_cells_before }}';
+		} );
+
+		add_action( 'gravityview/template/table/cells/after', $callbacks []= function( $context ) use ( $view, $form, $test ) {
+			$test->assertSame( $context->view, $view );
+			$test->assertEquals( $context->entry['form_id'], $form['id'] );
+			echo '{{ gravityview/template/table/cells/after }}';
+		} );
+
+		add_action( 'gravityview_table_cells_after', $callbacks []= function( $gravityview_view ) use ( $view, $test ) {
+			$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
+			echo '{{ gravityview_table_cells_after }}';
+		} );
 
 		$renderer = new \GV\View_Renderer();
 
@@ -5676,6 +5702,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertContains( 'class="alt gravityview_entry_class gravityview/template/table/entry/class"', $out );
 
+		$this->assertContains( '{{ gravityview/template/table/cells/before }}{{ gravityview_table_cells_before }}', $out );
+		$this->assertContains( '{{ gravityview/template/table/cells/after }}{{ gravityview_table_cells_after }}', $out );
+
 		remove_action( 'gravityview_before', $callbacks[0] );
 		remove_action( 'gravityview/template/before', $callbacks[1] );
 		remove_action( 'gravityview_after', $callbacks[2] );
@@ -5690,29 +5719,33 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_action( 'gravityview/template/table/body/after', $callbacks[11] );
 		remove_filter( 'gravityview_entry_class', $callbacks[12] );
 		remove_filter( 'gravityview/template/table/entry/class', $callbacks[13] );
+		remove_filter( 'gravityview_table_cells_before', $callbacks[14] );
+		remove_filter( 'gravityview/template/table/cells/before', $callbacks[15] );
+		remove_filter( 'gravityview_table_cells_after', $callbacks[16] );
+		remove_filter( 'gravityview/template/table/cells/after', $callbacks[17] );
 
 		$callbacks = array();
 
 		$view->settings->update( array( 'hide_until_searched' => true ) );
 
 		add_action( 'gravityview_table_tr_before', $callbacks []= function( $gravityview_view ) use ( $view, $test ) {
-			$this->assertEquals( $gravityview_view->getViewId(), $view->ID );
+			$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
 			echo '{{ gravityview_table_tr_before }}';
 		} );
 
 		add_action( 'gravityview/template/table/tr/before', $callbacks []= function( $context ) use ( $view, $test ) {
-			$this->assertSame( $view, $context->view );
+			$test->assertSame( $view, $context->view );
 			echo '{{ gravityview/template/table/tr/before }}';
 		} );
 
 
 		add_action( 'gravityview_table_tr_after', $callbacks []= function( $gravityview_view ) use ( $view, $test ) {
-			$this->assertEquals( $gravityview_view->getViewId(), $view->ID );
+			$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
 			echo '{{ gravityview_table_tr_after }}';
 		} );
 
 		add_action( 'gravityview/template/table/tr/after', $callbacks []= function( $context ) use ( $view, $test ) {
-			$this->assertSame( $view, $context->view );
+			$test->assertSame( $view, $context->view );
 			echo '{{ gravityview/template/table/tr/after }}';
 		} );
 
@@ -5720,7 +5753,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 			return "{{ gravitview_no_entries_text }}$text";
 		}, 10, 2 );
 
-		add_filter( 'gravityview/template/text/no_entries', $callbacks []= function( $text, $is_search, $context ) {
+		add_filter( 'gravityview/template/text/no_entries', $callbacks []= function( $text, $is_search, $context ) use ( $view, $test ) {
+			$test->assertSame( $view, $context->view );
 			return "{{ gravityview/template/text/no_entries }}$text";
 		}, 10, 3 );
 

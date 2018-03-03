@@ -86,8 +86,8 @@ class Template_Context extends Context {
 		 */
 		$context->view = Utils::get( $template, 'view' );
 		$context->source = Utils::get( $template, 'source' );
-		$context->field = Utils::get( $template, 'field' );
-		$context->entry = Utils::get( $template, 'entry' );
+		$context->field = Utils::get( $template, 'field' ) ? : Utils::get( $data, 'field' );
+		$context->entry = Utils::get( $template, 'entry' ) ? : Utils::get( $data, 'entry' );
 		$context->request = Utils::get( $template, 'request' );
 
 		$context->entries = Utils::get( $template, 'entries' ) ? $template->entries->fetch() : null;

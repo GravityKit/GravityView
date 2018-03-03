@@ -4,12 +4,14 @@
  *
  * @global \GV\Template_Context $gravityview
  */
+
+$template = $gravityview->template;
 ?>
 	<tbody>
 		<?php
 
 		/** @action `gravityview/template/table/body/before` */
-		$gravityview->template::body_before( $gravityview );
+		$template::body_before( $gravityview );
 
 		if ( ! $gravityview->entries->count() ) {
 			?>
@@ -17,7 +19,7 @@
 				<?php
 
 				/** @action `gravityview/template/table/tr/before` */
-				$gravityview->template::tr_before( $gravityview );
+				$template::tr_before( $gravityview );
 
                 ?>
 				<td colspan="<?php echo $gravityview->fields->by_position( 'directory_table-columns' )->by_visible()->count() ? : ''; ?>" class="gv-no-results">
@@ -26,7 +28,7 @@
 				<?php
 
 				/** @action `gravityview/template/table/tr/after` */
-				$gravityview->template::tr_after( $gravityview );
+				$template::tr_after( $gravityview );
 
                 ?>
 			</tr>
@@ -38,7 +40,7 @@
 				$alt = empty( $alt ) ? 'alt' : '';
 
 				/** @action `gravityview/template/table/entry/class` */
-				$class = $gravityview->template::entry_class( $alt, $entry, $gravityview );
+				$class = $template::entry_class( $alt, $entry, $gravityview );
 
 				$attributes = array(
 					'class' => $class,
@@ -49,6 +51,6 @@
 		}
 
 		/** @action `gravityview/template/table/body/after` */
-		$gravityview->template::body_after( $gravityview );
+		$template::body_after( $gravityview );
 		?>
 	</tbody>
