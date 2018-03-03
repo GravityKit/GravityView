@@ -9,7 +9,7 @@
 		<tr>
 			<?php $gravityview->template->the_columns(); ?>
 		</tr>
-		<?php gravityview_footer(); ?>
+		<?php gravityview_footer( $gravityview ); ?>
 	</tfoot>
 </table>
 </div><!-- end .gv-table-container -->

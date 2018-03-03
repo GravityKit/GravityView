@@ -924,7 +924,28 @@ function gravityview_before() {
 
 function gravityview_header() {
 	/**
+	 * @action `gravityview/template/header` Append content to the view.
+	 * @param object $gravityview The $gravityview object available in templates.
+	 */
+	if ( count( $args = func_get_args() ) ) {
+		$gravityview = reset( $args );
+		if ( $gravityview instanceof \GV\Template_Context ) {
+			/**
+			 * @action `gravityview/template/header` Prepend content to the view container <div>.
+			 * @param \GV\Template_Context $gravityview The $gravityview object available in templates.
+			 */
+			do_action( 'gravityview/template/header', $gravityview );
+
+			/**
+			 * @deprecated Use `gravityview/template/header`
+			 */
+			return do_action( 'gravityview_header', $gravityview->view->ID );
+		}
+	}
+
+	/**
 	 * @action `gravityview_header` Prepend content to the View container `<div>`
+	 * @deprecated Use `gravityview/template/header`.
 	 * @param int $view_id The ID of the View being displayed
 	 */
 	do_action( 'gravityview_header', gravityview_get_view_id() );
@@ -932,7 +953,28 @@ function gravityview_header() {
 
 function gravityview_footer() {
 	/**
+	 * @action `gravityview/template/footer` Append content to the view.
+	 * @param object $gravityview The $gravityview object available in templates.
+	 */
+	if ( count( $args = func_get_args() ) ) {
+		$gravityview = reset( $args );
+		if ( $gravityview instanceof \GV\Template_Context ) {
+			/**
+			 * @action `gravityview/template/footer` Prepend outside of the view container <div>.
+			 * @param \GV\Template_Context $gravityview The $gravityview object available in templates.
+			 */
+			do_action( 'gravityview/template/footer', $gravityview );
+
+			/**
+			 * @deprecated Use `gravityview/template/footer`
+			 */
+			return do_action( 'gravityview_footer', $gravityview->view->ID );
+		}
+	}
+
+	/**
 	 * @action `gravityview_after` Display content after a View. Used to render footer widget areas. Rendered outside the View container `<div>`
+	 * @deprecated Use `gravityview/template/footer`.
 	 * @param int $view_id The ID of the View being displayed
 	 */
 	do_action( 'gravityview_footer', gravityview_get_view_id() );
