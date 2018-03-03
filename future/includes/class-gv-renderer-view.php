@@ -120,12 +120,14 @@ class View_Renderer extends Renderer {
 			'sorting' => $parameters['sorting'],
 		) ) );
 
-		add_action( 'gravityview/template/after', function( $context ) {
+		add_action( 'gravityview/template/after', $view_id_output = function( $context ) {
 			printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $context->view->ID );
 		} );
 
 		ob_start();
 		$template->render();
+
+		remove_action( 'gravityview/template/after', $view_id_output );
 
 		\GV\Mocks\Legacy_Context::pop();
 		return ob_get_clean();

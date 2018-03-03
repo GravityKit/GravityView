@@ -119,6 +119,10 @@ class Legacy_Override_Template extends \Gamajo_Template_Loader {
 	 * @return string The output.
 	 */
 	public function render( $slug ) {
+		add_action( 'gravityview/template/after', $view_id_output = function( $context ) {
+			printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $context->view->ID );
+		} );
+
 		ob_start();
 
 		$request = new Mock_Request();
@@ -217,7 +221,8 @@ class Legacy_Override_Template extends \Gamajo_Template_Loader {
 
 		}
 
-		printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $this->view->ID );
+		remove_action( 'gravityview/template/after', $view_id_output );
+
 		return ob_get_clean();
 	}
 }

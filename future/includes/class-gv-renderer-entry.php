@@ -107,9 +107,15 @@ class Entry_Renderer extends Renderer {
 		}
 		$template = new $class( $entry, $view, $request );
 
+		add_action( 'gravityview/template/after', $view_id_output = function( $context ) {
+			printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $context->view->ID );
+		} );
+
 		ob_start();
 		$template->render();
-		printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $view->ID );
+
+		remove_action( 'gravityview/template/after', $view_id_output );
+
 		return ob_get_clean();
 	}
 }
