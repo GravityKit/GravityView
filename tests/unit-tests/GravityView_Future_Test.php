@@ -5716,15 +5716,27 @@ class GVFuture_Test extends GV_UnitTestCase {
 			echo '{{ gravityview/template/table/tr/after }}';
 		} );
 
+		add_filter( 'gravitview_no_entries_text', $callbacks []= function( $text, $is_search ) {
+			return "{{ gravitview_no_entries_text }}$text";
+		}, 10, 2 );
+
+		add_filter( 'gravityview/template/text/no_entries', $callbacks []= function( $text, $is_search, $context ) {
+			return "{{ gravityview/template/text/no_entries }}$text";
+		}, 10, 3 );
+
 		$out = $renderer->render( $view );
 
 		$this->assertContains( '{{ gravityview/template/table/tr/before }}{{ gravityview_table_tr_before }}', $out );
 		$this->assertContains( '{{ gravityview/template/table/tr/after }}{{ gravityview_table_tr_after }}', $out );
 
+		$this->assertContains( '{{ gravityview/template/text/no_entries }}{{ gravitview_no_entries_text }}', $out );
+
 		remove_action( 'gravityview_table_tr_before', $callbacks[0] );
 		remove_action( 'gravityview/template/table/tr/before', $callbacks[1] );
 		remove_action( 'gravityview_table_tr_after', $callbacks[2] );
 		remove_action( 'gravityview/template/table/tr/after', $callbacks[3] );
+		remove_filter( 'gravitview_no_entries_text', $callbacks[4] );
+		remove_filter( 'gravityview/template/text/no_entries', $callbacks[5] );
 	}
 }
 

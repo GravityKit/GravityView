@@ -282,31 +282,53 @@ class GravityView_API {
 	/**
 	 * Get the "No Results" text depending on whether there were results.
 	 * @param  boolean     $wpautop Apply wpautop() to the output?
+	 *
+	 * @since 2.0
+	 * @param \GV\Template_Context $context The context
+	 *
 	 * @return string               HTML of "no results" text
 	 */
-	public static function no_results($wpautop = true) {
-		$gravityview_view = GravityView_View::getInstance();
-
+	public static function no_results( $wpautop = true, $context = null ) {
 		$is_search = false;
 
-		if( $gravityview_view && ( $gravityview_view->curr_start || $gravityview_view->curr_end || $gravityview_view->curr_search ) ) {
-			$is_search = true;
+		if ( $context instanceof \GV\Template_Context ) {
+			if ( $context->request->is_search() ) {
+				$search = true;
+			}
+		} else {
+			$gravityview_view = GravityView_View::getInstance();
+
+			if( $gravityview_view && ( $gravityview_view->curr_start || $gravityview_view->curr_end || $gravityview_view->curr_search ) ) {
+				$is_search = true;
+			}
 		}
 
-		if($is_search) {
-			$output = __('This search returned no results.', 'gravityview');
+		if ( $is_search ) {
+			$output = __( 'This search returned no results.', 'gravityview' );
 		} else {
-			$output = __('No entries match your request.', 'gravityview');
+			$output = __( 'No entries match your request.', 'gravityview' );
 		}
 
 		/**
 		 * @filter `gravitview_no_entries_text` Modify the text displayed when there are no entries.
 		 * @param string $output The existing "No Entries" text
 		 * @param boolean $is_search Is the current page a search result, or just a multiple entries screen?
+		 * @return string The modified text.
+		 * @deprecated Use `gravityview/template/text/no_entries`
 		 */
-		$output = apply_filters( 'gravitview_no_entries_text', $output, $is_search);
+		$output = apply_filters( 'gravitview_no_entries_text', $output, $is_search );
 
-		return $wpautop ? wpautop($output) : $output;
+		/**
+		 * @filter `gravityview/template/text/no_entries` Modify the text displayed when there are no entries.
+		 * @since 2.0
+		 * @param string $output The existing "No Entries" text
+		 * @param boolean $is_search Is the current page a search result, or just a multiple entries screen?
+		 * @param \GV\Template_Context $context The context.
+		 * @return string The modified text.
+		 */
+		$output = apply_filters( 'gravityview/template/text/no_entries', $output, $is_search, $context );
+
+		return $wpautop ? wpautop( $output ) : $output;
 	}
 
 	/**
@@ -695,8 +717,8 @@ function gv_entry_link( $entry, $post_id = NULL ) {
 	return GravityView_API::entry_link( $entry, $post_id );
 }
 
-function gv_no_results($wpautop = true) {
-	return GravityView_API::no_results( $wpautop );
+function gv_no_results( $wpautop = true, $context = null ) {
+	return GravityView_API::no_results( $wpautop, $context );
 }
 
 /**

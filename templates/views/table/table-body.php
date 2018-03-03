@@ -21,7 +21,7 @@
 
                 ?>
 				<td colspan="<?php echo $gravityview->fields->by_position( 'directory_table-columns' )->by_visible()->count() ? : ''; ?>" class="gv-no-results">
-					<?php echo gv_no_results(); ?>
+					<?php echo gv_no_results( true, $gravityview ); ?>
 				</td>
 				<?php
 
