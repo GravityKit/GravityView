@@ -69,21 +69,29 @@ class GravityView_Entry_List {
 	private $item_tag = 'li';
 
 	/**
+	 * The context this list is operating in.
+	 * @todo Deprecated this class altogether.
+	 * @var \GV\Template_Context
+	 */
+	private $template_context;
+
+	/**
 	 * @param array $entries
 	 * @param int $post_id
 	 * @param array $form
 	 * @param string $link_format
 	 * @param string $after_link
+	 * @param \GV\Template_Context $template_context The context
 	 */
-	function __construct( $entries = array(), $post_id = 0, $form = array(), $link_format = '', $after_link = '', $context = '' ) {
-
+	function __construct( $entries = array(), $post_id = 0, $form = array(), $link_format = '', $after_link = '', $context = '', $template_context = null ) {
 		$this->entries = $entries;
 		$this->post_id = $post_id;
 		$this->form = $form;
 		$this->link_format = $link_format;
 		$this->after_link = $after_link;
 		$this->context = $context;
-		$this->empty_message = function_exists( 'gv_no_results' ) ? gv_no_results() : __('No entries match your request.', 'gravityview');
+		$this->template_context = $template_context;
+		$this->empty_message = function_exists( 'gv_no_results' ) ? gv_no_results( $template_context ) : __( 'No entries match your request.', 'gravityview' );
 	}
 
 	/**

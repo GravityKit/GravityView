@@ -62,7 +62,8 @@ $list = new GravityView_Entry_List(
 	$gravityview->view->form->form,
 	$gravityview->field->link_format,
 	$gravityview->field->after_link,
-	'other_entries' // Context
+	'other_entries', // Context
+	$gravityview
 );
 
 /** The state still haunts us... BOO! */
