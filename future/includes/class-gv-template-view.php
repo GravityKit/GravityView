@@ -77,6 +77,10 @@ abstract class View_Template extends Template {
 		parent::__construct();
 	}
 
+	public function __destruct() {
+		remove_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ) );
+	}
+
 	/**
 	 * Enable granular template overrides based on current post, view, form, etc.
 	 *

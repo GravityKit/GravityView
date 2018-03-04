@@ -338,82 +338,78 @@ class GravityView_API {
 	 *
 	 * @param int $post_id Post ID
 	 * @param boolean $add_query_args Add pagination and sorting arguments
+	 *
+	 * @since 2.0
+	 * @param \GV\Template_Context $context The context this is being used in.
+	 *
 	 * @return string      Permalink to multiple entries view
 	 */
-	public static function directory_link( $post_id = NULL, $add_query_args = true ) {
+	public static function directory_link( $post_id = NULL, $add_query_args = true, $context = null ) {
 		global $post;
 
-		$gravityview_view = GravityView_View::getInstance();
-
-		if( empty( $post_id ) ) {
-
-			$post_id = false;
-
+		if ( empty( $post_id ) ) {
 			// DataTables passes the Post ID
-			if( defined('DOING_AJAX') && DOING_AJAX ) {
-
-				$post_id = isset( $_POST['post_id'] ) ? (int)$_POST['post_id'] : false;
-
+			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+				$post_id = \GV\Utils::_POST( 'post_id', false );
 			} else {
+				if ( $context instanceof \GV\Template_Context ) {
+					// Shortcodes, embeds
+					if ( is_a( $post, 'WP_Post' ) ) {
+						$post_id = $post->ID;
 
-				// The Post ID has been passed via the shortcode
-				if( !empty( $gravityview_view ) && $gravityview_view->getPostId() ) {
-
-					$post_id = $gravityview_view->getPostId();
-
-				} else {
-
-					// This is a GravityView post type
-					if( GravityView_frontend::getInstance()->isGravityviewPostType() ) {
-
-						$post_id = isset( $gravityview_view ) ? $gravityview_view->getViewId() : $post->ID;
-
+					// Actual views
 					} else {
-
-						// This is an embedded GravityView; use the embedded post's ID as the base.
-						if( GravityView_frontend::getInstance()->isPostHasShortcode() && is_a( $post, 'WP_Post' ) ) {
-
-							$post_id = $post->ID;
-
-						} elseif( $gravityview_view->getViewId() ) {
-
-							// The GravityView has been embedded in a widget or in a template, and
-							// is not in the current content. Thus, we defer to the View's own ID.
-							$post_id = $gravityview_view->getViewId();
-
-						}
-
+						$post_id = $context->view ? $context->view->ID : false;
 					}
+				} else {
+					/** @deprecated path of execution */
+					$gravityview_view = GravityView_View::getInstance();
 
+					// The Post ID has been passed via the shortcode
+					if ( ! empty( $gravityview_view ) && $gravityview_view->getPostId() ) {
+						$post_id = $gravityview_view->getPostId();
+					} else {
+						// This is a GravityView post type
+						if ( GravityView_frontend::getInstance()->isGravityviewPostType() ) {
+							$post_id = isset( $gravityview_view ) ? $gravityview_view->getViewId() : $post->ID;
+						} else {
+							// This is an embedded GravityView; use the embedded post's ID as the base.
+							if ( GravityView_frontend::getInstance()->isPostHasShortcode() && is_a( $post, 'WP_Post' ) ) {
+								$post_id = $post->ID;
+							} elseif ( $gravityview_view->getViewId() ) {
+								// The GravityView has been embedded in a widget or in a template, and
+								// is not in the current content. Thus, we defer to the View's own ID.
+								$post_id = $gravityview_view->getViewId();
+							}
+						}
+					}
 				}
 			}
 		}
 
 		// No post ID, get outta here.
-		if( empty( $post_id ) ) {
-			return NULL;
+		if ( empty( $post_id ) ) {
+			return null;
 		}
 
 		// If we've saved the permalink in memory, use it
 		// @since 1.3
 		$link = wp_cache_get( 'gv_directory_link_'.$post_id );
 
-		if( (int) $post_id === (int) get_option( 'page_on_front' ) ) {
+		if ( (int) $post_id === (int) get_option( 'page_on_front' ) ) {
 			$link = home_url();
 		}
 
-		if( empty( $link ) ) {
-
+		if ( empty( $link ) ) {
 			$link = get_permalink( $post_id );
 
 			// If not yet saved, cache the permalink.
 			// @since 1.3
 			wp_cache_set( 'gv_directory_link_'.$post_id, $link );
-
 		}
 
 		// Deal with returning to proper pagination for embedded views
-		if( $link && $add_query_args ) {
+		if ( $link && $add_query_args ) {
 
 			$args = array();
 
@@ -437,7 +433,13 @@ class GravityView_API {
 		 */
 		$link = apply_filters( 'gravityview_directory_link', $link, $post_id );
 
-		return $link;
+		/**
+		 * @filter `gravityview/view/links/directory` Modify the URL to the View "directory" context
+		 * @since 2.0
+		 * @param string $link URL to the View's "directory" context (Multiple Entries screen)
+		 * @param \GV\Template_Context $context 
+		 */
+		return apply_filters( 'gravityview/view/links/directory', $link, $context );
 	}
 
 	/**
@@ -709,8 +711,8 @@ function gv_value( $entry, $field ) {
 	return $value;
 }
 
-function gv_directory_link( $post = NULL, $add_pagination = true ) {
-	return GravityView_API::directory_link( $post, $add_pagination );
+function gv_directory_link( $post = NULL, $add_pagination = true, $context = null ) {
+	return GravityView_API::directory_link( $post, $add_pagination, $context );
 }
 
 function gv_entry_link( $entry, $post_id = NULL ) {
@@ -724,11 +726,16 @@ function gv_no_results( $wpautop = true, $context = null ) {
 /**
  * Generate HTML for the back link from single entry view
  * @since 1.0.1
+ * @since 2.0
+ * @param \GV\Template_Context $context The context this link is being displayed from.
  * @return string|null      If no GV post exists, null. Otherwise, HTML string of back link.
  */
-function gravityview_back_link() {
+function gravityview_back_link( $context = null ) {
 
-	$href = gv_directory_link();
+	if ( $context instanceof \GV\Template_Context ) {
+	}
+
+	$href = gv_directory_link( null, true, $context );
 
 	/**
 	 * @filter `gravityview_go_back_url` Modify the back link URL

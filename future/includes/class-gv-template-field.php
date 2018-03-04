@@ -91,6 +91,10 @@ abstract class Field_Template extends Template {
 		parent::__construct();
 	}
 
+	public function __destruct() {
+		remove_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ) );
+	}
+
 	/**
 	 * Enable granular template overrides based on current post, view, form, field types, etc.
 	 *
@@ -140,7 +144,7 @@ abstract class Field_Template extends Template {
 
 		global $post;
 
-		if ( ! $this->request->is_view() && $post ) {
+		if ( $this->request && $this->request->is_view() && $post ) {
 			if ( $this->field && $this->field->type ) {
 				$specifics []= sprintf( '%spost-%d-view-%d-field-%s-%s.php', $slug_dir, $post->ID, $this->view->ID, $this->field->type, $slug_name );
 				$this->field->inputType && $specifics []= sprintf( '%spost-%d-view-%d-field-%s-%s.php', $slug_dir, $post->ID, $this->view->ID, $this->field->inputType, $slug_name );
@@ -159,7 +163,7 @@ abstract class Field_Template extends Template {
 		}
 		
 		/** Field-specific */
-		if ( $this->field ) {
+		if ( $this->field && $this->view ) {
 
 			if ( $this->field->ID ) {
 				$specifics []= sprintf( '%sform-%d-field-%d-%s.php', $slug_dir, $this->view->form->ID, $this->field->ID, $slug_name );
@@ -184,12 +188,14 @@ abstract class Field_Template extends Template {
 			}
 		}
 
-		/** Generic field templates */
-		$specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $this->view->ID, $slug_name );
-		$specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $this->view->form->ID, $slug_name );
+		if ( $this->view ) {
+			/** Generic field templates */
+			$specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $this->view->ID, $slug_name );
+			$specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $this->view->form->ID, $slug_name );
 
-		$specifics []= sprintf( '%sview-%d-field.php', $slug_dir, $this->view->ID );
-		$specifics []= sprintf( '%sform-%d-field.php', $slug_dir, $this->view->form->ID );
+			$specifics []= sprintf( '%sview-%d-field.php', $slug_dir, $this->view->ID );
+			$specifics []= sprintf( '%sform-%d-field.php', $slug_dir, $this->view->form->ID );
+		}
 
 		$specifics []= sprintf( '%sfield-%s.php', $slug_dir, $slug_name );
 		$specifics []= sprintf( '%sfield.php', $slug_dir );

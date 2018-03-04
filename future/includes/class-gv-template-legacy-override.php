@@ -63,6 +63,10 @@ class Legacy_Override_Template extends \Gamajo_Template_Loader {
 		$this->plugin_template_directory = 'templates/deprecated/';
 	}
 
+	public function __destruct() {
+		remove_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ) );
+	}
+
 	/**
 	 * @inheritdoc
 	 * @see Gamajo_Template_Loader::locate_template()
