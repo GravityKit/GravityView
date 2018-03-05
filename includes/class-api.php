@@ -732,9 +732,6 @@ function gv_no_results( $wpautop = true, $context = null ) {
  */
 function gravityview_back_link( $context = null ) {
 
-	if ( $context instanceof \GV\Template_Context ) {
-	}
-
 	$href = gv_directory_link( null, true, $context );
 
 	/**
@@ -742,26 +739,56 @@ function gravityview_back_link( $context = null ) {
 	 * @since 1.17.5
 	 * @see gv_directory_link() Generated the original back link
 	 * @param string $href Existing label URL
+	 * @deprecated Use `gravityview/template/links/back/url`
 	 */
 	$href = apply_filters( 'gravityview_go_back_url', $href );
 
-	if( empty( $href ) ) { return NULL; }
+	/**
+	 * @filter `gravityview/template/links/back/url` Modify the back link URL
+	 * @since 2.0
+	 * @see gv_directory_link() Generated the original back link
+	 * @param string $href Existing label URL
+	 * @param \GV\Template_Context The context.
+	 */
+	$href = apply_filters( 'gravityview/template/links/back/url', $href, $context );
 
-	// calculate link label
-	$gravityview_view = GravityView_View::getInstance();
+	if ( empty( $href ) ) {
+		return NULL;
+	}
 
-	$label = $gravityview_view->getBackLinkLabel() ? $gravityview_view->getBackLinkLabel() : __( '&larr; Go back', 'gravityview' );
+	if ( $context instanceof \GV\Template_Context ) {
+		$view_id = $context->view->ID;
+		$view_label = $context->template->get_back_label();
+	} else {
+		/** @deprecated legacy path */
+		$gravityview_view = GravityView_View::getInstance();
+		$view_id = $gravityview_view->getViewId();
+		$view_label = $gravityview_view->getBackLinkLabel() ? $gravityview_view->getBackLinkLabel() : false;
+	}
+
+	/** Default */
+	$label = $view_label ? $view_label : __( '&larr; Go back', 'gravityview' );
 
 	/**
 	 * @filter `gravityview_go_back_label` Modify the back link text
 	 * @since 1.0.9
 	 * @param string $label Existing label text
+	 * @deprecated Use `gravityview/template/links/back/label`
 	 */
 	$label = apply_filters( 'gravityview_go_back_label', $label );
 
+	/**
+	 * @filter `gravityview_go_back_label` Modify the back link text
+	 * @since 2.0
+	 * @see gv_directory_link() Generated the original back link
+	 * @param string $label Existing label text
+	 * @param \GV\Template_Context The context.
+	 */
+	$label = apply_filters( 'gravityview/template/links/back/label', $label, $context );
+
 	$link = gravityview_get_link( $href, esc_html( $label ), array(
-		'data-viewid' => $gravityview_view->getViewId()
-	));
+		'data-viewid' => $view_id,
+	) );
 
 	return $link;
 }
@@ -1280,7 +1307,7 @@ function gravityview_field_output( $passed_args ) {
 	}
 
 	/**
-	 * @todo  Depricate `gravityview_field_output`
+	 * @todo Depricate `gravityview_field_output`
 	 */
 	$html = apply_filters( 'gravityview_field_output', $html, $args );
 

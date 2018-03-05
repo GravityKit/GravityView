@@ -5644,6 +5644,26 @@ class GVFuture_Test extends GV_UnitTestCase {
 			return "$link{{ gravityview/view/links/directory }}";
 		}, 10, 2 );
 
+		add_filter( 'gravityview_go_back_url', $callbacks []= function( $url ) use ( $view, $test ) {
+			$test->assertEquals( $view->ID, \GravityView_View::getInstance()->getViewId() );
+			return "$url{{ gravityview_go_back_url }}";
+		} );
+
+		add_filter( 'gravityview/template/links/back/url', $callbacks []= function( $url, $context ) use ( $view, $test ) {
+			$test->assertSame( $view, $context->view );
+			return "$url{{ gravityview/template/links/back/url }}";
+		}, 10, 2 );
+
+		add_filter( 'gravityview_go_back_label', $callbacks []= function( $label ) use ( $view, $test ) {
+			$test->assertEquals( $view->ID, \GravityView_View::getInstance()->getViewId() );
+			return "$label{{ gravityview_go_back_label }}";
+		} );
+
+		add_filter( 'gravityview/template/links/back/label', $callbacks []= function( $label, $context ) use ( $view, $test ) {
+			$test->assertSame( $view, $context->view );
+			return "$label{{ gravityview/template/links/back/label }}";
+		}, 10, 2 );
+
 		$renderer = new \GV\Entry_Renderer();
 
 		gravityview()->request = new \GV\Mock_Request();
@@ -5661,14 +5681,18 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		remove_action( 'gravityview_before', $callbacks[0] );
 		remove_action( 'gravityview/template/before', $callbacks[1] );
-		remove_action( 'gravityview_after', $callbacks[2] );
-		remove_action( 'gravityview/template/after', $callbacks[3] );
+		remove_action( 'gravityview_after', $callbacks[2], 11 );
+		remove_action( 'gravityview/template/after', $callbacks[3], 11 );
 		remove_action( 'gravityview_header', $callbacks[4] );
 		remove_action( 'gravityview/template/header', $callbacks[5] );
 		remove_action( 'gravityview_footer', $callbacks[6] );
 		remove_action( 'gravityview/template/footer', $callbacks[7] );
 		remove_filter( 'gravityview_directory_link', $callbacks[8] );
 		remove_filter( 'gravityview/view/links/directory', $callbacks[9] );
+		remove_filter( 'gravityview_go_back_url', $callbacks[10] );
+		remove_filter( 'gravityview/template/links/back/url', $callbacks[11] );
+		remove_filter( 'gravityview_go_back_label', $callbacks[12] );
+		remove_filter( 'gravityview/template/links/back/label', $callbacks[13] );
 	}
 }
 

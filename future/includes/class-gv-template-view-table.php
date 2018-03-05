@@ -53,14 +53,6 @@ class View_Table_Template extends View_Template {
 		$context = Template_Context::from_template( $this, compact( 'entry', 'fields' ) );
 
 		/**
-		 * @filter `gravityview/template/table/fields` Modify the fields displayed in this tables.
-		 * @param \GV\Field_Collection $fields The fields.
-		 * @param \GV\Template_Context $context The context.
-		 * @since 2.0
-		 */
-		$fields = apply_filters( 'gravityview/template/table/fields', $fields, $context );
-
-		/**
 		 * @filter `gravityview_table_cells` Modify the fields displayed in a table
 		 * @param array $fields
 		 * @param GravityView_View $this
@@ -68,6 +60,14 @@ class View_Table_Template extends View_Template {
 		 */
 		$fields = apply_filters( 'gravityview_table_cells', $fields->as_configuration(), \GravityView_View::getInstance() );
 		$fields = Field_Collection::from_configuration( $fields );
+
+		/**
+		 * @filter `gravityview/template/table/fields` Modify the fields displayed in this tables.
+		 * @param \GV\Field_Collection $fields The fields.
+		 * @param \GV\Template_Context $context The context.
+		 * @since 2.0
+		 */
+		$fields = apply_filters( 'gravityview/template/table/fields', $fields, $context );
 
 		$context = Template_Context::from_template( $this, compact( 'entry', 'fields' ) );
 
@@ -170,23 +170,6 @@ class View_Table_Template extends View_Template {
 		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
 
 		$output = $renderer->render( $field, $this->view, $source, $entry, $this->request );
-
-
-		/**
-		 * @filter `gravityview/render/hide-empty-zone`
-		 * If a zone has no field output, choose whether to show wrapper
-		 * False by default to keep backward compatibility
-		 * @since 1.7.6
-		 * @param boolean $hide_empty_zone Default: false
-
-		 * @since 2.0
-		 * @param \GV\Field $field The field.
-		 * @param \GV\Entry $entry The entry.
-		 * @param \GV\Template_Context $context The context.
-		 */
-		if ( apply_filters( 'gravityview/render/hide-empty-zone', false, $context ) ) {
-			return;
-		}
 
 		/** Output. */
 		printf( '<td%s>%s</td>', $attributes, $output );

@@ -216,6 +216,8 @@ abstract class Field_Template extends Template {
 		/** Retrieve the value. */
 		$display_value = $value = $this->field->get_value( $this->view, $this->source, $this->entry );
 
+		$context = Template_Context::from_template( $this, compact( 'display_value', 'value' ) );
+
 		if ( empty( $value ) ) {
 			/**
 			 * @filter `gravityview_empty_value` What to display when a field is empty
@@ -227,9 +229,9 @@ abstract class Field_Template extends Template {
 			/**
 			 * @filter `gravityview/field/value/empty` What to display when this field is empty.
 			 * @param string $value The value to display (Default: empty string)
-			 * @param \GV\Field_Template The template this is being called from.
+			 * @param \GV\Template_Context The template context this is being called from.
 			 */
-			$value = apply_filters( 'gravityview/field/value/empty', $value, $this );
+			$value = apply_filters( 'gravityview/field/value/empty', $value, $context );
 		}
 
 		$source = $this->source;
@@ -255,10 +257,7 @@ abstract class Field_Template extends Template {
 			}
 		}
 
-		$context = Template_Context::from_template( $this, array(
-			'display_value' => $display_value,
-			'value' => $value,
-		) );
+		$context = Template_Context::from_template( $this, compact( 'display_value', 'value' ) );
 
 		/**
 		 * Make various pieces of data available to the template
@@ -266,10 +265,9 @@ abstract class Field_Template extends Template {
 		 *
 		 * @filter `gravityview/template/field/context`
 		 * @param \GV\Template_Context $context The context for this template.
-		 * @param \GV\Field_Template $template The current template.
 		 * @since future
 		 */
-		$this->push_template_data( apply_filters( 'gravityview/template/field/context', $context, $this ), 'gravityview' );
+		$this->push_template_data( apply_filters( 'gravityview/template/field/context', $context ), 'gravityview' );
 
 		/** Bake the template. */
 		ob_start();
@@ -395,9 +393,9 @@ abstract class Field_Template extends Template {
 		 * @since future
 		 *
 		 * @param string $output The current output.
-		 * @param \GV\Field_Template The template this is being called from.
+		 * @param \GV\Template_Context The template this is being called from.
 		 */
-		echo apply_filters( "gravityview/field/output", $output, $this );
+		echo apply_filters( "gravityview/field/output", $output, $context );
 
 		remove_filter( 'gravityview/field/output', $pre_link_compat_callback, 5 );
 		remove_filter( 'gravityview/field/output', $post_link_compat_callback, 9 );

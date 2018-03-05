@@ -26,17 +26,17 @@ class Entry_Table_Template extends Entry_Template {
 	 * @return string|false The field output or false if "hide_empty" is set.
 	 */
 	public function the_field( \GV\Field $field ) {
+		$context = Template_Context::from_template( $this, compact( 'field' ) );
+
 		/**
 		 * @filter `gravityview/entry/cell/attributes` Filter the row attributes for the row in table view.
 		 *
 		 * @param array $attributes The HTML attributes.
-		 * @param \GV\Field $field The field these attributes are for.
-		 * @param \GV\Entry $entry The entry this is being called for.
-		 * @param \GV\Entry_Template This template.
+		 * @param \GV\Template_Context This template.
 		 *
 		 * @since future
 		 */
-		$attributes = apply_filters( 'gravityview/entry/cell/attributes', array(), $field, $this->entry, $this );
+		$attributes = apply_filters( 'gravityview/entry/cell/attributes', array(), $context );
 
 		/** Glue the attributes together. */
 		foreach ( $attributes as $attribute => $value ) {
@@ -73,7 +73,25 @@ class Entry_Table_Template extends Entry_Template {
 		$fields = $this->view->fields->by_position( 'single_table-columns' )->by_visible();
 		$form = $this->view->form;
 
-		/** @todo add filters from old code */
+		$context = Template_Context::from_template( $this, compact( 'fields' ) );
+
+		/**
+		 * @filter `gravityview_table_cells` Modify the fields displayed in a table
+		 * @param array $fields
+		 * @param GravityView_View $this
+		 * @deprecated Use `gravityview/template/table/fields`
+		 */
+		$fields = apply_filters( 'gravityview_table_cells', $fields->as_configuration(), \GravityView_View::getInstance() );
+		$fields = Field_Collection::from_configuration( $fields );
+
+		/**
+		 * @filter `gravityview/template/table/fields` Modify the fields displayed in this tables.
+		 * @param \GV\Field_Collection $fields The fields.
+		 * @param \GV\Template_Context $context The context.
+		 * @since 2.0
+		 */
+		$fields = apply_filters( 'gravityview/template/table/fields', $fields, $context );
+
 		foreach ( $fields->all() as $field ) {
 			$column_label = apply_filters( 'gravityview/template/field_label', $field->get_label( $this->view, $form ), $field->as_configuration(), $form->form ? $form->form : null, null );
 			if ( $field_output = $this->the_field( $field ) ) {

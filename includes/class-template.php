@@ -527,10 +527,11 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 * @param boolean $do_replace Perform merge tag and shortcode processing on the label. Default: true.
 	 * @since future
 	 *
+	 * @deprecated Use $template->get_back_label();
+	 *
 	 * @return string
 	 */
 	public function getBackLinkLabel( $do_replace = true ) {
-
 		if ( $do_replace ) {
 			$back_link_label = GravityView_API::replace_variables( $this->back_link_label, $this->getForm(), $this->getCurrentEntry() );
 			return do_shortcode( $back_link_label );

@@ -152,6 +152,29 @@ abstract class Entry_Template extends Template {
 		$this->get_template_part( static::$slug );
 		$this->pop_template_data( 'gravityview' );
 	}
+
+	/**
+	 * Fetch the back link label for an entry context.
+	 *
+	 * @param boolean $do_replace Whether to perform merge tag replacements, etc.
+	 *
+	 * @see `gravityview/template/links/back/label` filter
+	 *
+	 * @return string The link label
+	 */
+	public function get_back_label( $do_replace = true ) {
+		if ( ! $this->view ) {
+			return '';
+		}
+
+		$back_link_label = $this->view->settings->get( 'back_link_label', null );
+
+		if ( $do_replace ) {
+			$back_link_label = \GravityView_API::replace_variables( $back_link_label, Utils::get( $this->view, 'form/form' ), $this->entry->as_entry() );
+			return do_shortcode( $back_link_label );
+		}
+		return $back_link_label;
+	}
 }
 
 /** Load implementations. */
