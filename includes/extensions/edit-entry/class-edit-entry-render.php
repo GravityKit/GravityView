@@ -295,7 +295,7 @@ class GravityView_Edit_Entry_Render {
 			do_action('gravityview_log_debug', __METHOD__ . ': Submission is valid.' );
 
 			/**
-			 * @hack This step is needed to unset the adminOnly from form fields, to add the calculation fields
+			 * @hack This step is needed to fix field visibility, to add the calculation fields
 			 */
 			$form = $this->form_prepare_for_save();
 
@@ -484,7 +484,7 @@ class GravityView_Edit_Entry_Render {
 
 
 	/**
-	 * Unset adminOnly and convert field input key to string
+	 * Set visibility to visible and convert field input key to string
 	 * @return array $form
 	 */
 	private function form_prepare_for_save() {
@@ -503,7 +503,7 @@ class GravityView_Edit_Entry_Render {
 				unset( $form['fields'][ $k ] );
 			}
 
-			$field->adminOnly = false;
+			$field->visibility = 'visible';
 
 			if( isset( $field->inputs ) && is_array( $field->inputs ) ) {
 				foreach( $field->inputs as $key => $input ) {
@@ -1147,7 +1147,7 @@ class GravityView_Edit_Entry_Render {
 		}
 
 		// SET SOME FIELD DEFAULTS TO PREVENT ISSUES
-		$field->adminOnly = false; /** @see GFFormDisplay::get_counter_init_script() need to prevent adminOnly */
+		$field->visibility = 'visible'; /** @see GFFormDisplay::get_counter_init_script() need to make field visible */
 
 		$field_value = $this->get_field_value( $field );
 
@@ -1282,7 +1282,7 @@ class GravityView_Edit_Entry_Render {
 
 			// This is because we're doing admin form pretending to be front-end, so Gravity Forms
 			// expects certain field array items to be set.
-			foreach ( array( 'noDuplicates', 'adminOnly', 'inputType', 'isRequired', 'enablePrice', 'inputs', 'allowedExtensions' ) as $key ) {
+			foreach ( array( 'noDuplicates', 'visibility', 'inputType', 'isRequired', 'enablePrice', 'inputs', 'allowedExtensions' ) as $key ) {
 				$field->{$key} = isset( $field->{$key} ) ? $field->{$key} : NULL;
 			}
 
@@ -1639,7 +1639,7 @@ class GravityView_Edit_Entry_Render {
 		// Hide fields depending on admin settings
 		$fields = $this->filter_fields( $form['fields'], $edit_fields );
 
-		// If Edit Entry fields are configured, remove adminOnly field settings. Otherwise, don't.
+		// If Edit Entry fields are configured, remove hidden/administrative field settings. Otherwise, don't.
 		$fields = $this->filter_admin_only_fields( $fields, $edit_fields, $form, $view_id );
 
 		/**
@@ -1748,7 +1748,7 @@ class GravityView_Edit_Entry_Render {
 	}
 
 	/**
-	 * Remove fields that shouldn't be visible based on the Gravity Forms adminOnly field property
+	 * Remove fields that shouldn't be visible based on the Gravity Forms visibility field property
 	 *
 	 * @since 1.9.1
 	 *
@@ -1766,15 +1766,28 @@ class GravityView_Edit_Entry_Render {
 		 * If the Edit Entry tab is not configured, adminOnly fields will not be shown to non-administrators.
 		 * If the Edit Entry tab *is* configured, adminOnly fields will be shown to non-administrators, using the configured GV permissions
 		 * @since 1.9.1
+         * @since 1.22.6 Deprecated
+         * @deprecated Use gravityview/edit_entry/use_gf_visibility_setting instead
 		 * @param boolean $use_gf_adminonly_setting True: Hide field if set to Admin Only in GF and the user is not an admin. False: show field based on GV permissions, ignoring GF permissions.
 		 * @param array $form GF Form array
 		 * @param int $view_id View ID
 		 */
 		$use_gf_adminonly_setting = apply_filters( 'gravityview/edit_entry/use_gf_admin_only_setting', empty( $edit_fields ), $form, $view_id );
 
-		if( $use_gf_adminonly_setting && false === GVCommon::has_cap( 'gravityforms_edit_entries', $this->entry['id'] ) ) {
+		/**
+		 * @filter `gravityview/edit_entry/use_gf_visibility_setting` When Edit tab isn't configured, should the Gravity Forms "Visibility" field settings be used to control field display? Default: true
+		 * If the Edit Entry tab is not configured, Administrative fields will not be shown to non-administrators.
+		 * If the Edit Entry tab *is* configured, Administrative fields will be shown to non-administrators, using the configured GV permissions
+		 * @since 1.22.6
+		 * @param boolean $use_gf_visibility_setting True: Hide field if set to Administrative in GF and the user is not an admin. False: show field based on GV permissions, ignoring GF permissions.
+		 * @param array $form GF Form array
+		 * @param int $view_id View ID
+		 */
+		$use_gf_visibility_setting = apply_filters( 'gravityview/edit_entry/use_gf_visibility_setting', empty( $edit_fields ), $form, $view_id );
+
+		if( $use_gf_adminonly_setting && $use_gf_visibility_setting && false === GVCommon::has_cap( 'gravityforms_edit_entries', $this->entry['id'] ) ) {
 			foreach( $fields as $k => $field ) {
-				if( $field->adminOnly ) {
+				if( 'administrative' === $field->visibility ) {
 					unset( $fields[ $k ] );
 				}
 			}
@@ -1782,7 +1795,17 @@ class GravityView_Edit_Entry_Render {
 		}
 
 		foreach( $fields as &$field ) {
-			$field->adminOnly = false;
+
+			/**
+			 * @filter `gravityview/edit_entry/make_all_fields_visible` Set field visibility to "visible" for all fields
+			 * @since 1.22.6
+			 * @param string $visibility 'visible' by default. Default options are 'hidden', 'visible', and 'administrative'
+             * @param GF_Field $field Form field being modified
+			 * @param int $view_id Current View ID
+			 */
+			$visibility = apply_filters( 'gravityview/edit_entry/field_visibility', 'visible', $field, $view_id );
+
+			$field->visibility = $visibility;
 		}
 
 		return $fields;
