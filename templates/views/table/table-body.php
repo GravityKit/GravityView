@@ -39,7 +39,7 @@ $template = $gravityview->template;
 				// Add `alt` class to alternate rows
 				$alt = empty( $alt ) ? 'alt' : '';
 
-				/** @action `gravityview/template/table/entry/class` */
+				/** @filter `gravityview/template/table/entry/class` */
 				$class = $template::entry_class( $alt, $entry, $gravityview );
 
 				$attributes = array(

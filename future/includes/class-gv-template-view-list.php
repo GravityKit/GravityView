@@ -128,4 +128,157 @@ class View_List_Template extends View_Template {
 
 		return $vars;
 	}
+
+	/**
+	 * `gravityview_entry_class` and `gravityview/template/list/entry/class` filters.
+	 *
+	 * Modify of the class of a row.
+	 *
+	 * @param string $class The class.
+	 * @param \GV\Entry $entry The entry.
+	 * @param \GV\Template_Context The context.
+	 *
+	 * @return string The classes.
+	 */
+	public static function entry_class( $class, $entry, $context ) {
+		/**
+		 * @filter `gravityview_entry_class` Modify the class applied to the entry row.
+		 * @param string $class Existing class.
+		 * @param array $entry Current entry being displayed
+		 * @param GravityView_View $this Current GravityView_View object
+		 * @deprecated Use `gravityview/template/list/entry/class`
+		 * @return string The modified class.
+		 */
+		$class = apply_filters( 'gravityview_entry_class', $class, $entry->as_entry(), \GravityView_View::getInstance() );
+
+		/**
+		 * @filter `gravityview/template/list/entry/class` Modify the class aplied to the entry row.
+		 * @param string $class The existing class.
+		 * @param \GV\Template_Context The context.
+		 * @return string The modified class.
+		 */
+		return apply_filters( 'gravityview/template/list/entry/class', $class, Template_Context::from_template( $context->template, compact( 'entry' ) ) );
+	}
+
+	/**
+	 * `gravityview_list_body_before` and `gravityview/template/list/body/before` actions.
+	 *
+	 * Output inside the `tbody` of the list.
+	 *
+	 * @param $context \GV\Template_Context The 2.0 context.
+	 *
+	 * @return void
+	 */
+	public static function body_before( $context ) {
+		/**
+		 * @action `gravityview/template/list/body/before` Output inside the `tbody` of the list.
+		 * @since future
+		 * @param \GV\Template_Context $context The template context.
+		 */
+		do_action( 'gravityview/template/list/body/before', $context );
+
+		/**
+		* @action `gravityview_list_body_before` Inside the `tbody`, before any rows are rendered. Can be used to insert additional rows.
+		* @deprecated Use `gravityview/template/list/body/before`
+		* @since 1.0.7
+		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		*/
+		do_action( 'gravityview_list_body_before', \GravityView_View::getInstance() /** ugh! */ );
+	}
+
+	/**
+	 * `gravityview_list_body_after` and `gravityview/template/list/body/after` actions.
+	 *
+	 * Output inside the `tbody` of the list.
+	 *
+	 * @param $context \GV\Template_Context The 2.0 context.
+	 *
+	 * @return void
+	 */
+	public static function body_after( $context ) {
+		/**
+		 * @action `gravityview/template/list/body/after` Output inside the `tbody` of the list at the end.
+		 * @since future
+		 * @param \GV\Template_Context $context The template context.
+		 */
+		do_action( 'gravityview/template/list/body/after', $context );
+
+		/**
+		* @action `gravityview_list_body_after` Inside the `tbody`, after any rows are rendered. Can be used to insert additional rows.
+		* @deprecated Use `gravityview/template/list/body/after`
+		* @since 1.0.7
+		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		*/
+		do_action( 'gravityview_list_body_after', \GravityView_View::getInstance() /** ugh! */ );
+	}
+
+	/**
+	 * `gravityview_list_entry_before` and `gravityview/template/list/entry/before` actions.
+	 * `gravityview_list_entry_title_before` and `gravityview/template/list/entry/title/before` actions.
+	 * `gravityview_list_entry_content_before` and `gravityview/template/list/entry/content/before` actions.
+	 * `gravityview_list_entry_footer_before` and `gravityview/template/list/entry/footer/before` actions.
+	 *
+	 * Output inside the `entry` of the list.
+	 *
+	 * @param \GV\Entry $entry The entry.
+	 * @param \GV\Template_Context $context The 2.0 context.
+	 * @param string $zone The list zone (footer, image, title, etc.).
+	 *
+	 * @return void
+	 */
+	public static function entry_before( $entry, $context, $zone = '' ) {
+		$zone = str_replace( '//', '/', "/$zone/" );
+
+		/**
+		 * @action `gravityview/template/list/entry/$zone/before` Output inside the `entry` of the list at the end.
+		 * @since future
+		 * @param \GV\Template_Context $context The template context.
+		 */
+		do_action( sprintf( 'gravityview/template/list/entry%sbefore', $zone ), Template_Context::from_template( $context->template, compact( 'entry' ) ) );
+
+		$zone = str_replace( '/', '_', $zone );
+
+		/**
+		* @action `gravityview_list_entry_$zone_before` Inside the `entry`, before any rows are rendered. Can be used to insert additional rows.
+		* @deprecated Use `gravityview/template/list/entry/$zone/before`
+		* @since 1.0.7
+		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		*/
+		do_action( sprintf( 'gravityview_list_entry%sbefore', $zone ), $entry->as_entry(), \GravityView_View::getInstance() /** ugh! */ );
+	}
+
+	/**
+	 * `gravityview_list_entry_after` and `gravityview/template/list/entry/after` actions.
+	 * `gravityview_list_entry_title_after` and `gravityview/template/list/entry/title/after` actions.
+	 * `gravityview_list_entry_content_after` and `gravityview/template/list/entry/content/after` actions.
+	 * `gravityview_list_entry_footer_after` and `gravityview/template/list/entry/footer/after` actions.
+	 *
+	 * Output inside the `entry` of the list.
+	 *
+	 * @param \GV\Entry $entry The entry.
+	 * @param \GV\Template_Context $context The 2.0 context.
+	 * @param string $zone The list zone (footer, image, title, etc.).
+	 *
+	 * @return void
+	 */
+	public static function entry_after( $entry, $context, $zone = '' ) {
+		$zone = str_replace( '//', '/', "/$zone/" );
+
+		/**
+		 * @action `gravityview/template/list/entry/$zone/after` Output inside the `entry` of the list at the end.
+		 * @since future
+		 * @param \GV\Template_Context $context The template context.
+		 */
+		do_action( sprintf( 'gravityview/template/list/entry%safter', $zone ), Template_Context::from_template( $context->template, compact( 'entry' ) ) );
+
+		$zone = str_replace( '/', '_', $zone );
+
+		/**
+		* @action `gravityview_list_entry_$zone_after` Inside the `entry`, after any rows are rendered. Can be used to insert additional rows.
+		* @deprecated Use `gravityview/template/list/entry/after`
+		* @since 1.0.7
+		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		*/
+		do_action( sprintf( 'gravityview_list_entry%safter', $zone ), $entry->as_entry(), \GravityView_View::getInstance() /** ugh! */ );
+	}
 }

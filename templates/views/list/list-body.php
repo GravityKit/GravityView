@@ -5,19 +5,17 @@
  * @global \GV\Template_Context $gravityview
  */
 
-/**
- * @action `gravityview_list_body_before` Tap in before the entry loop has been displayed
- * @since 2.0 Updated second parameter to pass \GV\Template_Context instead of \GravityView_View
- * @param \GV\Template_Context $gravityview Current $gravityview state
- */
-do_action( 'gravityview_list_body_before', $gravityview );
+$template = $gravityview->template;
+
+/** @action `gravityview/template/list/body/before` */
+$template::body_before( $gravityview );
 
 // There are no entries.
 if ( ! $gravityview->entries->count() ) {
 	?>
 	<div class="gv-list-view gv-no-results">
 		<div class="gv-list-view-title">
-			<h3><?php echo gv_no_results(); ?></h3>
+			<h3><?php echo gv_no_results( true, $gravityview ); ?></h3>
 		</div>
 	</div>
 	<?php
@@ -27,44 +25,29 @@ if ( ! $gravityview->entries->count() ) {
 
 		$entry_slug = GravityView_API::get_entry_slug( $entry->ID, $entry->as_entry() );
 
+		/** @filter `gravityview/template/list/entry/class` */
+		$entry_class = $template::entry_class( 'gv-list-view', $entry, $gravityview );
+
+	?>
+        <div id="gv_list_<?php echo esc_attr( $entry_slug ); ?>" class="<?php echo gravityview_sanitize_html_class( $entry_class ); ?>">
+
+		<?php
+
+		/** @action `gravityview/template/list/entry/before` */
+		$template::entry_before( $entry, $gravityview );
+
 		/**
          * @var bool $has_title
          * @var bool $has_subtitle
          * @var \GV\Field_Collection $title
          * @var \GV\Field_Collection $subtitle
          */
-		extract( $gravityview->template->extract_zone_vars( array( 'title', 'subtitle' ) ) );
-
-		/**
-		 * @filter `gravityview_entry_class` Modify the class applied to the entry row
-         * @since 2.0 Updated third parameter to pass \GV\Template_Context instead of \GravityView_View
-		 * @param string $entry_class Existing class. Default: `gv-list-view`
-		 * @param array $entry Current entry being displayed
-		 * @param \GV\Template_Context $gravityview Current $gravityview state
-		 */
-		$entry_class = apply_filters( 'gravityview_entry_class', 'gv-list-view', $entry->as_entry(), $gravityview );
-	?>
-        <div id="gv_list_<?php echo esc_attr( $entry_slug ); ?>" class="<?php echo gravityview_sanitize_html_class( $entry_class ); ?>">
-
-		<?php
-
-		/**
-		 * @action `gravityview_entry_before` Tap in before the the entry is displayed, inside the entry container
-         * @since 2.0 Updated second parameter to pass \GV\Template_Context instead of \GravityView_View
-		 * @param array $entry Gravity Forms Entry array
-		 * @param \GV\Template_Context $gravityview Current $gravityview state
-		 */
-		do_action( 'gravityview_entry_before', $entry, $gravityview );
+		extract( $template->extract_zone_vars( array( 'title', 'subtitle' ) ) );
 
         if ( $has_title || $has_subtitle ) {
 
-	        /**
-	         * @action `gravityview_entry_title_before` Tap in before the the entry title is displayed
-             * @since 2.0 Updated second parameter to pass \GV\Template_Context instead of \GravityView_View
-	         * @param array $entry Gravity Forms Entry array
-	         * @param \GV\Template_Context $gravityview Current $gravityview state
-	         */
-	        do_action( 'gravityview_entry_title_before', $entry, $gravityview );
+			/** @action `gravityview/template/list/entry/title/before` */
+			$template::entry_before( $entry, $gravityview, 'title' );
 
             ?>
 
@@ -109,13 +92,8 @@ if ( ! $gravityview->entries->count() ) {
 			</div>
 		<?php
 
-            /**
-             * @action `gravityview_entry_title_after` Tap in after the title block
-             * @since 2.0 Updated second parameter to pass \GV\Template_Context instead of \GravityView_View
-             * @param array $entry Gravity Forms Entry array
-             * @param \GV\Template_Context $gravityview Current $gravityview state
-             */
-            do_action( 'gravityview_entry_title_after', $entry, $gravityview );
+			/** @action `gravityview/template/list/entry/title/after` */
+			$template::entry_after( $entry, $gravityview, 'title' );
 
         }
 
@@ -127,10 +105,10 @@ if ( ! $gravityview->entries->count() ) {
 		 * @var \GV\Field_Collection $description
          * @var \GV\Field_Collection $attributes
 		 */
-		extract( $gravityview->template->extract_zone_vars( array( 'image', 'description', 'content-attributes' ) ) );
+		extract( $template->extract_zone_vars( array( 'image', 'description', 'content-attributes' ) ) );
 
-		$has_content_before_action = has_action( 'gravityview_entry_content_before' );
-		$has_content_after_action = has_action( 'gravityview_entry_content_after' );
+		$has_content_before_action = has_action( 'gravityview/template/list/entry/content/before' );
+		$has_content_after_action = has_action( 'gravityview/template/list/entry/content/after' );
 
 		if ( $has_image || $has_description || $has_content_attributes || $has_content_before_action || $has_content_after_action ) {
 			?>
@@ -138,13 +116,8 @@ if ( ! $gravityview->entries->count() ) {
 
 				<?php
 
-                    /**
-                     * @action `gravityview_entry_content_before` Tap in inside the View Content wrapper <div>
-                     * @since 2.0 Updated second parameter to pass \GV\Template_Context instead of \GravityView_View
-                     * @param array $entry Gravity Forms Entry array
-                     * @param \GV\Template_Context $gravityview Current $gravityview state
-                     */
-                    do_action( 'gravityview_entry_content_before', $entry, $gravityview );
+					/** @action `gravityview/template/list/entry/content/before` */
+					$template::entry_before( $entry, $gravityview, 'content' );
 
 					if ( $has_image ) {
 						?><div class="gv-grid-col-1-3 gv-list-view-content-image"><?php
@@ -178,13 +151,8 @@ if ( ! $gravityview->entries->count() ) {
 						?></div><?php
 					}
 
-                    /**
-                     * @action `gravityview_entry_content_after` Tap in at the end of the View Content wrapper <div>
-                     * @since 2.0 Updated second parameter to pass \GV\Template_Context instead of \GravityView_View
-                     * @param array $entry Gravity Forms Entry array
-                     * @param \GV\Template_Context $gravityview Current $gravityview state
-                     */
-                    do_action( 'gravityview_entry_content_after', $entry, $gravityview );
+					/** @action `gravityview/template/list/entry/content/after` */
+					$template::entry_after( $entry, $gravityview, 'content' );
 			?>
 
             </div>
@@ -198,18 +166,12 @@ if ( ! $gravityview->entries->count() ) {
 		 * @var \GV\Field_Collection $footer_left
 		 * @var \GV\Field_Collection $footer_right
 		 */
-		extract( $gravityview->template->extract_zone_vars( array( 'footer-left', 'footer-right' ) ) );
+		extract( $template->extract_zone_vars( array( 'footer-left', 'footer-right' ) ) );
 
 		// Is the footer configured?
 		if ( $has_footer_left || $has_footer_right ) {
-
-			/**
-			 * @action `gravityview_entry_footer_before` Tap in before the footer wrapper
-             * @since 2.0 Updated second parameter to pass \GV\Template_Context instead of \GravityView_View
-			 * @param array $entry Gravity Forms Entry array
-			 * @param \GV\Template_Context $gravityview Current $gravityview state
-			 */
-			do_action( 'gravityview_entry_footer_before', $entry, $gravityview );
+			/** @action `gravityview/template/list/entry/footer/before` */
+			$template::entry_before( $entry, $gravityview, 'footer' );
 			?>
 
 			<div class="gv-grid gv-list-view-footer">
@@ -236,22 +198,13 @@ if ( ! $gravityview->entries->count() ) {
 
 			<?php
 
-			/**
-			 * @action `gravityview_entry_footer_after` Tap in after the footer wrapper
-             * @since 2.0 Updated second parameter to pass \GV\Template_Context instead of \GravityView_View
-			 * @param array $entry Gravity Forms Entry array
-			 * @param \GV\Template_Context $gravityview Current $gravityview state
-			 */
-			do_action( 'gravityview_entry_footer_after', $entry, $gravityview );
+			/** @action `gravityview/template/list/entry/footer/after` */
+			$template::entry_after( $entry, $gravityview, 'footer' );
 
 		} // End if footer is configured
 
-		/**
-		 * @action `gravityview_entry_after` Tap in after the entry has been displayed, but before the container is closed
-		 * @param array $entry Gravity Forms Entry array
-		 * @param \GV\Template_Context $gravityview Current $gravityview state
-		 */
-		do_action( 'gravityview_entry_after', $entry, $gravityview );
+		/** @action `gravityview/template/list/entry/after` */
+		$template::entry_after( $entry, $gravityview );
 
 		?>
 
@@ -260,9 +213,5 @@ if ( ! $gravityview->entries->count() ) {
 	<?php }
 }
 
-/**
- * @action `gravityview_list_body_after` Tap in after the entry loop has been displayed
- * @since 2.0 Updated second parameter to pass \GV\Template_Context instead of \GravityView_View
- * @param \GV\Template_Context $gravityview Current $gravityview state
- */
-do_action( 'gravityview_list_body_after', $gravityview );
+/** @action `gravityview/template/list/body/after` */
+$template::body_after( $gravityview );
