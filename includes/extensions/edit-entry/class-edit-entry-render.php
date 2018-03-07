@@ -503,7 +503,7 @@ class GravityView_Edit_Entry_Render {
 				unset( $form['fields'][ $k ] );
 			}
 
-			$field->visibility = 'visible';
+			$field->adminOnly = false;
 
 			if( isset( $field->inputs ) && is_array( $field->inputs ) ) {
 				foreach( $field->inputs as $key => $input ) {
@@ -1147,7 +1147,7 @@ class GravityView_Edit_Entry_Render {
 		}
 
 		// SET SOME FIELD DEFAULTS TO PREVENT ISSUES
-		$field->visibility = 'visible'; /** @see GFFormDisplay::get_counter_init_script() need to make field visible */
+		$field->adminOnly = false; /** @see GFFormDisplay::get_counter_init_script() need to make field visible */
 
 		$field_value = $this->get_field_value( $field );
 
@@ -1282,8 +1282,13 @@ class GravityView_Edit_Entry_Render {
 
 			// This is because we're doing admin form pretending to be front-end, so Gravity Forms
 			// expects certain field array items to be set.
-			foreach ( array( 'noDuplicates', 'visibility', 'inputType', 'isRequired', 'enablePrice', 'inputs', 'allowedExtensions' ) as $key ) {
+			foreach ( array( 'noDuplicates', 'inputType', 'isRequired', 'enablePrice', 'inputs', 'allowedExtensions' ) as $key ) {
 				$field->{$key} = isset( $field->{$key} ) ? $field->{$key} : NULL;
+			}
+
+			// TODO: Remove when minimum GF Version is 2.0.6.5
+			if( ! isset( $field->visibility ) && ! isset( $field->adminOnly ) ) {
+			    $field->adminOnly = NULL;
 			}
 
 			switch( RGFormsModel::get_input_type( $field ) ) {
@@ -1787,8 +1792,15 @@ class GravityView_Edit_Entry_Render {
 
 		if( $use_gf_adminonly_setting && $use_gf_visibility_setting && false === GVCommon::has_cap( 'gravityforms_edit_entries', $this->entry['id'] ) ) {
 			foreach( $fields as $k => $field ) {
-				if( 'administrative' === $field->visibility ) {
-					unset( $fields[ $k ] );
+				// TODO: Remove when minimum GF Version is 2.0.6.5
+				if( ! isset( $field->visibility ) ) {
+					if( $field->adminOnly ) {
+						unset( $fields[ $k ] );
+					}
+				} else{
+				    if( 'administrative' === $field->visibility ) {
+						unset( $fields[ $k ] );
+					}
 				}
 			}
 			return $fields;
@@ -1796,16 +1808,25 @@ class GravityView_Edit_Entry_Render {
 
 		foreach( $fields as &$field ) {
 
-			/**
-			 * @filter `gravityview/edit_entry/make_all_fields_visible` Set field visibility to "visible" for all fields
-			 * @since 1.22.6
-			 * @param string $visibility 'visible' by default. Default options are 'hidden', 'visible', and 'administrative'
-             * @param GF_Field $field Form field being modified
-			 * @param int $view_id Current View ID
-			 */
-			$visibility = apply_filters( 'gravityview/edit_entry/field_visibility', 'visible', $field, $view_id );
+		    // TODO: Remove when minimum GF Version is 2.0.6.5
+		    if( ! isset( $field->visibility ) ) {
 
-			$field->visibility = $visibility;
+			    $field->adminOnly = false;
+
+		    } else {
+
+			    /**
+			     * @filter `gravityview/edit_entry/make_all_fields_visible` Set field visibility to "visible" for all fields
+			     * @since 1.22.6
+			     *
+			     * @param string $visibility 'visible' by default. Default options are 'hidden', 'visible', and 'administrative'
+			     * @param GF_Field $field Form field being modified
+			     * @param int $view_id Current View ID
+			     */
+			    $visibility = apply_filters( 'gravityview/edit_entry/field_visibility', 'visible', $field, $view_id );
+
+			    $field->visibility = $visibility;
+		    }
 		}
 
 		return $fields;
