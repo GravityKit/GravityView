@@ -11,7 +11,7 @@ gravityview_before( $gravityview );
 
 ?><p class="gv-back-link"><?php echo gravityview_back_link( $gravityview ); ?></p>
 
-<div class="<?php gv_container_class( 'gv-table-view gv-table-container gv-table-single-container' ); ?>">
+<div class="<?php gv_container_class( 'gv-table-view gv-table-container gv-table-single-container', true, $gravityview ); ?>">
 	<table class="gv-table-view-content">
 		<?php if ( $gravityview->fields->by_position( 'single_table-columns' )->by_visible()->count() ): ?>
 			<thead>

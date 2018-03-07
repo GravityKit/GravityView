@@ -6,7 +6,7 @@
  */
 ?>
 <?php gravityview_before( $gravityview ); ?>
-<div class="<?php gv_container_class('gv-table-view gv-table-container gv-table-multiple-container'); ?>">
+<div class="<?php gv_container_class( 'gv-table-view gv-table-container gv-table-multiple-container', true, $gravityview ); ?>">
 <table class="gv-table-view">
 	<thead>
 		<?php gravityview_header( $gravityview ); ?>

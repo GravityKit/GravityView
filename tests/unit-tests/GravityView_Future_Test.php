@@ -5475,6 +5475,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 			echo '{{ gravityview_table_cells_after }}';
 		} );
 
+		add_filter( 'gravityview/render/container/class', $callbacks []= function( $class, $context ) use ( $view, $test ) {
+			$test->assertSame( $context->view, $view );
+			$test->assertContains( "gv-container-{$view->ID}", $class );
+			return "$class {{ gravityview/render/container/class }}";
+		}, 10, 2 );
+
 		$renderer = new \GV\View_Renderer();
 
 		gravityview()->request = new \GV\Mock_Request();
@@ -5496,6 +5502,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( '{{ gravityview/template/table/cells/before }}{{ gravityview_table_cells_before }}', $out );
 		$this->assertContains( '{{ gravityview/template/table/cells/after }}{{ gravityview_table_cells_after }}', $out );
 
+		$this->assertContains( 'gravityviewrendercontainerclass' /** sanitized */, $out );
+
 		remove_action( 'gravityview_before', $callbacks[0] );
 		remove_action( 'gravityview/template/before', $callbacks[1] );
 		remove_action( 'gravityview_after', $callbacks[2], 11 );
@@ -5514,6 +5522,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_action( 'gravityview_table_cells_before', $callbacks[15] );
 		remove_action( 'gravityview/template/table/cells/after', $callbacks[16] );
 		remove_action( 'gravityview_table_cells_after', $callbacks[17] );
+		remove_filter( 'gravityview/render/container/class', $callbacks[18] );
 
 		$callbacks = array();
 
@@ -5555,6 +5564,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( '{{ gravityview/template/table/tr/after }}{{ gravityview_table_tr_after }}', $out );
 
 		$this->assertContains( '{{ gravityview/template/text/no_entries }}{{ gravitview_no_entries_text }}', $out );
+
+		$this->assertContains( "gv-container-{$view->ID}", $out );
+		$this->assertContains( "gv-container-no-results", $out );
 
 		remove_action( 'gravityview_table_tr_before', $callbacks[0] );
 		remove_action( 'gravityview/template/table/tr/before', $callbacks[1] );
@@ -5664,6 +5676,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 			return "$label{{ gravityview/template/links/back/label }}";
 		}, 10, 2 );
 
+		add_filter( 'gravityview/render/container/class', $callbacks []= function( $class, $context ) use ( $view, $test ) {
+			$test->assertSame( $context->view, $view );
+			$test->assertContains( "gv-container-{$view->ID}", $class );
+			return "$class {{ gravityview/render/container/class }}";
+		}, 10, 2 );
+
 		$renderer = new \GV\Entry_Renderer();
 
 		gravityview()->request = new \GV\Mock_Request();
@@ -5678,6 +5696,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( '{{ gravityview/template/footer }}{{ gravityview_footer }}', $out );
 
 		$this->assertContains( '%20gravityview_directory_link%20%20gravityview/view/links/directory%20', $out );
+
+		$this->assertContains( 'gravityviewrendercontainerclass' /** sanitized */, $out );
+
+		$this->assertContains( "gv-container-{$view->ID}", $out );
+		$this->assertNotContains( "gv-container-no-results", $out );
 
 		remove_action( 'gravityview_before', $callbacks[0] );
 		remove_action( 'gravityview/template/before', $callbacks[1] );

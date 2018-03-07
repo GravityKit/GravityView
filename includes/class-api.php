@@ -652,26 +652,45 @@ function gv_class( $field, $form = NULL, $entry = array() ) {
  * Generate a CSS class to be added to the wrapper <div> of a View
  *
  * @since 1.5.4
- * @since 1.16 Added $echo param
+ * @since 1.16 Added $echo parameter.
+ * @since 2.0 Added $context parameter.
  *
  * @param string $passed_css_class Default: `gv-container gv-container-{view id}`. If View is hidden until search, adds ` hidden`
  * @param boolean $echo Whether to echo the output. Default: true
+ * @param \GV\Template_Context $context The template context.
  *
  * @return string CSS class, sanitized by gravityview_sanitize_html_class()
  */
-function gv_container_class( $passed_css_class = '', $echo = true ) {
+function gv_container_class( $passed_css_class = '', $echo = true, $context = null ) {
+	if ( $context instanceof \GV\Template_Context ) {
+		$hide_until_searched = false;
+		$total_entries = 0;
+		$view_id = 0;
+		if ( $context->view ) {
+			$view_id = $context->view->ID;
+			$hide_until_searched = $context->view->settings->get( 'hide_until_searched' );
+		}
+		if ( $context->entries ) {
+			$total_entries = $context->entries->total();
+		} else if ( $context->entry ) {
+			$total_entries = 1;
+		}
+	} else {
+		/** @deprecated legacy execution path */
+		$view_id = GravityView_View::getInstance()->getViewId();
+		$hide_until_searched = GravityView_View::getInstance()->isHideUntilSearched();
+		$total_entries = GravityView_View::getInstance()->getTotalEntries();
+	}
 
 	$passed_css_class = trim( $passed_css_class );
 
-	$view_id = GravityView_View::getInstance()->getViewId();
-
 	$default_css_class = ! empty( $view_id ) ? sprintf( 'gv-container gv-container-%d', $view_id ) : 'gv-container';
 
-	if( GravityView_View::getInstance()->isHideUntilSearched() ) {
+	if ( $hide_until_searched ) {
 		$default_css_class .= ' hidden';
 	}
 
-	if( 0 === GravityView_View::getInstance()->getTotalEntries() ) {
+	if ( 0 === $total_entries ) {
 		$default_css_class .= ' gv-container-no-results';
 	}
 
@@ -681,12 +700,14 @@ function gv_container_class( $passed_css_class = '', $echo = true ) {
 	 * @filter `gravityview/render/container/class` Modify the CSS class to be added to the wrapper <div> of a View
 	 * @since 1.5.4
 	 * @param[in,out] string $css_class Default: `gv-container gv-container-{view id}`. If View is hidden until search, adds ` hidden`. If the View has no results, adds `gv-container-no-results`
+	 * @since 2.0
+	 * @param \GV\Template_Context $context The context.
 	 */
-	$css_class = apply_filters( 'gravityview/render/container/class', $css_class );
+	$css_class = apply_filters( 'gravityview/render/container/class', $css_class, $context );
 
 	$css_class = gravityview_sanitize_html_class( $css_class );
 
-	if( $echo ) {
+	if ( $echo ) {
 		echo $css_class;
 	}
 
