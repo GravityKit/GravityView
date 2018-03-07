@@ -20,6 +20,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.22.6 =
+
+__Developer Updates:__
+
+* Added `gravityview/edit_entry/reveal_hidden_field` filter to prevent Hidden fields from becoming Text fields in Edit Entry
+
 = 1.22.5 on January 25, 2018 =
 
 * Improves support for [DIY Layout](https://gravityview.co/extensions/diy-layout/), a layout for designers & developers to take full advantage of GravityView
