@@ -15,13 +15,11 @@ extract( $gravityview->template->extract_zone_vars( array( 'title', 'subtitle' )
 extract( $gravityview->template->extract_zone_vars( array( 'image', 'description', 'content-attributes' ) ) );
 extract( $gravityview->template->extract_zone_vars( array( 'footer-left', 'footer-right' ) ) );
 
-?>
+gravityview_before( $gravityview );
 
-<?php gravityview_before( $gravityview ); ?>
+?><div class="<?php gv_container_class( 'gv-list-view gv-list-container gv-list-single-container', true, $gravityview ); ?>">
 
-<div class="<?php gv_container_class( 'gv-list-view gv-list-container gv-list-single-container', true, $gravityview ); ?>">
-
-	<p class="gv-back-link"><?php echo gravityview_back_link(); ?></p>
+	<p class="gv-back-link"><?php echo gravityview_back_link( $gravityview ); ?></p>
 
 	<?php if ( $has_title || $has_subtitle || $has_image || $has_description || $has_content_attributes || $has_footer_left || $has_footer_right ): ?>
 		<div id="gv_list_<?php echo esc_attr( $entry_slug ); ?>" class="gv-list-view">
@@ -145,9 +143,7 @@ extract( $gravityview->template->extract_zone_vars( array( 'footer-left', 'foote
 	?>
 		</div>
 	<?php endif; ?>
-</div>
-
-<?php
+</div><?php
 
 gravityview_after( $gravityview );
 
