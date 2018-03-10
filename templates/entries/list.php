@@ -40,7 +40,7 @@ gravityview_before( $gravityview );
 							$extras = array( 'wpautop' => true );
 						}
 
-						if ( $output = $gravityview->template->the_field( $field, $entry, $extras ) ) {
+						if ( $output = $gravityview->template->the_field( $field, $extras ) ) {
 							$did_main = 1;
 							echo $gravityview->template->wrap( $output, $wrap );
 						}
@@ -57,7 +57,7 @@ gravityview_before( $gravityview );
 									$wrap = array( 'p' => $gravityview->template->the_field_attributes( $field ) );
 								}
 
-								if ( $output = $gravityview->template->the_field( $field, $entry, $wrap, $extras ) ) {
+								if ( $output = $gravityview->template->the_field( $field, $wrap, $extras ) ) {
 									$did_main = 1;
 									echo $gravityview->template->wrap( $output, $wrap );
 								}
@@ -76,7 +76,7 @@ gravityview_before( $gravityview );
 					if ( $has_image ) {
 						?><div class="gv-list-view-content-image gv-grid-col-1-3"><?php
 						foreach ( $image->all() as $i => $field ) {
-							if ( $output = $gravityview->template->the_field( $field, $entry ) ) {
+							if ( $output = $gravityview->template->the_field( $field ) ) {
 								echo $gravityview->template->wrap( $output, array( 'div' => $gravityview->template->the_field_attributes( $field ) ) );
 							}
 						}
@@ -87,7 +87,7 @@ gravityview_before( $gravityview );
 						?><div class="gv-list-view-content-description"><?php
 						$extras = array( 'label_tag' => 'h4', 'wpautop' => true );
 						foreach ( $description->all() as $i => $field ) {
-							if ( $output = $gravityview->template->the_field( $field, $entry, $extras ) ) {
+							if ( $output = $gravityview->template->the_field( $field, $extras ) ) {
 								echo $gravityview->template->wrap( $output, array( 'div' => $gravityview->template->the_field_attributes( $field ) ) );
 							}
 						}
@@ -98,7 +98,7 @@ gravityview_before( $gravityview );
 						?><div class="gv-list-view-content-attributes"><?php
 						$extras = array( 'label_tag' => 'h4', 'wpautop' => true );
 						foreach ( $attributes->all() as $i => $field ) {
-							if ( $output = $gravityview->template->the_field( $field, $entry, $extras ) ) {
+							if ( $output = $gravityview->template->the_field( $field, $extras ) ) {
 								echo $gravityview->template->wrap( $output, array( 'div' => $gravityview->template->the_field_attributes( $field ) ) );
 							}
 						}
@@ -119,7 +119,7 @@ gravityview_before( $gravityview );
 				<div class="gv-grid-col-1-2 gv-left">
 					<?php
 						foreach ( $footer_left->all() as $i => $field ) {
-							if ( $output = $gravityview->template->the_field( $field, $entry ) ) {
+							if ( $output = $gravityview->template->the_field( $field ) ) {
 								echo $gravityview->template->wrap( $output, array( 'div' => $gravityview->template->the_field_attributes( $field ) ) );
 							}
 						}
@@ -129,7 +129,7 @@ gravityview_before( $gravityview );
 				<div class="gv-grid-col-1-2 gv-right">
 					<?php
 						foreach ( $footer_right->all() as $i => $field ) {
-							if ( $output = $gravityview->template->the_field( $field, $entry ) ) {
+							if ( $output = $gravityview->template->the_field( $field ) ) {
 								echo $gravityview->template->wrap( $output, array( 'div' => $gravityview->template->the_field_attributes( $field ) ) );
 							}
 						}

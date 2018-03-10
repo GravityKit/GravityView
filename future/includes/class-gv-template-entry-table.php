@@ -21,7 +21,6 @@ class Entry_Table_Template extends Entry_Template {
 	 * Output a field cell.
 	 *
 	 * @param \GV\Field $field The field to be ouput.
-	 * @param \GV\Field $entry The entry this field is for.
 	 *
 	 * @return string|false The field output or false if "hide_empty" is set.
 	 */
@@ -100,8 +99,19 @@ class Entry_Table_Template extends Entry_Template {
 		$fields = apply_filters( 'gravityview/template/table/fields', $fields, $context );
 
 		foreach ( $fields->all() as $field ) {
-			$column_label = apply_filters( 'gravityview/template/field_label', $field->get_label( $this->view, $form ), $field->as_configuration(), $form->form ? $form->form : null, null );
+			/**
+			 * @deprecated Here for back-compatibility.
+			 */
+			$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form ), $field->as_configuration() );
+			$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, $this->entry->as_entry() );
 
+			/**
+			 * @filter `gravityview/template/field/label` Override the field label.
+			 * @since 2.0
+			 * @param[in,out] string $column_label The label to override.
+			 * @param \GV\Template_Context $context The context.
+			 */
+			$column_label = apply_filters( 'gravityview/template/field/label', $column_label, Template_Context::from_template( $this, compact( $field ) ) );
 
 			/**
 			 * @filter `gravityview/template/table/entry/hide_empty`

@@ -92,6 +92,8 @@ class GravityView_API {
 		 * @param[in] array $field GravityView field array
 		 * @param[in] array $form Gravity Forms form array
 		 * @param[in] array $entry Gravity Forms entry array
+		 *
+		 * @deprecated Use the context-aware version `gravityview/template/field/label`
 		 */
 		$label = apply_filters( 'gravityview/template/field_label', $label, $field, $form, $entry );
 
@@ -1197,6 +1199,7 @@ function gravityview_get_map_link( $address ) {
  *
  * @since  1.1.5
  * @param  array $passed_args Associative array with field data. `field` and `form` are required.
+ * @deprecated No longer used with new 2.0 templates.
  * @return string Field output. If empty value and hide empty is true, return empty.
  */
 function gravityview_field_output( $passed_args ) {
@@ -1218,6 +1221,7 @@ function gravityview_field_output( $passed_args ) {
 	 * @since 1.7
 	 * @param array $args Associative array; `field` and `form` is required.
 	 * @param array $passed_args Original associative array with field data. `field` and `form` are required.
+	 * @deprecated
 	 */
 	$args = apply_filters( 'gravityview/field_output/args', $args, $passed_args );
 

@@ -51,10 +51,22 @@ class View_List_Template extends View_Template {
 			$output = wpautop( $output );
 		}
 
-		$label = apply_filters( 'gravityview/template/field_label', $field->get_label( $this->view, $form ), $field->as_configuration(), $form->form ? $form->form : null, null );
+		/**
+		 * @deprecated Here for back-compatibility.
+		 */
+		$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form ), $field->as_configuration() );
+		$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, null );
+
+		/**
+		 * @filter `gravityview/template/field/label` Override the field label.
+		 * @since 2.0
+		 * @param[in,out] string $column_label The label to override.
+		 * @param \GV\Template_Context $context The context.
+		 */
+		$column_label = apply_filters( 'gravityview/template/field/label', $column_label, Template_Context::from_template( $this, compact( $field, $entry ) ) );
 
 		/** Wrap the label as needed */
-		$label = $this->wrap( $label, array( 'span' => array( 'class' => 'gv-field-label' ) ) );
+		$label = $this->wrap( $column_label, array( 'span' => array( 'class' => 'gv-field-label' ) ) );
 		if ( !empty( $extras['label_tag'] ) ) {
 			$label = $this->wrap( $label, array( $extras['label_tag'] => array() ) );
 		}

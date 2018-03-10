@@ -21,18 +21,17 @@ class Entry_List_Template extends Entry_Template {
 	 * Output the field in the list view.
 	 *
 	 * @param \GV\Field $field The field to output.
-	 * @param \GV\Entry $entry The entry.
 	 * @param array $extras Extra stuff, like wpautop, etc.
 	 *
 	 * @return string
 	 */
-	public function the_field( \GV\Field $field, \GV\Entry $entry, $extras = null ) {
+	public function the_field( \GV\Field $field, $extras = null ) {
 		$form = $this->view->form;
 
 		$renderer = new Field_Renderer();
 		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
 		
-		$output = $renderer->render( $field, $this->view, $source, $entry, $this->request );
+		$output = $renderer->render( $field, $this->view, $source, $this->entry, $this->request );
 
 		/**
 		 * @filter `gravityview/template/table/entry/hide_empty`
@@ -51,10 +50,22 @@ class Entry_List_Template extends Entry_Template {
 			$output = wpautop( $output );
 		}
 
-		$label = apply_filters( 'gravityview/template/field_label', $field->get_label( $this->view, $form ), $field->as_configuration(), $form->form ? $form->form : null, null );
+		/**
+		 * @deprecated Here for back-compatibility.
+		 */
+		$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form ), $field->as_configuration() );
+		$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, $this->entry->as_entry() );
+
+		/**
+		 * @filter `gravityview/template/field/label` Override the field label.
+		 * @since 2.0
+		 * @param[in,out] string $column_label The label to override.
+		 * @param \GV\Template_Context $context The context.
+		 */
+		$column_label = apply_filters( 'gravityview/template/field/label', $column_label, Template_Context::from_template( $this, compact( $field ) ) );
 
 		/** Wrap the label as needed */
-		$label = $this->wrap( $label, array( 'span' => array( 'class' => 'gv-field-label' ) ) );
+		$label = $this->wrap( $column_label, array( 'span' => array( 'class' => 'gv-field-label' ) ) );
 		if ( ! empty( $extras['label_tag'] ) ) {
 			$label = $this->wrap( $label, array( $extras['label_tag'] => array() ) );
 		}

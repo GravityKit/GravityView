@@ -29,7 +29,19 @@ class View_Table_Template extends View_Template {
 		/** @todo Add class filters from the old code. */
 		foreach ( $fields->by_visible()->all() as $field ) {
 
-			$column_label = apply_filters( 'gravityview/template/field_label', $field->get_label( $this->view, $form ), $field->as_configuration(), $form->form ? $form->form : null, null );
+			/**
+			 * @deprecated Here for back-compatibility.
+			 */
+			$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form ), $field->as_configuration() );
+			$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, null );
+
+			/**
+			 * @filter `gravityview/template/field/label` Override the field label.
+			 * @since 2.0
+			 * @param[in,out] string $column_label The label to override.
+			 * @param \GV\Template_Context $context The context. Does not have entry set here.
+			 */
+			$column_label = apply_filters( 'gravityview/template/field/label', $column_label, Template_Context::from_template( $this, compact( $field ) ) );
 
 			printf( '<th id="gv-field-%d-%s" class="gv-field-%d-%s"%s><span class="gv-field-label">%s</span></th>',
 				esc_attr( $form->ID ), esc_attr( $field->ID ), esc_attr( $form->ID ), esc_attr( $field->ID ),
