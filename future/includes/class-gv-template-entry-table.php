@@ -53,9 +53,16 @@ class Entry_Table_Template extends Entry_Template {
 		$output = $renderer->render( $field, $this->view, $source, $this->entry, $this->request );
 
 		/**
+		 * @filter `gravityview/template/table/entry/hide_empty`
+		 * @param boolean Should the row be hidden if the value is empty? Default: don't hide.
+		 * @param \GV\Template_Context $context The context ;) Love it, cherish it. And don't you dare modify it!
+		 */
+		$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', $this->view->settings->get( 'hide_empty', false ), Template_Context::from_template( $this, compact( $field ) ) );
+
+		/**
 		 * Hide empty if nothing to show.
 		 */
-		if ( $this->view->settings->get( 'hide_empty' ) && gv_empty( $output, false, false ) ) {
+		if ( $hide_empty && gv_empty( $output, false, false ) ) {
 			return false;
 		}
 
@@ -94,10 +101,19 @@ class Entry_Table_Template extends Entry_Template {
 
 		foreach ( $fields->all() as $field ) {
 			$column_label = apply_filters( 'gravityview/template/field_label', $field->get_label( $this->view, $form ), $field->as_configuration(), $form->form ? $form->form : null, null );
-			if ( $field_output = $this->the_field( $field ) ) {
+
+
+			/**
+			 * @filter `gravityview/template/table/entry/hide_empty`
+			 * @param boolean Should the row be hidden if the value is empty? Default: don't hide.
+			 * @param \GV\Template_Context $context The context ;) Love it, cherish it. And don't you dare modify it!
+			 */
+			$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', $this->view->settings->get( 'hide_empty', false ), Template_Context::from_template( $this, compact( $field ) ) );
+
+			if ( ( $field_output = $this->the_field( $field ) ) || ! $hide_empty ) {
 				printf( '<tr id="gv-field-%d-%s" class="gv-field-%d-%s">', $form->ID, $field->ID, $form->ID, $field->ID );
 					printf( '<th scope="row"><span class="gv-field-label">%s</span></th>', $column_label );
-					echo $field_output;
+					echo $field_output ? : '<td></td>';
 				printf( '</tr>' );
 			}
 		}

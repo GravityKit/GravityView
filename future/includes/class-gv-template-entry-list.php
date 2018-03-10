@@ -34,9 +34,16 @@ class Entry_List_Template extends Entry_Template {
 		
 		$output = $renderer->render( $field, $this->view, $source, $entry, $this->request );
 
+		/**
+		 * @filter `gravityview/template/table/entry/hide_empty`
+		 * @param boolean Should the row be hidden if the value is empty? Default: don't hide.
+		 * @param \GV\Template_Context $context The context ;) Love it, cherish it. And don't you dare modify it!
+		 */
+		$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', $this->view->settings->get( 'hide_empty', false ), Template_Context::from_template( $this, compact( $field ) ) );
+
 		/** No value? don't output anything. */
-		if ( ! $output ) {
-			return;
+		if ( $hide_empty && gv_empty( $output, false, false ) ) {
+			return false;
 		}
 
 		/** Auto paragraph the value. */
@@ -48,7 +55,7 @@ class Entry_List_Template extends Entry_Template {
 
 		/** Wrap the label as needed */
 		$label = $this->wrap( $label, array( 'span' => array( 'class' => 'gv-field-label' ) ) );
-		if ( !empty( $extras['label_tag'] ) ) {
+		if ( ! empty( $extras['label_tag'] ) ) {
 			$label = $this->wrap( $label, array( $extras['label_tag'] => array() ) );
 		}
 		

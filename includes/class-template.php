@@ -637,11 +637,13 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 * @param array $atts
 	 * @param bool $echo Whether to print the output
 	 *
+	 * @deprecated This will never get called in new templates.
+	 *
 	 * @return string|null
 	 */
 	public function renderZone( $zone = '', $atts = array(), $echo = true ) {
 
-		if( empty( $zone ) ) {
+		if ( empty( $zone ) ) {
 			gravityview()->log->error( 'No zone defined.');
 			return NULL;
 		}
@@ -663,7 +665,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 		$fields = $this->getField( $final_atts['zone_id'] );
 
 		// Backward compatibility
-		if( 'table' === $this->getTemplatePartSlug() ) {
+		if ( 'table' === $this->getTemplatePartSlug() ) {
 			/**
 			 * @filter `gravityview_table_cells` Modify the fields displayed in a table
 			 * @param array $fields
@@ -673,7 +675,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 			$fields = apply_filters("gravityview_table_cells", $fields, $this );
 		}
 
-		if( empty( $fields ) ) {
+		if ( empty( $fields ) ) {
 
 			gravityview()->log->error( 'Empty View configuration for this context.', array( 'data' => $fields ) );
 
@@ -692,8 +694,10 @@ class GravityView_View extends Gamajo_Template_Loader {
 		 * False by default to keep backward compatibility
 		 * @since 1.7.6
 		 * @param boolean $hide_empty_zone Default: false
+		 * @since 2.0
+		 * @param \GV\Template_Context $context The context. Null here. Since this path is deprecated.
 		 */
-		if( empty( $field_output ) && apply_filters( 'gravityview/render/hide-empty-zone', false ) ) {
+		if ( empty( $field_output ) && apply_filters( 'gravityview/render/hide-empty-zone', false, null ) ) {
 			return NULL;
 		}
 

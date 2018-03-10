@@ -6113,6 +6113,191 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_filter( 'gravityview_go_back_label', $callbacks[4] );
 		remove_filter( 'gravityview/template/links/back/label', $callbacks[5] );
 	}
+
+	public function test_hide_empty_filters_compat() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		foreach ( range( 1, 5 ) as $i ) {
+			$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+				'form_id' => $form['id'],
+				'1' => microtime( true ),
+				'2' => '', // Empty
+			) );
+		}
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'hide_empty' => false,
+			),
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+						'label' => 'Microtime',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '2',
+						'label' => 'Index',
+					),
+				),
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+						'label' => 'Microtime',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '2',
+						'label' => 'Index',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$test = &$this;
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_entry'] = $entry;
+
+		/** Single table */
+		$renderer = new \GV\Entry_Renderer();
+		$this->assertContains( 'Index', $renderer->render( $entry, $view ) );
+		$this->assertContains( 'Microtime', $renderer->render( $entry, $view ) );
+
+		add_filter( 'gravityview/render/hide-empty-zone', $filter = function( $hide, $context ) use ( &$test, &$view ) {
+			$test->assertSame( $context->view, $view );
+			return true;
+		}, 10, 2 );
+
+		$this->assertNotContains( 'Index', $renderer->render( $entry, $view ) );
+		$this->assertContains( 'Microtime', $renderer->render( $entry, $view ) );
+
+		remove_filter( 'gravityview/render/hide-empty-zone', $filter );
+
+		/** Directory table */
+
+		gravityview()->request->returns['is_view'] = $view;
+
+		$renderer = new \GV\View_Renderer();
+		$this->assertContains( 'Index', $renderer->render( $view ) );
+		$this->assertContains( 'Microtime', $renderer->render( $view ) );
+
+		add_filter( 'gravityview/render/hide-empty-zone', $filter = function( $hide, $context ) use ( &$test, &$view ) {
+			$test->assertSame( $context->view, $view );
+			return true;
+		}, 10, 2 );
+
+		$id = sprintf( 'gv-field-%d-%d', $form['id'], 2 );
+		$this->assertContains( "<td id=\"$id\" class=\"$id\"></td>", $renderer->render( $view ) );
+		$this->assertContains( 'Microtime', $renderer->render( $view ) );
+
+		remove_filter( 'gravityview/render/hide-empty-zone', $filter );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'preset_business_listings',
+			'settings' => array(
+				'hide_empty' => false,
+			),
+			'fields' => array(
+				'directory_list-title' => array(
+					wp_generate_password( 4, false ) => array( 'id' => '1', 'label' => 'Microtime' ),
+					wp_generate_password( 4, false ) => array( 'id' => '2',	'label' => 'Index' )
+				),
+				'directory_list-subtitle' => array(
+					wp_generate_password( 4, false ) => array( 'id' => '1', 'label' => 'Microtime' ),
+					wp_generate_password( 4, false ) => array( 'id' => '2',	'label' => 'Index' )
+				),
+				'directory_list-image' => array(
+					wp_generate_password( 4, false ) => array( 'id' => '1', 'label' => 'Microtime' ),
+					wp_generate_password( 4, false ) => array( 'id' => '2',	'label' => 'Index' )
+				),
+				'directory_list-description' => array(
+					wp_generate_password( 4, false ) => array( 'id' => '1', 'label' => 'Microtime' ),
+					wp_generate_password( 4, false ) => array( 'id' => '2',	'label' => 'Index' )
+				),
+				'directory_list-footer-left' => array(
+					wp_generate_password( 4, false ) => array( 'id' => '1', 'label' => 'Microtime' ),
+					wp_generate_password( 4, false ) => array( 'id' => '2',	'label' => 'Index' )
+				),
+				'directory_list-footer-right' => array(
+					wp_generate_password( 4, false ) => array( 'id' => '1', 'label' => 'Microtime' ),
+					wp_generate_password( 4, false ) => array( 'id' => '2',	'label' => 'Index' )
+				),
+
+				'single_list-title' => array(
+					wp_generate_password( 4, false ) => array( 'id' => '1', 'label' => 'Microtime' ),
+					wp_generate_password( 4, false ) => array( 'id' => '2',	'label' => 'Index' )
+				),
+				'single_list-subtitle' => array(
+					wp_generate_password( 4, false ) => array( 'id' => '1', 'label' => 'Microtime' ),
+					wp_generate_password( 4, false ) => array( 'id' => '2',	'label' => 'Index' )
+				),
+				'single_list-image' => array(
+					wp_generate_password( 4, false ) => array( 'id' => '1', 'label' => 'Microtime' ),
+					wp_generate_password( 4, false ) => array( 'id' => '2',	'label' => 'Index' )
+				),
+				'single_list-description' => array(
+					wp_generate_password( 4, false ) => array( 'id' => '1', 'label' => 'Microtime' ),
+					wp_generate_password( 4, false ) => array( 'id' => '2',	'label' => 'Index' )
+				),
+				'single_list-footer-left' => array(
+					wp_generate_password( 4, false ) => array( 'id' => '1', 'label' => 'Microtime' ),
+					wp_generate_password( 4, false ) => array( 'id' => '2',	'label' => 'Index' )
+				),
+				'single_list-footer-right' => array(
+					wp_generate_password( 4, false ) => array( 'id' => '1', 'label' => 'Microtime' ),
+					wp_generate_password( 4, false ) => array( 'id' => '2',	'label' => 'Index' )
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_entry'] = $entry;
+
+		/** Single list */
+		$renderer = new \GV\Entry_Renderer();
+		$this->assertContains( 'Index', $renderer->render( $entry, $view ) );
+		$this->assertContains( 'Microtime', $renderer->render( $entry, $view ) );
+
+		add_filter( 'gravityview/render/hide-empty-zone', $filter = function( $hide, $context ) use ( &$test, &$view ) {
+			$test->assertSame( $context->view, $view );
+			return true;
+		}, 10, 2 );
+
+		$this->assertNotContains( 'Index', $renderer->render( $entry, $view ) );
+		$this->assertContains( 'Microtime', $renderer->render( $entry, $view ) );
+
+		remove_filter( 'gravityview/render/hide-empty-zone', $filter );
+
+		/** Directory list */
+
+		gravityview()->request->returns['is_view'] = $view;
+
+		$renderer = new \GV\View_Renderer();
+		$this->assertContains( 'Index', $renderer->render( $view ) );
+		$this->assertContains( 'Microtime', $renderer->render( $view ) );
+
+		add_filter( 'gravityview/render/hide-empty-zone', $filter = function( $hide, $context ) use ( &$test, &$view ) {
+			$test->assertSame( $context->view, $view );
+			return true;
+		}, 10, 2 );
+
+		$id = sprintf( 'gv-field-%d-%d', $form['id'], 2 );
+		$this->assertNotContains( 'Index', $renderer->render( $view ) );
+		$this->assertContains( 'Microtime', $renderer->render( $view ) );
+
+		remove_filter( 'gravityview/render/hide-empty-zone', $filter );
+	}
+
+	public function test_field_filters_compat_generic() {
+		// renderZone
+		// gravityview_field_output
+	}
 }
 
 class GVFutureTest_Extension_Test_BC extends GravityView_Extension {
