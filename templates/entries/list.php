@@ -17,7 +17,7 @@ extract( $gravityview->template->extract_zone_vars( array( 'footer-left', 'foote
 
 gravityview_before( $gravityview );
 
-?><div class="<?php gv_container_class( 'gv-list-view gv-list-container gv-list-single-container', true, $gravityview ); ?>">
+?><div class="<?php gv_container_class( 'gv-list-container gv-list-single-container', true, $gravityview ); ?>">
 
 	<p class="gv-back-link"><?php echo gravityview_back_link( $gravityview ); ?></p>
 

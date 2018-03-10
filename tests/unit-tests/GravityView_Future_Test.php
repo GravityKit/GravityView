@@ -5504,27 +5504,30 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertContains( 'gravityviewrendercontainerclass' /** sanitized */, $out );
 
-		remove_action( 'gravityview_before', $callbacks[0] );
-		remove_action( 'gravityview/template/before', $callbacks[1] );
-		remove_action( 'gravityview_after', $callbacks[2], 11 );
-		remove_action( 'gravityview/template/after', $callbacks[3], 11 );
-		remove_action( 'gravityview_header', $callbacks[4] );
-		remove_action( 'gravityview/template/header', $callbacks[5] );
-		remove_action( 'gravityview_footer', $callbacks[6] );
-		remove_action( 'gravityview/template/footer', $callbacks[7] );
-		remove_action( 'gravityview_table_body_before', $callbacks[8] );
-		remove_action( 'gravityview/template/table/body/before', $callbacks[9] );
-		remove_action( 'gravityview_table_body_after', $callbacks[10] );
-		remove_action( 'gravityview/template/table/body/after', $callbacks[11] );
-		remove_filter( 'gravityview_entry_class', $callbacks[12] );
-		remove_filter( 'gravityview/template/table/entry/class', $callbacks[13] );
-		remove_action( 'gravityview/template/table/cells/before', $callbacks[14] );
-		remove_action( 'gravityview_table_cells_before', $callbacks[15] );
-		remove_action( 'gravityview/template/table/cells/after', $callbacks[16] );
-		remove_action( 'gravityview_table_cells_after', $callbacks[17] );
-		remove_filter( 'gravityview/render/container/class', $callbacks[18] );
+		$removed = array(
+			remove_action( 'gravityview_before', array_shift( $callbacks ) ),
+			remove_action( 'gravityview/template/before', array_shift( $callbacks ) ),
+			remove_action( 'gravityview_after', array_shift( $callbacks ), 11 ),
+			remove_action( 'gravityview/template/after', array_shift( $callbacks ), 11 ),
+			remove_action( 'gravityview_header', array_shift( $callbacks ) ),
+			remove_action( 'gravityview/template/header', array_shift( $callbacks ) ),
+			remove_action( 'gravityview_footer', array_shift( $callbacks ) ),
+			remove_action( 'gravityview/template/footer', array_shift( $callbacks ) ),
+			remove_action( 'gravityview_table_body_before', array_shift( $callbacks ) ),
+			remove_action( 'gravityview/template/table/body/before', array_shift( $callbacks ) ),
+			remove_action( 'gravityview_table_body_after', array_shift( $callbacks ) ),
+			remove_action( 'gravityview/template/table/body/after', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview_entry_class', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/template/table/entry/class', array_shift( $callbacks ) ),
+			remove_action( 'gravityview/template/table/cells/before', array_shift( $callbacks ) ),
+			remove_action( 'gravityview_table_cells_before', array_shift( $callbacks ) ),
+			remove_action( 'gravityview/template/table/cells/after', array_shift( $callbacks ) ),
+			remove_action( 'gravityview_table_cells_after', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/render/container/class', array_shift( $callbacks ) ),
+		);
 
-		$callbacks = array();
+		$this->assertNotContains( false, $removed );
+		$this->assertEmpty( $callbacks );
 
 		$view->settings->update( array( 'hide_until_searched' => true ) );
 
@@ -5568,12 +5571,17 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( "gv-container-{$view->ID}", $out );
 		$this->assertContains( "gv-container-no-results", $out );
 
-		remove_action( 'gravityview_table_tr_before', $callbacks[0] );
-		remove_action( 'gravityview/template/table/tr/before', $callbacks[1] );
-		remove_action( 'gravityview_table_tr_after', $callbacks[2] );
-		remove_action( 'gravityview/template/table/tr/after', $callbacks[3] );
-		remove_filter( 'gravitview_no_entries_text', $callbacks[4] );
-		remove_filter( 'gravityview/template/text/no_entries', $callbacks[5] );
+		$removed = array(
+			remove_action( 'gravityview_table_tr_before', array_shift( $callbacks ) ),
+			remove_action( 'gravityview/template/table/tr/before', array_shift( $callbacks ) ),
+			remove_action( 'gravityview_table_tr_after', array_shift( $callbacks ) ),
+			remove_action( 'gravityview/template/table/tr/after', array_shift( $callbacks ) ),
+			remove_filter( 'gravitview_no_entries_text', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/template/text/no_entries', array_shift( $callbacks ) ),
+		);
+
+		$this->assertNotContains( false, $removed );
+		$this->assertEmpty( $callbacks );
 	}
 
 	public function test_template_hooks_compat_table_single() {
@@ -5702,21 +5710,26 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( "gv-container-{$view->ID}", $out );
 		$this->assertNotContains( "gv-container-no-results", $out );
 
-		remove_action( 'gravityview_before', $callbacks[0] );
-		remove_action( 'gravityview/template/before', $callbacks[1] );
-		remove_action( 'gravityview_after', $callbacks[2], 11 );
-		remove_action( 'gravityview/template/after', $callbacks[3], 11 );
-		remove_action( 'gravityview_header', $callbacks[4] );
-		remove_action( 'gravityview/template/header', $callbacks[5] );
-		remove_action( 'gravityview_footer', $callbacks[6] );
-		remove_action( 'gravityview/template/footer', $callbacks[7] );
-		remove_filter( 'gravityview_directory_link', $callbacks[8] );
-		remove_filter( 'gravityview/view/links/directory', $callbacks[9] );
-		remove_filter( 'gravityview_go_back_url', $callbacks[10] );
-		remove_filter( 'gravityview/template/links/back/url', $callbacks[11] );
-		remove_filter( 'gravityview_go_back_label', $callbacks[12] );
-		remove_filter( 'gravityview/template/links/back/label', $callbacks[13] );
-		remove_filter( 'gravityview/render/container/class', $callbacks[14] );
+		$removed = array(
+			remove_action( 'gravityview_before', array_shift( $callbacks ) ),
+			remove_action( 'gravityview/template/before', array_shift( $callbacks ) ),
+			remove_action( 'gravityview_after', array_shift( $callbacks ), 11 ),
+			remove_action( 'gravityview/template/after', array_shift( $callbacks ), 11 ),
+			remove_action( 'gravityview_header', array_shift( $callbacks ) ),
+			remove_action( 'gravityview/template/header', array_shift( $callbacks ) ),
+			remove_action( 'gravityview_footer', array_shift( $callbacks ) ),
+			remove_action( 'gravityview/template/footer', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview_directory_link', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/view/links/directory', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview_go_back_url', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/template/links/back/url', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview_go_back_label', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/template/links/back/label', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/render/container/class', array_shift( $callbacks ) ),
+		);
+
+		$this->assertNotContains( false, $removed );
+		$this->assertEmpty( $callbacks );
 	}
 
 	public function test_template_hooks_compat_list_directory( $really_directory = false, $save_callback = null ) {
@@ -5802,25 +5815,27 @@ class GVFuture_Test extends GV_UnitTestCase {
 			echo '{{ gravityview/template/after }}';
 		}, 11 );
 
-		add_action( 'gravityview_header', $callbacks []= function( $view_id ) use ( $view, $test ) {
-			$test->assertEquals( $view->ID, $view_id );
-			echo '{{ gravityview_header }}';
-		} );
+		if ( $mode == 'directory' ) {
+			add_action( 'gravityview_header', $callbacks []= function( $view_id ) use ( $view, $test ) {
+				$test->assertEquals( $view->ID, $view_id );
+				echo '{{ gravityview_header }}';
+			} );
 
-		add_action( 'gravityview/template/header', $callbacks []= function( $context ) use ( $view, $test ) {
-			$test->assertSame( $view, $context->view );
-			echo '{{ gravityview/template/header }}';
-		} );
+			add_action( 'gravityview/template/header', $callbacks []= function( $context ) use ( $view, $test ) {
+				$test->assertSame( $view, $context->view );
+				echo '{{ gravityview/template/header }}';
+			} );
 
-		add_action( 'gravityview_footer', $callbacks []= function( $view_id ) use ( $view, $test ) {
-			$test->assertEquals( $view->ID, $view_id );
-			echo '{{ gravityview_footer }}';
-		} );
+			add_action( 'gravityview_footer', $callbacks []= function( $view_id ) use ( $view, $test ) {
+				$test->assertEquals( $view->ID, $view_id );
+				echo '{{ gravityview_footer }}';
+			} );
 
-		add_action( 'gravityview/template/footer', $callbacks []= function( $context ) use ( $view, $test ) {
-			$test->assertSame( $view, $context->view );
-			echo '{{ gravityview/template/footer }}';
-		} );
+			add_action( 'gravityview/template/footer', $callbacks []= function( $context ) use ( $view, $test ) {
+				$test->assertSame( $view, $context->view );
+				echo '{{ gravityview/template/footer }}';
+			} );
+		}
 
 		add_filter( 'gravityview/render/container/class', $callbacks []= function( $class, $context ) use ( $view, $test ) {
 			$test->assertSame( $context->view, $view );
@@ -5828,99 +5843,76 @@ class GVFuture_Test extends GV_UnitTestCase {
 			return "$class {{ gravityview/render/container/class }}";
 		}, 10, 2 );
 
-		add_filter( 'gravityview_entry_class', $callbacks []= function( $class, $entry, $gravityview_view ) use ( $view, $form, $test ) {
-			$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
-			$test->assertEquals( $entry['form_id'], $form['id'] );
-			return "$class gravityview_entry_class";
-		}, 10, 3 );
-
-		add_filter( 'gravityview/template/list/entry/class', $callbacks []= function( $class, $context ) use ( $view, $form, $test ) {
-			$test->assertSame( $context->view, $view );
-			$test->assertEquals( $context->entry['form_id'], $form['id'] );
-			return "$class gravityview/template/list/entry/class";
-		}, 10, 2 );
-
-		add_action( 'gravityview_list_body_before', $callbacks []= function( $gravityview_view ) use ( $view, $test ) {
-			$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
-			echo '{{ gravityview_list_body_before }}';
-		} );
-
-		add_action( 'gravityview/template/list/body/before', $callbacks []= function( $context ) use ( $view, $test ) {
-			$test->assertSame( $view, $context->view );
-			echo '{{ gravityview/template/list/body/before }}';
-		} );
-
-		add_action( 'gravityview_list_body_after', $callbacks []= function( $gravityview_view ) use ( $view, $test ) {
-			$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
-			echo '{{ gravityview_list_body_after }}';
-		} );
-
-		add_action( 'gravityview/template/list/body/after', $callbacks []= function( $context ) use ( $view, $test ) {
-			$test->assertSame( $view, $context->view );
-			echo '{{ gravityview/template/list/body/after }}';
-		} );
-
-		add_action( 'gravityview_list_entry_before', $callbacks []= function( $entry, $gravityview_view ) use ( $view, $form, $test ) {
-			$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
-			$test->assertEquals( $entry['form_id'], $form['id'] );
-			echo '{{ gravityview_list_entry_before }}';
-		}, 10, 2 );
-
-		add_action( 'gravityview/template/list/entry/before', $callbacks []= function( $context ) use ( $view, $form, $test ) {
-			$test->assertSame( $view, $context->view );
-			$test->assertEquals( $context->entry['form_id'], $form['id'] );
-			echo '{{ gravityview/template/list/entry/before }}';
-		} );
-
-		add_action( 'gravityview_list_entry_after', $callbacks []= function( $entry, $gravityview_view ) use ( $view, $form, $test ) {
-			$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
-			$test->assertEquals( $entry['form_id'], $form['id'] );
-			echo '{{ gravityview_list_entry_after }}';
-		}, 10, 2 );
-
-		add_action( 'gravityview/template/list/entry/after', $callbacks []= function( $context ) use ( $view, $form, $test ) {
-			$test->assertSame( $view, $context->view );
-			$test->assertEquals( $context->entry['form_id'], $form['id'] );
-			echo '{{ gravityview/template/list/entry/after }}';
-		} );
-
-		add_action( 'gravityview_list_entry_title_after', $callbacks []= function( $entry, $gravityview_view ) use ( $view, $form, $test ) {
-			$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
-			$test->assertEquals( $entry['form_id'], $form['id'] );
-			echo '{{ gravityview_list_entry_title_after }}';
-		}, 10, 2 );
-
-		add_action( 'gravityview/template/list/entry/title/after', $callbacks []= function( $context ) use ( $view, $form, $test ) {
-			$test->assertSame( $view, $context->view );
-			$test->assertEquals( $context->entry['form_id'], $form['id'] );
-			echo '{{ gravityview/template/list/entry/title/after }}';
-		} );
-
-		add_action( 'gravityview_list_entry_content_after', $callbacks []= function( $entry, $gravityview_view ) use ( $view, $form, $test ) {
-			$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
-			$test->assertEquals( $entry['form_id'], $form['id'] );
-			echo '{{ gravityview_list_entry_content_after }}';
-		}, 10, 2 );
-
-		add_action( 'gravityview/template/list/entry/content/after', $callbacks []= function( $context ) use ( $view, $form, $test ) {
-			$test->assertSame( $view, $context->view );
-			$test->assertEquals( $context->entry['form_id'], $form['id'] );
-			echo '{{ gravityview/template/list/entry/content/after }}';
-		} );
-
-		add_action( 'gravityview_list_entry_footer_after', $callbacks []= function( $entry, $gravityview_view ) use ( $view, $form, $test ) {
-			$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
-			$test->assertEquals( $entry['form_id'], $form['id'] );
-			echo '{{ gravityview_list_entry_footer_after }}';
-		}, 10, 2 );
-
-		add_action( 'gravityview/template/list/entry/footer/after', $callbacks []= function( $context ) use ( $view, $form, $test ) {
-			$test->assertSame( $view, $context->view );
-			$test->assertEquals( $context->entry['form_id'], $form['id'] );
-			echo '{{ gravityview/template/list/entry/footer/after }}';
-		} );
 
 		if ( $mode == 'directory' ) {
+			add_filter( 'gravityview_entry_class', $callbacks []= function( $class, $entry, $gravityview_view ) use ( $view, $form, $test ) {
+				$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
+				$test->assertEquals( $entry['form_id'], $form['id'] );
+				return "$class gravityview_entry_class";
+			}, 10, 3 );
+
+			add_filter( 'gravityview/template/list/entry/class', $callbacks []= function( $class, $context ) use ( $view, $form, $test ) {
+				$test->assertSame( $context->view, $view );
+				$test->assertEquals( $context->entry['form_id'], $form['id'] );
+				return "$class gravityview/template/list/entry/class";
+			}, 10, 2 );
+
+			add_action( 'gravityview_list_body_before', $callbacks []= function( $gravityview_view ) use ( $view, $test ) {
+				$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
+				echo '{{ gravityview_list_body_before }}';
+			} );
+
+			add_action( 'gravityview/template/list/body/before', $callbacks []= function( $context ) use ( $view, $test ) {
+				$test->assertSame( $view, $context->view );
+				echo '{{ gravityview/template/list/body/before }}';
+			} );
+
+			add_action( 'gravityview_list_body_after', $callbacks []= function( $gravityview_view ) use ( $view, $test ) {
+				$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
+				echo '{{ gravityview_list_body_after }}';
+			} );
+
+			add_action( 'gravityview/template/list/body/after', $callbacks []= function( $context ) use ( $view, $test ) {
+				$test->assertSame( $view, $context->view );
+				echo '{{ gravityview/template/list/body/after }}';
+			} );
+
+			add_action( 'gravityview_list_entry_before', $callbacks []= function( $entry, $gravityview_view ) use ( $view, $form, $test ) {
+				$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
+				$test->assertEquals( $entry['form_id'], $form['id'] );
+				echo '{{ gravityview_list_entry_before }}';
+			}, 10, 2 );
+
+			add_action( 'gravityview/template/list/entry/before', $callbacks []= function( $context ) use ( $view, $form, $test ) {
+				$test->assertSame( $view, $context->view );
+				$test->assertEquals( $context->entry['form_id'], $form['id'] );
+				echo '{{ gravityview/template/list/entry/before }}';
+			} );
+
+			add_action( 'gravityview_list_entry_after', $callbacks []= function( $entry, $gravityview_view ) use ( $view, $form, $test ) {
+				$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
+				$test->assertEquals( $entry['form_id'], $form['id'] );
+				echo '{{ gravityview_list_entry_after }}';
+			}, 10, 2 );
+
+			add_action( 'gravityview/template/list/entry/after', $callbacks []= function( $context ) use ( $view, $form, $test ) {
+				$test->assertSame( $view, $context->view );
+				$test->assertEquals( $context->entry['form_id'], $form['id'] );
+				echo '{{ gravityview/template/list/entry/after }}';
+			} );
+
+			add_action( 'gravityview_list_entry_title_after', $callbacks []= function( $entry, $gravityview_view ) use ( $view, $form, $test ) {
+				$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
+				$test->assertEquals( $entry['form_id'], $form['id'] );
+				echo '{{ gravityview_list_entry_title_after }}';
+			}, 10, 2 );
+
+			add_action( 'gravityview/template/list/entry/title/after', $callbacks []= function( $context ) use ( $view, $form, $test ) {
+				$test->assertSame( $view, $context->view );
+				$test->assertEquals( $context->entry['form_id'], $form['id'] );
+				echo '{{ gravityview/template/list/entry/title/after }}';
+			} );
+
 			add_action( 'gravityview_list_entry_title_before', $callbacks []= function( $entry, $gravityview_view ) use ( $view, $form, $test ) {
 				$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
 				$test->assertEquals( $entry['form_id'], $form['id'] );
@@ -5943,6 +5935,30 @@ class GVFuture_Test extends GV_UnitTestCase {
 				$test->assertSame( $view, $context->view );
 				$test->assertEquals( $context->entry['form_id'], $form['id'] );
 				echo '{{ gravityview/template/list/entry/content/before }}';
+			} );
+
+			add_action( 'gravityview_list_entry_content_after', $callbacks []= function( $entry, $gravityview_view ) use ( $view, $form, $test ) {
+				$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
+				$test->assertEquals( $entry['form_id'], $form['id'] );
+				echo '{{ gravityview_list_entry_content_after }}';
+			}, 10, 2 );
+
+			add_action( 'gravityview/template/list/entry/content/after', $callbacks []= function( $context ) use ( $view, $form, $test ) {
+				$test->assertSame( $view, $context->view );
+				$test->assertEquals( $context->entry['form_id'], $form['id'] );
+				echo '{{ gravityview/template/list/entry/content/after }}';
+			} );
+
+			add_action( 'gravityview_list_entry_footer_after', $callbacks []= function( $entry, $gravityview_view ) use ( $view, $form, $test ) {
+				$test->assertEquals( $gravityview_view->getViewId(), $view->ID );
+				$test->assertEquals( $entry['form_id'], $form['id'] );
+				echo '{{ gravityview_list_entry_footer_after }}';
+			}, 10, 2 );
+
+			add_action( 'gravityview/template/list/entry/footer/after', $callbacks []= function( $context ) use ( $view, $form, $test ) {
+				$test->assertSame( $view, $context->view );
+				$test->assertEquals( $context->entry['form_id'], $form['id'] );
+				echo '{{ gravityview/template/list/entry/footer/after }}';
 			} );
 
 			add_action( 'gravityview_list_entry_footer_before', $callbacks []= function( $entry, $gravityview_view ) use ( $view, $form, $test ) {
@@ -5974,19 +5990,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertStringStartsWith( '{{ gravityview/template/before }}{{ gravityview_before }}', $out );
 		$this->assertStringEndsWith( '{{ gravityview/template/after }}{{ gravityview_after }}', $out );
 
+
 		if ( $mode == 'directory' ) {
 			$this->assertContains( '{{ gravityview/template/header }}{{ gravityview_header }}', $out );
 			$this->assertContains( '{{ gravityview/template/footer }}{{ gravityview_footer }}', $out );
-		}
 
-		$this->assertContains( 'gravityviewrendercontainerclass' /** sanitized */, $out );
-		$this->assertNotContains( "gv-container-no-results", $out );
-
-		if ( $mode == 'directory' ) {
 			$this->assertContains( '{{ gravityview/template/list/body/before }}{{ gravityview_list_body_before }}', $out );
 			$this->assertContains( '{{ gravityview/template/list/body/after }}{{ gravityview_list_body_after }}', $out );
-
-			$this->assertContains( 'class="gv-list-view gravityview_entry_class gravityviewtemplatelistentryclass', $out );
 
 			$this->assertContains( '{{ gravityview/template/list/entry/before }}{{ gravityview_list_entry_before }}', $out );
 			$this->assertContains( '{{ gravityview/template/list/entry/after }}{{ gravityview_list_entry_after }}', $out );
@@ -5994,54 +6004,66 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$this->assertContains( '{{ gravityview/template/list/entry/title/after }}{{ gravityview_list_entry_title_after }}', $out );
 			$this->assertContains( '{{ gravityview/template/list/entry/content/before }}{{ gravityview_list_entry_content_before }}', $out );
 			$this->assertContains( '{{ gravityview/template/list/entry/content/after }}{{ gravityview_list_entry_content_after }}', $out );
+
 			$this->assertContains( '{{ gravityview/template/list/entry/footer/before }}{{ gravityview_list_entry_footer_before }}', $out );
 			$this->assertContains( '{{ gravityview/template/list/entry/footer/after }}{{ gravityview_list_entry_footer_after }}', $out );
+
+			$this->assertContains( 'class="gravityview_entry_class gravityviewtemplatelistentryclass', $out );
 		}
 
-		remove_action( 'gravityview_before', $callbacks[0] );
-		remove_action( 'gravityview/template/before', $callbacks[1] );
-		remove_action( 'gravityview_after', $callbacks[2], 11 );
-		remove_action( 'gravityview/template/after', $callbacks[3], 11 );
-		remove_action( 'gravityview_header', $callbacks[4] );
-		remove_action( 'gravityview/template/header', $callbacks[5] );
-		remove_action( 'gravityview_footer', $callbacks[6] );
-		remove_action( 'gravityview/template/footer', $callbacks[7] );
-		remove_filter( 'gravityview/render/container/class', $callbacks[8] );
-		remove_filter( 'gravityview_entry_class', $callbacks[9] );
-		remove_filter( 'gravityview/template/list/entry/class', $callbacks[10] );
-		remove_action( 'gravityview_list_body_before', $callbacks[11] );
-		remove_action( 'gravityview/template/list/body/before', $callbacks[12] );
-		remove_action( 'gravityview_list_body_after', $callbacks[13] );
-		remove_action( 'gravityview/template/list/body/after', $callbacks[14] );
-		remove_action( 'gravityview_list_entry_before', $callbacks[15] );
-		remove_action( 'gravityview/template/list/entry/before', $callbacks[16] );
-		remove_action( 'gravityview_list_entry_after', $callbacks[17] );
-		remove_action( 'gravityview/template/list/entry/after', $callbacks[18] );
-		remove_action( 'gravityview_list_entry_before', $callbacks[15] );
-		remove_action( 'gravityview/template/list/entry/before', $callbacks[16] );
-		remove_action( 'gravityview_list_entry_after', $callbacks[17] );
-		remove_action( 'gravityview/template/list/entry/after', $callbacks[18] );
+		$this->assertContains( 'gravityviewrendercontainerclass' /** sanitized */, $out );
+		$this->assertNotContains( "gv-container-no-results", $out );
 
-		if ( $mode == 'directory' ) {
-			remove_action( 'gravityview_list_entry_title_before', $callbacks[19] );
-			remove_action( 'gravityview/template/list/entry/title/before', $callbacks[20] );
-			remove_action( 'gravityview_list_entry_content_before', $callbacks[21] );
-			remove_action( 'gravityview/template/list/entry/content/before', $callbacks[22] );
-			remove_action( 'gravityview_list_entry_footer_before', $callbacks[23] );
-			remove_action( 'gravityview/template/list/entry/footer/before', $callbacks[24] );
-			remove_action( 'gravityview_list_entry_title_after', $callbacks[25] );
-			remove_action( 'gravityview/template/list/entry/title/after', $callbacks[26] );
-			remove_action( 'gravityview_list_entry_content_after', $callbacks[27] );
-			remove_action( 'gravityview/template/list/entry/content/after', $callbacks[28] );
-			remove_action( 'gravityview_list_entry_footer_after', $callbacks[29] );
-			remove_action( 'gravityview/template/list/entry/footer/after', $callbacks[30] );
-		}
+		$removed = array_merge(
+			array(
+				remove_action( 'gravityview_before', array_shift( $callbacks ) ),
+				remove_action( 'gravityview/template/before', array_shift( $callbacks ) ),
+				remove_action( 'gravityview_after', array_shift( $callbacks ), 11 ),
+				remove_action( 'gravityview/template/after', array_shift( $callbacks ), 11 ),
+			),
+			$mode != 'directory' ? array() : array(
+				remove_action( 'gravityview_header', array_shift( $callbacks ) ),
+				remove_action( 'gravityview/template/header', array_shift( $callbacks ) ),
+				remove_action( 'gravityview_footer', array_shift( $callbacks ) ),
+				remove_action( 'gravityview/template/footer', array_shift( $callbacks ) ),
+			),
+			array( remove_filter( 'gravityview/render/container/class', array_shift( $callbacks ) ) ),
+			$mode != 'directory' ? array() : array(
+				remove_filter( 'gravityview_entry_class', array_shift( $callbacks ) ),
+				remove_filter( 'gravityview/template/list/entry/class', array_shift( $callbacks ) ),
+				remove_action( 'gravityview_list_body_before', array_shift( $callbacks ) ),
+				remove_action( 'gravityview/template/list/body/before', array_shift( $callbacks ) ),
+				remove_action( 'gravityview_list_body_after', array_shift( $callbacks ) ),
+				remove_action( 'gravityview/template/list/body/after', array_shift( $callbacks ) ),
+				remove_action( 'gravityview_list_entry_before', array_shift( $callbacks ) ),
+				remove_action( 'gravityview/template/list/entry/before', array_shift( $callbacks ) ),
+				remove_action( 'gravityview_list_entry_after', array_shift( $callbacks ) ),
+				remove_action( 'gravityview/template/list/entry/after', array_shift( $callbacks ) ),
+				remove_action( 'gravityview_list_entry_title_after', array_shift( $callbacks ) ),
+				remove_action( 'gravityview/template/list/entry/title/after', array_shift( $callbacks ) ),
+				remove_action( 'gravityview_list_entry_before', array_shift( $callbacks ) ),
+				remove_action( 'gravityview/template/list/entry/before', array_shift( $callbacks ) ),
+				remove_action( 'gravityview_list_entry_after', array_shift( $callbacks ) ),
+				remove_action( 'gravityview/template/list/entry/after', array_shift( $callbacks ) ),
+				remove_action( 'gravityview_list_entry_title_before', array_shift( $callbacks ) ),
+				remove_action( 'gravityview/template/list/entry/title/before', array_shift( $callbacks ) ),
+				remove_action( 'gravityview_list_entry_content_before', array_shift( $callbacks ) ),
+				remove_action( 'gravityview/template/list/entry/content/before', array_shift( $callbacks ) ),
+				remove_action( 'gravityview_list_entry_content_after', array_shift( $callbacks ) ),
+				remove_action( 'gravityview/template/list/entry/content/after', array_shift( $callbacks ) ),
+				remove_action( 'gravityview_list_entry_footer_after', array_shift( $callbacks ) ),
+				remove_action( 'gravityview/template/list/entry/footer/after', array_shift( $callbacks ) ),
+				remove_action( 'gravityview_list_entry_footer_before', array_shift( $callbacks ) ),
+				remove_action( 'gravityview/template/list/entry/footer/before', array_shift( $callbacks ) ),
+			)
+		);
+		
+		$this->assertNotContains( false, $removed );
+		$this->assertEmpty( $callbacks );
 
 		if ( $mode == 'single' ) {
 			return $out;
 		}
-
-		$callbacks = array();
 
 		$view->settings->update( array( 'hide_until_searched' => true ) );
 		
@@ -6061,8 +6083,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( "gv-container-{$view->ID}", $out );
 		$this->assertContains( "gv-container-no-results", $out );
 
-		remove_filter( 'gravitview_no_entries_text', $callbacks[0] );
-		remove_filter( 'gravityview/template/text/no_entries', $callbacks[1] );
+		$removed = array(
+			remove_filter( 'gravitview_no_entries_text', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/template/text/no_entries', array_shift( $callbacks ) ),
+		);
+
+		$this->assertNotContains( false, $removed );
+		$this->assertEmpty( $callbacks );
 	}
 
 	public function test_template_hooks_compat_list_single() {
