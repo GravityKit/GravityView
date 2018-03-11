@@ -703,6 +703,16 @@ class GravityView_Widget_Search extends GravityView_Widget {
 					$filter = $filters;
 				}
 
+				// State/Province should be exact matches
+				if ( 'address' === $form_field['type'] ) {
+
+					$input_id = gravityview_get_input_id_from_id( $field_id );
+
+					if ( 4 === $input_id ) {
+						$filter['operator'] = 'is';
+					};
+				}
+
 				break;
 
 			case 'date':
