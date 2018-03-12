@@ -25,48 +25,10 @@ class Entry_Table_Template extends Entry_Template {
 	 * @return string|false The field output or false if "hide_empty" is set.
 	 */
 	public function the_field( \GV\Field $field ) {
-		$context = Template_Context::from_template( $this, compact( 'field' ) );
-
-		/**
-		 * @filter `gravityview/entry/cell/attributes` Filter the row attributes for the row in table view.
-		 *
-		 * @param array $attributes The HTML attributes.
-		 * @param \GV\Template_Context This template.
-		 *
-		 * @since future
-		 */
-		$attributes = apply_filters( 'gravityview/entry/cell/attributes', array(), $context );
-
-		/** Glue the attributes together. */
-		foreach ( $attributes as $attribute => $value ) {
-			$attributes[$attribute] = sprintf( "$attribute=\"%s\"", esc_attr( $value) );
-		}
-		$attributes = implode( ' ', $attributes );
-		if ( $attributes ) {
-			$attributes = " $attributes";
-		}
-
 		$renderer = new Field_Renderer();
 		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
 
-		$output = $renderer->render( $field, $this->view, $source, $this->entry, $this->request );
-
-		/**
-		 * @filter `gravityview/template/table/entry/hide_empty`
-		 * @param boolean Should the row be hidden if the value is empty? Default: don't hide.
-		 * @param \GV\Template_Context $context The context ;) Love it, cherish it. And don't you dare modify it!
-		 */
-		$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', $this->view->settings->get( 'hide_empty', false ), Template_Context::from_template( $this, compact( $field ) ) );
-
-		/**
-		 * Hide empty if nothing to show.
-		 */
-		if ( $hide_empty && gv_empty( $output, false, false ) ) {
-			return false;
-		}
-
-		/** Output. */
-		return sprintf( '<td%s>%s</td>', $attributes, $output );
+		return $renderer->render( $field, $this->view, $source, $this->entry, $this->request );
 	}
 
 	/**
@@ -99,6 +61,8 @@ class Entry_Table_Template extends Entry_Template {
 		$fields = apply_filters( 'gravityview/template/table/fields', $fields, $context );
 
 		foreach ( $fields->all() as $field ) {
+			$context = Template_Context::from_template( $this, compact( 'field' ) );
+
 			/**
 			 * @deprecated Here for back-compatibility.
 			 */
@@ -111,21 +75,22 @@ class Entry_Table_Template extends Entry_Template {
 			 * @param[in,out] string $column_label The label to override.
 			 * @param \GV\Template_Context $context The context.
 			 */
-			$column_label = apply_filters( 'gravityview/template/field/label', $column_label, Template_Context::from_template( $this, compact( $field ) ) );
+			$column_label = apply_filters( 'gravityview/template/field/label', $column_label, $context );
 
 			/**
 			 * @filter `gravityview/template/table/entry/hide_empty`
 			 * @param boolean Should the row be hidden if the value is empty? Default: don't hide.
 			 * @param \GV\Template_Context $context The context ;) Love it, cherish it. And don't you dare modify it!
 			 */
-			$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', $this->view->settings->get( 'hide_empty', false ), Template_Context::from_template( $this, compact( $field ) ) );
+			$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', $this->view->settings->get( 'hide_empty', false ), $context );
 
-			if ( ( $field_output = $this->the_field( $field ) ) || ! $hide_empty ) {
-				printf( '<tr id="gv-field-%d-%s" class="gv-field-%d-%s">', $form->ID, $field->ID, $form->ID, $field->ID );
-					printf( '<th scope="row"><span class="gv-field-label">%s</span></th>', $column_label );
-					echo $field_output ? : '<td></td>';
-				printf( '</tr>' );
-			}
+			echo \gravityview_field_output( array(
+				'label' => $column_label,
+				'value' => $this->the_field( $field ),
+				'markup' => '<tr id="{{ field_id }}" class="{{ class }}"><th scope="row">{{ label }}</th><td>{{ value }}</td></tr>',
+				'hide_empty' => $hide_empty,
+				'zone_id' => 'single_table-columns',
+			), $context );
 		}
 	}
 }

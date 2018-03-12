@@ -157,8 +157,6 @@ class GravityView_API {
 	 * @return string
 	 */
 	public static function field_class( $field, $form = NULL, $entry = NULL ) {
-		$gravityview_view = GravityView_View::getInstance();
-
 		$classes = array();
 
 		if( !empty( $field['custom_class'] ) ) {
@@ -187,6 +185,9 @@ class GravityView_API {
 			if( !empty( $form ) && !empty( $form['id'] ) ) {
 				$form_id = '-'.$form['id'];
 			} else {
+				// @deprecated path. Form should always be given.
+				gravityview()->log->warning( 'GravityView_View::getInstance() legacy API called' );
+				$gravityview_view = GravityView_View::getInstance();
 				$form_id = $gravityview_view->getFormId() ? '-'. $gravityview_view->getFormId() : '';
 			}
 
@@ -209,13 +210,15 @@ class GravityView_API {
 	 * @return string Sanitized unique HTML `id` attribute for the field
 	 */
 	public static function field_html_attr_id( $field, $form = array(), $entry = array() ) {
-		$gravityview_view = GravityView_View::getInstance();
 		$id = $field['id'];
 
 		if ( ! empty( $id ) ) {
 			if ( ! empty( $form ) && ! empty( $form['id'] ) ) {
 				$form_id = '-' . $form['id'];
 			} else {
+				// @deprecated path. Form should always be given.
+				gravityview()->log->warning( 'GravityView_View::getInstance() legacy API called' );
+				$gravityview_view = GravityView_View::getInstance();
 				$form_id = $gravityview_view->getFormId() ? '-' . $gravityview_view->getFormId() : '';
 			}
 
@@ -1199,16 +1202,17 @@ function gravityview_get_map_link( $address ) {
  *
  * @since  1.1.5
  * @param  array $passed_args Associative array with field data. `field` and `form` are required.
- * @deprecated No longer used with new 2.0 templates.
+ * @since  2.0
+ * @param  \GV\Template_Context The template context.
  * @return string Field output. If empty value and hide empty is true, return empty.
  */
-function gravityview_field_output( $passed_args ) {
+function gravityview_field_output( $passed_args, $context = null ) {
 	$defaults = array(
 		'entry' => null,
 		'field' => null,
 		'form' => null,
 		'hide_empty' => true,
-		'markup' => '<div id="{{ field_id }}" class="{{ class }}">{{label}}{{value}}</div>',
+		'markup' => '<div id="{{ field_id }}" class="{{ class }}">{{ label }}{{ value }}</div>',
 		'label_markup' => '',
 		'wpautop' => false,
 		'zone_id' => null,
@@ -1221,23 +1225,51 @@ function gravityview_field_output( $passed_args ) {
 	 * @since 1.7
 	 * @param array $args Associative array; `field` and `form` is required.
 	 * @param array $passed_args Original associative array with field data. `field` and `form` are required.
+	 * @since 2.0
+	 * @param \GV\Template_Context $context The context.
 	 * @deprecated
 	 */
-	$args = apply_filters( 'gravityview/field_output/args', $args, $passed_args );
+	$args = apply_filters( 'gravityview/field_output/args', $args, $passed_args, $context );
 
-	// Required fields.
-	if ( empty( $args['field'] ) || empty( $args['form'] ) ) {
-		gravityview()->log->error( 'Field or form are empty.', array( 'data' => $args ) );
-		return '';
+	/**
+	 * @filter `gravityview/template/field_output/context` Modify the context before generation begins.
+	 * @since 2.0
+	 * @param[in,out] \GV\Template_Context $context The context.
+	 * @param array $args The sanitized arguments, these should not be trusted any longer.
+	 * @param array $passed_args The passed arguments, these should not be trusted any longer.
+	 */
+	$context = apply_filters( 'gravityview/template/field_output/context', $context, $args, $passed_args );
+
+	if ( $context instanceof \GV\Template_Context ) {
+		if ( ! $context->field || ! $context->view || ! $context->view->form ) {
+			gravityview()->log->error( 'Field or form are empty.', array( 'data' => array( $context->field, $context->view->form ) ) );
+			return '';
+		}
+	} else {
+		// @deprecated path
+		// Required fields.
+		if ( empty( $args['field'] ) || empty( $args['form'] ) ) {
+			gravityview()->log->error( 'Field or form are empty.', array( 'data' => $args ) );
+			return '';
+		}
 	}
 
-	$entry = empty( $args['entry'] ) ? array() : $args['entry'];
+	if ( $context instanceof \GV\Template_Context ) {
+		$entry = $args['entry'] ? : ( $context->entry ? $context->entry->as_entry() : array() );
+		$field = $args['field'] ? : ( $context->field ? $context->field->as_configuration() : array() );
+		$form = $args['form'] ? : ( $context->view->form ? $context->view->form->form : array() );
+	} else {
+		// @deprecated path
+		$entry = empty( $args['entry'] ) ? array() : $args['entry'];
+		$field = $args['field'];
+		$form = $args['form'];
+	}
 
 	/**
 	 * Create the content variables for replacing.
 	 * @since 1.11
 	 */
-	$context = array(
+	$placeholders = array(
 		'value' => '',
 		'width' => '',
 		'width:style' => '',
@@ -1247,37 +1279,47 @@ function gravityview_field_output( $passed_args ) {
 		'field_id' => '',
 	);
 
-	$context['value'] = gv_value( $entry, $args['field'] );
+	if ( $context instanceof \GV\Template_Context ) {
+		$placeholders['value'] = \GV\Utils::get( $args, 'value', '' );
+	} else {
+		// @deprecated path
+		$placeholders['value'] = gv_value( $entry, $field );
+	}
 
 	// If the value is empty and we're hiding empty, return empty.
-	if ( $context['value'] === '' && ! empty( $args['hide_empty'] ) ) {
+	if ( $placeholders['value'] === '' && ! empty( $args['hide_empty'] ) ) {
 		return '';
 	}
 
-	if ( $context['value'] !== '' && ! empty( $args['wpautop'] ) ) {
-		$context['value'] = wpautop( $context['value'] );
+	if ( $placeholders['value'] !== '' && ! empty( $args['wpautop'] ) ) {
+		$placeholders['value'] = wpautop( $placeholders['value'] );
 	}
 
 	// Get width setting, if exists
-	$context['width'] = GravityView_API::field_width( $args['field'] );
+	$placeholders['width'] = GravityView_API::field_width( $field );
 
 	// If replacing with CSS inline formatting, let's do it.
-	$context['width:style'] = GravityView_API::field_width( $args['field'], 'width:' . $context['width'] . '%;' );
+	$placeholders['width:style'] = GravityView_API::field_width( $field, 'width:' . $placeholders['width'] . '%;' );
 
 	// Grab the Class using `gv_class`
-	$context['class'] = gv_class( $args['field'], $args['form'], $entry );
-	$context['field_id'] = GravityView_API::field_html_attr_id( $args['field'], $args['form'], $entry );
+	$placeholders['class'] = gv_class( $field, $form, $entry );
+	$placeholders['field_id'] = GravityView_API::field_html_attr_id( $field, $form, $entry );
+
 
 	// Get field label if needed
 	if ( ! empty( $args['label_markup'] ) && ! empty( $args['field']['show_label'] ) ) {
-		$context['label'] = str_replace( array( '{{label}}', '{{ label }}' ), '<span class="gv-field-label">{{ label_value }}</span>', $args['label_markup'] );
+		$placeholders['label'] = str_replace( array( '{{label}}', '{{ label }}' ), '<span class="gv-field-label">{{ label_value }}</span>', $args['label_markup'] );
 	}
 
-	// Default Label value
-	$context['label_value'] = gv_label( $args['field'], $entry );
+	if ( $context instanceof \GV\Template_Context ) {
+		$placeholders['label_value'] = \GV\Utils::get( $args, 'label' );
+	} else {
+		// Default Label value
+		$placeholders['label_value'] = gv_label( $field, $entry );
+	}
 
-	if ( empty( $context['label'] ) && ! empty( $context['label_value'] ) ){
-		$context['label'] = '<span class="gv-field-label">{{ label_value }}</span>';
+	if ( empty( $placeholders['label'] ) && ! empty( $placeholders['label_value'] ) ){
+		$placeholders['label'] = '<span class="gv-field-label">{{ label_value }}</span>';
 	}
 
 	/**
@@ -1285,28 +1327,34 @@ function gravityview_field_output( $passed_args ) {
 	 * @since 1.11
 	 * @param string $markup The HTML for the markup
 	 * @param array $args All args for the field output
+	 * @since 2.0
+	 * @param \GV\Template_Context $context The context.
 	 */
-	$html = apply_filters( 'gravityview/field_output/pre_html', $args['markup'], $args );
+	$html = apply_filters( 'gravityview/field_output/pre_html', $args['markup'], $args, $context );
 
 	/**
 	 * @filter `gravityview/field_output/open_tag` Modify the opening tags for the template content placeholders
 	 * @since 1.11
 	 * @param string $open_tag Open tag for template content placeholders. Default: `{{`
+	 * @since 2.0
+	 * @param \GV\Template_Context $context The context.
 	 */
-	$open_tag = apply_filters( 'gravityview/field_output/open_tag', '{{', $args );
+	$open_tag = apply_filters( 'gravityview/field_output/open_tag', '{{', $args, $context );
 
 	/**
 	 * @filter `gravityview/field_output/close_tag` Modify the closing tags for the template content placeholders
 	 * @since 1.11
 	 * @param string $close_tag Close tag for template content placeholders. Default: `}}`
+	 * @since 2.0
+	 * @param \GV\Template_Context $context The context.
 	 */
-	$close_tag = apply_filters( 'gravityview/field_output/close_tag', '}}', $args );
+	$close_tag = apply_filters( 'gravityview/field_output/close_tag', '}}', $args, $context );
 
 	/**
 	 * Loop through each of the tags to replace and replace both `{{tag}}` and `{{ tag }}` with the values
 	 * @since 1.11
 	 */
-	foreach ( $context as $tag => $value ) {
+	foreach ( $placeholders as $tag => $value ) {
 
 		// If the tag doesn't exist just skip it
 		if ( false === strpos( $html, $open_tag . $tag . $close_tag ) && false === strpos( $html, $open_tag . ' ' . $tag . ' ' . $close_tag ) ){
@@ -1324,27 +1372,32 @@ function gravityview_field_output( $passed_args ) {
 		 * @since 1.11
 		 * @param string $value The content to be shown instead of the {{tag}} placeholder
 		 * @param array $args Arguments passed to the function
+		 * @since 2.0
+		 * @param \GV\Template_Context $context The context.
 		 */
-		$value = apply_filters( 'gravityview/field_output/context/' . $tag, $value, $args );
+		$value = apply_filters( 'gravityview/field_output/context/' . $tag, $value, $args, $context );
 
 		// Finally do the replace
 		$html = str_replace( $search, $value, $html );
 	}
 
 	/**
-	 * @todo Depricate `gravityview_field_output`
+	 * @filter `gravityview_field_output` Modify field HTML output
+	 * @param string $html Existing HTML output
+	 * @param array $args Arguments passed to the function
+	 * @since 2.0
+	 * @param \GV\Template_Context $context The context.
 	 */
-	$html = apply_filters( 'gravityview_field_output', $html, $args );
+	$html = apply_filters( 'gravityview_field_output', $html, $args, $context );
 
 	/**
 	 * @filter `gravityview/field_output/html` Modify field HTML output
 	 * @param string $html Existing HTML output
 	 * @param array $args Arguments passed to the function
+	 * @since 2.0
+	 * @param \GV\Template_Context $context The context.
 	 */
-	$html = apply_filters( 'gravityview/field_output/html', $html, $args );
-
-	// Just free up a tiny amount of memory
-	unset( $value, $args, $passed_args, $entry, $context, $search, $open_tag, $tag, $close_tag );
+	$html = apply_filters( 'gravityview/field_output/html', $html, $args, $context );
 
 	return $html;
 }

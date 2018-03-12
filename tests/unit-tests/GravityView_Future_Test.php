@@ -3995,6 +3995,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		} );
 
 		$this->assertEquals( 'Look, space is the place, okay?', GravityView_API::field_label( $field_settings, $entry, true ) );
+
+		remove_all_filters( 'gravityview_render_after_label' );
+		remove_all_filters( 'gravityview/template/field_label' );
 	}
 
 	/**
@@ -6377,8 +6380,130 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	public function test_field_output_args_filter_compat() {
-		// gravityview/field_output/args
-		// gravityview_field_output( '' );
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		foreach ( range( 1, 5 ) as $i ) {
+			$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+				'form_id' => $form['id'],
+				'1' => microtime( true ),
+				'2' => ':)',
+			) );
+		}
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'hide_empty' => false,
+			),
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+						'label' => 'Microtime',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '2',
+						'label' => 'Index',
+					),
+				),
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+						'label' => 'Microtime',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '2',
+						'label' => 'Index',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$test = &$this;
+
+		gravityview()->request = new \GV\Mock_Request();
+
+		/** Directory table */
+
+		gravityview()->request->returns['is_view'] = $view;
+
+		$callbacks = array();
+
+		add_filter( 'gravityview/field_output/args', $callbacks []= function( $args, $passed_args, $context ) use ( $test, &$view ) {
+			$test->assertSame( $context->view, $view );
+			$args['value'] = 'spAce';
+			$args['markup'] .= '[{{ value }}]';
+			return $args;
+		}, 10, 3 );
+
+		add_filter( 'gravityview/template/field_output/context', $callbacks []= function( $context, $args, $passed_args ) use ( $test, &$view ) {
+			$test->assertSame( $context->view, $view );
+			$test->assertEquals( $args['value'], 'spAce' );
+			$context->field->custom_class = 'sentinel-class';
+			return $context;
+		}, 10, 3 );
+
+		add_filter( 'gravityview/field_output/pre_html', $callbacks []= function( $markup, $args, $context ) use ( $test, &$view ) {
+			$test->assertSame( $context->view, $view );
+			$test->assertEquals( $args['value'], 'spAce' );
+			return str_replace( '}}', ']]', str_replace( '{{', '[[', "--{{ value }}--|$markup" ) );
+		}, 10, 3 );
+
+		add_filter( 'gravityview/field_output/open_tag', $callbacks []= function( $tag, $args, $context ) use ( $test, &$view ) {
+			$test->assertSame( $context->view, $view );
+			$test->assertEquals( $args['value'], 'spAce' );
+			return '[[';
+		}, 10, 3 );
+
+		add_filter( 'gravityview/field_output/close_tag', $callbacks []= function( $tag, $args, $context ) use ( $test, &$view ) {
+			$test->assertSame( $context->view, $view );
+			$test->assertEquals( $args['value'], 'spAce' );
+			return ']]';
+		}, 10, 3 );
+
+		add_filter( 'gravityview/field_output/context/value', $callbacks []= function( $value, $args, $context ) use ( $test, &$view ) {
+			$test->assertSame( $context->view, $view );
+			$test->assertEquals( $args['value'], $value );
+			return "$value==value==";
+		}, 10, 3 );
+
+		add_filter( 'gravityview_field_output', $callbacks []= function( $html, $args, $context ) use ( $test, &$view ) {
+			$test->assertSame( $context->view, $view );
+			$test->assertEquals( $args['value'], 'spAce' );
+			return "{{ gravityview_field_output }}$html";
+		}, 10, 3 );
+
+		add_filter( 'gravityview/field_output/html', $callbacks []= function( $html, $args, $context ) use ( $test, &$view ) {
+			$test->assertSame( $context->view, $view );
+			$test->assertEquals( $args['value'], 'spAce' );
+			return "{{ gravityview/field_output/html }}$html";
+		}, 10, 3 );
+
+		$renderer = new \GV\View_Renderer();
+		$out = $renderer->render( $view );
+
+		$this->assertContains( '[spAce==value==]', $out );
+		$this->assertContains( 'sentinel-class', $out );
+		$this->assertContains( '--spAce==value==--', $out );
+		$this->assertContains( '{{ gravityview_field_output }}', $out );
+		$this->assertContains( '{{ gravityview/field_output/html }}', $out );
+
+		$removed = array(
+			remove_filter( 'gravityview/field_output/args', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/template/field_output/context', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/field_output/pre_html', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/field_output/open_tag', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/field_output/close_tag', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/field_output/context/value', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview_field_output', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/field_output/html', array_shift( $callbacks ) ),
+		);
+		
+		$this->assertNotContains( false, $removed );
+		$this->assertEmpty( $callbacks );
 	}
 }
 

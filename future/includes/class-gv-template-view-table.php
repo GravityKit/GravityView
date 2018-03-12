@@ -26,8 +26,8 @@ class View_Table_Template extends View_Template {
 		$fields = $this->view->fields->by_position( 'directory_table-columns' );
 		$form = $this->view->form;
 
-		/** @todo Add class filters from the old code. */
 		foreach ( $fields->by_visible()->all() as $field ) {
+			$context = Template_Context::from_template( $this, compact( 'field' ) );
 
 			/**
 			 * @deprecated Here for back-compatibility.
@@ -41,12 +41,17 @@ class View_Table_Template extends View_Template {
 			 * @param[in,out] string $column_label The label to override.
 			 * @param \GV\Template_Context $context The context. Does not have entry set here.
 			 */
-			$column_label = apply_filters( 'gravityview/template/field/label', $column_label, Template_Context::from_template( $this, compact( $field ) ) );
+			$column_label = apply_filters( 'gravityview/template/field/label', $column_label, $context );
 
-			printf( '<th id="gv-field-%d-%s" class="gv-field-%d-%s"%s><span class="gv-field-label">%s</span></th>',
-				esc_attr( $form->ID ), esc_attr( $field->ID ), esc_attr( $form->ID ), esc_attr( $field->ID ),
-				$field->width ? sprintf( ' style="width: %d%%"', $field->width ) : '', $column_label
+			$args = array(
+				'hide_empty' => false,
+				'zone_id' => 'directory_table-columns',
+				'markup' => '<th id="{{ field_id }}" class="{{ class }}">{{label}}</th>',
+				'label_markup' => '<span class="gv-field-label">{{ label }}</span>',
+				'label' => $column_label,
 			);
+
+			echo \gravityview_field_output( $args, $context );
 		}
 	}
 
@@ -154,37 +159,20 @@ class View_Table_Template extends View_Template {
 
 		$context = Template_Context::from_template( $this, compact( 'field', 'entry' ) );
 
-	    $attributes = array(
-			'id' => \GravityView_API::field_html_attr_id( $field->as_configuration(), $this->view->form, $entry->as_entry() ),
-			'class' => gv_class( $field->as_configuration(), $this->view->form, $entry->as_entry() ),
-		);
-
-		/**
-		 * @filter `gravityview/template/table/entry/cell/attributes` Filter the row attributes for the row in table view.
-		 *
-		 * @param array $attributes The HTML attributes.
-		 * @param \GV\Template_Context This template.
-		 *
-		 * @since future
-		 */
-		$attributes = apply_filters( 'gravityview/template/table/entry/cell/attributes', $attributes, $context );
-
-		/** Glue the attributes together. */
-		foreach ( $attributes as $attribute => $value ) {
-			$attributes[$attribute] = sprintf( "$attribute=\"%s\"", esc_attr( $value) );
-		}
-		$attributes = implode( ' ', $attributes );
-		if ( $attributes ) {
-			$attributes = " $attributes";
-		}
-
 		$renderer = new Field_Renderer();
 		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
 
-		$output = $renderer->render( $field, $this->view, $source, $entry, $this->request );
+		$value = $renderer->render( $field, $this->view, $source, $entry, $this->request );
+
+		$args = array(
+			'value' => $value,
+			'hide_empty' => false,
+			'zone_id' => 'directory_table-columns',
+			'markup' => '<td id="{{ field_id }}" class="{{ class }}">{{ value }}</td>',
+		);
 
 		/** Output. */
-		printf( '<td%s>%s</td>', $attributes, $output );
+		echo \gravityview_field_output( $args, $context );
 	}
 
 	/**
@@ -322,6 +310,3 @@ class View_Table_Template extends View_Template {
 		return apply_filters( 'gravityview/template/table/entry/class', $class, Template_Context::from_template( $context->template, compact( 'entry' ) ) );
 	}
 }
-
-
-
