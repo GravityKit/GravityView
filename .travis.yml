@@ -36,8 +36,6 @@ matrix:
         env: WP_VERSION=4.4 WP_MULTISITE=0
       - php: 7.2
         env: WP_VERSION=4.4 WP_MULTISITE=0
-      - php: 7.3
-        env: WP_VERSION=4.4 WP_MULTISITE=0
 
 install:
   - curl -s https://getcomposer.org/installer | php
@@ -46,7 +44,7 @@ install:
 before_script:
   - bash tests/bin/install.sh gravityview_test root '' localhost $WP_VERSION
   - bash tests/bin/travis.sh before
-  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' ]]; then DO_COVERAGE=1; else DO_COVERAGE=0; fi
+  - if [[ $TRAVIS_PHP_VERSION = '7.2' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' ]]; then DO_COVERAGE=1; else DO_COVERAGE=0; fi
 
 script:
   - if [[ $DO_COVERAGE = '1' ]]; then vendor/bin/phpunit -c phpunit.xml.dist; else vendor/bin/phpunit -c phpunit.xml.dist --no-coverage; fi
