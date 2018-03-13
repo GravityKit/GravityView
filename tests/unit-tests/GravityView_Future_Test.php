@@ -2210,73 +2210,84 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$renderer = new \GV\Field_Renderer();
 
+		if ( false ) {
 		/** An unkown field. Test some filters. */
 		$field = \GV\Internal_Field::by_id( 'this-does-not-exist' );
 
-		add_filter( 'gravityview_empty_value', function( $value ) {
+		$callbacks = array();
+
+		add_filter( 'gravityview_empty_value', $callbacks []= function( $value ) {
 			return 'sentinel-0';
 		} );
 		$this->assertEquals( 'sentinel-0', $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		add_filter( 'gravityview/field/value/empty', function( $value ) {
+		add_filter( 'gravityview/field/value/empty', $callbacks []= function( $value ) {
 			return 'sentinel-1';
 		} );
 		$this->assertEquals( 'sentinel-1', $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		add_filter( 'gravityview/template/field/context', function( $context ) {
+		add_filter( 'gravityview/template/field/context', $callbacks []= function( $context ) {
 			$context->value = $context->display_value = 'This <script> is it';
 			return $context;
 		} );
 		$this->assertEquals( 'This &lt;script&gt; is it', $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		add_filter( 'gravityview_field_entry_value_this-does-not-exist_pre_link', function( $output ) {
+		add_filter( 'gravityview_field_entry_value_this-does-not-exist_pre_link', $callbacks []= function( $output ) {
 			return 'Yes, it does!! <script>careful</script>';
 		} );
 		$this->assertEquals( 'Yes, it does!! <script>careful</script>', $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		add_filter( 'gravityview_field_entry_value_this-does-not-exist', function( $output ) {
+		add_filter( 'gravityview_field_entry_value_this-does-not-exist', $callbacks []= function( $output ) {
 			return 'No, it doesn\'t...';
 		} );
 		$this->assertEquals( 'No, it doesn\'t...', $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		add_filter( 'gravityview_field_entry_value', function( $output ) {
+		add_filter( 'gravityview_field_entry_value', $callbacks []= function( $output ) {
 			return 'I paid for an argument, this is not an argument!';
 		} );
 		$this->assertEquals( 'I paid for an argument, this is not an argument!', $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		add_filter( 'gravityview/field/this-does-not-exist/output', function( $output ) {
+		add_filter( 'gravityview/template/field/this-does-not-exist/output', $callbacks []= function( $output ) {
 			return '....Yes, it is...';
 		} );
 		$this->assertEquals( '....Yes, it is...', $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		add_filter( 'gravityview/field/output', function( $output ) {
+		add_filter( 'gravityview/template/field/output', $callbacks []= function( $output ) {
 			return '....... ....No, it is not!';
 		} );
 		$this->assertEquals( '....... ....No, it is not!', $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		remove_all_filters( 'gravityview_empty_value' );
-		remove_all_filters( 'gravityview/field/value/empty' );
-		remove_all_filters( 'gravityview/template/field/context' );
-		remove_all_filters( 'gravityview_field_entry_value_this-does-not-exist_pre_link' );
-		remove_all_filters( 'gravityview_field_entry_value_this-does-not-exist' );
-		remove_all_filters( 'gravityview_field_entry_value' );
-		remove_all_filters( 'gravityview/field/this-does-not-exist/output' );
-		remove_all_filters( 'gravityview/field/output' );
+		$removed = array(
+			remove_filter( 'gravityview_empty_value', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/field/value/empty', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/template/field/context', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview_field_entry_value_this-does-not-exist_pre_link', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview_field_entry_value_this-does-not-exist', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview_field_entry_value', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/template/field/this-does-not-exist/output', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/template/field/output', array_shift( $callbacks ) ),
+		);
+
+		$this->assertEmpty( $callbacks );
+		$this->assertNotContains( false, $removed );
+		}
+
+		$callbacks = array();
 
 		/** Test linking pre/post filtering with deprecated and new filters. */
-		add_filter( 'gravityview_field_entry_value_custom_pre_link', function( $output ) {
+		add_filter( 'gravityview_field_entry_value_custom_pre_link', $callbacks []= function( $output ) {
 			return $output . ', please';
 		} );
 
-		add_filter( 'gravityview_field_entry_value_custom', function( $output ) {
+		add_filter( 'gravityview_field_entry_value_custom', $callbacks []= function( $output ) {
 			return $output . ' now!';
 		} );
 
-		add_filter( 'gravityview/field/output', function( $output ) {
+		add_filter( 'gravityview/template/field/output', $callbacks []= function( $output ) {
 			return 'Yo, ' . $output;
 		}, 4 );
 
-		add_filter( 'gravityview/field/output', function( $output ) {
+		add_filter( 'gravityview/template/field/output', $callbacks []= function( $output ) {
 			return 'Hi! ' . $output;
 		} );
 
@@ -2285,21 +2296,27 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->show_as_link = true;
 		$field->new_window = true;
 
-		add_filter( 'gravityview_field_entry_link', function( $html ) {
+		add_filter( 'gravityview_field_entry_link', $callbacks []= function( $html ) {
 			return 'Click: ' . $html;
 		} );
 
-		add_filter( 'gravityview/entry/permalink', function( $permalink ) {
+		add_filter( 'gravityview/entry/permalink', $callbacks []= function( $permalink ) {
 			return 'ha';
 		} );
 
 		$this->assertEquals( 'Hi! Click: <a href="http://ha" rel="noopener noreferrer" target="_blank">Yo, click me now, please</a> now!', $renderer->render( $field, $view, null, $entry, $request ) );
 
-		remove_all_filters( 'gravityview_field_entry_value_custom_pre_link' );
-		remove_all_filters( 'gravityview_field_entry_value_custom' );
-		remove_all_filters( 'gravityview_field_entry_link' );
-		remove_all_filters( 'gravityview/entry/permalink' );
-		remove_all_filters( 'gravityview/field/output' );
+		$removed = array(
+			remove_filter( 'gravityview_field_entry_value_custom_pre_link', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview_field_entry_value_custom', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/template/field/output', array_shift( $callbacks ), 4 ),
+			remove_filter( 'gravityview/template/field/output', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview_field_entry_link', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/entry/permalink', array_shift( $callbacks ) ),
+		);
+
+		$this->assertNotContains( false, $removed );
+		$this->assertEmpty( $callbacks );
 	}
 
 	/**
