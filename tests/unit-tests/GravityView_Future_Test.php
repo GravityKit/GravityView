@@ -6505,6 +6505,127 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertNotContains( false, $removed );
 		$this->assertEmpty( $callbacks );
 	}
+
+	public function test_field_value_filters_compat_generic() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form->ID,
+			'template_id' => 'table',
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form->ID,
+			'16' => 'hello'
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$request = new \GV\Mock_Request();
+		$request->returns['is_view'] = $view;
+
+		/** Simple */
+		$template = new \GV\Field_HTML_Template( \GV\Internal_Field::by_id( 'id' ), $view, $view->form, $entry, $request );
+		ob_start(); $template->render(); $output = ob_get_clean();
+		$this->assertEquals( $entry->ID, $output );
+
+		$template = new \GV\Field_HTML_Template( \GV\GF_Field::by_id( $form, '16' ), $view, $view->form, $entry, $request );
+		ob_start(); $template->render(); $output = ob_get_clean();
+		$this->assertEquals( '<p>hello</p>', trim( $output ) );
+
+		$callbacks = array();
+		$called = array();
+		$test = &$this;
+
+		/** Filtering */
+		add_filter( 'gravityview_empty_value', $callbacks []= function( $value ) {
+			return "$value{{ gravityview_empty_value }}";
+		} );
+
+		add_filter( 'gravityview/field/value/empty', $callbacks []= function( $value, $context ) use ( $test, &$view ) {
+			$test->assertSame( $context->view, $view );
+			return "$value{{ gravityview/field/value/empty }}";
+		}, 10, 2 );
+
+		add_filter( 'gravityview/template/field/context', $callbacks []= function( $context ) use ( $test, &$view, &$called ) {
+			$test->assertSame( $context->view, $view );
+			$called['gravityview/template/field/context'] = true;
+			return $context;
+		} );
+
+		$template = new \GV\Field_HTML_Template( \GV\Internal_Field::by_id( 'id' ), $view, $view->form, $entry, $request );
+		ob_start(); $template->render(); $output = ob_get_clean();
+		$this->assertEquals( $entry->ID, $output );
+
+		$template = new \GV\Field_HTML_Template( \GV\GF_Field::by_id( $form, '1.1' ), $view, $view->form, $entry, $request );
+		ob_start(); $template->render(); $output = ob_get_clean();
+		$this->assertEquals( '{{ gravityview_empty_value }}{{ gravityview/field/value/empty }}', $output );
+		$this->assertTrue( $called['gravityview/template/field/context'] );
+
+		add_filter( 'gravityview_field_entry_value_textarea_pre_link', $callbacks []= function( $output, $entry, $field, $field_compat ) {
+			return "$output<< gravityview_field_entry_value_textarea_pre_link >>";
+		}, 10, 4 );
+
+		add_filter( 'gravityview_field_entry_value_pre_link', $callbacks []= function( $output, $entry, $field, $field_compat ) {
+			return "$output<< gravityview_field_entry_value_pre_link >>";
+		}, 10, 4 );
+
+		add_filter( 'gravityview_field_entry_link', $callbacks []= function( $output, $permalink, $entry, $field ) {
+			return "$output{{ gravityview_field_entry_link }}";
+		}, 10, 4 );
+
+		add_filter( 'gravityview/template/field/entry_link', $callbacks []= function( $output, $permalink, $context ) use ( &$test, &$view ) {
+			$test->assertSame( $context->view, $view );
+			return "$output==gravityview/template/field/entry_link==";
+		}, 10, 4 );
+
+		add_filter( 'gravityview_field_entry_value_textarea', $callbacks []= function( $output, $entry, $field, $field_compat ) {
+			return "$output{{ gravityview_field_entry_value_textarea }}";
+		}, 10, 4 );
+
+		add_filter( 'gravityview_field_entry_value', $callbacks []= function( $output, $entry, $field, $field_compat ) {
+			return "$output{{ gravityview_field_entry_value }}";
+		}, 10, 4 );
+
+		add_filter( 'gravityview/template/field/textarea/output', $callbacks []= function( $output, $context ) use ( &$test, &$view ) {
+			$test->assertSame( $context->view, $view );
+			return "$output(__gravityview/template/field/textarea/output__)";
+		}, 10, 2 );
+
+		add_filter( 'gravityview/template/field/output', $callbacks []= function( $output, $context ) use ( &$test, &$view ) {
+			$test->assertSame( $context->view, $view );
+			return "$output(__gravityview/template/field/output__)";
+		}, 10, 2 );
+
+		// @todo merge tags {entry_id}
+
+		$field = \GV\GF_Field::by_id( $form, '16' );
+		$field->show_as_link = true;
+		$template = new \GV\Field_HTML_Template( $field, $view, $view->form, $entry, $request );
+		ob_start(); $template->render(); $output = ob_get_clean();
+		$this->assertContains( "<p>hello</p>\n<< gravityview_field_entry_value_textarea_pre_link >><< gravityview_field_entry_value_pre_link >>", $output );
+		$this->assertContains( 'pre_link >></a>{{ gravityview_field_entry_link }}==gravityview/template/field/entry_link==', $output );
+		$this->assertContains( '/entry_link=={{ gravityview_field_entry_value_textarea }}{{ gravityview_field_entry_value }}', $output );
+		$this->assertContains( 'field_entry_value }}(__gravityview/template/field/textarea/output__)(__gravityview/template/field/output__)', $output );
+
+		$removed = array(
+			remove_filter( 'gravityview_empty_value', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/field/value/empty', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/template/field/context', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview_field_entry_value_textarea_pre_link', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview_field_entry_value_pre_link', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview_field_entry_link', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/template/field/entry_link', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview_field_entry_value_textarea', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview_field_entry_value', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/template/field/textarea/output', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/template/field/output', array_shift( $callbacks ) ),
+		);
+		
+		$this->assertNotContains( false, $removed );
+		$this->assertEmpty( $callbacks );
+	}
 }
 
 class GVFutureTest_Extension_Test_BC extends GravityView_Extension {
