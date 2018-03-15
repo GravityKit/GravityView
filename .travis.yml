@@ -19,6 +19,7 @@ php:
   - 5.3
   - 5.4
   - 5.6
+  - 7.0
   - 7.1
   - 7.2
 
@@ -32,6 +33,8 @@ matrix:
     - php: 5.3
       env: WP_VERSION=latest WP_MULTISITE=1
   exclude:
+      - php: 7.0
+        env: WP_VERSION=4.4 WP_MULTISITE=0
       - php: 7.1
         env: WP_VERSION=4.4 WP_MULTISITE=0
       - php: 7.2
@@ -42,6 +45,9 @@ install:
   - php composer.phar install --no-interaction
 
 before_script:
+  - echo -e "[server]\nmax_allowed_packet=64M" | sudo tee -a /etc/mysql/conf.d/limits.cnf
+  - sudo service mysql reload
+  - mysql -e "SHOW VARIABLES LIKE 'max_allowed_packet';"
   - bash tests/bin/install.sh gravityview_test root '' localhost $WP_VERSION
   - bash tests/bin/travis.sh before
   - if [[ $TRAVIS_PHP_VERSION = '7.2' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' ]]; then DO_COVERAGE=1; else DO_COVERAGE=0; fi
