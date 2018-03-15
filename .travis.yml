@@ -46,7 +46,7 @@ install:
 
 before_script:
   - echo -e "[server]\nmax_allowed_packet=64M" | sudo tee -a /etc/mysql/conf.d/limits.cnf
-  - sudo service mysql reload
+  - sudo service mysql restart
   - mysql -e "SHOW VARIABLES LIKE 'max_allowed_packet';"
   - bash tests/bin/install.sh gravityview_test root '' localhost $WP_VERSION
   - bash tests/bin/travis.sh before
