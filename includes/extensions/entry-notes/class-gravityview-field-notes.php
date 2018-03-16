@@ -73,6 +73,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		// add template path to check for field
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
+		add_filter( 'gravityview/template/fields_template_paths', array( $this, 'add_template_path' ) );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts') );
 		add_action( 'gravityview/field/notes/scripts', array( $this, 'enqueue_scripts' ) );
