@@ -253,7 +253,7 @@ abstract class Field_Template extends Template {
 
 		/** Bake the template. */
 		ob_start();
-		$located_template = $this->get_template_part( static::$slug );
+		$this->located_template = $this->get_template_part( static::$slug );
 		$output = ob_get_clean();
 
 		if ( empty( $output ) ) {
@@ -274,7 +274,7 @@ abstract class Field_Template extends Template {
 			$context = Template_Context::from_template( $this, compact( 'display_value', 'value' ) );
 		}
 
-		gravityview()->log->info( 'Field template for field #{field_id} loaded: {located_template}', array( 'field_id' => $this->field->ID, 'located_template' => $located_template ) );
+		gravityview()->log->info( 'Field template for field #{field_id} loaded: {located_template}', array( 'field_id' => $this->field->ID, 'located_template' => $this->located_template ) );
 
 		$this->pop_template_data( 'gravityview' );
 
@@ -289,7 +289,7 @@ abstract class Field_Template extends Template {
 			'format' => 'html',
 			'entry' => $this->entry->as_entry(),
 			'field_type' => $this->field->type,
-			'field_path' => $located_template,
+			'field_path' => $this->located_template,
 		);
 
 		$pre_link_compat_callback = function( $output, $context ) use ( $field_compat ) {

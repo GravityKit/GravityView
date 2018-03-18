@@ -148,7 +148,7 @@ class GravityView_Edit_Entry {
 
         $nonce_key = self::get_nonce_key( $view_id, $entry['form_id'], $entry['id']  );
 
-        $base = gv_entry_link( $entry, $post_id );
+        $base = gv_entry_link( $entry, $post_id ? : $view_id  );
 
         $url = add_query_arg( array(
             'edit' => wp_create_nonce( $nonce_key )
@@ -231,7 +231,7 @@ class GravityView_Edit_Entry {
      * Needs to be used combined with GravityView_Edit_Entry::user_can_edit_entry for maximum security!!
      *
      * @param  array $entry Gravity Forms entry array
-     * @param int $view_id ID of the view you want to check visibility against {@since 1.9.2}
+     * @param int $view_id ID of the view you want to check visibility against {@since 1.9.2}. Required since 2.0
      * @return bool
      */
     public static function check_user_cap_edit_entry( $entry, $view_id = 0 ) {
@@ -259,6 +259,7 @@ class GravityView_Edit_Entry {
             // get user_edit setting
             if( empty( $view_id ) || $view_id == GravityView_View::getInstance()->getViewId() ) {
                 // if View ID not specified or is the current view
+				// @deprecated path
                 $user_edit = GravityView_View::getInstance()->getAtts('user_edit');
             } else {
                 // in case is specified and not the current view

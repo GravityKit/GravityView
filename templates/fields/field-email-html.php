@@ -63,17 +63,7 @@ if ( ! isset( $field_settings['emailmailto'] ) || ! empty( $field_settings['emai
  *
  * @var boolean
  */
-$prevent_encrypt = apply_filters( 'gravityview_email_prevent_encrypt', false );
-
-/**
- * @filter `gravityview/fields/email/prevent_encrypt` Prevent encrypting emails.
- *
- * @since future
- *
- * @param boolean $prevent_encrypt Whether to prevent encryption or not. Default: false.
- * @param @param \GV\Template_Context The $gravityview template context object.
- */
-$prevent_encrypt = apply_filters( 'gravityview/fields/email/prevent_encrypt', $prevent_encrypt, $gravityview );
+$prevent_encrypt = apply_filters( 'gravityview_email_prevent_encrypt', false, $gravityview );
 
 // If encrypting the link
 if ( ! empty( $field_settings['emailencrypt'] ) && ! $prevent_encrypt ) {
