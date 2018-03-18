@@ -3,7 +3,7 @@
  * The default address field output template.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 $field_id = $gravityview->field->ID;
 $field = $gravityview->field->field;

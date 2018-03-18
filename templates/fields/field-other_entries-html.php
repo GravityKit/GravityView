@@ -4,7 +4,7 @@
  *  entries created by same author.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 
 $created_by = \GV\Utils::get( $gravityview->entry, 'created_by' );

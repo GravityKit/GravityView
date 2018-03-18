@@ -3,7 +3,7 @@
  * The default select field output template.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 $field = $gravityview->field->field;
 $display_value = $gravityview->display_value;
