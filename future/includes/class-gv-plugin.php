@@ -19,7 +19,7 @@ final class Plugin {
 	 * @var string The plugin version.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public static $version = GV_PLUGIN_VERSION;
 
@@ -67,7 +67,7 @@ final class Plugin {
 	 * @var \GV\Addon_Settings The plugin "addon" settings.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $settings;
 
@@ -284,7 +284,7 @@ final class Plugin {
 	 * Retrieve an absolute path within the Gravity Forms plugin directory.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @param string $path Optional. Append this extra path component.
 	 * @return string The absolute path to the plugin directory.
@@ -297,7 +297,7 @@ final class Plugin {
 	 * Retrieve a URL within the Gravity Forms plugin directory.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @param string $path Optional. Extra path appended to the URL.
 	 * @return string The URL to this plugin, with trailing slash.
@@ -310,7 +310,7 @@ final class Plugin {
 	 * Is everything compatible with this version of GravityView?
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return bool
 	 */
@@ -325,7 +325,7 @@ final class Plugin {
 	 * Is this version of GravityView compatible with the current version of PHP?
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return bool true if compatible, false otherwise.
 	 */
@@ -337,7 +337,7 @@ final class Plugin {
 	 * Is this version of GravityView compatible with the current version of WordPress?
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return bool true if compatible, false otherwise.
 	 */
@@ -349,7 +349,7 @@ final class Plugin {
 	 * Is this version of GravityView compatible with the current version of Gravity Forms?
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return bool true if compatible, false otherwise (or not active/installed).
 	 */

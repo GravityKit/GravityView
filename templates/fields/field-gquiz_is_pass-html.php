@@ -3,7 +3,7 @@
  * The default quiz pass/fail field output template.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 $form = $gravityview->view->form->form;
 $display_value = $gravityview->display_value;

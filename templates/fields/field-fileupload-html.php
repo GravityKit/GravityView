@@ -3,7 +3,7 @@
  * The default file upload field output template.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 $field = $gravityview->field->field;
 $value = $gravityview->value;

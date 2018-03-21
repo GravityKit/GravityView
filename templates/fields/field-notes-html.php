@@ -3,7 +3,7 @@
  * The default notes field output template.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 $entry = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();

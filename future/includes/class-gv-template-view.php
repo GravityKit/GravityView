@@ -134,7 +134,7 @@ abstract class View_Template extends Template {
 		 * @filter `gravityview/template/view/context`
 		 * @param \GV\Template_Context $context The context for this template.
 		 * @param \GV\View_Template $template The current template.
-		 * @since future
+		 * @since 2.0
 		 */
 		$this->push_template_data( $context = apply_filters( 'gravityview/template/view/context', $context, $this ), 'gravityview' );
 

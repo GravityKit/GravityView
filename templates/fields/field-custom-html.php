@@ -3,7 +3,7 @@
  * The default custom content field output template.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 $form = $gravityview->view->form->form;
 $entry = $gravityview->entry->as_entry();
@@ -24,7 +24,7 @@ if ( ! class_exists( 'GFFormDisplay' ) ) {
  * @since 1.6.2
  * @param string $content HTML content of field
  *
- * @since future
+ * @since 2.0
  * @param stdClass The gravityview template context object.
  */
 $content = apply_filters( 'gravityview/fields/custom/content_before', $gravityview->field->content, $gravityview );
@@ -44,7 +44,7 @@ $content = GravityView_API::replace_variables( $content, $form, $entry, false, t
  * @param boolean $decode Enable/Disable decoding of brackets in the content (default: false)
  * @param string $content HTML content of field
  *
- * @since future
+ * @since 2.0
  * @param stdClass The gravityview template context object.
  */
 if ( apply_filters( 'gravityview/fields/custom/decode_shortcodes', false, $content, $gravityview ) ) {
@@ -61,7 +61,7 @@ if ( ! empty( $gravityview->field->wpautop ) ) {
  * @since 1.6.2
  * @param string $content HTML content of field
  *
- * @since future
+ * @since 2.0
  * @param stdClass The gravityview template context object.
  */
 $content = apply_filters( 'gravityview/fields/custom/content_after', $content, $gravityview );

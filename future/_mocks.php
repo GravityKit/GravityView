@@ -8,7 +8,7 @@ namespace GV\Mocks;
 /**
  * @see \GravityView_View_Data::add_view
  * @internal
- * @since future
+ * @since 2.0
  *
  * @return array|false The old array data, or false on error.
  */
@@ -60,7 +60,7 @@ function GravityView_View_Data_add_view( $view_id, $atts, $_this ) {
 /**
  * @see \GravityView_frontend::get_view_entries
  * @internal
- * @since future
+ * @since 2.0
  *
  * @return array The old associative array data as returned by
  *  \GravityView_frontend::get_view_entries(), the paging parameters
@@ -153,7 +153,7 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
  * @see \GravityView_API::field_value
  * @deprecated Use \GV\Field_Template::render()
  * @internal
- * @since future
+ * @since 2.0
  *
  * @return null|string The value of a field in an entry.
  */
@@ -218,7 +218,7 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
  *
  * @see \GravityView_API::field_label
  * @internal
- * @since future
+ * @since 2.0
  *
  * @return string The label of a field in an entry.
  */

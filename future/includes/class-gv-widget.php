@@ -64,7 +64,7 @@ abstract class Widget {
 	/**
 	 * The position of the widget.
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @var string
 	 */
 	public $position = '';
@@ -72,7 +72,7 @@ abstract class Widget {
 	/**
 	 * A unique ID for this widget.
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @var string
 	 */
 	public $UID = '';
@@ -81,7 +81,7 @@ abstract class Widget {
 	 * The actual configuration for this widget instance.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @var \GV\Settings
 	 */
 	public $configuration;
@@ -371,7 +371,7 @@ abstract class Widget {
 	 * @param array $configuration The configuration array.
 	 * @see \GV\Widget::as_configuration()
 	 * @internal
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\Widget|null The widget implementation from configuration or none.
 	 */
@@ -403,7 +403,7 @@ abstract class Widget {
 	 *			+ whatever else specific fields may have
 	 *
 	 * @internal
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return array
 	 */
@@ -417,7 +417,7 @@ abstract class Widget {
 	 * Return all registered widgets.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return array
 	 */
@@ -440,7 +440,7 @@ abstract class Widget {
 	 * Whether this Widget's been registered already or not.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return bool
 	 */

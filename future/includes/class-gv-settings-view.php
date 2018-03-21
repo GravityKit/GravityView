@@ -15,7 +15,7 @@ class View_Settings extends Settings {
 	 * @param bool $detailed Whether to return detailed setting meta information or just the value.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\View_Settings
 	 */
@@ -32,7 +32,7 @@ class View_Settings extends Settings {
 	 * @param string $group Retrieve settings of a particular group.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return array The default settings along with their values.
 	 *      @param[out] string $label Setting label shown in admin

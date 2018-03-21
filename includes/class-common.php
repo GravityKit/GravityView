@@ -1259,7 +1259,7 @@ class GVCommon {
 
 			/**
 			 * @filter `gravityview/view/configuration/fields` Filter the View fields' configuration array.
-			 * @since future
+			 * @since 2.0
 			 *
 			 * @param array $fields Multi-array of fields with first level being the field zones.
 			 * @param \GV\View $view The View the fields are being pulled for.

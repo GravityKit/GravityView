@@ -35,7 +35,7 @@ abstract class Source {
 	 * @see Constant backend identifiers above and \GV\Source subclasses.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public static $backend = null;
 

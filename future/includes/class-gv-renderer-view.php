@@ -20,7 +20,7 @@ class View_Renderer extends Renderer {
 	 * @param \GV\Request $request The request context we're currently in. Default: `gravityview()->request`
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return string The rendered View.
 	 */
@@ -95,7 +95,7 @@ class View_Renderer extends Renderer {
 
 		/**
 		 * @filter `gravityview/template/view/class` Filter the template class that is about to be used to render the view.
-		 * @since future
+		 * @since 2.0
 		 * @param string $class The chosen class - Default: \GV\View_Table_Template.
 		 * @param \GV\View $view The view about to be rendered.
 		 * @param \GV\Request $request The associated request.

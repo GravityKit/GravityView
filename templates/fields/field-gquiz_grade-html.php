@@ -3,7 +3,7 @@
  * The default quiz grade field output template.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 $value = $gravityview->value;
 $form = $gravityview->view->form->form;

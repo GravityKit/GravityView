@@ -187,7 +187,7 @@ class View_Table_Template extends View_Template {
 	public static function body_before( $context ) {
 		/**
 		 * @action `gravityview/template/table/body/before` Output inside the `tbody` of the table.
-		 * @since future
+		 * @since 2.0
 		 * @param \GV\Template_Context $context The template context.
 		 */
 		do_action( 'gravityview/template/table/body/before', $context );
@@ -213,7 +213,7 @@ class View_Table_Template extends View_Template {
 	public static function body_after( $context ) {
 		/**
 		 * @action `gravityview/template/table/body/after` Output inside the `tbody` of the table at the end.
-		 * @since future
+		 * @since 2.0
 		 * @param \GV\Template_Context $context The template context.
 		 */
 		do_action( 'gravityview/template/table/body/after', $context );
@@ -239,7 +239,7 @@ class View_Table_Template extends View_Template {
 	public static function tr_before( $context ) {
 		/**
 		 * @action `gravityview/template/table/tr/before` Output inside the `tr` of the table when there are no results.
-		 * @since future
+		 * @since 2.0
 		 * @param \GV\Template_Context $context The template context.
 		 */
 		do_action( 'gravityview/template/table/tr/before', $context );
@@ -265,7 +265,7 @@ class View_Table_Template extends View_Template {
 	public static function tr_after( $context ) {
 		/**
 		 * @action `gravityview/template/table/tr/after` Output inside the `tr` of the table when there are no results.
-		 * @since future
+		 * @since 2.0
 		 * @param \GV\Template_Context $context The template context.
 		 */
 		do_action( 'gravityview/template/table/tr/after', $context );

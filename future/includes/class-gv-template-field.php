@@ -247,7 +247,7 @@ abstract class Field_Template extends Template {
 		 *
 		 * @filter `gravityview/template/field/context`
 		 * @param \GV\Template_Context $context The context for this template.
-		 * @since future
+		 * @since 2.0
 		 */
 		$this->push_template_data( apply_filters( 'gravityview/template/field/context', $context ), 'gravityview' );
 
@@ -372,7 +372,7 @@ abstract class Field_Template extends Template {
 			/**
 			 * @filter `gravityview/template/field/{$field_type}/output` Modify the field output for a field type.
 			 *
-			 * @since future
+			 * @since 2.0
 			 *
 			 * @param string $output The current output.
 			 * @param \GV\Template_Context The template context this is being called from.
@@ -402,7 +402,7 @@ abstract class Field_Template extends Template {
 		/**
 		 * @filter `gravityview/template/field/output` Modify the field output for a field.
 		 *
-		 * @since future
+		 * @since 2.0
 		 *
 		 * @param string $output The current output.
 		 * @param \GV\Template_Context The template this is being called from.
