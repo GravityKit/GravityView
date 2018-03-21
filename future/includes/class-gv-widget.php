@@ -255,7 +255,9 @@ abstract class Widget {
 	 */
 	public function assign_widget_options( $options = array(), $template = '', $widget = '' ) {
 		if ( $this->get_widget_id() === $widget ) {
-			$options = array_merge( $options, $this->get_settings() );
+			if( $settings = $this->get_settings() ) {
+				$options = array_merge( $options, $settings );
+			}
 		}
 		return $options;
 	}
