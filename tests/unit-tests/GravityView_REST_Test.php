@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Test for the GV REST API
  *
@@ -9,10 +8,11 @@
  * @link      http://gravityview.co
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
- * @since 1.14.4
+ * @since 2.0
+ *
+ * @group rest
  */
 class GravityView_REST_Test extends WP_UnitTestCase {
-
 	public function setUp() {
 		parent::setUp();
 
@@ -30,7 +30,7 @@ class GravityView_REST_Test extends WP_UnitTestCase {
 	/**
 	 * Test that namespace is set properly
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 *
 	 * @covers GravityView_REST_Util::get_namespace()
 	 */
@@ -41,7 +41,7 @@ class GravityView_REST_Test extends WP_UnitTestCase {
 	/**
 	 * Test that main namespace routes exist
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @covers GravityView_Plugin::boot_api((
 	 * @covers GravityView_REST_Route::register_routes()
 	 */
@@ -55,7 +55,7 @@ class GravityView_REST_Test extends WP_UnitTestCase {
 	/**
 	 * Test that view routes exist
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @covers GravityView_Plugin::boot_api()
 	 * @covers GravityView_REST_Views_Route::register_routes()
 	 * @covers GravityView_REST_Route::register_routes()
@@ -73,7 +73,7 @@ class GravityView_REST_Test extends WP_UnitTestCase {
 	/**
 	 * Test that entry routes exist
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @covers GravityView_Plugin::boot_api()
 	 * @covers GravityView_REST_Entries_Route::register_routes()
 	 * @covers GravityView_REST_Route::register_routes()

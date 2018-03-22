@@ -15,7 +15,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
 }
 
-abstract class Route extends WP_REST_Controller {
+abstract class Route extends \WP_REST_Controller {
 
 	/**
 	 * Route Name
