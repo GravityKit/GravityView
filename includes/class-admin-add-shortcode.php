@@ -89,7 +89,7 @@ class GravityView_Admin_Add_Shortcode {
 
 		// If there are no views set up yet, we get outta here.
 		if( empty( $views ) ) {
-			echo '<div id="select_gravityview_view"><div class="wrap">'. GravityView_Post_Types::no_views_text() .'</div></div>';
+			echo '<div id="select_gravityview_view"><div class="wrap">' . GravityView_Admin::no_views_text() . '</div></div>';
 			return;
 		}
 
@@ -99,7 +99,7 @@ class GravityView_Admin_Add_Shortcode {
 				<div class="wrap">
 
 					<h2 class=""><?php esc_html_e( 'Embed a View', 'gravityview' ); ?></h2>
-					<p class="subtitle"><?php printf( esc_attr ( __( 'Use this form to embed a View into this %s. %sLearn more about using shortcodes.%s', 'gravityview') ), $post_type->labels->singular_name, '<a href="http://gravityview.co/support/documentation/202934188/" target="_blank">', '</a>' ); ?></p>
+					<p class="subtitle"><?php printf( esc_attr ( __( 'Use this form to embed a View into this %s. %sLearn more about using shortcodes.%s', 'gravityview') ), $post_type->labels->singular_name, '<a href="http://docs.gravityview.co/article/73-using-the-shortcode" target="_blank" rel="noopener noreferrer">', '</a>' ); ?></p>
 
 					<div>
 						<h3><label for="gravityview_id"><?php esc_html_e( 'Select a View', 'gravityview' ); ?></label></h3>
@@ -121,7 +121,7 @@ class GravityView_Admin_Add_Shortcode {
 
 						<?php
 
-						$settings = GravityView_View_Data::get_default_args( true );
+						$settings = \GV\View_Settings::defaults( true );
 
 						foreach ( $settings as $key => $setting ) {
 

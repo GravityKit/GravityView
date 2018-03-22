@@ -1,0 +1,15 @@
+/**
+ * RTL version of the gv-default-styles.css stylesheet
+ *
+ * @package   GravityView
+ * @author    Zack Katz <zack@katzwebservices.com>
+ * @license   GPL2
+ * @link      https://gravityview.co
+ * @copyright Copyright 2016, Katz Web Services, Inc.
+ *
+ * @since 1.17
+ */
+
+$rtl: true;
+
+@import "gv-default-styles";

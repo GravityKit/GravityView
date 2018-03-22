@@ -24,6 +24,56 @@ class GravityView_Migrate {
 
 		$this->migrate_redux_settings();
 
+		$this->maybe_migrate_approved_meta();
+
+	}
+
+	/**
+	 * Convert approval meta values to enumerated values
+	 *
+	 * @since 1.18
+	 */
+	private function maybe_migrate_approved_meta() {
+
+		// check if search migration is already performed
+		$is_updated = get_option( 'gv_migrated_approved_meta' );
+
+		if ( $is_updated ) {
+			return;
+		}
+
+		$this->update_approved_meta();
+	}
+
+	/**
+	 * Convert "Approved" approval status to "1"
+	 *
+	 * @since 1.18
+	 *
+	 * @return void
+	 */
+	private function update_approved_meta() {
+		global $wpdb;
+
+		if ( ! class_exists( 'GFFormsModel' ) ) {
+			gravityview()->log->error( 'GFFormsModel does not exist.' );
+			return;
+		}
+
+		$table_name = GFFormsModel::get_lead_meta_table_name();
+
+		$sql = "UPDATE {$table_name} SET `meta_value` = %s WHERE `meta_key` = 'is_approved' AND `meta_value` = %s";
+
+		$approved_result = $wpdb->query( $wpdb->prepare( $sql, GravityView_Entry_Approval_Status::APPROVED, 'Approved' ) );
+
+		$disapproved_result = $wpdb->query( $wpdb->prepare( $sql, GravityView_Entry_Approval_Status::DISAPPROVED, '0' ) );
+
+		if( false === $approved_result || false === $disapproved_result ) {
+			gravityview()->log->error( 'There was an error processing the query. {error}', array( 'error' => $wpdb->last_error ) );
+		} else {
+			// All done: Meta values are migrated
+			update_option( 'gv_migrated_approved_meta', true );
+		}
 	}
 
 	/**
@@ -60,13 +110,13 @@ class GravityView_Migrate {
 		}
 
 		// Get the current app settings (just defaults)
-		$current = GravityView_Settings::get_instance()->get_app_settings();
+		$current = gravityview()->settings->all();
 
 		// Merge the redux settings with the defaults
 		$updated_settings = wp_parse_args( $redux_settings, $current );
 
 		// Update the defaults to the new merged
-		GravityView_Settings::get_instance()->update_app_settings( $updated_settings );
+		gravityview()->settings->update( $updated_settings );
 
 		// And now remove the previous option, so this is a one-time thing.
 		delete_option('gravityview_settings');
@@ -86,12 +136,12 @@ class GravityView_Migrate {
 
 		$data = array(
 			'edd_action' => 'check_license',
-			'license' => rgget('license_key', $redux_settings ),
+			'license' => \GV\Utils::_GET( 'license_key', \GV\Utils::get( $redux_settings, 'license_key' ) ),
 			'update' => false,
 			'format' => 'object',
 		);
 
-		$license_call = GravityView_Settings::get_instance()->get_license_handler()->license_call( $data );
+		$license_call = \GV\License_Handler::get()->license_call( $data );
 
 		if( is_object( $license_call ) && isset( $license_call->license ) ) {
 			$redux_settings['license_key_status'] = $license_call->license;
@@ -118,25 +168,25 @@ class GravityView_Migrate {
 
 
 		$redux_settings = array(
-			'support-email' => rgget( 'support-email', $redux_option ),
-			'no-conflict-mode' => ( rgget( 'no-conflict-mode', $redux_option ) ? '1' : '0' ),
+			'support-email' => \GV\Utils::get( $redux_option, 'support-email' ),
+			'no-conflict-mode' => \GV\Utils::get( $redux_option, 'no-conflict-mode' ) ? '1' : '0',
 		);
 
-		if( $license_array = rgget( 'license', $redux_option ) ) {
+		if ( $license_array = \GV\Utils::get( $redux_option, 'license' ) ) {
 
-			$redux_settings['license_key'] = $license_key = rgget( 'license', $license_array );
+			$redux_settings['license_key'] = $license_key = \GV\Utils::get( $license_array, 'license' );
 
 			$redux_last_changed_values = get_option('gravityview_settings-transients');
 
 			// This contains the last response for license validation
-			if( !empty( $redux_last_changed_values ) && $saved_values = rgget( 'changed_values', $redux_last_changed_values ) ) {
+			if( !empty( $redux_last_changed_values ) && $saved_values = \GV\Utils::get( $redux_last_changed_values, 'changed_values' ) ) {
 
-				$saved_license = rgget('license', $saved_values );
+				$saved_license = \GV\Utils::get( $saved_values, 'license' );
 
 				// Only use the last-saved values if they are for the same license
-				if( $saved_license && rgget( 'license', $saved_license ) === $license_key ) {
-					$redux_settings['license_key_status'] = rgget( 'status', $saved_license );
-					$redux_settings['license_key_response'] = rgget( 'response', $saved_license );
+				if( $saved_license && \GV\Utils::get( $saved_license, 'license' ) === $license_key ) {
+					$redux_settings['license_key_status'] = \GV\Utils::get( $saved_license, 'status' );
+					$redux_settings['license_key_response'] = \GV\Utils::get( $saved_license, 'response' );
 				}
 			}
 		}
@@ -163,12 +213,12 @@ class GravityView_Migrate {
 
 		foreach( $views as $view ) {
 
-			$widgets = get_post_meta( $view->ID, '_gravityview_directory_widgets', true );
+			$widgets = gravityview_get_directory_widgets( $view->ID );
 			$search_fields = null;
 
 			if( empty( $widgets ) || !is_array( $widgets ) ) { continue; }
 
-			do_action( 'gravityview_log_debug', '[GravityView_Migrate/update_search_on_views] Loading View ID: ', $view->ID );
+			gravityview()->log->debug( '[GravityView_Migrate/update_search_on_views] Loading View ID: {view_id}', array( 'view_id' => $view->ID ) );
 
 			foreach( $widgets as $area => $ws ) {
 				foreach( $ws as $k => $widget ) {
@@ -201,19 +251,19 @@ class GravityView_Migrate {
 					$widgets[ $area ][ $k ]['search_fields'] = $search_config;
 					$widgets[ $area ][ $k ]['search_layout'] = 'horizontal';
 
-					do_action( 'gravityview_log_debug', '[GravityView_Migrate/update_search_on_views] Updated Widget: ', $widgets[ $area ][ $k ] );
+					gravityview()->log->debug( '[GravityView_Migrate/update_search_on_views] Updated Widget: ', array( 'data' => $widgets[ $area ][ $k ] ) );
 				}
 			}
 
 			// update widgets view
-			update_post_meta( $view->ID, '_gravityview_directory_widgets', $widgets );
+			gravityview_set_directory_widgets( $view->ID, $widgets );
 
 		} // foreach Views
 
 		// all done! enjoy the new Search Widget!
 		update_option( 'gv_migrate_searchwidget', true );
 
-		do_action( 'gravityview_log_debug', '[GravityView_Migrate/update_search_on_views] All done! enjoy the new Search Widget!' );
+		gravityview()->log->debug( '[GravityView_Migrate/update_search_on_views] All done! enjoy the new Search Widget!' );
 	}
 
 
@@ -225,7 +275,7 @@ class GravityView_Migrate {
 		$search_fields = array();
 
 		// check view fields' settings
-		$fields = get_post_meta( $view_id, '_gravityview_directory_fields', true );
+		$fields = gravityview_get_directory_fields( $view_id, false );
 
 		if( !empty( $fields ) && is_array( $fields ) ) {
 

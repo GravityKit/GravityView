@@ -11,7 +11,7 @@ $search_field = $gravityview_view->search_field;
 
 // Make sure that there are choices to display
 if( empty( $search_field['choices'] ) ) {
-	do_action('gravityview_log_debug', 'search-field-select.php - No choices for field' );
+	gravityview()->log->debug( 'search-field-select.php - No choices for field' );
 	return;
 }
 
@@ -25,7 +25,7 @@ $default_option = apply_filters('gravityview/extension/search/select_default', '
 
 ?>
 <div class="gv-search-box gv-search-field-select">
-	<?php if( ! gv_empty( $search_field['label'], false ) ) { ?>
+	<?php if( ! gv_empty( $search_field['label'], false, false ) ) { ?>
 		<label for="search-box-<?php echo esc_attr( $search_field['name'] ); ?>"><?php echo esc_html( $search_field['label'] ); ?></label>
 	<?php } ?>
 	<p>
@@ -33,7 +33,7 @@ $default_option = apply_filters('gravityview/extension/search/select_default', '
 			<option value="" <?php gv_selected( '', $search_field['value'], true ); ?>><?php echo esc_html( $default_option ); ?></option>
 			<?php
 			foreach( $search_field['choices'] as $choice ) : ?>
-				<option value="<?php echo esc_attr( $choice['value'] ); ?>" <?php gv_selected( $choice['value'], $search_field['value'], true ); ?>><?php echo esc_html( $choice['text'] ); ?></option>
+				<option value="<?php echo esc_attr( $choice['value'] ); ?>" <?php gv_selected( esc_attr( $choice['value'] ), esc_attr( $search_field['value'] ), true ); ?>><?php echo esc_html( $choice['text'] ); ?></option>
 			<?php endforeach; ?>
 		</select>
 	</p>

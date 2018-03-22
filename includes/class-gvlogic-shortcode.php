@@ -104,8 +104,9 @@ class GVLogic_Shortcode {
 	 * Register the shortcode
 	 * @return void
 	 */
-	function add_hooks() {
+	private function add_hooks() {
 		add_shortcode( 'gvlogic', array( $this, 'shortcode' ) );
+		add_shortcode( 'gvlogicelse', array( $this, 'shortcode' ) );
 	}
 
 	/**
@@ -114,7 +115,7 @@ class GVLogic_Shortcode {
 	 *
 	 * @return array
 	 */
-	function get_operators( $with_values = false ) {
+	private function get_operators( $with_values = false ) {
 
 		$operators = array_merge( self::$SUPPORTED_ARRAY_OPERATORS, self::$SUPPORTED_NUMERIC_OPERATORS, self::$SUPPORTED_SCALAR_OPERATORS, self::$SUPPORTED_CUSTOM_OPERATORS );
 
@@ -135,7 +136,7 @@ class GVLogic_Shortcode {
 	 *
 	 * @return bool True: it's an allowed operation type and was added. False: invalid operation type
 	 */
-	function set_operation( $operation = '' ) {
+	private function set_operation( $operation = '' ) {
 
 		if( empty( $operation ) ) {
 			return false;
@@ -144,7 +145,7 @@ class GVLogic_Shortcode {
 		$operators = $this->get_operators( false );
 
 		if( !in_array( $operation, $operators ) ) {
-			do_action( 'gravityview_log_debug', __METHOD__ .' Attempted to add invalid operation type.', $operation );
+			gravityview()->log->debug( ' Attempted to add invalid operation type. {operation}', array( 'operation' => $operation ) );
 			return false;
 		}
 
@@ -187,24 +188,27 @@ class GVLogic_Shortcode {
 	public function shortcode( $atts = array(), $content = NULL, $shortcode_tag = '' ) {
 
 		// Don't process except on frontend
-		if ( GravityView_Plugin::is_admin() ) {
+		if ( gravityview()->request->is_admin() ) {
 			return null;
 		}
 
 		if( empty( $atts ) ) {
-			do_action( 'gravityview_log_error', __METHOD__.' $atts are empty.', $atts );
+			gravityview()->log->error( '$atts are empty.', array( 'data' => $atts ) );
 			return null;
 		}
 
 		$this->passed_atts = $atts;
 		$this->passed_content = $content;
+		$this->content = '';
+		$this->else_content = '';
+		$this->atts = array();
 		$this->shortcode = $shortcode_tag;
 
 		$this->parse_atts();
 
 		// We need an "if"
 		if( false === $this->if ) {
-			do_action( 'gravityview_log_error', __METHOD__.' $atts->if is empty.', $this->passed_atts );
+			gravityview()->log->error( '$atts->if is empty.', array( 'data' => $this->passed_atts ) );
 			return null;
 		}
 
@@ -212,15 +216,15 @@ class GVLogic_Shortcode {
 
 		// We need an operation and comparison value
 		if( ! $setup ) {
-			do_action( 'gravityview_log_error', __METHOD__.' No valid operators were passed.', $this->atts );
+			gravityview()->log->error( 'No valid operators were passed.', array( 'data' => $this->atts ) );
 			return null;
 		}
 
-		// Set the content and else_content
-		$this->set_content_and_else_content();
-
 		// Check if it's a match
 		$this->set_is_match();
+
+		// Set the content and else_content
+		$this->set_content_and_else_content();
 
 		// Return the value!
 		$output = $this->get_output();
@@ -232,7 +236,7 @@ class GVLogic_Shortcode {
 	 * Does the if and the comparison match?
 	 * @uses GVCommon::matches_operation
 	 *
-	 * @return boolean True: yep; false: nope
+	 * @return void
 	 */
 	private function set_is_match() {
 		$this->is_match = GVCommon::matches_operation( $this->if, $this->comparison, $this->operation );
@@ -254,6 +258,10 @@ class GVLogic_Shortcode {
 		// Get recursive!
 		$output = do_shortcode( $output );
 
+		if ( class_exists( 'GFCommon' ) ) {
+			$output = GFCommon::replace_variables( $output, array(), array() );
+		}
+
 		/**
 		 * @filter `gravityview/gvlogic/output` Modify the [gvlogic] output
 		 * @param string $output HTML/text output
@@ -261,7 +269,7 @@ class GVLogic_Shortcode {
 		 */
 		$output = apply_filters('gravityview/gvlogic/output', $output, $this );
 
-		do_action( 'gravityview_log_debug', __METHOD__ .' Output: ', $output );
+		gravityview()->log->debug( 'Output: ', array( 'data' => $output ) );
 
 		return $output;
 	}
@@ -270,18 +278,80 @@ class GVLogic_Shortcode {
 	 * Check for `[else]` tag inside the shortcode content. If exists, set the else_content variable.
 	 * If not, use the `else` attribute passed by the shortcode, if exists.
 	 *
-	 * @todo allow for chains of [else if="{another field:123}" is="example"] - requires registering [else] shortcode...
 	 * @return void
 	 */
 	private function set_content_and_else_content() {
 
-		$content = explode( '[else]', $this->passed_content );
+		$passed_content = $this->passed_content;
 
-		$this->content = $content[0];
+		list( $before_else, $after_else ) = array_pad( explode( '[else]', $passed_content ), 2, NULL );
+		list( $before_else_if, $after_else_if ) = array_pad( explode( '[else', $passed_content ), 2, NULL );
 
 		$else_attr = isset( $this->atts['else'] ) ? $this->atts['else'] : NULL;
+		$else_content = isset( $after_else ) ? $after_else : $else_attr;
 
-		$this->else_content = isset( $content[1] ) ? $content[1] : $else_attr;
+		// The content is everything OTHER than the [else]
+		$this->content = $before_else_if;
+
+		if ( ! $this->is_match ) {
+			if( $elseif_content = $this->process_elseif( $before_else ) ) {
+				$this->else_content = $elseif_content;
+			} else {
+				$this->else_content = $else_content;
+			}
+		}
+	}
+
+	/**
+	 * Handle additional conditional logic inside the [else] pseudo-shortcode
+	 *
+	 * @since 1.21.2
+	 *
+	 * @param string $before_else Shortcode content before the [else] tag (if it exists)
+	 *
+	 * @return bool|string False: No [else if] statements found. Otherwise, return the matched content.
+	 */
+	private function process_elseif( $before_else ) {
+
+		$regex = get_shortcode_regex( array( 'else' ) );
+
+		// 2. Check if there are any ELSE IF statements
+		preg_match_all( '/' . $regex . '/', $before_else . '[/else]', $else_if_matches, PREG_SET_ORDER );
+
+		// 3. The ELSE IF statements that remain should be processed to see if they are valid
+		foreach ( $else_if_matches as $key => $else_if_match ) {
+
+			// If $else_if_match[5] exists and has content, check for more shortcodes
+			preg_match_all( '/' . $regex . '/', $else_if_match[5] . '[/else]', $recursive_matches, PREG_SET_ORDER );
+
+			// If the logic passes, this is the value that should be used for $this->else_content
+			$else_if_value = $else_if_match[5];
+			$check_elseif_match = $else_if_match[0];
+
+			// Retrieve the value of the match that is currently being checked, without any other [else] tags
+			if( ! empty( $recursive_matches[0][0] ) ) {
+				$else_if_value = str_replace( $recursive_matches[0][0], '', $else_if_value );
+				$check_elseif_match = str_replace( $recursive_matches[0][0], '', $check_elseif_match );
+			}
+
+			$check_elseif_match = str_replace( '[else', '[gvlogicelse', $check_elseif_match );
+			$check_elseif_match = str_replace( '[/else', '[/gvlogicelse', $check_elseif_match );
+
+			// Make sure to close the tag
+			if ( '[/gvlogicelse]' !== substr( $check_elseif_match, -14, 14 ) ) {
+				$check_elseif_match .= '[/gvlogicelse]';
+			}
+
+			// The shortcode returned a value; it was a match
+			if ( $result = do_shortcode( $check_elseif_match ) ) {
+				return $else_if_value;
+			}
+
+			// Process any remaining [else] tags
+			return $this->process_elseif( $else_if_match[5] );
+		}
+
+		return false;
 	}
 
 	/**
@@ -304,7 +374,15 @@ class GVLogic_Shortcode {
 		$this->atts = function_exists( 'array_intersect_key' ) ? array_intersect_key( $this->passed_atts, $this->atts ) : $this->atts;
 
 		// Strip whitespace if it's not default false
-		$this->if = is_string( $this->atts['if'] ) ? trim( $this->atts['if'] ) : false;
+		$this->if = ( isset( $this->atts['if'] ) && is_string( $this->atts['if'] ) ) ? trim( $this->atts['if'] ) : false;
+
+		/**
+		 * @action `gravityview/gvlogic/parse_atts/after` Modify shortcode attributes after it's been parsed
+		 * @see https://gist.github.com/zackkatz/def9b295b80c4ae109760ffba200f498 for an example
+		 * @since 1.21.5
+		 * @param GVLogic_Shortcode $this The GVLogic_Shortcode instance
+		 */
+		do_action( 'gravityview/gvlogic/parse_atts/after', $this );
 
 		// Make sure the "if" isn't processed in self::setup_operation_and_comparison()
 		unset( $this->atts['if'] );

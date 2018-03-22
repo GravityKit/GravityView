@@ -28,7 +28,7 @@
 	thead th.gv-approve-column {
 
 		// Add Floaty's head
-		a:before {
+		*:before {
 			padding: 0;
 			margin: 0;
 			content: "a";
@@ -63,11 +63,19 @@
 	}
 
 	// Tick mark icon
-	.toggleApproved.entry_approved:before {
+	.toggleApproved.approved:before {
 		content: "\f147";
 		color: #00ac15;
 		font-size: 26px;
 		text-indent: -4px;
+		.rtl & { text-align: right; text-indent: 4px; }
+	}
+
+	// Tick mark icon
+	.toggleApproved.unapproved:before {
+		content: "\f159";
+		color: #ecaa00;
+		font-size: 17px;
 		.rtl & { text-align: right; text-indent: 4px; }
 	}
 

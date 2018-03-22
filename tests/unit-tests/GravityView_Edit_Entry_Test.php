@@ -62,9 +62,9 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->assertNotEmpty( $view, 'There was an error creating the View' );
 
-		$post_title = new WP_UnitTest_Generator_Sequence( __METHOD__ . ' %s' );
+		$post_title_sequence = new WP_UnitTest_Generator_Sequence( __METHOD__ . ' %s' );
 		$post_id = $this->factory->post->create(array(
-			'post_title' => $post_title->next(),
+			'post_title' => $post_title_sequence->next(),
 			'post_content' => sprintf( '[gravityview id="%d"]', $view->ID ),
 		));
 
@@ -77,15 +77,17 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		###
 		$edit_link_no_post = GravityView_Edit_Entry::get_edit_link( $entry, $view->ID );
 
+		$args = array(
+			'entry' => $entry['id'],
+			'edit' => $nonce,
+		);
+
 		// A link to the raw
-		$this->assertEquals( '?page=gf_entries&view=entry&edit='.$nonce, $edit_link_no_post );
+		$this->assertEquals( add_query_arg( $args, get_permalink( $view->ID ) ), $edit_link_no_post );
 
 		$args = array(
 			'p' => $post_id,
 			'entry' => $entry['id'],
-			'gvid' => $view->ID,
-			'page' => 'gf_entries',
-			'view' => 'entry',
 			'edit' => $nonce,
 		);
 
@@ -97,7 +99,127 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		###
 		$edit_link_with_post = GravityView_Edit_Entry::get_edit_link( $entry, $view->ID, $post_id );
 
-		$this->assertEquals( add_query_arg( $args, 'http://example.org/' ), $edit_link_with_post );
+		$this->assertEquals( add_query_arg( $args, site_url( '/' ) ), $edit_link_with_post );
+	}
+
+	/**
+	 * @covers GravityView_Edit_Entry::get_edit_link()
+	 * @see https://github.com/gravityview/GravityView/issues/842
+	 */
+	public function test_get_edit_link_loop() {
+		$this->_reset_context();
+
+		{ /** Test fixtures */
+			$form = $this->factory->form->create_and_get();
+
+			$editor = $this->factory->user->create_and_set( array(
+				'user_login' => 'editor',
+				'role' => 'editor'
+			) );
+
+			$entry = $this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'created_by' => $editor->ID,
+			) );
+
+			$view = $this->factory->view->create_and_get(array(
+				'form_id' => $form['id'],
+				'settings' => array(
+					'user_edit' => 1
+				),
+			) );
+			$view->entry = $entry;
+
+			$a_post = $this->factory->post->create_and_get( array(
+				'post_content' => 'This is a post',
+			) );
+
+			$view_post = $this->factory->post->create_and_get( array(
+				'post_content' => '[gravityview id="' . $view->ID . '"]',
+			) );
+			$view_post->view = $view;
+
+			$another_form = $this->factory->form->create_and_get();
+
+			$another_entry = $this->factory->entry->create_and_get( array(
+				'form_id' => $another_form['id'],
+				'created_by' => $editor->ID,
+			) );
+
+			$another_view = $this->factory->view->create_and_get(array(
+				'form_id' => $another_form['id'],
+				'settings' => array(
+					'user_edit' => 1
+				),
+			) );
+			$another_view->entry = $another_entry;
+
+			$another_post = $this->factory->post->create_and_get( array(
+				'post_content' => 'This is a post',
+			) );
+
+			$another_view_post = $this->factory->post->create_and_get( array(
+				'post_content' => '[gravityview id="' . $another_view->ID . '"]',
+			) );
+			$another_view_post->view = $another_view;
+
+			$and_another_form = $this->factory->form->create_and_get();
+
+			$and_another_entry = $this->factory->entry->create_and_get( array(
+				'form_id' => $another_form['id'],
+				'created_by' => $editor->ID,
+			) );
+
+			$and_another_view = $this->factory->view->create_and_get(array(
+				'form_id' => $another_form['id'],
+				'settings' => array(
+					'user_edit' => 1
+				),
+			) );
+			/** Fake it until you make it... */
+			$and_another_view->view = $and_another_view;
+			$and_another_view->view->entry = $and_another_entry;
+		}
+
+		/** Let's mix it up, we have posts, view shortcodes and an actual view */
+		$posts = array( $a_post, $view_post, $another_post, $another_view_post, $and_another_view );
+
+		$data = GravityView_View_Data::getInstance( $posts );
+		$fe = GravityView_frontend::getInstance();
+		$fe->setGvOutputData( $data );
+
+		/** Fake the loop, sort of... */
+		global $wp_actions, $wp_query;
+		$wp_actions['loop_start'] = 1;
+		$wp_query->in_the_loop = true;
+
+		add_filter( 'gravityview/edit_entry/verify_nonce', '__return_true' );
+
+		foreach ( $posts as $_post ) {
+			setup_postdata( $GLOBALS['post'] =& $_post );
+
+			/**
+			 * We can also check the actual content output here to make sure all is well
+			 *  and no IDs are messed up, etc. @todo for another day, for another test. */
+			$fe->insert_view_in_content( get_the_content() );
+
+			if ( empty( $_post->view ) ) {
+				continue;
+			}
+
+			$args = array(
+				'entry' => $_post->view->entry['id'],
+			);
+			$expected = add_query_arg( $args, get_permalink( $_post->ID ) );
+
+			$edit_link_with_post = GravityView_Edit_Entry::get_edit_link( $_post->view->entry, $_post->view->ID, $_post->ID );
+			$this->assertEquals( $expected, remove_query_arg( array( 'edit', 'gvid' ), $edit_link_with_post ) );
+		}
+
+		remove_all_filters( 'gravityview/edit_entry/verify_nonce' );
+		unset( $wp_actions['loop_start'] );
+		$wp_query->in_the_loop = false;
+		$this->_reset_context();
 	}
 
 	/**
@@ -222,7 +344,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->factory->user->set( $contributor_id );
 
-		$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view->ID ) );
+		$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view_user_edit_enabled->ID ) );
 
 		#####
 		##### Test TRUE Filter
@@ -232,18 +354,18 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		// Should be true anyway
 		$this->factory->user->set( $admin_id );
-			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view->ID ) );
-			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view->ID ) );
+			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_enabled->ID ) );
+			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view_user_edit_enabled->ID ) );
 
 		// Should be false, but we have filter set to true
 		$this->factory->user->set( $editor_id );
-			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view->ID ) );
-			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view->ID ) );
+			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view_user_edit_enabled->ID ) );
+			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_enabled->ID ) );
 
 		// Should be false, but we have filter set to true
 		$this->factory->user->set( $contributor_id );
-			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view->ID ) );
-			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view->ID ) );
+			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_enabled->ID ) );
+			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view_user_edit_enabled->ID ) );
 
 		remove_filter( 'gravityview/edit_entry/user_can_edit_entry', '__return_true' );
 
@@ -256,16 +378,16 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 			// Should be true but the filter is set to false
 			$this->factory->user->set( $admin_id );
-			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view->ID ) );
-			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view->ID ) );
+			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_enabled->ID ) );
+			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view_user_edit_enabled->ID ) );
 
 			// Should be true, but we have filter set to false
 			$this->factory->user->set( $editor_id );
-			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view->ID ) );
+			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_enabled->ID ) );
 
 			// Should be false, and we have filter set to false
 			$this->factory->user->set( $contributor_id );
-			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view->ID ) );
+			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_enabled->ID ) );
 
 		remove_filter( 'gravityview/edit_entry/user_can_edit_entry', '__return_false' );
 
@@ -300,6 +422,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_enabled->ID ), $cap );
 
 			$user->add_cap( $cap );
+			$user->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
 
 			// Can edit now
 			$this->assertTrue( current_user_can( $cap ), $cap );
@@ -322,5 +445,737 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 	}
 
+	/**
+	 * Reset the edit entry context.
+	 *
+	 * @return void
+	 */
+	private function _reset_context() {
+		GravityView_Edit_Entry::$instance = null;
+		GravityView_frontend::$instance = null;
+		GravityView_View_Data::$instance = null;
+		GravityView_View::$instance = null;
 
+		wp_set_current_user( 0 );
+		remove_all_filters( 'gravityview/is_single_entry' );
+		remove_all_filters( 'gravityview/edit_entry/form_fields' );
+		$_GET = array(); $_POST = array(); $_FILES = array();
+
+		RGFormsModel::$uploaded_files = array();
+	}
+
+	/**
+	 * Emulate a valid edit view hit.
+	 *
+	 * @param $form A $view object returned by our factory.
+	 * @param $view A $view object returned by our factory.
+	 * @param $entry An $entry object returned by our factory.
+	 *
+	 * @return array With first item the rendered output,
+	 *  and second item the render instance, and third item is the reloaded entry.
+	 */
+	private function _emulate_render( $form, $view, $entry ) {
+		$loader = GravityView_Edit_Entry::getInstance();
+		$render = $loader->instances['render'];
+
+		add_filter( 'gravityview/is_single_entry', '__return_true' );
+		$data = GravityView_View_Data::getInstance( $view );
+		$template = GravityView_View::getInstance( array(
+			'form' => $form,
+			'form_id' => $form['id'],
+			'view_id' => $view->ID,
+			'entries' => array( $entry ),
+			'atts' => GVCommon::get_template_settings( $view->ID ),
+		) );
+
+		$_GET['edit'] = wp_create_nonce(
+			GravityView_Edit_Entry::get_nonce_key( $view->ID, $form['id'], $entry['id'] )
+		);
+
+		/** Render */
+		ob_start() && $render->init( $data );
+		$rendered_form = ob_get_clean();
+
+		return array( $rendered_form, $render, GFAPI::get_entry( $entry['id'] ) );
+	}
+
+	/**
+	 * Create a user with a random email/username.
+	 *
+	 * @param string $role The role
+	 *
+	 * @return int The ID of the created user.
+	 */
+	private function _generate_user( $role ) {
+		return $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => $role )
+		);
+	}
+
+	/**
+	 * All rendering stuff here for now to save time. Move to logical classes and methods later.
+	 *
+	 * @covers GravityView_Edit_Entry_Render::is_edit_entry()
+	 * @covers GravityView_Edit_Entry_Render::prevent_render_form()
+	 * @covers GravityView_Edit_Entry_Render::init()
+	 * @covers GravityView_Edit_Entry_Render::process_save()
+	 */
+	public function test_edit_entry_render() {
+		/** A clean slate, please. */
+		$this->_reset_context();
+
+		$loader = GravityView_Edit_Entry::getInstance();
+		$render = $loader->instances['render'];
+		$this->assertInstanceOf( 'GravityView_Edit_Entry_Render', $render );
+
+		$form = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		/** GravityView_Edit_Entry_Render::is_edit_entry */
+		$this->assertFalse( $render->is_edit_entry() );
+		add_filter( 'gravityview/is_single_entry', '__return_true' );
+		$_GET['edit'] = 'this is an edit';
+		$this->assertTrue( $render->is_edit_entry() );
+
+		/** GravityView_Edit_Entry_Render::prevent_render_form */
+		global $wp_current_filter;
+		$render->prevent_render_form();
+		$this->assertNotEmpty( do_shortcode( sprintf( '[gravityform id="%d"]', $form['id'] ) ) );
+
+		$wp_current_filter = array( 'wp_head' );
+		$render->prevent_render_form();
+		$this->assertEmpty( do_shortcode( sprintf( '[gravityform id="%d"]', $form['id'] ) ) );
+
+		$wp_current_filter = array( 'wp_footer' );
+		$render->prevent_render_form();
+		$this->assertNotEmpty( do_shortcode( sprintf( '[gravityform id="%d"]', $form['id'] ) ) );
+
+		/** Main rendering emulation. */
+		$form = $this->factory->form->create_and_get();
+		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'], 'status' => 'active' ) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		GravityView_View_Data::$instance = null;
+		GravityView_View::$instance = null;
+		GravityView_oEmbed::$instance = null;
+		$data = GravityView_View_Data::getInstance( $view );
+		$template = GravityView_View::getInstance( array(
+			'form' => $form,
+			'form_id' => $form['id'],
+			'view_id' => $view->ID,
+			'entries' => array( $entry ),
+		) );
+		ob_start() && $render->init( $data );
+		$this->assertContains( 'do not have permission', ob_get_clean() );
+
+		/** Let's try again. */
+		$subscriber = $this->_generate_user( 'subscriber' );
+		wp_set_current_user( $subscriber );
+		ob_start() && $render->init( $data );
+		$this->assertContains( 'do not have permission', ob_get_clean() );
+
+		$administrator = $this->_generate_user( 'administrator' );
+		wp_set_current_user( $administrator );
+		ob_start() && $render->init( $data );
+		$this->assertContains( 'link to edit this entry is not valid', ob_get_clean() );
+
+		$_GET['edit'] = wp_create_nonce( $render::$nonce_key ); /** @todo: also test gravityview/edit_entry/verify_nonce */
+		ob_start() && $render->init( $data );
+		$this->assertContains( 'gv-edit-entry-wrapper', ob_get_clean() );
+
+		/** So this is the basic emulation of viewing the edit entry. Let's try something more complex: */
+
+		$_this = &$this;
+		$_this->disable_action_1 = false;;
+		add_action( 'gform_pre_render', function( $form, $ajax = false, $field_values = '' ) use ( $_this  ) {
+			if ( $_this->disable_action_1 ) /** Run only when inside this test. */ {
+				return $form;
+			}
+
+			/** @todo Add output form assertions here, like, are the needed fields hidden? ... */
+			$_this->assertTrue( false );
+
+			return $form;
+		}, 9999, 3 );
+		$_this->disable_action_1 = true;
+		ob_start() && $render->init( $data ); ob_get_clean();
+
+		/** Great, now how about some saving? The default form. Although we should be testing specific forms as well. */
+		$_POST = array();
+		$_POST['lid'] = $entry['id'];
+		$_POST['is_submit_' . $form['id']] = true;
+		foreach ( $form['fields'] as $field ) {
+			/** Emulate a $_POST */
+			foreach ( $field->inputs ? : array( array( 'id' => $field->id ) ) as $input ) {
+				if ( $field->type == 'time' ) { /** An old incompatibility in the time field. */
+					$_POST["input_{$field->id}"] = $entry[$field->id];
+				} else {
+					$_POST["input_{$field->id}"] = $entry[strval($input['id'])];
+				}
+			}
+		}
+		$_POST['input_1'] = "This has been changed";
+		ob_start() && $render->init( $data ); ob_get_clean();
+		$this->assertEquals( $_POST['input_1'], $render->entry[1] );
+
+		/**
+		 * This covers the basics of editing, I think.
+		 * A lot here is missing, many more edge cases should be covered!
+		 *
+		 * Here be dragons.
+		 */
+
+		/** Cleanup */
+		$this->_reset_context();
+	}
+
+	public function test_edit_entry_simple() {
+		/** Create a user */
+		$administrator = $this->_generate_user( 'administrator' );
+
+		/** Create the form, entry and view */
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'created_by' => $administrator,
+			'form_id' => $form['id'],
+			/** Fields, more complex entries may have hundreds of fields defined in the JSON file. */
+			'1' => 'this is field one',
+			'2' => 102,
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		/** Request the rendered form */
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertContains( 'gform_submit', $output );
+
+		/** Submit an edit */
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+
+		$_POST = array(
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+
+			/** Fields */
+			'input_1' => 'we changed it',
+			'input_2' => 102,
+		);
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		/** Check updates */
+		$this->assertEquals( $entry['1'], 'we changed it' );
+		$this->assertEquals( $entry['2'], 102 );
+
+		/** Cleanup */
+		$this->_reset_context();
+	}
+
+	public function test_edit_entry_upload() {
+		/** Create a user */
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$filename = site_url( '/tmp/noexist-392393190d9_007/upload.txt' );
+
+		/** Create the form, entry and view */
+		$form = $this->factory->form->import_and_get( 'upload.json' );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'created_by' => $administrator,
+			'form_id' => $form['id'],
+			'1' => $filename,
+			'2' => '123',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		/** Request the rendered form */
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertContains( 'gform_submit', $output );
+		$this->assertContains( 'upload.txt', $output );
+
+		/** Try saving a change, but no touching the upload field. */
+		$_POST = array(
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+
+			/** Fields */
+			'gform_uploaded_files' => json_encode( array( 'input_1' => $entry['1'] ) ),
+			'input_2' => '40',
+			'input_3' => '',
+		);
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertEquals( $entry['1'], $filename, 'File upload got erased!' );
+
+		/** Edit only the text input, see what happens to the upload. */
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+
+		$_POST = array(
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+
+			/** Fields */
+			'gform_uploaded_files' => json_encode( array( 'input_1' => $entry['1'] ) ),
+			'input_2' => '29',
+			'input_3' => '',
+		);
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertEquals( $entry['1'], $filename );
+		$this->assertEquals( $entry['2'], '29' );
+
+		/** Edit the upload, make sure it saves. */
+		$_POST['input_2'] ='31';
+		unset( $_POST['gform_uploaded_files'] );
+		$tmp_name = tempnam( '/tmp/', 'gvtest_' );
+		file_put_contents( $tmp_name, 'zZz' );
+		$_FILES = array(
+			'input_1' => array( 'name' => 'sleep.txt', 'type' => 'text', 'size' => 3, 'tmp_name' => $tmp_name, 'error' => UPLOAD_ERR_OK ),
+		);
+
+		// Since move_uploaded_file will not work, let's fake it...
+		add_filter( 'gform_save_field_value', array( $this, '_fake_move_uploaded_file' ), 10, 5 );
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( $entry['1'], $this->_target['url'] );
+		$this->assertEquals( $entry['2'], '31' );
+
+		remove_filter( 'gform_save_field_value', array( $this, '_fake_move_uploaded_file' ), 10 );
+	}
+
+	/**
+	 * If temp file can't be copied during the test, fake a URL
+	 * @used-by test_edit_entry_upload
+	 */
+	public function _fake_move_uploaded_file( $value, $lead, $field, $form, $input_id ) {
+
+		if ( $value == 'FAILED (Temporary file could not be copied.)' ) {
+			$target = GFFormsModel::get_file_upload_path( $form['id'], 'tiny.jpg' );
+			$this->_target = $target;
+			return $target['url'];
+		}
+
+		return $value;
+	}
+
+	/**
+	 * @covers GravityView_Edit_Entry_Render::custom_validation()
+	 * @covers GravityView_Edit_Entry_Render::validate()
+	 * @covers GravityView_Edit_Entry_Render::get_configured_edit_fields()
+	 * @covers GravityView_Edit_Entry_Render::user_can_edit_entry()
+	 */
+	public function test_edit_entry_simple_fails() {
+		/** Create a couple of users */
+		$subscriber1 = $this->_generate_user( 'subscriber' );
+		$subscriber2 = $this->_generate_user( 'subscriber' );
+		$administrator = $this->_generate_user( 'administrator' );
+
+		/** Create the form, entry and view */
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'created_by' => $subscriber1,
+			'form_id' => $form['id'],
+			/** Fields, more complex entries may have hundreds of fields defined in the JSON file. */
+			'1' => 'set all the fields!',
+			'2' => 107,
+		) );
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'settings' => wp_parse_args( array(
+				'user_edit' => 1, /** Allow users to edit entries in this view. */
+			), GravityView_View_Data::get_default_args() ),
+		) );
+
+		/** Let's get failing... */
+
+		$post = array(
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+
+			/** Fields */
+			'input_1' => 'we changed it',
+			'input_2' => 102310,
+		);
+
+		/** No permissions to edit this entry */
+		$this->_reset_context(); $_POST = $post;
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertContains( 'do not have permission to edit this entry', $output );
+		$this->assertEquals( $entry['1'], $entry['1'] );
+		$this->assertEquals( $entry['2'], $entry['2'] );
+
+		/** No permissions to edit this entry, not logged in. */
+		$this->_reset_context(); $_POST = $post;
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertContains( 'do not have permission to edit this entry', $output );
+		$this->assertEquals( $entry['1'], $entry['1'] );
+		$this->assertEquals( $entry['2'], $entry['2'] );
+
+		/** No permissions to edit this entry, logged in as someone else. */
+		$this->_reset_context(); $_POST = $post;
+		wp_set_current_user( $subscriber2 );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertContains( 'do not have permission to edit this entry', $output );
+		$this->assertEquals( $entry['1'], $entry['1'] );
+		$this->assertEquals( $entry['2'], $entry['2'] );
+
+		/** Only one field is visible and editable. */
+		$this->_reset_context(); $_POST = $post;
+		wp_set_current_user( $subscriber1 );
+
+		add_filter( 'gravityview/edit_entry/form_fields', function( $fields, $edit_fields, $form, $view_id ) {
+			unset( $fields[0] ); /** The first text field is now hidden. */
+			return $fields;
+		}, 10, 4 );
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertEquals( $entry['1'], $entry['1'], 'Oh no! The first field was edited.' );
+		$this->assertEquals( $entry['2'], $post['input_2'], 'The second field was not edited... Why?' );
+
+		/** Test internal validation. */
+		$this->_reset_context(); $_POST = $post;
+		wp_set_current_user( $administrator );
+		$_POST['input_2'] = 'this is not a number nanananana';
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertEquals( $entry['2'], $post['input_2'], 'A numeric field was changed! WTF?' );
+		$this->assertContains( 'enter a valid number', $output );
+
+		/** Cleanup */
+		$this->_reset_context();
+	}
+
+	public function test_edit_entry_post_image() {
+		/** Create a user */
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$filename = site_url( '/tmp/noexist-9f9a9291490_001/upload.png' );
+
+		/** Create the form, entry and view */
+		$form = $this->factory->form->import_and_get( 'post_image.json' );
+		$post = $this->factory->view->create_and_get();
+		$input = "input_{$form['id']}";
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'created_by' => $administrator,
+			'form_id' => $form['id'],
+			'post_id' => $post->ID,
+			'1' => "$filename|:|this is a title|:|this is a caption|:|this is a description",
+			/**
+			 * The entry goes through an empty state when
+			 * saving, so we need to have a non-empty field
+			 * present all the time. This is a bug that may
+			 * pop up one day in the edit entry extension.
+			 *
+			 * Hopefully, we'd have rewritten it by then.
+			 */
+			'2' => 'oh wow',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		/** Request the rendered form */
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertContains( 'gform_submit', $output );
+		$this->assertContains( "{$input}_1", $output );
+		$this->assertContains( 'upload.png', $output );
+		$this->assertContains( "{$input}_1_1", $output );
+		$this->assertContains( 'this is a title', $output );
+		$this->assertContains( "{$input}_1_4", $output );
+		$this->assertContains( 'this is a caption', $output );
+		$this->assertContains( "{$input}_1_7", $output );
+		$this->assertContains( 'this is a description', $output );
+
+		/** Try saving a change, but not touching the image upload field. */
+		$_POST = array(
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+
+			'input_1' => $filename,
+			'input_2' => 'wut',
+			'input_1_1' => 'this is a title',
+			'input_1_4' => 'this is another caption',
+			'input_1_7' => 'this is another description',
+
+			'gform_uploaded_files' => json_encode( array( 'input_1' => $entry['1'] ) ),
+		);
+		$_FILES['input_1'] = array( 'name' => '', 'type' => '', 'size' => 0, 'tmp_name' => '', 'error' => UPLOAD_ERR_NO_FILE );
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertEquals( "$filename|:|this is a title|:|this is another caption|:|this is another description", $entry['1'], 'Post image data got erased!' );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @since 1.20
+	 * @covers GravityView_Edit_Entry_User_Registration::restore_display_name()
+	 */
+	public function test_restore_display_name() {
+
+		/** A clean slate, please. */
+		GravityView_Edit_Entry::$instance = null;
+
+		$loader = GravityView_Edit_Entry::getInstance();
+
+		/** @var GravityView_Edit_Entry_User_Registration $registration */
+		$registration = $loader->instances['user-registration'];
+		$this->assertInstanceOf( 'GravityView_Edit_Entry_User_Registration', $registration );
+		$_user_before_update_prop = new ReflectionProperty( 'GravityView_Edit_Entry_User_Registration', '_user_before_update' );
+		$_user_before_update_prop->setAccessible( true ); // It was private; let's make it public
+
+
+		$microtime = md5( microtime() );
+
+		$user_before_update = $this->factory->user->create_and_get( array(
+			'user_login' => $microtime,
+			'user_email' => $microtime . '@gravityview.tests',
+			'display_name' => 'Zeek LaBeek',
+			'nickname' => 'Zeekary',
+			'first_name' => 'Zeek',
+			'last_name' => 'LaBeek',
+			'role' => 'subscriber',
+		) );
+
+		$user_id = $user_before_update->ID;
+
+	// Make the value of $_user_before_update non-null so it passes the test
+		$_user_before_update_prop->setValue( $registration, $user_before_update );
+
+
+		// Set it to anything other than "update" so that the logic passes
+		$config = array(
+			'meta' => array(
+				'feed_type' => 'create',
+			),
+		);
+
+	// Test that the filter works
+		add_filter( 'gravityview/edit_entry/restore_display_name', '__return_false' );
+
+		$should_be_null = $registration->restore_display_name( $user_id, $config, array(), '' );
+
+		$this->assertNull( $should_be_null, 'the `gravityview/edit_entry/restore_display_name` filter didn\'t work' );
+
+		remove_filter( 'gravityview/edit_entry/restore_display_name', '__return_false' );
+
+
+	// Set it to "update" so that the logic fails
+		$config = array(
+			'meta' => array(
+				'feed_type' => 'update',
+			),
+		);
+
+		$should_be_null = $registration->restore_display_name( $user_id, $config, array(), '' );
+
+		$this->assertNull( $should_be_null, '$config should have blocked processing; it was `update` feed type' );
+
+
+
+		// Now use "Create" to pass through initial logic check
+		$config = array(
+			'meta' => array(
+				'feed_type' => 'create',
+			),
+		);
+
+	// Change something that should be changed back
+		$this->factory->user->update_object( $user_id, array( 'display_name' => 'Changed During Update') );
+
+		$user_after_update = get_userdata( $user_id );
+
+		$this->assertEquals( 'Changed During Update', $user_after_update->display_name ); // Make sure the value changed properly
+
+		// The user should still be saved in $_user_before_update_prop
+		$this->assertEquals( $user_before_update, $_user_before_update_prop->getValue( $registration ) );
+
+		// Update the user
+		$should_be_int_user_id = $registration->restore_display_name( $user_id, $config, array(), '' );
+
+		$this->assertEquals( $user_id, $should_be_int_user_id );
+
+		// $_user_before_update_prop is reset at the end of the method
+		$this->assertEquals( NULL, $_user_before_update_prop->getValue( $registration ) );
+
+		$user_after_update = get_userdata( $user_id );
+
+		$this->assertEquals( $user_before_update->display_name, $user_after_update->display_name );
+
+
+
+	// Test gravityview/edit_entry/user_registration/restored_user filter
+		$_user_before_update_prop->setValue( $registration, $user_before_update );
+
+		// To check the filter and the WP_Error return at the same time,
+		// Delete the ID from $user_data, which will throw a WP_Error in wp_update_user() (since ID isn't defined)
+		add_filter('gravityview/edit_entry/user_registration/restored_user', function( $user_data ) {
+
+			$user_data->ID = 0;
+			$user_data->data->ID = 0;
+
+			return $user_data;
+		});
+
+		$should_be_wp_error = $registration->restore_display_name( $user_id, $config, array(), '' );
+
+		$this->assertWPError( $should_be_wp_error );
+
+		remove_all_filters('gravityview/edit_entry/user_registration/restored_user' );
+
+
+	// Test User not exists
+		$_user_before_update_prop->setValue( $registration, $user_before_update );
+
+		// remove the user; should be WP_Error
+		parent::delete_user( $user_id );
+
+		$this->assertFalse( get_userdata( $user_id ), 'The user was not successfully deleted.' );
+
+		$should_be_false = $registration->restore_display_name( $user_id, $config, array(), '' );
+
+		$this->assertFalse( $should_be_false );
+
+		/** Cleanup. */
+		GravityView_Edit_Entry::$instance = null;
+	}
+
+	/**
+	 * @since 1.20
+	 *
+	 * @covers GravityView_Edit_Entry_User_Registration::generate_display_names
+	 */
+	public function test_edit_entry_ur_generate_display_names() {
+
+		/** A clean slate, please */
+		GravityView_Edit_Entry::$instance = null;
+
+		$loader = GravityView_Edit_Entry::getInstance();
+
+		/** @var GravityView_Edit_Entry_User_Registration $registration */
+		$registration = $loader->instances['user-registration'];
+		$this->assertInstanceOf( 'GravityView_Edit_Entry_User_Registration', $registration );
+
+		$microtime = md5( microtime() );
+
+		$complete_subscriber = $this->factory->user->create_and_get( array(
+			'user_login' => $microtime,
+			'user_email' => $microtime . '@gravityview.tests',
+			'display_name' => 'Zeek LaBeek',
+			'nickname' => 'Zeekary',
+			'first_name' => 'Zeek',
+			'last_name' => 'LaBeek',
+			'role' => 'subscriber',
+		) );
+
+		$display_names = $registration->generate_display_names( $complete_subscriber );
+
+		$this->assertEquals( 'Zeek', $display_names['firstname'] );
+		$this->assertEquals( 'LaBeek', $display_names['lastname'] );
+		$this->assertEquals( 'Zeek LaBeek', $display_names['firstlast'] );
+		$this->assertEquals( 'LaBeek Zeek', $display_names['lastfirst'] );
+		$this->assertEquals( 'Zeekary', $display_names['nickname'] );
+		$this->assertEquals( $microtime, $display_names['username'] );
+
+
+		// When the first name and last name aren't available, they should not be set in the returned array
+		$incomplete_subscriber = clone $complete_subscriber;
+		$incomplete_subscriber->first_name = '';
+		$incomplete_subscriber->last_name = '';
+
+		$incomplete_display_names = $registration->generate_display_names( $complete_subscriber );
+
+		$this->assertFalse( isset( $incomplete_display_names['firstname'] ) );
+		$this->assertFalse( isset( $incomplete_display_names['lastname'] ) );
+		$this->assertFalse( isset( $incomplete_display_names['firstlast'] ) );
+		$this->assertFalse( isset( $incomplete_display_names['lastfirst'] ) );
+
+		/** Cleanup. */
+		GravityView_Edit_Entry::$instance = null;
+	}
+
+	/**
+	 * @since 1.20
+	 *
+	 * @covers GravityView_Edit_Entry_User_Registration::match_current_display_name()
+	 * @covers GravityView_Edit_Entry_User_Registration::update_user()
+	 */
+	public function test_edit_entry_registration() {
+
+		/** A clean slate, please. */
+		GravityView_Edit_Entry::$instance = null;
+
+		$loader = GravityView_Edit_Entry::getInstance();
+
+		/** @var GravityView_Edit_Entry_User_Registration $registration */
+		$registration = $loader->instances['user-registration'];
+		$this->assertInstanceOf( 'GravityView_Edit_Entry_User_Registration', $registration );
+
+		/** Some fixtures... */
+		$subscriber = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'display_name' => 'Zeek LaBeek',
+			'nickname' => 'Zeekary',
+			'first_name' => 'Zeek',
+			'last_name' => 'LaBeek',
+			'role' => 'subscriber' )
+		);
+
+		$form = $this->factory->form->create_and_get();
+		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'], 'status' => 'publish', 'created_by' => $subscriber ) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		/** All good here! */
+		$registration->update_user( $form, $entry['id'] );
+
+		parent::delete_user( $subscriber );
+
+		/**
+		 * When updating an user that doesn't exist, make sure no errors are thrown
+		 * @see GravityView_Edit_Entry_User_Registration::match_current_display_name
+		 */
+		$registration->update_user( $form, $entry['id'] );
+
+		/** Cleanup. */
+		GravityView_Edit_Entry::$instance = null;
+	}
+}
+
+/** The GF_User_Registration mock if not exists. */
+if ( ! class_exists( 'GF_User_Registration' ) ) {
+
+	if( file_exists( plugin_dir_path('gravityformsuserregistration/userregistration.php') ) ) {
+		include plugin_dir_path( 'gravityformsuserregistration/userregistration.php' );
+
+		GF_User_Registration_Bootstrap::load();
+	}
+
+	// Still doesn't exist!
+
+	if ( ! class_exists('GF_User_Registration') ) {
+
+		class GF_User_Registration {
+			public static function get_instance() {
+				return new self();
+			}
+
+			public function get_single_submission_feed( $entry, $form ) {
+				return array(
+					'meta' => array(
+						'displayname' => 'user_login',
+						// Default. `firstname`, `lastname`, `firstlast`, `lastfirst`, `nickname` are valid options
+						'role'        => 'gfur_preserve_role',
+						// Default value.
+					),
+				);
+			}
+
+			public function get_meta_value( $key, $feed, $form, $entry ) {
+				return '';
+			}
+		}
+	}
 }

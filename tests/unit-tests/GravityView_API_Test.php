@@ -50,6 +50,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		// Test no View ID and no hide formatting
 		GravityView_View::getInstance()->setViewId( 0 );
 		GravityView_View::getInstance()->setHideUntilSearched( false );
+		GravityView_View::getInstance()->setTotalEntries( 0 );
 
 		// Test $echo parameter TRUE
 		ob_start();
@@ -58,15 +59,6 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( 'gv-container gv-container-no-results', $output );
 
-		GravityView_View::getInstance()->setEntries( array( array('id'), array('id') ) );
-		GravityView_View::getInstance()->setTotalEntries( 2 );
-
-		// Test non-empty View
-		ob_start();
-		gv_container_class();
-		$output = ob_get_clean();
-
-		$this->assertEquals( 'gv-container gv-container-no-results', $output );
 
 		GravityView_View::getInstance()->setEntries( array( array('id'), array('id') ) );
 		GravityView_View::getInstance()->setTotalEntries( 2 );
@@ -203,6 +195,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		// Test the replace_variables functionality
 		$this->assertEquals( 'testing 12383 gv-field-'.$form['id'].'-'.$field_id, GravityView_API::field_class( $field, $form, $entry ) );
 
+		unset( $field['custom_class'] );
 	}
 
 	/**
@@ -214,7 +207,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		global $post;
 
 		$user = $this->factory->user->create_and_set( array( 'role' => 'administrator' ) );
-		$form = $this->factory->form->create_and_get( array( 'form_id' => $form['id'] ) );
+		$form = $this->factory->form->create_and_get();
 		$post = $this->factory->view->create_and_get();
 		$entry = $this->factory->entry->create_and_get( array(
 			'created_by' => $user->ID,
@@ -317,30 +310,13 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	}
 
 	public function _get_new_view_id() {
-
-		$view_array = array(
-			'post_content' => '',
-			'post_type' => 'gravityview',
-			'post_status' => 'publish',
-		);
-
-		// Add the View
-		$view_post_type_id = wp_insert_post( $view_array );
-
-		// Set the form ID
-		update_post_meta( $view_post_type_id, '_gravityview_form_id', $this->form_id );
-
-		// Set the View settigns
-		update_post_meta( $view_post_type_id, '_gravityview_template_settings', GravityView_View_Data::get_default_args() );
-
-		// Set the template to be table
-		update_post_meta( $view_post_type_id, '_gravityview_directory_template', 'default_table' );
-
-		return $view_post_type_id;
-
+		return $this->factory->view->create_object( array(
+			'form_id' => $this->form_id
+		) );
 	}
 
 	/**
+	 * @covers ::gravityview_get_current_views()
 	 * @group get_current_views
 	 * @internal Make sure this test is above the test_directory_link() test so that one doesn't pollute $post
 	 */
@@ -348,13 +324,17 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		$fe = GravityView_frontend::getInstance();
 
-		// Clear the data so that gravityview_get_current_views() runs parse_content()
-		$fe->gv_output_data = null;
+		$fe->setIsGravityviewPostType( false );
+		$fe->setPostHasShortcode( false );
+		$fe->setPostId( null );
+		$fe->setIsSearch( false );
 
-		$view_post_type_id = $this->_get_new_view_id();
+		GravityView_View_Data::$instance = NULL;
+		$fe->setGvOutputData( NULL );
 
 		global $post;
 
+		$view_post_type_id = $this->_get_new_view_id();
 		$post = get_post( $view_post_type_id );
 
 		$this->assertEquals( $view_post_type_id, $post->ID, 'The post was not properly created' );
@@ -362,7 +342,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$current_views = gravityview_get_current_views();
 
 		// Check if the view post is set
-		$this->assertTrue( isset( $current_views[ $view_post_type_id ] ), 'The $current_views array didnt have a value set at $post-ID key' );
+		$this->assertTrue( isset( $current_views[ $view_post_type_id ] ), 'The $current_views array didn\'t have a value set at $post->ID key of ' . $view_post_type_id );
 
 		// When the view is added, the key is set to the View ID and the `id` is also set to that
 		$this->assertEquals( $view_post_type_id, $current_views[ $view_post_type_id ]['id'] );
@@ -377,11 +357,12 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$second_current_views = gravityview_get_current_views();
 
 		// Check to make sure add_view worked properly
-		$this->assertEquals( $second_view_post_type_id, $second_current_views[ $second_view_post_type_id ]['id'] );
+		$this->assertEquals( $second_view_post_type_id, $second_current_views[ $second_view_post_type_id ]['view_id'] );
 
 		// Now two Views
 		$this->assertEquals( 2, count( $second_current_views ) );
 
+		GravityView_View_Data::$instance = NULL;
 	}
 
 	/**
@@ -455,7 +436,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$args = array(
 			'entry' => $entry,
 			'form' => $form,
-			'hide_empty' => $this->atts['hide_empty'],
+			'hide_empty' => isset( $this->atts ) ? $this->atts['hide_empty'] : true,
 		);
 
 		return;
@@ -545,21 +526,29 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		/* TODO - fix this assertion */
 		$this->assertEquals( site_url( '?p=' . $post_id . '&pagenum=2' ), GravityView_API::directory_link() );
+	}
 
-		$gravityview_view->setPostId( $post_id );
+	/**
+	 * @covers ::gv_directory_link()
+	 * @covers GravityView_API::directory_link()
+	 *
+	 * @group ajax
+	 */
+	public function test_directory_link_ajax() {
+		if ( ! defined( 'DOING_AJAX' ) ) {
+			define( 'DOING_AJAX', true );
+		}
 
-		//
-		// TESTING AJAX
-		//
-		define( 'DOING_AJAX', true );
-
-		// No passed post_id; use $_POST when DOING_AJAX is set
-		$this->assertNull( GravityView_API::directory_link() );
-
+		$post_array = array(
+			'post_content' => 'asdasdsd',
+			'post_type' => 'post',
+			'post_status' => 'publish',
+		);
+		$post_id = wp_insert_post( $post_array );
+		$_GET['pagenum'] = 2;
 		$_POST['post_id'] = $post_id;
 		// No passed post_id; use $_POST when DOING_AJAX is set
 		$this->assertEquals( site_url( '?p=' . $post_id . '&pagenum=2' ), GravityView_API::directory_link() );
-
 	}
 
 }

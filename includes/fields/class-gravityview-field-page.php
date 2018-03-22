@@ -11,6 +11,7 @@ class GravityView_Field_Page extends GravityView_Field {
 
 	var $is_searchable = false;
 
+	/** @see GF_Field_Page */
 	var $_gf_field_class_name = 'GF_Field_Page';
 
 	var $group = 'standard';

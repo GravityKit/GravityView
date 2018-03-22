@@ -87,6 +87,10 @@ class GravityView_Admin_Duplicate_View {
 	 * Test if the user is allowed to copy Views
 	 *
 	 * @since 1.6
+	 *
+	 * @param WP_Post|int Post ID or Post object
+	 *
+	 * @return bool True: user can copy the View; false: nope.
 	 */
 	private function current_user_can_copy( $post ) {
 
@@ -283,7 +287,7 @@ class GravityView_Admin_Duplicate_View {
 
 		/** If there's no gravityview post type for some reason, abort! */
 		if ( !$post_type_object ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' No gravityview post type exists when trying to clone the View.', $view );
+			gravityview()->log->error( 'No gravityview post type exists when trying to clone the View.', array( 'data' => $view ) );
 			return '';
 		}
 

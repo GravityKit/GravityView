@@ -24,11 +24,6 @@ class GravityView_Admin {
 		// Migrate Class
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-migrate.php' );
 
-		// Don't load tooltips if on Gravity Forms, otherwise it overrides translations
-		if( class_exists( 'GFCommon' ) && class_exists( 'GFForms' ) && !GFForms::is_gravity_page() ) {
-			require_once( GFCommon::get_base_path() . '/tooltips.php' );
-		}
-
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes/class-gravityview-admin-metaboxes.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/entry-list.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-change-entry-creator.php' );
@@ -57,6 +52,72 @@ class GravityView_Admin {
 
 		add_action( 'plugins_loaded', array( $this, 'backend_actions' ), 100 );
 
+		add_action( 'gravityview/metaboxes/data-source/before', array( 'GravityView_Admin', 'connected_form_warning' ) );
+	}
+
+	/**
+	 * Get text for no views found.
+	 *
+	 * @since 1.18 Moved to GravityView_Admin
+	 *
+	 * @return string HTML message with no container tags.
+	 */
+	public static function no_views_text() {
+		
+		if ( isset( $_REQUEST['post_status'] ) && 'trash' === $_REQUEST['post_status'] ) {
+			return __( 'No Views found in Trash', 'gravityview' );
+		} elseif( ! empty( $_GET['s'] ) ) {
+			return __( 'No Views found.', 'gravityview' );
+		}
+
+		// Floaty the Astronaut says "oi"
+		$image = self::get_floaty();
+
+		if ( GVCommon::has_cap( 'edit_gravityviews' ) ) {
+			$output = sprintf( esc_attr__( "%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n\nIf you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page.", 'gravityview' ), '<h3>', '<a href="' . admin_url( 'post-new.php?post_type=gravityview' ) . '">', '</a>', '</h3>', '<a href="' . admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ) . '">', '</a>' );
+		} else {
+			$output = esc_attr__( 'There are no active Views', 'gravityview' );
+		}
+
+		return $image . wpautop( $output );
+	}
+
+	/**
+	 * Display error HTML in Edit View when the form is in the trash or no longer exists in Gravity Forms
+	 *
+	 * @since 1.19
+	 *
+	 * @param int $form_id Gravity Forms
+	 *
+	 * @return void
+	 */
+	public static function connected_form_warning( $form_id = 0 ) {
+        global $pagenow;
+
+		if ( ! is_int( $form_id ) || $pagenow === 'post-new.php' ) {
+			return;
+		}
+
+		$form_info = GFFormsModel::get_form( $form_id, true );
+
+		$error = '';
+		if ( empty( $form_info ) ) {
+			$error = esc_html__( 'The form connected to this View no longer exists.', 'gravityview' );
+			$error .= ' ' . esc_html__( 'Select another form as the data source for this View.', 'gravityview' );
+		} elseif ( $form_info->is_trash ) {
+			$error = esc_html__( 'The connected form is in the trash.', 'gravityview' );
+			$error .= ' ' . gravityview_get_link( admin_url( 'admin.php?page=gf_edit_forms&filter=trash' ), esc_html__( 'Restore the form from the trash', 'gravityview' ) );
+			$error .= ' ' . esc_html__( 'or select another form.', 'gravityview' );
+		}
+
+		if( $error ) {
+			?>
+			<div class="wp-dialog notice-warning inline error wp-clearfix">
+				<?php echo gravityview_get_floaty(); ?>
+				<h3><?php echo $error; ?></h3>
+			</div>
+			<?php
+		}
 	}
 
 	/**
@@ -70,7 +131,9 @@ class GravityView_Admin {
 		/** @define "GRAVITYVIEW_DIR" "../" */
 		include_once( GRAVITYVIEW_DIR .'includes/admin/class.field.type.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/admin/class.render.settings.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/class-admin-label.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/admin/class-gravityview-admin-view-item.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/admin/class-gravityview-admin-view-field.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/admin/class-gravityview-admin-view-widget.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-views.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-welcome.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
@@ -181,7 +244,7 @@ class GravityView_Admin {
 				date_i18n( __( 'M j, Y @ G:i', 'gravityview' ), strtotime( ( isset( $post->post_date ) ? $post->post_date : NULL )  ) )
 			) . $new_form_text,
 			/* translators: %s and %s are HTML tags linking to the View on the website */
-			10  => sprintf(__( 'View draft updated. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
+			10  => sprintf(__( 'View draft updated. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
 
 			/**
 			 * These apply to `bulk_post_updated_messages`
@@ -242,73 +305,31 @@ class GravityView_Admin {
 	/**
 	 * Is the current admin page a GravityView-related page?
 	 *
-	 * @todo Convert to use WP_Screen
+	 * @deprecated See `gravityview()->request->is_admin` or `\GV\Request::is_admin`
 	 * @param string $hook
 	 * @param null|string $page Optional. String return value of page to compare against.
 	 *
-	 * @return bool|string|void If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
+	 * @return bool|string If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
 	 */
 	static function is_admin_page( $hook = '', $page = NULL ) {
-		global $current_screen, $plugin_page, $pagenow, $post;
-
-		if( ! is_admin() ) { return false; }
-
-		$is_page = false;
-
-		$is_gv_screen = (!empty($current_screen) && isset($current_screen->post_type) && $current_screen->post_type === 'gravityview');
-
-		$is_gv_post_type_get = (isset($_GET['post_type']) && $_GET['post_type'] === 'gravityview');
-
-		$is_gv_settings_get = isset( $_GET['page'] ) && $_GET['page'] === 'gravityview_settings';
-
-		if( empty( $post ) && $pagenow === 'post.php' && !empty( $_GET['post'] ) ) {
-			$gv_post = get_post( intval( $_GET['post'] ) );
-			$is_gv_post_type = (!empty($gv_post) && !empty($gv_post->post_type) && $gv_post->post_type === 'gravityview');
-		} else {
-			$is_gv_post_type = (!empty($post) && !empty($post->post_type) && $post->post_type === 'gravityview');
-		}
-
-		if( $is_gv_screen || $is_gv_post_type || $is_gv_post_type || $is_gv_post_type_get || $is_gv_settings_get ) {
-
-			// $_GET `post_type` variable
-			if(in_array($pagenow, array( 'post.php' , 'post-new.php' )) ) {
-				$is_page = 'single';
-			} else if ( in_array( $plugin_page, array( 'gravityview_settings', 'gravityview_page_gravityview_settings' ) ) || ( !empty( $_GET['page'] ) && $_GET['page'] === 'gravityview_settings' ) ) {
-				$is_page = 'settings';
-			} else {
-				$is_page = 'views';
-			}
-		}
-
-		/**
-		 * @filter `gravityview_is_admin_page` Is the current admin page a GravityView-related page?
-		 * @param[in,out] string|bool $is_page If false, no. If string, the name of the page (`single`, `settings`, or `views`)
-		 * @param[in] string $hook The name of the page to check against. Is passed to the method.
-		 */
-		$is_page = apply_filters( 'gravityview_is_admin_page', $is_page, $hook );
-
-		// If the current page is the same as the compared page
-		if( !empty( $page ) ) {
-			return $is_page === $page;
-		}
-
-		return $is_page;
+		gravityview()->log->warning( 'The \GravityView_Admin::is_admin_page() method is deprecated. Use gravityview()->request->is_admin' );
+		return gravityview()->request->is_admin( $hook, $page );
 	}
-
 }
 
 new GravityView_Admin;
 
 /**
- * Alias for GravityView_Admin::is_admin_page()
- *
- * @see GravityView_Admin::is_admin_page
+ * Former alias for GravityView_Admin::is_admin_page()
  *
  * @param string $hook
  * @param null|string $page Optional. String return value of page to compare against.
  *
- * @return bool|string|void If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
+ * @deprecated See `gravityview()->request->is_admin` or `\GV\Request::is_admin`
+ *
+ * @return bool|string If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
  */
-function gravityview_is_admin_page($hook = '', $page = NULL) {
-	return GravityView_Admin::is_admin_page( $hook, $page );
+function gravityview_is_admin_page( $hook = '', $page = NULL ) {
+	gravityview()->log->warning( 'The gravityview_is_admin_page() function is deprecated. Use gravityview()->request->is_admin' );
+	return gravityview()->request->is_admin( $hook, $page );
 }

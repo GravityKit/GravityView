@@ -9,6 +9,8 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 
 	var $name = 'post_category';
 
+	var $is_searchable = true;
+
 	var $search_operators = array( 'is', 'in', 'not in', 'isnot', 'contains');
 
 	var $_gf_field_class_name = 'GF_Field_Post_Category';
@@ -40,7 +42,7 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 	public function set_post_categories( $form = array(), $entry_id = 0 ) {
 
 		$entry = GFAPI::get_entry( $entry_id );
-		$post_id = rgar( $entry, 'post_id' );
+		$post_id = \GV\Utils::get( $entry, 'post_id' );
 
 		if( empty( $post_id ) ) {
 			return false;

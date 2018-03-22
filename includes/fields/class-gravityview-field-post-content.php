@@ -9,6 +9,8 @@ class GravityView_Field_Post_Content extends GravityView_Field {
 
 	var $name = 'post_content';
 
+	var $is_searchable = true;
+
 	var $search_operators = array( 'is', 'isnot', 'contains', 'starts_with', 'ends_with' );
 
 	var $_gf_field_class_name = 'GF_Field_Post_Content';
@@ -72,8 +74,8 @@ class GravityView_Field_Post_Content extends GravityView_Field {
 		wp_editor( $value, $input_name, $editor_settings );
 		$editor = ob_get_clean();
 
-		$logic_event = rgar( $editor_settings, 'logic_event' );
-		$placeholder = rgar( $editor_settings, 'placeholder' );
+		$logic_event = \GV\Utils::get( $editor_settings, 'logic_event' );
+		$placeholder = \GV\Utils::get( $editor_settings, 'placeholder' );
 
 		/** @internal Instead of using `add_filter('the_editor')` and doing the same thing, it's cleaner here. */
 		$editor = str_replace( '<textarea ', "<textarea {$logic_event} {$placeholder}", $editor );

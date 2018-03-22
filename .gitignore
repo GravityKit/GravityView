@@ -19,6 +19,8 @@ composer.lock
 ### Libraries ###
 vendor/.git
 vendor/*/.git
+vendor/composer/
+vendor/autoload.php
 
 ### Grunt ###
 node_modules/*
@@ -42,6 +44,8 @@ languages/gravityview-pt.po
 .idea/tasks.xml
 .idea/dictionaries
 .idea/deployment.xml
+.idea/modules.xml
+.idea/php.xml
 
 # Sensitive or high-churn files:
 .idea/dataSources.ids
@@ -59,7 +63,7 @@ languages/gravityview-pt.po
 
 ## Bower
 assets/lib/flexibility/*
-!assets/lib/flexibility/dist/*
+!assets/lib/flexibility/*.js
 !assets/lib/flexibility/*.json
 
 # Unit tests
@@ -76,8 +80,11 @@ languages/gravityview-de.mo
 
 languages/gravityview-de.po
 
+# DoxyGen
 docs/config.doxygen
+docs/html
 
-.idea/modules.xml
+# VIM
+*.swp
 
 .idea/php.xml

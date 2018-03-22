@@ -43,14 +43,15 @@ class GravityView_frontend_Test extends GV_UnitTestCase {
 		$search_dates = GravityView_frontend::process_search_dates( $date_range_2015, $date_range_june_2015 );
 		$this->assertEquals( $date_range_june_2015, $search_dates, 'The 2015 June passed values are all inside 2015 View settings. Use the passed values.' );
 
+		$now = time();
 
-		$yesterday = date( 'Y-m-d H:i:s', strtotime('yesterday') );
-		$three_days_ago_ymd = date( 'Y-m-d', strtotime('3 days ago') );
-		$one_month_ago = date( 'Y-m-d H:i:s', strtotime('-1 month') );
+		$yesterday = date( 'Y-m-d H:i:s', strtotime( 'yesterday', $now ) );
+		$three_days_ago_ymd = date( 'Y-m-d', strtotime( '3 days ago', $now ) );
+		$one_month_ago = date( 'Y-m-d H:i:s', strtotime( '-1 month', $now ) );
 
 		$relative_dates = array(
-			'start_date' => '-1 month',
-			'end_date' => 'yesterday'
+			'start_date' => date( 'Y-m-d H:i:s', strtotime( '-1 month', $now ) ),
+			'end_date' => date( 'Y-m-d H:i:s', strtotime( 'yesterday', $now ) )
 		);
 
 		$search_dates = GravityView_frontend::process_search_dates( $relative_dates );
@@ -59,6 +60,22 @@ class GravityView_frontend_Test extends GV_UnitTestCase {
 		$search_dates = GravityView_frontend::process_search_dates( $relative_dates, array( 'end_date' => $three_days_ago_ymd ) );
 		$this->assertEquals( array( 'start_date' => $one_month_ago, 'end_date' => $three_days_ago_ymd ), $search_dates, 'end_date overridden' );
 
+	}
+
+	/**
+	 * @covers GravityView_frontend::get_search_criteria()
+	 */
+	public function test_get_search_criteria() {
+
+		/** Just an empty test. */
+		$this->assertEquals( array(
+			'field_filters' => array(), 'status' => 'active'
+		), GravityView_frontend::get_search_criteria( array(), 1 ) );
+
+		/** Make sure searching is locked if implicit search_value is given. */
+		$criteria = GravityView_frontend::get_search_criteria( array( 'search_value' => 'hello', 'search_field' => '1' ), 1 );
+
+		$this->assertEquals( 'all', $criteria['field_filters']['mode'] );
 	}
 
 }

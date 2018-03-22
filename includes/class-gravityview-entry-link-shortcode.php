@@ -113,13 +113,13 @@ class GravityView_Entry_Link_Shortcode {
 	private function shortcode( $atts, $content = null, $context = 'gv_entry_link' ) {
 
 		// Don't process when saving post. Keep processing if it's admin-ajax.php
-		if ( ! class_exists( 'GravityView_Plugin' ) || GravityView_Plugin::is_admin() ) {
+		if ( gravityview()->request->is_admin() ) {
 			return null;
 		}
 
 		// Make sure GV is loaded
 		if ( ! class_exists( 'GravityView_frontend' ) || ! class_exists( 'GravityView_View' ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' GravityView_frontend or GravityView_View do not exist.' );
+			gravityview()->log->error( 'GravityView_frontend or GravityView_View do not exist.' );
 
 			return null;
 		}
@@ -129,17 +129,17 @@ class GravityView_Entry_Link_Shortcode {
 		$this->view_id = empty( $this->settings['view_id'] ) ? GravityView_View::getInstance()->getViewId() : absint( $this->settings['view_id'] );
 
 		if ( empty( $this->view_id ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' A View ID was not defined and we are not inside a View' );
+			gravityview()->log->error( 'A View ID was not defined and we are not inside a View' );
 
 			return null;
 		}
 
 		$this->entry = $this->get_entry( $this->settings['entry_id'] );
 
-		do_action( 'gravityview_log_debug', __METHOD__ . ' ' . $context . ' $atts: ', $atts );
+		gravityview()->log->debug( '{context} atts:', array( 'context' => $context, 'data' => $atts ) );
 
 		if ( ! $this->has_cap() ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' User does not have the capability to ' . esc_attr( $this->settings['action'] ) . ' this entry: ' . $this->entry['id'] );
+			gravityview()->log->error( 'User does not have the capability to {action} this entry: {entry_id}', array( 'action' => esc_attr( $this->settings['action'] ), 'entry_id' => $this->entry['id'] ) );
 
 			return null;
 		}
@@ -147,7 +147,7 @@ class GravityView_Entry_Link_Shortcode {
 		$url = $this->get_url();
 
 		if ( ! $url ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' Link returned false; View or Post may not exist.' );
+			gravityview()->log->error( 'Link returned false; View or Post may not exist.' );
 
 			return false;
 		}
@@ -287,7 +287,7 @@ class GravityView_Entry_Link_Shortcode {
 
 		if ( empty( $entry_id ) ) {
 			if ( ! $backup_entry ) {
-				do_action( 'gravityview_log_error', __METHOD__ . ' No entry defined (or entry id not valid number)', $this->settings );
+				gravityview()->log->error( 'No entry defined (or entry id not valid number)', array( 'data' => $this->settings ) );
 
 				return false;
 			}
@@ -302,7 +302,7 @@ class GravityView_Entry_Link_Shortcode {
 
 		// No search results
 		if ( false === $entry ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' No entries match the entry ID defined', $entry_id );
+			gravityview()->log->error( 'No entries match the entry ID defined: {entry_id}', array( 'entry_id' => $entry_id ) );
 
 			return false;
 		}

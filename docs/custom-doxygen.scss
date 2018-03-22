@@ -80,6 +80,8 @@ dl.reflist {
     color: #555555;
 
     & > code:first-of-type,
+    & > div > code:first-of-type,
+    & p > code:first-of-type,
     & dl + code {
 
       color: black;

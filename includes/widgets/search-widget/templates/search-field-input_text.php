@@ -10,7 +10,7 @@ $search_field = $gravityview_view->search_field;
 
 ?>
 <div class="gv-search-box gv-search-field-text">
-	<?php if( ! gv_empty( $search_field['label'], false ) ) { ?>
+	<?php if( ! gv_empty( $search_field['label'], false, false ) ) { ?>
 	<label for="search-box-<?php echo esc_attr( $search_field['name'] ); ?>"><?php echo esc_html( $search_field['label'] ); ?></label>
 	<?php } ?>
 	<p>

@@ -88,9 +88,9 @@ final class GravityView_Fields {
 	/**
 	 * Alias for get_instance()
 	 *
-	 * @param string|GF_Field $field_name Gravity Forms field class or the class name type
+	 * @param string|GF_Field $gf_field Gravity Forms field class or the class name type
 	 *
-	 * @return GravityView_Field
+	 * @return GravityView_Field|false Returns false if no matching fields found
 	 */
 	public static function get_associated_field( $gf_field ) {
 

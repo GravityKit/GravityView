@@ -9,6 +9,8 @@ class GravityView_Field_Created_By extends GravityView_Field {
 
 	var $name = 'created_by';
 
+	var $is_searchable = true;
+
 	var $search_operators = array( 'is', 'isnot' );
 
 	var $group = 'meta';
@@ -17,6 +19,7 @@ class GravityView_Field_Created_By extends GravityView_Field {
 
 	public function __construct() {
 		$this->label = esc_html__( 'Created By', 'gravityview' );
+		$this->default_search_label = __( 'Submitted by:', 'gravityview' );
 		parent::__construct();
 	}
 

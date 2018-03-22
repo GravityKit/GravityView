@@ -15,6 +15,8 @@ class GravityView_Field_Post_ID extends GravityView_Field {
 
 	var $name = 'post_id';
 
+	var $is_searchable = true;
+
 	var $search_operators = array( 'is', 'isnot', 'greater_than', 'less_than' );
 
 	var $group = 'post';

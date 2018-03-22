@@ -6,15 +6,24 @@
  * @global WP_Post $post
  */
 
-
 // Use nonce for verification
 wp_nonce_field( 'gravityview_select_form', 'gravityview_select_form_nonce' );
 
 //current value
-$current_form = gravityview_get_form_id( $post->ID );
+$current_form = (int) \GV\Utils::_GET( 'form_id', gravityview_get_form_id( $post->ID ) );
+
+// If form is in trash or not existing, show error
+GravityView_Admin::connected_form_warning( $current_form );
 
 // check for available gravity forms
-$forms = gravityview_get_forms();
+$forms = gravityview_get_forms('any');
+
+/**
+ * @param int $current_form Form currently selected in the View (0 if none selected)
+ * @param array $forms Array of active forms, not in trash
+ * @since 1.22.1
+ */
+do_action( 'gravityview/metaboxes/data-source/before', $current_form, $forms );
 
 ?>
 <label for="gravityview_form_id" ><?php esc_html_e( 'Where would you like the data to come from for this View?', 'gravityview' ); ?></label>
@@ -24,7 +33,7 @@ $forms = gravityview_get_forms();
 
 	if ( empty( $current_form ) && GVCommon::has_cap( 'gravityforms_create_form' ) ) {
 		?>
-		<a class="button button-primary" href="#gv_start_fresh" title="<?php esc_attr_e( 'Start Fresh', 'gravityview' ); ?>"><?php esc_html_e( 'Start Fresh', 'gravityview' ); ?></a>
+		<a class="button button-primary" href="#gv_start_fresh" title="<?php esc_attr_e( 'Use a Form Preset', 'gravityview' ); ?>"><?php esc_html_e( 'Use a Form Preset', 'gravityview' ); ?></a>
 
 		<?php if( !empty( $forms ) ) { ?>
 			<span>&nbsp;<?php esc_html_e( 'or use an existing form', 'gravityview' ); ?>&nbsp;</span>
@@ -64,3 +73,12 @@ $forms = gravityview_get_forms();
 <?php
 // hidden field to keep track of start fresh state ?>
 <input type="hidden" id="gravityview_form_id_start_fresh" name="gravityview_form_id_start_fresh" value="0" />
+
+<?php
+
+/**
+ * @param int $current_form Form currently selected in the View (0 if none selected)
+ * @param array $forms Array of active forms, not in trash
+ * @since 1.22.1
+ */
+do_action( 'gravityview/metaboxes/data-source/after', $current_form, $forms );

@@ -14,7 +14,7 @@ class GravityView_Field_Transaction_ID extends GravityView_Field {
 
 	var $is_numeric = true;
 
-	var $search_operators = array( 'is', 'isnot' );
+	var $search_operators = array( 'is', 'isnot', 'starts_with', 'ends_with'  );
 
 	var $group = 'pricing';
 

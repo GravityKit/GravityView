@@ -12,6 +12,8 @@ class GravityView_Field_Source_URL extends GravityView_Field {
 
 	var $name = 'source_url';
 
+	var $is_searchable = true;
+
 	var $search_operators = array( 'is', 'isnot', 'contains', 'starts_with', 'ends_with' );
 
 	var $group = 'meta';
@@ -41,7 +43,7 @@ class GravityView_Field_Source_URL extends GravityView_Field {
 		$add_options['source_link_text'] = array(
 			'type' => 'text',
 			'label' => __( 'Link Text:', 'gravityview' ),
-			'desc' => __('Customize the link text. If empty, the link text will be the the URL.', 'gravityview'),
+			'desc' => __('Customize the link text. If empty, the link text will be the URL.', 'gravityview'),
 			'value' => NULL,
 			'merge_tags' => true,
 		);

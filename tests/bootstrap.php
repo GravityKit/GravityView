@@ -49,39 +49,61 @@ class GV_Unit_Tests_Bootstrap {
 
 		$this->tests_dir    = dirname( __FILE__ );
 		$this->plugin_dir   = dirname( $this->tests_dir );
-		$this->wp_tests_dir = getenv( 'WP_TESTS_DIR' ) ? getenv( 'WP_TESTS_DIR' ) : $this->plugin_dir . '/tmp/wordpress-tests-lib';
+		$this->wp_tests_dir = getenv( 'WP_TESTS_DIR' ) ? getenv( 'WP_TESTS_DIR' ) : '/tmp/wordpress-tests-lib';
 
 		// load test function so tests_add_filter() is available
 		require_once $this->wp_tests_dir . '/includes/functions.php';
 
+		// stub remote HTTP calls
+		tests_add_filter( 'pre_http_request', array( $this, 'mock_http' ), 10, 3 );
+
+		// In WordPress 4.0 this is not being set, so let's just set it to localhost
+		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+
 		// load GV
 		tests_add_filter( 'muplugins_loaded', array( $this, 'load' ) );
 
-		tests_add_filter( 'gravityview_log_error', array( $this, 'test_print_log'), 10, 3 );
-
 		// Log debug if passed to `phpunit` like: `phpunit --debug --verbose`
 		if( in_array( '--debug', (array)$_SERVER['argv'], true ) && in_array( '--verbose', (array)$_SERVER['argv'], true ) ) {
-			tests_add_filter( 'gravityview_log_debug', array( $this, 'test_print_log' ), 10, 3 );
+			tests_add_filter( 'gravityview_log_error', array( $this, 'test_print_log'), 10, 2 );
+			tests_add_filter( 'gravityview_log_debug', array( $this, 'test_print_log_backtrace' ), 10, 2 );
 		}
 
 		// load the WP testing environment
 		require_once( $this->wp_tests_dir . '/includes/bootstrap.php' );
 
 		require_once $this->tests_dir . '/GV_UnitTestCase.php';
-
+		require_once $this->tests_dir . '/gravityforms-factory.php';
+		require_once $this->tests_dir . '/gravityview-generators.php';
+		require_once $this->tests_dir . '/gravityview-factory.php';
 		require_once $this->tests_dir . '/factory.php';
 
 		// set up GravityView
 		$this->install();
 	}
 
-	public function test_print_log(  $message = '', $data = null  ) {
+	/**
+	 * Alias of test_print_log, with backtrace
+	 * @since 1.21.6
+	 * @param $message
+	 * @param $data
+	 */
+	public function test_print_log_backtrace( $message, $data = null ) {
+		$this->test_print_log( $message, $data, true );
+	}
+
+	public function test_print_log(  $message = '', $data = null, $backtrace = false  ) {
 		$error = array(
 			'message' => $message,
 			'data' => $data,
-			'backtrace' => function_exists('wp_debug_backtrace_summary') ? wp_debug_backtrace_summary( null, 3 ) : '',
 		);
-		fwrite(STDERR, print_r( $error, true ) );
+
+		if( $backtrace ) {
+			$error['backtrace'] = function_exists('wp_debug_backtrace_summary') ? wp_debug_backtrace_summary( null, 3 ) : '';
+		}
+
+		fwrite( STDERR, print_r( $error, true ) );
+		fflush( STDERR );
 	}
 
 	/**
@@ -90,9 +112,12 @@ class GV_Unit_Tests_Bootstrap {
 	 * @since 1.9
 	 */
 	public function load() {
-		require_once $this->plugin_dir . '/tmp/gravityforms/gravityforms.php';
 
-		$this->load_rest_api();
+		if( file_exists( $this->plugin_dir . '/tmp/gravityforms/gravityforms.php' ) ) {
+			require_once $this->plugin_dir . '/tmp/gravityforms/gravityforms.php';
+		} else {
+			require_once '/tmp/gravityforms/gravityforms.php';
+		}
 
 		require_once $this->plugin_dir . '/gravityview.php';
 
@@ -100,116 +125,13 @@ class GV_Unit_Tests_Bootstrap {
 		remove_all_filters( 'query', 10 );
 
 		// set up Gravity Forms database
-		@GFForms::setup( true );
+		if ( function_exists( 'gf_upgrade' ) ) {
+			gf_upgrade()->maybe_upgrade();
+		} else {
+			@GFForms::setup( true );
+		}
 
 		$this->create_stubs();
-	}
-
-	/**
-	 * Fetch the REST API files
-	 * @since 1.15.1
-	 */
-	private function load_rest_api() {
-
-		if( ! defined( 'REST_API_VERSION' ) ) {
-
-			define( 'REST_API_VERSION', '2.0' );
-
-			/** Compatibility shims for PHP functions */
-			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/compat.php' );
-
-			/** WP_HTTP_Response class */
-			require_once( $this->plugin_dir . '/tmp/api-core/wp-includes/class-wp-http-response.php' );
-
-			/** Main API functions */
-			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/functions.php' );
-
-			/** WP_REST_Server class */
-			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/rest-api/class-wp-rest-server.php' );
-
-			/** WP_HTTP_Response class */
-			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/class-wp-http-response.php' );
-
-			/** WP_REST_Response class */
-			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/rest-api/class-wp-rest-response.php' );
-
-			/** WP_REST_Request class */
-			require_once( $this->plugin_dir . '/tmp/api-core/wp-includes/rest-api/class-wp-rest-request.php' );
-
-			/** REST functions */
-			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/rest-api/rest-functions.php' );
-
-			/** REST filters */
-			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/filters.php' );
-
-			/**
-			 * Determines if the rewrite rules should be flushed.
-			 *
-			 * @since 4.4.0
-			 */
-			function rest_api_maybe_flush_rewrites() {
-				$version = get_option( 'rest_api_plugin_version', null );
-
-				if ( empty( $version ) || REST_API_VERSION !== $version ) {
-					flush_rewrite_rules();
-					update_option( 'rest_api_plugin_version', REST_API_VERSION );
-				}
-			}
-
-			add_action( 'init', 'rest_api_maybe_flush_rewrites', 999 );
-
-			/**
-			 * Registers routes and flush the rewrite rules on activation.
-			 *
-			 * @since 4.4.0
-			 *
-			 * @param bool $network_wide ?
-			 */
-			function rest_api_activation( $network_wide ) {
-				if ( function_exists( 'is_multisite' ) && is_multisite() && $network_wide ) {
-					$mu_blogs = wp_get_sites();
-
-					foreach ( $mu_blogs as $mu_blog ) {
-						switch_to_blog( $mu_blog['blog_id'] );
-
-						rest_api_register_rewrites();
-						update_option( 'rest_api_plugin_version', null );
-					}
-
-					restore_current_blog();
-				} else {
-					rest_api_register_rewrites();
-					update_option( 'rest_api_plugin_version', null );
-				}
-			}
-
-			register_activation_hook( __FILE__, 'rest_api_activation' );
-
-			/**
-			 * Flushes the rewrite rules on deactivation.
-			 *
-			 * @since 4.4.0
-			 *
-			 * @param bool $network_wide ?
-			 */
-			function rest_api_deactivation( $network_wide ) {
-				if ( function_exists( 'is_multisite' ) && is_multisite() && $network_wide ) {
-
-					$mu_blogs = wp_get_sites();
-
-					foreach ( $mu_blogs as $mu_blog ) {
-						switch_to_blog( $mu_blog['blog_id'] );
-						delete_option( 'rest_api_plugin_version' );
-					}
-
-					restore_current_blog();
-				} else {
-					delete_option( 'rest_api_plugin_version' );
-				}
-			}
-
-			register_deactivation_hook( __FILE__, 'rest_api_deactivation' );
-		}
 	}
 
 	/**
@@ -318,6 +240,16 @@ class GV_Unit_Tests_Bootstrap {
 		}
 
 		return self::$instance;
+	}
+
+	/**
+	 * Block all HTTP calls unless specifically mocked.
+	 */
+	public function mock_http( $override, $args, $url ) {
+		if ( $response = apply_filters( 'gravityview/tests/mock_http', $args, $url ) ) {
+			return $response;
+		}
+		return new WP_Error( 'HTTP calls denied in test mode. Use gravityview/tests/mock_http to filter.' );
 	}
 
 }

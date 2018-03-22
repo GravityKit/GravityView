@@ -18,5 +18,8 @@ HS.beacon.ready(function() {
 	"use strict";
 	window.HSCW.config.contact.enabled = ( gvSupport.contactEnabled * 1 );
 	this.identify( gvSupport.data );
-	// this.search( adminpage + pagenow ); this.open(); @todo Add keywords to articles with the adminpage+pagenow value to enable for pre-populated beacon searches
+
+	if ( gvSupport.suggest.length ) {
+		this.suggest( gvSupport.suggest );
+	}
 });

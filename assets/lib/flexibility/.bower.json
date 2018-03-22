@@ -1,7 +1,7 @@
 {
   "name": "flexibility",
   "description": "Use Flexbox while supporting older Internet Explorers",
-  "main": "dist/flexibility.js",
+  "main": "flexibility.js",
   "authors": [
     "Jonathan Neal <jonathantneal@hotmail.com> (http://jonathantneal.com)"
   ],
@@ -37,7 +37,7 @@
     "explorer",
     "layout"
   ],
-  "homepage": "https://github.com/10up/flexibility.git",
+  "homepage": "https://github.com/jonathantneal/flexibility.git",
   "moduleType": [],
   "ignore": [
     "bower_components",
@@ -45,14 +45,14 @@
     "node_modules",
     "tests"
   ],
-  "version": "1.0.6",
-  "_release": "1.0.6",
+  "version": "2.0.1",
+  "_release": "2.0.1",
   "_resolution": {
     "type": "version",
-    "tag": "v1.0.6",
-    "commit": "48cf64bb3ccd35292fd77ec9ead88d0cf64749c7"
+    "tag": "2.0.1",
+    "commit": "6a36e507fb72b8de57af62de4850434c3daf8b9d"
   },
-  "_source": "git://github.com/10up/flexibility.git",
+  "_source": "https://github.com/10up/flexibility.git",
   "_target": "*",
   "_originalSource": "flexibility"
 }

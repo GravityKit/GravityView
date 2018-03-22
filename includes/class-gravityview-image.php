@@ -113,7 +113,12 @@ class GravityView_Image {
 			// 		And we want to get the image size using PHP
 			if ( empty( $string ) && !empty( $this->getimagesize ) ) {
 
-				$image_size = getimagesize( $this->src );
+				$image_size = @getimagesize( $this->src );
+
+				// If it didn't return a response, it may be a HTTPS/SSL error
+				if ( empty( $image_size[0] ) ) {
+					$image_size = @getimagesize( set_url_scheme( $this->src, 'http' ) );
+				}
 
 				if ( !empty( $image_size ) ) {
 					list( $width, $height ) = $image_size;

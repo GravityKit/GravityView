@@ -43,12 +43,13 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 	 * If passed something other than a string, returns the passed value.
 	 *
 	 * @since 1.16.2
+	 * @since 1.19.2 Converted from private to static public method
 	 *
 	 * @param string $value The stored value of an image, impoded with `|:|` values
 	 *
 	 * @return array with `url`, `title`, `caption` and `description` values
 	 */
-	private function explode_value( $value ) {
+	static public function explode_value( $value ) {
 
 		// Already is an array, perhaps?
 		if ( ! is_string( $value ) ) {
@@ -94,7 +95,7 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 		$img_name = null;
 
 		// Convert |:| to associative array
-		$img_array = $this->explode_value( $value );
+		$img_array = self::explode_value( $value );
 
 		if( ! empty( $img_array['url'] ) ) {
 
@@ -115,9 +116,9 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 		add_filter( 'gform_is_form_editor', '__return_false' );
 
 		$input_value = array(
-			"{$id}.1" => rgar( $img_array, 'title' ),
-			"{$id}.4" => rgar( $img_array, 'caption' ),
-			"{$id}.7" => rgar( $img_array, 'description' ),
+			"{$id}.1" => \GV\Utils::get( $img_array, 'title' ),
+			"{$id}.4" => \GV\Utils::get( $img_array, 'caption' ),
+			"{$id}.7" => \GV\Utils::get( $img_array, 'description' ),
 		);
 
 		// Get the field HTML output

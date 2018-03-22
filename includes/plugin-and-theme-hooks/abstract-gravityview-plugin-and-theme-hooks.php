@@ -65,7 +65,7 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 
 	/**
 	 * Define features in the admin editor used by the theme or plugin to be used when registering the GravityView post type
-	 * @see GravityView_Post_Types::init_post_types
+	 * @see \GV\Entry::get_endpoint_name
 	 * @since 1.15.2
 	 * @type array
 	 */
@@ -76,6 +76,16 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	 * @return void
 	 */
 	public function __construct() {
+		add_action( 'wp_loaded', array( $this, '_wp_loaded' ) );
+	}
+
+	/**
+	 * Fired when all themes and plugins have been loaded.
+	 * This makes sure we can reliably detect functions and classes.
+	 * @internal
+	 * @return void
+	 */
+	public function _wp_loaded() {
 		$this->maybe_add_hooks();
 	}
 

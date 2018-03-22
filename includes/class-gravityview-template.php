@@ -72,7 +72,7 @@ abstract class GravityView_Template {
 		add_filter( 'gravityview_template_active_areas', array( $this, 'assign_active_areas' ), 10, 3 );
 
 		// field options
-		add_filter( 'gravityview_template_field_options', array( $this, 'assign_field_options' ), 10, 4 );
+		add_filter( 'gravityview_template_field_options', array( $this, 'assign_field_options' ), 10, 5 );
 
 		// template slug
 		add_filter( "gravityview_template_slug_{$this->template_id}", array( $this, 'assign_view_slug' ), 10, 2 );
@@ -163,13 +163,13 @@ abstract class GravityView_Template {
 	 *
 	 * @return array Array of field options
 	 */
-	public function assign_field_options( $field_options, $template_id, $field_id = NULL, $context = 'directory' ) {
+	public function assign_field_options( $field_options, $template_id, $field_id = NULL, $context = 'directory', $input_type = '' ) {
 
 		if ( $this->template_id === $template_id ) {
 
 			foreach ( $this->field_options as $key => $field_option ) {
 
-				$field_context = rgar( $field_option, 'context' );
+				$field_context = \GV\Utils::get( $field_option, 'context' );
 
 				// Does the field option only apply to a certain context?
 				// You can define multiple contexts as an array:  `context => array("directory", "single")`

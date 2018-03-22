@@ -7,7 +7,7 @@
  *
  * @extends GravityView_Widget
  */
-class GravityView_Widget_Custom_Content extends GravityView_Widget {
+class GravityView_Widget_Custom_Content extends \GV\Widget {
 
 	/**
 	 * Does this get displayed on a single entry?
@@ -65,7 +65,7 @@ class GravityView_Widget_Custom_Content extends GravityView_Widget {
 
 		// No custom content
 		if( empty( $widget_args['content'] ) ) {
-			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: No content.', get_class($this)) );
+			gravityview()->log->debug( 'No content.' );
 			return;
 		}
 
@@ -76,7 +76,7 @@ class GravityView_Widget_Custom_Content extends GravityView_Widget {
 
 		$content = $widget_args['content'];
 
-		$content = GravityView_Merge_Tags::replace_variables( $content );
+		$content = GravityView_Merge_Tags::replace_variables( $content, array(), array(), false, true, false );
 
 		// Enqueue scripts needed for Gravity Form display, if form shortcode exists.
 		// Also runs `do_shortcode()`

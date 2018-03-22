@@ -9,6 +9,8 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  */
 class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 
+	var $default_roles = array( 'administrator', 'editor', 'author', 'contributor', 'subscriber' );
+
 	/**
 	 * @covers GravityView_Roles_Capabilities::get_instance
 	 */
@@ -88,9 +90,7 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 	 */
 	public function test_has_cap_cap_parameter() {
 
-		$default_roles = array( 'administrator', 'editor', 'author', 'contributor', 'subscriber' );
-
-		foreach( $default_roles as $role ) {
+		foreach( $this->default_roles as $role ) {
 
 			// Create a user with the default roles
 			$user = $this->factory->user->create_and_set( array( 'role' => $role )  );
@@ -151,7 +151,7 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( $zero, wp_get_current_user() );
 
-		foreach( $default_roles as $role ) {
+		foreach( $this->default_roles as $role ) {
 
 			$user_id = $this->factory->user->create( array(
 				'user_login' => $role,
@@ -192,6 +192,7 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 		}
 
 		$zero->add_cap( 'gravityview_full_access' );
+		$zero->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
 
 		// With GV full access, $zero is a $hero
 		foreach( $role_caps as $cap ) {
@@ -235,6 +236,7 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 
 		$zero->add_cap( 'edit_gravityviews' );
 		$zero->add_cap( 'edit_published_gravityviews' );
+		$zero->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
 
 		// CAN edit own view
 		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'edit_gravityview', $zero_view_id ) );
@@ -243,6 +245,7 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'edit_gravityview', $admin_view_id ) );
 
 		$zero->add_cap( 'edit_others_gravityviews' );
+		$zero->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
 
 		// CAN edit others' View
 		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'edit_gravityview', $admin_view_id ) );
@@ -251,6 +254,7 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'edit_gravityview', $admin_private_view_id ) );
 
 		$zero->add_cap( 'edit_private_gravityviews' );
+		$zero->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
 
 		// And now user can edit other's PRIVATE View
 		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'edit_gravityview', $admin_private_view_id ) );
@@ -262,8 +266,64 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 		$zero->remove_all_caps();
 
 		$zero->add_cap( 'gravityview_full_access' );
+		$zero->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
 
 		// With GV full access, $zero is a $hero
 		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'edit_gravityview', $admin_private_view_id ) );
+	}
+
+	public function test_non_logged_in_override() {
+		// Create a user with no capabilities
+		$zero = $this->factory->user->create_and_set( array(
+			'user_login' => 'zero',
+			'role' => 'zero',
+		) );
+
+		$this->assertTrue( is_user_logged_in() );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
+
+		$has_cap = function( $caps ) {
+			$caps['gv_custom_test_cap'] = true;
+			return $caps;
+		};
+		add_filter( 'user_has_cap', $has_cap );
+
+		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
+
+		wp_set_current_user( 0 );
+
+		$this->assertFalse( is_user_logged_in() );
+
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
+
+		$allow = function( $login ) {
+			return true;
+		};
+
+		add_filter( 'gravityview/capabilities/allow_logged_out', $allow );
+
+		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
+		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( array( 'gv_custom_test_cap', 'gv_custom_test_nocap' ) ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( array( 'gv_custom_test_nocap', 'gv_custom_test_nocap_two' ) ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap('gravityview_full_access') );
+
+		remove_filter( 'user_has_cap', $has_cap );
+
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( array( 'gv_custom_test_cap', 'gv_custom_test_nocap' ) ) );
+		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( array( 'gravityview_edit_others_entries', 'gv_custom_test_nocap' ) ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap('gravityview_full_access') );
+
+		remove_filter( 'gravityview/capabilities/allow_logged_out', $allow );
+
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_cap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'gv_custom_test_nocap' ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( array( 'gravityview_edit_others_entries', 'gv_custom_test_nocap' ) ) );
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap('gravityview_full_access') );
 	}
 }

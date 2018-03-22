@@ -22,7 +22,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Quiz extends GravityView_Plugin_and
 	 * @inheritDoc
 	 * @since 1.17
 	 */
-	protected $function_name = 'acf';
+	protected $constant_name = 'GF_QUIZ_VERSION';
 
 	/**
 	 * @since 1.17

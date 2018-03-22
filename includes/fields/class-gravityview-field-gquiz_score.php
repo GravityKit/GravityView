@@ -11,6 +11,10 @@ class GravityView_Field_Quiz_Score extends GravityView_Field {
 
 	var $group = 'advanced';
 
+	var $is_searchable = true;
+
+	var $search_operators = array( 'is', 'isnot', 'greater_than', 'less_than' );
+
 	public function __construct() {
 		$this->label = esc_html__( 'Quiz Score', 'gravityview' );
 		parent::__construct();

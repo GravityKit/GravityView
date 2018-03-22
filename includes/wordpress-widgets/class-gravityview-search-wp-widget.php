@@ -25,7 +25,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		$gravityview_widget = GravityView_Widget_Search::getInstance();
 
 		// frontend - filter entries
-		add_filter( 'gravityview_fe_search_criteria', array( $gravityview_widget, 'filter_entries' ), 10, 1 );
+		add_filter( 'gravityview_fe_search_criteria', array( $gravityview_widget, 'filter_entries' ), 10, 3 );
 
 		// frontend - add template path
 		add_filter( 'gravityview_template_paths', array( $gravityview_widget, 'add_template_path' ) );
@@ -55,7 +55,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		// Don't show unless a View ID has been set.
 		if( empty( $instance['view_id'] ) ) {
 
-			do_action('gravityview_log_debug', sprintf( '%s[widget]: No View ID has been defined. Not showing the widget.', get_class($this)), $instance );
+			gravityview()->log->debug( 'No View ID has been defined. Not showing the widget.', array( 'data' => $instance ) );
 
 			return;
 		}
@@ -156,7 +156,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		// If there are no views set up yet, we get outta here.
 		if( empty( $views ) ) { ?>
 			<div id="select_gravityview_view">
-				<div class="wrap"><?php echo GravityView_Post_Types::no_views_text(); ?></div>
+				<div class="wrap"><?php echo GravityView_Admin::no_views_text(); ?></div>
 			</div>
 			<?php return;
 		}

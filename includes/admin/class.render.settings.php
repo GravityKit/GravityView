@@ -255,6 +255,7 @@ class GravityView_Render_Settings {
 
 			if( class_exists( $type_class ) ) {
 
+				/** @var GravityView_FieldType $render_type */
 				$render_type = new $type_class( $name, $option, $curr_value );
 
 				ob_start();
@@ -293,10 +294,12 @@ class GravityView_Render_Settings {
 	 */
 	public static function render_setting_row( $key = '', $current_settings = array(), $override_input = null, $name = 'template_settings[%s]', $id = 'gravityview_se_%s' ) {
 
-		$setting = GravityView_View_Data::get_default_arg( $key, true );
+		$settings = \GV\View_Settings::with_defaults( true );
 
 		// If the key doesn't exist, there's something wrong.
-		if( empty( $setting ) ) { return; }
+		if ( ! $setting = $settings->get( $key ) ) {
+			return;
+		}
 
 		/**
 		 * @deprecated setting index 'name' was replaced by 'label'
@@ -346,6 +349,10 @@ class GravityView_Render_Settings {
 			$show_if = ' data-show-if="'. implode( ' ', $setting['show_in_template'] ).'"';
 		} else {
 			$show_if = '';
+		}
+
+		if( ! empty( $setting['requires'] ) ) {
+			$show_if .= sprintf( ' data-requires="%s"', $setting['requires'] );
 		}
 
 		// output
@@ -405,6 +412,8 @@ class GravityView_Render_Settings {
 	 */
 	public static function render_checkbox_option( $name = '', $id = '', $current = '' ) {
 
+		_deprecated_function( __METHOD__, '1.2', 'GravityView_FieldType_checkbox::render_input' );
+
 		$output  = '<input name="'. esc_attr( $name ) .'" type="hidden" value="0">';
 		$output .= '<input name="'. esc_attr( $name ) .'" id="'. esc_attr( $id ) .'" type="checkbox" value="1" '. checked( $current, '1', false ) .' >';
 
@@ -422,6 +431,8 @@ class GravityView_Render_Settings {
 	 * @return string         [html tags]
 	 */
 	public static function render_text_option( $name = '', $id = '', $current = '', $add_merge_tags = NULL, $args = array() ) {
+
+		_deprecated_function( __METHOD__, '1.2', 'GravityView_FieldType_text::render_input' );
 
 		// Show the merge tags if the field is a list view
 		$is_list = ( preg_match( '/_list-/ism', $name ));
@@ -453,6 +464,8 @@ class GravityView_Render_Settings {
 	 */
 	public static function render_textarea_option( $name = '', $id = '', $current = '', $add_merge_tags = NULL, $args = array() ) {
 
+		_deprecated_function( __METHOD__, '1.2', 'GravityView_FieldType_textarea::render_input' );
+
 		// Show the merge tags if the field is a list view
 		$is_list = ( preg_match( '/_list-/ism', $name ));
 
@@ -481,6 +494,8 @@ class GravityView_Render_Settings {
 	 * @return string          [html tags]
 	 */
 	public static function render_select_option( $name = '', $id = '', $choices, $current = '' ) {
+
+		_deprecated_function( __METHOD__, '1.2', 'GravityView_FieldType_select::render_input' );
 
 		$output = '<select name="'. $name .'" id="'. $id .'">';
 		foreach( $choices as $value => $label ) {

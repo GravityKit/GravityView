@@ -36,16 +36,21 @@ function gravityview_get_form_from_entry_id( $entry_slug ) {
 	return GVCommon::get_form_from_entry_id( $entry_slug );
 }
 
+
 /**
- * Returns the list of available forms
+ * Alias of GFAPI::get_forms()
  *
- * @see GVCommon::get_forms()
- * @access public
- * @param mixed $form_id
- * @return array Empty array if GFAPI isn't available or no forms. Otherwise, associative array with id, title keys
+ * @see GFAPI::get_forms()
+ *
+ * @since 1.19 Allow "any" $active status option
+ *
+ * @param bool|string $active Status of forms. Use `any` to get array of forms with any status. Default: `true`
+ * @param bool $trash Include forms in trash? Default: `false`
+ *
+ * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
  */
-function gravityview_get_forms() {
-	return GVCommon::get_forms();
+function gravityview_get_forms( $active = true, $trash = false ) {
+	return GVCommon::get_forms( $active, $trash );
 }
 
 /**
@@ -130,10 +135,12 @@ function gravityview_get_field_label( $form, $field_id, $field_value = '' ) {
  *
  * Alias of GFFormsModel::get_field
  *
+ * @since 1.19 Allow passing form ID as well as form array
+ *
  * @uses GVCommon::get_field
  * @see GFFormsModel::get_field
  * @access public
- * @param array $form
+ * @param array|int $form Form array or ID
  * @param string|int $field_id
  * @return GF_Field|null Returns NULL if field with ID $field_id doesn't exist.
  */
@@ -165,11 +172,16 @@ function gravityview_has_shortcode_r( $content, $tag = 'gravityview' ) {
 
 /**
  * Get the views for a particular form
+ *
+ * @since 1.22.1 Added $args param
+ *
  * @param  int $form_id Gravity Forms form ID
+ * @param  array $args Pass args sent to get_posts()
+ *
  * @return array          Array with view details
  */
-function gravityview_get_connected_views( $form_id ) {
-	return GVCommon::get_connected_views( $form_id );
+function gravityview_get_connected_views( $form_id, $args = array() ) {
+	return GVCommon::get_connected_views( $form_id, $args );
 }
 
 /**
@@ -201,7 +213,7 @@ function gravityview_get_template_id( $post_id ) {
 /**
  * Get all the settings for a View
  *
- * @uses  GravityView_View_Data::get_default_args() Parses the settings with the plugin defaults as backups.
+ * @uses  \GV\View_Settings::defaults() Parses the settings with the plugin defaults as backups.
  * @param  int $post_id View ID
  * @return array          Associative array of settings with plugin defaults used if not set by the View
  */
@@ -239,32 +251,67 @@ function gravityview_get_registered_templates() {
 }
 
 /**
- * Alias of GVCommon::get_directory_fields()
+ * Get the field configuration for the View
  *
- * @since TODO
+ * array(
  *
- * @see GVCommon::get_directory_fields()
+ * 	[other zones]
+ *
+ * 	'directory_list-title' => array(
+ *
+ *   	[other fields]
+ *
+ *  	'5372653f25d44' => array(
+ *  		'id' => string '9' (length=1)
+ *  		'label' => string 'Screenshots' (length=11)
+ *			'show_label' => string '1' (length=1)
+ *			'custom_label' => string '' (length=0)
+ *			'custom_class' => string 'gv-gallery' (length=10)
+ * 			'only_loggedin' => string '0' (length=1)
+ *			'only_loggedin_cap' => string 'read' (length=4)
+ *  	)
+ *
+ * 		[other fields]
+ *  )
+ *
+ * 	[other zones]
+ * )
+ *
+ * @since 1.17.4 Added $apply_filter parameter
+ *
  * @param  int $post_id View ID
+ * @param  bool $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
  * @return array          Multi-array of fields with first level being the field zones. See code comment.
  */
-function gravityview_get_directory_fields( $post_id ) {
-	return GVCommon::get_directory_fields( $post_id );
+function gravityview_get_directory_fields( $post_id, $apply_filter = true ) {
+	return GVCommon::get_directory_fields( $post_id, $apply_filter );
 }
 
 /**
- * Alias of GVCommon::get_directory_widgets()
+ * Get the widgets, as configured for a View
  *
- * @since TODO
+ * @since 1.17.4
  *
- * @see GVCommon::get_directory_widgets()
+ * @param int $post_id
  *
- * @param int $view_id View ID
- * @param bool $json_decode Whether to JSON-decode the widget values. Default: `false`
- *
- * @return array Multi-array of widgets, with the slug of each widget "zone" being the key
+ * @return array
  */
-function gravityview_get_directory_widgets( $view_id, $json_decode = false ) {
-	return GVCommon::get_directory_widgets( $view_id, $json_decode );
+function gravityview_get_directory_widgets( $post_id ) {
+	return get_post_meta( $post_id, '_gravityview_directory_widgets', true );
+}
+
+/**
+ * Set the widgets, as configured for a View
+ *
+ * @since 1.17.4
+ *
+ * @param int $post_id
+ * @param array $widgets array of widgets
+ *
+ * @return int|bool
+ */
+function gravityview_set_directory_widgets( $post_id, $widgets = array() ) {
+	return update_post_meta( $post_id, '_gravityview_directory_widgets', $widgets );
 }
 
 /**
@@ -302,7 +349,7 @@ function gravityview_get_field_type(  $form = null , $field_id = '' ) {
 function get_gravityview( $view_id = '', $atts = array() ) {
 	if( !empty( $view_id ) ) {
 		$atts['id'] = $view_id;
-		$args = wp_parse_args( $atts, GravityView_View_Data::get_default_args() );
+		$args = wp_parse_args( $atts, \GV\View_Settings::defaults() );
 		$GravityView_frontend = GravityView_frontend::getInstance();
 		$GravityView_frontend->setGvOutputData( GravityView_View_Data::getInstance( $view_id ) );
 		$GravityView_frontend->set_context_view_id( $view_id );
@@ -344,7 +391,7 @@ function gravityview_is_single_entry() {
  */
 function gravityview_view_has_single_checkbox_or_radio( $form, $view_fields ) {
 
-	if( $form_fields = GFFormsModel::get_fields_by_type( $form, array( 'checkbox', 'radio' ) ) ) {
+	if( class_exists('GFFormsModel') && $form_fields = GFFormsModel::get_fields_by_type( $form, array( 'checkbox', 'radio' ) ) ) {
 
 		/** @var GF_Field_Radio|GF_Field_Checkbox $form_field */
 		foreach( $form_fields as $form_field ) {

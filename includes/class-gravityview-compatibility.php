@@ -84,34 +84,49 @@ class GravityView_Compatibility {
 
 	/**
 	 * Is everything compatible with this version of GravityView?
+	 *
+	 * @deprecated 1.19.4
+	 * @see \GV\Plugin::is_compatible() accessible via gravityview()->plugin->is_compatible()
+	 *
 	 * @return bool
 	 */
 	public static function is_valid() {
-		return ( self::is_valid_gravity_forms() && self::is_valid_wordpress() && self::is_valid_php() );
+		return gravityview()->plugin->is_compatible();
 	}
 
 	/**
 	 * Is the version of WordPress compatible?
 	 * @since 1.12
+	 *
+	 * @deprecated 1.19.4
+	 * @see \GV\Plugin::is_compatible_wordpress() accessible via gravityview()->plugin->is_compatible_wordpress()
 	 */
 	private static function is_valid_wordpress() {
-		return self::$valid_wordpress;
+		return gravityview()->plugin->is_compatible_wordpress();
 	}
 
 	/**
 	 * @since 1.12
+	 *
+	 * @deprecated 1.19.4
+	 * @see \GV\Plugin::is_compatible_gravityforms() accessible via gravityview()->plugin->is_compatible_gravityforms()
+	 *
 	 * @return bool
 	 */
 	private static function is_valid_gravity_forms() {
-		return self::$valid_gravity_forms;
+		return gravityview()->plugin->is_compatible_gravityforms();
 	}
 
 	/**
 	 * @since 1.12
+	 *
+	 * @deprecated 1.19.4
+	 * @see \GV\Plugin::is_compatible_php() accessible via gravityview()->plugin->is_compatible_php()
+	 *
 	 * @return bool
 	 */
 	private static function is_valid_php() {
-		return self::$valid_php;
+		return gravityview()->plugin->is_compatible_php();
 	}
 
 	/**
@@ -172,10 +187,13 @@ class GravityView_Compatibility {
 	 * Is the version of PHP compatible?
 	 *
 	 * @since 1.12
+	 * @since 1.19.2 Shows a notice if it's compatible with future PHP version requirements
+	 *
 	 * @return boolean
 	 */
 	public static function check_php() {
-		if( false === version_compare( phpversion(), GV_MIN_PHP_VERSION , '>=' ) ) {
+
+		if ( ! gravityview()->plugin->is_compatible_php() ) {
 
 			self::$notices['php_version'] = array(
 				'class' => 'error',
@@ -199,7 +217,7 @@ class GravityView_Compatibility {
 	public static function check_wordpress() {
 		global $wp_version;
 
-		if( version_compare( $wp_version, GV_MIN_WP_VERSION ) <= 0 ) {
+		if ( ! gravityview()->plugin->is_compatible_wordpress() ) {
 
 			self::$notices['wp_version'] = array(
 				'class' => 'error',
@@ -228,20 +246,26 @@ class GravityView_Compatibility {
 		// Bypass other checks: if the class exists
 		if( class_exists( 'GFCommon' ) ) {
 
-			// and the version's right, we're good.
-			if( true === version_compare( GFCommon::$version, GV_MIN_GF_VERSION, ">=" ) ) {
+			// Does the version meet future requirements?
+			if( true === version_compare( GFCommon::$version, GV_FUTURE_MIN_GF_VERSION, ">=" ) ) {
 				return true;
 			}
 
-			// Or the version's wrong
+			// Does it meet minimum requirements?
+			$meets_minimum = gravityview()->plugin->is_compatible_gravityforms();
+
+			$class = $meets_minimum ? 'notice-warning' : 'error';
+
+			// Show the notice even if the future version requirements aren't met
 			self::$notices['gf_version'] = array(
-				'class' => 'error',
-				'message' => sprintf( __( "%sGravityView requires Gravity Forms Version %s or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', GV_MIN_GF_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.GFCommon::$version.'</span>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
+				'class' => $class,
+				'message' => sprintf( __( "%sGravityView requires Gravity Forms Version %s or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', GV_FUTURE_MIN_GF_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.GFCommon::$version.'</span>', "\n\n".'<a href="https://gravityview.co/gravityforms/" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
 				'cap' => 'update_plugins',
-				'dismiss' => 'gf_version',
+				'dismiss' => 'gf_version_' . GV_FUTURE_MIN_GF_VERSION,
 			);
 
-			return false;
+			// Return false if the plugin is not compatible, true if meets minimum
+			return $meets_minimum;
 		}
 
 		$gf_status = self::get_plugin_status( 'gravityforms/gravityforms.php' );

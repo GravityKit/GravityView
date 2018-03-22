@@ -16,16 +16,23 @@
 			<directory suffix=".php">./tests/unit-tests</directory>
 		</testsuite>
 	</testsuites>
+	<groups>
+		<exclude>
+			<group>ajax</group>
+		</exclude>
+	</groups>
 	<filter>
-		<blacklist>
-			<directory suffix=".php">./bin/</directory>
-			<directory suffix=".php">./language/</directory>
-			<directory suffix=".php">./templates/</directory>
-			<directory suffix=".php">./tests/</directory>
-			<directory suffix=".php">./tmp/</directory>
-		</blacklist>
+		<whitelist processUncoveredFilesFromWhitelist="false">
+			<directory suffix=".php">./</directory>
+			<exclude>
+				<directory>./tests/</directory>
+				<directory>./vendor/</directory>
+				<directory>./includes/lib/</directory>
+				<directory>./future/lib/</directory>
+			</exclude>
+		</whitelist>
 	</filter>
 	<logging>
-		<log type="coverage-clover" target="./tmp/clover.xml" charset="UTF-8" />
+		<log type="coverage-clover" target="/tmp/clover.xml" charset="UTF-8" />
 	</logging>
 </phpunit>

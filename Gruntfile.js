@@ -94,7 +94,7 @@ module.exports = function(grunt) {
 					expand: true,
 					cwd: 'assets/lib',
 					extDot: 'last', // Process extension as the last dot (jquery.cookie.js)
-					src: ['**/*.js', '!**/build.js', '!**/dist/*.js', '!**/*.min.js'],
+					src: ['**/*.js', '!**/build.js', '!**/dist/*.js', '!**/*.min.js', '!**/flexibility.js'],
 					dest: 'assets/lib',
 					ext: '.min.js'
 				}]
@@ -176,7 +176,23 @@ module.exports = function(grunt) {
 			transifex: 'tx pull -a',
 
 			// Create a ZIP file
-			zip: 'git-archive-all ../gravityview.zip',
+			zip: {
+				cmd: function( version = '' ) {
+
+					var filename = ( version === '' ) ? 'gravityview' : 'gravityview-' + version;
+
+					// First, create the full archive
+					var command = 'git-archive-all gravityview.zip &&';
+
+					command += 'unzip -o gravityview.zip &&';
+
+					command += 'zip -r ../' + filename + '.zip gravityview &&';
+
+					command += 'rm -rf gravityview/ && rm -f gravityview.zip';
+
+					return command;
+				}
+			},
 
 			bower: 'bower install'
 		},
@@ -189,7 +205,7 @@ module.exports = function(grunt) {
 					type: 'wp-plugin',
 					domainPath: '/languages',
 					updateTimestamp: false,
-					exclude: ['node_modules/.*', 'assets/.*', 'tmp/.*', 'vendor/.*', 'includes/lib/xml-parsers/.*', 'includes/lib/jquery-cookie/.*', 'includes/lib/standalone-phpenkoder/.*' ],
+					exclude: ['node_modules/.*', 'assets/.*', 'tmp/.*', 'vendor/.*', 'includes/lib/xml-parsers/.*', 'includes/lib/jquery-cookie/.*' ],
 					potHeaders: {
 						poedit: true,
 						'x-poedit-keywordslist': true
@@ -228,7 +244,7 @@ module.exports = function(grunt) {
 		addtextdomain: {
 			options: {
 				textdomain: 'gravityview',    // Project text domain.
-				updateDomains: [ 'gravityview', 'gravity-view', 'gravityforms', 'edd_sl', 'edd' ]  // List of text domains to replace.
+				updateDomains: [ 'gravityview', 'gravity-view', 'gravityforms', 'edd_sl', 'edd', 'easy-digital-downloads' ]  // List of text domains to replace.
 			},
 			target: {
 				files: {
@@ -238,9 +254,9 @@ module.exports = function(grunt) {
 						'!node_modules/**',
 						'!tests/**',
 						'!tmp/**',
+						'!vendor/**',
 						'!includes/lib/xml-parsers/**',
 						'!includes/lib/jquery-cookie/**',
-						'!includes/lib/standalone-phpenkoder/**'
 					]
 				}
 			}

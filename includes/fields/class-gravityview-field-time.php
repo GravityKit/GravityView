@@ -12,8 +12,11 @@ class GravityView_Field_Time extends GravityView_Field {
 
 	var $name = 'time';
 
+	var $is_searchable = true;
+
 	var $search_operators = array( 'is', 'isnot', 'greater_than', 'less_than' );
 
+	/** @see GF_Field_Time */
 	var $_gf_field_class_name = 'GF_Field_Time';
 
 	var $group = 'advanced';

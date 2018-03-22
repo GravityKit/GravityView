@@ -14,6 +14,10 @@ class GravityView_Field_Date extends GravityView_Field {
 
 	var $_gf_field_class_name = 'GF_Field_Date';
 
+	var $is_searchable = true;
+
+	var $search_operators = array( 'less_than', 'greater_than', 'is', 'isnot' );
+
 	var $group = 'advanced';
 
 	public function __construct() {
@@ -53,13 +57,13 @@ class GravityView_Field_Date extends GravityView_Field {
 		$date_field_output = '';
 		switch( $field_input_id ) {
 			case 1:
-				$date_field_output = rgar( $parsed_date, 'day' );
+				$date_field_output = \GV\Utils::get( $parsed_date, 'day' );
 				break;
 			case 2:
-				$date_field_output = rgar( $parsed_date, 'month' );
+				$date_field_output = \GV\Utils::get( $parsed_date, 'month' );
 				break;
 			case 3:
-				$date_field_output = rgar( $parsed_date, 'year' );
+				$date_field_output = \GV\Utils::get( $parsed_date, 'year' );
 				break;
 		}
 

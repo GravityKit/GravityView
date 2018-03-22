@@ -34,7 +34,7 @@ function gravityview_css_url( $css_file = '', $dir_path = '' ) {
 
 	if( file_exists( $template_css_path ) ) {
 		$path = trailingslashit( get_stylesheet_directory_uri() ) . 'gravityview/css/' . $css_file;
-		do_action( 'gravityview_log_debug', __FUNCTION__ . ': Stylesheet override ('. esc_attr( $css_file ) .')' );
+		gravityview()->log->debug( 'Stylesheet override ({css_file})', array( 'css_file' => esc_attr( $css_file ) ) );
 	} else {
 		// Default: use GravityView CSS file
 
@@ -186,7 +186,7 @@ function gravityview_strip_whitespace( $string ) {
  */
 function gravityview_ob_include( $file_path, $object = NULL ) {
 	if( ! file_exists( $file_path ) ) {
-		do_action( 'gravityview_log_error', __FUNCTION__ . ': File path does not exist. ', $file_path );
+		gravityview()->log->error( 'File path does not exist. {path}', array( 'path' => $file_path ) );
 		return '';
 	}
 	ob_start();
@@ -400,7 +400,22 @@ function gv_not_empty( $value, $zero_is_empty = false, $allow_string_booleans = 
  */
 function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true ) {
 
-	if(
+	/**
+	 * Arrays with empty values are empty.
+	 *
+	 * Consider the a missing product field.
+	 */
+	if ( is_array( $value ) ) {
+		$values = array();
+		foreach ( $value as $v ) {
+			if ( ! gv_empty( $v, $zero_is_empty, $allow_string_booleans ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	if (
 		! isset( $value ) // If it's not set, it's empty!
 		|| false === $value
 		|| null === $value
@@ -411,7 +426,7 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
 		return true;
 	}
 
-	if( is_string( $value ) && $allow_string_booleans ) {
+	if ( is_string( $value ) && $allow_string_booleans ) {
 
 		$value = trim( $value );
 		$value = strtolower( $value );
@@ -424,7 +439,7 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
 	}
 
 	// If zero isn't empty, then if $value is a number and it's empty, it's zero. Thus, return false.
-	if( ! $zero_is_empty && is_numeric( $value ) && empty( $value ) ) {
+	if ( ! $zero_is_empty && is_numeric( $value ) && empty( $value ) ) {
 		return false;
 	}
 
@@ -541,7 +556,7 @@ function gravityview_is_valid_datetime( $datetime, $expected_format = 'Y-m-d' ) 
 function gravityview_get_input_id_from_id( $field_id = '' ) {
 
 	if ( ! is_numeric( $field_id ) ) {
-		do_action( 'gravityview_log_error', __FUNCTION__ . ': $field_id not numeric', $field_id );
+		gravityview()->log->error( '$field_id not numeric', array( 'data' => $field_id ) );
 		return false;
 	}
 
@@ -618,21 +633,21 @@ function gravityview_get_terms_choices( $args = array() ) {
 function _gravityview_process_posted_fields() {
 	$fields = array();
 
-	if( !empty( $_POST['fields'] ) ) {
-		if ( ! is_array( $_POST['fields'] ) ) {
+	if( !empty( $_POST['gv_fields'] ) ) {
+		if ( ! is_array( $_POST['gv_fields'] ) ) {
 
 			// We are not using parse_str() due to max_input_vars limitation with large View configurations
 			$fields_holder = array();
-			GVCommon::gv_parse_str( $_POST['fields'], $fields_holder );
+			GVCommon::gv_parse_str( $_POST['gv_fields'], $fields_holder );
 
 			if ( isset( $fields_holder['fields'] ) ) {
 				$fields = $fields_holder['fields'];
 			} else {
-				do_action( 'gravityview_log_error', '[save_postdata] No `fields` key was found after parsing $fields string', $fields_holder );
+				gravityview()->log->error( 'No `fields` key was found after parsing $fields string', array( 'data' => $fields_holder ) );
 			}
 
 		} else {
-			$fields = $_POST['fields'];
+			$fields = $_POST['gv_fields'];
 		}
 	}
 
