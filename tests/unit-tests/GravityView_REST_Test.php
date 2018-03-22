@@ -12,20 +12,7 @@
  *
  * @group rest
  */
-class GravityView_REST_Test extends WP_UnitTestCase {
-	public function setUp() {
-		parent::setUp();
-
-		/** @var WP_REST_Server $wp_rest_server */
-		global $wp_rest_server;
-		$this->server = $wp_rest_server = new WP_REST_Server;
-		do_action( 'rest_api_init');
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-	}
-
+class GravityView_REST_Test extends WP_Test_REST_Controller_Testcase {
 	/**
 	 * Test that namespace is set properly
 	 * @since 2.0
@@ -39,7 +26,9 @@ class GravityView_REST_Test extends WP_UnitTestCase {
 	 * @since 2.0
 	 */
 	public function test_namespace_exists() {
-		$routes = $this->server->get_routes();
+		global $wp_rest_server;
+
+		$routes = $wp_rest_server->get_routes();
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace(), $routes );
 	}
 
@@ -48,7 +37,9 @@ class GravityView_REST_Test extends WP_UnitTestCase {
 	 * @since 2.0
 	 */
 	public function test_view_routes_exists() {
-		$routes = $this->server->get_routes();
+		global $wp_rest_server;
+
+		$routes = $wp_rest_server->get_routes();
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views', $routes );
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)/entries', $routes );
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)/entries/(?P<s_id>[\w-]+)', $routes );
