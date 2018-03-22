@@ -23,7 +23,7 @@ final class Core {
 	 * @var \GV\Plugin The WordPress plugin context.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $plugin;
 
@@ -31,7 +31,7 @@ final class Core {
 	 * @var \GV\Request The global request.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $request;
 
@@ -39,7 +39,7 @@ final class Core {
 	 * @var \GV\Logger
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $log;
 

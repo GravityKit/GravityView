@@ -16,7 +16,7 @@ class Widget_Collection extends Collection {
 	 * @param \GV\Widget $widget The widget to add to the internal array.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return void
 	 */
 	public function add( $widget ) {
@@ -33,7 +33,7 @@ class Widget_Collection extends Collection {
 	 * @param int $widget_uid The UID of the widget in the collection to get.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\Widget|null The \GV\Widget with the $widget_uid as the UID, or null if not found.
 	 */

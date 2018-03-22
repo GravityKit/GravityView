@@ -60,7 +60,7 @@ class GravityView_Field_Payment_Amount extends GravityView_Field {
 	/**
 	 * Filter the value of the field, future.
 	 *
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @param mixed			$value	The value of the field.
 	 * @param \GV\Field		$field	The field as seen by future.

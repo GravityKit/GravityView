@@ -348,7 +348,8 @@ class Addon_Settings extends \GFAddOn {
 
 	public function app_settings_uninstall_tab() {
 		if ( $this->maybe_uninstall() ) {
-			return parent::app_settings_uninstall_tab();
+			parent::app_settings_uninstall_tab();
+			return;
 		}
 
 		if ( ! ( $this->current_user_can_any( $this->_capabilities_uninstall ) && ( ! function_exists( 'is_multisite' ) || ! is_multisite() || is_super_admin() ) ) ) {

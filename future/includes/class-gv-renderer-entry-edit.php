@@ -23,7 +23,7 @@ class Edit_Entry_Renderer extends Entry_Renderer {
 	 * @todo Just a wrapper around the old code. Cheating. Needs rewrite :)
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return string The rendered Entry edit screen.
 	 */

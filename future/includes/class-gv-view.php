@@ -25,7 +25,7 @@ class View implements \ArrayAccess {
 	 * @var \GV\View_Settings The settings.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $settings;
 
@@ -33,7 +33,7 @@ class View implements \ArrayAccess {
 	 * @var \GV\Widget_Collection The widets attached here.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $widgets;
 
@@ -43,7 +43,7 @@ class View implements \ArrayAccess {
 	 * Contains the form that is sourced for entries in this view.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $form;
 
@@ -53,7 +53,7 @@ class View implements \ArrayAccess {
 	 * Contains all the fields that are attached to this view.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $fields;
 
@@ -165,7 +165,7 @@ class View implements \ArrayAccess {
 				 *  (example: if your permalink structure is /blog/, then your links will be: false->/view/, true->/blog/view/).
 				 *  Defaults to true.
 				 * @see https://codex.wordpress.org/Function_Reference/register_post_type
-				 * @since future
+				 * @since 2.0
 				 * @param bool $with_front
 				 */
 				'with_front' => apply_filters( 'gravityview/post_type/with_front', true ),
@@ -236,7 +236,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * @filter `gravityview/request/output/direct` Should this View be directly accessbile?
-		 * @since future
+		 * @since 2.0
 		 * @param[in,out] boolean Accessible or not. Default: accessbile.
 		 * @param \GV\View $view The View we're trying to directly render here.
 		 * @param \GV\Request $request The current request.
@@ -326,7 +326,7 @@ class View implements \ArrayAccess {
 	 * @param \WP_Post $post The \WP_Post instance to wrap.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return \GV\View|null An instance around this \WP_Post if valid, null otherwise.
 	 */
 	public static function from_post( $post ) {
@@ -360,7 +360,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * @filter `gravityview/view/configuration/fields` Filter the View fields' configuration array.
-		 * @since future
+		 * @since 2.0
 		 *
 		 * @param array $fields Multi-array of fields with first level being the field zones.
 		 * @param \GV\View $view The View the fields are being pulled for.
@@ -369,7 +369,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * @filter `gravityview/view/fields` Filter the Field Collection for this View.
-		 * @since future
+		 * @since 2.0
 		 *
 		 * @param \GV\Field_Collection $fields A collection of fields.
 		 * @param \GV\View $view The View the fields are being pulled for.
@@ -378,7 +378,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * @filter `gravityview/view/configuration/widgets` Filter the View widgets' configuration array.
-		 * @since future
+		 * @since 2.0
 		 *
 		 * @param array $fields Multi-array of widgets with first level being the field zones.
 		 * @param \GV\View $view The View the widgets are being pulled for.
@@ -387,7 +387,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * @filter `gravityview/view/widgets` Filter the Widget Collection for this View.
-		 * @since future
+		 * @since 2.0
 		 *
 		 * @param \GV\Widget_Collection $widgets A collection of widgets.
 		 * @param \GV\View $view The View the widgets are being pulled for.
@@ -414,7 +414,7 @@ class View implements \ArrayAccess {
 	 * @param int|string $post_id The post ID.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return \GV\View|null An instance around this \WP_Post or null if not found.
 	 */
 	public static function by_id( $post_id ) {
@@ -430,7 +430,7 @@ class View implements \ArrayAccess {
 	 * @param int|\WP_Post|null $view The WordPress post ID, a \WP_Post object or null for global $post;
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return bool Whether the post exists or not.
 	 */
 	public static function exists( $view ) {
@@ -442,7 +442,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 * @return bool Whether the offset exists or not, limited to GravityView_View_Data::$views element keys.
 	 */
 	public function offsetExists( $offset ) {
@@ -457,7 +457,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return mixed The value of the requested view data key limited to GravityView_View_Data::$views element keys.
 	 */
@@ -491,7 +491,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return void
 	 */
@@ -504,7 +504,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 * @return void
 	 */
 	public function offsetUnset( $offset ) {
@@ -520,7 +520,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 * @return array
 	 */
 	public function as_data() {

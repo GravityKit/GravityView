@@ -17,7 +17,7 @@ class Internal_Source extends Source {
 	 * @var string The identifier of the backend used for this source.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public static $backend = self::BACKEND_INTERNAL;
 

@@ -70,7 +70,7 @@ abstract class Request {
 	 * The current $post is a View, no?
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @todo tests
 	 *
 	 * @return \GV\View|false The view requested or false
@@ -87,7 +87,7 @@ abstract class Request {
 	 * Is this an edit entry request?
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @todo tests
 	 *
 	 * @return \GV\GF_Entry|false The entry requested or false.
@@ -105,7 +105,7 @@ abstract class Request {
 	 * Check whether this an edit entry request.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @todo tests
 	 *
 	 * @return \GV\Entry|false The entry requested or false.
@@ -126,7 +126,7 @@ abstract class Request {
 	 * Check whether this an entry search request.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @todo tests
 	 * @todo implementation
 	 *

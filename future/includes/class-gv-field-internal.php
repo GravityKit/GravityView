@@ -23,7 +23,7 @@ class Internal_Field extends Field {
 	 * @param array $configuration The configuration array.
 	 * @see \GV\Field::as_configuration()
 	 * @internal
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\internal_Field|null The field implementation or null on error.
 	 */

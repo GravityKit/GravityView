@@ -21,7 +21,7 @@ class Entry_Renderer extends Renderer {
 	 * @param \GV\Request $request The request context we're currently in. Default: `gravityview()->request`
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return string The rendered Entry.
 	 */
@@ -49,7 +49,7 @@ class Entry_Renderer extends Renderer {
 		 * @action `gravityview_render_entry_{View ID}` Before rendering a single entry for a specific View ID
 		 * @since 1.17
 		 *
-		 * @since future
+		 * @since 2.0
 		 * @param \GV\Entry $entry The entry about to be rendered
 		 * @param \GV\View $view The connected view
 		 * @param \GV\Request $request The associated request 
@@ -94,7 +94,7 @@ class Entry_Renderer extends Renderer {
 
 		/**
 		 * @filter `gravityview/template/entry/class` Filter the template class that is about to be used to render the entry.
-		 * @since future
+		 * @since 2.0
 		 * @param string $class The chosen class - Default: \GV\Entry_Table_Template.
 		 * @param \GV\Entry $entry The entry about to be rendered.
 		 * @param \GV\View $view The view connected to it.

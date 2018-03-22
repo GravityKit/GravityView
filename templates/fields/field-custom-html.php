@@ -26,6 +26,8 @@ if ( ! class_exists( 'GFFormDisplay' ) ) {
  *
  * @since 2.0
  * @param \GV\Template_Context The gravityview template context instance.
+ * @since 2.0
+ * @param stdClass The gravityview template context object.
  */
 $content = apply_filters( 'gravityview/fields/custom/content_before', $gravityview->field->content, $gravityview );
 $content = trim( rtrim( $content ) );

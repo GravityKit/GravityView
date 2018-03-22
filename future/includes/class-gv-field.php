@@ -23,7 +23,7 @@ class Field {
 	/**
 	 * @var string The field position in the view.
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $position = '';
 
@@ -33,42 +33,42 @@ class Field {
 	 * A unique relation identifier between this field and a view.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $UID = '';
 
 	/**
 	 * @var string The form field ID for this field.
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $ID = '';
 
 	/**
 	 * @var string The form label for this field.
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $label = '';
 
 	/**
 	 * @var string The custom label for this field.
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $custom_label = '';
 
 	/**
 	 * @var bool Whether to show the label or not for this field.
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $show_label = true;
 
 	/**
 	 * @var string The custom class for this field.
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $custom_class = '';
 
@@ -78,7 +78,7 @@ class Field {
 	 * If empty, anyone can view it, including non-logged in users.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $cap = '';
 
@@ -86,7 +86,7 @@ class Field {
 	 * @var bool Show as a link to entry.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $show_as_link = false;
 
@@ -94,7 +94,7 @@ class Field {
 	 * @var bool Filter this field from searching.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $search_filter = false;
 
@@ -114,7 +114,7 @@ class Field {
 	 *			+ whatever else specific field types may have
 	 *
 	 * @internal
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return array
 	 */
@@ -161,7 +161,7 @@ class Field {
 	 * @param array $configuration The configuration array.
 	 * @see \GV\Field::as_configuration()
 	 * @internal
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\Field The field implementation from configuration (\GV\GF_Field, \GV\Internal_Field).
 	 */
@@ -220,7 +220,7 @@ class Field {
 	 *
 	 * @param array $configuration The configuration array.
 	 * @see \GV\Field::as_configuration()
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return void
 	 */

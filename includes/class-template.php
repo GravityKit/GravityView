@@ -525,7 +525,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 	/**
 	 * @param boolean $do_replace Perform merge tag and shortcode processing on the label. Default: true.
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @deprecated Use $template->get_back_label();
 	 *

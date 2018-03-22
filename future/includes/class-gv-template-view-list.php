@@ -131,7 +131,7 @@ class View_List_Template extends View_Template {
 	public static function body_before( $context ) {
 		/**
 		 * @action `gravityview/template/list/body/before` Output inside the `tbody` of the list.
-		 * @since future
+		 * @since 2.0
 		 * @param \GV\Template_Context $context The template context.
 		 */
 		do_action( 'gravityview/template/list/body/before', $context );
@@ -157,7 +157,7 @@ class View_List_Template extends View_Template {
 	public static function body_after( $context ) {
 		/**
 		 * @action `gravityview/template/list/body/after` Output inside the `tbody` of the list at the end.
-		 * @since future
+		 * @since 2.0
 		 * @param \GV\Template_Context $context The template context.
 		 */
 		do_action( 'gravityview/template/list/body/after', $context );
@@ -190,7 +190,7 @@ class View_List_Template extends View_Template {
 
 		/**
 		 * @action `gravityview/template/list/entry/$zone/before` Output inside the `entry` of the list at the end.
-		 * @since future
+		 * @since 2.0
 		 * @param \GV\Template_Context $context The template context.
 		 */
 		do_action( sprintf( 'gravityview/template/list/entry%sbefore', $zone ), Template_Context::from_template( $context->template, compact( 'entry' ) ) );
@@ -225,7 +225,7 @@ class View_List_Template extends View_Template {
 
 		/**
 		 * @action `gravityview/template/list/entry/$zone/after` Output inside the `entry` of the list at the end.
-		 * @since future
+		 * @since 2.0
 		 * @param \GV\Template_Context $context The template context.
 		 */
 		do_action( sprintf( 'gravityview/template/list/entry%safter', $zone ), Template_Context::from_template( $context->template, compact( 'entry' ) ) );

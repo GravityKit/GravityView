@@ -16,7 +16,7 @@ class Field_Collection extends Collection {
 	 * @param \GV\Field $field The field to add to the internal array.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return void
 	 */
 	public function add( $field ) {
@@ -33,7 +33,7 @@ class Field_Collection extends Collection {
 	 * @param int $field_uid The UID of the field in the field to get.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\Field|null The \GV\Field with the $field_uid as the UID, or null if not found.
 	 */
