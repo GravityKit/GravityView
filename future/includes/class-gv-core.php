@@ -151,6 +151,10 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );
 		add_action( 'init', array( '\GV\Entry', 'add_rewrite_endpoint' ) );
 
+		/** REST API */
+		require_once $this->plugin->dir( 'future/includes/rest/class-gv-rest-core.php' );
+		add_action( 'rest_api_init', array( '\GV\REST\Core', 'init' ) );
+
 		/** Generate custom slugs on entry save. @todo Deprecate. */
 		add_action( 'gform_entry_created', array( '\GravityView_API', 'entry_create_custom_slug' ), 10, 2 );
 

@@ -1,20 +1,25 @@
 <?php
 /**
- * The Entries route
- *
  * @package   GravityView
  * @license   GPL2+
  * @author    Josh Pollock <josh@joshpress.net>
  * @link      http://gravityview.co
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
- * @since 1.14.4
+ * @since 2.0
  */
-class GravityView_REST_Entries_Route extends GravityView_REST_Route {
+namespace GV\REST;
+
+/** If this file is called directly, abort. */
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
+	die();
+}
+
+class Entries_Route extends Route {
 	/**
 	 * Route Name
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 *
 	 * @access protected
 	 * @string
@@ -24,7 +29,7 @@ class GravityView_REST_Entries_Route extends GravityView_REST_Route {
 	/**
 	 * Sub type
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @access protected
 	 * @var string
 	 */
@@ -35,7 +40,7 @@ class GravityView_REST_Entries_Route extends GravityView_REST_Route {
 	 *
 	 * Callback for /v1/entries/
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_Error|WP_REST_Request
 	 */
@@ -83,7 +88,7 @@ class GravityView_REST_Entries_Route extends GravityView_REST_Route {
 	 *
 	 * Callback for /v1/entries/{id}/field/{id}/
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_Error|WP_REST_Request
 	 */
@@ -108,7 +113,7 @@ class GravityView_REST_Entries_Route extends GravityView_REST_Route {
 	/**
 	 * Arguments for the create entry route
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @return array
 	 */
 	public function create_item_args() {
@@ -134,7 +139,7 @@ class GravityView_REST_Entries_Route extends GravityView_REST_Route {
 	/**
 	 * Arguments for the update entry route
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @return array
 	 */
 	public function update_item_args() {
@@ -160,7 +165,7 @@ class GravityView_REST_Entries_Route extends GravityView_REST_Route {
 	/**
 	 * Arguments for the update feild route
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @return array
 	 */
 	public function update_sub_item_args() {

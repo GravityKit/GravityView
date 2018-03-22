@@ -1,21 +1,25 @@
 <?php
 /**
- * The Views route
- *
  * @package   GravityView
  * @license   GPL2+
  * @author    Josh Pollock <josh@joshpress.net>
  * @link      http://gravityview.co
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
- * @since 1.14.4
+ * @since 2.0
  */
-class GravityView_REST_Views_Route extends GravityView_REST_Route {
+namespace GV\REST;
 
+/** If this file is called directly, abort. */
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
+	die();
+}
+
+class Views_Route extends Route {
 	/**
 	 * Route Name
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 *
 	 * @access protected
 	 * @string
@@ -25,7 +29,7 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 	/**
 	 * Sub type, forms {$namespace}/route_name/{id}/sub_type type endpoints
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @access protected
 	 * @var string
 	 */
@@ -69,7 +73,7 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 	 *
 	 * Callback for /v1/views/{id}/
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_Error|WP_REST_Response
 	 */
@@ -97,7 +101,7 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 	 *
 	 *  @todo ZACK - Use this as generic prepare for response or remove from usage
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @param mixed $item WordPress representation of the item.
 	 * @param WP_REST_Request $request Request object.
 	 * @return mixed
@@ -117,7 +121,7 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 	 *
 	 * Callback for /v1/views/{id}/entries/
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_Error|WP_REST_Response
 	 */
@@ -160,7 +164,7 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 	 * Callback for /v1/views/{id}/entries/{id}/
 	 *
 	 * @uses GVCommon::get_entry
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_Error|WP_REST_Response
 	 */
@@ -199,7 +203,7 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 	 *
 	 * @todo ZACK - Use this as generic prepare for response or remove from usage
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @param WP_Post $view_post WordPress representation of the item.
 	 * @param WP_REST_Request $request Request object.
 	 * @return mixed

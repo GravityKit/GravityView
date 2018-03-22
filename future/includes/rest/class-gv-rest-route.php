@@ -1,21 +1,26 @@
 <?php
 /**
- * Abstract class for creating GV REST API Routes from
- *
  * @package   GravityView
  * @license   GPL2+
  * @author    Josh Pollock <josh@joshpress.net>
  * @link      http://gravityview.co
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
- * @since 1.14.4
+ * @since 2.0
  */
-abstract class GravityView_REST_Route extends WP_REST_Controller {
+namespace GV\REST;
+
+/** If this file is called directly, abort. */
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
+	die();
+}
+
+abstract class Route extends WP_REST_Controller {
 
 	/**
 	 * Route Name
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @access protected
 	 * @var string
 	 */
@@ -24,7 +29,7 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 	/**
 	 * Sub type, forms {$namespace}/route_name/{id}/sub_type type endpoints
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @access protected
 	 * @var string
 	 */
@@ -152,7 +157,7 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 	 *
 	 * MUST SET route_name property in subclass!
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @access protected
 	 * @return string
 	 */
@@ -160,7 +165,7 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 		if( is_string( $this->route_name ) ) {
 			return $this->route_name;
 		}else{
-			_doing_it_wrong( __METHOD__, __( 'Must set route name in subclass.', 'gravityview' ), '1.14.4' );
+			_doing_it_wrong( __METHOD__, __( 'Must set route name in subclass.', 'gravityview' ), '2.0' );
 		}
 
 	}
@@ -170,7 +175,7 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 	 *
 	 * MUST SET sub_type property in subclass!
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @access protected
 	 * @return string
 	 */
@@ -178,7 +183,7 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 		if( is_string( $this->sub_type ) ) {
 			return $this->sub_type;
 		}else{
-			_doing_it_wrong( __METHOD__, __( 'Must set route sub type in subclass.', 'gravityview' ), '1.14.4' );
+			_doing_it_wrong( __METHOD__, __( 'Must set route sub type in subclass.', 'gravityview' ), '2.0' );
 		}
 
 	}
@@ -361,7 +366,7 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 	 *
 	 *  @todo ZACK - Use this as genric prepare for response or remvoe from usage
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @param mixed $item WordPress representation of the item.
 	 * @param WP_REST_Request $request Request object.
 	 * @return mixed
@@ -374,7 +379,7 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 	/**
 	 * Generic response for routes not yet implemented
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @return WP_REST_Response
 	 */
 	protected function not_implemented(  ) {
@@ -388,7 +393,7 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 	 *
 	 * @todo get rid of this since it's not being used?
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @param mixed $value
 	 * @return string
 	 */
@@ -405,7 +410,7 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 	 *
 	 * Returns empty array for args instead of making an error.
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @param $method
 	 * @return array
 	 */
@@ -424,7 +429,7 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 	/**
 	 * Ensure a boolen is a boolean
 	 *
-	 * @since 1.14.4
+	 * @since 2.0
 	 * @param $value
 	 *
 	 * @return bool
