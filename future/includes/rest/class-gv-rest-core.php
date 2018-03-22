@@ -7,10 +7,14 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 }
 
 class Core {
+	public static $routes;
+
 	/**
 	 * Initialization.
 	 */
 	public static function init() {
+		self::$routes['views'] = $views = new Views_Route();
+		$views->register_routes();
 	}
 
 	/**
@@ -37,5 +41,4 @@ class Core {
 
 /** Load routes. */
 require gravityview()->plugin->dir( 'future/includes/rest/class-gv-rest-route.php' );
-require gravityview()->plugin->dir( 'future/includes/rest/class-gv-rest-entries-route.php' );
 require gravityview()->plugin->dir( 'future/includes/rest/class-gv-rest-views-route.php' );

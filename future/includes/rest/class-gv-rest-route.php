@@ -16,7 +16,6 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 }
 
 abstract class Route extends \WP_REST_Controller {
-
 	/**
 	 * Route Name
 	 *
@@ -39,11 +38,11 @@ abstract class Route extends \WP_REST_Controller {
 	 * Register the routes for the objects of the controller.
 	 */
 	public function register_routes() {
-		$namespace = GravityView_REST_Util::get_namespace();
+		$namespace = \GV\REST\Core::get_namespace();
 		$base = $this->get_route_name();
 		register_rest_route( $namespace, '/' . $base, array(
 			array(
-				'methods'         => WP_REST_Server::READABLE,
+				'methods'         => \WP_REST_Server::READABLE,
 				'callback'        => array( $this, 'get_items' ),
 				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 				'args'            => array(
@@ -58,7 +57,7 @@ abstract class Route extends \WP_REST_Controller {
 				)
 			),
 			array(
-				'methods'         => WP_REST_Server::CREATABLE,
+				'methods'         => \WP_REST_Server::CREATABLE,
 				'callback'        => array( $this, 'create_item' ),
 				'permission_callback' => array( $this, 'create_item_permissions_check' ),
 				'args'            => $this->create_item_args()
@@ -67,7 +66,7 @@ abstract class Route extends \WP_REST_Controller {
 		) );
 		register_rest_route( $namespace, '/' . $base . '/(?P<id>[\d]+)', array(
 			array(
-				'methods'         => WP_REST_Server::READABLE,
+				'methods'         => \WP_REST_Server::READABLE,
 				'callback'        => array( $this, 'get_item' ),
 				'permission_callback' => array( $this, 'get_item_permissions_check' ),
 				'args'            => array(
@@ -77,13 +76,13 @@ abstract class Route extends \WP_REST_Controller {
 				),
 			),
 			array(
-				'methods'         => WP_REST_Server::EDITABLE,
+				'methods'         => \WP_REST_Server::EDITABLE,
 				'callback'        => array( $this, 'update_item' ),
 				'permission_callback' => array( $this, 'update_item_permissions_check' ),
 				'args'              => $this->update_item_args(),
 			),
 			array(
-				'methods'  => WP_REST_Server::DELETABLE,
+				'methods'  => \WP_REST_Server::DELETABLE,
 				'callback' => array( $this, 'delete_item' ),
 				'permission_callback' => array( $this, 'delete_item_permissions_check' ),
 				'args'     => array(
@@ -98,7 +97,7 @@ abstract class Route extends \WP_REST_Controller {
 
 		register_rest_route( $namespace, '/' . $base . '/(?P<id>[\d]+)' . '/' . $sub_type , array(
 			array(
-				'methods'         => WP_REST_Server::READABLE,
+				'methods'         => \WP_REST_Server::READABLE,
 				'callback'        => array( $this, 'get_sub_items' ),
 				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 				'args'            => array(
@@ -115,7 +114,7 @@ abstract class Route extends \WP_REST_Controller {
 				)
 			),
 			array(
-				'methods'         => WP_REST_Server::CREATABLE,
+				'methods'         => \WP_REST_Server::CREATABLE,
 				'callback'        => array( $this, 'create_sub_item' ),
 				'permission_callback' => array( $this, 'create_item_permissions_check' ),
 				'args'     => $this->create_sub_item_args()
@@ -123,7 +122,7 @@ abstract class Route extends \WP_REST_Controller {
 		) );
 		register_rest_route( $namespace, sprintf( '/%s/(?P<id>[\d]+)/%s/(?P<s_id>[\w-]+)', $base, $sub_type ) , array(
 			array(
-				'methods'         => WP_REST_Server::READABLE,
+				'methods'         => \WP_REST_Server::READABLE,
 				'callback'        => array( $this, 'get_sub_item' ),
 				'permission_callback' => array( $this, 'get_item_permissions_check' ),
 				'args'            => array(
@@ -133,13 +132,13 @@ abstract class Route extends \WP_REST_Controller {
 				),
 			),
 			array(
-				'methods'         => WP_REST_Server::EDITABLE,
+				'methods'         => \WP_REST_Server::EDITABLE,
 				'callback'        => array( $this, 'update_sub_item' ),
 				'permission_callback' => array( $this, 'update_item_permissions_check' ),
 				'args'     => $this->update_sub_item_args()
 			),
 			array(
-				'methods'  => WP_REST_Server::DELETABLE,
+				'methods'  => \WP_REST_Server::DELETABLE,
 				'callback' => array( $this, 'delete_sub_item' ),
 				'permission_callback' => array( $this, 'delete_item_permissions_check' ),
 				'args'     => array(
@@ -149,7 +148,6 @@ abstract class Route extends \WP_REST_Controller {
 				),
 			),
 		) );
-
 	}
 
 	/**
@@ -162,12 +160,11 @@ abstract class Route extends \WP_REST_Controller {
 	 * @return string
 	 */
 	protected function get_route_name() {
-		if( is_string( $this->route_name ) ) {
+		if ( is_string( $this->route_name ) ) {
 			return $this->route_name;
-		}else{
+		} else {
 			_doing_it_wrong( __METHOD__, __( 'Must set route name in subclass.', 'gravityview' ), '2.0' );
 		}
-
 	}
 
 	/**
@@ -180,12 +177,11 @@ abstract class Route extends \WP_REST_Controller {
 	 * @return string
 	 */
 	protected function get_sub_type() {
-		if( is_string( $this->sub_type ) ) {
+		if ( is_string( $this->sub_type ) ) {
 			return $this->sub_type;
-		}else{
+		} else {
 			_doing_it_wrong( __METHOD__, __( 'Must set route sub type in subclass.', 'gravityview' ), '2.0' );
 		}
-
 	}
 
 	/**
@@ -206,7 +202,6 @@ abstract class Route extends \WP_REST_Controller {
 	 */
 	public function get_item( $request ) {
 		return $this->not_implemented();
-
 	}
 
 	/**
@@ -217,7 +212,6 @@ abstract class Route extends \WP_REST_Controller {
 	 */
 	public function create_item( $request ) {
 		return $this->not_implemented();
-
 	}
 
 	/**
@@ -228,7 +222,6 @@ abstract class Route extends \WP_REST_Controller {
 	 */
 	public function update_item( $request ) {
 		return $this->not_implemented();
-
 	}
 
 	/**
@@ -239,7 +232,6 @@ abstract class Route extends \WP_REST_Controller {
 	 */
 	public function delete_item( $request ) {
 		return $this->not_implemented();
-
 	}
 
 
@@ -265,7 +257,6 @@ abstract class Route extends \WP_REST_Controller {
 
 		//get parameters from request
 		$params = $request->get_params();
-
 	}
 
 	/**
@@ -276,7 +267,6 @@ abstract class Route extends \WP_REST_Controller {
 	 */
 	public function create_sub_item( $request ) {
 		return $this->not_implemented();
-
 	}
 
 	/**
@@ -398,7 +388,7 @@ abstract class Route extends \WP_REST_Controller {
 	 * @return string
 	 */
 	public function safe_string( $value) {
-		if( ! is_string( $value ) ) {
+		if ( ! is_string( $value ) ) {
 			return '';
 		}
 
@@ -415,15 +405,14 @@ abstract class Route extends \WP_REST_Controller {
 	 * @return array
 	 */
 	public function __call( $method, $args ) {
-		if( in_array( $method, array(
+		if ( in_array( $method, array(
 			'create_item_args',
 			'update_item_args',
 			'create_sub_item_args',
 			'update_sub_item_args'
-		))) {
+		) ) ) {
 			return array();
 		}
-
 	}
 
 	/**
@@ -435,11 +424,8 @@ abstract class Route extends \WP_REST_Controller {
 	 * @return bool
 	 */
 	public function validate_boolean( $value ) {
-		if( in_array( $value, array( true, false, 'TRUE', 'FALSE', 'true', 'false', 1, 0, '1', '0' ) ) ){
+		if ( in_array( $value, array( true, false, 'TRUE', 'FALSE', 'true', 'false', 1, 0, '1', '0' ) ) ) {
 			return true;
 		}
-
 	}
-
-
 }

@@ -26,67 +26,31 @@ class GravityView_REST_Test extends WP_UnitTestCase {
 		parent::tearDown();
 	}
 
-
 	/**
 	 * Test that namespace is set properly
-	 *
 	 * @since 2.0
-	 *
-	 * @covers GravityView_REST_Util::get_namespace()
 	 */
 	public function test_namespace() {
-		$this->assertEquals( 'gravityview/v1', GravityView_REST_Util::get_namespace() );
+		$this->assertEquals( 'gravityview/v1', \GV\REST\Core::get_namespace() );
 	}
 
 	/**
 	 * Test that main namespace routes exist
-	 *
 	 * @since 2.0
-	 * @covers GravityView_Plugin::boot_api((
-	 * @covers GravityView_REST_Route::register_routes()
 	 */
-	public function test_namespace_exists(){
-
+	public function test_namespace_exists() {
 		$routes = $this->server->get_routes();
-
-		$this->assertArrayHasKey( '/' . GravityView_REST_Util::get_namespace(), $routes );
+		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace(), $routes );
 	}
 
 	/**
 	 * Test that view routes exist
-	 *
 	 * @since 2.0
-	 * @covers GravityView_Plugin::boot_api()
-	 * @covers GravityView_REST_Views_Route::register_routes()
-	 * @covers GravityView_REST_Route::register_routes()
 	 */
-	public function test_view_routes_exists(){
+	public function test_view_routes_exists() {
 		$routes = $this->server->get_routes();
-		$this->assertArrayHasKey( '/' . GravityView_REST_Util::get_namespace() . '/views', $routes );
-		$this->assertArrayHasKey( '/' . GravityView_REST_Util::get_namespace() . '/views/(?P<id>[\d]+)/entries', $routes );
-
-		$this->assertArrayHasKey( '/' . GravityView_REST_Util::get_namespace() . '/views/(?P<id>[\d]+)/entries/(?P<s_id>[\d]+)', $routes );
-
-
+		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views', $routes );
+		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)/entries', $routes );
+		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)/entries/(?P<s_id>[\w-]+)', $routes );
 	}
-
-	/**
-	 * Test that entry routes exist
-	 *
-	 * @since 2.0
-	 * @covers GravityView_Plugin::boot_api()
-	 * @covers GravityView_REST_Entries_Route::register_routes()
-	 * @covers GravityView_REST_Route::register_routes()
-	 */
-	public function test_entries_routes_exists(){
-		$routes = $this->server->get_routes();
-		$this->assertArrayHasKey( '/' . GravityView_REST_Util::get_namespace() . '/entries', $routes );
-		$this->assertArrayHasKey( '/' . GravityView_REST_Util::get_namespace() . '/entries/(?P<id>[\d]+)', $routes );
-		$this->assertArrayHasKey( '/' . GravityView_REST_Util::get_namespace() . '/entries/(?P<id>[\d]+)/field', $routes );
-
-		$this->assertArrayHasKey( '/' . GravityView_REST_Util::get_namespace() . '/entries/(?P<id>[\d]+)/field/(?P<s_id>[\d]+)', $routes );
-
-
-	}
-
 }
