@@ -794,7 +794,7 @@ class GravityView_frontend {
 		 * Compatibility with filters hooking in `gravityview_search_criteria` instead of `gravityview_fe_search_criteria`.
 		 */
 		$criteria = apply_filters( 'gravityview_search_criteria', array(), array( $form_id ), $args['id'] );
-		$search_criteria = $criteria['search_criteria'];
+		$search_criteria = isset( $criteria['search_criteria'] ) ? $criteria['search_criteria'] : array( 'field_filters' => array() );
 
 		/**
 		 * @filter `gravityview_fe_search_criteria` Modify the search criteria
