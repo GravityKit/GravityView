@@ -73,6 +73,7 @@ class GV_Unit_Tests_Bootstrap {
 		require_once( $this->wp_tests_dir . '/includes/bootstrap.php' );
 
 		require_once $this->tests_dir . '/GV_UnitTestCase.php';
+		require_once $this->tests_dir . '/GV_RESTUnitTestCase.php';
 		require_once $this->tests_dir . '/gravityforms-factory.php';
 		require_once $this->tests_dir . '/gravityview-generators.php';
 		require_once $this->tests_dir . '/gravityview-factory.php';

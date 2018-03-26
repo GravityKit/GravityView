@@ -30,10 +30,7 @@ class Entry_Renderer extends Renderer {
 			$request = &gravityview()->request;
 		}
 
-		/**
-		 * For now we only know how to render views in a Frontend_Request context.
-		 */
-		if ( ! in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request' ) ) ) {
+		if ( ! in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request', 'GV\REST\Request' ) ) ) {
 			gravityview()->log->error( 'Renderer unable to render Entry in {request_class} context', array( 'request_class' => get_class( $request ) ) );
 			return null;
 		}

@@ -40,17 +40,20 @@ abstract class Route extends \WP_REST_Controller {
 	public function register_routes() {
 		$namespace = \GV\REST\Core::get_namespace();
 		$base = $this->get_route_name();
+
+		$format = '(?:\.(?P<format>html|json))?';
+
 		register_rest_route( $namespace, '/' . $base, array(
 			array(
 				'methods'         => \WP_REST_Server::READABLE,
 				'callback'        => array( $this, 'get_items' ),
 				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 				'args'            => array(
-					'page' => array(
+					'paging[current_page]' => array(
 						'default' => 1,
 						'sanitize_callback' => 'absint'
 					),
-					'limit' => array(
+					'paging[page_size]' => array(
 						'default' => 10,
 						'sanitize_callback' => 'absint'
 					)
@@ -95,21 +98,19 @@ abstract class Route extends \WP_REST_Controller {
 
 		$sub_type = $this->get_sub_type();
 
-		register_rest_route( $namespace, '/' . $base . '/(?P<id>[\d]+)' . '/' . $sub_type , array(
+		register_rest_route( $namespace, '/' . $base . '/(?P<id>[\d]+)' . '/' . $sub_type . $format, array(
 			array(
 				'methods'         => \WP_REST_Server::READABLE,
 				'callback'        => array( $this, 'get_sub_items' ),
 				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 				'args'            => array(
-					'args'            => array(
-						'page' => array(
-							'default' => 1,
-							'sanitize_callback' => 'absint'
-						),
-						'limit' => array(
-							'default' => 10,
-							'sanitize_callback' => 'absint'
-						)
+					'paging[current_page]' => array(
+						'default' => 1,
+						'sanitize_callback' => 'absint'
+					),
+					'paging[page_size]' => array(
+						'default' => 10,
+						'sanitize_callback' => 'absint'
 					)
 				)
 			),
@@ -120,7 +121,7 @@ abstract class Route extends \WP_REST_Controller {
 				'args'     => $this->create_sub_item_args()
 			),
 		) );
-		register_rest_route( $namespace, sprintf( '/%s/(?P<id>[\d]+)/%s/(?P<s_id>[\w-]+)', $base, $sub_type ) , array(
+		register_rest_route( $namespace, sprintf( '/%s/(?P<id>[\d]+)/%s/(?P<s_id>[\w-]+)%s', $base, $sub_type, $format ) , array(
 			array(
 				'methods'         => \WP_REST_Server::READABLE,
 				'callback'        => array( $this, 'get_sub_item' ),

@@ -25,7 +25,7 @@ abstract class Entry_Template extends Template {
 	 * Prefix for filter names.
 	 * @var string
 	 */
-	protected $filter_prefix = 'gravityview/template/entries/';
+	protected $filter_prefix = 'gravityview/template/entries';
 
 	/**
 	 * Directory name where custom templates for this plugin should be found in the theme.

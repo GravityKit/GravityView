@@ -46,26 +46,24 @@ class Views_Route extends Route {
 	 */
 	public function get_items( $request ) {
 
-		$page = $request->get_param( 'page' );
-		$limit = $request->get_param( 'limit' );
+		$page = $request->get_param( 'paging[current_page]' );
+		$limit = $request->get_param( 'paging[page_size]' );
 
-		// @todo GravityView internal
-		$items = GVCommon::get_all_views( array(
+		$items = \GVCommon::get_all_views( array(
 			'posts_per_page' => $limit,
 			'paged' => $page,
-		));
+		) );
 
 		if( empty( $items ) ) {
 			return new WP_Error( 'gravityview-no-views', __( 'No Views found.', 'gravityview' ) ); //@todo message
 		}
 
 		$data = array();
-		foreach( $items as $item ) {
+		foreach ( $items as $item ) {
 			$data[] = $this->prepare_view_for_response( $item, $request );
 		}
 
-		return new WP_REST_Response( $data, 200 );
-
+		return new \WP_REST_Response( $data, 200 );
 	}
 
 	/**
@@ -99,16 +97,16 @@ class Views_Route extends Route {
 	/**
 	 * Prepare the item for the REST response
 	 *
-	 *  @todo ZACK - Use this as generic prepare for response or remove from usage
-	 *
 	 * @since 2.0
 	 * @param mixed $item WordPress representation of the item.
 	 * @param WP_REST_Request $request Request object.
 	 * @return mixed
 	 */
-	public function prepare_entry_for_response( $item, WP_REST_Request $request ) {
+	public function prepare_entry_for_response( $item, \WP_REST_Request $request ) {
+		$return = $item->as_entry();
 
-		$return = $item;
+		// @todo Prepare value for display
+		// @todo Set the labels!
 
 		// Remove empty field values, saves lots of space.
 		$return = array_filter( $return, 'gv_not_empty' );
@@ -129,33 +127,28 @@ class Views_Route extends Route {
 
 		$url     = $request->get_url_params();
 		$view_id = intval( $url['id'] );
-		$page    = $request->get_param( 'page' );
-		$limit   = GravityView_frontend::calculate_page_size( $request->get_param( 'limit' ) );
-		$offset  = GravityView_frontend::calculate_offset( $limit, $page );
+		$format  = \GV\Utils::get( $url, 'format', 'json' );
 
-		$form_id = gravityview_get_form_id( $view_id );
+		$view = \GV\View::by_id( $view_id );
 
-		$atts = array(
-			'id'        => $view_id,
-			'page_size' => $limit,
-			'offset'    => $offset,
-			'cache'     => false
-		);
-
-		GravityView_frontend::getInstance()->set_context_view_id( $view_id );
-
-		$data = GravityView_frontend::get_view_entries( $atts, $form_id );
-
-		if ( empty( $data ) ) {
-			return new WP_Error( 'gravityview-no-views', __( 'No Views found.', 'gravityview' ) ); //@todo message
+		if ( $format == 'html' ) {
+			$renderer = new \GV\View_Renderer();
+			return new \WP_REST_Response( $renderer->render( $view, new Request( $request ) ), 200 );
 		}
+
+		$entries = $view->get_entries( new Request( $request ) );
+
+		if ( ! $entries->all() ) {
+			return new \WP_Error( 'gravityview-no-entries', __( 'No Entries found.', 'gravityview' ) );
+		}
+
+		$data = array( 'entries' => $entries->all() );
 
 		foreach ( $data['entries'] as &$entry ) {
 			$entry = $this->prepare_entry_for_response( $entry, $request );
 		}
 
-		return new WP_REST_Response( $data, 200 );
-
+		return new \WP_REST_Response( $data, 200 );
 	}
 
 	/**
@@ -201,20 +194,16 @@ class Views_Route extends Route {
 	/**
 	 * Prepare the item for the REST response
 	 *
-	 * @todo ZACK - Use this as generic prepare for response or remove from usage
-	 *
 	 * @since 2.0
 	 * @param WP_Post $view_post WordPress representation of the item.
 	 * @param WP_REST_Request $request Request object.
 	 * @return mixed
 	 */
-	public function prepare_view_for_response( $view_post, $request ) {
+	public function prepare_view_for_response( $view_post, \WP_REST_Request $request ) {
 
-		$view_id = $view_post->ID;
+		$view = \GV\View::from_post( $view_post );
 
-		// TODO: Configure widget output to match spec
-		// https://docs.google.com/document/d/1n8nB96EK4zCMN9AE8FEzK5SiVG77Slfzkcj4JtSdZNE/edit#
-		$item = GravityView_View_Data::getInstance()->get_view( $view_id );
+		$item = $view->as_data();
 
 		// Add all the WP_Post data
 		$view_post = $view_post->to_array();
@@ -232,7 +221,7 @@ class Views_Route extends Route {
 			'page_size' => rgars( $return, 'settings/page_size' ),
 			'sort_field' => rgars( $return, 'settings/sort_field' ),
 			'sort_direction' => rgars( $return, 'settings/sort_direction' ),
-			'offset' => intval( $request->get_param('offset') ),
+			'offset' => rgars( $return, 'settings/offset' ),
 		);
 
 		unset( $return['settings']['page_size'], $return['settings']['sort_field'], $return['settings']['sort_direction'] );

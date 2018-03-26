@@ -6108,7 +6108,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			remove_filter( 'gravityview/template/field_label', array_shift( $callbacks ) ),
 			remove_filter( 'gravityview/template/field/label', array_shift( $callbacks ) ),
 		);
-		
+
 		$this->assertNotContains( false, $removed );
 		$this->assertEmpty( $callbacks );
 
@@ -6117,7 +6117,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		}
 
 		$view->settings->update( array( 'hide_until_searched' => true ) );
-		
+
 		add_filter( 'gravitview_no_entries_text', $callbacks []= function( $text, $is_search ) {
 			return "{{ gravitview_no_entries_text }}$text";
 		}, 10, 2 );
@@ -6494,7 +6494,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			remove_filter( 'gravityview_field_output', array_shift( $callbacks ) ),
 			remove_filter( 'gravityview/field_output/html', array_shift( $callbacks ) ),
 		);
-		
+
 		$this->assertNotContains( false, $removed );
 		$this->assertEmpty( $callbacks );
 	}
@@ -6613,7 +6613,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			remove_filter( 'gravityview/template/field/textarea/output', array_shift( $callbacks ) ),
 			remove_filter( 'gravityview/template/field/output', array_shift( $callbacks ) ),
 		);
-		
+
 		$this->assertNotContains( false, $removed );
 		$this->assertEmpty( $callbacks );
 	}

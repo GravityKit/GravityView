@@ -140,4 +140,5 @@ abstract class Request {
 /** Load implementations. */
 require gravityview()->plugin->dir( 'future/includes/class-gv-request-frontend.php' );
 require gravityview()->plugin->dir( 'future/includes/class-gv-request-admin.php' );
+require gravityview()->plugin->dir( 'future/includes/rest/class-gv-request-rest.php' );
 require gravityview()->plugin->dir( 'future/includes/class-gv-request-mock.php' );
