@@ -73,6 +73,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		// add template path to check for field
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
+		add_filter( 'gravityview/template/fields_template_paths', array( $this, 'add_template_path' ) );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts') );
 		add_action( 'gravityview/field/notes/scripts', array( $this, 'enqueue_scripts' ) );
@@ -461,9 +462,12 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 * @param object $note Note object with id, user_id, date_created, value, note_type, user_name, user_email vars
 	 * @param bool $show_delete Whether to show the bulk delete inputs
 	 *
+	 * @since 2.0
+	 * @param \GV\Template_Context $context The context.
+	 *
 	 * @return string HTML
 	 */
-	static public function display_note( $note, $show_delete = false ) {
+	static public function display_note( $note, $show_delete = false, $context = null ) {
 
 		if( ! is_object( $note ) ) {
 			return '';
@@ -488,22 +492,30 @@ class GravityView_Field_Notes extends GravityView_Field {
 		 * @param array $note_content Array of note content that will be replaced in template files
 		 * @param object $note Note object with id, user_id, date_created, value, note_type, user_name, user_email vars
 		 * @param boolean $show_delete True: Notes are editable. False: no editing notes.
+		 * @since 2.0
+		 * @param \GV\Template_Context $context The context.
 		 */
-		$note_content = apply_filters( 'gravityview/field/notes/content', $note_content, $note, $show_delete );
+		$note_content = apply_filters( 'gravityview/field/notes/content', $note_content, $note, $show_delete, $context );
 
-		ob_start();
-		GravityView_View::getInstance()->get_template_part( 'note', 'detail' );
-		$note_detail_html = ob_get_clean();
+		$note_row_template = ( $show_delete && GVCommon::has_cap( 'gravityview_delete_entry_notes' ) ) ? 'row-editable' : 'row';
+
+		if ( $context instanceof \GV\Template_Context ) {
+			$note_detail_html = file_get_contents( $context->template->get_template_part( 'note', 'detail' ) );
+			$note_row = file_get_contents( $context->template->get_template_part( 'note', $note_row_template ) );
+		} else {
+			/** @deprecated path */
+			ob_start();
+			GravityView_View::getInstance()->get_template_part( 'note', 'detail' );
+			$note_detail_html = ob_get_clean();
+
+			ob_start();
+			GravityView_View::getInstance()->get_template_part( 'note', $note_row_template );
+			$note_row = ob_get_clean();
+		}
 
 		foreach ( $note_content as $tag => $value ) {
 			$note_detail_html = str_replace( '{' . $tag . '}', $value, $note_detail_html );
 		}
-
-		$note_row_template = ( $show_delete && GVCommon::has_cap( 'gravityview_delete_entry_notes' ) ) ? 'row-editable' : 'row';
-
-		ob_start();
-		GravityView_View::getInstance()->get_template_part( 'note', $note_row_template );
-		$note_row = ob_get_clean();
 
 		$replacements = array(
 			'{note_id}' => $note_content['note_id'],
@@ -552,30 +564,47 @@ class GravityView_Field_Notes extends GravityView_Field {
 	/**
 	 * Get the Add Note form HTML
 	 *
-	 * @todo Allow passing entry_id as a shortcode parameter to set entry from shortcode
-	 *
 	 * @since 1.17
+	 *
+	 * @since 2.0
+	 * @param array $atts Shortcode attributes for entry ID
+	 * @param \GV\Template_Context $context The context, when called outside of a shortcode
 	 *
 	 * @return string HTML of the Add Note form, or empty string if the user doesn't have the `gravityview_add_entry_notes` cap
 	 */
-	public static function get_add_note_part() {
+	public static function get_add_note_part( $atts, $context = null ) {
+
+		$atts = shortcode_atts( array( 'entry' => null ), $atts );
 
 		if( ! GVCommon::has_cap( 'gravityview_add_entry_notes' ) ) {
 			gravityview()->log->error( 'User does not have permission to add entry notes ("gravityview_add_entry_notes").' );
 			return '';
 		}
 
-		$gravityview_view = GravityView_View::getInstance();
+		if ( $context instanceof \GV\Template_Context ) {
+			$add_note_html = $context->template->get_template_part( 'note', 'add-note' );
+			$visibility_settings = $context->field->notes;
+			$entry = $context->entry->as_entry();
+		} else {
+			$gravityview_view = GravityView_View::getInstance();
 
-		ob_start();
-		$gravityview_view->get_template_part( 'note', 'add-note' );
-		$add_note_html = ob_get_clean();
+			ob_start();
+			$gravityview_view->get_template_part( 'note', 'add-note' );
+			$add_note_html = ob_get_clean();
+
+			$visibility_settings = $gravityview_view->getCurrentFieldSetting( 'notes' );
+
+			if ( $atts['entry'] ) {
+				$entry = GFAPI::get_entry( $entry_id );
+			}
+
+			if ( ! isset( $entry ) || ! $entry ) {
+				$entry = $gravityview_view->getCurrentEntry();
+			}
+		}
 
 		// Strip extra whitespace in template
 		$add_note_html = gravityview_strip_whitespace( $add_note_html );
-
-		$visibility_settings = $gravityview_view->getCurrentFieldSetting( 'notes' );
-		$entry = $gravityview_view->getCurrentEntry();
 		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
 		$nonce_field = wp_nonce_field( 'gv_note_add_' . $entry_slug, 'gv_note_add', false, false );
 

@@ -255,16 +255,19 @@ class GravityView_API {
 	 * @param array|string $passed_tag_atts Attributes to be added to the anchor tag, such as `title` or `rel`.
 	 * @param array $field_settings Array of field settings. Optional, but passed to the `gravityview_field_entry_link` filter
 	 *
+	 * @since 2.0
+	 * @param int $base_id The post or the view that this entry is linked from.
+	 *
 	 * @return string|null Returns HTML for an anchor link. Null if $entry isn't defined or is missing an ID.
 	 */
-	public static function entry_link_html( $entry = array(), $anchor_text = '', $passed_tag_atts = array(), $field_settings = array() ) {
+	public static function entry_link_html( $entry = array(), $anchor_text = '', $passed_tag_atts = array(), $field_settings = array(), $base_id = null ) {
 
 		if ( empty( $entry ) || ! is_array( $entry ) || ! isset( $entry['id'] ) ) {
 			gravityview()->log->debug( 'Entry not defined; returning null', array( 'data' => $entry ) );
 			return NULL;
 		}
 
-		$href = self::entry_link( $entry );
+		$href = self::entry_link( $entry, $base_id );
 
 		if( '' === $href ) {
 			return NULL;
@@ -570,6 +573,7 @@ class GravityView_API {
 		if ( ! empty( $entry ) && ! is_array( $entry ) ) {
 			$entry = GVCommon::get_entry( $entry );
 		} else if( empty( $entry ) ) {
+			// @deprecated path
 			$entry = GravityView_frontend::getInstance()->getEntry();
 		}
 
@@ -1139,9 +1143,11 @@ function gravityview_get_context() {
  * @since  1.2
  * @param  string $value    Field value passed by Gravity Forms. String of file URL, or serialized string of file URL array
  * @param  string $gv_class Field class to add to the output HTML
+ * @since  2.0
+ * @param  \GV\Template_Context $context The context
  * @return array           Array of file output, with `file_path` and `html` keys (see comments above)
  */
-function gravityview_get_files_array( $value, $gv_class = '' ) {
+function gravityview_get_files_array( $value, $gv_class = '', $context = null ) {
 	/** @define "GRAVITYVIEW_DIR" "../" */
 
 	if( !class_exists( 'GravityView_Field' ) ) {
@@ -1152,7 +1158,7 @@ function gravityview_get_files_array( $value, $gv_class = '' ) {
 		include_once( GRAVITYVIEW_DIR .'includes/fields/class-gravityview-field-fileupload.php' );
 	}
 
-	return GravityView_Field_FileUpload::get_files_array( $value, $gv_class );
+	return GravityView_Field_FileUpload::get_files_array( $value, $gv_class, $context );
 }
 
 /**

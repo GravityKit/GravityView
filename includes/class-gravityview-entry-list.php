@@ -70,10 +70,11 @@ class GravityView_Entry_List {
 
 	/**
 	 * The context this list is operating in.
-	 * @todo Deprecated this class altogether.
+	 * @todo Deprecate this class altogether.
+	 * @since 2.0
 	 * @var \GV\Template_Context
 	 */
-	private $template_context;
+	public $template_context;
 
 	/**
 	 * @param array $entries
@@ -81,6 +82,7 @@ class GravityView_Entry_List {
 	 * @param array $form
 	 * @param string $link_format
 	 * @param string $after_link
+	 * @since 2.0
 	 * @param \GV\Template_Context $template_context The context
 	 */
 	function __construct( $entries = array(), $post_id = 0, $form = array(), $link_format = '', $after_link = '', $context = '', $template_context = null ) {
@@ -182,7 +184,12 @@ class GravityView_Entry_List {
 		}
 
 		$output = '';
-		$current_entry = GravityView_View::getInstance()->getCurrentEntry();
+
+		if ( $this->template_context instanceof \GV\Template_Context ) {
+			$current_entry = $this->template_context->entry->as_entry();
+		} else {
+			$current_entry = GravityView_View::getInstance()->getCurrentEntry();
+		}
 
 		$output .= '<'. $this->wrapper_tag .'>';
 

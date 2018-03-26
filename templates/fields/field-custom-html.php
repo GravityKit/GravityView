@@ -25,6 +25,8 @@ if ( ! class_exists( 'GFFormDisplay' ) ) {
  * @param string $content HTML content of field
  *
  * @since 2.0
+ * @param \GV\Template_Context The gravityview template context instance.
+ * @since 2.0
  * @param stdClass The gravityview template context object.
  */
 $content = apply_filters( 'gravityview/fields/custom/content_before', $gravityview->field->content, $gravityview );
@@ -45,7 +47,7 @@ $content = GravityView_API::replace_variables( $content, $form, $entry, false, t
  * @param string $content HTML content of field
  *
  * @since 2.0
- * @param stdClass The gravityview template context object.
+ * @param \GV\Template_Context The gravityview template context instance.
  */
 if ( apply_filters( 'gravityview/fields/custom/decode_shortcodes', false, $content, $gravityview ) ) {
 	$content = GVCommon::decode_shortcodes( $content );
@@ -62,7 +64,7 @@ if ( ! empty( $gravityview->field->wpautop ) ) {
  * @param string $content HTML content of field
  *
  * @since 2.0
- * @param stdClass The gravityview template context object.
+ * @param \GV\Template_Context The gravityview template context instance.
  */
 $content = apply_filters( 'gravityview/fields/custom/content_after', $content, $gravityview );
 

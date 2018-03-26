@@ -2723,9 +2723,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'trim_words' => 4 ) );
-		/** This is a bad test, no entry link can be determined and the space is trimmed from the &hellip; */
-		$this->assertEquals( '<p>okay {entry_id} what happens&hellip;</p>' . "\n", $renderer->render( $field, $view, $form, $entry, $request ) );
-		GravityView_View::getInstance()->setViewId( $view->ID );
+
 		$expected = sprintf( '<p>okay {entry_id} what happens<a href="%s"> &hellip;</a></p>' . "\n", esc_attr( $entry->get_permalink( $view, $request ) ) );
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
@@ -3019,16 +3017,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'support@gravityview.co', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		remove_filter( 'gravityview_email_prevent_encrypt', '__return_true' );
-
-		add_filter( 'gravityview/fields/email/prevent_encrypt', '__return_true' );
-
-		$field->update_configuration( array( 'emailencrypt' => true ) );
-		$this->assertEquals( 'support@gravityview.co', $renderer->render( $field, $view, $form, $entry, $request ) );
-
-		remove_filter( 'gravityview/fields/email/prevent_encrypt', '__return_true' );
-
-		$this->assertContains( 'Email hidden; Javascript is required.', $renderer->render( $field, $view, $form, $entry, $request ) );
-		$this->assertNotContains( 'support@gravityview.co', $renderer->render( $field, $view, $form, $entry, $request ) );
 	}
 
 	/**
@@ -3273,7 +3261,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'5' => json_encode( array( 'https://one.jpg', 'https://two.mp3' ) ),
 		) );
-		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'settings' => array(
+				'lightbox' => false,
+			),
+		) );
 
 		$form = \GV\GF_Form::by_id( $form['id'] );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
@@ -3282,16 +3275,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$request = new \GV\Frontend_Request();
 		$renderer = new \GV\Field_Renderer();
 
-
 		$field = \GV\GF_Field::by_id( $form, '5' );
-
-		/** Still haunted by good ol' global state :( */
-		GravityView_View::getInstance()->setCurrentField( array(
-			'field' => $field->field,
-			'field_settings' => $field->as_configuration(),
-			'entry' => $entry->as_entry(),
-			'field_value' => $field->get_value( $view, $form, $entry ),
-		) );
 
 		$output = $renderer->render( $field, $view, $form, $entry, $request );
 
@@ -3307,14 +3291,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** No fancy rendering, just links, please? */
 
 		$field->update_configuration( array( 'link_to_file' => true ) );
-
-		/** Still haunted by good ol' global state :( */
-		GravityView_View::getInstance()->setCurrentField( array(
-			'field' => $field->field,
-			'field_settings' => $field->as_configuration(),
-			'entry' => $entry->as_entry(),
-			'field_value' => $field->get_value( $view, $form, $entry ),
-		) );
 
 		$expected = "<ul class='gv-field-file-uploads gv-field-{$form->ID}-5'>";
 		$expected .= '<li><a href="http://one.jpg" rel="noopener noreferrer" target="_blank">one.jpg</a></li><li><a href="http://two.mp3" rel="noopener noreferrer" target="_blank">two.mp3</a></li></ul>';
@@ -4381,8 +4357,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'\GravityView_frontend::gv_output_data' => \GravityView_View_Data::getInstance(),
 			'\GravityView_View::paging' => array( 'offset' => 0, 'page_size' => 20 ),
 			'\GravityView_View::sorting' => array( 'sort_field' => 'date_created', 'sort_direction' => 'ASC', 'is_numeric' => false ),
-			'wp_actions[loop_start]' => 0,
-			'wp_query::in_the_loop' => false,
+			'wp_actions[loop_start]' => 1,
+			'wp_query::in_the_loop' => true,
 			'\GravityView_frontend::post_id' => $post->ID,
 			'\GravityView_frontend::context_view_id' => $view->ID,
 			'\GravityView_View::atts' => $view->settings->as_atts(),
@@ -6615,8 +6591,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 			return "$output(__gravityview/template/field/output__)";
 		}, 10, 2 );
 
-		// @todo merge tags {entry_id}
-
 		$field = \GV\GF_Field::by_id( $form, '16' );
 		$field->show_as_link = true;
 		$template = new \GV\Field_HTML_Template( $field, $view, $view->form, $entry, $request );
@@ -6642,6 +6616,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		
 		$this->assertNotContains( false, $removed );
 		$this->assertEmpty( $callbacks );
+	}
+
+	public function test_field_value_filters_compat_specific() {
 	}
 }
 

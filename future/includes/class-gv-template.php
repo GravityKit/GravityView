@@ -29,6 +29,11 @@ abstract class Template extends \Gamajo_Template_Loader {
 	private static $data_stack = array();
 
 	/**
+	 * @var string The located template.
+	 */
+	public $located_template = '';
+
+	/**
 	 * General template initialization.
 	 *
 	 * Sets the $plugin_directory field.
