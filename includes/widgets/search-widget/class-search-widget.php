@@ -998,9 +998,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * @param array $search_fields Array of search filters with `key`, `label`, `value`, `type`, `choices` keys
 		 * @param GravityView_Widget_Search $this Current widget object
 		 * @param array $widget_args Args passed to this method. {@since 1.8}
+		 * @param \GV\Template_Context $context {@since 2.0}
 		 * @var array
 		 */
-		$gravityview_view->search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this, $widget_args );
+		$gravityview_view->search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this, $widget_args, $context );
 
 		$gravityview_view->search_layout = ! empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'horizontal';
 
