@@ -54,8 +54,8 @@ class Views_Route extends Route {
 			'paged' => $page,
 		) );
 
-		if( empty( $items ) ) {
-			return new WP_Error( 'gravityview-no-views', __( 'No Views found.', 'gravityview' ) ); //@todo message
+		if ( empty( $items ) ) {
+			return new \WP_Error( 'gravityview-no-views', __( 'No Views found.', 'gravityview' ) ); //@todo message
 		}
 
 		$data = array();
@@ -87,9 +87,9 @@ class Views_Route extends Route {
 		if ( $item && ! is_wp_error( $item ) ) {
 			$data = $this->prepare_view_for_response( $item, $request );
 
-			return new WP_REST_Response( $data, 200 );
+			return new \WP_REST_Response( $data, 200 );
 		}else{
-			return new WP_Error( 'code', sprintf( 'A View with ID #%d was not found.', $view_id ) ); //@todo message
+			return new \WP_Error( 'code', sprintf( 'A View with ID #%d was not found.', $view_id ) ); //@todo message
 		}
 
 	}
@@ -162,33 +162,6 @@ class Views_Route extends Route {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function get_sub_item( $request ) {
-
-		$url = $request->get_url_params();
-		$view_id = $url['id'];
-		$entry_slug_or_id = $url['s_id'];
-
-		/**
-		 * We need to set some information so that the search criteria is properly fetched.
-		 * This allows filtering out entries that shouldn't be included in the View results.
-		 * @see GVCommon::check_entry_display()
-		 * @see GVCommon::calculate_get_entries_criteria
-		 */
-		GravityView_frontend::getInstance()->set_context_view_id( $view_id );
-		GravityView_frontend::getInstance()->setIsGravityviewPostType( true );
-		GravityView_frontend::getInstance()->setSingleEntry( $entry_slug_or_id );
-
-		$item = GVCommon::get_entry( $entry_slug_or_id, true, true );
-
-		//return a response or error based on some conditional
-		if ( $item && ! is_wp_error( $item ) ) {
-
-			$data = $this->prepare_entry_for_response( $item, $request );
-
-			return new WP_REST_Response( $data, 200 );
-		}else{
-			return new WP_Error( 'code', __('You have attempted to view an entry that is not visible or may not exist.', 'gravityview' ) ); //@todo message
-		}
-
 	}
 
 	/**
