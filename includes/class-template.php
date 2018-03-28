@@ -884,7 +884,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		// Prevent being called twice
 		if ( did_action( "gravityview/widgets/$zone/{$view->ID}/rendered" ) ) {
-			gravityview()->log->debug( 'Not rendering {zone}; already rendered', array( 'zone' => $zone.'_'.$view_id.'_widgets' ) );
+			gravityview()->log->debug( 'Not rendering {zone}; already rendered', array( 'zone' => $zone.'_'.$view->ID.'_widgets' ) );
 			return;
 		}
 

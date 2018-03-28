@@ -60,7 +60,11 @@ class GravityView_Migrate {
 			return;
 		}
 
-		$table_name = GFFormsModel::get_lead_meta_table_name();
+		if ( version_compare( GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) ) {
+			$table_name = GFFormsModel::get_entry_meta_table_name();
+		} else {
+			$table_name = GFFormsModel::get_lead_meta_table_name();
+		}
 
 		$sql = "UPDATE {$table_name} SET `meta_value` = %s WHERE `meta_key` = 'is_approved' AND `meta_value` = %s";
 
