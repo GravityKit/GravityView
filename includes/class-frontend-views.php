@@ -793,7 +793,7 @@ class GravityView_frontend {
 		/**
 		 * Compatibility with filters hooking in `gravityview_search_criteria` instead of `gravityview_fe_search_criteria`.
 		 */
-		$criteria = apply_filters( 'gravityview_search_criteria', array(), array( $form_id ), $args['id'] );
+		$criteria = apply_filters( 'gravityview_search_criteria', array(), array( $form_id ), \GV\Utils::get( $args, 'id' ) );
 		$search_criteria = isset( $criteria['search_criteria'] ) ? $criteria['search_criteria'] : array( 'field_filters' => array() );
 
 		/**
@@ -981,7 +981,7 @@ class GravityView_frontend {
 		 * @param array $parameters Array with `search_criteria`, `sorting` and `paging` keys.
 		 * @param array $args View configuration args.
 		 */
-		$parameters = apply_filters( 'gravityview_get_entries_'.$args['id'], $parameters, $args, $form_id );
+		$parameters = apply_filters( 'gravityview_get_entries_'.\GV\Utils::get( $args, 'id' ), $parameters, $args, $form_id );
 
 		gravityview()->log->debug( '$parameters passed to gravityview_get_entries(): ', array( 'data' => $parameters ) );
 

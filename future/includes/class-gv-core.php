@@ -218,6 +218,9 @@ final class Core {
 		/** Magic. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-wrappers.php' );
 
+		/** Cache busting. */
+		add_action( 'clean_post_cache', '\GV\View::_flush_cache' );
+
 		/**
 		 * @action `gravityview/loaded` The core has been loaded.
 		 *
