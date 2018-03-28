@@ -46,8 +46,8 @@ class Views_Route extends Route {
 	 */
 	public function get_items( $request ) {
 
-		$page = $request->get_param( 'paging[current_page]' );
-		$limit = $request->get_param( 'paging[page_size]' );
+		$page = $request->get_param( 'page' );
+		$limit = $request->get_param( 'limit' );
 
 		$items = \GVCommon::get_all_views( array(
 			'posts_per_page' => $limit,
@@ -58,9 +58,12 @@ class Views_Route extends Route {
 			return new \WP_Error( 'gravityview-no-views', __( 'No Views found.', 'gravityview' ) ); //@todo message
 		}
 
-		$data = array();
+		$data = array(
+			'views' => array(),
+			'total' => wp_count_posts( 'gravityview' )->publish,
+		);
 		foreach ( $items as $item ) {
-			$data[] = $this->prepare_view_for_response( $item, $request );
+			$data['views'][] = $this->prepare_view_for_response( $item, $request );
 		}
 
 		return new \WP_REST_Response( $data, 200 );
@@ -142,7 +145,7 @@ class Views_Route extends Route {
 			return new \WP_Error( 'gravityview-no-entries', __( 'No Entries found.', 'gravityview' ) );
 		}
 
-		$data = array( 'entries' => $entries->all() );
+		$data = array( 'entries' => $entries->all(), 'total' => $entries->total() );
 
 		foreach ( $data['entries'] as &$entry ) {
 			$entry = $this->prepare_entry_for_response( $entry, $request );

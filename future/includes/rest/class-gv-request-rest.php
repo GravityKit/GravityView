@@ -27,8 +27,8 @@ class Request extends \GV\Request {
 	public function get_paging() {
 		return array(
 			'paging' => array(
-				'page_size' => $this->request->get_param( 'paging[page_size]' ),
-				'current_page' => $this->request->get_param( 'paging[current_page]' ),
+				'page_size' => $this->request->get_param( 'limit' ),
+				'current_page' => $this->request->get_param( 'page' ),
 			),
 		);
 	}

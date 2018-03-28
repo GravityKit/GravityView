@@ -30,7 +30,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$response = rest_get_server()->dispatch( $request );
 		$data     = $response->get_data();
 
-		$this->assertEquals( array( 'paging[current_page]', 'paging[page_size]' ), array_keys( $data['endpoints'][0]['args'] ) );
+		$this->assertEquals( array( 'page', 'limit' ), array_keys( $data['endpoints'][0]['args'] ) );
 
 		$form = $this->factory->form->create_and_get();
 		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
@@ -50,7 +50,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$response = rest_get_server()->dispatch( $request );
 		$data     = $response->get_data();
 
-		$this->assertEquals( array( 'paging[current_page]', 'paging[page_size]' ), array_keys( $data['endpoints'][0]['args'] ) );
+		$this->assertEquals( array( 'page', 'limit' ), array_keys( $data['endpoints'][0]['args'] ) );
 
 		$request  = new WP_REST_Request( 'OPTIONS', '/gravityview/v1/views/' . $view->ID . '/entries/' . $entry['id'] );
 		$response = rest_get_server()->dispatch( $request );
@@ -83,25 +83,27 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views' );
 		$request->set_query_params( array(
-			'paging[page_size]' => 1,
-			'paging[current_page]' => 1,
+			'limit' => 1,
+			'page' => 1,
 		) );
 		$response = rest_get_server()->dispatch( $request );
 
 		$views = $response->get_data();
-		$this->assertCount( 1, $views );
-		$this->assertEquals( $view3->ID, $views[0]['ID'] );
+		$this->assertCount( 1, $views['views'] );
+		$this->assertEquals( 3, $views['total'] );
+		$this->assertEquals( $view3->ID, $views['views'][0]['ID'] );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views' );
 		$request->set_query_params( array(
-			'paging[page_size]' => 2,
-			'paging[current_page]' => 2,
+			'limit' => 2,
+			'page' => 2,
 		) );
 		$response = rest_get_server()->dispatch( $request );
 
 		$views = $response->get_data();
-		$this->assertCount( 1, $views );
-		$this->assertEquals( $view->ID, $views[0]['ID'] );
+		$this->assertCount( 1, $views['views'] );
+		$this->assertEquals( 3, $views['total'] );
+		$this->assertEquals( $view->ID, $views['views'][0]['ID'] );
 
 		// Entries
 		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
@@ -122,24 +124,26 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries' );
 		$request->set_query_params( array(
-			'paging[page_size]' => 1,
-			'paging[current_page]' => 1,
+			'limit' => 1,
+			'page' => 1,
 		) );
 		$response = rest_get_server()->dispatch( $request );
 
 		$entries = $response->get_data();
 		$this->assertCount( 1, $entries['entries'] );
+		$this->assertEquals( 3, $entries['total'] );
 		$this->assertEquals( $entry2['id'], $entries['entries'][0]['id'] );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.json' );
 		$request->set_query_params( array(
-			'paging[page_size]' => 2,
-			'paging[current_page]' => 2,
+			'limit' => 2,
+			'page' => 2,
 		) );
 		$response = rest_get_server()->dispatch( $request );
 
 		$entries = $response->get_data();
-		$this->assertCount( 1, $entries );
+		$this->assertCount( 1, $entries['entries'] );
+		$this->assertEquals( 3, $entries['total'] );
 		$this->assertEquals( $entry['id'], $entries['entries'][0]['id'] );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.html' );

@@ -49,11 +49,11 @@ abstract class Route extends \WP_REST_Controller {
 				'callback'        => array( $this, 'get_items' ),
 				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 				'args'            => array(
-					'paging[current_page]' => array(
+					'page' => array(
 						'default' => 1,
 						'sanitize_callback' => 'absint'
 					),
-					'paging[page_size]' => array(
+					'limit' => array(
 						'default' => 10,
 						'sanitize_callback' => 'absint'
 					)
@@ -104,11 +104,11 @@ abstract class Route extends \WP_REST_Controller {
 				'callback'        => array( $this, 'get_sub_items' ),
 				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 				'args'            => array(
-					'paging[current_page]' => array(
+					'page' => array(
 						'default' => 1,
 						'sanitize_callback' => 'absint'
 					),
-					'paging[page_size]' => array(
+					'limit' => array(
 						'default' => 10,
 						'sanitize_callback' => 'absint'
 					)
