@@ -58,6 +58,16 @@ class View implements \ArrayAccess {
 	public $fields;
 
 	/**
+	 * @var array
+	 *
+	 * Internal static cache for gets, and whatnot.
+	 * This is not persistent, resets across requests.
+
+	 * @internal
+	 */
+	private static $cache = array();
+
+	/**
 	 * The constructor.
 	 */
 	public function __construct() {
@@ -335,6 +345,10 @@ class View implements \ArrayAccess {
 			return null;
 		}
 
+		if ( $view = Utils::get( self::$cache, "View::from_post:{$post->ID}" ) ) {
+			return $view;
+		}
+
 		$view = new self();
 		$view->post = $post;
 
@@ -405,7 +419,24 @@ class View implements \ArrayAccess {
 			'id' => $view->ID,
 		) );
 
+		self::$cache[ "View::from_post:{$post->ID}" ] = &$view;
+
 		return $view;
+	}
+
+	/**
+	 * Flush the view cache.
+	 *
+	 * @param int $view_id The View to reset cache for. Optional. Default: resets everything.
+	 *
+	 * @internal
+	 */
+	public static function _flush_cache( $view_id = null ) {
+		if ( $view_id ) {
+			unset( self::$cache[ "View::from_post:$view_id" ] );
+			return;
+		}
+		self::$cache = array();
 	}
 
 	/**

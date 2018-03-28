@@ -38,6 +38,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$wp_query = new WP_Query();
 		$post = null;
 
+		\GV\View::_flush_cache();
+
 		set_current_screen( 'front' );
 		wp_set_current_user( 0 );
 	}
@@ -1244,6 +1246,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$logged_in_count = count( $view_data['fields']['directory_table-columns'] );
 
 		wp_set_current_user( 0 );
+
+		\GV\View::_flush_cache();
 
 		$view = \GV\View::from_post( $post );
 		$view_data = $view->as_data();
