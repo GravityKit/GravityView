@@ -205,6 +205,9 @@ abstract class Extension {
 	 * @return boolean Is the extension supported?
 	 */
 	protected function is_extension_supported() {
+
+		self::$is_compatible = is_array( self::$is_compatible ) ? self::$is_compatible : array( get_called_class() => (bool) self::$is_compatible );
+
 		if ( ! function_exists( 'gravityview' ) ) {
 			$message = sprintf( __( 'Could not activate the %s Extension; GravityView is not active.', 'gravityview' ), $this->_title );
 		} else if ( false === version_compare( Plugin::$version, $this->_min_gravityview_version , ">=" ) ) {
