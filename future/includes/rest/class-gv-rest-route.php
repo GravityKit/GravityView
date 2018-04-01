@@ -102,7 +102,7 @@ abstract class Route extends \WP_REST_Controller {
 			array(
 				'methods'         => \WP_REST_Server::READABLE,
 				'callback'        => array( $this, 'get_sub_items' ),
-				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				'permission_callback' => array( $this, 'get_sub_items_permissions_check' ),
 				'args'            => array(
 					'page' => array(
 						'default' => 1,
@@ -117,7 +117,7 @@ abstract class Route extends \WP_REST_Controller {
 			array(
 				'methods'         => \WP_REST_Server::CREATABLE,
 				'callback'        => array( $this, 'create_sub_item' ),
-				'permission_callback' => array( $this, 'create_item_permissions_check' ),
+				'permission_callback' => array( $this, 'create_sub_item_permissions_check' ),
 				'args'     => $this->create_sub_item_args()
 			),
 		) );
@@ -125,7 +125,7 @@ abstract class Route extends \WP_REST_Controller {
 			array(
 				'methods'         => \WP_REST_Server::READABLE,
 				'callback'        => array( $this, 'get_sub_item' ),
-				'permission_callback' => array( $this, 'get_item_permissions_check' ),
+				'permission_callback' => array( $this, 'get_sub_item_permissions_check' ),
 				'args'            => array(
 					'context'          => array(
 						'default'      => 'view',
@@ -135,13 +135,13 @@ abstract class Route extends \WP_REST_Controller {
 			array(
 				'methods'         => \WP_REST_Server::EDITABLE,
 				'callback'        => array( $this, 'update_sub_item' ),
-				'permission_callback' => array( $this, 'update_item_permissions_check' ),
+				'permission_callback' => array( $this, 'update_sub_item_permissions_check' ),
 				'args'     => $this->update_sub_item_args()
 			),
 			array(
 				'methods'  => \WP_REST_Server::DELETABLE,
 				'callback' => array( $this, 'delete_sub_item' ),
-				'permission_callback' => array( $this, 'delete_item_permissions_check' ),
+				'permission_callback' => array( $this, 'delete_sub_item_permissions_check' ),
 				'args'     => array(
 					'force'    => array(
 						'default'      => false,
@@ -255,9 +255,6 @@ abstract class Route extends \WP_REST_Controller {
 	 */
 	public function get_sub_item( $request ) {
 		return $this->not_implemented();
-
-		//get parameters from request
-		$params = $request->get_params();
 	}
 
 	/**
@@ -297,8 +294,7 @@ abstract class Route extends \WP_REST_Controller {
 	 * @return WP_Error|bool
 	 */
 	public function get_items_permissions_check( $request ) {
-		return true;
-
+		return $this->not_implemented();
 	}
 
 	/**
@@ -308,7 +304,7 @@ abstract class Route extends \WP_REST_Controller {
 	 * @return WP_Error|bool
 	 */
 	public function get_item_permissions_check( $request ) {
-		return $this->get_items_permissions_check( $request );
+		return $this->not_implemented();
 	}
 
 	/**
@@ -318,7 +314,7 @@ abstract class Route extends \WP_REST_Controller {
 	 * @return WP_Error|bool
 	 */
 	public function create_item_permissions_check( $request ) {
-		return current_user_can( 'edit_something' );
+		return $this->not_implemented();
 	}
 
 	/**
@@ -328,7 +324,7 @@ abstract class Route extends \WP_REST_Controller {
 	 * @return WP_Error|bool
 	 */
 	public function update_item_permissions_check( $request ) {
-		return $this->create_item_permissions_check( $request );
+		return $this->not_implemented();
 	}
 
 	/**
@@ -338,7 +334,7 @@ abstract class Route extends \WP_REST_Controller {
 	 * @return WP_Error|bool
 	 */
 	public function delete_item_permissions_check( $request ) {
-		return $this->create_item_permissions_check( $request );
+		return $this->not_implemented();
 	}
 
 	/**
@@ -349,7 +345,7 @@ abstract class Route extends \WP_REST_Controller {
 	 * @return WP_Error|object $prepared_item
 	 */
 	protected function prepare_item_for_database( $request ) {
-		return array();
+		return $this->not_implemented();
 	}
 
 	/**
@@ -363,7 +359,7 @@ abstract class Route extends \WP_REST_Controller {
 	 * @return mixed
 	 */
 	public function prepare_item_for_response( $item, $request ) {
-		return array();
+		return $this->not_implemented();
 	}
 
 
@@ -374,26 +370,8 @@ abstract class Route extends \WP_REST_Controller {
 	 * @return WP_REST_Response
 	 */
 	protected function not_implemented(  ) {
-		$error = new WP_Error( 'not-implemented-yet', __( 'Endpoint Not Yet Implemented.', 'gravityview' )  );
-		return new WP_REST_Response( $error, 501 );
-	}
-
-
-	/**
-	 * Utility sanatizer for strings
-	 *
-	 * @todo get rid of this since it's not being used?
-	 *
-	 * @since 2.0
-	 * @param mixed $value
-	 * @return string
-	 */
-	public function safe_string( $value) {
-		if ( ! is_string( $value ) ) {
-			return '';
-		}
-
-		return trim( strip_tags( $value ) );
+		$error = new \WP_Error( 'not-implemented-yet', __( 'Endpoint Not Yet Implemented.', 'gravityview' )  );
+		return new \WP_REST_Response( $error, 501 );
 	}
 
 	/**
@@ -413,20 +391,6 @@ abstract class Route extends \WP_REST_Controller {
 			'update_sub_item_args'
 		) ) ) {
 			return array();
-		}
-	}
-
-	/**
-	 * Ensure a boolen is a boolean
-	 *
-	 * @since 2.0
-	 * @param $value
-	 *
-	 * @return bool
-	 */
-	public function validate_boolean( $value ) {
-		if ( in_array( $value, array( true, false, 'TRUE', 'FALSE', 'true', 'false', 1, 0, '1', '0' ) ) ) {
-			return true;
 		}
 	}
 }

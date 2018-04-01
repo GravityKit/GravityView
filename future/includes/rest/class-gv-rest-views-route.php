@@ -89,12 +89,10 @@ class Views_Route extends Route {
 		//return a response or error based on some conditional
 		if ( $item && ! is_wp_error( $item ) ) {
 			$data = $this->prepare_view_for_response( $item, $request );
-
 			return new \WP_REST_Response( $data, 200 );
-		}else{
-			return new \WP_Error( 'code', sprintf( 'A View with ID #%d was not found.', $view_id ) ); //@todo message
 		}
 
+		return new \WP_Error( 'code', sprintf( 'A View with ID #%d was not found.', $view_id ) );
 	}
 
 	/**
@@ -112,7 +110,7 @@ class Views_Route extends Route {
 
 		// Only output the fields that should be displayed.
 		$allowed = array();
-		foreach ( $view->fields->by_visible()->by_position( "{$context}_*" )->all() as $field ) {
+		foreach ( $view->fields->by_position( "{$context}_*" )->by_visible()->all() as $field ) {
 			$allowed[] = $field->ID;
 		}
 
@@ -132,11 +130,16 @@ class Views_Route extends Route {
 			}
 		}
 
-		// @todo Prepare the remaining values for display
-		// @todo Set the labels!
+		$r = new Request( $request );
 
-		// Remove empty field values, saves lots of space.
-		$return = array_filter( $return, 'gv_not_empty' );
+		foreach ( $allowed as $field ) {
+			$source = is_numeric( $field ) ? $view->form : new \GV\Internal_Source();
+			$field  = is_numeric( $field ) ? \GV\GF_Field::by_id( $view->form, $field ) : \GV\Internal_Field::by_id( $field );
+
+			$return[ $field->ID ] = $field->get_value( $view, $source, $entry, $r );
+		}
+
+		// @todo Set the labels!
 
 		return $return;
 	}
@@ -189,6 +192,20 @@ class Views_Route extends Route {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function get_sub_item( $request ) {
+		$url      = $request->get_url_params();
+		$view_id  = intval( $url['id'] );
+		$entry_id = intval( $url['s_id'] );
+		$format   = \GV\Utils::get( $url, 'format', 'json' );
+
+		$view  = \GV\View::by_id( $view_id );
+		$entry = \GV\GF_Entry::by_id( $entry_id );
+
+		if ( $format == 'html' ) {
+			$renderer = new \GV\Entry_Renderer();
+			return $renderer->render( $entry, $view, new Request( $request ) );
+		}
+
+		return $this->prepare_entry_for_response( $view, $entry, $request, 'single' );
 	}
 
 	/**
@@ -200,6 +217,10 @@ class Views_Route extends Route {
 	 * @return mixed
 	 */
 	public function prepare_view_for_response( $view_post, \WP_REST_Request $request ) {
+		if ( is_wp_error( $this->get_item_permissions_check( $request, $view_post->ID ) ) ) {
+			// Redacted out view.
+			return array( 'ID' => $view_post->ID, 'post_content' => __( 'You are not allowed to access this content.', 'gravityview' ) );
+		}
 
 		$view = \GV\View::from_post( $view_post );
 
@@ -227,5 +248,87 @@ class Views_Route extends Route {
 		unset( $return['settings']['page_size'], $return['settings']['sort_field'], $return['settings']['sort_direction'] );
 
 		return $return;
+	}
+
+	public function get_item_permissions_check( $request ) {
+		if ( func_num_args() == 2 ) {
+			$view_id = func_get_arg( 1 ); // $view_id override
+		} else {
+			$url     = $request->get_url_params();
+			$view_id = intval( $url['id'] );
+		}
+
+		if ( ! $view = \GV\View::by_id( $view_id ) ) {
+			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+		}
+
+		if ( post_password_required( $view->ID ) ) {
+			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+		}
+
+		$public_states = get_post_stati( array( 'public' => true ) );
+		if ( ! in_array( $view->post_status, $public_states ) && ! \GVCommon::has_cap( 'read_gravityview', $view->ID ) ) {
+			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+		}
+
+		// Shortcodes only
+		$direct_access = apply_filters( 'gravityview_direct_access', true, $view->ID );
+		if ( ! apply_filters( 'gravityview/view/output/direct', $direct_access, $view, $request ) ) {
+			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+		}
+
+		// Embed only
+		if ( $view->settings->get( 'embed_only' ) && ! \GVCommon::has_cap( 'read_private_gravityviews' ) ) {
+			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+		}
+
+		return true;
+	}
+
+	public function get_sub_item_permissions_check( $request ) {
+		// Accessing a single entry needs the View access permissions.
+		if ( is_wp_error( $error = $this->get_items_permissions_check( $request ) ) ) {
+			return $error;
+		}
+
+		$url     = $request->get_url_params();
+		$view_id = intval( $url['id'] );
+		$entry_id = intval( $url['s_id'] );
+
+		$view = \GV\View::by_id( $view_id );
+
+		if ( ! $entry = \GV\GF_Entry::by_id( $entry_id ) ) {
+			return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
+		}
+
+		if ( $entry['form_id'] != $view->form->ID ) {
+			return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
+		}
+
+		if ( $entry['status'] != 'active' ) {
+			return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
+		}
+
+		if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $entry->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
+			return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
+		}
+
+		if ( $view->settings->get( 'show_only_approved' ) ) {
+			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
+				return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
+			}
+		}
+
+		return true;
+	}
+
+	public function get_items_permissions_check( $request ) {
+		// Getting a list of all Views is always possible.
+		return true;
+	}
+
+	public function get_sub_items_permissions_check( $request ) {
+		// Accessing all entries of a View needs the same permissions as accessing the View.
+		return $this->get_item_permissions_check( $request );
 	}
 }

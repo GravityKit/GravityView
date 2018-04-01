@@ -131,7 +131,6 @@ class gravityview extends \GV\Shortcode {
 		 * Just this view.
 		 */
 		} else {
-			/** @todo protection! */
 			$renderer = new \GV\View_Renderer();
 			return $renderer->render( $view, $request );
 		}
