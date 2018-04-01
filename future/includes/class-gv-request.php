@@ -58,12 +58,12 @@ abstract class Request {
 	}
 
 	/**
-	 * Is this a REST request?
+	 * Is this a REST request? Call after parse_request.
 	 *
 	 * @return boolean
 	 */
 	public static function is_rest() {
-		return defined( 'REST_REQUEST' ) && REST_REQUEST;
+		return ! empty( $GLOBALS['wp']->query_vars['rest_route'] );
 	}
 
 	/**
