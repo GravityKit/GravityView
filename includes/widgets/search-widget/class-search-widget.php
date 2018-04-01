@@ -506,7 +506,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$visible_fields = array();
 
 		if ( $view ) {
-			foreach ( $view->fields->all() as $field ) {
+			foreach ( $view->fields->by_visible()->by_position( 'directory_*' )->all() as $field ) {
 				$visible_fields []= $field->ID;
 			}
 		}

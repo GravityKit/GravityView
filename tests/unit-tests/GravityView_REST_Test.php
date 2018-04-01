@@ -122,6 +122,11 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 			'2' => -100,
 		) );
 
+		add_filter( 'gravityview/rest/entry/fields', $callback = function( $allowed ) {
+			$allowed[] = 'ip';
+			return $allowed;
+		} );
+
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries' );
 		$request->set_query_params( array(
 			'limit' => 1,
@@ -129,10 +134,13 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		) );
 		$response = rest_get_server()->dispatch( $request );
 
+		remove_filter( 'gravityview/rest/entry/fields', $callback );
+
 		$entries = $response->get_data();
 		$this->assertCount( 1, $entries['entries'] );
 		$this->assertEquals( 3, $entries['total'] );
 		$this->assertEquals( $entry2['id'], $entries['entries'][0]['id'] );
+		$this->assertEqualSets( array( 'id', 1, 'ip' ), array_keys( $entries['entries'][0] ) );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.json' );
 		$request->set_query_params( array(

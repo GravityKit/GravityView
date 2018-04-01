@@ -101,14 +101,38 @@ class Views_Route extends Route {
 	 * Prepare the item for the REST response
 	 *
 	 * @since 2.0
-	 * @param mixed $item WordPress representation of the item.
+	 * @param \GV\View $view The view.
+	 * @param \GV\Entry $entry WordPress representation of the item.
 	 * @param WP_REST_Request $request Request object.
-	 * @return mixed
+	 * @param string $context The context (directory, single)
+	 * @return mixed The data that is sent.
 	 */
-	public function prepare_entry_for_response( $item, \WP_REST_Request $request ) {
-		$return = $item->as_entry();
+	public function prepare_entry_for_response( $view, $entry, \WP_REST_Request $request, $context ) {
+		$return = $entry->as_entry();
 
-		// @todo Prepare value for display
+		// Only output the fields that should be displayed.
+		$allowed = array();
+		foreach ( $view->fields->by_visible()->by_position( "{$context}_*" )->all() as $field ) {
+			$allowed[] = $field->ID;
+		}
+
+		/**
+		 * @filter `gravityview/rest/entry/fields` Whitelist more entry fields that are output in regular REST requests.
+		 * @param[in,out] array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the view.
+		 * @param \GV\View $view The view.
+		 * @param \GV\Entry $entry WordPress representation of the item.
+		 * @param WP_REST_Request $request Request object.
+		 * @param string $context The context (directory, single)
+		 */
+		$allowed = apply_filters( 'gravityview/rest/entry/fields', $allowed, $view, $entry, $request, $context );
+
+		foreach ( $return as $key => $value ) {
+			if ( ! in_array( $key, $allowed ) ) {
+				unset( $return[ $key ] );
+			}
+		}
+
+		// @todo Prepare the remaining values for display
 		// @todo Set the labels!
 
 		// Remove empty field values, saves lots of space.
@@ -148,7 +172,7 @@ class Views_Route extends Route {
 		$data = array( 'entries' => $entries->all(), 'total' => $entries->total() );
 
 		foreach ( $data['entries'] as &$entry ) {
-			$entry = $this->prepare_entry_for_response( $entry, $request );
+			$entry = $this->prepare_entry_for_response( $view, $entry, $request, 'directory' );
 		}
 
 		return new \WP_REST_Response( $data, 200 );
