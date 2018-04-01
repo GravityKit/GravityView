@@ -632,7 +632,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$filter_key = $this->convert_request_key_to_filter_key( $key );
 
 			// could return simple filter or multiple filters
-			if ( ! in_array( $filter_key , $searchable_fields ) ) {
+			if ( ! in_array( 'search_all', $searchable_fields ) && ! in_array( $filter_key , $searchable_fields ) ) {
 				continue;
 			}
 

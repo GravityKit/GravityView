@@ -164,6 +164,61 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertContains( 'set all the fields! 2', $html );
 	}
 
+	public function test_get_entries_filter() {
+		$form = $this->factory->form->create_and_get();
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+						'label' => 'Text',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+					),
+				),
+			),
+		) );
+
+		// Entries
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form['id'],
+			'1' => 'world',
+			'2' => -100,
+		) );
+		$entry1 = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form['id'],
+			'1' => 'hello world',
+			'2' => -100,
+		) );
+		$entry2 = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form['id'],
+			'1' => 'hello',
+			'2' => -100,
+		) );
+
+		$_GET['filter_1'] = 'hello';
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries' );
+		$response = rest_get_server()->dispatch( $request );
+
+		$entries = $response->get_data();
+		$this->assertCount( 1, $entries['entries'] );
+		$this->assertEquals( 1, $entries['total'] );
+		$this->assertEquals( $entry2['id'], $entries['entries'][0]['id'] );
+	}
+
 	public function test_get_item() {
 	}
 
