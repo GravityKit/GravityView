@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = 1.22.6 =
 
 * Fixed: Line breaks being added to `[gvlogic]` shortcode output
+* Fixed: Gravity Forms 2.3 compatibility notice
 
 __Developer Updates:__
 
