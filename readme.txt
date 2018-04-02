@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Fixed: Line breaks being added to `[gvlogic]` shortcode output
 * Fixed: Gravity Forms 2.3 compatibility notice
+* Fixed: "The ID is required." message when configuring the GravityView Search WordPress widget
 
 __Developer Updates:__
 
