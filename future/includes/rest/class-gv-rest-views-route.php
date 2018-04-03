@@ -163,7 +163,13 @@ class Views_Route extends Route {
 
 		if ( $format == 'html' ) {
 			$renderer = new \GV\View_Renderer();
-			return new \WP_REST_Response( $renderer->render( $view, new Request( $request ) ), 200 );
+			$total = 0;
+			add_action( 'gravityview/template/view/render', function( $context ) use ( &$total ) {
+				$total = $context->entries->count();
+			} );
+			$response = new \WP_REST_Response( $renderer->render( $view, new Request( $request ) ), 200 );
+			$response->header( 'X-Item-Count', $total );
+			return $response;
 		}
 
 		$entries = $view->get_entries( new Request( $request ) );

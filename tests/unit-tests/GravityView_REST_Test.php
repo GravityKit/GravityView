@@ -165,12 +165,21 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.html' );
 		$response = rest_get_server()->dispatch( $request );
 		$this->assertEquals( 200, $response->status );
+		$this->assertEquals( 3, $response->headers['X-Item-Count'] );
 
 		$html = $response->get_data();
 		$this->assertContains( 'gv-table-view', $html );
 		$this->assertContains( 'set all the fields!', $html );
 		$this->assertContains( 'set all the fields! 1', $html );
 		$this->assertContains( 'set all the fields! 2', $html );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.html' );
+		$request->set_query_params( array(
+			'page' => 99,
+		) );
+		$response = rest_get_server()->dispatch( $request );
+		$this->assertEquals( 200, $response->status );
+		$this->assertEquals( 0, $response->headers['X-Item-Count'] );
 	}
 
 	public function test_get_entries_filter() {
