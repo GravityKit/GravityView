@@ -116,7 +116,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		$instance['search_clear'] = $new_instance['search_clear'];
 		$instance['search_mode'] = $new_instance['search_mode'];
 
-		$is_valid_embed_id = GravityView_View_Data::is_valid_embed_id( $new_instance['post_id'], $instance['view_id'] );
+		$is_valid_embed_id = GravityView_View_Data::is_valid_embed_id( $new_instance['post_id'], $instance['view_id'], true );
 
 		//check if post_id is a valid post with embedded View
 		$instance['error_post_id'] = is_wp_error( $is_valid_embed_id ) ? $is_valid_embed_id->get_error_message() : NULL;

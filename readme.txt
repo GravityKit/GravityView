@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.4
-Tested up to: 4.9.1
+Tested up to: 4.9.5
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -19,6 +19,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 1.22.6 on April 4, 2018 =
+
+* Fixed: Line breaks being added to `[gvlogic]` shortcode output
+* Fixed: Gravity Forms 2.3 compatibility notice
+* Fixed: "The ID is required." message when configuring the GravityView Search WordPress widget
+* Fixed: Slashes were being added to Post Image details
+
+__Developer Updates:__
+
+* Added `gravityview/edit_entry/reveal_hidden_field` filter, which allows you to prevent Hidden fields from becoming Text fields in Edit Entry context
+* Added `gravityview/edit_entry/field_visibility` filter to set field visibility on Edit Entry (default is always "visible")
 
 = 1.22.5 on January 25, 2018 =
 
