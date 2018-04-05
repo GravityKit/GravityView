@@ -651,7 +651,7 @@ msgstr ""
 
 #: includes/class-admin-add-shortcode.php:111
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:322
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:188
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:191
 msgid "(no title)"
 msgstr ""
 
@@ -980,23 +980,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:486
+#: includes/class-admin-welcome.php:503
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:507
+#: includes/class-admin-welcome.php:524
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:542
+#: includes/class-admin-welcome.php:559
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:567
+#: includes/class-admin-welcome.php:584
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:568
+#: includes/class-admin-welcome.php:585
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1175,7 +1175,7 @@ msgstr ""
 
 #: includes/class-data.php:635
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:350
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:216
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:219
 msgid "Learn more&hellip;"
 msgstr ""
 
@@ -1386,7 +1386,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:140
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1957
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2001
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
@@ -1568,7 +1568,7 @@ msgid "Update Settings"
 msgstr ""
 
 #: includes/class-gravityview-settings.php:848
-#: includes/class-gv-license-handler.php:745
+#: includes/class-gv-license-handler.php:749
 msgid "You don't have the ability to edit plugin settings."
 msgstr ""
 
@@ -1593,9 +1593,9 @@ msgid ""
 msgstr ""
 
 #: includes/class-gravityview-settings.php:910
-#: includes/class-gv-license-handler.php:302
-#: includes/class-gv-license-handler.php:316
-#: includes/class-gv-license-handler.php:747
+#: includes/class-gv-license-handler.php:306
+#: includes/class-gv-license-handler.php:320
+#: includes/class-gv-license-handler.php:751
 msgid "Verifying license&hellip;"
 msgstr ""
 
@@ -1657,114 +1657,114 @@ msgstr ""
 msgid "You are running GravityView version %s"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:301
-#: includes/class-gv-license-handler.php:748
+#: includes/class-gv-license-handler.php:305
+#: includes/class-gv-license-handler.php:752
 msgid "Activate License"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:308
-#: includes/class-gv-license-handler.php:749
+#: includes/class-gv-license-handler.php:312
+#: includes/class-gv-license-handler.php:753
 msgid "Deactivate License"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:309
+#: includes/class-gv-license-handler.php:313
 msgid "Deactivating license&hellip;"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:315
+#: includes/class-gv-license-handler.php:319
 msgid "Check License"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:510
+#: includes/class-gv-license-handler.php:514
 msgid "License Details:"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:529
+#: includes/class-gv-license-handler.php:533
 msgid "Access your GravityView account"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:530
+#: includes/class-gv-license-handler.php:534
 msgid "This development site does not count toward license activation limits"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:532
+#: includes/class-gv-license-handler.php:536
 msgid "License level: %s"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:534
+#: includes/class-gv-license-handler.php:538
 msgid "Activations: %d of %s sites"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:535
+#: includes/class-gv-license-handler.php:539
 msgid "Renew on: %s"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:570
+#: includes/class-gv-license-handler.php:574
 msgid "Upgrades available:"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:587
+#: includes/class-gv-license-handler.php:591
 msgid "Get access to Extensions"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:591
+#: includes/class-gv-license-handler.php:595
 msgid "Get access to Entry Importer and other Premium plugins"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:733
+#: includes/class-gv-license-handler.php:737
 msgid "Status"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:734
+#: includes/class-gv-license-handler.php:738
 msgid "There was an error processing the request."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:735
+#: includes/class-gv-license-handler.php:739
 msgid ""
 "Could not deactivate the license. The license key you attempted to "
 "deactivate may not be active or valid."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:736
-#: includes/class-gv-license-handler.php:737
+#: includes/class-gv-license-handler.php:740
+#: includes/class-gv-license-handler.php:741
 msgid "The license key is valid, but it has not been activated for this site."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:738
+#: includes/class-gv-license-handler.php:742
 msgid "Invalid: this license has reached its activation limit."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:738
+#: includes/class-gv-license-handler.php:742
 msgid "You can manage license activations %son your GravityView account page%s."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:739
+#: includes/class-gv-license-handler.php:743
 msgid "The license has been deactivated."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:740
+#: includes/class-gv-license-handler.php:744
 msgid "The license key is valid and active."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:741
+#: includes/class-gv-license-handler.php:745
 msgid "The license key entered is invalid."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:742
+#: includes/class-gv-license-handler.php:746
 msgid "Invalid license key."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:743
+#: includes/class-gv-license-handler.php:747
 msgid "This license key has been revoked."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:744
+#: includes/class-gv-license-handler.php:748
 msgid ""
 "This license key has expired. %sRenew your license on the GravityView "
 "website%s to receive updates and support."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:750
+#: includes/class-gv-license-handler.php:754
 msgid "Verify License"
 msgstr ""
 
@@ -1890,27 +1890,27 @@ msgstr ""
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1441
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1446
 msgid "This email is already in use"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1448
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1453
 msgid "Usernames cannot be changed"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1513
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1518
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1951
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1995
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1961
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2005
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2001
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2045
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -2916,39 +2916,42 @@ msgid "Search form for searching entries."
 msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:44
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:243
 msgid "Search Layout"
 msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:47
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:246
 msgid "Horizontal"
 msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:48
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:250
 msgid "Vertical"
 msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:53
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:221
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:224
 msgid "Show Clear button"
 msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:65
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:227
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:230
 msgid "Search Mode"
 msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:66
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:236
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:239
 msgid "Should search results match all search fields, or any?"
 msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:70
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:230
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:233
 msgid "Match Any Fields"
 msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:71
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:234
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:237
 msgid "Match All Fields"
 msgstr ""
 
@@ -3006,23 +3009,23 @@ msgstr ""
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:988
+#: includes/widgets/search-widget/class-search-widget.php:999
 msgid "Search Entries:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:991
+#: includes/widgets/search-widget/class-search-widget.php:1002
 msgid "Filter by date:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:994
+#: includes/widgets/search-widget/class-search-widget.php:1005
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1110
+#: includes/widgets/search-widget/class-search-widget.php:1121
 msgid "Clear"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1176
+#: includes/widgets/search-widget/class-search-widget.php:1187
 msgid "Show a different month"
 msgstr ""
 
@@ -3057,12 +3060,12 @@ msgid "Recent Entries"
 msgstr ""
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:279
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:165
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:168
 msgid "Title:"
 msgstr ""
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:308
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:175
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:178
 msgid "Please select a View to search."
 msgstr ""
 
@@ -3071,12 +3074,12 @@ msgid "&mdash; Select a View as Entries Source &mdash;"
 msgstr ""
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:346
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:212
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:215
 msgid "If Embedded, Page ID:"
 msgstr ""
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:349
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:215
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:218
 msgid ""
 "To have a search performed on an embedded View, enter the ID of the post or "
 "page where the View is embedded."
@@ -3094,25 +3097,25 @@ msgstr ""
 msgid "GravityView Search"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:138
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:140
 msgid ""
 "This widget is not configurable from this screen. Please configure it on "
 "the %sWidgets page%s."
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:183
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:186
 msgid "View:"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:185
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:188
 msgid "&mdash; Select a View &mdash;"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:243
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:258
 msgid "Searchable fields:"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:244
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:259
 msgid "Search Fields"
 msgstr ""
 
@@ -3254,12 +3257,12 @@ msgctxt "gravityview"
 msgid "Show me beta versions if they are available."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:533
+#: includes/class-gv-license-handler.php:537
 msgctxt "1: Customer name; 2: Customer email"
 msgid "Licensed to: %1$s (%2$s)"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:578
+#: includes/class-gv-license-handler.php:582
 msgctxt "1: GravityView upgrade name, 2: Cost of upgrade"
 msgid "Upgrade to %1$s for %2$s"
 msgstr ""
@@ -3270,7 +3273,7 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1977
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2021
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
@@ -3304,27 +3307,27 @@ msgid ""
 "entries displayed in the View."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1171
+#: includes/widgets/search-widget/class-search-widget.php:1182
 msgctxt "Close calendar"
 msgid "Close"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1172
+#: includes/widgets/search-widget/class-search-widget.php:1183
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1173
+#: includes/widgets/search-widget/class-search-widget.php:1184
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1174
+#: includes/widgets/search-widget/class-search-widget.php:1185
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1175
+#: includes/widgets/search-widget/class-search-widget.php:1186
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
