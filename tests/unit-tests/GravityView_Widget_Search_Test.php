@@ -354,6 +354,20 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		    'gv_end' => '2018-04-07',
 		);
 
+		$view = $this->factory->view->create_and_get( array(
+			'fields' => array( '_' => array(
+				array( 'id' => '1.1' ),
+			) ),
+			'widgets' => array( '_' => array(
+				array(
+					'id' => 'search_bar',
+					'search_fields' => json_encode( array(
+						array( 'field' => 'entry_date' ),
+					) ),
+				),
+			) ),
+		) );
+
 		add_filter( 'pre_option_timezone_string', $callback = function() {
 			return 'Etc/GMT+0';
 		} );
@@ -365,7 +379,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 				'mode' => 'any',
 			),
 		);
-		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array() ) );
+		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
 
 		remove_filter( 'pre_option_timezone_string', $callback );
 
@@ -380,7 +394,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 				'mode' => 'any',
 			),
 		);
-		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array() ) );
+		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
 
 		remove_filter( 'pre_option_timezone_string', $callback );
 	}
