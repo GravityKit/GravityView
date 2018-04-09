@@ -566,7 +566,7 @@ class GravityView_API {
 	 * @param  array|int $entry   Entry array or entry ID
 	 * @param  int|null $post_id If wanting to define the parent post, pass a post ID
 	 * @param boolean $add_directory_args True: Add args to help return to directory; False: only include args required to get to entry {@since 1.7.3}
-	 * @return string          Link to the entry with the directory parent slug
+	 * @return string          Link to the entry with the directory parent slug, or empty string if embedded post or View doesn't exist
 	 */
 	public static function entry_link( $entry, $post_id = NULL, $add_directory_args = true ) {
 
