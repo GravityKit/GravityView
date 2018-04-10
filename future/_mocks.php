@@ -139,7 +139,7 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 	 * @deprecated
 	 * Do not use this filter anymore.
 	 */
-	$entries = apply_filters( 'gravityview_entries', $entries, $criteria, $parameters, $count );
+	$entries = apply_filters_ref_array( 'gravityview_entries', array( $entries, $criteria, $parameters, &$count ) );
 
 	return array( $entries, $paging, $count );
 }
