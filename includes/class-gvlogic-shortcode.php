@@ -66,7 +66,6 @@ class GVLogic_Shortcode {
 	 * The comparison operator
 	 * @var string
 	 */
-	var $operation = 'is';
 
 	/**
 	 * Does the comparison pass?
@@ -136,11 +135,6 @@ class GVLogic_Shortcode {
 	 *
 	 * @return bool True: it's an allowed operation type and was added. False: invalid operation type
 	 */
-	private function set_operation( $operation = '' ) {
-
-		if( empty( $operation ) ) {
-			return false;
-		}
 
 		$operators = $this->get_operators( false );
 
