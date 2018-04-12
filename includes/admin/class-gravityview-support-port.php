@@ -104,6 +104,7 @@ class GravityView_Support_Port {
 			'payment_id'       => '',
 			'customer_name'    => '',
 			'customer_email'   => '',
+            'price_id'         => '0',
 		) );
 
 		// This is just HTML we don't need.
