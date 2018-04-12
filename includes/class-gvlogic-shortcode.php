@@ -64,8 +64,11 @@ class GVLogic_Shortcode {
 
 	/**
 	 * The comparison operator
+	 * @since 1.21.5
+	 * @since 2.0 Changed default from "is" to "isnot"
 	 * @var string
 	 */
+	var $operation = 'isnot';
 
 	/**
 	 * Does the comparison pass?
@@ -135,6 +138,7 @@ class GVLogic_Shortcode {
 	 *
 	 * @return bool True: it's an allowed operation type and was added. False: invalid operation type
 	 */
+	private function set_operation( $operation = 'isnot' ) {
 
 		$operators = $this->get_operators( false );
 
@@ -158,6 +162,10 @@ class GVLogic_Shortcode {
 	 * @return bool True: we've got an operation and comparison value; False: no, we don't
 	 */
 	private function setup_operation_and_comparison() {
+
+		if ( empty( $this->atts ) ) {
+			return true;
+		}
 
 		foreach( $this->atts as $key => $value ) {
 
@@ -223,7 +231,23 @@ class GVLogic_Shortcode {
 		// Return the value!
 		$output = $this->get_output();
 
+		$this->reset();
+
 		return $output;
+	}
+
+	/**
+	 * Restore the original settings for the shortcode
+	 *
+	 * @since 2.0 Needed because $atts can now be empty
+	 *
+	 * @return void
+	 */
+	private function reset() {
+		$this->operation = 'isnot';
+		$this->comparison = '';
+		$this->passed_atts = array();
+		$this->passed_content = '';
 	}
 
 	/**
