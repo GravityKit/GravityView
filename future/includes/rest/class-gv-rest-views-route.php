@@ -41,8 +41,8 @@ class Views_Route extends Route {
 	 *
 	 * Callback for GET /v1/views/
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|WP_REST_Response
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function get_items( $request ) {
 
@@ -75,8 +75,8 @@ class Views_Route extends Route {
 	 * Callback for /v1/views/{id}/
 	 *
 	 * @since 2.0
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|WP_REST_Response
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function get_item( $request ) {
 
@@ -101,7 +101,7 @@ class Views_Route extends Route {
 	 * @since 2.0
 	 * @param \GV\View $view The view.
 	 * @param \GV\Entry $entry WordPress representation of the item.
-	 * @param WP_REST_Request $request Request object.
+	 * @param \WP_REST_Request $request Request object.
 	 * @param string $context The context (directory, single)
 	 * @return mixed The data that is sent.
 	 */
@@ -119,7 +119,7 @@ class Views_Route extends Route {
 		 * @param[in,out] array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the view.
 		 * @param \GV\View $view The view.
 		 * @param \GV\Entry $entry WordPress representation of the item.
-		 * @param WP_REST_Request $request Request object.
+		 * @param \WP_REST_Request $request Request object.
 		 * @param string $context The context (directory, single)
 		 */
 		$allowed = apply_filters( 'gravityview/rest/entry/fields', $allowed, $view, $entry, $request, $context );
@@ -150,8 +150,8 @@ class Views_Route extends Route {
 	 * Callback for /v1/views/{id}/entries/
 	 *
 	 * @since 2.0
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|WP_REST_Response
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function get_sub_items( $request ) {
 
@@ -194,8 +194,8 @@ class Views_Route extends Route {
 	 *
 	 * @uses GVCommon::get_entry
 	 * @since 2.0
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|WP_REST_Response
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function get_sub_item( $request ) {
 		$url      = $request->get_url_params();
@@ -218,8 +218,8 @@ class Views_Route extends Route {
 	 * Prepare the item for the REST response
 	 *
 	 * @since 2.0
-	 * @param WP_Post $view_post WordPress representation of the item.
-	 * @param WP_REST_Request $request Request object.
+	 * @param \WP_Post $view_post WordPress representation of the item.
+	 * @param \WP_REST_Request $request Request object.
 	 * @return mixed
 	 */
 	public function prepare_view_for_response( $view_post, \WP_REST_Request $request ) {
