@@ -168,10 +168,16 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertEquals( 3, $response->headers['X-Item-Count'] );
 
 		$html = $response->get_data();
+		$this->assertContains( '<meta http-equiv="X-Item-Count" content="3" />', $html );
 		$this->assertContains( 'gv-table-view', $html );
 		$this->assertContains( 'set all the fields!', $html );
 		$this->assertContains( 'set all the fields! 1', $html );
 		$this->assertContains( 'set all the fields! 2', $html );
+
+		add_filter( 'gravityview/rest/entries/html/insert_meta', '__return_false' );
+		$html = $response->get_data();
+		$this->assertNotContains( '<meta http-equiv="X-Item-Count"', $html );
+		remove_filter( 'gravityview/rest/entries/html/insert_meta', '__return_false' );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.html' );
 		$request->set_query_params( array(
@@ -180,6 +186,9 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$response = rest_get_server()->dispatch( $request );
 		$this->assertEquals( 200, $response->status );
 		$this->assertEquals( 0, $response->headers['X-Item-Count'] );
+
+		$html = $response->get_data();
+		$this->assertContains( '<meta http-equiv="X-Item-Count" content="0" />', $html );
 	}
 
 	public function test_get_entries_filter() {

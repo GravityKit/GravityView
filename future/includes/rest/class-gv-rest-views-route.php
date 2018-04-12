@@ -162,13 +162,32 @@ class Views_Route extends Route {
 		$view = \GV\View::by_id( $view_id );
 
 		if ( $format == 'html' ) {
+
 			$renderer = new \GV\View_Renderer();
 			$total = 0;
+
 			add_action( 'gravityview/template/view/render', function( $context ) use ( &$total ) {
 				$total = $context->entries->count();
 			} );
-			$response = new \WP_REST_Response( $renderer->render( $view, new Request( $request ) ), 200 );
+
+			$output = $renderer->render( $view, new Request( $request ) );
+
+			/**
+			 * @filter `gravityview/rest/entries/html/insert_meta` Whether to include `http-equiv` meta tags in the HTML output describing the data
+			 * @param bool $insert_meta Add <meta> tags? [Default: true]
+			 * @param int $total The number of entries being rendered
+			 * @param \GV\View $view The view.
+			 * @param \WP_REST_Request $request Request object.
+			 */
+			$insert_meta = apply_filters( 'gravityview/rest/entries/html/insert_meta', true, $total, $view, $request );
+
+			if( $insert_meta ) {
+				$output = '<meta http-equiv="X-Item-Count" content="' . $total . '" />' . $output;
+			}
+
+			$response = new \WP_REST_Response( $output, 200 );
 			$response->header( 'X-Item-Count', $total );
+
 			return $response;
 		}
 
