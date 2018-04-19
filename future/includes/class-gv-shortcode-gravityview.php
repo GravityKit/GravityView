@@ -45,10 +45,6 @@ class gravityview extends \GV\Shortcode {
 			return '';
 		}
 
-		$current_view = $request->is_view();
-
-		$is_current_view = $current_view && ( $current_view->ID === $view->ID );
-
 		$view->settings->update( $atts );
 		$entries = $view->get_entries( $request );
 
@@ -87,7 +83,7 @@ class gravityview extends \GV\Shortcode {
 		/**
 		 * Editing a single entry.
 		 */
-		} else if ( $is_current_view && $entry = $request->is_edit_entry() ) {
+		} else if ( $entry = $request->is_edit_entry() ) {
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -111,7 +107,7 @@ class gravityview extends \GV\Shortcode {
 		/**
 		 * Viewing a single entry.
 		 */
-		} else if ( $is_current_view && $entry = $request->is_entry() ) {
+		} else if ( $entry = $request->is_entry() ) {
 
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
