@@ -334,6 +334,18 @@ final class Plugin {
 	}
 
 	/**
+	 * Is this version of GravityView compatible with the future required version of PHP?
+	 *
+	 * @api
+	 * @since 2.0
+	 *
+	 * @return bool true if compatible, false otherwise.
+	 */
+	public function is_compatible_future_php() {
+		return version_compare( $this->get_php_version(), self::$future_min_php_version, '>=' );
+	}
+
+	/**
 	 * Is this version of GravityView compatible with the current version of WordPress?
 	 *
 	 * @api
@@ -356,6 +368,19 @@ final class Plugin {
 	public function is_compatible_gravityforms() {
 		$version = $this->get_gravityforms_version();
 		return $version ? version_compare( $version, self::$min_gf_version, '>=' ) : false;
+	}
+
+	/**
+	 * Is this version of GravityView compatible with the future version of Gravity Forms?
+	 *
+	 * @api
+	 * @since 2.0
+	 *
+	 * @return bool true if compatible, false otherwise (or not active/installed).
+	 */
+	public function is_compatible_future_gravityforms() {
+		$version = $this->get_gravityforms_version();
+		return $version ? version_compare( $version, self::$future_min_gf_version, '>=' ) : false;
 	}
 
 	/**

@@ -45,6 +45,18 @@ class gravityview extends \GV\Shortcode {
 			return '';
 		}
 
+		/**
+		 * When this shortcode is embedded inside a view we can only
+		 * display it as a directory. There's no other way.
+		 * Try to detect that we're not embedded to allow edit and single contexts.
+		 */
+		$is_reembedded = true; // Assume as embeded unless detected otherwise.
+		if ( $request instanceof \GV\Frontend_Request ) {
+			if ( ( $_view = $request->is_view() ) && $_view->ID == $view->ID ) {
+				$is_reembedded = false;
+			}
+		}
+
 		$view->settings->update( $atts );
 		$entries = $view->get_entries( $request );
 
@@ -83,7 +95,7 @@ class gravityview extends \GV\Shortcode {
 		/**
 		 * Editing a single entry.
 		 */
-		} else if ( $entry = $request->is_edit_entry() ) {
+		} else if ( ! $is_reembedded && ( $entry = $request->is_edit_entry() ) ) {
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -107,8 +119,7 @@ class gravityview extends \GV\Shortcode {
 		/**
 		 * Viewing a single entry.
 		 */
-		} else if ( $entry = $request->is_entry() ) {
-
+		} else if ( ! $is_reembedded && ( $entry = $request->is_entry() ) ) {
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -133,6 +144,12 @@ class gravityview extends \GV\Shortcode {
 		 * Just this view.
 		 */
 		} else {
+			if ( $is_reembedded ) {
+				// Mock the request with the actual View, not the global one
+				$request = new \GV\Mock_Request();
+				$request->returns['is_view'] = $view;
+			}
+
 			$renderer = new \GV\View_Renderer();
 			return $renderer->render( $view, $request );
 		}

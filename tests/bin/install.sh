@@ -154,13 +154,13 @@ if [ "$1" == 'help' ]; then
 	exit 1
 fi
 
-# TRAVIS_GRAVITY_FORMS_DL_URL variable will be set in TravisCI
-GRAVITY_FORMS_DL_PATH_OR_URL="${7-$TRAVIS_GRAVITY_FORMS_DL_URL}"
+# TRAVIS_GRAVITY_FORMS_2_2_DL_URL variable will be set in TravisCI
+GRAVITY_FORMS_DL_PATH_OR_URL="${7-$TRAVIS_GRAVITY_FORMS_2_2_DL_URL}"
 
 # Get current WordPress plugin directory
 TESTS_PLUGINS_DIR="$(dirname "${PWD}")"
 
-install_gravity_forms(){
+install_gravity_forms_22(){
     mkdir -p "$GF_CORE_DIR"
 
     # If you have passed a path, check if it exists. If it does, use that as the Gravity Forms location
@@ -187,7 +187,7 @@ install_gravity_forms(){
 	fi
 }
 
-install_gravity_forms_23(){
+install_gravity_forms(){
     mkdir -p "$GF_CORE_DIR"
 
     # If you have passed a path, check if it exists. If it does, use that as the Gravity Forms location
@@ -196,10 +196,10 @@ install_gravity_forms_23(){
         rsync -ar --exclude=.git "$GRAVITY_FORMS_DL_PATH_OR_URL" /tmp/gravityforms/
 
     # Otherwise,
-    elif [[ $TRAVIS_GRAVITY_FORMS_2_3_RC_5_DL_URL != '' ]]; then
+    elif [[ TRAVIS_GRAVITY_FORMS_2_3_DL_URL != '' ]]; then
 
         # Pull from remote
-	    curl -L "$TRAVIS_GRAVITY_FORMS_2_3_RC_5_DL_URL" --output /tmp/gravityforms.zip
+	    curl -L "TRAVIS_GRAVITY_FORMS_2_3_DL_URL" --output /tmp/gravityforms.zip
 
 	    # -o will overwrite files. -q is quiet mode
 	    unzip -o -q /tmp/gravityforms.zip -d /tmp/
@@ -215,8 +215,8 @@ install_gravity_forms_23(){
 }
 
 # Pick version to install
-if [[ $GF_VERSION == "2.3" ]]; then
-	install_gravity_forms_23
+if [[ $GF_VERSION == "2.2" ]]; then
+	install_gravity_forms_22
 else
 	install_gravity_forms
 fi
