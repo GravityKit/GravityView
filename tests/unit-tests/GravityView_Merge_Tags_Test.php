@@ -416,10 +416,10 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		$form['fields'][] = $field;
 
 		$tests = array(
-			'{sanitize_html_class:100}' => 'This is spaces',
-			'{sanitize_html_class:101}' => 'This-is-commas',
-			'{sanitize_html_class:201}' => 'tag',
-			'{esc_html:201}' => '&lt;tag&gt;',
+			'{label1:100:sanitize_html_class}' => 'This is spaces',
+			'{label2:101:sanitize_html_class}' => 'Thisiscommas',
+			'{label3:201:sanitize_html_class}' => 'tag',
+			'{label4:201:esc_html}' => '&lt;tag&gt;',
 		);
 
 		foreach( $tests as $merge_tag => $expected ) {
