@@ -51,7 +51,7 @@ class gravityview extends \GV\Shortcode {
 		 * Try to detect that we're not embedded to allow edit and single contexts.
 		 */
 		$is_reembedded = true; // Assume as embeded unless detected otherwise.
-		if ( $request instanceof \GV\Frontend_Request ) {
+		if ( in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request' ) ) ) {
 			if ( ( $_view = $request->is_view() ) && $_view->ID == $view->ID ) {
 				$is_reembedded = false;
 			}
