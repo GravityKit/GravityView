@@ -273,7 +273,6 @@ class GravityView_Compatibility {
 				$title = __( 'In the future, GravityView will require Gravity Forms Version %s or newer.', 'gravityview' );
 				$version = GV_FUTURE_MIN_GF_VERSION;
 				$class = 'notice-warning';
-
 			} else {
 				/* translators: the placeholder is the required version of Gravity Forms. */
 				$title = __( 'GravityView requires Gravity Forms Version %s or newer.', 'gravityview' );
@@ -287,7 +286,7 @@ class GravityView_Compatibility {
 			$message .= '<p>' . sprintf( esc_html__( "You're using Version %s. Please update your Gravity Forms or purchase a license.", 'gravityview' ), '<span style="font-family: Consolas, Courier, monospace;">'.GFCommon::$version.'</span>' ) . '</p>';
 
 			/* translators: In this context, "get" means purchase */
-			$message .= '<p><a href="https://gravityview.co/gravityforms/" class="button button-secondary button-large button-hero">' . __( 'Get the Latest Gravity Forms', 'gravityview' ) . '</a></p>';
+			$message .= '<p><a href="https://gravityview.co/gravityforms/" class="button button-secondary button-large button-hero">' . esc_html__( 'Get the Latest Gravity Forms', 'gravityview' ) . '</a></p>';
 
 
 			// Show the notice even if the future version requirements aren't met
