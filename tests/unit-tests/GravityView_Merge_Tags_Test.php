@@ -390,9 +390,6 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	 */
 	function test_merge_tag_data() {
 
-		remove_all_filters( 'gform_pre_replace_merge_tags' );
-		remove_all_filters( 'gform_merge_tag_filter' );
-
 		$form = $this->factory->form->create_and_get();
 		$post = $this->factory->post->create_and_get();
 
@@ -403,19 +400,26 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 
 		$entry = $this->factory->entry->create_and_get( $entry_args );
 
-		$test_values = array(
-			'100' => 'This is spaces',
-			'101' => 'This,is,commas',
-			'201' => '<tag>',
-		);
+		$entry['100'] = 'This is spaces';
+		$entry['101'] = 'This,is,commas';
+		$entry['201'] = '<tag>';
 
-		$entry = array_merge( $entry, $test_values );
+		// 2.3 checks to make sure the fields exist
+		$field = new GF_Field_Text();
+		$field->id = 100;
+		$form['fields'][] = $field;
+		$field = new GF_Field_Text();
+		$field->id = 101;
+		$form['fields'][] = $field;
+		$field = new GF_Field_Text();
+		$field->id = 201;
+		$form['fields'][] = $field;
 
 		$tests = array(
-			'{sanitize_html_class:100}' => 'this is spaces',
-			'{sanitize_html_class:101}' => 'this-is-commas',
+			'{sanitize_html_class:100}' => 'This is spaces',
+			'{sanitize_html_class:101}' => 'This-is-commas',
 			'{sanitize_html_class:201}' => 'tag',
-			//'{esc_html:201}' => '&lt;tag&gt;',
+			'{esc_html:201}' => '&lt;tag&gt;',
 		);
 
 		foreach( $tests as $merge_tag => $expected ) {
@@ -437,9 +441,6 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	 * @since 1.15.1
 	 */
 	function test_gf_merge_tags() {
-
-		remove_all_filters( 'gform_pre_replace_merge_tags' );
-		remove_all_filters( 'gform_merge_tag_filter' );
 		
 		$form = $this->factory->form->create_and_get();
 		$post = $this->factory->post->create_and_get();

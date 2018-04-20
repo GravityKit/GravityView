@@ -45,7 +45,7 @@ class GravityView_Merge_Tags {
 	public static function process_modifiers( $value, $merge_tag, $modifier, $field, $raw_value ) {
 
 		// No modifier was set or the raw value was empty
-		if( 'all_fields' === $merge_tag || '' === $modifier || ! is_string( $raw_value ) || '' === $raw_value ) {
+		if ( 'all_fields' === $merge_tag || '' === $modifier || ! is_string( $raw_value ) || '' === $raw_value ) {
 			return $value;
 		}
 
@@ -203,8 +203,7 @@ class GravityView_Merge_Tags {
 	 * @return string
 	 */
 	private static function modifier_sanitize_html_class( $raw_value, $matches ) {
-
-		if( empty( $matches[0] ) || ! function_exists( 'gravityview_sanitize_html_class' ) ) {
+		if ( empty( $matches[0] ) || ! function_exists( 'gravityview_sanitize_html_class' ) ) {
 			return $raw_value;
 		}
 
@@ -302,7 +301,7 @@ class GravityView_Merge_Tags {
 	 */
 	public static function replace_gv_merge_tags( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
-		if( '' === $text ) {
+		if ( '' === $text ) {
 			return $text;
 		}
 
@@ -312,7 +311,7 @@ class GravityView_Merge_Tags {
 		 * @see GFCommon::replace_variables_prepopulate()
 		 * @todo Remove eventually: Gravity Forms fixed this issue in 1.9.14
 		 */
-		if( false === $form ) {
+		if ( false === $form ) {
 			return $text;
 		}
 
