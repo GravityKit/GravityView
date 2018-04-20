@@ -167,12 +167,12 @@ class GVLogic_Shortcode {
 			return true;
 		}
 
-		foreach( $this->atts as $key => $value ) {
+		foreach ( $this->atts as $key => $value ) {
 
-			$valid = $this->set_operation( $key );
+			$valid = $this->set_operation( $key == 'else' ? 'isnot' : $key );
 
-			if( $valid ) {
-				$this->comparison = $value;
+			if ( $valid ) {
+				$this->comparison = $key == 'else' ? '' : $value;
 				return true;
 			}
 		}
