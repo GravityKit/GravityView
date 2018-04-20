@@ -199,6 +199,11 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 			array(
 				'modifier' => 'sanitize_html_class',
 				'raw' => '<example>',
+				'expected' => 'example',
+			),
+			array(
+				'modifier' => 'sanitize_html_class',
+				'raw' => '***',
 				'expected' => '',
 			),
 			array(
@@ -218,10 +223,13 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 			),
 		);
 
+		// Fake it as it's used for default filters
+		$field = (object) array( 'type' => 'text' );
+
 		foreach ( $tests as $test ) {
 			$value = isset( $test['value'] ) ? $test['value'] : 'value should not be used';
 			$merge_tag = isset( $test['merge_tag'] ) ? $test['merge_tag'] : 'merge tag not used';
-			$value = GravityView_Merge_Tags::process_modifiers( $value, $merge_tag, $test['modifier'], 'field not used', $test['raw'] );
+			$value = GravityView_Merge_Tags::process_modifiers( $value, $merge_tag, $test['modifier'], $field, $test['raw'] );
 			$this->assertEquals( $test['expected'], $value, print_r( $test, true ) );
 		}
 
