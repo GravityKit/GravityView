@@ -569,18 +569,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			/**
-			 * WordPress <= 4.3 expects a format with H:i:s for get_gmt_from_date
-			 * Make sure it's always complete.
-			 */
-			if ( $curr_start ) {
-				$curr_start = date( 'Y-m-d H:i:s', strtotime( $curr_start ) );
-			}
-
-			if ( $curr_end ) {
-				$curr_end = date( 'Y-m-d H:i:s', strtotime( $curr_end ) );
-			}
-
-			/**
 			 * @filter `gravityview_date_created_adjust_timezone` Whether to adjust the timezone for entries. \n
 			 * date_created is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php)
 			 * @since 1.12
@@ -592,10 +580,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 			/**
 			 * Don't set $search_criteria['start_date'] if start_date is empty as it may lead to bad query results (GFAPI::get_entries)
 			 */
-			if ( !empty( $curr_start ) ) {
+			if ( ! empty( $curr_start ) ) {
+				$curr_start = date( 'Y-m-d H:i:s', strtotime( $curr_start ) );
 				$search_criteria['start_date'] = $adjust_tz ? get_gmt_from_date( $curr_start ) : $curr_start;
 			}
-			if ( !empty( $curr_end ) ) {
+
+			if ( ! empty( $curr_end ) ) {
+				// Fast-forward 24 hour on the end time
+				$curr_end = date( 'Y-m-d H:i:s', strtotime( $curr_end ) + DAY_IN_SECONDS );
 				$search_criteria['end_date'] = $adjust_tz ? get_gmt_from_date( $curr_end ) : $curr_end;
 			}
 		}
