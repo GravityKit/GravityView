@@ -114,7 +114,6 @@ class GF_Form extends Form implements \ArrayAccess {
 
 		/** Add the counter lazy callback. */
 		$entries->add_count_callback( function( $filters ) use ( $form ) {
-
 			$search_criteria = array();
 			$sorting = array();
 

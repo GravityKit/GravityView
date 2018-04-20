@@ -259,5 +259,4 @@ final class GravityView_Plugin {
 		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
 		gravityview()->log->error( $message, $data );
     }
-
 } // end class GravityView_Plugin

@@ -168,13 +168,23 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			$disable_wrapped_link = false;
 
-			// Is this an image?
-			$image = new GravityView_Image(array(
+			$image_atts = array(
 				'src' => $file_path,
 				'class' => 'gv-image gv-field-id-'.$field_settings['id'],
 				'alt' => $field_settings['label'],
 				'width' => ( $is_single ? NULL : 250 )
-			));
+			);
+
+			/**
+			 * Modify the default image attributes for uploaded images
+			 * @since 2.0
+			 * @see GravityView_Image For the available attributes
+			 * @param array $image_atts
+			 */
+			$image_atts = apply_filters( 'gravityview/fields/fileupload/image_atts', $image_atts );
+
+			// Is this an image?
+			$image = new GravityView_Image( $image_atts );
 
 			$content = $image->html();
 

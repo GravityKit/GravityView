@@ -185,6 +185,37 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 				'raw' => '03-02-2016', // February 3, 2016
 				'expected' => 1454457600,
 			),
+
+			array(
+				'modifier' => 'esc_html',
+				'raw' => '<example>',
+				'expected' => '&lt;example&gt;',
+			),
+			array(
+				'modifier' => 'sanitize_title',
+				'raw' => '<example>',
+				'expected' => '',
+			),
+			array(
+				'modifier' => 'sanitize_html_class',
+				'raw' => '<example>',
+				'expected' => '',
+			),
+			array(
+				'modifier' => 'esc_html',
+				'raw' => '["Apple", "Orange", "Pear"]',
+				'expected' => '[&quot;Apple&quot;, &quot;Orange&quot;, &quot;Pear&quot;]',
+			),
+			array(
+				'modifier' => 'sanitize_title',
+				'raw' => '["Apple", "Orange", "Pear"]',
+				'expected' => 'apple-orange-pear',
+			),
+			array(
+				'modifier' => 'sanitize_html_class',
+				'raw' => '["Apple", "Orange", "Pear"]',
+				'expected' => 'Apple Orange Pear',
+			),
 		);
 
 		foreach ( $tests as $test ) {
@@ -343,6 +374,53 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		add_filter( 'gravityview/merge_tags/do_replace_variables', '__return_false' );
 		$this->assertEquals( '{get:string}', GravityView_Merge_Tags::replace_variables( '{get:string}' ) );
 		remove_filter( 'gravityview/merge_tags/do_replace_variables', '__return_false' );
+	}
+
+	/**
+	 * @covers GravityView_Merge_Tags::merge_tag_data()
+	 * @since 2.0
+	 */
+	function test_merge_tag_data() {
+
+		remove_all_filters( 'gform_pre_replace_merge_tags' );
+		remove_all_filters( 'gform_merge_tag_filter' );
+
+		$form = $this->factory->form->create_and_get();
+		$post = $this->factory->post->create_and_get();
+
+		$entry_args = array(
+			'form_id' => $form['id'],
+			'post_id' => $post->ID,
+		);
+
+		$entry = $this->factory->entry->create_and_get( $entry_args );
+
+		$test_values = array(
+			'100' => 'This is spaces',
+			'101' => 'This,is,commas',
+			'201' => '<tag>',
+		);
+
+		$entry = array_merge( $entry, $test_values );
+
+		$tests = array(
+			'{sanitize_html_class:100}' => 'this is spaces',
+			'{sanitize_html_class:101}' => 'this-is-commas',
+			'{sanitize_html_class:201}' => 'tag',
+			//'{esc_html:201}' => '&lt;tag&gt;',
+		);
+
+		foreach( $tests as $merge_tag => $expected ) {
+			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
+			$this->assertEquals( urlencode( $expected ), GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry, true ), $merge_tag );
+
+			remove_filter( 'gform_replace_merge_tags', array( 'GravityView_Merge_Tags', 'replace_gv_merge_tags' ), 10 );
+			$this->assertEquals( $expected, GFCommon::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
+			$this->assertEquals( urlencode( $expected ), GFCommon::replace_variables( $merge_tag, $form, $entry, true ), $merge_tag );
+			add_filter( 'gform_replace_merge_tags', array( 'GravityView_Merge_Tags', 'replace_gv_merge_tags' ), 10, 7 );
+		}
+
+		wp_reset_postdata();
 	}
 
 	/**

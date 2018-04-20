@@ -86,12 +86,11 @@ class GVCommon {
 	/**
 	 * Get all existing Views
 	 *
-	 * @since  1.5.4
-	 * @since  TODO Added $args array
+	 * @since 1.5.4 Added $args array
 	 *
 	 * @param array $args Pass custom array of args, formatted as if for `get_posts()`
 	 *
-	 * @return array Array of Views as `WP_Post`. Empty array if none found.
+	 * @return WP_Post[] Array of Views as `WP_Post`. Empty array if none found.
 	 */
 	public static function get_all_views( $args = array() ) {
 
@@ -1268,6 +1267,35 @@ class GVCommon {
 		}
 
 		return $fields;
+	}
+
+	/**
+	 * Get the widget configuration for a View
+	 *
+	 * @param int $view_id View ID
+	 * @param bool $json_decode Whether to JSON-decode the widget values. Default: `false`
+	 *
+	 * @return array Multi-array of widgets, with the slug of each widget "zone" being the key ("header_top"), and each widget having their own "id"
+	 */
+	public static function get_directory_widgets( $view_id, $json_decode = false ) {
+
+		$view_widgets = get_post_meta( $view_id, '_gravityview_directory_widgets', true );
+
+		$defaults = array(
+			'header_top' => array(),
+			'header_left' => array(),
+			'header_right' => array(),
+			'footer_left' => array(),
+			'footer_right' => array(),
+		);
+
+		$directory_widgets = wp_parse_args( $view_widgets, $defaults );
+
+		if( $json_decode ) {
+			$directory_widgets = gv_map_deep( $directory_widgets, 'gv_maybe_json_decode' );
+		}
+
+		return $directory_widgets;
 	}
 
 

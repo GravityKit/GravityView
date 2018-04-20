@@ -506,7 +506,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$visible_fields = array();
 
 		if ( $view ) {
-			foreach ( $view->fields->all() as $field ) {
+			foreach ( $view->fields->by_visible()->by_position( 'directory_*' )->all() as $field ) {
 				$visible_fields []= $field->ID;
 			}
 		}
@@ -624,7 +624,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$filter_key = $this->convert_request_key_to_filter_key( $key );
 
 			// could return simple filter or multiple filters
-			if ( ! in_array( $filter_key , $searchable_fields ) ) {
+			if ( ! in_array( 'search_all', $searchable_fields ) && ! in_array( $filter_key , $searchable_fields ) ) {
 				continue;
 			}
 

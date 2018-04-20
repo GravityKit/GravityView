@@ -28,7 +28,7 @@ class gravityview extends \GV\Shortcode {
 		$request = gravityview()->request;
 
 		if ( $request->is_admin() ) {
-			return;
+			return '';
 		}
 
 		$atts = wp_parse_args( $atts, array(
@@ -41,7 +41,8 @@ class gravityview extends \GV\Shortcode {
 		$view = \GV\View::by_id( $atts['id'] ? : $atts['view_id'] );
 
 		if ( ! $view ) {
-			return;
+			gravityview()->log->error( 'View does not exist #{view_id}', array( 'view_id' => $view->ID ) );
+			return '';
 		}
 
 		/**

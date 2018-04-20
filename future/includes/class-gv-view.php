@@ -582,12 +582,23 @@ class View implements \ArrayAccess {
 			 * @todo: Stop using _frontend and use something like $request->get_search_criteria() instead
 			 */
 			$parameters = \GravityView_frontend::get_view_entries_parameters( $this->settings->as_atts(), $this->form->ID );
+
+			if ( $request instanceof REST\Request ) {
+				$atts = $this->settings->as_atts();
+				$paging_parameters = wp_parse_args( $request->get_paging(), array(
+						'paging' => array( 'page_size' => $atts['page_size'] ),
+					) );
+				$parameters['paging'] = $paging_parameters['paging'];
+			}
+
+			$page = Utils::get( $parameters['paging'], 'current_page' ) ?
+				: ( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
+
 			$entries = $this->form->entries
 				->filter( \GV\GF_Entry_Filter::from_search_criteria( $parameters['search_criteria'] ) )
 				->offset( $this->settings->get( 'offset' ) )
 				->limit( $parameters['paging']['page_size'] )
-				/** @todo: Get the page from the request instead! */
-				->page( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
+				->page( $page );
 			if ( ! empty( $parameters['sorting'] ) ) {
 				$field = new \GV\Field();
 				$field->ID = $parameters['sorting']['key'];
