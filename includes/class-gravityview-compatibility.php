@@ -344,7 +344,7 @@ class GravityView_Compatibility {
 			default:
 				self::$notices['gf_installed'] = array(
 					'class' => 'error',
-					'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $39%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
+					'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $59%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="https://gravityview.co/gravityforms/" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
 					'cap' => 'install_plugins',
 					'dismiss' => 'gf_installed',
 				);
