@@ -174,10 +174,11 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertContains( 'set all the fields! 1', $html );
 		$this->assertContains( 'set all the fields! 2', $html );
 
-		add_filter( 'gravityview/rest/entries/html/insert_meta', '__return_false' );
+		$this->assertTrue( add_filter( 'gravityview/rest/entries/html/insert_meta', '__return_false' ) );
+		$response = rest_get_server()->dispatch( $request );
 		$html = $response->get_data();
 		$this->assertNotContains( '<meta http-equiv="X-Item-Count"', $html );
-		remove_filter( 'gravityview/rest/entries/html/insert_meta', '__return_false' );
+		$this->assertTrue( remove_filter( 'gravityview/rest/entries/html/insert_meta', '__return_false' ) );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.html' );
 		$request->set_query_params( array(
