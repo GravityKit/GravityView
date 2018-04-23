@@ -1,4 +1,9 @@
 <?php
+
+if ( ! class_exists( 'GV_RESTUnitTestCase' ) ) {
+	return;
+}
+
 /**
  * Test for the GV REST API
  *
