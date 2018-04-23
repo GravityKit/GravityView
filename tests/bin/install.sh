@@ -157,7 +157,7 @@ if [ "$1" == 'help' ]; then
 fi
 
 # TRAVIS_GRAVITY_FORMS_2_2_DL_URL variable will be set in TravisCI
-GRAVITY_FORMS_DL_PATH_OR_URL="${7-$TRAVIS_GRAVITY_FORMS_2_2_DL_URL}"
+GRAVITY_FORMS_DL_PATH_OR_URL="${7-$TRAVIS_GRAVITY_FORMS_2_3_DL_URL}"
 
 # Get current WordPress plugin directory
 TESTS_PLUGINS_DIR="$(dirname "${PWD}")"
@@ -165,13 +165,33 @@ TESTS_PLUGINS_DIR="$(dirname "${PWD}")"
 install_gravity_forms_22(){
     mkdir -p "$GF_CORE_DIR"
 
-    # If you have passed a path, check if it exists. If it does, use that as the Gravity Forms location
-    if [[ $GRAVITY_FORMS_DL_PATH_OR_URL != '' && -d $GRAVITY_FORMS_DL_PATH_OR_URL ]]; then
+    if [ -z ${TRAVIS_GRAVITY_FORMS_2_2_DL_URL+x} ]; then
+        # Pull from remote
+	    curl -L "$GRAVITY_FORMS_DL_PATH_OR_URL" --output /tmp/gravityforms-2.2.zip
 
-        rsync -ar --exclude=.git "$GRAVITY_FORMS_DL_PATH_OR_URL" /tmp/gravityforms/
+	    # -o will overwrite files. -q is quiet mode
+	    unzip -o -q /tmp/gravityforms-2.2.zip -d /tmp/
+    else
+        if [[ -d "$TESTS_PLUGINS_DIR"/gravityforms2.2 ]]; then
+            rsync -ar --exclude=.git "$TESTS_PLUGINS_DIR"/gravityforms /tmp/
+        else
+            exit 1
+        fi
+    fi
+}
 
-    # Otherwise, treat as remote and download
-    elif [[ $GRAVITY_FORMS_DL_PATH_OR_URL != '' ]]; then
+install_gravity_forms(){
+    mkdir -p "$GF_CORE_DIR"
+
+    echo "$GRAVITY_FORMS_DL_PATH_OR_URL";
+
+    # If you have passed an URL with a ZIP file, grab it and install
+    if [[ $GRAVITY_FORMS_DL_PATH_OR_URL = *".zip"* ]]; then
+
+        # install unzip if not available
+        if ! [ -x "$(command -v unzip)" ]; then
+            apt-get install zip unzip
+        fi
 
         # Pull from remote
 	    curl -L "$GRAVITY_FORMS_DL_PATH_OR_URL" --output /tmp/gravityforms.zip
@@ -179,37 +199,17 @@ install_gravity_forms_22(){
 	    # -o will overwrite files. -q is quiet mode
 	    unzip -o -q /tmp/gravityforms.zip -d /tmp/
 
-    # Otherwise, if you have Gravity Forms installed locally, use that.
-    else
-        if [[ -d "$TESTS_PLUGINS_DIR"/gravityforms ]]; then
-            rsync -ar --exclude=.git "$TESTS_PLUGINS_DIR"/gravityforms /tmp/
-        else
-            exit 1
-        fi
-	fi
-}
-
-install_gravity_forms(){
-    mkdir -p "$GF_CORE_DIR"
-
     # If you have passed a path, check if it exists. If it does, use that as the Gravity Forms location
-    if [[ $GRAVITY_FORMS_DL_PATH_OR_URL != '' && -d $GRAVITY_FORMS_DL_PATH_OR_URL ]]; then
+    elif [[ $GRAVITY_FORMS_DL_PATH_OR_URL != '' && -d $GRAVITY_FORMS_DL_PATH_OR_URL ]]; then
 
         rsync -ar --exclude=.git "$GRAVITY_FORMS_DL_PATH_OR_URL" /tmp/gravityforms/
 
-    # Otherwise,
-    elif [[ TRAVIS_GRAVITY_FORMS_2_3_DL_URL != '' ]]; then
-
-        # Pull from remote
-	    curl -L "TRAVIS_GRAVITY_FORMS_2_3_DL_URL" --output /tmp/gravityforms.zip
-
-	    # -o will overwrite files. -q is quiet mode
-	    unzip -o -q /tmp/gravityforms.zip -d /tmp/
-
     # Otherwise, if you have Gravity Forms installed locally, use that.
     else
         if [[ -d "$TESTS_PLUGINS_DIR"/gravityforms ]]; then
             rsync -ar --exclude=.git "$TESTS_PLUGINS_DIR"/gravityforms /tmp/
+        elif [[ -d "$TESTS_PLUGINS_DIR"/../../gravityforms ]]; then
+            rsync -ar --exclude=.git "$TESTS_PLUGINS_DIR"/../../gravityforms/ /tmp/
         else
             exit 1
         fi
