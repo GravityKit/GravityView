@@ -351,10 +351,17 @@ final class Plugin {
 	 * @api
 	 * @since 2.0
 	 *
+	 * @param string $version Version to check against; otherwise uses GV_MIN_WP_VERSION
+	 *
 	 * @return bool true if compatible, false otherwise.
 	 */
-	public function is_compatible_wordpress() {
-		return version_compare( $this->get_wordpress_version(), self::$min_wp_version, '>=' );
+	public function is_compatible_wordpress( $version = null ) {
+
+		if( ! $version ) {
+			$version = self::$min_wp_version;
+		}
+
+		return version_compare( $this->get_wordpress_version(), $version, '>=' );
 	}
 
 	/**
