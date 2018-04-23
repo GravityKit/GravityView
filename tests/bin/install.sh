@@ -167,16 +167,10 @@ install_gravity_forms_22(){
 
     if [ -z ${TRAVIS_GRAVITY_FORMS_2_2_DL_URL+x} ]; then
         # Pull from remote
-	    curl -L "$GRAVITY_FORMS_DL_PATH_OR_URL" --output /tmp/gravityforms-2.2.zip
+	    curl -L "$TRAVIS_GRAVITY_FORMS_2_2_DL_URL" --output /tmp/gravityforms.zip
 
 	    # -o will overwrite files. -q is quiet mode
-	    unzip -o -q /tmp/gravityforms-2.2.zip -d /tmp/
-    else
-        if [[ -d "$TESTS_PLUGINS_DIR"/gravityforms2.2 ]]; then
-            rsync -ar --exclude=.git "$TESTS_PLUGINS_DIR"/gravityforms /tmp/
-        else
-            exit 1
-        fi
+	    unzip -o -q /tmp/gravityforms.zip -d /tmp/
     fi
 }
 
