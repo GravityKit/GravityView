@@ -1,4 +1,10 @@
 <?php
+
+// Less than WP 4.7
+if ( ! class_exists( 'WP_Test_REST_Controller_Testcase' ) ) {
+	return;
+}
+
 abstract class GV_RESTUnitTestCase extends WP_Test_REST_Controller_Testcase {
 
 	/**
