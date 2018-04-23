@@ -385,7 +385,9 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers GravityView_Merge_Tags::merge_tag_data()
+	 * @covers GravityView_Merge_Tags::modifier_sanitize_html_class()
+	 * @covers GravityView_Merge_Tags::modifier_esc_html()
+	 * @covers GravityView_Merge_Tags::modifier_sanitize_title()
 	 * @since 2.0
 	 */
 	function test_merge_tag_data() {
@@ -400,37 +402,43 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 
 		$entry = $this->factory->entry->create_and_get( $entry_args );
 
+		// 2.3 checks to make sure the fields exist
+		$form['fields'][] = new GF_Field_Text( array( 'id' => 100, 'form_id' => $form['id'] ) );
+		$form['fields'][] = new GF_Field_Text( array( 'id' => 101, 'form_id' => $form['id'] ) );
+		$form['fields'][] = new GF_Field_Text( array( 'id' => 201, 'form_id' => $form['id'] ) );
+
 		$entry['100'] = 'This is spaces';
 		$entry['101'] = 'This,is,commas';
 		$entry['201'] = '<tag>';
 
-		// 2.3 checks to make sure the fields exist
-		$field = new GF_Field_Text();
-		$field->id = 100;
-		$form['fields'][] = $field;
-		$field = new GF_Field_Text();
-		$field->id = 101;
-		$form['fields'][] = $field;
-		$field = new GF_Field_Text();
-		$field->id = 201;
-		$form['fields'][] = $field;
-
 		$tests = array(
-			'{sanitize_html_class:100}' => 'This is spaces',
-			'{sanitize_html_class:101}' => 'This-is-commas',
-			'{sanitize_html_class:201}' => 'tag',
-			'{esc_html:201}' => '&lt;tag&gt;',
+			'{Field:100:sanitize_html_class}' => 'This is spaces',
+			'{Field:100:sanitize_html_class,urlencode}' => 'This+is+spaces',
+			'{Field:101:sanitize_html_class}' => 'Thisiscommas',
+			'{Field:101:sanitize_html_class,urlencode}' => 'Thisiscommas',
+			'{Field:201:sanitize_html_class}' => 'tag',
+			'{Field:201:sanitize_html_class,urlencode}' => 'tag',
+			'{Field:201:esc_html}' => '&lt;tag&gt;',
+			'{Field:201:esc_html,urlencode}' => '%26lt%3Btag%26gt%3B',
+
+			// When GF modifiers come first, doesn't process
+			'{Field:100:urlencode,sanitize_html_class}' => $entry['100'],
+			'{Field:101:urlencode,sanitize_html_class}' => $entry['101'],
+			'{Field:201:urlencode,sanitize_html_class}' => $entry['201'],
 		);
+
+		$filter_tags = function( $tags ) {
+			return array( '<tag>' );
+		};
+
+		// Allow GF to process the tag
+		add_filter( 'gform_allowable_tags', $filter_tags );
 
 		foreach( $tests as $merge_tag => $expected ) {
 			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
-			$this->assertEquals( urlencode( $expected ), GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry, true ), $merge_tag );
-
-			remove_filter( 'gform_replace_merge_tags', array( 'GravityView_Merge_Tags', 'replace_gv_merge_tags' ), 10 );
-			$this->assertEquals( $expected, GFCommon::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
-			$this->assertEquals( urlencode( $expected ), GFCommon::replace_variables( $merge_tag, $form, $entry, true ), $merge_tag );
-			add_filter( 'gform_replace_merge_tags', array( 'GravityView_Merge_Tags', 'replace_gv_merge_tags' ), 10, 7 );
 		}
+
+		remove_filter( 'gform_allowable_tags', $filter_tags );
 
 		wp_reset_postdata();
 	}
@@ -456,7 +464,8 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		);
 
 		foreach( $tests as $merge_tag => $expected ) {
-			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
+
+			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry, false ), $merge_tag );
 			$this->assertEquals( urlencode( $expected ), GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry, true ), $merge_tag );
 
 			remove_filter( 'gform_replace_merge_tags', array( 'GravityView_Merge_Tags', 'replace_gv_merge_tags' ), 10 );
