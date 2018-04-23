@@ -147,13 +147,17 @@ install_db
 ## Below is custom GravityView code
 ##
 
-
 if [ "$1" == 'help' ]; then
     echo "usage: $0 [db-name (default: root)] [db-user (default: root)] [db-pass (default: root)] [db-host (default: localhost)] [wp-version (default: latest)] [skip-database-creation (default: false)] [gravity-forms-zip-url]"
     echo "example using remote .zip: $0 gravityview_test root root localhost latest http://example.com/path/to/gravityview.zip"
     echo "example using local path: $0 gravityview_test root root localhost latest ../gravityforms/"
     echo "If Gravity Forms is not installed locally, you must provide either a path to a local Gravity Forms directory, or a full URL that points to a .zip file of Gravity Forms. If it is, you can leave the argument blank."
 	exit 1
+fi
+
+# install unzip if not available
+if ! [ -x "$(command -v unzip)" ]; then
+    apt-get install zip unzip
 fi
 
 # TRAVIS_GRAVITY_FORMS_2_2_DL_URL variable will be set in TravisCI
@@ -165,27 +169,18 @@ TESTS_PLUGINS_DIR="$(dirname "${PWD}")"
 install_gravity_forms_22(){
     mkdir -p "$GF_CORE_DIR"
 
-    if [ -z ${TRAVIS_GRAVITY_FORMS_2_2_DL_URL+x} ]; then
-        # Pull from remote
-	    curl -L "$TRAVIS_GRAVITY_FORMS_2_2_DL_URL" --output /tmp/gravityforms.zip
+    # Pull from remote
+    curl -L "$TRAVIS_GRAVITY_FORMS_2_2_DL_URL" --output /tmp/gravityforms.zip
 
-	    # -o will overwrite files. -q is quiet mode
-	    unzip -o -q /tmp/gravityforms.zip -d /tmp/
-    fi
+    # -o will overwrite files. -q is quiet mode
+    unzip -o -q /tmp/gravityforms.zip -d /tmp/
 }
 
 install_gravity_forms(){
     mkdir -p "$GF_CORE_DIR"
 
-    echo "$GRAVITY_FORMS_DL_PATH_OR_URL";
-
     # If you have passed an URL with a ZIP file, grab it and install
     if [[ $GRAVITY_FORMS_DL_PATH_OR_URL = *".zip"* ]]; then
-
-        # install unzip if not available
-        if ! [ -x "$(command -v unzip)" ]; then
-            apt-get install zip unzip
-        fi
 
         # Pull from remote
 	    curl -L "$GRAVITY_FORMS_DL_PATH_OR_URL" --output /tmp/gravityforms.zip
