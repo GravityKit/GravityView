@@ -181,7 +181,7 @@ class Views_Route extends Route {
 			 */
 			$insert_meta = apply_filters( 'gravityview/rest/entries/html/insert_meta', true, $total, $view, $request );
 
-			if( $insert_meta ) {
+			if ( $insert_meta ) {
 				$output = '<meta http-equiv="X-Item-Count" content="' . $total . '" />' . $output;
 			}
 
