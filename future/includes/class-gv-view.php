@@ -613,7 +613,6 @@ class View implements \ArrayAccess {
 							Multi_Entry::from_entries( array_map( '\GV\GF_Entry::from_entry', $entry ) )
 						);
 					}
-					var_dump( $entries );
 				} else {
 					array_map( array( $entries, 'add' ), array_map( '\GV\GF_Entry::from_entry', $query->get() ) );
 				}

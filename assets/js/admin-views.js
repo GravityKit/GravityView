@@ -47,6 +47,7 @@
  *  stopImmediatePropagation: function
  * }} jQueryEvent
  */
+
 (function( $ ) {
 
 	var viewConfiguration, viewGeneralSettings;
@@ -889,7 +890,7 @@
 						case 'field':
 							// If in Single context, show fields available in single
 							// If it Directory, same for directory
-							return $( "#" + context + "-available-fields-" + $( this ).attr( 'data-formid' ) ).html();
+							return $( "#" + context + "-available-fields" ).html();
 						case 'widget':
 							return $( "#directory-available-widgets" ).html();
 					}
@@ -1053,7 +1054,7 @@
 				field_label: newField.find( '.gv-field-label' ).attr( 'data-original-title' ),
 				field_type: addButton.attr( 'data-objecttype' ),
 				input_type: newField.attr( 'data-inputtype' ),
-				form_id: addButton.attr( 'data-formid' ),
+				form_id: vcfg.currentFormId,
 				nonce: gvGlobals.nonce
 			};
 
