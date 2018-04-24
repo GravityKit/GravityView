@@ -116,6 +116,7 @@ class GravityView_Merge_Tags {
 	 * Run the Merge Tag value through the wpautop function
 	 *
 	 * @since 1.17
+	 * @since 2.0 Added $field param and support for urlencode
 	 *
 	 * @uses wpautop
 	 *
@@ -124,13 +125,15 @@ class GravityView_Merge_Tags {
 	 *
 	 * @return string Modified value, if longer than the passed `maxwords` modifier
 	 */
-	private static function modifier_wpautop( $raw_value, $matches ) {
+	private static function modifier_wpautop( $raw_value, $matches, $field = null ) {
 
 		if( empty( $matches[0] ) || ! function_exists( 'wpautop' ) ) {
 			return $raw_value;
 		}
 
-		return trim( wpautop( $raw_value ) );
+		$return = trim( wpautop( $raw_value ) );
+
+		return self::maybe_urlencode( $field, $return );
 	}
 
 	/**
@@ -142,13 +145,15 @@ class GravityView_Merge_Tags {
 	 *   Example: "one & two" will be counted as three words, but "one& two" will be counted as two words
 	 *
 	 * @since 1.17
+	 * @since 2.0 Added $field param and support for urlencode
 	 *
 	 * @param string $raw_value Value to filter
 	 * @param array $matches Regex matches group
+	 * @param GF_Field|false $field
 	 *
 	 * @return string Modified value, if longer than the passed `maxwords` modifier
 	 */
-	private static function modifier_maxwords( $raw_value, $matches ) {
+	private static function modifier_maxwords( $raw_value, $matches, $field = null ) {
 
 		if( ! is_string( $raw_value ) || empty( $matches[1] ) || ! function_exists( 'wp_trim_words' ) ) {
 			return $raw_value;
@@ -166,6 +171,42 @@ class GravityView_Merge_Tags {
 
 		$return = str_replace( $more_placeholder, '&hellip;', $return );
 
+		return self::maybe_urlencode( $field, $return );
+	}
+
+	/**
+	 * GF 2.3 adds GF_Field::get_modifers(), which allows us to check if a field has urlencode applied to it
+	 *
+	 * @since 2.0
+	 *
+	 * @see GFCommon::replace_field_variable
+	 *
+	 * Here's the relevant code:
+	 *
+	 * <code>
+	 * $modifier  = strtolower( rgar( $match, $i ) );
+	 * $modifiers = array_map( 'trim', explode( ',', $modifier ) );
+	 * $field->set_modifiers( $modifiers );
+	 * </code>
+	 *
+	 * @param GF_Field|false $field
+	 * @param string $value
+	 *
+	 * @return mixed|string
+	 */
+	private static function maybe_urlencode( $field = false, $value = '' ) {
+
+		$return = $value;
+
+		if ( $field && method_exists( $field, 'get_modifiers' ) ) {
+
+			$modifiers = $field->get_modifiers();
+
+			if ( in_array( 'urlencode', $modifiers ) ) {
+				$return = urlencode( $return );
+			}
+		}
+
 		return $return;
 	}
 
@@ -178,16 +219,20 @@ class GravityView_Merge_Tags {
 	 *
 	 * @param mixed $raw_value The raw value submitted for this field. May be CSV or JSON-encoded.
 	 * @param array $matches Regex matches group
+	 * @param string $value The value as passed by Gravity Forms
+	 * @param GF_Field|false $field Gravity Forms field, if any
 	 *
 	 * @return string
 	 */
-	private static function modifier_esc_html( $raw_value, $matches ) {
+	private static function modifier_esc_html( $raw_value, $matches = array(), $value = '', $field = null ) {
 
 		if( empty( $matches[0] ) || ! function_exists( 'esc_html' ) ) {
 			return $raw_value;
 		}
 
-		return esc_html( $raw_value );
+		$return = esc_html( $raw_value );
+
+		return self::maybe_urlencode( $field, $return );
 	}
 
 	/**
@@ -199,15 +244,19 @@ class GravityView_Merge_Tags {
 	 *
 	 * @param mixed $raw_value The raw value submitted for this field. May be CSV or JSON-encoded.
 	 * @param array $matches Regex matches group
+	 * @param string $value The value as passed by Gravity Forms
+	 * @param GF_Field|false $field Gravity Forms field, if any
 	 *
 	 * @return string
 	 */
-	private static function modifier_sanitize_html_class( $raw_value, $matches ) {
+	private static function modifier_sanitize_html_class( $raw_value, $matches, $value = '', $field = null ) {
 		if ( empty( $matches[0] ) || ! function_exists( 'gravityview_sanitize_html_class' ) ) {
 			return $raw_value;
 		}
 
-		return gravityview_sanitize_html_class( $raw_value );
+		$return = gravityview_sanitize_html_class( $raw_value );
+
+		return self::maybe_urlencode( $field, $return );
 	}
 
 	/**
@@ -219,16 +268,20 @@ class GravityView_Merge_Tags {
 	 *
 	 * @param mixed $raw_value The raw value submitted for this field. May be CSV or JSON-encoded.
 	 * @param array $matches Regex matches group
+	 * @param string $value The value as passed by Gravity Forms
+	 * @param GF_Field|false $field Gravity Forms field, if any
 	 *
 	 * @return string
 	 */
-	private static function modifier_sanitize_title( $raw_value, $matches ) {
+	private static function modifier_sanitize_title( $raw_value, $matches, $value = '',$field = null ) {
 
 		if( empty( $matches[0] ) || ! function_exists( 'sanitize_title' ) ) {
 			return $raw_value;
 		}
 
-		return sanitize_title( $raw_value, '', 'gravityview/merge-tags/modifier' );
+		$return = sanitize_title( $raw_value, '', 'gravityview/merge-tags/modifier' );
+
+		return self::maybe_urlencode( $field, $return );
 	}
 
 	/**
