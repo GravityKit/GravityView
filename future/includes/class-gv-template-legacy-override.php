@@ -151,12 +151,11 @@ class Legacy_Override_Template extends \Gamajo_Template_Loader {
 						}
 					}
 				}
-				return;
-			}
-
-			foreach ( $wp_filter[ $hook ]->callbacks[10] as $function_key => $callback ) {
-				if ( strpos( $function_key, 'render_widget_hooks' ) ) {
-					unset( $wp_filter[ $hook ]->callbacks[10][ $function_key ] );
+			} else {
+				foreach ( $wp_filter[ $hook ]->callbacks[10] as $function_key => $callback ) {
+					if ( strpos( $function_key, 'render_widget_hooks' ) ) {
+						unset( $wp_filter[ $hook ]->callbacks[10][ $function_key ] );
+					}
 				}
 			}
 		}
