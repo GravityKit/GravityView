@@ -105,7 +105,7 @@ class GF_Field extends Field {
 			return null;
 		}
 
-		if ( $view && $this->label ) {
+		if ( $this->label ) {
 			return $this->label;
 		}
 

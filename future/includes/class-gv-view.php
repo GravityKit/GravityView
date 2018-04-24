@@ -68,6 +68,14 @@ class View implements \ArrayAccess {
 	private static $cache = array();
 
 	/**
+	 * @var \GV\Join[] The joins for all sources in this view.
+	 *
+	 * @api
+	 * @since future
+	 */
+	public $joins = array();
+
+	/**
 	 * The constructor.
 	 */
 	public function __construct() {
@@ -359,6 +367,22 @@ class View implements \ArrayAccess {
 				'view_id' => $view->ID,
 				'form_id' => $view->_gravityview_form_id ? : 0,
 			) );
+		} else if ( gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
+			/** And the connected joins. */
+			foreach( (array)get_post_meta( $view->ID, '_gravityview_form_joins', true ) as $_join ) {
+				if ( ! is_array( $_join ) || count( $_join ) != 4 ) {
+					continue;
+				}
+				list( $join, $join_column, $join_on, $join_on_column ) = $_join;
+
+				$join = GF_Form::by_id( $join );
+				$join_on = GF_Form::by_id( $join_on );
+
+				$join_column = is_numeric( $join_column ) ? GF_Field::by_id( $join, $join_column ) : Internal_Field( $join_column );
+				$join_on_column = is_numeric( $join_on_column ) ? GF_Field::by_id( $join_on, $join_on_column ) : Internal_Field( $join_on_column );
+
+				$view->joins []= new Join( $join, $join_column, $join_on, $join_on_column );
+			}
 		}
 
 		/**
@@ -575,9 +599,8 @@ class View implements \ArrayAccess {
 	 * @return \GV\Entry_Collection The entries.
 	 */
 	public function get_entries( $request ) {
-		if ( ! $this->form ) {
-			$entries = new \GV\Entry_Collection();
-		} else {
+		$entries = new \GV\Entry_Collection();
+		if ( $this->form ) {
 			/**
 			 * @todo: Stop using _frontend and use something like $request->get_search_criteria() instead
 			 */
@@ -594,16 +617,64 @@ class View implements \ArrayAccess {
 			$page = Utils::get( $parameters['paging'], 'current_page' ) ?
 				: ( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
 
-			$entries = $this->form->entries
-				->filter( \GV\GF_Entry_Filter::from_search_criteria( $parameters['search_criteria'] ) )
-				->offset( $this->settings->get( 'offset' ) )
-				->limit( $parameters['paging']['page_size'] )
-				->page( $page );
-			if ( ! empty( $parameters['sorting'] ) ) {
-				$field = new \GV\Field();
-				$field->ID = $parameters['sorting']['key'];
-				$direction = strtolower( $parameters['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
-				$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction ) );
+			if ( gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
+				/**
+				 * New \GF_Query stuff :)
+				 */
+				$query = new \GF_Query( $this->form->ID, $parameters['search_criteria'], $parameters['sorting'] );
+
+				$query->limit( $parameters['paging']['page_size'] )
+					->page( $page );
+
+				/**
+				 * Any joins?
+				 */
+				if ( count( $this->joins ) ) {
+					foreach ( $this->joins as $join ) {
+						$query = $join->as_query_join( $query );
+					}
+				}
+
+				/**
+				 * @action `gravityview/view/query` Override the \GF_Query before the get() call.
+				 * @param \GF_Query $query The current query object
+				 * @param \GV\View $this The current view object
+				 * @param \GV\Request $request The request object
+				 */
+				do_action( 'gravityview/view/query', $query, $this, $request );
+
+				/**
+				 * Map from Gravity Forms entries arrays to an Entry_Collection.
+				 */
+				if ( count( $this->joins ) ) {
+					foreach ( $query->get() as $entry ) {
+						$entries->add(
+							Multi_Entry::from_entries( array_map( '\GV\GF_Entry::from_entry', $entry ) )
+						);
+					}
+				} else {
+					array_map( array( $entries, 'add' ), array_map( '\GV\GF_Entry::from_entry', $query->get() ) );
+				}
+
+				/**
+				 * Add total count callback.
+				 */
+				$entries->add_count_callback( function() use ( $query ) {
+					return $query->total_found;
+				} );
+			} else {
+				$entries = $this->form->entries
+					->filter( \GV\GF_Entry_Filter::from_search_criteria( $parameters['search_criteria'] ) )
+					->offset( $this->settings->get( 'offset' ) )
+					->limit( $parameters['paging']['page_size'] )
+					->page( $page );
+
+				if ( ! empty( $parameters['sorting'] ) ) {
+					$field = new \GV\Field();
+					$field->ID = $parameters['sorting']['key'];
+					$direction = strtolower( $parameters['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
+					$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction ) );
+				}
 			}
 		}
 
@@ -617,14 +688,10 @@ class View implements \ArrayAccess {
 	}
 
 	public function __get( $key ) {
-
-		$return = isset( $this->$key ) ? $this->$key : null;
-
 		if ( $this->post ) {
-			$raw_post = $this->post->filter('raw');
-			$return = $raw_post->$key;
+			$raw_post = $this->post->filter( 'raw' );
+			return $raw_post->{$key};
 		}
-
-		return $return;
+		return isset( $this->{$key} ) ? $this->{$key} : null;
 	}
 }

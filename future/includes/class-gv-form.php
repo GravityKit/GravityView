@@ -39,6 +39,11 @@ abstract class Form extends Source {
 		return null;
 	}
 
+	/** @TODO Gennady, how should this be handled? */
+	public function get_form() {
+		return $this->form;
+	}
+
 	/**
 	 * Get all entries for this form.
 	 *

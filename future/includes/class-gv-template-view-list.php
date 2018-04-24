@@ -29,10 +29,17 @@ class View_List_Template extends View_Template {
 	public function the_field( \GV\Field $field, \GV\Entry $entry, $extras = null ) {
 		$form = $this->view->form;
 
+		if ( $entry instanceof Multi_Entry ) {
+			if ( ! $entry = Utils::get( $entry, $field->form_id ) ) {
+				return;
+			}
+			$form = GF_Form::by_id( $field->form_id );
+		}
+
 		$context = Template_Context::from_template( $this, compact( 'field', 'entry' ) );
 
 		$renderer = new Field_Renderer();
-		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
+		$source = is_numeric( $field->ID ) ? $form : new Internal_Source();
 		
 		$value = $renderer->render( $field, $this->view, $source, $entry, $this->request );
 

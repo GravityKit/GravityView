@@ -149,6 +149,7 @@ class GravityView_Render_Settings {
 	 * @see GravityView_Admin_Views::render_active_areas
 	 *
 	 * @access public
+	 * @param string $form_id
 	 * @param string $field_type field / widget
 	 * @param string $template_id
 	 * @param string $field_id
@@ -161,7 +162,7 @@ class GravityView_Render_Settings {
 	 *
 	 * @return string HTML of dialog box
 	 */
-	public static function render_field_options( $field_type, $template_id, $field_id, $field_label, $area, $input_type = NULL, $uniqid = '', $current = '', $context = 'single', $item = array() ) {
+	public static function render_field_options( $form_id, $field_type, $template_id, $field_id, $field_label, $area, $input_type = NULL, $uniqid = '', $current = '', $context = 'single', $item = array() ) {
 
 		if( empty( $uniqid ) ) {
 			//generate a unique field id
@@ -178,6 +179,9 @@ class GravityView_Render_Settings {
 		$output = '';
 		$output .= '<input type="hidden" class="field-key" name="'. $name_prefix .'[id]" value="'. esc_attr( $field_id ) .'">';
 		$output .= '<input type="hidden" class="field-label" name="'. $name_prefix .'[label]" value="'. esc_attr( $field_label ) .'">';
+		if ( $form_id ) {
+			$output .= '<input type="hidden" class="field-form-id" name="'. $name_prefix .'[form_id]" value="'. esc_attr( $form_id ) .'">';
+		}
 
 		// If there are no options, return what we got.
 		if(empty($options)) {

@@ -239,7 +239,7 @@ class GravityView_Ajax {
 	 */
 	function get_field_options() {
 		$this->check_ajax_nonce();
-
+		
 		if( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) ) {
 			gravityview()->log->error( 'Required fields were not set in the $_POST request. ' );
 			$this->_exit( false );
@@ -255,7 +255,8 @@ class GravityView_Ajax {
 		$input_type = isset($_post['input_type']) ? esc_attr( $_post['input_type'] ) : NULL;
 		$context = isset($_post['context']) ? esc_attr( $_post['context'] ) : NULL;
 
-		$response = GravityView_Render_Settings::render_field_options( $_post['field_type'], $_post['template'], $_post['field_id'], $_post['field_label'], $_post['area'], $input_type, '', '', $context  );
+		$form_id = empty( $_post['form_id'] ) ? null : $_post['form_id'];
+		$response = GravityView_Render_Settings::render_field_options( $form_id, $_post['field_type'], $_post['template'], $_post['field_id'], $_post['field_label'], $_post['area'], $input_type, '', '', $context  );
 
 		$response = gravityview_strip_whitespace( $response );
 

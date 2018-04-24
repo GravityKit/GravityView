@@ -24,10 +24,10 @@ class View_Table_Template extends View_Template {
 	 */
 	public function the_columns() {
 		$fields = $this->view->fields->by_position( 'directory_table-columns' );
-		$form = $this->view->form;
 
 		foreach ( $fields->by_visible()->all() as $field ) {
 			$context = Template_Context::from_template( $this, compact( 'field' ) );
+			$form = $field->form_id ? GF_Form::by_id( $field->form_id ) : $this->view->form;
 
 			/**
 			 * @deprecated Here for back-compatibility.
@@ -156,6 +156,14 @@ class View_Table_Template extends View_Template {
 	 * @return void
 	 */
 	public function the_field( \GV\Field $field, \GV\Entry $entry ) {
+		$form = $this->view->form;
+
+		if ( $entry instanceof Multi_Entry ) {
+			if ( ! $entry = Utils::get( $entry, $field->form_id ) ) {
+				return;
+			}
+			$form = GF_Form::by_id( $field->form_id );
+		}
 
 		$context = Template_Context::from_template( $this, compact( 'field', 'entry' ) );
 

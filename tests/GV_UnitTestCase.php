@@ -50,4 +50,29 @@ class GV_UnitTestCase extends WP_UnitTestCase {
 		}
 	}
 
+	/**
+	 * Renders HTML on the commandline nicely, needs lynx.
+	 *
+	 * @param string $data The data to render.
+	 *
+	 * @return string The transformed HTML
+	 */
+	public static function debug_render_html( $data ) {
+		$ds = array(
+			array( 'pipe', 'r' ),
+			array( 'pipe', 'w' ),
+		);
+
+		if ( ! is_resource( $handle = proc_open( 'lynx -dump -stdin', $ds, $pipes ) ) ) {
+			return $data;
+		}
+
+		fwrite( $pipes[0], $data );
+		fclose( $pipes[0] );
+		$data = stream_get_contents( $pipes[1] );
+		fclose( $pipes[1] );
+		proc_close( $handle );
+
+		return $data;
+	}
 }

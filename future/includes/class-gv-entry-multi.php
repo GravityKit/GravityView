@@ -10,7 +10,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * The multi-entry Entry implementation.
  *
  * An entry that is really a join of 2+ entries.
- * Used for JOINS in the \GV\Query component.
+ * Used for JOINS in the \GF_Query component.
  */
 class Multi_Entry extends Entry implements \ArrayAccess {
 	/**
@@ -34,18 +34,41 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 	/**
 	 * Construct a multientry from an array of entries.
 	 *
-	 * @param \GV\Entry $entries The entries.
+	 * @param \GV\Entry[] $entries The entries.
 	 *
 	 * @return \GV\Multi_Entry A multientry object.
 	 */
 	public static function from_entries( $entries ) {
 		$_entry = new self();
 		foreach ( $entries as &$entry ) {
-			if ( empty( $entry['form_id'] ) ) {
+			if ( ! $entry instanceof Entry ) {
 				continue;
 			}
 			$_entry->entries[ $entry['form_id'] ]  = &$entry;
 		}
+		return $_entry;
+	}
+
+	/**
+	 * Fake legacy template support.
+	 *
+	 * Take the first entry and set it as the current entry.
+	 * But support nesting.
+	 *
+	 * @return array See \GV\Entry::as_entry()
+	 */
+	public function as_entry() {
+		$_entry = array();
+
+		if ( $entry = reset( $this->entries ) ) {
+			$_entry = $entry->as_entry();
+
+			foreach ( $this->entries as $entry ) {
+				$entry = $entry->as_entry();
+				$_entry['_multi'][ $entry['form_id'] ] = $entry;
+			}
+		}
+
 		return $_entry;
 	}
 

@@ -47,6 +47,7 @@
  *  stopImmediatePropagation: function
  * }} jQueryEvent
  */
+
 (function( $ ) {
 
 	var viewConfiguration, viewGeneralSettings;
@@ -310,7 +311,7 @@
 
 			} else {
 				// if both form and template were selected, show View Layout config
-				if ( $( "#gravityview_directory_template" ).val().length > 0 ) {
+				if ( $( "#gravityview_directory_template" ).length && $( "#gravityview_directory_template" ).val().length > 0 ) {
 					$( "#gravityview_select_template" ).slideUp( 150 );
 					vcfg.showViewConfig();
 				} else {
