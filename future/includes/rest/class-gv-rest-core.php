@@ -13,6 +13,14 @@ class Core {
 	 * Initialization.
 	 */
 	public static function init() {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_REST ) || gravityview()->plugin->settings->get( 'rest_api' ) !== '1' ) {
+			return;
+		}
+
+		/** Load routes. */
+		require_once gravityview()->plugin->dir( 'future/includes/rest/class-gv-rest-route.php' );
+		require_once gravityview()->plugin->dir( 'future/includes/rest/class-gv-rest-views-route.php' );
+
 		self::$routes['views'] = $views = new Views_Route();
 		$views->register_routes();
 	}
@@ -38,7 +46,3 @@ class Core {
 		return rest_url( self::get_namespace() );
 	}
 }
-
-/** Load routes. */
-require gravityview()->plugin->dir( 'future/includes/rest/class-gv-rest-route.php' );
-require gravityview()->plugin->dir( 'future/includes/rest/class-gv-rest-views-route.php' );

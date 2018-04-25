@@ -307,6 +307,20 @@ class Views_Route extends Route {
 			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
 		}
 
+		// REST disabled
+		if ( ! gravityview()->plugin->settings->get( 'rest_api' ) || $view->settings->get( 'rest_disable' )  ) {
+			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+		}
+
+		/**
+		 * @filter `gravityview/view/output/rest` Disable rest output. Final chance.
+		 * @param[in,out] bool Enable or not.
+		 * @param \GV\View $view The view.
+		 */
+		if ( ! apply_filters( 'gravityview/view/output/rest', true, $view ) ) {
+			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+		}
+
 		return true;
 	}
 

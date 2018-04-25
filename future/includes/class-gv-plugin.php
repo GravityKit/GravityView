@@ -77,6 +77,11 @@ final class Plugin {
 	const FEATURE_JOINS = 'joins';
 
 	/**
+	 * @var string The REST API functionality identifier.
+	 */
+	const FEATURE_REST  = 'rest_api';
+
+	/**
 	 * Get the global instance of \GV\Plugin.
 	 *
 	 * @return \GV\Plugin The global instance of GravityView Plugin.
@@ -448,6 +453,8 @@ final class Plugin {
 		switch ( $feature ):
 				case self::FEATURE_JOINS:
 					return class_exists( '\GF_Query' );
+				case self::FEATURE_REST:
+					return class_exists( '\WP_REST_Controller' );
 			default:
 				return false;
 		endswitch;

@@ -502,16 +502,22 @@ class Addon_Settings extends \GFAddOn {
 	private function defaults() {
 		$defaults = array(
 			// Set the default license in wp-config.php
-			'license_key' => defined( 'GRAVITYVIEW_LICENSE_KEY' ) ? GRAVITYVIEW_LICENSE_KEY : '',
+			'license_key'          => defined( 'GRAVITYVIEW_LICENSE_KEY' ) ? GRAVITYVIEW_LICENSE_KEY : '',
 			'license_key_response' => '',
-			'license_key_status' => '',
-			'support-email' => get_bloginfo( 'admin_email' ),
-			'no-conflict-mode' => '1',
-			'support_port' => '1',
-			'flexbox_search' => '1',
-			'beta' => '0',
+			'license_key_status'   => '',
+			'support-email'        => get_bloginfo( 'admin_email' ),
+			'no-conflict-mode'     => '1',
+			'support_port'         => '1',
+			'flexbox_search'       => '1',
+			'rest_api'             => '0',
+			'beta'                 => '0',
 		);
-		return $defaults;
+
+		/**
+		 * @filter `gravityview/settings/default` Filter default global settings.
+		 * @param[in,out] array The defaults.
+		 */
+		return apply_filters( 'gravityview/settings/defaults', $defaults );
 	}
 
 	/***
@@ -810,6 +816,28 @@ class Addon_Settings extends \GFAddOn {
 				),
 				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ) . ' ' . __( 'If your Edit View tabs are ugly, enable this setting.', 'gravityview' ),
 			),
+			/**
+			 * @since 2.0 Added REST API
+			 */
+			gravityview()->plugin->supports( Plugin::FEATURE_REST ) ?
+				array(
+					'name' => 'rest_api',
+					'type' => 'radio',
+					'label' => __( 'REST API', 'gravityview' ),
+					'default_value' => $default_settings['rest_api'],
+					'horizontal' => 1,
+					'choices' => array(
+						array(
+							'label' => _x( 'Enable', 'Setting: Enable or Disable', 'gravityview' ),
+							'value' => '1',
+						),
+						array(
+							'label' => _x( 'Disable', 'Setting: Enable or Disable', 'gravityview' ),
+							'value' => '0',
+						),
+					),
+					'description' => __( 'Enable View and Entry access via the REST API? Regular per-view restrictions apply (private, password protected, etc.).', 'gravityview' ),
+				) : array(),
 			array(
 				'name' => 'beta',
 				'type' => 'checkbox',
@@ -826,6 +854,8 @@ class Addon_Settings extends \GFAddOn {
 				'description'   => __( 'You will have early access to the latest GravityView features and improvements. There may be bugs! If you encounter an issue, help make GravityView better by reporting it!', 'gravityview' ),
 			),
 		);
+
+		$fields = array_filter( $fields, 'count' );
 
 		/**
 		 * @filter `gravityview_settings_fields` Filter the settings fields.

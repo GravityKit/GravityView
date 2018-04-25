@@ -348,11 +348,13 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$view4 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 		$view5 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 		$view6 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view7 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
 		// These should not be seen by regular users
 		wp_update_post( array( 'ID' => $view4->ID, 'post_password' => '123' ) );
-		wp_update_post( array( 'ID' => $view5->ID, 'post_status' => 'protected' ) );
+		wp_update_post( array( 'ID' => $view5->ID, 'post_status' => 'private' ) );
 		wp_update_post( array( 'ID' => $view6->ID, 'post_status' => 'trash' ) );
+		wp_update_post( array( 'ID' => $view7->ID, 'post_status' => 'draft' ) );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views' );
 		$request->set_query_params( array(
@@ -408,42 +410,57 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries/' . $entry1['id'] );
 		$response = rest_get_server()->dispatch( $request );
 		$this->assertEquals( 500, $response->status );
-		return;
-
-		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.json' );
-		$request->set_query_params( array(
-			'limit' => 2,
-			'page' => 2,
-		) );
-		$response = rest_get_server()->dispatch( $request );
-		$this->assertEquals( 200, $response->status );
-
-		$entries = $response->get_data();
-		$this->assertCount( 1, $entries['entries'] );
-		$this->assertEquals( 3, $entries['total'] );
-		$this->assertEquals( $entry['id'], $entries['entries'][0]['id'] );
-
-		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.html' );
-		$response = rest_get_server()->dispatch( $request );
-		$this->assertEquals( 200, $response->status );
-
-		$html = $response->get_data();
-		$this->assertContains( 'gv-table-view', $html );
-		$this->assertContains( 'set all the fields!', $html );
-		$this->assertContains( 'set all the fields! 1', $html );
-		$this->assertContains( 'set all the fields! 2', $html );
 
 		// View
 
 		// Password protected
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view4->ID );
 		$response = rest_get_server()->dispatch( $request );
-		$this->assertEquals( 401, $response->status );
+		$this->assertEquals( 500, $response->status );
 
-		// Trashed
+		// Protected
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view5->ID );
 		$response = rest_get_server()->dispatch( $request );
-		$this->assertEquals( 401, $response->status );
+		$this->assertEquals( 500, $response->status );
+
+		// Trashed
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view6->ID );
+		$response = rest_get_server()->dispatch( $request );
+		$this->assertEquals( 500, $response->status );
+
+		// Draft
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view7->ID );
+		$response = rest_get_server()->dispatch( $request );
+		$this->assertEquals( 500, $response->status );
+
+		$view8 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		// REST disabled for View
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view8->ID );
+		$response = rest_get_server()->dispatch( $request );
+		$this->assertEquals( 200, $response->status );
+
+		add_filter( 'gravityview/view/output/rest', '__return_false' );
+
+		$response = rest_get_server()->dispatch( $request );
+		$this->assertEquals( 500, $response->status );
+
+		remove_filter( 'gravityview/view/output/rest', '__return_false' );
+
+		$response = rest_get_server()->dispatch( $request );
+		$this->assertEquals( 200, $response->status );
+
+		$view9 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'], 'settings' => array( 'rest_disable' => true ) ) );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view9->ID );
+		$response = rest_get_server()->dispatch( $request );
+		$this->assertEquals( 500, $response->status );
+
+		$view10 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'], 'settings' => array( 'rest_disable' => false ) ) );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view10->ID );
+		$response = rest_get_server()->dispatch( $request );
+		$this->assertEquals( 200, $response->status );
 	}
 
 	public function test_create_item() {

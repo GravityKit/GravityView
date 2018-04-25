@@ -120,6 +120,12 @@ class GV_Unit_Tests_Bootstrap {
 			require_once '/tmp/gravityforms/gravityforms.php';
 		}
 
+		/** Enable the REST API */
+		add_action( 'gravityview/settings/defaults', function( $defaults ) {
+			$defaults['rest_api'] = '1';
+			return $defaults;
+		} );
+
 		require_once $this->plugin_dir . '/gravityview.php';
 
 		/* Remove temporary tables which causes problems with GF */
