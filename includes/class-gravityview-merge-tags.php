@@ -418,6 +418,7 @@ class GravityView_Merge_Tags {
 
 			$link_args = array(
 				'return' => 'url',
+				'entry_id' => $entry['id'],
 				'post_id' => \GV\Utils::get( $match, 1, null ),
 				'action' => \GV\Utils::get( $match, 2, 'read' ),
 			);
