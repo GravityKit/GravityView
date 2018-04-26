@@ -836,7 +836,8 @@ class Addon_Settings extends \GFAddOn {
 							'value' => '0',
 						),
 					),
-					'description' => __( 'Enable View and Entry access via the REST API? Regular per-view restrictions apply (private, password protected, etc.).', 'gravityview' ),
+					'description' => __( 'Enable View and Entry access via the REST API? Regular per-View restrictions apply (private, password protected, etc.).', 'gravityview' ),
+					'tooltip' => '<p>' . esc_html__( 'If you are unsure, choose the Disable setting.', 'gravityview' ) . '</p>',
 				) : array(),
 			array(
 				'name' => 'beta',
