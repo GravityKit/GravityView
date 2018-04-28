@@ -272,6 +272,16 @@ class Views_Route extends Route {
 
 		unset( $return['settings']['page_size'], $return['settings']['sort_field'], $return['settings']['sort_direction'] );
 
+		// Redact for non-logged ins
+		if ( ! \GVCommon::has_cap( 'edit_others_gravityviews' ) ) {
+			unset( $return['settings'] );
+			unset( $return['search_criteria'] );
+		}
+		
+		if ( ! current_user_can( 'gravityforms_edit_forms' ) ) {
+			unset( $return['form'] );
+		}
+
 		return $return;
 	}
 

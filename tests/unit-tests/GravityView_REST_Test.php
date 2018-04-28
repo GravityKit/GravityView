@@ -463,6 +463,63 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertEquals( 200, $response->status );
 	}
 
+	public function test_get_information_disclosure() {
+		$user_id = $this->factory->user->create( array(
+			'role' => 'administrator',
+		) );
+
+		$form = $this->factory->form->create_and_get();
+
+		// Views
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+						'label' => 'Text',
+					),
+				),
+			),
+			'settings' => array( 'show_only_approved' => true ),
+		) );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views' );
+		$request->set_query_params( array(
+			'limit' => 1,
+			'page' => 1,
+		) );
+		$response = rest_get_server()->dispatch( $request );
+		$this->assertEquals( 200, $response->status );
+
+		$views = $response->get_data();
+		$this->assertCount( 1, $views['views'] );
+		$this->assertEquals( 1, $views['total'] );
+		$this->assertEquals( $view->ID, $views['views'][0]['ID'] );
+
+		$this->assertNotContains( 'settings', array_keys( $views['views'][0] ) );
+		$this->assertNotContains( 'form', array_keys( $views['views'][0] ) );
+		$this->assertNotContains( 'search_criteria', array_keys( $views['views'][0] ) );
+
+		wp_set_current_user( $user_id );
+
+		$response = rest_get_server()->dispatch( $request );
+		$this->assertEquals( 200, $response->status );
+
+		$views = $response->get_data();
+		$this->assertCount( 1, $views['views'] );
+		$this->assertEquals( 1, $views['total'] );
+		$this->assertEquals( $view->ID, $views['views'][0]['ID'] );
+
+		$this->assertContains( 'settings', array_keys( $views['views'][0] ) );
+		$this->assertContains( 'form', array_keys( $views['views'][0] ) );
+		$this->assertContains( 'search_criteria', array_keys( $views['views'][0] ) );
+	}
+
 	public function test_create_item() {
 	}
 
