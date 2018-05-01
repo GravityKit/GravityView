@@ -252,6 +252,12 @@ class GravityView_Welcome {
 
 			<div class="changelog point-releases" style="border-bottom: 0">
 
+                <div class="update-nag inline widefat">
+                    <h2 style="margin-top: 0">GravityView 2.0: Release Candidate 1</h2>
+
+                    <p><strong>We&rsquo;re getting close to releasing Version 2.0</strong>&mdash;please let us know if you encounter any issues! Email <a href="mailto:support@gravityview.co">support@gravityview.co</a> if you think something isn&rsquo;t right.</p>
+                </div>
+
 				<div class="feature-section col two-col" style="margin:0; padding: 0;">
 					<div class="col col-1">
                         <div class="media-container"><iframe width="489" height="275" src="https://www.youtube-nocookie.com/embed/ANEiBP1tON0?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
@@ -270,6 +276,22 @@ class GravityView_Welcome {
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
+
+                <h3>1.22.6 on April 4, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Line breaks being added to <code>[gvlogic]</code> shortcode output</li>
+                    <li>Fixed: Gravity Forms 2.3 compatibility notice</li>
+                    <li>Fixed: &quot;The ID is required.&quot; message when configuring the GravityView Search WordPress widget</li>
+                    <li>Fixed: Slashes were being added to Post Image details</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Added <code>gravityview/edit_entry/reveal_hidden_field</code> filter, which allows you to prevent Hidden fields from becoming Text fields in Edit Entry context</li>
+                    <li>Added <code>gravityview/edit_entry/field_visibility</code> filter to set field visibility on Edit Entry (default is always &quot;visible&quot;)</li>
+                </ul>
 
                 <h3>1.22.5 on January 25, 2018</h3>
 
