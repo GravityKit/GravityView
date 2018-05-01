@@ -46,8 +46,10 @@ msgstr ""
 #: future/includes/class-gv-extension.php:223
 msgid ""
 "The %s Extension is not compatible with this version of GravityView. Please "
-"update the plugin to the latest version."
+"update the Extension to the latest version."
 msgstr ""
+"De %s plugin is niet compatible met deze versie van GravityView. Update naar"
+" de laatste versie van GravityView."
 
 #: future/includes/class-gv-license-handler.php:259
 msgid "License Details:"
@@ -1581,27 +1583,27 @@ msgstr ""
 msgid "List of Changes"
 msgstr "Lijst van wijzigingen"
 
-#: includes/class-admin-welcome.php:271
+#: includes/class-admin-welcome.php:277
 msgid "What&rsquo;s New"
 msgstr "Wat is er nieuw"
 
-#: includes/class-admin-welcome.php:486
+#: includes/class-admin-welcome.php:508
 msgid "View change history"
 msgstr "Bekijk geschiedenis van wijzigingen"
 
-#: includes/class-admin-welcome.php:507
+#: includes/class-admin-welcome.php:529
 msgid "GravityView is brought to you by:"
 msgstr "GravityView word je aangeboden door:"
 
-#: includes/class-admin-welcome.php:542
+#: includes/class-admin-welcome.php:564
 msgid "Contributors"
 msgstr "Bijdragers"
 
-#: includes/class-admin-welcome.php:567
+#: includes/class-admin-welcome.php:589
 msgid "Want to contribute?"
 msgstr "Wil je bijdragen?"
 
-#: includes/class-admin-welcome.php:568
+#: includes/class-admin-welcome.php:590
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
