@@ -526,7 +526,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$searchable_fields = $this->get_view_searchable_fields( $view );
 
 		// add free search
-		if ( ! empty( $get['gv_search'] ) && in_array( 'search_all', $searchable_fields ) ) {
+		if ( isset( $get['gv_search'] ) && '' !== $get['gv_search'] && in_array( 'search_all', $searchable_fields ) ) {
 
 			$search_all_value = trim( $get['gv_search'] );
 
