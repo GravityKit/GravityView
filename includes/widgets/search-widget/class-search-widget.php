@@ -444,6 +444,54 @@ class GravityView_Widget_Search extends \GV\Widget {
 		return $search_fields;
 	}
 
+	/**
+	 * Get the fields that are searchable for a View
+	 *
+	 * @since 2.0
+	 *
+	 * @param \GV\View|null $view
+	 *
+	 * TODO: Move to \GV\View, perhaps? And return a Field_Collection
+	 * TODO: Use in gravityview()->request->is_search() to calculate whether a valid search
+	 *
+	 * @return array If no View, returns empty array. Otherwise, returns array of fields configured in widgets and Search Bar for a View
+	 */
+	private function get_view_searchable_fields( $view ) {
+
+		/**
+		 * Find all search widgets on the view and get the searchable fields settings.
+		 */
+		$searchable_fields = array();
+
+		if ( ! $view ) {
+			return $searchable_fields;
+		}
+
+		/**
+		 * Include the sidebar Widgets.
+		 */
+		$widgets = (array) get_option( 'widget_gravityview_search', array() );
+
+		foreach ( $widgets as $widget ) {
+			if ( ! empty( $widget['view_id'] ) && $widget['view_id'] == $view->ID ) {
+				if( $_fields = json_decode( $widget['search_fields'], true ) ) {
+					foreach ( $_fields as $field ) {
+						$searchable_fields [] = $field['field'];
+					}
+				}
+			}
+		}
+
+		foreach ( $view->widgets->by_id( $this->get_widget_id() )->all() as $widget ) {
+			if( $_fields = json_decode( $widget->configuration->get( 'search_fields' ), true ) ) {
+				foreach ( $_fields as $field ) {
+					$searchable_fields [] = $field['field'];
+				}
+			}
+		}
+
+		return $searchable_fields;
+	}
 
 	/** --- Frontend --- */
 
@@ -475,30 +523,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		// Make sure array key is set up
 		$search_criteria['field_filters'] = \GV\Utils::get( $search_criteria, 'field_filters', array() );
 
-		/**
-		 * Find all search widgets on the view and get the searchable fields settings.
-		 */
-		$searchable_fields = array();
-		if ( $view ) {
-
-			/**
-			 * Include the sidebar Widgets.
-			 */
-			$widgets = (array)get_option( 'widget_gravityview_search', array() );
-			foreach ( $widgets as $widget ) {
-				if ( ! empty( $widget['view_id'] ) && $widget['view_id'] == $view->ID ) {
-					foreach ( json_decode( $widget['search_fields'], true ) as $field ) {
-						$searchable_fields []= $field['field'];
-					}
-				}
-			}
-
-			foreach ( $view->widgets->by_id( $this->get_widget_id() )->all() as $widget ) {
-				foreach ( json_decode( $widget->configuration->get( 'search_fields' ), true ) as $field ) {
-					$searchable_fields []= $field['field'];
-				}
-			}
-		}
+		$searchable_fields = $this->get_view_searchable_fields( $view );
 
 		/**
 		 * Find all visible fields on the view.
