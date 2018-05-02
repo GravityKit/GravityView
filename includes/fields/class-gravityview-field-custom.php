@@ -50,6 +50,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 				'value' => '',
 				'class'	=> 'code',
 				'merge_tags' => 'force',
+				'rows' => 15,
 				'show_all_fields' => true, // Show the `{all_fields}` and `{pricing_fields}` merge tags
 			),
 			'wpautop' => array(

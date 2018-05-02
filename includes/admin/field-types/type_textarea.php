@@ -37,8 +37,9 @@ class GravityView_FieldType_textarea extends GravityView_FieldType {
         }
 		$class .= \GV\Utils::get( $this->field, 'class' );
 		$placeholder = \GV\Utils::get( $this->field, 'placeholder' );
+		$rows = \GV\Utils::get( $this->field, 'rows', 5 );
 		?>
-		<textarea name="<?php echo esc_attr( $this->name ); ?>" placeholder="<?php echo esc_attr( $placeholder ); ?>" id="<?php echo $this->get_field_id(); ?>" class="<?php echo gravityview_sanitize_html_class( $class ); ?>" rows="5"><?php echo esc_textarea(  $this->value ); ?></textarea>
+		<textarea name="<?php echo esc_attr( $this->name ); ?>" placeholder="<?php echo esc_attr( $placeholder ); ?>" id="<?php echo $this->get_field_id(); ?>" class="<?php echo gravityview_sanitize_html_class( $class ); ?>" rows="<?php echo intval( $rows ); ?>"><?php echo esc_textarea(  $this->value ); ?></textarea>
        	<?php
 	}
 
