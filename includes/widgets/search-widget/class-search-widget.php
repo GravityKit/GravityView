@@ -525,17 +525,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$searchable_fields = $this->get_view_searchable_fields( $view );
 
-		/**
-		 * Find all visible fields on the view.
-		 */
-		$visible_fields = array();
-
-		if ( $view ) {
-			foreach ( $view->fields->by_visible()->by_position( 'directory_*' )->all() as $field ) {
-				$visible_fields []= $field->ID;
-			}
-		}
-
 		// add free search
 		if ( ! empty( $get['gv_search'] ) && in_array( 'search_all', $searchable_fields ) ) {
 

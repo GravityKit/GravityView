@@ -81,6 +81,7 @@ class Field_Collection extends Collection {
 	public function by_visible() {
 		$fields = new self();
 
+		/** @var \GV\Field $field */
 		foreach ( $this->all() as $field ) {
 			if ( $field->is_visible() ) {
 				$fields->add( $field );
