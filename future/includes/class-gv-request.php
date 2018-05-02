@@ -133,7 +133,16 @@ abstract class Request {
 	 * @return boolean True if this is a search request.
 	 */
 	public function is_search() {
-		return $this->is_view() && ! empty ( $_GET['gv_search'] );
+
+		$search_method = apply_filters( 'gravityview/search/method', 'get' );
+
+		if ( 'post' === $search_method ) {
+			$get = $_POST;
+		} else {
+			$get = $_GET;
+		}
+
+		return $this->is_view() && ( isset( $get['gv_search'] ) || isset( $get['gv_start'] ) || isset( $get['gv_end'] ) || isset( $get['gv_by'] ) || isset( $get['gv_id'] ) );
 	}
 }
 

@@ -832,6 +832,61 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Frontend_Request::is_search()
 	 */
 	public function test_frontend_request_is_search() {
+
+		$request = new \GV\Frontend_Request();
+
+		global $post;
+		$this->assertFalse( $request->is_view() );
+
+		$view = $this->factory->view->create_and_get();
+
+		$post = $view;
+		$this->assertInstanceOf( '\GV\View', $request->is_view() );
+
+		$_GET = array();
+		$this->assertFalse( $request->is_search() );
+
+		$_GET = array( 'gv_search' => 'flow' );
+		$this->assertTrue( $request->is_search() );
+
+		$_GET = array(
+            'gv_search' => 'flow',
+            'filter_16' => 'Features+%2F+Enhancements',
+        );
+
+		$this->assertTrue( $request->is_search() );
+
+		$_GET = array(
+			'gv_search' => '',
+			'filter_16' => 'Features+%2F+Enhancements',
+		);
+		$this->assertTrue( $request->is_search() );
+
+		// TODO: Only count $_GET when in searchable fields
+
+		$_GET = array();
+		$_POST = array(
+			'gv_search' => '',
+			'filter_16' => 'Features+%2F+Enhancements',
+		);
+		$this->assertFalse( $request->is_search() );
+
+		// Use $_POST instead of $_GET for searches
+		add_filter( 'gravityview/search/method', $use_post = function( $method = 'get' ) {
+		    return 'post';
+        });
+
+		$_POST = array(
+			'gv_search' => '',
+			'filter_16' => 'Features+%2F+Enhancements',
+		);
+		$this->assertTrue( $request->is_search() );
+
+		remove_filter( 'gravityview/search/method', $use_post );
+
+		$this->assertFalse( $request->is_search() );
+
+		$post = null;
 	}
 
 	public function test_admin_request_is_admin_page() {
