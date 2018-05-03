@@ -145,16 +145,19 @@ class gravityview extends \GV\Shortcode {
 		 */
 		} else {
 			if ( $is_reembedded ) {
+				
 				// Mock the request with the actual View, not the global one
 				$mock_request = new \GV\Mock_Request();
 				$mock_request->returns['is_view'] = $view;
 				$mock_request->returns['is_entry'] = $request->is_entry();
 				$mock_request->returns['is_edit_entry'] = $request->is_edit_entry();
 				$mock_request->returns['is_search'] = $request->is_search();
+
+				$request = $mock_request;
 			}
 
 			$renderer = new \GV\View_Renderer();
-			return $renderer->render( $view, $mock_request );
+			return $renderer->render( $view, $request );
 		}
 	}
 
