@@ -518,6 +518,8 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertContains( 'settings', array_keys( $views['views'][0] ) );
 		$this->assertContains( 'form', array_keys( $views['views'][0] ) );
 		$this->assertContains( 'search_criteria', array_keys( $views['views'][0] ) );
+
+		wp_set_current_user( 0 );
 	}
 
 	public function test_create_item() {

@@ -278,7 +278,7 @@ class Views_Route extends Route {
 			unset( $return['search_criteria'] );
 		}
 		
-		if ( ! current_user_can( 'gravityforms_edit_forms' ) ) {
+		if ( ! \GFCommon::current_user_can_any( 'gravityforms_edit_forms' ) ) {
 			unset( $return['form'] );
 		}
 
