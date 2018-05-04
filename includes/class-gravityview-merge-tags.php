@@ -53,6 +53,8 @@ class GravityView_Merge_Tags {
 		$gv_modifiers = array(
 			'maxwords:(\d+)' => 'modifier_maxwords', /** @see modifier_maxwords */
 		    'timestamp' => 'modifier_timestamp', /** @see modifier_timestamp */
+			/** @see modifier_strings */
+			'urlencode' => 'modifier_strings',
 			'wpautop' => 'modifier_strings',
 		    'esc_html' => 'modifier_strings',
 		    'sanitize_html_class' => 'modifier_strings',
@@ -243,6 +245,10 @@ class GravityView_Merge_Tags {
 
 		$return = $raw_value;
 
+		switch( $matches[0] ) {
+			case 'urlencode':
+				$return = urlencode( $raw_value );
+				break;
 			case 'wpautop':
 				$return = trim( wpautop( $raw_value ) );
 				break;
@@ -272,7 +278,7 @@ class GravityView_Merge_Tags {
 				break;
 		}
 
-		return self::maybe_urlencode( $field, $return );
+		return $return;
 	}
 
 	/**
