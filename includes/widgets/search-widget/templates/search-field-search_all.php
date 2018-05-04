@@ -10,6 +10,7 @@ $view_id = $gravityview_view->getViewId();
 $value = $gravityview_view->search_field['value'];
 $label = $gravityview_view->search_field['label'];
 
+$html_input_type = RGFormsModel::is_html5_enabled() ? 'search' : 'text';
 ?>
 
 <div class="gv-search-box gv-search-field-text gv-search-field-search_all">
@@ -17,6 +18,6 @@ $label = $gravityview_view->search_field['label'];
 	<?php if( ! gv_empty( $label, false, false ) ) { ?>
 		<label for="gv_search_<?php echo $view_id; ?>"><?php echo esc_html( $label ); ?></label>
 	<?php } ?>
-		<p><input type="text" name="gv_search" id="gv_search_<?php echo $view_id; ?>" value="<?php echo $value; ?>" /></p>
+		<p><input type="<?php echo $html_input_type; ?>" name="gv_search" id="gv_search_<?php echo $view_id; ?>" value="<?php echo $value; ?>" /></p>
 	</div>
 </div>
