@@ -385,9 +385,9 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers GravityView_Merge_Tags::modifier_sanitize_html_class()
-	 * @covers GravityView_Merge_Tags::modifier_esc_html()
-	 * @covers GravityView_Merge_Tags::modifier_sanitize_title()
+	 * @covers GravityView_Merge_Tags::modifier_strings()
+	 * @covers GravityView_Merge_Tags::modifier_explode()
+	 *
 	 * @since 2.0
 	 */
 	function test_merge_tag_data() {
@@ -406,25 +406,41 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		$form['fields'][] = new GF_Field_Text( array( 'id' => 100, 'form_id' => $form['id'] ) );
 		$form['fields'][] = new GF_Field_Text( array( 'id' => 101, 'form_id' => $form['id'] ) );
 		$form['fields'][] = new GF_Field_Text( array( 'id' => 201, 'form_id' => $form['id'] ) );
+		$form['fields'][] = new GF_Field_Text( array( 'id' => 301, 'form_id' => $form['id'] ) );
 
 		$entry['100'] = 'This is spaces';
 		$entry['101'] = 'This,is,commas';
 		$entry['201'] = '<tag>';
+		$entry['301'] = '["This","is","JSON"]';
 
 		$tests = array(
 			'{Field:100:sanitize_html_class}' => 'This is spaces',
+			'{Field:100:ucwords}' => 'This Is Spaces',
+			'{Field:100:ucwords,urlencode}' => 'This+Is+Spaces',
+			'{Field:100:urlencode,ucwords}' => 'This+is+spaces',
+			'{Field:100:urlencode}' => 'This+is+spaces',
 			'{Field:100:sanitize_html_class,urlencode}' => 'This+is+spaces',
+			'{Field:100:urlencode,sanitize_html_class}' => 'Thisisspaces',
 			'{Field:101:sanitize_html_class}' => 'Thisiscommas',
 			'{Field:101:sanitize_html_class,urlencode}' => 'Thisiscommas',
+			'{Field:101:explode}' => 'This is commas',
+			'{Field:101:explode,strtoupper}' => 'THIS IS COMMAS',
+			'{Field:101:explode,strtoupper,strtolower}' => 'this is commas',
+			'{Field:101:explode,ucwords}' => 'This Is Commas',
+			'{Field:101:urlencode}' => 'This%2Cis%2Ccommas',
+			'{Field:101:urlencode,strtoupper}' => 'THIS%2CIS%2CCOMMAS',
+			'{Field:101:urlencode,sanitize_html_class}' => 'Thisiscommas',
 			'{Field:201:sanitize_html_class}' => 'tag',
 			'{Field:201:sanitize_html_class,urlencode}' => 'tag',
 			'{Field:201:esc_html}' => '&lt;tag&gt;',
 			'{Field:201:esc_html,urlencode}' => '%26lt%3Btag%26gt%3B',
-
-			// When GF modifiers come first, doesn't process
-			'{Field:100:urlencode,sanitize_html_class}' => $entry['100'],
-			'{Field:101:urlencode,sanitize_html_class}' => $entry['101'],
-			'{Field:201:urlencode,sanitize_html_class}' => $entry['201'],
+			'{Field:201:urlencode,sanitize_html_class}' => 'tag',
+			'{Field:201:strtoupper}' => '<TAG>',
+			'{Field:301:explode}' => 'This is JSON',
+			'{Field:301:explode,sanitize_title}' => 'this-is-json',
+			'{Field:301:explode,sanitize_title,strtoupper,urlencode}' => 'THIS-IS-JSON',
+			'{Field:301:explode,strtolower}' => 'this is json',
+			'{Field:301:esc_html,explode}' => '[&quot;This&quot; &quot;is&quot; &quot;JSON&quot;]',
 		);
 
 		$filter_tags = function( $tags ) {
