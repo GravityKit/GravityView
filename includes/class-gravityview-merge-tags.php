@@ -57,6 +57,11 @@ class GravityView_Merge_Tags {
 		    'esc_html' => 'modifier_strings',
 		    'sanitize_html_class' => 'modifier_strings',
 			'sanitize_title' => 'modifier_strings',
+			'strtolower' => 'modifier_strings',
+			'strtoupper' => 'modifier_strings',
+			'ucfirst' => 'modifier_strings',
+			'ucwords' => 'modifier_strings',
+			'wptexturize' => 'modifier_strings',
 		);
 
 		$modifiers = explode( ',', $modifier );
@@ -249,6 +254,21 @@ class GravityView_Merge_Tags {
 				break;
 			case 'sanitize_title':
 				$return = sanitize_title( $raw_value, '', 'gravityview/merge-tags/modifier' );
+				break;
+			case 'strtoupper':
+				$return = function_exists( 'mb_strtoupper' ) ? mb_strtoupper( $raw_value ) : strtoupper( $raw_value );
+				break;
+			case 'strtolower':
+				$return = function_exists( 'mb_strtolower' ) ? mb_strtolower( $raw_value ) : strtolower( $raw_value );
+				break;
+			case 'ucwords':
+				$return = ucwords( $raw_value );
+				break;
+			case 'ucfirst':
+				$return = ucfirst( $raw_value );
+				break;
+			case 'wptexturize':
+				$return = wptexturize( $raw_value );
 				break;
 		}
 
