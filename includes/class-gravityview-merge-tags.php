@@ -53,6 +53,8 @@ class GravityView_Merge_Tags {
 		$gv_modifiers = array(
 			'maxwords:(\d+)' => 'modifier_maxwords', /** @see modifier_maxwords */
 		    'timestamp' => 'modifier_timestamp', /** @see modifier_timestamp */
+			'explode' => 'modifier_explode', /** @see modifier_explode */
+
 			/** @see modifier_strings */
 			'urlencode' => 'modifier_strings',
 			'wpautop' => 'modifier_strings',
@@ -200,12 +202,13 @@ class GravityView_Merge_Tags {
 		return $return;
 	}
 
+
 	/**
-	 * Sanitize the value with esc_html()
+	 * Convert JSON or CSV values into space-separated string
+	 *
+	 * Useful for Multiple Select field data, like categories
 	 *
 	 * @since 2.0
-	 *
-	 * @uses esc_html()
 	 *
 	 * @param mixed $raw_value The raw value submitted for this field. May be CSV or JSON-encoded.
 	 * @param array $matches Regex matches group
@@ -214,15 +217,14 @@ class GravityView_Merge_Tags {
 	 *
 	 * @return string
 	 */
-	private static function modifier_esc_html( $raw_value, $matches = array(), $value = '', $field = null ) {
+	private static function modifier_explode( $raw_value, $matches, $value, $field = null ) {
 
-		if( empty( $matches[0] ) || ! function_exists( 'esc_html' ) ) {
-			return $raw_value;
+		// For JSON-encoded arrays
+		if( $json_array = json_decode( $raw_value, true ) ) {
+			return implode( ' ', $json_array );
 		}
 
-		$return = esc_html( $raw_value );
-
-		return self::maybe_urlencode( $field, $return );
+		return implode( ' ', explode( ',', $raw_value ) );
 	}
 
 	/**
