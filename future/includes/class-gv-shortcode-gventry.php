@@ -97,11 +97,18 @@ class gventry extends \GV\Shortcode {
 			}
 		}
 
+		/** Remove the back link. */
+		add_filter( 'gravityview/template/links/back/url', '__return_false' );
+
 		$renderer = new \GV\Entry_Renderer();
 
 		$request = new \GV\Mock_Request();
 		$request->returns['is_entry'] = $entry;
 
-		return  $renderer->render( $entry, $view, $request );
+		$out = $renderer->render( $entry, $view, $request );
+
+		remove_filter( 'gravityview/template/links/back/url', '__return_false' );
+
+		return $out;
 	}
 }

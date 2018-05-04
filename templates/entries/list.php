@@ -19,7 +19,7 @@ gravityview_before( $gravityview );
 
 ?><div class="<?php gv_container_class( 'gv-list-container gv-list-single-container', true, $gravityview ); ?>">
 
-	<p class="gv-back-link"><?php echo gravityview_back_link( $gravityview ); ?></p>
+	<?php if ( $link = gravityview_back_link( $gravityview ) ) { ?><p class="gv-back-link"><?php echo $link; ?></p><?php } ?>
 
 	<?php if ( $has_title || $has_subtitle || $has_image || $has_description || $has_content_attributes || $has_footer_left || $has_footer_right ): ?>
 		<div id="gv_list_<?php echo esc_attr( $entry_slug ); ?>" class="gv-list-view">

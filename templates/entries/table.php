@@ -9,7 +9,7 @@
 
 gravityview_before( $gravityview );
 
-?><p class="gv-back-link"><?php echo gravityview_back_link( $gravityview ); ?></p>
+?><?php if ( $link = gravityview_back_link( $gravityview ) ) { ?><p class="gv-back-link"><?php echo $link; ?></p><?php } ?>
 
 <div class="<?php gv_container_class( 'gv-table-view gv-table-container gv-table-single-container', true, $gravityview ); ?>">
 	<table class="gv-table-view-content">
