@@ -58,17 +58,24 @@ class GravityView_Merge_Tags {
 		    'sanitize_html_class' => 'modifier_sanitize_html_class', /** @see modifier_sanitize_html_class */
 			'sanitize_title' => 'modifier_sanitize_title', /** @see modifier_sanitize_title */
 		);
-		
-		$return = $value;
 
-		foreach ( $gv_modifiers as $gv_modifier => $method ) {
+		$modifiers = explode( ',', $modifier );
 
-			// Only match the regex if it's the first modifer; this allows us to enforce our own modifier structure
-			preg_match( '/^' . $gv_modifier .'/ism', $modifier, $matches );
+		$return = $raw_value;
 
-			if( ! empty( $matches ) ) {
+		foreach ( $modifiers as $passed_modifier ) {
+
+			foreach( $gv_modifiers as $gv_modifier => $method ) {
+
+				// Uses ^ to only match the first modifier, to enforce same order as passed by GF
+				preg_match( '/^' . $gv_modifier . '/ism', $passed_modifier, $matches );
+
+				if ( empty( $matches ) ) {
+					continue;
+				}
+
 				// The called method is passed the raw value and the full matches array
-				$return = self::$method( $raw_value, $matches, $value, $field );
+				$return = self::$method( $return, $matches, $value, $field );
 				break;
 			}
 		}
