@@ -161,8 +161,10 @@ final class Core {
 		/** Shortcodes */
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gravityview.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gventry.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gvfield.php' );
 		add_action( 'init', array( '\GV\Shortcodes\gravityview', 'add' ) );
+		add_action( 'init', array( '\GV\Shortcodes\gventry', 'add' ) );
 		add_action( 'init', array( '\GV\Shortcodes\gvfield', 'add' ) );
 		
 		/** oEmbed */
