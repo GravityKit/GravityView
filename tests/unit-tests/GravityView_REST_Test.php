@@ -450,17 +450,37 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$response = rest_get_server()->dispatch( $request );
 		$this->assertEquals( 200, $response->status );
 
-		$view9 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'], 'settings' => array( 'rest_disable' => true ) ) );
+		$view9 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'], 'settings' => array( 'rest_disable' => '1' ) ) );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view9->ID );
 		$response = rest_get_server()->dispatch( $request );
 		$this->assertEquals( 500, $response->status );
 
-		$view10 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'], 'settings' => array( 'rest_disable' => false ) ) );
+		$view10 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'], 'settings' => array( 'rest_disable' => '0' ) ) );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view10->ID );
 		$response = rest_get_server()->dispatch( $request );
 		$this->assertEquals( 200, $response->status );
+
+		/** Enable the REST API */
+		gravityview()->plugin->settings->set( array( 'rest_api' => '0' ) );
+		add_action( 'gravityview/settings/defaults', $callback = function( $defaults ) {
+			$defaults['rest_api'] = '0';
+			return $defaults;
+		} );
+		$view11 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'], 'settings' => array( 'rest_disable' => '0' ) ) );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view11->ID );
+		$response = rest_get_server()->dispatch( $request );
+		$this->assertEquals( 500, $response->status );
+
+		$view12 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'], 'settings' => array( 'rest_enable' => '1' ) ) );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view12->ID );
+		$response = rest_get_server()->dispatch( $request );
+		$this->assertEquals( 200, $response->status );
+
+		remove_action( 'gravityview/settings/defaults', $callback );
 	}
 
 	public function test_get_information_disclosure() {

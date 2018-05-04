@@ -13,7 +13,7 @@ class Core {
 	 * Initialization.
 	 */
 	public static function init() {
-		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_REST ) || gravityview()->plugin->settings->get( 'rest_api' ) !== '1' ) {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_REST ) ) {
 			return;
 		}
 

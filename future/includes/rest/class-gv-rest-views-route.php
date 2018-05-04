@@ -317,8 +317,10 @@ class Views_Route extends Route {
 			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
 		}
 
-		// REST disabled
-		if ( ! gravityview()->plugin->settings->get( 'rest_api' ) || $view->settings->get( 'rest_disable' )  ) {
+		// REST
+		if ( gravityview()->plugin->settings->get( 'rest_api' ) === '1' && $view->settings->get( 'rest_disable' ) === '1' ) {
+			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+		} elseif ( gravityview()->plugin->settings->get( 'rest_api' ) !== '1' && $view->settings->get( 'rest_enable' ) !== '1' ) {
 			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
 		}
 

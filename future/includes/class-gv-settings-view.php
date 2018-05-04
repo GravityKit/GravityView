@@ -244,6 +244,19 @@ class View_Settings extends Settings {
 					'full_width'        => true,
 				),
 			) : array(),
+		( gravityview()->plugin->supports( Plugin::FEATURE_REST ) && ( gravityview()->plugin->settings->get( 'rest_api' ) !== '1' ) ) ?
+			array(
+				'rest_enable'           => array(
+					'label'             => __( 'Allow REST Access', 'gravityview' ),
+					'group'             => 'default',
+					'desc'              => __( 'Enable  REST access to this View.', 'gravityview' ),
+					'type'              => 'checkbox',
+					'value'             => '',
+					'tooltip'           => false,
+					'show_in_shortcode' => false,
+					'full_width'        => true,
+				),
+			) : array(),
 		array(
 			'post_id' => array(
 				'type'              => 'number',
