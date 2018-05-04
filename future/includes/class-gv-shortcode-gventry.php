@@ -32,8 +32,9 @@ class gventry extends \GV\Shortcode {
 		}
 
 		$atts = wp_parse_args( $atts, array(
-			'id'      => 0,
-			'view_id' => 0,
+			'id'        => 0,
+			'entry_id'  => 0,
+			'view_id'   => 0,
 		) );
 
 		$view = \GV\View::by_id( $atts['view_id'] );
@@ -43,10 +44,12 @@ class gventry extends \GV\Shortcode {
 			return '';
 		}
 
-		$entry = \GV\GF_Entry::by_id( $atts['id'] );
+		$entry_id = ! empty( $atts['entry_id'] ) ? $atts['entry_id'] : $atts['id'];
+
+		$entry = \GV\GF_Entry::by_id( $entry_id );
 
 		if ( ! $entry ) {
-			gravityview()->log->error( 'Entry does not exist #{entry_id}', array( 'entry_id' => $atts['entry_id'] ) );
+			gravityview()->log->error( 'Entry does not exist #{entry_id}', array( 'entry_id' => $entry_id ) );
 			return '';
 		}
 
