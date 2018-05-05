@@ -7067,6 +7067,65 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	public function test_oembed_in_custom_content() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'content' => 'You are here.',
+					),
+				),
+			)
+		) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $post );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'content' => $entry->get_permalink( $view ),
+						'oembed' => true,
+					),
+				),
+			)
+		) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$view = \GV\View::from_post( $post );
+
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_entry'] = $entry;
+
+		$renderer = new \GV\Entry_Renderer();
+
+		$this->assertContains( 'You are here.', $renderer->render( $entry, $view ) );
+
+		$this->_reset_context();
+	}
 }
 
 class GVFutureTest_Extension_Test_BC extends GravityView_Extension {

@@ -53,6 +53,11 @@ if ( apply_filters( 'gravityview/fields/custom/decode_shortcodes', false, $conte
 	$content = GVCommon::decode_shortcodes( $content );
 }
 
+// oEmbed?
+if ( ! empty( $gravityview->field->oembed ) ) {
+	$content = $GLOBALS['wp_embed']->autoembed( $content );
+}
+
 // Add paragraphs?
 if ( ! empty( $gravityview->field->wpautop ) ) {
 	$content = wpautop( $content );

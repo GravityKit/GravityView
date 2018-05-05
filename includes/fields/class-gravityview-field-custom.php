@@ -59,10 +59,16 @@ class GravityView_Field_Custom extends GravityView_Field {
 				'tooltip' => __( 'Wrap each block of text in an HTML paragraph tag (recommended for text).', 'gravityview' ),
 				'value' => '',
 			),
+			'oembed' => array(
+				'type' => 'checkbox',
+				'label' => __( 'Render oEmbeds', 'gravityview' ),
+				'tooltip' => __( 'oEmbed URLs will be unwrapped and rendered.', 'gravityview' ),
+				'value' => '',
+			),
 		);
 
-		if( 'edit' === $context ) {
-			unset( $field_options['custom_label'], $field_options['show_label'], $field_options['allow_edit_cap'], $new_fields['wpautop'] );
+		if ( 'edit' === $context ) {
+			unset( $field_options['custom_label'], $field_options['show_label'], $field_options['allow_edit_cap'], $new_fields['wpautop'], $new_fields['oembed'] );
 		}
 
 		return $new_fields + $field_options;
