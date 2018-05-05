@@ -72,6 +72,11 @@ final class Plugin {
 	public $settings;
 
 	/**
+	 * @var string The GFQuery functionality identifier.
+	 */
+	const FEATURE_GFQUERY = 'gfquery';
+
+	/**
 	 * @var string The joins functionality identifier.
 	 */
 	const FEATURE_JOINS = 'joins';
@@ -450,7 +455,12 @@ final class Plugin {
 	 * @return boolean
 	 */
 	public function supports( $feature ) {
+		if ( ! is_null( $supports = apply_filters( "gravityview/plugin/feature/$feature", null ) ) ) {
+			return $supports;
+		}
+
 		switch ( $feature ):
+				case self::FEATURE_GFQUERY:
 				case self::FEATURE_JOINS:
 					return class_exists( '\GF_Query' );
 				case self::FEATURE_REST:

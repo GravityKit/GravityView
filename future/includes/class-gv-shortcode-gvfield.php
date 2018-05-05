@@ -24,6 +24,11 @@ class gvfield extends \GV\Shortcode {
 	 * @return string The output.
 	 */
 	public function callback( $atts, $content = null ) {
+		$request = gravityview()->request;
+
+		if ( $request->is_admin() ) {
+			return apply_filters( 'gravityview/shortcodes/gvfield/output', '', null, null, $atts );
+		}
 
 		$atts = wp_parse_args( $atts, array(
 			'view_id' => null,
@@ -45,7 +50,7 @@ class gvfield extends \GV\Shortcode {
 
 		switch( $atts['entry_id'] ):
 			case 'last':
-				if ( class_exists( '\GF_Query' ) ) {
+				if ( gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
 					/**
 					 * @todo Remove once we refactor the use of get_view_entries_parameters.
 					 *

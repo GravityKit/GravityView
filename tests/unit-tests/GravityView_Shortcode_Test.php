@@ -299,4 +299,8 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		unset( $_GET['pagenum'] );
 	}
 
+	public function test_shortcode_abstract() {
+		$shortcode = new \GV\Shortcode();
+		$this->assertEmpty( $shortcode->callback( array() ) );
+	}
 }
