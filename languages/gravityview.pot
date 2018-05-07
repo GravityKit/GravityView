@@ -674,7 +674,15 @@ msgstr ""
 msgid "Disable REST access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:256
+#: future/includes/class-gv-settings-view.php:250
+msgid "Allow REST Access"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:252
+msgid "Enable  REST access to this View."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:269
 msgid "Random"
 msgstr ""
 
@@ -788,7 +796,8 @@ msgstr ""
 #: future/includes/rest/class-gv-rest-views-route.php:312
 #: future/includes/rest/class-gv-rest-views-route.php:317
 #: future/includes/rest/class-gv-rest-views-route.php:322
-#: future/includes/rest/class-gv-rest-views-route.php:331
+#: future/includes/rest/class-gv-rest-views-route.php:324
+#: future/includes/rest/class-gv-rest-views-route.php:333
 msgid "You are not allowed to access this content."
 msgstr ""
 
@@ -2259,12 +2268,12 @@ msgid ""
 "using the %s shortcode (%slearn more%s)."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:57
+#: includes/fields/class-gravityview-field-custom.php:58
 #: includes/widgets/class-gravityview-widget-custom-content.php:39
 msgid "Automatically add paragraphs to content"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:58
+#: includes/fields/class-gravityview-field-custom.php:59
 #: includes/widgets/class-gravityview-widget-custom-content.php:40
 msgid "Wrap each block of text in an HTML paragraph tag (recommended for text)."
 msgstr ""
@@ -3106,23 +3115,23 @@ msgstr ""
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1080
+#: includes/widgets/search-widget/class-search-widget.php:1094
 msgid "Search Entries:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1083
+#: includes/widgets/search-widget/class-search-widget.php:1097
 msgid "Filter by date:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1086
+#: includes/widgets/search-widget/class-search-widget.php:1100
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1202
+#: includes/widgets/search-widget/class-search-widget.php:1216
 msgid "Clear"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1268
+#: includes/widgets/search-widget/class-search-widget.php:1282
 msgid "Show a different month"
 msgstr ""
 
@@ -3417,27 +3426,27 @@ msgid ""
 "entries displayed in the View."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1263
+#: includes/widgets/search-widget/class-search-widget.php:1277
 msgctxt "Close calendar"
 msgid "Close"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1264
+#: includes/widgets/search-widget/class-search-widget.php:1278
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1265
+#: includes/widgets/search-widget/class-search-widget.php:1279
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1266
+#: includes/widgets/search-widget/class-search-widget.php:1280
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1267
+#: includes/widgets/search-widget/class-search-widget.php:1281
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
