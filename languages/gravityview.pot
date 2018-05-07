@@ -205,13 +205,13 @@ msgid ""
 "look strange. Don't be concerned!"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:518
+#: future/includes/class-gv-plugin.php:528
 #: includes/class-gravityview-entry-approval.php:345
 #: tests/unit-tests/GravityView_Uninstall_Test.php:191
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:519
+#: future/includes/class-gv-plugin.php:529
 #: includes/class-gravityview-entry-approval.php:339
 #: tests/unit-tests/GravityView_Uninstall_Test.php:192
 msgid "Approved the Entry for GravityView"
@@ -2278,6 +2278,10 @@ msgstr ""
 msgid "Wrap each block of text in an HTML paragraph tag (recommended for text)."
 msgstr ""
 
+#: includes/fields/class-gravityview-field-custom.php:64
+msgid "Render oEmbeds"
+msgstr ""
+
 #: includes/fields/class-gravityview-field-date.php:25
 #: includes/widgets/search-widget/class-search-widget.php:187
 msgid "Date"
@@ -3412,6 +3416,11 @@ msgstr ""
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:438
 msgctxt "Message to display when submitting a note without content."
 msgid "Note cannot be blank."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-custom.php:65
+msgctxt "HTML link pointing to WordPress article on oEmbed"
+msgid "Automatically convert oEmbed URLs into embedded content (%slearn more%s)."
 msgstr ""
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:90

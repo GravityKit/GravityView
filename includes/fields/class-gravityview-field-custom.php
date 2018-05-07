@@ -62,7 +62,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 			'oembed' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Render oEmbeds', 'gravityview' ),
-				'tooltip' => __( 'oEmbed URLs will be unwrapped and rendered.', 'gravityview' ),
+				'desc' => sprintf( _x( 'Automatically convert oEmbed URLs into embedded content (%slearn more%s).', 'HTML link pointing to WordPress article on oEmbed', 'gravityview' ), '<a href="https://codex.wordpress.org/Embeds" rel="external noopener noreferrer">', '</a>' ),
 				'value' => '',
 			),
 		);
