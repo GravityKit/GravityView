@@ -373,7 +373,7 @@ function _gravityview_strip_subdomain( $string_maybe_has_subdomain ) {
 /**
  * The inverse of gv_empty()
  *
- * @since TODO
+ * @since 2.0
  *
  * @param mixed  $value Check whether this is not empty
  * @param bool $zero_is_empty Should the number zero be treated as an empty value? Default: `false`
@@ -449,7 +449,7 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
 /**
  * If content is JSON, decode it. Otherwise, return the passed value
  *
- * @since TODO
+ * @since 2.0
  *
  * @see json_decode() for more information about the function parameters
  *

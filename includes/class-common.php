@@ -606,7 +606,7 @@ class GVCommon {
 	/**
 	 * Get the entry ID from a string that may be the Entry ID or the Entry Slug
 	 *
-	 * @since TODO
+	 * @since 1.18
 	 *
 	 * @param string $entry_id_or_slug The ID or slug of an entry.
 	 * @param bool $force_allow_ids Whether to force allowing getting the ID of an entry, even if custom slugs are enabled
