@@ -174,7 +174,7 @@ class GravityView_Welcome {
             <div class="feature-video"  style="text-align:center;">
                 <iframe height="315" src="https://www.youtube-nocookie.com/embed/WrXsZhqKRY8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
 
-                <p style="text-align:center; padding-top: 1em;"><a class="button button-primary button-hero" href="http://docs.gravityview.co/category/24-category">Read more: Setting Up Your First View</a></p>
+                <p style="text-align:center; padding-top: 1em;"><a class="button button-primary button-hero" href="https://docs.gravityview.co/category/24-category">Read more: Setting Up Your First View</a></p>
             </div>
 
 			<div class="feature-section two-col">
@@ -387,7 +387,7 @@ class GravityView_Welcome {
                 <ul>
                     <li>Modified: Template files <code>list-header.php</code>, <code>list-single.php</code>, <code>table-header.php</code>, <code>table-single.php</code></li>
                     <li>Fixed: When <code>GRAVITYVIEW_LICENSE_KEY</code> constant is defined, it will always be used, and the license field will be disabled</li>
-                    <li>Fixed: List View and Table View templates have more standardized CSS selectors for single &amp; multiple contexts (<a href="http://docs.gravityview.co/article/63-css-guide">Learn more</a>)</li>
+                    <li>Fixed: List View and Table View templates have more standardized CSS selectors for single &amp; multiple contexts (<a href="https://docs.gravityview.co/article/63-css-guide">Learn more</a>)</li>
                     <li>Fixed: Permalink issue when embedding a View on a page, then making it the site&#39;s Front Page</li>
                     <li>Fixed: Transient cache issues when invalidating cache</li>
                     <li>Fixed: <code>gv_empty()</code> now returns false for an array with all empty values</li>
@@ -430,7 +430,7 @@ class GravityView_Welcome {
                 <h3>1.21.5 on June 8, 2017</h3>
 
                 <ul>
-                    <li>Added: The <code>{current_post}</code> Merge Tag adds information about the current post. <a href="http://docs.gravityview.co/article/412-currentpost-merge-tag">Read more about it</a>.</li>
+                    <li>Added: The <code>{current_post}</code> Merge Tag adds information about the current post. <a href="https://docs.gravityview.co/article/412-currentpost-merge-tag">Read more about it</a>.</li>
                     <li>Added: <code>gravityview/gvlogic/parse_atts/after</code> action to modify <code>[gvlogic]</code> shortcode attributes after it&#39;s been parsed</li>
                     <li>Added: A new setting to opt-in for access to the latest pre-release versions of GravityView (in <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ) ); ?>">Views &gt; Settings)</a></li>
                     <li>Added: Support for Restrict Content Pro when in &quot;No-Conflict Mode&quot;</li>

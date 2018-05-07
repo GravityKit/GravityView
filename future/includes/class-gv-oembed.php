@@ -224,7 +224,7 @@ class oEmbed {
 		$entry_var_name = \GV\Entry::get_endpoint_name();
 
 		/**
-		 * @filter `gravityview_slug` Modify the url part for a View. [Read the doc](http://docs.gravityview.co/article/62-changing-the-view-slug)
+		 * @filter `gravityview_slug` Modify the url part for a View. [Read the doc](https://docs.gravityview.co/article/62-changing-the-view-slug)
 		 * @param string $rewrite_slug The slug shown in the URL
 		 */
 		$rewrite_slug = apply_filters( 'gravityview_slug', 'view' );

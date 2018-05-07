@@ -172,7 +172,7 @@ class View implements \ArrayAccess {
 			'rewrite'             => array(
 				/**
 				 * @filter `gravityview_slug` Modify the url part for a View.
-				 * @see http://docs.gravityview.co/article/62-changing-the-view-slug
+				 * @see https://docs.gravityview.co/article/62-changing-the-view-slug
 				 * @param string $slug The slug shown in the URL
 				 */
 				'slug' => apply_filters( 'gravityview_slug', 'view' ),

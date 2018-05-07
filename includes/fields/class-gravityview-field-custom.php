@@ -46,7 +46,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 			'content' => array(
 				'type' => 'textarea',
 				'label' => __( 'Custom Content', 'gravityview' ),
-				'desc' => sprintf( __( 'Enter text or HTML. Also supports shortcodes. You can show or hide data using the %s shortcode (%slearn more%s).', 'gravityview' ), '<code>[gvlogic]</code>', '<a href="http://docs.gravityview.co/article/252-gvlogic-shortcode">', '</a>' ),
+				'desc' => sprintf( __( 'Enter text or HTML. Also supports shortcodes. You can show or hide data using the %s shortcode (%slearn more%s).', 'gravityview' ), '<code>[gvlogic]</code>', '<a href="https://docs.gravityview.co/article/252-gvlogic-shortcode">', '</a>' ),
 				'value' => '',
 				'class'	=> 'code',
 				'merge_tags' => 'force',

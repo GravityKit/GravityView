@@ -443,7 +443,7 @@ class GravityView_Merge_Tags {
 	 *
 	 * @uses GVCommon::format_date()
 	 *
-	 * @see http://docs.gravityview.co/article/331-date-created-merge-tag for documentation
+	 * @see https://docs.gravityview.co/article/331-date-created-merge-tag for documentation
 	 *
 	 * @param string $date_created The Gravity Forms date created format
 	 * @param string $property Any modifiers for the merge tag (`human`, `format:m/d/Y`)

@@ -128,7 +128,7 @@ class GravityView_Render_Settings {
 
 		/**
 		 * @filter `gravityview_field_visibility_caps` Modify the capabilities shown in the field dropdown
-		 * @see http://docs.gravityview.co/article/96-how-to-modify-capabilities-shown-in-the-field-only-visible-to-dropdown
+		 * @see https://docs.gravityview.co/article/96-how-to-modify-capabilities-shown-in-the-field-only-visible-to-dropdown
 		 * @since  1.0.1
 		 * @param  array $select_cap_choices Associative rray of role slugs with labels ( `manage_options` => `Administrator` )
 		 * @param  string $template_id Optional. View slug
