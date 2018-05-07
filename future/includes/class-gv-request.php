@@ -127,7 +127,6 @@ abstract class Request {
 	 *
 	 * @api
 	 * @since 2.0
-	 * @todo tests
 	 * @todo implementation
 	 *
 	 * @return boolean True if this is a search request.
