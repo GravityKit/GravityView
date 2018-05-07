@@ -207,13 +207,13 @@ msgid ""
 " strange. Don't be concerned!"
 msgstr "预览时不加载样式，所以下面的内容会看起来很奇怪。别担心！"
 
-#: future/includes/class-gv-plugin.php:518
+#: future/includes/class-gv-plugin.php:528
 #: includes/class-gravityview-entry-approval.php:345
 #: tests/unit-tests/GravityView_Uninstall_Test.php:191
 msgid "Disapproved the Entry for GravityView"
 msgstr "Gravity Forms的已拒绝条目"
 
-#: future/includes/class-gv-plugin.php:519
+#: future/includes/class-gv-plugin.php:529
 #: includes/class-gravityview-entry-approval.php:339
 #: tests/unit-tests/GravityView_Uninstall_Test.php:192
 msgid "Approved the Entry for GravityView"
@@ -678,7 +678,15 @@ msgstr ""
 msgid "Disable REST access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:256
+#: future/includes/class-gv-settings-view.php:250
+msgid "Allow REST Access"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:252
+msgid "Enable  REST access to this View."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:269
 msgid "Random"
 msgstr ""
 
@@ -792,7 +800,8 @@ msgstr ""
 #: future/includes/rest/class-gv-rest-views-route.php:312
 #: future/includes/rest/class-gv-rest-views-route.php:317
 #: future/includes/rest/class-gv-rest-views-route.php:322
-#: future/includes/rest/class-gv-rest-views-route.php:331
+#: future/includes/rest/class-gv-rest-views-route.php:324
+#: future/includes/rest/class-gv-rest-views-route.php:333
 msgid "You are not allowed to access this content."
 msgstr ""
 
@@ -2272,16 +2281,20 @@ msgid ""
 "using the %s shortcode (%slearn more%s)."
 msgstr "输入文本或HTML。还支持短码。可以使用 %s 短码来显示或隐藏数据(%s了解更多%s)。"
 
-#: includes/fields/class-gravityview-field-custom.php:57
+#: includes/fields/class-gravityview-field-custom.php:58
 #: includes/widgets/class-gravityview-widget-custom-content.php:39
 msgid "Automatically add paragraphs to content"
 msgstr "自动添加段落到内容"
 
-#: includes/fields/class-gravityview-field-custom.php:58
+#: includes/fields/class-gravityview-field-custom.php:59
 #: includes/widgets/class-gravityview-widget-custom-content.php:40
 msgid ""
 "Wrap each block of text in an HTML paragraph tag (recommended for text)."
 msgstr "在一个 HTML 段落标签中包裹每个文本块（推荐文本）。"
+
+#: includes/fields/class-gravityview-field-custom.php:64
+msgid "Render oEmbeds"
+msgstr ""
 
 #: includes/fields/class-gravityview-field-date.php:25
 #: includes/widgets/search-widget/class-search-widget.php:187
@@ -3122,23 +3135,23 @@ msgstr "搜索一切"
 msgid "Entry Creator"
 msgstr "条目创建者"
 
-#: includes/widgets/search-widget/class-search-widget.php:1080
+#: includes/widgets/search-widget/class-search-widget.php:1094
 msgid "Search Entries:"
 msgstr "搜索条目："
 
-#: includes/widgets/search-widget/class-search-widget.php:1083
+#: includes/widgets/search-widget/class-search-widget.php:1097
 msgid "Filter by date:"
 msgstr "按日期过滤："
 
-#: includes/widgets/search-widget/class-search-widget.php:1086
+#: includes/widgets/search-widget/class-search-widget.php:1100
 msgid "Entry ID:"
 msgstr "条目 ID："
 
-#: includes/widgets/search-widget/class-search-widget.php:1202
+#: includes/widgets/search-widget/class-search-widget.php:1216
 msgid "Clear"
 msgstr "清空"
 
-#: includes/widgets/search-widget/class-search-widget.php:1268
+#: includes/widgets/search-widget/class-search-widget.php:1282
 msgid "Show a different month"
 msgstr "显示一个不同的月份"
 
@@ -3427,6 +3440,12 @@ msgctxt "Message to display when submitting a note without content."
 msgid "Note cannot be blank."
 msgstr "备注不能为空。"
 
+#: includes/fields/class-gravityview-field-custom.php:65
+msgctxt "HTML link pointing to WordPress article on oEmbed"
+msgid ""
+"Automatically convert oEmbed URLs into embedded content (%slearn more%s)."
+msgstr ""
+
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:90
 msgctxt "Gravity Flow Workflow Step Status"
 msgid "Status: %s"
@@ -3439,27 +3458,27 @@ msgid ""
 "entries displayed in the View."
 msgstr "注意：这将显示%s所有表单条目%s的投票结果，不仅限于视图中显示的条目。"
 
-#: includes/widgets/search-widget/class-search-widget.php:1263
+#: includes/widgets/search-widget/class-search-widget.php:1277
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "关闭"
 
-#: includes/widgets/search-widget/class-search-widget.php:1264
+#: includes/widgets/search-widget/class-search-widget.php:1278
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr "上一步"
 
-#: includes/widgets/search-widget/class-search-widget.php:1265
+#: includes/widgets/search-widget/class-search-widget.php:1279
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr "下一个"
 
-#: includes/widgets/search-widget/class-search-widget.php:1266
+#: includes/widgets/search-widget/class-search-widget.php:1280
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr "今日"
 
-#: includes/widgets/search-widget/class-search-widget.php:1267
+#: includes/widgets/search-widget/class-search-widget.php:1281
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr "星期"
