@@ -144,6 +144,7 @@ final class Plugin {
 	 * @return void
 	 */
 	public function include_legacy_frontend( $force = false ) {
+
 		if ( gravityview()->request->is_admin() && ! $force ) {
 			return;
 		}
@@ -198,6 +199,7 @@ final class Plugin {
 		include_once $this->dir( 'includes/widgets/register-gravityview-widgets.php' );
 
 		// Add oEmbed
+		include_once $this->dir( 'includes/class-api.php' );
 		include_once $this->dir( 'includes/class-oembed.php' );
 
 		// Add logging

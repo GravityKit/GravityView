@@ -78,7 +78,9 @@ class oEmbed {
 	 * @return string The embed HTML.
 	 */
 	public static function render( $matches, $attr, $url, $rawattr ) {
+
 		$result = self::parse_matches( $matches, $url );
+
 		if ( ! $result || count( $result ) != 2 ) {
 			gravityview()->log->notice( 'View or entry could not be parsed in oEmbed url {url}', array( 'url' => $url, 'matches' => $matches ) );
 			return __( 'You are not allowed to view this content.', 'gravityview' );
