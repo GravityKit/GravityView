@@ -74,6 +74,8 @@ define( 'GV_FUTURE_MIN_GF_VERSION', '2.2.5.22' );
  */
 require GRAVITYVIEW_DIR . 'future/loader.php';
 
+require GRAVITYVIEW_DIR . 'includes/class-gravityview-compatibility.php';
+
 /**
  * GravityView_Plugin main class.
  *
@@ -167,7 +169,7 @@ final class GravityView_Plugin {
 	 * @since 1.5.1
 	 * @return void
 	 */
-	public static function include_extension_framework() {
+	private static function include_extension_framework() {
 		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
 	}
 
@@ -221,7 +223,7 @@ final class GravityView_Plugin {
 	 */
 	public function frontend_actions( $force = false ) {
 		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-		return gravityview()->plugin->include_legacy_frontend( $force );
+		gravityview()->plugin->include_legacy_frontend( $force );
 	}
 
 	/**
