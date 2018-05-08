@@ -16,7 +16,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 register_activation_hook( GRAVITYVIEW_DIR . 'gravityview.php', 'gravityview_lock_version' );
 function gravityview_lock_version() {
 	$version = phpversion();
-	if ( version_compare( $version, '5.3', '<' ) ) {
+	if ( version_compare( $version, '5.3.0', '<' ) ) {
 
 		if ( php_sapi_name() == 'cli' ) {
 			printf( __( "GravityView requires PHP Version %s or newer. You're using Version %s. Please ask your host to upgrade your server's PHP.", 'gravityview' ),
@@ -34,7 +34,7 @@ function gravityview_lock_version() {
 }
 
 /** The future branch of GravityView requires PHP 5.3+ namespaces and SPL. */
-if ( version_compare( phpversion(), '5.3' , '<' ) ) {
+if ( version_compare( phpversion(), '5.3.0' , '<' ) ) {
 	return false;
 
 /** All looks fine. */

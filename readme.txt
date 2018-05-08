@@ -2,6 +2,7 @@
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.4
 Tested up to: 4.9.5
+Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -20,9 +21,44 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.0 Beta =
+= 2.0 on May 8, 2018 =
 
-The changelog will not be maintained for beta versions. __For information about the Beta, please [read up here](https://github.com/gravityview/GravityView/wiki/The-Future-of-GravityView)__.
+This is a major release. Please back up your site before updating.
+
+* GravityView now requires PHP 5.3 or newer
+
+New Shortcodes
+
+* `[gventry]`: embed entries in a post, page or a View ([learn more](https://docs.gravityview.co/article/462-gvfield-embed-gravity-forms-field-values))
+* `[gvfield]`: embed single field values ([learn more](https://docs.gravityview.co/article/462-gvfield-embed-gravity-forms-field-values))
+
+* [Many new Merge Tag modifiers](https://docs.gravityview.co/article/350-merge-tag-modifiers)
+
+oEmbed
+
+* Use oEmbed with Custom Content fields - easily embed YouTube videos, Tweets (and much more) on your Custom Content field
+*
+
+Other new features:
+
+* "Is Starred" field - display whether an entry is "Starred" in Gravity Forms or not, and star/unstar it from the front end of your site
+* Faster
+
+__Developer Updates__
+
+This release is the biggest ever for developers! Even so, we have taken great care to provide backward compatibility with GravityView 1.x. No breaking
+changes were made (as long as the site's running PHP 5.3 or better!).
+
+* New REST API
+* New `gravityview()` API wrapper function, now used for easy access to everything you could want
+* We have rewritten the plugin from the ground up. [Learn all about it here](https://github.com/gravityview/GravityView/wiki/The-Future-of-GravityView).
+* New template structure ([learn how to migrate your custom template files](https://github.com/gravityview/GravityView/wiki/Template-Migration))
+* We have gotten rid of global state; actions and filters are now passed a `$context` argument, a [`\GV\Template_Context` object](https://github.com/gravityview/GravityView/blob/2.0/future/includes/class-gv-context-template.php)
+* Introduce a lot of new classes
+    - `\GV\Entry`
+    - `\GV\Form`
+    - `\GV\Template` and `\GV\View_Template`
+* _Countless_ new filters and actions
 
 = 1.22.5 on January 25, 2018 =
 

@@ -91,6 +91,11 @@ class GravityView_Compatibility {
 	 * @return bool
 	 */
 	public static function is_valid() {
+
+		if ( ! function_exists( 'gravityview' ) ) {
+			return false;
+		}
+
 		return gravityview()->plugin->is_compatible();
 	}
 
@@ -102,6 +107,11 @@ class GravityView_Compatibility {
 	 * @see \GV\Plugin::is_compatible_wordpress() accessible via gravityview()->plugin->is_compatible_wordpress()
 	 */
 	private static function is_valid_wordpress() {
+
+		if ( ! function_exists( 'gravityview' ) ) {
+			return false;
+		}
+
 		return gravityview()->plugin->is_compatible_wordpress();
 	}
 
@@ -114,6 +124,11 @@ class GravityView_Compatibility {
 	 * @return bool
 	 */
 	private static function is_valid_gravity_forms() {
+
+		if ( ! function_exists( 'gravityview' ) ) {
+			return false;
+		}
+
 		return gravityview()->plugin->is_compatible_gravityforms();
 	}
 
@@ -126,6 +141,11 @@ class GravityView_Compatibility {
 	 * @return bool
 	 */
 	private static function is_valid_php() {
+
+		if ( ! function_exists( 'gravityview' ) ) {
+			return false;
+		}
+
 		return gravityview()->plugin->is_compatible_php();
 	}
 
@@ -193,6 +213,10 @@ class GravityView_Compatibility {
 	 */
 	public static function check_php() {
 
+		if ( ! function_exists( 'gravityview' ) ) {
+			return false;
+		}
+
 		if ( ! gravityview()->plugin->is_compatible_php() ) {
 
 			self::$notices['php_version'] = array(
@@ -230,6 +254,10 @@ class GravityView_Compatibility {
 	 */
 	public static function check_wordpress() {
 		global $wp_version;
+
+		if ( ! function_exists( 'gravityview' ) ) {
+			return false;
+		}
 
 		if ( ! gravityview()->plugin->is_compatible_wordpress() ) {
 
