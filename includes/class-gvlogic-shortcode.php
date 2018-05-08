@@ -277,7 +277,7 @@ class GVLogic_Shortcode {
 		$output = do_shortcode( $output );
 
 		if ( class_exists( 'GFCommon' ) ) {
-			$output = GFCommon::replace_variables( $output, array(), array() );
+			$output = GFCommon::replace_variables( $output, array(), array(), false, true, false );
 		}
 
 		/**

@@ -320,6 +320,23 @@ class GravityView_Welcome {
                     <li>Added <code>gravityview/edit_entry/field_visibility</code> filter to set field visibility on Edit Entry (default is always &quot;visible&quot;)</li>
                 </ul>
 
+                <h3>1.22.6 on April 4, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Line breaks being added to <code>[gvlogic]</code> shortcode output</li>
+                    <li>Fixed: Gravity Forms 2.3 compatibility notice</li>
+                    <li>Fixed: &quot;The ID is required.&quot; message when configuring the GravityView Search WordPress widget</li>
+                    <li>Fixed: Slashes were being added to Post Image details</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Added <code>gravityview/edit_entry/reveal_hidden_field</code> filter, which allows you to prevent Hidden fields from becoming Text fields in Edit Entry context</li>
+                    <li>Added <code>gravityview/edit_entry/field_visibility</code> filter to set field visibility on Edit Entry (default is always &quot;visible&quot;)</li>
+                </ul>
+
+
                 <h3>1.22.5 on January 25, 2018</h3>
 
                 <ul>
