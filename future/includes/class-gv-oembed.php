@@ -29,6 +29,8 @@ class oEmbed {
 		if ( ! empty( $_GET['gv_oembed_provider'] ) && ! empty( $_GET['url'] ) ) {
 			add_action( 'template_redirect', array( __CLASS__, 'render_provider_request' ) );
 		}
+
+		add_action( 'pre_oembed_result', array( __CLASS__, 'pre_oembed_result' ), 11, 3 );
 	}
 
 	/**
@@ -244,5 +246,23 @@ class oEmbed {
 		$match_regex = "(?:{$using_permalinks}|{$not_using_permalinks})";
 
 		return '#'.$match_regex.'#i';
+	}
+
+	/**
+	 * Internal oEmbed output, shortcircuit without proxying to the provider.
+	 */
+	public static function pre_oembed_result( $result, $url, $args ) {
+		if ( ! preg_match( self::get_entry_regex(), $url, $matches ) ) {
+			return $result;
+		}
+
+		$view_entry = self::parse_matches( $matches, $url );
+		if ( ! $view_entry || count( $view_entry ) != 2 ) {
+			return $result;
+		}
+
+		list( $view, $entry ) = $view_entry;
+
+		return self::render_frontend( $view, $entry );
 	}
 }
