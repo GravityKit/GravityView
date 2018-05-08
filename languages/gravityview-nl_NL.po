@@ -753,7 +753,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:269
 msgid "Random"
-msgstr ""
+msgstr "Willekeurig"
 
 #: future/includes/class-gv-view.php:128
 msgid "Parent View:"
@@ -856,7 +856,7 @@ msgstr "Geen weergaven gevonden."
 
 #: future/includes/rest/class-gv-rest-views-route.php:197
 msgid "No Entries found."
-msgstr ""
+msgstr "Geen inzendingen gevonden."
 
 #: future/includes/rest/class-gv-rest-views-route.php:247
 #: future/includes/rest/class-gv-rest-views-route.php:297
@@ -868,7 +868,7 @@ msgstr ""
 #: future/includes/rest/class-gv-rest-views-route.php:324
 #: future/includes/rest/class-gv-rest-views-route.php:333
 msgid "You are not allowed to access this content."
-msgstr ""
+msgstr "Je hebt geen toestemming tot deze inhoud."
 
 #: future/lib/EDD_SL_Plugin_Updater.php:202
 #: includes/lib/EDD_SL_Plugin_Updater.php:204
@@ -3494,12 +3494,12 @@ msgstr "Uit"
 #: future/includes/class-gv-settings-addon.php:831
 msgctxt "Setting: Enable or Disable"
 msgid "Enable"
-msgstr ""
+msgstr "Inschakelen"
 
 #: future/includes/class-gv-settings-addon.php:835
 msgctxt "Setting: Enable or Disable"
 msgid "Disable"
-msgstr ""
+msgstr "Uitschakelen"
 
 #: future/includes/class-gv-settings-addon.php:850
 msgctxt "gravityview"

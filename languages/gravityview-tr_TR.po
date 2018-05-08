@@ -46,6 +46,8 @@ msgid ""
 "The %s Extension is not compatible with this version of GravityView. Please "
 "update the Extension to the latest version."
 msgstr ""
+"%s eklentisi GravityView bu sürümü ile uyumlu değil. Lütfen eklentiyi en son"
+" sürüme güncelleyiniz."
 
 #: future/includes/class-gv-license-handler.php:259
 msgid "License Details:"
@@ -486,17 +488,19 @@ msgstr ""
 
 #: future/includes/class-gv-settings-addon.php:826
 msgid "REST API"
-msgstr ""
+msgstr "REST API"
 
 #: future/includes/class-gv-settings-addon.php:839
 msgid ""
 "Enable View and Entry access via the REST API? Regular per-View restrictions"
 " apply (private, password protected, etc.)."
 msgstr ""
+"Görünüm ve Kayıtları REST API ile çalıştırmak istermisiniz? Görünüm bazlı "
+"kısıtlamalar uygulanabilir (özel, şifreli, korumalı vs.)"
 
 #: future/includes/class-gv-settings-addon.php:840
 msgid "If you are unsure, choose the Disable setting."
-msgstr ""
+msgstr "Emin değilseniz ayarı kapatabilirsiniz."
 
 #: future/includes/class-gv-settings-addon.php:845
 msgid "Become a Beta Tester"
@@ -733,23 +737,23 @@ msgstr "Sadece kısakod ile gömülüyse bu Görünüme erişime izin ver."
 
 #: future/includes/class-gv-settings-view.php:237
 msgid "Prevent REST Access"
-msgstr ""
+msgstr "REST erişimini engelle"
 
 #: future/includes/class-gv-settings-view.php:239
 msgid "Disable REST access to this View."
-msgstr ""
+msgstr "Bu Görünüme REST erişimini engelle."
 
 #: future/includes/class-gv-settings-view.php:250
 msgid "Allow REST Access"
-msgstr ""
+msgstr "REST erişimine izin ver"
 
 #: future/includes/class-gv-settings-view.php:252
 msgid "Enable  REST access to this View."
-msgstr ""
+msgstr "Bu Görünümde REST erişimine izin ver."
 
 #: future/includes/class-gv-settings-view.php:269
 msgid "Random"
-msgstr ""
+msgstr "Rastgele"
 
 #: future/includes/class-gv-view.php:128
 msgid "Parent View:"
@@ -835,15 +839,15 @@ msgstr "Sağ"
 
 #: future/includes/rest/class-gv-rest-route.php:167
 msgid "Must set route name in subclass."
-msgstr ""
+msgstr "Alt sınıfta yol adı ayarlanmış olmalı."
 
 #: future/includes/rest/class-gv-rest-route.php:184
 msgid "Must set route sub type in subclass."
-msgstr ""
+msgstr "Yol alt tipi, alt sınıfta ayarlanmış olmalı."
 
 #: future/includes/rest/class-gv-rest-route.php:373
 msgid "Endpoint Not Yet Implemented."
-msgstr ""
+msgstr "Bitiş noktası ayarlanmamış."
 
 #: future/includes/rest/class-gv-rest-views-route.php:58
 #: includes/class-admin.php:70
@@ -852,7 +856,7 @@ msgstr "Görünüm bulunamadı."
 
 #: future/includes/rest/class-gv-rest-views-route.php:197
 msgid "No Entries found."
-msgstr ""
+msgstr "Hiç Kayıt bulunamadı."
 
 #: future/includes/rest/class-gv-rest-views-route.php:247
 #: future/includes/rest/class-gv-rest-views-route.php:297
@@ -864,7 +868,7 @@ msgstr ""
 #: future/includes/rest/class-gv-rest-views-route.php:324
 #: future/includes/rest/class-gv-rest-views-route.php:333
 msgid "You are not allowed to access this content."
-msgstr ""
+msgstr "Bu içeriğe erişmeye yetkiniz yok."
 
 #: future/lib/EDD_SL_Plugin_Updater.php:202
 #: includes/lib/EDD_SL_Plugin_Updater.php:204
@@ -1924,7 +1928,7 @@ msgstr ""
 #. translators: In this context, "get" means purchase
 #: includes/class-gravityview-compatibility.php:289
 msgid "Get the Latest Gravity Forms"
-msgstr ""
+msgstr "Gravity Forms son sürümünü edinin"
 
 #: includes/class-gravityview-compatibility.php:337
 msgid ""
@@ -2027,7 +2031,7 @@ msgstr "Görünüm Detayları"
 
 #: includes/class-gravityview-html-elements.php:80
 msgid "Select a field"
-msgstr ""
+msgstr "Bir alan seçin"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:115
 msgid "Delete Link Text"
@@ -2423,7 +2427,7 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-custom.php:64
 msgid "Render oEmbeds"
-msgstr ""
+msgstr "oEmbed işleyin"
 
 #: includes/fields/class-gravityview-field-date.php:25
 #: includes/widgets/search-widget/class-search-widget.php:187
@@ -2565,20 +2569,20 @@ msgstr "Tamamlandı"
 
 #: includes/fields/class-gravityview-field-is-starred.php:27
 msgid "Entry Star"
-msgstr ""
+msgstr "Yıldızlı Kayıt"
 
 #: includes/fields/class-gravityview-field-is-starred.php:28
 #: includes/widgets/search-widget/class-search-widget.php:323
 msgid "Is Starred"
-msgstr ""
+msgstr "Yıldızlı"
 
 #: includes/fields/class-gravityview-field-is-starred.php:29
 msgid "Display the entry's \"star\" status."
-msgstr ""
+msgstr "Kayıtların \"Yıldız\" durumunu görüntüle."
 
 #: includes/fields/class-gravityview-field-is-starred.php:145
 msgid "There was an error updating the entry."
-msgstr ""
+msgstr "Kayıt güncellenirken hata oluştu."
 
 #: includes/fields/class-gravityview-field-list.php:39
 msgid "List"
@@ -3466,12 +3470,12 @@ msgstr "Kapalı"
 #: future/includes/class-gv-settings-addon.php:831
 msgctxt "Setting: Enable or Disable"
 msgid "Enable"
-msgstr ""
+msgstr "Etkinleştir"
 
 #: future/includes/class-gv-settings-addon.php:835
 msgctxt "Setting: Enable or Disable"
 msgid "Disable"
-msgstr ""
+msgstr "Kapat"
 
 #: future/includes/class-gv-settings-addon.php:850
 msgctxt "gravityview"
