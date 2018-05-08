@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.0-rc.1\n"
+"Project-Id-Version: GravityView 2.0\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
 "MIME-Version: 1.0\n"
@@ -167,17 +167,17 @@ msgstr ""
 msgid "Check License"
 msgstr ""
 
-#: future/includes/class-gv-oembed.php:84
-#: future/includes/class-gv-oembed.php:195
-#: future/includes/class-gv-oembed.php:200
-#: future/includes/class-gv-oembed.php:206
-#: future/includes/class-gv-shortcode-gravityview.php:86
-#: future/includes/class-gv-shortcode-gravityview.php:101
-#: future/includes/class-gv-shortcode-gravityview.php:106
-#: future/includes/class-gv-shortcode-gravityview.php:112
-#: future/includes/class-gv-shortcode-gravityview.php:125
-#: future/includes/class-gv-shortcode-gravityview.php:130
-#: future/includes/class-gv-shortcode-gravityview.php:136
+#: future/includes/class-gv-oembed.php:88
+#: future/includes/class-gv-oembed.php:199
+#: future/includes/class-gv-oembed.php:204
+#: future/includes/class-gv-oembed.php:210
+#: future/includes/class-gv-shortcode-gravityview.php:93
+#: future/includes/class-gv-shortcode-gravityview.php:108
+#: future/includes/class-gv-shortcode-gravityview.php:113
+#: future/includes/class-gv-shortcode-gravityview.php:119
+#: future/includes/class-gv-shortcode-gravityview.php:132
+#: future/includes/class-gv-shortcode-gravityview.php:137
+#: future/includes/class-gv-shortcode-gravityview.php:143
 #: future/includes/class-gv-view.php:224 future/includes/class-gv-view.php:263
 #: future/includes/class-gv-view.php:271 future/includes/class-gv-view.php:278
 #: future/includes/class-gv-view.php:287 future/includes/class-gv-view.php:292
@@ -187,31 +187,31 @@ msgstr ""
 msgid "You are not allowed to view this content."
 msgstr ""
 
-#: future/includes/class-gv-oembed.php:156
+#: future/includes/class-gv-oembed.php:160
 msgid "Embed Entry %d"
 msgstr ""
 
-#: future/includes/class-gv-oembed.php:158
+#: future/includes/class-gv-oembed.php:162
 msgid "This entry will be displayed as it is configured in View %d"
 msgstr ""
 
-#: future/includes/class-gv-oembed.php:177
+#: future/includes/class-gv-oembed.php:181
 msgid "This will look better when it is embedded."
 msgstr ""
 
-#: future/includes/class-gv-oembed.php:178
+#: future/includes/class-gv-oembed.php:182
 msgid ""
 "Styles don't get loaded when being previewed, so the content below will "
 "look strange. Don't be concerned!"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:528
+#: future/includes/class-gv-plugin.php:530
 #: includes/class-gravityview-entry-approval.php:345
 #: tests/unit-tests/GravityView_Uninstall_Test.php:191
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:529
+#: future/includes/class-gv-plugin.php:531
 #: includes/class-gravityview-entry-approval.php:339
 #: tests/unit-tests/GravityView_Uninstall_Test.php:192
 msgid "Approved the Entry for GravityView"
@@ -1478,27 +1478,27 @@ msgstr ""
 msgid "List of Changes"
 msgstr ""
 
-#: includes/class-admin-welcome.php:277
+#: includes/class-admin-welcome.php:269
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:508
+#: includes/class-admin-welcome.php:362
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:529
+#: includes/class-admin-welcome.php:383
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:564
+#: includes/class-admin-welcome.php:418
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:589
+#: includes/class-admin-welcome.php:443
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:590
+#: includes/class-admin-welcome.php:444
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."

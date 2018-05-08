@@ -149,9 +149,9 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			/**
 			 * @filter `gravityview/fields/fileupload/file_path` Modify the file path before generating a link to it
 			 * @since 1.22.3
+			 * @since 2.0 Added $context parameter
 			 * @param string $file_path Path to the file uploaded by Gravity Forms
 			 * @param array  $field_settings Array of GravityView field settings
-			 *
 			 * @param \GV\Template_Context $context The context.
 			 */
 			$file_path = apply_filters( 'gravityview/fields/fileupload/file_path', $file_path, $field_settings, $context );
