@@ -34,8 +34,8 @@ function gravityview_lock_version() {
 }
 
 /** The future branch of GravityView requires PHP 5.3+ namespaces and SPL. */
-if ( version_compare( phpversion(), '5.3' , '<' ) ) {
-	return false;
+if ( version_compare( phpversion(), '5.3.0' , '<' ) ) {
+	require GRAVITYVIEW_DIR . 'future/_stubs.php';
 
 /** All looks fine. */
 } else {
