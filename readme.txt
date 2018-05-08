@@ -59,6 +59,18 @@ This release is the biggest ever for developers! Even so, we have taken great ca
 
 A special thanks to [Gennady](https://codeseekah.com) for your tireless pursuit of better code, insistence on backward compatibility, and your positive attitude. 👏
 
+= 1.22.6 on April 4, 2018 =
+
+* Fixed: Line breaks being added to `[gvlogic]` shortcode output
+* Fixed: Gravity Forms 2.3 compatibility notice
+* Fixed: "The ID is required." message when configuring the GravityView Search WordPress widget
+* Fixed: Slashes were being added to Post Image details
+
+__Developer Updates:__
+
+* Added `gravityview/edit_entry/reveal_hidden_field` filter, which allows you to prevent Hidden fields from becoming Text fields in Edit Entry context
+* Added `gravityview/edit_entry/field_visibility` filter to set field visibility on Edit Entry (default is always "visible")
+
 = 1.22.5 on January 25, 2018 =
 
 * Improves support for [DIY Layout](https://gravityview.co/extensions/diy-layout/), a layout for designers & developers to take full advantage of GravityView
