@@ -585,6 +585,7 @@ class GravityView_Edit_Entry_Render {
             $value = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'] );
 
             $ary = ! empty( $value ) ? explode( '|:|', $value ) : array();
+	        $ary = stripslashes_deep( $ary );
             $img_url = \GV\Utils::get( $ary, 0 );
 
             $img_title       = count( $ary ) > 1 ? $ary[1] : '';
@@ -613,13 +614,12 @@ class GravityView_Edit_Entry_Render {
                 set_post_thumbnail( $post_id, $media_id );
             }
 
-        } elseif ( !empty( $_POST[ $input_name ] ) && is_array( $value ) ) {
+        } elseif ( ! empty( $_POST[ $input_name ] ) && is_array( $value ) ) {
 
-            $img_url = $_POST[ $input_name ];
-
-			$img_title       = \GV\Utils::_POST( $input_name . '_1' );
-			$img_caption     = \GV\Utils::_POST( $input_name . '_4' );
-			$img_description = \GV\Utils::_POST( $input_name . '_7' );
+            $img_url         = stripslashes_deep( $_POST[ $input_name ] );
+            $img_title       = stripslashes_deep( \GV\Utils::_POST( $input_name . '_1' ) );
+			$img_caption     = stripslashes_deep( \GV\Utils::_POST( $input_name . '_4' ) );
+			$img_description = stripslashes_deep( \GV\Utils::_POST( $input_name . '_7' ) );
 
 			$value = ! empty( $img_url ) ? $img_url . "|:|" . $img_title . "|:|" . $img_caption . "|:|" . $img_description : '';
 
