@@ -21,44 +21,43 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.0 on May 8, 2018 =
+= Version 2.0 on May 8, 2018 =
 
-This is a major release. Please back up your site before updating.
+We are proud to share this release with you: we have been working on this release since 2016, and although most of the changes won’t be seen, GravityView has a brand-new engine that will power the plugin into the future! 🚀
+\- Zack with GravityView
 
-* GravityView now requires PHP 5.3 or newer
+---
 
-New Shortcodes
+**Note: GravityView now requires PHP 5.3 or newer**
+
+_This is a major release. Please back up your site before updating._ We have tested the plugin thoroughly, but we suggest backing up your site before updating all plugins.
+
+**New functionality**
 
 * `[gventry]`: embed entries in a post, page or a View ([learn more](https://docs.gravityview.co/article/462-gvfield-embed-gravity-forms-field-values))
 * `[gvfield]`: embed single field values ([learn more](https://docs.gravityview.co/article/462-gvfield-embed-gravity-forms-field-values))
-
-* [Many new Merge Tag modifiers](https://docs.gravityview.co/article/350-merge-tag-modifiers)
-
-oEmbed
-
+* [Many new Merge Tag modifiers](https://docs.gravityview.co/article/350-merge-tag-modifiers) - These enable powerful new abilities when using the Custom Content field!
 * Use oEmbed with Custom Content fields - easily embed YouTube videos, Tweets (and much more) on your Custom Content field
-*
-
-Other new features:
-
 * "Is Starred" field - display whether an entry is "Starred" in Gravity Forms or not, and star/unstar it from the front end of your site
-* Faster
+* Added Bosnian and Iranian translations
 
-__Developer Updates__
+**Small changes**
 
-This release is the biggest ever for developers! Even so, we have taken great care to provide backward compatibility with GravityView 1.x. No breaking
-changes were made (as long as the site's running PHP 5.3 or better!).
+* Added `{gv_entry_link}` Merge Tag, alias of `[gv_entry_link]` shortcode in `{gv_entry_link:[post id]:[action]}` format. This allows you to use `{gv_entry_link}` inside HTML tags, where you are not able to use the `[gv_entry_link]` shortcode.
+* Default `[gvlogic]` comparison is now set to `isnot=""`; this way, you can just use `[gvlogic if="{example:1}"]` instead of `[gvlogic if="{example:1}" isnot=""]` to check if a field has a value.
 
-* New REST API
-* New `gravityview()` API wrapper function, now used for easy access to everything you could want
+**Developer Updates**
+
+This release is the biggest ever for developers! Even so, we have taken great care to provide backward compatibility with GravityView 1.x. Other than increasing the minimum version of PHP to 5.3, **no breaking changes were made.**
+
 * We have rewritten the plugin from the ground up. [Learn all about it here](https://github.com/gravityview/GravityView/wiki/The-Future-of-GravityView).
+* New REST API! Fetch GravityView details and entries using the WordPress REST API endpoint. It's disabled by default, but can be enabled or disabled globally on GravityView Settings screen, or per-View in View Settings.
+* New `gravityview()` API wrapper function, now used for easy access to everything you could want
 * New template structure ([learn how to migrate your custom template files](https://github.com/gravityview/GravityView/wiki/Template-Migration))
 * We have gotten rid of global state; actions and filters are now passed a `$context` argument, a [`\GV\Template_Context` object](https://github.com/gravityview/GravityView/blob/2.0/future/includes/class-gv-context-template.php)
-* Introduce a lot of new classes
-    - `\GV\Entry`
-    - `\GV\Form`
-    - `\GV\Template` and `\GV\View_Template`
-* _Countless_ new filters and actions
+* _Countless_ new filters and actions! Additional documentation will be coming, both on docs.gravityview.co as well as codex.gravityview.co.
+
+A special thanks to [Gennady](https://codeseekah.com) for your tireless pursuit of better code, insistence on backward compatibility, and your positive attitude. 👏
 
 = 1.22.5 on January 25, 2018 =
 
