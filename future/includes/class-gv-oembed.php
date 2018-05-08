@@ -211,9 +211,33 @@ class oEmbed {
 			}
 		}
 
+		/**
+		 * When this is embedded inside a view we should not display the widgets.
+		 */
+		$request = gravityview()->request;
+		$is_reembedded = true; // Assume as embeded unless detected otherwise.
+		if ( in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request' ) ) ) {
+			if ( ( $_view = $request->is_view() ) && $_view->ID == $view->ID ) {
+				$is_reembedded = false;
+			}
+		}
+
+		/**
+		 * Remove Widgets on a nested embedded View.
+		 */
+		if ( $is_reembedded ) {
+			$view->widgets = new \GV\Widget_Collection();
+		}
+
+		/** Remove the back link. */
+		add_filter( 'gravityview/template/links/back/url', '__return_false' );
+
 		$renderer = new \GV\Entry_Renderer();
 		$output = $renderer->render( $entry, $view, gravityview()->request );
 		$output = sprintf( '<div class="gravityview-oembed gravityview-oembed-entry gravityview-oembed-entry-%d">%s</div>', $entry->ID, $output );
+
+		remove_filter( 'gravityview/template/links/back/url', '__return_false' );
+
 		return $output;
 	}
 

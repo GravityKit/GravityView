@@ -57,6 +57,13 @@ class gravityview extends \GV\Shortcode {
 			}
 		}
 
+		/**
+		 * Remove Widgets on a nested embedded View.
+		 */
+		if ( $is_reembedded ) {
+			$view->widgets = new \GV\Widget_Collection();
+		}
+
 		$view->settings->update( $atts );
 		$entries = $view->get_entries( $request );
 
