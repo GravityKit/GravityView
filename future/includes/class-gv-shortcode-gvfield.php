@@ -112,7 +112,50 @@ class gvfield extends \GV\Shortcode {
 			return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, $entry, $field, $atts );
 		}
 
-		/** @todo Protection! */
+		if ( $view->form->ID != $entry['form_id'] ) {
+			gravityview()->log->error( 'Entry does not belong to view (form mismatch)' );
+			return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, $entry, $atts );
+		}
+
+		if ( post_password_required( $view->ID ) ) {
+			gravityview()->log->notice( 'Post password is required for View #{view_id}', array( 'view_id' => $view->ID ) );
+			return apply_filters( 'gravityview/shortcodes/gvfield/output', get_the_password_form( $view->ID ), $view, $entry, $atts );
+		}
+
+		if ( ! $view->form  ) {
+			gravityview()->log->notice( 'View #{id} has no form attached to it.', array( 'id' => $view->ID ) );
+
+			/**
+			 * This View has no data source. There's nothing to show really.
+			 * ...apart from a nice message if the user can do anything about it.
+			 */
+			if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
+				$return = __( sprintf( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
+				return apply_filters( 'gravityview/shortcodes/gvfield/output', $return, $view, $entry, $atts );
+			}
+
+			return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, $entry, $atts );
+		}
+
+		/** Private, pending, draft, etc. */
+		$public_states = get_post_stati( array( 'public' => true ) );
+		if ( ! in_array( $view->post_status, $public_states ) && ! \GVCommon::has_cap( 'read_gravityview', $view->ID ) ) {
+			gravityview()->log->notice( 'The current user cannot access this View #{view_id}', array( 'view_id' => $view->ID ) );
+			return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, $entry, $atts );
+		}
+
+		/** Unapproved entries. */
+		if ( $entry['status'] != 'active' ) {
+			gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
+			return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, $entry, $atts );
+		}
+
+		if ( $view->settings->get( 'show_only_approved' ) ) {
+			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
+				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
+				return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, $entry, $atts );
+			}
+		}
 
 		$field->update_configuration( $atts );
 
