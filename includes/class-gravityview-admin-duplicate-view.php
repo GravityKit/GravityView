@@ -287,7 +287,7 @@ class GravityView_Admin_Duplicate_View {
 
 		/** If there's no gravityview post type for some reason, abort! */
 		if ( !$post_type_object ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' No gravityview post type exists when trying to clone the View.', $view );
+			gravityview()->log->error( 'No gravityview post type exists when trying to clone the View.', array( 'data' => $view ) );
 			return '';
 		}
 

@@ -6,7 +6,7 @@
  *
  * @extends GravityView_Widget
  */
-class GravityView_Widget_Pagination_Info extends GravityView_Widget {
+class GravityView_Widget_Pagination_Info extends \GV\Widget {
 
 	/**
 	 * Does this get displayed on a single entry?

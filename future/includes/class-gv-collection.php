@@ -21,7 +21,7 @@ class Collection {
 	 * @param mixed $value The object to be added.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return void
 	 */
 	public function add( $value ) {
@@ -32,7 +32,7 @@ class Collection {
 	 * Clear this collection.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return void
 	 */
 	public function clear() {
@@ -45,7 +45,7 @@ class Collection {
 	 * @param \GV\Collection $collection The collection to be merged.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return void
 	 */
 	public function merge( \GV\Collection $collection ) {
@@ -56,7 +56,7 @@ class Collection {
 	 * Returns all the objects in this collection as an an array.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return array The objects in this collection.
 	 */
 	public function all() {
@@ -67,7 +67,7 @@ class Collection {
 	 * Get the last added object.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return mixed|null The last item in here, or null if there are none.
 	 */
 	public function last() {
@@ -75,10 +75,21 @@ class Collection {
 	}
 
 	/**
+	 * Get the first added object.
+	 *
+	 * @api
+	 * @since 2.0
+	 * @return mixed|null The first item in here, or null if there are none.
+	 */
+	public function first() {
+		return reset( $this->storage );
+	}
+
+	/**
 	 * Returns the count of the objects in this collection.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return int The size of this collection.
 	 */
 	public function count() {

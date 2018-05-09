@@ -59,7 +59,7 @@ class Entry_Sort {
 	 * @param string $mode The sort mode (self::NUMERIC). Default: self::ALPHA.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\Entry_Sort An instance of this class, pass to \GV\Entry_Collection::sort()
 	 */
@@ -67,5 +67,21 @@ class Entry_Sort {
 		$this->field = $field;
 		$this->direction = $direction;
 		$this->mode = $mode;
+	}
+
+	/**
+	 * Return search_criteria-compatible array.
+	 *
+	 * @return array [`key`, `direction`, `is_numeric`]
+	 */
+	public function to_sorting() {
+		if ( $this->field ) {
+			return array(
+				'key' => $this->field->ID,
+				'direction' => $this->direction ? : self::ASC,
+				'is_numeric' => self::ALPHA ? true : false,
+			);
+		}
+		return array();
 	}
 }

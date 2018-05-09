@@ -38,7 +38,7 @@ class GravityView_Edit_Entry_Admin {
         add_filter( 'gravityview_template_edit_link_options', array( $this, 'edit_link_field_options' ), 10, 5 );
 
         // add tooltips
-        add_filter( 'gravityview_tooltips', array( $this, 'tooltips') );
+        add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'tooltips') );
 
         // custom fields' options for zone EDIT
         add_filter( 'gravityview_template_field_options', array( $this, 'field_options' ), 10, 5 );

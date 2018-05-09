@@ -74,7 +74,7 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 
 		$default_label = GravityView_Entry_Approval_Status::get_label( $status );
 
-		$value = rgar( $field_settings, $field_setting_key, $default_label );
+		$value = \GV\Utils::get( $field_settings, $field_setting_key, $default_label );
 
 		return sprintf( '<span class="gv-approval-%s">%s</span>', esc_attr( $status_key ), $value );
 	}
@@ -128,7 +128,7 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 	/**
 	 * Display the approval status of an entry
 	 *
-	 * @see http://docs.gravityview.co/article/389-approvalstatus-merge-tag Read how to use the `{approval_status}` merge tag
+	 * @see https://docs.gravityview.co/article/389-approvalstatus-merge-tag Read how to use the `{approval_status}` merge tag
 	 *
 	 * @since 1.18
 	 *
@@ -154,7 +154,7 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 		foreach ( $matches as $match ) {
 
 			if ( empty( $entry ) ) {
-				do_action( 'gravityview_log_error', __METHOD__ . ': No entry data available. Returning empty string.' );
+				gravityview()->log->error( 'No entry data available. Returning empty string.' );
 				$replacement = '';
 			} else {
 				$replacement = GravityView_Entry_Approval::get_entry_status( $entry, $match[1] );

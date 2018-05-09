@@ -1,0 +1,17 @@
+.gv-notice {
+	padding: .5em .75em;
+	margin: 1em 0;
+	background-color: #ffffcc;
+	border: 1px solid #ddd;
+
+	&.gv-error {
+		padding: .75em;
+		border-color: #fd9ca1;
+		background-color: #ffdfe0;
+	}
+
+	p {
+		margin: 0;
+		padding: 0;
+	}
+}

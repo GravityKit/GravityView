@@ -16,7 +16,7 @@ class View_Collection extends Collection {
 	 * @param \GV\View $view The view to add to the internal array.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return void
 	 */
 	public function add( $view ) {
@@ -35,7 +35,7 @@ class View_Collection extends Collection {
 	 * @param int $view_id The ID of the view to get.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\View|null The \GV\View with the $view_id as the ID, or null if not found.
 	 */
@@ -54,7 +54,7 @@ class View_Collection extends Collection {
 	 * @param int $view_id The ID of the view to check.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return boolean Whether it exists or not.
 	 */
@@ -72,7 +72,7 @@ class View_Collection extends Collection {
 	 * @param \WP_Post $post The \WP_Post object to look into.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return \GV\View_Collection A \GV\View_Collection instance contanining the views inside the supplied \WP_Post.
 	 */
 	public static function from_post( \WP_Post $post ) {
@@ -89,7 +89,7 @@ class View_Collection extends Collection {
 			 *
 			 * This is useful when using themes that store content that may contain shortcodes in custom post meta.
 			 *
-			 * @since future
+			 * @since 2.0
 			 *
 			 * @param[in,out] array $meta_keys Array of key values to check. If empty, do not check. Default: empty array
 			 * @param[in] \WP_Post $post The post that is being checked
@@ -122,7 +122,7 @@ class View_Collection extends Collection {
 	 * @param string $content The content to look into.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return \GV\View_Collection A \GV\View_Collection instance containing the views inside the supplied \WP_Post.
 	 */
 	public static function from_content( $content ) {

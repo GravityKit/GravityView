@@ -50,6 +50,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		// Test no View ID and no hide formatting
 		GravityView_View::getInstance()->setViewId( 0 );
 		GravityView_View::getInstance()->setHideUntilSearched( false );
+		GravityView_View::getInstance()->setTotalEntries( 0 );
 
 		// Test $echo parameter TRUE
 		ob_start();
@@ -194,6 +195,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		// Test the replace_variables functionality
 		$this->assertEquals( 'testing 12383 gv-field-'.$form['id'].'-'.$field_id, GravityView_API::field_class( $field, $form, $entry ) );
 
+		unset( $field['custom_class'] );
 	}
 
 	/**

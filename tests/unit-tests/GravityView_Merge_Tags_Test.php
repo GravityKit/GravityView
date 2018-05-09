@@ -185,12 +185,51 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 				'raw' => '03-02-2016', // February 3, 2016
 				'expected' => 1454457600,
 			),
+
+			array(
+				'modifier' => 'esc_html',
+				'raw' => '<example>',
+				'expected' => '&lt;example&gt;',
+			),
+			array(
+				'modifier' => 'sanitize_title',
+				'raw' => '<example>',
+				'expected' => '',
+			),
+			array(
+				'modifier' => 'sanitize_html_class',
+				'raw' => '<example>',
+				'expected' => 'example',
+			),
+			array(
+				'modifier' => 'sanitize_html_class',
+				'raw' => '***',
+				'expected' => '',
+			),
+			array(
+				'modifier' => 'esc_html',
+				'raw' => '["Apple", "Orange", "Pear"]',
+				'expected' => '[&quot;Apple&quot;, &quot;Orange&quot;, &quot;Pear&quot;]',
+			),
+			array(
+				'modifier' => 'sanitize_title',
+				'raw' => '["Apple", "Orange", "Pear"]',
+				'expected' => 'apple-orange-pear',
+			),
+			array(
+				'modifier' => 'sanitize_html_class',
+				'raw' => '["Apple", "Orange", "Pear"]',
+				'expected' => 'Apple Orange Pear',
+			),
 		);
+
+		// Fake it as it's used for default filters
+		$field = (object) array( 'type' => 'text' );
 
 		foreach ( $tests as $test ) {
 			$value = isset( $test['value'] ) ? $test['value'] : 'value should not be used';
 			$merge_tag = isset( $test['merge_tag'] ) ? $test['merge_tag'] : 'merge tag not used';
-			$value = GravityView_Merge_Tags::process_modifiers( $value, $merge_tag, $test['modifier'], 'field not used', $test['raw'] );
+			$value = GravityView_Merge_Tags::process_modifiers( $value, $merge_tag, $test['modifier'], $field, $test['raw'] );
 			$this->assertEquals( $test['expected'], $value, print_r( $test, true ) );
 		}
 
@@ -208,7 +247,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 		) );
 
-		$date_created = rgar( $entry, 'date_created' );
+		$date_created = \GV\Utils::get( $entry, 'date_created' );
 
 		/**
 		 * adjusting date to local configured Time Zone
@@ -332,7 +371,9 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		remove_filter( 'gravityview/merge_tags/get/esc_html/string', '__return_false' );
 
 		## TEST merge_tags/get/value/string FILTER
-		function __return_example() { return 'example'; }
+		if ( ! function_exists( '__return_example' ) ) {
+			function __return_example() { return 'example'; }
+		}
 		add_filter('gravityview/merge_tags/get/value/string', '__return_example' );
 		$this->assertEquals( 'example', GravityView_Merge_Tags::replace_variables( '{get:string}' ) );
 		remove_filter('gravityview/merge_tags/get/value/string', '__return_example' );
@@ -344,14 +385,86 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers GravityView_Merge_Tags::modifier_strings()
+	 * @covers GravityView_Merge_Tags::modifier_explode()
+	 *
+	 * @since 2.0
+	 */
+	function test_merge_tag_data() {
+
+		$form = $this->factory->form->create_and_get();
+		$post = $this->factory->post->create_and_get();
+
+		$entry_args = array(
+			'form_id' => $form['id'],
+			'post_id' => $post->ID,
+		);
+
+		$entry = $this->factory->entry->create_and_get( $entry_args );
+
+		// 2.3 checks to make sure the fields exist
+		$form['fields'][] = new GF_Field_Text( array( 'id' => 100, 'form_id' => $form['id'] ) );
+		$form['fields'][] = new GF_Field_Text( array( 'id' => 101, 'form_id' => $form['id'] ) );
+		$form['fields'][] = new GF_Field_Text( array( 'id' => 201, 'form_id' => $form['id'] ) );
+		$form['fields'][] = new GF_Field_Text( array( 'id' => 301, 'form_id' => $form['id'] ) );
+
+		$entry['100'] = 'This is spaces';
+		$entry['101'] = 'This,is,commas';
+		$entry['201'] = '<tag>';
+		$entry['301'] = '["This","is","JSON"]';
+
+		$tests = array(
+			'{Field:100:sanitize_html_class}' => 'This is spaces',
+			'{Field:100:ucwords}' => 'This Is Spaces',
+			'{Field:100:ucwords,urlencode}' => 'This+Is+Spaces',
+			'{Field:100:urlencode,ucwords}' => 'This+is+spaces',
+			'{Field:100:urlencode}' => 'This+is+spaces',
+			'{Field:100:sanitize_html_class,urlencode}' => 'This+is+spaces',
+			'{Field:100:urlencode,sanitize_html_class}' => 'Thisisspaces',
+			'{Field:101:sanitize_html_class}' => 'Thisiscommas',
+			'{Field:101:sanitize_html_class,urlencode}' => 'Thisiscommas',
+			'{Field:101:explode}' => 'This is commas',
+			'{Field:101:explode,strtoupper}' => 'THIS IS COMMAS',
+			'{Field:101:explode,strtoupper,strtolower}' => 'this is commas',
+			'{Field:101:explode,ucwords}' => 'This Is Commas',
+			'{Field:101:urlencode}' => 'This%2Cis%2Ccommas',
+			'{Field:101:urlencode,strtoupper}' => 'THIS%2CIS%2CCOMMAS',
+			'{Field:101:urlencode,sanitize_html_class}' => 'Thisiscommas',
+			'{Field:201:sanitize_html_class}' => 'tag',
+			'{Field:201:sanitize_html_class,urlencode}' => 'tag',
+			'{Field:201:esc_html}' => '&lt;tag&gt;',
+			'{Field:201:esc_html,urlencode}' => '%26lt%3Btag%26gt%3B',
+			'{Field:201:urlencode,sanitize_html_class}' => 'tag',
+			'{Field:201:strtoupper}' => '<TAG>',
+			'{Field:301:explode}' => 'This is JSON',
+			'{Field:301:explode,sanitize_title}' => 'this-is-json',
+			'{Field:301:explode,sanitize_title,strtoupper,urlencode}' => 'THIS-IS-JSON',
+			'{Field:301:explode,strtolower}' => 'this is json',
+			'{Field:301:esc_html,explode}' => '[&quot;This&quot; &quot;is&quot; &quot;JSON&quot;]',
+		);
+
+		$filter_tags = function( $tags ) {
+			return array( '<tag>' );
+		};
+
+		// Allow GF to process the tag
+		add_filter( 'gform_allowable_tags', $filter_tags );
+
+		foreach( $tests as $merge_tag => $expected ) {
+			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
+		}
+
+		remove_filter( 'gform_allowable_tags', $filter_tags );
+
+		wp_reset_postdata();
+	}
+
+	/**
 	 * We want to make sure that GravityView doesn't affect core Gravity Forms Merge Tags output
 	 * @covers GravityView_Merge_Tags::replace_variables()
 	 * @since 1.15.1
 	 */
 	function test_gf_merge_tags() {
-
-		remove_all_filters( 'gform_pre_replace_merge_tags' );
-		remove_all_filters( 'gform_merge_tag_filter' );
 		
 		$form = $this->factory->form->create_and_get();
 		$post = $this->factory->post->create_and_get();
@@ -361,13 +474,14 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 			'{form_title}' => $form['title'],
 			'{form_id}' => $form['id'],
 			'{entry_id}' => $entry['id'],
-			'{entry_url}' => esc_url( get_bloginfo( 'wpurl' ) . '/wp-admin/admin.php?page=gf_entries&view=entry&id=' . $form['id'] . '&lid=' . rgar( $entry, 'id' ) ),
+			'{entry_url}' => esc_url( get_bloginfo( 'wpurl' ) . '/wp-admin/admin.php?page=gf_entries&view=entry&id=' . $form['id'] . '&lid=' . \GV\Utils::get( $entry, 'id' ) ),
 			'{admin_email}' => get_bloginfo( 'admin_email' ),
 			'{post_id}' => $post->ID,
 		);
 
 		foreach( $tests as $merge_tag => $expected ) {
-			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
+
+			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry, false ), $merge_tag );
 			$this->assertEquals( urlencode( $expected ), GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry, true ), $merge_tag );
 
 			remove_filter( 'gform_replace_merge_tags', array( 'GravityView_Merge_Tags', 'replace_gv_merge_tags' ), 10 );

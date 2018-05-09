@@ -349,7 +349,7 @@ function gravityview_get_field_type(  $form = null , $field_id = '' ) {
 function get_gravityview( $view_id = '', $atts = array() ) {
 	if( !empty( $view_id ) ) {
 		$atts['id'] = $view_id;
-		$args = wp_parse_args( $atts, defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? \GV\View_Settings::defaults() : GravityView_View_Data::get_default_args() );
+		$args = wp_parse_args( $atts, \GV\View_Settings::defaults() );
 		$GravityView_frontend = GravityView_frontend::getInstance();
 		$GravityView_frontend->setGvOutputData( GravityView_View_Data::getInstance( $view_id ) );
 		$GravityView_frontend->set_context_view_id( $view_id );
