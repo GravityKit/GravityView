@@ -36,9 +36,16 @@ class GravityView_GVEntry_Shortcode_Test extends GV_UnitTestCase {
 			'entry_id' => $entry['id'],
 		);
 
+		$atts_id = array(
+			'view_id' => $view->ID,
+			'id' => $entry['id'],
+		);
+
 		$gventry = new \GV\Shortcodes\gventry();
 
 		$this->assertContains( '<span class="gv-field-label">Textarea</span></th><td><p>hello</p>', $gventry->callback( $atts ) );
+
+		$this->assertContains( '<span class="gv-field-label">Textarea</span></th><td><p>hello</p>', $gventry->callback( $atts_id ) );
 
 		$another_entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],

@@ -104,7 +104,7 @@ class gventry extends \GV\Shortcode {
 				}
 				break;
 			default:
-				if ( ! $entry = \GV\GF_Entry::by_id( $atts['entry_id'] ) ) {
+				if ( ! $entry = \GV\GF_Entry::by_id( $entry_id ) ) {
 					gravityview()->log->error( 'Entry #{entry_id} not found', array( 'view_id' => $atts['view_id'] ) );
 					return apply_filters( 'gravityview/shortcodes/gventry/output', '', $view, null, $atts );
 				}
