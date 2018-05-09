@@ -46,14 +46,13 @@ class gravityview extends \GV\Shortcode {
 		}
 
 		/**
-		 * When this shortcode is embedded inside a view we can only
-		 * display it as a directory. There's no other way.
+		 * When this shortcode is embedded inside a View we can only display it as a directory. There's no other way.
 		 * Try to detect that we're not embedded to allow edit and single contexts.
 		 */
-		$is_reembedded = true; // Assume as embeded unless detected otherwise.
+		$is_reembedded = false; // Assume not embedded unless detected otherwise.
 		if ( in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request' ) ) ) {
-			if ( ( $_view = $request->is_view() ) && $_view->ID == $view->ID ) {
-				$is_reembedded = false;
+			if ( ( $_view = $request->is_view() ) && $_view->ID !== $view->ID ) {
+				$is_reembedded = true;
 			}
 		}
 
