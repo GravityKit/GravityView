@@ -1080,7 +1080,7 @@ class Addon_Settings extends \GFAddOn {
 		if ( $this->is_save_postback() ) {
 			if ( ! \GVCommon::has_cap( 'gravityview_edit_settings' ) ) {
 				$_POST = array(); // If you don't reset the $_POST array, it *looks* like the settings were changed, but they weren't
-				GFCommon::add_error_message( __( 'You don\'t have the ability to edit plugin settings.', 'gravityview' ) );
+				\GFCommon::add_error_message( __( 'You don\'t have the ability to edit plugin settings.', 'gravityview' ) );
 				return;
 			}
 		}
@@ -1103,7 +1103,7 @@ class Addon_Settings extends \GFAddOn {
 		if ( $local_key !== $response_key ) {
 			unset( $posted_settings['license_key_response'] );
 			unset( $posted_settings['license_key_status'] );
-			GFCommon::add_error_message( __('The license key you entered has been saved, but not activated. Please activate the license.', 'gravityview' ) );
+			\GFCommon::add_error_message( __('The license key you entered has been saved, but not activated. Please activate the license.', 'gravityview' ) );
 		}
 		return $posted_settings;
 	}

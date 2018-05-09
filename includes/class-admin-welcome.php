@@ -305,8 +305,11 @@ class GravityView_Welcome {
                     </ul>
                 </div>
 
-                <h3>2.0.1 on May 9, 2018</h3>
+                <h3>2.0.1 &amp; 2.0.2 on May 9, 2018</h3>
                 <ul>
+                    <li>Fixed: Widgets not displayed when a View is embedded</li>
+                    <li>Fixed: Saving new settings can cause fatal error</li>
+                    <li>Fixed: Prevent commonly-used front end function from creating an error in the Dashboard</li>
                     <li>Fixed: Hide labels if "Show Label" is not checked</li>
                     <li>Fixed: CSS borders on List layout</li>
                     <li>Fixed: Error when fetching GravityView Widget with DataTables Extension 2.2</li>

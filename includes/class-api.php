@@ -1095,9 +1095,15 @@ function gravityview_after() {
  * Get the current View ID being rendered
  *
  * @global GravityView_View $gravityview_view
- * @return string View context "directory" or "single"
+ *
+ * @return int View ID, if exists. `0` if `GravityView_View` doesn't exist, like in the admin, or no View is set.
  */
 function gravityview_get_view_id() {
+
+	if ( ! class_exists( 'GravityView_View' ) ) {
+		return 0;
+	}
+
 	return GravityView_View::getInstance()->getViewId();
 }
 

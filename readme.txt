@@ -21,8 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.0.1 on May 9, 2018 =
+= 2.0.1 & 2.0.2 on May 9, 2018 =
 
+* Fixed: Widgets not displayed when a View is embedded
+* Fixed: Saving new settings can cause fatal error
+* Fixed: Prevent commonly-used front end function from creating an error in the Dashboard
 * Fixed: Hide labels if "Show Label" is not checked
 * Fixed: CSS borders on List layout
 * Fixed: Error when fetching GravityView Widget with DataTables Extension 2.2
