@@ -537,7 +537,7 @@ class View implements \ArrayAccess {
 			case 'template_id':
 				return $this->settings->get( 'template' );
 			case 'widgets':
-				return $this->widgets->to_configuration();
+				return $this->widgets->as_configuration();
 		}
 	}
 
