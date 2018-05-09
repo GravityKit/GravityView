@@ -253,7 +253,7 @@ final class GravityView_Entry_Approval_Status {
 				if( 'key' === $attr_key ) {
 					return $key;
 				} else {
-					return rgar( $choice, $attr_key, false );
+					return \GV\Utils::get( $choice, $attr_key, false );
 				}
 			}
 		}

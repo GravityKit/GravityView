@@ -1,6 +1,6 @@
 // ================================================
-// Table View Template Styles for Gravity View
-// http://katz.co/gravityview/
+// Table View Template Styles for GravityView
+// https://gravityview.co
 // ================================================
 
 // 1. Variables
@@ -10,11 +10,8 @@
 // Change accordingly to your website styles
 // ------------------------------------------------
 
-/**
- * @todo: Should we convert to `table-layout: fixed;`?
- * @see https://css-tricks.com/fixing-tables-long-strings/
- */
 .gv-table-view {
+	table-layout: fixed;
 	width: 100%;
 }
 

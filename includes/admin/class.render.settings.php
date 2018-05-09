@@ -128,7 +128,7 @@ class GravityView_Render_Settings {
 
 		/**
 		 * @filter `gravityview_field_visibility_caps` Modify the capabilities shown in the field dropdown
-		 * @see http://docs.gravityview.co/article/96-how-to-modify-capabilities-shown-in-the-field-only-visible-to-dropdown
+		 * @see https://docs.gravityview.co/article/96-how-to-modify-capabilities-shown-in-the-field-only-visible-to-dropdown
 		 * @since  1.0.1
 		 * @param  array $select_cap_choices Associative rray of role slugs with labels ( `manage_options` => `Administrator` )
 		 * @param  string $template_id Optional. View slug
@@ -149,6 +149,7 @@ class GravityView_Render_Settings {
 	 * @see GravityView_Admin_Views::render_active_areas
 	 *
 	 * @access public
+	 * @param string $form_id
 	 * @param string $field_type field / widget
 	 * @param string $template_id
 	 * @param string $field_id
@@ -161,7 +162,7 @@ class GravityView_Render_Settings {
 	 *
 	 * @return string HTML of dialog box
 	 */
-	public static function render_field_options( $field_type, $template_id, $field_id, $field_label, $area, $input_type = NULL, $uniqid = '', $current = '', $context = 'single', $item = array() ) {
+	public static function render_field_options( $form_id, $field_type, $template_id, $field_id, $field_label, $area, $input_type = NULL, $uniqid = '', $current = '', $context = 'single', $item = array() ) {
 
 		if( empty( $uniqid ) ) {
 			//generate a unique field id
@@ -178,6 +179,9 @@ class GravityView_Render_Settings {
 		$output = '';
 		$output .= '<input type="hidden" class="field-key" name="'. $name_prefix .'[id]" value="'. esc_attr( $field_id ) .'">';
 		$output .= '<input type="hidden" class="field-label" name="'. $name_prefix .'[label]" value="'. esc_attr( $field_label ) .'">';
+		if ( $form_id ) {
+			$output .= '<input type="hidden" class="field-form-id" name="'. $name_prefix .'[form_id]" value="'. esc_attr( $form_id ) .'">';
+		}
 
 		// If there are no options, return what we got.
 		if(empty($options)) {
@@ -294,10 +298,12 @@ class GravityView_Render_Settings {
 	 */
 	public static function render_setting_row( $key = '', $current_settings = array(), $override_input = null, $name = 'template_settings[%s]', $id = 'gravityview_se_%s' ) {
 
-		$setting = GravityView_View_Data::get_default_arg( $key, true );
+		$settings = \GV\View_Settings::with_defaults( true );
 
 		// If the key doesn't exist, there's something wrong.
-		if( empty( $setting ) ) { return; }
+		if ( ! $setting = $settings->get( $key ) ) {
+			return;
+		}
 
 		/**
 		 * @deprecated setting index 'name' was replaced by 'label'

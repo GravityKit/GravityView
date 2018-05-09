@@ -65,7 +65,7 @@ class GravityView_Field_Created_By extends GravityView_Field {
 	 * Exactly like Gravity Forms' User Meta functionality, but instead shows information on the user who created the entry
 	 * instead of the currently logged-in user.
 	 *
-	 * @see http://docs.gravityview.co/article/281-the-createdby-merge-tag Read how to use the `{created_by}` merge tag
+	 * @see https://docs.gravityview.co/article/281-the-createdby-merge-tag Read how to use the `{created_by}` merge tag
 	 *
 	 * @since 1.16
 	 *

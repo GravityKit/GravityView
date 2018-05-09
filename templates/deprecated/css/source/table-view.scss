@@ -1,0 +1,47 @@
+// ================================================
+// Table View Template Styles for Gravity View
+// http://katz.co/gravityview/
+// ================================================
+
+// 1. Variables
+// ================================================
+
+// 1.1. Colors
+// Change accordingly to your website styles
+// ------------------------------------------------
+
+/**
+ * @todo: Should we convert to `table-layout: fixed;`?
+ * @see https://css-tricks.com/fixing-tables-long-strings/
+ */
+.gv-table-view {
+	width: 100%;
+}
+
+.gv-table-view th,
+.gv-table-view td {
+	padding: .3em;
+}
+
+.gv-table-view-content {
+
+	table-layout: fixed;
+
+	// The single entry view left column
+	th {
+		width: 35%;
+		vertical-align: top;
+	}
+}
+
+// 2. Sorting links
+// Change accordingly to your website styles
+// ------------------------------------------------
+
+a.gv-sort.gv-icon-caret-up-down {
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 1;
+    }
+}

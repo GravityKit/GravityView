@@ -19,7 +19,12 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		$this->assertEquals( '', $value );
 
 		$view_id = $this->factory->view->create();
-		$value = do_shortcode( '[gravityview id="'.$view_id.'"]' );
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'view' => \GV\View::by_id( $view_id ),
+		) );
+
+		$value = do_shortcode( '[gravityview id="'.$view_id.'" hoolo="3"]' );
 		$this->assertNotEmpty( $value );
 		$this->assertTrue( strpos( $value, 'gv-container' ) > 0 );
 	}
@@ -294,4 +299,8 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		unset( $_GET['pagenum'] );
 	}
 
+	public function test_shortcode_abstract() {
+		$shortcode = new \GV\Shortcode();
+		$this->assertEmpty( $shortcode->callback( array() ) );
+	}
 }
