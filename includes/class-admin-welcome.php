@@ -307,8 +307,9 @@ class GravityView_Welcome {
 
                 <h3>2.0.1 on May 9, 2018</h3>
                 <ul>
-                    <li>Fixed: CSS borders on List layout</li>
+                    <li>Fixed: Hide labels if "Show Label" is not checked</li>
                     <li>Fixed: Error when fetching GravityView Widget with DataTables Extension 2.2</li>
+                    <li>Fixed: CSS borders on List layout</li>
                 </ul>
 
                 <h3>1.22.6 on April 4, 2018</h3>
