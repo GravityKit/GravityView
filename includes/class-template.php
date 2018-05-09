@@ -836,8 +836,9 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 * @return void
 	 */
 	public function render_widget_hooks( $view_id_or_context ) {
-		/**
-		 * @deperecated Numeric argument is deprecated. Pass a \GV\Template_Context instead.
+
+	    /**
+		 * @deprecated Numeric argument is deprecated. Pass a \GV\Template_Context instead.
 		 */
 		if ( is_numeric( $view_id_or_context ) ) {
 			$view = \GV\View::by_id( $view_id_or_context );
