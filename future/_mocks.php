@@ -322,10 +322,14 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 			break;
 	endswitch;
 
+	if( $force_show_label ) {
+		$field_settings['show_label'] = '1';
+	}
+
 	/** Add the field settings. */
 	$field->update_configuration( $field_settings );
 
-	if ( ! empty( $field->show_label ) || $force_show_label ) {
+	if ( ! empty( $field->show_label ) ) {
 
 		$label = $field->get_label( null, isset( $gf_form ) ? $gf_form : null, $entry );
 
