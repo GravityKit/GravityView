@@ -221,7 +221,7 @@ final class GravityView_Plugin {
 	 */
 	public function frontend_actions( $force = false ) {
 		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-		return gravityview()->plugin->include_legacy_frontend( $force );
+		gravityview()->plugin->include_legacy_frontend( $force );
 	}
 
 	/**
