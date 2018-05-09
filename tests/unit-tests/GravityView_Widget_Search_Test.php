@@ -136,7 +136,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		// Test dates
 		$_GET = array(
 			'gv_start' => $start,
-		    'gv_end' => $end,
+			'gv_end' => $end,
 		);
 
 		$search_criteria_dates = array(
@@ -351,7 +351,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	public function test_filter_entries_gv_start_end_time() {
 		$_GET = array(
 			'gv_start' => '2018-04-07',
-		    'gv_end' => '2018-04-07',
+			'gv_end' => '2018-04-07',
 		);
 
 		$view = $this->factory->view->create_and_get( array(

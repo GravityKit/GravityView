@@ -21,6 +21,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0.1 on May 9, 2018 =
+
+* Fixed: Hide labels if "Show Label" is not checked
+* Fixed: CSS borders on List layout
+* Fixed: Error when fetching GravityView Widget with DataTables Extension 2.2
+* Fixed: Fail gracefully when GravityView Maps is installed on a server running PHP 5.2.4
+
 = Version 2.0 on May 8, 2018 =
 
 We are proud to share this release with you: we have been working on this release since 2016, and although most of the changes won’t be seen, GravityView has a brand-new engine that will power the plugin into the future! 🚀

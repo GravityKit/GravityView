@@ -3,7 +3,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	https://gravityview.co
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:          	2.0
+ * Version:          	2.0.1
  * Author:            	GravityView
  * Author URI:        	https://gravityview.co
  * Text Domain:       	gravityview
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * The plugin version.
  */
-define( 'GV_PLUGIN_VERSION', '2.0' );
+define( 'GV_PLUGIN_VERSION', '2.0.1' );
 
 /**
  * Full path to the GravityView file
@@ -221,7 +221,7 @@ final class GravityView_Plugin {
 	 */
 	public function frontend_actions( $force = false ) {
 		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-		return gravityview()->plugin->include_legacy_frontend( $force );
+		gravityview()->plugin->include_legacy_frontend( $force );
 	}
 
 	/**

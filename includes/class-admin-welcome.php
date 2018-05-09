@@ -305,6 +305,14 @@ class GravityView_Welcome {
                     </ul>
                 </div>
 
+                <h3>2.0.1 on May 9, 2018</h3>
+                <ul>
+                    <li>Fixed: Hide labels if "Show Label" is not checked</li>
+                    <li>Fixed: CSS borders on List layout</li>
+                    <li>Fixed: Error when fetching GravityView Widget with DataTables Extension 2.2</li>
+                    <li>Fixed: Fail gracefully when GravityView Maps is installed on a server running PHP 5.2.4</li>
+                </ul>
+
                 <h3>1.22.6 on April 4, 2018</h3>
 
                 <ul>

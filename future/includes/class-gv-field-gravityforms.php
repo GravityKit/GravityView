@@ -100,6 +100,10 @@ class GF_Field extends Field {
 			return $label;
 		}
 
+		if ( ! $this->show_label ) {
+			return '';
+		}
+
 		if ( ! $source || ! is_object( $source ) || ! is_a( $source, '\GV\GF_Form' ) ) {
 			gravityview()->log->error( '$source is not a valid \GV\GF_Form instance' );
 			return null;
