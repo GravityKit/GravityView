@@ -18,6 +18,9 @@ class GravityView_Extension {
 
 	function __construct() {
 	}
+
+	function add_notice() {
+	}
 }
 
 function gravityview() {
