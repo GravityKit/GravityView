@@ -300,6 +300,7 @@ class GravityView_Welcome {
                         <li>New <code>gravityview()</code> API wrapper function, now used for easy access to everything you could want</li>
                         <li>New template structure (<a href="https://github.com/gravityview/GravityView/wiki/Template-Migration">learn how to migrate your custom template files</a>)</li>
                         <li>We have gotten rid of global state; actions and filters are now passed a <code>$context</code> argument, a <a href="https://github.com/gravityview/GravityView/blob/2.0/future/includes/class-gv-context-template.php"><code>\GV\Template_Context</code> object</a></li>
+                        <li>When HTML 5 is enabled in Gravity Forms, now the Search All field will use <code>type="search"</code></li>
                         <li><em>Countless</em> new filters and actions! Additional documentation will be coming, both on <a href="https://docs.gravityview.co">docs.gravityview.co</a> as well as <a href="https://codex.gravityview.co">codex.gravityview.co</a>.</li>
                     </ul>
                 </div>
