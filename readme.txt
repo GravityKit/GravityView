@@ -24,8 +24,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = 2.0.1 on May 9, 2018 =
 
 * Fixed: Hide labels if "Show Label" is not checked
-* Fixed: Error when fetching GravityView Widget with DataTables Extension 2.2
 * Fixed: CSS borders on List layout
+* Fixed: Error when fetching GravityView Widget with DataTables Extension 2.2
+* Fixed: Fail gracefully when GravityView Maps is installed on a server running PHP 5.2.4
 
 = Version 2.0 on May 8, 2018 =
 
