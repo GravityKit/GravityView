@@ -591,20 +591,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 */
 			$adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', true, 'search' );
 
-<<<<<<< HEAD
-		/**
-		 * Don't set $search_criteria['start_date'] if start_date is empty as it may lead to bad query results (GFAPI::get_entries)
-		 */
-		if ( ! empty( $curr_start ) ) {
-			$curr_start = date( 'Y-m-d H:i:s', strtotime( $curr_start ) );
-			$search_criteria['start_date'] = $adjust_tz ? get_gmt_from_date( $curr_start ) : $curr_start;
-		}
-
-		if ( ! empty( $curr_end ) ) {
-			// Fast-forward 24 hour on the end time
-			$curr_end = date( 'Y-m-d H:i:s', strtotime( $curr_end ) + DAY_IN_SECONDS );
-			$search_criteria['end_date'] = $adjust_tz ? get_gmt_from_date( $curr_end ) : $curr_end;
-=======
 			/**
 			 * Don't set $search_criteria['start_date'] if start_date is empty as it may lead to bad query results (GFAPI::get_entries)
 			 */
@@ -618,7 +604,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$curr_end = date( 'Y-m-d H:i:s', strtotime( $curr_end ) + DAY_IN_SECONDS );
 				$search_criteria['end_date'] = $adjust_tz ? get_gmt_from_date( $curr_end ) : $curr_end;
 			}
->>>>>>> master
 		}
 
 		// search for a specific entry ID

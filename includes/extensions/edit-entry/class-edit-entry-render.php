@@ -1779,19 +1779,11 @@ class GravityView_Edit_Entry_Render {
 				                }
 				            }
 
-<<<<<<< HEAD
-							$field->defaultValue = serialize( $list_field_value ) ? : $field->defaultValue;
-						} else {
-							$field->defaultValue = $field_value ? : $field->defaultValue;
-						}
-					}
-=======
 				            $field->defaultValue = serialize( $list_field_value );
 				        } else {
 				            $field->defaultValue = $field_value;
 				        }
 				    }
->>>>>>> master
 				}
 			}
 		}
