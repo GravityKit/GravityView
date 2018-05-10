@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.0.1\n"
+"Project-Id-Version: GravityView 2.0.3\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -171,13 +171,13 @@ msgstr ""
 #: future/includes/class-gv-oembed.php:199
 #: future/includes/class-gv-oembed.php:204
 #: future/includes/class-gv-oembed.php:210
-#: future/includes/class-gv-shortcode-gravityview.php:93
-#: future/includes/class-gv-shortcode-gravityview.php:108
-#: future/includes/class-gv-shortcode-gravityview.php:113
-#: future/includes/class-gv-shortcode-gravityview.php:119
-#: future/includes/class-gv-shortcode-gravityview.php:132
-#: future/includes/class-gv-shortcode-gravityview.php:137
-#: future/includes/class-gv-shortcode-gravityview.php:143
+#: future/includes/class-gv-shortcode-gravityview.php:97
+#: future/includes/class-gv-shortcode-gravityview.php:112
+#: future/includes/class-gv-shortcode-gravityview.php:117
+#: future/includes/class-gv-shortcode-gravityview.php:123
+#: future/includes/class-gv-shortcode-gravityview.php:136
+#: future/includes/class-gv-shortcode-gravityview.php:141
+#: future/includes/class-gv-shortcode-gravityview.php:147
 #: future/includes/class-gv-view.php:224 future/includes/class-gv-view.php:263
 #: future/includes/class-gv-view.php:271 future/includes/class-gv-view.php:278
 #: future/includes/class-gv-view.php:287 future/includes/class-gv-view.php:292
@@ -1482,23 +1482,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:387
+#: includes/class-admin-welcome.php:408
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:408
+#: includes/class-admin-welcome.php:429
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:443
+#: includes/class-admin-welcome.php:464
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:468
+#: includes/class-admin-welcome.php:489
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:469
+#: includes/class-admin-welcome.php:490
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1642,7 +1642,7 @@ msgstr ""
 msgid "&larr; Go back"
 msgstr ""
 
-#: includes/class-api.php:1182
+#: includes/class-api.php:1188
 msgid "Map It"
 msgstr ""
 
@@ -2134,7 +2134,7 @@ msgstr ""
 msgid "added on {date_created_formatted}"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:556
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:562
 msgid "The note is empty."
 msgstr ""
 

@@ -108,6 +108,16 @@ class Entry_Renderer extends Renderer {
 			printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $context->view->ID );
 		} );
 
+		/** Mock the legacy state for the widgets and whatnot */
+		$entries = new Entry_Collection();
+		$entries->add( $entry );
+		\GV\Mocks\Legacy_Context::push( array(
+			'view' => $view,
+			'entries' => $entries,
+			'entry' => $entry,
+			'request' => $request,
+		) );
+
 		ob_start();
 		$template->render();
 

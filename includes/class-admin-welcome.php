@@ -305,6 +305,23 @@ class GravityView_Welcome {
                     </ul>
                 </div>
 
+                <h3>2.0.3 on May 10, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Compatibility with <code>[gravitypdf]</code> shortcode</li>
+                    <li>Fixed: When using <code>[gravityview]</code> shortcode, the <code>page_size</code> setting wasn't being respected</li>
+                    <li>Fixed: <code>[gravityview detail="last_entry" /]</code> not returning the correct entry</li>
+                    <li>Fixed: Widgets not being properly rendered when using oEmbed</li>
+                    <li>Fixed: Note fields not rendering properly</li>
+                </ul>
+
+                <p><strong>Developer Notes</strong></p>
+
+                <ul>
+                    <li>Fixed: <code>GravityView_View::getInstance()</code> not returning information about a single entry</li>
+                    <li>Added: <code>gravityview/shortcode/detail/$key</code> filter</li>
+                </ul>
+
                 <h3>2.0.1 &amp; 2.0.2 on May 9, 2018</h3>
                 <ul>
                     <li>Fixed: Widgets not displayed when a View is embedded</li>

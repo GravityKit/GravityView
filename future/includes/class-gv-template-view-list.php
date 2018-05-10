@@ -29,6 +29,13 @@ class View_List_Template extends View_Template {
 	public function the_field( \GV\Field $field, \GV\Entry $entry, $extras = null ) {
 		$form = $this->view->form;
 
+		/**
+		 * Push legacy entry context.
+		 */
+		\GV\Mocks\Legacy_Context::load( array(
+			'entry' => $entry,
+		) );
+
 		if ( $entry instanceof Multi_Entry ) {
 			if ( ! $entry = Utils::get( $entry, $field->form_id ) ) {
 				return;

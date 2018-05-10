@@ -35,13 +35,18 @@ class gravityview extends \GV\Shortcode {
 			'id' => 0,
 			'view_id' => 0,
 			'detail' => null,
-			'page_size' => 20,
 		) );
+		
+		if ( ! $view_id = $atts['id'] ? : $atts['view_id'] ) {
+			if ( $atts['detail'] && $view = $request->is_view() ) {
+				$view_id = $view->ID;
+			}
+		}
 
-		$view = \GV\View::by_id( $atts['id'] ? : $atts['view_id'] );
+		$view = \GV\View::by_id( $view_id );
 
 		if ( ! $view ) {
-			gravityview()->log->error( 'View does not exist #{view_id}', array( 'view_id' => $view->ID ) );
+			gravityview()->log->error( 'View does not exist #{view_id}', array( 'view_id' => $view_id ) );
 			return '';
 		}
 
@@ -173,7 +178,6 @@ class gravityview extends \GV\Shortcode {
 	 * @param \GV\View $view The View.
 	 * @param \GV\Entry_Collection $entries The calculated entries.
 	 * @param array $atts The shortcode attributes (with defaults).
-	 * @param array $view_atts A quirky compatibility parameter where we get the unaltered view atts.
 	 *
 	 * @return string The output.
 	 */
@@ -188,12 +192,24 @@ class gravityview extends \GV\Shortcode {
 				$output = number_format_i18n( min( $entries->total(), $view->settings->get( 'offset' ) + 1 ) );
 				break;
 			case 'last_entry':
-				$output = number_format_i18n( $view->settings->get( 'page_size' ) );
+				$output = number_format_i18n( $view->settings->get( 'page_size' ) + $view->settings->get( 'offset' ) );
 				break;
 			case 'page_size':
 				$output = number_format_i18n( $view->settings->get( $key ) );
 				break;
 		endswitch;
+
+		/**
+		 * @filter `gravityview/shortcode/detail/{$detail}` Filter the detail output returned from `[gravityview detail="$detail"]`
+		 * @since 1.13
+		 * @param string[in,out] $output Existing output
+		 *
+		 * @since 2.0.3
+		 * @param \GV\View $view The view.
+		 * @param \GV\Entry_Collection $entries The entries.
+		 * @param array $atts The shortcode atts with defaults.
+		 */
+		$output = apply_filters( "gravityview/shortcode/detail/$key", $output, $view );
 
 		return $output;
 	}

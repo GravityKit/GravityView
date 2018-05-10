@@ -15,6 +15,7 @@
  * Handle the [gravityview] shortcode
  *
  * @since 1.13
+ * @deprecated since 2.0.3, see \GV\Shortcodes\gravityview
  */
 class GravityView_Shortcode {
 
@@ -23,9 +24,6 @@ class GravityView_Shortcode {
 	}
 
 	private function add_hooks() {
-
-		// Shortcode to render view (directory)
-		add_shortcode( 'gravityview', array( $this, 'shortcode' ) );
 	}
 
 	/**

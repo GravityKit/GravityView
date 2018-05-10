@@ -21,6 +21,19 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0.3 on May 10, 2018 =
+
+* Fixed: Compatibility with `[gravitypdf]` shortcode
+* Fixed: When using `[gravityview]` shortcode, the `page_size` setting wasn't being respected
+* Fixed: `[gravityview detail="last_entry" /]` not returning the correct entry
+* Fixed: Widgets not being properly rendered when using oEmbed
+* Fixed: Note fields not rendering properly
+
+__Developer Notes__
+
+* Fixed: `GravityView_View::getInstance()` not returning information about a single entry
+* Added: `gravityview/shortcode/detail/$key` filter
+
 = 2.0.1 & 2.0.2 on May 9, 2018 =
 
 * Fixed: Widgets not displayed when a View is embedded

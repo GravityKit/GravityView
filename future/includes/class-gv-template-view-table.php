@@ -70,6 +70,13 @@ class View_Table_Template extends View_Template {
 		$context = Template_Context::from_template( $this, compact( 'entry', 'fields' ) );
 
 		/**
+		 * Push legacy entry context.
+		 */
+		\GV\Mocks\Legacy_Context::load( array(
+			'entry' => $entry,
+		) );
+
+		/**
 		 * @filter `gravityview_table_cells` Modify the fields displayed in a table
 		 * @param array $fields
 		 * @param GravityView_View $this
