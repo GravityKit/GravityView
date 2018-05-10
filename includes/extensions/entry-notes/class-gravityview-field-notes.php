@@ -595,7 +595,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			$visibility_settings = $gravityview_view->getCurrentFieldSetting( 'notes' );
 
 			if ( $atts['entry'] ) {
-				$entry = GFAPI::get_entry( $entry_id );
+				$entry = GFAPI::get_entry( $atts['entry'] );
 			}
 
 			if ( ! isset( $entry ) || ! $entry ) {
