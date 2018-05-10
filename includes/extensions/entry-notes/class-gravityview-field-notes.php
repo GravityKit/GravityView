@@ -500,8 +500,14 @@ class GravityView_Field_Notes extends GravityView_Field {
 		$note_row_template = ( $show_delete && GVCommon::has_cap( 'gravityview_delete_entry_notes' ) ) ? 'row-editable' : 'row';
 
 		if ( $context instanceof \GV\Template_Context ) {
-			$note_detail_html = file_get_contents( $context->template->get_template_part( 'note', 'detail' ) );
-			$note_row = file_get_contents( $context->template->get_template_part( 'note', $note_row_template ) );
+
+		    ob_start();
+		    $context->template->get_template_part( 'note', 'detail', true );
+            $note_detail_html = ob_get_clean();
+
+            ob_start();
+			$context->template->get_template_part( 'note', $note_row_template, true );
+			$note_row = ob_get_clean();
 		} else {
 			/** @deprecated path */
 			ob_start();
@@ -582,7 +588,11 @@ class GravityView_Field_Notes extends GravityView_Field {
 		}
 
 		if ( $context instanceof \GV\Template_Context ) {
-			$add_note_html = $context->template->get_template_part( 'note', 'add-note' );
+
+			ob_start();
+			$context->template->get_template_part( 'note', 'add-note', true );
+			$add_note_html = ob_get_clean();
+
 			$visibility_settings = $context->field->notes;
 			$entry = $context->entry->as_entry();
 		} else {
