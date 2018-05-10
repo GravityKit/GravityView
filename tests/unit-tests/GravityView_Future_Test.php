@@ -2016,6 +2016,23 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( 'text in a textarea', $future );
 		$this->assertContains( 'Let&#039;s go back!', $future );
 		$this->assertNotContains( 'Country', $future );
+
+
+		// Check sorting links
+		$view->settings->set( 'sort_columns', '1' );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $entry, $view );
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'class="gv-sort', $future );
+
+		// Check sorting links
+		$view->settings->set( 'sort_columns', '0' );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $entry, $view );
+		$this->assertEquals( $legacy, $future );
+		$this->assertNotContains( 'class="gv-sort', $future );
 	}
 
 	public function test_entry_renderer_table_hide_empty() {

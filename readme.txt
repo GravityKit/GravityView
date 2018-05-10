@@ -21,6 +21,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: "Enable sorting by column" option for Table layouts
+
 = 2.0.3 on May 10, 2018 =
 
 * Fixed: Compatibility with `[gravitypdf]` shortcode
