@@ -92,7 +92,7 @@
 				.on( 'keydown keyup', vcfg.altKeyListener )
 
 				// select form
-				.on( 'change', '#gravityview_form_id', vcfg.formChange )
+				.on( 'change', '#gravityview_form_id', vcfg.formChange )  // TODO: Update for Joins
 
 				// start fresh button
 				.on( 'click', 'a[href="#gv_start_fresh"]', vcfg.startFresh )
@@ -614,7 +614,7 @@
 			if ( context !== undefined && 'preset' === context ) {
 				data.template_id = id;
 			} else {
-				data.form_id = vcfg.gvSelectForm.val();
+				data.form_id = vcfg.gvSelectForm.val(); // TODO: Update for Joins
 			}
 
 			$.post(ajaxurl, data, function (response) {
@@ -965,6 +965,10 @@
 			if ( preset !== undefined && 'preset' === preset ) {
 				data.template_id = templateid;
 			} else {
+				/**
+				 * TODO: Update to support multiple fields in Joins
+				 * @see GravityView_Ajax::gv_available_fields()
+				 * */
 				data.form_id = vcfg.gvSelectForm.val();
 			}
 
@@ -1054,7 +1058,7 @@
 				field_label: newField.find( '.gv-field-label' ).attr( 'data-original-title' ),
 				field_type: addButton.attr( 'data-objecttype' ),
 				input_type: newField.attr( 'data-inputtype' ),
-				form_id: vcfg.currentFormId,
+				form_id: vcfg.currentFormId,  // TODO: Update for Joins
 				nonce: gvGlobals.nonce
 			};
 
