@@ -618,7 +618,7 @@ class View implements \ArrayAccess {
 			$page = Utils::get( $parameters['paging'], 'current_page' ) ?
 				: ( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
 
-			if ( gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
+			if ( gravityview()->plugin->supports( Plugin::FEATURE_GFQUERY ) ) {
 				/**
 				 * New \GF_Query stuff :)
 				 */
@@ -630,7 +630,7 @@ class View implements \ArrayAccess {
 				/**
 				 * Any joins?
 				 */
-				if ( count( $this->joins ) ) {
+				if ( Plugin::FEATURE_JOINS && count( $this->joins ) ) {
 					foreach ( $this->joins as $join ) {
 						$query = $join->as_query_join( $query );
 					}
