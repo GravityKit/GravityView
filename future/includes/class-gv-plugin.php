@@ -19,7 +19,7 @@ final class Plugin {
 	 * @var string The plugin version.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public static $version = GV_PLUGIN_VERSION;
 
@@ -67,14 +67,24 @@ final class Plugin {
 	 * @var \GV\Addon_Settings The plugin "addon" settings.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $settings;
+
+	/**
+	 * @var string The GFQuery functionality identifier.
+	 */
+	const FEATURE_GFQUERY = 'gfquery';
 
 	/**
 	 * @var string The joins functionality identifier.
 	 */
 	const FEATURE_JOINS = 'joins';
+
+	/**
+	 * @var string The REST API functionality identifier.
+	 */
+	const FEATURE_REST  = 'rest_api';
 
 	/**
 	 * Get the global instance of \GV\Plugin.
@@ -134,6 +144,7 @@ final class Plugin {
 	 * @return void
 	 */
 	public function include_legacy_frontend( $force = false ) {
+
 		if ( gravityview()->request->is_admin() && ! $force ) {
 			return;
 		}
@@ -188,6 +199,7 @@ final class Plugin {
 		include_once $this->dir( 'includes/widgets/register-gravityview-widgets.php' );
 
 		// Add oEmbed
+		include_once $this->dir( 'includes/class-api.php' );
 		include_once $this->dir( 'includes/class-oembed.php' );
 
 		// Add logging
@@ -290,7 +302,7 @@ final class Plugin {
 	 * Retrieve an absolute path within the Gravity Forms plugin directory.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @param string $path Optional. Append this extra path component.
 	 * @return string The absolute path to the plugin directory.
@@ -303,7 +315,7 @@ final class Plugin {
 	 * Retrieve a URL within the Gravity Forms plugin directory.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @param string $path Optional. Extra path appended to the URL.
 	 * @return string The URL to this plugin, with trailing slash.
@@ -316,7 +328,7 @@ final class Plugin {
 	 * Is everything compatible with this version of GravityView?
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return bool
 	 */
@@ -331,7 +343,7 @@ final class Plugin {
 	 * Is this version of GravityView compatible with the current version of PHP?
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return bool true if compatible, false otherwise.
 	 */
@@ -340,28 +352,60 @@ final class Plugin {
 	}
 
 	/**
-	 * Is this version of GravityView compatible with the current version of WordPress?
+	 * Is this version of GravityView compatible with the future required version of PHP?
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return bool true if compatible, false otherwise.
 	 */
-	public function is_compatible_wordpress() {
-		return version_compare( $this->get_wordpress_version(), self::$min_wp_version, '>=' );
+	public function is_compatible_future_php() {
+		return version_compare( $this->get_php_version(), self::$future_min_php_version, '>=' );
+	}
+
+	/**
+	 * Is this version of GravityView compatible with the current version of WordPress?
+	 *
+	 * @api
+	 * @since 2.0
+	 *
+	 * @param string $version Version to check against; otherwise uses GV_MIN_WP_VERSION
+	 *
+	 * @return bool true if compatible, false otherwise.
+	 */
+	public function is_compatible_wordpress( $version = null ) {
+
+		if( ! $version ) {
+			$version = self::$min_wp_version;
+		}
+
+		return version_compare( $this->get_wordpress_version(), $version, '>=' );
 	}
 
 	/**
 	 * Is this version of GravityView compatible with the current version of Gravity Forms?
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return bool true if compatible, false otherwise (or not active/installed).
 	 */
 	public function is_compatible_gravityforms() {
 		$version = $this->get_gravityforms_version();
 		return $version ? version_compare( $version, self::$min_gf_version, '>=' ) : false;
+	}
+
+	/**
+	 * Is this version of GravityView compatible with the future version of Gravity Forms?
+	 *
+	 * @api
+	 * @since 2.0
+	 *
+	 * @return bool true if compatible, false otherwise (or not active/installed).
+	 */
+	public function is_compatible_future_gravityforms() {
+		$version = $this->get_gravityforms_version();
+		return $version ? version_compare( $version, self::$future_min_gf_version, '>=' ) : false;
 	}
 
 	/**
@@ -413,9 +457,16 @@ final class Plugin {
 	 * @return boolean
 	 */
 	public function supports( $feature ) {
+		if ( ! is_null( $supports = apply_filters( "gravityview/plugin/feature/$feature", null ) ) ) {
+			return $supports;
+		}
+
 		switch ( $feature ):
+				case self::FEATURE_GFQUERY:
 				case self::FEATURE_JOINS:
 					return class_exists( '\GF_Query' );
+				case self::FEATURE_REST:
+					return class_exists( '\WP_REST_Controller' );
 			default:
 				return false;
 		endswitch;

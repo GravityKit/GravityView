@@ -3,7 +3,7 @@
  * The default form section output template.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 $field = $gravityview->field->field;
 $form = $gravityview->view->form->form;

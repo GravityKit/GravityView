@@ -790,6 +790,11 @@ class GravityView_frontend {
 	 * @return array          Array of search parameters, formatted in Gravity Forms mode, using `status` key set to "active" by default, `field_filters` array with `key`, `value` and `operator` keys.
 	 */
 	public static function get_search_criteria( $args, $form_id ) {
+		/**
+		 * Compatibility with filters hooking in `gravityview_search_criteria` instead of `gravityview_fe_search_criteria`.
+		 */
+		$criteria = apply_filters( 'gravityview_search_criteria', array(), array( $form_id ), \GV\Utils::get( $args, 'id' ) );
+		$search_criteria = isset( $criteria['search_criteria'] ) ? $criteria['search_criteria'] : array( 'field_filters' => array() );
 
 		/**
 		 * @filter `gravityview_fe_search_criteria` Modify the search criteria
@@ -798,7 +803,7 @@ class GravityView_frontend {
 		 * @param int $form_id ID of the Gravity Forms form that is being searched
 		 * @param array $args The View settings.
 		 */
-		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ), $form_id, $args );
+		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', $search_criteria, $form_id, $args );
 
 		$original_search_criteria = $search_criteria;
 
@@ -976,7 +981,7 @@ class GravityView_frontend {
 		 * @param array $parameters Array with `search_criteria`, `sorting` and `paging` keys.
 		 * @param array $args View configuration args.
 		 */
-		$parameters = apply_filters( 'gravityview_get_entries_'.$args['id'], $parameters, $args, $form_id );
+		$parameters = apply_filters( 'gravityview_get_entries_'.\GV\Utils::get( $args, 'id' ), $parameters, $args, $form_id );
 
 		gravityview()->log->debug( '$parameters passed to gravityview_get_entries(): ', array( 'data' => $parameters ) );
 

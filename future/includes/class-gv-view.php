@@ -25,7 +25,7 @@ class View implements \ArrayAccess {
 	 * @var \GV\View_Settings The settings.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $settings;
 
@@ -33,7 +33,7 @@ class View implements \ArrayAccess {
 	 * @var \GV\Widget_Collection The widets attached here.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $widgets;
 
@@ -43,7 +43,7 @@ class View implements \ArrayAccess {
 	 * Contains the form that is sourced for entries in this view.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $form;
 
@@ -53,9 +53,19 @@ class View implements \ArrayAccess {
 	 * Contains all the fields that are attached to this view.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $fields;
+
+	/**
+	 * @var array
+	 *
+	 * Internal static cache for gets, and whatnot.
+	 * This is not persistent, resets across requests.
+
+	 * @internal
+	 */
+	private static $cache = array();
 
 	/**
 	 * @var \GV\Join[] The joins for all sources in this view.
@@ -162,7 +172,7 @@ class View implements \ArrayAccess {
 			'rewrite'             => array(
 				/**
 				 * @filter `gravityview_slug` Modify the url part for a View.
-				 * @see http://docs.gravityview.co/article/62-changing-the-view-slug
+				 * @see https://docs.gravityview.co/article/62-changing-the-view-slug
 				 * @param string $slug The slug shown in the URL
 				 */
 				'slug' => apply_filters( 'gravityview_slug', 'view' ),
@@ -173,7 +183,7 @@ class View implements \ArrayAccess {
 				 *  (example: if your permalink structure is /blog/, then your links will be: false->/view/, true->/blog/view/).
 				 *  Defaults to true.
 				 * @see https://codex.wordpress.org/Function_Reference/register_post_type
-				 * @since future
+				 * @since 2.0
 				 * @param bool $with_front
 				 */
 				'with_front' => apply_filters( 'gravityview/post_type/with_front', true ),
@@ -244,7 +254,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * @filter `gravityview/request/output/direct` Should this View be directly accessbile?
-		 * @since future
+		 * @since 2.0
 		 * @param[in,out] boolean Accessible or not. Default: accessbile.
 		 * @param \GV\View $view The View we're trying to directly render here.
 		 * @param \GV\Request $request The current request.
@@ -334,13 +344,17 @@ class View implements \ArrayAccess {
 	 * @param \WP_Post $post The \WP_Post instance to wrap.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return \GV\View|null An instance around this \WP_Post if valid, null otherwise.
 	 */
 	public static function from_post( $post ) {
 		if ( ! $post || get_post_type( $post ) != 'gravityview' ) {
 			gravityview()->log->error( 'Only gravityview post types can be \GV\View instances.' );
 			return null;
+		}
+
+		if ( $view = Utils::get( self::$cache, "View::from_post:{$post->ID}" ) ) {
+			return $view;
 		}
 
 		$view = new self();
@@ -384,7 +398,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * @filter `gravityview/view/configuration/fields` Filter the View fields' configuration array.
-		 * @since future
+		 * @since 2.0
 		 *
 		 * @param array $fields Multi-array of fields with first level being the field zones.
 		 * @param \GV\View $view The View the fields are being pulled for.
@@ -393,7 +407,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * @filter `gravityview/view/fields` Filter the Field Collection for this View.
-		 * @since future
+		 * @since 2.0
 		 *
 		 * @param \GV\Field_Collection $fields A collection of fields.
 		 * @param \GV\View $view The View the fields are being pulled for.
@@ -402,7 +416,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * @filter `gravityview/view/configuration/widgets` Filter the View widgets' configuration array.
-		 * @since future
+		 * @since 2.0
 		 *
 		 * @param array $fields Multi-array of widgets with first level being the field zones.
 		 * @param \GV\View $view The View the widgets are being pulled for.
@@ -411,7 +425,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * @filter `gravityview/view/widgets` Filter the Widget Collection for this View.
-		 * @since future
+		 * @since 2.0
 		 *
 		 * @param \GV\Widget_Collection $widgets A collection of widgets.
 		 * @param \GV\View $view The View the widgets are being pulled for.
@@ -429,7 +443,24 @@ class View implements \ArrayAccess {
 			'id' => $view->ID,
 		) );
 
+		self::$cache[ "View::from_post:{$post->ID}" ] = &$view;
+
 		return $view;
+	}
+
+	/**
+	 * Flush the view cache.
+	 *
+	 * @param int $view_id The View to reset cache for. Optional. Default: resets everything.
+	 *
+	 * @internal
+	 */
+	public static function _flush_cache( $view_id = null ) {
+		if ( $view_id ) {
+			unset( self::$cache[ "View::from_post:$view_id" ] );
+			return;
+		}
+		self::$cache = array();
 	}
 
 	/**
@@ -438,7 +469,7 @@ class View implements \ArrayAccess {
 	 * @param int|string $post_id The post ID.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return \GV\View|null An instance around this \WP_Post or null if not found.
 	 */
 	public static function by_id( $post_id ) {
@@ -454,7 +485,7 @@ class View implements \ArrayAccess {
 	 * @param int|\WP_Post|null $view The WordPress post ID, a \WP_Post object or null for global $post;
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return bool Whether the post exists or not.
 	 */
 	public static function exists( $view ) {
@@ -466,7 +497,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 * @return bool Whether the offset exists or not, limited to GravityView_View_Data::$views element keys.
 	 */
 	public function offsetExists( $offset ) {
@@ -481,7 +512,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return mixed The value of the requested view data key limited to GravityView_View_Data::$views element keys.
 	 */
@@ -506,7 +537,7 @@ class View implements \ArrayAccess {
 			case 'template_id':
 				return $this->settings->get( 'template' );
 			case 'widgets':
-				return $this->widgets->to_configuration();
+				return $this->widgets->as_configuration();
 		}
 	}
 
@@ -515,7 +546,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return void
 	 */
@@ -528,7 +559,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 * @return void
 	 */
 	public function offsetUnset( $offset ) {
@@ -544,7 +575,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 * @return array
 	 */
 	public function as_data() {
@@ -575,8 +606,16 @@ class View implements \ArrayAccess {
 			 */
 			$parameters = \GravityView_frontend::get_view_entries_parameters( $this->settings->as_atts(), $this->form->ID );
 
-			/** @todo: Get the page from the request instead! */
-			$page = ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1;
+			if ( $request instanceof REST\Request ) {
+				$atts = $this->settings->as_atts();
+				$paging_parameters = wp_parse_args( $request->get_paging(), array(
+						'paging' => array( 'page_size' => $atts['page_size'] ),
+					) );
+				$parameters['paging'] = $paging_parameters['paging'];
+			}
+
+			$page = Utils::get( $parameters['paging'], 'current_page' ) ?
+				: ( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
 
 			if ( gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
 				/**
@@ -629,6 +668,7 @@ class View implements \ArrayAccess {
 					->offset( $this->settings->get( 'offset' ) )
 					->limit( $parameters['paging']['page_size'] )
 					->page( $page );
+
 				if ( ! empty( $parameters['sorting'] ) ) {
 					$field = new \GV\Field();
 					$field->ID = $parameters['sorting']['key'];

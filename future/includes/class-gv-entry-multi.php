@@ -21,7 +21,7 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 	/**
 	 * @var string The identifier of the backend used for this entry.
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public static $backend = 'multi';
 
@@ -77,7 +77,7 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 * @return bool Whether the offset exists or not.
 	 */
 	public function offsetExists( $offset ) {
@@ -91,7 +91,7 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return mixed The value of the requested entry data.
 	 */
@@ -107,7 +107,7 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return void
 	 */
@@ -120,7 +120,7 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 * @return void
 	 */
 	public function offsetUnset( $offset ) {

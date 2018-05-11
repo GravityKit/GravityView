@@ -165,7 +165,7 @@ class GravityView_Admin {
 		}
 
 		if( GVCommon::has_cap( 'gravityview_support_port' ) ) {
-			$actions[] = '<a href="http://docs.gravityview.co">' . esc_html__( 'Support', 'gravityview' ) . '</a>';
+			$actions[] = '<a href="https://docs.gravityview.co">' . esc_html__( 'Support', 'gravityview' ) . '</a>';
 		}
 
 		return array_merge( $actions, $links );

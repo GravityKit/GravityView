@@ -25,16 +25,33 @@ class View_Table_Template extends View_Template {
 	public function the_columns() {
 		$fields = $this->view->fields->by_position( 'directory_table-columns' );
 
-		/** @todo Add class filters from the old code. */
 		foreach ( $fields->by_visible()->all() as $field ) {
+			$context = Template_Context::from_template( $this, compact( 'field' ) );
 			$form = $field->form_id ? GF_Form::by_id( $field->form_id ) : $this->view->form;
 
-			$column_label = apply_filters( 'gravityview/template/field_label', $field->get_label( $this->view, $form ), $field->as_configuration(), $form->form ? $form->form : null, null );
+			/**
+			 * @deprecated Here for back-compatibility.
+			 */
+			$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form ), $field->as_configuration() );
+			$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, null );
 
-			printf( '<th id="gv-field-%d-%s" class="gv-field-%d-%s"%s><span class="gv-field-label">%s</span></th>',
-				esc_attr( $form->ID ), esc_attr( $field->ID ), esc_attr( $form->ID ), esc_attr( $field->ID ),
-				$field->width ? sprintf( ' style="width: %d%%"', $field->width ) : '', $column_label
+			/**
+			 * @filter `gravityview/template/field/label` Override the field label.
+			 * @since 2.0
+			 * @param[in,out] string $column_label The label to override.
+			 * @param \GV\Template_Context $context The context. Does not have entry set here.
+			 */
+			$column_label = apply_filters( 'gravityview/template/field/label', $column_label, $context );
+
+			$args = array(
+				'hide_empty' => false,
+				'zone_id' => 'directory_table-columns',
+				'markup' => '<th id="{{ field_id }}" class="{{ class }}">{{label}}</th>',
+				'label_markup' => '<span class="gv-field-label">{{ label }}</span>',
+				'label' => $column_label,
 			);
+
+			echo \gravityview_field_output( $args, $context );
 		}
 	}
 
@@ -48,50 +65,82 @@ class View_Table_Template extends View_Template {
 	 */
 	public function the_entry( \GV\Entry $entry, $attributes ) {
 
-		$context = Template_Context::from_template( $this );
+		$fields = $this->view->fields->by_position( 'directory_table-columns' )->by_visible();
+
+		$context = Template_Context::from_template( $this, compact( 'entry', 'fields' ) );
 
 		/**
-		 * @filter `gravityview/entry/row/attributes` Filter the row attributes for the row in table view.
+		 * @filter `gravityview_table_cells` Modify the fields displayed in a table
+		 * @param array $fields
+		 * @param GravityView_View $this
+		 * @deprecated Use `gravityview/template/table/fields`
+		 */
+		$fields = apply_filters( 'gravityview_table_cells', $fields->as_configuration(), \GravityView_View::getInstance() );
+		$fields = Field_Collection::from_configuration( $fields );
+
+		/**
+		 * @filter `gravityview/template/table/fields` Modify the fields displayed in this tables.
+		 * @param \GV\Field_Collection $fields The fields.
+		 * @param \GV\Template_Context $context The context.
+		 * @since 2.0
+		 */
+		$fields = apply_filters( 'gravityview/template/table/fields', $fields, $context );
+
+		$context = Template_Context::from_template( $this, compact( 'entry', 'fields' ) );
+
+		/**
+		 * @filter `gravityview/template/table/entry/row/attributes` Filter the row attributes for the row in table view.
 		 *
 		 * @param array $attributes The HTML attributes.
-		 * @param \GV\Entry $entry The entry this is being called for.
-		 * @param \GV\View_Template This template.
+		 * @param \GV\Template_Context The context.
 		 *
 		 * @since 2.0
 		 */
-		$attributes = apply_filters( 'gravityview/entry/row/attributes', $attributes, $entry, $this );
+		$attributes = apply_filters( 'gravityview/template/table/entry/row/attributes', $attributes, $context );
 
 		/** Glue the attributes together. */
 		foreach ( $attributes as $attribute => $value ) {
-			$attributes[$attribute] = sprintf( "$attribute=\"%s\"", esc_attr( $value) );
+			$attributes[ $attribute ] = sprintf( "$attribute=\"%s\"", esc_attr( $value ) );
 		}
 		$attributes = implode( ' ', $attributes );
-
-		$fields = $this->view->fields->by_position( 'directory_table-columns' )->by_visible();
 
 		?>
 			<tr<?php echo $attributes ? " $attributes" : ''; ?>>
                 <?php
 
+				/**
+				 * @action `gravityview/template/table/cells/before` Inside the `tr` while rendering each entry in the loop. Can be used to insert additional table cells.
+				 * @since 2.0
+				 * @param \GV\Template_Context The context.
+				 */
+				do_action( 'gravityview/template/table/cells/before', $context );
+
                 /**
                  * @action `gravityview_table_cells_before` Inside the `tr` while rendering each entry in the loop. Can be used to insert additional table cells.
                  * @since 1.0.7
-                 * @since 2.0 Updated to pass \GV\Template_Context instead of \GravityView_View
-                 * @param \GV\Template_Context $context Current $gravityview state
+				 * @param GravityView_View $this Current GravityView_View object
+				 * @deprecated Use `gravityview/template/table/cells/before`
                  */
-                do_action('gravityview_table_cells_before', $context );
+                do_action( 'gravityview_table_cells_before', \GravityView_View::getInstance() );
 
                 foreach ( $fields->all() as $field ) {
 					$this->the_field( $field, $entry );
 				}
 
+				/**
+				 * @action `gravityview/template/table/cells/after` Inside the `tr` while rendering each entry in the loop. Can be used to insert additional table cells.
+				 * @since 2.0
+				 * @param \GV\Template_Context The context.
+				 */
+				do_action( 'gravityview/template/table/cells/after', $context );
+
                 /**
                  * @action `gravityview_table_cells_after` Inside the `tr` while rendering each entry in the loop. Can be used to insert additional table cells.
                  * @since 1.0.7
-                 * @since 2.0 Updated to pass \GV\Template_Context instead of \GravityView_View
-                 * @param \GV\Template_Context $context Current $gravityview state
+				 * @param GravityView_View $this Current GravityView_View object
+				 * @deprecated Use `gravityview/template/table/cells/after`
                  */
-                do_action('gravityview_table_cells_after', $context );
+                do_action( 'gravityview_table_cells_after', \GravityView_View::getInstance() );
 
 				?>
 			</tr>
@@ -116,36 +165,156 @@ class View_Table_Template extends View_Template {
 			$form = GF_Form::by_id( $field->form_id );
 		}
 
-	    $attributes = array(
-			'id' => \GravityView_API::field_html_attr_id( $field->as_configuration(), $form, $entry->as_entry() ),
-			'class' => gv_class( $field->as_configuration(), $form, $entry->as_entry() ),
-		);
-
-		/**
-		 * @filter `gravityview/entry/cell/attributes` Filter the row attributes for the row in table view.
-		 *
-		 * @param array $attributes The HTML attributes.
-		 * @param \GV\Field $field The field these attributes are for.
-		 * @param \GV\Entry $entry The entry this is being called for.
-		 * @param \GV\View_Template This template.
-		 *
-		 * @since future
-		 */
-		$attributes = apply_filters( 'gravityview/entry/cell/attributes', $attributes, $field, $entry, $this );
-
-		/** Glue the attributes together. */
-		foreach ( $attributes as $attribute => $value ) {
-			$attributes[$attribute] = sprintf( "$attribute=\"%s\"", esc_attr( $value) );
-		}
-		$attributes = implode( ' ', $attributes );
-		if ( $attributes ) {
-			$attributes = " $attributes";
-		}
+		$context = Template_Context::from_template( $this, compact( 'field', 'entry' ) );
 
 		$renderer = new Field_Renderer();
-		$source = is_numeric( $field->ID ) ? \GV\GF_Form::by_id( $field->form_id ) : new Internal_Source();
+		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
+
+		$value = $renderer->render( $field, $this->view, $source, $entry, $this->request );
+
+		$args = array(
+			'value' => $value,
+			'hide_empty' => false,
+			'zone_id' => 'directory_table-columns',
+			'markup' => '<td id="{{ field_id }}" class="{{ class }}">{{ value }}</td>',
+		);
 
 		/** Output. */
-		printf( '<td%s>%s</td>', $attributes, $renderer->render( $field, $this->view, $source, $entry, $this->request ) );
+		echo \gravityview_field_output( $args, $context );
+	}
+
+	/**
+	 * `gravityview_table_body_before` and `gravityview/template/table/body/before` actions.
+	 *
+	 * Output inside the `tbody` of the table.
+	 *
+	 * @param $context \GV\Template_Context The 2.0 context.
+	 *
+	 * @return void
+	 */
+	public static function body_before( $context ) {
+		/**
+		 * @action `gravityview/template/table/body/before` Output inside the `tbody` of the table.
+		 * @since 2.0
+		 * @param \GV\Template_Context $context The template context.
+		 */
+		do_action( 'gravityview/template/table/body/before', $context );
+
+		/**
+		* @action `gravityview_table_body_before` Inside the `tbody`, before any rows are rendered. Can be used to insert additional rows.
+		* @deprecated Use `gravityview/template/table/body/before`
+		* @since 1.0.7
+		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		*/
+		do_action( 'gravityview_table_body_before', \GravityView_View::getInstance() /** ugh! */ );
+	}
+
+	/**
+	 * `gravityview_table_body_after` and `gravityview/template/table/body/after` actions.
+	 *
+	 * Output inside the `tbody` of the table.
+	 *
+	 * @param $context \GV\Template_Context The 2.0 context.
+	 *
+	 * @return void
+	 */
+	public static function body_after( $context ) {
+		/**
+		 * @action `gravityview/template/table/body/after` Output inside the `tbody` of the table at the end.
+		 * @since 2.0
+		 * @param \GV\Template_Context $context The template context.
+		 */
+		do_action( 'gravityview/template/table/body/after', $context );
+
+		/**
+		* @action `gravityview_table_body_after` Inside the `tbody`, after any rows are rendered. Can be used to insert additional rows.
+		* @deprecated Use `gravityview/template/table/body/after`
+		* @since 1.0.7
+		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		*/
+		do_action( 'gravityview_table_body_after', \GravityView_View::getInstance() /** ugh! */ );
+	}
+
+	/**
+	 * `gravityview_table_tr_before` and `gravityview/template/table/tr/after` actions.
+	 *
+	 * Output inside the `tr` of the table.
+	 *
+	 * @param $context \GV\Template_Context The 2.0 context.
+	 *
+	 * @return void
+	 */
+	public static function tr_before( $context ) {
+		/**
+		 * @action `gravityview/template/table/tr/before` Output inside the `tr` of the table when there are no results.
+		 * @since 2.0
+		 * @param \GV\Template_Context $context The template context.
+		 */
+		do_action( 'gravityview/template/table/tr/before', $context );
+
+		/**
+		 * @action `gravityview_table_tr_before` Before the `tr` while rendering each entry in the loop. Can be used to insert additional table rows.
+		 * @since 1.0.7
+		 * @deprecated USe `gravityview/template/table/tr/before`
+		 * @param GravityView_View $gravityview_view Current GraivtyView_View object.
+		 */
+		do_action( 'gravityview_table_tr_before', \GravityView_View::getInstance() /** ugh! */ );
+	}
+
+	/**
+	 * `gravityview_table_tr_after` and `gravityview/template/table/tr/after` actions.
+	 *
+	 * Output inside the `tr` of the table.
+	 *
+	 * @param $context \GV\Template_Context The 2.0 context.
+	 *
+	 * @return void
+	 */
+	public static function tr_after( $context ) {
+		/**
+		 * @action `gravityview/template/table/tr/after` Output inside the `tr` of the table when there are no results.
+		 * @since 2.0
+		 * @param \GV\Template_Context $context The template context.
+		 */
+		do_action( 'gravityview/template/table/tr/after', $context );
+
+		/**
+		 * @action `gravityview_table_tr_after` Inside the `tr` while rendering each entry in the loop. Can be used to insert additional table cells.
+		 * @since 1.0.7
+		 * @deprecated USe `gravityview/template/table/tr/after`
+		 * @param GravityView_View $gravityview_view Current GraivtyView_View object.
+		 */
+		do_action( 'gravityview_table_tr_after', \GravityView_View::getInstance() /** ugh! */ );
+	}
+
+	/**
+	 * `gravityview_entry_class` and `gravityview/template/table/entry/class` filters.
+	 *
+	 * Modify of the class of a row.
+	 *
+	 * @param string $class The class.
+	 * @param \GV\Entry $entry The entry.
+	 * @param \GV\Template_Context The context.
+	 *
+	 * @return string The classes.
+	 */
+	public static function entry_class( $class, $entry, $context ) {
+		/**
+		 * @filter `gravityview_entry_class` Modify the class applied to the entry row.
+		 * @param string $class Existing class.
+		 * @param array $entry Current entry being displayed
+		 * @param GravityView_View $this Current GravityView_View object
+		 * @deprecated Use `gravityview/template/table/entry/class`
+		 * @return string The modified class.
+		 */
+		$class = apply_filters( 'gravityview_entry_class', $class, $entry->as_entry(), \GravityView_View::getInstance() );
+
+		/**
+		 * @filter `gravityview/template/table/entry/class` Modify the class aplied to the entry row.
+		 * @param string $class The existing class.
+		 * @param \GV\Template_Context The context.
+		 * @return string The modified class.
+		 */
+		return apply_filters( 'gravityview/template/table/entry/class', $class, Template_Context::from_template( $context->template, compact( 'entry' ) ) );
 	}
 }

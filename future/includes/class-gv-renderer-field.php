@@ -23,7 +23,7 @@ class Field_Renderer extends Renderer {
 	 * @param \GV\Request $request The request for this context if applicable.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return string The rendered Field
 	 */
@@ -32,17 +32,14 @@ class Field_Renderer extends Renderer {
 			$request = &gravityview()->request;
 		}
 
-		/**
-		 * For now we only know how to render views in a Frontend_Request context.
-		 */
-		if ( ! in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request' ) ) ) {
+		if ( ! in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request', 'GV\REST\Request' ) ) ) {
 			gravityview()->log->error( 'Renderer unable to render View in {request_class} context', array( 'request_class' => get_class( $request ) ) );
 			return null;
 		}
 
 		/**
 		 * @filter `gravityview/template/field/class` Filter the template class that is about to be used to render the view.
-		 * @since future
+		 * @since 2.0
 		 * @param string $class The chosen class - Default: \GV\Field_HTML_Template.
 		 * @param \GV\Field $field The field about to be rendered.
 		 * @param \GV\View $view The view in this context, if applicable.

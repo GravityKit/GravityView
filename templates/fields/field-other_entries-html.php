@@ -4,7 +4,7 @@
  *  entries created by same author.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 
 $created_by = \GV\Utils::get( $gravityview->entry, 'created_by' );
@@ -36,8 +36,10 @@ $search_criteria = GravityView_frontend::process_search_only_approved( $gravityv
  * @param array $criteria Gravity Forms search criteria array, as used by GVCommon::get_entries()
  * @param array $view_settings Associative array of settings with plugin defaults used if not set by the View
  * @param int $form_id The Gravity Forms ID
+ * @since 2.0
+ * @param \GV\Template_Context $gravityview The context
  */
-$criteria = apply_filters( 'gravityview/field/other_entries/criteria', $search_criteria, $gravityview->view->settings->as_atts(), $gravityview->view->form->ID );
+$criteria = apply_filters( 'gravityview/field/other_entries/criteria', $search_criteria, $gravityview->view->settings->as_atts(), $gravityview->view->form->ID, $gravityview );
 
 /** Force mode all and filter out our own entry. */
 $search_criteria['field_filters']['mode'] = 'all';
@@ -62,21 +64,12 @@ $list = new GravityView_Entry_List(
 	$gravityview->view->form->form,
 	$gravityview->field->link_format,
 	$gravityview->field->after_link,
-	'other_entries' // Context
+	'other_entries', // Context
+	$gravityview
 );
-
-/** The state still haunts us... BOO! */
-\GV\Mocks\Legacy_Context::push( array(
-	'view' => $gravityview->view,
-	'entry' => $gravityview->entry,
-	'entres' => $entries,
-) );
 
 /** Generate and echo the output. */
 $list->output();
-
-/** Restore global state. */
-\GV\Mocks\Legacy_Context::pop();
 
 /**
  * @since 1.7.6

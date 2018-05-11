@@ -71,20 +71,20 @@ abstract class GravityView_Field {
 	/**
 	 * @var null|string The key used to search and sort entry meta in Gravity Forms. Used if the field stores data as custom entry meta.
 	 * @see https://www.gravityhelp.com/documentation/article/gform_entry_meta/
-	 * @since TODO
+	 * @since 1.19
 	 */
 	public $entry_meta_key = null;
 
 	/**
 	 * @var string|array Optional. The callback function after entry meta is updated, only used if $entry_meta_key is set.
 	 * @see https://www.gravityhelp.com/documentation/article/gform_entry_meta/
-	 * @since TODO
+	 * @since 1.19
 	 */
 	var $entry_meta_update_callback = null;
 
 	/**
 	 * @var bool Whether to show meta when set to true automatically adds the column to the entry list, without having to edit and add the column for display
-	 * @since TODO
+	 * @since 1.19
 	 */
 	var $entry_meta_is_default_column = false;
 
@@ -162,7 +162,7 @@ abstract class GravityView_Field {
 	/**
 	 * Add the field to the Filter & Sort available fields
 	 *
-	 * @since TODO
+	 * @since 1.19
 	 *
 	 * @param array $fields Sub-set of GF form fields that are sortable
 	 *

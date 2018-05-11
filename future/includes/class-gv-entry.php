@@ -16,7 +16,7 @@ abstract class Entry {
 	/**
 	 * @var string The identifier of the backend used for this entry.
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public static $backend = null;
 
@@ -24,7 +24,7 @@ abstract class Entry {
 	 * @var int The ID for this entry.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $ID = null;
 
@@ -76,7 +76,7 @@ abstract class Entry {
 	 * @param int|string $entry_id The internal entry ID.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return \GV\Entry|null An instance of this entry or null if not found.
 	 */
 	public static function by_id( $entry_id ) {
@@ -96,7 +96,7 @@ abstract class Entry {
 	 * Return the link to this entry in the supplied context.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @param \GV\View $view The View context.
 	 * @param \GV\Request $request The Request (current if null).
@@ -136,7 +136,7 @@ abstract class Entry {
 		 * @param string $link URL to the View's "directory" context (Multiple Entries screen)
 		 * @param int $post_id ID of the post to link to. If the View is embedded, it is the post or page ID
 		 */
-		$permalink = apply_filters( 'gravityview_directory_link', $permalink, $request->is_view() ? $view->ID : $post ? $post->ID : null );
+		$permalink = apply_filters( 'gravityview_directory_link', $permalink, $request->is_view() ? $view->ID : ( $post ? $post->ID : null ) );
 
 		$entry_endpoint_name = \GV\Entry::get_endpoint_name();
 		$entry_slug = \GravityView_API::get_entry_slug( $this->ID, $this->as_entry() );
@@ -171,7 +171,7 @@ abstract class Entry {
 
 		/**
 		 * @filter `gravityview/entry/permalink` The permalink of this entry.
-		 * @since future
+		 * @since 2.0
 		 * @param string $permalink The permalink.
 		 * @param \GV\Entry $entry The entry we're retrieving it for.
 		 * @param \GV\View $view The view context.

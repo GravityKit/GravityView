@@ -3,7 +3,7 @@
  * The default file upload field output template.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 $field = $gravityview->field->field;
 $value = $gravityview->value;
@@ -16,7 +16,7 @@ if ( ! empty( $value ) ) {
 
 	$gv_class = gv_class( $field, $form, $entry );
 
-	$output_arr = gravityview_get_files_array( $value, $gv_class );
+	$output_arr = gravityview_get_files_array( $value, $gv_class, $gravityview );
 
 	// If the output array is just one item, let's not show a list.
 	if ( sizeof( $output_arr ) === 1 ) {

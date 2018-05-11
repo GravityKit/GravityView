@@ -73,6 +73,7 @@ class GV_Unit_Tests_Bootstrap {
 		require_once( $this->wp_tests_dir . '/includes/bootstrap.php' );
 
 		require_once $this->tests_dir . '/GV_UnitTestCase.php';
+		require_once $this->tests_dir . '/GV_RESTUnitTestCase.php';
 		require_once $this->tests_dir . '/gravityforms-factory.php';
 		require_once $this->tests_dir . '/gravityview-generators.php';
 		require_once $this->tests_dir . '/gravityview-factory.php';
@@ -118,6 +119,12 @@ class GV_Unit_Tests_Bootstrap {
 		} else {
 			require_once '/tmp/gravityforms/gravityforms.php';
 		}
+
+		/** Enable the REST API */
+		add_action( 'gravityview/settings/defaults', function( $defaults ) {
+			$defaults['rest_api'] = '1';
+			return $defaults;
+		} );
 
 		require_once $this->plugin_dir . '/gravityview.php';
 

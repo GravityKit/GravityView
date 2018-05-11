@@ -16,7 +16,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	/**
 	 * @var string The identifier of the backend used for this form.
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public static $backend = self::BACKEND_GRAVITYFORMS;
 
@@ -35,7 +35,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 * @param int|string $form_id The internal form ID.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return \GV\GF_Form|null An instance of this form or null if not found.
 	 */
 	public static function by_id( $form_id ) {
@@ -64,7 +64,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 * Get all entries for this form.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\Entry_Collection The \GV\Entry_Collection
 	 */
@@ -114,7 +114,6 @@ class GF_Form extends Form implements \ArrayAccess {
 
 		/** Add the counter lazy callback. */
 		$entries->add_count_callback( function( $filters ) use ( $form ) {
-
 			$search_criteria = array();
 			$sorting = array();
 
@@ -194,7 +193,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 * @return bool Whether the offset exists or not.
 	 */
 	public function offsetExists( $offset ) {
@@ -208,7 +207,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return mixed The value of the requested form data.
 	 */
@@ -221,7 +220,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return void
 	 */
@@ -234,7 +233,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 * @return void
 	 */
 	public function offsetUnset( $offset ) {

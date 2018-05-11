@@ -9,7 +9,7 @@
  * @since 1.19
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 $entry = $gravityview->entry->as_entry();
 

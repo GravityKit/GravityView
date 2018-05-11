@@ -15,13 +15,11 @@ extract( $gravityview->template->extract_zone_vars( array( 'title', 'subtitle' )
 extract( $gravityview->template->extract_zone_vars( array( 'image', 'description', 'content-attributes' ) ) );
 extract( $gravityview->template->extract_zone_vars( array( 'footer-left', 'footer-right' ) ) );
 
-?>
+gravityview_before( $gravityview );
 
-<?php gravityview_before( $gravityview ); ?>
+?><div class="<?php gv_container_class( 'gv-list-container gv-list-single-container', true, $gravityview ); ?>">
 
-<div class="<?php gv_container_class( 'gv-list-view gv-list-container gv-list-single-container' ); ?>">
-
-	<p class="gv-back-link"><?php echo gravityview_back_link(); ?></p>
+	<?php if ( $link = gravityview_back_link( $gravityview ) ) { ?><p class="gv-back-link"><?php echo $link; ?></p><?php } ?>
 
 	<?php if ( $has_title || $has_subtitle || $has_image || $has_description || $has_content_attributes || $has_footer_left || $has_footer_right ): ?>
 		<div id="gv_list_<?php echo esc_attr( $entry_slug ); ?>" class="gv-list-view">
@@ -35,17 +33,14 @@ extract( $gravityview->template->extract_zone_vars( array( 'footer-left', 'foote
 					foreach ( $title->all() as $i => $field ) {
 						// The first field in the title zone is the main
 						if ( $did_main == 0 ) {
-							$extras = array();
-							$wrap = array( 'h3' => $gravityview->template->the_field_attributes( $field ) );
+							$did_main = 1;
+							$extras = array( 'wpautop' => false, 'markup' => '<h3 class="{{ class }}">{{ label }}{{ value }}</h3>' );
 						} else {
-							$wrap = array( 'div' => $gravityview->template->the_field_attributes( $field ) );
 							$extras = array( 'wpautop' => true );
 						}
-
-						if ( $output = $gravityview->template->the_field( $field, $entry, $extras ) ) {
-							$did_main = 1;
-							echo $gravityview->template->wrap( $output, $wrap );
-						}
+ 
+						$extras['zone_id'] = 'single_list-title';
+						echo $gravityview->template->the_field( $field, $extras );
 					}
 
 					if ( $has_subtitle ) {
@@ -54,15 +49,12 @@ extract( $gravityview->template->extract_zone_vars( array( 'footer-left', 'foote
 							foreach ( $subtitle->all() as $i => $field ) {
 								// The first field in the subtitle zone is the main
 								if ( $did_main == 0 ) {
-									$wrap = array( 'h4' => $gravityview->template->the_field_attributes( $field ) );
-								} else {
-									$wrap = array( 'p' => $gravityview->template->the_field_attributes( $field ) );
+									$did_main = 1;
+									$extras = array( 'markup' => '<h4 id="{{ field_id }}" class="{{ class }}">{{ label }}{{ value }}</h4>' );
 								}
 
-								if ( $output = $gravityview->template->the_field( $field, $entry, $wrap, $extras ) ) {
-									$did_main = 1;
-									echo $gravityview->template->wrap( $output, $wrap );
-								}
+								$extras['zone_id'] = 'single_list-subtitle';
+								echo $gravityview->template->the_field( $field, $extras );
 							}
 						?></div><?php
 					}
@@ -78,9 +70,7 @@ extract( $gravityview->template->extract_zone_vars( array( 'footer-left', 'foote
 					if ( $has_image ) {
 						?><div class="gv-list-view-content-image gv-grid-col-1-3"><?php
 						foreach ( $image->all() as $i => $field ) {
-							if ( $output = $gravityview->template->the_field( $field, $entry ) ) {
-								echo $gravityview->template->wrap( $output, array( 'div' => $gravityview->template->the_field_attributes( $field ) ) );
-							}
+							echo $gravityview->template->the_field( $field, array( 'zone_id' => 'single_list-image' ) );
 						}
 						?></div><?php
 					}
@@ -89,9 +79,8 @@ extract( $gravityview->template->extract_zone_vars( array( 'footer-left', 'foote
 						?><div class="gv-list-view-content-description"><?php
 						$extras = array( 'label_tag' => 'h4', 'wpautop' => true );
 						foreach ( $description->all() as $i => $field ) {
-							if ( $output = $gravityview->template->the_field( $field, $entry, $extras ) ) {
-								echo $gravityview->template->wrap( $output, array( 'div' => $gravityview->template->the_field_attributes( $field ) ) );
-							}
+							$extras = array( 'wpautop' => true, 'zone_id' => 'single_list-description', 'label_markup'  => '<h4>{{ label }}</h4>' );
+							echo $gravityview->template->the_field( $field, $extras );
 						}
 						?></div><?php
 					}
@@ -100,9 +89,8 @@ extract( $gravityview->template->extract_zone_vars( array( 'footer-left', 'foote
 						?><div class="gv-list-view-content-attributes"><?php
 						$extras = array( 'label_tag' => 'h4', 'wpautop' => true );
 						foreach ( $attributes->all() as $i => $field ) {
-							if ( $output = $gravityview->template->the_field( $field, $entry, $extras ) ) {
-								echo $gravityview->template->wrap( $output, array( 'div' => $gravityview->template->the_field_attributes( $field ) ) );
-							}
+							$extras = array( 'zone_id' => 'single_list-content-attributes', 'markup' => '<p id="{{ field_id }}" class="{{ class }}">{{ label }}{{ value }}</p>' );
+							echo $gravityview->template->the_field( $field, $extras );
 						}
 						?></div><?php
 					}
@@ -121,9 +109,7 @@ extract( $gravityview->template->extract_zone_vars( array( 'footer-left', 'foote
 				<div class="gv-grid-col-1-2 gv-left">
 					<?php
 						foreach ( $footer_left->all() as $i => $field ) {
-							if ( $output = $gravityview->template->the_field( $field, $entry ) ) {
-								echo $gravityview->template->wrap( $output, array( 'div' => $gravityview->template->the_field_attributes( $field ) ) );
-							}
+							echo $gravityview->template->the_field( $field, array( 'zone_id' => 'single_list-footer-left' ) );
 						}
 					?>
 				</div>
@@ -131,9 +117,7 @@ extract( $gravityview->template->extract_zone_vars( array( 'footer-left', 'foote
 				<div class="gv-grid-col-1-2 gv-right">
 					<?php
 						foreach ( $footer_right->all() as $i => $field ) {
-							if ( $output = $gravityview->template->the_field( $field, $entry ) ) {
-								echo $gravityview->template->wrap( $output, array( 'div' => $gravityview->template->the_field_attributes( $field ) ) );
-							}
+							echo $gravityview->template->the_field( $field, array( 'zone_id' => 'directory_list-footer-right' ) );
 						}
 					?>
 				</div>
@@ -145,9 +129,7 @@ extract( $gravityview->template->extract_zone_vars( array( 'footer-left', 'foote
 	?>
 		</div>
 	<?php endif; ?>
-</div>
-
-<?php
+</div><?php
 
 gravityview_after( $gravityview );
 

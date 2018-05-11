@@ -25,7 +25,7 @@ abstract class Entry_Template extends Template {
 	 * Prefix for filter names.
 	 * @var string
 	 */
-	protected $filter_prefix = 'gravityview/template/entries/';
+	protected $filter_prefix = 'gravityview/template/entries';
 
 	/**
 	 * Directory name where custom templates for this plugin should be found in the theme.
@@ -75,6 +75,10 @@ abstract class Entry_Template extends Template {
 		add_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ), 10, 3 );
 
 		parent::__construct();
+	}
+
+	public function __destruct() {
+		remove_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ) );
 	}
 
 	/**
@@ -140,13 +144,36 @@ abstract class Entry_Template extends Template {
 		 * @filter `gravityview/template/entry/context`
 		 * @param \GV\Template_Context $context The context for this template.
 		 * @param \GV\Entry_Template $template The current template.
-		 * @since future
+		 * @since 2.0
 		 */
 		$this->push_template_data( apply_filters( 'gravityview/template/entry/context', $context, $this ), 'gravityview' );
 
 		/** Load the template. */
 		$this->get_template_part( static::$slug );
 		$this->pop_template_data( 'gravityview' );
+	}
+
+	/**
+	 * Fetch the back link label for an entry context.
+	 *
+	 * @param boolean $do_replace Whether to perform merge tag replacements, etc.
+	 *
+	 * @see `gravityview/template/links/back/label` filter
+	 *
+	 * @return string The link label
+	 */
+	public function get_back_label( $do_replace = true ) {
+		if ( ! $this->view ) {
+			return '';
+		}
+
+		$back_link_label = $this->view->settings->get( 'back_link_label', null );
+
+		if ( $do_replace ) {
+			$back_link_label = \GravityView_API::replace_variables( $back_link_label, Utils::get( $this->view, 'form/form' ), $this->entry->as_entry() );
+			return do_shortcode( $back_link_label );
+		}
+		return $back_link_label;
 	}
 }
 

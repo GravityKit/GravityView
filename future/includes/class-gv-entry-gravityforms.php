@@ -16,7 +16,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	/**
 	 * @var string The identifier of the backend used for this entry.
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public static $backend = 'gravityforms';
 
@@ -35,7 +35,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 * @param int|string $entry_id The internal entry ID.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return \GV\Entry|null An instance of this entry or null if not found.
 	 */
 	public static function by_id( $entry_id ) {
@@ -65,7 +65,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 * @param int $form_id The form ID, since slugs can be non-unique. Default: 0.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return \GV\Entry|null An instance of this entry or null if not found.
 	 */
 	public static function by_slug( $entry_slug, $form_id = 0 ) {
@@ -123,7 +123,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 * @return bool Whether the offset exists or not.
 	 */
 	public function offsetExists( $offset ) {
@@ -137,7 +137,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return mixed The value of the requested entry data.
 	 */
@@ -150,7 +150,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return void
 	 */
@@ -163,7 +163,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @internal
 	 * @deprecated
-	 * @since future
+	 * @since 2.0
 	 * @return void
 	 */
 	public function offsetUnset( $offset ) {

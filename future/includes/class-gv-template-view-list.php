@@ -36,80 +36,39 @@ class View_List_Template extends View_Template {
 			$form = GF_Form::by_id( $field->form_id );
 		}
 
+		$context = Template_Context::from_template( $this, compact( 'field', 'entry' ) );
+
 		$renderer = new Field_Renderer();
 		$source = is_numeric( $field->ID ) ? $form : new Internal_Source();
 		
-		$output = $renderer->render( $field, $this->view, $source, $entry, $this->request );
+		$value = $renderer->render( $field, $this->view, $source, $entry, $this->request );
 
-		/** No value? don't output anything. */
-		if ( ! $output ) {
-			return;
-		}
+		/**
+		 * @deprecated Here for back-compatibility.
+		 */
+		$label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form ), $field->as_configuration() );
+		$label = apply_filters( 'gravityview/template/field_label', $label, $field->as_configuration(), $form->form ? $form->form : null, null );
 
-		/** Auto paragraph the value. */
-		if ( ! empty( $extras['wpautop'] ) ) {
-			$output = wpautop( $output );
-		}
+		/**
+		 * @filter `gravityview/template/field/label` Override the field label.
+		 * @since 2.0
+		 * @param[in,out] string $label The label to override.
+		 * @param \GV\Template_Context $context The context.
+		 */
+		$label = apply_filters( 'gravityview/template/field/label', $label, $context );
 
-		$label = apply_filters( 'gravityview/template/field_label', $field->get_label( $this->view, $form ), $field->as_configuration(), $form->form ? $form->form : null, null );
+		/**
+		 * @filter `gravityview/template/table/entry/hide_empty`
+		 * @param boolean Should the row be hidden if the value is empty? Default: don't hide.
+		 * @param \GV\Template_Context $context The context ;) Love it, cherish it. And don't you dare modify it!
+		 */
+		$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', Utils::get( $extras, 'hide_empty', $this->view->settings->get( 'hide_empty', false ) ), $context );
 
-		/** Wrap the label as needed */
-		$label = $this->wrap( $label, array( 'span' => array( 'class' => 'gv-field-label' ) ) );
-		if ( !empty( $extras['label_tag'] ) ) {
-			$label = $this->wrap( $label, array( $extras['label_tag'] => array() ) );
-		}
-		
-		return $label . $output;
-	}
+		$extras['hide_empty'] = $hide_empty;
+		$extras['label'] = $label;
+		$extras['value'] = $value;
 
-	/**
-	 * Generate the default field attributes.
-	 *
-	 * @param \GV\Field $field The field.
-	 * @param array $attributes Optional overrides.
-	 *
-	 * @return array An array of attributes.
-	 */
-	public function the_field_attributes( $field, $attributes = array() ) {
-		return wp_parse_args( $attributes, array(
-			'id' => sprintf( 'gv-field-%d-%s', $this->view->form ? $this->view->form->ID : 0, $field->ID ),
-			'class' => sprintf( 'gv-field-%d-%s', $this->view->form ? $this->view->form->ID : 0, $field->ID ),
-		) );
-	}
-
-	/**
-	 * Wrap content into some tags.
-	 *
-	 * @param string $content The content to wrap.
-	 * @param array $wrap The wrapper in the form of array( $tag => array( $attribute => $value, .. ) )
-	 *
-	 * @todo reuse
-	 *
-	 * @return string The wrapped string
-	 */
-	public function wrap( $content, $wrap ) {
-		if ( ! is_array( $wrap ) || ! count( $wrap ) ) {
-			return $content;
-		}
-
-		$wraps = array_keys( $wrap );
-		$tag = array_pop( $wraps );
-		$attributes = $wrap[ $tag ];
-
-		/** Glue the attributes together. */
-		foreach ( (array)$attributes as $attribute => $value ) {
-			if ( $value ) {
-				$attributes[ $attribute ] = sprintf( "$attribute=\"%s\"", esc_attr( $value) );
-			} else {
-				unset( $attributes[ $attribute ] );
-			}
-		}
-		$attributes = implode( ' ', $attributes );
-		if ( $attributes ) {
-			$attributes = " $attributes";
-		}
-
-		return sprintf( '<%s%s>%s</%s>', $tag, $attributes, $content, $tag );
+		return \gravityview_field_output( $extras, $context );
 	}
 
 	/**
@@ -134,5 +93,158 @@ class View_List_Template extends View_Template {
 		}
 
 		return $vars;
+	}
+
+	/**
+	 * `gravityview_entry_class` and `gravityview/template/list/entry/class` filters.
+	 *
+	 * Modify of the class of a row.
+	 *
+	 * @param string $class The class.
+	 * @param \GV\Entry $entry The entry.
+	 * @param \GV\Template_Context The context.
+	 *
+	 * @return string The classes.
+	 */
+	public static function entry_class( $class, $entry, $context ) {
+		/**
+		 * @filter `gravityview_entry_class` Modify the class applied to the entry row.
+		 * @param string $class Existing class.
+		 * @param array $entry Current entry being displayed
+		 * @param GravityView_View $this Current GravityView_View object
+		 * @deprecated Use `gravityview/template/list/entry/class`
+		 * @return string The modified class.
+		 */
+		$class = apply_filters( 'gravityview_entry_class', $class, $entry->as_entry(), \GravityView_View::getInstance() );
+
+		/**
+		 * @filter `gravityview/template/list/entry/class` Modify the class aplied to the entry row.
+		 * @param string $class The existing class.
+		 * @param \GV\Template_Context The context.
+		 * @return string The modified class.
+		 */
+		return apply_filters( 'gravityview/template/list/entry/class', $class, Template_Context::from_template( $context->template, compact( 'entry' ) ) );
+	}
+
+	/**
+	 * `gravityview_list_body_before` and `gravityview/template/list/body/before` actions.
+	 *
+	 * Output inside the `tbody` of the list.
+	 *
+	 * @param $context \GV\Template_Context The 2.0 context.
+	 *
+	 * @return void
+	 */
+	public static function body_before( $context ) {
+		/**
+		 * @action `gravityview/template/list/body/before` Output inside the `tbody` of the list.
+		 * @since 2.0
+		 * @param \GV\Template_Context $context The template context.
+		 */
+		do_action( 'gravityview/template/list/body/before', $context );
+
+		/**
+		* @action `gravityview_list_body_before` Inside the `tbody`, before any rows are rendered. Can be used to insert additional rows.
+		* @deprecated Use `gravityview/template/list/body/before`
+		* @since 1.0.7
+		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		*/
+		do_action( 'gravityview_list_body_before', \GravityView_View::getInstance() /** ugh! */ );
+	}
+
+	/**
+	 * `gravityview_list_body_after` and `gravityview/template/list/body/after` actions.
+	 *
+	 * Output inside the `tbody` of the list.
+	 *
+	 * @param $context \GV\Template_Context The 2.0 context.
+	 *
+	 * @return void
+	 */
+	public static function body_after( $context ) {
+		/**
+		 * @action `gravityview/template/list/body/after` Output inside the `tbody` of the list at the end.
+		 * @since 2.0
+		 * @param \GV\Template_Context $context The template context.
+		 */
+		do_action( 'gravityview/template/list/body/after', $context );
+
+		/**
+		* @action `gravityview_list_body_after` Inside the `tbody`, after any rows are rendered. Can be used to insert additional rows.
+		* @deprecated Use `gravityview/template/list/body/after`
+		* @since 1.0.7
+		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		*/
+		do_action( 'gravityview_list_body_after', \GravityView_View::getInstance() /** ugh! */ );
+	}
+
+	/**
+	 * `gravityview_list_entry_before` and `gravityview/template/list/entry/before` actions.
+	 * `gravityview_list_entry_title_before` and `gravityview/template/list/entry/title/before` actions.
+	 * `gravityview_list_entry_content_before` and `gravityview/template/list/entry/content/before` actions.
+	 * `gravityview_list_entry_footer_before` and `gravityview/template/list/entry/footer/before` actions.
+	 *
+	 * Output inside the `entry` of the list.
+	 *
+	 * @param \GV\Entry $entry The entry.
+	 * @param \GV\Template_Context $context The 2.0 context.
+	 * @param string $zone The list zone (footer, image, title, etc.).
+	 *
+	 * @return void
+	 */
+	public static function entry_before( $entry, $context, $zone = '' ) {
+		$zone = str_replace( '//', '/', "/$zone/" );
+
+		/**
+		 * @action `gravityview/template/list/entry/$zone/before` Output inside the `entry` of the list at the end.
+		 * @since 2.0
+		 * @param \GV\Template_Context $context The template context.
+		 */
+		do_action( sprintf( 'gravityview/template/list/entry%sbefore', $zone ), Template_Context::from_template( $context->template, compact( 'entry' ) ) );
+
+		$zone = str_replace( '/', '_', $zone );
+
+		/**
+		* @action `gravityview_list_entry_$zone_before` Inside the `entry`, before any rows are rendered. Can be used to insert additional rows.
+		* @deprecated Use `gravityview/template/list/entry/$zone/before`
+		* @since 1.0.7
+		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		*/
+		do_action( sprintf( 'gravityview_list_entry%sbefore', $zone ), $entry->as_entry(), \GravityView_View::getInstance() /** ugh! */ );
+	}
+
+	/**
+	 * `gravityview_list_entry_after` and `gravityview/template/list/entry/after` actions.
+	 * `gravityview_list_entry_title_after` and `gravityview/template/list/entry/title/after` actions.
+	 * `gravityview_list_entry_content_after` and `gravityview/template/list/entry/content/after` actions.
+	 * `gravityview_list_entry_footer_after` and `gravityview/template/list/entry/footer/after` actions.
+	 *
+	 * Output inside the `entry` of the list.
+	 *
+	 * @param \GV\Entry $entry The entry.
+	 * @param \GV\Template_Context $context The 2.0 context.
+	 * @param string $zone The list zone (footer, image, title, etc.).
+	 *
+	 * @return void
+	 */
+	public static function entry_after( $entry, $context, $zone = '' ) {
+		$zone = str_replace( '//', '/', "/$zone/" );
+
+		/**
+		 * @action `gravityview/template/list/entry/$zone/after` Output inside the `entry` of the list at the end.
+		 * @since 2.0
+		 * @param \GV\Template_Context $context The template context.
+		 */
+		do_action( sprintf( 'gravityview/template/list/entry%safter', $zone ), Template_Context::from_template( $context->template, compact( 'entry' ) ) );
+
+		$zone = str_replace( '/', '_', $zone );
+
+		/**
+		* @action `gravityview_list_entry_$zone_after` Inside the `entry`, after any rows are rendered. Can be used to insert additional rows.
+		* @deprecated Use `gravityview/template/list/entry/after`
+		* @since 1.0.7
+		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		*/
+		do_action( sprintf( 'gravityview_list_entry%safter', $zone ), $entry->as_entry(), \GravityView_View::getInstance() /** ugh! */ );
 	}
 }

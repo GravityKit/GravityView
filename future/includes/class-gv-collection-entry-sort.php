@@ -59,7 +59,7 @@ class Entry_Sort {
 	 * @param string $mode The sort mode (self::NUMERIC). Default: self::ALPHA.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\Entry_Sort An instance of this class, pass to \GV\Entry_Collection::sort()
 	 */

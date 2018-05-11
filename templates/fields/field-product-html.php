@@ -3,7 +3,7 @@
  * The default product field output template.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 $field_id = $gravityview->field->ID;
 $value = $gravityview->value;

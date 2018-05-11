@@ -227,24 +227,27 @@ final class GravityView_Delete_Entry {
 	 * We don't want to link to the single entry, because when deleted, there would be nothing to return to.
 	 *
 	 * @since 1.5.1
-	 * @param  array      $entry Gravity Forms entry array
-	 * @return string|null             If directory link is valid, the URL to process the delete request. Otherwise, `NULL`.
+	 * @param  array       $entry Gravity Forms entry array
+	 * @param  int         $view_id The View id. Not optional since 2.0
+	 * @return string|null If directory link is valid, the URL to process the delete request. Otherwise, `NULL`.
 	 */
 	public static function get_delete_link( $entry, $view_id = 0, $post_id = null ) {
+		if ( ! $view_id ) {
+			/** @deprecated path */
+			$view_id = gravityview_get_view_id();
+		}
 
 		self::getInstance()->set_entry( $entry );
 
-        $base = GravityView_API::directory_link( $post_id, true );
+        $base = GravityView_API::directory_link( $post_id ? : $view_id, true );
 
-		if( empty( $base ) ) {
+		if ( empty( $base ) ) {
 			gravityview()->log->error( 'Post ID does not exist: {post_id}', array( 'post_id' => $post_id ) );
 			return NULL;
 		}
 
 		// Use the slug instead of the ID for consistent security
 		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
-
-        $view_id = empty( $view_id ) ? gravityview_get_view_id() : $view_id;
 
 		$actionurl = add_query_arg( array(
 			'action'	=> 'delete',
@@ -270,7 +273,7 @@ final class GravityView_Delete_Entry {
 	function add_delete_button( $form = array(), $entry = array(), $view_id = NULL ) {
 
 		// Only show the link to those who are allowed to see it.
-		if( !self::check_user_cap_delete_entry( $entry ) ) {
+		if( !self::check_user_cap_delete_entry( $entry, array(), $view_id ) ) {
 			return;
 		}
 
@@ -558,7 +561,7 @@ final class GravityView_Delete_Entry {
 	 * @param  array $entry Gravity Forms entry array
 	 * @return boolean|WP_Error        True: can edit form. WP_Error: nope.
 	 */
-	function user_can_delete_entry( $entry = array() ) {
+	function user_can_delete_entry( $entry = array(), $view_id ) {
 
 		$error = NULL;
 
@@ -566,7 +569,7 @@ final class GravityView_Delete_Entry {
 			$error = __( 'The link to delete this entry is not valid; it may have expired.', 'gravityview');
 		}
 
-		if( ! self::check_user_cap_delete_entry( $entry ) ) {
+		if( ! self::check_user_cap_delete_entry( $entry, array(), $view_id ) ) {
 			$error = __( 'You do not have permission to delete this entry.', 'gravityview');
 		}
 
@@ -597,11 +600,14 @@ final class GravityView_Delete_Entry {
 	 *
 	 * @param  array $entry Gravity Forms entry array
 	 * @param array $field Field settings (optional)
-	 * @param int $view_id Pass a View ID to check caps against. If not set, check against current View (optional)
+	 * @param int $view_id Pass a View ID to check caps against. If not set, check against current View (@deprecated no longer optional)
 	 * @return bool
 	 */
 	public static function check_user_cap_delete_entry( $entry, $field = array(), $view_id = 0 ) {
-		$gravityview_view = GravityView_View::getInstance();
+		if ( ! $view_id ) {
+			/** @deprecated path */
+			$view_id = GravityView_View::getInstance()->getViewId();
+		}
 
 		$current_user = wp_get_current_user();
 
@@ -649,8 +655,6 @@ final class GravityView_Delete_Entry {
 
 			return false;
 		}
-
-		$view_id = empty( $view_id ) ? $gravityview_view->getViewId() : $view_id;
 
 		// Only checks user_delete view option if view is already set
 		if( $view_id ) {

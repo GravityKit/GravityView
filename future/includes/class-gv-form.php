@@ -17,7 +17,7 @@ abstract class Form extends Source {
 	 * @var int The ID for this form.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $ID = null;
 
@@ -32,23 +32,18 @@ abstract class Form extends Source {
 	 * @param int|string $form_id The internal form ID.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return \GV\Form|null An instance of this form or null if not found.
 	 */
 	public static function by_id( $form_id ) {
 		return null;
 	}
 
-	/** @TODO Gennady, how should this be handled? */
-	public function get_form() {
-		return $this->form;
-	}
-
 	/**
 	 * Get all entries for this form.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\Entry_Collection The \GV\Entry_Collection
 	 */

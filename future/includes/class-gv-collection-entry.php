@@ -58,7 +58,7 @@ class Entry_Collection extends Collection {
 	 * @param \GV\Entry $entry The entry to add to the internal array.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return void
 	 */
 	public function add( $entry ) {
@@ -78,7 +78,7 @@ class Entry_Collection extends Collection {
 	 * @param string $backend The form backend identifier, allows for multiple form backends in the future. Unused until then.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\Entry|null The \GV\entry with the $entry_id as the ID, or null if not found.
 	 */
@@ -95,7 +95,7 @@ class Entry_Collection extends Collection {
 	 * Count the total number of \GV\Entry objects that are possible to get.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return int The total number of entries that are fetchable.
 	 */
@@ -122,7 +122,7 @@ class Entry_Collection extends Collection {
 	 * Get the entries as an array.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\Entry[] The entries as an array.
 	 */
@@ -137,7 +137,7 @@ class Entry_Collection extends Collection {
 	 * Get the last \GV\Entry in this collection.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\Entry|null The last entry or null.
 	 */
@@ -152,7 +152,7 @@ class Entry_Collection extends Collection {
 	 * Get the first \GV\Entry in this collection.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\Entry|null The first entry or null.
 	 */
@@ -167,7 +167,7 @@ class Entry_Collection extends Collection {
 	 * Hydrate this collection now.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\Entry_Collection This collection, now hydrated.
 	 */
@@ -205,7 +205,7 @@ class Entry_Collection extends Collection {
 	 * @param \GV\Entry_Filter $filter The filter to be applied.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\Entry_Collection A copy of the this collection with the filter applied.
 	 */
@@ -224,7 +224,7 @@ class Entry_Collection extends Collection {
 	 * @param \GV\Entry_Sort $sort The sort to apply to this collection.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\Entry_Collection A copy of the this collection with the sort applied.
 	 */
@@ -243,7 +243,7 @@ class Entry_Collection extends Collection {
 	 * @param int $limit The limit.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\Entry_Collection A copy of the this collection with the limit applied.
 	 */
@@ -264,7 +264,7 @@ class Entry_Collection extends Collection {
 	 * @param int $offset The number of entries to skip in the database.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\Entry_Collection A copy of the this collection with the offset applied.
 	 */
@@ -305,7 +305,7 @@ class Entry_Collection extends Collection {
 	 * @param callable $callback The callback to call when needed.
 	 *
 	 * @internal
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return void
 	 */
@@ -325,7 +325,7 @@ class Entry_Collection extends Collection {
 	 * @param callable $callback The callback to call when needed.
 	 *
 	 * @internal
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return void
 	 */

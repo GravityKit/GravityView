@@ -5,6 +5,6 @@
  * @global \GV\Template_Context $gravityview
  */
 ?>
-<?php gravityview_footer(); ?>
+	<?php gravityview_footer( $gravityview ); ?>
 </div>
 <?php gravityview_after( $gravityview ); ?>

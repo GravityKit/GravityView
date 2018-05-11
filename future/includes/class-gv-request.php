@@ -58,19 +58,19 @@ abstract class Request {
 	}
 
 	/**
-	 * Is this a REST request?
+	 * Is this a REST request? Call after parse_request.
 	 *
 	 * @return boolean
 	 */
 	public static function is_rest() {
-		return defined( 'REST_REQUEST' ) && REST_REQUEST;
+		return ! empty( $GLOBALS['wp']->query_vars['rest_route'] );
 	}
 
 	/**
 	 * The current $post is a View, no?
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @todo tests
 	 *
 	 * @return \GV\View|false The view requested or false
@@ -87,7 +87,7 @@ abstract class Request {
 	 * Is this an edit entry request?
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @todo tests
 	 *
 	 * @return \GV\GF_Entry|false The entry requested or false.
@@ -105,7 +105,7 @@ abstract class Request {
 	 * Check whether this an edit entry request.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @todo tests
 	 *
 	 * @return \GV\Entry|false The entry requested or false.
@@ -126,18 +126,27 @@ abstract class Request {
 	 * Check whether this an entry search request.
 	 *
 	 * @api
-	 * @since future
-	 * @todo tests
+	 * @since 2.0
 	 * @todo implementation
 	 *
 	 * @return boolean True if this is a search request.
 	 */
 	public function is_search() {
-		return $this->is_view() && ! empty ( $_GET['gv_search'] );
+
+		$search_method = apply_filters( 'gravityview/search/method', 'get' );
+
+		if ( 'post' === $search_method ) {
+			$get = $_POST;
+		} else {
+			$get = $_GET;
+		}
+
+		return $this->is_view() && ( isset( $get['gv_search'] ) || isset( $get['gv_start'] ) || isset( $get['gv_end'] ) || isset( $get['gv_by'] ) || isset( $get['gv_id'] ) );
 	}
 }
 
 /** Load implementations. */
 require gravityview()->plugin->dir( 'future/includes/class-gv-request-frontend.php' );
 require gravityview()->plugin->dir( 'future/includes/class-gv-request-admin.php' );
+require gravityview()->plugin->dir( 'future/includes/rest/class-gv-request-rest.php' );
 require gravityview()->plugin->dir( 'future/includes/class-gv-request-mock.php' );

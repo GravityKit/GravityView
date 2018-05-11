@@ -23,7 +23,7 @@ final class Core {
 	 * @var \GV\Plugin The WordPress plugin context.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $plugin;
 
@@ -31,7 +31,7 @@ final class Core {
 	 * @var \GV\Request The global request.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $request;
 
@@ -39,7 +39,7 @@ final class Core {
 	 * @var \GV\Logger
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $log;
 
@@ -151,14 +151,20 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );
 		add_action( 'init', array( '\GV\Entry', 'add_rewrite_endpoint' ) );
 
+		/** REST API */
+		require_once $this->plugin->dir( 'future/includes/rest/class-gv-rest-core.php' );
+		add_action( 'rest_api_init', array( '\GV\REST\Core', 'init' ) );
+
 		/** Generate custom slugs on entry save. @todo Deprecate. */
 		add_action( 'gform_entry_created', array( '\GravityView_API', 'entry_create_custom_slug' ), 10, 2 );
 
 		/** Shortcodes */
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gravityview.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gventry.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gvfield.php' );
 		add_action( 'init', array( '\GV\Shortcodes\gravityview', 'add' ) );
+		add_action( 'init', array( '\GV\Shortcodes\gventry', 'add' ) );
 		add_action( 'init', array( '\GV\Shortcodes\gvfield', 'add' ) );
 		
 		/** oEmbed */
@@ -216,6 +222,9 @@ final class Core {
 
 		/** Magic. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-wrappers.php' );
+
+		/** Cache busting. */
+		add_action( 'clean_post_cache', '\GV\View::_flush_cache' );
 
 		/**
 		 * @action `gravityview/loaded` The core has been loaded.

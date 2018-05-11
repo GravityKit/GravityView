@@ -3,7 +3,7 @@
  * The default post_excerpt field output template.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 if ( ! empty( $gravityview->field->dynamic_data ) && ! empty( $gravityview->entry['post_id'] ) ) {
 

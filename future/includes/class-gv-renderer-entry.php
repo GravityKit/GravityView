@@ -21,7 +21,7 @@ class Entry_Renderer extends Renderer {
 	 * @param \GV\Request $request The request context we're currently in. Default: `gravityview()->request`
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return string The rendered Entry.
 	 */
@@ -30,10 +30,7 @@ class Entry_Renderer extends Renderer {
 			$request = &gravityview()->request;
 		}
 
-		/**
-		 * For now we only know how to render views in a Frontend_Request context.
-		 */
-		if ( ! in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request' ) ) ) {
+		if ( ! in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request', 'GV\REST\Request' ) ) ) {
 			gravityview()->log->error( 'Renderer unable to render Entry in {request_class} context', array( 'request_class' => get_class( $request ) ) );
 			return null;
 		}
@@ -49,7 +46,7 @@ class Entry_Renderer extends Renderer {
 		 * @action `gravityview_render_entry_{View ID}` Before rendering a single entry for a specific View ID
 		 * @since 1.17
 		 *
-		 * @since future
+		 * @since 2.0
 		 * @param \GV\Entry $entry The entry about to be rendered
 		 * @param \GV\View $view The connected view
 		 * @param \GV\Request $request The associated request 
@@ -58,7 +55,7 @@ class Entry_Renderer extends Renderer {
 
 		/** Entry does not belong to this view. */
 		if ( $view->form && $view->form->ID != $entry['form_id'] ) {
-			gravityview()->log->error( 'The requested entry does not belong to this view. Entry #{entry_id}, #View {view_id}', array( 'entry_id' => $entry->ID, 'view_id' => $view->ID ) );
+			gravityview()->log->error( 'The requested entry does not belong to this View. Entry #{entry_id}, #View {view_id}', array( 'entry_id' => $entry->ID, 'view_id' => $view->ID ) );
 			return null;
 		}
 
@@ -94,7 +91,7 @@ class Entry_Renderer extends Renderer {
 
 		/**
 		 * @filter `gravityview/template/entry/class` Filter the template class that is about to be used to render the entry.
-		 * @since future
+		 * @since 2.0
 		 * @param string $class The chosen class - Default: \GV\Entry_Table_Template.
 		 * @param \GV\Entry $entry The entry about to be rendered.
 		 * @param \GV\View $view The view connected to it.
@@ -107,9 +104,15 @@ class Entry_Renderer extends Renderer {
 		}
 		$template = new $class( $entry, $view, $request );
 
+		add_action( 'gravityview/template/after', $view_id_output = function( $context ) {
+			printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $context->view->ID );
+		} );
+
 		ob_start();
 		$template->render();
-		printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $view->ID );
+
+		remove_action( 'gravityview/template/after', $view_id_output );
+
 		return ob_get_clean();
 	}
 }

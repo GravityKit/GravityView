@@ -77,6 +77,10 @@ abstract class View_Template extends Template {
 		parent::__construct();
 	}
 
+	public function __destruct() {
+		remove_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ) );
+	}
+
 	/**
 	 * Enable granular template overrides based on current post, view, form, etc.
 	 *
@@ -130,9 +134,16 @@ abstract class View_Template extends Template {
 		 * @filter `gravityview/template/view/context`
 		 * @param \GV\Template_Context $context The context for this template.
 		 * @param \GV\View_Template $template The current template.
-		 * @since future
+		 * @since 2.0
 		 */
-		$this->push_template_data( apply_filters( 'gravityview/template/view/context', $context, $this ), 'gravityview' );
+		$this->push_template_data( $context = apply_filters( 'gravityview/template/view/context', $context, $this ), 'gravityview' );
+
+		/**
+		 * @filter `gravityview/template/view/render` Before rendering.
+		 * @param \GV\View_Template $template The current template.
+		 * @since 2.0
+		 */
+		do_action( 'gravityview/template/view/render', $context );
 
 		/** Load the template. */
 		$this->get_template_part( static::$slug );

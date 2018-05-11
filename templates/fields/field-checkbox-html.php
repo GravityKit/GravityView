@@ -3,7 +3,7 @@
  * The default checkbox field output template.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 $field_id = $gravityview->field->ID;
 $field = $gravityview->field->field;
@@ -42,8 +42,11 @@ if ( ! $is_single_input ) {
 				 * @param string $output HTML span with `dashicons dashicons-yes` class
 				 * @param array $entry Gravity Forms entry array
 				 * @param array $field GravityView field array
+				 *
+				 * @since 2.0
+				 * @param \GV\Template_Context The template context.
 				 */
-				$output = apply_filters( 'gravityview_field_tick', '<span class="dashicons dashicons-yes"></span>', $entry, $field );
+				$output = apply_filters( 'gravityview_field_tick', '<span class="dashicons dashicons-yes"></span>', $entry, $field, $gravityview );
 			}
 			break;
 	}

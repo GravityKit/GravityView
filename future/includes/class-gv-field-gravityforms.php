@@ -22,7 +22,7 @@ class GF_Field extends Field {
 	 * @param array $configuration The configuration array.
 	 * @see \GV\Field::as_configuration()
 	 * @internal
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\GF_Field|null The field implementation or null on error.
 	 */
@@ -100,6 +100,10 @@ class GF_Field extends Field {
 			return $label;
 		}
 
+		if ( ! $this->show_label ) {
+			return '';
+		}
+
 		if ( ! $source || ! is_object( $source ) || ! is_a( $source, '\GV\GF_Form' ) ) {
 			gravityview()->log->error( '$source is not a valid \GV\GF_Form instance' );
 			return null;
@@ -145,7 +149,7 @@ class GF_Field extends Field {
 	}
 
 	/**
-	 * A proxy getter for the backing Gravity View field.
+	 * A proxy getter for the backing GravityView field.
 	 *
 	 * The view field configuration is checked first, though.
 	 *

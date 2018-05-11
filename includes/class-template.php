@@ -525,12 +525,13 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 	/**
 	 * @param boolean $do_replace Perform merge tag and shortcode processing on the label. Default: true.
-	 * @since future
+	 * @since 2.0
+	 *
+	 * @deprecated Use $template->get_back_label();
 	 *
 	 * @return string
 	 */
 	public function getBackLinkLabel( $do_replace = true ) {
-
 		if ( $do_replace ) {
 			$back_link_label = GravityView_API::replace_variables( $this->back_link_label, $this->getForm(), $this->getCurrentEntry() );
 			return do_shortcode( $back_link_label );
@@ -636,11 +637,13 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 * @param array $atts
 	 * @param bool $echo Whether to print the output
 	 *
+	 * @deprecated This will never get called in new templates.
+	 *
 	 * @return string|null
 	 */
 	public function renderZone( $zone = '', $atts = array(), $echo = true ) {
 
-		if( empty( $zone ) ) {
+		if ( empty( $zone ) ) {
 			gravityview()->log->error( 'No zone defined.');
 			return NULL;
 		}
@@ -662,16 +665,17 @@ class GravityView_View extends Gamajo_Template_Loader {
 		$fields = $this->getField( $final_atts['zone_id'] );
 
 		// Backward compatibility
-		if( 'table' === $this->getTemplatePartSlug() ) {
+		if ( 'table' === $this->getTemplatePartSlug() ) {
 			/**
 			 * @filter `gravityview_table_cells` Modify the fields displayed in a table
 			 * @param array $fields
 			 * @param GravityView_View $this
+			 * @deprecated Use `gravityview/template/table/fields`
 			 */
 			$fields = apply_filters("gravityview_table_cells", $fields, $this );
 		}
 
-		if( empty( $fields ) ) {
+		if ( empty( $fields ) ) {
 
 			gravityview()->log->error( 'Empty View configuration for this context.', array( 'data' => $fields ) );
 
@@ -690,8 +694,10 @@ class GravityView_View extends Gamajo_Template_Loader {
 		 * False by default to keep backward compatibility
 		 * @since 1.7.6
 		 * @param boolean $hide_empty_zone Default: false
+		 * @since 2.0
+		 * @param \GV\Template_Context $context The context. Null here. Since this path is deprecated.
 		 */
-		if( empty( $field_output ) && apply_filters( 'gravityview/render/hide-empty-zone', false ) ) {
+		if ( empty( $field_output ) && apply_filters( 'gravityview/render/hide-empty-zone', false, null ) ) {
 			return NULL;
 		}
 
@@ -830,8 +836,9 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 * @return void
 	 */
 	public function render_widget_hooks( $view_id_or_context ) {
-		/**
-		 * @deperecated Numeric argument is deprecated. Pass a \GV\Template_Context instead.
+
+	    /**
+		 * @deprecated Numeric argument is deprecated. Pass a \GV\Template_Context instead.
 		 */
 		if ( is_numeric( $view_id_or_context ) ) {
 			$view = \GV\View::by_id( $view_id_or_context );
@@ -878,7 +885,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		// Prevent being called twice
 		if ( did_action( "gravityview/widgets/$zone/{$view->ID}/rendered" ) ) {
-			gravityview()->log->debug( 'Not rendering {zone}; already rendered', array( 'zone' => $zone.'_'.$view_id.'_widgets' ) );
+			gravityview()->log->debug( 'Not rendering {zone}; already rendered', array( 'zone' => $zone.'_'.$view->ID.'_widgets' ) );
 			return;
 		}
 

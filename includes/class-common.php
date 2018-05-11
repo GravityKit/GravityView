@@ -86,12 +86,11 @@ class GVCommon {
 	/**
 	 * Get all existing Views
 	 *
-	 * @since  1.5.4
-	 * @since  TODO Added $args array
+	 * @since 1.5.4 Added $args array
 	 *
 	 * @param array $args Pass custom array of args, formatted as if for `get_posts()`
 	 *
-	 * @return array Array of Views as `WP_Post`. Empty array if none found.
+	 * @return WP_Post[] Array of Views as `WP_Post`. Empty array if none found.
 	 */
 	public static function get_all_views( $args = array() ) {
 
@@ -607,7 +606,7 @@ class GVCommon {
 	/**
 	 * Get the entry ID from a string that may be the Entry ID or the Entry Slug
 	 *
-	 * @since TODO
+	 * @since 1.18
 	 *
 	 * @param string $entry_id_or_slug The ID or slug of an entry.
 	 * @param bool $force_allow_ids Whether to force allowing getting the ID of an entry, even if custom slugs are enabled
@@ -707,7 +706,7 @@ class GVCommon {
 	 * @since 1.13 You can define context, which displays/hides based on what's being displayed (single, multiple, edit)
 	 * @since 1.22.1 Added 'in' and 'not_in' for JSON-encoded array values, serialized non-strings
 	 *
-	 * @see http://docs.gravityview.co/article/252-gvlogic-shortcode
+	 * @see https://docs.gravityview.co/article/252-gvlogic-shortcode
 	 * @uses GFFormsModel::matches_operation
 	 * @since 1.7.5
 	 *
@@ -1259,7 +1258,7 @@ class GVCommon {
 
 			/**
 			 * @filter `gravityview/view/configuration/fields` Filter the View fields' configuration array.
-			 * @since future
+			 * @since 2.0
 			 *
 			 * @param array $fields Multi-array of fields with first level being the field zones.
 			 * @param \GV\View $view The View the fields are being pulled for.
@@ -1268,6 +1267,35 @@ class GVCommon {
 		}
 
 		return $fields;
+	}
+
+	/**
+	 * Get the widget configuration for a View
+	 *
+	 * @param int $view_id View ID
+	 * @param bool $json_decode Whether to JSON-decode the widget values. Default: `false`
+	 *
+	 * @return array Multi-array of widgets, with the slug of each widget "zone" being the key ("header_top"), and each widget having their own "id"
+	 */
+	public static function get_directory_widgets( $view_id, $json_decode = false ) {
+
+		$view_widgets = get_post_meta( $view_id, '_gravityview_directory_widgets', true );
+
+		$defaults = array(
+			'header_top' => array(),
+			'header_left' => array(),
+			'header_right' => array(),
+			'footer_left' => array(),
+			'footer_right' => array(),
+		);
+
+		$directory_widgets = wp_parse_args( $view_widgets, $defaults );
+
+		if( $json_decode ) {
+			$directory_widgets = gv_map_deep( $directory_widgets, 'gv_maybe_json_decode' );
+		}
+
+		return $directory_widgets;
 	}
 
 

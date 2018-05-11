@@ -24,7 +24,7 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 	/**
 	 * @covers GVLogic_Shortcode::shortcode
 	 */
-	function test_comparisons() {
+	function test_comparisons( $shortcode = 'gvlogic') {
 
 		$correct = array(
 			'if="4" is="4"',
@@ -36,11 +36,12 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 			'if="4" greater_than="1"',
 			'if="4" greater_than_or_is="1"',
 			'if="4" greater_than_or_equals="1"',
+			'if="1"',
 		);
 
 		foreach ( $correct as $i => $true_statement ) {
-			$this->assertEquals( 'Correct a' . $i, do_shortcode( '[gvlogic ' . $true_statement .' else="Incorrect a' . $i .'"]Correct a' . $i .'[/gvlogic]') );
-			$this->assertEquals( 'Correct b' . $i, do_shortcode( '[gvlogic ' . $true_statement .']Correct b' . $i .'[else]Incorrect b' . $i .'[/gvlogic]') );
+			$this->assertEquals( 'Correct a' . $i, do_shortcode( '['.$shortcode.' ' . $true_statement .' else="Incorrect a' . $i .'"]Correct a' . $i .'[/'.$shortcode.']') );
+			$this->assertEquals( 'Correct b' . $i, do_shortcode( '['.$shortcode.' ' . $true_statement .']Correct b' . $i .'[else]Incorrect b' . $i .'[/'.$shortcode.']') );
 		}
 
 
@@ -54,11 +55,12 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 			'if="4" greater_than="400"',
 			'if="4" greater_than_or_is="400"',
 			'if="4" greater_than_or_equals="400"',
+			'if=""',
 		);
 
 		foreach ( $incorrect as $i => $false_statement ) {
-			$this->assertEquals( 'Incorrect c' . $i, do_shortcode( '[gvlogic ' . $false_statement .' else="Incorrect c'  . $i . '"]Correct c'  . $i . '[/gvlogic]'), $false_statement );
-			$this->assertEquals( 'Incorrect d' . $i, do_shortcode( '[gvlogic ' . $false_statement .']Correct d'  . $i . '[else]Incorrect d'  . $i . '[/gvlogic]'), $false_statement );
+			$this->assertEquals( 'Incorrect c' . $i, do_shortcode( '['.$shortcode.' ' . $false_statement .' else="Incorrect c'  . $i . '"]Correct c'  . $i . '[/'.$shortcode.']'), $false_statement );
+			$this->assertEquals( 'Incorrect d' . $i, do_shortcode( '['.$shortcode.' ' . $false_statement .']Correct d'  . $i . '[else]Incorrect d'  . $i . '[/'.$shortcode.']'), $false_statement );
 		}
 	}
 
@@ -75,6 +77,10 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( 'Correct 2', $value );
 
+		$value = do_shortcode( '[gvlogic if="not empty"]Correct 3[/gvlogic]' );
+
+		$this->assertEquals( 'Correct 3', $value );
+
 		$value = do_shortcode( '[gvlogic if="4" is="5" else="Incorrect 1"]Correct[/gvlogic]' );
 
 		$this->assertEquals( 'Incorrect 1', $value );
@@ -83,9 +89,33 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( 'Incorrect 2', $value );
 
+		$empty_value = do_shortcode( '[gvlogic if=""]Correct[else]Incorrect 3[/gvlogic]' );
+
+		$this->assertEquals( 'Incorrect 3', $empty_value );
+
 		$empty_value = do_shortcode( '[gvlogic if="4" is="5"]Empty because Incorrect[/gvlogic]' );
 
 		$this->assertEquals( '', $empty_value );
+
+		$empty_value = do_shortcode( '[gvlogic if=""]Empty because Incorrect 2[/gvlogic]' );
+
+		$this->assertEquals( '', $empty_value );
+
+	}
+
+	/**
+	 * Make sure our official way of registering a second shortcode actually works
+	 *
+	 * @since 2.0
+	 */
+	function test_register_another_gvlogic_shortcode() {
+
+		$GVLogic_Shortcode            = GVLogic_Shortcode::get_instance();
+		$GVLogic_Shortcode->shortcode = 'gvlogic2';
+
+		add_shortcode( 'gvlogic2', array( $GVLogic_Shortcode, 'shortcode' ) );
+
+		$this->test_comparisons('gvlogic2' );
 	}
 
 	/**
@@ -141,6 +171,16 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 		$value = do_shortcode( '[gvlogic if="2" is="2"]Test 5 Correct[else if="2" is="3"]Test 5 Incorrect 2[else if="3" is="4"]Test 5 Incorrect 3[else if="4" is="5"]Test 5 Incorrect 4[else if="5" is="5"]Test 5 Incorrect 5[else]Test 5 Incorrect 6[/gvlogic]' );
 
 		$this->assertEquals( 'Test 5 Correct', $value );
+
+		// Empty comparison
+		$value = do_shortcode( '[gvlogic if=""]Test 6 Incorrect[else if="1"]Test 6 Correct[/gvlogic]' );
+
+		$this->assertEquals( 'Test 6 Correct', $value );
+
+		// Empty comparison
+		$value = do_shortcode( '[gvlogic if=""]Test 7 Incorrect[else if="1" is="2"]Test 7 Incorrect 2[else if=""]Test 7 Incorrect 3[else if="1" greater_than="0"]Test 7 Correct[/gvlogic]' );
+
+		$this->assertEquals( 'Test 7 Correct', $value );
 
 	}
 

@@ -71,7 +71,10 @@ class GravityView_Entry_Link_Shortcode {
 	 * @since 1.15
 	 * @copydoc GravityView_Entry_Link_Shortcode::shortcode
 	 */
-	public function edit_shortcode( $atts, $content = null, $context = 'gv_edit_entry_link' ) {
+	public function edit_shortcode( $atts = array(), $content = null, $context = 'gv_edit_entry_link' ) {
+
+		$atts = shortcode_atts( self::$defaults, $atts );
+
 		$atts['action'] = 'edit';
 
 		return $this->shortcode( $atts, $content, $context );
@@ -84,7 +87,10 @@ class GravityView_Entry_Link_Shortcode {
 	 * @since 1.15
 	 * @copydoc GravityView_Entry_Link_Shortcode::shortcode
 	 */
-	public function delete_shortcode( $atts, $content = null, $context = 'gv_delete_entry_link' ) {
+	public function delete_shortcode( $atts = array(), $content = null, $context = 'gv_delete_entry_link' ) {
+
+		$atts = shortcode_atts( self::$defaults, $atts );
+
 		$atts['action'] = 'delete';
 
 		return $this->shortcode( $atts, $content, $context );

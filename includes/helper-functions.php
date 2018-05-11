@@ -371,6 +371,21 @@ function _gravityview_strip_subdomain( $string_maybe_has_subdomain ) {
 }
 
 /**
+ * The inverse of gv_empty()
+ *
+ * @since 2.0
+ *
+ * @param mixed  $value Check whether this is not empty
+ * @param bool $zero_is_empty Should the number zero be treated as an empty value? Default: `false`
+ * @param bool $allow_string_booleans Whether to check if 'yes', 'true' => `true` and 'no', 'false' => `false`. Default: `false`
+ *
+ * @return bool
+ */
+function gv_not_empty( $value, $zero_is_empty = false, $allow_string_booleans = false ) {
+	return ! gv_empty( $value, $zero_is_empty, $allow_string_booleans );
+}
+
+/**
  * Is the value empty?
  *
  * Allows you to pass a function instead of just a variable, like the empty() function insists upon (until PHP 5.5)
@@ -429,6 +444,41 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
 	}
 
 	return empty( $value );
+}
+
+/**
+ * If content is JSON, decode it. Otherwise, return the passed value
+ *
+ * @since 2.0
+ *
+ * @see json_decode() for more information about the function parameters
+ *
+ * @param string $value The string that may be decoded
+ * @param bool $assoc [optional] When `true`, returned objects will be converted into associative arrays
+ * @param int $depth [optional] User specified recursion depth.
+ * @param int $options [optional] Bitmask of JSON decode options
+ *
+ * @return array|mixed|object|string If $value is JSON, returns the response from `json_decode()`. Otherwise, returns original value.
+ */
+function gv_maybe_json_decode( $value, $assoc = false, $depth = 512, $options = 0 ) {
+
+	if( ! is_string( $value ) ) {
+		return $value;
+	}
+
+	$decoded = json_decode( $value );
+
+	// There was a JSON error (PHP 5.3+)
+	if( function_exists('json_last_error') && JSON_ERROR_NONE !== json_last_error() ) {
+		return $value;
+	}
+
+	// It wasn't JSON (PHP < 5.3 fallback)
+	if( is_null( $decoded ) ) {
+		return $value;
+	}
+
+	return $decoded;
 }
 
 

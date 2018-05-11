@@ -20,7 +20,7 @@ class View_Renderer extends Renderer {
 	 * @param \GV\Request $request The request context we're currently in. Default: `gravityview()->request`
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return string The rendered View.
 	 */
@@ -29,10 +29,7 @@ class View_Renderer extends Renderer {
 			$request = &gravityview()->request;
 		}
 
-		/**
-		 * For now we only know how to render views in a Frontend_Request context.
-		 */
-		if ( ! in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request' ) ) ) {
+		if ( ! in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request', 'GV\REST\Request' ) ) ) {
 			gravityview()->log->error( 'Renderer unable to render View in {request_class} context', array( 'request_class' => get_class( $request ) ) );
 			return null;
 		}
@@ -95,7 +92,7 @@ class View_Renderer extends Renderer {
 
 		/**
 		 * @filter `gravityview/template/view/class` Filter the template class that is about to be used to render the view.
-		 * @since future
+		 * @since 2.0
 		 * @param string $class The chosen class - Default: \GV\View_Table_Template.
 		 * @param \GV\View $view The view about to be rendered.
 		 * @param \GV\Request $request The associated request.
@@ -120,10 +117,14 @@ class View_Renderer extends Renderer {
 			'sorting' => $parameters['sorting'],
 		) ) );
 
+		add_action( 'gravityview/template/after', $view_id_output = function( $context ) {
+			printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $context->view->ID );
+		} );
+
 		ob_start();
 		$template->render();
 
-		printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $view->ID );
+		remove_action( 'gravityview/template/after', $view_id_output );
 
 		\GV\Mocks\Legacy_Context::pop();
 		return ob_get_clean();

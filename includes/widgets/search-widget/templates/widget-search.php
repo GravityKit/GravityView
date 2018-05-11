@@ -3,6 +3,7 @@
  * Display the Search widget
  *
  * @see class-search-widget.php
+ * @global GravityView_Widget_Search $this
  */
 
 $gravityview_view = GravityView_View::getInstance();
@@ -26,6 +27,14 @@ $search_method = GravityView_Widget_Search::getInstance()->get_search_method();
 	do_action( 'gravityview_search_widget_fields_before', $this );
 
 	foreach( $this->search_fields as $search_field ) {
+
+		/**
+		 * @action `gravityview_search_widget_field_before` Before each search input is rendered (other than the submit button)
+		 * @param GravityView_Widget_Search $this GravityView Widget instance
+         * @param array $search_field
+		 */
+		do_action( 'gravityview_search_widget_field_before', $this, $search_field );
+
 		$gravityview_view->search_field = $search_field;
 		$this->render( 'search-field', $search_field['input'], false );
 
@@ -33,6 +42,13 @@ $search_method = GravityView_Widget_Search::getInstance()->get_search_method();
 		if( !$has_inputs &&  $search_field['input'] != 'link' ) {
 			$has_inputs = true;
 		}
+
+		/**
+		 * @action `gravityview_search_widget_field_after` After each search input is rendered (other than the submit button)
+		 * @param GravityView_Widget_Search $this GravityView Widget instance
+         * @param array $search_field
+		 */
+		do_action( 'gravityview_search_widget_field_after', $this, $search_field );
 	}
 
 	/**
@@ -41,16 +57,8 @@ $search_method = GravityView_Widget_Search::getInstance()->get_search_method();
 	 */
 	do_action( 'gravityview_search_widget_fields_after', $this );
 
-	if( $has_inputs ) { ?>
-		<div class="gv-search-box gv-search-box-submit">
-			<?php
-
-			// Output the Clear button, if enabled
-			GravityView_Widget_Search::the_clear_search_button();
-
-			?>
-			<input type="hidden" name="mode" value="<?php echo esc_attr( $gravityview_view->search_mode ); ?>" />
-			<input type="submit" class="button gv-search-button" id="gv_search_button_<?php echo $view_id; ?>" value="<?php esc_attr_e( 'Search', 'gravityview' ); ?>" />
-		</div>
-	<?php } ?>
+	if( $has_inputs ) {
+	    $this->render( 'search-field', 'submit', false );
+    }
+?>
 </form>

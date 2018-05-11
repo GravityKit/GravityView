@@ -68,7 +68,7 @@ class GravityView_Field_Is_Fulfilled extends GravityView_Field {
 	/**
 	 * Filter the value of the field (future)
 	 *
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @param mixed $value The value in.
 	 *

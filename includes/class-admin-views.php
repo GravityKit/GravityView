@@ -57,6 +57,35 @@ class GravityView_Admin_Views {
 
 		add_action( 'pre_get_posts', array( $this, 'filter_pre_get_posts_by_gravityview_form_id' ) );
 
+		add_filter( 'gravityview/support_port/localization_data', array( $this, 'suggest_support_articles' ) );
+
+	}
+
+	/**
+     * When on the Add/Edit View screen, suggest most popular articles related to that
+     *
+	 * @param array $localization_data Data to be passed to the Support Port JS
+	 *
+	 * @return array
+	 */
+	function suggest_support_articles( $localization_data = array() ) {
+
+	    if( ! gravityview()->request->is_view() ) {
+	        return $localization_data;
+        }
+
+		$localization_data['suggest'] = array(
+            '57ef23539033602e61d4a560',
+            '54c67bb9e4b0512429885513',
+            '54c67bb9e4b0512429885512',
+            '54c67bbbe4b07997ea3f3f6b',
+            '54d1a33ae4b086c0c0964ce9',
+            '57ef253c9033602e61d4a563',
+            '552355bfe4b0221aadf2572b',
+            '54c67bcde4b051242988553e',
+        );
+
+		return $localization_data;
 	}
 
 	/**

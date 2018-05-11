@@ -136,12 +136,12 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		// Test dates
 		$_GET = array(
 			'gv_start' => $start,
-		    'gv_end' => $end,
+			'gv_end' => $end,
 		);
 
 		$search_criteria_dates = array(
-			'start_date' => get_gmt_from_date( "$start 00:00:00" ),
-			'end_date' => get_gmt_from_date( "$end 00:00:00" ),
+			'start_date' => get_gmt_from_date( $start ),
+			'end_date' => get_gmt_from_date( '2017-10-04' /* + 1 day */ ),
 			'field_filters' => array(
 				'mode' => 'any',
 			),
@@ -248,7 +248,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 				'mode' => 'any',
 			),
 			'start_date' => '2017-05-01 00:00:00',
-			'end_date' => '2017-12-31 00:00:00',
+			'end_date' => '2018-01-01 00:00:00',
 		);
 
 		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
@@ -346,5 +346,56 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
 
 		$_GET = array();
+	}
+
+	public function test_filter_entries_gv_start_end_time() {
+		$_GET = array(
+			'gv_start' => '2018-04-07',
+			'gv_end' => '2018-04-07',
+		);
+
+		$view = $this->factory->view->create_and_get( array(
+			'fields' => array( '_' => array(
+				array( 'id' => '1.1' ),
+			) ),
+			'widgets' => array( '_' => array(
+				array(
+					'id' => 'search_bar',
+					'search_fields' => json_encode( array(
+						array( 'field' => 'entry_date' ),
+					) ),
+				),
+			) ),
+		) );
+
+		add_filter( 'pre_option_timezone_string', $callback = function() {
+			return 'Etc/GMT+0';
+		} );
+
+		$search_criteria_dates = array(
+			'start_date' => '2018-04-07 00:00:00',
+			'end_date' => '2018-04-08 00:00:00',
+			'field_filters' => array(
+				'mode' => 'any',
+			),
+		);
+		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
+
+		remove_filter( 'pre_option_timezone_string', $callback );
+
+		add_filter( 'pre_option_timezone_string', $callback = function() {
+			return 'Etc/GMT+5';
+		} );
+
+		$search_criteria_dates = array(
+			'start_date' => '2018-04-07 05:00:00',
+			'end_date' => '2018-04-08 05:00:00',
+			'field_filters' => array(
+				'mode' => 'any',
+			),
+		);
+		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
+
+		remove_filter( 'pre_option_timezone_string', $callback );
 	}
 }

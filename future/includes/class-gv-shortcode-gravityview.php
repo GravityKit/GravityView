@@ -28,7 +28,7 @@ class gravityview extends \GV\Shortcode {
 		$request = gravityview()->request;
 
 		if ( $request->is_admin() ) {
-			return;
+			return '';
 		}
 
 		$atts = wp_parse_args( $atts, array(
@@ -41,7 +41,26 @@ class gravityview extends \GV\Shortcode {
 		$view = \GV\View::by_id( $atts['id'] ? : $atts['view_id'] );
 
 		if ( ! $view ) {
-			return;
+			gravityview()->log->error( 'View does not exist #{view_id}', array( 'view_id' => $view->ID ) );
+			return '';
+		}
+
+		/**
+		 * When this shortcode is embedded inside a View we can only display it as a directory. There's no other way.
+		 * Try to detect that we're not embedded to allow edit and single contexts.
+		 */
+		$is_reembedded = false; // Assume not embedded unless detected otherwise.
+		if ( in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request' ) ) ) {
+			if ( ( $_view = $request->is_view() ) && $_view->ID !== $view->ID ) {
+				$is_reembedded = true;
+			}
+		}
+
+		/**
+		 * Remove Widgets on a nested embedded View.
+		 */
+		if ( $is_reembedded ) {
+			$view->widgets = new \GV\Widget_Collection();
 		}
 
 		$view->settings->update( $atts );
@@ -82,7 +101,7 @@ class gravityview extends \GV\Shortcode {
 		/**
 		 * Editing a single entry.
 		 */
-		} else if ( $entry = $request->is_edit_entry() ) {
+		} else if ( ! $is_reembedded && ( $entry = $request->is_edit_entry() ) ) {
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -106,7 +125,7 @@ class gravityview extends \GV\Shortcode {
 		/**
 		 * Viewing a single entry.
 		 */
-		} else if ( $entry = $request->is_entry() ) {
+		} else if ( ! $is_reembedded && ( $entry = $request->is_entry() ) ) {
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -131,7 +150,18 @@ class gravityview extends \GV\Shortcode {
 		 * Just this view.
 		 */
 		} else {
-			/** @todo protection! */
+			if ( $is_reembedded ) {
+				
+				// Mock the request with the actual View, not the global one
+				$mock_request = new \GV\Mock_Request();
+				$mock_request->returns['is_view'] = $view;
+				$mock_request->returns['is_entry'] = $request->is_entry();
+				$mock_request->returns['is_edit_entry'] = $request->is_edit_entry();
+				$mock_request->returns['is_search'] = $request->is_search();
+
+				$request = $mock_request;
+			}
+
 			$renderer = new \GV\View_Renderer();
 			return $renderer->render( $view, $request );
 		}

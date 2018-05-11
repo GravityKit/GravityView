@@ -650,6 +650,10 @@ class License_Handler {
 		// View Data
 		$gravityview_posts = wp_count_posts( 'gravityview', 'readable' );
 
+		$data['view_count'] = null;
+		$data['view_first'] = null;
+		$data['view_latest'] = null;
+
 		if ( $gravityview_posts->publish ) {
 			$data['view_count'] = $gravityview_posts->publish;
 

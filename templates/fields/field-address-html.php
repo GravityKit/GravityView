@@ -3,7 +3,7 @@
  * The default address field output template.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 $field_id = $gravityview->field->ID;
 $field = $gravityview->field->field;
@@ -11,9 +11,10 @@ $value = $gravityview->value;
 $display_value = $gravityview->display_value;
 $entry = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();
+$is_single_input = floor( $field_id ) !== floatval( $field_id );
 
 // If it's the full address
-if ( floor( $field_id ) === floatval( $field_id ) ) {
+if ( ! $is_single_input ) {
 
 	/**
 	 * Make sure we're only showing enabled inputs.

@@ -19,7 +19,7 @@ class Settings {
 	 * Create with new.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @param array $settings Initial settings. Default: none.
 	 * @return \GV\Settings
@@ -34,7 +34,7 @@ class Settings {
 	 * Mass update values from the allowed ones.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @param array An array of settings to update.
 	 * @return \GV\Settings self chain.
@@ -53,7 +53,7 @@ class Settings {
 	 * @param mixed $value The value to be added to the key.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return void
 	 */
 	public function set( $key, $value ) {
@@ -67,7 +67,7 @@ class Settings {
 	 * @param mixed $default A default in case the key is not set. 
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return mixed|null
 	 */
 	public function get( $key, $default = null ) {
@@ -78,7 +78,7 @@ class Settings {
 	 * Returns all the objects in this collection as an an array.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return array The objects in this collection.
 	 */
 	public function all() {

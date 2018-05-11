@@ -77,8 +77,13 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		###
 		$edit_link_no_post = GravityView_Edit_Entry::get_edit_link( $entry, $view->ID );
 
+		$args = array(
+			'entry' => $entry['id'],
+			'edit' => $nonce,
+		);
+
 		// A link to the raw
-		$this->assertEquals( '?edit='.$nonce, $edit_link_no_post );
+		$this->assertEquals( add_query_arg( $args, get_permalink( $view->ID ) ), $edit_link_no_post );
 
 		$args = array(
 			'p' => $post_id,
@@ -94,7 +99,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		###
 		$edit_link_with_post = GravityView_Edit_Entry::get_edit_link( $entry, $view->ID, $post_id );
 
-		$this->assertEquals( add_query_arg( $args, 'http://example.org/' ), $edit_link_with_post );
+		$this->assertEquals( add_query_arg( $args, site_url( '/' ) ), $edit_link_with_post );
 	}
 
 	/**
@@ -669,6 +674,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	}
 
 	public function test_edit_entry_upload() {
+		add_filter( 'gform_file_upload_whitelisting_disabled', '__return_true' );
+
 		/** Create a user */
 		$administrator = $this->_generate_user( 'administrator' );
 
@@ -739,6 +746,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( $entry['2'], '31' );
 
 		remove_filter( 'gform_save_field_value', array( $this, '_fake_move_uploaded_file' ), 10 );
+		remove_filter( 'gform_file_upload_whitelisting_disabled', '__return_true' );
 	}
 
 	/**

@@ -444,6 +444,54 @@ class GravityView_Widget_Search extends \GV\Widget {
 		return $search_fields;
 	}
 
+	/**
+	 * Get the fields that are searchable for a View
+	 *
+	 * @since 2.0
+	 *
+	 * @param \GV\View|null $view
+	 *
+	 * TODO: Move to \GV\View, perhaps? And return a Field_Collection
+	 * TODO: Use in gravityview()->request->is_search() to calculate whether a valid search
+	 *
+	 * @return array If no View, returns empty array. Otherwise, returns array of fields configured in widgets and Search Bar for a View
+	 */
+	private function get_view_searchable_fields( $view ) {
+
+		/**
+		 * Find all search widgets on the view and get the searchable fields settings.
+		 */
+		$searchable_fields = array();
+
+		if ( ! $view ) {
+			return $searchable_fields;
+		}
+
+		/**
+		 * Include the sidebar Widgets.
+		 */
+		$widgets = (array) get_option( 'widget_gravityview_search', array() );
+
+		foreach ( $widgets as $widget ) {
+			if ( ! empty( $widget['view_id'] ) && $widget['view_id'] == $view->ID ) {
+				if( $_fields = json_decode( $widget['search_fields'], true ) ) {
+					foreach ( $_fields as $field ) {
+						$searchable_fields [] = $field['field'];
+					}
+				}
+			}
+		}
+
+		foreach ( $view->widgets->by_id( $this->get_widget_id() )->all() as $widget ) {
+			if( $_fields = json_decode( $widget->configuration->get( 'search_fields' ), true ) ) {
+				foreach ( $_fields as $field ) {
+					$searchable_fields [] = $field['field'];
+				}
+			}
+		}
+
+		return $searchable_fields;
+	}
 
 	/** --- Frontend --- */
 
@@ -475,44 +523,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 		// Make sure array key is set up
 		$search_criteria['field_filters'] = \GV\Utils::get( $search_criteria, 'field_filters', array() );
 
-		/**
-		 * Find all search widgets on the view and get the searchable fields settings.
-		 */
-		$searchable_fields = array();
-		if ( $view ) {
-
-			/**
-			 * Include the sidebar Widgets.
-			 */
-			$widgets = (array)get_option( 'widget_gravityview_search', array() );
-			foreach ( $widgets as $widget ) {
-				if ( ! empty( $widget['view_id'] ) && $widget['view_id'] == $view->ID ) {
-					foreach ( json_decode( $widget['search_fields'], true ) as $field ) {
-						$searchable_fields []= $field['field'];
-					}
-				}
-			}
-
-			foreach ( $view->widgets->by_id( $this->get_widget_id() )->all() as $widget ) {
-				foreach ( json_decode( $widget->configuration->get( 'search_fields' ), true ) as $field ) {
-					$searchable_fields []= $field['field'];
-				}
-			}
-		}
-
-		/**
-		 * Find all visible fields on the view.
-		 */
-		$visible_fields = array();
-
-		if ( $view ) {
-			foreach ( $view->fields->all() as $field ) {
-				$visible_fields []= $field->ID;
-			}
-		}
+		$searchable_fields = $this->get_view_searchable_fields( $view );
 
 		// add free search
-		if ( ! empty( $get['gv_search'] ) && in_array( 'search_all', $searchable_fields ) ) {
+		if ( isset( $get['gv_search'] ) && '' !== $get['gv_search'] && in_array( 'search_all', $searchable_fields ) ) {
 
 			$search_all_value = trim( $get['gv_search'] );
 
@@ -569,18 +583,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			/**
-			 * WordPress <= 4.3 expects a format with H:i:s for get_gmt_from_date
-			 * Make sure it's always complete.
-			 */
-			if ( $curr_start ) {
-				$curr_start = date( 'Y-m-d H:i:s', strtotime( $curr_start ) );
-			}
-
-			if ( $curr_end ) {
-				$curr_end = date( 'Y-m-d H:i:s', strtotime( $curr_end ) );
-			}
-
-			/**
 			 * @filter `gravityview_date_created_adjust_timezone` Whether to adjust the timezone for entries. \n
 			 * date_created is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php)
 			 * @since 1.12
@@ -592,10 +594,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 			/**
 			 * Don't set $search_criteria['start_date'] if start_date is empty as it may lead to bad query results (GFAPI::get_entries)
 			 */
-			if ( !empty( $curr_start ) ) {
+			if ( ! empty( $curr_start ) ) {
+				$curr_start = date( 'Y-m-d H:i:s', strtotime( $curr_start ) );
 				$search_criteria['start_date'] = $adjust_tz ? get_gmt_from_date( $curr_start ) : $curr_start;
 			}
-			if ( !empty( $curr_end ) ) {
+
+			if ( ! empty( $curr_end ) ) {
+				// Fast-forward 24 hour on the end time
+				$curr_end = date( 'Y-m-d H:i:s', strtotime( $curr_end ) + DAY_IN_SECONDS );
 				$search_criteria['end_date'] = $adjust_tz ? get_gmt_from_date( $curr_end ) : $curr_end;
 			}
 		}
@@ -632,7 +638,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$filter_key = $this->convert_request_key_to_filter_key( $key );
 
 			// could return simple filter or multiple filters
-			if ( ! in_array( $filter_key , $searchable_fields ) ) {
+			if ( ! in_array( 'search_all', $searchable_fields ) && ! in_array( $filter_key , $searchable_fields ) ) {
 				continue;
 			}
 
@@ -998,9 +1004,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * @param array $search_fields Array of search filters with `key`, `label`, `value`, `type`, `choices` keys
 		 * @param GravityView_Widget_Search $this Current widget object
 		 * @param array $widget_args Args passed to this method. {@since 1.8}
+		 * @param \GV\Template_Context $context {@since 2.0}
 		 * @var array
 		 */
-		$gravityview_view->search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this, $widget_args );
+		$gravityview_view->search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this, $widget_args, $context );
 
 		$gravityview_view->search_layout = ! empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'horizontal';
 

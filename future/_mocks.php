@@ -8,7 +8,7 @@ namespace GV\Mocks;
 /**
  * @see \GravityView_View_Data::add_view
  * @internal
- * @since future
+ * @since 2.0
  *
  * @return array|false The old array data, or false on error.
  */
@@ -60,7 +60,7 @@ function GravityView_View_Data_add_view( $view_id, $atts, $_this ) {
 /**
  * @see \GravityView_frontend::get_view_entries
  * @internal
- * @since future
+ * @since 2.0
  *
  * @return array The old associative array data as returned by
  *  \GravityView_frontend::get_view_entries(), the paging parameters
@@ -139,7 +139,7 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 	 * @deprecated
 	 * Do not use this filter anymore.
 	 */
-	$entries = apply_filters( 'gravityview_entries', $entries, $criteria, $parameters, $count );
+	$entries = apply_filters_ref_array( 'gravityview_entries', array( $entries, $criteria, $parameters, &$count ) );
 
 	return array( $entries, $paging, $count );
 }
@@ -153,7 +153,7 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
  * @see \GravityView_API::field_value
  * @deprecated Use \GV\Field_Template::render()
  * @internal
- * @since future
+ * @since 2.0
  *
  * @return null|string The value of a field in an entry.
  */
@@ -222,7 +222,7 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
  *
  * @see \GravityView_API::field_label
  * @internal
- * @since future
+ * @since 2.0
  *
  * @return string The label of a field in an entry.
  */
@@ -322,10 +322,14 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 			break;
 	endswitch;
 
+	if( $force_show_label ) {
+		$field_settings['show_label'] = '1';
+	}
+
 	/** Add the field settings. */
 	$field->update_configuration( $field_settings );
 
-	if ( ! empty( $field->show_label ) || $force_show_label ) {
+	if ( ! empty( $field->show_label ) ) {
 
 		$label = $field->get_label( null, isset( $gf_form ) ? $gf_form : null, $entry );
 

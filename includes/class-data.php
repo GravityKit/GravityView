@@ -298,7 +298,7 @@ class GravityView_View_Data {
 				$message = esc_html__( 'You did not enter a number. The value entered should be a number, representing the ID of the post or page the View is embedded on.', 'gravityview' );
 
 				// @todo Convert to generic article about Embed IDs
-				$message .= ' ' . gravityview_get_link( 'http://docs.gravityview.co/article/222-the-search-widget', __( 'Learn more&hellip;', 'gravityview' ), 'target=_blank' );
+				$message .= ' ' . gravityview_get_link( 'https://docs.gravityview.co/article/222-the-search-widget', __( 'Learn more&hellip;', 'gravityview' ), 'target=_blank' );
 			}
 		}
 

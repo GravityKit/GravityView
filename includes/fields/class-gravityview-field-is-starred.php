@@ -20,7 +20,7 @@ class GravityView_Field_Is_Starred extends GravityView_Field {
 	private static $has_star_field = false;
 
 	/**
-	 * GravityView_Field_Date_Created constructor.
+	 * GravityView_Field_Is_Starred constructor.
 	 */
 	public function __construct() {
 
@@ -35,13 +35,14 @@ class GravityView_Field_Is_Starred extends GravityView_Field {
 	}
 
 	private function add_hooks() {
-		add_filter( "gravityview/field/{$this->name}/output", array( $this, 'get_content' ), 4 /** pre_link */, 2 );
+	    /** @see \GV\Field::get_value_filters */
+		add_filter( "gravityview/field/{$this->name}/output", array( $this, 'get_content' ), 4, 2 );
 		add_action( 'gravityview/template/after', array( $this, 'print_script'), 10, 1 );
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ), 10, 3 );
 	}
 
 	/**
-	 * @filter `gravityview_entry_default_fields`
+	 * Add this field to the default fields in the GV field picker
 	 *
 	 * @param  array $entry_default_fields Array of fields shown by default
 	 * @param  string|array $form form_ID or form object
@@ -49,7 +50,7 @@ class GravityView_Field_Is_Starred extends GravityView_Field {
 	 *
 	 * @return array
 	 */
-	function add_default_field( $entry_default_fields, $form, $zone ) {
+	function add_default_field( $entry_default_fields = array(), $form = array(), $zone = '' ) {
 
 		if( 'edit' !== $zone ) {
 			$entry_default_fields[ $this->name ] = array(

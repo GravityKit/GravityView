@@ -23,7 +23,7 @@ class Internal_Field extends Field {
 	 * @param array $configuration The configuration array.
 	 * @see \GV\Field::as_configuration()
 	 * @internal
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return \GV\internal_Field|null The field implementation or null on error.
 	 */
@@ -75,6 +75,10 @@ class Internal_Field extends Field {
 	public function get_label( View $view = null, Source $source = null, Entry $entry = null, Request $request = null ) {
 		if ( $label = parent::get_label( $view, $source, $entry, $request ) ) {
 			return $label;
+		}
+
+		if ( ! $this->show_label ) {
+			return '';
 		}
 
 		return $this->field ? $this->field->label : $this->label;

@@ -3,7 +3,7 @@
  * The default notes field output template.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 $entry = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();
@@ -19,20 +19,16 @@ if ( ! GVCommon::has_cap( array( 'gravityview_view_entry_notes', 'gravityview_ad
 	return;
 }
 
-/** State, state, state... :( */
-$_instance = GravityView_View::getInstance();
-$_instance->setForm( $gravityview->view->form->form );
-$_instance->setCurrentEntry( $entry );
-$_instance->setCurrentField( array( 'field_settings' => $field_settings ) );
-
 require_once( GFCommon::get_base_path() . '/entry_detail.php' );
 
 /**
  * @action `gravityview/field/notes/scripts` Print scripts and styles required for the Notes field
  * @see GravityView_Field_Notes::enqueue_scripts
  * @since 1.17
+ * @since 2.0
+ * @param \GV\Template_Context $gravityview The context.
  */
-do_action( 'gravityview/field/notes/scripts' );
+do_action( 'gravityview/field/notes/scripts', $gravityview );
 
 $notes = GravityView_Entry_Notes::get_notes( $entry['id'] );
 $strings = GravityView_Field_Notes::strings();
@@ -72,7 +68,7 @@ $container_class .= $show_notes ? ' gv-show-notes' : ' gv-hide-notes';
 					<tr class="gv-notes-no-notes"><td colspan="2"><?php echo $strings['no-notes']; ?></td></tr>
 					<?php
 						foreach ( $notes as $note ) {
-							echo GravityView_Field_Notes::display_note( $note, $show_delete );
+							echo GravityView_Field_Notes::display_note( $note, $show_delete, $gravityview );
 						}
 					?>
 				</tbody>
@@ -83,10 +79,7 @@ $container_class .= $show_notes ? ' gv-show-notes' : ' gv-hide-notes';
 	} // End if can view notes
 
 	if ( $show_add ) {
-		echo do_shortcode( '[gv_note_add]' );
+		echo GravityView_Field_Notes::get_add_note_part( array(), $gravityview );
 	}
-
-	/** State, state, state... */
-	GravityView_View::$instance = $_instance;
 ?>
 </div>

@@ -63,6 +63,10 @@ class Legacy_Override_Template extends \Gamajo_Template_Loader {
 		$this->plugin_template_directory = 'templates/deprecated/';
 	}
 
+	public function __destruct() {
+		remove_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ) );
+	}
+
 	/**
 	 * @inheritdoc
 	 * @see Gamajo_Template_Loader::locate_template()
@@ -119,6 +123,10 @@ class Legacy_Override_Template extends \Gamajo_Template_Loader {
 	 * @return string The output.
 	 */
 	public function render( $slug ) {
+		add_action( 'gravityview/template/after', $view_id_output = function( $context ) {
+			printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $context->view->ID );
+		} );
+
 		ob_start();
 
 		$request = new Mock_Request();
@@ -143,12 +151,11 @@ class Legacy_Override_Template extends \Gamajo_Template_Loader {
 						}
 					}
 				}
-				return;
-			}
-
-			foreach ( $wp_filter[ $hook ]->callbacks[10] as $function_key => $callback ) {
-				if ( strpos( $function_key, 'render_widget_hooks' ) ) {
-					unset( $wp_filter[ $hook ]->callbacks[10][ $function_key ] );
+			} else {
+				foreach ( $wp_filter[ $hook ]->callbacks[10] as $function_key => $callback ) {
+					if ( strpos( $function_key, 'render_widget_hooks' ) ) {
+						unset( $wp_filter[ $hook ]->callbacks[10][ $function_key ] );
+					}
 				}
 			}
 		}
@@ -218,7 +225,8 @@ class Legacy_Override_Template extends \Gamajo_Template_Loader {
 			}
 		}
 
-		printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $this->view->ID );
+		remove_action( 'gravityview/template/after', $view_id_output );
+
 		return ob_get_clean();
 	}
 }

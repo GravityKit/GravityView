@@ -29,6 +29,8 @@ class oEmbed {
 		if ( ! empty( $_GET['gv_oembed_provider'] ) && ! empty( $_GET['url'] ) ) {
 			add_action( 'template_redirect', array( __CLASS__, 'render_provider_request' ) );
 		}
+
+		add_action( 'pre_oembed_result', array( __CLASS__, 'pre_oembed_result' ), 11, 3 );
 	}
 
 	/**
@@ -78,7 +80,9 @@ class oEmbed {
 	 * @return string The embed HTML.
 	 */
 	public static function render( $matches, $attr, $url, $rawattr ) {
+
 		$result = self::parse_matches( $matches, $url );
+
 		if ( ! $result || count( $result ) != 2 ) {
 			gravityview()->log->notice( 'View or entry could not be parsed in oEmbed url {url}', array( 'url' => $url, 'matches' => $matches ) );
 			return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -207,9 +211,33 @@ class oEmbed {
 			}
 		}
 
+		/**
+		 * When this is embedded inside a view we should not display the widgets.
+		 */
+		$request = gravityview()->request;
+		$is_reembedded = true; // Assume as embeded unless detected otherwise.
+		if ( in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request' ) ) ) {
+			if ( ( $_view = $request->is_view() ) && $_view->ID == $view->ID ) {
+				$is_reembedded = false;
+			}
+		}
+
+		/**
+		 * Remove Widgets on a nested embedded View.
+		 */
+		if ( $is_reembedded ) {
+			$view->widgets = new \GV\Widget_Collection();
+		}
+
+		/** Remove the back link. */
+		add_filter( 'gravityview/template/links/back/url', '__return_false' );
+
 		$renderer = new \GV\Entry_Renderer();
 		$output = $renderer->render( $entry, $view, gravityview()->request );
 		$output = sprintf( '<div class="gravityview-oembed gravityview-oembed-entry gravityview-oembed-entry-%d">%s</div>', $entry->ID, $output );
+
+		remove_filter( 'gravityview/template/links/back/url', '__return_false' );
+
 		return $output;
 	}
 
@@ -224,7 +252,7 @@ class oEmbed {
 		$entry_var_name = \GV\Entry::get_endpoint_name();
 
 		/**
-		 * @filter `gravityview_slug` Modify the url part for a View. [Read the doc](http://docs.gravityview.co/article/62-changing-the-view-slug)
+		 * @filter `gravityview_slug` Modify the url part for a View. [Read the doc](https://docs.gravityview.co/article/62-changing-the-view-slug)
 		 * @param string $rewrite_slug The slug shown in the URL
 		 */
 		$rewrite_slug = apply_filters( 'gravityview_slug', 'view' );
@@ -242,5 +270,23 @@ class oEmbed {
 		$match_regex = "(?:{$using_permalinks}|{$not_using_permalinks})";
 
 		return '#'.$match_regex.'#i';
+	}
+
+	/**
+	 * Internal oEmbed output, shortcircuit without proxying to the provider.
+	 */
+	public static function pre_oembed_result( $result, $url, $args ) {
+		if ( ! preg_match( self::get_entry_regex(), $url, $matches ) ) {
+			return $result;
+		}
+
+		$view_entry = self::parse_matches( $matches, $url );
+		if ( ! $view_entry || count( $view_entry ) != 2 ) {
+			return $result;
+		}
+
+		list( $view, $entry ) = $view_entry;
+
+		return self::render_frontend( $view, $entry );
 	}
 }

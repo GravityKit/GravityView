@@ -3,7 +3,7 @@
  * The default post_image field output template.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 $field = $gravityview->field->field;
 $value = $gravityview->value;
@@ -40,8 +40,10 @@ if ( ! empty( $field['postFeaturedImage'] ) && ! empty( $field_settings['dynamic
 	 * Modify what size is fetched for the post's Featured Image
 	 * @param string $size The size to be fetched using `wp_get_attachment_image_src()` (default: 'large')
 	 * @param array $entry Gravity Forms entry array
+	 * @since 2.0
+	 * @param \GV\Template_Context $context The context
 	 */
-	$image_size = apply_filters( 'gravityview/fields/post_image/size', 'large', $entry );
+	$image_size = apply_filters( 'gravityview/fields/post_image/size', 'large', $entry, $gravityview );
 	$image_url = wp_get_attachment_image_src( get_post_thumbnail_id( $entry['post_id'] ), $image_size );
 
 	if ( empty( $image_url[0] ) ) {

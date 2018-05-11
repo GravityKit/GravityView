@@ -205,6 +205,20 @@ class GravityView_Compatibility {
 			return false;
 		}
 
+		if ( ! gravityview()->plugin->is_compatible_future_php() ) {
+
+			// Show the notice on every update. Yes, annoying, but not as annoying as a plugin breaking.
+			$key = sprintf('php_%s_%s', GV_FUTURE_MIN_PHP_VERSION, GravityView_Plugin::version );
+
+			self::$notices[ $key ] = array(
+				'class' => 'error',
+				'message' => sprintf( __( "%sGravityView will soon require PHP Version %s.%s \n\nYou're using Version %s. Please ask your host to upgrade your server's PHP.", 'gravityview' ), '<h3>', GV_FUTURE_MIN_PHP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.phpversion().'</span>' ),
+				'cap' => 'manage_options',
+				'dismiss' => $key,
+			);
+
+		}
+
 		return true;
 	}
 
@@ -254,14 +268,33 @@ class GravityView_Compatibility {
 			// Does it meet minimum requirements?
 			$meets_minimum = gravityview()->plugin->is_compatible_gravityforms();
 
-			$class = $meets_minimum ? 'notice-warning' : 'error';
+			if( $meets_minimum ) {
+				/* translators: first placeholder is the future required version of Gravity Forms. The second placeholder is the current version of Gravity Forms. */
+				$title = __( 'In the future, GravityView will require Gravity Forms Version %s or newer.', 'gravityview' );
+				$version = GV_FUTURE_MIN_GF_VERSION;
+				$class = 'notice-warning';
+			} else {
+				/* translators: the placeholder is the required version of Gravity Forms. */
+				$title = __( 'GravityView requires Gravity Forms Version %s or newer.', 'gravityview' );
+				$version = GV_MIN_GF_VERSION;
+				$class = 'error';
+			}
+
+			$message = '<h3>' . esc_html( sprintf( $title, $version ) ) . '</h3>';
+
+			/* translators: the placeholder is the current version of Gravity Forms. */
+			$message .= '<p>' . sprintf( esc_html__( "You're using Version %s. Please update your Gravity Forms or purchase a license.", 'gravityview' ), '<span style="font-family: Consolas, Courier, monospace;">'.GFCommon::$version.'</span>' ) . '</p>';
+
+			/* translators: In this context, "get" means purchase */
+			$message .= '<p><a href="https://gravityview.co/gravityforms/" class="button button-secondary button-large button-hero">' . esc_html__( 'Get the Latest Gravity Forms', 'gravityview' ) . '</a></p>';
+
 
 			// Show the notice even if the future version requirements aren't met
 			self::$notices['gf_version'] = array(
 				'class' => $class,
-				'message' => sprintf( __( "%sGravityView requires Gravity Forms Version %s or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', GV_FUTURE_MIN_GF_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.GFCommon::$version.'</span>', "\n\n".'<a href="https://gravityview.co/gravityforms/" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
+				'message' => $message,
 				'cap' => 'update_plugins',
-				'dismiss' => 'gf_version_' . GV_FUTURE_MIN_GF_VERSION,
+				'dismiss' => 'gf_version_' . $version,
 			);
 
 			// Return false if the plugin is not compatible, true if meets minimum
@@ -310,7 +343,7 @@ class GravityView_Compatibility {
 			default:
 				self::$notices['gf_installed'] = array(
 					'class' => 'error',
-					'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $39%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
+					'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $59%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="https://gravityview.co/gravityforms/" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
 					'cap' => 'install_plugins',
 					'dismiss' => 'gf_installed',
 				);

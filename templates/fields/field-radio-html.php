@@ -3,7 +3,7 @@
  * The default radio field output template.
  *
  * @global \GV\Template_Context $gravityview
- * @since future
+ * @since 2.0
  */
 $field_id = $gravityview->field->ID;
 $field = $gravityview->field->field;
@@ -29,7 +29,7 @@ if ( floatval( $field_id ) === floor( floatval( $field_id ) ) ) {
 	foreach( $entry_keys as $input_key ) {
 		if( is_numeric( $input_key ) && floatval( $input_key ) === floatval( $field_id ) ) {
 			if( in_array( $field['type'], array( 'radio', 'checkbox' ) ) && !empty( $entry[ $input_key ] ) ) {
-				$output = apply_filters( 'gravityview_field_tick', '<span class="dashicons dashicons-yes"></span>', $entry, $field);
+				$output = apply_filters( 'gravityview_field_tick', '<span class="dashicons dashicons-yes"></span>', $entry, $field, $gravityview );
 			} else {
 				$output = $entry[ $input_key ];
 			}
