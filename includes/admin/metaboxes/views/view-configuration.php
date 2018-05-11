@@ -28,10 +28,21 @@
 
 
 			<?php // list of available fields to be shown in the popup ?>
-			<div id="directory-available-fields" class="hide-if-js gv-tooltip">
-				<span class="close"><i class="dashicons dashicons-dismiss"></i></span>
-				<?php do_action('gravityview_render_available_fields', $curr_form, 'directory' ); ?>
-			</div>
+            <div id="directory-available-fields" class="hide-if-js gv-tooltip">
+                <span class="close"><i class="dashicons dashicons-dismiss"></i></span>
+				<?php
+
+				if( ! empty( $view ) && count( $view->joins ) ) {
+					/** @var \GV\View $view */
+					foreach ( $view->joins as $join ) {
+						do_action( 'gravityview_render_available_fields', $join->join->ID, 'directory' );
+						do_action( 'gravityview_render_available_fields', $join->join_on->ID, 'directory' );
+					}
+				} else {
+					do_action( 'gravityview_render_available_fields', $curr_form, 'directory' );
+				}
+				?>
+            </div>
 
 			<?php // list of available widgets to be shown in the popup ?>
 			<div id="directory-available-widgets" class="hide-if-js gv-tooltip">
