@@ -27,28 +27,30 @@
 			<?php do_action('gravityview_render_widgets_active_areas', $curr_template, 'footer', $post->ID ); ?>
 
 
-			<?php // list of available fields to be shown in the popup ?>
-            <div id="directory-available-fields" class="hide-if-js gv-tooltip">
-                <span class="close"><i class="dashicons dashicons-dismiss"></i></span>
-				<?php
-
-				if( ! empty( $view ) && count( $view->joins ) ) {
-					/** @var \GV\View $view */
-					foreach ( $view->joins as $join ) {
-						do_action( 'gravityview_render_available_fields', $join->join->ID, 'directory' );
-						do_action( 'gravityview_render_available_fields', $join->join_on->ID, 'directory' );
-					}
-				} else {
-					do_action( 'gravityview_render_available_fields', $curr_form, 'directory' );
+			<?php
+			// list of available fields to be shown in the popup
+			$form_ids = array( $curr_form );
+			if ( ( $view = \GV\View::from_post( $post ) ) && $view->joins ) {
+				foreach ( $view->joins as $join ) {
+					$form_ids []= $join->join->ID;
+					$form_ids []= $join->join_on->ID;
 				}
+			}
+			foreach ( array_unique( $form_ids ) as $form_id ) {
 				?>
-            </div>
+                <div id="directory-available-fields-<?php echo esc_attr( $form_id ); ?>" class="hide-if-js gv-tooltip" data-formid="<?php echo esc_attr( $form_id ); ?>">
+                    <span class="close"><i class="dashicons dashicons-dismiss"></i></span>
+					<?php do_action('gravityview_render_available_fields', $form_id, 'directory' ); ?>
+                </div>
+				<?php
+			}
+			?>
 
 			<?php // list of available widgets to be shown in the popup ?>
-			<div id="directory-available-widgets" class="hide-if-js gv-tooltip">
-				<span class="close"><i class="dashicons dashicons-dismiss"></i></span>
+            <div id="directory-available-widgets" class="hide-if-js gv-tooltip">
+                <span class="close"><i class="dashicons dashicons-dismiss"></i></span>
 				<?php do_action('gravityview_render_available_widgets' ); ?>
-			</div>
+            </div>
 
 		</div>
 

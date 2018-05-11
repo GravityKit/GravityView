@@ -890,7 +890,7 @@
 						case 'field':
 							// If in Single context, show fields available in single
 							// If it Directory, same for directory
-							return $( "#" + context + "-available-fields" ).html();
+							return $( "#" + context + "-available-fields-" + $( this ).attr( 'data-formid' ) ).html();
 						case 'widget':
 							return $( "#directory-available-widgets" ).html();
 					}
