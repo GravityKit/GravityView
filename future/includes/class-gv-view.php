@@ -605,6 +605,7 @@ class View implements \ArrayAccess {
 			 * @todo: Stop using _frontend and use something like $request->get_search_criteria() instead
 			 */
 			$parameters = \GravityView_frontend::get_view_entries_parameters( $this->settings->as_atts(), $this->form->ID );
+			$parameters = \GVCommon::calculate_get_entries_criteria( $parameters, $this->form->ID );
 
 			if ( $request instanceof REST\Request ) {
 				$atts = $this->settings->as_atts();
