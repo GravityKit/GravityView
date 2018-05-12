@@ -562,12 +562,12 @@ msgid "Sort by field"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:138
-#: includes/class-common.php:1310
+#: includes/class-common.php:1309
 msgid "Default"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:139
-#: includes/class-common.php:1353
+#: includes/class-common.php:1352
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
 msgstr ""
@@ -1657,7 +1657,7 @@ msgstr ""
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1463
+#: includes/class-common.php:1462
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -3345,12 +3345,12 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr ""
 
-#: includes/class-frontend-views.php:1297
+#: includes/class-frontend-views.php:1298
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-frontend-views.php:1298
+#: includes/class-frontend-views.php:1299
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""
