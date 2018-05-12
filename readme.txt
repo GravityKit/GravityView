@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Slow front-end performance, affecting all layout types
 * Fixed: Search not performing properly
 * Fixed: "Enable sorting by column" option for Table layouts
+* GravityView will require Gravity Forms 2.3 in the future; please make sure you're using the latest version of Gravity Forms!
 
 __Developer Updates__
 

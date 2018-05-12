@@ -311,6 +311,7 @@ class GravityView_Welcome {
                     <li>Fixed: Slow front-end performance, affecting all layout types</li>
                     <li>Fixed: Search not performing properly</li>
                     <li>Fixed: "Enable sorting by column" option for Table layouts</li>
+                    <li>GravityView will require Gravity Forms 2.3 in the future; please make sure you&rsquo;re using the latest version of Gravity Forms!</li>
                 </ul>
 
                 <p><strong>Developer Updates</strong></p>
