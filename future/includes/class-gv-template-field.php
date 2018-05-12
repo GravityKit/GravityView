@@ -86,131 +86,152 @@ abstract class Field_Template extends Template {
 		$this->request = $request;
 
 		/** Add granular overrides. */
-		add_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ), 10, 3 );
+		add_filter( $this->filter_prefix . '_get_template_part', $this->_add_id_specific_templates_callback  = self::add_id_specific_templates( $this ), 10, 3 );
 
 		parent::__construct();
 	}
 
 	public function __destruct() {
-		remove_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ) );
+		remove_filter( $this->filter_prefix . '_get_template_part', $this->_add_id_specific_templates_callback );;
 	}
 
 	/**
 	 * Enable granular template overrides based on current post, view, form, field types, etc.
 	 *
-	 * The hierarchy is as follows:
+	 * Why? See https://github.com/gravityview/GravityView/issues/1024
 	 *
-	 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field type]-html.php
-	 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field inputType]-html.php
-	 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-html.php
-	 * - post-[ID of post of page where view is embedded]-field-[Field type]-html.php
-	 * - post-[ID of post of page where view is embedded]-field-[Field inputType]-html.php
-	 * - post-[ID of post of page where view is embedded]-field-html.php
-	 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field type].php
-	 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field inputType].php
-	 * - post-[ID of post of page where view is embedded]-view-[View ID]-field.php
-	 * - post-[ID of post of page where view is embedded]-field-[Field type].php
-	 * - post-[ID of post of page where view is embedded]-field-[Field inputType].php
-	 * - post-[ID of post of page where view is embedded]-field.php
-	 * - form-[Form ID]-field-[Field ID]-html.php
-	 * - form-[Form ID]-field-[Field ID].php
-	 * - form-[Form ID]-field-[Field type]-html.php
-	 * - form-[Form ID]-field-[Field inputType]-html.php
-	 * - form-[Form ID]-field-[Field type].php
-	 * - form-[Form ID]-field-[Field inputType].php
-	 * - view-[View ID]-field-[Field type]-html.php
-	 * - view-[View ID]-field-[Field inputType]-html.php
-	 * - view-[View ID]-field-[Field type].php
-	 * - view-[View ID]-field-[Field inputType].php
-	 * - field-[Field type]-html.php
-	 * - field-[Field inputType]-html.php
-	 * - field-[Field type].php
-	 * - field-[Field inputType].php
-	 * - field-html.php
-	 * - field.php
-	 *
-	 * @see  Gamajo_Template_Loader::get_template_file_names() Where the filter is
-	 * @param array $templates Existing list of templates.
-	 * @param string $slug      Name of the template base, example: `html`, `json`, `xml`
-	 * @param string $name      Name of the template part.
-	 *
-	 * @return array $templates Modified template array, merged with existing $templates values
+	 * @param \GV\Field_Template $template The template instance.
+	 * @return callable The callback bound to `get_template_part`. See `\GV\Field_Template::__construct`
 	 */
-	public function add_id_specific_templates( $templates, $slug, $name ) {
+	public static function add_id_specific_templates( $template ) {
 
-		$specifics = array();
+		$inputType  = null;
+		$field_type = null;
+		$field_id   = null;
+		$view_id    = null;
+		$form_id    = null;
+		$is_view    = $template->request && $template->request->is_view();
 
-		list( $slug_dir, $slug_name ) = self::split_slug( $slug, $name );
-
-		global $post;
-
-		if ( $this->field ) {
-			$inputType  = $this->field->inputType;
-			$field_type = $this->field->type;
+		if ( $template->field ) {
+			$inputType  = $template->field->inputType;
+			$field_type = $template->field->type;
+			$field_id   = $template->field->ID;
 		}
 
-		if ( $this->view ) {
-			$view_id = $this->view->ID;
+		if ( $template->view ) {
+			$view_id = $template->view->ID;
+			$form_id = $template->view->form ? $template->view->form->ID : null;
 		}
 
-		if ( $this->request && $this->request->is_view() && $post ) {
-			if ( $this->field && $field_type ) {
-				$specifics []= sprintf( '%spost-%d-view-%d-field-%s-%s.php', $slug_dir, $post->ID, $view_id, $field_type, $slug_name );
-				$inputType && $specifics []= sprintf( '%spost-%d-view-%d-field-%s-%s.php', $slug_dir, $post->ID, $view_id, $inputType, $slug_name );
-				$specifics []= sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $view_id, $field_type );
-				$inputType && $specifics []= sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $view_id, $inputType );
-				$specifics []= sprintf( '%spost-%d-field-%s-%s.php', $slug_dir, $post->ID, $field_type, $slug_name );
-				$inputType && $specifics []= sprintf( '%spost-%d-field-%s-%s.php', $slug_dir, $post->ID, $inputType, $slug_name );
-				$specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $field_type );
-				$inputType &&  $specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $inputType );
+		$class = get_class( $template );
+
+		/**
+		 * Enable granular template overrides based on current post, view, form, field types, etc.
+		 *
+		 * The hierarchy is as follows:
+		 *
+		 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field type]-html.php
+		 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field inputType]-html.php
+		 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-html.php
+		 * - post-[ID of post of page where view is embedded]-field-[Field type]-html.php
+		 * - post-[ID of post of page where view is embedded]-field-[Field inputType]-html.php
+		 * - post-[ID of post of page where view is embedded]-field-html.php
+		 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field type].php
+		 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field inputType].php
+		 * - post-[ID of post of page where view is embedded]-view-[View ID]-field.php
+		 * - post-[ID of post of page where view is embedded]-field-[Field type].php
+		 * - post-[ID of post of page where view is embedded]-field-[Field inputType].php
+		 * - post-[ID of post of page where view is embedded]-field.php
+		 * - form-[Form ID]-field-[Field ID]-html.php
+		 * - form-[Form ID]-field-[Field ID].php
+		 * - form-[Form ID]-field-[Field type]-html.php
+		 * - form-[Form ID]-field-[Field inputType]-html.php
+		 * - form-[Form ID]-field-[Field type].php
+		 * - form-[Form ID]-field-[Field inputType].php
+		 * - view-[View ID]-field-[Field type]-html.php
+		 * - view-[View ID]-field-[Field inputType]-html.php
+		 * - view-[View ID]-field-[Field type].php
+		 * - view-[View ID]-field-[Field inputType].php
+		 * - field-[Field type]-html.php
+		 * - field-[Field inputType]-html.php
+		 * - field-[Field type].php
+		 * - field-[Field inputType].php
+		 * - field-html.php
+		 * - field.php
+		 *
+		 * @see  Gamajo_Template_Loader::get_template_file_names() Where the filter is
+		 * @param array $templates Existing list of templates.
+		 * @param string $slug      Name of the template base, example: `html`, `json`, `xml`
+		 * @param string $name      Name of the template part.
+		 *
+		 * @return array $templates Modified template array, merged with existing $templates values
+		 */
+		return function( $templates, $slug, $name ) use ( $class, $inputType, $field_type, $view_id, $is_view, $form_id, $field_id ) {
+			$specifics = array();
+
+			list( $slug_dir, $slug_name ) = $class::split_slug( $slug, $name );
+
+			global $post;
+
+			if ( $is_view && $post ) {
+				if ( $field_type ) {
+					$specifics []= sprintf( '%spost-%d-view-%d-field-%s-%s.php', $slug_dir, $post->ID, $view_id, $field_type, $slug_name );
+					$inputType && $specifics []= sprintf( '%spost-%d-view-%d-field-%s-%s.php', $slug_dir, $post->ID, $view_id, $inputType, $slug_name );
+					$specifics []= sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $view_id, $field_type );
+					$inputType && $specifics []= sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $view_id, $inputType );
+					$specifics []= sprintf( '%spost-%d-field-%s-%s.php', $slug_dir, $post->ID, $field_type, $slug_name );
+					$inputType && $specifics []= sprintf( '%spost-%d-field-%s-%s.php', $slug_dir, $post->ID, $inputType, $slug_name );
+					$specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $field_type );
+					$inputType &&  $specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $inputType );
+				}
+
+				$specifics []= sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $view_id, $slug_name );
+				$specifics []= sprintf( '%spost-%d-view-%d-field.php', $slug_dir, $post->ID, $view_id );
+				$specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $slug_name );
+				$specifics []= sprintf( '%spost-%d-field.php', $slug_dir, $post->ID );
+			}
+			
+			/** Field-specific */
+			if ( $field_id && $form_id ) {
+
+				if ( $field_id ) {
+					$specifics []= sprintf( '%sform-%d-field-%d-%s.php', $slug_dir, $form_id, $field_id, $slug_name );
+					$specifics []= sprintf( '%sform-%d-field-%d.php', $slug_dir, $form_id, $field_id );
+				}
+
+				if ( $field_type ) {
+					$specifics []= sprintf( '%sform-%d-field-%s-%s.php', $slug_dir, $form_id, $field_type, $slug_name );
+					$inputType && $specifics []= sprintf( '%sform-%d-field-%s-%s.php', $slug_dir, $form_id, $inputType, $slug_name );
+					$specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $form_id, $field_type );
+					$inputType && $specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $form_id, $inputType );
+
+					$specifics []= sprintf( '%sview-%d-field-%s-%s.php', $slug_dir, $view_id, $field_type, $slug_name );
+					$inputType && $specifics []= sprintf( '%sview-%d-field-%s-%s.php', $slug_dir, $view_id, $inputType, $slug_name );
+					$specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $view_id, $field_type );
+					$inputType && $specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $view_id, $inputType );
+
+					$specifics []= sprintf( '%sfield-%s-%s.php', $slug_dir, $field_type, $slug_name );
+					$inputType && $specifics []= sprintf( '%sfield-%s-%s.php', $slug_dir, $inputType, $slug_name );
+					$specifics []= sprintf( '%sfield-%s.php', $slug_dir, $field_type );
+					$inputType && $specifics []= sprintf( '%sfield-%s.php', $slug_dir, $inputType );
+				}
 			}
 
-			$specifics []= sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $view_id, $slug_name );
-			$specifics []= sprintf( '%spost-%d-view-%d-field.php', $slug_dir, $post->ID, $view_id );
-			$specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $slug_name );
-			$specifics []= sprintf( '%spost-%d-field.php', $slug_dir, $post->ID );
-		}
-		
-		/** Field-specific */
-		if ( $this->field && $this->view ) {
+			if ( $form_id ) {
+				/** Generic field templates */
+				$specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $view_id, $slug_name );
+				$specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $form_id, $slug_name );
 
-			if ( $this->field->ID ) {
-				$specifics []= sprintf( '%sform-%d-field-%d-%s.php', $slug_dir, $this->view->form->ID, $this->field->ID, $slug_name );
-				$specifics []= sprintf( '%sform-%d-field-%d.php', $slug_dir, $this->view->form->ID, $this->field->ID );
+				$specifics []= sprintf( '%sview-%d-field.php', $slug_dir, $view_id );
+				$specifics []= sprintf( '%sform-%d-field.php', $slug_dir, $form_id );
 			}
 
-			if ( $field_type ) {
-				$specifics []= sprintf( '%sform-%d-field-%s-%s.php', $slug_dir, $this->view->form->ID, $field_type, $slug_name );
-				$inputType && $specifics []= sprintf( '%sform-%d-field-%s-%s.php', $slug_dir, $this->view->form->ID, $inputType, $slug_name );
-				$specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $this->view->form->ID, $field_type );
-				$inputType && $specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $this->view->form->ID, $inputType );
-
-				$specifics []= sprintf( '%sview-%d-field-%s-%s.php', $slug_dir, $view_id, $field_type, $slug_name );
-				$inputType && $specifics []= sprintf( '%sview-%d-field-%s-%s.php', $slug_dir, $view_id, $inputType, $slug_name );
-				$specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $view_id, $field_type );
-				$inputType && $specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $view_id, $inputType );
-
-				$specifics []= sprintf( '%sfield-%s-%s.php', $slug_dir, $field_type, $slug_name );
-				$inputType && $specifics []= sprintf( '%sfield-%s-%s.php', $slug_dir, $inputType, $slug_name );
-				$specifics []= sprintf( '%sfield-%s.php', $slug_dir, $field_type );
-				$inputType && $specifics []= sprintf( '%sfield-%s.php', $slug_dir, $inputType );
-			}
-		}
-
-		if ( $this->view ) {
-			/** Generic field templates */
-			$specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $view_id, $slug_name );
-			$specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $this->view->form->ID, $slug_name );
-
-			$specifics []= sprintf( '%sview-%d-field.php', $slug_dir, $view_id );
-			$specifics []= sprintf( '%sform-%d-field.php', $slug_dir, $this->view->form->ID );
-		}
-
-		$specifics []= sprintf( '%sfield-%s.php', $slug_dir, $slug_name );
-		$specifics []= sprintf( '%sfield.php', $slug_dir );
+			$specifics []= sprintf( '%sfield-%s.php', $slug_dir, $slug_name );
+			$specifics []= sprintf( '%sfield.php', $slug_dir );
 
 
-		return array_merge( $specifics, $templates );
+			return array_merge( $specifics, $templates );
+		};
 	}
 
 	/**
