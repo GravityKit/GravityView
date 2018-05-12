@@ -370,7 +370,7 @@ class License_Handler {
 	 * @param  object|null $license_data Object with license data
 	 * @return array          Modified array of content
 	 */
-	private function strings( $status = NULL, $license_data = null ) {
+	public function strings( $status = NULL, $license_data = null ) {
 		$strings = array(
 			'status' => esc_html__( 'Status', 'gravityview' ),
 			'error' => esc_html__( 'There was an error processing the request.', 'gravityview' ),
