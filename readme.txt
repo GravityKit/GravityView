@@ -21,7 +21,17 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0.4 on May 12, 2018 =
+
+* Fixed: Slow front-end performance, affecting all layout types
+* Fixed: Search not performing properly
 * Fixed: "Enable sorting by column" option for Table layouts
+
+__Developer Updates__
+
+* Fixed: `GravityView_frontend::get_view_entries()` search generation
+* Fixed: `gravityview_get_template_settings()` not returning settings
+* Tweak: Cache View and Field magic getters into variables for less overhead.
 
 = 2.0.3 on May 10, 2018 =
 

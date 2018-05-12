@@ -305,6 +305,23 @@ class GravityView_Welcome {
                     </ul>
                 </div>
 
+                <h3>2.0.4 on May 12, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Slow front-end performance, affecting all layout types</li>
+                    <li>Fixed: Search not performing properly</li>
+                    <li>Fixed: "Enable sorting by column" option for Table layouts</li>
+                </ul>
+
+                <p><strong>Developer Updates</strong></p>
+
+                <ul>
+                    <li>Fixed: <code>GravityView_frontend::get_view_entries()</code> search generation</li>
+                    <li>Fixed: <code>gravityview_get_template_settings()</code> not returning settings</li>
+                    <li>Tweak: Cache View and Field magic getters into variables for less overhead.</li>
+                </ul>
+
+
                 <h3>2.0.3 on May 10, 2018</h3>
 
                 <ul>
