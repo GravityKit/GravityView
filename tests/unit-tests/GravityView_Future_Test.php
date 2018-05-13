@@ -4337,6 +4337,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$view->settings->update( array( 'page_size' => 1, 'offset' => 1 ) );
 
+		$view->settings->set( 'sort_field', 'id' );
+		$view->settings->set( 'sort_direction', 'desc' );
+
 		$entries = GravityView_frontend::get_view_entries( $view->settings->as_atts(), $form->ID );
 		$this->assertEquals( 1, $entries['count'] );
 		$this->assertEquals( array( 'offset' => 0, 'page_size' => 1 ), $entries['paging'] );
