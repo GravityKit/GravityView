@@ -626,7 +626,7 @@ class View implements \ArrayAccess {
 				$query = new \GF_Query( $this->form->ID, $parameters['search_criteria'], $parameters['sorting'] );
 
 				$query->limit( $parameters['paging']['page_size'] )
-					->page( $page );
+					->offset( ( ( $page - 1 ) * $parameters['paging']['page_size'] ) + $this->settings->get( 'offset' ) );
 
 				/**
 				 * Any joins?
