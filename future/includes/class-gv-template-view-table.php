@@ -29,32 +29,25 @@ class View_Table_Template extends View_Template {
 	 */
 	public function __construct( View $view, Entry_Collection $entries, Request $request ) {
 
-	    add_filter( 'gravityview/template/field/label', array( $this, 'add_columns_sort_links' ), 100, 2 );
+	    add_filter( 'gravityview/template/field/label', array( __CLASS__, 'add_columns_sort_links' ), 100, 2 );
 
 		parent::__construct( $view, $entries, $request );
-	}
-
-	/**
-	 * @since 2.0.4
-	 */
-	public function __destruct() {
-
-		remove_filter( 'gravityview/template/field/label', array( $this, 'add_columns_sort_links' ), 100 );
-
-		parent::__destruct();
 	}
 
 	/**
      * Add sorting links to HTML columns that support sorting
      *
      * @since 2.0.4
+     * @since 2.0.5 Made static
+     *
+     * @static
      *
 	 * @param string $column_label Label for the table column
 	 * @param \GV\Template_Context $context
 	 *
 	 * @return string
 	 */
-	public function add_columns_sort_links( $column_label, $context = null ) {
+	static public function add_columns_sort_links( $column_label, $context = null ) {
 
 		$sort_columns = $context->view->settings->get( 'sort_columns' );
 
