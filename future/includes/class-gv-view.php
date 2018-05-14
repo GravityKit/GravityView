@@ -658,6 +658,8 @@ class View implements \ArrayAccess {
 					array_map( array( $entries, 'add' ), array_map( '\GV\GF_Entry::from_entry', $query->get() ) );
 				}
 
+				var_dump( $query->_introspect()['queries'] );
+
 				/**
 				 * Add total count callback.
 				 */
