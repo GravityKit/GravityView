@@ -16,29 +16,11 @@ branches:
     - 2.0
 
 php:
-  - 5.3
-  - 5.4
-  - 5.6
-  - 7.0
-  - 7.1
   - 7.2
 
 env:
   - WP_VERSION=latest WP_MULTISITE=0
   - WP_VERSION=latest WP_MULTISITE=0 GF_VERSION=2.2
-  - WP_VERSION=4.4 WP_MULTISITE=0
-
-matrix:
-  include:
-    - php: 5.3
-      env: WP_VERSION=latest WP_MULTISITE=1
-  exclude:
-      - php: 7.0
-        env: WP_VERSION=4.4 WP_MULTISITE=0
-      - php: 7.1
-        env: WP_VERSION=4.4 WP_MULTISITE=0
-      - php: 7.2
-        env: WP_VERSION=4.4 WP_MULTISITE=0
 
 install:
   - curl -s https://getcomposer.org/installer | php
@@ -52,7 +34,7 @@ before_script:
   - bash tests/bin/install.sh gravityview_test root '' localhost $WP_VERSION
   - bash tests/bin/travis.sh before
   - mkdir -p /tmp/wordpress-tests-lib/data/themedir1
-  - if [[ $TRAVIS_PHP_VERSION = '7.2' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' ]]; then DO_COVERAGE=1; else DO_COVERAGE=0; fi
+  - if [[ $TRAVIS_PHP_VERSION = '7.2' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' ]]; then DO_COVERAGE=1; else DO_COVERAGE=1; fi
 
 script:
   - if [[ $DO_COVERAGE = '1' ]]; then vendor/bin/phpunit -c phpunit.xml.dist; else vendor/bin/phpunit -c phpunit.xml.dist --no-coverage --filter test_get_view_entries_compat; fi
