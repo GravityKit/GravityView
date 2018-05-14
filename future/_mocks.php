@@ -95,41 +95,24 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 		 */
 		$paging = \GV\Utils::get( $parameters, 'paging' );
 	} else {
-		$entries = $form->entries
-			->filter( \GV\GF_Entry_Filter::from_search_criteria( $criteria['search_criteria'] ) )
-			->offset( $args['offset'] )
-			->limit( $criteria['paging']['page_size'] );
-
-		if ( $criteria['paging']['page_size'] ) {
-			$entries = $entries->page( ( ( $criteria['paging']['offset'] - $args['offset'] ) / $criteria['paging']['page_size'] ) + 1 );
+		$entries = new \GV\Entry_Collection();
+		if ( $view = \GV\View::by_id( \GV\Utils::get( $args, 'id' ) ) ) {
+			$view->settings->update( $args );
+			$entries = $view->get_entries( gravityview()->request );
 		}
 
-		if ( ! empty( $criteria['sorting'] ) ) {
-			$field = new \GV\Field();
-			$field->ID = $criteria['sorting']['key'];
-			switch( strtolower( $criteria['sorting']['direction'] ) ) {
-				case 'asc':
-					$direction = \GV\Entry_Sort::ASC;
-					break;
-				case 'rand':
-					$direction = \GV\Entry_Sort::RAND;
-					break;
-				default:
-				case 'desc':
-					$direction = \GV\Entry_Sort::DESC;
-					break;
-			}
-
-			$mode = $criteria['sorting']['is_numeric'] ? \GV\Entry_Sort::NUMERIC : \GV\Entry_Sort::ALPHA;
-			$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction, $mode ) );
-		}
+		$page = \GV\Utils::get( $parameters['paging'], 'current_page' ) ?
+			: ( ( ( $parameters['paging']['offset'] - $view->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
 
 		/** Set paging, count and unwrap the entries. */
 		$paging = array(
-			'offset' => ( $entries->current_page - 1 ) * $entries->limit,
-			'page_size' => $entries->limit,
+			'offset' => ( $page - 1 ) * $view->settings->get( 'page_size' ),
+			'page_size' => $view->settings->get( 'page_size' ),
 		);
-		$count = $entries->total();
+		/**
+		 * GF_Query does not subtract the offset, we have to subtract it ourselves.
+		 */
+		$count = $entries->total() - ( gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ? $view->settings->get( 'offset' ) : 0 );
 		$entries = array_map( function( $e ) { return $e->as_entry(); }, $entries->all() );
 	}
 
