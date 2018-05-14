@@ -31,7 +31,7 @@ class GVCommon {
 		}
 
 		// Only get_form_meta is cached. ::facepalm::
-		if ( class_exists( 'RGFormsModel' ) ) {
+		if ( class_exists( 'GFFormsModel' ) ) {
 			return GFFormsModel::get_form_meta( $form_id );
 		}
 
