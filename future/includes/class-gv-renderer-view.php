@@ -107,6 +107,8 @@ class View_Renderer extends Renderer {
 		/** @todo Deprecate this! */
 		$parameters = \GravityView_frontend::get_view_entries_parameters( $view->settings->as_atts(), $view->form->ID );
 
+		global $post;
+
 		/** Mock the legacy state for the widgets and whatnot */
 		\GV\Mocks\Legacy_Context::push( array_merge( array(
 			'view' => $view,
@@ -115,6 +117,8 @@ class View_Renderer extends Renderer {
 		), empty( $parameters ) ? array() : array(
 			'paging' => $parameters['paging'],
 			'sorting' => $parameters['sorting'],
+		), empty( $post ) ? array() : array(
+			'post' => $post,
 		) ) );
 
 		add_action( 'gravityview/template/after', $view_id_output = function( $context ) {
