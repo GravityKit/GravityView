@@ -88,3 +88,4 @@ docs/html
 *.swp
 
 .idea/php.xml
+package-lock.json

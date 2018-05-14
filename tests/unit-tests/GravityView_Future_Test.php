@@ -2016,6 +2016,23 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( 'text in a textarea', $future );
 		$this->assertContains( 'Let&#039;s go back!', $future );
 		$this->assertNotContains( 'Country', $future );
+
+
+		// Check sorting links
+		$view->settings->set( 'sort_columns', '1' );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $entry, $view );
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'class="gv-sort', $future );
+
+		// Check sorting links
+		$view->settings->set( 'sort_columns', '0' );
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $entry, $view );
+		$this->assertEquals( $legacy, $future );
+		$this->assertNotContains( 'class="gv-sort', $future );
 	}
 
 	public function test_entry_renderer_table_hide_empty() {
@@ -4319,6 +4336,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 
 		$view->settings->update( array( 'page_size' => 1, 'offset' => 1 ) );
+
+		$view->settings->set( 'sort_field', 'id' );
+		$view->settings->set( 'sort_direction', 'desc' );
 
 		$entries = GravityView_frontend::get_view_entries( $view->settings->as_atts(), $form->ID );
 		$this->assertEquals( 1, $entries['count'] );

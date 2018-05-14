@@ -605,6 +605,8 @@ class View implements \ArrayAccess {
 			 * @todo: Stop using _frontend and use something like $request->get_search_criteria() instead
 			 */
 			$parameters = \GravityView_frontend::get_view_entries_parameters( $this->settings->as_atts(), $this->form->ID );
+			$parameters['context_view_id'] = $this->ID;
+			$parameters = \GVCommon::calculate_get_entries_criteria( $parameters, $this->form->ID );
 
 			if ( $request instanceof REST\Request ) {
 				$atts = $this->settings->as_atts();
@@ -617,7 +619,7 @@ class View implements \ArrayAccess {
 			$page = Utils::get( $parameters['paging'], 'current_page' ) ?
 				: ( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
 
-			if ( gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
+			if ( gravityview()->plugin->supports( Plugin::FEATURE_GFQUERY ) ) {
 				/**
 				 * New \GF_Query stuff :)
 				 */
@@ -629,7 +631,7 @@ class View implements \ArrayAccess {
 				/**
 				 * Any joins?
 				 */
-				if ( count( $this->joins ) ) {
+				if ( Plugin::FEATURE_JOINS && count( $this->joins ) ) {
 					foreach ( $this->joins as $join ) {
 						$query = $join->as_query_join( $query );
 					}
@@ -656,6 +658,8 @@ class View implements \ArrayAccess {
 					array_map( array( $entries, 'add' ), array_map( '\GV\GF_Entry::from_entry', $query->get() ) );
 				}
 
+				var_dump( $query->_introspect()['queries'] );
+
 				/**
 				 * Add total count callback.
 				 */
@@ -668,8 +672,8 @@ class View implements \ArrayAccess {
 					->offset( $this->settings->get( 'offset' ) )
 					->limit( $parameters['paging']['page_size'] )
 					->page( $page );
-
-				if ( ! empty( $parameters['sorting'] ) ) {
+				
+				if ( ! empty( $parameters['sorting'] ) && ! empty( $parameters['sorting']['key'] ) ) {
 					$field = new \GV\Field();
 					$field->ID = $parameters['sorting']['key'];
 					$direction = strtolower( $parameters['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;

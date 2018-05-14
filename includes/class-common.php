@@ -1179,8 +1179,7 @@ class GVCommon {
 
 		$settings = get_post_meta( $post_id, '_gravityview_template_settings', true );
 
-		if ( class_exists( 'GravityView_View_Data' ) ) {
-
+		if ( class_exists( '\GV\View_Settings' ) ) {
 
 			return wp_parse_args( (array)$settings, \GV\View_Settings::defaults() );
 
