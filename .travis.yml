@@ -34,7 +34,7 @@ before_script:
   - bash tests/bin/install.sh gravityview_test root '' localhost $WP_VERSION
   - bash tests/bin/travis.sh before
   - mkdir -p /tmp/wordpress-tests-lib/data/themedir1
-  - if [[ $TRAVIS_PHP_VERSION = '7.2' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' ]]; then DO_COVERAGE=1; else DO_COVERAGE=1; fi
+  - if [[ $TRAVIS_PHP_VERSION = '7.2' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' ]]; then DO_COVERAGE=0; else DO_COVERAGE=0; fi
 
 script:
   - if [[ $DO_COVERAGE = '1' ]]; then vendor/bin/phpunit -c phpunit.xml.dist; else vendor/bin/phpunit -c phpunit.xml.dist --no-coverage --filter test_get_view_entries_compat; fi
