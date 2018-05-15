@@ -561,7 +561,7 @@ final class GravityView_Delete_Entry {
 	 * @param  array $entry Gravity Forms entry array
 	 * @return boolean|WP_Error        True: can edit form. WP_Error: nope.
 	 */
-	function user_can_delete_entry( $entry = array(), $view_id ) {
+	function user_can_delete_entry( $entry = array(), $view_id = null ) {
 
 		$error = NULL;
 
