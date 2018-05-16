@@ -107,6 +107,13 @@ class gravityview extends \GV\Shortcode {
 		 * Editing a single entry.
 		 */
 		} else if ( ! $is_reembedded && ( $entry = $request->is_edit_entry() ) ) {
+			/**
+			 * When editing an entry don't render multiple views.
+			 */
+			if ( ( $selected = \GV\Utils::_GET( 'gvid' ) ) && $view->ID != $selected ) {
+				return '';
+			}
+
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -131,6 +138,13 @@ class gravityview extends \GV\Shortcode {
 		 * Viewing a single entry.
 		 */
 		} else if ( ! $is_reembedded && ( $entry = $request->is_entry() ) ) {
+			/**
+			 * When viewing an entry don't render multiple views.
+			 */
+			if ( ( $selected = \GV\Utils::_GET( 'gvid' ) ) && $view->ID != $selected ) {
+				return '';
+			}
+
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gravityview' );

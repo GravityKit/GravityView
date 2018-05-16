@@ -31,7 +31,7 @@ class GVCommon {
 		}
 
 		// Only get_form_meta is cached. ::facepalm::
-		if ( class_exists( 'RGFormsModel' ) ) {
+		if ( class_exists( 'GFFormsModel' ) ) {
 			return GFFormsModel::get_form_meta( $form_id );
 		}
 
@@ -429,6 +429,7 @@ class GVCommon {
 			'sorting' => null,
 			'paging' => null,
 			'cache' => (isset( $passed_criteria['cache'] ) ? (bool) $passed_criteria['cache'] : true),
+			'context_view_id' => null,
 		);
 
 		$criteria = wp_parse_args( $passed_criteria, $search_criteria_defaults );
@@ -483,20 +484,15 @@ class GVCommon {
 			}
 		}
 
-		if ( ! GravityView_frontend::getInstance()->getSingleEntry() ) {
-			$multiple_original = class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance() && GravityView_View_Data::getInstance()->has_multiple_views();
-		}
-
-		// Calculate the context view id and send it to the advanced filter
-		if ( GravityView_frontend::getInstance()->getSingleEntry() ) {
-			$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
-		} elseif ( $multiple_original ) {
-			$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
-		} elseif ( 'delete' === GFForms::get( 'action' ) ) {
-			$criteria['context_view_id'] = isset( $_GET['view_id'] ) ? intval( $_GET['view_id'] ) : null;
-		} elseif( !isset( $criteria['context_view_id'] ) ) {
-            // Prevent overriding the Context View ID: Some widgets could set the context_view_id (e.g. Recent Entries widget)
-			$criteria['context_view_id'] = null;
+		if ( empty( $criteria['context_view_id'] ) ) {
+			// Calculate the context view id and send it to the advanced filter
+			if ( GravityView_frontend::getInstance()->getSingleEntry() ) {
+				$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
+			} else if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance() && GravityView_View_Data::getInstance()->has_multiple_views() ) {
+				$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
+			} else if ( 'delete' === GFForms::get( 'action' ) ) {
+				$criteria['context_view_id'] = isset( $_GET['view_id'] ) ? intval( $_GET['view_id'] ) : null;
+			}
 		}
 
 		/**

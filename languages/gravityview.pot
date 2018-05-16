@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.0.3\n"
+"Project-Id-Version: GravityView 2.0.5\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -172,12 +172,12 @@ msgstr ""
 #: future/includes/class-gv-oembed.php:204
 #: future/includes/class-gv-oembed.php:210
 #: future/includes/class-gv-shortcode-gravityview.php:97
-#: future/includes/class-gv-shortcode-gravityview.php:112
-#: future/includes/class-gv-shortcode-gravityview.php:117
-#: future/includes/class-gv-shortcode-gravityview.php:123
-#: future/includes/class-gv-shortcode-gravityview.php:136
-#: future/includes/class-gv-shortcode-gravityview.php:141
-#: future/includes/class-gv-shortcode-gravityview.php:147
+#: future/includes/class-gv-shortcode-gravityview.php:119
+#: future/includes/class-gv-shortcode-gravityview.php:124
+#: future/includes/class-gv-shortcode-gravityview.php:130
+#: future/includes/class-gv-shortcode-gravityview.php:150
+#: future/includes/class-gv-shortcode-gravityview.php:155
+#: future/includes/class-gv-shortcode-gravityview.php:161
 #: future/includes/class-gv-view.php:224 future/includes/class-gv-view.php:263
 #: future/includes/class-gv-view.php:271 future/includes/class-gv-view.php:278
 #: future/includes/class-gv-view.php:287 future/includes/class-gv-view.php:292
@@ -221,7 +221,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/view-configuration.php:6
 #: includes/class-frontend-views.php:560
 #: includes/class-gravityview-admin-bar.php:104
-#: includes/class-gravityview-entry-link-shortcode.php:211
+#: includes/class-gravityview-entry-link-shortcode.php:210
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
 #: includes/extensions/edit-entry/class-edit-entry-render.php:898
@@ -562,12 +562,12 @@ msgid "Sort by field"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:138
-#: includes/class-common.php:1309
+#: includes/class-common.php:1305
 msgid "Default"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:139
-#: includes/class-common.php:1352
+#: includes/class-common.php:1348
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
 msgstr ""
@@ -1482,23 +1482,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:408
+#: includes/class-admin-welcome.php:438
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:429
+#: includes/class-admin-welcome.php:459
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:464
+#: includes/class-admin-welcome.php:494
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:489
+#: includes/class-admin-welcome.php:519
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:490
+#: includes/class-admin-welcome.php:520
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1651,13 +1651,13 @@ msgstr ""
 msgid "Post ID"
 msgstr ""
 
-#: includes/class-common.php:979
+#: includes/class-common.php:975
 #. translators: %s: relative time from now, used for generic date comparisons.
 #. "1 day ago", or "20 seconds ago"
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1462
+#: includes/class-common.php:1458
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -1880,7 +1880,7 @@ msgstr ""
 msgid "Reset Entry approval for GravityView"
 msgstr ""
 
-#: includes/class-gravityview-entry-link-shortcode.php:214
+#: includes/class-gravityview-entry-link-shortcode.php:213
 #: includes/extensions/delete-entry/class-delete-entry.php:117
 #: includes/extensions/delete-entry/class-delete-entry.php:147
 #: includes/extensions/delete-entry/class-delete-entry.php:164
@@ -1889,7 +1889,7 @@ msgstr ""
 msgid "Delete Entry"
 msgstr ""
 
-#: includes/class-gravityview-entry-link-shortcode.php:217
+#: includes/class-gravityview-entry-link-shortcode.php:216
 #: includes/fields/class-gravityview-field-entry-link.php:51
 #: templates/deprecated/fields/entry_link.php:16
 #: templates/fields/field-entry_link-html.php:12

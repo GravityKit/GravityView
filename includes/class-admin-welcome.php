@@ -305,6 +305,18 @@ class GravityView_Welcome {
                     </ul>
                 </div>
 
+                <h3> 2.0.5 on May 16, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Entry Link fields and <code>[gv_entry_link]</code> shortcode not working properly with DataTables when embedded</li>
+                    <li>Fixed: Do not output other shortcodes in single entry mode</li>
+                    <li>Fixed: Error when deleting an entry</li>
+                    <li>Fixed: When multiple Views are embedded on a page, and one or more has Advanced Filters enabled, no entries will be displayed</li>
+                    <li>Fixed: PHP warning with <code>[gravitypdf]</code> shortcode</li>
+                    <li>Fixed: When multiple table layout Views are embedded on a page, there are multiple column sorting links displayed</li>
+                    <li>Fixed: Error displaying message that a license is expired</li>
+                </ul>
+
                 <h3>2.0.4 on May 12, 2018</h3>
 
                 <ul>

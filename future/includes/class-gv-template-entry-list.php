@@ -51,7 +51,7 @@ class Entry_List_Template extends Entry_Template {
 
 		/**
 		 * @filter `gravityview/template/table/entry/hide_empty`
-		 * @param boolean Should the row be hidden if the value is empty? Default: don't hide.
+		 * @param boolean $hide_empty Should the row be hidden if the value is empty? Default: don't hide.
 		 * @param \GV\Template_Context $context The context ;) Love it, cherish it. And don't you dare modify it!
 		 */
 		$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', Utils::get( $extras, 'hide_empty', $this->view->settings->get( 'hide_empty', false ) ), $context );
