@@ -521,6 +521,11 @@ class GravityView_Cache {
 	 */
 	public function use_cache() {
 
+		// Exit early if debugging!
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			return apply_filters( 'gravityview_use_cache', false, $this );
+		}
+
 		$use_cache = true;
 
 		if ( GVCommon::has_cap( 'edit_gravityviews' ) ) {
