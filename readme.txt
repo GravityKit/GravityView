@@ -21,6 +21,16 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0.5 on May 16, 2018 =
+
+* Fixed: Entry Link fields and `[gv_entry_link]` shortcode not working properly with DataTables when embedded
+* Fixed: Do not output other shortcodes in single entry mode
+* Fixed: Error when deleting an entry
+* Fixed: When multiple Views are embedded on a page, and one or more has Advanced Filters enabled, no entries will be displayed
+* Fixed: PHP warning with `[gravitypdf]` shortcode
+* Fixed: When multiple table layout Views are embedded on a page, there are multiple column sorting links displayed
+* Fixed: Error displaying message that a license is expired
+
 = 2.0.4 on May 12, 2018 =
 
 * Fixed: Slow front-end performance, affecting all layout types
