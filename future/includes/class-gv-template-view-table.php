@@ -150,7 +150,7 @@ class View_Table_Template extends View_Template {
 		/**
 		 * @filter `gravityview_table_cells` Modify the fields displayed in a table
 		 * @param array $fields
-		 * @param GravityView_View $this
+		 * @param \GravityView_View $this
 		 * @deprecated Use `gravityview/template/table/fields`
 		 */
 		$fields = apply_filters( 'gravityview_table_cells', $fields->as_configuration(), \GravityView_View::getInstance() );
@@ -196,7 +196,7 @@ class View_Table_Template extends View_Template {
                 /**
                  * @action `gravityview_table_cells_before` Inside the `tr` while rendering each entry in the loop. Can be used to insert additional table cells.
                  * @since 1.0.7
-				 * @param GravityView_View $this Current GravityView_View object
+				 * @param \GravityView_View $this Current GravityView_View object
 				 * @deprecated Use `gravityview/template/table/cells/before`
                  */
                 do_action( 'gravityview_table_cells_before', \GravityView_View::getInstance() );
@@ -215,7 +215,7 @@ class View_Table_Template extends View_Template {
                 /**
                  * @action `gravityview_table_cells_after` Inside the `tr` while rendering each entry in the loop. Can be used to insert additional table cells.
                  * @since 1.0.7
-				 * @param GravityView_View $this Current GravityView_View object
+				 * @param \GravityView_View $this Current GravityView_View object
 				 * @deprecated Use `gravityview/template/table/cells/after`
                  */
                 do_action( 'gravityview_table_cells_after', \GravityView_View::getInstance() );
