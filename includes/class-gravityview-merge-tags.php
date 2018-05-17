@@ -72,6 +72,15 @@ class GravityView_Merge_Tags {
 
 		$return = $raw_value;
 
+		$unserialized = maybe_unserialize( $raw_value );
+
+		if ( method_exists( $field, 'get_value_merge_tag' ) && is_array( $unserialized ) ) {
+
+			$non_gv_modifiers = array_diff( $modifiers, array_keys( $gv_modifiers ) );
+
+			$return = $field->get_value_merge_tag( $value, '', array( 'currency' => '' ), array(), implode( '', $non_gv_modifiers ), $raw_value, false, false, 'text', false);
+		}
+
 		foreach ( $modifiers as $passed_modifier ) {
 
 			foreach( $gv_modifiers as $gv_modifier => $method ) {
