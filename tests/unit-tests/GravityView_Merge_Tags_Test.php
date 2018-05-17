@@ -224,7 +224,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		);
 
 		// Fake it as it's used for default filters
-		$field = (object) array( 'type' => 'text' );
+		$field = new GF_Field_Text();
 
 		foreach ( $tests as $test ) {
 			$value = isset( $test['value'] ) ? $test['value'] : 'value should not be used';
@@ -408,10 +408,15 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		$form['fields'][] = new GF_Field_Text( array( 'id' => 201, 'form_id' => $form['id'] ) );
 		$form['fields'][] = new GF_Field_Text( array( 'id' => 301, 'form_id' => $form['id'] ) );
 
+		$list_field = new GF_Field_List( array( 'id' => 401, 'form_id' => $form['id'] ) );
+
+		$form['fields'][] = $list_field;
+
 		$entry['100'] = 'This is spaces';
 		$entry['101'] = 'This,is,commas';
 		$entry['201'] = '<tag>';
 		$entry['301'] = '["This","is","JSON"]';
+		$entry['401'] = 'a:2:{i:0;s:8:"One List";i:1;s:8:"Two List";}';
 
 		$tests = array(
 			'{Field:100:sanitize_html_class}' => 'This is spaces',
@@ -441,6 +446,13 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 			'{Field:301:explode,sanitize_title,strtoupper,urlencode}' => 'THIS-IS-JSON',
 			'{Field:301:explode,strtolower}' => 'this is json',
 			'{Field:301:esc_html,explode}' => '[&quot;This&quot; &quot;is&quot; &quot;JSON&quot;]',
+			'{List Field:401:url}' => 'One List,Two List',
+			'{List Field:401:text}' => 'One List, Two List',
+			'{List Field:401:html}' => "<ul class='bulleted'><li>One List</li><li>Two List</li></ul>",
+			'{List Field:401:url,urlencode}' => 'One+List%2CTwo+List',
+			'{List Field:401:text,urlencode}' => 'One+List%2C+Two+List',
+			'{List Field:401:html,esc_html}' => "&lt;ul class=&#039;bulleted&#039;&gt;&lt;li&gt;One List&lt;/li&gt;&lt;li&gt;Two List&lt;/li&gt;&lt;/ul&gt;",
+			'{List Field:401:non_gf_non_gv}' => 'One List, Two List',
 		);
 
 		$filter_tags = function( $tags ) {
@@ -462,6 +474,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	/**
 	 * We want to make sure that GravityView doesn't affect core Gravity Forms Merge Tags output
 	 * @covers GravityView_Merge_Tags::replace_variables()
+	 * @group gf_merge_tags
 	 * @since 1.15.1
 	 */
 	function test_gf_merge_tags() {
@@ -482,7 +495,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		foreach( $tests as $merge_tag => $expected ) {
 
 			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry, false ), $merge_tag );
-			$this->assertEquals( urlencode( $expected ), GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry, true ), $merge_tag );
+			$this->assertEquals( urlencode( $expected ), GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry, true ), $merge_tag . ' (urlencoded)' );
 
 			remove_filter( 'gform_replace_merge_tags', array( 'GravityView_Merge_Tags', 'replace_gv_merge_tags' ), 10 );
 			$this->assertEquals( $expected, GFCommon::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
