@@ -520,6 +520,9 @@ final class Legacy_Context {
 				case '\GravityView_View::fields':
 					\GravityView_View::getInstance()->setFields( $value );
 					break;
+				case '\GravityView_View::_current_field':
+					\GravityView_View::getInstance()->setCurrentField( $value );
+					break;
 				case 'wp_actions[loop_start]':
 					global $wp_actions;
 					$wp_actions['loop_start'] = $value;
@@ -595,6 +598,23 @@ final class Legacy_Context {
 				case 'fields':
 					self::thaw( array(
 						'\GravityView_View::fields' => $value->as_configuration(),
+					) );
+					break;
+				case 'field':
+					self::thaw( array(
+						'\GravityView_View::_current_field' => array(
+							'field_id' => $value->ID,
+							'field' => $value->field,
+							'field_settings' => $value->as_configuration(),
+							'form' => \GravityView_View::getInstance()->getForm(),
+							'field_type' => $value->type, /** {@since 1.6} */
+							'entry' => \GravityView_View::getInstance()->getCurrentEntry(),
+
+							// 'field_path' => $field_path, /** {@since 1.16} */
+							// 'value' => $value,
+							// 'display_value' => $display_value,
+							// 'format' => $format,
+						),
 					) );
 					break;
 				case 'request':
