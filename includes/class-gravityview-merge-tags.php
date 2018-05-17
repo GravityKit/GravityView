@@ -98,6 +98,11 @@ class GravityView_Merge_Tags {
 			}
 		}
 
+		// No GravityView modifications were made; return the (default) original value
+		if ( $raw_value === $return ) {
+			return $value;
+		}
+
 		/**
 		 * @filter `gravityview/merge_tags/modifiers/value` Modify the merge tag modifier output
 		 * @since 2.0

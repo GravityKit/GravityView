@@ -452,6 +452,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 			'{List Field:401:url,urlencode}' => 'One+List%2CTwo+List',
 			'{List Field:401:text,urlencode}' => 'One+List%2C+Two+List',
 			'{List Field:401:html,esc_html}' => "&lt;ul class=&#039;bulleted&#039;&gt;&lt;li&gt;One List&lt;/li&gt;&lt;li&gt;Two List&lt;/li&gt;&lt;/ul&gt;",
+			'{List Field:401:non_gf_non_gv}' => 'One List, Two List',
 		);
 
 		$filter_tags = function( $tags ) {
