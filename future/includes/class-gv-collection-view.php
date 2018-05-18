@@ -90,18 +90,25 @@ class View_Collection extends Collection {
 			 * This is useful when using themes that store content that may contain shortcodes in custom post meta.
 			 *
 			 * @since 2.0
+			 * @since 2.0.7 Added $views parameter, passed by reference
 			 *
 			 * @param[in,out] array $meta_keys Array of key values to check. If empty, do not check. Default: empty array
 			 * @param[in] \WP_Post $post The post that is being checked
+			 * @param \GV\View_Collection $views The current View Collection object, passed as reference
 			 */
-			$meta_keys = apply_filters( 'gravityview/view_collection/from_post/meta_keys', array(), $post );
+			$meta_keys = apply_filters_ref_array( 'gravityview/view_collection/from_post/meta_keys', array( array(), $post, &$views ) );
 
-			/**
-			 * @filter `gravityview/data/parse/meta_keys`
-			 * @deprecated
-			 * @see The `gravityview/view_collection/from_post/meta_keys` filter.
-			 */
-			$meta_keys = (array)apply_filters( 'gravityview/data/parse/meta_keys', $meta_keys, $post->ID );
+			if ( function_exists( 'apply_filters_deprecated' ) ) {
+				$meta_keys = (array) apply_filters_deprecated( 'gravityview/data/parse/meta_keys', array( $meta_keys, $post->ID ), '2.0.7', 'gravityview/view_collection/from_post/meta_keys' );
+			} else {
+				/**
+				 * @filter `gravityview/data/parse/meta_keys`
+				 * @deprecated
+				 * @todo Require WP 4.6.0 so that `apply_filters_deprecated` is always available
+				 * @see The `gravityview/view_collection/from_post/meta_keys` filter.
+				 */
+				$meta_keys = (array) apply_filters( 'gravityview/data/parse/meta_keys', $meta_keys, $post->ID );
+			}
 
 			/** What about inside post meta values? */
 			foreach ( $meta_keys as $meta_key ) {
