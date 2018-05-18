@@ -45,11 +45,24 @@ class GravityView_Theme_Hooks_SiteOrigin extends GravityView_Plugin_and_Theme_Ho
 
 		foreach ( (array) $post->panels_data['widgets'] as $widget ) {
 
-			if ( empty( $widget['text'] ) ) {
+			$views->merge( \GV\View_Collection::from_content( \GV\Utils::get( $widget, 'text' ) ) );
+
+			if ( empty( $widget['tabs'] ) || ! is_array( $widget['tabs'] ) ) {
 				continue;
 			}
 
-			$views->merge( \GV\View_Collection::from_content( $widget['text'] ) );
+			foreach ( $widget['tabs'] as $tab ) {
+
+				// Livemesh Tabs
+				$backup = \GV\Utils::get( $tab, 'tab_content' );
+
+				// SiteOrigin Tabs
+				$content = \GV\Utils::get( $tab, 'content_text', $backup );
+
+				if( $content ) {
+					$views->merge( \GV\View_Collection::from_content( $content ) );
+				}
+			}
 		}
 
 		return $meta_keys;
