@@ -305,6 +305,21 @@ class GravityView_Welcome {
                     </ul>
                 </div>
 
+                <h3>2.0.6 on May 17, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Conflicts with Yoast SEO &amp; Jetpack plugins that prevent widgets from displaying</li>
+                    <li>Fixed: Some fields display as HTML (fixes Gravity Flow Discussion field, for example)</li>
+                    <li>Fixed: Some Merge Tag modifiers not working, such as <code>:url</code> for List fields</li>
+                    <li>Fixed: Give Floaty a place to hang out on the GravityView Settings screen with new Gravity Forms CSS</li>
+                </ul>
+
+                <p><strong>Developer Updates</strong></p>
+
+                <ul>
+                    <li>Fixed: Backward-compatibility for using global <code>$gravityview_view-&gt;_current_field</code> (don't use in new code!)</li>
+                </ul>
+
                 <h3> 2.0.5 on May 16, 2018</h3>
 
                 <ul>
