@@ -659,39 +659,38 @@ class GVCommon {
 	 */
 	public static function get_entry( $entry_slug, $force_allow_ids = false, $check_entry_display = true ) {
 
-		if ( class_exists( 'GFAPI' ) && ! empty( $entry_slug ) ) {
-
-			$entry_id = self::get_entry_id( $entry_slug, $force_allow_ids );
-
-			if ( empty( $entry_id ) ) {
-				return false;
-			}
-
-			// fetch the entry
-			$entry = GFAPI::get_entry( $entry_id );
-
-			/**
-			 * @filter `gravityview/common/get_entry/check_entry_display` Override whether to check entry display rules against filters
-			 * @since 1.16.2
-			 * @param bool $check_entry_display Check whether the entry is visible for the current View configuration. Default: true.
-			 * @param array $entry Gravity Forms entry array
-			 */
-			$check_entry_display = apply_filters( 'gravityview/common/get_entry/check_entry_display', $check_entry_display, $entry );
-
-			if( $check_entry_display ) {
-				// Is the entry allowed
-				$entry = self::check_entry_display( $entry );
-			}
-
-			if( is_wp_error( $entry ) ) {
-				gravityview()->log->error( '{error}', array( 'error' => $entry->get_error_message() ) );
-				return false;
-			}
-
-			return $entry;
+		if ( ! class_exists( 'GFAPI' ) || empty( $entry_slug ) ) {
+			return false;
 		}
 
-		return false;
+		$entry_id = self::get_entry_id( $entry_slug, $force_allow_ids );
+
+		if ( empty( $entry_id ) ) {
+			return false;
+		}
+
+		// fetch the entry
+		$entry = GFAPI::get_entry( $entry_id );
+
+		/**
+		 * @filter `gravityview/common/get_entry/check_entry_display` Override whether to check entry display rules against filters
+		 * @since 1.16.2
+		 * @param bool $check_entry_display Check whether the entry is visible for the current View configuration. Default: true.
+		 * @param array $entry Gravity Forms entry array
+		 */
+		$check_entry_display = apply_filters( 'gravityview/common/get_entry/check_entry_display', $check_entry_display, $entry );
+
+		if( $check_entry_display ) {
+			// Is the entry allowed
+			$entry = self::check_entry_display( $entry );
+		}
+
+		if( is_wp_error( $entry ) ) {
+			gravityview()->log->error( '{error}', array( 'error' => $entry->get_error_message() ) );
+			return false;
+		}
+
+		return $entry;
 	}
 
 	/**
