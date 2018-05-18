@@ -5318,7 +5318,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'widgets' => array(
 				'header_top' => array(
 					wp_generate_password( 4, false ) => array(
-						'id' => $widget_id = wp_generate_password( 4, false ) . '-widget',
+						'id' => $widget_id = wp_generate_password( 12, false ) . '-widget',
 						'test' => 'foo',
 					),
 				),
