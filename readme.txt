@@ -21,7 +21,17 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0.6 on May 17, 2018 =
+
+* Fixed: Conflicts with Yoast SEO & Jetpack plugins that prevent widgets from displaying
+* Fixed: Some fields display as HTML (fixes Gravity Flow Discussion field, for example)
+* Fixed: Some Merge Tag modifiers not working, such as `:url` for List fields
 * Fixed: Give Floaty a place to hang out on the GravityView Settings screen with new Gravity Forms CSS
+
+__Developer Updates__
+
+* Fixed: Backward-compatibility for using global `$gravityview_view->_current_field` (don't use in new code!)
+
 = 2.0.5 on May 16, 2018 =
 
 * Fixed: Entry Link fields and `[gv_entry_link]` shortcode not working properly with DataTables when embedded
