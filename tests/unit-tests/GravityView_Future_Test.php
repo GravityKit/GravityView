@@ -508,8 +508,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\View_Collection::contains()
 	 * @covers \GravityView_View_Data::maybe_get_view_id()
 	 * @covers \GravityView_View_Data::is_valid_embed_id()
+     * @expectedDeprecated gravityview/data/parse/meta_keys
 	 */
 	public function test_view_collection_from_post() {
+
 		$original_shortcode = $GLOBALS['shortcode_tags']['gravityview'];
 		remove_shortcode( 'gravityview' ); /** Conflicts with existing shortcode right now. */
 		\GV\Shortcodes\gravityview::add();
