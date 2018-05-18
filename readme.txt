@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: Give Floaty a place to hang out on the GravityView Settings screen with new Gravity Forms CSS
 = 2.0.5 on May 16, 2018 =
 
 * Fixed: Entry Link fields and `[gv_entry_link]` shortcode not working properly with DataTables when embedded
