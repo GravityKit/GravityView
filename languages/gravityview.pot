@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.0.5\n"
+"Project-Id-Version: GravityView 2.0.6\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -134,14 +134,14 @@ msgid ""
 msgstr ""
 
 #: future/includes/class-gv-license-handler.php:387
-#: future/includes/class-gv-settings-addon.php:1083
+#: future/includes/class-gv-settings-addon.php:1130
 msgid "You don't have the ability to edit plugin settings."
 msgstr ""
 
 #: future/includes/class-gv-license-handler.php:389
 #: future/includes/class-gv-license-handler.php:496
 #: future/includes/class-gv-license-handler.php:510
-#: future/includes/class-gv-settings-addon.php:756
+#: future/includes/class-gv-settings-addon.php:761
 msgid "Verifying license&hellip;"
 msgstr ""
 
@@ -178,11 +178,11 @@ msgstr ""
 #: future/includes/class-gv-shortcode-gravityview.php:150
 #: future/includes/class-gv-shortcode-gravityview.php:155
 #: future/includes/class-gv-shortcode-gravityview.php:161
-#: future/includes/class-gv-view.php:224 future/includes/class-gv-view.php:263
-#: future/includes/class-gv-view.php:271 future/includes/class-gv-view.php:278
-#: future/includes/class-gv-view.php:287 future/includes/class-gv-view.php:292
-#: future/includes/class-gv-view.php:298 future/includes/class-gv-view.php:311
-#: future/includes/class-gv-view.php:316 future/includes/class-gv-view.php:322
+#: future/includes/class-gv-view.php:235 future/includes/class-gv-view.php:274
+#: future/includes/class-gv-view.php:282 future/includes/class-gv-view.php:289
+#: future/includes/class-gv-view.php:298 future/includes/class-gv-view.php:303
+#: future/includes/class-gv-view.php:309 future/includes/class-gv-view.php:322
+#: future/includes/class-gv-view.php:327 future/includes/class-gv-view.php:333
 #: includes/class-frontend-views.php:623
 msgid "You are not allowed to view this content."
 msgstr ""
@@ -349,7 +349,7 @@ msgid "Uninstall %s"
 msgstr ""
 
 #: future/includes/class-gv-settings-addon.php:543
-#: future/includes/class-gv-settings-addon.php:1023
+#: future/includes/class-gv-settings-addon.php:1070
 msgid "Update Settings"
 msgstr ""
 
@@ -392,89 +392,89 @@ msgstr ""
 msgid "Required"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:752
+#: future/includes/class-gv-settings-addon.php:757
 msgid "License Key"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:753
+#: future/includes/class-gv-settings-addon.php:758
 msgid ""
 "Enter the license key that was sent to you on purchase. This enables plugin "
 "updates &amp; support."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:775
+#: future/includes/class-gv-settings-addon.php:780
 msgid "Support Email"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:776
+#: future/includes/class-gv-settings-addon.php:781
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:785
+#: future/includes/class-gv-settings-addon.php:790
 msgid "Show Support Port?"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:798
+#: future/includes/class-gv-settings-addon.php:803
 msgid "The Support Port looks like this."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:798
+#: future/includes/class-gv-settings-addon.php:803
 msgid ""
 "The Support Port provides quick access to how-to articles and tutorials. "
 "For administrators, it also makes it easy to contact support."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:799
+#: future/includes/class-gv-settings-addon.php:804
 msgid "Show the Support Port on GravityView pages?"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:804
+#: future/includes/class-gv-settings-addon.php:809
 msgid "No-Conflict Mode"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:817
+#: future/includes/class-gv-settings-addon.php:822
 msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
 "themes."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:817
+#: future/includes/class-gv-settings-addon.php:822
 msgid "If your Edit View tabs are ugly, enable this setting."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:826
+#: future/includes/class-gv-settings-addon.php:831
 msgid "REST API"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:839
+#: future/includes/class-gv-settings-addon.php:844
 msgid ""
 "Enable View and Entry access via the REST API? Regular per-View "
 "restrictions apply (private, password protected, etc.)."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:840
+#: future/includes/class-gv-settings-addon.php:845
 msgid "If you are unsure, choose the Disable setting."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:845
+#: future/includes/class-gv-settings-addon.php:850
 msgid "Become a Beta Tester"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:855
+#: future/includes/class-gv-settings-addon.php:860
 msgid ""
 "You will have early access to the latest GravityView features and "
 "improvements. There may be bugs! If you encounter an issue, help make "
 "GravityView better by reporting it!"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:895
+#: future/includes/class-gv-settings-addon.php:900
 msgid "You are running GravityView version %s"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1106
+#: future/includes/class-gv-settings-addon.php:1153
 msgid ""
 "The license key you entered has been saved, but not activated. Please "
 "activate the license."
@@ -3260,37 +3260,37 @@ msgctxt "A scale from 0 (bad) to 10 (good)"
 msgid "%s (\"Not at all likely\") to %s (\"Extremely likely\")"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:790
+#: future/includes/class-gv-settings-addon.php:795
 msgctxt "Setting: Show or Hide"
 msgid "Show"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:794
+#: future/includes/class-gv-settings-addon.php:799
 msgctxt "Setting: Show or Hide"
 msgid "Hide"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:809
+#: future/includes/class-gv-settings-addon.php:814
 msgctxt "Setting: On or off"
 msgid "On"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:813
+#: future/includes/class-gv-settings-addon.php:818
 msgctxt "Setting: On or off"
 msgid "Off"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:831
+#: future/includes/class-gv-settings-addon.php:836
 msgctxt "Setting: Enable or Disable"
 msgid "Enable"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:835
+#: future/includes/class-gv-settings-addon.php:840
 msgctxt "Setting: Enable or Disable"
 msgid "Disable"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:850
+#: future/includes/class-gv-settings-addon.php:855
 msgctxt "gravityview"
 msgid "Show me beta versions if they are available."
 msgstr ""

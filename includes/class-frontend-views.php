@@ -123,7 +123,7 @@ class GravityView_frontend {
 	}
 
 	/**
-	 * @param GravityView_View_Data $gv_output_data
+	 * @param \GravityView_View_Data $gv_output_data
 	 */
 	public function setGvOutputData( $gv_output_data ) {
 		$this->gv_output_data = $gv_output_data;

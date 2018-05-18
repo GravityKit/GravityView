@@ -205,6 +205,17 @@ class View implements \ArrayAccess {
 	public static function content( $content ) {
 		$request = gravityview()->request;
 
+		// Plugins may run through the content in the header. WP SEO does this for its OpenGraph functionality.
+		if ( ! defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
+			if ( ! did_action( 'loop_start' ) ) {
+				gravityview()->log->debug( 'Not processing yet: loop_start hasn\'t run yet. Current action: {action}', array( 'action' => current_filter() ) );
+				return $content;
+			}
+
+			//	We don't want this filter to run infinite loop on any post content fields
+			remove_filter( 'the_content', array( __CLASS__, __METHOD__ ) );
+		}
+
 		/**
 		 * This is not a View. Bail.
 		 *

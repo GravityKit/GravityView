@@ -669,7 +669,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 			/**
 			 * @filter `gravityview_table_cells` Modify the fields displayed in a table
 			 * @param array $fields
-			 * @param GravityView_View $this
+			 * @param \GravityView_View $this
 			 * @deprecated Use `gravityview/template/table/fields`
 			 */
 			$fields = apply_filters("gravityview_table_cells", $fields, $this );

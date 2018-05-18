@@ -214,7 +214,7 @@ class GravityView_Edit_Entry_Render {
 	 *
 	 * Run when the is_edit_entry returns true.
 	 *
-	 * @param GravityView_View_Data $gv_data GravityView Data object
+	 * @param \GravityView_View_Data $gv_data GravityView Data object
 	 * @return void
 	 */
 	public function init( $gv_data ) {

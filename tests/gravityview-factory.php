@@ -219,7 +219,7 @@ class GV_UnitTest_Factory_For_Entry extends GF_UnitTest_Factory_For_Entry {
 	 * @return mixed
 	 */
 	function update_object( $entry_id = '', $entry = array() ) {
-		return GFAPI::update_entry( $entry_id, $entry );
+		return GFAPI::update_entry( $entry, $entry_id );
 	}
 
 	/**

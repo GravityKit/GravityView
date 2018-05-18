@@ -249,6 +249,10 @@ abstract class Field_Template extends Template {
 		$source = $this->source;
 		$source_backend = $source ? $source::$backend : null;
 
+		\GV\Mocks\Legacy_Context::load( array(
+			'field' => $this->field,
+		) );
+
 		/** Alter the display value according to Gravity Forms. */
 		if ( $source_backend == \GV\Source::BACKEND_GRAVITYFORMS ) {
 			/** Prevent any PHP warnings that may be generated. */
@@ -265,7 +269,7 @@ abstract class Field_Template extends Template {
 
 			/** Replace merge tags for admin-only fields. */
 			if ( ! empty( $this->field->field->adminOnly ) ) {
-				$display_value = \GravityView_API::replace_variables( $display_value, $this->form->form, $this->entry->as_entry() );
+				$display_value = \GravityView_API::replace_variables( $display_value, $this->form->form, $this->entry->as_entry(), false, false );
 			}
 		}
 
@@ -349,7 +353,7 @@ abstract class Field_Template extends Template {
 
 				$permalink = $context->entry->get_permalink( $context->view, $context->request );
 				$output = \gravityview_get_link( $permalink, $output, $link_atts );
-				
+
 				/**
 				 * @filter `gravityview_field_entry_link` Modify the link HTML
 				 * @param string $link HTML output of the link

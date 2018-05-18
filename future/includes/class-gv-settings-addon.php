@@ -747,6 +747,11 @@ class Addon_Settings extends \GFAddOn {
 
 		$fields = array(
 			array(
+				'name' => 'gv_header',
+				'value' => '',
+				'type' => 'html',
+			),
+			array(
 				'name' => 'license_key',
 				'required' => true,
 				'label' => __( 'License Key', 'gravityview' ),
@@ -1006,6 +1011,48 @@ class Addon_Settings extends \GFAddOn {
 		}
 
 		return $return;
+	}
+
+	/**
+	 * Allow pure HTML settings row
+     *
+     * @since 2.0.6
+     *
+	 * @param array $field
+	 * @param bool $echo Whether to echo the
+	 *
+	 * @return string
+	 */
+	protected function settings_html( $field, $echo = true ) {
+
+		$return = \GV\Utils::get( $field, 'value', '' );
+
+		if ( $echo ) {
+			echo $return;
+		}
+
+		return $return;
+	}
+
+	/**
+	 * No <th> needed for pure HTML settings row
+	 *
+	 * @since 2.0.6
+	 *
+	 * @param array $field
+	 *
+	 * @return void
+	 */
+	public function single_setting_row_html( $field ) {
+		?>
+
+        <tr id="gaddon-setting-row-<?php echo esc_attr( $field['name'] ); ?>">
+            <td colspan="2">
+				<?php $this->single_setting( $field ); ?>
+            </td>
+        </tr>
+
+		<?php
 	}
 
 	/**

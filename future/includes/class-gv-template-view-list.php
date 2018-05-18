@@ -118,7 +118,7 @@ class View_List_Template extends View_Template {
 		 * @filter `gravityview_entry_class` Modify the class applied to the entry row.
 		 * @param string $class Existing class.
 		 * @param array $entry Current entry being displayed
-		 * @param GravityView_View $this Current GravityView_View object
+		 * @param \GravityView_View $this Current GravityView_View object
 		 * @deprecated Use `gravityview/template/list/entry/class`
 		 * @return string The modified class.
 		 */
@@ -154,7 +154,7 @@ class View_List_Template extends View_Template {
 		* @action `gravityview_list_body_before` Inside the `tbody`, before any rows are rendered. Can be used to insert additional rows.
 		* @deprecated Use `gravityview/template/list/body/before`
 		* @since 1.0.7
-		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		* @param \GravityView_View $gravityview_view Current GravityView_View object.
 		*/
 		do_action( 'gravityview_list_body_before', \GravityView_View::getInstance() /** ugh! */ );
 	}
@@ -180,7 +180,7 @@ class View_List_Template extends View_Template {
 		* @action `gravityview_list_body_after` Inside the `tbody`, after any rows are rendered. Can be used to insert additional rows.
 		* @deprecated Use `gravityview/template/list/body/after`
 		* @since 1.0.7
-		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		* @param \GravityView_View $gravityview_view Current GravityView_View object.
 		*/
 		do_action( 'gravityview_list_body_after', \GravityView_View::getInstance() /** ugh! */ );
 	}
@@ -215,7 +215,7 @@ class View_List_Template extends View_Template {
 		* @action `gravityview_list_entry_$zone_before` Inside the `entry`, before any rows are rendered. Can be used to insert additional rows.
 		* @deprecated Use `gravityview/template/list/entry/$zone/before`
 		* @since 1.0.7
-		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		* @param \GravityView_View $gravityview_view Current GravityView_View object.
 		*/
 		do_action( sprintf( 'gravityview_list_entry%sbefore', $zone ), $entry->as_entry(), \GravityView_View::getInstance() /** ugh! */ );
 	}
@@ -250,7 +250,7 @@ class View_List_Template extends View_Template {
 		* @action `gravityview_list_entry_$zone_after` Inside the `entry`, after any rows are rendered. Can be used to insert additional rows.
 		* @deprecated Use `gravityview/template/list/entry/after`
 		* @since 1.0.7
-		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		* @param \GravityView_View $gravityview_view Current GravityView_View object.
 		*/
 		do_action( sprintf( 'gravityview_list_entry%safter', $zone ), $entry->as_entry(), \GravityView_View::getInstance() /** ugh! */ );
 	}
