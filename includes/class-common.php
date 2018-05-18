@@ -669,8 +669,11 @@ class GVCommon {
 			return false;
 		}
 
-		// fetch the entry
-		$entry = GFAPI::get_entry( $entry_id );
+		if ( ! $entry = wp_cache_get( 'gv_entry_' . $entry_id ) ) {
+			// fetch the entry
+			$entry = GFAPI::get_entry( $entry_id );
+			wp_cache_set( 'gv_entry_' . $entry_id, $entry );
+		}
 
 		/**
 		 * @filter `gravityview/common/get_entry/check_entry_display` Override whether to check entry display rules against filters

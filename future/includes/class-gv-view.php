@@ -611,6 +611,8 @@ class View implements \ArrayAccess {
 	 */
 	public function get_entries( $request ) {
 		$entries = new \GV\Entry_Collection();
+		$cache_key = false;
+
 		if ( $this->form ) {
 			/**
 			 * @todo: Stop using _frontend and use something like $request->get_search_criteria() instead
@@ -656,17 +658,34 @@ class View implements \ArrayAccess {
 				 */
 				do_action( 'gravityview/view/query', $query, $this, $request );
 
+				// Generate unique cache key for this request
+				$query_array = $query->_introspect();
+
+				unset( $query_array['queries'], $query_array['aliases'] );
+
+				$cache_key = "View::get_entries:{$this->ID}:" . serialize( $query_array );
+
+				if ( ! $query_entries = Utils::get( self::$cache, $cache_key . '/entries' ) ) {
+
+					$query_entries = $query->get();
+
+					self::$cache[ $cache_key .'/entries' ] = $query_entries;
+					self::$cache[ $cache_key .'/query' ] = &$query;
+				} else {
+					$query = self::$cache[ $cache_key .'/query' ];
+				}
+
 				/**
 				 * Map from Gravity Forms entries arrays to an Entry_Collection.
 				 */
 				if ( count( $this->joins ) ) {
-					foreach ( $query->get() as $entry ) {
+					foreach ( $query_entries as $entry ) {
 						$entries->add(
 							Multi_Entry::from_entries( array_map( '\GV\GF_Entry::from_entry', $entry ) )
 						);
 					}
 				} else {
-					array_map( array( $entries, 'add' ), array_map( '\GV\GF_Entry::from_entry', $query->get() ) );
+					array_map( array( $entries, 'add' ), array_map( '\GV\GF_Entry::from_entry', $query_entries ) );
 				}
 
 				/**
@@ -697,7 +716,9 @@ class View implements \ArrayAccess {
 		 * @param \GV\View $view The view.
 		 * @param \GV\Request $request The request.
 		 */
-		return apply_filters( 'gravityview/view/entries', $entries, $this, $request );
+		$entries = apply_filters( 'gravityview/view/entries', $entries, $this, $request );
+
+		return $entries;
 	}
 
 	public function __get( $key ) {
