@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.4
-Tested up to: 4.9.5
+Tested up to: 4.9.6
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -20,6 +20,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.0.6.1 on May 21, 2018 =
+
+* Fixed: "Hide View data until search is performed" not working
+* Added: Support for SiteOrigin Page Builder and LiveMesh SiteOrigin Widgets
+* Fixed: Enfold Theme layout builder no longer rendering Views
 
 = 2.0.6 on May 17, 2018 =
 
