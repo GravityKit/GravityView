@@ -88,6 +88,9 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		$this->assertContains( get_permalink( $post->ID ), $content );
 	}
 
+	/**
+	 * @since 2.0.6.2
+	 */
 	function test_gv_age_shortcode() {
 
 		add_shortcode( 'gv_age_1_x', array( $this, '_gv_age_1_x_shortcode' ) );
