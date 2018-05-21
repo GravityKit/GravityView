@@ -199,7 +199,7 @@ class oEmbed {
 			return __( 'You are not allowed to view this content.', 'gravityview' );
 		}
 
-		if ( $entry['status'] != 'active' ) {
+		if ( $entry && 'active' !== $entry['status'] ) {
 			gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 			return __( 'You are not allowed to view this content.', 'gravityview' );
 		}
@@ -224,8 +224,9 @@ class oEmbed {
 
 		/**
 		 * Remove Widgets on a nested embedded View.
+		 * Also, don't show widgets if we're embedding an entry
 		 */
-		if ( $is_reembedded ) {
+		if ( $is_reembedded || $entry ) {
 			$view->widgets = new \GV\Widget_Collection();
 		}
 
