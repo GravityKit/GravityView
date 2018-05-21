@@ -859,7 +859,54 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertTrue( $request->is_search() );
 
 		$_GET = array(
-			'gv_search' => '',
+			'filter_currency' => 'USD',
+		);
+
+		$this->assertTrue( $request->is_search() );
+
+		$_GET = array(
+			'gv_start' => '2001-01-01',
+		);
+
+		$this->assertTrue( $request->is_search() );
+
+		$_GET = array(
+			'gv_end' => '2001-01-01',
+		);
+
+		$this->assertTrue( $request->is_search() );
+
+		$_GET = array(
+			'gv_by' => '1',
+		);
+
+		$this->assertTrue( $request->is_search() );
+
+		$_GET = array(
+			'gv_id' => '123',
+		);
+
+		$this->assertTrue( $request->is_search() );
+
+		$_GET = array(
+			'filter_payment_status' => 'Completed',
+		);
+
+		$this->assertTrue( $request->is_search() );
+
+		$_GET = array(
+			'_filter_16' => 'Features+%2F+Enhancements', // Not GV field key
+		);
+
+		$this->assertFalse( $request->is_search() );
+
+		$_GET = array(
+			'filter_16_And_Then_Some' => 'Features+%2F+Enhancements', // Not GV field key
+		);
+
+		$this->assertFalse( $request->is_search() );
+
+		$_GET = array(
 			'filter_16' => 'Features+%2F+Enhancements',
 		);
 		$this->assertTrue( $request->is_search() );
@@ -868,7 +915,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$_GET = array();
 		$_POST = array(
-			'gv_search' => '',
 			'filter_16' => 'Features+%2F+Enhancements',
 		);
 		$this->assertFalse( $request->is_search() );
@@ -879,10 +925,12 @@ class GVFuture_Test extends GV_UnitTestCase {
         });
 
 		$_POST = array(
-			'gv_search' => '',
 			'filter_16' => 'Features+%2F+Enhancements',
 		);
 		$this->assertTrue( $request->is_search() );
+
+		$_POST = array();
+		$this->assertFalse( $request->is_search() );
 
 		remove_filter( 'gravityview/search/method', $use_post );
 
