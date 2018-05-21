@@ -677,7 +677,9 @@ function gv_container_class( $passed_css_class = '', $echo = true, $context = nu
 		$view_id = 0;
 		if ( $context->view ) {
 			$view_id = $context->view->ID;
-			$hide_until_searched = $context->view->settings->get( 'hide_until_searched' );
+			if( $context->view->settings->get( 'hide_until_searched' ) ) {
+				$hide_until_searched = ! $context->request->is_search();
+			}
 		}
 		if ( $context->entries ) {
 			$total_entries = $context->entries->total();

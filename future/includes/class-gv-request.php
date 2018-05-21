@@ -141,7 +141,44 @@ abstract class Request {
 			$get = $_GET;
 		}
 
-		return $this->is_view() && ( isset( $get['gv_search'] ) || isset( $get['gv_start'] ) || isset( $get['gv_end'] ) || isset( $get['gv_by'] ) || isset( $get['gv_id'] ) );
+		$has_field_key = $this->_has_field_key( $get );
+
+		return $this->is_view() && ( $has_field_key || isset( $get['gv_search'] ) || isset( $get['gv_start'] ) || isset( $get['gv_end'] ) || isset( $get['gv_by'] ) || isset( $get['gv_id'] ) );
+	}
+
+	/**
+	 * Calculate whether the $_REQUEST has a GravityView field
+	 *
+	 * @internal
+	 * @todo Roll into the future Search refactor
+	 *
+	 * @since 2.0.7
+	 *
+	 * @param array $get $_POST or $_GET array
+	 *
+	 * @return bool True: GravityView-formatted field detected; False: not detected
+	 */
+	private function _has_field_key( $get ) {
+
+		$has_field_key = false;
+
+		$fields = \GravityView_Fields::get_all();
+
+		$meta = array();
+		foreach ( $fields as $field ) {
+			if( empty( $field->_gf_field_class_name ) ) {
+				$meta[] = preg_quote( $field->name );
+			}
+		}
+
+		foreach ( $get as $key => $value ) {
+			if ( preg_match('/^filter_(([0-9_]+)|'. implode( '|', $meta ) .')$/ism', $key ) ) {
+				$has_field_key = true;
+				break;
+			}
+		}
+
+		return $has_field_key;
 	}
 }
 

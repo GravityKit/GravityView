@@ -305,6 +305,14 @@ class GravityView_Welcome {
                     </ul>
                 </div>
 
+                <h3>2.0.6.1 on May 21, 2018</h3>
+
+                <ul>
+                    <li>Fixed: "Hide View data until search is performed" not working</li>
+                    <li>Added: Support for SiteOrigin Page Builder and LiveMesh SiteOrigin Widgets</li>
+                    <li>Fixed: Enfold Theme layout builder no longer rendering Views</li>
+                </ul>
+
                 <h3>2.0.6 on May 17, 2018</h3>
 
                 <ul>

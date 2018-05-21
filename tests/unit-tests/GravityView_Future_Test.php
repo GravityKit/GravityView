@@ -508,8 +508,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\View_Collection::contains()
 	 * @covers \GravityView_View_Data::maybe_get_view_id()
 	 * @covers \GravityView_View_Data::is_valid_embed_id()
+     * @expectedDeprecated gravityview/data/parse/meta_keys
 	 */
 	public function test_view_collection_from_post() {
+
 		$original_shortcode = $GLOBALS['shortcode_tags']['gravityview'];
 		remove_shortcode( 'gravityview' ); /** Conflicts with existing shortcode right now. */
 		\GV\Shortcodes\gravityview::add();
@@ -857,7 +859,54 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertTrue( $request->is_search() );
 
 		$_GET = array(
-			'gv_search' => '',
+			'filter_currency' => 'USD',
+		);
+
+		$this->assertTrue( $request->is_search() );
+
+		$_GET = array(
+			'gv_start' => '2001-01-01',
+		);
+
+		$this->assertTrue( $request->is_search() );
+
+		$_GET = array(
+			'gv_end' => '2001-01-01',
+		);
+
+		$this->assertTrue( $request->is_search() );
+
+		$_GET = array(
+			'gv_by' => '1',
+		);
+
+		$this->assertTrue( $request->is_search() );
+
+		$_GET = array(
+			'gv_id' => '123',
+		);
+
+		$this->assertTrue( $request->is_search() );
+
+		$_GET = array(
+			'filter_payment_status' => 'Completed',
+		);
+
+		$this->assertTrue( $request->is_search() );
+
+		$_GET = array(
+			'_filter_16' => 'Features+%2F+Enhancements', // Not GV field key
+		);
+
+		$this->assertFalse( $request->is_search() );
+
+		$_GET = array(
+			'filter_16_And_Then_Some' => 'Features+%2F+Enhancements', // Not GV field key
+		);
+
+		$this->assertFalse( $request->is_search() );
+
+		$_GET = array(
 			'filter_16' => 'Features+%2F+Enhancements',
 		);
 		$this->assertTrue( $request->is_search() );
@@ -866,7 +915,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$_GET = array();
 		$_POST = array(
-			'gv_search' => '',
 			'filter_16' => 'Features+%2F+Enhancements',
 		);
 		$this->assertFalse( $request->is_search() );
@@ -877,10 +925,12 @@ class GVFuture_Test extends GV_UnitTestCase {
         });
 
 		$_POST = array(
-			'gv_search' => '',
 			'filter_16' => 'Features+%2F+Enhancements',
 		);
 		$this->assertTrue( $request->is_search() );
+
+		$_POST = array();
+		$this->assertFalse( $request->is_search() );
 
 		remove_filter( 'gravityview/search/method', $use_post );
 
@@ -5316,7 +5366,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'widgets' => array(
 				'header_top' => array(
 					wp_generate_password( 4, false ) => array(
-						'id' => $widget_id = wp_generate_password( 4, false ) . '-widget',
+						'id' => $widget_id = wp_generate_password( 12, false ) . '-widget',
 						'test' => 'foo',
 					),
 				),
