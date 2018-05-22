@@ -551,8 +551,8 @@ final class Legacy_Context {
 
 					self::thaw( array(
 						'\GravityView_View::atts' => $value->settings->as_atts(),
-						'\GravityView_View::view_id' => $value->ID,
-						'\GravityView_View::back_link_label' => $value->settings->get( 'back_link_label', null ),
+						'\GravityView_View::view_id' => $value->ID, /** @see \GravityView_View::$view_id */
+						'\GravityView_View::back_link_label' => $value->settings->get( 'back_link_label', null ), /** @see \GravityView_View::$back_link_label */
 						'\GravityView_View::form' => $value->form ? $value->form->form : null,
 						'\GravityView_View::form_id' => $value->form ? $value->form->ID : null,
 

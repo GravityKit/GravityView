@@ -683,11 +683,22 @@ class GravityView_View extends Gamajo_Template_Loader {
 		}
 
 		$field_output = '';
+
+        $view = \GV\View::by_id( $this->view_id );
+
+		\GV\Mocks\Legacy_Context::push( array_merge( array(
+			'view' => $view,
+			'fields' => \GV\Field_Collection::from_configuration( $fields ),
+			'in_the_loop' => true,
+            'entry' => \GV\GF_Entry::from_entry( $final_atts['entry'] ),
+		) ) );
+
 		foreach ( $fields as $field ) {
 			$final_atts['field'] = $field;
-
 			$field_output .= gravityview_field_output( $final_atts );
 		}
+
+		\GV\Mocks\Legacy_Context::pop();
 
 		/**
 		 * If a zone has no field output, choose whether to show wrapper

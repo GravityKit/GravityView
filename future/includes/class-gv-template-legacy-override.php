@@ -186,7 +186,7 @@ class Legacy_Override_Template extends \Gamajo_Template_Loader {
 
 			\GravityView_View::getInstance()->_include( $this->get_template_part( $slug, 'single' ) );
 
-			Mocks\Legacy_Context::pop();
+			\GV\Mocks\Legacy_Context::pop();
 
 		/**
 		 * Directory view.
@@ -221,7 +221,7 @@ class Legacy_Override_Template extends \Gamajo_Template_Loader {
 
 				\GravityView_View::getInstance()->_include( $this->get_template_part( $slug, $part ) );
 
-				Mocks\Legacy_Context::pop();
+				\GV\Mocks\Legacy_Context::pop();
 			}
 		}
 

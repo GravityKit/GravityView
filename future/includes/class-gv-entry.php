@@ -98,7 +98,7 @@ abstract class Entry {
 	 * @api
 	 * @since 2.0
 	 *
-	 * @param \GV\View|null $view The View context.
+	 * @param \GV\View $view The View context.
 	 * @param \GV\Request $request The Request (current if null).
 	 * @param boolean $track_directory Keep the housing directory arguments intact (used for breadcrumbs, for example). Default: true.
 	 *
@@ -113,8 +113,6 @@ abstract class Entry {
 
 		$args = array();
 
-		$view_id = is_null ( $view ) ? null : $view->ID;
-
 		$permalink = null;
 
 		/** This is not a regular view. */
@@ -123,13 +121,13 @@ abstract class Entry {
 			/** Must be an embed of some sort. */
 			if ( is_object( $post ) && is_numeric( $post->ID ) ) {
 				$permalink = get_permalink( $post->ID );
-				$args['gvid'] = $view_id;
+				$args['gvid'] = $view->ID;
 			}
 		}
 		
 		/** Fallback to regular view base. */
 		if ( is_null( $permalink ) ) {
-			$permalink = get_permalink( $view_id );
+			$permalink = get_permalink( $view->ID );
 		}
 
 		/**
@@ -138,7 +136,7 @@ abstract class Entry {
 		 * @param string $link URL to the View's "directory" context (Multiple Entries screen)
 		 * @param int $post_id ID of the post to link to. If the View is embedded, it is the post or page ID
 		 */
-		$permalink = apply_filters( 'gravityview_directory_link', $permalink, $request->is_view() ? $view_id : ( $post ? $post->ID : null ) );
+		$permalink = apply_filters( 'gravityview_directory_link', $permalink, $request->is_view() ? $view->ID : ( $post ? $post->ID : null ) );
 
 		$entry_endpoint_name = \GV\Entry::get_endpoint_name();
 		$entry_slug = \GravityView_API::get_entry_slug( $this->ID, $this->as_entry() );
