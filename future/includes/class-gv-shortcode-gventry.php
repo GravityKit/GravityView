@@ -148,7 +148,9 @@ class gventry extends \GV\Shortcode {
 			return apply_filters( 'gravityview/shortcodes/gventry/output', '', $view, $entry, $atts );
 		}
 
-		if ( $view->settings->get( 'show_only_approved' ) ) {
+		$is_admin_and_can_view = $view->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap('gravityview_moderate_entries', $view->ID );
+
+		if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
 			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
 				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
 				return apply_filters( 'gravityview/shortcodes/gventry/output', '', $view, $entry, $atts );
