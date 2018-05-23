@@ -1111,6 +1111,7 @@ function gravityview_get_view_id() {
 
 /**
  * @global GravityView_View $gravityview_view
+ * @deprecated since 2.0.6.2 Use `gravityview()->request`
  * @return string View context "directory", "single", or "edit"
  */
 function gravityview_get_context() {
@@ -1124,15 +1125,11 @@ function gravityview_get_context() {
 	 */
 	$is_edit_entry = apply_filters( 'gravityview_is_edit_entry', false );
 
-	if( $is_edit_entry ) {
-		$context = 'edit';
-	} else if( class_exists( 'GravityView_frontend' ) && $single = GravityView_frontend::is_single_entry() ) {
-		$context = 'single';
-	} else if( class_exists( 'GravityView_View' ) ) {
-		$context = GravityView_View::getInstance()->getContext();
+	if ( $is_edit_entry ) {
+		return 'edit';
+	} else {
+		return gravityview()->request->is_entry() ? 'single' : 'directory';
 	}
-
-	return $context;
 }
 
 
