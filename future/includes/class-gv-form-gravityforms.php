@@ -61,6 +61,27 @@ class GF_Form extends Form implements \ArrayAccess {
 	}
 
 	/**
+	 * Construct a \GV\Form instance from a Gravity Forms form array.
+	 *
+	 * @since 2.0.7
+	 *
+	 * @param array $form The form array
+	 *
+	 * @return \GV\GF_Form|null An instance of this form or null if not found.
+	 */
+	public static function from_form( $form ) {
+		if ( empty( $form['id'] ) ) {
+			return null;
+		}
+
+		$self = new self();
+		$self->form = $form;
+		$self->ID = $self->form['id'];
+
+		return $self;
+	}
+
+	/**
 	 * Get all entries for this form.
 	 *
 	 * @api

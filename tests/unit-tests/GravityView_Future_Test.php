@@ -629,7 +629,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 */
 	public function test_form_gravityforms() {
 		$_form = $this->factory->form->create_and_get();
-		$_view = $this->factory->view->create_and_get( array( 'form_id' => $_form['id'] ) );
 
 		$form = \GV\GF_Form::by_id( $_form['id'] );
 		$this->assertInstanceOf( '\GV\Form', $form );
@@ -638,6 +637,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $form->ID, $_form['id'] );
 		$this->assertEquals( $form::$backend, 'gravityforms' );
 
+		$form_from_form = \GV\GF_Form::from_form( $_form );
+		$this->assertEquals( $form, $form_from_form );
+
 		/** Array access. */
 		$this->assertEquals( $form['id'], $_form['id'] );
 		$form['hello'] = 'one';
@@ -645,6 +647,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Invalid ID. */
 		$this->assertNull( \GV\GF_Form::by_id( false ) );
+		$this->assertNull( \GV\GF_Form::from_form( array() ) );
 	}
 
 	/**
