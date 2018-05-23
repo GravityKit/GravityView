@@ -5206,10 +5206,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_filter( 'pre_http_request', $callback );
 
 		$this->assertContains( 'Verifying license', $handler->settings_edd_license_activation( false, false ) );
+
+		remove_all_filters( 'pre_http_request' );
 	}
 
 	public function test_addon_settings() {
-		$this->assertSame( \GravityView_Settings::get_instance(), $settings = gravityview()->plugin->settings );
+		$settings = gravityview()->plugin->settings;
+		$settings->update( array() );
+		$this->assertSame( \GravityView_Settings::get_instance(), $settings );
 		$this->assertEquals( array_keys( $settings->get_default_settings() ), array( 'license_key', 'license_key_response', 'license_key_status', 'support-email', 'no-conflict-mode', 'support_port', 'flexbox_search', 'rest_api', 'beta' ) );
 
 		$this->assertNull( $settings->get( 'not' ) );
