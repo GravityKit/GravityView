@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.0.6.1\n"
+"Project-Id-Version: GravityView 2.0.7.1\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -224,7 +224,7 @@ msgstr ""
 #: includes/class-gravityview-entry-link-shortcode.php:210
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:898
+#: includes/extensions/edit-entry/class-edit-entry-render.php:895
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 #: templates/fields/field-edit_link-html.php:23
 msgid "Edit Entry"
@@ -1482,23 +1482,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:474
+#: includes/class-admin-welcome.php:487
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:495
+#: includes/class-admin-welcome.php:508
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:530
+#: includes/class-admin-welcome.php:543
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:555
+#: includes/class-admin-welcome.php:568
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:556
+#: includes/class-admin-welcome.php:569
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1872,7 +1872,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:140
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1896
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1892
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
@@ -1984,39 +1984,39 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:951
+#: includes/extensions/edit-entry/class-edit-entry-render.php:948
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:951
+#: includes/extensions/edit-entry/class-edit-entry-render.php:948
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:957
+#: includes/extensions/edit-entry/class-edit-entry-render.php:954
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1095
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1092
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1102
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1099
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1455
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1452
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1890
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1886
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1900
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1896
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1940
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1936
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -3396,7 +3396,7 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1916
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1912
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""

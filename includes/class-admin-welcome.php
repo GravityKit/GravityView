@@ -305,6 +305,14 @@ class GravityView_Welcome {
                     </ul>
                 </div>
 
+                <h3>2.0.7.1 on May 24, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Merge Tags not being shown in Custom Content fields in Edit Entry</li>
+                    <li>Fixed: "gvGlobals not defined" JavaScript error on Edit Entry screen affecting some themes</li>
+                    <li>Fixed: Don't clear Search Bar configuration when switching View layouts</li>
+                </ul>
+
                 <h3>2.0.7 on May 23, 2018</h3>
                 <ul>
                     <li>Fixed: Entry visibility when View is embedded</li>
