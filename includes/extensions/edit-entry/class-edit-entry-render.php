@@ -1211,7 +1211,7 @@ class GravityView_Edit_Entry_Render {
 
 			// saved field entry value (if empty, fallback to the pre-populated value, if exists)
 			// or pre-populated value if not empty and set to override saved value
-			$field_value = !gv_empty( $this->entry[ $id ], false, false ) && ! ( $override_saved_value && !gv_empty( $pre_value, false, false ) ) ? $this->entry[ $id ] : $pre_value;
+			$field_value = isset( $this->entry[ $id ] ) && ! gv_empty( $this->entry[ $id ], false, false ) && ! ( $override_saved_value && !gv_empty( $pre_value, false, false ) ) ? $this->entry[ $id ] : $pre_value;
 
 			// in case field is post_category but inputType is select, multi-select or radio, convert value into array of category IDs.
 			if ( 'post_category' === $field->type && !gv_empty( $field_value, false, false ) ) {
