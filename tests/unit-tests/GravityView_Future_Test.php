@@ -898,10 +898,16 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertTrue( $request->is_search() );
 
 		$_GET = array(
-			'_filter_16' => 'Features+%2F+Enhancements', // Not GV field key
+			'FILTER_PAYMENT_STATUS' => 'Completed',
 		);
 
 		$this->assertFalse( $request->is_search() );
+
+		$_GET = array(
+			'_filter_16' => 'Features+%2F+Enhancements', // Not GV field key
+		);
+
+		$this->assertFalse( $request->is_search(), '_filter_16' );
 
 		$_GET = array(
 			'filter_16_And_Then_Some' => 'Features+%2F+Enhancements', // Not GV field key

@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: "Hide View data until search is performed" not working for Views on embedded pages
 = 2.0.6.1 on May 21, 2018 =
 
 * Fixed: "Hide View data until search is performed" not working
