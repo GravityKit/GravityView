@@ -21,6 +21,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0.7.1 on May 24, 2018 =
+
+* Fixed: Merge Tags not being shown in Custom Content fields in Edit Entry
+* Fixed: "gvGlobals not defined" JavaScript error on Edit Entry screen affecting some themes
+* Fixed: Don't clear Search Bar configuration when switching View layouts
+
 = 2.0.7 on May 23, 2018 =
 
 * Fixed: Entry visibility when View is embedded
