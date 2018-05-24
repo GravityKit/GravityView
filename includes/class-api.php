@@ -1113,7 +1113,7 @@ function gravityview_get_view_id() {
  * Returns the current GravityView context, or empty string if not GravityView
  *
  * - Returns empty string on GravityView archive pages
- * - Returns empty string on archive pages containing embedded views
+ * - Returns empty string on archive pages containing embedded Views
  * - Returns empty string for embedded Views, not 'directory'
  * - Returns empty string for embedded entries (oEmbed or [gventry]), not 'single'
  * - Returns 'single' when viewing a [gravityview] shortcode-embedded single entry
