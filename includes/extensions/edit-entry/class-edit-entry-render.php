@@ -258,10 +258,12 @@ class GravityView_Edit_Entry_Render {
 
 		wp_register_script( 'gform_gravityforms', GFCommon::get_base_url().'/js/gravityforms.js', array( 'jquery', 'gform_json', 'gform_placeholder', 'sack', 'plupload-all', 'gravityview-fe-view' ) );
 
-		GFFormDisplay::enqueue_form_scripts($gravityview_view->getForm(), false);
+		GFFormDisplay::enqueue_form_scripts( $gravityview_view->getForm(), false);
+
+		wp_localize_script( 'gravityview-fe-view', 'gvGlobals', array( 'cookiepath' => COOKIEPATH ) );
 
 		// Sack is required for images
-		wp_print_scripts( array( 'sack', 'gform_gravityforms' ) );
+		wp_print_scripts( array( 'sack', 'gform_gravityforms', 'gravityview-fe-view' ) );
 	}
 
 
