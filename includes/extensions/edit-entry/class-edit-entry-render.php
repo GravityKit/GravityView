@@ -298,11 +298,6 @@ class GravityView_Edit_Entry_Render {
 			gravityview()->log->debug( 'Submission is valid.' );
 
 			/**
-			 * @hack This step is needed to fix field visibility, to add the calculation fields
-			 */
-			$form = $this->form_prepare_for_save();
-
-			/**
 			 * @hack This step is needed to unset the adminOnly from form fields, to add the calculation fields
 			 */
 			$form = $this->form_prepare_for_save();
@@ -1641,7 +1636,6 @@ class GravityView_Edit_Entry_Render {
 
 	        /** @var GF_Field $field */
 	        foreach ( $fields as $field ) {
-
 				if( intval( $configured_field['id'] ) === intval( $field->id ) && $this->user_can_edit_field( $configured_field, false ) ) {
 				    $edit_fields[] = $this->merge_field_properties( $field, $configured_field );
 				    break;
