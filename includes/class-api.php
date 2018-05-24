@@ -1110,6 +1110,7 @@ function gravityview_get_view_id() {
 }
 
 /**
+ * Returns the current GravityView context, or empty string if not GravityView
  * @global GravityView_View $gravityview_view
  * @deprecated since 2.0.6.2 Use `gravityview()->request`
  * @return string View context "directory", "single", or "edit"
@@ -1130,8 +1131,10 @@ function gravityview_get_context() {
 
 	if ( $is_edit_entry ) {
 		return 'edit';
-	} else {
-		return gravityview()->request->is_entry() ? 'single' : 'directory';
+	} else if ( gravityview()->request->is_entry() ) {
+		return 'single';
+	} else if ( gravityview()->request->is_view() ) {
+		return 'directory';
 	}
 }
 
