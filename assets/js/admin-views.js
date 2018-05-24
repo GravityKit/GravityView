@@ -506,8 +506,8 @@
 			};
 
 			var continue_button = {
-				text: gvGlobals.label_continue,
-				click: function () {
+			text: gvGlobals.label_continue,
+			click: function () {
 					if ( thisDialog.is( '#gravityview_form_id_dialog' ) ) {
 						if ( vcfg.startFreshStatus ) {
 							vcfg.startFreshContinue();
@@ -844,7 +844,7 @@
 		 */
 		updateViewConfig: function ( data ) {
 			var vcfg = viewConfiguration;
-			
+
 			$.post( ajaxurl, data, function ( response ) {
 				if ( response ) {
 					var content = $.parseJSON( response );
@@ -877,9 +877,15 @@
 
 		// tooltips
 
-		init_tooltips: function () {
+    remove_tooltips: function (el) {
+      if ($( el || '.gv-add-field' ).is(':ui-tooltip')) {
+      	$( '.gv-add-field' ).tooltip( 'destroy' ).off( 'click' );
+      }
+		},
 
-			$( ".gv-add-field" ).tooltip( {
+		init_tooltips: function (el) {
+
+			$( el || ".gv-add-field" ).tooltip( {
 				content: function () {
 
 					// Is the field picker in single or directory mode?
@@ -913,7 +919,7 @@
 			} )// add title attribute so the tooltip can continue to work (jquery ui bug?)
 				.attr( "title", "" ).on( 'mouseout focusout', function ( e ) {
 					e.stopImmediatePropagation();
-				} ).click( function ( e ) {
+				} ).on( 'click', function ( e ) {
 
 					// add title attribute so the tooltip can continue to work (jquery ui bug?)
 					$( this ).attr( "title", "" );
@@ -1734,5 +1740,12 @@
 		} );
 
 	} );
+
+	// Expose globally methods to initialize/destroy tooltips and to display dialog window
+	window.gvAdminActions = {
+		initTooltips: viewConfiguration.init_tooltips,
+		removeTooltips: viewConfiguration.remove_tooltips,
+		showDialog: viewConfiguration.showDialog,
+	};
 
 }(jQuery));
