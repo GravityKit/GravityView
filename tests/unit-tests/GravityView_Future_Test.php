@@ -629,7 +629,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 */
 	public function test_form_gravityforms() {
 		$_form = $this->factory->form->create_and_get();
-		$_view = $this->factory->view->create_and_get( array( 'form_id' => $_form['id'] ) );
 
 		$form = \GV\GF_Form::by_id( $_form['id'] );
 		$this->assertInstanceOf( '\GV\Form', $form );
@@ -638,6 +637,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $form->ID, $_form['id'] );
 		$this->assertEquals( $form::$backend, 'gravityforms' );
 
+		$form_from_form = \GV\GF_Form::from_form( $_form );
+		$this->assertEquals( $form, $form_from_form );
+
 		/** Array access. */
 		$this->assertEquals( $form['id'], $_form['id'] );
 		$form['hello'] = 'one';
@@ -645,6 +647,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Invalid ID. */
 		$this->assertNull( \GV\GF_Form::by_id( false ) );
+		$this->assertNull( \GV\GF_Form::from_form( array() ) );
 	}
 
 	/**
@@ -895,10 +898,16 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertTrue( $request->is_search() );
 
 		$_GET = array(
-			'_filter_16' => 'Features+%2F+Enhancements', // Not GV field key
+			'FILTER_PAYMENT_STATUS' => 'Completed',
 		);
 
 		$this->assertFalse( $request->is_search() );
+
+		$_GET = array(
+			'_filter_16' => 'Features+%2F+Enhancements', // Not GV field key
+		);
+
+		$this->assertFalse( $request->is_search(), '_filter_16' );
 
 		$_GET = array(
 			'filter_16_And_Then_Some' => 'Features+%2F+Enhancements', // Not GV field key
@@ -5203,10 +5212,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_filter( 'pre_http_request', $callback );
 
 		$this->assertContains( 'Verifying license', $handler->settings_edd_license_activation( false, false ) );
+
+		remove_all_filters( 'pre_http_request' );
 	}
 
 	public function test_addon_settings() {
-		$this->assertSame( \GravityView_Settings::get_instance(), $settings = gravityview()->plugin->settings );
+		$settings = gravityview()->plugin->settings;
+		$settings->update( array() );
+		$this->assertSame( \GravityView_Settings::get_instance(), $settings );
 		$this->assertEquals( array_keys( $settings->get_default_settings() ), array( 'license_key', 'license_key_response', 'license_key_status', 'support-email', 'no-conflict-mode', 'support_port', 'flexbox_search', 'rest_api', 'beta' ) );
 
 		$this->assertNull( $settings->get( 'not' ) );

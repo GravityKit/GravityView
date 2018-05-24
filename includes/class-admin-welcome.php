@@ -305,6 +305,24 @@ class GravityView_Welcome {
                     </ul>
                 </div>
 
+                <h3>2.0.7 on May 23, 2018</h3>
+                <ul>
+                    <li>Fixed: Entry visibility when View is embedded</li>
+                    <li>Fixed: Don't show widgets if we're oEmbedding an entry</li>
+                    <li>Fixed: Don't apply "Hide Until Search" on entry pages</li>
+                    <li>Fixed: "Hide View data until search is performed" not working for Views on embedded pages</li>
+                    <li>Fixed: Restore Advanced Custom Fields plugin compatibility</li>
+                    <li>Tweak: When activating a license, remove the notice immediately</li>
+                    <li>Fixed: Maps API key settings resetting after 24 hours</li>
+                </ul>
+
+                <p><strong>Developer Updates</strong></p>
+
+                <ul>
+                    <li>Changed: gravityview<em>get</em>context() now returns empty string if not GravityView post type</li>
+                </ul>
+
+
                 <h3>2.0.6.1 on May 21, 2018</h3>
 
                 <ul>

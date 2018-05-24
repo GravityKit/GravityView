@@ -326,6 +326,14 @@ abstract class Field_Template extends Template {
 			'field_path' => $this->located_template,
 		);
 
+		/**
+		 * Wrap output in a link, if enabled in the field settings
+		 *
+		 * @param string $output HTML value output
+		 * @param \GV\Template_Context $context
+		 *
+		 * @return mixed|string|void
+		 */
 		$pre_link_compat_callback = function( $output, $context ) use ( $field_compat ) {
 			$field = $context->field;
 

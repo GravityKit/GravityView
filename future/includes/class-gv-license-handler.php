@@ -467,7 +467,7 @@ class License_Handler {
 		$settings['license_key_status'] = $license_data->license;
 		$settings['license_key_response'] = (array)$license_data;
 
-		$this->settings->update( $settings );
+		$this->settings->set( $settings );
 	}
 
 	public function settings_edd_license_activation( $field, $echo ) {

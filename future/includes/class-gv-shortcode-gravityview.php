@@ -97,6 +97,8 @@ class gravityview extends \GV\Shortcode {
 			return __( 'You are not allowed to view this content.', 'gravityview' );
 		}
 
+		$is_admin_and_can_view = $view->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap('gravityview_moderate_entries', $view->ID );
+
 		/**
 		 * View details.
 		 */
@@ -124,7 +126,7 @@ class gravityview extends \GV\Shortcode {
 				return __( 'You are not allowed to view this content.', 'gravityview' );
 			}
 
-			if ( $view->settings->get( 'show_only_approved' ) ) {
+			if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
 				if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
 					gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
 					return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -155,7 +157,7 @@ class gravityview extends \GV\Shortcode {
 				return __( 'You are not allowed to view this content.', 'gravityview' );
 			}
 
-			if ( $view->settings->get( 'show_only_approved' ) ) {
+			if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
 				if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
 					gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
 					return __( 'You are not allowed to view this content.', 'gravityview' );

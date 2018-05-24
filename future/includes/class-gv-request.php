@@ -141,9 +141,15 @@ abstract class Request {
 			$get = $_GET;
 		}
 
-		$has_field_key = $this->_has_field_key( $get );
+		unset( $get['mode'] );
 
-		return $this->is_view() && ( $has_field_key || isset( $get['gv_search'] ) || isset( $get['gv_start'] ) || isset( $get['gv_end'] ) || isset( $get['gv_by'] ) || isset( $get['gv_id'] ) );
+		if( $has_field_key = $this->_has_field_key( $get ) ) {
+			return true;
+		}
+
+		$get = array_filter( $get, 'gravityview_is_not_empty_string' );
+
+		return isset( $get['gv_search'] ) || isset( $get['gv_start'] ) || isset( $get['gv_end'] ) || isset( $get['gv_by'] ) || isset( $get['gv_id'] );
 	}
 
 	/**
@@ -172,7 +178,7 @@ abstract class Request {
 		}
 
 		foreach ( $get as $key => $value ) {
-			if ( preg_match('/^filter_(([0-9_]+)|'. implode( '|', $meta ) .')$/ism', $key ) ) {
+			if ( preg_match('/^filter_(([0-9_]+)|'. implode( '|', $meta ) .')$/sm', $key ) ) {
 				$has_field_key = true;
 				break;
 			}

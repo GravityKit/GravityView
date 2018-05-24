@@ -21,6 +21,20 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0.7 on May 23, 2018 =
+
+* Fixed: Entry visibility when View is embedded
+* Fixed: Don't show widgets if we're oEmbedding an entry
+* Fixed: Don't apply "Hide Until Search" on entry pages
+* Fixed: "Hide View data until search is performed" not working for Views on embedded pages
+* Fixed: Restore Advanced Custom Fields plugin compatibility
+* Tweak: When activating a license, remove the notice immediately
+* Fixed: Maps API key settings resetting after 24 hours
+
+__Developer Updates__
+
+* Changed: gravityview_get_context() now returns empty string if not GravityView post type
+
 = 2.0.6.1 on May 21, 2018 =
 
 * Fixed: "Hide View data until search is performed" not working

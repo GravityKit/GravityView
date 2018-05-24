@@ -573,12 +573,17 @@ class Addon_Settings extends \GFAddOn {
 	 * @return void
 	 */
 	public function license_key_notice() {
-		$license_status = $this->get( 'license_key_status' );
-		$license_key = $this->get( 'license_key' );
-		if( '' === $license_key ) {
-			$license_status = 'inactive';
-        }
-		$license_id = empty( $license_key ) ? 'license' : $license_key;
+
+	    if( $this->is_save_postback() ) {
+		    $settings = $this->get_posted_settings();
+		    $license_key = \GV\Utils::get( $settings, 'license_key' );
+		    $license_status = \GV\Utils::get( $settings, 'license_key_status', 'inactive' );
+        } else {
+		    $license_status = $this->get( 'license_key_status', 'inactive' );
+		    $license_key    = $this->get( 'license_key' );
+	    }
+
+	    $license_id = empty( $license_key ) ? 'license' : $license_key;
 
 		$message = esc_html__( 'Your GravityView license %s. This means you&rsquo;re missing out on updates and support! %sActivate your license%s or %sget a license here%s.', 'gravityview' );
 
