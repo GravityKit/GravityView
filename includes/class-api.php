@@ -1115,8 +1115,11 @@ function gravityview_get_view_id() {
  * @return string View context "directory", "single", or "edit"
  */
 function gravityview_get_context() {
+	global $wp_query;
 
-	$context = '';
+	if ( isset( $wp_query ) && $wp_query->post_count > 1 ) {
+		return '';
+	}
 
 	/**
 	 * @filter `gravityview_is_edit_entry` Whether we're currently on the Edit Entry screen \n
