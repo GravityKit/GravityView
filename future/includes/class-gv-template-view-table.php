@@ -117,7 +117,7 @@ class View_Table_Template extends View_Template {
 			$args = array(
 				'hide_empty' => false,
 				'zone_id' => 'directory_table-columns',
-				'markup' => '<th id="{{ field_id }}" class="{{ class }}">{{label}}</th>',
+				'markup' => '<th id="{{ field_id }}" class="{{ class }}" style="{{width:style}}>{{label}}</th>',
 				'label_markup' => '<span class="gv-field-label">{{ label }}</span>',
 				'label' => $column_label,
 			);

@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0.7.2 =
+
+* Fixed: Table layout not using field Column Width settings
+
 = 2.0.7.1 on May 24, 2018 =
 
 * Fixed: Merge Tags not being shown in Custom Content fields in Edit Entry
