@@ -1448,13 +1448,22 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( 'custom_label' => 'This is {entry_id}' ) );
 		$this->assertEquals( 'This is ' . $entry->ID, $field->get_label( $view, $view->form, $entry ) );
 
+		/** Custom label override not shown when show_label disabled */
+		$field->update_configuration( array( 'show_label' => '0', 'custom_label' => 'This is {entry_id}' ) );
+		$this->assertEquals( '', $field->get_label( $view, $view->form, $entry ) );
+
 		/** Internal fields. */
 		$field = \GV\Internal_Field::by_id( 'id' );
 		$field->update_configuration( array( 'label' => 'ID <small>Entry</small>' ) );
 		$this->assertEquals( 'ID <small>Entry</small>', $field->get_label() );
 
+		/** Show label false for Internal fields. */
+		$field->update_configuration( array( 'show_label' => '0', 'label' => 'Mesa busten wit happiness seein yousa again, Ani' ) );
+		$this->assertEquals( '', $field->get_label() );
+		$this->assertEquals( '', $field->get_label( $view, $view->form, $entry ) );
+
 		/** Custom label override and merge tags. */
-		$field->update_configuration( array( 'custom_label' => 'This is {entry_id}' ) );
+		$field->update_configuration( array( 'show_label' => '1', 'custom_label' => 'This is {entry_id}' ) );
 		$this->assertEquals( 'This is ' . $entry->ID, $field->get_label( $view, $view->form, $entry ) );
 	}
 

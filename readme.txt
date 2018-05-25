@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = 2.0.7.2 =
 
 * Fixed: Table layout not using field Column Width settings
+* Fixed: With "Show Label" disabled, "Custom Label" setting is being displayed (if set)
 
 = 2.0.7.1 on May 24, 2018 =
 
