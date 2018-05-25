@@ -21,11 +21,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.0.7.2 =
+= 2.0.8 on May 25, 2018 =
 
 * Fixed: Table layout not using field Column Width settings
 * Fixed: With "Show Label" disabled, "Custom Label" setting is being displayed (if set)
 * Fixed: List Field columns were being shown as searchable in Search Bar
+* Fixed: Conflict with Gravity Forms Import Entries file upload process
 
 = 2.0.7.1 on May 24, 2018 =
 
