@@ -130,6 +130,8 @@ class View_Renderer extends Renderer {
 
 		remove_action( 'gravityview/template/after', $view_id_output );
 
+		\GravityView_frontend::getInstance()->add_view_scripts_and_styles( $view, array( $view ) );
+
 		\GV\Mocks\Legacy_Context::pop();
 		return ob_get_clean();
 	}

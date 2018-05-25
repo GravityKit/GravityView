@@ -1231,83 +1231,106 @@ class GravityView_frontend {
 
 			foreach ( $views as $view_id => $data ) {
 				$view = \GV\View::by_id( $data['id'] );
-				$view_id = $view->ID;
-				$template_id = gravityview_get_template_id( $view->ID );
-				$data = $view->as_data();
-
-				/**
-				 * Don't enqueue the scripts or styles if it's not going to be displayed.
-				 * @since 1.15
-				 */
-				if( is_user_logged_in() && false === GVCommon::has_cap( 'read_gravityview', $view_id ) ) {
-					continue;
-				}
-
-				// By default, no thickbox
-				$js_dependencies = array( 'jquery', 'gravityview-jquery-cookie' );
-				$css_dependencies = array();
-
-				$lightbox = $view->settings->get( 'lightbox' );
-
-				// If the thickbox is enqueued, add dependencies
-				if ( $lightbox ) {
-
-					/**
-					 * @filter `gravity_view_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
-					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
-					 */
-					$js_dependencies[] = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
-
-					/**
-					 * @filter `gravity_view_lightbox_style` Modify the lightbox CSS slug. Default: `thickbox`
-					 * @param string $script_slug If you want to use a different lightbox script, return the name of its CSS file here.
-					 */
-					$css_dependencies[] = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
-				}
-
-				/**
-				 * If the form has checkbox fields, enqueue dashicons
-				 * @see https://github.com/katzwebservices/GravityView/issues/536
-				 * @since 1.15
-				 */
-				if( gravityview_view_has_single_checkbox_or_radio( $data['form'], $data['fields'] ) ) {
-					$css_dependencies[] = 'dashicons';
-				}
-
-				wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GravityView_Plugin::version, true );
-
-				$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-
-				wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ) , GravityView_Plugin::version, true );
-
-				wp_enqueue_script( 'gravityview-fe-view' );
-
-				if ( ! empty( $data['atts']['sort_columns'] ) ) {
-					wp_enqueue_style( 'gravityview_font', plugins_url( 'assets/css/font.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
-				}
-
-				$this->enqueue_default_style( $css_dependencies );
-
-				self::add_style( $template_id );
+				$this->add_view_scripts_and_styles( $view );
 			}
 
 			if ( 'wp_print_footer_scripts' === current_filter() ) {
-
-				$js_localization = array(
-					'cookiepath' => COOKIEPATH,
-					'clear' => _x( 'Clear', 'Clear all data from the form', 'gravityview' ),
-					'reset' => _x( 'Reset', 'Reset the search form to the state that existed on page load', 'gravityview' ),
-				);
-
-				/**
-				 * @filter `gravityview_js_localization` Modify the array passed to wp_localize_script()
-				 * @param array $js_localization The data padded to the Javascript file
-				 * @param array $views Array of View data arrays with View settings
-				 */
-				$js_localization = apply_filters( 'gravityview_js_localization', $js_localization, $views );
-
-				wp_localize_script( 'gravityview-fe-view', 'gvGlobals', $js_localization );
+				$this->_localize_javascript( $views );
 			}
+		}
+	}
+
+	/**
+	 * @internal
+	 */
+	public function _localize_javascript( $views = array() ) {
+
+		$js_localization = array(
+			'cookiepath' => COOKIEPATH,
+			'clear' => _x( 'Clear', 'Clear all data from the form', 'gravityview' ),
+			'reset' => _x( 'Reset', 'Reset the search form to the state that existed on page load', 'gravityview' ),
+		);
+
+		/**
+		 * @filter `gravityview_js_localization` Modify the array passed to wp_localize_script()
+		 * @param array $js_localization The data padded to the Javascript file
+		 * @param array $views Array of View data arrays with View settings
+		 */
+		$js_localization = apply_filters( 'gravityview_js_localization', $js_localization, $views );
+
+		wp_localize_script( 'gravityview-fe-view', 'gvGlobals', $js_localization );
+	}
+
+	/**
+	 * @param \GV\View $view
+	 */
+	public function add_view_scripts_and_styles( \GV\View $view = null, $localize = false ) {
+
+		if ( ! $view ) {
+			return;
+		}
+
+		$view_id = $view->ID;
+		$template_id = gravityview_get_template_id( $view->ID );
+		$data = $view->as_data();
+
+		/**
+		 * Don't enqueue the scripts or styles if it's not going to be displayed.
+		 * @since 1.15
+		 */
+		if( is_user_logged_in() && false === GVCommon::has_cap( 'read_gravityview', $view_id ) ) {
+			return;
+		}
+
+		// By default, no thickbox
+		$js_dependencies = array( 'jquery', 'gravityview-jquery-cookie' );
+		$css_dependencies = array();
+
+		$lightbox = $view->settings->get( 'lightbox' );
+
+		// If the thickbox is enqueued, add dependencies
+		if ( $lightbox ) {
+
+			/**
+			 * @filter `gravity_view_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
+			 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
+			 */
+			$js_dependencies[] = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
+
+			/**
+			 * @filter `gravity_view_lightbox_style` Modify the lightbox CSS slug. Default: `thickbox`
+			 * @param string $script_slug If you want to use a different lightbox script, return the name of its CSS file here.
+			 */
+			$css_dependencies[] = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
+		}
+
+		/**
+		 * If the form has checkbox fields, enqueue dashicons
+		 * @see https://github.com/katzwebservices/GravityView/issues/536
+		 * @since 1.15
+		 */
+		if( gravityview_view_has_single_checkbox_or_radio( $data['form'], $data['fields'] ) ) {
+			$css_dependencies[] = 'dashicons';
+		}
+
+		wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GravityView_Plugin::version, true );
+
+		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+		wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ) , GravityView_Plugin::version, true );
+
+		wp_enqueue_script( 'gravityview-fe-view' );
+
+		if ( ! empty( $data['atts']['sort_columns'] ) ) {
+			wp_enqueue_style( 'gravityview_font', plugins_url( 'assets/css/font.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
+		}
+
+		$this->enqueue_default_style( $css_dependencies );
+
+		self::add_style( $template_id );
+
+		if ( $localize ) {
+			$this->_localize_javascript();
 		}
 	}
 
