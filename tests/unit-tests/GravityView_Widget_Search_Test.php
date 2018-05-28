@@ -141,7 +141,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$search_criteria_dates = array(
 			'start_date' => get_gmt_from_date( $start ),
-			'end_date' => get_gmt_from_date( '2017-10-04' /* + 1 day */ ),
+			'end_date' => get_gmt_from_date( '2017-10-03 23:59:59' /* + 1 day */ ),
 			'field_filters' => array(
 				'mode' => 'any',
 			),
@@ -248,7 +248,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 				'mode' => 'any',
 			),
 			'start_date' => '2017-05-01 00:00:00',
-			'end_date' => '2018-01-01 00:00:00',
+			'end_date' => '2017-12-31 23:59:59',
 		);
 
 		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
@@ -374,7 +374,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$search_criteria_dates = array(
 			'start_date' => '2018-04-07 00:00:00',
-			'end_date' => '2018-04-08 00:00:00',
+			'end_date' => '2018-04-07 23:59:59',
 			'field_filters' => array(
 				'mode' => 'any',
 			),
