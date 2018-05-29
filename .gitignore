@@ -22,8 +22,9 @@ vendor/*/.git
 vendor/composer/
 vendor/autoload.php
 
-### Grunt ###
+### Node ###
 node_modules/*
+package-lock.json
 
 ### CodeKit ####
 .sass-cache
@@ -45,6 +46,7 @@ languages/gravityview-pt.po
 .idea/dictionaries
 .idea/deployment.xml
 .idea/modules.xml
+
 .idea/php.xml
 
 # Sensitive or high-churn files:
@@ -86,5 +88,3 @@ docs/html
 
 # VIM
 *.swp
-
-.idea/php.xml

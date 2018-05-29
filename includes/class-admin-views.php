@@ -628,7 +628,7 @@ class GravityView_Admin_Views {
 					continue;
 				}
 
-				$output .= new GravityView_Admin_View_Field( $details['label'], $id, $details );
+				$output .= new GravityView_Admin_View_Field( $details['label'], $id, $details, $settings = array(), $form );
 
 			} // End foreach
 		}
@@ -689,7 +689,7 @@ class GravityView_Admin_Views {
 				}
 
 				// Render a label for each of them
-				echo new GravityView_Admin_View_Field( $item['label_text'], $item['field_id'], $item );
+				echo new GravityView_Admin_View_Field( $item['label_text'], $item['field_id'], $item, $settings = array(), $form );
 
 			}
 		}
@@ -931,7 +931,7 @@ class GravityView_Admin_Views {
 												echo new GravityView_Admin_View_Widget( $item['label'], $field['id'], $item, $field );
 												break;
 											default:
-												echo new GravityView_Admin_View_Field( $item['label'], $field['id'], $item, $field );
+												echo new GravityView_Admin_View_Field( $item['label'], $field['id'], $item, $field, $form_id );
 										}
 
 
@@ -944,34 +944,7 @@ class GravityView_Admin_Views {
 								<span class="drop-message"><?php echo sprintf(esc_attr__('"+ %s" or drag existing %ss here.', 'gravityview'), $button_label, $type ); ?></span>
 							</div>
 							<div class="gv-droppable-area-action">
-								<?php
-									if ( $type == 'field' && count( $view->joins ) ) {
-										?>
-											<?php
-												$known_joins = array();
-												foreach ( $view->joins as $join ) {
-													if ( ! in_array( $join->join->ID, $known_joins ) ) {
-														$known_joins []= $join->join->ID;
-														?>
-															<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>" data-formid="<?php echo esc_attr( $join->join->ID ); ?>"><?php echo '+ '.esc_html( $button_label ); ?> from Form #<?php echo esc_html( $join->join->ID ); ?></a>
-														<?php
-													}
-
-													if ( ! in_array( $join->join_on->ID, $known_joins ) ) {
-														$known_joins []= $join->join_on->ID;
-														?>
-															<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>" data-formid="<?php echo esc_attr( $join->join_on->ID ); ?>"><?php echo '+ '.esc_html( $button_label ); ?> from Form #<?php echo esc_html( $join->join_on->ID ); ?></a>
-														<?php
-													}
-												}
-											?>
-										<?php
-									} else {
-										?>
-											<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>" data-formid="<?php echo esc_attr( $view->form ? $view->form->ID : '' ); ?>"><?php echo '+ '.esc_html( $button_label ); ?></a>
-										<?php
-									}
-								?>
+								<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>" data-formid="<?php echo $view ? esc_attr( $view->form ? $view->form->ID : '' ) : ''; ?>"><?php echo '+ '.esc_html( $button_label ); ?></a>
 
 								<p class="gv-droppable-area-title"><strong><?php echo esc_html( $area['title'] ); ?></strong><?php if( !empty( $area['subtitle'] ) ) { ?><span class="gv-droppable-area-subtitle"> &ndash; <?php echo esc_html( $area['subtitle'] ); ?></span><?php } ?></p>
 							</div>
@@ -1175,7 +1148,7 @@ class GravityView_Admin_Views {
 				'gform_form_admin',
 				'jquery-ui-autocomplete'
 			);
-			
+
 		} elseif ( preg_match( '/style/ism', $filter ) ) {
 
 			$allowed_dependencies = array(

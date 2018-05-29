@@ -364,7 +364,9 @@ class Views_Route extends Route {
 			return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
 		}
 
-		if ( $view->settings->get( 'show_only_approved' ) ) {
+		$is_admin_and_can_view = $view->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap('gravityview_moderate_entries', $view->ID );
+
+		if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
 			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
 				return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
 			}

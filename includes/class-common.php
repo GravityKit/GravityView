@@ -31,7 +31,7 @@ class GVCommon {
 		}
 
 		// Only get_form_meta is cached. ::facepalm::
-		if ( class_exists( 'RGFormsModel' ) ) {
+		if ( class_exists( 'GFFormsModel' ) ) {
 			return GFFormsModel::get_form_meta( $form_id );
 		}
 
@@ -429,6 +429,7 @@ class GVCommon {
 			'sorting' => null,
 			'paging' => null,
 			'cache' => (isset( $passed_criteria['cache'] ) ? (bool) $passed_criteria['cache'] : true),
+			'context_view_id' => null,
 		);
 
 		$criteria = wp_parse_args( $passed_criteria, $search_criteria_defaults );
@@ -483,20 +484,15 @@ class GVCommon {
 			}
 		}
 
-		if ( ! GravityView_frontend::getInstance()->getSingleEntry() ) {
-			$multiple_original = class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance() && GravityView_View_Data::getInstance()->has_multiple_views();
-		}
-
-		// Calculate the context view id and send it to the advanced filter
-		if ( GravityView_frontend::getInstance()->getSingleEntry() ) {
-			$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
-		} elseif ( $multiple_original ) {
-			$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
-		} elseif ( 'delete' === GFForms::get( 'action' ) ) {
-			$criteria['context_view_id'] = isset( $_GET['view_id'] ) ? intval( $_GET['view_id'] ) : null;
-		} elseif( !isset( $criteria['context_view_id'] ) ) {
-            // Prevent overriding the Context View ID: Some widgets could set the context_view_id (e.g. Recent Entries widget)
-			$criteria['context_view_id'] = null;
+		if ( empty( $criteria['context_view_id'] ) ) {
+			// Calculate the context view id and send it to the advanced filter
+			if ( GravityView_frontend::getInstance()->getSingleEntry() ) {
+				$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
+			} else if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance() && GravityView_View_Data::getInstance()->has_multiple_views() ) {
+				$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
+			} else if ( 'delete' === GFForms::get( 'action' ) ) {
+				$criteria['context_view_id'] = isset( $_GET['view_id'] ) ? intval( $_GET['view_id'] ) : null;
+			}
 		}
 
 		/**
@@ -663,39 +659,38 @@ class GVCommon {
 	 */
 	public static function get_entry( $entry_slug, $force_allow_ids = false, $check_entry_display = true ) {
 
-		if ( class_exists( 'GFAPI' ) && ! empty( $entry_slug ) ) {
-
-			$entry_id = self::get_entry_id( $entry_slug, $force_allow_ids );
-
-			if ( empty( $entry_id ) ) {
-				return false;
-			}
-
-			// fetch the entry
-			$entry = GFAPI::get_entry( $entry_id );
-
-			/**
-			 * @filter `gravityview/common/get_entry/check_entry_display` Override whether to check entry display rules against filters
-			 * @since 1.16.2
-			 * @param bool $check_entry_display Check whether the entry is visible for the current View configuration. Default: true.
-			 * @param array $entry Gravity Forms entry array
-			 */
-			$check_entry_display = apply_filters( 'gravityview/common/get_entry/check_entry_display', $check_entry_display, $entry );
-
-			if( $check_entry_display ) {
-				// Is the entry allowed
-				$entry = self::check_entry_display( $entry );
-			}
-
-			if( is_wp_error( $entry ) ) {
-				gravityview()->log->error( '{error}', array( 'error' => $entry->get_error_message() ) );
-				return false;
-			}
-
-			return $entry;
+		if ( ! class_exists( 'GFAPI' ) || empty( $entry_slug ) ) {
+			return false;
 		}
 
-		return false;
+		$entry_id = self::get_entry_id( $entry_slug, $force_allow_ids );
+
+		if ( empty( $entry_id ) ) {
+			return false;
+		}
+
+		// fetch the entry
+		$entry = GFAPI::get_entry( $entry_id );
+
+		/**
+		 * @filter `gravityview/common/get_entry/check_entry_display` Override whether to check entry display rules against filters
+		 * @since 1.16.2
+		 * @param bool $check_entry_display Check whether the entry is visible for the current View configuration. Default: true.
+		 * @param array $entry Gravity Forms entry array
+		 */
+		$check_entry_display = apply_filters( 'gravityview/common/get_entry/check_entry_display', $check_entry_display, $entry );
+
+		if( $check_entry_display ) {
+			// Is the entry allowed
+			$entry = self::check_entry_display( $entry );
+		}
+
+		if( is_wp_error( $entry ) ) {
+			gravityview()->log->error( '{error}', array( 'error' => $entry->get_error_message() ) );
+			return false;
+		}
+
+		return $entry;
 	}
 
 	/**
@@ -1130,15 +1125,23 @@ class GVCommon {
 	public static function get_connected_views( $form_id, $args = array() ) {
 
 		$defaults = array(
-			'post_type' => 'gravityview',
+			'post_type'      => 'gravityview',
 			'posts_per_page' => 100,
-			'meta_key' => '_gravityview_form_id',
-			'meta_value' => (int)$form_id,
+			'meta_key'       => '_gravityview_form_id',
+			'meta_value'     => (int) $form_id,
 		);
+		$args     = wp_parse_args( $args, $defaults );
+		$views    = get_posts( $args );
 
-		$args = wp_parse_args( $args, $defaults );
-
-		$views = get_posts( $args );
+		$joins = get_post_meta( $form_id, '_gravityview_form_views', true );
+		if ( $joins ) {
+			$args = array(
+				'post_type'      => 'gravityview',
+				'posts_per_page' => 100,
+				'post__in'       => $joins,
+			);
+			$views    = array_merge( $views, get_posts( $args ) );
+		}
 
 		return $views;
 	}
@@ -1179,8 +1182,7 @@ class GVCommon {
 
 		$settings = get_post_meta( $post_id, '_gravityview_template_settings', true );
 
-		if ( class_exists( 'GravityView_View_Data' ) ) {
-
+		if ( class_exists( '\GV\View_Settings' ) ) {
 
 			return wp_parse_args( (array)$settings, \GV\View_Settings::defaults() );
 

@@ -95,41 +95,24 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 		 */
 		$paging = \GV\Utils::get( $parameters, 'paging' );
 	} else {
-		$entries = $form->entries
-			->filter( \GV\GF_Entry_Filter::from_search_criteria( $criteria['search_criteria'] ) )
-			->offset( $args['offset'] )
-			->limit( $criteria['paging']['page_size'] );
-
-		if ( $criteria['paging']['page_size'] ) {
-			$entries = $entries->page( ( ( $criteria['paging']['offset'] - $args['offset'] ) / $criteria['paging']['page_size'] ) + 1 );
+		$entries = new \GV\Entry_Collection();
+		if ( $view = \GV\View::by_id( \GV\Utils::get( $args, 'id' ) ) ) {
+			$view->settings->update( $args );
+			$entries = $view->get_entries( gravityview()->request );
 		}
 
-		if ( ! empty( $criteria['sorting'] ) ) {
-			$field = new \GV\Field();
-			$field->ID = $criteria['sorting']['key'];
-			switch( strtolower( $criteria['sorting']['direction'] ) ) {
-				case 'asc':
-					$direction = \GV\Entry_Sort::ASC;
-					break;
-				case 'rand':
-					$direction = \GV\Entry_Sort::RAND;
-					break;
-				default:
-				case 'desc':
-					$direction = \GV\Entry_Sort::DESC;
-					break;
-			}
-
-			$mode = $criteria['sorting']['is_numeric'] ? \GV\Entry_Sort::NUMERIC : \GV\Entry_Sort::ALPHA;
-			$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction, $mode ) );
-		}
+		$page = \GV\Utils::get( $parameters['paging'], 'current_page' ) ?
+			: ( ( ( $parameters['paging']['offset'] - $view->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
 
 		/** Set paging, count and unwrap the entries. */
 		$paging = array(
-			'offset' => ( $entries->current_page - 1 ) * $entries->limit,
-			'page_size' => $entries->limit,
+			'offset' => ( $page - 1 ) * $view->settings->get( 'page_size' ),
+			'page_size' => $view->settings->get( 'page_size' ),
 		);
-		$count = $entries->total();
+		/**
+		 * GF_Query does not subtract the offset, we have to subtract it ourselves.
+		 */
+		$count = $entries->total() - ( gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ? $view->settings->get( 'offset' ) : 0 );
 		$entries = array_map( function( $e ) { return $e->as_entry(); }, $entries->all() );
 	}
 
@@ -537,6 +520,9 @@ final class Legacy_Context {
 				case '\GravityView_View::fields':
 					\GravityView_View::getInstance()->setFields( $value );
 					break;
+				case '\GravityView_View::_current_field':
+					\GravityView_View::getInstance()->setCurrentField( $value );
+					break;
 				case 'wp_actions[loop_start]':
 					global $wp_actions;
 					$wp_actions['loop_start'] = $value;
@@ -612,6 +598,23 @@ final class Legacy_Context {
 				case 'fields':
 					self::thaw( array(
 						'\GravityView_View::fields' => $value->as_configuration(),
+					) );
+					break;
+				case 'field':
+					self::thaw( array(
+						'\GravityView_View::_current_field' => array(
+							'field_id' => $value->ID,
+							'field' => $value->field,
+							'field_settings' => $value->as_configuration(),
+							'form' => \GravityView_View::getInstance()->getForm(),
+							'field_type' => $value->type, /** {@since 1.6} */
+							'entry' => \GravityView_View::getInstance()->getCurrentEntry(),
+
+							// 'field_path' => $field_path, /** {@since 1.16} */
+							// 'value' => $value,
+							// 'display_value' => $display_value,
+							// 'format' => $format,
+						),
 					) );
 					break;
 				case 'request':

@@ -563,6 +563,11 @@ class GravityView_Admin_ApproveEntries {
 
 		// Sanitize the values, just to be sure.
 		foreach ( $bulk_actions as $key => $group ) {
+
+		    if( empty( $group ) ) {
+		        continue;
+		    }
+
 			foreach ( $group as $i => $action ) {
 				$bulk_actions[ $key ][ $i ]['label'] = esc_html( $bulk_actions[ $key ][ $i ]['label'] );
 				$bulk_actions[ $key ][ $i ]['value'] = esc_attr( $bulk_actions[ $key ][ $i ]['value'] );

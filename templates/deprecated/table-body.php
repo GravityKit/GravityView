@@ -14,7 +14,7 @@
 		/**
 		 * @action `gravityview_table_body_before` Inside the `tbody`, before any rows are rendered. Can be used to insert additional rows.
          * @since 1.0.7
-         * @param GravityView_View $this Current GravityView_View object
+         * @param \GravityView_View $this Current GravityView_View object
 		 */
 		do_action('gravityview_table_body_before', $this );
 
@@ -43,7 +43,7 @@
 				 * @filter `gravityview_entry_class` Modify the class applied to the entry row
 				 * @param string $alt Existing class. Default: if odd row, `alt`, otherwise empty string.
 				 * @param array $entry Current entry being displayed
-				 * @param GravityView_View $this Current GravityView_View object
+				 * @param \GravityView_View $this Current GravityView_View object
 				 */
 				$class = apply_filters( 'gravityview_entry_class', $alt, $entry, $this );
 		?>
@@ -52,7 +52,7 @@
                     /**
                      * @action `gravityview_table_cells_before` Inside the `tr` while rendering each entry in the loop. Can be used to insert additional table cells.
                      * @since 1.0.7
-                     * @param GravityView_View $this Current GravityView_View object
+                     * @param \GravityView_View $this Current GravityView_View object
                      */
 					do_action('gravityview_table_cells_before', $this );
 
@@ -66,7 +66,7 @@
                      *
                      * @since 1.0.7
                      *
-                     * @param GravityView_View $this Current GravityView_View object
+                     * @param \GravityView_View $this Current GravityView_View object
                      */
 					do_action('gravityview_table_cells_after', $this );
 		?>

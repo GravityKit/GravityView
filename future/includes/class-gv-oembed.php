@@ -199,7 +199,7 @@ class oEmbed {
 			return __( 'You are not allowed to view this content.', 'gravityview' );
 		}
 
-		if ( $entry['status'] != 'active' ) {
+		if ( $entry && 'active' !== $entry['status'] ) {
 			gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 			return __( 'You are not allowed to view this content.', 'gravityview' );
 		}
@@ -215,17 +215,18 @@ class oEmbed {
 		 * When this is embedded inside a view we should not display the widgets.
 		 */
 		$request = gravityview()->request;
-		$is_reembedded = true; // Assume as embeded unless detected otherwise.
+		$is_reembedded = false; // Assume not embedded unless detected otherwise.
 		if ( in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request' ) ) ) {
-			if ( ( $_view = $request->is_view() ) && $_view->ID == $view->ID ) {
-				$is_reembedded = false;
+			if ( ( $_view = $request->is_view() ) && $_view->ID !== $view->ID ) {
+				$is_reembedded = true;
 			}
 		}
 
 		/**
 		 * Remove Widgets on a nested embedded View.
+		 * Also, don't show widgets if we're embedding an entry
 		 */
-		if ( $is_reembedded ) {
+		if ( $is_reembedded || $entry ) {
 			$view->widgets = new \GV\Widget_Collection();
 		}
 

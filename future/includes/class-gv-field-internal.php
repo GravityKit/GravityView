@@ -13,7 +13,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  */
 class Internal_Field extends Field {
 	/**
-	 * @var \GravityView_Field The backing GravityView field (old).
+	 * @var \GravityView_Field|false The backing GravityView field (old). False if none exists.
 	 */
 	public $field;
 
@@ -25,17 +25,17 @@ class Internal_Field extends Field {
 	 * @internal
 	 * @since 2.0
 	 *
-	 * @return \GV\internal_Field|null The field implementation or null on error.
+	 * @return \GV\Internal_Field|null The field implementation or null on error.
 	 */
 	public static function from_configuration( $configuration ) {
+
 		if ( empty( $configuration['id'] ) || ! is_string( $configuration['id'] ) ) {
 			gravityview()->log->error( 'Invalid configuration[id] supplied.' );
 			return null;
 		}
 
-		$field = new self();
-		$field->ID = $configuration['id'];
-		$field->type = $configuration['id'];
+		$field = self::by_id( $configuration['id'] );
+
 		$field->update_configuration( $configuration );
 
 		return $field;
@@ -46,7 +46,7 @@ class Internal_Field extends Field {
 	 *
 	 * @param int $field_id The internal Gravity Forms field ID.
 	 *
-	 * @return \GV\Field|null The requested field or null if not found.
+	 * @return \GV\Internal_Field|null The requested field or null if not found.
 	 */
 	public static function by_id( $field_id ) {
 		$field = new self();

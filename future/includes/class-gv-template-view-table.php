@@ -17,6 +17,77 @@ class View_Table_Template extends View_Template {
 	 */
 	public static $slug = 'table';
 
+
+	/**
+     * Constructor. Add filters to modify output.
+     *
+	 * @since 2.0.4
+	 *
+	 * @param View $view
+	 * @param Entry_Collection $entries
+	 * @param Request $request
+	 */
+	public function __construct( View $view, Entry_Collection $entries, Request $request ) {
+
+	    add_filter( 'gravityview/template/field/label', array( __CLASS__, 'add_columns_sort_links' ), 100, 2 );
+
+		parent::__construct( $view, $entries, $request );
+	}
+
+	/**
+     * Add sorting links to HTML columns that support sorting
+     *
+     * @since 2.0.4
+     * @since 2.0.5 Made static
+     *
+     * @static
+     *
+	 * @param string $column_label Label for the table column
+	 * @param \GV\Template_Context $context
+	 *
+	 * @return string
+	 */
+	static public function add_columns_sort_links( $column_label, $context = null ) {
+
+		$sort_columns = $context->view->settings->get( 'sort_columns' );
+
+		if ( empty( $sort_columns ) ) {
+            return $column_label;
+		}
+
+		if ( ! \GravityView_frontend::getInstance()->is_field_sortable( $context->field->ID, $context->view->form->form ) ) {
+			return $column_label;
+		}
+
+		$sorting = \GravityView_View::getInstance()->getSorting();
+
+		$class = 'gv-sort';
+
+		$sort_field_id = \GravityView_frontend::_override_sorting_id_by_field_type( $context->field->ID, $context->view->form->ID );
+
+		$sort_args = array(
+			'sort' => $context->field->ID,
+			'dir' => 'asc',
+		);
+
+		if ( ! empty( $sorting['key'] ) && (string) $sort_field_id === (string) $sorting['key'] ) {
+			//toggle sorting direction.
+			if ( 'asc' === $sorting['direction'] ) {
+				$sort_args['dir'] = 'desc';
+				$class .= ' gv-icon-sort-desc';
+			} else {
+				$sort_args['dir'] = 'asc';
+				$class .= ' gv-icon-sort-asc';
+			}
+		} else {
+			$class .= ' gv-icon-caret-up-down';
+		}
+
+		$url = add_query_arg( $sort_args, remove_query_arg( array('pagenum') ) );
+
+		return '<a href="'. esc_url_raw( $url ) .'" class="'. $class .'" ></a>&nbsp;'. $column_label;
+	}
+
 	/**
 	 * Output the table column names.
 	 *
@@ -70,9 +141,16 @@ class View_Table_Template extends View_Template {
 		$context = Template_Context::from_template( $this, compact( 'entry', 'fields' ) );
 
 		/**
+		 * Push legacy entry context.
+		 */
+		\GV\Mocks\Legacy_Context::load( array(
+			'entry' => $entry,
+		) );
+
+		/**
 		 * @filter `gravityview_table_cells` Modify the fields displayed in a table
 		 * @param array $fields
-		 * @param GravityView_View $this
+		 * @param \GravityView_View $this
 		 * @deprecated Use `gravityview/template/table/fields`
 		 */
 		$fields = apply_filters( 'gravityview_table_cells', $fields->as_configuration(), \GravityView_View::getInstance() );
@@ -118,7 +196,7 @@ class View_Table_Template extends View_Template {
                 /**
                  * @action `gravityview_table_cells_before` Inside the `tr` while rendering each entry in the loop. Can be used to insert additional table cells.
                  * @since 1.0.7
-				 * @param GravityView_View $this Current GravityView_View object
+				 * @param \GravityView_View $this Current GravityView_View object
 				 * @deprecated Use `gravityview/template/table/cells/before`
                  */
                 do_action( 'gravityview_table_cells_before', \GravityView_View::getInstance() );
@@ -137,7 +215,7 @@ class View_Table_Template extends View_Template {
                 /**
                  * @action `gravityview_table_cells_after` Inside the `tr` while rendering each entry in the loop. Can be used to insert additional table cells.
                  * @since 1.0.7
-				 * @param GravityView_View $this Current GravityView_View object
+				 * @param \GravityView_View $this Current GravityView_View object
 				 * @deprecated Use `gravityview/template/table/cells/after`
                  */
                 do_action( 'gravityview_table_cells_after', \GravityView_View::getInstance() );
@@ -177,6 +255,7 @@ class View_Table_Template extends View_Template {
 			'hide_empty' => false,
 			'zone_id' => 'directory_table-columns',
 			'markup' => '<td id="{{ field_id }}" class="{{ class }}">{{ value }}</td>',
+            'form' => $form,
 		);
 
 		/** Output. */
@@ -204,7 +283,7 @@ class View_Table_Template extends View_Template {
 		* @action `gravityview_table_body_before` Inside the `tbody`, before any rows are rendered. Can be used to insert additional rows.
 		* @deprecated Use `gravityview/template/table/body/before`
 		* @since 1.0.7
-		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		* @param \GravityView_View $gravityview_view Current GravityView_View object.
 		*/
 		do_action( 'gravityview_table_body_before', \GravityView_View::getInstance() /** ugh! */ );
 	}
@@ -230,7 +309,7 @@ class View_Table_Template extends View_Template {
 		* @action `gravityview_table_body_after` Inside the `tbody`, after any rows are rendered. Can be used to insert additional rows.
 		* @deprecated Use `gravityview/template/table/body/after`
 		* @since 1.0.7
-		* @param GravityView_View $gravityview_view Current GravityView_View object.
+		* @param \GravityView_View $gravityview_view Current GravityView_View object.
 		*/
 		do_action( 'gravityview_table_body_after', \GravityView_View::getInstance() /** ugh! */ );
 	}
@@ -256,7 +335,7 @@ class View_Table_Template extends View_Template {
 		 * @action `gravityview_table_tr_before` Before the `tr` while rendering each entry in the loop. Can be used to insert additional table rows.
 		 * @since 1.0.7
 		 * @deprecated USe `gravityview/template/table/tr/before`
-		 * @param GravityView_View $gravityview_view Current GraivtyView_View object.
+		 * @param \GravityView_View $gravityview_view Current GraivtyView_View object.
 		 */
 		do_action( 'gravityview_table_tr_before', \GravityView_View::getInstance() /** ugh! */ );
 	}
@@ -282,7 +361,7 @@ class View_Table_Template extends View_Template {
 		 * @action `gravityview_table_tr_after` Inside the `tr` while rendering each entry in the loop. Can be used to insert additional table cells.
 		 * @since 1.0.7
 		 * @deprecated USe `gravityview/template/table/tr/after`
-		 * @param GravityView_View $gravityview_view Current GraivtyView_View object.
+		 * @param \GravityView_View $gravityview_view Current GravityView_View object.
 		 */
 		do_action( 'gravityview_table_tr_after', \GravityView_View::getInstance() /** ugh! */ );
 	}
@@ -303,7 +382,7 @@ class View_Table_Template extends View_Template {
 		 * @filter `gravityview_entry_class` Modify the class applied to the entry row.
 		 * @param string $class Existing class.
 		 * @param array $entry Current entry being displayed
-		 * @param GravityView_View $this Current GravityView_View object
+		 * @param \GravityView_View $this Current GravityView_View object
 		 * @deprecated Use `gravityview/template/table/entry/class`
 		 * @return string The modified class.
 		 */

@@ -305,6 +305,76 @@ class GravityView_Welcome {
                     </ul>
                 </div>
 
+                <h3>2.0.6.1 on May 21, 2018</h3>
+
+                <ul>
+                    <li>Fixed: "Hide View data until search is performed" not working</li>
+                    <li>Added: Support for SiteOrigin Page Builder and LiveMesh SiteOrigin Widgets</li>
+                    <li>Fixed: Enfold Theme layout builder no longer rendering Views</li>
+                </ul>
+
+                <h3>2.0.6 on May 17, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Conflicts with Yoast SEO &amp; Jetpack plugins that prevent widgets from displaying</li>
+                    <li>Fixed: Some fields display as HTML (fixes Gravity Flow Discussion field, for example)</li>
+                    <li>Fixed: Some Merge Tag modifiers not working, such as <code>:url</code> for List fields</li>
+                    <li>Fixed: Give Floaty a place to hang out on the GravityView Settings screen with new Gravity Forms CSS</li>
+                </ul>
+
+                <p><strong>Developer Updates</strong></p>
+
+                <ul>
+                    <li>Fixed: Backward-compatibility for using global <code>$gravityview_view-&gt;_current_field</code> (don't use in new code!)</li>
+                </ul>
+
+                <h3> 2.0.5 on May 16, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Entry Link fields and <code>[gv_entry_link]</code> shortcode not working properly with DataTables when embedded</li>
+                    <li>Fixed: Do not output other shortcodes in single entry mode</li>
+                    <li>Fixed: Error when deleting an entry</li>
+                    <li>Fixed: When multiple Views are embedded on a page, and one or more has Advanced Filters enabled, no entries will be displayed</li>
+                    <li>Fixed: PHP warning with <code>[gravitypdf]</code> shortcode</li>
+                    <li>Fixed: When multiple table layout Views are embedded on a page, there are multiple column sorting links displayed</li>
+                    <li>Fixed: Error displaying message that a license is expired</li>
+                </ul>
+
+                <h3>2.0.4 on May 12, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Slow front-end performance, affecting all layout types</li>
+                    <li>Fixed: Search not performing properly</li>
+                    <li>Fixed: "Enable sorting by column" option for Table layouts</li>
+                    <li>GravityView will require Gravity Forms 2.3 in the future; please make sure you&rsquo;re using the latest version of Gravity Forms!</li>
+                </ul>
+
+                <p><strong>Developer Updates</strong></p>
+
+                <ul>
+                    <li>Fixed: <code>GravityView_frontend::get_view_entries()</code> search generation</li>
+                    <li>Fixed: <code>gravityview_get_template_settings()</code> not returning settings</li>
+                    <li>Tweak: Cache View and Field magic getters into variables for less overhead.</li>
+                </ul>
+
+
+                <h3>2.0.3 on May 10, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Compatibility with <code>[gravitypdf]</code> shortcode</li>
+                    <li>Fixed: When using <code>[gravityview]</code> shortcode, the <code>page_size</code> setting wasn't being respected</li>
+                    <li>Fixed: <code>[gravityview detail="last_entry" /]</code> not returning the correct entry</li>
+                    <li>Fixed: Widgets not being properly rendered when using oEmbed</li>
+                    <li>Fixed: Note fields not rendering properly</li>
+                </ul>
+
+                <p><strong>Developer Notes</strong></p>
+
+                <ul>
+                    <li>Fixed: <code>GravityView_View::getInstance()</code> not returning information about a single entry</li>
+                    <li>Added: <code>gravityview/shortcode/detail/$key</code> filter</li>
+                </ul>
+
                 <h3>2.0.1 &amp; 2.0.2 on May 9, 2018</h3>
                 <ul>
                     <li>Fixed: Widgets not displayed when a View is embedded</li>

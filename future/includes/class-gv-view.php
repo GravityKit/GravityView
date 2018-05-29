@@ -205,6 +205,17 @@ class View implements \ArrayAccess {
 	public static function content( $content ) {
 		$request = gravityview()->request;
 
+		// Plugins may run through the content in the header. WP SEO does this for its OpenGraph functionality.
+		if ( ! defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
+			if ( ! did_action( 'loop_start' ) ) {
+				gravityview()->log->debug( 'Not processing yet: loop_start hasn\'t run yet. Current action: {action}', array( 'action' => current_filter() ) );
+				return $content;
+			}
+
+			//	We don't want this filter to run infinite loop on any post content fields
+			remove_filter( 'the_content', array( __CLASS__, __METHOD__ ) );
+		}
+
 		/**
 		 * This is not a View. Bail.
 		 *
@@ -278,6 +289,8 @@ class View implements \ArrayAccess {
 			return __( 'You are not allowed to view this content.', 'gravityview' );
 		}
 
+		$is_admin_and_can_view = $view->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap('gravityview_moderate_entries', $view->ID );
+
 		/**
 		 * Editing a single entry.
 		 */
@@ -292,7 +305,7 @@ class View implements \ArrayAccess {
 				return __( 'You are not allowed to view this content.', 'gravityview' );
 			}
 
-			if ( $view->settings->get( 'show_only_approved' ) ) {
+			if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
 				if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
 					gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
 					return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -316,7 +329,7 @@ class View implements \ArrayAccess {
 				return __( 'You are not allowed to view this content.', 'gravityview' );
 			}
 
-			if ( $view->settings->get( 'show_only_approved' ) ) {
+			if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
 				if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
 					gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
 					return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -605,6 +618,8 @@ class View implements \ArrayAccess {
 			 * @todo: Stop using _frontend and use something like $request->get_search_criteria() instead
 			 */
 			$parameters = \GravityView_frontend::get_view_entries_parameters( $this->settings->as_atts(), $this->form->ID );
+			$parameters['context_view_id'] = $this->ID;
+			$parameters = \GVCommon::calculate_get_entries_criteria( $parameters, $this->form->ID );
 
 			if ( $request instanceof REST\Request ) {
 				$atts = $this->settings->as_atts();
@@ -617,19 +632,19 @@ class View implements \ArrayAccess {
 			$page = Utils::get( $parameters['paging'], 'current_page' ) ?
 				: ( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
 
-			if ( gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
+			if ( gravityview()->plugin->supports( Plugin::FEATURE_GFQUERY ) ) {
 				/**
 				 * New \GF_Query stuff :)
 				 */
 				$query = new \GF_Query( $this->form->ID, $parameters['search_criteria'], $parameters['sorting'] );
 
 				$query->limit( $parameters['paging']['page_size'] )
-					->page( $page );
+					->offset( ( ( $page - 1 ) * $parameters['paging']['page_size'] ) + $this->settings->get( 'offset' ) );
 
 				/**
 				 * Any joins?
 				 */
-				if ( count( $this->joins ) ) {
+				if ( Plugin::FEATURE_JOINS && count( $this->joins ) ) {
 					foreach ( $this->joins as $join ) {
 						$query = $join->as_query_join( $query );
 					}
@@ -668,8 +683,8 @@ class View implements \ArrayAccess {
 					->offset( $this->settings->get( 'offset' ) )
 					->limit( $parameters['paging']['page_size'] )
 					->page( $page );
-
-				if ( ! empty( $parameters['sorting'] ) ) {
+				
+				if ( ! empty( $parameters['sorting'] ) && ! empty( $parameters['sorting']['key'] ) ) {
 					$field = new \GV\Field();
 					$field->ID = $parameters['sorting']['key'];
 					$direction = strtolower( $parameters['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;

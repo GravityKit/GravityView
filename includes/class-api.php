@@ -677,7 +677,9 @@ function gv_container_class( $passed_css_class = '', $echo = true, $context = nu
 		$view_id = 0;
 		if ( $context->view ) {
 			$view_id = $context->view->ID;
-			$hide_until_searched = $context->view->settings->get( 'hide_until_searched' );
+			if( $context->view->settings->get( 'hide_until_searched' ) ) {
+				$hide_until_searched = ( empty( $context->entry ) && ! $context->request->is_search() );
+			}
 		}
 		if ( $context->entries ) {
 			$total_entries = $context->entries->total();
@@ -1108,12 +1110,24 @@ function gravityview_get_view_id() {
 }
 
 /**
+ * Returns the current GravityView context, or empty string if not GravityView
+ *
+ * - Returns empty string on GravityView archive pages
+ * - Returns empty string on archive pages containing embedded Views
+ * - Returns empty string for embedded Views, not 'directory'
+ * - Returns empty string for embedded entries (oEmbed or [gventry]), not 'single'
+ * - Returns 'single' when viewing a [gravityview] shortcode-embedded single entry
+ *
  * @global GravityView_View $gravityview_view
- * @return string View context "directory", "single", or "edit"
+ * @deprecated since 2.0.6.2 Use `gravityview()->request`
+ * @return string View context "directory", "single", "edit", or empty string if not GravityView
  */
 function gravityview_get_context() {
+	global $wp_query;
 
-	$context = '';
+	if ( isset( $wp_query ) && $wp_query->post_count > 1 ) {
+		return '';
+	}
 
 	/**
 	 * @filter `gravityview_is_edit_entry` Whether we're currently on the Edit Entry screen \n
@@ -1122,15 +1136,15 @@ function gravityview_get_context() {
 	 */
 	$is_edit_entry = apply_filters( 'gravityview_is_edit_entry', false );
 
-	if( $is_edit_entry ) {
-		$context = 'edit';
-	} else if( class_exists( 'GravityView_frontend' ) && $single = GravityView_frontend::is_single_entry() ) {
-		$context = 'single';
-	} else if( class_exists( 'GravityView_View' ) ) {
-		$context = GravityView_View::getInstance()->getContext();
+	if ( $is_edit_entry ) {
+		return 'edit';
+	} else if ( gravityview()->request->is_entry() ) {
+		return 'single';
+	} else if ( gravityview()->request->is_view() ) {
+		return 'directory';
 	}
 
-	return $context;
+	return '';
 }
 
 

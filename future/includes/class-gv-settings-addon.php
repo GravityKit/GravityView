@@ -573,12 +573,17 @@ class Addon_Settings extends \GFAddOn {
 	 * @return void
 	 */
 	public function license_key_notice() {
-		$license_status = $this->get( 'license_key_status' );
-		$license_key = $this->get( 'license_key' );
-		if( '' === $license_key ) {
-			$license_status = 'inactive';
-        }
-		$license_id = empty( $license_key ) ? 'license' : $license_key;
+
+	    if( $this->is_save_postback() ) {
+		    $settings = $this->get_posted_settings();
+		    $license_key = \GV\Utils::get( $settings, 'license_key' );
+		    $license_status = \GV\Utils::get( $settings, 'license_key_status', 'inactive' );
+        } else {
+		    $license_status = $this->get( 'license_key_status', 'inactive' );
+		    $license_key    = $this->get( 'license_key' );
+	    }
+
+	    $license_id = empty( $license_key ) ? 'license' : $license_key;
 
 		$message = esc_html__( 'Your GravityView license %s. This means you&rsquo;re missing out on updates and support! %sActivate your license%s or %sget a license here%s.', 'gravityview' );
 
@@ -746,6 +751,11 @@ class Addon_Settings extends \GFAddOn {
 		$disabled_attribute = \GVCommon::has_cap( 'gravityview_edit_settings' ) ? false : 'disabled';
 
 		$fields = array(
+			array(
+				'name' => 'gv_header',
+				'value' => '',
+				'type' => 'html',
+			),
 			array(
 				'name' => 'license_key',
 				'required' => true,
@@ -1006,6 +1016,48 @@ class Addon_Settings extends \GFAddOn {
 		}
 
 		return $return;
+	}
+
+	/**
+	 * Allow pure HTML settings row
+     *
+     * @since 2.0.6
+     *
+	 * @param array $field
+	 * @param bool $echo Whether to echo the
+	 *
+	 * @return string
+	 */
+	protected function settings_html( $field, $echo = true ) {
+
+		$return = \GV\Utils::get( $field, 'value', '' );
+
+		if ( $echo ) {
+			echo $return;
+		}
+
+		return $return;
+	}
+
+	/**
+	 * No <th> needed for pure HTML settings row
+	 *
+	 * @since 2.0.6
+	 *
+	 * @param array $field
+	 *
+	 * @return void
+	 */
+	public function single_setting_row_html( $field ) {
+		?>
+
+        <tr id="gaddon-setting-row-<?php echo esc_attr( $field['name'] ); ?>">
+            <td colspan="2">
+				<?php $this->single_setting( $field ); ?>
+            </td>
+        </tr>
+
+		<?php
 	}
 
 	/**

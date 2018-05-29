@@ -20,10 +20,6 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 
 		$view_id = $this->factory->view->create();
 
-		\GV\Mocks\Legacy_Context::push( array(
-			'view' => \GV\View::by_id( $view_id ),
-		) );
-
 		$value = do_shortcode( '[gravityview id="'.$view_id.'" hoolo="3"]' );
 		$this->assertNotEmpty( $value );
 		$this->assertTrue( strpos( $value, 'gv-container' ) > 0 );
@@ -35,19 +31,31 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 	 * @covers GravityView_View::setTotalEntries
 	 */
 	function test_shortcode_get_view_detail_PAGING() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'settings' => array(
+				'page_size' => 10,
+			)
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$request = new \GV\Mock_Request();
+		$request->returns['is_view'] = &$view;
+		gravityview()->request = $request;
 
 		// Not set
-		GravityView_View::getInstance()->setTotalEntries( 0 );
-		GravityView_View::getInstance()->setPaging( array() );
 		$value = do_shortcode( '[gravityview detail=first_entry]' );
-		$this->assertEquals( '', $value );
+		$this->assertEquals( '0', $value );
 
-
-		GravityView_View::getInstance()->setTotalEntries( 1000 );
-		GravityView_View::getInstance()->setPaging( array(
-			'offset' => 0,
-			'page_size' => 10,
-		));
+		foreach ( range( 1, 50 ) as $i ) {
+			$entry = $this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'status' => 'active',
+				'16' => sprintf( '[%d] Entry %s', $i, wp_generate_password( 12 ) ),
+			) );
+		}
 
 		$value = do_shortcode( '[gravityview detail=first_entry]' );
 		$this->assertEquals( '1', $value );
@@ -58,10 +66,10 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		$value = do_shortcode( '[gravityview detail=page_size]' );
 		$this->assertEquals( '10', $value );
 
-		GravityView_View::getInstance()->setPaging( array(
+		$view->settings->update( array(
 			'offset' => 20,
 			'page_size' => 20,
-		));
+		) );
 
 		$value = do_shortcode( '[gravityview detail=first_entry]' );
 		$this->assertEquals( '21', $value );
@@ -84,6 +92,8 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		remove_filter( 'gravityview/shortcode/detail/page_size', '__return_empty_string' );
 		remove_filter( 'gravityview/shortcode/detail/first_entry', '__return_empty_string' );
 		remove_filter( 'gravityview/shortcode/detail/last_entry', '__return_empty_string' );
+
+		gravityview()->request = new \GV\Frontend_Request();
 	}
 
 	/**
@@ -91,19 +101,44 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 	 * @covers GravityView_View::setTotalEntries
 	 */
 	function test_shortcode_get_view_detail_TOTAL_ENTRIES() {
-		GravityView_View::getInstance()->setTotalEntries( 0 );
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'settings' => array(
+				'page_size' => 10,
+			)
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$request = new \GV\Mock_Request();
+		$request->returns['is_view'] = &$view;
+		gravityview()->request = $request;
+
+		// Not set
+		$value = do_shortcode( '[gravityview detail=first_entry]' );
+		$this->assertEquals( '0', $value );
+
 		$value = do_shortcode( '[gravityview detail=total_entries]' );
 		$this->assertEquals( '0', $value );
 
-		GravityView_View::getInstance()->setTotalEntries( 1000 );
+		foreach ( range( 1, 1050 ) as $i ) {
+			$entry = $this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'status' => 'active',
+				'16' => sprintf( '[%d] Entry %s', $i, wp_generate_password( 12 ) ),
+			) );
+		}
+
 		$value = do_shortcode( '[gravityview detail=total_entries]' );
-		$this->assertEquals( '1,000', $value );
+		$this->assertEquals( '1,050', $value );
 
 		add_filter( 'gravityview/shortcode/detail/total_entries', '__return_empty_string' );
-		GravityView_View::getInstance()->setTotalEntries( 1000000 );
 		$value = do_shortcode( '[gravityview detail=total_entries]' );
 		$this->assertEquals( '', $value );
 		remove_filter( 'gravityview/shortcode/detail/total_entries', '__return_empty_string' );
+
+		gravityview()->request = new \GV\Frontend_Request();
 	}
 
 	/**

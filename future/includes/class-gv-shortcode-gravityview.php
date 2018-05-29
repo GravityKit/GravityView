@@ -35,13 +35,18 @@ class gravityview extends \GV\Shortcode {
 			'id' => 0,
 			'view_id' => 0,
 			'detail' => null,
-			'page_size' => 20,
 		) );
+		
+		if ( ! $view_id = $atts['id'] ? : $atts['view_id'] ) {
+			if ( $atts['detail'] && $view = $request->is_view() ) {
+				$view_id = $view->ID;
+			}
+		}
 
-		$view = \GV\View::by_id( $atts['id'] ? : $atts['view_id'] );
+		$view = \GV\View::by_id( $view_id );
 
 		if ( ! $view ) {
-			gravityview()->log->error( 'View does not exist #{view_id}', array( 'view_id' => $view->ID ) );
+			gravityview()->log->error( 'View does not exist #{view_id}', array( 'view_id' => $view_id ) );
 			return '';
 		}
 
@@ -92,6 +97,8 @@ class gravityview extends \GV\Shortcode {
 			return __( 'You are not allowed to view this content.', 'gravityview' );
 		}
 
+		$is_admin_and_can_view = $view->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap('gravityview_moderate_entries', $view->ID );
+
 		/**
 		 * View details.
 		 */
@@ -102,6 +109,13 @@ class gravityview extends \GV\Shortcode {
 		 * Editing a single entry.
 		 */
 		} else if ( ! $is_reembedded && ( $entry = $request->is_edit_entry() ) ) {
+			/**
+			 * When editing an entry don't render multiple views.
+			 */
+			if ( ( $selected = \GV\Utils::_GET( 'gvid' ) ) && $view->ID != $selected ) {
+				return '';
+			}
+
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -112,7 +126,7 @@ class gravityview extends \GV\Shortcode {
 				return __( 'You are not allowed to view this content.', 'gravityview' );
 			}
 
-			if ( $view->settings->get( 'show_only_approved' ) ) {
+			if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
 				if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
 					gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
 					return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -126,6 +140,13 @@ class gravityview extends \GV\Shortcode {
 		 * Viewing a single entry.
 		 */
 		} else if ( ! $is_reembedded && ( $entry = $request->is_entry() ) ) {
+			/**
+			 * When viewing an entry don't render multiple views.
+			 */
+			if ( ( $selected = \GV\Utils::_GET( 'gvid' ) ) && $view->ID != $selected ) {
+				return '';
+			}
+
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -136,7 +157,7 @@ class gravityview extends \GV\Shortcode {
 				return __( 'You are not allowed to view this content.', 'gravityview' );
 			}
 
-			if ( $view->settings->get( 'show_only_approved' ) ) {
+			if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
 				if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
 					gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
 					return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -173,7 +194,6 @@ class gravityview extends \GV\Shortcode {
 	 * @param \GV\View $view The View.
 	 * @param \GV\Entry_Collection $entries The calculated entries.
 	 * @param array $atts The shortcode attributes (with defaults).
-	 * @param array $view_atts A quirky compatibility parameter where we get the unaltered view atts.
 	 *
 	 * @return string The output.
 	 */
@@ -188,12 +208,24 @@ class gravityview extends \GV\Shortcode {
 				$output = number_format_i18n( min( $entries->total(), $view->settings->get( 'offset' ) + 1 ) );
 				break;
 			case 'last_entry':
-				$output = number_format_i18n( $view->settings->get( 'page_size' ) );
+				$output = number_format_i18n( $view->settings->get( 'page_size' ) + $view->settings->get( 'offset' ) );
 				break;
 			case 'page_size':
 				$output = number_format_i18n( $view->settings->get( $key ) );
 				break;
 		endswitch;
+
+		/**
+		 * @filter `gravityview/shortcode/detail/{$detail}` Filter the detail output returned from `[gravityview detail="$detail"]`
+		 * @since 1.13
+		 * @param string[in,out] $output Existing output
+		 *
+		 * @since 2.0.3
+		 * @param \GV\View $view The view.
+		 * @param \GV\Entry_Collection $entries The entries.
+		 * @param array $atts The shortcode atts with defaults.
+		 */
+		$output = apply_filters( "gravityview/shortcode/detail/$key", $output, $view );
 
 		return $output;
 	}

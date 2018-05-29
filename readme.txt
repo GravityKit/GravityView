@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.4
-Tested up to: 4.9.5
+Tested up to: 4.9.6
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -20,6 +20,59 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.0.6.1 on May 21, 2018 =
+
+* Fixed: "Hide View data until search is performed" not working
+* Added: Support for SiteOrigin Page Builder and LiveMesh SiteOrigin Widgets
+* Fixed: Enfold Theme layout builder no longer rendering Views
+
+= 2.0.6 on May 17, 2018 =
+
+* Fixed: Conflicts with Yoast SEO & Jetpack plugins that prevent widgets from displaying
+* Fixed: Some fields display as HTML (fixes Gravity Flow Discussion field, for example)
+* Fixed: Some Merge Tag modifiers not working, such as `:url` for List fields
+* Fixed: Give Floaty a place to hang out on the GravityView Settings screen with new Gravity Forms CSS
+
+__Developer Updates__
+
+* Fixed: Backward-compatibility for using global `$gravityview_view->_current_field` (don't use in new code!)
+
+= 2.0.5 on May 16, 2018 =
+
+* Fixed: Entry Link fields and `[gv_entry_link]` shortcode not working properly with DataTables when embedded
+* Fixed: Do not output other shortcodes in single entry mode
+* Fixed: Error when deleting an entry
+* Fixed: When multiple Views are embedded on a page, and one or more has Advanced Filters enabled, no entries will be displayed
+* Fixed: PHP warning with `[gravitypdf]` shortcode
+* Fixed: When multiple table layout Views are embedded on a page, there are multiple column sorting links displayed
+* Fixed: Error displaying message that a license is expired
+
+= 2.0.4 on May 12, 2018 =
+
+* Fixed: Slow front-end performance, affecting all layout types
+* Fixed: Search not performing properly
+* Fixed: "Enable sorting by column" option for Table layouts
+* GravityView will require Gravity Forms 2.3 in the future; please make sure you're using the latest version of Gravity Forms!
+
+__Developer Updates__
+
+* Fixed: `GravityView_frontend::get_view_entries()` search generation
+* Fixed: `gravityview_get_template_settings()` not returning settings
+* Tweak: Cache View and Field magic getters into variables for less overhead.
+
+= 2.0.3 on May 10, 2018 =
+
+* Fixed: Compatibility with `[gravitypdf]` shortcode
+* Fixed: When using `[gravityview]` shortcode, the `page_size` setting wasn't being respected
+* Fixed: `[gravityview detail="last_entry" /]` not returning the correct entry
+* Fixed: Widgets not being properly rendered when using oEmbed
+* Fixed: Note fields not rendering properly
+
+__Developer Notes__
+
+* Fixed: `GravityView_View::getInstance()` not returning information about a single entry
+* Added: `gravityview/shortcode/detail/$key` filter
 
 = 2.0.1 & 2.0.2 on May 9, 2018 =
 

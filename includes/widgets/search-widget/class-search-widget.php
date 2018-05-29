@@ -217,7 +217,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		global $pagenow;
 
 		// Don't process any scripts below here if it's not a GravityView page or the widgets screen
-		if ( ! gravityview_is_admin_page( $hook ) && ( 'widgets.php' !== $pagenow ) ) {
+		if ( ! gravityview_is_admin_page( $hook, 'single' ) && ( 'widgets.php' !== $pagenow ) ) {
 			return;
 		}
 

@@ -90,6 +90,47 @@ class GravityView_API_Test extends GV_UnitTestCase {
 			$this->assertEquals( $expected, $formatted, $expected );
 		}
 
+		$post = $this->factory->view->create_and_get( array( 'form_id' => $this->form_id ) );
+		$view = \GV\View::from_post( $post );
+		$view->settings->update( array( 'page_size' => 3 ) );
+
+		$entries = new \GV\Entry_Collection();
+
+		foreach ( range( 1, 5 ) as $i ) {
+			$entry = $this->factory->entry->create_and_get( array(
+				'form_id' => $this->form_id,
+				'status' => 'active',
+				'16' => wp_generate_password( 12 ),
+			) );
+			$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
+		}
+
+		$context = new \GV\Template_Context();
+		$context->request = new \GV\Mock_Request();
+		$context->entries = $entries;
+
+		$classes = array(
+			'gv-container' => gv_container_class( '', false, $context ),
+			'with-passed-class gv-container' => gv_container_class( 'with-passed-class', false, $context ),
+			'with-passed-class and-whitespace gv-container' => gv_container_class( '   with-passed-class and-whitespace   ', false, $context ),
+		);
+
+		foreach ( $classes as $expected => $formatted ) {
+			$this->assertEquals( $expected, $formatted, $expected );
+		}
+
+		$context->view = $view;
+
+		$classes = array(
+			'gv-container gv-container-' . $view->ID => gv_container_class( '', false, $context ),
+			'with-passed-class gv-container gv-container-' . $view->ID => gv_container_class( 'with-passed-class', false, $context ),
+			'with-passed-class and-whitespace gv-container gv-container-' . $view->ID => gv_container_class( '   with-passed-class and-whitespace   ', false, $context ),
+		);
+
+		foreach ( $classes as $expected => $formatted ) {
+			$this->assertEquals( $expected, $formatted, $expected );
+		}
+
 		// Test Hide Until Search formatting
 		GravityView_View::getInstance()->setHideUntilSearched( true );
 
@@ -97,6 +138,19 @@ class GravityView_API_Test extends GV_UnitTestCase {
 			'gv-container hidden' => gv_container_class(),
 			'with-passed-class gv-container hidden' => gv_container_class( 'with-passed-class' ),
 			'with-passed-class and-whitespace gv-container hidden' => gv_container_class( '   with-passed-class and-whitespace   ' ),
+		);
+
+		foreach ( $classes as $expected => $formatted ) {
+			$this->assertEquals( $expected, $formatted, $expected );
+		}
+
+		$context->view->settings->set( 'hide_until_searched', '1' );
+		$context->request->returns['is_search'] = false;
+
+		$classes = array(
+			'gv-container gv-container-' . $view->ID .' hidden' => gv_container_class( '', false, $context ),
+			'with-passed-class gv-container gv-container-' . $view->ID .' hidden' => gv_container_class( 'with-passed-class', false, $context ),
+			'with-passed-class and-whitespace gv-container gv-container-' . $view->ID .' hidden' => gv_container_class( '   with-passed-class and-whitespace   ', false, $context ),
 		);
 
 		foreach ( $classes as $expected => $formatted ) {
