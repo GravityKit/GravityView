@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: List Field columns were being shown as searchable in Search Bar
 * Fixed: Conflict with Gravity Forms Import Entries file upload process
 * Fixed: Empty searches could show results when "Hide View data until search is performed" is enabled
+* Fixed: When "Start Date" and "End Date" are the same day, results may not be accurate
 
 = 2.0.7.1 on May 24, 2018 =
 
