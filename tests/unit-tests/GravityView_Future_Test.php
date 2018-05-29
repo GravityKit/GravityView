@@ -508,9 +508,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\View_Collection::contains()
 	 * @covers \GravityView_View_Data::maybe_get_view_id()
 	 * @covers \GravityView_View_Data::is_valid_embed_id()
-     * @expectedDeprecated gravityview/data/parse/meta_keys
 	 */
 	public function test_view_collection_from_post() {
+		if ( function_exists( 'apply_filters_deprecated' ) ) {
+			$this->expected_deprecated[] = 'gravityview/data/parse/meta_keys';
+		}
 
 		$original_shortcode = $GLOBALS['shortcode_tags']['gravityview'];
 		remove_shortcode( 'gravityview' ); /** Conflicts with existing shortcode right now. */
@@ -622,6 +624,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $view['atts']['search_field'], 2 );
 
 		$GLOBALS['shortcode_tags']['gravityview'] = $original_shortcode;
+
+		if ( function_exists( 'apply_filters_deprecated' ) ) {
+			$this->expectedDeprecated();
+		}
 	}
 
 	/**
