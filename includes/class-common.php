@@ -1125,15 +1125,23 @@ class GVCommon {
 	public static function get_connected_views( $form_id, $args = array() ) {
 
 		$defaults = array(
-			'post_type' => 'gravityview',
+			'post_type'      => 'gravityview',
 			'posts_per_page' => 100,
-			'meta_key' => '_gravityview_form_id',
-			'meta_value' => (int)$form_id,
+			'meta_key'       => '_gravityview_form_id',
+			'meta_value'     => (int) $form_id,
 		);
+		$args     = wp_parse_args( $args, $defaults );
+		$views    = get_posts( $args );
 
-		$args = wp_parse_args( $args, $defaults );
-
-		$views = get_posts( $args );
+		$joins = get_post_meta( $form_id, '_gravityview_form_views', true );
+		if ( $joins ) {
+			$args = array(
+				'post_type'      => 'gravityview',
+				'posts_per_page' => 100,
+				'post__in'       => $joins,
+			);
+			$views    = array_merge( $views, get_posts( $args ) );
+		}
 
 		return $views;
 	}
