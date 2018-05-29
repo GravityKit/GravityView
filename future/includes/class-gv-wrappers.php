@@ -13,6 +13,12 @@ namespace GV\Wrappers;
  * The views magic wrapper.
  */
 class views {
+
+	/**
+	 * @var \GV\View An internal View keeper.
+	 */
+	private $view = null;
+
 	/**
 	 * Gets a View.
 	 *
@@ -68,5 +74,16 @@ class views {
 				return $this->get( $post );
 			}
 		}
+	}
+
+	/**
+	 * Mock the internal pointer.
+	 *
+	 * @param \GV\View $view The View to supply on fallback in ::get()
+	 *
+	 * @return void
+	 */
+	public function set( $view ) {
+		$this->view = $view;
 	}
 }

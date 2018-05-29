@@ -50,6 +50,8 @@ class gravityview extends \GV\Shortcode {
 			return '';
 		}
 
+		gravityview()->views->set( $view );
+
 		/**
 		 * When this shortcode is embedded inside a View we can only display it as a directory. There's no other way.
 		 * Try to detect that we're not embedded to allow edit and single contexts.
