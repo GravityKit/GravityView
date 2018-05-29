@@ -73,6 +73,11 @@ class views {
 			if ( $post instanceof \WP_Post && $post->post_type == 'gravityview' ) {
 				return $this->get( $post );
 			}
+
+			/**
+			 * Final fallback.
+			 */
+			return $this->view;
 		}
 	}
 

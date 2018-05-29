@@ -245,9 +245,14 @@ final class Core {
 	 * Making developers happy, since 2017.
 	 */
 	public function __get( $key ) {
+		static $views;
+
 		switch ( $key ) {
 			case 'views':
-				return new \GV\Wrappers\views();
+				if ( is_null( $views ) ) {
+					$views = new \GV\Wrappers\views();
+				}
+				return $views;
 		}
 	}
 
