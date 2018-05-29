@@ -29,14 +29,9 @@
 
 			<?php
 			// list of available fields to be shown in the popup
-			$form_ids = array( $curr_form );
-			if ( ( $view = \GV\View::from_post( $post ) ) && $view->joins ) {
-				foreach ( $view->joins as $join ) {
-					$form_ids []= $join->join->ID;
-					$form_ids []= $join->join_on->ID;
-				}
-			}
-			foreach ( array_unique( $form_ids ) as $form_id ) {
+            $forms = gravityview_get_forms( 'any' );
+			$form_ids = array_map( function ($form) { return $form['id']; }, $forms);
+			foreach ( $form_ids as $form_id ) {
 				?>
                 <div id="directory-available-fields-<?php echo esc_attr( $form_id ); ?>" class="hide-if-js gv-tooltip" data-formid="<?php echo esc_attr( $form_id ); ?>">
                     <span class="close"><i class="dashicons dashicons-dismiss"></i></span>
