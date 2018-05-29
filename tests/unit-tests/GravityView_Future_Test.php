@@ -920,6 +920,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 		);
 		$this->assertTrue( $request->is_search() );
 
+		$_GET = array(
+			'filter_16' => '',
+            'mode' => 'any',
+		);
+
+		$this->assertFalse( $request->is_search() );
+
 		// TODO: Only count $_GET when in searchable fields
 
 		$_GET = array();

@@ -143,11 +143,11 @@ abstract class Request {
 
 		unset( $get['mode'] );
 
+		$get = array_filter( $get, 'gravityview_is_not_empty_string' );
+
 		if( $has_field_key = $this->_has_field_key( $get ) ) {
 			return true;
 		}
-
-		$get = array_filter( $get, 'gravityview_is_not_empty_string' );
 
 		return isset( $get['gv_search'] ) || isset( $get['gv_start'] ) || isset( $get['gv_end'] ) || isset( $get['gv_by'] ) || isset( $get['gv_id'] );
 	}
