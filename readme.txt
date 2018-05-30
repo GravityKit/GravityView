@@ -30,6 +30,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Empty searches could show results when "Hide View data until search is performed" is enabled
 * Fixed: When "Start Date" and "End Date" are the same day, results may not be accurate
 
+__Developer Updates__
+
+* Fixed: `gv_value()` didn't have necessary View global data set for backward compatibility (`gv_value()` is now deprecated! Use `Use \GV\Field_Template::render()` instead.)
+
 = 2.0.7.1 on May 24, 2018 =
 
 * Fixed: Merge Tags not being shown in Custom Content fields in Edit Entry
