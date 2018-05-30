@@ -305,6 +305,23 @@ class GravityView_Welcome {
                     </ul>
                 </div>
 
+                <h3>2.0.8 on May 25, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Table layout not using field Column Width settings</li>
+                    <li>Fixed: With "Show Label" disabled, "Custom Label" setting is being displayed (if set)</li>
+                    <li>Fixed: List Field columns were being shown as searchable in Search Bar</li>
+                    <li>Fixed: Conflict with Gravity Forms Import Entries file upload process</li>
+                    <li>Fixed: Empty searches could show results when "Hide View data until search is performed" is enabled</li>
+                    <li>Fixed: When "Start Date" and "End Date" are the same day, results may not be accurate</li>
+                </ul>
+
+                <p><strong>Developer Updates</strong></p>
+
+                <ul>
+                    <li>Fixed: <code>gv_value()</code> didn't have necessary View global data set for backward compatibility (<code>gv_value()</code> is now deprecated! Use <code>Use \GV\Field_Template::render()</code> instead.)</li>
+                </ul>
+
                 <h3>2.0.7.1 on May 24, 2018</h3>
 
                 <ul>

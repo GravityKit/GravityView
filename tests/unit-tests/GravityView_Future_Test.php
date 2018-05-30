@@ -508,9 +508,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\View_Collection::contains()
 	 * @covers \GravityView_View_Data::maybe_get_view_id()
 	 * @covers \GravityView_View_Data::is_valid_embed_id()
-     * @expectedDeprecated gravityview/data/parse/meta_keys
 	 */
 	public function test_view_collection_from_post() {
+		if ( function_exists( 'apply_filters_deprecated' ) ) {
+			$this->expected_deprecated[] = 'gravityview/data/parse/meta_keys';
+		}
 
 		$original_shortcode = $GLOBALS['shortcode_tags']['gravityview'];
 		remove_shortcode( 'gravityview' ); /** Conflicts with existing shortcode right now. */
@@ -622,6 +624,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $view['atts']['search_field'], 2 );
 
 		$GLOBALS['shortcode_tags']['gravityview'] = $original_shortcode;
+
+		if ( function_exists( 'apply_filters_deprecated' ) ) {
+			$this->expectedDeprecated();
+		}
 	}
 
 	/**
@@ -919,6 +925,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'filter_16' => 'Features+%2F+Enhancements',
 		);
 		$this->assertTrue( $request->is_search() );
+
+		$_GET = array(
+			'filter_16' => '',
+            'mode' => 'any',
+		);
+
+		$this->assertFalse( $request->is_search() );
 
 		// TODO: Only count $_GET when in searchable fields
 
@@ -1448,13 +1461,22 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( 'custom_label' => 'This is {entry_id}' ) );
 		$this->assertEquals( 'This is ' . $entry->ID, $field->get_label( $view, $view->form, $entry ) );
 
+		/** Custom label override not shown when show_label disabled */
+		$field->update_configuration( array( 'show_label' => '0', 'custom_label' => 'This is {entry_id}' ) );
+		$this->assertEquals( '', $field->get_label( $view, $view->form, $entry ) );
+
 		/** Internal fields. */
 		$field = \GV\Internal_Field::by_id( 'id' );
 		$field->update_configuration( array( 'label' => 'ID <small>Entry</small>' ) );
 		$this->assertEquals( 'ID <small>Entry</small>', $field->get_label() );
 
+		/** Show label false for Internal fields. */
+		$field->update_configuration( array( 'show_label' => '0', 'label' => 'Mesa busten wit happiness seein yousa again, Ani' ) );
+		$this->assertEquals( '', $field->get_label() );
+		$this->assertEquals( '', $field->get_label( $view, $view->form, $entry ) );
+
 		/** Custom label override and merge tags. */
-		$field->update_configuration( array( 'custom_label' => 'This is {entry_id}' ) );
+		$field->update_configuration( array( 'show_label' => '1', 'custom_label' => 'This is {entry_id}' ) );
 		$this->assertEquals( 'This is ' . $entry->ID, $field->get_label( $view, $view->form, $entry ) );
 	}
 
