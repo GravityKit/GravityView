@@ -73,7 +73,7 @@ class View_Collection extends Collection {
 	 *
 	 * @api
 	 * @since 2.0
-	 * @return \GV\View_Collection A \GV\View_Collection instance contanining the views inside the supplied \WP_Post.
+	 * @return \GV\View_Collection A \GV\View_Collection instance containing the views inside the supplied \WP_Post.
 	 */
 	public static function from_post( \WP_Post $post ) {
 		$views = new self();

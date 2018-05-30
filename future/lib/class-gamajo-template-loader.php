@@ -10,7 +10,9 @@
  * @version   1.3.0
  */
 
-if ( ! class_exists( 'Gamajo_Template_Loader' ) ) {
+namespace GV;
+
+if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 
 	/**
 	 * Template loader.
