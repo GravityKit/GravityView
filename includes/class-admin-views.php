@@ -886,7 +886,7 @@ class GravityView_Admin_Views {
 
 					<?php foreach( $areas as $area ) : 	?>
 
-						<div class="gv-droppable-area">
+						<div class="gv-droppable-area" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>">
 							<div class="active-drop active-drop-<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
 
 								<?php // render saved fields
