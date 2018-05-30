@@ -4,32 +4,30 @@ about: Create a report to help us improve
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**Describe the Issue**
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+--------
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+### Additional information
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**This issue happens in the following settings:**
 
-**Additional context**
-Add any other context about the problem here.
+_Please try to re-create the issue in each rendering mode. This helps debug the problem._
+
+- [ ] View
+- [ ] Embedded via shortcode
+- [ ] Embedded via oEmbed
+
+**If shortcode, paste the shortcode below**
+
+`[replace me]`
+
+**Are Advanced Filter filters configured for the View?**
+
+- [ ] Yes
+- [ ] No
+
+**If yes, please drag a screenshot below:**
+
