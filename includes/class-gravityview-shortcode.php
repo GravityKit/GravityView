@@ -15,7 +15,8 @@
  * Handle the [gravityview] shortcode
  *
  * @since 1.13
- * @deprecated since 2.0.3, see \GV\Shortcodes\gravityview
+ * @deprecated since 2.0.3
+ * @see \GV\Shortcodes\gravityview
  */
 class GravityView_Shortcode {
 
