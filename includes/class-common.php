@@ -1124,6 +1124,8 @@ class GVCommon {
 	 */
 	public static function get_connected_views( $form_id, $args = array() ) {
 
+		global $wpdb;
+
 		$defaults = array(
 			'post_type'      => 'gravityview',
 			'posts_per_page' => 100,
@@ -1133,14 +1135,23 @@ class GVCommon {
 		$args     = wp_parse_args( $args, $defaults );
 		$views    = get_posts( $args );
 
-		$joins = get_post_meta( $form_id, '_gravityview_form_views', true );
-		if ( $joins ) {
-			$args = array(
+		$views_with_joins = $wpdb->get_results( "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '_gravityview_form_joins'" );
+
+		$joined_forms = array();
+		foreach ( $views_with_joins as $view ) {
+			$data = unserialize( $view->meta_value );
+			if ( (int) $data[0][2] === (int) $form_id ) {
+				$joined_forms[] = $view->post_id;
+			}
+		}
+
+		if ( $joined_forms ) {
+			$args  = array(
 				'post_type'      => 'gravityview',
 				'posts_per_page' => 100,
-				'post__in'       => $joins,
+				'post__in'       => $joined_forms,
 			);
-			$views    = array_merge( $views, get_posts( $args ) );
+			$views = array_merge( $views, get_posts( $args ) );
 		}
 
 		return $views;
