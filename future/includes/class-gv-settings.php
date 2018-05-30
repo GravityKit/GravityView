@@ -36,7 +36,7 @@ class Settings {
 	 * @api
 	 * @since 2.0
 	 *
-	 * @param array An array of settings to update.
+	 * @param array $settings An array of settings to update.
 	 * @return \GV\Settings self chain.
 	 */
 	public function update( $settings ) {

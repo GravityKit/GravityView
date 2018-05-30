@@ -198,7 +198,7 @@ class View_Settings extends Settings {
 			'search_field' => array(
 				'label'             => __( 'Search Field', 'gravityview' ),
 				'desc'              => __( 'If Search Value is set, you can define a specific field to search in. Otherwise, all fields will be searched.', 'gravityview' ),
-				'type'              => 'number',
+				'type'              => 'text',
 				'value'             => '',
 				'group'             => 'filter',
 				'show_in_shortcode' => false,
