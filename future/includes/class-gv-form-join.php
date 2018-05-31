@@ -40,8 +40,6 @@ class Join {
 	 * @param \GV\Field $join_column Its column.
 	 * @param \GV\Source $join_on The form we're joining on.
 	 * @param \GV\Field $join_on_column Its column.
-	 *
-	 * @return \GV\Joins $this
 	 */
 	public function __construct( $join, $join_column, $join_on, $join_on_column ) {
 		if ( $join instanceof \GV\Source ) {
@@ -70,12 +68,20 @@ class Join {
 	 */
 	public function as_query_join( $query ) {
 		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) || ! $query instanceof \GF_Query ) {
-				return null;
+			return null;
+		}
+
+		$join_id    = intval( $this->join->ID );
+		$join_on_id = intval( $this->join_on->ID );
+
+		if ( empty( $join_id ) || empty( $join_on_id ) ) {
+			gravityview()->log->error( 'Query join form not an integer.', array( 'data' => $this ) );
+			return null;
 		}
 
 		return $query->join(
-			new \GF_Query_Column( $this->join_on_column->ID, $this->join_on->ID ),
-			new \GF_Query_Column( $this->join_column->ID, $this->join->ID )
+			new \GF_Query_Column( $this->join_on_column->ID, $join_on_id ),
+			new \GF_Query_Column( $this->join_column->ID, $join_id )
 		);
 	}
 }
