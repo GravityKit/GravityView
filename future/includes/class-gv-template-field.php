@@ -86,7 +86,7 @@ abstract class Field_Template extends Template {
 		$this->request = $request;
 
 		/** Add granular overrides. */
-		add_filter( $this->filter_prefix . '_get_template_part', $this->_add_id_specific_templates_callback  = self::add_id_specific_templates( $this ), 10, 3 );
+		add_filter( $this->filter_prefix . '_get_template_part', $this->_add_id_specific_templates_callback = self::add_id_specific_templates( $this ), 10, 3 );
 
 		parent::__construct();
 	}
@@ -226,9 +226,16 @@ abstract class Field_Template extends Template {
 				$specifics []= sprintf( '%sform-%d-field.php', $slug_dir, $form_id );
 			}
 
+			/**
+			 * Legacy.
+			 */
+			if ( $field_type ) {
+				$specifics []= sprintf( '%s.php', $field_type );
+				$specifics []= sprintf( 'fields/%s.php', $field_type );
+			}
+
 			$specifics []= sprintf( '%sfield-%s.php', $slug_dir, $slug_name );
 			$specifics []= sprintf( '%sfield.php', $slug_dir );
-
 
 			return array_merge( $specifics, $templates );
 		};
