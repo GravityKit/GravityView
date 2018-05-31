@@ -31,8 +31,6 @@ $gv-overlay-index: 10000;
 --------------------------------------- */
 
 .gv-grid {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	margin-bottom: 2em;
 }
@@ -62,8 +60,6 @@ $gv-overlay-index: 10000;
 [class*='gv-grid-col-'] {
 	float: left;
 	padding-right: 1em;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
@@ -131,8 +127,6 @@ $gv-overlay-index: 10000;
 	background: #eee;
 	position: relative;
 	border: 2px solid transparent;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
@@ -221,7 +215,6 @@ $gv-overlay-index: 10000;
 
 	background: #2ecc37;
 	border-color: #00a213;
-	-webkit-box-shadow: inset 0 1px 0 rgba(120, 230, 129, .5), 0 1px 0 rgba(0, 0, 0, .15);
 	box-shadow: inset 0 1px 0 rgba(120, 230, 129, .5), 0 1px 0 rgba(0, 0, 0, .15);
 
 	&.focus,
@@ -230,14 +223,12 @@ $gv-overlay-index: 10000;
 	&:hover {
 		border-color: #00a213;
 		background: #1ebe41;
-		-webkit-box-shadow: inset 0 1px 0 rgba(120, 230, 129, .6);
 		box-shadow: inset 0 1px 0 rgba(120, 230, 129, .6);
 	}
 
 	&.focus,
 	&:focus {
 		border-color: #0e5025;
-		-webkit-box-shadow: inset 0 1px 0 rgba(120, 230, 129, .6), 1px 1px 2px rgba(0, 0, 0, .4);
 		box-shadow: inset 0 1px 0 rgba(120, 230, 129, .6), 1px 1px 2px rgba(0, 0, 0, .4);
 	}
 
@@ -531,8 +522,6 @@ hr {
 	margin: 5px 0;
 	width: 100%;
 	z-index: 100; // Above .drop-message
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 
 	h5 {
@@ -542,11 +531,7 @@ hr {
 		font-size: 14px;
 		margin: 0;
 		padding: 0 0 0 .25em;
-		-webkit-user-select: none;
-		-moz-user-select: none;
 		user-select: none;
-		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 
 		// Parent field name
@@ -558,8 +543,6 @@ hr {
 
 	span.gv-field-controls {
 		padding-left: .33em; // Give some space.
-		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 	}
 
