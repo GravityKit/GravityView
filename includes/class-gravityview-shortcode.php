@@ -15,7 +15,8 @@
  * Handle the [gravityview] shortcode
  *
  * @since 1.13
- * @deprecated since 2.0.3, see \GV\Shortcodes\gravityview
+ * @deprecated since 2.0.3
+ * @see \GV\Shortcodes\gravityview
  */
 class GravityView_Shortcode {
 
@@ -84,7 +85,7 @@ class GravityView_Shortcode {
 		$filtered_atts = shortcode_atts( $supported_atts, $passed_atts, 'gravityview' );
 
 		// Only keep the passed attributes after making sure that they're valid pairs
-		$filtered_atts = function_exists( 'array_intersect_key' ) ? array_intersect_key( (array) $passed_atts, $filtered_atts ) : $filtered_atts;
+		$filtered_atts = array_intersect_key( (array) $passed_atts, $filtered_atts );
 
 		$atts = array();
 

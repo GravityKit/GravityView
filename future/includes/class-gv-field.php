@@ -258,8 +258,6 @@ class Field {
 	/**
 	 * Retrieve the label for this field.
 	 *
-	 * Returns null in this implementation (or, rather, lack thereof).
-	 *
 	 * @param \GV\View $view The view for this context if applicable.
 	 * @param \GV\Source $source The source (form) for this context if applicable.
 	 * @param \GV\Entry $entry The entry for this context if applicable.
@@ -268,6 +266,11 @@ class Field {
 	 * @return string The label for this field. Nothing here.
 	 */
 	public function get_label( View $view = null, Source $source = null, Entry $entry = null, Request $request = null ) {
+
+		if ( ! $this->show_label ) {
+			return '';
+		}
+
 		/** A custom label is available. */
 		if ( ! empty( $this->custom_label ) ) {
 			return \GravityView_API::replace_variables( $this->custom_label, $source ? $source->form ? : null : null, $entry ? $entry->as_entry() : null );

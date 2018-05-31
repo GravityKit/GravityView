@@ -70,15 +70,16 @@ class Internal_Field extends Field {
 	 * @param \GV\Entry $entry The entry for this context if applicable.
 	 * @param \GV\Request $request The request for this context if applicable.
 	 *
-	 * @return string The label for this field. Nothing here.
+	 * @return string The label for this field.
 	 */
 	public function get_label( View $view = null, Source $source = null, Entry $entry = null, Request $request = null ) {
-		if ( $label = parent::get_label( $view, $source, $entry, $request ) ) {
-			return $label;
-		}
 
 		if ( ! $this->show_label ) {
 			return '';
+		}
+
+		if ( $label = parent::get_label( $view, $source, $entry, $request ) ) {
+			return $label;
 		}
 
 		return $this->field ? $this->field->label : $this->label;

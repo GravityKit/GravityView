@@ -267,7 +267,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-wp-i18n');
 
 	// Regular CSS/JS/Image Compression stuff
-	grunt.registerTask( 'default', [ 'exec:bower', 'sass', 'uglify', 'imagemin', 'watch' ] );
+	grunt.registerTask( 'default', [ 'exec:bower', 'sass', 'uglify', 'imagemin', 'translate', 'watch' ] );
 
 	// Translation stuff
 	grunt.registerTask( 'translate', [ 'exec:transifex', 'potomo', 'addtextdomain', 'makepot' ] );

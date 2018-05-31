@@ -43,6 +43,29 @@ class GravityView_Field_List extends GravityView_Field {
 		add_filter( 'gravityview/template/field_label', array( $this, '_filter_field_label' ), 10, 4 );
 
 		add_filter( 'gravityview/common/get_form_fields', array( $this, 'add_form_fields' ), 10, 3 );
+
+		add_filter( 'gravityview/search/searchable_fields', array( $this, 'remove_columns_from_searchable_fields' ), 10 );
+	}
+
+	/**
+	 * Removes columns from searchable field dropdown
+	 *
+	 * Columns are able to be added to View layouts, but not separately searched!
+	 *
+	 * @param array $fields
+	 * @param int $form_id
+	 *
+	 * @return array
+	 */
+	public function remove_columns_from_searchable_fields( $fields ) {
+
+		foreach ( $fields as $key => $field ) {
+			if ( isset( $field['parent'] ) && $field['parent'] instanceof \GF_Field_List ) {
+				unset( $fields[ $key ] );
+			}
+		}
+
+		return $fields;
 	}
 
 	/**

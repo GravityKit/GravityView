@@ -96,12 +96,13 @@ class GF_Field extends Field {
 	 * @return string The label for this Gravity Forms field.
 	 */
 	public function get_label( View $view = null, Source $source = null, Entry $entry = null, Request $request = null ) {
-		if ( $label = parent::get_label( $view, $source, $entry, $request ) ) {
-			return $label;
-		}
 
 		if ( ! $this->show_label ) {
 			return '';
+		}
+
+		if ( $label = parent::get_label( $view, $source, $entry, $request ) ) {
+			return $label;
 		}
 
 		if ( ! $source || ! is_object( $source ) || ! is_a( $source, '\GV\GF_Form' ) ) {
