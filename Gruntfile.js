@@ -51,6 +51,18 @@ module.exports = function(grunt) {
 			}
 		},
 
+		postcss: {
+			options: {
+				map: false,
+				processors: [
+					require('autoprefixer')
+				]
+			},
+			dist: {
+				src: 'assets/css/*.css'
+			}
+		},
+
 		jshint: [
 			"assets/js/admin-views.js",
 			"assets/js/admin-edd-license.js",
@@ -134,7 +146,7 @@ module.exports = function(grunt) {
 			},
 			extension_scss: {
 				files: ['includes/extensions/**/*.scss'],
-				tasks: ['sass:extensions']
+				tasks: ['sass:extensions', 'postcss:dist']
 			},
 			templates: {
 				files: ['templates/css/**/*.scss','!templates/css/**/*.css'],
@@ -142,7 +154,7 @@ module.exports = function(grunt) {
 			},
 			scss: {
 				files: ['assets/css/scss/*.scss'],
-				tasks: ['sass:dist']
+				tasks: ['sass:dist', 'postcss:dist']
 			},
 			docs: {
 				files: ['docs/*.scss'],
@@ -267,7 +279,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-wp-i18n');
 
 	// Regular CSS/JS/Image Compression stuff
-	grunt.registerTask( 'default', [ 'exec:bower', 'sass', 'uglify', 'imagemin', 'translate', 'watch' ] );
+	grunt.registerTask( 'default', [ 'exec:bower', 'sass', 'postcss', 'uglify', 'imagemin', 'translate', 'watch' ] );
 
 	// Translation stuff
 	grunt.registerTask( 'translate', [ 'exec:transifex', 'potomo', 'addtextdomain', 'makepot' ] );
