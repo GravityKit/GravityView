@@ -258,10 +258,12 @@ class GravityView_Edit_Entry_Render {
 
 		wp_register_script( 'gform_gravityforms', GFCommon::get_base_url().'/js/gravityforms.js', array( 'jquery', 'gform_json', 'gform_placeholder', 'sack', 'plupload-all', 'gravityview-fe-view' ) );
 
-		GFFormDisplay::enqueue_form_scripts($gravityview_view->getForm(), false);
+		GFFormDisplay::enqueue_form_scripts( $gravityview_view->getForm(), false);
+
+		wp_localize_script( 'gravityview-fe-view', 'gvGlobals', array( 'cookiepath' => COOKIEPATH ) );
 
 		// Sack is required for images
-		wp_print_scripts( array( 'sack', 'gform_gravityforms' ) );
+		wp_print_scripts( array( 'sack', 'gform_gravityforms', 'gravityview-fe-view' ) );
 	}
 
 
@@ -296,11 +298,6 @@ class GravityView_Edit_Entry_Render {
 		if( $this->is_valid ) {
 
 			gravityview()->log->debug( 'Submission is valid.' );
-
-			/**
-			 * @hack This step is needed to fix field visibility, to add the calculation fields
-			 */
-			$form = $this->form_prepare_for_save();
 
 			/**
 			 * @hack This step is needed to unset the adminOnly from form fields, to add the calculation fields
@@ -1214,7 +1211,7 @@ class GravityView_Edit_Entry_Render {
 
 			// saved field entry value (if empty, fallback to the pre-populated value, if exists)
 			// or pre-populated value if not empty and set to override saved value
-			$field_value = !gv_empty( $this->entry[ $id ], false, false ) && ! ( $override_saved_value && !gv_empty( $pre_value, false, false ) ) ? $this->entry[ $id ] : $pre_value;
+			$field_value = isset( $this->entry[ $id ] ) && ! gv_empty( $this->entry[ $id ], false, false ) && ! ( $override_saved_value && !gv_empty( $pre_value, false, false ) ) ? $this->entry[ $id ] : $pre_value;
 
 			// in case field is post_category but inputType is select, multi-select or radio, convert value into array of category IDs.
 			if ( 'post_category' === $field->type && !gv_empty( $field_value, false, false ) ) {
@@ -1641,7 +1638,6 @@ class GravityView_Edit_Entry_Render {
 
 	        /** @var GF_Field $field */
 	        foreach ( $fields as $field ) {
-
 				if( intval( $configured_field['id'] ) === intval( $field->id ) && $this->user_can_edit_field( $configured_field, false ) ) {
 				    $edit_fields[] = $this->merge_field_properties( $field, $configured_field );
 				    break;

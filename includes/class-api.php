@@ -1425,5 +1425,8 @@ function gravityview_field_output( $passed_args, $context = null ) {
 	 */
 	$html = apply_filters( 'gravityview/field_output/html', $html, $args, $context );
 
+	/** @since 2.0.8 Remove unused atts */
+	$html = str_replace( array( ' style=""', ' class=""', ' id=""' ), '', $html );
+
 	return $html;
 }

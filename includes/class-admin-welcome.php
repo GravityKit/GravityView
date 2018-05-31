@@ -305,6 +305,49 @@ class GravityView_Welcome {
                     </ul>
                 </div>
 
+                <h3>2.0.8 on May 25, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Table layout not using field Column Width settings</li>
+                    <li>Fixed: With "Show Label" disabled, "Custom Label" setting is being displayed (if set)</li>
+                    <li>Fixed: List Field columns were being shown as searchable in Search Bar</li>
+                    <li>Fixed: Conflict with Gravity Forms Import Entries file upload process</li>
+                    <li>Fixed: Empty searches could show results when "Hide View data until search is performed" is enabled</li>
+                    <li>Fixed: When "Start Date" and "End Date" are the same day, results may not be accurate</li>
+                </ul>
+
+                <p><strong>Developer Updates</strong></p>
+
+                <ul>
+                    <li>Fixed: <code>gv_value()</code> didn't have necessary View global data set for backward compatibility (<code>gv_value()</code> is now deprecated! Use <code>Use \GV\Field_Template::render()</code> instead.)</li>
+                </ul>
+
+                <h3>2.0.7.1 on May 24, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Merge Tags not being shown in Custom Content fields in Edit Entry</li>
+                    <li>Fixed: "gvGlobals not defined" JavaScript error on Edit Entry screen affecting some themes</li>
+                    <li>Fixed: Don't clear Search Bar configuration when switching View layouts</li>
+                </ul>
+
+                <h3>2.0.7 on May 23, 2018</h3>
+                <ul>
+                    <li>Fixed: Entry visibility when View is embedded</li>
+                    <li>Fixed: Don't show widgets if we're oEmbedding an entry</li>
+                    <li>Fixed: Don't apply "Hide Until Search" on entry pages</li>
+                    <li>Fixed: "Hide View data until search is performed" not working for Views on embedded pages</li>
+                    <li>Fixed: Restore Advanced Custom Fields plugin compatibility</li>
+                    <li>Tweak: When activating a license, remove the notice immediately</li>
+                    <li>Fixed: Maps API key settings resetting after 24 hours</li>
+                </ul>
+
+                <p><strong>Developer Updates</strong></p>
+
+                <ul>
+                    <li>Changed: gravityview<em>get</em>context() now returns empty string if not GravityView post type</li>
+                </ul>
+
+
                 <h3>2.0.6.1 on May 21, 2018</h3>
 
                 <ul>

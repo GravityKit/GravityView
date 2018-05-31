@@ -215,4 +215,49 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 		return $interval->format( $atts['format'] ); // Default format is years ('%y')
 	}
+
+	function test_shortcode_search_value_search_filter() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => sprintf( 'yes-yes-yes Entry %s', wp_generate_password( 12 ) ),
+		) );
+		$entries []= \GV\GF_Entry::by_id( $entry['id'] );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => sprintf( 'no-no-no Entry %s', wp_generate_password( 12 ) ),
+		) );
+		$entries []= \GV\GF_Entry::by_id( $entry['id'] );
+
+		global $post;
+		$post = $this->factory->post->create_and_get();
+		$post->post_content = sprintf( '[gravityview id="%d" search_filter="16" search_value="no-no-no"]', $view->ID );
+
+		$content = apply_filters( 'the_content', $post->post_content );
+
+		$this->assertContains( 'no-no-no', $content );
+		$this->assertNotContains( 'yes-yes-yes', $content );
+	}
 }

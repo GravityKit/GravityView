@@ -21,6 +21,39 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0.8 on May 25, 2018 =
+
+* Fixed: Table layout not using field Column Width settings
+* Fixed: With "Show Label" disabled, "Custom Label" setting is being displayed (if set)
+* Fixed: List Field columns were being shown as searchable in Search Bar
+* Fixed: Conflict with Gravity Forms Import Entries file upload process
+* Fixed: Empty searches could show results when "Hide View data until search is performed" is enabled
+* Fixed: When "Start Date" and "End Date" are the same day, results may not be accurate
+
+__Developer Updates__
+
+* Fixed: `gv_value()` didn't have necessary View global data set for backward compatibility (`gv_value()` is now deprecated! Use `Use \GV\Field_Template::render()` instead.)
+
+= 2.0.7.1 on May 24, 2018 =
+
+* Fixed: Merge Tags not being shown in Custom Content fields in Edit Entry
+* Fixed: "gvGlobals not defined" JavaScript error on Edit Entry screen affecting some themes
+* Fixed: Don't clear Search Bar configuration when switching View layouts
+
+= 2.0.7 on May 23, 2018 =
+
+* Fixed: Entry visibility when View is embedded
+* Fixed: Don't show widgets if we're oEmbedding an entry
+* Fixed: Don't apply "Hide Until Search" on entry pages
+* Fixed: "Hide View data until search is performed" not working for Views on embedded pages
+* Fixed: Restore Advanced Custom Fields plugin compatibility
+* Tweak: When activating a license, remove the notice immediately
+* Fixed: Maps API key settings resetting after 24 hours
+
+__Developer Updates__
+
+* Changed: gravityview_get_context() now returns empty string if not GravityView post type
+
 = 2.0.6.1 on May 21, 2018 =
 
 * Fixed: "Hide View data until search is performed" not working

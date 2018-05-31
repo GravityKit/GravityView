@@ -568,6 +568,19 @@ class Addon_Settings extends \GFAddOn {
 	}
 
 	/**
+     * Check whether GravityView is being saved
+     *
+     * The generic is_save_postback() is true for all addons
+     *
+     * @since 2.0.8
+     *
+	 * @return bool
+	 */
+	public function is_save_postback() {
+		return isset( $_POST['gform-settings-save'] ) && isset( $_POST['_gravityview_save_settings_nonce'] );
+	}
+
+	/**
 	 * Display a notice if the plugin is inactive.
 	 *
 	 * @return void

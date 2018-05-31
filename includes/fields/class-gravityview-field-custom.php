@@ -88,7 +88,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 	 *
 	 * @return GF_Field[] If Custom Content field exists, returns fields array with the fields inserted. Otherwise, returns unmodified fields array.
 	 */
-	public function show_field_in_edit_entry( $fields, $edit_fields = null, $form, $view_id ) {
+	public function show_field_in_edit_entry( $fields, $edit_fields = null, $form, $view_id = 0 ) {
 
 		// Not configured; show all fields.
 		if ( is_null( $edit_fields ) ) {
@@ -98,7 +98,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 		$new_fields = array();
 		$i = 0;
 
-		$entry = GravityView_View::getInstance()->getCurrentEntry();
+		$entry = gravityview()->request->is_edit_entry();
 
 		// Loop through the configured Edit Entry fields and add Custom Content fields if there are any
 		// TODO: Make this available to other custom GV field types
@@ -114,7 +114,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 				// Replace merge tags in the content
 				foreach ( $field_data as $key => $field_datum ) {
-					$field_data[ $key ] = GravityView_Merge_Tags::replace_variables( $field_datum, $form, $entry, false, false );
+					$field_data[ $key ] = GravityView_Merge_Tags::replace_variables( $field_datum, $form, $entry->as_entry(), false, false );
 				}
 
 				$field_data['cssClass'] = \GV\Utils::get( $edit_field, 'custom_class' );

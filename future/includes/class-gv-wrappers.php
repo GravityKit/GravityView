@@ -13,6 +13,12 @@ namespace GV\Wrappers;
  * The views magic wrapper.
  */
 class views {
+
+	/**
+	 * @var \GV\View An internal View keeper.
+	 */
+	private $view = null;
+
 	/**
 	 * Gets a View.
 	 *
@@ -67,6 +73,22 @@ class views {
 			if ( $post instanceof \WP_Post && $post->post_type == 'gravityview' ) {
 				return $this->get( $post );
 			}
+
+			/**
+			 * Final fallback.
+			 */
+			return $this->view;
 		}
+	}
+
+	/**
+	 * Mock the internal pointer.
+	 *
+	 * @param \GV\View $view The View to supply on fallback in ::get()
+	 *
+	 * @return void
+	 */
+	public function set( $view ) {
+		$this->view = $view;
 	}
 }

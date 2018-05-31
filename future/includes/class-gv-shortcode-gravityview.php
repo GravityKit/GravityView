@@ -18,12 +18,12 @@ class gravityview extends \GV\Shortcode {
 	/**
 	 * Process and output the [gravityview] shortcode.
 	 *
-	 * @param array $atts The attributes passed.
+	 * @param array $passed_atts The attributes passed.
 	 * @param string $content The content inside the shortcode.
 	 *
 	 * @return string|null The output.
 	 */
-	public function callback( $atts, $content = null ) {
+	public function callback( $passed_atts, $content = null ) {
 
 		$request = gravityview()->request;
 
@@ -31,7 +31,7 @@ class gravityview extends \GV\Shortcode {
 			return '';
 		}
 
-		$atts = wp_parse_args( $atts, array(
+		$atts = wp_parse_args( $passed_atts, array(
 			'id' => 0,
 			'view_id' => 0,
 			'detail' => null,
@@ -50,6 +50,8 @@ class gravityview extends \GV\Shortcode {
 			return '';
 		}
 
+		gravityview()->views->set( $view );
+
 		/**
 		 * When this shortcode is embedded inside a View we can only display it as a directory. There's no other way.
 		 * Try to detect that we're not embedded to allow edit and single contexts.
@@ -67,6 +69,8 @@ class gravityview extends \GV\Shortcode {
 		if ( $is_reembedded ) {
 			$view->widgets = new \GV\Widget_Collection();
 		}
+
+		$atts = $this->parse_and_sanitize_atts( $atts );
 
 		$view->settings->update( $atts );
 		$entries = $view->get_entries( $request );
@@ -186,6 +190,82 @@ class gravityview extends \GV\Shortcode {
 			$renderer = new \GV\View_Renderer();
 			return $renderer->render( $view, $request );
 		}
+	}
+
+	/**
+	 * Validate attributes passed to the [gravityview] shortcode. Supports {get} Merge Tags values.
+	 *
+	 * Attributes passed to the shortcode are compared to registered attributes {@see \GV\View_Settings::defaults}
+	 * Only attributes that are defined will be allowed through.
+	 *
+	 * Then, {get} merge tags are replaced with their $_GET values, if passed
+	 *
+	 * Then, attributes are sanitized based on the type of setting (number, checkbox, select, radio, text)
+	 *
+	 * @see \GV\View_Settings::defaults() Only attributes defined in default() are valid to be passed via the shortcode
+	 *
+	 * @param array $passed_atts Attribute pairs defined to render the View
+	 *
+	 * @return array Valid and sanitized attribute pairs
+	 */
+	private function parse_and_sanitize_atts( $passed_atts ) {
+
+		$defaults = \GV\View_Settings::defaults( true );
+
+		$supported_atts = array_fill_keys( array_keys( $defaults ), '' );
+
+		// Whittle down the attributes to only valid pairs
+		$filtered_atts = shortcode_atts( $supported_atts, $passed_atts, 'gravityview' );
+
+		// Only keep the passed attributes after making sure that they're valid pairs
+		$filtered_atts = array_intersect_key( (array) $passed_atts, $filtered_atts );
+
+		$atts = array();
+
+		foreach( $filtered_atts as $key => $passed_value ) {
+
+			// Allow using GravityView merge tags in shortcode attributes, like {get} and {created_by}
+			$passed_value = \GravityView_Merge_Tags::replace_variables( $passed_value );
+
+			switch( $defaults[ $key ]['type'] ) {
+
+				/**
+				 * Make sure number fields are numeric.
+				 * Also, convert mixed number strings to numbers
+				 * @see http://php.net/manual/en/function.is-numeric.php#107326
+				 */
+				case 'number':
+					if( is_numeric( $passed_value ) ) {
+						$atts[ $key ] = ( $passed_value + 0 );
+					}
+					break;
+
+				// Checkboxes should be 1 or 0
+				case 'checkbox':
+					$atts[ $key ] = gv_empty( $passed_value, true, false ) ? 0 : 1;
+					break;
+
+				/**
+				 * Only allow values that are defined in the settings
+				 */
+				case 'select':
+				case 'radio':
+					$options = isset( $defaults[ $key ]['choices'] ) ? $defaults[ $key ]['choices'] : $defaults[ $key ]['options'];
+					if( in_array( $passed_value, array_keys( $options ) ) ) {
+						$atts[ $key ] = $passed_value;
+					}
+					break;
+
+				case 'text':
+				default:
+					$atts[ $key ] = $passed_value;
+					break;
+			}
+		}
+
+		$atts['detail'] = \GV\Utils::get( $passed_atts, 'detail', null );
+
+		return $atts;
 	}
 
 	/**
