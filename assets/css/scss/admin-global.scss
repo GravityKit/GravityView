@@ -19,8 +19,8 @@
 #adminmenu .menu-icon-gravityview div.wp-menu-image:before,
 #available-widgets [class*=gv_recent_entries] .widget-title:before,
 #available-widgets [class*=gravityview_search] .widget-title:before{
-	@extend [class^="gv-icon-"]:before;
-	@extend .gv-icon-astronaut-head:before;
+	@extend .gv-icon__before;
+	@extend .gv-icon-astronaut-head__before;
 }
 
 // Fix Make theme overriding button width
