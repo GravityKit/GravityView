@@ -677,7 +677,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		if ( empty( $fields ) ) {
 
-			gravityview()->log->error( 'Empty View configuration for this context.', array( 'data' => $fields ) );
+			gravityview()->log->error( 'Empty zone configuration for {zone_id}.', array( 'zone_id' => $final_atts['zone_id'] ) );
 
 			return NULL;
 		}
