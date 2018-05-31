@@ -381,8 +381,12 @@ class View implements \ArrayAccess {
 				'form_id' => $view->_gravityview_form_id ? : 0,
 			) );
 		} else if ( gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
+
+			$_joins = (array) get_post_meta( $view->ID, '_gravityview_form_joins', true );
+
 			/** And the connected joins. */
-			foreach( (array)get_post_meta( $view->ID, '_gravityview_form_joins', true ) as $_join ) {
+			foreach( $_joins as $_join ) {
+
 				if ( ! is_array( $_join ) || count( $_join ) != 4 ) {
 					continue;
 				}
