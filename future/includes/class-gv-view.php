@@ -391,8 +391,8 @@ class View implements \ArrayAccess {
 				$join = GF_Form::by_id( $join );
 				$join_on = GF_Form::by_id( $join_on );
 
-				$join_column = is_numeric( $join_column ) ? GF_Field::by_id( $join, $join_column ) : Internal_Field( $join_column );
-				$join_on_column = is_numeric( $join_on_column ) ? GF_Field::by_id( $join_on, $join_on_column ) : Internal_Field( $join_on_column );
+				$join_column = is_numeric( $join_column ) ? GF_Field::by_id( $join, $join_column ) : Internal_Field::by_id( $join_column );
+				$join_on_column = is_numeric( $join_on_column ) ? GF_Field::by_id( $join_on, $join_on_column ) : Internal_Field::by_id( $join_on_column );
 
 				$view->joins []= new Join( $join, $join_column, $join_on, $join_on_column );
 			}
