@@ -931,7 +931,7 @@ class GravityView_Admin_Views {
 												echo new GravityView_Admin_View_Widget( $item['label'], $field['id'], $item, $field );
 												break;
 											default:
-												echo new GravityView_Admin_View_Field( $item['label'], $field['id'], $item, $field, $form_id );
+												echo new GravityView_Admin_View_Field( $field['label'], $field['id'], $item, $field, $form_id );
 										}
 
 
