@@ -233,7 +233,7 @@ class GravityView_Entry_Link_Shortcode {
 	private function get_url() {
 
 		// if post_id is not defined, default to view_id
-		$post_id = empty( $this->settings['post_id'] ) ? null : absint( $this->settings['post_id'] );
+		$post_id = empty( $this->settings['post_id'] ) ? $this->view_id : $this->settings['post_id'];
 
 		switch ( $this->settings['action'] ) {
 			case 'edit':
