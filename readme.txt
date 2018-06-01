@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 == Changelog ==
 
 * Fixed: `[gv_entry_link]` when embedded in a post or page, not a View
+* Fixed: `[gv_entry_link]` returning a broken link when the entry isn't defined
 = 2.0.8 on May 25, 2018 =
 
 * Fixed: Table layout not using field Column Width settings

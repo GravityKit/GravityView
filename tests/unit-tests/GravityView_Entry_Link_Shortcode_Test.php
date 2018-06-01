@@ -97,6 +97,9 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 
 		$post_content = apply_filters( 'the_content', sprintf( '[gv_entry_link entry_id="%d" post_id="%d"]', $atts['entry_id'], $view->ID, $post_id ) );
 		$this->assertEquals( '', trim( $post_content ), 'You should need to have a View ID at least.' );
+
+		$post_content = apply_filters( 'the_content', sprintf( '[gv_entry_link view_id="%d" post_id="%d"]', $atts['entry_id'], $view->ID, $post_id ) );
+		$this->assertEquals( '', trim( $post_content ), 'You need an Entry ID when you are not inside a View' );
 	}
 
 	/**
