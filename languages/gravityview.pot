@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.0.8\n"
+"Project-Id-Version: GravityView 2.0.8.1\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -221,7 +221,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/view-configuration.php:6
 #: includes/class-frontend-views.php:560
 #: includes/class-gravityview-admin-bar.php:104
-#: includes/class-gravityview-entry-link-shortcode.php:210
+#: includes/class-gravityview-entry-link-shortcode.php:216
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
 #: includes/extensions/edit-entry/class-edit-entry-render.php:895
@@ -1880,7 +1880,7 @@ msgstr ""
 msgid "Reset Entry approval for GravityView"
 msgstr ""
 
-#: includes/class-gravityview-entry-link-shortcode.php:213
+#: includes/class-gravityview-entry-link-shortcode.php:219
 #: includes/extensions/delete-entry/class-delete-entry.php:117
 #: includes/extensions/delete-entry/class-delete-entry.php:147
 #: includes/extensions/delete-entry/class-delete-entry.php:164
@@ -1889,7 +1889,7 @@ msgstr ""
 msgid "Delete Entry"
 msgstr ""
 
-#: includes/class-gravityview-entry-link-shortcode.php:216
+#: includes/class-gravityview-entry-link-shortcode.php:222
 #: includes/fields/class-gravityview-field-entry-link.php:51
 #: templates/deprecated/fields/entry_link.php:16
 #: templates/fields/field-entry_link-html.php:12

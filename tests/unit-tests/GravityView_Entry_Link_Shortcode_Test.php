@@ -68,6 +68,38 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 		$this->_test_read( $view, $entry, $atts );
 		$this->_test_edit( $view, $entry, $atts );
 		$this->_test_delete( $view, $entry, $atts );
+
+		$this->_test_embed( $view, $entry, $atts );
+	}
+
+	/**
+	 * @since 2.0.9
+	 */
+	function _test_embed( $view, $entry, $atts ) {
+
+		$post_title = new WP_UnitTest_Generator_Sequence( __METHOD__ . ' %s' );
+		$post_id = $this->factory->post->create(array(
+			'post_title' => $post_title->next(),
+			'post_content' => sprintf( '[gv_entry_link action="read" entry_id="%d" view_id="%d"]', $atts['entry_id'], $view->ID ),
+		));
+
+		$post = get_post( $post_id );
+
+		$post_content = apply_filters( 'the_content', $post->post_content );
+
+		// Link to the View
+		$this->assertEquals( '<a href="http://example.org/?gravityview=' . $view->post_name . '&amp;entry='. $atts['entry_id'] .'">View Details</a>', trim( $post_content ), 'Embedded failed' );
+
+		$post_content = apply_filters( 'the_content', sprintf( '[gv_entry_link action="read" entry_id="%d" view_id="%d" post_id="%d"]', $atts['entry_id'], $view->ID, $post_id ) );
+
+		// Link to the Embed
+		$this->assertEquals( '<a href="http://example.org/?p='. $post_id .'&amp;entry='. $atts['entry_id'] .'">View Details</a>', trim( $post_content ), 'Embedded failed' );
+
+		$post_content = apply_filters( 'the_content', sprintf( '[gv_entry_link entry_id="%d" post_id="%d"]', $atts['entry_id'], $view->ID, $post_id ) );
+		$this->assertEquals( '', trim( $post_content ), 'You should need to have a View ID at least.' );
+
+		$post_content = apply_filters( 'the_content', sprintf( '[gv_entry_link view_id="%d" post_id="%d"]', $atts['entry_id'], $view->ID, $post_id ) );
+		$this->assertEquals( '', trim( $post_content ), 'You need an Entry ID when you are not inside a View' );
 	}
 
 	/**
