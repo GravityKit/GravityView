@@ -11,7 +11,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  *
  * @see https://github.com/GaryJones/Gamajo-Template-Loader
  */
-if ( ! class_exists( '\Gamajo_Template_Loader' ) ) {
+if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 	require gravityview()->plugin->dir( 'future/lib/class-gamajo-template-loader.php' );
 }
 
@@ -21,7 +21,7 @@ if ( ! class_exists( '\Gamajo_Template_Loader' ) ) {
  * Stores information on where a template to render an object is,
  *  and other metadata.
  */
-abstract class Template extends \Gamajo_Template_Loader {
+abstract class Template extends \GV\Gamajo_Template_Loader {
 	
 	/**
 	 * @var array The template data stack.
