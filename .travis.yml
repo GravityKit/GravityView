@@ -12,8 +12,7 @@ notifications:
 branches:
   only:
     - master
-    - future
-    - 2.0
+    - develop
 
 php:
   - 5.3

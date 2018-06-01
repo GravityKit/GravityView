@@ -16,11 +16,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
-if( ! class_exists( 'Gamajo_Template_Loader' ) ) {
+if( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 	require( GRAVITYVIEW_DIR . 'includes/lib/class-gamajo-template-loader.php' );
 }
 
-class GravityView_View extends Gamajo_Template_Loader {
+class GravityView_View extends \GV\Gamajo_Template_Loader {
 
 	/**
 	 * Prefix for filter names.
@@ -677,7 +677,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		if ( empty( $fields ) ) {
 
-			gravityview()->log->error( 'Empty View configuration for this context.', array( 'data' => $fields ) );
+			gravityview()->log->error( 'Empty zone configuration for {zone_id}.', array( 'zone_id' => $final_atts['zone_id'] ) );
 
 			return NULL;
 		}

@@ -141,6 +141,12 @@ class GravityView_Entry_Link_Shortcode {
 
 		$this->entry = $this->get_entry( $this->settings['entry_id'] );
 
+		if ( empty( $this->entry ) ) {
+			gravityview()->log->error( 'An Entry ID was not defined or found. Entry ID: {entry_id}', array( 'entry_id' => $this->settings['entry_id'] ) );
+
+			return null;
+		}
+
 		gravityview()->log->debug( '{context} atts:', array( 'context' => $context, 'data' => $atts ) );
 
 		if ( ! $this->has_cap() ) {
@@ -233,7 +239,7 @@ class GravityView_Entry_Link_Shortcode {
 	private function get_url() {
 
 		// if post_id is not defined, default to view_id
-		$post_id = empty( $this->settings['post_id'] ) ? null : absint( $this->settings['post_id'] );
+		$post_id = empty( $this->settings['post_id'] ) ? $this->view_id : $this->settings['post_id'];
 
 		switch ( $this->settings['action'] ) {
 			case 'edit':

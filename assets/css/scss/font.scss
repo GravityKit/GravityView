@@ -29,6 +29,7 @@ a.icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.gv-icon__before,
 [class^="gv-icon-"]:before,
 [class*=" gv-icon-"]:before {
   font-family: "gravityview" !important;
@@ -42,6 +43,7 @@ a.icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.gv-icon-astronaut-head__before,
 .gv-icon-astronaut-head:before {
   content: "a";
 }
