@@ -308,9 +308,11 @@ class GravityView_Welcome {
                 <h3>2.0.8.1 on May 31, 2018</h3>
 
                 <ul>
+                    <li>Fixed: Standalone map fields not displaying on the <a href="https://gravityview.co/extensions/maps/">Maps layout</a></li>
                     <li>Fixed: <code>[gv_entry_link]</code> when embedded in a post or page, not a View</li>
                     <li>Fixed: <code>[gv_entry_link]</code> returning a broken link when the entry isn't defined</li>
                     <li>Fixed: Conflict with Testimonials Widget plugin (and other plugins) loading outdated code</li>
+                    <li>Fixed: PHP notice when displaying Gravity Flow "Workflow" field</li>
                 </ul>
 
                 <h3>2.0.8 on May 25, 2018</h3>
