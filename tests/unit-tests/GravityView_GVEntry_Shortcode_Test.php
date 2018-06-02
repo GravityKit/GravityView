@@ -47,6 +47,17 @@ class GravityView_GVEntry_Shortcode_Test extends GV_UnitTestCase {
 
 		$this->assertContains( '<span class="gv-field-label">Textarea</span></th><td><p>hello</p>', $gventry->callback( $atts_id ) );
 
+		$get_atts = array(
+			'view_id' => '{get:view_id}',
+			'entry_id' => '{get:entry_id}',
+		);
+
+		$_GET = $atts;
+
+		$this->assertContains( '<span class="gv-field-label">Textarea</span></th><td><p>hello</p>', $gventry->callback( $get_atts ), '$_GET merge tags not being replaced' );
+
+		$_GET = array();
+
 		$another_entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
 			'status' => 'active',

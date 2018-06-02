@@ -36,6 +36,8 @@ class gvfield extends \GV\Shortcode {
 			'field_id' => null,
 		) );
 
+		$atts = gv_map_deep( $atts, array( 'GravityView_Merge_Tags', 'replace_get_variables' ) );
+
 		/**
 		 * @filter `gravityview/shortcodes/gvfield/atts` Filter the [gvfield] shortcode attributes.
 		 * @param array $atts The initial attributes.

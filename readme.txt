@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0.8.2 =
+
+* Added: Allow passing `{get}` Merge Tags to [gventry] and [gvfield] shortcodes
+
 = 2.0.8.1 on May 31, 2018 =
 
 * Fixed: Standalone map fields not displaying on the [Maps layout](https://gravityview.co/extensions/maps/)
