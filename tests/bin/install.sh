@@ -184,7 +184,7 @@ install_gravity_forms(){
 
         rm -rf /tmp/gravityforms/
 
-        git clone -C /tmp/gravityforms/ --depth 1 "https://${GITHUB_ACCESS_TOKEN}@github.com/gravityforms/gravityforms.git"
+        git clone "https://${GITHUB_ACCESS_TOKEN}@github.com/gravityforms/gravityforms.git" /tmp/gravityforms/
 
     # If you have passed an URL with a ZIP file, grab it and install
     elif [[ $GRAVITY_FORMS_DL_PATH_OR_URL = *".zip"* ]]; then
