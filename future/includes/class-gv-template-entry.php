@@ -11,7 +11,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  *
  * @see https://github.com/GaryJones/Gamajo-Template-Loader
  */
-if ( ! class_exists( 'Gamajo_Template_Loader' ) ) {
+if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 	require gravityview()->plugin->dir( 'future/lib/class-gamajo-template-loader.php' );
 }
 

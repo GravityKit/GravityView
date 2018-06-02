@@ -11,7 +11,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  *
  * @see https://github.com/GaryJones/Gamajo-Template-Loader
  */
-if ( ! class_exists( '\Gamajo_Template_Loader' ) ) {
+if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 	require gravityview()->plugin->dir( 'future/lib/class-gamajo-template-loader.php' );
 }
 
@@ -20,7 +20,7 @@ if ( ! class_exists( '\Gamajo_Template_Loader' ) ) {
  *
  * Makes sure they work by setting up context, etc.
  */
-class Legacy_Override_Template extends \Gamajo_Template_Loader {
+class Legacy_Override_Template extends \GV\Gamajo_Template_Loader {
 	/**
 	 * Prefix for filter names.
 	 * @var string

@@ -63,7 +63,7 @@ class GravityView_Field_Workflow_Final_Status extends GravityView_Field {
 	function modify_search_filters( $search_fields = array(), GravityView_Widget_Search $widget, $widget_args = array() ) {
 
 		foreach ( $search_fields as & $search_field ) {
-			if ( $this->name === $search_field['key'] ) {
+			if ( $this->name === \GV\Utils::get( $search_field, 'key' ) ) {
 				$search_field['choices'] = GravityView_Plugin_Hooks_Gravity_Flow::get_status_options();
 			}
 		}
