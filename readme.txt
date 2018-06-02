@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = 2.0.8.2 =
 
 * Added: Allow passing `{get}` Merge Tags to [gventry] and [gvfield] shortcodes
+* Fixed: Issues with legacy template back-compatiblity and newer API widgets (A-Z Widget vs. Maps Template for example)
 
 = 2.0.8.1 on May 31, 2018 =
 
