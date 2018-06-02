@@ -182,11 +182,9 @@ install_gravity_forms(){
     # If you have an access token to Gravity Forms repo, grab and install
     if [[ $GITHUB_ACCESS_TOKEN != '' ]]; then
 
-       curl -H "Authorization: token $GITHUB_ACCESS_TOKEN" \
-       -L "https://api.github.com/repos/gravityforms/gravityforms/zipball" > /tmp/gravityforms.zip
+        rm -rf /tmp/gravityforms/
 
-	    # -o will overwrite files. -q is quiet mode
-	    unzip -o -q /tmp/gravityforms.zip -d /tmp/
+        git clone --depth 1 --no-tags "https://${GITHUB_ACCESS_TOKEN}@github.com/gravityforms/gravityforms.git"
 
     # If you have passed an URL with a ZIP file, grab it and install
     elif [[ $GRAVITY_FORMS_DL_PATH_OR_URL = *".zip"* ]]; then
