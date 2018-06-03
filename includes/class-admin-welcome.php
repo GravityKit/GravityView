@@ -313,6 +313,7 @@ class GravityView_Welcome {
                     <li>Fixed: Edit Entry showing "Invalid link" warnings when multiple Views are embedded on a page</li>
                     <li>Fixed: Issues with legacy template back-compatiblity (A-Z Filters) and newer API widgets (Maps)</li>
                     <li>Fixed: Translations for entry "meta", like "Created By" or "Date Created"</li>
+                    <li>Fixed: When searching State/Province with the Search Bar, use "exact match" search</li>
                 </ul>
 
                 <p><strong>Developer Notes</strong></p>

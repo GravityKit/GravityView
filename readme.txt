@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Edit Entry showing "Invalid link" warnings when multiple Views are embedded on a page
 * Fixed: Issues with legacy template back-compatiblity (A-Z Filters) and newer API widgets (Maps)
 * Fixed: Translations for entry "meta", like "Created By" or "Date Created"
+* Fixed: When searching State/Province with the Search Bar, use "exact match" search
 
 __Developer Notes__
 
