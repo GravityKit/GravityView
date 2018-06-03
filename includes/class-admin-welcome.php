@@ -305,6 +305,20 @@ class GravityView_Welcome {
                     </ul>
                 </div>
 
+                <h3>2.0.8.2 on June 1, 2016</h3>
+
+                <ul>
+                    <li>Fixed: Edit Entry showing "Invalid link" warnings when multiple Views are embedded on a page</li>
+                    <li>Added: Allow passing <code>{get}</code> Merge Tags to [gventry] and [gvfield] shortcodes</li>
+                    <li>Fixed: Issues with legacy template back-compatiblity (A-Z Filters) and newer API widgets (Maps)</li>
+                </ul>
+
+                <p><strong>Developer Notes</strong></p>
+
+                <ul>
+                    <li>Added: Auto-prefixing for all CSS rules, set to cover 99.7% of browsers. We were already prefixing, so it doesn't change much, but it will update automatically from now on, based on browser support.</li>
+                </ul>
+
                 <h3>2.0.8.1 on May 31, 2018</h3>
 
                 <ul>

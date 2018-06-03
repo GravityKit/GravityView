@@ -21,11 +21,15 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.0.8.2 =
+= 2.0.8.2 on June 1, 2016 =
 
 * Fixed: Edit Entry showing "Invalid link" warnings when multiple Views are embedded on a page
 * Added: Allow passing `{get}` Merge Tags to [gventry] and [gvfield] shortcodes
-* Fixed: Issues with legacy template back-compatiblity and newer API widgets (A-Z Widget vs. Maps Template for example)
+* Fixed: Issues with legacy template back-compatiblity (A-Z Filters) and newer API widgets (Maps)
+
+__Developer Notes__
+
+* Added: Auto-prefixing for all CSS rules, set to cover 99.7% of browsers. We were already prefixing, so it doesn't change much, but it will update automatically from now on, based on browser support.
 
 = 2.0.8.1 on May 31, 2018 =
 
