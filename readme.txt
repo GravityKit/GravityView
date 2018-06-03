@@ -23,9 +23,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 2.0.8.2 on June 1, 2016 =
 
-* Fixed: Edit Entry showing "Invalid link" warnings when multiple Views are embedded on a page
 * Added: Allow passing `{get}` Merge Tags to [gventry] and [gvfield] shortcodes
+* Fixed: Edit Entry showing "Invalid link" warnings when multiple Views are embedded on a page
 * Fixed: Issues with legacy template back-compatiblity (A-Z Filters) and newer API widgets (Maps)
+* Fixed: Translations for entry "meta", like "Created By" or "Date Created"
 
 __Developer Notes__
 

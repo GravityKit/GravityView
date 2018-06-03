@@ -308,9 +308,10 @@ class GravityView_Welcome {
                 <h3>2.0.8.2 on June 1, 2016</h3>
 
                 <ul>
-                    <li>Fixed: Edit Entry showing "Invalid link" warnings when multiple Views are embedded on a page</li>
                     <li>Added: Allow passing <code>{get}</code> Merge Tags to [gventry] and [gvfield] shortcodes</li>
+                    <li>Fixed: Edit Entry showing "Invalid link" warnings when multiple Views are embedded on a page</li>
                     <li>Fixed: Issues with legacy template back-compatiblity (A-Z Filters) and newer API widgets (Maps)</li>
+                    <li>Fixed: Translations for entry "meta", like "Created By" or "Date Created"</li>
                 </ul>
 
                 <p><strong>Developer Notes</strong></p>
