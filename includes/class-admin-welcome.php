@@ -305,7 +305,7 @@ class GravityView_Welcome {
                     </ul>
                 </div>
 
-                <h3>2.0.8.2 on June 1, 2016</h3>
+                <h3>2.0.9 on June 1, 2016</h3>
 
                 <ul>
                     <li>Added: Allow passing <code>{get}</code> Merge Tags to [gventry] and [gvfield] shortcodes</li>

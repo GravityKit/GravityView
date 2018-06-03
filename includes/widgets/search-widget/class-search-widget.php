@@ -448,7 +448,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * Get the fields that are searchable for a View
 	 *
 	 * @since 2.0
-	 * @since 2.0.8.2 Added $with_full_field parameter
+	 * @since 2.0.9 Added $with_full_field parameter
 	 *
 	 * @param \GV\View|null $view
 	 * @param bool $with_full_field Return full field array, or just field ID? Default: false (just field ID)

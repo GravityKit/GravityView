@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.0.8.2 on June 1, 2016 =
+= 2.0.9 on June 1, 2016 =
 
 * Added: Allow passing `{get}` Merge Tags to [gventry] and [gvfield] shortcodes
 * Fixed: Searching by entry creator using the Search Bar wasn't working
