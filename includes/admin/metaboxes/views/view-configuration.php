@@ -68,11 +68,19 @@
 				} ?>
 			</div>
 
-			<div id="single-available-fields" class="hide-if-js gv-tooltip">
+			<?php
+			// list of available fields to be shown in the popup
+            $forms = gravityview_get_forms( 'any' );
+			$form_ids = array_map( function ($form) { return $form['id']; }, $forms);
+			foreach ( $form_ids as $form_id ) {
+				?>
+			<div id="single-available-fields-<?php echo esc_attr( $form_id ); ?>" class="hide-if-js gv-tooltip">
 				<span class="close"><i class="dashicons dashicons-dismiss"></i></span>
-				<?php do_action('gravityview_render_available_fields', $curr_form, 'single' ); ?>
+				<?php do_action('gravityview_render_available_fields', $form_id, 'single' ); ?>
 			</div>
-
+				<?php
+			}
+			?>
 		</div>
 
 	</div> <?php // end single view tab ?>
