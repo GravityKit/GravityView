@@ -5,7 +5,7 @@ namespace GV\Wrappers;
  * This file contains magic wrapper code for `gravityview()`.
  *
  * Every `gravityview()` magic key maps to a class that exposes more magic.
- *  Chains of inifite magic can be constructed spanning seas of mermaids,
+ *  Chains of infinite magic can be constructed spanning seas of mermaids,
  *  valleys of unicorns and whirlwinds of shooting stars.
  */
 
@@ -26,7 +26,7 @@ class views {
 	 *  out what you need from the current context, from the supplied
 	 *  args, etc.
 	 *
-	 * @param string|int|array|\GV\View\WP_Post|null Anything goes.
+	 * @param string|int|array|\GV\View|\WP_Post|null Anything goes.
 	 *
 	 * @return \GV\View|null The detected View.
 	 */
@@ -79,6 +79,8 @@ class views {
 			 */
 			return $this->view;
 		}
+
+		return null;
 	}
 
 	/**
