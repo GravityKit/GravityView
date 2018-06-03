@@ -258,7 +258,6 @@ abstract class Field_Template extends Template {
 
 		\GV\Mocks\Legacy_Context::load( array(
 			'field' => $this->field,
-			'entry' => $this->entry,
 		) );
 
 		/** Alter the display value according to Gravity Forms. */
