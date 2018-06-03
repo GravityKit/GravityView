@@ -37,6 +37,8 @@ class gventry extends \GV\Shortcode {
 			'view_id'   => 0,
 		) );
 
+		$atts = gv_map_deep( $atts, array( 'GravityView_Merge_Tags', 'replace_get_variables' ) );
+
 		/**
 		 * @filter `gravityview/shortcodes/gventry/atts` Filter the [gventry] shortcode attributes.
 		 * @param array $atts The initial attributes.

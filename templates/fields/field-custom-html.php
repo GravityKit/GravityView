@@ -41,7 +41,7 @@ if ( empty( $content ) ) {
 $content = GravityView_API::replace_variables( $content, $form, $entry, false, true, false );
 
 /**
- * @filter `gravityview/fields/custom/decode_shortcodes` Decode brackets in shortcodes
+ * @filter `gravityview/fields/custom/decode_shortcodes` Decode brackets in shortcodes, rendering them inert (escape brackets).
  * @since 1.16.5
  * @param boolean $decode Enable/Disable decoding of brackets in the content (default: false)
  * @param string $content HTML content of field

@@ -1432,7 +1432,7 @@ class GravityView_Edit_Entry_Render {
 				    }
 
 				    // validate if multi file upload reached max number of files [maxFiles] => 2
-				    if( rgobj( $field, 'maxFiles') && rgobj( $field, 'multipleFiles') ) {
+				    if( \GV\Utils::get( $field, 'maxFiles') && \GV\Utils::get( $field, 'multipleFiles') ) {
 
 				        $input_name = 'input_' . $field->id;
 				        //uploaded

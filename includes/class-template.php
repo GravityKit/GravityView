@@ -845,6 +845,13 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 			$is_single = gravityview_get_context() == 'single';
 			$total_entries = GravityView_View::getInstance()->getTotalEntries();
 
+			/**
+			 * Fake new context for legacy template code.
+			 */
+			$view_id_or_context = \GV\Template_Context::from_template( array(
+				'view' => $view,
+			) );
+
 		} else if ( $view_id_or_context instanceof \GV\Template_Context ) {
 			$view = $view_id_or_context->view;
 			$is_single = (boolean)$view_id_or_context->request->is_entry();

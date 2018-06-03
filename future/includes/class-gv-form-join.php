@@ -48,13 +48,27 @@ class Join {
 	 * @return \GF_Query The $query
 	 */
 	public function as_query_join( $query ) {
-		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) || ! $query instanceof \GF_Query ) {
-				return null;
+
+		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
+			return null;
+		}
+
+		if ( ! $query instanceof \GF_Query ) {
+			gravityview()->log->error( 'Query not instance of \GF_Query.' );
+			return null;
+		}
+
+		$join_id    = intval( $this->join->ID );
+		$join_on_id = intval( $this->join_on->ID );
+
+		if ( empty( $join_id ) || empty( $join_on_id ) ) {
+			gravityview()->log->error( 'Query join form not an integer.', array( 'data' => $this ) );
+			return null;
 		}
 
 		return $query->join(
-			new \GF_Query_Column( $this->join_on_column->ID, $this->join_on->ID ),
-			new \GF_Query_Column( $this->join_column->ID, $this->join->ID )
+			new \GF_Query_Column( $this->join_on_column->ID, $join_on_id ),
+			new \GF_Query_Column( $this->join_column->ID, $join_id )
 		);
 	}
 }

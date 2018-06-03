@@ -320,6 +320,11 @@ class GravityView_Merge_Tags {
 	 */
 	public static function replace_variables( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = true, $nl2br = true, $format = 'html', $aux_data = array() ) {
 
+		if ( ! is_string( $text ) ) {
+			gravityview()->log->error( '$text is not a string.', array( 'data' => $text ) );
+			return $text;
+		}
+
 		/**
 		 * @filter `gravityview_do_replace_variables` Turn off merge tag variable replacements.\n
 		 * Useful where you want to process variables yourself. We do this in the Math Extension.

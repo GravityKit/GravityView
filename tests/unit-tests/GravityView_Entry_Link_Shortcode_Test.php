@@ -155,28 +155,28 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 
 		$nonce = wp_create_nonce( $nonce_key );
 
-		$gvid = GravityView_View_Data::getInstance()->has_multiple_views() ? '&gvid='.gravityview_get_view_id() : '';
+		$gvid = '&gvid='.$view->ID;
 
 		$atts['return'] = 'html';
 		$edit_link = $this->object->edit_shortcode( $atts );
 		$atts['action'] = 'edit';
 		$edit_link_backward_compat = $this->object->read_shortcode( $atts );
 		$this->assertEquals( $edit_link, $edit_link_backward_compat );
-		$this->assertEquals( '<a href="http://example.org/?p='.$atts['post_id'].'&amp;entry='.$atts['entry_id'].esc_attr( $gvid ) .'&amp;edit='.$nonce.'">Edit Entry</a>', $edit_link, 'edit link' );
+		$this->assertEquals( '<a href="http://example.org/?p='.$atts['post_id'].'&amp;entry='.$atts['entry_id'] . '&amp;edit='.$nonce. esc_attr( $gvid ) . '">Edit Entry</a>', $edit_link, 'edit link' );
 
 		$atts['return'] = 'url';
 		$edit_link_return_url = $this->object->edit_shortcode( $atts );
-		$this->assertEquals( 'http://example.org/?p='.$atts['post_id'].'&entry='.$atts['entry_id']. $gvid . '&edit='.$nonce , $edit_link_return_url, 'edit link URL only' );
+		$this->assertEquals( 'http://example.org/?p='.$atts['post_id'].'&entry='.$atts['entry_id'] . '&edit='.$nonce . $gvid, $edit_link_return_url, 'edit link URL only' );
 
 		$atts['return'] = 'html';
 		$atts['link_atts'] = 'target="_blank"&title="check me out!"';
 		$edit_link_link_atts = $this->object->edit_shortcode( $atts );
-		$this->assertEquals( '<a href="http://example.org/?p='.$atts['post_id'].'&amp;entry='.$atts['entry_id'].esc_attr( $gvid ) .'&amp;edit='.$nonce . '" target="&quot;_blank&quot;" title="&quot;check me out!&quot;">Edit Entry</a>', $edit_link_link_atts, 'edit link, return html, with link_atts target="_blank"&title="check me out!"' );
+		$this->assertEquals( '<a href="http://example.org/?p='.$atts['post_id'].'&amp;entry='.$atts['entry_id'] .'&amp;edit='.$nonce . esc_attr( $gvid ) . '" target="&quot;_blank&quot;" title="&quot;check me out!&quot;">Edit Entry</a>', $edit_link_link_atts, 'edit link, return html, with link_atts target="_blank"&title="check me out!"' );
 
 		$atts['return'] = 'html';
 		$atts['link_atts'] = 'target=_blank&title=check me out!';
 		$edit_link_link_atts = $this->object->edit_shortcode( $atts );
-		$this->assertEquals( '<a href="http://example.org/?p='.$atts['post_id'].'&amp;entry='.$atts['entry_id']. esc_attr( $gvid ) . '&amp;edit='.$nonce . '" rel="noopener noreferrer" target="_blank" title="check me out!">Edit Entry</a>', $edit_link_link_atts, 'edit link return html with link atts target=_blank&title=check me out!' );
+		$this->assertEquals( '<a href="http://example.org/?p='.$atts['post_id'].'&amp;entry='.$atts['entry_id'] . '&amp;edit='.$nonce . esc_attr( $gvid ) . '" rel="noopener noreferrer" target="_blank" title="check me out!">Edit Entry</a>', $edit_link_link_atts, 'edit link return html with link atts target=_blank&title=check me out!' );
 
 		global $post;
 		$post = get_post( $atts['post_id'] );
@@ -184,12 +184,12 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 		\GV\Mocks\Legacy_Context::push( array( 'view' => \GV\View::from_post( $view ), 'entry' => \GV\GF_Entry::from_entry( $entry ), 'post' => $post ) );
 
 		$edit_link_no_atts = $this->object->edit_shortcode( array() );
-		$this->assertEquals( '<a href="http://example.org/?gravityview='.$view->post_name.'&amp;entry='.$atts['entry_id'].esc_attr( $gvid ) .'&amp;edit='.$nonce.'">Edit Entry</a>', $edit_link_no_atts, 'edit link no atts' );
+		$this->assertEquals( '<a href="http://example.org/?gravityview='.$view->post_name.'&amp;entry='.$atts['entry_id'] . '&amp;edit='.$nonce.esc_attr( $gvid ).'">Edit Entry</a>', $edit_link_no_atts, 'edit link no atts' );
 
 		add_filter( 'gravityview_custom_entry_slug', '__return_true' );
 		$edit_link_no_atts_custom_slug = $this->object->edit_shortcode( array() );
 		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
-		$this->assertEquals( '<a href="http://example.org/?gravityview='.$view->post_name.'&amp;entry='.$entry_slug.esc_attr( $gvid ) .'&amp;edit='.$nonce.'">Edit Entry</a>', $edit_link_no_atts_custom_slug, 'edit link no atts custom slug' );
+		$this->assertEquals( '<a href="http://example.org/?gravityview='.$view->post_name.'&amp;entry='.$entry_slug .'&amp;edit='.$nonce.esc_attr( $gvid ).'">Edit Entry</a>', $edit_link_no_atts_custom_slug, 'edit link no atts custom slug' );
 		remove_filter( 'gravityview_custom_entry_slug', '__return_true' );
 
 		\GV\Mocks\Legacy_Context::pop();

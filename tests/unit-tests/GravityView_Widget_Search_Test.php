@@ -40,7 +40,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 						array( 'field' => 'search_all' ),
 						array( 'field' => 'entry_id' ),
 						array( 'field' => 'entry_date' ),
-						array( 'field' => 'entry_creator' ),
+						array( 'field' => 'created_by' ),
 					) ),
 				),
 			) ),
@@ -128,7 +128,6 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		);
 
 		$this->assertEquals( $search_criteria_with_more_params, $this->widget->filter_entries( array(), null, $args ) );
-
 
 		$start = '1997-03-28';
 		$end = '2017-10-03';
@@ -285,7 +284,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		/**
 		 * gv_by query parameter.
 		 *
-		 * SHOULD NOT search unless "entry_creator" is set in Search Widget "Search Field" settings.
+		 * SHOULD NOT search unless "created_by" is set in Search Widget "Search Field" settings.
 		 */
 		$view = $this->factory->view->create_and_get( array(
 			'fields' => array( '_' => array(
@@ -301,13 +300,53 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			) ),
 		) );
 
-		$_GET = array( 'gv_by' => '_', 'gv_id' => '3' );
+		$_GET = array( 'gv_by' => '1', 'gv_id' => '3' );
 
 		$search_criteria = array(
 			'field_filters' => array(
 				array(
 					'key' => 'id',
 					'value' => '3',
+					'operator' => '=',
+				),
+				'mode' => 'any',
+			),
+		);
+
+		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
+
+		/**
+		 * gv_by query parameter.
+		 *
+		 * SHOULD NOT search unless "created_by" is set in Search Widget "Search Field" settings.
+		 */
+		$view = $this->factory->view->create_and_get( array(
+			'fields' => array( '_' => array(
+				array( 'id' => '1.1' ),
+			) ),
+			'widgets' => array( '_' => array(
+				array(
+					'id' => 'search_bar',
+					'search_fields' => json_encode( array(
+						array( 'field' => 'entry_id' ),
+						array( 'field' => 'created_by' ),
+					) ),
+				),
+			) ),
+		) );
+
+		$_GET = array( 'gv_by' => '1', 'gv_id' => '3' );
+
+		$search_criteria = array(
+			'field_filters' => array(
+				array(
+					'key' => 'id',
+					'value' => '3',
+					'operator' => '=',
+				),
+				array(
+					'key' => 'created_by',
+					'value' => '1',
 					'operator' => '=',
 				),
 				'mode' => 'any',

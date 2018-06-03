@@ -179,8 +179,15 @@ install_gravity_forms_22(){
 install_gravity_forms(){
     mkdir -p "$GF_CORE_DIR"
 
+    # If you have an access token to Gravity Forms repo, grab and install
+    if [[ $GITHUB_ACCESS_TOKEN != '' ]]; then
+
+        rm -rf /tmp/gravityforms/
+
+        git clone "https://${GITHUB_ACCESS_TOKEN}@github.com/gravityforms/gravityforms.git" /tmp/gravityforms/
+
     # If you have passed an URL with a ZIP file, grab it and install
-    if [[ $GRAVITY_FORMS_DL_PATH_OR_URL = *".zip"* ]]; then
+    elif [[ $GRAVITY_FORMS_DL_PATH_OR_URL = *".zip"* ]]; then
 
         # Pull from remote
 	    curl -L "$GRAVITY_FORMS_DL_PATH_OR_URL" --output /tmp/gravityforms.zip
