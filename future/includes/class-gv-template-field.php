@@ -228,8 +228,9 @@ abstract class Field_Template extends Template {
 
 			/**
 			 * Legacy.
+			 * Ignore some types that conflict.
 			 */
-			if ( $field_type ) {
+			if ( ! in_array( $field_type, array( 'notes' ) ) ) {
 				$specifics []= sprintf( '%s.php', $field_type );
 				$specifics []= sprintf( 'fields/%s.php', $field_type );
 			}
