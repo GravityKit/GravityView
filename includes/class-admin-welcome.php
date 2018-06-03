@@ -309,6 +309,7 @@ class GravityView_Welcome {
 
                 <ul>
                     <li>Added: Allow passing <code>{get}</code> Merge Tags to [gventry] and [gvfield] shortcodes</li>
+                    <li>Fixed: Searching by entry creator using the Search Bar wasn't working</li>
                     <li>Fixed: Edit Entry showing "Invalid link" warnings when multiple Views are embedded on a page</li>
                     <li>Fixed: Issues with legacy template back-compatiblity (A-Z Filters) and newer API widgets (Maps)</li>
                     <li>Fixed: Translations for entry "meta", like "Created By" or "Date Created"</li>

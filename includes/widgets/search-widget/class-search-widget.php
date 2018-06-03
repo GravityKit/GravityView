@@ -619,7 +619,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		// search for a specific Created_by ID
-		if ( ! empty( $get[ 'gv_by' ] ) && in_array( 'entry_creator', $searchable_fields ) ) {
+		if ( ! empty( $get[ 'gv_by' ] ) && in_array( 'created_by', $searchable_fields ) ) {
 			$search_criteria['field_filters'][] = array(
 				'key' => 'created_by',
 				'value' => absint( $get['gv_by'] ),
