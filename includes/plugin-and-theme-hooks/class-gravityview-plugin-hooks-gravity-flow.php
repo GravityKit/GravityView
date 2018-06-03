@@ -58,7 +58,7 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 
 		$entry_meta = gravity_flow()->get_entry_meta( array(), $form_id );
 
-		return (array) rgars( $entry_meta, $status_key . '/filter/choices' );
+		return (array) \GV\Utils::get( $entry_meta, $status_key . '/filter/choices' );
 	}
 
 

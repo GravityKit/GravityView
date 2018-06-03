@@ -28,7 +28,7 @@ class GravityView_Theme_Hooks_Avia extends GravityView_Plugin_and_Theme_Hooks {
 	 * @inheritDoc
 	 * @since 1.15.2
 	 */
-	protected $meta_keys = array(
+	protected $content_meta_keys = array(
 		'_aviaLayoutBuilderCleanData'
 	);
 

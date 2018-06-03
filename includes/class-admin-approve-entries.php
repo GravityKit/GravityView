@@ -49,7 +49,7 @@ class GravityView_Admin_ApproveEntries {
 		// add hidden field with approve status
 		add_action( 'gform_entries_first_column_actions', array( $this, 'add_entry_approved_hidden_input' ), 1, 5 );
 
-		add_filter( 'gravityview_tooltips', array( $this, 'tooltips' ) );
+		add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'tooltips' ) );
 
 		// adding styles and scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles') );
@@ -247,10 +247,10 @@ class GravityView_Admin_ApproveEntries {
 		$gv_bulk_action = false;
 
 		if( version_compare( GFForms::$version, '2.0', '>=' ) ) {
-			$bulk_action = ( '-1' !== rgpost('action') ) ? rgpost('action') : rgpost('action2');
+			$bulk_action = ( '-1' !== \GV\Utils::_POST( 'action' ) ) ? \GV\Utils::_POST( 'action' ) : \GV\Utils::_POST( 'action2' );
 		} else {
 			// GF 1.9.x - Bulk action 2 is the bottom bulk action select form.
-			$bulk_action = rgpost('bulk_action') ? rgpost('bulk_action') : rgpost('bulk_action2');
+			$bulk_action = \GV\Utils::_POST( 'bulk_action' ) ? \GV\Utils::_POST( 'bulk_action' ) : \GV\Utils::_POST( 'bulk_action2' );
 		}
 
 		// Check the $bulk_action value against GV actions, see if they're the same. I hate strpos().
@@ -279,7 +279,7 @@ class GravityView_Admin_ApproveEntries {
 		
 		// gforms_entry_list is the nonce that confirms we're on the right page
 		// gforms_update_note is sent when bulk editing entry notes. We don't want to process then.
-		if ( $bulk_action && rgpost('gforms_entry_list') && empty( $_POST['gforms_update_note'] ) ) {
+		if ( $bulk_action && \GV\Utils::_POST( 'gforms_entry_list' ) && empty( $_POST['gforms_update_note'] ) ) {
 
 			check_admin_referer( 'gforms_entry_list', 'gforms_entry_list' );
 
@@ -292,7 +292,7 @@ class GravityView_Admin_ApproveEntries {
 			list( $approved_status, $form_id ) = explode( '-', $bulk_action );
 
 			if ( empty( $form_id ) ) {
-				do_action( 'gravityview_log_error', '[process_bulk_action] Form ID is empty from parsing bulk action.', $bulk_action );
+				gravityview()->log->error( 'Form ID is empty from parsing bulk action.', array( 'data' => $bulk_action ) );
 				return false;
 			}
 
@@ -319,7 +319,7 @@ class GravityView_Admin_ApproveEntries {
 			}
 
 			if ( empty( $entries ) ) {
-				do_action( 'gravityview_log_error', '[process_bulk_action] Entries are empty' );
+				gravityview()->log->error( 'Entries are empty' );
 				return false;
 			}
 
@@ -436,7 +436,7 @@ class GravityView_Admin_ApproveEntries {
 		$forms = RGFormsModel::get_forms( null, 'title' );
 
 		if( ! isset( $forms[0] ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ': No forms were found' );
+			gravityview()->log->error( 'No forms were found' );
 			return 0;
 		}
 
@@ -451,9 +451,7 @@ class GravityView_Admin_ApproveEntries {
 	function add_scripts_and_styles( $hook ) {
 
 		if( ! class_exists( 'GFForms' ) ) {
-
-			do_action( 'gravityview_log_error', 'GravityView_Admin_ApproveEntries[add_scripts_and_styles] GFForms does not exist.' );
-
+			gravityview()->log->error( 'GFForms does not exist.' );
 			return;
 		}
 
@@ -514,7 +512,7 @@ class GravityView_Admin_ApproveEntries {
 		    return '';
         }
 
-	    $order = ( 'desc' === rgget('order') ) ? 'asc' : 'desc';
+	    $order = ( 'desc' === \GV\Utils::_GET( 'order' ) ) ? 'asc' : 'desc';
 
 	    $args = array(
 		    'orderby' => $approved_column_id,
@@ -565,6 +563,11 @@ class GravityView_Admin_ApproveEntries {
 
 		// Sanitize the values, just to be sure.
 		foreach ( $bulk_actions as $key => $group ) {
+
+		    if( empty( $group ) ) {
+		        continue;
+		    }
+
 			foreach ( $group as $i => $action ) {
 				$bulk_actions[ $key ][ $i ]['label'] = esc_html( $bulk_actions[ $key ][ $i ]['label'] );
 				$bulk_actions[ $key ][ $i ]['value'] = esc_attr( $bulk_actions[ $key ][ $i ]['value'] );

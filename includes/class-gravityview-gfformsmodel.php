@@ -72,9 +72,9 @@ class GravityView_GFFormsModel extends GFFormsModel {
         foreach ( $media as $media_item ) {
             foreach( (array) $post_data['images'] as $post_data_item ) {
                 if(
-                    rgar( $post_data_item, 'title' ) === $media_item->post_title &&
-                    rgar( $post_data_item, 'description' ) === $media_item->post_content &&
-                    rgar( $post_data_item, 'caption' ) === $media_item->post_excerpt
+                    \GV\Utils::get( $post_data_item, 'title' ) === $media_item->post_title &&
+                    \GV\Utils::get( $post_data_item, 'description' ) === $media_item->post_content &&
+                    \GV\Utils::get( $post_data_item, 'caption' ) === $media_item->post_excerpt
                 ) {
                     $post_images["{$post_data_item['field_id']}"] = $media_item->ID;
                 }

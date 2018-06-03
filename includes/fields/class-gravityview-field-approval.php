@@ -75,6 +75,8 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 		add_filter( 'gravityview_get_entries', array( $this, 'modify_search_parameters' ), 1000 );
 
 		add_filter( 'gravityview/field_output/html', array( $this, 'maybe_prevent_field_render' ), 10, 2 );
+
+		add_filter( 'gravityview/field/is_visible', array( $this, 'maybe_not_visible' ), 10, 2 );
 	}
 
 	/**
@@ -90,11 +92,24 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	public function maybe_prevent_field_render( $html, $args ) {
 
 		// If the field is `entry_approval` type but the user doesn't have the moderate entries cap, don't render.
-		if( $this->name === rgar( $args['field'], 'id' ) && ! GVCommon::has_cap('gravityview_moderate_entries') ) {
+		if( $this->name === \GV\Utils::get( $args['field'], 'id' ) && ! GVCommon::has_cap('gravityview_moderate_entries') ) {
 			return '';
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Do not show this field if `gravityview_moderate_entries` capability is absent.
+	 *
+	 * @return boolean Whether this field is visible or not.
+	 */
+	public function maybe_not_visible( $visible, $field ) {
+		if ( $this->name !== $field->ID ) {
+			return $visible;
+		}
+
+		return GVCommon::has_cap( 'gravityview_moderate_entries' );
 	}
 
 	/**
@@ -106,7 +121,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	 */
 	public function modify_search_parameters( $parameters ) {
 
-		if( $this->name === rgars( $parameters, 'sorting/key' ) ) {
+		if ( $this->name === \GV\Utils::get( $parameters, 'sorting/key' ) ) {
 			$parameters['sorting']['key'] = 'is_approved';
 		}
 

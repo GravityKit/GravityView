@@ -38,6 +38,7 @@ class GravityView_Field_Transaction_Type extends GravityView_Field {
 		$this->description = esc_html__( 'The type of the order: one-time payment or subscription', 'gravityview' );
 
 		add_filter( 'gravityview_field_entry_value_' . $this->name . '_pre_link', array( $this, 'get_content' ), 10, 4 );
+		add_filter( 'gravityview/field/transaction_type/value', array( $this, 'get_value' ), 10 );
 
 		parent::__construct();
 	}
@@ -62,6 +63,19 @@ class GravityView_Field_Transaction_Type extends GravityView_Field {
 		if( ! empty( $field['field_path'] ) ) { return $output; }
 
 		return $this->get_string_from_value( $output );
+	}
+
+	/**
+	 * Filter the value of the field (future)
+	 *
+	 * @since 2.0
+	 *
+	 * @param mixed $value The value in.
+	 *
+	 * @return mixed The value out.
+	 */
+	public function get_value( $value ) {
+		return $this->get_string_from_value( $value );
 	}
 
 	/**

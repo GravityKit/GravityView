@@ -71,20 +71,20 @@ abstract class GravityView_Field {
 	/**
 	 * @var null|string The key used to search and sort entry meta in Gravity Forms. Used if the field stores data as custom entry meta.
 	 * @see https://www.gravityhelp.com/documentation/article/gform_entry_meta/
-	 * @since TODO
+	 * @since 1.19
 	 */
 	public $entry_meta_key = null;
 
 	/**
 	 * @var string|array Optional. The callback function after entry meta is updated, only used if $entry_meta_key is set.
 	 * @see https://www.gravityhelp.com/documentation/article/gform_entry_meta/
-	 * @since TODO
+	 * @since 1.19
 	 */
 	var $entry_meta_update_callback = null;
 
 	/**
 	 * @var bool Whether to show meta when set to true automatically adds the column to the entry list, without having to edit and add the column for display
-	 * @since TODO
+	 * @since 1.19
 	 */
 	var $entry_meta_is_default_column = false;
 
@@ -162,7 +162,7 @@ abstract class GravityView_Field {
 	/**
 	 * Add the field to the Filter & Sort available fields
 	 *
-	 * @since TODO
+	 * @since 1.19
 	 *
 	 * @param array $fields Sub-set of GF form fields that are sortable
 	 *
@@ -367,7 +367,7 @@ abstract class GravityView_Field {
 			$entry_meta["{$this->entry_meta_key}"] = $added_meta;
 
 		} else {
-			do_action( 'gravityview_log_error', __METHOD__ . ' Entry meta already set: ' . $this->entry_meta_key, $entry_meta["{$this->entry_meta_key}"] );
+			gravityview()->log->error( 'Entry meta already set: {meta_key}', array( 'meta_key' => $this->entry_meta_key, 'data' =>  $entry_meta["{$this->entry_meta_key}"] ) );
 		}
 
 		return $entry_meta;
@@ -482,7 +482,7 @@ abstract class GravityView_Field {
 	protected function is_choice_value_enabled() {
 
 		// If "Add Field" button is processing, get the Form ID
-		$connected_form = rgpost( 'form_id' );
+		$connected_form = \GV\Utils::_POST( 'form_id' );
 
 		// Otherwise, get the Form ID from the Post page
 		if( empty( $connected_form ) ) {
@@ -490,14 +490,14 @@ abstract class GravityView_Field {
 		}
 
 		if( empty( $connected_form ) ) {
-			do_action( 'gravityview_log_error', sprintf( '%s: Form not found for form ID "%s"', __METHOD__, $connected_form ) );
+			gravityview()->log->error( 'Form not found for form ID "{form_id}"', array( 'form_id' => $connected_form ) );
 			return false;
 		}
 
 		$form = GFAPI::get_form( $connected_form );
 
 		if ( ! $form ) {
-			do_action( 'gravityview_log_error', sprintf( '%s: Form not found for field ID of "%s", when checking for a form with ID of "%s"', __METHOD__, $this->_field_id, $connected_form ) );
+			gravityview()->log->error( 'Form not found for field ID of "{field_id}", when checking for a form with ID of "{form_id}"', array( 'field_id' => $this->_field_id, 'form_id' => $connected_form ) );
 			return false;
 		}
 

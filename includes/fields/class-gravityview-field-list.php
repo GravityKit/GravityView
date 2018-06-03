@@ -43,6 +43,29 @@ class GravityView_Field_List extends GravityView_Field {
 		add_filter( 'gravityview/template/field_label', array( $this, '_filter_field_label' ), 10, 4 );
 
 		add_filter( 'gravityview/common/get_form_fields', array( $this, 'add_form_fields' ), 10, 3 );
+
+		add_filter( 'gravityview/search/searchable_fields', array( $this, 'remove_columns_from_searchable_fields' ), 10 );
+	}
+
+	/**
+	 * Removes columns from searchable field dropdown
+	 *
+	 * Columns are able to be added to View layouts, but not separately searched!
+	 *
+	 * @param array $fields
+	 * @param int $form_id
+	 *
+	 * @return array
+	 */
+	public function remove_columns_from_searchable_fields( $fields ) {
+
+		foreach ( $fields as $key => $field ) {
+			if ( isset( $field['parent'] ) && $field['parent'] instanceof \GF_Field_List ) {
+				unset( $fields[ $key ] );
+			}
+		}
+
+		return $fields;
 	}
 
 	/**
@@ -74,12 +97,12 @@ class GravityView_Field_List extends GravityView_Field {
 				$input_id = sprintf( '%d.%d', $list_field->id, $key ); // {field_id}.{column_key}
 
 				$list_columns[ $input_id ] = array(
-					'label'       => rgar( $input, 'text' ),
+					'label'       => \GV\Utils::get( $input, 'text' ),
 					'customLabel' => '',
 					'parent'      => $list_field,
-					'type'        => rgar( $list_field, 'type' ),
-					'adminLabel'  => rgar( $list_field, 'adminLabel' ),
-					'adminOnly'   => rgar( $list_field, 'adminOnly' ),
+					'type'        => \GV\Utils::get( $list_field, 'type' ),
+					'adminLabel'  => \GV\Utils::get( $list_field, 'adminLabel' ),
+					'adminOnly'   => \GV\Utils::get( $list_field, 'adminOnly' ),
 				);
 			}
 
@@ -120,7 +143,7 @@ class GravityView_Field_List extends GravityView_Field {
 		$list_rows = maybe_unserialize( $field_value );
 
 		if( ! is_array( $list_rows ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' - $field_value did not unserialize', $field_value );
+			gravityview()->log->error( '$field_value did not unserialize', array( 'data' => $field_value ) );
 			return null;
 		}
 

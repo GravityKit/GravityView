@@ -63,7 +63,7 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 		/** Overridden by a template. */
 		if( ! empty( $field['field_path'] ) ) { return $output; }
 
-		return GVCommon::format_date( $field['value'], 'format='.rgar( $field_settings, 'date_display' ) );
+		return GVCommon::format_date( $field['value'], 'format=' . \GV\Utils::get( $field_settings, 'date_display' ) );
 	}
 
 	/**
@@ -71,7 +71,7 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 	 *
 	 * @since 1.16
 	 *
-	 * @see http://docs.gravityview.co/article/331-date-created-merge-tag for usage information
+	 * @see https://docs.gravityview.co/article/331-date-created-merge-tag for usage information
 	 *
 	 * @param array $matches Array of Merge Tag matches found in text by preg_match_all
 	 * @param string $text Text to replace
@@ -86,7 +86,7 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 		$return = $text;
 
 		/** Use $this->name instead of date_created because Payment Date uses this as well*/
-		$date_created = rgar( $entry, $this->name );
+		$date_created = \GV\Utils::get( $entry, $this->name );
 
 		foreach ( $matches as $match ) {
 

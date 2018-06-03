@@ -77,13 +77,19 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		###
 		$edit_link_no_post = GravityView_Edit_Entry::get_edit_link( $entry, $view->ID );
 
+		$args = array(
+			'entry' => $entry['id'],
+			'edit' => $nonce,
+		);
+
 		// A link to the raw
-		$this->assertEquals( '?edit='.$nonce, $edit_link_no_post );
+		$this->assertEquals( add_query_arg( $args, get_permalink( $view->ID ) ), $edit_link_no_post );
 
 		$args = array(
 			'p' => $post_id,
 			'entry' => $entry['id'],
 			'edit' => $nonce,
+			'gvid' => $view->ID,
 		);
 
 		// When running all tests, this test thinks we have multiple Views. Correct that.
@@ -94,7 +100,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		###
 		$edit_link_with_post = GravityView_Edit_Entry::get_edit_link( $entry, $view->ID, $post_id );
 
-		$this->assertEquals( add_query_arg( $args, 'http://example.org/' ), $edit_link_with_post );
+		$this->assertEquals( add_query_arg( $args, site_url( '/' ) ), $edit_link_with_post );
 	}
 
 	/**
@@ -553,6 +559,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 		GravityView_View_Data::$instance = null;
 		GravityView_View::$instance = null;
+		GravityView_oEmbed::$instance = null;
 		$data = GravityView_View_Data::getInstance( $view );
 		$template = GravityView_View::getInstance( array(
 			'form' => $form,
@@ -668,6 +675,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	}
 
 	public function test_edit_entry_upload() {
+		add_filter( 'gform_file_upload_whitelisting_disabled', '__return_true' );
+
 		/** Create a user */
 		$administrator = $this->_generate_user( 'administrator' );
 
@@ -738,6 +747,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( $entry['2'], '31' );
 
 		remove_filter( 'gform_save_field_value', array( $this, '_fake_move_uploaded_file' ), 10 );
+		remove_filter( 'gform_file_upload_whitelisting_disabled', '__return_true' );
 	}
 
 	/**
