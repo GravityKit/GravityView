@@ -144,7 +144,7 @@
 
 				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )
 
-				.on( 'search keydown', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters );
+				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters );
 
 			// End bind to $('body')
 
@@ -956,6 +956,7 @@
 			// Allow closeTooltips to know whether to close the tooltip on escape
 			if( 'keydown' === e.type ) {
 				$( this ).attr( 'data-has-search', ( input.length > 0 ) ? input.length : null );
+				return; // Only process the filtering on keyup
 			}
 
 			$tooltip.find( '.gv-fields' ).show().filter( function () {
