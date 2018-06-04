@@ -208,7 +208,8 @@
 
 					// Escape key was pressed
 					if ( e.keyCode === 27 ) {
-						close = true;
+						close = $( '.gv-field-filter-form input[data-has-search]:focus' ).length === 0;
+						return_false = close;
 					}
 
 					break;
@@ -904,27 +905,36 @@
 				close: function () {
 					$( this ).attr( 'data-tooltip', null );
 
-          $(document).find( '.gv-field-filter' ).on( 'keyup' );
+					// Reset the search
+					$( document ).find( '.gv-field-filter-form input' ).on( 'keyup click search' );
 				},
-        open: function() {
-          $( this ).attr( 'data-tooltip', 'active' ).attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
+		        open: function() {
 
-          $( document ).find( '.gv-field-filter' ).on( 'keyup' , function() {
-            var input = $.trim( $( this ).val() );
-            var $tooltip = $( this ).parents( '.ui-tooltip-content' );
-            var $resultsNotFound = $tooltip.find( '.gv-field-filter.no-results' );
+					$( this )
+						.attr( 'data-tooltip', 'active' )
+						.attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) )
+						.find( '.gv-field-filter-form input').focus();
 
-            $tooltip.find( '.gv-fields' ).show().filter(function() {
-            	return ! $( this ).find( '.gv-field-label' ).attr( 'data-original-title' ).match( new RegExp( input, 'i' ));
-            }).hide();
+				        var input = $.trim( $( this ).val() ),
+					        $tooltip = $( this ).parents( '.ui-tooltip-content' ),
+				            $resultsNotFound = $tooltip.find( '.gv-no-results' );
 
-            if ( ! $tooltip.find( '.gv-fields:visible' ).length ) {
-              $resultsNotFound.show();
-						} else {
-              $resultsNotFound.hide();
-						}
-          });
-        },
+				        // Allow closeTooltips to know whether to close the tooltip on escape
+				        if( 'keydown' === e.type ) {
+				        	$( this ).attr( 'data-has-search', ( input.length > 0 ) ? input.length : null );
+				        }
+
+				        $tooltip.find( '.gv-fields' ).show().filter( function () {
+					        return ! $( this ).find( '.gv-field-label' ).attr( 'data-original-title' ).match( new RegExp( input, 'i' ) );
+				        } ).hide();
+
+				        if ( ! $tooltip.find( '.gv-fields:visible' ).length ) {
+					        $resultsNotFound.show();
+				        } else {
+					        $resultsNotFound.hide();
+				        }
+			        } );
+		        },
 				closeOnEscape: true,
 				disabled: true, // Don't open on hover
 				position: {
