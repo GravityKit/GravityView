@@ -39,6 +39,7 @@ class GravityView_Admin_Views {
 
 		add_action( 'gravityview_render_directory_active_areas', array( $this, 'render_directory_active_areas'), 10, 4 );
 		add_action( 'gravityview_render_widgets_active_areas', array( $this, 'render_widgets_active_areas'), 10, 3 );
+		add_action( 'gravityview_render_field_pickers', array( $this, 'render_field_pickers') );
 		add_action( 'gravityview_render_available_fields', array( $this, 'render_available_fields'), 10, 2 );
 		add_action( 'gravityview_render_available_widgets', array( $this, 'render_available_widgets') );
 		add_action( 'gravityview_render_active_areas', array( $this, 'render_active_areas'), 10, 5 );
@@ -986,6 +987,40 @@ class GravityView_Admin_Views {
 
 		return $output;
 	}
+
+	/**
+     * Renders "Add Field" tooltips
+     *
+     * @since 2.1
+     *
+	 * @param string $context "directory", "single", or "edit"
+     *
+     * @return void
+	 */
+	function render_field_pickers( $context = 'directory' ) {
+
+		// list of available fields to be shown in the popup
+		$forms = gravityview_get_forms( 'any' );
+
+		$form_ids = array_map( function ($form) { return $form['id']; }, $forms);
+
+		foreach ( $form_ids as $form_id ) {
+			$filter_field_id = sprintf( 'gv-field-filter-%s-%d', $context, $form_id );
+			?>
+            <div id="<?php echo esc_html( $context ); ?>-available-fields-<?php echo esc_attr( $form_id ); ?>" class="hide-if-js gv-tooltip">
+                <span class="close"><i class="dashicons dashicons-dismiss"></i></span>
+                <div class="gv-field-filter-form">
+                    <label class="screen-reader-text" for="<?php echo esc_html( $filter_field_id ); ?>"><?php esc_html_e( 'Filter Fields:', 'gravityview' ); ?></label>
+                    <input type="search" class="widefat gv-field-filter" id="<?php echo esc_html( $filter_field_id ); ?>" placeholder="<?php echo __( 'Filter fields by name or label', 'gravityview' ); ?>" />
+                </div>
+
+                <?php do_action('gravityview_render_available_fields', $form_id, $context ); ?>
+
+                <div class="gv-no-results hidden description"><?php esc_html_e( 'No fields were found matching the search.', 'gravityview' ); ?></div>
+            </div>
+			<?php
+		}
+    }
 
 	/**
 	 * Render the Template Active Areas and configured active fields for a given template id and post id

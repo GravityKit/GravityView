@@ -24,29 +24,13 @@
 
 			<h4><?php esc_html_e( 'Below Entries Widgets', 'gravityview'); ?> <span><?php esc_html_e( 'These widgets will be shown below entries.', 'gravityview'); ?></span></h4>
 
-			<?php do_action('gravityview_render_widgets_active_areas', $curr_template, 'footer', $post->ID ); ?>
-
-
 			<?php
-			// list of available fields to be shown in the popup
-            $forms = gravityview_get_forms( 'any' );
-			$form_ids = array_map( function ($form) { return $form['id']; }, $forms);
-			foreach ( $form_ids as $form_id ) {
-			?>
-                <div id="directory-available-fields-<?php echo esc_attr( $form_id ); ?>" class="hide-if-js gv-tooltip" data-formid="<?php echo esc_attr( $form_id ); ?>">
-                    <span class="close"><i class="dashicons dashicons-dismiss"></i></span>
-                    <div>
-                        <label><?php echo __( 'Filter Fields', 'gravityview' ); ?>
-                            <input type="text" class="widefat gv-field-filter" placeholder="<?php echo __( 'Start typing the Field name or label', 'gravityview' ); ?>" />
-                        </label>
-                    </div>
-                    <hr />
-					<?php do_action('gravityview_render_available_fields', $form_id, 'directory' ); ?>
-                    <div class="gv-field-filter no-results hidden"><?php echo __( 'Unable to match any Fields', 'gravityview' ); ?></div>
-                </div>
-			<?php
-			}
-			?>
+
+                do_action('gravityview_render_widgets_active_areas', $curr_template, 'footer', $post->ID );
+
+    			do_action('gravityview_render_field_pickers', 'directory' );
+
+            ?>
 
 			<?php // list of available widgets to be shown in the popup ?>
             <div id="directory-available-widgets" class="hide-if-js gv-tooltip">
@@ -76,26 +60,8 @@
                 }
 			    ?>
 			</div>
-
-			<?php
-			// list of available fields to be shown in the popup
-            $forms = gravityview_get_forms( 'any' );
-			$form_ids = array_map( function ($form) { return $form['id']; }, $forms);
-			foreach ( $form_ids as $form_id ) {
-		    ?>
-			    <div id="single-available-fields-<?php echo esc_attr( $form_id ); ?>" class="hide-if-js gv-tooltip">
-				    <span class="close"><i class="dashicons dashicons-dismiss"></i></span>
-                    <div>
-                        <label><?php echo __( 'Filter Fields', 'gravityview' ); ?>
-                            <input type="text" class="widefat gv-field-filter" placeholder="<?php echo __( 'Start typing the Field name or label', 'gravityview' ); ?>" />
-                        </label>
-                    </div>
-                    <hr />
-				    <?php do_action('gravityview_render_available_fields', $form_id, 'single' ); ?>
-                    <div class="gv-field-filter no-results hidden"><?php echo __( 'Unable to match any Fields', 'gravityview' ); ?></div>
-			    </div>
-			<?php
-			}
+            <?php
+                do_action('gravityview_render_field_pickers', 'single' );
 			?>
 		</div>
 
@@ -113,10 +79,9 @@
 				?>
 			</div>
 
-			<div id="edit-available-fields" class="hide-if-js gv-tooltip">
-				<span class="close"><i class="dashicons dashicons-dismiss"></i></span>
-				<?php do_action('gravityview_render_available_fields', $curr_form, 'edit' ); ?>
-			</div>
+			<?php
+			    do_action('gravityview_render_field_pickers', 'edit' );
+			?>
 
 		</div>
 
