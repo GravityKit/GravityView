@@ -1011,10 +1011,12 @@ class GravityView_Admin_Views {
                 <span class="close"><i class="dashicons dashicons-dismiss"></i></span>
                 <div class="gv-field-filter-form">
                     <label class="screen-reader-text" for="<?php echo esc_html( $filter_field_id ); ?>"><?php esc_html_e( 'Filter Fields:', 'gravityview' ); ?></label>
-                    <input type="search" class="widefat gv-field-filter" id="<?php echo esc_html( $filter_field_id ); ?>" placeholder="<?php echo __( 'Filter fields by name or label', 'gravityview' ); ?>" />
+                    <input type="search" class="widefat gv-field-filter" aria-controls="<?php echo $filter_field_id; ?>" id="<?php echo esc_html( $filter_field_id ); ?>" placeholder="<?php esc_html_e( 'Filter fields by name or label', 'gravityview' ); ?>" />
                 </div>
 
+                <div id="available-fields-<?php echo $filter_field_id; ?>" aria-live="polite" role="listbox">
                 <?php do_action('gravityview_render_available_fields', $form_id, $context ); ?>
+                </div>
 
                 <div class="gv-no-results hidden description"><?php esc_html_e( 'No fields were found matching the search.', 'gravityview' ); ?></div>
             </div>
