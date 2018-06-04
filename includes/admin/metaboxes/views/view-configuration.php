@@ -30,7 +30,14 @@
 			<?php // list of available fields to be shown in the popup ?>
 			<div id="directory-available-fields" class="hide-if-js gv-tooltip">
 				<span class="close"><i class="dashicons dashicons-dismiss"></i></span>
+                <div>
+                    <label><?php echo __( 'Filter Fields', 'gravityview' ); ?>
+                        <input type="text" class="widefat gv-field-filter" placeholder="<?php echo __( 'Start typing the Field name or label', 'gravityview' ); ?>" />
+                    </label>
+                </div>
+                <hr />
 				<?php do_action('gravityview_render_available_fields', $curr_form, 'directory' ); ?>
+                <div class="gv-field-filter no-results hidden"><?php echo __( 'Unable to match any Fields', 'gravityview' ); ?></div>
 			</div>
 
 			<?php // list of available widgets to be shown in the popup ?>
@@ -62,7 +69,14 @@
 
 			<div id="single-available-fields" class="hide-if-js gv-tooltip">
 				<span class="close"><i class="dashicons dashicons-dismiss"></i></span>
+                <div>
+                    <label><?php echo __( 'Filter Fields', 'gravityview' ); ?>
+                        <input type="text" class="widefat gv-field-filter" placeholder="<?php echo __( 'Start typing the Field name or label', 'gravityview' ); ?>" />
+                    </label>
+                </div>
+                <hr />
 				<?php do_action('gravityview_render_available_fields', $curr_form, 'single' ); ?>
+                <div class="gv-field-filter no-results hidden"><?php echo __( 'Unable to match any Fields', 'gravityview' ); ?></div>
 			</div>
 
 		</div>

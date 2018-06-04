@@ -844,7 +844,7 @@
 		 */
 		updateViewConfig: function ( data ) {
 			var vcfg = viewConfiguration;
-			
+
 			$.post( ajaxurl, data, function ( response ) {
 				if ( response ) {
 					var content = $.parseJSON( response );
@@ -899,9 +899,23 @@
 					$( this ).attr( 'data-tooltip', null );
 				},
 				open: function () {
-
 					$( this ).attr( 'data-tooltip', 'active' ).attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
 
+          $( document ).find( '.gv-field-filter:visible' ).on( 'keyup' , function() {
+            var input = $.trim( $( this ).val() );
+            var $tooltip = $( this ).parents( '.ui-tooltip-content' );
+            var $resultsNotFound = $tooltip.find( '.gv-field-filter.no-results' );
+
+            $tooltip.find( '.gv-fields' ).show().filter(function() {
+              return ! $( this ).find( '.gv-field-label' ).attr( 'data-original-title' ).match( new RegExp( input, 'i' ) );
+            }).hide();
+
+            if ( ! $tooltip.find( '.gv-fields:visible' ).length ) {
+              $resultsNotFound.show();
+            } else {
+              $resultsNotFound.hide();
+            }
+          }).focus();
 				},
 				closeOnEscape: true,
 				disabled: true, // Don't open on hover
