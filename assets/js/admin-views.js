@@ -142,7 +142,9 @@
 				// Update checkbox visibility when having dependency checkboxes
 				.on( 'change', ".gv-setting-list, #gravityview_settings", vcfg.toggleCheckboxes )
 
-				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings );
+				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )
+
+				.on( 'search keydown', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters );
 
 			// End bind to $('body')
 
@@ -904,36 +906,13 @@
 				},
 				close: function () {
 					$( this ).attr( 'data-tooltip', null );
-
-					// Reset the search
-					$( document ).find( '.gv-field-filter-form input' ).on( 'keyup click search' );
 				},
 		        open: function() {
 
 					$( this )
 						.attr( 'data-tooltip', 'active' )
-						.attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) )
-						.find( '.gv-field-filter-form input').focus();
+						.attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
 
-				        var input = $.trim( $( this ).val() ),
-					        $tooltip = $( this ).parents( '.ui-tooltip-content' ),
-				            $resultsNotFound = $tooltip.find( '.gv-no-results' );
-
-				        // Allow closeTooltips to know whether to close the tooltip on escape
-				        if( 'keydown' === e.type ) {
-				        	$( this ).attr( 'data-has-search', ( input.length > 0 ) ? input.length : null );
-				        }
-
-				        $tooltip.find( '.gv-fields' ).show().filter( function () {
-					        return ! $( this ).find( '.gv-field-label' ).attr( 'data-original-title' ).match( new RegExp( input, 'i' ) );
-				        } ).hide();
-
-				        if ( ! $tooltip.find( '.gv-fields:visible' ).length ) {
-					        $resultsNotFound.show();
-				        } else {
-					        $resultsNotFound.hide();
-				        }
-			        } );
 		        },
 				closeOnEscape: true,
 				disabled: true, // Don't open on hover
@@ -942,21 +921,52 @@
 					at: "center top-12"
 				},
 				tooltipClass: 'top'
-			} )// add title attribute so the tooltip can continue to work (jquery ui bug?)
-				.attr( "title", "" ).on( 'mouseout focusout', function ( e ) {
-					e.stopImmediatePropagation();
-				} ).on( 'click', function ( e ) {
+			} )
+			// add title attribute so the tooltip can continue to work (jquery ui bug?)
+			.attr( "title", "" ).on( 'mouseout focusout', function ( e ) {
+				e.stopImmediatePropagation();
+			} )
+			.on( 'click', function ( e ) {
 
-					// add title attribute so the tooltip can continue to work (jquery ui bug?)
-					$( this ).attr( "title", "" );
+				// add title attribute so the tooltip can continue to work (jquery ui bug?)
+				$( this ).attr( "title", "" );
 
-					e.preventDefault();
-					//e.stopImmediatePropagation();
+				e.preventDefault();
+				//e.stopImmediatePropagation();
 
-					$( this ).tooltip( "open" );
+				$( this ).tooltip( "open" );
 
-				} );
+			} );
 
+		},
+
+		/**
+		 * Filters visible fields in the field picker tooltip when the value of the field filter search input changes (or is cleared)
+		 *
+		 * {@since 2.1}
+		 *
+		 * {@returns void}
+		 */
+		setupFieldFilters: function( e ) {
+
+			var input = $( this ).val(),
+				$tooltip = $( this ).parents( '.ui-tooltip-content' ),
+				$resultsNotFound = $tooltip.find( '.gv-no-results' );
+
+			// Allow closeTooltips to know whether to close the tooltip on escape
+			if( 'keydown' === e.type ) {
+				$( this ).attr( 'data-has-search', ( input.length > 0 ) ? input.length : null );
+			}
+
+			$tooltip.find( '.gv-fields' ).show().filter( function () {
+				return ! $( this ).find( '.gv-field-label' ).attr( 'data-original-title' ).match( new RegExp( input, 'i' ) );
+			} ).hide();
+
+			if ( ! $tooltip.find( '.gv-fields:visible' ).length ) {
+				$resultsNotFound.show();
+			} else {
+				$resultsNotFound.hide();
+			}
 		},
 
 		/**
