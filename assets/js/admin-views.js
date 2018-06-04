@@ -889,6 +889,8 @@
 		init_tooltips: function (el) {
 
 			$( el || ".gv-add-field" ).tooltip( {
+				show:    150,
+				hide:    200,
 				content: function () {
 
 					// Is the field picker in single or directory mode?
