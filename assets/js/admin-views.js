@@ -949,7 +949,7 @@
 		 */
 		setupFieldFilters: function( e ) {
 
-			var input = $( this ).val(),
+			var input = $.trim( $( this ).val() ),
 				$tooltip = $( this ).parents( '.ui-tooltip-content' ),
 				$resultsNotFound = $tooltip.find( '.gv-no-results' );
 
