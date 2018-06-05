@@ -59,8 +59,6 @@ class GravityView_Ajax {
 	 * Returns available fields given a form ID or a preset template ID
 	 * AJAX callback
 	 *
-	 * // TODO: Update for Joins
-	 *
 	 * @access public
 	 * @return void
 	 */
