@@ -154,6 +154,10 @@ class GravityView_Edit_Entry {
             'edit' => wp_create_nonce( $nonce_key )
         ), $base );
 
+        if( $post_id ) {
+	        $url = add_query_arg( array( 'gvid' => $view_id ), $url );
+        }
+
 	    /**
 	     * Allow passing params to dynamically populate entry with values
 	     * @since 1.9.2

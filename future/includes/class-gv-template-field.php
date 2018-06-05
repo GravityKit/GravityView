@@ -228,8 +228,9 @@ abstract class Field_Template extends Template {
 
 			/**
 			 * Legacy.
+			 * Ignore some types that conflict.
 			 */
-			if ( $field_type ) {
+			if ( ! in_array( $field_type, array( 'notes' ) ) ) {
 				$specifics []= sprintf( '%s.php', $field_type );
 				$specifics []= sprintf( 'fields/%s.php', $field_type );
 			}
@@ -258,7 +259,6 @@ abstract class Field_Template extends Template {
 
 		\GV\Mocks\Legacy_Context::load( array(
 			'field' => $this->field,
-			'entry' => $this->entry,
 		) );
 
 		/** Alter the display value according to Gravity Forms. */
@@ -322,7 +322,7 @@ abstract class Field_Template extends Template {
 
 		/** A compatibility array that's required by some of the deprecated filters. */
 		$field_compat = array(
-			'form' => $source_backend == \GV\Source::BACKEND_GRAVITYFORMS ? $this->source->form : null,
+			'form' => $source_backend == \GV\Source::BACKEND_GRAVITYFORMS ? $this->source->form : ( $this->view->form ? $this->view->form->form : null ),
 			'field_id' => $this->field->ID,
 			'field' => $this->field->field,
 			'field_settings' => $this->field->as_configuration(),
