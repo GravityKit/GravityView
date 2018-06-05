@@ -381,12 +381,8 @@ class View implements \ArrayAccess {
 				'form_id' => $view->_gravityview_form_id ? : 0,
 			) );
 		} else if ( gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
-
-			$_joins = (array) get_post_meta( $view->ID, '_gravityview_form_joins', true );
-
 			/** And the connected joins. */
-			foreach( $_joins as $_join ) {
-
+			foreach( (array)get_post_meta( $view->ID, '_gravityview_form_joins', true ) as $_join ) {
 				if ( ! is_array( $_join ) || count( $_join ) != 4 ) {
 					continue;
 				}
@@ -395,8 +391,8 @@ class View implements \ArrayAccess {
 				$join = GF_Form::by_id( $join );
 				$join_on = GF_Form::by_id( $join_on );
 
-				$join_column = is_numeric( $join_column ) ? GF_Field::by_id( $join, $join_column ) : Internal_Field::by_id( $join_column );
-				$join_on_column = is_numeric( $join_on_column ) ? GF_Field::by_id( $join_on, $join_on_column ) : Internal_Field::by_id( $join_on_column );
+				$join_column = is_numeric( $join_column ) ? GF_Field::by_id( $join, $join_column ) : Internal_Field( $join_column );
+				$join_on_column = is_numeric( $join_on_column ) ? GF_Field::by_id( $join_on, $join_on_column ) : Internal_Field( $join_on_column );
 
 				$view->joins []= new Join( $join, $join_column, $join_on, $join_on_column );
 			}
