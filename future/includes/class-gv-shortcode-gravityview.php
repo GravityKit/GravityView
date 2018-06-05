@@ -113,10 +113,12 @@ class gravityview extends \GV\Shortcode {
 		 * Editing a single entry.
 		 */
 		} else if ( ! $is_reembedded && ( $entry = $request->is_edit_entry() ) ) {
+
 			/**
 			 * When editing an entry don't render multiple views.
 			 */
 			if ( ( $selected = \GV\Utils::_GET( 'gvid' ) ) && $view->ID != $selected ) {
+				gravityview()->log->notice( 'Entry ID #{entry_id} not rendered because another View ID was passed using `?gvid`: #{selected}', array( 'entry_id' => $entry->ID, 'selected' => $selected ) );
 				return '';
 			}
 
