@@ -903,8 +903,6 @@
 				open: function () {
 					$( this ).attr( 'data-tooltip', 'active' ).attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
 
-					if ( $( this ).attr( 'data-objecttype' ) !== 'field' ) return;
-
           $( document ).find( '.gv-field-filter:visible' ).on( 'keyup' , function() {
             var input = $.trim( $( this ).val() );
             var $tooltip = $( this ).parents( '.ui-tooltip-content' );
@@ -919,7 +917,7 @@
             } else {
               $resultsNotFound.hide();
             }
-          }).focus();
+          });
 				},
 				closeOnEscape: true,
 				disabled: true, // Don't open on hover
