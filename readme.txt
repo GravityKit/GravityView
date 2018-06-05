@@ -21,6 +21,19 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0.9 on June 1, 2016 =
+
+* Added: Allow passing `{get}` Merge Tags to [gventry] and [gvfield] shortcodes
+* Fixed: Searching by entry creator using the Search Bar wasn't working
+* Fixed: Edit Entry showing "Invalid link" warnings when multiple Views are embedded on a page
+* Fixed: Issues with legacy template back-compatiblity (A-Z Filters) and newer API widgets (Maps)
+* Fixed: Translations for entry "meta", like "Created By" or "Date Created"
+* Fixed: When searching State/Province with the Search Bar, use "exact match" search
+
+__Developer Notes__
+
+* Added: Auto-prefixing for all CSS rules, set to cover 99.7% of browsers. We were already prefixing, so it doesn't change much, but it will update automatically from now on, based on browser support.
+
 = 2.0.8.1 on May 31, 2018 =
 
 * Fixed: Standalone map fields not displaying on the [Maps layout](https://gravityview.co/extensions/maps/)

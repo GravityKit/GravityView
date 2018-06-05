@@ -89,6 +89,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			'p' => $post_id,
 			'entry' => $entry['id'],
 			'edit' => $nonce,
+			'gvid' => $view->ID,
 		);
 
 		// When running all tests, this test thinks we have multiple Views. Correct that.

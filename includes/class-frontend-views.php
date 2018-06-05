@@ -294,7 +294,7 @@ class GravityView_frontend {
 			// this is where will break from core wordpress
 			/** @internal Don't use this filter; it will be unnecessary soon - it's just a patch for specific use case */
 			$ignore = apply_filters( 'gravityview/internal/ignored_endpoints', array( 'preview', 'page', 'paged', 'cpage' ), $query );
-			$endpoints = rgobj( $wp_rewrite, 'endpoints' );
+			$endpoints = \GV\Utils::get( $wp_rewrite, 'endpoints' );
 			foreach ( (array) $endpoints as $endpoint ) {
 				$ignore[] = $endpoint[1];
 			}

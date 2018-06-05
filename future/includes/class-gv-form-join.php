@@ -67,7 +67,13 @@ class Join {
 	 * @return \GF_Query The $query
 	 */
 	public function as_query_join( $query ) {
-		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) || ! $query instanceof \GF_Query ) {
+
+		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
+			return null;
+		}
+
+		if ( ! $query instanceof \GF_Query ) {
+			gravityview()->log->error( 'Query not instance of \GF_Query.' );
 			return null;
 		}
 

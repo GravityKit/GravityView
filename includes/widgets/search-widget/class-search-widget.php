@@ -448,15 +448,17 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * Get the fields that are searchable for a View
 	 *
 	 * @since 2.0
+	 * @since 2.0.9 Added $with_full_field parameter
 	 *
 	 * @param \GV\View|null $view
+	 * @param bool $with_full_field Return full field array, or just field ID? Default: false (just field ID)
 	 *
 	 * TODO: Move to \GV\View, perhaps? And return a Field_Collection
 	 * TODO: Use in gravityview()->request->is_search() to calculate whether a valid search
 	 *
 	 * @return array If no View, returns empty array. Otherwise, returns array of fields configured in widgets and Search Bar for a View
 	 */
-	private function get_view_searchable_fields( $view ) {
+	private function get_view_searchable_fields( $view, $with_full_field = false ) {
 
 		/**
 		 * Find all search widgets on the view and get the searchable fields settings.
@@ -476,7 +478,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			if ( ! empty( $widget['view_id'] ) && $widget['view_id'] == $view->ID ) {
 				if( $_fields = json_decode( $widget['search_fields'], true ) ) {
 					foreach ( $_fields as $field ) {
-						$searchable_fields [] = $field['field'];
+						$searchable_fields [] = $with_full_field ? $field : $field['field'];
 					}
 				}
 			}
@@ -485,7 +487,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		foreach ( $view->widgets->by_id( $this->get_widget_id() )->all() as $widget ) {
 			if( $_fields = json_decode( $widget->configuration->get( 'search_fields' ), true ) ) {
 				foreach ( $_fields as $field ) {
-					$searchable_fields [] = $field['field'];
+					$searchable_fields [] = $with_full_field ? $field : $field['field'];
 				}
 			}
 		}
@@ -619,7 +621,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		// search for a specific Created_by ID
-		if ( ! empty( $get[ 'gv_by' ] ) && in_array( 'entry_creator', $searchable_fields ) ) {
+		if ( ! empty( $get[ 'gv_by' ] ) && in_array( 'created_by', $searchable_fields ) ) {
 			$search_criteria['field_filters'][] = array(
 				'key' => 'created_by',
 				'value' => absint( $get['gv_by'] ),
@@ -809,6 +811,30 @@ class GravityView_Widget_Search extends \GV\Widget {
 					}
 
 					$filter = $filters;
+				}
+
+				// State/Province should be exact matches
+				if ( 'address' === $form_field->field->type ) {
+
+					$searchable_fields = $this->get_view_searchable_fields( $view, true );
+
+					foreach ( $searchable_fields as $searchable_field ) {
+
+						if( $form_field->ID !== $searchable_field['field'] ) {
+							continue;
+						}
+
+						// Only exact-match dropdowns, not text search
+						if( in_array( $searchable_field['input'], array( 'text', 'search' ), true ) ) {
+							continue;
+						}
+
+						$input_id = gravityview_get_input_id_from_id( $form_field->ID );
+
+						if ( 4 === $input_id ) {
+							$filter['operator'] = 'is';
+						};
+					}
 				}
 
 				break;

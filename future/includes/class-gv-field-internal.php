@@ -82,7 +82,11 @@ class Internal_Field extends Field {
 			return $label;
 		}
 
-		return $this->field ? $this->field->label : $this->label;
+		if ( $this->label ) {
+			return $this->label;
+		}
+
+		return $this->field ? $this->field->label : '';
 	}
 
 	/**
