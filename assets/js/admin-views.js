@@ -897,9 +897,13 @@
 				},
 				close: function () {
 					$( this ).attr( 'data-tooltip', null );
+
+					$( document ).find( '.gv-field-filter:visible' ).off( 'keyup' );
 				},
 				open: function () {
 					$( this ).attr( 'data-tooltip', 'active' ).attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
+
+					if ( $( this ).attr( 'data-objecttype' ) !== 'field' ) return;
 
           $( document ).find( '.gv-field-filter:visible' ).on( 'keyup' , function() {
             var input = $.trim( $( this ).val() );
