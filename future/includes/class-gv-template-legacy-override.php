@@ -211,9 +211,9 @@ class Legacy_Override_Template extends \GV\Gamajo_Template_Loader {
 				), empty( $parameters ) ? array() : array(
 					'paging' => $parameters['paging'],
 					'sorting' => $parameters['sorting'],
-				), $post ? array() : array(
+				), $post ? array(
 					'post' => $post,
-				) ) );
+				) : array() ) );
 
 				\GravityView_View::getInstance()->setTemplatePartSlug( $slug );
 
