@@ -346,10 +346,66 @@ class View implements \ArrayAccess {
 			$renderer = new View_Renderer();
 			return $renderer->render( $view, $request );
 		}
-		
+
 		return $content;
 	}
 
+	/**
+	 * Get joins associated with a view
+	 *
+	 * @param \WP_Post $post
+	 *
+	 * @api
+	 * @since 2.0
+	 * @return array|null Array of \GV\View instances
+	 */
+	public static function get_joins( $post ) {
+		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
+			return null;
+		}
+
+		if ( ! $post || get_post_type( $post ) != 'gravityview' ) {
+			gravityview()->log->error( 'Only gravityview post types can be \GV\View instances.' );
+			return null;
+		}
+
+		$joins = array();
+
+		foreach ( (array) get_post_meta( $post->ID, '_gravityview_form_joins', true ) as $_join ) {
+			if ( ! is_array( $_join ) || count( $_join ) != 4 ) {
+				continue;
+			}
+			list( $join, $join_column, $join_on, $join_on_column ) = $_join;
+
+			$join    = GF_Form::by_id( $join );
+			$join_on = GF_Form::by_id( $join_on );
+
+			$join_column    = is_numeric( $join_column ) ? GF_Field::by_id( $join, $join_column ) : Internal_Field( $join_column );
+			$join_on_column = is_numeric( $join_on_column ) ? GF_Field::by_id( $join_on, $join_on_column ) : Internal_Field( $join_on_column );
+
+			$joins [] = new Join( $join, $join_column, $join_on, $join_on_column );
+		}
+
+		return $joins;
+	}
+
+	public static function get_joined_forms( $post_id ) {
+		if ( ! $post_id || ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
+			return null;
+		}
+
+		foreach ( (array) get_post_meta( $post_id, '_gravityview_form_joins', true ) as $_join ) {
+			if ( ! is_array( $_join ) || count( $_join ) != 4 ) {
+				continue;
+			}
+			list( $join, $join_column, $join_on, $join_on_column ) = $_join;
+
+			$forms_ids[] = GF_Form::by_id( $join_on );
+		}
+
+		return (!empty( $forms_ids)) ? $forms_ids : null;
+
+	}
 
 	/**
 	 * Construct a \GV\View instance from a \WP_Post.
@@ -380,27 +436,9 @@ class View implements \ArrayAccess {
 				'view_id' => $view->ID,
 				'form_id' => $view->_gravityview_form_id ? : 0,
 			) );
-		} else if ( gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
-
-			$_joins = (array) get_post_meta( $view->ID, '_gravityview_form_joins', true );
-
-			/** And the connected joins. */
-			foreach( $_joins as $_join ) {
-
-				if ( ! is_array( $_join ) || count( $_join ) != 4 ) {
-					continue;
-				}
-				list( $join, $join_column, $join_on, $join_on_column ) = $_join;
-
-				$join = GF_Form::by_id( $join );
-				$join_on = GF_Form::by_id( $join_on );
-
-				$join_column = is_numeric( $join_column ) ? GF_Field::by_id( $join, $join_column ) : Internal_Field::by_id( $join_column );
-				$join_on_column = is_numeric( $join_on_column ) ? GF_Field::by_id( $join_on, $join_on_column ) : Internal_Field::by_id( $join_on_column );
-
-				$view->joins []= new Join( $join, $join_column, $join_on, $join_on_column );
-			}
 		}
+
+		$view->joins = $view->get_joins( $post );
 
 		/**
 		 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array.
@@ -534,7 +572,7 @@ class View implements \ArrayAccess {
 	 * @return mixed The value of the requested view data key limited to GravityView_View_Data::$views element keys.
 	 */
 	public function offsetGet( $offset ) {
-		
+
 		gravityview()->log->notice( 'This is a \GV\View object should not be accessed as an array.' );
 
 		if ( ! isset( $this[ $offset ] ) ) {
@@ -608,7 +646,7 @@ class View implements \ArrayAccess {
 		);
 	}
 
-	/** 
+	/**
 	 * Retrieve the entries for the current view and request.
 	 *
 	 * @param \GV\Request The request. Usued for now.
@@ -687,7 +725,7 @@ class View implements \ArrayAccess {
 					->offset( $this->settings->get( 'offset' ) )
 					->limit( $parameters['paging']['page_size'] )
 					->page( $page );
-				
+
 				if ( ! empty( $parameters['sorting'] ) && ! empty( $parameters['sorting']['key'] ) ) {
 					$field = new \GV\Field();
 					$field->ID = $parameters['sorting']['key'];
