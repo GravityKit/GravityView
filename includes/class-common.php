@@ -1139,9 +1139,13 @@ class GVCommon {
 
 		$joined_forms = array();
 		foreach ( $views_with_joins as $view ) {
+
 			$data = unserialize( $view->meta_value );
-			if ( ! empty( $data[0][2] ) && (int) $data[0][2] === (int) $form_id ) {
-				$joined_forms[] = $view->post_id;
+
+			foreach ( (array) $data as $datum ) {
+				if ( ! empty( $datum[2] ) && (int) $datum[2] === (int) $form_id ) {
+					$joined_forms[] = $view->post_id;
+				}
 			}
 		}
 
