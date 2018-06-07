@@ -184,7 +184,7 @@ class License_Handler {
 
 			$json = json_encode( $license_data );
 
-			$update_license = Utils::get( $data, 'update' );
+			$update_license = Utils::get( $data, 'update' ) || 'gravityview_license' === Utils::_POST('action');
 
 			$is_check_action_button = ( 'check_license' === Utils::get( $data, 'edd_action' ) && defined( 'DOING_AJAX' ) && DOING_AJAX );
 
@@ -420,7 +420,7 @@ class License_Handler {
 	/**
 	 * Perform the call
 	 *
-	 * @return array|WP_Error
+	 * @return array|\WP_Error
 	 */
 	private function _license_get_remote_response( $data, $license = '' ) {
 		$api_params = $this->_get_edd_settings( $data['edd_action'], $license );
