@@ -892,16 +892,16 @@
 				show:    150,
 				hide:    200,
 				content: function () {
-
 					// Is the field picker in single or directory mode?
 					//	var context = ( $(this).parents('#single-view').length ) ? 'single' : 'directory';
 					var context = $( this ).attr( 'data-context' );
+					var formId = $( this ).attr( 'data-formid' ) || $( '#gravityview_form_id' ).val();
 
 					switch ( $( this ).attr( 'data-objecttype' ) ) {
 						case 'field':
 							// If in Single context, show fields available in single
 							// If it Directory, same for directory
-							return $( "#" + context + "-available-fields-" + $( this ).attr( 'data-formid' ) ).html();
+							return $( "#" + context + "-available-fields-" + formId ).html();
 						case 'widget':
 							return $( "#directory-available-widgets" ).html();
 					}
@@ -929,7 +929,6 @@
 				e.stopImmediatePropagation();
 			} )
 			.on( 'click', function ( e ) {
-
 				// add title attribute so the tooltip can continue to work (jquery ui bug?)
 				$( this ).attr( "title", "" );
 
