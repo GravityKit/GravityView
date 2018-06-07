@@ -872,11 +872,18 @@ class GravityView_Admin_Views {
 			}
 
 			if( 'field' === $type ) {
-				$available_items = $this->get_available_fields( $form, $zone );
-			} else {
-				$available_items = $this->get_registered_widgets();
-			}
+				$joined_forms = gravityview_get_joined_forms( $post->ID );
 
+				$available_items[$form] = $this->get_available_fields( $form, $zone );
+
+				if($joined_forms) {
+					foreach ( $joined_forms as $form ) {
+						$available_items[ $form->ID ] = $this->get_available_fields( $form->ID, $zone );
+					}
+				}
+			} else {
+				$available_items[ $form ] = $this->get_registered_widgets();
+			}
 		}
 
 		foreach( $rows as $row ) :
@@ -896,22 +903,24 @@ class GravityView_Admin_Views {
 
 									foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) {
 
+										// Maybe has a form ID
+										$form_id = empty( $field['form_id'] ) ? null : $field['form_id'];
+
 										$input_type = NULL;
-										$original_item = isset( $available_items[ $field['id'] ] ) ? $available_items[ $field['id'] ] : false ;
+
+										if ($form_id) {
+											$original_item = isset( $available_items[ $form_id ] [ $field['id'] ] ) ? $available_items[ $form_id ] [ $field['id'] ] : false ;
+                                        } else {
+											$original_item = isset( $available_items[ $field['id'] ] ) ? $available_items[ $field['id'] ] : false ;
+                                        }
 
 										if( !$original_item ) {
-
 											gravityview()->log->error( 'An item was not available when rendering the output; maybe it was added by a plugin that is now de-activated.', array(' data' => array('available_items' => $available_items, 'field' => $field ) ) );
 
 											$original_item = $field;
 										} else {
-
 											$input_type = isset( $original_item['type'] ) ? $original_item['type'] : NULL;
-
 										}
-
-										// Maybe has a form ID
-										$form_id = empty( $field['form_id'] ) ? null : $field['form_id'];
 
 										// Field options dialog box
 										$field_options = GravityView_Render_Settings::render_field_options( $form_id, $type, $template_id, $field['id'], $original_item['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone, $original_item );
@@ -934,10 +943,6 @@ class GravityView_Admin_Views {
 											default:
 												echo new GravityView_Admin_View_Field( $field['label'], $field['id'], $item, $field, $form_id );
 										}
-
-
-										//endif;
-
 									}
 
 								} // End if zone is not empty ?>
