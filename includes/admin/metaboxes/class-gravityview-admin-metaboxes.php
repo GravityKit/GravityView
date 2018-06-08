@@ -97,6 +97,8 @@ class GravityView_Admin_Metaboxes {
 	function settings_metabox_render( $post ) {
 
 		/**
+		 * @action `gravityview/metaboxes/before_render` Before rendering GravityView metaboxes
+		 * @since 1.8
 		 * @param WP_Post $post
 		 */
 		do_action( 'gravityview/metaboxes/before_render', $post );
@@ -107,6 +109,8 @@ class GravityView_Admin_Metaboxes {
 		include self::$metaboxes_dir . 'views/gravityview-content.php';
 
 		/**
+		 * @action `gravityview/metaboxes/after_render` After rendering GravityView metaboxes
+		 * @since 1.8
 		 * @param WP_Post $post
 		 */
 		do_action( 'gravityview/metaboxes/after_render', $post );
@@ -122,7 +126,7 @@ class GravityView_Admin_Metaboxes {
 			array(
 				'id' => 'template_settings',
 				'title' => __( 'View Settings', 'gravityview' ),
-				'file' => 'view-settings.php',
+				'file' => 'multiple-entries.php',
 				'icon-class' => 'dashicons-admin-generic',
 				'callback' => '',
 				'callback_args' => '',
@@ -132,6 +136,22 @@ class GravityView_Admin_Metaboxes {
 				'title' => __( 'Single Entry', 'gravityview' ),
 				'file' => 'single-entry.php',
 				'icon-class' => 'dashicons-media-default',
+				'callback' => '',
+				'callback_args' => '',
+			),
+			array(
+				'id' => 'edit_entry', // Use the same ID as View Settings for backward compatibility
+				'title' => __( 'Edit Entry', 'gravityview' ),
+				'file' => 'edit-entry.php',
+				'icon-class' => 'dashicons-pencil',
+				'callback' => '',
+				'callback_args' => '',
+			),
+			array(
+				'id' => 'permissions', // Use the same ID as View Settings for backward compatibility
+				'title' => __( 'Permissions', 'gravityview' ),
+				'file' => 'permissions.php',
+				'icon-class' => 'dashicons-lock',
 				'callback' => '',
 				'callback_args' => '',
 			),
