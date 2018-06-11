@@ -372,6 +372,10 @@ class View implements \ArrayAccess {
 
 		$joins_meta = get_post_meta( $post->ID, '_gravityview_form_joins', true );
 
+		if ( empty( $joins_meta ) ) {
+			return null;
+		}
+
 		foreach ( $joins_meta as $meta ) {
 			if ( ! is_array( $meta ) || count( $meta ) != 4 ) {
 				continue;
@@ -409,6 +413,10 @@ class View implements \ArrayAccess {
 
 		$joins_meta = get_post_meta( $post_id, '_gravityview_form_joins', true );
 
+		if ( empty( $joins_meta ) ) {
+			return null;
+		}
+
 		foreach ( $joins_meta  as $meta ) {
 			if ( ! is_array( $meta ) || count( $meta ) != 4 ) {
 				continue;
@@ -420,7 +428,6 @@ class View implements \ArrayAccess {
 		}
 
 		return ( !empty( $forms_ids) ) ? $forms_ids : null;
-
 	}
 
 	/**
