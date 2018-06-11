@@ -357,7 +357,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @api
 	 * @since 2.0
-	 * @return array|null Array of \GV\View instances
+	 * @return \GV\Join[]|null Array of \GV\Join instances
 	 */
 	public static function get_joins( $post ) {
 		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
@@ -371,11 +371,14 @@ class View implements \ArrayAccess {
 
 		$joins = array();
 
-		foreach ( (array) get_post_meta( $post->ID, '_gravityview_form_joins', true ) as $_join ) {
-			if ( ! is_array( $_join ) || count( $_join ) != 4 ) {
+		$joins_meta = get_post_meta( $post->ID, '_gravityview_form_joins', true );
+
+		foreach ( $joins_meta as $meta ) {
+			if ( ! is_array( $meta ) || count( $meta ) != 4 ) {
 				continue;
 			}
-			list( $join, $join_column, $join_on, $join_on_column ) = $_join;
+
+			list( $join, $join_column, $join_on, $join_on_column ) = $meta;
 
 			$join    = GF_Form::by_id( $join );
 			$join_on = GF_Form::by_id( $join_on );
@@ -389,21 +392,35 @@ class View implements \ArrayAccess {
 		return $joins;
 	}
 
+	/**
+	 * Get joined forms associated with a view
+	 *
+	 * @param $post_id
+	 *
+	 * @api
+	 * @since 2.0
+	 * @return \GV\GF_Form[]|null Array of \GV\GF_Form instances
+	 */
 	public static function get_joined_forms( $post_id ) {
 		if ( ! $post_id || ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
 			return null;
 		}
 
-		foreach ( (array) get_post_meta( $post_id, '_gravityview_form_joins', true ) as $_join ) {
-			if ( ! is_array( $_join ) || count( $_join ) != 4 ) {
+		$forms_ids = array();
+
+		$joins_meta = get_post_meta( $post_id, '_gravityview_form_joins', true );
+
+		foreach ( $joins_meta  as $meta ) {
+			if ( ! is_array( $meta ) || count( $meta ) != 4 ) {
 				continue;
 			}
-			list( $join, $join_column, $join_on, $join_on_column ) = $_join;
 
-			$forms_ids[] = GF_Form::by_id( $join_on );
+			list( $join, $join_column, $join_on, $join_on_column ) = $meta;
+
+			$forms_ids [] = GF_Form::by_id( $join_on );
 		}
 
-		return (!empty( $forms_ids)) ? $forms_ids : null;
+		return ( !empty( $forms_ids) ) ? $forms_ids : null;
 
 	}
 
