@@ -4751,7 +4751,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** Post password */
 		wp_update_post( array( 'ID' => $post->ID, 'post_password' => '123' ) );
 		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
-		$this->assertContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+		$this->assertContains( 'content is password protected', \GV\View::content( 'what!?' ) );
+
+		/** When the user has added a password, show the content. Requires 4.7.0 or newer. */
+		if( class_exists( 'WP_Hook' ) ) {
+		    add_filter( 'post_password_required', '__return_false' );
+		    $this->assertContains( 'No entries match your request.', \GV\View::content( 'what!?' ) );
+		    remove_filter( 'post_password_required', '__return_false' );
+		}
 
 		/** Private */
 		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'private', 'post_password' => '' ) );

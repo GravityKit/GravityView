@@ -269,43 +269,15 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
-                <div style="font-size: 1.1em;">
-                    <h3>Version 2.0 on May 8, 2018</h3>
+                <h3>2.0.10 on June 6, 2018</h3>
 
-                    <p><strong>New functionality</strong></p>
+                <ul>
+                    <li>Added: Search for fields by name when adding fields to your View configuration (it's really great!)</li>
+                    <li>Fixed: Password-protected Views were showing "You are not allowed to view this content" instead of the password form</li>
+                    <li>Fixed: When Map View is embedded, Search Bar pointed to View URL, not page URL</li>
+                </ul>
 
-                    <ul>
-                        <li><code>[gventry]</code>: embed entries in a post, page or a View (<a href="https://docs.gravityview.co/article/462-gvfield-embed-gravity-forms-field-values">learn more</a>)</li>
-                        <li><code>[gvfield]</code>: embed single field values (<a href="https://docs.gravityview.co/article/462-gvfield-embed-gravity-forms-field-values">learn more</a>)</li>
-                        <li><a href="https://docs.gravityview.co/article/350-merge-tag-modifiers">Many new Merge Tag modifiers</a> - These enable powerful new abilities when using the Custom Content field!</li>
-                        <li>Use oEmbed with Custom Content fields - easily embed YouTube videos, Tweets (and much more) on your Custom Content field</li>
-                        <li>"Is Starred" field - display whether an entry is "Starred" in Gravity Forms or not, and star/unstar it from the front end of your site</li>
-                        <li>Added Bosnian, Iranian, and Canadian French translations, updated many others (thank you all!)</li>
-                    </ul>
-
-                    <p><strong>Smaller changes</strong></p>
-
-                    <ul>
-                        <li>Added <code>{gv_entry_link}</code> Merge Tag, alias of <code>[gv_entry_link]</code> shortcode in <code>{gv_entry_link:[post id]:[action]}</code> format. This allows you to use <code>{gv_entry_link}</code> inside HTML tags, where you are not able to use the <code>[gv_entry_link]</code> shortcode.</li>
-                        <li>Default <code>[gvlogic]</code> comparison is now set to <code>isnot=""</code>; this way, you can just use <code>[gvlogic if="{example:1}"]</code> instead of <code>[gvlogic if="{example:1}" isnot=""]</code> to check if a field has a value.</li>
-                    </ul>
-
-                    <p><strong>Developer Updates</strong></p>
-
-                    <p>This release is the biggest <strong>ever</strong> for developers! Even so, we have taken great care to provide backward compatibility with GravityView 1.x. Other than increasing the minimum version of PHP to 5.3, <strong>no breaking changes were made.</strong></p>
-
-                    <ul>
-                        <li>We have rewritten the plugin from the ground up. <a href="https://github.com/gravityview/GravityView/wiki/The-Future-of-GravityView">Learn all about it here</a>.</li>
-                        <li>New REST API! Fetch GravityView details and entries using the WordPress REST API endpoint. It's disabled by default, but can be enabled or disabled globally on GravityView Settings screen, or per-View in View Settings. <a href="https://github.com/gravityview/GravityView/wiki/REST-API">Learn about the endpoints</a>.</li>
-                        <li>New <code>gravityview()</code> API wrapper function, now used for easy access to everything you could want</li>
-                        <li>New template structure (<a href="https://github.com/gravityview/GravityView/wiki/Template-Migration">learn how to migrate your custom template files</a>)</li>
-                        <li>We have gotten rid of global state; actions and filters are now passed a <code>$context</code> argument, a <a href="https://github.com/gravityview/GravityView/blob/2.0/future/includes/class-gv-context-template.php"><code>\GV\Template_Context</code> object</a></li>
-                        <li>When HTML 5 is enabled in Gravity Forms, now the Search All field will use <code>type="search"</code></li>
-                        <li><em>Countless</em> new filters and actions! Additional documentation will be coming, both on <a href="https://docs.gravityview.co">docs.gravityview.co</a> as well as <a href="https://codex.gravityview.co">codex.gravityview.co</a>.</li>
-                    </ul>
-                </div>
-
-                <h3>2.0.9 on June 1, 2016</h3>
+                <h3>2.0.9 on June 1, 2018</h3>
 
                 <ul>
                     <li>Added: Allow passing <code>{get}</code> Merge Tags to [gventry] and [gvfield] shortcodes</li>
@@ -456,75 +428,38 @@ class GravityView_Welcome {
                     <li>Fixed: Fail gracefully when GravityView Maps is installed on a server running PHP 5.2.4</li>
                 </ul>
 
-                <h3>1.22.6 on April 4, 2018</h3>
+                <h3>Version 2.0 on May 8, 2018</h3>
+
+                <p><strong>New functionality</strong></p>
 
                 <ul>
-                    <li>Fixed: Line breaks being added to <code>[gvlogic]</code> shortcode output</li>
-                    <li>Fixed: Gravity Forms 2.3 compatibility notice</li>
-                    <li>Fixed: &quot;The ID is required.&quot; message when configuring the GravityView Search WordPress widget</li>
-                    <li>Fixed: Slashes were being added to Post Image details</li>
+                    <li><code>[gventry]</code>: embed entries in a post, page or a View (<a href="https://docs.gravityview.co/article/462-gvfield-embed-gravity-forms-field-values">learn more</a>)</li>
+                    <li><code>[gvfield]</code>: embed single field values (<a href="https://docs.gravityview.co/article/462-gvfield-embed-gravity-forms-field-values">learn more</a>)</li>
+                    <li><a href="https://docs.gravityview.co/article/350-merge-tag-modifiers">Many new Merge Tag modifiers</a> - These enable powerful new abilities when using the Custom Content field!</li>
+                    <li>Use oEmbed with Custom Content fields - easily embed YouTube videos, Tweets (and much more) on your Custom Content field</li>
+                    <li>"Is Starred" field - display whether an entry is "Starred" in Gravity Forms or not, and star/unstar it from the front end of your site</li>
+                    <li>Added Bosnian, Iranian, and Canadian French translations, updated many others (thank you all!)</li>
                 </ul>
 
-                <p><strong>Developer Updates:</strong></p>
+                <p><strong>Smaller changes</strong></p>
 
                 <ul>
-                    <li>Added <code>gravityview/edit_entry/reveal_hidden_field</code> filter, which allows you to prevent Hidden fields from becoming Text fields in Edit Entry context</li>
-                    <li>Added <code>gravityview/edit_entry/field_visibility</code> filter to set field visibility on Edit Entry (default is always &quot;visible&quot;)</li>
+                    <li>Added <code>{gv_entry_link}</code> Merge Tag, alias of <code>[gv_entry_link]</code> shortcode in <code>{gv_entry_link:[post id]:[action]}</code> format. This allows you to use <code>{gv_entry_link}</code> inside HTML tags, where you are not able to use the <code>[gv_entry_link]</code> shortcode.</li>
+                    <li>Default <code>[gvlogic]</code> comparison is now set to <code>isnot=""</code>; this way, you can just use <code>[gvlogic if="{example:1}"]</code> instead of <code>[gvlogic if="{example:1}" isnot=""]</code> to check if a field has a value.</li>
                 </ul>
 
-                <h3>1.22.6 on April 4, 2018</h3>
+                <p><strong>Developer Updates</strong></p>
+
+                <p>This release is the biggest <strong>ever</strong> for developers! Even so, we have taken great care to provide backward compatibility with GravityView 1.x. Other than increasing the minimum version of PHP to 5.3, <strong>no breaking changes were made.</strong></p>
 
                 <ul>
-                    <li>Fixed: Line breaks being added to <code>[gvlogic]</code> shortcode output</li>
-                    <li>Fixed: Gravity Forms 2.3 compatibility notice</li>
-                    <li>Fixed: &quot;The ID is required.&quot; message when configuring the GravityView Search WordPress widget</li>
-                    <li>Fixed: Slashes were being added to Post Image details</li>
-                </ul>
-
-                <p><strong>Developer Updates:</strong></p>
-
-                <ul>
-                    <li>Added <code>gravityview/edit_entry/reveal_hidden_field</code> filter, which allows you to prevent Hidden fields from becoming Text fields in Edit Entry context</li>
-                    <li>Added <code>gravityview/edit_entry/field_visibility</code> filter to set field visibility on Edit Entry (default is always &quot;visible&quot;)</li>
-                </ul>
-
-
-                <h3>1.22.5 on January 25, 2018</h3>
-
-                <ul>
-                    <li>Improves support for <a href="https://gravityview.co/extensions/diy-layout/">DIY Layout</a>, a layout for designers &amp; developers to take full advantage of GravityView</li>
-                    <li>Tweak: Show &quot;Embed Shortcode&quot; helper if a View has widgets configured but not Fields</li>
-                    <li>Fixed: Add Note support for Gravity Forms 2.3 (it&#39;s coming soon)</li>
-                    <li>Fixed: <code>tabindex</code> not properly set for Update/Cancel/Delete buttons in Edit Entry</li>
-                    <li>Fixed: Hide Yoast SEO Content &amp; SEO Analysis functionality when editing a View</li>
-                    <li>Fixed: Line breaks were being added to Custom Content fields and widgets, even when &quot;Automatically add paragraphs to content&quot; wasn&#39;t checked</li>
-                </ul>
-
-                <p><strong>Developer Updates:</strong></p>
-
-                <ul>
-                    <li>Add <code>$nl2br</code>, <code>$format</code>, <code>$aux_data</code> parameters to <code>GravityView_API::replace_variables()</code> to be consistent with <code>GFCommon::replace_variables()</code></li>
-                </ul>
-
-                <h3>1.22.4?</h3>
-
-                <p>Yes, we skipped a minor release (1.22.4 exists only in our hearts). Thanks for noticing!</p>
-
-                <h3>1.22.3 on December 21, 2017</h3>
-
-                <ul>
-                    <li>Added: Support for displaying files uploaded using the Gravity Forms Dropbox Addon (thanks, @mgratch and @ViewFromTheBox!)</li>
-                    <li>Added: Merge Tags now are replaced when in <code>[gvlogic]</code> shortcodes not in a View</li>
-                    <li>Fixed: Filtering by date in Advanced Filters prevented single entries from being visible</li>
-                    <li>Fixed: <code>gravityview/capabilities/allow_logged_out</code> filter wasn&#39;t living up to its name (allowing logged-out visitors to edit entries)</li>
-                </ul>
-
-                <p><strong>Developer Updates:</strong></p>
-
-                <ul>
-                    <li>Modified: We&#39;re reverting changes made to Advanced Custom Field plugin compatibility</li>
-                    <li>Added: <code>gravityview/fields/fileupload/file_path</code> filter in <code>class-gravityview-field-fileupload.php</code></li>
-                    <li>Modified: Removed <code>!important</code> from the CSS height rule for the <code>.gv-notes .gv-note-add textarea</code> rule</li>
+                    <li>We have rewritten the plugin from the ground up. <a href="https://github.com/gravityview/GravityView/wiki/The-Future-of-GravityView">Learn all about it here</a>.</li>
+                    <li>New REST API! Fetch GravityView details and entries using the WordPress REST API endpoint. It's disabled by default, but can be enabled or disabled globally on GravityView Settings screen, or per-View in View Settings. <a href="https://github.com/gravityview/GravityView/wiki/REST-API">Learn about the endpoints</a>.</li>
+                    <li>New <code>gravityview()</code> API wrapper function, now used for easy access to everything you could want</li>
+                    <li>New template structure (<a href="https://github.com/gravityview/GravityView/wiki/Template-Migration">learn how to migrate your custom template files</a>)</li>
+                    <li>We have gotten rid of global state; actions and filters are now passed a <code>$context</code> argument, a <a href="https://github.com/gravityview/GravityView/blob/2.0/future/includes/class-gv-context-template.php"><code>\GV\Template_Context</code> object</a></li>
+                    <li>When HTML 5 is enabled in Gravity Forms, now the Search All field will use <code>type="search"</code></li>
+                    <li><em>Countless</em> new filters and actions! Additional documentation will be coming, both on <a href="https://docs.gravityview.co">docs.gravityview.co</a> as well as <a href="https://codex.gravityview.co">codex.gravityview.co</a>.</li>
                 </ul>
 
 				<p style="text-align: center">
@@ -606,7 +541,7 @@ class GravityView_Welcome {
 						<li class="wp-person">Chinese translation by <a href="https://www.transifex.com/user/profile/michaeledi/">@michaeledi</a></li>
                         <li class="wp-person">Persian translation by <a href="https://www.transifex.com/user/profile/azadmojtaba/">@azadmojtaba</a>, <a href="https://www.transifex.com/user/profile/amirbe/">@amirbe</a>, <a href="https://www.transifex.com/user/profile/Moein.Rm/">@Moein.Rm</a></li>
 						<li class="wp-person">Russian translation by <a href="https://www.transifex.com/user/profile/gkovaleff/">@gkovaleff</a></li>
-						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, <a href="https://github.com/mgratch">@mgratch</a>, <a href="https://github.com/ViewFromTheBox">@ViewFromTheBox</a>, <a href="https://github.com/stevehenty">@stevehenty</a>, and <a href="https://github.com/naomicbush">@naomicbush</a></li>
+						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, <a href="https://github.com/mgratch">@mgratch</a>, <a href="https://github.com/ViewFromTheBox">@ViewFromTheBox</a>, <a href="https://github.com/stevehenty">@stevehenty</a>, <a href="https://github.com/naomicbush">@naomicbush</a>, and <a href="https://github.com/mrcasual">@mrcasual</a></li>
 					</ul>
 
 					<h4><?php esc_attr_e( 'Want to contribute?', 'gravityview' ); ?></h4>
