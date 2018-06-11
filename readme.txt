@@ -21,6 +21,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: Per-user language setting not being used in WordPress 4.7 or newer
+
 = 2.0.10 on June 6, 2018 =
 
 * Added: Search for fields by name when adding fields to your View configuration (it's really great!)
