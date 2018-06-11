@@ -494,6 +494,7 @@ class GravityView_Entry_Approval {
 		/**
 		 * @action `gravityview/approve_entries/{$action}` Triggered when an entry approval is reset.
 		 * $action can be 'approved', 'unapproved', or 'disapproved'
+		 * Note: If you want this to work with Bulk Actions, run in a plugin rather than a theme; the bulk updates hook runs before themes are loaded.
 		 * @since 1.7.6.1
 		 * @since 1.18 Added "unapproved"
 		 * @param  int $entry_id ID of the Gravity Forms entry

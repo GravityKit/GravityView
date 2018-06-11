@@ -21,7 +21,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.0.9 on June 1, 2016 =
+= 2.0.10 on June 6, 2018 =
+
+* Added: Search for fields by name when adding fields to your View configuration (it's really great!)
+* Fixed: Password-protected Views were showing "You are not allowed to view this content" instead of the password form
+* Fixed: When Map View is embedded, Search Bar pointed to View URL, not page URL
+
+= 2.0.9 on June 1, 2018 =
 
 * Added: Allow passing `{get}` Merge Tags to [gventry] and [gvfield] shortcodes
 * Fixed: Searching by entry creator using the Search Bar wasn't working

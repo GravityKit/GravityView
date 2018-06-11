@@ -228,11 +228,10 @@ class View implements \ArrayAccess {
 
 		/**
 		 * This View is password protected. Nothing to do here.
-		 * WordPress outputs the form automagically inside `get_the_content`.
 		 */
 		if ( post_password_required( $view->ID ) ) {
 			gravityview()->log->notice( 'Post password is required for View #{view_id}', array( 'view_id' => $view->ID ) );
-			return __( 'You are not allowed to view this content.', 'gravityview' );
+			return get_the_password_form( $view->ID );
 		}
 
 		if ( ! $view->form ) {
