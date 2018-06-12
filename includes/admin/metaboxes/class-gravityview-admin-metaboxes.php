@@ -126,8 +126,16 @@ class GravityView_Admin_Metaboxes {
 			array(
 				'id' => 'template_settings',
 				'title' => __( 'View Settings', 'gravityview' ),
-				'file' => 'multiple-entries.php',
+				'file' => 'view-settings.php',
 				'icon-class' => 'dashicons-admin-generic',
+				'callback' => '',
+				'callback_args' => '',
+			),
+			array(
+				'id' => 'multiple_entries',
+				'title' => __( 'Multiple Entries', 'gravityview' ),
+				'file' => 'multiple-entries.php',
+				'icon-class' => 'dashicons-admin-page',
 				'callback' => '',
 				'callback_args' => '',
 			),
@@ -143,15 +151,7 @@ class GravityView_Admin_Metaboxes {
 				'id' => 'edit_entry', // Use the same ID as View Settings for backward compatibility
 				'title' => __( 'Edit Entry', 'gravityview' ),
 				'file' => 'edit-entry.php',
-				'icon-class' => 'dashicons-pencil',
-				'callback' => '',
-				'callback_args' => '',
-			),
-			array(
-				'id' => 'permissions', // Use the same ID as View Settings for backward compatibility
-				'title' => __( 'Permissions', 'gravityview' ),
-				'file' => 'permissions.php',
-				'icon-class' => 'dashicons-lock',
+				'icon-class' => 'dashicons-welcome-write-blog',
 				'callback' => '',
 				'callback_args' => '',
 			),
