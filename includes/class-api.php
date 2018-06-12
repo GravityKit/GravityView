@@ -1081,7 +1081,9 @@ function gravityview_after() {
 			/**
 			 * @deprecated Use `gravityview/template/after`
 			 */
-			return do_action( 'gravityview_after', $gravityview->view->ID );
+			do_action( 'gravityview_after', $gravityview->view->ID );
+
+			return;
 		}
 	}
 
