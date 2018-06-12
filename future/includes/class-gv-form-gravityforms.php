@@ -55,7 +55,7 @@ class GF_Form extends Form implements \ArrayAccess {
 		$self = new self();
 		$self->form = $form;
 
-		$self->ID = $self->form['id'];
+		$self->ID = intval( $self->form['id'] );
 
 		return $self;
 	}
