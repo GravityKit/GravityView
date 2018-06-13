@@ -12,27 +12,6 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * Contains a join between two Sources on two Fields.
  */
 class Join {
-
-	/**
-	 * @var GF_Form|Source|Form
-	 */
-	private $join;
-
-	/**
-	 * @var GF_Form|Source|Form
-	 */
-	private $join_on;
-
-	/**
-	 * @var Field
-	 */
-	private $join_column;
-
-	/**
-	 * @var Field
-	 */
-	private $join_on_column;
-
 	/**
 	 * Construct a JOIN container.
 	 *
@@ -40,6 +19,8 @@ class Join {
 	 * @param \GV\Field $join_column Its column.
 	 * @param \GV\Source $join_on The form we're joining on.
 	 * @param \GV\Field $join_on_column Its column.
+	 *
+	 * @return \GV\Joins $this
 	 */
 	public function __construct( $join, $join_column, $join_on, $join_on_column ) {
 		if ( $join instanceof \GV\Source ) {

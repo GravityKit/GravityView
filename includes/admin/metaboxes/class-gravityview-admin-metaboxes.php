@@ -261,8 +261,6 @@ class GravityView_Admin_Metaboxes {
 		// Selected Form
 		$curr_form = gravityview_get_form_id( $post->ID );
 
-		$view = \GV\View::from_post( $post );
-
 		// Selected template
 		$curr_template = gravityview_get_template_id( $post->ID );
 

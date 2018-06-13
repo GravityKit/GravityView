@@ -39,12 +39,7 @@ abstract class GravityView_Admin_View_Item {
 	 */
 	protected $settings;
 
-	/**
-	 * @var string For ID, if available
-	 */
-	protected $form_id;
-
-	function __construct( $title = '', $item_id, $item = array(), $settings = array(), $form_id = null) {
+	function __construct( $title = '', $item_id, $item = array(), $settings = array() ) {
 
 		// Backward compat
 		if ( ! empty( $item['type'] ) ) {
@@ -69,7 +64,6 @@ abstract class GravityView_Admin_View_Item {
 		$this->title      = $title;
 		$this->item       = $item;
 		$this->id         = $item_id;
-		$this->form_id    = $form_id;
 		$this->settings   = $settings;
 		$this->label_type = $item['label_type'];
 	}
@@ -184,9 +178,8 @@ abstract class GravityView_Admin_View_Item {
 		$output .= '</h5>';
 
 		$container_class = ! empty( $this->item['parent'] ) ? ' gv-child-field' : '';
-		$data_form_id   = ! empty( $this->form_id ) ? 'data-formid="' . esc_attr( $this->form_id ) . '"' : '';
 
-		$output = '<div data-fieldid="' . esc_attr( $this->id ) . '" ' . $data_form_id . ' data-inputtype="' . esc_attr( $this->item['input_type'] ) . '" class="gv-fields' . $container_class . '">' . $output . $this->item['settings_html'] . '</div>';
+		$output = '<div data-fieldid="' . esc_attr( $this->id ) . '" data-inputtype="' . esc_attr( $this->item['input_type'] ) . '" class="gv-fields' . $container_class . '">' . $output . $this->item['settings_html'] . '</div>';
 
 		return $output;
 	}
