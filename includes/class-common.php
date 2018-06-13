@@ -1124,13 +1124,14 @@ class GVCommon {
 	 */
 	public static function get_connected_views( $form_id, $args = array() ) {
 
-		$defaults = array(
-			'post_type' => 'gravityview',
-			'posts_per_page' => 100,
-			'meta_key' => '_gravityview_form_id',
-			'meta_value' => (int)$form_id,
-		);
+		global $wpdb;
 
+		$defaults = array(
+			'post_type'      => 'gravityview',
+			'posts_per_page' => 100,
+			'meta_key'       => '_gravityview_form_id',
+			'meta_value'     => (int) $form_id,
+		);
 		$args     = wp_parse_args( $args, $defaults );
 		$views    = get_posts( $args );
 
