@@ -93,11 +93,23 @@ abstract class Request {
 	 * @return \GV\GF_Entry|false The entry requested or false.
 	 */
 	public function is_entry() {
+
 		if ( $id = get_query_var( \GV\Entry::get_endpoint_name() ) ) {
+
+			static $entries = array();
+
+			if ( isset( $entries[ $id ] ) ) {
+				return $entries[ $id ];
+			}
+
 			if ( $entry = \GV\GF_Entry::by_id( $id ) ) {
+				$entries[ $id ] = $entry;
 				return $entry;
 			}
+
+			$entries[ $id ] = false;
 		}
+
 		return false;
 	}
 
