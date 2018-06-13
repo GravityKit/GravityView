@@ -363,25 +363,26 @@ class View implements \ArrayAccess {
 	 *
 	 * @api
 	 * @since 2.0
-	 * @return \GV\Join[]|null Array of \GV\Join instances
+	 * @return \GV\Join[] Array of \GV\Join instances
 	 */
 	public static function get_joins( $post ) {
+
 		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
-			return null;
+			return array();
 		}
 
 		if ( ! $post || get_post_type( $post ) != 'gravityview' ) {
 			gravityview()->log->error( 'Only gravityview post types can be \GV\View instances.' );
-			return null;
+			return array();
 		}
-
-		$joins = array();
 
 		$joins_meta = get_post_meta( $post->ID, '_gravityview_form_joins', true );
 
 		if ( empty( $joins_meta ) ) {
-			return null;
+			return array();
 		}
+
+		$joins = array();
 
 		foreach ( $joins_meta as $meta ) {
 			if ( ! is_array( $meta ) || count( $meta ) != 4 ) {
