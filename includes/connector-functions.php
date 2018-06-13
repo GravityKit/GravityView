@@ -199,7 +199,9 @@ function gravityview_get_form_id( $view_id ) {
 /**
  * Get joined forms associated with a view
  *
- * @param $view_id
+ * @since 2.0.11
+ *
+ * @param int $view_id ID of the View
  *
  * @return \GV\GF_Form[] Array of \GV\GF_Form instances
  */
