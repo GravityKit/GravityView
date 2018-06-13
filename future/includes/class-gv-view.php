@@ -335,6 +335,13 @@ class View implements \ArrayAccess {
 				}
 			}
 
+			$error = \GVCommon::check_entry_display( $entry->as_entry() );
+
+			if( is_wp_error( $error ) ) {
+				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing: {message}', array( 'entry_id' => $entry->ID, 'message' => $error->get_error_message() ) );
+				return __( 'You are not allowed to view this content.', 'gravityview' );
+			}
+
 			$renderer = new Entry_Renderer();
 			return $renderer->render( $entry, $view, $request );
 
