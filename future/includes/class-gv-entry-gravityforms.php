@@ -36,7 +36,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @api
 	 * @since 2.0
-	 * @return \GV\Entry|null An instance of this entry or null if not found.
+	 * @return \GV\GF_Entry|null An instance of this entry or null if not found.
 	 */
 	public static function by_id( $entry_id ) {
 		$entry = null;
@@ -66,7 +66,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @api
 	 * @since 2.0
-	 * @return \GV\Entry|null An instance of this entry or null if not found.
+	 * @return \GV\GF_Entry|null An instance of this entry or null if not found.
 	 */
 	public static function by_slug( $entry_slug, $form_id = 0 ) {
 		global $wpdb;
@@ -102,7 +102,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @param array $entry The array ID.
 	 *
-	 * @return \GV\Entry|null An instance of this entry or null if not found.
+	 * @return \GV\GF_Entry|null An instance of this entry or null if not found.
 	 */
 	public static function from_entry( $entry ) {
 		if ( empty( $entry['id'] ) ) {

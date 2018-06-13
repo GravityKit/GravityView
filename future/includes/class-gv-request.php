@@ -84,7 +84,7 @@ abstract class Request {
 	}
 
 	/**
-	 * Is this an edit entry request?
+	 * Checks whether this is a single entry request
 	 *
 	 * @api
 	 * @since 2.0
@@ -102,7 +102,7 @@ abstract class Request {
 	}
 
 	/**
-	 * Check whether this an edit entry request.
+	 * Checks whether this an edit entry request.
 	 *
 	 * @api
 	 * @since 2.0
@@ -123,7 +123,7 @@ abstract class Request {
 	}
 
 	/**
-	 * Check whether this an entry search request.
+	 * Checks whether this an entry search request.
 	 *
 	 * @api
 	 * @since 2.0
