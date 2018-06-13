@@ -111,6 +111,13 @@ class View_Settings extends Settings {
 				'value'             => 1,
 				'show_in_shortcode' => false,
 			),
+			'hide_empty_single' => array(
+				'label'             => __( 'Hide empty fields', 'gravityview' ),
+				'group'             => 'default',
+				'type'              => 'checkbox',
+				'value'             => 1,
+				'show_in_shortcode' => false,
+			),
 			'edit_feeds' => array(
 				'label'             => __( 'Feeds', 'gravityview' ),
 				'group'             => 'default',
@@ -298,6 +305,7 @@ class View_Settings extends Settings {
 				'options'           => array(
 					'multiple' => __( 'Multiple Entries', 'gravityview' ),
 					'single'   => __( 'Single Entry', 'gravityview' ),
+					'custom'   => __( 'Other URL', 'gravityview' ),
 				),
 				'show_in_shortcode' => false,
 				'full_width'        => true,
