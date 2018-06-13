@@ -996,7 +996,7 @@ class GravityView_Admin_Views {
 	/**
      * Renders "Add Field" tooltips
      *
-     * @since 2.1
+     * @since 2.0.11
      *
 	 * @param string $context "directory", "single", or "edit"
      *
