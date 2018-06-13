@@ -21,7 +21,16 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0.10.1 on June 12, 2018 =
+
+* Fixed: GravityView license details not saving when the license was activated (only when the Update Settings button was clicked)
+* Fixed: Entry filtering for single entries
 * Fixed: Per-user language setting not being used in WordPress 4.7 or newer
+
+__Developer Notes__
+
+* Added: `\GV\View::get_joins()` method to fetch array of `\GV\Joins` connected with a View
+* Added: `\GV\View::get_joined_forms()` method to get array of `\GV\GF_Forms` connected with a View
 
 = 2.0.10 on June 6, 2018 =
 
