@@ -201,7 +201,7 @@ function gravityview_get_form_id( $view_id ) {
  *
  * @param $view_id
  *
- * @return \GV\GF_Form[]|null Array of \GV\GF_Form instances
+ * @return \GV\GF_Form[] Array of \GV\GF_Form instances
  */
 function gravityview_get_joined_forms( $view_id ) {
 	return View::get_joined_forms( $view_id );

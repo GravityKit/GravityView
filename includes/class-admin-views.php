@@ -871,16 +871,15 @@ class GravityView_Admin_Views {
 				$form = gravityview_get_form_id( $post->ID );
 			}
 
-			if( 'field' === $type ) {
+			if ( 'field' === $type ) {
+				$available_items[ $form ] = $this->get_available_fields( $form, $zone );
+
 				$joined_forms = gravityview_get_joined_forms( $post->ID );
 
-				$available_items[$form] = $this->get_available_fields( $form, $zone );
+                foreach ( $joined_forms as $form ) {
+                    $available_items[ $form->ID ] = $this->get_available_fields( $form->ID, $zone );
+                }
 
-				if($joined_forms) {
-					foreach ( $joined_forms as $form ) {
-						$available_items[ $form->ID ] = $this->get_available_fields( $form->ID, $zone );
-					}
-				}
 			} else {
 				$available_items[ $form ] = $this->get_registered_widgets();
 			}
@@ -899,7 +898,7 @@ class GravityView_Admin_Views {
 
 								<?php // render saved fields
 
-								if( !empty( $values[ $zone .'_'. $area['areaid'] ] ) ) {
+								if( ! empty( $values[ $zone .'_'. $area['areaid'] ] ) ) {
 
 									foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) {
 
@@ -908,13 +907,13 @@ class GravityView_Admin_Views {
 
 										$input_type = NULL;
 
-										if ($form_id) {
+										if ( $form_id ) {
 											$original_item = isset( $available_items[ $form_id ] [ $field['id'] ] ) ? $available_items[ $form_id ] [ $field['id'] ] : false ;
                                         } else {
 											$original_item = isset( $available_items[ $field['id'] ] ) ? $available_items[ $field['id'] ] : false ;
                                         }
 
-										if( !$original_item ) {
+										if ( !$original_item ) {
 											gravityview()->log->error( 'An item was not available when rendering the output; maybe it was added by a plugin that is now de-activated.', array(' data' => array('available_items' => $available_items, 'field' => $field ) ) );
 
 											$original_item = $field;
@@ -932,7 +931,7 @@ class GravityView_Admin_Views {
 										);
 
 										// Merge the values with the current item to pass things like widget descriptions and original field names
-										if( $original_item ) {
+										if ( $original_item ) {
 											$item = wp_parse_args( $item, $original_item );
 										}
 
