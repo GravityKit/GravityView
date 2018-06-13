@@ -39,6 +39,7 @@ class GravityView_Admin_Views {
 
 		add_action( 'gravityview_render_directory_active_areas', array( $this, 'render_directory_active_areas'), 10, 4 );
 		add_action( 'gravityview_render_widgets_active_areas', array( $this, 'render_widgets_active_areas'), 10, 3 );
+		add_action( 'gravityview_render_field_pickers', array( $this, 'render_field_pickers') );
 		add_action( 'gravityview_render_available_fields', array( $this, 'render_available_fields'), 10, 2 );
 		add_action( 'gravityview_render_available_widgets', array( $this, 'render_available_widgets') );
 		add_action( 'gravityview_render_active_areas', array( $this, 'render_active_areas'), 10, 5 );
@@ -628,7 +629,7 @@ class GravityView_Admin_Views {
 					continue;
 				}
 
-				$output .= new GravityView_Admin_View_Field( $details['label'], $id, $details );
+				$output .= new GravityView_Admin_View_Field( $details['label'], $id, $details, $settings = array(), $form );
 
 			} // End foreach
 		}
@@ -689,7 +690,7 @@ class GravityView_Admin_Views {
 				}
 
 				// Render a label for each of them
-				echo new GravityView_Admin_View_Field( $item['label_text'], $item['field_id'], $item );
+				echo new GravityView_Admin_View_Field( $item['label_text'], $item['field_id'], $item, $settings = array(), $form );
 
 			}
 		}
@@ -870,12 +871,18 @@ class GravityView_Admin_Views {
 				$form = gravityview_get_form_id( $post->ID );
 			}
 
-			if( 'field' === $type ) {
-				$available_items = $this->get_available_fields( $form, $zone );
-			} else {
-				$available_items = $this->get_registered_widgets();
-			}
+			if ( 'field' === $type ) {
+				$available_items[ $form ] = $this->get_available_fields( $form, $zone );
 
+				$joined_forms = gravityview_get_joined_forms( $post->ID );
+
+                foreach ( $joined_forms as $form ) {
+                    $available_items[ $form->ID ] = $this->get_available_fields( $form->ID, $zone );
+                }
+
+			} else {
+				$available_items[ $form ] = $this->get_registered_widgets();
+			}
 		}
 
 		foreach( $rows as $row ) :
@@ -886,31 +893,33 @@ class GravityView_Admin_Views {
 
 					<?php foreach( $areas as $area ) : 	?>
 
-						<div class="gv-droppable-area">
+						<div class="gv-droppable-area" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>">
 							<div class="active-drop active-drop-<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
 
 								<?php // render saved fields
 
-								if( !empty( $values[ $zone .'_'. $area['areaid'] ] ) ) {
+								if( ! empty( $values[ $zone .'_'. $area['areaid'] ] ) ) {
 
 									foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) {
 
+										// Maybe has a form ID
+										$form_id = empty( $field['form_id'] ) ? null : $field['form_id'];
+
 										$input_type = NULL;
-										$original_item = isset( $available_items[ $field['id'] ] ) ? $available_items[ $field['id'] ] : false ;
 
-										if( !$original_item ) {
+										if ( $form_id ) {
+											$original_item = isset( $available_items[ $form_id ] [ $field['id'] ] ) ? $available_items[ $form_id ] [ $field['id'] ] : false ;
+                                        } else {
+											$original_item = isset( $available_items[ $field['id'] ] ) ? $available_items[ $field['id'] ] : false ;
+                                        }
 
+										if ( !$original_item ) {
 											gravityview()->log->error( 'An item was not available when rendering the output; maybe it was added by a plugin that is now de-activated.', array(' data' => array('available_items' => $available_items, 'field' => $field ) ) );
 
 											$original_item = $field;
 										} else {
-
 											$input_type = isset( $original_item['type'] ) ? $original_item['type'] : NULL;
-
 										}
-
-										// Maybe has a form ID
-										$form_id = empty( $field['form_id'] ) ? null : $field['form_id'];
 
 										// Field options dialog box
 										$field_options = GravityView_Render_Settings::render_field_options( $form_id, $type, $template_id, $field['id'], $original_item['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone, $original_item );
@@ -922,7 +931,7 @@ class GravityView_Admin_Views {
 										);
 
 										// Merge the values with the current item to pass things like widget descriptions and original field names
-										if( $original_item ) {
+										if ( $original_item ) {
 											$item = wp_parse_args( $item, $original_item );
 										}
 
@@ -931,12 +940,8 @@ class GravityView_Admin_Views {
 												echo new GravityView_Admin_View_Widget( $item['label'], $field['id'], $item, $field );
 												break;
 											default:
-												echo new GravityView_Admin_View_Field( $item['label'], $field['id'], $item, $field );
+												echo new GravityView_Admin_View_Field( $field['label'], $field['id'], $item, $field, $form_id );
 										}
-
-
-										//endif;
-
 									}
 
 								} // End if zone is not empty ?>
@@ -986,6 +991,42 @@ class GravityView_Admin_Views {
 
 		return $output;
 	}
+
+	/**
+     * Renders "Add Field" tooltips
+     *
+     * @since 2.0.11
+     *
+	 * @param string $context "directory", "single", or "edit"
+     *
+     * @return void
+	 */
+	function render_field_pickers( $context = 'directory' ) {
+
+		// list of available fields to be shown in the popup
+		$forms = gravityview_get_forms( 'any' );
+
+		$form_ids = array_map( function ($form) { return $form['id']; }, $forms);
+
+		foreach ( $form_ids as $form_id ) {
+			$filter_field_id = sprintf( 'gv-field-filter-%s-%d', $context, $form_id );
+			?>
+            <div id="<?php echo esc_html( $context ); ?>-available-fields-<?php echo esc_attr( $form_id ); ?>" class="hide-if-js gv-tooltip">
+                <span class="close"><i class="dashicons dashicons-dismiss"></i></span>
+                <div class="gv-field-filter-form">
+                    <label class="screen-reader-text" for="<?php echo esc_html( $filter_field_id ); ?>"><?php esc_html_e( 'Filter Fields:', 'gravityview' ); ?></label>
+                    <input type="search" class="widefat gv-field-filter" aria-controls="<?php echo $filter_field_id; ?>" id="<?php echo esc_html( $filter_field_id ); ?>" placeholder="<?php esc_html_e( 'Filter fields by name or label', 'gravityview' ); ?>" />
+                </div>
+
+                <div id="available-fields-<?php echo $filter_field_id; ?>" aria-live="polite" role="listbox">
+                <?php do_action('gravityview_render_available_fields', $form_id, $context ); ?>
+                </div>
+
+                <div class="gv-no-results hidden description"><?php esc_html_e( 'No fields were found matching the search.', 'gravityview' ); ?></div>
+            </div>
+			<?php
+		}
+    }
 
 	/**
 	 * Render the Template Active Areas and configured active fields for a given template id and post id
@@ -1148,7 +1189,7 @@ class GravityView_Admin_Views {
 				'gform_form_admin',
 				'jquery-ui-autocomplete'
 			);
-			
+
 		} elseif ( preg_match( '/style/ism', $filter ) ) {
 
 			$allowed_dependencies = array(

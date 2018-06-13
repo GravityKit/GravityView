@@ -42,6 +42,13 @@ class Entry_Renderer extends Renderer {
 			return get_the_password_form( $view->ID );
 		}
 
+
+		/** Entry does not belong to this view. */
+		if ( $view->form && $view->form->ID != $entry['form_id'] ) {
+			gravityview()->log->error( 'The requested entry does not belong to this View. Entry #{entry_id}, #View {view_id}', array( 'entry_id' => $entry->ID, 'view_id' => $view->ID ) );
+			return null;
+		}
+
 		/**
 		 * @action `gravityview_render_entry_{View ID}` Before rendering a single entry for a specific View ID
 		 * @since 1.17
@@ -49,15 +56,9 @@ class Entry_Renderer extends Renderer {
 		 * @since 2.0
 		 * @param \GV\Entry $entry The entry about to be rendered
 		 * @param \GV\View $view The connected view
-		 * @param \GV\Request $request The associated request 
+		 * @param \GV\Request $request The associated request
 		 */
 		do_action( 'gravityview_render_entry_' . $view->ID, $entry, $view, $request );
-
-		/** Entry does not belong to this view. */
-		if ( $view->form && $view->form->ID != $entry['form_id'] ) {
-			gravityview()->log->error( 'The requested entry does not belong to this View. Entry #{entry_id}, #View {view_id}', array( 'entry_id' => $entry->ID, 'view_id' => $view->ID ) );
-			return null;
-		}
 
 		/**
 		 * @filter `gravityview_template_slug_{$template_id}` Modify the template slug about to be loaded in directory views.

@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.0.10\n"
+"Project-Id-Version: GravityView 2.0.11\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -178,11 +178,13 @@ msgstr ""
 #: future/includes/class-gv-shortcode-gravityview.php:158
 #: future/includes/class-gv-shortcode-gravityview.php:163
 #: future/includes/class-gv-shortcode-gravityview.php:169
+#: future/includes/class-gv-shortcode-gravityview.php:177
 #: future/includes/class-gv-view.php:273 future/includes/class-gv-view.php:281
 #: future/includes/class-gv-view.php:288 future/includes/class-gv-view.php:299
 #: future/includes/class-gv-view.php:304 future/includes/class-gv-view.php:310
 #: future/includes/class-gv-view.php:323 future/includes/class-gv-view.php:328
-#: future/includes/class-gv-view.php:334 includes/class-frontend-views.php:623
+#: future/includes/class-gv-view.php:334 future/includes/class-gv-view.php:342
+#: includes/class-frontend-views.php:623
 msgid "You are not allowed to view this content."
 msgstr ""
 
@@ -204,13 +206,13 @@ msgid ""
 "look strange. Don't be concerned!"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:530
+#: future/includes/class-gv-plugin.php:537
 #: includes/class-gravityview-entry-approval.php:345
 #: tests/unit-tests/GravityView_Uninstall_Test.php:191
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:531
+#: future/includes/class-gv-plugin.php:538
 #: includes/class-gravityview-entry-approval.php:339
 #: tests/unit-tests/GravityView_Uninstall_Test.php:192
 msgid "Approved the Entry for GravityView"
@@ -561,12 +563,12 @@ msgid "Sort by field"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:138
-#: includes/class-common.php:1323
+#: includes/class-common.php:1331
 msgid "Default"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:139
-#: includes/class-common.php:1366
+#: includes/class-common.php:1374
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
 msgstr ""
@@ -1163,13 +1165,13 @@ msgid "(no title)"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:138
-#: includes/class-admin-views.php:1114
+#: includes/class-admin-views.php:1119
 #: includes/extensions/edit-entry/partials/form-buttons.php:31
 msgid "Cancel"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:183
-#: includes/class-admin-views.php:1118
+#: includes/class-admin-views.php:1123
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -1394,65 +1396,65 @@ msgstr ""
 msgid "Add Field"
 msgstr ""
 
-#: includes/class-admin-views.php:945
+#: includes/class-admin-views.php:950
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr ""
 
-#: includes/class-admin-views.php:1013
+#: includes/class-admin-views.php:1018
 msgid "Filter Fields:"
 msgstr ""
 
-#: includes/class-admin-views.php:1014
+#: includes/class-admin-views.php:1019
 msgid "Filter fields by name or label"
 msgstr ""
 
-#: includes/class-admin-views.php:1021
+#: includes/class-admin-views.php:1026
 msgid "No fields were found matching the search."
 msgstr ""
 
-#: includes/class-admin-views.php:1055
+#: includes/class-admin-views.php:1060
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:1056
+#: includes/class-admin-views.php:1061
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1112
+#: includes/class-admin-views.php:1117
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:1113
+#: includes/class-admin-views.php:1118
 msgid "Close"
 msgstr ""
 
-#: includes/class-admin-views.php:1115
+#: includes/class-admin-views.php:1120
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:1116
+#: includes/class-admin-views.php:1121
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:1117
+#: includes/class-admin-views.php:1122
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1119
+#: includes/class-admin-views.php:1124
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1120
+#: includes/class-admin-views.php:1125
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:1121
+#: includes/class-admin-views.php:1126
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -1653,7 +1655,7 @@ msgstr ""
 msgid "&larr; Go back"
 msgstr ""
 
-#: includes/class-api.php:1202
+#: includes/class-api.php:1204
 msgid "Map It"
 msgstr ""
 
@@ -1668,7 +1670,7 @@ msgstr ""
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1476
+#: includes/class-common.php:1484
 msgid "Email hidden; Javascript is required."
 msgstr ""
 

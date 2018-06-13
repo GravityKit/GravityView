@@ -2,7 +2,7 @@ language: php
 
 sudo: false
 
-dist: precise
+dist: trusty
 
 notifications:
   email:

@@ -142,7 +142,9 @@
 				// Update checkbox visibility when having dependency checkboxes
 				.on( 'change', ".gv-setting-list, #gravityview_settings", vcfg.toggleCheckboxes )
 
-				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings );
+				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )
+
+				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters );
 
 			// End bind to $('body')
 
@@ -208,7 +210,8 @@
 
 					// Escape key was pressed
 					if ( e.keyCode === 27 ) {
-						close = true;
+						close = $( '.gv-field-filter-form input[data-has-search]:focus' ).length === 0;
+						return_false = close;
 					}
 
 					break;
@@ -506,8 +509,8 @@
 			};
 
 			var continue_button = {
-				text: gvGlobals.label_continue,
-				click: function () {
+			text: gvGlobals.label_continue,
+			click: function () {
 					if ( thisDialog.is( '#gravityview_form_id_dialog' ) ) {
 						if ( vcfg.startFreshStatus ) {
 							vcfg.startFreshContinue();
@@ -614,7 +617,7 @@
 			if ( context !== undefined && 'preset' === context ) {
 				data.template_id = id;
 			} else {
-				data.form_id = vcfg.gvSelectForm.val();
+				data.form_id = vcfg.gvSelectForm.val(); // TODO: Update for Joins
 			}
 
 			$.post(ajaxurl, data, function (response) {
@@ -844,7 +847,7 @@
 		 */
 		updateViewConfig: function ( data ) {
 			var vcfg = viewConfiguration;
-			
+
 			$.post( ajaxurl, data, function ( response ) {
 				if ( response ) {
 					var content = $.parseJSON( response );
@@ -877,20 +880,28 @@
 
 		// tooltips
 
-		init_tooltips: function () {
+    remove_tooltips: function (el) {
+      if ($( el || '.gv-add-field' ).is(':ui-tooltip')) {
+      	$( '.gv-add-field' ).tooltip( 'destroy' ).off( 'click' );
+      }
+		},
 
-			$( ".gv-add-field" ).tooltip( {
+		init_tooltips: function (el) {
+
+			$( el || ".gv-add-field" ).tooltip( {
+				show:    150,
+				hide:    200,
 				content: function () {
-
 					// Is the field picker in single or directory mode?
 					//	var context = ( $(this).parents('#single-view').length ) ? 'single' : 'directory';
 					var context = $( this ).attr( 'data-context' );
+					var formId = $( this ).attr( 'data-formid' ) || $( '#gravityview_form_id' ).val();
 
 					switch ( $( this ).attr( 'data-objecttype' ) ) {
 						case 'field':
 							// If in Single context, show fields available in single
 							// If it Directory, same for directory
-							return $( "#" + context + "-available-fields" ).html();
+							return $( "#" + context + "-available-fields-" + formId ).html();
 						case 'widget':
 							return $( "#directory-available-widgets" ).html();
 					}
@@ -898,11 +909,13 @@
 				close: function () {
 					$( this ).attr( 'data-tooltip', null );
 				},
-				open: function () {
+		        open: function() {
 
-					$( this ).attr( 'data-tooltip', 'active' ).attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
+					$( this )
+						.attr( 'data-tooltip', 'active' )
+						.attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
 
-				},
+		        },
 				closeOnEscape: true,
 				disabled: true, // Don't open on hover
 				position: {
@@ -910,21 +923,52 @@
 					at: "center top-12"
 				},
 				tooltipClass: 'top'
-			} )// add title attribute so the tooltip can continue to work (jquery ui bug?)
-				.attr( "title", "" ).on( 'mouseout focusout', function ( e ) {
-					e.stopImmediatePropagation();
-				} ).click( function ( e ) {
+			} )
+			// add title attribute so the tooltip can continue to work (jquery ui bug?)
+			.attr( "title", "" ).on( 'mouseout focusout', function ( e ) {
+				e.stopImmediatePropagation();
+			} )
+			.on( 'click', function ( e ) {
+				// add title attribute so the tooltip can continue to work (jquery ui bug?)
+				$( this ).attr( "title", "" );
 
-					// add title attribute so the tooltip can continue to work (jquery ui bug?)
-					$( this ).attr( "title", "" );
+				e.preventDefault();
+				//e.stopImmediatePropagation();
 
-					e.preventDefault();
-					//e.stopImmediatePropagation();
+				$( this ).tooltip( "open" );
 
-					$( this ).tooltip( "open" );
+			} );
 
-				} );
+		},
 
+		/**
+		 * Filters visible fields in the field picker tooltip when the value of the field filter search input changes (or is cleared)
+		 *
+		 * {@since 2.0.11}
+		 *
+		 * {@returns void}
+		 */
+		setupFieldFilters: function( e ) {
+
+			var input = $.trim( $( this ).val() ),
+				$tooltip = $( this ).parents( '.ui-tooltip-content' ),
+				$resultsNotFound = $tooltip.find( '.gv-no-results' );
+
+			// Allow closeTooltips to know whether to close the tooltip on escape
+			if( 'keydown' === e.type ) {
+				$( this ).attr( 'data-has-search', ( input.length > 0 ) ? input.length : null );
+				return; // Only process the filtering on keyup
+			}
+
+			$tooltip.find( '.gv-fields' ).show().filter( function () {
+				return ! $( this ).find( '.gv-field-label' ).attr( 'data-original-title' ).match( new RegExp( input, 'i' ) );
+			} ).hide();
+
+			if ( ! $tooltip.find( '.gv-fields:visible' ).length ) {
+				$resultsNotFound.show();
+			} else {
+				$resultsNotFound.hide();
+			}
 		},
 
 		/**
@@ -965,6 +1009,10 @@
 			if ( preset !== undefined && 'preset' === preset ) {
 				data.template_id = templateid;
 			} else {
+				/**
+				 * TODO: Update to support multiple fields in Joins
+				 * @see GravityView_Ajax::gv_available_fields()
+				 * */
 				data.form_id = vcfg.gvSelectForm.val();
 			}
 
@@ -1054,7 +1102,7 @@
 				field_label: newField.find( '.gv-field-label' ).attr( 'data-original-title' ),
 				field_type: addButton.attr( 'data-objecttype' ),
 				input_type: newField.attr( 'data-inputtype' ),
-				form_id: vcfg.currentFormId,
+				form_id: parseInt($(clicked).attr( 'data-formid' ), 10) || vcfg.currentFormId,
 				nonce: gvGlobals.nonce
 			};
 
@@ -1730,5 +1778,12 @@
 		} );
 
 	} );
+
+	// Expose globally methods to initialize/destroy tooltips and to display dialog window
+	window.gvAdminActions = {
+		initTooltips: viewConfiguration.init_tooltips,
+		removeTooltips: viewConfiguration.remove_tooltips,
+		showDialog: viewConfiguration.showDialog,
+	};
 
 }(jQuery));

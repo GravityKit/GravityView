@@ -84,7 +84,7 @@ abstract class Request {
 	}
 
 	/**
-	 * Is this an edit entry request?
+	 * Checks whether this is a single entry request
 	 *
 	 * @api
 	 * @since 2.0
@@ -93,16 +93,28 @@ abstract class Request {
 	 * @return \GV\GF_Entry|false The entry requested or false.
 	 */
 	public function is_entry() {
+
 		if ( $id = get_query_var( \GV\Entry::get_endpoint_name() ) ) {
+
+			static $entries = array();
+
+			if ( isset( $entries[ $id ] ) ) {
+				return $entries[ $id ];
+			}
+
 			if ( $entry = \GV\GF_Entry::by_id( $id ) ) {
+				$entries[ $id ] = $entry;
 				return $entry;
 			}
+
+			$entries[ $id ] = false;
 		}
+
 		return false;
 	}
 
 	/**
-	 * Check whether this an edit entry request.
+	 * Checks whether this an edit entry request.
 	 *
 	 * @api
 	 * @since 2.0
@@ -123,7 +135,7 @@ abstract class Request {
 	}
 
 	/**
-	 * Check whether this an entry search request.
+	 * Checks whether this an entry search request.
 	 *
 	 * @api
 	 * @since 2.0
