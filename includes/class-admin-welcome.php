@@ -269,6 +269,23 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>2.0.11 on June 12, 2018</h3>
+
+                <ul>
+                    <li>Added: Search for fields by name when adding fields to your View configuration (it's really great!)</li>
+                    <li>Fixed: GravityView license details not saving when the license was activated (only when the Update Settings button was clicked)</li>
+                    <li>Fixed: Entry filtering for single entries</li>
+                    <li>Fixed: Per-user language setting not being used in WordPress 4.7 or newer</li>
+                </ul>
+
+                <p><strong>Developer Notes</strong></p>
+
+                <ul>
+                    <li>Added: <code>\GV\View::get_joins()</code> method to fetch array of <code>\GV\Joins</code> connected with a View</li>
+                    <li>Added: <code>\GV\View::get_joined_forms()</code> method to get array of <code>\GV\GF_Forms</code> connected with a View</li>
+                </ul>
+
+
                 <h3>2.0.10 on June 6, 2018</h3>
 
                 <ul>
