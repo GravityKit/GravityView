@@ -21,8 +21,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.0.10.1 on June 12, 2018 =
+= 2.0.11 on June 12, 2018 =
 
+* Added: Search for fields by name when adding fields to your View configuration (it's really great!)
 * Fixed: GravityView license details not saving when the license was activated (only when the Update Settings button was clicked)
 * Fixed: Entry filtering for single entries
 * Fixed: Per-user language setting not being used in WordPress 4.7 or newer
@@ -34,7 +35,6 @@ __Developer Notes__
 
 = 2.0.10 on June 6, 2018 =
 
-* Added: Search for fields by name when adding fields to your View configuration (it's really great!)
 * Fixed: Password-protected Views were showing "You are not allowed to view this content" instead of the password form
 * Fixed: When Map View is embedded, Search Bar pointed to View URL, not page URL
 

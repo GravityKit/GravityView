@@ -92,7 +92,7 @@
 				.on( 'keydown keyup', vcfg.altKeyListener )
 
 				// select form
-				.on( 'change', '#gravityview_form_id', vcfg.formChange )  // TODO: Update for Joins
+				.on( 'change', '#gravityview_form_id', vcfg.formChange )
 
 				// start fresh button
 				.on( 'click', 'a[href="#gv_start_fresh"]', vcfg.startFresh )
@@ -944,7 +944,7 @@
 		/**
 		 * Filters visible fields in the field picker tooltip when the value of the field filter search input changes (or is cleared)
 		 *
-		 * {@since 2.1}
+		 * {@since 2.0.11}
 		 *
 		 * {@returns void}
 		 */
