@@ -133,8 +133,6 @@ class oEmbed {
 		$view = null;
 
 		if ( $view_id = url_to_postid( $url ) ) {
-			gravityview()->log->error( 'View ID: {view_id}', array( 'view_id' => $view_id ) );
-
 			$view = \GV\View::by_id( $view_id );
 		}
 
