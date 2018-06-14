@@ -16,7 +16,7 @@ $search_method = GravityView_Widget_Search::getInstance()->get_search_method();
 
 ?>
 
-<form class="gv-widget-search <?php echo GravityView_Widget_Search::get_search_class(); ?>" method="<?php echo $search_method; ?>" action="<?php echo esc_url( GravityView_Widget_Search::get_search_form_action() ); ?>">
+<form class="gv-widget-search <?php echo GravityView_Widget_Search::get_search_class(); ?>" method="<?php echo $search_method; ?>" action="<?php echo esc_url( GravityView_Widget_Search::get_search_form_action() ); ?>" data-viewid="<?php echo $view_id; ?>">
 
 	<?php
 
