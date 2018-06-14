@@ -301,11 +301,6 @@ abstract class Extension {
 			require_once gravityview()->plugin->dir( 'future/lib/EDD_SL_Plugin_Updater.php' );
 		}
 
-		// Don't update if invalid license.
-		if ( false === $license || empty( $license['status'] ) || strtolower( $license['status'] ) !== 'valid' ) {
-			return;
-		}
-
 		new EDD_SL_Plugin_Updater(
 			$this->_remote_update_url,
 			$this->_path,

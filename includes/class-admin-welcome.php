@@ -273,6 +273,7 @@ class GravityView_Welcome {
 
                 <ul>
                     <li>Fixed: On the Plugins page, "Update now" not working for GravityView Premium Plugins, Views & Extensions</li>
+                    <li>Fixed: Always show that plugin updates are available, even if a license is expired</li>
                 </ul>
 
                 <h3>2.0.11 on June 12, 2018</h3>
