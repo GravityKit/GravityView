@@ -289,8 +289,9 @@ abstract class Extension {
 	 * @return void
 	 */
 	public function settings() {
+
 		// If doing ajax, get outta here
-		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) )  {
+		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX && 'update-plugin' !== Utils::_POST('action') ) )  {
 			return;
 		}
 
@@ -298,11 +299,6 @@ abstract class Extension {
 
 		if ( ! class_exists( '\GV\EDD_SL_Plugin_Updater' ) ) {
 			require_once gravityview()->plugin->dir( 'future/lib/EDD_SL_Plugin_Updater.php' );
-		}
-
-		// Don't update if invalid license.
-		if ( false === $license || empty( $license['status'] ) || strtolower( $license['status'] ) !== 'valid' ) {
-			return;
 		}
 
 		new EDD_SL_Plugin_Updater(

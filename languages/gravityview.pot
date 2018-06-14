@@ -1165,13 +1165,13 @@ msgid "(no title)"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:138
-#: includes/class-admin-views.php:1119
+#: includes/class-admin-views.php:1118
 #: includes/extensions/edit-entry/partials/form-buttons.php:31
 msgid "Cancel"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:183
-#: includes/class-admin-views.php:1123
+#: includes/class-admin-views.php:1122
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -1396,65 +1396,65 @@ msgstr ""
 msgid "Add Field"
 msgstr ""
 
-#: includes/class-admin-views.php:950
+#: includes/class-admin-views.php:949
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr ""
 
-#: includes/class-admin-views.php:1018
+#: includes/class-admin-views.php:1017
 msgid "Filter Fields:"
 msgstr ""
 
-#: includes/class-admin-views.php:1019
+#: includes/class-admin-views.php:1018
 msgid "Filter fields by name or label"
 msgstr ""
 
-#: includes/class-admin-views.php:1026
+#: includes/class-admin-views.php:1025
 msgid "No fields were found matching the search."
 msgstr ""
 
-#: includes/class-admin-views.php:1060
+#: includes/class-admin-views.php:1059
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:1061
+#: includes/class-admin-views.php:1060
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1117
+#: includes/class-admin-views.php:1116
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:1118
+#: includes/class-admin-views.php:1117
 msgid "Close"
 msgstr ""
 
-#: includes/class-admin-views.php:1120
+#: includes/class-admin-views.php:1119
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:1121
+#: includes/class-admin-views.php:1120
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:1122
+#: includes/class-admin-views.php:1121
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1124
+#: includes/class-admin-views.php:1123
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1125
+#: includes/class-admin-views.php:1124
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:1126
+#: includes/class-admin-views.php:1125
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -1495,23 +1495,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:466
+#: includes/class-admin-welcome.php:489
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:487
+#: includes/class-admin-welcome.php:510
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:522
+#: includes/class-admin-welcome.php:545
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:547
+#: includes/class-admin-welcome.php:570
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:548
+#: includes/class-admin-welcome.php:571
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
