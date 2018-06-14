@@ -289,8 +289,9 @@ abstract class Extension {
 	 * @return void
 	 */
 	public function settings() {
+
 		// If doing ajax, get outta here
-		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) )  {
+		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX && 'update-plugin' !== Utils::_POST('action') ) )  {
 			return;
 		}
 

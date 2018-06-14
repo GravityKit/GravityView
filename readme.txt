@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0.12 on June 12, 2018 =
+
+* Fixed: On the Plugins page, "Update now" not working for GravityView Premium Plugins, Views & Extensions
+
 = 2.0.11 on June 12, 2018 =
 
 * Added: Search for fields by name when adding fields to your View configuration (it's really great!)
