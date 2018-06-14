@@ -4736,6 +4736,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertContains( 'gravityview-oembed gravityview-oembed-entry gravityview-oembed-entry-' . $entry->ID, $future_output );
 
+		$this->assertNotContains( 'You are not allowed', $future_output );
+
+		$args['url'] = add_query_arg( array( 'gravityview' => $post->ID, 'entry' => $entry['id'] ), site_url() );
+
+		$future_output = call_user_func_array( $future, $args );
+
+		$this->assertNotContains( 'You are not allowed', $future_output );
+
 		wp_set_current_user( 0 );
 		gravityview()->request = new \GV\Frontend_Request();
 	}
