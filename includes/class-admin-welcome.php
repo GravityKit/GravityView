@@ -269,7 +269,7 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
-                <h3>2.0.12.1 on June 25, 2018</h3>
+                <h3>2.0.13 on June 25, 2018</h3>
 
                 <ul>
                     <li>Fixed: Custom Content fields not working with DIY Layout since 2.0.11</li>
