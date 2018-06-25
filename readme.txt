@@ -21,7 +21,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0.12.1 on June 25, 2018 =
+
+* Fixed: Custom Content fields not working with DIY Layout since 2.0.11
 * Fixed: Fatal error when migrating settings from (very) old versions of GravityView
+* Added: Code for Entry Notes to work properly with future version of DataTables
+
 = 2.0.12 on June 12, 2018 =
 
 * Fixed: On the Plugins page, "Update now" not working for GravityView Premium Plugins, Views & Extensions
