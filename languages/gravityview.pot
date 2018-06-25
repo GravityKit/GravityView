@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.0.11\n"
+"Project-Id-Version: GravityView 2.0.13\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -168,9 +168,9 @@ msgid "Check License"
 msgstr ""
 
 #: future/includes/class-gv-oembed.php:88
-#: future/includes/class-gv-oembed.php:199
-#: future/includes/class-gv-oembed.php:204
-#: future/includes/class-gv-oembed.php:210
+#: future/includes/class-gv-oembed.php:212
+#: future/includes/class-gv-oembed.php:217
+#: future/includes/class-gv-oembed.php:223
 #: future/includes/class-gv-shortcode-gravityview.php:101
 #: future/includes/class-gv-shortcode-gravityview.php:127
 #: future/includes/class-gv-shortcode-gravityview.php:132
@@ -188,19 +188,19 @@ msgstr ""
 msgid "You are not allowed to view this content."
 msgstr ""
 
-#: future/includes/class-gv-oembed.php:160
+#: future/includes/class-gv-oembed.php:173
 msgid "Embed Entry %d"
 msgstr ""
 
-#: future/includes/class-gv-oembed.php:162
+#: future/includes/class-gv-oembed.php:175
 msgid "This entry will be displayed as it is configured in View %d"
 msgstr ""
 
-#: future/includes/class-gv-oembed.php:181
+#: future/includes/class-gv-oembed.php:194
 msgid "This will look better when it is embedded."
 msgstr ""
 
-#: future/includes/class-gv-oembed.php:182
+#: future/includes/class-gv-oembed.php:195
 msgid ""
 "Styles don't get loaded when being previewed, so the content below will "
 "look strange. Don't be concerned!"
@@ -225,7 +225,7 @@ msgstr ""
 #: includes/class-gravityview-entry-link-shortcode.php:216
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:895
+#: includes/extensions/edit-entry/class-edit-entry-render.php:907
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 #: templates/fields/field-edit_link-html.php:23
 msgid "Edit Entry"
@@ -1165,13 +1165,13 @@ msgid "(no title)"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:138
-#: includes/class-admin-views.php:1118
+#: includes/class-admin-views.php:1119
 #: includes/extensions/edit-entry/partials/form-buttons.php:31
 msgid "Cancel"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:183
-#: includes/class-admin-views.php:1122
+#: includes/class-admin-views.php:1123
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -1396,65 +1396,65 @@ msgstr ""
 msgid "Add Field"
 msgstr ""
 
-#: includes/class-admin-views.php:949
+#: includes/class-admin-views.php:950
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr ""
 
-#: includes/class-admin-views.php:1017
+#: includes/class-admin-views.php:1018
 msgid "Filter Fields:"
 msgstr ""
 
-#: includes/class-admin-views.php:1018
+#: includes/class-admin-views.php:1019
 msgid "Filter fields by name or label"
 msgstr ""
 
-#: includes/class-admin-views.php:1025
+#: includes/class-admin-views.php:1026
 msgid "No fields were found matching the search."
 msgstr ""
 
-#: includes/class-admin-views.php:1059
+#: includes/class-admin-views.php:1060
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:1060
+#: includes/class-admin-views.php:1061
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1116
+#: includes/class-admin-views.php:1117
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:1117
+#: includes/class-admin-views.php:1118
 msgid "Close"
 msgstr ""
 
-#: includes/class-admin-views.php:1119
+#: includes/class-admin-views.php:1120
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:1120
+#: includes/class-admin-views.php:1121
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:1121
+#: includes/class-admin-views.php:1122
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1123
+#: includes/class-admin-views.php:1124
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1124
+#: includes/class-admin-views.php:1125
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:1125
+#: includes/class-admin-views.php:1126
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -1495,23 +1495,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:489
+#: includes/class-admin-welcome.php:498
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:510
+#: includes/class-admin-welcome.php:519
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:545
+#: includes/class-admin-welcome.php:554
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:570
+#: includes/class-admin-welcome.php:579
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:571
+#: includes/class-admin-welcome.php:580
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1885,7 +1885,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:140
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1892
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1904
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
@@ -1925,48 +1925,48 @@ msgstr ""
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:297
+#: includes/extensions/delete-entry/class-delete-entry.php:302
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:422
 msgid "Delete"
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:371
+#: includes/extensions/delete-entry/class-delete-entry.php:376
 msgid "The entry does not exist."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:444
+#: includes/extensions/delete-entry/class-delete-entry.php:449
 msgid "Moving the entry to the trash failed."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:542
+#: includes/extensions/delete-entry/class-delete-entry.php:547
 msgid "Are you sure you want to delete this entry? This cannot be undone."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:569
+#: includes/extensions/delete-entry/class-delete-entry.php:574
 msgid "The link to delete this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:573
+#: includes/extensions/delete-entry/class-delete-entry.php:578
 msgid "You do not have permission to delete this entry."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:578
+#: includes/extensions/delete-entry/class-delete-entry.php:583
 msgid "The entry is already in the trash."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:580
+#: includes/extensions/delete-entry/class-delete-entry.php:585
 msgid "You cannot delete the entry; it is already in the trash."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:717
+#: includes/extensions/delete-entry/class-delete-entry.php:722
 msgid "There was an error deleting the entry: %s"
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:721
+#: includes/extensions/delete-entry/class-delete-entry.php:726
 msgid "The entry was successfully moved to the trash."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:724
+#: includes/extensions/delete-entry/class-delete-entry.php:729
 msgid "The entry was successfully deleted."
 msgstr ""
 
@@ -1997,39 +1997,39 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:948
+#: includes/extensions/edit-entry/class-edit-entry-render.php:960
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:948
+#: includes/extensions/edit-entry/class-edit-entry-render.php:960
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:954
+#: includes/extensions/edit-entry/class-edit-entry-render.php:966
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1092
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1104
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1099
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1111
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1452
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1464
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1886
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1898
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1896
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1908
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1936
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1948
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -3409,7 +3409,7 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1912
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1924
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""

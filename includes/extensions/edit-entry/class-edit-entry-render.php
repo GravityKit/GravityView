@@ -93,6 +93,15 @@ class GravityView_Edit_Entry_Render {
 	public $view_id;
 
 	/**
+	 * ID of the current post. May also be ID of the current View.
+     *
+     * @since 2.0.13
+     * 
+     * @var int
+	 */
+	public $post_id;
+
+	/**
 	 * Updated entry is valid (GF Validation object)
 	 *
 	 * @var array
@@ -193,6 +202,8 @@ class GravityView_Edit_Entry_Render {
 	 * When Edit entry view is requested setup the vars
 	 */
 	private function setup_vars() {
+        global $post;
+
 		$gravityview_view = GravityView_View::getInstance();
 
 
@@ -204,6 +215,7 @@ class GravityView_Edit_Entry_Render {
 		$this->form = $gravityview_view->getForm();
 		$this->form_id = $gravityview_view->getFormId();
 		$this->view_id = $gravityview_view->getViewId();
+		$this->post_id = \GV\Utils::get( $post, 'ID', null );
 
 		self::$nonce_key = GravityView_Edit_Entry::get_nonce_key( $this->view_id, $this->form_id, $this->entry['id'] );
 	}

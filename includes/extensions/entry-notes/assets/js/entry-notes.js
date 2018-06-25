@@ -60,7 +60,7 @@
 			// Wrapper for custom Email To input
 			email_to_custom_wrapper: '.gv-note-to-custom-container'
 		},
-		
+
 		/**
 		 * Add all the jQuery actions and hooks
 		 * @since 1.17
@@ -74,7 +74,7 @@
 				$(gv_notes.selectors.bulk_toggle, $( this ) ).on('change', gv_notes.toggle_all );
 
 				$( gv_notes.selectors.bulk_form, $( this ) ).on( 'submit', gv_notes.delete_notes );
-				
+
 				$( gv_notes.selectors.email_select, $( this ) ).on('change', gv_notes.email_fields_toggle ).trigger('change');
 
 				$( gv_notes.selectors.add_note_form, $( this ) )
@@ -130,7 +130,7 @@
 		 * Allow Command+Enter to submit new notes. Yummy!
 		 *
 		 * @see https://davidwalsh.name/command-enter-submit-forms
-		 * 
+		 *
 		 * @since 1.17
 		 *
 		 * @param {jQueryEvent} e
@@ -145,7 +145,7 @@
 		 * Toggle all checkboxes based on the value of this checkbox
 		 *
 		 * @since 1.17
-		 * 
+		 *
 		 * @param e
 		 */
 		toggle_all: function( e ) {
@@ -156,9 +156,9 @@
 
 		/**
 		 * Process deleting notes when the Bulk Actions form is submitted
-		 * 
+		 *
 		 * @since 1.17
-		 * 
+		 *
 		 * @param e
 		 * @returns {boolean}
 		 */
@@ -259,7 +259,7 @@
 		 * Add a note using AJAX submission
 		 *
 		 * @since 1.17
-		 * 
+		 *
 		 * @param e
 		 * @returns {boolean}
 		 */
@@ -274,7 +274,7 @@
 				gv_notes.show_message( $submit, GVNotes.text.error_empty_note );
 				return;
 			}
-			
+
 			$.ajax({
 				url: GVNotes.ajaxurl,
 				isLocal: true,
@@ -340,5 +340,8 @@
 
 	// Initialize after shiftSelectable
 	gv_notes.init();
+
+  // Expose entry notes logic globally
+  window.gvEntryNotes = gv_notes;
 
 })(jQuery);

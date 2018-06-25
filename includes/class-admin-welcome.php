@@ -269,6 +269,14 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>2.0.13 on June 25, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Custom Content fields not working with DIY Layout since 2.0.11</li>
+                    <li>Fixed: Fatal error when migrating settings from (very) old versions of GravityView</li>
+                    <li>Added: Code for Entry Notes to work properly with future version of DataTables</li>
+                </ul>
+
                 <h3>2.0.12 on June 13, 2018</h3>
 
                 <ul>

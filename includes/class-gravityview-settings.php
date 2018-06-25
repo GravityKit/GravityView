@@ -22,7 +22,7 @@ class GravityView_Settings extends \GV\Addon_Settings {
 	 * @return \GV\Addon_Settings
 	 */
 	public static function get_instance() {
-		gravityview()->log->warning( '\GravityView_Settings is deprecated. Use gravityview()->settings instead.' );
+		gravityview()->log->warning( '\GravityView_Settings is deprecated. Use gravityview()->plugin->settings instead.' );
 		return gravityview()->plugin->settings;
 	}
 }

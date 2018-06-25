@@ -55,7 +55,7 @@ final class GravityView_Delete_Entry {
 		// add template path to check for field
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
 
-		add_action( 'gravityview/edit-entry/publishing-action/after', array( $this, 'add_delete_button'), 10, 3 );
+		add_action( 'gravityview/edit-entry/publishing-action/after', array( $this, 'add_delete_button'), 10, 4 );
 
 		add_action ( 'gravityview/delete-entry/deleted', array( $this, 'process_connected_posts' ), 10, 2 );
 		add_action ( 'gravityview/delete-entry/trashed', array( $this, 'process_connected_posts' ), 10, 2 );
@@ -266,11 +266,16 @@ final class GravityView_Delete_Entry {
 	 * Add a Delete button to the #publishing-action section of the Delete Entry form
 	 *
 	 * @since 1.5.1
+	 * @since 2.0.13 Added $post_id
+	 *
 	 * @param array $form    Gravity Forms form array
 	 * @param array $entry   Gravity Forms entry array
 	 * @param int $view_id GravityView View ID
+	 * @param int $post_id Current post ID. May be same as View ID.
+	 *
+	 * @return void
 	 */
-	function add_delete_button( $form = array(), $entry = array(), $view_id = NULL ) {
+	public function add_delete_button( $form = array(), $entry = array(), $view_id = null, $post_id = null ) {
 
 		// Only show the link to those who are allowed to see it.
 		if( !self::check_user_cap_delete_entry( $entry, array(), $view_id ) ) {
@@ -294,7 +299,7 @@ final class GravityView_Delete_Entry {
 			'onclick' => self::get_confirm_dialog(),
 		);
 
-		echo gravityview_get_link( self::get_delete_link( $entry, $view_id ), esc_attr__( 'Delete', 'gravityview' ), $attributes );
+		echo gravityview_get_link( self::get_delete_link( $entry, $view_id, $post_id ), esc_attr__( 'Delete', 'gravityview' ), $attributes );
 
 	}
 

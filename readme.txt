@@ -21,6 +21,19 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0.13 on June 25, 2018 =
+
+* Fixed: When View is embedded in a page, the "Delete Entry" link redirects the user to the View URL instead of embedded page URL
+* Fixed: Custom Content fields not working with DIY Layout since 2.0.11
+* Fixed: Fatal error when migrating settings from (very) old versions of GravityView
+* Fixed: oEmbed not working when using "plain" URLs with numeric View ID slugs
+
+__Developer Notes__
+
+* Added: Code to expose Entry Notes globally, to fix conflict with DataTables (future DataTables update required)
+* Added: `data-viewid` attribute to the Search Bar form with the current View ID
+* Added: Current Post ID parameter to the `gravityview/edit-entry/publishing-action/after` action
+
 = 2.0.12 on June 12, 2018 =
 
 * Fixed: On the Plugins page, "Update now" not working for GravityView Premium Plugins, Views & Extensions
