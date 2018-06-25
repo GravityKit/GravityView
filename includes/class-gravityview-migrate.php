@@ -114,13 +114,13 @@ class GravityView_Migrate {
 		}
 
 		// Get the current app settings (just defaults)
-		$current = gravityview()->settings->all();
+		$current = gravityview()->plugin->settings->all();
 
 		// Merge the redux settings with the defaults
 		$updated_settings = wp_parse_args( $redux_settings, $current );
 
 		// Update the defaults to the new merged
-		gravityview()->settings->update( $updated_settings );
+		gravityview()->plugin->settings->update( $updated_settings );
 
 		// And now remove the previous option, so this is a one-time thing.
 		delete_option('gravityview_settings');

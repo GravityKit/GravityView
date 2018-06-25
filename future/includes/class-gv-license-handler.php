@@ -52,7 +52,7 @@ class License_Handler {
 		$this->settings = $settings;
 		
 		if ( ! $this->settings instanceof Addon_Settings ) {
-			$this->settings = gravityview()->settings;
+			$this->settings = gravityview()->plugin->settings;
 		}
 
 		add_action( 'admin_init', array( $this, 'setup_edd' ), 0 );
