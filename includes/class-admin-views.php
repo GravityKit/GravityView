@@ -861,6 +861,7 @@ class GravityView_Admin_Views {
 		$available_items = array();
 
 		$view = \GV\View::from_post( $post );
+		$form_id = null;
 
 		// if saved values, get available fields to label everyone
 		if( !empty( $values ) && ( !empty( $post->ID ) || !empty( $_POST['template_id'] ) ) ) {
@@ -879,8 +880,8 @@ class GravityView_Admin_Views {
                 foreach ( $joined_forms as $form ) {
                     $available_items[ $form->ID ] = $this->get_available_fields( $form->ID, $zone );
                 }
-
 			} else {
+			    $form_id = $form;
 				$available_items[ $form ] = $this->get_registered_widgets();
 			}
 		}
@@ -903,7 +904,7 @@ class GravityView_Admin_Views {
 									foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) {
 
 										// Maybe has a form ID
-										$form_id = empty( $field['form_id'] ) ? null : $field['form_id'];
+										$form_id = empty( $field['form_id'] ) ? $form_id : $field['form_id'];
 
 										$input_type = NULL;
 
