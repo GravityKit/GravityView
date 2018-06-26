@@ -38,6 +38,7 @@ class Entry_Table_Template extends Entry_Template {
 	 */
 	public function the_entry() {
 
+		/** @var \GV\Field_Collection $fields */
 		$fields = $this->view->fields->by_position( 'single_table-columns' )->by_visible();
 		$form = $this->view->form;
 
@@ -79,7 +80,7 @@ class Entry_Table_Template extends Entry_Template {
 
 			/**
 			 * @filter `gravityview/template/table/entry/hide_empty`
-			 * @param boolean Should the row be hidden if the value is empty? Default: don't hide.
+			 * @param boolean $hide_empty Should the row be hidden if the value is empty? Default: don't hide.
 			 * @param \GV\Template_Context $context The context ;) Love it, cherish it. And don't you dare modify it!
 			 */
 			$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', $this->view->settings->get( 'hide_empty', false ), $context );
