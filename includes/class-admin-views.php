@@ -869,7 +869,7 @@ class GravityView_Admin_Views {
 			if( !empty( $_POST['template_id'] ) ) {
 				$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
 			} else {
-				$form = gravityview_get_form_id( $post->ID );
+				$form_id = $form = gravityview_get_form_id( $post->ID );
 			}
 
 			if ( 'field' === $type ) {
@@ -881,7 +881,6 @@ class GravityView_Admin_Views {
                     $available_items[ $form->ID ] = $this->get_available_fields( $form->ID, $zone );
                 }
 			} else {
-			    $form_id = $form;
 				$available_items[ $form ] = $this->get_registered_widgets();
 			}
 		}
