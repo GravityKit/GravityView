@@ -152,7 +152,7 @@ if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
 
 				$update_cache = get_site_transient( 'update_plugins' );
 
-				$update_cache = is_object( $update_cache ) ? $update_cache : new stdClass();
+				$update_cache = is_object( $update_cache ) ? $update_cache : new \stdClass();
 
 				if ( empty( $update_cache->response ) || empty( $update_cache->response[ $this->name ] ) ) {
 
