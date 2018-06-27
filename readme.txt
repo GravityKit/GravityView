@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0.13.1 on June 26, 2018 =
+
+* Fixed: Custom Content fields not working with DIY Layout
+* Fixed: Error when displaying plugin updates on a single site of a Multisite installation
+
 = 2.0.13 on June 25, 2018 =
 
 * Fixed: When View is embedded in a page, the "Delete Entry" link redirects the user to the View URL instead of embedded page URL

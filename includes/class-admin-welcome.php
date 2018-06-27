@@ -269,6 +269,13 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>2.0.13.1 on June 26, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Custom Content fields not working with DIY Layout</li>
+                    <li>Fixed: Error when displaying plugin updates on a single site of a Multisite installation</li>
+                </ul>
+                
                 <h3>2.0.13 on June 25, 2018</h3>
 
                 <ul>
