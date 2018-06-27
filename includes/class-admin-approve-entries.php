@@ -489,39 +489,31 @@ class GravityView_Admin_ApproveEntries {
             'approve_title' => GravityView_Entry_Approval_Status::get_title_attr('disapproved'),
 			'disapprove_title' => GravityView_Entry_Approval_Status::get_title_attr('approved'),
 			'column_title' => __( 'Show entry in directory view?', 'gravityview'),
-			'column_link' => esc_url( $this->get_sort_link( $form_id ) ),
+			'column_link' => esc_url( $this->get_sort_link() ),
 		) );
 
 	}
 
 	/**
-     * Generate a link to sort by approval status (if there is an Approve/Disapprove field)
+     * Generate a link to sort by approval status
      *
      * Note: Sorting by approval will never be great because it's not possible currently to declare the sorting as
      * numeric, but it does group the approved entries together.
      *
-	 * @param int $form_id
+     * @since 2.0.14 Remove need for approval field for sorting by approval status
+     *
+	 * @param int $form_id [NO LONGER USED]
 	 *
 	 * @return string Sorting link
 	 */
 	private function get_sort_link( $form_id = 0 ) {
 
-		$approved_column_id = self::get_approved_column( $form_id );
-
-		if( ! $approved_column_id ) {
-		    return '';
-        }
-
-	    $order = ( 'desc' === \GV\Utils::_GET( 'order' ) ) ? 'asc' : 'desc';
-
 	    $args = array(
-		    'orderby' => $approved_column_id,
-            'order' => $order,
+		    'orderby' => 'is_approved',
+            'order' => ( 'desc' === \GV\Utils::_GET( 'order' ) ) ? 'asc' : 'desc',
         );
 
-	    $link = add_query_arg( $args );
-
-		return $link;
+		return add_query_arg( $args );
     }
 
 	/**
