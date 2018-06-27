@@ -713,11 +713,9 @@ class GVCommon {
 	 */
 	public static function matches_operation( $val1, $val2, $operation ) {
 
-		$json_function = function_exists('wp_json_encode') ? 'wp_json_encode' : 'json_encode';
-
 		// Only process strings
-		$val1 = ! is_string( $val1 ) ? $json_function( $val1 ) : $val1;
-		$val2 = ! is_string( $val2 ) ? $json_function( $val2 ) : $val2;
+		$val1 = ! is_string( $val1 ) ? wp_json_encode( $val1 ) : $val1;
+		$val2 = ! is_string( $val2 ) ? wp_json_encode( $val2 ) : $val2;
 
 		$value = false;
 
