@@ -770,8 +770,8 @@ class GVCommon {
 				if( ! empty( $json_val_1 ) || ! empty( $json_val_2 ) ) {
 
 					$json_in = false;
-					$json_val_1 = $json_val_1 ? $json_val_1 : array( $val1 );
-					$json_val_2 = $json_val_2 ? $json_val_2 : array( $val2 );
+					$json_val_1 = $json_val_1 ? (array) $json_val_1 : array( $val1 );
+					$json_val_2 = $json_val_2 ? (array) $json_val_2 : array( $val2 );
 
 					// For JSON, we want to compare as "in" or "not in" rather than "contains"
 					foreach ( $json_val_1 as $item_1 ) {
