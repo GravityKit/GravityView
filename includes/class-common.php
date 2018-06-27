@@ -705,8 +705,8 @@ class GVCommon {
 	 * @uses GFFormsModel::matches_operation
 	 * @since 1.7.5
 	 *
-	 * @param string $val1 Left side of comparison
-	 * @param string $val2 Right side of comparison
+	 * @param mixed $val1 Left side of comparison
+	 * @param mixed $val2 Right side of comparison
 	 * @param string $operation Type of comparison
 	 *
 	 * @return bool True: matches, false: not matches
@@ -868,6 +868,8 @@ class GVCommon {
 		$filters = $search_criteria['field_filters'];
 
 		$mode = array_key_exists( 'mode', $filters ) ? strtolower( $filters['mode'] ) : 'all';
+
+		$mode = $mode ? : 'all'; // If mode is an empty string, assume it's 'all'
 
 		// Prevent the mode from being processed below
 		unset( $filters['mode'] );
