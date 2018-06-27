@@ -99,12 +99,20 @@ class GravityView_Admin_ApproveEntries {
 			),
 		);
 
-		$approved_count = $disapproved_count = 0;
+		$field_filters_unapproved = array(
+			array(
+				'key'      => GravityView_Entry_Approval::meta_key,
+				'value'    => GravityView_Entry_Approval_Status::UNAPPROVED,
+			),
+		);
+
+		$approved_count = $disapproved_count = $unapproved_count = 0;
 
 		// Only count if necessary
 		if( $include_counts ) {
 			$approved_count = count( gravityview_get_entry_ids( $form['id'], array( 'status' => 'active', 'field_filters' => $field_filters_approved ) ) );
 			$disapproved_count = count( gravityview_get_entry_ids( $form['id'], array( 'status' => 'active', 'field_filters' => $field_filters_disapproved ) ) );
+			$unapproved_count = count( gravityview_get_entry_ids( $form['id'], array( 'status' => 'active', 'field_filters' => $field_filters_unapproved ) ) );
 		}
 
 		$filter_links[] = array(
@@ -119,6 +127,13 @@ class GravityView_Admin_ApproveEntries {
 			'field_filters' => $field_filters_disapproved,
 			'count'         => $disapproved_count,
 			'label'         => GravityView_Entry_Approval_Status::get_label( GravityView_Entry_Approval_Status::DISAPPROVED ),
+		);
+
+		$filter_links[] = array(
+			'id'            => 'gv_unapproved',
+			'field_filters' => $field_filters_unapproved,
+			'count'         => $unapproved_count,
+			'label'         => GravityView_Entry_Approval_Status::get_label( GravityView_Entry_Approval_Status::UNAPPROVED ),
 		);
 
 		return $filter_links;
