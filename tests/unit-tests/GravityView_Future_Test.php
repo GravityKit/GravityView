@@ -5488,7 +5488,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		global $post;
 
-		$post = $this->factory->view->create_and_get( array(
+		$post = $this->factory->view->create_and_get( $config = array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
 			'fields' => array(
@@ -5524,6 +5524,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 				),
 			),
 		) );
+
+		file_put_contents( '/tmp/test.log', var_export( $config, true ) );
 
 		/** Trigger registration under this ID */
 		new GVFutureTest_Widget_Test( 'Widget', $widget_id );

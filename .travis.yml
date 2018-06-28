@@ -62,3 +62,4 @@ after_script:
 
 after_success:
   - if [[ $DO_COVERAGE = '1' ]]; then travis_retry php vendor/bin/coveralls -v --exclude-no-stmt; fi
+  - cat /tmp/test.log
