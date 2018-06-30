@@ -235,18 +235,17 @@ class View_Table_Template extends View_Template {
 	 */
 	public function the_field( \GV\Field $field, \GV\Entry $entry ) {
 		$form = $this->view->form;
+		$single_entry = $entry;
 
-		if ( $entry instanceof Multi_Entry ) {
-			if ( ! $entry = Utils::get( $entry, $field->form_id ) ) {
+		if ( $entry->is_multi() ) {
+			if ( ! $single_entry = Utils::get( $entry, $field->form_id ) ) {
 				return;
 			}
 			$form = GF_Form::by_id( $field->form_id );
 		}
 
-		$context = Template_Context::from_template( $this, compact( 'field', 'entry' ) );
-
 		$renderer = new Field_Renderer();
-		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
+		$source = is_numeric( $field->ID ) ? $form : new Internal_Source();
 
 		$value = $renderer->render( $field, $this->view, $source, $entry, $this->request );
 
@@ -257,6 +256,9 @@ class View_Table_Template extends View_Template {
 			'markup' => '<td id="{{ field_id }}" class="{{ class }}">{{ value }}</td>',
             'form' => $form,
 		);
+
+		$context = Template_Context::from_template( $this, compact( 'field' ) );
+		$context->entry = $single_entry;
 
 		/** Output. */
 		echo \gravityview_field_output( $args, $context );

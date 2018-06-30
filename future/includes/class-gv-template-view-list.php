@@ -36,7 +36,7 @@ class View_List_Template extends View_Template {
 			'entry' => $entry,
 		) );
 
-		if ( $entry instanceof Multi_Entry ) {
+		if ( $entry->is_multi() ) {
 			if ( ! $entry = Utils::get( $entry, $field->form_id ) ) {
 				return;
 			}
