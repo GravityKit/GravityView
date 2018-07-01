@@ -359,21 +359,21 @@ class View implements \ArrayAccess {
 	 * @return \GV\Join[] Array of \GV\Join instances
 	 */
 	public static function get_joins( $post ) {
+		$joins = array();
+
 		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
-			return array();
+			return $joins;
 		}
 
 		if ( ! $post || get_post_type( $post ) != 'gravityview' ) {
 			gravityview()->log->error( 'Only gravityview post types can be \GV\View instances.' );
-			return array();
+			return $joins;
 		}
-
-		$joins = array();
 
 		$joins_meta = get_post_meta( $post->ID, '_gravityview_form_joins', true );
 
 		if ( empty( $joins_meta ) ) {
-			return array();
+			return $joins;
 		}
 
 		foreach ( $joins_meta as $meta ) {
@@ -386,8 +386,8 @@ class View implements \ArrayAccess {
 			$join    = GF_Form::by_id( $join );
 			$join_on = GF_Form::by_id( $join_on );
 
-			$join_column    = is_numeric( $join_column ) ? GF_Field::by_id( $join, $join_column ) : Internal_Field( $join_column );
-			$join_on_column = is_numeric( $join_on_column ) ? GF_Field::by_id( $join_on, $join_on_column ) : Internal_Field( $join_on_column );
+			$join_column    = is_numeric( $join_column ) ? GF_Field::by_id( $join, $join_column ) : Internal_Field::by_id( $join_column );
+			$join_on_column = is_numeric( $join_on_column ) ? GF_Field::by_id( $join_on, $join_on_column ) : Internal_Field::by_id( $join_on_column );
 
 			$joins [] = new Join( $join, $join_column, $join_on, $join_on_column );
 		}
