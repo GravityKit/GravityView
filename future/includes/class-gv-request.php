@@ -93,11 +93,27 @@ abstract class Request {
 	 * @return \GV\GF_Entry|false The entry requested or false.
 	 */
 	public function is_entry() {
-		if ( $id = get_query_var( \GV\Entry::get_endpoint_name() ) ) {
-			if ( $entry = \GV\GF_Entry::by_id( $id ) ) {
+		if ( $id = get_query_var( Entry::get_endpoint_name() ) ) {
+
+			/**
+			 * A joined request.
+			 */
+			if ( $joins = $this->is_view()->joins ) {
+				$entries = array();
+				foreach ( explode( ',', $id ) as $id ) {
+					$entries[] = GF_Entry::by_id( $id );
+				}
+				return Multi_Entry::from_entries( array_filter( $entries ) );
+			}
+
+			/**
+			 * A regular one.
+			 */
+			if ( $entry = GF_Entry::by_id( $id ) ) {
 				return $entry;
 			}
 		}
+
 		return false;
 	}
 
