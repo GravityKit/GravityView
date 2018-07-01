@@ -318,20 +318,30 @@ class View implements \ArrayAccess {
 		 * Viewing a single entry.
 		 */
 		} else if ( $entry = $request->is_entry() ) {
-			if ( $entry['status'] != 'active' ) {
-				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
-				return __( 'You are not allowed to view this content.', 'gravityview' );
-			}
 
-			if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $entry->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
-				gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $entry->ID ) );
-				return __( 'You are not allowed to view this content.', 'gravityview' );
-			}
+			$entryset = $entry->is_multi() ? $entry->entries : array( $entry );
 
-			if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
-				if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
-					gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
+			$custom_slug = apply_filters( 'gravityview_custom_entry_slug', false );
+			$ids = explode( ',', get_query_var( \GV\Entry::get_endpoint_name() ) );
+
+			$show_only_approved = $view->settings->get( 'show_only_approved' );
+
+			foreach ( $entryset as $e ) {
+				if ( $e['status'] != 'active' ) {
+					gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $e->ID ) );
 					return __( 'You are not allowed to view this content.', 'gravityview' );
+				}
+
+				if ( $custom_slug && ! in_array( $e->slug, $ids ) ) {
+					gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $e->ID ) );
+					return __( 'You are not allowed to view this content.', 'gravityview' );
+				}
+
+				if ( $show_only_approved && ! $is_admin_and_can_view ) {
+					if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $e->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
+						gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $e->ID ) );
+						return __( 'You are not allowed to view this content.', 'gravityview' );
+					}
 				}
 			}
 
