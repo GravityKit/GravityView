@@ -402,19 +402,19 @@ class View implements \ArrayAccess {
 	 *
 	 * @api
 	 * @since 2.0
-	 * @return \GV\GF_Form[]|null Array of \GV\GF_Form instances
+	 * @return \GV\GF_Form[] Array of \GV\GF_Form instances
 	 */
 	public static function get_joined_forms( $post_id ) {
-		if ( ! $post_id || ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
-			return null;
-		}
+		$forms = array();
 
-		$forms_ids = array();
+		if ( ! $post_id || ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
+			return $forms;
+		}
 
 		$joins_meta = get_post_meta( $post_id, '_gravityview_form_joins', true );
 
 		if ( empty( $joins_meta ) ) {
-			return null;
+			return $forms;
 		}
 
 		foreach ( $joins_meta  as $meta ) {
@@ -424,10 +424,10 @@ class View implements \ArrayAccess {
 
 			list( $join, $join_column, $join_on, $join_on_column ) = $meta;
 
-			$forms_ids [] = GF_Form::by_id( $join_on );
+			$forms[] = GF_Form::by_id( $join_on );
 		}
 
-		return ( !empty( $forms_ids) ) ? $forms_ids : null;
+		return $forms;
 	}
 
 	/**
