@@ -16,12 +16,12 @@ class Join {
 	/**
 	 * @var GF_Form|Source|Form
 	 */
-	private $join;
+	public $join;
 
 	/**
 	 * @var GF_Form|Source|Form
 	 */
-	private $join_on;
+	public $join_on;
 
 	/**
 	 * @var Field
