@@ -120,7 +120,7 @@ abstract class Field_Template extends Template {
 
 		if ( $template->view ) {
 			$view_id = $template->view->ID;
-			$form_id = $template->source instanceof GF_Form ? $template->source->ID : null;
+			$form_id = $template->view->form ? $template->view->form->ID : null;
 		}
 
 		$class = get_class( $template );
