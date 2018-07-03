@@ -5512,7 +5512,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'widgets' => array(
 				'header_top' => array(
 					wp_generate_password( 4, false ) => array(
-						'id' => $widget_id = wp_generate_password( 12, false ) . '-widget',
+						'id' => $widget_id = wp_generate_password( 4, false ) . '-widget',
 						'test' => 'foo',
 					),
 				),
@@ -5525,13 +5525,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 			),
 		) );
 
-		file_put_contents( '/tmp/test.log', var_export( $config, true ) );
-
 		/** Trigger registration under this ID */
 		new GVFutureTest_Widget_Test( 'Widget', $widget_id );
 
 		$view = \GV\View::from_post( $post );
 
+		file_put_contents( '/tmp/test.log', var_export( $view->widgets, true ) );
 
 		$renderer = new \GV\View_Renderer();
 
