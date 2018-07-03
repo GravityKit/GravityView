@@ -5,8 +5,14 @@
  * @global \GV\Template_Context $gravityview
  * @since 2.0
  */
-$form = $gravityview->view->form->form;
-$entry = $gravityview->entry->as_entry();
+$form = \GV\GF_Form::by_id( $gravityview->field->form_id )->form;
+
+if( $gravityview->entry->is_multi() ) {
+	$entry = \GV\Utils::get( $gravityview->entry, $gravityview->field->form_id )->as_entry();
+} else {
+	$entry = $gravityview->entry->as_entry();
+}
+
 $field_settings = $gravityview->field->as_configuration();
 
 /** Default to empty. */
