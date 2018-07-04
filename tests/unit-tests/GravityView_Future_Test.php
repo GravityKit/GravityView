@@ -5530,7 +5530,18 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$view = \GV\View::from_post( $post );
 
-		file_put_contents( '/tmp/test.log', var_export( $view->widgets, true ) );
+		global $wp_filter;
+
+		$debug = array(
+			'View::$_gravityview_directory_widgets' => $view->_gravityview_directory_widgets,
+			'Widget_Collection::from_configuration' => \GV\Widget_Collection::from_configuration( $view->_gravityview_directory_widgets ),
+			'View::$widgets' => $view->widgets,
+			'filters' => array(
+				'gravityview/view/configuration/widgets' => \GV\Utils::get( $wp_filter, 'gravityview/view/configuration/widgets' ),
+				'gravityview/view/widgets' => \GV\Utils::get( $wp_filter, 'gravityview/view/widgets' ),
+			),
+		);
+		file_put_contents( '/tmp/test.log', var_export( $debug, true ) );
 
 		$renderer = new \GV\View_Renderer();
 
