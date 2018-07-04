@@ -10,6 +10,18 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * A collection of \GV\Field objects.
  */
 class Field_Collection extends Collection {
+
+	/**
+	 * Returns all the objects in this collection as an an array. Here for docBlock purposes only.
+	 *
+	 * @since 2.0.13.1
+	 *
+	 * @return \GV\Field[]
+	 */
+	public function all() {
+		return parent::all();
+	}
+
 	/**
 	 * Add a \GV\Field to this collection.
 	 *

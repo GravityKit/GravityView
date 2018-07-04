@@ -4736,6 +4736,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertContains( 'gravityview-oembed gravityview-oembed-entry gravityview-oembed-entry-' . $entry->ID, $future_output );
 
+		$this->assertNotContains( 'You are not allowed', $future_output );
+
+		$args['url'] = add_query_arg( array( 'gravityview' => $post->ID, 'entry' => $entry['id'] ), site_url() );
+
+		$future_output = call_user_func_array( $future, $args );
+
+		$this->assertNotContains( 'You are not allowed', $future_output );
+
 		wp_set_current_user( 0 );
 		gravityview()->request = new \GV\Frontend_Request();
 	}
@@ -4975,7 +4983,103 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertNotContains( 'not allowed to view', $future->callback( $args ) );
 
 		remove_all_filters( 'gravityview_custom_entry_slug' );
+
+
+
+		/**
+		 * Tests: Created By Current User filter
+		 */
+
+		$view->settings->update( array( 'show_only_approved' => false ) );
+		$request->returns['is_view'] = $view;
+
+		$subscriber = $this->factory->user->create( array(
+				'user_login' => md5( microtime() ),
+				'user_email' => md5( microtime() ) . '@gravityview.tests',
+				'role' => 'subscriber' )
+		);
+
+		$administrator = $this->factory->user->create( array(
+				'user_login' => md5( microtime() ),
+				'user_email' => md5( microtime() ) . '@gravityview.tests',
+				'role' => 'administrator' )
+		);
+
+		if ( function_exists( 'grant_super_admin' ) ) {
+			grant_super_admin( $administrator );
+		}
+
+		wp_set_current_user( $administrator );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'created_by' => $administrator,
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello'
+		) );
+
+		$request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		// Allowed to view since no filters have been added yet.
+		$this->assertNotContains( 'not allowed to view', $future->callback( $args ) );
+
+		add_filter( 'gravityview_search_criteria', array( $this, '_filter_created_by_current_user' ), 10, 3 );
+
+		// Should work; created_by matches current user.
+		$this->assertNotContains( 'not allowed to view', $future->callback( $args ) );
+
+		wp_set_current_user( $subscriber );
+
+		$this->assertContains( 'not allowed to view', $future->callback( $args ), 'Should NOT work; created_by is administrator and current user is subscriber' );
+
+		wp_set_current_user( 0 );
+
+		$this->assertContains( 'not allowed to view', $future->callback( $args ), 'Should NOT work; created_by is administrator and no user is set' );
+
+		wp_set_current_user( $administrator );
+
+		$this->assertNotContains( 'not allowed to view', $future->callback( $args ), 'Should work; created_by and logged-in user are administrator' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'created_by' => $subscriber,
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello'
+		) );
+
+		$request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		// Should NOT work; created_by is subscriber and filter is set to administrator
+		$this->assertContains( 'not allowed to view', $future->callback( $args ) );
+
+		wp_set_current_user( 0 );
+
+		// Should NOT work; created_by is subscriber and filter is set to administrator
+		$this->assertContains( 'not allowed to view', $future->callback( $args ) );
+
+		wp_set_current_user( $subscriber );
+
+		// Should NOT work; created_by is subscriber and filter is set to administrator
+		$this->assertNotContains( 'not allowed to view', $future->callback( $args ) );
+
+		remove_filter( 'gravityview_search_criteria', array( $this, '_filter_created_by_current_user' ), 10 );
 	}
+
+	public function _filter_created_by_current_user( $criteria ) {
+
+	    $user = wp_get_current_user();
+
+	    $criteria['search_criteria']['field_filters'] = array(
+			'mode' => 'all',
+			array(
+				'key' => 'created_by',
+				'operator' => 'is',
+				'value' => $user->ID,
+			)
+		);
+
+		return $criteria;
+    }
 
 	public function test_protection_oembed() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
@@ -5384,7 +5488,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		global $post;
 
-		$post = $this->factory->view->create_and_get( array(
+		$post = $this->factory->view->create_and_get( $config = array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
 			'fields' => array(
@@ -5408,7 +5512,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'widgets' => array(
 				'header_top' => array(
 					wp_generate_password( 4, false ) => array(
-						'id' => $widget_id = wp_generate_password( 12, false ) . '-widget',
+						'id' => $widget_id = wp_generate_password( 4, false ) . '-widget',
 						'test' => 'foo',
 					),
 				),
@@ -5426,6 +5530,18 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$view = \GV\View::from_post( $post );
 
+		global $wp_filter;
+
+		$debug = array(
+			'View::$_gravityview_directory_widgets' => $view->_gravityview_directory_widgets,
+			'Widget_Collection::from_configuration' => \GV\Widget_Collection::from_configuration( $view->_gravityview_directory_widgets ),
+			'View::$widgets' => $view->widgets,
+			'filters' => array(
+				'gravityview/view/configuration/widgets' => \GV\Utils::get( $wp_filter, 'gravityview/view/configuration/widgets' ),
+				'gravityview/view/widgets' => \GV\Utils::get( $wp_filter, 'gravityview/view/widgets' ),
+			),
+		);
+		file_put_contents( '/tmp/test.log', var_export( $debug, true ) );
 
 		$renderer = new \GV\View_Renderer();
 

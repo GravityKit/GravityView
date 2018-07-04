@@ -21,9 +21,43 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.0.10 on June 6, 2018 =
+= 2.0.13.1 on June 26, 2018 =
+
+* Fixed: Custom Content fields not working with DIY Layout
+* Fixed: Error when displaying plugin updates on a single site of a Multisite installation
+
+= 2.0.13 on June 25, 2018 =
+
+* Fixed: When View is embedded in a page, the "Delete Entry" link redirects the user to the View URL instead of embedded page URL
+* Fixed: Custom Content fields not working with DIY Layout since 2.0.11
+* Fixed: Fatal error when migrating settings from (very) old versions of GravityView
+* Fixed: oEmbed not working when using "plain" URLs with numeric View ID slugs
+
+__Developer Notes__
+
+* Added: Code to expose Entry Notes globally, to fix conflict with DataTables (future DataTables update required)
+* Added: `data-viewid` attribute to the Search Bar form with the current View ID
+* Added: Current Post ID parameter to the `gravityview/edit-entry/publishing-action/after` action
+
+= 2.0.12 on June 12, 2018 =
+
+* Fixed: On the Plugins page, "Update now" not working for GravityView Premium Plugins, Views & Extensions
+* Fixed: Always show that plugin updates are available, even if a license is expired
+
+= 2.0.11 on June 12, 2018 =
 
 * Added: Search for fields by name when adding fields to your View configuration (it's really great!)
+* Fixed: GravityView license details not saving when the license was activated (only when the Update Settings button was clicked)
+* Fixed: Entry filtering for single entries
+* Fixed: Per-user language setting not being used in WordPress 4.7 or newer
+
+__Developer Notes__
+
+* Added: `\GV\View::get_joins()` method to fetch array of `\GV\Joins` connected with a View
+* Added: `\GV\View::get_joined_forms()` method to get array of `\GV\GF_Forms` connected with a View
+
+= 2.0.10 on June 6, 2018 =
+
 * Fixed: Password-protected Views were showing "You are not allowed to view this content" instead of the password form
 * Fixed: When Map View is embedded, Search Bar pointed to View URL, not page URL
 

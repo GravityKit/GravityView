@@ -861,6 +861,7 @@ class GravityView_Admin_Views {
 		$available_items = array();
 
 		$view = \GV\View::from_post( $post );
+		$form_id = null;
 
 		// if saved values, get available fields to label everyone
 		if( !empty( $values ) && ( !empty( $post->ID ) || !empty( $_POST['template_id'] ) ) ) {
@@ -868,19 +869,17 @@ class GravityView_Admin_Views {
 			if( !empty( $_POST['template_id'] ) ) {
 				$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
 			} else {
-				$form = gravityview_get_form_id( $post->ID );
+				$form_id = $form = gravityview_get_form_id( $post->ID );
 			}
 
-			if( 'field' === $type ) {
+			if ( 'field' === $type ) {
+				$available_items[ $form ] = $this->get_available_fields( $form, $zone );
+
 				$joined_forms = gravityview_get_joined_forms( $post->ID );
 
-				$available_items[$form] = $this->get_available_fields( $form, $zone );
-
-				if($joined_forms) {
-					foreach ( $joined_forms as $form ) {
-						$available_items[ $form->ID ] = $this->get_available_fields( $form->ID, $zone );
-					}
-				}
+                foreach ( $joined_forms as $form ) {
+                    $available_items[ $form->ID ] = $this->get_available_fields( $form->ID, $zone );
+                }
 			} else {
 				$available_items[ $form ] = $this->get_registered_widgets();
 			}
@@ -899,22 +898,22 @@ class GravityView_Admin_Views {
 
 								<?php // render saved fields
 
-								if( !empty( $values[ $zone .'_'. $area['areaid'] ] ) ) {
+								if( ! empty( $values[ $zone .'_'. $area['areaid'] ] ) ) {
 
 									foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) {
 
 										// Maybe has a form ID
-										$form_id = empty( $field['form_id'] ) ? null : $field['form_id'];
+										$form_id = empty( $field['form_id'] ) ? $form_id : $field['form_id'];
 
 										$input_type = NULL;
 
-										if ($form_id) {
+										if ( $form_id ) {
 											$original_item = isset( $available_items[ $form_id ] [ $field['id'] ] ) ? $available_items[ $form_id ] [ $field['id'] ] : false ;
                                         } else {
 											$original_item = isset( $available_items[ $field['id'] ] ) ? $available_items[ $field['id'] ] : false ;
                                         }
 
-										if( !$original_item ) {
+										if ( !$original_item ) {
 											gravityview()->log->error( 'An item was not available when rendering the output; maybe it was added by a plugin that is now de-activated.', array(' data' => array('available_items' => $available_items, 'field' => $field ) ) );
 
 											$original_item = $field;
@@ -932,7 +931,7 @@ class GravityView_Admin_Views {
 										);
 
 										// Merge the values with the current item to pass things like widget descriptions and original field names
-										if( $original_item ) {
+										if ( $original_item ) {
 											$item = wp_parse_args( $item, $original_item );
 										}
 
@@ -996,7 +995,7 @@ class GravityView_Admin_Views {
 	/**
      * Renders "Add Field" tooltips
      *
-     * @since 2.1
+     * @since 2.0.11
      *
 	 * @param string $context "directory", "single", or "edit"
      *

@@ -345,6 +345,13 @@ class View implements \ArrayAccess {
 				}
 			}
 
+			$error = \GVCommon::check_entry_display( $entry->as_entry() );
+
+			if( is_wp_error( $error ) ) {
+				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing: {message}', array( 'entry_id' => $entry->ID, 'message' => $error->get_error_message() ) );
+				return __( 'You are not allowed to view this content.', 'gravityview' );
+			}
+
 			$renderer = new Entry_Renderer();
 			return $renderer->render( $entry, $view, $request );
 
@@ -362,21 +369,23 @@ class View implements \ArrayAccess {
 	/**
 	 * Get joins associated with a view
 	 *
-	 * @param \WP_Post $post
+	 * @param \WP_Post $post GravityView CPT to get joins for
 	 *
 	 * @api
-	 * @since 2.0
+	 * @since 2.0.11
+	 *
 	 * @return \GV\Join[] Array of \GV\Join instances
 	 */
 	public static function get_joins( $post ) {
 		$joins = array();
 
 		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
+			gravityview()->log->error( 'Cannot get joined forms; joins feature not supported.' );
 			return $joins;
 		}
 
-		if ( ! $post || get_post_type( $post ) != 'gravityview' ) {
-			gravityview()->log->error( 'Only gravityview post types can be \GV\View instances.' );
+		if ( ! $post || 'gravityview' !== get_post_type( $post ) ) {
+			gravityview()->log->error( 'Only "gravityview" post types can be \GV\View instances.' );
 			return $joins;
 		}
 
@@ -408,16 +417,28 @@ class View implements \ArrayAccess {
 	/**
 	 * Get joined forms associated with a view
 	 *
-	 * @param $post_id
+	 * @since 2.0.11
 	 *
 	 * @api
 	 * @since 2.0
+	 * @param int $post_id ID of the View
+	 *
 	 * @return \GV\GF_Form[] Array of \GV\GF_Form instances
 	 */
 	public static function get_joined_forms( $post_id ) {
 		$forms = array();
 
+		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
+			gravityview()->log->error( 'Cannot get joined forms; joins feature not supported.' );
+			return $forms;
+		}
+
 		if ( ! $post_id || ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
+			return $forms;
+		}
+
+		if ( empty( $post_id ) ) {
+			gravityview()->log->error( 'Cannot get joined forms; $post_id was empty' );
 			return $forms;
 		}
 
@@ -450,7 +471,8 @@ class View implements \ArrayAccess {
 	 * @return \GV\View|null An instance around this \WP_Post if valid, null otherwise.
 	 */
 	public static function from_post( $post ) {
-		if ( ! $post || get_post_type( $post ) != 'gravityview' ) {
+
+		if ( ! $post || 'gravityview' !== get_post_type( $post ) ) {
 			gravityview()->log->error( 'Only gravityview post types can be \GV\View instances.' );
 			return null;
 		}

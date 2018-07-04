@@ -94,7 +94,7 @@ class GravityView_Admin {
 	public static function connected_form_warning( $form_id = 0 ) {
         global $pagenow;
 
-		if ( ! is_int( $form_id ) || $pagenow === 'post-new.php' ) {
+		if ( empty( $form_id ) || $pagenow === 'post-new.php' ) {
 			return;
 		}
 

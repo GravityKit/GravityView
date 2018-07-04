@@ -256,8 +256,14 @@ abstract class Extension {
 		// Set filter for plugin's languages directory
 		$lang_dir = dirname( plugin_basename( $path ) ) . '/languages/';
 
+		$locale = get_locale();
+
+		if ( function_exists('get_user_locale') && is_admin() ) {
+			$locale = get_user_locale();
+		}
+
 		// Traditional WordPress plugin locale filter
-		$locale = apply_filters( 'plugin_locale',  get_locale(), $this->_text_domain );
+		$locale = apply_filters( 'plugin_locale',  $locale, $this->_text_domain );
 
 		$mofile = sprintf( '%1$s-%2$s.mo', $this->_text_domain, $locale );
 
@@ -283,8 +289,9 @@ abstract class Extension {
 	 * @return void
 	 */
 	public function settings() {
+
 		// If doing ajax, get outta here
-		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) )  {
+		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX && 'update-plugin' !== Utils::_POST('action') ) )  {
 			return;
 		}
 
@@ -292,11 +299,6 @@ abstract class Extension {
 
 		if ( ! class_exists( '\GV\EDD_SL_Plugin_Updater' ) ) {
 			require_once gravityview()->plugin->dir( 'future/lib/EDD_SL_Plugin_Updater.php' );
-		}
-
-		// Don't update if invalid license.
-		if ( false === $license || empty( $license['status'] ) || strtolower( $license['status'] ) !== 'valid' ) {
-			return;
 		}
 
 		new EDD_SL_Plugin_Updater(

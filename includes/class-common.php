@@ -705,19 +705,17 @@ class GVCommon {
 	 * @uses GFFormsModel::matches_operation
 	 * @since 1.7.5
 	 *
-	 * @param string $val1 Left side of comparison
-	 * @param string $val2 Right side of comparison
+	 * @param mixed $val1 Left side of comparison
+	 * @param mixed $val2 Right side of comparison
 	 * @param string $operation Type of comparison
 	 *
 	 * @return bool True: matches, false: not matches
 	 */
 	public static function matches_operation( $val1, $val2, $operation ) {
 
-		$json_function = function_exists('wp_json_encode') ? 'wp_json_encode' : 'json_encode';
-
 		// Only process strings
-		$val1 = ! is_string( $val1 ) ? $json_function( $val1 ) : $val1;
-		$val2 = ! is_string( $val2 ) ? $json_function( $val2 ) : $val2;
+		$val1 = ! is_string( $val1 ) ? wp_json_encode( $val1 ) : $val1;
+		$val2 = ! is_string( $val2 ) ? wp_json_encode( $val2 ) : $val2;
 
 		$value = false;
 
@@ -772,8 +770,8 @@ class GVCommon {
 				if( ! empty( $json_val_1 ) || ! empty( $json_val_2 ) ) {
 
 					$json_in = false;
-					$json_val_1 = $json_val_1 ? $json_val_1 : array( $val1 );
-					$json_val_2 = $json_val_2 ? $json_val_2 : array( $val2 );
+					$json_val_1 = $json_val_1 ? (array) $json_val_1 : array( $val1 );
+					$json_val_2 = $json_val_2 ? (array) $json_val_2 : array( $val2 );
 
 					// For JSON, we want to compare as "in" or "not in" rather than "contains"
 					foreach ( $json_val_1 as $item_1 ) {
@@ -870,6 +868,8 @@ class GVCommon {
 		$filters = $search_criteria['field_filters'];
 
 		$mode = array_key_exists( 'mode', $filters ) ? strtolower( $filters['mode'] ) : 'all';
+
+		$mode = $mode ? : 'all'; // If mode is an empty string, assume it's 'all'
 
 		// Prevent the mode from being processed below
 		unset( $filters['mode'] );

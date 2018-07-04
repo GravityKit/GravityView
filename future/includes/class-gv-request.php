@@ -84,7 +84,7 @@ abstract class Request {
 	}
 
 	/**
-	 * Is this an edit entry request?
+	 * Checks whether this is a single entry request
 	 *
 	 * @api
 	 * @since 2.0
@@ -93,32 +93,40 @@ abstract class Request {
 	 * @return \GV\GF_Entry|false The entry requested or false.
 	 */
 	public function is_entry() {
+		static $entries = array();
+
+		$entry = false;
+
 		if ( $id = get_query_var( Entry::get_endpoint_name() ) ) {
+
+			if ( isset( $entries[ $id ] ) ) {
+				return $entries[ $id ];
+			}
 
 			/**
 			 * A joined request.
 			 */
 			if ( $joins = $this->is_view()->joins ) {
-				$entries = array();
+				$multientry = array();
 				foreach ( explode( ',', $id ) as $id ) {
-					$entries[] = GF_Entry::by_id( $id );
+					$multientry[] = GF_Entry::by_id( $id );
 				}
-				return Multi_Entry::from_entries( array_filter( $entries ) );
+				$entry = Multi_Entry::from_entries( array_filter( $multientry ) );
+			}  else {
+				/**
+				 * A regular one.
+				 */
+				$entry = GF_Entry::by_id( $id );
 			}
 
-			/**
-			 * A regular one.
-			 */
-			if ( $entry = GF_Entry::by_id( $id ) ) {
-				return $entry;
-			}
+			$entries[ $id ] = $entry;
 		}
 
-		return false;
+		return $entry;
 	}
 
 	/**
-	 * Check whether this an edit entry request.
+	 * Checks whether this an edit entry request.
 	 *
 	 * @api
 	 * @since 2.0
@@ -139,7 +147,7 @@ abstract class Request {
 	}
 
 	/**
-	 * Check whether this an entry search request.
+	 * Checks whether this an entry search request.
 	 *
 	 * @api
 	 * @since 2.0

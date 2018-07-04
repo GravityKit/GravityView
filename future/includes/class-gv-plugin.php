@@ -241,7 +241,14 @@ final class Plugin {
 			$loaded = load_theme_textdomain( 'gravityview', '/languages/' );
 		}
 		if ( ! $loaded ) {
-			$locale = apply_filters( 'plugin_locale', get_locale(), 'gravityview' );
+
+			$locale = get_locale();
+
+			if ( function_exists('get_user_locale') && is_admin() ) {
+				$locale = get_user_locale();
+			}
+
+			$locale = apply_filters( 'plugin_locale', $locale, 'gravityview' );
 			$mofile = $this->dir( 'languages' ) . '/gravityview-'. $locale .'.mo';
 			load_textdomain( 'gravityview', $mofile );
 		}

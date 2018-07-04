@@ -130,14 +130,27 @@ class oEmbed {
 			return null;
 		}
 
-		if ( ! $view_id = url_to_postid( $url ) ) {
-			$view = \GV\View::from_post( get_page_by_path( $matches['slug'], OBJECT, 'gravityview' ) );
-		} else {
+		$view = null;
+
+		if ( $view_id = url_to_postid( $url ) ) {
 			$view = \GV\View::by_id( $view_id );
 		}
 
+		// Maybe it failed to find a GravityView CPT
 		if ( ! $view ) {
-			gravityview()->log->error( 'Could not detect view from URL {url}', array( 'url' => $url ) );
+
+			// If the slug doesn't work, maybe using Plain permalinks and not the slug, only ID
+			if( is_numeric( $matches['slug'] ) ) {
+				$view = \GV\View::by_id( $matches['slug'] );
+			}
+
+			if( ! $view ) {
+				$view = \GV\View::from_post( get_page_by_path( $matches['slug'], OBJECT, 'gravityview' ) );
+			}
+		}
+
+		if ( ! $view ) {
+			gravityview()->log->error( 'Could not detect View from URL {url}', array( 'url' => $url, 'data' => $matches ) );
 			return null;
 		}
 

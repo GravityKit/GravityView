@@ -59,6 +59,7 @@ script:
 after_script:
   - if [[ $DO_COVERAGE = '1' ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
   - if [[ $DO_COVERAGE = '1' ]]; then php ocular.phar code-coverage:upload --format=php-clover /tmp/clover.xml; fi
+  - cat /tmp/test.log
 
 after_success:
   - if [[ $DO_COVERAGE = '1' ]]; then travis_retry php vendor/bin/coveralls -v --exclude-no-stmt; fi
