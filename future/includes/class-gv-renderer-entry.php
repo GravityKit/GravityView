@@ -43,12 +43,6 @@ class Entry_Renderer extends Renderer {
 		}
 
 
-		/** Entry does not belong to this view. */
-		if ( $view->form && $view->form->ID != $entry['form_id'] ) {
-			gravityview()->log->error( 'The requested entry does not belong to this View. Entry #{entry_id}, #View {view_id}', array( 'entry_id' => $entry->ID, 'view_id' => $view->ID ) );
-			return null;
-		}
-
 		/**
 		 * @action `gravityview_render_entry_{View ID}` Before rendering a single entry for a specific View ID
 		 * @since 1.17
