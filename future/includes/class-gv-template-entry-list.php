@@ -26,7 +26,8 @@ class Entry_List_Template extends Entry_Template {
 	 * @return string
 	 */
 	public function the_field( \GV\Field $field, $extras = null ) {
-		$form = $this->view->form;
+		$form = \GV\GF_Form::by_id( $field->form_id ) ? : $this->view->form;
+		$entry = $this->entry->is_multi() ? Utils::get( $this->entry, $field->form_id ) : $this->entry;
 
 		$renderer = new Field_Renderer();
 		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
@@ -38,8 +39,8 @@ class Entry_List_Template extends Entry_Template {
 		/**
 		 * @deprecated Here for back-compatibility.
 		 */
-		$label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form, $this->entry ), $field->as_configuration() );
-		$label = apply_filters( 'gravityview/template/field_label', $label, $field->as_configuration(), $form->form ? $form->form : null, $this->entry->as_entry() );
+		$label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form, $entry ), $field->as_configuration() );
+		$label = apply_filters( 'gravityview/template/field_label', $label, $field->as_configuration(), $form->form ? $form->form : null, $entry->as_entry() );
 
 		/**
 		 * @filter `gravityview/template/field/label` Override the field label.
