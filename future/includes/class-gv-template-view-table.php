@@ -238,7 +238,7 @@ class View_Table_Template extends View_Template {
 		$single_entry = $entry;
 
 		if ( $entry->is_multi() ) {
-			if ( ! $single_entry = Utils::get( $entry, $field->form_id ) ) {
+			if ( ! $single_entry = $entry->from_field( $field ) ) {
 				return;
 			}
 			$form = GF_Form::by_id( $field->form_id );

@@ -27,7 +27,7 @@ class Entry_List_Template extends Entry_Template {
 	 */
 	public function the_field( \GV\Field $field, $extras = null ) {
 		$form = \GV\GF_Form::by_id( $field->form_id ) ? : $this->view->form;
-		$entry = $this->entry->is_multi() ? Utils::get( $this->entry, $field->form_id ) : $this->entry;
+		$entry = $this->entry->from_field( $field );
 
 		$renderer = new Field_Renderer();
 		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();

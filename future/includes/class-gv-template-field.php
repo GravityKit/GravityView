@@ -250,11 +250,7 @@ abstract class Field_Template extends Template {
 	 * @return void
 	 */
 	public function render() {
-		if ( $this->entry->is_multi() ) {
-			$entry = Utils::get( $this->entry, $this->field->form_id );
-		} else {
-			$entry = $this->entry;
-		}
+		$entry = $this->entry->from_field( $this->field );
 
 		/** Retrieve the value. */
 		$display_value = $value = $this->field->get_value( $this->view, $this->source, $entry );

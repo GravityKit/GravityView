@@ -200,4 +200,19 @@ abstract class Entry {
 	public function is_multi() {
 		return $this instanceof Multi_Entry;
 	}
+
+	/**
+	 * If this is a Multi_Entry filter it by Field
+	 *
+	 * @param \GV\Field $field The field to filter by.
+	 * @param int A fallaback form_id if the field supplied is invaild.
+	 *
+	 * @return \GV\Entry|null A \GV\Entry or null if not found.
+	 */
+	public function from_field( $field, $fallback = 0 ) {
+		if ( ! $this->is_multi() ) {
+			return $this;
+		}
+		return Utils::get( $this, $field->form_id, $fallback );
+	}
 }
