@@ -35,7 +35,8 @@ __Developer Notes:__
 * Added: `gravityview/approve_entries/after_submission/default_status` filter to modify the default status of an entry as it is created.
 * Modified: No longer delete `is_approved` entry meta when updating entry status - leave the value to be `GravityView_Entry_Approval_Status::UNAPPROVED` (3)
 * Fixed: Allow for "in" and "not_in" comparisons when using `GravityView_GFFormsModel::is_value_match`
-* If "Search Mode" key is set, but there is no value, use "all"
+* Tweak: If "Search Mode" key is set, but there is no value, use "all"
+* Tweak: Reduced number of database queries when rendering a View
 
 = 2.0.13.1 on June 26, 2018 =
 
