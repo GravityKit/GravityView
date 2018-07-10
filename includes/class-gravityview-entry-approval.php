@@ -165,11 +165,32 @@ class GravityView_Entry_Approval {
 	 * Update the is_approved meta whenever the entry is submitted (and it contains a User Opt-in field)
 	 *
 	 * @since 1.16.6
+	 * @since 2.0.14 Set the default approval `is_approved` value upon submission
 	 *
 	 * @param $entry array Gravity Forms entry object
 	 * @param $form array Gravity Forms form object
 	 */
 	public function after_submission( $entry, $form ) {
+
+		$default_status = GravityView_Entry_Approval_Status::UNAPPROVED;
+
+		/**
+		 * @filter `gravityview/approve_entries/after_submission/default_status` Modify the default approval status for newly submitted entries
+		 * @since 2.0.14
+		 * @param int $default_status See GravityView_Entry_Approval_Status() for valid statuses.
+		 */
+		$filtered_status = apply_filters( 'gravityview/approve_entries/after_submission/default_status', $default_status );
+
+		if ( GravityView_Entry_Approval_Status::is_valid( $filtered_status ) ) {
+			$default_status = $filtered_status;
+		} else {
+			gravityview()->log->error( 'Invalid approval status returned by `gravityview/approve_entries/after_submission/default_status` filter: {status}', array( 'status' => $filtered_status ) );
+		}
+
+		// Set default
+		self::update_approved_meta( $entry['id'], $default_status, $entry['form_id'] );
+
+		// Then check for if there is an approval column, and use that value instead
 		$this->after_update_entry_update_approved_meta( $form , $entry['id'] );
 	}
 
@@ -474,12 +495,7 @@ class GravityView_Entry_Approval {
 		$status = GravityView_Entry_Approval_Status::maybe_convert_status( $status );
 
 		// update entry meta
-
-		if( GravityView_Entry_Approval_Status::is_unapproved( $status ) ) {
-			gform_delete_meta( $entry_id, self::meta_key );
-		} else {
-			gform_update_meta( $entry_id, self::meta_key, $status, $form_id );
-		}
+		gform_update_meta( $entry_id, self::meta_key, $status, $form_id );
 
 		/**
 		 * @action `gravityview/approve_entries/updated` Triggered when an entry approval is updated

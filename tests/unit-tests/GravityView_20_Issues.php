@@ -260,4 +260,50 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		$this->assertContains( 'no-no-no', $content );
 		$this->assertNotContains( 'yes-yes-yes', $content );
 	}
+
+	/**
+	 * @link https://github.com/gravityview/GravityView/issues/1117
+	 */
+	public function test_merge_tags_in_labels() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'custom_label' => 'Textarea with entry {E:16}',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'custom_label' => 'Entry {date_created:timestamp} ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'custom_label' => 'Label: {date_created:timestamp} Entry: {E:16}',
+						'content' => 'Content: {date_created:timestamp} Entry: {E:16}',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'date_created' => '1970-05-23 21:21:18',
+			'status' => 'active',
+			'16' => sprintf( 'Just some entry %s', wp_generate_password( 12 ) ),
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$renderer = new \GV\Entry_Renderer();
+
+		$output = $renderer->render( $entry, $view );
+
+		$this->assertContains( 'Content: 12345678 Entry: Just some entry', $output );
+		$this->assertContains( 'Textarea with entry Just some entry', $output );
+		$this->assertContains( 'Label: 12345678 Entry: Just some entry', $output );
+	}
 }

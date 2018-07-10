@@ -38,7 +38,7 @@ class Entry_List_Template extends Entry_Template {
 		/**
 		 * @deprecated Here for back-compatibility.
 		 */
-		$label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form ), $field->as_configuration() );
+		$label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form, $this->entry ), $field->as_configuration() );
 		$label = apply_filters( 'gravityview/template/field_label', $label, $field->as_configuration(), $form->form ? $form->form : null, $this->entry->as_entry() );
 
 		/**

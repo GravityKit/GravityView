@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.4
-Tested up to: 4.9.6
+Tested up to: 4.9.7
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -20,6 +20,23 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.0.14 on July 9, 2018 =
+
+* Added: Allow filtering entries by Unapproved status in Gravity Forms
+* Added: Reset entry approval status by holding down Option/Alt when clicking entry approval icon
+* Fixed: Merge Tags not working in field Custom Labels
+* Fixed: Enable sorting by approval status all the time, not just when a form has an Approval field
+* Fixed: When a View is saved without a connected form, don't show "no longer exists" message
+* Fixed: Inline Edit plugin not updating properly when GravityView is active
+
+__Developer Notes:__
+
+* Added: `gravityview/approve_entries/after_submission/default_status` filter to modify the default status of an entry as it is created.
+* Modified: No longer delete `is_approved` entry meta when updating entry status - leave the value to be `GravityView_Entry_Approval_Status::UNAPPROVED` (3)
+* Fixed: Allow for "in" and "not_in" comparisons when using `GravityView_GFFormsModel::is_value_match`
+* Tweak: If "Search Mode" key is set, but there is no value, use "all"
+* Tweak: Reduced number of database queries when rendering a View
 
 = 2.0.13.1 on June 26, 2018 =
 

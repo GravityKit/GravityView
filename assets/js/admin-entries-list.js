@@ -151,20 +151,27 @@
 	self.toggleApproved = function ( e ) {
 		e.preventDefault();
 
-		var entryID = $( this ).parent().parent().find( 'th input[type="checkbox"]' ).val();
+		var entryID = $( this ).parent().parent().find( 'th input[type="checkbox"]' ).val(),
+			title,
+			status;
 
-		$( this ).addClass( 'loading' );
-
-		if ( $( this ).hasClass( 'approved' ) ) {
-			$( this ).prop( 'title', gvGlobals.approve_title );
-			self.updateApproved( entryID, gvGlobals.status_disapproved, $( this ) );
+		// When holding down option/control, unapprove the entry
+		if ( e.altKey ) {
+			status = gvGlobals.status_unapproved;
+			title  = gvGlobals.unapprove_title;
+		} else if ( $( this ).hasClass( 'approved' ) ) {
+			title = gvGlobals.approve_title;
+			status = gvGlobals.status_disapproved;
 		} else {
-			$( this ).prop( 'title', gvGlobals.disapprove_title );
-			self.updateApproved( entryID, gvGlobals.status_approved, $( this ) );
+			title = gvGlobals.disapprove_title;
+			status = gvGlobals.status_approved;
 		}
 
-		return false;
+		$( this ).addClass( 'loading' ).prop( 'title', title );
 
+		self.updateApproved( entryID, status, $( this ) );
+
+		return false;
 	};
 
 	/**
@@ -231,16 +238,31 @@
 
 				if( response.success ) {
 
-					var increment = $target.hasClass('unapproved') ? 0 : -1;
+					var approved_increment = $target.hasClass( 'approved' ) ? -1 : 0,
+						disapproved_increment = $target.hasClass( 'disapproved' ) ? -1 : 0,
+						unapproved_increment = $target.hasClass( 'unapproved' ) ? -1 : 0;
 
-					// If there was a successful AJAX request, toggle the checkbox
-					$target.removeClass('unapproved').toggleClass( 'approved', (
-						approved === gvGlobals.status_approved
-					) );
+					$target.removeClass( 'approved unapproved disapproved' );
+
+					switch ( approved ) {
+						case gvGlobals.status_approved:
+							$target.addClass( 'approved' );
+							approved_increment++;
+							break;
+						case gvGlobals.status_disapproved:
+							$target.addClass( 'disapproved' );
+							disapproved_increment++;
+							break;
+						case gvGlobals.status_unapproved:
+							$target.addClass( 'unapproved' );
+							unapproved_increment++;
+							break;
+					}
 
 					// Update the entry filter count
-					window.UpdateCount( "gv_approved_count", ( gvGlobals.status_approved.toString() === approved.toString() ) ? 1 : increment );
-					window.UpdateCount( "gv_disapproved_count", ( gvGlobals.status_disapproved.toString() === approved.toString() ) ? 1 : increment );
+					window.UpdateCount( "gv_approved_count", approved_increment );
+					window.UpdateCount( "gv_disapproved_count", disapproved_increment );
+					window.UpdateCount( "gv_unapproved_count", unapproved_increment );
 					
 				} else {
 					alert( response.data[0].message );

@@ -34,6 +34,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 
 		$this->assertTrue( GVCommon::matches_operation( array('json', 'encoded' ), '["json","encoded"]', 'equals' ) );
 
+		$this->assertTrue( GVCommon::matches_operation( 12, '12', 'is' ), 'String numbers should equal ints' );
 		$this->assertTrue( GVCommon::matches_operation( '12', '12', 'greater_than_or_is' ) );
 		$this->assertTrue( GVCommon::matches_operation( '15', '12', 'greater_than_or_is' ) );
 		$this->assertFalse( GVCommon::matches_operation( '10', '12', 'greater_than_or_is' ) );
@@ -90,6 +91,13 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$this->assertFalse( GVCommon::matches_operation( '["BMW", "Audi"]', '["BMW not exact match", "Audi not exact match"]', 'in' ), 'Should not match, even though strings match' );
 		$this->assertTrue( GVCommon::matches_operation( '["BMW", "Audi"]', '["Volkswagen"]', 'not_in' ) );
 		$this->assertTrue( GVCommon::matches_operation( '["BMW", "Audi"]', '["BM"]', 'not_in' ) );
+
+		$this->assertTrue( GVCommon::matches_operation( array( '1' ), array( '1' ),  'in' ) );
+		$this->assertTrue( GVCommon::matches_operation( array( '1', '2', '3', '4' ), array( 4 ),  'in' ) ); // Number strings
+		$this->assertTrue( GVCommon::matches_operation( array( '1.12345', '2', '3', '4' ), array( 1.12345 ),  'in' ) ); // Number strings
+		$this->assertTrue( GVCommon::matches_operation( array( '1.12345', '2', '3', '4' ), 1.12345,  'in' ), 'Should allow for one to be an array and one not array' );
+		$this->assertTrue( GVCommon::matches_operation( '1.12345', 1.12345,  'in' ), 'Should allow for both to not be an array' );
+		$this->assertTrue( GVCommon::matches_operation( array(), array( '1' ),  'not_in' ) );
 	}
 
 	/**

@@ -67,7 +67,7 @@ class Entry_Table_Template extends Entry_Template {
 			/**
 			 * @deprecated Here for back-compatibility.
 			 */
-			$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form ), $field->as_configuration() );
+			$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form, $this->entry ), $field->as_configuration() );
 			$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, $this->entry->as_entry() );
 
 			/**

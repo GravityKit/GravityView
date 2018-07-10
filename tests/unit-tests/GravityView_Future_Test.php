@@ -5488,7 +5488,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		global $post;
 
-		$post = $this->factory->view->create_and_get( array(
+		$post = $this->factory->view->create_and_get( $config = array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
 			'fields' => array(
@@ -5512,7 +5512,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'widgets' => array(
 				'header_top' => array(
 					wp_generate_password( 4, false ) => array(
-						'id' => $widget_id = wp_generate_password( 12, false ) . '-widget',
+						'id' => $widget_id = wp_generate_password( 4, false ) . '-widget',
 						'test' => 'foo',
 					),
 				),
@@ -5530,6 +5530,18 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$view = \GV\View::from_post( $post );
 
+		global $wp_filter;
+
+		$debug = array(
+			'View::$_gravityview_directory_widgets' => $view->_gravityview_directory_widgets,
+			'Widget_Collection::from_configuration' => \GV\Widget_Collection::from_configuration( $view->_gravityview_directory_widgets ),
+			'View::$widgets' => $view->widgets,
+			'filters' => array(
+				'gravityview/view/configuration/widgets' => \GV\Utils::get( $wp_filter, 'gravityview/view/configuration/widgets' ),
+				'gravityview/view/widgets' => \GV\Utils::get( $wp_filter, 'gravityview/view/widgets' ),
+			),
+		);
+		file_put_contents( '/tmp/test.log', var_export( $debug, true ) );
 
 		$renderer = new \GV\View_Renderer();
 
