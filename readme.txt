@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: Inline Edit plugin not updating properly when GravityView is active
 = 2.0.13.1 on June 26, 2018 =
 
 * Fixed: Custom Content fields not working with DIY Layout
