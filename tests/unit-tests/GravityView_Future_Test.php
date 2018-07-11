@@ -5541,9 +5541,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 					$debug['registered_widgets'] = $registered_widgets;
 
-					$debug['class'] = $class = Utils::get( $widget, 'class' );
+					$debug['class'] = $class = Utils::get( $_configuration, 'class' );
 					$debug['class_exists'] = class_exists( $class );
-					$debug['object'] = new $class( Utils::get( $widget, 'label' ), $id );
+					$debug['object'] = new $class( Utils::get( $_configuration, 'label' ), $id );
 
 					file_put_contents( '/tmp/test.log', var_export( $debug, true ) );
 					break;
