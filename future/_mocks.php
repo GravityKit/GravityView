@@ -591,7 +591,7 @@ final class Legacy_Context {
 				case 'entry':
 					self::thaw( array(
 						'\GravityView_frontend::single_entry' => $value->ID,
-						'\GravityView_frontend::entry' => $value->ID,
+						'\GravityView_frontend::entry' => $value->as_entry(),
 						'\GravityView_View::_current_entry' => $value->as_entry(),
 					) );
 					break;
