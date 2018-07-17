@@ -50,7 +50,7 @@ class License_Handler {
 	private function __construct( $settings ) {
 
 		$this->settings = $settings;
-		
+
 		if ( ! $this->settings instanceof Addon_Settings ) {
 			$this->settings = gravityview()->plugin->settings;
 		}
@@ -187,6 +187,10 @@ class License_Handler {
 			$update_license = Utils::get( $data, 'update' ) || 'gravityview_license' === Utils::_POST('action');
 
 			$is_check_action_button = ( 'check_license' === Utils::get( $data, 'edd_action' ) && defined( 'DOING_AJAX' ) && DOING_AJAX );
+
+			if ('deactivate_license' === Utils::get( $data, 'edd_action') ) {
+				apply_filters('gravityview/admin_installer/delete_extensions_data', true);
+			}
 
 			if ( $is_check_action_button ) {
 				delete_transient( self::status_transient_key );

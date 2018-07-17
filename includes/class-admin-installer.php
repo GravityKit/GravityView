@@ -17,12 +17,15 @@ class GravityView_Admin_Installer {
 	const EDD_API_KEY = 'e4c7321c4dcf342c9cb078e27bf4ba97';
 	const EDD_API_TOKEN = 'e031fd350b03bc223b10f04d8b5dde42';
 	const EXTENSIONS_DATA_EXPIRY = 86400;
+	const EXTENSIONS_DATA_TRANSIENT = 'gv_extensions_data';
 
 	public $minimum_capability = 'install_plugins';
+	private $_extensions_data_updated = false;
 
 	public function __construct() {
 		$this->add_extensions_data_filters();
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ), 200 );
+		add_filter( 'gravityview/admin_installer/delete_extensions_data', array( $this, 'delete_extensions_data' ) );
 	}
 
 	public function add_extensions_data_filters() {
@@ -61,7 +64,7 @@ class GravityView_Admin_Installer {
 	}
 
 	public function get_extensions_data() {
-		$extensions_data = get_transient( 'gv_extensions_data' );
+		$extensions_data = get_transient( self::EXTENSIONS_DATA_TRANSIENT );
 		if ( $extensions_data ) {
 			return $extensions_data;
 		}
@@ -86,13 +89,28 @@ class GravityView_Admin_Installer {
 			return false;
 		}
 
-		set_transient( 'gv_extensions_data', $extensions_data['products'], self::EXTENSIONS_DATA_EXPIRY );
+		$this->_extensions_data_updated = true;
 
 		return $extensions_data['products'];
 	}
 
+	public function set_extensions_data( $data = false ) {
+		if ( ! $data ) {
+			$data = $this->get_extensions_data();
+		}
+
+		return set_transient( self::EXTENSIONS_DATA_TRANSIENT, $data, self::EXTENSIONS_DATA_EXPIRY );
+	}
+
+	public function delete_extensions_data() {
+		return delete_transient( self::EXTENSIONS_DATA_TRANSIENT );
+	}
+
 	public function display_extensions_and_plugins_screen() {
 		$extensions_data = $this->get_extensions_data();
+		if ( $this->_extensions_data_updated ) {
+			$this->set_extensions_data( $extensions_data );
+		}
 
 		if ( ! $extensions_data ) {
 			?>
