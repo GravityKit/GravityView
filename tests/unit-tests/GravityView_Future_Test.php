@@ -5644,18 +5644,27 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$view = \GV\View::from_post( $post );
 
-		global $wp_filter;
+		if ( ! \GV\Widget_Collection::from_configuration( $view->_gravityview_directory_widgets )->count() ) {
+			file_put_contents( '/tmp/test.log', var_export( $view->_gravityview_directory_widgets, true ) );
+			foreach ( $_widgets as $uid => $_configuration ) {
+				if ( ! $widget = Widget::from_configuration( $_configuration ) ) {
+					$debug = array(
+						'_configuration' => $_configuration,
+					);
 
-		$debug = array(
-			'View::$_gravityview_directory_widgets' => $view->_gravityview_directory_widgets,
-			'Widget_Collection::from_configuration' => \GV\Widget_Collection::from_configuration( $view->_gravityview_directory_widgets ),
-			'View::$widgets' => $view->widgets,
-			'filters' => array(
-				'gravityview/view/configuration/widgets' => \GV\Utils::get( $wp_filter, 'gravityview/view/configuration/widgets' ),
-				'gravityview/view/widgets' => \GV\Utils::get( $wp_filter, 'gravityview/view/widgets' ),
-			),
-		);
-		file_put_contents( '/tmp/test.log', var_export( $debug, true ) );
+					$registered_widgets = \GV\Widget::registered();
+
+					$debug['registered_widgets'] = $registered_widgets;
+
+					$debug['class'] = $class = Utils::get( $_configuration, 'class' );
+					$debug['class_exists'] = class_exists( $class );
+					$debug['object'] = new $class( Utils::get( $_configuration, 'label' ), $id );
+
+					file_put_contents( '/tmp/test.log', var_export( $debug, true ) );
+					break;
+				}
+			}
+		}
 
 		$renderer = new \GV\View_Renderer();
 
