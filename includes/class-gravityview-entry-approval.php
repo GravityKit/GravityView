@@ -93,22 +93,22 @@ class GravityView_Entry_Approval {
 	 */
 	public function ajax_update_approved() {
 		
-		$form_id = intval( rgpost('form_id') );
+		$form_id = intval( \GV\Utils::_POST( 'form_id' ) );
 
 		// We always want requests from the admin to allow entry IDs, but not from the frontend
 		// There's another nonce sent when approving entries in the admin that we check
-		$force_entry_ids = rgpost( 'admin_nonce' ) && wp_verify_nonce( rgpost( 'admin_nonce' ), 'gravityview_admin_entry_approval' );
+		$force_entry_ids = \GV\Utils::_POST( 'admin_nonce' ) && wp_verify_nonce( \GV\Utils::_POST( 'admin_nonce' ), 'gravityview_admin_entry_approval' );
 		
-		$entry_id = GVCommon::get_entry_id( rgpost('entry_slug'), $force_entry_ids );
+		$entry_id = GVCommon::get_entry_id( \GV\Utils::_POST( 'entry_slug' ), $force_entry_ids );
 
-		$approval_status = rgpost('approved');
+		$approval_status = \GV\Utils::_POST( 'approved' );
 
-		$nonce = rgpost('nonce');
+		$nonce = \GV\Utils::_POST( 'nonce' );
 
 		// Valid status
 		if( ! GravityView_Entry_Approval_Status::is_valid( $approval_status ) ) {
 
-			do_action( 'gravityview_log_error', __METHOD__ . ': Invalid approval status', $_POST );
+			gravityview()->log->error( 'Invalid approval status', array( 'data' => $_POST ) );
 
 			$result = new WP_Error( 'invalid_status', __( 'The request was invalid. Refresh the page and try again.', 'gravityview' ) );
 
@@ -117,7 +117,7 @@ class GravityView_Entry_Approval {
 		// Valid values
 		elseif ( empty( $entry_id ) || empty( $form_id ) ) {
 
-			do_action( 'gravityview_log_error', __METHOD__ . ' entry_id or form_id are empty.', $_POST );
+			gravityview()->log->error( 'entry_id or form_id are empty.', array( 'data' => $_POST ) );
 
 			$result = new WP_Error( 'empty_details', __( 'The request was invalid. Refresh the page and try again.', 'gravityview' ) );
 
@@ -126,7 +126,7 @@ class GravityView_Entry_Approval {
 		// Valid nonce
 		else if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'gravityview_entry_approval' ) ) {
 
-			do_action( 'gravityview_log_error', __METHOD__ . ' Security check failed.', $_POST );
+			gravityview()->log->error( 'Security check failed.', array( 'data' => $_POST ) );
 
 			$result = new WP_Error( 'invalid_nonce', __( 'The request was invalid. Refresh the page and try again.', 'gravityview' ) );
 
@@ -135,7 +135,7 @@ class GravityView_Entry_Approval {
 		// Has capability
 		elseif ( ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry_id ) ) {
 
-			do_action( 'gravityview_log_error', __METHOD__ . ' User does not have the `gravityview_moderate_entries` capability.' );
+			gravityview()->log->error( 'User does not have the `gravityview_moderate_entries` capability.' );
 
 			$result = new WP_Error( 'Missing Cap: gravityview_moderate_entries', __( 'You do not have permission to edit this entry.', 'gravityview') );
 
@@ -149,7 +149,7 @@ class GravityView_Entry_Approval {
 		}
 
 		if ( is_wp_error( $result ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' Error updating approval: ' . $result->get_error_message() );
+			gravityview()->log->error( 'Error updating approval: {error}', array( 'error' =>  $result->get_error_message() ) );
 
 			wp_send_json_error( $result );
 		}
@@ -165,11 +165,32 @@ class GravityView_Entry_Approval {
 	 * Update the is_approved meta whenever the entry is submitted (and it contains a User Opt-in field)
 	 *
 	 * @since 1.16.6
+	 * @since 2.0.14 Set the default approval `is_approved` value upon submission
 	 *
 	 * @param $entry array Gravity Forms entry object
 	 * @param $form array Gravity Forms form object
 	 */
 	public function after_submission( $entry, $form ) {
+
+		$default_status = GravityView_Entry_Approval_Status::UNAPPROVED;
+
+		/**
+		 * @filter `gravityview/approve_entries/after_submission/default_status` Modify the default approval status for newly submitted entries
+		 * @since 2.0.14
+		 * @param int $default_status See GravityView_Entry_Approval_Status() for valid statuses.
+		 */
+		$filtered_status = apply_filters( 'gravityview/approve_entries/after_submission/default_status', $default_status );
+
+		if ( GravityView_Entry_Approval_Status::is_valid( $filtered_status ) ) {
+			$default_status = $filtered_status;
+		} else {
+			gravityview()->log->error( 'Invalid approval status returned by `gravityview/approve_entries/after_submission/default_status` filter: {status}', array( 'status' => $filtered_status ) );
+		}
+
+		// Set default
+		self::update_approved_meta( $entry['id'], $default_status, $entry['form_id'] );
+
+		// Then check for if there is an approval column, and use that value instead
 		$this->after_update_entry_update_approved_meta( $form , $entry['id'] );
 	}
 
@@ -196,7 +217,7 @@ class GravityView_Entry_Approval {
 		$entry = GFAPI::get_entry( $entry_id );
 
 		// If the checkbox is blank, it's disapproved, regardless of the label
-		if ( '' === rgar( $entry, $approved_column ) ) {
+		if ( '' === \GV\Utils::get( $entry, $approved_column ) ) {
 			$value = GravityView_Entry_Approval_Status::DISAPPROVED;
 		} else {
 			// If the checkbox is not blank, it's approved
@@ -222,18 +243,18 @@ class GravityView_Entry_Approval {
 	public static function update_bulk( $entries = array(), $approved, $form_id ) {
 
 		if( empty($entries) || ( $entries !== true && !is_array($entries) ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' Entries were empty or malformed.', $entries );
+			gravityview()->log->error( 'Entries were empty or malformed.', array( 'data' => $entries ) );
 			return NULL;
 		}
 
 		if( ! GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' User does not have the `gravityview_moderate_entries` capability.' );
+			gravityview()->log->error( 'User does not have the `gravityview_moderate_entries` capability.' );
 			return NULL;
 		}
 
 
 		if ( ! GravityView_Entry_Approval_Status::is_valid( $approved ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' Invalid approval status', $approved );
+			gravityview()->log->error( 'Invalid approval status', array( 'data' => $approved ) );
 			return NULL;
 		}
 
@@ -269,12 +290,12 @@ class GravityView_Entry_Approval {
 	public static function update_approved( $entry_id = 0, $approved = 2, $form_id = 0, $approvedcolumn = 0 ) {
 
 		if( !class_exists( 'GFAPI' ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . 'GFAPI does not exist' );
+			gravityview()->log->error( 'GFAPI does not exist' );
 			return false;
 		}
 
 		if( ! GravityView_Entry_Approval_Status::is_valid( $approved ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ': Not a valid approval value.' );
+			gravityview()->log->error( 'Not a valid approval value.' );
 			return false;
 		}
 
@@ -283,7 +304,7 @@ class GravityView_Entry_Approval {
 		$entry = GFAPI::get_entry( $entry_id );
 
 		if ( is_wp_error( $entry ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ': Entry does not exist' );
+			gravityview()->log->error( 'Entry does not exist' );
 			return false;
 		}
 
@@ -291,7 +312,7 @@ class GravityView_Entry_Approval {
 		$result = self::update_approved_column( $entry_id, $approved, $form_id, $approvedcolumn );
 
 		if( is_wp_error( $result ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . sprintf( ' - Entry approval not updated: %s', $result->get_error_message() ) );
+			gravityview()->log->error( 'Entry approval not updated: {error}', array( 'error' => $result->get_error_message() ) );
 			return false;
 		}
 
@@ -462,45 +483,39 @@ class GravityView_Entry_Approval {
 	private static function update_approved_meta( $entry_id, $status, $form_id = 0 ) {
 
 		if ( ! GravityView_Entry_Approval_Status::is_valid( $status ) ) {
-			do_action('gravityview_log_error', __METHOD__ . ': $is_approved not valid value', $status );
+			gravityview()->log->error( '$is_approved not valid value', array( 'data' => $status ) );
+			return;
+		}
+
+		if ( ! function_exists( 'gform_update_meta' ) ) {
+			gravityview()->log->error( '`gform_update_meta` does not exist.' );
 			return;
 		}
 
 		$status = GravityView_Entry_Approval_Status::maybe_convert_status( $status );
 
 		// update entry meta
-		if( function_exists('gform_update_meta') ) {
+		gform_update_meta( $entry_id, self::meta_key, $status, $form_id );
 
-			if( GravityView_Entry_Approval_Status::is_unapproved( $status ) ) {
-				gform_delete_meta( $entry_id, self::meta_key );
-			} else {
-				gform_update_meta( $entry_id, self::meta_key, $status, $form_id );
-			}
+		/**
+		 * @action `gravityview/approve_entries/updated` Triggered when an entry approval is updated
+		 * @since 1.7.6.1
+		 * @param  int $entry_id ID of the Gravity Forms entry
+		 * @param  string|int $status String whether entry is approved or not. See GravityView_Entry_Approval_Status for valid statuses.
+		 */
+		do_action( 'gravityview/approve_entries/updated', $entry_id, $status );
 
-			/**
-			 * @action `gravityview/approve_entries/updated` Triggered when an entry approval is updated
-			 * @since 1.7.6.1
-			 * @param  int $entry_id ID of the Gravity Forms entry
-			 * @param  string|int $status String whether entry is approved or not. See GravityView_Entry_Approval_Status for valid statuses.
-			 */
-			do_action( 'gravityview/approve_entries/updated', $entry_id, $status );
+		$action = GravityView_Entry_Approval_Status::get_key( $status );
 
-			$action = GravityView_Entry_Approval_Status::get_key( $status );
-
-			/**
-			 * @action `gravityview/approve_entries/{$action}` Triggered when an entry approval is reset.
-			 * $action can be 'approved', 'unapproved', or 'disapproved'
-			 * @since 1.7.6.1
-			 * @since 1.18 Added "unapproved"
-			 * @param  int $entry_id ID of the Gravity Forms entry
-			 */
-			do_action( 'gravityview/approve_entries/' . $action , $entry_id );
-
-		} else {
-
-			do_action('gravityview_log_error', __METHOD__ . ' - `gform_update_meta` does not exist.' );
-
-		}
+		/**
+		 * @action `gravityview/approve_entries/{$action}` Triggered when an entry approval is reset.
+		 * $action can be 'approved', 'unapproved', or 'disapproved'
+		 * Note: If you want this to work with Bulk Actions, run in a plugin rather than a theme; the bulk updates hook runs before themes are loaded.
+		 * @since 1.7.6.1
+		 * @since 1.18 Added "unapproved"
+		 * @param  int $entry_id ID of the Gravity Forms entry
+		 */
+		do_action( 'gravityview/approve_entries/' . $action , $entry_id );
 	}
 
 	/**

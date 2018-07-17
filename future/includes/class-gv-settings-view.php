@@ -10,6 +10,20 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * The View Settings class.
  */
 class View_Settings extends Settings {
+	/**
+	 * Retrieve an instance of the settings with default values.
+	 * @param bool $detailed Whether to return detailed setting meta information or just the value.
+	 *
+	 * @api
+	 * @since 2.0
+	 *
+	 * @return \GV\View_Settings
+	 */
+	public static function with_defaults( $detailed = false ) {
+		$settings = new self();
+		$settings->update( self::defaults( $detailed ) );
+		return $settings;
+	}
 
 	/**
 	 * Retrieve the default View settings.
@@ -18,7 +32,7 @@ class View_Settings extends Settings {
 	 * @param string $group Retrieve settings of a particular group.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 *
 	 * @return array The default settings along with their values.
 	 *      @param[out] string $label Setting label shown in admin
@@ -32,197 +46,224 @@ class View_Settings extends Settings {
 	 */
 	public static function defaults( $detailed = false, $group = null ) {
 
-		$default_settings = array(
+		$default_settings = array_merge( array(
 			'id' => array(
-				'label' => __('View ID', 'gravityview'),
-				'type' => 'number',
-				'group'	=> 'default',
-				'value' => NULL,
-				'tooltip' => NULL,
+				'label'             => __( 'View ID', 'gravityview' ),
+				'type'              => 'number',
+				'group'             => 'default',
+				'value'             => NULL,
+				'tooltip'           => NULL,
 				'show_in_shortcode' => false,
 			),
 			'page_size' => array(
-				'label' 	=> __('Number of entries per page', 'gravityview'),
-				'type' => 'number',
-				'class'	=> 'small-text',
-				'group'	=> 'default',
-				'value' => 25,
+				'label'             => __( 'Number of entries per page', 'gravityview' ),
+				'type'              => 'number',
+				'class'             => 'small-text',
+				'group'             => 'default',
+				'value'             => 25,
 				'show_in_shortcode' => true,
 			),
 			'offset' => array(
-				'label' 	=> __('Offset entries starting from', 'gravityview'),
-				'type' => 'number',
-				'class'	=> 'small-text',
-				'group'	=> 'default',
-				'value' => 0,
+				'label'             => __( 'Offset entries starting from', 'gravityview' ),
+				'type'              => 'number',
+				'class'             => 'small-text',
+				'group'             => 'default',
+				'value'             => 0,
 				'show_in_shortcode' => true,
 			),
 			'lightbox' => array(
-				'label' => __( 'Enable lightbox for images', 'gravityview' ),
-				'type' => 'checkbox',
-				'group'	=> 'default',
-				'value' => 1,
-				'tooltip' => NULL,
+				'label'             => __( 'Enable lightbox for images', 'gravityview' ),
+				'type'              => 'checkbox',
+				'group'             => 'default',
+				'value'             => 1,
+				'tooltip'           => NULL,
 				'show_in_shortcode' => true,
 			),
-			'show_only_approved' => array(
-				'label' => __( 'Show only approved entries', 'gravityview' ),
-				'type' => 'checkbox',
-				'group'	=> 'default',
-				'value' => 0,
+			'show_only_approved'    => array(
+				'label'             => __( 'Show only approved entries', 'gravityview' ),
+				'type'              => 'checkbox',
+				'group'             => 'default',
+				'value'             => 0,
 				'show_in_shortcode' => true,
 			),
 			'admin_show_all_statuses' => array(
-				'label' => __( 'Show all entries to administrators', 'gravityview' ),
-				'desc'	=> __('Administrators will be able to see entries with any approval status.', 'gravityview'),
-				'tooltip' => __('Logged-out visitors and non-administrators will only see approved entries, while administrators will see entries with all statuses. This makes it easier for administrators to moderate entries from a View.', 'gravityview'),
-				'requires' => 'show_only_approved',
-				'type' => 'checkbox',
-				'group'	=> 'default',
-				'value' => 0,
+				'label'             => __( 'Show all entries to administrators', 'gravityview' ),
+				'desc'              => __( 'Administrators will be able to see entries with any approval status.', 'gravityview' ),
+				'tooltip'           => __( 'Logged-out visitors and non-administrators will only see approved entries, while administrators will see entries with all statuses. This makes it easier for administrators to moderate entries from a View.', 'gravityview' ),
+				'requires'          => 'show_only_approved',
+				'type'              => 'checkbox',
+				'group'             => 'default',
+				'value'             => 0,
 				'show_in_shortcode' => false,
 			),
 			'hide_until_searched' => array(
-				'label' => __( 'Hide View data until search is performed', 'gravityview' ),
-				'type' => 'checkbox',
-				'group'	=> 'default',
-				'tooltip' => __( 'When enabled it will only show any View entries after a search is performed.', 'gravityview' ),
-				'value' => 0,
+				'label'             => __( 'Hide View data until search is performed', 'gravityview' ),
+				'type'              => 'checkbox',
+				'group'             => 'default',
+				'tooltip'           => __( 'When enabled it will only show any View entries after a search is performed.', 'gravityview' ),
+				'value'             => 0,
 				'show_in_shortcode' => false,
 			),
 			'hide_empty' => array(
-				'label' 	=> __( 'Hide empty fields', 'gravityview' ),
-				'group'	=> 'default',
-				'type'	=> 'checkbox',
-				'value' => 1,
+				'label'             => __( 'Hide empty fields', 'gravityview' ),
+				'group'             => 'default',
+				'type'              => 'checkbox',
+				'value'             => 1,
 				'show_in_shortcode' => false,
 			),
 			'user_edit' => array(
-				'label'	=> __( 'Allow User Edit', 'gravityview' ),
-				'group'	=> 'default',
-				'desc'	=> __('Allow logged-in users to edit entries they created.', 'gravityview'),
-				'value'	=> 0,
-				'tooltip' => __('Display "Edit Entry" fields to non-administrator users if they created the entry. Edit Entry fields will always be displayed to site administrators.', 'gravityview'),
-				'type'	=> 'checkbox',
+				'label'             => __( 'Allow User Edit', 'gravityview' ),
+				'group'             => 'default',
+				'desc'              => __( 'Allow logged-in users to edit entries they created.', 'gravityview' ),
+				'value'             => 0,
+				'tooltip'           => __( 'Display "Edit Entry" fields to non-administrator users if they created the entry. Edit Entry fields will always be displayed to site administrators.', 'gravityview' ),
+				'type'              => 'checkbox',
 				'show_in_shortcode' => true,
 			),
 			'user_delete' => array(
-				'label'	=> __( 'Allow User Delete', 'gravityview' ),
-				'group'	=> 'default',
-				'desc'	=> __('Allow logged-in users to delete entries they created.', 'gravityview'),
-				'value'	=> 0,
-				'tooltip' => __('Display "Delete Entry" fields to non-administrator users if they created the entry. Delete Entry fields will always be displayed to site administrators.', 'gravityview'),
-				'type'	=> 'checkbox',
+				'label'             => __( 'Allow User Delete', 'gravityview' ),
+				'group'             => 'default',
+				'desc'              => __( 'Allow logged-in users to delete entries they created.', 'gravityview' ),
+				'value'             => 0,
+				'tooltip'           => __( 'Display "Delete Entry" fields to non-administrator users if they created the entry. Delete Entry fields will always be displayed to site administrators.', 'gravityview' ),
+				'type'              => 'checkbox',
 				'show_in_shortcode' => true,
 			),
 			'sort_field' => array(
-				'label'	=> __('Sort by field', 'gravityview'),
-				'type' => 'select',
-				'value' => '',
-				'group'	=> 'sort',
-				'options' => array(
-					'' => __( 'Default', 'gravityview'),
-					'date_created' => __( 'Date Created', 'gravityview'),
-				),
+				'label'             => __( 'Sort by field', 'gravityview' ),
+				'type'              => 'select',
+				'value'             => '',
+				'group'             => 'sort',
+				'options'           => array(
+										''             => __( 'Default', 'gravityview' ),
+										'date_created' => __( 'Date Created', 'gravityview' ),
+									),
 				'show_in_shortcode' => true,
 			),
 			'sort_direction' => array(
-				'label' 	=> __('Sort direction', 'gravityview'),
-				'type' => 'select',
-				'value' => 'ASC',
-				'group'	=> 'sort',
-				'options' => array(
-					'ASC' => __('ASC', 'gravityview'),
-					'DESC' => __('DESC', 'gravityview'),
+				'label'             => __( 'Sort direction', 'gravityview' ),
+				'type'              => 'select',
+				'value'             => 'ASC',
+				'group'             => 'sort',
+				'options'           => array(
+										'ASC'  => __( 'ASC', 'gravityview' ),
+										'DESC' => __( 'DESC', 'gravityview' ),
 				),
 				'show_in_shortcode' => true,
 			),
 			'sort_columns' => array(
-				'label' 	=> __( 'Enable sorting by column', 'gravityview' ),
-				'left_label' => __( 'Column Sorting', 'gravityview' ),
-				'type' => 'checkbox',
-				'value' => false,
-				'group'	=> 'sort',
-				'tooltip' => NULL,
+				'label'             => __( 'Enable sorting by column', 'gravityview' ),
+				'left_label'        => __( 'Column Sorting', 'gravityview' ),
+				'type'              => 'checkbox',
+				'value'             => false,
+				'group'             => 'sort',
+				'tooltip'           => NULL,
 				'show_in_shortcode' => true,
-				'show_in_template' => array( 'default_table', 'preset_business_data', 'preset_issue_tracker', 'preset_resume_board', 'preset_job_board' ),
+				'show_in_template'  => array( 'default_table', 'preset_business_data', 'preset_issue_tracker', 'preset_resume_board', 'preset_job_board' ),
 			),
 			'start_date' => array(
-				'label' 	=> __('Filter by Start Date', 'gravityview'),
-				'class'	=> 'gv-datepicker',
-				'desc'	=> __('Show entries submitted after this date. Supports relative dates, such as "-1 week" or "-1 month".', 'gravityview' ),
-				'type' => 'text',
-				'value' => '',
-				'group'	=> 'filter',
+				'label'             => __( 'Filter by Start Date', 'gravityview' ),
+				'class'             => 'gv-datepicker',
+				'desc'              => __( 'Show entries submitted after this date. Supports relative dates, such as "-1 week" or "-1 month".', 'gravityview' ),
+				'type'              => 'text',
+				'value'             => '',
+				'group'             => 'filter',
 				'show_in_shortcode' => true,
 			),
 			'end_date' => array(
-				'label' 	=> __('Filter by End Date', 'gravityview'),
-				'class'	=> 'gv-datepicker',
-				'desc'	=> __('Show entries submitted before this date. Supports relative dates, such as "now" or "-3 days".', 'gravityview' ),
-				'type' => 'text',
-				'value' => '',
-				'group'	=> 'filter',
+				'label'             => __( 'Filter by End Date', 'gravityview' ),
+				'class'             => 'gv-datepicker',
+				'desc'              => __( 'Show entries submitted before this date. Supports relative dates, such as "now" or "-3 days".', 'gravityview' ),
+				'type'              => 'text',
+				'value'             => '',
+				'group'             => 'filter',
 				'show_in_shortcode' => true,
 			),
 			'class' => array(
-				'label' 	=> __('CSS Class', 'gravityview'),
-				'desc'	=> __('CSS class to add to the wrapping HTML container.', 'gravityview'),
-				'group'	=> 'default',
-				'type' => 'text',
-				'value' => '',
+				'label'             => __( 'CSS Class', 'gravityview' ),
+				'desc'              => __( 'CSS class to add to the wrapping HTML container.', 'gravityview' ),
+				'group'             => 'default',
+				'type'              => 'text',
+				'value'             => '',
 				'show_in_shortcode' => false,
 			),
 			'search_value' => array(
-				'label' 	=> __('Search Value', 'gravityview'),
-				'desc'	=> __('Define a default search value for the View', 'gravityview'),
-				'type' => 'text',
-				'value' => '',
-				'group'	=> 'filter',
+				'label'             => __( 'Search Value', 'gravityview' ),
+				'desc'              => __( 'Define a default search value for the View', 'gravityview' ),
+				'type'              => 'text',
+				'value'             => '',
+				'group'             => 'filter',
 				'show_in_shortcode' => false,
 			),
 			'search_field' => array(
-				'label' 	=> __('Search Field', 'gravityview'),
-				'desc'	=> __('If Search Value is set, you can define a specific field to search in. Otherwise, all fields will be searched.', 'gravityview'),
-				'type' => 'number',
-				'value' => '',
-				'group'	=> 'filter',
+				'label'             => __( 'Search Field', 'gravityview' ),
+				'desc'              => __( 'If Search Value is set, you can define a specific field to search in. Otherwise, all fields will be searched.', 'gravityview' ),
+				'type'              => 'text',
+				'value'             => '',
+				'group'             => 'filter',
 				'show_in_shortcode' => false,
 			),
 			'single_title' => array(
-				'label'	=> __('Single Entry Title', 'gravityview'),
-				'type'	=> 'text',
-				'desc'	=> __('When viewing a single entry, change the title of the page to this setting. Otherwise, the title will not change between the Multiple Entries and Single Entry views.', 'gravityview'),
-				'group'	=> 'default',
-				'value'	=> '',
+				'label'             => __( 'Single Entry Title', 'gravityview' ),
+				'type'              => 'text',
+				'desc'              => __( 'When viewing a single entry, change the title of the page to this setting. Otherwise, the title will not change between the Multiple Entries and Single Entry views.', 'gravityview' ),
+				'group'             => 'default',
+				'value'             => '',
 				'show_in_shortcode' => false,
-				'full_width' => true,
+				'full_width'        => true,
 			),
 			'back_link_label' => array(
-				'label'	=> __('Back Link Label', 'gravityview'),
-				'group'	=> 'default',
-				'desc'	=> __('The text of the link that returns to the multiple entries view.', 'gravityview'),
-				'type'	=> 'text',
-				'value'	=> '',
+				'label'             => __( 'Back Link Label', 'gravityview' ),
+				'group'             => 'default',
+				'desc'              => __( 'The text of the link that returns to the multiple entries view.', 'gravityview' ),
+				'type'              => 'text',
+				'value'             => '',
 				'show_in_shortcode' => false,
-				'full_width' => true,
+				'full_width'        => true,
 			),
 			'embed_only' => array(
-				'label'	=> __('Prevent Direct Access', 'gravityview'),
-				'group'	=> 'default',
-				'desc'	=> __('Only allow access to this View when embedded using the shortcode.', 'gravityview'),
-				'type'	=> 'checkbox',
-				'value'	=> '',
-				'tooltip' => false,
+				'label'             => __( 'Prevent Direct Access', 'gravityview' ),
+				'group'             => 'default',
+				'desc'              => __( 'Only allow access to this View when embedded using the shortcode.', 'gravityview' ),
+				'type'              => 'checkbox',
+				'value'             => '',
+				'tooltip'           => false,
 				'show_in_shortcode' => false,
-				'full_width' => true,
+				'full_width'        => true,
 			),
+		), ( gravityview()->plugin->supports( Plugin::FEATURE_REST ) && ( gravityview()->plugin->settings->get( 'rest_api' ) === '1' ) ) ?
+			array(
+				'rest_disable'          => array(
+					'label'             => __( 'Prevent REST Access', 'gravityview' ),
+					'group'             => 'default',
+					'desc'              => __( 'Disable REST access to this View.', 'gravityview' ),
+					'type'              => 'checkbox',
+					'value'             => '',
+					'tooltip'           => false,
+					'show_in_shortcode' => false,
+					'full_width'        => true,
+				),
+			) : array(),
+		( gravityview()->plugin->supports( Plugin::FEATURE_REST ) && ( gravityview()->plugin->settings->get( 'rest_api' ) !== '1' ) ) ?
+			array(
+				'rest_enable'           => array(
+					'label'             => __( 'Allow REST Access', 'gravityview' ),
+					'group'             => 'default',
+					'desc'              => __( 'Enable  REST access to this View.', 'gravityview' ),
+					'type'              => 'checkbox',
+					'value'             => '',
+					'tooltip'           => false,
+					'show_in_shortcode' => false,
+					'full_width'        => true,
+				),
+			) : array(),
+		array(
 			'post_id' => array(
-				'type' => 'number',
-				'value' => '',
+				'type'              => 'number',
+				'value'             => '',
 				'show_in_shortcode' => false,
 			),
-		);
+		) );
 
 		if ( version_compare( \GFCommon::$version, '2.3-beta-4', '>=' ) ) {
 			$default_settings['sort_direction']['options']['RAND'] = __( 'Random', 'gravityview' );
@@ -252,7 +293,7 @@ class View_Settings extends Settings {
 
 		// But sometimes, we want all the details.
 		} else {
-			foreach ($default_settings as $key => $value) {
+			foreach ( $default_settings as $key => $value ) {
 
 				// If the $group argument is set for the method,
 				// ignore any settings that aren't in that group.
@@ -263,21 +304,6 @@ class View_Settings extends Settings {
 				}
 			}
 			return $default_settings;
-		}
-	}
-
-	/**
-	 * Mass update values from the allowed ones.
-	 *
-	 * @api
-	 * @since future
-	 *
-	 * @param array An array of settings to update.
-	 * @return void
-	 */
-	public function update( $settings ) {
-		foreach ( $settings as $key => $value ) {
-			$this->set( $key, $value );
 		}
 	}
 

@@ -49,7 +49,7 @@ class GravityView_Admin_ApproveEntries {
 		// add hidden field with approve status
 		add_action( 'gform_entries_first_column_actions', array( $this, 'add_entry_approved_hidden_input' ), 1, 5 );
 
-		add_filter( 'gravityview_tooltips', array( $this, 'tooltips' ) );
+		add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'tooltips' ) );
 
 		// adding styles and scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles') );
@@ -99,12 +99,20 @@ class GravityView_Admin_ApproveEntries {
 			),
 		);
 
-		$approved_count = $disapproved_count = 0;
+		$field_filters_unapproved = array(
+			array(
+				'key'      => GravityView_Entry_Approval::meta_key,
+				'value'    => GravityView_Entry_Approval_Status::UNAPPROVED,
+			),
+		);
+
+		$approved_count = $disapproved_count = $unapproved_count = 0;
 
 		// Only count if necessary
 		if( $include_counts ) {
 			$approved_count = count( gravityview_get_entry_ids( $form['id'], array( 'status' => 'active', 'field_filters' => $field_filters_approved ) ) );
 			$disapproved_count = count( gravityview_get_entry_ids( $form['id'], array( 'status' => 'active', 'field_filters' => $field_filters_disapproved ) ) );
+			$unapproved_count = count( gravityview_get_entry_ids( $form['id'], array( 'status' => 'active', 'field_filters' => $field_filters_unapproved ) ) );
 		}
 
 		$filter_links[] = array(
@@ -119,6 +127,13 @@ class GravityView_Admin_ApproveEntries {
 			'field_filters' => $field_filters_disapproved,
 			'count'         => $disapproved_count,
 			'label'         => GravityView_Entry_Approval_Status::get_label( GravityView_Entry_Approval_Status::DISAPPROVED ),
+		);
+
+		$filter_links[] = array(
+			'id'            => 'gv_unapproved',
+			'field_filters' => $field_filters_unapproved,
+			'count'         => $unapproved_count,
+			'label'         => GravityView_Entry_Approval_Status::get_label( GravityView_Entry_Approval_Status::UNAPPROVED ),
 		);
 
 		return $filter_links;
@@ -247,10 +262,10 @@ class GravityView_Admin_ApproveEntries {
 		$gv_bulk_action = false;
 
 		if( version_compare( GFForms::$version, '2.0', '>=' ) ) {
-			$bulk_action = ( '-1' !== rgpost('action') ) ? rgpost('action') : rgpost('action2');
+			$bulk_action = ( '-1' !== \GV\Utils::_POST( 'action' ) ) ? \GV\Utils::_POST( 'action' ) : \GV\Utils::_POST( 'action2' );
 		} else {
 			// GF 1.9.x - Bulk action 2 is the bottom bulk action select form.
-			$bulk_action = rgpost('bulk_action') ? rgpost('bulk_action') : rgpost('bulk_action2');
+			$bulk_action = \GV\Utils::_POST( 'bulk_action' ) ? \GV\Utils::_POST( 'bulk_action' ) : \GV\Utils::_POST( 'bulk_action2' );
 		}
 
 		// Check the $bulk_action value against GV actions, see if they're the same. I hate strpos().
@@ -279,7 +294,7 @@ class GravityView_Admin_ApproveEntries {
 		
 		// gforms_entry_list is the nonce that confirms we're on the right page
 		// gforms_update_note is sent when bulk editing entry notes. We don't want to process then.
-		if ( $bulk_action && rgpost('gforms_entry_list') && empty( $_POST['gforms_update_note'] ) ) {
+		if ( $bulk_action && \GV\Utils::_POST( 'gforms_entry_list' ) && empty( $_POST['gforms_update_note'] ) ) {
 
 			check_admin_referer( 'gforms_entry_list', 'gforms_entry_list' );
 
@@ -292,7 +307,7 @@ class GravityView_Admin_ApproveEntries {
 			list( $approved_status, $form_id ) = explode( '-', $bulk_action );
 
 			if ( empty( $form_id ) ) {
-				do_action( 'gravityview_log_error', '[process_bulk_action] Form ID is empty from parsing bulk action.', $bulk_action );
+				gravityview()->log->error( 'Form ID is empty from parsing bulk action.', array( 'data' => $bulk_action ) );
 				return false;
 			}
 
@@ -319,7 +334,7 @@ class GravityView_Admin_ApproveEntries {
 			}
 
 			if ( empty( $entries ) ) {
-				do_action( 'gravityview_log_error', '[process_bulk_action] Entries are empty' );
+				gravityview()->log->error( 'Entries are empty' );
 				return false;
 			}
 
@@ -436,7 +451,7 @@ class GravityView_Admin_ApproveEntries {
 		$forms = RGFormsModel::get_forms( null, 'title' );
 
 		if( ! isset( $forms[0] ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ': No forms were found' );
+			gravityview()->log->error( 'No forms were found' );
 			return 0;
 		}
 
@@ -451,9 +466,7 @@ class GravityView_Admin_ApproveEntries {
 	function add_scripts_and_styles( $hook ) {
 
 		if( ! class_exists( 'GFForms' ) ) {
-
-			do_action( 'gravityview_log_error', 'GravityView_Admin_ApproveEntries[add_scripts_and_styles] GFForms does not exist.' );
-
+			gravityview()->log->error( 'GFForms does not exist.' );
 			return;
 		}
 
@@ -491,39 +504,31 @@ class GravityView_Admin_ApproveEntries {
             'approve_title' => GravityView_Entry_Approval_Status::get_title_attr('disapproved'),
 			'disapprove_title' => GravityView_Entry_Approval_Status::get_title_attr('approved'),
 			'column_title' => __( 'Show entry in directory view?', 'gravityview'),
-			'column_link' => esc_url( $this->get_sort_link( $form_id ) ),
+			'column_link' => esc_url( $this->get_sort_link() ),
 		) );
 
 	}
 
 	/**
-     * Generate a link to sort by approval status (if there is an Approve/Disapprove field)
+     * Generate a link to sort by approval status
      *
      * Note: Sorting by approval will never be great because it's not possible currently to declare the sorting as
      * numeric, but it does group the approved entries together.
      *
-	 * @param int $form_id
+     * @since 2.0.14 Remove need for approval field for sorting by approval status
+     *
+	 * @param int $form_id [NO LONGER USED]
 	 *
 	 * @return string Sorting link
 	 */
 	private function get_sort_link( $form_id = 0 ) {
 
-		$approved_column_id = self::get_approved_column( $form_id );
-
-		if( ! $approved_column_id ) {
-		    return '';
-        }
-
-	    $order = ( 'desc' === rgget('order') ) ? 'asc' : 'desc';
-
 	    $args = array(
-		    'orderby' => $approved_column_id,
-            'order' => $order,
+		    'orderby' => 'is_approved',
+            'order' => ( 'desc' === \GV\Utils::_GET( 'order' ) ) ? 'asc' : 'desc',
         );
 
-	    $link = add_query_arg( $args );
-
-		return $link;
+		return add_query_arg( $args );
     }
 
 	/**
@@ -565,6 +570,11 @@ class GravityView_Admin_ApproveEntries {
 
 		// Sanitize the values, just to be sure.
 		foreach ( $bulk_actions as $key => $group ) {
+
+		    if( empty( $group ) ) {
+		        continue;
+		    }
+
 			foreach ( $group as $i => $action ) {
 				$bulk_actions[ $key ][ $i ]['label'] = esc_html( $bulk_actions[ $key ][ $i ]['label'] );
 				$bulk_actions[ $key ][ $i ]['value'] = esc_attr( $bulk_actions[ $key ][ $i ]['value'] );

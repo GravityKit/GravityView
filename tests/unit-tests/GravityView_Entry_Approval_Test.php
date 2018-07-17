@@ -25,6 +25,49 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers GravityView_Entry_Approval::after_submission
+	 */
+	public function test_after_submission() {
+
+		$args = array( 'form_id' => $this->form_id, 'date_created' => '2013-11-28 11:00', '1' => 'Second Choice', '2.2' => 'Second Choice', '8' => '1', '13.6' => 'Spain' );
+
+		$entry = $this->factory->entry->create_and_get( $args );
+
+		$GravityView_Entry_Approval = new GravityView_Entry_Approval;
+
+		$this->assertEquals( '', gform_get_meta( $entry['id'], GravityView_Entry_Approval::meta_key ), 'entry status should not be set, entry created via API' );
+
+		$GravityView_Entry_Approval->after_submission( $entry, $this->form );
+
+		$this->assertEquals( GravityView_Entry_Approval_Status::UNAPPROVED, (int) gform_get_meta( $entry['id'], GravityView_Entry_Approval::meta_key ), 'entry status should be set to unapproved' );
+
+		gform_delete_meta( $entry['id'], GravityView_Entry_Approval::meta_key ); // Reset
+
+		add_filter( 'gravityview/approve_entries/after_submission/default_status', function() {
+			return 'NOT A VALID APPROVAL STATUS, MATE';
+		});
+
+		$GravityView_Entry_Approval->after_submission( $entry, $this->form );
+
+		$this->assertEquals( GravityView_Entry_Approval_Status::UNAPPROVED, (int) gform_get_meta( $entry['id'], GravityView_Entry_Approval::meta_key ), 'entry status should be set to default (unapproved) since invalid filter value' );
+
+		remove_all_filters( 'gravityview/approve_entries/after_submission/default_status' );
+
+
+		gform_delete_meta( $entry['id'], GravityView_Entry_Approval::meta_key ); // Reset
+
+		add_filter( 'gravityview/approve_entries/after_submission/default_status', function() {
+			return GravityView_Entry_Approval_Status::APPROVED;
+		});
+
+		$GravityView_Entry_Approval->after_submission( $entry, $this->form );
+
+		$this->assertEquals( GravityView_Entry_Approval_Status::APPROVED, (int) gform_get_meta( $entry['id'], GravityView_Entry_Approval::meta_key ), 'entry status should be set to approved because filter' );
+
+		remove_all_filters( 'gravityview/approve_entries/after_submission/default_status' );
+	}
+
+	/**
 	 * @since 1.18
 	 * @covers GravityView_Entry_Approval::update_approved
 	 * @covers GravityView_Cache::in_blacklist()

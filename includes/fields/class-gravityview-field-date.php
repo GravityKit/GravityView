@@ -21,7 +21,11 @@ class GravityView_Field_Date extends GravityView_Field {
 	var $group = 'advanced';
 
 	public function __construct() {
+
 		$this->label = esc_html__( 'Date', 'gravityview' );
+
+		add_filter( 'gravityview/merge_tags/modifiers/value', array( $this, 'apply_format_date_modifiers' ), 10, 6 );
+
 		parent::__construct();
 	}
 
@@ -34,6 +38,30 @@ class GravityView_Field_Date extends GravityView_Field {
 		$this->add_field_support('date_display', $field_options );
 
 		return $field_options;
+	}
+
+	/**
+	 * Allow Date fields to take advantage of the GV date modifiers
+	 *
+	 * @since 2.0
+	 * @uses  GravityView_Merge_Tags::format_date
+	 *
+	 * @param string $return The current merge tag value to be filtered.
+	 * @param string $raw_value The raw value submitted for this field. May be CSV or JSON-encoded.
+	 * @param string $value The original merge tag value, passed from Gravity Forms
+	 * @param string $merge_tag If the merge tag being executed is an individual field merge tag (i.e. {Name:3}), this variable will contain the field's ID. If not, this variable will contain the name of the merge tag (i.e. all_fields).
+	 * @param string $modifier The string containing any modifiers for this merge tag. For example, "maxwords:10" would be the modifiers for the following merge tag: `{Text:2:maxwords:10}`.
+	 * @param GF_Field $field The current field.
+	 *
+	 * @return string If Date field, run it through GravityView_Merge_Tags::format_date; otherwise, return the original value
+	 */
+	public function apply_format_date_modifiers( $return, $raw_value = '', $value = '', $merge_tag = '', $modifier = '', $field = null ) {
+
+		if ( 'date' === $field->type ) {
+			$return = GravityView_Merge_Tags::format_date( $raw_value, $modifier );
+		}
+
+		return $return;
 	}
 
 	/**
@@ -57,13 +85,13 @@ class GravityView_Field_Date extends GravityView_Field {
 		$date_field_output = '';
 		switch( $field_input_id ) {
 			case 1:
-				$date_field_output = rgar( $parsed_date, 'day' );
+				$date_field_output = \GV\Utils::get( $parsed_date, 'day' );
 				break;
 			case 2:
-				$date_field_output = rgar( $parsed_date, 'month' );
+				$date_field_output = \GV\Utils::get( $parsed_date, 'month' );
 				break;
 			case 3:
-				$date_field_output = rgar( $parsed_date, 'year' );
+				$date_field_output = \GV\Utils::get( $parsed_date, 'year' );
 				break;
 		}
 

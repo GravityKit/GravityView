@@ -70,7 +70,7 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 		if( gravityview_is_admin_page() ) {
 
 				// Make Yoast metabox go down to the bottom please.
-			add_filter( 'wpseo_metabox_prio', array( $this, '__return_low' ) );
+			add_filter( 'wpseo_metabox_prio', array( $this, 'return_low' ) );
 
 			// Prevent the SEO from being checked. Eesh.
 			add_filter( 'wpseo_use_page_analysis', '__return_false' );
@@ -128,7 +128,7 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 	 * @param string $existing Existing priority. Default: `high`
 	 * @return string Returns 'low'
 	 */
-	function __return_low( $existing = 'high' ) {
+	function return_low( $existing = 'high' ) {
 		return 'low';
 	}
 }

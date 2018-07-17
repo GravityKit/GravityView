@@ -1,0 +1,95 @@
+/**
+ * Styles for GravityView frontend Approve/Unapprove toggles
+ * @since TODO
+ */
+
+.gv-approval-toggle {
+
+  /**
+   * Change the icon size
+   */
+  $font-size: 24px;
+  $background: #f0f0f0;
+
+  // Start with green approval check mark
+  color: #008000!important;
+
+  box-shadow: none!important;
+  text-decoration: none!important;
+  border-bottom: none!important;
+
+  /**
+   * The label for the icons
+   */
+  span.screen-reader-text {
+    position: absolute;
+    margin: -1px;
+    padding: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    border: 0;
+  }
+
+  &.gv-approval-disapproved {
+
+    // Switch to red X
+    color: #981225!important;
+
+    &::before {
+      content: "\f158";
+    }
+  }
+
+  // Switch to yellow circle
+  &.gv-approval-unapproved {
+    color: #ecaa00!important;
+
+    &::before {
+      content: "\f159";
+    }
+  }
+
+  &.gv-approval-loading {
+    &::before {
+      background: $background !important;
+    }
+    opacity: .7;
+    cursor: wait!important;
+  }
+
+  &::before {
+    font-family: "dashicons";
+    left: 0;
+    top: 0;
+    cursor: pointer;
+    content: "\f147";
+    width: $font-size;
+    height: $font-size;
+    border: 1px solid darken( $background, 7% );
+    padding: 4px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    display: inline;
+    font-size: $font-size;
+    -webkit-box-shadow: inset 0 3px 5px rgba( 0, 0, 0, 0 );
+    -moz-box-shadow: inset 0 3px 5px rgba( 0, 0, 0, 0 );
+    box-shadow: inset 0 3px 5px rgba( 0, 0, 0, 0 );
+  }
+
+  &:link::before,
+  &:visited::before {
+    background: $background;
+  }
+
+  &:hover::before {
+    background: darken( $background, 2.5% );
+  }
+
+  &:active::before {
+    background: darken( $background, 7% );
+  }
+
+}

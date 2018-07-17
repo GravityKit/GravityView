@@ -148,11 +148,15 @@ class GravityView_Edit_Entry {
 
         $nonce_key = self::get_nonce_key( $view_id, $entry['form_id'], $entry['id']  );
 
-        $base = gv_entry_link( $entry, $post_id );
+        $base = gv_entry_link( $entry, $post_id ? : $view_id  );
 
         $url = add_query_arg( array(
             'edit' => wp_create_nonce( $nonce_key )
         ), $base );
+
+        if( $post_id ) {
+	        $url = add_query_arg( array( 'gvid' => $view_id ), $url );
+        }
 
 	    /**
 	     * Allow passing params to dynamically populate entry with values
@@ -231,7 +235,7 @@ class GravityView_Edit_Entry {
      * Needs to be used combined with GravityView_Edit_Entry::user_can_edit_entry for maximum security!!
      *
      * @param  array $entry Gravity Forms entry array
-     * @param int $view_id ID of the view you want to check visibility against {@since 1.9.2}
+     * @param int $view_id ID of the view you want to check visibility against {@since 1.9.2}. Required since 2.0
      * @return bool
      */
     public static function check_user_cap_edit_entry( $entry, $view_id = 0 ) {
@@ -244,13 +248,13 @@ class GravityView_Edit_Entry {
         // Then we're good.
         if( GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_others_entries' ), $entry['id'] ) ) {
 
-            do_action('gravityview_log_debug', __METHOD__ . ' - User has ability to edit all entries.');
+            gravityview()->log->debug( 'User has ability to edit all entries.' );
 
             $user_can_edit = true;
 
         } else if( !isset( $entry['created_by'] ) ) {
 
-            do_action('gravityview_log_error', 'GravityView_Edit_Entry[check_user_cap_edit_entry] Entry `created_by` doesn\'t exist.');
+            gravityview()->log->error( 'Entry `created_by` doesn\'t exist.');
 
             $user_can_edit = false;
 
@@ -259,6 +263,7 @@ class GravityView_Edit_Entry {
             // get user_edit setting
             if( empty( $view_id ) || $view_id == GravityView_View::getInstance()->getViewId() ) {
                 // if View ID not specified or is the current view
+				// @deprecated path
                 $user_edit = GravityView_View::getInstance()->getAtts('user_edit');
             } else {
                 // in case is specified and not the current view
@@ -270,7 +275,7 @@ class GravityView_Edit_Entry {
             // User edit is disabled
             if( empty( $user_edit ) ) {
 
-                do_action('gravityview_log_debug', 'GravityView_Edit_Entry[check_user_cap_edit_entry] User Edit is disabled. Returning false.' );
+                gravityview()->log->debug( 'User Edit is disabled. Returning false.' );
 
                 $user_can_edit = false;
             }
@@ -278,13 +283,13 @@ class GravityView_Edit_Entry {
             // User edit is enabled and the logged-in user is the same as the user who created the entry. We're good.
             else if( is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
 
-                do_action('gravityview_log_debug', sprintf( 'GravityView_Edit_Entry[check_user_cap_edit_entry] User %s created the entry.', $current_user->ID ) );
+                gravityview()->log->debug( 'User {user_id} created the entry.', array( 'user_id', $current_user->ID ) );
 
                 $user_can_edit = true;
 
             } else if( ! is_user_logged_in() ) {
 
-                do_action( 'gravityview_log_debug', __METHOD__ . ' No user defined; edit entry requires logged in user' );
+                gravityview()->log->debug( 'No user defined; edit entry requires logged in user' );
             }
 
         }

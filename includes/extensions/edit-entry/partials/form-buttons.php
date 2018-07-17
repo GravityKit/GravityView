@@ -53,11 +53,13 @@
 	/**
 	 * @action `gravityview/edit-entry/publishing-action/after` Triggered after the submit buttons in the Edit Entry screen, inside the `<div id="publishing-action">` container.
 	 * @since 1.5.1
+     * @since 2.0.13 Added $post_id
 	 * @param array $form The Gravity Forms form
 	 * @param array $entry The Gravity Forms entry
 	 * @param int $view_id The current View ID
+     * @param int $post_id The current Post ID
 	 */
-	do_action( 'gravityview/edit-entry/publishing-action/after', $object->form, $object->entry, $object->view_id );
+	do_action( 'gravityview/edit-entry/publishing-action/after', $object->form, $object->entry, $object->view_id, $object->post_id );
 
 	?>
 	<input type="hidden" name="action" value="update" />

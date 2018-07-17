@@ -133,7 +133,9 @@ install_db() {
 	fi
 
 	# create database
-	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
+	if ! mysql -u"$DB_USER" --password="$DB_PASS" -e "use $DB_NAME"$EXTRA; then
+	    mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
+	fi
 }
 
 install_wp
@@ -145,7 +147,6 @@ install_db
 ## Below is custom GravityView code
 ##
 
-
 if [ "$1" == 'help' ]; then
     echo "usage: $0 [db-name (default: root)] [db-user (default: root)] [db-pass (default: root)] [db-host (default: localhost)] [wp-version (default: latest)] [skip-database-creation (default: false)] [gravity-forms-zip-url]"
     echo "example using remote .zip: $0 gravityview_test root root localhost latest http://example.com/path/to/gravityview.zip"
@@ -154,60 +155,57 @@ if [ "$1" == 'help' ]; then
 	exit 1
 fi
 
-# TRAVIS_GRAVITY_FORMS_DL_URL variable will be set in TravisCI
-GRAVITY_FORMS_DL_PATH_OR_URL="${7-$TRAVIS_GRAVITY_FORMS_DL_URL}"
+# install unzip if not available
+if ! [ -x "$(command -v unzip)" ]; then
+    apt-get install zip unzip
+fi
+
+# TRAVIS_GRAVITY_FORMS_2_2_DL_URL variable will be set in TravisCI
+GRAVITY_FORMS_DL_PATH_OR_URL="${7-$TRAVIS_GRAVITY_FORMS_2_3_DL_URL}"
 
 # Get current WordPress plugin directory
 TESTS_PLUGINS_DIR="$(dirname "${PWD}")"
 
+install_gravity_forms_22(){
+    mkdir -p "$GF_CORE_DIR"
+
+    # Pull from remote
+    curl -L "$TRAVIS_GRAVITY_FORMS_2_2_DL_URL" --output /tmp/gravityforms.zip
+
+    # -o will overwrite files. -q is quiet mode
+    unzip -o -q /tmp/gravityforms.zip -d /tmp/
+}
+
 install_gravity_forms(){
     mkdir -p "$GF_CORE_DIR"
 
-    # If you have passed a path, check if it exists. If it does, use that as the Gravity Forms location
-    if [[ $GRAVITY_FORMS_DL_PATH_OR_URL != '' && -d $GRAVITY_FORMS_DL_PATH_OR_URL ]]; then
+    # If you have an access token to Gravity Forms repo, grab and install
+    if [[ $GITHUB_ACCESS_TOKEN != '' ]]; then
 
-        rsync -ar --exclude=.git "$GRAVITY_FORMS_DL_PATH_OR_URL" /tmp/gravityforms/
+        rm -rf /tmp/gravityforms/
 
-    # Otherwise,
-    elif [[ $TRAVIS_GRAVITY_FORMS_2_2_4_5_DL_URL != '' ]]; then
+        git clone "https://${GITHUB_ACCESS_TOKEN}@github.com/gravityforms/gravityforms.git" /tmp/gravityforms/
+
+    # If you have passed an URL with a ZIP file, grab it and install
+    elif [[ $GRAVITY_FORMS_DL_PATH_OR_URL = *".zip"* ]]; then
 
         # Pull from remote
-	    curl -L "$TRAVIS_GRAVITY_FORMS_2_2_4_5_DL_URL" --output /tmp/gravityforms.zip
+	    curl -L "$GRAVITY_FORMS_DL_PATH_OR_URL" --output /tmp/gravityforms.zip
 
 	    # -o will overwrite files. -q is quiet mode
 	    unzip -o -q /tmp/gravityforms.zip -d /tmp/
+
+    # If you have passed a path, check if it exists. If it does, use that as the Gravity Forms location
+    elif [[ $GRAVITY_FORMS_DL_PATH_OR_URL != '' && -d $GRAVITY_FORMS_DL_PATH_OR_URL ]]; then
+
+        rsync -ar --exclude=.git "$GRAVITY_FORMS_DL_PATH_OR_URL" /tmp/gravityforms/
 
     # Otherwise, if you have Gravity Forms installed locally, use that.
     else
         if [[ -d "$TESTS_PLUGINS_DIR"/gravityforms ]]; then
             rsync -ar --exclude=.git "$TESTS_PLUGINS_DIR"/gravityforms /tmp/
-        else
-            exit 1
-        fi
-	fi
-}
-
-install_gravity_forms_23(){
-    mkdir -p "$GF_CORE_DIR"
-
-    # If you have passed a path, check if it exists. If it does, use that as the Gravity Forms location
-    if [[ $GRAVITY_FORMS_DL_PATH_OR_URL != '' && -d $GRAVITY_FORMS_DL_PATH_OR_URL ]]; then
-
-        rsync -ar --exclude=.git "$GRAVITY_FORMS_DL_PATH_OR_URL" /tmp/gravityforms/
-
-    # Otherwise,
-    elif [[ $TRAVIS_GRAVITY_FORMS_2_3_BETA_2_DL_URL != '' ]]; then
-
-        # Pull from remote
-	    curl -L "$TRAVIS_GRAVITY_FORMS_2_3_BETA_2_DL_URL" --output /tmp/gravityforms.zip
-
-	    # -o will overwrite files. -q is quiet mode
-	    unzip -o -q /tmp/gravityforms.zip -d /tmp/
-
-    # Otherwise, if you have Gravity Forms installed locally, use that.
-    else
-        if [[ -d "$TESTS_PLUGINS_DIR"/gravityforms ]]; then
-            rsync -ar --exclude=.git "$TESTS_PLUGINS_DIR"/gravityforms /tmp/
+        elif [[ -d "$TESTS_PLUGINS_DIR"/../../gravityforms ]]; then
+            rsync -ar --exclude=.git "$TESTS_PLUGINS_DIR"/../../gravityforms/ /tmp/
         else
             exit 1
         fi
@@ -215,8 +213,8 @@ install_gravity_forms_23(){
 }
 
 # Pick version to install
-if [[ $GF_VERSION == "2.3" ]]; then
-	install_gravity_forms_23
+if [[ $GF_VERSION == "2.2" ]]; then
+	install_gravity_forms_22
 else
 	install_gravity_forms
 fi

@@ -19,11 +19,7 @@ HS.beacon.ready(function() {
 	window.HSCW.config.contact.enabled = ( gvSupport.contactEnabled * 1 );
 	this.identify( gvSupport.data );
 
-	// Allow linking to articles in the Support Port
-	jQuery( 'a[data-hs-article]').on('click', function ( e ) {
-		e.preventDefault();
-		HS.beacon.show( jQuery( this ).attr('data-hs-article') );
-	});
-
-	// this.search( adminpage + pagenow ); this.open(); @todo Add keywords to articles with the adminpage+pagenow value to enable for pre-populated beacon searches
+	if ( gvSupport.suggest.length ) {
+		this.suggest( gvSupport.suggest );
+	}
 });

@@ -45,30 +45,75 @@ class GravityView_Merge_Tags {
 	public static function process_modifiers( $value, $merge_tag, $modifier, $field, $raw_value ) {
 
 		// No modifier was set or the raw value was empty
-		if( 'all_fields' === $merge_tag || '' === $modifier || ! is_string( $raw_value ) || '' === $raw_value ) {
+		if ( 'all_fields' === $merge_tag || '' === $modifier || ! is_string( $raw_value ) || '' === $raw_value ) {
 			return $value;
 		}
 
 		// matching regex => the value is the method to call to replace the value.
 		$gv_modifiers = array(
 			'maxwords:(\d+)' => 'modifier_maxwords', /** @see modifier_maxwords */
-			'wpautop' => 'modifier_wpautop', /** @see modifier_wpautop */
 		    'timestamp' => 'modifier_timestamp', /** @see modifier_timestamp */
+			'explode' => 'modifier_explode', /** @see modifier_explode */
+
+			/** @see modifier_strings */
+			'urlencode' => 'modifier_strings',
+			'wpautop' => 'modifier_strings',
+		    'esc_html' => 'modifier_strings',
+		    'sanitize_html_class' => 'modifier_strings',
+			'sanitize_title' => 'modifier_strings',
+			'strtolower' => 'modifier_strings',
+			'strtoupper' => 'modifier_strings',
+			'ucfirst' => 'modifier_strings',
+			'ucwords' => 'modifier_strings',
+			'wptexturize' => 'modifier_strings',
 		);
-		
-		$return = $value;
 
-		foreach ( $gv_modifiers as $gv_modifier => $method ) {
+		$modifiers = explode( ',', $modifier );
 
-			// Only match the regex if it's the first modifer; this allows us to enforce our own modifier structure
-			preg_match( '/^' . $gv_modifier .'/ism', $modifier, $matches );
+		$return = $raw_value;
 
-			if( ! empty( $matches ) ) {
+		$unserialized = maybe_unserialize( $raw_value );
+
+		if ( method_exists( $field, 'get_value_merge_tag' ) && is_array( $unserialized ) ) {
+
+			$non_gv_modifiers = array_diff( $modifiers, array_keys( $gv_modifiers ) );
+
+			$return = $field->get_value_merge_tag( $value, '', array( 'currency' => '' ), array(), implode( '', $non_gv_modifiers ), $raw_value, false, false, 'text', false);
+		}
+
+		foreach ( $modifiers as $passed_modifier ) {
+
+			foreach( $gv_modifiers as $gv_modifier => $method ) {
+
+				// Uses ^ to only match the first modifier, to enforce same order as passed by GF
+				preg_match( '/^' . $gv_modifier . '/ism', $passed_modifier, $matches );
+
+				if ( empty( $matches ) ) {
+					continue;
+				}
+
 				// The called method is passed the raw value and the full matches array
-				$return = self::$method( $raw_value, $matches );
+				$return = self::$method( $return, $matches, $value, $field );
 				break;
 			}
 		}
+
+		// No GravityView modifications were made; return the (default) original value
+		if ( $raw_value === $return ) {
+			return $value;
+		}
+
+		/**
+		 * @filter `gravityview/merge_tags/modifiers/value` Modify the merge tag modifier output
+		 * @since 2.0
+		 * @param string $return The current merge tag value to be filtered.
+		 * @param string $raw_value The raw value submitted for this field. May be CSV or JSON-encoded.
+		 * @param string $value The original merge tag value, passed from Gravity Forms
+		 * @param string $merge_tag If the merge tag being executed is an individual field merge tag (i.e. {Name:3}), this variable will contain the field's ID. If not, this variable will contain the name of the merge tag (i.e. all_fields).
+		 * @param string $modifier The string containing any modifiers for this merge tag. For example, "maxwords:10" would be the modifiers for the following merge tag: `{Text:2:maxwords:10}`.
+		 * @param GF_Field $field The current field.
+		 */
+		$return = apply_filters( 'gravityview/merge_tags/modifiers/value', $return, $raw_value, $value, $merge_tag, $modifier, $field );
 		
 		return $return;
 	}
@@ -98,27 +143,6 @@ class GravityView_Merge_Tags {
 	}
 
 	/**
-	 * Run the Merge Tag value through the wpautop function
-	 *
-	 * @since 1.17
-	 *
-	 * @uses wpautop
-	 *
-	 * @param string $raw_value Value to filter
-	 * @param array $matches Regex matches group
-	 *
-	 * @return string Modified value, if longer than the passed `maxwords` modifier
-	 */
-	private static function modifier_wpautop( $raw_value, $matches ) {
-
-		if( empty( $matches[0] ) || ! function_exists( 'wpautop' ) ) {
-			return $raw_value;
-		}
-
-		return trim( wpautop( $raw_value ) );
-	}
-
-	/**
 	 * Trim the Merge Tag's length in words.
 	 * 
 	 * Notes: 
@@ -127,13 +151,15 @@ class GravityView_Merge_Tags {
 	 *   Example: "one & two" will be counted as three words, but "one& two" will be counted as two words
 	 *
 	 * @since 1.17
+	 * @since 2.0 Added $field param and support for urlencode
 	 *
 	 * @param string $raw_value Value to filter
 	 * @param array $matches Regex matches group
+	 * @param GF_Field|false $field
 	 *
 	 * @return string Modified value, if longer than the passed `maxwords` modifier
 	 */
-	private static function modifier_maxwords( $raw_value, $matches ) {
+	private static function modifier_maxwords( $raw_value, $matches, $field = null ) {
 
 		if( ! is_string( $raw_value ) || empty( $matches[1] ) || ! function_exists( 'wp_trim_words' ) ) {
 			return $raw_value;
@@ -150,6 +176,123 @@ class GravityView_Merge_Tags {
 		$return = force_balance_tags( wp_specialchars_decode( wp_trim_words( htmlentities( $raw_value ), $max, $more_placeholder ) ) );
 
 		$return = str_replace( $more_placeholder, '&hellip;', $return );
+
+		return self::maybe_urlencode( $field, $return );
+	}
+
+	/**
+	 * GF 2.3 adds GF_Field::get_modifers(), which allows us to check if a field has urlencode applied to it
+	 *
+	 * @since 2.0
+	 *
+	 * @see GFCommon::replace_field_variable
+	 *
+	 * Here's the relevant code:
+	 *
+	 * <code>
+	 * $modifier  = strtolower( rgar( $match, $i ) );
+	 * $modifiers = array_map( 'trim', explode( ',', $modifier ) );
+	 * $field->set_modifiers( $modifiers );
+	 * </code>
+	 *
+	 * @param GF_Field|false $field
+	 * @param string $value
+	 *
+	 * @return mixed|string
+	 */
+	private static function maybe_urlencode( $field = false, $value = '' ) {
+
+		$return = $value;
+
+		if ( $field && method_exists( $field, 'get_modifiers' ) ) {
+
+			$modifiers = $field->get_modifiers();
+
+			if ( in_array( 'urlencode', $modifiers ) ) {
+				$return = urlencode( $return );
+			}
+		}
+
+		return $return;
+	}
+
+
+	/**
+	 * Convert JSON or CSV values into space-separated string
+	 *
+	 * Useful for Multiple Select field data, like categories
+	 *
+	 * @since 2.0
+	 *
+	 * @param mixed $raw_value The raw value submitted for this field. May be CSV or JSON-encoded.
+	 * @param array $matches Regex matches group
+	 * @param string $value The value as passed by Gravity Forms
+	 * @param GF_Field|false $field Gravity Forms field, if any
+	 *
+	 * @return string
+	 */
+	private static function modifier_explode( $raw_value, $matches, $value, $field = null ) {
+
+		// For JSON-encoded arrays
+		if( $json_array = json_decode( $raw_value, true ) ) {
+			return implode( ' ', $json_array );
+		}
+
+		return implode( ' ', explode( ',', $raw_value ) );
+	}
+
+	/**
+	 * Process strings with common PHP string manipulations
+	 *
+	 * @since 2.0
+	 *
+	 * @param mixed $raw_value The raw value submitted for this field. May be CSV or JSON-encoded.
+	 * @param array $matches Regex matches group
+	 * @param string $value The value as passed by Gravity Forms
+	 * @param GF_Field|false $field Gravity Forms field, if any
+	 *
+	 * @return string
+	 */
+	private static function modifier_strings( $raw_value, $matches, $value = '', $field = null ) {
+
+		if( empty( $matches[0] ) ) {
+			return $raw_value;
+		}
+
+		$return = $raw_value;
+
+		switch( $matches[0] ) {
+			case 'urlencode':
+				$return = urlencode( $raw_value );
+				break;
+			case 'wpautop':
+				$return = trim( wpautop( $raw_value ) );
+				break;
+			case 'esc_html':
+				$return = esc_html( $raw_value );
+				break;
+			case 'sanitize_html_class':
+				$return = function_exists( 'gravityview_sanitize_html_class' ) ? gravityview_sanitize_html_class( $raw_value ) : sanitize_html_class( $raw_value );
+				break;
+			case 'sanitize_title':
+				$return = sanitize_title( $raw_value, '', 'gravityview/merge-tags/modifier' );
+				break;
+			case 'strtoupper':
+				$return = function_exists( 'mb_strtoupper' ) ? mb_strtoupper( $raw_value ) : strtoupper( $raw_value );
+				break;
+			case 'strtolower':
+				$return = function_exists( 'mb_strtolower' ) ? mb_strtolower( $raw_value ) : strtolower( $raw_value );
+				break;
+			case 'ucwords':
+				$return = ucwords( $raw_value );
+				break;
+			case 'ucfirst':
+				$return = ucfirst( $raw_value );
+				break;
+			case 'wptexturize':
+				$return = wptexturize( $raw_value );
+				break;
+		}
 
 		return $return;
 	}
@@ -175,7 +318,12 @@ class GravityView_Merge_Tags {
 	 * @param  array            $aux_data     Additional data to be used to replace merge tags {@see https://www.gravityhelp.com/documentation/article/gform_merge_tag_data/}
 	 * @return string           Text with variables maybe replaced
 	 */
-	public static function replace_variables($text, $form = array(), $entry = array(), $url_encode = false, $esc_html = true, $nl2br = true, $format = 'html', $aux_data = array() ) {
+	public static function replace_variables( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = true, $nl2br = true, $format = 'html', $aux_data = array() ) {
+
+		if ( ! is_string( $text ) ) {
+			gravityview()->log->error( '$text is not a string.', array( 'data' => $text ) );
+			return $text;
+		}
 
 		/**
 		 * @filter `gravityview_do_replace_variables` Turn off merge tag variable replacements.\n
@@ -224,7 +372,7 @@ class GravityView_Merge_Tags {
 	 */
 	public static function replace_gv_merge_tags( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
-		if( '' === $text ) {
+		if ( '' === $text ) {
 			return $text;
 		}
 
@@ -234,7 +382,7 @@ class GravityView_Merge_Tags {
 		 * @see GFCommon::replace_variables_prepopulate()
 		 * @todo Remove eventually: Gravity Forms fixed this issue in 1.9.14
 		 */
-		if( false === $form ) {
+		if ( false === $form ) {
 			return $text;
 		}
 
@@ -242,7 +390,71 @@ class GravityView_Merge_Tags {
 
 		$text = self::replace_current_post( $text, $form, $entry, $url_encode, $esc_html );
 
+		$text = self::replace_entry_link( $text, $form, $entry, $url_encode, $esc_html );
+
 		return $text;
+	}
+
+	/**
+	 * Add a {gv_entry_link} Merge Tag, alias of [gv_entry_link] shortcode in {gv_entry_link:[post id]:[action]} format
+	 *
+	 * @param string $original_text Text to replace
+	 * @param array $form Gravity Forms form array
+	 * @param array $entry Entry array
+	 * @param bool $url_encode Whether to URL-encode output
+	 * @param bool $esc_html Indicates if the esc_html function should be applied.
+	 *
+	 * @return string Original text, if no {gv_entry_link} Merge Tags found, otherwise text with Merge Tags replaced
+	 */
+	public static function replace_entry_link( $original_text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
+
+		// Is there is {gv_entry_link} or {gv_entry_link:[post id]} or {gv_entry_link:[post id]:[action]} merge tag?
+		preg_match_all( "/{gv_entry_link(?:\:(\d+)\:?(.*?))?}/ism", $original_text, $matches, PREG_SET_ORDER );
+
+		if( empty( $matches ) ) {
+			return $original_text;
+		}
+
+		if ( ! class_exists( 'GravityView_Entry_Link_Shortcode' ) ) {
+			gravityview()->log->error( 'GravityView_Entry_Link_Shortcode not found' );
+			return $original_text;
+		}
+
+		$Shortcode = new GravityView_Entry_Link_Shortcode;
+
+		$return = $original_text;
+
+		/**
+		 * @param array $match {
+		 *   $match[0] Full tag
+		 *   $match[1] Post ID (optional)
+		 *   $match[2] Action (optional)
+		 * }
+		 */
+		foreach ( $matches as $match ) {
+			$full_tag = $match[0];
+
+			$link_args = array(
+				'return' => 'url',
+				'entry_id' => $entry['id'],
+				'post_id' => \GV\Utils::get( $match, 1, null ),
+				'action' => \GV\Utils::get( $match, 2, 'read' ),
+			);
+
+			$entry_link = $Shortcode->read_shortcode( $link_args, null, 'gv_entry_link_merge_tag' );
+
+			if( $url_encode ) {
+				$entry_link = urlencode( $entry_link );
+			}
+
+			if ( $esc_html ) {
+				$entry_link = esc_html( $entry_link );
+			}
+
+			$return = str_replace( $full_tag, $entry_link, $return );
+		}
+
+		return $return;
 	}
 
 	/**
@@ -250,7 +462,7 @@ class GravityView_Merge_Tags {
 	 *
 	 * @uses GVCommon::format_date()
 	 *
-	 * @see http://docs.gravityview.co/article/331-date-created-merge-tag for documentation
+	 * @see https://docs.gravityview.co/article/331-date-created-merge-tag for documentation
 	 *
 	 * @param string $date_created The Gravity Forms date created format
 	 * @param string $property Any modifiers for the merge tag (`human`, `format:m/d/Y`)
@@ -347,7 +559,7 @@ class GravityView_Merge_Tags {
 
 		foreach ( (array) $matches as $match ) {
 			$full_tag = $match[0];
-			$modifier = rgar( $match, 2, 'permalink' );
+			$modifier = \GV\Utils::get( $match, 2, 'permalink' );
 
 			$replacement = false;
 
@@ -413,7 +625,7 @@ class GravityView_Merge_Tags {
 			$full_tag = $match[0];
 			$property = $match[1];
 
-			$value = stripslashes_deep( rgget( $property ) );
+			$value = stripslashes_deep( \GV\Utils::_GET( $property ) );
 
 			/**
 			 * @filter `gravityview/merge_tags/get/glue/` Modify the glue used to convert an array of `{get}` values from an array to string

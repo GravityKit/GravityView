@@ -109,12 +109,12 @@ class GravityView_Cache {
 		if ( is_wp_error( $entry ) ) {
 
 			/** @var WP_Error $entry */
-			do_action( 'gravityview_log_error', __METHOD__ . ' Could not retrieve entry ' . $lead_id . ' to delete it: ' . $entry->get_error_message() );
+			gravityview()->log->error( 'Could not retrieve entry {entry_id} to delete it: {error}', array( 'entry_id' => $lead_id, 'error' => $entry->get_error_message() ) );
 
 			return;
 		}
 
-		do_action( 'gravityview_log_debug', __METHOD__ . ' adding form ' . $entry['form_id'] . ' to blacklist because entry #' . $lead_id . ' was deleted', array( 'value' => $property_value, 'previous' => $previous_value ) );
+		gravityview()->log->debug( 'adding form {form_id} to blacklist because entry #{lead_id} was deleted', array( 'form_id' => $entry['form_id'], 'entry_id' => $lead_id, 'data' => array( 'value' => $property_value, 'previous' => $previous_value ) ) );
 
 		$this->blacklist_add( $entry['form_id'] );
 	}
@@ -129,7 +129,7 @@ class GravityView_Cache {
 	 */
 	public function entry_updated( $form, $lead_id ) {
 
-		do_action( 'gravityview_log_debug', 'GravityView_Cache[entry_updated] adding form ' . $form['id'] . ' to blacklist because entry #' . $lead_id . ' was updated' );
+		gravityview()->log->debug(' adding form {form_id} to blacklist because entry #{entry_id} was updated', array( 'form_id' => $form['id'], 'entry_id' => $lead_id ) );
 
 		$this->blacklist_add( $form['id'] );
 	}
@@ -146,7 +146,7 @@ class GravityView_Cache {
 	 */
 	public function entry_created( $entry, $form ) {
 
-		do_action( 'gravityview_log_debug', 'GravityView_Cache[entry_created] adding form ' . $form['id'] . ' to blacklist because entry #' . $entry['id'] . ' was created' );
+		gravityview()->log->debug( 'adding form {form_id} to blacklist because entry #{entry_id} was created', array( 'form_id' => $form['id'], 'entry_id' => $entry['id'] ) );
 
 		$this->blacklist_add( $form['id'] );
 	}
@@ -164,7 +164,7 @@ class GravityView_Cache {
 			return;
 		}
 
-		do_action( 'gravityview_log_debug', 'GravityView_Cache[entry_added] adding form ' . $form['id'] . ' to blacklist because entry #' . $entry['id'] . ' was added' );
+		gravityview()->log->debug( 'adding form {form_id} to blacklist because entry #{entry_id} was added', array( 'form_id' => $form['id'], 'entry_id' => $entry['id'] ) );
 
 		$this->blacklist_add( $form['id'] );
 	}
@@ -236,10 +236,10 @@ class GravityView_Cache {
 
 		$form_ids = is_array( $form_ids ) ? $form_ids : array( $form_ids );
 
-		do_action( 'gravityview_log_debug', 'GravityView_Cache[blacklist_add] Adding form IDs to cache blacklist', array(
+		gravityview()->log->debug( 'Adding form IDs to cache blacklist', array( 'data' => array(
 			'$form_ids'  => $form_ids,
 			'$blacklist' => $blacklist
-		) );
+		) ) );
 
 		// Add the passed form IDs
 		$blacklist = array_merge( (array) $blacklist, $form_ids );
@@ -267,11 +267,11 @@ class GravityView_Cache {
 
 		$updated_list = array_diff( $blacklist, (array) $form_ids );
 
-		do_action( 'gravityview_log_debug', 'GravityView_Cache[blacklist_remove] Removing form IDs from cache blacklist', array(
+		gravityview()->log->debug( 'Removing form IDs from cache blacklist', array( 'data' => array(
 			'$form_ids'     => $form_ids,
 			'$blacklist'    => $blacklist,
 			'$updated_list' => $updated_list
-		) );
+		) ) );
 
 		return update_option( self::BLACKLIST_OPTION_NAME, $updated_list );
 	}
@@ -293,7 +293,7 @@ class GravityView_Cache {
 
 		if ( empty( $form_ids ) ) {
 
-			do_action( 'gravityview_log_debug', 'GravityView_Cache[in_blacklist] Did not add form to blacklist; empty form ID', $form_ids );
+			gravityview()->log->debug( 'Did not add form to blacklist; empty form ID', array( 'data' => $form_ids ) );
 
 			return false;
 		}
@@ -302,7 +302,7 @@ class GravityView_Cache {
 
 			if ( in_array( $form_id, $blacklist ) ) {
 
-				do_action( 'gravityview_log_debug', 'GravityView_Cache[in_blacklist] Form #' . esc_attr( $form_id ) . ' is in the cache blacklist' );
+				gravityview()->log->debug( 'Form #{form_id} is in the cache blacklist', array( 'form_id' => $form_id ) );
 
 				return true;
 			}
@@ -325,29 +325,29 @@ class GravityView_Cache {
 
 		if ( ! $this->use_cache() ) {
 
-			do_action( 'gravityview_log_debug', 'GravityView_Cache[get] Not using cached results because of GravityView_Cache->use_cache() results' );
+			gravityview()->log->debug( 'Not using cached results because of GravityView_Cache->use_cache() results' );
 
 			return false;
 		}
 
-		do_action( 'gravityview_log_debug', 'GravityView_Cache[get] Fetching request with transient key ' . $key );
+		gravityview()->log->debug( 'Fetching request with transient key {key}', array( 'key' => $key ) );
 
 		$result = get_transient( $key );
 
 		if ( is_wp_error( $result ) ) {
 
-			do_action( 'gravityview_log_debug', 'GravityView_Cache[get] Fetching request resulted in error:', $result );
+			gravityview()->log->debug( 'Fetching request resulted in error:', array( 'data' => $result ) );
 
 			return false;
 
 		} elseif ( $result ) {
 
-			do_action( 'gravityview_log_debug', 'GravityView_Cache[get] Cached results found for  transient key ' . $key );
+			gravityview()->log->debug( 'Cached results found for  transient key {key}', array( 'key' => $key ) );
 
 			return $result;
 		}
 
-		do_action( 'gravityview_log_debug', 'GravityView_Cache[get] No cached results found for  transient key ' . $key );
+		gravityview()->log->debug( 'No cached results found for  transient key {key}', array( 'key' => $key ) );
 
 		return NULL;
 
@@ -372,13 +372,13 @@ class GravityView_Cache {
 			 */
 			$cache_time = (int) apply_filters( 'gravityview_cache_time_' . $filter_name, DAY_IN_SECONDS );
 
-			do_action( 'gravityview_log_debug', 'GravityView_Cache[set] Setting cache with transient key ' . $this->key . ' for ' . $cache_time . ' seconds' );
+			gravityview()->log->debug( 'Setting cache with transient key {key} for {cache_time} seconds', array( 'key' => $this->key, 'cache_time' => $cache_time ) );
 
 			return set_transient( $this->key, $content, $cache_time );
 
 		}
 
-		do_action( 'gravityview_log_debug', 'GravityView_Cache[set] Cache not set; content is empty' );
+		gravityview()->log->debug( 'Cache not set; content is empty' );
 
 		return false;
 
@@ -401,7 +401,7 @@ class GravityView_Cache {
 		$form_ids = is_null( $form_ids ) ? $this->form_ids : $form_ids;
 
 		if ( empty( $form_ids ) ) {
-			do_action( 'gravityview_log_debug', 'GravityView_Cache[delete] Did not delete cache; empty form IDs' );
+			gravityview()->log->debug( 'Did not delete cache; empty form IDs' );
 
 			return;
 		}
@@ -428,10 +428,10 @@ class GravityView_Cache {
 				delete_transient( preg_replace( '#^_transient_#', '', $transient ) );
 			}
 
-			do_action( 'gravityview_log_debug', 'GravityView_Cache[delete] Deleting cache for form #' . $form_id, array(
+			gravityview()->log->debug( 'Deleting cache for form #{form_id}', array( 'form_id' => $form_id, 'data' => array(
 				$sql,
 				sprintf( 'Deleted results: %d', count( $transients ) )
-			) );
+			) ) );
 		}
 
 	}
@@ -509,7 +509,7 @@ class GravityView_Cache {
 
 		$num_results += $wpdb->query( $sql );
 
-		do_action( 'gravityview_log_debug', 'GravityView_Cache[delete_expired_transients] Deleted ' . $num_results . ' expired transient records from the database' );
+		gravityview()->log->debug( 'Deleted {count} expired transient records from the database', array( 'count' => $num_results ) );
 	}
 
 	/**
@@ -521,13 +521,18 @@ class GravityView_Cache {
 	 */
 	public function use_cache() {
 
+		// Exit early if debugging (unless running PHPUnit)
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && ! ( defined('DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) ) {
+			return apply_filters( 'gravityview_use_cache', false, $this );
+		}
+
 		$use_cache = true;
 
 		if ( GVCommon::has_cap( 'edit_gravityviews' ) ) {
 
 			if ( isset( $_GET['cache'] ) || isset( $_GET['nocache'] ) ) {
 
-				do_action( 'gravityview_log_debug', 'GravityView_Cache[use_cache] Not using cache: ?cache or ?nocache is in the URL' );
+				gravityview()->log->debug( 'Not using cache: ?cache or ?nocache is in the URL' );
 
 				$use_cache = false;
 			}

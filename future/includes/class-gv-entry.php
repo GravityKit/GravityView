@@ -16,7 +16,7 @@ abstract class Entry {
 	/**
 	 * @var string The identifier of the backend used for this entry.
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public static $backend = null;
 
@@ -24,7 +24,7 @@ abstract class Entry {
 	 * @var int The ID for this entry.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 */
 	public $ID = null;
 
@@ -76,7 +76,7 @@ abstract class Entry {
 	 * @param int|string $entry_id The internal entry ID.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0
 	 * @return \GV\Entry|null An instance of this entry or null if not found.
 	 */
 	public static function by_id( $entry_id ) {
@@ -90,5 +90,95 @@ abstract class Entry {
 	 */
 	public function as_entry() {
 		return $this->entry;
+	}
+
+	/**
+	 * Return the link to this entry in the supplied context.
+	 *
+	 * @api
+	 * @since 2.0
+	 *
+	 * @param \GV\View|null $view The View context.
+	 * @param \GV\Request $request The Request (current if null).
+	 * @param boolean $track_directory Keep the housing directory arguments intact (used for breadcrumbs, for example). Default: true.
+	 *
+	 * @return string The permalink to this entry.
+	 */
+	public function get_permalink( \GV\View $view = null, \GV\Request $request = null, $track_directory = true ) {
+		if ( is_null( $request ) ) {
+			$request = &gravityview()->request;
+		}
+
+		global $post;
+
+		$args = array();
+
+		$view_id = is_null ( $view ) ? null : $view->ID;
+
+		$permalink = null;
+
+		/** This is not a regular view. */
+		if ( ! $request->is_view() ) {
+
+			/** Must be an embed of some sort. */
+			if ( is_object( $post ) && is_numeric( $post->ID ) ) {
+				$permalink = get_permalink( $post->ID );
+				$args['gvid'] = $view_id;
+			}
+		}
+		
+		/** Fallback to regular view base. */
+		if ( is_null( $permalink ) ) {
+			$permalink = get_permalink( $view_id );
+		}
+
+		/**
+		 * @filter `gravityview_directory_link` Modify the URL to the View "directory" context
+		 * @since 1.19.4
+		 * @param string $link URL to the View's "directory" context (Multiple Entries screen)
+		 * @param int $post_id ID of the post to link to. If the View is embedded, it is the post or page ID
+		 */
+		$permalink = apply_filters( 'gravityview_directory_link', $permalink, $request->is_view() ? $view_id : ( $post ? $post->ID : null ) );
+
+		$entry_endpoint_name = \GV\Entry::get_endpoint_name();
+		$entry_slug = \GravityView_API::get_entry_slug( $this->ID, $this->as_entry() );
+
+		/** Assemble the permalink. */
+		if ( get_option( 'permalink_structure' ) && ! is_preview() ) {
+			/**
+			 * Make sure the $directory_link doesn't contain any query otherwise it will break when adding the entry slug.
+			 * @since 1.16.5
+			 */
+			$link_parts = explode( '?', $permalink );
+
+			$query = ! empty( $link_parts[1] ) ? '?' . $link_parts[1] : '';
+
+			$permalink = trailingslashit( $link_parts[0] ) . $entry_endpoint_name . '/'. $entry_slug .'/' . $query;
+		} else {
+			$args[ $entry_endpoint_name ] = $entry_slug;
+		}
+
+		if ( $track_directory ) {
+			if ( ! empty( $_GET['pagenum'] ) ) {
+				$args['pagenum'] = intval( $_GET['pagenum'] );
+			}
+
+			if ( $sort = Utils::_GET( 'sort' ) ) {
+				$args['sort'] = $sort;
+				$args['dir'] = Utils::_GET( 'dir' );
+			}
+		}
+
+		$permalink = add_query_arg( $args, $permalink );
+
+		/**
+		 * @filter `gravityview/entry/permalink` The permalink of this entry.
+		 * @since 2.0
+		 * @param string $permalink The permalink.
+		 * @param \GV\Entry $entry The entry we're retrieving it for.
+		 * @param \GV\View|null $view The view context.
+		 * @param \GV\Request $reqeust The request context.
+		 */
+		return apply_filters( 'gravityview/entry/permalink', $permalink, $this, $view, $request );
 	}
 }

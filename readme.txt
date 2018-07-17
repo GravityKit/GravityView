@@ -1,7 +1,8 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.4
-Tested up to: 4.9.1
+Tested up to: 4.9.7
+Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -20,7 +21,232 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.22.5 on January 22, 2018 =
+= 2.0.14 on July 9, 2018 =
+
+* Added: Allow filtering entries by Unapproved status in Gravity Forms
+* Added: Reset entry approval status by holding down Option/Alt when clicking entry approval icon
+* Fixed: Merge Tags not working in field Custom Labels
+* Fixed: Enable sorting by approval status all the time, not just when a form has an Approval field
+* Fixed: When a View is saved without a connected form, don't show "no longer exists" message
+* Fixed: Inline Edit plugin not updating properly when GravityView is active
+
+__Developer Notes:__
+
+* Added: `gravityview/approve_entries/after_submission/default_status` filter to modify the default status of an entry as it is created.
+* Modified: No longer delete `is_approved` entry meta when updating entry status - leave the value to be `GravityView_Entry_Approval_Status::UNAPPROVED` (3)
+* Fixed: Allow for "in" and "not_in" comparisons when using `GravityView_GFFormsModel::is_value_match`
+* Tweak: If "Search Mode" key is set, but there is no value, use "all"
+* Tweak: Reduced number of database queries when rendering a View
+
+= 2.0.13.1 on June 26, 2018 =
+
+* Fixed: Custom Content fields not working with DIY Layout
+* Fixed: Error when displaying plugin updates on a single site of a Multisite installation
+
+= 2.0.13 on June 25, 2018 =
+
+* Fixed: When View is embedded in a page, the "Delete Entry" link redirects the user to the View URL instead of embedded page URL
+* Fixed: Custom Content fields not working with DIY Layout since 2.0.11
+* Fixed: Fatal error when migrating settings from (very) old versions of GravityView
+* Fixed: oEmbed not working when using "plain" URLs with numeric View ID slugs
+
+__Developer Notes__
+
+* Added: Code to expose Entry Notes globally, to fix conflict with DataTables (future DataTables update required)
+* Added: `data-viewid` attribute to the Search Bar form with the current View ID
+* Added: Current Post ID parameter to the `gravityview/edit-entry/publishing-action/after` action
+
+= 2.0.12 on June 12, 2018 =
+
+* Fixed: On the Plugins page, "Update now" not working for GravityView Premium Plugins, Views & Extensions
+* Fixed: Always show that plugin updates are available, even if a license is expired
+
+= 2.0.11 on June 12, 2018 =
+
+* Added: Search for fields by name when adding fields to your View configuration (it's really great!)
+* Fixed: GravityView license details not saving when the license was activated (only when the Update Settings button was clicked)
+* Fixed: Entry filtering for single entries
+* Fixed: Per-user language setting not being used in WordPress 4.7 or newer
+
+__Developer Notes__
+
+* Added: `\GV\View::get_joins()` method to fetch array of `\GV\Joins` connected with a View
+* Added: `\GV\View::get_joined_forms()` method to get array of `\GV\GF_Forms` connected with a View
+
+= 2.0.10 on June 6, 2018 =
+
+* Fixed: Password-protected Views were showing "You are not allowed to view this content" instead of the password form
+* Fixed: When Map View is embedded, Search Bar pointed to View URL, not page URL
+
+= 2.0.9 on June 1, 2018 =
+
+* Added: Allow passing `{get}` Merge Tags to [gventry] and [gvfield] shortcodes
+* Fixed: Searching by entry creator using the Search Bar wasn't working
+* Fixed: Edit Entry showing "Invalid link" warnings when multiple Views are embedded on a page
+* Fixed: Issues with legacy template back-compatiblity (A-Z Filters) and newer API widgets (Maps)
+* Fixed: Translations for entry "meta", like "Created By" or "Date Created"
+* Fixed: When searching State/Province with the Search Bar, use "exact match" search
+
+__Developer Notes__
+
+* Added: Auto-prefixing for all CSS rules, set to cover 99.7% of browsers. We were already prefixing, so it doesn't change much, but it will update automatically from now on, based on browser support.
+
+= 2.0.8.1 on May 31, 2018 =
+
+* Fixed: Standalone map fields not displaying on the [Maps layout](https://gravityview.co/extensions/maps/)
+* Fixed: `[gv_entry_link]` when embedded in a post or page, not a View
+* Fixed: `[gv_entry_link]` returning a broken link when the entry isn't defined
+* Fixed: Conflict with Testimonials Widget plugin (and other plugins) loading outdated code
+* Fixed: PHP notice when displaying Gravity Flow "Workflow" field
+
+= 2.0.8 on May 25, 2018 =
+
+* Fixed: Table layout not using field Column Width settings
+* Fixed: With "Show Label" disabled, "Custom Label" setting is being displayed (if set)
+* Fixed: List Field columns were being shown as searchable in Search Bar
+* Fixed: Conflict with Gravity Forms Import Entries file upload process
+* Fixed: Empty searches could show results when "Hide View data until search is performed" is enabled
+* Fixed: When "Start Date" and "End Date" are the same day, results may not be accurate
+
+__Developer Updates__
+
+* Fixed: `gv_value()` didn't have necessary View global data set for backward compatibility (`gv_value()` is now deprecated! Use `Use \GV\Field_Template::render()` instead.)
+
+= 2.0.7.1 on May 24, 2018 =
+
+* Fixed: Merge Tags not being shown in Custom Content fields in Edit Entry
+* Fixed: "gvGlobals not defined" JavaScript error on Edit Entry screen affecting some themes
+* Fixed: Don't clear Search Bar configuration when switching View layouts
+
+= 2.0.7 on May 23, 2018 =
+
+* Fixed: Entry visibility when View is embedded
+* Fixed: Don't show widgets if we're oEmbedding an entry
+* Fixed: Don't apply "Hide Until Search" on entry pages
+* Fixed: "Hide View data until search is performed" not working for Views on embedded pages
+* Fixed: Restore Advanced Custom Fields plugin compatibility
+* Tweak: When activating a license, remove the notice immediately
+* Fixed: Maps API key settings resetting after 24 hours
+
+__Developer Updates__
+
+* Changed: gravityview_get_context() now returns empty string if not GravityView post type
+
+= 2.0.6.1 on May 21, 2018 =
+
+* Fixed: "Hide View data until search is performed" not working
+* Added: Support for SiteOrigin Page Builder and LiveMesh SiteOrigin Widgets
+* Fixed: Enfold Theme layout builder no longer rendering Views
+
+= 2.0.6 on May 17, 2018 =
+
+* Fixed: Conflicts with Yoast SEO & Jetpack plugins that prevent widgets from displaying
+* Fixed: Some fields display as HTML (fixes Gravity Flow Discussion field, for example)
+* Fixed: Some Merge Tag modifiers not working, such as `:url` for List fields
+* Fixed: Give Floaty a place to hang out on the GravityView Settings screen with new Gravity Forms CSS
+
+__Developer Updates__
+
+* Fixed: Backward-compatibility for using global `$gravityview_view->_current_field` (don't use in new code!)
+
+= 2.0.5 on May 16, 2018 =
+
+* Fixed: Entry Link fields and `[gv_entry_link]` shortcode not working properly with DataTables when embedded
+* Fixed: Do not output other shortcodes in single entry mode
+* Fixed: Error when deleting an entry
+* Fixed: When multiple Views are embedded on a page, and one or more has Advanced Filters enabled, no entries will be displayed
+* Fixed: PHP warning with `[gravitypdf]` shortcode
+* Fixed: When multiple table layout Views are embedded on a page, there are multiple column sorting links displayed
+* Fixed: Error displaying message that a license is expired
+
+= 2.0.4 on May 12, 2018 =
+
+* Fixed: Slow front-end performance, affecting all layout types
+* Fixed: Search not performing properly
+* Fixed: "Enable sorting by column" option for Table layouts
+* GravityView will require Gravity Forms 2.3 in the future; please make sure you're using the latest version of Gravity Forms!
+
+__Developer Updates__
+
+* Fixed: `GravityView_frontend::get_view_entries()` search generation
+* Fixed: `gravityview_get_template_settings()` not returning settings
+* Tweak: Cache View and Field magic getters into variables for less overhead.
+
+= 2.0.3 on May 10, 2018 =
+
+* Fixed: Compatibility with `[gravitypdf]` shortcode
+* Fixed: When using `[gravityview]` shortcode, the `page_size` setting wasn't being respected
+* Fixed: `[gravityview detail="last_entry" /]` not returning the correct entry
+* Fixed: Widgets not being properly rendered when using oEmbed
+* Fixed: Note fields not rendering properly
+
+__Developer Notes__
+
+* Fixed: `GravityView_View::getInstance()` not returning information about a single entry
+* Added: `gravityview/shortcode/detail/$key` filter
+
+= 2.0.1 & 2.0.2 on May 9, 2018 =
+
+* Fixed: Widgets not displayed when a View is embedded
+* Fixed: Saving new settings can cause fatal error
+* Fixed: Prevent commonly-used front end function from creating an error in the Dashboard
+* Fixed: Hide labels if "Show Label" is not checked
+* Fixed: CSS borders on List layout
+* Fixed: Error when fetching GravityView Widget with DataTables Extension 2.2
+* Fixed: Fail gracefully when GravityView Maps is installed on a server running PHP 5.2.4
+
+= Version 2.0 on May 8, 2018 =
+
+We are proud to share this release with you: we have been working on this release since 2016, and although most of the changes won’t be seen, GravityView has a brand-new engine that will power the plugin into the future! 🚀
+\- Zack with GravityView
+
+---
+
+**Note: GravityView now requires PHP 5.3 or newer**
+
+_This is a major release. Please back up your site before updating._ We have tested the plugin thoroughly, but we suggest backing up your site before updating all plugins.
+
+**New functionality**
+
+* `[gventry]`: embed entries in a post, page or a View ([learn more](https://docs.gravityview.co/article/462-gvfield-embed-gravity-forms-field-values))
+* `[gvfield]`: embed single field values ([learn more](https://docs.gravityview.co/article/462-gvfield-embed-gravity-forms-field-values))
+* [Many new Merge Tag modifiers](https://docs.gravityview.co/article/350-merge-tag-modifiers) - These enable powerful new abilities when using the Custom Content field!
+* Use oEmbed with Custom Content fields - easily embed YouTube videos, Tweets (and much more) on your Custom Content field
+* "Is Starred" field - display whether an entry is "Starred" in Gravity Forms or not, and star/unstar it from the front end of your site
+* Added Bosnian, Iranian, and Canadian French translations, updated many others (thank you all!)
+
+**Smaller changes**
+
+* Added `{gv_entry_link}` Merge Tag, alias of `[gv_entry_link]` shortcode in `{gv_entry_link:[post id]:[action]}` format. This allows you to use `{gv_entry_link}` inside HTML tags, where you are not able to use the `[gv_entry_link]` shortcode.
+* Default `[gvlogic]` comparison is now set to `isnot=""`; this way, you can just use `[gvlogic if="{example:1}"]` instead of `[gvlogic if="{example:1}" isnot=""]` to check if a field has a value.
+
+**Developer Updates**
+
+This release is the biggest ever for developers! Even so, we have taken great care to provide backward compatibility with GravityView 1.x. Other than increasing the minimum version of PHP to 5.3, **no breaking changes were made.**
+
+* We have rewritten the plugin from the ground up. [Learn all about it here](https://github.com/gravityview/GravityView/wiki/The-Future-of-GravityView).
+* New REST API! Fetch GravityView details and entries using the WordPress REST API endpoint. It's disabled by default, but can be enabled or disabled globally on GravityView Settings screen, or per-View in View Settings. [Learn about the endpoints](https://github.com/gravityview/GravityView/wiki/REST-API).
+* New `gravityview()` API wrapper function, now used for easy access to everything you could want
+* New template structure ([learn how to migrate your custom template files](https://github.com/gravityview/GravityView/wiki/Template-Migration))
+* We have gotten rid of global state; actions and filters are now passed a `$context` argument, a [`\GV\Template_Context` object](https://github.com/gravityview/GravityView/blob/2.0/future/includes/class-gv-context-template.php)
+* When HTML 5 is enabled in Gravity Forms, now the Search All field will use `type="search"`
+* _Countless_ new filters and actions! Additional documentation will be coming, both on [docs.gravityview.co](https://docs.gravityview.co) as well as [codex.gravityview.co](https://codex.gravityview.co).
+
+A special thanks to [Gennady](https://codeseekah.com) for your tireless pursuit of better code, insistence on backward compatibility, and your positive attitude. 👏
+
+= 1.22.6 on April 4, 2018 =
+
+* Fixed: Line breaks being added to `[gvlogic]` shortcode output
+* Fixed: Gravity Forms 2.3 compatibility notice
+* Fixed: "The ID is required." message when configuring the GravityView Search WordPress widget
+* Fixed: Slashes were being added to Post Image details
+
+__Developer Updates:__
+
+* Added `gravityview/edit_entry/reveal_hidden_field` filter, which allows you to prevent Hidden fields from becoming Text fields in Edit Entry context
+* Added `gravityview/edit_entry/field_visibility` filter to set field visibility on Edit Entry (default is always "visible")
+
+= 1.22.5 on January 25, 2018 =
 
 * Improves support for [DIY Layout](https://gravityview.co/extensions/diy-layout/), a layout for designers & developers to take full advantage of GravityView
 * Tweak: Show "Embed Shortcode" helper if a View has widgets configured but not Fields
@@ -32,6 +258,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 __Developer Updates:__
 
 * Add `$nl2br`, `$format`, `$aux_data` parameters to `GravityView_API::replace_variables()` to be consistent with `GFCommon::replace_variables()`
+
+= 1.22.4? =
+
+Yes, we skipped a minor release (1.22.4 exists only in our hearts). Thanks for noticing!
 
 = 1.22.3 on December 21, 2017 =
 
@@ -90,7 +320,7 @@ __Developer Updates:__
 
 * Modified: Template files `list-header.php`, `list-single.php`, `table-header.php`, `table-single.php`
 * Fixed: When `GRAVITYVIEW_LICENSE_KEY` constant is defined, it will always be used, and the license field will be disabled
-* Fixed: List View and Table View templates have more standardized CSS selectors for single & multiple contexts ([Learn more](http://docs.gravityview.co/article/63-css-guide))
+* Fixed: List View and Table View templates have more standardized CSS selectors for single & multiple contexts ([Learn more](https://docs.gravityview.co/article/63-css-guide))
 * Fixed: Permalink issue when embedding a View on a page, then making it the site's Front Page
 * Fixed: Transient cache issues when invalidating cache
 * Fixed: `gv_empty()` now returns false for an array with all empty values
@@ -120,7 +350,7 @@ __Developer Updates:__
 
 = 1.21.5 on June 8, 2017 =
 
-* Added: The `{current_post}` Merge Tag adds information about the current post. [Read more about it](http://docs.gravityview.co/article/412-currentpost-merge-tag).
+* Added: The `{current_post}` Merge Tag adds information about the current post. [Read more about it](https://docs.gravityview.co/article/412-currentpost-merge-tag).
 * Added: `gravityview/gvlogic/parse_atts/after` action to modify `[gvlogic]` shortcode attributes after it's been parsed
 * Added: A new setting to opt-in for access to the latest pre-release versions of GravityView (in Views > Settings)
 * Added: Support for Restrict Content Pro when in "No-Conflict Mode"
@@ -288,7 +518,7 @@ __Developer Notes:__
 * New: __Front-end entry moderation__! You can now approve and disapprove entries from the front of a View - [learn how to use front-end entry approval](https://docs.gravityview.co/article/390-entry-approval)
     - Add entry moderation to your View with the new "Approve Entries" field
     - Displaying the current approval status by using the new "Approval Status" field
-    - Views have a new "Show all entries to administrators" setting. This allows administrators to see entries with any approval status. [Learn how to use this new setting](http://docs.gravityview.co/article/390-entry-approval#clarify-step-16)
+    - Views have a new "Show all entries to administrators" setting. This allows administrators to see entries with any approval status. [Learn how to use this new setting](https://docs.gravityview.co/article/390-entry-approval#clarify-step-16)
 * Fixed: Approval values not updating properly when using the "Approve/Reject" and "User Opt-In" fields
 * Tweak: Show inactive forms in the Data Source form dropdown
 * Tweak: If a View is connected to a form that is in the trash or does not exist, an error message is now shown
@@ -298,14 +528,14 @@ __Developer Notes:__
 
 __Developer Notes:__
 
-* Added: `field-approval.css` CSS file. [Learn how to override the design here](http://docs.gravityview.co/article/388-front-end-approval-css).
+* Added: `field-approval.css` CSS file. [Learn how to override the design here](https://docs.gravityview.co/article/388-front-end-approval-css).
 * Modified: Removed the bottom border on the "No Results" text (`.gv-no-results` CSS selector)
 * Fixed: Deprecated `get_bloginfo()` usage
 
 = 1.18.1 on November 3, 2016 =
 
 * Updated: 100% Chinese translation—thank you [Michael Edi](https://www.transifex.com/user/profile/michaeledi/)!
-* Fixed: Entry approval not working when using [custom entry slugs](http://docs.gravityview.co/article/57-customizing-urls)
+* Fixed: Entry approval not working when using [custom entry slugs](https://docs.gravityview.co/article/57-customizing-urls)
 * Fixed: `Undefined index: is_active` warning is shown when editing entries with User Registration Addon active
 * Fixed: Strip extra whitespace in Entry Note field templates
 
@@ -432,7 +662,7 @@ __Developer Notes:__
     - Add and delete Entry Notes from the frontend
     - Allows users to email Notes when they are added
     - Display notes to logged-out users
-    - New [user capabilities](http://docs.gravityview.co/article/311-gravityview-capabilities) to limit access (`gravityview_add_entry_notes`, `gravityview_view_entry_notes`, `gravityview_delete_entry_notes`, `gravityview_email_entry_notes`)
+    - New [user capabilities](https://docs.gravityview.co/article/311-gravityview-capabilities) to limit access (`gravityview_add_entry_notes`, `gravityview_view_entry_notes`, `gravityview_delete_entry_notes`, `gravityview_email_entry_notes`)
 * Added: Merge Tag modifiers - now set a maximum length of content, and automatically add paragraphs to Merge Tags. [Read how to use the new Merge Tag modifiers](https://docs.gravityview.co/article/350-merge-tag-modifiers).
     - `:maxwords:{number}` - Limit output to a set number of words
     - `:wpautop` - Automatically add line breaks and paragraphs to content
@@ -545,7 +775,7 @@ __Developer Notes:__
 
 * Fixed: Date range search not working
 * Fixed: Display fields with calculation enabled on the Edit Entry view
-* Fixed: Large images in a gallery not resizing (when using [.gv-gallery](http://docs.gravityview.co/article/247-create-a-gallery))
+* Fixed: Large images in a gallery not resizing (when using [.gv-gallery](https://docs.gravityview.co/article/247-create-a-gallery))
 * Tweak: Start and end date in search are included in the results
 
 __Developer Notes:__
@@ -608,9 +838,9 @@ __Developer Notes:__
 
 = 1.16 on January 14 =
 * Happy New Year! We have big things planned for GravityView in 2016, including a new View Builder. Stay tuned :-)
-* Added: Merge Tags. [See all GravityView Merge Tags](http://docs.gravityview.co/article/76-merge-tags)
-    * `{date_created}` The date an entry was created. [Read how to use it here](http://docs.gravityview.co/article/331-date-created-merge-tag).
-    * `{payment_date}` The date the payment was received. Formatted using [the same modifiers](http://docs.gravityview.co/article/331-date-created-merge-tag) as `{date_created}`
+* Added: Merge Tags. [See all GravityView Merge Tags](https://docs.gravityview.co/article/76-merge-tags)
+    * `{date_created}` The date an entry was created. [Read how to use it here](https://docs.gravityview.co/article/331-date-created-merge-tag).
+    * `{payment_date}` The date the payment was received. Formatted using [the same modifiers](https://docs.gravityview.co/article/331-date-created-merge-tag) as `{date_created}`
     * `{payment_status}` The current payment status of the entry (ie "Processing", "Pending", "Active", "Expired", "Failed", "Cancelled", "Approved", "Reversed", "Refunded", "Voided")
     * `{payment_method}` The way the entry was paid for (ie "Credit Card", "PayPal", etc.)
     * `{payment_amount}` The payment amount, formatted as the currency (ie `$75.25`). Use `{payment_amount:raw}` for the un-formatted number (ie `75.25`)
@@ -650,7 +880,7 @@ __Developer Notes:__
 * Fixed: Don't output widget structural HTML if there are no configured widgets
 * Fixed: Empty HTML `<h4>` label container output in List layout, even when "Show Label" was unchecked
 * Fixed: Fetching the current entry can improperly return an empty array when using `GravityView_View->getCurrentEntry()` in DataTables extension
-* Fixed: `gravityview/sortable/formfield_{form}_{field_id}` filter [detailed here](http://docs.gravityview.co/article/231-how-to-disable-the-sorting-control-on-one-table-column)
+* Fixed: `gravityview/sortable/formfield_{form}_{field_id}` filter [detailed here](https://docs.gravityview.co/article/231-how-to-disable-the-sorting-control-on-one-table-column)
 * Fixed: `gravityview/sortable/field_blacklist` filter docBlock fixed
 * Tweak: Set `max-width: 50%` for `div.gv-list-view-content-image`
 * Tweak: Moved `gv_selected()` to `helper-functions.php` from `class-api.php`
@@ -707,16 +937,16 @@ __Developer Notes:__
 * Tweak: Rename `GravityView_Merge_Tags::_gform_replace_merge_tags()` method `GravityView_Merge_Tags::replace_gv_merge_tags()` for clarity
 
 = 1.15 on October 15 =
-* Added: `{get}` Merge Tag that allows passing data via URL to be safely displayed in Merge Tags. [Learn how this works](http://docs.gravityview.co/article/314-the-get-merge-tag).
+* Added: `{get}` Merge Tag that allows passing data via URL to be safely displayed in Merge Tags. [Learn how this works](https://docs.gravityview.co/article/314-the-get-merge-tag).
 	- Example: When adding `?first-name=Floaty` to a URL, the Custom Content `My name is {get:first-name}` would be replaced with `My name is Floaty`
-* Added: GravityView Capabilities: restrict access to GravityView functionality to certain users and roles. [Learn more](http://docs.gravityview.co/article/311-gravityview-capabilities).
+* Added: GravityView Capabilities: restrict access to GravityView functionality to certain users and roles. [Learn more](https://docs.gravityview.co/article/311-gravityview-capabilities).
 	- Fixed: Users without the ability to create Gravity Forms forms are able to create a new form via "Start Fresh"
 	- Only add the Approve Entries column if user has the `gravityview_moderate_entries` capability (defaults to Editor role or higher)
 	- Fixed: Contributors now have access to the GravityView "Getting Started" screen
-* Added: `[gv_entry_link]` shortcode to link directly to an entry. [Learn more](http://docs.gravityview.co/article/287-edit-entry-and-delete-entry-shortcodes).
+* Added: `[gv_entry_link]` shortcode to link directly to an entry. [Learn more](https://docs.gravityview.co/article/287-edit-entry-and-delete-entry-shortcodes).
 	- Existing `[gv_delete_entry_link]` and `[gv_edit_entry_link]` shortcodes will continue to work
-* Added: Ability to filter View by form in the Admin. [Learn more](http://docs.gravityview.co/article/313-the-views-list-on-the-dashboard).
-* Added: Option to delete GravityView data when the plugin is uninstalled, then deleted. [Learn more](http://docs.gravityview.co/article/312-how-to-delete-the-gravityview-data-when-the-plugin-is-uninstalled).
+* Added: Ability to filter View by form in the Admin. [Learn more](https://docs.gravityview.co/article/313-the-views-list-on-the-dashboard).
+* Added: Option to delete GravityView data when the plugin is uninstalled, then deleted. [Learn more](https://docs.gravityview.co/article/312-how-to-delete-the-gravityview-data-when-the-plugin-is-uninstalled).
 * Added: New support "Beacon" to easily search documentation and ask support questions
 * Added: Clear search button to the Search Widget (WP widget)
 * Fixed: `number_format()` PHP warning on blank Number fields
@@ -799,8 +1029,8 @@ __Developer Notes:__
 * Added: Number field settings
 	- Format number: Display numbers with thousands separators
 	- Decimals: Precision of the number of decimal places. Leave blank to use existing precision.
-* Added: `detail` parameter to the `[gravityview]` shortcode. [Learn more](http://docs.gravityview.co/article/73-using-the-shortcode#detail-parameter)
-* Added: `context` parameter to the `[gvlogic]` shortcode to show/hide content based on current mode (Multiple Entries, Single Entry, Edit Entry). [Learn more](http://docs.gravityview.co/article/252-gvlogic-shortcode#context)
+* Added: `detail` parameter to the `[gravityview]` shortcode. [Learn more](https://docs.gravityview.co/article/73-using-the-shortcode#detail-parameter)
+* Added: `context` parameter to the `[gvlogic]` shortcode to show/hide content based on current mode (Multiple Entries, Single Entry, Edit Entry). [Learn more](https://docs.gravityview.co/article/252-gvlogic-shortcode#context)
 * Added: Allow to override the entry saved value by the dynamic populated value on the Edit Entry view using the `gravityview/edit_entry/pre_populate/override` filter
 * Added: "Edit View" link in the Toolbar when on an embedded View screen
 * Added: `gravityview_is_hierarchical` filter to enable defining a Parent View
@@ -813,7 +1043,7 @@ __Developer Notes:__
 * Fixed: Extension class wasn't properly checking requirements
 * Fixed: Issue with some themes adding paragraphs to Javascript tags in the Edit Entry screen
 * Fixed: Duplicated information in the debugging logs
-* Updated: "Single Entry Title" and "Back Link Label" settings now support shortcodes, allowing for you to use [`[gvlogic]`](http://docs.gravityview.co/article/252-gvlogic-shortcode)
+* Updated: "Single Entry Title" and "Back Link Label" settings now support shortcodes, allowing for you to use [`[gvlogic]`](https://docs.gravityview.co/article/252-gvlogic-shortcode)
 * Updated: German and Portuguese translations
 
 = 1.12 on August 5 =
@@ -865,7 +1095,7 @@ __Developer Notes:__
 * Fixed: Edit Entry and Delete Entry may not always show in embedded Views
 * Fixed: Search Bar "Clear" button Javascript warning in Internet Explorer
 * Fixed: Edit Entry styling issues with input sizes. Edit Entry now uses 100% Gravity Forms styles.
-* Added: `[gv_edit_entry_link]` and `[gv_delete_entry_link]` shortcodes. [Read how to use them](http://docs.gravityview.co/article/287-edit-entry-and-delete-entry-shortcodes)
+* Added: `[gv_edit_entry_link]` and `[gv_delete_entry_link]` shortcodes. [Read how to use them](https://docs.gravityview.co/article/287-edit-entry-and-delete-entry-shortcodes)
 
 = 1.9.1 on June 24 =
 * Fixed: Allow "Admin Only" fields to appear in Edit Entry form
@@ -880,9 +1110,9 @@ __Developer Notes:__
 	- If visiting an invalid Edit Entry link, you are now provided with a back link
 	- Product fields are now hidden by default, since they aren't editable. If you want to instead display the old message that "product fields aren't editable," you can show them using the new `gravityview/edit_entry/hide-product-fields` filter
 * Added: Define column widths for fields in each field's settings (for Table and DataTable View Types only)
-* Added: `{created_by}` Merge Tag that displays information from the creator of the entry ([learn more](http://docs.gravityview.co/article/281-the-createdby-merge-tag))
+* Added: `{created_by}` Merge Tag that displays information from the creator of the entry ([learn more](https://docs.gravityview.co/article/281-the-createdby-merge-tag))
 * Added: Edit Entry field setting to open link in new tab/window
-* Added: CSS classes to the Update/Cancel/Delete buttons ([learn more](http://docs.gravityview.co/article/63-css-guide#edit-entry))
+* Added: CSS classes to the Update/Cancel/Delete buttons ([learn more](https://docs.gravityview.co/article/63-css-guide#edit-entry))
 * Fixed: Shortcodes not processing properly in DataTables Extension
 * Tweak: Changed support widget to a Live Chat customer support and feedback form widget
 
@@ -902,7 +1132,7 @@ __Developer Notes:__
 * Tweak: Updated the `list-single.php`, `table-body.php`, `table-single.php` templates to use `GravityView_View->getFields()` method
 
 = 1.8 on May 26 =
-* View settings have been consolidated to a single location. [Learn more about the new View Settings layout](http://docs.gravityview.co/article/275-view-settings).
+* View settings have been consolidated to a single location. [Learn more about the new View Settings layout](https://docs.gravityview.co/article/275-view-settings).
 * Added: Custom Link Text in Website fields
 * Added: Poll Addon GravityView widget
 * Added: Quiz Addon support: add Quiz score fields to your View configuration
@@ -910,7 +1140,7 @@ __Developer Notes:__
 * Fixed: `[gvlogic]` shortcode now properly handles comparing empty values.
     * Use `[gvlogic if="{example} is=""]` to determine if a value is blank.
     * Use `[gvlogic if="{example} isnot=""]` to determine if a value is not blank.
-    * See "Matching blank values" in the [shortcode documentation](http://docs.gravityview.co/article/252-gvlogic-shortcode)
+    * See "Matching blank values" in the [shortcode documentation](https://docs.gravityview.co/article/252-gvlogic-shortcode)
 * Fixed: Sorting by full address. Now defaults to sorting by city. Use the `gravityview/sorting/address` filter to modify what data to use ([here's how](https://gist.github.com/zackkatz/8b8f296c6f7dc99d227d))
 * Fixed: Newly created entries cannot be directly accessed when using the custom slug feature
 * Fixed: Merge Tag autocomplete hidden behind the Field settings (did you know you can type `{` in a field that has Merge Tags enabled and you will get autocomplete?)
@@ -955,7 +1185,7 @@ __Developer Notes:__
 * Fixed: Path issue with the A-Z Filters Extension
 
 = 1.7.5 on April 10 =
-* Added: `[gvlogic]` Shortcode - allows you to show or hide content based on the value of merge tags in Custom Content fields! [Learn how to use the shortcode](http://docs.gravityview.co/article/252-gvlogic-shortcode).
+* Added: `[gvlogic]` Shortcode - allows you to show or hide content based on the value of merge tags in Custom Content fields! [Learn how to use the shortcode](https://docs.gravityview.co/article/252-gvlogic-shortcode).
 * Fixed: White Screen error when license key wasn't set and settings weren't migrated (introduced in 1.7.4)
 * Fixed: No-Conflict Mode not working (introduced in 1.7.4)
 * Fixed: PHP notices when visiting complex URLs
@@ -995,7 +1225,7 @@ __Developer Notes:__
 
 = 1.7.2 on March 18 =
 * Added: Other Entries field - Show what other entries the entry creator has in the current View
-* Added: Ability to hide the Approve/Reject column when viewing Gravity Forms entries ([Learn how](http://docs.gravityview.co/article/248-how-to-hide-the-approve-reject-entry-column))
+* Added: Ability to hide the Approve/Reject column when viewing Gravity Forms entries ([Learn how](https://docs.gravityview.co/article/248-how-to-hide-the-approve-reject-entry-column))
 * Fixed: Missing Row Action links for non-View types (posts, pages)
 * Fixed: Embedded DataTable Views with `search_value` not filtering correctly
 * Fixed: Not possible to change View status to 'Publish'
@@ -1009,8 +1239,8 @@ __Developer Notes:__
 
 = 1.7 on March 10 =
 * Added: You can now edit most Post Fields in Edit Entry mode
-    - Supports Post Content, Post Title, Post Excerpt, Post Tags, Post Category, and most Post Custom Field configurations ([Learn more](http://docs.gravityview.co/article/245-editable-post-fields))
-* Added: Sort Table columns ([read how](http://docs.gravityview.co/article/230-how-to-enable-the-table-column-sorting-feature))
+    - Supports Post Content, Post Title, Post Excerpt, Post Tags, Post Category, and most Post Custom Field configurations ([Learn more](https://docs.gravityview.co/article/245-editable-post-fields))
+* Added: Sort Table columns ([read how](https://docs.gravityview.co/article/230-how-to-enable-the-table-column-sorting-feature))
 * Added: Post ID field now available - shows the ID of the post that was created by the Gravity Forms entry
 * Fixed: Properly reset `$post` after Live Post Data is displayed
 * Tweak: Display spinning cursor while waiting for View configurations to load
@@ -1030,7 +1260,7 @@ __Developer Notes:__
 * GravityView will soon require Gravity Forms 1.9 or higher. If you are running Gravity Forms Version 1.8.x, please update to the latest version.
 
 = 1.6.2 on February 23 =
-* Added: Two new hooks in the Custom Content field to enable conditional logic or enable `the_content` WordPress filter which will trigger the Video embed ([read how](http://docs.gravityview.co/article/227-how-can-i-transform-a-video-link-into-a-player-using-the-custom-content-field))
+* Added: Two new hooks in the Custom Content field to enable conditional logic or enable `the_content` WordPress filter which will trigger the Video embed ([read how](https://docs.gravityview.co/article/227-how-can-i-transform-a-video-link-into-a-player-using-the-custom-content-field))
 * Fixed: Issue when embedding multiple DataTables views in the same page
 * Tweak: A more robust "Save View" procedure to prevent losing field configuration on certain browsers
 * Updated Translations:
@@ -1051,11 +1281,11 @@ __Developer Notes:__
 * Updated: Hungarian, Norwegian, Portuguese, Swedish, Turkish, and Spanish translations (thanks to all the translators!)
 
 = 1.6 on February 12 =
-* Our support site has moved to [docs.gravityview.co](http://docs.gravityview.co). We hope you enjoy the improved experience!
-* Added: GravityView Search Widget - Configure a WordPress widget that searches any of your Views. [Read how to set it up](http://docs.gravityview.co/article/222-the-search-widget)
-* Added: Duplicate View functionality allows you to clone a View from the All Views screen. [Learn more](http://docs.gravityview.co/article/105-how-to-duplicate-or-copy-a-view)
-* Added: Recent Entries WordPress Widget - show the latest entries for your View. [Learn more](http://docs.gravityview.co/article/223-the-recent-entries-widget)
-* Added: Embed Single Entries - You can now embed entries in a post or page! [See how](http://docs.gravityview.co/article/105-how-to-duplicate-or-copy-a-view)
+* Our support site has moved to [docs.gravityview.co](https://docs.gravityview.co). We hope you enjoy the improved experience!
+* Added: GravityView Search Widget - Configure a WordPress widget that searches any of your Views. [Read how to set it up](https://docs.gravityview.co/article/222-the-search-widget)
+* Added: Duplicate View functionality allows you to clone a View from the All Views screen. [Learn more](https://docs.gravityview.co/article/105-how-to-duplicate-or-copy-a-view)
+* Added: Recent Entries WordPress Widget - show the latest entries for your View. [Learn more](https://docs.gravityview.co/article/223-the-recent-entries-widget)
+* Added: Embed Single Entries - You can now embed entries in a post or page! [See how](https://docs.gravityview.co/article/105-how-to-duplicate-or-copy-a-view)
 * Fixed: Fatal errors caused by Gravity Forms 1.9.1 conflict
 * Fixed: Respect Custom Input Labels added in Gravity Forms 1.9
 * Fixed: Edit Entry Admin Bar link
@@ -1500,7 +1730,7 @@ We're just getting started with what can be done with DataTables. We'll have muc
 	* Fixed: Default setting values working again
 	* Fixed: Field type settings now working
 * Added: `search_field` parameter to the shortcode. This allows you to specify a field ID where you want the search performed (The search itself is defined in `search_value`)
-* Added: [Using the Shortcode](http://docs.gravityview.co/article/73-using-the-shortcode) help article
+* Added: [Using the Shortcode](https://docs.gravityview.co/article/73-using-the-shortcode) help article
 * Added: Data Source added to the Views page
 * Fixed: Field labels escaping issue (`It's an Example` was displaying as `It\'s an Example`)
 * Fixed: Settings "gear" not showing when adding a new field

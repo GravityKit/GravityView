@@ -1,0 +1,29 @@
+
+.gv-edit-entry-wrapper {
+
+	.dashicons {
+		font-size: .925em;
+		padding: 0 .2em;
+		width: 1em;
+		height: 1em;
+		line-height: 1em;
+		#{$margin-left}: .5em;
+	}
+
+	.dashicons-dismiss {
+		color: #a10013;
+
+		&:hover {
+			color: #e20012;
+		}
+	}
+
+	.dashicons-download {
+		color: #406e20;
+
+		&:hover {
+			color: #469416;
+		}
+	}
+
+}

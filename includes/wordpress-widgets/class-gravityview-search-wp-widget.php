@@ -25,7 +25,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		$gravityview_widget = GravityView_Widget_Search::getInstance();
 
 		// frontend - filter entries
-		add_filter( 'gravityview_fe_search_criteria', array( $gravityview_widget, 'filter_entries' ), 10, 1 );
+		add_filter( 'gravityview_fe_search_criteria', array( $gravityview_widget, 'filter_entries' ), 10, 3 );
 
 		// frontend - add template path
 		add_filter( 'gravityview_template_paths', array( $gravityview_widget, 'add_template_path' ) );
@@ -55,7 +55,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		// Don't show unless a View ID has been set.
 		if( empty( $instance['view_id'] ) ) {
 
-			do_action('gravityview_log_debug', sprintf( '%s[widget]: No View ID has been defined. Not showing the widget.', get_class($this)), $instance );
+			gravityview()->log->debug( 'No View ID has been defined. Not showing the widget.', array( 'data' => $instance ) );
 
 			return;
 		}
@@ -116,7 +116,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		$instance['search_clear'] = $new_instance['search_clear'];
 		$instance['search_mode'] = $new_instance['search_mode'];
 
-		$is_valid_embed_id = GravityView_View_Data::is_valid_embed_id( $new_instance['post_id'], $instance['view_id'] );
+		$is_valid_embed_id = GravityView_View_Data::is_valid_embed_id( $instance['post_id'], $instance['view_id'], true );
 
 		//check if post_id is a valid post with embedded View
 		$instance['error_post_id'] = is_wp_error( $is_valid_embed_id ) ? $is_valid_embed_id->get_error_message() : NULL;
@@ -213,7 +213,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 			<input class="code" size="3" id="<?php echo $this->get_field_id('post_id'); ?>" name="<?php echo $this->get_field_name('post_id'); ?>" type="text" value="<?php echo esc_attr( $post_id ); ?>" />
 			<span class="howto"><?php
 				esc_html_e('To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded.', 'gravityview' );
-				echo ' '.gravityview_get_link('http://docs.gravityview.co/article/222-the-search-widget', __('Learn more&hellip;', 'gravityview' ), 'target=_blank' );
+				echo ' '.gravityview_get_link('https://docs.gravityview.co/article/222-the-search-widget', __('Learn more&hellip;', 'gravityview' ), 'target=_blank' );
 				?></span>
 		</p>
 

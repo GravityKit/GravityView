@@ -10,7 +10,10 @@
 wp_nonce_field( 'gravityview_select_form', 'gravityview_select_form_nonce' );
 
 //current value
-$current_form = (int) rgar( (array) $_GET, 'form_id', gravityview_get_form_id( $post->ID ) );
+$current_form = (int) \GV\Utils::_GET( 'form_id', gravityview_get_form_id( $post->ID ) );
+
+// If form is in trash or not existing, show error
+GravityView_Admin::connected_form_warning( $current_form );
 
 // check for available gravity forms
 $forms = gravityview_get_forms('any');

@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author	Katz Web Services, Inc.
- * @link	  http://gravityview.co
+ * @author    Katz Web Services, Inc.
+ * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
 
@@ -93,6 +93,15 @@ class GravityView_Edit_Entry_Render {
 	public $view_id;
 
 	/**
+	 * ID of the current post. May also be ID of the current View.
+     *
+     * @since 2.0.13
+     * 
+     * @var int
+	 */
+	public $post_id;
+
+	/**
 	 * Updated entry is valid (GF Validation object)
 	 *
 	 * @var array
@@ -160,12 +169,12 @@ class GravityView_Edit_Entry_Render {
 	public function prevent_maybe_process_form() {
 
 		if( ! empty( $_POST ) ) {
-			do_action( 'gravityview_log_debug', 'GravityView_Edit_Entry[prevent_maybe_process_form] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
+	        gravityview()->log->debug( 'GravityView_Edit_Entry[prevent_maybe_process_form] $_POSTed data (sanitized): ', array( 'data' => esc_html( print_r( $_POST, true ) ) ) );
 		}
 
 		if( $this->is_edit_entry_submission() ) {
 			remove_action( 'wp',  array( 'RGForms', 'maybe_process_form'), 9 );
-			remove_action( 'wp',  array( 'GFForms', 'maybe_process_form'), 9 );
+	        remove_action( 'wp',  array( 'GFForms', 'maybe_process_form'), 9 );
 		}
 	}
 
@@ -193,17 +202,20 @@ class GravityView_Edit_Entry_Render {
 	 * When Edit entry view is requested setup the vars
 	 */
 	private function setup_vars() {
+        global $post;
+
 		$gravityview_view = GravityView_View::getInstance();
 
 
 		$entries = $gravityview_view->getEntries();
-		self::$original_entry = $entries[0];
-		$this->entry = $entries[0];
+	    self::$original_entry = $entries[0];
+	    $this->entry = $entries[0];
 
 		self::$original_form = $gravityview_view->getForm();
 		$this->form = $gravityview_view->getForm();
 		$this->form_id = $gravityview_view->getFormId();
 		$this->view_id = $gravityview_view->getViewId();
+		$this->post_id = \GV\Utils::get( $post, 'ID', null );
 
 		self::$nonce_key = GravityView_Edit_Entry::get_nonce_key( $this->view_id, $this->form_id, $this->entry['id'] );
 	}
@@ -214,7 +226,7 @@ class GravityView_Edit_Entry_Render {
 	 *
 	 * Run when the is_edit_entry returns true.
 	 *
-	 * @param GravityView_View_Data $gv_data GravityView Data object
+	 * @param \GravityView_View_Data $gv_data GravityView Data object
 	 * @return void
 	 */
 	public function init( $gv_data ) {
@@ -224,16 +236,19 @@ class GravityView_Edit_Entry_Render {
 
 		$this->setup_vars();
 
+		if ( ! $gv_data ) {
+			$gv_data = GravityView_View_Data::getInstance();
+		}
+
 		// Multiple Views embedded, don't proceed if nonce fails
-		$multiple_views = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? gravityview()->views->count() > 1 : $gv_data->has_multiple_views();
-		if( $multiple_views && ! wp_verify_nonce( $_GET['edit'], self::$nonce_key ) ) {
-			do_action('gravityview_log_error', __METHOD__ . ': Nonce validation failed for the Edit Entry request; returning' );
+		if ( $gv_data->has_multiple_views() && ! wp_verify_nonce( $_GET['edit'], self::$nonce_key ) ) {
+			gravityview()->log->error( 'Nonce validation failed for the Edit Entry request; returning' );
 			return;
 		}
 
 		// Sorry, you're not allowed here.
 		if( false === $this->user_can_edit_entry( true ) ) {
-			do_action('gravityview_log_error', __METHOD__ . ': User is not allowed to edit this entry; returning', $this->entry );
+			gravityview()->log->error( 'User is not allowed to edit this entry; returning', array( 'data' => $this->entry ) );
 			return;
 		}
 
@@ -255,10 +270,12 @@ class GravityView_Edit_Entry_Render {
 
 		wp_register_script( 'gform_gravityforms', GFCommon::get_base_url().'/js/gravityforms.js', array( 'jquery', 'gform_json', 'gform_placeholder', 'sack', 'plupload-all', 'gravityview-fe-view' ) );
 
-		GFFormDisplay::enqueue_form_scripts($gravityview_view->getForm(), false);
+		GFFormDisplay::enqueue_form_scripts( $gravityview_view->getForm(), false);
+
+		wp_localize_script( 'gravityview-fe-view', 'gvGlobals', array( 'cookiepath' => COOKIEPATH ) );
 
 		// Sack is required for images
-		wp_print_scripts( array( 'sack', 'gform_gravityforms' ) );
+		wp_print_scripts( array( 'sack', 'gform_gravityforms', 'gravityview-fe-view' ) );
 	}
 
 
@@ -275,16 +292,16 @@ class GravityView_Edit_Entry_Render {
 		$valid = $this->verify_nonce();
 
 		if( !$valid ) {
-			do_action('gravityview_log_error', __METHOD__ . ' Nonce validation failed.' );
+			gravityview()->log->error( 'Nonce validation failed.' );
 			return;
 		}
 
 		if( $this->entry['id'] !== $_POST['lid'] ) {
-			do_action('gravityview_log_error', __METHOD__ . ' Entry ID did not match posted entry ID.' );
+			gravityview()->log->error( 'Entry ID did not match posted entry ID.' );
 			return;
 		}
 
-		do_action('gravityview_log_debug', __METHOD__ . ': $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
+		gravityview()->log->debug( '$_POSTed data (sanitized): ', array( 'data' => esc_html( print_r( $_POST, true ) ) ) );
 
 		$this->process_save_process_files( $this->form_id );
 
@@ -292,7 +309,7 @@ class GravityView_Edit_Entry_Render {
 
 		if( $this->is_valid ) {
 
-			do_action('gravityview_log_debug', __METHOD__ . ': Submission is valid.' );
+			gravityview()->log->debug( 'Submission is valid.' );
 
 			/**
 			 * @hack This step is needed to unset the adminOnly from form fields, to add the calculation fields
@@ -314,8 +331,8 @@ class GravityView_Edit_Entry_Render {
 
 			GFFormsModel::save_lead( $form, $this->entry );
 
-			// Delete the values for hidden inputs
-			$this->unset_hidden_field_values();
+	        // Delete the values for hidden inputs
+	        $this->unset_hidden_field_values();
 			
 			$this->entry['date_created'] = $date_created;
 
@@ -325,7 +342,7 @@ class GravityView_Edit_Entry_Render {
 			// Perform actions normally performed after updating a lead
 			$this->after_update();
 
-			/**
+	        /**
 			 * Must be AFTER after_update()!
 			 * @see https://github.com/gravityview/GravityView/issues/764
 			 */
@@ -340,7 +357,7 @@ class GravityView_Edit_Entry_Render {
 			do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'], $this );
 
 		} else {
-			do_action('gravityview_log_error', __METHOD__ . ': Submission is NOT valid.', $this->entry );
+			gravityview()->log->error( 'Submission is NOT valid.', array( 'entry' => $this->entry ) );
 		}
 
 	} // process_save
@@ -355,13 +372,13 @@ class GravityView_Edit_Entry_Render {
 	 * @return void
 	 */
 	private function unset_hidden_field_values() {
-		global $wpdb;
+	    global $wpdb;
 
 		/**
 		 * @filter `gravityview/edit_entry/unset_hidden_field_values` Whether to delete values of fields hidden by conditional logic
-         * @since 1.22.2
-         * @param bool $unset_hidden_field_values Default: true
-         * @param GravityView_Edit_Entry_Render $this This object
+		 * @since 1.22.2
+		 * @param bool $unset_hidden_field_values Default: true
+		 * @param GravityView_Edit_Entry_Render $this This object
 		 */
 		$unset_hidden_field_values = apply_filters( 'gravityview/edit_entry/unset_hidden_field_values', true, $this );
 
@@ -369,7 +386,7 @@ class GravityView_Edit_Entry_Render {
 			return;
 		}
 
-        if ( version_compare( GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) && method_exists( 'GFFormsModel', 'get_entry_meta_table_name' ) ) {
+		if ( version_compare( GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) && method_exists( 'GFFormsModel', 'get_entry_meta_table_name' ) ) {
 			$entry_meta_table = GFFormsModel::get_entry_meta_table_name();
 			$current_fields = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key, meta_value FROM $entry_meta_table WHERE entry_id=%d", $this->entry['id'] ) );
 		} else {
@@ -377,27 +394,27 @@ class GravityView_Edit_Entry_Render {
 			$current_fields = $wpdb->get_results( $wpdb->prepare( "SELECT id, field_number FROM $lead_detail_table WHERE lead_id=%d", $this->entry['id'] ) );
 		}
 
-		foreach ( $this->entry as $input_id => $field_value ) {
+	    foreach ( $this->entry as $input_id => $field_value ) {
 
-			$field = RGFormsModel::get_field( $this->form, $input_id );
+		    $field = RGFormsModel::get_field( $this->form, $input_id );
 
-			// Reset fields that are hidden
-			// Don't pass $entry as fourth parameter; force using $_POST values to calculate conditional logic
-			if ( GFFormsModel::is_field_hidden( $this->form, $field, array(), NULL ) ) {
+		    // Reset fields that are hidden
+		    // Don't pass $entry as fourth parameter; force using $_POST values to calculate conditional logic
+		    if ( GFFormsModel::is_field_hidden( $this->form, $field, array(), NULL ) ) {
 
-				// List fields are stored as empty arrays when empty
-				$empty_value = $this->is_field_json_encoded( $field ) ? '[]' : '';
+		        // List fields are stored as empty arrays when empty
+			    $empty_value = $this->is_field_json_encoded( $field ) ? '[]' : '';
 
-				$lead_detail_id = GFFormsModel::get_lead_detail_id( $current_fields, $input_id );
+			    $lead_detail_id = GFFormsModel::get_lead_detail_id( $current_fields, $input_id );
 
-				GFFormsModel::update_lead_field_value( $this->form, $this->entry, $field, $lead_detail_id, $input_id, $empty_value );
+			    GFFormsModel::update_lead_field_value( $this->form, $this->entry, $field, $lead_detail_id, $input_id, $empty_value );
 
-				// Prevent the $_POST values of hidden fields from being used as default values when rendering the form
+			    // Prevent the $_POST values of hidden fields from being used as default values when rendering the form
 				// after submission
-				$post_input_id = 'input_' . str_replace( '.', '_', $input_id );
-				$_POST[ $post_input_id ] = '';
-			}
-		}
+			    $post_input_id = 'input_' . str_replace( '.', '_', $input_id );
+			    $_POST[ $post_input_id ] = '';
+		    }
+	    }
 	}
 
 	/**
@@ -484,14 +501,14 @@ class GravityView_Edit_Entry_Render {
 
 
 	/**
-	 * Unset adminOnly and convert field input key to string
+	 * Set visibility to visible and convert field input key to string
 	 * @return array $form
 	 */
 	private function form_prepare_for_save() {
 
 		$form = $this->form;
 
-		/** @var GF_Field $field */
+	    /** @var GF_Field $field */
 		foreach( $form['fields'] as $k => &$field ) {
 
 			/**
@@ -507,7 +524,7 @@ class GravityView_Edit_Entry_Render {
 
 			if( isset( $field->inputs ) && is_array( $field->inputs ) ) {
 				foreach( $field->inputs as $key => $input ) {
-					$field->inputs[ $key ][ 'id' ] = (string)$input['id'];
+				    $field->inputs[ $key ][ 'id' ] = (string)$input['id'];
 				}
 			}
 		}
@@ -528,30 +545,13 @@ class GravityView_Edit_Entry_Render {
 			foreach ( $this->fields_with_calculation as $calc_field ) {
 				$inputs = $calc_field->get_entry_inputs();
 				if ( is_array( $inputs ) ) {
-					foreach ( $inputs as $input ) {
-						$input_name = 'input_' . str_replace( '.', '_', $input['id'] );
-						list( $prefix, $field_id, $input_id ) = rgexplode( '_', $input_name, 3 );
-
-						switch ( $input_id ) {
-							case 1:
-								/** Never void the labels. */
-								$value = $entry[ $input['id'] ];
-								break;
-							case 2:
-								/** Always recalcualte the final price. */
-								$value = '';
-								break;
-							case 3:
-								/** Fetch the quantity form the request. */
-								$value = rgpost( $input_name, $entry[ $input['id'] ] );
-								break;
-						}
-
-						$entry[ strval( $input['id'] ) ] = RGFormsModel::prepare_value( $form, $calc_field, $value, $input_name, $entry['id'], $entry );
-					}
+				    foreach ( $inputs as $input ) {
+				        $input_name = 'input_' . str_replace( '.', '_', $input['id'] );
+				        $entry[ strval( $input['id'] ) ] = RGFormsModel::prepare_value( $form, $calc_field, '', $input_name, $entry['id'], $entry );
+				    }
 				} else {
-					$input_name = 'input_' . str_replace( '.', '_', $calc_field->id);
-					$entry[ strval( $calc_field->id ) ] = RGFormsModel::prepare_value( $form, $calc_field, '', $input_name, $entry['id'], $entry );
+				    $input_name = 'input_' . str_replace( '.', '_', $calc_field->id);
+				    $entry[ strval( $calc_field->id ) ] = RGFormsModel::prepare_value( $form, $calc_field, '', $input_name, $entry['id'], $entry );
 				}
 			}
 
@@ -562,9 +562,9 @@ class GravityView_Edit_Entry_Render {
 			$return_entry = GFAPI::update_entry( $entry );
 
 			if( is_wp_error( $return_entry ) ) {
-				do_action( 'gravityview_log_error', 'Updating the entry calculation fields failed', $return_entry );
+				gravityview()->log->error( 'Updating the entry calculation fields failed', array( 'data' => $return_entry ) );
 			} else {
-				do_action( 'gravityview_log_debug', 'Updating the entry calculation fields succeeded' );
+				gravityview()->log->debug( 'Updating the entry calculation fields succeeded' );
 			}
 		}
 	}
@@ -599,10 +599,11 @@ class GravityView_Edit_Entry_Render {
 			$value = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'] );
 
 			$ary = ! empty( $value ) ? explode( '|:|', $value ) : array();
-			$img_url = rgar( $ary, 0 );
+	        $ary = stripslashes_deep( $ary );
+			$img_url = \GV\Utils::get( $ary, 0 );
 
-			$img_title	   = count( $ary ) > 1 ? $ary[1] : '';
-			$img_caption	 = count( $ary ) > 2 ? $ary[2] : '';
+			$img_title       = count( $ary ) > 1 ? $ary[1] : '';
+			$img_caption     = count( $ary ) > 2 ? $ary[2] : '';
 			$img_description = count( $ary ) > 3 ? $ary[3] : '';
 
 			$image_meta = array(
@@ -619,6 +620,7 @@ class GravityView_Edit_Entry_Render {
 			 * todo: As soon as \GFFormsModel::media_handle_upload becomes a public method, move this call to \GFFormsModel::media_handle_upload and remove the hack from this class.
 			 * Note: the method became public in GF 1.9.17.7, but we don't require that version yet.
 			 */
+			require_once GRAVITYVIEW_DIR . 'includes/class-gravityview-gfformsmodel.php';
 			$media_id = GravityView_GFFormsModel::media_handle_upload( $img_url, $post_id, $image_meta );
 
 			// is this field set as featured image?
@@ -626,13 +628,12 @@ class GravityView_Edit_Entry_Render {
 				set_post_thumbnail( $post_id, $media_id );
 			}
 
-		} elseif ( !empty( $_POST[ $input_name ] ) && is_array( $value ) ) {
+		} elseif ( ! empty( $_POST[ $input_name ] ) && is_array( $value ) ) {
 
-			$img_url = $_POST[ $input_name ];
-
-			$img_title	   = rgar( $_POST, $input_name.'_1' );
-			$img_caption	 = rgar( $_POST, $input_name .'_4' );
-			$img_description = rgar( $_POST, $input_name .'_7' );
+			$img_url         = stripslashes_deep( $_POST[ $input_name ] );
+			$img_title       = stripslashes_deep( \GV\Utils::_POST( $input_name . '_1' ) );
+			$img_caption     = stripslashes_deep( \GV\Utils::_POST( $input_name . '_4' ) );
+			$img_description = stripslashes_deep( \GV\Utils::_POST( $input_name . '_7' ) );
 
 			$value = ! empty( $img_url ) ? $img_url . "|:|" . $img_title . "|:|" . $img_caption . "|:|" . $img_description : '';
 
@@ -671,7 +672,7 @@ class GravityView_Edit_Entry_Render {
 	private function maybe_update_post_fields( $form ) {
 
 		if( empty( $this->entry['post_id'] ) ) {
-			do_action( 'gravityview_log_debug', __METHOD__ . ': This entry has no post fields. Continuing...' );
+	        gravityview()->log->debug( 'This entry has no post fields. Continuing...' );
 			return;
 		}
 
@@ -679,7 +680,7 @@ class GravityView_Edit_Entry_Render {
 
 		// Security check
 		if( false === GVCommon::has_cap( 'edit_post', $post_id ) ) {
-			do_action( 'gravityview_log_error', 'The current user does not have the ability to edit Post #'.$post_id );
+			gravityview()->log->error( 'The current user does not have the ability to edit Post #{post_id}', array( 'post_id' => $post_id ) );
 			return;
 		}
 
@@ -706,51 +707,51 @@ class GravityView_Edit_Entry_Render {
 
 				switch( $field->type ) {
 
-					case 'post_title':
-						$post_title = $value;
-						if( rgar( $form, 'postTitleTemplateEnabled' ) ) {
-							$post_title = $this->fill_post_template( $form['postTitleTemplate'], $form, $entry_tmp );
-						}
-						$updated_post->post_title = $post_title;
-						$updated_post->post_name  = $post_title;
-						unset( $post_title );
-						break;
+				    case 'post_title':
+				        $post_title = $value;
+				        if ( \GV\Utils::get( $form, 'postTitleTemplateEnabled' ) ) {
+				            $post_title = $this->fill_post_template( $form['postTitleTemplate'], $form, $entry_tmp );
+				        }
+				        $updated_post->post_title = $post_title;
+				        $updated_post->post_name  = $post_title;
+				        unset( $post_title );
+				        break;
 
-					case 'post_content':
-						$post_content = $value;
-						if( rgar( $form, 'postContentTemplateEnabled' ) ) {
-							$post_content = $this->fill_post_template( $form['postContentTemplate'], $form, $entry_tmp, true );
-						}
-						$updated_post->post_content = $post_content;
-						unset( $post_content );
-						break;
-					case 'post_excerpt':
-						$updated_post->post_excerpt = $value;
-						break;
-					case 'post_tags':
-						wp_set_post_tags( $post_id, $value, false );
-						break;
-					case 'post_category':
-						break;
-					case 'post_custom_field':
+				    case 'post_content':
+				        $post_content = $value;
+				        if ( \GV\Utils::get( $form, 'postContentTemplateEnabled' ) ) {
+				            $post_content = $this->fill_post_template( $form['postContentTemplate'], $form, $entry_tmp, true );
+				        }
+				        $updated_post->post_content = $post_content;
+				        unset( $post_content );
+				        break;
+				    case 'post_excerpt':
+				        $updated_post->post_excerpt = $value;
+				        break;
+				    case 'post_tags':
+				        wp_set_post_tags( $post_id, $value, false );
+				        break;
+				    case 'post_category':
+				        break;
+				    case 'post_custom_field':
 						if ( is_array( $value ) && ( floatval( $field_id ) !== floatval( $field->id ) ) ) {
 							$value = $value[ $field_id ];
 						}
 
-						if( ! empty( $field->customFieldTemplateEnabled ) ) {
-							$value = $this->fill_post_template( $field->customFieldTemplate, $form, $entry_tmp, true );
-						}
+				        if( ! empty( $field->customFieldTemplateEnabled ) ) {
+				            $value = $this->fill_post_template( $field->customFieldTemplate, $form, $entry_tmp, true );
+				        }
 
-						if ( $this->is_field_json_encoded( $field ) && ! is_string( $value ) ) {
-							$value = function_exists('wp_json_encode') ? wp_json_encode( $value ) : json_encode( $value );
-						}
+	                    if ( $this->is_field_json_encoded( $field ) && ! is_string( $value ) ) {
+		                    $value = wp_json_encode( $value );
+	                    }
 
-						update_post_meta( $post_id, $field->postCustomFieldName, $value );
-						break;
+				        update_post_meta( $post_id, $field->postCustomFieldName, $value );
+				        break;
 
-					case 'post_image':
-						$value = $this->update_post_image( $form, $field, $field_id, $value, $this->entry, $post_id );
-						break;
+				    case 'post_image':
+				        $value = $this->update_post_image( $form, $field, $field_id, $value, $this->entry, $post_id );
+				        break;
 
 				}
 
@@ -769,9 +770,9 @@ class GravityView_Edit_Entry_Render {
 			$return_entry = GFAPI::update_entry( $this->entry );
 
 			if( is_wp_error( $return_entry ) ) {
-			   do_action( 'gravityview_log_error', 'Updating the entry post fields failed', array( '$this->entry' => $this->entry, '$return_entry' => $return_entry ) );
+				gravityview()->log->error( 'Updating the entry post fields failed', array( 'data' => array( '$this->entry' => $this->entry, '$return_entry' => $return_entry ) ) );
 			} else {
-				do_action( 'gravityview_log_debug', 'Updating the entry post fields for post #'.$post_id.' succeeded' );
+				gravityview()->log->debug( 'Updating the entry post fields for post #{post_id} succeeded', array( 'post_id' => $post_id ) );
 			}
 
 		}
@@ -780,9 +781,9 @@ class GravityView_Edit_Entry_Render {
 
 		if( is_wp_error( $return_post ) ) {
 			$return_post->add_data( $updated_post, '$updated_post' );
-			do_action( 'gravityview_log_error', 'Updating the post content failed', compact( 'updated_post', 'return_post' ) );
+			gravityview()->log->error( 'Updating the post content failed', array( 'data' => compact( 'updated_post', 'return_post' ) ) );
 		} else {
-			do_action( 'gravityview_log_debug', 'Updating the post content for post #'.$post_id.' succeeded', $updated_post );
+			gravityview()->log->debug( 'Updating the post content for post #{post_id} succeeded', array( 'post_id' => $post_id, 'data' => $updated_post ) );
 		}
 	}
 
@@ -795,20 +796,20 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private function is_field_json_encoded( $field ) {
 
-		$json_encoded = false;
+	    $json_encoded = false;
 
 		$input_type = RGFormsModel::get_input_type( $field );
 
-		// Only certain custom field types are supported
-		switch( $input_type ) {
-			case 'fileupload':
-			case 'list':
-			case 'multiselect':
-				$json_encoded = true;
-				break;
-		}
+	    // Only certain custom field types are supported
+	    switch( $input_type ) {
+		    case 'fileupload':
+		    case 'list':
+		    case 'multiselect':
+			    $json_encoded = true;
+			    break;
+	    }
 
-		return $json_encoded;
+	    return $json_encoded;
 	}
 
 	/**
@@ -864,7 +865,7 @@ class GravityView_Edit_Entry_Render {
 
 		$entry = GFFormsModel::set_entry_meta( $entry, $this->form );
 
-		if ( version_compare( GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '<' ) ) {
+		if ( version_compare( GFFormsModel::get_database_version(), '2.3-dev-1', '<' ) ) {
 			// We need to clear the cache because Gravity Forms caches the field values, which
 			// we have just updated.
 			foreach ($this->form['fields'] as $key => $field) {
@@ -898,14 +899,14 @@ class GravityView_Edit_Entry_Render {
 			?><h2 class="gv-edit-entry-title">
 				<span><?php
 
-					/**
-					 * @filter `gravityview_edit_entry_title` Modify the edit entry title
-					 * @param string $edit_entry_title Modify the "Edit Entry" title
-					 * @param GravityView_Edit_Entry_Render $this This object
-					 */
-					$edit_entry_title = apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gravityview'), $this );
+				    /**
+				     * @filter `gravityview_edit_entry_title` Modify the edit entry title
+				     * @param string $edit_entry_title Modify the "Edit Entry" title
+				     * @param GravityView_Edit_Entry_Render $this This object
+				     */
+				    $edit_entry_title = apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gravityview'), $this );
 
-					echo esc_attr( $edit_entry_title );
+				    echo esc_attr( $edit_entry_title );
 			?></span>
 			</h2>
 
@@ -929,7 +930,7 @@ class GravityView_Edit_Entry_Render {
 
 			<script>
 				gform.addFilter('gform_reset_pre_conditional_logic_field_action', function ( reset, formId, targetId, defaultValues, isInit ) {
-					return false;
+				    return false;
 				});
 			</script>
 
@@ -949,7 +950,7 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private function maybe_print_message() {
 
-		if( rgpost('action') === 'update' ) {
+		if ( \GV\Utils::_POST( 'action' ) === 'update' ) {
 
 			$back_link = esc_url( remove_query_arg( array( 'page', 'view', 'edit' ) ) );
 
@@ -1014,7 +1015,7 @@ class GravityView_Edit_Entry_Render {
 
 		ob_get_clean();
 
-		remove_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields' ), 5000 );
+	    remove_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields' ), 5000 );
 		remove_filter( 'gform_submit_button', array( $this, 'render_form_buttons' ) );
 		remove_filter( 'gform_disable_view_counter', '__return_true' );
 		remove_filter( 'gform_field_input', array( $this, 'verify_user_can_edit_post' ), 5 );
@@ -1068,7 +1069,7 @@ class GravityView_Edit_Entry_Render {
 
 		// for now we don't support Save and Continue feature.
 		if( ! self::$supports_save_and_continue ) {
-			unset( $form['save'] );
+	        unset( $form['save'] );
 		}
 
 		return $form;
@@ -1143,7 +1144,7 @@ class GravityView_Edit_Entry_Render {
 			|| ! empty( $field_content )
 			|| in_array( $field->type, array( 'honeypot' ) )
 		) {
-			return $field_content;
+	        return $field_content;
 		}
 
 		// SET SOME FIELD DEFAULTS TO PREVENT ISSUES
@@ -1151,24 +1152,24 @@ class GravityView_Edit_Entry_Render {
 
 		$field_value = $this->get_field_value( $field );
 
-		// Prevent any PHP warnings, like undefined index
-		ob_start();
+	    // Prevent any PHP warnings, like undefined index
+	    ob_start();
 
-		$return = null;
+	    $return = null;
 
 		/** @var GravityView_Field $gv_field */
 		if( $gv_field && is_callable( array( $gv_field, 'get_field_input' ) ) ) {
 			$return = $gv_field->get_field_input( $this->form, $field_value, $this->entry, $field );
 		} else {
-			$return = $field->get_field_input( $this->form, $field_value, $this->entry );
-		}
+	        $return = $field->get_field_input( $this->form, $field_value, $this->entry );
+	    }
 
-		// If there was output, it's an error
-		$warnings = ob_get_clean();
+	    // If there was output, it's an error
+	    $warnings = ob_get_clean();
 
-		if( !empty( $warnings ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . $warnings, $field_value );
-		}
+	    if( !empty( $warnings ) ) {
+		    gravityview()->log->error( '{warning}', array( 'warning' => $warnings, 'data' => $field_value ) );
+	    }
 
 		return $return;
 	}
@@ -1203,8 +1204,8 @@ class GravityView_Edit_Entry_Render {
 				$input_id = strval( $input['id'] );
 				
 				if ( isset( $this->entry[ $input_id ] ) && ! gv_empty( $this->entry[ $input_id ], false, false ) ) {
-					$field_value[ $input_id ] =  'post_category' === $field->type ? GFCommon::format_post_category( $this->entry[ $input_id ], true ) : $this->entry[ $input_id ];
-					$allow_pre_populated = false;
+				    $field_value[ $input_id ] =  'post_category' === $field->type ? GFCommon::format_post_category( $this->entry[ $input_id ], true ) : $this->entry[ $input_id ];
+				    $allow_pre_populated = false;
 				}
 
 			}
@@ -1222,13 +1223,13 @@ class GravityView_Edit_Entry_Render {
 
 			// saved field entry value (if empty, fallback to the pre-populated value, if exists)
 			// or pre-populated value if not empty and set to override saved value
-			$field_value = !gv_empty( $this->entry[ $id ], false, false ) && ! ( $override_saved_value && !gv_empty( $pre_value, false, false ) ) ? $this->entry[ $id ] : $pre_value;
+			$field_value = isset( $this->entry[ $id ] ) && ! gv_empty( $this->entry[ $id ], false, false ) && ! ( $override_saved_value && !gv_empty( $pre_value, false, false ) ) ? $this->entry[ $id ] : $pre_value;
 
 			// in case field is post_category but inputType is select, multi-select or radio, convert value into array of category IDs.
 			if ( 'post_category' === $field->type && !gv_empty( $field_value, false, false ) ) {
 				$categories = array();
 				foreach ( explode( ',', $field_value ) as $cat_string ) {
-					$categories[] = GFCommon::format_post_category( $cat_string, true );
+				    $categories[] = GFCommon::format_post_category( $cat_string, true );
 				}
 				$field_value = 'multiselect' === $field->get_input_type() ? $categories : implode( '', $categories );
 			}
@@ -1238,25 +1239,25 @@ class GravityView_Edit_Entry_Render {
 		// if value is empty get the default value if defined
 		$field_value = $field->get_value_default_if_empty( $field_value );
 
-		/**
-		 * @filter `gravityview/edit_entry/field_value` Change the value of an Edit Entry field, if needed
-		 * @since 1.11
-		 * @since 1.20 Added third param
-		 * @param mixed $field_value field value used to populate the input
-		 * @param object $field Gravity Forms field object ( Class GF_Field )
-		 * @param GravityView_Edit_Entry_Render $this Current object
-		 */
-		$field_value = apply_filters( 'gravityview/edit_entry/field_value', $field_value, $field, $this );
+	    /**
+	     * @filter `gravityview/edit_entry/field_value` Change the value of an Edit Entry field, if needed
+	     * @since 1.11
+	     * @since 1.20 Added third param
+	     * @param mixed $field_value field value used to populate the input
+	     * @param object $field Gravity Forms field object ( Class GF_Field )
+	     * @param GravityView_Edit_Entry_Render $this Current object
+	     */
+	    $field_value = apply_filters( 'gravityview/edit_entry/field_value', $field_value, $field, $this );
 
-		/**
-		 * @filter `gravityview/edit_entry/field_value_{field_type}` Change the value of an Edit Entry field for a specific field type
-		 * @since 1.17
-		 * @since 1.20 Added third param
-		 * @param mixed $field_value field value used to populate the input
-		 * @param GF_Field $field Gravity Forms field object
-		 * @param GravityView_Edit_Entry_Render $this Current object
-		 */
-		$field_value = apply_filters( 'gravityview/edit_entry/field_value_' . $field->type , $field_value, $field, $this );
+	    /**
+	     * @filter `gravityview/edit_entry/field_value_{field_type}` Change the value of an Edit Entry field for a specific field type
+	     * @since 1.17
+	     * @since 1.20 Added third param
+	     * @param mixed $field_value field value used to populate the input
+	     * @param GF_Field $field Gravity Forms field object
+	     * @param GravityView_Edit_Entry_Render $this Current object
+	     */
+	    $field_value = apply_filters( 'gravityview/edit_entry/field_value_' . $field->type , $field_value, $field, $this );
 
 		return $field_value;
 	}
@@ -1269,7 +1270,7 @@ class GravityView_Edit_Entry_Render {
 	 *
 	 * @see GFFormDisplay::validate()
 	 * @param  array $form GF Form
-	 * @return array	   Modified GF Form
+	 * @return array       Modified GF Form
 	 */
 	public function gform_pre_validation( $form ) {
 
@@ -1283,7 +1284,7 @@ class GravityView_Edit_Entry_Render {
 			// This is because we're doing admin form pretending to be front-end, so Gravity Forms
 			// expects certain field array items to be set.
 			foreach ( array( 'noDuplicates', 'adminOnly', 'inputType', 'isRequired', 'enablePrice', 'inputs', 'allowedExtensions' ) as $key ) {
-				$field->{$key} = isset( $field->{$key} ) ? $field->{$key} : NULL;
+	            $field->{$key} = isset( $field->{$key} ) ? $field->{$key} : NULL;
 			}
 
 			switch( RGFormsModel::get_input_type( $field ) ) {
@@ -1297,61 +1298,61 @@ class GravityView_Edit_Entry_Render {
 				 */
 				case 'fileupload':
 
-					// Set the previous value
-					$entry = $this->get_entry();
+				    // Set the previous value
+				    $entry = $this->get_entry();
 
-					$input_name = 'input_'.$field->id;
-					$form_id = $form['id'];
+				    $input_name = 'input_'.$field->id;
+				    $form_id = $form['id'];
 
-					$value = NULL;
+				    $value = NULL;
 
-					// Use the previous entry value as the default.
-					if( isset( $entry[ $field->id ] ) ) {
-						$value = $entry[ $field->id ];
-					}
+				    // Use the previous entry value as the default.
+				    if( isset( $entry[ $field->id ] ) ) {
+				        $value = $entry[ $field->id ];
+				    }
 
-					// If this is a single upload file
-					if( !empty( $_FILES[ $input_name ] ) && !empty( $_FILES[ $input_name ]['name'] ) ) {
-						$file_path = GFFormsModel::get_file_upload_path( $form['id'], $_FILES[ $input_name ]['name'] );
-						$value = $file_path['url'];
+				    // If this is a single upload file
+				    if( !empty( $_FILES[ $input_name ] ) && !empty( $_FILES[ $input_name ]['name'] ) ) {
+				        $file_path = GFFormsModel::get_file_upload_path( $form['id'], $_FILES[ $input_name ]['name'] );
+				        $value = $file_path['url'];
 
-					} else {
+				    } else {
 
-						// Fix PHP warning on line 1498 of form_display.php for post_image fields
-						// Fix PHP Notice:  Undefined index:  size in form_display.php on line 1511
-						$_FILES[ $input_name ] = array('name' => '', 'size' => '' );
+				        // Fix PHP warning on line 1498 of form_display.php for post_image fields
+				        // Fix PHP Notice:  Undefined index:  size in form_display.php on line 1511
+				        $_FILES[ $input_name ] = array('name' => '', 'size' => '' );
 
-					}
+				    }
 
-					if( rgar($field, "multipleFiles") ) {
+				    if ( \GV\Utils::get( $field, "multipleFiles" ) ) {
 
-						// If there are fresh uploads, process and merge them.
-						// Otherwise, use the passed values, which should be json-encoded array of URLs
-						if( isset( GFFormsModel::$uploaded_files[$form_id][$input_name] ) ) {
-							$value = empty( $value ) ? '[]' : $value;
-							$value = stripslashes_deep( $value );
-							$value = GFFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'], array());
-						}
+				        // If there are fresh uploads, process and merge them.
+				        // Otherwise, use the passed values, which should be json-encoded array of URLs
+				        if( isset( GFFormsModel::$uploaded_files[$form_id][$input_name] ) ) {
+				            $value = empty( $value ) ? '[]' : $value;
+				            $value = stripslashes_deep( $value );
+				            $value = GFFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'], array());
+				        }
 
-					} else {
+				    } else {
 
-						// A file already exists when editing an entry
-						// We set this to solve issue when file upload fields are required.
-						GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] = $value;
+				        // A file already exists when editing an entry
+				        // We set this to solve issue when file upload fields are required.
+				        GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] = $value;
 
-					}
+				    }
 
-					$this->entry[ $input_name ] = $value;
-					$_POST[ $input_name ] = $value;
+				    $this->entry[ $input_name ] = $value;
+				    $_POST[ $input_name ] = $value;
 
-					break;
+				    break;
 
 				case 'number':
-					// Fix "undefined index" issue at line 1286 in form_display.php
-					if( !isset( $_POST['input_'.$field->id ] ) ) {
-						$_POST['input_'.$field->id ] = NULL;
-					}
-					break;
+				    // Fix "undefined index" issue at line 1286 in form_display.php
+				    if( !isset( $_POST['input_'.$field->id ] ) ) {
+				        $_POST['input_'.$field->id ] = NULL;
+				    }
+				    break;
 			}
 
 		}
@@ -1376,11 +1377,6 @@ class GravityView_Edit_Entry_Render {
 		 */
 		if ( class_exists( 'GF_User_Registration' ) ) {
 			remove_filter( 'gform_validation', array( GF_User_Registration::get_instance(), 'validate' ) );
-			/**
-			 * Add some custom validation either way.
-			 * https://secure.helpscout.net/conversation/430858351/10957/?folderId=1210164
-			 */
-			add_filter( 'gform_validation_' . $this->form_id, array( $this, 'user_registration_validation' ), 10, 4 );
 		} else  if ( class_exists( 'GFUser' ) ) {
 			remove_filter( 'gform_validation', array( 'GFUser', 'user_registration_validation' ) );
 		}
@@ -1407,53 +1403,8 @@ class GravityView_Edit_Entry_Render {
 		$this->is_valid = GFFormDisplay::validate( $this->form, $field_values, 1, $failed_validation_page );
 
 		remove_filter( 'gform_validation_'. $this->form_id, array( $this, 'custom_validation' ), 10 );
-		remove_filter( 'gform_validation_' . $this->form_id, array( $this, 'user_registration_validation' ), 10 );
 	}
 
-	/**
-	 * Make validation work for User Registration feeds.
-	 *
-	 * The default validation does a bit too much for our liking.
-	 * Email, username validation should work. Called on the `gform_validation` filter.
-	 *
-	 * @param array $validation_results The validation results.
-	 * @return array The modified validation results.
-	 */
-	public function user_registration_validation( $validation_results ) {
-		$user_registration = GF_User_Registration::get_instance();
-
-		$entry = $this->get_entry();
-		$form = $validation_results['form'];
-
-		if ( ! $feed = $user_registration->get_single_submission_feed( $entry, $form ) ) {
-			return $validation_results;
-		}
-
-		$username_field = GFFormsModel::get_field( $form, rgars( $feed, 'meta/username' ) );
-		$email_field    = GFFormsModel::get_field( $form, rgars( $feed, 'meta/email' ) );
-
-		$username   = $user_registration->get_meta_value( 'username', $feed, $form, $entry );
-		$user_email = $user_registration->get_meta_value( 'email', $feed, $form, $entry );
-
-		$value = RGFormsModel::get_field_value( $email_field );
-		if ( $user_email != $value && email_exists( $value ) ) {
-			$email_field->failed_validation = 1;
-			$email_field->validation_message = __( 'This email is already in use', 'gravityview' );
-			$validation_results['is_valid'] = false;
-		}
-
-		$value = RGFormsModel::get_field_value( $username_field );
-		if ( $username != $value ) {
-			$username_field->failed_validation = 1;
-			$username_field->validation_message = __( 'Usernames cannot be changed', 'gravityview' );
-			$validation_results['is_valid'] = false;
-		}
-
-		// We'll need this result when rendering the form ( on GFFormDisplay::get_form )
-		$this->form_after_validation = $validation_results['form'];
-
-		return $validation_results;
-	}
 
 	/**
 	 * Make validation work for Edit Entry
@@ -1464,13 +1415,13 @@ class GravityView_Edit_Entry_Render {
 	 * set them as valid. If there are still issues, we'll return false.
 	 *
 	 * @param  [type] $validation_results [description]
-	 * @return [type]					 [description]
+	 * @return [type]                     [description]
 	 */
 	public function custom_validation( $validation_results ) {
 
-		do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Validation results: ', $validation_results );
+		gravityview()->log->debug( 'GravityView_Edit_Entry[custom_validation] Validation results: ', array( 'data' => $validation_results ) );
 
-		do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
+		gravityview()->log->debug( 'GravityView_Edit_Entry[custom_validation] $_POSTed data (sanitized): ', array( 'data' => esc_html( print_r( $_POST, true ) ) ) );
 
 		$gv_valid = true;
 
@@ -1486,93 +1437,93 @@ class GravityView_Edit_Entry_Render {
 				case 'fileupload' :
 				case 'post_image':
 
-					// in case nothing is uploaded but there are already files saved
-					if( !empty( $field->failed_validation ) && !empty( $field->isRequired ) && !empty( $value ) ) {
-						$field->failed_validation = false;
-						unset( $field->validation_message );
-					}
+				    // in case nothing is uploaded but there are already files saved
+				    if( !empty( $field->failed_validation ) && !empty( $field->isRequired ) && !empty( $value ) ) {
+				        $field->failed_validation = false;
+				        unset( $field->validation_message );
+				    }
 
-					// validate if multi file upload reached max number of files [maxFiles] => 2
-					if( rgobj( $field, 'maxFiles') && rgobj( $field, 'multipleFiles') ) {
+				    // validate if multi file upload reached max number of files [maxFiles] => 2
+				    if( \GV\Utils::get( $field, 'maxFiles') && \GV\Utils::get( $field, 'multipleFiles') ) {
 
-						$input_name = 'input_' . $field->id;
-						//uploaded
-						$file_names = isset( GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] ) ? GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] : array();
+				        $input_name = 'input_' . $field->id;
+				        //uploaded
+				        $file_names = isset( GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] ) ? GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] : array();
 
-						//existent
-						$entry = $this->get_entry();
-						$value = NULL;
-						if( isset( $entry[ $field->id ] ) ) {
-							$value = json_decode( $entry[ $field->id ], true );
-						}
+				        //existent
+				        $entry = $this->get_entry();
+				        $value = NULL;
+				        if( isset( $entry[ $field->id ] ) ) {
+				            $value = json_decode( $entry[ $field->id ], true );
+				        }
 
-						// count uploaded files and existent entry files
-						$count_files = count( $file_names ) + count( $value );
+				        // count uploaded files and existent entry files
+				        $count_files = count( $file_names ) + count( $value );
 
-						if( $count_files > $field->maxFiles ) {
-							$field->validation_message = __( 'Maximum number of files reached', 'gravityview' );
-							$field->failed_validation = 1;
-							$gv_valid = false;
+				        if( $count_files > $field->maxFiles ) {
+				            $field->validation_message = __( 'Maximum number of files reached', 'gravityview' );
+				            $field->failed_validation = 1;
+				            $gv_valid = false;
 
-							// in case of error make sure the newest upload files are removed from the upload input
-							GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ] = null;
-						}
+				            // in case of error make sure the newest upload files are removed from the upload input
+				            GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ] = null;
+				        }
 
-					}
+				    }
 
 
-					break;
+				    break;
 
 			}
 
 			// This field has failed validation.
 			if( !empty( $field->failed_validation ) ) {
 
-				do_action( 'gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Field is invalid.', array( 'field' => $field, 'value' => $value ) );
+				gravityview()->log->debug( 'GravityView_Edit_Entry[custom_validation] Field is invalid.', array( 'data' => array( 'field' => $field, 'value' => $value ) ) );
 
 				switch ( $field_type ) {
 
-					// Captchas don't need to be re-entered.
-					case 'captcha':
+				    // Captchas don't need to be re-entered.
+				    case 'captcha':
 
-						// Post Image fields aren't editable, so we un-fail them.
-					case 'post_image':
-						$field->failed_validation = false;
-						unset( $field->validation_message );
-						break;
+				        // Post Image fields aren't editable, so we un-fail them.
+				    case 'post_image':
+				        $field->failed_validation = false;
+				        unset( $field->validation_message );
+				        break;
 
 				}
 
 				// You can't continue inside a switch, so we do it after.
 				if( empty( $field->failed_validation ) ) {
-					continue;
+				    continue;
 				}
 
 				// checks if the No Duplicates option is not validating entry against itself, since
 				// we're editing a stored entry, it would also assume it's a duplicate.
 				if( !empty( $field->noDuplicates ) ) {
 
-					$entry = $this->get_entry();
+				    $entry = $this->get_entry();
 
-					// If the value of the entry is the same as the stored value
-					// Then we can assume it's not a duplicate, it's the same.
-					if( !empty( $entry ) && $value == $entry[ $field->id ] ) {
-						//if value submitted was not changed, then don't validate
-						$field->failed_validation = false;
+				    // If the value of the entry is the same as the stored value
+				    // Then we can assume it's not a duplicate, it's the same.
+				    if( !empty( $entry ) && $value == $entry[ $field->id ] ) {
+				        //if value submitted was not changed, then don't validate
+				        $field->failed_validation = false;
 
-						unset( $field->validation_message );
+				        unset( $field->validation_message );
 
-						do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Field not a duplicate; it is the same entry.', $entry );
+				        gravityview()->log->debug( 'GravityView_Edit_Entry[custom_validation] Field not a duplicate; it is the same entry.', array( 'data' => $entry ) );
 
-						continue;
-					}
+				        continue;
+				    }
 				}
 
 				// if here then probably we are facing the validation 'At least one field must be filled out'
 				if( GFFormDisplay::is_empty( $field, $this->form_id  ) && empty( $field->isRequired ) ) {
-					unset( $field->validation_message );
-					$field->validation_message = false;
-					continue;
+				    unset( $field->validation_message );
+	                $field->validation_message = false;
+				    continue;
 				}
 
 				$gv_valid = false;
@@ -1583,7 +1534,7 @@ class GravityView_Edit_Entry_Render {
 
 		$validation_results['is_valid'] = $gv_valid;
 
-		do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Validation results.', $validation_results );
+		gravityview()->log->debug( 'GravityView_Edit_Entry[custom_validation] Validation results.', array( 'data' => $validation_results ) );
 
 		// We'll need this result when rendering the form ( on GFFormDisplay::get_form )
 		$this->form_after_validation = $validation_results['form'];
@@ -1623,14 +1574,11 @@ class GravityView_Edit_Entry_Render {
 	private function get_configured_edit_fields( $form, $view_id ) {
 
 		// Get all fields for form
-		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
-			if ( \GV\View::exists( $view_id ) ) {
-				$view = \GV\View::by_id( $view_id );
-				$properties = $view->fields->as_configuration();
-			}
+		if ( \GV\View::exists( $view_id ) ) {
+			$view = \GV\View::by_id( $view_id );
+			$properties = $view->fields ? $view->fields->as_configuration() : array();
 		} else {
-			/** GravityView_View_Data is deprecated. */
-			$properties = GravityView_View_Data::getInstance()->get_fields( $view_id );
+			$properties = null;
 		}
 
 		// If edit tab not yet configured, show all fields
@@ -1639,8 +1587,8 @@ class GravityView_Edit_Entry_Render {
 		// Hide fields depending on admin settings
 		$fields = $this->filter_fields( $form['fields'], $edit_fields );
 
-		// If Edit Entry fields are configured, remove adminOnly field settings. Otherwise, don't.
-		$fields = $this->filter_admin_only_fields( $fields, $edit_fields, $form, $view_id );
+	    // If Edit Entry fields are configured, remove adminOnly field settings. Otherwise, don't.
+	    $fields = $this->filter_admin_only_fields( $fields, $edit_fields, $form, $view_id );
 
 		/**
 		 * @filter `gravityview/edit_entry/form_fields` Modify the fields displayed in Edit Entry form
@@ -1700,12 +1648,11 @@ class GravityView_Edit_Entry_Render {
 		// The edit tab has been configured, so we loop through to configured settings
 		foreach ( $configured_fields as $configured_field ) {
 
-			/** @var GF_Field $field */
-			foreach ( $fields as $field ) {
-
+	        /** @var GF_Field $field */
+	        foreach ( $fields as $field ) {
 				if( intval( $configured_field['id'] ) === intval( $field->id ) && $this->user_can_edit_field( $configured_field, false ) ) {
-					$edit_fields[] = $this->merge_field_properties( $field, $configured_field );
-					break;
+				    $edit_fields[] = $this->merge_field_properties( $field, $configured_field );
+				    break;
 				}
 
 			}
@@ -1761,28 +1708,28 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private function filter_admin_only_fields( $fields = array(), $edit_fields = null, $form = array(), $view_id = 0 ) {
 
-		/**
+	    /**
 		 * @filter `gravityview/edit_entry/use_gf_admin_only_setting` When Edit tab isn't configured, should the Gravity Forms "Admin Only" field settings be used to control field display to non-admins? Default: true
-		 * If the Edit Entry tab is not configured, adminOnly fields will not be shown to non-administrators.
-		 * If the Edit Entry tab *is* configured, adminOnly fields will be shown to non-administrators, using the configured GV permissions
-		 * @since 1.9.1
-		 * @param boolean $use_gf_adminonly_setting True: Hide field if set to Admin Only in GF and the user is not an admin. False: show field based on GV permissions, ignoring GF permissions.
-		 * @param array $form GF Form array
-		 * @param int $view_id View ID
-		 */
-		$use_gf_adminonly_setting = apply_filters( 'gravityview/edit_entry/use_gf_admin_only_setting', empty( $edit_fields ), $form, $view_id );
+	     * If the Edit Entry tab is not configured, adminOnly fields will not be shown to non-administrators.
+	     * If the Edit Entry tab *is* configured, adminOnly fields will be shown to non-administrators, using the configured GV permissions
+	     * @since 1.9.1
+	     * @param boolean $use_gf_adminonly_setting True: Hide field if set to Admin Only in GF and the user is not an admin. False: show field based on GV permissions, ignoring GF permissions.
+	     * @param array $form GF Form array
+	     * @param int $view_id View ID
+	     */
+	    $use_gf_adminonly_setting = apply_filters( 'gravityview/edit_entry/use_gf_admin_only_setting', empty( $edit_fields ), $form, $view_id );
 
-		if( $use_gf_adminonly_setting && false === GVCommon::has_cap( 'gravityforms_edit_entries', $this->entry['id'] ) ) {
+	    if( $use_gf_adminonly_setting && false === GVCommon::has_cap( 'gravityforms_edit_entries', $this->entry['id'] ) ) {
 			foreach( $fields as $k => $field ) {
 				if( $field->adminOnly ) {
-					unset( $fields[ $k ] );
+				    unset( $fields[ $k ] );
 				}
 			}
 			return $fields;
 		}
 
-		foreach( $fields as &$field ) {
-			$field->adminOnly = false;
+	    foreach( $fields as &$field ) {
+		    $field->adminOnly = false;
 		}
 
 		return $fields;
@@ -1815,36 +1762,36 @@ class GravityView_Edit_Entry_Render {
 
 			if( 'checkbox' === $field->type ) {
 				foreach ( $field->get_entry_inputs() as $key => $input ) {
-					$input_id = $input['id'];
-					$choice = $field->choices[ $key ];
-					$value = rgar( $this->entry, $input_id );
-					$match = RGFormsModel::choice_value_match( $field, $choice, $value );
-					if( $match ) {
-						$field->choices[ $key ]['isSelected'] = true;
-					}
+				    $input_id = $input['id'];
+				    $choice = $field->choices[ $key ];
+				    $value = \GV\Utils::get( $this->entry, $input_id );
+				    $match = RGFormsModel::choice_value_match( $field, $choice, $value );
+				    if( $match ) {
+				        $field->choices[ $key ]['isSelected'] = true;
+				    }
 				}
 			} else {
 
 				// We need to run through each field to set the default values
 				foreach ( $this->entry as $field_id => $field_value ) {
 
-					if( floatval( $field_id ) === floatval( $field->id ) ) {
+				    if( floatval( $field_id ) === floatval( $field->id ) ) {
 
-						if( 'list' === $field->type ) {
-							$list_rows = maybe_unserialize( $field_value );
+				        if( 'list' === $field->type ) {
+				            $list_rows = maybe_unserialize( $field_value );
 
-							$list_field_value = array();
-							foreach ( (array) $list_rows as $row ) {
-								foreach ( (array) $row as $column ) {
-									$list_field_value[] = $column;
-								}
-							}
+				            $list_field_value = array();
+				            foreach ( (array) $list_rows as $row ) {
+				                foreach ( (array) $row as $column ) {
+				                    $list_field_value[] = $column;
+				                }
+				            }
 
-							$field->defaultValue = serialize( $list_field_value );
-						} else {
-							$field->defaultValue = $field_value;
-						}
-					}
+				            $field->defaultValue = serialize( $list_field_value );
+				        } else {
+				            $field->defaultValue = $field_value;
+				        }
+				    }
 				}
 			}
 		}
@@ -1901,7 +1848,7 @@ class GravityView_Edit_Entry_Render {
 			return $has_conditional_logic;
 		}
 
-		/** @see GravityView_Edit_Entry_Render::filter_conditional_logic for filter documentation */
+	    /** @see GravityView_Edit_Entry_Render::filter_conditional_logic for filter documentation */
 		return apply_filters( 'gravityview/edit_entry/conditional_logic', $has_conditional_logic, $form );
 	}
 
@@ -1918,7 +1865,7 @@ class GravityView_Edit_Entry_Render {
 	 * @todo Move to GVCommon
 	 *
 	 * @param  boolean $echo Show error messages in the form?
-	 * @return boolean		True: can edit form. False: nope.
+	 * @return boolean        True: can edit form. False: nope.
 	 */
 	private function user_can_edit_entry( $echo = false ) {
 
@@ -1968,19 +1915,19 @@ class GravityView_Edit_Entry_Render {
 
 		if( $echo && $error !== true ) {
 
-			$error = esc_html( $error );
+	        $error = esc_html( $error );
 
-			/**
-			 * @since 1.9
-			 */
-			if ( ! empty( $this->entry ) ) {
-				$error .= ' ' . gravityview_get_link( '#', _x('Go back.', 'Link shown when invalid Edit Entry link is clicked', 'gravityview' ), array( 'onclick' => "window.history.go(-1); return false;" ) );
-			}
+	        /**
+	         * @since 1.9
+	         */
+	        if ( ! empty( $this->entry ) ) {
+		        $error .= ' ' . gravityview_get_link( '#', _x('Go back.', 'Link shown when invalid Edit Entry link is clicked', 'gravityview' ), array( 'onclick' => "window.history.go(-1); return false;" ) );
+	        }
 
 			echo GVCommon::generate_notice( wpautop( $error ), 'gv-error error');
 		}
 
-		do_action('gravityview_log_error', 'GravityView_Edit_Entry[user_can_edit_entry]' . $error );
+		gravityview()->log->error( '{error}', array( 'error' => $error ) );
 
 		return false;
 	}
@@ -1991,7 +1938,7 @@ class GravityView_Edit_Entry_Render {
 	 * @uses  GravityView_Edit_Entry->check_user_cap_edit_field() Check user capabilities
 	 * @param  array  $field Field or field settings array
 	 * @param  boolean $echo  Whether to show error message telling user they aren't allowed
-	 * @return boolean		 True: user can edit the current field; False: nope, they can't.
+	 * @return boolean         True: user can edit the current field; False: nope, they can't.
 	 */
 	private function user_can_edit_field( $field, $echo = false ) {
 
@@ -2010,7 +1957,7 @@ class GravityView_Edit_Entry_Render {
 			echo GVCommon::generate_notice( wpautop( esc_html( $error ) ), 'gv-error error');
 		}
 
-		do_action('gravityview_log_error', 'GravityView_Edit_Entry[user_can_edit_field]' . $error );
+		gravityview()->log->error( '{error}', array( 'error' => $error ) );
 
 		return false;
 
@@ -2034,7 +1981,6 @@ class GravityView_Edit_Entry_Render {
 
 		$field_cap = isset( $field['allow_edit_cap'] ) ? $field['allow_edit_cap'] : false;
 
-		// If the field has custom editing capaibilities set, check those
 		if( $field_cap ) {
 			return GVCommon::has_cap( $field['allow_edit_cap'] );
 		}

@@ -60,7 +60,7 @@
 				.on( 'click', ".widget[id*='"+ wp_widget_id +"'] input.widget-control-save", gvSearchWidget.saveWidget )
 
 				// [View] hook on assigned form/template change to clear cache
-				.on( 'change', '#gravityview_form_id, #gravityview_directory_template', gvSearchWidget.clearViewSearchData )
+				.on( 'change', '#gravityview_form_id', gvSearchWidget.clearViewSearchData )
 
 				// [WP widget] hook on assigned view id change to clear cache
 				.on( 'change', '#gravityview_view_id', gvSearchWidget.clearWidgetSearchData );
@@ -663,7 +663,7 @@
 
 		/**
 		 * [Specific for View Search Widget]
-		 * When form or template change, clear the select fields cache and remove all the search_bar configs
+		 * When form changes, clear the select fields cache and remove all the search_bar configs
 		 */
 		clearViewSearchData: function() {
 			gvSearchWidget.selectFields = null;

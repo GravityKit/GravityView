@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[gravityview.gravityview]
+[gravityview.2-0--gravityview]
 file_filter = languages/gravityview-<lang>.po
 source_file = languages/gravityview.pot
 source_lang = en

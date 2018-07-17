@@ -139,24 +139,32 @@
   }
 
   // Add the stars to the top
-  #gform_tab_group {
+  #gform-settings #gaddon-setting-row-gv_header {
     padding: 0;
     background: url(../images/stars.jpg) left top repeat-x;
 
-    // Add Floaty
-    &:before {
-      content: '';
-      display: block;
+    td {
+
+      padding: 0!important;
+
+      height: 130px;
       position: relative;
-      margin-left: 0;
-      background-color: #fff;
+      overflow: hidden;
 
-      min-height: 110px;
-      background: url(../images/astronaut-200x263.png) -30px top no-repeat;
-      margin: 0;
-      padding: 10px 0 0 160px;
+      // Add Floaty
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        bottom: -150px;
+
+        height: 263px;
+        background: transparent url(../images/astronaut-200x263.png) -30px 0 no-repeat;
+        margin: 0;
+        padding: 10px 0 0 160px;
+      }
     }
-
   }
 
   .gform_tab_group {
@@ -196,7 +204,7 @@
   #gform_tab_container {
     margin-left: 0;
     background-color: #fff;
-    padding-bottom: 0;
+    padding: 20px 20px 0 20px;
   }
 
   // Hide the tabs

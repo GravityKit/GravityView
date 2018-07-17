@@ -13,29 +13,30 @@ branches:
   only:
     - master
     - develop
-    - 2.0
 
 php:
-  - 5.3
-  - 5.4
-  - 5.6
+  - 7.2
+  - 7.1
   - 7.0
+  - 5.6
+  - 5.4
+  - 5.3
 
 env:
   - WP_VERSION=latest WP_MULTISITE=0
-  - WP_VERSION=latest WP_MULTISITE=0 GF_VERSION=2.3
+  - WP_VERSION=latest WP_MULTISITE=0 GF_VERSION=2.2
   - WP_VERSION=4.4 WP_MULTISITE=0
 
 matrix:
   include:
     - php: 5.3
       env: WP_VERSION=latest WP_MULTISITE=1
-    - php: 5.3
-      env: WP_VERSION=4.4 WP_MULTISITE=0 GV_NO_FUTURE=1
-    - php: 7.0
-      env: WP_VERSION=latest WP_MULTISITE=0 GV_NO_FUTURE=1
   exclude:
       - php: 7.0
+        env: WP_VERSION=4.4 WP_MULTISITE=0
+      - php: 7.1
+        env: WP_VERSION=4.4 WP_MULTISITE=0
+      - php: 7.2
         env: WP_VERSION=4.4 WP_MULTISITE=0
 
 install:
@@ -43,9 +44,14 @@ install:
   - php composer.phar install --no-interaction
 
 before_script:
+  - echo -e "[server]\nmax_allowed_packet=16M\nwait_timeout=28800" | sudo tee -a /etc/mysql/conf.d/limits.cnf
+  - sudo service mysql restart
+  - mysql -e "SHOW VARIABLES LIKE 'max_allowed_packet';"
+  - mysql -e "SHOW VARIABLES LIKE 'wait_timeout';"
   - bash tests/bin/install.sh gravityview_test root '' localhost $WP_VERSION
   - bash tests/bin/travis.sh before
-  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' && -z $GV_NO_FUTURE ]]; then DO_COVERAGE=1; else DO_COVERAGE=0; fi
+  - mkdir -p /tmp/wordpress-tests-lib/data/themedir1
+  - if [[ $TRAVIS_PHP_VERSION = '7.2' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' ]]; then DO_COVERAGE=1; else DO_COVERAGE=0; fi
 
 script:
   - if [[ $DO_COVERAGE = '1' ]]; then vendor/bin/phpunit -c phpunit.xml.dist; else vendor/bin/phpunit -c phpunit.xml.dist --no-coverage; fi
@@ -53,6 +59,7 @@ script:
 after_script:
   - if [[ $DO_COVERAGE = '1' ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
   - if [[ $DO_COVERAGE = '1' ]]; then php ocular.phar code-coverage:upload --format=php-clover /tmp/clover.xml; fi
+  - cat /tmp/test.log
 
 after_success:
   - if [[ $DO_COVERAGE = '1' ]]; then travis_retry php vendor/bin/coveralls -v --exclude-no-stmt; fi

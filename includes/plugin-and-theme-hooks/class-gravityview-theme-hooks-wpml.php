@@ -109,7 +109,7 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 		if ( method_exists( $wpml_url_filters, 'remove_global_hooks' ) ) {
 			$wpml_url_filters->remove_global_hooks();
 		} else {
-			do_action( 'gravityview_log_error', '[GravityView_Theme_Hooks_WPML::remove_url_hooks] WPML missing remove_global_hooks method. Needs version 3.6.2+.' );
+			gravityview()->log->error( 'WPML missing remove_global_hooks method. Needs version 3.6.2+.' );
 		}
 
 		if ( $wpml_url_filters->frontend_uses_root() === true ) {
@@ -137,7 +137,7 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 		if ( method_exists( $wpml_url_filters, 'add_global_hooks' ) ) {
 			$wpml_url_filters->add_global_hooks();
 		} else {
-			do_action( 'gravityview_log_error', '[GravityView_Theme_Hooks_WPML::add_url_hooks] WPML missing add_global_hooks method. Needs version 3.6.2+.' );
+			gravityview()->log->error( 'WPML missing add_global_hooks method. Needs version 3.6.2+.' );
 		}
 
 		if ( $wpml_url_filters->frontend_uses_root() === true ) {
@@ -168,7 +168,7 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 		if ( $entry_slug = GravityView_frontend::getInstance()->getSingleEntry() ) {
 
 			if ( ! method_exists( $sitepress, 'get_setting' ) ) {
-				do_action( 'gravityview_log_error', __METHOD__ . ': This version of WPML is outdated and does not include the required method get_setting().' );
+				gravityview()->log->error( 'This version of WPML is outdated and does not include the required method get_setting().' );
 				return $languages;
 			}
 
@@ -180,6 +180,10 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 
 			if( $translations ) {
 				foreach ( $languages as $lang_code => $language ) {
+
+					if( ! isset( $translations[ $lang_code ] ) || ! is_object( $translations[ $lang_code ] ) ) {
+						continue;
+					}
 
 					$lang_post_id = $translations[ $lang_code ]->element_id;
 

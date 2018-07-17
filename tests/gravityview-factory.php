@@ -48,6 +48,8 @@ class GV_UnitTest_Factory_For_View extends WP_UnitTest_Factory_For_Post {
 		$form_id = $args['form_id'];
 		$template_id = isset( $args['template_id'] ) ? $args['template_id'] : 'preset_business_data';
 		$settings = isset( $args['settings'] ) ? $args['settings'] : GravityView_View_Data::get_default_args();
+		$widgets = isset( $args['widgets'] ) ? $args['widgets'] : array();
+		$joins = isset( $args['joins'] ) ? $args['joins'] : array();
 		$fields = isset( $args['fields'] ) ? serialize( $args['fields'] ) : 'a:1:{s:23:"directory_table-columns";a:3:{s:13:"535d63d1488b0";a:9:{s:2:"id";s:1:"4";s:5:"label";s:13:"Business Name";s:10:"show_label";s:1:"1";s:12:"custom_label";s:0:"";s:12:"custom_class";s:0:"";s:12:"show_as_link";s:1:"0";s:13:"search_filter";s:1:"0";s:13:"only_loggedin";s:1:"0";s:17:"only_loggedin_cap";s:4:"read";}s:13:"535d63d379a3c";a:9:{s:2:"id";s:2:"12";s:5:"label";s:20:"Business Description";s:10:"show_label";s:1:"1";s:12:"custom_label";s:0:"";s:12:"custom_class";s:0:"";s:12:"show_as_link";s:1:"0";s:13:"search_filter";s:1:"0";s:13:"only_loggedin";s:1:"0";s:17:"only_loggedin_cap";s:4:"read";}s:13:"535d63dc735a6";a:9:{s:2:"id";s:1:"2";s:5:"label";s:7:"Address";s:10:"show_label";s:1:"1";s:12:"custom_label";s:0:"";s:12:"custom_class";s:0:"";s:12:"show_as_link";s:1:"0";s:13:"search_filter";s:1:"0";s:13:"only_loggedin";s:1:"0";s:17:"only_loggedin_cap";s:4:"read";}}}';
 
 		$insert_post_response = parent::create_object( $args );
@@ -58,8 +60,9 @@ class GV_UnitTest_Factory_For_View extends WP_UnitTest_Factory_For_Post {
 				'_gravityview_form_id' => $form_id,
 				'_gravityview_template_settings' => $settings,
 				'_gravityview_directory_template' => $template_id,
-				'_gravityview_directory_widgets' => 'a:0:{}',
+				'_gravityview_directory_widgets' => $widgets,
 				'_gravityview_directory_fields' => $fields,
+				'_gravityview_form_joins' => $joins,
 			);
 
 			foreach ( $view_meta as $meta_key => $meta_value ) {
@@ -191,7 +194,11 @@ class GV_UnitTest_Factory_For_Entry extends GF_UnitTest_Factory_For_Entry {
 
 	function create_object( $args ) {
 
-		$args = wp_parse_args( $args, $this->default_generation_definitions );
+		foreach ( $this->default_generation_definitions as $key => $value ) {
+			if ( ! isset( $args[ $key ] ) ) {
+				$args[ $key ] = $this->default_generation_definitions[ $key ];
+			}
+		}
 
 		if( !isset( $args['form_id'] ) ) {
 			$form = $this->factory->form->create();
@@ -212,7 +219,7 @@ class GV_UnitTest_Factory_For_Entry extends GF_UnitTest_Factory_For_Entry {
 	 * @return mixed
 	 */
 	function update_object( $entry_id = '', $entry = array() ) {
-		return GFAPI::update_entry( $entry_id, $entry );
+		return GFAPI::update_entry( $entry, $entry_id );
 	}
 
 	/**

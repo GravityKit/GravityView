@@ -11,8 +11,7 @@
  * @since 1.0.0
  */
 
-
-
+use GV\View;
 
 /**
  * Returns the form object for a given Form ID.
@@ -198,6 +197,19 @@ function gravityview_get_form_id( $view_id ) {
 }
 
 /**
+ * Get joined forms associated with a view
+ *
+ * @since 2.0.11
+ *
+ * @param int $view_id ID of the View
+ *
+ * @return \GV\GF_Form[] Array of \GV\GF_Form instances
+ */
+function gravityview_get_joined_forms( $view_id ) {
+	return View::get_joined_forms( $view_id );
+}
+
+/**
  * Get the template ID (`list`, `table`, `datatables`, `map`) for a View
  *
  * @see GravityView_Template::template_id
@@ -349,7 +361,7 @@ function gravityview_get_field_type(  $form = null , $field_id = '' ) {
 function get_gravityview( $view_id = '', $atts = array() ) {
 	if( !empty( $view_id ) ) {
 		$atts['id'] = $view_id;
-		$args = wp_parse_args( $atts, defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? \GV\View_Settings::defaults() : GravityView_View_Data::get_default_args() );
+		$args = wp_parse_args( $atts, \GV\View_Settings::defaults() );
 		$GravityView_frontend = GravityView_frontend::getInstance();
 		$GravityView_frontend->setGvOutputData( GravityView_View_Data::getInstance( $view_id ) );
 		$GravityView_frontend->set_context_view_id( $view_id );
