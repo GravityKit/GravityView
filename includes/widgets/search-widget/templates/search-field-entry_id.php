@@ -16,6 +16,6 @@ $label = $gravityview_view->search_field['label'];
 		<?php if( ! gv_empty( $label, false, false ) ) { ?>
 		<label for="gv_entry_id_<?php echo $view_id; ?>"><?php echo esc_html( $label ); ?></label>
 		<?php } ?>
-		<p><input type="text" name="gv_id" id="gv_entry_id_<?php echo $view_id; ?>" value="<?php echo $value; ?>" /></p>
+		<p><input type="text" name="gv_id" id="gv_entry_id_<?php echo $view_id; ?>" value="<?php echo esc_attr( $value ); ?>" /></p>
 	</div>
 </div>
