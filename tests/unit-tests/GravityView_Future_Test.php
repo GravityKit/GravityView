@@ -1624,6 +1624,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( '[3] Some text in a textarea', $future );
 		$this->assertNotContains( '[24] Some text in a textarea', $future );
 		$this->assertContains( '[25] Some text in a textarea', $future );
+
+		remove_filter( 'gravityview/view/entries', array( $this, '_filter_gravityview_view_entries' ), 10 );
     }
 
     /**
