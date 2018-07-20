@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * A general class for About page.
  *
- * @since 2.3.XX
+ * @since 2.0.XX
  */
 class GravityView_Admin_Installer {
 	const EDD_API_URL = 'https://gravityview.co/edd-api/products';
