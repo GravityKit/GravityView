@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.0.14.1 on July 19, 2018 =
+
+* Fixed: Potential XSS ("Cross Site Scripting") security issue. **Please update.**
+* Fixed: GravityView styles weren't being loaded for some users
+
 = 2.0.14 on July 9, 2018 =
 
 * Added: Allow filtering entries by Unapproved status in Gravity Forms
