@@ -106,7 +106,7 @@ class GravityView_Admin_Installer {
 
 		$extensions_data = json_decode( wp_remote_retrieve_body( $response ), true );
 		if ( empty( $extensions_data['products'] ) ) {
-			return false;
+			return array();
 		}
 
 		$this->set_extensions_data( $extensions_data['products'] );
@@ -140,7 +140,7 @@ class GravityView_Admin_Installer {
 	public function render_screen() {
 		$extensions_data = $this->get_extensions_data();
 
-		if ( ! $extensions_data ) {
+		if ( empty( $extensions_data ) ) {
 			?>
             <div class="wrap">
                 <h2>
