@@ -17,13 +17,14 @@ class GravityView_Admin_Installer {
 	const EDD_API_URL = 'https://gravityview.co/edd-api/products';
 	const EDD_API_KEY = 'e4c7321c4dcf342c9cb078e27bf4ba97';
 	const EDD_API_TOKEN = 'e031fd350b03bc223b10f04d8b5dde42';
-	const EXTENSIONS_DATA_EXPIRY = DAY_IN_SECONDS;
 	const EXTENSIONS_DATA_TRANSIENT = 'gv_extensions_data';
+	const EXTENSIONS_DATA_TRANSIENT_EXPIRY = DAY_IN_SECONDS;
 
 	public $minimum_capability = 'install_plugins';
 
 	public function __construct() {
 		$this->add_extensions_data_filters();
+
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ), 200 );
 		add_action( 'gravityview/admin_installer/delete_extensions_data', array( $this, 'delete_extensions_data' ) );
 		add_action( 'wp_ajax_gravityview_admin_installer_activate', array( $this, 'activate_extension' ) );
@@ -31,6 +32,11 @@ class GravityView_Admin_Installer {
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_ui_assets' ) );
 	}
 
+	/**
+	 * Modify plugins data with custom GV extension info
+	 *
+	 * @return void
+	 */
 	public function add_extensions_data_filters() {
 		$extensions_data = get_transient( self::EXTENSIONS_DATA_TRANSIENT );
 		if ( ! $extensions_data ) {
@@ -55,6 +61,11 @@ class GravityView_Admin_Installer {
 		}, 10, 3 );
 	}
 
+	/**
+	 * Add new admin menu
+	 *
+	 * @return void
+	 */
 	public function add_admin_menu() {
 		add_submenu_page(
 			'edit.php?post_type=gravityview',
@@ -66,6 +77,11 @@ class GravityView_Admin_Installer {
 		);
 	}
 
+	/**
+	 * Get extensions data from transient or from API; save transient after getting data from API
+	 *
+	 * @return array
+	 */
 	public function get_extensions_data() {
 		$extensions_data = get_transient( self::EXTENSIONS_DATA_TRANSIENT );
 		if ( $extensions_data ) {
@@ -97,14 +113,29 @@ class GravityView_Admin_Installer {
 		return $extensions_data['products'];
 	}
 
+	/**
+	 * Save extensions data in a time-bound transient
+	 *
+	 * @param array $data
+	 *
+	 * @return void
+	 */
 	public function set_extensions_data( $data ) {
-		return set_transient( self::EXTENSIONS_DATA_TRANSIENT, $data, self::EXTENSIONS_DATA_EXPIRY );
+		set_transient( self::EXTENSIONS_DATA_TRANSIENT, $data, self::EXTENSIONS_DATA_TRANSIENT_EXPIRY );
 	}
 
+	/**
+	 * Delete extensions data transient
+	 *
+	 * @return void
+	 */
 	public function delete_extensions_data() {
 		return delete_transient( self::EXTENSIONS_DATA_TRANSIENT );
 	}
 
+	/**
+	 * Display a grid of available extensions and controls to install/activate/deactivate them
+	 */
 	public function display_extensions_and_plugins_screen() {
 		$extensions_data = $this->get_extensions_data();
 
@@ -241,6 +272,11 @@ class GravityView_Admin_Installer {
 		<?php
 	}
 
+	/**
+	 * Handle AJAX request to activate extension
+	 *
+	 * @return string JSON response status and error message
+	 */
 	public function activate_extension() {
 		$data = \GV\Utils::_POST( 'data', array() );
 
@@ -261,6 +297,11 @@ class GravityView_Admin_Installer {
 		wp_send_json_success();
 	}
 
+	/**
+	 * Handle AJAX request to deactivate extension
+	 *
+	 * @return string JSON response status and error message
+	 */
 	public function deactivate_extension() {
 		$data = \GV\Utils::_POST( 'data', array() );
 
@@ -281,6 +322,11 @@ class GravityView_Admin_Installer {
 		wp_send_json_success();
 	}
 
+	/**
+	 * Register and enqueue assets; localize script
+	 *
+	 * @return void
+	 */
 	public function register_ui_assets() {
 		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
