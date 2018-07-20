@@ -147,9 +147,11 @@ class GravityView_Admin_Installer {
                 <h2>
 					<?php esc_html_e( 'GravityView Extensions and Plugins', 'gravityview' ); ?>
                 </h2>
-                <p>
-					<?php esc_html_e( 'Extensions and plugins data cannot be loaded at the moment. Please try again later.', 'gravityview' ); ?>
-                </p>
+                <div class="gv-admin-installer-notice notice inline error">
+                    <h3>
+                        <?php esc_html_e( 'Extensions and plugins data cannot be loaded at the moment. Please try again later.', 'gravityview' ); ?>
+                    </h3>
+                </div>
             </div>
 			<?php
 
