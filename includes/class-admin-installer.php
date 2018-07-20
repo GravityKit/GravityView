@@ -14,12 +14,20 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 2.0.XX
  */
 class GravityView_Admin_Installer {
+
 	const EDD_API_URL = 'https://gravityview.co/edd-api/products';
+
 	const EDD_API_KEY = 'e4c7321c4dcf342c9cb078e27bf4ba97';
+
 	const EDD_API_TOKEN = 'e031fd350b03bc223b10f04d8b5dde42';
+
 	const EXTENSIONS_DATA_TRANSIENT = 'gv_extensions_data';
+
 	const EXTENSIONS_DATA_TRANSIENT_EXPIRY = DAY_IN_SECONDS;
 
+	/**
+	 * @var string
+	 */
 	public $minimum_capability = 'install_plugins';
 
 	public function __construct() {
@@ -79,19 +87,19 @@ class GravityView_Admin_Installer {
 	}
 
 	/**
-     * Get an array of plugins with textdomains as keys
-     *
+	 * Get an array of plugins with textdomains as keys
+	 *
 	 * @return array {
-     * @type string $path       Path to the plugin
-     * @type string $version    What version is the plugin
-     * @type bool   $activated  Is the plugin activated
-     * }
+	 * @type string $path Path to the plugin
+	 * @type string $version What version is the plugin
+	 * @type bool $activated Is the plugin activated
+	 * }
 	 */
 	protected function get_wp_plugins_data() {
 
-	    $wp_plugins = array();
+		$wp_plugins = array();
 
-	    $all_plugins = get_plugins();
+		$all_plugins = get_plugins();
 
 		foreach ( $all_plugins as $path => $plugin ) {
 
@@ -107,7 +115,7 @@ class GravityView_Admin_Installer {
 		}
 
 		return $wp_plugins;
-    }
+	}
 
 	/**
 	 * Get extensions data from transient or from API; save transient after getting data from API
@@ -115,13 +123,16 @@ class GravityView_Admin_Installer {
 	 * @return array
 	 */
 	public function get_extensions_data() {
+
 		$extensions_data = get_transient( self::EXTENSIONS_DATA_TRANSIENT );
+
 		if ( $extensions_data ) {
 			return $extensions_data;
 		}
 
 		$home_url = parse_url( home_url() );
-		$api_url  = add_query_arg(
+
+		$api_url = add_query_arg(
 			array(
 				'key'         => self::EDD_API_KEY,
 				'token'       => self::EDD_API_TOKEN,
@@ -133,10 +144,11 @@ class GravityView_Admin_Installer {
 
 		$response = wp_remote_get( $api_url, array(
 			'sslverify' => false,
-            'timeout'   => 10,
+			'timeout'   => 10,
 		) );
 
 		$extensions_data = json_decode( wp_remote_retrieve_body( $response ), true );
+
 		if ( empty( $extensions_data['products'] ) ) {
 			return array();
 		}
@@ -168,8 +180,13 @@ class GravityView_Admin_Installer {
 
 	/**
 	 * Display a grid of available extensions and controls to install/activate/deactivate them
+	 *
+	 * @since 2.1
+	 *
+	 * @return void
 	 */
 	public function render_screen() {
+
 		$extensions_data = $this->get_extensions_data();
 
 		if ( empty( $extensions_data ) ) {
@@ -180,7 +197,7 @@ class GravityView_Admin_Installer {
                 </h2>
                 <div class="gv-admin-installer-notice notice inline error">
                     <h3>
-                        <?php esc_html_e( 'Extensions and plugins data cannot be loaded at the moment. Please try again later.', 'gravityview' ); ?>
+						<?php esc_html_e( 'Extensions and plugins data cannot be loaded at the moment. Please try again later.', 'gravityview' ); ?>
                     </h3>
                 </div>
             </div>
@@ -204,19 +221,18 @@ class GravityView_Admin_Installer {
             </div>
 
             <div class="gv-admin-installer-container">
-
 				<?php
 
-                $wp_plugins = $this->get_wp_plugins_data();
+				$wp_plugins = $this->get_wp_plugins_data();
 
-		        foreach ( $extensions_data as $extension ) {
+				foreach ( $extensions_data as $extension ) {
 
-			        if ( empty( $extension['info'] ) ) {
-				        continue;
-			        }
+					if ( empty( $extension['info'] ) ) {
+						continue;
+					}
 
-			        $this->render_extension( $extension, $wp_plugins );
-		        }
+					$this->render_extension( $extension, $wp_plugins );
+				}
 				?>
             </div>
         </div>
@@ -224,92 +240,89 @@ class GravityView_Admin_Installer {
 	}
 
 	/**
-     * Outputs the HTML of a single extension
-     *
+	 * Outputs the HTML of a single extension
+	 *
 	 * @param array $extension Extension data, as returned from EDD API
 	 * @param array $wp_plugins
-     *
-     * @return void
+	 *
+	 * @return void
 	 */
 	protected function render_extension( $extension, $wp_plugins ) {
 
-        $extension_info = $extension['info'];
+		$extension_info = $extension['info'];
 
-        $install_url    = add_query_arg(
-            array(
-                'action'   => 'install-plugin',
-                'plugin'   => $extension_info['slug'],
-                '_wpnonce' => wp_create_nonce( 'install-plugin_' . $extension_info['slug'] ),
-            ),
-            self_admin_url( 'update.php' )
-        );
+		$install_url = add_query_arg(
+			array(
+				'action'   => 'install-plugin',
+				'plugin'   => $extension_info['slug'],
+				'_wpnonce' => wp_create_nonce( 'install-plugin_' . $extension_info['slug'] ),
+			),
+			self_admin_url( 'update.php' )
+		);
 
-        if ( 'gravityview' === $extension_info['slug'] ) {
-            return;
-        }
+		if ( 'gravityview' === $extension_info['slug'] ) {
+			return;
+		}
 
-        $wp_plugin = \GV\Utils::get( $wp_plugins, $extension_info['textdomain'], false );
+		$wp_plugin = \GV\Utils::get( $wp_plugins, $extension_info['textdomain'], false );
 
-        ?>
+		?>
         <div class="item">
             <div class="addon-inner">
-                <img class="thumbnail" src="<?php echo esc_attr( $extension_info['thumbnail'] ); ?>" alt="" />
+                <img class="thumbnail" src="<?php echo esc_attr( $extension_info['thumbnail'] ); ?>" alt=""/>
                 <h3>
-                    <?php echo esc_attr( $extension_info['title'] ); ?>
+					<?php echo esc_attr( $extension_info['title'] ); ?>
                 </h3>
                 <div><?php
 
-                    if ( ! $wp_plugin ) {
+					if ( ! $wp_plugin ) {
 
-                        ?>
+						?>
                         <div class="status notinstalled">
-                            <?php esc_html_e( 'Not Installed', 'gravityview' ); ?>
+							<?php esc_html_e( 'Not Installed', 'gravityview' ); ?>
                         </div>
                         <a data-status="notinstalled" href="<?php echo $install_url; ?>" class="button">
                             <span class="title"><?php esc_html_e( 'Install', 'gravityview' ); ?></span>
                             <span class="spinner"></span>
                         </a>
-                        <?php
+						<?php
 
-                    } else if ( false === $wp_plugin['activated'] ) {
-
-                        ?>
+					} else if ( false === $wp_plugin['activated'] ) {
+						?>
                         <div class="status inactive">
-                            <?php esc_html_e( 'Inactive', 'gravityview' ); ?>
+							<?php esc_html_e( 'Inactive', 'gravityview' ); ?>
                         </div>
-                        <a data-status="inactive" data-plugin-path="<?php echo $wp_plugin['path']; ?>" href=" #" class="button">
+                        <a data-status="inactive" data-plugin-path="<?php echo $wp_plugin['path']; ?>" href="#" class="button">
                             <span class="title"><?php esc_html_e( 'Activate', 'gravityview' ); ?></span>
                             <span class="spinner"></span>
                         </a>
 
-                        <?php
+						<?php
 
-                    } else {
-
-                        ?>
+					} else {
+					    ?>
                         <div class="status active">
-                            <?php esc_html_e( 'Active', 'gravityview' ); ?>
+							<?php esc_html_e( 'Active', 'gravityview' ); ?>
                         </div>
                         <a data-status="active" data-plugin-path="<?php echo $wp_plugin['path']; ?>" href="#" class="button">
                             <span class="title"><?php esc_html_e( 'Deactivate', 'gravityview' ); ?></span>
                             <span class="spinner"></span>
                         </a>
 
-                        <?php
+						<?php
+					}
 
-                    }
-
-                    ?>
+					?>
                 </div>
 
                 <div class="addon-excerpt">
-                    <?php echo wpautop( esc_html( $extension_info['excerpt'] ) ); ?>
+					<?php echo wpautop( esc_html( $extension_info['excerpt'] ) ); ?>
                 </div>
 
             </div>
         </div>
-        <?php
-    }
+		<?php
+	}
 
 	/**
 	 * Handle AJAX request to activate extension
@@ -368,9 +381,9 @@ class GravityView_Admin_Installer {
 	 */
 	public function maybe_enqueue_scripts_and_styles() {
 
-		if( ! gravityview()->request->is_admin( '', 'extensions' ) ) {
-		    return;
-        }
+		if ( ! gravityview()->request->is_admin( '', 'extensions' ) ) {
+			return;
+		}
 
 		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
