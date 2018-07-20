@@ -1642,9 +1642,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
         $return = new \GV\Entry_Collection();
 
-        foreach ( $entries->all() as $entry ) {
-            // Only add even entry IDs to the new Entry Collection
-            if ( $entry->ID % 2 === 0 ) {
+        foreach ( $entries->all() as $i => $entry ) {
+            if ( $i % 2 === 0 ) {
                 $return->add( $entry );
             }
         }
