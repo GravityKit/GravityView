@@ -161,7 +161,7 @@ class Views_Route extends Route {
 
 		$view = \GV\View::by_id( $view_id );
 
-		if ( $format == 'html' ) {
+		if ( 'html' == $format ) {
 
 			$renderer = new \GV\View_Renderer();
 			$total = 0;
@@ -195,6 +195,34 @@ class Views_Route extends Route {
 
 		if ( ! $entries->all() ) {
 			return new \WP_Error( 'gravityview-no-entries', __( 'No Entries found.', 'gravityview' ) );
+		}
+
+		if ( 'csv' == $format ) {
+			ob_start();
+
+			$csv = fopen( 'php://output', 'w' );
+
+			/** Da' BOM :) */
+			fputs( $csv, "\xef\xbb\xbf" );
+
+			$headers_done = false;
+
+			foreach ( $entries->all() as $entry ) {
+				$entry = $this->prepare_entry_for_response( $view, $entry, $request, 'directory' );
+				var_dump( $entry );
+				exit;
+
+				if ( ! $headers_done ) {
+					$headers_done = fputcsv( $csv, array_keys( $entry ) );
+				}
+
+				fputcsv( $csv, $entry );
+			}
+
+			$response = new \WP_REST_Response( ob_get_clean(), 200 );
+			$response->header( 'X-Item-Count', $entries->total() );
+
+			return $response;
 		}
 
 		$data = array( 'entries' => $entries->all(), 'total' => $entries->total() );
