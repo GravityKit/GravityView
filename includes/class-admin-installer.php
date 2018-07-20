@@ -200,7 +200,7 @@ class GravityView_Admin_Installer {
             </p>
 
             <div class="gv-admin-installer-notice notice inline error hidden is-dismissible">
-                <p></p>
+                <p><!-- Contents will be replaced by JavaScript if there is an error --></p>
             </div>
 
             <div class="gv-admin-installer-container">
