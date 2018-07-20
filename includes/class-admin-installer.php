@@ -79,6 +79,37 @@ class GravityView_Admin_Installer {
 	}
 
 	/**
+     * Get an array of plugins with textdomains as keys
+     *
+	 * @return array {
+     * @type string $path       Path to the plugin
+     * @type string $version    What version is the plugin
+     * @type bool   $activated  Is the plugin activated
+     * }
+	 */
+	protected function get_wp_plugins_data() {
+
+	    $wp_plugins = array();
+
+	    $all_plugins = get_plugins();
+
+		foreach ( $all_plugins as $path => $plugin ) {
+
+			if ( empty( $plugin['TextDomain'] ) ) {
+				continue;
+			}
+
+			$wp_plugins[ $plugin['TextDomain'] ] = array(
+				'path'      => $path,
+				'version'   => $plugin['Version'],
+				'activated' => is_plugin_active( $path )
+			);
+		}
+
+		return $wp_plugins;
+    }
+
+	/**
 	 * Get extensions data from transient or from API; save transient after getting data from API
 	 *
 	 * @return array
@@ -156,19 +187,6 @@ class GravityView_Admin_Installer {
 			<?php
 
 			return;
-		}
-
-		$wp_plugins = array();
-		foreach ( get_plugins() as $path => $plugin ) {
-			if ( empty( $plugin['TextDomain'] ) ) {
-				continue;
-			}
-
-			$wp_plugins[ $plugin['TextDomain'] ] = array(
-				'path'      => $path,
-				'version'   => $plugin['Version'],
-				'activated' => is_plugin_active( $path )
-			);
 		}
 
 		?>
