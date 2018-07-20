@@ -15,6 +15,9 @@
 
   var adminInstaller = {
 
+    /**
+     * Add click events to activate/deactivate/install buttons
+     */
     init: function () {
 
       $( '.gv-admin-installer-container' ).on( 'click' , 'a.button:not(.disabled)' , function ( e ) {
@@ -58,6 +61,14 @@
 
     } ,
 
+    /**
+     * Activate extension via Ajax POST request
+     *
+     * @param {string} pluginPath WP's plugin path
+     * @param {Object} item DOM element with extension data
+     *
+     * @returns {Promise}
+     */
     activate: function ( pluginPath , item ) {
       var defer = $.Deferred();
 
@@ -82,6 +93,14 @@
       return defer.promise();
     } ,
 
+    /**
+     * Deactivate extension via Ajax POST request
+     *
+     * @param {string} pluginPath WP's plugin path
+     * @param {Object} item DOM element with extension data
+     *
+     * @returns {Promise}
+     */
     deactivate: function ( pluginPath , item ) {
       var defer = $.Deferred();
 
@@ -106,6 +125,11 @@
       return defer.promise();
     } ,
 
+    /**
+     * Install extension via redirect installation page
+     *
+     * @returns {Promise}
+     */
     install: function ( installUrl ) {
       var defer = $.Deferred();
 
