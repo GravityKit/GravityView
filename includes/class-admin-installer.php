@@ -335,11 +335,9 @@ class GravityView_Admin_Installer {
 
 		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-		wp_register_style( 'gravityview-admin-installer', GRAVITYVIEW_URL . 'assets/css/admin-installer.css', array(), \GV\Plugin::$version );
-		wp_enqueue_style( 'gravityview-admin-installer' );
+		wp_enqueue_style( 'gravityview-admin-installer', GRAVITYVIEW_URL . 'assets/css/admin-installer.css', array(), \GV\Plugin::$version );
 
-		wp_register_script( 'gravityview-admin-installer', GRAVITYVIEW_URL . 'assets/js/admin-installer' . $script_debug . '.js', array( 'jquery' ), \GV\Plugin::$version, true );
-		wp_enqueue_script( 'gravityview-admin-installer' );
+		wp_enqueue_script( 'gravityview-admin-installer', GRAVITYVIEW_URL . 'assets/js/admin-installer' . $script_debug . '.js', array( 'jquery' ), \GV\Plugin::$version, true );
 
 		wp_localize_script( 'gravityview-admin-installer', 'gvAdminInstaller', array(
 			'activateErrorLabel'    => __( 'Extension activation failed.', 'gravityview' ),
