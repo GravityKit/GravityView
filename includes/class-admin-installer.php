@@ -260,7 +260,7 @@ class GravityView_Admin_Installer {
                             </div>
 
                             <div>
-								<?php echo $extension_info['excerpt']; ?>
+								<?php echo wpautop( esc_html( $extension_info['excerpt'] ) ); ?>
                             </div>
 
                         </div>
