@@ -101,7 +101,8 @@ class GravityView_Admin_Installer {
 		);
 
 		$response = wp_remote_get( $api_url, array(
-			'sslverify' => false
+			'sslverify' => false,
+            'timeout'   => 10,
 		) );
 
 		$extensions_data = json_decode( wp_remote_retrieve_body( $response ), true );
