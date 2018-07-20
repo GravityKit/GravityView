@@ -23,13 +23,14 @@ class GravityView_Admin_Installer {
 	public $minimum_capability = 'install_plugins';
 
 	public function __construct() {
+
 		$this->add_extensions_data_filters();
 
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ), 200 );
 		add_action( 'gravityview/admin_installer/delete_extensions_data', array( $this, 'delete_extensions_data' ) );
 		add_action( 'wp_ajax_gravityview_admin_installer_activate', array( $this, 'activate_extension' ) );
 		add_action( 'wp_ajax_gravityview_admin_installer_deactivate', array( $this, 'deactivate_extension' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_ui_assets' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'maybe_enqueue_scripts_and_styles' ) );
 	}
 
 	/**
@@ -73,7 +74,7 @@ class GravityView_Admin_Installer {
 			__( 'Extensions & Plugins', 'gravityview' ),
 			$this->minimum_capability,
 			'gv-admin-installer',
-			array( $this, 'display_extensions_and_plugins_screen' )
+			array( $this, 'render_screen' )
 		);
 	}
 
@@ -118,16 +119,16 @@ class GravityView_Admin_Installer {
 	 *
 	 * @param array $data
 	 *
-	 * @return void
+	 * @return true if successful, false otherwise
 	 */
 	public function set_extensions_data( $data ) {
-		set_transient( self::EXTENSIONS_DATA_TRANSIENT, $data, self::EXTENSIONS_DATA_TRANSIENT_EXPIRY );
+		return set_transient( self::EXTENSIONS_DATA_TRANSIENT, $data, self::EXTENSIONS_DATA_TRANSIENT_EXPIRY );
 	}
 
 	/**
 	 * Delete extensions data transient
 	 *
-	 * @return void
+	 * @return bool true if successful, false otherwise
 	 */
 	public function delete_extensions_data() {
 		return delete_transient( self::EXTENSIONS_DATA_TRANSIENT );
@@ -136,7 +137,7 @@ class GravityView_Admin_Installer {
 	/**
 	 * Display a grid of available extensions and controls to install/activate/deactivate them
 	 */
-	public function display_extensions_and_plugins_screen() {
+	public function render_screen() {
 		$extensions_data = $this->get_extensions_data();
 
 		if ( ! $extensions_data ) {
@@ -300,7 +301,7 @@ class GravityView_Admin_Installer {
 	/**
 	 * Handle AJAX request to deactivate extension
 	 *
-	 * @return string JSON response status and error message
+	 * @return void Send JSON response status and error message
 	 */
 	public function deactivate_extension() {
 		$data = \GV\Utils::_POST( 'data', array() );
@@ -327,7 +328,7 @@ class GravityView_Admin_Installer {
 	 *
 	 * @return void
 	 */
-	public function register_ui_assets() {
+	public function maybe_enqueue_scripts_and_styles() {
 
 		if( ! gravityview()->request->is_admin( '', 'extensions' ) ) {
 		    return;

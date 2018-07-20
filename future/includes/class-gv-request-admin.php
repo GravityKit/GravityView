@@ -42,7 +42,7 @@ class Admin_Request extends Request {
 				$is_page = 'views';
 			} else if ( $is_gv_edit_single = $current_screen->base == 'post' ) {
 				$is_page = 'single';
-			} else if ( $is_gv_settings = $current_screen->id == 'gravityview_page_gravityview_settings' ) {
+			} else if ( $is_gv_settings = 'gravityview_page_gravityview_settings' === $current_screen->id ) {
 				$is_page = 'settings';
 			} else if( $is_extensions = 'gravityview_page_gv-admin-installer' === $current_screen->id ) {
 				$is_page = 'extensions';
