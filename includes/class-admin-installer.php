@@ -1,7 +1,7 @@
 <?php
-<?php
 
 // Exit if accessed directly
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * A general class for About page.
  *
- * @since 2.0.XX
+ * @since 2.3.XX
  */
 class GravityView_Admin_Installer {
 	const EDD_API_URL = 'https://gravityview.co/edd-api/products';
@@ -27,6 +27,9 @@ class GravityView_Admin_Installer {
 		$this->add_extensions_data_filters();
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ), 200 );
 		add_filter( 'gravityview/admin_installer/delete_extensions_data', array( $this, 'delete_extensions_data' ) );
+		add_action( 'wp_ajax_gravityview_admin_installer_activate', array( $this, 'activate_extension' ) );
+		add_action( 'wp_ajax_gravityview_admin_installer_deactivate', array( $this, 'deactivate_extension' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'register_ui_assets' ) );
 	}
 
 	public function add_extensions_data_filters() {
@@ -82,7 +85,7 @@ class GravityView_Admin_Installer {
 		);
 
 		$response = wp_remote_get( $api_url, array(
-			'sslverify' => false,
+			'sslverify' => false
 		) );
 
 		$extensions_data = json_decode( wp_remote_retrieve_body( $response ), true );
@@ -135,6 +138,7 @@ class GravityView_Admin_Installer {
 			}
 
 			$wp_plugins[ $plugin['TextDomain'] ] = array(
+				'path'      => $path,
 				'version'   => $plugin['Version'],
 				'activated' => is_plugin_active( $path )
 			);
@@ -142,101 +146,6 @@ class GravityView_Admin_Installer {
 
 		?>
         <div class="wrap">
-            <style>
-                .gv-admin-installer-container .addon-inner .active {
-                    background-color: #CBECA0;
-                    border: 1px solid #97B48A;
-                    padding: 6px;
-                    display: block;
-                    font-weight: bold;
-                    color: #2D5312;
-                    margin-bottom: 12px;
-                    background-repeat: repeat-x;
-                    background-position: 0 0;
-                    -webkit-border-radius: 3px;
-                    -moz-border-radius: 3px;
-                    border-radius: 3px
-                }
-
-                .gv-admin-installer-container .addon-inner .notinstalled {
-                    background-color: #EEE;
-                    border: 1px solid #DADADA;
-                    padding: 6px;
-                    display: block;
-                    font-weight: bold;
-                    color: #424242;
-                    margin-bottom: 12px;
-                    background-repeat: repeat-x;
-                    background-position: 0 0;
-                    -webkit-border-radius: 3px;
-                    -moz-border-radius: 3px;
-                    border-radius: 3px
-                }
-
-                .gv-admin-installer-container .addon-inner .inactive {
-                    background-color: #FFFBCC;
-                    padding: 6px;
-                    font-weight: bold;
-                    border: 1px solid #E6DB55;
-                    color: #424242;
-                    margin-bottom: 12px;
-                    background-repeat: repeat-x;
-                    background-position: 0 0;
-                    -webkit-border-radius: 3px;
-                    -moz-border-radius: 3px;
-                    border-radius: 3px
-                }
-
-                .gv-admin-installer-container .addon-inner {
-                    margin: 1.5em;
-                }
-
-                .gv-admin-installer-container .addon-inner ul {
-                    margin-left: 1.25em;
-                    list-style: initial;
-                }
-
-                .gv-admin-installer-container .addon-inner div {
-                    margin-top: 1em
-                }
-
-                .gv-admin-installer-container .addon-inner .thumbnail {
-                    width: 100%;
-                    max-width: 300px;
-
-                    /*-webkit-clip-path: polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%);
-                    clip-path: polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%);*/
-                }
-
-                .gv-admin-installer-container {
-                    min-height: 400px;
-                    display: flex;
-                    display: -webkit-flex;
-                    flex-wrap: wrap;
-                    flex-direction: row;
-                    align-items: flex-start;
-                    align-content: space-between;
-                }
-
-                .gv-admin-installer-container:after {
-                    display: block;
-                    flex: 999 999 auto;
-                }
-
-                .gv-admin-installer-container > .item {
-                    flex: 0 0 auto;
-                    margin: 0 20px 20px 0;
-                    border: 1px solid #ccc;
-                    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
-                    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
-                    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
-                    width: 33%;
-                    min-width: 250px;
-                    max-width: 340px;
-                    min-height: 440px;
-                }
-            </style>
-
             <h2>
 				<?php _e( 'GravityView Extensions and Plugins', 'gravityview' ); ?>
             </h2>
@@ -244,6 +153,10 @@ class GravityView_Admin_Installer {
             <p>
 				<?php _e( 'The following are available add-ons to extend GravityView functionality:', 'gravityview' ); ?>
             </p>
+
+            <div class="gv-admin-installer-notice notice inline error hidden">
+                <p></p>
+            </div>
 
             <div class="gv-admin-installer-container">
 
@@ -263,46 +176,59 @@ class GravityView_Admin_Installer {
 						continue;
 					}
 
+					$wp_plugin = ( ! empty( $wp_plugins[ $extension_info['textdomain'] ] ) ) ? $wp_plugins[ $extension_info['textdomain'] ] : false;
+
 					?>
                     <div class="item">
                         <div class="addon-inner">
-                            <img class="thumbnail" src="<?php echo $extension_info['thumbnail']; ?>"
-                                 alt="extension image"/>
+                            <img class="thumbnail" src="<?php echo $extension_info['thumbnail']; ?>" alt="extension image"/>
                             <h3>
 								<?php echo $extension_info['title']; ?>
                             </h3>
                             <div>
 								<?php
-								if ( empty( $wp_plugins[ $extension_info['textdomain'] ] ) ) {
+
+								if ( ! $wp_plugin ) {
+
 									?>
-                                    <div class="notinstalled">
+                                    <div class="status notinstalled">
 										<?php _e( 'Not Installed', 'gravityview' ); ?>
                                     </div>
-                                    <a href="<?php echo $install_url; ?>" class=" button">
-										<?php _e( 'Install', 'gravityview' ); ?>
+                                    <a data-status="notinstalled" href="<?php echo $install_url; ?>" class="button">
+                                        <span class="title"><?php _e( 'Install', 'gravityview' ); ?></span>
+                                        <span class="spinner"></span>
                                     </a>
 									<?php
-								} else if ( $wp_plugins[ $extension_info['textdomain'] ]['activated'] === false ) {
+
+								} else if ( $wp_plugin['activated'] === false ) {
+
 									?>
-                                    <div class="inactive">
+                                    <div class="status inactive">
 										<?php _e( 'Inactive', 'gravityview' ); ?>
                                     </div>
-                                    <a href="#" class=" button">
-										<?php _e( 'Activate', 'gravityview' ); ?>
+                                    <a data-status="inactive" data-plugin-path="<?php echo $wp_plugin['path']; ?>" href=" #" class="button">
+                                        <span class="title"><?php _e( 'Activate', 'gravityview' ); ?></span>
+                                        <span class="spinner"></span>
                                     </a>
+
 									<?php
+
 								} else {
+
 									?>
-                                    <div class="active">
+                                    <div class="status active">
 										<?php _e( 'Active', 'gravityview' ); ?>
                                     </div>
-                                    <a href="#" class=" button">
-										<?php _e( 'Deactivate', 'gravityview' ); ?>
+                                    <a data-status="active" data-plugin-path="<?php echo $wp_plugin['path']; ?>" href="#" class="button">
+                                        <span class="title"><?php _e( 'Deactivate', 'gravityview' ); ?></span>
+                                        <span class="spinner"></span>
                                     </a>
-									<?php
-								}
-								?>
 
+									<?php
+
+								}
+
+								?>
                             </div>
 
                             <div>
@@ -310,7 +236,6 @@ class GravityView_Admin_Installer {
                             </div>
 
                         </div>
-
                     </div>
 					<?php
 				}
@@ -318,6 +243,65 @@ class GravityView_Admin_Installer {
             </div>
         </div>
 		<?php
+	}
+
+	public function activate_extension() {
+		$data = \GV\Utils::_POST( 'data', array() );
+
+		if ( empty( $data['path'] ) ) {
+			return;
+		}
+
+		$result = activate_plugin( $data['path'] );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error(
+				array(
+					'error' => sprintf( __( 'Extension activation failed: %s', 'gravityview' ), $result->get_error_message() )
+				)
+			);
+		}
+
+		wp_send_json_success();
+	}
+
+	public function deactivate_extension() {
+		$data = \GV\Utils::_POST( 'data', array() );
+
+		if ( empty( $data['path'] ) ) {
+			return;
+		}
+
+		$result = deactivate_plugins( $data['path'] );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error(
+				array(
+					'error' => sprintf( __( 'Extension deactivation failed: %s', 'gravityview' ), $result->get_error_message() )
+				)
+			);
+		}
+
+		wp_send_json_success();
+	}
+
+	public function register_ui_assets() {
+		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+		wp_register_style( 'gravityview-admin-installer', GRAVITYVIEW_URL . 'assets/css/admin-installer.css', array(), \GV\Plugin::$version );
+		wp_enqueue_style( 'gravityview-admin-installer' );
+
+		wp_register_script( 'gravityview-admin-installer', GRAVITYVIEW_URL . 'assets/js/admin-installer' . $script_debug . '.js', array( 'jquery' ), \GV\Plugin::$version, true );
+		wp_enqueue_script( 'gravityview-admin-installer' );
+
+		wp_localize_script( 'gravityview-admin-installer', 'gvAdminInstaller', array(
+			'activateErrorLabel'    => __( 'Extension activation failed.', 'gravityview' ),
+			'deactivateErrorLabel'  => __( 'Extension deactivation failed.', 'gravityview' ),
+			'activeStatusLabel'     => __( 'Active', 'gravityview' ),
+			'inactiveStatusLabel'   => __( 'Inactive', 'gravityview' ),
+			'activateActionLabel'   => __( 'Activate', 'gravityview' ),
+			'deactivateActionLabel' => __( 'Deactivate', 'gravityview' )
+		) );
 	}
 }
 

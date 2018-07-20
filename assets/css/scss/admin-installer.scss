@@ -1,0 +1,106 @@
+/**
+ * Custom CSS for extensions & plugins page
+ *
+ * @package   GravityView
+ * @license   GPL2+
+ * @author    Katz Web Services, Inc.
+ * @link      http://gravityview.co
+ * @copyright Copyright 2014, Katz Web Services, Inc.
+ *
+ * @since 2.3.x
+ */
+
+.gv-admin-installer-container {
+  min-height: 400px;
+  display: flex;
+  display: -webkit-flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: flex-start;
+  align-content: space-between;
+
+  &:after {
+    display: block;
+    flex: 999 999 auto;
+  }
+
+  .item {
+    flex: 0 0 auto;
+    margin: 0 20px 20px 0;
+    border: 1px solid #ccc;
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    width: 33%;
+    min-width: 250px;
+    max-width: 340px;
+    min-height: 440px;
+  }
+
+  .addon-inner {
+    margin: 1.5em;
+
+    ul {
+      margin-left: 1.25em;
+      list-style: initial;
+    }
+
+    div {
+      margin-top: 1em
+    }
+
+    .thumbnail {
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .inactive {
+      background-color: #FFFBCC;
+      padding: 6px;
+      font-weight: bold;
+      border: 1px solid #E6DB55;
+      color: #424242;
+      margin-bottom: 12px;
+      background-repeat: repeat-x;
+      background-position: 0 0;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px
+    }
+
+    .notinstalled {
+      background-color: #EEE;
+      border: 1px solid #DADADA;
+      padding: 6px;
+      display: block;
+      font-weight: bold;
+      color: #424242;
+      margin-bottom: 12px;
+      background-repeat: repeat-x;
+      background-position: 0 0;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px
+    }
+
+    .active {
+      background-color: #CBECA0;
+      border: 1px solid #97B48A;
+      padding: 6px;
+      display: block;
+      font-weight: bold;
+      color: #2D5312;
+      margin-bottom: 12px;
+      background-repeat: repeat-x;
+      background-position: 0 0;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px
+    }
+
+    .spinner {
+      display: none;
+      visibility: visible;
+    }
+  }
+}
