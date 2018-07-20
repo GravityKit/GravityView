@@ -165,6 +165,7 @@ abstract class Route extends \WP_REST_Controller {
 			return $this->route_name;
 		} else {
 			_doing_it_wrong( __METHOD__, __( 'Must set route name in subclass.', 'gravityview' ), '2.0' );
+			return '';
 		}
 	}
 
@@ -182,14 +183,15 @@ abstract class Route extends \WP_REST_Controller {
 			return $this->sub_type;
 		} else {
 			_doing_it_wrong( __METHOD__, __( 'Must set route sub type in subclass.', 'gravityview' ), '2.0' );
+			return '';
 		}
 	}
 
 	/**
 	 * Get a collection of items
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|WP_REST_Response
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function get_items( $request ) {
 		return $this->not_implemented();
@@ -198,8 +200,8 @@ abstract class Route extends \WP_REST_Controller {
 	/**
 	 * Get one item from the collection
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|WP_REST_Response
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function get_item( $request ) {
 		return $this->not_implemented();
@@ -208,8 +210,8 @@ abstract class Route extends \WP_REST_Controller {
 	/**
 	 * Create one item from the collection
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|WP_REST_Request
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_REST_Response
 	 */
 	public function create_item( $request ) {
 		return $this->not_implemented();
@@ -218,8 +220,8 @@ abstract class Route extends \WP_REST_Controller {
 	/**
 	 * Update one item from the collection
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|WP_REST_Request
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_REST_Response
 	 */
 	public function update_item( $request ) {
 		return $this->not_implemented();
@@ -228,8 +230,8 @@ abstract class Route extends \WP_REST_Controller {
 	/**
 	 * Delete one item from the collection
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|WP_REST_Request
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_REST_Response
 	 */
 	public function delete_item( $request ) {
 		return $this->not_implemented();
@@ -239,8 +241,8 @@ abstract class Route extends \WP_REST_Controller {
 	/**
 	 * Get a collection of items
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|WP_REST_Response
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function get_sub_items( $request ) {
 		return $this->not_implemented();
@@ -250,8 +252,8 @@ abstract class Route extends \WP_REST_Controller {
 	/**
 	 * Get one item from the collection
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|WP_REST_Response
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function get_sub_item( $request ) {
 		return $this->not_implemented();
@@ -260,8 +262,8 @@ abstract class Route extends \WP_REST_Controller {
 	/**
 	 * Create one item from the collection
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|WP_REST_Request
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_REST_Response
 	 */
 	public function create_sub_item( $request ) {
 		return $this->not_implemented();
@@ -270,8 +272,8 @@ abstract class Route extends \WP_REST_Controller {
 	/**
 	 * Update one item from the collection for sub items
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|WP_REST_Request
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_REST_Response
 	 */
 	public function update_sub_item( $request ) {
 		return $this->not_implemented();
@@ -280,8 +282,8 @@ abstract class Route extends \WP_REST_Controller {
 	/**
 	 * Delete one item from the collection for sub items
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|WP_REST_Request
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_REST_Response
 	 */
 	public function delete_sub_item( $request ) {
 		return $this->not_implemented();
@@ -290,8 +292,8 @@ abstract class Route extends \WP_REST_Controller {
 	/**
 	 * Check if a given request has access to get items
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|bool
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_REST_Response
 	 */
 	public function get_items_permissions_check( $request ) {
 		return $this->not_implemented();
@@ -300,8 +302,8 @@ abstract class Route extends \WP_REST_Controller {
 	/**
 	 * Check if a given request has access to get a specific item
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|bool
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_REST_Response
 	 */
 	public function get_item_permissions_check( $request ) {
 		return $this->not_implemented();
@@ -310,8 +312,8 @@ abstract class Route extends \WP_REST_Controller {
 	/**
 	 * Check if a given request has access to create items
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|bool
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_REST_Response
 	 */
 	public function create_item_permissions_check( $request ) {
 		return $this->not_implemented();
@@ -320,8 +322,8 @@ abstract class Route extends \WP_REST_Controller {
 	/**
 	 * Check if a given request has access to update a specific item
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|bool
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_REST_Response
 	 */
 	public function update_item_permissions_check( $request ) {
 		return $this->not_implemented();
@@ -330,8 +332,8 @@ abstract class Route extends \WP_REST_Controller {
 	/**
 	 * Check if a given request has access to delete a specific item
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|bool
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_REST_Response
 	 */
 	public function delete_item_permissions_check( $request ) {
 		return $this->not_implemented();
@@ -341,8 +343,8 @@ abstract class Route extends \WP_REST_Controller {
 	 * Prepare the item for create or update operation
 	 *
 	 * @todo ZACK - Use this as genric prepare to save or remove from usage.
-	 * @param WP_REST_Request $request Request object
-	 * @return WP_Error|object $prepared_item
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response
 	 */
 	protected function prepare_item_for_database( $request ) {
 		return $this->not_implemented();
@@ -351,12 +353,12 @@ abstract class Route extends \WP_REST_Controller {
 	/**
 	 * Prepare the item for the REST response
 	 *
-	 *  @todo ZACK - Use this as genric prepare for response or remvoe from usage
+	 *  @todo ZACK - Use this as generic prepare for response or remove from usage
 	 *
 	 * @since 2.0
 	 * @param mixed $item WordPress representation of the item.
-	 * @param WP_REST_Request $request Request object.
-	 * @return mixed
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response
 	 */
 	public function prepare_item_for_response( $item, $request ) {
 		return $this->not_implemented();
@@ -367,7 +369,7 @@ abstract class Route extends \WP_REST_Controller {
 	 * Generic response for routes not yet implemented
 	 *
 	 * @since 2.0
-	 * @return WP_REST_Response
+	 * @return \WP_REST_Response
 	 */
 	protected function not_implemented(  ) {
 		$error = new \WP_Error( 'not-implemented-yet', __( 'Endpoint Not Yet Implemented.', 'gravityview' )  );

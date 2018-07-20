@@ -1540,6 +1540,117 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( \GV\View_Template::split_slug( 'partial/fraction/atom', 'quark' ), array( 'partial/fraction/', 'atom-quark' ) );
 	}
 
+	public function test_filter_entries() {
+        $form = $this->factory->form->import_and_get( 'complete.json' );
+
+        global $post;
+
+        $post = $this->factory->view->create_and_get( array(
+            'form_id' => $form['id'],
+            'template_id' => 'table',
+            'fields' => array(
+                'directory_table-columns' => array(
+                    wp_generate_password( 4, false ) => array(
+                        'id' => '16',
+                        'label' => 'Textarea',
+                    ),
+                    wp_generate_password( 4, false ) => array(
+                        'id' => 'id',
+                        'label' => 'Entry ID',
+                    ),
+                    wp_generate_password( 4, false ) => array(
+                        'id' => '1.6',
+                        'label' => 'Country <small>(Address)</small>',
+                        'only_loggedin_cap' => 'read',
+                        'only_loggedin' => true,
+                    ),
+                ),
+            ),
+            'widgets' => array(
+                'header_top' => array(
+                    wp_generate_password( 4, false ) => array(
+                        'id' => 'search_bar',
+                        'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+                    ),
+                ),
+            ),
+        ) );
+
+        $view = \GV\View::from_post( $post );
+
+        $entries = new \GV\Entry_Collection();
+
+        $renderer = new \GV\View_Renderer();
+
+        gravityview()->request = new \GV\Mock_Request();
+        gravityview()->request->returns['is_view'] = $view;
+
+        $legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+        $future = $renderer->render( $view );
+
+        /** No matching entries... */
+        $this->assertEquals( $legacy, $future );
+        $this->assertContains( 'No entries match your request', $future );
+
+		/** Some more */
+		foreach ( range( 1, 25 ) as $i ) {
+
+		    $entry = $this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'status' => 'active',
+				'16' => sprintf( '[%d] Some text in a textarea (%s)', $i, wp_generate_password( 12 ) ),
+			) );
+
+			$entries->add( \GV\GF_Entry::from_entry( $entry ) );
+		}
+
+        $this->assertEquals( 25, $view->get_entries( new GV\Frontend_Request() )->count() );
+
+		$future = $renderer->render( $view );
+		$this->assertContains( '[1] Some text in a textarea', $future );
+		$this->assertContains( '[2] Some text in a textarea', $future );
+		$this->assertContains( '[24] Some text in a textarea', $future );
+		$this->assertContains( '[25] Some text in a textarea', $future );
+
+		/**
+		 * After filtering the entries.
+		 */
+		add_filter( 'gravityview/view/entries', $callback = array( $this, '_filter_gravityview_view_entries' ), 10, 3 );
+
+		$this->assertEquals( 13, $view->get_entries( new GV\Frontend_Request() )->count() );
+
+		$future = $renderer->render( $view );
+		$this->assertContains( '[1] Some text in a textarea', $future );
+		$this->assertNotContains( '[2] Some text in a textarea', $future );
+		$this->assertContains( '[3] Some text in a textarea', $future );
+		$this->assertNotContains( '[24] Some text in a textarea', $future );
+		$this->assertContains( '[25] Some text in a textarea', $future );
+
+		$this->assertTrue( remove_filter( 'gravityview/view/entries', $callback ) );
+    }
+
+    /**
+     * Return only entries with an even entry ID
+     *
+     * @param \GV\Entry_Collection $entries The entries for this view.
+     * @param \GV\View $view The view.
+     * @param \GV\Request $request The request.
+     *
+     * @return \GV\Entry_Collection
+     */
+    function _filter_gravityview_view_entries( $entries, $view, $request ) {
+
+        $return = new \GV\Entry_Collection();
+
+        foreach ( $entries->all() as $i => $entry ) {
+            if ( $i % 2 === 0 ) {
+                $return->add( $entry );
+            }
+        }
+
+        return $return;
+    }
+
 	/**
 	 * @covers \GV\View_Renderer::render()
 	 * @covers \GV\View_Table_Template::render()
@@ -5530,18 +5641,27 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$view = \GV\View::from_post( $post );
 
-		global $wp_filter;
+		if ( ! \GV\Widget_Collection::from_configuration( $view->_gravityview_directory_widgets )->count() ) {
+			file_put_contents( '/tmp/test.log', var_export( $view->_gravityview_directory_widgets, true ) );
+			foreach ( $_widgets as $uid => $_configuration ) {
+				if ( ! $widget = Widget::from_configuration( $_configuration ) ) {
+					$debug = array(
+						'_configuration' => $_configuration,
+					);
 
-		$debug = array(
-			'View::$_gravityview_directory_widgets' => $view->_gravityview_directory_widgets,
-			'Widget_Collection::from_configuration' => \GV\Widget_Collection::from_configuration( $view->_gravityview_directory_widgets ),
-			'View::$widgets' => $view->widgets,
-			'filters' => array(
-				'gravityview/view/configuration/widgets' => \GV\Utils::get( $wp_filter, 'gravityview/view/configuration/widgets' ),
-				'gravityview/view/widgets' => \GV\Utils::get( $wp_filter, 'gravityview/view/widgets' ),
-			),
-		);
-		file_put_contents( '/tmp/test.log', var_export( $debug, true ) );
+					$registered_widgets = \GV\Widget::registered();
+
+					$debug['registered_widgets'] = $registered_widgets;
+
+					$debug['class'] = $class = Utils::get( $_configuration, 'class' );
+					$debug['class_exists'] = class_exists( $class );
+					$debug['object'] = new $class( Utils::get( $_configuration, 'label' ), $id );
+
+					file_put_contents( '/tmp/test.log', var_export( $debug, true ) );
+					break;
+				}
+			}
+		}
 
 		$renderer = new \GV\View_Renderer();
 

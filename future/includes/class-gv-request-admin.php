@@ -37,13 +37,15 @@ class Admin_Request extends Request {
 		 */
 		$is_page = false;
 
-		if ( function_exists( '\get_current_screen' ) && ( $current_screen = \get_current_screen() ) && $current_screen->post_type == 'gravityview' ) {
-			if ( $is_gv_edit_list = $current_screen->base == 'edit' ) {
-				$is_page = 'views';
-			} else if ( $is_gv_edit_single = $current_screen->base == 'post' ) {
-				$is_page = 'single';
-			} else if ( $is_gv_settings = $current_screen->id == 'gravityview_page_gravityview_settings' ) {
-				$is_page = 'settings';
+		if ( function_exists( '\get_current_screen' ) || function_exists( 'get_current_screen' ) ) {
+			if ( ( $current_screen = \get_current_screen() ) && $current_screen->post_type == 'gravityview' ) {
+				if ( $is_gv_edit_list = $current_screen->base == 'edit' ) {
+					$is_page = 'views';
+				} else if ( $is_gv_edit_single = $current_screen->base == 'post' ) {
+					$is_page = 'single';
+				} else if ( $is_gv_settings = $current_screen->id == 'gravityview_page_gravityview_settings' ) {
+					$is_page = 'settings';
+				}
 			}
 		}
 

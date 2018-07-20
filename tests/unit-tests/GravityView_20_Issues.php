@@ -306,4 +306,79 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		$this->assertContains( 'Textarea with entry Just some entry', $output );
 		$this->assertContains( 'Label: 12345678 Entry: Just some entry', $output );
 	}
+
+	/**
+	 * https://github.com/gravityview/GravityView/issues/1124
+	 */
+	public function test_hide_until_searched_widgets() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		global $post;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'settings' => array(
+				'hide_until_searched' => true,
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+					),
+				),
+				'header_left' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'page_info',
+					),
+				),
+				'footer_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom_content',
+						'content' => 'Here we go again! <b>Now</b>',
+					),
+				),
+				'footer_right' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'page_links',
+					),
+				),
+			),
+		) );
+
+		$view = \GV\View::from_post( $post );
+		$view->settings->update( array( 'page_size' => 3 ) );
+
+		$entries = new \GV\Entry_Collection();
+
+		foreach ( range( 1, 5 ) as $i ) {
+			$entry = $this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'status' => 'active',
+				'16' => wp_generate_password( 12 ),
+			) );
+			$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
+		}
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$renderer = new \GV\View_Renderer();
+
+		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+		$future = $renderer->render( $view );
+
+		$this->assertEquals( $legacy, $future );
+		$this->assertContains( 'Search Entries', $future );
+		$this->assertContains( 'Here we go again! <b>Now</b>', $future );
+	}
 }
