@@ -49,6 +49,10 @@
           .fail( function ( error ) {
 
             $( '.gv-admin-installer-notice' ).show().find( 'p' ).text( error );
+
+            $( 'html, body' ).animate( {
+              scrollTop: $( '.wrap' ).offset().top
+            } , 1000 );
           } );
       } );
 
