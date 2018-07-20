@@ -206,93 +206,110 @@ class GravityView_Admin_Installer {
             <div class="gv-admin-installer-container">
 
 				<?php
-				foreach ( $extensions_data as $extension ) {
-					if ( empty( $extension['info'] ) ) {
-						continue;
-					}
 
-					$extension_info = $extension['info'];
-					$install_url    = add_query_arg(
-						array(
-							'action'   => 'install-plugin',
-							'plugin'   => $extension_info['slug'],
-							'_wpnonce' => wp_create_nonce( 'install-plugin_' . $extension_info['slug'] ),
-						),
-						self_admin_url( 'update.php' )
-					);
+                $wp_plugins = $this->get_wp_plugins_data();
 
-					if ( 'gravityview' === $extension_info['slug'] ) {
-						continue;
-					}
+		        foreach ( $extensions_data as $extension ) {
 
-					$wp_plugin = ( ! empty( $wp_plugins[ $extension_info['textdomain'] ] ) ) ? $wp_plugins[ $extension_info['textdomain'] ] : false;
+			        if ( empty( $extension['info'] ) ) {
+				        continue;
+			        }
 
-					?>
-                    <div class="item">
-                        <div class="addon-inner">
-                            <img class="thumbnail" src="<?php echo $extension_info['thumbnail']; ?>" alt="extension image"/>
-                            <h3>
-								<?php echo $extension_info['title']; ?>
-                            </h3>
-                            <div>
-								<?php
-
-								if ( ! $wp_plugin ) {
-
-									?>
-                                    <div class="status notinstalled">
-										<?php esc_html_e( 'Not Installed', 'gravityview' ); ?>
-                                    </div>
-                                    <a data-status="notinstalled" href="<?php echo $install_url; ?>" class="button">
-                                        <span class="title"><?php esc_html_e( 'Install', 'gravityview' ); ?></span>
-                                        <span class="spinner"></span>
-                                    </a>
-									<?php
-
-								} else if ( $wp_plugin['activated'] === false ) {
-
-									?>
-                                    <div class="status inactive">
-										<?php esc_html_e( 'Inactive', 'gravityview' ); ?>
-                                    </div>
-                                    <a data-status="inactive" data-plugin-path="<?php echo $wp_plugin['path']; ?>" href=" #" class="button">
-                                        <span class="title"><?php esc_html_e( 'Activate', 'gravityview' ); ?></span>
-                                        <span class="spinner"></span>
-                                    </a>
-
-									<?php
-
-								} else {
-
-									?>
-                                    <div class="status active">
-										<?php esc_html_e( 'Active', 'gravityview' ); ?>
-                                    </div>
-                                    <a data-status="active" data-plugin-path="<?php echo $wp_plugin['path']; ?>" href="#" class="button">
-                                        <span class="title"><?php esc_html_e( 'Deactivate', 'gravityview' ); ?></span>
-                                        <span class="spinner"></span>
-                                    </a>
-
-									<?php
-
-								}
-
-								?>
-                            </div>
-
-                            <div>
-								<?php echo wpautop( esc_html( $extension_info['excerpt'] ) ); ?>
-                            </div>
-
-                        </div>
-                    </div>
-					<?php
-				}
+			        $this->render_extension( $extension, $wp_plugins );
+		        }
 				?>
             </div>
         </div>
 		<?php
 	}
+
+	/**
+     * Outputs the HTML of a single extension
+     *
+	 * @param array $extension Extension data, as returned from EDD API
+	 * @param array $wp_plugins
+     *
+     * @return void
+	 */
+	protected function render_extension( $extension, $wp_plugins ) {
+
+        $extension_info = $extension['info'];
+
+        $install_url    = add_query_arg(
+            array(
+                'action'   => 'install-plugin',
+                'plugin'   => $extension_info['slug'],
+                '_wpnonce' => wp_create_nonce( 'install-plugin_' . $extension_info['slug'] ),
+            ),
+            self_admin_url( 'update.php' )
+        );
+
+        if ( 'gravityview' === $extension_info['slug'] ) {
+            return;
+        }
+
+        $wp_plugin = \GV\Utils::get( $wp_plugins, $extension_info['textdomain'], false );
+
+        ?>
+        <div class="item">
+            <div class="addon-inner">
+                <img class="thumbnail" src="<?php echo esc_attr( $extension_info['thumbnail'] ); ?>" alt="" />
+                <h3>
+                    <?php echo esc_attr( $extension_info['title'] ); ?>
+                </h3>
+                <div><?php
+
+                    if ( ! $wp_plugin ) {
+
+                        ?>
+                        <div class="status notinstalled">
+                            <?php esc_html_e( 'Not Installed', 'gravityview' ); ?>
+                        </div>
+                        <a data-status="notinstalled" href="<?php echo $install_url; ?>" class="button">
+                            <span class="title"><?php esc_html_e( 'Install', 'gravityview' ); ?></span>
+                            <span class="spinner"></span>
+                        </a>
+                        <?php
+
+                    } else if ( false === $wp_plugin['activated'] ) {
+
+                        ?>
+                        <div class="status inactive">
+                            <?php esc_html_e( 'Inactive', 'gravityview' ); ?>
+                        </div>
+                        <a data-status="inactive" data-plugin-path="<?php echo $wp_plugin['path']; ?>" href=" #" class="button">
+                            <span class="title"><?php esc_html_e( 'Activate', 'gravityview' ); ?></span>
+                            <span class="spinner"></span>
+                        </a>
+
+                        <?php
+
+                    } else {
+
+                        ?>
+                        <div class="status active">
+                            <?php esc_html_e( 'Active', 'gravityview' ); ?>
+                        </div>
+                        <a data-status="active" data-plugin-path="<?php echo $wp_plugin['path']; ?>" href="#" class="button">
+                            <span class="title"><?php esc_html_e( 'Deactivate', 'gravityview' ); ?></span>
+                            <span class="spinner"></span>
+                        </a>
+
+                        <?php
+
+                    }
+
+                    ?>
+                </div>
+
+                <div class="addon-excerpt">
+                    <?php echo wpautop( esc_html( $extension_info['excerpt'] ) ); ?>
+                </div>
+
+            </div>
+        </div>
+        <?php
+    }
 
 	/**
 	 * Handle AJAX request to activate extension
