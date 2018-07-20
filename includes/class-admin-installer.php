@@ -125,7 +125,7 @@ class GravityView_Admin_Installer {
 			array(
 				'key'         => self::EDD_API_KEY,
 				'token'       => self::EDD_API_TOKEN,
-				'url'         => $home_url['host'],
+				'url'         => \GV\Utils::get( $home_url, 'host', home_url() ),
 				'license_key' => gravityview()->plugin->settings->get( 'license_key' )
 			),
 			self::EDD_API_URL
