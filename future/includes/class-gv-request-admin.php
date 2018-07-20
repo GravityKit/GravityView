@@ -44,6 +44,8 @@ class Admin_Request extends Request {
 				$is_page = 'single';
 			} else if ( $is_gv_settings = $current_screen->id == 'gravityview_page_gravityview_settings' ) {
 				$is_page = 'settings';
+			} else if( $is_extensions = 'gravityview_page_gv-admin-installer' === $current_screen->id ) {
+				$is_page = 'extensions';
 			}
 		}
 

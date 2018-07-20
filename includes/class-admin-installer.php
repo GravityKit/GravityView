@@ -328,6 +328,11 @@ class GravityView_Admin_Installer {
 	 * @return void
 	 */
 	public function register_ui_assets() {
+
+		if( ! gravityview()->request->is_admin( '', 'extensions' ) ) {
+		    return;
+        }
+
 		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		wp_register_style( 'gravityview-admin-installer', GRAVITYVIEW_URL . 'assets/css/admin-installer.css', array(), \GV\Plugin::$version );
