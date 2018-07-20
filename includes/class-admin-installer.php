@@ -177,7 +177,7 @@ class GravityView_Admin_Installer {
 				<?php esc_html_e( 'The following are available add-ons to extend GravityView functionality:', 'gravityview' ); ?>
             </p>
 
-            <div class="gv-admin-installer-notice notice inline error hidden">
+            <div class="gv-admin-installer-notice notice inline error hidden is-dismissible">
                 <p></p>
             </div>
 

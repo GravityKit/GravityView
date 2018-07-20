@@ -48,10 +48,7 @@
           } )
           .fail( function ( error ) {
 
-            $( '.gv-admin-installer-notice' )
-              .show()
-              .find( 'p' ).text( error ).end()
-              .delay( 2000 ).fadeOut();
+            $( '.gv-admin-installer-notice' ).show().find( 'p' ).text( error );
           } );
       } );
 
