@@ -13,132 +13,131 @@
 
 ( function ( $ ) {
 
-  var adminInstaller = {
+	var adminInstaller = {
 
-    /**
-     * Add click events to activate/deactivate/install buttons
-     */
-    init: function () {
+		/**
+		 * Add click events to activate/deactivate/install buttons
+		 */
+		init: function () {
 
-      $( '.gv-admin-installer-container' ).on( 'click' , 'a.button:not(.disabled)' , function ( e ) {
+			$( '.gv-admin-installer-container' ).on( 'click', 'a.button:not(.disabled)', function ( e ) {
 
-        e.preventDefault();
+				e.preventDefault();
 
-        var item       = $( this ).parent() ,
-            status     = $( this ).attr( 'data-status' ) ,
-            pluginPath = $( this ).attr( 'data-plugin-path' ) ,
-            installUrl = $( this ).attr( 'href' );
+				var item = $( this ).parent(), status = $( this ).attr( 'data-status' ),
+					pluginPath = $( this ).attr( 'data-plugin-path' ),
+					installUrl = $( this ).attr( 'href' );
 
-        var performAction = function () {
-          $( '.gv-admin-installer-container a.button' ).addClass( 'disabled' );
-          $( item ).find( '.spinner' ).show();
+				var performAction = function () {
+					$( '.gv-admin-installer-container a.button' ).addClass( 'disabled' );
+					$( item ).find( '.spinner' ).show();
 
-          switch ( status ) {
-            case 'active':
-              return adminInstaller.deactivate( pluginPath , item );
-            case 'inactive':
-              return adminInstaller.activate( pluginPath , item );
-            case 'notinstalled':
-              return adminInstaller.install( installUrl );
-          }
-        };
+					switch ( status ) {
+						case 'active':
+							return adminInstaller.deactivate( pluginPath, item );
+						case 'inactive':
+							return adminInstaller.activate( pluginPath, item );
+						case 'notinstalled':
+							return adminInstaller.install( installUrl );
+					}
+				};
 
-        $.when( performAction() )
-          .always( function () {
+				$.when( performAction() )
+					.always( function () {
 
-            $( item ).find( '.spinner' ).hide();
-            $( '.gv-admin-installer-container a.button' ).removeClass( 'disabled' );
-          } )
-          .fail( function ( error ) {
+						$( item ).find( '.spinner' ).hide();
+						$( '.gv-admin-installer-container a.button' ).removeClass( 'disabled' );
+					} )
+					.fail( function ( error ) {
 
-            $( '.gv-admin-installer-notice' ).show().find( 'p' ).text( error );
+						$( '.gv-admin-installer-notice' ).show().find( 'p' ).text( error );
 
-            $( 'html, body' ).animate( {
-              scrollTop: $( '.wrap' ).offset().top
-            } , 1000 );
-          } );
-      } );
+						$( 'html, body' ).animate( {
+							scrollTop: $( '.wrap' ).offset().top
+						}, 1000 );
+					} );
+			} );
 
-    } ,
+		},
 
-    /**
-     * Activate extension via Ajax POST request
-     *
-     * @param {string} pluginPath WP's plugin path
-     * @param {Object} item DOM element with extension data
-     *
-     * @returns {Promise}
-     */
-    activate: function ( pluginPath , item ) {
-      var defer = $.Deferred();
+		/**
+		 * Activate extension via Ajax POST request
+		 *
+		 * @param {string} pluginPath WP's plugin path
+		 * @param {Object} item DOM element with extension data
+		 *
+		 * @returns {Promise}
+		 */
+		activate: function ( pluginPath, item ) {
+			var defer = $.Deferred();
 
-      $.post( ajaxurl , {
-        'action': 'gravityview_admin_installer_activate' ,
-        'data': { path: pluginPath }
-      } , function ( response ) {
-        if ( !response.success ) {
-          defer.reject( response.data.error );
-        }
+			$.post( ajaxurl, {
+				'action': 'gravityview_admin_installer_activate',
+				'data': { path: pluginPath }
+			}, function ( response ) {
+				if ( !response.success ) {
+					defer.reject( response.data.error );
+				}
 
-        $( item ).find( 'div.status' ).removeClass( 'inactive' ).addClass( 'active' ).text( gvAdminInstaller.activeStatusLabel );
-        $( item ).find( 'a.button' ).attr( 'data-status' , 'active' );
-        $( item ).find( 'a.button span.title' ).text( gvAdminInstaller.deactivateActionLabel );
+				$( item ).find( 'div.status' ).removeClass( 'inactive' ).addClass( 'active' ).text( gvAdminInstaller.activeStatusLabel );
+				$( item ).find( 'a.button' ).attr( 'data-status', 'active' );
+				$( item ).find( 'a.button span.title' ).text( gvAdminInstaller.deactivateActionLabel );
 
-        defer.resolve();
-      } ).fail( function () {
+				defer.resolve();
+			} ).fail( function () {
 
-        defer.reject( gvAdminInstaller.activateErrorLabel );
-      } );
+				defer.reject( gvAdminInstaller.activateErrorLabel );
+			} );
 
-      return defer.promise();
-    } ,
+			return defer.promise();
+		},
 
-    /**
-     * Deactivate extension via Ajax POST request
-     *
-     * @param {string} pluginPath WP's plugin path
-     * @param {Object} item DOM element with extension data
-     *
-     * @returns {Promise}
-     */
-    deactivate: function ( pluginPath , item ) {
-      var defer = $.Deferred();
+		/**
+		 * Deactivate extension via Ajax POST request
+		 *
+		 * @param {string} pluginPath WP's plugin path
+		 * @param {Object} item DOM element with extension data
+		 *
+		 * @returns {Promise}
+		 */
+		deactivate: function ( pluginPath, item ) {
+			var defer = $.Deferred();
 
-      $.post( ajaxurl , {
-        'action': 'gravityview_admin_installer_deactivate' ,
-        'data': { path: pluginPath }
-      } , function ( response ) {
-        if ( !response.success ) {
-          defer.reject( response.data.error );
-        }
+			$.post( ajaxurl, {
+				'action': 'gravityview_admin_installer_deactivate',
+				'data': { path: pluginPath }
+			}, function ( response ) {
+				if ( !response.success ) {
+					defer.reject( response.data.error );
+				}
 
-        $( item ).find( 'div.status' ).removeClass( 'active' ).addClass( 'inactive' ).html( gvAdminInstaller.inactiveStatusLabel );
-        $( item ).find( 'a.button' ).attr( 'data-status' , 'inactive' );
-        $( item ).find( 'a.button span.title' ).text( gvAdminInstaller.activateActionLabel );
+				$( item ).find( 'div.status' ).removeClass( 'active' ).addClass( 'inactive' ).html( gvAdminInstaller.inactiveStatusLabel );
+				$( item ).find( 'a.button' ).attr( 'data-status', 'inactive' );
+				$( item ).find( 'a.button span.title' ).text( gvAdminInstaller.activateActionLabel );
 
-        defer.resolve();
-      } ).fail( function () {
+				defer.resolve();
+			} ).fail( function () {
 
-        defer.reject( gvAdminInstaller.deactivateErrorLabel );
-      } );
+				defer.reject( gvAdminInstaller.deactivateErrorLabel );
+			} );
 
-      return defer.promise();
-    } ,
+			return defer.promise();
+		},
 
-    /**
-     * Install extension via redirect installation page
-     *
-     * @returns {Promise}
-     */
-    install: function ( installUrl ) {
-      var defer = $.Deferred();
+		/**
+		 * Install extension via redirect installation page
+		 *
+		 * @returns {Promise}
+		 */
+		install: function ( installUrl ) {
+			var defer = $.Deferred();
 
-      window.location.href = installUrl;
+			window.location.href = installUrl;
 
-      return defer.promise();
-    }
-  };
+			return defer.promise();
+		}
+	};
 
-  adminInstaller.init();
+	adminInstaller.init();
 
 }( jQuery ) );
