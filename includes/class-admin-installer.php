@@ -281,7 +281,7 @@ class GravityView_Admin_Installer {
                         <div class="status notinstalled">
 							<?php esc_html_e( 'Not Installed', 'gravityview' ); ?>
                         </div>
-                        <a data-status="notinstalled" href="<?php echo $install_url; ?>" class="button">
+                        <a data-status="notinstalled" href="<?php echo esc_url( $install_url ); ?>" class="button">
                             <span class="title"><?php esc_html_e( 'Install', 'gravityview' ); ?></span>
                             <span class="spinner"></span>
                         </a>
@@ -292,7 +292,7 @@ class GravityView_Admin_Installer {
                         <div class="status inactive">
 							<?php esc_html_e( 'Inactive', 'gravityview' ); ?>
                         </div>
-                        <a data-status="inactive" data-plugin-path="<?php echo $wp_plugin['path']; ?>" href="#" class="button">
+                        <a data-status="inactive" data-plugin-path="<?php echo esc_attr( $wp_plugin['path'] ); ?>" href="#" class="button">
                             <span class="title"><?php esc_html_e( 'Activate', 'gravityview' ); ?></span>
                             <span class="spinner"></span>
                         </a>
@@ -304,7 +304,7 @@ class GravityView_Admin_Installer {
                         <div class="status active">
 							<?php esc_html_e( 'Active', 'gravityview' ); ?>
                         </div>
-                        <a data-status="active" data-plugin-path="<?php echo $wp_plugin['path']; ?>" href="#" class="button">
+                        <a data-status="active" data-plugin-path="<?php echo esc_attr( $wp_plugin['path'] ); ?>" href="#" class="button">
                             <span class="title"><?php esc_html_e( 'Deactivate', 'gravityview' ); ?></span>
                             <span class="spinner"></span>
                         </a>
