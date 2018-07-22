@@ -1612,9 +1612,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( '[24] Some text in a textarea', $future );
 		$this->assertContains( '[25] Some text in a textarea', $future );
 
-    ## AFTER FILTERING ENTRIES
-
-		add_filter( 'gravityview/view/entries', array( $this, '_filter_gravityview_view_entries' ), 10, 3 );
+		/**
+		 * After filtering the entries.
+		 */
+		add_filter( 'gravityview/view/entries', $callback = array( $this, '_filter_gravityview_view_entries' ), 10, 3 );
 
 		$this->assertEquals( 13, $view->get_entries( new GV\Frontend_Request() )->count() );
 
@@ -1625,7 +1626,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertNotContains( '[24] Some text in a textarea', $future );
 		$this->assertContains( '[25] Some text in a textarea', $future );
 
-		remove_filter( 'gravityview/view/entries', array( $this, '_filter_gravityview_view_entries' ), 10 );
+		$this->assertTrue( remove_filter( 'gravityview/view/entries', $callback ) );
     }
 
     /**
@@ -1641,14 +1642,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
         $return = new \GV\Entry_Collection();
 
-            if( 123 !== $view->ID ) {
-                return $entries;
-            }
-
-        foreach( $entries->all() as $entry ) {
-
-            // Only add even entry IDs to the new Entry Collection
-            if( $entry->ID % 2 === 0 ) {
+        foreach ( $entries->all() as $i => $entry ) {
+            if ( $i % 2 === 0 ) {
                 $return->add( $entry );
             }
         }

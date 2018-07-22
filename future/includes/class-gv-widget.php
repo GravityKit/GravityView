@@ -331,7 +331,20 @@ abstract class Widget {
 	 * @return boolean True: render frontend; False: don't render frontend
 	 */
 	public function pre_render_frontend() {
-		if ( $view = gravityview()->views->get() ) {
+		/**
+		 * Assume shown regardless of hide_until_search setting.
+		 */
+		$whitelist = array(
+			'custom_content',
+		);
+
+		/**
+		 * @filter `gravityview/widget/hide_until_searched/whitelist` Some widgets have got to stay shown.
+		 * @param[in,out] string[] $whitelist The widget IDs that have to be shown by default.
+		 */
+		$whitelist = apply_filters( 'gravityview/widget/hide_until_searched/whitelist', $whitelist );
+
+		if ( ( $view = gravityview()->views->get() ) && ! in_array( $this->get_widget_id(), $whitelist ) ) {
 			$hide_until_searched = $view->settings->get( 'hide_until_searched' );
 		} else {
 			$hide_until_searched = false;

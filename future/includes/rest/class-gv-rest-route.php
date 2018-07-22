@@ -41,7 +41,7 @@ abstract class Route extends \WP_REST_Controller {
 		$namespace = \GV\REST\Core::get_namespace();
 		$base = $this->get_route_name();
 
-		$format = '(?:\.(?P<format>html|json|csv))?';
+		$format = '(?:\.(?P<format>html|json))?';
 
 		register_rest_route( $namespace, '/' . $base, array(
 			array(
