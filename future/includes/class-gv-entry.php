@@ -123,7 +123,12 @@ abstract class Entry {
 			/** Must be an embed of some sort. */
 			if ( is_object( $post ) && is_numeric( $post->ID ) ) {
 				$permalink = get_permalink( $post->ID );
-				$args['gvid'] = $view_id;
+
+				$view_collection = View_Collection::from_post( $post );
+
+				if( 1 < $view_collection->count() ) {
+					$args['gvid'] = $view_id;
+				}
 			}
 		}
 		
