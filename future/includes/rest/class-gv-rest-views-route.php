@@ -159,6 +159,22 @@ class Views_Route extends Route {
 		$view_id = intval( $url['id'] );
 		$format  = \GV\Utils::get( $url, 'format', 'json' );
 
+		if( $post_id = $request->get_param('post_id') ) {
+			global $post;
+
+			$post = get_post( $post_id );
+
+			if ( ! $post || is_wp_error( $post ) ) {
+				return new \WP_Error( 'gravityview-post-not-found', sprintf( 'A post with ID #%d was not found.', $post_id ) );
+			}
+
+			$collection = \GV\View_Collection::from_post( $post );
+
+			if ( ! $collection->contains( $view_id ) ) {
+				return new \WP_Error( 'gravityview-post-not-contains', sprintf( 'The post with ID #%d does not contain a View with ID #%d', $post_id, $view_id ) );
+			}
+		}
+
 		$view = \GV\View::by_id( $view_id );
 
 		if ( $format == 'html' ) {

@@ -36,7 +36,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertEquals( 200, $response->status );
 		$data     = $response->get_data();
 
-		$this->assertEquals( array( 'page', 'limit' ), array_keys( $data['endpoints'][0]['args'] ) );
+		$this->assertEquals( array( 'page', 'limit', 'post_id' ), array_keys( $data['endpoints'][0]['args'] ) );
 
 		$form = $this->factory->form->create_and_get();
 		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
