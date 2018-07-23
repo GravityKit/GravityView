@@ -164,10 +164,12 @@ class Views_Route extends Route {
 		if ( $format == 'html' ) {
 
 			$renderer = new \GV\View_Renderer();
-			$total = 0;
+			$count = $total = 0;
 
-			add_action( 'gravityview/template/view/render', function( $context ) use ( &$total ) {
-				$total = $context->entries->count();
+			/** @var \GV\Template_Context $context */
+			add_action( 'gravityview/template/view/render', function( $context ) use ( &$count, &$total ) {
+				$count = $context->entries->count();
+				$total = $context->entries->total();
 			} );
 
 			$output = $renderer->render( $view, new Request( $request ) );
@@ -175,18 +177,21 @@ class Views_Route extends Route {
 			/**
 			 * @filter `gravityview/rest/entries/html/insert_meta` Whether to include `http-equiv` meta tags in the HTML output describing the data
 			 * @param bool $insert_meta Add <meta> tags? [Default: true]
-			 * @param int $total The number of entries being rendered
+			 * @param int $count The number of entries being rendered
 			 * @param \GV\View $view The view.
 			 * @param \WP_REST_Request $request Request object.
+			 * @param int $total The number of total entries for the request
 			 */
-			$insert_meta = apply_filters( 'gravityview/rest/entries/html/insert_meta', true, $total, $view, $request );
+			$insert_meta = apply_filters( 'gravityview/rest/entries/html/insert_meta', true, $count, $view, $request, $total );
 
 			if ( $insert_meta ) {
-				$output = '<meta http-equiv="X-Item-Count" content="' . $total . '" />' . $output;
+				$output = '<meta http-equiv="X-Item-Count" content="' . $count . '" />' . $output;
+				$output = '<meta http-equiv="X-Item-Total" content="' . $total . '" />' . $output;
 			}
 
 			$response = new \WP_REST_Response( $output, 200 );
-			$response->header( 'X-Item-Count', $total );
+			$response->header( 'X-Item-Count', $count );
+			$response->header( 'X-Item-Total', $total );
 
 			return $response;
 		}
