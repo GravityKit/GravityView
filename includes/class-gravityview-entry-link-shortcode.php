@@ -208,7 +208,7 @@ class GravityView_Entry_Link_Shortcode {
 	private function get_anchor_text( $content = null ) {
 
 		if ( $content ) {
-			return $content;
+			return do_shortcode( $content );
 		}
 
 		switch ( $this->settings['action'] ) {
