@@ -58,7 +58,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertEquals( 200, $response->status );
 		$data     = $response->get_data();
 
-		$this->assertEquals( array( 'page', 'limit' ), array_keys( $data['endpoints'][0]['args'] ) );
+		$this->assertEquals( array( 'page', 'limit', 'post_id' ), array_keys( $data['endpoints'][0]['args'] ) );
 
 		$request  = new WP_REST_Request( 'OPTIONS', '/gravityview/v1/views/' . $view->ID . '/entries/' . $entry['id'] );
 		$response = rest_get_server()->dispatch( $request );
