@@ -231,6 +231,10 @@ class GravityView_Admin_Installer {
 						continue;
 					}
 
+					if ( 'gravityview' === \GV\Utils::get( $extension, 'info/slug' ) ) {
+						continue;
+					}
+
 					$this->render_extension( $extension, $wp_plugins );
 				}
 				?>
@@ -251,68 +255,59 @@ class GravityView_Admin_Installer {
 
 		$extension_info = $extension['info'];
 
-		$install_url = add_query_arg(
-			array(
-				'action'   => 'install-plugin',
-				'plugin'   => $extension_info['slug'],
-				'_wpnonce' => wp_create_nonce( 'install-plugin_' . $extension_info['slug'] ),
-			),
-			self_admin_url( 'update.php' )
-		);
-
-		if ( 'gravityview' === $extension_info['slug'] ) {
-			return;
-		}
-
-		$wp_plugin = \GV\Utils::get( $wp_plugins, $extension_info['textdomain'], false );
-
 		?>
         <div class="item">
             <div class="addon-inner">
                 <img class="thumbnail" src="<?php echo esc_attr( $extension_info['thumbnail'] ); ?>" alt=""/>
                 <h3>
-					<?php echo esc_attr( $extension_info['title'] ); ?>
+					<?php echo esc_html( $extension_info['title'] ); ?>
                 </h3>
                 <div><?php
 
+	                $wp_plugin = \GV\Utils::get( $wp_plugins, $extension_info['textdomain'], false );
+
+                    $href = $plugin_path = '#';
+
 					if ( ! $wp_plugin ) {
 
-						?>
-                        <div class="status notinstalled">
-							<?php esc_html_e( 'Not Installed', 'gravityview' ); ?>
-                        </div>
-                        <a data-status="notinstalled" href="<?php echo esc_url( $install_url ); ?>" class="button">
-                            <span class="title"><?php esc_html_e( 'Install', 'gravityview' ); ?></span>
-                            <span class="spinner"></span>
-                        </a>
-						<?php
+						$href = add_query_arg(
+							array(
+								'action'   => 'install-plugin',
+								'plugin'   => $extension_info['slug'],
+								'_wpnonce' => wp_create_nonce( 'install-plugin_' . $extension_info['slug'] ),
+							),
+							self_admin_url( 'update.php' )
+						);
+
+						$status = 'notinstalled';
+	                    $status_label = __( 'Not Installed', 'gravityview' );
+						$button_label = __( 'Install', 'gravityview' );
 
 					} else if ( false === $wp_plugin['activated'] ) {
-						?>
-                        <div class="status inactive">
-							<?php esc_html_e( 'Inactive', 'gravityview' ); ?>
-                        </div>
-                        <a data-status="inactive" data-plugin-path="<?php echo esc_attr( $wp_plugin['path'] ); ?>" href="#" class="button">
-                            <span class="title"><?php esc_html_e( 'Activate', 'gravityview' ); ?></span>
-                            <span class="spinner"></span>
-                        </a>
 
-						<?php
+						$status = 'inactive';
+						$status_label = __( 'Inactive', 'gravityview' );
+						$button_label = __( 'Activate', 'gravityview' );
+						$plugin_path = $wp_plugin['path'];
 
 					} else {
-					    ?>
-                        <div class="status active">
-							<?php esc_html_e( 'Active', 'gravityview' ); ?>
-                        </div>
-                        <a data-status="active" data-plugin-path="<?php echo esc_attr( $wp_plugin['path'] ); ?>" href="#" class="button">
-                            <span class="title"><?php esc_html_e( 'Deactivate', 'gravityview' ); ?></span>
-                            <span class="spinner"></span>
-                        </a>
 
-						<?php
+					    $plugin_path = $wp_plugin['path'];
+						$status = 'active';
+						$status_label = __( 'Active', 'gravityview' );
+						$button_label = __( 'Deactivate', 'gravityview' );
+
 					}
 
 					?>
+
+                    <div class="status <?php echo esc_attr( $status ); ?>">
+		                <?php echo esc_html( $status_label ); ?>
+                    </div>
+                    <a data-status="<?php echo esc_attr( $status ); ?>" data-plugin-path="<?php echo esc_attr( $plugin_path ); ?>" href="<?php echo esc_url( $href ); ?>" class="button">
+                        <span class="title"><?php echo esc_html( $button_label ); ?></span>
+                        <span class="spinner"></span>
+                    </a>
                 </div>
 
                 <div class="addon-excerpt">
@@ -327,7 +322,7 @@ class GravityView_Admin_Installer {
 	/**
 	 * Handle AJAX request to activate extension
 	 *
-	 * @return string JSON response status and error message
+	 * @return void Exits with JSON response
 	 */
 	public function activate_extension() {
 		$data = \GV\Utils::_POST( 'data', array() );
