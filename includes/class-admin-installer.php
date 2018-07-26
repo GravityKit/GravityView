@@ -253,7 +253,13 @@ class GravityView_Admin_Installer {
 	 */
 	protected function render_extension( $extension, $wp_plugins ) {
 
-		$extension_info = $extension['info'];
+		$extension_info = wp_parse_args( (array) $extension['info'], array(
+		    'thumbnail' => '',
+            'title' => '',
+            'textdomain' => '',
+            'slug' => '',
+            'excerpt' => '',
+        ) );
 
 		?>
         <div class="item">
