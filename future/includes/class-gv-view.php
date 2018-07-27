@@ -693,7 +693,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @return \GV\Entry_Collection The entries.
 	 */
-	public function get_entries( $request ) {
+	public function get_entries( $request = null ) {
 		$entries = new \GV\Entry_Collection();
 		if ( $this->form ) {
 			/**

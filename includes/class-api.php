@@ -504,7 +504,7 @@ class GravityView_API {
 		 * @filter `gravityview_custom_entry_slug` Whether to enable and use custom entry slugs.
 		 * @param boolean True: Allow for slugs based on entry values. False: always use entry IDs (default)
 		 */
-		$custom = apply_filters('gravityview_custom_entry_slug', false );
+		$custom = apply_filters( 'gravityview_custom_entry_slug', false );
 
 		// If we're using custom slug...
 		if ( $custom ) {
@@ -512,13 +512,34 @@ class GravityView_API {
 			// Get the entry hash
 			$hash = self::get_custom_entry_slug( $id_or_string, $entry );
 
-			// See if the entry already has a hash set
-			$value = gform_get_meta( $id_or_string, 'gravityview_unique_id' );
+			// Cache the slugs
+			static $cache = array();
+
+			if ( ! isset( $cache[ $id_or_string ] ) ) {
+				global $wpdb;
+
+				if ( version_compare( GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) ) {
+					$table = GFFormsModel::get_entry_meta_table_name();
+					$column = 'entry_id';
+				} else {
+					$table = RGFormsModel::get_lead_meta_table_name();
+					$column = 'lead_id';
+				}
+
+				$results = $wpdb->get_results( $wpdb->prepare( "SELECT $column, meta_value FROM $table WHERE form_id = (SELECT form_id FROM $table WHERE $column = %d LIMIT 1) AND meta_key = 'gravityview_unique_id'", $id_or_string ) );
+				$cache = array_replace( $cache, array_combine( wp_list_pluck( $results, $column ), wp_list_pluck( $results, 'meta_value' ) ) );
+
+				if ( ! isset( $cache[ $id_or_string ] ) ) {
+					$cache[ $id_or_string ] = false;
+				}
+			}
+
+			$value = $cache[ $id_or_string ];
 
 			// If it does have a hash set, and the hash is expected, use it.
 			// This check allows users to change the hash structure using the
 			// gravityview_entry_hash filter and have the old hashes expire.
-			if( empty( $value ) || $value !== $hash ) {
+			if ( empty( $value ) || $value !== $hash ) {
 				gravityview()->log->debug( 'Setting hash for entry {entry}: {hash}', array( 'entry' => $id_or_string, 'hash' => $hash ) );
 				gform_update_meta( $id_or_string, 'gravityview_unique_id', $hash, \GV\Utils::get( $entry, 'form_id' ) );
 			}
