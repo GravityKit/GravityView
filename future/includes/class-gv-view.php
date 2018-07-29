@@ -196,6 +196,30 @@ class View implements \ArrayAccess {
 	}
 
 	/**
+	 * Add extra rewrite endpoints.
+	 *
+	 * @return void
+	 */
+	public static function add_rewrite_endpoint() {
+		/**
+		 * CSV.
+		 */
+		global $wp_rewrite;
+
+		$slug = apply_filters( 'gravityview_slug', 'view' );
+		$rule = array( sprintf( '%s/([^/]+)/csv/?', $slug ), 'index.php?gravityview=$matches[1]&csv=1', 'top' );
+
+		add_filter( 'query_vars', function( $query_vars ) { 
+			$query_vars[] = 'csv';
+			return $query_vars;
+		} );
+
+		if ( ! isset( $wp_rewrite->extra_rules_top[ $rule[0] ] ) ) {
+			call_user_func_array( 'add_rewrite_rule', $rule );
+		}
+	}
+
+	/**
 	 * A renderer filter for the View post type content.
 	 *
 	 * @param string $content Should be empty, as we don't store anything there.
@@ -782,6 +806,27 @@ class View implements \ArrayAccess {
 		 * @param \GV\Request $request The request.
 		 */
 		return apply_filters( 'gravityview/view/entries', $entries, $this, $request );
+	}
+
+	/**
+	 * Last chance to configure the output.
+	 *
+	 * Used for CSV output, for example.
+	 *
+	 * @return void
+	 */
+	public function template_redirect() {
+		/**
+		 * CSV output.
+		 */
+		if ( ! get_query_var( 'csv' ) ) {
+			return;
+		}
+
+		if ( $view = gravityview()->request->is_view() ) {
+			// shit
+			exit;
+		}
 	}
 
 	public function __get( $key ) {
