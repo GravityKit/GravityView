@@ -203,20 +203,20 @@ class Views_Route extends Route {
 			$csv = fopen( 'php://output', 'w' );
 
 			/** Da' BOM :) */
-			fputs( $csv, "\xef\xbb\xbf" );
+			if ( apply_filters( 'gform_include_bom_export_entries', true, $form ) ) {
+				fputs( $csv, "\xef\xbb\xbf" );
+			}
 
 			$headers_done = false;
 
 			foreach ( $entries->all() as $entry ) {
 				$entry = $this->prepare_entry_for_response( $view, $entry, $request, 'directory' );
-				var_dump( $entry );
-				exit;
 
 				if ( ! $headers_done ) {
 					$headers_done = fputcsv( $csv, array_keys( $entry ) );
 				}
 
-				fputcsv( $csv, $entry );
+				fputcsv( $csv, array_map( array( __CLASS__, '_csv_strip_formula' ), $entry ) );
 			}
 
 			$response = new \WP_REST_Response( ob_get_clean(), 200 );
@@ -411,5 +411,12 @@ class Views_Route extends Route {
 	public function get_sub_items_permissions_check( $request ) {
 		// Accessing all entries of a View needs the same permissions as accessing the View.
 		return $this->get_item_permissions_check( $request );
+	}
+
+	public static function _csv_strip_formula( $value ) {
+		if ( strpos( $value, '=' ) === 0 ) {
+			$value = "'" . $value;
+		}
+		return $value;
 	}
 }
