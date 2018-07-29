@@ -123,8 +123,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Entry::get_endpoint_name()
 	 */
 	public function test_entry_endpoint_rewrite_name() {
-		$entry_enpoint = array_filter( $GLOBALS['wp_rewrite']->endpoints, function( $endpoint ) {
-			return $endpoint === array( EP_ALL, 'entry', 'entry' );
+		$entry_enpoint = array_filter( $GLOBALS['wp_rewrite']->extra_rules_top, function( $endpoint ) {
+			return $endpoint === 'index.php?gravityview=$matches[1]&entry=$matches[3]';
 		} );
 
 		$this->assertNotEmpty( $entry_enpoint, 'Single Entry endpoint not registered.' );
