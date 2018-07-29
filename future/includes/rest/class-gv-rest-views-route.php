@@ -318,31 +318,22 @@ class Views_Route extends Route {
 			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
 		}
 
-		if ( post_password_required( $view->ID ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
-		}
+		while ( $error = $view->can_render( array( 'rest' ), $request ) ) {
+			if ( ! is_wp_error( $error ) )
+				break;
 
-		$public_states = get_post_stati( array( 'public' => true ) );
-		if ( ! in_array( $view->post_status, $public_states ) && ! \GVCommon::has_cap( 'read_gravityview', $view->ID ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
-		}
+			switch ( str_replace( 'gravityview/', '', $error->get_error_code() ) ) {
+				case 'rest_disabled':
+				case 'post_password_required':
+				case 'not_public':
+				case 'embed_only':
+				case 'no_direct_access':
+					return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+				case 'no_form_attached':
+					return new \WP_Error( 'rest_forbidden', __( 'This View is not configured properly.', 'gravityview' ) );
+			}
 
-		// Shortcodes only
-		$direct_access = apply_filters( 'gravityview_direct_access', true, $view->ID );
-		if ( ! apply_filters( 'gravityview/view/output/direct', $direct_access, $view, $request ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
-		}
-
-		// Embed only
-		if ( $view->settings->get( 'embed_only' ) && ! \GVCommon::has_cap( 'read_private_gravityviews' ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
-		}
-
-		// REST
-		if ( gravityview()->plugin->settings->get( 'rest_api' ) === '1' && $view->settings->get( 'rest_disable' ) === '1' ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
-		} elseif ( gravityview()->plugin->settings->get( 'rest_api' ) !== '1' && $view->settings->get( 'rest_enable' ) !== '1' ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+			return $content;
 		}
 
 		/**
