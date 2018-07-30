@@ -379,6 +379,12 @@ class View implements \ArrayAccess {
 			}
 		}
 
+		if ( in_array( 'csv', $context ) ) {
+			if ( $this->settings->get( 'csv_enable' ) !== '1' ) {
+				return new \WP_Error( 'gravityview/csv_disabled' );
+			}
+		}
+
 		/**
 		 * This View is password protected. Nothing to do here.
 		 */
@@ -878,10 +884,74 @@ class View implements \ArrayAccess {
 			return;
 		}
 
-		if ( $view = gravityview()->request->is_view() ) {
-			// shit
-			exit;
+		if ( ! $view = gravityview()->request->is_view() ) {
+			return;
 		}
+
+		if ( is_wp_error( $error = $view->can_render( array( 'csv' ) ) ) ) {
+			return;
+		}
+
+		header( sprintf( 'Content-Disposition: attachment;filename=%s.csv', $view->ID ) );
+		header( 'Content-Transfer-Encoding: binary' );
+		header( 'Content-Type: text/csv' );
+
+		$csv = fopen( 'php://output', 'w' );
+
+		/** Da' BOM :) */
+		if ( apply_filters( 'gform_include_bom_export_entries', true, $form ) ) {
+			fputs( $csv, "\xef\xbb\xbf" );
+		}
+
+		$entries = $view->get_entries();
+
+		$headers_done = false;
+		$allowd = array();
+
+		/**
+		 * @todo Maybe create a CSV_Renderer?
+		 */
+		foreach ( $view->fields->by_position( "directory_*" )->by_visible()->all() as $field ) {
+			$allowed[] = $field->ID;
+		}
+
+		foreach ( $entries->all() as $entry ) {
+			$return = $entry->as_entry();
+
+			/**
+			 * @filter `gravityview/csv/entry/fields` Whitelist more entry fields that are output in CSV requests.
+			 * @param[in,out] array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the view.
+			 * @param \GV\View $view The view.
+			 * @param \GV\Entry $entry WordPress representation of the item.
+			 */
+			$allowed = apply_filters( 'gravityview/rest/entry/fields', $allowed, $view, $entry );
+
+			foreach ( $return as $key => $value ) {
+				if ( ! in_array( $key, $allowed ) ) {
+					unset( $return[ $key ] );
+				}
+			}
+
+			foreach ( $allowed as $field ) {
+				$source = is_numeric( $field ) ? $view->form : new \GV\Internal_Source();
+				$field  = is_numeric( $field ) ? \GV\GF_Field::by_id( $view->form, $field ) : \GV\Internal_Field::by_id( $field );
+
+				$return[ $field->ID ] = $field->get_value( $view, $source, $entry );
+			}
+
+			if ( ! $headers_done ) {
+				$headers_done = fputcsv( $csv, array_keys( array_map( $strip_formulas = function( $value ) {
+					if ( strpos( $value, '=' ) === 0 ) {
+						$value = "'" . $value;
+					}
+					return $value;
+				}, $return ) ) );
+			}
+
+			fputcsv( $csv, array_map( $strip_formulas, $return ) );
+		}
+
+		exit;
 	}
 
 	public function __get( $key ) {
