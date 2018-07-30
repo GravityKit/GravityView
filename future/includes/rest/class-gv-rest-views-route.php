@@ -159,15 +159,33 @@ class Views_Route extends Route {
 		$view_id = intval( $url['id'] );
 		$format  = \GV\Utils::get( $url, 'format', 'json' );
 
+		if( $post_id = $request->get_param('post_id') ) {
+			global $post;
+
+			$post = get_post( $post_id );
+
+			if ( ! $post || is_wp_error( $post ) ) {
+				return new \WP_Error( 'gravityview-post-not-found', sprintf( 'A post with ID #%d was not found.', $post_id ) );
+			}
+
+			$collection = \GV\View_Collection::from_post( $post );
+
+			if ( ! $collection->contains( $view_id ) ) {
+				return new \WP_Error( 'gravityview-post-not-contains', sprintf( 'The post with ID #%d does not contain a View with ID #%d', $post_id, $view_id ) );
+			}
+		}
+
 		$view = \GV\View::by_id( $view_id );
 
 		if ( 'html' == $format ) {
 
 			$renderer = new \GV\View_Renderer();
-			$total = 0;
+			$count = $total = 0;
 
-			add_action( 'gravityview/template/view/render', function( $context ) use ( &$total ) {
-				$total = $context->entries->count();
+			/** @var \GV\Template_Context $context */
+			add_action( 'gravityview/template/view/render', function( $context ) use ( &$count, &$total ) {
+				$count = $context->entries->count();
+				$total = $context->entries->total();
 			} );
 
 			$output = $renderer->render( $view, new Request( $request ) );
@@ -175,18 +193,21 @@ class Views_Route extends Route {
 			/**
 			 * @filter `gravityview/rest/entries/html/insert_meta` Whether to include `http-equiv` meta tags in the HTML output describing the data
 			 * @param bool $insert_meta Add <meta> tags? [Default: true]
-			 * @param int $total The number of entries being rendered
+			 * @param int $count The number of entries being rendered
 			 * @param \GV\View $view The view.
 			 * @param \WP_REST_Request $request Request object.
+			 * @param int $total The number of total entries for the request
 			 */
-			$insert_meta = apply_filters( 'gravityview/rest/entries/html/insert_meta', true, $total, $view, $request );
+			$insert_meta = apply_filters( 'gravityview/rest/entries/html/insert_meta', true, $count, $view, $request, $total );
 
 			if ( $insert_meta ) {
-				$output = '<meta http-equiv="X-Item-Count" content="' . $total . '" />' . $output;
+				$output = '<meta http-equiv="X-Item-Count" content="' . $count . '" />' . $output;
+				$output = '<meta http-equiv="X-Item-Total" content="' . $total . '" />' . $output;
 			}
 
 			$response = new \WP_REST_Response( $output, 200 );
-			$response->header( 'X-Item-Count', $total );
+			$response->header( 'X-Item-Count', $count );
+			$response->header( 'X-Item-Total', $total );
 
 			return $response;
 		}
@@ -325,31 +346,22 @@ class Views_Route extends Route {
 			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
 		}
 
-		if ( post_password_required( $view->ID ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
-		}
+		while ( $error = $view->can_render( array( 'rest' ), $request ) ) {
+			if ( ! is_wp_error( $error ) )
+				break;
 
-		$public_states = get_post_stati( array( 'public' => true ) );
-		if ( ! in_array( $view->post_status, $public_states ) && ! \GVCommon::has_cap( 'read_gravityview', $view->ID ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
-		}
+			switch ( str_replace( 'gravityview/', '', $error->get_error_code() ) ) {
+				case 'rest_disabled':
+				case 'post_password_required':
+				case 'not_public':
+				case 'embed_only':
+				case 'no_direct_access':
+					return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+				case 'no_form_attached':
+					return new \WP_Error( 'rest_forbidden', __( 'This View is not configured properly.', 'gravityview' ) );
+			}
 
-		// Shortcodes only
-		$direct_access = apply_filters( 'gravityview_direct_access', true, $view->ID );
-		if ( ! apply_filters( 'gravityview/view/output/direct', $direct_access, $view, $request ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
-		}
-
-		// Embed only
-		if ( $view->settings->get( 'embed_only' ) && ! \GVCommon::has_cap( 'read_private_gravityviews' ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
-		}
-
-		// REST
-		if ( gravityview()->plugin->settings->get( 'rest_api' ) === '1' && $view->settings->get( 'rest_disable' ) === '1' ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
-		} elseif ( gravityview()->plugin->settings->get( 'rest_api' ) !== '1' && $view->settings->get( 'rest_enable' ) !== '1' ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+			return $content;
 		}
 
 		/**

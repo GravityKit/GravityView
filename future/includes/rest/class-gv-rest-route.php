@@ -54,6 +54,10 @@ abstract class Route extends \WP_REST_Controller {
 					'limit' => array(
 						'default' => 10,
 						'sanitize_callback' => 'absint'
+					),
+					'post_id' => array(
+						'default' => null,
+						'sanitize_callback' => 'absint'
 					)
 				)
 			),
@@ -110,6 +114,10 @@ abstract class Route extends \WP_REST_Controller {
 					),
 					'limit' => array(
 						'default' => 10,
+						'sanitize_callback' => 'absint'
+					),
+					'post_id' => array(
+						'default' => null,
 						'sanitize_callback' => 'absint'
 					)
 				)

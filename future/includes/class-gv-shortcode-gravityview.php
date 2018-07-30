@@ -75,30 +75,30 @@ class gravityview extends \GV\Shortcode {
 		$view->settings->update( $atts );
 		$entries = $view->get_entries( $request );
 
-		if ( post_password_required( $view->ID ) ) {
-			gravityview()->log->notice( 'Post password is required for View #{view_id}', array( 'view_id' => $view->ID ) );
-			return get_the_password_form( $view->ID );
-		}
+		/**
+		 * Check permissions.
+		 */
+		while ( $error = $view->can_render( array( 'shortcode' ), $request ) ) {
+			if ( ! is_wp_error( $error ) )
+				break;
 
-		if ( ! $view->form  ) {
-			gravityview()->log->notice( 'View #{id} has no form attached to it.', array( 'id' => $view->ID ) );
-
-			/**
-			 * This View has no data source. There's nothing to show really.
-			 * ...apart from a nice message if the user can do anything about it.
-			 */
-			if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-				return __( sprintf( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
+			switch ( str_replace( 'gravityview/', '', $error->get_error_code() ) ) {
+				case 'post_password_required':
+					return get_the_password_form( $view->ID );
+				case 'no_form_attached':
+					/**
+					 * This View has no data source. There's nothing to show really.
+					 * ...apart from a nice message if the user can do anything about it.
+					 */
+					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
+						return __( sprintf( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
+					}
+					break;
+				case 'no_direct_access':
+				case 'embed_only':
+				case 'not_public':
+					return __( 'You are not allowed to view this content.', 'gravityview' );
 			}
-
-			return $content;
-		}
-
-		/** Private, pending, draft, etc. */
-		$public_states = get_post_stati( array( 'public' => true ) );
-		if ( ! in_array( $view->post_status, $public_states ) && ! \GVCommon::has_cap( 'read_gravityview', $view->ID ) ) {
-			gravityview()->log->notice( 'The current user cannot access this View #{view_id}', array( 'view_id' => $view->ID ) );
-			return __( 'You are not allowed to view this content.', 'gravityview' );
 		}
 
 		$is_admin_and_can_view = $view->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap('gravityview_moderate_entries', $view->ID );

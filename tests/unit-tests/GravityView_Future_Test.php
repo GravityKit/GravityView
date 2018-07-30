@@ -123,8 +123,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Entry::get_endpoint_name()
 	 */
 	public function test_entry_endpoint_rewrite_name() {
-		$entry_enpoint = array_filter( $GLOBALS['wp_rewrite']->endpoints, function( $endpoint ) {
-			return $endpoint === array( EP_ALL, 'entry', 'entry' );
+		$entry_enpoint = array_filter( $GLOBALS['wp_rewrite']->extra_rules_top, function( $endpoint ) {
+			return $endpoint === 'index.php?gravityview=$matches[1]&entry=$matches[3]';
 		} );
 
 		$this->assertNotEmpty( $entry_enpoint, 'Single Entry endpoint not registered.' );
@@ -198,6 +198,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->create_and_get();
 		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$another_view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$and_another_view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
 		$form = \GV\GF_Form::by_id( $form['id'] );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
@@ -219,9 +221,18 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$_GET = array();
 
-		/** An embedded View, sort of. */
-		$post = $this->factory->post->create_and_get();
+		/** One embedded View */
+		$post = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $another_view->ID . '"]'));
+		$expected_url = add_query_arg( array( 'entry' => $entry->ID ), get_permalink( $post->ID ) );
+		$this->assertEquals( $expected_url, $entry->get_permalink( $view, $request ) );
 
+		/** Multiple embedded Views */
+		$post = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $another_view->ID .'"] [gravityview id="'. $view->ID . '"]'));
+		$expected_url = add_query_arg( array( 'gvid' => $view->ID, 'entry' => $entry->ID ), get_permalink( $post->ID ) );
+		$this->assertEquals( $expected_url, $entry->get_permalink( $view, $request ) );
+
+		/** Multiple embedded Views, even if they are not the View of the entry */
+		$post = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $another_view->ID . '"] [gravityview id="' . $and_another_view->ID . '"]'));
 		$expected_url = add_query_arg( array( 'gvid' => $view->ID, 'entry' => $entry->ID ), get_permalink( $post->ID ) );
 		$this->assertEquals( $expected_url, $entry->get_permalink( $view, $request ) );
 
