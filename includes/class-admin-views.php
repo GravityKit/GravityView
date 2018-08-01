@@ -40,12 +40,10 @@ class GravityView_Admin_Views {
 		add_action( 'gravityview_render_directory_active_areas', array( $this, 'render_directory_active_areas'), 10, 4 );
 		add_action( 'gravityview_render_widgets_active_areas', array( $this, 'render_widgets_active_areas'), 10, 3 );
 		add_action( 'gravityview_render_field_pickers', array( $this, 'render_field_pickers') );
+		add_action( 'gravityview_render_field_and_widget_options', array( $this, 'render_field_and_widget_options') );
 		add_action( 'gravityview_render_available_fields', array( $this, 'render_available_fields'), 10, 2 );
 		add_action( 'gravityview_render_available_widgets', array( $this, 'render_available_widgets') );
 		add_action( 'gravityview_render_active_areas', array( $this, 'render_active_areas'), 10, 5 );
-
-		// @todo check if this hook is needed..
-		//add_action( 'gravityview_render_field_options', array( $this, 'render_field_options'), 10, 9 );
 
 		// Add Connected Form column
 		add_filter('manage_gravityview_posts_columns' , array( $this, 'add_post_type_columns' ) );
@@ -615,7 +613,6 @@ class GravityView_Admin_Views {
 		$fields = $this->get_available_fields( $form, $context );
 
 		$output = '';
-
 		if( !empty( $fields ) ) {
 
 			foreach( $fields as $id => $details ) {
@@ -884,7 +881,6 @@ class GravityView_Admin_Views {
 				$available_items[ $form ] = $this->get_registered_widgets();
 			}
 		}
-
 		foreach( $rows as $row ) :
 			foreach( $row as $col => $areas ) :
 				$column = ($col == '2-2') ? '1-2' : $col; ?>
@@ -921,12 +917,9 @@ class GravityView_Admin_Views {
 											$input_type = isset( $original_item['type'] ) ? $original_item['type'] : NULL;
 										}
 
-										// Field options dialog box
-										$field_options = GravityView_Render_Settings::render_field_options( $form_id, $type, $template_id, $field['id'], $original_item['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone, $original_item );
-
 										$item = array(
 											'input_type' => $input_type,
-											'settings_html' => $field_options,
+											'settings_html' => null,
 											'label_type' => $type
 										);
 
@@ -990,6 +983,38 @@ class GravityView_Admin_Views {
 		echo $output;
 
 		return $output;
+	}
+
+	/**
+	 * Renders field options templates
+	 *
+	 * @since 2.0.XX
+	 *
+	 * @return void
+	 */
+
+	function render_field_and_widget_options() {
+
+	    // render widgets templates
+	    $widgets = \GV\Widget::registered();
+
+	    foreach ($widgets as $widget_identifier => $data) {
+		    echo GravityView_Render_Settings::render_field_and_widget_options( 'widget', $widget_identifier);
+        }
+
+		// render fields templates
+		$forms = gravityview_get_forms( 'any' );
+
+		foreach ( $forms as $form ) {
+			foreach ( $form['fields'] as $field ) {
+				$fields[] = $field['type'];
+			}
+		}
+
+		foreach ( array_unique( $fields ) as $field_identifier ) {
+			echo GravityView_Render_Settings::render_field_and_widget_options( 'field', $field_identifier);
+		}
+
 	}
 
 	/**

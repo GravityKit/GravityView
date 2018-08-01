@@ -231,6 +231,9 @@ class GravityView_Ajax {
 
 
 	/**
+	 * @deprecated since 2.0.XX
+	 * @TODO: add proper version
+	 *
 	 * Returns field options - called by ajax when dropping fields into active areas
 	 * AJAX callback
 	 *
@@ -239,7 +242,7 @@ class GravityView_Ajax {
 	 */
 	function get_field_options() {
 		$this->check_ajax_nonce();
-		
+
 		if( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) ) {
 			gravityview()->log->error( 'Required fields were not set in the $_POST request. ' );
 			$this->_exit( false );
