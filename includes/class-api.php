@@ -527,7 +527,10 @@ class GravityView_API {
 				}
 
 				$results = $wpdb->get_results( $wpdb->prepare( "SELECT $column, meta_value FROM $table WHERE form_id = (SELECT form_id FROM $table WHERE $column = %d LIMIT 1) AND meta_key = 'gravityview_unique_id'", $id_or_string ) );
-				$cache = array_replace( $cache, array_combine( wp_list_pluck( $results, $column ), wp_list_pluck( $results, 'meta_value' ) ) );
+
+				if ( $results ) {
+					$cache = array_replace( $cache, array_combine( wp_list_pluck( $results, $column ), wp_list_pluck( $results, 'meta_value' ) ) );
+				}
 
 				if ( ! isset( $cache[ $id_or_string ] ) ) {
 					$cache[ $id_or_string ] = false;
