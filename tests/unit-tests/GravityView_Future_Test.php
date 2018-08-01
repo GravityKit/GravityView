@@ -5654,7 +5654,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		if ( ! \GV\Widget_Collection::from_configuration( $view->_gravityview_directory_widgets )->count() ) {
 			file_put_contents( '/tmp/test.log', var_export( $view->_gravityview_directory_widgets, true ) );
-			foreach ( $_widgets as $uid => $_configuration ) {
+			foreach ( $view->_gravityview_directory_widgets as $uid => $_configuration ) {
 				if ( ! $widget = Widget::from_configuration( $_configuration ) ) {
 					$debug = array(
 						'_configuration' => $_configuration,
@@ -5668,7 +5668,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 					$debug['class_exists'] = class_exists( $class );
 					$debug['object'] = new $class( Utils::get( $_configuration, 'label' ), $id );
 
-					file_put_contents( '/tmp/test.log', var_export( $debug, true ) );
+					file_put_contents( '/tmp/test.log', var_export( $debug, true ), FILE_APPEND );
 					break;
 				}
 			}
