@@ -5655,7 +5655,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		if ( ! \GV\Widget_Collection::from_configuration( $view->_gravityview_directory_widgets )->count() ) {
 			file_put_contents( '/tmp/test.log', var_export( $view->_gravityview_directory_widgets, true ) );
 			foreach ( $view->_gravityview_directory_widgets as $uid => $_configuration ) {
-				if ( ! $widget = Widget::from_configuration( $_configuration ) ) {
+				if ( ! $widget = \GV\Widget::from_configuration( $_configuration ) ) {
 					$debug = array(
 						'_configuration' => $_configuration,
 					);
