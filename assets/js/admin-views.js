@@ -328,6 +328,8 @@
 
 			vcfg.zebraStripeSettings();
 
+			vcfg.initializeFieldAndWidgetSettings();
+
 		},
 
 		/**
@@ -1574,7 +1576,25 @@
 			} );
 
 			return false;
-		}
+		},
+
+    /**
+     * Adds settings data to fields and widgets that will be displayed in dialogue box
+     */
+    initializeFieldAndWidgetSettings: function () {
+      $('.active-drop').find('.gv-fields').each(function(e) {
+        var id = $(this).attr('data-fieldid'),
+            type = $(this).attr('data-fieldtype'),
+            area = $(this).parent().attr('data-areaid'),
+            $template = $('.gv_' + type + '_' + id + '_options_template');
+
+        if ( !$template.length ) return;
+
+        $(this).find('a[href="#settings"]').removeClass('hide-if-js');
+        $(this).append($template.html());
+      });
+
+    }
 
 	}; // end viewConfiguration object
 
