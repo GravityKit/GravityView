@@ -186,7 +186,7 @@ abstract class GravityView_Admin_View_Item {
 		$container_class = ! empty( $this->item['parent'] ) ? ' gv-child-field' : '';
 		$data_form_id   = ! empty( $this->form_id ) ? 'data-formid="' . esc_attr( $this->form_id ) . '"' : '';
 
-		$output = '<div data-fieldid="' . esc_attr( $this->id ) . '" ' . $data_form_id . ' data-inputtype="' . esc_attr( $this->item['input_type'] ) . '" class="gv-fields' . $container_class . '">' . $output . $this->item['settings_html'] . '</div>';
+		$output = '<div data-fieldtype="' . esc_html($this->label_type) .'" data-fieldid="' . esc_attr( $this->id ) . '" ' . $data_form_id . ' data-inputtype="' . esc_attr( $this->item['input_type'] ) . '" class="gv-fields' . $container_class . '">' . $output . $this->item['settings_html'] . '</div>';
 
 		return $output;
 	}
