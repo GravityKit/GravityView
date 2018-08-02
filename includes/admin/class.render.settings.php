@@ -210,6 +210,8 @@ class GravityView_Render_Settings {
 
 			$value = isset( $current[ $key ] ) ? $current[ $key ] : null;
 
+			$option['id'] = isset( $option['id'] ) ? $option['id'] : $name_prefix . '[' . $key . ']';
+
 			$field_output = self::render_field_option( $name_prefix . '[' . $key . ']', $option, $value );
 
 			// The setting is empty
