@@ -1578,26 +1578,49 @@
 			return false;
 		},
 
-    /**
-     * Adds settings data to fields and widgets that will be displayed in dialogue box
-     */
-    initializeFieldAndWidgetSettings: function () {
-      $('.active-drop').find('.gv-fields').each(function(e) {
-        var id = $(this).attr('data-fieldid'),
-            type = $(this).attr('data-fieldtype'),
-            area = $(this).parent().attr('data-areaid'),
-            $template = $('.gv_' + type + '_' + id + '_options_template');
+		/**
+		 * Adds settings data to fields and widgets that will be displayed in dialogue box
+		 */
+		initializeFieldAndWidgetSettings: function () {
+			var vcfg = viewConfiguration;
 
-        if ( !$template.length ) return;
+			$( '.active-drop' ).find( '.gv-fields' ).each( function ( e ) {
+				var fieldId = $( this ).attr( 'data-fieldid' ),
+					formId = $( this ).attr( 'data-formid' ) || vcfg.currentFormId,
+					type = $( this ).attr( 'data-fieldtype' ),
+					area = $( this ).parent().attr( 'data-areaid' ),
+					label = $( this ).find( '.gv-field-label' ).attr( 'data-original-title' ),
+					title = $( this ).find( '.gv-field-label' ).attr( 'title' ),
+					$template = $( '.gv_' + type + '_' + fieldId + '_options_template' );
 
-        $(this).find('a[href="#settings"]').removeClass('hide-if-js');
-        $(this).append($template.html());
-      });
+				if ( !$template.length ) return;
 
-    }
+				$( this ).find( 'a[href="#settings"]' ).removeClass( 'hide-if-js' );
+
+				var uniqueId = vcfg.generateUniqueId();
+
+				var templateData = $template.html()
+					.replace( new RegExp( '%context%', 'gm' ), area )
+					.replace( new RegExp( '%unique_id%', 'gm' ), uniqueId )
+					.replace( new RegExp( '%field_label%', 'gm' ), label )
+					.replace( new RegExp( '%field_id%', 'gm' ), fieldId )
+					.replace( new RegExp( '%form_id%', 'gm' ), formId );
+
+				$( this ).append( templateData );
+			} );
+
+		},
+
+		/**
+		 * Generates unique ID (random string)
+		 *
+		 * @returns {string} Random string
+		 */
+		generateUniqueId: function () {
+			return Math.random().toString(36).substr(2, 9);
+		},
 
 	}; // end viewConfiguration object
-
 
 	/**
 	 * Manages the General View Settings
