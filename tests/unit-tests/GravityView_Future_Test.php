@@ -5666,7 +5666,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 					$debug['class'] = $class = \GV\Utils::get( $_configuration, 'class' );
 					$debug['class_exists'] = class_exists( $class );
-					$debug['object'] = new $class( \GV\Utils::get( $_configuration, 'label' ), $id );
+					if ( $debug['class_exists'] ) {
+						$debug['object'] = new $class( \GV\Utils::get( $_configuration, 'label' ), $id );
+					}
 
 					file_put_contents( '/tmp/test.log', var_export( $debug, true ), FILE_APPEND );
 					break;
