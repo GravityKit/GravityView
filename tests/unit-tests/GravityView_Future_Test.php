@@ -5634,7 +5634,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'widgets' => array(
 				'header_top' => array(
 					wp_generate_password( 4, false ) => array(
-						'id' => $widget_id = '1' . wp_generate_password( 3, false ) . '-widget',
+						'id' => $widget_id = wp_generate_password( 4, false ) . '-widget',
 						'test' => 'foo',
 					),
 				),
@@ -5649,16 +5649,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Trigger registration under this ID */
 		new GVFutureTest_Widget_Test( 'Widget', $widget_id );
-
-		$registered_widgets = \GV\Widget::registered();
-		if ( ! $widget = \GV\Utils::get( $registered_widgets, $widget_id ) ) {
-			$debug = array();
-			$debug['widget_id'] = $widget_id;
-			$debug['registered_widgets'] = $registered_widgets;
-			file_put_contents( '/tmp/test.log', var_export( $debug, true ), FILE_APPEND );
-		}
-
-		$this->assertNotNull( $widget );
 
 		$view = \GV\View::from_post( $post );
 

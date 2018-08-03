@@ -464,6 +464,6 @@ abstract class Widget {
 			gravityview()->log->warning( 'Widget ID not set before calling Widget::is_registered', array( 'data' => $this ) );
 			return false;
 		}
-		return in_array( $widget_id, array_keys( self::registered() ) );
+		return in_array( $widget_id, array_keys( self::registered() ), true );
 	}
 }
