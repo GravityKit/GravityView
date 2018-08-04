@@ -120,6 +120,15 @@ class View_Settings extends Settings {
 				'type'              => 'checkbox',
 				'show_in_shortcode' => true,
 			),
+			'unapprove_edit' => array(
+				'label'             => __( 'Unapprove Edited Entries', 'gravityview' ),
+				'group'             => 'default',
+				'desc'              => __( 'Edited entries are unapproved automatically.', 'gravityview' ),
+				'value'             => 0,
+				'tooltip'           => __( 'When an entry is edited by a non-administrator it is marked as unapproved. Requires "Allow User Edit" and "Show only approved entries" settings.', 'gravityview' ),
+				'type'              => 'checkbox',
+				'show_in_shortcode' => true,
+			),
 			'user_delete' => array(
 				'label'             => __( 'Allow User Delete', 'gravityview' ),
 				'group'             => 'default',

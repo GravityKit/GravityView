@@ -1065,8 +1065,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$microtime = md5( microtime() );
 
 		$complete_subscriber = $this->factory->user->create_and_get( array(
-			'user_login' => $microtime,
-			'user_email' => $microtime . '@gravityview.tests',
+			'user_login' => $microtime, 'user_email' => $microtime . '@gravityview.tests',
 			'display_name' => 'Zeek LaBeek',
 			'nickname' => 'Zeekary',
 			'first_name' => 'Zeek',
@@ -1145,6 +1144,116 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		/** Cleanup. */
 		GravityView_Edit_Entry::$instance = null;
+	}
+
+	public function test_unapprove_on_edit() {
+		$subscriber = $this->factory->user->create( array(
+				'user_login' => md5( microtime() ),
+				'user_email' => md5( microtime() ) . '@gravityview.tests',
+				'role' => 'subscriber' )
+		);
+
+		$administrator = $this->factory->user->create( array(
+				'user_login' => md5( microtime() ),
+				'user_email' => md5( microtime() ) . '@gravityview.tests',
+				'role' => 'administrator' )
+		);
+
+		wp_set_current_user( 0 );
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'show_only_approved' => true,
+				'user_edit' => true,
+			),
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			)
+		) );
+		$view = \GV\View::from_post( $post );
+
+		// Create an initial entry by $subscriber
+		$entry = $this->factory->entry->create_and_get( array(
+			'created_by' => $subscriber,
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'this is one'
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+		gravityview()->request->returns['is_entry'] = $entry;
+
+		// The entry is not approved for viewing
+		$this->assertContains( 'are not allowed', \GV\View::content( 'entry' ) );
+
+		// Approve the entry
+		gform_update_meta( $entry->ID, \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
+		// The entry is approved for viewing
+		$this->assertNotContains( 'are not allowed', \GV\View::content( 'entry' ) );
+
+		wp_set_current_user( $subscriber );
+
+		// Edit the entry
+		$_POST = array(
+			'lid' => $entry->ID,
+			'is_submit_' . $form['id'] => true,
+
+			/** Fields */
+			'input_1' => 'this is two',
+		);
+		$this->_emulate_render( $form, $view, $entry->as_entry() );
+
+		// It's still approved and modified
+		$this->assertNotContains( 'this is two', \GV\View::content( 'entry' ) );
+
+		// Update the View settings
+		$view->settings->update( array( 'unapprove_edit' => true ) );
+
+		// Edit the entry
+		$_POST = array(
+			'lid' => $entry->ID,
+			'is_submit_' . $form['id'] => true,
+
+			/** Fields */
+			'input_1' => 'this is three',
+		);
+		$this->_emulate_render( $form, $view, $entry->as_entry() );
+
+		wp_set_current_user( 0 );
+
+		// The entry is no longer approved
+		$this->assertContains( 'are not allowed', \GV\View::content( 'entry' ) );
+
+		// Approve it
+		gform_update_meta( $entry->ID, \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
+		wp_set_current_user( $administrator );
+
+		// Edit the entry (by admin)
+		$_POST = array(
+			'lid' => $entry->ID,
+			'is_submit_' . $form['id'] => true,
+
+			/** Fields */
+			'input_1' => 'this is four',
+		);
+		$this->_emulate_render( $form, $view, $entry->as_entry() );
+
+		// It's still approved and modified
+		$this->assertNotContains( 'this is four', \GV\View::content( 'entry' ) );
+
+		$this->_reset_context();
 	}
 }
 

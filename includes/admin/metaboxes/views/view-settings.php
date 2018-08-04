@@ -55,6 +55,11 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 		GravityView_Render_Settings::render_setting_row( 'rest_enable', $current_settings );
 	}
 
+	/**
+	 * @since 2.0
+	 */
+	GravityView_Render_Settings::render_setting_row( 'unapprove_edit', $current_settings );
+
 	do_action( 'gravityview_admin_directory_settings', $current_settings );
 
 	?>

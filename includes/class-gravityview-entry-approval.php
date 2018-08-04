@@ -47,6 +47,9 @@ class GravityView_Entry_Approval {
 		// process ajax approve entry requests
 		add_action('wp_ajax_gv_update_approved', array( $this, 'ajax_update_approved'));
 
+		// autounapprove
+		add_action( 'gravityview/edit_entry/after_update', array( __CLASS__, 'autounapprove' ), 10, 4 );
+
 	}
 
 	/**
@@ -565,6 +568,32 @@ class GravityView_Entry_Approval {
 		}
 
 		return $approved_column_id;
+	}
+
+	/**
+	 * Maybe unapprove entry on edit.
+	 *
+	 * Called from gravityview/edit_entry/after_update
+	 *
+	 * @param array $form Gravity Forms form array
+	 * @param string $entry_id Numeric ID of the entry that was updated
+	 * @param GravityView_Edit_Entry_Render $this This object
+	 * @param GravityView_View_Data $gv_data The View data
+	 *
+	 * @return void
+	 */
+	public static function autounapprove( $form, $entry_id, $edit, $gv_data ) {
+		$view = \GV\View::by_id( array_keys( $gv_data->get_views() )[0] );
+
+		if ( ! $view->settings->get( 'unapprove_edit' ) ) {
+			return;
+		}
+
+		if ( GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
+			return;
+		}
+
+		self::update_approved_meta( $entry_id, GravityView_Entry_Approval_Status::UNAPPROVED, $form['id'] );
 	}
 
 }
