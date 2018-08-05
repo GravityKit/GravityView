@@ -7481,18 +7481,23 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$request = new \GV\Frontend_Request();
 
-		global $post;
+		global $post, $wp_rewrite;
 
 		$post = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $view->ID . '"]' ) );
 
-		update_option( 'permalink_structure', '/%postname%' );
-		$this->assertEquals( get_permalink( $post->ID ) . '/entry/' . $entry->ID . '/', $url = $entry->get_permalink( $view, $request ) );
+		$this->set_permalink_structure( '/%postname%/' );
+		\GV\Entry::add_rewrite_endpoint();
+		flush_rewrite_rules();
+
+		$this->assertEquals( get_permalink( $post->ID ) . 'entry/' . $entry->ID . '/', $url = $entry->get_permalink( $view, $request ) );
 
 		$this->go_to( $url );
 
 		$this->assertEquals( $entry->ID, get_query_var( 'entry' ) );
 
-		update_option( 'permalink_structure', '' );
+		$this->set_permalink_structure( '' );
+		\GV\Entry::add_rewrite_endpoint();
+		flush_rewrite_rules();
 
 		$this->_reset_context();
 	}
