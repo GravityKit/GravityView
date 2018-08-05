@@ -42,18 +42,14 @@ abstract class Entry {
 	public static function add_rewrite_endpoint() {
 		global $wp_rewrite;
 
-		$slug = apply_filters( 'gravityview_slug', 'view' );
 		$endpoint = self::get_endpoint_name();
-		$rule = array( sprintf( '%s/([^/]+)/%s(/(.*))?/?$', $slug, $endpoint ), sprintf( 'index.php?gravityview=$matches[1]&%s=$matches[3]', $endpoint ), 'top' );
 
-		add_filter( 'query_vars', function( $query_vars ) use ( $endpoint ) {
-			$query_vars[] = $endpoint;
-			return $query_vars;
-		} );
-
-		if ( ! isset( $wp_rewrite->extra_rules_top[ $rule[0] ] ) ) {
-			call_user_func_array( 'add_rewrite_rule', $rule );
+		/** Let's make sure the endpoint array is not polluted. */
+		if ( in_array( array( EP_ALL, $endpoint, $endpoint ), $wp_rewrite->endpoints ) ) {
+			return;
 		}
+
+		add_rewrite_endpoint( $endpoint, EP_ALL );
 	}
 
 	/**
