@@ -7468,6 +7468,34 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	public function test_entry_rewrite_rule() {
+		$this->_reset_context();
+		$form = $this->factory->form->create_and_get();
+		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+
+		global $post;
+
+		$post = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $view->ID . '"]' ) );
+
+		update_option( 'permalink_structure', '/%postname%' );
+		$this->assertEquals( get_permalink( $post->ID ) . '/entry/' . $entry->ID . '/', $url = $entry->get_permalink( $view, $request ) );
+
+		$this->go_to( $url );
+
+		$this->assertEquals( $entry->ID, get_query_var( 'entry' ) );
+
+		update_option( 'permalink_structure', '' );
+
+		$this->_reset_context();
+	}
 }
 
 class GVFutureTest_Extension_Test_BC extends GravityView_Extension {
