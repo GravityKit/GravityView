@@ -198,6 +198,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->create_and_get();
 		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$another_view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$and_another_view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
 		$form = \GV\GF_Form::by_id( $form['id'] );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
@@ -219,9 +221,18 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$_GET = array();
 
-		/** An embedded View, sort of. */
-		$post = $this->factory->post->create_and_get();
+		/** One embedded View */
+		$post = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $another_view->ID . '"]'));
+		$expected_url = add_query_arg( array( 'entry' => $entry->ID ), get_permalink( $post->ID ) );
+		$this->assertEquals( $expected_url, $entry->get_permalink( $view, $request ) );
 
+		/** Multiple embedded Views */
+		$post = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $another_view->ID .'"] [gravityview id="'. $view->ID . '"]'));
+		$expected_url = add_query_arg( array( 'gvid' => $view->ID, 'entry' => $entry->ID ), get_permalink( $post->ID ) );
+		$this->assertEquals( $expected_url, $entry->get_permalink( $view, $request ) );
+
+		/** Multiple embedded Views, even if they are not the View of the entry */
+		$post = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $another_view->ID . '"] [gravityview id="' . $and_another_view->ID . '"]'));
 		$expected_url = add_query_arg( array( 'gvid' => $view->ID, 'entry' => $entry->ID ), get_permalink( $post->ID ) );
 		$this->assertEquals( $expected_url, $entry->get_permalink( $view, $request ) );
 
@@ -1539,6 +1550,117 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( \GV\View_Template::split_slug( 'partial/fraction/atom', '' ), array( 'partial/fraction/', 'atom' ) );
 		$this->assertEquals( \GV\View_Template::split_slug( 'partial/fraction/atom', 'quark' ), array( 'partial/fraction/', 'atom-quark' ) );
 	}
+
+	public function test_filter_entries() {
+        $form = $this->factory->form->import_and_get( 'complete.json' );
+
+        global $post;
+
+        $post = $this->factory->view->create_and_get( array(
+            'form_id' => $form['id'],
+            'template_id' => 'table',
+            'fields' => array(
+                'directory_table-columns' => array(
+                    wp_generate_password( 4, false ) => array(
+                        'id' => '16',
+                        'label' => 'Textarea',
+                    ),
+                    wp_generate_password( 4, false ) => array(
+                        'id' => 'id',
+                        'label' => 'Entry ID',
+                    ),
+                    wp_generate_password( 4, false ) => array(
+                        'id' => '1.6',
+                        'label' => 'Country <small>(Address)</small>',
+                        'only_loggedin_cap' => 'read',
+                        'only_loggedin' => true,
+                    ),
+                ),
+            ),
+            'widgets' => array(
+                'header_top' => array(
+                    wp_generate_password( 4, false ) => array(
+                        'id' => 'search_bar',
+                        'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+                    ),
+                ),
+            ),
+        ) );
+
+        $view = \GV\View::from_post( $post );
+
+        $entries = new \GV\Entry_Collection();
+
+        $renderer = new \GV\View_Renderer();
+
+        gravityview()->request = new \GV\Mock_Request();
+        gravityview()->request->returns['is_view'] = $view;
+
+        $legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
+        $future = $renderer->render( $view );
+
+        /** No matching entries... */
+        $this->assertEquals( $legacy, $future );
+        $this->assertContains( 'No entries match your request', $future );
+
+		/** Some more */
+		foreach ( range( 1, 25 ) as $i ) {
+
+		    $entry = $this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'status' => 'active',
+				'16' => sprintf( '[%d] Some text in a textarea (%s)', $i, wp_generate_password( 12 ) ),
+			) );
+
+			$entries->add( \GV\GF_Entry::from_entry( $entry ) );
+		}
+
+        $this->assertEquals( 25, $view->get_entries( new GV\Frontend_Request() )->count() );
+
+		$future = $renderer->render( $view );
+		$this->assertContains( '[1] Some text in a textarea', $future );
+		$this->assertContains( '[2] Some text in a textarea', $future );
+		$this->assertContains( '[24] Some text in a textarea', $future );
+		$this->assertContains( '[25] Some text in a textarea', $future );
+
+		/**
+		 * After filtering the entries.
+		 */
+		add_filter( 'gravityview/view/entries', $callback = array( $this, '_filter_gravityview_view_entries' ), 10, 3 );
+
+		$this->assertEquals( 13, $view->get_entries( new GV\Frontend_Request() )->count() );
+
+		$future = $renderer->render( $view );
+		$this->assertContains( '[1] Some text in a textarea', $future );
+		$this->assertNotContains( '[2] Some text in a textarea', $future );
+		$this->assertContains( '[3] Some text in a textarea', $future );
+		$this->assertNotContains( '[24] Some text in a textarea', $future );
+		$this->assertContains( '[25] Some text in a textarea', $future );
+
+		$this->assertTrue( remove_filter( 'gravityview/view/entries', $callback ) );
+    }
+
+    /**
+     * Return only entries with an even entry ID
+     *
+     * @param \GV\Entry_Collection $entries The entries for this view.
+     * @param \GV\View $view The view.
+     * @param \GV\Request $request The request.
+     *
+     * @return \GV\Entry_Collection
+     */
+    function _filter_gravityview_view_entries( $entries, $view, $request ) {
+
+        $return = new \GV\Entry_Collection();
+
+        foreach ( $entries->all() as $i => $entry ) {
+            if ( $i % 2 === 0 ) {
+                $return->add( $entry );
+            }
+        }
+
+        return $return;
+    }
 
 	/**
 	 * @covers \GV\View_Renderer::render()

@@ -269,6 +269,13 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>2.0.14.1 on July 19, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Potential XSS ("Cross Site Scripting") security issue. <strong>Please update.</strong></li>
+                    <li>Fixed: GravityView styles weren't being loaded for some users</li>
+                </ul>
+
                 <h3>2.0.14 on July 9, 2018</h3>
 
                 <ul>
