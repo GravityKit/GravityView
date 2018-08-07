@@ -135,7 +135,44 @@ class GravityView_Admin_Installer {
 	/**
 	 * Get extensions data from transient or from API; save transient after getting data from API
 	 *
-	 * @return array
+	 * @return array {
+     *   @type array  $info {
+     *       @type string $id int 17
+     *       @type string $slug Extension slug
+     *       @type string $title Extension title
+     *       @type string $create_date in '2018-07-19 20:03:10' format
+     *       @type string $modified_date
+     *       @type string $status
+     *       @type string $link URL to public plugin page
+     *       @type string $content
+     *       @type string $excerpt
+     *       @type string $thumbnail URL to thumbnail
+     *       @type array  $category Taxonomy details for the plugin's category {
+     *         @type int $term_id => int 30
+     *         @type string $name => string 'Plugins' (length=7)
+     *         @type string $slug => string 'plugins' (length=7)
+     *         @type int $term_group => int 0
+     *         @type int $term_taxonomy_id => int 30
+     *         @type string $taxonomy => string 'download_category' (length=17)
+     *         @type string $description => string '' (length=0)
+     *         @type int $parent => int 0
+     *         @type int $count => int 4
+     *         @type string $filter => string 'raw' (length=3)
+     *       }
+     *       @type array $tags {see $category above}
+     *       @type string $textdomain string 'gravityview' (length=11)
+     *   }
+     *   @type array $pricing array of `price_name_slugs` => '00.00' values, if price options exist
+     *   @type array $licensing {
+     *       @type bool   $enabled Is licensing enabled for the extension
+     *       @type string $version Version number
+     *       @type string $exp_unit Expiration unit ('years')
+     *       @type string $exp_length Expiration length ('1')
+     *   }
+     *   @type array $files Array of files. Empty if user has no access to the file. {
+     *       @type string $file string URL of the file download
+     *   }
+     * }
 	 */
 	public function get_extensions_data() {
 
