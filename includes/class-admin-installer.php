@@ -39,6 +39,21 @@ class GravityView_Admin_Installer {
 		add_action( 'wp_ajax_gravityview_admin_installer_activate', array( $this, 'activate_extension' ) );
 		add_action( 'wp_ajax_gravityview_admin_installer_deactivate', array( $this, 'deactivate_extension' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'maybe_enqueue_scripts_and_styles' ) );
+		add_filter( 'gravityview_noconflict_scripts', array( $this, 'register_noconflict' ) );
+		add_filter( 'gravityview_noconflict_styles', array( $this, 'register_noconflict' ) );
+
+	/**
+	 * Let us operate when GF no-conflict is enabled
+	 *
+	 * @param array $items Scripts or styles to exclude from no-conflict
+	 *
+	 * @return array
+	 */
+	public function register_noconflict( $items ) {
+
+		$items[] = 'gravityview-admin-installer';
+
+		return $items;
 	}
 
 	/**
