@@ -10,6 +10,23 @@
  * @since 2.0.x
  */
 
+.gravityview_page_gv-admin-installer #wpwrap {
+
+	h1 {
+		font-size: 2.7em;
+		line-height: 1.3;
+		font-weight: 300;
+		text-align: center;
+	}
+
+	h2 {
+		text-align: center;
+		margin: .25em 0 2em;
+		font-size: 1.4em;
+		line-height: 1.5;
+	}
+}
+
 .gv-admin-installer-container {
 	min-height: 400px;
 	display: flex;
@@ -27,12 +44,20 @@
 	.item {
 		flex: 0 0 auto;
 		margin: 0 1% 20px 0;
-		border: 1px solid #ccc;
-		box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+		border: 1px solid #d1d1d5;
+		border-radius: 5px;
+		box-shadow: 0 0 6px rgba(33, 36, 52, 0.1);
 		width: 340px;
 		min-width: 250px;
 		max-width: 100%;
-		min-height: 440px;
+		min-height: 515px;
+		background-color: #ffffff;
+		position: relative;
+
+		&.featured {
+			background-color: #ffffee;
+			border-color: #FFFBCC;
+		}
 	}
 
 	.addon-inner {
@@ -51,6 +76,10 @@
 
 		div {
 			margin-top: 1em
+		}
+
+		p {
+			font-size: 1.1em;
 		}
 
 		.thumbnail {
