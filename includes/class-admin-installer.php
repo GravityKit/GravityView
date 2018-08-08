@@ -409,8 +409,8 @@ class GravityView_Admin_Installer {
                 <h3><?php echo esc_html( $extension_info['title'] ); ?></h3>
                 <div>
                     <?php if( $status_label ) { ?>
-                    <div class="status <?php echo esc_attr( $status ); ?>">
-		                <?php echo esc_html( $status_label ); ?>
+                    <div class="status <?php echo esc_attr( $status ); ?>" title="<?php printf( esc_attr__( 'Plugin status: %s', 'gravityview' ), esc_html( $status_label ) ); ?>">
+                        <span class="dashicons dashicons-admin-plugins"></span> <span class="status-label"><?php echo esc_html( $status_label ); ?></span>
                     </div>
 			        <?php } ?>
 
