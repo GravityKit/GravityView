@@ -64,7 +64,7 @@ class GravityView_Admin_Installer {
 	 * @return void
 	 */
 	public function add_extensions_data_filters() {
-		$extensions_data = get_transient( self::EXTENSIONS_DATA_TRANSIENT );
+		$extensions_data = get_site_transient( self::EXTENSIONS_DATA_TRANSIENT );
 		if ( ! $extensions_data ) {
 			return;
 		}
@@ -194,7 +194,7 @@ class GravityView_Admin_Installer {
 	 */
 	public function get_extensions_data() {
 
-		$extensions_data = get_transient( self::EXTENSIONS_DATA_TRANSIENT );
+		$extensions_data = get_site_transient( self::EXTENSIONS_DATA_TRANSIENT );
 
 		if ( $extensions_data ) {
 			return $extensions_data;
@@ -241,7 +241,7 @@ class GravityView_Admin_Installer {
 	 * @return true if successful, false otherwise
 	 */
 	public function set_extensions_data( $data ) {
-		return set_transient( self::EXTENSIONS_DATA_TRANSIENT, $data, self::EXTENSIONS_DATA_TRANSIENT_EXPIRY );
+		return set_site_transient( self::EXTENSIONS_DATA_TRANSIENT, $data, self::EXTENSIONS_DATA_TRANSIENT_EXPIRY );
 	}
 
 	/**
@@ -250,7 +250,7 @@ class GravityView_Admin_Installer {
 	 * @return bool true if successful, false otherwise
 	 */
 	public function delete_extensions_data() {
-		return delete_transient( self::EXTENSIONS_DATA_TRANSIENT );
+		return delete_site_transient( self::EXTENSIONS_DATA_TRANSIENT );
 	}
 
 	/**
