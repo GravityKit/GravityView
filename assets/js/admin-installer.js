@@ -75,7 +75,8 @@
 				'action': 'gravityview_admin_installer_activate',
 				'data': { path: pluginPath }
 			}, function ( response ) {
-				if ( !response.success ) {
+
+				if ( ! response.success ) {
 					defer.reject( response.data.error );
 				}
 

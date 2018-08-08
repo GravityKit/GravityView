@@ -467,7 +467,7 @@ class GravityView_Admin_Installer {
 		if ( is_wp_error( $result ) ) {
 			wp_send_json_error(
 				array(
-					'error' => sprintf( __( 'Extension activation failed: %s', 'gravityview' ), $result->get_error_message() )
+					'error' => sprintf( __( 'Plugin activation failed: %s', 'gravityview' ), $result->get_error_message() )
 				)
 			);
 		}
@@ -523,8 +523,8 @@ class GravityView_Admin_Installer {
 		wp_enqueue_script( 'gravityview-admin-installer', GRAVITYVIEW_URL . 'assets/js/admin-installer' . $script_debug . '.js', array( 'jquery' ), \GV\Plugin::$version, true );
 
 		wp_localize_script( 'gravityview-admin-installer', 'gvAdminInstaller', array(
-			'activateErrorLabel'    => __( 'Extension activation failed.', 'gravityview' ),
-			'deactivateErrorLabel'  => __( 'Extension deactivation failed.', 'gravityview' ),
+			'activateErrorLabel'    => __( 'Plugin activation failed.', 'gravityview' ),
+			'deactivateErrorLabel'  => __( 'Plugin deactivation failed.', 'gravityview' ),
 			'activeStatusLabel'     => __( 'Active', 'gravityview' ),
 			'inactiveStatusLabel'   => __( 'Inactive', 'gravityview' ),
 			'activateActionLabel'   => __( 'Activate', 'gravityview' ),
