@@ -132,9 +132,12 @@ class Addon_Settings extends \GFAddOn {
 	 * @return void
 	 */
 	public function add_network_menu() {
-		if ( gravityview()->plugin->is_network_activated() ) {
-			add_menu_page( __( 'Settings', 'gravityview' ), __( 'GravityView', 'gravityview' ), $this->_capabilities_app_settings, "{$this->_slug}_settings", array( $this, 'app_tab_page' ), 'none' );
+
+	    if ( ! gravityview()->plugin->is_network_activated() ) {
+			return;
 		}
+
+        add_menu_page( __( 'Settings', 'gravityview' ), __( 'GravityView', 'gravityview' ), $this->_capabilities_app_settings, "{$this->_slug}_settings", array( $this, 'app_tab_page' ), 'none' );
 	}
 
 	/**
@@ -644,15 +647,17 @@ class Addon_Settings extends \GFAddOn {
 			$message = sprintf( $message, $status, "\n\n" . '<a href="' . esc_url( $primary_button_link ) . '" class="button button-primary">', '</a>', '<a href="' . esc_url( $url ) . '" class="button button-secondary">', '</a>' );
 		}
 
-		if ( ! empty( $status ) ) {
-			\GravityView_Admin_Notices::add_notice( array(
-				'message' => $message,
-				'class'   => 'updated',
-				'title'   => $title,
-				'cap'     => 'gravityview_edit_settings',
-				'dismiss' => sha1( $license_status . '_' . $license_id . '_' . date( 'z' ) ), // Show every day, instead of every 8 weeks (which is the default)
-			) );
+		if ( empty( $status ) ) {
+			return;
 		}
+
+        \GravityView_Admin_Notices::add_notice( array(
+            'message' => $message,
+            'class'   => 'notice notice-warning',
+            'title'   => $title,
+            'cap'     => 'gravityview_edit_settings',
+            'dismiss' => sha1( $license_status . '_' . $license_id . '_' . date( 'z' ) ), // Show every day, instead of every 8 weeks (which is the default)
+        ) );
 	}
 
 	/**
