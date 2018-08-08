@@ -83,7 +83,8 @@ class Addon_Settings extends \GFAddOn {
 	 */
 	public function init_admin() {
 		$this->_load_license_handler();
-		$this->license_key_notice();
+
+		add_action( 'admin_head', array( $this, 'license_key_notice' ) );
 
 		add_filter( 'gform_addon_app_settings_menu_gravityview', array( $this, 'modify_app_settings_menu_title' ) );
 
