@@ -840,7 +840,7 @@ msgstr ""
 #: future/includes/rest/class-gv-rest-views-route.php:58
 #: includes/class-admin.php:70
 msgid "No Views found."
-msgstr ""
+msgstr "Не найдено просмотров."
 
 #: future/includes/rest/class-gv-rest-views-route.php:197
 msgid "No Entries found."
@@ -856,7 +856,7 @@ msgstr "Не найдено записей."
 #: future/includes/rest/class-gv-rest-views-route.php:324
 #: future/includes/rest/class-gv-rest-views-route.php:333
 msgid "You are not allowed to access this content."
-msgstr ""
+msgstr "Вам не разрешен доступ к этому содержанию."
 
 #: future/lib/EDD_SL_Plugin_Updater.php:202
 #: includes/lib/EDD_SL_Plugin_Updater.php:204
