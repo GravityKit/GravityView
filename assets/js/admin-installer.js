@@ -79,9 +79,7 @@
 					defer.reject( response.data.error );
 				}
 
-				$( item ).find( 'div.status' ).removeClass( 'inactive' ).addClass( 'active' ).text( gvAdminInstaller.activeStatusLabel );
-				$( item ).find( 'a.button' ).attr( 'data-status', 'active' );
-				$( item ).find( 'a.button span.title' ).text( gvAdminInstaller.deactivateActionLabel );
+				adminInstaller.update_item( item,  'active', gvAdminInstaller.activeStatusLabel, gvAdminInstaller.deactivateActionLabel );
 
 				defer.resolve();
 			} ).fail( function () {
@@ -111,9 +109,7 @@
 					defer.reject( response.data.error );
 				}
 
-				$( item ).find( 'div.status' ).removeClass( 'active' ).addClass( 'inactive' ).html( gvAdminInstaller.inactiveStatusLabel );
-				$( item ).find( 'a.button' ).attr( 'data-status', 'inactive' );
-				$( item ).find( 'a.button span.title' ).text( gvAdminInstaller.activateActionLabel );
+				adminInstaller.update_item( item,  'inactive', gvAdminInstaller.inactiveStatusLabel, gvAdminInstaller.activateActionLabel );
 
 				defer.resolve();
 			} ).fail( function () {
@@ -122,6 +118,20 @@
 			} );
 
 			return defer.promise();
+		},
+
+		/**
+		 * Updates item with new status labels, text, and button action labels
+		 *
+		 * @param {Object} item DOM element with extension data
+		 * @param {string} status Status key ("active", "inactive" or "notinstalled")
+		 * @param {string} status_label The label shown for the extension status
+		 * @param {string} button_text The text of the extension button
+		 */
+		update_item: function ( item, status, status_label, button_text ) {
+			$( item ).find( 'div.status' ).removeClass( 'active inactive notinstalled' ).addClass( status ).find( '.status-label' ).text( status_label );
+			$( item ).find( 'a.button' ).attr( 'data-status', status );
+			$( item ).find( 'a.button span.title' ).text( button_text );
 		},
 
 		/**
