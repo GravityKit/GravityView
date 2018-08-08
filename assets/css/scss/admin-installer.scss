@@ -123,6 +123,10 @@
 			max-width: 300px;
 		}
 
+		.status {
+			transition: background-color .75s;
+		}
+
 		.inactive {
 			background-color: #FFFBCC;
 			padding: 6px;
