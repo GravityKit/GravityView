@@ -405,7 +405,7 @@ class GravityView_Admin_Installer {
 		?>
         <div class="item <?php echo esc_attr( $item_class ); ?>">
             <div class="addon-inner">
-                <a href="<?php echo esc_url( $extension_info['link'] ); ?>" rel="external noreferrer noopener"><img class="thumbnail" src="<?php echo esc_attr( $extension_info['thumbnail'] ); ?>" alt="" /></a>
+                <a href="<?php echo esc_url( $extension_info['link'] ); ?>" rel="external noreferrer noopener" title="<?php esc_html_e( 'Visit the plugin page', 'gravityview' ); ?>"><img class="thumbnail" src="<?php echo esc_attr( $extension_info['thumbnail'] ); ?>" alt="" /></a>
                 <h3><?php echo esc_html( $extension_info['title'] ); ?></h3>
                 <div>
                     <?php if( $status_label ) { ?>
