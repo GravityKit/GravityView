@@ -58,6 +58,7 @@ class GravityView_Admin_Installer {
 		return $items;
 	}
 
+
 	/**
 	 * Modify plugins data with custom GV extension info
 	 *
@@ -267,13 +268,9 @@ class GravityView_Admin_Installer {
 		if ( empty( $extensions_data ) ) {
 			?>
             <div class="wrap">
-                <h2>
-					<?php esc_html_e( 'GravityView Extensions and Plugins', 'gravityview' ); ?>
-                </h2>
+                <h1><?php esc_html_e( 'GravityView Extensions and Plugins', 'gravityview' ); ?></h1>
                 <div class="gv-admin-installer-notice notice inline error">
-                    <h3>
-						<?php esc_html_e( 'Extensions and plugins data cannot be loaded at the moment. Please try again later.', 'gravityview' ); ?>
-                    </h3>
+                    <h3><?php esc_html_e( 'Extensions and plugins data cannot be loaded at the moment. Please try again later.', 'gravityview' ); ?></h3>
                 </div>
             </div>
 			<?php
@@ -334,71 +331,124 @@ class GravityView_Admin_Installer {
             'textdomain' => '',
             'slug' => '',
             'excerpt' => '',
+            'link' => '',
         ) );
 
+
+		$wp_plugin = \GV\Utils::get( $wp_plugins, $extension_info['textdomain'], false );
+
+		$has_access = ! empty( $extension['files'] );
+		$spinner = true;
+		$href = $plugin_path = '#';
+		$button_class = '';
+		$button_title = '';
+		$item_class   = '';
+		$base_price = $this->get_extension_base_price( $extension );
+
+		switch( gravityview()->plugin->settings->get( 'license_key_response/license' ) ) {
+            case 'active':
+			case 'valid':
+                break;
+            default:
+                $button_class = 'disabled disabled-license';
+                $button_title = __( 'An active license is required.', 'gravityview' );
+                break;
+		}
+
+		// If it's available to purchase, and they don't have access
+		if ( ! $has_access && ! empty( $base_price ) ) {
+			$spinner      = false;
+			$status_label = '';
+			$button_label = sprintf( __( 'Purchase Now for %s', 'gravityview' ), '$' . $base_price );
+			$button_class = 'button-primary button-large';
+			$href         = $extension_info['link'];
+			$item_class   = 'featured';
+		} else if ( ! $has_access ) {
+			$spinner      = false;
+			$status_label = '';
+    		$galactic_only = in_array( \GV\Utils::get( $extension, 'info/category/0/slug' ), array( 'plugins', 'views' ) );
+			$license      = $galactic_only ? __( 'Galactic', 'gravityview' ) : __( 'Interstellar', 'gravityview' );
+			$button_label = sprintf( __( 'Upgrade to %s for Access', 'gravityview' ), $license );
+			$button_class = 'button-primary button-large';
+			$href         = 'https://gravityview.co/pricing/?utm_source=admin-installer&utm_medium=admin&utm_campaign=Admin%20Notice&utm_content=' . $license;
+		} else if ( ! $wp_plugin ) {
+
+			$href = add_query_arg(
+				array(
+					'action'   => 'install-plugin',
+					'plugin'   => $extension_info['slug'],
+					'_wpnonce' => wp_create_nonce( 'install-plugin_' . $extension_info['slug'] ),
+				),
+				self_admin_url( 'update.php' )
+			);
+
+			$status = 'notinstalled';
+			$status_label = __( 'Not Installed', 'gravityview' );
+			$button_label = __( 'Install', 'gravityview' );
+
+		} else if ( false === $wp_plugin['activated'] ) {
+
+			$status = 'inactive';
+			$status_label = __( 'Inactive', 'gravityview' );
+			$button_label = __( 'Activate', 'gravityview' );
+			$plugin_path = $wp_plugin['path'];
+
+		} else {
+
+			$plugin_path = $wp_plugin['path'];
+			$status = 'active';
+			$status_label = __( 'Active', 'gravityview' );
+			$button_label = __( 'Deactivate', 'gravityview' );
+
+		}
+
 		?>
-        <div class="item">
+        <div class="item <?php echo esc_attr( $item_class ); ?>">
             <div class="addon-inner">
                 <img class="thumbnail" src="<?php echo esc_attr( $extension_info['thumbnail'] ); ?>" alt=""/>
-                <h3>
-					<?php echo esc_html( $extension_info['title'] ); ?>
-                </h3>
-                <div><?php
-
-	                $wp_plugin = \GV\Utils::get( $wp_plugins, $extension_info['textdomain'], false );
-
-                    $href = $plugin_path = '#';
-
-					if ( ! $wp_plugin ) {
-
-						$href = add_query_arg(
-							array(
-								'action'   => 'install-plugin',
-								'plugin'   => $extension_info['slug'],
-								'_wpnonce' => wp_create_nonce( 'install-plugin_' . $extension_info['slug'] ),
-							),
-							self_admin_url( 'update.php' )
-						);
-
-						$status = 'notinstalled';
-	                    $status_label = __( 'Not Installed', 'gravityview' );
-						$button_label = __( 'Install', 'gravityview' );
-
-					} else if ( false === $wp_plugin['activated'] ) {
-
-						$status = 'inactive';
-						$status_label = __( 'Inactive', 'gravityview' );
-						$button_label = __( 'Activate', 'gravityview' );
-						$plugin_path = $wp_plugin['path'];
-
-					} else {
-
-					    $plugin_path = $wp_plugin['path'];
-						$status = 'active';
-						$status_label = __( 'Active', 'gravityview' );
-						$button_label = __( 'Deactivate', 'gravityview' );
-
-					}
-
-					?>
-
+                <h3><?php echo esc_html( $extension_info['title'] ); ?></h3>
+                <div>
+                    <?php if( $status_label ) { ?>
                     <div class="status <?php echo esc_attr( $status ); ?>">
 		                <?php echo esc_html( $status_label ); ?>
                     </div>
-                    <a data-status="<?php echo esc_attr( $status ); ?>" data-plugin-path="<?php echo esc_attr( $plugin_path ); ?>" href="<?php echo esc_url( $href ); ?>" class="button">
+			        <?php } ?>
+
+                    <a data-status="<?php echo esc_attr( $status ); ?>" data-plugin-path="<?php echo esc_attr( $plugin_path ); ?>" href="<?php echo esc_url( $href ); ?>" class="button <?php echo esc_attr( $button_class ); ?>" title="<?php echo esc_attr( $button_title ); ?>">
                         <span class="title"><?php echo esc_html( $button_label ); ?></span>
-                        <span class="spinner"></span>
+                        <?php if( $spinner ) { ?><span class="spinner"></span><?php } ?>
                     </a>
                 </div>
 
                 <div class="addon-excerpt">
 					<?php echo wpautop( esc_html( $extension_info['excerpt'] ) ); ?>
                 </div>
-
             </div>
         </div>
 		<?php
 	}
+
+	/**
+     * Returns the base price for an extension
+     *
+	 * @param array $extension
+	 *
+	 * @return float Base price for an extension. If not for sale separately, returns 0
+	 */
+	private function get_extension_base_price( $extension ) {
+
+	    $base_price = \GV\Utils::get( $extension, 'pricing/amount', 0 );
+		$base_price = \GFCommon::to_number( $base_price );
+
+		unset( $extension['pricing']['amount'] );
+
+		// Price options array, not single price
+		if ( ! $base_price && ! empty( $extension['pricing'] ) ) {
+			$base_price = array_shift( $extension['pricing'] );
+		}
+
+		return floatval( $base_price );
+    }
 
 	/**
 	 * Handle AJAX request to activate extension

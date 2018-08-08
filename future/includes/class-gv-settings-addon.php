@@ -612,7 +612,7 @@ class Addon_Settings extends \GFAddOn {
 		 * but didn't want to mess up the translation strings for the translators.
 		 */
 		$message = mb_substr( $message, 0, mb_strlen( $message ) - 1 );
-		$title = __ ( 'Inactive License', 'gravityview');
+		$title = __( 'Inactive License', 'gravityview');
 		$status = '';
 		$update_below = false;
 		$primary_button_link = admin_url( 'edit.php?post_type=gravityview&amp;page=gravityview_settings' );

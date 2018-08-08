@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.0.14\n"
+"Project-Id-Version: GravityView 2.0.14.1\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -44,126 +44,126 @@ msgid ""
 "update the Extension to the latest version."
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:259
+#: future/includes/class-gv-license-handler.php:263
 msgid "License Details:"
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:277
+#: future/includes/class-gv-license-handler.php:281
 msgid "Access your GravityView account"
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:278
+#: future/includes/class-gv-license-handler.php:282
 msgid "This development site does not count toward license activation limits"
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:280
+#: future/includes/class-gv-license-handler.php:284
 msgid "License level: %s"
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:282
+#: future/includes/class-gv-license-handler.php:286
 msgid "Activations: %d of %s sites"
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:283
+#: future/includes/class-gv-license-handler.php:287
 msgid "Renew on: %s"
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:317
+#: future/includes/class-gv-license-handler.php:321
 msgid "Upgrades available:"
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:332
+#: future/includes/class-gv-license-handler.php:336
 msgid "Get access to Extensions"
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:336
+#: future/includes/class-gv-license-handler.php:340
 msgid "Get access to Entry Importer and other Premium plugins"
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:375
+#: future/includes/class-gv-license-handler.php:379
 msgid "Status"
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:376
+#: future/includes/class-gv-license-handler.php:380
 msgid "There was an error processing the request."
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:377
+#: future/includes/class-gv-license-handler.php:381
 msgid ""
 "Could not deactivate the license. The license key you attempted to "
 "deactivate may not be active or valid."
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:378
-#: future/includes/class-gv-license-handler.php:379
+#: future/includes/class-gv-license-handler.php:382
+#: future/includes/class-gv-license-handler.php:383
 msgid "The license key is valid, but it has not been activated for this site."
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:380
+#: future/includes/class-gv-license-handler.php:384
 msgid "Invalid: this license has reached its activation limit."
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:380
+#: future/includes/class-gv-license-handler.php:384
 msgid "You can manage license activations %son your GravityView account page%s."
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:381
+#: future/includes/class-gv-license-handler.php:385
 msgid "The license has been deactivated."
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:382
+#: future/includes/class-gv-license-handler.php:386
 msgid "The license key is valid and active."
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:383
+#: future/includes/class-gv-license-handler.php:387
 msgid "The license key entered is invalid."
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:384
+#: future/includes/class-gv-license-handler.php:388
 msgid "Invalid license key."
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:385
+#: future/includes/class-gv-license-handler.php:389
 msgid "This license key has been revoked."
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:386
+#: future/includes/class-gv-license-handler.php:390
 msgid ""
 "This license key has expired. %sRenew your license on the GravityView "
 "website%s to receive updates and support."
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:387
+#: future/includes/class-gv-license-handler.php:391
 #: future/includes/class-gv-settings-addon.php:1148
 msgid "You don't have the ability to edit plugin settings."
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:389
-#: future/includes/class-gv-license-handler.php:496
-#: future/includes/class-gv-license-handler.php:510
+#: future/includes/class-gv-license-handler.php:393
+#: future/includes/class-gv-license-handler.php:500
+#: future/includes/class-gv-license-handler.php:514
 #: future/includes/class-gv-settings-addon.php:779
 msgid "Verifying license&hellip;"
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:390
-#: future/includes/class-gv-license-handler.php:495
+#: future/includes/class-gv-license-handler.php:394
+#: future/includes/class-gv-license-handler.php:499
 msgid "Activate License"
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:391
-#: future/includes/class-gv-license-handler.php:502
+#: future/includes/class-gv-license-handler.php:395
+#: future/includes/class-gv-license-handler.php:506
 msgid "Deactivate License"
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:392
+#: future/includes/class-gv-license-handler.php:396
 msgid "Verify License"
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:503
+#: future/includes/class-gv-license-handler.php:507
 msgid "Deactivating license&hellip;"
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:509
+#: future/includes/class-gv-license-handler.php:513
 msgid "Check License"
 msgstr ""
 
@@ -222,7 +222,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/view-configuration.php:6
 #: includes/class-frontend-views.php:560
 #: includes/class-gravityview-admin-bar.php:104
-#: includes/class-gravityview-entry-link-shortcode.php:216
+#: includes/class-gravityview-entry-link-shortcode.php:233
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
 #: includes/extensions/edit-entry/class-edit-entry-render.php:907
@@ -260,7 +260,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-addon.php:136
 #: future/includes/class-gv-settings-addon.php:740
-#: includes/class-admin-views.php:420 includes/class-admin.php:164
+#: includes/class-admin-views.php:420 includes/class-admin.php:165
 msgid "Settings"
 msgstr ""
 
@@ -769,15 +769,15 @@ msgstr ""
 msgid "Right"
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-route.php:167
+#: future/includes/rest/class-gv-rest-route.php:175
 msgid "Must set route name in subclass."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-route.php:184
+#: future/includes/rest/class-gv-rest-route.php:193
 msgid "Must set route sub type in subclass."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-route.php:373
+#: future/includes/rest/class-gv-rest-route.php:383
 msgid "Endpoint Not Yet Implemented."
 msgstr ""
 
@@ -786,19 +786,19 @@ msgstr ""
 msgid "No Views found."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:197
+#: future/includes/rest/class-gv-rest-views-route.php:218
 msgid "No Entries found."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:247
-#: future/includes/rest/class-gv-rest-views-route.php:297
-#: future/includes/rest/class-gv-rest-views-route.php:301
-#: future/includes/rest/class-gv-rest-views-route.php:306
-#: future/includes/rest/class-gv-rest-views-route.php:312
-#: future/includes/rest/class-gv-rest-views-route.php:317
+#: future/includes/rest/class-gv-rest-views-route.php:268
+#: future/includes/rest/class-gv-rest-views-route.php:318
 #: future/includes/rest/class-gv-rest-views-route.php:322
-#: future/includes/rest/class-gv-rest-views-route.php:324
+#: future/includes/rest/class-gv-rest-views-route.php:327
 #: future/includes/rest/class-gv-rest-views-route.php:333
+#: future/includes/rest/class-gv-rest-views-route.php:338
+#: future/includes/rest/class-gv-rest-views-route.php:343
+#: future/includes/rest/class-gv-rest-views-route.php:345
+#: future/includes/rest/class-gv-rest-views-route.php:354
 msgid "You are not allowed to access this content."
 msgstr ""
 
@@ -1241,6 +1241,74 @@ msgstr ""
 msgid "Show entry in directory view?"
 msgstr ""
 
+#: includes/class-admin-installer.php:139
+#: includes/class-admin-installer.php:140
+msgid "Extensions & Plugins"
+msgstr ""
+
+#: includes/class-admin-installer.php:295
+#: includes/class-admin-installer.php:307
+msgid "GravityView Extensions and Plugins"
+msgstr ""
+
+#: includes/class-admin-installer.php:297
+msgid ""
+"Extensions and plugins data cannot be loaded at the moment. Please try "
+"again later."
+msgstr ""
+
+#: includes/class-admin-installer.php:309
+msgid "The following plugins extend GravityView and Gravity Forms functionality:"
+msgstr ""
+
+#: includes/class-admin-installer.php:395
+msgid "Not Installed"
+msgstr ""
+
+#: includes/class-admin-installer.php:396
+msgid "Install"
+msgstr ""
+
+#: includes/class-admin-installer.php:402
+msgid "Purchase Now for %s"
+msgstr ""
+
+#: includes/class-admin-installer.php:411
+#: includes/class-admin-installer.php:545
+msgid "Inactive"
+msgstr ""
+
+#: includes/class-admin-installer.php:412
+#: includes/class-admin-installer.php:546
+msgid "Activate"
+msgstr ""
+
+#: includes/class-admin-installer.php:419
+#: includes/class-admin-installer.php:544
+msgid "Active"
+msgstr ""
+
+#: includes/class-admin-installer.php:420
+#: includes/class-admin-installer.php:547
+msgid "Deactivate"
+msgstr ""
+
+#: includes/class-admin-installer.php:491
+msgid "Extension activation failed: %s"
+msgstr ""
+
+#: includes/class-admin-installer.php:516
+msgid "Extension deactivation failed: %s"
+msgstr ""
+
+#: includes/class-admin-installer.php:542
+msgid "Extension activation failed."
+msgstr ""
+
+#: includes/class-admin-installer.php:543
+msgid "Extension deactivation failed."
+msgstr ""
+
 #: includes/class-admin-views.php:131
 msgid "All forms"
 msgstr ""
@@ -1495,23 +1563,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:505
+#: includes/class-admin-welcome.php:533
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:526
+#: includes/class-admin-welcome.php:554
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:561
+#: includes/class-admin-welcome.php:589
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:586
+#: includes/class-admin-welcome.php:614
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:587
+#: includes/class-admin-welcome.php:615
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1549,15 +1617,15 @@ msgstr ""
 msgid "or select another form."
 msgstr ""
 
-#: includes/class-admin.php:168
+#: includes/class-admin.php:169
 msgid "Support"
 msgstr ""
 
-#: includes/class-admin.php:213
+#: includes/class-admin.php:214
 msgid "A new form was created for this View: \"%s\""
 msgstr ""
 
-#: includes/class-admin.php:214
+#: includes/class-admin.php:215
 msgid ""
 "%sThere are no entries for the new form, so the View will also be empty.%s "
 "To start collecting entries, you can add submissions through %sthe preview "
@@ -1569,75 +1637,75 @@ msgid ""
 "\t\t\t\t\t"
 msgstr ""
 
-#: includes/class-admin.php:227 includes/class-admin.php:229
-#: includes/class-admin.php:232
+#: includes/class-admin.php:228 includes/class-admin.php:230
+#: includes/class-admin.php:233
 #. translators: %s and %s are HTML tags linking to the View on the website
 msgid "View updated. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:230
+#: includes/class-admin.php:231
 msgid "View deleted."
 msgstr ""
 
-#: includes/class-admin.php:234
+#: includes/class-admin.php:235
 #. translators: %s: date and time of the revision
 msgid "View restored to revision from %s"
 msgstr ""
 
-#: includes/class-admin.php:236
+#: includes/class-admin.php:237
 #. translators: %s and %s are HTML tags linking to the View on the website
 msgid "View published. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:238
+#: includes/class-admin.php:239
 #. translators: %s and %s are HTML tags linking to the View on the website
 msgid "View saved. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:239
+#: includes/class-admin.php:240
 msgid "View submitted."
 msgstr ""
 
-#: includes/class-admin.php:242
+#: includes/class-admin.php:243
 #. translators: Date and time the View is scheduled to be published
 msgid "View scheduled for: %1$s."
 msgstr ""
 
-#: includes/class-admin.php:244
+#: includes/class-admin.php:245
 #. translators: Publish box date format, see http:php.net/date
 msgid "M j, Y @ G:i"
 msgstr ""
 
-#: includes/class-admin.php:247
+#: includes/class-admin.php:248
 #. translators: %s and %s are HTML tags linking to the View on the website
 msgid "View draft updated. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:253
+#: includes/class-admin.php:254
 msgid "%s View updated."
 msgid_plural "%s Views updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:254
+#: includes/class-admin.php:255
 msgid "%s View not updated, somebody is editing it."
 msgid_plural "%s Views not updated, somebody is editing them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:255
+#: includes/class-admin.php:256
 msgid "%s View permanently deleted."
 msgid_plural "%s Views permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:256
+#: includes/class-admin.php:257
 msgid "%s View moved to the Trash."
 msgid_plural "%s Views moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:257
+#: includes/class-admin.php:258
 msgid "%s View restored from the Trash."
 msgid_plural "%s Views restored from the Trash."
 msgstr[0] ""
@@ -1651,11 +1719,11 @@ msgstr ""
 msgid "No entries match your request."
 msgstr ""
 
-#: includes/class-api.php:802
+#: includes/class-api.php:823
 msgid "&larr; Go back"
 msgstr ""
 
-#: includes/class-api.php:1204
+#: includes/class-api.php:1225
 msgid "Map It"
 msgstr ""
 
@@ -1893,7 +1961,7 @@ msgstr ""
 msgid "Reset Entry approval for GravityView"
 msgstr ""
 
-#: includes/class-gravityview-entry-link-shortcode.php:219
+#: includes/class-gravityview-entry-link-shortcode.php:236
 #: includes/extensions/delete-entry/class-delete-entry.php:117
 #: includes/extensions/delete-entry/class-delete-entry.php:147
 #: includes/extensions/delete-entry/class-delete-entry.php:164
@@ -1902,7 +1970,7 @@ msgstr ""
 msgid "Delete Entry"
 msgstr ""
 
-#: includes/class-gravityview-entry-link-shortcode.php:222
+#: includes/class-gravityview-entry-link-shortcode.php:239
 #: includes/fields/class-gravityview-field-entry-link.php:51
 #: templates/deprecated/fields/entry_link.php:16
 #: templates/fields/field-entry_link-html.php:12
@@ -3252,12 +3320,12 @@ msgstr ""
 msgid "Pass/Fail"
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:281
+#: future/includes/class-gv-license-handler.php:285
 msgctxt "1: Customer name; 2: Customer email"
 msgid "Licensed to: %1$s (%2$s)"
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:323
+#: future/includes/class-gv-license-handler.php:327
 msgctxt "1: GravityView upgrade name, 2: Cost of upgrade"
 msgid "Upgrade to %1$s for %2$s"
 msgstr ""
