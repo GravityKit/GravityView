@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * A general class for About page.
  *
- * @since 2.0.XX
+ * @since 2.1
  */
 class GravityView_Admin_Installer {
 
@@ -21,9 +21,9 @@ class GravityView_Admin_Installer {
 
 	const EDD_API_TOKEN = 'e031fd350b03bc223b10f04d8b5dde42';
 
-	const EXTENSIONS_DATA_TRANSIENT = 'gv_extensions_data';
+	const DOWNLOADS_DATA_TRANSIENT = 'gv_downloads_data';
 
-	const EXTENSIONS_DATA_TRANSIENT_EXPIRY = DAY_IN_SECONDS;
+	const DOWNLOADS_DATA_TRANSIENT_EXPIRY = DAY_IN_SECONDS;
 
 	/**
 	 * @var string
@@ -32,12 +32,12 @@ class GravityView_Admin_Installer {
 
 	public function __construct() {
 
-		$this->add_extensions_data_filters();
+		$this->add_downloads_data_filters();
 
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ), 200 );
-		add_action( 'gravityview/admin_installer/delete_extensions_data', array( $this, 'delete_extensions_data' ) );
-		add_action( 'wp_ajax_gravityview_admin_installer_activate', array( $this, 'activate_extension' ) );
-		add_action( 'wp_ajax_gravityview_admin_installer_deactivate', array( $this, 'deactivate_extension' ) );
+		add_action( 'gravityview/admin_installer/delete_downloads_data', array( $this, 'delete_downloads_data' ) );
+		add_action( 'wp_ajax_gravityview_admin_installer_activate', array( $this, 'activate_download' ) );
+		add_action( 'wp_ajax_gravityview_admin_installer_deactivate', array( $this, 'deactivate_download' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'maybe_enqueue_scripts_and_styles' ) );
 		add_filter( 'gravityview_noconflict_scripts', array( $this, 'register_noconflict' ) );
 		add_filter( 'gravityview_noconflict_styles', array( $this, 'register_noconflict' ) );
@@ -64,14 +64,14 @@ class GravityView_Admin_Installer {
 	 *
 	 * @return void
 	 */
-	public function add_extensions_data_filters() {
-		$extensions_data = get_site_transient( self::EXTENSIONS_DATA_TRANSIENT );
-		if ( ! $extensions_data ) {
+	public function add_downloads_data_filters() {
+		$downloads_data = get_site_transient( self::DOWNLOADS_DATA_TRANSIENT );
+		if ( ! $downloads_data ) {
 			return;
 		}
 
-		add_filter( 'plugins_api', function ( $data, $action, $args ) use ( $extensions_data ) {
-			foreach ( $extensions_data as $extension ) {
+		add_filter( 'plugins_api', function ( $data, $action, $args ) use ( $downloads_data ) {
+			foreach ( $downloads_data as $extension ) {
 				if ( empty( $extension['info'] ) || empty( $args->slug ) || $args->slug !== $extension['info']['slug'] ) {
 					continue;
 				}
@@ -113,7 +113,7 @@ class GravityView_Admin_Installer {
 	 */
 	public function maybe_modify_license_notice( $notice = '' ) {
 
-		if ( ! gravityview()->request->is_admin( '', 'extensions' ) ) {
+		if ( ! gravityview()->request->is_admin( '', 'downloads' ) ) {
             return $notice;
         }
 
@@ -152,7 +152,7 @@ class GravityView_Admin_Installer {
 	}
 
 	/**
-	 * Get extensions data from transient or from API; save transient after getting data from API
+	 * Get downloads data from transient or from API; save transient after getting data from API
 	 *
 	 * @return array {
      *   @type array  $info {
@@ -193,12 +193,12 @@ class GravityView_Admin_Installer {
      *   }
      * }
 	 */
-	public function get_extensions_data() {
+	public function get_downloads_data() {
 
-		$extensions_data = get_site_transient( self::EXTENSIONS_DATA_TRANSIENT );
+		$downloads_data = get_site_transient( self::DOWNLOADS_DATA_TRANSIENT );
 
-		if ( $extensions_data ) {
-			return $extensions_data;
+		if ( $downloads_data ) {
+			return $downloads_data;
 		}
 
 		$home_url = parse_url( home_url() );
@@ -223,39 +223,39 @@ class GravityView_Admin_Installer {
 			return array();
 		}
 
-		$extensions_data = json_decode( wp_remote_retrieve_body( $response ), true );
+		$downloads_data = json_decode( wp_remote_retrieve_body( $response ), true );
 
-		if ( empty( $extensions_data['products'] ) ) {
+		if ( empty( $downloads_data['products'] ) ) {
 			return array();
 		}
 
-		$this->set_extensions_data( $extensions_data['products'] );
+		$this->set_downloads_data( $downloads_data['products'] );
 
-		return $extensions_data['products'];
+		return $downloads_data['products'];
 	}
 
 	/**
-	 * Save extensions data in a time-bound transient
+	 * Save downloads data in a time-bound transient
 	 *
 	 * @param array $data
 	 *
 	 * @return true if successful, false otherwise
 	 */
-	public function set_extensions_data( $data ) {
-		return set_site_transient( self::EXTENSIONS_DATA_TRANSIENT, $data, self::EXTENSIONS_DATA_TRANSIENT_EXPIRY );
+	public function set_downloads_data( $data ) {
+		return set_site_transient( self::DOWNLOADS_DATA_TRANSIENT, $data, self::DOWNLOADS_DATA_TRANSIENT_EXPIRY );
 	}
 
 	/**
-	 * Delete extensions data transient
+	 * Delete downloads data transient
 	 *
 	 * @return bool true if successful, false otherwise
 	 */
-	public function delete_extensions_data() {
-		return delete_site_transient( self::EXTENSIONS_DATA_TRANSIENT );
+	public function delete_downloads_data() {
+		return delete_site_transient( self::DOWNLOADS_DATA_TRANSIENT );
 	}
 
 	/**
-	 * Display a grid of available extensions and controls to install/activate/deactivate them
+	 * Display a grid of available downloads and controls to install/activate/deactivate them
 	 *
 	 * @since 2.1
 	 *
@@ -263,9 +263,9 @@ class GravityView_Admin_Installer {
 	 */
 	public function render_screen() {
 
-		$extensions_data = $this->get_extensions_data();
+		$downloads_data = $this->get_downloads_data();
 
-		if ( empty( $extensions_data ) ) {
+		if ( empty( $downloads_data ) ) {
 			?>
             <div class="wrap">
                 <h1><?php esc_html_e( 'GravityView Extensions and Plugins', 'gravityview' ); ?></h1>
@@ -297,7 +297,7 @@ class GravityView_Admin_Installer {
 
 				$wp_plugins = $this->get_wp_plugins_data();
 
-				foreach ( $extensions_data as $extension ) {
+				foreach ( $downloads_data as $extension ) {
 
 					if ( empty( $extension['info'] ) ) {
 						continue;
@@ -307,7 +307,7 @@ class GravityView_Admin_Installer {
 						continue;
 					}
 
-					$this->render_extension( $extension, $wp_plugins );
+					$this->render_download( $extension, $wp_plugins );
 				}
 				?>
             </div>
@@ -316,16 +316,16 @@ class GravityView_Admin_Installer {
 	}
 
 	/**
-	 * Outputs the HTML of a single extension
+	 * Outputs the HTML of a single download
 	 *
-	 * @param array $extension Extension data, as returned from EDD API
+	 * @param array $download Download data, as returned from EDD API
 	 * @param array $wp_plugins
 	 *
 	 * @return void
 	 */
-	protected function render_extension( $extension, $wp_plugins ) {
+	protected function render_download( $download, $wp_plugins ) {
 
-		$extension_info = wp_parse_args( (array) $extension['info'], array(
+		$download_info = wp_parse_args( (array) $download['info'], array(
 		    'thumbnail' => '',
             'title' => '',
             'textdomain' => '',
@@ -431,20 +431,20 @@ class GravityView_Admin_Installer {
 	/**
      * Returns the base price for an extension
      *
-	 * @param array $extension
+	 * @param array $download
 	 *
 	 * @return float Base price for an extension. If not for sale separately, returns 0
 	 */
-	private function get_extension_base_price( $extension ) {
+	private function get_download_base_price( $download ) {
 
-	    $base_price = \GV\Utils::get( $extension, 'pricing/amount', 0 );
+	    $base_price = \GV\Utils::get( $download, 'pricing/amount', 0 );
 		$base_price = \GFCommon::to_number( $base_price );
 
-		unset( $extension['pricing']['amount'] );
+		unset( $download['pricing']['amount'] );
 
 		// Price options array, not single price
-		if ( ! $base_price && ! empty( $extension['pricing'] ) ) {
-			$base_price = array_shift( $extension['pricing'] );
+		if ( ! $base_price && ! empty( $download['pricing'] ) ) {
+			$base_price = array_shift( $download['pricing'] );
 		}
 
 		return floatval( $base_price );
@@ -455,7 +455,7 @@ class GravityView_Admin_Installer {
 	 *
 	 * @return void Exits with JSON response
 	 */
-	public function activate_extension() {
+	public function activate_download() {
 		$data = \GV\Utils::_POST( 'data', array() );
 
 		if ( empty( $data['path'] ) ) {
@@ -480,7 +480,7 @@ class GravityView_Admin_Installer {
 	 *
 	 * @return void Send JSON response status and error message
 	 */
-	public function deactivate_extension() {
+	public function deactivate_download() {
 		$data = \GV\Utils::_POST( 'data', array() );
 
 		if ( empty( $data['path'] ) ) {
@@ -507,7 +507,7 @@ class GravityView_Admin_Installer {
 	 */
 	public function maybe_enqueue_scripts_and_styles() {
 
-		if ( ! gravityview()->request->is_admin( '', 'extensions' ) ) {
+		if ( ! gravityview()->request->is_admin( '', 'downloads' ) ) {
 			return;
 		}
 
