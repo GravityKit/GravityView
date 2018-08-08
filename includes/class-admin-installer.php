@@ -283,13 +283,13 @@ class GravityView_Admin_Installer {
 
 		?>
         <div class="wrap">
-            <h2>
-				<?php esc_html_e( 'GravityView Extensions and Plugins', 'gravityview' ); ?>
-            </h2>
 
-            <p>
-				<?php esc_html_e( 'The following are available add-ons to extend GravityView functionality:', 'gravityview' ); ?>
-            </p>
+
+            <h1><?php esc_html_e( 'GravityView Extensions and Plugins', 'gravityview' ); ?></h1>
+
+            <h2><?php esc_html_e( 'The following plugins extend GravityView and Gravity Forms functionality:', 'gravityview' ); ?></h2>
+
+            <div class="wp-header-end"></div>
 
             <div class="gv-admin-installer-notice notice inline error hidden is-dismissible">
                 <p><!-- Contents will be replaced by JavaScript if there is an error --></p>
