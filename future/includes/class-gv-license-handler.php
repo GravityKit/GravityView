@@ -396,6 +396,12 @@ class License_Handler {
 			'check_license' => esc_html__( 'Verify License', 'gravityview' ),
 		);
 
+		/**
+		 * @internal Do not rely on this filter.
+		 * @since 2.1
+		 */
+		$strings = apply_filters( 'gravityview/admin/license/strings', $strings );
+
 		return Utils::get( $strings, $status, null );
 	}
 

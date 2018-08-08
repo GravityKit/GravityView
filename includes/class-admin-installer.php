@@ -41,6 +41,8 @@ class GravityView_Admin_Installer {
 		add_action( 'admin_enqueue_scripts', array( $this, 'maybe_enqueue_scripts_and_styles' ) );
 		add_filter( 'gravityview_noconflict_scripts', array( $this, 'register_noconflict' ) );
 		add_filter( 'gravityview_noconflict_styles', array( $this, 'register_noconflict' ) );
+		add_filter( 'gravityview/settings/license-key-notice', array( $this, 'maybe_modify_license_notice' ) );
+	}
 
 	/**
 	 * Let us operate when GF no-conflict is enabled
@@ -99,6 +101,22 @@ class GravityView_Admin_Installer {
 			'gv-admin-installer',
 			array( $this, 'render_screen' )
 		);
+	}
+
+	/**
+     * When on the Installer page, show a different notice than on the Settings page
+     *
+	 * @param array $notice
+	 *
+	 * @return string License notice
+	 */
+	public function maybe_modify_license_notice( $notice = '' ) {
+
+		if ( ! gravityview()->request->is_admin( '', 'extensions' ) ) {
+            return $notice;
+        }
+
+        return esc_html__( 'Your license %s. Do you want access to these plugins? %sActivate your license%s or %sget a license here%s.', 'gravityview' );
 	}
 
 	/**

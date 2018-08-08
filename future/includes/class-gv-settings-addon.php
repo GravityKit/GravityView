@@ -603,6 +603,9 @@ class Addon_Settings extends \GFAddOn {
 
 		$message = esc_html__( 'Your GravityView license %s. This means you&rsquo;re missing out on updates and support! %sActivate your license%s or %sget a license here%s.', 'gravityview' );
 
+		/** @internal Do not use! Will change without notice (pun slightly intended). */
+		$message = apply_filters( 'gravityview/settings/license-key-notice', $message );
+
 		/**
 		 * I wanted to remove the period from after the buttons in the string,
 		 * but didn't want to mess up the translation strings for the translators.
