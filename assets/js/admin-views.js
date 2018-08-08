@@ -1585,31 +1585,40 @@
 			var vcfg = viewConfiguration;
 
 			$( '.active-drop' ).find( '.gv-fields' ).each( function ( e ) {
-				var fieldId = $( this ).attr( 'data-fieldid' ),
-					formId = $( this ).attr( 'data-formid' ) || vcfg.currentFormId,
-					type = $( this ).attr( 'data-fieldtype' ),
-					area = $( this ).parent().attr( 'data-areaid' ),
-					label = $( this ).find( '.gv-field-label' ).attr( 'data-original-title' ),
-					title = $( this ).find( '.gv-field-label' ).attr( 'title' ),
-					$template = $( '.gv_' + type + '_' + fieldId + '_options_template' );
-
-				if ( !$template.length ) return;
+				var data = {
+					context: $( this ).parent().attr( 'data-areaid' ),
+					fieldId: $( this ).attr( 'data-fieldid' ),
+					fieldLabel: $( this ).find( '.gv-field-label' ).attr( 'data-original-title' ),
+					formId: $( this ).attr( 'data-formid' ) || vcfg.currentFormId
+				};
 
 				$( this ).find( 'a[href="#settings"]' ).removeClass( 'hide-if-js' );
+				$( this ).html( vcfg.populateFieldAndWidgetTemplate( $( this ).html(), data )
 
-				var uniqueId = vcfg.generateUniqueId();
-
-				var templateData = $template.html()
-					.replace( new RegExp( '%context%', 'gm' ), area )
-					.replace( new RegExp( '%unique_id%', 'gm' ), uniqueId )
-					.replace( new RegExp( '%field_label%', 'gm' ), label )
-					.replace( new RegExp( '%field_id%', 'gm' ), fieldId )
-					.replace( new RegExp( '%form_id%', 'gm' ), formId );
-
-				$( this ).append( templateData );
 			} );
-
 		},
+
+		/**
+		 * Populates template by replacing shortcodes with data
+		 *
+		 * @param {string} template HTML with shortcodes
+		 * @param {object} data Shortcodes data to be replaced
+		 * @returns string|void
+		 */
+		populateFieldAndWidgetTemplate: function ( template, data ) {
+			if (!template || !$.isPlainObject( data) ) {
+				return;
+			}
+
+			var uniqueId = vcfg.generateUniqueId();
+
+			return template
+				.replace( new RegExp( '%context%', 'gm' ), data.context || '%context%' )
+				.replace( new RegExp( '%field_id%', 'gm' ), data.fieldId || '%field_id%' )
+				.replace( new RegExp( '%field_label%', 'gm' ), data.fieldLabel || '%field_label%' )
+				.replace( new RegExp( '%form_id%', 'gm' ), data.formId || '%form_id%' )
+				.replace( new RegExp( '%unique_id%', 'gm' ), uniqueId );
+		}
 
 		/**
 		 * Generates unique ID (random string)

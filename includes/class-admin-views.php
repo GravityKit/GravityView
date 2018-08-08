@@ -917,9 +917,13 @@ class GravityView_Admin_Views {
 											$input_type = isset( $original_item['type'] ) ? $original_item['type'] : NULL;
 										}
 
+										// Field options dialog box
+                                        $field_identifier = ('widget' === $type) ? $field['id'] : $input_type;
+										$field_options = GravityView_Render_Settings::render_field_and_widget_options( $type, $field_identifier, $field);
+
 										$item = array(
 											'input_type' => $input_type,
-											'settings_html' => null,
+											'settings_html' => $field_options,
 											'label_type' => $type
 										);
 
