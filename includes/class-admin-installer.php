@@ -199,6 +199,11 @@ class GravityView_Admin_Installer {
 			'timeout'   => 10,
 		) );
 
+		if ( is_wp_error( $response ) ) {
+		    gravityview()->log->error( "Extension data response is an error", array( 'data' => $response ) );
+			return array();
+		}
+
 		$extensions_data = json_decode( wp_remote_retrieve_body( $response ), true );
 
 		if ( empty( $extensions_data['products'] ) ) {
