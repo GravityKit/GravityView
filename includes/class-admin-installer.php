@@ -395,7 +395,7 @@ class GravityView_Admin_Installer {
 		$href = $plugin_path = '#';
 		$status = $item_class = $button_title = $button_class = '';
 		$base_price = $this->get_download_base_price( $download );
-		$is_active = 'active' === gravityview()->plugin->settings->get( 'license_key_response/license' );
+		$is_active = in_array( gravityview()->plugin->settings->get( 'license_key_response/license' ), array( 'active', 'valid' ), true );
 		$galactic_only = in_array( \GV\Utils::get( $download, 'info/category/0/slug' ), array( 'plugins', 'views' ) );
 		$required_license = $galactic_only ? __( 'Galactic', 'gravityview' ) : __( 'Interstellar', 'gravityview' );
 
