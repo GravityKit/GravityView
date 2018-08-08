@@ -487,17 +487,22 @@ class GravityView_Admin_Installer {
 			return;
 		}
 
-		$result = deactivate_plugins( $data['path'] );
+		$plugin = plugin_basename( trim( $data['path'] ) ); /** @see deactivate_plugins() */
 
-		if ( is_wp_error( $result ) ) {
-			wp_send_json_error(
-				array(
-					'error' => sprintf( __( 'Extension deactivation failed: %s', 'gravityview' ), $result->get_error_message() )
-				)
-			);
-		}
+		/**
+         * deactivate_plugins() has no return value, so instead, we hook into an action that runs on success
+         * We could have used `deactivate_plugin`, but this is more specific
+         */
+		add_action( 'deactivate_' . $plugin, 'wp_send_json_success' );
 
-		wp_send_json_success();
+		deactivate_plugins( $data['path'] );
+
+		// And if we're able to reach this function, we know something went wrong
+		wp_send_json_error(
+			array(
+				'error' => sprintf( __( 'Plugin deactivation failed.', 'gravityview' ) )
+			)
+		);
 	}
 
 	/**
