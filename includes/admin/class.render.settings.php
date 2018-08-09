@@ -180,13 +180,13 @@ class GravityView_Render_Settings {
 
 		// %shortcode% is replaced with data in the UI.
 		// See assets/js/admin-views.js@populateFieldAndWidgetTemplate method
-		$name_prefix = $field_type . 's' . '[%context%][%unique_id%]';
+		$name_prefix = $field_type . 's' . '[__context__][__unique_id__]';
 
 		// build output
 		$output = ( $template_tag ) ? sprintf( '<div class="gv_%s_%s_options_template">', $field_type, $field_name ) : '';
-		$output .= '<input type="hidden" class="field-key" name="' . $name_prefix . '[id]" value="%field_id%">';
-		$output .= '<input type="hidden" class="field-label" name="' . $name_prefix . '[label]" value="%field_label%">';
-		$output .= '<input type="hidden" class="field-form-id" name="' . $name_prefix . '[form_id]" value="%form_id%">';
+		$output .= '<input type="hidden" class="field-key" name="' . $name_prefix . '[id]" value="__field_id__">';
+		$output .= '<input type="hidden" class="field-label" name="' . $name_prefix . '[label]" value="__field_label__">';
+		$output .= '<input type="hidden" class="field-form-id" name="' . $name_prefix . '[form_id]" value="__form_id__">';
 
 		// get field/widget options
 		$options = self::get_default_field_and_widget_options( $field_type, $field_name );
@@ -204,7 +204,7 @@ class GravityView_Render_Settings {
 			return $output;
 		}
 
-		$output .= '<div class="gv-dialog-options" title="' . esc_attr( sprintf( __( 'Options: %s', 'gravityview' ), '%field_label%' ) ) . '">';
+		$output .= '<div class="gv-dialog-options" title="' . esc_attr( sprintf( __( 'Options: %s', 'gravityview' ), '__field_label__' ) ) . '">';
 
 		/**
 		 * @since 1.8
@@ -214,8 +214,6 @@ class GravityView_Render_Settings {
 		foreach ( $options as $key => $option ) {
 
 			$value = isset( $field_data[ $key ] ) ? $field_data[ $key ] : null;
-
-			$option['id'] = isset( $option['id'] ) ? $option['id'] : $name_prefix . '[' . $key . ']';
 
 			$field_output = self::render_field_option( $name_prefix . '[' . $key . ']', $option, $value );
 

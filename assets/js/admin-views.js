@@ -1587,11 +1587,11 @@
 				uniqueId = vcfg.generateUniqueId();
 
 			return template
-				.replace( new RegExp( '%context%', 'gm' ), data.context || '%context%' )
-				.replace( new RegExp( '%field_id%', 'gm' ), data.fieldId || '%field_id%' )
-				.replace( new RegExp( '%field_label%', 'gm' ), data.fieldLabel || '%field_label%' )
-				.replace( new RegExp( '%form_id%', 'gm' ), data.formId || '%form_id%' )
-				.replace( new RegExp( '%unique_id%', 'gm' ), uniqueId );
+				.replace( new RegExp( '__context__', 'gm' ), data.context || '__context__' )
+				.replace( new RegExp( '__field_id__', 'gm' ), data.fieldId || '__field_id__' )
+				.replace( new RegExp( '__field_label__', 'gm' ), data.fieldLabel || '__field_label__' )
+				.replace( new RegExp( '__form_id__', 'gm' ), data.formId || '__form_id__' )
+				.replace( new RegExp( '__unique_id__', 'gm' ), uniqueId );
 		},
 
 		/**
