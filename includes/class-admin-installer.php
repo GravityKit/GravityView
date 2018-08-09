@@ -94,10 +94,20 @@ class GravityView_Admin_Installer {
 	 * @return void
 	 */
 	public function add_admin_menu() {
+
+	    $plugin_icon = '<span class="dashicons dashicons-admin-plugins"></span>';
+
+	    $menu_text   = _x( 'Extensions', 'Extensions are WordPress plugins that add functionality to GravityView and Gravity Forms', 'gravityview' );
+
+	    // Display the icon on the inside
+	    $menu_text   = is_rtl() ? $plugin_icon . $menu_text : $menu_text . $plugin_icon;
+
+		$menu_text = sprintf( '<span title="%s">%s</span>', esc_attr__( 'Plugins that extend GravityView and Gravity Forms functionality.', 'gravityview' ), $menu_text );
+
 		add_submenu_page(
 			'edit.php?post_type=gravityview',
-			__( 'Extensions & Plugins', 'gravityview' ),
-			__( 'Extensions & Plugins', 'gravityview' ),
+			__( 'GravityView Extensions and Plugins', 'gravityview' ),
+			$menu_text,
 			$this->minimum_capability,
 			'gv-admin-installer',
 			array( $this, 'render_screen' )

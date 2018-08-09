@@ -23,18 +23,8 @@
 	@extend .gv-icon-astronaut-head__before;
 }
 
-#adminmenu .wp-has-current-submenu a[href*="gv-admin-installer"] {
-
-	color: #49cc93;
-	color: rgba(77, 217, 158, 0.9);
-
-	&:hover {
-		color: #00b9eb;
-	}
-
-	.gv-asterisk {
-		color: red!important;
-	}
+#menu-posts-gravityview .wp-submenu .dashicons {
+	padding: 0 .2em;
 }
 
 // Fix Make theme overriding button width
