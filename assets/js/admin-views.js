@@ -1091,7 +1091,7 @@
 
 			var newField = clicked.clone().hide();
 			var areaId = clicked.parents( '.ui-tooltip' ).attr( 'id' );
-			var templateId = $( "#gravityview_directory_template" ).val();
+			var templateId = $( '#gravityview_directory_template' ).val();
 			var tooltipId = clicked.parents( '.ui-tooltip' ).attr( 'id' );
 			var addButton = $( 'a.gv-add-field[data-tooltip-id="' + tooltipId + '"]' );
 
@@ -1100,15 +1100,18 @@
 				fieldId: newField.attr( 'data-fieldid' ),
 				fieldLabel: newField.find( '.gv-field-label' ).attr( 'data-original-title' ),
 				fieldTitle: newField.find( '.gv-field-label' ).attr( 'title' ),
-				formId: parseInt( $( clicked ).attr( 'data-formid' ), 10 ) || vcfg.currentFormId
+				formId: parseInt( $( clicked ).attr( 'data-formid' ), 10 ) || vcfg.currentFormId,
 			};
 
 			var fieldType = addButton.attr( 'data-objecttype' );
-			var fieldIdentifier = ( fieldType === 'widget' ) ? data.fieldId : newField.attr( 'data-inputtype' );
+			var fieldName = (fieldType === 'widget') ? data.fieldId : newField.attr( 'data-inputtype' );
 
-			$template = $( '.gv_' + fieldType + '_' + fieldIdentifier + '_options_template' );
+			$template = $( '.gv_' + fieldType + '_' + fieldName + '_options_template' );
 
-			if ( !$template.length ) return;
+			// When a field does not have a template, use a default one
+			if ( !$template.length ) {
+				$template = $( '.gv_' + fieldType + '_default_field_options_template' );
+			}
 
 			// Add field/widget settings
 			newField.append( vcfg.populateFieldAndWidgetTemplate( $template.html(), data ) );
@@ -1121,7 +1124,7 @@
 			// append the new field to the active drop
 			$( 'a[data-tooltip-id="' + areaId + '"]' ).parents( '.gv-droppable-area' ).find( '.active-drop' ).append( newField ).end().attr( 'data-tooltip-id', '' );
 
-			$('body').trigger( 'gravityview/field-added', newField );
+			$( 'body' ).trigger( 'gravityview/field-added', newField );
 
 			// Show the new field
 			newField.fadeIn( 100, function () {

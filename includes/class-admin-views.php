@@ -918,8 +918,8 @@ class GravityView_Admin_Views {
 										}
 
 										// Field options dialog box
-                                        $field_identifier = ('widget' === $type) ? $field['id'] : $input_type;
-										$field_options = GravityView_Render_Settings::render_field_and_widget_options( $type, $field_identifier, $field);
+                                        $field_name = ('widget' === $type) ? $field['id'] : $input_type;
+										$field_options = GravityView_Render_Settings::render_field_and_widget_options( $type, $field_name, $field);
 
 										$item = array(
 											'input_type' => $input_type,
@@ -999,14 +999,14 @@ class GravityView_Admin_Views {
 
 	function render_field_and_widget_options() {
 
-	    // render widgets templates
-	    $widgets = \GV\Widget::registered();
+		// render GV widget templates
+		$widgets = \GV\Widget::registered();
 
-	    foreach ($widgets as $widget_identifier => $data) {
-		    echo GravityView_Render_Settings::render_field_and_widget_options( 'widget', $widget_identifier);
-        }
+		foreach ( $widgets as $widget_name => $data ) {
+			echo GravityView_Render_Settings::render_field_and_widget_options( 'widget', $widget_name );
+		}
 
-		// render fields templates
+		// render GF field templates
 		$forms = gravityview_get_forms( 'any' );
 
 		foreach ( $forms as $form ) {
@@ -1015,8 +1015,25 @@ class GravityView_Admin_Views {
 			}
 		}
 
-		foreach ( array_unique( $fields ) as $field_identifier ) {
-			echo GravityView_Render_Settings::render_field_and_widget_options( 'field', $field_identifier);
+		foreach ( array_unique( $fields ) as $field_name ) {
+			echo GravityView_Render_Settings::render_field_and_widget_options( 'field', $field_name );
+		}
+
+		// render GV fields templates
+		foreach ( GravityView_Fields::get_all() as $field ) {
+			echo GravityView_Render_Settings::render_field_and_widget_options( 'field', $field->name );
+		}
+
+		// render GV virtual and default field templates
+		$fields = array(
+			'edit_link',
+			'delete_link',
+			'entry_map',
+            'default_field' // this will be used for all fields/widget that don't have their own templates
+		);
+
+		foreach ( $fields as $field_name ) {
+			echo GravityView_Render_Settings::render_field_and_widget_options( 'field', $field_name );
 		}
 
 	}
