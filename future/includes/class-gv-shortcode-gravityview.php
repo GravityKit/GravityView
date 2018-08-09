@@ -61,10 +61,6 @@ class gravityview extends \GV\Shortcode {
 			if ( ( $_view = $request->is_view() ) && $_view->ID !== $view->ID ) {
 				$is_reembedded = true;
 			}
-
-			if ( ( ! $_view ) && $request->is_entry() ) {
-				$is_reembedded = true; // This shortcode is embedded in an entry...
-			}
 		}
 
 		/**
