@@ -40,7 +40,7 @@ class GravityView_Admin_Views {
 		add_action( 'gravityview_render_directory_active_areas', array( $this, 'render_directory_active_areas'), 10, 4 );
 		add_action( 'gravityview_render_widgets_active_areas', array( $this, 'render_widgets_active_areas'), 10, 3 );
 		add_action( 'gravityview_render_field_pickers', array( $this, 'render_field_pickers') );
-		add_action( 'gravityview_render_field_and_widget_options', array( $this, 'render_field_and_widget_options') );
+		add_action( 'gravityview_render_field_and_widget_options', array( $this, 'render_field_and_widget_options'), 10, 2 );
 		add_action( 'gravityview_render_available_fields', array( $this, 'render_available_fields'), 10, 2 );
 		add_action( 'gravityview_render_available_widgets', array( $this, 'render_available_widgets') );
 		add_action( 'gravityview_render_active_areas', array( $this, 'render_active_areas'), 10, 5 );
@@ -918,8 +918,7 @@ class GravityView_Admin_Views {
 										}
 
 										// Field options dialog box
-                                        $field_name = ('widget' === $type) ? $field['id'] : $input_type;
-										$field_options = GravityView_Render_Settings::render_field_and_widget_options( $type, $field_name, $field);
+										$field_options = GravityView_Render_Settings::render_field_and_widget_options( $type, $field['id'], $input_type, $zone, $template_id, $field );
 
 										$item = array(
 											'input_type' => $input_type,
@@ -996,14 +995,13 @@ class GravityView_Admin_Views {
 	 *
 	 * @return void
 	 */
-
-	function render_field_and_widget_options() {
+	function render_field_and_widget_options( $context = 'directory', $template_id ) {
 
 		// render GV widget templates
 		$widgets = \GV\Widget::registered();
 
-		foreach ( $widgets as $widget_name => $data ) {
-			echo GravityView_Render_Settings::render_field_and_widget_options( 'widget', $widget_name );
+		foreach ( $widgets as $widget_id => $data ) {
+			echo GravityView_Render_Settings::render_field_and_widget_options( 'widget', $widget_id, null, $context, $template_id );
 		}
 
 		// render GF field templates
@@ -1015,13 +1013,13 @@ class GravityView_Admin_Views {
 			}
 		}
 
-		foreach ( array_unique( $fields ) as $field_name ) {
-			echo GravityView_Render_Settings::render_field_and_widget_options( 'field', $field_name );
+		foreach ( array_unique( $fields ) as $input_type ) {
+			echo GravityView_Render_Settings::render_field_and_widget_options( 'field', null, $input_type, $context, $template_id );
 		}
 
 		// render GV fields templates
 		foreach ( GravityView_Fields::get_all() as $field ) {
-			echo GravityView_Render_Settings::render_field_and_widget_options( 'field', $field->name );
+			echo GravityView_Render_Settings::render_field_and_widget_options( 'field', null, $field->name, $context, $template_id );
 		}
 
 		// render GV virtual and default field templates
@@ -1032,8 +1030,8 @@ class GravityView_Admin_Views {
             'default_field' // this will be used for all fields/widget that don't have their own templates
 		);
 
-		foreach ( $fields as $field_name ) {
-			echo GravityView_Render_Settings::render_field_and_widget_options( 'field', $field_name );
+		foreach ( $fields as $input_type ) {
+			echo GravityView_Render_Settings::render_field_and_widget_options( 'field', null, $input_type, $context, $template_id );
 		}
 
 	}

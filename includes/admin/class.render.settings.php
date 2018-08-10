@@ -14,67 +14,67 @@
 class GravityView_Render_Settings {
 
 	/**
-	 * Get the default options for a field or widget
+	 * Get the default options for a standard field.
 	 *
-	 * @param  string $field_type Type of field options to render (`field` or `widget`)
-	 * @param string $field_name Field input type (textarea, list, select, search_bar, etc.) or widget ID
-	 *
-	 * @since 2.0.XX
-	 * @TODO  : add proper version
-	 *
+	 * @param  string      $field_type  Type of field options to render (`field` or `widget`)
+	 * @param  string      $template_id Table slug
+	 * @param  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+	 * @param  string      $context     What context are we in? Example: `single` or `directory`
+	 * @param  string      $input_type  (textarea, list, select, etc.)
 	 * @return array       Array of field options with `label`, `value`, `type`, `default` keys
 	 */
-	public static function get_default_field_and_widget_options( $field_type, $field_name ) {
+	public static function get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type ) {
 
 		$field_options = array();
 
-		if ( 'field' === $field_type ) {
+		if( 'field' === $field_type ) {
 
 			// Default options - fields
 			$field_options = array(
-				'show_label'        => array(
-					'type'  => 'checkbox',
+				'show_label' => array(
+					'type' => 'checkbox',
 					'label' => __( 'Show Label', 'gravityview' ),
 					'value' => true,
 				),
-				'custom_label'      => array(
-					'type'       => 'text',
-					'label'      => __( 'Custom Label:', 'gravityview' ),
-					'value'      => '',
+				'custom_label' => array(
+					'type' => 'text',
+					'label' => __( 'Custom Label:', 'gravityview' ),
+					'value' => '',
 					'merge_tags' => true,
 				),
-				'custom_class'      => array(
-					'type'       => 'text',
-					'label'      => __( 'Custom CSS Class:', 'gravityview' ),
-					'desc'       => __( 'This class will be added to the field container', 'gravityview' ),
-					'value'      => '',
+				'custom_class' => array(
+					'type' => 'text',
+					'label' => __( 'Custom CSS Class:', 'gravityview' ),
+					'desc' => __( 'This class will be added to the field container', 'gravityview'),
+					'value' => '',
 					'merge_tags' => true,
-					'tooltip'    => 'gv_css_merge_tags',
+					'tooltip' => 'gv_css_merge_tags',
 				),
-				'only_loggedin'     => array(
-					'type'  => 'checkbox',
+				'only_loggedin' => array(
+					'type' => 'checkbox',
 					'label' => __( 'Make visible only to logged-in users?', 'gravityview' ),
 					'value' => ''
 				),
 				'only_loggedin_cap' => array(
-					'type'    => 'select',
-					'label'   => __( 'Make visible for:', 'gravityview' ),
-					'options' => self::get_cap_choices(),
-					'class'   => 'widefat',
-					'value'   => 'read',
+					'type' => 'select',
+					'label' => __( 'Make visible for:', 'gravityview' ),
+					'options' => self::get_cap_choices( $template_id, $field_id, $context, $input_type ),
+					'class' => 'widefat',
+					'value' => 'read',
 				),
 			);
 
-			// Return options to be used with table/DataTables
-			$field_options['table'] = array(
-				'width' => array(
-					'type'  => 'number',
-					'label' => __( 'Percent Width', 'gravityview' ),
-					'desc'  => __( 'Leave blank for column width to be based on the field content.', 'gravityview' ),
+			// Match Table as well as DataTables
+			if( preg_match( '/table/ism', $template_id ) && 'directory' === $context ) {
+				$field_options['width'] = array(
+					'type' => 'number',
+					'label' => __('Percent Width', 'gravityview'),
+					'desc' => __( 'Leave blank for column width to be based on the field content.', 'gravityview'),
 					'class' => 'code widefat',
-					'value' => ''
-				)
-			);
+					'value' => '',
+				);
+			}
+
 		}
 
 		/**
@@ -85,37 +85,19 @@ class GravityView_Render_Settings {
 		 * @param[in]  string      $context     What context are we in? Example: `single` or `directory`
 		 * @param[in]  string      $input_type  (textarea, list, select, etc.)
 		 */
-		$field_options = apply_filters( "gravityview_template_{$field_type}_options", $field_options, null, ( 'widget' === $field_type ) ? $field_name : null, null, ( 'field' === $field_type ) ? $field_name : null );
+		$field_options = apply_filters( "gravityview_template_{$field_type}_options", $field_options, $template_id, $field_id, $context, $input_type );
 
 		/**
-		 * @filter `gravityview_template_{$field_name}_options` Filter the field options by field name. For fields it's input type (`textarea`, `list`, `select`, etc.), for widgets it's widget ID (`search_bar`, etc.).
+		 * @filter `gravityview_template_{$input_type}_options` Filter the field options by input type (`$input_type` examples: `textarea`, `list`, `select`, etc.)
 		 * @param[in,out] array    Array of field options with `label`, `value`, `type`, `default` keys
 		 * @param[in]  string      $template_id Table slug
 		 * @param[in]  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
 		 * @param[in]  string      $context     What context are we in? Example: `single` or `directory`
 		 * @param[in]  string      $input_type  (textarea, list, select, etc.)
 		 */
-		$field_options = apply_filters( "gravityview_template_{$field_name}_options", $field_options, null, ( 'widget' === $field_type ) ? $field_name : null, null, ( 'field' === $field_type ) ? $field_name : null );
+		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type );
 
 		return $field_options;
-
-	}
-
-	/**
-	 * @deprecated since 2.0.XX
-	 * @TODO: add proper version
-	 *
-	 * Start using GravityView_Render_Settings::get_default_field_and_widget_options
-	 *
-	 * @return array       Array of field options with `label`, `value`, `type`, `default` keys
-	 */
-	public static function get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type ) {
-
-		_deprecated_function( 'GravityView_Render_Settings::get_default_field_and_widget_options', '2.X.00', 'GravityView_Render_Settings::get_default_field_and_widget_options' );
-
-		$field_name = ( 'widget' == $field_type ) ? $field_id : $input_type;
-
-		return self::get_default_field_and_widget_options( $field_type, $field_name );
 	}
 
 	/**
@@ -168,12 +150,12 @@ class GravityView_Render_Settings {
 	 * @access public
 	 *
 	 * @param  string $field_type Type of field options to render (`field` or `widget`)
-	 * @param string  $field_name Field input type (textarea, list, select, search_bar, etc.) or widget ID
-	 * @param array   $field_data (default: array())
+	 * @param  string $field_id   Field input type (textarea, list, select, search_bar, etc.) or widget ID
+	 * @param  array  $field_data Field options, such as id, type, name, etc. (default: array())
 	 *
 	 * @return string HTML of dialog box
 	 */
-	public static function render_field_and_widget_options( $field_type, $field_name, $field_data = array() ) {
+	public static function render_field_and_widget_options( $field_type, $field_id, $input_type, $context, $template_id, $field_data = array() ) {
 
 		// do not wrap settings HTML block in a template tag when field data is available
 		$template_tag = empty( $field_data );
@@ -182,6 +164,8 @@ class GravityView_Render_Settings {
 		// See assets/js/admin-views.js@populateFieldAndWidgetTemplate method
 		$name_prefix = $field_type . 's' . '[__context__][__unique_id__]';
 
+		$field_name = ( 'widget' === $field_type ) ? $field_id : $input_type;
+
 		// build output
 		$output = ( $template_tag ) ? sprintf( '<div class="gv_%s_%s_options_template">', $field_type, $field_name ) : '';
 		$output .= '<input type="hidden" class="field-key" name="' . $name_prefix . '[id]" value="__field_id__">';
@@ -189,8 +173,7 @@ class GravityView_Render_Settings {
 		$output .= '<input type="hidden" class="field-form-id" name="' . $name_prefix . '[form_id]" value="__form_id__">';
 
 		// get field/widget options
-		$options = self::get_default_field_and_widget_options( $field_type, $field_name );
-
+		$options = self::get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type );
 		if ( empty( $options ) ) {
 
 			// This is here for checking if the output is empty in render_label()
@@ -258,7 +241,7 @@ class GravityView_Render_Settings {
 
 		$field_name = ( 'widget' == $field_type ) ? $field_id : $input_type;
 
-		return self::render_field_and_widget_options( $field_type, $field_name, $field_data );
+		return self::render_field_and_widget_options( $field_type, $field_name, $template_id, $field_data );
 	}
 
 	/**

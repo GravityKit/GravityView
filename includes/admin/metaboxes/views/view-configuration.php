@@ -30,7 +30,7 @@
 
     			do_action('gravityview_render_field_pickers', 'directory' );
 
-                do_action('gravityview_render_field_and_widget_options', 'directory' );
+                do_action('gravityview_render_field_and_widget_options', 'directory', $curr_template );
 
             ?>
 
@@ -65,7 +65,7 @@
             <?php
                 do_action('gravityview_render_field_pickers', 'single' );
 
-                do_action('gravityview_render_field_and_widget_options', 'single' );
+                do_action('gravityview_render_field_and_widget_options', 'single', $curr_template );
             ?>
 		</div>
 
@@ -86,7 +86,7 @@
 			<?php
 			    do_action('gravityview_render_field_pickers', 'edit' );
 
-			    do_action('gravityview_render_field_and_widget_options', 'edit' );
+			    do_action('gravityview_render_field_and_widget_options', 'edit', $curr_template );
 			?>
 
 		</div>
