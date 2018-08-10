@@ -338,4 +338,46 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		$shortcode = new \GV\Shortcode();
 		$this->assertEmpty( $shortcode->callback( array() ) );
 	}
+
+	public function test_shortcode_single_view_from_directory() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+				),
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => $field = sprintf( '[%d] Entry %s', 1, wp_generate_password( 12 ) ),
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$request = new \GV\Mock_Request();
+		$request->returns['is_entry'] = $entry;
+		gravityview()->request = $request;
+
+		$output = do_shortcode( '[gravityview id="' . $view->ID . '"]' );
+		$this->assertContains( $field, $output );
+
+		gravityview()->request = new \GV\Frontend_Request();
+	}
 }
