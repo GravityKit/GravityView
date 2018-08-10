@@ -58,12 +58,17 @@ class gravityview extends \GV\Shortcode {
 		 */
 		$is_reembedded = false; // Assume not embedded unless detected otherwise.
 		if ( in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request' ) ) ) {
+
 			if ( ( $_view = $request->is_view() ) && $_view->ID !== $view->ID ) {
 				$is_reembedded = true;
-			}
 
-			if ( ( ! $_view ) && $request->is_entry() ) {
-				$is_reembedded = true; // This shortcode is embedded in an entry...
+			} elseif ( $request->is_entry() ) {
+				$backtrace = debug_backtrace( ~DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS );
+				foreach ( array_slice( $backtrace, 1 ) as $call ) {
+					if ( \GV\Utils::get( $call, 'class' ) == __CLASS__ && \GV\Utils::get( $call, 'function' ) == __FUNCTION__ ) {
+						$is_reembedded = true;
+					}
+				}
 			}
 		}
 

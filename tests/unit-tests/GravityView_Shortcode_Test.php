@@ -367,7 +367,7 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
 			'status' => 'active',
-			'1' => $field = sprintf( '[%d] Entry %s', 1, wp_generate_password( 12 ) ),
+			'1' => $field = sprintf( '[%d] Entry %s', 1, wp_generate_password( 12, false ) ),
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
@@ -375,8 +375,13 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		$request->returns['is_entry'] = $entry;
 		gravityview()->request = $request;
 
-		$output = do_shortcode( '[gravityview id="' . $view->ID . '"]' );
-		$this->assertContains( $field, $output );
+		global $post;
+
+		$post = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $view->ID . '"]' ) );
+
+		$shorcode = new \GV\Shortcodes\gravityview();
+
+		$this->assertContains( $field, $shorcode->callback( array( 'id' => $view->ID ) ) );
 
 		gravityview()->request = new \GV\Frontend_Request();
 	}
