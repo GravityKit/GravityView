@@ -225,7 +225,7 @@ class GravityView_Admin_Installer {
 
 		$response = wp_remote_get( $api_url, array(
 			'sslverify' => false,
-			'timeout'   => 10,
+			'timeout'   => 5,
 		) );
 
 		if ( is_wp_error( $response ) ) {
