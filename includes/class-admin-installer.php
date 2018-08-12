@@ -164,7 +164,7 @@ class GravityView_Admin_Installer {
 	/**
 	 * Get downloads data from transient or from API; save transient after getting data from API
 	 *
-	 * @return array {
+	 * @return WP_Error|array If error, returns WP_Error. If not valid JSON, empty array. Otherwise, this structure: {
      *   @type array  $info {
      *       @type string $id int 17
      *       @type string $slug Extension slug
@@ -230,7 +230,7 @@ class GravityView_Admin_Installer {
 
 		if ( is_wp_error( $response ) ) {
 		    gravityview()->log->error( "Extension data response is an error", array( 'data' => $response ) );
-			return array();
+			return $response;
 		}
 
 		$downloads_data = json_decode( wp_remote_retrieve_body( $response ), true );
@@ -275,12 +275,17 @@ class GravityView_Admin_Installer {
 
 		$downloads_data = $this->get_downloads_data();
 
-		if ( empty( $downloads_data ) ) {
+		if ( is_wp_error( $downloads_data ) || empty( $downloads_data ) ) {
 			?>
             <div class="wrap">
                 <h1><?php esc_html_e( 'GravityView Extensions and Plugins', 'gravityview' ); ?></h1>
                 <div class="gv-admin-installer-notice notice inline error">
                     <h3><?php esc_html_e( 'Extensions and plugins data cannot be loaded at the moment. Please try again later.', 'gravityview' ); ?></h3>
+                    <?php
+                    if ( is_wp_error( $downloads_data ) ) {
+	                    echo wpautop( '<pre>' . esc_html( $downloads_data->get_error_message() ) . '</pre>' );
+                    }
+                    ?>
                 </div>
             </div>
 			<?php
