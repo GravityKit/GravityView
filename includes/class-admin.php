@@ -63,7 +63,7 @@ class GravityView_Admin {
 	 * @return string HTML message with no container tags.
 	 */
 	public static function no_views_text() {
-		
+
 		if ( isset( $_REQUEST['post_status'] ) && 'trash' === $_REQUEST['post_status'] ) {
 			return __( 'No Views found in Trash', 'gravityview' );
 		} elseif( ! empty( $_GET['s'] ) ) {
@@ -136,6 +136,7 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/admin/class-gravityview-admin-view-widget.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-views.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-welcome.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/class-admin-installer.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 

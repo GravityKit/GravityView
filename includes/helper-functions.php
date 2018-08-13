@@ -196,22 +196,28 @@ function gravityview_ob_include( $file_path, $object = NULL ) {
 
 /**
  * Get an image of our intrepid explorer friend
+ *
  * @since 1.12
+ * @since 2.1 Added $class parameter
+ *
+ * @param int $height Height of the cutie in pixels
+ * @param null|string $css_class If defined, use the passed CSS class (can be empty string). Otherwise, use default alignleft (or alignright, based on RTL).
+ *
  * @return string HTML image tag with floaty's cute mug on it
  */
-function gravityview_get_floaty( $height = 87 ) {
+function gravityview_get_floaty( $height = 87, $css_class = null ) {
 
 	$width = $height * 0.7586206897;
 
 	if( function_exists('is_rtl') && is_rtl() ) {
 		$style = 'margin:10px 10px 10px 0;';
-		$class = 'alignright';
+		$css_class = is_string( $css_class ) ? $css_class : 'alignright';
 	} else {
 		$style = 'margin:10px 10px 10px 0;';
-		$class = 'alignleft';
+		$css_class = is_string( $css_class ) ? $css_class : 'alignleft';
 	}
 
-	return '<img src="'.plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="'.$class.'" height="'.intval( $height ).'" width="'.round( $width, 2 ).'" alt="The GravityView Astronaut Says:" style="'.$style.'" />';
+	return '<img src="'. esc_url( plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ) ) .'" class="'. gravityview_sanitize_html_class( $css_class ).'" height="'.intval( $height ).'" width="'.round( $width, 2 ).'" alt="The GravityView Astronaut Says:" style="'.$style.'" />';
 }
 
 /**

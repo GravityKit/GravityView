@@ -3,13 +3,14 @@
 # Translators:
 # George Kovalev <gkovaleff@gmail.com>, 2018
 # Zachary Katz <zack@katz.co>, 2018
+# Viktor Skachkov <awsswa59@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView 2.0.11\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Zachary Katz <zack@katz.co>, 2018\n"
+"Last-Translator: Viktor Skachkov <awsswa59@gmail.com>, 2018\n"
 "Language-Team: Russian (https://www.transifex.com/katzwebservices/teams/18775/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -47,6 +48,8 @@ msgid ""
 "The %s Extension is not compatible with this version of GravityView. Please "
 "update the Extension to the latest version."
 msgstr ""
+"Расширение %s несовместимо с этой версией GravityView. Обновите расширение "
+"до последней версии."
 
 #: future/includes/class-gv-license-handler.php:259
 msgid "License Details:"
@@ -263,7 +266,7 @@ msgstr "Набор записей"
 #: future/includes/class-gv-renderer.php:61
 #: includes/class-frontend-views.php:571
 msgid "Add fields to %s"
-msgstr ""
+msgstr "Добавить поля в %s"
 
 #: future/includes/class-gv-renderer.php:62
 #: includes/class-frontend-views.php:572
@@ -498,7 +501,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-addon.php:868
 msgid "Become a Beta Tester"
-msgstr ""
+msgstr "Стать бета тестером"
 
 #: future/includes/class-gv-settings-addon.php:878
 msgid ""
@@ -521,7 +524,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:51
 msgid "View ID"
-msgstr "ID представления"
+msgstr "Просмотреть ID"
 
 #: future/includes/class-gv-settings-view.php:59
 msgid "Number of entries per page"
@@ -529,7 +532,7 @@ msgstr "Количество записей на странице"
 
 #: future/includes/class-gv-settings-view.php:67
 msgid "Offset entries starting from"
-msgstr ""
+msgstr "Смещение записей начиная с"
 
 #: future/includes/class-gv-settings-view.php:75
 msgid "Enable lightbox for images"
@@ -730,15 +733,15 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:250
 msgid "Allow REST Access"
-msgstr ""
+msgstr "Разрешить доступ к REST"
 
 #: future/includes/class-gv-settings-view.php:252
 msgid "Enable  REST access to this View."
-msgstr ""
+msgstr "Включите к этому просмотру REST доступ."
 
 #: future/includes/class-gv-settings-view.php:269
 msgid "Random"
-msgstr ""
+msgstr "Случайный"
 
 #: future/includes/class-gv-view.php:128
 msgid "Parent View:"
@@ -837,11 +840,11 @@ msgstr ""
 #: future/includes/rest/class-gv-rest-views-route.php:58
 #: includes/class-admin.php:70
 msgid "No Views found."
-msgstr ""
+msgstr "Не найдено просмотров."
 
 #: future/includes/rest/class-gv-rest-views-route.php:197
 msgid "No Entries found."
-msgstr ""
+msgstr "Не найдено записей."
 
 #: future/includes/rest/class-gv-rest-views-route.php:247
 #: future/includes/rest/class-gv-rest-views-route.php:297
@@ -853,7 +856,7 @@ msgstr ""
 #: future/includes/rest/class-gv-rest-views-route.php:324
 #: future/includes/rest/class-gv-rest-views-route.php:333
 msgid "You are not allowed to access this content."
-msgstr ""
+msgstr "Вам не разрешен доступ к этому содержанию."
 
 #: future/lib/EDD_SL_Plugin_Updater.php:202
 #: includes/lib/EDD_SL_Plugin_Updater.php:204
@@ -3568,7 +3571,7 @@ msgstr ""
 #: includes/class-gravityview-html-elements.php:123
 msgctxt "no dropdown items"
 msgid "None"
-msgstr ""
+msgstr "Нечего"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:196
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:89

@@ -160,6 +160,20 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @since 2.1
+	 * @covers ::gravityview_get_floaty()
+	 */
+	public function test_gravityview_get_floaty() {
+		$this->assertContains( 'src="' . esc_url( plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ) ) . '"', gravityview_get_floaty( 100 ) );
+		$this->assertContains( 'height="100"', gravityview_get_floaty( 100 ) );
+		$this->assertContains( 'width="75.86"', gravityview_get_floaty( 100 ) );
+		$this->assertContains( 'class="alignleft"', gravityview_get_floaty( 100 ) );
+		$this->assertContains( 'class="testing-custom-class"', gravityview_get_floaty( 100, 'testing-custom-class' ) );
+		$this->assertContains( 'class="scriptNot Safescript"', gravityview_get_floaty( 100, '"><script>Not Safe!</script>"' ) );
+		$this->assertContains( 'height="3"', gravityview_get_floaty( pi() ), 'height should have been converted to int' );
+	}
+
+	/**
 	 * @since 1.16.4
 	 * @covers ::gravityview_get_input_id_from_id()
 	 */
