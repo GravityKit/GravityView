@@ -120,6 +120,16 @@ class View_Settings extends Settings {
 				'type'              => 'checkbox',
 				'show_in_shortcode' => true,
 			),
+			'unapprove_edit' => array(
+				'label'             => __( 'Unapprove Entries After Edit', 'gravityview' ),
+				'group'             => 'default',
+				'requires'          => 'user_edit',
+				'desc'              => __( 'When an entry is edited by a non-administrator, reset the approval status to "Unapproved".', 'gravityview' ),
+				'tooltip'           => __( 'If the "Show only approved entries" setting is enabled, the entry will need to be re-approved by an administrator before it is shown in the View.' ),
+				'value'             => 0,
+				'type'              => 'checkbox',
+				'show_in_shortcode' => true,
+			),
 			'user_delete' => array(
 				'label'             => __( 'Allow User Delete', 'gravityview' ),
 				'group'             => 'default',
