@@ -1065,7 +1065,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$microtime = md5( microtime() );
 
 		$complete_subscriber = $this->factory->user->create_and_get( array(
-			'user_login' => $microtime, 'user_email' => $microtime . '@gravityview.tests',
+			'user_login' => $microtime,
+			'user_email' => $microtime . '@gravityview.tests',
 			'display_name' => 'Zeek LaBeek',
 			'nickname' => 'Zeekary',
 			'first_name' => 'Zeek',
@@ -1146,6 +1147,9 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		GravityView_Edit_Entry::$instance = null;
 	}
 
+	/**
+	 * @covers GravityView_Entry_Approval::autounapprove
+	 */
 	public function test_unapprove_on_edit() {
 		$subscriber = $this->factory->user->create( array(
 				'user_login' => md5( microtime() ),

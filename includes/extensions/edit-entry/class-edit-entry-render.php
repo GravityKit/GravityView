@@ -352,6 +352,7 @@ class GravityView_Edit_Entry_Render {
 
 			/**
 			 * @action `gravityview/edit_entry/after_update` Perform an action after the entry has been updated using Edit Entry
+             * @since 2.1 Added $gv_data parameter
 			 * @param array $form Gravity Forms form array
 			 * @param string $entry_id Numeric ID of the entry that was updated
 			 * @param GravityView_Edit_Entry_Render $this This object
