@@ -512,12 +512,10 @@ class GravityView_Admin_Installer {
 
 		$result = activate_plugin( $data['path'] );
 
-		if ( is_wp_error( $result ) ) {
-			wp_send_json_error(
-				array(
-					'error' => sprintf( __( 'Plugin activation failed: %s', 'gravityview' ), $result->get_error_message() )
-				)
-			);
+		if ( is_wp_error( $result ) || ! is_plugin_active( $data['path'] ) ) {
+			wp_send_json_error( array(
+                'error' => sprintf( __( 'Plugin activation failed: %s', 'gravityview' ), $result->get_error_message() )
+            ) );
 		}
 
 		wp_send_json_success();
@@ -535,22 +533,15 @@ class GravityView_Admin_Installer {
 			return;
 		}
 
-		$plugin = plugin_basename( trim( $data['path'] ) ); /** @see deactivate_plugins() */
-
-		/**
-         * deactivate_plugins() has no return value, so instead, we hook into an action that runs on success
-         * We could have used `deactivate_plugin`, but this is more specific
-         */
-		add_action( 'deactivate_' . $plugin, 'wp_send_json_success' );
-
 		deactivate_plugins( $data['path'] );
 
-		// And if we're able to reach this function, we know something went wrong
-		wp_send_json_error(
-			array(
-				'error' => sprintf( __( 'Plugin deactivation failed.', 'gravityview' ) )
-			)
-		);
+		if( is_plugin_active( $data['path'] ) ) {
+            wp_send_json_error( array(
+                'error' => sprintf( __( 'Plugin deactivation failed.', 'gravityview' ) )
+            ) );
+        }
+
+		wp_send_json_success();
 	}
 
 	/**
