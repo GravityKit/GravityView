@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class GravityView_Admin_Installer {
 
-	const EDD_API_URL = 'https://gravityview.co/edd-api/products';
+	const EDD_API_URL = 'https://gravityview.co/edd-api/products/';
 
 	const EDD_API_KEY = 'e4c7321c4dcf342c9cb078e27bf4ba97';
 
