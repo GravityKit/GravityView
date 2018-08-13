@@ -124,6 +124,7 @@ class View_Settings extends Settings {
 				'label'             => __( 'Unapprove Edited Entries', 'gravityview' ),
 				'group'             => 'default',
 				'desc'              => __( 'Edited entries are unapproved automatically.', 'gravityview' ),
+				'requires'          => 'user_edit',
 				'value'             => 0,
 				'tooltip'           => __( 'When an entry is edited by a non-administrator it is marked as unapproved. Requires "Allow User Edit" and "Show only approved entries" settings.', 'gravityview' ),
 				'type'              => 'checkbox',
