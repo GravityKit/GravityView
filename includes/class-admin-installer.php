@@ -400,7 +400,7 @@ class GravityView_Admin_Installer {
 
 		$wp_plugin = \GV\Utils::get( $wp_plugins, $download_info['textdomain'], false );
 
-		$has_access = true; //! empty( $download['files'] );
+		$has_access = ! empty( $download['files'] );
 		$spinner = true;
 		$href = $plugin_path = '#';
 		$status = $item_class = $button_title = $button_class = '';
