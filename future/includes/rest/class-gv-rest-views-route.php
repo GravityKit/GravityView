@@ -237,7 +237,7 @@ class Views_Route extends Route {
 					$headers_done = fputcsv( $csv, array_keys( $entry ) );
 				}
 
-				fputcsv( $csv, array_map( array( __CLASS__, '_csv_strip_formula' ), $entry ) );
+				fputcsv( $csv, array_map( 'gravityview_strip_excel_formulas', $entry ) );
 			}
 
 			$response = new \WP_REST_Response( ob_get_clean(), 200 );
@@ -423,12 +423,5 @@ class Views_Route extends Route {
 	public function get_sub_items_permissions_check( $request ) {
 		// Accessing all entries of a View needs the same permissions as accessing the View.
 		return $this->get_item_permissions_check( $request );
-	}
-
-	public static function _csv_strip_formula( $value ) {
-		if ( strpos( $value, '=' ) === 0 ) {
-			$value = "'" . $value;
-		}
-		return $value;
 	}
 }

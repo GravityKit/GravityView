@@ -434,4 +434,18 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 		// RETURN FILTER TO TRUE
 		add_filter( 'gravityview_anchor_text_noquerystring', '__return_true' );
 	}
+
+	/**
+	 * @covers gravityview_strip_excel_formulas
+	 * @since 2.1
+	 */
+	public function test_gravityview_strip_excel_formulas() {
+
+		$this->assertEquals( 'No equals', gravityview_strip_excel_formulas( 'No equals' ) );
+
+		$this->assertEquals( "Equals in the = Middle", gravityview_strip_excel_formulas( 'Equals in the = Middle' ) );
+
+		$this->assertEquals( "'=Equals", gravityview_strip_excel_formulas( '=Equals' ) );
+
+	}
 }

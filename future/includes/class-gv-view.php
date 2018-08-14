@@ -940,15 +940,10 @@ class View implements \ArrayAccess {
 			}
 
 			if ( ! $headers_done ) {
-				$headers_done = fputcsv( $csv, array_keys( array_map( $strip_formulas = function( $value ) {
-					if ( strpos( $value, '=' ) === 0 ) {
-						$value = "'" . $value;
-					}
-					return $value;
-				}, $return ) ) );
+				$headers_done = fputcsv( $csv, array_keys( array_map( 'gravityview_strip_excel_formulas', $return ) ) );
 			}
 
-			fputcsv( $csv, array_map( $strip_formulas, $return ) );
+			fputcsv( $csv, array_map( 'gravityview_strip_excel_formulas', $return ) );
 		}
 
 		exit;
