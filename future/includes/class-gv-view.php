@@ -906,7 +906,7 @@ class View implements \ArrayAccess {
 		$entries = $view->get_entries();
 
 		$headers_done = false;
-		$allowd = array();
+		$allowed = array();
 
 		/**
 		 * @todo Maybe create a CSV_Renderer?
