@@ -247,14 +247,14 @@ class GravityView_Edit_Entry_Render {
 		}
 
 		// Sorry, you're not allowed here.
-		if( false === $this->user_can_edit_entry( true ) ) {
+		if ( false === $this->user_can_edit_entry( true ) ) {
 			gravityview()->log->error( 'User is not allowed to edit this entry; returning', array( 'data' => $this->entry ) );
 			return;
 		}
 
 		$this->print_scripts();
 
-		$this->process_save();
+		$this->process_save( $gv_data );
 
 		$this->edit_entry_form();
 
@@ -281,22 +281,24 @@ class GravityView_Edit_Entry_Render {
 
 	/**
 	 * Process edit entry form save
+	 *
+	 * @param array $gv_data The View data.
 	 */
-	private function process_save() {
+	private function process_save( $gv_data ) {
 
-		if( empty( $_POST ) || ! isset( $_POST['lid'] ) ) {
+		if ( empty( $_POST ) || ! isset( $_POST['lid'] ) ) {
 			return;
 		}
 
 		// Make sure the entry, view, and form IDs are all correct
 		$valid = $this->verify_nonce();
 
-		if( !$valid ) {
+		if ( !$valid ) {
 			gravityview()->log->error( 'Nonce validation failed.' );
 			return;
 		}
 
-		if( $this->entry['id'] !== $_POST['lid'] ) {
+		if ( $this->entry['id'] !== $_POST['lid'] ) {
 			gravityview()->log->error( 'Entry ID did not match posted entry ID.' );
 			return;
 		}
@@ -350,11 +352,13 @@ class GravityView_Edit_Entry_Render {
 
 			/**
 			 * @action `gravityview/edit_entry/after_update` Perform an action after the entry has been updated using Edit Entry
+             * @since 2.1 Added $gv_data parameter
 			 * @param array $form Gravity Forms form array
 			 * @param string $entry_id Numeric ID of the entry that was updated
 			 * @param GravityView_Edit_Entry_Render $this This object
+			 * @param GravityView_View_Data $gv_data The View data
 			 */
-			do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'], $this );
+			do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'], $this, $gv_data );
 
 		} else {
 			gravityview()->log->error( 'Submission is NOT valid.', array( 'entry' => $this->entry ) );
