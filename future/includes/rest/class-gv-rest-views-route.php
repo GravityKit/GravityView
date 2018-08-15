@@ -224,7 +224,7 @@ class Views_Route extends Route {
 			$csv = fopen( 'php://output', 'w' );
 
 			/** Da' BOM :) */
-			if ( apply_filters( 'gform_include_bom_export_entries', true, $form ) ) {
+			if ( apply_filters( 'gform_include_bom_export_entries', true, $view->form->form ) ) {
 				fputs( $csv, "\xef\xbb\xbf" );
 			}
 
