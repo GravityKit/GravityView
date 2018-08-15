@@ -436,7 +436,7 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers gravityview_strip_excel_formulas
+	 * @covers ::gravityview_strip_excel_formulas()
 	 * @since 2.1
 	 */
 	public function test_gravityview_strip_excel_formulas() {
