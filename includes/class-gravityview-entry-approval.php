@@ -577,13 +577,16 @@ class GravityView_Entry_Approval {
 	 *
 	 * @param array $form Gravity Forms form array
 	 * @param string $entry_id Numeric ID of the entry that was updated
-	 * @param GravityView_Edit_Entry_Render $this This object
+	 * @param GravityView_Edit_Entry_Render $edit This object
 	 * @param GravityView_View_Data $gv_data The View data
 	 *
 	 * @return void
 	 */
 	public static function autounapprove( $form, $entry_id, $edit, $gv_data ) {
-		$view = \GV\View::by_id( array_keys( $gv_data->get_views() )[0] );
+
+		$view_keys = array_keys( $gv_data->get_views() );
+
+		$view = \GV\View::by_id( $view_keys[0] );
 
 		if ( ! $view->settings->get( 'unapprove_edit' ) ) {
 			return;
