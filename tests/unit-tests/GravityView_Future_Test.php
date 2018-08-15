@@ -999,10 +999,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		get_current_screen()->id = 'gravityview_page_gv-admin-installer';
 		get_current_screen()->post_type = 'gravityview';
 
-		$this->assertTrue( gravityview()->request->is_admin( '', 'extensions' ) );
+		$this->assertTrue( gravityview()->request->is_admin( '', 'downloads' ) );
 
 		get_current_screen()->post_type = 'not gravityview';
-		$this->assertFalse( gravityview()->request->is_admin( '', 'extensions' ) );
+		$this->assertFalse( gravityview()->request->is_admin( '', 'downloads' ) );
 
 		gravityview()->request = $_request;
 		get_current_screen()->id = $_id;
