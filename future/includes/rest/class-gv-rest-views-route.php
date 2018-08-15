@@ -241,7 +241,8 @@ class Views_Route extends Route {
 			}
 
 			$response = new \WP_REST_Response( ob_get_clean(), 200 );
-			$response->header( 'X-Item-Count', $entries->total() );
+			$response->header( 'X-Item-Count', $entries->count() );
+			$response->header( 'X-Item-Total', $entries->total() );
 
 			return $response;
 		}
