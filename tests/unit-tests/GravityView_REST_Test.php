@@ -203,7 +203,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 
 		$csv = $response->get_data();
 		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $csv );
-		$this->assertContains( '5,"set all the fields! 2"', $csv );
+		$this->assertContains( $entry2['id'] . ',"set all the fields! 2"', $csv );
 	}
 
 	public function test_get_entries_filter() {
