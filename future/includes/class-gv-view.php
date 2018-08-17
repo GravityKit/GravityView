@@ -876,7 +876,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @return void
 	 */
-	public function template_redirect() {
+	public static function template_redirect() {
 		/**
 		 * CSV output.
 		 */
