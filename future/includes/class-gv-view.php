@@ -381,7 +381,7 @@ class View implements \ArrayAccess {
 
 		if ( in_array( 'csv', $context ) ) {
 			if ( $this->settings->get( 'csv_enable' ) !== '1' ) {
-				return new \WP_Error( 'gravityview/csv_disabled' );
+				return new \WP_Error( 'gravityview/csv_disabled', 'The CSV endpoint is not enabled for this View' );
 			}
 		}
 
@@ -889,6 +889,7 @@ class View implements \ArrayAccess {
 		}
 
 		if ( is_wp_error( $error = $view->can_render( array( 'csv' ) ) ) ) {
+			gravityview()->log->error( 'Not rendering CSV: ' . $error->get_error_message() );
 			return;
 		}
 
