@@ -177,7 +177,7 @@ class Views_Route extends Route {
 
 		$view = \GV\View::by_id( $view_id );
 
-		if ( 'html' == $format ) {
+		if ( 'html' === $format ) {
 
 			$renderer = new \GV\View_Renderer();
 			$count = $total = 0;
@@ -218,7 +218,7 @@ class Views_Route extends Route {
 			return new \WP_Error( 'gravityview-no-entries', __( 'No Entries found.', 'gravityview' ) );
 		}
 
-		if ( 'csv' == $format ) {
+		if ( 'csv' === $format ) {
 			ob_start();
 
 			$csv = fopen( 'php://output', 'w' );
@@ -275,7 +275,7 @@ class Views_Route extends Route {
 		$view  = \GV\View::by_id( $view_id );
 		$entry = \GV\GF_Entry::by_id( $entry_id );
 
-		if ( $format == 'html' ) {
+		if ( $format === 'html' ) {
 			$renderer = new \GV\Entry_Renderer();
 			return $renderer->render( $entry, $view, new Request( $request ) );
 		}
@@ -336,7 +336,7 @@ class Views_Route extends Route {
 	}
 
 	public function get_item_permissions_check( $request ) {
-		if ( func_num_args() == 2 ) {
+		if ( func_num_args() === 2 ) {
 			$view_id = func_get_arg( 1 ); // $view_id override
 		} else {
 			$url     = $request->get_url_params();
