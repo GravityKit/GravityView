@@ -895,13 +895,24 @@ class View implements \ArrayAccess {
 			return;
 		}
 
-		header( sprintf( 'Content-Disposition: attachment;filename=%s.csv', $view->ID ) );
+		/**
+		 * Modify the name of the generated CSV file
+		 * @since 2.1
+		 * @param string   $filename File name used when downloading a CSV
+		 * @param \GV\View $view Current View being rendered
+		 */
+		$filename = apply_filters( 'gravityview/output/csv/filename', $view->ID, $view );
+
+		header( sprintf( 'Content-Disposition: attachment;filename="%s.csv"', addslashes( $filename ) ) );
 		header( 'Content-Transfer-Encoding: binary' );
 		header( 'Content-Type: text/csv' );
 
 		$csv = fopen( 'php://output', 'w' );
 
-		/** Da' BOM :) */
+		/**
+		 * Add da' BOM if GF uses it
+		 * @see GFExport::start_export()
+		 */
 		if ( apply_filters( 'gform_include_bom_export_entries', true, $form ) ) {
 			fputs( $csv, "\xef\xbb\xbf" );
 		}
