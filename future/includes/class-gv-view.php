@@ -439,6 +439,8 @@ class View implements \ArrayAccess {
 			gravityview()->log->notice( 'The current user cannot access this View #{view_id}', array( 'view_id' => $this->ID ) );
 			return new \WP_Error( 'gravityview/not_public' );
 		}
+
+		return true;
 	}
 
 	/**
