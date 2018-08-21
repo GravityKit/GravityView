@@ -363,8 +363,6 @@ class Views_Route extends Route {
 				case 'no_form_attached':
 					return new \WP_Error( 'rest_forbidden', __( 'This View is not configured properly.', 'gravityview' ) );
 			}
-
-			return $content;
 		}
 
 		/**
