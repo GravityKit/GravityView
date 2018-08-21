@@ -348,8 +348,10 @@ class Views_Route extends Route {
 		}
 
 		while ( $error = $view->can_render( array( 'rest' ), $request ) ) {
-			if ( ! is_wp_error( $error ) )
+
+			if ( ! is_wp_error( $error ) ) {
 				break;
+			}
 
 			switch ( str_replace( 'gravityview/', '', $error->get_error_code() ) ) {
 				case 'rest_disabled':
