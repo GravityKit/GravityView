@@ -192,6 +192,7 @@ class Views_Route extends Route {
 
 			/**
 			 * @filter `gravityview/rest/entries/html/insert_meta` Whether to include `http-equiv` meta tags in the HTML output describing the data
+			 * @since 2.0
 			 * @param bool $insert_meta Add <meta> tags? [Default: true]
 			 * @param int $count The number of entries being rendered
 			 * @param \GV\View $view The view.
@@ -335,6 +336,11 @@ class Views_Route extends Route {
 		return $return;
 	}
 
+	/**
+	 * @param \WP_REST_Request $request
+	 *
+	 * @return bool|\WP_Error
+	 */
 	public function get_item_permissions_check( $request ) {
 		if ( func_num_args() === 2 ) {
 			$view_id = func_get_arg( 1 ); // $view_id override
