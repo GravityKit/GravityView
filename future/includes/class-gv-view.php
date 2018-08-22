@@ -896,12 +896,13 @@ class View implements \ArrayAccess {
 		}
 
 		/**
-		 * Modify the name of the generated CSV file
+		 * Modify the name of the generated CSV file. Name will be sanitized using sanitize_file_name() before output.
+		 * @see sanitize_file_name()
 		 * @since 2.1
-		 * @param string   $filename File name used when downloading a CSV
+		 * @param string   $filename File name used when downloading a CSV. Default is "{View title}.csv"
 		 * @param \GV\View $view Current View being rendered
 		 */
-		$filename = apply_filters( 'gravityview/output/csv/filename', $view->ID, $view );
+		$filename = apply_filters( 'gravityview/output/csv/filename', get_the_title( $view->post ), $view );
 
 		header( sprintf( 'Content-Disposition: attachment;filename="%s.csv"', sanitize_file_name( $filename ) ) );
 		header( 'Content-Transfer-Encoding: binary' );
