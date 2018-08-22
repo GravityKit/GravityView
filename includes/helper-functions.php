@@ -659,3 +659,23 @@ function _gravityview_process_posted_fields() {
 
 	return $fields;
 }
+
+/**
+ * Sanitizes Excel formulas inside CSV output
+ *
+ * @internal
+ *
+ * @since 2.1
+ *
+ * @param $value
+ *
+ * @return string
+ */
+function gravityview_strip_excel_formulas( $value ) {
+
+	if ( strpos( $value, '=' ) === 0 ) {
+		$value = "'" . $value;
+	}
+
+	return $value;
+}
