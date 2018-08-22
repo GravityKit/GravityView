@@ -920,7 +920,7 @@ class View implements \ArrayAccess {
 		$entries = $view->get_entries();
 
 		$headers_done = false;
-		$allowed = array();
+		$allowed = $headers = array();
 
 		/**
 		 * @todo Maybe create a CSV_Renderer?
@@ -951,10 +951,15 @@ class View implements \ArrayAccess {
 				$field  = is_numeric( $field ) ? \GV\GF_Field::by_id( $view->form, $field ) : \GV\Internal_Field::by_id( $field );
 
 				$return[ $field->ID ] = $field->get_value( $view, $source, $entry );
+
+				if ( ! $headers_done ) {
+					$label = $field->get_label( $view, $source, $entry );
+					$headers[ $field->ID ] = $label ? $label : $field->ID;
+				}
 			}
 
 			if ( ! $headers_done ) {
-				$headers_done = fputcsv( $csv, array_keys( array_map( 'gravityview_strip_excel_formulas', $return ) ) );
+				$headers_done = fputcsv( $csv, array_values( array_map( 'gravityview_strip_excel_formulas', $headers ) ) );
 			}
 
 			fputcsv( $csv, array_map( 'gravityview_strip_excel_formulas', $return ) );
