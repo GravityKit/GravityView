@@ -903,7 +903,7 @@ class View implements \ArrayAccess {
 		 */
 		$filename = apply_filters( 'gravityview/output/csv/filename', $view->ID, $view );
 
-		header( sprintf( 'Content-Disposition: attachment;filename="%s.csv"', addslashes( $filename ) ) );
+		header( sprintf( 'Content-Disposition: attachment;filename="%s.csv"', sanitize_file_name( $filename ) ) );
 		header( 'Content-Transfer-Encoding: binary' );
 		header( 'Content-Type: text/csv' );
 
