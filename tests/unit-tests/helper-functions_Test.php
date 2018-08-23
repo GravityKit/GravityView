@@ -450,16 +450,16 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::gravityview_strip_excel_formulas()
+	 * @covers \GV\Utils::strip_excel_formulas()
 	 * @since 2.1
 	 */
 	public function test_gravityview_strip_excel_formulas() {
 
-		$this->assertEquals( 'No equals', gravityview_strip_excel_formulas( 'No equals' ) );
+		$this->assertEquals( 'No equals', \GV\Utils::strip_excel_formulas( 'No equals' ) );
 
-		$this->assertEquals( "Equals in the = Middle", gravityview_strip_excel_formulas( 'Equals in the = Middle' ) );
+		$this->assertEquals( "Equals in the = Middle", \GV\Utils::strip_excel_formulas( 'Equals in the = Middle' ) );
 
-		$this->assertEquals( "'=Equals", gravityview_strip_excel_formulas( '=Equals' ) );
+		$this->assertEquals( "'=Equals", \GV\Utils::strip_excel_formulas( '=Equals' ) );
 
 	}
 }

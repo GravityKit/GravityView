@@ -96,4 +96,24 @@ class Utils {
 
 		return $default;
 	}
+
+	/**
+	 * Sanitizes Excel formulas inside CSV output
+	 *
+	 * @internal
+	 *
+	 * @since 2.1
+	 *
+	 * @param $value The cell value to strip formulas from.
+	 *
+	 * @return string The sanitized value.
+	 */
+	public static function strip_excel_formulas( $value ) {
+
+		if ( strpos( $value, '=' ) === 0 ) {
+			$value = "'" . $value;
+		}
+
+		return $value;
+	}
 }

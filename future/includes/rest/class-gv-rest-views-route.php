@@ -235,10 +235,10 @@ class Views_Route extends Route {
 				$entry = $this->prepare_entry_for_response( $view, $entry, $request, 'directory' );
 
 				if ( ! $headers_done ) {
-					$headers_done = fputcsv( $csv, array_keys( $entry ) );
+					$headers_done = fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), array_keys( $entry ) ) );
 				}
 
-				fputcsv( $csv, array_map( 'gravityview_strip_excel_formulas', $entry ) );
+				fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), $entry ) );
 			}
 
 			$response = new \WP_REST_Response( ob_get_clean(), 200 );
