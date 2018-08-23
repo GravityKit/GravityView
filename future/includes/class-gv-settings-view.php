@@ -259,7 +259,7 @@ class View_Settings extends Settings {
 				'rest_enable'           => array(
 					'label'             => __( 'Allow REST Access', 'gravityview' ),
 					'group'             => 'default',
-					'desc'              => __( 'Enable  REST access to this View.', 'gravityview' ),
+					'desc'              => __( 'Enable REST access to this View.', 'gravityview' ),
 					'type'              => 'checkbox',
 					'value'             => '',
 					'tooltip'           => false,
@@ -267,6 +267,18 @@ class View_Settings extends Settings {
 					'full_width'        => true,
 				),
 			) : array(),
+		array(
+			'csv_enable'            => array(
+				'label'             => __( 'Allow CSV Access', 'gravityview' ),
+				'group'             => 'default',
+				'desc'              => __( 'Enable CSV access to this View.', 'gravityview' ),
+				'type'              => 'checkbox',
+				'value'             => '',
+				'tooltip'           => false,
+				'show_in_shortcode' => false,
+				'full_width'        => true,
+			),
+		),
 		array(
 			'post_id' => array(
 				'type'              => 'number',

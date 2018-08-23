@@ -177,7 +177,7 @@ class Views_Route extends Route {
 
 		$view = \GV\View::by_id( $view_id );
 
-		if ( $format == 'html' ) {
+		if ( 'html' === $format ) {
 
 			$renderer = new \GV\View_Renderer();
 			$count = $total = 0;
@@ -192,6 +192,7 @@ class Views_Route extends Route {
 
 			/**
 			 * @filter `gravityview/rest/entries/html/insert_meta` Whether to include `http-equiv` meta tags in the HTML output describing the data
+			 * @since 2.0
 			 * @param bool $insert_meta Add <meta> tags? [Default: true]
 			 * @param int $count The number of entries being rendered
 			 * @param \GV\View $view The view.
@@ -216,6 +217,35 @@ class Views_Route extends Route {
 
 		if ( ! $entries->all() ) {
 			return new \WP_Error( 'gravityview-no-entries', __( 'No Entries found.', 'gravityview' ) );
+		}
+
+		if ( 'csv' === $format ) {
+			ob_start();
+
+			$csv = fopen( 'php://output', 'w' );
+
+			/** Da' BOM :) */
+			if ( apply_filters( 'gform_include_bom_export_entries', true, $view->form->form ) ) {
+				fputs( $csv, "\xef\xbb\xbf" );
+			}
+
+			$headers_done = false;
+
+			foreach ( $entries->all() as $entry ) {
+				$entry = $this->prepare_entry_for_response( $view, $entry, $request, 'directory' );
+
+				if ( ! $headers_done ) {
+					$headers_done = fputcsv( $csv, array_keys( $entry ) );
+				}
+
+				fputcsv( $csv, array_map( 'gravityview_strip_excel_formulas', $entry ) );
+			}
+
+			$response = new \WP_REST_Response( ob_get_clean(), 200 );
+			$response->header( 'X-Item-Count', $entries->count() );
+			$response->header( 'X-Item-Total', $entries->total() );
+
+			return $response;
 		}
 
 		$data = array( 'entries' => $entries->all(), 'total' => $entries->total() );
@@ -246,7 +276,7 @@ class Views_Route extends Route {
 		$view  = \GV\View::by_id( $view_id );
 		$entry = \GV\GF_Entry::by_id( $entry_id );
 
-		if ( $format == 'html' ) {
+		if ( $format === 'html' ) {
 			$renderer = new \GV\Entry_Renderer();
 			return $renderer->render( $entry, $view, new Request( $request ) );
 		}
@@ -306,8 +336,13 @@ class Views_Route extends Route {
 		return $return;
 	}
 
+	/**
+	 * @param \WP_REST_Request $request
+	 *
+	 * @return bool|\WP_Error
+	 */
 	public function get_item_permissions_check( $request ) {
-		if ( func_num_args() == 2 ) {
+		if ( func_num_args() === 2 ) {
 			$view_id = func_get_arg( 1 ); // $view_id override
 		} else {
 			$url     = $request->get_url_params();
@@ -319,8 +354,10 @@ class Views_Route extends Route {
 		}
 
 		while ( $error = $view->can_render( array( 'rest' ), $request ) ) {
-			if ( ! is_wp_error( $error ) )
+
+			if ( ! is_wp_error( $error ) ) {
 				break;
+			}
 
 			switch ( str_replace( 'gravityview/', '', $error->get_error_code() ) ) {
 				case 'rest_disabled':
@@ -332,8 +369,6 @@ class Views_Route extends Route {
 				case 'no_form_attached':
 					return new \WP_Error( 'rest_forbidden', __( 'This View is not configured properly.', 'gravityview' ) );
 			}
-
-			return $content;
 		}
 
 		/**

@@ -196,6 +196,30 @@ class View implements \ArrayAccess {
 	}
 
 	/**
+	 * Add extra rewrite endpoints.
+	 *
+	 * @return void
+	 */
+	public static function add_rewrite_endpoint() {
+		/**
+		 * CSV.
+		 */
+		global $wp_rewrite;
+
+		$slug = apply_filters( 'gravityview_slug', 'view' );
+		$rule = array( sprintf( '%s/([^/]+)/csv/?', $slug ), 'index.php?gravityview=$matches[1]&csv=1', 'top' );
+
+		add_filter( 'query_vars', function( $query_vars ) { 
+			$query_vars[] = 'csv';
+			return $query_vars;
+		} );
+
+		if ( ! isset( $wp_rewrite->extra_rules_top[ $rule[0] ] ) ) {
+			call_user_func_array( 'add_rewrite_rule', $rule );
+		}
+	}
+
+	/**
 	 * A renderer filter for the View post type content.
 	 *
 	 * @param string $content Should be empty, as we don't store anything there.
@@ -355,6 +379,12 @@ class View implements \ArrayAccess {
 			}
 		}
 
+		if ( in_array( 'csv', $context ) ) {
+			if ( $this->settings->get( 'csv_enable' ) !== '1' ) {
+				return new \WP_Error( 'gravityview/csv_disabled', 'The CSV endpoint is not enabled for this View' );
+			}
+		}
+
 		/**
 		 * This View is password protected. Nothing to do here.
 		 */
@@ -409,6 +439,8 @@ class View implements \ArrayAccess {
 			gravityview()->log->notice( 'The current user cannot access this View #{view_id}', array( 'view_id' => $this->ID ) );
 			return new \WP_Error( 'gravityview/not_public' );
 		}
+
+		return true;
 	}
 
 	/**
@@ -837,6 +869,104 @@ class View implements \ArrayAccess {
 		 * @param \GV\Request $request The request.
 		 */
 		return apply_filters( 'gravityview/view/entries', $entries, $this, $request );
+	}
+
+	/**
+	 * Last chance to configure the output.
+	 *
+	 * Used for CSV output, for example.
+	 *
+	 * @return void
+	 */
+	public static function template_redirect() {
+		/**
+		 * CSV output.
+		 */
+		if ( ! get_query_var( 'csv' ) ) {
+			return;
+		}
+
+		if ( ! $view = gravityview()->request->is_view() ) {
+			return;
+		}
+
+		if ( is_wp_error( $error = $view->can_render( array( 'csv' ) ) ) ) {
+			gravityview()->log->error( 'Not rendering CSV: ' . $error->get_error_message() );
+			return;
+		}
+
+		/**
+		 * Modify the name of the generated CSV file. Name will be sanitized using sanitize_file_name() before output.
+		 * @see sanitize_file_name()
+		 * @since 2.1
+		 * @param string   $filename File name used when downloading a CSV. Default is "{View title}.csv"
+		 * @param \GV\View $view Current View being rendered
+		 */
+		$filename = apply_filters( 'gravityview/output/csv/filename', get_the_title( $view->post ), $view );
+
+		header( sprintf( 'Content-Disposition: attachment;filename="%s.csv"', sanitize_file_name( $filename ) ) );
+		header( 'Content-Transfer-Encoding: binary' );
+		header( 'Content-Type: text/csv' );
+
+		$csv = fopen( 'php://output', 'w' );
+
+		/**
+		 * Add da' BOM if GF uses it
+		 * @see GFExport::start_export()
+		 */
+		if ( apply_filters( 'gform_include_bom_export_entries', true, $form ) ) {
+			fputs( $csv, "\xef\xbb\xbf" );
+		}
+
+		$entries = $view->get_entries();
+
+		$headers_done = false;
+		$allowed = $headers = array();
+
+		/**
+		 * @todo Maybe create a CSV_Renderer?
+		 */
+		foreach ( $view->fields->by_position( "directory_*" )->by_visible()->all() as $field ) {
+			$allowed[] = $field->ID;
+		}
+
+		foreach ( $entries->all() as $entry ) {
+			$return = $entry->as_entry();
+
+			/**
+			 * @filter `gravityview/csv/entry/fields` Whitelist more entry fields that are output in CSV requests.
+			 * @param[in,out] array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the view.
+			 * @param \GV\View $view The view.
+			 * @param \GV\Entry $entry WordPress representation of the item.
+			 */
+			$allowed = apply_filters( 'gravityview/rest/entry/fields', $allowed, $view, $entry );
+
+			foreach ( $return as $key => $value ) {
+				if ( ! in_array( $key, $allowed ) ) {
+					unset( $return[ $key ] );
+				}
+			}
+
+			foreach ( $allowed as $field ) {
+				$source = is_numeric( $field ) ? $view->form : new \GV\Internal_Source();
+				$field  = is_numeric( $field ) ? \GV\GF_Field::by_id( $view->form, $field ) : \GV\Internal_Field::by_id( $field );
+
+				$return[ $field->ID ] = $field->get_value( $view, $source, $entry );
+
+				if ( ! $headers_done ) {
+					$label = $field->get_label( $view, $source, $entry );
+					$headers[ $field->ID ] = $label ? $label : $field->ID;
+				}
+			}
+
+			if ( ! $headers_done ) {
+				$headers_done = fputcsv( $csv, array_values( array_map( 'gravityview_strip_excel_formulas', $headers ) ) );
+			}
+
+			fputcsv( $csv, array_map( 'gravityview_strip_excel_formulas', $return ) );
+		}
+
+		exit;
 	}
 
 	public function __get( $key ) {

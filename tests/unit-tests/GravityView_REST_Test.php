@@ -26,7 +26,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace(), $routes );
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views', $routes );
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)', $routes );
-		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)/entries(?:\.(?P<format>html|json))?', $routes );
+		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)/entries(?:\.(?P<format>html|json|csv))?', $routes );
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)/entries/(?P<s_id>[\w-]+)(?:\.(?P<format>html|json))?', $routes );
 	}
 
@@ -195,6 +195,15 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 
 		$html = $response->get_data();
 		$this->assertContains( '<meta http-equiv="X-Item-Count" content="0" />', $html );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.csv' );
+		$response = rest_get_server()->dispatch( $request );
+		$this->assertEquals( 200, $response->status );
+		$this->assertEquals( 3, $response->headers['X-Item-Count'] );
+
+		$csv = $response->get_data();
+		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $csv );
+		$this->assertContains( $entry2['id'] . ',"set all the fields! 2"', $csv );
 	}
 
 	public function test_get_entries_filter() {
