@@ -834,7 +834,7 @@ function gravityview_back_link( $context = null ) {
 	$label = apply_filters( 'gravityview_go_back_label', $label );
 
 	/**
-	 * @filter `gravityview_go_back_label` Modify the back link text
+	 * @filter `gravityview/template/links/back/label` Modify the back link text
 	 * @since 2.0
 	 * @see gv_directory_link() Generated the original back link
 	 * @param string $label Existing label text
