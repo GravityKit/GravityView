@@ -270,6 +270,27 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 				)
 			),
 
+			'Search operators that are valid should not be stripped' => array(
+				'original' => array(
+					'id' => 123,
+					'search_operator' => 'is',
+				),
+				'expected' => array(
+					'id' => 123,
+					'search_operator' => 'is',
+				)
+			),
+
+			'Search operators that do not exist should be stripped' => array(
+				'original' => array(
+					'id' => 123,
+					'search_operator' => 'this is not valid',
+				),
+				'expected' => array(
+					'id' => 123,
+				)
+			),
+
 			'{get} should not pass unsanitized stuff' => array(
 				'get' => array(
 					'danger' => '<script>alert()</script>'

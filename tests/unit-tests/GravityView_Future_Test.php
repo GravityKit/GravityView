@@ -6027,6 +6027,17 @@ class GVFuture_Test extends GV_UnitTestCase {
 			return "$label{{ gravityview/template/links/back/label }}";
 		}, 10, 2 );
 
+		add_filter( 'gravityview/template/links/back/atts', $callbacks []= function( $atts, $context ) use ( $view, $test ) {
+			$test->assertSame( $view, $context->view );
+			$test->assertEquals( array( 'data-viewid' => $context->view->ID ), $atts );
+
+			$atts['class'] = 'back-links-are-the-best-links';
+			$atts['rel'] = 'self';
+			$atts['should-be-stripped'] = 'just like old paint';
+
+			return $atts;
+		}, 10, 2 );
+
 		add_filter( 'gravityview/render/container/class', $callbacks []= function( $class, $context ) use ( $view, $test ) {
 			$test->assertSame( $context->view, $view );
 			$test->assertContains( "gv-container-{$view->ID}", $class );
@@ -6067,6 +6078,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertContains( '%20gravityview_directory_link%20%20gravityview/view/links/directory%20', $out );
 
+		$this->assertContains( 'class="back-links-are-the-best-links"', $out );
+		$this->assertContains( 'data-viewid="' . $view->ID . '"', $out );
+		$this->assertContains( 'rel="self"', $out );
+		$this->assertNotContains( 'should-be-stripped', $out );
 		$this->assertContains( 'gravityviewrendercontainerclass' /** sanitized */, $out );
 
 		$this->assertContains( "gv-container-{$view->ID}", $out );
@@ -6087,6 +6102,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			remove_filter( 'gravityview/template/links/back/url', array_shift( $callbacks ) ),
 			remove_filter( 'gravityview_go_back_label', array_shift( $callbacks ) ),
 			remove_filter( 'gravityview/template/links/back/label', array_shift( $callbacks ) ),
+			remove_filter( 'gravityview/template/links/back/atts', array_shift( $callbacks ) ),
 			remove_filter( 'gravityview/render/container/class', array_shift( $callbacks ) ),
 			remove_filter( 'gravityview_render_after_label', array_shift( $callbacks ) ),
 			remove_filter( 'gravityview/template/field_label', array_shift( $callbacks ) ),

@@ -834,7 +834,7 @@ function gravityview_back_link( $context = null ) {
 	$label = apply_filters( 'gravityview_go_back_label', $label );
 
 	/**
-	 * @filter `gravityview_go_back_label` Modify the back link text
+	 * @filter `gravityview/template/links/back/label` Modify the back link text
 	 * @since 2.0
 	 * @see gv_directory_link() Generated the original back link
 	 * @param string $label Existing label text
@@ -842,9 +842,15 @@ function gravityview_back_link( $context = null ) {
 	 */
 	$label = apply_filters( 'gravityview/template/links/back/label', $label, $context );
 
-	$link = gravityview_get_link( $href, esc_html( $label ), array(
-		'data-viewid' => $view_id,
-	) );
+	/**
+	 * @filter `gravityview/template/links/back/atts` Modify the attributes used on the back link anchor tag
+	 * @since 2.1
+	 * @param array $atts Original attributes, default: [ data-viewid => $view_id ]
+	 * @param \GV\Template_Context The context.
+	 */
+	$atts = apply_filters( 'gravityview/template/links/back/atts', array( 'data-viewid' => $view_id ), $context );
+
+	$link = gravityview_get_link( $href, esc_html( $label ), $atts );
 
 	return $link;
 }

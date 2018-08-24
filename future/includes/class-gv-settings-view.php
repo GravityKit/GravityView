@@ -213,6 +213,13 @@ class View_Settings extends Settings {
 				'group'             => 'filter',
 				'show_in_shortcode' => false,
 			),
+			'search_operator' => array(
+				'label'             => __( 'Search Operator', 'gravityview' ),
+				'type'              => 'operator',
+				'value'             => 'contains',
+				'group'             => 'filter',
+				'show_in_shortcode' => false,
+			),
 			'single_title' => array(
 				'label'             => __( 'Single Entry Title', 'gravityview' ),
 				'type'              => 'text',
