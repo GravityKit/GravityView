@@ -1363,12 +1363,6 @@ function gravityview_field_output( $passed_args, $context = null ) {
 	$placeholders['class'] = gv_class( $field, $form, $entry );
 	$placeholders['field_id'] = GravityView_API::field_html_attr_id( $field, $form, $entry );
 
-
-	// Get field label if needed
-	if ( ! empty( $args['label_markup'] ) && ! empty( $args['field']['show_label'] ) ) {
-		$placeholders['label'] = str_replace( array( '{{label}}', '{{ label }}' ), '<span class="gv-field-label">{{ label_value }}</span>', $args['label_markup'] );
-	}
-
 	if ( $context instanceof \GV\Template_Context ) {
 		$placeholders['label_value'] = \GV\Utils::get( $args, 'label' );
 	} else {

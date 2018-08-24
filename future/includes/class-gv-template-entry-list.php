@@ -56,6 +56,11 @@ class Entry_List_Template extends Entry_Template {
 		 */
 		$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', Utils::get( $extras, 'hide_empty', $this->view->settings->get( 'hide_empty', false ) ), $context );
 
+		if ( is_numeric( $field->ID ) ) {
+			$extras['field'] = $field->as_configuration();
+		}
+
+		$extras['entry'] = $this->entry->as_entry();
 		$extras['hide_empty'] = $hide_empty;
 		$extras['label'] = $label;
 		$extras['value'] = $value;
