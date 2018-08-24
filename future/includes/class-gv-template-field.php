@@ -466,3 +466,4 @@ abstract class Field_Template extends Template {
 
 /** Load implementations. */
 require gravityview()->plugin->dir( 'future/includes/class-gv-template-field-html.php' );
+require gravityview()->plugin->dir( 'future/includes/class-gv-template-field-csv.php' );

@@ -101,10 +101,9 @@ class Utils {
 	 * Sanitizes Excel formulas inside CSV output
 	 *
 	 * @internal
-	 *
 	 * @since 2.1
 	 *
-	 * @param $value The cell value to strip formulas from.
+	 * @param string $value The cell value to strip formulas from.
 	 *
 	 * @return string The sanitized value.
 	 */
@@ -115,5 +114,21 @@ class Utils {
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Return a value by call.
+	 *
+	 * Use for quick hook callback returns and whatnot.
+	 *
+	 * @internal
+	 * @since 2.1
+	 *
+	 * @param mixed $value The value to return from the closure.
+	 *
+	 * @return Closure The closure with the $value bound.
+	 */
+	public static function _return( $value ) {
+		return function() use ( $value ) { return $value; };
 	}
 }

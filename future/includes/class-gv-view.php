@@ -904,17 +904,20 @@ class View implements \ArrayAccess {
 		 */
 		$filename = apply_filters( 'gravityview/output/csv/filename', get_the_title( $view->post ), $view );
 
-		header( sprintf( 'Content-Disposition: attachment;filename="%s.csv"', sanitize_file_name( $filename ) ) );
-		header( 'Content-Transfer-Encoding: binary' );
-		header( 'Content-Type: text/csv' );
+		if ( ! defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
+			header( sprintf( 'Content-Disposition: attachment;filename="%s.csv"', sanitize_file_name( $filename ) ) );
+			header( 'Content-Transfer-Encoding: binary' );
+			header( 'Content-Type: text/csv' );
+		}
 
+		ob_start();
 		$csv = fopen( 'php://output', 'w' );
 
 		/**
 		 * Add da' BOM if GF uses it
 		 * @see GFExport::start_export()
 		 */
-		if ( apply_filters( 'gform_include_bom_export_entries', true, $form ) ) {
+		if ( apply_filters( 'gform_include_bom_export_entries', true, $view->form ? $view->form->form : null ) ) {
 			fputs( $csv, "\xef\xbb\xbf" );
 		}
 
@@ -923,12 +926,11 @@ class View implements \ArrayAccess {
 		$headers_done = false;
 		$allowed = $headers = array();
 
-		/**
-		 * @todo Maybe create a CSV_Renderer?
-		 */
 		foreach ( $view->fields->by_position( "directory_*" )->by_visible()->all() as $field ) {
 			$allowed[] = $field->ID;
 		}
+
+		$renderer = new Field_Renderer();
 
 		foreach ( $entries->all() as $entry ) {
 			$return = $entry->as_entry();
@@ -939,7 +941,7 @@ class View implements \ArrayAccess {
 			 * @param \GV\View $view The view.
 			 * @param \GV\Entry $entry WordPress representation of the item.
 			 */
-			$allowed = apply_filters( 'gravityview/rest/entry/fields', $allowed, $view, $entry );
+			$allowed = apply_filters( 'gravityview/csv/entry/fields', $allowed, $view, $entry );
 
 			foreach ( $return as $key => $value ) {
 				if ( ! in_array( $key, $allowed ) ) {
@@ -951,7 +953,8 @@ class View implements \ArrayAccess {
 				$source = is_numeric( $field ) ? $view->form : new \GV\Internal_Source();
 				$field  = is_numeric( $field ) ? \GV\GF_Field::by_id( $view->form, $field ) : \GV\Internal_Field::by_id( $field );
 
-				$return[ $field->ID ] = $field->get_value( $view, $source, $entry );
+
+				$return[ $field->ID ] = $renderer->render( $field, $view, $source, $entry, gravityview()->request, '\GV\Field_CSV_Template' );
 
 				if ( ! $headers_done ) {
 					$label = $field->get_label( $view, $source, $entry );
@@ -960,13 +963,19 @@ class View implements \ArrayAccess {
 			}
 
 			if ( ! $headers_done ) {
-				$headers_done = fputcsv( $csv, array_values( array_map( array( '\GV\Utils', 'strip_excel_formulas' ), $headers ) ) );
+				$headers_done = fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), array_values( $headers ) ) );
 			}
 
 			fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), $return ) );
 		}
 
-		exit;
+		fflush( $csv );
+
+		echo rtrim( ob_get_clean() );
+
+		if ( ! defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
+			exit;
+		}
 	}
 
 	public function __get( $key ) {

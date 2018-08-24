@@ -103,9 +103,13 @@ class Views_Route extends Route {
 	 * @param \GV\Entry $entry WordPress representation of the item.
 	 * @param \WP_REST_Request $request Request object.
 	 * @param string $context The context (directory, single)
+	 * @param string $class The value renderer. Default: null (raw value)
+	 *
+	 * @since 2.1 Add value renderer override $class parameter.
+	 *
 	 * @return mixed The data that is sent.
 	 */
-	public function prepare_entry_for_response( $view, $entry, \WP_REST_Request $request, $context ) {
+	public function prepare_entry_for_response( $view, $entry, \WP_REST_Request $request, $context, $class = null ) {
 		$return = $entry->as_entry();
 
 		// Only output the fields that should be displayed.
@@ -132,11 +136,19 @@ class Views_Route extends Route {
 
 		$r = new Request( $request );
 
+		if ( $class ) {
+			$renderer = new \GV\Field_Renderer();
+		}
+
 		foreach ( $allowed as $field ) {
 			$source = is_numeric( $field ) ? $view->form : new \GV\Internal_Source();
 			$field  = is_numeric( $field ) ? \GV\GF_Field::by_id( $view->form, $field ) : \GV\Internal_Field::by_id( $field );
 
-			$return[ $field->ID ] = $field->get_value( $view, $source, $entry, $r );
+			if ( $class ) {
+				$return[ $field->ID ] = $renderer->render( $field, $view, $source, $entry, $r, $class );
+			} else {
+				$return[ $field->ID ] = $field->get_value( $view, $source, $entry, $r );
+			}
 		}
 
 		// @todo Set the labels!
@@ -225,14 +237,14 @@ class Views_Route extends Route {
 			$csv = fopen( 'php://output', 'w' );
 
 			/** Da' BOM :) */
-			if ( apply_filters( 'gform_include_bom_export_entries', true, $view->form->form ) ) {
+			if ( apply_filters( 'gform_include_bom_export_entries', true, $view->form ? $view->form->form : null ) ) {
 				fputs( $csv, "\xef\xbb\xbf" );
 			}
 
 			$headers_done = false;
 
 			foreach ( $entries->all() as $entry ) {
-				$entry = $this->prepare_entry_for_response( $view, $entry, $request, 'directory' );
+				$entry = $this->prepare_entry_for_response( $view, $entry, $request, 'directory', '\GV\Field_CSV_Template' );
 
 				if ( ! $headers_done ) {
 					$headers_done = fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), array_keys( $entry ) ) );
@@ -241,7 +253,7 @@ class Views_Route extends Route {
 				fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), $entry ) );
 			}
 
-			$response = new \WP_REST_Response( ob_get_clean(), 200 );
+			$response = new \WP_REST_Response( rtrim( ob_get_clean() ), 200 );
 			$response->header( 'X-Item-Count', $entries->count() );
 			$response->header( 'X-Item-Total', $entries->total() );
 

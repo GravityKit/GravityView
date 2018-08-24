@@ -7509,6 +7509,81 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	public function test_view_csv_simple() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form->ID,
+			'template_id' => 'table',
+            'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Order ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Item',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '8',
+						'label' => 'Customer Name',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form->ID,
+			'status' => 'active',
+			'16' => 'A pair of shoes',
+			'8.3' => 'Winston',
+			'8.6' => 'Potter',
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$entry2 = $this->factory->entry->create_and_get( array(
+			'form_id' => $form->ID,
+			'status' => 'active',
+			'16' => '=Broomsticks x 8',
+			'8.3' => 'Harry',
+			'8.6' => 'Churchill',
+		) );
+		$entry2 = \GV\GF_Entry::by_id( $entry2['id'] );
+
+		$this->assertNull( $view::template_redirect() );
+
+		set_query_var( 'csv', 1 );
+
+		$this->assertNull( $view::template_redirect() );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$this->assertNull( $view::template_redirect() );
+
+		$view->settings->update( array( 'csv_enable' => '1' ) );
+
+		add_filter( 'gform_include_bom_export_entries', '__return_false' );
+
+		ob_start();
+		$view::template_redirect();
+		$expected = array(
+			'id,Textarea,Name',
+			$entry2->ID . ',"\'=Broomsticks x 8","Harry Churchill"',
+			$entry->ID . ',"A pair of shoes","Winston Potter"',
+		);
+		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
+
+		remove_filter( 'gform_include_bom_export_entries', '__return_false' );
+
+		$this->_reset_context();
+	}
 }
 
 class GVFutureTest_Extension_Test_BC extends GravityView_Extension {
