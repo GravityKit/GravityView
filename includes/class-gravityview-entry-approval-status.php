@@ -308,6 +308,6 @@ final class GravityView_Entry_Approval_Status {
 	 * @return string|false The status key at status $value, if exists. If not exists, false.
 	 */
 	public static function get_key( $value ) {
-		return self::choice_pluck( $value, 'key' );
+		return self::choice_pluck( (int) $value, 'key' );
 	}
 }

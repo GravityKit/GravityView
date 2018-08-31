@@ -36,8 +36,6 @@
 
 			self.addApprovedColumn();
 
-			self.setInitialApprovedEntries();
-
 			$( '.toggleApproved' ).on( 'click', self.toggleApproved );
 
 		}
@@ -121,13 +119,6 @@
 		// Don't add column if there are no entries yet.
 		if( $( 'tbody tr', '#lead_form' ).length === 1 && $( 'tbody tr td', '#lead_form' ).length === 1 ) {
 			return;
-		}
-
-		var link = '<a href="' + gvGlobals.column_link + '" title="' + gvGlobals.column_title + '"></a>';
-
-		// No link to sort by value? Show a span instead
-		if( 0 === gvGlobals.column_link.length ) {
-			link = '<span title="' + gvGlobals.column_title + '"></span>';
 		}
 
 		/**

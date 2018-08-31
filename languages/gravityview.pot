@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.0.14\n"
+"Project-Id-Version: GravityView 2.0.14.1\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -773,11 +773,11 @@ msgstr ""
 msgid "Must set route name in subclass."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-route.php:184
+#: future/includes/rest/class-gv-rest-route.php:185
 msgid "Must set route sub type in subclass."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-route.php:373
+#: future/includes/rest/class-gv-rest-route.php:375
 msgid "Endpoint Not Yet Implemented."
 msgstr ""
 
@@ -1179,65 +1179,70 @@ msgstr ""
 msgid "Please select a View"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:152
+#: includes/class-admin-approve-entries.php:91
+#: includes/fields/class-gravityview-field-approval.php:25
+msgid "Approve Entries"
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:198
 msgid "GravityView Fields"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:153
+#: includes/class-admin-approve-entries.php:199
 msgid ""
 "Allow administrators to approve or reject entries and users to opt-in or "
 "opt-out of their entries being displayed."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:175
+#: includes/class-admin-approve-entries.php:221
 msgid "Approve/Reject"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:181
+#: includes/class-admin-approve-entries.php:227
 msgid "User Opt-In"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:205
+#: includes/class-admin-approve-entries.php:251
 msgid "Approved? (Admin-only)"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:207
+#: includes/class-admin-approve-entries.php:253
 msgid "Approved?"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:227
+#: includes/class-admin-approve-entries.php:273
 msgid "Show Entry on Website"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:229
+#: includes/class-admin-approve-entries.php:275
 msgid "Opt-In"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:237
+#: includes/class-admin-approve-entries.php:283
 msgid "Yes, display my entry on the website"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:341
+#: includes/class-admin-approve-entries.php:387
 msgid "%d entries"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:341
+#: includes/class-admin-approve-entries.php:387
 msgid "1 entry"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:346
+#: includes/class-admin-approve-entries.php:392
 msgid "%s approved."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:350
+#: includes/class-admin-approve-entries.php:396
 msgid "%s unapproved."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:354
+#: includes/class-admin-approve-entries.php:400
 msgid "%s disapproved."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:506
+#: includes/class-admin-approve-entries.php:552
 msgid "Show entry in directory view?"
 msgstr ""
 
@@ -1495,23 +1500,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:505
+#: includes/class-admin-welcome.php:533
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:526
+#: includes/class-admin-welcome.php:554
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:561
+#: includes/class-admin-welcome.php:589
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:586
+#: includes/class-admin-welcome.php:614
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:587
+#: includes/class-admin-welcome.php:615
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -2161,10 +2166,6 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-address.php:268
 msgid "Display a \"Map It\" link below the address"
-msgstr ""
-
-#: includes/fields/class-gravityview-field-approval.php:25
-msgid "Approve Entries"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-approval.php:27

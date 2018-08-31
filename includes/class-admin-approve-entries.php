@@ -46,8 +46,26 @@ class GravityView_Admin_ApproveEntries {
 		// capture bulk actions
 		add_action( 'gform_loaded', array( $this, 'process_bulk_action') );
 
-		// add hidden field with approve status
-		add_action( 'gform_entries_first_column_actions', array( $this, 'add_entry_approved_hidden_input' ), 1, 5 );
+		/**
+		 * Used to inject markup and replace the value of any non-first column in the entry list grid.
+		 *
+		 * @param string $value        The value of the field
+		 * @param int    $form_id      The ID of the current form
+		 * @param int    $field_id     The ID of the field
+		 * @param array  $entry        The Entry object
+		 * @param string $query_string The current page's query string
+		 */
+		add_filter( 'gform_entries_column_filter', array( $this, 'entry_list_column_value' ), 10, 5 );
+
+		/**
+		 * Allow the columns to be displayed in the entry list table to be overridden.
+		 *
+		 * @since 2.0.7.6
+		 *
+		 * @param array $table_columns The columns to be displayed in the entry list table.
+		 * @param int   $form_id       The ID of the form the entries to be listed belong to.
+		 */
+		add_filter( 'gform_entry_list_columns', array( $this, 'entry_list_add_column' ), 10, 2 );
 
 		add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'tooltips' ) );
 
@@ -59,6 +77,38 @@ class GravityView_Admin_ApproveEntries {
 
 		add_filter( 'gform_filter_links_entry_list', array( $this, 'filter_links_entry_list' ), 10, 3 );
 	}
+
+	function entry_list_add_column( $table_columns, $form_id ) {
+
+	    #$column = array( 'field_id-is_approved' => esc_html__( 'Approve Entries', 'gravityview' ) );
+
+		#$keys = array_keys( $table_columns );
+		#$index = array_search( 'is_starred', $keys );
+		#$pos = false === $index ? count( $table_columns ) : $index + 1;
+
+		#$table_columns = array_merge( array_slice( $table_columns, 0, $pos ), $column, array_slice( $table_columns, $pos ) );
+
+		$column_selector = array_pop( $table_columns );
+
+		$table_columns['field_id-is_approved'] = '<span class="gv-icon gv-icon-astronaut-head" title="' . esc_attr__( 'Approve Entries', 'gravityview' ) . '"></span>';
+
+		$table_columns['column_selector'] = $column_selector;
+
+		#$table_columns = array( 'field_id-is_approved' => esc_html__( 'Approve Entries', 'gravityview' ) ) + $table_columns;
+
+        return $table_columns;
+	}
+
+	function entry_list_column_value( $value, $form_id, $field_id, $entry, $query_string ) {
+	    if( 'is_approved' !== $field_id ) {
+	        return $value;
+        }
+
+		$title = GravityView_Entry_Approval_Status::get_title_attr( $value );
+	    $css_class = GravityView_Entry_Approval_Status::get_key( $value );
+
+		echo '<a href="#" class="toggleApproved '. esc_attr( $css_class ) . '" title="' . esc_attr( $title ) . '"></a>';
+    }
 
 	/**
 	 * Add filter links to the Entries page

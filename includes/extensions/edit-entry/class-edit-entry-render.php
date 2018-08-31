@@ -179,7 +179,7 @@ class GravityView_Edit_Entry_Render {
 	}
 
 	/**
-	 * Is the current page an Edit Entry page?
+	 * Is the current request an Edit Entry page, or Edit Entry form submission?
 	 * @return boolean
 	 */
 	public function is_edit_entry() {
