@@ -1,0 +1,185 @@
+/**
+ * Custom CSS for extensions & plugins page
+ *
+ * @package		 GravityView
+ * @license		 GPL2+
+ * @author		Katz Web Services, Inc.
+ * @link				http://gravityview.co
+ * @copyright Copyright 2018, Katz Web Services, Inc.
+ *
+ * @since 2.0.x
+ */
+
+.gravityview_page_gv-admin-installer {
+	#wpwrap {
+		h1 {
+			font-size: 2.7em;
+			line-height: 1.3;
+			font-weight: 300;
+			text-align: center;
+		}
+
+		h2 {
+			text-align: center;
+			margin: .25em 0 2em;
+			font-size: 1.4em;
+			line-height: 1.5;
+		}
+	}
+
+	.update-nag {
+		display: none;
+	}
+
+	#message.notice-warning {
+		margin: 0 0 2.5em;
+		padding: 10px;
+		width: 100%;
+		box-sizing: border-box;
+		box-shadow: 0 0 6px rgba(255, 215, 128, 0.7);
+		background-color: #fffde6;
+		border: 1px solid #e6e0a1;
+		border-radius: 5px;
+
+		.button-link {
+			display: none;
+		}
+
+		img {
+			height: 120px;
+			width: auto;
+		}
+
+		h3 {
+			font-size: 150%;
+		}
+		p {
+			font-size: 120%;
+			font-weight: bold;
+		}
+		a {
+			font-weight: normal;
+		}
+	}
+}
+
+.gv-admin-installer-container {
+	min-height: 400px;
+	display: flex;
+	display: -webkit-flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	align-items: flex-start;
+	align-content: space-between;
+
+	&:after {
+		display: block;
+		flex: 999 999 auto;
+	}
+
+	.item {
+		flex: 0 0 auto;
+		margin: 0 1% 20px 0;
+		border: 1px solid #d1d1d5;
+		border-radius: 5px;
+		box-shadow: 0 0 6px rgba(33, 36, 52, 0.1);
+		width: 340px;
+		min-width: 250px;
+		max-width: 100%;
+		min-height: 515px;
+		background-color: #ffffff;
+		position: relative;
+
+		&.featured {
+			background-color: #ffffee;
+			border-color: #FFFBCC;
+		}
+	}
+
+	.addon-inner {
+		margin: 1.5em;
+
+		ul {
+			list-style: initial;
+			margin-right: 0;
+			margin-left: 1.25em;
+
+			.rtl & {
+				margin-left: 0;
+				margin-right: 1.25em;
+			}
+		}
+
+		div {
+			margin-top: 1em
+		}
+
+		p {
+			font-size: 1.1em;
+		}
+
+		.thumbnail {
+			width: 100%;
+			max-width: 300px;
+		}
+
+		.status {
+			transition: background-color .75s;
+		}
+
+		.inactive {
+			background-color: #FFFBCC;
+			padding: 6px;
+			font-weight: bold;
+			border: 1px solid #E6DB55;
+			color: #424242;
+			margin-bottom: 12px;
+			background-repeat: repeat-x;
+			background-position: 0 0;
+			border-radius: 3px
+		}
+
+		.notinstalled {
+			background-color: #EEE;
+			border: 1px solid #DADADA;
+			padding: 6px;
+			display: block;
+			font-weight: bold;
+			color: #424242;
+			margin-bottom: 12px;
+			background-repeat: repeat-x;
+			background-position: 0 0;
+			border-radius: 3px
+		}
+
+		.active {
+			background-color: #CBECA0;
+			border: 1px solid #97B48A;
+			padding: 6px;
+			display: block;
+			font-weight: bold;
+			color: #2D5312;
+			margin-bottom: 12px;
+			background-repeat: repeat-x;
+			background-position: 0 0;
+			border-radius: 3px
+		}
+
+		.disabled-license {
+			cursor: not-allowed;
+		}
+
+		.spinner {
+			display: none;
+			visibility: visible;
+			margin-right: 0;
+			margin-left: 10px;
+
+			.rtl & {
+				margin-left: 0;
+				margin-right: 10px;
+			}
+		}
+	}
+
+}

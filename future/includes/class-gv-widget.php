@@ -331,7 +331,20 @@ abstract class Widget {
 	 * @return boolean True: render frontend; False: don't render frontend
 	 */
 	public function pre_render_frontend() {
-		if ( $view = gravityview()->views->get() ) {
+		/**
+		 * Assume shown regardless of hide_until_search setting.
+		 */
+		$whitelist = array(
+			'custom_content',
+		);
+
+		/**
+		 * @filter `gravityview/widget/hide_until_searched/whitelist` Some widgets have got to stay shown.
+		 * @param[in,out] string[] $whitelist The widget IDs that have to be shown by default.
+		 */
+		$whitelist = apply_filters( 'gravityview/widget/hide_until_searched/whitelist', $whitelist );
+
+		if ( ( $view = gravityview()->views->get() ) && ! in_array( $this->get_widget_id(), $whitelist ) ) {
 			$hide_until_searched = $view->settings->get( 'hide_until_searched' );
 		} else {
 			$hide_until_searched = false;
@@ -342,9 +355,9 @@ abstract class Widget {
 		 * @param boolean $hide_until_searched Hide until search?
 		 * @param \GV\Widget $this Widget instance
 		 */
-		$hide_until_search = apply_filters( 'gravityview/widget/hide_until_searched', $hide_until_searched, $this );
+		$hide_until_searched = apply_filters( 'gravityview/widget/hide_until_searched', $hide_until_searched, $this );
 
-		if ( $hide_until_search ) {
+		if ( $hide_until_searched && ! gravityview()->request->is_search() ) {
 			gravityview()->log->debug( 'Hide View data until search is performed' );
 			return false;
 		}
@@ -451,6 +464,6 @@ abstract class Widget {
 			gravityview()->log->warning( 'Widget ID not set before calling Widget::is_registered', array( 'data' => $this ) );
 			return false;
 		}
-		return in_array( $widget_id, array_keys( self::registered() ) );
+		return in_array( $widget_id, array_keys( self::registered() ), true );
 	}
 }

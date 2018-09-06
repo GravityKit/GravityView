@@ -50,7 +50,7 @@ class License_Handler {
 	private function __construct( $settings ) {
 
 		$this->settings = $settings;
-		
+
 		if ( ! $this->settings instanceof Addon_Settings ) {
 			$this->settings = gravityview()->plugin->settings;
 		}
@@ -187,6 +187,10 @@ class License_Handler {
 			$update_license = Utils::get( $data, 'update' ) || 'gravityview_license' === Utils::_POST('action');
 
 			$is_check_action_button = ( 'check_license' === Utils::get( $data, 'edd_action' ) && defined( 'DOING_AJAX' ) && DOING_AJAX );
+
+			if ( 'deactivate_license' === Utils::get( $data, 'edd_action' ) ) {
+				do_action('gravityview/admin_installer/delete_downloads_data', true );
+			}
 
 			if ( $is_check_action_button ) {
 				delete_transient( self::status_transient_key );
@@ -366,11 +370,12 @@ class License_Handler {
 	/**
 	 * Override the text used in the GravityView EDD license Javascript
 	 *
-	 * @param  array|null $status Status to get. If empty, get all strings.
-	 * @param  object|null $license_data Object with license data
-	 * @return array          Modified array of content
+	 * @param  string $status Status to get. If empty, get all strings.
+	 * @param  object|array|null $license_data Object with license data, used to generate link to license renewal URL
+	 * @return string Modified array of content
 	 */
 	public function strings( $status = NULL, $license_data = null ) {
+
 		$strings = array(
 			'status' => esc_html__( 'Status', 'gravityview' ),
 			'error' => esc_html__( 'There was an error processing the request.', 'gravityview' ),
@@ -391,6 +396,12 @@ class License_Handler {
 			'deactivate_license' => esc_html__( 'Deactivate License', 'gravityview' ),
 			'check_license' => esc_html__( 'Verify License', 'gravityview' ),
 		);
+
+		/**
+		 * @internal Do not rely on this filter.
+		 * @since 2.1
+		 */
+		$strings = apply_filters( 'gravityview/admin/license/strings', $strings );
 
 		return Utils::get( $strings, $status, null );
 	}

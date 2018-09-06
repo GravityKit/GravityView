@@ -26,7 +26,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace(), $routes );
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views', $routes );
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)', $routes );
-		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)/entries(?:\.(?P<format>html|json))?', $routes );
+		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)/entries(?:\.(?P<format>html|json|csv))?', $routes );
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)/entries/(?P<s_id>[\w-]+)(?:\.(?P<format>html|json))?', $routes );
 	}
 
@@ -36,7 +36,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertEquals( 200, $response->status );
 		$data     = $response->get_data();
 
-		$this->assertEquals( array( 'page', 'limit' ), array_keys( $data['endpoints'][0]['args'] ) );
+		$this->assertEquals( array( 'page', 'limit', 'post_id' ), array_keys( $data['endpoints'][0]['args'] ) );
 
 		$form = $this->factory->form->create_and_get();
 		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
@@ -58,7 +58,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertEquals( 200, $response->status );
 		$data     = $response->get_data();
 
-		$this->assertEquals( array( 'page', 'limit' ), array_keys( $data['endpoints'][0]['args'] ) );
+		$this->assertEquals( array( 'page', 'limit', 'post_id' ), array_keys( $data['endpoints'][0]['args'] ) );
 
 		$request  = new WP_REST_Request( 'OPTIONS', '/gravityview/v1/views/' . $view->ID . '/entries/' . $entry['id'] );
 		$response = rest_get_server()->dispatch( $request );
@@ -195,6 +195,68 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 
 		$html = $response->get_data();
 		$this->assertContains( '<meta http-equiv="X-Item-Count" content="0" />', $html );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.csv' );
+		$response = rest_get_server()->dispatch( $request );
+		$this->assertEquals( 200, $response->status );
+		$this->assertEquals( 3, $response->headers['X-Item-Count'] );
+
+		$csv = $response->get_data();
+		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $csv );
+		$this->assertContains( $entry2['id'] . ',"set all the fields! 2"', $csv );
+	}
+
+	public function test_get_items_csv_complex() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		// Views
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Order ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Item',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '8',
+						'label' => 'Customer Name',
+					),
+				),
+			),
+		) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'A pair of shoes',
+			'8.3' => 'Winston',
+			'8.6' => 'Potter',
+		) );
+
+		$entry2 = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => '=Broomsticks x 8',
+			'8.3' => 'Harry',
+			'8.6' => 'Churchill',
+		) );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.csv' );
+		$response = rest_get_server()->dispatch( $request );
+		$this->assertEquals( 200, $response->status );
+		$this->assertEquals( 2, $response->headers['X-Item-Count'] );
+
+		$csv = $response->get_data();
+		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $csv );
+		$this->assertContains( 'id,16,8', $csv );
+		$this->assertContains( $entry2['id'] . ',"\'=Broomsticks x 8","Harry Churchill"', $csv );
+		$this->assertContains( $entry['id'] . ',"A pair of shoes","Winston Potter"', $csv );
+		$this->assertStringEndsWith( '"', $csv );
 	}
 
 	public function test_get_entries_filter() {

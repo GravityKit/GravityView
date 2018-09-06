@@ -86,6 +86,8 @@ class Entry_Table_Template extends Entry_Template {
 			$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', $this->view->settings->get( 'hide_empty', false ), $context );
 
 			echo \gravityview_field_output( array(
+				'entry' => $this->entry->as_entry(),
+				'field' => is_numeric( $field->ID ) ? $field->as_configuration() : null,
 				'label' => $column_label,
 				'value' => $this->the_field( $field ),
 				'markup' => '<tr id="{{ field_id }}" class="{{ class }}"><th scope="row">{{ label }}</th><td>{{ value }}</td></tr>',

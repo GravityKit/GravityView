@@ -115,6 +115,7 @@ class View_Table_Template extends View_Template {
 			$column_label = apply_filters( 'gravityview/template/field/label', $column_label, $context );
 
 			$args = array(
+				'field' => is_numeric( $field->ID ) ? $field->as_configuration() : null,
 				'hide_empty' => false,
 				'zone_id' => 'directory_table-columns',
 				'markup' => '<th id="{{ field_id }}" class="{{ class }}" style="{{width:style}}">{{label}}</th>',
@@ -251,6 +252,8 @@ class View_Table_Template extends View_Template {
 		$value = $renderer->render( $field, $this->view, $source, $entry, $this->request );
 
 		$args = array(
+			'entry' => $entry->as_entry(),
+			'field' => is_numeric( $field->ID ) ? $field->as_configuration() : null,
 			'value' => $value,
 			'hide_empty' => false,
 			'zone_id' => 'directory_table-columns',
