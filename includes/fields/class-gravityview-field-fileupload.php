@@ -104,6 +104,9 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				'field_path' => $context->template->located_template,
 			);
 		} else {
+
+			_doing_it_wrong( __METHOD__, '2.0', 'Please pass a \GV\Template_Context object as the 3rd parameter' );
+
 			$gravityview_view = GravityView_View::getInstance();
 			/** @deprecated path */
 			$gv_field_array = $gravityview_view->getCurrentField();

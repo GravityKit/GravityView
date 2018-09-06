@@ -1180,6 +1180,10 @@ function gravityview_get_files_array( $value, $gv_class = '', $context = null ) 
 		include_once( GRAVITYVIEW_DIR .'includes/fields/class-gravityview-field-fileupload.php' );
 	}
 
+	if ( is_null( $context ) ) {
+		_doing_it_wrong( __FUNCTION__, '2.0', 'Please pass an \GV\Template_Context object as the 3rd parameter' );
+	}
+
 	return GravityView_Field_FileUpload::get_files_array( $value, $gv_class, $context );
 }
 
