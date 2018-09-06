@@ -358,9 +358,20 @@ class GravityView_Admin_Installer {
                     </a>
                 </div>
 
-                <div class="addon-excerpt">
-					<?php echo wpautop( esc_html( $download_info['excerpt'] ) ); ?>
-                </div>
+                <div class="addon-excerpt"><?php
+
+                    $excerpt = \GV\Utils::get( $download_info, 'installer_excerpt', $download_info['excerpt'] );
+
+                    // Allow some pure HTML tags, but remove everything else from the excerpt.
+                    $tags = array( '<strong>', '</strong>', '<em>', '</em>', '<code>', '</code>' );
+                    $replacements = array( '[b]', '[/b]', '[i]', '[/i]', '[code]', '[/code]' );
+
+                    $excerpt = str_replace( $tags, $replacements, $excerpt );
+                    $excerpt = esc_html( strip_tags( $excerpt ) );
+					$excerpt = str_replace( $replacements, $tags, $excerpt );
+
+					echo wpautop( $excerpt );
+                ?></div>
             </div>
         </div>
 		<?php
