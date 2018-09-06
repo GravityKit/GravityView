@@ -80,12 +80,14 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 
 		$triggered_notifications = array();
 
+		$test_object = & $this;
+
 		foreach( $notifications as $test_notification ) {
 
-			add_filter( 'gform_notification', $filter_notification = function( $notification, $form, $lead ) use ( $test_notification, $test_form, $test_entry, & $triggered_notifications ) {
-				$this->assertSame( $notification, $test_notification );
-				$this->assertSame( $lead, $test_entry );
-				$this->assertSame( $form, $test_form );
+			add_filter( 'gform_notification', $filter_notification = function( $notification, $form, $lead ) use ( $test_notification, $test_form, $test_entry, & $triggered_notifications, $test_object ) {
+				$test_object->assertSame( $notification, $test_notification );
+				$test_object->assertSame( $lead, $test_entry );
+				$test_object->assertSame( $form, $test_form );
 				$triggered_notifications[] = $test_notification;
 			}, 10, 3 );
 
@@ -93,6 +95,8 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 
 			remove_filter( 'gform_notification', $filter_notification );
 		}
+
+		unset( $test_object );
 
 		$this->assertSame( $notifications, $triggered_notifications );
 	}
