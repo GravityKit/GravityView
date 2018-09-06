@@ -344,7 +344,7 @@ class GravityView_Admin_Installer {
         <div class="item <?php echo esc_attr( $details['item_class'] ); ?>">
             <div class="addon-inner">
                 <a href="<?php echo esc_url( $download_info['link'] ); ?>" rel="external noreferrer noopener" title="<?php esc_html_e( 'Visit the plugin page', 'gravityview' ); ?>"><img class="thumbnail" src="<?php echo esc_attr( $download_info['thumbnail'] ); ?>" alt="" /></a>
-                <h3><?php echo esc_html( $download_info['title'] ); ?></h3>
+                <h3><?php echo esc_html( \GV\Utils::get( $download_info, 'installer_title', $download_info['title'] ) ); ?></h3>
                 <div>
                     <?php if( $details['status_label'] ) { ?>
                     <div class="status <?php echo esc_attr( $details['status'] ); ?>" title="<?php printf( esc_attr__( 'Plugin status: %s', 'gravityview' ), esc_html( $details['status_label'] ) ); ?>">
@@ -396,6 +396,8 @@ class GravityView_Admin_Installer {
 			'slug' => '',
 			'excerpt' => '',
 			'link' => '',
+			'installer_title' => null, // May not be defined
+			'installer_excerpt' => null, // May not be defined
 		) );
 
 		$wp_plugin = \GV\Utils::get( $wp_plugins, $download_info['textdomain'], false );
