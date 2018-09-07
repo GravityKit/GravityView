@@ -21,6 +21,28 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.1 =
+
+* Added: Send email notifications when an entry is approved, disapproved, or the approval status has changed
+* Added: Automatically un-approve an entry when it has been updated by an user without the ability to moderate entries
+* Don't add `gvid` unless multiple Views embedded in a post
+* Added: Easy way to install Extensions and our stand-alone Premium Plugins
+* Fixed: Slashes being stripped from `{date_created}` Merge Tag format, preventing it from working
+* Fixed: Allow embedding a view in an embedded entry
+
+__Developer Notes:__
+* Process shortcodes inside [gv_entry_link] shortcodes
+* Added: `gravityview/shortcodes/gv_entry_link/output` filter to modify output of the [gv_entry_link] shortcode
+* Reduced database lookups when using custom entry slugs
+* Improved the rules added to WP Rewrite so that the `/entry/` endpoint is only added to Views
+* Introduced `\GV\View->can_render()` method to reduce code duplication
+* Fixed: PHP 5.3 warning in when using `array_combine()` on empty arrays
+* Apply `addslashes` to View Configuration when saving, fixing `{date_created}` format
+
+**REST API**
+* Allow setting parent post or page with the REST API request using `post_id={id}`
+* Added `X-Item-Total` header and meta to REST API response
+
 = 2.0.14.1 on July 19, 2018 =
 
 * Fixed: Potential XSS ("Cross Site Scripting") security issue. **Please update.**
