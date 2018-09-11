@@ -319,6 +319,7 @@ class GravityView_API {
 
 		/**
 		 * @filter `gravitview_no_entries_text` Modify the text displayed when there are no entries.
+		 * Note: this filter is, and always has been, misspelled. This will not be fixed, since the filter is deprecated.
 		 * @param string $output The existing "No Entries" text
 		 * @param boolean $is_search Is the current page a search result, or just a multiple entries screen?
 		 * @return string The modified text.
