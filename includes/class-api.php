@@ -301,7 +301,7 @@ class GravityView_API {
 
 		if ( $context instanceof \GV\Template_Context ) {
 			if ( $context->request->is_search() ) {
-				$search = true;
+				$is_search = true;
 			}
 		} else {
 			$gravityview_view = GravityView_View::getInstance();
