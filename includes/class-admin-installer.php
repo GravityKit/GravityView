@@ -394,7 +394,7 @@ class GravityView_Admin_Installer {
      *   @type string $href URL for the download's button
      *   @type bool   $spinner Whether to show the spinner icon
      *   @type string $item_class CSS class for the download container
-     *   @type string $required_license The name of the required license for the download ("Galactic" or "Interstellar")
+     *   @type string $required_license The name of the required license for the download ("All Access" or "Core + Extensions")
      *   @type bool   $is_active Is the current GravityView license (as entered in Settings) active?
      * }
 	 */
@@ -420,7 +420,7 @@ class GravityView_Admin_Installer {
 		$base_price = $this->get_download_base_price( $download );
 		$is_active = in_array( gravityview()->plugin->settings->get( 'license_key_response/license' ), array( 'active', 'valid' ), true );
 		$galactic_only = in_array( \GV\Utils::get( $download, 'info/category/0/slug' ), array( 'plugins', 'views' ) );
-		$required_license = $galactic_only ? __( 'Galactic', 'gravityview' ) : __( 'Interstellar', 'gravityview' );
+		$required_license = $galactic_only ? __( 'All Access', 'gravityview' ) : __( 'Core + Extensions', 'gravityview' );
 
 		// The license is not active - no matter what level, this should not work
 		if( ! $is_active  && empty( $base_price ) ) {
