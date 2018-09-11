@@ -261,6 +261,9 @@ class View implements \ArrayAccess {
 				case 'post_password_required':
 					return get_the_password_form( $view->ID );
 				case 'no_form_attached':
+
+					gravityview()->log->error( 'View #{view_id} cannot render: {error_code} {error_message}', array( 'error_code' => $error->get_error_code(), 'error_message' => $error->get_error_message() ) );
+
 					/**
 					 * This View has no data source. There's nothing to show really.
 					 * ...apart from a nice message if the user can do anything about it.
@@ -272,6 +275,7 @@ class View implements \ArrayAccess {
 				case 'no_direct_access':
 				case 'embed_only':
 				case 'not_public':
+					gravityview()->log->notice( 'View #{view_id} cannot render: {error_code} {error_message}', array( 'error_code' => $error->get_error_code(), 'error_message' => $error->get_error_message() ) );
 					return __( 'You are not allowed to view this content.', 'gravityview' );
 			}
 
