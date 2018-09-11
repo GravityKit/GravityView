@@ -229,7 +229,7 @@ class GravityView_Edit_Entry_Render {
 	 * @param \GravityView_View_Data $gv_data GravityView Data object
 	 * @return void
 	 */
-	public function init( $gv_data ) {
+	public function init( $gv_data = null ) {
 
 		require_once( GFCommon::get_base_path() . '/form_display.php' );
 		require_once( GFCommon::get_base_path() . '/entry_detail.php' );
@@ -241,7 +241,7 @@ class GravityView_Edit_Entry_Render {
 		}
 
 		// Multiple Views embedded, don't proceed if nonce fails
-		if ( $gv_data->has_multiple_views() && ! wp_verify_nonce( $_GET['edit'], self::$nonce_key ) ) {
+		if ( $gv_data->has_multiple_views() && ! $this->verify_nonce() ) {
 			gravityview()->log->error( 'Nonce validation failed for the Edit Entry request; returning' );
 			return;
 		}
