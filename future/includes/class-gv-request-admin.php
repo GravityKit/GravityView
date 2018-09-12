@@ -23,10 +23,6 @@ class Admin_Request extends Request {
 			return false;
 		}
 
-		if( ! function_exists( '\get_current_screen' ) ) {
-			return false;
-		}
-
 		/**
 		 * Regular check.
 		 */
@@ -41,7 +37,11 @@ class Admin_Request extends Request {
 		 */
 		$is_page = false;
 
-		$current_screen = \get_current_screen();
+		if( function_exists( '\get_current_screen' ) ) {
+			$current_screen = \get_current_screen();
+		} else {
+			$current_screen = false;
+		}
 
 		if ( $current_screen && $current_screen->post_type == 'gravityview' ) {
 			if ( $is_gv_edit_list = 'edit' === $current_screen->base ) {
