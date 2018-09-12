@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Easy way to install Extensions and our stand-alone Premium Plugins
 * Fixed: Slashes being stripped from `{date_created}` Merge Tag format, preventing it from working
 * Fixed: Allow embedding a view in an embedded entry
+* Added: Reset entry approval on the front end of a View by Option + clicking the Entry Approval field
 
 __Developer Notes:__
 * Process shortcodes inside [gv_entry_link] shortcodes
