@@ -125,7 +125,7 @@ class View_Settings extends Settings {
 				'group'             => 'default',
 				'requires'          => 'user_edit',
 				'desc'              => __( 'When an entry is edited by a non-administrator, reset the approval status to "Unapproved".', 'gravityview' ),
-				'tooltip'           => __( 'If the "Show only approved entries" setting is enabled, the entry will need to be re-approved by an administrator before it is shown in the View.' ),
+				'tooltip'           => __( 'If the "Show only approved entries" setting is enabled, the entry will need to be re-approved by an administrator before it is shown in the View.', 'gravityview' ),
 				'value'             => 0,
 				'type'              => 'checkbox',
 				'show_in_shortcode' => true,
