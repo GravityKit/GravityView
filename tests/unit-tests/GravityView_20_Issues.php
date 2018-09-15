@@ -466,4 +466,42 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	/**
+	 * https://github.com/gravityview/GravityView/issues/1148
+	 */
+	public function test_is_approved_field_values() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'is_approved',
+						'unapproved_label' => '',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'is_approved',
+						'unapproved_label' => 'Nicht bestätigt',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$renderer = new \GV\Entry_Renderer();
+
+		$output = $renderer->render( $entry, $view );
+
+		$this->assertContains( '<span class="gv-approval-unapproved">Unapproved</span>', $output );
+		$this->assertContains( '<span class="gv-approval-unapproved">Nicht bestätigt</span>', $output );
+	}
 }
