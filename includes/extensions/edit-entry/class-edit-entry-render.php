@@ -1076,6 +1076,8 @@ class GravityView_Edit_Entry_Render {
 	        unset( $form['save'] );
 		}
 
+		$form = $this->unselect_default_values( $form );
+
 		return $form;
 	}
 
@@ -1737,6 +1739,29 @@ class GravityView_Edit_Entry_Render {
 		}
 
 		return $fields;
+	}
+
+	/**
+	 * Checkboxes and other checkbox-based controls should not
+	 * display default checks in edit mode.
+	 *
+	 * https://github.com/gravityview/GravityView/1149
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $form Gravity Forms array object
+	 *
+	 * @return array $form, modified to default checkboxes, radios from showing up.
+	 */
+	function unselect_default_values( $form ) {
+		foreach ( $form['fields'] as &$field ) {
+			if ( $field->choices ) foreach ( $field->choices as &$choice ) {
+				if ( \GV\Utils::get( $choice, 'isSelected' ) ) {
+					$choice['isSelected'] = false;
+				}
+			}
+		}
+		return $form;
 	}
 
 	// --- Conditional Logic
