@@ -1753,14 +1753,21 @@ class GravityView_Edit_Entry_Render {
 	 *
 	 * @return array $form, modified to default checkboxes, radios from showing up.
 	 */
-	function unselect_default_values( $form ) {
-		foreach ( $form['fields'] as &$field ) {
-			if ( $field->choices ) foreach ( $field->choices as &$choice ) {
+	private function unselect_default_values( $form ) {
+
+	    foreach ( $form['fields'] as &$field ) {
+
+			if ( empty( $field->choices ) ) {
+                continue;
+			}
+
+            foreach ( $field->choices as &$choice ) {
 				if ( \GV\Utils::get( $choice, 'isSelected' ) ) {
 					$choice['isSelected'] = false;
 				}
 			}
 		}
+
 		return $form;
 	}
 
