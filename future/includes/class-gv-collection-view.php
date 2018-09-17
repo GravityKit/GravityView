@@ -112,10 +112,32 @@ class View_Collection extends Collection {
 
 			/** What about inside post meta values? */
 			foreach ( $meta_keys as $meta_key ) {
-				if ( is_string( $post->$meta_key ) ) {
-					$views->merge( self::from_content( $post->$meta_key ) );
-				}
+				$views = self::merge_deep( $views, $post, $post->{$meta_key} );
 			}
+		}
+
+		return $views;
+	}
+
+	/**
+	 * Process meta values when stored singular (string) or multiple (array). Supports nested arrays.
+	 *
+	 * @since 2.1
+	 *
+	 * @param \GV\View_Collection $views
+	 * @param \WP_Post $post The \WP_Post object to look into.
+	 * @param string|array $meta_value Meta value of $post at $meta_key, can be string or associative array
+	 *
+	 * @return \GV\View_Collection $views
+	 */
+	private static function merge_deep( $views, $post, $meta_value ) {
+
+		if ( is_array( $meta_value ) ) {
+			foreach ( $meta_value as $value ) {
+				$views = self::merge_deep( $views, $post, $value );
+			}
+		} elseif ( is_string( $meta_value ) ) {
+			$views->merge( self::from_content( $meta_value ) );
 		}
 
 		return $views;
