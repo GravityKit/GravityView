@@ -75,6 +75,9 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 		$default_label = GravityView_Entry_Approval_Status::get_label( $status );
 
 		$value = \GV\Utils::get( $field_settings, $field_setting_key, $default_label );
+		if ( empty( $value ) ) {
+			$value = $default_label;
+		}
 
 		return sprintf( '<span class="gv-approval-%s">%s</span>', esc_attr( $status_key ), $value );
 	}
