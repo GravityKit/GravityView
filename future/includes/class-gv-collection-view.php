@@ -78,7 +78,9 @@ class View_Collection extends Collection {
 	public static function from_post( \WP_Post $post ) {
 		$views = new self();
 
-		if ( get_post_type( $post ) == 'gravityview' ) {
+		$post_type = get_post_type( $post );
+
+		if ( 'gravityview' === $post_type ) {
 			/** A straight up gravityview post. */
 			$views->add( View::from_post( $post ) );
 		} else {
@@ -112,7 +114,7 @@ class View_Collection extends Collection {
 
 			/** What about inside post meta values? */
 			foreach ( $meta_keys as $meta_key ) {
-				$views = self::merge_deep( $views, $post, $post->{$meta_key} );
+				$views = self::merge_deep( $views, $post->{$meta_key} );
 			}
 		}
 
@@ -120,23 +122,26 @@ class View_Collection extends Collection {
 	}
 
 	/**
-	 * Process meta values when stored singular (string) or multiple (array). Supports nested arrays.
+	 * Process meta values when stored singular (string) or multiple (array). Supports nested arrays and JSON strings.
 	 *
 	 * @since 2.1
 	 *
-	 * @param \GV\View_Collection $views
-	 * @param \WP_Post $post The \WP_Post object to look into.
-	 * @param string|array $meta_value Meta value of $post at $meta_key, can be string or associative array
+	 * @param \GV\View_Collection $views Existing View Collection to merge with
+	 * @param string|array $meta_value Value to parse. Normally the value of $post->{$meta_key}.
 	 *
-	 * @return \GV\View_Collection $views
+	 * @return \GV\View_Collection $views View Collection containing any additional Views found
 	 */
-	private static function merge_deep( $views, $post, $meta_value ) {
+	private static function merge_deep( $views, $meta_value ) {
+
+		$meta_value = gv_maybe_json_decode( $meta_value, true );
 
 		if ( is_array( $meta_value ) ) {
-			foreach ( $meta_value as $value ) {
-				$views = self::merge_deep( $views, $post, $value );
+			foreach ( $meta_value as $index => $item ) {
+				$meta_value[ $index ] = self::merge_deep( $views, $item );
 			}
-		} elseif ( is_string( $meta_value ) ) {
+		}
+
+		if ( is_string( $meta_value ) ) {
 			$views->merge( self::from_content( $meta_value ) );
 		}
 

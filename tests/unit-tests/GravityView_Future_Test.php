@@ -557,6 +557,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$with_shortcodes_in_meta = $this->factory->post->create_and_get();
 		update_post_meta( $with_shortcodes_in_meta->ID, 'meta_test', sprintf( '[gravityview id="%d"]', $post->ID ) );
 		update_post_meta( $with_shortcodes_in_meta->ID, 'another_meta_test', sprintf( '[gravityview id="%d"]', $another_post->ID ) );
+		update_post_meta( $with_shortcodes_in_meta->ID, 'json_meta_test', json_encode( array( array( 'random' => 'json', 'has_shortcode' => sprintf( '[gravityview id="%d"][gravityview id="%d"]', $post->ID, $another_post->ID ) ) ) ) );
 
 		/** And make sure arrays don't break things. */
 		update_post_meta( $with_shortcodes_in_meta->ID, 'invalid_meta_test', array( 'do not even try to parse this' ) );
@@ -583,6 +584,16 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$views = \GV\View_Collection::from_post( $with_shortcodes_in_meta );
 		$this->assertCount( 1, $views->all() );
+		$view = $views->get( $another_post->ID );
+		$this->assertEquals( $view->ID, $another_post->ID );
+
+		add_filter( 'gravityview/data/parse/meta_keys', function( $meta_keys, $post_id ) use ( $with_shortcodes_in_meta, $test ) {
+			$test->assertEquals( $post_id, $with_shortcodes_in_meta->ID );
+			return array( 'json_meta_test' );
+		}, 10, 2 );
+
+		$views = \GV\View_Collection::from_post( $with_shortcodes_in_meta );
+		$this->assertCount( 2, $views->all() );
 		$view = $views->get( $another_post->ID );
 		$this->assertEquals( $view->ID, $another_post->ID );
 
