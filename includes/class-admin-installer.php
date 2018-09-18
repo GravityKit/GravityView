@@ -430,7 +430,7 @@ class GravityView_Admin_Installer {
 		}
 
 		// No access with the current license level, and the download is available to purchase
-		else if ( ! $has_access && ! empty( $base_price ) ) {
+		elseif ( ! $has_access && ! empty( $base_price ) ) {
 			$spinner      = false;
 			$status_label = '';
 			$button_label = sprintf( __( 'Purchase Now for %s', 'gravityview' ), '$' . $base_price );
@@ -440,7 +440,7 @@ class GravityView_Admin_Installer {
 		}
 
 		// No access with the current license level, and the download is not sold separately
-		else if ( ! $has_access && $is_active ) {
+		elseif ( ! $has_access && $is_active ) {
 			$spinner      = false;
 			$status_label = '';
 			$button_label = sprintf( __( 'Upgrade to %s for Access', 'gravityview' ), $required_license );
@@ -449,7 +449,7 @@ class GravityView_Admin_Installer {
 		}
 
 		// Access but the plugin is not installed
-		else if ( ! $wp_plugin ) {
+		elseif ( ! $wp_plugin ) {
 
 			$href = add_query_arg(
 				array(
@@ -467,8 +467,7 @@ class GravityView_Admin_Installer {
 		}
 
 		// Access and the plugin is installed but not active
-		else if ( false === $wp_plugin['activated'] ) {
-
+		elseif ( false === $wp_plugin['activated'] ) {
 			$status = 'inactive';
 			$status_label = __( 'Inactive', 'gravityview' );
 			$button_label = __( 'Activate', 'gravityview' );
