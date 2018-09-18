@@ -65,8 +65,10 @@ class GravityView_Admin_Installer {
 	 * @return void
 	 */
 	public function add_downloads_data_filters() {
-		$downloads_data = get_site_transient( self::DOWNLOADS_DATA_TRANSIENT );
-		if ( ! $downloads_data ) {
+
+	    $downloads_data = get_site_transient( self::DOWNLOADS_DATA_TRANSIENT );
+
+	    if ( ! $downloads_data ) {
 			return;
 		}
 
