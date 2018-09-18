@@ -472,7 +472,7 @@ function gv_maybe_json_decode( $value, $assoc = false, $depth = 512, $options = 
 		return $value;
 	}
 
-	$decoded = json_decode( $value );
+	$decoded = json_decode( $value, $assoc, $depth, $options );
 
 	// There was a JSON error (PHP 5.3+)
 	if( function_exists('json_last_error') && JSON_ERROR_NONE !== json_last_error() ) {
