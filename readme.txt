@@ -23,13 +23,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 2.1 =
 
-* Added: Send email notifications when an entry is approved, disapproved, or the approval status has changed
+* Added: You can now send email notifications when an entry is approved, disapproved, or the approval status has changed. [Learn how](https://docs.gravityview.co/article/488-notification-when-entry-approved)
 * Added: Automatically un-approve an entry when it has been updated by an user without the ability to moderate entries
-* Don't add `gvid` unless multiple Views embedded in a post
-* Added: Easy way to install Extensions and our stand-alone Premium Plugins
-* Fixed: Slashes being stripped from `{date_created}` Merge Tag format, preventing it from working
-* Fixed: Allow embedding a view in an embedded entry
-* Added: Reset entry approval on the front end of a View by Option + clicking the Entry Approval field
+* Added: Easy way to install Extensions and our stand-alone Premium Plugins [Learn how](https://docs.gravityview.co/article/489-managing-extensions)
+* Improved: Reset entry approval on the front end of a View by Option + Clicking the Entry Approval field
+* Fixed: Custom date format not working with the `{date_created}` Merge Tag
+* Fixed: Embedding a View inside an embedded entry
 
 __Developer Notes:__
 * Process shortcodes inside [gv_entry_link] shortcodes
@@ -37,12 +36,11 @@ __Developer Notes:__
 * Reduced database lookups when using custom entry slugs
 * Improved the rules added to WP Rewrite so that the `/entry/` endpoint is only added to Views
 * Introduced `\GV\View->can_render()` method to reduce code duplication
+* Fixed: Don't add `gvid` unless multiple Views embedded in a post
 * Fixed: PHP 5.3 warning in when using `array_combine()` on empty arrays
 * Apply `addslashes` to View Configuration when saving, fixing `{date_created}` format
-
-**REST API**
-* Allow setting parent post or page with the REST API request using `post_id={id}`
-* Added `X-Item-Total` header and meta to REST API response
+* REST API: Allow setting parent post or page with the REST API request using `post_id={id}` ([learn more](https://docs.gravityview.co/article/468-rest-api))
+* REST API: Added `X-Item-Total` header and meta to REST API response
 
 = 2.0.14.1 on July 19, 2018 =
 
