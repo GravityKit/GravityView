@@ -554,6 +554,13 @@ class View implements \ArrayAccess {
 		}
 
 		if ( $view = Utils::get( self::$cache, "View::from_post:{$post->ID}" ) ) {
+			/**
+			 * @filter `gravityview/view/get` Override View.
+			 * @param \GV\View $view The View instance pointer.
+			 * @since 2.1
+			 */
+			do_action_ref_array( 'gravityview/view/get', array( &$view ) );
+
 			return $view;
 		}
 
@@ -630,6 +637,13 @@ class View implements \ArrayAccess {
 		) );
 
 		self::$cache[ "View::from_post:{$post->ID}" ] = &$view;
+
+		/**
+		 * @filter `gravityview/view/get` Override View.
+		 * @param \GV\View $view The View instance pointer.
+		 * @since 2.1
+		 */
+		do_action_ref_array( 'gravityview/view/get', array( &$view ) );
 
 		return $view;
 	}
@@ -780,7 +794,7 @@ class View implements \ArrayAccess {
 	/**
 	 * Retrieve the entries for the current view and request.
 	 *
-	 * @param \GV\Request The request. Usued for now.
+	 * @param \GV\Request The request. Unused for now.
 	 *
 	 * @return \GV\Entry_Collection The entries.
 	 */

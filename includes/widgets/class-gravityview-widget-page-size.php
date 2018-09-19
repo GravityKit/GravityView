@@ -25,7 +25,7 @@ class Page_Size extends \GV\Widget {
 		$settings = array();
 
 		if ( ! $this->is_registered() ) {
-			// add_filter( '
+			add_action( 'gravityview/view/get', array( $this, 'override_view_page_size' ) );
 		}
 
 		parent::__construct( __( 'Page Size', 'gravityview' ) , 'page_size', $default_values, $settings );
@@ -92,6 +92,29 @@ class Page_Size extends \GV\Widget {
 		<?php
 	}
 
+	/**
+	 * Override the View settings and inject the needed page size.
+	 *
+	 * This might be too early, seeing that there's lack of full context, but we should
+	 * be fine for now.
+	 *
+	 * @param \GV\View $view The View.
+	 */
+	public function override_view_page_size( &$view ) {
+		if ( ! $view->widgets->by_id( 'page_size' )->count() ) {
+			return;
+		}
+
+		if ( $page_size = \GV\Utils::_GET( 'page_size' ) ) {
+			$context = \GV\Template_Context::from_template( array(
+				'view' => $view,
+			) );
+
+			if ( in_array( $page_size, wp_list_pluck( self::get_page_sizes( $context ), 'value' ) ) ) {
+				$view->settings->update( array( 'page_size' => $page_size ) );
+			}
+		}
+	}
 }
 
-new GravityView_Widget_Page_Size;
+new Page_Size;
