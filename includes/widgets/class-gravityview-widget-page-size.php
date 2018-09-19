@@ -1,11 +1,11 @@
 <?php
-
+namespace GV\Widgets;
 /**
  * Widget to display page size
  *
- * @extends GravityView_Widget
+ * @extends GV\Widget
  */
-class GravityView_Widget_Page_Size extends \GV\Widget {
+class Page_Size extends \GV\Widget {
 
 	/**
 	 * Does this get displayed on a single entry?
@@ -24,11 +24,21 @@ class GravityView_Widget_Page_Size extends \GV\Widget {
 
 		$settings = array();
 
+		if ( ! $this->is_registered() ) {
+			// add_filter( '
+		}
+
 		parent::__construct( __( 'Page Size', 'gravityview' ) , 'page_size', $default_values, $settings );
 	}
 
-	public static function get_page_sizes() {
-
+	/** 
+	 * Get an array of page sizes.
+	 *
+	 * @param \GV\Context $context The context.
+	 *
+	 * @return array The page sizes in an array with value and text keys.
+	 */
+	public static function get_page_sizes( $context ) {
 		$sizes = array(
 			array(
 				'value' => 10,
@@ -44,24 +54,29 @@ class GravityView_Widget_Page_Size extends \GV\Widget {
 			),
 		);
 
+		/**
+		 * @filter `gravityview/widgets/page_size/page_sizes` Filter the available page sizes as needed.
+		 * @param[in,out] array $page_sizes The sizes.
+		 * @param \GV\Context The context.
+		 */
+		$sizes = apply_filters( 'gravityview/widgets/page_size/page_sizes', $sizes, $context );
+
 		return $sizes;
 	}
 
 	public function render_frontend( $widget_args, $content = '', $context = '') {
 
 		$search_field = array(
-			'label' => 'Page Size',
-			'choices' => self::get_page_sizes(),
+			'label' => __( 'Page Size', 'gravityview' ),
+			'choices' => self::get_page_sizes( $context ),
 			'value' => (int) \GV\Utils::_GET( 'page_size' ),
 		);
 
-		$default_option = 'Change Page Size';
+		$default_option = __( 'Change Page Size', 'gravityview' );
 		?>
 		<div class="gv-page-size">
-			<?php #if( ! gv_empty( $search_field['label'], false, false ) ) { ?>
 			<label for="gv-page_size"><?php echo esc_html( $search_field['label'] ); ?></label>
-			<?php #} ?>
-			<form method="get" action="<?php esc_url( add_query_arg() ); ?>" onchange="this.submit();">
+			<form method="get" action="" onchange="this.submit();">
 				<div>
 					<select name="page_size" id="gv-page_size">
 						<option value="" <?php gv_selected( '', $search_field['value'], true ); ?>><?php echo esc_html( $default_option ); ?></option>
