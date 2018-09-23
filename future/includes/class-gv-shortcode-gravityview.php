@@ -83,7 +83,6 @@ class gravityview extends \GV\Shortcode {
 		$atts = $this->parse_and_sanitize_atts( $atts );
 
 		$view->settings->update( $atts );
-		$entries = $view->get_entries( $request );
 
 		/**
 		 * Check permissions.
@@ -117,6 +116,7 @@ class gravityview extends \GV\Shortcode {
 		 * View details.
 		 */
 		if ( $atts['detail'] ) {
+			$entries = $view->get_entries( $request );
 			return self::_return( $this->detail( $view, $entries, $atts ) );
 
 		/**
