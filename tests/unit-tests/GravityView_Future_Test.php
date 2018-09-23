@@ -3574,11 +3574,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$renderer = new \GV\Field_Renderer();
 
 		$field = \GV\GF_Field::by_id( $form, '5' );
+		$field->update_configuration( array( 'link_to_file' => false ) );
+		$field->update_configuration( array( 'show_as_link' => false ) );
 
 		$output = $renderer->render( $field, $view, $form, $entry, $request );
 
 		$expected = "<ul class='gv-field-file-uploads gv-field-{$form->ID}-5'>";
-		$expected .= '<li><a href="http://one.jpg" rel="noopener noreferrer" target="_blank"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a></li>';
+		$expected .= '<li><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></li>';
 		$expected .= '<li>';
 
 		$this->assertContains( $expected, $output );
@@ -3589,9 +3591,49 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** No fancy rendering, just links, please? */
 
 		$field->update_configuration( array( 'link_to_file' => true ) );
+		$field->update_configuration( array( 'show_as_link' => false ) );
 
 		$expected = "<ul class='gv-field-file-uploads gv-field-{$form->ID}-5'>";
-		$expected .= '<li><a href="http://one.jpg" rel="noopener noreferrer" target="_blank">one.jpg</a></li><li><a href="http://two.mp3" rel="noopener noreferrer" target="_blank">two.mp3</a></li></ul>';
+		$expected .= '<li><a href="http://one.jpg" rel="noopener noreferrer" target="_blank"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a></li><li><a href="http://two.mp3" rel="noopener noreferrer" target="_blank">two.mp3</a></li></ul>';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		/** What about show as link then? Double link? */
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'5' => json_encode( array( 'https://one.jpg' ) ),
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '5' );
+
+		$field->update_configuration( array( 'link_to_file' => false ) );
+		$field->update_configuration( array( 'show_as_link' => false ) );
+
+		$output = $renderer->render( $field, $view, $form, $entry, $request );
+
+		$expected = '<img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" />';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'link_to_file' => true ) );
+		$field->update_configuration( array( 'show_as_link' => false ) );
+
+		$expected = '<a href="http://one.jpg" rel="noopener noreferrer" target="_blank"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'link_to_file' => false ) );
+		$field->update_configuration( array( 'show_as_link' => true ) );
+
+		$expected = sprintf( '<a href="%s"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>', esc_attr( $link = $entry->get_permalink( $view ) ) );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'link_to_file' => true ) );
+		$field->update_configuration( array( 'show_as_link' => true ) );
+
+		$expected = sprintf( '<a href="%s"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>', esc_attr( $link ) );
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 	}
 
