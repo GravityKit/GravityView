@@ -821,9 +821,13 @@ class GVCommon {
 	 * @since 1.7.4
 	 *
 	 * @param array $entry Gravity Forms Entry object
+	 *
+	 * @since 2.1
+	 * @param \GV\View $view The View.
+	 *
 	 * @return WP_Error|array Returns WP_Error if entry is not valid according to the view search filters (Adv Filter). Returns original $entry value if passes.
 	 */
-	public static function check_entry_display( $entry ) {
+	public static function check_entry_display( $entry, $view = null ) {
 
 		if ( ! $entry || is_wp_error( $entry ) ) {
 			return new WP_Error('entry_not_found', 'Entry was not found.', $entry );
@@ -833,7 +837,9 @@ class GVCommon {
 			return new WP_Error( 'form_id_not_set', '[apply_filters_to_entry] Entry is empty!', $entry );
 		}
 
-		$criteria = self::calculate_get_entries_criteria();
+		$criteria = self::calculate_get_entries_criteria( array(
+			'context_view_id' => $view ? $view->ID : null,
+		) );
 
 		if ( empty( $criteria['search_criteria'] ) || ! is_array( $criteria['search_criteria'] ) ) {
 			gravityview()->log->debug( '[apply_filters_to_entry] Entry approved! No search criteria found:', array( 'data' => $criteria ) );
