@@ -114,7 +114,7 @@ class Views_Route extends Route {
 		// Only output the fields that should be displayed.
 		$allowed = array();
 		foreach ( $view->fields->by_position( "{$context}_*" )->by_visible()->all() as $field ) {
-			$allowed[] = $field->ID;
+			$allowed[ $field->ID ] = $field;
 		}
 
 		/**
@@ -125,7 +125,7 @@ class Views_Route extends Route {
 		 * @param \WP_REST_Request $request Request object.
 		 * @param string $context The context (directory, single)
 		 */
-		$allowed = apply_filters( 'gravityview/rest/entry/fields', $allowed, $view, $entry, $request, $context );
+		$allowed_field_ids = apply_filters( 'gravityview/rest/entry/fields', array_keys( $allowed ), $view, $entry, $request, $context );
 
 		$r = new Request( $request );
 		$return = array();
@@ -135,9 +135,14 @@ class Views_Route extends Route {
 			$renderer = new \GV\Field_Renderer();
 		}
 
-		foreach ( $allowed as $field ) {
-			$source = is_numeric( $field ) ? $view->form : new \GV\Internal_Source();
-			$field  = is_numeric( $field ) ? \GV\GF_Field::by_id( $view->form, $field ) : \GV\Internal_Field::by_id( $field );
+		foreach ( $allowed_field_ids as $field_id ) {
+			$source = is_numeric( $field_id ) ? $view->form : new \GV\Internal_Source();
+
+			if ( isset( $allowed[ $field_id ] ) ) {
+				$field = $allowed[ $field_id ];
+			} else {
+				$field = is_numeric( $field_id ) ? \GV\GF_Field::by_id( $view->form, $field_id ) : \GV\Internal_Field::by_id( $field_id );
+			}
 
 			if ( $class ) {
 				$return[ $field->ID ] = $renderer->render( $field, $view, $source, $entry, $r, $class );
@@ -145,8 +150,6 @@ class Views_Route extends Route {
 				$return[ $field->ID ] = $field->get_value( $view, $source, $entry, $r );
 			}
 		}
-
-		// @todo Set the labels!
 
 		return $return;
 	}
