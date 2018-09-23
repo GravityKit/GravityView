@@ -145,8 +145,6 @@
 				// Update checkbox visibility when having dependency checkboxes
 				.on( 'change', ".gv-setting-list, #gravityview_settings", vcfg.toggleCheckboxes )
 
-				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )
-
 				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters );
 
 			// End bind to $('body')
