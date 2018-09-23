@@ -245,7 +245,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 				$text = $image->html();
 
-				if ( $lightbox ) {
+				if ( $lightbox && empty( $field_settings['show_as_link'] ) ) {
 					$lightbox_link_atts = array(
 						'rel' => sprintf( "%s-%s", $gv_class, $entry_slug ),
 						'class' => 'thickbox',
@@ -269,7 +269,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			$disable_wrapped_link = apply_filters( 'gravityview/fields/fileupload/disable_link', false, $field_compat, $context );
 
 			// Output textualized content where 
-			if ( ! $disable_wrapped_link && ! empty( $field_settings['link_to_file'] ) && empty( $field_settings['show_as_link'] ) ) {
+			if ( ! $disable_wrapped_link && ( ! empty( $field_settings['link_to_file'] ) && empty( $field_settings['show_as_link'] ) ) ) {
 				$content = empty( $text ) ? $file_path_info['basename'] : $text;
 
 				/**

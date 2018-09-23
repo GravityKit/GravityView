@@ -3635,6 +3635,17 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$expected = sprintf( '<a href="%s"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>', esc_attr( $link ) );
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		/** What about the thickbox? Shouldn't display. */
+
+		$view->settings->update( array( 'lightbox' => true ) );
+		$expected = sprintf( '<a href="%s"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>', esc_attr( $link ) );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'link_to_file' => false ) );
+		$field->update_configuration( array( 'show_as_link' => false ) );
+
+		$this->assertContains( '<a class="thickbox" href="http://one.jpg" rel', $renderer->render( $field, $view, $form, $entry, $request ) );
 	}
 
 	/**
