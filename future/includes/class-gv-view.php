@@ -937,7 +937,8 @@ class View implements \ArrayAccess {
 		$renderer = new Field_Renderer();
 
 		foreach ( $entries->all() as $entry ) {
-			$return = $entry->as_entry();
+
+			$return = array();
 
 			/**
 			 * @filter `gravityview/csv/entry/fields` Whitelist more entry fields that are output in CSV requests.
@@ -947,16 +948,9 @@ class View implements \ArrayAccess {
 			 */
 			$allowed = apply_filters( 'gravityview/csv/entry/fields', $allowed, $view, $entry );
 
-			foreach ( $return as $key => $value ) {
-				if ( ! in_array( $key, $allowed ) ) {
-					unset( $return[ $key ] );
-				}
-			}
-
-			foreach ( $allowed as $field ) {
-				$source = is_numeric( $field ) ? $view->form : new \GV\Internal_Source();
-				$field  = is_numeric( $field ) ? \GV\GF_Field::by_id( $view->form, $field ) : \GV\Internal_Field::by_id( $field );
-
+			foreach ( $allowed as $field_id ) {
+				$source = is_numeric( $field_id ) ? $view->form : new \GV\Internal_Source();
+				$field  = is_numeric( $field_id ) ? \GV\GF_Field::by_id( $view->form, $field_id ) : \GV\Internal_Field::by_id( $field_id );
 
 				$return[ $field->ID ] = $renderer->render( $field, $view, $source, $entry, gravityview()->request, '\GV\Field_CSV_Template' );
 

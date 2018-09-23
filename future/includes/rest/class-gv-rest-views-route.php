@@ -110,7 +110,6 @@ class Views_Route extends Route {
 	 * @return mixed The data that is sent.
 	 */
 	public function prepare_entry_for_response( $view, $entry, \WP_REST_Request $request, $context, $class = null ) {
-		$return = $entry->as_entry();
 
 		// Only output the fields that should be displayed.
 		$allowed = array();
@@ -128,13 +127,9 @@ class Views_Route extends Route {
 		 */
 		$allowed = apply_filters( 'gravityview/rest/entry/fields', $allowed, $view, $entry, $request, $context );
 
-		foreach ( $return as $key => $value ) {
-			if ( ! in_array( $key, $allowed ) ) {
-				unset( $return[ $key ] );
-			}
-		}
-
 		$r = new Request( $request );
+		$return = array();
+		$renderer = null;
 
 		if ( $class ) {
 			$renderer = new \GV\Field_Renderer();
