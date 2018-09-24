@@ -504,4 +504,45 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		$this->assertContains( '<span class="gv-approval-unapproved">Unapproved</span>', $output );
 		$this->assertContains( '<span class="gv-approval-unapproved">Nicht bestätigt</span>', $output );
 	}
+
+	/**
+	 * https://secure.helpscout.net/conversation/603701583/15492/
+	 */
+	public function test_gravityview_entries_pass_count_by_reference() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+		$view = \GV\View::from_post( $post );
+
+		list( $entries, $paging, $count ) = \GV\Mocks\GravityView_frontend_get_view_entries( array( 'id' => $view->ID ), $form['id'], array(
+			'paging' => array( 'current_page' => 1, 'offset' => 0, 'page_size' => 25 ),
+		), 0 );
+
+		$this->assertEquals( array(
+			array(), array( 'offset' => 0, 'page_size' => 25 ), 0
+		), array( $entries, $paging, $count ) );
+
+		add_filter( 'gravityview_before_get_entries', $before_callback = function( $entries, $criteria, $parameters, &$count ) {
+			$count = 10;
+			return array();
+		}, 10, 4 );
+
+		list( $entries, $paging, $count ) = \GV\Mocks\GravityView_frontend_get_view_entries( array( 'id' => $view->ID ), $form['id'], array(
+			'paging' => array( 'current_page' => 1, 'offset' => 0, 'page_size' => 25 ),
+		), 10 );
+
+		$this->assertTrue( remove_filter( 'gravityview_before_get_entries', $before_callback ) );
+
+		add_filter( 'gravityview_entries', $before_callback = function( $entries, $criteria, $parameters, &$count ) {
+			$count = 11;
+			return array();
+		}, 10, 4 );
+
+		list( $entries, $paging, $count ) = \GV\Mocks\GravityView_frontend_get_view_entries( array( 'id' => $view->ID ), $form['id'], array(
+			'paging' => array( 'current_page' => 1, 'offset' => 0, 'page_size' => 25 ),
+		), 11 );
+
+		$this->assertTrue( remove_filter( 'gravityview_entries', $before_callback ) );
+	}
 }
