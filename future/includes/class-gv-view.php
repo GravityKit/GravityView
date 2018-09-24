@@ -931,32 +931,31 @@ class View implements \ArrayAccess {
 		$allowed = $headers = array();
 
 		foreach ( $view->fields->by_position( "directory_*" )->by_visible()->all() as $field ) {
-			$allowed[] = $field->ID;
+			$allowed[ $field->ID ] = $field;
 		}
 
 		$renderer = new Field_Renderer();
 
 		foreach ( $entries->all() as $entry ) {
-			$return = $entry->as_entry();
+
+			$return = array();
 
 			/**
 			 * @filter `gravityview/csv/entry/fields` Whitelist more entry fields that are output in CSV requests.
-			 * @param[in,out] array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the view.
+			 * @param[in,out] array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the View.
 			 * @param \GV\View $view The view.
 			 * @param \GV\Entry $entry WordPress representation of the item.
 			 */
-			$allowed = apply_filters( 'gravityview/csv/entry/fields', $allowed, $view, $entry );
+			$allowed_field_ids = apply_filters( 'gravityview/csv/entry/fields', array_keys( $allowed ), $view, $entry );
 
-			foreach ( $return as $key => $value ) {
-				if ( ! in_array( $key, $allowed ) ) {
-					unset( $return[ $key ] );
+			foreach ( $allowed_field_ids as $field_id ) {
+				$source = is_numeric( $field_id ) ? $view->form : new \GV\Internal_Source();
+
+				if ( isset( $allowed[ $field_id ] ) ) {
+					$field = $allowed[ $field_id ];
+				} else {
+					$field = is_numeric( $field_id ) ? \GV\GF_Field::by_id( $view->form, $field_id ) : \GV\Internal_Field::by_id( $field_id );
 				}
-			}
-
-			foreach ( $allowed as $field ) {
-				$source = is_numeric( $field ) ? $view->form : new \GV\Internal_Source();
-				$field  = is_numeric( $field ) ? \GV\GF_Field::by_id( $view->form, $field ) : \GV\Internal_Field::by_id( $field );
-
 
 				$return[ $field->ID ] = $renderer->render( $field, $view, $source, $entry, gravityview()->request, '\GV\Field_CSV_Template' );
 

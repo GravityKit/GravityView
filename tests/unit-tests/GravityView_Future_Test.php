@@ -7613,6 +7613,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 						'id' => '8',
 						'label' => 'Customer Name',
 					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '8.3',
+						'label' => 'Customer First Name',
+					),
 				),
 			),
 		) );
@@ -7654,9 +7658,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		ob_start();
 		$view::template_redirect();
 		$expected = array(
-			'id,Textarea,Name',
-			$entry2->ID . ',"\'=Broomsticks x 8","Harry Churchill"',
-			$entry->ID . ',"A pair of shoes","Winston Potter"',
+			'"Order ID",Item,"Customer Name","Customer First Name"',
+			$entry2->ID . ',"\'=Broomsticks x 8","Harry Churchill",Harry',
+			$entry->ID . ',"A pair of shoes","Winston Potter",Winston',
 		);
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
