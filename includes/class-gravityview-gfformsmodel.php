@@ -48,7 +48,7 @@ class GravityView_GFFormsModel extends GFFormsModel {
 			return GVCommon::matches_operation( (array) $field_value, (array) $target_value, $operation );
 		}
 
-		return parent::is_value_match( (array) $field_value, $target_value, $operation, $source_field, $rule, $form );
+		return parent::is_value_match( $field_value, $target_value, $operation, $source_field, $rule, $form );
 	}
 
 	/**
