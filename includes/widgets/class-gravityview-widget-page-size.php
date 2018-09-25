@@ -82,6 +82,10 @@ class Page_Size extends \GV\Widget {
 	public function render_frontend( $widget_args, $content = '', $context = null ) {
 
 		$search_field = array(
+		if( ! $this->pre_render_frontend() ) {
+			return;
+		}
+
 			'label'   => __( 'Page Size', 'gravityview' ),
 			'choices' => self::get_page_sizes( $context ),
 			'value'   => (int) \GV\Utils::_GET( 'page_size', $context->view->settings->get( 'page_size' ) ),
