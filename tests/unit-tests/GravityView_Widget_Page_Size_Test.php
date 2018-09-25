@@ -105,7 +105,7 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 		// Restore default page size
 		$view->settings->update( array( 'page_size' => 25 ) );
 
-		add_filter( 'gravityview/widgets/page_size/page_sizes', $page_sizes_callback = function() {
+		add_filter( 'gravityview/widget/page_size/page_sizes', $page_sizes_callback = function() {
 			return array(
 				array( 'value' => 12345, 'text' => 'page_sizes12345' ),
 				array( 'value' => 15, 'text' => '<a>& don\'t forget to escape me!</a>' ),
@@ -116,7 +116,7 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 		$this->assertContains( 'page_sizes12345', $future );
 		$this->assertContains( '&lt;a&gt;&amp; don&#039;t forget to escape me!&lt;/a&gt;', $future );
 
-		$this->assertTrue( remove_filter( 'gravityview/widgets/page_size/page_sizes', $page_sizes_callback ) );
+		$this->assertTrue( remove_filter( 'gravityview/widget/page_size/page_sizes', $page_sizes_callback ) );
     }
 
 	/**
@@ -179,7 +179,7 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 		    array( 'value' => 15, 'text' => '<a>& don\'t forget to escape me!</a>' ),
 	    );
 
-	    add_filter( 'gravityview/widgets/page_size/page_sizes', $page_sizes_callback = function() use ( $expected_result ) {
+	    add_filter( 'gravityview/widget/page_size/page_sizes', $page_sizes_callback = function() use ( $expected_result ) {
 		    return $expected_result;
 	    } );
 
@@ -189,7 +189,7 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 
 	    $this->assertSame( $expected_result, $page_sizes );
 
-	    $this->assertTrue( remove_filter( 'gravityview/widgets/page_size/page_sizes', $page_sizes_callback ) );
+	    $this->assertTrue( remove_filter( 'gravityview/widget/page_size/page_sizes', $page_sizes_callback ) );
 	}
 
 	public function test_page_size_widget_functionality() {
@@ -243,7 +243,7 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 		$future = $renderer->render( $view );
 		$this->assertContains( 'gv-page_size', $future );
 
-		add_filter( 'gravityview/widgets/page_size/page_sizes', $page_sizes_callback = function( $sizes ) {
+		add_filter( 'gravityview/widget/page_size/page_sizes', $page_sizes_callback = function( $sizes ) {
 			$sizes[] = array( 'value' => 7, 'text' => '7 entries per page' );
 			return $sizes;
 		} );
@@ -262,7 +262,7 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 		$this->assertContains( '[94] Some text in a textarea', $future );
 		$this->assertNotContains( '[93] Some text in a textarea', $future );
 
-		$this->assertTrue( remove_filter( 'gravityview/widgets/page_size/page_sizes', $page_sizes_callback ) );
+		$this->assertTrue( remove_filter( 'gravityview/widget/page_size/page_sizes', $page_sizes_callback ) );
     }
 	
 	public function test_page_size_widget_not_present() {
