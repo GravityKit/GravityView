@@ -65,7 +65,7 @@ class Template_Context extends Context {
 	/**
 	 * Create a context from a Template
 	 *
-	 * @param \GV\Template $template The template.
+	 * @param \GV\Template|array $template The template or array with values expected in a template
 	 * @param array $data Additional data not tied to the template object.
 	 *
 	 * @return \GV\Template_Context The context holder.
