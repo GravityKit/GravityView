@@ -102,9 +102,11 @@ class Page_Size extends \GV\Widget {
 
 		?>
         <div class="gv-widget-page-size">
-            <?php if( ! empty( $settings['label'] ) ) { ?><label for="gv-page_size"><?php echo esc_html( $settings['label'] ); ?></label><?php } ?>
-            <form method="get" action="" onchange="this.submit();">
+            <form method="get" action="<?php echo esc_url( add_query_arg( array() ) ); ?>" onchange="this.submit();">
                 <div>
+                    <?php if( ! empty( $settings['label'] ) ) { ?>
+                    <label for="gv-page_size"><?php echo esc_html( $settings['label'] ); ?></label>
+                    <?php } ?>
                     <select name="page_size" id="gv-page_size">
                         <option value=""><?php echo esc_html( $settings['default_choice_text'] ); ?></option>
 						<?php
