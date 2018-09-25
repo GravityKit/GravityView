@@ -114,7 +114,15 @@ class Page_Size extends \GV\Widget {
                             <option value='<?php echo esc_attr( $choice['value'] ); ?>'<?php gv_selected( esc_attr( $choice['value'] ), esc_attr( $page_size ), true ); ?>><?php echo esc_html( $choice['text'] ); ?></option>
 						<?php } ?>
                     </select>
-                    <input type="submit" value="Submit" style="display: none"/>
+                    <input type="submit" value="Submit" style="visibility: hidden; position: absolute;" /><?php
+                    if( ! empty( $_GET ) ) {
+                        $get = $_GET;
+                        unset( $get['page_size'] );
+	                    foreach ( $get as $key => $value ) {
+		                    printf( '<input type="hidden" name="%s" value="%s" />', esc_attr( $key ), esc_attr( $value ) );
+	                    }
+                    }
+                    ?>
                 </div>
             </form>
         </div>

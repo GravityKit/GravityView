@@ -118,6 +118,8 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 
 		$this->assertTrue( remove_filter( 'gravityview/widget/page_size/page_sizes', $page_sizes_callback ) );
 
+		$this->assertContains('<label for="gv-page_size">', $future );
+
 		add_filter( 'gravityview/widget/page_size/settings', $test_settings_filter = function( $settings ) {
 			$settings['label'] = '';
 			return $settings;
@@ -141,6 +143,12 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 
 		$future = $renderer->render( $view );
 		$this->assertContains( '<option value="">Make a choice, me matey</option>', $future );
+
+		$_GET['page_size'] = 100;
+		$_GET['filter_1_4'] = '\'Sanitize & Me!"';
+
+		$future = $renderer->render( $view );
+		$this->assertContains( '<input type="hidden" name="filter_1_4" value="&#039;Sanitize &amp; Me!&quot;" />', $future );
 
 		remove_all_filters( 'gravityview/widget/page_size/settings' );
     }
