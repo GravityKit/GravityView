@@ -34,45 +34,59 @@ class Page_Size extends \GV\Widget {
 	/** 
 	 * Get an array of page sizes.
 	 *
-	 * @param \GV\Context $context The context.
+	 * @param \GV\Template_Context|string $context The context, if available
 	 *
-	 * @return array The page sizes in an array with value and text keys.
+	 * @return array The page sizes in an array with `value` and `text` keys.
 	 */
 	public static function get_page_sizes( $context ) {
-		$sizes = array(
-			array(
-				'value' => 10,
-				'text'  => 10,
-			),
-			array(
-				'value' => 20,
-				'text'  => 20,
-			),
-			array(
-				'value' => 30,
-				'text'  => 30,
-			),
-		);
+
+		$default_size = 25;
+
+		if( $context instanceof \GV\Template_Context ) {
+            $default_size = (int) $context->view->settings->get( 'page_size' );
+        }
+
+	    $sizes = array( 10, 25, $default_size, 50, 100 );
+
+		$sizes = array_unique( array_filter( $sizes ) );
+
+        sort( $sizes );
+
+	    $page_sizes = array();
+		foreach ( $sizes as $size ) {
+			$page_sizes []= array(
+				'value' => $size,
+                'text'  => $size
+            );
+		}
 
 		/**
-		 * @filter `gravityview/widgets/page_size/page_sizes` Filter the available page sizes as needed.
-		 * @param[in,out] array $page_sizes The sizes.
-		 * @param \GV\Context The context.
+		 * @filter `gravityview/widgets/page_size/page_sizes` Filter the available page sizes as needed
+		 * @param[in,out] array $sizes The sizes, with `value` and `text` keys. `text` key used as HTML option label.
+		 * @param \GV\Context $context The context.
 		 */
-		$sizes = apply_filters( 'gravityview/widgets/page_size/page_sizes', $sizes, $context );
+		$page_sizes = apply_filters( 'gravityview/widgets/page_size/page_sizes', $page_sizes, $context );
 
-		return $sizes;
+		return $page_sizes;
 	}
 
-	public function render_frontend( $widget_args, $content = '', $context = '') {
+	/**
+     *
+     * @param array $widget_args The Widget shortcode args.
+	 * @param string $content The content.
+	 * @param string|\GV\Template_Context $context The context, if available.
+	 *
+	 */
+	public function render_frontend( $widget_args, $content = '', $context = null ) {
 
 		$search_field = array(
 			'label' => __( 'Page Size', 'gravityview' ),
 			'choices' => self::get_page_sizes( $context ),
-			'value' => (int) \GV\Utils::_GET( 'page_size' ),
+			'value' => (int) \GV\Utils::_GET( 'page_size', $context->view->settings->get( 'page_size' ) ),
 		);
 
-		$default_option = __( 'Change Page Size', 'gravityview' );
+		$default_option = __( 'Results Per Page', 'gravityview' );
+
 		?>
 		<div class="gv-page-size">
 			<label for="gv-page_size"><?php echo esc_html( $search_field['label'] ); ?></label>
@@ -82,7 +96,7 @@ class Page_Size extends \GV\Widget {
 						<option value="" <?php gv_selected( '', $search_field['value'], true ); ?>><?php echo esc_html( $default_option ); ?></option>
 						<?php
 						foreach( $search_field['choices'] as $choice ) { ?>
-							<option value="<?php echo esc_attr( $choice['value'] ); ?>" <?php gv_selected( esc_attr( $choice['value'] ), esc_attr( $search_field['value'] ), true ); ?>><?php echo esc_html( $choice['text'] ); ?></option>
+							<option value='<?php echo esc_attr( $choice['value'] ); ?>'<?php gv_selected( esc_attr( $choice['value'] ), esc_attr( $search_field['value'] ), true ); ?>><?php echo esc_html( $choice['text'] ); ?></option>
 						<?php } ?>
 					</select>
 					<input type="submit" value="Submit" style="display: none" />
