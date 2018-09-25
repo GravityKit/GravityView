@@ -90,7 +90,7 @@ class Page_Size extends \GV\Widget {
 		$default_option = __( 'Results Per Page', 'gravityview' );
 
 		?>
-        <div class="gv-page-size">
+        <div class="gv-widget-page-size">
             <label for="gv-page_size"><?php echo esc_html( $search_field['label'] ); ?></label>
             <form method="get" action="" onchange="this.submit();">
                 <div>
