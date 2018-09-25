@@ -115,19 +115,32 @@ class Page_Size extends \GV\Widget {
 	 * @param \GV\View $view The View.
 	 */
 	public function override_view_page_size( &$view ) {
-		if ( ! $view->widgets->by_id( 'page_size' )->count() ) {
+
+	    if ( ! $view->widgets->by_id( 'page_size' )->count() ) {
 			return;
 		}
 
-		if ( $page_size = \GV\Utils::_GET( 'page_size' ) ) {
-			$context = \GV\Template_Context::from_template( array(
-				'view' => $view,
-			) );
+		$page_size = \GV\Utils::_GET( 'page_size' );
 
-			if ( in_array( $page_size, wp_list_pluck( self::get_page_sizes( $context ), 'value' ) ) ) {
-				$view->settings->update( array( 'page_size' => $page_size ) );
-			}
+		if ( is_null( $page_size ) ) {
+			return;
 		}
+
+		// Already overridden
+		if( (int) $page_size === (int) $view->settings->get( 'page_size' ) ) {
+		    return;
+        }
+
+		$context = \GV\Template_Context::from_template( array(
+			'view' => $view,
+		) );
+
+		if ( ! in_array( (int) $page_size, wp_list_pluck( self::get_page_sizes( $context ), 'value' ), true ) ) {
+		    gravityview()->log->warning( 'The passed page size is not allowed: {page_size}. Not modifying result.', array( 'page_size' => $page_size ) );
+		    return;
+		}
+
+        $view->settings->update( array( 'page_size' => $page_size ) );
 	}
 }
 
