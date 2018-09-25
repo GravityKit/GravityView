@@ -124,7 +124,7 @@ class Page_Size extends \GV\Widget {
 
 		$page_size = \GV\Utils::_GET( 'page_size' );
 
-		if ( is_null( $page_size ) ) {
+		if ( empty( $page_size ) ) {
 			return;
 		}
 
