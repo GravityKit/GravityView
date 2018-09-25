@@ -81,28 +81,35 @@ class Page_Size extends \GV\Widget {
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = null ) {
 
-		$search_field = array(
 		if( ! $this->pre_render_frontend() ) {
 			return;
 		}
 
+		$page_size = (int) \GV\Utils::_GET( 'page_size', $context->view->settings->get( 'page_size' ) );
+
+		$settings = shortcode_atts( array(
 			'label'   => __( 'Page Size', 'gravityview' ),
 			'choices' => self::get_page_sizes( $context ),
-			'value'   => (int) \GV\Utils::_GET( 'page_size', $context->view->settings->get( 'page_size' ) ),
-		);
+			'default_choice_text' => __( 'Results Per Page', 'gravityview' ),
+		), $widget_args, 'gravityview_widget_page_size' );
 
-		$default_option = __( 'Results Per Page', 'gravityview' );
+		/**
+		 * @filter `gravityview/widget/page_size/settings` Filter the settings for the widget
+		 * @param array $settings Configuration for how output will display, with `label`, `choices`, `default_choice_text` keys
+		 * @param \GV\Template_Context $context The context.
+		 */
+		$settings = apply_filters( 'gravityview/widget/page_size/settings', $settings, $context );
 
 		?>
         <div class="gv-widget-page-size">
-            <label for="gv-page_size"><?php echo esc_html( $search_field['label'] ); ?></label>
+            <?php if( ! empty( $settings['label'] ) ) { ?><label for="gv-page_size"><?php echo esc_html( $settings['label'] ); ?></label><?php } ?>
             <form method="get" action="" onchange="this.submit();">
                 <div>
                     <select name="page_size" id="gv-page_size">
-                        <option value="" <?php gv_selected( '', $search_field['value'], true ); ?>><?php echo esc_html( $default_option ); ?></option>
+                        <option value=""><?php echo esc_html( $settings['default_choice_text'] ); ?></option>
 						<?php
-						foreach ( $search_field['choices'] as $choice ) { ?>
-                            <option value='<?php echo esc_attr( $choice['value'] ); ?>'<?php gv_selected( esc_attr( $choice['value'] ), esc_attr( $search_field['value'] ), true ); ?>><?php echo esc_html( $choice['text'] ); ?></option>
+						foreach ( $settings['choices'] as $choice ) { ?>
+                            <option value='<?php echo esc_attr( $choice['value'] ); ?>'<?php gv_selected( esc_attr( $choice['value'] ), esc_attr( $page_size ), true ); ?>><?php echo esc_html( $choice['text'] ); ?></option>
 						<?php } ?>
                     </select>
                     <input type="submit" value="Submit" style="display: none"/>

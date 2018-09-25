@@ -114,9 +114,35 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 
 		$future = $renderer->render( $view );
 		$this->assertContains( 'page_sizes12345', $future );
-		$this->assertContains( '&lt;a&gt;&amp; don&#039;t forget to escape me!&lt;/a&gt;', $future );
+		$this->assertContains( esc_attr( '<a>& don\'t forget to escape me!</a>' ), $future );
 
 		$this->assertTrue( remove_filter( 'gravityview/widget/page_size/page_sizes', $page_sizes_callback ) );
+
+		add_filter( 'gravityview/widget/page_size/settings', $test_settings_filter = function( $settings ) {
+			$settings['label'] = '';
+			return $settings;
+		});
+
+		$future = $renderer->render( $view );
+		$this->assertNotContains('<label for="gv-page_size">', $future );
+
+		add_filter( 'gravityview/widget/page_size/settings', $test_settings_filter = function( $settings ) {
+			$settings['label'] = '<em>Sanitize Me Labels!</em>';
+			return $settings;
+		});
+
+		$future = $renderer->render( $view );
+		$this->assertContains( esc_html( '<em>Sanitize Me Labels!</em>' ), $future );
+
+		add_filter( 'gravityview/widget/page_size/settings', $test_settings_filter = function( $settings ) {
+			$settings['default_choice_text'] = 'Make a choice, me matey';
+			return $settings;
+		});
+
+		$future = $renderer->render( $view );
+		$this->assertContains( '<option value="">Make a choice, me matey</option>', $future );
+
+		remove_all_filters( 'gravityview/widget/page_size/settings' );
     }
 
 	/**
