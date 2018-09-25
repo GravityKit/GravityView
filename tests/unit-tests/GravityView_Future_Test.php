@@ -557,6 +557,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$with_shortcodes_in_meta = $this->factory->post->create_and_get();
 		update_post_meta( $with_shortcodes_in_meta->ID, 'meta_test', sprintf( '[gravityview id="%d"]', $post->ID ) );
 		update_post_meta( $with_shortcodes_in_meta->ID, 'another_meta_test', sprintf( '[gravityview id="%d"]', $another_post->ID ) );
+		update_post_meta( $with_shortcodes_in_meta->ID, 'json_meta_test', json_encode( array( array( 'random' => 'json', 'has_shortcode' => sprintf( '[gravityview id="%d"][gravityview id="%d"]', $post->ID, $another_post->ID ) ) ) ) );
 
 		/** And make sure arrays don't break things. */
 		update_post_meta( $with_shortcodes_in_meta->ID, 'invalid_meta_test', array( 'do not even try to parse this' ) );
@@ -583,6 +584,16 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$views = \GV\View_Collection::from_post( $with_shortcodes_in_meta );
 		$this->assertCount( 1, $views->all() );
+		$view = $views->get( $another_post->ID );
+		$this->assertEquals( $view->ID, $another_post->ID );
+
+		add_filter( 'gravityview/data/parse/meta_keys', function( $meta_keys, $post_id ) use ( $with_shortcodes_in_meta, $test ) {
+			$test->assertEquals( $post_id, $with_shortcodes_in_meta->ID );
+			return array( 'json_meta_test' );
+		}, 10, 2 );
+
+		$views = \GV\View_Collection::from_post( $with_shortcodes_in_meta );
+		$this->assertCount( 2, $views->all() );
 		$view = $views->get( $another_post->ID );
 		$this->assertEquals( $view->ID, $another_post->ID );
 
@@ -3563,11 +3574,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$renderer = new \GV\Field_Renderer();
 
 		$field = \GV\GF_Field::by_id( $form, '5' );
+		$field->update_configuration( array( 'link_to_file' => false ) );
+		$field->update_configuration( array( 'show_as_link' => false ) );
 
 		$output = $renderer->render( $field, $view, $form, $entry, $request );
 
 		$expected = "<ul class='gv-field-file-uploads gv-field-{$form->ID}-5'>";
-		$expected .= '<li><a href="http://one.jpg" rel="noopener noreferrer" target="_blank"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a></li>';
+		$expected .= '<li><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></li>';
 		$expected .= '<li>';
 
 		$this->assertContains( $expected, $output );
@@ -3578,10 +3591,61 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** No fancy rendering, just links, please? */
 
 		$field->update_configuration( array( 'link_to_file' => true ) );
+		$field->update_configuration( array( 'show_as_link' => false ) );
 
 		$expected = "<ul class='gv-field-file-uploads gv-field-{$form->ID}-5'>";
-		$expected .= '<li><a href="http://one.jpg" rel="noopener noreferrer" target="_blank">one.jpg</a></li><li><a href="http://two.mp3" rel="noopener noreferrer" target="_blank">two.mp3</a></li></ul>';
+		$expected .= '<li><a href="http://one.jpg" rel="noopener noreferrer" target="_blank"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a></li><li><a href="http://two.mp3" rel="noopener noreferrer" target="_blank">two.mp3</a></li></ul>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		/** What about show as link then? Double link? */
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'5' => json_encode( array( 'https://one.jpg' ) ),
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '5' );
+
+		$field->update_configuration( array( 'link_to_file' => false ) );
+		$field->update_configuration( array( 'show_as_link' => false ) );
+
+		$output = $renderer->render( $field, $view, $form, $entry, $request );
+
+		$expected = '<img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" />';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'link_to_file' => true ) );
+		$field->update_configuration( array( 'show_as_link' => false ) );
+
+		$expected = '<a href="http://one.jpg" rel="noopener noreferrer" target="_blank"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'link_to_file' => false ) );
+		$field->update_configuration( array( 'show_as_link' => true ) );
+
+		$expected = sprintf( '<a href="%s"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>', esc_attr( $link = $entry->get_permalink( $view ) ) );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'link_to_file' => true ) );
+		$field->update_configuration( array( 'show_as_link' => true ) );
+
+		$expected = sprintf( '<a href="%s"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>', esc_attr( $link ) );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		/** What about the thickbox? Shouldn't display. */
+
+		$view->settings->update( array( 'lightbox' => true ) );
+		$expected = sprintf( '<a href="%s"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>', esc_attr( $link ) );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'link_to_file' => false ) );
+		$field->update_configuration( array( 'show_as_link' => false ) );
+
+		$this->assertContains( '<a class="thickbox" href="http://one.jpg" rel', $renderer->render( $field, $view, $form, $entry, $request ) );
 	}
 
 	/**
@@ -7549,6 +7613,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 						'id' => '8',
 						'label' => 'Customer Name',
 					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '8.3',
+						'label' => 'Customer First Name',
+					),
 				),
 			),
 		) );
@@ -7590,9 +7658,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		ob_start();
 		$view::template_redirect();
 		$expected = array(
-			'id,Textarea,Name',
-			$entry2->ID . ',"\'=Broomsticks x 8","Harry Churchill"',
-			$entry->ID . ',"A pair of shoes","Winston Potter"',
+			'"Order ID",Item,"Customer Name","Customer First Name"',
+			$entry2->ID . ',"\'=Broomsticks x 8","Harry Churchill",Harry',
+			$entry->ID . ',"A pair of shoes","Winston Potter",Winston',
 		);
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 

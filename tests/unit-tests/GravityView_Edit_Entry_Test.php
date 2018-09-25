@@ -468,7 +468,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	/**
 	 * Emulate a valid edit view hit.
 	 *
-	 * @param $form A $view object returned by our factory.
+	 * @param $form A $form object returned by our factory.
 	 * @param $view A $view object returned by our factory.
 	 * @param $entry An $entry object returned by our factory.
 	 *
@@ -1256,6 +1256,58 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		// It's still approved and modified
 		$this->assertNotContains( 'this is four', \GV\View::content( 'entry' ) );
+
+		$this->_reset_context();
+	}
+
+	public function test_form_render_default_fields() {
+		/** Create a user */
+		$administrator = $this->_generate_user( 'administrator' );
+
+		/** Create the form, entry and view */
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$form['fields'][1]->choices[4]['isSelected'] = true;;
+		\GFAPI::update_form( $form );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'created_by' => $administrator,
+			'status' => 'active',
+			'form_id' => $form['id'],
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+		/** Request the rendered form */
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertNotContains( "value='Much Worse' checked='checked'", $output );
+
+		$this->_reset_context();
+
+		$form['fields'][1]->choices[4]['isSelected'] = true;;
+		\GFAPI::update_form( $form );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'created_by' => $administrator,
+			'status' => 'active',
+			'form_id' => $form['id'],
+			'2.1' => 'Much Better',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+		/** Request the rendered form */
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertContains( "value='Much Better' checked='checked'", $output );
+		$this->assertNotContains( "value='Much Worse' checked='checked'", $output );
 
 		$this->_reset_context();
 	}

@@ -65,8 +65,10 @@ class GravityView_Admin_Installer {
 	 * @return void
 	 */
 	public function add_downloads_data_filters() {
-		$downloads_data = get_site_transient( self::DOWNLOADS_DATA_TRANSIENT );
-		if ( ! $downloads_data ) {
+
+	    $downloads_data = get_site_transient( self::DOWNLOADS_DATA_TRANSIENT );
+
+	    if ( ! $downloads_data ) {
 			return;
 		}
 
@@ -407,6 +409,7 @@ class GravityView_Admin_Installer {
 			'slug' => '',
 			'excerpt' => '',
 			'link' => '',
+            'coming_soon' => false,
 			'installer_title' => null, // May not be defined
 			'installer_excerpt' => null, // May not be defined
 		) );
@@ -430,7 +433,7 @@ class GravityView_Admin_Installer {
 		}
 
 		// No access with the current license level, and the download is available to purchase
-		else if ( ! $has_access && ! empty( $base_price ) ) {
+		elseif ( ! $has_access && ! empty( $base_price ) ) {
 			$spinner      = false;
 			$status_label = '';
 			$button_label = sprintf( __( 'Purchase Now for %s', 'gravityview' ), '$' . $base_price );
@@ -440,7 +443,7 @@ class GravityView_Admin_Installer {
 		}
 
 		// No access with the current license level, and the download is not sold separately
-		else if ( ! $has_access && $is_active ) {
+		elseif ( ! $has_access && $is_active ) {
 			$spinner      = false;
 			$status_label = '';
 			$button_label = sprintf( __( 'Upgrade to %s for Access', 'gravityview' ), $required_license );
@@ -448,8 +451,17 @@ class GravityView_Admin_Installer {
 			$href         = 'https://gravityview.co/pricing/?utm_source=admin-installer&utm_medium=admin&utm_campaign=Admin%20Notice&utm_content=' . $required_license;
 		}
 
+        elseif ( ! empty( $download_info['coming_soon'] ) ) {
+	        $spinner      = false;
+	        $status       = 'notinstalled';
+	        $status_label = __( 'Coming Soon', 'gravityview' );
+	        $button_label = __( 'Learn More', 'gravityview' );
+	        $button_class = 'button-primary button-large';
+	        $href         = \GV\Utils::get( $download_info, 'link', 'https://gravityview.co/extensions/' );
+        }
+
 		// Access but the plugin is not installed
-		else if ( ! $wp_plugin ) {
+		elseif ( ! $wp_plugin ) {
 
 			$href = add_query_arg(
 				array(
@@ -467,8 +479,7 @@ class GravityView_Admin_Installer {
 		}
 
 		// Access and the plugin is installed but not active
-		else if ( false === $wp_plugin['activated'] ) {
-
+		elseif ( false === $wp_plugin['activated'] ) {
 			$status = 'inactive';
 			$status_label = __( 'Inactive', 'gravityview' );
 			$button_label = __( 'Activate', 'gravityview' );

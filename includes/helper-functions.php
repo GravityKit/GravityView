@@ -462,7 +462,7 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
  * @param string $value The string that may be decoded
  * @param bool $assoc [optional] When `true`, returned objects will be converted into associative arrays
  * @param int $depth [optional] User specified recursion depth.
- * @param int $options [optional] Bitmask of JSON decode options
+ * @param int $options [optional] Bitmask of JSON decode options. Used only on sites running PHP 5.4+
  *
  * @return array|mixed|object|string If $value is JSON, returns the response from `json_decode()`. Otherwise, returns original value.
  */
@@ -472,7 +472,11 @@ function gv_maybe_json_decode( $value, $assoc = false, $depth = 512, $options = 
 		return $value;
 	}
 
-	$decoded = json_decode( $value );
+	if ( version_compare( phpversion(), '5.4.0', '>=' ) ) {
+		$decoded = json_decode( $value, $assoc, $depth, $options );
+	} else {
+		$decoded = json_decode( $value, $assoc, $depth );
+	}
 
 	// There was a JSON error (PHP 5.3+)
 	if( function_exists('json_last_error') && JSON_ERROR_NONE !== json_last_error() ) {

@@ -83,7 +83,6 @@ class gravityview extends \GV\Shortcode {
 		$atts = $this->parse_and_sanitize_atts( $atts );
 
 		$view->settings->update( $atts );
-		$entries = $view->get_entries( $request );
 
 		/**
 		 * Check permissions.
@@ -117,6 +116,7 @@ class gravityview extends \GV\Shortcode {
 		 * View details.
 		 */
 		if ( $atts['detail'] ) {
+			$entries = $view->get_entries( $request );
 			return self::_return( $this->detail( $view, $entries, $atts ) );
 
 		/**
@@ -180,7 +180,7 @@ class gravityview extends \GV\Shortcode {
 				}
 			}
 
-			$error = \GVCommon::check_entry_display( $entry->as_entry() );
+			$error = \GVCommon::check_entry_display( $entry->as_entry(), $view );
 
 			if( is_wp_error( $error ) ) {
 				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing: {message}', array( 'entry_id' => $entry->ID, 'message' => $error->get_error_message() ) );

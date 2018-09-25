@@ -1076,6 +1076,8 @@ class GravityView_Edit_Entry_Render {
 	        unset( $form['save'] );
 		}
 
+		$form = $this->unselect_default_values( $form );
+
 		return $form;
 	}
 
@@ -1094,33 +1096,34 @@ class GravityView_Edit_Entry_Render {
 	 */
 	public function verify_user_can_edit_post( $field_content = '', $field, $value, $lead_id = 0, $form_id ) {
 
-		if( GFCommon::is_post_field( $field ) ) {
-
-			$message = null;
-
-			// First, make sure they have the capability to edit the post.
-			if( false === current_user_can( 'edit_post', $this->entry['post_id'] ) ) {
-
-				/**
-				 * @filter `gravityview/edit_entry/unsupported_post_field_text` Modify the message when someone isn't able to edit a post
-				 * @param string $message The existing "You don't have permission..." text
-				 */
-				$message = apply_filters('gravityview/edit_entry/unsupported_post_field_text', __('You don&rsquo;t have permission to edit this post.', 'gravityview') );
-
-			} elseif( null === get_post( $this->entry['post_id'] ) ) {
-				/**
-				 * @filter `gravityview/edit_entry/no_post_text` Modify the message when someone is editing an entry attached to a post that no longer exists
-				 * @param string $message The existing "This field is not editable; the post no longer exists." text
-				 */
-				$message = apply_filters('gravityview/edit_entry/no_post_text', __('This field is not editable; the post no longer exists.', 'gravityview' ) );
-			}
-
-			if( $message ) {
-				$field_content = sprintf('<div class="ginput_container ginput_container_' . $field->type . '">%s</div>', wpautop( $message ) );
-			}
+		if( ! GFCommon::is_post_field( $field ) ) {
+			return $field_content;
 		}
 
-		return $field_content;
+        $message = null;
+
+        // First, make sure they have the capability to edit the post.
+        if( false === current_user_can( 'edit_post', $this->entry['post_id'] ) ) {
+
+            /**
+             * @filter `gravityview/edit_entry/unsupported_post_field_text` Modify the message when someone isn't able to edit a post
+             * @param string $message The existing "You don't have permission..." text
+             */
+            $message = apply_filters('gravityview/edit_entry/unsupported_post_field_text', __('You don&rsquo;t have permission to edit this post.', 'gravityview') );
+
+        } elseif( null === get_post( $this->entry['post_id'] ) ) {
+            /**
+             * @filter `gravityview/edit_entry/no_post_text` Modify the message when someone is editing an entry attached to a post that no longer exists
+             * @param string $message The existing "This field is not editable; the post no longer exists." text
+             */
+            $message = apply_filters('gravityview/edit_entry/no_post_text', __('This field is not editable; the post no longer exists.', 'gravityview' ) );
+        }
+
+        if( $message ) {
+            $field_content = sprintf('<div class="ginput_container ginput_container_' . $field->type . '">%s</div>', wpautop( $message ) );
+        }
+
+        return $field_content;
 	}
 
 	/**
@@ -1737,6 +1740,36 @@ class GravityView_Edit_Entry_Render {
 		}
 
 		return $fields;
+	}
+
+	/**
+	 * Checkboxes and other checkbox-based controls should not
+	 * display default checks in edit mode.
+	 *
+	 * https://github.com/gravityview/GravityView/1149
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $form Gravity Forms array object
+	 *
+	 * @return array $form, modified to default checkboxes, radios from showing up.
+	 */
+	private function unselect_default_values( $form ) {
+
+	    foreach ( $form['fields'] as &$field ) {
+
+			if ( empty( $field->choices ) ) {
+                continue;
+			}
+
+            foreach ( $field->choices as &$choice ) {
+				if ( \GV\Utils::get( $choice, 'isSelected' ) ) {
+					$choice['isSelected'] = false;
+				}
+			}
+		}
+
+		return $form;
 	}
 
 	// --- Conditional Logic
