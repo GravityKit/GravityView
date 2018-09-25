@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Automatically un-approve an entry when it has been updated by an user without the ability to moderate entries
 * Added: Easy way to install GravityView Extensions and our stand-alone plugins [Learn how](https://docs.gravityview.co/article/489-managing-extensions)
 * Added: Enable CSV output for Views [TODO: ADD LINK TO DOC]
+* Added: A "Page Size" widget allows users to change the number of entries per page
 * Added: Support for displaying a single input value of a Chained Select field
 * Improved: Added a shortcut to reset entry approval on the front-end of a View: "Option + Click" on the Entry Approval field
 * Fixed: Custom date format not working with the `{date_created}` Merge Tag
@@ -36,7 +37,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 __Developer Notes:__
 
 * Added: Process shortcodes inside [gv_entry_link] shortcodes
-* Added: `gravityview/shortcodes/gv_entry_link/output` filter to modify output of the [gv_entry_link] shortcode
+* Added: `gravityview/shortcodes/gv_entry_link/output` filter to modify output of the `[gv_entry_link]` shortcode
+* Added `gravityview/widget/page_size/settings` and `gravityview/widget/page_size/page_sizes` filters to modify new Page Size widget
 * Improved: Reduced database lookups when using custom entry slugs
 * Introduced `\GV\View->can_render()` method to reduce code duplication
 * Fixed: Don't add `gvid` unless multiple Views embedded in a post
