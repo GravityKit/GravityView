@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Added: Send email notifications when an entry is approved, disapproved, or the approval status has changed
 * Added: Automatically un-approve an entry when it has been updated by an user without the ability to moderate entries
+* Added: A "Page Size" widget allows users to change the number of entries per page
 * Don't add `gvid` unless multiple Views embedded in a post
 * Added: Easy way to install Extensions and our stand-alone Premium Plugins
 * Fixed: Slashes being stripped from `{date_created}` Merge Tag format, preventing it from working
@@ -38,6 +39,7 @@ __Developer Notes:__
 * Introduced `\GV\View->can_render()` method to reduce code duplication
 * Fixed: PHP 5.3 warning in when using `array_combine()` on empty arrays
 * Apply `addslashes` to View Configuration when saving, fixing `{date_created}` format
+* Added `gravityview/widget/page_size/settings` and `gravityview/widget/page_size/page_sizes` filters to modify new Page Size widget
 
 **REST API**
 * Allow setting parent post or page with the REST API request using `post_id={id}`
