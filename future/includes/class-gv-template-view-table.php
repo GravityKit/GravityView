@@ -105,7 +105,7 @@ class View_Table_Template extends View_Template {
 				'zone_id' => 'directory_table-columns',
 				'markup' => '<th id="{{ field_id }}" class="{{ class }}" style="{{width:style}}" data-label="{{label_value:esc_attr}}">{{label}}</th>',
 				'label_markup' => '<span class="gv-field-label">{{ label }}</span>',
-				'label' => $this->get_field_column_label( $field, $context ),
+				'label' => self::get_field_column_label( $field, $context ),
 			);
 
 			echo \gravityview_field_output( $args, $context );
@@ -120,14 +120,14 @@ class View_Table_Template extends View_Template {
 	 * @param \GV\Field $field
 	 * @param \GV\Template_Context $context
 	 */
-	private function get_field_column_label( $field, $context = null ) {
+	protected static function get_field_column_label( $field, $context = null ) {
 
-		$form = $field->form_id ? GF_Form::by_id( $field->form_id ) : $this->view->form;
+		$form = $field->form_id ? GF_Form::by_id( $field->form_id ) : $context->view->form;
 
 		/**
 		 * @deprecated Here for back-compatibility.
 		 */
-		$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form ), $field->as_configuration() );
+		$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $context->view, $form ), $field->as_configuration() );
 		$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, null );
 
 		/**
@@ -271,7 +271,7 @@ class View_Table_Template extends View_Template {
 			'value' => $value,
 			'hide_empty' => false,
 			'zone_id' => 'directory_table-columns',
-            'label' => $this->get_field_column_label( $field, $context ),
+            'label' => self::get_field_column_label( $field, $context ),
 			'markup' => '<td id="{{ field_id }}" class="{{ class }}" data-label="{{label_value:esc_attr}}">{{ value }}</td>',
             'form' => $form,
 		);
