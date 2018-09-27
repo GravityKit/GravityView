@@ -21,18 +21,24 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.1 =
+= 2.1 on September 27, 2018 =
 
 * Added: You can now send email notifications when an entry is approved, disapproved, or the approval status has changed. [Learn how](https://docs.gravityview.co/article/488-notification-when-entry-approved)
 * Added: Automatically un-approve an entry when it has been updated by an user without the ability to moderate entries
 * Added: Easy way to install GravityView Extensions and our stand-alone plugins [Learn how](https://docs.gravityview.co/article/489-managing-extensions)
-* Added: Enable CSV output for Views [TODO: ADD LINK TO DOC]
+* Added: Enable CSV output for Views [Learn how](https://docs.gravityview.co/article/491-csv-export)
 * Added: A "Page Size" widget allows users to change the number of entries per page
 * Added: Support for displaying a single input value of a Chained Select field
 * Improved: Added a shortcut to reset entry approval on the front-end of a View: "Option + Click" on the Entry Approval field
 * Fixed: Custom date format not working with the `{date_created}` Merge Tag
 * Fixed: Embedding a View inside an embedded entry didn't work
 * Fixed: "Link to entry" setting not working for File Upload fields
+* Fixed: Approval Status field not showing anything
+* Updated translations - thank you, translators!
+    - Polish translated by [@dariusz.zielonka](https://www.transifex.com/user/profile/dariusz.zielonka/)
+    - Russian translated by [@awsswa59](https://www.transifex.com/user/profile/awsswa59/)
+    - Turkish translated by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
+    - Chinese translated by [@michaeledi](https://www.transifex.com/user/profile/michaeledi/)
 
 __Developer Notes:__
 
