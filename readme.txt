@@ -21,9 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.1.0.1 =
+= 2.1.0.1 on September 27, 2018 =
 
-* Fixed: Table layout responsive labels showing sorting icon HTML
+* Fixed: Responsive table layout labels showing sorting icon HTML
+* Fixed: Responsive table layout showing table footer
 
 = 2.1 on September 27, 2018 =
 
