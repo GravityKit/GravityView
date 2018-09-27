@@ -107,6 +107,13 @@ class GravityView_Shortcode {
 					}
 					break;
 
+				/** @since 2.1 */
+				case 'operator':
+					if( GFFormsModel::is_valid_operator( $passed_value ) ) {
+						$atts[ $key ] = $passed_value;
+					}
+					break;
+
 				// Checkboxes should be 1 or 0
 				case 'checkbox':
 					$atts[ $key ] = gv_empty( $passed_value, true, false ) ? 0 : 1;

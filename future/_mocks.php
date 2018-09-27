@@ -87,7 +87,8 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 	 * @deprecated
 	 * Do not use this filter anymore.
 	 */
-	$entries = apply_filters( 'gravityview_before_get_entries', null, $criteria, $parameters, $count );
+	$entries = apply_filters_ref_array( 'gravityview_before_get_entries', array( null, $criteria, $parameters, &$count ) );
+
 	if ( ! is_null( $entries ) ) {
 		/**
 		 * We've been given an entries result that we can return,

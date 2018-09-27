@@ -556,6 +556,7 @@ class GravityView_Admin_Views {
 				$fields = _gravityview_process_posted_fields();
 			}
 
+			$fields = map_deep( $fields, 'addslashes' );
 			$statii['directory_fields'] = update_post_meta( $post_id, '_gravityview_directory_fields', $fields );
 
 			// Directory Visible Widgets

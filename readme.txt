@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.4
-Tested up to: 4.9.7
+Tested up to: 4.9.8
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -20,6 +20,41 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.1 on September 27, 2018 =
+
+* Added: You can now send email notifications when an entry is approved, disapproved, or the approval status has changed. [Learn how](https://docs.gravityview.co/article/488-notification-when-entry-approved)
+* Added: Automatically un-approve an entry when it has been updated by an user without the ability to moderate entries
+* Added: Easy way to install GravityView Extensions and our stand-alone plugins [Learn how](https://docs.gravityview.co/article/489-managing-extensions)
+* Added: Enable CSV output for Views [Learn how](https://docs.gravityview.co/article/491-csv-export)
+* Added: A "Page Size" widget allows users to change the number of entries per page
+* Added: Support for displaying a single input value of a Chained Select field
+* Added: The Table layout is now mobile-responsive!
+* Improved: Added a shortcut to reset entry approval on the front-end of a View: "Option + Click" on the Entry Approval field
+* Fixed: Custom date format not working with the `{date_created}` Merge Tag
+* Fixed: Embedding a View inside an embedded entry didn't work
+* Fixed: "Link to entry" setting not working for File Upload fields
+* Fixed: Approval Status field not showing anything
+* Updated translations - thank you, translators!
+    - Polish translated by [@dariusz.zielonka](https://www.transifex.com/user/profile/dariusz.zielonka/)
+    - Russian translated by [@awsswa59](https://www.transifex.com/user/profile/awsswa59/)
+    - Turkish translated by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
+    - Chinese translated by [@michaeledi](https://www.transifex.com/user/profile/michaeledi/)
+
+__Developer Notes:__
+
+* Added: Process shortcodes inside [gv_entry_link] shortcodes
+* Added: `gravityview/shortcodes/gv_entry_link/output` filter to modify output of the `[gv_entry_link]` shortcode
+* Added `gravityview/widget/page_size/settings` and `gravityview/widget/page_size/page_sizes` filters to modify new Page Size widget
+* Modified: Added `data-label` attributes to all Table layout cells to make responsive layout CSS-only
+* Modified: Added responsive CSS to the Table layout CSS ("table-view.css")
+* Improved: Reduced database lookups when using custom entry slugs
+* Introduced `\GV\View->can_render()` method to reduce code duplication
+* Fixed: Don't add `gvid` unless multiple Views embedded in a post
+* Fixed: PHP 5.3 warning in when using `array_combine()` on empty arrays
+* Fixed: Apply `addslashes` to View Configuration when saving, fixing `{date_created}` format
+* REST API: Allow setting parent post or page with the REST API request using `post_id={id}` ([learn more](https://docs.gravityview.co/article/468-rest-api))
+* REST API: Added `X-Item-Total` header and meta to REST API response
 
 = 2.0.14.1 on July 19, 2018 =
 

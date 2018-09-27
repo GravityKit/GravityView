@@ -184,4 +184,41 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 
 	}
 
+	/**
+	 * Make sure a basic "logged-in" check works
+	 */
+	function test_gv_shortcode_for_user_id_logged_in() {
+
+		$this->expected_deprecated[] = 'WP_User->id';
+
+		$administrator = $this->factory->user->create( array(
+				'user_login' => md5( microtime() ),
+				'user_email' => md5( microtime() ) . '@gravityview.tests',
+				'role' => 'administrator' )
+		);
+
+		wp_set_current_user( 0 );
+
+		// $current_user->id bypasses false, which gets replaced with empty string.
+		$this->assertEquals( '0', GFCommon::replace_variables_prepopulate( '{user:id}' ) );
+
+		// $current_user->get("ID") returns false, which gets replaced with empty string.
+		$this->assertEquals( '', GFCommon::replace_variables_prepopulate( '{user:ID}' ) );
+
+		$this->assertEquals( 'Logged-Out', do_shortcode( GFCommon::replace_variables_prepopulate( '[gvlogic if="{user:id}" is="0"]Logged-Out[else]Logged-In[/gvlogic]' ) ) );
+		$this->assertEquals( 'Logged-Out', do_shortcode( GFCommon::replace_variables_prepopulate( '[gvlogic if="{user:ID}" is=""]Logged-Out[else]Logged-In[/gvlogic]' ) ) );
+		$this->assertEquals( 'Logged-Out', do_shortcode( GFCommon::replace_variables_prepopulate( '[gvlogic if="{user:id}" greater_than="0"]Logged-In[else]Logged-Out[/gvlogic]' ) ) );
+		$this->assertEquals( 'Logged-Out', do_shortcode( GFCommon::replace_variables_prepopulate( '[gvlogic if="{user:ID}" greater_than="0"]Logged-In[else]Logged-Out[/gvlogic]' ) ) );
+
+		wp_set_current_user( $administrator );
+
+		$this->assertEquals( "{$administrator}", GFCommon::replace_variables_prepopulate( '{user:id}' ) );
+		$this->assertEquals( "{$administrator}", GFCommon::replace_variables_prepopulate( '{user:ID}' ) );
+
+		$this->assertEquals( 'Logged-In', do_shortcode( GFCommon::replace_variables_prepopulate( '[gvlogic if="{user:id}" is="0"]Logged-Out[else]Logged-In[/gvlogic]' ) ) );
+		$this->assertEquals( 'Logged-In', do_shortcode( GFCommon::replace_variables_prepopulate( '[gvlogic if="{user:ID}" is=""]Logged-Out[else]Logged-In[/gvlogic]' ) ) );
+		$this->assertEquals( 'Logged-In', do_shortcode( GFCommon::replace_variables_prepopulate( '[gvlogic if="{user:id}" greater_than="0"]Logged-In[else]Logged-Out[/gvlogic]' ) ) );
+		$this->assertEquals( 'Logged-In', do_shortcode( GFCommon::replace_variables_prepopulate( '[gvlogic if="{user:ID}" greater_than="0"]Logged-In[else]Logged-Out[/gvlogic]' ) ) );
+	}
+
 }

@@ -381,4 +381,168 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		$this->assertContains( 'Search Entries', $future );
 		$this->assertContains( 'Here we go again! <b>Now</b>', $future );
 	}
+
+	/**
+	 * https://github.com/gravityview/GravityView/issues/1137
+	 */
+	public function test_view_in_view_embedded() {
+		$this->_reset_context();
+		$form         = $this->factory->form->import_and_get( 'simple.json' );
+		$another_form = $this->factory->form->import_and_get( 'simple.json' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'status' => 'active',
+			'form_id' => $form['id'],
+			'1' => 'this is an entry',
+		) );
+
+		$another_entry = $this->factory->entry->create_and_get( array(
+			'status' => 'active',
+			'form_id' => $another_form['id'],
+			'1' => 'this is an another entry',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'content' => 'Embed this view!',
+					),
+				),
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'content' => 'Embed this view!',
+					),
+				),
+			),
+		) );
+
+		$another_view = $this->factory->view->create_and_get( array(
+			'form_id' => $another_form['id'],
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'content' => '[gravityview id="' . $view->ID . '"]',
+					),
+				),
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'content' => '[gravityview id="' . $view->ID . '"]',
+					),
+				),
+			),
+		) );
+
+		$form          = \GV\GF_Form::by_id( $form['id'] );
+		$entry         = \GV\GF_Entry::by_id( $entry['id'] );
+		$view          = \GV\View::from_post( $view );
+		$another_form  = \GV\GF_Form::by_id( $another_form['id'] );
+		$another_entry = \GV\GF_Entry::by_id( $another_entry['id'] );
+		$another_view  = \GV\View::from_post( $another_view );
+
+		$future = new \GV\Shortcodes\gravityview();
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = false;
+
+		$args = array(
+			'id' => $another_view->ID,
+		);
+
+		$this->assertContains( 'Embed this view', $future->callback( $args ) );
+
+		global $post;
+
+		$post = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $another_view->ID . '"]' ) );
+
+		gravityview()->request->returns['is_entry'] = $another_entry;
+
+		$this->assertContains( 'Embed this view', $future->callback( $args ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * https://github.com/gravityview/GravityView/issues/1148
+	 */
+	public function test_is_approved_field_values() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'is_approved',
+						'unapproved_label' => '',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'is_approved',
+						'unapproved_label' => 'Nicht bestätigt',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$renderer = new \GV\Entry_Renderer();
+
+		$output = $renderer->render( $entry, $view );
+
+		$this->assertContains( '<span class="gv-approval-unapproved">Unapproved</span>', $output );
+		$this->assertContains( '<span class="gv-approval-unapproved">Nicht bestätigt</span>', $output );
+	}
+
+	/**
+	 * https://secure.helpscout.net/conversation/603701583/15492/
+	 */
+	public function test_gravityview_entries_pass_count_by_reference() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+		$view = \GV\View::from_post( $post );
+
+		list( $entries, $paging, $count ) = \GV\Mocks\GravityView_frontend_get_view_entries( array( 'id' => $view->ID ), $form['id'], array(
+			'paging' => array( 'current_page' => 1, 'offset' => 0, 'page_size' => 25 ),
+		), 0 );
+
+		$this->assertEquals( array(
+			array(), array( 'offset' => 0, 'page_size' => 25 ), 0
+		), array( $entries, $paging, $count ) );
+
+		add_filter( 'gravityview_before_get_entries', $before_callback = function( $entries, $criteria, $parameters, &$count ) {
+			$count = 10;
+			return array();
+		}, 10, 4 );
+
+		list( $entries, $paging, $count ) = \GV\Mocks\GravityView_frontend_get_view_entries( array( 'id' => $view->ID ), $form['id'], array(
+			'paging' => array( 'current_page' => 1, 'offset' => 0, 'page_size' => 25 ),
+		), 10 );
+
+		$this->assertTrue( remove_filter( 'gravityview_before_get_entries', $before_callback ) );
+
+		add_filter( 'gravityview_entries', $before_callback = function( $entries, $criteria, $parameters, &$count ) {
+			$count = 11;
+			return array();
+		}, 10, 4 );
+
+		list( $entries, $paging, $count ) = \GV\Mocks\GravityView_frontend_get_view_entries( array( 'id' => $view->ID ), $form['id'], array(
+			'paging' => array( 'current_page' => 1, 'offset' => 0, 'page_size' => 25 ),
+		), 11 );
+
+		$this->assertTrue( remove_filter( 'gravityview_entries', $before_callback ) );
+	}
 }

@@ -3,9 +3,8 @@
  * Welcome Page Class
  *
  * @package   GravityView
- * @author    Zack Katz <zack@katzwebservices.com>
- * @license   ToBeDefined
- * @link      http://www.katzwebservices.com
+ * @author    Zack Katz <zack@gravityview.co>
+ * @link      https://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -250,24 +249,69 @@ class GravityView_Welcome {
 
 			<?php $this->tabs(); ?>
 
-            <div class="feature-section one-col">
-                <div class="col">
-                    <h2>18 months in the making, made possible thanks to your support.</h2>
+            <div class="feature-section col two-col" style="margin:0 0 2em 0; padding: 0;">
 
-                    <blockquote>
-                        <p class="lead-description" style="text-align: left">We at GravityView are proud to share Version 2.0 with you: we have been working on this update since 2016! Although most of the changes aren&rsquo;t visible, <strong>GravityView has a brand-new engine</strong> that will power the plugin into the future! &#128640;
-                            <cite style="display: block; padding-top: .25em;">&ndash; Zack with GravityView</cite></p>
-                    </blockquote>
-
-                    <p style="margin: 1em;"><em style="font-size: 1.1em;"><strong>A special thanks to <a href="https://codeseekah.com">Gennady</a></strong> for your tireless pursuit of better code, insistence on backward compatibility, and your positive attitude. &#128079;</em></p>
+                <div class="col col-1">
+                    <div class="media-container"><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gv-admin-installer' ) ); ?>"><img alt="Admin installer of GravityView plugins &amp; extensions" src="<?php echo plugins_url( 'assets/images/screenshots/installer.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></a></div>
+                    <h4 class="higher">Admin Installer</h4>
+                    <p>Download and manage all your GravityView plugins and extensions from one convenient place&mdash;you no longer need to download plugins from your GravityView Account page!</p>
+                    <p><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gv-admin-installer' ) ); ?>" class="button button-primary button-large">Check out the Installer</a></p>
+                </div>
+                <div class="col col-2">
+                    <div class="media-container"><img alt="Approval notifications" src="<?php echo plugins_url( 'assets/images/screenshots/approval-notifications.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
+                    <h4 class="higher">Approval Notifications</h4>
+                    <p>Notify users or administrators when entries have been approved or disapproved.</p>
+                    <p><a href="https://docs.gravityview.co/article/488-notification-when-entry-approved" class="button button-primary button-large">Learn How to Set Up</a></p>
                 </div>
             </div>
 
 			<div class="changelog point-releases" style="border-bottom: 0">
 
                 <div class="headline-feature" style="max-width: 100%">
-					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
-				</div>
+                    <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
+                </div>
+
+                <h2>2.1 on September 27, 2018</h2>
+
+                <ul>
+                    <li>Added: You can now send email notifications when an entry is approved, disapproved, or the approval status has changed. <a href="https://docs.gravityview.co/article/488-notification-when-entry-approved">Learn how</a></li>
+                    <li>Added: Automatically un-approve an entry when it has been updated by an user without the ability to moderate entries</li>
+                    <li>Added: Easy way to install GravityView Extensions and our stand-alone plugins <a href="https://docs.gravityview.co/article/489-managing-extensions">Learn how</a></li>
+                    <li>Added: Enable CSV output for Views <a href="https://docs.gravityview.co/article/491-csv-export">Learn how</a></li>
+                    <li>Added: A "Page Size" widget allows users to change the number of entries per page</li>
+                    <li>Added: Support for displaying a single input value of a Chained Select field</li>
+                    <li>Added: The Table layout is now mobile-responsive!</li>
+                    <li>Improved: Added a shortcut to reset entry approval on the front-end of a View: "Option + Click" on the Entry Approval field</li>
+                    <li>Fixed: Custom date format not working with the <code>{date_created}</code> Merge Tag</li>
+                    <li>Fixed: Embedding a View inside an embedded entry didn't work</li>
+                    <li>Fixed: "Link to entry" setting not working for File Upload fields</li>
+                    <li>Fixed: Approval Status field not showing anything</li>
+                    <li>Updated translations - thank you, translators!
+                        <ul>
+                            <li>Polish translated by <a href="https://www.transifex.com/user/profile/dariusz.zielonka/">@dariusz.zielonka</a></li>
+                            <li>Russian translated by <a href="https://www.transifex.com/user/profile/awsswa59/">@awsswa59</a></li>
+                            <li>Turkish translated by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
+                            <li>Chinese translated by <a href="https://www.transifex.com/user/profile/michaeledi/">@michaeledi</a></li>
+                        </ul></li>
+                </ul>
+
+                <p><strong>Developer Notes:</strong></p>
+
+                <ul>
+                    <li>Added: Process shortcodes inside [gv<em>entry</em>link] shortcodes</li>
+                    <li>Added: <code>gravityview/shortcodes/gv_entry_link/output</code> filter to modify output of the <code>[gv_entry_link]</code> shortcode</li>
+                    <li>Added <code>gravityview/widget/page_size/settings</code> and <code>gravityview/widget/page_size/page_sizes</code> filters to modify new Page Size widget</li>
+                    <li>Modified: Added <code>data-label</code> attributes to all Table layout cells to make responsive layout CSS-only</li>
+                    <li>Modified: Added responsive CSS to the Table layout CSS ("table-view.css")</li>
+                    <li>Improved: Reduced database lookups when using custom entry slugs</li>
+                    <li>Introduced <code>\GV\View-&gt;can_render()</code> method to reduce code duplication</li>
+                    <li>Fixed: Don't add <code>gvid</code> unless multiple Views embedded in a post</li>
+                    <li>Fixed: PHP 5.3 warning in when using <code>array_combine()</code> on empty arrays</li>
+                    <li>Fixed: Apply <code>addslashes</code> to View Configuration when saving, fixing <code>{date_created}</code> format</li>
+                    <li>REST API: Allow setting parent post or page with the REST API request using <code>post_id={id}</code> (<a href="https://docs.gravityview.co/article/468-rest-api">learn more</a>)</li>
+                    <li>REST API: Added <code>X-Item-Total</code> header and meta to REST API response</li>
+                </ul>
+
 
                 <h3>2.0.14.1 on July 19, 2018</h3>
 
@@ -344,191 +388,6 @@ class GravityView_Welcome {
                     <li>Fixed: When Map View is embedded, Search Bar pointed to View URL, not page URL</li>
                 </ul>
 
-                <h3>2.0.9 on June 1, 2018</h3>
-
-                <ul>
-                    <li>Added: Allow passing <code>{get}</code> Merge Tags to [gventry] and [gvfield] shortcodes</li>
-                    <li>Fixed: Searching by entry creator using the Search Bar wasn't working</li>
-                    <li>Fixed: Edit Entry showing "Invalid link" warnings when multiple Views are embedded on a page</li>
-                    <li>Fixed: Issues with legacy template back-compatiblity (A-Z Filters) and newer API widgets (Maps)</li>
-                    <li>Fixed: Translations for entry "meta", like "Created By" or "Date Created"</li>
-                    <li>Fixed: When searching State/Province with the Search Bar, use "exact match" search</li>
-                </ul>
-
-                <p><strong>Developer Notes</strong></p>
-
-                <ul>
-                    <li>Added: Auto-prefixing for all CSS rules, set to cover 99.7% of browsers. We were already prefixing, so it doesn't change much, but it will update automatically from now on, based on browser support.</li>
-                </ul>
-
-                <h3>2.0.8.1 on May 31, 2018</h3>
-
-                <ul>
-                    <li>Fixed: Standalone map fields not displaying on the <a href="https://gravityview.co/extensions/maps/">Maps layout</a></li>
-                    <li>Fixed: <code>[gv_entry_link]</code> when embedded in a post or page, not a View</li>
-                    <li>Fixed: <code>[gv_entry_link]</code> returning a broken link when the entry isn't defined</li>
-                    <li>Fixed: Conflict with Testimonials Widget plugin (and other plugins) loading outdated code</li>
-                    <li>Fixed: PHP notice when displaying Gravity Flow "Workflow" field</li>
-                </ul>
-
-                <h3>2.0.8 on May 25, 2018</h3>
-
-                <ul>
-                    <li>Fixed: Table layout not using field Column Width settings</li>
-                    <li>Fixed: With "Show Label" disabled, "Custom Label" setting is being displayed (if set)</li>
-                    <li>Fixed: List Field columns were being shown as searchable in Search Bar</li>
-                    <li>Fixed: Conflict with Gravity Forms Import Entries file upload process</li>
-                    <li>Fixed: Empty searches could show results when "Hide View data until search is performed" is enabled</li>
-                    <li>Fixed: When "Start Date" and "End Date" are the same day, results may not be accurate</li>
-                </ul>
-
-                <p><strong>Developer Updates</strong></p>
-
-                <ul>
-                    <li>Fixed: <code>gv_value()</code> didn't have necessary View global data set for backward compatibility (<code>gv_value()</code> is now deprecated! Use <code>Use \GV\Field_Template::render()</code> instead.)</li>
-                </ul>
-
-                <h3>2.0.7.1 on May 24, 2018</h3>
-
-                <ul>
-                    <li>Fixed: Merge Tags not being shown in Custom Content fields in Edit Entry</li>
-                    <li>Fixed: "gvGlobals not defined" JavaScript error on Edit Entry screen affecting some themes</li>
-                    <li>Fixed: Don't clear Search Bar configuration when switching View layouts</li>
-                </ul>
-
-                <h3>2.0.7 on May 23, 2018</h3>
-                <ul>
-                    <li>Fixed: Entry visibility when View is embedded</li>
-                    <li>Fixed: Don't show widgets if we're oEmbedding an entry</li>
-                    <li>Fixed: Don't apply "Hide Until Search" on entry pages</li>
-                    <li>Fixed: "Hide View data until search is performed" not working for Views on embedded pages</li>
-                    <li>Fixed: Restore Advanced Custom Fields plugin compatibility</li>
-                    <li>Tweak: When activating a license, remove the notice immediately</li>
-                    <li>Fixed: Maps API key settings resetting after 24 hours</li>
-                </ul>
-
-                <p><strong>Developer Updates</strong></p>
-
-                <ul>
-                    <li>Changed: gravityview<em>get</em>context() now returns empty string if not GravityView post type</li>
-                </ul>
-
-
-                <h3>2.0.6.1 on May 21, 2018</h3>
-
-                <ul>
-                    <li>Fixed: "Hide View data until search is performed" not working</li>
-                    <li>Added: Support for SiteOrigin Page Builder and LiveMesh SiteOrigin Widgets</li>
-                    <li>Fixed: Enfold Theme layout builder no longer rendering Views</li>
-                </ul>
-
-                <h3>2.0.6 on May 17, 2018</h3>
-
-                <ul>
-                    <li>Fixed: Conflicts with Yoast SEO &amp; Jetpack plugins that prevent widgets from displaying</li>
-                    <li>Fixed: Some fields display as HTML (fixes Gravity Flow Discussion field, for example)</li>
-                    <li>Fixed: Some Merge Tag modifiers not working, such as <code>:url</code> for List fields</li>
-                    <li>Fixed: Give Floaty a place to hang out on the GravityView Settings screen with new Gravity Forms CSS</li>
-                </ul>
-
-                <p><strong>Developer Updates</strong></p>
-
-                <ul>
-                    <li>Fixed: Backward-compatibility for using global <code>$gravityview_view-&gt;_current_field</code> (don't use in new code!)</li>
-                </ul>
-
-                <h3> 2.0.5 on May 16, 2018</h3>
-
-                <ul>
-                    <li>Fixed: Entry Link fields and <code>[gv_entry_link]</code> shortcode not working properly with DataTables when embedded</li>
-                    <li>Fixed: Do not output other shortcodes in single entry mode</li>
-                    <li>Fixed: Error when deleting an entry</li>
-                    <li>Fixed: When multiple Views are embedded on a page, and one or more has Advanced Filters enabled, no entries will be displayed</li>
-                    <li>Fixed: PHP warning with <code>[gravitypdf]</code> shortcode</li>
-                    <li>Fixed: When multiple table layout Views are embedded on a page, there are multiple column sorting links displayed</li>
-                    <li>Fixed: Error displaying message that a license is expired</li>
-                </ul>
-
-                <h3>2.0.4 on May 12, 2018</h3>
-
-                <ul>
-                    <li>Fixed: Slow front-end performance, affecting all layout types</li>
-                    <li>Fixed: Search not performing properly</li>
-                    <li>Fixed: "Enable sorting by column" option for Table layouts</li>
-                    <li>GravityView will require Gravity Forms 2.3 in the future; please make sure you&rsquo;re using the latest version of Gravity Forms!</li>
-                </ul>
-
-                <p><strong>Developer Updates</strong></p>
-
-                <ul>
-                    <li>Fixed: <code>GravityView_frontend::get_view_entries()</code> search generation</li>
-                    <li>Fixed: <code>gravityview_get_template_settings()</code> not returning settings</li>
-                    <li>Tweak: Cache View and Field magic getters into variables for less overhead.</li>
-                </ul>
-
-
-                <h3>2.0.3 on May 10, 2018</h3>
-
-                <ul>
-                    <li>Fixed: Compatibility with <code>[gravitypdf]</code> shortcode</li>
-                    <li>Fixed: When using <code>[gravityview]</code> shortcode, the <code>page_size</code> setting wasn't being respected</li>
-                    <li>Fixed: <code>[gravityview detail="last_entry" /]</code> not returning the correct entry</li>
-                    <li>Fixed: Widgets not being properly rendered when using oEmbed</li>
-                    <li>Fixed: Note fields not rendering properly</li>
-                </ul>
-
-                <p><strong>Developer Notes</strong></p>
-
-                <ul>
-                    <li>Fixed: <code>GravityView_View::getInstance()</code> not returning information about a single entry</li>
-                    <li>Added: <code>gravityview/shortcode/detail/$key</code> filter</li>
-                </ul>
-
-                <h3>2.0.1 &amp; 2.0.2 on May 9, 2018</h3>
-                <ul>
-                    <li>Fixed: Widgets not displayed when a View is embedded</li>
-                    <li>Fixed: Saving new settings can cause fatal error</li>
-                    <li>Fixed: Prevent commonly-used front end function from creating an error in the Dashboard</li>
-                    <li>Fixed: Hide labels if "Show Label" is not checked</li>
-                    <li>Fixed: CSS borders on List layout</li>
-                    <li>Fixed: Error when fetching GravityView Widget with DataTables Extension 2.2</li>
-                    <li>Fixed: Fail gracefully when GravityView Maps is installed on a server running PHP 5.2.4</li>
-                </ul>
-
-                <h3>Version 2.0 on May 8, 2018</h3>
-
-                <p><strong>New functionality</strong></p>
-
-                <ul>
-                    <li><code>[gventry]</code>: embed entries in a post, page or a View (<a href="https://docs.gravityview.co/article/462-gvfield-embed-gravity-forms-field-values">learn more</a>)</li>
-                    <li><code>[gvfield]</code>: embed single field values (<a href="https://docs.gravityview.co/article/462-gvfield-embed-gravity-forms-field-values">learn more</a>)</li>
-                    <li><a href="https://docs.gravityview.co/article/350-merge-tag-modifiers">Many new Merge Tag modifiers</a> - These enable powerful new abilities when using the Custom Content field!</li>
-                    <li>Use oEmbed with Custom Content fields - easily embed YouTube videos, Tweets (and much more) on your Custom Content field</li>
-                    <li>"Is Starred" field - display whether an entry is "Starred" in Gravity Forms or not, and star/unstar it from the front end of your site</li>
-                    <li>Added Bosnian, Iranian, and Canadian French translations, updated many others (thank you all!)</li>
-                </ul>
-
-                <p><strong>Smaller changes</strong></p>
-
-                <ul>
-                    <li>Added <code>{gv_entry_link}</code> Merge Tag, alias of <code>[gv_entry_link]</code> shortcode in <code>{gv_entry_link:[post id]:[action]}</code> format. This allows you to use <code>{gv_entry_link}</code> inside HTML tags, where you are not able to use the <code>[gv_entry_link]</code> shortcode.</li>
-                    <li>Default <code>[gvlogic]</code> comparison is now set to <code>isnot=""</code>; this way, you can just use <code>[gvlogic if="{example:1}"]</code> instead of <code>[gvlogic if="{example:1}" isnot=""]</code> to check if a field has a value.</li>
-                </ul>
-
-                <p><strong>Developer Updates</strong></p>
-
-                <p>This release is the biggest <strong>ever</strong> for developers! Even so, we have taken great care to provide backward compatibility with GravityView 1.x. Other than increasing the minimum version of PHP to 5.3, <strong>no breaking changes were made.</strong></p>
-
-                <ul>
-                    <li>We have rewritten the plugin from the ground up. <a href="https://github.com/gravityview/GravityView/wiki/The-Future-of-GravityView">Learn all about it here</a>.</li>
-                    <li>New REST API! Fetch GravityView details and entries using the WordPress REST API endpoint. It's disabled by default, but can be enabled or disabled globally on GravityView Settings screen, or per-View in View Settings. <a href="https://github.com/gravityview/GravityView/wiki/REST-API">Learn about the endpoints</a>.</li>
-                    <li>New <code>gravityview()</code> API wrapper function, now used for easy access to everything you could want</li>
-                    <li>New template structure (<a href="https://github.com/gravityview/GravityView/wiki/Template-Migration">learn how to migrate your custom template files</a>)</li>
-                    <li>We have gotten rid of global state; actions and filters are now passed a <code>$context</code> argument, a <a href="https://github.com/gravityview/GravityView/blob/2.0/future/includes/class-gv-context-template.php"><code>\GV\Template_Context</code> object</a></li>
-                    <li>When HTML 5 is enabled in Gravity Forms, now the Search All field will use <code>type="search"</code></li>
-                    <li><em>Countless</em> new filters and actions! Additional documentation will be coming, both on <a href="https://docs.gravityview.co">docs.gravityview.co</a> as well as <a href="https://codex.gravityview.co">codex.gravityview.co</a>.</li>
-                </ul>
-
 				<p style="text-align: center">
 					<a href="https://gravityview.co/changelog/" class="aligncenter button button-primary button-hero" style="margin: 0 auto; display: inline-block; text-transform: capitalize"><?php esc_html_e( 'View change history', 'gravityview' ); ?></a>
 				</p>
@@ -578,7 +437,13 @@ class GravityView_Welcome {
                 <div class="col last-feature">
                     <h3>Gennady Kovshenin <a href="https://twitter.com/soulseekah" title="Follow Gennady on Twitter"><span class="dashicons dashicons-twitter"></span></a> <a href="https://codeseekah.com" title="View Gennady&rsquo;s Blog"><span class="dashicons dashicons-admin-site"></span></a></h3>
                     <h4 style="font-weight:0; margin-top:0">Core Developer</h4>
-                    <p><img style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/gennady.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Gennady works on the GravityView core, improving everything behind the scenes. He is an active member of the WordPress community and loves exotic tea. Gennady lives and runs long distances in <a href="https://wikipedia.org/wiki/Magnitogorsk" rel="external">Magnitogorsk, Russia</a>.</p>
+                    <p><img style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/gennady.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Gennady works on the GravityView core, improving everything behind the scenes. He is an active member of the WordPress community and loves exotic tea. Gennady lives and runs long distances in <a href="https://wikipedia.org/wiki/Saint_Petersburg" rel="external">St. Petersburg, Russia</a>.</p>
+                </div>
+
+                <div class="col">
+                    <h3>Vlad K.</h3>
+                    <h4 style="font-weight:0; margin-top:0">Core Developer</h4>
+                    <p><img style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/vlad.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Vlad, while being the &ldquo;new kid on the block&rdquo; at GravityView, is not new to WordPress, having previously worked on the top newsletter plugin. He&rsquo;s a full-stack developer who focuses on GravityView's user-facing code in the Dashboard and front end. Vlad comes from Russia and lives in Canada.</p>
                 </div>
 			</div>
 
@@ -607,7 +472,8 @@ class GravityView_Welcome {
 						<li class="wp-person">Danish translation by <a href="https://www.transifex.com/accounts/profile/jaegerbo/">@jaegerbo</a></li>
 						<li class="wp-person">Chinese translation by <a href="https://www.transifex.com/user/profile/michaeledi/">@michaeledi</a></li>
                         <li class="wp-person">Persian translation by <a href="https://www.transifex.com/user/profile/azadmojtaba/">@azadmojtaba</a>, <a href="https://www.transifex.com/user/profile/amirbe/">@amirbe</a>, <a href="https://www.transifex.com/user/profile/Moein.Rm/">@Moein.Rm</a></li>
-						<li class="wp-person">Russian translation by <a href="https://www.transifex.com/user/profile/gkovaleff/">@gkovaleff</a></li>
+						<li class="wp-person">Russian translation by <a href="https://www.transifex.com/user/profile/gkovaleff/">@gkovaleff</a>, <a href="https://www.transifex.com/user/profile/awsswa59/">@awsswa59</a></li>
+                        <li class="wp-person">Polish translation by <a href="https://www.transifex.com/user/profile/dariusz.zielonka/">@dariusz.zielonka</a></li>
 						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, <a href="https://github.com/mgratch">@mgratch</a>, <a href="https://github.com/ViewFromTheBox">@ViewFromTheBox</a>, <a href="https://github.com/stevehenty">@stevehenty</a>, <a href="https://github.com/naomicbush">@naomicbush</a>, and <a href="https://github.com/mrcasual">@mrcasual</a></li>
 					</ul>
 
@@ -623,12 +489,12 @@ class GravityView_Welcome {
 				<h4>Thanks to the following open-source software:</h4>
 
 				<ul>
-					<li><a href="http://datatables.net/">DataTables</a> - amazing tool for table data display. Many thanks!</li>
+					<li><a href="https://datatables.net/">DataTables</a> - amazing tool for table data display. Many thanks!</li>
 					<li><a href="https://github.com/10up/flexibility">Flexibility</a> - Adds support for CSS flexbox to Internet Explorer 8 &amp; 9</li>
 					<li><a href="https://github.com/GaryJones/Gamajo-Template-Loader">Gamajo Template Loader</a> - makes it easy to load template files with user overrides</li>
 					<li><a href="https://github.com/carhartl/jquery-cookie">jQuery Cookie plugin</a> - Access and store cookie values with jQuery</li>
-					<li><a href="https://katz.si/gf">Gravity Forms</a> - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!</li>
-					<li>GravityView uses icons made by Freepik, Adam Whitcroft, Amit Jakhu, Zurb, Scott de Jonge, Yannick, Picol, Icomoon, TutsPlus, Dave Gandy, SimpleIcon from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a></li>
+					<li><a href="https://gravityview.co/gravityforms">Gravity Forms</a> - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!</li>
+					<li>GravityView uses icons made by Freepik, Adam Whitcroft, Amit Jakhu, Zurb, Scott de Jonge, Yannick, Picol, Icomoon, TutsPlus, Dave Gandy, SimpleIcon from <a href="https://www.flaticon.com" title="Flaticon">www.flaticon.com</a></li>
 					<li>GravityView uses free vector art by <a href="https://www.vecteezy.com">vecteezy.com</a></li>
 					<li><a href="https://github.com/jnicol/standalone-phpenkoder">PHPEnkoder</a> script encodes the email addresses.</li>
 					<li>The Duplicate View functionality is based on the excellent <a href="https://lopo.it/duplicate-post-plugin/">Duplicate Post plugin</a> by Enrico Battocchi</li>

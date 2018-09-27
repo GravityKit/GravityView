@@ -41,8 +41,6 @@ abstract class Route extends \WP_REST_Controller {
 		$namespace = \GV\REST\Core::get_namespace();
 		$base = $this->get_route_name();
 
-		$format = '(?:\.(?P<format>html|json))?';
-
 		register_rest_route( $namespace, '/' . $base, array(
 			array(
 				'methods'         => \WP_REST_Server::READABLE,
@@ -55,6 +53,10 @@ abstract class Route extends \WP_REST_Controller {
 					),
 					'limit' => array(
 						'default' => 10,
+						'sanitize_callback' => 'absint'
+					),
+					'post_id' => array(
+						'default' => null,
 						'sanitize_callback' => 'absint'
 					)
 				)
@@ -97,6 +99,8 @@ abstract class Route extends \WP_REST_Controller {
 		) );
 
 		$sub_type = $this->get_sub_type();
+		
+		$format = '(?:\.(?P<format>html|json|csv))?';
 
 		register_rest_route( $namespace, '/' . $base . '/(?P<id>[\d]+)' . '/' . $sub_type . $format, array(
 			array(
@@ -111,6 +115,10 @@ abstract class Route extends \WP_REST_Controller {
 					'limit' => array(
 						'default' => 10,
 						'sanitize_callback' => 'absint'
+					),
+					'post_id' => array(
+						'default' => null,
+						'sanitize_callback' => 'absint'
 					)
 				)
 			),
@@ -121,6 +129,9 @@ abstract class Route extends \WP_REST_Controller {
 				'args'     => $this->create_sub_item_args()
 			),
 		) );
+
+		$format = '(?:\.(?P<format>html|json))?';
+
 		register_rest_route( $namespace, sprintf( '/%s/(?P<id>[\d]+)/%s/(?P<s_id>[\w-]+)%s', $base, $sub_type, $format ) , array(
 			array(
 				'methods'         => \WP_REST_Server::READABLE,

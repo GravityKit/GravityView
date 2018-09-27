@@ -14,7 +14,9 @@
  */
 abstract class GravityView_Extension extends \GV\Extension {
 	public function __construct() {
-		gravityview()->log->warning( '\GravityView_Extension is deprecated. Inherit from \GV\Extension instead', array( 'data' => $this ) );
+		if( ! in_array( $this->_author, array( 'GravityView', 'Katz Web Services, Inc.', true ) ) ) {
+			gravityview()->log->warning( '\GravityView_Extension is deprecated. Inherit from \GV\Extension instead', array( 'data' => $this ) );
+		}
 		parent::__construct();
 	}
 }

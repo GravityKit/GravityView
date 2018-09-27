@@ -120,6 +120,16 @@ class View_Settings extends Settings {
 				'type'              => 'checkbox',
 				'show_in_shortcode' => true,
 			),
+			'unapprove_edit' => array(
+				'label'             => __( 'Unapprove Entries After Edit', 'gravityview' ),
+				'group'             => 'default',
+				'requires'          => 'user_edit',
+				'desc'              => __( 'When an entry is edited by a non-administrator, reset the approval status to "Unapproved".', 'gravityview' ),
+				'tooltip'           => __( 'If the "Show only approved entries" setting is enabled, the entry will need to be re-approved by an administrator before it is shown in the View.', 'gravityview' ),
+				'value'             => 0,
+				'type'              => 'checkbox',
+				'show_in_shortcode' => true,
+			),
 			'user_delete' => array(
 				'label'             => __( 'Allow User Delete', 'gravityview' ),
 				'group'             => 'default',
@@ -203,6 +213,13 @@ class View_Settings extends Settings {
 				'group'             => 'filter',
 				'show_in_shortcode' => false,
 			),
+			'search_operator' => array(
+				'label'             => __( 'Search Operator', 'gravityview' ),
+				'type'              => 'operator',
+				'value'             => 'contains',
+				'group'             => 'filter',
+				'show_in_shortcode' => false,
+			),
 			'single_title' => array(
 				'label'             => __( 'Single Entry Title', 'gravityview' ),
 				'type'              => 'text',
@@ -249,7 +266,7 @@ class View_Settings extends Settings {
 				'rest_enable'           => array(
 					'label'             => __( 'Allow REST Access', 'gravityview' ),
 					'group'             => 'default',
-					'desc'              => __( 'Enable  REST access to this View.', 'gravityview' ),
+					'desc'              => __( 'Enable REST access to this View.', 'gravityview' ),
 					'type'              => 'checkbox',
 					'value'             => '',
 					'tooltip'           => false,
@@ -257,6 +274,18 @@ class View_Settings extends Settings {
 					'full_width'        => true,
 				),
 			) : array(),
+		array(
+			'csv_enable'            => array(
+				'label'             => __( 'Allow CSV Access', 'gravityview' ),
+				'group'             => 'default',
+				'desc'              => __( 'Enable CSV access to this View.', 'gravityview' ),
+				'type'              => 'checkbox',
+				'value'             => '',
+				'tooltip'           => false,
+				'show_in_shortcode' => false,
+				'full_width'        => true,
+			),
+		),
 		array(
 			'post_id' => array(
 				'type'              => 'number',

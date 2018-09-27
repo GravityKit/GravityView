@@ -270,6 +270,27 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 				)
 			),
 
+			'Search operators that are valid should not be stripped' => array(
+				'original' => array(
+					'id' => 123,
+					'search_operator' => 'is',
+				),
+				'expected' => array(
+					'id' => 123,
+					'search_operator' => 'is',
+				)
+			),
+
+			'Search operators that do not exist should be stripped' => array(
+				'original' => array(
+					'id' => 123,
+					'search_operator' => 'this is not valid',
+				),
+				'expected' => array(
+					'id' => 123,
+				)
+			),
+
 			'{get} should not pass unsanitized stuff' => array(
 				'get' => array(
 					'danger' => '<script>alert()</script>'
@@ -337,5 +358,52 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 	public function test_shortcode_abstract() {
 		$shortcode = new \GV\Shortcode();
 		$this->assertEmpty( $shortcode->callback( array() ) );
+	}
+
+	public function test_shortcode_single_view_from_directory() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+				),
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => $field = sprintf( '[%d] Entry %s', 1, wp_generate_password( 12, false ) ),
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$request = new \GV\Mock_Request();
+		$request->returns['is_entry'] = $entry;
+		gravityview()->request = $request;
+
+		global $post;
+
+		$post = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $view->ID . '"]' ) );
+
+		$shorcode = new \GV\Shortcodes\gravityview();
+
+		$this->assertContains( $field, $shorcode->callback( array( 'id' => $view->ID ) ) );
+
+		gravityview()->request = new \GV\Frontend_Request();
 	}
 }
