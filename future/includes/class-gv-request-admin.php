@@ -26,11 +26,12 @@ class Admin_Request extends Request {
 		/**
 		 * Regular check.
 		 */
-		if ( ! ( $args = func_get_args() ) || count( $args ) != 2 ) {
+		if ( ! ( $args = func_get_args() ) ) {
 			return true;
 		}
 
-		$context = $args[1];
+		$hook    = \GV\Utils::get( $args, 0, '' );
+		$context = \GV\Utils::get( $args, 1, null );
 
 		/**
 		 * Assume false by default.
@@ -66,7 +67,7 @@ class Admin_Request extends Request {
 		 * @param[in,out] string|bool $is_page If false, no. If string, the name of the page (`single`, `settings`, or `views`)
 		 * @param[in] string $hook The name of the page to check against. Is passed to the method.
 		 */
-		$is_page = apply_filters( 'gravityview_is_admin_page', $is_page, $args[0] );
+		$is_page = apply_filters( 'gravityview_is_admin_page', $is_page, $hook );
 
 		// If the current page is the same as the compared page
 		if ( ! empty( $context ) ) {
