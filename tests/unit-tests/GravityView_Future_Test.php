@@ -983,6 +983,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$post = null;
 	}
 
+	/**
+	 * @covers \gravityview_is_admin_page()
+     * @covers \GV\Admin_Request::is_admin()
+	 */
 	public function test_admin_request_is_admin_page() {
 		$this->assertFalse( gravityview_is_admin_page() );
 
@@ -1011,9 +1015,25 @@ class GVFuture_Test extends GV_UnitTestCase {
 		get_current_screen()->post_type = 'gravityview';
 
 		$this->assertTrue( gravityview()->request->is_admin( '', 'downloads' ) );
+		$this->assertEquals( 'downloads', gravityview()->request->is_admin( 'gravityview_page_gv-admin-installer' ) );
 
 		get_current_screen()->post_type = 'not gravityview';
 		$this->assertFalse( gravityview()->request->is_admin( '', 'downloads' ) );
+
+		get_current_screen()->id = 'toplevel_page_gf_edit_forms';
+		get_current_screen()->post_type = '';
+		$this->assertFalse( gravityview()->request->is_admin( '', null ) );
+
+		get_current_screen()->id = 'gravityview_page_gv-getting-started';
+		get_current_screen()->post_type = 'gravityview';
+		$this->assertTrue( gravityview()->request->is_admin() );
+		$this->assertTrue( gravityview()->request->is_admin( 'gravityview_page_gv-getting-started', 'getting-started' ) );
+		$this->assertEquals( 'getting-started', gravityview()->request->is_admin( 'gravityview_page_gv-getting-started' ) );
+
+
+		get_current_screen()->id = 'upload';
+		get_current_screen()->post_type = 'attachment';
+		$this->assertFalse( gravityview()->request->is_admin( '', null ) );
 
 		gravityview()->request = $_request;
 		get_current_screen()->id = $_id;
