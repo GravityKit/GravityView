@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.1.0.1 on September 27, 2018 =
+
+* Fixed: Responsive table layout labels showing sorting icon HTML
+* Fixed: Responsive table layout showing table footer
+
 = 2.1 on September 27, 2018 =
 
 * Added: You can now send email notifications when an entry is approved, disapproved, or the approval status has changed. [Learn how](https://docs.gravityview.co/article/488-notification-when-entry-approved)

@@ -103,7 +103,7 @@ class View_Table_Template extends View_Template {
 				'field' => is_numeric( $field->ID ) ? $field->as_configuration() : null,
 				'hide_empty' => false,
 				'zone_id' => 'directory_table-columns',
-				'markup' => '<th id="{{ field_id }}" class="{{ class }}" style="{{width:style}}" data-label="{{label_value:esc_attr}}">{{label}}</th>',
+				'markup' => '<th id="{{ field_id }}" class="{{ class }}" style="{{width:style}}" data-label="{{label_value:data-label}}">{{label}}</th>',
 				'label_markup' => '<span class="gv-field-label">{{ label }}</span>',
 				'label' => self::get_field_column_label( $field, $context ),
 			);
@@ -272,7 +272,7 @@ class View_Table_Template extends View_Template {
 			'hide_empty' => false,
 			'zone_id' => 'directory_table-columns',
             'label' => self::get_field_column_label( $field, $context ),
-			'markup' => '<td id="{{ field_id }}" class="{{ class }}" data-label="{{label_value:esc_attr}}">{{ value }}</td>',
+			'markup' => '<td id="{{ field_id }}" class="{{ class }}" data-label="{{label_value:data-label}}">{{ value }}</td>',
             'form' => $form,
 		);
 

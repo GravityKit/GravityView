@@ -312,6 +312,13 @@ class GravityView_Welcome {
                     <li>REST API: Added <code>X-Item-Total</code> header and meta to REST API response</li>
                 </ul>
 
+                <h3>2.1.0.1 on September 27, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Responsive table layout labels showing sorting icon HTML</li>
+                    <li>Fixed: Responsive table layout showing table footer</li>
+                </ul>
+
 
                 <h3>2.0.14.1 on July 19, 2018</h3>
 
