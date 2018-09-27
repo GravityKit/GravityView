@@ -280,6 +280,7 @@ class GravityView_Welcome {
                     <li>Added: Enable CSV output for Views <a href="https://docs.gravityview.co/article/491-csv-export">Learn how</a></li>
                     <li>Added: A "Page Size" widget allows users to change the number of entries per page</li>
                     <li>Added: Support for displaying a single input value of a Chained Select field</li>
+                    <li>Added: The Table layout is now mobile-responsive!</li>
                     <li>Improved: Added a shortcut to reset entry approval on the front-end of a View: "Option + Click" on the Entry Approval field</li>
                     <li>Fixed: Custom date format not working with the <code>{date_created}</code> Merge Tag</li>
                     <li>Fixed: Embedding a View inside an embedded entry didn't work</li>
@@ -300,6 +301,8 @@ class GravityView_Welcome {
                     <li>Added: Process shortcodes inside [gv<em>entry</em>link] shortcodes</li>
                     <li>Added: <code>gravityview/shortcodes/gv_entry_link/output</code> filter to modify output of the <code>[gv_entry_link]</code> shortcode</li>
                     <li>Added <code>gravityview/widget/page_size/settings</code> and <code>gravityview/widget/page_size/page_sizes</code> filters to modify new Page Size widget</li>
+                    <li>Modified: Added <code>data-label</code> attributes to all Table layout cells to make responsive layout CSS-only</li>
+                    <li>Modified: Added responsive CSS to the Table layout CSS ("table-view.css")</li>
                     <li>Improved: Reduced database lookups when using custom entry slugs</li>
                     <li>Introduced <code>\GV\View-&gt;can_render()</code> method to reduce code duplication</li>
                     <li>Fixed: Don't add <code>gvid</code> unless multiple Views embedded in a post</li>
