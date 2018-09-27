@@ -1339,6 +1339,7 @@ function gravityview_field_output( $passed_args, $context = null ) {
 		'label' => '',
 		'label_value' => '',
 		'label_value:esc_attr' => '',
+		'label_value:data-label' => '',
 		'class' => '',
 		'field_id' => '',
 	);
@@ -1376,6 +1377,7 @@ function gravityview_field_output( $passed_args, $context = null ) {
 		$placeholders['label_value'] = gv_label( $field, $entry );
 	}
 
+	$placeholders['label_value:data-label'] = trim( esc_attr( strip_tags( str_replace( '>&nbsp;', '>', $placeholders['label_value'] ) ) ) );
 	$placeholders['label_value:esc_attr'] = esc_attr( $placeholders['label_value'] );
 
 	if ( empty( $placeholders['label'] ) && ! empty( $placeholders['label_value'] ) ){
