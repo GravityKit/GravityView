@@ -113,13 +113,13 @@ class GravityView_Support_Port {
 		switch ( intval( $response['price_id'] ) ) {
 			default:
 			case 1:
-				$package = 'Sol';
+				$package = 'Core';
 				break;
 			case 2:
-				$package = 'Interstellar';
+				$package = 'Extensions';
 				break;
 			case 3:
-				$package = 'Galactic';
+				$package = 'All Access';
 				break;
             case 4:
                 $package = 'Lifetime';
