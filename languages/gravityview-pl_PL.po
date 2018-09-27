@@ -5,7 +5,7 @@
 # Dariusz Zielonka <info@dariusz-zielonka.pl>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.0.14.1\n"
+"Project-Id-Version: GravityView 2.1\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
@@ -184,7 +184,7 @@ msgstr "Sprawdź licencję"
 #: future/includes/class-gv-oembed.php:212
 #: future/includes/class-gv-oembed.php:217
 #: future/includes/class-gv-oembed.php:223
-#: future/includes/class-gv-shortcode-gravityview.php:110
+#: future/includes/class-gv-shortcode-gravityview.php:109
 #: future/includes/class-gv-shortcode-gravityview.php:137
 #: future/includes/class-gv-shortcode-gravityview.php:142
 #: future/includes/class-gv-shortcode-gravityview.php:148
@@ -641,12 +641,12 @@ msgid "Sort by field"
 msgstr "Sortuj według pola"
 
 #: future/includes/class-gv-settings-view.php:148
-#: includes/class-common.php:1331
+#: includes/class-common.php:1345
 msgid "Default"
 msgstr "Domyślne"
 
 #: future/includes/class-gv-settings-view.php:149
-#: includes/class-common.php:1374
+#: includes/class-common.php:1388
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
 msgstr "Data utworzenia"
@@ -888,18 +888,18 @@ msgstr "Endpoint nie został jeszcze wdrożony."
 msgid "No Views found."
 msgstr "Nie znaleziono Widoków."
 
-#: future/includes/rest/class-gv-rest-views-route.php:231
+#: future/includes/rest/class-gv-rest-views-route.php:229
 msgid "No Entries found."
 msgstr "Nie znaleziono pozycji."
 
-#: future/includes/rest/class-gv-rest-views-route.php:310
-#: future/includes/rest/class-gv-rest-views-route.php:365
-#: future/includes/rest/class-gv-rest-views-route.php:380
-#: future/includes/rest/class-gv-rest-views-route.php:392
+#: future/includes/rest/class-gv-rest-views-route.php:308
+#: future/includes/rest/class-gv-rest-views-route.php:363
+#: future/includes/rest/class-gv-rest-views-route.php:378
+#: future/includes/rest/class-gv-rest-views-route.php:390
 msgid "You are not allowed to access this content."
 msgstr "Nie masz uprawnień do wyświetlania tej treści."
 
-#: future/includes/rest/class-gv-rest-views-route.php:382
+#: future/includes/rest/class-gv-rest-views-route.php:380
 msgid "This View is not configured properly."
 msgstr ""
 
@@ -1737,27 +1737,27 @@ msgstr ""
 msgid "List of Changes"
 msgstr "Lista zmian"
 
-#: includes/class-admin-welcome.php:268
+#: includes/class-admin-welcome.php:271
 msgid "What&rsquo;s New"
 msgstr "Co nowego?"
 
-#: includes/class-admin-welcome.php:532
+#: includes/class-admin-welcome.php:389
 msgid "View change history"
 msgstr "Wyświetl historię zmian"
 
-#: includes/class-admin-welcome.php:553
+#: includes/class-admin-welcome.php:410
 msgid "GravityView is brought to you by:"
 msgstr "GravityView jest dostarczany przez:"
 
-#: includes/class-admin-welcome.php:594
+#: includes/class-admin-welcome.php:451
 msgid "Contributors"
 msgstr "Współtwórcy"
 
-#: includes/class-admin-welcome.php:619
+#: includes/class-admin-welcome.php:477
 msgid "Want to contribute?"
 msgstr "Chcesz się przyczynić?"
 
-#: includes/class-admin-welcome.php:620
+#: includes/class-admin-welcome.php:478
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1927,11 +1927,11 @@ msgstr "ID Wpisu"
 
 #. translators: %s: relative time from now, used for generic date comparisons.
 #. "1 day ago", or "20 seconds ago"
-#: includes/class-common.php:974
+#: includes/class-common.php:988
 msgid "%s ago"
 msgstr "%s temu"
 
-#: includes/class-common.php:1484
+#: includes/class-common.php:1498
 msgid "Email hidden; Javascript is required."
 msgstr ""
 "E-mail został ukryty; Włączenie JavaScript jest wymagane aby go ujawnić."
@@ -3304,6 +3304,19 @@ msgstr "Pokaż każdy numer strony zamiast podsumowania (np .: 1 2 3 ... 8 »)"
 #: includes/widgets/class-gravityview-widget-page-links.php:23
 msgid "Page Links"
 msgstr "Linki stron"
+
+#: includes/widgets/class-gravityview-widget-page-size.php:20
+msgid "Allow users to modify the number of results shown per page."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-page-size.php:33
+#: includes/widgets/class-gravityview-widget-page-size.php:91
+msgid "Page Size"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-page-size.php:93
+msgid "Results Per Page"
+msgstr ""
 
 #: includes/widgets/class-gravityview-widget-pagination-info.php:19
 msgid "Summary of the number of visible entries out of the total results."

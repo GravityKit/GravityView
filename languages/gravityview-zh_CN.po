@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # Zachary Katz <zack@katz.co>, 2018
-# michael edi <michaeledi@163.com>, 2018
+# Edi Weigh <michaeledi@163.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.0.14.1\n"
+"Project-Id-Version: GravityView 2.1\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
-"Last-Translator: michael edi <michaeledi@163.com>, 2018\n"
+"Last-Translator: Edi Weigh <michaeledi@163.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/katzwebservices/teams/18775/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -43,7 +43,7 @@ msgstr "%s 扩展需要PHP版本 %s 或更新的。请访问您的主机升级�
 msgid ""
 "The %s Extension is not compatible with this version of GravityView. Please "
 "update the Extension to the latest version."
-msgstr ""
+msgstr "%s扩展和当前GravityView版本不兼容。请升级插件到最新版本。"
 
 #: future/includes/class-gv-license-handler.php:263
 msgid "License Details:"
@@ -173,7 +173,7 @@ msgstr "检查许可证"
 #: future/includes/class-gv-oembed.php:212
 #: future/includes/class-gv-oembed.php:217
 #: future/includes/class-gv-oembed.php:223
-#: future/includes/class-gv-shortcode-gravityview.php:110
+#: future/includes/class-gv-shortcode-gravityview.php:109
 #: future/includes/class-gv-shortcode-gravityview.php:137
 #: future/includes/class-gv-shortcode-gravityview.php:142
 #: future/includes/class-gv-shortcode-gravityview.php:148
@@ -451,28 +451,28 @@ msgstr "如果您的编辑视图选项卡显示异常，启用此设置。"
 
 #: future/includes/class-gv-settings-addon.php:858
 msgid "REST API"
-msgstr ""
+msgstr "REST API"
 
 #: future/includes/class-gv-settings-addon.php:871
 msgid ""
 "Enable View and Entry access via the REST API? Regular per-View restrictions"
 " apply (private, password protected, etc.)."
-msgstr ""
+msgstr "允许通过REST API访问视图和条目吗？通用视图的限制将被启用（私有，密码保护等）"
 
 #: future/includes/class-gv-settings-addon.php:872
 msgid "If you are unsure, choose the Disable setting."
-msgstr ""
+msgstr "如果您不确定，选择“禁用”设置。"
 
 #: future/includes/class-gv-settings-addon.php:877
 msgid "Become a Beta Tester"
-msgstr ""
+msgstr "成为测试用户"
 
 #: future/includes/class-gv-settings-addon.php:887
 msgid ""
 "You will have early access to the latest GravityView features and "
 "improvements. There may be bugs! If you encounter an issue, help make "
 "GravityView better by reporting it!"
-msgstr ""
+msgstr "您将可以提前获取最新的GravityView功能和改进。可能有会存在漏洞！如果您遇到问题，请报告来帮助GravityView改进！"
 
 #: future/includes/class-gv-settings-addon.php:927
 msgid "You are running GravityView version %s"
@@ -494,7 +494,7 @@ msgstr "每页的条目数"
 
 #: future/includes/class-gv-settings-view.php:67
 msgid "Offset entries starting from"
-msgstr ""
+msgstr "间隔显示条目，从"
 
 #: future/includes/class-gv-settings-view.php:75
 msgid "Enable lightbox for images"
@@ -548,19 +548,19 @@ msgstr "如果他们已创建该条目，对非管理员用户显示“编辑条
 
 #: future/includes/class-gv-settings-view.php:124
 msgid "Unapprove Entries After Edit"
-msgstr ""
+msgstr "编辑后取消批准条目"
 
 #: future/includes/class-gv-settings-view.php:127
 msgid ""
 "When an entry is edited by a non-administrator, reset the approval status to"
 " \"Unapproved\"."
-msgstr ""
+msgstr "非管理员编辑条目时，将审批状态重置为“未批准”。"
 
 #: future/includes/class-gv-settings-view.php:128
 msgid ""
 "If the \"Show only approved entries\" setting is enabled, the entry will "
 "need to be re-approved by an administrator before it is shown in the View."
-msgstr ""
+msgstr "如果启用了“仅显示已批准的条目”设置，则需要管理员重新批准该条目，然后才能在视图中显示该条目。"
 
 #: future/includes/class-gv-settings-view.php:134
 msgid "Allow User Delete"
@@ -582,12 +582,12 @@ msgid "Sort by field"
 msgstr "按字段排序"
 
 #: future/includes/class-gv-settings-view.php:148
-#: includes/class-common.php:1331
+#: includes/class-common.php:1345
 msgid "Default"
 msgstr "默认"
 
 #: future/includes/class-gv-settings-view.php:149
-#: includes/class-common.php:1374
+#: includes/class-common.php:1388
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
 msgstr "条目创建的日期。"
@@ -661,7 +661,7 @@ msgstr "如果搜索值被设置，您可以定义一个特定的字段来搜索
 
 #: future/includes/class-gv-settings-view.php:217
 msgid "Search Operator"
-msgstr ""
+msgstr "搜索操作者"
 
 #: future/includes/class-gv-settings-view.php:224
 msgid "Single Entry Title"
@@ -692,31 +692,31 @@ msgstr "只允许通过简码嵌入时访问这个视图。"
 
 #: future/includes/class-gv-settings-view.php:254
 msgid "Prevent REST Access"
-msgstr ""
+msgstr "阻止REST访问"
 
 #: future/includes/class-gv-settings-view.php:256
 msgid "Disable REST access to this View."
-msgstr ""
+msgstr "禁用通过REST访问视图。"
 
 #: future/includes/class-gv-settings-view.php:267
 msgid "Allow REST Access"
-msgstr ""
+msgstr "允许REST访问"
 
 #: future/includes/class-gv-settings-view.php:269
 msgid "Enable REST access to this View."
-msgstr ""
+msgstr "启用通过REST访问此视图。"
 
 #: future/includes/class-gv-settings-view.php:279
 msgid "Allow CSV Access"
-msgstr ""
+msgstr "允许访问CSV"
 
 #: future/includes/class-gv-settings-view.php:281
 msgid "Enable CSV access to this View."
-msgstr ""
+msgstr "启用CSV访问此视图"
 
 #: future/includes/class-gv-settings-view.php:298
 msgid "Random"
-msgstr ""
+msgstr "随机"
 
 #: future/includes/class-gv-view.php:128
 msgid "Parent View:"
@@ -802,48 +802,48 @@ msgstr "右"
 
 #: future/includes/rest/class-gv-rest-route.php:178
 msgid "Must set route name in subclass."
-msgstr ""
+msgstr "必须在子类设置路由名称"
 
 #: future/includes/rest/class-gv-rest-route.php:196
 msgid "Must set route sub type in subclass."
-msgstr ""
+msgstr "必须在子类中设置子路由名称。"
 
 #: future/includes/rest/class-gv-rest-route.php:386
 msgid "Endpoint Not Yet Implemented."
-msgstr ""
+msgstr "节点尚未应用。"
 
 #: future/includes/rest/class-gv-rest-views-route.php:58
 #: includes/class-admin.php:70
 msgid "No Views found."
 msgstr "未找到视图。"
 
-#: future/includes/rest/class-gv-rest-views-route.php:231
+#: future/includes/rest/class-gv-rest-views-route.php:229
 msgid "No Entries found."
-msgstr ""
+msgstr "未找到条目。"
 
-#: future/includes/rest/class-gv-rest-views-route.php:310
-#: future/includes/rest/class-gv-rest-views-route.php:365
-#: future/includes/rest/class-gv-rest-views-route.php:380
-#: future/includes/rest/class-gv-rest-views-route.php:392
+#: future/includes/rest/class-gv-rest-views-route.php:308
+#: future/includes/rest/class-gv-rest-views-route.php:363
+#: future/includes/rest/class-gv-rest-views-route.php:378
+#: future/includes/rest/class-gv-rest-views-route.php:390
 msgid "You are not allowed to access this content."
-msgstr ""
+msgstr "你无权限访问此内容。"
 
-#: future/includes/rest/class-gv-rest-views-route.php:382
+#: future/includes/rest/class-gv-rest-views-route.php:380
 msgid "This View is not configured properly."
-msgstr ""
+msgstr "此视图配置不正确。"
 
 #: future/lib/EDD_SL_Plugin_Updater.php:202
 #: includes/lib/EDD_SL_Plugin_Updater.php:204
 msgid ""
 "There is a new version of %1$s available. %2$sView version %3$s details%4$s."
-msgstr ""
+msgstr "有一个新版本的%1$s可用。%2$s查看版本%3$s详情%4$s。"
 
 #: future/lib/EDD_SL_Plugin_Updater.php:210
 #: includes/lib/EDD_SL_Plugin_Updater.php:212
 msgid ""
 "There is a new version of %1$s available. %2$sView version %3$s details%4$s "
 "or %5$supdate now%6$s."
-msgstr ""
+msgstr "有一个新版本的%1$s可用。%2$s查看版本%3$s详情或者%5$s现在升级%6$s。"
 
 #: future/lib/EDD_SL_Plugin_Updater.php:400
 #: includes/lib/EDD_SL_Plugin_Updater.php:402
@@ -860,7 +860,7 @@ msgstr "错误"
 msgid ""
 "GravityView requires PHP Version %s or newer. You're using Version %s. "
 "Please ask your host to upgrade your server's PHP."
-msgstr ""
+msgstr "GravityView需要 PHP 版本为 %s 或更新版本。您正在使用的版本是 %s。请访问您的主机去更新您的服务器的 PHP。"
 
 #: future/loader.php:27 includes/class-gravityview-compatibility.php:200
 msgid ""
@@ -1066,7 +1066,7 @@ msgstr "这个视图的中你想要的数据从何而来？"
 
 #: includes/admin/metaboxes/views/data-source.php:36
 msgid "Use a Form Preset"
-msgstr ""
+msgstr "使用预置表单"
 
 #: includes/admin/metaboxes/views/data-source.php:39
 msgid "or use an existing form"
@@ -1277,107 +1277,107 @@ msgstr "在视图目录中显示条目？"
 
 #: includes/class-admin-installer.php:102
 msgid "Plugins that extend GravityView and Gravity Forms functionality."
-msgstr ""
+msgstr "扩展GravityView和Gravity Forms功能的插件。"
 
 #: includes/class-admin-installer.php:106
 #: includes/class-admin-installer.php:278
 #: includes/class-admin-installer.php:297
 msgid "GravityView Extensions and Plugins"
-msgstr ""
+msgstr "GravityView扩展和插件"
 
 #: includes/class-admin-installer.php:127
 msgid ""
 "Your license %s. Do you want access to these plugins? %sActivate your "
 "license%s or %sget a license here%s."
-msgstr ""
+msgstr "你的许可证%s。你想使用这些插件吗？%s激活你的许可证%s或%s 在这里获取许可证%s。"
 
 #: includes/class-admin-installer.php:280
 msgid ""
 "Extensions and plugins data cannot be loaded at the moment. Please try again"
 " later."
-msgstr ""
+msgstr "扩展和插件数据目前无法加载。请稍后再试。"
 
 #: includes/class-admin-installer.php:299
 msgid ""
 "The following plugins extend GravityView and Gravity Forms functionality:"
-msgstr ""
+msgstr "以下插件扩展了GravityView和Gravity Forms功能："
 
 #: includes/class-admin-installer.php:348
 msgid "Visit the plugin page"
-msgstr ""
+msgstr "访问插件页面"
 
 #: includes/class-admin-installer.php:352
 msgid "Plugin status: %s"
-msgstr ""
+msgstr "插件状态：%s"
 
 #: includes/class-admin-installer.php:426
 msgid "All Access"
-msgstr ""
+msgstr "全部访问"
 
 #: includes/class-admin-installer.php:426
 msgid "Core + Extensions"
-msgstr ""
+msgstr "主程序+插件"
 
 #: includes/class-admin-installer.php:432
 msgid "Active %s License is Required."
-msgstr ""
+msgstr "需要激活%s许可证。"
 
 #: includes/class-admin-installer.php:439
 msgid "Purchase Now for %s"
-msgstr ""
+msgstr "现在以%s的价格购买"
 
 #: includes/class-admin-installer.php:449
 msgid "Upgrade to %s for Access"
-msgstr ""
+msgstr "升级到%s以访问"
 
 #: includes/class-admin-installer.php:457
 msgid "Coming Soon"
-msgstr ""
+msgstr "敬请期待"
 
 #: includes/class-admin-installer.php:458
 msgid "Learn More"
-msgstr ""
+msgstr "了解更多"
 
 #: includes/class-admin-installer.php:476
 msgid "Not Installed"
-msgstr ""
+msgstr "未安装"
 
 #: includes/class-admin-installer.php:477
 msgid "Install"
-msgstr ""
+msgstr "安装"
 
 #: includes/class-admin-installer.php:484
 #: includes/class-admin-installer.php:592
 msgid "Inactive"
-msgstr ""
+msgstr "未启用"
 
 #: includes/class-admin-installer.php:485
 #: includes/class-admin-installer.php:593
 msgid "Activate"
-msgstr ""
+msgstr "启用"
 
 #: includes/class-admin-installer.php:495
 #: includes/class-admin-installer.php:591
 msgid "Active"
-msgstr ""
+msgstr "已启用"
 
 #: includes/class-admin-installer.php:496
 #: includes/class-admin-installer.php:594
 msgid "Deactivate"
-msgstr ""
+msgstr "禁用"
 
 #: includes/class-admin-installer.php:541
 msgid "Plugin activation failed: %s"
-msgstr ""
+msgstr "插件激活失败：%s"
 
 #: includes/class-admin-installer.php:564
 #: includes/class-admin-installer.php:590
 msgid "Plugin deactivation failed."
-msgstr ""
+msgstr "插件禁用失败。"
 
 #: includes/class-admin-installer.php:589
 msgid "Plugin activation failed."
-msgstr ""
+msgstr "插件激活失败。"
 
 #: includes/class-admin-views.php:131
 msgid "All forms"
@@ -1540,15 +1540,15 @@ msgstr "“+ %s” 或拖动现有的 %ss 到这里。"
 
 #: includes/class-admin-views.php:1018
 msgid "Filter Fields:"
-msgstr ""
+msgstr "筛选字段："
 
 #: includes/class-admin-views.php:1019
 msgid "Filter fields by name or label"
-msgstr ""
+msgstr "通过名称和标签筛选字段"
 
 #: includes/class-admin-views.php:1026
 msgid "No fields were found matching the search."
-msgstr ""
+msgstr "没有符合搜索结果的字段。"
 
 #: includes/class-admin-views.php:1060
 msgid "This View is configured using the %s View type, which is disabled."
@@ -1629,27 +1629,27 @@ msgstr "感谢您安装GravityView。完美的显示您的Gravity Forms条目。
 msgid "List of Changes"
 msgstr "更改列表"
 
-#: includes/class-admin-welcome.php:268
+#: includes/class-admin-welcome.php:271
 msgid "What&rsquo;s New"
 msgstr "新鲜事"
 
-#: includes/class-admin-welcome.php:532
+#: includes/class-admin-welcome.php:389
 msgid "View change history"
-msgstr ""
+msgstr "查看更改历史"
 
-#: includes/class-admin-welcome.php:553
+#: includes/class-admin-welcome.php:410
 msgid "GravityView is brought to you by:"
 msgstr "重力视图由以下团队呈现："
 
-#: includes/class-admin-welcome.php:594
+#: includes/class-admin-welcome.php:451
 msgid "Contributors"
 msgstr "贡献者"
 
-#: includes/class-admin-welcome.php:619
+#: includes/class-admin-welcome.php:477
 msgid "Want to contribute?"
 msgstr "想要贡献?"
 
-#: includes/class-admin-welcome.php:620
+#: includes/class-admin-welcome.php:478
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1756,27 +1756,27 @@ msgstr "视图草稿已更新。%s在站点上查看。%s"
 #: includes/class-admin.php:254
 msgid "%s View updated."
 msgid_plural "%s Views updated."
-msgstr[0] ""
+msgstr[0] "%s个视图被更新。"
 
 #: includes/class-admin.php:255
 msgid "%s View not updated, somebody is editing it."
 msgid_plural "%s Views not updated, somebody is editing them."
-msgstr[0] ""
+msgstr[0] "%s个视图未被更新，有人正在编辑它们。"
 
 #: includes/class-admin.php:256
 msgid "%s View permanently deleted."
 msgid_plural "%s Views permanently deleted."
-msgstr[0] ""
+msgstr[0] "%s个视图被永久删除。"
 
 #: includes/class-admin.php:257
 msgid "%s View moved to the Trash."
 msgid_plural "%s Views moved to the Trash."
-msgstr[0] ""
+msgstr[0] "%s个视图被移入回收站。"
 
 #: includes/class-admin.php:258
 msgid "%s View restored from the Trash."
 msgid_plural "%s Views restored from the Trash."
-msgstr[0] ""
+msgstr[0] "%s个视图从回收站中还原。"
 
 #: includes/class-api.php:315
 msgid "This search returned no results."
@@ -1801,11 +1801,11 @@ msgstr "文章 ID"
 
 #. translators: %s: relative time from now, used for generic date comparisons.
 #. "1 day ago", or "20 seconds ago"
-#: includes/class-common.php:974
+#: includes/class-common.php:988
 msgid "%s ago"
 msgstr "%s之前"
 
-#: includes/class-common.php:1484
+#: includes/class-common.php:1498
 msgid "Email hidden; Javascript is required."
 msgstr "电子邮件已隐藏隐藏；需要Javascript。"
 
@@ -1908,7 +1908,7 @@ msgstr "更改条目创建者︰"
 msgid ""
 "The displayed list of users has been trimmed due to the large number of "
 "users. %sLearn how to remove this limit%s."
-msgstr ""
+msgstr "由于用户数量庞大，显示的用户列表已被部分隐藏。%s了解如何删除此限制%s。"
 
 #: includes/class-gravityview-compatibility.php:176
 msgid ""
@@ -1941,24 +1941,24 @@ msgstr ""
 #: includes/class-gravityview-compatibility.php:273
 msgid ""
 "In the future, GravityView will require Gravity Forms Version %s or newer."
-msgstr ""
+msgstr "将来，GravityView将需要GravityForms%s或更新版本。"
 
 #. translators: the placeholder is the required version of Gravity Forms.
 #: includes/class-gravityview-compatibility.php:278
 msgid "GravityView requires Gravity Forms Version %s or newer."
-msgstr ""
+msgstr "GravityView将需要GravityForms%s或更新版本。"
 
 #. translators: the placeholder is the current version of Gravity Forms.
 #: includes/class-gravityview-compatibility.php:286
 msgid ""
 "You're using Version %s. Please update your Gravity Forms or purchase a "
 "license."
-msgstr ""
+msgstr "您使用的是%s版本。请更新Gravity Forms或购买许可证。"
 
 #. translators: In this context, "get" means purchase
 #: includes/class-gravityview-compatibility.php:289
 msgid "Get the Latest Gravity Forms"
-msgstr ""
+msgstr "获取最新的Gravity Forms"
 
 #: includes/class-gravityview-compatibility.php:337
 msgid ""
@@ -1970,7 +1970,7 @@ msgstr "%sGravityView需要GravityView处于激活状态。%s激活GravityView%s
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
 "properly. %sGet Gravity Forms%s - starting at $59%s%s"
-msgstr ""
+msgstr "%sGravityView要求安装Gravity Forms。%s获取Gravity Forms%s只需$59%s%s"
 
 #: includes/class-gravityview-compatibility.php:366
 msgid "Potential Conflict"
@@ -2054,7 +2054,7 @@ msgstr "视图详情"
 
 #: includes/class-gravityview-html-elements.php:80
 msgid "Select a field"
-msgstr ""
+msgstr "选择字段"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:115
 msgid "Delete Link Text"
@@ -2437,7 +2437,7 @@ msgstr "在一个 HTML 段落标签中包裹每个文本块（推荐文本）。
 
 #: includes/fields/class-gravityview-field-custom.php:64
 msgid "Render oEmbeds"
-msgstr ""
+msgstr "加载oEmbeds"
 
 #: includes/fields/class-gravityview-field-date.php:25
 #: includes/widgets/search-widget/class-search-widget.php:187
@@ -2575,20 +2575,20 @@ msgstr "完成"
 
 #: includes/fields/class-gravityview-field-is-starred.php:27
 msgid "Entry Star"
-msgstr ""
+msgstr "条目星标"
 
 #: includes/fields/class-gravityview-field-is-starred.php:28
 #: includes/widgets/search-widget/class-search-widget.php:323
 msgid "Is Starred"
-msgstr ""
+msgstr "已星标"
 
 #: includes/fields/class-gravityview-field-is-starred.php:29
 msgid "Display the entry's \"star\" status."
-msgstr ""
+msgstr "显示条目的星标状态"
 
 #: includes/fields/class-gravityview-field-is-starred.php:145
 msgid "There was an error updating the entry."
-msgstr ""
+msgstr "更新条目时出错。"
 
 #: includes/fields/class-gravityview-field-list.php:39
 msgid "List"
@@ -2815,7 +2815,7 @@ msgstr "时间"
 
 #: includes/fields/class-gravityview-field-total.php:25
 msgid "Total"
-msgstr ""
+msgstr "全部"
 
 #: includes/fields/class-gravityview-field-transaction-id.php:27
 msgid "Transaction ID"
@@ -3116,6 +3116,19 @@ msgstr "显示每一个页号而不是摘要（例如：1 2 3 ... 8 »）"
 #: includes/widgets/class-gravityview-widget-page-links.php:23
 msgid "Page Links"
 msgstr "页面链接"
+
+#: includes/widgets/class-gravityview-widget-page-size.php:20
+msgid "Allow users to modify the number of results shown per page."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-page-size.php:33
+#: includes/widgets/class-gravityview-widget-page-size.php:91
+msgid "Page Size"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-page-size.php:93
+msgid "Results Per Page"
+msgstr ""
 
 #: includes/widgets/class-gravityview-widget-pagination-info.php:19
 msgid "Summary of the number of visible entries out of the total results."
@@ -3443,17 +3456,17 @@ msgstr "关闭"
 #: future/includes/class-gv-settings-addon.php:863
 msgctxt "Setting: Enable or Disable"
 msgid "Enable"
-msgstr ""
+msgstr "启用"
 
 #: future/includes/class-gv-settings-addon.php:867
 msgctxt "Setting: Enable or Disable"
 msgid "Disable"
-msgstr ""
+msgstr "禁用"
 
 #: future/includes/class-gv-settings-addon.php:882
 msgctxt "gravityview"
 msgid "Show me beta versions if they are available."
-msgstr ""
+msgstr "显示测试版本"
 
 #: future/includes/class-gv-view.php:125
 msgctxt "Post Type General Name"
@@ -3502,7 +3515,7 @@ msgctxt ""
 "Extensions are WordPress plugins that add functionality to GravityView and "
 "Gravity Forms"
 msgid "Extensions"
-msgstr ""
+msgstr "扩展"
 
 #: includes/class-admin-views.php:472
 msgctxt "Column title that shows what template is being used for Views"
@@ -3555,22 +3568,22 @@ msgstr "没有用户"
 #: includes/class-gravityview-entry-approval.php:117
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry is approved"
-msgstr ""
+msgstr "条目已批准"
 
 #: includes/class-gravityview-entry-approval.php:118
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry is disapproved"
-msgstr ""
+msgstr "条目已拒绝"
 
 #: includes/class-gravityview-entry-approval.php:119
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry approval is reset"
-msgstr ""
+msgstr "条目审批状态被重置"
 
 #: includes/class-gravityview-entry-approval.php:120
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry approval is changed"
-msgstr ""
+msgstr "条目审批状态已更新"
 
 #: includes/class-gravityview-html-elements.php:122
 msgctxt "all dropdown items"
@@ -3580,7 +3593,7 @@ msgstr "全部"
 #: includes/class-gravityview-html-elements.php:123
 msgctxt "no dropdown items"
 msgid "None"
-msgstr ""
+msgstr "无"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:196
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:89
@@ -3614,7 +3627,7 @@ msgstr "备注不能为空。"
 msgctxt "HTML link pointing to WordPress article on oEmbed"
 msgid ""
 "Automatically convert oEmbed URLs into embedded content (%slearn more%s)."
-msgstr ""
+msgstr "自动转换oEmbed链接为嵌入的内容（%s了解更多%s）。"
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:90
 msgctxt "Gravity Flow Workflow Step Status"
