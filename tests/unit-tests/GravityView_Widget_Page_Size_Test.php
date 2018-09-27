@@ -200,13 +200,14 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 
 	    $page_sizes = \GV\Widgets\Page_Size::get_page_sizes( $context );
 
-	    $this->assertEquals( 9999, array_pop( $page_sizes )['value'], 'Should be sorted small to large' );
+	    $last_item = array_pop( $page_sizes );
+	    $this->assertEquals( 9999, $last_item['value'], 'Should be sorted small to large' );
 
 	    $view->settings->update( array( 'page_size' => 1 ) );
 
 	    $page_sizes = \GV\Widgets\Page_Size::get_page_sizes( $context );
 
-	    $this->assertEquals( 1, array_shift( $page_sizes )['value'], 'Should be sorted small to large' );
+	    $this->assertEquals( 1, $page_sizes[0]['value'], 'Should be sorted small to large' );
 
 	    $expected_result = array(
 		    array( 'value' => 12345, 'text' => 'page_sizes12345' ),
