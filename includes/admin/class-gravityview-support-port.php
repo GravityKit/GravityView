@@ -38,7 +38,7 @@ class GravityView_Support_Port {
 		global $pagenow;
 
 		// Don't show if not GravityView page, or if we're on the Widgets page
-		if ( ! gravityview_is_admin_page( $hook ) || $pagenow === 'widgets.php' ) {
+		if ( ! gravityview()->request->is_admin( $hook ) || $pagenow === 'widgets.php' ) {
 			return;
 		}
 
