@@ -311,6 +311,12 @@ class GravityView_Welcome {
                     <li>REST API: Allow setting parent post or page with the REST API request using <code>post_id={id}</code> (<a href="https://docs.gravityview.co/article/468-rest-api">learn more</a>)</li>
                     <li>REST API: Added <code>X-Item-Total</code> header and meta to REST API response</li>
                 </ul>
+                
+                <h3>2.1.0.2 on September 28, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Images showing as links for File Upload fields</li>
+                </ul>
 
                 <h3>2.1.0.1 on September 27, 2018</h3>
 
