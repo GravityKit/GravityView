@@ -152,8 +152,6 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			// This is from Gravity Forms's code
 			$file_path = esc_attr( str_replace( " ", "%20", $file_path ) );
 
-			$file_path = $field->get_download_url( $file_path );
-
 			/**
 			 * @filter `gravityview/fields/fileupload/file_path` Modify the file path before generating a link to it
 			 * @since 1.22.3
