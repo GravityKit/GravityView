@@ -312,9 +312,10 @@ class GravityView_Welcome {
                     <li>REST API: Added <code>X-Item-Total</code> header and meta to REST API response</li>
                 </ul>
                 
-                <h3>2.1.0.2 on September 28, 2018</h3>
+                <h3>2.1.0.2 &amp; 2.1.0.3 on September 28, 2018</h3>
 
                 <ul>
+                    <li>Fixed: Slashes being added to field quotes</li>
                     <li>Fixed: Images showing as links for File Upload fields</li>
                 </ul>
 
