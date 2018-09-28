@@ -1515,7 +1515,7 @@ class GVCommon {
 	 *
 	 * Do the same than parse_str without max_input_vars limitation:
 	 * Parses $string as if it were the query string passed via a URL and sets variables in the current scope.
-	 * @param $string array string to parse (not altered like in the original parse_str(), use the second parameter!)
+	 * @param $string string string to parse (not altered like in the original parse_str(), use the second parameter!)
 	 * @param $result array  If the second parameter is present, variables are stored in this variable as array elements
 	 * @return bool true or false if $string is an empty string
 	 * @since  1.5.3

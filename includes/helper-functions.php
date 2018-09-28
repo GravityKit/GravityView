@@ -648,7 +648,7 @@ function _gravityview_process_posted_fields() {
 
 			// We are not using parse_str() due to max_input_vars limitation with large View configurations
 			$fields_holder = array();
-			GVCommon::gv_parse_str( $_POST['gv_fields'], $fields_holder );
+			GVCommon::gv_parse_str( stripslashes( $_POST['gv_fields'] ), $fields_holder );
 
 			if ( isset( $fields_holder['fields'] ) ) {
 				$fields = $fields_holder['fields'];
