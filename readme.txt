@@ -21,8 +21,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.1.0.2 on September 28, 2018 =
+= 2.1.0.2 and 2.1.0.3 on September 28, 2018 =
 
+* Fixed: Slashes being added to field quotes
 * Fixed: Images showing as links for File Upload fields
 
 = 2.1.0.1 on September 27, 2018 =
