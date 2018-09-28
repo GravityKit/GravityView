@@ -51,7 +51,7 @@ class GravityView_Admin_No_Conflict {
 	function no_conflict_scripts() {
 		global $wp_scripts;
 
-		if( ! gravityview_is_admin_page() ) {
+		if( ! gravityview()->request->is_admin( '', null ) ) {
 			return;
 		}
 
@@ -110,7 +110,7 @@ class GravityView_Admin_No_Conflict {
 	function no_conflict_styles() {
 		global $wp_styles;
 
-		if( ! gravityview_is_admin_page() ) {
+		if( ! gravityview()->request->is_admin( '', null ) ) {
 			return;
 		}
 

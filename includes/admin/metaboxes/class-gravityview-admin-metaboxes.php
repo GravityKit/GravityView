@@ -299,7 +299,7 @@ class GravityView_Admin_Metaboxes {
 		global $post;
 
 		// Only show this on GravityView post types.
-		if( false === gravityview_is_admin_page() ) {
+		if( false === gravityview()->request->is_admin( '', null ) ) {
 			return;
 		}
 

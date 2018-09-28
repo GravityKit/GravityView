@@ -1099,7 +1099,7 @@ class GravityView_Admin_Views {
 		wp_register_script( 'gravityview-jquery-cookie', plugins_url('assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
 
 		// Don't process any scripts below here if it's not a GravityView page.
-		if( ! gravityview_is_admin_page( $hook, 'single' ) && ! $is_widgets_page ) {
+		if( ! gravityview()->request->is_admin( $hook, 'single' ) && ! $is_widgets_page ) {
 		    return;
 		}
 
