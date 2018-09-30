@@ -545,4 +545,54 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 		$this->assertTrue( remove_filter( 'gravityview_entries', $before_callback ) );
 	}
+
+	/**
+	 * https://secure.helpscout.net/conversation/673812806/16937/
+	 */
+	public function test_fileupload_download_link_index_php_detection() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$upload_url = GFFormsModel::get_upload_url( $form['id'] );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'5' => json_encode( $files = array( $upload_url . '/one.jpg', $upload_url . '/two.mp3' ) ),
+		) );
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'settings' => array(
+				'lightbox' => false,
+			),
+		) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '5' );
+		$field->update_configuration( array( 'link_to_file' => false ) );
+		$field->update_configuration( array( 'show_as_link' => false ) );
+
+		$files[0] = $field->field->get_download_url( $files[0] );
+		$files[1] = $field->field->get_download_url( $files[1] );
+
+		$this->assertContains( 'index.php', $files[0] );
+		$this->assertContains( 'one.jpg', $files[0] );
+		$this->assertContains( 'index.php', $files[1] );
+		$this->assertContains( 'two.mp3', $files[1] );
+
+		$output = $renderer->render( $field, $view, $form, $entry, $request );
+
+		$expected = "<ul class='gv-field-file-uploads gv-field-{$form->ID}-5'>";
+		$expected .= '<li><img src="' . $files[0] . '" width="250" class="gv-image gv-field-id-5" /></li>';
+		$expected .= '<li>';
+
+		$this->assertContains( $expected, $output );
+		$this->assertContains( '<audio class="wp-audio-shortcode', $output );
+		$this->assertContains( '<source type="audio/mpeg" src="' . esc_attr( $files[1] ) . '?_=', $output );
+		$this->assertContains( '" /><a href="' . esc_attr( $files[1] ). '">' . esc_html( $files[1] ) .  '</a></audio></li></ul>', $output );
+	}
 }

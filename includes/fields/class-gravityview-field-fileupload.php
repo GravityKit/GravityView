@@ -152,6 +152,24 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			// This is from Gravity Forms's code
 			$file_path = esc_attr( str_replace( " ", "%20", $file_path ) );
 
+			// Get file path information
+			$file_path_info = pathinfo( $file_path );
+
+			// If pathinfo() gave us the extension of the file, run the switch statement using that.
+			$extension = empty( $file_path_info['extension'] ) ? NULL : strtolower( $file_path_info['extension'] );
+			$basename = $file_path_info['basename'];
+
+			// Get the secure download URL
+			$is_secure = false;
+			$secure_file_path = $field->get_download_url( $file_path );
+
+			if ( $secure_file_path != $file_path ) {
+				$basename = basename( $secure_file_path );
+				$insecure_file_path = $file_path;
+				$file_path = $secure_file_path;
+				$is_secure = true;
+			}
+
 			/**
 			 * @filter `gravityview/fields/fileupload/file_path` Modify the file path before generating a link to it
 			 * @since 1.22.3
@@ -162,15 +180,11 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			 */
 			$file_path = apply_filters( 'gravityview/fields/fileupload/file_path', $file_path, $field_settings, $context );
 
-			// Get file path information
-			$file_path_info = pathinfo( $file_path );
-
-			// If pathinfo() gave us the extension of the file, run the switch statement using that.
-			$extension = empty( $file_path_info['extension'] ) ? NULL : strtolower( $file_path_info['extension'] );
-
 			// Audio
 			if ( in_array( $extension, wp_get_audio_extensions() ) ) {
 				if ( shortcode_exists( 'audio' ) ) {
+					$src = $is_secure ? $insecure_file_path : $file_path;
+
 					/**
 					 * @filter `gravityview_audio_settings` Modify the settings passed to the `wp_video_shortcode()` function
 					 * @since  1.2
@@ -179,7 +193,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					 * @param \GV\Template_Context $context The context.
 					 */
 					$audio_settings = apply_filters( 'gravityview_audio_settings', array(
-						'src' => $file_path,
+						'src' => $src,
 						'class' => 'wp-audio-shortcode gv-audio gv-field-id-'.$field_settings['id']
 					), $context );
 
@@ -189,11 +203,18 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					 * @see https://developer.wordpress.org/reference/functions/wp_audio_shortcode/
 					 */
 					$rendered = wp_audio_shortcode( $audio_settings );
+
+					if ( $is_secure ) {
+						foreach ( array( 'esc_attr', 'esc_html', 'esc_url', 'trim' /** noop */ ) as $f ) {
+							$rendered = str_replace( $f( $insecure_file_path ), $f( $secure_file_path ), $rendered );
+						}
+					}
 				}
 
 			// Video
 			} else if ( in_array( $extension, wp_get_video_extensions() ) ) {
 				if ( shortcode_exists( 'video' ) ) {
+					$src = $is_secure ? $insecure_file_path : $file_path;
 
 					/**
 					 * @filter `gravityview_video_settings` Modify the settings passed to the `wp_video_shortcode()` function
@@ -203,7 +224,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					 * @param \GV\Template_Context $context The context.
 					 */
 					$video_settings = apply_filters( 'gravityview_video_settings', array(
-						'src' => $file_path,
+						'src' => $src,
 						'class' => 'wp-video-shortcode gv-video gv-field-id-'.$field_settings['id']
 					), $context );
 
@@ -213,6 +234,12 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					 * @see https://developer.wordpress.org/reference/functions/wp_video_shortcode/
 					 */
 					$rendered = wp_video_shortcode( $video_settings );
+
+					if ( $is_secure ) {
+						foreach ( array( 'esc_attr', 'esc_html', 'esc_url', 'trim' /** noop */ ) as $f ) {
+							$rendered = str_replace( $f( $insecure_file_path ), $f( $secure_file_path ), $rendered );
+						}
+					}
 				}
 
 			// PDF
@@ -228,6 +255,10 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					'alt' => $field_settings['label'],
 					'width' => ( $is_single ? NULL : 250 )
 				);
+
+				if ( $is_secure ) {
+					$image_atts['validate_src'] = false;
+				}
 
 				/**
 				 * Modify the default image attributes for uploaded images
@@ -268,7 +299,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			// Output textualized content where 
 			if ( ! $disable_wrapped_link && ( ! empty( $field_settings['link_to_file'] ) && empty( $field_settings['show_as_link'] ) ) ) {
-				$content = empty( $text ) ? $file_path_info['basename'] : $text;
+				$content = empty( $text ) ? $basename : $text;
 
 				/**
 				 * Modify the link text (defaults to the file name)
@@ -293,7 +324,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 				$content = gravityview_get_link( $file_path, $content, $link_atts );
 			} else {
-				$content = empty( $rendered ) ? ( empty( $text ) ? $file_path_info['basename'] : $text ) : $rendered;
+				$content = empty( $rendered ) ? ( empty( $text ) ? $basename : $text ) : $rendered;
 			}
 
 			$output_arr[] = array(
