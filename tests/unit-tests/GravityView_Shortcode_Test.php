@@ -281,6 +281,17 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 				)
 			),
 
+			'More search operators that are valid should not be stripped' => array(
+				'original' => array(
+					'id' => 123,
+					'search_operator' => 'contains',
+				),
+				'expected' => array(
+					'id' => 123,
+					'search_operator' => 'contains',
+				)
+			),
+
 			'Search operators that do not exist should be stripped' => array(
 				'original' => array(
 					'id' => 123,
@@ -405,5 +416,53 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		$this->assertContains( $field, $shorcode->callback( array( 'id' => $view->ID ) ) );
 
 		gravityview()->request = new \GV\Frontend_Request();
+	}
+
+	public function test_shortcode_search() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+						'label' => 'Text',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'abcxyz',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'abc',
+		) );
+
+		$shortcode = new \GV\Shortcodes\gravityview();
+		$content = $shortcode->callback( array( 'id' => $view->ID ) );
+		$this->assertContains( 'data-label="Text">abc</td>', $content );
+		$this->assertContains( 'data-label="Text">abcxyz</td>', $content );
+
+		$shortcode = new \GV\Shortcodes\gravityview();
+		$content = $shortcode->callback( array( 'id' => $view->ID, 'search_field' => '1', 'search_value' => 'abcxyz' ) );
+		$this->assertNotContains( 'data-label="Text">abc</td>', $content );
+		$this->assertContains( 'data-label="Text">abcxyz</td>', $content );
+
+		$shortcode = new \GV\Shortcodes\gravityview();
+		$content = $shortcode->callback( array( 'id' => $view->ID, 'search_field' => '1', 'search_value' => 'abc', 'search_operator' => 'is' ) );
+		$this->assertContains( 'data-label="Text">abc</td>', $content );
+		$this->assertNotContains( 'data-label="Text">abcxyz</td>', $content );
 	}
 }
