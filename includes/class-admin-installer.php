@@ -348,7 +348,7 @@ class GravityView_Admin_Installer {
                 <a href="<?php echo esc_url( $download_info['link'] ); ?>" rel="external noreferrer noopener" title="<?php esc_html_e( 'Visit the plugin page', 'gravityview' ); ?>"><img class="thumbnail" src="<?php echo esc_attr( $download_info['thumbnail'] ); ?>" alt="" /></a>
                 <h3><?php echo esc_html( \GV\Utils::get( $download_info, 'installer_title', $download_info['title'] ) ); ?></h3>
                 <div>
-                    <?php if( $details['status_label'] ) { ?>
+                    <?php if( ! empty( $details['status_label'] ) ) { ?>
                     <div class="status <?php echo esc_attr( $details['status'] ); ?>" title="<?php printf( esc_attr__( 'Plugin status: %s', 'gravityview' ), esc_html( $details['status_label'] ) ); ?>">
                         <span class="dashicons dashicons-admin-plugins"></span> <span class="status-label"><?php echo esc_html( $details['status_label'] ); ?></span>
                     </div>
@@ -428,6 +428,7 @@ class GravityView_Admin_Installer {
 		// The license is not active - no matter what level, this should not work
 		if( ! $is_active  && empty( $base_price ) ) {
 			$spinner      = false;
+			$status_label = '';
 			$button_class = 'disabled disabled-license';
 			$button_label = sprintf( __( 'Active %s License is Required.', 'gravityview' ), $required_license );
 		}
