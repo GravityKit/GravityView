@@ -15,6 +15,8 @@ class Page_Size extends \GV\Widget {
 	 */
 	protected $show_on_single = false;
 
+	protected $widget_id = 'page_size';
+
 	function __construct() {
 
 		$this->widget_description = __( 'Allow users to modify the number of results shown per page.', 'gravityview' );
@@ -30,7 +32,7 @@ class Page_Size extends \GV\Widget {
 			add_action( 'gravityview/view/get', array( $this, 'override_view_page_size' ) );
 		}
 
-		parent::__construct( __( 'Page Size', 'gravityview' ), 'page_size', $default_values, $settings );
+		parent::__construct( __( 'Page Size', 'gravityview' ), $this->widget_id, $default_values, $settings );
 	}
 
 	/**
