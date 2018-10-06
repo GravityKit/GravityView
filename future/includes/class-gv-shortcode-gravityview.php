@@ -106,6 +106,7 @@ class gravityview extends \GV\Shortcode {
 				case 'no_direct_access':
 				case 'embed_only':
 				case 'not_public':
+				default:
 					return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
 			}
 		}
