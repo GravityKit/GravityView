@@ -5,7 +5,7 @@
  * @global \GV\Template_Context $gravityview
  * @since 2.0
  */
-$value = $gravityview->value;
+$display_value = $gravityview->display_value;
 $form = $gravityview->view->form->form;
 $field_settings = $gravityview->field->as_configuration();
 
