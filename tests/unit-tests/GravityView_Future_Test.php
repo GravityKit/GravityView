@@ -124,7 +124,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 */
 	public function test_entry_endpoint_rewrite_name() {
 		$entry_enpoint = array_filter( $GLOBALS['wp_rewrite']->endpoints, function( $endpoint ) {
-			return $endpoint === array( EP_ALL, 'entry', 'entry' );
+			return $endpoint === array( EP_PERMALINK | EP_PAGES, 'entry', 'entry' );
 		} );
 
 		$this->assertNotEmpty( $entry_enpoint, 'Single Entry endpoint not registered.' );
