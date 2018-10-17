@@ -40,7 +40,7 @@ class Renderer {
 				$tab = __( 'Edit Entry', 'gravityview' );
 				$context = 'edit';
 				break;
-			case ( $gravityview->request->is_entry() ):
+			case ( $gravityview->request->is_entry( $gravityview->view->form ? $gravityview->view->form->ID : 0 ) ):
 				$tab = __( 'Single Entry', 'gravityview' );
 				$context = 'single';
 				break;

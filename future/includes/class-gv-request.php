@@ -90,24 +90,26 @@ abstract class Request {
 	 * @since 2.0
 	 * @todo tests
 	 *
+	 * @param int $form_id The form ID, since slugs can be non-unique. Default: 0.
+	 *
 	 * @return \GV\GF_Entry|false The entry requested or false.
 	 */
-	public function is_entry() {
+	public function is_entry( $form_id = 0 ) {
 
 		if ( $id = get_query_var( \GV\Entry::get_endpoint_name() ) ) {
 
 			static $entries = array();
 
-			if ( isset( $entries[ $id ] ) ) {
-				return $entries[ $id ];
+			if ( isset( $entries[ "$form_id:$id" ] ) ) {
+				return $entries[ "$form_id:$id" ];
 			}
 
-			if ( $entry = \GV\GF_Entry::by_id( $id ) ) {
-				$entries[ $id ] = $entry;
+			if ( $entry = \GV\GF_Entry::by_id( $id, $form_id ) ) {
+				$entries[ "$form_id:$id" ] = $entry;
 				return $entry;
 			}
 
-			$entries[ $id ] = false;
+			$entries[ "$form_id:$id" ] = false;
 		}
 
 		return false;
@@ -120,15 +122,17 @@ abstract class Request {
 	 * @since 2.0
 	 * @todo tests
 	 *
+	 * @param int $form_id The form ID, since slugs can be non-unique. Default: 0.
+	 *
 	 * @return \GV\Entry|false The entry requested or false.
 	 */
-	public function is_edit_entry() {
+	public function is_edit_entry( $form_id = 0 ) {
 		/**
 		* @filter `gravityview_is_edit_entry` Whether we're currently on the Edit Entry screen \n
 		* The Edit Entry functionality overrides this value.
 		* @param boolean $is_edit_entry
 		*/
-		if ( ( $entry = $this->is_entry() ) && apply_filters( 'gravityview_is_edit_entry', false ) ) {
+		if ( ( $entry = $this->is_entry( $form_id ) ) && apply_filters( 'gravityview_is_edit_entry', false ) ) {
 			return $entry;
 		}
 		return false;

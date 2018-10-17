@@ -288,7 +288,7 @@ class View implements \ArrayAccess {
 		/**
 		 * Editing a single entry.
 		 */
-		if ( $entry = $request->is_edit_entry() ) {
+		if ( $entry = $request->is_edit_entry( $view->form ? $view->form->ID : 0 ) ) {
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -312,7 +312,7 @@ class View implements \ArrayAccess {
 		/**
 		 * Viewing a single entry.
 		 */
-		} else if ( $entry = $request->is_entry() ) {
+		} else if ( $entry = $request->is_entry( $view->form ? $view->form->ID : 0 ) ) {
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gravityview' );
