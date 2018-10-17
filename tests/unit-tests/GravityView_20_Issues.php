@@ -595,4 +595,34 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		$this->assertContains( '<source type="audio/mpeg" src="' . esc_attr( $files[1] ) . '?_=', $output );
 		$this->assertContains( '" /><a href="' . esc_attr( $files[1] ). '">' . esc_html( $files[1] ) .  '</a></audio></li></ul>', $output );
 	}
+
+	/**
+	 * https://gravityview.slack.com/archives/C91HX67RV/p1539807639000200
+	 */
+	public function test_entry_by_non_unique_slug() {
+
+		$form1 = $this->factory->form->create_and_get();
+		$form2 = $this->factory->form->create_and_get();
+		$entry1 = $this->factory->entry->create_and_get( array( 'form_id' => $form1['id'] ) );
+		$entry2 = $this->factory->entry->create_and_get( array( 'form_id' => $form2['id'] ) );
+
+		add_filter( 'gravityview_custom_entry_slug', '__return_true' );
+
+		add_filter( 'gravityview_entry_slug', function( $slug ) {
+			return "non-unique";
+		}, 10 );
+
+		/** Updates the slug as a side-effect :( */
+		\GravityView_API::get_entry_slug( $entry1['id'], $entry1 );
+		\GravityView_API::get_entry_slug( $entry2['id'], $entry2 );
+
+		$entry = \GV\GF_Entry::by_id( 'non-unique', $form1['id'] );
+		$this->assertEquals( $entry1['id'], $entry->ID );
+
+		$entry = \GV\GF_Entry::by_id( 'non-unique', $form2['id'] );
+		$this->assertEquals( $entry2['id'], $entry->ID );
+
+		remove_all_filters( 'gravityview_custom_entry_slug' );
+		remove_all_filters( 'gravityview_entry_slug' );
+	}
 }
