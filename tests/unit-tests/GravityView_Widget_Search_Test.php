@@ -468,7 +468,11 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$_GET = $dates;
 
+		add_filter( 'gravityview/widgets/search/datepicker/format', function() use ( $name ) { return $name; } );
+
 		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
+
+		remove_all_filters( 'gravityview/widgets/search/datepicker/format' );
 
 		$_GET = array();
 	}

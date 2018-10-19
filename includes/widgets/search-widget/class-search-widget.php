@@ -565,19 +565,27 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		// start date & end date
 		if ( in_array( 'entry_date', $searchable_fields ) ) {
-			$curr_start = !empty( $get['gv_start'] ) ? $get['gv_start'] : '';
-			$curr_end = !empty( $get['gv_start'] ) ? $get['gv_end'] : '';
+			/**
+			 * Get and normalize the dates according to the input format.
+			 */
+			if ( $curr_start = ! empty( $get['gv_start'] ) ? $get['gv_start'] : '' ) {
+				$curr_start = date_create_from_format( $this->get_datepicker_format( true ), $curr_start )->format( 'Y-m-d' );
+			}
+
+			if ( $curr_end = ! empty( $get['gv_start'] ) ? ( ! empty( $get['gv_end'] ) ? $get['gv_end'] : '' ) : '' ) {
+				$curr_end = date_create_from_format( $this->get_datepicker_format( true ), $curr_end )->format( 'Y-m-d' );
+			}
 
 			if ( $view ) {
 				/**
 				 * Override start and end dates if View is limited to some already.
 				 */
-				if ( $start_date =$view->settings->get( 'start_date' ) ) {
+				if ( $start_date = $view->settings->get( 'start_date' ) ) {
 					if ( $start_timestamp = strtotime( $curr_start ) ) {
 						$curr_start = $start_timestamp < strtotime( $start_date ) ? $start_date : $curr_start;
 					}
 				}
-				if ( $end_date =$view->settings->get( 'end_date' ) ) {
+				if ( $end_date = $view->settings->get( 'end_date' ) ) {
 					if ( $end_timestamp = strtotime( $curr_end ) ) {
 						$curr_end = $end_timestamp > strtotime( $end_date ) ? $end_date : $curr_end;
 					}
@@ -894,7 +902,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'mdy' => 'm/d/Y',
 			'dmy' => 'd/m/Y',
 			'dmy_dash' => 'd-m-Y',
-			'dmy_dot' => 'm.d.Y',
+			'dmy_dot' => 'd.m.Y',
 			'ymd_slash' => 'Y/m/d',
 			'ymd_dash' => 'Y-m-d',
 			'ymd_dot' => 'Y.m.d',
@@ -1384,10 +1392,51 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * - `ymd_dash` (yyyy-mm-dd)
 		 * - `ymp_dot` (yyyy.mm.dd)
 		 */
-		$datepicker_class = apply_filters( 'gravityview_search_datepicker_class', 'gv-datepicker datepicker mdy' );
+		$datepicker_class = apply_filters( 'gravityview_search_datepicker_class', "gv-datepicker datepicker " . $this->get_datepicker_format() );
 
 		$gravityview_view->datepicker_class = $datepicker_class;
 
+	}
+
+	/**
+	 * Retrieve the datepicker format.
+	 *
+	 * @param bool $date_format Whether to return the PHP date format or the datpicker class name. Default: false.
+	 *
+	 * @see https://docs.gravityview.co/article/115-changing-the-format-of-the-search-widgets-date-picker
+	 *
+	 * @return string The datepicker format placeholder, or the PHP date format.
+	 */
+	private function get_datepicker_format( $date_format = false ) {
+		/**
+		 * @filter `gravityview/widgets/search/datepicker/format`
+		 * @param string           $format Default: mdy
+		 * Options are:
+		 * - `mdy` (mm/dd/yyyy)
+		 * - `dmy` (dd/mm/yyyy)
+		 * - `dmy_dash` (dd-mm-yyyy)
+		 * - `dmy_dot` (dd.mm.yyyy)
+		 * - `ymp_slash` (yyyy/mm/dd)
+		 * - `ymd_dash` (yyyy-mm-dd)
+		 * - `ymp_dot` (yyyy.mm.dd)
+		 */
+		$format = apply_filters( 'gravityview/widgets/search/datepicker/format', 'mdy' );
+
+		if ( ! $date_format ) {
+			return $format;
+		}
+
+		return array(
+			'mdy' => 'm/d/Y',
+
+			'dmy_dash' => 'd-m-Y',
+			'dmy_dot' => 'd.m.Y',
+			'dmy' => 'd/m/Y',
+
+			'ymd_slash' => 'Y/m/d',
+			'ymd_dash' => 'Y-m-d',
+			'ymd_dot' => 'Y.m.d',
+		)[ $format ];
 	}
 
 
