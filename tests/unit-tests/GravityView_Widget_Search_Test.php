@@ -495,6 +495,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	public function get_gv_start_end_formats() {
 		return array(
 			array( 'mm/dd/yyyy', array( 'gv_start' => '02/01/2018', 'gv_end' => '04/03/2018' ), 'mdy' ),
+			array( 'mm/dd/yyyy', array( 'gv_start' => '02/01/2018', 'gv_end' => '04/03/2018' ), 'invalid! This should result in mdy.' ),
 
 			array( 'yyyy-mm-dd', array( 'gv_start' => '2018-02-01', 'gv_end' => '2018-04-03' ), 'ymd_dash' ),
 			array( 'yyyy/mm/dd', array( 'gv_start' => '2018/02/01', 'gv_end' => '2018/04/03' ), 'ymd_slash' ),

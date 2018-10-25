@@ -1408,8 +1408,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @return string The datepicker format placeholder, or the PHP date format.
 	 */
 	private function get_datepicker_format( $date_format = false ) {
+
+		$default_format = 'mdy';
+
 		/**
 		 * @filter `gravityview/widgets/search/datepicker/format`
+		 * @since 2.1.1
 		 * @param string           $format Default: mdy
 		 * Options are:
 		 * - `mdy` (mm/dd/yyyy)
@@ -1420,13 +1424,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * - `ymd_dash` (yyyy-mm-dd)
 		 * - `ymd_dot` (yyyy.mm.dd)
 		 */
-		$format = apply_filters( 'gravityview/widgets/search/datepicker/format', 'mdy' );
+		$format = apply_filters( 'gravityview/widgets/search/datepicker/format', $default_format );
 
-		if ( ! $date_format ) {
-			return $format;
-		}
-
-		return array(
+		$gf_date_formats = array(
 			'mdy' => 'm/d/Y',
 
 			'dmy_dash' => 'd-m-Y',
@@ -1436,7 +1436,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'ymd_slash' => 'Y/m/d',
 			'ymd_dash' => 'Y-m-d',
 			'ymd_dot' => 'Y.m.d',
-		)[ $format ];
+		);
+
+		if ( ! $date_format ) {
+			// If the format key isn't valid, return default format key
+			return isset( $gf_date_formats[ $format ] ) ? $format : $default_format;
+		}
+
+		// If the format key isn't valid, return default format value
+		return \GV\Utils::get( $gf_date_formats, $format, $gf_date_formats[ $default_format ] );
 	}
 
 
