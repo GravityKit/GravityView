@@ -1102,8 +1102,13 @@ class GravityView_Admin_Views {
 
 		// Add the GV font (with the Astronaut)
 		wp_enqueue_style( 'gravityview_global', plugins_url('assets/css/admin-global.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version );
+		wp_register_style( 'gravityview_views_styles', plugins_url( 'assets/css/admin-views.css', GRAVITYVIEW_FILE ), array( 'dashicons', 'wp-jquery-ui-dialog' ), \GV\Plugin::$version );
 
 		wp_register_script( 'gravityview-jquery-cookie', plugins_url('assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
+		if( GFForms::get_page() === 'form_list' ) {
+			wp_enqueue_style( 'gravityview_views_styles' );
+			return;
+        }
 
 		// Don't process any scripts below here if it's not a GravityView page.
 		if( ! gravityview()->request->is_admin( $hook, 'single' ) && ! $is_widgets_page ) {
@@ -1134,7 +1139,7 @@ class GravityView_Admin_Views {
             'remove_all_fields' => __( 'Would you like to remove all fields in this zone? (You are seeing this message because you were holding down the ALT key)', 'gravityview' ),
         ));
 
-        wp_enqueue_style( 'gravityview_views_styles', plugins_url( 'assets/css/admin-views.css', GRAVITYVIEW_FILE ), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );
+		wp_enqueue_style( 'gravityview_views_styles' );
 
         // Enqueue scripts needed for merge tags
         self::enqueue_gravity_forms_scripts();
