@@ -603,19 +603,24 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:124
 msgid "Unapprove Entries After Edit"
-msgstr ""
+msgstr "Cofnij zatwierdzenie wpisów pozycji po ich Edycji"
 
 #: future/includes/class-gv-settings-view.php:127
 msgid ""
 "When an entry is edited by a non-administrator, reset the approval status to"
 " \"Unapproved\"."
 msgstr ""
+"Gdy wpis jest edytowany przez osobę niebędącą administratorem, zresetuj stan"
+" zatwierdzenia na \"Niezatwierdzony\"."
 
 #: future/includes/class-gv-settings-view.php:128
 msgid ""
 "If the \"Show only approved entries\" setting is enabled, the entry will "
 "need to be re-approved by an administrator before it is shown in the View."
 msgstr ""
+"Jeśli ustawienie \"Pokaż tylko zatwierdzone pozycje\" jest włączone, wpis "
+"pozycji musi zostać ponownie zatwierdzony przez administratora, zanim "
+"zostanie wyświetlony w widoku."
 
 #: future/includes/class-gv-settings-view.php:134
 msgid "Allow User Delete"
@@ -727,7 +732,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:217
 msgid "Search Operator"
-msgstr ""
+msgstr "Operator wyszukiwania"
 
 #: future/includes/class-gv-settings-view.php:224
 msgid "Single Entry Title"
@@ -775,15 +780,15 @@ msgstr "Zezwalaj na dostęp przez REST"
 
 #: future/includes/class-gv-settings-view.php:269
 msgid "Enable REST access to this View."
-msgstr ""
+msgstr "Włącz dostęp REST do tego Widoku."
 
 #: future/includes/class-gv-settings-view.php:279
 msgid "Allow CSV Access"
-msgstr ""
+msgstr "Zezwalaj na dostęp do CSV"
 
 #: future/includes/class-gv-settings-view.php:281
 msgid "Enable CSV access to this View."
-msgstr ""
+msgstr "Włącz dostęp CSV do tego Widoku."
 
 #: future/includes/class-gv-settings-view.php:298
 msgid "Random"
@@ -901,7 +906,7 @@ msgstr "Nie masz uprawnień do wyświetlania tej treści."
 
 #: future/includes/rest/class-gv-rest-views-route.php:380
 msgid "This View is not configured properly."
-msgstr ""
+msgstr "Ten widok nie jest poprawnie skonfigurowany."
 
 #: future/lib/EDD_SL_Plugin_Updater.php:202
 #: includes/lib/EDD_SL_Plugin_Updater.php:204
@@ -1358,7 +1363,7 @@ msgstr "%s zaakceptowano."
 
 #: includes/class-admin-approve-entries.php:350
 msgid "%s unapproved."
-msgstr "%s nie zaakceptowano."
+msgstr "%s nie zatwierdzono."
 
 #: includes/class-admin-approve-entries.php:354
 msgid "%s disapproved."
@@ -1370,107 +1375,112 @@ msgstr "Pokazać pozycję w widoku katalogu?"
 
 #: includes/class-admin-installer.php:102
 msgid "Plugins that extend GravityView and Gravity Forms functionality."
-msgstr ""
+msgstr "Wtyczki rozszerzające funkcjonalność GravityView i Gravity Forms."
 
 #: includes/class-admin-installer.php:106
 #: includes/class-admin-installer.php:278
 #: includes/class-admin-installer.php:297
 msgid "GravityView Extensions and Plugins"
-msgstr ""
+msgstr "Rozszerzenia i wtyczki GravityView"
 
 #: includes/class-admin-installer.php:127
 msgid ""
 "Your license %s. Do you want access to these plugins? %sActivate your "
 "license%s or %sget a license here%s."
 msgstr ""
+"Twoja licencja %s. Czy chcesz mieć dostęp do tych wtyczek? %sAktywuj swoją "
+"licencję%s lub %spobierz ją tutaj%s."
 
 #: includes/class-admin-installer.php:280
 msgid ""
 "Extensions and plugins data cannot be loaded at the moment. Please try again"
 " later."
 msgstr ""
+"Dane rozszerzeń i wtyczek nie mogą być załadowane w tej chwili. Spróbuj "
+"ponownie później."
 
 #: includes/class-admin-installer.php:299
 msgid ""
 "The following plugins extend GravityView and Gravity Forms functionality:"
 msgstr ""
+"Poniższe wtyczki rozszerzają funkcjonalność GravityView i Gravity Forms:"
 
 #: includes/class-admin-installer.php:348
 msgid "Visit the plugin page"
-msgstr ""
+msgstr "Odwiedź stronę wtyczki"
 
 #: includes/class-admin-installer.php:352
 msgid "Plugin status: %s"
-msgstr ""
+msgstr "Stan wtyczek: %s"
 
 #: includes/class-admin-installer.php:426
 msgid "All Access"
-msgstr ""
+msgstr "Pełen dostęp"
 
 #: includes/class-admin-installer.php:426
 msgid "Core + Extensions"
-msgstr ""
+msgstr "Core + Rozszerzenia"
 
 #: includes/class-admin-installer.php:432
 msgid "Active %s License is Required."
-msgstr ""
+msgstr "Wymagana jest aktywna licencja %s."
 
 #: includes/class-admin-installer.php:439
 msgid "Purchase Now for %s"
-msgstr ""
+msgstr "Kup teraz za %s"
 
 #: includes/class-admin-installer.php:449
 msgid "Upgrade to %s for Access"
-msgstr ""
+msgstr "Ulepsz do na %s, aby uzyskać dostęp"
 
 #: includes/class-admin-installer.php:457
 msgid "Coming Soon"
-msgstr ""
+msgstr "Już wkrótce"
 
 #: includes/class-admin-installer.php:458
 msgid "Learn More"
-msgstr ""
+msgstr "Dowiedz się więcej"
 
 #: includes/class-admin-installer.php:476
 msgid "Not Installed"
-msgstr ""
+msgstr "Nie zainstalowano"
 
 #: includes/class-admin-installer.php:477
 msgid "Install"
-msgstr ""
+msgstr "Instaluj"
 
 #: includes/class-admin-installer.php:484
 #: includes/class-admin-installer.php:592
 msgid "Inactive"
-msgstr ""
+msgstr "Nieaktywna"
 
 #: includes/class-admin-installer.php:485
 #: includes/class-admin-installer.php:593
 msgid "Activate"
-msgstr ""
+msgstr "Aktywuj"
 
 #: includes/class-admin-installer.php:495
 #: includes/class-admin-installer.php:591
 msgid "Active"
-msgstr ""
+msgstr "Aktywna"
 
 #: includes/class-admin-installer.php:496
 #: includes/class-admin-installer.php:594
 msgid "Deactivate"
-msgstr ""
+msgstr "Dezaktywuj"
 
 #: includes/class-admin-installer.php:541
 msgid "Plugin activation failed: %s"
-msgstr ""
+msgstr "Aktywacja wtyczki nie powiodła się: %s"
 
 #: includes/class-admin-installer.php:564
 #: includes/class-admin-installer.php:590
 msgid "Plugin deactivation failed."
-msgstr ""
+msgstr "Dezaktywacja wtyczki nie powiodła się."
 
 #: includes/class-admin-installer.php:589
 msgid "Plugin activation failed."
-msgstr ""
+msgstr "Aktywacja wtyczki nie powiodła się."
 
 #: includes/class-admin-views.php:131
 msgid "All forms"
@@ -2159,7 +2169,7 @@ msgstr ""
 
 #: includes/class-gravityview-entry-approval-status.php:68
 msgid "Unapproved"
-msgstr "Nie zaakceptowano"
+msgstr "Nie zatwierdzono"
 
 #: includes/class-gravityview-entry-approval-status.php:69
 msgid "Reset Approval"
@@ -2715,7 +2725,7 @@ msgstr "Jeśli pozycja nie jest zatwierdzona, wyświetl podaną wartość"
 
 #: includes/fields/class-gravityview-field-is-approved.php:190
 msgid "Unapproved Label"
-msgstr "Etykieta Braku Akceptacji"
+msgstr "Etykieta Braku Zatwierdzenia"
 
 #: includes/fields/class-gravityview-field-is-approved.php:191
 msgid ""
@@ -3308,15 +3318,17 @@ msgstr "Linki stron"
 #: includes/widgets/class-gravityview-widget-page-size.php:20
 msgid "Allow users to modify the number of results shown per page."
 msgstr ""
+"Zezwalaj użytkownikom na modyfikowanie liczby wyników wyświetlanych na "
+"stronie."
 
 #: includes/widgets/class-gravityview-widget-page-size.php:33
 #: includes/widgets/class-gravityview-widget-page-size.php:91
 msgid "Page Size"
-msgstr ""
+msgstr "Rozmiar strony"
 
 #: includes/widgets/class-gravityview-widget-page-size.php:93
 msgid "Results Per Page"
-msgstr ""
+msgstr "Liczba wyników na stronie"
 
 #: includes/widgets/class-gravityview-widget-pagination-info.php:19
 msgid "Summary of the number of visible entries out of the total results."
@@ -3720,7 +3732,7 @@ msgctxt ""
 "Extensions are WordPress plugins that add functionality to GravityView and "
 "Gravity Forms"
 msgid "Extensions"
-msgstr ""
+msgstr "Rozszerzenia"
 
 #: includes/class-admin-views.php:472
 msgctxt "Column title that shows what template is being used for Views"
@@ -3773,22 +3785,22 @@ msgstr "Brak użytkownika"
 #: includes/class-gravityview-entry-approval.php:117
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry is approved"
-msgstr ""
+msgstr "Wpis jest zatwierdzony"
 
 #: includes/class-gravityview-entry-approval.php:118
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry is disapproved"
-msgstr ""
+msgstr "Wpis jest odrzucony"
 
 #: includes/class-gravityview-entry-approval.php:119
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry approval is reset"
-msgstr ""
+msgstr "Zatwierdzenie wpisu jest zresetowane"
 
 #: includes/class-gravityview-entry-approval.php:120
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry approval is changed"
-msgstr ""
+msgstr "Zatwierdzenie wpisu jest zmienione"
 
 #: includes/class-gravityview-html-elements.php:122
 msgctxt "all dropdown items"
