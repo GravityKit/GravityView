@@ -51,6 +51,7 @@ class GravityView_Admin_Views {
 		add_filter('manage_gravityview_posts_columns' , array( $this, 'add_post_type_columns' ) );
 
 		add_filter( 'gform_toolbar_menu', array( 'GravityView_Admin_Views', 'gform_toolbar_menu' ), 10, 2 );
+		add_action( 'gform_form_actions', array( 'GravityView_Admin_Views', 'gform_toolbar_menu' ), 10, 2 );
 
 		add_action( 'manage_gravityview_posts_custom_column', array( $this, 'add_custom_column_content'), 10, 2 );
 
@@ -162,9 +163,15 @@ class GravityView_Admin_Views {
 	 * @param  int $id         ID of the current Gravity form
 	 * @return array            Modified array
 	 */
-	static function gform_toolbar_menu( $menu_items = array(), $id = NULL ) {
+	public static function gform_toolbar_menu( $menu_items = array(), $id = NULL ) {
 
 		$connected_views = gravityview_get_connected_views( $id, array( 'post_status' => 'any' ) );
+
+		$priority = 0;
+
+		if( 'form_list' === GFForms::get_page() ) {
+			$priority = 790;
+        }
 
 		if( empty( $connected_views ) ) {
 
@@ -174,7 +181,7 @@ class GravityView_Admin_Views {
 				'title'          => esc_attr__( 'Create a View using this form as a data source', 'gravityview' ),
 				'url'            => admin_url( 'post-new.php?post_type=gravityview&form_id=' . $id ),
 				'menu_class'     => 'gv_connected_forms gf_form_toolbar_settings',
-				'priority'       => 0,
+				'priority'       => $priority,
 				'capabilities'   => array( 'edit_gravityviews' ),
 			);
 
@@ -223,7 +230,7 @@ class GravityView_Admin_Views {
 				'onclick'        => 'return false;',
 				'menu_class'     => 'gv_connected_forms gf_form_toolbar_settings',
 				'sub_menu_items' => $sub_menu_items,
-				'priority'       => 0,
+				'priority'       => $priority,
 				'capabilities'   => array( 'edit_gravityviews' ),
 			);
 		}
