@@ -23,7 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 2.1.1 on October 25, 2018 =
 
-* Fixed: Fixed an issue when using [custom entry slugs](https://docs.gravityview.co/article/57-customizing-urls) where non-unique values across forms cause the entries to not be accessible
+* Added: A "Connected Views" menu on the Gravity Forms Forms page - hover over a form to see the new Connected Views menu!
 * Fixed: Additional slashes being added to the custom date format for Date fields
 * Fixed: Quiz letter grade not updated after editing an entry that has Gravity Forms Quiz fields
 * Fixed: Single Entry screen is inaccessible when the category is part of a URL path (using the `%category%` tag in the site's Permalinks settings)
@@ -36,6 +36,7 @@ __Developer Updates:__
 * Added: `gravityview/template/table/use-legacy-style` filter to  use the legacy Table layout stylesheet without any responsive layout styles (added in GravityView 2.1) - [Here's code you can use](https://gist.github.com/zackkatz/45d869e096cd5114a87952d292116d3f)
 * Added: `gravityview/view/can_render` filter to allow you to override whether a View can be rendered or not
 * Added: `gravityview/widgets/search/datepicker/format` filter to allow you to modify only the format used, rather than using the `gravityview_search_datepicker_class` filter
+* Fixed: Fixed an issue when using [custom entry slugs](https://docs.gravityview.co/article/57-customizing-urls) where non-unique values across forms cause the entries to not be accessible
 * Fixed: Undefined index PHP warning in the GravityView Extensions screen
 * Fixed: Removed internal usage of deprecated GravityView functions
 

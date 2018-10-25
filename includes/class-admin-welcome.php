@@ -274,7 +274,7 @@ class GravityView_Welcome {
                 <h3>2.1.1 on October 25, 2018</h3>
 
                 <ul>
-                    <li>Fixed: Fixed an issue when using <a href="https://docs.gravityview.co/article/57-customizing-urls">custom entry slugs</a> where non-unique values across forms cause the entries to not be accessible</li>
+                    <li>Added: A "Connected Views" menu on the Gravity Forms Forms page - hover over a form to see the new Connected Views menu!</li>
                     <li>Fixed: Additional slashes being added to the custom date format for Date fields</li>
                     <li>Fixed: Quiz letter grade not updated after editing an entry that has Gravity Forms Quiz fields</li>
                     <li>Fixed: Single Entry screen is inaccessible when the category is part of a URL path (using the <code>%category%</code> tag in the site's Permalinks settings)</li>
@@ -285,6 +285,7 @@ class GravityView_Welcome {
                 <p><strong>Developer Updates:</strong></p>
 
                 <ul>
+                    <li>Fixed: Fixed an issue when using <a href="https://docs.gravityview.co/article/57-customizing-urls">custom entry slugs</a> where non-unique values across forms cause the entries to not be accessible</li>
                     <li>Added: <code>gravityview/template/table/use-legacy-style</code> filter to  use the legacy Table layout stylesheet without any responsive layout styles (added in GravityView 2.1) - <a href="https://gist.github.com/zackkatz/45d869e096cd5114a87952d292116d3f">Here's code you can use</a></li>
                     <li>Added: <code>gravityview/view/can_render</code> filter to allow you to override whether a View can be rendered or not</li>
                     <li>Added: <code>gravityview/widgets/search/datepicker/format</code> filter to allow you to modify only the format used, rather than using the <code>gravityview_search_datepicker_class</code> filter</li>
