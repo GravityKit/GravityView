@@ -569,11 +569,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 * Get and normalize the dates according to the input format.
 			 */
 			if ( $curr_start = ! empty( $get['gv_start'] ) ? $get['gv_start'] : '' ) {
-				$curr_start = date_create_from_format( $this->get_datepicker_format( true ), $curr_start )->format( 'Y-m-d' );
+				if( $curr_start_date = date_create_from_format( $this->get_datepicker_format( true ), $curr_start ) ) {
+					$curr_start = $curr_start_date->format( 'Y-m-d' );
+				}
 			}
 
 			if ( $curr_end = ! empty( $get['gv_start'] ) ? ( ! empty( $get['gv_end'] ) ? $get['gv_end'] : '' ) : '' ) {
-				$curr_end = date_create_from_format( $this->get_datepicker_format( true ), $curr_end )->format( 'Y-m-d' );
+				if( $curr_end_date = date_create_from_format( $this->get_datepicker_format( true ), $curr_end ) ) {
+					$curr_end = $curr_end_date->format( 'Y-m-d' );
+				}
 			}
 
 			if ( $view ) {
@@ -923,7 +927,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @return string
 	 */
 	public static function get_formatted_date( $value = '', $format = 'Y-m-d' ) {
+
 		$date = date_create( $value );
+
 		if ( empty( $date ) ) {
 			gravityview()->log->debug( 'Date format not valid: {value}', array( 'value' => $value ) );
 			return '';
