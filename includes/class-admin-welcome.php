@@ -271,6 +271,41 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
+                <h3>2.1.1 on October 25, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Fixed an issue when using <a href="https://docs.gravityview.co/article/57-customizing-urls">custom entry slugs</a> where non-unique values across forms cause the entries to not be accessible</li>
+                    <li>Fixed: Additional slashes being added to the custom date format for Date fields</li>
+                    <li>Fixed: Quiz letter grade not updated after editing an entry that has Gravity Forms Quiz fields</li>
+                    <li>Fixed: Single Entry screen is inaccessible when the category is part of a URL path (using the <code>%category%</code> tag in the site's Permalinks settings)</li>
+                    <li>Fixed: Issue where GravityView CSS isn't loading in the Dashboard for some customers</li>
+                    <li>Fixed: Display uploaded files using Gravity Forms' secure link URL format, if enabled</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Added: <code>gravityview/template/table/use-legacy-style</code> filter to  use the legacy Table layout stylesheet without any responsive layout styles (added in GravityView 2.1) - <a href="https://gist.github.com/zackkatz/45d869e096cd5114a87952d292116d3f">Here's code you can use</a></li>
+                    <li>Added: <code>gravityview/view/can_render</code> filter to allow you to override whether a View can be rendered or not</li>
+                    <li>Added: <code>gravityview/widgets/search/datepicker/format</code> filter to allow you to modify only the format used, rather than using the <code>gravityview_search_datepicker_class</code> filter</li>
+                    <li>Fixed: Undefined index PHP warning in the GravityView Extensions screen</li>
+                    <li>Fixed: Removed internal usage of deprecated GravityView functions</li>
+                </ul>
+
+                <h3>2.1.0.2 &amp; 2.1.0.3 on September 28, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Slashes being added to field quotes</li>
+                    <li>Fixed: Images showing as links for File Upload fields</li>
+                </ul>
+
+                <h3>2.1.0.1 on September 27, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Responsive table layout labels showing sorting icon HTML</li>
+                    <li>Fixed: Responsive table layout showing table footer</li>
+                </ul>
+
                 <h2>2.1 on September 27, 2018</h2>
 
                 <ul>
@@ -311,21 +346,6 @@ class GravityView_Welcome {
                     <li>REST API: Allow setting parent post or page with the REST API request using <code>post_id={id}</code> (<a href="https://docs.gravityview.co/article/468-rest-api">learn more</a>)</li>
                     <li>REST API: Added <code>X-Item-Total</code> header and meta to REST API response</li>
                 </ul>
-                
-                <h3>2.1.0.2 &amp; 2.1.0.3 on September 28, 2018</h3>
-
-                <ul>
-                    <li>Fixed: Slashes being added to field quotes</li>
-                    <li>Fixed: Images showing as links for File Upload fields</li>
-                </ul>
-
-                <h3>2.1.0.1 on September 27, 2018</h3>
-
-                <ul>
-                    <li>Fixed: Responsive table layout labels showing sorting icon HTML</li>
-                    <li>Fixed: Responsive table layout showing table footer</li>
-                </ul>
-
 
                 <h3>2.0.14.1 on July 19, 2018</h3>
 
