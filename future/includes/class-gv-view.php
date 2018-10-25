@@ -339,16 +339,13 @@ class View implements \ArrayAccess {
 
 			$renderer = new Entry_Renderer();
 			return $renderer->render( $entry, $view, $request );
+		}
 
 		/**
 		 * Plain old View.
 		 */
-		} else {
-			$renderer = new View_Renderer();
-			return $renderer->render( $view, $request );
-		}
-
-		return $content;
+		$renderer = new View_Renderer();
+		return $renderer->render( $view, $request );
 	}
 
 	/**
