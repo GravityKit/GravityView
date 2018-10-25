@@ -1388,9 +1388,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * - `dmy` (dd/mm/yyyy)
 		 * - `dmy_dash` (dd-mm-yyyy)
 		 * - `dmy_dot` (dd.mm.yyyy)
-		 * - `ymp_slash` (yyyy/mm/dd)
+		 * - `ymd_slash` (yyyy/mm/dd)
 		 * - `ymd_dash` (yyyy-mm-dd)
-		 * - `ymp_dot` (yyyy.mm.dd)
+		 * - `ymd_dot` (yyyy.mm.dd)
 		 */
 		$datepicker_class = apply_filters( 'gravityview_search_datepicker_class', "gv-datepicker datepicker " . $this->get_datepicker_format() );
 
@@ -1416,9 +1416,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * - `dmy` (dd/mm/yyyy)
 		 * - `dmy_dash` (dd-mm-yyyy)
 		 * - `dmy_dot` (dd.mm.yyyy)
-		 * - `ymp_slash` (yyyy/mm/dd)
+		 * - `ymd_slash` (yyyy/mm/dd)
 		 * - `ymd_dash` (yyyy-mm-dd)
-		 * - `ymp_dot` (yyyy.mm.dd)
+		 * - `ymd_dot` (yyyy.mm.dd)
 		 */
 		$format = apply_filters( 'gravityview/widgets/search/datepicker/format', 'mdy' );
 

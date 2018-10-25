@@ -132,6 +132,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$start = '1997-03-28';
 		$end = '2017-10-03';
 
+		add_filter( 'gravityview/widgets/search/datepicker/format', function() { return 'ymd_dash'; } );
+
 		// Test dates
 		$_GET = array(
 			'gv_start' => $start,
@@ -148,6 +150,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, $args ) );
 
 		$_GET = array();
+
+		remove_all_filters( 'gravityview/widgets/search/datepicker/format' );
 	}
 
 	public function test_search_limited_fields() {
@@ -169,6 +173,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 				),
 			) ),
 		) );
+
+		add_filter( 'gravityview/widgets/search/datepicker/format', function() { return 'ymd_dash'; } );
 
 		$_GET = array( 'gv_search' => '_' );
 
@@ -385,6 +391,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
 
 		$_GET = array();
+
+		remove_all_filters( 'gravityview/widgets/search/datepicker/format' );
 	}
 
 	public function test_filter_entries_gv_start_end_time() {
@@ -392,6 +400,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'gv_start' => '2018-04-07',
 			'gv_end' => '2018-04-07',
 		);
+
+		add_filter( 'gravityview/widgets/search/datepicker/format', function() { return 'ymd_dash'; } );
 
 		$view = $this->factory->view->create_and_get( array(
 			'fields' => array( '_' => array(
@@ -438,6 +448,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		remove_filter( 'pre_option_timezone_string', $callback );
 
 		$_GET = array();
+
+		remove_all_filters( 'gravityview/widgets/search/datepicker/format' );
 	}
 
 	/**
