@@ -78,7 +78,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 	 * @return array           Array of file output, with `file_path` and `html` keys (see comments above)
 	 */
 	static function get_files_array( $value, $gv_class, $context = null ) {
-
+		
 		if ( $context instanceof \GV\Template_Context ) {
 			$field = $context->field->field;
 			$field_settings = $context->field->as_configuration();
@@ -161,11 +161,11 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			// Get the secure download URL
 			$is_secure = false;
+			$insecure_file_path = $file_path;
 			$secure_file_path = $field->get_download_url( $file_path );
 
-			if ( $secure_file_path != $file_path ) {
+			if ( $secure_file_path !== $file_path ) {
 				$basename = basename( $secure_file_path );
-				$insecure_file_path = $file_path;
 				$file_path = $secure_file_path;
 				$is_secure = true;
 			}
@@ -183,7 +183,6 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			// Audio
 			if ( in_array( $extension, wp_get_audio_extensions() ) ) {
 				if ( shortcode_exists( 'audio' ) ) {
-					$src = $is_secure ? $insecure_file_path : $file_path;
 
 					/**
 					 * @filter `gravityview_audio_settings` Modify the settings passed to the `wp_video_shortcode()` function
@@ -193,7 +192,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					 * @param \GV\Template_Context $context The context.
 					 */
 					$audio_settings = apply_filters( 'gravityview_audio_settings', array(
-						'src' => $src,
+						'src' => $file_path,
 						'class' => 'wp-audio-shortcode gv-audio gv-field-id-'.$field_settings['id']
 					), $context );
 
@@ -214,7 +213,6 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			// Video
 			} else if ( in_array( $extension, wp_get_video_extensions() ) ) {
 				if ( shortcode_exists( 'video' ) ) {
-					$src = $is_secure ? $insecure_file_path : $file_path;
 
 					/**
 					 * @filter `gravityview_video_settings` Modify the settings passed to the `wp_video_shortcode()` function
@@ -224,7 +222,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					 * @param \GV\Template_Context $context The context.
 					 */
 					$video_settings = apply_filters( 'gravityview_video_settings', array(
-						'src' => $src,
+						'src' => $file_path,
 						'class' => 'wp-video-shortcode gv-video gv-field-id-'.$field_settings['id']
 					), $context );
 
@@ -249,6 +247,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			// Images
 			} else if ( in_array( $extension, array( 'jpg', 'jpeg', 'jpe', 'gif', 'png' ) ) ) {
+
 				$image_atts = array(
 					'src' => $file_path,
 					'class' => 'gv-image gv-field-id-'.$field_settings['id'],
