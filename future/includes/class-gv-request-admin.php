@@ -38,7 +38,7 @@ class Admin_Request extends Request {
 		 */
 		$is_page = false;
 
-		if( function_exists( '\get_current_screen' ) ) {
+		if( function_exists( '\get_current_screen' ) || function_exists( 'get_current_screen' ) ) {
 			$current_screen = \get_current_screen();
 		} else {
 			$current_screen = false;

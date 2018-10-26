@@ -341,6 +341,9 @@ class GravityView_Edit_Entry_Render {
 			// Process calculation fields
 			$this->update_calculation_fields();
 
+			// Process Quiz fields
+			$this->update_quiz_fields();
+
 			// Perform actions normally performed after updating a lead
 			$this->after_update();
 
@@ -558,10 +561,9 @@ class GravityView_Edit_Entry_Render {
 				    $entry[ strval( $calc_field->id ) ] = RGFormsModel::prepare_value( $form, $calc_field, '', $input_name, $entry['id'], $entry );
 				}
 			}
-
 		}
 
-		if( $update ) {
+		if ( $update ) {
 
 			$return_entry = GFAPI::update_entry( $entry );
 
@@ -570,6 +572,22 @@ class GravityView_Edit_Entry_Render {
 			} else {
 				gravityview()->log->debug( 'Updating the entry calculation fields succeeded' );
 			}
+		}
+	}
+
+	/**
+	 * Make sure the quiz is updated accordingly.
+	 * https://github.com/gravityview/GravityView/issues/1166
+	 */
+	private function update_quiz_fields() {
+		if ( ! class_exists( 'GFQuiz' ) ) {
+			return;
+		}
+
+		$entry = GFAPI::get_entry( $this->entry['id'] );
+
+		foreach ( array( 'score', 'percent', 'grade', 'is_pass' ) as $meta ) {
+			GFQuiz::get_instance()->update_entry_meta( "gfquiz_$meta", $entry, self::$original_form );
 		}
 	}
 

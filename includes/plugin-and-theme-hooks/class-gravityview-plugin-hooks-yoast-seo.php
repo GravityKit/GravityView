@@ -67,7 +67,7 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 
 		parent::add_hooks();
 
-		if( gravityview_is_admin_page() ) {
+		if( gravityview()->request->is_admin( '', null ) ) {
 
 				// Make Yoast metabox go down to the bottom please.
 			add_filter( 'wpseo_metabox_prio', array( $this, 'return_low' ) );

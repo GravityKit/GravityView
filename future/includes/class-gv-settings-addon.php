@@ -645,7 +645,7 @@ class Addon_Settings extends \GFAddOn {
 		$url = 'https://gravityview.co/pricing/?utm_source=admin_notice&utm_medium=admin&utm_content='.$license_status.'&utm_campaign=Admin%20Notice';
 
 		// Show a different notice on settings page for inactive licenses (hide the buttons)
-		if ( $update_below && gravityview_is_admin_page( '', 'settings' ) ) {
+		if ( $update_below && gravityview()->request->is_admin( '', 'settings' ) ) {
 			$message = sprintf( $message, $status, '<div class="hidden">', '', '', '</div><a href="#" onclick="jQuery(\'#license_key\').focus(); return false;">' . $update_below . '</a>' );
 		} else {
 			$message = sprintf( $message, $status, "\n\n" . '<a href="' . esc_url( $primary_button_link ) . '" class="button button-primary">', '</a>', '<a href="' . esc_url( $url ) . '" class="button button-secondary">', '</a>' );

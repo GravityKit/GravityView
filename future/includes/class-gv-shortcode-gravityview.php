@@ -66,7 +66,7 @@ class gravityview extends \GV\Shortcode {
 			if ( ( $_view = $request->is_view() ) && $_view->ID !== $view->ID ) {
 				$is_reembedded = true;
 
-			} elseif ( $request->is_entry() && self::$callstack ) {
+			} elseif ( $request->is_entry( $view->form ? $view->form->ID : 0 ) && self::$callstack ) {
 				$is_reembedded = true;
 			}
 		}
@@ -106,6 +106,7 @@ class gravityview extends \GV\Shortcode {
 				case 'no_direct_access':
 				case 'embed_only':
 				case 'not_public':
+				default:
 					return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
 			}
 		}
@@ -122,7 +123,7 @@ class gravityview extends \GV\Shortcode {
 		/**
 		 * Editing a single entry.
 		 */
-		} else if ( ! $is_reembedded && ( $entry = $request->is_edit_entry() ) ) {
+		} else if ( ! $is_reembedded && ( $entry = $request->is_edit_entry( $view->form ? $view->form->ID : 0 ) ) ) {
 
 			/**
 			 * When editing an entry don't render multiple views.
@@ -155,7 +156,7 @@ class gravityview extends \GV\Shortcode {
 		/**
 		 * Viewing a single entry.
 		 */
-		} else if ( ! $is_reembedded && ( $entry = $request->is_entry() ) ) {
+		} else if ( ! $is_reembedded && ( $entry = $request->is_entry( $view->form ? $view->form->ID : 0 ) ) ) {
 			/**
 			 * When viewing an entry don't render multiple views.
 			 */
@@ -199,8 +200,8 @@ class gravityview extends \GV\Shortcode {
 				// Mock the request with the actual View, not the global one
 				$mock_request = new \GV\Mock_Request();
 				$mock_request->returns['is_view'] = $view;
-				$mock_request->returns['is_entry'] = $request->is_entry();
-				$mock_request->returns['is_edit_entry'] = $request->is_edit_entry();
+				$mock_request->returns['is_entry'] = $request->is_entry( $view->form ? $view->form->ID : 0 );
+				$mock_request->returns['is_edit_entry'] = $request->is_edit_entry( $view->form ? $view->form->ID : 0 );
 				$mock_request->returns['is_search'] = $request->is_search();
 
 				$request = $mock_request;

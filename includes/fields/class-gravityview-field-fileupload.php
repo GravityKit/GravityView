@@ -78,7 +78,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 	 * @return array           Array of file output, with `file_path` and `html` keys (see comments above)
 	 */
 	static function get_files_array( $value, $gv_class, $context = null ) {
-
+		
 		if ( $context instanceof \GV\Template_Context ) {
 			$field = $context->field->field;
 			$field_settings = $context->field->as_configuration();
@@ -142,7 +142,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		// Process each file path
 		foreach ( $file_paths as $file_path ) {
 
-			$text = $rendered = null;
+			$rendered = null;
 
 			// If the site is HTTPS, use HTTPS
 			if ( function_exists('set_url_scheme') ) {
@@ -151,6 +151,25 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			// This is from Gravity Forms's code
 			$file_path = esc_attr( str_replace( " ", "%20", $file_path ) );
+
+			// Get file path information
+			$file_path_info = pathinfo( $file_path );
+
+			// If pathinfo() gave us the extension of the file, run the switch statement using that.
+			$extension = empty( $file_path_info['extension'] ) ? NULL : strtolower( $file_path_info['extension'] );
+			$basename = $file_path_info['basename'];
+
+			// Get the secure download URL
+			$is_secure = false;
+			$insecure_file_path = $file_path;
+			$secure_file_path = $field->get_download_url( $file_path );
+			$text = $basename;
+
+			if ( $secure_file_path !== $file_path ) {
+				$basename = basename( $secure_file_path );
+				$file_path = $secure_file_path;
+				$is_secure = true;
+			}
 
 			/**
 			 * @filter `gravityview/fields/fileupload/file_path` Modify the file path before generating a link to it
@@ -162,15 +181,10 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			 */
 			$file_path = apply_filters( 'gravityview/fields/fileupload/file_path', $file_path, $field_settings, $context );
 
-			// Get file path information
-			$file_path_info = pathinfo( $file_path );
-
-			// If pathinfo() gave us the extension of the file, run the switch statement using that.
-			$extension = empty( $file_path_info['extension'] ) ? NULL : strtolower( $file_path_info['extension'] );
-
 			// Audio
 			if ( in_array( $extension, wp_get_audio_extensions() ) ) {
 				if ( shortcode_exists( 'audio' ) ) {
+
 					/**
 					 * @filter `gravityview_audio_settings` Modify the settings passed to the `wp_video_shortcode()` function
 					 * @since  1.2
@@ -179,7 +193,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					 * @param \GV\Template_Context $context The context.
 					 */
 					$audio_settings = apply_filters( 'gravityview_audio_settings', array(
-						'src' => $file_path,
+						'src' => $insecure_file_path, // Needs to be insecure path so WP can parse extension
 						'class' => 'wp-audio-shortcode gv-audio gv-field-id-'.$field_settings['id']
 					), $context );
 
@@ -189,10 +203,22 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					 * @see https://developer.wordpress.org/reference/functions/wp_audio_shortcode/
 					 */
 					$rendered = wp_audio_shortcode( $audio_settings );
+
+					if ( $is_secure ) {
+
+						// The shortcode adds instance URL args: add_query_arg( '_', $instance, $atts[ $fallback ] )
+						// these break the path, since we already have "?" in the URL
+						$rendered = str_replace( '?_=', '&_=', $rendered );
+
+						foreach ( array( 'esc_attr', 'esc_html', 'esc_url', 'trim' /** noop */ ) as $f ) {
+							$rendered = str_replace( $f( $insecure_file_path ), $f( $secure_file_path ), $rendered );
+						}
+					}
 				}
 
 			// Video
 			} else if ( in_array( $extension, wp_get_video_extensions() ) ) {
+
 				if ( shortcode_exists( 'video' ) ) {
 
 					/**
@@ -203,7 +229,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					 * @param \GV\Template_Context $context The context.
 					 */
 					$video_settings = apply_filters( 'gravityview_video_settings', array(
-						'src' => $file_path,
+						'src' => $insecure_file_path, // Needs to be insecure path so WP can parse extension
 						'class' => 'wp-video-shortcode gv-video gv-field-id-'.$field_settings['id']
 					), $context );
 
@@ -213,26 +239,44 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					 * @see https://developer.wordpress.org/reference/functions/wp_video_shortcode/
 					 */
 					$rendered = wp_video_shortcode( $video_settings );
+
+					if ( $is_secure ) {
+
+						// The shortcode adds instance URL args: add_query_arg( '_', $instance, $atts[ $fallback ] )
+						// these break the path, since we already have "?" in the URL
+						$rendered = str_replace( '?_=', '&_=', $rendered );
+
+						foreach ( array( 'esc_attr', 'esc_html', 'esc_url', 'trim' /** noop */ ) as $f ) {
+							$rendered = str_replace( $f( $insecure_file_path ), $f( $secure_file_path ), $rendered );
+						}
+					}
 				}
 
 			// PDF
 			} else if ( $extension === 'pdf' ) {
+
 				// PDF needs to be displayed in an IFRAME
 				$file_path = add_query_arg( array( 'TB_iframe' => 'true' ), $file_path );
 
 			// Images
 			} else if ( in_array( $extension, array( 'jpg', 'jpeg', 'jpe', 'gif', 'png' ) ) ) {
 				$image_atts = array(
-					'src' => $file_path,
-					'class' => 'gv-image gv-field-id-'.$field_settings['id'],
-					'alt' => $field_settings['label'],
-					'width' => ( $is_single ? NULL : 250 )
+					'src'   => $file_path,
+					'class' => 'gv-image gv-field-id-' . $field_settings['id'],
+					'alt'   => $field_settings['label'],
+					'width' => ( $is_single ? null : 250 )
 				);
+
+				if ( $is_secure ) {
+					$image_atts['validate_src'] = false;
+				}
 
 				/**
 				 * Modify the default image attributes for uploaded images
+				 *
 				 * @since 2.0
 				 * @see GravityView_Image For the available attributes
+				 *
 				 * @param array $image_atts
 				 */
 				$image_atts = apply_filters( 'gravityview/fields/fileupload/image_atts', $image_atts );
@@ -241,17 +285,36 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 				$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
 
-				$text = $image->html();
+				/**
+				 * @filter `gravityview/fields/fileupload/allow_insecure_lightbox` Allow insecure links to be shown for the lighbox.
+				 * Thickbox doesn't work with secure URLs :(
+				 * @param[in,out] bool True or not. DANGER! DANGER! Default: false! Override at your own RISK!!!
+				 * @param array $field_settings The field settings.
+				 * @param \GV\Template_Context $context The context.
+				 */
+				$override_security = apply_filters( 'gravityview/fields/fileupload/allow_insecure_lightbox', false, $file_path, $field_settings, $context );
 
-				if ( $lightbox && empty( $field_settings['show_as_link'] ) ) {
+				if ( $lightbox && empty( $field_settings['show_as_link'] ) && ( ! $is_secure || $override_security ) ) {
 					$lightbox_link_atts = array(
-						'rel' => sprintf( "%s-%s", $gv_class, $entry_slug ),
+						'rel'   => sprintf( "%s-%s", $gv_class, $entry_slug ),
 						'class' => 'thickbox',
 					);
+
+					if ( $override_security ) {
+						$image_atts['src'] = $insecure_file_path;
+						$image = new GravityView_Image( $image_atts );
+						$file_path = $insecure_file_path;
+						// :( a kitten died somewhere
+					}
 
 					$rendered = gravityview_get_link( $file_path, $image->html(), $lightbox_link_atts );
 				} else {
 					$rendered = $image->html();
+				}
+
+				// Show as link should render the image regardless.
+				if ( ! empty( $field_settings['show_as_link'] ) ) {
+					$text = $rendered;
 				}
 			}
 
@@ -267,9 +330,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			$disable_wrapped_link = apply_filters( 'gravityview/fields/fileupload/disable_link', false, $field_compat, $context );
 
 			// Output textualized content where 
-			if ( ! $disable_wrapped_link && ( ! empty( $field_settings['link_to_file'] ) && empty( $field_settings['show_as_link'] ) ) ) {
-				$content = empty( $text ) ? $file_path_info['basename'] : $text;
-
+			if ( ! $disable_wrapped_link && ( ! empty( $field_settings['link_to_file'] ) || ! empty( $field_settings['show_as_link'] ) ) ) {
 				/**
 				 * Modify the link text (defaults to the file name)
 				 *
@@ -280,20 +341,22 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				 * @since 2.0
 				 * @param \GV\Template_Context $context The context.
 				 */
-				$content = apply_filters( 'gravityview/fields/fileupload/link_content', $content, $field_compat, $context );
+				$content = apply_filters( 'gravityview/fields/fileupload/link_content', $text, $field_compat, $context );
 
-				/**
-				 * @filter `gravityview/fields/fileupload/link_atts` Modify the link attributes for a file upload field
-				 * @param array|string $link_atts Array or attributes string
-				 * @param array $field_compat Current GravityView field array
-				 * @since 2.0
-				 * @param \GV\Template_Context $context The context.
-				 */
-				$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', array( 'target' => '_blank' ), $field_compat, $context );
+				if ( empty( $field_settings['show_as_link'] ) ) {
+					/**
+					 * @filter `gravityview/fields/fileupload/link_atts` Modify the link attributes for a file upload field
+					 * @param array|string $link_atts Array or attributes string
+					 * @param array $field_compat Current GravityView field array
+					 * @since 2.0
+					 * @param \GV\Template_Context $context The context.
+					 */
+					$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', array( 'target' => '_blank' ), $field_compat, $context );
 
-				$content = gravityview_get_link( $file_path, $content, $link_atts );
+					$content = gravityview_get_link( $file_path, $content, $link_atts );
+				}
 			} else {
-				$content = empty( $rendered ) ? ( empty( $text ) ? $file_path_info['basename'] : $text ) : $rendered;
+				$content = empty( $rendered ) ? $text : $rendered;
 			}
 
 			$output_arr[] = array(

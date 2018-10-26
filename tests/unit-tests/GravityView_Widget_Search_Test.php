@@ -132,6 +132,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$start = '1997-03-28';
 		$end = '2017-10-03';
 
+		add_filter( 'gravityview/widgets/search/datepicker/format', function() { return 'ymd_dash'; } );
+
 		// Test dates
 		$_GET = array(
 			'gv_start' => $start,
@@ -148,6 +150,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, $args ) );
 
 		$_GET = array();
+
+		remove_all_filters( 'gravityview/widgets/search/datepicker/format' );
 	}
 
 	public function test_search_limited_fields() {
@@ -169,6 +173,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 				),
 			) ),
 		) );
+
+		add_filter( 'gravityview/widgets/search/datepicker/format', function() { return 'ymd_dash'; } );
 
 		$_GET = array( 'gv_search' => '_' );
 
@@ -385,6 +391,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
 
 		$_GET = array();
+
+		remove_all_filters( 'gravityview/widgets/search/datepicker/format' );
 	}
 
 	public function test_filter_entries_gv_start_end_time() {
@@ -392,6 +400,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'gv_start' => '2018-04-07',
 			'gv_end' => '2018-04-07',
 		);
+
+		add_filter( 'gravityview/widgets/search/datepicker/format', function() { return 'ymd_dash'; } );
 
 		$view = $this->factory->view->create_and_get( array(
 			'fields' => array( '_' => array(
@@ -436,5 +446,65 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
 
 		remove_filter( 'pre_option_timezone_string', $callback );
+
+		$_GET = array();
+
+		remove_all_filters( 'gravityview/widgets/search/datepicker/format' );
 	}
+
+	/**
+	 * @dataProvider get_gv_start_end_formats
+	 */
+	public function test_filter_entries_gv_start_end_formats( $format, $dates, $name ) {
+		$view = $this->factory->view->create_and_get( array(
+			'fields' => array( '_' => array(
+				array( 'id' => '1.1' ),
+			) ),
+			'widgets' => array( '_' => array(
+				array(
+					'id' => 'search_bar',
+					'search_fields' => json_encode( array(
+						array( 'field' => 'entry_date' ),
+					) ),
+				),
+			) ),
+		) );
+
+		$search_criteria_dates = array(
+			'start_date' => '2018-02-01 00:00:00',
+			'end_date' => '2018-04-03 23:59:59',
+			'field_filters' => array(
+				'mode' => 'any',
+			),
+		);
+
+		$_GET = $dates;
+
+		add_filter( 'gravityview/widgets/search/datepicker/format', function() use ( $name ) { return $name; } );
+
+		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
+
+		remove_all_filters( 'gravityview/widgets/search/datepicker/format' );
+
+		$_GET = array();
+	}
+
+	/**
+	 * https://docs.gravityview.co/article/115-changing-the-format-of-the-search-widgets-date-picker
+	 */
+	public function get_gv_start_end_formats() {
+		return array(
+			array( 'mm/dd/yyyy', array( 'gv_start' => '02/01/2018', 'gv_end' => '04/03/2018' ), 'mdy' ),
+			array( 'mm/dd/yyyy', array( 'gv_start' => '02/01/2018', 'gv_end' => '04/03/2018' ), 'invalid! This should result in mdy.' ),
+
+			array( 'yyyy-mm-dd', array( 'gv_start' => '2018-02-01', 'gv_end' => '2018-04-03' ), 'ymd_dash' ),
+			array( 'yyyy/mm/dd', array( 'gv_start' => '2018/02/01', 'gv_end' => '2018/04/03' ), 'ymd_slash' ),
+			array( 'yyyy.mm.dd', array( 'gv_start' => '2018.02.01', 'gv_end' => '2018.04.03' ), 'ymd_dot' ),
+
+			array( 'dd/mm/yyyy', array( 'gv_start' => '01/02/2018', 'gv_end' => '03/04/2018' ), 'dmy' ),
+			array( 'dd-mm-yyyy', array( 'gv_start' => '01-02-2018', 'gv_end' => '03-04-2018' ), 'dmy_dash' ),
+			array( 'dd.mm.yyyy', array( 'gv_start' => '01.02.2018', 'gv_end' => '03.04.2018' ), 'dmy_dot' ),
+		);
+	}
+
 }

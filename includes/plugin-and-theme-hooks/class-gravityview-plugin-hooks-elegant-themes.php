@@ -34,7 +34,7 @@ class GravityView_Theme_Hooks_Elegant_Themes extends GravityView_Plugin_and_Them
 	 * Prevent Divi from adding their stuff to GV pages
 	 */
 	public function add_hooks_admin_init() {
-		if ( GravityView_Admin::is_admin_page() ) {
+		if ( gravityview()->request->is_admin( '', null ) ) {
 			// Prevent Divi from adding import/export modal dialog
 			remove_action( 'admin_init', 'et_pb_register_builder_portabilities' );
 

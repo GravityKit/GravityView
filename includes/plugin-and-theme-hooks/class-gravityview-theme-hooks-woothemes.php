@@ -75,7 +75,7 @@ class GravityView_Theme_Hooks_WooThemes extends GravityView_Plugin_and_Theme_Hoo
 	function remove_meta_box() {
 		global $pagenow;
 
-		$gv_page = gravityview_is_admin_page( '', 'single' );
+		$gv_page = gravityview()->request->is_admin( '', 'single' );
 
 		// New View or Edit View page
 		if( $gv_page && $pagenow === 'post-new.php' ) {

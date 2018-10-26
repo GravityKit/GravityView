@@ -275,6 +275,7 @@ class View implements \ArrayAccess {
 				case 'no_direct_access':
 				case 'embed_only':
 				case 'not_public':
+				default:
 					gravityview()->log->notice( 'View #{view_id} cannot render: {error_code} {error_message}', array( 'error_code' => $error->get_error_code(), 'error_message' => $error->get_error_message() ) );
 					return __( 'You are not allowed to view this content.', 'gravityview' );
 			}
@@ -287,7 +288,7 @@ class View implements \ArrayAccess {
 		/**
 		 * Editing a single entry.
 		 */
-		if ( $entry = $request->is_edit_entry() ) {
+		if ( $entry = $request->is_edit_entry( $view->form ? $view->form->ID : 0 ) ) {
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -311,7 +312,7 @@ class View implements \ArrayAccess {
 		/**
 		 * Viewing a single entry.
 		 */
-		} else if ( $entry = $request->is_entry() ) {
+		} else if ( $entry = $request->is_entry( $view->form ? $view->form->ID : 0 ) ) {
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -338,16 +339,13 @@ class View implements \ArrayAccess {
 
 			$renderer = new Entry_Renderer();
 			return $renderer->render( $entry, $view, $request );
+		}
 
 		/**
 		 * Plain old View.
 		 */
-		} else {
-			$renderer = new View_Renderer();
-			return $renderer->render( $view, $request );
-		}
-
-		return $content;
+		$renderer = new View_Renderer();
+		return $renderer->render( $view, $request );
 	}
 
 	/**
@@ -372,6 +370,17 @@ class View implements \ArrayAccess {
 
 		if ( ! is_array( $context ) ) {
 			$context = array();
+		}
+
+		/**
+		 * @filter `gravityview/view/can_render` Whether the view can be rendered or not.
+		 * @param bool|\WP_Error $result  The result. Default: null.
+		 * @param \GV\View       $view	The view.
+		 * @param string[]       $context See \GV\View::can_render
+		 * @param \GV\Request    $request The request.
+		 */
+		if ( ! is_null( $result = apply_filters( 'gravityview/view/can_render', null, $this, $context, $request ) ) ) {
+			return $result;
 		}
 
 		if ( in_array( 'rest', $context ) ) {

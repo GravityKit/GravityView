@@ -49,7 +49,7 @@ abstract class Entry {
 			return;
 		}
 
-		add_rewrite_endpoint( $endpoint, EP_ALL );
+		add_rewrite_endpoint( $endpoint, EP_PAGES | EP_PERMALINK );
 	}
 
 	/**

@@ -28,7 +28,7 @@ class GravityView_Support_Port {
 	/**
 	 * Enqueue Support Port script if user has it enabled and we're on a GravityView plugin page
 	 *
-	 * @uses gravityview_is_admin_page()
+	 * @uses \GV\Admin_Request::is_admin()
 	 * @uses wp_enqueue_script()
 	 * @since 1.15
 	 *
