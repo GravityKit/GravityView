@@ -3622,11 +3622,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 			return $_;
 		}, 10, 4 );
 
-		add_filter( 'gravityview_video_settings', function( $settings ) {
-			$settings['width'] = 640;
-			$settings['height'] = 360;
-			return $settings;
-		} );
+		if ( isset( $GLOBALS['content_width'] ) ) {
+			$content_width = $GLOBALS['content_width'];
+			$GLOBALS['content_width'] = /** over */ 9000;
+		}
 
 		$output = $renderer->render( $field, $view, $form, $entry, $request );
 
@@ -3793,7 +3792,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'wp_video_shortcode_override' );
 		remove_all_filters( 'wp_audio_shortcode_override' );
-		remove_all_filters( 'gravityview_video_settings' );
+
+		if ( isset( $content_width ) ) {
+			$GLOBALS['content_width'] = $content_width;
+		}
 	}
 
 	/**
