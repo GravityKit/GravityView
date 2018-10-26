@@ -3669,7 +3669,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$expected = sprintf( '<a href="%s">', esc_attr( $entry->get_permalink( $view ) ) );
 		$expected .= "<ul class='gv-field-file-uploads gv-field-{$form->ID}-5'>";
 			// one.jpg
-			$expected .= '<li>one.jpg</li>';
+			$expected .= '<li><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></li>';
 			// two.mp3
 			$expected .= '<li>two.mp3</li>';
 			// three.pdf
@@ -3719,7 +3719,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( $display_as_url => false ) );
 		$field->update_configuration( array( $link_to_entry => true ) );
 
-		$expected = sprintf( '<a href="%s">one.jpg</a>', esc_attr( $entry->get_permalink( $view ) ) );
+		$expected = sprintf( '<a href="%s"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>', esc_attr( $entry->get_permalink( $view ) ) );
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( $display_as_url => true ) );
@@ -3747,7 +3747,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( $display_as_url => false ) );
 		$field->update_configuration( array( $link_to_entry => true ) );
 
-		$expected = sprintf( '<a href="%s">one.jpg</a>', esc_attr( $entry->get_permalink( $view ) ) );
+		$expected = sprintf( '<a href="%s"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>', esc_attr( $entry->get_permalink( $view ) ) );
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( $display_as_url => true ) );

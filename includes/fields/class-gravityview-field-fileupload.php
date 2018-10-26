@@ -295,6 +295,11 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				} else {
 					$rendered = $image->html();
 				}
+
+				// Show as link should render the image regardless.
+				if ( ! empty( $field_settings['show_as_link'] ) ) {
+					$text = $rendered;
+				}
 			}
 
 			/**
