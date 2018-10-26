@@ -214,10 +214,6 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 							$rendered = str_replace( $f( $insecure_file_path ), $f( $secure_file_path ), $rendered );
 						}
 					}
-
-					if ( $context instanceof \GV\Template_Context ) {
-						$context->field->show_as_link = false; // Prevent video from being wrapped in a link
-					}
 				}
 
 			// Video
@@ -253,10 +249,6 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 						foreach ( array( 'esc_attr', 'esc_html', 'esc_url', 'trim' /** noop */ ) as $f ) {
 							$rendered = str_replace( $f( $insecure_file_path ), $f( $secure_file_path ), $rendered );
 						}
-					}
-
-					if ( $context instanceof \GV\Template_Context ) {
-						$context->field->show_as_link = false; // Prevent video from being wrapped in a link
 					}
 				}
 
