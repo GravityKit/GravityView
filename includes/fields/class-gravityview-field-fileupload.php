@@ -285,7 +285,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 				$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
 
-				if ( $lightbox && empty( $field_settings['show_as_link'] ) ) {
+				if ( $lightbox && empty( $field_settings['show_as_link'] ) && ! $is_secure ) {
 					$lightbox_link_atts = array(
 						'rel'   => sprintf( "%s-%s", $gv_class, $entry_slug ),
 						'class' => 'thickbox',

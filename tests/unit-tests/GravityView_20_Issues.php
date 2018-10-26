@@ -596,6 +596,42 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		$this->assertContains( '" /><a href="' . esc_attr( $files[1] ). '">' . esc_html( $files[1] ) .  '</a></audio></li></ul>', $output );
 	}
 
+	public function test_fileupload_download_link_lightbox() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$upload_url = GFFormsModel::get_upload_url( $form['id'] );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'5' => json_encode( array( $file = $upload_url . '/one.jpg' ) ),
+		) );
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'settings' => array(
+				'lightbox' => true,
+			),
+		) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '5' );
+		$field->update_configuration( array( 'link_to_file' => false ) );
+		$field->update_configuration( array( 'show_as_link' => false ) );
+
+		$output = $renderer->render( $field, $view, $form, $entry, $request );
+
+		$file = $field->field->get_download_url( $file );
+
+		$expected = '<img src="' . $file . '" width="250" class="gv-image gv-field-id-5" />';
+
+		$this->assertEquals( $expected, $output );
+	}
+
 	/**
 	 * https://gravityview.slack.com/archives/C91HX67RV/p1539807639000200
 	 */
