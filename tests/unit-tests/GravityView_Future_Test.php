@@ -3577,7 +3577,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'5' => json_encode( array( 'https://one.jpg', 'https://two.mp3' ) ),
+			'5' => json_encode( array(
+                'https://one.jpg',
+                'https://two.mp3',
+                'https://three.pdf',
+                'https://four.mp4',
+            ) ),
 		) );
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
@@ -3590,12 +3595,16 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 		$view = \GV\View::from_post( $view );
 
+		// The setting names are SO confusing. Let's use these clearer variables instead.
+		$display_as_url = 'link_to_file';
+		$link_to_entry  = 'show_as_link';
+
 		$request = new \GV\Frontend_Request();
 		$renderer = new \GV\Field_Renderer();
 
 		$field = \GV\GF_Field::by_id( $form, '5' );
-		$field->update_configuration( array( 'link_to_file' => false ) );
-		$field->update_configuration( array( 'show_as_link' => false ) );
+		$field->update_configuration( array( $display_as_url => false ) );
+		$field->update_configuration( array( $link_to_entry => false ) );
 
 		$output = $renderer->render( $field, $view, $form, $entry, $request );
 
@@ -3606,15 +3615,16 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( $expected, $output );
 		$this->assertContains( '<audio class="wp-audio-shortcode', $output );
 		$this->assertContains( '<source type="audio/mpeg" src="http://two.mp3?_=', $output );
-		$this->assertContains( '" /><a href="http://two.mp3">http://two.mp3</a></audio></li></ul>', $output );
+		$this->assertContains( '<video class="wp-video-shortcode gv-video', $output );
+		$this->assertContains( '" /><a href="http://two.mp3">http://two.mp3</a></audio></li>', $output );
 
 		/** No fancy rendering, just links, please? */
 
-		$field->update_configuration( array( 'link_to_file' => true ) );
-		$field->update_configuration( array( 'show_as_link' => false ) );
+		$field->update_configuration( array( $display_as_url => true ) );
+		$field->update_configuration( array( $link_to_entry => false ) );
 
 		$expected = "<ul class='gv-field-file-uploads gv-field-{$form->ID}-5'>";
-		$expected .= '<li><a href="http://one.jpg" rel="noopener noreferrer" target="_blank"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a></li><li><a href="http://two.mp3" rel="noopener noreferrer" target="_blank">two.mp3</a></li></ul>';
+		$expected .= '<li><a href="http://one.jpg" rel="noopener noreferrer" target="_blank">one.jpg</a></li><li><a href="http://two.mp3" rel="noopener noreferrer" target="_blank">two.mp3</a></li><li><a href="http://three.pdf?TB_iframe=true" rel="noopener noreferrer" target="_blank">three.pdf</a></li><li><a href="http://four.mp4" rel="noopener noreferrer" target="_blank">four.mp4</a></li></ul>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		/** What about show as link then? Double link? */
@@ -3630,40 +3640,38 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field = \GV\GF_Field::by_id( $form, '5' );
 
-		$field->update_configuration( array( 'link_to_file' => false ) );
-		$field->update_configuration( array( 'show_as_link' => false ) );
-
-		$output = $renderer->render( $field, $view, $form, $entry, $request );
+		$field->update_configuration( array( $display_as_url => false ) );
+		$field->update_configuration( array( $link_to_entry => false ) );
 
 		$expected = '<img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" />';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		$field->update_configuration( array( 'link_to_file' => true ) );
-		$field->update_configuration( array( 'show_as_link' => false ) );
+		$field->update_configuration( array( $display_as_url => true ) );
+		$field->update_configuration( array( $link_to_entry => false ) );
 
-		$expected = '<a href="http://one.jpg" rel="noopener noreferrer" target="_blank"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>';
+		$expected = '<a href="http://one.jpg" rel="noopener noreferrer" target="_blank">one.jpg</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		$field->update_configuration( array( 'link_to_file' => false ) );
-		$field->update_configuration( array( 'show_as_link' => true ) );
+		$field->update_configuration( array( $display_as_url => false ) );
+		$field->update_configuration( array( $link_to_entry => true ) );
 
 		$expected = sprintf( '<a href="%s"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>', esc_attr( $link = $entry->get_permalink( $view ) ) );
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		$field->update_configuration( array( 'link_to_file' => true ) );
-		$field->update_configuration( array( 'show_as_link' => true ) );
+		$field->update_configuration( array( $display_as_url => true ) );
+		$field->update_configuration( array( $link_to_entry => true ) );
 
-		$expected = sprintf( '<a href="%s"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>', esc_attr( $link ) );
+		$expected = sprintf( '<a href="%s">one.jpg</a>', esc_attr( $link ) );
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		/** What about the thickbox? Shouldn't display. */
 
 		$view->settings->update( array( 'lightbox' => true ) );
-		$expected = sprintf( '<a href="%s"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>', esc_attr( $link ) );
+		$expected = sprintf( '<a href="%s">one.jpg</a>', esc_attr( $link ) );
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		$field->update_configuration( array( 'link_to_file' => false ) );
-		$field->update_configuration( array( 'show_as_link' => false ) );
+		$field->update_configuration( array( $display_as_url => false ) );
+		$field->update_configuration( array( $link_to_entry => false ) );
 
 		$this->assertContains( '<a class="thickbox" href="http://one.jpg" rel', $renderer->render( $field, $view, $form, $entry, $request ) );
 	}
