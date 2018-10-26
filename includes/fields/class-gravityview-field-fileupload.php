@@ -192,7 +192,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					 * @param \GV\Template_Context $context The context.
 					 */
 					$audio_settings = apply_filters( 'gravityview_audio_settings', array(
-						'src' => $file_path,
+						'src' => $insecure_file_path, // Needs to be insecure path so WP can parse extension
 						'class' => 'wp-audio-shortcode gv-audio gv-field-id-'.$field_settings['id']
 					), $context );
 
@@ -204,6 +204,11 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					$rendered = wp_audio_shortcode( $audio_settings );
 
 					if ( $is_secure ) {
+
+						// The shortcode adds instance URL args: add_query_arg( '_', $instance, $atts[ $fallback ] )
+						// these break the path, since we already have "?" in the URL
+						$rendered = str_replace( '?_=', '&_=', $rendered );
+
 						foreach ( array( 'esc_attr', 'esc_html', 'esc_url', 'trim' /** noop */ ) as $f ) {
 							$rendered = str_replace( $f( $insecure_file_path ), $f( $secure_file_path ), $rendered );
 						}
@@ -226,7 +231,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					 * @param \GV\Template_Context $context The context.
 					 */
 					$video_settings = apply_filters( 'gravityview_video_settings', array(
-						'src' => $file_path,
+						'src' => $insecure_file_path, // Needs to be insecure path so WP can parse extension
 						'class' => 'wp-video-shortcode gv-video gv-field-id-'.$field_settings['id']
 					), $context );
 
@@ -238,6 +243,11 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					$rendered = wp_video_shortcode( $video_settings );
 
 					if ( $is_secure ) {
+
+						// The shortcode adds instance URL args: add_query_arg( '_', $instance, $atts[ $fallback ] )
+						// these break the path, since we already have "?" in the URL
+						$rendered = str_replace( '?_=', '&_=', $rendered );
+
 						foreach ( array( 'esc_attr', 'esc_html', 'esc_url', 'trim' /** noop */ ) as $f ) {
 							$rendered = str_replace( $f( $insecure_file_path ), $f( $secure_file_path ), $rendered );
 						}
