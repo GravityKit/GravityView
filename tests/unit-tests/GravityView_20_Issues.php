@@ -592,7 +592,7 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 		$this->assertContains( $expected, $output );
 		$this->assertContains( '<audio class="wp-audio-shortcode', $output );
-		$this->assertContains( '<source type="audio/mpeg" src="' . esc_attr( $files[1] ) . '?_=', $output );
+		$this->assertContains( '<source type="audio/mpeg" src="' . esc_attr( $files[1] ) . '&_=', $output );
 		$this->assertContains( '" /><a href="' . esc_attr( $files[1] ). '">' . esc_html( $files[1] ) .  '</a></audio></li></ul>', $output );
 	}
 

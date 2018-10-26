@@ -261,7 +261,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			// Images
 			} else if ( in_array( $extension, array( 'jpg', 'jpeg', 'jpe', 'gif', 'png' ) ) ) {
 				$image_atts = array(
-					'src'   => $insecure_file_path,
+					'src'   => $file_path,
 					'class' => 'gv-image gv-field-id-' . $field_settings['id'],
 					'alt'   => $field_settings['label'],
 					'width' => ( $is_single ? null : 250 )
