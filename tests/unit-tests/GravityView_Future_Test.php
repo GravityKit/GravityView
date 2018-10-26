@@ -3622,6 +3622,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 			return $_;
 		}, 10, 4 );
 
+		add_filter( 'gravityview_video_settings', function( $settings ) {
+			$settings['width'] = 640;
+			$settings['height'] = 360;
+			return $settings;
+		} );
+
 		$output = $renderer->render( $field, $view, $form, $entry, $request );
 
 		$expected = "<ul class='gv-field-file-uploads gv-field-{$form->ID}-5'>";
@@ -3784,6 +3790,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		remove_all_filters( 'gravityview/fields/fileupload/disable_link' );
+
+		remove_all_filters( 'wp_video_shortcode_override' );
+		remove_all_filters( 'wp_audio_shortcode_override' );
+		remove_all_filters( 'gravityview_video_settings' );
 	}
 
 	/**
