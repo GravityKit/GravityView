@@ -39,6 +39,7 @@ __Developer Updates:__
 * Fixed: Fixed an issue when using [custom entry slugs](https://docs.gravityview.co/article/57-customizing-urls) where non-unique values across forms cause the entries to not be accessible
 * Fixed: Undefined index PHP warning in the GravityView Extensions screen
 * Fixed: Removed internal usage of deprecated GravityView functions
+* Limitation: "Enable lightbox for images" will not work on images when using Gravity Forms secure URL format. [Contact support](mailto:support@gravityview.co) for a work-around, or use a [different lightbox script](https://docs.gravityview.co/article/277-using-the-foobox-lightbox-plugin-instead-of-the-default).
 
 = 2.1.0.2 and 2.1.0.3 on September 28, 2018 =
 

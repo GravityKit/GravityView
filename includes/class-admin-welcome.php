@@ -291,6 +291,7 @@ class GravityView_Welcome {
                     <li>Added: <code>gravityview/widgets/search/datepicker/format</code> filter to allow you to modify only the format used, rather than using the <code>gravityview_search_datepicker_class</code> filter</li>
                     <li>Fixed: Undefined index PHP warning in the GravityView Extensions screen</li>
                     <li>Fixed: Removed internal usage of deprecated GravityView functions</li>
+                    <li>Limitation: "Enable lightbox for images" will not work on images when using Gravity Forms secure URL format. <a href="mailto:support@gravityview.co">Contact support</a> for a work-around, or use a <a href="https://docs.gravityview.co/article/277-using-the-foobox-lightbox-plugin-instead-of-the-default">different lightbox script</a>.</li>
                 </ul>
 
                 <h3>2.1.0.2 &amp; 2.1.0.3 on September 28, 2018</h3>
