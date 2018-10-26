@@ -3582,6 +3582,7 @@ class GVFuture_Test extends GV_UnitTestCase {
                 'https://two.mp3',
                 'https://three.pdf',
                 'https://four.mp4',
+                'https://five.txt',
             ) ),
 		) );
 		$view = $this->factory->view->create_and_get( array(
@@ -3603,31 +3604,76 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$renderer = new \GV\Field_Renderer();
 
 		$field = \GV\GF_Field::by_id( $form, '5' );
+
+		/** Regular rendering, formatted nicely, no wrapper links. */
 		$field->update_configuration( array( $display_as_url => false ) );
 		$field->update_configuration( array( $link_to_entry => false ) );
 
-		$output = $renderer->render( $field, $view, $form, $entry, $request );
-
 		$expected = "<ul class='gv-field-file-uploads gv-field-{$form->ID}-5'>";
-		$expected .= '<li><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></li>';
-		$expected .= '<li>';
+			// one.jpg
+			$expected .= '<li><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></li>';
+			// two.mp3
+			$expected .= "<li><!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->\n";
+			$expected .= '<audio class="wp-audio-shortcode gv-audio gv-field-id-5" id="audio-0-1" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="http://two.mp3?_=1" /><a href="http://two.mp3">http://two.mp3</a></audio></li>';
+			// three.pdf
+			$expected .= '<li>three.pdf</li>';
+			// four.mp4
+			$expected .= '<li><div style="width: 640px;" class="wp-video"><!--[if lt IE 9]><script>document.createElement(\'video\');</script><![endif]-->';
+			$expected .= "\n" . '<video class="wp-video-shortcode gv-video gv-field-id-5" id="video-0-1" width="640" height="360" preload="metadata" controls="controls"><source type="video/mp4" src="http://four.mp4?_=1" /><a href="http://four.mp4">http://four.mp4</a></video></div></li>';
+			// five.txt
+			$expected .= '<li>five.txt</li>';
+		$expected .= '</ul>';
 
-		$this->assertContains( $expected, $output );
-		$this->assertContains( '<audio class="wp-audio-shortcode', $output );
-		$this->assertContains( '<source type="audio/mpeg" src="http://two.mp3?_=', $output );
-		$this->assertContains( '<video class="wp-video-shortcode gv-video', $output );
-		$this->assertContains( '" /><a href="http://two.mp3">http://two.mp3</a></audio></li>', $output );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		/** No fancy rendering, just links, please? */
-
+		/** No fancy rendering, just file links, please? */
 		$field->update_configuration( array( $display_as_url => true ) );
 		$field->update_configuration( array( $link_to_entry => false ) );
 
 		$expected = "<ul class='gv-field-file-uploads gv-field-{$form->ID}-5'>";
-		$expected .= '<li><a href="http://one.jpg" rel="noopener noreferrer" target="_blank">one.jpg</a></li><li><a href="http://two.mp3" rel="noopener noreferrer" target="_blank">two.mp3</a></li><li><a href="http://three.pdf?TB_iframe=true" rel="noopener noreferrer" target="_blank">three.pdf</a></li><li><a href="http://four.mp4" rel="noopener noreferrer" target="_blank">four.mp4</a></li></ul>';
+			// one.jpg
+			$expected .= '<li><a href="http://one.jpg" rel="noopener noreferrer" target="_blank">one.jpg</a></li>';
+			// two.mp3
+			$expected .= '<li><a href="http://two.mp3" rel="noopener noreferrer" target="_blank">two.mp3</a></li>';
+			// three.pdf
+			$expected .= '<li><a href="http://three.pdf?TB_iframe=true" rel="noopener noreferrer" target="_blank">three.pdf</a></li>';
+			// four.mp4
+			$expected .= '<li><a href="http://four.mp4" rel="noopener noreferrer" target="_blank">four.mp4</a></li>';
+			// five.txt
+			$expected .= '<li><a href="http://five.txt" rel="noopener noreferrer" target="_blank">five.txt</a></li>';
+		$expected .= '</ul>';
+
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		/** What about show as link then? Double link? */
+		/** Link to entry forces file links. */
+		$field->update_configuration( array( $display_as_url => false ) );
+		$field->update_configuration( array( $link_to_entry => true ) );
+
+		$expected = sprintf( '<a href="%s">', esc_attr( $entry->get_permalink( $view ) ) );
+		$expected .= "<ul class='gv-field-file-uploads gv-field-{$form->ID}-5'>";
+			// one.jpg
+			$expected .= '<li>one.jpg</li>';
+			// two.mp3
+			$expected .= '<li>two.mp3</li>';
+			// three.pdf
+			$expected .= '<li>three.pdf</li>';
+			// four.mp4
+			$expected .= '<li>four.mp4</li>';
+			// five.txt
+			$expected .= '<li>five.txt</li>';
+		$expected .= '</ul>';
+		$expected .= '</a>';
+
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		/** Both? Link to entry. */
+		$field->update_configuration( array( $display_as_url => true ) );
+		$field->update_configuration( array( $link_to_entry => true ) );
+
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+
+		/** Cool, thanks! What about image behavior with lightboxes, override filter? */
 
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
@@ -3640,6 +3686,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field = \GV\GF_Field::by_id( $form, '5' );
 
+		/** All the basics. */
 		$field->update_configuration( array( $display_as_url => false ) );
 		$field->update_configuration( array( $link_to_entry => false ) );
 
@@ -3655,25 +3702,71 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( $display_as_url => false ) );
 		$field->update_configuration( array( $link_to_entry => true ) );
 
-		$expected = sprintf( '<a href="%s"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>', esc_attr( $link = $entry->get_permalink( $view ) ) );
+		$expected = sprintf( '<a href="%s">one.jpg</a>', esc_attr( $entry->get_permalink( $view ) ) );
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( $display_as_url => true ) );
 		$field->update_configuration( array( $link_to_entry => true ) );
 
-		$expected = sprintf( '<a href="%s">one.jpg</a>', esc_attr( $link ) );
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		/** What about the thickbox? Shouldn't display. */
-
+		/** Thickbox. */
 		$view->settings->update( array( 'lightbox' => true ) );
-		$expected = sprintf( '<a href="%s">one.jpg</a>', esc_attr( $link ) );
-		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( $display_as_url => false ) );
 		$field->update_configuration( array( $link_to_entry => false ) );
 
-		$this->assertContains( '<a class="thickbox" href="http://one.jpg" rel', $renderer->render( $field, $view, $form, $entry, $request ) );
+		$expected = '<a class="thickbox" href="http://one.jpg" rel="gv-field-' . $form->ID . '-5-' . $form->ID . '">';
+			$expected .= '<img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" />';
+		$expected .= '</a>';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( $display_as_url => true ) );
+		$field->update_configuration( array( $link_to_entry => false ) );
+
+		$expected = '<a href="http://one.jpg" rel="noopener noreferrer" target="_blank">one.jpg</a>';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( $display_as_url => false ) );
+		$field->update_configuration( array( $link_to_entry => true ) );
+
+		$expected = sprintf( '<a href="%s">one.jpg</a>', esc_attr( $entry->get_permalink( $view ) ) );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( $display_as_url => true ) );
+		$field->update_configuration( array( $link_to_entry => true ) );
+
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		/** Override, force nice rendering */
+		add_filter( 'gravityview/fields/fileupload/disable_link', '__return_true' );
+
+		$field->update_configuration( array( $display_as_url => false ) );
+		$field->update_configuration( array( $link_to_entry => false ) );
+
+		$expected = '<a class="thickbox" href="http://one.jpg" rel="gv-field-' . $form->ID . '-5-' . $form->ID . '">';
+			$expected .= '<img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" />';
+		$expected .= '</a>';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( $display_as_url => true ) );
+		$field->update_configuration( array( $link_to_entry => false ) );
+
+		$expected = '<a class="thickbox" href="http://one.jpg" rel="gv-field-' . $form->ID . '-5-' . $form->ID . '"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( $display_as_url => false ) );
+		$field->update_configuration( array( $link_to_entry => true ) );
+
+		$expected = sprintf( '<a href="%s"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>', esc_attr( $entry->get_permalink( $view ) ) );
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( $display_as_url => true ) );
+		$field->update_configuration( array( $link_to_entry => true ) );
+
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		remove_all_filters( 'gravityview/fields/fileupload/disable_link' );
 	}
 
 	/**

@@ -268,44 +268,40 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			// Images
 			} else if ( in_array( $extension, array( 'jpg', 'jpeg', 'jpe', 'gif', 'png' ) ) ) {
+				$image_atts = array(
+					'src'   => $insecure_file_path,
+					'class' => 'gv-image gv-field-id-' . $field_settings['id'],
+					'alt'   => $field_settings['label'],
+					'width' => ( $is_single ? null : 250 )
+				);
 
-				if ( empty( $field_settings['link_to_file'] ) ) {
+				if ( $is_secure ) {
+					$image_atts['validate_src'] = false;
+				}
 
-					$image_atts = array(
-						'src'   => $insecure_file_path,
-						'class' => 'gv-image gv-field-id-' . $field_settings['id'],
-						'alt'   => $field_settings['label'],
-						'width' => ( $is_single ? null : 250 )
+				/**
+				 * Modify the default image attributes for uploaded images
+				 *
+				 * @since 2.0
+				 * @see GravityView_Image For the available attributes
+				 *
+				 * @param array $image_atts
+				 */
+				$image_atts = apply_filters( 'gravityview/fields/fileupload/image_atts', $image_atts );
+
+				$image = new GravityView_Image( $image_atts );
+
+				$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
+
+				if ( $lightbox && empty( $field_settings['show_as_link'] ) ) {
+					$lightbox_link_atts = array(
+						'rel'   => sprintf( "%s-%s", $gv_class, $entry_slug ),
+						'class' => 'thickbox',
 					);
 
-					if ( $is_secure ) {
-						$image_atts['validate_src'] = false;
-					}
-
-					/**
-					 * Modify the default image attributes for uploaded images
-					 *
-					 * @since 2.0
-					 * @see GravityView_Image For the available attributes
-					 *
-					 * @param array $image_atts
-					 */
-					$image_atts = apply_filters( 'gravityview/fields/fileupload/image_atts', $image_atts );
-
-					$image = new GravityView_Image( $image_atts );
-
-					$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
-
-					if ( $lightbox && empty( $field_settings['show_as_link'] ) ) {
-						$lightbox_link_atts = array(
-							'rel'   => sprintf( "%s-%s", $gv_class, $entry_slug ),
-							'class' => 'thickbox',
-						);
-
-						$rendered = gravityview_get_link( $file_path, $image->html(), $lightbox_link_atts );
-					} else {
-						$rendered = $image->html();
-					}
+					$rendered = gravityview_get_link( $file_path, $image->html(), $lightbox_link_atts );
+				} else {
+					$rendered = $image->html();
 				}
 			}
 
@@ -321,9 +317,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			$disable_wrapped_link = apply_filters( 'gravityview/fields/fileupload/disable_link', false, $field_compat, $context );
 
 			// Output textualized content where 
-			if ( ! $disable_wrapped_link && ( ! empty( $field_settings['link_to_file'] ) && empty( $field_settings['show_as_link'] ) ) ) {
-				$content = empty( $text ) ? $basename : $text;
-
+			if ( ! $disable_wrapped_link && ( ! empty( $field_settings['link_to_file'] ) || ! empty( $field_settings['show_as_link'] ) ) ) {
 				/**
 				 * Modify the link text (defaults to the file name)
 				 *
@@ -334,20 +328,22 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				 * @since 2.0
 				 * @param \GV\Template_Context $context The context.
 				 */
-				$content = apply_filters( 'gravityview/fields/fileupload/link_content', $content, $field_compat, $context );
+				$content = apply_filters( 'gravityview/fields/fileupload/link_content', $text, $field_compat, $context );
 
-				/**
-				 * @filter `gravityview/fields/fileupload/link_atts` Modify the link attributes for a file upload field
-				 * @param array|string $link_atts Array or attributes string
-				 * @param array $field_compat Current GravityView field array
-				 * @since 2.0
-				 * @param \GV\Template_Context $context The context.
-				 */
-				$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', array( 'target' => '_blank' ), $field_compat, $context );
+				if ( empty( $field_settings['show_as_link'] ) ) {
+					/**
+					 * @filter `gravityview/fields/fileupload/link_atts` Modify the link attributes for a file upload field
+					 * @param array|string $link_atts Array or attributes string
+					 * @param array $field_compat Current GravityView field array
+					 * @since 2.0
+					 * @param \GV\Template_Context $context The context.
+					 */
+					$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', array( 'target' => '_blank' ), $field_compat, $context );
 
-				$content = gravityview_get_link( $file_path, $content, $link_atts );
+					$content = gravityview_get_link( $file_path, $content, $link_atts );
+				}
 			} else {
-				$content = empty( $rendered ) ? ( empty( $text ) ? $basename : $text ) : $rendered;
+				$content = empty( $rendered ) ? $text : $rendered;
 			}
 
 			$output_arr[] = array(
