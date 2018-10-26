@@ -142,7 +142,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		// Process each file path
 		foreach ( $file_paths as $file_path ) {
 
-			$text = $rendered = null;
+			$rendered = null;
 
 			// If the site is HTTPS, use HTTPS
 			if ( function_exists('set_url_scheme') ) {
@@ -163,6 +163,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			$is_secure = false;
 			$insecure_file_path = $file_path;
 			$secure_file_path = $field->get_download_url( $file_path );
+			$text = $basename;
 
 			if ( $secure_file_path !== $file_path ) {
 				$basename = basename( $secure_file_path );
@@ -221,6 +222,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			// Video
 			} else if ( in_array( $extension, wp_get_video_extensions() ) ) {
+
 				if ( shortcode_exists( 'video' ) ) {
 
 					/**
@@ -260,46 +262,50 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			// PDF
 			} else if ( $extension === 'pdf' ) {
+
 				// PDF needs to be displayed in an IFRAME
 				$file_path = add_query_arg( array( 'TB_iframe' => 'true' ), $file_path );
 
 			// Images
 			} else if ( in_array( $extension, array( 'jpg', 'jpeg', 'jpe', 'gif', 'png' ) ) ) {
 
-				$image_atts = array(
-					'src' => $file_path,
-					'class' => 'gv-image gv-field-id-'.$field_settings['id'],
-					'alt' => $field_settings['label'],
-					'width' => ( $is_single ? NULL : 250 )
-				);
+				if ( empty( $field_settings['link_to_file'] ) ) {
 
-				if ( $is_secure ) {
-					$image_atts['validate_src'] = false;
-				}
-
-				/**
-				 * Modify the default image attributes for uploaded images
-				 * @since 2.0
-				 * @see GravityView_Image For the available attributes
-				 * @param array $image_atts
-				 */
-				$image_atts = apply_filters( 'gravityview/fields/fileupload/image_atts', $image_atts );
-
-				$image = new GravityView_Image( $image_atts );
-
-				$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
-
-				$text = $image->html();
-
-				if ( $lightbox && empty( $field_settings['show_as_link'] ) ) {
-					$lightbox_link_atts = array(
-						'rel' => sprintf( "%s-%s", $gv_class, $entry_slug ),
-						'class' => 'thickbox',
+					$image_atts = array(
+						'src'   => $insecure_file_path,
+						'class' => 'gv-image gv-field-id-' . $field_settings['id'],
+						'alt'   => $field_settings['label'],
+						'width' => ( $is_single ? null : 250 )
 					);
 
-					$rendered = gravityview_get_link( $file_path, $image->html(), $lightbox_link_atts );
-				} else {
-					$rendered = $image->html();
+					if ( $is_secure ) {
+						$image_atts['validate_src'] = false;
+					}
+
+					/**
+					 * Modify the default image attributes for uploaded images
+					 *
+					 * @since 2.0
+					 * @see GravityView_Image For the available attributes
+					 *
+					 * @param array $image_atts
+					 */
+					$image_atts = apply_filters( 'gravityview/fields/fileupload/image_atts', $image_atts );
+
+					$image = new GravityView_Image( $image_atts );
+
+					$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
+
+					if ( $lightbox && empty( $field_settings['show_as_link'] ) ) {
+						$lightbox_link_atts = array(
+							'rel'   => sprintf( "%s-%s", $gv_class, $entry_slug ),
+							'class' => 'thickbox',
+						);
+
+						$rendered = gravityview_get_link( $file_path, $image->html(), $lightbox_link_atts );
+					} else {
+						$rendered = $image->html();
+					}
 				}
 			}
 
