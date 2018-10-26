@@ -3609,22 +3609,39 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( $display_as_url => false ) );
 		$field->update_configuration( array( $link_to_entry => false ) );
 
+		$video_instance = 0;
+		$audio_instance = 0;
+
+		add_filter( 'wp_audio_shortcode_override', function( $_, $__, $___, $instance ) use ( &$audio_instance ) {
+			$audio_instance = $instance;
+			return $_;
+		}, 10, 4 );
+
+		add_filter( 'wp_video_shortcode_override', function( $_, $__, $___, $instance ) use ( &$video_instance ) {
+			$video_instance = $instance;
+			return $_;
+		}, 10, 4 );
+
+		$output = $renderer->render( $field, $view, $form, $entry, $request );
+
 		$expected = "<ul class='gv-field-file-uploads gv-field-{$form->ID}-5'>";
 			// one.jpg
 			$expected .= '<li><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></li>';
 			// two.mp3
-			$expected .= "<li><!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->\n";
-			$expected .= '<audio class="wp-audio-shortcode gv-audio gv-field-id-5" id="audio-0-1" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="http://two.mp3?_=1" /><a href="http://two.mp3">http://two.mp3</a></audio></li>';
+			$maybe_ie_nine = $audio_instance > 1 ? '' : "<!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->\n";
+			$expected .= "<li>$maybe_ie_nine";
+			$expected .= '<audio class="wp-audio-shortcode gv-audio gv-field-id-5" id="audio-0-' . $audio_instance . '" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="http://two.mp3?_=' . $audio_instance . '" /><a href="http://two.mp3">http://two.mp3</a></audio></li>';
 			// three.pdf
 			$expected .= '<li>three.pdf</li>';
 			// four.mp4
-			$expected .= '<li><div style="width: 640px;" class="wp-video"><!--[if lt IE 9]><script>document.createElement(\'video\');</script><![endif]-->';
-			$expected .= "\n" . '<video class="wp-video-shortcode gv-video gv-field-id-5" id="video-0-1" width="640" height="360" preload="metadata" controls="controls"><source type="video/mp4" src="http://four.mp4?_=1" /><a href="http://four.mp4">http://four.mp4</a></video></div></li>';
+			$maybe_ie_nine = $video_instance > 1 ? '' : "<!--[if lt IE 9]><script>document.createElement('video');</script><![endif]-->\n";
+			$expected .= '<li><div style="width: 640px;" class="wp-video">' . $maybe_ie_nine;
+			$expected .= '<video class="wp-video-shortcode gv-video gv-field-id-5" id="video-0-' . $video_instance . '" width="640" height="360" preload="metadata" controls="controls"><source type="video/mp4" src="http://four.mp4?_=' . $video_instance . '" /><a href="http://four.mp4">http://four.mp4</a></video></div></li>';
 			// five.txt
 			$expected .= '<li>five.txt</li>';
 		$expected .= '</ul>';
 
-		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertEquals( $expected, $output );
 
 		/** No fancy rendering, just file links, please? */
 		$field->update_configuration( array( $display_as_url => true ) );
