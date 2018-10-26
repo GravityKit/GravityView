@@ -285,11 +285,27 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 				$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
 
-				if ( $lightbox && empty( $field_settings['show_as_link'] ) && ! $is_secure ) {
+				/**
+				 * @filter `gravityview/fields/fileupload/allow_insecure_lightbox` Allow insecure links to be shown for the lighbox.
+				 * Thickbox doesn't work with secure URLs :(
+				 * @param[in,out] bool True or not. DANGER! DANGER! Default: false! Override at your own RISK!!!
+				 * @param array $field_settings The field settings.
+				 * @param \GV\Template_Context $context The context.
+				 */
+				$override_security = apply_filters( 'gravityview/fields/fileupload/allow_insecure_lightbox', false, $file_path, $field_settings, $context );
+
+				if ( $lightbox && empty( $field_settings['show_as_link'] ) && ( ! $is_secure || $override_security ) ) {
 					$lightbox_link_atts = array(
 						'rel'   => sprintf( "%s-%s", $gv_class, $entry_slug ),
 						'class' => 'thickbox',
 					);
+
+					if ( $override_security ) {
+						$image_atts['src'] = $insecure_file_path;
+						$image = new GravityView_Image( $image_atts );
+						$file_path = $insecure_file_path;
+						// :( a kitten died somewhere
+					}
 
 					$rendered = gravityview_get_link( $file_path, $image->html(), $lightbox_link_atts );
 				} else {
