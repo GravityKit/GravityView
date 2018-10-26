@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.1.1 on October 25, 2018 =
+= 2.1.1 on October 26, 2018 =
 
 * Added: A "Connected Views" menu on the Gravity Forms Forms page - hover over a form to see the new Connected Views menu!
 * Fixed: Additional slashes being added to the custom date format for Date fields

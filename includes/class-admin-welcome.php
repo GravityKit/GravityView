@@ -271,7 +271,7 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
-                <h3>2.1.1 on October 25, 2018</h3>
+                <h3>2.1.1 on October 26, 2018</h3>
 
                 <ul>
                     <li>Added: A "Connected Views" menu on the Gravity Forms Forms page - hover over a form to see the new Connected Views menu!</li>
