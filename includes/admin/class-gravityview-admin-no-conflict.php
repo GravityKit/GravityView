@@ -147,6 +147,9 @@ class GravityView_Admin_No_Conflict {
 
 			// @todo qTip styles not loading for some reason!
 			'jquery-qtip.js',
+
+			// ACF
+			'acf-global',
 		);
 
 		$this->remove_conflicts( $wp_styles, $wp_allowed_styles, 'styles' );
