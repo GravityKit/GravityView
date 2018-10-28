@@ -276,6 +276,12 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 		 * @return mixed|void
 		 */
 		protected function get_template_paths() {
+			static $file_paths;
+
+			if ( ! is_null( $file_paths ) ) {
+				return $file_paths;
+			}
+
 			$theme_directory = trailingslashit( $this->theme_template_directory );
 
 			$file_paths = array(
@@ -300,7 +306,7 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 			// Sort the file paths based on priority.
 			ksort( $file_paths, SORT_NUMERIC );
 
-			return array_map( 'trailingslashit', $file_paths );
+			return $file_paths = array_map( 'trailingslashit', $file_paths );
 		}
 
 		/**
