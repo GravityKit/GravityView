@@ -271,7 +271,7 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
-                <h3>2.1.1 on October 25, 2018</h3>
+                <h3>2.1.1 on October 26, 2018</h3>
 
                 <ul>
                     <li>Added: A "Connected Views" menu on the Gravity Forms Forms page - hover over a form to see the new Connected Views menu!</li>
@@ -291,6 +291,7 @@ class GravityView_Welcome {
                     <li>Added: <code>gravityview/widgets/search/datepicker/format</code> filter to allow you to modify only the format used, rather than using the <code>gravityview_search_datepicker_class</code> filter</li>
                     <li>Fixed: Undefined index PHP warning in the GravityView Extensions screen</li>
                     <li>Fixed: Removed internal usage of deprecated GravityView functions</li>
+                    <li>Limitation: "Enable lightbox for images" will not work on images when using Gravity Forms secure URL format. <a href="mailto:support@gravityview.co">Contact support</a> for a work-around, or use a <a href="https://docs.gravityview.co/article/277-using-the-foobox-lightbox-plugin-instead-of-the-default">different lightbox script</a>.</li>
                 </ul>
 
                 <h3>2.1.0.2 &amp; 2.1.0.3 on September 28, 2018</h3>
