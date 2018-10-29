@@ -985,7 +985,25 @@ class GravityView_Edit_Entry_Render {
 				echo GVCommon::generate_notice( $message , 'gv-error' );
 
 			} else {
-				$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'. esc_url( $back_link ) .'">', '</a>' );
+				$view = \GV\View::by_id( $this->view_id );
+				$edit_redirect = $view->settings->get( 'edit_redirect' );
+
+				if ( '0' === $edit_redirect ) {
+					$redirect_url = $back_link;
+					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturning to Entry%s', 'gravityview'), '<a href="'. esc_url( $redirect_url ) .'">', '</a>' );
+				} else if ( '1' === $edit_redirect ) {
+					$redirect_url = $directory_link = GravityView_API::directory_link();
+					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturning to %s%s', 'gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $view->post_title ), '</a>' );
+				} else if ( '' == $edit_redirect ) {
+					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'. esc_url( $back_link ) .'">', '</a>' );
+				} else {
+					$redirect_url = $edit_redirect;
+					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sRedirecting to %s%s', 'gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $edit_redirect ), '</a>' );
+				}
+
+				if ( isset( $redirect_url ) ) {
+					$entry_updated_message .= sprintf( '<script type="text/javascript">window.location.href = %s;</script>', json_encode( $redirect_url ) );
+				}
 
 				/**
 				 * @filter `gravityview/edit_entry/success` Modify the edit entry success message (including the anchor link)
