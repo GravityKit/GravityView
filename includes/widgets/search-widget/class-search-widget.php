@@ -853,6 +853,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			case 'date':
 
+				$date_format = $this->get_datepicker_format( true );
+
 				if ( is_array( $value ) ) {
 
 					// Reset filter variable
@@ -871,17 +873,18 @@ class GravityView_Widget_Search extends \GV\Widget {
 						 */
 						if( !GFFormsModel::is_valid_operator( $operator ) && $operator === '<=' ) {
 							$operator = '<';
-							$date = date( 'Y-m-d', strtotime( $date . ' +1 day' ) );
+							$date = date( 'Y-m-d', strtotime( self::get_formatted_date( $date, 'Y-m-d', $date_format ) . ' +1 day' ) );
 						}
 
 						$filter[] = array(
 							'key'      => $filter_key,
-							'value'    => self::get_formatted_date( $date, 'Y-m-d' ),
+							'value'    => self::get_formatted_date( $date, 'Y-m-d', $date_format ),
 							'operator' => $operator,
 						);
 					}
 				} else {
-					$filter['value'] = self::get_formatted_date( $value, 'Y-m-d' );
+					$date = $value;
+					$filter['value'] = self::get_formatted_date( $date, 'Y-m-d', $date_format );
 				}
 
 				break;
@@ -924,11 +927,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 *
 	 * @param string $value Date value input
 	 * @param string $format Wanted formatted date
+	 *
+	 * @since 2.1.2
+	 * @param string $value_format The value format. Default: Y-m-d
+	 *
 	 * @return string
 	 */
-	public static function get_formatted_date( $value = '', $format = 'Y-m-d' ) {
+	public static function get_formatted_date( $value = '', $format = 'Y-m-d', $value_format = 'Y-m-d' ) {
 
-		$date = date_create( $value );
+		$date = date_create_from_format( $value_format, $value );
 
 		if ( empty( $date ) ) {
 			gravityview()->log->debug( 'Date format not valid: {value}', array( 'value' => $value ) );
@@ -1401,7 +1408,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$datepicker_class = apply_filters( 'gravityview_search_datepicker_class', "gv-datepicker datepicker " . $this->get_datepicker_format() );
 
 		$gravityview_view->datepicker_class = $datepicker_class;
-
 	}
 
 	/**
