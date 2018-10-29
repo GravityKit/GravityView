@@ -987,22 +987,33 @@ class GravityView_Edit_Entry_Render {
 			} else {
 				$view = \GV\View::by_id( $this->view_id );
 				$edit_redirect = $view->settings->get( 'edit_redirect' );
+				$edit_redirect_url = $view->settings->get( 'edit_redirect_url' );
 
-				if ( '0' === $edit_redirect ) {
-					$redirect_url = $back_link;
-					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturning to Entry%s', 'gravityview'), '<a href="'. esc_url( $redirect_url ) .'">', '</a>' );
-				} else if ( '1' === $edit_redirect ) {
-					$redirect_url = $directory_link = GravityView_API::directory_link();
-					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturning to %s%s', 'gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $view->post_title ), '</a>' );
-				} else if ( '' == $edit_redirect ) {
-					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'. esc_url( $back_link ) .'">', '</a>' );
-				} else {
-					$redirect_url = $edit_redirect;
-					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sRedirecting to %s%s', 'gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $edit_redirect ), '</a>' );
+				switch ( $edit_redirect ) {
+
+                    case '0':
+	                    $redirect_url = $back_link;
+	                    $entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturning to Entry%s', 'gravityview'), '<a href="'. esc_url( $redirect_url ) .'">', '</a>' );
+                        break;
+
+                    case '1':
+	                    $redirect_url = $directory_link = GravityView_API::directory_link();
+	                    $entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturning to %s%s', 'gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $view->post_title ), '</a>' );
+	                    break;
+
+                    case '2':
+	                    $redirect_url = $edit_redirect_url;
+	                    $entry_updated_message = sprintf( esc_attr__('Entry Updated. %sRedirecting to %s%s', 'gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $edit_redirect_url ), '</a>' );
+                        break;
+
+                    case '':
+                    default:
+					    $entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'. esc_url( $back_link ) .'">', '</a>' );
+                        break;
 				}
 
 				if ( isset( $redirect_url ) ) {
-					$entry_updated_message .= sprintf( '<script type="text/javascript">window.location.href = %s;</script>', json_encode( $redirect_url ) );
+					$entry_updated_message .= sprintf( '<script>window.location.href = %s;</script>', json_encode( $redirect_url ) );
 				}
 
 				/**
