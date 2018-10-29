@@ -507,4 +507,68 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider get_date_filter_formats
+	 */
+	public function test_date_filter_formats( $format, $dates, $name ) {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		global $post;
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '3',
+						'label' => 'Date',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+					),
+				),
+			),
+		) );
+
+		$search_criteria_dates = array(
+			'field_filters' => array(
+				'mode' => 'any',
+				array(
+					'key' => 3,
+					'value' => '2018-02-01',
+				),
+			),
+		);
+
+		$_GET = $dates;
+
+		add_filter( 'gravityview/widgets/search/datepicker/format', function() use ( $name ) { return $name; } );
+
+		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
+
+		remove_all_filters( 'gravityview/widgets/search/datepicker/format' );
+
+		$_GET = array();
+	}
+
+	public function get_date_filter_formats() {
+		return array(
+			array( 'mm/dd/yyyy', array( 'filter_3' => '02/01/2018' ), 'mdy' ),
+			array( 'mm/dd/yyyy', array( 'filter_3' => '02/01/2018' ), 'invalid! This should result in mdy.' ),
+
+			array( 'yyyy-mm-dd', array( 'filter_3' => '2018-02-01' ), 'ymd_dash' ),
+			array( 'yyyy/mm/dd', array( 'filter_3' => '2018/02/01' ), 'ymd_slash' ),
+			array( 'yyyy.mm.dd', array( 'filter_3' => '2018.02.01' ), 'ymd_dot' ),
+
+			array( 'dd/mm/yyyy', array( 'filter_3' => '01/02/2018' ), 'dmy' ),
+			array( 'dd-mm-yyyy', array( 'filter_3' => '01-02-2018' ), 'dmy_dash' ),
+			array( 'dd.mm.yyyy', array( 'filter_3' => '01.02.2018' ), 'dmy_dot' ),
+		);
+	}
 }
