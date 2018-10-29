@@ -1003,6 +1003,7 @@ class GravityView_Edit_Entry_Render {
 
                     case '2':
 	                    $redirect_url = $edit_redirect_url;
+	                    $redirect_url = GFCommon::replace_variables( $redirect_url, $this->form, $this->entry, false, false, false, 'text' );
 	                    $entry_updated_message = sprintf( esc_attr__('Entry Updated. %sRedirecting to %s%s', 'gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $edit_redirect_url ), '</a>' );
                         break;
 
