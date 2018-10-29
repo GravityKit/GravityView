@@ -974,7 +974,7 @@ class GravityView_Edit_Entry_Render {
 
 		if ( \GV\Utils::_POST( 'action' ) === 'update' ) {
 
-			$back_link = esc_url( remove_query_arg( array( 'page', 'view', 'edit' ) ) );
+			$back_link = remove_query_arg( array( 'page', 'view', 'edit' ) );
 
 			if( ! $this->is_valid ){
 
@@ -985,7 +985,7 @@ class GravityView_Edit_Entry_Render {
 				echo GVCommon::generate_notice( $message , 'gv-error' );
 
 			} else {
-				$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'. $back_link .'">', '</a>' );
+				$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'. esc_url( $back_link ) .'">', '</a>' );
 
 				/**
 				 * @filter `gravityview/edit_entry/success` Modify the edit entry success message (including the anchor link)
