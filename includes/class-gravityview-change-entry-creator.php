@@ -97,19 +97,6 @@ class GravityView_Change_Entry_Creator {
     	remove_action("gform_entry_info", 'gravityview_change_entry_creator_form', 10 );
     	remove_action("gform_after_update_entry", 'gravityview_update_entry_creator', 10 );
 
-    	// Disable for Gravity Forms Add-ons 3.6.2 and lower
-    	if( class_exists( 'KWS_GF_Change_Lead_Creator' ) ) {
-
-    		$Old_Lead_Creator = new KWS_GF_Change_Lead_Creator;
-
-    		// Now, no validation is required in the methods; let's hook in.
-    		remove_action('admin_init', array( $Old_Lead_Creator, 'set_screen_mode' ) );
-
-    		remove_action("gform_entry_info", array( $Old_Lead_Creator, 'add_select' ), 10 );
-
-    		remove_action("gform_after_update_entry", array( $Old_Lead_Creator, 'update_entry_creator' ), 10 );
-    	}
-
     }
 
     /**
