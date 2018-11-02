@@ -536,6 +536,8 @@ class GravityView_Edit_Entry_Render {
 			}
 		}
 
+		$form['fields'] = array_values( $form['fields'] );
+
 		return $form;
 	}
 
@@ -1667,7 +1669,7 @@ class GravityView_Edit_Entry_Render {
 
 		// The Edit tab has not been configured, so we return all fields by default.
 		if( empty( $configured_fields ) ) {
-			return $fields;
+			return array_values( $fields );
 		}
 
 		// The edit tab has been configured, so we loop through to configured settings
@@ -1750,7 +1752,7 @@ class GravityView_Edit_Entry_Render {
 				    unset( $fields[ $k ] );
 				}
 			}
-			return $fields;
+			return array_values( $fields );
 		}
 
 	    foreach( $fields as &$field ) {

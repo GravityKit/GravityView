@@ -1317,7 +1317,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$administrator = $this->_generate_user( 'administrator' );
 
-		$form = $this->factory->form->import_and_get( 'simple_calc.json' );
+		$form = $this->factory->form->import_and_get( 'calculations.json' );
 
 		$entry = $this->factory->entry->create_and_get( array(
 			'status' => 'active',
@@ -1398,6 +1398,82 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( '7', $entry['1'] );
 		$this->assertEquals( '4', $entry['2'] );
 		$this->assertEquals( '11', $entry['3'] );
+
+		$this->_reset_context();
+	}
+
+	public function test_simple_product_calculations() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$form = $this->factory->form->import_and_get( 'calculations.json' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'status' => 'active',
+			'form_id' => $form['id'],
+
+			// No transaction data
+			'payment_status' => '',
+			'payment_date'   => '',
+			'transaction_id' => '',
+			'payment_amount' => '',
+			'payment_method' => '',
+
+			'4.1' => 'A',
+			'4.2' => '$ 66.00',
+			'4.3' => '1',
+
+			'5.1' => 'B',
+			'5.2' => '$ 12.00',
+			'5.3' => '1',
+
+			'6' => '78',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
+			return $fields;
+		} );
+
+		$_POST = array(
+			// @todo remove when/if 7d0f54cdecc2ad9baeb0b8b16a47cb1abf5aadb5 is in
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+
+			'input_4.1' => '-', // Security
+			'input_4.2' => '$ 1.00', // Security
+			'input_4.3' => '5',
+
+			'input_5.1' => '-', // Security
+			'input_5.2' => '1', // Security
+			'input_5.3' => '9', // Security
+
+			'input_6' => '999', // Security
+
+			'state_' . $form['id'] => '',
+		);
+
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		var_dump( $entry );
+
+		$this->assertEquals( 'A', $entry['4.1'] );
+		$this->assertEquals( 'B', $entry['5.1'] );
+
+		$this->assertEquals( '$ 66.00', $entry['4.2'] );
+		$this->assertEquals( '$ 12.00', $entry['5.2'] );
+
+		$this->assertEquals( '5', $entry['4.3'] );
+		$this->assertEquals( '1', $entry['5.3'] );
+
+		$this->assertEquals( '606', $entry['6'] );
+
+		$this->_reset_context();
 	}
 }
 
