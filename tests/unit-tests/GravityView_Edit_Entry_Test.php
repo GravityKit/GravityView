@@ -1353,6 +1353,51 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( '8', $entry['3'] );
 
 		$this->_reset_context();
+
+		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
+			unset( $fields[1] ); // Hide the second field
+			unset( $fields[2] ); // Hide the total field
+			return $fields;
+		} );
+
+		$_POST = array(
+			// @todo remove when/if 7d0f54cdecc2ad9baeb0b8b16a47cb1abf5aadb5 is in
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+
+			'input_1' => '7',
+		);
+
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( '7', $entry['1'] );
+		$this->assertEquals( '3', $entry['2'] );
+		$this->assertEquals( '10', $entry['3'] );
+
+		$this->_reset_context();
+
+		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
+			unset( $fields[0] ); // Hide the first field
+			return $fields;
+		} );
+
+		$_POST = array(
+			// @todo remove when/if 7d0f54cdecc2ad9baeb0b8b16a47cb1abf5aadb5 is in
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+
+			'input_1' => '0', // Test security
+			'input_2' => '4',
+			'input_3' => '-1', // Test security
+		);
+
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( '7', $entry['1'] );
+		$this->assertEquals( '4', $entry['2'] );
+		$this->assertEquals( '11', $entry['3'] );
 	}
 }
 
