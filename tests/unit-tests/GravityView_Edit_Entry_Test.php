@@ -493,6 +493,21 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			GravityView_Edit_Entry::get_nonce_key( $view->ID, $form['id'], $entry['id'] )
 		);
 
+		if ( ! empty( $_POST ) ) {
+			$state = array();
+			foreach ( $entry as $key => $value ) {
+				if ( is_numeric( $key ) ) {
+					$state[ 'input_' . str_replace( '.', '_', $key ) ] = $value;
+				}
+			}
+
+			$_POST += array(
+				'lid' => $entry['id'],
+				'is_submit_' . $form['id'] => true,
+				'state_' . $form['id'] => GFFormDisplay::get_state( $form, $state ),
+			);
+		}
+
 		/** Render */
 		ob_start() && $render->init( $data );
 		$rendered_form = ob_get_clean();
@@ -604,8 +619,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		/** Great, now how about some saving? The default form. Although we should be testing specific forms as well. */
 		$_POST = array();
-		$_POST['lid'] = $entry['id'];
-		$_POST['is_submit_' . $form['id']] = true;
 		foreach ( $form['fields'] as $field ) {
 			/** Emulate a $_POST */
 			foreach ( $field->inputs ? : array( array( 'id' => $field->id ) ) as $input ) {
@@ -657,10 +670,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		wp_set_current_user( $administrator );
 
 		$_POST = array(
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'input_1' => 'we changed it',
 			'input_2' => 102,
 		);
@@ -701,10 +710,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		/** Try saving a change, but no touching the upload field. */
 		$_POST = array(
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'gform_uploaded_files' => json_encode( array( 'input_1' => $entry['1'] ) ),
 			'input_2' => '40',
 			'input_3' => '',
@@ -717,10 +722,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		wp_set_current_user( $administrator );
 
 		$_POST = array(
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'gform_uploaded_files' => json_encode( array( 'input_1' => $entry['1'] ) ),
 			'input_2' => '29',
 			'input_3' => '',
@@ -796,10 +797,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		/** Let's get failing... */
 
 		$post = array(
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'input_1' => 'we changed it',
 			'input_2' => 102310,
 		);
@@ -894,9 +891,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		/** Try saving a change, but not touching the image upload field. */
 		$_POST = array(
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
 			'input_1' => $filename,
 			'input_2' => 'wut',
 			'input_1_1' => 'this is a title',
@@ -1210,10 +1204,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		// Edit the entry
 		$_POST = array(
-			'lid' => $entry->ID,
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'input_1' => 'this is two',
 		);
 		$this->_emulate_render( $form, $view, $entry->as_entry() );
@@ -1226,10 +1216,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		// Edit the entry
 		$_POST = array(
-			'lid' => $entry->ID,
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'input_1' => 'this is three',
 		);
 		$this->_emulate_render( $form, $view, $entry->as_entry() );
@@ -1246,10 +1232,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		// Edit the entry (by admin)
 		$_POST = array(
-			'lid' => $entry->ID,
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'input_1' => 'this is four',
 		);
 		$this->_emulate_render( $form, $view, $entry->as_entry() );
@@ -1337,10 +1319,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		} );
 
 		$_POST = array(
-			// @todo remove when/if 7d0f54cdecc2ad9baeb0b8b16a47cb1abf5aadb5 is in
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
 			'input_1' => '5',
 			'input_2' => '3',
 		);
@@ -1361,10 +1339,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		} );
 
 		$_POST = array(
-			// @todo remove when/if 7d0f54cdecc2ad9baeb0b8b16a47cb1abf5aadb5 is in
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
 			'input_1' => '7',
 		);
 
@@ -1383,10 +1357,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		} );
 
 		$_POST = array(
-			// @todo remove when/if 7d0f54cdecc2ad9baeb0b8b16a47cb1abf5aadb5 is in
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
 			'input_1' => '0', // Test security
 			'input_2' => '4',
 			'input_3' => '-1', // Test security
@@ -1406,6 +1376,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 
 		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
 
 		$form = $this->factory->form->import_and_get( 'calculations.json' );
 
@@ -1440,27 +1412,22 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		} );
 
 		$_POST = array(
-			// @todo remove when/if 7d0f54cdecc2ad9baeb0b8b16a47cb1abf5aadb5 is in
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
+			'input_4_1' => $entry['4.1'],
+			'input_4_2' => $entry['4.2'],
+			'input_4_3' => $entry['4.3'],
 
-			'input_4.1' => '-', // Security
-			'input_4.2' => '$ 1.00', // Security
-			'input_4.3' => '5',
+			'input_5_1' => $entry['5.1'],
+			'input_5_2' => $entry['5.2'],
+			'input_5_3' => $entry['5.3'],
 
-			'input_5.1' => '-', // Security
-			'input_5.2' => '1', // Security
-			'input_5.3' => '9', // Security
-
-			'input_6' => '999', // Security
-
-			'state_' . $form['id'] => '',
+			'input_6' => $entry['6'],
 		);
 
-		wp_set_current_user( $administrator );
+		var_dump( $entry );
+
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
-		var_dump( $entry );
+		print( $output );
 
 		$this->assertEquals( 'A', $entry['4.1'] );
 		$this->assertEquals( 'B', $entry['5.1'] );
