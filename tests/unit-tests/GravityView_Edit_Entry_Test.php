@@ -618,7 +618,10 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		ob_start() && $render->init( $data ); ob_get_clean();
 
 		/** Great, now how about some saving? The default form. Although we should be testing specific forms as well. */
-		$_POST = array();
+		$_POST = array(
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+		);
 		foreach ( $form['fields'] as $field ) {
 			/** Emulate a $_POST */
 			foreach ( $field->inputs ? : array( array( 'id' => $field->id ) ) as $input ) {
