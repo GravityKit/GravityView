@@ -154,7 +154,7 @@
                   "id" : "4.3"
                }
             ],
-            "label" : "Product Name",
+            "label" : "A",
             "description" : "",
             "defaultValue" : "",
             "calculationFormula" : "",
@@ -219,7 +219,7 @@
             "enableCalculation" : "",
             "defaultValue" : "",
             "description" : "",
-            "label" : "Product Name",
+            "label" : "B",
             "inputs" : [
                {
                   "id" : "5.1",

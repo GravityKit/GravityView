@@ -1414,7 +1414,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$_POST = array(
 			'input_4_1' => $entry['4.1'],
 			'input_4_2' => $entry['4.2'],
-			'input_4_3' => $entry['4.3'],
+			'input_4_3' => '5',
 
 			'input_5_1' => $entry['5.1'],
 			'input_5_2' => $entry['5.2'],
@@ -1423,11 +1423,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			'input_6' => $entry['6'],
 		);
 
-		var_dump( $entry );
-
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
-
-		print( $output );
 
 		$this->assertEquals( 'A', $entry['4.1'] );
 		$this->assertEquals( 'B', $entry['5.1'] );
@@ -1438,7 +1434,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( '5', $entry['4.3'] );
 		$this->assertEquals( '1', $entry['5.3'] );
 
-		$this->assertEquals( '606', $entry['6'] );
+		$this->assertEquals( '342', $entry['6'] );
 
 		$this->_reset_context();
 	}
