@@ -63,7 +63,7 @@ class GravityView_Change_Entry_Creator {
     	// Update the entry. The `false` prevents checking Akismet; `true` disables the user updated hook from firing
     	$result = RGFormsModel::update_lead_property( $entry['id'], 'created_by', $user_id, false, true );
 
-    	if( empty( $result ) ) {
+    	if ( false === $result ) {
     		$status = __('Error', 'gravityview');
     	} else {
     		$status = __('Success', 'gravityview');
@@ -71,7 +71,7 @@ class GravityView_Change_Entry_Creator {
 
     	$note = sprintf( _x('%s: Assigned User ID #%d as the entry creator.', 'First parameter: Success or error of the action. Second: User ID number', 'gravityview'), $status, $user_id );
 
-    	gravityview()->log->debug( 'GravityView_Change_Entry_Creator[assign_new_user_to_lead] - {note}', array( 'note', $note ) );
+    	gravityview()->log->debug( 'GravityView_Change_Entry_Creator[assign_new_user_to_lead] - {note}', array( 'note' => $note ) );
 
 	    /**
 	     * @filter `gravityview_disable_change_entry_creator_note` Disable adding a note when changing the entry creator
