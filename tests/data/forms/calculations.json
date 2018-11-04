@@ -243,8 +243,83 @@
             "adminLabel" : ""
          },
          {
-            "errorMessage" : "",
+            "isRequired" : false,
             "id" : 6,
+            "inputName" : "",
+            "enableCalculation" : true,
+            "productField" : "",
+            "inputType" : "calculation",
+            "noDuplicates" : false,
+            "enablePrice" : null,
+            "choices" : [
+               {
+                  "price" : "$ 0.00",
+                  "text" : "First Choice",
+                  "value" : "First Choice",
+                  "isSelected" : false
+               },
+               {
+                  "price" : "$ 0.00",
+                  "isSelected" : false,
+                  "text" : "Second Choice",
+                  "value" : "Second Choice"
+               },
+               {
+                  "value" : "Third Choice",
+                  "text" : "Third Choice",
+                  "isSelected" : false,
+                  "price" : "$ 0.00"
+               }
+            ],
+            "inputs" : [
+               {
+                  "id" : "6.1",
+                  "label" : "Name",
+                  "name" : ""
+               },
+               {
+                  "label" : "Price",
+                  "id" : "6.2",
+                  "name" : ""
+               },
+               {
+                  "label" : "Quantity",
+                  "id" : "6.3",
+                  "name" : ""
+               }
+            ],
+            "maxFiles" : "",
+            "size" : "medium",
+            "subLabelPlacement" : "",
+            "gp-unique-id_starting_number" : "",
+            "formId" : 39,
+            "inputMaskValue" : "",
+            "basePrice" : "$ 0.00",
+            "visibility" : "visible",
+            "descriptionPlacement" : "",
+            "displayAllCategories" : false,
+            "placeholder" : "",
+            "inputMask" : false,
+            "adminLabel" : "",
+            "label" : "C",
+            "calculationFormula" : "{Number:1} * {B (Price):5.2}",
+            "useRichTextEditor" : false,
+            "labelPlacement" : "",
+            "conditionalLogic" : "",
+            "description" : "",
+            "type" : "product",
+            "gwreadonly_enable" : false,
+            "defaultValue" : "",
+            "calculationRounding" : "",
+            "cssClass" : "",
+            "allowsPrepopulate" : false,
+            "errorMessage" : "",
+            "disableQuantity" : false,
+            "multipleFiles" : false
+         },
+         {
+            "errorMessage" : "",
+            "id" : 7,
             "productField" : "",
             "adminLabel" : "",
             "inputMaskValue" : "",

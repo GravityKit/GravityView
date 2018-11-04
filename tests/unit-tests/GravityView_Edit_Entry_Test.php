@@ -1384,6 +1384,9 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$form = $this->factory->form->import_and_get( 'calculations.json' );
 
+		unset( $form['fields'][5] ); // Remove the calculation product
+		\GFAPI::update_form( $form );
+
 		$entry = $this->factory->entry->create_and_get( array(
 			'status' => 'active',
 			'form_id' => $form['id'],
@@ -1403,7 +1406,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			'5.2' => '$ 12.00',
 			'5.3' => '1',
 
-			'6' => '78',
+			'7' => '78',
 		) );
 
 		$view = $this->factory->view->create_and_get( array(
@@ -1419,7 +1422,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			'input_5_2' => $entry['5.2'],
 			'input_5_3' => $entry['5.3'],
 
-			'input_6' => $entry['6'],
+			'input_7' => $entry['7'],
 		);
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
@@ -1433,7 +1436,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( '5', $entry['4.3'] );
 		$this->assertEquals( '1', $entry['5.3'] );
 
-		$this->assertEquals( '342', $entry['6'] );
+		$this->assertEquals( '342', $entry['7'] );
 
 		$this->_reset_context();
 
@@ -1441,7 +1444,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
 			unset( $fields[4] ); // Hide the $12 one
-			unset( $fields[5] ); // Hide the total
+			unset( $fields[7] ); // Hide the total
 			return $fields;
 		} );
 
@@ -1462,7 +1465,118 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( '7', $entry['4.3'] );
 		$this->assertEquals( '1', $entry['5.3'] );
 
-		$this->assertEquals( '474', $entry['6'] );
+		$this->assertEquals( '474', $entry['7'] );
+
+		$this->_reset_context();
+	}
+
+	public function test_product_calculations_with_formula() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'calculations.json' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'status' => 'active',
+			'form_id' => $form['id'],
+
+			// No transaction data
+			'payment_status' => '',
+			'payment_date'   => '',
+			'transaction_id' => '',
+			'payment_amount' => '',
+			'payment_method' => '',
+
+			'1' => '3',
+			'2' => '',
+			'3' => '3',
+
+			'4.1' => 'A',
+			'4.2' => '$ 66.00',
+			'4.3' => '1',
+
+			'5.1' => 'B',
+			'5.2' => '$ 12.00',
+			'5.3' => '1',
+
+			'6.1' => 'C',
+			'6.2' => '$ 36.00',
+			'6.3' => '3',
+
+			'7' => '186',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+		$_POST = array(
+			'input_1' => '5',
+			'input_2' => $entry['2'],
+			'input_3' => $entry['3'],
+
+			'input_4_1' => $entry['4.1'],
+			'input_4_2' => $entry['4.2'],
+			'input_4_3' => $entry['4.3'],
+
+			'input_5_1' => $entry['5.1'],
+			'input_5_2' => $entry['5.2'],
+			'input_5_3' => $entry['5.3'],
+
+			'input_6_1' => $entry['6.1'],
+			'input_6_2' => $entry['6.2'],
+			'input_6_3' => $entry['6.3'],
+
+			'input_7' => $entry['7'],
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'A', $entry['4.1'] );
+		$this->assertEquals( 'B', $entry['5.1'] );
+		$this->assertEquals( 'C', $entry['6.1'] );
+
+		$this->assertEquals( '$ 66.00', $entry['4.2'] );
+		$this->assertEquals( '$ 12.00', $entry['5.2'] );
+		$this->assertEquals( '$60.00', $entry['6.2'] ); // Lol, GF recalculation removes the space :)
+
+		$this->assertEquals( '1', $entry['4.3'] );
+		$this->assertEquals( '1', $entry['5.3'] );
+		$this->assertEquals( '3', $entry['6.3'] );
+
+		$this->assertEquals( '258', $entry['7'] );
+
+		$this->_reset_context();
+
+		wp_set_current_user( $administrator );
+
+		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
+			unset( $fields[4] ); // Hide the $12 one
+			unset( $fields[7] ); // Hide the total
+			return $fields;
+		} );
+
+		$_POST = array(
+			'input_4_1' => $entry['4.1'],
+			'input_4_2' => $entry['4.2'],
+			'input_4_3' => '7',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'A', $entry['4.1'] );
+		$this->assertEquals( 'B', $entry['5.1'] );
+
+		$this->assertEquals( '$ 66.00', $entry['4.2'] );
+		$this->assertEquals( '$ 12.00', $entry['5.2'] );
+
+		$this->assertEquals( '7', $entry['4.3'] );
+		$this->assertEquals( '1', $entry['5.3'] );
+
+		$this->assertEquals( '474', $entry['7'] );
 
 		$this->_reset_context();
 	}

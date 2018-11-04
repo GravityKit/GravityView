@@ -556,11 +556,11 @@ class GravityView_Edit_Entry_Render {
 				if ( is_array( $inputs ) ) {
 				    foreach ( $inputs as $input ) {
 				        $input_name = 'input_' . str_replace( '.', '_', $input['id'] );
-				        $entry[ strval( $input['id'] ) ] = RGFormsModel::prepare_value( $form, $calc_field, '', $input_name, $entry['id'], $entry );
+				        $entry[ strval( $input['id'] ) ] = RGFormsModel::prepare_value( $form, $calc_field, $entry[ strval( $input['id'] ) ], $input_name, $entry['id'], $entry );
 				    }
 				} else {
 				    $input_name = 'input_' . str_replace( '.', '_', $calc_field->id);
-				    $entry[ strval( $calc_field->id ) ] = RGFormsModel::prepare_value( $form, $calc_field, '', $input_name, $entry['id'], $entry );
+				    $entry[ strval( $calc_field->id ) ] = RGFormsModel::prepare_value( $form, $calc_field, $entry[ strval( $calc_field->id ) ], $input_name, $entry['id'], $entry );
 				}
 			}
 		}
