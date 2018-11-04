@@ -542,6 +542,7 @@ class GravityView_Edit_Entry_Render {
 	}
 
 	private function update_calculation_fields() {
+		global $wpdb;
 
 		$form = self::$original_form;
 		$update = false;
@@ -549,31 +550,23 @@ class GravityView_Edit_Entry_Render {
 		// get the most up to date entry values
 		$entry = GFAPI::get_entry( $this->entry['id'] );
 
-		if( !empty( $this->fields_with_calculation ) ) {
+		$entry_meta_table = GFFormsModel::get_entry_meta_table_name();
+		$current_fields = $wpdb->get_results( $wpdb->prepare( "SELECT id, meta_key FROM $entry_meta_table WHERE entry_id=%d", $entry['id'] ) );
+
+		if ( ! empty( $this->fields_with_calculation ) ) {
 			$update = true;
-			foreach ( $this->fields_with_calculation as $calc_field ) {
-				$inputs = $calc_field->get_entry_inputs();
+			foreach ( $this->fields_with_calculation as $field ) {
+				$inputs = $field->get_entry_inputs();
 				if ( is_array( $inputs ) ) {
 				    foreach ( $inputs as $input ) {
-				        $input_name = 'input_' . str_replace( '.', '_', $input['id'] );
-				        $entry[ strval( $input['id'] ) ] = RGFormsModel::prepare_value( $form, $calc_field, $entry[ strval( $input['id'] ) ], $input_name, $entry['id'], $entry );
+						GFFormsModel::save_input( $form, $field, $entry, $current_fields, $input['id'] );
 				    }
 				} else {
-				    $input_name = 'input_' . str_replace( '.', '_', $calc_field->id);
-				    $entry[ strval( $calc_field->id ) ] = RGFormsModel::prepare_value( $form, $calc_field, $entry[ strval( $calc_field->id ) ], $input_name, $entry['id'], $entry );
+					GFFormsModel::save_input( $form, $field, $entry, $current_fields, $field->id );
 				}
 			}
-		}
 
-		if ( $update ) {
-
-			$return_entry = GFAPI::update_entry( $entry );
-
-			if( is_wp_error( $return_entry ) ) {
-				gravityview()->log->error( 'Updating the entry calculation fields failed', array( 'data' => $return_entry ) );
-			} else {
-				gravityview()->log->debug( 'Updating the entry calculation fields succeeded' );
-			}
+			GFFormsModel::commit_batch_field_operations();
 		}
 	}
 

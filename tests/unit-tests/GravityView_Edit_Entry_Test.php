@@ -1554,29 +1554,40 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		wp_set_current_user( $administrator );
 
 		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
+			unset( $fields[1] ); // Hide the second number
+			unset( $fields[2] ); // Hide the calculation number
 			unset( $fields[4] ); // Hide the $12 one
-			unset( $fields[7] ); // Hide the total
+			unset( $fields[6] ); // Hide the total
 			return $fields;
 		} );
 
 		$_POST = array(
+			'input_1' => '9',
+
 			'input_4_1' => $entry['4.1'],
 			'input_4_2' => $entry['4.2'],
 			'input_4_3' => '7',
+
+			'input_6_1' => $entry['6.1'],
+			'input_6_2' => $entry['6.2'],
+			'input_6_3' => '9',
 		);
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
 		$this->assertEquals( 'A', $entry['4.1'] );
 		$this->assertEquals( 'B', $entry['5.1'] );
+		$this->assertEquals( 'C', $entry['6.1'] );
 
 		$this->assertEquals( '$ 66.00', $entry['4.2'] );
 		$this->assertEquals( '$ 12.00', $entry['5.2'] );
+		$this->assertEquals( '$108.00', $entry['6.2'] );
 
 		$this->assertEquals( '7', $entry['4.3'] );
 		$this->assertEquals( '1', $entry['5.3'] );
+		$this->assertEquals( '9', $entry['6.3'] );
 
-		$this->assertEquals( '474', $entry['7'] );
+		$this->assertEquals( '1446', $entry['7'] );
 
 		$this->_reset_context();
 	}
