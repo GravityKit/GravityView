@@ -509,14 +509,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 */
 	public function filter_entries( $search_criteria, $form_id = null, $args = array(), $force_search_criteria = false ) {
 		if ( ! $force_search_criteria && gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
-			static $filter_added = false;
-			if ( ! $filter_added ) {
-				/**
-				 * If GF_Query is available, we can construct custom conditions with nested
-				 * booleans on the query, giving up the old ways of flat search_criteria field_filters.
-				 */
-				$filter_added = add_action( 'gravityview/view/query', array( $this, 'gf_query_filter' ), 10, 3 );
-			}
+			/**
+			 * If GF_Query is available, we can construct custom conditions with nested
+			 * booleans on the query, giving up the old ways of flat search_criteria field_filters.
+			 */
+			add_action( 'gravityview/view/query', array( $this, 'gf_query_filter' ), 10, 3 );
 			return $search_criteria; // Return the original criteria, GF_Query modification kicks in later
 		}
 
