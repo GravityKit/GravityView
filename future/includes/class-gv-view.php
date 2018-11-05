@@ -828,6 +828,19 @@ class View implements \ArrayAccess {
 			$page = Utils::get( $parameters['paging'], 'current_page' ) ?
 				: ( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
 
+			/**
+			 * Cleanup duplicate field_filter parameters to simplify the query.
+			 */
+			$unique_field_filters = array();
+			foreach ( $parameters['search_criteria']['field_filters'] as $key => $filter ) {
+				if ( 'mode' === $key ) {
+					$unique_field_filters['mode'] = $filter;
+				} else if ( ! in_array( $filter, $unique_field_filters ) ) {
+					$unique_field_filters[] = $filter;
+				}
+			}
+			$parameters['search_criteria']['field_filters'] = $unique_field_filters;
+
 			if ( gravityview()->plugin->supports( Plugin::FEATURE_GFQUERY ) ) {
 				/**
 				 * New \GF_Query stuff :)
