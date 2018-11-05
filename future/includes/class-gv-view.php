@@ -841,6 +841,10 @@ class View implements \ArrayAccess {
 			}
 			$parameters['search_criteria']['field_filters'] = $unique_field_filters;
 
+			if ( ! empty( $parameters['search_criteria']['field_filters'] ) ) {
+				gravityview()->log->notice( 'search_criteria/field_filters is not empty, third-party code may be using legacy search_criteria filters.' );
+			}
+
 			if ( gravityview()->plugin->supports( Plugin::FEATURE_GFQUERY ) ) {
 				/**
 				 * New \GF_Query stuff :)
