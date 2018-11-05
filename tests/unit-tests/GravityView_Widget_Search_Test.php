@@ -571,4 +571,66 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			array( 'dd.mm.yyyy', array( 'filter_3' => '01.02.2018' ), 'dmy_dot' ),
 		);
 	}
+
+	public function test_search_is_approved_gf_query() {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'show_only_approved' => true,
+			),
+			'fields' => array(
+				'directory_table-columns' => array( wp_generate_password( 4, false ) => array(
+						'id' => '4',
+						'label' => 'Email',
+					),
+					wp_generate_password( 16, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"4","input":"input_text"},{"field":"16","input":"input_text"}]',
+						'search_mode' => 'any',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		/** Approved entry. */
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+
+			'4'  => 'support@gravityview.co',
+			'16' => 'Contact us if you have any questions.',
+		) );
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
+		/** Unapproved entry. */
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+
+			'4'  => 'support@gravityview.co',
+			'16' => 'Contact us if you have any questions.',
+		) );
+
+		$_GET = array(
+			'filter_4'  => 'support',
+			'filter_16' => 'support', // In mode "any" this is ignored
+		);
+
+		$this->assertEquals( 1, $view->get_entries()->count() );
+	}
 }
