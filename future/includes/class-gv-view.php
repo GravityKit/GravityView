@@ -810,10 +810,24 @@ class View implements \ArrayAccess {
 	public function get_entries( $request = null ) {
 		$entries = new \GV\Entry_Collection();
 		if ( $this->form ) {
+			$parameters = $this->settings->as_atts();
+
+			/**
+			 * Remove multiple sorting before calling legacy filters.
+			 * This allows us to fake it till we make it.
+			 */
+			if ( ! empty( $parameters['sort_field'] ) && is_array( $parameters['sort_field'] ) ) {
+				$has_multisort = true;
+				$parameters['sort_field'] = reset( $parameters['sort_field'] );
+				if ( ! empty( $parameters['sort_direction'] ) && is_array( $parameters['sort_direction'] ) ) {
+					$parameters['sort_direction'] = reset( $parameters['sort_direction'] );
+				}
+			}
+
 			/**
 			 * @todo: Stop using _frontend and use something like $request->get_search_criteria() instead
 			 */
-			$parameters = \GravityView_frontend::get_view_entries_parameters( $this->settings->as_atts(), $this->form->ID );
+			$parameters = \GravityView_frontend::get_view_entries_parameters( $parameters, $this->form->ID );
 			$parameters['context_view_id'] = $this->ID;
 			$parameters = \GVCommon::calculate_get_entries_criteria( $parameters, $this->form->ID );
 
@@ -850,6 +864,37 @@ class View implements \ArrayAccess {
 				 * New \GF_Query stuff :)
 				 */
 				$query = new \GF_Query( $this->form->ID, $parameters['search_criteria'], $parameters['sorting'] );
+
+				/**
+				 * Apply multisort.
+				 */
+				if ( ! empty( $has_multisort ) ) {
+					$atts = $this->settings->as_atts();
+
+					$sort_field_ids = \GV\Utils::_GET( 'sort', \GV\Utils::get( $atts, 'sort_field', array() ) );
+					$sort_directions = \GV\Utils::_GET( 'dir', \GV\Utils::get( $atts, 'sort_direction', array() ) );
+
+					$skip_first = false;
+
+					foreach ( $sort_field_ids as $key => $sort_field_id ) {
+						if ( ! $skip_first ) {
+							$skip_first = true; // Skip the first one, it's already in the query
+							continue;
+						}
+
+						$sort_field_id = \GravityView_frontend::_override_sorting_id_by_field_type( $sort_field_id, $this->form->ID );
+						$sort_direction = \GV\Utils::get( $sort_directions, $key, 'ASC' );
+
+						if ( ! empty( $sort_field_id ) ) {
+							$order = new \GF_Query_Column( $sort_field_id, $this->form->ID );
+							if ( \GVCommon::is_field_numeric( $this->form->ID, $sort_field_id ) ) {
+								$order = \GF_Query_Call::CAST( $order, GF_Query::TYPE_SIGNED );
+							}
+
+							$query->order( $order, $sort_direction );
+						}
+					}
+				}
 
 				$query->limit( $parameters['paging']['page_size'] )
 					->offset( ( ( $page - 1 ) * $parameters['paging']['page_size'] ) + $this->settings->get( 'offset' ) );
