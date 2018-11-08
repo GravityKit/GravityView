@@ -832,7 +832,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/edit_entry/form_fields', function( $fields, $edit_fields, $form, $view_id ) {
 			unset( $fields[0] ); /** The first text field is now hidden. */
-			return $fields;
+			return array_values( $fields );
 		}, 10, 4 );
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
@@ -1318,7 +1318,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
 			unset( $fields[2] ); // Hide the total field
-			return $fields;
+			return array_values( $fields );
 		} );
 
 		$_POST = array(
@@ -1338,7 +1338,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
 			unset( $fields[1] ); // Hide the second field
 			unset( $fields[2] ); // Hide the total field
-			return $fields;
+			return array_values( $fields );
 		} );
 
 		$_POST = array(
@@ -1356,7 +1356,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
 			unset( $fields[0] ); // Hide the first field
-			return $fields;
+			return array_values( $fields );
 		} );
 
 		$_POST = array(
@@ -1385,6 +1385,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'calculations.json' );
 
 		unset( $form['fields'][5] ); // Remove the calculation product
+		$form['fields'] = array_values( $form['fields'] );
 		\GFAPI::update_form( $form );
 
 		$entry = $this->factory->entry->create_and_get( array(
@@ -1445,7 +1446,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
 			unset( $fields[4] ); // Hide the $12 one
 			unset( $fields[7] ); // Hide the total
-			return $fields;
+			return array_values( $fields );
 		} );
 
 		$_POST = array(
@@ -1558,7 +1559,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			unset( $fields[2] ); // Hide the calculation number
 			unset( $fields[4] ); // Hide the $12 one
 			unset( $fields[6] ); // Hide the total
-			return $fields;
+			return array_values( $fields );
 		} );
 
 		$_POST = array(
