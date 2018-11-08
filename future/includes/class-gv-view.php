@@ -871,6 +871,8 @@ class View implements \ArrayAccess {
 				 */
 				do_action_ref_array( 'gravityview/view/query', array( &$query, $this, $request ) );
 
+				gravityview()->log->debug( 'GF_Query parameters: ', array( 'data' => Utils::gf_query_debug( $query ) ) );
+
 				/**
 				 * Map from Gravity Forms entries arrays to an Entry_Collection.
 				 */
