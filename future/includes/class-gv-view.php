@@ -888,7 +888,7 @@ class View implements \ArrayAccess {
 						if ( ! empty( $sort_field_id ) ) {
 							$order = new \GF_Query_Column( $sort_field_id, $this->form->ID );
 							if ( \GVCommon::is_field_numeric( $this->form->ID, $sort_field_id ) ) {
-								$order = \GF_Query_Call::CAST( $order, GF_Query::TYPE_SIGNED );
+								$order = \GF_Query_Call::CAST( $order, defined( 'GF_Query::TYPE_DECIMAL' ) ? GF_Query::TYPE_DECIMAL : GF_Query::TYPE_SIGNED );
 							}
 
 							$query->order( $order, $sort_direction );
