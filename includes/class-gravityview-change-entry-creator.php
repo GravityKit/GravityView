@@ -63,7 +63,7 @@ class GravityView_Change_Entry_Creator {
     	// Update the entry. The `false` prevents checking Akismet; `true` disables the user updated hook from firing
     	$result = RGFormsModel::update_entry_property( (int) $entry['id'], 'created_by', (int) $user_id, false, true );
 
-    	if( empty( $result ) ) {
+    	if ( false === $result ) {
     		$status = __('Error', 'gravityview');
     		global $wpdb;
 		    $note = sprintf( '%s: Failed to assign User ID #%d as the entry creator (Last database error: "%s")', $status, $user_id, $wpdb->last_error );

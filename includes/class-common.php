@@ -192,7 +192,12 @@ class GVCommon {
 
 			$has_transaction_data = \GV\Utils::get( $entry, $meta, false );
 
-			if( ! empty( $has_transaction_data ) ) {
+			if ( is_numeric( $has_transaction_data ) && ( ! floatval( $has_transaction_data ) > 0 ) ) {
+				$has_transaction_data = false;
+				continue;
+			}
+
+			if ( ! empty( $has_transaction_data ) ) {
 				break;
 			}
 		}

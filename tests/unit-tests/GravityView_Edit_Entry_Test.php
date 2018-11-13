@@ -493,6 +493,21 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			GravityView_Edit_Entry::get_nonce_key( $view->ID, $form['id'], $entry['id'] )
 		);
 
+		if ( ! empty( $_POST ) ) {
+			$state = array();
+			foreach ( $entry as $key => $value ) {
+				if ( is_numeric( $key ) ) {
+					$state[ 'input_' . str_replace( '.', '_', $key ) ] = $value;
+				}
+			}
+
+			$_POST += array(
+				'lid' => $entry['id'],
+				'is_submit_' . $form['id'] => true,
+				'state_' . $form['id'] => GFFormDisplay::get_state( $form, $state ),
+			);
+		}
+
 		/** Render */
 		ob_start() && $render->init( $data );
 		$rendered_form = ob_get_clean();
@@ -603,9 +618,10 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		ob_start() && $render->init( $data ); ob_get_clean();
 
 		/** Great, now how about some saving? The default form. Although we should be testing specific forms as well. */
-		$_POST = array();
-		$_POST['lid'] = $entry['id'];
-		$_POST['is_submit_' . $form['id']] = true;
+		$_POST = array(
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+		);
 		foreach ( $form['fields'] as $field ) {
 			/** Emulate a $_POST */
 			foreach ( $field->inputs ? : array( array( 'id' => $field->id ) ) as $input ) {
@@ -657,10 +673,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		wp_set_current_user( $administrator );
 
 		$_POST = array(
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'input_1' => 'we changed it',
 			'input_2' => 102,
 		);
@@ -701,10 +713,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		/** Try saving a change, but no touching the upload field. */
 		$_POST = array(
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'gform_uploaded_files' => json_encode( array( 'input_1' => $entry['1'] ) ),
 			'input_2' => '40',
 			'input_3' => '',
@@ -717,10 +725,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		wp_set_current_user( $administrator );
 
 		$_POST = array(
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'gform_uploaded_files' => json_encode( array( 'input_1' => $entry['1'] ) ),
 			'input_2' => '29',
 			'input_3' => '',
@@ -796,10 +800,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		/** Let's get failing... */
 
 		$post = array(
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'input_1' => 'we changed it',
 			'input_2' => 102310,
 		);
@@ -832,7 +832,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/edit_entry/form_fields', function( $fields, $edit_fields, $form, $view_id ) {
 			unset( $fields[0] ); /** The first text field is now hidden. */
-			return $fields;
+			return array_values( $fields );
 		}, 10, 4 );
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
@@ -894,9 +894,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		/** Try saving a change, but not touching the image upload field. */
 		$_POST = array(
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
 			'input_1' => $filename,
 			'input_2' => 'wut',
 			'input_1_1' => 'this is a title',
@@ -1210,10 +1207,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		// Edit the entry
 		$_POST = array(
-			'lid' => $entry->ID,
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'input_1' => 'this is two',
 		);
 		$this->_emulate_render( $form, $view, $entry->as_entry() );
@@ -1226,10 +1219,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		// Edit the entry
 		$_POST = array(
-			'lid' => $entry->ID,
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'input_1' => 'this is three',
 		);
 		$this->_emulate_render( $form, $view, $entry->as_entry() );
@@ -1246,10 +1235,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		// Edit the entry (by admin)
 		$_POST = array(
-			'lid' => $entry->ID,
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'input_1' => 'this is four',
 		);
 		$this->_emulate_render( $form, $view, $entry->as_entry() );
@@ -1308,6 +1293,302 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 		$this->assertContains( "value='Much Better' checked='checked'", $output );
 		$this->assertNotContains( "value='Much Worse' checked='checked'", $output );
+
+		$this->_reset_context();
+	}
+
+	public function test_simple_calculations() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$form = $this->factory->form->import_and_get( 'calculations.json' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'status' => 'active',
+			'form_id' => $form['id'],
+			'1' => 2,
+			'2' => 3,
+			'3' => 5,
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
+			unset( $fields[2] ); // Hide the total field
+			return array_values( $fields );
+		} );
+
+		$_POST = array(
+			'input_1' => '5',
+			'input_2' => '3',
+		);
+
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( '5', $entry['1'] );
+		$this->assertEquals( '3', $entry['2'] );
+		$this->assertEquals( '8', $entry['3'] );
+
+		$this->_reset_context();
+
+		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
+			unset( $fields[1] ); // Hide the second field
+			unset( $fields[2] ); // Hide the total field
+			return array_values( $fields );
+		} );
+
+		$_POST = array(
+			'input_1' => '7',
+		);
+
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( '7', $entry['1'] );
+		$this->assertEquals( '3', $entry['2'] );
+		$this->assertEquals( '10', $entry['3'] );
+
+		$this->_reset_context();
+
+		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
+			unset( $fields[0] ); // Hide the first field
+			return array_values( $fields );
+		} );
+
+		$_POST = array(
+			'input_1' => '0', // Test security
+			'input_2' => '4',
+			'input_3' => '-1', // Test security
+		);
+
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( '7', $entry['1'] );
+		$this->assertEquals( '4', $entry['2'] );
+		$this->assertEquals( '11', $entry['3'] );
+
+		$this->_reset_context();
+	}
+
+	public function test_simple_product_calculations() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'calculations.json' );
+
+		unset( $form['fields'][5] ); // Remove the calculation product
+		$form['fields'] = array_values( $form['fields'] );
+		\GFAPI::update_form( $form );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'status' => 'active',
+			'form_id' => $form['id'],
+
+			// No transaction data
+			'payment_status' => '',
+			'payment_date'   => '',
+			'transaction_id' => '',
+			'payment_amount' => '',
+			'payment_method' => '',
+
+			'4.1' => 'A',
+			'4.2' => '$ 66.00',
+			'4.3' => '1',
+
+			'5.1' => 'B',
+			'5.2' => '$ 12.00',
+			'5.3' => '1',
+
+			'7' => '78',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+		$_POST = array(
+			'input_4_1' => $entry['4.1'],
+			'input_4_2' => $entry['4.2'],
+			'input_4_3' => '5',
+
+			'input_5_1' => $entry['5.1'],
+			'input_5_2' => $entry['5.2'],
+			'input_5_3' => $entry['5.3'],
+
+			'input_7' => $entry['7'],
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'A', $entry['4.1'] );
+		$this->assertEquals( 'B', $entry['5.1'] );
+
+		$this->assertEquals( '$ 66.00', $entry['4.2'] );
+		$this->assertEquals( '$ 12.00', $entry['5.2'] );
+
+		$this->assertEquals( '5', $entry['4.3'] );
+		$this->assertEquals( '1', $entry['5.3'] );
+
+		$this->assertEquals( '342', $entry['7'] );
+
+		$this->_reset_context();
+
+		wp_set_current_user( $administrator );
+
+		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
+			unset( $fields[4] ); // Hide the $12 one
+			unset( $fields[7] ); // Hide the total
+			return array_values( $fields );
+		} );
+
+		$_POST = array(
+			'input_4_1' => $entry['4.1'],
+			'input_4_2' => $entry['4.2'],
+			'input_4_3' => '7',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'A', $entry['4.1'] );
+		$this->assertEquals( 'B', $entry['5.1'] );
+
+		$this->assertEquals( '$ 66.00', $entry['4.2'] );
+		$this->assertEquals( '$ 12.00', $entry['5.2'] );
+
+		$this->assertEquals( '7', $entry['4.3'] );
+		$this->assertEquals( '1', $entry['5.3'] );
+
+		$this->assertEquals( '474', $entry['7'] );
+
+		$this->_reset_context();
+	}
+
+	public function test_product_calculations_with_formula() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'calculations.json' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'status' => 'active',
+			'form_id' => $form['id'],
+
+			// No transaction data
+			'payment_status' => '',
+			'payment_date'   => '',
+			'transaction_id' => '',
+			'payment_amount' => '',
+			'payment_method' => '',
+
+			'1' => '3',
+			'2' => '',
+			'3' => '3',
+
+			'4.1' => 'A',
+			'4.2' => '$ 66.00',
+			'4.3' => '1',
+
+			'5.1' => 'B',
+			'5.2' => '$ 12.00',
+			'5.3' => '1',
+
+			'6.1' => 'C',
+			'6.2' => '$ 36.00',
+			'6.3' => '3',
+
+			'7' => '186',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+		$_POST = array(
+			'input_1' => '5',
+			'input_2' => $entry['2'],
+			'input_3' => $entry['3'],
+
+			'input_4_1' => $entry['4.1'],
+			'input_4_2' => $entry['4.2'],
+			'input_4_3' => $entry['4.3'],
+
+			'input_5_1' => $entry['5.1'],
+			'input_5_2' => $entry['5.2'],
+			'input_5_3' => $entry['5.3'],
+
+			'input_6_1' => $entry['6.1'],
+			'input_6_2' => $entry['6.2'],
+			'input_6_3' => $entry['6.3'],
+
+			'input_7' => $entry['7'],
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'A', $entry['4.1'] );
+		$this->assertEquals( 'B', $entry['5.1'] );
+		$this->assertEquals( 'C', $entry['6.1'] );
+
+		$this->assertEquals( '$ 66.00', $entry['4.2'] );
+		$this->assertEquals( '$ 12.00', $entry['5.2'] );
+		$this->assertEquals( '$60.00', $entry['6.2'] ); // Lol, GF recalculation removes the space :)
+
+		$this->assertEquals( '1', $entry['4.3'] );
+		$this->assertEquals( '1', $entry['5.3'] );
+		$this->assertEquals( '3', $entry['6.3'] );
+
+		$this->assertEquals( '258', $entry['7'] );
+
+		$this->_reset_context();
+
+		wp_set_current_user( $administrator );
+
+		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
+			unset( $fields[1] ); // Hide the second number
+			unset( $fields[2] ); // Hide the calculation number
+			unset( $fields[4] ); // Hide the $12 one
+			unset( $fields[6] ); // Hide the total
+			return array_values( $fields );
+		} );
+
+		$_POST = array(
+			'input_1' => '9',
+
+			'input_4_1' => $entry['4.1'],
+			'input_4_2' => $entry['4.2'],
+			'input_4_3' => '7',
+
+			'input_6_1' => $entry['6.1'],
+			'input_6_2' => $entry['6.2'],
+			'input_6_3' => '9',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'A', $entry['4.1'] );
+		$this->assertEquals( 'B', $entry['5.1'] );
+		$this->assertEquals( 'C', $entry['6.1'] );
+
+		$this->assertEquals( '$ 66.00', $entry['4.2'] );
+		$this->assertEquals( '$ 12.00', $entry['5.2'] );
+		$this->assertEquals( '$108.00', $entry['6.2'] );
+
+		$this->assertEquals( '7', $entry['4.3'] );
+		$this->assertEquals( '1', $entry['5.3'] );
+		$this->assertEquals( '9', $entry['6.3'] );
+
+		$this->assertEquals( '1446', $entry['7'] );
 
 		$this->_reset_context();
 	}

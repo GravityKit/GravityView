@@ -536,10 +536,13 @@ class GravityView_Edit_Entry_Render {
 			}
 		}
 
+		$form['fields'] = array_values( $form['fields'] );
+
 		return $form;
 	}
 
 	private function update_calculation_fields() {
+		global $wpdb;
 
 		$form = self::$original_form;
 		$update = false;
@@ -547,30 +550,29 @@ class GravityView_Edit_Entry_Render {
 		// get the most up to date entry values
 		$entry = GFAPI::get_entry( $this->entry['id'] );
 
-		if( !empty( $this->fields_with_calculation ) ) {
-			$update = true;
-			foreach ( $this->fields_with_calculation as $calc_field ) {
-				$inputs = $calc_field->get_entry_inputs();
-				if ( is_array( $inputs ) ) {
-				    foreach ( $inputs as $input ) {
-				        $input_name = 'input_' . str_replace( '.', '_', $input['id'] );
-				        $entry[ strval( $input['id'] ) ] = RGFormsModel::prepare_value( $form, $calc_field, '', $input_name, $entry['id'], $entry );
-				    }
-				} else {
-				    $input_name = 'input_' . str_replace( '.', '_', $calc_field->id);
-				    $entry[ strval( $calc_field->id ) ] = RGFormsModel::prepare_value( $form, $calc_field, '', $input_name, $entry['id'], $entry );
-				}
-			}
+		if ( version_compare( GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) && method_exists( 'GFFormsModel', 'get_entry_meta_table_name' ) ) {
+			$entry_meta_table = GFFormsModel::get_entry_meta_table_name();
+			$current_fields = $wpdb->get_results( $wpdb->prepare( "SELECT id, meta_key FROM $entry_meta_table WHERE entry_id=%d", $entry['id'] ) );
+		} else {
+			$lead_detail_table = GFFormsModel::get_lead_details_table_name();
+			$current_fields = $wpdb->get_results( $wpdb->prepare( "SELECT id, field_number FROM $lead_detail_table WHERE lead_id=%d", $entry['id'] ) );
 		}
 
-		if ( $update ) {
+		if ( ! empty( $this->fields_with_calculation ) ) {
+			$update = true;
+			foreach ( $this->fields_with_calculation as $field ) {
+				$inputs = $field->get_entry_inputs();
+				if ( is_array( $inputs ) ) {
+				    foreach ( $inputs as $input ) {
+						GFFormsModel::save_input( $form, $field, $entry, $current_fields, $input['id'] );
+				    }
+				} else {
+					GFFormsModel::save_input( $form, $field, $entry, $current_fields, $field->id );
+				}
+			}
 
-			$return_entry = GFAPI::update_entry( $entry );
-
-			if( is_wp_error( $return_entry ) ) {
-				gravityview()->log->error( 'Updating the entry calculation fields failed', array( 'data' => $return_entry ) );
-			} else {
-				gravityview()->log->debug( 'Updating the entry calculation fields succeeded' );
+			if ( method_exists( 'GFFormsModel', 'commit_batch_field_operations' ) ) {
+				GFFormsModel::commit_batch_field_operations();
 			}
 		}
 	}
@@ -974,7 +976,7 @@ class GravityView_Edit_Entry_Render {
 
 		if ( \GV\Utils::_POST( 'action' ) === 'update' ) {
 
-			$back_link = esc_url( remove_query_arg( array( 'page', 'view', 'edit' ) ) );
+			$back_link = remove_query_arg( array( 'page', 'view', 'edit' ) );
 
 			if( ! $this->is_valid ){
 
@@ -985,7 +987,7 @@ class GravityView_Edit_Entry_Render {
 				echo GVCommon::generate_notice( $message , 'gv-error' );
 
 			} else {
-				$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'. $back_link .'">', '</a>' );
+				$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'. esc_url( $back_link ) .'">', '</a>' );
 
 				/**
 				 * @filter `gravityview/edit_entry/success` Modify the edit entry success message (including the anchor link)
@@ -1667,7 +1669,7 @@ class GravityView_Edit_Entry_Render {
 
 		// The Edit tab has not been configured, so we return all fields by default.
 		if( empty( $configured_fields ) ) {
-			return $fields;
+			return array_values( $fields );
 		}
 
 		// The edit tab has been configured, so we loop through to configured settings
@@ -1750,7 +1752,7 @@ class GravityView_Edit_Entry_Render {
 				    unset( $fields[ $k ] );
 				}
 			}
-			return $fields;
+			return array_values( $fields );
 		}
 
 	    foreach( $fields as &$field ) {

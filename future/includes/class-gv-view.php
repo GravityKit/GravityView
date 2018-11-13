@@ -828,6 +828,23 @@ class View implements \ArrayAccess {
 			$page = Utils::get( $parameters['paging'], 'current_page' ) ?
 				: ( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
 
+			/**
+			 * Cleanup duplicate field_filter parameters to simplify the query.
+			 */
+			$unique_field_filters = array();
+			foreach ( $parameters['search_criteria']['field_filters'] as $key => $filter ) {
+				if ( 'mode' === $key ) {
+					$unique_field_filters['mode'] = $filter;
+				} else if ( ! in_array( $filter, $unique_field_filters ) ) {
+					$unique_field_filters[] = $filter;
+				}
+			}
+			$parameters['search_criteria']['field_filters'] = $unique_field_filters;
+
+			if ( ! empty( $parameters['search_criteria']['field_filters'] ) ) {
+				gravityview()->log->notice( 'search_criteria/field_filters is not empty, third-party code may be using legacy search_criteria filters.' );
+			}
+
 			if ( gravityview()->plugin->supports( Plugin::FEATURE_GFQUERY ) ) {
 				/**
 				 * New \GF_Query stuff :)
@@ -853,6 +870,8 @@ class View implements \ArrayAccess {
 				 * @param \GV\Request $request The request object
 				 */
 				do_action_ref_array( 'gravityview/view/query', array( &$query, $this, $request ) );
+
+				gravityview()->log->debug( 'GF_Query parameters: ', array( 'data' => Utils::gf_query_debug( $query ) ) );
 
 				/**
 				 * Map from Gravity Forms entries arrays to an Entry_Collection.

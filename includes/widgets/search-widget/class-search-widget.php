@@ -499,10 +499,23 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	/**
 	 * Calculate the search criteria to filter entries
-	 * @param  array $search_criteria
+	 * @param array $search_criteria The search criteria
+	 * @param int $form_id The form ID
+	 * @param array $args Some args
+	 *
+	 * @param bool $force_search_criteria Whether to suppress GF_Query filter, internally used in self::gf_query_filter
+	 *
 	 * @return array
 	 */
-	public function filter_entries( $search_criteria, $form_id = null, $args = array() ) {
+	public function filter_entries( $search_criteria, $form_id = null, $args = array(), $force_search_criteria = false ) {
+		if ( ! $force_search_criteria && gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			/**
+			 * If GF_Query is available, we can construct custom conditions with nested
+			 * booleans on the query, giving up the old ways of flat search_criteria field_filters.
+			 */
+			add_action( 'gravityview/view/query', array( $this, 'gf_query_filter' ), 10, 3 );
+			return $search_criteria; // Return the original criteria, GF_Query modification kicks in later
+		}
 
 		if( 'post' === $this->search_method ) {
 			$get = $_POST;
@@ -685,6 +698,61 @@ class GravityView_Widget_Search extends \GV\Widget {
 		unset( $get );
 
 		return $search_criteria;
+	}
+
+	/**
+	 * Filters the \GF_Query with advanced logic.
+	 *
+	 * Dropin for the legacy flat filters when \GF_Query is available.
+	 *
+	 * @param \GF_Query $query The current query object reference
+	 * @param \GV\View $this The current view object
+	 * @param \GV\Request $request The request object
+	 */
+	public function gf_query_filter( &$query, $view, $request ) {
+		/**
+		 * This is a shortcut to get all the needed search criteria.
+		 * We feed these into an new GF_Query and tack them onto the current object.
+		 */
+		$search_criteria = $this->filter_entries( array(), null, array( 'id' => $view->ID ), true /** force search_criteria */ );
+
+		if ( empty( $search_criteria['field_filters'] ) ) {
+			return;
+		}
+
+		foreach ( $search_criteria['field_filters'] as &$filter ) {
+			if ( ! is_array( $filter ) ) {
+				continue;
+			}
+
+			// By default, we want searches to be wildcard for each field.
+			$filter['operator'] = empty( $filter['operator'] ) ? 'contains' : $filter['operator'];
+
+			/**
+			 * @filter `gravityview_search_operator` Modify the search operator for the field (contains, is, isnot, etc)
+			 * @param string $operator Existing search operator
+			 * @param array $filter array with `key`, `value`, `operator`, `type` keys
+			 */
+			$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter );
+		}
+
+		/**
+		 * Parse the filter criteria to generate the needed
+		 * WHERE clauses. This is a trick to not write our own generation
+		 * code by reusing what's inside GF_Query already.
+		 */
+		$_tmp_query       = new GF_Query( $view->form->ID, $search_criteria );
+		$_tmp_query_parts = $_tmp_query->_introspect();
+
+		/**
+		 * Grab the current clauses. We'll be combining them shortly.
+		 */
+		$query_parts      = $query->_introspect();
+
+		/**
+		 * Combine the parts as a new WHERE clause.
+		 */
+		$query->where( GF_Query_Condition::_and( $query_parts['where'], $_tmp_query_parts['where'] ) );
 	}
 
 	/**

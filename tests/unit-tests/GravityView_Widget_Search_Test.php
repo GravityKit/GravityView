@@ -30,7 +30,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	private function _test_word_splitting() {
 		$_GET = array();
 
-		$this->assertEquals( array('original value'), $this->widget->filter_entries( array('original value') ), 'when $_GET is empty, $search_criteria should be returned' );
+		$this->assertEquals( array('original value'), $this->widget->filter_entries( array('original value'), null, array(), true ), 'when $_GET is empty, $search_criteria should be returned' );
 
 		$view = $this->factory->view->create_and_get( array(
 			'widgets' => array( '_' => array(
@@ -62,7 +62,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'gv_search' => ' with  spaces'
 		);
 		add_filter( 'gravityview/search-all-split-words', '__return_false' );
-		$this->assertEquals( $search_criteria_single, $this->widget->filter_entries( array(), null, $args ) );
+		$this->assertEquals( $search_criteria_single, $this->widget->filter_entries( array(), null, $args, true ) );
 		remove_filter( 'gravityview/search-all-split-words', '__return_false' );
 
 		$search_criteria_split = array(
@@ -84,12 +84,12 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$_GET = array(
 			'gv_search' => ' with  spaces'
 		);
-		$this->assertEquals( $search_criteria_split, $this->widget->filter_entries( array(), null, $args ) );
+		$this->assertEquals( $search_criteria_split, $this->widget->filter_entries( array(), null, $args, true ) );
 
 		$_GET = array(
 			'gv_search' => '%20with%20%20spaces'
 		);
-		$this->assertEquals( $search_criteria_split, $this->widget->filter_entries( array(), null, $args ) );
+		$this->assertEquals( $search_criteria_split, $this->widget->filter_entries( array(), null, $args, true ) );
 
 		$_GET = array(
 			'gv_search' => '%20with%20%20spaces'
@@ -99,14 +99,14 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$search_criteria_split_mode['field_filters']['mode'] = 'all';
 
 		add_filter( 'gravityview/search/mode', function() { return 'all'; } );
-		$this->assertEquals( $search_criteria_split_mode, $this->widget->filter_entries( array(), null, $args ) );
+		$this->assertEquals( $search_criteria_split_mode, $this->widget->filter_entries( array(), null, $args, true ) );
 		remove_all_filters( 'gravityview/search/mode' );
 
 		$_GET = array(
 			'gv_search' => 'with%20%20spaces',
 			'mode' => 'all',
 		);
-		$this->assertEquals( $search_criteria_split_mode, $this->widget->filter_entries( array(), null, $args ) );
+		$this->assertEquals( $search_criteria_split_mode, $this->widget->filter_entries( array(), null, $args, true ) );
 
 
 		// Test ?gv_id param
@@ -127,7 +127,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'operator' => '=',
 		);
 
-		$this->assertEquals( $search_criteria_with_more_params, $this->widget->filter_entries( array(), null, $args ) );
+		$this->assertEquals( $search_criteria_with_more_params, $this->widget->filter_entries( array(), null, $args, true ) );
 
 		$start = '1997-03-28';
 		$end = '2017-10-03';
@@ -147,7 +147,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 				'mode' => 'any',
 			),
 		);
-		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, $args ) );
+		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, $args, true ) );
 
 		$_GET = array();
 
@@ -184,7 +184,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			),
 		);
 
-		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
+		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
 		/**
 		 * gv_search query paramter.
@@ -222,7 +222,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			),
 		);
 
-		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
+		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
 		/**
 		 * gv_start, gv_end query parameters.
@@ -256,7 +256,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'end_date' => '2017-12-31 23:59:59',
 		);
 
-		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
+		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
 		/**
 		 * gv_id query parameter.
@@ -285,7 +285,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			),
 		);
 
-		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
+		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
 		/**
 		 * gv_by query parameter.
@@ -319,7 +319,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			),
 		);
 
-		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
+		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
 		/**
 		 * gv_by query parameter.
@@ -359,7 +359,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			),
 		);
 
-		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
+		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
 		/**
 		 * filter_* query parameters.
@@ -388,7 +388,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			),
 		);
 
-		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
+		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
 		$_GET = array();
 
@@ -428,7 +428,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 				'mode' => 'any',
 			),
 		);
-		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
+		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
 		remove_filter( 'pre_option_timezone_string', $callback );
 
@@ -443,7 +443,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 				'mode' => 'any',
 			),
 		);
-		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
+		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
 		remove_filter( 'pre_option_timezone_string', $callback );
 
@@ -482,7 +482,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/widgets/search/datepicker/format', function() use ( $name ) { return $name; } );
 
-		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
+		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
 		remove_all_filters( 'gravityview/widgets/search/datepicker/format' );
 
@@ -550,7 +550,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/widgets/search/datepicker/format', function() use ( $name ) { return $name; } );
 
-		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ) ) );
+		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
 		remove_all_filters( 'gravityview/widgets/search/datepicker/format' );
 
@@ -570,5 +570,79 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			array( 'dd-mm-yyyy', array( 'filter_3' => '01-02-2018' ), 'dmy_dash' ),
 			array( 'dd.mm.yyyy', array( 'filter_3' => '01.02.2018' ), 'dmy_dot' ),
 		);
+	}
+
+	public function test_search_is_approved_gf_query() {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'show_only_approved' => true,
+			),
+			'fields' => array(
+				'directory_table-columns' => array( wp_generate_password( 4, false ) => array(
+						'id' => '4',
+						'label' => 'Email',
+					),
+					wp_generate_password( 16, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"4","input":"input_text"},{"field":"16","input":"input_text"}]',
+						'search_mode' => 'any',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		/** Approved entry. */
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+
+			'4'  => 'support@gravityview.co',
+			'16' => 'Contact us if you have any questions.',
+		) );
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
+		/** Approved sentinel. */
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+
+			'4'  => 'gravityview.co',
+			'16' => 'Our website.',
+		) );
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
+		/** Unapproved entry. */
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+
+			'4'  => 'support@gravityview.co',
+			'16' => 'Contact us if you have any questions.',
+		) );
+
+		$_GET = array(
+			'filter_4'  => 'support',
+			'filter_16' => 'support', // In mode "any" this should be ignored
+		);
+
+		$this->assertEquals( 1, $view->get_entries()->count() );
+
+		$_GET = array();
 	}
 }
