@@ -325,6 +325,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 			),
 		);
 
+		if ( gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			$custom_fields['is_approved'] = array(
+				'text' => esc_html__( 'Is Approved', 'gravityview' ),
+				'type' => 'boolean',
+			);
+		}
+
 		foreach( $custom_fields as $custom_field_key => $custom_field ) {
 			$output .= sprintf( '<option value="%s" %s data-inputtypes="%s" data-placeholder="%s">%s</option>', $custom_field_key, selected( $custom_field_key, $current, false ), $custom_field['type'], self::get_field_label( array('field' => $custom_field_key ) ), $custom_field['text'] );
 		}
@@ -720,13 +727,46 @@ class GravityView_Widget_Search extends \GV\Widget {
 			return;
 		}
 
+		$extra_conditions = array();
+
 		foreach ( $search_criteria['field_filters'] as &$filter ) {
 			if ( ! is_array( $filter ) ) {
 				continue;
 			}
 
+			// Construct a manual query for unapproved statuses
+			if ( 'is_approved' === $filter['key'] && in_array( \GravityView_Entry_Approval_Status::UNAPPROVED, $filter['value'] ) ) {
+				$_tmp_query       = new GF_Query( $view->form->ID, array(
+					'field_filters' => array(
+						array(
+							'operator' => 'in',
+							'key'      => 'is_approved',
+							'value'    => $filter['value'],
+						),
+						array(
+							'operator' => 'is',
+							'key'      => 'is_approved',
+							'value'    => '',
+						),
+						'mode' => 'any'
+					),
+				) );
+				$_tmp_query_parts = $_tmp_query->_introspect();
+
+				$extra_conditions[] = $_tmp_query_parts['where'];
+
+				$filter = false;
+
+				continue;
+			}
+
 			// By default, we want searches to be wildcard for each field.
 			$filter['operator'] = empty( $filter['operator'] ) ? 'contains' : $filter['operator'];
+
+			// For multichoice, let's have an in (OR) search.
+			if ( is_array( $filter['value'] ) ) {
+				$filter['operator'] = 'in';
+			}
 
 			/**
 			 * @filter `gravityview_search_operator` Modify the search operator for the field (contains, is, isnot, etc)
@@ -735,6 +775,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 */
 			$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter );
 		}
+
+		$search_criteria['field_filters'] = array_filter( $search_criteria['field_filters'] );
 
 		/**
 		 * Parse the filter criteria to generate the needed
@@ -752,7 +794,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 		/**
 		 * Combine the parts as a new WHERE clause.
 		 */
-		$query->where( GF_Query_Condition::_and( $query_parts['where'], $_tmp_query_parts['where'] ) );
+		$where = call_user_func_array( '\GF_Query_Condition::_and', array_merge( array( $query_parts['where'], $_tmp_query_parts['where'] ), $extra_conditions ) );
+		$query->where( $where );
 	}
 
 	/**
@@ -1110,6 +1153,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$updated_field['value'] = $this->rgget_or_rgpost( 'gv_by' );
 					$updated_field['choices'] = self::get_created_by_choices();
 					break;
+				
+				case 'is_approved':
+					$updated_field['key'] = 'is_approved';
+					$updated_field['input'] = 'checkbox';
+					$updated_field['value'] = $this->rgget_or_rgpost( 'filter_is_approved' );
+					$updated_field['choices'] = self::get_is_approved_choices();
+					break;
 			}
 
 			$search_fields[ $k ] = $updated_field;
@@ -1319,6 +1369,25 @@ class GravityView_Widget_Search extends \GV\Widget {
 		return $choices;
 	}
 
+	/**
+	 * Calculate the search checkbox choices for approval status
+	 *
+	 * @since develop
+	 *
+	 * @return array Array of approval status choices (value = status, text = display name)
+	 */
+	private static function get_is_approved_choices() {
+
+		$choices = array();
+		foreach ( GravityView_Entry_Approval_Status::get_all() as $status ) {
+			$choices[] = array(
+				'value' => $status['value'],
+				'text' => $status['label'],
+			);
+		}
+
+		return $choices;
+	}
 
 	/**
 	 * Output the Clear Search Results button

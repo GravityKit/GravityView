@@ -645,4 +645,109 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$_GET = array();
 	}
+
+	/**
+	 * @dataProvider get_test_approval_status_search
+	 */
+	public function test_approval_status_search( $show_only_approved, $statuses, $counts ) {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array( wp_generate_password( 4, false ) => array(
+						'id' => '4',
+						'label' => 'Email',
+					),
+					wp_generate_password( 16, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'settings' => array(
+				'show_only_approved' => $show_only_approved,
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"is_approved","input":"checkbox"}]',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$did_unapproved_meta = false;
+
+		foreach ( array( 'approved', 'disapproved', 'unapproved' ) as $status ) {
+			foreach ( range( 1, $statuses[ $status ] ) as $_ ) {
+				$entry = $this->factory->entry->create_and_get( array(
+					'form_id' => $form['id'],
+					'status' => 'active',
+					'16' => wp_generate_password( 16, false ),
+				) );
+
+				if ( 'unapproved' === $status ) {
+					if ( ! $did_unapproved_meta ) { // Test both unapproved meta, and empty approval value meta
+						gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::UNAPPROVED );
+						$did_unapproved_meta = true;
+					}
+					continue;
+				}
+
+				gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, $status === 'approved' ? \GravityView_Entry_Approval_Status::APPROVED : \GravityView_Entry_Approval_Status::DISAPPROVED );
+			}
+		}
+
+		/** Show all. */
+		foreach ( $counts as $count ) {
+			$_GET = array(
+				'filter_is_approved' => $count['filter']
+			);
+			$this->assertEquals( $count['count'], $view->get_entries()->count() );
+		}
+
+		$_GET = array();
+	}
+
+	public function get_test_approval_status_search() {
+		return array(
+			array(
+				'show_only_approved' => false,
+				'statuses'           => array(
+					'unapproved'  => 2,
+					'approved'    => 5,
+					'disapproved' => 8,
+				),
+				'counts'      => array(
+					array( 'count' => 15, 'filter' => array() ),
+					array( 'count' => 2, 'filter' => array( \GravityView_Entry_Approval_Status::UNAPPROVED ) ),
+					array( 'count' => 5, 'filter' => array( \GravityView_Entry_Approval_Status::APPROVED ) ),
+					array( 'count' => 8, 'filter' => array( \GravityView_Entry_Approval_Status::DISAPPROVED ) ),
+					array( 'count' => 0, 'filter' => array( -1 ) ),
+				)
+			),
+			array(
+				'show_only_approved' => true,
+				'statuses'           => array(
+					'unapproved'  => 2,
+					'approved'    => 5,
+					'disapproved' => 8,
+				),
+				'counts'      => array(
+					array( 'count' => 5, 'filter' => array() ),
+					array( 'count' => 0, 'filter' => array( \GravityView_Entry_Approval_Status::UNAPPROVED ) ),
+					array( 'count' => 5, 'filter' => array( \GravityView_Entry_Approval_Status::APPROVED ) ),
+					array( 'count' => 0, 'filter' => array( \GravityView_Entry_Approval_Status::DISAPPROVED ) ),
+					array( 'count' => 0, 'filter' => array( -1 ) ),
+				)
+			),
+		);
+	}
 }
