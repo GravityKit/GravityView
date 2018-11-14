@@ -24,6 +24,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Added: Search entries by approval status.
+* Added: More flexible search by entry creator (added text, multicheckbox, multiselect controls).
+* Added: Entry creator in text mode now searches by email, login and name fields.
+* Added: `gravityview/widgets/search/created_by/user_meta_fields` filter for entry creator search.
+* Added: `gravityview/widgets/search/created_by/user_fields` filter for entry creator search.
 
 = 2.1.1 on October 26, 2018 =
 
