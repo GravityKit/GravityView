@@ -53,11 +53,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 				'label' => __( 'Show Clear button', 'gravityview' ),
 				'value' => false,
 			),
-			'show_totals' => array(
-				'type' => 'checkbox',
-				'label' => __( 'Show result totals', 'gravityview' ),
-				'value' => false,
-			),
 			'search_fields' => array(
 				'type' => 'hidden',
 				'label' => '',
@@ -1534,21 +1529,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 	public static function the_clear_search_button() {
 		if ( $this->search_clear ) {
 			$url = strtok( add_query_arg( array() ), '?' );
+
 			echo gravityview_get_link( $url, esc_html__( 'Clear', 'gravityview' ), 'class=button gv-search-clear' );
 
-		}
-	}
-
-	/**
-	 * Output the result totals.
-	 */
-	public static function show_totals() {
-		$gravityview_view = GravityView_View::getInstance();
-
-		if ( $gravityview_view->show_totals ) {
-			if ( gravityview()->request->is_search() ) {
-				printf( __( 'Found: %d results', 'gravityview' ), 0 );
-			}
 		}
 	}
 

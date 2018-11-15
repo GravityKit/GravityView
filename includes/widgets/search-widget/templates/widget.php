@@ -60,10 +60,6 @@ $has_inputs = false;
 
 	if ( $has_inputs ) {
 		$template->get_template_part( 'submit' );
-
-		if ( gravityview()->request->is_search() ) {
-			echo sprintf( '<div class="gv-search-box gv-search-results">%s</div>', sprintf( __( 'Matches found: %d', 'gravityview' ), $gravityview->entries->total() ) );
-		}
     }
 ?>
 </form>
