@@ -28,11 +28,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 	private $search_method = 'get';
 
 	public function __construct() {
+		self::$instance = &$this;
 
 		$this->widget_id = 'search_bar';
 		$this->widget_description = esc_html__( 'Search form for searching entries.', 'gravityview' );
-
-		self::$instance = &$this;
 
 		self::$file = plugin_dir_path( __FILE__ );
 
@@ -93,13 +92,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 			add_action( 'wp_ajax_gv_searchable_fields', array( 'GravityView_Widget_Search', 'get_searchable_fields' ) );
 		}
 
-		parent::__construct( esc_html__( 'Search Bar', 'gravityview' ), null, $default_values, $settings );
+		parent::__construct( esc_html__( 'Search Bar', 'gravityview' ), $this->widget_id, $default_values, $settings );
 
 		// calculate the search method (POST / GET)
 		$this->set_search_method();
 	}
 
 	/**
+	 * @deprecated Returns the latest instance of this Widget.
 	 * @return GravityView_Widget_Search
 	 */
 	public static function getInstance() {
@@ -1160,19 +1160,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 	}
 
 	/**
-	 * Renders the Search Widget
-	 * @param array $widget_args
-	 * @param string $content
-	 * @param string $context
-	 *
-	 * @return void
+	 * @inheritDoc
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
-		/** @var GravityView_View $gravityview_view */
-		$gravityview_view = GravityView_View::getInstance();
-
-		if ( empty( $gravityview_view ) ) {
-			gravityview()->log->debug( '$gravityview_view not instantiated yet.' );
+		if ( ! $context instanceof \GV\Template_Context ) {
+			gravityview()->log->debug( sprintf( '%s[render_frontend]: No context.', get_class( $this ) ) );
 			return;
 		}
 
@@ -1190,7 +1182,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$updated_field = $field;
 
-			$updated_field = $this->get_search_filter_details( $updated_field );
+			$updated_field = $this->get_search_filter_details( $updated_field, $context );
 
 			switch ( $field['field'] ) {
 
@@ -1243,33 +1235,62 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * @param \GV\Template_Context $context {@since 2.0}
 		 * @var array
 		 */
-		$gravityview_view->search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this, $widget_args, $context );
+		$this->search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this, $widget_args, $context );
 
-		$gravityview_view->search_layout = ! empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'horizontal';
-
-		/** @since 1.14 */
-		$gravityview_view->search_mode = ! empty( $widget_args['search_mode'] ) ? $widget_args['search_mode'] : 'any';
+		$this->search_layout = ! empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'horizontal';
+		$this->search_mode   = ! empty( $widget_args['search_mode'] ) ? $widget_args['search_mode'] : 'any';
 
 		$custom_class = ! empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
+		$this->search_class = self::get_search_class( $custom_class );
 
-		$gravityview_view->search_class = self::get_search_class( $custom_class );
+		$this->search_clear = ! empty( $widget_args['search_clear'] ) ? $widget_args['search_clear'] : false;
 
-		$gravityview_view->search_clear = ! empty( $widget_args['search_clear'] ) ? $widget_args['search_clear'] : false;
+		/**
+		 * @deprecated Set legacy state for old custom code that still uses it.
+		 */
+		$gravityview_view = GravityView_View::getInstance();
+		$gravityview_view->search_fields = $this->search_fields;
+		$gravityview_view->search_layout = $this->search_layout;
+		$gravityview_view->search_mode   = $this->search_mode;
+		$gravityview_view->search_class  = $this->search_class;
+		$gravityview_view->search_clear  = $this->search_clear;
 
 		if ( $this->has_date_field( $search_fields ) ) {
 			// enqueue datepicker stuff only if needed!
 			$this->enqueue_datepicker();
+
+			/**
+			 * @deprecated Set legacy state for old custom code that still uses it.
+			 */
+			$gravityview_view->datepicker_class = $this->datepicker_class;
 		}
 
 		$this->maybe_enqueue_flexibility();
 
-		$gravityview_view->render( 'widget', 'search', false );
+		$template = new class extends \GV\Template {
+			protected $filter_prefix = 'gravityview/widgets/search';
+			protected $theme_template_directory = 'gravityview/widgets/search';
+
+			public function __construct() {
+				$this->plugin_directory = gravityview()->plugin->dir();
+				$this->plugin_template_directory = 'includes/widgets/search-widget/templates/';
+			}
+		};
+
+		$template->push_template_data( $this, 'widget' );
+		$template->push_template_data( $template, 'template' );
+
+		$template->get_template_part( 'widget' );
+
+		$template->pop_template_data( 'template' );
+		$template->pop_template_data( 'widget' );
 	}
 
 	/**
 	 * Get the search class for a search form
 	 *
 	 * @since 1.5.4
+	 * @deprecated See search_class()
 	 *
 	 * @return string Sanitized CSS class for the search form
 	 */
@@ -1294,10 +1315,39 @@ class GravityView_Widget_Search extends \GV\Widget {
 		return gravityview_sanitize_html_class( $search_class );
 	}
 
+	/**
+	 * Get the search class for a search form
+	 *
+	 * @param \GV\Template_Context $context The context.
+	 * @param \GV\$context The context.
+	 *
+	 * @return string Sanitized CSS class for the search form
+	 */
+	public function search_class( $context, $custom_class = '' ) {
+		$search_class = 'gv-search-' . $this->search_layout;
+
+		if ( ! empty( $custom_class )  ) {
+			$search_class .= ' '.$custom_class;
+		}
+
+		/**
+		 * @filter `gravityview_search_class` Modify the CSS class for the search form
+		 * @param string $search_class The CSS class for the search form
+		 * @param \GV\Template_Context $context The context.
+		 * @param \GV\Widget $this The search widget.
+		 */
+		$search_class = apply_filters( 'gravityview_search_class', $search_class, $context, $this );
+
+		// Is there an active search being performed? Used by fe-views.js
+		$search_class .= gravityview()->request->is_search() ? ' gv-is-search' : '';
+
+		return gravityview_sanitize_html_class( $search_class );
+	}
 
 	/**
 	 * Calculate the search form action
 	 * @since 1.6
+	 * @deprecated See search_form_action()
 	 *
 	 * @return string
 	 */
@@ -1309,6 +1359,23 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$url = add_query_arg( array(), get_permalink( $post_id ) );
 
 		return esc_url( $url );
+	}
+
+	/**
+	 * Calculate the form action.
+	 *
+	 * @param \GV\Template_Context $context The context.
+	 *
+	 * @return string Unescaped.
+	 */
+	public function search_form_action( $context ) {
+		global $post;
+		if ( $post ) {
+			$base = get_permalink( $post->ID );
+		} else {
+			$base = get_permalink( $context->view->ID );
+		}
+		return $base;
 	}
 
 	/**
@@ -1372,11 +1439,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @param array $field
 	 * @return array
 	 */
-	private function get_search_filter_details( $field ) {
-
-		$gravityview_view = GravityView_View::getInstance();
-
-		$form = $gravityview_view->getForm();
+	private function get_search_filter_details( $field, $context ) {
+		$form = $context->view->form->form;
 
 		// for advanced field ids (eg, first name / last name )
 		$name = 'filter_' . str_replace( '.', '_', $field['field'] );
@@ -1459,13 +1523,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	/**
 	 * Output the Clear Search Results button
+	 * @deprecated Use inline in templates
 	 * @since 1.5.4
 	 */
 	public static function the_clear_search_button() {
-		$gravityview_view = GravityView_View::getInstance();
-
-		if ( $gravityview_view->search_clear ) {
-
+		if ( $this->search_clear ) {
 			$url = strtok( add_query_arg( array() ), '?' );
 
 			echo gravityview_get_link( $url, esc_html__( 'Clear', 'gravityview' ), 'class=button gv-search-clear' );
@@ -1587,8 +1649,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @return void
 	 */
 	public function enqueue_datepicker() {
-		$gravityview_view = GravityView_View::getInstance();
-
 		wp_enqueue_script( 'jquery-ui-datepicker' );
 
 		add_filter( 'gravityview_js_dependencies', array( $this, 'add_datepicker_js_dependency' ) );
@@ -1610,9 +1670,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * - `ymd_dash` (yyyy-mm-dd)
 		 * - `ymd_dot` (yyyy.mm.dd)
 		 */
-		$datepicker_class = apply_filters( 'gravityview_search_datepicker_class', "gv-datepicker datepicker " . $this->get_datepicker_format() );
-
-		$gravityview_view->datepicker_class = $datepicker_class;
+		$this->datepicker_class = apply_filters( 'gravityview_search_datepicker_class', "gv-datepicker datepicker " . $this->get_datepicker_format() );
 	}
 
 	/**

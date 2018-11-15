@@ -32,6 +32,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Edit entry on products with calculations voided labels and quantities.
 * Fixed: Major search and filtering any/all mode combination issues, especially with "only approved" mode, A-Z Filters, Featured Entries, Advanced Filters plugins.
 * Fixed: Support all documented date formats in all date field searches.
+* Major: Updated the Search Widget against the 2.0 core API. No more global state. Most filters now have a context to go along with.
 
 = 2.1.1 on October 26, 2018 =
 
