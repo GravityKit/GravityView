@@ -659,11 +659,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 		if ( ! empty( $get[ 'gv_by' ] ) && in_array( 'created_by', $searchable_fields ) ) {
 			$search_criteria['field_filters'][] = array(
 				'key' => 'created_by',
-				'value' => absint( $get['gv_by'] ),
+				'value' => $get['gv_by'],
 				'operator' => '=',
 			);
 		}
-
 
 		// Get search mode passed in URL
 		$mode = isset( $get['mode'] ) && in_array( $get['mode'], array( 'any', 'all' ) ) ?  $get['mode'] : 'any';
