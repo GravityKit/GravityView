@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Entry creator in text mode now searches by email, login and name fields.
 * Added: `gravityview/widgets/search/created_by/user_meta_fields` filter for entry creator search.
 * Added: `gravityview/widgets/search/created_by/user_fields` filter for entry creator search.
+* Fixed: Edit/single entry on home page did not work (404 not found).
 * Fixed: Stray Advanced Custom Fields editor at the bottom of View configuration pages.
 * Fixed: Edit entry on products with calculations voided labels and quantities.
 * Fixed: Major search and filtering any/all mode combination issues, especially with "only approved" mode, A-Z Filters, Featured Entries, Advanced Filters plugins.
