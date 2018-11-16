@@ -157,6 +157,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'boolean' => array( 'single_checkbox' ),
 			'select' => array( 'select', 'radio', 'link' ),
 			'multi' => array( 'select', 'multiselect', 'radio', 'checkbox', 'link' ),
+
+			// hybrids
+			'created_by' => array( 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ),
 		);
 
 		/**
@@ -317,13 +320,20 @@ class GravityView_Widget_Search extends \GV\Widget {
 			),
 			'created_by' => array(
 				'text' => esc_html__( 'Entry Creator', 'gravityview' ),
-				'type' => 'select',
+				'type' => 'created_by',
 			),
 			'is_starred' => array(
 				'text' => esc_html__( 'Is Starred', 'gravityview' ),
 				'type' => 'boolean',
 			),
 		);
+
+		if ( gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			$custom_fields['is_approved'] = array(
+				'text' => esc_html__( 'Is Approved', 'gravityview' ),
+				'type' => 'boolean',
+			);
+		}
 
 		foreach( $custom_fields as $custom_field_key => $custom_field ) {
 			$output .= sprintf( '<option value="%s" %s data-inputtypes="%s" data-placeholder="%s">%s</option>', $custom_field_key, selected( $custom_field_key, $current, false ), $custom_field['type'], self::get_field_label( array('field' => $custom_field_key ) ), $custom_field['text'] );
@@ -649,11 +659,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 		if ( ! empty( $get[ 'gv_by' ] ) && in_array( 'created_by', $searchable_fields ) ) {
 			$search_criteria['field_filters'][] = array(
 				'key' => 'created_by',
-				'value' => absint( $get['gv_by'] ),
+				'value' => $get['gv_by'],
 				'operator' => '=',
 			);
 		}
-
 
 		// Get search mode passed in URL
 		$mode = isset( $get['mode'] ) && in_array( $get['mode'], array( 'any', 'all' ) ) ?  $get['mode'] : 'any';
@@ -720,13 +729,112 @@ class GravityView_Widget_Search extends \GV\Widget {
 			return;
 		}
 
+		$widgets = $view->widgets->by_id( $this->widget_id );
+		if ( $widgets->count() ) {
+			$widget = $widgets->all()[0];
+			foreach ( $search_fields = json_decode( $widget->configuration->get( 'search_fields' ), true ) as $search_field ) {
+				if ( 'created_by' === $search_field['field'] && 'input_text' === $search_field['input'] ) {
+					$created_by_text_mode = true;
+				}
+			}
+		}
+
+		$extra_conditions = array();
+
 		foreach ( $search_criteria['field_filters'] as &$filter ) {
 			if ( ! is_array( $filter ) ) {
 				continue;
 			}
 
+			// Construct a manual query for unapproved statuses
+			if ( 'is_approved' === $filter['key'] && in_array( \GravityView_Entry_Approval_Status::UNAPPROVED, $filter['value'] ) ) {
+				$_tmp_query       = new GF_Query( $view->form->ID, array(
+					'field_filters' => array(
+						array(
+							'operator' => 'in',
+							'key'      => 'is_approved',
+							'value'    => $filter['value'],
+						),
+						array(
+							'operator' => 'is',
+							'key'      => 'is_approved',
+							'value'    => '',
+						),
+						'mode' => 'any'
+					),
+				) );
+				$_tmp_query_parts = $_tmp_query->_introspect();
+
+				$extra_conditions[] = $_tmp_query_parts['where'];
+
+				$filter = false;
+				continue;
+			}
+
+			// Construct manual query for text mode creator search
+			if ( 'created_by' === $filter['key'] && ! empty( $created_by_text_mode ) ) {
+				$extra_conditions[] = new class( $filter, $view ) extends \GF_Query_Condition {
+					public function __construct( $filter, $view ) {
+						$this->value = $filter['value'];
+						$this->view = $view;
+					}
+
+					public function sql( $query ) {
+						$user_meta_fields = array(
+							'nickname', 'first_name', 'last_name', 
+						);
+
+						global $wpdb;
+
+						/**
+						 * @filter `gravityview/widgets/search/created_by/user_meta_fields` Filter the user meta fields to search by.
+						 * @param[in,out] array The user meta fields.
+						 * @param \GV\View $view The view.
+						 */
+						$user_meta_fields = apply_filters( 'gravityview/widgets/search/created_by/user_meta_fields', $user_meta_fields, $this->view );
+
+
+						$user_fields = array(
+							'user_nicename', 'user_login', 'display_name', 'user_email', 
+						);
+						/**
+						 * @filter `gravityview/widgets/search/created_by/user_fields` Filter the user meta fields to search by.
+						 * @param[in,out] array The user fields.
+						 * @param \GV\View $view The view.
+						 */
+						$user_fields = apply_filters( 'gravityview/widgets/search/created_by/user_fields', $user_fields, $this->view );
+
+						$column = sprintf( '`%s`.`created_by`', $query->_alias( null ) );
+
+						$conditions = array();
+
+						foreach ( $user_fields as $user_field ) {
+							$conditions[] = $wpdb->prepare( "`u`.`$user_field` LIKE %s", '%' . $wpdb->esc_like( $this->value ) .  '%' );
+						}
+
+						foreach ( $user_meta_fields as $meta_field ) {
+							$conditions[] = $wpdb->prepare( "(`um`.`meta_key` = %s AND `um`.`meta_value` LIKE %s)", $meta_field, '%' . $wpdb->esc_like( $this->value ) .  '%' );
+						}
+
+						$conditions = '(' . implode( ' OR ', $conditions ) . ')';
+
+						$alias = $query->_alias( null );
+
+						return "(EXISTS (SELECT 1 FROM $wpdb->users u LEFT JOIN $wpdb->usermeta um ON u.ID = um.user_id WHERE (u.ID = `$alias`.`created_by` AND $conditions)))";
+					}
+				};
+
+				$filter = false;
+				continue;
+			}
+
 			// By default, we want searches to be wildcard for each field.
 			$filter['operator'] = empty( $filter['operator'] ) ? 'contains' : $filter['operator'];
+
+			// For multichoice, let's have an in (OR) search.
+			if ( is_array( $filter['value'] ) ) {
+				$filter['operator'] = 'in'; // @todo what about in contains (OR LIKE chains)?
+			}
 
 			/**
 			 * @filter `gravityview_search_operator` Modify the search operator for the field (contains, is, isnot, etc)
@@ -735,6 +843,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 */
 			$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter );
 		}
+
+		$search_criteria['field_filters'] = array_filter( $search_criteria['field_filters'] );
 
 		/**
 		 * Parse the filter criteria to generate the needed
@@ -752,7 +862,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 		/**
 		 * Combine the parts as a new WHERE clause.
 		 */
-		$query->where( GF_Query_Condition::_and( $query_parts['where'], $_tmp_query_parts['where'] ) );
+		$where = call_user_func_array( '\GF_Query_Condition::_and', array_merge( array( $query_parts['where'], $_tmp_query_parts['where'] ), $extra_conditions ) );
+		$query->where( $where );
 	}
 
 	/**
@@ -1110,6 +1221,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$updated_field['value'] = $this->rgget_or_rgpost( 'gv_by' );
 					$updated_field['choices'] = self::get_created_by_choices();
 					break;
+				
+				case 'is_approved':
+					$updated_field['key'] = 'is_approved';
+					$updated_field['input'] = 'checkbox';
+					$updated_field['value'] = $this->rgget_or_rgpost( 'filter_is_approved' );
+					$updated_field['choices'] = self::get_is_approved_choices();
+					break;
 			}
 
 			$search_fields[ $k ] = $updated_field;
@@ -1319,6 +1437,25 @@ class GravityView_Widget_Search extends \GV\Widget {
 		return $choices;
 	}
 
+	/**
+	 * Calculate the search checkbox choices for approval status
+	 *
+	 * @since develop
+	 *
+	 * @return array Array of approval status choices (value = status, text = display name)
+	 */
+	private static function get_is_approved_choices() {
+
+		$choices = array();
+		foreach ( GravityView_Entry_Approval_Status::get_all() as $status ) {
+			$choices[] = array(
+				'value' => $status['value'],
+				'text' => $status['label'],
+			);
+		}
+
+		return $choices;
+	}
 
 	/**
 	 * Output the Clear Search Results button
