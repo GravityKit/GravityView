@@ -731,7 +731,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$widgets = $view->widgets->by_id( $this->widget_id );
 		if ( $widgets->count() ) {
-			$widget = $widgets->all()[0];
+			$widgets = $widgets->all();
+			$widget  = $widgets[0];
 			foreach ( $search_fields = json_decode( $widget->configuration->get( 'search_fields' ), true ) as $search_field ) {
 				if ( 'created_by' === $search_field['field'] && 'input_text' === $search_field['input'] ) {
 					$created_by_text_mode = true;
@@ -773,57 +774,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			// Construct manual query for text mode creator search
 			if ( 'created_by' === $filter['key'] && ! empty( $created_by_text_mode ) ) {
-				$extra_conditions[] = new class( $filter, $view ) extends \GF_Query_Condition {
-					public function __construct( $filter, $view ) {
-						$this->value = $filter['value'];
-						$this->view = $view;
-					}
-
-					public function sql( $query ) {
-						$user_meta_fields = array(
-							'nickname', 'first_name', 'last_name', 
-						);
-
-						global $wpdb;
-
-						/**
-						 * @filter `gravityview/widgets/search/created_by/user_meta_fields` Filter the user meta fields to search by.
-						 * @param[in,out] array The user meta fields.
-						 * @param \GV\View $view The view.
-						 */
-						$user_meta_fields = apply_filters( 'gravityview/widgets/search/created_by/user_meta_fields', $user_meta_fields, $this->view );
-
-
-						$user_fields = array(
-							'user_nicename', 'user_login', 'display_name', 'user_email', 
-						);
-						/**
-						 * @filter `gravityview/widgets/search/created_by/user_fields` Filter the user meta fields to search by.
-						 * @param[in,out] array The user fields.
-						 * @param \GV\View $view The view.
-						 */
-						$user_fields = apply_filters( 'gravityview/widgets/search/created_by/user_fields', $user_fields, $this->view );
-
-						$column = sprintf( '`%s`.`created_by`', $query->_alias( null ) );
-
-						$conditions = array();
-
-						foreach ( $user_fields as $user_field ) {
-							$conditions[] = $wpdb->prepare( "`u`.`$user_field` LIKE %s", '%' . $wpdb->esc_like( $this->value ) .  '%' );
-						}
-
-						foreach ( $user_meta_fields as $meta_field ) {
-							$conditions[] = $wpdb->prepare( "(`um`.`meta_key` = %s AND `um`.`meta_value` LIKE %s)", $meta_field, '%' . $wpdb->esc_like( $this->value ) .  '%' );
-						}
-
-						$conditions = '(' . implode( ' OR ', $conditions ) . ')';
-
-						$alias = $query->_alias( null );
-
-						return "(EXISTS (SELECT 1 FROM $wpdb->users u LEFT JOIN $wpdb->usermeta um ON u.ID = um.user_id WHERE (u.ID = `$alias`.`created_by` AND $conditions)))";
-					}
-				};
-
+				$extra_conditions[] = new GravityView_Widget_Search_GF_Query_Condition( $filter, $view );
 				$filter = false;
 				continue;
 			}
@@ -1668,3 +1619,61 @@ class GravityView_Widget_Search extends \GV\Widget {
 } // end class
 
 new GravityView_Widget_Search;
+
+if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+	return;
+}
+
+/**
+ * A GF_Query condition that allows user data searches.
+ */
+class GravityView_Widget_Search_GF_Query_Condition extends \GF_Query_Condition {
+	public function __construct( $filter, $view ) {
+		$this->value = $filter['value'];
+		$this->view = $view;
+	}
+
+	public function sql( $query ) {
+		$user_meta_fields = array(
+			'nickname', 'first_name', 'last_name', 
+		);
+
+		global $wpdb;
+
+		/**
+		 * @filter `gravityview/widgets/search/created_by/user_meta_fields` Filter the user meta fields to search by.
+		 * @param[in,out] array The user meta fields.
+		 * @param \GV\View $view The view.
+		 */
+		$user_meta_fields = apply_filters( 'gravityview/widgets/search/created_by/user_meta_fields', $user_meta_fields, $this->view );
+
+
+		$user_fields = array(
+			'user_nicename', 'user_login', 'display_name', 'user_email', 
+		);
+		/**
+		 * @filter `gravityview/widgets/search/created_by/user_fields` Filter the user meta fields to search by.
+		 * @param[in,out] array The user fields.
+		 * @param \GV\View $view The view.
+		 */
+		$user_fields = apply_filters( 'gravityview/widgets/search/created_by/user_fields', $user_fields, $this->view );
+
+		$column = sprintf( '`%s`.`created_by`', $query->_alias( null ) );
+
+		$conditions = array();
+
+		foreach ( $user_fields as $user_field ) {
+			$conditions[] = $wpdb->prepare( "`u`.`$user_field` LIKE %s", '%' . $wpdb->esc_like( $this->value ) .  '%' );
+		}
+
+		foreach ( $user_meta_fields as $meta_field ) {
+			$conditions[] = $wpdb->prepare( "(`um`.`meta_key` = %s AND `um`.`meta_value` LIKE %s)", $meta_field, '%' . $wpdb->esc_like( $this->value ) .  '%' );
+		}
+
+		$conditions = '(' . implode( ' OR ', $conditions ) . ')';
+
+		$alias = $query->_alias( null );
+
+		return "(EXISTS (SELECT 1 FROM $wpdb->users u LEFT JOIN $wpdb->usermeta um ON u.ID = um.user_id WHERE (u.ID = `$alias`.`created_by` AND $conditions)))";
+	}
+}
