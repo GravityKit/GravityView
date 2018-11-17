@@ -208,13 +208,17 @@ class GravityView_Admin_Installer {
 			return $downloads_data;
 		}
 
-		$home_url = parse_url( home_url() );
+		if( \GV\Plugin::is_network_activated() ) {
+			$home_url = network_home_url();
+		} else {
+			$home_url = home_url();
+		}
 
 		$api_url = add_query_arg(
 			array(
 				'key'         => self::EDD_API_KEY,
 				'token'       => self::EDD_API_TOKEN,
-				'url'         => \GV\Utils::get( $home_url, 'host', home_url() ),
+				'url'         => $home_url,
 				'license_key' => gravityview()->plugin->settings->get( 'license_key' )
 			),
 			self::EDD_API_URL
