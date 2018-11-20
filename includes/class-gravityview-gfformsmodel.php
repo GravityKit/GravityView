@@ -39,7 +39,7 @@ class GravityView_GFFormsModel extends GFFormsModel {
 	 */
 	public static function is_value_match( $field_value, $target_value, $operation = 'is', $source_field = null, $rule = null, $form = null ) {
 
-		if ( 'date_created' === $source_field ) {
+		if ( in_array( $source_field, array( 'date_created', 'date_updated', 'payment_date' ), true ) ) {
 			$field_value = is_int( $field_value )? $field_value : strtotime( $field_value );
 			$target_value = is_int( $target_value )? $target_value : strtotime( $target_value );
 		}
