@@ -49,8 +49,8 @@ class GravityView_GFFormsModel extends GFFormsModel {
 			$target_value = is_int( $target_value )? $target_value : strtotime( $target_value );
 		}
 
-		if ( in_array( $operation, array( 'in', 'not_in' ) ) ) {
-			return GVCommon::matches_operation( (array) $field_value, (array) $target_value, $operation );
+		if ( in_array( $_operation = str_replace( ' ', '_', trim( $operation ) ), array( 'in', 'not_in' ) ) ) {
+			return GVCommon::matches_operation( (array) $field_value, (array) $target_value, $_operation );
 		}
 
 		return parent::is_value_match( $field_value, $target_value, $operation, $source_field, $rule, $form );
