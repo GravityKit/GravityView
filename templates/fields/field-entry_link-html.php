@@ -21,4 +21,17 @@ if ( ! empty( $field_settings['new_window'] ) ) {
 
 global $post;
 
-echo GravityView_API::entry_link_html( $entry, $output, $tag_atts, $field_settings, $post ? $post->ID : $gravityview->view->ID );
+$href = $gravityview->entry->get_permalink( $gravityview->view, $gravityview->request, $tag_atts );
+
+$link = gravityview_get_link( $href, $output, $tag_atts );
+
+/**
+ * @filter `gravityview_field_entry_link` Modify the link HTML (here for backward compatibility)
+ * @param string $link HTML output of the link
+ * @param string $href URL of the link
+ * @param array  $entry The GF entry array
+ * @param  array $field_settings Settings for the particular GV field
+ */
+$output = apply_filters( 'gravityview_field_entry_link', $link, $href, $entry, $field_settings );
+
+echo $output;

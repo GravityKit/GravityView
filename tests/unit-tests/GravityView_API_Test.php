@@ -300,17 +300,41 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		$user = $this->factory->user->create_and_set( array( 'role' => 'administrator' ) );
 		$form = $this->factory->form->create_and_get();
-		$post = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view2 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 		$entry = $this->factory->entry->create_and_get( array(
 			'created_by' => $user->ID,
 			'form_id' => $form['id'],
 		) );
 
-		GravityView_View::getInstance()->setPostId( $post->ID );
+		GravityView_View::getInstance()->setPostId( $view->ID );
 
-		$href = GravityView_API::entry_link( $entry, $post->ID );
+		$href = GravityView_API::entry_link( $entry, $view->ID );
 
-		$this->assertEquals( site_url('?gravityview='.$post->post_name.'&entry='.$entry['id'] ), $href );
+		$this->assertEquals( site_url('?gravityview='.$view->post_name.'&entry='.$entry['id'] ), $href );
+
+		$post_with_embeds = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $view->ID .'"] and then [gravityview id="' . $view2->ID .'"]') );
+
+		GravityView_View::getInstance()->setPostId( $post_with_embeds->ID );
+		GravityView_View::getInstance()->setViewId( $view->ID );
+
+		$href = GravityView_API::entry_link( $entry, $post_with_embeds->ID );
+
+		// Reproduces GH#1190
+		$this->assertEquals( site_url('?p='.$post_with_embeds->ID .'&entry='.$entry['id'] . '&gvid=' . $view->ID ), $href );
+
+		GravityView_View::getInstance()->setViewId( $view2->ID );
+		$href = GravityView_API::entry_link( $entry, $post_with_embeds->ID );
+
+		$this->assertEquals( site_url('?p='.$post_with_embeds->ID .'&entry='.$entry['id'] . '&gvid=' . $view2->ID ), $href );
+
+		$post_with_single_embed = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $view->ID .'"]') );
+
+		GravityView_View::getInstance()->setPostId( $post_with_single_embed->ID );
+
+		$href = GravityView_API::entry_link( $entry, $post_with_single_embed->ID );
+
+		$this->assertEquals( site_url('?p='.$post_with_single_embed->ID .'&entry='.$entry['id'] ), $href );
 	}
 
 	/**
