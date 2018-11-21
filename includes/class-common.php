@@ -896,9 +896,28 @@ class GVCommon {
 		$form = self::get_form( $entry['form_id'] );
 
 		foreach ( $filters as $filter ) {
+			$operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
 
 			if ( ! isset( $filter['key'] ) ) {
-				gravityview()->log->debug( '[apply_filters_to_entry] Filter key not set: {filter}', array( 'filter' => $filter ) );
+				gravityview()->log->debug( '[apply_filters_to_entry] Filter key not set, any field mode', array( 'filter' => $filter ) );
+				/**
+				 * This is a cross-field search. Let's start digging'.
+				 */
+				foreach ( \GV\Utils::get( $form, 'fields', array() ) as $field ) {
+					$field_value = GFFormsModel::get_lead_field_value( $entry, $field );
+					if ( $is_value_match = GravityView_GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field ) ) {
+						if ( 'any' === $mode) {
+							return $entry; // All good here
+						} // mode === 'all'
+						continue 2; // Next filter
+					}
+					// If none of the values match and we're in all mode, drop down to the error below.
+				}
+
+				if ( 'all' === $mode ) {
+					return new WP_Error('failed_criteria', '[apply_filters_to_entry] Entry cannot be displayed. Failed a subcriterium for any field in ALL mode', $filter );
+				}
+
 				continue;
 			}
 
@@ -914,8 +933,6 @@ class GVCommon {
 				 // If it's a complex field, then fetch the input's value, if exists at the current key. Otherwise, let GF handle it
 				$field_value = ( is_array( $field_value ) && isset( $field_value[ $k ] ) ) ? \GV\Utils::get( $field_value, $k ) : $field_value;
 			}
-
-			$operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
 
 			$is_value_match = GravityView_GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field );
 
