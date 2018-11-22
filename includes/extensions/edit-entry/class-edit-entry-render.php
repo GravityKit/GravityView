@@ -341,9 +341,6 @@ class GravityView_Edit_Entry_Render {
 			// Process calculation fields
 			$this->update_calculation_fields();
 
-			// Process Quiz fields
-			$this->update_quiz_fields();
-
 			// Perform actions normally performed after updating a lead
 			$this->after_update();
 
@@ -574,22 +571,6 @@ class GravityView_Edit_Entry_Render {
 			if ( method_exists( 'GFFormsModel', 'commit_batch_field_operations' ) ) {
 				GFFormsModel::commit_batch_field_operations();
 			}
-		}
-	}
-
-	/**
-	 * Make sure the quiz is updated accordingly.
-	 * https://github.com/gravityview/GravityView/issues/1166
-	 */
-	private function update_quiz_fields() {
-		if ( ! class_exists( 'GFQuiz' ) ) {
-			return;
-		}
-
-		$entry = GFAPI::get_entry( $this->entry['id'] );
-
-		foreach ( array( 'score', 'percent', 'grade', 'is_pass' ) as $meta ) {
-			GFQuiz::get_instance()->update_entry_meta( "gfquiz_$meta", $entry, self::$original_form );
 		}
 	}
 
@@ -887,7 +868,7 @@ class GravityView_Edit_Entry_Render {
 		// Re-define the entry now that we've updated it.
 		$entry = RGFormsModel::get_lead( $this->entry['id'] );
 
-		$entry = GFFormsModel::set_entry_meta( $entry, $this->form );
+		$entry = GFFormsModel::set_entry_meta( $entry, self::$original_form );
 
 		if ( version_compare( GFFormsModel::get_database_version(), '2.3-dev-1', '<' ) ) {
 			// We need to clear the cache because Gravity Forms caches the field values, which
