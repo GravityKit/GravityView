@@ -850,6 +850,28 @@ class GVCommon {
 			return new WP_Error( 'form_id_not_set', '[apply_filters_to_entry] Entry is empty!', $entry );
 		}
 
+		if ( $view && gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			/**
+			 * Check whether the entry is in the entries subset by running a modified query.
+			 */
+			add_action( 'gravityview/view/query', $entry_subset_callback = function( &$query, $view, $request ) use ( $entry ) {
+				$_tmp_query       = new \GF_Query( $view->form->ID, array( 'field_filters' => array( 'mode' => 'all', array( 'key' => 'id', 'operation' => 'is', 'value' => $entry['id'] ) ) ) );
+				$_tmp_query_parts = $_tmp_query->_introspect();
+
+				$query_parts      = $query->_introspect();
+
+				$query->where( \GF_Query_Condition::_and( $_tmp_query_parts['where'], $query_parts['where'] ) );
+			}, 10, 3 );
+
+			if ( ( ! $entries = $view->get_entries()->all() ) || $entries[0]->ID !== $entry['id'] ) {
+				remove_action( 'gravityview/view/query', $entry_subset_callback );
+				return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
+			}
+
+			remove_action( 'gravityview/view/query', $entry_subset_callback );
+			return $entry;
+		}
+
 		$criteria = self::calculate_get_entries_criteria( array(
 			'context_view_id' => $view ? $view->ID : null,
 		) );
