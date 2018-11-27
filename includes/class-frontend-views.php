@@ -1430,7 +1430,7 @@ class GravityView_frontend {
 
 		if( is_numeric( $field_id ) ) {
 			$field = GFFormsModel::get_field( $form, $field_id );
-			$field_type = $field->type;
+			$field_type = $field ? $field->type : $field_id;
 		}
 
 		$not_sortable = array(
