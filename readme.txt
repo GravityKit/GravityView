@@ -35,6 +35,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Major search and filtering any/all mode combination issues, especially with "Show only approved entries" mode, A-Z Filters, Featured Entries, Advanced Filters plugins
 * Fixed: Support all documented date formats in all date field searches
 * Fixed: Issues with Advanced Filter date fields (including human strings, less than, greater than)
+* Fixed: Security issue (privilege escalation in single entry view) with Advanced Filter any field filter
 
 = 2.1.1 on October 26, 2018 =
 

@@ -702,6 +702,140 @@ class GVCommon_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * https://github.com/gravityview/GravityView/issues/1189
+	 */
+	function test_check_entry_display_any_fields() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'1' => '10',
+			'2' => '1000',
+		) );
+
+		add_filter( 'gravityview_search_criteria', function() use ( $view ) {
+			return array(
+				'search_criteria' => array(
+					'field_filters' => array(
+						'mode' => 'all',
+						array(
+							'operator' => 'is',
+							'value' => '100',
+						),
+					),
+				),
+				'context_view_id' => $view->ID,
+			);
+		} );
+
+		$result = GVCommon::check_entry_display( $entry );
+		$this->assertWPError( $result );
+
+		remove_all_filters( 'gravityview_search_criteria' );
+
+		add_filter( 'gravityview_search_criteria', function() use ( $view ) {
+			return array(
+				'search_criteria' => array(
+					'field_filters' => array(
+						'mode' => 'all',
+						array(
+							'operator' => 'is',
+							'value' => '1000',
+						),
+					),
+				),
+				'context_view_id' => $view->ID,
+			);
+		} );
+
+		$result = GVCommon::check_entry_display( $entry );
+		$this->assertEquals( $entry['id'], $result['id'] );
+
+		remove_all_filters( 'gravityview_search_criteria' );
+
+		add_filter( 'gravityview_search_criteria', function() use ( $view ) {
+			return array(
+				'search_criteria' => array(
+					'field_filters' => array(
+						'mode' => 'all',
+						array(
+							'operator' => 'is',
+							'value' => '10',
+						),
+					),
+				),
+				'context_view_id' => $view->ID,
+			);
+		} );
+
+		$result = GVCommon::check_entry_display( $entry );
+		$this->assertEquals( $entry['id'], $result['id'] );
+
+		remove_all_filters( 'gravityview_search_criteria' );
+
+		add_filter( 'gravityview_search_criteria', function() use ( $view ) {
+			return array(
+				'search_criteria' => array(
+					'field_filters' => array(
+						'mode' => 'all',
+						array(
+							'operator' => 'contains',
+							'value' => '1',
+						),
+					),
+				),
+				'context_view_id' => $view->ID,
+			);
+		} );
+
+		$result = GVCommon::check_entry_display( $entry );
+		$this->assertEquals( $entry['id'], $result['id'] );
+
+		remove_all_filters( 'gravityview_search_criteria' );
+
+		add_filter( 'gravityview_search_criteria', function() use ( $view ) {
+			return array(
+				'search_criteria' => array(
+					'field_filters' => array(
+						'mode' => 'any',
+						array(
+							'operator' => 'is',
+							'value' => '1',
+						),
+					),
+				),
+				'context_view_id' => $view->ID,
+			);
+		} );
+
+		$result = GVCommon::check_entry_display( $entry );
+		$this->assertWPError( $result );
+
+		remove_all_filters( 'gravityview_search_criteria' );
+
+		add_filter( 'gravityview_search_criteria', function() use ( $view ) {
+			return array(
+				'search_criteria' => array(
+					'field_filters' => array(
+						'mode' => 'any',
+						array(
+							'operator' => 'is',
+							'value' => '10',
+						),
+					),
+				),
+				'context_view_id' => $view->ID,
+			);
+		} );
+
+		$result = GVCommon::check_entry_display( $entry );
+		$this->assertEquals( $entry['id'], $result['id'] );
+
+		remove_all_filters( 'gravityview_search_criteria' );
+	}
+
+	/**
 	 * @since 1.20
 	 * @covers GVCommon::calculate_get_entries_criteria()
 	 * @covers GravityView_frontend::set_context_view_id()

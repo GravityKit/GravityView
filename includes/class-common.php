@@ -850,6 +850,28 @@ class GVCommon {
 			return new WP_Error( 'form_id_not_set', '[apply_filters_to_entry] Entry is empty!', $entry );
 		}
 
+		if ( $view && gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			/**
+			 * Check whether the entry is in the entries subset by running a modified query.
+			 */
+			add_action( 'gravityview/view/query', $entry_subset_callback = function( &$query, $view, $request ) use ( $entry ) {
+				$_tmp_query       = new \GF_Query( $view->form->ID, array( 'field_filters' => array( 'mode' => 'all', array( 'key' => 'id', 'operation' => 'is', 'value' => $entry['id'] ) ) ) );
+				$_tmp_query_parts = $_tmp_query->_introspect();
+
+				$query_parts      = $query->_introspect();
+
+				$query->where( \GF_Query_Condition::_and( $_tmp_query_parts['where'], $query_parts['where'] ) );
+			}, 10, 3 );
+
+			if ( ( ! $entries = $view->get_entries()->all() ) || $entries[0]->ID !== $entry['id'] ) {
+				remove_action( 'gravityview/view/query', $entry_subset_callback );
+				return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
+			}
+
+			remove_action( 'gravityview/view/query', $entry_subset_callback );
+			return $entry;
+		}
+
 		$criteria = self::calculate_get_entries_criteria( array(
 			'context_view_id' => $view ? $view->ID : null,
 		) );
@@ -896,9 +918,28 @@ class GVCommon {
 		$form = self::get_form( $entry['form_id'] );
 
 		foreach ( $filters as $filter ) {
+			$operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
 
 			if ( ! isset( $filter['key'] ) ) {
-				gravityview()->log->debug( '[apply_filters_to_entry] Filter key not set: {filter}', array( 'filter' => $filter ) );
+				gravityview()->log->debug( '[apply_filters_to_entry] Filter key not set, any field mode', array( 'filter' => $filter ) );
+				/**
+				 * This is a cross-field search. Let's start digging'.
+				 */
+				foreach ( \GV\Utils::get( $form, 'fields', array() ) as $field ) {
+					$field_value = GFFormsModel::get_lead_field_value( $entry, $field );
+					if ( $is_value_match = GravityView_GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field ) ) {
+						if ( 'any' === $mode) {
+							return $entry; // All good here
+						} // mode === 'all'
+						continue 2; // Next filter
+					}
+					// If none of the values match and we're in all mode, drop down to the error below.
+				}
+
+				if ( 'all' === $mode ) {
+					return new WP_Error('failed_criteria', '[apply_filters_to_entry] Entry cannot be displayed. Failed a subcriterium for any field in ALL mode', $filter );
+				}
+
 				continue;
 			}
 
@@ -914,8 +955,6 @@ class GVCommon {
 				 // If it's a complex field, then fetch the input's value, if exists at the current key. Otherwise, let GF handle it
 				$field_value = ( is_array( $field_value ) && isset( $field_value[ $k ] ) ) ? \GV\Utils::get( $field_value, $k ) : $field_value;
 			}
-
-			$operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
 
 			$is_value_match = GravityView_GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field );
 

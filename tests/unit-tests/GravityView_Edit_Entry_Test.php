@@ -502,6 +502,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			}
 
 			$_POST += array(
+				'action' => 'update',
 				'lid' => $entry['id'],
 				'is_submit_' . $form['id'] => true,
 				'state_' . $form['id'] => GFFormDisplay::get_state( $form, $state ),
@@ -681,6 +682,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		/** Check updates */
 		$this->assertEquals( $entry['1'], 'we changed it' );
 		$this->assertEquals( $entry['2'], 102 );
+
+		$this->assertContains( 'Entry Updated', $output );
 
 		/** Cleanup */
 		$this->_reset_context();
@@ -1591,6 +1594,72 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( '1446', $entry['7'] );
 
 		$this->_reset_context();
+	}
+
+	/** 
+	 * @dataProvider get_redirect_after_edit_data
+	 */
+	public function test_redirect_after_edit( $edit_redirect, $location ) {
+		/** Create a user */
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'this is one'
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'show_only_approved' => true,
+				'user_edit' => true,
+				'edit_redirect' => $edit_redirect,
+			),
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			)
+		) );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = \GV\View::from_post( $view );
+		gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+
+		// Edit the entry
+		$_POST = array(
+			'input_1' => 'this is ' . wp_generate_password( 4, false ),
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertContains( 'Entry Updated', $output );
+
+		if ( $location !== false ) {
+			$output = str_replace( json_encode( get_permalink( $view ) ), '"{permalink}"', $output );
+			$this->assertContains( sprintf( 'location.href = %s', json_encode( $location ) ), $output );
+		} else {
+			$this->assertNotContains( 'location.href', $output );
+		}
+
+		$this->_reset_context();
+	}
+
+	function get_redirect_after_edit_data() {
+		return array(
+			array( '', false ),
+			array( '0', '' /** homepage; the view is here */ ),
+			array( '1', '{permalink}' ),
+			array( 'https://gravityview.co', 'https://gravityview.co' ),
+		);
 	}
 }
 

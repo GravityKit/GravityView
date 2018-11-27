@@ -1654,7 +1654,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$entries->add( \GV\GF_Entry::from_entry( $entry ) );
 		}
 
-        $this->assertEquals( 25, $view->get_entries( new GV\Frontend_Request() )->count() );
+        $this->assertEquals( 25, $entries->count() );
+        $this->assertEquals( 25, $view->get_entries( new GV\Frontend_Request() )->fetch()->count() );
 
 		$future = $renderer->render( $view );
 		$this->assertContains( '[1] Some text in a textarea', $future );

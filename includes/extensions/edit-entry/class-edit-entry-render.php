@@ -341,9 +341,6 @@ class GravityView_Edit_Entry_Render {
 			// Process calculation fields
 			$this->update_calculation_fields();
 
-			// Process Quiz fields
-			$this->update_quiz_fields();
-
 			// Perform actions normally performed after updating a lead
 			$this->after_update();
 
@@ -574,22 +571,6 @@ class GravityView_Edit_Entry_Render {
 			if ( method_exists( 'GFFormsModel', 'commit_batch_field_operations' ) ) {
 				GFFormsModel::commit_batch_field_operations();
 			}
-		}
-	}
-
-	/**
-	 * Make sure the quiz is updated accordingly.
-	 * https://github.com/gravityview/GravityView/issues/1166
-	 */
-	private function update_quiz_fields() {
-		if ( ! class_exists( 'GFQuiz' ) ) {
-			return;
-		}
-
-		$entry = GFAPI::get_entry( $this->entry['id'] );
-
-		foreach ( array( 'score', 'percent', 'grade', 'is_pass' ) as $meta ) {
-			GFQuiz::get_instance()->update_entry_meta( "gfquiz_$meta", $entry, self::$original_form );
 		}
 	}
 
@@ -887,7 +868,7 @@ class GravityView_Edit_Entry_Render {
 		// Re-define the entry now that we've updated it.
 		$entry = RGFormsModel::get_lead( $this->entry['id'] );
 
-		$entry = GFFormsModel::set_entry_meta( $entry, $this->form );
+		$entry = GFFormsModel::set_entry_meta( $entry, self::$original_form );
 
 		if ( version_compare( GFFormsModel::get_database_version(), '2.3-dev-1', '<' ) ) {
 			// We need to clear the cache because Gravity Forms caches the field values, which
@@ -987,7 +968,25 @@ class GravityView_Edit_Entry_Render {
 				echo GVCommon::generate_notice( $message , 'gv-error' );
 
 			} else {
-				$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'. esc_url( $back_link ) .'">', '</a>' );
+				$view = \GV\View::by_id( $this->view_id );
+				$edit_redirect = $view->settings->get( 'edit_redirect' );
+
+				if ( '0' === $edit_redirect ) {
+					$redirect_url = $back_link;
+					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturning to Entry%s', 'gravityview'), '<a href="'. esc_url( $redirect_url ) .'">', '</a>' );
+				} else if ( '1' === $edit_redirect ) {
+					$redirect_url = $directory_link = GravityView_API::directory_link();
+					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturning to %s%s', 'gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $view->post_title ), '</a>' );
+				} else if ( '' == $edit_redirect ) {
+					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'. esc_url( $back_link ) .'">', '</a>' );
+				} else {
+					$redirect_url = $edit_redirect;
+					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sRedirecting to %s%s', 'gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $edit_redirect ), '</a>' );
+				}
+
+				if ( isset( $redirect_url ) ) {
+					$entry_updated_message .= sprintf( '<script type="text/javascript">window.location.href = %s;</script>', json_encode( $redirect_url ) );
+				}
 
 				/**
 				 * @filter `gravityview/edit_entry/success` Modify the edit entry success message (including the anchor link)

@@ -36,6 +36,68 @@ class GravityView_API {
 		} else {
 			return \GV\Mocks\GravityView_API_field_label( $form, $field, $entry, $force_show_label );
 		}
+
+		$label = '';
+
+		if( !empty( $field['show_label'] ) || $force_show_label ) {
+
+			$label = $field['label'];
+
+			// Support Gravity Forms 1.9+
+			if( class_exists( 'GF_Field' ) ) {
+
+				$field_object = RGFormsModel::get_field( $form, $field['id'] );
+
+				if( $field_object ) {
+
+					$input = GFFormsModel::get_input( $field_object, $field['id'] );
+
+					// This is a complex field, with labels on a per-input basis
+					if( $input ) {
+
+						// Does the input have a custom label on a per-input basis? Otherwise, default label.
+						$label = ! empty( $input['customLabel'] ) ? $input['customLabel'] : $input['label'];
+
+					} else {
+
+						// This is a field with one label
+						$label = $field_object->get_field_label( true, $field['label'] );
+
+					}
+
+				}
+
+			}
+
+			// Use Gravity Forms label by default, but if a custom label is defined in GV, use it.
+			if ( !empty( $field['custom_label'] ) ) {
+
+				$label = self::replace_variables( $field['custom_label'], $form, $entry );
+
+			}
+
+			/**
+			 * @filter `gravityview_render_after_label` Append content to a field label
+			 * @param[in,out] string $appended_content Content you can add after a label. Empty by default.
+			 * @param[in] array $field GravityView field array
+			 */
+			$label .= apply_filters( 'gravityview_render_after_label', '', $field );
+
+		} // End $field['show_label']
+
+		/**
+		 * @filter `gravityview/template/field_label` Modify field label output
+		 * @since 1.7
+		 * @param[in,out] string $label Field label HTML
+		 * @param[in] array $field GravityView field array
+		 * @param[in] array $form Gravity Forms form array
+		 * @param[in] array $entry Gravity Forms entry array
+		 *
+		 * @deprecated Use the context-aware version `gravityview/template/field/label`
+		 */
+		$label = apply_filters( 'gravityview/template/field_label', $label, $field, $form, $entry );
+
+		return $label;
 	}
 
 	/**
@@ -595,7 +657,15 @@ class GravityView_API {
 
 		}
 
-		if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() ) {
+		if( $post_id ) {
+			$passed_post = get_post( $post_id );
+			$views       = \GV\View_Collection::from_post( $passed_post );
+			$has_multiple_views = $views->count() > 1;
+		} else {
+			$has_multiple_views = class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views();
+		}
+
+		if ( $has_multiple_views ) {
 			$args['gvid'] = gravityview_get_view_id();
 		}
 
