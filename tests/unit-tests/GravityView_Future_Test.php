@@ -2915,8 +2915,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field = \GV\GF_Field::by_id( $form, '7' );
 
-		$expected = "<table class='gfield_list'><thead><tr><th>Column 1</th>\n";
-		$expected .= "<th>Column 2</th>\n</tr></thead>\n<tbody><tr><td>one</td>\n";
+		if ( version_compare( GFFormsModel::get_database_version(), '2.4-dev-1', '>=' ) ) {
+			$expected = "<table class='gfield_list'><thead><tr><th scope=\"col\">Column 1</th>\n";
+			$expected .= "<th scope=\"col\">Column 2</th>\n</tr></thead>\n<tbody><tr><td>one</td>\n";
+		} else {
+			$expected = "<table class='gfield_list'><thead><tr><th>Column 1</th>\n";
+			$expected .= "<th>Column 2</th>\n</tr></thead>\n<tbody><tr><td>one</td>\n";
+		}
+
 		$expected .= "<td>two</td>\n</tr>\n<tr><td>three</td>\n<td>four</td>\n</tr>\n<tbody></table>\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
