@@ -124,7 +124,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 */
 	public function test_entry_endpoint_rewrite_name() {
 		$entry_enpoint = array_filter( $GLOBALS['wp_rewrite']->endpoints, function( $endpoint ) {
-			return $endpoint === array( EP_PERMALINK | EP_PAGES, 'entry', 'entry' );
+			return $endpoint === array( EP_PERMALINK | EP_ROOT | EP_PAGES, 'entry', 'entry' );
 		} );
 
 		$this->assertNotEmpty( $entry_enpoint, 'Single Entry endpoint not registered.' );
@@ -1654,7 +1654,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$entries->add( \GV\GF_Entry::from_entry( $entry ) );
 		}
 
-        $this->assertEquals( 25, $view->get_entries( new GV\Frontend_Request() )->count() );
+        $this->assertEquals( 25, $entries->count() );
+        $this->assertEquals( 25, $view->get_entries( new GV\Frontend_Request() )->fetch()->count() );
 
 		$future = $renderer->render( $view );
 		$this->assertContains( '[1] Some text in a textarea', $future );
@@ -2914,8 +2915,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field = \GV\GF_Field::by_id( $form, '7' );
 
-		$expected = "<table class='gfield_list'><thead><tr><th>Column 1</th>\n";
-		$expected .= "<th>Column 2</th>\n</tr></thead>\n<tbody><tr><td>one</td>\n";
+		if ( version_compare( GFFormsModel::get_database_version(), '2.4-dev-1', '>=' ) ) {
+			$expected = "<table class='gfield_list'><thead><tr><th scope=\"col\">Column 1</th>\n";
+			$expected .= "<th scope=\"col\">Column 2</th>\n</tr></thead>\n<tbody><tr><td>one</td>\n";
+		} else {
+			$expected = "<table class='gfield_list'><thead><tr><th>Column 1</th>\n";
+			$expected .= "<th>Column 2</th>\n</tr></thead>\n<tbody><tr><td>one</td>\n";
+		}
+
 		$expected .= "<td>two</td>\n</tr>\n<tr><td>three</td>\n<td>four</td>\n</tr>\n<tbody></table>\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 

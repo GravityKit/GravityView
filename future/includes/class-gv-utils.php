@@ -131,4 +131,21 @@ class Utils {
 	public static function _return( $value ) {
 		return function() use ( $value ) { return $value; };
 	}
+
+	/**
+	 * Output an associative array represenation of the query parameters.
+	 *
+	 * @internal
+	 * @since 2.1
+	 *
+	 * @param \GF_Query The query object to dump.
+	 *
+	 * @return array An associative array of parameters.
+	 */
+	public static function gf_query_debug( $query ) {
+		$introspect = $query->_introspect();
+		return array(
+			'where' => $query->_where_unwrap( $introspect['where'] )
+		);
+	}
 }

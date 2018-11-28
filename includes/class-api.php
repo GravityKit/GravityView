@@ -657,7 +657,15 @@ class GravityView_API {
 
 		}
 
-		if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() ) {
+		if( $post_id ) {
+			$passed_post = get_post( $post_id );
+			$views       = \GV\View_Collection::from_post( $passed_post );
+			$has_multiple_views = $views->count() > 1;
+		} else {
+			$has_multiple_views = class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views();
+		}
+
+		if ( $has_multiple_views ) {
 			$args['gvid'] = gravityview_get_view_id();
 		}
 
