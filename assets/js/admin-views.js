@@ -186,9 +186,18 @@
 			$conditionals = $parent.find( '[data-requires]' );
 
 			$conditionals.each( function ()  {
-				var requires = $( this ).data( 'requires' );
-				var $checkbox = $parent.find(':checkbox[name$="['+requires+']"]');
-				$( this ).toggle( $checkbox.is(':checked') );
+				var requires = $( this ).data( 'requires' ),
+					requires_array = requires.split('='),
+					requires_name = requires_array[0],
+					requires_value = requires_array[1];
+
+				var $input = $parent.find(':input[name$="[' + requires_name + ']"]');
+
+				if ( $input.is(':checkbox') ) {
+					$( this ).toggle( $input.is(':checked') );
+				} else if ( requires_value !== undefined ) {
+					$( this ).toggle( $input.val() === requires_value );
+				}
 			});
 		},
 
