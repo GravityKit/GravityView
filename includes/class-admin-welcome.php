@@ -271,6 +271,34 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
+                <h3>2.2 on November 28, 2018</h3>
+
+                <ul>
+                    <li>Yes, GravityView is fully compatible with Gravity Forms 2.4!</li>
+                    <li>Added: Choose where users go after editing an entry</li>
+                    <li>Added: Search entries by approval status with new "Approval Status" field in the Search Bar</li>
+                    <li>Added: More search input types added for "Created By" searches</li>
+                    <li>Added: When searching "Created By", set the input type to "text" to search by user email, login and name fields</li>
+                    <li>Fixed: Issue installing plugins from the Extensions page on a Multisite network</li>
+                    <li>Fixed: When a View is embedded on the homepage of a site, Single Entry and Edit Entry did not work (404 not found error)</li>
+                    <li>Fixed: Stray "Advanced Custom Fields" editor at the bottom of Edit View pages</li>
+                    <li>Fixed: Labels and quantities removed when editing an entry that had product calculations</li>
+                    <li>Fixed: When multiple Views are embedded on a page, Single Entry could sometimes show "You are not allowed to view this content"</li>
+                    <li>Fixed: Major search and filtering any/all mode combination issues, especially with "Show only approved entries" mode, A-Z Filters, Featured Entries, Advanced Filtering plugins</li>
+                    <li>Fixed: Support all <a href="https://docs.gravityview.co/article/115-changing-the-format-of-the-search-widgets-date-picker">documented date formats</a> in Search Bar date fields</li>
+                    <li>Fixed: Issues with <a href="https://gravityview.co/extensions/advanced-filter/">Advanced Filtering</a> date fields (including human strings, less than, greater than)</li>
+                    <li>Fixed: Security issue when Advanced Filter was configured with an "Any form field" filter (single entries were not properly secured)</li>
+                    <li>Fixed: The Quiz Letter Grade is lost if Edit Entry does not contain all Gravity Forms Quiz Add-On fields</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Updated: <code>search-field-select.php</code> template to gracefully handle array values</li>
+                    <li>Added: Filters for new "Created By" search. <a href="https://docs.gravityview.co/article/523-created-by-text-search">Learn how to modify what fields are searched</a>.</li>
+                </ul>
+
+
                 <h3>2.1.1 on October 26, 2018</h3>
 
                 <ul>

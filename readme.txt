@@ -21,28 +21,34 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop =
+= 2.2 on November 28, 2018 =
 
-* Added: Search entries by approval status
-* Added: More flexible search by entry creator (added text, multicheckbox, multiselect controls)
-* Added: Entry creator in text mode now searches by email, login and name fields
-* Added: `gravityview/widgets/search/created_by/user_meta_fields` filter for entry creator search
-* Added: `gravityview/widgets/search/created_by/user_fields` filter for entry creator search
+* Yes, GravityView is fully compatible with Gravity Forms 2.4!
+* Added: Choose where users go after editing an entry
+* Added: Search entries by approval status with new "Approval Status" field in the Search Bar
+* Added: More search input types added for "Created By" searches
+* Added: When searching "Created By", set the input type to "text" to search by user email, login and name fields
 * Fixed: Issue installing plugins from the Extensions page on a Multisite network
-* Fixed: Edit/single entry on home page did not work (404 not found)
-* Fixed: Stray Advanced Custom Fields editor at the bottom of View configuration pages
-* Fixed: Edit entry on products with calculations voided labels and quantities
-* Fixed: Major search and filtering any/all mode combination issues, especially with "Show only approved entries" mode, A-Z Filters, Featured Entries, Advanced Filters plugins
-* Fixed: Support all documented date formats in all date field searches
-* Fixed: Issues with Advanced Filter date fields (including human strings, less than, greater than)
-* Fixed: Security issue (privilege escalation in single entry view) with Advanced Filter any field filter
+* Fixed: When a View is embedded on the homepage of a site, Single Entry and Edit Entry did not work (404 not found error)
+* Fixed: Stray "Advanced Custom Fields" editor at the bottom of Edit View pages
+* Fixed: Labels and quantities removed when editing an entry that had product calculations
+* Fixed: When multiple Views are embedded on a page, Single Entry could sometimes show "You are not allowed to view this content"
+* Fixed: Major search and filtering any/all mode combination issues, especially with "Show only approved entries" mode, A-Z Filters, Featured Entries, Advanced Filtering plugins
+* Fixed: Support all [documented date formats](https://docs.gravityview.co/article/115-changing-the-format-of-the-search-widgets-date-picker) in Search Bar date fields
+* Fixed: Issues with [Advanced Filtering](https://gravityview.co/extensions/advanced-filter/) date fields (including human strings, less than, greater than)
+* Fixed: Security issue when Advanced Filter was configured with an "Any form field" filter (single entries were not properly secured)
+* Fixed: The Quiz Letter Grade is lost if Edit Entry does not contain all Gravity Forms Quiz Add-On fields
+
+__Developer Updates:__
+
 * Updated: `search-field-select.php` template to gracefully handle array values
+* Added: Filters for new "Created By" search. [Learn how to modify what fields are searched](https://docs.gravityview.co/article/523-created-by-text-search).
 
 = 2.1.1 on October 26, 2018 =
 
 * Added: A "Connected Views" menu on the Gravity Forms Forms page - hover over a form to see the new Connected Views menu!
 * Fixed: Additional slashes being added to the custom date format for Date fields
-* Fixed: Quiz letter grade not updated after editing an entry that has Gravity Forms Quiz fields
+* Fixed: Quiz Letter Grade not updated after editing an entry that has Gravity Forms Quiz fields
 * Fixed: Single Entry screen is inaccessible when the category is part of a URL path (using the `%category%` tag in the site's Permalinks settings)
 * Fixed: Issue where GravityView CSS isn't loading in the Dashboard for some customers
 * Fixed: Display uploaded files using Gravity Forms' secure link URL format, if enabled
