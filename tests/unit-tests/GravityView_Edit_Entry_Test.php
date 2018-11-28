@@ -1337,6 +1337,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		if ( $location !== false ) {
 			$output = str_replace( json_encode( get_permalink( $view ) ), '"{permalink}"', $output );
 			$this->assertContains( sprintf( 'location.href = %s', json_encode( $location ) ), $output );
+			$this->assertContains( sprintf( '<meta http-equiv="refresh" content="0;URL=%s" /></noscript>', esc_attr( $location ) ), $output );
 		} else {
 			$this->assertNotContains( 'location.href', $output );
 		}

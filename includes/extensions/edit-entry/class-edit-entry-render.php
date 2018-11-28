@@ -1013,8 +1013,8 @@ class GravityView_Edit_Entry_Render {
                         break;
 				}
 
-				if ( isset( $redirect_url ) ) {
-					$entry_updated_message .= sprintf( '<script>window.location.href = %s;</script>', json_encode( $redirect_url ) );
+				if ( ! empty( $redirect_url ) ) {
+					$entry_updated_message .= sprintf( '<script>window.location.href = %s;</script><noscript><meta http-equiv="refresh" content="0;URL=%s" /></noscript>', json_encode( $redirect_url ), esc_attr( $redirect_url ) );
 				}
 
 				/**
