@@ -36,6 +36,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Support all documented date formats in all date field searches
 * Fixed: Issues with Advanced Filter date fields (including human strings, less than, greater than)
 * Fixed: Security issue (privilege escalation in single entry view) with Advanced Filter any field filter
+* Updated: `search-field-select.php` template to gracefully handle array values
 
 = 2.1.1 on October 26, 2018 =
 
