@@ -584,7 +584,7 @@ class GravityView_Edit_Entry_Render {
 	 *
 	 * @uses GFFormsModel::media_handle_upload
 	 * @uses set_post_thumbnail
-	 * 
+	 *
 	 * @param array $form GF Form array
 	 * @param GF_Field $field GF Field
 	 * @param string $field_id Numeric ID of the field
@@ -998,7 +998,7 @@ class GravityView_Edit_Entry_Render {
 				}
 
 				if ( isset( $redirect_url ) ) {
-					$entry_updated_message .= sprintf( '<script>window.location.href = %s;</script>', json_encode( $redirect_url ) );
+					$entry_updated_message .= sprintf( '<script>window.location.href = %s;</script><noscript><meta http-equiv="refresh" content="0;URL=%s" /></noscript>', json_encode( $redirect_url ), esc_attr( $redirect_url ) );
 				}
 
 				/**
@@ -1241,7 +1241,7 @@ class GravityView_Edit_Entry_Render {
 			foreach ( (array)$field->inputs as $input ) {
 
 				$input_id = strval( $input['id'] );
-				
+
 				if ( isset( $this->entry[ $input_id ] ) && ! gv_empty( $this->entry[ $input_id ], false, false ) ) {
 				    $field_value[ $input_id ] =  'post_category' === $field->type ? GFCommon::format_post_category( $this->entry[ $input_id ], true ) : $this->entry[ $input_id ];
 				    $allow_pre_populated = false;
