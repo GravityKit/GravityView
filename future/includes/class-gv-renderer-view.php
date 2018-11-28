@@ -104,8 +104,21 @@ class View_Renderer extends Renderer {
 		}
 		$template = new $class( $view, $entries, $request );
 
+		/**
+		 * Remove multiple sorting before calling legacy filters.
+		 * This allows us to fake it till we make it.
+		 */
+		$parameters = $view->settings->as_atts();
+		if ( ! empty( $parameters['sort_field'] ) && is_array( $parameters['sort_field'] ) ) {
+			$has_multisort = true;
+			$parameters['sort_field'] = reset( $parameters['sort_field'] );
+			if ( ! empty( $parameters['sort_direction'] ) && is_array( $parameters['sort_direction'] ) ) {
+				$parameters['sort_direction'] = reset( $parameters['sort_direction'] );
+			}
+		}
+
 		/** @todo Deprecate this! */
-		$parameters = \GravityView_frontend::get_view_entries_parameters( $view->settings->as_atts(), $view->form->ID );
+		$parameters = \GravityView_frontend::get_view_entries_parameters( $parameters, $view->form->ID );
 
 		global $post;
 
