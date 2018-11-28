@@ -1633,25 +1633,25 @@ class GravityView_Widget_Search_GF_Query_Condition extends \GF_Query_Condition {
 	}
 
 	public function sql( $query ) {
-		$user_meta_fields = array(
-			'nickname', 'first_name', 'last_name', 
-		);
-
 		global $wpdb;
 
+		$user_meta_fields = array(
+			'nickname', 'first_name', 'last_name',
+		);
+
 		/**
-		 * @filter `gravityview/widgets/search/created_by/user_meta_fields` Filter the user meta fields to search by.
+		 * @filter `gravityview/widgets/search/created_by/user_meta_fields` Filter the user meta fields to search.
 		 * @param[in,out] array The user meta fields.
 		 * @param \GV\View $view The view.
 		 */
 		$user_meta_fields = apply_filters( 'gravityview/widgets/search/created_by/user_meta_fields', $user_meta_fields, $this->view );
 
-
 		$user_fields = array(
 			'user_nicename', 'user_login', 'display_name', 'user_email', 
 		);
+
 		/**
-		 * @filter `gravityview/widgets/search/created_by/user_fields` Filter the user meta fields to search by.
+		 * @filter `gravityview/widgets/search/created_by/user_fields` Filter the user fields to search.
 		 * @param[in,out] array The user fields.
 		 * @param \GV\View $view The view.
 		 */
