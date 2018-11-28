@@ -30,6 +30,12 @@ class GravityView_Plugin_Hooks_ACF extends GravityView_Plugin_and_Theme_Hooks {
 	protected $class_name = 'acf';
 
 	/**
+	 * @since 2.2
+	 * @var array
+	 */
+	protected $style_handles = array( 'acf-global' );
+
+	/**
 	 * @since 1.16.5
 	 */
 	protected function add_hooks() {
