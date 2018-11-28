@@ -977,18 +977,18 @@ class GravityView_Edit_Entry_Render {
 
                     case '0':
 	                    $redirect_url = $back_link;
-	                    $entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturning to Entry%s', 'gravityview'), '<a href="'. esc_url( $redirect_url ) .'">', '</a>' );
+	                    $entry_updated_message = sprintf( esc_attr_x('Entry Updated. %sReturning to Entry%s', 'Replacements are HTML', 'gravityview'), '<a href="'. esc_url( $redirect_url ) .'">', '</a>' );
                         break;
 
                     case '1':
 	                    $redirect_url = $directory_link = GravityView_API::directory_link();
-	                    $entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturning to %s%s', 'gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $view->post_title ), '</a>' );
+	                    $entry_updated_message = sprintf( esc_attr_x('Entry Updated. %sReturning to %s%s', 'Replacement 1 is HTML. Replacement 2 is the title of the page where the user will be taken. Replacement 3 is HTML.','gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $view->post_title ), '</a>' );
 	                    break;
 
                     case '2':
 	                    $redirect_url = $edit_redirect_url;
 	                    $redirect_url = GFCommon::replace_variables( $redirect_url, $this->form, $this->entry, false, false, false, 'text' );
-	                    $entry_updated_message = sprintf( esc_attr__('Entry Updated. %sRedirecting to %s%s', 'gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $edit_redirect_url ), '</a>' );
+	                    $entry_updated_message = sprintf( esc_attr_x('Entry Updated. %sRedirecting to %s%s', 'Replacement 1 is HTML. Replacement 2 is the URL where the user will be taken. Replacement 3 is HTML.','gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $edit_redirect_url ), '</a>' );
                         break;
 
                     case '':
