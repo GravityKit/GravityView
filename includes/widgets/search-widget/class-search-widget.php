@@ -330,8 +330,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		if ( gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
 			$custom_fields['is_approved'] = array(
-				'type' => 'boolean',
 				'text' => esc_html__( 'Approval Status', 'gravityview' ),
+				'type' => 'multi',
 			);
 		}
 
@@ -1175,7 +1175,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 				
 				case 'is_approved':
 					$updated_field['key'] = 'is_approved';
-					$updated_field['input'] = 'checkbox';
 					$updated_field['value'] = $this->rgget_or_rgpost( 'filter_is_approved' );
 					$updated_field['choices'] = self::get_is_approved_choices();
 					break;
