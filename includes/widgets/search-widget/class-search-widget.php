@@ -1657,8 +1657,6 @@ class GravityView_Widget_Search_GF_Query_Condition extends \GF_Query_Condition {
 		 */
 		$user_fields = apply_filters( 'gravityview/widgets/search/created_by/user_fields', $user_fields, $this->view );
 
-		$column = sprintf( '`%s`.`created_by`', $query->_alias( null ) );
-
 		$conditions = array();
 
 		foreach ( $user_fields as $user_field ) {
