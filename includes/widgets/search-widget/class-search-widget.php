@@ -330,8 +330,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		if ( gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
 			$custom_fields['is_approved'] = array(
-				'text' => esc_html__( 'Is Approved', 'gravityview' ),
 				'type' => 'boolean',
+				'text' => esc_html__( 'Approval Status', 'gravityview' ),
 			);
 		}
 
