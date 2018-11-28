@@ -1308,6 +1308,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 				'show_only_approved' => true,
 				'user_edit' => true,
 				'edit_redirect' => $edit_redirect,
+				'edit_redirect_url' => $location,
 			),
 			'fields' => array(
 				'single_table-columns' => array(
@@ -1334,9 +1335,11 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->assertContains( 'Entry Updated', $output );
 
-		if ( $location !== false ) {
+		if ( ! empty( $location ) ) {
 			$output = str_replace( json_encode( get_permalink( $view ) ), '"{permalink}"', $output );
 			$this->assertContains( sprintf( 'location.href = %s', json_encode( $location ) ), $output );
+
+			$location = str_replace( '{permalink}', get_permalink( $view ), $location );
 			$this->assertContains( sprintf( '<meta http-equiv="refresh" content="0;URL=%s" /></noscript>', esc_attr( $location ) ), $output );
 		} else {
 			$this->assertNotContains( 'location.href', $output );
@@ -1350,7 +1353,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			array( '', false ),
 			array( '0', '' /** homepage; the view is here */ ),
 			array( '1', '{permalink}' ),
-			array( 'https://gravityview.co', 'https://gravityview.co' ),
+			array( '2', 'https://gravityview.co/floaty-loves-you/?with=<>&wild[]=! &characters=",' ) /** custom URL */,
 		);
 	}
 }
