@@ -256,7 +256,7 @@ class View_Settings extends Settings {
 			'edit_redirect_url' => array(
 				'label'             => __( 'Edit Entry Redirect URL', 'gravityview' ),
 				'group'             => 'default',
-				'desc'              => __( 'The URL to redirect to after editing an entry.', 'gravityview' ),
+				'desc'              => __( 'After editing an entry, the user will be taken to this URL.', 'gravityview' ),
 				'type'              => 'text',
 				'class'             => 'code widefat',
 				'value'             => '',

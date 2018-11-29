@@ -1647,6 +1647,9 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		if ( $location !== false ) {
 			$output = str_replace( json_encode( get_permalink( $view ) ), '"{permalink}"', $output );
 			$this->assertContains( sprintf( 'location.href = %s', json_encode( $location ) ), $output );
+
+			$location = str_replace( '{permalink}', get_permalink( $view ), $location );
+			$this->assertContains( sprintf( '<meta http-equiv="refresh" content="0;URL=%s" /></noscript>', esc_attr( $location ) ), $output );
 		} else {
 			$this->assertNotContains( 'location.href', $output );
 		}
@@ -1655,11 +1658,14 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	}
 
 	function get_redirect_after_edit_data() {
+
+		$custom_url = 'https://gravityview.co/floaty-loves-you/?with=<>&wild[]=! &characters=",';
+
 		return array(
 			array( '', false ),
 			array( '0', '' /** homepage; the view is here */ ),
 			array( '1', '{permalink}' ),
-			array( '2', 'https://gravityview.co', 'https://gravityview.co' ),
+			array( '2', $custom_url, $custom_url ),
 		);
 	}
 }
