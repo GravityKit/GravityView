@@ -36,6 +36,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Support all documented date formats in all date field searches
 * Fixed: Issues with Advanced Filter date fields (including human strings, less than, greater than)
 * Fixed: Security issue (privilege escalation in single entry view) with Advanced Filter any field filter
+* Added: Group by field in table Views
 
 = 2.1.1 on October 26, 2018 =
 

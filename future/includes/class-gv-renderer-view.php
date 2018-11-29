@@ -90,6 +90,15 @@ class View_Renderer extends Renderer {
 			}
 		}
 
+		if ( 'table' === $template_slug && ! empty( $view->settings->get( 'group_fields' ) ) ) {
+			/**
+			 * Override to group table.
+			 */
+			add_filter( 'gravityview/template/view/class', $class_override_callback = function() {
+				return '\GV\View_Table_Group_Template';
+			}, 9 );
+		}
+
 		/**
 		 * @filter `gravityview/template/view/class` Filter the template class that is about to be used to render the view.
 		 * @since 2.0
@@ -102,6 +111,11 @@ class View_Renderer extends Renderer {
 			gravityview()->log->notice( '{template_class} not found, falling back to legacy', array( 'template_class' => $class ) );
 			$class = '\GV\View_Legacy_Template';
 		}
+
+		if ( isset( $class_override_callback ) ) {
+			remove_filter( 'gravityview/template/view/class', $class_override_callback, 9 );
+		}
+
 		$template = new $class( $view, $entries, $request );
 
 		/** @todo Deprecate this! */

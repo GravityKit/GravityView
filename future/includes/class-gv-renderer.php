@@ -52,6 +52,11 @@ class Renderer {
 
 		$cls = $gravityview->template;
 		$slug = property_exists( $cls, '_configuration_slug' ) ? $cls::$_configuration_slug : $cls::$slug;
+
+		if ( 'table-group' === $slug ) {
+			$slug = 'table'; // Disregard the table-group subclass
+		}
+
 		if ( $gravityview->fields->by_position( sprintf( '%s_%s-*', $context, $slug ) )->by_visible()->count() ) {
 			return;
 		}
