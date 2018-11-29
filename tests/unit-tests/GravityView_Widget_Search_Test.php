@@ -654,6 +654,10 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
 		}
 
+		if ( version_compare( GFFormsModel::get_database_version(), '2.4-dev-1', '<' ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query fixes from Gravity Forms 2.4' );
+		}
+
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
