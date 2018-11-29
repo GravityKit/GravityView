@@ -15,6 +15,11 @@ if( empty( $search_field['choices'] ) ) {
 	return;
 }
 
+if( is_array( $search_field['value'] ) ) {
+    gravityview()->log->debug( 'search-field-select.php - Array values passed; using first value.' );
+	$search_field['value'] = reset( $search_field['value'] );
+}
+
 /**
  * @filter `gravityview/extension/search/select_default` Define the text for the default option in a select (multi or single dropdown)
  * @since 1.16.4

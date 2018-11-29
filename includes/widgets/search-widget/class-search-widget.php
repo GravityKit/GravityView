@@ -330,8 +330,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		if ( gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
 			$custom_fields['is_approved'] = array(
-				'text' => esc_html__( 'Is Approved', 'gravityview' ),
-				'type' => 'boolean',
+				'text' => esc_html__( 'Approval Status', 'gravityview' ),
+				'type' => 'multi',
 			);
 		}
 
@@ -748,7 +748,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			// Construct a manual query for unapproved statuses
-			if ( 'is_approved' === $filter['key'] && in_array( \GravityView_Entry_Approval_Status::UNAPPROVED, $filter['value'] ) ) {
+			if ( 'is_approved' === $filter['key'] && in_array( \GravityView_Entry_Approval_Status::UNAPPROVED, (array) $filter['value'], true ) ) {
 				$_tmp_query       = new GF_Query( $view->form->ID, array(
 					'field_filters' => array(
 						array(
@@ -1175,7 +1175,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 				
 				case 'is_approved':
 					$updated_field['key'] = 'is_approved';
-					$updated_field['input'] = 'checkbox';
 					$updated_field['value'] = $this->rgget_or_rgpost( 'filter_is_approved' );
 					$updated_field['choices'] = self::get_is_approved_choices();
 					break;
@@ -1634,31 +1633,29 @@ class GravityView_Widget_Search_GF_Query_Condition extends \GF_Query_Condition {
 	}
 
 	public function sql( $query ) {
-		$user_meta_fields = array(
-			'nickname', 'first_name', 'last_name', 
-		);
-
 		global $wpdb;
 
+		$user_meta_fields = array(
+			'nickname', 'first_name', 'last_name',
+		);
+
 		/**
-		 * @filter `gravityview/widgets/search/created_by/user_meta_fields` Filter the user meta fields to search by.
+		 * @filter `gravityview/widgets/search/created_by/user_meta_fields` Filter the user meta fields to search.
 		 * @param[in,out] array The user meta fields.
 		 * @param \GV\View $view The view.
 		 */
 		$user_meta_fields = apply_filters( 'gravityview/widgets/search/created_by/user_meta_fields', $user_meta_fields, $this->view );
 
-
 		$user_fields = array(
 			'user_nicename', 'user_login', 'display_name', 'user_email', 
 		);
+
 		/**
-		 * @filter `gravityview/widgets/search/created_by/user_fields` Filter the user meta fields to search by.
+		 * @filter `gravityview/widgets/search/created_by/user_fields` Filter the user fields to search.
 		 * @param[in,out] array The user fields.
 		 * @param \GV\View $view The view.
 		 */
 		$user_fields = apply_filters( 'gravityview/widgets/search/created_by/user_fields', $user_fields, $this->view );
-
-		$column = sprintf( '`%s`.`created_by`', $query->_alias( null ) );
 
 		$conditions = array();
 
