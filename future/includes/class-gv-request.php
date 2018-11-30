@@ -107,10 +107,36 @@ abstract class Request {
 			 * A joined request.
 			 */
 			if ( $joins = $this->is_view()->joins ) {
+				$forms = array_merge( wp_list_pluck( $joins, 'join' ), wp_list_pluck( $joins, 'join_on' ) );
+				$valid_forms = array_unique( wp_list_pluck( $forms, 'ID' ) );
+				$needs_forms = array_flip( $valid_forms );
+
 				$multientry = array();
-				foreach ( explode( ',', $id ) as $id ) {
-					$multientry[] = GF_Entry::by_id( $id );
+				foreach ( $ids = explode( ',', $id ) as $id ) {
+					if ( ! $e = GF_Entry::by_id( $id ) ) {
+						return false;
+					}
+
+					if ( ! in_array( $e['form_id'], $valid_forms ) ) {
+						return false;
+					}
+
+					unset( $needs_forms[ $e['form_id'] ] );
+
+					array_push( $multientry, $e );
 				}
+
+				/**
+				 * Not all forms have been requested.
+				 */
+				if ( count( $needs_forms ) ) {
+					return false;
+				}
+
+				if ( ( count( $multientry ) - 1 ) != count( $joins ) ) {
+					return false;
+				}
+
 				$entry = Multi_Entry::from_entries( array_filter( $multientry ) );
 			}  else {
 				/**

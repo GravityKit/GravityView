@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.0.13\n"
+"Project-Id-Version: GravityView 2.0.14\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -207,13 +207,13 @@ msgid ""
 msgstr ""
 
 #: future/includes/class-gv-plugin.php:537
-#: includes/class-gravityview-entry-approval.php:345
+#: includes/class-gravityview-entry-approval.php:366
 #: tests/unit-tests/GravityView_Uninstall_Test.php:191
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
 #: future/includes/class-gv-plugin.php:538
-#: includes/class-gravityview-entry-approval.php:339
+#: includes/class-gravityview-entry-approval.php:360
 #: tests/unit-tests/GravityView_Uninstall_Test.php:192
 msgid "Approved the Entry for GravityView"
 msgstr ""
@@ -1165,13 +1165,13 @@ msgid "(no title)"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:138
-#: includes/class-admin-views.php:1119
+#: includes/class-admin-views.php:1118
 #: includes/extensions/edit-entry/partials/form-buttons.php:31
 msgid "Cancel"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:183
-#: includes/class-admin-views.php:1123
+#: includes/class-admin-views.php:1122
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -1179,65 +1179,65 @@ msgstr ""
 msgid "Please select a View"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:137
+#: includes/class-admin-approve-entries.php:152
 msgid "GravityView Fields"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:138
+#: includes/class-admin-approve-entries.php:153
 msgid ""
 "Allow administrators to approve or reject entries and users to opt-in or "
 "opt-out of their entries being displayed."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:160
+#: includes/class-admin-approve-entries.php:175
 msgid "Approve/Reject"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:166
+#: includes/class-admin-approve-entries.php:181
 msgid "User Opt-In"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:190
+#: includes/class-admin-approve-entries.php:205
 msgid "Approved? (Admin-only)"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:192
+#: includes/class-admin-approve-entries.php:207
 msgid "Approved?"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:212
+#: includes/class-admin-approve-entries.php:227
 msgid "Show Entry on Website"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:214
+#: includes/class-admin-approve-entries.php:229
 msgid "Opt-In"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:222
+#: includes/class-admin-approve-entries.php:237
 msgid "Yes, display my entry on the website"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:326
+#: includes/class-admin-approve-entries.php:341
 msgid "%d entries"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:326
+#: includes/class-admin-approve-entries.php:341
 msgid "1 entry"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:331
+#: includes/class-admin-approve-entries.php:346
 msgid "%s approved."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:335
+#: includes/class-admin-approve-entries.php:350
 msgid "%s unapproved."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:339
+#: includes/class-admin-approve-entries.php:354
 msgid "%s disapproved."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:491
+#: includes/class-admin-approve-entries.php:506
 msgid "Show entry in directory view?"
 msgstr ""
 
@@ -1396,65 +1396,65 @@ msgstr ""
 msgid "Add Field"
 msgstr ""
 
-#: includes/class-admin-views.php:950
+#: includes/class-admin-views.php:949
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr ""
 
-#: includes/class-admin-views.php:1018
+#: includes/class-admin-views.php:1017
 msgid "Filter Fields:"
 msgstr ""
 
-#: includes/class-admin-views.php:1019
+#: includes/class-admin-views.php:1018
 msgid "Filter fields by name or label"
 msgstr ""
 
-#: includes/class-admin-views.php:1026
+#: includes/class-admin-views.php:1025
 msgid "No fields were found matching the search."
 msgstr ""
 
-#: includes/class-admin-views.php:1060
+#: includes/class-admin-views.php:1059
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:1061
+#: includes/class-admin-views.php:1060
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1117
+#: includes/class-admin-views.php:1116
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:1118
+#: includes/class-admin-views.php:1117
 msgid "Close"
 msgstr ""
 
-#: includes/class-admin-views.php:1120
+#: includes/class-admin-views.php:1119
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:1121
+#: includes/class-admin-views.php:1120
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:1122
+#: includes/class-admin-views.php:1121
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1124
+#: includes/class-admin-views.php:1123
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1125
+#: includes/class-admin-views.php:1124
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:1126
+#: includes/class-admin-views.php:1125
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -1495,23 +1495,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:498
+#: includes/class-admin-welcome.php:505
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:519
+#: includes/class-admin-welcome.php:526
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:554
+#: includes/class-admin-welcome.php:561
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:579
+#: includes/class-admin-welcome.php:586
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:580
+#: includes/class-admin-welcome.php:587
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1889,7 +1889,7 @@ msgstr ""
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
-#: includes/class-gravityview-entry-approval.php:342
+#: includes/class-gravityview-entry-approval.php:363
 msgid "Reset Entry approval for GravityView"
 msgstr ""
 

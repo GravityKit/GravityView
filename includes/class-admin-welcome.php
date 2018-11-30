@@ -269,6 +269,27 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>2.0.14 on July 9, 2018</h3>
+
+                <ul>
+                    <li>Added: Allow filtering entries by Unapproved status in Gravity Forms</li>
+                    <li>Added: Reset entry approval status by holding down Option/Alt when clicking entry approval icon</li>
+                    <li>Fixed: Merge Tags not working in field Custom Labels</li>
+                    <li>Fixed: Enable sorting by approval status all the time, not just when a form has an Approval field</li>
+                    <li>Fixed: When a View is saved without a connected form, don't show "no longer exists" message</li>
+                    <li>Fixed: Inline Edit plugin not updating properly when GravityView is active</li>
+                </ul>
+
+                <p><strong>Developer Notes:</strong></p>
+
+                <ul>
+                    <li>Added: <code>gravityview/approve_entries/after_submission/default_status</code> filter to modify the default status of an entry as it is created.</li>
+                    <li>Modified: No longer delete <code>is_approved</code> entry meta when updating entry status - leave the value to be <code>GravityView_Entry_Approval_Status::UNAPPROVED</code> (3)</li>
+                    <li>Fixed: Allow for "in" and "not_in" comparisons when using <code>GravityView_GFFormsModel::is_value_match</code></li>
+                    <li>Tweak: If "Search Mode" key is set, but there is no value, use "all"</li>
+                    <li>Tweak: Reduced number of database queries when rendering a View</li>
+                </ul>
+
                 <h3>2.0.13.1 on June 26, 2018</h3>
 
                 <ul>
