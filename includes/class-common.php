@@ -863,7 +863,28 @@ class GVCommon {
 				$query->where( \GF_Query_Condition::_and( $_tmp_query_parts['where'], $query_parts['where'] ) );
 			}, 10, 3 );
 
-			if ( ( ! $entries = $view->get_entries()->all() ) || $entries[0]->ID !== $entry['id'] ) {
+			$entries = $view->get_entries()->all();
+
+			if ( ! $entries ) {
+				remove_action( 'gravityview/view/query', $entry_subset_callback );
+				return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
+			}
+
+			// This entry is on a View with joins
+			if( $entries[0] instanceof \GV\Multi_Entry ) {
+
+				$multi_entry_ids = array();
+
+				foreach ( $entries[0]->entries as $multi_entry ) {
+					$multi_entry_ids[] = (int) $multi_entry->ID;
+				}
+
+				if( ! in_array( (int) $entry['id'], $multi_entry_ids, true ) ) {
+					remove_action( 'gravityview/view/query', $entry_subset_callback );
+					return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
+				}
+
+			} elseif ( (int) $entries[0]->ID !== (int) $entry['id'] ) {
 				remove_action( 'gravityview/view/query', $entry_subset_callback );
 				return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
 			}
