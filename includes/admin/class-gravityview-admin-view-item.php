@@ -114,6 +114,11 @@ abstract class GravityView_Admin_View_Item {
 		if ( $html ) {
 
 			foreach ( $field_info_items as $item ) {
+
+				if( \GV\Utils::get( $item, 'hide_in_picker', false ) ) {
+					continue;
+				}
+
 				$class = isset( $item['class'] ) ? sanitize_html_class( $item['class'] ) . ' description' : 'description';
 				// Add the title in case the value's long, in which case, it'll be truncated by CSS.
 				$output .= '<span class="' . $class . '">';

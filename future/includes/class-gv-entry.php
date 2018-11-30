@@ -148,6 +148,16 @@ abstract class Entry {
 		$entry_endpoint_name = \GV\Entry::get_endpoint_name();
 		$entry_slug = \GravityView_API::get_entry_slug( $this->ID, $this->as_entry() );
 
+		/**
+		 * @filter `gravityview/entry/slug` Modify the entry URL slug as needed.
+		 * @param[in,out] string $entry_slug The slug.
+		 * @param \GV\Entry $this The entry object.
+		 * @param \GV\View $view The view object.
+		 * @param \GV\Request $request The request.
+		 * @param boolean $track_directory Whether the directory is tracked.
+		 */
+		$entry_slug = apply_filters( 'gravityview/entry/slug', $entry_slug, $this, $view, $request, $track_directory );
+
 		/** Assemble the permalink. */
 		if ( get_option( 'permalink_structure' ) && ! is_preview() ) {
 			/**
@@ -185,5 +195,29 @@ abstract class Entry {
 		 * @param \GV\Request $reqeust The request context.
 		 */
 		return apply_filters( 'gravityview/entry/permalink', $permalink, $this, $view, $request );
+	}
+
+	/**
+	 * Is this a multi-entry (joined entry).
+	 *
+	 * @return boolean
+	 */
+	public function is_multi() {
+		return $this instanceof Multi_Entry;
+	}
+
+	/**
+	 * If this is a Multi_Entry filter it by Field
+	 *
+	 * @param \GV\Field $field The field to filter by.
+	 * @param int $fallback A fallaback form_id if the field supplied is invaild.
+	 *
+	 * @return \GV\Entry|null A \GV\Entry or null if not found.
+	 */
+	public function from_field( $field, $fallback = 0 ) {
+		if ( ! $this->is_multi() ) {
+			return $this;
+		}
+		return Utils::get( $this, $field->form_id, $fallback );
 	}
 }
