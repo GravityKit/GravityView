@@ -105,10 +105,17 @@ abstract class Request {
 				return $entries[ "$form_id:$id" ];
 			}
 
+			if ( ! $view = $this->is_view() ) {
+				/**
+				 * A shortcode probably.
+				 */
+				$view = gravityview()->views->get();
+			}
+
 			/**
 			 * A joined request.
 			 */
-			if ( $joins = $this->is_view()->joins ) {
+			if ( $view && ( $joins = $view->joins ) ) {
 				$forms = array_merge( wp_list_pluck( $joins, 'join' ), wp_list_pluck( $joins, 'join_on' ) );
 				$valid_forms = array_unique( wp_list_pluck( $forms, 'ID' ) );
 				$needs_forms = array_flip( $valid_forms );
