@@ -264,6 +264,9 @@ class View_Table_Template extends View_Template {
 
 		$value = $renderer->render( $field, $this->view, $source, $entry, $this->request );
 
+		$context = Template_Context::from_template( $this, compact( 'field' ) );
+		$context->entry = $single_entry;
+
 		$args = array(
 			'entry' => $entry->as_entry(),
 			'field' => is_numeric( $field->ID ) ? $field->as_configuration() : null,
@@ -274,9 +277,6 @@ class View_Table_Template extends View_Template {
 			'markup' => '<td id="{{ field_id }}" class="{{ class }}" data-label="{{label_value:data-label}}">{{ value }}</td>',
             'form' => $form,
 		);
-
-		$context = Template_Context::from_template( $this, compact( 'field' ) );
-		$context->entry = $single_entry;
 
 		/** Output. */
 		echo \gravityview_field_output( $args, $context );
