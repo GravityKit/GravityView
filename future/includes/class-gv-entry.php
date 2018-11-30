@@ -45,11 +45,11 @@ abstract class Entry {
 		$endpoint = self::get_endpoint_name();
 
 		/** Let's make sure the endpoint array is not polluted. */
-		if ( in_array( array( EP_ALL, $endpoint, $endpoint ), $wp_rewrite->endpoints ) ) {
+		if ( in_array( array( EP_PERMALINK | EP_PERMALINK | EP_ROOT, $endpoint, $endpoint ), $wp_rewrite->endpoints ) ) {
 			return;
 		}
 
-		add_rewrite_endpoint( $endpoint, EP_ALL );
+		add_rewrite_endpoint( $endpoint, EP_PAGES | EP_PERMALINK | EP_ROOT );
 	}
 
 	/**
@@ -123,7 +123,12 @@ abstract class Entry {
 			/** Must be an embed of some sort. */
 			if ( is_object( $post ) && is_numeric( $post->ID ) ) {
 				$permalink = get_permalink( $post->ID );
-				$args['gvid'] = $view_id;
+
+				$view_collection = View_Collection::from_post( $post );
+
+				if( 1 < $view_collection->count() ) {
+					$args['gvid'] = $view_id;
+				}
 			}
 		}
 		

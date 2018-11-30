@@ -24,11 +24,11 @@ class Mock_Request extends Request {
 		return $this->__call( __FUNCTION__, func_get_args() );
 	}
 
-	public function is_entry() {
+	public function is_entry( $form_id = 0 ) {
 		return $this->__call( __FUNCTION__, func_get_args() );
 	}
 
-	public function is_edit_entry() {
+	public function is_edit_entry( $form_id = 0 ) {
 		return $this->__call( __FUNCTION__, func_get_args() );
 	}
 

@@ -92,7 +92,7 @@
 		var $link = $( e.target ).is('span') ? $( e.target ).parent() : $( e.target );
 		var entry_slug = $link.attr('data-entry-slug');
 		var form_id = $link.attr('data-form-id');
-		var new_status = self.get_new_status( $link.attr( 'data-current-status') );
+		var new_status = self.get_new_status( e, $link.attr( 'data-current-status') );
 
 		if( self.debug ) {
 			console.log( 'toggle_approval', { 'target': e.target, 'current_approval_value': $link.attr( 'data-current-status'), 'new_status': new_status });
@@ -108,12 +108,18 @@
 	/**
 	 * Get the new status value that should be used when clicking the link, based on current value
 	 *
+	 * @param {Event} e
 	 * @param {string|int} old_status Old status value
 	 *
 	 * @returns {int}
 	 */
-	self.get_new_status = function( old_status ) {
+	self.get_new_status = function( e, old_status ) {
 		var new_status;
+
+		// When holding down option/control, unapprove the entry
+		if ( e.altKey ) {
+			return gvApproval.status.unapproved.value;
+		}
 
 		// The `+ ""` code converts the value to a string, without requiring `.toString()`
 		switch( old_status + "" ) {

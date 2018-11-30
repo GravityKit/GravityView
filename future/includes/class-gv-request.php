@@ -90,17 +90,19 @@ abstract class Request {
 	 * @since 2.0
 	 * @todo tests
 	 *
+	 * @param int $form_id The form ID, since slugs can be non-unique. Default: 0.
+	 *
 	 * @return \GV\GF_Entry|false The entry requested or false.
 	 */
-	public function is_entry() {
-		static $entries = array();
-
+	public function is_entry( $form_id = 0 ) {
 		$entry = false;
 
 		if ( $id = get_query_var( Entry::get_endpoint_name() ) ) {
 
-			if ( isset( $entries[ $id ] ) ) {
-				return $entries[ $id ];
+			static $entries = array();
+
+			if ( isset( $entries[ "$form_id:$id" ] ) ) {
+				return $entries[ "$form_id:$id" ];
 			}
 
 			/**
@@ -112,8 +114,8 @@ abstract class Request {
 				$needs_forms = array_flip( $valid_forms );
 
 				$multientry = array();
-				foreach ( $ids = explode( ',', $id ) as $id ) {
-					if ( ! $e = GF_Entry::by_id( $id ) ) {
+				foreach ( $ids = explode( ',', $id ) as $i => $id ) {
+					if ( ! $e = GF_Entry::by_id( $id, $forms[ $i ] ) ) {
 						return false;
 					}
 
@@ -142,10 +144,10 @@ abstract class Request {
 				/**
 				 * A regular one.
 				 */
-				$entry = GF_Entry::by_id( $id );
+				$entry = GF_Entry::by_id( $id, $form_id );
 			}
 
-			$entries[ $id ] = $entry;
+			$entries[ "$form_id:$id" ] = $entry;
 		}
 
 		return $entry;
@@ -158,15 +160,17 @@ abstract class Request {
 	 * @since 2.0
 	 * @todo tests
 	 *
+	 * @param int $form_id The form ID, since slugs can be non-unique. Default: 0.
+	 *
 	 * @return \GV\Entry|false The entry requested or false.
 	 */
-	public function is_edit_entry() {
+	public function is_edit_entry( $form_id = 0 ) {
 		/**
 		* @filter `gravityview_is_edit_entry` Whether we're currently on the Edit Entry screen \n
 		* The Edit Entry functionality overrides this value.
 		* @param boolean $is_edit_entry
 		*/
-		if ( ( $entry = $this->is_entry() ) && apply_filters( 'gravityview_is_edit_entry', false ) ) {
+		if ( ( $entry = $this->is_entry( $form_id ) ) && apply_filters( 'gravityview_is_edit_entry', false ) ) {
 			return $entry;
 		}
 		return false;

@@ -83,7 +83,8 @@ class Addon_Settings extends \GFAddOn {
 	 */
 	public function init_admin() {
 		$this->_load_license_handler();
-		$this->license_key_notice();
+
+		add_action( 'admin_head', array( $this, 'license_key_notice' ) );
 
 		add_filter( 'gform_addon_app_settings_menu_gravityview', array( $this, 'modify_app_settings_menu_title' ) );
 
@@ -132,9 +133,12 @@ class Addon_Settings extends \GFAddOn {
 	 * @return void
 	 */
 	public function add_network_menu() {
-		if ( gravityview()->plugin->is_network_activated() ) {
-			add_menu_page( __( 'Settings', 'gravityview' ), __( 'GravityView', 'gravityview' ), $this->_capabilities_app_settings, "{$this->_slug}_settings", array( $this, 'app_tab_page' ), 'none' );
+
+	    if ( ! gravityview()->plugin->is_network_activated() ) {
+			return;
 		}
+
+        add_menu_page( __( 'Settings', 'gravityview' ), __( 'GravityView', 'gravityview' ), $this->_capabilities_app_settings, "{$this->_slug}_settings", array( $this, 'app_tab_page' ), 'none' );
 	}
 
 	/**
@@ -600,12 +604,15 @@ class Addon_Settings extends \GFAddOn {
 
 		$message = esc_html__( 'Your GravityView license %s. This means you&rsquo;re missing out on updates and support! %sActivate your license%s or %sget a license here%s.', 'gravityview' );
 
+		/** @internal Do not use! Will change without notice (pun slightly intended). */
+		$message = apply_filters( 'gravityview/settings/license-key-notice', $message );
+
 		/**
 		 * I wanted to remove the period from after the buttons in the string,
 		 * but didn't want to mess up the translation strings for the translators.
 		 */
 		$message = mb_substr( $message, 0, mb_strlen( $message ) - 1 );
-		$title = __ ( 'Inactive License', 'gravityview');
+		$title = __( 'Inactive License', 'gravityview');
 		$status = '';
 		$update_below = false;
 		$primary_button_link = admin_url( 'edit.php?post_type=gravityview&amp;page=gravityview_settings' );
@@ -638,21 +645,23 @@ class Addon_Settings extends \GFAddOn {
 		$url = 'https://gravityview.co/pricing/?utm_source=admin_notice&utm_medium=admin&utm_content='.$license_status.'&utm_campaign=Admin%20Notice';
 
 		// Show a different notice on settings page for inactive licenses (hide the buttons)
-		if ( $update_below && gravityview_is_admin_page( '', 'settings' ) ) {
+		if ( $update_below && gravityview()->request->is_admin( '', 'settings' ) ) {
 			$message = sprintf( $message, $status, '<div class="hidden">', '', '', '</div><a href="#" onclick="jQuery(\'#license_key\').focus(); return false;">' . $update_below . '</a>' );
 		} else {
 			$message = sprintf( $message, $status, "\n\n" . '<a href="' . esc_url( $primary_button_link ) . '" class="button button-primary">', '</a>', '<a href="' . esc_url( $url ) . '" class="button button-secondary">', '</a>' );
 		}
 
-		if ( ! empty( $status ) ) {
-			\GravityView_Admin_Notices::add_notice( array(
-				'message' => $message,
-				'class'   => 'updated',
-				'title'   => $title,
-				'cap'     => 'gravityview_edit_settings',
-				'dismiss' => sha1( $license_status . '_' . $license_id . '_' . date( 'z' ) ), // Show every day, instead of every 8 weeks (which is the default)
-			) );
+		if ( empty( $status ) ) {
+			return;
 		}
+
+        \GravityView_Admin_Notices::add_notice( array(
+            'message' => $message,
+            'class'   => 'notice notice-warning',
+            'title'   => $title,
+            'cap'     => 'gravityview_edit_settings',
+            'dismiss' => sha1( $license_status . '_' . $license_id . '_' . date( 'z' ) ), // Show every day, instead of every 8 weeks (which is the default)
+        ) );
 	}
 
 	/**

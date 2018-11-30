@@ -96,4 +96,56 @@ class Utils {
 
 		return $default;
 	}
+
+	/**
+	 * Sanitizes Excel formulas inside CSV output
+	 *
+	 * @internal
+	 * @since 2.1
+	 *
+	 * @param string $value The cell value to strip formulas from.
+	 *
+	 * @return string The sanitized value.
+	 */
+	public static function strip_excel_formulas( $value ) {
+
+		if ( strpos( $value, '=' ) === 0 ) {
+			$value = "'" . $value;
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Return a value by call.
+	 *
+	 * Use for quick hook callback returns and whatnot.
+	 *
+	 * @internal
+	 * @since 2.1
+	 *
+	 * @param mixed $value The value to return from the closure.
+	 *
+	 * @return Closure The closure with the $value bound.
+	 */
+	public static function _return( $value ) {
+		return function() use ( $value ) { return $value; };
+	}
+
+	/**
+	 * Output an associative array represenation of the query parameters.
+	 *
+	 * @internal
+	 * @since 2.1
+	 *
+	 * @param \GF_Query The query object to dump.
+	 *
+	 * @return array An associative array of parameters.
+	 */
+	public static function gf_query_debug( $query ) {
+		$introspect = $query->_introspect();
+		return array(
+			'where' => $query->_where_unwrap( $introspect['where'] )
+		);
+	}
 }

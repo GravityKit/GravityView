@@ -98,33 +98,48 @@ class View_Table_Template extends View_Template {
 
 		foreach ( $fields->by_visible()->all() as $field ) {
 			$context = Template_Context::from_template( $this, compact( 'field' ) );
-			$form = $field->form_id ? GF_Form::by_id( $field->form_id ) : $this->view->form;
-
-			/**
-			 * @deprecated Here for back-compatibility.
-			 */
-			$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form ), $field->as_configuration() );
-			$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, null );
-
-			/**
-			 * @filter `gravityview/template/field/label` Override the field label.
-			 * @since 2.0
-			 * @param[in,out] string $column_label The label to override.
-			 * @param \GV\Template_Context $context The context. Does not have entry set here.
-			 */
-			$column_label = apply_filters( 'gravityview/template/field/label', $column_label, $context );
 
 			$args = array(
+				'field' => is_numeric( $field->ID ) ? $field->as_configuration() : null,
 				'hide_empty' => false,
 				'zone_id' => 'directory_table-columns',
-				'markup' => '<th id="{{ field_id }}" class="{{ class }}" style="{{width:style}}">{{label}}</th>',
+				'markup' => '<th id="{{ field_id }}" class="{{ class }}" style="{{width:style}}" data-label="{{label_value:data-label}}">{{label}}</th>',
 				'label_markup' => '<span class="gv-field-label">{{ label }}</span>',
-				'label' => $column_label,
+				'label' => self::get_field_column_label( $field, $context ),
 			);
 
 			echo \gravityview_field_output( $args, $context );
 		}
 	}
+
+	/**
+     * Returns the label for a column, with support for all deprecated filters
+     *
+     * @since 2.1
+     *
+	 * @param \GV\Field $field
+	 * @param \GV\Template_Context $context
+	 */
+	protected static function get_field_column_label( $field, $context = null ) {
+
+		$form = $field->form_id ? GF_Form::by_id( $field->form_id ) : $context->view->form;
+
+		/**
+		 * @deprecated Here for back-compatibility.
+		 */
+		$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $context->view, $form ), $field->as_configuration() );
+		$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, null );
+
+		/**
+		 * @filter `gravityview/template/field/label` Override the field label.
+		 * @since 2.0
+		 * @param[in,out] string $column_label The label to override.
+		 * @param \GV\Template_Context $context The context. Does not have entry set here.
+		 */
+		$column_label = apply_filters( 'gravityview/template/field/label', $column_label, $context );
+
+		return $column_label;
+    }
 
 	/**
 	 * Output the entry row.
@@ -250,10 +265,13 @@ class View_Table_Template extends View_Template {
 		$value = $renderer->render( $field, $this->view, $source, $entry, $this->request );
 
 		$args = array(
+			'entry' => $entry->as_entry(),
+			'field' => is_numeric( $field->ID ) ? $field->as_configuration() : null,
 			'value' => $value,
 			'hide_empty' => false,
 			'zone_id' => 'directory_table-columns',
-			'markup' => '<td id="{{ field_id }}" class="{{ class }}">{{ value }}</td>',
+            'label' => self::get_field_column_label( $field, $context ),
+			'markup' => '<td id="{{ field_id }}" class="{{ class }}" data-label="{{label_value:data-label}}">{{ value }}</td>',
             'form' => $form,
 		);
 

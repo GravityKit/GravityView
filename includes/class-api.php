@@ -301,7 +301,7 @@ class GravityView_API {
 
 		if ( $context instanceof \GV\Template_Context ) {
 			if ( $context->request->is_search() ) {
-				$search = true;
+				$is_search = true;
 			}
 		} else {
 			$gravityview_view = GravityView_View::getInstance();
@@ -319,6 +319,7 @@ class GravityView_API {
 
 		/**
 		 * @filter `gravitview_no_entries_text` Modify the text displayed when there are no entries.
+		 * Note: this filter is, and always has been, misspelled. This will not be fixed, since the filter is deprecated.
 		 * @param string $output The existing "No Entries" text
 		 * @param boolean $is_search Is the current page a search result, or just a multiple entries screen?
 		 * @return string The modified text.
@@ -504,7 +505,7 @@ class GravityView_API {
 		 * @filter `gravityview_custom_entry_slug` Whether to enable and use custom entry slugs.
 		 * @param boolean True: Allow for slugs based on entry values. False: always use entry IDs (default)
 		 */
-		$custom = apply_filters('gravityview_custom_entry_slug', false );
+		$custom = apply_filters( 'gravityview_custom_entry_slug', false );
 
 		// If we're using custom slug...
 		if ( $custom ) {
@@ -512,13 +513,37 @@ class GravityView_API {
 			// Get the entry hash
 			$hash = self::get_custom_entry_slug( $id_or_string, $entry );
 
-			// See if the entry already has a hash set
-			$value = gform_get_meta( $id_or_string, 'gravityview_unique_id' );
+			// Cache the slugs
+			static $cache = array();
+
+			if ( ! isset( $cache[ $id_or_string ] ) ) {
+				global $wpdb;
+
+				if ( version_compare( GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) ) {
+					$table = GFFormsModel::get_entry_meta_table_name();
+					$column = 'entry_id';
+				} else {
+					$table = RGFormsModel::get_lead_meta_table_name();
+					$column = 'lead_id';
+				}
+
+				$results = $wpdb->get_results( $wpdb->prepare( "SELECT $column, meta_value FROM $table WHERE form_id = (SELECT form_id FROM $table WHERE $column = %d LIMIT 1) AND meta_key = 'gravityview_unique_id'", $id_or_string ) );
+
+				if ( $results ) {
+					$cache = array_replace( $cache, array_combine( wp_list_pluck( $results, $column ), wp_list_pluck( $results, 'meta_value' ) ) );
+				}
+
+				if ( ! isset( $cache[ $id_or_string ] ) ) {
+					$cache[ $id_or_string ] = false;
+				}
+			}
+
+			$value = $cache[ $id_or_string ];
 
 			// If it does have a hash set, and the hash is expected, use it.
 			// This check allows users to change the hash structure using the
 			// gravityview_entry_hash filter and have the old hashes expire.
-			if( empty( $value ) || $value !== $hash ) {
+			if ( empty( $value ) || $value !== $hash ) {
 				gravityview()->log->debug( 'Setting hash for entry {entry}: {hash}', array( 'entry' => $id_or_string, 'hash' => $hash ) );
 				gform_update_meta( $id_or_string, 'gravityview_unique_id', $hash, \GV\Utils::get( $entry, 'form_id' ) );
 			}
@@ -632,7 +657,15 @@ class GravityView_API {
 
 		}
 
-		if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() ) {
+		if( $post_id ) {
+			$passed_post = get_post( $post_id );
+			$views       = \GV\View_Collection::from_post( $passed_post );
+			$has_multiple_views = $views->count() > 1;
+		} else {
+			$has_multiple_views = class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views();
+		}
+
+		if ( $has_multiple_views ) {
 			$args['gvid'] = gravityview_get_view_id();
 		}
 
@@ -810,7 +843,7 @@ function gravityview_back_link( $context = null ) {
 	$label = apply_filters( 'gravityview_go_back_label', $label );
 
 	/**
-	 * @filter `gravityview_go_back_label` Modify the back link text
+	 * @filter `gravityview/template/links/back/label` Modify the back link text
 	 * @since 2.0
 	 * @see gv_directory_link() Generated the original back link
 	 * @param string $label Existing label text
@@ -818,9 +851,15 @@ function gravityview_back_link( $context = null ) {
 	 */
 	$label = apply_filters( 'gravityview/template/links/back/label', $label, $context );
 
-	$link = gravityview_get_link( $href, esc_html( $label ), array(
-		'data-viewid' => $view_id,
-	) );
+	/**
+	 * @filter `gravityview/template/links/back/atts` Modify the attributes used on the back link anchor tag
+	 * @since 2.1
+	 * @param array $atts Original attributes, default: [ data-viewid => $view_id ]
+	 * @param \GV\Template_Context The context.
+	 */
+	$atts = apply_filters( 'gravityview/template/links/back/atts', array( 'data-viewid' => $view_id ), $context );
+
+	$link = gravityview_get_link( $href, esc_html( $label ), $atts );
 
 	return $link;
 }
@@ -1180,6 +1219,10 @@ function gravityview_get_files_array( $value, $gv_class = '', $context = null ) 
 		include_once( GRAVITYVIEW_DIR .'includes/fields/class-gravityview-field-fileupload.php' );
 	}
 
+	if ( is_null( $context ) ) {
+		_doing_it_wrong( __FUNCTION__, '2.0', 'Please pass an \GV\Template_Context object as the 3rd parameter' );
+	}
+
 	return GravityView_Field_FileUpload::get_files_array( $value, $gv_class, $context );
 }
 
@@ -1303,6 +1346,8 @@ function gravityview_field_output( $passed_args, $context = null ) {
 		'width:style' => '',
 		'label' => '',
 		'label_value' => '',
+		'label_value:esc_attr' => '',
+		'label_value:data-label' => '',
 		'class' => '',
 		'field_id' => '',
 	);
@@ -1333,18 +1378,15 @@ function gravityview_field_output( $passed_args, $context = null ) {
 	$placeholders['class'] = gv_class( $field, $form, $entry );
 	$placeholders['field_id'] = GravityView_API::field_html_attr_id( $field, $form, $entry );
 
-
-	// Get field label if needed
-	if ( ! empty( $args['label_markup'] ) && ! empty( $args['field']['show_label'] ) ) {
-		$placeholders['label'] = str_replace( array( '{{label}}', '{{ label }}' ), '<span class="gv-field-label">{{ label_value }}</span>', $args['label_markup'] );
-	}
-
 	if ( $context instanceof \GV\Template_Context ) {
 		$placeholders['label_value'] = \GV\Utils::get( $args, 'label' );
 	} else {
 		// Default Label value
 		$placeholders['label_value'] = gv_label( $field, $entry );
 	}
+
+	$placeholders['label_value:data-label'] = trim( esc_attr( strip_tags( str_replace( '>&nbsp;', '>', $placeholders['label_value'] ) ) ) );
+	$placeholders['label_value:esc_attr'] = esc_attr( $placeholders['label_value'] );
 
 	if ( empty( $placeholders['label'] ) && ! empty( $placeholders['label_value'] ) ){
 		$placeholders['label'] = '<span class="gv-field-label">{{ label_value }}</span>';

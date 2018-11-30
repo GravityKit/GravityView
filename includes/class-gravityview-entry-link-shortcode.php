@@ -172,7 +172,24 @@ class GravityView_Entry_Link_Shortcode {
 
 		$link_text = $this->get_anchor_text( $content );
 
-		return gravityview_get_link( $url, $link_text, $link_atts );
+		$return = gravityview_get_link( $url, $link_text, $link_atts );
+
+		/**
+		 * @filter `gravityview/shortcodes/gv_entry_link/output` Modify the output of the [gv_entry_link] shortcode
+		 * @since 2.0.15
+		 * @param string $return The HTML link output
+		 * @param array {
+		 *   @type string        $url The URL used to generate the anchor tag. {@see GravityView_Entry_Link_Shortcode::get_url}
+		 *   @type string        $link_text {@see GravityView_Entry_Link_Shortcode::get_anchor_text}
+		 *   @type array         $link_atts {@see GravityView_Entry_Link_Shortcode::get_link_atts}
+		 *   @type array|string  $atts Shortcode atts passed to shortcode
+		 *   @type string        $content Content passed to shortcode
+		 *   @type string        $context The tag of the shortcode being called
+		 * }
+		 */
+		$return = apply_filters( 'gravityview/shortcodes/gv_entry_link/output', $return, compact( 'url', 'link_text', 'link_atts', 'atts', 'content', 'context' ) );
+
+		return $return;
 	}
 
 	/**
@@ -208,7 +225,7 @@ class GravityView_Entry_Link_Shortcode {
 	private function get_anchor_text( $content = null ) {
 
 		if ( $content ) {
-			return $content;
+			return do_shortcode( $content );
 		}
 
 		switch ( $this->settings['action'] ) {

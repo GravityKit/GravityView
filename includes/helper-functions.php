@@ -196,22 +196,28 @@ function gravityview_ob_include( $file_path, $object = NULL ) {
 
 /**
  * Get an image of our intrepid explorer friend
+ *
  * @since 1.12
+ * @since 2.1 Added $class parameter
+ *
+ * @param int $height Height of the cutie in pixels
+ * @param null|string $css_class If defined, use the passed CSS class (can be empty string). Otherwise, use default alignleft (or alignright, based on RTL).
+ *
  * @return string HTML image tag with floaty's cute mug on it
  */
-function gravityview_get_floaty( $height = 87 ) {
+function gravityview_get_floaty( $height = 87, $css_class = null ) {
 
 	$width = $height * 0.7586206897;
 
 	if( function_exists('is_rtl') && is_rtl() ) {
 		$style = 'margin:10px 10px 10px 0;';
-		$class = 'alignright';
+		$css_class = is_string( $css_class ) ? $css_class : 'alignright';
 	} else {
 		$style = 'margin:10px 10px 10px 0;';
-		$class = 'alignleft';
+		$css_class = is_string( $css_class ) ? $css_class : 'alignleft';
 	}
 
-	return '<img src="'.plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="'.$class.'" height="'.intval( $height ).'" width="'.round( $width, 2 ).'" alt="The GravityView Astronaut Says:" style="'.$style.'" />';
+	return '<img src="'. esc_url( plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ) ) .'" class="'. gravityview_sanitize_html_class( $css_class ).'" height="'.intval( $height ).'" width="'.round( $width, 2 ).'" alt="The GravityView Astronaut Says:" style="'.$style.'" />';
 }
 
 /**
@@ -456,7 +462,7 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
  * @param string $value The string that may be decoded
  * @param bool $assoc [optional] When `true`, returned objects will be converted into associative arrays
  * @param int $depth [optional] User specified recursion depth.
- * @param int $options [optional] Bitmask of JSON decode options
+ * @param int $options [optional] Bitmask of JSON decode options. Used only on sites running PHP 5.4+
  *
  * @return array|mixed|object|string If $value is JSON, returns the response from `json_decode()`. Otherwise, returns original value.
  */
@@ -466,7 +472,11 @@ function gv_maybe_json_decode( $value, $assoc = false, $depth = 512, $options = 
 		return $value;
 	}
 
-	$decoded = json_decode( $value );
+	if ( version_compare( phpversion(), '5.4.0', '>=' ) ) {
+		$decoded = json_decode( $value, $assoc, $depth, $options );
+	} else {
+		$decoded = json_decode( $value, $assoc, $depth );
+	}
 
 	// There was a JSON error (PHP 5.3+)
 	if( function_exists('json_last_error') && JSON_ERROR_NONE !== json_last_error() ) {
@@ -638,7 +648,7 @@ function _gravityview_process_posted_fields() {
 
 			// We are not using parse_str() due to max_input_vars limitation with large View configurations
 			$fields_holder = array();
-			GVCommon::gv_parse_str( $_POST['gv_fields'], $fields_holder );
+			GVCommon::gv_parse_str( stripslashes( $_POST['gv_fields'] ), $fields_holder );
 
 			if ( isset( $fields_holder['fields'] ) ) {
 				$fields = $fields_holder['fields'];

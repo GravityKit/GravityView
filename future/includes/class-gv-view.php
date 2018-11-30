@@ -196,6 +196,30 @@ class View implements \ArrayAccess {
 	}
 
 	/**
+	 * Add extra rewrite endpoints.
+	 *
+	 * @return void
+	 */
+	public static function add_rewrite_endpoint() {
+		/**
+		 * CSV.
+		 */
+		global $wp_rewrite;
+
+		$slug = apply_filters( 'gravityview_slug', 'view' );
+		$rule = array( sprintf( '%s/([^/]+)/csv/?', $slug ), 'index.php?gravityview=$matches[1]&csv=1', 'top' );
+
+		add_filter( 'query_vars', function( $query_vars ) { 
+			$query_vars[] = 'csv';
+			return $query_vars;
+		} );
+
+		if ( ! isset( $wp_rewrite->extra_rules_top[ $rule[0] ] ) ) {
+			call_user_func_array( 'add_rewrite_rule', $rule );
+		}
+	}
+
+	/**
 	 * A renderer filter for the View post type content.
 	 *
 	 * @param string $content Should be empty, as we don't store anything there.
@@ -227,65 +251,36 @@ class View implements \ArrayAccess {
 		}
 
 		/**
-		 * This View is password protected. Nothing to do here.
+		 * Check permissions.
 		 */
-		if ( post_password_required( $view->ID ) ) {
-			gravityview()->log->notice( 'Post password is required for View #{view_id}', array( 'view_id' => $view->ID ) );
-			return get_the_password_form( $view->ID );
-		}
+		while ( $error = $view->can_render( null, $request ) ) {
+			if ( ! is_wp_error( $error ) )
+				break;
 
-		if ( ! $view->form ) {
-			gravityview()->log->notice( 'View #{id} has no form attached to it.', array( 'id' => $view->ID ) );
+			switch ( str_replace( 'gravityview/', '', $error->get_error_code() ) ) {
+				case 'post_password_required':
+					return get_the_password_form( $view->ID );
+				case 'no_form_attached':
 
-			/**
-			 * This View has no data source. There's nothing to show really.
-			 * ...apart from a nice message if the user can do anything about it.
-			 */
-			if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-				return __( sprintf( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
+					gravityview()->log->error( 'View #{view_id} cannot render: {error_code} {error_message}', array( 'error_code' => $error->get_error_code(), 'error_message' => $error->get_error_message() ) );
+
+					/**
+					 * This View has no data source. There's nothing to show really.
+					 * ...apart from a nice message if the user can do anything about it.
+					 */
+					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
+						return __( sprintf( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
+					}
+					break;
+				case 'no_direct_access':
+				case 'embed_only':
+				case 'not_public':
+				default:
+					gravityview()->log->notice( 'View #{view_id} cannot render: {error_code} {error_message}', array( 'error_code' => $error->get_error_code(), 'error_message' => $error->get_error_message() ) );
+					return __( 'You are not allowed to view this content.', 'gravityview' );
 			}
 
 			return $content;
-		}
-
-		/**
-		 * Is this View directly accessible via a post URL?
-		 *
-		 * @see https://codex.wordpress.org/Function_Reference/register_post_type#public
-		 */
-
-		/**
-		 * @filter `gravityview_direct_access` Should Views be directly accessible, or only visible using the shortcode?
-		 * @deprecated
-		 * @param[in,out] boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded. Default: `true`
-		 * @param int $view_id The ID of the View currently being requested. `0` for general setting
-		 */
-		$direct_access = apply_filters( 'gravityview_direct_access', true, $view->ID );
-
-		/**
-		 * @filter `gravityview/request/output/direct` Should this View be directly accessbile?
-		 * @since 2.0
-		 * @param[in,out] boolean Accessible or not. Default: accessbile.
-		 * @param \GV\View $view The View we're trying to directly render here.
-		 * @param \GV\Request $request The current request.
-		 */
-		if ( ! apply_filters( 'gravityview/view/output/direct', $direct_access, $view, $request ) ) {
-			return __( 'You are not allowed to view this content.', 'gravityview' );
-		}
-
-		/**
-		 * Is this View an embed-only View? If so, don't allow rendering here,
-		 *  as this is a direct request.
-		 */
-		if ( $view->settings->get( 'embed_only' ) && ! \GVCommon::has_cap( 'read_private_gravityviews' ) ) {
-			return __( 'You are not allowed to view this content.', 'gravityview' );
-		}
-
-		/** Private, pending, draft, etc. */
-		$public_states = get_post_stati( array( 'public' => true ) );
-		if ( ! in_array( $view->post_status, $public_states ) && ! \GVCommon::has_cap( 'read_gravityview', $view->ID ) ) {
-			gravityview()->log->notice( 'The current user cannot access this View #{view_id}', array( 'view_id' => $view->ID ) );
-			return __( 'You are not allowed to view this content.', 'gravityview' );
 		}
 
 		$is_admin_and_can_view = $view->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap('gravityview_moderate_entries', $view->ID );
@@ -293,7 +288,7 @@ class View implements \ArrayAccess {
 		/**
 		 * Editing a single entry.
 		 */
-		if ( $entry = $request->is_edit_entry() ) {
+		if ( $entry = $request->is_edit_entry( $view->form ? $view->form->ID : 0 ) ) {
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -317,7 +312,11 @@ class View implements \ArrayAccess {
 		/**
 		 * Viewing a single entry.
 		 */
-		} else if ( $entry = $request->is_entry() ) {
+		} else if ( $entry = $request->is_entry( $view->form ? $view->form->ID : 0 ) ) {
+			if ( $entry['status'] != 'active' ) {
+				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
+				return __( 'You are not allowed to view this content.', 'gravityview' );
+			}
 
 			$entryset = $entry->is_multi() ? $entry->entries : array( $entry );
 
@@ -345,25 +344,130 @@ class View implements \ArrayAccess {
 				}
 			}
 
-			$error = \GVCommon::check_entry_display( $entry->as_entry() );
+			$error = \GVCommon::check_entry_display( $entry->as_entry(), $view );
 
-			if( is_wp_error( $error ) ) {
+			if ( is_wp_error( $error ) ) {
 				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing: {message}', array( 'entry_id' => $entry->ID, 'message' => $error->get_error_message() ) );
 				return __( 'You are not allowed to view this content.', 'gravityview' );
 			}
 
 			$renderer = new Entry_Renderer();
 			return $renderer->render( $entry, $view, $request );
+		}
 
 		/**
 		 * Plain old View.
 		 */
-		} else {
-			$renderer = new View_Renderer();
-			return $renderer->render( $view, $request );
+		$renderer = new View_Renderer();
+		return $renderer->render( $view, $request );
+	}
+
+	/**
+	 * Checks whether this view can be accessed or not.
+	 *
+	 * @param string[]    $context The context we're asking for access from.
+	 *                             Can any and as many of one of:
+	 *                                 edit      An edit context.
+	 *                                 single    A single context.
+	 *                                 cpt       The custom post type single page acessed.
+	 *                                 shortcode Embedded as a shortcode.
+	 *                                 oembed    Embedded as an oEmbed.
+	 *                                 rest      A REST call.
+	 * @param \GV\Request $request The request
+	 *
+	 * @return bool|\WP_Error An error if this View shouldn't be rendered here.
+	 */
+	public function can_render( $context = null, $request = null ) {
+		if ( ! $request ) {
+			$request = gravityview()->request;
 		}
 
-		return $content;
+		if ( ! is_array( $context ) ) {
+			$context = array();
+		}
+
+		/**
+		 * @filter `gravityview/view/can_render` Whether the view can be rendered or not.
+		 * @param bool|\WP_Error $result  The result. Default: null.
+		 * @param \GV\View       $view	The view.
+		 * @param string[]       $context See \GV\View::can_render
+		 * @param \GV\Request    $request The request.
+		 */
+		if ( ! is_null( $result = apply_filters( 'gravityview/view/can_render', null, $this, $context, $request ) ) ) {
+			return $result;
+		}
+
+		if ( in_array( 'rest', $context ) ) {
+			// REST
+			if ( gravityview()->plugin->settings->get( 'rest_api' ) === '1' && $this->settings->get( 'rest_disable' ) === '1' ) {
+				return new \WP_Error( 'gravityview/rest_disabled' );
+			} elseif ( gravityview()->plugin->settings->get( 'rest_api' ) !== '1' && $this->settings->get( 'rest_enable' ) !== '1' ) {
+				return new \WP_Error( 'gravityview/rest_disabled' );
+			}
+		}
+
+		if ( in_array( 'csv', $context ) ) {
+			if ( $this->settings->get( 'csv_enable' ) !== '1' ) {
+				return new \WP_Error( 'gravityview/csv_disabled', 'The CSV endpoint is not enabled for this View' );
+			}
+		}
+
+		/**
+		 * This View is password protected. Nothing to do here.
+		 */
+		if ( post_password_required( $this->ID ) ) {
+			gravityview()->log->notice( 'Post password is required for View #{view_id}', array( 'view_id' => $this->ID ) );
+			return new \WP_Error( 'gravityview/post_password_required' );
+		}
+
+		if ( ! $this->form ) {
+			gravityview()->log->notice( 'View #{id} has no form attached to it.', array( 'id' => $this->ID ) );
+			return new \WP_Error( 'gravityview/no_form_attached' );
+		}
+
+		if ( ! in_array( 'shortcode', $context ) ) {
+			/**
+			 * Is this View directly accessible via a post URL?
+			 *
+			 * @see https://codex.wordpress.org/Function_Reference/register_post_type#public
+			 */
+
+			/**
+			 * @filter `gravityview_direct_access` Should Views be directly accessible, or only visible using the shortcode?
+			 * @deprecated
+			 * @param[in,out] boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded. Default: `true`
+			 * @param int $view_id The ID of the View currently being requested. `0` for general setting
+			 */
+			$direct_access = apply_filters( 'gravityview_direct_access', true, $this->ID );
+
+			/**
+			 * @filter `gravityview/request/output/direct` Should this View be directly accessbile?
+			 * @since 2.0
+			 * @param[in,out] boolean Accessible or not. Default: accessbile.
+			 * @param \GV\View $view The View we're trying to directly render here.
+			 * @param \GV\Request $request The current request.
+			 */
+			if ( ! apply_filters( 'gravityview/view/output/direct', $direct_access, $this, $request ) ) {
+				return new \WP_Error( 'gravityview/no_direct_access' );
+			}
+
+			/**
+			 * Is this View an embed-only View? If so, don't allow rendering here,
+			 *  as this is a direct request.
+			 */
+			if ( $this->settings->get( 'embed_only' ) && ! \GVCommon::has_cap( 'read_private_gravityviews' ) ) {
+				return new \WP_Error( 'gravityview/embed_only' );
+			}
+		}
+
+		/** Private, pending, draft, etc. */
+		$public_states = get_post_stati( array( 'public' => true ) );
+		if ( ! in_array( $this->post_status, $public_states ) && ! \GVCommon::has_cap( 'read_gravityview', $this->ID ) ) {
+			gravityview()->log->notice( 'The current user cannot access this View #{view_id}', array( 'view_id' => $this->ID ) );
+			return new \WP_Error( 'gravityview/not_public' );
+		}
+
+		return true;
 	}
 
 	/**
@@ -478,6 +582,13 @@ class View implements \ArrayAccess {
 		}
 
 		if ( $view = Utils::get( self::$cache, "View::from_post:{$post->ID}" ) ) {
+			/**
+			 * @filter `gravityview/view/get` Override View.
+			 * @param \GV\View $view The View instance pointer.
+			 * @since 2.1
+			 */
+			do_action_ref_array( 'gravityview/view/get', array( &$view ) );
+
 			return $view;
 		}
 
@@ -554,6 +665,13 @@ class View implements \ArrayAccess {
 		) );
 
 		self::$cache[ "View::from_post:{$post->ID}" ] = &$view;
+
+		/**
+		 * @filter `gravityview/view/get` Override View.
+		 * @param \GV\View $view The View instance pointer.
+		 * @since 2.1
+		 */
+		do_action_ref_array( 'gravityview/view/get', array( &$view ) );
 
 		return $view;
 	}
@@ -704,11 +822,11 @@ class View implements \ArrayAccess {
 	/**
 	 * Retrieve the entries for the current view and request.
 	 *
-	 * @param \GV\Request The request. Usued for now.
+	 * @param \GV\Request The request. Unused for now.
 	 *
 	 * @return \GV\Entry_Collection The entries.
 	 */
-	public function get_entries( $request ) {
+	public function get_entries( $request = null ) {
 		$entries = new \GV\Entry_Collection();
 		if ( $this->form ) {
 			/**
@@ -728,6 +846,23 @@ class View implements \ArrayAccess {
 
 			$page = Utils::get( $parameters['paging'], 'current_page' ) ?
 				: ( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
+
+			/**
+			 * Cleanup duplicate field_filter parameters to simplify the query.
+			 */
+			$unique_field_filters = array();
+			foreach ( $parameters['search_criteria']['field_filters'] as $key => $filter ) {
+				if ( 'mode' === $key ) {
+					$unique_field_filters['mode'] = $filter;
+				} else if ( ! in_array( $filter, $unique_field_filters ) ) {
+					$unique_field_filters[] = $filter;
+				}
+			}
+			$parameters['search_criteria']['field_filters'] = $unique_field_filters;
+
+			if ( ! empty( $parameters['search_criteria']['field_filters'] ) ) {
+				gravityview()->log->notice( 'search_criteria/field_filters is not empty, third-party code may be using legacy search_criteria filters.' );
+			}
 
 			if ( gravityview()->plugin->supports( Plugin::FEATURE_GFQUERY ) ) {
 				/**
@@ -749,11 +884,13 @@ class View implements \ArrayAccess {
 
 				/**
 				 * @action `gravityview/view/query` Override the \GF_Query before the get() call.
-				 * @param \GF_Query $query The current query object
+				 * @param \GF_Query $query The current query object reference
 				 * @param \GV\View $this The current view object
 				 * @param \GV\Request $request The request object
 				 */
-				do_action( 'gravityview/view/query', $query, $this, $request );
+				do_action_ref_array( 'gravityview/view/query', array( &$query, $this, $request ) );
+
+				gravityview()->log->debug( 'GF_Query parameters: ', array( 'data' => Utils::gf_query_debug( $query ) ) );
 
 				/**
 				 * Map from Gravity Forms entries arrays to an Entry_Collection.
@@ -797,6 +934,112 @@ class View implements \ArrayAccess {
 		 * @param \GV\Request $request The request.
 		 */
 		return apply_filters( 'gravityview/view/entries', $entries, $this, $request );
+	}
+
+	/**
+	 * Last chance to configure the output.
+	 *
+	 * Used for CSV output, for example.
+	 *
+	 * @return void
+	 */
+	public static function template_redirect() {
+		/**
+		 * CSV output.
+		 */
+		if ( ! get_query_var( 'csv' ) ) {
+			return;
+		}
+
+		if ( ! $view = gravityview()->request->is_view() ) {
+			return;
+		}
+
+		if ( is_wp_error( $error = $view->can_render( array( 'csv' ) ) ) ) {
+			gravityview()->log->error( 'Not rendering CSV: ' . $error->get_error_message() );
+			return;
+		}
+
+		/**
+		 * Modify the name of the generated CSV file. Name will be sanitized using sanitize_file_name() before output.
+		 * @see sanitize_file_name()
+		 * @since 2.1
+		 * @param string   $filename File name used when downloading a CSV. Default is "{View title}.csv"
+		 * @param \GV\View $view Current View being rendered
+		 */
+		$filename = apply_filters( 'gravityview/output/csv/filename', get_the_title( $view->post ), $view );
+
+		if ( ! defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
+			header( sprintf( 'Content-Disposition: attachment;filename="%s.csv"', sanitize_file_name( $filename ) ) );
+			header( 'Content-Transfer-Encoding: binary' );
+			header( 'Content-Type: text/csv' );
+		}
+
+		ob_start();
+		$csv = fopen( 'php://output', 'w' );
+
+		/**
+		 * Add da' BOM if GF uses it
+		 * @see GFExport::start_export()
+		 */
+		if ( apply_filters( 'gform_include_bom_export_entries', true, $view->form ? $view->form->form : null ) ) {
+			fputs( $csv, "\xef\xbb\xbf" );
+		}
+
+		$entries = $view->get_entries();
+
+		$headers_done = false;
+		$allowed = $headers = array();
+
+		foreach ( $view->fields->by_position( "directory_*" )->by_visible()->all() as $field ) {
+			$allowed[ $field->ID ] = $field;
+		}
+
+		$renderer = new Field_Renderer();
+
+		foreach ( $entries->all() as $entry ) {
+
+			$return = array();
+
+			/**
+			 * @filter `gravityview/csv/entry/fields` Whitelist more entry fields that are output in CSV requests.
+			 * @param[in,out] array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the View.
+			 * @param \GV\View $view The view.
+			 * @param \GV\Entry $entry WordPress representation of the item.
+			 */
+			$allowed_field_ids = apply_filters( 'gravityview/csv/entry/fields', array_keys( $allowed ), $view, $entry );
+
+			foreach ( $allowed_field_ids as $field_id ) {
+				$source = is_numeric( $field_id ) ? $view->form : new \GV\Internal_Source();
+
+				if ( isset( $allowed[ $field_id ] ) ) {
+					$field = $allowed[ $field_id ];
+				} else {
+					$field = is_numeric( $field_id ) ? \GV\GF_Field::by_id( $view->form, $field_id ) : \GV\Internal_Field::by_id( $field_id );
+				}
+
+				$return[ $field->ID ] = $renderer->render( $field, $view, $source, $entry, gravityview()->request, '\GV\Field_CSV_Template' );
+
+				if ( ! $headers_done ) {
+					$label = $field->get_label( $view, $source, $entry );
+					$headers[ $field->ID ] = $label ? $label : $field->ID;
+				}
+			}
+
+			if ( ! $headers_done ) {
+				$headers_done = fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), array_values( $headers ) ) );
+			}
+
+			fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), $return ) );
+		}
+
+		fflush( $csv );
+
+		echo rtrim( ob_get_clean() );
+
+		if ( ! defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
+			exit;
+		}
 	}
 
 	public function __get( $key ) {

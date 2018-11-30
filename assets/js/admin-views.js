@@ -186,9 +186,18 @@
 			$conditionals = $parent.find( '[data-requires]' );
 
 			$conditionals.each( function ()  {
-				var requires = $( this ).data( 'requires' );
-				var $checkbox = $parent.find(':checkbox[name$="['+requires+']"]');
-				$( this ).toggle( $checkbox.is(':checked') );
+				var requires = $( this ).data( 'requires' ),
+					requires_array = requires.split('='),
+					requires_name = requires_array[0],
+					requires_value = requires_array[1];
+
+				var $input = $parent.find(':input[name$="[' + requires_name + ']"]');
+
+				if ( $input.is(':checkbox') ) {
+					$( this ).toggle( $input.is(':checked') );
+				} else if ( requires_value !== undefined ) {
+					$( this ).toggle( $input.val() === requires_value );
+				}
 			});
 		},
 
@@ -560,6 +569,8 @@
 					$( '#wpwrap').find('> .gv-overlay' ).fadeOut( 'fast', function () {
 						$( this ).remove();
 					} );
+
+					$( 'body' ).trigger( 'gravityview/dialog-closed', thisDialog );
 				},
 				closeOnEscape: true,
 				buttons: buttons
@@ -1474,14 +1485,6 @@
 			e.stopImmediatePropagation();
 
 			$post.data( 'gv-valid', false );
-
-			/**
-			 * Add slashes to date fields so stripslashes doesn't strip all of them
-			 * {@link http://phpjs.org/functions/addslashes/}
-			 */
-			$post.find( 'input[name*=date_display]' ).val(function() {
-				return $( this ).val().replace( /[\\"']/g, '\\$&' ).replace( /\u0000/g, '\\0' );
-			});
 
 			// Get all the fields where the `name` attribute start with `fields`
 			var $fields = $post.find( ':input[name^=fields]' );

@@ -5,6 +5,7 @@
  * @global \GV\Template_Context $gravityview
  */
 
+/** @var \GV\View_Table_Template $template */
 $template = $gravityview->template;
 ?>
 	<tbody>
@@ -46,7 +47,7 @@ $template = $gravityview->template;
 					'class' => $class,
 				);
 
-				$gravityview->template->the_entry( $entry, $attributes );
+				$template->the_entry( $entry, $attributes );
 			}
 		}
 

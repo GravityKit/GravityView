@@ -120,6 +120,8 @@ class GV_Unit_Tests_Bootstrap {
 			require_once '/tmp/gravityforms/gravityforms.php';
 		}
 
+		require_once( GFCommon::get_base_path() . '/form_display.php' );
+
 		/** Enable the REST API */
 		add_action( 'gravityview/settings/defaults', function( $defaults ) {
 			$defaults['rest_api'] = '1';

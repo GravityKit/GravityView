@@ -25,6 +25,83 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers GravityView_Entry_Approval::add_approval_notification_events
+	 */
+	public function test_add_approval_notification_events() {
+
+		$events = apply_filters( 'gform_notification_events', array() );
+
+		$this->assertArrayHasKey( 'gravityview/approve_entries/approved', $events );
+		$this->assertArrayHasKey( 'gravityview/approve_entries/disapproved', $events );
+		$this->assertArrayHasKey( 'gravityview/approve_entries/unapproved', $events );
+		$this->assertArrayHasKey( 'gravityview/approve_entries/updated', $events );
+	}
+
+	/**
+	 * @covers GravityView_Entry_Approval::_send_notifications()
+	 * @covers GravityView_Entry_Approval::_trigger_notifications()
+	 */
+	public function test_send_notifications() {
+
+
+		$this->assertTrue( ! did_action( 'gform_notification' ) );
+
+		do_action( 'gravityview/approve_entries/disapproved', 0 );
+
+		$this->assertTrue( ! did_action( 'gform_notification' ), 'Filter should not have run because entry ID was invalid.' );
+
+		$notifications = array(
+			array(
+				'name'  => 'Approved',
+				'id'    => 1,
+				'event' => 'gravityview/approve_entries/approved',
+			),
+			array(
+				'name'  => 'Disapproved',
+				'id'    => 2,
+				'event' => 'gravityview/approve_entries/disapproved',
+			),
+			array(
+				'name'  => 'Unapproved',
+				'id'    => 3,
+				'event' => 'gravityview/approve_entries/unapproved',
+			),
+			array(
+				'name'  => 'Updated',
+				'id'    => 4,
+				'event' => 'gravityview/approve_entries/updated',
+			),
+		);
+
+		$test_form  = $this->factory->form->create_and_get( array( 'notifications' => $notifications ) );
+		$test_entry = $this->factory->entry->create_and_get( array( 'form_id' => $test_form['id'] ) );
+
+		$this->assertTrue( is_array( $test_entry ), 'Entry was not created properly' );
+
+		$triggered_notifications = array();
+
+		$test_object = & $this;
+
+		foreach( $notifications as $test_notification ) {
+
+			add_filter( 'gform_notification', $filter_notification = function( $notification, $form, $lead ) use ( $test_notification, $test_form, $test_entry, & $triggered_notifications, $test_object ) {
+				$test_object->assertSame( $notification, $test_notification );
+				$test_object->assertSame( $lead, $test_entry );
+				$test_object->assertSame( $form, $test_form );
+				$triggered_notifications[] = $test_notification;
+			}, 10, 3 );
+
+			do_action( $test_notification['event'], $test_entry['id'] );
+
+			remove_filter( 'gform_notification', $filter_notification );
+		}
+
+		unset( $test_object );
+
+		$this->assertSame( $notifications, $triggered_notifications );
+	}
+
+	/**
 	 * @covers GravityView_Entry_Approval::after_submission
 	 */
 	public function test_after_submission() {

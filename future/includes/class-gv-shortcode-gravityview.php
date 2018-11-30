@@ -16,6 +16,11 @@ class gravityview extends \GV\Shortcode {
 	public $name = 'gravityview';
 
 	/**
+	 * A stack of calls to track nested shortcodes.
+	 */
+	public static $callstack = array();
+
+	/**
 	 * Process and output the [gravityview] shortcode.
 	 *
 	 * @param array $passed_atts The attributes passed.
@@ -24,7 +29,6 @@ class gravityview extends \GV\Shortcode {
 	 * @return string|null The output.
 	 */
 	public function callback( $passed_atts, $content = null ) {
-
 		$request = gravityview()->request;
 
 		if ( $request->is_admin() ) {
@@ -58,10 +62,16 @@ class gravityview extends \GV\Shortcode {
 		 */
 		$is_reembedded = false; // Assume not embedded unless detected otherwise.
 		if ( in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request' ) ) ) {
+
 			if ( ( $_view = $request->is_view() ) && $_view->ID !== $view->ID ) {
+				$is_reembedded = true;
+
+			} elseif ( $request->is_entry( $view->form ? $view->form->ID : 0 ) && self::$callstack ) {
 				$is_reembedded = true;
 			}
 		}
+
+		array_push( self::$callstack, true );
 
 		/**
 		 * Remove Widgets on a nested embedded View.
@@ -73,32 +83,32 @@ class gravityview extends \GV\Shortcode {
 		$atts = $this->parse_and_sanitize_atts( $atts );
 
 		$view->settings->update( $atts );
-		$entries = $view->get_entries( $request );
 
-		if ( post_password_required( $view->ID ) ) {
-			gravityview()->log->notice( 'Post password is required for View #{view_id}', array( 'view_id' => $view->ID ) );
-			return get_the_password_form( $view->ID );
-		}
+		/**
+		 * Check permissions.
+		 */
+		while ( $error = $view->can_render( array( 'shortcode' ), $request ) ) {
+			if ( ! is_wp_error( $error ) )
+				break;
 
-		if ( ! $view->form  ) {
-			gravityview()->log->notice( 'View #{id} has no form attached to it.', array( 'id' => $view->ID ) );
-
-			/**
-			 * This View has no data source. There's nothing to show really.
-			 * ...apart from a nice message if the user can do anything about it.
-			 */
-			if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-				return __( sprintf( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
+			switch ( str_replace( 'gravityview/', '', $error->get_error_code() ) ) {
+				case 'post_password_required':
+					return self::_return( get_the_password_form( $view->ID ) );
+				case 'no_form_attached':
+					/**
+					 * This View has no data source. There's nothing to show really.
+					 * ...apart from a nice message if the user can do anything about it.
+					 */
+					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
+						return self::_return( __( sprintf( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' ) );
+					}
+					break;
+				case 'no_direct_access':
+				case 'embed_only':
+				case 'not_public':
+				default:
+					return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
 			}
-
-			return $content;
-		}
-
-		/** Private, pending, draft, etc. */
-		$public_states = get_post_stati( array( 'public' => true ) );
-		if ( ! in_array( $view->post_status, $public_states ) && ! \GVCommon::has_cap( 'read_gravityview', $view->ID ) ) {
-			gravityview()->log->notice( 'The current user cannot access this View #{view_id}', array( 'view_id' => $view->ID ) );
-			return __( 'You are not allowed to view this content.', 'gravityview' );
 		}
 
 		$is_admin_and_can_view = $view->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap('gravityview_moderate_entries', $view->ID );
@@ -107,78 +117,79 @@ class gravityview extends \GV\Shortcode {
 		 * View details.
 		 */
 		if ( $atts['detail'] ) {
-			return $this->detail( $view, $entries, $atts );
+			$entries = $view->get_entries( $request );
+			return self::_return( $this->detail( $view, $entries, $atts ) );
 
 		/**
 		 * Editing a single entry.
 		 */
-		} else if ( ! $is_reembedded && ( $entry = $request->is_edit_entry() ) ) {
+		} else if ( ! $is_reembedded && ( $entry = $request->is_edit_entry( $view->form ? $view->form->ID : 0 ) ) ) {
 
 			/**
 			 * When editing an entry don't render multiple views.
 			 */
 			if ( ( $selected = \GV\Utils::_GET( 'gvid' ) ) && $view->ID != $selected ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} not rendered because another View ID was passed using `?gvid`: #{selected}', array( 'entry_id' => $entry->ID, 'selected' => $selected ) );
-				return '';
+				return self::_return( '' );
 			}
 
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
-				return __( 'You are not allowed to view this content.', 'gravityview' );
+				return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
 			}
 
 			if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $entry->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
 				gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $entry->ID ) );
-				return __( 'You are not allowed to view this content.', 'gravityview' );
+				return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
 			}
 
 			if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
 				if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
 					gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
-					return __( 'You are not allowed to view this content.', 'gravityview' );
+					return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
 				}
 			}
 
 			$renderer = new \GV\Edit_Entry_Renderer();
-			return $renderer->render( $entry, $view, $request );
+			return self::_return( $renderer->render( $entry, $view, $request ) );
 
 		/**
 		 * Viewing a single entry.
 		 */
-		} else if ( ! $is_reembedded && ( $entry = $request->is_entry() ) ) {
+		} else if ( ! $is_reembedded && ( $entry = $request->is_entry( $view->form ? $view->form->ID : 0 ) ) ) {
 			/**
 			 * When viewing an entry don't render multiple views.
 			 */
 			if ( ( $selected = \GV\Utils::_GET( 'gvid' ) ) && $view->ID != $selected ) {
-				return '';
+				return self::_return( '' );
 			}
 
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
-				return __( 'You are not allowed to view this content.', 'gravityview' );
+				return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
 			}
 
 			if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $entry->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
 				gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $entry->ID ) );
-				return __( 'You are not allowed to view this content.', 'gravityview' );
+				return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
 			}
 
 			if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
 				if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
 					gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
-					return __( 'You are not allowed to view this content.', 'gravityview' );
+					return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
 				}
 			}
 
-			$error = \GVCommon::check_entry_display( $entry->as_entry() );
+			$error = \GVCommon::check_entry_display( $entry->as_entry(), $view );
 
 			if( is_wp_error( $error ) ) {
 				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing: {message}', array( 'entry_id' => $entry->ID, 'message' => $error->get_error_message() ) );
-				return __( 'You are not allowed to view this content.', 'gravityview' );
+				return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
 			}
 
 			$renderer = new \GV\Entry_Renderer();
-			return $renderer->render( $entry, $view, $request );
+			return self::_return( $renderer->render( $entry, $view, $request ) );
 
 		/**
 		 * Just this view.
@@ -189,15 +200,15 @@ class gravityview extends \GV\Shortcode {
 				// Mock the request with the actual View, not the global one
 				$mock_request = new \GV\Mock_Request();
 				$mock_request->returns['is_view'] = $view;
-				$mock_request->returns['is_entry'] = $request->is_entry();
-				$mock_request->returns['is_edit_entry'] = $request->is_edit_entry();
+				$mock_request->returns['is_entry'] = $request->is_entry( $view->form ? $view->form->ID : 0 );
+				$mock_request->returns['is_edit_entry'] = $request->is_edit_entry( $view->form ? $view->form->ID : 0 );
 				$mock_request->returns['is_search'] = $request->is_search();
 
 				$request = $mock_request;
 			}
 
 			$renderer = new \GV\View_Renderer();
-			return $renderer->render( $view, $request );
+			return self::_return( $renderer->render( $view, $request ) );
 		}
 	}
 
@@ -317,5 +328,13 @@ class gravityview extends \GV\Shortcode {
 		$output = apply_filters( "gravityview/shortcode/detail/$key", $output, $view );
 
 		return $output;
+	}
+
+	/**
+	 * Pop the callstack and return the value.
+	 */
+	private static function _return( $value ) {
+		array_pop( self::$callstack );
+		return $value;
 	}
 }

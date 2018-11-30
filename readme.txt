@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.4
-Tested up to: 4.9.7
+Tested up to: 4.9.8
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -20,6 +20,99 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.2 on November 28, 2018 =
+
+* Yes, GravityView is fully compatible with Gravity Forms 2.4!
+* Added: Choose where users go after editing an entry
+* Added: Search entries by approval status with new "Approval Status" field in the Search Bar
+* Added: More search input types added for "Created By" searches
+* Added: When searching "Created By", set the input type to "text" to search by user email, login and name fields
+* Fixed: Issue installing plugins from the Extensions page on a Multisite network
+* Fixed: When a View is embedded on the homepage of a site, Single Entry and Edit Entry did not work (404 not found error)
+* Fixed: Stray "Advanced Custom Fields" editor at the bottom of Edit View pages
+* Fixed: Labels and quantities removed when editing an entry that had product calculations
+* Fixed: When multiple Views are embedded on a page, Single Entry could sometimes show "You are not allowed to view this content"
+* Fixed: Major search and filtering any/all mode combination issues, especially with "Show only approved entries" mode, A-Z Filters, Featured Entries, Advanced Filtering plugins
+* Fixed: Support all [documented date formats](https://docs.gravityview.co/article/115-changing-the-format-of-the-search-widgets-date-picker) in Search Bar date fields
+* Fixed: Issues with [Advanced Filtering](https://gravityview.co/extensions/advanced-filter/) date fields (including human strings, less than, greater than)
+* Fixed: Security issue when Advanced Filter was configured with an "Any form field" filter (single entries were not properly secured)
+* Fixed: The Quiz Letter Grade is lost if Edit Entry does not contain all Gravity Forms Quiz Add-On fields
+
+__Developer Updates:__
+
+* Updated: `search-field-select.php` template to gracefully handle array values
+* Added: Filters for new "Created By" search. [Learn how to modify what fields are searched](https://docs.gravityview.co/article/523-created-by-text-search).
+
+= 2.1.1 on October 26, 2018 =
+
+* Added: A "Connected Views" menu on the Gravity Forms Forms page - hover over a form to see the new Connected Views menu!
+* Fixed: Additional slashes being added to the custom date format for Date fields
+* Fixed: Quiz Letter Grade not updated after editing an entry that has Gravity Forms Quiz fields
+* Fixed: Single Entry screen is inaccessible when the category is part of a URL path (using the `%category%` tag in the site's Permalinks settings)
+* Fixed: Issue where GravityView CSS isn't loading in the Dashboard for some customers
+* Fixed: Display uploaded files using Gravity Forms' secure link URL format, if enabled
+* Updated Polish translation. Dziękuję Ci, [@dariusz.zielonka](https://www.transifex.com/user/profile/dariusz.zielonka/)!
+
+__Developer Updates:__
+
+* Added: `gravityview/template/table/use-legacy-style` filter to  use the legacy Table layout stylesheet without any responsive layout styles (added in GravityView 2.1) - [Here's code you can use](https://gist.github.com/zackkatz/45d869e096cd5114a87952d292116d3f)
+* Added: `gravityview/view/can_render` filter to allow you to override whether a View can be rendered or not
+* Added: `gravityview/widgets/search/datepicker/format` filter to allow you to modify only the format used, rather than using the `gravityview_search_datepicker_class` filter
+* Fixed: Fixed an issue when using [custom entry slugs](https://docs.gravityview.co/article/57-customizing-urls) where non-unique values across forms cause the entries to not be accessible
+* Fixed: Undefined index PHP warning in the GravityView Extensions screen
+* Fixed: Removed internal usage of deprecated GravityView functions
+* Limitation: "Enable lightbox for images" will not work on images when using Gravity Forms secure URL format. [Contact support](mailto:support@gravityview.co) for a work-around, or use a [different lightbox script](https://docs.gravityview.co/article/277-using-the-foobox-lightbox-plugin-instead-of-the-default).
+
+= 2.1.0.2 and 2.1.0.3 on September 28, 2018 =
+
+* Fixed: Slashes being added to field quotes
+* Fixed: Images showing as links for File Upload fields
+
+= 2.1.0.1 on September 27, 2018 =
+
+* Fixed: Responsive table layout labels showing sorting icon HTML
+* Fixed: Responsive table layout showing table footer
+
+= 2.1 on September 27, 2018 =
+
+* Added: You can now send email notifications when an entry is approved, disapproved, or the approval status has changed. [Learn how](https://docs.gravityview.co/article/488-notification-when-entry-approved)
+* Added: Automatically un-approve an entry when it has been updated by an user without the ability to moderate entries
+* Added: Easy way to install GravityView Extensions and our stand-alone plugins [Learn how](https://docs.gravityview.co/article/489-managing-extensions)
+* Added: Enable CSV output for Views [Learn how](https://docs.gravityview.co/article/491-csv-export)
+* Added: A "Page Size" widget allows users to change the number of entries per page
+* Added: Support for displaying a single input value of a Chained Select field
+* Added: The Table layout is now mobile-responsive!
+* Improved: Added a shortcut to reset entry approval on the front-end of a View: "Option + Click" on the Entry Approval field
+* Fixed: Custom date format not working with the `{date_created}` Merge Tag
+* Fixed: Embedding a View inside an embedded entry didn't work
+* Fixed: "Link to entry" setting not working for File Upload fields
+* Fixed: Approval Status field not showing anything
+* Updated translations - thank you, translators!
+    - Polish translated by [@dariusz.zielonka](https://www.transifex.com/user/profile/dariusz.zielonka/)
+    - Russian translated by [@awsswa59](https://www.transifex.com/user/profile/awsswa59/)
+    - Turkish translated by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
+    - Chinese translated by [@michaeledi](https://www.transifex.com/user/profile/michaeledi/)
+
+__Developer Notes:__
+
+* Added: Process shortcodes inside [gv_entry_link] shortcodes
+* Added: `gravityview/shortcodes/gv_entry_link/output` filter to modify output of the `[gv_entry_link]` shortcode
+* Added `gravityview/widget/page_size/settings` and `gravityview/widget/page_size/page_sizes` filters to modify new Page Size widget
+* Modified: Added `data-label` attributes to all Table layout cells to make responsive layout CSS-only
+* Modified: Added responsive CSS to the Table layout CSS ("table-view.css")
+* Improved: Reduced database lookups when using custom entry slugs
+* Introduced `\GV\View->can_render()` method to reduce code duplication
+* Fixed: Don't add `gvid` unless multiple Views embedded in a post
+* Fixed: PHP 5.3 warning in when using `array_combine()` on empty arrays
+* Fixed: Apply `addslashes` to View Configuration when saving, fixing `{date_created}` format
+* REST API: Allow setting parent post or page with the REST API request using `post_id={id}` ([learn more](https://docs.gravityview.co/article/468-rest-api))
+* REST API: Added `X-Item-Total` header and meta to REST API response
+
+= 2.0.14.1 on July 19, 2018 =
+
+* Fixed: Potential XSS ("Cross Site Scripting") security issue. **Please update.**
+* Fixed: GravityView styles weren't being loaded for some users
 
 = 2.0.14 on July 9, 2018 =
 

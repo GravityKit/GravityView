@@ -192,7 +192,12 @@ class GVCommon {
 
 			$has_transaction_data = \GV\Utils::get( $entry, $meta, false );
 
-			if( ! empty( $has_transaction_data ) ) {
+			if ( is_numeric( $has_transaction_data ) && ( ! floatval( $has_transaction_data ) > 0 ) ) {
+				$has_transaction_data = false;
+				continue;
+			}
+
+			if ( ! empty( $has_transaction_data ) ) {
 				break;
 			}
 		}
@@ -516,9 +521,14 @@ class GVCommon {
 	 * @param int|array $form_ids The ID of the form or an array IDs of the Forms. Zero for all forms.
 	 * @param mixed $passed_criteria (default: null)
 	 * @param mixed &$total Optional. An output parameter containing the total number of entries. Pass a non-null value to generate the total count. (default: null)
+	 *
+	 * @deprecated See \GV\View::get_entries.
+	 *
 	 * @return mixed False: Error fetching entries. Array: Multi-dimensional array of Gravity Forms entry arrays
 	 */
 	public static function get_entries( $form_ids = null, $passed_criteria = null, &$total = null ) {
+
+		gravityview()->log->notice( '\GVCommon::get_entries is deprecated. Use \GV\View::get_entries instead.' );
 
 		// Filter the criteria before query (includes Adv Filter)
 		$criteria = self::calculate_get_entries_criteria( $passed_criteria, $form_ids );
@@ -555,9 +565,10 @@ class GVCommon {
 			 * @param  array $criteria The final search criteria used to generate the request to `GFAPI::get_entries()`
 			 * @param array $passed_criteria The original search criteria passed to `GVCommon::get_entries()`
 			 * @param  int|null $total Optional. An output parameter containing the total number of entries. Pass a non-null value to generate
+			 * @since 2.1 The $total parameter can now be overriden by reference.
 			 * @deprecated
 			 */
-			$entries = apply_filters( 'gravityview_before_get_entries', null, $criteria, $passed_criteria, $total );
+			$entries = apply_filters_ref_array( 'gravityview_before_get_entries', array( null, $criteria, $passed_criteria, &$total ) );
 
 			// No entries returned from gravityview_before_get_entries
 			if( is_null( $entries ) ) {
@@ -592,8 +603,10 @@ class GVCommon {
 		 * @param  array $criteria The final search criteria used to generate the request to `GFAPI::get_entries()`
 		 * @param array $passed_criteria The original search criteria passed to `GVCommon::get_entries()`
 		 * @param  int|null $total Optional. An output parameter containing the total number of entries. Pass a non-null value to generate
+		 * @since 2.1 The $total parameter can now be overriden by reference.
+		 * @deprecated
 		 */
-		$return = apply_filters( 'gravityview_entries', $return, $criteria, $passed_criteria, $total );
+		$return = apply_filters_ref_array( 'gravityview_entries', array( $return, $criteria, $passed_criteria, &$total ) );
 
 		return $return;
 	}
@@ -821,9 +834,13 @@ class GVCommon {
 	 * @since 1.7.4
 	 *
 	 * @param array $entry Gravity Forms Entry object
+	 *
+	 * @since 2.1
+	 * @param \GV\View $view The View.
+	 *
 	 * @return WP_Error|array Returns WP_Error if entry is not valid according to the view search filters (Adv Filter). Returns original $entry value if passes.
 	 */
-	public static function check_entry_display( $entry ) {
+	public static function check_entry_display( $entry, $view = null ) {
 
 		if ( ! $entry || is_wp_error( $entry ) ) {
 			return new WP_Error('entry_not_found', 'Entry was not found.', $entry );
@@ -833,7 +850,52 @@ class GVCommon {
 			return new WP_Error( 'form_id_not_set', '[apply_filters_to_entry] Entry is empty!', $entry );
 		}
 
-		$criteria = self::calculate_get_entries_criteria();
+		if ( $view && gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			/**
+			 * Check whether the entry is in the entries subset by running a modified query.
+			 */
+			add_action( 'gravityview/view/query', $entry_subset_callback = function( &$query, $view, $request ) use ( $entry ) {
+				$_tmp_query       = new \GF_Query( $view->form->ID, array( 'field_filters' => array( 'mode' => 'all', array( 'key' => 'id', 'operation' => 'is', 'value' => $entry['id'] ) ) ) );
+				$_tmp_query_parts = $_tmp_query->_introspect();
+
+				$query_parts      = $query->_introspect();
+
+				$query->where( \GF_Query_Condition::_and( $_tmp_query_parts['where'], $query_parts['where'] ) );
+			}, 10, 3 );
+
+			$entries = $view->get_entries()->all();
+
+			if ( ! $entries ) {
+				remove_action( 'gravityview/view/query', $entry_subset_callback );
+				return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
+			}
+
+			// This entry is on a View with joins
+			if( $entries[0] instanceof \GV\Multi_Entry ) {
+
+				$multi_entry_ids = array();
+
+				foreach ( $entries[0]->entries as $multi_entry ) {
+					$multi_entry_ids[] = (int) $multi_entry->ID;
+				}
+
+				if( ! in_array( (int) $entry['id'], $multi_entry_ids, true ) ) {
+					remove_action( 'gravityview/view/query', $entry_subset_callback );
+					return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
+				}
+
+			} elseif ( (int) $entries[0]->ID !== (int) $entry['id'] ) {
+				remove_action( 'gravityview/view/query', $entry_subset_callback );
+				return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
+			}
+
+			remove_action( 'gravityview/view/query', $entry_subset_callback );
+			return $entry;
+		}
+
+		$criteria = self::calculate_get_entries_criteria( array(
+			'context_view_id' => $view ? $view->ID : null,
+		) );
 
 		if ( empty( $criteria['search_criteria'] ) || ! is_array( $criteria['search_criteria'] ) ) {
 			gravityview()->log->debug( '[apply_filters_to_entry] Entry approved! No search criteria found:', array( 'data' => $criteria ) );
@@ -877,9 +939,28 @@ class GVCommon {
 		$form = self::get_form( $entry['form_id'] );
 
 		foreach ( $filters as $filter ) {
+			$operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
 
 			if ( ! isset( $filter['key'] ) ) {
-				gravityview()->log->debug( '[apply_filters_to_entry] Filter key not set: {filter}', array( 'filter' => $filter ) );
+				gravityview()->log->debug( '[apply_filters_to_entry] Filter key not set, any field mode', array( 'filter' => $filter ) );
+				/**
+				 * This is a cross-field search. Let's start digging'.
+				 */
+				foreach ( \GV\Utils::get( $form, 'fields', array() ) as $field ) {
+					$field_value = GFFormsModel::get_lead_field_value( $entry, $field );
+					if ( $is_value_match = GravityView_GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field ) ) {
+						if ( 'any' === $mode) {
+							return $entry; // All good here
+						} // mode === 'all'
+						continue 2; // Next filter
+					}
+					// If none of the values match and we're in all mode, drop down to the error below.
+				}
+
+				if ( 'all' === $mode ) {
+					return new WP_Error('failed_criteria', '[apply_filters_to_entry] Entry cannot be displayed. Failed a subcriterium for any field in ALL mode', $filter );
+				}
+
 				continue;
 			}
 
@@ -895,8 +976,6 @@ class GVCommon {
 				 // If it's a complex field, then fetch the input's value, if exists at the current key. Otherwise, let GF handle it
 				$field_value = ( is_array( $field_value ) && isset( $field_value[ $k ] ) ) ? \GV\Utils::get( $field_value, $k ) : $field_value;
 			}
-
-			$operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
 
 			$is_value_match = GravityView_GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field );
 
@@ -1501,7 +1580,7 @@ class GVCommon {
 	 *
 	 * Do the same than parse_str without max_input_vars limitation:
 	 * Parses $string as if it were the query string passed via a URL and sets variables in the current scope.
-	 * @param $string array string to parse (not altered like in the original parse_str(), use the second parameter!)
+	 * @param $string string string to parse (not altered like in the original parse_str(), use the second parameter!)
 	 * @param $result array  If the second parameter is present, variables are stored in this variable as array elements
 	 * @return bool true or false if $string is an empty string
 	 * @since  1.5.3
