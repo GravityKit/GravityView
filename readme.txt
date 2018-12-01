@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+== develop ==
+
+Fixed: Edit Entry writes incorrectly-formatted empty values in some cases.
+
 = 2.2 on November 28, 2018 =
 
 * Yes, GravityView is fully compatible with Gravity Forms 2.4!
