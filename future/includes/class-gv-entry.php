@@ -150,6 +150,7 @@ abstract class Entry {
 
 		/**
 		 * @filter `gravityview/entry/slug` Modify the entry URL slug as needed.
+		 * @since 2.2
 		 * @param[in,out] string $entry_slug The slug.
 		 * @param \GV\Entry $this The entry object.
 		 * @param \GV\View $view The view object.
@@ -200,6 +201,8 @@ abstract class Entry {
 	/**
 	 * Is this a multi-entry (joined entry).
 	 *
+	 * @since 2.2
+	 *
 	 * @return boolean
 	 */
 	public function is_multi() {
@@ -208,6 +211,8 @@ abstract class Entry {
 
 	/**
 	 * If this is a Multi_Entry filter it by Field
+	 *
+	 * @since 2.2
 	 *
 	 * @param \GV\Field $field The field to filter by.
 	 * @param int $fallback A fallaback form_id if the field supplied is invaild.

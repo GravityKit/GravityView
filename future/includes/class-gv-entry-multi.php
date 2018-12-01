@@ -76,7 +76,7 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 	 * Return the link to this multi entry in the supplied context.
 	 *
 	 * @api
-	 * @since 2.0
+	 * @since 2.2
 	 *
 	 * @param \GV\View|null $view The View context.
 	 * @param \GV\Request $request The Request (current if null).

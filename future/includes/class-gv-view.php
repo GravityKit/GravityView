@@ -313,10 +313,6 @@ class View implements \ArrayAccess {
 		 * Viewing a single entry.
 		 */
 		} else if ( $entry = $request->is_entry( $view->form ? $view->form->ID : 0 ) ) {
-			if ( $entry['status'] != 'active' ) {
-				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
-				return __( 'You are not allowed to view this content.', 'gravityview' );
-			}
 
 			$entryset = $entry->is_multi() ? $entry->entries : array( $entry );
 
@@ -326,7 +322,8 @@ class View implements \ArrayAccess {
 			$show_only_approved = $view->settings->get( 'show_only_approved' );
 
 			foreach ( $entryset as $e ) {
-				if ( $e['status'] != 'active' ) {
+
+				if ( 'active' !== $e['status'] ) {
 					gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $e->ID ) );
 					return __( 'You are not allowed to view this content.', 'gravityview' );
 				}
