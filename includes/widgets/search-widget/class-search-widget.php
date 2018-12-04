@@ -733,7 +733,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 		if ( $widgets->count() ) {
 			$widgets = $widgets->all();
 			$widget  = $widgets[0];
-			foreach ( $search_fields = json_decode( $widget->configuration->get( 'search_fields' ), true ) as $search_field ) {
+
+			$search_fields = json_decode( $widget->configuration->get( 'search_fields' ), true );
+
+			foreach ( (array) $search_fields as $search_field ) {
 				if ( 'created_by' === $search_field['field'] && 'input_text' === $search_field['input'] ) {
 					$created_by_text_mode = true;
 				}
