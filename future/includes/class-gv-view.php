@@ -887,6 +887,19 @@ class View implements \ArrayAccess {
 				if ( Plugin::FEATURE_JOINS && count( $this->joins ) ) {
 					foreach ( $this->joins as $join ) {
 						$query = $join->as_query_join( $query );
+
+						if ( true /** $this->settings->get( 'WHATEVER YOU CALL IT' ) **/ ) {
+							// Disable NULL outputs
+							$condition = new \GF_Query_Condition(
+								new \GF_Query_Column( $join->join_on_column->ID, $join->join_on->ID ),
+								\GF_Query_Condition::NEQ,
+								new \GF_Query_Literal( '' )
+							);
+
+							$query_parameters = $query->_introspect();
+
+							$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
+						}
 					}
 				}
 
