@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+== develop ==
+
+* CSS CHANGE: Reduced Search Bar negative margins to fix bar not being aligned properly to the left
+
 == 2.2.1 on December 4, 2018 ==
 
 * Confirmed compatibility with WordPress 5.0 and the new Gutenberg editor ([use the shortcode block to embed](https://docs.gravityview.co/article/526-does-gravityview-support-gutenberg))
