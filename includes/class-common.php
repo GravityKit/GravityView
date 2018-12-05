@@ -856,9 +856,20 @@ class GVCommon {
 			 * Check whether the entry is in the entries subset by running a modified query.
 			 */
 			add_action( 'gravityview/view/query', $entry_subset_callback = function( &$query, $view, $request ) use ( $entry ) {
-				$_tmp_query       = new \GF_Query( $view->form->ID, array( 'field_filters' => array( 'mode' => 'all', array( 'key' => 'id', 'operation' => 'is', 'value' => $entry['id'] ) ) ) );
+				$_tmp_query       = new \GF_Query( $view->form->ID, array(
+					'field_filters' => array(
+						'mode' => 'all',
+						array(
+							'key' => 'id',
+							'operation' => 'is',
+							'value' => $entry['id']
+						)
+					)
+				) );
+
 				$_tmp_query_parts = $_tmp_query->_introspect();
 
+				/** @var \GF_Query $query */
 				$query_parts      = $query->_introspect();
 
 				$query->where( \GF_Query_Condition::_and( $_tmp_query_parts['where'], $query_parts['where'] ) );
