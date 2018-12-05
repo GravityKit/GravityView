@@ -150,8 +150,8 @@ abstract class Entry {
 
 		/**
 		 * @filter `gravityview/entry/slug` Modify the entry URL slug as needed.
-		 * @since 2.2
-		 * @param[in,out] string $entry_slug The slug.
+		 * @since 2.2.1
+		 * @param[in,out] string $entry_slug The slug, sanitized with sanitize_title()
 		 * @param \GV\Entry $this The entry object.
 		 * @param \GV\View $view The view object.
 		 * @param \GV\Request $request The request.

@@ -5288,6 +5288,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertNotContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
 
 		remove_all_filters( 'gravityview_custom_entry_slug' );
+
+		/** Pagenum stored via query string shouldn't affect the display conditions for the entry */
+		$request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+		$_GET['pagenum'] = 1000;
+		$this->assertNotContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+		unset( $_GET['pagenum'] );
 	}
 
 	public function test_protection_gravityview_shortcode_single() {
