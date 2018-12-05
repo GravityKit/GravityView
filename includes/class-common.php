@@ -898,7 +898,7 @@ class GVCommon {
 			}
 
 			// This entry is on a View with joins
-			if( $entries[0] instanceof \GV\Multi_Entry ) {
+			if( $entries[0]->is_multi() ) {
 
 				$multi_entry_ids = array();
 
