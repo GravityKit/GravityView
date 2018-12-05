@@ -870,9 +870,13 @@ class View implements \ArrayAccess {
 
 			if ( gravityview()->plugin->supports( Plugin::FEATURE_GFQUERY ) ) {
 				/**
-				 * New \GF_Query stuff :)
+				 * @filter `gravityview/query/class`
+				 * @param[in,out] string The query class. Default: GF_Query.
+				 * @param \GV\View $this The View.
 				 */
-				$query = new \GF_Query( $this->form->ID, $parameters['search_criteria'], $parameters['sorting'] );
+				$query_class = apply_filters( 'gravityview/query/class', '\GF_Query', $this );
+
+				$query = new $query_class( $this->form->ID, $parameters['search_criteria'], $parameters['sorting'] );
 
 				$query->limit( $parameters['paging']['page_size'] )
 					->offset( ( ( $page - 1 ) * $parameters['paging']['page_size'] ) + $this->settings->get( 'offset' ) );

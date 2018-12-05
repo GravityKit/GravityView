@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * CSS CHANGE: Reduced Search Bar negative margins to fix bar not being aligned properly to the left
 * Template Change: Updated `widget-poll.php` template to display poll results for all Multiple Forms fields
+* Added: `gravityview/query/class` to allow query class overrides
 
 == 2.2.1 on December 4, 2018 ==
 
