@@ -91,6 +91,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			// ajax - get the searchable fields
 			add_action( 'wp_ajax_gv_searchable_fields', array( 'GravityView_Widget_Search', 'get_searchable_fields' ) );
+
+			add_action( 'gravityview_search_widget_fields_after', array( $this, 'add_preview_inputs' ) );
 		}
 
 		parent::__construct( esc_html__( 'Search Bar', 'gravityview' ), null, $default_values, $settings );
@@ -733,7 +735,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 		if ( $widgets->count() ) {
 			$widgets = $widgets->all();
 			$widget  = $widgets[0];
-			foreach ( $search_fields = json_decode( $widget->configuration->get( 'search_fields' ), true ) as $search_field ) {
+
+			$search_fields = json_decode( $widget->configuration->get( 'search_fields' ), true );
+
+			foreach ( (array) $search_fields as $search_field ) {
 				if ( 'created_by' === $search_field['field'] && 'input_text' === $search_field['input'] ) {
 					$created_by_text_mode = true;
 				}
@@ -748,13 +753,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			// Construct a manual query for unapproved statuses
-			if ( 'is_approved' === $filter['key'] && in_array( \GravityView_Entry_Approval_Status::UNAPPROVED, (array) $filter['value'], true ) ) {
+			if ( 'is_approved' === $filter['key'] && in_array( \GravityView_Entry_Approval_Status::UNAPPROVED, (array) $filter['value'] ) ) {
 				$_tmp_query       = new GF_Query( $view->form->ID, array(
 					'field_filters' => array(
 						array(
 							'operator' => 'in',
 							'key'      => 'is_approved',
-							'value'    => $filter['value'],
+							'value'    => (array) $filter['value'],
 						),
 						array(
 							'operator' => 'is',
@@ -1612,6 +1617,27 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		// If the format key isn't valid, return default format value
 		return \GV\Utils::get( $gf_date_formats, $format, $gf_date_formats[ $default_format ] );
+	}
+
+	/**
+	 * If previewing a View or page with embedded Views, make the search work properly by adding hidden fields with query vars
+	 *
+	 * @since 2.2.1
+	 *
+	 * @return void
+	 */
+	public function add_preview_inputs() {
+		global $wp;
+
+		if ( ! is_preview() || ! current_user_can( 'publish_gravityviews') ) {
+			return;
+		}
+
+		// Outputs `preview` and `post_id` variables
+		foreach ( $wp->query_vars as $key => $value ) {
+			printf( '<input type="hidden" name="%s" value="%s" />', esc_attr( $key ), esc_attr( $value ) );
+		}
+
 	}
 
 

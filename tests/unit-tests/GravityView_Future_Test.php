@@ -37,6 +37,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$wp_query = new WP_Query();
 		$post = null;
+		$_GET = array();
 
 		\GV\View::_flush_cache();
 
@@ -4836,6 +4837,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	public function test_mocks_legacy_context() {
+		$this->_reset_context();
 		\GV\Mocks\Legacy_Context::reset();
 
 		$this->assertNull( GravityView_frontend::$instance );
@@ -4843,7 +4845,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertNull( GravityView_View::$instance );
 
 		\GV\Mocks\Legacy_Context::pop();
-
 		$form = $this->factory->form->import_and_get( 'simple.json' );
 		$form = \GV\GF_Form::by_id( $form['id'] );
 		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
@@ -4882,6 +4883,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'wp_actions[loop_start]' => 0,
 			'wp_query::in_the_loop' => false,
 			'\GravityView_frontend::post_id' => $post->ID,
+			'\GravityView_View::hide_until_searched' => ( $view->settings->get('hide_until_searched', null ) && gravityview()->request->is_search() ),
 			'\GravityView_frontend::context_view_id' => $view->ID,
 			'\GravityView_View::atts' => $view->settings->as_atts(),
 			'\GravityView_View::view_id' => $view->ID,
@@ -4896,7 +4898,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'\GravityView_View_Data::views' => $views,
 		), \GV\Mocks\Legacy_Context::freeze() );
 
-		$view->settings->update( array( 'back_link_label' => 'Back to #{entry_id}' ) );
+		$view->settings->update( array( 'back_link_label' => 'Back to #{entry_id}', 'hide_until_searched' => 1 ) );
 
 		\GV\Mocks\Legacy_Context::push( array(
 			'view' => $view,
@@ -4904,9 +4906,22 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( "Back to #{entry_id}", GravityView_View::getInstance()->getBackLinkLabel( false ) );
 
+		$this->assertTrue( GravityView_View::getInstance()->isHideUntilSearched(), 'hide until searched should be enabled, since it is the setting' );
+
+		\GV\Mocks\Legacy_Context::pop();
+
+		$_GET['gv_search'] = 'disengage hide until searched!';
+
+		\GV\Mocks\Legacy_Context::push( array(
+			'view' => $view,
+		) );
+
+		$this->assertFalse( GravityView_View::getInstance()->isHideUntilSearched(), 'hide until searched should be disabled due to $_GET' );
+
 		\GV\Mocks\Legacy_Context::pop();
 
 		$this->assertEmpty( GravityView_View::getInstance()->getBackLinkLabel() );
+		$this->assertEmpty( GravityView_View::getInstance()->isHideUntilSearched() );
 
 		\GV\Mocks\Legacy_Context::reset();
 	}
@@ -5273,6 +5288,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertNotContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
 
 		remove_all_filters( 'gravityview_custom_entry_slug' );
+
+		/** Pagenum stored via query string shouldn't affect the display conditions for the entry */
+		$request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+		$_GET['pagenum'] = 1000;
+		$this->assertNotContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+		unset( $_GET['pagenum'] );
 	}
 
 	public function test_protection_gravityview_shortcode_single() {

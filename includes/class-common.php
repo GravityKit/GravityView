@@ -851,19 +851,67 @@ class GVCommon {
 		}
 
 		if ( $view && gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+
 			/**
 			 * Check whether the entry is in the entries subset by running a modified query.
 			 */
 			add_action( 'gravityview/view/query', $entry_subset_callback = function( &$query, $view, $request ) use ( $entry ) {
-				$_tmp_query       = new \GF_Query( $view->form->ID, array( 'field_filters' => array( 'mode' => 'all', array( 'key' => 'id', 'operation' => 'is', 'value' => $entry['id'] ) ) ) );
+				$_tmp_query       = new \GF_Query( $view->form->ID, array(
+					'field_filters' => array(
+						'mode' => 'all',
+						array(
+							'key' => 'id',
+							'operation' => 'is',
+							'value' => $entry['id']
+						)
+					)
+				) );
+
 				$_tmp_query_parts = $_tmp_query->_introspect();
 
+				/** @var \GF_Query $query */
 				$query_parts      = $query->_introspect();
 
 				$query->where( \GF_Query_Condition::_and( $_tmp_query_parts['where'], $query_parts['where'] ) );
+
 			}, 10, 3 );
 
-			if ( ( ! $entries = $view->get_entries()->all() ) || $entries[0]->ID !== $entry['id'] ) {
+			// Prevent page offset from being applied to the single entry query; it's used to return to the referring page number
+			add_filter( 'gravityview_search_criteria', $remove_pagenum = function( $criteria ) {
+
+				$criteria['paging'] = array(
+					'offset' => 0,
+					'page_size' => 25
+				);
+
+				return $criteria;
+			});
+
+			$entries = $view->get_entries()->all();
+
+			// Remove the modifying filter
+			remove_filter( 'gravityview_search_criteria', $remove_pagenum );
+
+			if ( ! $entries ) {
+				remove_action( 'gravityview/view/query', $entry_subset_callback );
+				return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
+			}
+
+			// This entry is on a View with joins
+			if( $entries[0]->is_multi() ) {
+
+				$multi_entry_ids = array();
+
+				foreach ( $entries[0]->entries as $multi_entry ) {
+					$multi_entry_ids[] = (int) $multi_entry->ID;
+				}
+
+				if( ! in_array( (int) $entry['id'], $multi_entry_ids, true ) ) {
+					remove_action( 'gravityview/view/query', $entry_subset_callback );
+					return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
+				}
+
+			} elseif ( (int) $entries[0]->ID !== (int) $entry['id'] ) {
 				remove_action( 'gravityview/view/query', $entry_subset_callback );
 				return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
 			}

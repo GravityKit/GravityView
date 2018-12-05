@@ -15,13 +15,15 @@ class Join {
 
 	/**
 	 * @var GF_Form|Source|Form
+	 * @since 2.2 Made private property public
 	 */
-	private $join;
+	public $join;
 
 	/**
 	 * @var GF_Form|Source|Form
+	 * @since 2.2 Made private property public
 	 */
-	private $join_on;
+	public $join_on;
 
 	/**
 	 * @var Field
