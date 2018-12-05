@@ -542,6 +542,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 				array(
 					'key' => 3,
 					'value' => '2018-02-01',
+					'form_id' => $form['id'],
 				),
 			),
 		);

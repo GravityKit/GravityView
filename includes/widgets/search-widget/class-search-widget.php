@@ -488,7 +488,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 			if ( ! empty( $widget['view_id'] ) && $widget['view_id'] == $view->ID ) {
 				if( $_fields = json_decode( $widget['search_fields'], true ) ) {
 					foreach ( $_fields as $field ) {
-						$searchable_fields [] = $with_full_field ? $field : $field['field'];
+						if ( empty( $field['form_id'] ) ) {
+							$field['form_id'] = $view->form ? $view->form->ID : 0;
+						}
+						$searchable_fields[] = $with_full_field ? $field : $field['field'];
 					}
 				}
 			}
@@ -497,7 +500,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 		foreach ( $view->widgets->by_id( $this->get_widget_id() )->all() as $widget ) {
 			if( $_fields = json_decode( $widget->configuration->get( 'search_fields' ), true ) ) {
 				foreach ( $_fields as $field ) {
-					$searchable_fields [] = $with_full_field ? $field : $field['field'];
+					if ( empty( $field['form_id'] ) ) {
+						$field['form_id'] = $view->form ? $view->form->ID : 0;
+					}
+					$searchable_fields[] = $with_full_field ? $field : $field['field'];
 				}
 			}
 		}
@@ -549,6 +555,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$search_criteria['field_filters'] = \GV\Utils::get( $search_criteria, 'field_filters', array() );
 
 		$searchable_fields = $this->get_view_searchable_fields( $view );
+		$searchable_field_objects = $this->get_view_searchable_fields( $view, true );
 
 		// add free search
 		if ( isset( $get['gv_search'] ) && '' !== $get['gv_search'] && in_array( 'search_all', $searchable_fields ) ) {
@@ -676,12 +683,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$filter_key = $this->convert_request_key_to_filter_key( $key );
 
-			// could return simple filter or multiple filters
-			if ( ! in_array( 'search_all', $searchable_fields ) && ! in_array( $filter_key , $searchable_fields ) ) {
+			if ( ! $filter = $this->prepare_field_filter( $filter_key, $value, $view, $searchable_field_objects ) ) {
 				continue;
 			}
-
-			$filter = $this->prepare_field_filter( $filter_key, $value, $view );
 
 			if ( isset( $filter[0]['value'] ) ) {
 				$search_criteria['field_filters'] = array_merge( $search_criteria['field_filters'], $filter );
@@ -741,9 +745,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		$extra_conditions = array();
+		$mode = 'any';
 
 		foreach ( $search_criteria['field_filters'] as &$filter ) {
 			if ( ! is_array( $filter ) ) {
+				if ( in_array( strtolower( $filter ), array( 'any', 'all' ) ) ) {
+					$mode = $filter;
+				}
 				continue;
 			}
 
@@ -787,6 +795,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$filter['operator'] = 'in'; // @todo what about in contains (OR LIKE chains)?
 			}
 
+			// Default form with joins functionality
+			if ( empty( $filter['form_id'] ) ) {
+				$filter['form_id'] = $view->form ? $view->form->ID : 0;
+			}
+
 			/**
 			 * @filter `gravityview_search_operator` Modify the search operator for the field (contains, is, isnot, etc)
 			 * @param string $operator Existing search operator
@@ -795,25 +808,51 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter );
 		}
 
-		$search_criteria['field_filters'] = array_filter( $search_criteria['field_filters'] );
+		$search_conditions = array();
 
-		/**
-		 * Parse the filter criteria to generate the needed
-		 * WHERE clauses. This is a trick to not write our own generation
-		 * code by reusing what's inside GF_Query already.
-		 */
-		$_tmp_query       = new GF_Query( $view->form->ID, $search_criteria );
-		$_tmp_query_parts = $_tmp_query->_introspect();
+		if ( $filters = array_filter( $search_criteria['field_filters'] ) ) {
+
+			foreach ( $filters as $filter ) {
+				if ( ! is_array( $filter ) ) {
+					continue;
+				}
+
+				/**
+				 * Parse the filter criteria to generate the needed
+				 * WHERE condition. This is a trick to not write our own generation
+				 * code by reusing what's inside GF_Query already as they
+				 * take care of many small things like forcing numeric, etc.
+				 */
+				$_tmp_query       = new GF_Query( $filter['form_id'], array( 'mode' => 'any', 'field_filters' => array( $filter ) ) );
+				$_tmp_query_parts = $_tmp_query->_introspect();
+				$search_condition = $_tmp_query_parts['where'];
+
+				/**
+				 * Make sure the column alias is correct.
+				 */
+				$left = $search_condition->left;
+				$alias = $query->_alias( $left->field_id, $left->source, $left->is_entry_column() ? 't' : 'm' );
+				$search_conditions[] = new GF_Query_Condition(
+					new GF_Query_Column( $left->field_id, $left->source, $alias ),
+					$search_condition->operator,
+					$search_condition->right
+				);
+			}
+
+			if ( $search_conditions ) {
+				$search_conditions = array( call_user_func_array( '\GF_Query_Condition::' . ( $mode == 'all' ? '_and' : '_or' ), $search_conditions ) );
+			}
+		}
 
 		/**
 		 * Grab the current clauses. We'll be combining them shortly.
 		 */
-		$query_parts      = $query->_introspect();
+		$query_parts = $query->_introspect();
 
 		/**
 		 * Combine the parts as a new WHERE clause.
 		 */
-		$where = call_user_func_array( '\GF_Query_Condition::_and', array_merge( array( $query_parts['where'], $_tmp_query_parts['where'] ), $extra_conditions ) );
+		$where = call_user_func_array( '\GF_Query_Condition::_and', array_merge( array( $query_parts['where'] ), $search_conditions, $extra_conditions ) );
 		$query->where( $where );
 	}
 
@@ -853,18 +892,71 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @param  string $filter_key ID of the field, or entry meta key
 	 * @param  string $value $_GET/$_POST search value
 	 * @param  \GV\View $view The view we're looking at
+	 * @param array[] $searchable_fields The searchable fields as configured by the widget.
 	 *
-	 * @return array        1 or 2 deph levels
+	 * @return array|false 1 or 2 deph levels, false if not allowed
 	 */
-	public function prepare_field_filter( $filter_key, $value, $view ) {
+	public function prepare_field_filter( $filter_key, $value, $view, $searchable_fields ) {
+		$filter_key = explode( ':', $filter_key ); // field_id, form_id
+
+		$form = null;
+
+		if ( count( $filter_key ) > 1 ) {
+			// form is specified
+			list( $field_id, $form_id ) = $filter_key;
+
+			if ( $forms = \GV\View::get_joined_forms( $view->ID ) ) {
+				if ( ! $form = \GV\GF_Form::by_id( $form_id ) ) {
+					return false;
+				}
+			}
+
+			// form is allowed
+			$found = false;
+			foreach ( $forms as $form ) {
+				if ( $form->ID == $form_id ) {
+					$found = true;
+					break;
+				}
+			}
+
+			if ( ! $found ) {
+				return false;
+			}
+
+			// form is in searchable fields
+			$found = false;
+			foreach ( $searchable_fields as $field ) {
+				if ( $field_id == $field['field'] && $form->ID == $field['form_id'] ) {
+					$found = true;
+					break;
+				}
+			}
+
+			if ( ! $found ) {
+				return false;
+			}
+		} else {
+			$field_id = reset( $filter_key );
+			$searchable_fields = wp_list_pluck( $searchable_fields, 'field' );
+			if ( ! in_array( 'search_all', $searchable_fields ) && ! in_array( $field_id, $searchable_fields ) ) {
+				return false;
+			}
+		}
+		
+		if ( ! $form ) {
+			// fallback
+			$form = $view->form;
+		}
 
 		// get form field array
-		$form_field = is_numeric( $filter_key ) ? \GV\GF_Field::by_id( $view->form, $filter_key ) : \GV\Internal_Field::by_id( $filter_key );
+		$form_field = is_numeric( $field_id ) ? \GV\GF_Field::by_id( $form, $field_id ) : \GV\Internal_Field::by_id( $field_id );
 
 		// default filter array
 		$filter = array(
-			'key'   => $filter_key,
+			'key'   => $field_id,
 			'value' => $value,
+			'form_id' => $form->ID,
 		);
 
 		switch ( $form_field->type ) {
@@ -886,7 +978,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				foreach ( $value as $val ) {
 					$cat = get_term( $val, 'category' );
 					$filter[] = array(
-						'key'      => $filter_key,
+						'key'      => $field_id,
 						'value'    => esc_attr( $cat->name ) . ':' . $val,
 						'operator' => 'is',
 					);
@@ -904,16 +996,16 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$filter = array();
 
 				foreach ( $value as $val ) {
-					$filter[] = array( 'key' => $filter_key, 'value' => $val );
+					$filter[] = array( 'key' => $field_id, 'value' => $val );
 				}
 
 				break;
 
 			case 'checkbox':
 				// convert checkbox on/off into the correct search filter
-				if ( false !== strpos( $filter_key, '.' ) && ! empty( $form_field->inputs ) && ! empty( $form_field->choices ) ) {
+				if ( false !== strpos( $field_id, '.' ) && ! empty( $form_field->inputs ) && ! empty( $form_field->choices ) ) {
 					foreach ( $form_field->inputs as $k => $input ) {
-						if ( $input['id'] == $filter_key ) {
+						if ( $input['id'] == $field_id ) {
 							$filter['value'] = $form_field->choices[ $k ]['value'];
 							$filter['operator'] = 'is';
 							break;
@@ -926,7 +1018,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 					foreach ( $value as $val ) {
 						$filter[] = array(
-							'key'      => $filter_key,
+							'key'      => $field_id,
 							'value'    => $val,
 							'operator' => 'is',
 						);
@@ -938,7 +1030,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			case 'name':
 			case 'address':
 
-				if ( false === strpos( $filter_key, '.' ) ) {
+				if ( false === strpos( $field_id, '.' ) ) {
 
 					$words = explode( ' ', $value );
 
@@ -1007,7 +1099,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 						}
 
 						$filter[] = array(
-							'key'      => $filter_key,
+							'key'      => $field_id,
 							'value'    => self::get_formatted_date( $date, 'Y-m-d', $date_format ),
 							'operator' => $operator,
 						);

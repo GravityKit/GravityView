@@ -517,6 +517,7 @@ class View implements \ArrayAccess {
 
 	/**
 	 * Get joined forms associated with a view
+	 * In no particular order.
 	 *
 	 * @since 2.0.11
 	 *
@@ -556,7 +557,13 @@ class View implements \ArrayAccess {
 
 			list( $join, $join_column, $join_on, $join_on_column ) = $meta;
 
-			$forms[] = GF_Form::by_id( $join_on );
+			if ( $form = GF_Form::by_id( $join_on ) ) {
+				$forms[ $join_on ] = $form;
+			}
+
+			if ( $form = GF_Form::by_id( $join ) ) {
+				$forms[ $join ] = $form;
+			}
 		}
 
 		return $forms;
