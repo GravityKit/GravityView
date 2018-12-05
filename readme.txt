@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 == develop ==
 
 Fixed: Edit Entry writes incorrectly-formatted empty values in some cases.
+* Fixed: Entries are not accessible when linked to from second page of results
 
 = 2.2 on November 28, 2018 =
 

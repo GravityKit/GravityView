@@ -851,6 +851,7 @@ class GVCommon {
 		}
 
 		if ( $view && gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+
 			/**
 			 * Check whether the entry is in the entries subset by running a modified query.
 			 */
@@ -861,9 +862,24 @@ class GVCommon {
 				$query_parts      = $query->_introspect();
 
 				$query->where( \GF_Query_Condition::_and( $_tmp_query_parts['where'], $query_parts['where'] ) );
+
 			}, 10, 3 );
 
+			// Prevent page offset from being applied to the single entry query; it's used to return to the referring page number
+			add_filter( 'gravityview_search_criteria', $remove_pagenum = function( $criteria ) {
+
+				$criteria['paging'] = array(
+					'offset' => 0,
+					'page_size' => 25
+				);
+
+				return $criteria;
+			});
+
 			$entries = $view->get_entries()->all();
+
+			// Remove the modifying filter
+			remove_filter( 'gravityview_search_criteria', $remove_pagenum );
 
 			if ( ! $entries ) {
 				remove_action( 'gravityview/view/query', $entry_subset_callback );
