@@ -879,15 +879,34 @@ class View implements \ArrayAccess {
 				 * Any joins?
 				 */
 				if ( Plugin::FEATURE_JOINS && count( $this->joins ) ) {
+
+					$is_admin_and_can_view = $this->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap( 'gravityview_moderate_entries', $this->ID );
+					
 					foreach ( $this->joins as $join ) {
 						$query = $join->as_query_join( $query );
 
 						if ( true /** $this->settings->get( 'WHATEVER YOU CALL IT' ) **/ ) {
+
 							// Disable NULL outputs
 							$condition = new \GF_Query_Condition(
 								new \GF_Query_Column( $join->join_on_column->ID, $join->join_on->ID ),
 								\GF_Query_Condition::NEQ,
 								new \GF_Query_Literal( '' )
+							);
+
+							$query_parameters = $query->_introspect();
+
+							$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
+						}
+
+
+						if ( $this->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
+
+							// Show only approved joined entries
+							$condition = new \GF_Query_Condition(
+								new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
+								\GF_Query_Condition::EQ,
+								new \GF_Query_Literal( \GravityView_Entry_Approval_Status::APPROVED )
 							);
 
 							$query_parameters = $query->_introspect();
