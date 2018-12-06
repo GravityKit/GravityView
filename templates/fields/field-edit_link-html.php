@@ -6,7 +6,13 @@
  * @since 2.0
  */
 $form = $gravityview->view->form->form;
-$entry = $gravityview->entry->as_entry();
+
+if ( $gravityview->entry->is_multi() ) {
+	$entry = $gravityview->entry->from_field( $gravityview->field )->as_entry();
+} else {
+	$entry = $gravityview->entry->as_entry();
+}
+
 $field_settings = $gravityview->field->as_configuration();
 
 global $post;

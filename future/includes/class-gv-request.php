@@ -135,18 +135,26 @@ abstract class Request {
 					array_push( $multientry, $e );
 				}
 
+				// Allow Edit Entry to only edit a single entry on a multi-entry
+				$is_edit_entry = apply_filters( 'gravityview_is_edit_entry', false );
+
 				/**
 				 * Not all forms have been requested.
 				 */
-				if ( count( $needs_forms ) ) {
+				if ( count( $needs_forms ) && ! $is_edit_entry ) {
 					return false;
 				}
 
-				if ( ( count( $multientry ) - 1 ) != count( $joins ) ) {
+				if ( ( count( $multientry ) - 1 ) != count( $joins ) && ! $is_edit_entry ) {
 					return false;
 				}
 
-				$entry = Multi_Entry::from_entries( array_filter( $multientry ) );
+				if ( $is_edit_entry && 1 === count( $multientry ) ) {
+					$entry = $multientry[0];
+				} else {
+					$entry = Multi_Entry::from_entries( array_filter( $multientry ) );
+				}
+				
 			}  else {
 				/**
 				 * A regular one.
