@@ -834,20 +834,23 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$_tmp_query_parts = $_tmp_query->_introspect();
 				$search_condition = $_tmp_query_parts['where'];
 
-				/**
-				 * Make sure the column alias is correct.
-				 */
-				$left = $search_condition->left;
-				$alias = $query->_alias( $left->field_id, $left->source, $left->is_entry_column() ? 't' : 'm' );
-
-				if ( $view->joins && $left->field_id == GF_Query_Column::META ) {
-					$search_conditions[] = new GravityView_Widget_Search_All_GF_Query_Condition( $search_condition, $view );
+				if ( empty( $filter['key'] ) &&  $search_condition->expressions ) {
+					 foreach ( $search_condition->expressions as $condition ) {
+						$search_conditions[] = new GravityView_Widget_Search_All_GF_Query_Condition( $condition, $view );
+					 }
 				} else {
-					$search_conditions[] = new GF_Query_Condition(
-						new GF_Query_Column( $left->field_id, $left->source, $alias ),
-						$search_condition->operator,
-						$search_condition->right
-					);
+					$left = $search_condition->left;
+					$alias = $query->_alias( $left->field_id, $left->source, $left->is_entry_column() ? 't' : 'm' );
+
+					if ( $view->joins && $left->field_id == GF_Query_Column::META ) {
+						$search_conditions[] = new GravityView_Widget_Search_All_GF_Query_Condition( $search_condition, $view );
+					} else {
+						$search_conditions[] = new GF_Query_Condition(
+							new GF_Query_Column( $left->field_id, $left->source, $alias ),
+							$search_condition->operator,
+							$search_condition->right
+						);
+					}
 				}
 			}
 
