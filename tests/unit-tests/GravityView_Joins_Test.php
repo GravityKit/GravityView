@@ -139,6 +139,10 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $view );
 
+		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
+		}
+
 		$renderer = new \GV\View_Renderer();
 
 		gravityview()->request = new \GV\Mock_Request();
@@ -260,6 +264,10 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $view );
 
+		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
+		}
+
 		$renderer = new \GV\View_Renderer();
 
 		gravityview()->request = new \GV\Mock_Request();
@@ -276,6 +284,15 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		);
 
 		$this->assertEquals( implode( '', $expected ), $result );
+	}
+
+	public function test_joins_with_approves() {
+		$this->_reset_context();
+
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_JOINS ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
 	}
 
 	public function test_legacy_template_table_joins() {
@@ -374,6 +391,10 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			),
 		) );
 		$view = \GV\View::from_post( $post );
+
+		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
+		}
 
 		$renderer = new \GV\Legacy_Override_Template( $view );
 
@@ -498,6 +519,10 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $post );
 
+		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
+		}
+
 		$renderer = new \GV\View_Renderer();
 
 		$renderer = new \GV\Legacy_Override_Template( $view );
@@ -560,6 +585,10 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			),
 		) );
 		$view = \GV\View::from_post( $post );
+
+		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
+		}
 
 		// For all unspecified cases the first form is always picked
 		$_GET = array();
