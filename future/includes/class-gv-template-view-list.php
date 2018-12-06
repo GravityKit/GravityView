@@ -29,25 +29,26 @@ class View_List_Template extends View_Template {
 	public function the_field( \GV\Field $field, \GV\Entry $entry, $extras = null ) {
 		$form = $this->view->form;
 
-		/**
-		 * Push legacy entry context.
-		 */
-		\GV\Mocks\Legacy_Context::load( array(
-			'entry' => $entry,
-		) );
-
 		if ( $entry->is_multi() ) {
-			if ( ! $entry = $entry->from_field( $field ) ) {
+			if ( ! $single_entry = $entry->from_field( $field ) ) {
 				return;
 			}
 			$form = GF_Form::by_id( $field->form_id );
 		}
 
+		/**
+		 * Push legacy entry context.
+		 */
+		\GV\Mocks\Legacy_Context::load( array(
+			'entry' => $entry,
+			'form' => $form,
+		) );
+
 		$context = Template_Context::from_template( $this, compact( 'field', 'entry' ) );
 
 		$renderer = new Field_Renderer();
 		$source = is_numeric( $field->ID ) ? $form : new Internal_Source();
-		
+
 		$value = $renderer->render( $field, $this->view, $source, $entry, $this->request );
 
 		/**
