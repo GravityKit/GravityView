@@ -879,6 +879,9 @@ class View implements \ArrayAccess {
 				 * Any joins?
 				 */
 				if ( Plugin::FEATURE_JOINS && count( $this->joins ) ) {
+
+					$is_admin_and_can_view = $this->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap('gravityview_moderate_entries', $this->ID );
+					
 					foreach ( $this->joins as $join ) {
 						$query = $join->as_query_join( $query );
 
@@ -896,7 +899,6 @@ class View implements \ArrayAccess {
 							$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
 						}
 
-						$is_admin_and_can_view = $this->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap('gravityview_moderate_entries', $this->ID );
 
 						if( $this->settings->get('show_only_approved' ) && ! $is_admin_and_can_view ) {
 
