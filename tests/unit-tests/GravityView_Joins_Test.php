@@ -293,6 +293,82 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
 		}
 
+		$customers = $this->factory->form->import_and_get( 'simple.json' );
+		$orders = $this->factory->form->import_and_get( 'complete.json' );
+
+		$customer = $this->factory->entry->create_and_get( array(
+			'form_id' => $customers['id'],
+			'status' => 'active',
+			'1' => 'Ann',
+			'2' => 1,
+		) );
+
+		$order = $this->factory->entry->create_and_get( array(
+			'form_id' => $orders['id'],
+			'status' => 'active',
+			'9' => 1,
+			'16' => 'Shoes',
+		) );
+
+		global $post;
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $orders['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'form_id' => $orders['id'],
+						'id' => 'id',
+						'label' => 'Order ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						// Test without explicit form_id set
+						'id' => '16',
+						'label' => 'Item',
+					),
+					wp_generate_password( 4, false ) => array(
+						'form_id' => $customers['id'],
+						'id' => '1',
+						'label' => 'Customer Name',
+					),
+				),
+			),
+			'joins' => array(
+				array( $orders['id'], '9', $customers['id'], '2' ),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
+		}
+
+		$view->settings->update( array( 'show_only_approved' => false ) );
+
+		$entries = $view->get_entries();
+		$this->assertCount( 1, $entries->all() );
+
+		$view->settings->update( array( 'show_only_approved' => true ) );
+
+		$entries = $view->get_entries();
+		$this->assertCount( 0, $entries->all() );
+
+		gform_update_meta( $order['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
+		$entries = $view->get_entries();
+		$this->assertCount( 0, $entries->all() );
+
+		gform_update_meta( $customer['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
+		$entries = $view->get_entries();
+		$this->assertCount( 1, $entries->all() );
+
+		gform_update_meta( $order['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::UNAPPROVED );
+
+		$entries = $view->get_entries();
+		$this->assertCount( 0, $entries->all() );
+
+		$this->_reset_context();
 	}
 
 	public function test_legacy_template_table_joins() {
