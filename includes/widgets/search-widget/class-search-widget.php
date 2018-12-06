@@ -731,6 +731,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 */
 		$search_criteria = $this->filter_entries( array(), null, array( 'id' => $view->ID ), true /** force search_criteria */ );
 
+		$query_class = $view->get_query_class();
+
 		if ( empty( $search_criteria['field_filters'] ) ) {
 			return;
 		}
@@ -762,7 +764,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			// Construct a manual query for unapproved statuses
 			if ( 'is_approved' === $filter['key'] && in_array( \GravityView_Entry_Approval_Status::UNAPPROVED, (array) $filter['value'] ) ) {
-				$_tmp_query       = new GF_Query( $view->form->ID, array(
+				$_tmp_query       = new $query_class( $view->form->ID, array(
 					'field_filters' => array(
 						array(
 							'operator' => 'in',
@@ -787,7 +789,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			// Construct manual query for text mode creator search
 			if ( 'created_by' === $filter['key'] && ! empty( $created_by_text_mode ) ) {
-				$extra_conditions[] = new GravityView_Widget_Search_GF_Query_Condition( $filter, $view );
+				$extra_conditions[] = new GravityView_Widget_Search_Author_GF_Query_Condition( $filter, $view );
 				$filter = false;
 				continue;
 			}
@@ -828,7 +830,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				 * code by reusing what's inside GF_Query already as they
 				 * take care of many small things like forcing numeric, etc.
 				 */
-				$_tmp_query       = new GF_Query( $filter['form_id'], array( 'mode' => 'any', 'field_filters' => array( $filter ) ) );
+				$_tmp_query       = new $query_class( $filter['form_id'], array( 'mode' => 'any', 'field_filters' => array( $filter ) ) );
 				$_tmp_query_parts = $_tmp_query->_introspect();
 				$search_condition = $_tmp_query_parts['where'];
 
@@ -837,11 +839,16 @@ class GravityView_Widget_Search extends \GV\Widget {
 				 */
 				$left = $search_condition->left;
 				$alias = $query->_alias( $left->field_id, $left->source, $left->is_entry_column() ? 't' : 'm' );
-				$search_conditions[] = new GF_Query_Condition(
-					new GF_Query_Column( $left->field_id, $left->source, $alias ),
-					$search_condition->operator,
-					$search_condition->right
-				);
+
+				if ( $view->joins && $left->field_id == GF_Query_Column::META ) {
+					$search_conditions[] = new GravityView_Widget_Search_All_GF_Query_Condition( $search_condition, $view );
+				} else {
+					$search_conditions[] = new GF_Query_Condition(
+						new GF_Query_Column( $left->field_id, $left->source, $alias ),
+						$search_condition->operator,
+						$search_condition->right
+					);
+				}
 			}
 
 			if ( $search_conditions ) {
@@ -1744,7 +1751,7 @@ if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
 /**
  * A GF_Query condition that allows user data searches.
  */
-class GravityView_Widget_Search_GF_Query_Condition extends \GF_Query_Condition {
+class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Condition {
 	public function __construct( $filter, $view ) {
 		$this->value = $filter['value'];
 		$this->view = $view;
@@ -1790,5 +1797,38 @@ class GravityView_Widget_Search_GF_Query_Condition extends \GF_Query_Condition {
 		$alias = $query->_alias( null );
 
 		return "(EXISTS (SELECT 1 FROM $wpdb->users u LEFT JOIN $wpdb->usermeta um ON u.ID = um.user_id WHERE (u.ID = `$alias`.`created_by` AND $conditions)))";
+	}
+}
+
+/**
+ * A GF_Query condition that allows searching across all fields.
+ */
+class GravityView_Widget_Search_All_GF_Query_Condition extends \GF_Query_Condition {
+	public function __construct( $search_condition, $view ) {
+		$this->search_condition = $search_condition;
+		$this->view = $view;
+	}
+
+	public function sql( $query ) {
+		// @todo Search limit to only known fields
+		$parameters = $query->_introspect();
+
+		// @todo We can search by properties as well in the future
+		$table = GFFormsModel::get_entry_meta_table_name();
+
+		$conditions = array();
+
+		foreach ( $parameters['aliases'] as $key => $alias ) {
+			if ( 'm' == $alias[0] && preg_match( '#\d+_\d+#', $key ) ) {
+				$conditions[] = sprintf( "EXISTS(SELECT * FROM `$table` WHERE `meta_value` %s %s AND `entry_id` = `%s`.`entry_id`)",
+					$this->search_condition->operator, $this->search_condition->right->sql( $query ), $alias );
+			}
+		}
+
+		if ( $conditions ) {
+			return '(' . implode( ' OR ', $conditions ) . ')';
+		}
+
+		return '';
 	}
 }

@@ -869,13 +869,7 @@ class View implements \ArrayAccess {
 			}
 
 			if ( gravityview()->plugin->supports( Plugin::FEATURE_GFQUERY ) ) {
-				/**
-				 * @filter `gravityview/query/class`
-				 * @param[in,out] string The query class. Default: GF_Query.
-				 * @param \GV\View $this The View.
-				 */
-				$query_class = apply_filters( 'gravityview/query/class', '\GF_Query', $this );
-
+				$query_class = $this->get_query_class();
 				$query = new $query_class( $this->form->ID, $parameters['search_criteria'], $parameters['sorting'] );
 
 				$query->limit( $parameters['paging']['page_size'] )
@@ -1061,6 +1055,21 @@ class View implements \ArrayAccess {
 		if ( ! defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
 			exit;
 		}
+	}
+
+	/**
+	 * Return the query class for this View.
+	 *
+	 * @return string The class name.
+	 */
+	public function get_query_class() {
+		/**
+		 * @filter `gravityview/query/class`
+		 * @param[in,out] string The query class. Default: GF_Query.
+		 * @param \GV\View $this The View.
+		 */
+		$query_class = apply_filters( 'gravityview/query/class', '\GF_Query', $this );
+		return $query_class;
 	}
 
 	public function __get( $key ) {
