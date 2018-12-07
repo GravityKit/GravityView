@@ -29,6 +29,10 @@ class Entry_List_Template extends Entry_Template {
 		$form = \GV\GF_Form::by_id( $field->form_id ) ? : $this->view->form;
 		$entry = $this->entry->from_field( $field );
 
+		if ( ! $entry ) {
+			return '';
+		}
+
 		$renderer = new Field_Renderer();
 		$source = is_numeric( $field->ID ) ? ( GF_Form::by_id( $field->form_id ) ? : $this->view->form ) : new Internal_Source();
 		
