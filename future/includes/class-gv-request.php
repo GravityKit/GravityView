@@ -122,7 +122,7 @@ abstract class Request {
 
 				$multientry = array();
 				foreach ( $ids = explode( ',', $id ) as $i => $id ) {
-					if ( ! $e = GF_Entry::by_id( $id, $forms[ $i ] ) ) {
+					if ( ! $e = GF_Entry::by_id( $id, $valid_forms[ $i ] ) ) {
 						return false;
 					}
 
