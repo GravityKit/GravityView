@@ -617,7 +617,16 @@ class GravityView_API {
 
 		$query_arg_name = \GV\Entry::get_endpoint_name();
 
-		$entry_slug = self::get_entry_slug( $entry['id'], $entry );
+		if ( ! empty( $entry['_multi'] ) ) {
+			$entry_slugs = array();
+			foreach ( $entry['_multi'] as $_multi ) {
+				$entry_slugs[] = self::get_entry_slug( $_multi['id'], $_multi );
+				$forms[] = $_multi['form_id'];
+			}
+			$entry_slug = implode( ',', $entry_slugs );
+		} else {
+			$entry_slug = self::get_entry_slug( $entry['id'], $entry );
+		}
 
 		if ( get_option('permalink_structure') && !is_preview() ) {
 
