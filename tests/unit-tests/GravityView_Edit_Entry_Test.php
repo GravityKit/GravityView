@@ -1596,6 +1596,65 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 	}
 
+	/**
+	 * https://secure.helpscout.net/conversation/676085022/16972/
+	 */
+	public function test_product_calculation_with_external_quantity() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'calculations.json', 1 );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'status'  => 'active',
+			'form_id' => $form['id'],
+
+			// No transaction data
+			'payment_status' => '',
+			'payment_date'   => '',
+			'transaction_id' => '',
+			'payment_amount' => '',
+			'payment_method' => '',
+
+			'1'    => 'hello',
+
+			'81.1' => 'Shipping',
+			'81.2' => '$ 2.00',
+
+			'111'  => '1',
+
+			'7'    => '66',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			)
+		) );
+
+		$_POST = array(
+			'input_1' => 'world',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'world', $entry['1'] );
+		$this->assertEquals( 'Shipping', $entry['81.1'] );
+		$this->assertEquals( '$2.00', $entry['81.2'] );
+		$this->assertEquals( '1', $entry['111'] );
+		$this->assertEquals( '2', $entry['7'] );
+
+		$this->_reset_context();
+	}
+
 	/** 
 	 * @dataProvider get_redirect_after_edit_data
 	 */
