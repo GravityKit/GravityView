@@ -559,14 +559,37 @@ class GravityView_Edit_Entry_Render {
 
 
 		if ( ! empty( $this->fields_with_calculation ) ) {
-			$update = true;
+			$allowed_fields = $this->get_configured_edit_fields( $form, $this->view_id );
+			$allowed_fields = wp_list_pluck( $allowed_fields, 'id' );
+
 			foreach ( $this->fields_with_calculation as $field ) {
 				$inputs = $field->get_entry_inputs();
 				if ( is_array( $inputs ) ) {
 				    foreach ( $inputs as $input ) {
+						list( $field_id, $input_id ) = rgexplode( '.', $input['id'], 2 );
+
+						if ( 'product' === $field->type ) {
+							$input_name = 'input_' . str_replace( '.', '_', $input['id'] );
+
+							// Only allow quantity to be set if it's allowed to be edited
+							if ( in_array( $field_id, $allowed_fields ) && $input_id == 3 ) {
+							} else { // otherwise set to what it previously was
+								$_POST[ $input_name ] = $entry[ $input['id'] ];
+							}
+						} else {
+							// Set to what it previously was if it's not editable
+							if ( ! in_array( $field_id, $allowed_fields ) ) {
+								$_POST[ $input_name ] = $entry[ $input['id'] ];
+							}
+						}
+
 						GFFormsModel::save_input( $form, $field, $entry, $current_fields, $input['id'] );
 				    }
 				} else {
+					// Set to what it previously was if it's not editable
+					if ( ! in_array( $field->id, $allowed_fields ) ) {
+						$_POST[ 'input_' . $field->id ] = $entry[ $field->id ];
+					}
 					GFFormsModel::save_input( $form, $field, $entry, $current_fields, $field->id );
 				}
 			}

@@ -1599,7 +1599,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	/**
 	 * https://secure.helpscout.net/conversation/676085022/16972/
 	 */
-	public function test_product_calculation_with_external_quantity() {
+	public function test_product_calculations_filtered_fields() {
 		$this->_reset_context();
 
 		$administrator = $this->_generate_user( 'administrator' );
@@ -1623,6 +1623,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 			'81.1' => 'Shipping',
 			'81.2' => '$ 2.00',
+			'81.3' => '5',
 
 			'111'  => '1',
 
@@ -1649,6 +1650,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'world', $entry['1'] );
 		$this->assertEquals( 'Shipping', $entry['81.1'] );
 		$this->assertEquals( '$2.00', $entry['81.2'] );
+		$this->assertEquals( '5', $entry['81.3'] );
 		$this->assertEquals( '1', $entry['111'] );
 		$this->assertEquals( '2', $entry['7'] );
 
