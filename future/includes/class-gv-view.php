@@ -997,6 +997,13 @@ class View implements \ArrayAccess {
 
 					$unions_sql = array();
 
+					/**
+					 * @param \GF_Query_Condition $condition
+					 * @param array $fields
+					 * @param $recurse
+					 *
+					 * @return \GF_Query_Condition
+					 */
 					$where_union_substitute = function( $condition, $fields, $recurse ) {
 						if ( $condition->expressions ) {
 							$conditions = array();
@@ -1011,7 +1018,7 @@ class View implements \ArrayAccess {
 							);
 						}
 
-						if ( ! $condition->left->is_entry_column() && ! $condition->left->is_meta_column() ) {
+						if ( ! $condition->left instanceof \GF_Query_Column || ( ! $condition->left->is_entry_column() && ! $condition->left->is_meta_column() ) ) {
 							return new \GF_Query_Condition(
 								new \GF_Query_Column( $fields[ $condition->left->field_id ]->ID ),
 								$condition->operator,
@@ -1023,8 +1030,11 @@ class View implements \ArrayAccess {
 					};
 
 					foreach ( $this->unions as $form_id => $fields ) {
+
 						// Build a new query for every unioned form
 						$query_class = $this->get_query_class();
+
+						/** @var \GF_Query|\GF_Patched_Query $q */
 						$q = new $query_class( $form_id );
 
 						// Copy the WHERE clauses but substitute the field_ids to the respective ones
@@ -1035,7 +1045,7 @@ class View implements \ArrayAccess {
 						foreach ( $query_parameters['order'] as $order ) {
 							list( $column, $order ) = $order;
 
-							if ( ! $column->is_entry_column() && ! $column->is_meta_column() ) {
+							if ( ! $column instanceof \GF_Query_Column || ( ! $column->is_entry_column() && ! $column->is_meta_column() ) ) {
 								$column = new \GF_Query_Column( $fields[ $column->field_id ]->ID );
 							}
 
