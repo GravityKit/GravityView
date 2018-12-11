@@ -71,7 +71,7 @@ class View implements \ArrayAccess {
 	 * @var \GV\Join[] The joins for all sources in this view.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0.1
 	 */
 	public $joins = array();
 
@@ -88,7 +88,7 @@ class View implements \ArrayAccess {
 	 *                    )
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.2.2
 	 */
 	public $unions = array();
 
@@ -592,7 +592,7 @@ class View implements \ArrayAccess {
 	 * @param \WP_Post $post GravityView CPT to get unions for
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.2.2
 	 *
 	 * @return \GV\Field[][] Array of unions (see self::$unions)
 	 */
