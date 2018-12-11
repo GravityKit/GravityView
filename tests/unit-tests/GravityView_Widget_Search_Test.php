@@ -762,15 +762,21 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'user_email' => md5( microtime() ) . '@gravityview.tests',
 		) );
 
+		$this->assertTrue( is_int( $alpha ) && ! empty( $alpha ) );
+
 		$beta = $this->factory->user->create( array(
 			'user_login' => 'beta',
 			'user_email' => md5( microtime() ) . '@gravityview.tests',
 		) );
 
+		$this->assertTrue( is_int( $beta ) && ! empty( $beta ) );
+
 		$gamma = $this->factory->user->create( array(
 			'user_login' => 'gamma',
 			'user_email' => md5( microtime() ) . '@gravityview.tests',
 		) );
+
+		$this->assertTrue( is_int( $gamma ) && ! empty( $gamma ) );
 
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$post = $this->factory->view->create_and_get( array(
