@@ -599,13 +599,15 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:124
 msgid "Unapprove Entries After Edit"
-msgstr ""
+msgstr "Неодобрение записей после редактирования"
 
 #: future/includes/class-gv-settings-view.php:127
 msgid ""
 "When an entry is edited by a non-administrator, reset the approval status to"
 " \"Unapproved\"."
 msgstr ""
+"Когда запись редактируется не администратором, сбросьте статус одобрения на "
+"\"Не утверждена\"."
 
 #: future/includes/class-gv-settings-view.php:128
 msgid ""
@@ -720,7 +722,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:217
 msgid "Search Operator"
-msgstr ""
+msgstr "Оператор поиска"
 
 #: future/includes/class-gv-settings-view.php:224
 msgid "Single Entry Title"
@@ -745,31 +747,31 @@ msgstr "Текст ссылки для возврата к просмотру н
 
 #: future/includes/class-gv-settings-view.php:242
 msgid "Redirect After Editing"
-msgstr ""
+msgstr "Перенаправление после редактирования"
 
 #: future/includes/class-gv-settings-view.php:244
 msgid "The page to redirect to after editing an entry."
-msgstr ""
+msgstr "Страница для перенаправления после редактирования записи."
 
 #: future/includes/class-gv-settings-view.php:248
 msgid "Stay on Edit Entry"
-msgstr ""
+msgstr "Оставайтесь на странице редактирования"
 
 #: future/includes/class-gv-settings-view.php:249
 msgid "Redirect to Single Entry"
-msgstr ""
+msgstr "Перенаправление на одиночную запись"
 
 #: future/includes/class-gv-settings-view.php:250
 msgid "Redirect to Multiple Entries"
-msgstr ""
+msgstr "Перенаправление на несколько записей"
 
 #: future/includes/class-gv-settings-view.php:251
 msgid "Redirect to URL"
-msgstr ""
+msgstr "Перенаправление на URL"
 
 #: future/includes/class-gv-settings-view.php:257
 msgid "Edit Entry Redirect URL"
-msgstr ""
+msgstr "Изменить URL адрес перенаправления"
 
 #: future/includes/class-gv-settings-view.php:259
 msgid "After editing an entry, the user will be taken to this URL."
@@ -799,7 +801,7 @@ msgstr "Разрешить доступ к REST"
 
 #: future/includes/class-gv-settings-view.php:294
 msgid "Enable REST access to this View."
-msgstr ""
+msgstr "Включите к этому просмотру REST доступ."
 
 #: future/includes/class-gv-settings-view.php:304
 msgid "Allow CSV Access"
@@ -1400,32 +1402,37 @@ msgstr ""
 #: includes/class-admin-installer.php:282
 #: includes/class-admin-installer.php:301
 msgid "GravityView Extensions and Plugins"
-msgstr ""
+msgstr "Расширения и плагины GravityView"
 
 #: includes/class-admin-installer.php:127
 msgid ""
 "Your license %s. Do you want access to these plugins? %sActivate your "
 "license%s or %sget a license here%s."
 msgstr ""
+"Ваша лицензия %s.Вы хотите получить доступ к этим плагинам?  %sАктивируйте "
+"свою лицензию %s или получите лицензию здесь %s."
 
 #: includes/class-admin-installer.php:284
 msgid ""
 "Extensions and plugins data cannot be loaded at the moment. Please try again"
 " later."
 msgstr ""
+"Данные о расширениях и плагинах не могут быть загружены в данный момент. "
+"Пожалуйста, попробуйте позже."
 
 #: includes/class-admin-installer.php:303
 msgid ""
 "The following plugins extend GravityView and Gravity Forms functionality:"
 msgstr ""
+"Следующие плагины расширяют функциональность GravityView и Gravity Forms:"
 
 #: includes/class-admin-installer.php:352
 msgid "Visit the plugin page"
-msgstr ""
+msgstr "Посетите страницу плагина"
 
 #: includes/class-admin-installer.php:356
 msgid "Plugin status: %s"
-msgstr ""
+msgstr "Состояние плагина: %s"
 
 #: includes/class-admin-installer.php:430
 msgid "All Access"
@@ -1433,23 +1440,23 @@ msgstr ""
 
 #: includes/class-admin-installer.php:430
 msgid "Core + Extensions"
-msgstr ""
+msgstr "Ядро + Расширения"
 
 #: includes/class-admin-installer.php:437
 msgid "Active %s License is Required."
-msgstr ""
+msgstr "Активирование  %sтребует лицензию."
 
 #: includes/class-admin-installer.php:444
 msgid "Purchase Now for %s"
-msgstr ""
+msgstr "Купить сейчас для %s"
 
 #: includes/class-admin-installer.php:454
 msgid "Upgrade to %s for Access"
-msgstr ""
+msgstr "Обновить  %s для доступа"
 
 #: includes/class-admin-installer.php:462
 msgid "Coming Soon"
-msgstr ""
+msgstr "Скоро будет"
 
 #: includes/class-admin-installer.php:463
 msgid "Learn More"
@@ -1457,11 +1464,11 @@ msgstr "Узнать больше"
 
 #: includes/class-admin-installer.php:481
 msgid "Not Installed"
-msgstr ""
+msgstr "Не установлен"
 
 #: includes/class-admin-installer.php:482
 msgid "Install"
-msgstr ""
+msgstr "Установить"
 
 #: includes/class-admin-installer.php:489
 #: includes/class-admin-installer.php:597
@@ -1471,30 +1478,30 @@ msgstr "Неактивная"
 #: includes/class-admin-installer.php:490
 #: includes/class-admin-installer.php:598
 msgid "Activate"
-msgstr ""
+msgstr "Активировать"
 
 #: includes/class-admin-installer.php:500
 #: includes/class-admin-installer.php:596
 msgid "Active"
-msgstr ""
+msgstr "Активный"
 
 #: includes/class-admin-installer.php:501
 #: includes/class-admin-installer.php:599
 msgid "Deactivate"
-msgstr ""
+msgstr "Декативировать"
 
 #: includes/class-admin-installer.php:546
 msgid "Plugin activation failed: %s"
-msgstr ""
+msgstr "Ошибка включения плагина: %s"
 
 #: includes/class-admin-installer.php:569
 #: includes/class-admin-installer.php:595
 msgid "Plugin deactivation failed."
-msgstr ""
+msgstr "Ошибка выключения плагина."
 
 #: includes/class-admin-installer.php:594
 msgid "Plugin activation failed."
-msgstr ""
+msgstr "Ошибка включения плагина."
 
 #: includes/class-admin-views.php:131
 msgid "All forms"
@@ -3318,15 +3325,17 @@ msgstr "Ссылки на страницы"
 #: includes/widgets/class-gravityview-widget-page-size.php:22
 msgid "Allow users to modify the number of results shown per page."
 msgstr ""
+"Разрешить пользователям изменять количество результатов, отображаемых на "
+"странице."
 
 #: includes/widgets/class-gravityview-widget-page-size.php:35
 #: includes/widgets/class-gravityview-widget-page-size.php:93
 msgid "Page Size"
-msgstr ""
+msgstr "Размер страницы"
 
 #: includes/widgets/class-gravityview-widget-page-size.php:95
 msgid "Results Per Page"
-msgstr ""
+msgstr "Результаты на страницу"
 
 #: includes/widgets/class-gravityview-widget-pagination-info.php:19
 msgid "Summary of the number of visible entries out of the total results."
@@ -3727,7 +3736,7 @@ msgctxt ""
 "Extensions are WordPress plugins that add functionality to GravityView and "
 "Gravity Forms"
 msgid "Extensions"
-msgstr ""
+msgstr "Расширения"
 
 #: includes/class-admin-views.php:478
 msgctxt "Column title that shows what template is being used for Views"
@@ -3780,22 +3789,22 @@ msgstr "Пользователь не найден"
 #: includes/class-gravityview-entry-approval.php:117
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry is approved"
-msgstr ""
+msgstr "Запись утверждена"
 
 #: includes/class-gravityview-entry-approval.php:118
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry is disapproved"
-msgstr ""
+msgstr "Запись отклонена"
 
 #: includes/class-gravityview-entry-approval.php:119
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry approval is reset"
-msgstr ""
+msgstr "Одобрение записей сбрасывается"
 
 #: includes/class-gravityview-entry-approval.php:120
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry approval is changed"
-msgstr ""
+msgstr "Утверждение записи изменено"
 
 #: includes/class-gravityview-html-elements.php:122
 msgctxt "all dropdown items"
@@ -3816,21 +3825,21 @@ msgstr "Создатель записи"
 #: includes/extensions/edit-entry/class-edit-entry-render.php:980
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %sReturning to Entry%s"
-msgstr ""
+msgstr "Запись обновлена. %sВозвращаясь к записи%s"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:985
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the title of the page where the user"
 " will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sReturning to %s%s"
-msgstr ""
+msgstr "Запись обновлена. %sВозвращаясь к %s%s"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:991
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the URL where the user will be "
 "taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sRedirecting to %s%s"
-msgstr ""
+msgstr "Запись обновлена. %sПеренаправление на %s%s"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1993
 msgctxt "Link shown when invalid Edit Entry link is clicked"
