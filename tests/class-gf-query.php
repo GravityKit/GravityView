@@ -1494,7 +1494,9 @@ AND ( meta_key REGEXP '^[0-9|.]+$'
 				}
 			}
 
-			GFFormsModel::hydrate_repeaters( $entries[ $entry['id'] ], $form );
+			if( is_callable( array( 'GFFormsModel', 'hydrate_repeaters' ) ) ) {
+				GFFormsModel::hydrate_repeaters( $entries[ $entry['id'] ], $form );
+			}
 		}
 
 		$results = array();
