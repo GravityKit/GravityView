@@ -55,6 +55,7 @@ class Field_Renderer extends Renderer {
 			return null;
 		}
 
+		/** @var \GV\Field_Template $class */
 		$renderer = new $class( $field, $view, $source, $entry, $request );
 		ob_start();
 		$renderer->render();

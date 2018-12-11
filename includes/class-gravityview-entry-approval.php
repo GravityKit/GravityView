@@ -665,7 +665,26 @@ class GravityView_Entry_Approval {
 			return;
 		}
 
-		self::update_approved_meta( $entry_id, GravityView_Entry_Approval_Status::UNAPPROVED, $form['id'] );
+		/**
+		 * @filter `gravityview/approve_entries/autounapprove/status`
+		 * @since 2.2.2
+		 * @param[in,out] int|false $approval_status Approval status integer, or false if you want to not update status. Use GravityView_Entry_Approval_Status constants. Default: 3 (GravityView_Entry_Approval_Status::UNAPPROVED)
+		 * @param array $form Gravity Forms form array
+		 * @param string $entry_id Numeric ID of the entry that was updated
+		 * @param \GV\View $view Current View where the entry was edited
+		 */
+		$approval_status = apply_filters( 'gravityview/approve_entries/autounapprove/status', GravityView_Entry_Approval_Status::UNAPPROVED, $form, $entry_id, $view );
+
+		// Allow returning false to exit
+		if ( false === $approval_status ) {
+			return;
+		}
+
+		if( ! GravityView_Entry_Approval_Status::is_valid( $approval_status ) ) {
+			$approval_status = GravityView_Entry_Approval_Status::UNAPPROVED;
+		}
+
+		self::update_approved_meta( $entry_id, $approval_status, $form['id'] );
 	}
 
 }

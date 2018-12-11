@@ -28,12 +28,12 @@ class Join {
 	/**
 	 * @var Field
 	 */
-	private $join_column;
+	public $join_column;
 
 	/**
 	 * @var Field
 	 */
-	private $join_on_column;
+	public $join_on_column;
 
 	/**
 	 * Construct a JOIN container.

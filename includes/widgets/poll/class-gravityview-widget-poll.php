@@ -53,8 +53,8 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 					'blue' => __('Blue', 'gravityview'),
 					'red' => __('Red', 'gravityview'),
 					'orange' => __('Orange', 'gravityview'),
-				)
-			)
+				),
+			),
 		);
 
 		if ( ! $this->is_registered() ) {
@@ -103,25 +103,31 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 	 */
 	public function pre_render_frontend() {
 
-		if( !class_exists('GFPolls') ) {
-
-			$return = false;
+		if( ! class_exists('GFPolls') ) {
 
 			gravityview()->log->error( 'Poll Widget not displayed; the Poll Addon is not loaded' );
 
-		} else {
-
-			$return = parent::pre_render_frontend();
-
-			$poll_fields = GFCommon::get_fields_by_type( GravityView_View::getInstance()->getForm(), array( 'poll' ) );
-
-			if ( empty ( $poll_fields ) ) {
-				gravityview()->log->error( 'Poll Widget not displayed; there are no poll fields for the form' );
-				$return = false;
-			}
+			return false;
 		}
 
-		return $return;
+		$view = gravityview()->views->get();
+
+		$poll_fields = array( $view->form->form['id'] => GFCommon::get_fields_by_type( $view->form, array( 'poll' ) ) );
+
+		foreach ( $view->joins as $join ) {
+			$poll_fields[ $join->join_on->form['id'] ] = GFCommon::get_fields_by_type( $join->join_on->form, array( 'poll' ) );
+		}
+
+		$poll_fields = array_filter( $poll_fields );
+
+		if ( empty ( $poll_fields ) ) {
+			gravityview()->log->error( 'Poll Widget not displayed; there are no poll fields for the form' );
+			return false;
+		}
+
+		$this->poll_fields = $poll_fields;
+
+		return parent::pre_render_frontend();
 	}
 
 	/**
@@ -159,9 +165,9 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 	 *
 	 * @since 1.8
 	 */
-	public function render_frontend( $widget_args, $content = '', $context = '') {
+	public function render_frontend( $widget_args, $content = '', $context = '' ) {
 
-		if( !$this->pre_render_frontend() ) {
+		if( ! $this->pre_render_frontend() ) {
 			return;
 		}
 
@@ -189,9 +195,11 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 		$gravityview_view->poll_merge_tag = $merge_tag;
 
 		$gravityview_view->poll_settings = $settings;
+		$gravityview_view->poll_fields = $this->poll_fields;
 
 		$gravityview_view->render('widget', 'poll', false );
 
+		unset( $gravityview_view->poll_merge_tag, $gravityview_view->poll_settings, $gravityview_view->poll_form, $gravityview_view->poll_fields );
 	}
 
 }

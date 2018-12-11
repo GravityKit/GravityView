@@ -21,6 +21,23 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+== 2.2.2 on December 11, 2018 ==
+
+* Added: Support for the new [Multiple Forms beta](https://gravityview.co/extensions/multiple-forms/)!
+* **Minor CSS Change**: Reduced Search Bar negative margins to fix the Search Bar not aligning properly
+* Fixed: Calculation fields that were not added to the Edit Entry fields were being emptied (except the price)
+* Updated translations - thank you, translators!
+    - Turkish translated by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
+    - Russian translated by [@awsswa59](https://www.transifex.com/user/profile/awsswa59/)
+    - Polish translated by [@dariusz.zielonka](https://www.transifex.com/user/profile/dariusz.zielonka/)
+
+__Developer Updates:__
+
+* Template Change: Updated `widget-poll.php` template to display poll results for all Multiple Forms fields
+* Added: `gravityview/query/class` filter to allow query class overrides, needed for Multiple Forms extension
+* Added: `gravityview/approve_entries/autounapprove/status` filter to change the approval status set when an entry is modified in Edit Entry
+* Added: `$unions` property to `\GV\View`, for future use with [Multiple Forms plugin](https://gravityview.co/extensions/multiple-forms/)
+
 == 2.2.1 on December 4, 2018 ==
 
 * Confirmed compatibility with WordPress 5.0 and the new Gutenberg editor ([use the shortcode block to embed](https://docs.gravityview.co/article/526-does-gravityview-support-gutenberg))

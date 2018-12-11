@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.2.1\n"
+"Project-Id-Version: GravityView 2.2.2\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -224,9 +224,9 @@ msgstr ""
 #: includes/class-gravityview-entry-link-shortcode.php:233
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:888
+#: includes/extensions/edit-entry/class-edit-entry-render.php:911
 #: includes/extensions/edit-entry/fields/edit_link.php:14
-#: templates/fields/field-edit_link-html.php:23
+#: templates/fields/field-edit_link-html.php:29
 msgid "Edit Entry"
 msgstr ""
 
@@ -1661,23 +1661,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:476
+#: includes/class-admin-welcome.php:492
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:497
+#: includes/class-admin-welcome.php:513
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:538
+#: includes/class-admin-welcome.php:554
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:564
+#: includes/class-admin-welcome.php:580
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:565
+#: includes/class-admin-welcome.php:581
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1817,11 +1817,11 @@ msgstr ""
 msgid "No entries match your request."
 msgstr ""
 
-#: includes/class-api.php:835
+#: includes/class-api.php:844
 msgid "&larr; Go back"
 msgstr ""
 
-#: includes/class-api.php:1247
+#: includes/class-api.php:1256
 msgid "Map It"
 msgstr ""
 
@@ -2051,7 +2051,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:213
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1948
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1971
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
@@ -2163,39 +2163,39 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:941
+#: includes/extensions/edit-entry/class-edit-entry-render.php:964
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:941
+#: includes/extensions/edit-entry/class-edit-entry-render.php:964
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:971
+#: includes/extensions/edit-entry/class-edit-entry-render.php:994
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1119
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1142
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1126
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1149
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1478
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1501
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1942
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1965
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1952
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1975
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1992
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2015
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -3312,23 +3312,23 @@ msgstr ""
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1285
+#: includes/widgets/search-widget/class-search-widget.php:1387
 msgid "Search Entries:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1288
+#: includes/widgets/search-widget/class-search-widget.php:1390
 msgid "Filter by date:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1291
+#: includes/widgets/search-widget/class-search-widget.php:1393
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1426
+#: includes/widgets/search-widget/class-search-widget.php:1528
 msgid "Clear"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1492
+#: includes/widgets/search-widget/class-search-widget.php:1594
 msgid "Show a different month"
 msgstr ""
 
@@ -3616,26 +3616,26 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:955
+#: includes/extensions/edit-entry/class-edit-entry-render.php:978
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %sReturning to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:960
+#: includes/extensions/edit-entry/class-edit-entry-render.php:983
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the title of the page where the "
 "user will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sReturning to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:966
+#: includes/extensions/edit-entry/class-edit-entry-render.php:989
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the URL where the user will be "
 "taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sRedirecting to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1968
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1991
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
@@ -3674,27 +3674,27 @@ msgid ""
 "entries displayed in the View."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1487
+#: includes/widgets/search-widget/class-search-widget.php:1589
 msgctxt "Close calendar"
 msgid "Close"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1488
+#: includes/widgets/search-widget/class-search-widget.php:1590
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1489
+#: includes/widgets/search-widget/class-search-widget.php:1591
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1490
+#: includes/widgets/search-widget/class-search-widget.php:1592
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1491
+#: includes/widgets/search-widget/class-search-widget.php:1593
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""

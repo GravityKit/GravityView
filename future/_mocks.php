@@ -148,6 +148,7 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
 	}
 
 	if ( ! empty( $entry['_multi'] ) && ! empty( $field_settings['form_id'] ) && ! empty( $entry['_multi'][ $field_settings['form_id'] ] ) ) {
+		$multientry = \GV\Multi_Entry::from_entries( array_map( '\GV\GF_Entry::from_entry', $entry['_multi'] ) );
 		$entry = $entry['_multi'][ $field_settings['form_id'] ];
 	}
 
@@ -196,7 +197,7 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
 	$field->update_configuration( $field_settings );
 
 	$renderer = new \GV\Field_Renderer();
-	return $renderer->render( $field, gravityview()->views->get(), $source == \GV\Source::BACKEND_GRAVITYFORMS ? $form : null, $entry, gravityview()->request );
+	return $renderer->render( $field, gravityview()->views->get(), $source == \GV\Source::BACKEND_GRAVITYFORMS ? $form : null, isset( $multientry ) ? $multientry : $entry, gravityview()->request );
 }
 
 /**

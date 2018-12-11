@@ -66,6 +66,10 @@ class Entry_Table_Template extends Entry_Template {
 			$form = \GV\GF_Form::by_id( $field->form_id ) ? : $this->view->form;
 			$entry = $this->entry->from_field( $field );
 
+			if ( ! $entry ) {
+				continue;
+			}
+
 			/**
 			 * @deprecated Here for back-compatibility.
 			 */

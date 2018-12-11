@@ -82,6 +82,11 @@ final class Plugin {
 	const FEATURE_JOINS = 'joins';
 
 	/**
+	 * @var string The unions functionality identifier.
+	 */
+	const FEATURE_UNIONS = 'unions';
+
+	/**
 	 * @var string The REST API functionality identifier.
 	 */
 	const FEATURE_REST  = 'rest_api';
@@ -471,7 +476,8 @@ final class Plugin {
 		switch ( $feature ):
 				case self::FEATURE_GFQUERY:
 				case self::FEATURE_JOINS:
-					return class_exists( '\GF_Query' );
+				case self::FEATURE_UNIONS:
+					return apply_filters( 'gravityview/query/class', false ) === '\GF_Patched_Query';
 				case self::FEATURE_REST:
 					return class_exists( '\WP_REST_Controller' );
 			default:

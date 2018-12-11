@@ -300,11 +300,20 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		$user = $this->factory->user->create_and_set( array( 'role' => 'administrator' ) );
 		$form = $this->factory->form->create_and_get();
+		$form2 = $this->factory->form->create_and_get();
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 		$view2 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 		$entry = $this->factory->entry->create_and_get( array(
 			'created_by' => $user->ID,
 			'form_id' => $form['id'],
+		) );
+		$entry2 = $this->factory->entry->create_and_get( array(
+			'created_by' => $user->ID,
+			'form_id' => $form2['id'],
+		) );
+
+		$multi_entry = \GV\Multi_Entry::from_entries( array(
+			\GV\GF_Entry::from_entry( $entry ), \GV\GF_Entry::from_entry( $entry2 )
 		) );
 
 		GravityView_View::getInstance()->setPostId( $view->ID );
@@ -335,6 +344,18 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$href = GravityView_API::entry_link( $entry, $post_with_single_embed->ID );
 
 		$this->assertEquals( site_url('?p='.$post_with_single_embed->ID .'&entry='.$entry['id'] ), $href );
+
+		$href = GravityView_API::entry_link( $multi_entry->as_entry(), $post_with_single_embed->ID );
+		$this->assertEquals( site_url('?p='.$post_with_single_embed->ID .'&entry='.$entry['id'] . ',' . $entry2['id'] ), $href );
+
+		add_filter( 'gravityview_custom_entry_slug', '__return_true' );
+
+		$href = GravityView_API::entry_link( $multi_entry->as_entry(), $post_with_single_embed->ID );
+		$entry1_slug = GravityView_API::get_entry_slug( $entry['id'] );
+		$entry2_slug = GravityView_API::get_entry_slug( $entry2['id'] );
+		$this->assertEquals( site_url('?p='.$post_with_single_embed->ID .'&entry='.$entry1_slug . ',' . $entry2_slug ), $href );
+
+		remove_filter( 'gravityview_custom_entry_slug', '__return_true' );
 	}
 
 	/**
