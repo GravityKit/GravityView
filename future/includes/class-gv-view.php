@@ -1018,7 +1018,7 @@ class View implements \ArrayAccess {
 							);
 						}
 
-						if ( ! $condition->left instanceof \GF_Query_Column || ( ! $condition->left->is_entry_column() && ! $condition->left->is_meta_column() ) ) {
+						if ( ! ( $condition->left && $condition->left instanceof \GF_Query_Column ) || ( ! $condition->left->is_entry_column() && ! $condition->left->is_meta_column() ) ) {
 							return new \GF_Query_Condition(
 								new \GF_Query_Column( $fields[ $condition->left->field_id ]->ID ),
 								$condition->operator,
@@ -1041,15 +1041,16 @@ class View implements \ArrayAccess {
 						$q->where( $where_union_substitute( $query_parameters['where'], $fields, $where_union_substitute ) );
 
 						// Copy the ORDER clause and substitute the field_ids to the respective ones
-						$orders = array();
 						foreach ( $query_parameters['order'] as $order ) {
 							list( $column, $order ) = $order;
 
-							if ( ! $column instanceof \GF_Query_Column || ( ! $column->is_entry_column() && ! $column->is_meta_column() ) ) {
-								$column = new \GF_Query_Column( $fields[ $column->field_id ]->ID );
-							}
+							if( $column && $column instanceof \GF_Query_Column ) {
+								if ( ! $column->is_entry_column() && ! $column->is_meta_column() ) {
+									$column = new \GF_Query_Column( $fields[ $column->field_id ]->ID );
+								}
 
-							$q->order( $column, $order );
+								$q->order( $column, $order );
+							}
 						}
 
 						add_filter( 'gf_query_sql', $gf_query_sql_callback = function( $sql ) use ( &$unions_sql ) {
