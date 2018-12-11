@@ -759,35 +759,36 @@ msgstr "Tekst łącza, który kieruje do widoku wielu pozycji."
 
 #: future/includes/class-gv-settings-view.php:242
 msgid "Redirect After Editing"
-msgstr ""
+msgstr "Przekierowanie po edycji"
 
 #: future/includes/class-gv-settings-view.php:244
 msgid "The page to redirect to after editing an entry."
-msgstr ""
+msgstr "Strona, do której ma nastąpić przekierowanie po edycji pozycji."
 
 #: future/includes/class-gv-settings-view.php:248
 msgid "Stay on Edit Entry"
-msgstr ""
+msgstr "Pozostań na stronie edycji pozycji"
 
 #: future/includes/class-gv-settings-view.php:249
 msgid "Redirect to Single Entry"
-msgstr ""
+msgstr "Przekierowanie do pojedynczej pozycji"
 
 #: future/includes/class-gv-settings-view.php:250
 msgid "Redirect to Multiple Entries"
-msgstr ""
+msgstr "Przekierowanie do wielu pozycji"
 
 #: future/includes/class-gv-settings-view.php:251
 msgid "Redirect to URL"
-msgstr ""
+msgstr "Przekieruj na adres URL"
 
 #: future/includes/class-gv-settings-view.php:257
 msgid "Edit Entry Redirect URL"
-msgstr ""
+msgstr "Edytuj przekierowanie pozycji na adres URL"
 
 #: future/includes/class-gv-settings-view.php:259
 msgid "After editing an entry, the user will be taken to this URL."
 msgstr ""
+"Po edycji pozycji, użytkownik zostanie przeniesiony do tego adresu URL."
 
 #: future/includes/class-gv-settings-view.php:267
 msgid "Prevent Direct Access"
@@ -3856,21 +3857,21 @@ msgstr "Autor pozycji"
 #: includes/extensions/edit-entry/class-edit-entry-render.php:980
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %sReturning to Entry%s"
-msgstr ""
+msgstr "Pozycja została zaktualizowana. %sWróć do pozycji%s"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:985
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the title of the page where the user"
 " will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sReturning to %s%s"
-msgstr ""
+msgstr "Pozycja została zaktualizowana. %sWróć do %s%s"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:991
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the URL where the user will be "
 "taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sRedirecting to %s%s"
-msgstr ""
+msgstr "Pozycja została zaktualizowana. %sPrzekierowuję do %s%s"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1993
 msgctxt "Link shown when invalid Edit Entry link is clicked"

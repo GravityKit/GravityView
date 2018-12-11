@@ -601,19 +601,24 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:124
 msgid "Unapprove Entries After Edit"
-msgstr ""
+msgstr "Düzenlemeden sonra kayıtlardaki onayı kaldır"
 
 #: future/includes/class-gv-settings-view.php:127
 msgid ""
 "When an entry is edited by a non-administrator, reset the approval status to"
 " \"Unapproved\"."
 msgstr ""
+"Herhangi bir kayıt yönetici olmayan biri tarafından düzenlendiğinde, "
+"\"Onaylanmamış\" olarak işaretle."
 
 #: future/includes/class-gv-settings-view.php:128
 msgid ""
 "If the \"Show only approved entries\" setting is enabled, the entry will "
 "need to be re-approved by an administrator before it is shown in the View."
 msgstr ""
+"\"Yalnızca onaylanmış girdileri göster\" ayarı etkinleştirilmişse, girişin "
+"bir görüntülenmeden önce bir yönetici tarafından yeniden onaylanması "
+"gerekir."
 
 #: future/includes/class-gv-settings-view.php:134
 msgid "Allow User Delete"
@@ -724,7 +729,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:217
 msgid "Search Operator"
-msgstr ""
+msgstr "Arama Operatörü"
 
 #: future/includes/class-gv-settings-view.php:224
 msgid "Single Entry Title"
@@ -750,35 +755,35 @@ msgstr "Çoklu kayıt görünümüne dönüş yapan bağlantının yazısı."
 
 #: future/includes/class-gv-settings-view.php:242
 msgid "Redirect After Editing"
-msgstr ""
+msgstr "Düzenlemeden Sonra Yönlendir"
 
 #: future/includes/class-gv-settings-view.php:244
 msgid "The page to redirect to after editing an entry."
-msgstr ""
+msgstr "Düzenlemeden sonra yönlendirilecek sayfa."
 
 #: future/includes/class-gv-settings-view.php:248
 msgid "Stay on Edit Entry"
-msgstr ""
+msgstr "Kayıt Düzenleme Aşamasında Kal"
 
 #: future/includes/class-gv-settings-view.php:249
 msgid "Redirect to Single Entry"
-msgstr ""
+msgstr "Tekil Kayıta Yönlendir"
 
 #: future/includes/class-gv-settings-view.php:250
 msgid "Redirect to Multiple Entries"
-msgstr ""
+msgstr "Çoklu Kayıtlara Yönlendir"
 
 #: future/includes/class-gv-settings-view.php:251
 msgid "Redirect to URL"
-msgstr ""
+msgstr "URL Adresine Yönlendir"
 
 #: future/includes/class-gv-settings-view.php:257
 msgid "Edit Entry Redirect URL"
-msgstr ""
+msgstr "Yönlendirilecek URL Adresi"
 
 #: future/includes/class-gv-settings-view.php:259
 msgid "After editing an entry, the user will be taken to this URL."
-msgstr ""
+msgstr "Kayıt düzenlemeden sonra, kullanıcı bu adrese yönlendirilecek."
 
 #: future/includes/class-gv-settings-view.php:267
 msgid "Prevent Direct Access"
@@ -802,15 +807,15 @@ msgstr "REST erişimine izin ver"
 
 #: future/includes/class-gv-settings-view.php:294
 msgid "Enable REST access to this View."
-msgstr ""
+msgstr "Bu Görünümde REST erişimini etkinleştir."
 
 #: future/includes/class-gv-settings-view.php:304
 msgid "Allow CSV Access"
-msgstr ""
+msgstr "CSV Erişimine İzin Ver"
 
 #: future/includes/class-gv-settings-view.php:306
 msgid "Enable CSV access to this View."
-msgstr ""
+msgstr "Bu Görünümde CSV Erişimine İzin Ver"
 
 #: future/includes/class-gv-settings-view.php:323
 msgid "Random"
@@ -929,7 +934,7 @@ msgstr "Bu içeriğe erişmeye yetkiniz yok."
 
 #: future/includes/rest/class-gv-rest-views-route.php:380
 msgid "This View is not configured properly."
-msgstr ""
+msgstr "Bu Görünüm doğru yapılandırılmamış."
 
 #: future/lib/EDD_SL_Plugin_Updater.php:202
 #: includes/lib/EDD_SL_Plugin_Updater.php:204
@@ -1396,107 +1401,111 @@ msgstr "Kaydı dizin içinde göster?"
 
 #: includes/class-admin-installer.php:102
 msgid "Plugins that extend GravityView and Gravity Forms functionality."
-msgstr ""
+msgstr "GravityView ve Gravity Forms işlevselliğini artıran eklentiler."
 
 #: includes/class-admin-installer.php:106
 #: includes/class-admin-installer.php:282
 #: includes/class-admin-installer.php:301
 msgid "GravityView Extensions and Plugins"
-msgstr ""
+msgstr "GravityView Uzantı ve Eklentileri"
 
 #: includes/class-admin-installer.php:127
 msgid ""
 "Your license %s. Do you want access to these plugins? %sActivate your "
 "license%s or %sget a license here%s."
 msgstr ""
+"Lisansınız: %s. Bu eklentilere erişim istiyormusunuz? %sLisansınızı "
+"etkinleştirin%s yada %sburadan bir lisans alın%s."
 
 #: includes/class-admin-installer.php:284
 msgid ""
 "Extensions and plugins data cannot be loaded at the moment. Please try again"
 " later."
 msgstr ""
+"Uzantı ve eklenti verileri şu anda yüklenemiyor. Lütfen daha sonra tekrar "
+"deneyiniz."
 
 #: includes/class-admin-installer.php:303
 msgid ""
 "The following plugins extend GravityView and Gravity Forms functionality:"
-msgstr ""
+msgstr "GravityView ve Gravity Forms işlevselliğini artıran eklentiler."
 
 #: includes/class-admin-installer.php:352
 msgid "Visit the plugin page"
-msgstr ""
+msgstr "Eklenti sayfasını ziyaret edin"
 
 #: includes/class-admin-installer.php:356
 msgid "Plugin status: %s"
-msgstr ""
+msgstr "Eklenti Durumu: %s"
 
 #: includes/class-admin-installer.php:430
 msgid "All Access"
-msgstr ""
+msgstr "Tüm Erişim"
 
 #: includes/class-admin-installer.php:430
 msgid "Core + Extensions"
-msgstr ""
+msgstr "Çekirdek + Uzantılar"
 
 #: includes/class-admin-installer.php:437
 msgid "Active %s License is Required."
-msgstr ""
+msgstr "Etkin %s Lisansı Gereklidir."
 
 #: includes/class-admin-installer.php:444
 msgid "Purchase Now for %s"
-msgstr ""
+msgstr "Şimdi %s satın al"
 
 #: includes/class-admin-installer.php:454
 msgid "Upgrade to %s for Access"
-msgstr ""
+msgstr "Erişimi için %s sürümüne güncelleyin"
 
 #: includes/class-admin-installer.php:462
 msgid "Coming Soon"
-msgstr ""
+msgstr "Çok Yakında"
 
 #: includes/class-admin-installer.php:463
 msgid "Learn More"
-msgstr ""
+msgstr "Daha Fazla"
 
 #: includes/class-admin-installer.php:481
 msgid "Not Installed"
-msgstr ""
+msgstr "Yüklü Değil"
 
 #: includes/class-admin-installer.php:482
 msgid "Install"
-msgstr ""
+msgstr "Yükle"
 
 #: includes/class-admin-installer.php:489
 #: includes/class-admin-installer.php:597
 msgid "Inactive"
-msgstr ""
+msgstr "Etkin Değil"
 
 #: includes/class-admin-installer.php:490
 #: includes/class-admin-installer.php:598
 msgid "Activate"
-msgstr ""
+msgstr "Etkinleştir"
 
 #: includes/class-admin-installer.php:500
 #: includes/class-admin-installer.php:596
 msgid "Active"
-msgstr ""
+msgstr "Etkin"
 
 #: includes/class-admin-installer.php:501
 #: includes/class-admin-installer.php:599
 msgid "Deactivate"
-msgstr ""
+msgstr "Devre dışı bırak"
 
 #: includes/class-admin-installer.php:546
 msgid "Plugin activation failed: %s"
-msgstr ""
+msgstr "%s Eklenti etkinleştirme hatası"
 
 #: includes/class-admin-installer.php:569
 #: includes/class-admin-installer.php:595
 msgid "Plugin deactivation failed."
-msgstr ""
+msgstr "Eklenti devre dışı bırakma başarısız."
 
 #: includes/class-admin-installer.php:594
 msgid "Plugin activation failed."
-msgstr ""
+msgstr "Eklenti etkinleştirme başarısız."
 
 #: includes/class-admin-views.php:131
 msgid "All forms"
@@ -1889,32 +1898,32 @@ msgstr "Görünüm taslağı güncellendi. %sÖnyüzde görüntüle%s"
 #: includes/class-admin.php:254
 msgid "%s View updated."
 msgid_plural "%s Views updated."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s Görünüm güncellendi."
+msgstr[1] "%s Görünüm güncellendi."
 
 #: includes/class-admin.php:255
 msgid "%s View not updated, somebody is editing it."
 msgid_plural "%s Views not updated, somebody is editing them."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] " Görünüm güncellenemedi, birileri düzenleme yapıyor."
+msgstr[1] "%s Görünüm güncellenemedi, birileri düzenleme yapıyor."
 
 #: includes/class-admin.php:256
 msgid "%s View permanently deleted."
 msgid_plural "%s Views permanently deleted."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] " %s Görünüm kalıcı olarak silindi."
+msgstr[1] "%s Görünüm kalıcı olarak silindi."
 
 #: includes/class-admin.php:257
 msgid "%s View moved to the Trash."
 msgid_plural "%s Views moved to the Trash."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s Görünüm Çöpe taşındı. "
+msgstr[1] "%s Görünüm Çöpe taşındı."
 
 #: includes/class-admin.php:258
 msgid "%s View restored from the Trash."
 msgid_plural "%s Views restored from the Trash."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s Görünüm Çöpten kurtarıldı. "
+msgstr[1] "%s Görünüm Çöpten kurtarıldı."
 
 #: includes/class-api.php:315
 msgid "This search returned no results."
@@ -3316,15 +3325,17 @@ msgstr "Sayfa Bağlantıları"
 #: includes/widgets/class-gravityview-widget-page-size.php:22
 msgid "Allow users to modify the number of results shown per page."
 msgstr ""
+"Kullanıcıların sayfa başına gösterilen sonuç sayısını değiştirmelerine izin "
+"ver."
 
 #: includes/widgets/class-gravityview-widget-page-size.php:35
 #: includes/widgets/class-gravityview-widget-page-size.php:93
 msgid "Page Size"
-msgstr ""
+msgstr "Sayfa Boyutu"
 
 #: includes/widgets/class-gravityview-widget-page-size.php:95
 msgid "Results Per Page"
-msgstr ""
+msgstr "Sayfa Başı Sonuç Sayısı"
 
 #: includes/widgets/class-gravityview-widget-pagination-info.php:19
 msgid "Summary of the number of visible entries out of the total results."
@@ -3725,7 +3736,7 @@ msgctxt ""
 "Extensions are WordPress plugins that add functionality to GravityView and "
 "Gravity Forms"
 msgid "Extensions"
-msgstr ""
+msgstr "Uzantılar"
 
 #: includes/class-admin-views.php:478
 msgctxt "Column title that shows what template is being used for Views"
@@ -3778,22 +3789,22 @@ msgstr "Kullanıcı Yok"
 #: includes/class-gravityview-entry-approval.php:117
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry is approved"
-msgstr ""
+msgstr "Kayıt onaylandı"
 
 #: includes/class-gravityview-entry-approval.php:118
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry is disapproved"
-msgstr ""
+msgstr "Kayıt onaylanmadı"
 
 #: includes/class-gravityview-entry-approval.php:119
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry approval is reset"
-msgstr ""
+msgstr "Kayıt onay durumu sıfırlandı"
 
 #: includes/class-gravityview-entry-approval.php:120
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry approval is changed"
-msgstr ""
+msgstr "Kayıt onay durumu değiştirildi"
 
 #: includes/class-gravityview-html-elements.php:122
 msgctxt "all dropdown items"
@@ -3814,21 +3825,21 @@ msgstr "Kayıt Sahibi"
 #: includes/extensions/edit-entry/class-edit-entry-render.php:980
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %sReturning to Entry%s"
-msgstr ""
+msgstr "Kayıt güncellendi. %sKayda Dönülüyor%s"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:985
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the title of the page where the user"
 " will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sReturning to %s%s"
-msgstr ""
+msgstr "Kayıt güncellendi. %sKayda Dönülüyor%s%s"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:991
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the URL where the user will be "
 "taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sRedirecting to %s%s"
-msgstr ""
+msgstr "Kayıt güncellendi. %sKayda Dönülüyor%s%s"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1993
 msgctxt "Link shown when invalid Edit Entry link is clicked"

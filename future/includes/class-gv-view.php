@@ -955,11 +955,11 @@ class View implements \ArrayAccess {
 				if ( gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) && count( $this->joins ) ) {
 
 					$is_admin_and_can_view = $this->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap( 'gravityview_moderate_entries', $this->ID );
-					
+
 					foreach ( $this->joins as $join ) {
 						$query = $join->as_query_join( $query );
 
-						if ( true /** $this->settings->get( 'WHATEVER YOU CALL IT' ) **/ ) {
+						if ( $this->settings->get( 'multiple_forms_disable_null_joins' ) ) {
 
 							// Disable NULL outputs
 							$condition = new \GF_Query_Condition(
