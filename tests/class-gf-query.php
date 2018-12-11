@@ -1413,7 +1413,7 @@ class GF_Patched_Query extends GF_Query {
 			'form_entry_meta' => array(),
 		);
 
-		$meta_clauses = array();
+		$meta_clauses = $entry_meta = array();
 
 		foreach ( $entryset as $entry ) {
 			$form_id = absint( $entry['form_id'] );
