@@ -121,7 +121,10 @@ abstract class Request {
 
 				$multientry = array();
 				foreach ( $ids = explode( ',', $id ) as $i => $id ) {
-					if ( ! $e = GF_Entry::by_id( $id, $valid_forms[ $i ] ) ) {
+
+					$valid_form = \GV\Utils::get( $valid_forms, $i, 0 );
+
+					if ( ! $e = GF_Entry::by_id( $id, $valid_form ) ) {
 						return false;
 					}
 
