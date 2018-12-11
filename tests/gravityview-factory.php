@@ -272,13 +272,14 @@ class GV_UnitTest_Factory_For_Form extends GF_UnitTest_Factory_For_Form {
 	 * Create form from a json dump file.
 	 *
 	 * @param string $filename Name of the file in data/forms/
+	 * @param int    $index    A subform in the json file.
 	 *
 	 * @return array A form array as returned by Gravity Forms
 	 */
-	function import_and_get( $filename ) {
+	function import_and_get( $filename, $index = 0 ) {
 		$form_json = file_get_contents( dirname( __FILE__ ) . "/data/forms/" . $filename );
 		$forms     = json_decode( $form_json, true );
-		$form      = $forms[0];
+		$form      = $forms[ $index ];
 
 		return $this->create_and_get( array(), $form );
 	}
