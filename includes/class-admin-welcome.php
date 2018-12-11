@@ -271,6 +271,29 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
+                <h3>2.2.2 on December 11, 2018</h3>
+
+                <ul>
+                    <li>Added: Support for the new <a href="https://gravityview.co/extensions/multiple-forms/">Multiple Forms beta</a>!</li>
+                    <li><strong>Minor CSS Change</strong>: Reduced Search Bar negative margins to fix the Search Bar not aligning properly</li>
+                    <li>Fixed: Calculation fields that were not added to the Edit Entry fields were being emptied (except the price)</li>
+                    <li>Updated translations - thank you, translators!
+                        <ul>
+                            <li>Turkish translated by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
+                            <li>Russian translated by <a href="https://www.transifex.com/user/profile/awsswa59/">@awsswa59</a></li>
+                            <li>Polish translated by <a href="https://www.transifex.com/user/profile/dariusz.zielonka/">@dariusz.zielonka</a></li>
+                        </ul></li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Template Change: Updated <code>widget-poll.php</code> template to display poll results for all Multiple Forms fields</li>
+                    <li>Added: <code>gravityview/query/class</code> filter to allow query class overrides, needed for Multiple Forms extension</li>
+                    <li>Added: <code>gravityview/approve_entries/autounapprove/status</code> filter to change the approval status set when an entry is modified in Edit Entry</li>
+                </ul>
+
+
                 <h3>2.2.1 on December 4, 2018</h3>
 
                 <ul>
