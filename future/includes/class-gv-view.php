@@ -76,6 +76,23 @@ class View implements \ArrayAccess {
 	public $joins = array();
 
 	/**
+	 * @var \GV\Field[][] The unions for all sources in this view.
+	 *                    An array of fields grouped by form_id keyed by
+	 *                    main field_id:
+	 *
+	 *                    array(
+	 *                        $form_id => array(
+	 *                            $field_id => $field,
+	 *                            $field_id => $field,
+	 *                        )
+	 *                    )
+	 *
+	 * @api
+	 * @since future
+	 */
+	public $unions = array();
+
+	/**
 	 * The constructor.
 	 */
 	public function __construct() {
@@ -570,6 +587,61 @@ class View implements \ArrayAccess {
 	}
 
 	/**
+	 * Get unions associated with a view
+	 *
+	 * @param \WP_Post $post GravityView CPT to get unions for
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @return \GV\Field[][] Array of unions (see self::$unions)
+	 */
+	public static function get_unions( $post ) {
+		$unions = array();
+
+		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_UNIONS ) ) {
+			gravityview()->log->error( 'Cannot get unions; unions feature not supported.' );
+			return $unions;
+		}
+
+		if ( ! $post || 'gravityview' !== get_post_type( $post ) ) {
+			gravityview()->log->error( 'Only "gravityview" post types can be \GV\View instances.' );
+			return $unions;
+		}
+
+		$fields = get_post_meta( $post->ID, '_gravityview_directory_fields', true );
+
+		if ( empty( $fields ) ) {
+			return $unions;
+		}
+
+		foreach ( $fields as $location => $_fields ) {
+			if ( strpos( $location, 'directory_' ) !== 0 ) {
+				continue;
+			}
+
+			foreach ( $_fields as $field ) {
+				if ( ! empty( $field['unions'] ) ) {
+					foreach ( $field['unions'] as $form_id => $field_id ) {
+						if ( ! isset( $unions[ $form_id ] ) ) {
+							$unions[ $form_id ] = array();
+						}
+
+						$unions[ $form_id ][ $field['id'] ] =
+							is_numeric( $field_id ) ? \GV\GF_Field::by_id( \GV\GF_Form::by_id( $form_id ), $field_id ) : \GV\Internal_Field::by_id( $field_id );
+					}
+				}
+			}
+
+			break;
+		}
+
+		// @todo We'll probably need to backfill null unions
+
+		return $unions;
+	}
+
+	/**
 	 * Construct a \GV\View instance from a \WP_Post.
 	 *
 	 * @param \WP_Post $post The \WP_Post instance to wrap.
@@ -609,6 +681,8 @@ class View implements \ArrayAccess {
 		}
 
 		$view->joins = $view->get_joins( $post );
+
+		$view->unions = $view->get_unions( $post );
 
 		/**
 		 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array.
@@ -878,7 +952,7 @@ class View implements \ArrayAccess {
 				/**
 				 * Any joins?
 				 */
-				if ( Plugin::FEATURE_JOINS && count( $this->joins ) ) {
+				if ( gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) && count( $this->joins ) ) {
 
 					$is_admin_and_can_view = $this->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap( 'gravityview_moderate_entries', $this->ID );
 					
@@ -914,6 +988,129 @@ class View implements \ArrayAccess {
 							$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
 						}
 					}
+				
+				/**
+				 * Unions?
+				 */
+				} else if ( gravityview()->plugin->supports( Plugin::FEATURE_UNIONS ) && count( $this->unions ) ) {
+					$query_parameters = $query->_introspect();
+
+					$unions_sql = array();
+
+					$where_union_substitute = function( $condition, $fields, $recurse ) {
+						if ( $condition->expressions ) {
+							$conditions = array();
+
+							foreach ( $condition->expressions as $_condition ) {
+								$conditions[] = $recurse( $_condition, $fields, $recurse );
+							}
+
+							return call_user_func_array(
+								array( '\GF_Query_Condition', $condition->operator == 'AND' ? '_and' : '_or' ),
+								$conditions
+							);
+						}
+
+						if ( ! $condition->left->is_entry_column() && ! $condition->left->is_meta_column() ) {
+							return new \GF_Query_Condition(
+								new \GF_Query_Column( $fields[ $condition->left->field_id ]->ID ),
+								$condition->operator,
+								$condition->right
+							);
+						}
+
+						return $condition;
+					};
+
+					foreach ( $this->unions as $form_id => $fields ) {
+						// Build a new query for every unioned form
+						$query_class = $this->get_query_class();
+						$q = new $query_class( $form_id );
+
+						// Copy the WHERE clauses but substitute the field_ids to the respective ones
+						$q->where( $where_union_substitute( $query_parameters['where'], $fields, $where_union_substitute ) );
+
+						// Copy the ORDER clause and substitute the field_ids to the respective ones
+						$orders = array();
+						foreach ( $query_parameters['order'] as $order ) {
+							list( $column, $order ) = $order;
+
+							if ( ! $column->is_entry_column() && ! $column->is_meta_column() ) {
+								$column = new \GF_Query_Column( $fields[ $column->field_id ]->ID );
+							}
+
+							$q->order( $column, $order );
+						}
+
+						add_filter( 'gf_query_sql', $gf_query_sql_callback = function( $sql ) use ( &$unions_sql ) {
+							// Remove SQL_CALC_FOUND_ROWS as it's not needed in UNION clauses
+							$select = 'UNION ALL ' . str_replace( 'SQL_CALC_FOUND_ROWS ', '', $sql['select'] );
+
+							// Record the SQL
+							$unions_sql[] = array(
+								// Remove columns, we'll rebuild them
+								'select'  => preg_replace( '#DISTINCT (.*)#', 'DISTINCT ', $select ),
+								'from'    => $sql['from'],
+								'join'    => $sql['join'],
+								'where'   => $sql['where'],
+								// Remove order and limit
+							);
+
+							// Return empty query, no need to call the database
+							return array();
+						} );
+
+						do_action_ref_array( 'gravityview/view/query', array( &$q, $this, $request ) );
+
+						$q->get(); // Launch
+
+						remove_filter( 'gf_query_sql', $gf_query_sql_callback );
+					}
+
+					add_filter( 'gf_query_sql', $gf_query_sql_callback = function( $sql ) use ( $unions_sql ) {
+						// Remove SQL_CALC_FOUND_ROWS as it's not needed in UNION clauses
+						$sql['select'] = str_replace( 'SQL_CALC_FOUND_ROWS ', '', $sql['select'] );
+
+						// Remove columns, we'll rebuild them
+						preg_match( '#DISTINCT (`[motc]\d+`.`.*?`)#', $sql['select'], $select_match );
+						$sql['select'] = preg_replace( '#DISTINCT (.*)#', 'DISTINCT ', $sql['select'] );
+
+						$unions = array();
+
+						// Transform selected columns to shared alias names
+						$column_to_alias = function( $column ) {
+							$column = str_replace( '`', '', $column );
+							return '`' . str_replace( '.', '_', $column ) . '`';
+						};
+
+						// Add all the order columns into the selects, so we can order by the whole union group
+						preg_match_all( '#(`[motc]\d+`.`.*?`)#', $sql['order'], $order_matches );
+						
+						$columns = array(
+							sprintf( '%s AS %s', $select_match[1], $column_to_alias( $select_match[1] ) )
+						);
+
+						foreach ( array_slice( $order_matches, 1 ) as $match ) {
+							$columns[] = sprintf( '%s AS %s', $match[0], $column_to_alias( $match[0] ) );
+
+							// Rewrite the order columns to the shared aliases
+							$sql['order'] = str_replace( $match[0], $column_to_alias( $match[0] ), $sql['order'] );
+						}
+
+						$columns = array_unique( $columns );
+
+						// Add the columns to every UNION
+						foreach ( $unions_sql as $union_sql ) {
+							$union_sql['select'] .= implode( ', ', $columns );
+							$unions []= implode( ' ', $union_sql );
+						}
+
+						// Add the columns to the main SELECT, but only grab the entry id column
+						$sql['select'] = 'SELECT SQL_CALC_FOUND_ROWS t1_id FROM (' . $sql['select'] . implode( ', ', $columns );
+						$sql['order'] = implode( ' ', $unions ) . ') AS u ' . $sql['order'];
+
+						return $sql;
+					} );
 				}
 
 				/**
@@ -937,6 +1134,10 @@ class View implements \ArrayAccess {
 					}
 				} else {
 					array_map( array( $entries, 'add' ), array_map( '\GV\GF_Entry::from_entry', $query->get() ) );
+				}
+
+				if ( isset( $gf_query_sql_callback ) ) {
+					remove_action( 'gf_query_sql', $gf_query_sql_callback );
 				}
 
 				/**

@@ -3,11 +3,8 @@
 defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
 
 /**
- * All future tests live here for now...
- *
- * ...at least until the future Test component appears.
- *
- * @group gvfuture
+ * All join and union tests live here.
+ * @group multi
  */
 class GravityView_Joins_Test extends GV_UnitTestCase {
 	function setUp() {
@@ -746,4 +743,98 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'Henry Marrek', $entries[0][ $chefs['id'] ]['1'] );
 		$this->assertEquals( 'Marick Bonobo', $entries[0][ $souschefs['id'] ]['1'] );
 	}
+
+	public function test_union_simple() {
+		$this->_reset_context();
+
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_UNIONS ) ) {
+			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
+		}
+
+		$form_1 = $this->factory->form->import_and_get( 'simple.json' );
+		$form_2 = $this->factory->form->import_and_get( 'complete.json' );
+
+		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'neptune@gravityview.co' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $form_1['id'], 'status' => 'active', '1'  => 'earth@gravityview.co' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $form_1['id'], 'status' => 'active', '1'  => 'saturn@gravityview.co' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'venus@gravityview.co' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'mars@gravityview.co' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $form_1['id'], 'status' => 'active', '1'  => 'uranus@gravityview.co' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'jupiter@gravityview.co' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'mercury@gravityview.co' ) );
+
+		global $post;
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form_1['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'form_id' => $form_1['id'],
+						'id' => 'id',
+						'label' => 'ID',
+						'unions' => array(
+							$form_2['id'] => 'id',
+						),
+					),
+					wp_generate_password( 4, false ) => array(
+						'form_id' => $form_1['id'],
+						'id' => '1',
+						'label' => 'Item',
+						'unions' => array(
+							$form_2['id'] => '16',
+						),
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$this->assertCount( 8, $expected_entries = wp_list_pluck( $view->get_entries()->all(), 'ID' ) );
+
+		$view->settings->update( array( 'page_size' => 3 ) );
+
+		$this->assertCount( 3, $actual_entries = wp_list_pluck( $view->get_entries()->all(), 'ID' ) );
+
+		$_GET = array( 'pagenum' => 2 );
+
+		$this->assertCount( 3, $entries = wp_list_pluck( $view->get_entries()->all(), 'ID' ) );
+		$actual_entries = array_merge( $actual_entries, $entries );
+
+		$_GET = array( 'pagenum' => 3 );
+
+		$this->assertCount( 2, $entries = wp_list_pluck( $view->get_entries()->all(), 'ID' ) );
+		$actual_entries = array_merge( $actual_entries, $entries );
+
+		$this->assertEquals( $expected_entries, $actual_entries );
+
+		$_GET = array();
+		$view->settings->update( array( 'page_size' => 25 ) );
+
+		add_filter( 'gravityview_search_criteria', $callback = function( $criteria ) {
+			$criteria['search_criteria']['field_filters'] []= array(
+				'key' => '1',
+				'operator' => 'contains',
+				'value' => 's',
+			);
+			return $criteria;
+		} );
+
+		$this->assertCount( 4, $view->get_entries()->all() );
+
+		remove_filter( 'gravityview_search_criteria', $callback );
+
+		$_GET = array( 'sort' => '1', 'dir' => 'asc' );
+
+		$this->assertCount( 8, $entries = $view->get_entries()->all() );
+
+		$expected = $actual = array_map( function( $e ) {
+			return empty( $e['1'] ) ? $e['16'] : $e['1'];
+		}, $entries );
+
+		sort( $expected );
+
+		$this->assertEquals( $expected, $actual );
+	}
+
 }
