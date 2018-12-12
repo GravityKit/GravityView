@@ -1413,7 +1413,7 @@ class GF_Patched_Query extends GF_Query {
 			'form_entry_meta' => array(),
 		);
 
-		$meta_clauses = array();
+		$meta_clauses = $entry_meta = array();
 
 		foreach ( $entryset as $entry ) {
 			$form_id = absint( $entry['form_id'] );
@@ -1494,7 +1494,9 @@ AND ( meta_key REGEXP '^[0-9|.]+$'
 				}
 			}
 
-			GFFormsModel::hydrate_repeaters( $entries[ $entry['id'] ], $form );
+			if( is_callable( array( 'GFFormsModel', 'hydrate_repeaters' ) ) ) {
+				GFFormsModel::hydrate_repeaters( $entries[ $entry['id'] ], $form );
+			}
 		}
 
 		$results = array();

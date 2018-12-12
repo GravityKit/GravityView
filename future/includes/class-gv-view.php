@@ -71,7 +71,7 @@ class View implements \ArrayAccess {
 	 * @var \GV\Join[] The joins for all sources in this view.
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.0.1
 	 */
 	public $joins = array();
 
@@ -88,7 +88,7 @@ class View implements \ArrayAccess {
 	 *                    )
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.2.2
 	 */
 	public $unions = array();
 
@@ -592,7 +592,7 @@ class View implements \ArrayAccess {
 	 * @param \WP_Post $post GravityView CPT to get unions for
 	 *
 	 * @api
-	 * @since future
+	 * @since 2.2.2
 	 *
 	 * @return \GV\Field[][] Array of unions (see self::$unions)
 	 */
@@ -997,6 +997,13 @@ class View implements \ArrayAccess {
 
 					$unions_sql = array();
 
+					/**
+					 * @param \GF_Query_Condition $condition
+					 * @param array $fields
+					 * @param $recurse
+					 *
+					 * @return \GF_Query_Condition
+					 */
 					$where_union_substitute = function( $condition, $fields, $recurse ) {
 						if ( $condition->expressions ) {
 							$conditions = array();
@@ -1011,7 +1018,7 @@ class View implements \ArrayAccess {
 							);
 						}
 
-						if ( ! $condition->left->is_entry_column() && ! $condition->left->is_meta_column() ) {
+						if ( ! ( $condition->left && $condition->left instanceof \GF_Query_Column ) || ( ! $condition->left->is_entry_column() && ! $condition->left->is_meta_column() ) ) {
 							return new \GF_Query_Condition(
 								new \GF_Query_Column( $fields[ $condition->left->field_id ]->ID ),
 								$condition->operator,
@@ -1023,23 +1030,27 @@ class View implements \ArrayAccess {
 					};
 
 					foreach ( $this->unions as $form_id => $fields ) {
+
 						// Build a new query for every unioned form
 						$query_class = $this->get_query_class();
+
+						/** @var \GF_Query|\GF_Patched_Query $q */
 						$q = new $query_class( $form_id );
 
 						// Copy the WHERE clauses but substitute the field_ids to the respective ones
 						$q->where( $where_union_substitute( $query_parameters['where'], $fields, $where_union_substitute ) );
 
 						// Copy the ORDER clause and substitute the field_ids to the respective ones
-						$orders = array();
 						foreach ( $query_parameters['order'] as $order ) {
 							list( $column, $order ) = $order;
 
-							if ( ! $column->is_entry_column() && ! $column->is_meta_column() ) {
-								$column = new \GF_Query_Column( $fields[ $column->field_id ]->ID );
-							}
+							if( $column && $column instanceof \GF_Query_Column ) {
+								if ( ! $column->is_entry_column() && ! $column->is_meta_column() ) {
+									$column = new \GF_Query_Column( $fields[ $column->field_id ]->ID );
+								}
 
-							$q->order( $column, $order );
+								$q->order( $column, $order );
+							}
 						}
 
 						add_filter( 'gform_gf_query_sql', $gf_query_sql_callback = function( $sql ) use ( &$unions_sql ) {
