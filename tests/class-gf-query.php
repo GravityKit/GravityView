@@ -742,7 +742,7 @@ class GF_Patched_Query extends GF_Query {
 
 		$paginate = implode( ' ', array_filter( array( $limit, $offset ), 'strlen' ) );
 
-		$sql = apply_filters( 'gf_query_sql', compact( 'select', 'from', 'join', 'where', 'order', 'paginate' ) );
+		$sql = apply_filters( 'gform_gf_query_sql', compact( 'select', 'from', 'join', 'where', 'order', 'paginate' ) );
 		$sql = implode( ' ', array_filter( $sql, 'strlen' ) );
 
 		GFCommon::log_debug( __METHOD__ . '(): sql => ' . $sql );

@@ -1042,7 +1042,7 @@ class View implements \ArrayAccess {
 							$q->order( $column, $order );
 						}
 
-						add_filter( 'gf_query_sql', $gf_query_sql_callback = function( $sql ) use ( &$unions_sql ) {
+						add_filter( 'gform_gf_query_sql', $gf_query_sql_callback = function( $sql ) use ( &$unions_sql ) {
 							// Remove SQL_CALC_FOUND_ROWS as it's not needed in UNION clauses
 							$select = 'UNION ALL ' . str_replace( 'SQL_CALC_FOUND_ROWS ', '', $sql['select'] );
 
@@ -1064,10 +1064,10 @@ class View implements \ArrayAccess {
 
 						$q->get(); // Launch
 
-						remove_filter( 'gf_query_sql', $gf_query_sql_callback );
+						remove_filter( 'gform_gf_query_sql', $gf_query_sql_callback );
 					}
 
-					add_filter( 'gf_query_sql', $gf_query_sql_callback = function( $sql ) use ( $unions_sql ) {
+					add_filter( 'gform_gf_query_sql', $gf_query_sql_callback = function( $sql ) use ( $unions_sql ) {
 						// Remove SQL_CALC_FOUND_ROWS as it's not needed in UNION clauses
 						$sql['select'] = str_replace( 'SQL_CALC_FOUND_ROWS ', '', $sql['select'] );
 
@@ -1137,7 +1137,7 @@ class View implements \ArrayAccess {
 				}
 
 				if ( isset( $gf_query_sql_callback ) ) {
-					remove_action( 'gf_query_sql', $gf_query_sql_callback );
+					remove_action( 'gform_gf_query_sql', $gf_query_sql_callback );
 				}
 
 				/**
