@@ -929,4 +929,123 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$_GET = array();
 	}
+
+	/**
+	 * https://gist.github.com/zackkatz/66e9fb2147a9eb1a2f2e
+	 */
+	public function test_override_search_operator() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 16, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"16","input":"input_text"}]',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello world',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'world',
+		) );
+
+		$_GET = array();
+		$this->assertEquals( 3, $view->get_entries()->count() );
+
+		$_GET = array( 'filter_16' => 'hello' );
+		$this->assertEquals( 2, $view->get_entries()->count() );
+
+		$_GET = array( 'filter_16' => 'world' );
+		$this->assertEquals( 2, $view->get_entries()->count() );
+
+		$_GET = array( 'filter_16' => 'hello world, goodbye moon' );
+		$this->assertEquals( 0, $view->get_entries()->count() );
+
+		$_GET = array( 'filter_16' => 'hello world' );
+		$this->assertEquals( 1, $view->get_entries()->count() );
+
+		add_filter( 'gravityview_fe_search_criteria', $callback = function( $search_criteria ) {
+			if ( ! isset( $search_criteria['field_filters'] ) ) {
+				return $search_criteria;
+			}
+
+			foreach ( $search_criteria['field_filters'] as $k => $filter ) {
+				if ( ! empty( $filter['key'] ) && '16' == $filter['key'] ) {
+					$search_criteria['field_filters'][ $k ]['operator'] = 'is';
+					break;
+				}
+			}
+
+			return $search_criteria;
+		} );
+
+		$_GET = array();
+		$this->assertEquals( 3, $view->get_entries()->count() );
+
+		$_GET = array( 'filter_16' => 'hello' );
+		$this->assertEquals( 1, $view->get_entries()->count() );
+
+		$_GET = array( 'filter_16' => 'world' );
+		$this->assertEquals( 1, $view->get_entries()->count() );
+
+		$_GET = array( 'filter_16' => 'hello world, goodbye moon' );
+		$this->assertEquals( 0, $view->get_entries()->count() );
+
+		$_GET = array( 'filter_16' => 'hello world' );
+		$this->assertEquals( 1, $view->get_entries()->count() );
+
+		remove_filter( 'gravityview_fe_search_criteria', $callback );
+
+		add_filter( 'gravityview_search_operator', $callback = function( $operator, $field ) {
+			if ( $field['key'] == '16' ) {
+				return 'is';
+			}
+			return $operator;
+		}, 10, 2 );
+
+		$_GET = array();
+		$this->assertEquals( 3, $view->get_entries()->count() );
+
+		$_GET = array( 'filter_16' => 'hello' );
+		$this->assertEquals( 1, $view->get_entries()->count() );
+
+		$_GET = array( 'filter_16' => 'world' );
+		$this->assertEquals( 1, $view->get_entries()->count() );
+
+		$_GET = array( 'filter_16' => 'hello world, goodbye moon' );
+		$this->assertEquals( 0, $view->get_entries()->count() );
+
+		$_GET = array( 'filter_16' => 'hello world' );
+		$this->assertEquals( 1, $view->get_entries()->count() );
+
+		remove_filter( 'gravityview_search_operator', $callback );
+
+		$_GET = array();
+	}
 }

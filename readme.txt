@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+== develop ==
+
+* Fixed: search operator overrides broke
+* Added: 3rd argument \GV\View to `gravityview_search_operator`
+
 == 2.2.2 on December 11, 2018 ==
 
 * Added: Support for the new [Multiple Forms beta](https://gravityview.co/extensions/multiple-forms/)!
