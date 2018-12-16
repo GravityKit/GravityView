@@ -29,6 +29,14 @@ class View_List_Template extends View_Template {
 	public function the_field( \GV\Field $field, \GV\Entry $entry, $extras = null ) {
 		$form = $this->view->form;
 
+		if ( isset( $this->view->unions[ $entry['form_id'] ] ) ) {
+			if ( isset( $this->view->unions[ $entry['form_id'] ][ $field->ID ] ) ) {
+				$field = $this->view->unions[ $entry['form_id'] ][ $field->ID ];
+			} elseif ( ! $field instanceof Internal_Field ) {
+				$field = Internal_Field::from_configuration( array( 'id' => 'custom' ) );
+			}
+		}
+
 		if ( $entry->is_multi() ) {
 			if ( ! $single_entry = $entry->from_field( $field ) ) {
 				return;
