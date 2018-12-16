@@ -1042,14 +1042,14 @@ class View implements \ArrayAccess {
 
 						// Copy the ORDER clause and substitute the field_ids to the respective ones
 						foreach ( $query_parameters['order'] as $order ) {
-							list( $column, $order ) = $order;
+							list( $column, $_order ) = $order;
 
-							if( $column && $column instanceof \GF_Query_Column ) {
+							if ( $column && $column instanceof \GF_Query_Column ) {
 								if ( ! $column->is_entry_column() && ! $column->is_meta_column() ) {
 									$column = new \GF_Query_Column( $fields[ $column->field_id ]->ID );
 								}
 
-								$q->order( $column, $order );
+								$q->order( $column, $_order );
 							}
 						}
 
