@@ -135,8 +135,10 @@ class GV_Unit_Tests_Bootstrap {
 
 		add_filter( 'gravityview/query/class', 'gravityview_joins_patch_query' );
 		function gravityview_joins_patch_query() {
-			require_once dirname( __FILE__ ) . '/class-gf-query.php';
-			return '\GF_Patched_Query';
+			if ( class_exists( 'GF_Query' ) ) {
+				require_once dirname( __FILE__ ) . '/class-gf-query.php';
+				return '\GF_Patched_Query';
+			}
 		}
 
 		// set up Gravity Forms database
