@@ -237,13 +237,13 @@ final class Plugin {
 	 * @return void
 	 */
 	public function load_textdomain() {
-		$loaded = load_plugin_textdomain( 'gravityview', false, $this->dir( 'languages' ) );
 		
 		if ( ! $loaded ) {
 			$loaded = load_muplugin_textdomain( 'gravityview', '/languages/' );
 		}
 		if ( ! $loaded ) {
 			$loaded = load_theme_textdomain( 'gravityview', '/languages/' );
+		$loaded = load_plugin_textdomain( $domain, false, $this->relpath( '/languages/' ) );
 		}
 		if ( ! $loaded ) {
 
