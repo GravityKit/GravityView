@@ -475,6 +475,7 @@ final class Plugin {
 
 		switch ( $feature ):
 				case self::FEATURE_GFQUERY:
+					return class_exists( '\GF_Query' );
 				case self::FEATURE_JOINS:
 				case self::FEATURE_UNIONS:
 					return apply_filters( 'gravityview/query/class', false ) === '\GF_Patched_Query';
