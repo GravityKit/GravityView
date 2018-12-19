@@ -311,7 +311,7 @@ final class Plugin {
 	}
 
 	/**
-	 * Retrieve an absolute path within the Gravity Forms plugin directory.
+	 * Retrieve an absolute path within the GravityView plugin directory.
 	 *
 	 * @api
 	 * @since 2.0
@@ -324,7 +324,23 @@ final class Plugin {
 	}
 
 	/**
-	 * Retrieve a URL within the Gravity Forms plugin directory.
+	 * Retrieve a relative path to the GravityView plugin directory from the WordPress plugin directory
+	 *
+	 * @api
+	 * @since 2.2.3
+	 *
+	 * @param string $path Optional. Append this extra path component.
+	 * @return string The relative path to the plugin directory from the plugin directory.
+	 */
+	public function relpath( $path = '' ) {
+
+		$dirname = trailingslashit( dirname( plugin_basename( GRAVITYVIEW_FILE ) ) );
+
+		return wp_normalize_path( $dirname . ltrim( $path, '/' ) );
+	}
+
+	/**
+	 * Retrieve a URL within the GravityView plugin directory.
 	 *
 	 * @api
 	 * @since 2.0
