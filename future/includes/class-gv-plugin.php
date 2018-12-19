@@ -234,29 +234,50 @@ final class Plugin {
 	/**
 	 * Load the translations.
 	 *
+	 * Order of look-ups:
+	 *
+	 * 1. /wp-content/languages/plugins/gravityview-{locale}.mo (loaded by WordPress Core)
+	 * 2. /wp-content/mu-plugins/gravityview-{locale}.mo
+	 * 3. /wp-content/mu-plugins/languages/gravityview-{locale}.mo
+	 * 4. /wp-content/plugins/gravityview/languages/gravityview-{locale}.mo
+	 *
 	 * @return void
 	 */
 	public function load_textdomain() {
-		
-		if ( ! $loaded ) {
-			$loaded = load_muplugin_textdomain( 'gravityview', '/languages/' );
+
+		$domain = 'gravityview';
+
+		// 1. /wp-content/languages/plugins/gravityview-{locale}.mo (loaded by WordPress Core)
+		if ( is_textdomain_loaded( $domain ) ) {
+			return;
 		}
-		if ( ! $loaded ) {
-			$loaded = load_theme_textdomain( 'gravityview', '/languages/' );
+
+		// 2. /wp-content/languages/plugins/gravityview-{locale}.mo
+		// 3. /wp-content/mu-plugins/plugins/languages/gravityview-{locale}.mo
+		$loaded = load_muplugin_textdomain( $domain, '/languages/' );
+
+		if ( $loaded ) {
+			return;
+		}
+
+		// 4. /wp-content/plugins/gravityview/languages/gravityview-{locale}.mo
 		$loaded = load_plugin_textdomain( $domain, false, $this->relpath( '/languages/' ) );
+
+		if ( $loaded ) {
+			return;
 		}
-		if ( ! $loaded ) {
 
-			$locale = get_locale();
+		// Pre-4.6 loading
+		// TODO: Remove when GV minimum version is WordPress 4.6.0
+		$locale = apply_filters( 'plugin_locale', ( ( function_exists('get_user_locale') && is_admin() ) ? get_user_locale() : get_locale() ), 'gravityview' );
 
-			if ( function_exists('get_user_locale') && is_admin() ) {
-				$locale = get_user_locale();
-			}
+		$loaded = load_textdomain( 'gravityview', sprintf( '%s/%s-%s.mo', $this->dir('languages'), $domain, $locale ) );
 
-			$locale = apply_filters( 'plugin_locale', $locale, 'gravityview' );
-			$mofile = $this->dir( 'languages' ) . '/gravityview-'. $locale .'.mo';
-			load_textdomain( 'gravityview', $mofile );
+		if( $loaded ) {
+			return;
 		}
+
+		gravityview()->log->error( sprintf( 'Unable to load textdomain for %s locale.', $locale ) );
 	}
 
 	/**
