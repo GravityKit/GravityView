@@ -320,7 +320,7 @@ final class Plugin {
 	 * @return string The absolute path to the plugin directory.
 	 */
 	public function dir( $path = '' ) {
-		return GRAVITYVIEW_DIR . ltrim( $path, '/' );
+		return wp_normalize_path( GRAVITYVIEW_DIR . ltrim( $path, '/' ) );
 	}
 
 	/**
