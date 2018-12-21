@@ -731,6 +731,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 */
 		$search_criteria = $this->filter_entries( array(), null, array( 'id' => $view->ID ), true /** force search_criteria */ );
 
+		/**
+		 * Call any userland filters that they might have.
+		 */
+		remove_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ), 10, 3 );
+		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', $search_criteria, $view->form->ID, $view->settings->as_atts() );
+		add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ), 10, 3 );
+
 		$query_class = $view->get_query_class();
 
 		if ( empty( $search_criteria['field_filters'] ) ) {
@@ -811,8 +818,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 * @filter `gravityview_search_operator` Modify the search operator for the field (contains, is, isnot, etc)
 			 * @param string $operator Existing search operator
 			 * @param array $filter array with `key`, `value`, `operator`, `type` keys
+			 * @since develop
+			 * @param \GV\View $view The View we're operating on.
 			 */
-			$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter );
+			$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter, $view );
 		}
 
 		$search_conditions = array();

@@ -742,7 +742,7 @@ class GF_Patched_Query extends GF_Query {
 
 		$paginate = implode( ' ', array_filter( array( $limit, $offset ), 'strlen' ) );
 
-		$sql = apply_filters( 'gf_query_sql', compact( 'select', 'from', 'join', 'where', 'order', 'paginate' ) );
+		$sql = apply_filters( 'gform_gf_query_sql', compact( 'select', 'from', 'join', 'where', 'order', 'paginate' ) );
 		$sql = implode( ' ', array_filter( $sql, 'strlen' ) );
 
 		GFCommon::log_debug( __METHOD__ . '(): sql => ' . $sql );
@@ -1109,7 +1109,7 @@ class GF_Patched_Query extends GF_Query {
 	 *
 	 * @return array
 	 */
-	public function _prime_joins( $explicit_joins, $where_inference_joins, $order_inference_joins ) {
+	public function _prime_joins( $explicit_joins, $where_inference_joins = null, $order_inference_joins = null ) {
 		$joins = array_unique( $explicit_joins );
 
 		$explicit_join_aliases = array();

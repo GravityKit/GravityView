@@ -750,8 +750,6 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 	public function test_union_simple() {
 		$this->_reset_context();
 
-		$this->markTestSkipped( 'Requires @soulseekah to fix! See https://travis-ci.org/gravityview/GravityView/jobs/466751595' );
-
 		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_UNIONS ) ) {
 			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
 		}

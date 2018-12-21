@@ -21,6 +21,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+== 2.2.3 on December 20, 2018 ==
+
+* Fixed: Issue loading translation files on Windows IIS servers
+
+__Developer Updates:__
+
+* Added: Third argument to `gravityview_search_operator` filter (the current `\GV\View` object)
+* Added: `GravityView_Image::is_valid_extension()` to determine whether an extension is valid for an image
+* Fixed: Search operator overrides that broke in 2.2
+* Modified: SVG files are now processed as images in GravityView
+* Modified: Changed translation file loading order to remove paths that didn't work! [See this article for the updated paths](https://docs.gravityview.co/article/530-translation-string-loading-order).
+
 == 2.2.2 on December 11, 2018 ==
 
 * Added: Support for the new [Multiple Forms beta](https://gravityview.co/extensions/multiple-forms/)!

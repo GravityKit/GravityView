@@ -217,6 +217,15 @@ class View_Table_Template extends View_Template {
                 do_action( 'gravityview_table_cells_before', \GravityView_View::getInstance() );
 
                 foreach ( $fields->all() as $field ) {
+					if ( isset( $this->view->unions[ $entry['form_id'] ] ) ) {
+						if ( isset( $this->view->unions[ $entry['form_id'] ][ $field->ID ] ) ) {
+							$field = $this->view->unions[ $entry['form_id'] ][ $field->ID ];
+						} else {
+							if ( ! $field instanceof Internal_Field ) {
+								$field = Internal_Field::from_configuration( array( 'id' => 'custom' ) );
+							}
+						}
+					}
 					$this->the_field( $field, $entry );
 				}
 
