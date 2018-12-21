@@ -193,7 +193,7 @@ abstract class Entry {
 		 * @param string $permalink The permalink.
 		 * @param \GV\Entry $entry The entry we're retrieving it for.
 		 * @param \GV\View|null $view The view context.
-		 * @param \GV\Request $reqeust The request context.
+		 * @param \GV\Request $request The request context.
 		 */
 		return apply_filters( 'gravityview/entry/permalink', $permalink, $this, $view, $request );
 	}
@@ -215,7 +215,7 @@ abstract class Entry {
 	 * @since 2.2
 	 *
 	 * @param \GV\Field $field The field to filter by.
-	 * @param int $fallback A fallaback form_id if the field supplied is invaild.
+	 * @param int $fallback A fallback form_id if the field supplied is invalid.
 	 *
 	 * @return \GV\Entry|null A \GV\Entry or null if not found.
 	 */
