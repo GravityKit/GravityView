@@ -976,19 +976,19 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		) );
 
 		$_GET = array();
-		$this->assertEquals( 3, $view->get_entries()->count() );
+		$this->assertEquals( 3, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello' );
-		$this->assertEquals( 2, $view->get_entries()->count() );
+		$this->assertEquals( 2, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'world' );
-		$this->assertEquals( 2, $view->get_entries()->count() );
+		$this->assertEquals( 2, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello world, goodbye moon' );
-		$this->assertEquals( 0, $view->get_entries()->count() );
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello world' );
-		$this->assertEquals( 1, $view->get_entries()->count() );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
 		add_filter( 'gravityview_fe_search_criteria', $callback = function( $search_criteria ) {
 			if ( ! isset( $search_criteria['field_filters'] ) ) {
@@ -1006,19 +1006,19 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		} );
 
 		$_GET = array();
-		$this->assertEquals( 3, $view->get_entries()->count() );
+		$this->assertEquals( 3, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello' );
-		$this->assertEquals( 1, $view->get_entries()->count() );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'world' );
-		$this->assertEquals( 1, $view->get_entries()->count() );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello world, goodbye moon' );
-		$this->assertEquals( 0, $view->get_entries()->count() );
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello world' );
-		$this->assertEquals( 1, $view->get_entries()->count() );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
 		remove_filter( 'gravityview_fe_search_criteria', $callback );
 
@@ -1030,19 +1030,19 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		}, 10, 2 );
 
 		$_GET = array();
-		$this->assertEquals( 3, $view->get_entries()->count() );
+		$this->assertEquals( 3, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello' );
-		$this->assertEquals( 1, $view->get_entries()->count() );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'world' );
-		$this->assertEquals( 1, $view->get_entries()->count() );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello world, goodbye moon' );
-		$this->assertEquals( 0, $view->get_entries()->count() );
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello world' );
-		$this->assertEquals( 1, $view->get_entries()->count() );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
 		remove_filter( 'gravityview_search_operator', $callback );
 
