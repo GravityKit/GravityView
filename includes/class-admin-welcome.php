@@ -271,6 +271,23 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
+                <h3>2.2.3 on December 20, 2018</h3>
+
+                <ul>
+                    <li>Fixed: Issue loading translation files on Windows IIS servers</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Added: Third argument to <code>gravityview_search_operator</code> filter (the current <code>\GV\View</code> object)</li>
+                    <li>Added: <code>GravityView_Image::is_valid_extension()</code> to determine whether an extension is valid for an image</li>
+                    <li>Fixed: Search operator overrides that broke in 2.2</li>
+                    <li>Modified: SVG files are now processed as images in GravityView</li>
+                    <li>Modified: Changed translation file loading order to remove paths that didn't work! <a href="https://docs.gravityview.co/article/530-translation-string-loading-order">See this article for the updated paths</a>.</li>
+                </ul>
+
+
                 <h3>2.2.2 on December 11, 2018</h3>
 
                 <ul>

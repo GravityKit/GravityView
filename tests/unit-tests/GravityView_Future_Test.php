@@ -48,11 +48,17 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\Plugin::dir()
 	 * @covers \GV\Plugin::url()
+     * @covers \GV\Plugin::relpath()
 	 */
-	public function test_plugin_dir_and_url() {
-		$this->assertEquals( GRAVITYVIEW_DIR, gravityview()->plugin->dir() );
+	public function test_plugin_dir_and_url_and_relpath() {
+	    $this->assertEquals( GRAVITYVIEW_DIR, gravityview()->plugin->dir() );
 		$this->assertStringEndsWith( '/gravityview/test/this.php', strtolower( gravityview()->plugin->dir( 'test/this.php' ) ) );
 		$this->assertStringEndsWith( '/gravityview/and/this.php', strtolower( gravityview()->plugin->dir( '/and/this.php' ) ) );
+
+		$dirname = trailingslashit( dirname( plugin_basename( GRAVITYVIEW_FILE ) ) );
+		$this->assertEquals( $dirname, gravityview()->plugin->relpath() );
+		$this->assertEquals( $dirname . 'languages/', gravityview()->plugin->relpath('/languages/') );
+		$this->assertEquals( $dirname . 'languages', gravityview()->plugin->relpath('languages') );
 
 		/** Due to how WP_PLUGIN_DIR is different in test mode, we are only able to check bits of the URL */
 		$this->assertStringStartsWith( 'http', strtolower( gravityview()->plugin->url() ) );
