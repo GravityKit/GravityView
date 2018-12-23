@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+== develop ==
+
+* Fixed: Other Entries field would display all entries without filtering
+
 == 2.2.3 on December 20, 2018 ==
 
 * Fixed: Issue loading translation files on Windows IIS servers
