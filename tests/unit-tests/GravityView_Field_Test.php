@@ -175,7 +175,9 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 			'status' => 'active',
 		) ) );
 
-		$this->assertEquals( $another_entry->ID, $field->field->get_entries( $context )[0]->ID );
+		$entries = $field->field->get_entries( $context );
+		$this->assertCount( 1, $entries );
+		$this->assertEquals( $another_entry->ID, $entries[0]->ID );
 
 		$and_another_entry = \GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
@@ -183,10 +185,10 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 			'status' => 'active',
 		) ) );
 
-		$this->assertEquals( $another_entry->ID, $field->field->get_entries( $context )[1]->ID );
-		$this->assertEquals( $and_another_entry->ID, $field->field->get_entries( $context )[0]->ID );
-
-		$this->assertCount( 2, $field->field->get_entries( $context ) );
+		$entries = $field->field->get_entries( $context );
+		$this->assertCount( 2, $entries );
+		$this->assertEquals( $another_entry->ID, $entries[1]->ID );
+		$this->assertEquals( $and_another_entry->ID, $entries[0]->ID );
 
 		/**
 		 * Filter by date.
@@ -205,17 +207,17 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 			'end_date' => '1991-01-01',
 		) );
 
-		$this->assertCount( 1, $field->field->get_entries( $context ) );
-
-		$this->assertEquals( $valid_date_entry->ID, $field->field->get_entries( $context )[0]->ID );
+		$entries = $field->field->get_entries( $context );
+		$this->assertCount( 1, $entries );
+		$this->assertEquals( $valid_date_entry->ID, $entries[0]->ID );
 
 		/**
 		 * Make sure search doesn't interfere.
 		 */
 		$_GET['gv_search'] = 'hello';
 
-		$this->assertCount( 1, $field->field->get_entries( $context ) );
-
-		$this->assertEquals( $valid_date_entry->ID, $field->field->get_entries( $context )[0]->ID );
+		$entries = $field->field->get_entries( $context );
+		$this->assertCount( 1, $entries );
+		$this->assertEquals( $valid_date_entry->ID, $entries[0]->ID );
 	}
 }
