@@ -25,6 +25,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Fixed: Other Entries field would display all entries without filtering
 * Fixed: Entry Date searches not working, broken in 2.2 (5197a89c1)
+* Fixed: CSV outputting wrong date formats for date fields and date created fields
+* Fixed: CSV outputing empty content for custom content fields
 
 == 2.2.3 on December 20, 2018 ==
 
