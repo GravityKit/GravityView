@@ -824,6 +824,22 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter, $view );
 		}
 
+		if ( ! empty( $search_criteria['start_date'] ) || ! empty( $search_criteria['end_date'] ) ) {
+			$date_criteria = array();
+
+			if ( isset( $search_criteria['start_date'] ) ) {
+				$date_criteria['start_date'] = $search_criteria['start_date'];
+			}
+
+			if ( isset( $search_criteria['end_date'] ) ) {
+				$date_criteria['end_date'] = $search_criteria['end_date'];
+			}
+
+			$_tmp_query         = new $query_class( $view->form->ID, $date_criteria );
+			$_tmp_query_parts   = $_tmp_query->_introspect();
+			$extra_conditions[] = $_tmp_query_parts['where'];
+		}
+
 		$search_conditions = array();
 
 		if ( $filters = array_filter( $search_criteria['field_filters'] ) ) {

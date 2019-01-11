@@ -7386,6 +7386,127 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	/**
+	 * https://github.com/gravityview/GravityView/issues/1231
+	 */
+	public function test_csv_shortcodes() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form->ID,
+			'template_id' => 'table',
+            'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Order ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'content' => 'before[test_csv_shortcodes_1]after',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form->ID,
+			'status' => 'active',
+			'16' => 'A pair of shoes',
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		set_query_var( 'csv', 1 );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$view->settings->update( array( 'csv_enable' => '1' ) );
+
+		add_filter( 'gform_include_bom_export_entries', '__return_false' );
+
+		add_shortcode( 'test_csv_shortcodes_1', function() {
+			return 'in';
+		} );
+
+		ob_start();
+		$view::template_redirect();
+		$expected = array(
+			'"Order ID","Custom Content"',
+			"{$entry->ID},beforeinafter",
+		);
+		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
+
+		remove_filter( 'gform_include_bom_export_entries', '__return_false' );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * https://github.com/gravityview/GravityView/issues/1231
+	 */
+	public function test_csv_date_formats() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form->ID,
+			'template_id' => 'table',
+            'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Order ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'date_created',
+						'date_display' => '\\\\y\\\\e\\\\a\\\\r: Y',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '3',
+						'date_display' => '\\\\m\\\\o\\\\n\\\\t\\\\h: m',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form->ID,
+			'status' => 'active',
+			'date_created' => '2000-01-01 01:01:01',
+			'3' => '2005-05-05',
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		set_query_var( 'csv', 1 );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$view->settings->update( array( 'csv_enable' => '1' ) );
+
+		add_filter( 'gform_include_bom_export_entries', '__return_false' );
+
+		ob_start();
+		$view::template_redirect();
+		$expected = array(
+			'"Order ID","Date Created",Date',
+			"{$entry->ID},\"year: 2000\",\"month: 05\"",
+		);
+		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
+
+		remove_filter( 'gform_include_bom_export_entries', '__return_false' );
+
+		$this->_reset_context();
+	}
 }
 
 class GVFutureTest_Extension_Test_BC extends GravityView_Extension {
