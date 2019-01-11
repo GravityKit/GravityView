@@ -210,10 +210,10 @@ function gravityview_get_floaty( $height = 87, $css_class = null ) {
 	$width = $height * 0.7586206897;
 
 	if( function_exists('is_rtl') && is_rtl() ) {
-		$style = 'margin:10px 10px 10px 0;';
+		$style = 'margin:10px 10px 10px 0; height='. $height .'px; width: '. $width .'px;';
 		$css_class = is_string( $css_class ) ? $css_class : 'alignright';
 	} else {
-		$style = 'margin:10px 10px 10px 0;';
+		$style = 'margin:10px 10px 10px 0; height='. $height .'px; width: '. $width .'px;';
 		$css_class = is_string( $css_class ) ? $css_class : 'alignleft';
 	}
 
