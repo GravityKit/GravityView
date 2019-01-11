@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-== 2.2.3 on December 20, 2018 ==
+= 2.2.3 on December 20, 2018 =
 
 * Fixed: Issue loading translation files on Windows IIS servers
 
@@ -33,7 +33,7 @@ __Developer Updates:__
 * Modified: SVG files are now processed as images in GravityView
 * Modified: Changed translation file loading order to remove paths that didn't work! [See this article for the updated paths](https://docs.gravityview.co/article/530-translation-string-loading-order).
 
-== 2.2.2 on December 11, 2018 ==
+= 2.2.2 on December 11, 2018 =
 
 * Added: Support for the new [Multiple Forms beta](https://gravityview.co/extensions/multiple-forms/)!
 * **Minor CSS Change**: Reduced Search Bar negative margins to fix the Search Bar not aligning properly
@@ -50,7 +50,7 @@ __Developer Updates:__
 * Added: `gravityview/approve_entries/autounapprove/status` filter to change the approval status set when an entry is modified in Edit Entry
 * Added: `$unions` property to `\GV\View`, for future use with [Multiple Forms plugin](https://gravityview.co/extensions/multiple-forms/)
 
-== 2.2.1 on December 4, 2018 ==
+= 2.2.1 on December 4, 2018 =
 
 * Confirmed compatibility with WordPress 5.0 and the new Gutenberg editor ([use the shortcode block to embed](https://docs.gravityview.co/article/526-does-gravityview-support-gutenberg))
 * Added: Support for upcoming [Multiple Forms plugin](https://gravityview.co/extensions/multiple-forms/)
