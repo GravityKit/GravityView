@@ -221,4 +221,59 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'Logged-In', do_shortcode( GFCommon::replace_variables_prepopulate( '[gvlogic if="{user:ID}" greater_than="0"]Logged-In[else]Logged-Out[/gvlogic]' ) ) );
 	}
 
+	/**
+	 * @dataProvider get_test_gv_shortcode_date_comparison
+	 */
+	function test_gv_shortcode_date_comparison( $date1, $date2, $op, $result ) {
+		$form_id = \GFAPI::add_form( array(
+			'title'  => __FUNCTION__,
+			'fields' => array(
+				array( 'id' => 1, 'label' => 'Date 1', 'type'  => 'date' ),
+				array( 'id' => 2, 'label' => 'Date 2', 'type'  => 'date' ),
+			),
+		) );
+		$form = \GV\GF_Form::by_id( $form_id );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form_id,
+			'template_id' => 'table',
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'content' => 'You are here.',
+					),
+				),
+			)
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form_id,
+			'status' => 'active',
+			'1' => $date1,
+			'2' => $date2,
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$renderer = new \GV\Field_Renderer();
+		$field = \GV\Internal_Field::by_id( 'custom' );
+
+		$field->content = sprintf( '[gvlogic if="{Date Field:1}" %s="{Date Field 2:2}"]CORRECT[/gvlogic]', $op );
+		$this->assertEquals( $result ? 'CORRECT' : '', $renderer->render( $field, $view, null, $entry ) );
+	}
+
+	function get_test_gv_shortcode_date_comparison() {
+		return array(
+			array( '2019-01-13', '2019-01-13', 'equals', true ),
+			array( '2019-01-14', '2019-01-13', 'equals', false ),
+			array( '2019-01-14', '2019-01-13', 'isnot', true ),
+			array( '2019-01-14', '2019-01-14', 'isnot', false ),
+			array( '2019-01-11', '2019-01-14', 'greater_than', false ),
+			array( '2019-01-11', '2019-01-14', 'less_than', true ),
+			array( '2019-01-17', '2019-01-14', 'greater_than_or_is', true ),
+			array( '2019-01-17', '2019-01-14', 'less_than_or_is', false ),
+		);
+	}
+
 }
