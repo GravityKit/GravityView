@@ -1,9 +1,9 @@
 # Copyright (C) 2018 GravityView
 # This file is distributed under the GPLv2 or later.
 # Translators:
-# Zachary Katz <zack@katz.co>, 2018
 # Clara Di Gennaro <claradigennaro7@hotmail.com>, 2018
 # Davide Andreotti <andreottidavide@yahoo.it>, 2018
+# Zachary Katz <zack@katz.co>, 2019
 # 
 msgid ""
 msgstr ""
@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
-"Last-Translator: Davide Andreotti <andreottidavide@yahoo.it>, 2018\n"
+"Last-Translator: Zachary Katz <zack@katz.co>, 2019\n"
 "Language-Team: Italian (https://www.transifex.com/katzwebservices/teams/18775/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,23 +29,27 @@ msgstr ""
 
 #: future/includes/class-gv-extension.php:217
 msgid "Could not activate the %s Extension; GravityView is not active."
-msgstr ""
+msgstr "Impossibile attivare l'estensione %s; GravityView non è attivo."
 
 #: future/includes/class-gv-extension.php:219
 msgid "The %s Extension requires GravityView Version %s or newer."
-msgstr ""
+msgstr "L'estensione %s richiede GravityView versione %s o successiva."
 
 #: future/includes/class-gv-extension.php:221
 msgid ""
 "The %s Extension requires PHP Version %s or newer. Please ask your host to "
 "upgrade your server's PHP."
 msgstr ""
+"L'estensione %s richiede la versione %s di PHP o più recente. Si prega di "
+"chiedere al vostro host di aggiornare il PHP del server."
 
 #: future/includes/class-gv-extension.php:223
 msgid ""
 "The %s Extension is not compatible with this version of GravityView. Please "
 "update the Extension to the latest version."
 msgstr ""
+"L'estensione %s non è compatibile con questa versione di GravityView. Si "
+"prega di aggiornare l'estensione alla versione più recente."
 
 #: future/includes/class-gv-license-handler.php:263
 msgid "License Details:"
@@ -884,13 +888,13 @@ msgstr ""
 #: future/lib/EDD_SL_Plugin_Updater.php:400
 #: includes/lib/EDD_SL_Plugin_Updater.php:402
 msgid "You do not have permission to install plugin updates"
-msgstr ""
+msgstr "Non hai il permesso di installare gli aggiornamenti dei plugin"
 
 #: future/lib/EDD_SL_Plugin_Updater.php:400
 #: includes/class-gravityview-change-entry-creator.php:67
 #: includes/lib/EDD_SL_Plugin_Updater.php:402
 msgid "Error"
-msgstr ""
+msgstr "Errore"
 
 #: future/loader.php:22
 msgid ""
@@ -3511,7 +3515,7 @@ msgstr ""
 #: future/includes/class-gv-settings-addon.php:841
 msgctxt "Setting: On or off"
 msgid "On"
-msgstr ""
+msgstr "On"
 
 #: future/includes/class-gv-settings-addon.php:845
 msgctxt "Setting: On or off"

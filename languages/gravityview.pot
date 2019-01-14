@@ -1,14 +1,14 @@
-# Copyright (C) 2018 GravityView
+# Copyright (C) 2019 GravityView
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.2.2\n"
+"Project-Id-Version: GravityView 2.2.4\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Katz Web Services, Inc. <support@katz.co>\n"
 "Language-Team: Katz Web Services, Inc. <support@katz.co>\n"
 "X-Generator: grunt-wp-i18n 0.5.4\n"
@@ -205,13 +205,13 @@ msgid ""
 "look strange. Don't be concerned!"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:580
+#: future/includes/class-gv-plugin.php:581
 #: includes/class-gravityview-entry-approval.php:439
 #: tests/unit-tests/GravityView_Uninstall_Test.php:191
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:581
+#: future/includes/class-gv-plugin.php:582
 #: includes/class-gravityview-entry-approval.php:433
 #: tests/unit-tests/GravityView_Uninstall_Test.php:192
 msgid "Approved the Entry for GravityView"
@@ -1523,12 +1523,12 @@ msgid "Details of the logged-in user who created the entry (if any)."
 msgstr ""
 
 #: includes/class-admin-views.php:751
-#: includes/fields/class-gravityview-field-other-entries.php:25
+#: includes/fields/class-gravityview-field-other-entries.php:27
 msgid "Other Entries"
 msgstr ""
 
 #: includes/class-admin-views.php:753
-#: includes/fields/class-gravityview-field-other-entries.php:26
+#: includes/fields/class-gravityview-field-other-entries.php:28
 msgid "Display other entries created by the entry creator."
 msgstr ""
 
@@ -1661,23 +1661,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:499
+#: includes/class-admin-welcome.php:528
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:520
+#: includes/class-admin-welcome.php:549
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:561
+#: includes/class-admin-welcome.php:590
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:587
+#: includes/class-admin-welcome.php:616
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:588
+#: includes/class-admin-welcome.php:617
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -2645,52 +2645,52 @@ msgid ""
 "precision."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:47
+#: includes/fields/class-gravityview-field-other-entries.php:49
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:363
 msgid "Entry link text (required)"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:48
+#: includes/fields/class-gravityview-field-other-entries.php:50
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:269
 msgid "Entry #{entry_id}"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:54
+#: includes/fields/class-gravityview-field-other-entries.php:56
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:370
 msgid "Text or HTML to display after the link (optional)"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:55
+#: includes/fields/class-gravityview-field-other-entries.php:57
 msgid "This content will be displayed below each entry link."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:63
+#: includes/fields/class-gravityview-field-other-entries.php:65
 msgid "Entries to Display"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:64
+#: includes/fields/class-gravityview-field-other-entries.php:66
 msgid "What is the maximum number of entries that should be shown?"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:71
+#: includes/fields/class-gravityview-field-other-entries.php:73
 msgid "Hide if no entries"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:72
+#: includes/fields/class-gravityview-field-other-entries.php:74
 msgid "Don't display this field if the entry creator has no other entries"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:78
+#: includes/fields/class-gravityview-field-other-entries.php:80
 msgid "No Entries Text"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:79
+#: includes/fields/class-gravityview-field-other-entries.php:81
 msgid ""
 "The text that is shown if the entry creator has no other entries (and "
 "\"Hide if no entries\" is disabled)."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:80
+#: includes/fields/class-gravityview-field-other-entries.php:82
 msgid "This user has no other entries."
 msgstr ""
 
@@ -3312,23 +3312,23 @@ msgstr ""
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1396
+#: includes/widgets/search-widget/class-search-widget.php:1412
 msgid "Search Entries:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1399
+#: includes/widgets/search-widget/class-search-widget.php:1415
 msgid "Filter by date:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1402
+#: includes/widgets/search-widget/class-search-widget.php:1418
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1537
+#: includes/widgets/search-widget/class-search-widget.php:1553
 msgid "Clear"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1603
+#: includes/widgets/search-widget/class-search-widget.php:1619
 msgid "Show a different month"
 msgstr ""
 
@@ -3674,27 +3674,27 @@ msgid ""
 "entries displayed in the View."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1598
+#: includes/widgets/search-widget/class-search-widget.php:1614
 msgctxt "Close calendar"
 msgid "Close"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1599
+#: includes/widgets/search-widget/class-search-widget.php:1615
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1600
+#: includes/widgets/search-widget/class-search-widget.php:1616
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1601
+#: includes/widgets/search-widget/class-search-widget.php:1617
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1602
+#: includes/widgets/search-widget/class-search-widget.php:1618
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""

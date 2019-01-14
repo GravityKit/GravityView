@@ -128,7 +128,7 @@ class View_Table_Template extends View_Template {
 		 * @deprecated Here for back-compatibility.
 		 */
 		$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $context->view, $form ), $field->as_configuration() );
-		$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, null );
+		$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), ( $form && $form->form ) ? $form->form : null, null );
 
 		/**
 		 * @filter `gravityview/template/field/label` Override the field label.

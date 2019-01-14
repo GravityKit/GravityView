@@ -976,19 +976,19 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		) );
 
 		$_GET = array();
-		$this->assertEquals( 3, $view->get_entries()->count() );
+		$this->assertEquals( 3, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello' );
-		$this->assertEquals( 2, $view->get_entries()->count() );
+		$this->assertEquals( 2, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'world' );
-		$this->assertEquals( 2, $view->get_entries()->count() );
+		$this->assertEquals( 2, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello world, goodbye moon' );
-		$this->assertEquals( 0, $view->get_entries()->count() );
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello world' );
-		$this->assertEquals( 1, $view->get_entries()->count() );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
 		add_filter( 'gravityview_fe_search_criteria', $callback = function( $search_criteria ) {
 			if ( ! isset( $search_criteria['field_filters'] ) ) {
@@ -1006,19 +1006,19 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		} );
 
 		$_GET = array();
-		$this->assertEquals( 3, $view->get_entries()->count() );
+		$this->assertEquals( 3, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello' );
-		$this->assertEquals( 1, $view->get_entries()->count() );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'world' );
-		$this->assertEquals( 1, $view->get_entries()->count() );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello world, goodbye moon' );
-		$this->assertEquals( 0, $view->get_entries()->count() );
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello world' );
-		$this->assertEquals( 1, $view->get_entries()->count() );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
 		remove_filter( 'gravityview_fe_search_criteria', $callback );
 
@@ -1030,21 +1030,87 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		}, 10, 2 );
 
 		$_GET = array();
-		$this->assertEquals( 3, $view->get_entries()->count() );
+		$this->assertEquals( 3, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello' );
-		$this->assertEquals( 1, $view->get_entries()->count() );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'world' );
-		$this->assertEquals( 1, $view->get_entries()->count() );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello world, goodbye moon' );
-		$this->assertEquals( 0, $view->get_entries()->count() );
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello world' );
-		$this->assertEquals( 1, $view->get_entries()->count() );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
 		remove_filter( 'gravityview_search_operator', $callback );
+
+		$_GET = array();
+	}
+
+	/**
+	 * https://github.com/gravityview/GravityView/issues/1233
+	 */
+	public function test_search_date_created() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 16, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"entry_date","input":"date_range"}]',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'date_created' => '2019-01-03 12:00:00',
+			'16' => 'hello world',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'date_created' => '2019-01-04 12:00:00',
+			'16' => 'hello',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'date_created' => '2019-01-05 12:00:00',
+			'16' => 'world',
+		) );
+
+		$_GET = array();
+		$this->assertEquals( 3, $view->get_entries()->fetch()->count() );
+
+		$_GET['gv_start'] = '01/01/2019';
+		$_GET['gv_end']   = '01/01/2019';
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
+
+		$_GET['gv_start'] = '01/04/2019';
+		$_GET['gv_end']   = '01/04/2019';
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
+		$_GET['gv_start'] = '01/06/2019';
+		$_GET['gv_end']   = '01/06/2019';
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
 
 		$_GET = array();
 	}
