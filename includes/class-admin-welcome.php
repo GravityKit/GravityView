@@ -271,6 +271,18 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
+                <h3>2.2.4 on January 14, 2019</h3>
+
+                <ul>
+                    <li>Fixed: Other Entries field would display all entries without filtering</li>
+                    <li>Fixed: Entry Date searches not working (broken in 2.2)</li>
+                    <li>Fixed: CSV outputting wrong date formats for Date and Date Created fields</li>
+                    <li>Fixed: CSV outputting empty content for Custom Content fields</li>
+                    <li>Fixed: Changelog formatting so that the 2.2.1, 2.2.2, and 2.2.3 updates are shown</li>
+                    <li>Fixed: The picture of Floaty was <em>really big</em> in the Getting Started screen</li>
+                </ul>
+
+
                 <h3>2.2.3 on December 20, 2018</h3>
 
                 <ul>

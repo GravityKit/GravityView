@@ -21,12 +21,15 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop =
+= 2.2.4 on January 14, 2019 =
 
 * Fixed: Other Entries field would display all entries without filtering
-* Fixed: Entry Date searches not working, broken in 2.2 (5197a89c1)
-* Fixed: CSV outputting wrong date formats for date fields and date created fields
-* Fixed: CSV outputing empty content for custom content fields
+* Fixed: Entry Date searches not working (broken in 2.2)
+* Fixed: CSV outputting wrong date formats for Date and Date Created fields
+* Fixed: CSV outputting empty content for Custom Content fields
+* Fixed: Changelog formatting so that the 2.2.1, 2.2.2, and 2.2.3 updates are shown
+* Fixed: The picture of Floaty was _really big_ in the Getting Started screen
+* Updated Translations for Italian and Iranian. Thanks, Farhad!
 
 = 2.2.3 on December 20, 2018 =
 
