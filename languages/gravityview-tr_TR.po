@@ -1674,7 +1674,7 @@ msgstr "Alanları Sırala:"
 
 #: includes/class-admin-views.php:1026
 msgid "Filter fields by name or label"
-msgstr "Alanları ada yada etikete göre sırala"
+msgstr "Alanları ara yada etikete göre sırala"
 
 #: includes/class-admin-views.php:1033
 msgid "No fields were found matching the search."
