@@ -215,6 +215,7 @@ class GravityView_Edit_Entry {
 			'transaction_type',
 			'captcha',
 			'honeypot',
+			'creditcard',
 		);
 
 		/**

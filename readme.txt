@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Don't show credit card fields on the Edit Entry screen (#1219)
+
 = 2.2.4 on January 14, 2019 =
 
 * Fixed: Other Entries field would display all entries without filtering
