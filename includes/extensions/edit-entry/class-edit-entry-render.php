@@ -331,6 +331,16 @@ class GravityView_Edit_Entry_Render {
 			 */
 			unset( $this->entry['date_created'] );
 
+			/**
+			 * @action `gravityview/edit_entry/before_update` Perform an action after the entry has been updated using Edit Entry
+			 * @since develop
+			 * @param array $form Gravity Forms form array
+			 * @param string $entry_id Numeric ID of the entry that is being updated
+			 * @param GravityView_Edit_Entry_Render $this This object
+			 * @param GravityView_View_Data $gv_data The View data
+			 */
+			do_action( 'gravityview/edit_entry/before_update', $form, $this->entry['id'], $this, $gv_data );
+
 			GFFormsModel::save_lead( $form, $this->entry );
 
 	        // Delete the values for hidden inputs

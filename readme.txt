@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Fixed: Don't show credit card fields on the Edit Entry screen (#1219)
+* Added: `gravityview/edit_entry/before_update` hook
 
 = 2.2.4 on January 14, 2019 =
 
