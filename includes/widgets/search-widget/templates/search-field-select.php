@@ -38,7 +38,15 @@ $default_option = apply_filters('gravityview/extension/search/select_default', '
 			<option value="" <?php gv_selected( '', $search_field['value'], true ); ?>><?php echo esc_html( $default_option ); ?></option>
 			<?php
 			foreach( $search_field['choices'] as $choice ) : ?>
-				<option value="<?php echo esc_attr( $choice['value'] ); ?>" <?php gv_selected( esc_attr( $choice['value'] ), esc_attr( $search_field['value'] ), true ); ?>><?php echo esc_html( $choice['text'] ); ?></option>
+				<?php if ( is_array( $choice['value'] ) ): ?>
+					<optgroup label="<?php echo esc_attr( $choice['text'] ); ?>">
+						<?php foreach ( $choice['value'] as $subchoice ): ?>
+							<option value="<?php echo esc_attr( $subchoice['value'] ); ?>"><?php echo esc_html( $subchoice['text'] ); ?></option>
+						<?php endforeach; ?>
+					</optgroup>
+				<?php else: ?>
+					<option value="<?php echo esc_attr( $choice['value'] ); ?>" <?php gv_selected( esc_attr( $choice['value'] ), esc_attr( $search_field['value'] ), true ); ?>><?php echo esc_html( $choice['text'] ); ?></option>
+				<?php endif; ?>
 			<?php endforeach; ?>
 		</select>
 	</p>

@@ -25,6 +25,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Fixed: Don't show credit card fields on the Edit Entry screen (#1219)
 * Added: `gravityview/edit_entry/before_update` hook
+* Added: Support for nested dropdown selection in search fields
+* Fixed: State search dropdown type for custom address types
 
 = 2.2.4 on January 14, 2019 =
 
