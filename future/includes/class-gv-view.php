@@ -1237,8 +1237,8 @@ class View implements \ArrayAccess {
 		$headers_done = false;
 		$allowed = $headers = array();
 
-		foreach ( $view->fields->by_position( "directory_*" )->by_visible()->all() as $field ) {
-			$allowed[ $field->ID ] = $field;
+		foreach ( $view->fields->by_position( "directory_*" )->by_visible()->all() as $id => $field ) {
+			$allowed[] = $field;
 		}
 
 		$renderer = new Field_Renderer();
@@ -1248,27 +1248,25 @@ class View implements \ArrayAccess {
 			$return = array();
 
 			/**
-			 * @filter `gravityview/csv/entry/fields` Whitelist more entry fields that are output in CSV requests.
+			 * @filter `gravityview/csv/entry/fields` Whitelist more entry fields by ID that are output in CSV requests.
 			 * @param[in,out] array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the View.
 			 * @param \GV\View $view The view.
 			 * @param \GV\Entry $entry WordPress representation of the item.
 			 */
-			$allowed_field_ids = apply_filters( 'gravityview/csv/entry/fields', array_keys( $allowed ), $view, $entry );
+			$allowed_field_ids = apply_filters( 'gravityview/csv/entry/fields', wp_list_pluck( $allowed, 'ID' ), $view, $entry );
 
-			foreach ( $allowed_field_ids as $field_id ) {
-				$source = is_numeric( $field_id ) ? $view->form : new \GV\Internal_Source();
+			$allowed = array_filter( $allowed, function( $field ) use ( $allowed_field_ids ) {
+				return in_array( $field->ID, $allowed_field_ids, true );
+			} );
 
-				if ( isset( $allowed[ $field_id ] ) ) {
-					$field = $allowed[ $field_id ];
-				} else {
-					$field = is_numeric( $field_id ) ? \GV\GF_Field::by_id( $view->form, $field_id ) : \GV\Internal_Field::by_id( $field_id );
-				}
+			foreach ( $allowed as $field ) {
+				$source = is_numeric( $field->ID ) ? $view->form : new \GV\Internal_Source();
 
-				$return[ $field->ID ] = $renderer->render( $field, $view, $source, $entry, gravityview()->request, '\GV\Field_CSV_Template' );
+				$return[] = $renderer->render( $field, $view, $source, $entry, gravityview()->request, '\GV\Field_CSV_Template' );
 
 				if ( ! $headers_done ) {
 					$label = $field->get_label( $view, $source, $entry );
-					$headers[ $field->ID ] = $label ? $label : $field->ID;
+					$headers[] = $label ? $label : $field->ID;
 				}
 			}
 
