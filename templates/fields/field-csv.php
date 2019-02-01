@@ -1,12 +1,28 @@
 <?php
 /**
- * The default field output template.
+ * The default field output template for CSVs.
  *
  * @global \GV\Template_Context $gravityview
  * @since 2.0
  */
 $field_id = $gravityview->field->ID;
 $display_value = $gravityview->display_value;
+$value = $gravityview->value;
 $entry = $gravityview->entry->as_entry();
 
-echo gravityview_get_field_value( $entry, $field_id, $display_value );
+/**
+ * Fields that will output as raw data in CSV mode.
+ */
+$raw_types = array(
+	'email',
+);
+
+/**
+ * @filter `gravityview/template/csv/field/raw` Filters field types to output by value instead of display_value.
+ * @param[in, out] bool Raw or not. By default outputs raw for $raw_types.
+ * @param \GV\Template_Context The context.
+ * @since develop
+ */
+$raw = apply_filters( 'gravityview/template/csv/field/raw', in_array( $gravityview->field->type, $raw_types, true ), $gravityview );
+
+echo gravityview_get_field_value( $entry, $field_id, $raw ? $value : $display_value );

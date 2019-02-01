@@ -28,6 +28,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Support for nested dropdown selection in search fields
 * Fixed: State search dropdown type for custom address types
 * Modified: CSV REST API endpoint returns binary data instead of JSON-encoded data
+* Fixed: Email field being output as URL in CSV
+* Added: `gravityview/template/csv/field/raw` filter to allow raw output of specific fields
 
 = 2.2.4 on January 14, 2019 =
 
