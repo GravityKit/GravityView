@@ -251,9 +251,16 @@ class Views_Route extends Route {
 				fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), $entry ) );
 			}
 
-			$response = new \WP_REST_Response( rtrim( ob_get_clean() ), 200 );
+			$response = new \WP_REST_Response( '', 200 );
 			$response->header( 'X-Item-Count', $entries->count() );
 			$response->header( 'X-Item-Total', $entries->total() );
+			$response->header( 'Content-Type', 'text/csv' );
+
+			fflush( $csv );
+
+			echo rtrim( ob_get_clean() );
+
+			add_filter( 'rest_pre_serve_request', '__return_true' );
 
 			return $response;
 		}

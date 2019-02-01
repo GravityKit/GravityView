@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: `gravityview/edit_entry/before_update` hook
 * Added: Support for nested dropdown selection in search fields
 * Fixed: State search dropdown type for custom address types
+* Modified: CSV REST API endpoint returns binary data instead of JSON-encoded data
 
 = 2.2.4 on January 14, 2019 =
 

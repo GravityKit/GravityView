@@ -197,11 +197,13 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertContains( '<meta http-equiv="X-Item-Count" content="0" />', $html );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.csv' );
+		ob_start(); // CSV binary data is output ad hoc
 		$response = rest_get_server()->dispatch( $request );
+		$csv = ob_get_clean();
 		$this->assertEquals( 200, $response->status );
 		$this->assertEquals( 3, $response->headers['X-Item-Count'] );
+		$this->assertEquals( 'text/csv', $response->headers['Content-Type'] );
 
-		$csv = $response->get_data();
 		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $csv );
 		$this->assertContains( $entry2['id'] . ',"set all the fields! 2"', $csv );
 	}
@@ -247,11 +249,12 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		) );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.csv' );
+		ob_start(); // CSV binary data is output ad hoc
 		$response = rest_get_server()->dispatch( $request );
+		$csv = ob_get_clean();
 		$this->assertEquals( 200, $response->status );
 		$this->assertEquals( 2, $response->headers['X-Item-Count'] );
 
-		$csv = $response->get_data();
 		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $csv );
 		$this->assertContains( 'id,16,8', $csv );
 		$this->assertContains( $entry2['id'] . ',"\'=Broomsticks x 8","Harry Churchill"', $csv );
