@@ -349,7 +349,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$csv = ob_get_clean();
 
 		$this->assertContains( 'id,id/2/,custom,custom/2/', $csv );
-		$this->assertContains( '2,2,hello,world', $csv );
+		$this->assertContains( "{$entry['id']},{$entry['id']},hello,world", $csv );
 
 		remove_filter( 'gravityview/api/field/key', $callback );
 	}
@@ -427,7 +427,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 						'label' => 'Text',
 					),
 					wp_generate_password( 4, false ) => array(
-						'id' => 'custom_content',
+						'id' => 'custom',
 						'content' => 'Hello, world!',
 						'label' => 'Custom',
 					),
@@ -478,6 +478,8 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$html = $response->get_data();
 		$this->assertContains( 'gv-table-view', $html );
 		$this->assertContains( 'set all the fields!', $html );
+
+		remove_filter( 'gravityview/rest/entry/fields', $callback );
 	}
 
 	public function test_get_security() {

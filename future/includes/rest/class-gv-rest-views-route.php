@@ -131,6 +131,11 @@ class Views_Route extends Route {
 			return in_array( $field->ID, $allowed_field_ids, true );
 		} );
 
+		// Tack on additional fields if needed
+		foreach ( array_diff( $allowed_field_ids, wp_list_pluck( $allowed, 'ID' ) ) as $field_id ) {
+			$allowed[] = is_numeric( $field_id ) ? \GV\GF_Field::by_id( $view->form, $field_id ) : \GV\Internal_Field::by_id( $field_id );
+		}
+
 		$r = new Request( $request );
 		$return = array();
 

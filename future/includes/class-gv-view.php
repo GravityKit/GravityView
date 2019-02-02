@@ -1259,6 +1259,10 @@ class View implements \ArrayAccess {
 				return in_array( $field->ID, $allowed_field_ids, true );
 			} );
 
+			foreach ( array_diff( $allowed_field_ids, wp_list_pluck( $allowed, 'ID' ) ) as $field_id ) {
+				$allowed[] = is_numeric( $field_id ) ? \GV\GF_Field::by_id( $view->form, $field_id ) : \GV\Internal_Field::by_id( $field_id );
+			}
+
 			foreach ( $allowed as $field ) {
 				$source = is_numeric( $field->ID ) ? $view->form : new \GV\Internal_Source();
 
