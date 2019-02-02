@@ -31,6 +31,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Email field being output as URL in CSV
 * Added: `gravityview/template/csv/field/raw` filter to allow raw output of specific fields
 * Fixed: CSV's could not contain more than one special field (id, custom content, etc.)
+* Added: `gravityview/api/field/key` filter to customize the generated REST API entry JSON keys
+* Fixed: JSON REST API endpoint did not render custom content fields
+* Fixed: CSV and JSON REST API did not output duplicate headers (id, custom, etc.)
+* Modified: In the REST API duplicate keys are now postfixed with (n), for example: id(1), id(2), instead of not showing them at all
 
 = 2.2.4 on January 14, 2019 =
 

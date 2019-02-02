@@ -262,6 +262,98 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertStringEndsWith( '"', $csv );
 	}
 
+	public function test_get_items_custom_content() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'The ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'The ID again, just because',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'label' => 'C1',
+						'content' => 'hello',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'label' => 'C2',
+						'content' => 'world',
+					),
+				),
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'The ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'The ID again, just because',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'label' => 'C1',
+						'content' => 'hello',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'label' => 'C2',
+						'content' => 'world',
+					),
+				),
+			),
+		) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'expect the unexpected',
+		) );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.json' );
+		$response = rest_get_server()->dispatch( $request );
+		$data = $response->get_data();
+
+		$this->assertEquals( array(
+			'id'        => $entry['id'],
+			'id(2)'     => $entry['id'],
+			'custom'    => 'hello',
+			'custom(2)' => 'world',
+		), current( $data['entries'] ) );
+
+		add_filter( 'gravityview/api/field/key', $callback = function( $key ) {
+			return str_replace( array( '(', ')' ), '/', $key );
+		} );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries/' . $entry['id'] );
+		$response = rest_get_server()->dispatch( $request );
+		$this->assertEquals( 200, $response->status );
+
+		$this->assertEquals( array(
+			'id'        => $entry['id'],
+			'id/2/'     => $entry['id'],
+			'custom'    => 'hello',
+			'custom/2/' => 'world',
+		), $response->get_data() );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.csv' );
+		ob_start(); // CSV binary data is output ad hoc
+		$response = rest_get_server()->dispatch( $request );
+		$csv = ob_get_clean();
+
+		$this->assertContains( 'id,id/2/,custom,custom/2/', $csv );
+		$this->assertContains( '2,2,hello,world', $csv );
+
+		remove_filter( 'gravityview/api/field/key', $callback );
+	}
+
 	public function test_get_entries_filter() {
 		$form = $this->factory->form->create_and_get();
 
