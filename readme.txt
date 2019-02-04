@@ -32,6 +32,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: `gravityview/template/csv/field/raw` filter to allow raw output of specific fields
 * Fixed: CSV's could not contain more than one special field (id, custom content, etc.)
 * Updated: The Support Port built-in docs search
+* Updated: Russian translation by [@awsswa59](https://www.transifex.com/user/profile/awsswa59/)
 * Added: `gravityview/api/field/key` filter to customize the generated REST API entry JSON keys
 * Fixed: JSON REST API endpoint did not render custom content fields
 * Fixed: CSV and JSON REST API did not output duplicate headers (id, custom, etc.)

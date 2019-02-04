@@ -3,7 +3,7 @@
 # Translators:
 # Zachary Katz <zack@katz.co>, 2018
 # George Kovalev <gkovaleff@gmail.com>, 2018
-# Viktor S <awsswa59@gmail.com>, 2018
+# Viktor S <awsswa59@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
-"Last-Translator: Viktor S <awsswa59@gmail.com>, 2018\n"
+"Last-Translator: Viktor S <awsswa59@gmail.com>, 2019\n"
 "Language-Team: Russian (https://www.transifex.com/katzwebservices/teams/18775/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -614,6 +614,9 @@ msgid ""
 "If the \"Show only approved entries\" setting is enabled, the entry will "
 "need to be re-approved by an administrator before it is shown in the View."
 msgstr ""
+"Если включен параметр «Показывать только утвержденные записи», запись должна"
+" быть повторно одобрена администратором, прежде чем она отобразится в "
+"представлении."
 
 #: future/includes/class-gv-settings-view.php:134
 msgid "Allow User Delete"
@@ -776,6 +779,7 @@ msgstr "Изменить URL адрес перенаправления"
 #: future/includes/class-gv-settings-view.php:259
 msgid "After editing an entry, the user will be taken to this URL."
 msgstr ""
+"После редактирования записи пользователь будет перенаправлен на этот URL."
 
 #: future/includes/class-gv-settings-view.php:267
 msgid "Prevent Direct Access"
@@ -805,11 +809,11 @@ msgstr "Включите к этому просмотру REST доступ."
 
 #: future/includes/class-gv-settings-view.php:304
 msgid "Allow CSV Access"
-msgstr ""
+msgstr "Разрешить доступ CSV"
 
 #: future/includes/class-gv-settings-view.php:306
 msgid "Enable CSV access to this View."
-msgstr ""
+msgstr "Включите к этому просмотру CSV доступ."
 
 #: future/includes/class-gv-settings-view.php:323
 msgid "Random"
@@ -928,7 +932,7 @@ msgstr "Вам не разрешен доступ к этому содержан
 
 #: future/includes/rest/class-gv-rest-views-route.php:380
 msgid "This View is not configured properly."
-msgstr ""
+msgstr "Это представление не настроено должным образом."
 
 #: future/lib/EDD_SL_Plugin_Updater.php:202
 #: includes/lib/EDD_SL_Plugin_Updater.php:204
@@ -1397,6 +1401,7 @@ msgstr "Показывать запись в представлении?"
 #: includes/class-admin-installer.php:102
 msgid "Plugins that extend GravityView and Gravity Forms functionality."
 msgstr ""
+"Плагины которые расширяют функциональность GravityView и Gravity Forms."
 
 #: includes/class-admin-installer.php:106
 #: includes/class-admin-installer.php:282
@@ -1436,7 +1441,7 @@ msgstr "Состояние плагина: %s"
 
 #: includes/class-admin-installer.php:430
 msgid "All Access"
-msgstr ""
+msgstr "Весь доступ"
 
 #: includes/class-admin-installer.php:430
 msgid "Core + Extensions"
