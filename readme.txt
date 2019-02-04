@@ -21,22 +21,26 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop =
+= 2.2.5 on February 4, 2019 =
 
-* Fixed: Don't show credit card fields on the Edit Entry screen (#1219)
-* Added: `gravityview/edit_entry/before_update` hook
-* Added: Support for nested dropdown selection in search fields
+* Added: Support for nested dropdown selection in Search Bar
 * Fixed: State search dropdown type for custom address types
-* Modified: CSV REST API endpoint returns binary data instead of JSON-encoded data
-* Fixed: Email field being output as URL in CSV
-* Added: `gravityview/template/csv/field/raw` filter to allow raw output of specific fields
-* Fixed: CSV's could not contain more than one special field (id, custom content, etc.)
-* Updated: The Support Port built-in docs search
+* Fixed: Don't show Credit Card fields on the Edit Entry screen (#1219)
+* REST API and CSV fixes
+    * Fixed: Email field being output as links in CSV
+    * Fixed: CSVs could not contain more than one special field (Entry ID, Custom Content, etc.)
+    * Fixed: CSV and JSON REST API did not output duplicate headers (Entry ID, Custom Content, etc.)
+    * Fixed: JSON REST API endpoint did not render Custom Content fields
+    * Modified: In the REST API duplicate keys are now suffixed with (n), for example: id(1), id(2), instead of not showing them at all
+* Updated: Script used to provide built-in Support Port
 * Updated: Russian translation by [@awsswa59](https://www.transifex.com/user/profile/awsswa59/)
+
+__Developer Updates:__
+
+* Added: `gravityview/edit_entry/before_update` hook
 * Added: `gravityview/api/field/key` filter to customize the generated REST API entry JSON keys
-* Fixed: JSON REST API endpoint did not render custom content fields
-* Fixed: CSV and JSON REST API did not output duplicate headers (id, custom, etc.)
-* Modified: In the REST API duplicate keys are now postfixed with (n), for example: id(1), id(2), instead of not showing them at all
+* Added: `gravityview/template/csv/field/raw` filter to allow raw output of specific fields
+* Modified: CSV REST API endpoint returns binary data instead of JSON-encoded data
 
 = 2.2.4 on January 14, 2019 =
 

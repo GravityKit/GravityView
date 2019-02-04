@@ -224,7 +224,7 @@ msgstr ""
 #: includes/class-gravityview-entry-link-shortcode.php:233
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:911
+#: includes/extensions/edit-entry/class-edit-entry-render.php:921
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 #: templates/fields/field-edit_link-html.php:29
 msgid "Edit Entry"
@@ -845,19 +845,19 @@ msgstr ""
 msgid "No Views found."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:229
+#: future/includes/rest/class-gv-rest-views-route.php:264
 msgid "No Entries found."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:308
-#: future/includes/rest/class-gv-rest-views-route.php:363
-#: future/includes/rest/class-gv-rest-views-route.php:378
-#: future/includes/rest/class-gv-rest-views-route.php:382
-#: future/includes/rest/class-gv-rest-views-route.php:392
+#: future/includes/rest/class-gv-rest-views-route.php:350
+#: future/includes/rest/class-gv-rest-views-route.php:405
+#: future/includes/rest/class-gv-rest-views-route.php:420
+#: future/includes/rest/class-gv-rest-views-route.php:424
+#: future/includes/rest/class-gv-rest-views-route.php:434
 msgid "You are not allowed to access this content."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:380
+#: future/includes/rest/class-gv-rest-views-route.php:422
 msgid "This View is not configured properly."
 msgstr ""
 
@@ -925,76 +925,76 @@ msgstr ""
 msgid "This field links to the Single Entry"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:75
+#: includes/admin/class-gravityview-support-port.php:81
 msgid "GravityView Support"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:76
+#: includes/admin/class-gravityview-support-port.php:82
 msgid "Search GravityView Docs"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:77
+#: includes/admin/class-gravityview-support-port.php:83
 msgid ""
 "Your search timed out. Please double-check your internet connection and try "
 "again."
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:79
+#: includes/admin/class-gravityview-support-port.php:85
 msgid "Contact Support"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:80
+#: includes/admin/class-gravityview-support-port.php:86
 msgid "Attach a screenshot or file"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:81
+#: includes/admin/class-gravityview-support-port.php:87
 msgid "The maximum file size is 10 MB"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:82
+#: includes/admin/class-gravityview-support-port.php:88
 msgid "Your Name"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:83
+#: includes/admin/class-gravityview-support-port.php:89
 msgid "Please enter your name"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:84
+#: includes/admin/class-gravityview-support-port.php:90
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:429
 msgid "Email address"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:85
+#: includes/admin/class-gravityview-support-port.php:91
 msgid "Please enter a valid email address"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:86
+#: includes/admin/class-gravityview-support-port.php:92
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:431
 msgid "Subject"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:88
+#: includes/admin/class-gravityview-support-port.php:94
 msgid "How can we help you?"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:90
+#: includes/admin/class-gravityview-support-port.php:96
 msgid "Message sent!"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:91
+#: includes/admin/class-gravityview-support-port.php:97
 msgid ""
 "Thanks for reaching out! Someone from the GravityView team will get back to "
 "you soon."
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:264
-#: includes/admin/class-gravityview-support-port.php:270
+#: includes/admin/class-gravityview-support-port.php:267
+#: includes/admin/class-gravityview-support-port.php:273
 #. translators: "Support Port" can be translated as "Support Portal" or
 #. "Support Window"
 msgid "GravityView Support Port"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:275
+#: includes/admin/class-gravityview-support-port.php:278
 msgid "Show GravityView Support Port when on a GravityView-related page"
 msgstr ""
 
@@ -2051,7 +2051,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:213
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1971
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1981
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
@@ -2163,39 +2163,39 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:964
+#: includes/extensions/edit-entry/class-edit-entry-render.php:974
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:964
+#: includes/extensions/edit-entry/class-edit-entry-render.php:974
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:994
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1004
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1142
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1152
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1149
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1159
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1501
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1511
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1965
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1975
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1975
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1985
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2015
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2025
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -2321,11 +2321,11 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-address.php:267
+#: includes/fields/class-gravityview-field-address.php:286
 msgid "Show Map Link:"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-address.php:268
+#: includes/fields/class-gravityview-field-address.php:287
 msgid "Display a \"Map It\" link below the address"
 msgstr ""
 
@@ -3513,17 +3513,17 @@ msgctxt "Label in field picker for empty label"
 msgid "Field #%s (No Label)"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:78
+#: includes/admin/class-gravityview-support-port.php:84
 msgctxt "a support form search has returned empty for the following word"
 msgid "No results found for"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:87
+#: includes/admin/class-gravityview-support-port.php:93
 msgctxt "Error shown when submitting support request and there is no subject provided"
 msgid "Please enter a subject"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:89
+#: includes/admin/class-gravityview-support-port.php:95
 msgctxt "Error shown when submitting support request and there is no message provided"
 msgid "Please enter a message"
 msgstr ""
@@ -3616,26 +3616,26 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:978
+#: includes/extensions/edit-entry/class-edit-entry-render.php:988
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %sReturning to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:983
+#: includes/extensions/edit-entry/class-edit-entry-render.php:993
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the title of the page where the "
 "user will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sReturning to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:989
+#: includes/extensions/edit-entry/class-edit-entry-render.php:999
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the URL where the user will be "
 "taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sRedirecting to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1991
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2001
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
