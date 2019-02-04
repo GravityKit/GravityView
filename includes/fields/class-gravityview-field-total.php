@@ -24,7 +24,7 @@ class GravityView_Field_Total extends GravityView_Field {
 	public function __construct() {
 		$this->label = esc_html__( 'Total', 'gravityview' );
 
-		add_filter( 'gravityview/edit_entry/after_update', array( $this, 'edit_entry_recalculate_totals' ), 10, 3 );
+		add_action( 'gravityview/edit_entry/after_update', array( $this, 'edit_entry_recalculate_totals' ), 10, 3 );
 
 		add_filter( 'gravityview_blacklist_field_types', array( $this, 'add_to_blacklist' ), 10, 2 );
 

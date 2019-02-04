@@ -21,6 +21,27 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.2.5 on February 4, 2019 =
+
+* Added: Support for nested dropdown selection in Search Bar
+* Fixed: State search dropdown type for custom address types
+* Fixed: Don't show Credit Card fields on the Edit Entry screen (#1219)
+* REST API and CSV fixes
+    * Fixed: Email field being output as links in CSV
+    * Fixed: CSVs could not contain more than one special field (Entry ID, Custom Content, etc.)
+    * Fixed: CSV and JSON REST API did not output duplicate headers (Entry ID, Custom Content, etc.)
+    * Fixed: JSON REST API endpoint did not render Custom Content fields
+    * Modified: In the REST API duplicate keys are now suffixed with (n), for example: id(1), id(2), instead of not showing them at all
+* Updated: Script used to provide built-in Support Port
+* Updated: Russian translation by [@awsswa59](https://www.transifex.com/user/profile/awsswa59/)
+
+__Developer Updates:__
+
+* Added: `gravityview/edit_entry/before_update` hook
+* Added: `gravityview/api/field/key` filter to customize the generated REST API entry JSON keys
+* Added: `gravityview/template/csv/field/raw` filter to allow raw output of specific fields
+* Modified: CSV REST API endpoint returns binary data instead of JSON-encoded data
+
 = 2.2.4 on January 14, 2019 =
 
 * Fixed: Other Entries field would display all entries without filtering

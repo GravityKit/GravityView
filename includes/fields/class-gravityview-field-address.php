@@ -75,7 +75,7 @@ class GravityView_Field_Address extends GravityView_Field {
 					 * @uses GravityView_Field_Address::get_choices_country()
 					 * @uses GravityView_Field_Address::get_choices_state()
 					 */
-					$choices = $this->{$method_name}( $address_field );
+					$choices = $this->{$method_name}( $address_field, $form );
 				}
 
 				if( ! empty( $choices ) ) {
@@ -128,10 +128,11 @@ class GravityView_Field_Address extends GravityView_Field {
 	 * @uses GF_Field_Address::get_canadian_provinces()
 	 *
 	 * @param GF_Field_Address $address_field
+	 * @param array            $form
 	 *
 	 * @return array Array of countries with `value` and `text` keys as the name of the country
 	 */
-	private function get_choices_state( $address_field ) {
+	private function get_choices_state( $address_field, $form ) {
 
 		$address_type = empty( $address_field->addressType ) ? $address_field->get_default_address_type( $form['id'] ) : $address_field->addressType;
 
@@ -145,15 +146,33 @@ class GravityView_Field_Address extends GravityView_Field {
 				$states = GFCommon::get_canadian_provinces();
 				break;
 			default:
+				$address_types = $address_field->get_address_types( $form['id'] );
 				$states = empty( $address_types[ $address_type ]['states'] ) ? array() : $address_types[ $address_type ]['states'];
 				break;
 		}
 
 		foreach ( $states as $key => $state ) {
-			$state_choices[] = array(
-				'value' => $state,
-				'text' => $state,
-			);
+			if ( is_array( $state ) ) {
+				$state_subchoices = array();
+
+				foreach ( $state as $substate ) {
+					$state_subchoices[] = array(
+						'value' => $substate,
+						'text' => $substate,
+					);
+				}
+
+				$state_choices[] = array(
+					'text' => $key,
+					'value' => $state_subchoices,
+				);
+
+			} else {
+				$state_choices[] = array(
+					'value' => $state,
+					'text' => $state,
+				);
+			}
 		}
 
 		return $state_choices;

@@ -271,6 +271,34 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
+                <h3>2.2.5 on February 4, 2019</h3>
+
+                <ul>
+                    <li>Added: Support for nested dropdown selection in Search Bar</li>
+                    <li>Fixed: State search dropdown type for custom address types</li>
+                    <li>Fixed: Don't show Credit Card fields on the Edit Entry screen (#1219)</li>
+                    <li>REST API and CSV fixes
+                        <ul>
+                            <li>Fixed: Email field being output as links in CSV</li>
+                            <li>Fixed: CSVs could not contain more than one special field (Entry ID, Custom Content, etc.)</li>
+                            <li>Fixed: CSV and JSON REST API did not output duplicate headers (Entry ID, Custom Content, etc.)</li>
+                            <li>Fixed: JSON REST API endpoint did not render Custom Content fields</li>
+                            <li>Modified: In the REST API duplicate keys are now suffixed with (n), for example: id(1), id(2), instead of not showing them at all</li>
+                        </ul></li>
+                    <li>Updated: Script used to provide built-in Support Port</li>
+                    <li>Updated: Russian translation by <a href="https://www.transifex.com/user/profile/awsswa59/">@awsswa59</a></li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Added: <code>gravityview/edit_entry/before_update</code> hook</li>
+                    <li>Added: <code>gravityview/api/field/key</code> filter to customize the generated REST API entry JSON keys</li>
+                    <li>Added: <code>gravityview/template/csv/field/raw</code> filter to allow raw output of specific fields</li>
+                    <li>Modified: CSV REST API endpoint returns binary data instead of JSON-encoded data</li>
+                </ul>
+
+
                 <h3>2.2.4 on January 14, 2019</h3>
 
                 <ul>

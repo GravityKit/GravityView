@@ -197,11 +197,13 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertContains( '<meta http-equiv="X-Item-Count" content="0" />', $html );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.csv' );
+		ob_start(); // CSV binary data is output ad hoc
 		$response = rest_get_server()->dispatch( $request );
+		$csv = ob_get_clean();
 		$this->assertEquals( 200, $response->status );
 		$this->assertEquals( 3, $response->headers['X-Item-Count'] );
+		$this->assertEquals( 'text/csv', $response->headers['Content-Type'] );
 
-		$csv = $response->get_data();
 		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $csv );
 		$this->assertContains( $entry2['id'] . ',"set all the fields! 2"', $csv );
 	}
@@ -247,16 +249,109 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		) );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.csv' );
+		ob_start(); // CSV binary data is output ad hoc
 		$response = rest_get_server()->dispatch( $request );
+		$csv = ob_get_clean();
 		$this->assertEquals( 200, $response->status );
 		$this->assertEquals( 2, $response->headers['X-Item-Count'] );
 
-		$csv = $response->get_data();
 		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $csv );
 		$this->assertContains( 'id,16,8', $csv );
 		$this->assertContains( $entry2['id'] . ',"\'=Broomsticks x 8","Harry Churchill"', $csv );
 		$this->assertContains( $entry['id'] . ',"A pair of shoes","Winston Potter"', $csv );
 		$this->assertStringEndsWith( '"', $csv );
+	}
+
+	public function test_get_items_custom_content() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'The ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'The ID again, just because',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'label' => 'C1',
+						'content' => 'hello',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'label' => 'C2',
+						'content' => 'world',
+					),
+				),
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'The ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'The ID again, just because',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'label' => 'C1',
+						'content' => 'hello',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'label' => 'C2',
+						'content' => 'world',
+					),
+				),
+			),
+		) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'expect the unexpected',
+		) );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.json' );
+		$response = rest_get_server()->dispatch( $request );
+		$data = $response->get_data();
+
+		$this->assertEquals( array(
+			'id'        => $entry['id'],
+			'id(2)'     => $entry['id'],
+			'custom'    => 'hello',
+			'custom(2)' => 'world',
+		), current( $data['entries'] ) );
+
+		add_filter( 'gravityview/api/field/key', $callback = function( $key ) {
+			return str_replace( array( '(', ')' ), '/', $key );
+		} );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries/' . $entry['id'] );
+		$response = rest_get_server()->dispatch( $request );
+		$this->assertEquals( 200, $response->status );
+
+		$this->assertEquals( array(
+			'id'        => $entry['id'],
+			'id/2/'     => $entry['id'],
+			'custom'    => 'hello',
+			'custom/2/' => 'world',
+		), $response->get_data() );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.csv' );
+		ob_start(); // CSV binary data is output ad hoc
+		$response = rest_get_server()->dispatch( $request );
+		$csv = ob_get_clean();
+
+		$this->assertContains( 'id,id/2/,custom,custom/2/', $csv );
+		$this->assertContains( "{$entry['id']},{$entry['id']},hello,world", $csv );
+
+		remove_filter( 'gravityview/api/field/key', $callback );
 	}
 
 	public function test_get_entries_filter() {
@@ -332,7 +427,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 						'label' => 'Text',
 					),
 					wp_generate_password( 4, false ) => array(
-						'id' => 'custom_content',
+						'id' => 'custom',
 						'content' => 'Hello, world!',
 						'label' => 'Custom',
 					),
@@ -383,6 +478,8 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$html = $response->get_data();
 		$this->assertContains( 'gv-table-view', $html );
 		$this->assertContains( 'set all the fields!', $html );
+
+		remove_filter( 'gravityview/rest/entry/fields', $callback );
 	}
 
 	public function test_get_security() {
