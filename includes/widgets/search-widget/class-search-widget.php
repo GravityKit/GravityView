@@ -660,7 +660,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$search_criteria['field_filters'][] = array(
 				'key' => 'id',
 				'value' => absint( $get[ 'gv_id' ] ),
-				'operator' => '=',
+				'operator' => $this->get_operator( $get, 'gv_id', array( '=' ), '=' ),
 			);
 		}
 
@@ -669,7 +669,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$search_criteria['field_filters'][] = array(
 				'key' => 'created_by',
 				'value' => $get['gv_by'],
-				'operator' => '=',
+				'operator' => $this->get_operator( $get, 'gv_by', array( '=' ), '=' ),
 			);
 		}
 
@@ -680,13 +680,21 @@ class GravityView_Widget_Search extends \GV\Widget {
 		foreach ( $get as $key => $value ) {
 
 			if ( 0 !== strpos( $key, 'filter_' ) || gv_empty( $value, false, false ) || ( is_array( $value ) && count( $value ) === 1 && gv_empty( $value[0], false, false ) ) ) {
-				continue;
+				continue; // Not a filter, or empty
+			}
+
+			if ( strpos( $key, '|op' ) !== false ) {
+				continue; // This is an operator
 			}
 
 			$filter_key = $this->convert_request_key_to_filter_key( $key );
 
-			if ( ! $filter = $this->prepare_field_filter( $filter_key, $value, $view, $searchable_field_objects ) ) {
+			if ( ! $filter = $this->prepare_field_filter( $filter_key, $value, $view, $searchable_field_objects, $get ) ) {
 				continue;
+			}
+
+			if ( ! isset( $filter['operator'] ) ) {
+				$filter['operator'] = $this->get_operator( $get, $key, array( 'contains' ), 'contains' );
 			}
 
 			if ( isset( $filter[0]['value'] ) ) {
@@ -933,10 +941,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @param  string $value $_GET/$_POST search value
 	 * @param  \GV\View $view The view we're looking at
 	 * @param array[] $searchable_fields The searchable fields as configured by the widget.
+	 * @param string[] $get The $_GET/$_POST array.
+	 *
+	 * @since develop Added 5th $get parameter for operator overrides.
+	 * @todo Set function as private.
 	 *
 	 * @return array|false 1 or 2 deph levels, false if not allowed
 	 */
-	public function prepare_field_filter( $filter_key, $value, $view, $searchable_fields ) {
+	public function prepare_field_filter( $filter_key, $value, $view, $searchable_fields, $get = array() ) {
+		$key = $filter_key;
 		$filter_key = explode( ':', $filter_key ); // field_id, form_id
 
 		$form = null;
@@ -1003,7 +1016,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			case 'select':
 			case 'radio':
-				$filter['operator'] = 'is';
+				$filter['operator'] = $this->get_operator( $get, $key, array( 'is' ), 'is' );
 				break;
 
 			case 'post_category':
@@ -1020,7 +1033,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$filter[] = array(
 						'key'      => $field_id,
 						'value'    => esc_attr( $cat->name ) . ':' . $val,
-						'operator' => 'is',
+						'operator' => $this->get_operator( $get, $key, array( 'is' ), 'is' ),
 					);
 				}
 
@@ -1047,7 +1060,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 					foreach ( $form_field->inputs as $k => $input ) {
 						if ( $input['id'] == $field_id ) {
 							$filter['value'] = $form_field->choices[ $k ]['value'];
-							$filter['operator'] = 'is';
+							$filter['operator'] = $this->get_operator( $get, $key, array( 'is' ), 'is' );
 							break;
 						}
 					}
@@ -1060,7 +1073,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 						$filter[] = array(
 							'key'      => $field_id,
 							'value'    => $val,
-							'operator' => 'is',
+							'operator' => $this->get_operator( $get, $key, array( 'is' ), 'is' ),
 						);
 					}
 				}
@@ -1106,7 +1119,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 						$input_id = gravityview_get_input_id_from_id( $form_field->ID );
 
 						if ( 4 === $input_id ) {
-							$filter['operator'] = 'is';
+							$filter['operator'] = $this->get_operator( $get, $key, array( 'is' ), 'is' );
 						};
 					}
 				}
@@ -1141,12 +1154,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 						$filter[] = array(
 							'key'      => $field_id,
 							'value'    => self::get_formatted_date( $date, 'Y-m-d', $date_format ),
-							'operator' => $operator,
+							'operator' => $this->get_operator( $get, $key, array( $operator ), $operator ),
 						);
 					}
 				} else {
 					$date = $value;
 					$filter['value'] = self::get_formatted_date( $date, 'Y-m-d', $date_format );
+					$filter['operator'] = $this->get_operator( $get, $key, array( 'is' ), 'is' );
 				}
 
 				break;
@@ -1765,6 +1779,33 @@ class GravityView_Widget_Search extends \GV\Widget {
 			printf( '<input type="hidden" name="%s" value="%s" />', esc_attr( $key ), esc_attr( $value ) );
 		}
 
+	}
+
+	/**
+	 * Get an operator URL override.
+	 *
+	 * @param array  $get     Where to look for the operator.
+	 * @param string $key     The filter key to look for.
+	 * @param array  $allowed The allowed operators (whitelist).
+	 * @param string $default The default operator.
+	 *
+	 * @return string The operator.
+	 */
+	private function get_operator( $get, $key, $allowed, $default ) {
+		$operator = \GV\Utils::get( $get, "$key|op", $default );
+
+		/**
+		 * @filter `gravityview/search/operator_whitelist` An array of allowed operators for a field.
+		 * @param[in,out] string[] A whitelist of allowed operators.
+		 * @param string The filter name.
+		 */
+		$allowed = apply_filters( 'gravityview/search/operator_whitelist', $allowed, $key );
+
+		if ( ! in_array( $operator, $allowed, true ) ) {
+			$operator = $default;
+		}
+
+		return $operator;
 	}
 
 
