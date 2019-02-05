@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Added: [gvlogic logged_in="true"] support to easily check user login status
+
 = 2.2.5 on February 4, 2019 =
 
 * Added: Support for nested dropdown selection in Search Bar
