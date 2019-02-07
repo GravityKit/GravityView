@@ -973,6 +973,27 @@ class View implements \ArrayAccess {
 							$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
 						}
 
+						/**
+						 * This is a temporary stub filter, until GF_Query supports NULL conditions.
+						 * Do not use! This filter will be removed.
+						 */
+						$is_null_condition_class = apply_filters( 'gravityview/query/is_null_condition', null );
+
+						// Filter to active entries only
+						$condition = new \GF_Query_Condition(
+							new \GF_Query_Column( 'status', $join->join_on->ID ),
+							\GF_Query_Condition::EQ,
+							new \GF_Query_Literal( 'active' )
+						);
+
+						if ( ! is_null( $is_null_condition_class ) ) {
+							$condition = \GF_Query_Condition::_or( $condition, new $is_null_condition_class(
+								new \GF_Query_Column( 'status', $join->join_on->ID )
+							) );
+						}
+
+						$q = $query->_introspect();
+						$query->where( \GF_Query_Condition::_and( $q['where'], $condition ) );
 
 						if ( $this->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
 
@@ -982,6 +1003,12 @@ class View implements \ArrayAccess {
 								\GF_Query_Condition::EQ,
 								new \GF_Query_Literal( \GravityView_Entry_Approval_Status::APPROVED )
 							);
+
+							if ( ! is_null( $is_null_condition_class ) ) {
+								$condition = \GF_Query_Condition::_or( $condition, new $is_null_condition_class(
+									new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID )
+								) );
+							}
 
 							$query_parameters = $query->_introspect();
 
