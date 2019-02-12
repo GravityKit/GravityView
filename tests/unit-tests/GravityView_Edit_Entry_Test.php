@@ -1729,6 +1729,52 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			array( '2', $custom_url, $custom_url ),
 		);
 	}
+
+	function test_hidden_conditional_edit_simple() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'conditionals.json' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+
+			'1'   => 'One name',
+			'2.1' => 'I have another name, though',
+			'3'   => 'Another name',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'user_edit' => true,
+			),
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			)
+		) );
+
+		$_POST = array(
+			'input_1' => 'My name',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'My name', $entry['1'] );
+		$this->assertEquals( 'I have another name, though', $entry['2.1'] );
+		$this->assertEquals( 'Another name', $entry['3'] );
+
+		$this->_reset_context();
+	}
 }
 
 /** The GF_User_Registration mock if not exists. */

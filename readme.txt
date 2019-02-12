@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Added: [gvlogic logged_in="true"] support to easily check user login status
+* Fixed: Conditional logic breaks on edit entry, if the condition field is not present
 
 = 2.2.5 on February 4, 2019 =
 
