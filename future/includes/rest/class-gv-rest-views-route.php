@@ -187,6 +187,7 @@ class Views_Route extends Route {
 						$return[ $field_id ] = unserialize( $field->get_value( $view, $source, $entry, $r ) );
 						break;
 					case 'fileupload':
+					case 'business_hours':
 						$return[ $field_id ] = json_decode( $field->get_value( $view, $source, $entry, $r ) );
 						break;
 					default;
