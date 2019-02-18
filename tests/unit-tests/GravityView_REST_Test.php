@@ -717,6 +717,10 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 						'id' => '7',
 						'label' => 'A List',
 					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '5',
+						'label' => 'File',
+					),
 				),
 			),
 		) );
@@ -728,6 +732,10 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 			'7' => serialize( array(
 				array( 'Column 1' => 'one', 'Column 2' => 'two' ),
 				array( 'Column 1' => 'three', 'Column 2' => 'four' ),
+			) ),
+			'5' => json_encode( array(
+				'http://one.jpg',
+				'http://two.mp3',
 			) ),
 		) );
 
@@ -741,6 +749,9 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $csv );
 		$this->assertContains( 'one,two', $csv );
 		$this->assertNotContains( '<', $csv );
+		$this->assertNotContains( '[', $csv );
+		$this->assertContains( 'one.jpg', $csv );
+		$this->assertContains( 'two.mp3', $csv );
 		$this->assertStringEndsWith( '"', $csv );
 	}
 
