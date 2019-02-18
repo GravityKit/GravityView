@@ -182,7 +182,16 @@ class Views_Route extends Route {
 			} else if ( $class ) {
 				$return[ $field_id ] = $renderer->render( $field, $view, $source, $entry, $r, $class );
 			} else {
-				$return[ $field_id ] = $field->get_value( $view, $source, $entry, $r );
+				switch ( $field->type ):
+					case 'list':
+						$return[ $field_id ] = unserialize( $field->get_value( $view, $source, $entry, $r ) );
+						break;
+					case 'fileupload':
+						$return[ $field_id ] = json_decode( $field->get_value( $view, $source, $entry, $r ) );
+						break;
+					default;
+						$return[ $field_id ] = $field->get_value( $view, $source, $entry, $r );
+				endswitch;
 			}
 		}
 

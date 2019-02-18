@@ -25,6 +25,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Added: [gvlogic logged_in="true"] support to easily check user login status
 * Fixed: Conditional logic breaks on edit entry, if the condition field is not present
+* Fixed: CSV output of list and fileupload fields
+* Modified: list and fileupload fields are now output as objects/arrays in REST API JSON
 
 = 2.2.5 on February 4, 2019 =
 

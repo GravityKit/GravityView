@@ -755,6 +755,60 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertStringEndsWith( '"', $csv );
 	}
 
+	public function test_get_items_raw() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		// Views
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '4',
+						'label' => 'Email',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '7',
+						'label' => 'A List',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '5',
+						'label' => 'File',
+					),
+				),
+			),
+		) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'4' => 'support@gravityview.co',
+			'7' => serialize( array(
+				array( 'Column 1' => 'one', 'Column 2' => 'two' ),
+				array( 'Column 1' => 'three', 'Column 2' => 'four' ),
+			) ),
+			'5' => json_encode( array(
+				'http://one.jpg',
+				'http://two.mp3',
+			) ),
+		) );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries/' . $entry['id'] );
+		$response = rest_get_server()->dispatch( $request );
+
+		$data = $response->get_data();
+
+		$this->assertEquals( 'support@gravityview.co', $data[4] );
+		$this->assertEquals( array(
+			array( 'Column 1' => 'one', 'Column 2' => 'two' ),
+			array( 'Column 1' => 'three', 'Column 2' => 'four' ),
+		), $data[7] );
+		$this->assertEquals( array(
+			'http://one.jpg',
+			'http://two.mp3',
+		), $data[5] );
+	}
+
 	public function test_create_item() {
 	}
 
