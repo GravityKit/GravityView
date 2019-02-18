@@ -7526,6 +7526,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 						'id' => '4',
 						'label' => 'Email',
 					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '7',
+						'label' => 'A List',
+					),
 				),
 			),
 		) );
@@ -7535,6 +7539,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'form_id' => $form->ID,
 			'status' => 'active',
 			'4' => 'support@gravityview.co',
+			'7' => serialize( array(
+				array( 'Column 1' => 'one', 'Column 2' => 'two' ),
+				array( 'Column 1' => 'three', 'Column 2' => 'four' ),
+			) ),
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
@@ -7547,14 +7555,19 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		ob_start();
 		$view::template_redirect();
-		$expected = array( 'Email', 'support@gravityview.co' );
+		$list = implode( "\n", array(
+			'Column 1,Column 2',
+			'one,two',
+			'three,four',
+		) );
+		$expected = array( 'Email,"A List"', sprintf( 'support@gravityview.co,"%s"', $list ) );
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
 		add_filter( 'gravityview/template/csv/field/raw', '__return_false' );
 
 		ob_start();
 		$view::template_redirect();
-		$expected = array( 'Email', '"<a href=\'mailto:support@gravityview.co\'>support@gravityview.co</a>"' );
+		$expected = array( 'Email,"A List"', sprintf( '"<a href=\'mailto:support@gravityview.co\'>support@gravityview.co</a>","%s"', $list ) );
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
 		remove_filter( 'gravityview/template/csv/field/raw', '__return_false' );

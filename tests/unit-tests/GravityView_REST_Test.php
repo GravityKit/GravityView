@@ -701,6 +701,49 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		wp_set_current_user( 0 );
 	}
 
+	public function test_get_items_csv_raw() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		// Views
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '4',
+						'label' => 'Email',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '7',
+						'label' => 'A List',
+					),
+				),
+			),
+		) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'4' => 'support@gravityview.co',
+			'7' => serialize( array(
+				array( 'Column 1' => 'one', 'Column 2' => 'two' ),
+				array( 'Column 1' => 'three', 'Column 2' => 'four' ),
+			) ),
+		) );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.csv' );
+		ob_start(); // CSV binary data is output ad hoc
+		$response = rest_get_server()->dispatch( $request );
+		$csv = ob_get_clean();
+		$this->assertEquals( 200, $response->status );
+		$this->assertEquals( 1, $response->headers['X-Item-Count'] );
+
+		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $csv );
+		$this->assertContains( 'one,two', $csv );
+		$this->assertNotContains( '<', $csv );
+		$this->assertStringEndsWith( '"', $csv );
+	}
+
 	public function test_create_item() {
 	}
 
