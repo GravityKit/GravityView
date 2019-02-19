@@ -22,8 +22,32 @@ $value = is_array( $value ) ? array_filter( $value, 'gravityview_is_not_empty_st
 
 // If so, then we have something worth showing
 if ( !empty( $value ) ) {
-
 	$input_id = gravityview_get_input_id_from_id( $field_id );
+
+	/**
+	 * If a product has 0 quantity, don't output any of it.
+	 * https://github.com/gravityview/GravityView/issues/1263
+	 *
+	 * @since develop
+	 */
+	if ( $gravityview->view->settings->get( 'hide_empty' ) ) {
+		$_field_id = intval( $field_id );
+
+		$quantity_found = false;
+
+		foreach ( $gravityview->fields->all() as $_field ) {
+			if ( $_field->type == 'quantity' ) {
+				if ( $_field->productField == $_field_id ) {
+					$quantity_found = ! empty( $entry[ $_field->ID ] );
+					break;
+				}
+			}
+		}
+
+		if ( ! $quantity_found && ! $gravityview->field->disableQuantity && empty( $entry[ "$_field_id.3" ] ) ) {
+			return;
+		}
+	}
 
 	$output = gravityview_get_field_value( $entry, $field_id, $display_value );
 

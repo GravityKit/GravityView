@@ -27,6 +27,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Conditional logic breaks on edit entry, if the condition field is not present
 * Fixed: CSV output of list and fileupload fields
 * Modified: list and fileupload fields are now output as objects/arrays in REST API JSON
+* Modified: business_hours field support for CSV and JSON output
+* Fixed: hide_empty setting for Product and Quantity fields
 
 = 2.2.5 on February 4, 2019 =
 

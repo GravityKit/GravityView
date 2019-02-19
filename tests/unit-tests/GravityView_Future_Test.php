@@ -7639,6 +7639,123 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	public function test_hide_empty_products() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'products.json' );
+
+		global $post;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+						'label' => 'Product A',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '2',
+						'label' => 'Product B',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '4',
+						'label' => 'Product C',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '5',
+						'label' => 'Quantity C',
+					),
+				),
+			),
+			'settings' => array(
+				'hide_empty' => true,
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1.1' => 'Product A',
+			'1.2' => '$5.00',
+			'2.1' => 'Product B',
+			'2.2' => '$10.00',
+			'2.3' => '1',
+			'4.1' => 'Quantity C',
+			'4.2' => '$15.00',
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		gravityview()->request->returns['is_view'] = $view;
+		gravityview()->request->returns['is_entry'] = $entry;
+
+		$renderer = new \GV\Entry_Renderer();
+
+		$future = $renderer->render( $entry, $view );
+
+		$this->assertNotContains( 'Product A', $future );
+		$this->assertNotContains( 'Product C', $future );
+		$this->assertNotContains( 'Quantity C', $future );
+		$this->assertContains( 'Product B', $future );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1.1' => 'Product A',
+			'1.2' => '$5.00',
+			'1.3' => '1',
+			'2.1' => 'Product B',
+			'2.2' => '$10.00',
+			'2.3' => '1',
+			'4.1' => 'Quantity C',
+			'4.2' => '$15.00',
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		gravityview()->request->returns['is_view'] = $view;
+		gravityview()->request->returns['is_entry'] = $entry;
+
+		$renderer = new \GV\Entry_Renderer();
+
+		$future = $renderer->render( $entry, $view );
+
+		$this->assertContains( 'Product A', $future );
+		$this->assertContains( 'Product B', $future );
+		$this->assertNotContains( 'Product C', $future );
+		$this->assertNotContains( 'Quantity C', $future );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1.1' => 'Product A',
+			'1.2' => '$5.00',
+			'1.3' => '1',
+			'2.1' => 'Product B',
+			'2.2' => '$10.00',
+			'2.3' => '1',
+			'4.1' => 'Quantity C',
+			'4.2' => '$15.00',
+			'5' => '1',
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		gravityview()->request->returns['is_view'] = $view;
+		gravityview()->request->returns['is_entry'] = $entry;
+
+		$renderer = new \GV\Entry_Renderer();
+
+		$future = $renderer->render( $entry, $view );
+
+		$this->assertContains( 'Product A', $future );
+		$this->assertContains( 'Product B', $future );
+		$this->assertContains( 'Product C', $future );
+		$this->assertContains( 'Quantity C', $future );
+
+		$this->_reset_context();
+	}
 }
 
 class GVFutureTest_Extension_Test_BC extends GravityView_Extension {
