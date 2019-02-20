@@ -35,6 +35,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Dropdown, radio and link input support for product searching
 * Fixed: Other entries empty text override was not working
 * Added: `gravityview/search/created_by/text` filter to override dropdown and radio text in "created by" search UI
+* Updated: 100% translated for Dutch, German, and French
 
 = 2.2.5 on February 4, 2019 =
 
