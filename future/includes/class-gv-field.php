@@ -368,9 +368,9 @@ class Field {
 	 * @return boolean Whether this $key is set or not.
 	 */
 	public function __isset( $key ) {
-		switch( $key ):
+		switch( $key ) {
 			default:
 				return isset( $this->configuration[ $key ] );
-		endswitch;
+		}
 	}
 }
