@@ -350,12 +350,14 @@ class Field {
 	 * @return mixed|null The value for the given configuration key, null if doesn't exist.
 	 */
 	public function __get( $key ) {
-		switch( $key ):
+		switch( $key ) {
 			default:
 				if ( isset( $this->configuration[ $key ] ) ) {
 					return $this->configuration[ $key ];
 				}
-		endswitch;
+		}
+
+		return null;
 	}
 
 	/**
