@@ -296,10 +296,17 @@ class Views_Route extends Route {
 				fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), $entry ) );
 			}
 
-			$response = new \WP_REST_Response( '', 200 );
-			$response->header( 'X-Item-Count', $entries->count() );
-			$response->header( 'X-Item-Total', $entries->total() );
-			$response->header( 'Content-Type', 'text/csv' );
+			if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) {
+				$response = new \WP_REST_Response( '', 200 );
+				$response->header( 'X-Item-Count', $entries->count() );
+				$response->header( 'X-Item-Total', $entries->total() );
+				$response->header( 'Content-Type', 'text/csv' );
+			} else {
+				$response = null;
+				header( 'X-Item-Count: ' . $entries->count() );
+				header( 'X-Item-Total: ' . $entries->total() );
+				header( 'Content-Type: text/csv' );
+			}
 
 			fflush( $csv );
 
