@@ -45,6 +45,14 @@ class GravityView_Edit_Entry_Render {
 	public $entry;
 
 	/**
+	 * The View.
+	 *
+	 * @var \GV\View.
+	 * @since develop
+	 */
+	public $view;
+
+	/**
 	 * Gravity Forms entry array (it won't get changed during this class lifecycle)
 	 * @since 1.17.2
 	 * @var array
@@ -126,7 +134,7 @@ class GravityView_Edit_Entry_Render {
 
 		add_filter( 'gravityview_is_edit_entry', array( $this, 'is_edit_entry') );
 
-		add_action( 'gravityview_edit_entry', array( $this, 'init' ) );
+		add_action( 'gravityview_edit_entry', array( $this, 'init' ), 10, 4 );
 
 		// Disable conditional logic if needed (since 1.9)
 		add_filter( 'gform_has_conditional_logic', array( $this, 'manage_conditional_logic' ), 10, 2 );
@@ -227,9 +235,15 @@ class GravityView_Edit_Entry_Render {
 	 * Run when the is_edit_entry returns true.
 	 *
 	 * @param \GravityView_View_Data $gv_data GravityView Data object
+	 * @param \GV\Entry   $entry   The Entry.
+	 * @param \GV\View    $view    The View.
+	 * @param \GV\Request $request The Request.
+	 *
+	 * @since develop Added $entry, $view, $request adhocs.
+	 *
 	 * @return void
 	 */
-	public function init( $gv_data = null ) {
+	public function init( $gv_data = null, $entry = null, $view = null, $request = null ) {
 
 		require_once( GFCommon::get_base_path() . '/form_display.php' );
 		require_once( GFCommon::get_base_path() . '/entry_detail.php' );
@@ -251,6 +265,8 @@ class GravityView_Edit_Entry_Render {
 			gravityview()->log->error( 'User is not allowed to edit this entry; returning', array( 'data' => $this->entry ) );
 			return;
 		}
+
+		$this->view = $view;
 
 		$this->print_scripts();
 
@@ -912,6 +928,40 @@ class GravityView_Edit_Entry_Render {
 			// we have just updated.
 			foreach ($this->form['fields'] as $key => $field) {
 				GFFormsModel::refresh_lead_field_value( $entry['id'], $field->id );
+			}
+		}
+
+		/**
+		 * Maybe process feeds.
+		 *
+		 * @since develop
+		 */
+		if ( $allowed_feeds = $this->view->settings->get( 'edit_feeds', array() ) ) {
+			$feeds = GFAPI::get_feeds( null, $entry['form_id'] );
+			if ( ! is_wp_error( $feeds ) ) {
+				$registered_feeds = array();
+				foreach ( GFAddOn::get_registered_addons() as $registered_feed ) {
+					if ( is_subclass_of( $registered_feed,  'GFFeedAddOn' ) ) {
+						if ( method_exists( $registered_feed, 'get_instance' ) ) {
+							$registered_feed = call_user_func( array( $registered_feed, 'get_instance' ) );
+							$registered_feeds[ $registered_feed->get_slug() ] = $registered_feed;
+						}
+					}
+				}
+				foreach ( $feeds as $feed ) {
+					if ( in_array( $feed['id'], $allowed_feeds ) ) {
+						if ( $feed_object = \GV\Utils::get( $registered_feeds, $feed['addon_slug'] ) ) {
+							$returned_entry = $feed_object->process_feed( $feed, $entry, self::$original_form );
+							if ( is_array( $returned_entry ) && rgar( $returned_entry, 'id' ) ) {
+								$entry = $returned_entry;
+							}
+
+							do_action( 'gform_post_process_feed', $feed, $entry, self::$original_form, $feed_object );
+							$slug = $feed_object->get_slug();
+							do_action( "gform_{$slug}_post_process_feed", $feed, $entry, self::$original_form, $feed_object );
+						}
+					}
+				}
 			}
 		}
 

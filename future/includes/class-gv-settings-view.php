@@ -111,9 +111,15 @@ class View_Settings extends Settings {
 				'value'             => 1,
 				'show_in_shortcode' => false,
 			),
-			'user_edit' => array(
-				'label'             => __( 'Allow User Edit', 'gravityview' ),
+			'edit_feeds' => array(
+				'label'             => __( 'Feeds', 'gravityview' ),
 				'group'             => 'default',
+				'type'              => 'checkbox',
+				'value'             => array(),
+				'show_in_shortcode' => false,
+			),
+			'user_edit' => array(
+				'label'             => __( 'Allow User Edit', 'gravityview' ), 'group'             => 'default',
 				'desc'              => __( 'Allow logged-in users to edit entries they created.', 'gravityview' ),
 				'value'             => 0,
 				'tooltip'           => __( 'Display "Edit Entry" fields to non-administrator users if they created the entry. Edit Entry fields will always be displayed to site administrators.', 'gravityview' ),

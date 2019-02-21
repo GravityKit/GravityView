@@ -510,7 +510,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		}
 
 		/** Render */
-		ob_start() && $render->init( $data );
+		ob_start() && $render->init( $data, \GV\Entry::by_id( $entry['id'] ), \GV\View::from_post( $view ) );
 		$rendered_form = ob_get_clean();
 
 		return array( $rendered_form, $render, GFAPI::get_entry( $entry['id'] ) );
@@ -1775,6 +1775,56 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	public function test_edit_entry_feeds() {
+		$this->_reset_context();
+
+		/** Create a user */
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'this is one'
+		) );
+
+		$feed_id = GFAPI::add_feed( $form['id'], array(), 'GravityView_Edit_Entry_Test_Feed' );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'show_only_approved' => true,
+				'user_edit' => true,
+				'edit_feeds' => array( $feed_id, ),
+			),
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			)
+		) );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = \GV\View::from_post( $view );
+		gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		wp_set_current_user( $administrator );
+
+		// Edit the entry
+		$_POST = array(
+			'input_1' => 'this is ' . wp_generate_password( 4, false ),
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( array( $entry['id'] ), GravityView_Edit_Entry_Test_Feed::$processed );
+
+		$this->_reset_context();
+	}
 }
 
 /** The GF_User_Registration mock if not exists. */
@@ -1811,4 +1861,28 @@ if ( ! class_exists( 'GF_User_Registration' ) ) {
 			}
 		}
 	}
+}
+
+if ( ! class_exists( 'GravityView_Edit_Entry_Test_Feed' ) ) {
+	GFForms::include_feed_addon_framework();
+
+	class GravityView_Edit_Entry_Test_Feed extends GFFeedAddOn {
+		public static $processed = array();
+
+		protected $_slug = 'GravityView_Edit_Entry_Test_Feed';
+
+		public function process_feed( $feed, $entry, $form ) {
+			self::$processed[] = $entry['id'];
+		}
+
+		public static function reset() {
+			self::$processed = array();
+		}
+
+		public static function get_instance() {
+			return new self;
+		}
+	}
+
+	GFAddon::register( 'GravityView_Edit_Entry_Test_Feed' );
 }
