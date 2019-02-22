@@ -310,6 +310,10 @@ class Views_Route extends Route {
 				return true;
 			} );
 
+			if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) {
+				echo $data; // rest_pre_serve_request is not called in tests
+			}
+
 			return $response;
 		}
 
