@@ -7756,6 +7756,55 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	/**
+	 * https://github.com/gravityview/GravityView/issues/1230
+	 */
+	public function test_sort_by_time_field() {
+		$this->markTestSkipped( 'Depends on upstream GF_Query functionality' );
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$three = $this->factory->entry->create_and_get( array(
+			'status' => 'active',
+			'form_id' => $form['id'],
+			'17' => '3:12 pm',
+		) );
+		$one = $this->factory->entry->create_and_get( array(
+			'status' => 'active',
+			'form_id' => $form['id'],
+			'17' => '7:12 am',
+		) );
+		$two = $this->factory->entry->create_and_get( array(
+			'status' => 'active',
+			'form_id' => $form['id'],
+			'17' => '13:00',
+		) );
+
+		global $post;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '17',
+						'label' => 'Time',
+					),
+				),
+			),
+		) );
+
+		$view = \GV\View::from_post( $post );
+		$view->settings->set( 'sort_field', '17.1' );
+		$view->settings->set( 'sort_direction', 'asc' );
+
+		$this->assertEquals(
+			array( $one['id'], $two['id'], $three['id'] ),
+			wp_list_pluck( $view->get_entries( new \GV\Frontend_Request() )->all(), 'ID' )
+		);
+	}
 }
 
 class GVFutureTest_Extension_Test_BC extends GravityView_Extension {
