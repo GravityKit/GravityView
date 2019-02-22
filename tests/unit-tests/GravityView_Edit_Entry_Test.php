@@ -510,7 +510,10 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		}
 
 		/** Render */
-		ob_start() && $render->init( $data, \GV\Entry::by_id( $entry['id'] ), \GV\View::from_post( $view ) );
+		if ( ! $view instanceof \GV\View ) {
+			$view = \GV\View::from_post( $view );
+		}
+		ob_start() && $render->init( $data, \GV\Entry::by_id( $entry['id'] ), $view );
 		$rendered_form = ob_get_clean();
 
 		return array( $rendered_form, $render, GFAPI::get_entry( $entry['id'] ) );
@@ -634,7 +637,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			}
 		}
 		$_POST['input_1'] = "This has been changed";
-		ob_start() && $render->init( $data ); ob_get_clean();
+		ob_start() && $render->init( $data, \GV\Entry::by_id( $entry['id'] ), \GV\View::from_post( $view ) ); ob_get_clean();
 		$this->assertEquals( $_POST['input_1'], $render->entry[1] );
 
 		/**
