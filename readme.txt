@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Modified: list and fileupload fields are now output as objects/arrays in REST API JSON
 * Modified: business_hours field support for CSV and JSON output
 * Fixed: hide_empty setting for Product and Quantity fields
+* Fixed: Month and day reversed in multi-input date fields
 
 = 2.2.5 on February 4, 2019 =
 

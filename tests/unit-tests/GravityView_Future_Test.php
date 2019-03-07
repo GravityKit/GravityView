@@ -3287,6 +3287,15 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field = \GV\GF_Field::by_id( $form, '3' );
 		$this->assertEquals( '05/07/2017', $renderer->render( $field, $view, $form, $entry, $request ) );
 
+		$field = \GV\GF_Field::by_id( $form, '3.1' );
+		$this->assertEquals( '05', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '3.2' );
+		$this->assertEquals( '07', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field = \GV\GF_Field::by_id( $form, '3.3' );
+		$this->assertEquals( '2017', $renderer->render( $field, $view, $form, $entry, $request ) );
+
 		$field->update_configuration( array( 'date_display' => 'Y-m-d H:i:s' ) );
 		$this->assertEquals( '2017-05-07 00:00:00', $renderer->render( $field, $view, $form, $entry, $request ) );
 
