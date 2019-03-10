@@ -164,28 +164,32 @@ class gravityview extends \GV\Shortcode {
 				return self::_return( '' );
 			}
 
-			if ( $entry['status'] != 'active' ) {
-				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
-				return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
-			}
+			$entryset = $entry->is_multi() ? $entry->entries : array( $entry );
 
-			if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $entry->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
-				gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $entry->ID ) );
-				return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
-			}
-
-			if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
-				if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
-					gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
+			foreach ( $entryset as $e ) {
+				if ( $e['status'] != 'active' ) {
+					gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $e->ID ) );
 					return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
 				}
-			}
 
-			$error = \GVCommon::check_entry_display( $entry->as_entry(), $view );
+				if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $e->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
+					gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $e->ID ) );
+					return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
+				}
 
-			if( is_wp_error( $error ) ) {
-				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing: {message}', array( 'entry_id' => $entry->ID, 'message' => $error->get_error_message() ) );
-				return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
+				if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
+					if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $e->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
+						gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $e->ID ) );
+						return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
+					}
+				}
+
+				$error = \GVCommon::check_entry_display( $e->as_entry(), $view );
+
+				if ( is_wp_error( $error ) ) {
+					gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing: {message}', array( 'entry_id' => $e->ID, 'message' => $error->get_error_message() ) );
+					return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
+				}
 			}
 
 			$renderer = new \GV\Entry_Renderer();

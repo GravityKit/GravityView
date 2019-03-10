@@ -745,6 +745,113 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * https://github.com/gravityview/Multiple-Forms/issues/38
+	 */
+	public function test_single_entry_join_permissions() {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_JOINS ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$chefs = $this->factory->form->import_and_get( 'simple.json' );
+		$souschefs = $this->factory->form->import_and_get( 'simple.json' );
+
+		$none = $this->factory->form->import_and_get( 'simple.json' );
+
+		$c1 = $this->factory->entry->create_and_get( array( 'form_id' => $chefs['id'], 'status' => 'active', '2' => 1, '1' => 'Maria Henry' ) );
+		$c2 = $this->factory->entry->create_and_get( array( 'form_id' => $chefs['id'], 'status' => 'active', '2' => 2, '1' => 'Henry Marrek' ) );
+
+		$s1 = $this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 1, '1' => 'Mary Jane' ) );
+		$s2 = $this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 1, '1' => 'Jane Henryson' ) );
+		$s3 = $this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 2, '1' => 'Marick Bonobo' ) );
+		$s4 = $this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 2, '1' => 'Henry Oswald' ) );
+
+		$n1 = $this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '1' => 'None' ) );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $chefs['id'],
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'form_id' => $chefs['id'],
+						'label' => 'Entry ID',
+						'show_as_link' => true,
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'form_id' => $souschefs['id'],
+						'label' => 'Entry ID',
+						'show_as_link' => true,
+					),
+				),
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'form_id' => $chefs['id'],
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'form_id' => $souschefs['id'],
+						'label' => 'Entry ID',
+					),
+				),
+			),
+			'joins' => array(
+				array( $chefs['id'], '2', $souschefs['id'], '2' ),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$output = do_shortcode( '[gravityview id=' . $view->ID . ']' );
+
+		$this->assertContains( 'entry=' . implode( ',', array( $c1['id'], $s1['id'] ) ), $output );
+		$this->assertContains( 'entry=' . implode( ',', array( $c1['id'], $s2['id'] ) ), $output );
+		$this->assertContains( 'entry=' . implode( ',', array( $c2['id'], $s3['id'] ) ), $output );
+		$this->assertContains( 'entry=' . implode( ',', array( $c2['id'], $s4['id'] ) ), $output );
+
+		$output = $view->content( '' );
+
+		$this->assertContains( 'entry=' . implode( ',', array( $c1['id'], $s1['id'] ) ), $output );
+		$this->assertContains( 'entry=' . implode( ',', array( $c1['id'], $s2['id'] ) ), $output );
+		$this->assertContains( 'entry=' . implode( ',', array( $c2['id'], $s3['id'] ) ), $output );
+		$this->assertContains( 'entry=' . implode( ',', array( $c2['id'], $s4['id'] ) ), $output );
+
+		gravityview()->request->returns['is_entry'] = \GV\Multi_Entry::from_entries( array(
+			\GV\GF_Entry::by_id( $c1['id'] ), \GV\GF_Entry::by_id( $s1['id'] ),
+		) );
+
+		$output = do_shortcode( '[gravityview id=' . $view->ID . ']' );
+		$this->assertNotContains( 'not allowed', $output );
+
+		$output = $view->content( '' );
+		$this->assertNotContains( 'not allowed', $output );
+
+		gravityview()->request->returns['is_entry'] = \GV\Multi_Entry::from_entries( array(
+			\GV\GF_Entry::by_id( $c2['id'] ), \GV\GF_Entry::by_id( $s3['id'] ),
+		) );
+
+		$output = do_shortcode( '[gravityview id=' . $view->ID . ']' );
+		$this->assertNotContains( 'not allowed', $output );
+
+		$output = $view->content( '' );
+		$this->assertNotContains( 'not allowed', $output );
+
+		gravityview()->request->returns['is_entry'] = \GV\Multi_Entry::from_entries( array(
+			\GV\GF_Entry::by_id( $c1['id'] ), \GV\GF_Entry::by_id( $n1['id'] ),
+		) );
+
+		$output = do_shortcode( '[gravityview id=' . $view->ID . ']' );
+		$this->assertContains( 'not allowed', $output );
+
+		$output = $view->content( '' );
+		$this->assertContains( 'not allowed', $output );
+	}
+
+	/**
 	 * @since 2.2.2
 	 */
 	public function test_union_simple() {
