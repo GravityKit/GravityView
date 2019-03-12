@@ -7,6 +7,11 @@
  * @since 2.0
  */
 
+if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
+	gravityview()->log->error( '{file} template loaded without context', array( 'file' => __FILE__ ) );
+	return;
+}
+
 $created_by = \GV\Utils::get( $gravityview->entry, 'created_by' );
 
 /** There was no logged in user who created this entry. */

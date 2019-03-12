@@ -30,6 +30,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Modified: business_hours field support for CSV and JSON output
 * Fixed: hide_empty setting for Product and Quantity fields
 * Fixed: Month and day reversed in multi-input date fields
+* Fixed: Join issues with embedded Views
+* Fixed: Guard templates from being loaded without context
 
 = 2.2.5 on February 4, 2019 =
 
