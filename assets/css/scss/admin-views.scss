@@ -54,7 +54,7 @@ $gv-overlay-index: 10000;
 }
 
 .gv-grid-border {
-	border: 1px solid #999;
+	border: none;//border: 1px solid #999;
 }
 
 [class*='gv-grid-col-'] {
@@ -107,14 +107,14 @@ $gv-overlay-index: 10000;
 }
 
 .gv-section h4 {
-	font-size: 14px;
+	font-size: 15px;
 	font-weight: bold;
 }
 
 .gv-section h4 span {
 	font-size: 14px;
-	float: right;
 	color: #999;
+	display: block;
 	font-weight: normal;
 }
 
@@ -436,11 +436,12 @@ hr {
 --------------------------------------- */
 
 .gv-droppable-area {
-	border: 1px solid #ccc;
+	border: 1px dotted #ccc;
 	margin-bottom: 1em;
+	text-align: center;
 
 	.gv-droppable-area-action {
-		background: #eee;
+		//background: #eee;
 		padding: 0.5em;
 	}
 
@@ -467,8 +468,7 @@ hr {
 	}
 
 	.button-secondary {
-		float: right;
-		margin-right: .5em;
+		margin: 0 auto;
 
 		&:first-child {
 			margin: 0;

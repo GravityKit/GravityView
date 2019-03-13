@@ -988,7 +988,7 @@ class GravityView_Admin_Views {
 		ob_start();
 		?>
 
-		<div class="gv-grid gv-grid-pad gv-grid-border" id="directory-<?php echo $zone; ?>-widgets">
+		<div class="gv-grid" id="directory-<?php echo $zone; ?>-widgets">
 			<?php $this->render_active_areas( $template_id, 'widget', $zone, $default_widget_areas, $widgets ); ?>
 		</div>
 

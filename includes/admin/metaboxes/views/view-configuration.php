@@ -16,7 +16,7 @@
 
 			<h4><?php esc_html_e( 'Entries Fields', 'gravityview'); ?> <span><?php esc_html_e( 'These fields will be shown for each entry.', 'gravityview'); ?></span></h4>
 
-			<div id="directory-active-fields" class="gv-grid gv-grid-pad gv-grid-border">
+			<div id="directory-active-fields" class="gv-grid">
 				<?php if(!empty( $curr_template ) ) {
 					do_action('gravityview_render_directory_active_areas', $curr_template, 'directory', $post->ID, true );
 				} ?>
@@ -53,7 +53,7 @@
 
 			<h4><?php esc_html_e( 'These fields will be shown in Single Entry view.', 'gravityview'); ?></h4>
 
-			<div id="single-active-fields" class="gv-grid gv-grid-pad gv-grid-border">
+			<div id="single-active-fields" class="gv-grid">
 				<?php
                 if(!empty( $curr_template ) ) {
 				    do_action('gravityview_render_directory_active_areas', $curr_template, 'single', $post->ID, true );
@@ -73,7 +73,7 @@
 
 			<h4><?php esc_html_e( 'Fields shown when editing an entry.', 'gravityview'); ?> <span><?php esc_html_e('If not configured, all form fields will be displayed.', 'gravityview'); ?></span></h4>
 
-			<div id="edit-active-fields" class="gv-grid gv-grid-pad gv-grid-border">
+			<div id="edit-active-fields" class="gv-grid">
 				<?php
 				do_action('gravityview_render_directory_active_areas', apply_filters( 'gravityview/template/edit', 'default_table_edit' ), 'edit', $post->ID, true );
 				?>
