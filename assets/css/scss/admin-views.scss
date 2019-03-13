@@ -915,3 +915,12 @@ hr {
 		line-height: 1;
 	}
 }
+
+.gv-configuration-hint {
+	.dashicons-yes {
+		color: green;
+	}
+	.dashicons-no {
+		color: red;
+	}
+}

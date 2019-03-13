@@ -34,7 +34,7 @@ class GravityView_Render_Settings {
 				'show_label' => array(
 					'type' => 'checkbox',
 					'label' => __( 'Show Label', 'gravityview' ),
-					'value' => true,
+					'value' => false,
 				),
 				'custom_label' => array(
 					'type' => 'text',
@@ -73,6 +73,8 @@ class GravityView_Render_Settings {
 					'class' => 'code widefat',
 					'value' => '',
 				);
+
+				$field_options['show_label']['value'] = true;
 			}
 
 		}

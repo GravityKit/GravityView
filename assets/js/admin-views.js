@@ -292,7 +292,24 @@
 
 			var icon = parent.find( '.gv-field-controls .dashicons-admin-links' );
 
+			var is_not_checked = $( e.target ).not( ':checked' );
+
 			icon.toggleClass( 'hide-if-js', $( e.target ).not( ':checked' ) );
+
+			var has_single_entry_link = $( '#directory-fields', viewConfiguration )
+				.find('.gv-droppable-area .gv-fields')
+				.find('input:checkbox[name*=show_as_link]')
+				.filter(':checked');
+
+			var show_warning = ( ! has_single_entry_link.length && is_not_checked.length );
+
+			$( '#gv-config-fields-single' )
+				.find( '.dashicons' )
+				.toggleClass( 'dashicons-yes', show_warning )
+				.toggleClass( 'dashicons-no', ! show_warning );
+
+//				.attr( 'title', ( show_warning ? 'No fields link to the Single Entry context.' : '' ) )
+//				.css( ( show_warning ? { 'cursor': 'help' } : {} ) );
 
 		},
 
@@ -1401,6 +1418,8 @@
 			if ( $( 'input:checkbox[name*=show_as_link]', $parent ).is( ':checked' ) ) {
 				$( 'input:checkbox[name*=link_to_]', $parent ).attr( 'disabled', true );
 			}
+
+
 
 			// Link to Post should hide when Single Entry is checked
 			if ( $( 'input:checkbox[name*=link_to_]:checked', $parent ).length > 0 ) {

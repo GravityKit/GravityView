@@ -7,7 +7,7 @@
 
 global $post;
 ?>
-<div class="misc-pub-section gv-shortcode misc-pub-section-last">
+<div class="misc-pub-section gv-shortcode">
 	<i class="dashicons dashicons-editor-code"></i>
 	<span><?php esc_html_e( 'Embed Shortcode', 'gravityview' ); ?></span>
 	<div>

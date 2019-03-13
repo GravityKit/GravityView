@@ -42,6 +42,8 @@ class GravityView_Admin_Metaboxes {
 		// information box
 		add_action( 'post_submitbox_misc_actions', array( $this, 'render_shortcode_hint' ) );
 
+		add_action( 'post_submitbox_misc_actions', array( $this, 'render_configuration_hint' ), 20 );
+
 	}
 
 	/**
@@ -311,6 +313,20 @@ class GravityView_Admin_Metaboxes {
 		include self::$metaboxes_dir . 'views/shortcode-hint.php';
 	}
 
+	/**
+	 * Show configuration status
+	 * @since TODO
+	 */
+	function render_configuration_hint() {
+		global $post;
+
+		// Only show this on GravityView post types.
+		if( false === gravityview()->request->is_admin( '', null ) ) {
+			return;
+		}
+
+		include self::$metaboxes_dir . 'views/configuration-hint.php';
+	}
 }
 
 new GravityView_Admin_Metaboxes;

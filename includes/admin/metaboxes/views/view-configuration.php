@@ -1,9 +1,9 @@
 <div id="gv-view-configuration-tabs">
 
 	<ul class="nav-tab-wrapper">
-		<li><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page"></i> <?php esc_html_e( 'Multiple Entries', 'gravityview' ); ?></a></li>
-		<li><a href="#single-view" class="nav-tab"><i class="dashicons dashicons-media-default"></i> <?php esc_html_e( 'Single Entry', 'gravityview' ); ?></a></li>
-		<li><a href="#edit-view" class="nav-tab"><i class="dashicons dashicons-welcome-write-blog"></i> <?php esc_html_e( 'Edit Entry', 'gravityview' ); ?></a></li>
+		<li id="tab-multiple-entries"><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page"></i> <?php esc_html_e( 'Multiple Entries', 'gravityview' ); ?></a></li>
+		<li id="tab-single-entry"><a href="#single-view" class="nav-tab"><i class="dashicons dashicons-media-default"></i> <?php esc_html_e( 'Single Entry', 'gravityview' ); ?></a></li>
+		<li id="tab-edit-entry"><a href="#edit-view" class="nav-tab"><i class="dashicons dashicons-welcome-write-blog"></i> <?php esc_html_e( 'Edit Entry', 'gravityview' ); ?></a></li>
 	</ul>
 
 	<div id="directory-view">
