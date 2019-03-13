@@ -297,6 +297,10 @@ abstract class Extension {
 
 		$license = $this->get_license();
 
+		if ( empty( $license['license'] ) ) {
+			return;
+		}
+
 		if ( ! class_exists( '\GV\EDD_SL_Plugin_Updater' ) ) {
 			require_once gravityview()->plugin->dir( 'future/lib/EDD_SL_Plugin_Updater.php' );
 		}
