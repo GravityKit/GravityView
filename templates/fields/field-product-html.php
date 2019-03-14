@@ -14,6 +14,9 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 $field_id = $gravityview->field->ID;
 $value = $gravityview->value;
 $display_value = $gravityview->display_value;
+if ( '' == $display_value ) {
+	$display_value = $value;
+}
 $entry = $gravityview->entry->as_entry();
 
 /**
@@ -27,7 +30,7 @@ $entry = $gravityview->entry->as_entry();
 $value = is_array( $value ) ? array_filter( $value, 'gravityview_is_not_empty_string' ) : $value;
 
 // If so, then we have something worth showing
-if ( !empty( $value ) ) {
+if ( ! empty( $value ) ) {
 	$input_id = gravityview_get_input_id_from_id( $field_id );
 
 	/**
@@ -36,7 +39,9 @@ if ( !empty( $value ) ) {
 	 *
 	 * @since develop
 	 */
-	if ( $gravityview->view->settings->get( 'hide_empty' ) ) {
+	$hide_empty_products = ! in_array( $gravityview->field->inputType, array( 'select', 'radio', 'price', 'hidden' ) );
+
+	if ( $hide_empty_products && $gravityview->view->settings->get( 'hide_empty' ) ) {
 		$_field_id = intval( $field_id );
 
 		$quantity_found = false;

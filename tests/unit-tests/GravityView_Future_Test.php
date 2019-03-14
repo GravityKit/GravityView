@@ -7763,6 +7763,29 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( 'Product C', $future );
 		$this->assertContains( 'Quantity C', $future );
 
+		$form['fields'][0]->inputType = 'price';
+		$form['fields'][0]->inputs = null;
+		\GFAPI::update_form( $form );
+
+		\GFFormsModel::flush_current_forms();
+		\GFCache::flush();
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => '$5.00',
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		gravityview()->request->returns['is_view'] = $view;
+		gravityview()->request->returns['is_entry'] = $entry;
+
+		$renderer = new \GV\Entry_Renderer();
+
+		$future = $renderer->render( $entry, $view );
+
+		$this->assertContains( 'Product A', $future );
+
 		$this->_reset_context();
 	}
 }
