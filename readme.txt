@@ -32,6 +32,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Month and day reversed in multi-input date fields
 * Fixed: Join issues with embedded Views
 * Fixed: Guard templates from being loaded without context
+* Added: Dropdown, radio and link input support for product searching
 
 = 2.2.5 on February 4, 2019 =
 

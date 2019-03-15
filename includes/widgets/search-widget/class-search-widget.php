@@ -162,6 +162,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			// hybrids
 			'created_by' => array( 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ),
+			'product'   => array( 'select', 'radio', 'link', 'input_text' ),
 		);
 
 		/**
@@ -399,6 +400,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$input_type = 'date';
 		} elseif ( in_array( $field_type, array( 'number' ) ) || in_array( $field_id, array( 'payment_amount' ) ) ) {
 			$input_type = 'number';
+		} elseif ( in_array( $field_type, array( 'product' ) ) ) {
+			$input_type = 'product';
 		} else {
 			$input_type = 'text';
 		}
