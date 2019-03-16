@@ -22,8 +22,16 @@ if ( empty( $created_by ) ) {
 $entries = $gravityview->field->field->get_entries( $gravityview );
 
 /** Don't show if no entries and the setting says so. */
-if ( empty( $entries ) && $gravityview->field->no_entries_hide ) {
-	return;
+if ( empty( $entries ) ) {
+	if ( $gravityview->field->no_entries_hide ) {
+		return;
+	}
+	
+	if ( $gravityview->field->no_entries_text ) {
+		echo '<div class="gv-no-results"><p>' . esc_html( $gravityview->field->no_entries_text );
+		echo "</p>\n</div>";
+		return;
+	}
 }
 
 /** If there are search results, get the entry list object. */

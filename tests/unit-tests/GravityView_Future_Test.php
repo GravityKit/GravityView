@@ -2830,6 +2830,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( "<div class=\"gv-no-results\"><p>No entries match your request.</p>\n</div>", $renderer->render( $field, $view, null, $entry, $request ) );
 
+		$field->update_configuration( array( 'no_entries_text' => 'The user has no other entries, none at all.' ) );
+
+		$this->assertEquals( "<div class=\"gv-no-results\"><p>The user has no other entries, none at all.</p>\n</div>", $renderer->render( $field, $view, null, $entry, $request ) );
+
 		$entry_anon = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
 			'created_by' => 0,
