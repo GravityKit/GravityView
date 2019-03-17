@@ -1,9 +1,9 @@
 <div id="gv-view-configuration-tabs">
 
 	<ul class="nav-tab-wrapper">
-		<li id="tab-multiple-entries"><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page"></i> <?php esc_html_e( 'Multiple Entries', 'gravityview' ); ?></a></li>
-		<li id="tab-single-entry"><a href="#single-view" class="nav-tab"><i class="dashicons dashicons-media-default"></i> <?php esc_html_e( 'Single Entry', 'gravityview' ); ?></a></li>
-		<li id="tab-edit-entry"><a href="#edit-view" class="nav-tab"><i class="dashicons dashicons-welcome-write-blog"></i> <?php esc_html_e( 'Edit Entry', 'gravityview' ); ?></a></li>
+		<li id="tab-multiple-entries"><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page"></i> <?php esc_html_e( 'Multiple Entries', 'gravityview' ); ?> <span class="gv-config-status" onclick="alert('link to Help Scout');"><i class="dashicons dashicons-warning"></i> Not Configured</span></a></li>
+		<li id="tab-single-entry"><a href="#single-view" class="nav-tab"><i class="dashicons dashicons-media-default"></i> <?php esc_html_e( 'Single Entry', 'gravityview' ); ?> <span class="gv-config-status">3 Fields</span></a></li>
+		<li id="tab-edit-entry"><a href="#edit-view" class="nav-tab"><i class="dashicons dashicons-welcome-write-blog"></i> <?php esc_html_e( 'Edit Entry', 'gravityview' ); ?> <span class="gv-config-status">All Fields</span></a></li>
 	</ul>
 
 	<div id="directory-view">
