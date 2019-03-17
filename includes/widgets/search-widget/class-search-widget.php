@@ -1284,6 +1284,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			return;
 		}
 
+		$view = \GV\View::by_id( $gravityview_view->view_id );
 
 		// prepare fields
 		foreach ( $search_fields as $k => $field ) {
@@ -1319,7 +1320,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$updated_field['key'] = 'created_by';
 					$updated_field['name'] = 'gv_by';
 					$updated_field['value'] = $this->rgget_or_rgpost( 'gv_by' );
-					$updated_field['choices'] = self::get_created_by_choices();
+					$updated_field['choices'] = self::get_created_by_choices( $view );
 					break;
 				
 				case 'is_approved':
@@ -1513,11 +1514,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Calculate the search choices for the users
 	 *
+	 * @param \GV\View $view The view
+	 * @since develop
+	 *
 	 * @since 1.8
 	 *
 	 * @return array Array of user choices (value = ID, text = display name)
 	 */
-	private static function get_created_by_choices() {
+	private static function get_created_by_choices( $view ) {
 
 		/**
 		 * filter gravityview/get_users/search_widget
@@ -1527,9 +1531,17 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$choices = array();
 		foreach ( $users as $user ) {
+			/**
+			 * @filter `gravityview/search/created_by/text` Filter the display text in created by search choices
+			 * @since develop
+			 * @param string[in,out] The text. Default: $user->display_name
+			 * @param \WP_User $user The user.
+			 * @param \GV\View $view The view.
+			 */
+			$text = apply_filters( 'gravityview/search/created_by/text', $user->display_name, $user, $view );
 			$choices[] = array(
 				'value' => $user->ID,
-				'text' => $user->display_name,
+				'text' => $text,
 			);
 		}
 
