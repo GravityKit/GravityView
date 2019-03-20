@@ -26,9 +26,9 @@ class Entry_Table_Template extends Entry_Template {
 	 */
 	public function the_field( \GV\Field $field ) {
 		$renderer = new Field_Renderer();
-		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
+		$source = is_numeric( $field->ID ) ? ( GF_Form::by_id( $field->form_id ) ? : $this->view->form ) : new Internal_Source();
 
-		return $renderer->render( $field, $this->view, $source, $this->entry, $this->request );
+		return $renderer->render( $field, $this->view, $source, $this->entry->from_field( $field ), $this->request );
 	}
 
 	/**
@@ -40,7 +40,6 @@ class Entry_Table_Template extends Entry_Template {
 
 		/** @var \GV\Field_Collection $fields */
 		$fields = $this->view->fields->by_position( 'single_table-columns' )->by_visible();
-		$form = $this->view->form;
 
 		$context = Template_Context::from_template( $this, compact( 'fields' ) );
 
@@ -64,11 +63,18 @@ class Entry_Table_Template extends Entry_Template {
 		foreach ( $fields->all() as $field ) {
 			$context = Template_Context::from_template( $this, compact( 'field' ) );
 
+			$form = \GV\GF_Form::by_id( $field->form_id ) ? : $this->view->form;
+			$entry = $this->entry->from_field( $field );
+
+			if ( ! $entry ) {
+				continue;
+			}
+
 			/**
 			 * @deprecated Here for back-compatibility.
 			 */
-			$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form, $this->entry ), $field->as_configuration() );
-			$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, $this->entry->as_entry() );
+			$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form, $entry ), $field->as_configuration() );
+			$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, $entry->as_entry() );
 
 			/**
 			 * @filter `gravityview/template/field/label` Override the field label.

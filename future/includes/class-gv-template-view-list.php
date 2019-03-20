@@ -29,25 +29,34 @@ class View_List_Template extends View_Template {
 	public function the_field( \GV\Field $field, \GV\Entry $entry, $extras = null ) {
 		$form = $this->view->form;
 
-		/**
-		 * Push legacy entry context.
-		 */
-		\GV\Mocks\Legacy_Context::load( array(
-			'entry' => $entry,
-		) );
+		if ( isset( $this->view->unions[ $entry['form_id'] ] ) ) {
+			if ( isset( $this->view->unions[ $entry['form_id'] ][ $field->ID ] ) ) {
+				$field = $this->view->unions[ $entry['form_id'] ][ $field->ID ];
+			} elseif ( ! $field instanceof Internal_Field ) {
+				$field = Internal_Field::from_configuration( array( 'id' => 'custom' ) );
+			}
+		}
 
-		if ( $entry instanceof Multi_Entry ) {
-			if ( ! $entry = Utils::get( $entry, $field->form_id ) ) {
+		if ( $entry->is_multi() ) {
+			if ( ! $single_entry = $entry->from_field( $field ) ) {
 				return;
 			}
 			$form = GF_Form::by_id( $field->form_id );
 		}
 
+		/**
+		 * Push legacy entry context.
+		 */
+		\GV\Mocks\Legacy_Context::load( array(
+			'entry' => $entry,
+			'form' => $form,
+		) );
+
 		$context = Template_Context::from_template( $this, compact( 'field', 'entry' ) );
 
 		$renderer = new Field_Renderer();
 		$source = is_numeric( $field->ID ) ? $form : new Internal_Source();
-		
+
 		$value = $renderer->render( $field, $this->view, $source, $entry, $this->request );
 
 		/**

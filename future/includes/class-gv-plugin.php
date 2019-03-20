@@ -82,6 +82,11 @@ final class Plugin {
 	const FEATURE_JOINS = 'joins';
 
 	/**
+	 * @var string The unions functionality identifier.
+	 */
+	const FEATURE_UNIONS = 'unions';
+
+	/**
 	 * @var string The REST API functionality identifier.
 	 */
 	const FEATURE_REST  = 'rest_api';
@@ -229,29 +234,50 @@ final class Plugin {
 	/**
 	 * Load the translations.
 	 *
+	 * Order of look-ups:
+	 *
+	 * 1. /wp-content/languages/plugins/gravityview-{locale}.mo (loaded by WordPress Core)
+	 * 2. /wp-content/mu-plugins/gravityview-{locale}.mo
+	 * 3. /wp-content/mu-plugins/languages/gravityview-{locale}.mo
+	 * 4. /wp-content/plugins/gravityview/languages/gravityview-{locale}.mo
+	 *
 	 * @return void
 	 */
 	public function load_textdomain() {
-		$loaded = load_plugin_textdomain( 'gravityview', false, $this->dir( 'languages' ) );
-		
-		if ( ! $loaded ) {
-			$loaded = load_muplugin_textdomain( 'gravityview', '/languages/' );
-		}
-		if ( ! $loaded ) {
-			$loaded = load_theme_textdomain( 'gravityview', '/languages/' );
-		}
-		if ( ! $loaded ) {
 
-			$locale = get_locale();
+		$domain = 'gravityview';
 
-			if ( function_exists('get_user_locale') && is_admin() ) {
-				$locale = get_user_locale();
-			}
-
-			$locale = apply_filters( 'plugin_locale', $locale, 'gravityview' );
-			$mofile = $this->dir( 'languages' ) . '/gravityview-'. $locale .'.mo';
-			load_textdomain( 'gravityview', $mofile );
+		// 1. /wp-content/languages/plugins/gravityview-{locale}.mo (loaded by WordPress Core)
+		if ( is_textdomain_loaded( $domain ) ) {
+			return;
 		}
+
+		// 2. /wp-content/languages/plugins/gravityview-{locale}.mo
+		// 3. /wp-content/mu-plugins/plugins/languages/gravityview-{locale}.mo
+		$loaded = load_muplugin_textdomain( $domain, '/languages/' );
+
+		if ( $loaded ) {
+			return;
+		}
+
+		// 4. /wp-content/plugins/gravityview/languages/gravityview-{locale}.mo
+		$loaded = load_plugin_textdomain( $domain, false, $this->relpath( '/languages/' ) );
+
+		if ( $loaded ) {
+			return;
+		}
+
+		// Pre-4.6 loading
+		// TODO: Remove when GV minimum version is WordPress 4.6.0
+		$locale = apply_filters( 'plugin_locale', ( ( function_exists('get_user_locale') && is_admin() ) ? get_user_locale() : get_locale() ), 'gravityview' );
+
+		$loaded = load_textdomain( 'gravityview', sprintf( '%s/%s-%s.mo', $this->dir('languages'), $domain, $locale ) );
+
+		if( $loaded ) {
+			return;
+		}
+
+		gravityview()->log->error( sprintf( 'Unable to load textdomain for %s locale.', $locale ) );
 	}
 
 	/**
@@ -306,7 +332,7 @@ final class Plugin {
 	}
 
 	/**
-	 * Retrieve an absolute path within the Gravity Forms plugin directory.
+	 * Retrieve an absolute path within the GravityView plugin directory.
 	 *
 	 * @api
 	 * @since 2.0
@@ -315,11 +341,27 @@ final class Plugin {
 	 * @return string The absolute path to the plugin directory.
 	 */
 	public function dir( $path = '' ) {
-		return GRAVITYVIEW_DIR . ltrim( $path, '/' );
+		return wp_normalize_path( GRAVITYVIEW_DIR . ltrim( $path, '/' ) );
 	}
 
 	/**
-	 * Retrieve a URL within the Gravity Forms plugin directory.
+	 * Retrieve a relative path to the GravityView plugin directory from the WordPress plugin directory
+	 *
+	 * @api
+	 * @since 2.2.3
+	 *
+	 * @param string $path Optional. Append this extra path component.
+	 * @return string The relative path to the plugin directory from the plugin directory.
+	 */
+	public function relpath( $path = '' ) {
+
+		$dirname = trailingslashit( dirname( plugin_basename( GRAVITYVIEW_FILE ) ) );
+
+		return wp_normalize_path( $dirname . ltrim( $path, '/' ) );
+	}
+
+	/**
+	 * Retrieve a URL within the GravityView plugin directory.
 	 *
 	 * @api
 	 * @since 2.0
@@ -470,8 +512,10 @@ final class Plugin {
 
 		switch ( $feature ):
 				case self::FEATURE_GFQUERY:
-				case self::FEATURE_JOINS:
 					return class_exists( '\GF_Query' );
+				case self::FEATURE_JOINS:
+				case self::FEATURE_UNIONS:
+					return apply_filters( 'gravityview/query/class', false ) === '\GF_Patched_Query';
 				case self::FEATURE_REST:
 					return class_exists( '\WP_REST_Controller' );
 			default:

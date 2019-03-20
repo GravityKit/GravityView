@@ -111,4 +111,113 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 
 	}
 
+	/**
+	 * https://github.com/gravityview/GravityView/issues/1223
+	 */
+	function test_GravityView_Field_Other_Entries_get_entries() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'page_size' => 10,
+			),
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$user_1 = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'display_name' => 'John John',
+		) );
+
+		$field = \GV\Internal_Field::by_id( 'other_entries' );
+
+		$null_entry = \GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => 0,
+			'status' => 'active',
+		) ) );
+
+		$entry = \GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $user_1,
+			'status' => 'active',
+		) ) );
+
+		$context = \GV\Template_Context::from_template( array(
+			'view' => $view,
+			'entry' => $entry,
+			'field' => $field,
+		) );
+
+		$this->assertEmpty( $field->field->get_entries( $context ) );
+
+		$another_entry = \GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $user_1,
+			'status' => 'active',
+		) ) );
+
+		$entries = $field->field->get_entries( $context );
+		$this->assertCount( 1, $entries );
+		$this->assertEquals( $another_entry->ID, $entries[0]->ID );
+
+		$and_another_entry = \GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $user_1,
+			'status' => 'active',
+		) ) );
+
+		$entries = $field->field->get_entries( $context );
+		$this->assertCount( 2, $entries );
+		$this->assertEquals( $another_entry->ID, $entries[1]->ID );
+		$this->assertEquals( $and_another_entry->ID, $entries[0]->ID );
+
+		/**
+		 * Filter by date.
+		 */
+		$valid_date_entry = \GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $user_1,
+			'status' => 'active',
+			'date_created' => '1990-12-22 01:02:03',
+		) ) );
+
+		$this->assertCount( 3, $field->field->get_entries( $context ) );
+
+		$view->settings->update( array(
+			'start_date' => '1990-01-01',
+			'end_date' => '1991-01-01',
+		) );
+
+		$entries = $field->field->get_entries( $context );
+		$this->assertCount( 1, $entries );
+		$this->assertEquals( $valid_date_entry->ID, $entries[0]->ID );
+
+		/**
+		 * Make sure search doesn't interfere.
+		 */
+		$_GET['gv_search'] = 'hello';
+
+		$entries = $field->field->get_entries( $context );
+		$this->assertCount( 1, $entries );
+		$this->assertEquals( $valid_date_entry->ID, $entries[0]->ID );
+	}
 }

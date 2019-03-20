@@ -502,6 +502,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			}
 
 			$_POST += array(
+				'action' => 'update',
 				'lid' => $entry['id'],
 				'is_submit_' . $form['id'] => true,
 				'state_' . $form['id'] => GFFormDisplay::get_state( $form, $state ),
@@ -509,7 +510,10 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		}
 
 		/** Render */
-		ob_start() && $render->init( $data );
+		if ( ! $view instanceof \GV\View ) {
+			$view = \GV\View::from_post( $view );
+		}
+		ob_start() && $render->init( $data, \GV\Entry::by_id( $entry['id'] ), $view );
 		$rendered_form = ob_get_clean();
 
 		return array( $rendered_form, $render, GFAPI::get_entry( $entry['id'] ) );
@@ -633,7 +637,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			}
 		}
 		$_POST['input_1'] = "This has been changed";
-		ob_start() && $render->init( $data ); ob_get_clean();
+		ob_start() && $render->init( $data, \GV\Entry::by_id( $entry['id'] ), \GV\View::from_post( $view ) ); ob_get_clean();
 		$this->assertEquals( $_POST['input_1'], $render->entry[1] );
 
 		/**
@@ -681,6 +685,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		/** Check updates */
 		$this->assertEquals( $entry['1'], 'we changed it' );
 		$this->assertEquals( $entry['2'], 102 );
+
+		$this->assertContains( 'Entry Updated', $output );
 
 		/** Cleanup */
 		$this->_reset_context();
@@ -832,7 +838,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/edit_entry/form_fields', function( $fields, $edit_fields, $form, $view_id ) {
 			unset( $fields[0] ); /** The first text field is now hidden. */
-			return $fields;
+			return array_values( $fields );
 		}, 10, 4 );
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
@@ -1318,7 +1324,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
 			unset( $fields[2] ); // Hide the total field
-			return $fields;
+			return array_values( $fields );
 		} );
 
 		$_POST = array(
@@ -1338,7 +1344,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
 			unset( $fields[1] ); // Hide the second field
 			unset( $fields[2] ); // Hide the total field
-			return $fields;
+			return array_values( $fields );
 		} );
 
 		$_POST = array(
@@ -1356,7 +1362,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
 			unset( $fields[0] ); // Hide the first field
-			return $fields;
+			return array_values( $fields );
 		} );
 
 		$_POST = array(
@@ -1385,6 +1391,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'calculations.json' );
 
 		unset( $form['fields'][5] ); // Remove the calculation product
+		$form['fields'] = array_values( $form['fields'] );
 		\GFAPI::update_form( $form );
 
 		$entry = $this->factory->entry->create_and_get( array(
@@ -1445,7 +1452,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
 			unset( $fields[4] ); // Hide the $12 one
 			unset( $fields[7] ); // Hide the total
-			return $fields;
+			return array_values( $fields );
 		} );
 
 		$_POST = array(
@@ -1558,7 +1565,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			unset( $fields[2] ); // Hide the calculation number
 			unset( $fields[4] ); // Hide the $12 one
 			unset( $fields[6] ); // Hide the total
-			return $fields;
+			return array_values( $fields );
 		} );
 
 		$_POST = array(
@@ -1588,6 +1595,236 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( '9', $entry['6.3'] );
 
 		$this->assertEquals( '1446', $entry['7'] );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * https://secure.helpscout.net/conversation/676085022/16972/
+	 */
+	public function test_product_calculations_filtered_fields() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'calculations.json', 1 );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'status'  => 'active',
+			'form_id' => $form['id'],
+
+			// No transaction data
+			'payment_status' => '',
+			'payment_date'   => '',
+			'transaction_id' => '',
+			'payment_amount' => '',
+			'payment_method' => '',
+
+			'1'    => 'hello',
+
+			'81.1' => 'Shipping',
+			'81.2' => '$ 2.00',
+			'81.3' => '5',
+
+			'111'  => '1',
+
+			'7'    => '66',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			)
+		) );
+
+		$_POST = array(
+			'input_1' => 'world',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'world', $entry['1'] );
+		$this->assertEquals( 'Shipping', $entry['81.1'] );
+		$this->assertEquals( '$2.00', $entry['81.2'] );
+		$this->assertEquals( '5', $entry['81.3'] );
+		$this->assertEquals( '1', $entry['111'] );
+		$this->assertEquals( '2', $entry['7'] );
+
+		$this->_reset_context();
+	}
+
+	/** 
+	 * @dataProvider get_redirect_after_edit_data
+	 */
+	public function test_redirect_after_edit( $edit_redirect, $location, $edit_redirect_url = false ) {
+		/** Create a user */
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'this is one'
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'show_only_approved' => true,
+				'user_edit' => true,
+				'edit_redirect' => $edit_redirect,
+				'edit_redirect_url' => $edit_redirect_url
+			),
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			)
+		) );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = \GV\View::from_post( $view );
+		gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+
+		// Edit the entry
+		$_POST = array(
+			'input_1' => 'this is ' . wp_generate_password( 4, false ),
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertContains( 'Entry Updated', $output );
+
+		if ( $location !== false ) {
+			$output = str_replace( json_encode( get_permalink( $view ) ), '"{permalink}"', $output );
+			$this->assertContains( sprintf( 'location.href = %s', json_encode( $location ) ), $output );
+
+			$location = str_replace( '{permalink}', get_permalink( $view ), $location );
+			$this->assertContains( sprintf( '<meta http-equiv="refresh" content="0;URL=%s" /></noscript>', esc_attr( $location ) ), $output );
+		} else {
+			$this->assertNotContains( 'location.href', $output );
+		}
+
+		$this->_reset_context();
+	}
+
+	function get_redirect_after_edit_data() {
+
+		$custom_url = 'https://gravityview.co/floaty-loves-you/?with=<>&wild[]=! &characters=",';
+
+		return array(
+			array( '', false ),
+			array( '0', '' /** homepage; the view is here */ ),
+			array( '1', '{permalink}' ),
+			array( '2', $custom_url, $custom_url ),
+		);
+	}
+
+	function test_hidden_conditional_edit_simple() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'conditionals.json' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+
+			'1'   => 'One name',
+			'2.1' => 'I have another name, though',
+			'3'   => 'Another name',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'user_edit' => true,
+			),
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			)
+		) );
+
+		$_POST = array(
+			'input_1' => 'My name',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'My name', $entry['1'] );
+		$this->assertEquals( 'I have another name, though', $entry['2.1'] );
+		$this->assertEquals( 'Another name', $entry['3'] );
+
+		$this->_reset_context();
+	}
+
+	public function test_edit_entry_feeds() {
+		$this->_reset_context();
+
+		/** Create a user */
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'this is one'
+		) );
+
+		$feed_id = GFAPI::add_feed( $form['id'], array(), 'GravityView_Edit_Entry_Test_Feed' );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'show_only_approved' => true,
+				'user_edit' => true,
+				'edit_feeds' => array( $feed_id, ),
+			),
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			)
+		) );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = \GV\View::from_post( $view );
+		gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		wp_set_current_user( $administrator );
+
+		// Edit the entry
+		$_POST = array(
+			'input_1' => 'this is ' . wp_generate_password( 4, false ),
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( array( $entry['id'] ), GravityView_Edit_Entry_Test_Feed::$processed );
 
 		$this->_reset_context();
 	}
@@ -1627,4 +1864,28 @@ if ( ! class_exists( 'GF_User_Registration' ) ) {
 			}
 		}
 	}
+}
+
+if ( ! class_exists( 'GravityView_Edit_Entry_Test_Feed' ) ) {
+	GFForms::include_feed_addon_framework();
+
+	class GravityView_Edit_Entry_Test_Feed extends GFFeedAddOn {
+		public static $processed = array();
+
+		protected $_slug = 'GravityView_Edit_Entry_Test_Feed';
+
+		public function process_feed( $feed, $entry, $form ) {
+			self::$processed[] = $entry['id'];
+		}
+
+		public static function reset() {
+			self::$processed = array();
+		}
+
+		public static function get_instance() {
+			return new self;
+		}
+	}
+
+	GFAddon::register( 'GravityView_Edit_Entry_Test_Feed' );
 }

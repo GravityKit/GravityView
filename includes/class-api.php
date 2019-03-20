@@ -617,7 +617,16 @@ class GravityView_API {
 
 		$query_arg_name = \GV\Entry::get_endpoint_name();
 
-		$entry_slug = self::get_entry_slug( $entry['id'], $entry );
+		if ( ! empty( $entry['_multi'] ) ) {
+			$entry_slugs = array();
+			foreach ( $entry['_multi'] as $_multi ) {
+				$entry_slugs[] = self::get_entry_slug( $_multi['id'], $_multi );
+				$forms[] = $_multi['form_id'];
+			}
+			$entry_slug = implode( ',', $entry_slugs );
+		} else {
+			$entry_slug = self::get_entry_slug( $entry['id'], $entry );
+		}
 
 		if ( get_option('permalink_structure') && !is_preview() ) {
 
@@ -657,7 +666,15 @@ class GravityView_API {
 
 		}
 
-		if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() ) {
+		if( $post_id ) {
+			$passed_post = get_post( $post_id );
+			$views       = \GV\View_Collection::from_post( $passed_post );
+			$has_multiple_views = $views->count() > 1;
+		} else {
+			$has_multiple_views = class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views();
+		}
+
+		if ( $has_multiple_views ) {
 			$args['gvid'] = gravityview_get_view_id();
 		}
 

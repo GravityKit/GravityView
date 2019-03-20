@@ -128,7 +128,7 @@ class View_Table_Template extends View_Template {
 		 * @deprecated Here for back-compatibility.
 		 */
 		$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $context->view, $form ), $field->as_configuration() );
-		$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, null );
+		$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), ( $form && $form->form ) ? $form->form : null, null );
 
 		/**
 		 * @filter `gravityview/template/field/label` Override the field label.
@@ -217,6 +217,15 @@ class View_Table_Template extends View_Template {
                 do_action( 'gravityview_table_cells_before', \GravityView_View::getInstance() );
 
                 foreach ( $fields->all() as $field ) {
+					if ( isset( $this->view->unions[ $entry['form_id'] ] ) ) {
+						if ( isset( $this->view->unions[ $entry['form_id'] ][ $field->ID ] ) ) {
+							$field = $this->view->unions[ $entry['form_id'] ][ $field->ID ];
+						} else {
+							if ( ! $field instanceof Internal_Field ) {
+								$field = Internal_Field::from_configuration( array( 'id' => 'custom' ) );
+							}
+						}
+					}
 					$this->the_field( $field, $entry );
 				}
 
@@ -250,20 +259,23 @@ class View_Table_Template extends View_Template {
 	 */
 	public function the_field( \GV\Field $field, \GV\Entry $entry ) {
 		$form = $this->view->form;
+		$single_entry = $entry;
 
-		if ( $entry instanceof Multi_Entry ) {
-			if ( ! $entry = Utils::get( $entry, $field->form_id ) ) {
+		if ( $entry->is_multi() ) {
+			if ( ! $single_entry = $entry->from_field( $field ) ) {
+				echo '<td></td>';
 				return;
 			}
 			$form = GF_Form::by_id( $field->form_id );
 		}
 
-		$context = Template_Context::from_template( $this, compact( 'field', 'entry' ) );
-
 		$renderer = new Field_Renderer();
-		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
+		$source = is_numeric( $field->ID ) ? $form : new Internal_Source();
 
 		$value = $renderer->render( $field, $this->view, $source, $entry, $this->request );
+
+		$context = Template_Context::from_template( $this, compact( 'field' ) );
+		$context->entry = $single_entry;
 
 		$args = array(
 			'entry' => $entry->as_entry(),

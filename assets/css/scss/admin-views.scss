@@ -468,6 +468,11 @@ hr {
 
 	.button-secondary {
 		float: right;
+		margin-right: .5em;
+
+		&:first-child {
+			margin: 0;
+		}
 	}
 
 }

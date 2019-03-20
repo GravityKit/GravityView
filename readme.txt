@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.4
-Tested up to: 4.9.8
+Tested up to: 5.0
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -21,11 +21,125 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Added: [gvlogic logged_in="true"] support to easily check user login status
+* Fixed: Conditional logic breaks on edit entry, if the condition field is not present
+* Fixed: CSV output of list and fileupload fields
+* Modified: list and fileupload fields are now output as objects/arrays in REST API JSON
+* Modified: business_hours field support for CSV and JSON output
+* Fixed: hide_empty setting for Product and Quantity fields
+* Fixed: Month and day reversed in multi-input date fields
+* Fixed: Join issues with embedded Views
+* Fixed: Guard templates from being loaded without context
+* Added: Dropdown, radio and link input support for product searching
+* Fixed: Other entries empty text override was not working
+* Added: `gravityview/search/created_by/text` filter to override dropdown and radio text in "created by" search UI
+* Updated: 100% translated for Dutch, German, and French
+
+= 2.2.5 on February 4, 2019 =
+
+* Added: Support for nested dropdown selection in Search Bar
+* Fixed: State search dropdown type for custom address types
+* Fixed: Don't show Credit Card fields on the Edit Entry screen (#1219)
+* REST API and CSV fixes
+    * Fixed: Email field being output as links in CSV
+    * Fixed: CSVs could not contain more than one special field (Entry ID, Custom Content, etc.)
+    * Fixed: CSV and JSON REST API did not output duplicate headers (Entry ID, Custom Content, etc.)
+    * Fixed: JSON REST API endpoint did not render Custom Content fields
+    * Modified: In the REST API duplicate keys are now suffixed with (n), for example: id(1), id(2), instead of not showing them at all
+* Updated: Script used to provide built-in Support Port
+* Updated: Russian translation by [@awsswa59](https://www.transifex.com/user/profile/awsswa59/)
+
+__Developer Updates:__
+
+* Added: `gravityview/edit_entry/before_update` hook
+* Added: `gravityview/api/field/key` filter to customize the generated REST API entry JSON keys
+* Added: `gravityview/template/csv/field/raw` filter to allow raw output of specific fields
+* Modified: CSV REST API endpoint returns binary data instead of JSON-encoded data
+
+= 2.2.4 on January 14, 2019 =
+
+* Fixed: Other Entries field would display all entries without filtering
+* Fixed: Entry Date searches not working (broken in 2.2)
+* Fixed: CSV outputting wrong date formats for Date and Date Created fields
+* Fixed: CSV outputting empty content for Custom Content fields
+* Fixed: Changelog formatting so that the 2.2.1, 2.2.2, and 2.2.3 updates are shown
+* Fixed: The picture of Floaty was _really big_ in the Getting Started screen
+* Updated Translations for Italian and Iranian. Thanks, Farhad!
+
+= 2.2.3 on December 20, 2018 =
+
+* Fixed: Issue loading translation files on Windows IIS servers
+
+__Developer Updates:__
+
+* Added: Third argument to `gravityview_search_operator` filter (the current `\GV\View` object)
+* Added: `GravityView_Image::is_valid_extension()` to determine whether an extension is valid for an image
+* Fixed: Search operator overrides that broke in 2.2
+* Modified: SVG files are now processed as images in GravityView
+* Modified: Changed translation file loading order to remove paths that didn't work! [See this article for the updated paths](https://docs.gravityview.co/article/530-translation-string-loading-order).
+
+= 2.2.2 on December 11, 2018 =
+
+* Added: Support for the new [Multiple Forms beta](https://gravityview.co/extensions/multiple-forms/)!
+* **Minor CSS Change**: Reduced Search Bar negative margins to fix the Search Bar not aligning properly
+* Fixed: Calculation fields that were not added to the Edit Entry fields were being emptied (except the price)
+* Updated translations - thank you, translators!
+    - Turkish translated by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
+    - Russian translated by [@awsswa59](https://www.transifex.com/user/profile/awsswa59/)
+    - Polish translated by [@dariusz.zielonka](https://www.transifex.com/user/profile/dariusz.zielonka/)
+
+__Developer Updates:__
+
+* Template Change: Updated `widget-poll.php` template to display poll results for all Multiple Forms fields
+* Added: `gravityview/query/class` filter to allow query class overrides, needed for Multiple Forms extension
+* Added: `gravityview/approve_entries/autounapprove/status` filter to change the approval status set when an entry is modified in Edit Entry
+* Added: `$unions` property to `\GV\View`, for future use with [Multiple Forms plugin](https://gravityview.co/extensions/multiple-forms/)
+
+= 2.2.1 on December 4, 2018 =
+
+* Confirmed compatibility with WordPress 5.0 and the new Gutenberg editor ([use the shortcode block to embed](https://docs.gravityview.co/article/526-does-gravityview-support-gutenberg))
+* Added: Support for upcoming [Multiple Forms plugin](https://gravityview.co/extensions/multiple-forms/)
+* Fixed: Edit Entry writes incorrectly-formatted empty values in some cases.
+* Fixed: "Hide View data until search is performed" not working for [Maps layout](https://gravityview.co/extensions/maps/)
+* Fixed: Entries are not accessible when linked to from second page of results
+* Fixed: Search redirects to home page when previewing an unpublished View
+
+__Developer Updates:__
+
+* Fixed: Error loading GravityView when server has not defined `GLOB_BRACE` value for the `glob()` function
+* Added: `gravityview/entry/slug` filter to modify entry slug. It runs after the slug has been generated by `GravityView_API::get_entry_slug()`
+* Added: `\GV\Entry::is_multi()` method to check whether the request's entry is a `Multi_Entry` (contains data from multiple entries because of joins)
+
+= 2.2 on November 28, 2018 =
+
+* Yes, GravityView is fully compatible with Gravity Forms 2.4!
+* Added: Choose where users go after editing an entry
+* Added: Search entries by approval status with new "Approval Status" field in the Search Bar
+* Added: More search input types added for "Created By" searches
+* Added: When searching "Created By", set the input type to "text" to search by user email, login and name fields
+* Fixed: Issue installing plugins from the Extensions page on a Multisite network
+* Fixed: When a View is embedded on the homepage of a site, Single Entry and Edit Entry did not work (404 not found error)
+* Fixed: Stray "Advanced Custom Fields" editor at the bottom of Edit View pages
+* Fixed: Labels and quantities removed when editing an entry that had product calculations
+* Fixed: When multiple Views are embedded on a page, Single Entry could sometimes show "You are not allowed to view this content"
+* Fixed: Major search and filtering any/all mode combination issues, especially with "Show only approved entries" mode, A-Z Filters, Featured Entries, Advanced Filtering plugins
+* Fixed: Support all [documented date formats](https://docs.gravityview.co/article/115-changing-the-format-of-the-search-widgets-date-picker) in Search Bar date fields
+* Fixed: Issues with [Advanced Filtering](https://gravityview.co/extensions/advanced-filter/) date fields (including human strings, less than, greater than)
+* Fixed: Security issue when Advanced Filter was configured with an "Any form field" filter (single entries were not properly secured)
+* Fixed: The Quiz Letter Grade is lost if Edit Entry does not contain all Gravity Forms Quiz Add-On fields
+
+__Developer Updates:__
+
+* Updated: `search-field-select.php` template to gracefully handle array values
+* Added: Filters for new "Created By" search. [Learn how to modify what fields are searched](https://docs.gravityview.co/article/523-created-by-text-search).
+
 = 2.1.1 on October 26, 2018 =
 
 * Added: A "Connected Views" menu on the Gravity Forms Forms page - hover over a form to see the new Connected Views menu!
 * Fixed: Additional slashes being added to the custom date format for Date fields
-* Fixed: Quiz letter grade not updated after editing an entry that has Gravity Forms Quiz fields
+* Fixed: Quiz Letter Grade not updated after editing an entry that has Gravity Forms Quiz fields
 * Fixed: Single Entry screen is inaccessible when the category is part of a URL path (using the `%category%` tag in the site's Permalinks settings)
 * Fixed: Issue where GravityView CSS isn't loading in the Dashboard for some customers
 * Fixed: Display uploaded files using Gravity Forms' secure link URL format, if enabled

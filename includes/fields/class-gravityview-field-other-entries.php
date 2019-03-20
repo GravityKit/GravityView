@@ -21,6 +21,8 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 
 	var $group = 'gravityview';
 
+	private $context;
+
 	public function __construct() {
 		$this->label = esc_html__( 'Other Entries', 'gravityview' );
 		$this->description = esc_html__('Display other entries created by the entry creator.', 'gravityview');
@@ -83,6 +85,103 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 		return $new_options + $field_options;
 	}
 
+	/**
+	 * Retrieve the other entries based on the current View and entry.
+	 *
+	 * @param \GV\Template_Context $context The context that contains the View and the Entry.
+	 *
+	 * @return \GV\Entry[] The entries.
+	 */
+	public function get_entries( $context ) {
+		add_action( 'gravityview/view/query', array( $this, 'gf_query_filter' ), 10, 3 );
+		add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ), 10, 3 );
+
+		// Exclude widiget modifiers altogether
+		global $wp_filter;
+		$filters = array(
+			'gravityview_fe_search_criteria',
+			'gravityview_search_criteria',
+			'gravityview/view/query',
+		);
+		$removed = $remove = array();
+		foreach ( $filters as $filter ) {
+			foreach ( $wp_filter[ $filter ] as $priority => $callbacks ) {
+				foreach ( $callbacks as $id => $callback ) {
+					if ( ! is_array( $callback['function'] ) ) {
+						continue;
+					}
+					if ( $callback['function'][0] instanceof \GV\Widget ) {
+						$remove[] = array( $filter, $priority, $id );
+					}
+				}
+			}
+		}
+
+		foreach ( $remove as $r ) {
+			list( $filter, $priority, $id ) = $r;
+			$removed[] = array( $filter, $priority, $id, $wp_filter[ $filter ]->callbacks[ $priority ][ $id ] );
+			unset( $wp_filter[ $filter ]->callbacks[ $priority ][ $id ] );
+		}
+
+		$this->context = $context;
+
+		$entries = $context->view->get_entries()->all();
+
+		foreach ( $removed as $r ) {
+			list( $filter, $priority, $id, $function ) = $r;
+			$wp_filter[ $filter ]->callbacks[ $priority ][ $id ] = $function;
+		}
+
+		remove_action( 'gravityview/view/query', array( $this, 'gf_query_filter' ) );
+		remove_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ) );
+
+		$this->context = null;
+
+		return $entries;
+	}
+
+	public function filter_entries( $search_criteria, $form_id = null, $args = array(), $force_search_criteria = false ) {
+		$context = $this->context;
+
+		$created_by = $context->entry['created_by'];
+
+		/** Filter entries by approved and created_by. */
+		$search_criteria['field_filters'][] = array(
+			'key' => 'created_by',
+			'value' => $created_by,
+			'operator' => 'is'
+		);
+
+		/**
+		 * @filter `gravityview/field/other_entries/criteria` Modify the search parameters before the entries are fetched.
+		 *
+		 * @since 1.11
+		 *
+		 * @param array $criteria Gravity Forms search criteria array, as used by GVCommon::get_entries()
+		 * @param array $view_settings Associative array of settings with plugin defaults used if not set by the View
+		 * @param int $form_id The Gravity Forms ID
+		 * @since 2.0
+		 * @param \GV\Template_Context $gravityview The context
+		 */
+		$criteria = apply_filters( 'gravityview/field/other_entries/criteria', $search_criteria, $context->view->settings->as_atts(), $context->view->form->ID, $context );
+
+		/** Force mode all and filter out our own entry. */
+		$search_criteria['field_filters']['mode'] = 'all';
+		$search_criteria['field_filters'][] = array(
+			'key' => 'id',
+			'value' => $context->entry->ID,
+			'operator' => 'isnot'
+		);
+
+		$search_criteria['paging']['page_size'] = $context->field->page_size ? : 10;
+
+		return $search_criteria;
+	}
+
+	public function gf_query_filter( &$query, $view, $request ) {
+		// @todo One day, we can implement in GF_Query as well...
+		// this would allow us to keep on using nested conditionals and not force 'all'
+	}
 }
 
 new GravityView_Field_Other_Entries;

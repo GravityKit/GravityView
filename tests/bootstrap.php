@@ -133,6 +133,14 @@ class GV_Unit_Tests_Bootstrap {
 		/* Remove temporary tables which causes problems with GF */
 		remove_all_filters( 'query', 10 );
 
+		add_filter( 'gravityview/query/class', 'gravityview_joins_patch_query' );
+		function gravityview_joins_patch_query() {
+			if ( class_exists( 'GF_Query' ) ) {
+				require_once dirname( __FILE__ ) . '/class-gf-query.php';
+				return '\GF_Patched_Query';
+			}
+		}
+
 		// set up Gravity Forms database
 		if ( function_exists( 'gf_upgrade' ) ) {
 			gf_upgrade()->maybe_upgrade();

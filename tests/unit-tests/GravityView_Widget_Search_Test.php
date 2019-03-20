@@ -540,8 +540,10 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'field_filters' => array(
 				'mode' => 'any',
 				array(
-					'key' => 3,
+					'key' => '3',
 					'value' => '2018-02-01',
+					'form_id' => $form['id'],
+					'operator' => 'is'
 				),
 			),
 		);
@@ -642,6 +644,545 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		);
 
 		$this->assertEquals( 1, $view->get_entries()->count() );
+
+		$_GET = array();
+	}
+
+	/**
+	 * @dataProvider get_test_approval_status_search
+	 */
+	public function test_approval_status_search( $show_only_approved, $statuses, $counts ) {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array( wp_generate_password( 4, false ) => array(
+						'id' => '4',
+						'label' => 'Email',
+					),
+					wp_generate_password( 16, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'settings' => array(
+				'show_only_approved' => $show_only_approved,
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"is_approved","input":"checkbox"}]',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$did_unapproved_meta = false;
+
+		foreach ( array( 'approved', 'disapproved', 'unapproved' ) as $status ) {
+			foreach ( range( 1, $statuses[ $status ] ) as $_ ) {
+				$entry = $this->factory->entry->create_and_get( array(
+					'form_id' => $form['id'],
+					'status' => 'active',
+					'16' => wp_generate_password( 16, false ),
+				) );
+
+				if ( 'unapproved' === $status ) {
+					if ( ! $did_unapproved_meta ) { // Test both unapproved meta, and empty approval value meta
+						gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::UNAPPROVED );
+						$did_unapproved_meta = true;
+					}
+					continue;
+				}
+
+				gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, $status === 'approved' ? \GravityView_Entry_Approval_Status::APPROVED : \GravityView_Entry_Approval_Status::DISAPPROVED );
+			}
+		}
+
+		/** Show all. */
+		foreach ( $counts as $count ) {
+			$_GET = array(
+				'filter_is_approved' => $count['filter']
+			);
+			$this->assertEquals( $count['count'], $view->get_entries()->count() );
+		}
+
+		$_GET = array();
+	}
+
+	public function get_test_approval_status_search() {
+		return array(
+			array(
+				'show_only_approved' => false,
+				'statuses'           => array(
+					'unapproved'  => 2,
+					'approved'    => 5,
+					'disapproved' => 8,
+				),
+				'counts'      => array(
+					array( 'count' => 15, 'filter' => array() ),
+					array( 'count' => 2, 'filter' => array( \GravityView_Entry_Approval_Status::UNAPPROVED ) ),
+					array( 'count' => 5, 'filter' => array( \GravityView_Entry_Approval_Status::APPROVED ) ),
+					array( 'count' => 8, 'filter' => array( \GravityView_Entry_Approval_Status::DISAPPROVED ) ),
+					array( 'count' => 0, 'filter' => array( -1 ) ),
+				)
+			),
+			array(
+				'show_only_approved' => true,
+				'statuses'           => array(
+					'unapproved'  => 2,
+					'approved'    => 5,
+					'disapproved' => 8,
+				),
+				'counts'      => array(
+					array( 'count' => 5, 'filter' => array() ),
+					array( 'count' => 0, 'filter' => array( \GravityView_Entry_Approval_Status::UNAPPROVED ) ),
+					array( 'count' => 5, 'filter' => array( \GravityView_Entry_Approval_Status::APPROVED ) ),
+					array( 'count' => 0, 'filter' => array( \GravityView_Entry_Approval_Status::DISAPPROVED ) ),
+					array( 'count' => 0, 'filter' => array( -1 ) ),
+				)
+			),
+		);
+	}
+
+	public function test_created_by_multi_search() {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$alpha = $this->factory->user->create( array(
+			'user_login' => 'alpha',
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+		) );
+
+		$this->assertTrue( is_int( $alpha ) && ! empty( $alpha ) );
+
+		$beta = $this->factory->user->create( array(
+			'user_login' => 'beta',
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+		) );
+
+		$this->assertTrue( is_int( $beta ) && ! empty( $beta ) );
+
+		$gamma = $this->factory->user->create( array(
+			'user_login' => 'gamma',
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+		) );
+
+		$this->assertTrue( is_int( $gamma ) && ! empty( $gamma ) );
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 16, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"created_by","input":"checkbox"}]',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $alpha,
+			'status' => 'active',
+			'16' => wp_generate_password( 16, false ),
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $beta,
+			'status' => 'active',
+			'16' => wp_generate_password( 16, false ),
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $gamma,
+			'status' => 'active',
+			'16' => wp_generate_password( 16, false ),
+		) );
+
+		$_GET = array();
+		$this->assertEquals( 3, $view->get_entries()->count() );
+
+		$_GET = array( 'gv_by' => $alpha );
+		$this->assertEquals( 1, $view->get_entries()->count() );
+
+		$_GET = array( 'gv_by' => array( $alpha, $beta ) );
+		$this->assertEquals( 2, $view->get_entries()->count() );
+
+		$_GET = array( 'gv_by' => -1 );
+		$this->assertEquals( 0, $view->get_entries()->count() );
+
+		$_GET = array();
+	}
+
+	public function test_created_by_text_search() {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$alpha = $this->factory->user->create( array(
+			'user_login' => 'alpha',
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+		) );
+
+		$beta = $this->factory->user->create( array(
+			'user_login' => 'beta',
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+		) );
+
+		$gamma = $this->factory->user->create( array(
+			'user_login' => 'gamma',
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+		) );
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 16, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"created_by","input":"input_text"}]',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $alpha,
+			'status' => 'active',
+			'16' => wp_generate_password( 16, false ),
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $beta,
+			'status' => 'active',
+			'16' => wp_generate_password( 16, false ),
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $gamma,
+			'status' => 'active',
+			'16' => wp_generate_password( 16, false ),
+		) );
+
+		$_GET = array();
+		$this->assertEquals( 3, $view->get_entries()->count() );
+
+		$_GET = array( 'gv_by' => 'a' );
+		$this->assertEquals( 3, $view->get_entries()->count() );
+
+		$_GET = array( 'gv_by' => 'mm' );
+		$this->assertEquals( 1, $view->get_entries()->count() );
+
+		$_GET = array( 'gv_by' => 'beta' );
+		$this->assertEquals( 1, $view->get_entries()->count() );
+
+		$_GET = array( 'gv_by' => 'gravityview.tests' );
+		$this->assertEquals( 3, $view->get_entries()->count() );
+
+		$_GET = array( 'gv_by' => 'custom' );
+		$this->assertEquals( 0, $view->get_entries()->count() );
+
+		update_user_meta( $gamma, 'custom_meta', 'custom' );
+		add_filter( 'gravityview/widgets/search/created_by/user_meta_fields', function() {
+			return array( 'custom_meta' );
+		} );
+		$this->assertEquals( 1, $view->get_entries()->count() );
+
+		remove_all_filters( 'gravityview/widgets/search/created_by/user_meta_fields' );
+
+		$_GET = array();
+	}
+
+	/**
+	 * https://gist.github.com/zackkatz/66e9fb2147a9eb1a2f2e
+	 */
+	public function test_override_search_operator() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 16, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"16","input":"input_text"}]',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello world',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'world',
+		) );
+
+		$_GET = array();
+		$this->assertEquals( 3, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'filter_16' => 'hello' );
+		$this->assertEquals( 2, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'filter_16' => 'world' );
+		$this->assertEquals( 2, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'filter_16' => 'hello world, goodbye moon' );
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'filter_16' => 'hello world' );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
+		add_filter( 'gravityview_fe_search_criteria', $callback = function( $search_criteria ) {
+			if ( ! isset( $search_criteria['field_filters'] ) ) {
+				return $search_criteria;
+			}
+
+			foreach ( $search_criteria['field_filters'] as $k => $filter ) {
+				if ( ! empty( $filter['key'] ) && '16' == $filter['key'] ) {
+					$search_criteria['field_filters'][ $k ]['operator'] = 'is';
+					break;
+				}
+			}
+
+			return $search_criteria;
+		} );
+
+		$_GET = array();
+		$this->assertEquals( 3, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'filter_16' => 'hello' );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'filter_16' => 'world' );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'filter_16' => 'hello world, goodbye moon' );
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'filter_16' => 'hello world' );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
+		remove_filter( 'gravityview_fe_search_criteria', $callback );
+
+		add_filter( 'gravityview_search_operator', $callback = function( $operator, $field ) {
+			if ( $field['key'] == '16' ) {
+				return 'is';
+			}
+			return $operator;
+		}, 10, 2 );
+
+		$_GET = array();
+		$this->assertEquals( 3, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'filter_16' => 'hello' );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'filter_16' => 'world' );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'filter_16' => 'hello world, goodbye moon' );
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'filter_16' => 'hello world' );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
+		remove_filter( 'gravityview_search_operator', $callback );
+
+		$_GET = array();
+	}
+
+	/**
+	 * https://github.com/gravityview/GravityView/issues/1233
+	 */
+	public function test_search_date_created() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 16, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"entry_date","input":"date_range"}]',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'date_created' => '2019-01-03 12:00:00',
+			'16' => 'hello world',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'date_created' => '2019-01-04 12:00:00',
+			'16' => 'hello',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'date_created' => '2019-01-05 12:00:00',
+			'16' => 'world',
+		) );
+
+		$_GET = array();
+		$this->assertEquals( 3, $view->get_entries()->fetch()->count() );
+
+		$_GET['gv_start'] = '01/01/2019';
+		$_GET['gv_end']   = '01/01/2019';
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
+
+		$_GET['gv_start'] = '01/04/2019';
+		$_GET['gv_end']   = '01/04/2019';
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
+		$_GET['gv_start'] = '01/06/2019';
+		$_GET['gv_end']   = '01/06/2019';
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
+
+		$_GET = array();
+	}
+
+	public function test_operator_url_overrides() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 16, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"16","input":"input_text"}]',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$hello_world = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello world',
+		) );
+
+		$hello = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello',
+		) );
+
+		$world = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'world',
+		) );
+
+		$_GET = array();
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 3, $entries );
+
+		$_GET['filter_16'] = 'hello';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 2, $entries );
+
+		$_GET['filter_16'] = 'hello';
+		$_GET['filter_16|op'] = '!='; // Override doesn't work, as '!=' is not in whitelist
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 2, $entries );
+		$this->assertEquals( $hello['id'], $entries[0]['id'] );
+		$this->assertEquals( $hello_world['id'], $entries[1]['id'] );
+
+		add_filter( 'gravityview/search/operator_whitelist', $callback = function() {
+			return array( '!=' );
+		} );
+
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 2, $entries );
+		$this->assertEquals( $world['id'], $entries[0]['id'] );
+		$this->assertEquals( $hello_world['id'], $entries[1]['id'] );
+
+		remove_filter( 'gravityview/search/operator_whitelist', $callback );
 
 		$_GET = array();
 	}

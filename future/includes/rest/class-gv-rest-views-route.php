@@ -114,40 +114,85 @@ class Views_Route extends Route {
 		// Only output the fields that should be displayed.
 		$allowed = array();
 		foreach ( $view->fields->by_position( "{$context}_*" )->by_visible()->all() as $field ) {
-			$allowed[ $field->ID ] = $field;
+			$allowed[] = $field;
 		}
 
 		/**
 		 * @filter `gravityview/rest/entry/fields` Whitelist more entry fields that are output in regular REST requests.
 		 * @param[in,out] array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the view.
 		 * @param \GV\View $view The view.
-		 * @param \GV\Entry $entry WordPress representation of the item.
+		 * @param \GV\Entry $entry The entry.
 		 * @param \WP_REST_Request $request Request object.
 		 * @param string $context The context (directory, single)
 		 */
-		$allowed_field_ids = apply_filters( 'gravityview/rest/entry/fields', array_keys( $allowed ), $view, $entry, $request, $context );
+		$allowed_field_ids = apply_filters( 'gravityview/rest/entry/fields', wp_list_pluck( $allowed, 'ID' ), $view, $entry, $request, $context );
+
+		$allowed = array_filter( $allowed, function( $field ) use ( $allowed_field_ids ) {
+			return in_array( $field->ID, $allowed_field_ids, true );
+		} );
+
+		// Tack on additional fields if needed
+		foreach ( array_diff( $allowed_field_ids, wp_list_pluck( $allowed, 'ID' ) ) as $field_id ) {
+			$allowed[] = is_numeric( $field_id ) ? \GV\GF_Field::by_id( $view->form, $field_id ) : \GV\Internal_Field::by_id( $field_id );
+		}
 
 		$r = new Request( $request );
 		$return = array();
-		$renderer = null;
 
-		if ( $class ) {
-			$renderer = new \GV\Field_Renderer();
-		}
+		$renderer = new \GV\Field_Renderer();
+		
+		$used_ids = array();
 
-		foreach ( $allowed_field_ids as $field_id ) {
-			$source = is_numeric( $field_id ) ? $view->form : new \GV\Internal_Source();
+		foreach ( $allowed as $field ) {
+			$source = is_numeric( $field->ID ) ? $view->form : new \GV\Internal_Source();
 
-			if ( isset( $allowed[ $field_id ] ) ) {
-				$field = $allowed[ $field_id ];
+			$field_id = $field->ID;
+			$index = null;
+
+			if ( ! isset( $used_ids[ $field_id ] ) ) {
+				$used_ids[ $field_id ] = 0;
 			} else {
-				$field = is_numeric( $field_id ) ? \GV\GF_Field::by_id( $view->form, $field_id ) : \GV\Internal_Field::by_id( $field_id );
+				$index = ++$used_ids[ $field_id ];
 			}
 
-			if ( $class ) {
-				$return[ $field->ID ] = $renderer->render( $field, $view, $source, $entry, $r, $class );
+			if ( $index ) {
+				/**
+				 * Modify non-unique IDs (custom, id, etc.) to be unique and not gobbled up.
+				 */
+				$field_id = sprintf( '%s(%d)', $field_id, $index + 1 );
+			}
+
+			/**
+			 * @filter `gravityview/api/field/key` Filter the key name in the results for JSON output.
+			 * @param[in,out] string $field_id The ID. Should be unique or keys will be gobbled up.
+			 * @param \GV\View $view The view.
+			 * @param \GV\Entry $entry The entry.
+			 * @param \WP_REST_Request $request Request object.
+			 * @param string $context The context (directory, single)
+			 */
+			$field_id = apply_filters( 'gravityview/api/field/key', $field_id, $view, $entry, $request, $context );
+
+			if ( ! $class && in_array( $field->ID, array( 'custom' ) ) ) {
+				/**
+				 * Custom fields (and perhaps some others) will require rendering as they don't
+				 * contain an intrinsic value (for custom their value is stored in the view and requires a renderer).
+				 * We force the CSV template to take over in such cases, it's good enough for most cases.
+				 */
+				$return[ $field_id ] = $renderer->render( $field, $view, $source, $entry, $r, '\GV\Field_CSV_Template' );
+			} else if ( $class ) {
+				$return[ $field_id ] = $renderer->render( $field, $view, $source, $entry, $r, $class );
 			} else {
-				$return[ $field->ID ] = $field->get_value( $view, $source, $entry, $r );
+				switch ( $field->type ):
+					case 'list':
+						$return[ $field_id ] = unserialize( $field->get_value( $view, $source, $entry, $r ) );
+						break;
+					case 'fileupload':
+					case 'business_hours':
+						$return[ $field_id ] = json_decode( $field->get_value( $view, $source, $entry, $r ) );
+						break;
+					default;
+						$return[ $field_id ] = $field->get_value( $view, $source, $entry, $r );
+				endswitch;
 			}
 		}
 
@@ -251,9 +296,23 @@ class Views_Route extends Route {
 				fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), $entry ) );
 			}
 
-			$response = new \WP_REST_Response( rtrim( ob_get_clean() ), 200 );
+			$response = new \WP_REST_Response( '', 200 );
 			$response->header( 'X-Item-Count', $entries->count() );
 			$response->header( 'X-Item-Total', $entries->total() );
+			$response->header( 'Content-Type', 'text/csv' );
+
+			fflush( $csv );
+
+			$data = rtrim( ob_get_clean() );
+
+			add_filter( 'rest_pre_serve_request', function() use ( $data ) {
+				echo $data;
+				return true;
+			} );
+
+			if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) {
+				echo $data; // rest_pre_serve_request is not called in tests
+			}
 
 			return $response;
 		}

@@ -15,6 +15,11 @@ if( empty( $search_field['choices'] ) ) {
 	return;
 }
 
+if( is_array( $search_field['value'] ) ) {
+    gravityview()->log->debug( 'search-field-select.php - Array values passed; using first value.' );
+	$search_field['value'] = reset( $search_field['value'] );
+}
+
 /**
  * @filter `gravityview/extension/search/select_default` Define the text for the default option in a select (multi or single dropdown)
  * @since 1.16.4
@@ -32,9 +37,17 @@ $default_option = apply_filters('gravityview/extension/search/select_default', '
 		<select name="<?php echo esc_attr( $search_field['name'] ); ?>" id="search-box-<?php echo esc_attr( $search_field['name'] ); ?>">
 			<option value="" <?php gv_selected( '', $search_field['value'], true ); ?>><?php echo esc_html( $default_option ); ?></option>
 			<?php
-			foreach( $search_field['choices'] as $choice ) : ?>
-				<option value="<?php echo esc_attr( $choice['value'] ); ?>" <?php gv_selected( esc_attr( $choice['value'] ), esc_attr( $search_field['value'] ), true ); ?>><?php echo esc_html( $choice['text'] ); ?></option>
-			<?php endforeach; ?>
+			foreach( $search_field['choices'] as $choice ) { ?>
+				<?php if ( is_array( $choice['value'] ) ) { ?>
+					<optgroup label="<?php echo esc_attr( $choice['text'] ); ?>">
+						<?php foreach ( $choice['value'] as $subchoice ): ?>
+							<option value="<?php echo esc_attr( $subchoice['value'] ); ?>"><?php echo esc_html( $subchoice['text'] ); ?></option>
+						<?php endforeach; ?>
+					</optgroup>
+				<?php } else { ?>
+					<option value="<?php echo esc_attr( $choice['value'] ); ?>" <?php gv_selected( esc_attr( $choice['value'] ), esc_attr( $search_field['value'] ), true ); ?>><?php echo esc_html( $choice['text'] ); ?></option>
+				<?php } ?>
+			<?php } ?>
 		</select>
 	</p>
 </div>

@@ -1,20 +1,21 @@
-# Copyright (C) 2018 GravityView
+# Copyright (C) 2019 GravityView
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # Mojtaba Azad <azadmojtaba@gmail.com>, 2018
-# amir be <fcamirh@gmail.com>, 2018
 # Moein Roohi Moghaddam <Moein.Moghaddam1380@yahoo.com>, 2018
-# Zachary Katz <zack@katz.co>, 2018
+# amir be <fcamirh@gmail.com>, 2018
+# Zachary Katz <zack@katz.co>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.1\n"
+"Project-Id-Version: GravityView 2.2.4\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
-"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Zachary Katz <zack@katz.co>, 2018\n"
+"PO-Revision-Date: 2018-04-30 22:20+0000\n"
+"Last-Translator: Zachary Katz <zack@katz.co>, 2019\n"
 "Language-Team: Persian (Iran) (https://www.transifex.com/katzwebservices/teams/18775/fa_IR/)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fa_IR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -33,19 +34,23 @@ msgstr "افزونه%s را نمی توان فعال کرد ; گرویتی وی�
 
 #: future/includes/class-gv-extension.php:219
 msgid "The %s Extension requires GravityView Version %s or newer."
-msgstr ""
+msgstr "الحاقی %s نیاز به نسخه GravityView %s یا نسخه تازه‌تر دارد."
 
 #: future/includes/class-gv-extension.php:221
 msgid ""
 "The %s Extension requires PHP Version %s or newer. Please ask your host to "
 "upgrade your server's PHP."
 msgstr ""
+"الحاقی %s نیاز به PHP نسخه %s یا تازه‌تر دارد. لطفاُ از هاست خود بخواهید تا "
+"PHP سرور را ارتقا دهد."
 
 #: future/includes/class-gv-extension.php:223
 msgid ""
 "The %s Extension is not compatible with this version of GravityView. Please "
 "update the Extension to the latest version."
 msgstr ""
+"الحاقی %s با این نسخه از GravityView سازگار نیست. لطفاُ الحاقی را به آخرین "
+"نسخه ارتقا دهید."
 
 #: future/includes/class-gv-license-handler.php:263
 msgid "License Details:"
@@ -175,18 +180,18 @@ msgstr "بررسی لایسنس"
 #: future/includes/class-gv-oembed.php:212
 #: future/includes/class-gv-oembed.php:217
 #: future/includes/class-gv-oembed.php:223
-#: future/includes/class-gv-shortcode-gravityview.php:109
-#: future/includes/class-gv-shortcode-gravityview.php:137
-#: future/includes/class-gv-shortcode-gravityview.php:142
-#: future/includes/class-gv-shortcode-gravityview.php:148
-#: future/includes/class-gv-shortcode-gravityview.php:168
-#: future/includes/class-gv-shortcode-gravityview.php:173
-#: future/includes/class-gv-shortcode-gravityview.php:179
-#: future/includes/class-gv-shortcode-gravityview.php:187
-#: future/includes/class-gv-view.php:279 future/includes/class-gv-view.php:293
-#: future/includes/class-gv-view.php:298 future/includes/class-gv-view.php:304
-#: future/includes/class-gv-view.php:317 future/includes/class-gv-view.php:322
-#: future/includes/class-gv-view.php:328 future/includes/class-gv-view.php:336
+#: future/includes/class-gv-shortcode-gravityview.php:110
+#: future/includes/class-gv-shortcode-gravityview.php:138
+#: future/includes/class-gv-shortcode-gravityview.php:143
+#: future/includes/class-gv-shortcode-gravityview.php:149
+#: future/includes/class-gv-shortcode-gravityview.php:169
+#: future/includes/class-gv-shortcode-gravityview.php:174
+#: future/includes/class-gv-shortcode-gravityview.php:180
+#: future/includes/class-gv-shortcode-gravityview.php:188
+#: future/includes/class-gv-view.php:297 future/includes/class-gv-view.php:311
+#: future/includes/class-gv-view.php:316 future/includes/class-gv-view.php:322
+#: future/includes/class-gv-view.php:345 future/includes/class-gv-view.php:350
+#: future/includes/class-gv-view.php:356 future/includes/class-gv-view.php:365
 #: includes/class-frontend-views.php:623
 msgid "You are not allowed to view this content."
 msgstr ""
@@ -209,13 +214,13 @@ msgid ""
 " strange. Don't be concerned!"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:537
+#: future/includes/class-gv-plugin.php:581
 #: includes/class-gravityview-entry-approval.php:439
 #: tests/unit-tests/GravityView_Uninstall_Test.php:191
 msgid "Disapproved the Entry for GravityView"
 msgstr "ورودی برای گرویتی‌ویو تایید نشد"
 
-#: future/includes/class-gv-plugin.php:538
+#: future/includes/class-gv-plugin.php:582
 #: includes/class-gravityview-entry-approval.php:433
 #: tests/unit-tests/GravityView_Uninstall_Test.php:192
 msgid "Approved the Entry for GravityView"
@@ -228,9 +233,9 @@ msgstr "ورودی برای گرویتی‌ویو تایید شد"
 #: includes/class-gravityview-entry-link-shortcode.php:233
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:911
+#: includes/extensions/edit-entry/class-edit-entry-render.php:921
 #: includes/extensions/edit-entry/fields/edit_link.php:14
-#: templates/fields/field-edit_link-html.php:23
+#: templates/fields/field-edit_link-html.php:29
 msgid "Edit Entry"
 msgstr "ویرایش ورودی"
 
@@ -263,7 +268,7 @@ msgstr "تنظیمات گراویتی ویو"
 
 #: future/includes/class-gv-settings-addon.php:141
 #: future/includes/class-gv-settings-addon.php:749
-#: includes/class-admin-views.php:420 includes/class-admin.php:165
+#: includes/class-admin-views.php:426 includes/class-admin.php:165
 msgid "Settings"
 msgstr "تنظیمات"
 
@@ -585,12 +590,12 @@ msgid "Sort by field"
 msgstr "چینش با شاخه"
 
 #: future/includes/class-gv-settings-view.php:148
-#: includes/class-common.php:1345
+#: includes/class-common.php:1437
 msgid "Default"
 msgstr "پیشفرض"
 
 #: future/includes/class-gv-settings-view.php:149
-#: includes/class-common.php:1388
+#: includes/class-common.php:1480
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
 msgstr "تاریخ تشکیل"
@@ -652,7 +657,7 @@ msgid "Define a default search value for the View"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:209
-#: includes/widgets/search-widget/class-search-widget.php:234
+#: includes/widgets/search-widget/class-search-widget.php:239
 msgid "Search Field"
 msgstr "جستجو شاخه"
 
@@ -686,99 +691,131 @@ msgid "The text of the link that returns to the multiple entries view."
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:242
-msgid "Prevent Direct Access"
-msgstr "جلوگیری از دسترسی مستقیم"
+msgid "Redirect After Editing"
+msgstr ""
 
 #: future/includes/class-gv-settings-view.php:244
-msgid "Only allow access to this View when embedded using the shortcode."
+msgid "The page to redirect to after editing an entry."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:254
-msgid "Prevent REST Access"
+#: future/includes/class-gv-settings-view.php:248
+msgid "Stay on Edit Entry"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:256
-msgid "Disable REST access to this View."
+#: future/includes/class-gv-settings-view.php:249
+msgid "Redirect to Single Entry"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:250
+msgid "Redirect to Multiple Entries"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:251
+msgid "Redirect to URL"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:257
+msgid "Edit Entry Redirect URL"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:259
+msgid "After editing an entry, the user will be taken to this URL."
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:267
-msgid "Allow REST Access"
-msgstr ""
+msgid "Prevent Direct Access"
+msgstr "جلوگیری از دسترسی مستقیم"
 
 #: future/includes/class-gv-settings-view.php:269
-msgid "Enable REST access to this View."
+msgid "Only allow access to this View when embedded using the shortcode."
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:279
-msgid "Allow CSV Access"
+msgid "Prevent REST Access"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:281
+msgid "Disable REST access to this View."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:292
+msgid "Allow REST Access"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:294
+msgid "Enable REST access to this View."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:304
+msgid "Allow CSV Access"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:306
 msgid "Enable CSV access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:298
+#: future/includes/class-gv-settings-view.php:323
 msgid "Random"
 msgstr "تصادفی"
 
-#: future/includes/class-gv-view.php:128
+#: future/includes/class-gv-view.php:145
 msgid "Parent View:"
 msgstr "نمای شاخه ای"
 
-#: future/includes/class-gv-view.php:129
+#: future/includes/class-gv-view.php:146
 msgid "All Views"
 msgstr "همه نماها"
 
-#: future/includes/class-gv-view.php:131
+#: future/includes/class-gv-view.php:148
 msgid "Add New View"
 msgstr "ایجاد نما جدید"
 
-#: future/includes/class-gv-view.php:132
+#: future/includes/class-gv-view.php:149
 msgid "New View"
 msgstr "ایجاد نما"
 
-#: future/includes/class-gv-view.php:133
+#: future/includes/class-gv-view.php:150
 #: includes/class-gravityview-admin-bar.php:140
 msgid "Edit View"
 msgstr "تغییر نما"
 
-#: future/includes/class-gv-view.php:134
+#: future/includes/class-gv-view.php:151
 msgid "Update View"
 msgstr "بروزرسانی نما"
 
-#: future/includes/class-gv-view.php:135
+#: future/includes/class-gv-view.php:152
 msgid "Search Views"
 msgstr "جستجو نما"
 
-#: future/includes/class-gv-view.php:137 includes/class-admin.php:68
+#: future/includes/class-gv-view.php:154 includes/class-admin.php:68
 msgid "No Views found in Trash"
 msgstr ""
 
-#: future/includes/class-gv-view.php:138
+#: future/includes/class-gv-view.php:155
 msgid "Filter Views list"
 msgstr ""
 
-#: future/includes/class-gv-view.php:139
+#: future/includes/class-gv-view.php:156
 msgid "Views list navigation"
 msgstr ""
 
-#: future/includes/class-gv-view.php:140
+#: future/includes/class-gv-view.php:157
 msgid "Views list"
 msgstr "لیست نماها"
 
-#: future/includes/class-gv-view.php:141
+#: future/includes/class-gv-view.php:158
 msgid "See Views"
 msgstr "نمایش نماها"
 
-#: future/includes/class-gv-view.php:142
+#: future/includes/class-gv-view.php:159
 msgid "View Attributes"
 msgstr "ویژگی های نما"
 
-#: future/includes/class-gv-view.php:145
+#: future/includes/class-gv-view.php:162
 msgid "view"
 msgstr "نما"
 
-#: future/includes/class-gv-view.php:146
+#: future/includes/class-gv-view.php:163
 msgid "Create views based on a Gravity Forms form"
 msgstr ""
 
@@ -820,18 +857,19 @@ msgstr ""
 msgid "No Views found."
 msgstr "هیچ نمایی یافت نشد"
 
-#: future/includes/rest/class-gv-rest-views-route.php:229
+#: future/includes/rest/class-gv-rest-views-route.php:264
 msgid "No Entries found."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:308
-#: future/includes/rest/class-gv-rest-views-route.php:363
-#: future/includes/rest/class-gv-rest-views-route.php:378
-#: future/includes/rest/class-gv-rest-views-route.php:390
+#: future/includes/rest/class-gv-rest-views-route.php:350
+#: future/includes/rest/class-gv-rest-views-route.php:405
+#: future/includes/rest/class-gv-rest-views-route.php:420
+#: future/includes/rest/class-gv-rest-views-route.php:424
+#: future/includes/rest/class-gv-rest-views-route.php:434
 msgid "You are not allowed to access this content."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:380
+#: future/includes/rest/class-gv-rest-views-route.php:422
 msgid "This View is not configured properly."
 msgstr ""
 
@@ -851,7 +889,7 @@ msgstr ""
 #: future/lib/EDD_SL_Plugin_Updater.php:400
 #: includes/lib/EDD_SL_Plugin_Updater.php:402
 msgid "You do not have permission to install plugin updates"
-msgstr ""
+msgstr "شما مجوز نصب به‌روزرسانی‌های افزونه را ندارید"
 
 #: future/lib/EDD_SL_Plugin_Updater.php:400
 #: includes/class-gravityview-change-entry-creator.php:67
@@ -880,31 +918,35 @@ msgstr "نوع: %s"
 msgid "Field ID: %s"
 msgstr "شناسه فیلد: %s"
 
-#: includes/admin/class-gravityview-admin-view-field.php:40
+#: includes/admin/class-gravityview-admin-view-field.php:39
 msgid "Admin Label: %s"
 msgstr "لقب مدیر:%s"
 
-#: includes/admin/class-gravityview-admin-view-item.php:142
+#: includes/admin/class-gravityview-admin-view-field.php:45
+msgid "Form ID: %s"
+msgstr ""
+
+#: includes/admin/class-gravityview-admin-view-item.php:147
 msgid "Configure %s Settings"
 msgstr "پیکربندی %s تنظیمات"
 
-#: includes/admin/class-gravityview-admin-view-item.php:143
+#: includes/admin/class-gravityview-admin-view-item.php:148
 msgid "Remove %s"
 msgstr "حذف %s"
 
-#: includes/admin/class-gravityview-admin-view-item.php:144
+#: includes/admin/class-gravityview-admin-view-item.php:149
 msgid "This field links to the Single Entry"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:75
+#: includes/admin/class-gravityview-support-port.php:81
 msgid "GravityView Support"
 msgstr "پشتیبانی گرویتی‌ویو"
 
-#: includes/admin/class-gravityview-support-port.php:76
+#: includes/admin/class-gravityview-support-port.php:82
 msgid "Search GravityView Docs"
 msgstr "جستجو در اسناد گرویتی‌ویو"
 
-#: includes/admin/class-gravityview-support-port.php:77
+#: includes/admin/class-gravityview-support-port.php:83
 msgid ""
 "Your search timed out. Please double-check your internet connection and try "
 "again."
@@ -912,49 +954,49 @@ msgstr ""
 "زمان مجاز برای جستجوی شما به پایان رسید. لطفا ارتباط اینترنت خود را بررسی "
 "کنید."
 
-#: includes/admin/class-gravityview-support-port.php:79
+#: includes/admin/class-gravityview-support-port.php:85
 msgid "Contact Support"
 msgstr "تماس با پشتیبان"
 
-#: includes/admin/class-gravityview-support-port.php:80
+#: includes/admin/class-gravityview-support-port.php:86
 msgid "Attach a screenshot or file"
 msgstr "الصاق اسکرین‌شات یا فایل"
 
-#: includes/admin/class-gravityview-support-port.php:81
+#: includes/admin/class-gravityview-support-port.php:87
 msgid "The maximum file size is 10 MB"
 msgstr "حداکثر حجم فایل 10 مگابایت"
 
-#: includes/admin/class-gravityview-support-port.php:82
+#: includes/admin/class-gravityview-support-port.php:88
 msgid "Your Name"
 msgstr "نام"
 
-#: includes/admin/class-gravityview-support-port.php:83
+#: includes/admin/class-gravityview-support-port.php:89
 msgid "Please enter your name"
 msgstr "لطفا نام خود را وارد کنید"
 
-#: includes/admin/class-gravityview-support-port.php:84
+#: includes/admin/class-gravityview-support-port.php:90
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:429
 msgid "Email address"
 msgstr "آدرس ایمیل"
 
-#: includes/admin/class-gravityview-support-port.php:85
+#: includes/admin/class-gravityview-support-port.php:91
 msgid "Please enter a valid email address"
 msgstr "لطفا آدرس ایمیل خود را وارد کنید"
 
-#: includes/admin/class-gravityview-support-port.php:86
+#: includes/admin/class-gravityview-support-port.php:92
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:431
 msgid "Subject"
 msgstr "موضوع"
 
-#: includes/admin/class-gravityview-support-port.php:88
+#: includes/admin/class-gravityview-support-port.php:94
 msgid "How can we help you?"
 msgstr "چه کمکی از دست ما برمی‌آید؟"
 
-#: includes/admin/class-gravityview-support-port.php:90
+#: includes/admin/class-gravityview-support-port.php:96
 msgid "Message sent!"
 msgstr "پیام ارسال شد!"
 
-#: includes/admin/class-gravityview-support-port.php:91
+#: includes/admin/class-gravityview-support-port.php:97
 msgid ""
 "Thanks for reaching out! Someone from the GravityView team will get back to "
 "you soon."
@@ -963,12 +1005,12 @@ msgstr ""
 
 #. translators: "Support Port" can be translated as "Support Portal" or
 #. "Support Window"
-#: includes/admin/class-gravityview-support-port.php:264
-#: includes/admin/class-gravityview-support-port.php:270
+#: includes/admin/class-gravityview-support-port.php:267
+#: includes/admin/class-gravityview-support-port.php:273
 msgid "GravityView Support Port"
 msgstr "سامانه پشتیبانی گرویتی‌ویو"
 
-#: includes/admin/class-gravityview-support-port.php:275
+#: includes/admin/class-gravityview-support-port.php:278
 msgid "Show GravityView Support Port when on a GravityView-related page"
 msgstr "نمایش دادن سامانه پشتیبانی گرویتی‌ویو در صفحات مرتبط با گرویتی‌ویو"
 
@@ -1059,7 +1101,7 @@ msgid "Filter &amp; Sort"
 msgstr ""
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:187
-#: includes/class-admin-views.php:469
+#: includes/class-admin-views.php:475
 msgid "Data Source"
 msgstr "منبع داده"
 
@@ -1115,7 +1157,7 @@ msgstr "همین حالا بخرید"
 
 #: includes/admin/metaboxes/views/select-template.php:35
 #: includes/fields/class-gravityview-field-select.php:25
-#: includes/widgets/search-widget/class-search-widget.php:188
+#: includes/widgets/search-widget/class-search-widget.php:193
 msgid "Select"
 msgstr "انتخاب"
 
@@ -1203,13 +1245,13 @@ msgid "(no title)"
 msgstr "(بدون عنوان)"
 
 #: includes/class-admin-add-shortcode.php:138
-#: includes/class-admin-views.php:1119
+#: includes/class-admin-views.php:1132
 #: includes/extensions/edit-entry/partials/form-buttons.php:31
 msgid "Cancel"
 msgstr "انصراف"
 
 #: includes/class-admin-add-shortcode.php:183
-#: includes/class-admin-views.php:1123
+#: includes/class-admin-views.php:1136
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -1284,8 +1326,8 @@ msgid "Plugins that extend GravityView and Gravity Forms functionality."
 msgstr ""
 
 #: includes/class-admin-installer.php:106
-#: includes/class-admin-installer.php:278
-#: includes/class-admin-installer.php:297
+#: includes/class-admin-installer.php:282
+#: includes/class-admin-installer.php:301
 msgid "GravityView Extensions and Plugins"
 msgstr ""
 
@@ -1295,91 +1337,91 @@ msgid ""
 "license%s or %sget a license here%s."
 msgstr ""
 
-#: includes/class-admin-installer.php:280
+#: includes/class-admin-installer.php:284
 msgid ""
 "Extensions and plugins data cannot be loaded at the moment. Please try again"
 " later."
 msgstr ""
 
-#: includes/class-admin-installer.php:299
+#: includes/class-admin-installer.php:303
 msgid ""
 "The following plugins extend GravityView and Gravity Forms functionality:"
 msgstr ""
 
-#: includes/class-admin-installer.php:348
+#: includes/class-admin-installer.php:352
 msgid "Visit the plugin page"
 msgstr ""
 
-#: includes/class-admin-installer.php:352
+#: includes/class-admin-installer.php:356
 msgid "Plugin status: %s"
 msgstr ""
 
-#: includes/class-admin-installer.php:426
+#: includes/class-admin-installer.php:430
 msgid "All Access"
 msgstr ""
 
-#: includes/class-admin-installer.php:426
+#: includes/class-admin-installer.php:430
 msgid "Core + Extensions"
 msgstr ""
 
-#: includes/class-admin-installer.php:432
+#: includes/class-admin-installer.php:437
 msgid "Active %s License is Required."
 msgstr ""
 
-#: includes/class-admin-installer.php:439
+#: includes/class-admin-installer.php:444
 msgid "Purchase Now for %s"
 msgstr ""
 
-#: includes/class-admin-installer.php:449
+#: includes/class-admin-installer.php:454
 msgid "Upgrade to %s for Access"
 msgstr ""
 
-#: includes/class-admin-installer.php:457
+#: includes/class-admin-installer.php:462
 msgid "Coming Soon"
 msgstr ""
 
-#: includes/class-admin-installer.php:458
+#: includes/class-admin-installer.php:463
 msgid "Learn More"
 msgstr ""
 
-#: includes/class-admin-installer.php:476
+#: includes/class-admin-installer.php:481
 msgid "Not Installed"
 msgstr ""
 
-#: includes/class-admin-installer.php:477
+#: includes/class-admin-installer.php:482
 msgid "Install"
 msgstr ""
 
-#: includes/class-admin-installer.php:484
-#: includes/class-admin-installer.php:592
+#: includes/class-admin-installer.php:489
+#: includes/class-admin-installer.php:597
 msgid "Inactive"
 msgstr ""
 
-#: includes/class-admin-installer.php:485
-#: includes/class-admin-installer.php:593
+#: includes/class-admin-installer.php:490
+#: includes/class-admin-installer.php:598
 msgid "Activate"
 msgstr ""
 
-#: includes/class-admin-installer.php:495
-#: includes/class-admin-installer.php:591
+#: includes/class-admin-installer.php:500
+#: includes/class-admin-installer.php:596
 msgid "Active"
 msgstr ""
 
-#: includes/class-admin-installer.php:496
-#: includes/class-admin-installer.php:594
+#: includes/class-admin-installer.php:501
+#: includes/class-admin-installer.php:599
 msgid "Deactivate"
 msgstr ""
 
-#: includes/class-admin-installer.php:541
+#: includes/class-admin-installer.php:546
 msgid "Plugin activation failed: %s"
 msgstr ""
 
-#: includes/class-admin-installer.php:564
-#: includes/class-admin-installer.php:590
+#: includes/class-admin-installer.php:569
+#: includes/class-admin-installer.php:595
 msgid "Plugin deactivation failed."
 msgstr ""
 
-#: includes/class-admin-installer.php:589
+#: includes/class-admin-installer.php:594
 msgid "Plugin activation failed."
 msgstr ""
 
@@ -1387,138 +1429,138 @@ msgstr ""
 msgid "All forms"
 msgstr "همه فرم‌ها"
 
-#: includes/class-admin-views.php:172 includes/class-admin-views.php:203
+#: includes/class-admin-views.php:178 includes/class-admin-views.php:209
 msgid "Create a View"
 msgstr "درست کردن نما"
 
-#: includes/class-admin-views.php:174 includes/class-admin-views.php:205
+#: includes/class-admin-views.php:180 includes/class-admin-views.php:211
 msgid "Create a View using this form as a data source"
 msgstr ""
 
-#: includes/class-admin-views.php:191
+#: includes/class-admin-views.php:197
 msgid "No Title (View #%d)"
 msgstr ""
 
-#: includes/class-admin-views.php:219
+#: includes/class-admin-views.php:225
 msgid "Connected Views"
 msgstr "ویوهای متصل شده"
 
-#: includes/class-admin-views.php:221
+#: includes/class-admin-views.php:227
 msgid "GravityView Views using this form as a data source"
 msgstr ""
 
-#: includes/class-admin-views.php:295
+#: includes/class-admin-views.php:301
 msgid "CSS Merge Tags"
 msgstr ""
 
-#: includes/class-admin-views.php:296
+#: includes/class-admin-views.php:302
 msgid ""
 "Developers: The CSS classes will be sanitized using the "
 "%ssanitize_title_with_dashes()%s function."
 msgstr ""
 
-#: includes/class-admin-views.php:363
+#: includes/class-admin-views.php:369
 msgid "Not connected."
 msgstr "متصل نشده است."
 
-#: includes/class-admin-views.php:372
+#: includes/class-admin-views.php:378
 msgid "The connected form can not be found; it may no longer exist."
 msgstr "فرم متصل شده پیدا نشد، شاید وجود ندارد."
 
-#: includes/class-admin-views.php:408
+#: includes/class-admin-views.php:414
 #: includes/class-gravityview-admin-bar.php:141
 msgid "Edit Form"
 msgstr "ویرایش فرم"
 
-#: includes/class-admin-views.php:415
+#: includes/class-admin-views.php:421
 msgid "Entries"
 msgstr "ورودی‌ها"
 
-#: includes/class-admin-views.php:420
+#: includes/class-admin-views.php:426
 msgid "Edit settings for this form"
 msgstr "ویرایش تنظیمات این فرم"
 
-#: includes/class-admin-views.php:425
+#: includes/class-admin-views.php:431
 msgid "Preview Form"
 msgstr "پیش‌نمایش فرم"
 
-#: includes/class-admin-views.php:425
+#: includes/class-admin-views.php:431
 msgid "Preview this form"
 msgstr "پیش‌نمایش این فرم"
 
-#: includes/class-admin-views.php:664
+#: includes/class-admin-views.php:671
 msgid "+ Add All Fields"
 msgstr "+ افزودن تمام فیلدها"
 
-#: includes/class-admin-views.php:665
+#: includes/class-admin-views.php:672
 msgid "Add all the available fields at once."
 msgstr ""
 
-#: includes/class-admin-views.php:715
-#: includes/widgets/search-widget/class-search-widget.php:315
+#: includes/class-admin-views.php:722
+#: includes/widgets/search-widget/class-search-widget.php:320
 msgid "Entry ID"
 msgstr "شناسه ورودی"
 
-#: includes/class-admin-views.php:717
+#: includes/class-admin-views.php:724
 msgid "The unique ID of the entry."
 msgstr "شناسه یکتای ورودی"
 
-#: includes/class-admin-views.php:720
-#: includes/widgets/search-widget/class-search-widget.php:311
+#: includes/class-admin-views.php:727
+#: includes/widgets/search-widget/class-search-widget.php:316
 msgid "Entry Date"
 msgstr "تاریخ ورودی"
 
-#: includes/class-admin-views.php:721
+#: includes/class-admin-views.php:728
 #: includes/fields/class-gravityview-field-date-created.php:29
 msgid "The date the entry was created."
 msgstr "تاریخ ایجاد ورودی."
 
-#: includes/class-admin-views.php:725
+#: includes/class-admin-views.php:732
 #: includes/fields/class-gravityview-field-source-url.php:22
 msgid "Source URL"
 msgstr "منبع URL"
 
-#: includes/class-admin-views.php:727
+#: includes/class-admin-views.php:734
 msgid "The URL of the page where the form was submitted."
 msgstr ""
 
-#: includes/class-admin-views.php:730
+#: includes/class-admin-views.php:737
 msgid "User IP"
 msgstr "آدرس IP کاربر"
 
-#: includes/class-admin-views.php:732
+#: includes/class-admin-views.php:739
 msgid "The IP Address of the user who created the entry."
 msgstr "آدرس IP کاربری که ورودی را ایجاد کرده است."
 
-#: includes/class-admin-views.php:735
+#: includes/class-admin-views.php:742
 msgid "User"
 msgstr "کاربر"
 
-#: includes/class-admin-views.php:737
+#: includes/class-admin-views.php:744
 msgid "Details of the logged-in user who created the entry (if any)."
 msgstr ""
 
-#: includes/class-admin-views.php:744
-#: includes/fields/class-gravityview-field-other-entries.php:25
+#: includes/class-admin-views.php:751
+#: includes/fields/class-gravityview-field-other-entries.php:27
 msgid "Other Entries"
 msgstr "دیگر ورودی‌ها"
 
-#: includes/class-admin-views.php:746
-#: includes/fields/class-gravityview-field-other-entries.php:26
+#: includes/class-admin-views.php:753
+#: includes/fields/class-gravityview-field-other-entries.php:28
 msgid "Display other entries created by the entry creator."
 msgstr "نمایش ورودی‌های دیگر که توسط ایجاد کننده این ورودی ساخته شده است."
 
-#: includes/class-admin-views.php:753
+#: includes/class-admin-views.php:760
 #: includes/fields/class-gravityview-field-entry-link.php:32
 msgid "Link to Entry"
 msgstr "لینک به ورودی"
 
-#: includes/class-admin-views.php:754
+#: includes/class-admin-views.php:761
 #: includes/fields/class-gravityview-field-entry-link.php:33
 msgid "A dedicated link to the single entry with customizable text."
 msgstr "لینک اختصاصی به ورودی با متن قابل تغییر."
 
-#: includes/class-admin-views.php:765
+#: includes/class-admin-views.php:772
 #: includes/fields/class-gravityview-field-custom.php:34
 #: includes/fields/class-gravityview-field-custom.php:48
 #: includes/widgets/class-gravityview-widget-custom-content.php:30
@@ -1526,61 +1568,61 @@ msgstr "لینک اختصاصی به ورودی با متن قابل تغییر.
 msgid "Custom Content"
 msgstr "محتوای دلخواه"
 
-#: includes/class-admin-views.php:767
+#: includes/class-admin-views.php:774
 msgid "Insert custom text or HTML."
 msgstr ""
 
-#: includes/class-admin-views.php:857
+#: includes/class-admin-views.php:864
 msgid "Add Widget"
 msgstr "افزودن ویجت"
 
-#: includes/class-admin-views.php:859
+#: includes/class-admin-views.php:866
 msgid "Add Field"
 msgstr "اضافه کردن شاخه"
 
-#: includes/class-admin-views.php:950
+#: includes/class-admin-views.php:957
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr ""
 
-#: includes/class-admin-views.php:1018
+#: includes/class-admin-views.php:1025
 msgid "Filter Fields:"
 msgstr ""
 
-#: includes/class-admin-views.php:1019
+#: includes/class-admin-views.php:1026
 msgid "Filter fields by name or label"
 msgstr ""
 
-#: includes/class-admin-views.php:1026
+#: includes/class-admin-views.php:1033
 msgid "No fields were found matching the search."
 msgstr ""
 
-#: includes/class-admin-views.php:1060
+#: includes/class-admin-views.php:1067
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:1061
+#: includes/class-admin-views.php:1068
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1117
+#: includes/class-admin-views.php:1130
 msgid "Enter View name here"
 msgstr "نام نما را اینجا وارد کنید"
 
-#: includes/class-admin-views.php:1118
+#: includes/class-admin-views.php:1131
 msgid "Close"
 msgstr "بستن"
 
-#: includes/class-admin-views.php:1120
+#: includes/class-admin-views.php:1133
 msgid "Continue"
 msgstr "ادامه"
 
-#: includes/class-admin-views.php:1121
+#: includes/class-admin-views.php:1134
 msgid "Ok"
 msgstr "تایید"
 
-#: includes/class-admin-views.php:1122
+#: includes/class-admin-views.php:1135
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
@@ -1588,17 +1630,17 @@ msgstr ""
 "هنگام ساختن ویو خطایی رخ داده است. تنظیمات را بررسی کنید یا با پشتیبانی "
 "گرویتی‌ویو تماس بگیرید."
 
-#: includes/class-admin-views.php:1124
+#: includes/class-admin-views.php:1137
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1125
+#: includes/class-admin-views.php:1138
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:1126
+#: includes/class-admin-views.php:1139
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -1639,23 +1681,23 @@ msgstr "فهرست تغییرات"
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:389
+#: includes/class-admin-welcome.php:528
 msgid "View change history"
 msgstr "دیدن تاریخچه تغییرات"
 
-#: includes/class-admin-welcome.php:410
+#: includes/class-admin-welcome.php:549
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:451
+#: includes/class-admin-welcome.php:590
 msgid "Contributors"
 msgstr "همکاری‌کنندگان"
 
-#: includes/class-admin-welcome.php:477
+#: includes/class-admin-welcome.php:616
 msgid "Want to contribute?"
 msgstr "تمایل به همکاری دارید؟"
 
-#: includes/class-admin-welcome.php:478
+#: includes/class-admin-welcome.php:617
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1790,26 +1832,26 @@ msgstr ""
 msgid "No entries match your request."
 msgstr ""
 
-#: includes/class-api.php:827
+#: includes/class-api.php:844
 msgid "&larr; Go back"
 msgstr ""
 
-#: includes/class-api.php:1239
+#: includes/class-api.php:1256
 msgid "Map It"
 msgstr ""
 
-#: includes/class-common.php:341
+#: includes/class-common.php:346
 #: includes/fields/class-gravityview-field-post-id.php:28
 msgid "Post ID"
 msgstr "کد پستی"
 
 #. translators: %s: relative time from now, used for generic date comparisons.
 #. "1 day ago", or "20 seconds ago"
-#: includes/class-common.php:988
+#: includes/class-common.php:1080
 msgid "%s ago"
 msgstr "%s قبل"
 
-#: includes/class-common.php:1498
+#: includes/class-common.php:1590
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -1896,19 +1938,19 @@ msgstr ""
 msgid "Dismiss"
 msgstr ""
 
-#: includes/class-gravityview-change-entry-creator.php:69
+#: includes/class-gravityview-change-entry-creator.php:71
 msgid "Success"
 msgstr "موفقیت"
 
-#: includes/class-gravityview-change-entry-creator.php:199
+#: includes/class-gravityview-change-entry-creator.php:187
 msgid "Changed entry creator from %s to %s"
 msgstr "ایجاد کننده ورودی از %s به %s تغییر کرد"
 
-#: includes/class-gravityview-change-entry-creator.php:231
+#: includes/class-gravityview-change-entry-creator.php:219
 msgid "Change Entry Creator:"
 msgstr "تغییر ایجاد کننده ورودی:"
 
-#: includes/class-gravityview-change-entry-creator.php:238
+#: includes/class-gravityview-change-entry-creator.php:226
 msgid ""
 "The displayed list of users has been trimmed due to the large number of "
 "users. %sLearn how to remove this limit%s."
@@ -2026,7 +2068,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:213
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1941
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1981
 msgid "You do not have permission to edit this entry."
 msgstr "شما دسترسی مجاز برای ویرایش این ورودی را ندارید."
 
@@ -2140,39 +2182,39 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:964
+#: includes/extensions/edit-entry/class-edit-entry-render.php:974
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:964
+#: includes/extensions/edit-entry/class-edit-entry-render.php:974
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:970
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1004
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1112
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1152
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1119
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1159
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1471
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1511
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1935
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1975
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "لینک ویرایش این ورودی معتبر نیست. ممکن است لینک منقضی شده باشد."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1945
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1985
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "امکان ویرایش این ورودی وجود ندارد. ورودی داخل زباله‌دان است."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1985
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2025
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -2300,11 +2342,11 @@ msgstr "این نوشته خالی است."
 msgid "Address"
 msgstr "آدرس"
 
-#: includes/fields/class-gravityview-field-address.php:267
+#: includes/fields/class-gravityview-field-address.php:286
 msgid "Show Map Link:"
 msgstr "نشان دادن نقشه لینک:"
 
-#: includes/fields/class-gravityview-field-address.php:268
+#: includes/fields/class-gravityview-field-address.php:287
 msgid "Display a \"Map It\" link below the address"
 msgstr ""
 
@@ -2325,8 +2367,8 @@ msgid "CAPTCHA"
 msgstr "کپچا"
 
 #: includes/fields/class-gravityview-field-checkbox.php:25
-#: includes/widgets/search-widget/class-search-widget.php:191
-#: includes/widgets/search-widget/class-search-widget.php:192
+#: includes/widgets/search-widget/class-search-widget.php:196
+#: includes/widgets/search-widget/class-search-widget.php:197
 msgid "Checkbox"
 msgstr "جعبه برسی"
 
@@ -2442,7 +2484,7 @@ msgid "Render oEmbeds"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-date.php:25
-#: includes/widgets/search-widget/class-search-widget.php:187
+#: includes/widgets/search-widget/class-search-widget.php:192
 msgid "Date"
 msgstr "تاریخ"
 
@@ -2526,6 +2568,7 @@ msgstr "HTML"
 
 #: includes/fields/class-gravityview-field-is-approved.php:40
 #: includes/fields/class-gravityview-field-is-approved.php:123
+#: includes/widgets/search-widget/class-search-widget.php:335
 msgid "Approval Status"
 msgstr ""
 
@@ -2579,7 +2622,7 @@ msgid "Entry Star"
 msgstr "نشان ورودی"
 
 #: includes/fields/class-gravityview-field-is-starred.php:28
-#: includes/widgets/search-widget/class-search-widget.php:323
+#: includes/widgets/search-widget/class-search-widget.php:328
 msgid "Is Starred"
 msgstr "نشان شده"
 
@@ -2625,52 +2668,52 @@ msgid ""
 "precision."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:47
+#: includes/fields/class-gravityview-field-other-entries.php:49
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:363
 msgid "Entry link text (required)"
 msgstr "متن لینک ورودی (اجباری)"
 
-#: includes/fields/class-gravityview-field-other-entries.php:48
+#: includes/fields/class-gravityview-field-other-entries.php:50
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:269
 msgid "Entry #{entry_id}"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:54
+#: includes/fields/class-gravityview-field-other-entries.php:56
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:370
 msgid "Text or HTML to display after the link (optional)"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:55
+#: includes/fields/class-gravityview-field-other-entries.php:57
 msgid "This content will be displayed below each entry link."
 msgstr "این محتوا پایین لینک هر ورودی نمایش داده خواهد شد."
 
-#: includes/fields/class-gravityview-field-other-entries.php:63
+#: includes/fields/class-gravityview-field-other-entries.php:65
 msgid "Entries to Display"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:64
+#: includes/fields/class-gravityview-field-other-entries.php:66
 msgid "What is the maximum number of entries that should be shown?"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:71
+#: includes/fields/class-gravityview-field-other-entries.php:73
 msgid "Hide if no entries"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:72
+#: includes/fields/class-gravityview-field-other-entries.php:74
 msgid "Don't display this field if the entry creator has no other entries"
 msgstr "اگر ایجاد کننده این ورودی، ورودی دیگری ندارد، این فیلد را نمایش نده"
 
-#: includes/fields/class-gravityview-field-other-entries.php:78
+#: includes/fields/class-gravityview-field-other-entries.php:80
 msgid "No Entries Text"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:79
+#: includes/fields/class-gravityview-field-other-entries.php:81
 msgid ""
 "The text that is shown if the entry creator has no other entries (and \"Hide"
 " if no entries\" is disabled)."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-other-entries.php:80
+#: includes/fields/class-gravityview-field-other-entries.php:82
 msgid "This user has no other entries."
 msgstr ""
 
@@ -2969,7 +3012,7 @@ msgid "Edit Table"
 msgstr "ویرایش جدول"
 
 #: includes/presets/default-edit/class-gravityview-default-template-edit.php:27
-#: includes/presets/default-table/class-gravityview-default-template-table.php:15
+#: includes/presets/default-table/class-gravityview-default-template-table.php:28
 msgid "Display items in a table view."
 msgstr ""
 
@@ -2986,7 +3029,7 @@ msgid "Display items in a listing view."
 msgstr " نشان دادن مورد در نمای لیسک کردن"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:27
-#: includes/presets/default-table/class-gravityview-default-template-table.php:29
+#: includes/presets/default-table/class-gravityview-default-template-table.php:42
 msgid "Link to single entry"
 msgstr "لینک به ورودی تنها"
 
@@ -3026,15 +3069,15 @@ msgstr "فوتر چپ"
 msgid "Footer Right"
 msgstr "فوتر راست"
 
-#: includes/presets/default-table/class-gravityview-default-template-table.php:14
+#: includes/presets/default-table/class-gravityview-default-template-table.php:27
 msgid "Table (default)"
 msgstr "میز (پیشفرض)"
 
-#: includes/presets/default-table/class-gravityview-default-template-table.php:40
+#: includes/presets/default-table/class-gravityview-default-template-table.php:53
 msgid "Visible Table Columns"
 msgstr "پنهان کردن ردیف ها"
 
-#: includes/presets/default-table/class-gravityview-default-template-table.php:41
+#: includes/presets/default-table/class-gravityview-default-template-table.php:54
 msgid "Each field will be displayed as a column in the table."
 msgstr ""
 
@@ -3118,16 +3161,16 @@ msgstr ""
 msgid "Page Links"
 msgstr "لینک صفحه"
 
-#: includes/widgets/class-gravityview-widget-page-size.php:20
+#: includes/widgets/class-gravityview-widget-page-size.php:22
 msgid "Allow users to modify the number of results shown per page."
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-page-size.php:33
-#: includes/widgets/class-gravityview-widget-page-size.php:91
+#: includes/widgets/class-gravityview-widget-page-size.php:35
+#: includes/widgets/class-gravityview-widget-page-size.php:93
 msgid "Page Size"
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-page-size.php:93
+#: includes/widgets/class-gravityview-widget-page-size.php:95
 msgid "Results Per Page"
 msgstr ""
 
@@ -3240,77 +3283,77 @@ msgstr ""
 msgid "Match All Fields"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:96
+#: includes/widgets/search-widget/class-search-widget.php:98
 msgid "Search Bar"
 msgstr "نوار جستجو"
 
-#: includes/widgets/search-widget/class-search-widget.php:186
+#: includes/widgets/search-widget/class-search-widget.php:191
 msgid "Text"
 msgstr "متن"
 
-#: includes/widgets/search-widget/class-search-widget.php:189
+#: includes/widgets/search-widget/class-search-widget.php:194
 msgid "Select (multiple values)"
 msgstr "انتخاب کردن( چند داده)"
 
-#: includes/widgets/search-widget/class-search-widget.php:190
+#: includes/widgets/search-widget/class-search-widget.php:195
 msgid "Radio"
 msgstr "رادیو"
 
-#: includes/widgets/search-widget/class-search-widget.php:193
+#: includes/widgets/search-widget/class-search-widget.php:198
 msgid "Links"
 msgstr "لینک"
 
-#: includes/widgets/search-widget/class-search-widget.php:194
+#: includes/widgets/search-widget/class-search-widget.php:199
 msgid "Date range"
 msgstr "بازه زمانی"
 
-#: includes/widgets/search-widget/class-search-widget.php:231
+#: includes/widgets/search-widget/class-search-widget.php:236
 msgid "No search fields configured yet."
 msgstr "هیچ فیلد جستجویی هنوز پیکربندی نشده است."
 
-#: includes/widgets/search-widget/class-search-widget.php:232
+#: includes/widgets/search-widget/class-search-widget.php:237
 msgid "Add Search Field"
 msgstr "اضافه کردن جستجو شاخه"
 
-#: includes/widgets/search-widget/class-search-widget.php:233
+#: includes/widgets/search-widget/class-search-widget.php:238
 msgid "Label"
 msgstr "برچسب"
 
-#: includes/widgets/search-widget/class-search-widget.php:235
+#: includes/widgets/search-widget/class-search-widget.php:240
 msgid "Input Type"
 msgstr "نوع ورودی"
 
-#: includes/widgets/search-widget/class-search-widget.php:236
+#: includes/widgets/search-widget/class-search-widget.php:241
 msgid ""
 "There was an error loading searchable fields. Save the View or refresh the "
 "page to fix this issue."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:307
+#: includes/widgets/search-widget/class-search-widget.php:312
 msgid "Search Everything"
 msgstr "جستجوی همه چیز"
 
-#: includes/widgets/search-widget/class-search-widget.php:319
+#: includes/widgets/search-widget/class-search-widget.php:324
 msgid "Entry Creator"
 msgstr "ایجاد کننده ورودی"
 
-#: includes/widgets/search-widget/class-search-widget.php:1123
+#: includes/widgets/search-widget/class-search-widget.php:1412
 msgid "Search Entries:"
 msgstr "جستجوی ورودی‌ها:"
 
-#: includes/widgets/search-widget/class-search-widget.php:1126
+#: includes/widgets/search-widget/class-search-widget.php:1415
 msgid "Filter by date:"
 msgstr "فیلتر کردن به ترتیب تاریخ "
 
-#: includes/widgets/search-widget/class-search-widget.php:1129
+#: includes/widgets/search-widget/class-search-widget.php:1418
 msgid "Entry ID:"
 msgstr "شناسه ورودی:"
 
-#: includes/widgets/search-widget/class-search-widget.php:1245
+#: includes/widgets/search-widget/class-search-widget.php:1553
 msgid "Clear"
 msgstr "پاک کردن"
 
-#: includes/widgets/search-widget/class-search-widget.php:1311
+#: includes/widgets/search-widget/class-search-widget.php:1619
 msgid "Show a different month"
 msgstr "نشان دادن ماه تغییر"
 
@@ -3471,43 +3514,43 @@ msgctxt "gravityview"
 msgid "Show me beta versions if they are available."
 msgstr ""
 
-#: future/includes/class-gv-view.php:125
+#: future/includes/class-gv-view.php:142
 msgctxt "Post Type General Name"
 msgid "Views"
 msgstr "نمایش ها"
 
-#: future/includes/class-gv-view.php:126
+#: future/includes/class-gv-view.php:143
 msgctxt "Post Type Singular Name"
 msgid "View"
 msgstr "نمایش"
 
-#: future/includes/class-gv-view.php:127
+#: future/includes/class-gv-view.php:144
 msgctxt "Menu name"
 msgid "Views"
 msgstr "نمایش ها"
 
-#: future/includes/class-gv-view.php:130
+#: future/includes/class-gv-view.php:147
 msgctxt "View Item"
 msgid "View"
 msgstr "نمایش"
 
-#: includes/admin/class-gravityview-admin-view-item.php:156
+#: includes/admin/class-gravityview-admin-view-item.php:161
 msgctxt "Label in field picker for empty label"
 msgid "Field #%s (No Label)"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:78
+#: includes/admin/class-gravityview-support-port.php:84
 msgctxt "a support form search has returned empty for the following word"
 msgid "No results found for"
 msgstr "هیچ نتیجه‌ای یافت نشد برای"
 
-#: includes/admin/class-gravityview-support-port.php:87
+#: includes/admin/class-gravityview-support-port.php:93
 msgctxt ""
 "Error shown when submitting support request and there is no subject provided"
 msgid "Please enter a subject"
 msgstr "لطفا موضوع را وارد کنید"
 
-#: includes/admin/class-gravityview-support-port.php:89
+#: includes/admin/class-gravityview-support-port.php:95
 msgctxt ""
 "Error shown when submitting support request and there is no message provided"
 msgid "Please enter a message"
@@ -3520,7 +3563,7 @@ msgctxt ""
 msgid "Extensions"
 msgstr ""
 
-#: includes/class-admin-views.php:472
+#: includes/class-admin-views.php:478
 msgctxt "Column title that shows what template is being used for Views"
 msgid "Template"
 msgstr "قالب"
@@ -3551,19 +3594,19 @@ msgctxt ""
 msgid "%s: Assigned User ID #%d as the entry creator."
 msgstr ""
 
-#: includes/class-gravityview-change-entry-creator.php:185
+#: includes/class-gravityview-change-entry-creator.php:173
 msgctxt ""
 "The name and the ID of users who initiated changes to entry ownership"
 msgid "%s (ID #%d)"
 msgstr ""
 
-#: includes/class-gravityview-change-entry-creator.php:187
+#: includes/class-gravityview-change-entry-creator.php:175
 msgctxt ""
 "To show that the entry was unassigned from an actual user to no user."
 msgid "No User"
 msgstr "هیج کاربری"
 
-#: includes/class-gravityview-change-entry-creator.php:242
+#: includes/class-gravityview-change-entry-creator.php:230
 msgctxt "No user assigned to the entry"
 msgid "No User"
 msgstr "هیج کاربری"
@@ -3604,7 +3647,26 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr "ایجاد کننده ورودی"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1961
+#: includes/extensions/edit-entry/class-edit-entry-render.php:988
+msgctxt "Replacements are HTML"
+msgid "Entry Updated. %sReturning to Entry%s"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:993
+msgctxt ""
+"Replacement 1 is HTML. Replacement 2 is the title of the page where the user"
+" will be taken. Replacement 3 is HTML."
+msgid "Entry Updated. %sReturning to %s%s"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:999
+msgctxt ""
+"Replacement 1 is HTML. Replacement 2 is the URL where the user will be "
+"taken. Replacement 3 is HTML."
+msgid "Entry Updated. %sRedirecting to %s%s"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2001
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr "بازگشت."
@@ -3646,27 +3708,27 @@ msgid ""
 "entries displayed in the View."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1306
+#: includes/widgets/search-widget/class-search-widget.php:1614
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "بستن"
 
-#: includes/widgets/search-widget/class-search-widget.php:1307
+#: includes/widgets/search-widget/class-search-widget.php:1615
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr "قبلی"
 
-#: includes/widgets/search-widget/class-search-widget.php:1308
+#: includes/widgets/search-widget/class-search-widget.php:1616
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr "بعدی"
 
-#: includes/widgets/search-widget/class-search-widget.php:1309
+#: includes/widgets/search-widget/class-search-widget.php:1617
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr "امروز"
 
-#: includes/widgets/search-widget/class-search-widget.php:1310
+#: includes/widgets/search-widget/class-search-widget.php:1618
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr "هفته"

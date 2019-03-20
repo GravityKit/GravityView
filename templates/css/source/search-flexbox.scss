@@ -10,7 +10,8 @@ $flexbox-margin: 10px;
 	align-items: flex-start;
 	justify-content: space-between;
 	flex: 1 0 auto;
-	margin: ( $flexbox-margin * 2 ) ($flexbox-margin * -2);
+	margin: ( $flexbox-margin * 2 ) ($flexbox-margin * -1);
+
 
 	&.gv-search-horizontal {
 		.gv-search-box {

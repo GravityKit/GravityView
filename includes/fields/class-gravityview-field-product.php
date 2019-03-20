@@ -31,7 +31,7 @@ class GravityView_Field_Product extends GravityView_Field {
 
 		add_filter( 'gravityview/edit_entry/field_blacklist', array( $this, 'edit_entry_field_blacklist' ), 10, 2 );
 
-		add_filter( 'gravityview/edit_entry/after_update', array( $this, 'clear_product_info_cache' ), 10, 3 );
+		add_action( 'gravityview/edit_entry/after_update', array( $this, 'clear_product_info_cache' ), 10, 3 );
 
 		parent::__construct();
 	}

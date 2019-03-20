@@ -1,0 +1,191 @@
+{
+   "0" : {
+      "postContentTemplate" : "",
+      "useCurrentUserAsAuthor" : true,
+      "confirmations" : [
+         {
+            "type" : "message",
+            "pageId" : "",
+            "name" : "Default Confirmation",
+            "url" : "",
+            "queryString" : "",
+            "id" : "5c5b348d8a28b",
+            "message" : "Thanks for contacting us! We will get in touch with you shortly.",
+            "isDefault" : true
+         }
+      ],
+      "button" : {
+         "text" : "Submit",
+         "type" : "text",
+         "imageUrl" : ""
+      },
+      "id" : 20,
+      "notifications" : [
+         {
+            "message" : "{all_fields}",
+            "to" : "{admin_email}",
+            "toType" : "email",
+            "name" : "Admin Notification",
+            "subject" : "New submission from {form_title}",
+            "id" : "5c5b348d8964a",
+            "event" : "form_submission"
+         }
+      ],
+      "description" : "",
+      "postTitleTemplate" : "",
+      "pagination" : null,
+      "firstPageCssClass" : null,
+      "labelPlacement" : "top_label",
+      "lastPageButton" : null,
+      "nextFieldId" : 4,
+      "version" : "2.4.5",
+      "descriptionPlacement" : "below",
+      "title" : "Double Name",
+      "postTitleTemplateEnabled" : false,
+      "postContentTemplateEnabled" : false,
+      "fields" : [
+         {
+            "useRichTextEditor" : false,
+            "placeholder" : "",
+            "multipleFiles" : false,
+            "enableCalculation" : "",
+            "maxLength" : "",
+            "inputs" : null,
+            "label" : "Name",
+            "calculationRounding" : "",
+            "fields" : "",
+            "size" : "medium",
+            "enablePasswordInput" : "",
+            "inputMaskValue" : "",
+            "productField" : "",
+            "labelPlacement" : "",
+            "subLabelPlacement" : "",
+            "description" : "",
+            "isRequired" : false,
+            "calculationFormula" : "",
+            "allowsPrepopulate" : false,
+            "descriptionPlacement" : "",
+            "adminLabel" : "",
+            "type" : "text",
+            "errorMessage" : "",
+            "visibility" : "visible",
+            "formId" : 20,
+            "cssClass" : "",
+            "choices" : "",
+            "inputMask" : false,
+            "id" : 1,
+            "conditionalLogic" : "",
+            "displayAllCategories" : false,
+            "defaultValue" : "",
+            "inputType" : "",
+            "maxFiles" : "",
+            "noDuplicates" : false,
+            "inputName" : "",
+            "disableQuantity" : false
+         },
+         {
+            "id" : 2,
+            "inputMask" : false,
+            "choices" : [
+               {
+                  "price" : "",
+                  "isSelected" : false,
+                  "text" : "I have another name, though",
+                  "value" : "I have another name, though"
+               }
+            ],
+            "cssClass" : "",
+            "displayAllCategories" : false,
+            "conditionalLogic" : "",
+            "noDuplicates" : false,
+            "maxFiles" : "",
+            "inputType" : "",
+            "defaultValue" : "",
+            "disableQuantity" : false,
+            "inputName" : "",
+            "calculationFormula" : "",
+            "descriptionPlacement" : "",
+            "allowsPrepopulate" : false,
+            "visibility" : "visible",
+            "errorMessage" : "",
+            "formId" : 20,
+            "type" : "checkbox",
+            "adminLabel" : "",
+            "inputMaskValue" : "",
+            "labelPlacement" : "",
+            "productField" : "",
+            "subLabelPlacement" : "",
+            "isRequired" : false,
+            "description" : "",
+            "placeholder" : "",
+            "useRichTextEditor" : false,
+            "enableSelectAll" : "",
+            "enableCalculation" : "",
+            "multipleFiles" : false,
+            "fields" : "",
+            "calculationRounding" : "",
+            "enablePrice" : "",
+            "label" : "Another name?",
+            "maxLength" : "",
+            "inputs" : [
+               {
+                  "name" : "",
+                  "label" : "I have another name, though",
+                  "id" : "2.1"
+               }
+            ],
+            "size" : "medium"
+         },
+         {
+            "multipleFiles" : false,
+            "enableCalculation" : "",
+            "useRichTextEditor" : false,
+            "placeholder" : "",
+            "size" : "medium",
+            "maxLength" : "",
+            "label" : "Another name",
+            "inputs" : null,
+            "calculationRounding" : "",
+            "fields" : "",
+            "inputMaskValue" : "",
+            "enablePasswordInput" : "",
+            "description" : "",
+            "subLabelPlacement" : "",
+            "isRequired" : false,
+            "productField" : "",
+            "labelPlacement" : "",
+            "allowsPrepopulate" : false,
+            "descriptionPlacement" : "",
+            "calculationFormula" : "",
+            "adminLabel" : "",
+            "type" : "text",
+            "formId" : 20,
+            "errorMessage" : "",
+            "visibility" : "visible",
+            "conditionalLogic" : {
+               "rules" : [
+                  {
+                     "value" : "I have another name, though",
+                     "fieldId" : "2",
+                     "operator" : "is"
+                  }
+               ],
+               "logicType" : "all",
+               "actionType" : "show"
+            },
+            "displayAllCategories" : false,
+            "cssClass" : "",
+            "choices" : "",
+            "id" : 3,
+            "inputMask" : false,
+            "inputName" : "",
+            "disableQuantity" : false,
+            "defaultValue" : "",
+            "inputType" : "",
+            "maxFiles" : "",
+            "noDuplicates" : false
+         }
+      ]
+   },
+   "version" : "2.4.5.10"
+}

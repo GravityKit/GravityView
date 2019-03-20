@@ -19,7 +19,11 @@ $include_path = GRAVITYVIEW_DIR . 'includes/plugin-and-theme-hooks/';
 // Abstract class
 require $include_path . 'abstract-gravityview-plugin-and-theme-hooks.php';
 
+$glob_flags = defined( 'GLOB_BRACE' ) ? GLOB_BRACE : 1024;
+
+$plugin_theme_hooks_files = glob( $include_path . 'class-gravityview-{plugin,theme}-hooks-*.php', $glob_flags );
+
 // Load all plugin and theme files automatically
-foreach ( glob( $include_path . 'class-gravityview-{plugin,theme}-hooks-*.php', GLOB_BRACE ) as $gv_hooks_filename ) {
+foreach ( (array) $plugin_theme_hooks_files as $gv_hooks_filename ) {
 	include $gv_hooks_filename;
 }
