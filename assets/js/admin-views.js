@@ -648,7 +648,7 @@
 			var vcfg = viewConfiguration;
 
 			// While it's loading, disable the field, remove previous options, and add loading message.
-			$( "#gravityview_sort_field" ).prop( 'disabled', 'disabled' ).empty().append( '<option>' + gvGlobals.loading_text + '</option>' );
+			$( ".gravityview_sort_field" ).prop( 'disabled', 'disabled' ).empty().append( '<option>' + gvGlobals.loading_text + '</option>' );
 
 			var data = {
 				action: 'gv_sortable_fields_form',
@@ -663,7 +663,7 @@
 
 			$.post(ajaxurl, data, function (response) {
 				if (response !== 'false' && response !== '0') {
-					$("#gravityview_sort_field").empty().append(response).prop('disabled', null);
+					$(".gravityview_sort_field").empty().append(response).prop('disabled', null);
 				}
 			});
 
