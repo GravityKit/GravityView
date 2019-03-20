@@ -187,12 +187,27 @@
 		 * @param  {jQuery} e
 		 */
 		toggleCheckboxes: function (  e ) {
+			viewConfiguration.toggleRequired( e.currentTarget, 'requires', false );
+			viewConfiguration.toggleRequired( e.currentTarget, 'requires-not', true );
+		},
 
-			var $parent = $( e.currentTarget );
-			$conditionals = $parent.find( '[data-requires]' );
+		/**
+		 * Process conditional show/hide logic
+		 *
+		 * @since 2.4
+		 *
+		 * @param {jQueryEvent} currentTarget
+		 * @param {string} data_attr The attribute to find in the target, like `requires` or `requires-not`
+		 * @param {boolean} reverse_logic If true, find items that do not match the attribute value. True = `requires-not`; false = `requires`
+		 */
+		toggleRequired: function( currentTarget, data_attr, reverse_logic ) {
 
-			$conditionals.each( function ()  {
-				var requires = $( this ).data( 'requires' ),
+			var $parent = $( currentTarget );
+
+			$parent
+				.find( '[data-' + data_attr + ']' )
+				.each( function ()  {
+				var requires = $( this ).data( data_attr ),
 					requires_array = requires.split('='),
 					requires_name = requires_array[0],
 					requires_value = requires_array[1];
@@ -200,11 +215,20 @@
 				var $input = $parent.find(':input[name$="[' + requires_name + ']"]');
 
 				if ( $input.is(':checkbox') ) {
-					$( this ).toggle( $input.is(':checked') );
+					if ( reverse_logic ) {
+						$(this).toggle( $input.not(':checked') );
+					} else {
+						$(this).toggle( $input.is(':checked') );
+					}
 				} else if ( requires_value !== undefined ) {
-					$( this ).toggle( $input.val() === requires_value );
+					if ( reverse_logic ) {
+						$(this).toggle( $input.val() !== requires_value );
+					} else {
+						$(this).toggle( $input.val() === requires_value );
+					}
 				}
 			});
+
 		},
 
 		/**
@@ -341,7 +365,7 @@
 
 			vcfg.togglePreviewButton();
 
-			vcfg.zebraStripeSettings();
+			vcfg.zebraStripeSettings( true );
 
 		},
 
