@@ -42,6 +42,8 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 
 	GravityView_Render_Settings::render_setting_row( 'sort_field_2', $current_settings, sprintf( $sort_fields_input, $secondary_sort_fields ) );
 
+	GravityView_Render_Settings::render_setting_row( 'sort_direction_2', $current_settings );
+
 
 	// End Sort fields
 	do_action( 'gravityview_metabox_sort_after', $current_settings );
