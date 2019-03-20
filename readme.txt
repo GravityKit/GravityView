@@ -23,19 +23,24 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Added: Multi-Sorting! Example: Sort first by Last Name, then sort those results by First Name [Read more about multi-sorting](#TODO)
 * Added: [gvlogic logged_in="true"] support to easily check user login status
-* Fixed: Conditional logic breaks on edit entry, if the condition field is not present
+* Added: Dropdown, Radio and Link input support for searching product fields
+* Fixed: Conditional Logic breaks in Edit Entry if the condition field is not present
 * Fixed: CSV output of list and fileupload fields
-* Modified: list and fileupload fields are now output as objects/arrays in REST API JSON
-* Modified: business_hours field support for CSV and JSON output
-* Fixed: hide_empty setting for Product and Quantity fields
+* Fixed: "Hide empty fields" setting not working Product and Quantity fields
 * Fixed: Month and day reversed in multi-input date fields
 * Fixed: Join issues with embedded Views
-* Fixed: Guard templates from being loaded without context
-* Added: Dropdown, radio and link input support for product searching
 * Fixed: Other entries empty text override was not working
-* Added: `gravityview/search/created_by/text` filter to override dropdown and radio text in "created by" search UI
 * Updated: 100% translated for Dutch, German, and French
+
+__Developer Updates:__
+
+* Added: `gravityview/search/created_by/text` filter to override dropdown and radio text in "created by" search UI
+* Modified: list and fileupload fields are now output as objects/arrays in REST API JSON
+* Modified: business_hours field support for CSV and JSON output
+* Fixed: Fatal error when custom templates are loaded without `\GV\Template_Context`
+
 
 = 2.2.5 on February 4, 2019 =
 
