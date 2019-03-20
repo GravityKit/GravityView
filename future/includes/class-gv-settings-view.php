@@ -148,6 +148,7 @@ class View_Settings extends Settings {
 			'sort_field' => array(
 				'label'             => __( 'Sort by field', 'gravityview' ),
 				'type'              => 'select',
+				'desc'              => __( 'By default, entries are sorted by Entry ID.', 'gravityview' ),
 				'value'             => '',
 				'group'             => 'sort',
 				'options'           => array(
@@ -176,6 +177,7 @@ class View_Settings extends Settings {
 					''             => __( 'Default', 'gravityview' ),
 					'date_created' => __( 'Date Created', 'gravityview' ),
 				),
+				'requires_not'          => 'sort_direction=RAND',
 				'show_in_shortcode' => true,
 			),
 			'sort_direction_2' => array(
@@ -187,6 +189,7 @@ class View_Settings extends Settings {
 					'ASC'  => __( 'ASC', 'gravityview' ),
 					'DESC' => __( 'DESC', 'gravityview' ),
 				),
+				'requires_not'      => 'sort_direction=RAND',
 				'show_in_shortcode' => true,
 			),
 			'sort_columns' => array(
