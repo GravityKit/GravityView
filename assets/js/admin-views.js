@@ -172,7 +172,13 @@
 		 * @since 1.19
 		 */
 		zebraStripeSettings: function() {
-			$( '#gravityview_settings').find('table').find('tr').removeClass('alternate').filter(':visible:even' ).addClass( 'alternate' );
+			jQuery( '#gravityview_settings').find('table').each( function ( ) {
+				$trs = $( this ).find('tr').not('[style="display: none;"]');
+
+				$trs.removeClass('alternate');
+
+				$trs.filter( ':even' ).addClass( 'alternate' );
+			});
 		},
 
 		/**

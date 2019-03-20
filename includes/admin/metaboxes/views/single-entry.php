@@ -11,7 +11,7 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 
 ?>
 
-<table class="form-table striped"><?php
+<table class="form-table"><?php
 
 	GravityView_Render_Settings::render_setting_row( 'single_title', $current_settings );
 
