@@ -971,7 +971,7 @@ class View implements \ArrayAccess {
 
 					$skip_first = false;
 
-					foreach ( $sort_field_ids as $key => $sort_field_id ) {
+					foreach ( (array) $sort_field_ids as $key => $sort_field_id ) {
 						if ( ! $skip_first ) {
 							$skip_first = true; // Skip the first one, it's already in the query
 							continue;
