@@ -198,7 +198,7 @@ class Legacy_Override_Template extends \GV\Gamajo_Template_Loader {
 			 * Remove multiple sorting before calling legacy filters.
 			 * This allows us to fake it till we make it.
 			 */
-			$parameters = $view->settings->as_atts();
+			$parameters = $this->view->settings->as_atts();
 			if ( ! empty( $parameters['sort_field'] ) && is_array( $parameters['sort_field'] ) ) {
 				$has_multisort = true;
 				$parameters['sort_field'] = reset( $parameters['sort_field'] );
