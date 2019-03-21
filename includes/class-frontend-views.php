@@ -1096,12 +1096,20 @@ class GravityView_frontend {
 	 * @since 1.7.4
 	 * @internal Hi developer! Although this is public, don't call this method; we're going to replace it.
 	 *
-	 * @param int|string $sort_field_id Field used for sorting (`id` or `1.2`)
+	 * @param int|string|array $sort_field_id Field used for sorting (`id` or `1.2`), or an array for multisorts
 	 * @param int $form_id GF Form ID
 	 *
 	 * @return string Possibly modified sorting ID
 	 */
 	public static function _override_sorting_id_by_field_type( $sort_field_id, $form_id ) {
+
+		if ( is_array( $sort_field_id ) ) {
+			$modified_ids = array();
+			foreach ( $sort_field_id as $_sort_field_id ) {
+				$modified_ids []= self::_override_sorting_id_by_field_type( $_sort_field_id, $form_id );
+			}
+			return $modified_ids;
+		}
 
 		$form = gravityview_get_form( $form_id );
 
