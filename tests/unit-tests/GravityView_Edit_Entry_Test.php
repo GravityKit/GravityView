@@ -1887,5 +1887,8 @@ if ( ! class_exists( 'GravityView_Edit_Entry_Test_Feed' ) ) {
 		}
 	}
 
+	$feed = new GravityView_Edit_Entry_Test_Feed();
+	$feed->setup();
+
 	GFAddon::register( 'GravityView_Edit_Entry_Test_Feed' );
 }
