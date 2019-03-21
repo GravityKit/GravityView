@@ -359,6 +359,10 @@ class GravityView_Render_Settings {
 			$show_if .= sprintf( ' data-requires="%s"', $setting['requires'] );
 		}
 
+		if( ! empty( $setting['requires_not'] ) ) {
+			$show_if .= sprintf( ' data-requires-not="%s"', $setting['requires_not'] );
+		}
+
 		// output
 		echo '<tr valign="top" '. $show_if .'>' . $output . '</tr>';
 

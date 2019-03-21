@@ -12,7 +12,7 @@ $curr_form = gravityview_get_form_id( $post->ID );
 $current_settings = gravityview_get_template_settings( $post->ID );
 
 ?>
-<table class="form-table striped">
+<table class="form-table">
 
 	<?php
 
@@ -26,11 +26,23 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 	 */
 	GravityView_Render_Settings::render_setting_row( 'sort_columns', $current_settings );
 
-	$sort_fields_input = '<select name="template_settings[sort_field]" id="gravityview_sort_field">'.gravityview_get_sortable_fields( $curr_form, $current_settings['sort_field'] ).'</select>';
+	$sort_fields_input = '<select name="template_settings[sort_field][]" class="gravityview_sort_field" id="gravityview_sort_field_%d">%s</select>';
 
-	GravityView_Render_Settings::render_setting_row( 'sort_field', $current_settings, $sort_fields_input );
+	if ( is_array( $current_settings['sort_field'] ) ) {
+		$primary_sort_fields = gravityview_get_sortable_fields( $curr_form, $current_settings['sort_field'][0] );
+		$secondary_sort_fields = gravityview_get_sortable_fields( $curr_form, $current_settings['sort_field'][1] );
+	} else {
+		$primary_sort_fields = $secondary_sort_fields = gravityview_get_sortable_fields( $curr_form, $current_settings['sort_field'] );
+    }
+
+
+	GravityView_Render_Settings::render_setting_row( 'sort_field', $current_settings, sprintf( $sort_fields_input, 1, $primary_sort_fields ) );
 
 	GravityView_Render_Settings::render_setting_row( 'sort_direction', $current_settings );
+
+	GravityView_Render_Settings::render_setting_row( 'sort_field_2', $current_settings, sprintf( $sort_fields_input, 2, $secondary_sort_fields ) );
+
+	GravityView_Render_Settings::render_setting_row( 'sort_direction_2', $current_settings );
 
 
 	// End Sort fields
