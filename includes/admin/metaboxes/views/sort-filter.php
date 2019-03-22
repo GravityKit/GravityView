@@ -35,15 +35,18 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 		$primary_sort_fields = $secondary_sort_fields = gravityview_get_sortable_fields( $curr_form, $current_settings['sort_field'] );
     }
 
-
 	GravityView_Render_Settings::render_setting_row( 'sort_field', $current_settings, sprintf( $sort_fields_input, 1, $primary_sort_fields ) );
 
-	GravityView_Render_Settings::render_setting_row( 'sort_direction', $current_settings );
+	$sort_dir_settings = $current_settings;
+	$sort_dir_settings['sort_direction'] = is_array( $current_settings['sort_direction'] ) ? $current_settings['sort_direction'][0] : $current_settings['sort_direction'];
+	GravityView_Render_Settings::render_setting_row( 'sort_direction', $sort_dir_settings, null, 'template_settings[sort_direction][]' );
 
 	GravityView_Render_Settings::render_setting_row( 'sort_field_2', $current_settings, sprintf( $sort_fields_input, 2, $secondary_sort_fields ) );
 
-	GravityView_Render_Settings::render_setting_row( 'sort_direction_2', $current_settings );
+	$sort_dir_settings['sort_direction_2'] = isset( $current_settings['sort_direction'][1] ) ? $current_settings['sort_direction'][1] : '';
+	GravityView_Render_Settings::render_setting_row( 'sort_direction_2', $sort_dir_settings, null, 'template_settings[sort_direction][]' );
 
+	unset( $sort_dir_settings );
 
 	// End Sort fields
 	do_action( 'gravityview_metabox_sort_after', $current_settings );
