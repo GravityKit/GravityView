@@ -118,8 +118,15 @@
 
 		// When holding down option/control, unapprove the entry
 		if ( e.altKey ) {
+
+			// When holding down option+shift, disapprove the entry
+			if ( e.shiftKey ) {
+				return gvApproval.status.disapproved.value;
+			}
+
 			return gvApproval.status.unapproved.value;
 		}
+
 
 		// The `+ ""` code converts the value to a string, without requiring `.toString()`
 		switch( old_status + "" ) {
