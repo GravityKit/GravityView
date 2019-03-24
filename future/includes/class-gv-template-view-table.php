@@ -63,7 +63,7 @@ class View_Table_Template extends View_Template {
 
 		$directions = $context->view->settings->get( 'sort_direction' );
 
-		foreach ( $context->view->settings->get( 'sort_field' ) as $i => $sort_field ) {
+		foreach ( (array)$context->view->settings->get( 'sort_field', array() ) as $i => $sort_field ) {
 			if ( $sort_field == $context->field->ID ) {
 				$sorting['key'] = $sort_field;
 				$sorting['direction'] = strtolower( Utils::get( $directions, $i, 'asc' ) );
