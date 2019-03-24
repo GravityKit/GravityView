@@ -157,8 +157,14 @@
 
 		// When holding down option/control, unapprove the entry
 		if ( e.altKey ) {
-			status = gvGlobals.status_unapproved;
-			title  = gvGlobals.unapprove_title;
+			// When holding down option+shift, disapprove the entry
+			if ( e.shiftKey ) {
+				status = gvGlobals.status_disapproved;
+				title = gvGlobals.disapprove_title;
+			} else {
+				status = gvGlobals.status_unapproved;
+				title = gvGlobals.unapprove_title;
+			}
 		} else if ( $( this ).hasClass( 'approved' ) ) {
 			title = gvGlobals.approve_title;
 			status = gvGlobals.status_disapproved;
