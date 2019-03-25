@@ -63,11 +63,28 @@ class View_Table_Template extends View_Template {
 
 		$directions = $context->view->settings->get( 'sort_direction' );
 
-		foreach ( (array)$context->view->settings->get( 'sort_field', array() ) as $i => $sort_field ) {
-			if ( $sort_field == $context->field->ID ) {
-				$sorting['key'] = $sort_field;
-				$sorting['direction'] = strtolower( Utils::get( $directions, $i, 'asc' ) );
-				break;
+		if ( Utils::_GET( 'sort' ) ) {
+			if ( is_array( Utils::_GET( 'sort' ) ) ) {
+				foreach ( (array)Utils::_GET( 'sort' ) as $key => $direction ) {
+					if ( $key == $context->field->ID ) {
+						$sorting['key'] = $context->field->ID;
+						$sorting['direction'] = strtolower( $direction );
+						break;
+					}
+				}
+			} else {
+				if ( Utils::_GET( 'sort' ) == $context->field->ID ) {
+					$sorting['key'] = $context->field->ID;
+					$sorting['direction'] = strtolower( Utils::_GET( 'dir', 'asc' ) );
+				}
+			}
+		} else {
+			foreach ( (array)$context->view->settings->get( 'sort_field', array() ) as $i => $sort_field ) {
+				if ( $sort_field == $context->field->ID ) {
+					$sorting['key'] = $sort_field;
+					$sorting['direction'] = strtolower( Utils::get( $directions, $i, 'asc' ) );
+					break;
+				}
 			}
 		}
 
@@ -76,24 +93,40 @@ class View_Table_Template extends View_Template {
 		$sort_field_id = \GravityView_frontend::_override_sorting_id_by_field_type( $context->field->ID, $context->view->form->ID );
 
 		$sort_args = array(
-			'sort' => $context->field->ID,
-			'dir' => 'asc',
+			sprintf( 'sort[%s]', $context->field->ID ),
+			'asc'
 		);
 
 		if ( ! empty( $sorting['key'] ) && (string) $sort_field_id === (string) $sorting['key'] ) {
 			//toggle sorting direction.
 			if ( 'asc' === $sorting['direction'] ) {
-				$sort_args['dir'] = 'desc';
+				$sort_args[1] = 'desc';
 				$class .= ' gv-icon-sort-desc';
 			} else {
-				$sort_args['dir'] = 'asc';
+				$sort_args[1] = 'asc';
 				$class .= ' gv-icon-sort-asc';
 			}
 		} else {
 			$class .= ' gv-icon-caret-up-down';
 		}
 
-		$url = add_query_arg( $sort_args, remove_query_arg( array('pagenum') ) );
+		$url = remove_query_arg( array( 'pagenum' ) );
+		$url = remove_query_arg( 'sort', $url );
+		if ( is_array( $sorts = Utils::_GET( 'sort' ) ) ) {
+			if ( ! in_array( $context->field->ID, $keys = array_keys( $sorts ) ) ) {
+				if ( count( $keys ) ) {
+					$url = add_query_arg( sprintf( 'sort[%s]', end( $keys ) ), $_GET['sort'][ end( $keys ) ], $url );
+					$url = add_query_arg( $sort_args[0], $sort_args[1], $url );
+				} else {
+					$url = add_query_arg( $sort_args[0], $sort_args[1], $url );
+				}
+			} else {
+				$sorts[ $context->field->ID ] = $sort_args[1];
+				$url = add_query_arg( array( 'sort' => $sorts ), $url );
+			}
+		} else {
+			$url = add_query_arg( $sort_args[0], $sort_args[1], $url );
+		}
 
 		return '<a href="'. esc_url_raw( $url ) .'" class="'. $class .'" ></a>&nbsp;'. $column_label;
 	}

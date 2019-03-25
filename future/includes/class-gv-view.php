@@ -966,8 +966,13 @@ class View implements \ArrayAccess {
 				if ( ! empty( $has_multisort ) ) {
 					$atts = $this->settings->as_atts();
 
-					$sort_field_ids = \GV\Utils::_GET( 'sort', \GV\Utils::get( $atts, 'sort_field', array() ) );
-					$sort_directions = \GV\Utils::_GET( 'dir', \GV\Utils::get( $atts, 'sort_direction', array() ) );
+					if ( $this->settings->get( 'sort_columns' ) && ! empty( \GV\Utils::_GET( 'sort' ) ) && is_array( $_GET['sort'] ) ) {
+						$sort_field_ids = array_keys( $_GET['sort'] );
+						$sort_directions = array_values( $_GET['sort'] );
+					} else {
+						$sort_field_ids = \GV\Utils::get( $atts, 'sort_field', array() );
+						$sort_directions = \GV\Utils::get( $atts, 'sort_direction', array() );
+					}
 
 					$skip_first = false;
 
@@ -978,7 +983,7 @@ class View implements \ArrayAccess {
 						}
 
 						$sort_field_id = \GravityView_frontend::_override_sorting_id_by_field_type( $sort_field_id, $this->form->ID );
-						$sort_direction = \GV\Utils::get( $sort_directions, $key, 'ASC' );
+						$sort_direction = strtoupper( \GV\Utils::get( $sort_directions, $key, 'ASC' ) );
 
 						if ( ! empty( $sort_field_id ) ) {
 							$order = new \GF_Query_Column( $sort_field_id, $this->form->ID );
@@ -1252,6 +1257,11 @@ class View implements \ArrayAccess {
 					->offset( $this->settings->get( 'offset' ) )
 					->limit( $parameters['paging']['page_size'] )
 					->page( $page );
+
+				if ( ! empty( $parameters['sorting'] ) && is_array( $parameters['sorting'] && ! isset( $parameters['sorting']['key'] ) ) ) {
+					// Pluck off multisort arrays
+					$parameters['sorting'] = $parameters['sorting'][0];
+				}
 
 				if ( ! empty( $parameters['sorting'] ) && ! empty( $parameters['sorting']['key'] ) ) {
 					$field = new \GV\Field();
