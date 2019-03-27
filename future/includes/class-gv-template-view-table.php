@@ -85,7 +85,7 @@ class View_Table_Template extends View_Template {
 				if ( $sort_field == $context->field->ID ) {
 					$sorting['key'] = $sort_field;
 					$sorting['direction'] = strtolower( Utils::get( $directions, $i, '' ) );
-					break;
+					break; // Only get the first sort
 				}
 			}
 		}
@@ -127,10 +127,7 @@ class View_Table_Template extends View_Template {
 		$url = remove_query_arg( 'sort', $url );
 		$multisort_url = self::_get_multisort_url( $url, $sort_args, $context->field->ID );
 
-		if ( '' !== $sort_args[1] ) {
-    		$url = add_query_arg( $sort_args[0], $sort_args[1], $url );
-		}
-
+    	$url = add_query_arg( $sort_args[0], $sort_args[1], $url );
 
 		return '<a href="'. esc_url_raw( $url ) .'" data-multisort-href="'. esc_url_raw( $multisort_url ) . '" class="'. $class .'" ></a>&nbsp;'. $column_label;
 	}
