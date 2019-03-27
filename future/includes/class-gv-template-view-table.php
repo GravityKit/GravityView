@@ -77,14 +77,14 @@ class View_Table_Template extends View_Template {
 			} else {
 				if ( $sorts == $context->field->ID ) {
 					$sorting['key'] = $context->field->ID;
-					$sorting['direction'] = strtolower( Utils::_GET( 'dir', 'asc' ) );
+					$sorting['direction'] = strtolower( Utils::_GET( 'dir', '' ) );
 				}
 			}
 		} else {
 			foreach ( (array)$context->view->settings->get( 'sort_field', array() ) as $i => $sort_field ) {
 				if ( $sort_field == $context->field->ID ) {
 					$sorting['key'] = $sort_field;
-					$sorting['direction'] = strtolower( Utils::get( $directions, $i, 'asc' ) );
+					$sorting['direction'] = strtolower( Utils::get( $directions, $i, '' ) );
 					break;
 				}
 			}
@@ -102,14 +102,23 @@ class View_Table_Template extends View_Template {
 		// If we are already sorting by the current field...
 		if ( ! empty( $sorting['key'] ) && (string) $sort_field_id === (string) $sorting['key'] ) {
 
-		    //...toggle sorting direction.
-			if ( 'asc' === $sorting['direction'] ) {
-				$sort_args[1] = 'desc';
-				$class .= ' gv-icon-sort-desc';
-			} else {
-				$sort_args[1] = 'asc';
-				$class .= ' gv-icon-sort-asc';
-			}
+		    switch( $sorting['direction'] ) {
+		        // No sort
+                case '':
+	                $sort_args[1] = 'asc';
+	                $class .= ' gv-icon-caret-up-down';
+                    break;
+                case 'desc':
+	                $sort_args[1] = '';
+	                $class .= ' gv-icon-sort-asc';
+	                break;
+                case 'asc':
+                default:
+                    $sort_args[1] = 'desc';
+                    $class .= ' gv-icon-sort-desc';
+                    break;
+            }
+
 		} else {
 			$class .= ' gv-icon-caret-up-down';
 		}
@@ -117,7 +126,11 @@ class View_Table_Template extends View_Template {
 		$url = remove_query_arg( array( 'pagenum' ) );
 		$url = remove_query_arg( 'sort', $url );
 		$multisort_url = self::_get_multisort_url( $url, $sort_args, $context->field->ID );
-		$url = add_query_arg( $sort_args[0], $sort_args[1], $url );
+
+		if ( '' !== $sort_args[1] ) {
+    		$url = add_query_arg( $sort_args[0], $sort_args[1], $url );
+		}
+
 
 		return '<a href="'. esc_url_raw( $url ) .'" data-multisort-href="'. esc_url_raw( $multisort_url ) . '" class="'. $class .'" ></a>&nbsp;'. $column_label;
 	}
