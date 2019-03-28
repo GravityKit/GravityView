@@ -177,7 +177,7 @@ class View_Settings extends Settings {
 					''             => __( 'Default', 'gravityview' ),
 					'date_created' => __( 'Date Created', 'gravityview' ),
 				),
-				'requires_not'          => 'sort_direction=RAND',
+				'requires_not'          => 'sort_direction][=RAND', // ][ is for toggleRequired, so it ends in []
 				'show_in_shortcode' => true,
 			),
 			'sort_direction_2' => array(
@@ -189,7 +189,7 @@ class View_Settings extends Settings {
 					'ASC'  => __( 'ASC', 'gravityview' ),
 					'DESC' => __( 'DESC', 'gravityview' ),
 				),
-				'requires_not'      => 'sort_direction=RAND',
+				'requires_not'      => 'sort_direction][=RAND', // ][ is for toggleRequired, so it ends in []
 				'show_in_shortcode' => true,
 			),
 			'sort_columns' => array(
