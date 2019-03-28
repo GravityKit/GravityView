@@ -4473,9 +4473,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( '/example/', $url );
 
-		// Save state for later
-		$_get_sort = \GV\Utils::_GET('sort');
-
+		$_GET = array();
 
 		$_GET['sort'] = array( '1' => 'asc' );
 		$url = $template->_get_multisort_url( '/example/', array( '1', 'desc' ), '1' );
@@ -4484,14 +4482,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 		// Sorting by first name, desc
 		$_GET['sort'] = array( '1' => 'desc' );
 		// So the link shows asc
-		$url = $template->_get_multisort_url( '/example/?sort[1]=asc', array( '1', 'asc' ), '1' );
+		$url = $template->_get_multisort_url( '/example/', array( 'sort[1]', 'asc' ), '1' );
 		$this->assertEquals( '/example/?sort[1]=asc', urldecode( $url ) );
 
 
 		// Sorting by last name asc
 		$_GET['sort'] = array( '2' => 'desc' );
 		// And if we were just single-sorting, we would expect to be sorted by default values
-		$url = $template->_get_multisort_url( '/example/?sort[1]=asc', array( '1', 'asc' ), '1' );
+		$url = $template->_get_multisort_url( '/example/', array( 'sort[1]', 'asc' ), '1' );
 
 		// But since we're multisorting, I expect sorting by last name desc, then by first name asc
 		$this->assertEquals( '/example/?sort[2]=desc&sort[1]=asc', urldecode( $url ) );
@@ -4503,14 +4501,23 @@ class GVFuture_Test extends GV_UnitTestCase {
             '1' => 'asc',
         );
 		// And if we were just single-sorting, we would expect to be sorted by default values
-		$url = $template->_get_multisort_url( '/example/?sort[2]=desc&sort[1]=desc', array( '1', 'desc' ), '1' );
+		$url = $template->_get_multisort_url( '/example/', array( 'sort[1]', 'desc' ), '1' );
 
 		// But since we're multisorting, I expect sorting by last name desc, then by first name asc
 		$this->assertEquals( '/example/?sort[2]=desc&sort[1]=desc', urldecode( $url ) );
 
+		// Sorting by last name asc
+		$_GET['sort'] = array(
+			'1' => 'asc',
+			'2' => 'desc',
+		);
+		// And if we were just single-sorting, we would expect to be sorted by default values
+		$url = $template->_get_multisort_url( '/example/', array( 'sort[1]', 'desc' ), '1' );
 
-		// Restore state
-		$_GET['sort'] = $_get_sort;
+		// But since we're multisorting, I expect sorting by last name desc, then by first name asc
+		$this->assertEquals( '/example/?sort[1]=desc&sort[2]=desc', urldecode( $url ) );
+
+		$_GET = array();
 	}
 
 	/**
