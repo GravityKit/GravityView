@@ -966,7 +966,7 @@ class View implements \ArrayAccess {
 				if ( ! empty( $has_multisort ) ) {
 					$atts = $this->settings->as_atts();
 
-					if ( $this->settings->get( 'sort_columns' ) && ! empty( \GV\Utils::_GET( 'sort' ) ) && is_array( $_GET['sort'] ) ) {
+					if ( $this->settings->get( 'sort_columns' ) && ! empty( $_GET['sort'] ) && is_array( $_GET['sort'] ) ) {
 						$sort_field_ids = array_keys( $_GET['sort'] );
 						$sort_directions = array_values( $_GET['sort'] );
 					} else {
