@@ -1583,7 +1583,8 @@ class GravityView_Edit_Entry_Render {
 				        }
 
 				        // count uploaded files and existent entry files
-				        $count_files = count( $file_names ) + count( $value );
+				        $count_files = ( is_array( $file_names ) ? count( $file_names ) : 0 ) +
+						               ( is_array( $value ) ? count( $value ) : 0 );
 
 				        if( $count_files > $field->maxFiles ) {
 				            $field->validation_message = __( 'Maximum number of files reached', 'gravityview' );
