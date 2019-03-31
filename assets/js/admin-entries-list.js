@@ -32,16 +32,47 @@
 		}
 
 		// Only support approve/reject if the column is visible
-		if( gvGlobals.show_column * 1 ) {
-
+		if ( gvGlobals.show_column * 1 ) {
 			self.addApprovedColumn();
 
 			self.setInitialApprovedEntries();
 
+			tippy( '.toggleApproved', {
+				interactive: true,
+				arrow: true,
+				arrowType: 'round',
+				theme: 'light-border',
+				content: gvGlobals.status_popover_template,
+				onShow: function( showEvent ) {
+					var tippy_instance = showEvent.popper._tippy;
+					var $popper = $( showEvent.popper );
+					var $entry_element = $( showEvent.reference );
+
+					$popper.find( 'a' ).off().on( 'click', function( linkClickEvent ) {
+						var current_status = parseInt( $entry_element.attr( 'data-current-status' ), 10 );
+						var new_status = parseInt( $( linkClickEvent.target ).attr( 'data-approved' ), 10 );
+						var entry_id = $entry_element.parent().parent().find( 'th input[type="checkbox"]' ).val();
+						var class_and_title = self.getClassAndTitleFromApprovalStatus( new_status );
+
+						if ( new_status === current_status ) {
+							return;
+						}
+
+						tippy_instance.hide();
+
+						$entry_element
+							.addClass( class_and_title[ 0 ] )
+							.addClass( 'loading' )
+							.prop( 'title', class_and_title[ 1 ] )
+							.attr( 'data-current-status', new_status );
+
+						self.updateApproved( entry_id, new_status, $entry_element );
+					} );
+				},
+			} );
+
 			$( '.toggleApproved' ).on( 'click', self.toggleApproved );
-
 		}
-
 	};
 
 	/**
@@ -55,33 +86,42 @@
 	};
 
 	/**
+	 * Return CSS class and title associated with approval status
+	 * @returns {array}
+	 */
+	self.getClassAndTitleFromApprovalStatus = function( status ) {
+		var css_class, title;
+
+		if ( parseInt( status, 10 ) === parseInt( gvGlobals.status_unapproved, 10 ) ) {
+			css_class = 'unapproved';
+			title = gvGlobals.unapprove_title;
+		} else if ( parseInt( status, 10 ) === parseInt( gvGlobals.status_approved, 10 ) ) {
+			css_class = 'approved';
+			title = gvGlobals.disapprove_title;
+		} else {
+			css_class = 'disapproved';
+			title = gvGlobals.approve_title;
+		}
+
+		return [ css_class, title ];
+	};
+
+	/**
 	 * Mark the entries that are approved as approved on load
 	 * See GravityView_Admin_ApproveEntries::add_entry_approved_hidden_input() for where input comes from
 	 */
 	self.setInitialApprovedEntries = function() {
 
-		$( 'tr:has(input.entry_approval)' ).each( function () {
+		$( 'tr:has(input.entry_approval)' ).each( function() {
 
 			var $input = $( 'input.entry_approval', $( this ) );
-			var css_class, title_attr;
+			var class_and_title = self.getClassAndTitleFromApprovalStatus( $input.val() );
 
-			switch ( $input.val() ) {
-				case gvGlobals.status_unapproved:
-					css_class = 'unapproved';
-					title_attr = gvGlobals.unapprove_title;
-					break;
-				case gvGlobals.status_approved:
-					css_class = 'approved';
-					title_attr = gvGlobals.disapprove_title;
-					break;
-				default:
-					css_class = 'disapproved';
-					title_attr = gvGlobals.approve_title;
-					break;
-			}
-
-			$( this ).find('a.toggleApproved').addClass( css_class ).prop( 'title', title_attr );
-		});
+			$( this ).find( 'a.toggleApproved' )
+				.addClass( class_and_title[ 0 ] )
+				.prop( 'title', class_and_title[ 1 ] )
+				.attr( 'data-current-status', $input.val() );
+		} );
 	};
 
 	/**
@@ -244,22 +284,22 @@
 
 				if( response.success ) {
 
-					var approved_increment = $target.hasClass( 'approved' ) ? -1 : 0,
-						disapproved_increment = $target.hasClass( 'disapproved' ) ? -1 : 0,
-						unapproved_increment = $target.hasClass( 'unapproved' ) ? -1 : 0;
+					var approved_increment    = $target.hasClass( 'approved' ) ? -1 : 0,
+							disapproved_increment = $target.hasClass( 'disapproved' ) ? -1 : 0,
+							unapproved_increment  = $target.hasClass( 'unapproved' ) ? -1 : 0;
 
 					$target.removeClass( 'approved unapproved disapproved' );
 
-					switch ( approved ) {
-						case gvGlobals.status_approved:
+					switch ( parseInt( approved, 10 ) ) {
+						case parseInt( gvGlobals.status_approved, 10 ):
 							$target.addClass( 'approved' );
 							approved_increment++;
 							break;
-						case gvGlobals.status_disapproved:
+						case parseInt( gvGlobals.status_disapproved, 10 ):
 							$target.addClass( 'disapproved' );
 							disapproved_increment++;
 							break;
-						case gvGlobals.status_unapproved:
+						case parseInt( gvGlobals.status_unapproved, 10 ):
 							$target.addClass( 'unapproved' );
 							unapproved_increment++;
 							break;
@@ -269,7 +309,7 @@
 					window.UpdateCount( "gv_approved_count", approved_increment );
 					window.UpdateCount( "gv_disapproved_count", disapproved_increment );
 					window.UpdateCount( "gv_unapproved_count", unapproved_increment );
-					
+
 				} else {
 					alert( response.data[0].message );
 				}

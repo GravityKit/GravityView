@@ -310,4 +310,21 @@ final class GravityView_Entry_Approval_Status {
 	public static function get_key( $value ) {
 		return self::choice_pluck( $value, 'key' );
 	}
+
+	/**
+	 * Get HTML template for a popover used to display approval statuses
+	 *
+	 * @param int $value Status value (1, 2, 3)
+	 *
+	 * @return string HTML code
+	 */
+	public static function get_status_popover_template() {
+		$choices = self::get_choices();
+
+		return <<<TEMPLATE
+<a href="#" data-approved="{$choices['approved']['value']}" aria-role="button"  aria-live="polite" class="gv-approval-toggle gv-approval-approved" title="{$choices['approved']['title']}"><span class="screen-reader-text">{$choices['approved']['label']}</span></a>
+<a href="#" data-approved="{$choices['disapproved']['value']}" aria-role="button"  aria-live="polite" class="gv-approval-toggle gv-approval-disapproved" title="{$choices['disapproved']['title']}"><span class="screen-reader-text">{$choices['disapproved']['label']}</span></a>
+<a href="#" data-approved="{$choices['unapproved']['value']}" aria-role="button"  aria-live="polite" class="gv-approval-toggle gv-approval-unapproved" title="{$choices['unapproved']['title']}"><span class="screen-reader-text">{$choices['unapproved']['label']}</span></a>
+TEMPLATE;
+	}
 }

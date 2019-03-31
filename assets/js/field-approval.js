@@ -68,16 +68,45 @@
 	 * Bind a trigger to the selector element
 	 */
 	self.add_toggle_approval_trigger = function() {
+
+		tippy( self.selector, {
+			interactive: true,
+			arrow: true,
+			arrowType: 'round',
+			theme: 'light-border',
+			content: gvApproval.status_popover_template,
+			onShow: function( showEvent ) {
+				var tippy_instance = showEvent.popper._tippy;
+				var $popper = $( showEvent.popper );
+				var $entry_element = $( showEvent.reference );
+
+				$popper.find( 'a' ).on( 'click', function( linkClickEvent ) {
+					var current_status = parseInt( $entry_element.attr( 'data-current-status' ), 10 );
+					var new_status = parseInt( $( linkClickEvent.target ).attr( 'data-approved' ), 10 );
+
+					if ( new_status === current_status ) {
+						return;
+					}
+
+					tippy_instance.hide();
+					$entry_element._newStatus = new_status;
+					self.toggle_approval( $entry_element );
+
+				} );
+			},
+		} );
+
 		$( self.selector ).on( 'click', function( e ) {
-			if( $( e.target ).hasClass( self.css_classes.loading ) ) {
+
+			if ( $( e.target ).hasClass( self.css_classes.loading ) ) {
 				e.preventDefault();
-				if( self.debug ) {
+				if ( self.debug ) {
 					console.log( 'add_toggle_approval_trigger', 'Cannot toggle approval while approval is pending.' );
 				}
 				return false;
 			}
 			self.toggle_approval( e );
-		});
+		} );
 	};
 
 	/**
@@ -86,16 +115,19 @@
 	 * @param e The clicked entry event object
 	 * @returns {boolean}
 	 */
-	self.toggle_approval = function ( e ) {
-		e.preventDefault();
+	self.toggle_approval = function( e ) {
+		if ( e._newStatus ) {
+			var $link = $( e );
+			var new_status = e._newStatus;
+		} else {
+			var $link = $( e.target ).is( 'span' ) ? $( e.target ).parent() : $( e.target );
+			var new_status = self.get_new_status( e, $link.attr( 'data-current-status' ) );
+		}
+		var entry_slug = $link.attr( 'data-entry-slug' );
+		var form_id = $link.attr( 'data-form-id' );
 
-		var $link = $( e.target ).is('span') ? $( e.target ).parent() : $( e.target );
-		var entry_slug = $link.attr('data-entry-slug');
-		var form_id = $link.attr('data-form-id');
-		var new_status = self.get_new_status( e, $link.attr( 'data-current-status') );
-
-		if( self.debug ) {
-			console.log( 'toggle_approval', { 'target': e.target, 'current_approval_value': $link.attr( 'data-current-status'), 'new_status': new_status });
+		if ( self.debug ) {
+			console.log( 'toggle_approval', { 'target': e.target, 'current_approval_value': $link.attr( 'data-current-status' ), 'new_status': new_status } );
 		}
 
 		$link.addClass( self.css_classes.loading );
