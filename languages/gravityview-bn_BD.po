@@ -6,7 +6,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.2.4\n"
+"Project-Id-Version: GravityView 2.2.5\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
@@ -186,14 +186,14 @@ msgstr "লাইসেন্সটি চেক"
 #: future/includes/class-gv-shortcode-gravityview.php:138
 #: future/includes/class-gv-shortcode-gravityview.php:143
 #: future/includes/class-gv-shortcode-gravityview.php:149
-#: future/includes/class-gv-shortcode-gravityview.php:169
-#: future/includes/class-gv-shortcode-gravityview.php:174
-#: future/includes/class-gv-shortcode-gravityview.php:180
-#: future/includes/class-gv-shortcode-gravityview.php:188
+#: future/includes/class-gv-shortcode-gravityview.php:172
+#: future/includes/class-gv-shortcode-gravityview.php:177
+#: future/includes/class-gv-shortcode-gravityview.php:183
+#: future/includes/class-gv-shortcode-gravityview.php:191
 #: future/includes/class-gv-view.php:297 future/includes/class-gv-view.php:311
 #: future/includes/class-gv-view.php:316 future/includes/class-gv-view.php:322
 #: future/includes/class-gv-view.php:345 future/includes/class-gv-view.php:350
-#: future/includes/class-gv-view.php:356 future/includes/class-gv-view.php:365
+#: future/includes/class-gv-view.php:356 future/includes/class-gv-view.php:364
 #: includes/class-frontend-views.php:623
 msgid "You are not allowed to view this content."
 msgstr "আপনি এই কন্টেন্ট দেখতে অনুমতি দেওয়া হয় না।"
@@ -237,9 +237,9 @@ msgstr "গ্রাভিটি ভিউ এর এই এন্ট্রি �
 #: includes/class-gravityview-entry-link-shortcode.php:233
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:921
+#: includes/extensions/edit-entry/class-edit-entry-render.php:999
 #: includes/extensions/edit-entry/fields/edit_link.php:14
-#: templates/fields/field-edit_link-html.php:29
+#: templates/fields/field-edit_link-html.php:35
 msgid "Edit Entry"
 msgstr "এন্ট্রি সম্পাদন করুন"
 
@@ -555,15 +555,19 @@ msgid "Hide empty fields"
 msgstr "শূন্য ফিল্ডগুলো লুকান"
 
 #: future/includes/class-gv-settings-view.php:115
+msgid "Feeds"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:122
 msgid "Allow User Edit"
 msgstr "ব্যবহারকারীর সম্পাদন ক্ষমতা দিন"
 
-#: future/includes/class-gv-settings-view.php:117
+#: future/includes/class-gv-settings-view.php:123
 msgid "Allow logged-in users to edit entries they created."
 msgstr ""
 "লগ-ইন করা ব্যবহারকারীকে তাদের তৈরিকৃত এন্ট্রি সম্পাদন করার ক্ষমতা দিন।"
 
-#: future/includes/class-gv-settings-view.php:119
+#: future/includes/class-gv-settings-view.php:125
 msgid ""
 "Display \"Edit Entry\" fields to non-administrator users if they created the"
 " entry. Edit Entry fields will always be displayed to site administrators."
@@ -572,31 +576,31 @@ msgstr ""
 "তারা একই এন্ট্রির তৈরিকারক হয়। এন্ট্রি সম্পাদন ফিল্ড সবসময় সাইট "
 "এডমিনিস্ট্রেটরদের নিকট সবসময় দেখানো হবে।"
 
-#: future/includes/class-gv-settings-view.php:124
+#: future/includes/class-gv-settings-view.php:130
 msgid "Unapprove Entries After Edit"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:127
+#: future/includes/class-gv-settings-view.php:133
 msgid ""
 "When an entry is edited by a non-administrator, reset the approval status to"
 " \"Unapproved\"."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:128
+#: future/includes/class-gv-settings-view.php:134
 msgid ""
 "If the \"Show only approved entries\" setting is enabled, the entry will "
 "need to be re-approved by an administrator before it is shown in the View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:134
+#: future/includes/class-gv-settings-view.php:140
 msgid "Allow User Delete"
 msgstr "ব্যবহারকারীকে তথ্য মুছে ফেলার ক্ষমতা দিন"
 
-#: future/includes/class-gv-settings-view.php:136
+#: future/includes/class-gv-settings-view.php:142
 msgid "Allow logged-in users to delete entries they created."
 msgstr "লগ-ইন করা ব্যবহারকারীকে তাদের তৈরিকৃত এন্ট্রি মুছে ফেলার ক্ষমতা দিন।"
 
-#: future/includes/class-gv-settings-view.php:138
+#: future/includes/class-gv-settings-view.php:144
 msgid ""
 "Display \"Delete Entry\" fields to non-administrator users if they created "
 "the entry. Delete Entry fields will always be displayed to site "
@@ -606,46 +610,62 @@ msgstr ""
 "তারা এন্ট্রির তৈরিকারক হয়। এন্ট্রি মুছে ফেলুন লিংক সবসময় এডমিনিস্ট্রেটরদের "
 "নিকট প্রদর্শিত হবে।"
 
-#: future/includes/class-gv-settings-view.php:143
+#: future/includes/class-gv-settings-view.php:149
 msgid "Sort by field"
 msgstr "ফিল্ড অনুসারে সাজান"
 
-#: future/includes/class-gv-settings-view.php:148
-#: includes/class-common.php:1437
+#: future/includes/class-gv-settings-view.php:151
+msgid "By default, entries are sorted by Entry ID."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:155
+#: future/includes/class-gv-settings-view.php:177
+#: includes/class-common.php:1444
 msgid "Default"
 msgstr "ডিফল্ট"
 
-#: future/includes/class-gv-settings-view.php:149
-#: includes/class-common.php:1480
+#: future/includes/class-gv-settings-view.php:156
+#: future/includes/class-gv-settings-view.php:178
+#: includes/class-common.php:1487
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
 msgstr "নির্মাণের তারিখ"
 
-#: future/includes/class-gv-settings-view.php:154
+#: future/includes/class-gv-settings-view.php:161
 msgid "Sort direction"
 msgstr "সাজানোর দিক"
 
-#: future/includes/class-gv-settings-view.php:159
+#: future/includes/class-gv-settings-view.php:166
+#: future/includes/class-gv-settings-view.php:189
 msgid "ASC"
 msgstr "কখগ"
 
-#: future/includes/class-gv-settings-view.php:160
+#: future/includes/class-gv-settings-view.php:167
+#: future/includes/class-gv-settings-view.php:190
 msgid "DESC"
 msgstr "গখক"
 
-#: future/includes/class-gv-settings-view.php:165
+#: future/includes/class-gv-settings-view.php:172
+msgid "Sort by secondary field"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:184
+msgid "Secondary sort direction"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:196
 msgid "Enable sorting by column"
 msgstr "কলাম দ্বারা বাছাই সক্রিয়"
 
-#: future/includes/class-gv-settings-view.php:166
+#: future/includes/class-gv-settings-view.php:197
 msgid "Column Sorting"
 msgstr "কলাম শ্রেণীবিভাজন"
 
-#: future/includes/class-gv-settings-view.php:175
+#: future/includes/class-gv-settings-view.php:206
 msgid "Filter by Start Date"
 msgstr "শুরুর তারিখ দ্বারা ফিল্টার করুন"
 
-#: future/includes/class-gv-settings-view.php:177
+#: future/includes/class-gv-settings-view.php:208
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
@@ -653,11 +673,11 @@ msgstr ""
 "এই তারিখের পরে জমানো এন্ট্রিগুলো দেখান। সমর্থনকৃত তারিখ, যেমন \"-1 সপ্তাহ\" "
 "অথবা \"-1 মাস\""
 
-#: future/includes/class-gv-settings-view.php:184
+#: future/includes/class-gv-settings-view.php:215
 msgid "Filter by End Date"
 msgstr "শেষ তারিখ দ্বারা ফিল্টার করুন"
 
-#: future/includes/class-gv-settings-view.php:186
+#: future/includes/class-gv-settings-view.php:217
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
@@ -665,28 +685,28 @@ msgstr ""
 "এই তারিখের পূর্বে জমানো এন্ট্রিগুলো দেখান। সমর্থনকৃত তারিখ, যেমন \"এখন\" "
 "অথবা \"-3 দিন\"।"
 
-#: future/includes/class-gv-settings-view.php:193
+#: future/includes/class-gv-settings-view.php:224
 msgid "CSS Class"
 msgstr "সিএসএস ক্লাস"
 
-#: future/includes/class-gv-settings-view.php:194
+#: future/includes/class-gv-settings-view.php:225
 msgid "CSS class to add to the wrapping HTML container."
 msgstr "এইচটিএমএল আধারে মোড়ানোর জন্য সিএসএস ক্লাস।"
 
-#: future/includes/class-gv-settings-view.php:201
+#: future/includes/class-gv-settings-view.php:232
 msgid "Search Value"
 msgstr "ভ্যালু অনুসন্ধান"
 
-#: future/includes/class-gv-settings-view.php:202
+#: future/includes/class-gv-settings-view.php:233
 msgid "Define a default search value for the View"
 msgstr "দৃশ্যের জন্য একটি অনুসন্ধান ভ্যালু নির্ধারণ করুন"
 
-#: future/includes/class-gv-settings-view.php:209
-#: includes/widgets/search-widget/class-search-widget.php:239
+#: future/includes/class-gv-settings-view.php:240
+#: includes/widgets/search-widget/class-search-widget.php:240
 msgid "Search Field"
 msgstr "অনুসন্ধান ফিল্ড"
 
-#: future/includes/class-gv-settings-view.php:210
+#: future/includes/class-gv-settings-view.php:241
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
@@ -694,15 +714,15 @@ msgstr ""
 "যদি অনুসন্ধান ভ্যালু নির্ধারিত থাকে, আপনি একটি নির্দিষ্ঠ ফিল্ডে অনুসন্ধান "
 "করতে পারেন। অন্যথায়, সকল ফিল্ডে অনুসন্ধান হবে।"
 
-#: future/includes/class-gv-settings-view.php:217
+#: future/includes/class-gv-settings-view.php:248
 msgid "Search Operator"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:224
+#: future/includes/class-gv-settings-view.php:255
 msgid "Single Entry Title"
 msgstr "একক দৃশ্য টাইটেল"
 
-#: future/includes/class-gv-settings-view.php:226
+#: future/includes/class-gv-settings-view.php:257
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and Single"
@@ -712,79 +732,79 @@ msgstr ""
 "করবে। অন্যথায় একাধিক এন্ট্রি এবং একক এন্ট্রির ক্ষেত্রে টাইটেল পরিবর্তন "
 "হবেনা।"
 
-#: future/includes/class-gv-settings-view.php:233
+#: future/includes/class-gv-settings-view.php:264
 msgid "Back Link Label"
 msgstr "পিছেনের লিংকের লেবেল"
 
-#: future/includes/class-gv-settings-view.php:235
+#: future/includes/class-gv-settings-view.php:266
 msgid "The text of the link that returns to the multiple entries view."
 msgstr "একাধিক এন্ট্রি দৃশ্য ফিরে যাওয়ার লিংকের শব্দ।"
 
-#: future/includes/class-gv-settings-view.php:242
+#: future/includes/class-gv-settings-view.php:273
 msgid "Redirect After Editing"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:244
+#: future/includes/class-gv-settings-view.php:275
 msgid "The page to redirect to after editing an entry."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:248
+#: future/includes/class-gv-settings-view.php:279
 msgid "Stay on Edit Entry"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:249
+#: future/includes/class-gv-settings-view.php:280
 msgid "Redirect to Single Entry"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:250
+#: future/includes/class-gv-settings-view.php:281
 msgid "Redirect to Multiple Entries"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:251
+#: future/includes/class-gv-settings-view.php:282
 msgid "Redirect to URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:257
+#: future/includes/class-gv-settings-view.php:288
 msgid "Edit Entry Redirect URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:259
+#: future/includes/class-gv-settings-view.php:290
 msgid "After editing an entry, the user will be taken to this URL."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:267
+#: future/includes/class-gv-settings-view.php:298
 msgid "Prevent Direct Access"
 msgstr "ডাইরেক্ট প্রবেশাধিকার রোধ"
 
-#: future/includes/class-gv-settings-view.php:269
+#: future/includes/class-gv-settings-view.php:300
 msgid "Only allow access to this View when embedded using the shortcode."
 msgstr "শুধু এই দেখুন অ্যাক্সেসের অনুমতি যখন সর্টকোড ব্যবহার এমবেডেড।"
 
-#: future/includes/class-gv-settings-view.php:279
+#: future/includes/class-gv-settings-view.php:310
 msgid "Prevent REST Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:281
+#: future/includes/class-gv-settings-view.php:312
 msgid "Disable REST access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:292
+#: future/includes/class-gv-settings-view.php:323
 msgid "Allow REST Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:294
+#: future/includes/class-gv-settings-view.php:325
 msgid "Enable REST access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:304
+#: future/includes/class-gv-settings-view.php:335
 msgid "Allow CSV Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:306
+#: future/includes/class-gv-settings-view.php:337
 msgid "Enable CSV access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:323
+#: future/includes/class-gv-settings-view.php:354
 msgid "Random"
 msgstr ""
 
@@ -887,19 +907,19 @@ msgstr ""
 msgid "No Views found."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:264
+#: future/includes/rest/class-gv-rest-views-route.php:274
 msgid "No Entries found."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:350
-#: future/includes/rest/class-gv-rest-views-route.php:405
-#: future/includes/rest/class-gv-rest-views-route.php:420
-#: future/includes/rest/class-gv-rest-views-route.php:424
-#: future/includes/rest/class-gv-rest-views-route.php:434
+#: future/includes/rest/class-gv-rest-views-route.php:367
+#: future/includes/rest/class-gv-rest-views-route.php:422
+#: future/includes/rest/class-gv-rest-views-route.php:437
+#: future/includes/rest/class-gv-rest-views-route.php:441
+#: future/includes/rest/class-gv-rest-views-route.php:451
 msgid "You are not allowed to access this content."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:422
+#: future/includes/rest/class-gv-rest-views-route.php:439
 msgid "This View is not configured properly."
 msgstr ""
 
@@ -1038,12 +1058,12 @@ msgstr ""
 
 #. translators: "Support Port" can be translated as "Support Portal" or
 #. "Support Window"
-#: includes/admin/class-gravityview-support-port.php:267
-#: includes/admin/class-gravityview-support-port.php:273
+#: includes/admin/class-gravityview-support-port.php:280
+#: includes/admin/class-gravityview-support-port.php:286
 msgid "GravityView Support Port"
 msgstr "মাধ্যাকর্ষণ দেখুন সাপোর্ট পোর্ট"
 
-#: includes/admin/class-gravityview-support-port.php:278
+#: includes/admin/class-gravityview-support-port.php:291
 msgid "Show GravityView Support Port when on a GravityView-related page"
 msgstr ""
 "দেখান মাধ্যাকর্ষণ দেখুন সাপোর্ট পোর্ট যখন একটি মাধ্যাকর্ষণ দেখুন সংক্রান্ত "
@@ -1197,7 +1217,7 @@ msgstr "কিনুন"
 
 #: includes/admin/metaboxes/views/select-template.php:35
 #: includes/fields/class-gravityview-field-select.php:25
-#: includes/widgets/search-widget/class-search-widget.php:193
+#: includes/widgets/search-widget/class-search-widget.php:194
 msgid "Select"
 msgstr "বাছাই"
 
@@ -1542,7 +1562,7 @@ msgid "Add all the available fields at once."
 msgstr "প্রাপ্ত সকল ফিল্ডগুলো একসাথে যোগ করুন।"
 
 #: includes/class-admin-views.php:722
-#: includes/widgets/search-widget/class-search-widget.php:320
+#: includes/widgets/search-widget/class-search-widget.php:321
 msgid "Entry ID"
 msgstr "এন্ট্রি আইডি"
 
@@ -1551,7 +1571,7 @@ msgid "The unique ID of the entry."
 msgstr "এন্ট্রির মৌলিক আইডি।"
 
 #: includes/class-admin-views.php:727
-#: includes/widgets/search-widget/class-search-widget.php:316
+#: includes/widgets/search-widget/class-search-widget.php:317
 msgid "Entry Date"
 msgstr "এন্ট্রি তারিখ"
 
@@ -1734,23 +1754,23 @@ msgstr "পরিবর্তনের লিস্ট"
 msgid "What&rsquo;s New"
 msgstr "নতুন &rsquo; কি"
 
-#: includes/class-admin-welcome.php:528
+#: includes/class-admin-welcome.php:556
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:549
+#: includes/class-admin-welcome.php:577
 msgid "GravityView is brought to you by:"
 msgstr "গ্রাভিটি ভিউ আপনার জন্য নিয়ে এল:"
 
-#: includes/class-admin-welcome.php:590
+#: includes/class-admin-welcome.php:618
 msgid "Contributors"
 msgstr "সহযোগী যারা"
 
-#: includes/class-admin-welcome.php:616
+#: includes/class-admin-welcome.php:644
 msgid "Want to contribute?"
 msgstr "সহযোগীতা করতে চান?"
 
-#: includes/class-admin-welcome.php:617
+#: includes/class-admin-welcome.php:645
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1908,11 +1928,11 @@ msgstr "পোস্ট আইডি"
 
 #. translators: %s: relative time from now, used for generic date comparisons.
 #. "1 day ago", or "20 seconds ago"
-#: includes/class-common.php:1080
+#: includes/class-common.php:1087
 msgid "%s ago"
 msgstr "% S এর আগে"
 
-#: includes/class-common.php:1590
+#: includes/class-common.php:1597
 msgid "Email hidden; Javascript is required."
 msgstr "ইমেইল লুকানো; জাভাস্ক্রীপ্ট দরকার।"
 
@@ -2143,7 +2163,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:213
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1981
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2059
 msgid "You do not have permission to edit this entry."
 msgstr "আপনি এই এন্ট্রি সম্পাদনা করার অনুমতি নেই."
 
@@ -2156,14 +2176,14 @@ msgstr ""
 #: includes/extensions/delete-entry/class-delete-entry.php:147
 #: includes/extensions/delete-entry/class-delete-entry.php:164
 #: includes/extensions/delete-entry/fields/delete_link.php:14
-#: templates/fields/field-delete_link-html.php:23
+#: templates/fields/field-delete_link-html.php:29
 msgid "Delete Entry"
 msgstr "লেখা মুছে ফেলো"
 
 #: includes/class-gravityview-entry-link-shortcode.php:239
 #: includes/fields/class-gravityview-field-entry-link.php:51
 #: templates/deprecated/fields/entry_link.php:16
-#: templates/fields/field-entry_link-html.php:12
+#: templates/fields/field-entry_link-html.php:18
 msgid "View Details"
 msgstr "বিস্তারিত দেখান"
 
@@ -2260,39 +2280,39 @@ msgstr "একটি নতুন ট্যাব বা উইন্ডোত�
 msgid "Make field editable to:"
 msgstr "ক্ষেত্রের সম্পাদনযোগ্য করুন:"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:974
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1052
 msgid "There was a problem with your submission."
 msgstr "আপনার উপস্থাপনে একটু সমস্যা ছিল."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:974
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1052
 msgid "Errors have been highlighted below."
 msgstr "ত্রুটিগুলি নীচে তুলে ধরা হয়েছে."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1004
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1082
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "প্রবেশ আপডেট. %s এর এন্ট্রি%s এর ফিরে"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1152
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1230
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1159
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1237
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1511
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1589
 msgid "Maximum number of files reached"
 msgstr "ফাইল সর্বোচ্চ সংখ্যায় পৌঁছেছে"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1975
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2053
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "এই এন্ট্রি সম্পাদনা লিঙ্কটি বৈধ নয়; এটা শেষ করে দিতে পারে."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1985
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2063
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "আপনি এন্ট্রি সম্পাদনা করতে পারবেন না; এটা ট্র্যাশে রয়েছে."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2025
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2103
 msgid "You do not have permission to edit this field."
 msgstr "যদি আপনি এই ক্ষেত্রটি সম্পাদন করতে অনুমতি নেই."
 
@@ -2444,8 +2464,8 @@ msgid "CAPTCHA"
 msgstr "ক্যাপচা"
 
 #: includes/fields/class-gravityview-field-checkbox.php:25
-#: includes/widgets/search-widget/class-search-widget.php:196
 #: includes/widgets/search-widget/class-search-widget.php:197
+#: includes/widgets/search-widget/class-search-widget.php:198
 msgid "Checkbox"
 msgstr "চেকবক্স"
 
@@ -2565,7 +2585,7 @@ msgid "Render oEmbeds"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-date.php:25
-#: includes/widgets/search-widget/class-search-widget.php:192
+#: includes/widgets/search-widget/class-search-widget.php:193
 msgid "Date"
 msgstr "তারিখ "
 
@@ -2653,7 +2673,7 @@ msgstr "এইচটিএমল"
 
 #: includes/fields/class-gravityview-field-is-approved.php:40
 #: includes/fields/class-gravityview-field-is-approved.php:123
-#: includes/widgets/search-widget/class-search-widget.php:335
+#: includes/widgets/search-widget/class-search-widget.php:336
 msgid "Approval Status"
 msgstr ""
 
@@ -2707,7 +2727,7 @@ msgid "Entry Star"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-is-starred.php:28
-#: includes/widgets/search-widget/class-search-widget.php:328
+#: includes/widgets/search-widget/class-search-widget.php:329
 msgid "Is Starred"
 msgstr ""
 
@@ -3389,43 +3409,43 @@ msgstr "সমস্ত ক্ষেত্রগুলি মেলে"
 msgid "Search Bar"
 msgstr "অনুসন্ধান বার"
 
-#: includes/widgets/search-widget/class-search-widget.php:191
+#: includes/widgets/search-widget/class-search-widget.php:192
 msgid "Text"
 msgstr "টেক্সট "
 
-#: includes/widgets/search-widget/class-search-widget.php:194
+#: includes/widgets/search-widget/class-search-widget.php:195
 msgid "Select (multiple values)"
 msgstr "(একাধিক মান) নির্বাচন"
 
-#: includes/widgets/search-widget/class-search-widget.php:195
+#: includes/widgets/search-widget/class-search-widget.php:196
 msgid "Radio"
 msgstr "রেডিও"
 
-#: includes/widgets/search-widget/class-search-widget.php:198
+#: includes/widgets/search-widget/class-search-widget.php:199
 msgid "Links"
 msgstr "লিংক"
 
-#: includes/widgets/search-widget/class-search-widget.php:199
+#: includes/widgets/search-widget/class-search-widget.php:200
 msgid "Date range"
 msgstr "তারিখের পরিসীমা"
 
-#: includes/widgets/search-widget/class-search-widget.php:236
+#: includes/widgets/search-widget/class-search-widget.php:237
 msgid "No search fields configured yet."
 msgstr "কোন সার্চ ক্ষেত্র এখনো কনফিগার।"
 
-#: includes/widgets/search-widget/class-search-widget.php:237
+#: includes/widgets/search-widget/class-search-widget.php:238
 msgid "Add Search Field"
 msgstr "ফিল্ড অনুসন্ধান করো"
 
-#: includes/widgets/search-widget/class-search-widget.php:238
+#: includes/widgets/search-widget/class-search-widget.php:239
 msgid "Label"
 msgstr "লেবেল"
 
-#: includes/widgets/search-widget/class-search-widget.php:240
+#: includes/widgets/search-widget/class-search-widget.php:241
 msgid "Input Type"
 msgstr "ইনপুট ধরন"
 
-#: includes/widgets/search-widget/class-search-widget.php:241
+#: includes/widgets/search-widget/class-search-widget.php:242
 msgid ""
 "There was an error loading searchable fields. Save the View or refresh the "
 "page to fix this issue."
@@ -3433,31 +3453,31 @@ msgstr ""
 "অনুসন্ধানযোগ্য ক্ষেত্র লোড করার সময় একটি ত্রুটি হয়েছিল। দেখুন সংরক্ষণ বা "
 "পৃষ্ঠাটি রিফ্রেশ এই সমস্যাটি সমাধানের জন্য।"
 
-#: includes/widgets/search-widget/class-search-widget.php:312
+#: includes/widgets/search-widget/class-search-widget.php:313
 msgid "Search Everything"
 msgstr "সবকিছু অনুসন্ধান"
 
-#: includes/widgets/search-widget/class-search-widget.php:324
+#: includes/widgets/search-widget/class-search-widget.php:325
 msgid "Entry Creator"
 msgstr "এণ্ট্রি ক্রিয়েটর"
 
-#: includes/widgets/search-widget/class-search-widget.php:1412
+#: includes/widgets/search-widget/class-search-widget.php:1430
 msgid "Search Entries:"
 msgstr "এন্ট্রি খুঁজুনঃ"
 
-#: includes/widgets/search-widget/class-search-widget.php:1415
+#: includes/widgets/search-widget/class-search-widget.php:1433
 msgid "Filter by date:"
 msgstr "তারিখ অনুসারে ছাঁকনিঃ"
 
-#: includes/widgets/search-widget/class-search-widget.php:1418
+#: includes/widgets/search-widget/class-search-widget.php:1436
 msgid "Entry ID:"
 msgstr "এণ্ট্রি আইডি:"
 
-#: includes/widgets/search-widget/class-search-widget.php:1553
+#: includes/widgets/search-widget/class-search-widget.php:1582
 msgid "Clear"
 msgstr "পরিস্কার"
 
-#: includes/widgets/search-widget/class-search-widget.php:1619
+#: includes/widgets/search-widget/class-search-widget.php:1648
 msgid "Show a different month"
 msgstr "একটি ভিন্ন মাসের দেখাও"
 
@@ -3556,12 +3576,12 @@ msgid "Search Fields"
 msgstr "অনুসন্ধান ক্ষেত্র"
 
 #: templates/deprecated/fields/gquiz_grade.php:24
-#: templates/fields/field-gquiz_grade-html.php:22
+#: templates/fields/field-gquiz_grade-html.php:28
 msgid "Letter"
 msgstr "চিঠি"
 
 #: templates/deprecated/fields/gquiz_is_pass.php:27
-#: templates/fields/field-gquiz_is_pass-html.php:26
+#: templates/fields/field-gquiz_is_pass-html.php:32
 msgid "Pass/Fail"
 msgstr "পাস / ব্যর্থ"
 
@@ -3681,12 +3701,12 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "খালি"
 
-#: includes/class-frontend-views.php:1298
+#: includes/class-frontend-views.php:1312
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr "পরিস্কার"
 
-#: includes/class-frontend-views.php:1299
+#: includes/class-frontend-views.php:1313
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr "রিসেট"
@@ -3755,26 +3775,26 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr "এণ্ট্রি ক্রিয়েটর"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:988
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1066
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %sReturning to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:993
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1071
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the title of the page where the user"
 " will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sReturning to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:999
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1077
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the URL where the user will be "
 "taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sRedirecting to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2001
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2079
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr "ফিরে যাও।"
@@ -3816,54 +3836,54 @@ msgstr ""
 "উল্লেখ্য: এই% সেল ফর্ম এন্ট্রি% এর, দৃশ্য প্রদর্শন না শুধুমাত্র এন্ট্রি জন্য"
 " পোলের ফলাফল প্রদর্শন করা হবে।"
 
-#: includes/widgets/search-widget/class-search-widget.php:1614
+#: includes/widgets/search-widget/class-search-widget.php:1643
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "বন্ধ"
 
-#: includes/widgets/search-widget/class-search-widget.php:1615
+#: includes/widgets/search-widget/class-search-widget.php:1644
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr "পূর্ববর্তী"
 
-#: includes/widgets/search-widget/class-search-widget.php:1616
+#: includes/widgets/search-widget/class-search-widget.php:1645
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr "পরবর্তী"
 
-#: includes/widgets/search-widget/class-search-widget.php:1617
+#: includes/widgets/search-widget/class-search-widget.php:1646
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr "আজ"
 
-#: includes/widgets/search-widget/class-search-widget.php:1618
+#: includes/widgets/search-widget/class-search-widget.php:1647
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr "সপ্তাহ"
 
 #: templates/deprecated/fields/gquiz_grade.php:25
 #: templates/deprecated/fields/gquiz_is_pass.php:28
-#: templates/fields/field-gquiz_grade-html.php:23
-#: templates/fields/field-gquiz_is_pass-html.php:27
+#: templates/fields/field-gquiz_grade-html.php:29
+#: templates/fields/field-gquiz_is_pass-html.php:33
 msgctxt "%s is the current Quiz field type (\"Letter\" or \"Pass/Fail\")"
 msgid "%s grading is disabled for this form. %sChange the setting%s"
 msgstr ""
 "%s এর শূন্য এই ফর্মটির জন্য নিষ্ক্রিয় করা হয়েছে. %s এর সেটিং পরিবর্তন%s এর"
 
 #: templates/deprecated/fields/post_image.php:108
-#: templates/fields/field-post_image-html.php:107
+#: templates/fields/field-post_image-html.php:113
 msgctxt "Post Image field title heading"
 msgid "Title:"
 msgstr "শিরোনাম:"
 
 #: templates/deprecated/fields/post_image.php:114
-#: templates/fields/field-post_image-html.php:113
+#: templates/fields/field-post_image-html.php:119
 msgctxt "Post Image field caption heading"
 msgid "Caption:"
 msgstr "ক্যাপশন:"
 
 #: templates/deprecated/fields/post_image.php:120
-#: templates/fields/field-post_image-html.php:119
+#: templates/fields/field-post_image-html.php:125
 msgctxt "Post Image field description heading"
 msgid "Description:"
 msgstr "বর্ণনা:"

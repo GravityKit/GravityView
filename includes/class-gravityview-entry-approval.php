@@ -245,6 +245,17 @@ class GravityView_Entry_Approval {
 	 */
 	public function after_submission( $entry, $form ) {
 
+		/**
+		 * @filter `gravityview/approve_entries/after_submission` Modify whether to run the after_submission process
+		 * @since 2.3
+		 * @param bool $process_after_submission default: true
+		 */
+		$process_after_submission = apply_filters( 'gravityview/approve_entries/after_submission', true );
+
+		if ( ! $process_after_submission ) {
+			return;
+		}
+
 		$default_status = GravityView_Entry_Approval_Status::UNAPPROVED;
 
 		/**

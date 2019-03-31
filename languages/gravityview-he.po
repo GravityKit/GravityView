@@ -6,7 +6,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.2.4\n"
+"Project-Id-Version: GravityView 2.2.5\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
@@ -182,14 +182,14 @@ msgstr "בדוק רישיון"
 #: future/includes/class-gv-shortcode-gravityview.php:138
 #: future/includes/class-gv-shortcode-gravityview.php:143
 #: future/includes/class-gv-shortcode-gravityview.php:149
-#: future/includes/class-gv-shortcode-gravityview.php:169
-#: future/includes/class-gv-shortcode-gravityview.php:174
-#: future/includes/class-gv-shortcode-gravityview.php:180
-#: future/includes/class-gv-shortcode-gravityview.php:188
+#: future/includes/class-gv-shortcode-gravityview.php:172
+#: future/includes/class-gv-shortcode-gravityview.php:177
+#: future/includes/class-gv-shortcode-gravityview.php:183
+#: future/includes/class-gv-shortcode-gravityview.php:191
 #: future/includes/class-gv-view.php:297 future/includes/class-gv-view.php:311
 #: future/includes/class-gv-view.php:316 future/includes/class-gv-view.php:322
 #: future/includes/class-gv-view.php:345 future/includes/class-gv-view.php:350
-#: future/includes/class-gv-view.php:356 future/includes/class-gv-view.php:365
+#: future/includes/class-gv-view.php:356 future/includes/class-gv-view.php:364
 #: includes/class-frontend-views.php:623
 msgid "You are not allowed to view this content."
 msgstr "אינך מורשה לצפות בתוכן זה."
@@ -231,9 +231,9 @@ msgstr "הרשומה אושרה עבור GravityView"
 #: includes/class-gravityview-entry-link-shortcode.php:233
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:921
+#: includes/extensions/edit-entry/class-edit-entry-render.php:999
 #: includes/extensions/edit-entry/fields/edit_link.php:14
-#: templates/fields/field-edit_link-html.php:29
+#: templates/fields/field-edit_link-html.php:35
 msgid "Edit Entry"
 msgstr "ערוך רשומה"
 
@@ -553,14 +553,18 @@ msgid "Hide empty fields"
 msgstr "הסתר שדות ריקים"
 
 #: future/includes/class-gv-settings-view.php:115
+msgid "Feeds"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:122
 msgid "Allow User Edit"
 msgstr "אפשר למשתמש לערוך"
 
-#: future/includes/class-gv-settings-view.php:117
+#: future/includes/class-gv-settings-view.php:123
 msgid "Allow logged-in users to edit entries they created."
 msgstr "אפשר למשתמשים מחוברים לערוך את הרשומות שיצרו."
 
-#: future/includes/class-gv-settings-view.php:119
+#: future/includes/class-gv-settings-view.php:125
 msgid ""
 "Display \"Edit Entry\" fields to non-administrator users if they created the"
 " entry. Edit Entry fields will always be displayed to site administrators."
@@ -568,31 +572,31 @@ msgstr ""
 "הצג שדות \"ערוך רשומה\" למשתמשים שאינם מנהלים, אם הם יצרו את הרשומה. שדות "
 "עריכת הרשומה יוצגו תמיד למנהלי האתר."
 
-#: future/includes/class-gv-settings-view.php:124
+#: future/includes/class-gv-settings-view.php:130
 msgid "Unapprove Entries After Edit"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:127
+#: future/includes/class-gv-settings-view.php:133
 msgid ""
 "When an entry is edited by a non-administrator, reset the approval status to"
 " \"Unapproved\"."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:128
+#: future/includes/class-gv-settings-view.php:134
 msgid ""
 "If the \"Show only approved entries\" setting is enabled, the entry will "
 "need to be re-approved by an administrator before it is shown in the View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:134
+#: future/includes/class-gv-settings-view.php:140
 msgid "Allow User Delete"
 msgstr "אפשר למשתמש למחוק"
 
-#: future/includes/class-gv-settings-view.php:136
+#: future/includes/class-gv-settings-view.php:142
 msgid "Allow logged-in users to delete entries they created."
 msgstr "אפשר למשתמשים מחוברים למחוק את הרשומות שיצרו."
 
-#: future/includes/class-gv-settings-view.php:138
+#: future/includes/class-gv-settings-view.php:144
 msgid ""
 "Display \"Delete Entry\" fields to non-administrator users if they created "
 "the entry. Delete Entry fields will always be displayed to site "
@@ -601,46 +605,62 @@ msgstr ""
 "הצג שדות \"מחק רשומה\" למשתמשים שאינם מנהלים, אם הם יצרו את הרשומה. שדות "
 "מחיקת הרשומה יוצגו תמיד למנהלי האתר."
 
-#: future/includes/class-gv-settings-view.php:143
+#: future/includes/class-gv-settings-view.php:149
 msgid "Sort by field"
 msgstr "מיין לפי שדה"
 
-#: future/includes/class-gv-settings-view.php:148
-#: includes/class-common.php:1437
+#: future/includes/class-gv-settings-view.php:151
+msgid "By default, entries are sorted by Entry ID."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:155
+#: future/includes/class-gv-settings-view.php:177
+#: includes/class-common.php:1444
 msgid "Default"
 msgstr "ברירת מחדל"
 
-#: future/includes/class-gv-settings-view.php:149
-#: includes/class-common.php:1480
+#: future/includes/class-gv-settings-view.php:156
+#: future/includes/class-gv-settings-view.php:178
+#: includes/class-common.php:1487
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
 msgstr "תאריך יצירה"
 
-#: future/includes/class-gv-settings-view.php:154
+#: future/includes/class-gv-settings-view.php:161
 msgid "Sort direction"
 msgstr "כיוון המיון"
 
-#: future/includes/class-gv-settings-view.php:159
+#: future/includes/class-gv-settings-view.php:166
+#: future/includes/class-gv-settings-view.php:189
 msgid "ASC"
 msgstr "עולה"
 
-#: future/includes/class-gv-settings-view.php:160
+#: future/includes/class-gv-settings-view.php:167
+#: future/includes/class-gv-settings-view.php:190
 msgid "DESC"
 msgstr "יורד"
 
-#: future/includes/class-gv-settings-view.php:165
+#: future/includes/class-gv-settings-view.php:172
+msgid "Sort by secondary field"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:184
+msgid "Secondary sort direction"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:196
 msgid "Enable sorting by column"
 msgstr "אפשר מיון לפי עמודה"
 
-#: future/includes/class-gv-settings-view.php:166
+#: future/includes/class-gv-settings-view.php:197
 msgid "Column Sorting"
 msgstr "מיון לפי עמודה"
 
-#: future/includes/class-gv-settings-view.php:175
+#: future/includes/class-gv-settings-view.php:206
 msgid "Filter by Start Date"
 msgstr "סנן לפי תאריך התחלה"
 
-#: future/includes/class-gv-settings-view.php:177
+#: future/includes/class-gv-settings-view.php:208
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
@@ -648,11 +668,11 @@ msgstr ""
 "הצג רשומות שנאספו לאחר תאריך זה. תומך תאריכים יחסיים, כגון \"-1 שבוע\" או "
 "\"-1 חודש\"."
 
-#: future/includes/class-gv-settings-view.php:184
+#: future/includes/class-gv-settings-view.php:215
 msgid "Filter by End Date"
 msgstr "סנן לפי תאריך סיום"
 
-#: future/includes/class-gv-settings-view.php:186
+#: future/includes/class-gv-settings-view.php:217
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
@@ -660,28 +680,28 @@ msgstr ""
 "הצג רשומות שנאספו לפני תאריך זה. תומך תאריכים יחסיים, כגון \"עכשיו\" או \"-3"
 " ימים\"."
 
-#: future/includes/class-gv-settings-view.php:193
+#: future/includes/class-gv-settings-view.php:224
 msgid "CSS Class"
 msgstr "קלאס CSS"
 
-#: future/includes/class-gv-settings-view.php:194
+#: future/includes/class-gv-settings-view.php:225
 msgid "CSS class to add to the wrapping HTML container."
 msgstr "הוספת CSS ל-HTML העוטף באתר."
 
-#: future/includes/class-gv-settings-view.php:201
+#: future/includes/class-gv-settings-view.php:232
 msgid "Search Value"
 msgstr "ערך חיפוש"
 
-#: future/includes/class-gv-settings-view.php:202
+#: future/includes/class-gv-settings-view.php:233
 msgid "Define a default search value for the View"
 msgstr "הגדר ערך חיפוש ברירת מחדל לתצוגה זו"
 
-#: future/includes/class-gv-settings-view.php:209
-#: includes/widgets/search-widget/class-search-widget.php:239
+#: future/includes/class-gv-settings-view.php:240
+#: includes/widgets/search-widget/class-search-widget.php:240
 msgid "Search Field"
 msgstr "שדה חיפוש"
 
-#: future/includes/class-gv-settings-view.php:210
+#: future/includes/class-gv-settings-view.php:241
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
@@ -689,15 +709,15 @@ msgstr ""
 "אם הוגדר ערך חיפוש, באפשרותך להגדיר שדה ספציפי כדי לבצע בו חיפוש. אחרת, "
 "החיפוש יתבצע בכל השדות."
 
-#: future/includes/class-gv-settings-view.php:217
+#: future/includes/class-gv-settings-view.php:248
 msgid "Search Operator"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:224
+#: future/includes/class-gv-settings-view.php:255
 msgid "Single Entry Title"
 msgstr "כותרת רשומה בודדת"
 
-#: future/includes/class-gv-settings-view.php:226
+#: future/includes/class-gv-settings-view.php:257
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and Single"
@@ -706,79 +726,79 @@ msgstr ""
 "בעת הצגת רשומה בודדת, שנה את הכותרת של העמוד להגדרה זו. אחרת, הכותרת לא "
 "תשתנה בין תצוגת רשומות מרובות ובין תצוגת רשומה בודדת."
 
-#: future/includes/class-gv-settings-view.php:233
+#: future/includes/class-gv-settings-view.php:264
 msgid "Back Link Label"
 msgstr "תווית קישור חזרה"
 
-#: future/includes/class-gv-settings-view.php:235
+#: future/includes/class-gv-settings-view.php:266
 msgid "The text of the link that returns to the multiple entries view."
 msgstr "טקסט הקישור שמחזיר לתצוגת רשומות מרובות."
 
-#: future/includes/class-gv-settings-view.php:242
+#: future/includes/class-gv-settings-view.php:273
 msgid "Redirect After Editing"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:244
+#: future/includes/class-gv-settings-view.php:275
 msgid "The page to redirect to after editing an entry."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:248
+#: future/includes/class-gv-settings-view.php:279
 msgid "Stay on Edit Entry"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:249
+#: future/includes/class-gv-settings-view.php:280
 msgid "Redirect to Single Entry"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:250
+#: future/includes/class-gv-settings-view.php:281
 msgid "Redirect to Multiple Entries"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:251
+#: future/includes/class-gv-settings-view.php:282
 msgid "Redirect to URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:257
+#: future/includes/class-gv-settings-view.php:288
 msgid "Edit Entry Redirect URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:259
+#: future/includes/class-gv-settings-view.php:290
 msgid "After editing an entry, the user will be taken to this URL."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:267
+#: future/includes/class-gv-settings-view.php:298
 msgid "Prevent Direct Access"
 msgstr "מנע גישה ישירה"
 
-#: future/includes/class-gv-settings-view.php:269
+#: future/includes/class-gv-settings-view.php:300
 msgid "Only allow access to this View when embedded using the shortcode."
 msgstr "אפשר גישה לתצוגה זו כאשר היא מוטמעת עם השורטקוד."
 
-#: future/includes/class-gv-settings-view.php:279
+#: future/includes/class-gv-settings-view.php:310
 msgid "Prevent REST Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:281
+#: future/includes/class-gv-settings-view.php:312
 msgid "Disable REST access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:292
+#: future/includes/class-gv-settings-view.php:323
 msgid "Allow REST Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:294
+#: future/includes/class-gv-settings-view.php:325
 msgid "Enable REST access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:304
+#: future/includes/class-gv-settings-view.php:335
 msgid "Allow CSV Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:306
+#: future/includes/class-gv-settings-view.php:337
 msgid "Enable CSV access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:323
+#: future/includes/class-gv-settings-view.php:354
 msgid "Random"
 msgstr ""
 
@@ -881,19 +901,19 @@ msgstr ""
 msgid "No Views found."
 msgstr "לא נמצאו תצוגות."
 
-#: future/includes/rest/class-gv-rest-views-route.php:264
+#: future/includes/rest/class-gv-rest-views-route.php:274
 msgid "No Entries found."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:350
-#: future/includes/rest/class-gv-rest-views-route.php:405
-#: future/includes/rest/class-gv-rest-views-route.php:420
-#: future/includes/rest/class-gv-rest-views-route.php:424
-#: future/includes/rest/class-gv-rest-views-route.php:434
+#: future/includes/rest/class-gv-rest-views-route.php:367
+#: future/includes/rest/class-gv-rest-views-route.php:422
+#: future/includes/rest/class-gv-rest-views-route.php:437
+#: future/includes/rest/class-gv-rest-views-route.php:441
+#: future/includes/rest/class-gv-rest-views-route.php:451
 msgid "You are not allowed to access this content."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:422
+#: future/includes/rest/class-gv-rest-views-route.php:439
 msgid "This View is not configured properly."
 msgstr ""
 
@@ -1029,12 +1049,12 @@ msgstr "תודה שיצרת קשר! מישהו מצוות GravityView יחזור
 
 #. translators: "Support Port" can be translated as "Support Portal" or
 #. "Support Window"
-#: includes/admin/class-gravityview-support-port.php:267
-#: includes/admin/class-gravityview-support-port.php:273
+#: includes/admin/class-gravityview-support-port.php:280
+#: includes/admin/class-gravityview-support-port.php:286
 msgid "GravityView Support Port"
 msgstr "יציאת התמיכה של GravityView"
 
-#: includes/admin/class-gravityview-support-port.php:278
+#: includes/admin/class-gravityview-support-port.php:291
 msgid "Show GravityView Support Port when on a GravityView-related page"
 msgstr "הצג את יציאת התמיכה של GravityView כאשר נמצאים בדף הקשור GravityView"
 
@@ -1185,7 +1205,7 @@ msgstr "קנה עכשיו"
 
 #: includes/admin/metaboxes/views/select-template.php:35
 #: includes/fields/class-gravityview-field-select.php:25
-#: includes/widgets/search-widget/class-search-widget.php:193
+#: includes/widgets/search-widget/class-search-widget.php:194
 msgid "Select"
 msgstr "בחר"
 
@@ -1529,7 +1549,7 @@ msgid "Add all the available fields at once."
 msgstr "הוסף את כל השדות הזמינים בבת אחת."
 
 #: includes/class-admin-views.php:722
-#: includes/widgets/search-widget/class-search-widget.php:320
+#: includes/widgets/search-widget/class-search-widget.php:321
 msgid "Entry ID"
 msgstr "מזהה רשומה"
 
@@ -1538,7 +1558,7 @@ msgid "The unique ID of the entry."
 msgstr "המזהה הייחודי של הרשומה."
 
 #: includes/class-admin-views.php:727
-#: includes/widgets/search-widget/class-search-widget.php:316
+#: includes/widgets/search-widget/class-search-widget.php:317
 msgid "Entry Date"
 msgstr "תאריך רשומה"
 
@@ -1715,23 +1735,23 @@ msgstr "רשימת שינויים"
 msgid "What&rsquo;s New"
 msgstr "מה חדש"
 
-#: includes/class-admin-welcome.php:528
+#: includes/class-admin-welcome.php:556
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:549
+#: includes/class-admin-welcome.php:577
 msgid "GravityView is brought to you by:"
 msgstr "GravityView מוגש לך מאת:"
 
-#: includes/class-admin-welcome.php:590
+#: includes/class-admin-welcome.php:618
 msgid "Contributors"
 msgstr "תורמים"
 
-#: includes/class-admin-welcome.php:616
+#: includes/class-admin-welcome.php:644
 msgid "Want to contribute?"
 msgstr "רוצה לתרום?"
 
-#: includes/class-admin-welcome.php:617
+#: includes/class-admin-welcome.php:645
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1899,11 +1919,11 @@ msgstr "מזהה פוסט"
 
 #. translators: %s: relative time from now, used for generic date comparisons.
 #. "1 day ago", or "20 seconds ago"
-#: includes/class-common.php:1080
+#: includes/class-common.php:1087
 msgid "%s ago"
 msgstr "לפני %s"
 
-#: includes/class-common.php:1590
+#: includes/class-common.php:1597
 msgid "Email hidden; Javascript is required."
 msgstr "דואר אלקטרוני מוסתר; דרוש Javascript."
 
@@ -2134,7 +2154,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr "בקשה לא תקינה. רענן את הדף ונסה שנית."
 
 #: includes/class-gravityview-entry-approval.php:213
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1981
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2059
 msgid "You do not have permission to edit this entry."
 msgstr "אין לך הרשאה לערוך רשומה זו."
 
@@ -2147,14 +2167,14 @@ msgstr "אישור הרשומה אופס עבור GravityView "
 #: includes/extensions/delete-entry/class-delete-entry.php:147
 #: includes/extensions/delete-entry/class-delete-entry.php:164
 #: includes/extensions/delete-entry/fields/delete_link.php:14
-#: templates/fields/field-delete_link-html.php:23
+#: templates/fields/field-delete_link-html.php:29
 msgid "Delete Entry"
 msgstr "מחק רשומה"
 
 #: includes/class-gravityview-entry-link-shortcode.php:239
 #: includes/fields/class-gravityview-field-entry-link.php:51
 #: templates/deprecated/fields/entry_link.php:16
-#: templates/fields/field-entry_link-html.php:12
+#: templates/fields/field-entry_link-html.php:18
 msgid "View Details"
 msgstr "הצג פרטים"
 
@@ -2246,39 +2266,39 @@ msgstr "לפתוח את הקישור בלשונית חדשה?"
 msgid "Make field editable to:"
 msgstr "הפוך את השדה ניתן לעריכה עבור:"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:974
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1052
 msgid "There was a problem with your submission."
 msgstr "יש בעיה עם ההגשה שלך."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:974
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1052
 msgid "Errors have been highlighted below."
 msgstr "השגיאות מודגשות להלן."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1004
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1082
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "רשומה עודכנה. %sחזור לרשומה%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1152
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1230
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr "אין לך הרשאה לערוך את הפוסט הזה."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1159
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1237
 msgid "This field is not editable; the post no longer exists."
 msgstr "שדה זה אינו ניתן לעריכה;  הפוסט כבר לא קיים."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1511
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1589
 msgid "Maximum number of files reached"
 msgstr "הגעת לכמות הקבצים המקסימלית"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1975
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2053
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "הקישור למחיקת הרשומה אינו תקין; יתכן והוא פג תוקף."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1985
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2063
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "אין באפשרותך לערוך את הרשומה; היא בפח."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2025
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2103
 msgid "You do not have permission to edit this field."
 msgstr "אין לך הרשאה לערוך שדה זה."
 
@@ -2429,8 +2449,8 @@ msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
 #: includes/fields/class-gravityview-field-checkbox.php:25
-#: includes/widgets/search-widget/class-search-widget.php:196
 #: includes/widgets/search-widget/class-search-widget.php:197
+#: includes/widgets/search-widget/class-search-widget.php:198
 msgid "Checkbox"
 msgstr "תיבת סימון"
 
@@ -2548,7 +2568,7 @@ msgid "Render oEmbeds"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-date.php:25
-#: includes/widgets/search-widget/class-search-widget.php:192
+#: includes/widgets/search-widget/class-search-widget.php:193
 msgid "Date"
 msgstr "תאריך"
 
@@ -2636,7 +2656,7 @@ msgstr "HTML"
 
 #: includes/fields/class-gravityview-field-is-approved.php:40
 #: includes/fields/class-gravityview-field-is-approved.php:123
-#: includes/widgets/search-widget/class-search-widget.php:335
+#: includes/widgets/search-widget/class-search-widget.php:336
 msgid "Approval Status"
 msgstr "סטטוס אישור"
 
@@ -2690,7 +2710,7 @@ msgid "Entry Star"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-is-starred.php:28
-#: includes/widgets/search-widget/class-search-widget.php:328
+#: includes/widgets/search-widget/class-search-widget.php:329
 msgid "Is Starred"
 msgstr ""
 
@@ -3364,43 +3384,43 @@ msgstr "התאם לכל השדות"
 msgid "Search Bar"
 msgstr "סרגל חיפוש"
 
-#: includes/widgets/search-widget/class-search-widget.php:191
+#: includes/widgets/search-widget/class-search-widget.php:192
 msgid "Text"
 msgstr "טקסט"
 
-#: includes/widgets/search-widget/class-search-widget.php:194
+#: includes/widgets/search-widget/class-search-widget.php:195
 msgid "Select (multiple values)"
 msgstr "בחר (ערכים מרובים)"
 
-#: includes/widgets/search-widget/class-search-widget.php:195
+#: includes/widgets/search-widget/class-search-widget.php:196
 msgid "Radio"
 msgstr "רדיו"
 
-#: includes/widgets/search-widget/class-search-widget.php:198
+#: includes/widgets/search-widget/class-search-widget.php:199
 msgid "Links"
 msgstr "קישורים"
 
-#: includes/widgets/search-widget/class-search-widget.php:199
+#: includes/widgets/search-widget/class-search-widget.php:200
 msgid "Date range"
 msgstr "טווח תאריכים"
 
-#: includes/widgets/search-widget/class-search-widget.php:236
+#: includes/widgets/search-widget/class-search-widget.php:237
 msgid "No search fields configured yet."
 msgstr "לא הוגדרו שדות חיפוש."
 
-#: includes/widgets/search-widget/class-search-widget.php:237
+#: includes/widgets/search-widget/class-search-widget.php:238
 msgid "Add Search Field"
 msgstr "הוסף שדה חיפוש"
 
-#: includes/widgets/search-widget/class-search-widget.php:238
+#: includes/widgets/search-widget/class-search-widget.php:239
 msgid "Label"
 msgstr "תווית"
 
-#: includes/widgets/search-widget/class-search-widget.php:240
+#: includes/widgets/search-widget/class-search-widget.php:241
 msgid "Input Type"
 msgstr "סוג הקלט"
 
-#: includes/widgets/search-widget/class-search-widget.php:241
+#: includes/widgets/search-widget/class-search-widget.php:242
 msgid ""
 "There was an error loading searchable fields. Save the View or refresh the "
 "page to fix this issue."
@@ -3408,31 +3428,31 @@ msgstr ""
 "אירעה שגיאה בטעינת שדות החיפוש. שמור את התצוגה או רענן את הדף כדי לתקן בעיה "
 "זו."
 
-#: includes/widgets/search-widget/class-search-widget.php:312
+#: includes/widgets/search-widget/class-search-widget.php:313
 msgid "Search Everything"
 msgstr "חפש הכל"
 
-#: includes/widgets/search-widget/class-search-widget.php:324
+#: includes/widgets/search-widget/class-search-widget.php:325
 msgid "Entry Creator"
 msgstr "יוצר רשומה"
 
-#: includes/widgets/search-widget/class-search-widget.php:1412
+#: includes/widgets/search-widget/class-search-widget.php:1430
 msgid "Search Entries:"
 msgstr "חפש רשומות:"
 
-#: includes/widgets/search-widget/class-search-widget.php:1415
+#: includes/widgets/search-widget/class-search-widget.php:1433
 msgid "Filter by date:"
 msgstr "סנן לפי תאריך:"
 
-#: includes/widgets/search-widget/class-search-widget.php:1418
+#: includes/widgets/search-widget/class-search-widget.php:1436
 msgid "Entry ID:"
 msgstr "מזהה רשומה:"
 
-#: includes/widgets/search-widget/class-search-widget.php:1553
+#: includes/widgets/search-widget/class-search-widget.php:1582
 msgid "Clear"
 msgstr "נקה"
 
-#: includes/widgets/search-widget/class-search-widget.php:1619
+#: includes/widgets/search-widget/class-search-widget.php:1648
 msgid "Show a different month"
 msgstr "הצג חודש שונה [טקסט בחירת תאריך]"
 
@@ -3529,12 +3549,12 @@ msgid "Search Fields"
 msgstr "שדות חיפוש"
 
 #: templates/deprecated/fields/gquiz_grade.php:24
-#: templates/fields/field-gquiz_grade-html.php:22
+#: templates/fields/field-gquiz_grade-html.php:28
 msgid "Letter"
 msgstr "אות"
 
 #: templates/deprecated/fields/gquiz_is_pass.php:27
-#: templates/fields/field-gquiz_is_pass-html.php:26
+#: templates/fields/field-gquiz_is_pass-html.php:32
 msgid "Pass/Fail"
 msgstr "עובר/נכשל"
 
@@ -3654,12 +3674,12 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "ריק"
 
-#: includes/class-frontend-views.php:1298
+#: includes/class-frontend-views.php:1312
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr "נקה"
 
-#: includes/class-frontend-views.php:1299
+#: includes/class-frontend-views.php:1313
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr "אפס"
@@ -3728,26 +3748,26 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr "יוצר רשומה"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:988
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1066
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %sReturning to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:993
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1071
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the title of the page where the user"
 " will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sReturning to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:999
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1077
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the URL where the user will be "
 "taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sRedirecting to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2001
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2079
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr "חזור."
@@ -3790,53 +3810,53 @@ msgstr ""
 "שים לב: זה יציג את תוצאות הסקר עבור %sכל רשומות הטופס%s, לא רק את הרשומות "
 "שמופיעות בתצוגה."
 
-#: includes/widgets/search-widget/class-search-widget.php:1614
+#: includes/widgets/search-widget/class-search-widget.php:1643
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "סגור"
 
-#: includes/widgets/search-widget/class-search-widget.php:1615
+#: includes/widgets/search-widget/class-search-widget.php:1644
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr "הקודם"
 
-#: includes/widgets/search-widget/class-search-widget.php:1616
+#: includes/widgets/search-widget/class-search-widget.php:1645
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr "הבא"
 
-#: includes/widgets/search-widget/class-search-widget.php:1617
+#: includes/widgets/search-widget/class-search-widget.php:1646
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr "היום"
 
-#: includes/widgets/search-widget/class-search-widget.php:1618
+#: includes/widgets/search-widget/class-search-widget.php:1647
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr "‎שבוע"
 
 #: templates/deprecated/fields/gquiz_grade.php:25
 #: templates/deprecated/fields/gquiz_is_pass.php:28
-#: templates/fields/field-gquiz_grade-html.php:23
-#: templates/fields/field-gquiz_is_pass-html.php:27
+#: templates/fields/field-gquiz_grade-html.php:29
+#: templates/fields/field-gquiz_is_pass-html.php:33
 msgctxt "%s is the current Quiz field type (\"Letter\" or \"Pass/Fail\")"
 msgid "%s grading is disabled for this form. %sChange the setting%s"
 msgstr "%s הדירוג  לא זמין לטופס זה. %sשנה את ההגדרה%s"
 
 #: templates/deprecated/fields/post_image.php:108
-#: templates/fields/field-post_image-html.php:107
+#: templates/fields/field-post_image-html.php:113
 msgctxt "Post Image field title heading"
 msgid "Title:"
 msgstr "כותרת:"
 
 #: templates/deprecated/fields/post_image.php:114
-#: templates/fields/field-post_image-html.php:113
+#: templates/fields/field-post_image-html.php:119
 msgctxt "Post Image field caption heading"
 msgid "Caption:"
 msgstr "כיתוב:"
 
 #: templates/deprecated/fields/post_image.php:120
-#: templates/fields/field-post_image-html.php:119
+#: templates/fields/field-post_image-html.php:125
 msgctxt "Post Image field description heading"
 msgid "Description:"
 msgstr "תיאור:"
