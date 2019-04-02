@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.4
-Tested up to: 5.0
+Tested up to: 5.1.1
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -21,9 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.3 on April 1, 2019 =
+= 2.3 on April 2, 2019 =
 
-* **Gravity Forms 2.3 is now required**. If this affects you, please [let us know](mailto:support@gravityview.co?subject=Gravity Forms 2.3)
+**Gravity Forms 2.3 is now required**. If this affects you, please [let us know](mailto:support@gravityview.co?subject=Gravity%20Forms%202.3%20Requirement)
+
 * Added: Multi-Sorting! Example: Sort first by Last Name, then sort those results by First Name [Read more about multi-sorting](#TODO)
 * Added: `[gvlogic logged_in="true"]` support to easily check user login status
 * Added: Dropdown, Radio and Link input support for searching product fields
