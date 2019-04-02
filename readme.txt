@@ -21,10 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop =
+= 2.3 on April 1, 2019 =
 
+* **Gravity Forms 2.3 is now required**. If this affects you, please [let us know](mailto:support@gravityview.co?subject=Gravity Forms 2.3)
 * Added: Multi-Sorting! Example: Sort first by Last Name, then sort those results by First Name [Read more about multi-sorting](#TODO)
-* Added: [gvlogic logged_in="true"] support to easily check user login status
+* Added: `[gvlogic logged_in="true"]` support to easily check user login status
 * Added: Dropdown, Radio and Link input support for searching product fields
 * Fixed: Conditional Logic breaks in Edit Entry if the condition field is not present
 * Fixed: CSV output of list and fileupload fields
