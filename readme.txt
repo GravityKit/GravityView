@@ -38,9 +38,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 __Developer Updates:__
 
 * Added: `gravityview/search/created_by/text` filter to override dropdown and radio text in "created by" search UI
-* Modified: list and fileupload fields are now output as objects/arrays in REST API JSON
-* Modified: business_hours field support for CSV and JSON output
+* Added: `gravityview/approve_entries/after_submission` filter to prevent `is_approved` meta from being added automatically after entry creation
+* Modified: List and File Upload fields are now output as objects/arrays in REST API JSON
+* Modified: [Business Hours](https://wordpress.org/plugins/gravity-forms-business-hours/) field support in CSV and JSON output
 * Fixed: Fatal error when custom templates are loaded without `\GV\Template_Context`
+* Fixed: Potential PHP warning with PHP 7.2
 
 
 = 2.2.5 on February 4, 2019 =
