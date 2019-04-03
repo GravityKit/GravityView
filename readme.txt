@@ -23,17 +23,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 2.3 on April 2, 2019 =
 
-**Gravity Forms 2.3 is now required**. If this affects you, please [let us know](mailto:support@gravityview.co?subject=Gravity%20Forms%202.3%20Requirement)
+**Gravity Forms 2.3 is required**. Some functionality will not work if you are using Gravity Forms 2.2. If this affects you, please [let us know](mailto:support@gravityview.co?subject=Gravity%20Forms%202.3%20Requirement)
 
-* Added: Multi-Sorting! Example: Sort first by Last Name, then sort those results by First Name [Read more about multi-sorting](#TODO)
-* Added: `[gvlogic logged_in="true"]` support to easily check user login status
+* Added: Multi-Sorting! Example: Sort first by Last Name, then sort those results by First Name [Read more about multi-sorting](https://docs.gravityview.co/article/570-sorting-by-multiple-columns)
+    - Works great with our [DataTables extension](https://gravityview.co/extensions/datatables/), too!
+* Added: `[gvlogic logged_in="true"]` support to easily check user login status - [read how it works](https://docs.gravityview.co/article/252-gvlogic-shortcode#logged-in-parameter)
 * Added: Dropdown, Radio and Link input support for searching product fields
 * Fixed: Conditional Logic breaks in Edit Entry if the condition field is not present
-* Fixed: CSV output of list and fileupload fields
+* Fixed: CSV output of List and File Upload fields
 * Fixed: "Hide empty fields" setting not working Product and Quantity fields
-* Fixed: Month and day reversed in multi-input date fields
-* Fixed: Join issues with embedded Views
-* Fixed: Other entries empty text override was not working
+* Fixed: Month and day reversed in multi-input date search fields
+* Fixed: Join issues with embedded Views when using [Multiple Forms](https://gravityview.co/extensions/multiple-forms/)
+* Fixed: Other Entries empty text override was not working
 * Updated: 100% translated for Dutch, German, and French
 
 __Developer Updates:__
@@ -44,6 +45,7 @@ __Developer Updates:__
 * Modified: [Business Hours](https://wordpress.org/plugins/gravity-forms-business-hours/) field support in CSV and JSON output
 * Fixed: Fatal error when custom templates are loaded without `\GV\Template_Context`
 * Fixed: Potential PHP warning with PHP 7.2
+* Added notice for users to upgrade to PHP 5.6, since WordPress will be bumping the minimum version soon
 
 
 = 2.2.5 on February 4, 2019 =

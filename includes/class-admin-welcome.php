@@ -252,16 +252,16 @@ class GravityView_Welcome {
             <div class="feature-section col two-col" style="margin:0 0 2em 0; padding: 0;">
 
                 <div class="col col-1">
-                    <div class="media-container"><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gv-admin-installer' ) ); ?>"><img alt="Admin installer of GravityView plugins &amp; extensions" src="<?php echo plugins_url( 'assets/images/screenshots/installer.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></a></div>
-                    <h4 class="higher">Admin Installer</h4>
-                    <p>Download and manage all your GravityView plugins and extensions from one convenient place&mdash;you no longer need to download plugins from your GravityView Account page!</p>
-                    <p><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gv-admin-installer' ) ); ?>" class="button button-primary button-large">Check out the Installer</a></p>
+                    <div class="media-container"><img alt="Screenshot of multisort settings" src="<?php echo plugins_url( 'assets/images/screenshots/multisort.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
+                    <h4 class="higher">Multi-Sort</h4>
+                    <p>Sort your Views by multiple fields, like last name&hellip;<em>and then first name</em>.</p>
+                    <p><a href="https://docs.gravityview.co/article/570-sorting-by-multiple-columns" class="button button-primary button-large">Learn How to Use Multi-Sort</a></p>
                 </div>
                 <div class="col col-2">
-                    <div class="media-container"><img alt="Approval notifications" src="<?php echo plugins_url( 'assets/images/screenshots/approval-notifications.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
-                    <h4 class="higher">Approval Notifications</h4>
-                    <p>Notify users or administrators when entries have been approved or disapproved.</p>
-                    <p><a href="https://docs.gravityview.co/article/488-notification-when-entry-approved" class="button button-primary button-large">Learn How to Set Up</a></p>
+                    <div class="media-container"><img alt="[gvlogic logged_in]" src="<?php echo plugins_url( 'assets/images/screenshots/logged_in.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
+                    <h4 class="higher">Check logged-in status with <code>[gvlogic]</code></h4>
+                    <p>Show or hide content based on whether the user is logged-in. Even better? Works with the existing <code>[gvlogic]</code> comparisons 💯</p>
+                    <p><a href="https://docs.gravityview.co/article/252-gvlogic-shortcode#logged-in-parameter" class="button button-primary button-large">Learn About <code>logged_in</code></a></p>
                 </div>
             </div>
 
@@ -270,6 +270,38 @@ class GravityView_Welcome {
                 <div class="headline-feature" style="max-width: 100%">
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
+
+                <h3>2.3 on April 2, 2019</h3>
+
+                <p><strong>Gravity Forms 2.3 is required</strong>. Some functionality will not work if you are using Gravity Forms 2.2. If this affects you, please <a href="mailto:support@gravityview.co?subject=Gravity%20Forms%202.3%20Requirement">let us know</a></p>
+
+                <ul>
+                    <li>Added: Multi-Sorting! Example: Sort first by Last Name, then sort those results by First Name <a href="https://docs.gravityview.co/article/570-sorting-by-multiple-columns">Read more about multi-sorting</a>
+                        <ul>
+                            <li>Works great with our <a href="https://gravityview.co/extensions/datatables/">DataTables extension</a>, too!</li>
+                        </ul></li>
+                    <li>Added: <code>[gvlogic logged_in="true"]</code> support to easily check user login status - <a href="https://docs.gravityview.co/article/252-gvlogic-shortcode#logged-in-parameter">read how it works</a></li>
+                    <li>Added: Dropdown, Radio and Link input support for searching product fields</li>
+                    <li>Fixed: Conditional Logic breaks in Edit Entry if the condition field is not present</li>
+                    <li>Fixed: CSV output of List and File Upload fields</li>
+                    <li>Fixed: "Hide empty fields" setting not working Product and Quantity fields</li>
+                    <li>Fixed: Month and day reversed in multi-input date search fields</li>
+                    <li>Fixed: Join issues with embedded Views when using <a href="https://gravityview.co/extensions/multiple-forms/">Multiple Forms</a></li>
+                    <li>Fixed: Other Entries empty text override was not working</li>
+                    <li>Updated: 100% translated for Dutch, German, and French</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Added: <code>gravityview/search/created_by/text</code> filter to override dropdown and radio text in "created by" search UI</li>
+                    <li>Added: <code>gravityview/approve_entries/after_submission</code> filter to prevent <code>is_approved</code> meta from being added automatically after entry creation</li>
+                    <li>Modified: List and File Upload fields are now output as objects/arrays in REST API JSON</li>
+                    <li>Modified: <a href="https://wordpress.org/plugins/gravity-forms-business-hours/">Business Hours</a> field support in CSV and JSON output</li>
+                    <li>Fixed: Fatal error when custom templates are loaded without <code>\GV\Template_Context</code></li>
+                    <li>Fixed: Potential PHP warning with PHP 7.2</li>
+                    <li>Added notice for users to upgrade to PHP 5.6, since WordPress will be bumping the minimum version soon</li>
+                </ul>
 
                 <h3>2.2.5 on February 4, 2019</h3>
 
