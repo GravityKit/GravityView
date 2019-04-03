@@ -58,7 +58,7 @@ class GVLogic_Shortcode {
 
 	/**
 	 * Special logged_in condition.
-	 * @since develop
+	 * @since 2.3
 	 * @var bool
 	 */
 	var $logged_in = null;
