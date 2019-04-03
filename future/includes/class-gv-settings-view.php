@@ -111,9 +111,15 @@ class View_Settings extends Settings {
 				'value'             => 1,
 				'show_in_shortcode' => false,
 			),
-			'user_edit' => array(
-				'label'             => __( 'Allow User Edit', 'gravityview' ),
+			'edit_feeds' => array(
+				'label'             => __( 'Feeds', 'gravityview' ),
 				'group'             => 'default',
+				'type'              => 'checkbox',
+				'value'             => array(),
+				'show_in_shortcode' => false,
+			),
+			'user_edit' => array(
+				'label'             => __( 'Allow User Edit', 'gravityview' ), 'group'             => 'default',
 				'desc'              => __( 'Allow logged-in users to edit entries they created.', 'gravityview' ),
 				'value'             => 0,
 				'tooltip'           => __( 'Display "Edit Entry" fields to non-administrator users if they created the entry. Edit Entry fields will always be displayed to site administrators.', 'gravityview' ),
@@ -142,6 +148,7 @@ class View_Settings extends Settings {
 			'sort_field' => array(
 				'label'             => __( 'Sort by field', 'gravityview' ),
 				'type'              => 'select',
+				'desc'              => __( 'By default, entries are sorted by Entry ID.', 'gravityview' ),
 				'value'             => '',
 				'group'             => 'sort',
 				'options'           => array(
@@ -159,6 +166,30 @@ class View_Settings extends Settings {
 										'ASC'  => __( 'ASC', 'gravityview' ),
 										'DESC' => __( 'DESC', 'gravityview' ),
 				),
+				'show_in_shortcode' => true,
+			),
+			'sort_field_2' => array(
+				'label'             => __( 'Sort by secondary field', 'gravityview' ),
+				'type'              => 'select',
+				'value'             => '',
+				'group'             => 'sort',
+				'options'           => array(
+					''             => __( 'Default', 'gravityview' ),
+					'date_created' => __( 'Date Created', 'gravityview' ),
+				),
+				'requires_not'          => 'sort_direction][=RAND', // ][ is for toggleRequired, so it ends in []
+				'show_in_shortcode' => true,
+			),
+			'sort_direction_2' => array(
+				'label'             => __( 'Secondary sort direction', 'gravityview' ),
+				'type'              => 'select',
+				'value'             => 'ASC',
+				'group'             => 'sort',
+				'options'           => array(
+					'ASC'  => __( 'ASC', 'gravityview' ),
+					'DESC' => __( 'DESC', 'gravityview' ),
+				),
+				'requires_not'      => 'sort_direction][=RAND', // ][ is for toggleRequired, so it ends in []
 				'show_in_shortcode' => true,
 			),
 			'sort_columns' => array(

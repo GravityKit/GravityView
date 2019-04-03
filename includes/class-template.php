@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
-	require( GRAVITYVIEW_DIR . 'includes/lib/class-gamajo-template-loader.php' );
+	require( GRAVITYVIEW_DIR . 'future/lib/class-gamajo-template-loader.php' );
 }
 
 class GravityView_View extends \GV\Gamajo_Template_Loader {

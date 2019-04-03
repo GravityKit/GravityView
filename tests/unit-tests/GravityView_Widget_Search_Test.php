@@ -540,9 +540,10 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'field_filters' => array(
 				'mode' => 'any',
 				array(
-					'key' => 3,
+					'key' => '3',
 					'value' => '2018-02-01',
 					'form_id' => $form['id'],
+					'operator' => 'is'
 				),
 			),
 		);
@@ -1111,6 +1112,77 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$_GET['gv_start'] = '01/06/2019';
 		$_GET['gv_end']   = '01/06/2019';
 		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
+
+		$_GET = array();
+	}
+
+	public function test_operator_url_overrides() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 16, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"16","input":"input_text"}]',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$hello_world = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello world',
+		) );
+
+		$hello = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello',
+		) );
+
+		$world = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'world',
+		) );
+
+		$_GET = array();
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 3, $entries );
+
+		$_GET['filter_16'] = 'hello';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 2, $entries );
+
+		$_GET['filter_16'] = 'hello';
+		$_GET['filter_16|op'] = '!='; // Override doesn't work, as '!=' is not in whitelist
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 2, $entries );
+		$this->assertEquals( $hello['id'], $entries[0]['id'] );
+		$this->assertEquals( $hello_world['id'], $entries[1]['id'] );
+
+		add_filter( 'gravityview/search/operator_whitelist', $callback = function() {
+			return array( '!=' );
+		} );
+
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 2, $entries );
+		$this->assertEquals( $world['id'], $entries[0]['id'] );
+		$this->assertEquals( $hello_world['id'], $entries[1]['id'] );
+
+		remove_filter( 'gravityview/search/operator_whitelist', $callback );
 
 		$_GET = array();
 	}

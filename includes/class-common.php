@@ -851,12 +851,19 @@ class GVCommon {
 		}
 
 		if ( $view && gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			$view_form_id = $view->form->ID;
+
+			if ( $view->joins ) {
+				if ( in_array( (int)$entry['form_id'], array_keys( $view::get_joined_forms( $view->ID ) ), true ) ) {
+					$view_form_id = $entry['form_id'];
+				}
+			}
 
 			/**
 			 * Check whether the entry is in the entries subset by running a modified query.
 			 */
-			add_action( 'gravityview/view/query', $entry_subset_callback = function( &$query, $view, $request ) use ( $entry ) {
-				$_tmp_query       = new \GF_Query( $view->form->ID, array(
+			add_action( 'gravityview/view/query', $entry_subset_callback = function( &$query, $view, $request ) use ( $entry, $view_form_id ) {
+				$_tmp_query       = new \GF_Query( $view_form_id, array(
 					'field_filters' => array(
 						'mode' => 'all',
 						array(
@@ -885,7 +892,7 @@ class GVCommon {
 				);
 
 				return $criteria;
-			});
+			} );
 
 			$entries = $view->get_entries()->all();
 
@@ -898,7 +905,7 @@ class GVCommon {
 			}
 
 			// This entry is on a View with joins
-			if( $entries[0]->is_multi() ) {
+			if ( $entries[0]->is_multi() ) {
 
 				$multi_entry_ids = array();
 
@@ -906,7 +913,7 @@ class GVCommon {
 					$multi_entry_ids[] = (int) $multi_entry->ID;
 				}
 
-				if( ! in_array( (int) $entry['id'], $multi_entry_ids, true ) ) {
+				if ( ! in_array( (int) $entry['id'], $multi_entry_ids, true ) ) {
 					remove_action( 'gravityview/view/query', $entry_subset_callback );
 					return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
 				}

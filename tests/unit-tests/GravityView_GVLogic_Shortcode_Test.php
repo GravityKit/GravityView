@@ -331,4 +331,100 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 		);
 	}
 
+	function test_gv_shortcode_loggedin() {
+		$form_id = \GFAPI::add_form( array(
+			'title'  => __FUNCTION__,
+			'fields' => array(
+				array( 'id' => 1, 'label' => 'Text', 'type'  => 'text' ),
+			),
+		) );
+		$form = \GV\GF_Form::by_id( $form_id );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form_id,
+			'template_id' => 'table',
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'content' => 'You are here.',
+					),
+				),
+			)
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form_id,
+			'status' => 'active',
+			'1' => 'hello world',
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$administrator = $this->factory->user->create( array(
+				'user_login' => md5( microtime() ),
+				'user_email' => md5( microtime() ) . '@gravityview.tests',
+				'role' => 'administrator' )
+		);
+
+		wp_set_current_user( 0 );
+
+		$renderer = new \GV\Field_Renderer();
+		$field = \GV\Internal_Field::by_id( 'custom' );
+
+		$field->content = '[gvlogic logged_in="true"]logged in[else]not logged in[/gvlogic]';
+		$this->assertEquals( 'not logged in', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic logged_in]logged in[else]not logged in[/gvlogic]';
+		$this->assertEquals( 'not logged in', $renderer->render( $field, $view, null, $entry ) );
+
+		wp_set_current_user( $administrator );
+
+		$this->assertEquals( 'logged in', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic logged_in="false"]not logged in[else]logged in[/gvlogic]';
+		$this->assertEquals( 'logged in', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic logged_in]not logged in[else]logged in[/gvlogic]';
+		$this->assertEquals( 'logged in', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic logged_in]not logged in[else]logged in[/gvlogic]';
+		$this->assertEquals( 'logged in', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic logged_in="no"]not logged in[else]logged in[/gvlogic]';
+		$this->assertEquals( 'logged in', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic logged_in="true"]logged in[else]not logged in[/gvlogic]';
+		$this->assertEquals( 'logged in', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic if="{Example:1}" isnot="hello world"]not passed: {Example:1}[else]passed[/gvlogic]';
+		$this->assertEquals( 'passed', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '{Example:1}';
+		$this->assertEquals( 'hello world', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic if="{Example:1}" is="hello world"]passed[else]not passed: {Example:1}[/gvlogic]';
+		$this->assertEquals( 'passed', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic if="{Text:1}" is="hello world" logged_in="false"]not logged in or not hello world[else]logged in and hello world[/gvlogic]';
+		$this->assertEquals( 'logged in and hello world', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic if="{example:1}" is="hello world" logged_in="1"]logged in and hello world[else]not logged in or not hello world[/gvlogic]';
+		$this->assertEquals( 'logged in and hello world', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic if="asdasdasdas" is="hello world" logged_in="1" else="inline else for the win"]logged in and hello world[/gvlogic]';
+		$this->assertEquals( 'inline else for the win', $renderer->render( $field, $view, null, $entry ), 'testing inline else' );
+
+		wp_set_current_user( 0 );
+
+		$field->content = '[gvlogic logged_in="true"]logged in[else]not logged in[/gvlogic]';
+		$this->assertEquals( 'not logged in', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic if="{example:1}" is="hello world" logged_in="0"]not logged in and hello world[else]logged in or not hello world[/gvlogic]';
+		$this->assertEquals( 'not logged in and hello world', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic if="{example:1}" isnot="hello world" logged_in="0"]not logged in and hello world[else]logged in or not hello world[/gvlogic]';
+		$this->assertEquals( 'logged in or not hello world', $renderer->render( $field, $view, null, $entry ) );
+	}
+
 }

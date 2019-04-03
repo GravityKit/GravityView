@@ -182,7 +182,17 @@ class Views_Route extends Route {
 			} else if ( $class ) {
 				$return[ $field_id ] = $renderer->render( $field, $view, $source, $entry, $r, $class );
 			} else {
-				$return[ $field_id ] = $field->get_value( $view, $source, $entry, $r );
+				switch ( $field->type ):
+					case 'list':
+						$return[ $field_id ] = unserialize( $field->get_value( $view, $source, $entry, $r ) );
+						break;
+					case 'fileupload':
+					case 'business_hours':
+						$return[ $field_id ] = json_decode( $field->get_value( $view, $source, $entry, $r ) );
+						break;
+					default;
+						$return[ $field_id ] = $field->get_value( $view, $source, $entry, $r );
+				endswitch;
 			}
 		}
 
@@ -293,9 +303,16 @@ class Views_Route extends Route {
 
 			fflush( $csv );
 
-			echo rtrim( ob_get_clean() );
+			$data = rtrim( ob_get_clean() );
 
-			add_filter( 'rest_pre_serve_request', '__return_true' );
+			add_filter( 'rest_pre_serve_request', function() use ( $data ) {
+				echo $data;
+				return true;
+			} );
+
+			if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) {
+				echo $data; // rest_pre_serve_request is not called in tests
+			}
 
 			return $response;
 		}

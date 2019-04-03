@@ -57,6 +57,13 @@ class GVLogic_Shortcode {
 	var $if = '';
 
 	/**
+	 * Special logged_in condition.
+	 * @since 2.3
+	 * @var bool
+	 */
+	var $logged_in = null;
+
+	/**
 	 * The right side of the comparison
 	 * @var string
 	 */
@@ -208,18 +215,20 @@ class GVLogic_Shortcode {
 
 		$this->parse_atts();
 
-		// We need an "if"
-		if( false === $this->if ) {
+		// Logged in operation
+		if ( ! is_null( $this->logged_in ) ) {
+			$this->setup_operation_and_comparison();
+		} else if ( false === $this->if ) {
 			gravityview()->log->error( '$atts->if is empty.', array( 'data' => $this->passed_atts ) );
 			return null;
-		}
+		} else {
+			$setup = $this->setup_operation_and_comparison();
 
-		$setup = $this->setup_operation_and_comparison();
-
-		// We need an operation and comparison value
-		if( ! $setup ) {
-			gravityview()->log->error( 'No valid operators were passed.', array( 'data' => $this->atts ) );
-			return null;
+			// We need an operation and comparison value
+			if( ! $setup ) {
+				gravityview()->log->error( 'No valid operators were passed.', array( 'data' => $this->atts ) );
+				return null;
+			}
 		}
 
 		// Check if it's a match
@@ -257,7 +266,22 @@ class GVLogic_Shortcode {
 	 * @return void
 	 */
 	private function set_is_match() {
-		$this->is_match = GVCommon::matches_operation( $this->if, $this->comparison, $this->operation );
+
+		$comparison_match = GVCommon::matches_operation( $this->if, $this->comparison, $this->operation );
+
+		if ( is_null( $this->logged_in ) ) {
+			$this->is_match = $comparison_match;
+			return;
+		}
+
+		$logged_in_match = ! $this->logged_in ^ is_user_logged_in(); // XNOR
+
+		// Only logged-in match
+		if( 1 === sizeof( $this->passed_atts ) ) {
+			$this->is_match = $logged_in_match;
+		} else {
+			$this->is_match = $logged_in_match && $comparison_match;
+		}
 	}
 
 	/**
@@ -381,6 +405,7 @@ class GVLogic_Shortcode {
 		$supported = array(
 			'if' => false,
 			'else' => false,
+			'logged_in' => null,
 		);
 
 		$supported_args = $supported + $this->get_operators( true );
@@ -393,6 +418,15 @@ class GVLogic_Shortcode {
 
 		// Strip whitespace if it's not default false
 		$this->if = ( isset( $this->atts['if'] ) && is_string( $this->atts['if'] ) ) ? trim( $this->atts['if'] ) : false;
+
+		if ( isset( $this->atts['logged_in'] ) ) {
+			// Truthy
+			if ( in_array( strtolower( $this->atts['logged_in'] ), array( '0', 'false', 'no' ) ) ) {
+				$this->logged_in = false;
+			} else {
+				$this->logged_in = true;
+			}
+		}
 
 		/**
 		 * @action `gravityview/gvlogic/parse_atts/after` Modify shortcode attributes after it's been parsed

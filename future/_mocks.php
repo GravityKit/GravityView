@@ -790,3 +790,11 @@ add_action( 'gravityview/template/after', function( $gravityview = null ) {
 		}
 	}
 } );
+
+add_filter( 'gravityview/query/is_null_condition', function() {
+	if ( ! class_exists( $class = '\GV\Mocks\GF_Query_Condition_IS_NULL' ) ) {
+		require_once gravityview()->plugin->dir( 'future/_mocks.isnull.php' );
+	}
+
+	return $class;
+} );

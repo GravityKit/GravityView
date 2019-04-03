@@ -1043,37 +1043,43 @@ class GravityView_frontend {
 		$sort_field_id = isset( $_GET['sort'] ) ? $_GET['sort'] : \GV\Utils::get( $args, 'sort_field' );
 		$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : \GV\Utils::get( $args, 'sort_direction' );
 
-		$sort_field_id = self::_override_sorting_id_by_field_type( $sort_field_id, $form_id );
-
 		if ( ! empty( $sort_field_id ) ) {
+			if ( is_array( $sort_field_id ) ) {
+				$sort_direction = array_values( $sort_field_id );
+				$sort_field_id = array_keys( $sort_field_id );
+
+				$sort_field_id = reset( $sort_field_id );
+				$sort_direction = reset( $sort_direction );
+			}
+
+			$sort_field_id = self::_override_sorting_id_by_field_type( $sort_field_id, $form_id );
 			$sorting = array(
 				'key' => $sort_field_id,
 				'direction' => strtolower( $sort_direction ),
 				'is_numeric' => GVCommon::is_field_numeric( $form_id, $sort_field_id )
 			);
-		}
 
-		if ( 'RAND' === $sort_direction ) {
+			if ( 'RAND' === $sort_direction ) {
 
-			$form = GFAPI::get_form( $form_id );
+				$form = GFAPI::get_form( $form_id );
 
-			// Get the first GF_Field field ID, set as the key for entry randomization
-			if( ! empty( $form['fields'] ) ) {
+				// Get the first GF_Field field ID, set as the key for entry randomization
+				if ( ! empty( $form['fields'] ) ) {
 
-				/** @var GF_Field $field */
-				foreach ( $form['fields'] as $field ) {
+					/** @var GF_Field $field */
+					foreach ( $form['fields'] as $field ) {
+						if ( ! is_a( $field, 'GF_Field' ) ) {
+							continue;
+						}
 
-					if( ! is_a( $field, 'GF_Field' ) ) {
-						continue;
+						$sorting = array(
+							'key'        => $field->id,
+							'is_numeric' => false,
+							'direction'  => 'RAND',
+						);
+
+						break;
 					}
-
-					$sorting = array(
-						'key'        => $field->id,
-						'is_numeric' => false,
-						'direction'  => 'RAND',
-					);
-
-					break;
 				}
 			}
 		}
@@ -1096,12 +1102,20 @@ class GravityView_frontend {
 	 * @since 1.7.4
 	 * @internal Hi developer! Although this is public, don't call this method; we're going to replace it.
 	 *
-	 * @param int|string $sort_field_id Field used for sorting (`id` or `1.2`)
+	 * @param int|string|array $sort_field_id Field used for sorting (`id` or `1.2`), or an array for multisorts
 	 * @param int $form_id GF Form ID
 	 *
 	 * @return string Possibly modified sorting ID
 	 */
 	public static function _override_sorting_id_by_field_type( $sort_field_id, $form_id ) {
+
+		if ( is_array( $sort_field_id ) ) {
+			$modified_ids = array();
+			foreach ( $sort_field_id as $_sort_field_id ) {
+				$modified_ids []= self::_override_sorting_id_by_field_type( $_sort_field_id, $form_id );
+			}
+			return $modified_ids;
+		}
 
 		$form = gravityview_get_form( $form_id );
 

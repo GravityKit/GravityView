@@ -3,7 +3,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	https://gravityview.co
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:          	2.2.5
+ * Version:          	2.3
  * Author:            	GravityView
  * Author URI:        	https://gravityview.co
  * Text Domain:       	gravityview
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * The plugin version.
  */
-define( 'GV_PLUGIN_VERSION', '2.2.5' );
+define( 'GV_PLUGIN_VERSION', '2.3' );
 
 /**
  * Full path to the GravityView file
@@ -42,7 +42,7 @@ define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
 /**
  * GravityView requires at least this version of Gravity Forms to function properly.
  */
-define( 'GV_MIN_GF_VERSION', '2.1' );
+define( 'GV_MIN_GF_VERSION', '2.3' );
 
 /**
  * GravityView requires at least this version of WordPress to function properly.
@@ -61,13 +61,13 @@ define( 'GV_MIN_PHP_VERSION', '5.3.0' );
  * @since 1.19.2
  * @var string|false
  */
-define( 'GV_FUTURE_MIN_PHP_VERSION', '5.4.8' );
+define( 'GV_FUTURE_MIN_PHP_VERSION', '5.6.0' );
 
 /**
  * GravityView will soon require at least this version of Gravity Forms to function properly.
  * @since 1.19.4
  */
-define( 'GV_FUTURE_MIN_GF_VERSION', '2.3.0' );
+define( 'GV_FUTURE_MIN_GF_VERSION', '2.4.0' );
 
 /**
  * The future is here and now.

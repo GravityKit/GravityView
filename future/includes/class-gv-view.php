@@ -356,13 +356,13 @@ class View implements \ArrayAccess {
 						return __( 'You are not allowed to view this content.', 'gravityview' );
 					}
 				}
-			}
 
-			$error = \GVCommon::check_entry_display( $entry->as_entry(), $view );
+				$error = \GVCommon::check_entry_display( $e->as_entry(), $view );
 
-			if ( is_wp_error( $error ) ) {
-				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing: {message}', array( 'entry_id' => $entry->ID, 'message' => $error->get_error_message() ) );
-				return __( 'You are not allowed to view this content.', 'gravityview' );
+				if ( is_wp_error( $error ) ) {
+					gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing: {message}', array( 'entry_id' => $e->ID, 'message' => $error->get_error_message() ) );
+					return __( 'You are not allowed to view this content.', 'gravityview' );
+				}
 			}
 
 			$renderer = new Entry_Renderer();
@@ -907,10 +907,24 @@ class View implements \ArrayAccess {
 	public function get_entries( $request = null ) {
 		$entries = new \GV\Entry_Collection();
 		if ( $this->form ) {
+			$parameters = $this->settings->as_atts();
+
+			/**
+			 * Remove multiple sorting before calling legacy filters.
+			 * This allows us to fake it till we make it.
+			 */
+			if ( ! empty( $parameters['sort_field'] ) && is_array( $parameters['sort_field'] ) ) {
+				$has_multisort = true;
+				$parameters['sort_field'] = reset( $parameters['sort_field'] );
+				if ( ! empty( $parameters['sort_direction'] ) && is_array( $parameters['sort_direction'] ) ) {
+					$parameters['sort_direction'] = reset( $parameters['sort_direction'] );
+				}
+			}
+
 			/**
 			 * @todo: Stop using _frontend and use something like $request->get_search_criteria() instead
 			 */
-			$parameters = \GravityView_frontend::get_view_entries_parameters( $this->settings->as_atts(), $this->form->ID );
+			$parameters = \GravityView_frontend::get_view_entries_parameters( $parameters, $this->form->ID );
 			$parameters['context_view_id'] = $this->ID;
 			$parameters = \GVCommon::calculate_get_entries_criteria( $parameters, $this->form->ID );
 
@@ -946,6 +960,42 @@ class View implements \ArrayAccess {
 				$query_class = $this->get_query_class();
 				$query = new $query_class( $this->form->ID, $parameters['search_criteria'], $parameters['sorting'] );
 
+				/**
+				 * Apply multisort.
+				 */
+				if ( ! empty( $has_multisort ) ) {
+					$atts = $this->settings->as_atts();
+
+					if ( $this->settings->get( 'sort_columns' ) && ! empty( $_GET['sort'] ) && is_array( $_GET['sort'] ) ) {
+						$sort_field_ids = array_keys( $_GET['sort'] );
+						$sort_directions = array_values( $_GET['sort'] );
+					} else {
+						$sort_field_ids = \GV\Utils::get( $atts, 'sort_field', array() );
+						$sort_directions = \GV\Utils::get( $atts, 'sort_direction', array() );
+					}
+
+					$skip_first = false;
+
+					foreach ( (array) $sort_field_ids as $key => $sort_field_id ) {
+						if ( ! $skip_first ) {
+							$skip_first = true; // Skip the first one, it's already in the query
+							continue;
+						}
+
+						$sort_field_id = \GravityView_frontend::_override_sorting_id_by_field_type( $sort_field_id, $this->form->ID );
+						$sort_direction = strtoupper( \GV\Utils::get( $sort_directions, $key, 'ASC' ) );
+
+						if ( ! empty( $sort_field_id ) ) {
+							$order = new \GF_Query_Column( $sort_field_id, $this->form->ID );
+							if ( \GVCommon::is_field_numeric( $this->form->ID, $sort_field_id ) ) {
+								$order = \GF_Query_Call::CAST( $order, defined( 'GF_Query::TYPE_DECIMAL' ) ? GF_Query::TYPE_DECIMAL : GF_Query::TYPE_SIGNED );
+							}
+
+							$query->order( $order, $sort_direction );
+						}
+					}
+				}
+
 				$query->limit( $parameters['paging']['page_size'] )
 					->offset( ( ( $page - 1 ) * $parameters['paging']['page_size'] ) + $this->settings->get( 'offset' ) );
 
@@ -973,6 +1023,38 @@ class View implements \ArrayAccess {
 							$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
 						}
 
+						/**
+						 * This is a temporary stub filter, until GF_Query supports NULL conditions.
+						 * Do not use! This filter will be removed.
+						 */
+						if ( defined( 'GF_Query_Condition::NULL' ) ) {
+							$is_null_condition_native = true;
+						} else {
+							$is_null_condition_class = apply_filters( 'gravityview/query/is_null_condition', null );
+							$is_null_condition_native = false;
+						}
+
+						// Filter to active entries only
+						$condition = new \GF_Query_Condition(
+							new \GF_Query_Column( 'status', $join->join_on->ID ),
+							\GF_Query_Condition::EQ,
+							new \GF_Query_Literal( 'active' )
+						);
+
+						if ( $is_null_condition_native ) {
+							$condition = \GF_Query_Condition::_or( $condition, new \GF_Query_Condition(
+								new \GF_Query_Column( 'status', $join->join_on->ID ),
+								\GF_Query_Condition::IS,
+								\GF_Query_Condition::NULL
+							) );
+						} else if ( ! is_null( $is_null_condition_class ) ) {
+							$condition = \GF_Query_Condition::_or( $condition, new $is_null_condition_class(
+								new \GF_Query_Column( 'status', $join->join_on->ID )
+							) );
+						}
+
+						$q = $query->_introspect();
+						$query->where( \GF_Query_Condition::_and( $q['where'], $condition ) );
 
 						if ( $this->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
 
@@ -982,6 +1064,18 @@ class View implements \ArrayAccess {
 								\GF_Query_Condition::EQ,
 								new \GF_Query_Literal( \GravityView_Entry_Approval_Status::APPROVED )
 							);
+
+							if ( $is_null_condition_native ) {
+								$condition = \GF_Query_Condition::_or( $condition, new \GF_Query_Condition(
+									new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
+									\GF_Query_Condition::IS,
+									\GF_Query_Condition::NULL
+								) );
+							} else if ( ! is_null( $is_null_condition_class ) ) {
+								$condition = \GF_Query_Condition::_or( $condition, new $is_null_condition_class(
+									new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID )
+								) );
+							}
 
 							$query_parameters = $query->_introspect();
 
@@ -1163,6 +1257,11 @@ class View implements \ArrayAccess {
 					->offset( $this->settings->get( 'offset' ) )
 					->limit( $parameters['paging']['page_size'] )
 					->page( $page );
+
+				if ( ! empty( $parameters['sorting'] ) && is_array( $parameters['sorting'] && ! isset( $parameters['sorting']['key'] ) ) ) {
+					// Pluck off multisort arrays
+					$parameters['sorting'] = $parameters['sorting'][0];
+				}
 
 				if ( ! empty( $parameters['sorting'] ) && ! empty( $parameters['sorting']['key'] ) ) {
 					$field = new \GV\Field();

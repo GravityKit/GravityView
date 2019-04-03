@@ -194,7 +194,20 @@ class Legacy_Override_Template extends \GV\Gamajo_Template_Loader {
 		} else {
 			$entries = $this->view->get_entries( $request );
 
-			$parameters = \GravityView_frontend::get_view_entries_parameters( $this->view->settings->as_atts(), $this->view->form->ID );
+			/**
+			 * Remove multiple sorting before calling legacy filters.
+			 * This allows us to fake it till we make it.
+			 */
+			$parameters = $this->view->settings->as_atts();
+			if ( ! empty( $parameters['sort_field'] ) && is_array( $parameters['sort_field'] ) ) {
+				$has_multisort = true;
+				$parameters['sort_field'] = reset( $parameters['sort_field'] );
+				if ( ! empty( $parameters['sort_direction'] ) && is_array( $parameters['sort_direction'] ) ) {
+					$parameters['sort_direction'] = reset( $parameters['sort_direction'] );
+				}
+			}
+
+			$parameters = \GravityView_frontend::get_view_entries_parameters( $parameters, $this->view->form->ID );
 
 			global $post;
 
