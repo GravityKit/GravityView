@@ -129,7 +129,15 @@ class View_Table_Template extends View_Template {
 
     	$url = add_query_arg( $sort_args[0], $sort_args[1], $url );
 
-		return '<a href="'. esc_url_raw( $url ) .'" data-multisort-href="'. esc_url_raw( $multisort_url ) . '" class="'. $class .'" ></a>&nbsp;'. $column_label;
+		$return = '<a href="'. esc_url_raw( $url ) .'"';
+
+		if ( ! empty( $multisort_url ) ) {
+			$return .= ' data-multisort-href="'. esc_url_raw( $multisort_url ) . '"';
+		}
+
+		$return .= ' class="'. $class .'" ></a>&nbsp;'. $column_label;
+
+		return $return;
 	}
 
 	/**
