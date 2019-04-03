@@ -63,9 +63,11 @@ class View_Table_Template extends View_Template {
 
 		$directions = $context->view->settings->get( 'sort_direction' );
 
-		if ( Utils::_GET( 'sort' ) ) {
-			if ( is_array( Utils::_GET( 'sort' ) ) ) {
-				foreach ( (array)Utils::_GET( 'sort' ) as $key => $direction ) {
+		$sorts = Utils::_GET( 'sort' );
+
+		if ( $sorts ) {
+			if ( is_array( $sorts ) ) {
+				foreach ( (array)$sorts as $key => $direction ) {
 					if ( $key == $context->field->ID ) {
 						$sorting['key'] = $context->field->ID;
 						$sorting['direction'] = strtolower( $direction );
@@ -73,17 +75,17 @@ class View_Table_Template extends View_Template {
 					}
 				}
 			} else {
-				if ( Utils::_GET( 'sort' ) == $context->field->ID ) {
+				if ( $sorts == $context->field->ID ) {
 					$sorting['key'] = $context->field->ID;
-					$sorting['direction'] = strtolower( Utils::_GET( 'dir', 'asc' ) );
+					$sorting['direction'] = strtolower( Utils::_GET( 'dir', '' ) );
 				}
 			}
 		} else {
 			foreach ( (array)$context->view->settings->get( 'sort_field', array() ) as $i => $sort_field ) {
 				if ( $sort_field == $context->field->ID ) {
 					$sorting['key'] = $sort_field;
-					$sorting['direction'] = strtolower( Utils::get( $directions, $i, 'asc' ) );
-					break;
+					$sorting['direction'] = strtolower( Utils::get( $directions, $i, '' ) );
+					break; // Only get the first sort
 				}
 			}
 		}
@@ -97,38 +99,86 @@ class View_Table_Template extends View_Template {
 			'asc'
 		);
 
+		// If we are already sorting by the current field...
 		if ( ! empty( $sorting['key'] ) && (string) $sort_field_id === (string) $sorting['key'] ) {
-			//toggle sorting direction.
-			if ( 'asc' === $sorting['direction'] ) {
-				$sort_args[1] = 'desc';
-				$class .= ' gv-icon-sort-desc';
-			} else {
-				$sort_args[1] = 'asc';
-				$class .= ' gv-icon-sort-asc';
-			}
+
+		    switch( $sorting['direction'] ) {
+		        // No sort
+                case '':
+	                $sort_args[1] = 'asc';
+	                $class .= ' gv-icon-caret-up-down';
+                    break;
+                case 'desc':
+	                $sort_args[1] = '';
+	                $class .= ' gv-icon-sort-asc';
+	                break;
+                case 'asc':
+                default:
+                    $sort_args[1] = 'desc';
+                    $class .= ' gv-icon-sort-desc';
+                    break;
+            }
+
 		} else {
 			$class .= ' gv-icon-caret-up-down';
 		}
 
 		$url = remove_query_arg( array( 'pagenum' ) );
 		$url = remove_query_arg( 'sort', $url );
-		if ( is_array( $sorts = Utils::_GET( 'sort' ) ) ) {
-			if ( ! in_array( $context->field->ID, $keys = array_keys( $sorts ) ) ) {
-				if ( count( $keys ) ) {
-					$url = add_query_arg( sprintf( 'sort[%s]', end( $keys ) ), $_GET['sort'][ end( $keys ) ], $url );
-					$url = add_query_arg( $sort_args[0], $sort_args[1], $url );
-				} else {
-					$url = add_query_arg( $sort_args[0], $sort_args[1], $url );
-				}
-			} else {
-				$sorts[ $context->field->ID ] = $sort_args[1];
-				$url = add_query_arg( array( 'sort' => $sorts ), $url );
-			}
-		} else {
-			$url = add_query_arg( $sort_args[0], $sort_args[1], $url );
+		$multisort_url = self::_get_multisort_url( $url, $sort_args, $context->field->ID );
+
+    	$url = add_query_arg( $sort_args[0], $sort_args[1], $url );
+
+		return '<a href="'. esc_url_raw( $url ) .'" data-multisort-href="'. esc_url_raw( $multisort_url ) . '" class="'. $class .'" ></a>&nbsp;'. $column_label;
+	}
+
+	/**
+     * Get the multi-sort URL used in the sorting links
+     *
+     * @todo Consider moving to Utils?
+     *
+     * @since 2.3
+     *
+     * @see add_columns_sort_links
+	 * @param string $url Single-sort URL
+	 * @param array $sort_args Single sorting for rules, in [ field_id, dir ] format
+     * @param string|int $field_id ID of the current field being displayed
+     *
+     * @return string Multisort URL, if there are multiple sorts. Otherwise, existing $url
+	 */
+	static public function _get_multisort_url( $url, $sort_args, $field_id ) {
+
+		$sorts = Utils::_GET( 'sort' );
+
+		if ( ! is_array( $sorts ) ) {
+            return $url;
 		}
 
-		return '<a href="'. esc_url_raw( $url ) .'" class="'. $class .'" ></a>&nbsp;'. $column_label;
+        $multisort_url = $url;
+
+		// If the field has already been sorted by, add the field to the URL
+        if ( ! in_array( $field_id, $keys = array_keys( $sorts ) ) ) {
+            if ( count( $keys ) ) {
+                $multisort_url = add_query_arg( sprintf( 'sort[%s]', end( $keys ) ), $sorts[ end( $keys ) ], $multisort_url );
+                $multisort_url = add_query_arg( $sort_args[0], $sort_args[1], $multisort_url );
+            } else {
+                $multisort_url = add_query_arg( $sort_args[0], $sort_args[1], $multisort_url );
+            }
+        }
+        // Otherwise, we are just updating the sort order
+        else {
+
+            // Pass empty value to unset
+            if( '' === $sort_args[1] ) {
+	            unset( $sorts[ $field_id ] );
+            } else {
+	            $sorts[ $field_id ] = $sort_args[1];
+            }
+
+            $multisort_url = add_query_arg( array( 'sort' => $sorts ), $multisort_url );
+        }
+
+		return $multisort_url;
 	}
 
 	/**

@@ -4414,7 +4414,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$view->settings->update( array( 'sort_columns' => 1 ) );
 
-		$expected = sprintf( '<th id="gv-field-%1$d-1" class="gv-field-%1$d-1" data-label="This is field one"><span class="gv-field-label"><a href="?sort%%5B1%%5D=asc" class="gv-sort gv-icon-caret-up-down" ></a>&nbsp;This is field one</span></th><th id="gv-field-%1$d-2" class="gv-field-%1$d-2" data-label="This is field two"><span class="gv-field-label"><a href="?sort%%5B2%%5D=asc" class="gv-sort gv-icon-caret-up-down" ></a>&nbsp;This is field two</span></th>', $view->form->ID );
+		$expected = sprintf( '<th id="gv-field-%1$d-1" class="gv-field-%1$d-1" data-label="This is field one"><span class="gv-field-label"><a href="?sort%%5B1%%5D=asc" data-multisort-href="?sort%%5B1%%5D=asc" class="gv-sort gv-icon-caret-up-down" ></a>&nbsp;This is field one</span></th><th id="gv-field-%1$d-2" class="gv-field-%1$d-2" data-label="This is field two"><span class="gv-field-label"><a href="?sort%%5B2%%5D=asc" data-multisort-href="?sort%%5B2%%5D=asc" class="gv-sort gv-icon-caret-up-down" ></a>&nbsp;This is field two</span></th>', $view->form->ID );
 		ob_start(); $template->the_columns();
 		$this->assertEquals( $expected, ob_get_clean() );
 
@@ -4432,6 +4432,92 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( '<tr class="hello-button" data-row="1" onclick="alert(&quot;hello :)&quot;);">', $output );
 
 		remove_all_filters( 'gravityview/template/table/entry/row/attributes' );
+	}
+
+	/**
+	 * @covers \GV\View_Table_Template::_get_multisort_url
+	 */
+	public function test__get_multisort_url() {
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form->ID ) );
+		add_filter( 'gravityview/configuration/fields', function( $fields ) {
+			return array(
+				'directory_table-columns' => array(
+					array(
+						'id' => 1,
+                        'label' => 'This is field one',
+					),
+					array(
+						'id' => 2,
+                        'custom_label' => 'This is field two',
+					),
+				),
+			);
+		} );
+		$view = \GV\View::by_id( $view->ID );
+		remove_all_filters( 'gravityview/configuration/fields' );
+
+		$request = new \GV\Mock_Request();
+		gravityview()->request = $request;
+		$request->returns['is_view'] = $view;
+
+		$template = new \GV\View_Table_Template( $view, $view->form->entries, $request );
+
+		$gv_field = new \GV\Field();
+		$gv_field->ID = 1;
+
+		$url = $template->_get_multisort_url( '/example/', array( '1', 'asc' ), '1' );
+
+		$this->assertEquals( '/example/', $url );
+
+		$_GET = array();
+
+		$_GET['sort'] = array( '1' => 'asc' );
+		$url = $template->_get_multisort_url( '/example/', array( '1', 'desc' ), '1' );
+		$this->assertEquals( '/example/?sort[1]=desc', urldecode( $url ) );
+
+		// Sorting by first name, desc
+		$_GET['sort'] = array( '1' => 'desc' );
+		// So the link shows asc
+		$url = $template->_get_multisort_url( '/example/', array( 'sort[1]', 'asc' ), '1' );
+		$this->assertEquals( '/example/?sort[1]=asc', urldecode( $url ) );
+
+
+		// Sorting by last name asc
+		$_GET['sort'] = array( '2' => 'desc' );
+		// And if we were just single-sorting, we would expect to be sorted by default values
+		$url = $template->_get_multisort_url( '/example/', array( 'sort[1]', 'asc' ), '1' );
+
+		// But since we're multisorting, I expect sorting by last name desc, then by first name asc
+		$this->assertEquals( '/example/?sort[2]=desc&sort[1]=asc', urldecode( $url ) );
+
+
+		// Sorting by last name asc
+		$_GET['sort'] = array(
+            '2' => 'desc',
+            '1' => 'asc',
+        );
+		// And if we were just single-sorting, we would expect to be sorted by default values
+		$url = $template->_get_multisort_url( '/example/', array( 'sort[1]', 'desc' ), '1' );
+
+		// But since we're multisorting, I expect sorting by last name desc, then by first name asc
+		$this->assertEquals( '/example/?sort[2]=desc&sort[1]=desc', urldecode( $url ) );
+
+		// Sorting by last name asc
+		$_GET['sort'] = array(
+			'1' => 'asc',
+			'2' => 'desc',
+		);
+		// And if we were just single-sorting, we would expect to be sorted by default values
+		$url = $template->_get_multisort_url( '/example/', array( 'sort[1]', 'desc' ), '1' );
+
+		// But since we're multisorting, I expect sorting by last name desc, then by first name asc
+		$this->assertEquals( '/example/?sort[1]=desc&sort[2]=desc', urldecode( $url ) );
+
+		$_GET = array();
 	}
 
 	/**
