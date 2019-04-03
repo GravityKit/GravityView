@@ -206,13 +206,13 @@ msgid ""
 msgstr ""
 
 #: future/includes/class-gv-plugin.php:581
-#: includes/class-gravityview-entry-approval.php:439
+#: includes/class-gravityview-entry-approval.php:450
 #: tests/unit-tests/GravityView_Uninstall_Test.php:191
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
 #: future/includes/class-gv-plugin.php:582
-#: includes/class-gravityview-entry-approval.php:433
+#: includes/class-gravityview-entry-approval.php:444
 #: tests/unit-tests/GravityView_Uninstall_Test.php:192
 msgid "Approved the Entry for GravityView"
 msgstr ""
@@ -1681,23 +1681,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:556
+#: includes/class-admin-welcome.php:588
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:577
+#: includes/class-admin-welcome.php:609
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:618
+#: includes/class-admin-welcome.php:650
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:644
+#: includes/class-admin-welcome.php:676
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:645
+#: includes/class-admin-welcome.php:677
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -2071,11 +2071,11 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:213
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2059
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2060
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
-#: includes/class-gravityview-entry-approval.php:436
+#: includes/class-gravityview-entry-approval.php:447
 msgid "Reset Entry approval for GravityView"
 msgstr ""
 
@@ -2203,19 +2203,19 @@ msgstr ""
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1589
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1590
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2053
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2054
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2063
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2064
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2103
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2104
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -3655,7 +3655,7 @@ msgctxt ""
 msgid "Entry Updated. %sRedirecting to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2079
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2080
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
