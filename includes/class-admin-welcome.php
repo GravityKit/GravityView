@@ -283,6 +283,7 @@ class GravityView_Welcome {
                     <li>Added: <code>[gvlogic logged_in="true"]</code> support to easily check user login status - <a href="https://docs.gravityview.co/article/252-gvlogic-shortcode#logged-in-parameter">read how it works</a></li>
                     <li>Added: Dropdown, Radio and Link input support for searching product fields</li>
                     <li>Fixed: Conditional Logic breaks in Edit Entry if the condition field is not present</li>
+                    <li>Fixed: Sorting numbers with decimals</li>
                     <li>Fixed: CSV output of List and File Upload fields</li>
                     <li>Fixed: "Hide empty fields" setting not working Product and Quantity fields</li>
                     <li>Fixed: Month and day reversed in multi-input date search fields</li>

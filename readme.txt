@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: `[gvlogic logged_in="true"]` support to easily check user login status - [read how it works](https://docs.gravityview.co/article/252-gvlogic-shortcode#logged-in-parameter)
 * Added: Dropdown, Radio and Link input support for searching product fields
 * Fixed: Conditional Logic breaks in Edit Entry if the condition field is not present
+* Fixed: Sorting numbers with decimals
 * Fixed: CSV output of List and File Upload fields
 * Fixed: "Hide empty fields" setting not working Product and Quantity fields
 * Fixed: Month and day reversed in multi-input date search fields
