@@ -409,10 +409,10 @@ class GVLogic_Shortcode {
 
 		if ( isset( $this->atts['logged_in'] ) ) {
 			// Truthy
-			if ( in_array( strtolower( $this->atts['logged_in'] ), array( '1', 'true', 'yes' ) ) ) {
-				$this->logged_in = true;
-			} else {
+			if ( in_array( strtolower( $this->atts['logged_in'] ), array( '0', 'false', 'no' ) ) ) {
 				$this->logged_in = false;
+			} else {
+				$this->logged_in = true;
 			}
 		}
 
