@@ -306,7 +306,7 @@ abstract class Extension {
 			$this->_path,
 			array(
             	'version'	=> $this->_version, // current version number
-            	'license'	=> \GV\Utils::get( $license, 'license_key', $license['license'] ),
+            	'license'	=> \GV\Utils::get( $license, 'license_key', \GV\Utils::get( $license, 'license', null ) ),
 	            'item_id'   => $this->_item_id, // The ID of the download on _remote_update_url
             	'item_name' => $this->_title,  // name of this plugin
             	'author' 	=> strip_tags( $this->_author )  // author of this plugin
