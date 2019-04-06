@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Custom state dropdown search with custom keys as search values.
+
 = 2.3 on April 2, 2019 =
 
 **Gravity Forms 2.3 is required**. Some functionality will not work if you are using Gravity Forms 2.2. If this affects you, please [let us know](mailto:support@gravityview.co?subject=Gravity%20Forms%202.3%20Requirement)
