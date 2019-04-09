@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Fixed: Custom state dropdown search with custom keys as search values.
+* Fixed: Edit entry permissions on multi-entry (joined) forms.
 
 = 2.3 on April 2, 2019 =
 
