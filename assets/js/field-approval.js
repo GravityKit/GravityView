@@ -77,11 +77,12 @@
 			content: gvApproval.status_popover_template,
 			onShow: function( showEvent ) {
 				var tippy_instance = showEvent.popper._tippy;
-				var $popper = $( showEvent.popper );
 				var $entry_element = $( showEvent.reference );
+				var current_status = parseInt( $entry_element.attr( 'data-current-status' ), 10 );
 
-				$popper.find( 'a' ).on( 'click', function( linkClickEvent ) {
-					var current_status = parseInt( $entry_element.attr( 'data-current-status' ), 10 );
+				var onClickHandler = function( linkClickEvent ) {
+					linkClickEvent.preventDefault();
+
 					var new_status = parseInt( $( linkClickEvent.target ).attr( 'data-approved' ), 10 );
 
 					if ( new_status === current_status ) {
@@ -91,8 +92,11 @@
 					tippy_instance.hide();
 					$entry_element._newStatus = new_status;
 					self.toggle_approval( $entry_element );
+				};
 
-				} );
+				$( showEvent.popper )
+					.find( 'a' ).removeClass( 'selected' ).off().on( 'click', onClickHandler ).end()
+					.find( 'a[data-approved="' + current_status + '"]' ).addClass( 'selected' );
 			},
 		} );
 

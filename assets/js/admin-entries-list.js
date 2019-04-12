@@ -45,11 +45,12 @@
 				content: gvGlobals.status_popover_template,
 				onShow: function( showEvent ) {
 					var tippy_instance = showEvent.popper._tippy;
-					var $popper = $( showEvent.popper );
 					var $entry_element = $( showEvent.reference );
+					var current_status = parseInt( $entry_element.attr( 'data-current-status' ), 10 );
 
-					$popper.find( 'a' ).off().on( 'click', function( linkClickEvent ) {
-						var current_status = parseInt( $entry_element.attr( 'data-current-status' ), 10 );
+					var onClickHandler = function( linkClickEvent ) {
+						linkClickEvent.preventDefault();
+
 						var new_status = parseInt( $( linkClickEvent.target ).attr( 'data-approved' ), 10 );
 						var entry_id = $entry_element.parent().parent().find( 'th input[type="checkbox"]' ).val();
 						var class_and_title = self.getClassAndTitleFromApprovalStatus( new_status );
@@ -67,7 +68,11 @@
 							.attr( 'data-current-status', new_status );
 
 						self.updateApproved( entry_id, new_status, $entry_element );
-					} );
+					};
+
+					$( showEvent.popper )
+						.find( 'a' ).removeClass( 'selected' ).off().on( 'click', onClickHandler ).end()
+						.find( 'a[data-approved="' + current_status + '"]' ).addClass( 'selected' );
 				},
 			} );
 
