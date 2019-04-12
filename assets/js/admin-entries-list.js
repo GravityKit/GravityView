@@ -53,7 +53,7 @@
 
 						var new_status = parseInt( $( linkClickEvent.target ).attr( 'data-approved' ), 10 );
 						var entry_id = $entry_element.parent().parent().find( 'th input[type="checkbox"]' ).val();
-						var class_and_title = self.getClassAndTitleFromApprovalStatus( new_status );
+						var new_class_and_title = self.getClassAndTitleFromApprovalStatus( new_status );
 
 						if ( new_status === current_status ) {
 							return;
@@ -62,9 +62,8 @@
 						tippy_instance.hide();
 
 						$entry_element
-							.addClass( class_and_title[ 0 ] )
 							.addClass( 'loading' )
-							.prop( 'title', class_and_title[ 1 ] )
+							.prop( 'title', new_class_and_title[ 1 ] )
 							.attr( 'data-current-status', new_status );
 
 						self.updateApproved( entry_id, new_status, $entry_element );
