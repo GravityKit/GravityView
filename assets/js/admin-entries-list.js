@@ -102,8 +102,6 @@
 
 				$( showEvent.popper ).on( 'click', onClickHandler );
 
-				console.log(current_status);
-
 				gv_select_status( showEvent.popper, current_status );
 			},
 			onHide: function ( hideEvent ) {
