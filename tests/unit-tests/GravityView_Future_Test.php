@@ -3382,9 +3382,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$renderer = new \GV\Field_Renderer();
 
 		$field = \GV\Internal_Field::by_id( 'entry_approval' );
-		$this->assertEquals( '<a href="#" aria-role="button" aria-live="polite" aria-busy="false" class="gv-approval-toggle gv-approval-unapproved" title="Entry not yet reviewed. Click to approve this entry." data-current-status="3" data-entry-slug="' . $entry->ID . '" data-form-id="' . $form->ID . '"><span class="screen-reader-text">Unapproved</span></a>', $renderer->render( $field, $view, null, $entry, $request ) );
+		$this->assertEquals( '<a href="#" aria-role="button" aria-live="polite" aria-busy="false" class="gv-approval-toggle selected gv-approval-unapproved" title="Entry not yet reviewed. Click to approve this entry." data-current-status="3" data-entry-slug="' . $entry->ID . '" data-form-id="' . $form->ID . '"><span class="screen-reader-text">Unapproved</span></a>', $renderer->render( $field, $view, null, $entry, $request ) );
 
 		$this->assertEquals( 1, did_action( 'gravityview/field/approval/load_scripts' ) );
+
+		\GravityView_Entry_Approval::update_approved( $entry['id'], GravityView_Entry_Approval_Status::DISAPPROVED );
+		$this->assertEquals( '<a href="#" aria-role="button" aria-live="polite" aria-busy="false" class="gv-approval-toggle selected gv-approval-disapproved" title="Entry not approved for directory viewing. Click to approve this entry." data-current-status="2" data-entry-slug="' . $entry->ID . '" data-form-id="' . $form->ID . '"><span class="screen-reader-text">Disapproved</span></a>', $renderer->render( $field, $view, null, $entry, $request ) );
 	}
 
 	/**
