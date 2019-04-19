@@ -687,8 +687,27 @@ class GravityView_Entry_Approval {
 		self::update_approved_meta( $entry_id, $approval_status, $form['id'] );
 	}
 
+	 *
+	 * @return string Where to place the popover; 'right' (default ltr), 'left' (default rtl), 'top', or 'bottom'
+	 */
+	public static function get_popover_placement() {
+
+		$placement = is_rtl() ? 'left' : 'right';
+
+		/**
+		 * @filter `gravityview/approve_entries/popover_placement` Where should the popover be placed?
+		 * @since 2.4.1
+		 * @param string $placement Where to place the popover; 'right' (default ltr), 'left' (default rtl), 'top', or 'bottom'
+		 */
+		$placement = apply_filters( 'gravityview/approve_entries/popover_placement', $placement );
+
+		return $placement;
+	}
+
 	/**
 	 * Get HTML template for a popover used to display approval statuses
+	 *
+	 * @since 2.4.1
 	 *
 	 * @internal For internal use only!
 	 *

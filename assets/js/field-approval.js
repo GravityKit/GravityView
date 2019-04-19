@@ -75,6 +75,7 @@
 			arrowType: 'round',
 			theme: 'light-border',
 			content: gvApproval.status_popover_template,
+			placement: gvApproval.status_popover_placement,
 			onShow: function( showEvent ) {
 				var tippy_instance = showEvent.popper._tippy;
 				var $entry_element = $( showEvent.reference );

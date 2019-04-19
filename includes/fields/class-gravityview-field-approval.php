@@ -192,7 +192,8 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce('gravityview_entry_approval'),
 			'status' => GravityView_Entry_Approval_Status::get_all(),
-			'status_popover_template' => GravityView_Entry_Approval_Status::get_status_popover_template(),
+			'status_popover_template' => GravityView_Entry_Approval::get_popover_template(),
+			'status_popover_placement' => GravityView_Entry_Approval::get_popover_placement(),
 		));
 
 	}

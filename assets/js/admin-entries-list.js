@@ -42,7 +42,6 @@
 				arrow: true,
 				arrowType: 'round',
 				theme: 'light-border',
-				content: gvGlobals.status_popover_template,
 				onShow: function( showEvent ) {
 					var tippy_instance = showEvent.popper._tippy;
 					var $entry_element = $( showEvent.reference );
@@ -79,6 +78,8 @@
 		}
 	};
 
+			content: gvGlobals.status_popover_template,
+			placement: gvGlobals.status_popover_placement,
 	/**
 	 * If there are messages, display them
 	 */

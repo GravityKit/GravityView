@@ -509,7 +509,8 @@ class GravityView_Admin_ApproveEntries {
 			'disapprove_title' => GravityView_Entry_Approval_Status::get_title_attr('approved'),
 			'column_title' => __( 'Show entry in directory view?', 'gravityview'),
 			'column_link' => esc_url( $this->get_sort_link() ),
-            'status_popover_template' => GravityView_Entry_Approval_Status::get_status_popover_template(),
+            'status_popover_template' => GravityView_Entry_Approval::get_popover_template(),
+			'status_popover_placement' => GravityView_Entry_Approval::get_popover_placement(),
 		) );
 
 	}
