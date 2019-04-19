@@ -69,6 +69,17 @@
 	 */
 	self.add_toggle_approval_trigger = function() {
 
+		/**
+		 * Little helper function to add the .selected class the current value
+		 * @param element
+		 * @param status 1, 2, or 3
+		 */
+		var gv_select_status = function( element, status ) {
+			$( element )
+				.find('a').removeClass('selected').end()
+				.find('a[data-approved="' + status + '"]').addClass('selected');
+		};
+
 		tippy( self.selector, {
 			interactive: true,
 			arrow: true,
@@ -87,6 +98,7 @@
 					var new_status = parseInt( $( linkClickEvent.target ).attr( 'data-approved' ), 10 );
 
 					if ( new_status === current_status ) {
+					gv_select_status( showEvent.popper, new_status );
 						return;
 					}
 
@@ -95,9 +107,7 @@
 					self.toggle_approval( $entry_element );
 				};
 
-				$( showEvent.popper )
-					.find( 'a' ).removeClass( 'selected' ).off().on( 'click', onClickHandler ).end()
-					.find( 'a[data-approved="' + current_status + '"]' ).addClass( 'selected' );
+				gv_select_status( showEvent.popper, current_status );
 			},
 		} );
 

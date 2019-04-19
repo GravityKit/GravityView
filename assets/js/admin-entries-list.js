@@ -49,6 +49,17 @@
 
 					var onClickHandler = function( linkClickEvent ) {
 						linkClickEvent.preventDefault();
+		/**
+		 * Little helper function to add the .selected class the current value
+		 * @param element
+		 * @param status 1, 2, or 3
+		 */
+		var gv_select_status = function( element, status ) {
+			$( element )
+				.find('a').removeClass('selected').off().end()
+				.find('a[data-approved="' + status + '"]').addClass('selected');
+		};
+
 
 						var new_status = parseInt( $( linkClickEvent.target ).attr( 'data-approved' ), 10 );
 						var entry_id = $entry_element.parent().parent().find( 'th input[type="checkbox"]' ).val();
@@ -59,6 +70,7 @@
 						}
 
 						tippy_instance.hide();
+					gv_select_status( showEvent.popper, new_status );
 
 						$entry_element
 							.addClass( 'loading' )
@@ -69,10 +81,9 @@
 					};
 
 					$( showEvent.popper )
-						.find( 'a' ).removeClass( 'selected' ).off().on( 'click', onClickHandler ).end()
-						.find( 'a[data-approved="' + current_status + '"]' ).addClass( 'selected' );
 				},
 			} );
+				gv_select_status( showEvent.popper, current_status );
 
 			$( '.toggleApproved' ).on( 'click', self.toggleApproved );
 		}
