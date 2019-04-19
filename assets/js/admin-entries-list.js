@@ -90,6 +90,11 @@
 					// Support keypad when using more modern browsers
 					var key = keyPressEvent.key || keyPressEvent.keyCode;
 
+					if ( 'Escape' === key || 'Esc' === key ) {
+						showEvent.popper._tippy.hide();
+						return;
+					}
+
 					if ( -1 === [ '1', '2', '3' ].indexOf( key ) ) {
 						return;
 					}
