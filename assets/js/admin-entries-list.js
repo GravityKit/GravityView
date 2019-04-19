@@ -102,6 +102,8 @@
 
 				$( showEvent.popper ).on( 'click', onClickHandler );
 
+				console.log(current_status);
+
 				gv_select_status( showEvent.popper, current_status );
 			},
 			onHide: function ( hideEvent ) {
@@ -251,7 +253,10 @@
 			status = gvGlobals.status_approved;
 		}
 
-		$( this ).addClass( 'loading' ).prop( 'title', title );
+		$( this )
+			.addClass( 'loading' )
+			.prop( 'title', title )
+			.attr( 'data-current-status', status );
 
 		self.updateApproved( entryID, status, $( this ) );
 
