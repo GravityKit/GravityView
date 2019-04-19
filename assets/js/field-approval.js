@@ -66,18 +66,89 @@
 
 	/**
 	 * Bind a trigger to the selector element
+	 * @since 2.4.1
 	 */
 	self.add_toggle_approval_trigger = function() {
+
+		/**
+		 * Little helper function to add the .selected class the current value
+		 * @param element
+		 * @param status 1, 2, or 3
+		 */
+		var gv_select_status = function( element, status ) {
+			$( element )
+				.find('a').removeClass('selected').end()
+				.find('a[data-approved="' + status + '"]').addClass('selected');
+		};
+
+		tippy( self.selector, {
+			interactive: true,
+			arrow: true,
+			arrowType: 'round',
+			theme: 'light-border',
+			content: gvApproval.status_popover_template,
+			placement: gvApproval.status_popover_placement,
+			onShow: function( showEvent ) {
+				var $entry_element = $( showEvent.reference );
+				var current_status = parseInt( $entry_element.attr( 'data-current-status' ), 10 );
+
+				var onClickHandler = function( linkClickEvent ) {
+					linkClickEvent.preventDefault();
+
+					var new_status = parseInt( $( linkClickEvent.target ).attr( 'data-approved' ), 10 );
+
+					$entry_element._newStatus = new_status;
+					self.toggle_approval( $entry_element );
+
+					gv_select_status( showEvent.popper, new_status );
+				};
+
+				/**
+				 * Needs to be defined here so we can pass it showEvent.popper
+				 *
+				 * @param {Event} keyPressEvent
+				 */
+				document.gvStatusKeyPressHandler = function( keyPressEvent ) {
+					keyPressEvent.preventDefault();
+
+					// Support keypad when using more modern browsers
+					var key = keyPressEvent.key || keyPressEvent.keyCode;
+
+					if ( 'Escape' === key || 'Esc' === key ) {
+						showEvent.popper._tippy.hide();
+						return;
+					}
+
+					if ( -1 === [ '1', '2', '3' ].indexOf( key ) ) {
+						return;
+					}
+
+					$( showEvent.popper ).find( 'a[data-approved="' + key + '"]' ).click();
+				};
+
+				$( document ).on( 'keyup', document.gvStatusKeyPressHandler );
+
+				$( showEvent.popper ).on( 'click', onClickHandler );
+
+				gv_select_status( showEvent.popper, current_status );
+			},
+			onHide: function ( hideEvent ) {
+				$( hideEvent.popper ).off('click');
+				$( document ).off( 'keyup', document.gvStatusKeyPressHandler );
+			}
+		} );
+
 		$( self.selector ).on( 'click', function( e ) {
-			if( $( e.target ).hasClass( self.css_classes.loading ) ) {
+
+			if ( $( e.target ).hasClass( self.css_classes.loading ) ) {
 				e.preventDefault();
-				if( self.debug ) {
+				if ( self.debug ) {
 					console.log( 'add_toggle_approval_trigger', 'Cannot toggle approval while approval is pending.' );
 				}
 				return false;
 			}
 			self.toggle_approval( e );
-		});
+		} );
 	};
 
 	/**
@@ -86,16 +157,19 @@
 	 * @param e The clicked entry event object
 	 * @returns {boolean}
 	 */
-	self.toggle_approval = function ( e ) {
-		e.preventDefault();
+	self.toggle_approval = function( e ) {
+		if ( e._newStatus ) {
+			var $link = $( e );
+			var new_status = e._newStatus;
+		} else {
+			var $link = $( e.target ).is( 'span' ) ? $( e.target ).parent() : $( e.target );
+			var new_status = self.get_new_status( e, $link.attr( 'data-current-status' ) );
+		}
+		var entry_slug = $link.attr( 'data-entry-slug' );
+		var form_id = $link.attr( 'data-form-id' );
 
-		var $link = $( e.target ).is('span') ? $( e.target ).parent() : $( e.target );
-		var entry_slug = $link.attr('data-entry-slug');
-		var form_id = $link.attr('data-form-id');
-		var new_status = self.get_new_status( e, $link.attr( 'data-current-status') );
-
-		if( self.debug ) {
-			console.log( 'toggle_approval', { 'target': e.target, 'current_approval_value': $link.attr( 'data-current-status'), 'new_status': new_status });
+		if ( self.debug ) {
+			console.log( 'toggle_approval', { 'target': e.target, 'current_approval_value': $link.attr( 'data-current-status' ), 'new_status': new_status } );
 		}
 
 		$link.addClass( self.css_classes.loading );
@@ -118,6 +192,7 @@
 
 		// When holding down option/control, unapprove the entry
 		if ( e.altKey ) {
+			e.preventDefault(); // Prevent browser takeover
 
 			// When holding down option+shift, disapprove the entry
 			if ( e.shiftKey ) {

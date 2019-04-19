@@ -698,6 +698,46 @@ class GravityView_Entry_Approval {
 		self::update_approved_meta( $entry_id, $approval_status, $form['id'] );
 	}
 
+	/**
+	 * Where should the popover be placed?
+	 *
+	 * @since 2.4.1
+	 *
+	 * @return string Where to place the popover; 'right' (default ltr), 'left' (default rtl), 'top', or 'bottom'
+	 */
+	public static function get_popover_placement() {
+
+		$placement = is_rtl() ? 'left' : 'right';
+
+		/**
+		 * @filter `gravityview/approve_entries/popover_placement` Where should the popover be placed?
+		 * @since 2.4.1
+		 * @param string $placement Where to place the popover; 'right' (default ltr), 'left' (default rtl), 'top', or 'bottom'
+		 */
+		$placement = apply_filters( 'gravityview/approve_entries/popover_placement', $placement );
+
+		return $placement;
+	}
+
+	/**
+	 * Get HTML template for a popover used to display approval statuses
+	 *
+	 * @since 2.4.1
+	 *
+	 * @internal For internal use only!
+	 *
+	 * @return string HTML code
+	 */
+	public static function get_popover_template() {
+
+		$choices = GravityView_Entry_Approval_Status::get_all();
+
+		return <<<TEMPLATE
+<a href="#" data-approved="{$choices['approved']['value']}" aria-role="button"  aria-live="polite" class="gv-approval-toggle gv-approval-approved popover" title="{$choices['approved']['action']}"><span class="screen-reader-text">{$choices['approved']['action']}</span></a>
+<a href="#" data-approved="{$choices['disapproved']['value']}" aria-role="button"  aria-live="polite" class="gv-approval-toggle gv-approval-disapproved popover" title="{$choices['disapproved']['action']}"><span class="screen-reader-text">{$choices['disapproved']['action']}</span></a>
+<a href="#" data-approved="{$choices['unapproved']['value']}" aria-role="button"  aria-live="polite" class="gv-approval-toggle gv-approval-unapproved popover" title="{$choices['unapproved']['action']}"><span class="screen-reader-text">{$choices['unapproved']['action']}</span></a>
+TEMPLATE;
+	}
 }
 
 new GravityView_Entry_Approval;
