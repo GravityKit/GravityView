@@ -450,6 +450,7 @@ class Addon_Settings extends \GFAddOn {
 				'response' => $this->get( 'license_key_response' ),
 			);
 		}
+
 		return Utils::get( $this->all(), $key, $default );
 	}
 
@@ -484,7 +485,15 @@ class Addon_Settings extends \GFAddOn {
 	 * @return array The settings.
 	 */
 	public function all() {
-	    return wp_parse_args( get_option( 'gravityformsaddon_' . $this->_slug . '_app_settings', array() ), $this->defaults() );
+		$option_name  = 'gravityformsaddon_' . $this->_slug . '_app_settings';
+
+		if( is_multisite() ) {
+			$option_value = get_blog_option( get_main_site_id(), $option_name, array() );
+        } else {
+		    $option_value = get_site_option( $option_name, array() );
+        }
+
+		return wp_parse_args( $option_value, $this->defaults() );
 	}
 
 	/**

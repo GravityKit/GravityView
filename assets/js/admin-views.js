@@ -194,7 +194,7 @@
 		/**
 		 * Process conditional show/hide logic
 		 *
-		 * @since 2.4
+		 * @since 2.3
 		 *
 		 * @param {jQueryEvent} currentTarget
 		 * @param {string} data_attr The attribute to find in the target, like `requires` or `requires-not`

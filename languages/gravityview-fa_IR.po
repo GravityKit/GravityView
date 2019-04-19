@@ -5,6 +5,7 @@
 # Moein Roohi Moghaddam <Moein.Moghaddam1380@yahoo.com>, 2018
 # amir be <fcamirh@gmail.com>, 2018
 # Zachary Katz <zack@katz.co>, 2019
+# A.Mehraban <Mehr.Ban@chmail.ir>, 2019
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>, 2019\n"
+"Last-Translator: A.Mehraban <Mehr.Ban@chmail.ir>, 2019\n"
 "Language-Team: Persian (Iran) (https://www.transifex.com/katzwebservices/teams/18775/fa_IR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -502,7 +503,7 @@ msgstr "تعداد ورودی‌ها در هر صفحه"
 
 #: future/includes/class-gv-settings-view.php:67
 msgid "Offset entries starting from"
-msgstr ""
+msgstr "ورودی برگرفته از آفست‌ها"
 
 #: future/includes/class-gv-settings-view.php:75
 msgid "Enable lightbox for images"
@@ -518,7 +519,7 @@ msgstr "نشان دادن همه ورودی ها به مدیر"
 
 #: future/includes/class-gv-settings-view.php:91
 msgid "Administrators will be able to see entries with any approval status."
-msgstr ""
+msgstr "مدیران قادر به دیدن ورودی‌ها در هر وضعیت مورد تایید خواهند بود."
 
 #: future/includes/class-gv-settings-view.php:92
 msgid ""
@@ -535,6 +536,8 @@ msgstr "پنهان کردن داده نما تا وقتی که جستجو انج
 msgid ""
 "When enabled it will only show any View entries after a search is performed."
 msgstr ""
+"زمانی که این قابلیت فعال شود، فقط پس بعد از انجام یک جستجو ورودی‌ها نمایش "
+"داده خواهد شد."
 
 #: future/includes/class-gv-settings-view.php:108
 msgid "Hide empty fields"
@@ -659,6 +662,8 @@ msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
 msgstr ""
+"نشان دادن ورودی‌های ارائه‌شده در قبل از این تاریخ. پشتیبانی از تاریخ‌های "
+"نسبی، مانند \"now\" یا \"-3 days\"."
 
 #: future/includes/class-gv-settings-view.php:224
 msgid "CSS Class"
@@ -674,7 +679,7 @@ msgstr "جست و جو مقدار"
 
 #: future/includes/class-gv-settings-view.php:233
 msgid "Define a default search value for the View"
-msgstr ""
+msgstr "تعریف مقدار جستجوی پیش‌فرض برای نما"
 
 #: future/includes/class-gv-settings-view.php:240
 #: includes/widgets/search-widget/class-search-widget.php:240
@@ -686,6 +691,8 @@ msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
 msgstr ""
+"اگر مقدار جستجو تعیین شود، می‌توانید یک زمینه خاص را برای جستجو تعریف کنید. "
+"در غیر این صورت همه زمینه‌ها جستجو خواهند شد."
 
 #: future/includes/class-gv-settings-view.php:248
 msgid "Search Operator"
@@ -701,6 +708,8 @@ msgid ""
 "Otherwise, the title will not change between the Multiple Entries and Single"
 " Entry views."
 msgstr ""
+"هنگام مشاهده یک ورودی واحد، عنوان صفحه را تغییر دهید. در غیر این صورت، این "
+"عنوان بین وردی‌های چندگانه و ورودی واحد تغییر نخواهد کرد."
 
 #: future/includes/class-gv-settings-view.php:264
 msgid "Back Link Label"
@@ -708,7 +717,7 @@ msgstr "برچسب لینک عقب"
 
 #: future/includes/class-gv-settings-view.php:266
 msgid "The text of the link that returns to the multiple entries view."
-msgstr ""
+msgstr "متن لینک که به نمای چند ورودی باز می‌گردد."
 
 #: future/includes/class-gv-settings-view.php:273
 msgid "Redirect After Editing"
@@ -809,15 +818,15 @@ msgstr "جستجو نما"
 
 #: future/includes/class-gv-view.php:154 includes/class-admin.php:68
 msgid "No Views found in Trash"
-msgstr ""
+msgstr "هیچ نمایی در سطل زباله یافت نشد"
 
 #: future/includes/class-gv-view.php:155
 msgid "Filter Views list"
-msgstr ""
+msgstr "فهرست نماهای فیلتر شده"
 
 #: future/includes/class-gv-view.php:156
 msgid "Views list navigation"
-msgstr ""
+msgstr "ناوبری فهرست نماها"
 
 #: future/includes/class-gv-view.php:157
 msgid "Views list"
@@ -837,7 +846,7 @@ msgstr "نما"
 
 #: future/includes/class-gv-view.php:163
 msgid "Create views based on a Gravity Forms form"
-msgstr ""
+msgstr "نمای پایه برای فرم‌های گراویتی فرمز ایجاد شود"
 
 #: future/includes/class-gv-widget.php:156
 #: includes/admin/class.render.settings.php:47
@@ -956,7 +965,7 @@ msgstr "حذف %s"
 
 #: includes/admin/class-gravityview-admin-view-item.php:149
 msgid "This field links to the Single Entry"
-msgstr ""
+msgstr "این فیلد به ورودی تکی لینک شده است"
 
 #: includes/admin/class-gravityview-support-port.php:81
 msgid "GravityView Support"
@@ -1088,7 +1097,7 @@ msgstr "سرپرست"
 
 #: includes/admin/class.render.settings.php:126
 msgid "Multisite Super Admin"
-msgstr ""
+msgstr "مدیر اصلی چندسایته"
 
 #: includes/admin/class.render.settings.php:195
 msgid "Options: %s"
@@ -1118,7 +1127,7 @@ msgstr "تنظیمات ویو"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:140
 msgid "Filter &amp; Sort"
-msgstr ""
+msgstr "فیلتر و مرتب‌سازی"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:187
 #: includes/class-admin-views.php:475
@@ -1127,7 +1136,7 @@ msgstr "منبع داده"
 
 #: includes/admin/metaboxes/views/data-source.php:29
 msgid "Where would you like the data to come from for this View?"
-msgstr ""
+msgstr "شما می‌خواهید از این داده‌ها برای این نما استفاده کنید؟"
 
 #: includes/admin/metaboxes/views/data-source.php:36
 msgid "Use a Form Preset"
@@ -1169,7 +1178,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/data-source.php:70
 msgid "GravityView requires Javascript to be enabled."
-msgstr ""
+msgstr "گراویتی‌ویو نیاز دارد تا قابلیت جاوا اسکریپت فعال شود."
 
 #: includes/admin/metaboxes/views/select-template.php:33
 msgid "Buy Now"
@@ -1288,6 +1297,8 @@ msgid ""
 "Allow administrators to approve or reject entries and users to opt-in or "
 "opt-out of their entries being displayed."
 msgstr ""
+"به مدیران اجازه دهید تا ورودی‌ها و کاربرانی را که انتخاب شده‌اند را تایید یا"
+" رد کنند."
 
 #: includes/class-admin-approve-entries.php:175
 msgid "Approve/Reject"
@@ -1331,7 +1342,7 @@ msgstr "%s تایید شد."
 
 #: includes/class-admin-approve-entries.php:350
 msgid "%s unapproved."
-msgstr ""
+msgstr "%s  تایید نشده."
 
 #: includes/class-admin-approve-entries.php:354
 msgid "%s disapproved."
@@ -1456,6 +1467,7 @@ msgstr "درست کردن نما"
 #: includes/class-admin-views.php:180 includes/class-admin-views.php:211
 msgid "Create a View using this form as a data source"
 msgstr ""
+"ایجاد یک نما با استفاده از این فرم که به عنوان یک منبع داده قرار می‌گیرد"
 
 #: includes/class-admin-views.php:197
 msgid "No Title (View #%d)"
@@ -1514,7 +1526,7 @@ msgstr "+ افزودن تمام فیلدها"
 
 #: includes/class-admin-views.php:672
 msgid "Add all the available fields at once."
-msgstr ""
+msgstr "همه زمینه‌های موجود را بلافاصله اضافه کنید."
 
 #: includes/class-admin-views.php:722
 #: includes/widgets/search-widget/class-search-widget.php:321
@@ -1590,7 +1602,7 @@ msgstr "محتوای دلخواه"
 
 #: includes/class-admin-views.php:774
 msgid "Insert custom text or HTML."
-msgstr ""
+msgstr "درج متن سفارشی و یا HTML."
 
 #: includes/class-admin-views.php:864
 msgid "Add Widget"
@@ -1652,13 +1664,15 @@ msgstr ""
 
 #: includes/class-admin-views.php:1137
 msgid "There was an error loading dynamic content."
-msgstr ""
+msgstr "در بارگذاری محتوای پویا خطایی رخ داد."
 
 #: includes/class-admin-views.php:1138
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
+"خطا هنگام اضافه کردن زمینه. لطفا دوباره سعی کنید یا با پشتیبانی گراویتی‌ویو "
+"تماس بگیرید."
 
 #: includes/class-admin-views.php:1139
 msgid ""
@@ -1744,7 +1758,7 @@ msgstr ""
 
 #: includes/class-admin.php:108
 msgid "The connected form is in the trash."
-msgstr ""
+msgstr "فرم متصل در زباله‌دان است."
 
 #: includes/class-admin.php:109
 msgid "Restore the form from the trash"
@@ -3059,11 +3073,11 @@ msgstr "لینک کردن موضوع"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:43
 msgid "Subheading"
-msgstr ""
+msgstr "زیر عنوان"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:44
 msgid "Data placed here will be bold."
-msgstr ""
+msgstr "اطلاعاتی که در اینجا قرار داده می‌شود برجسته است."
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:50
 msgid "Image"
@@ -3079,7 +3093,7 @@ msgstr "دیگر شاخه ها"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:58
 msgid "Below the subheading, a good place for description and other data."
-msgstr ""
+msgstr "در پایین زیر عنوان، مکان مناسبی برای توصیف و دیگر داده‌ها وجود دارد."
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:66
 msgid "Footer Left"
@@ -3139,7 +3153,7 @@ msgstr "میز رزومه"
 
 #: includes/presets/resume-board/class-gravityview-preset-resume-board.php:25
 msgid "Allow job-seekers to post their resumes."
-msgstr ""
+msgstr "به جویندگان کار اجازه دهید رزومه خود را ارسال کنند."
 
 #: includes/presets/staff-profiles/class-gravityview-preset-staff-profiles.php:24
 msgid "Staff Profiles"
@@ -3159,15 +3173,15 @@ msgstr ""
 
 #: includes/widgets/class-gravityview-widget-custom-content.php:20
 msgid "Insert custom text or HTML as a widget"
-msgstr ""
+msgstr "درج متن سفارشی و یا HTML به عنوان ابزارک"
 
 #: includes/widgets/class-gravityview-widget-custom-content.php:31
 msgid "Enter text or HTML. Also supports shortcodes."
-msgstr ""
+msgstr "متن یا HTML را وارد کنید. همچنین از کدهای کوتاه پشتیبانی می‌کند."
 
 #: includes/widgets/class-gravityview-widget-page-links.php:14
 msgid "Links to multiple pages of results."
-msgstr ""
+msgstr "ارتباط با چندین صفحه نتایج."
 
 #: includes/widgets/class-gravityview-widget-page-links.php:19
 msgid "Show each page number"
@@ -3175,7 +3189,7 @@ msgstr "نشان دادن هر صفحه"
 
 #: includes/widgets/class-gravityview-widget-page-links.php:20
 msgid "Show every page number instead of summary (eg: 1 2 3 ... 8 »)"
-msgstr ""
+msgstr "هر شماره صفحه را به جای خلاصه نمایش دهید (برای مثال: ۱ ۲ ۳ … ۸)"
 
 #: includes/widgets/class-gravityview-widget-page-links.php:23
 msgid "Page Links"
@@ -3196,15 +3210,15 @@ msgstr ""
 
 #: includes/widgets/class-gravityview-widget-pagination-info.php:19
 msgid "Summary of the number of visible entries out of the total results."
-msgstr ""
+msgstr "خلاصه تعداد ورودی‌های قابل‌رویت از کل نتایج."
 
 #: includes/widgets/class-gravityview-widget-pagination-info.php:28
 msgid "Show Pagination Info"
-msgstr ""
+msgstr "نمایش اطلاعات صفحه‌بندی"
 
 #: includes/widgets/class-gravityview-widget-pagination-info.php:57
 msgid "Displaying %1$s - %2$s of %3$s"
-msgstr ""
+msgstr "نمایش %1$s  -  %2$s  از %3$s"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:25
 msgid "Displays the results of Poll Fields that exist in the form."
@@ -3415,7 +3429,7 @@ msgstr "عنوان:"
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:308
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:180
 msgid "Please select a View to search."
-msgstr ""
+msgstr "لطفا یک نما برای جستجو انتخاب کنید."
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:318
 msgid "&mdash; Select a View as Entries Source &mdash;"
@@ -3424,7 +3438,7 @@ msgstr ""
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:346
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:217
 msgid "If Embedded, Page ID:"
-msgstr ""
+msgstr "در صورت وجود، شناسه صفحه:"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:349
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:220
@@ -3532,7 +3546,7 @@ msgstr "غیرفعال"
 #: future/includes/class-gv-settings-addon.php:882
 msgctxt "gravityview"
 msgid "Show me beta versions if they are available."
-msgstr ""
+msgstr "نگارش‌های آزمایشی (بتا) را اگر موجود بود به من نمایش دهید."
 
 #: future/includes/class-gv-view.php:142
 msgctxt "Post Type General Name"
@@ -3557,7 +3571,7 @@ msgstr "نمایش"
 #: includes/admin/class-gravityview-admin-view-item.php:161
 msgctxt "Label in field picker for empty label"
 msgid "Field #%s (No Label)"
-msgstr ""
+msgstr "فیلد #%s (بدون برچسب)"
 
 #: includes/admin/class-gravityview-support-port.php:84
 msgctxt "a support form search has returned empty for the following word"
@@ -3618,7 +3632,7 @@ msgstr ""
 msgctxt ""
 "The name and the ID of users who initiated changes to entry ownership"
 msgid "%s (ID #%d)"
-msgstr ""
+msgstr "%s (شناسه #%d)"
 
 #: includes/class-gravityview-change-entry-creator.php:175
 msgctxt ""

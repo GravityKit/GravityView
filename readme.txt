@@ -21,6 +21,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.3.1 on April 18, 2019 =
+
+* Added: Entry Approval now features a popover that allows you to select from all approval statuses
+* Fixed: Issues accessing Edit Entry for Views using [Multiple Forms](https://gravityview.co/extensions/multiple-forms/)
+* Fixed: Issues with Edit Entry where fields were duplicated. This temporarily reverts the conditional logic fix added in 2.3.
+* Fixed: Maps will now properly use global API key settings on Multisite installations
+
+__Developer Updates:__
+
+* Fixed: Issues searching Address fields that contain custom states
+* Added: `gravityview/approve_entries/popover_placement` filter to modify the placement of the approval popover (default: right)
+
 = 2.3 on April 2, 2019 =
 
 **Gravity Forms 2.3 is required**. Some functionality will not work if you are using Gravity Forms 2.2. If this affects you, please [let us know](mailto:support@gravityview.co?subject=Gravity%20Forms%202.3%20Requirement)

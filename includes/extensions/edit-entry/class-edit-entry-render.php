@@ -540,8 +540,6 @@ class GravityView_Edit_Entry_Render {
 
 		$form = $this->form;
 
-		$non_submitted_fields = array();
-
 	    /** @var GF_Field $field */
 		foreach( $form['fields'] as $k => &$field ) {
 
@@ -560,32 +558,6 @@ class GravityView_Edit_Entry_Render {
 				foreach( $field->inputs as $key => $input ) {
 				    $field->inputs[ $key ][ 'id' ] = (string)$input['id'];
 				}
-			}
-
-			/**
-			 * Unset fields that are used in conditionals, but only if these fields
-			 * are not present in the edit view fields.
-			 * @since develop
-			 */
-			if ( ! empty( $field['conditionalLogic'] ) && ! empty( $field['conditionalLogic']['rules'] ) ) {
-				foreach ( wp_list_pluck( $field['conditionalLogic']['rules'], 'fieldId' ) as $conditional_id ) {
-					$post_input_id = 'input_' . str_replace( '.', '_', $conditional_id );
-					if ( ! isset( $_POST[ $post_input_id ] ) ) {
-						$non_submitted_fields []= $conditional_id;
-					}
-				}
-			}
-		}
-
-		/**
-		 * Remove fields that are not submitted. For now we only do this with
-		 * fields that are used in conditional logic. In the future we may try
-		 * (or need) to remove all fields that are not being submitted. Or look
-		 * at the view edit configuration.
-		 */
-		foreach ( $form['fields'] as $k => $field ) {
-			if ( in_array( $field['id'], $non_submitted_fields ) ) {
-				unset( $form['fields'][ $k ] );
 			}
 		}
 

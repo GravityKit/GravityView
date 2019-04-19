@@ -155,9 +155,9 @@ class GravityView_Field_Address extends GravityView_Field {
 			if ( is_array( $state ) ) {
 				$state_subchoices = array();
 
-				foreach ( $state as $substate ) {
+				foreach ( $state as $key => $substate ) {
 					$state_subchoices[] = array(
-						'value' => $substate,
+						'value' => is_numeric( $key ) ? $substate : $key,
 						'text' => $substate,
 					);
 				}
@@ -169,7 +169,7 @@ class GravityView_Field_Address extends GravityView_Field {
 
 			} else {
 				$state_choices[] = array(
-					'value' => $state,
+					'value' => is_numeric( $key ) ? $state : $key,
 					'text' => $state,
 				);
 			}
