@@ -701,7 +701,7 @@ class GravityView_Entry_Approval {
 	/**
 	 * Where should the popover be placed?
 	 *
-	 * @since 2.4.1
+	 * @since 2.3.1
 	 *
 	 * @return string Where to place the popover; 'right' (default ltr), 'left' (default rtl), 'top', or 'bottom'
 	 */
@@ -711,7 +711,7 @@ class GravityView_Entry_Approval {
 
 		/**
 		 * @filter `gravityview/approve_entries/popover_placement` Where should the popover be placed?
-		 * @since 2.4.1
+		 * @since 2.3.1
 		 * @param string $placement Where to place the popover; 'right' (default ltr), 'left' (default rtl), 'top', or 'bottom'
 		 */
 		$placement = apply_filters( 'gravityview/approve_entries/popover_placement', $placement );
@@ -722,7 +722,7 @@ class GravityView_Entry_Approval {
 	/**
 	 * Get HTML template for a popover used to display approval statuses
 	 *
-	 * @since 2.4.1
+	 * @since 2.3.1
 	 *
 	 * @internal For internal use only!
 	 *

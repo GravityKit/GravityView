@@ -66,7 +66,7 @@
 
 	/**
 	 * Bind a trigger to the selector element
-	 * @since 2.4.1
+	 * @since 2.3.1
 	 */
 	self.add_toggle_approval_trigger = function() {
 
