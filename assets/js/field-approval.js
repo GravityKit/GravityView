@@ -66,6 +66,7 @@
 
 	/**
 	 * Bind a trigger to the selector element
+	 * @since 2.4.1
 	 */
 	self.add_toggle_approval_trigger = function() {
 
@@ -88,7 +89,6 @@
 			content: gvApproval.status_popover_template,
 			placement: gvApproval.status_popover_placement,
 			onShow: function( showEvent ) {
-				var tippy_instance = showEvent.popper._tippy;
 				var $entry_element = $( showEvent.reference );
 				var current_status = parseInt( $entry_element.attr( 'data-current-status' ), 10 );
 
@@ -97,18 +97,40 @@
 
 					var new_status = parseInt( $( linkClickEvent.target ).attr( 'data-approved' ), 10 );
 
-					if ( new_status === current_status ) {
+					$entry_element._newStatus = new_status;
+					self.toggle_approval( $entry_element );
+
 					gv_select_status( showEvent.popper, new_status );
+				};
+
+				/**
+				 * Needs to be defined here so we can pass it showEvent.popper
+				 *
+				 * @param {Event} keyPressEvent
+				 */
+				document.gvStatusKeyPressHandler = function( keyPressEvent ) {
+					keyPressEvent.preventDefault();
+
+					// Support keypad when using more modern browsers
+					var key = keyPressEvent.key || keyPressEvent.keyCode;
+
+					if ( -1 === [ '1', '2', '3' ].indexOf( key ) ) {
 						return;
 					}
 
-					tippy_instance.hide();
-					$entry_element._newStatus = new_status;
-					self.toggle_approval( $entry_element );
+					$( showEvent.popper ).find( 'a[data-approved="' + key + '"]' ).click();
 				};
+
+				$( document ).on( 'keyup', document.gvStatusKeyPressHandler );
+
+				$( showEvent.popper ).on( 'click', onClickHandler );
 
 				gv_select_status( showEvent.popper, current_status );
 			},
+			onHide: function ( hideEvent ) {
+				$( hideEvent.popper ).off('click');
+				$( document ).off( 'keyup', document.gvStatusKeyPressHandler );
+			}
 		} );
 
 		$( self.selector ).on( 'click', function( e ) {
@@ -165,6 +187,7 @@
 
 		// When holding down option/control, unapprove the entry
 		if ( e.altKey ) {
+			e.preventDefault(); // Prevent browser takeover
 
 			// When holding down option+shift, disapprove the entry
 			if ( e.shiftKey ) {

@@ -586,12 +586,13 @@ msgid "By default, entries are sorted by Entry ID."
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:155
+#: future/includes/class-gv-settings-view.php:177
 #: includes/class-common.php:1444
 msgid "Default"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:156
-#: future/includes/class-gv-settings-view.php:179
+#: future/includes/class-gv-settings-view.php:178
 #: includes/class-common.php:1487
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
@@ -602,12 +603,12 @@ msgid "Sort direction"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:166
-#: future/includes/class-gv-settings-view.php:190
+#: future/includes/class-gv-settings-view.php:189
 msgid "ASC"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:167
-#: future/includes/class-gv-settings-view.php:191
+#: future/includes/class-gv-settings-view.php:190
 msgid "DESC"
 msgstr ""
 
@@ -615,163 +616,153 @@ msgstr ""
 msgid "Sort by secondary field"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:177
-msgid "No Secondary Sort"
-msgstr ""
-
-#: future/includes/class-gv-settings-view.php:178
-#: includes/class-admin-views.php:722
-#: includes/widgets/search-widget/class-search-widget.php:321
-msgid "Entry ID"
-msgstr ""
-
-#: future/includes/class-gv-settings-view.php:185
+#: future/includes/class-gv-settings-view.php:184
 msgid "Secondary sort direction"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:197
+#: future/includes/class-gv-settings-view.php:196
 msgid "Enable sorting by column"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:198
+#: future/includes/class-gv-settings-view.php:197
 msgid "Column Sorting"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:207
+#: future/includes/class-gv-settings-view.php:206
 msgid "Filter by Start Date"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:209
+#: future/includes/class-gv-settings-view.php:208
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:216
+#: future/includes/class-gv-settings-view.php:215
 msgid "Filter by End Date"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:218
+#: future/includes/class-gv-settings-view.php:217
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:225
+#: future/includes/class-gv-settings-view.php:224
 msgid "CSS Class"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:226
+#: future/includes/class-gv-settings-view.php:225
 msgid "CSS class to add to the wrapping HTML container."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:233
+#: future/includes/class-gv-settings-view.php:232
 msgid "Search Value"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:234
+#: future/includes/class-gv-settings-view.php:233
 msgid "Define a default search value for the View"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:241
+#: future/includes/class-gv-settings-view.php:240
 #: includes/widgets/search-widget/class-search-widget.php:240
 msgid "Search Field"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:242
+#: future/includes/class-gv-settings-view.php:241
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:249
+#: future/includes/class-gv-settings-view.php:248
 msgid "Search Operator"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:256
+#: future/includes/class-gv-settings-view.php:255
 msgid "Single Entry Title"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:258
+#: future/includes/class-gv-settings-view.php:257
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and "
 "Single Entry views."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:265
+#: future/includes/class-gv-settings-view.php:264
 msgid "Back Link Label"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:267
+#: future/includes/class-gv-settings-view.php:266
 msgid "The text of the link that returns to the multiple entries view."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:274
+#: future/includes/class-gv-settings-view.php:273
 msgid "Redirect After Editing"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:276
+#: future/includes/class-gv-settings-view.php:275
 msgid "The page to redirect to after editing an entry."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:280
+#: future/includes/class-gv-settings-view.php:279
 msgid "Stay on Edit Entry"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:281
+#: future/includes/class-gv-settings-view.php:280
 msgid "Redirect to Single Entry"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:282
+#: future/includes/class-gv-settings-view.php:281
 msgid "Redirect to Multiple Entries"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:283
+#: future/includes/class-gv-settings-view.php:282
 msgid "Redirect to URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:289
+#: future/includes/class-gv-settings-view.php:288
 msgid "Edit Entry Redirect URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:291
+#: future/includes/class-gv-settings-view.php:290
 msgid "After editing an entry, the user will be taken to this URL."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:299
+#: future/includes/class-gv-settings-view.php:298
 msgid "Prevent Direct Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:301
+#: future/includes/class-gv-settings-view.php:300
 msgid "Only allow access to this View when embedded using the shortcode."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:311
+#: future/includes/class-gv-settings-view.php:310
 msgid "Prevent REST Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:313
+#: future/includes/class-gv-settings-view.php:312
 msgid "Disable REST access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:324
+#: future/includes/class-gv-settings-view.php:323
 msgid "Allow REST Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:326
+#: future/includes/class-gv-settings-view.php:325
 msgid "Enable REST access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:336
+#: future/includes/class-gv-settings-view.php:335
 msgid "Allow CSV Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:338
+#: future/includes/class-gv-settings-view.php:337
 msgid "Enable CSV access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:355
+#: future/includes/class-gv-settings-view.php:354
 msgid "Random"
 msgstr ""
 
@@ -1329,7 +1320,7 @@ msgstr ""
 msgid "%s disapproved."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:506
+#: includes/class-admin-approve-entries.php:510
 msgid "Show entry in directory view?"
 msgstr ""
 
@@ -1505,6 +1496,11 @@ msgstr ""
 
 #: includes/class-admin-views.php:672
 msgid "Add all the available fields at once."
+msgstr ""
+
+#: includes/class-admin-views.php:722
+#: includes/widgets/search-widget/class-search-widget.php:321
+msgid "Entry ID"
 msgstr ""
 
 #: includes/class-admin-views.php:724
@@ -2052,18 +2048,19 @@ msgid "Approve"
 msgstr ""
 
 #: includes/class-gravityview-entry-approval-status.php:64
+#: includes/class-gravityview-entry-approval-status.php:65
 msgid "Entry approved for directory viewing. Click to disapprove this entry."
 msgstr ""
 
-#: includes/class-gravityview-entry-approval-status.php:68
+#: includes/class-gravityview-entry-approval-status.php:69
 msgid "Unapproved"
 msgstr ""
 
-#: includes/class-gravityview-entry-approval-status.php:69
+#: includes/class-gravityview-entry-approval-status.php:70
 msgid "Reset Approval"
 msgstr ""
 
-#: includes/class-gravityview-entry-approval-status.php:70
+#: includes/class-gravityview-entry-approval-status.php:71
 msgid "Entry not yet reviewed. Click to approve this entry."
 msgstr ""
 
@@ -3569,12 +3566,12 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr ""
 
-#: includes/class-frontend-views.php:1298
+#: includes/class-frontend-views.php:1312
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-frontend-views.php:1299
+#: includes/class-frontend-views.php:1313
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""

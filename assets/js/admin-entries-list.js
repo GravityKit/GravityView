@@ -37,18 +37,14 @@
 
 			self.setInitialApprovedEntries();
 
-			tippy( '.toggleApproved', {
-				interactive: true,
-				arrow: true,
-				arrowType: 'round',
-				theme: 'light-border',
-				onShow: function( showEvent ) {
-					var tippy_instance = showEvent.popper._tippy;
-					var $entry_element = $( showEvent.reference );
-					var current_status = parseInt( $entry_element.attr( 'data-current-status' ), 10 );
+			self.setupTippy();
 
-					var onClickHandler = function( linkClickEvent ) {
-						linkClickEvent.preventDefault();
+			$( '.toggleApproved' ).on( 'click', self.toggleApproved );
+		}
+	};
+
+	self.setupTippy = function() {
+
 		/**
 		 * Little helper function to add the .selected class the current value
 		 * @param element
@@ -60,37 +56,62 @@
 				.find('a[data-approved="' + status + '"]').addClass('selected');
 		};
 
-
-						var new_status = parseInt( $( linkClickEvent.target ).attr( 'data-approved' ), 10 );
-						var entry_id = $entry_element.parent().parent().find( 'th input[type="checkbox"]' ).val();
-						var new_class_and_title = self.getClassAndTitleFromApprovalStatus( new_status );
-
-						if ( new_status === current_status ) {
-							return;
-						}
-
-						tippy_instance.hide();
-					gv_select_status( showEvent.popper, new_status );
-
-						$entry_element
-							.addClass( 'loading' )
-							.prop( 'title', new_class_and_title[ 1 ] )
-							.attr( 'data-current-status', new_status );
-
-						self.updateApproved( entry_id, new_status, $entry_element );
-					};
-
-					$( showEvent.popper )
-				},
-			} );
-				gv_select_status( showEvent.popper, current_status );
-
-			$( '.toggleApproved' ).on( 'click', self.toggleApproved );
-		}
-	};
-
+		tippy( '.toggleApproved', {
+			interactive: true,
+			arrow: true,
+			arrowType: 'round',
+			theme: 'light-border',
 			content: gvGlobals.status_popover_template,
 			placement: gvGlobals.status_popover_placement,
+			onShow: function( showEvent ) {
+				var $entry_element = $( showEvent.reference );
+				var current_status = parseInt( $entry_element.attr( 'data-current-status' ), 10 );
+
+				var onClickHandler = function( linkClickEvent ) {
+					linkClickEvent.preventDefault();
+
+					var new_status = parseInt( $( linkClickEvent.target ).attr( 'data-approved' ), 10 );
+					var entry_id = $entry_element.parent().parent().find( 'th input[type="checkbox"]' ).val();
+					var new_class_and_title = self.getClassAndTitleFromApprovalStatus( new_status );
+
+					$entry_element
+						.addClass( 'loading' )
+						.prop( 'title', new_class_and_title[ 1 ] )
+						.attr( 'data-current-status', new_status );
+
+					self.updateApproved( entry_id, new_status, $entry_element );
+
+					gv_select_status( showEvent.popper, new_status );
+				};
+
+				document.gvStatusKeyPressHandler = function( keyPressEvent ) {
+					keyPressEvent.preventDefault();
+
+					// Support keypad when using more modern browsers
+					var key = keyPressEvent.key || keyPressEvent.keyCode;
+
+					if ( -1 === [ '1', '2', '3' ].indexOf( key ) ) {
+						return;
+					}
+
+					$( showEvent.popper )
+						.find( 'a[data-approved="' + key + '"]' ).click();
+				};
+
+				$( document ).on( 'keyup', document.gvStatusKeyPressHandler );
+
+				$( showEvent.popper ).on( 'click', onClickHandler );
+
+				gv_select_status( showEvent.popper, current_status );
+			},
+			onHide: function ( hideEvent ) {
+				$( hideEvent.popper ).off('click');
+				$( document ).off( 'keyup', document.gvStatusKeyPressHandler );
+			}
+		} );
+
+	};
+
 	/**
 	 * If there are messages, display them
 	 */
@@ -213,6 +234,7 @@
 
 		// When holding down option/control, unapprove the entry
 		if ( e.altKey ) {
+			e.preventDefault(); // Prevent browser takeover
 			// When holding down option+shift, disapprove the entry
 			if ( e.shiftKey ) {
 				status = gvGlobals.status_disapproved;
