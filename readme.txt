@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: strtolower() warnings in frontend-views.php
+
 = 2.3.1 on April 18, 2019 =
 
 * Added: Entry Approval now features a popover that allows you to select from all approval statuses
