@@ -355,6 +355,7 @@ $gv-overlay-index: 10000;
 
 			// The tab anchor link
 			.nav-tab {
+				border-radius: 2px 2px 0 0;
 				float: left;
 				padding: .5em 1em;
 				text-decoration: none;
@@ -538,6 +539,8 @@ hr {
 		padding: 0 0 0 .25em;
 		user-select: none;
 		box-sizing: border-box;
+		text-align: left;
+
 
 		// Parent field name
 		small {
@@ -602,6 +605,7 @@ hr {
 		// In the zones, don't display the field info;
 		// that's being handled by tooltips
 		display: none;
+		text-align: left;
 
 		// In the field picker, display the field info.
 		.ui-tooltip & {
@@ -682,6 +686,7 @@ hr {
 	display: none;
 	width: 90%;
 	padding: 10px 0 !important;
+	text-align: left;
 
     /** @since 1.8 **/
     .subtitle {
