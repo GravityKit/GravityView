@@ -820,7 +820,7 @@ class View implements \ArrayAccess {
 	 * @deprecated
 	 * @since 2.0
 	 *
-	 * @return mixed The value of the requested view data key limited to GravityView_View_Data::$views element keys.
+	 * @return mixed The value of the requested view data key limited to GravityView_View_Data::$views element keys. If offset not found, return null.
 	 */
 	public function offsetGet( $offset ) {
 
@@ -845,6 +845,8 @@ class View implements \ArrayAccess {
 			case 'widgets':
 				return $this->widgets->as_configuration();
 		}
+
+		return null;
 	}
 
 	/**
