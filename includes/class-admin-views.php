@@ -889,7 +889,7 @@ class GravityView_Admin_Views {
                     $available_items[ $form->ID ] = $this->get_available_fields( $form->ID, $zone );
                 }
 			} else {
-				$available_items[ $form ] = $this->get_registered_widgets();
+				$available_items[ $form ] = \GV\Widget::registered();
 			}
 		}
 
@@ -977,9 +977,9 @@ class GravityView_Admin_Views {
 	 * @param  string $post_id Current Post ID (view)
 	 * @return string          html
 	 */
-	function render_widgets_active_areas( $template_id = '', $zone, $post_id = '' ) {
+	function render_widgets_active_areas( $template_id = '', $zone = '', $post_id = '' ) {
 
-		$default_widget_areas = GravityView_Widget::get_default_widget_areas();
+		$default_widget_areas = \GV\Widget::get_default_widget_areas();
 
 		$widgets = array();
 		if( !empty( $post_id ) ) {
