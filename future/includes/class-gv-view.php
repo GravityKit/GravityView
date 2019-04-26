@@ -680,9 +680,9 @@ class View implements \ArrayAccess {
 			) );
 		}
 
-		$view->joins = $view->get_joins( $post );
+		$view->joins = $view::get_joins( $post );
 
-		$view->unions = $view->get_unions( $post );
+		$view->unions = $view::get_unions( $post );
 
 		/**
 		 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array.
