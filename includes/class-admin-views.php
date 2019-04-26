@@ -972,6 +972,7 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Render the widget active areas
+     * @param  string $template_id The current slug of the selected View template
 	 * @param  string $zone    Either 'header' or 'footer'
 	 * @param  string $post_id Current Post ID (view)
 	 * @return string          html

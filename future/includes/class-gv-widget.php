@@ -209,13 +209,14 @@ abstract class Widget {
 
 		/**
 		 * @filter `gravityview_widget_active_areas` Array of zones available for widgets to be dropped into
-		 * @deprecated Use gravityview/widget/active_areas
+		 * @deprecated 2.0: Use gravityview/widget/active_areas instead
 		 * @param array $default_areas Definition for default widget areas
 		 */
 		$default_areas = apply_filters( 'gravityview_widget_active_areas', $default_areas );
 
 		/**
 		 * @filter `gravityview/widget/active_areas` Array of zones available for widgets to be dropped into
+		 * @since 2.0
 		 * @param array $default_areas Definition for default widget areas
 		 */
 		return apply_filters( 'gravityview/widget/active_areas', $default_areas );
@@ -266,7 +267,7 @@ abstract class Widget {
 	 * Do shortcode if the Widget's shortcode exists.
 	 *
 	 * @param  string $text   Widget text to check
-	 * @param  null|WP_Widget Empty if not called by WP_Widget, or a WP_Widget instance
+	 * @param  null|\WP_Widget Empty if not called by WP_Widget, or a WP_Widget instance
 	 *
 	 * @return string         Widget text
 	 */
