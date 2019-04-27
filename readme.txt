@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Fixed: strtolower() warnings in frontend-views.php
+* Fixed: `gravityview/fields/fileupload/link_atts` didn't work on link-wrapped images
 
 = 2.3.1 on April 18, 2019 =
 
