@@ -271,6 +271,20 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
+                <h3>2.3.2 on May 3, 2019</h3>
+
+                <ul>
+                    <li>Re-fixed: Conditional Logic breaks in Edit Entry if the condition field is not present</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Fixed: <code>strtolower()</code> warnings in <code>class-frontend-views.php</code></li>
+                    <li>Fixed: <code>gravityview/fields/fileupload/link_atts</code> filter didn't work on link-wrapped images</li>
+                    <li>Fixed: PHP notice triggered when using the Poll widget</li>
+                </ul>
+
                 <h3>2.3.1 on April 18, 2019</h3>
 
                 <ul>
