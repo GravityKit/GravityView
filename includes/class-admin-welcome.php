@@ -283,6 +283,7 @@ class GravityView_Welcome {
                     <li>Fixed: <code>strtolower()</code> warnings in <code>class-frontend-views.php</code></li>
                     <li>Fixed: <code>gravityview/fields/fileupload/link_atts</code> filter didn't work on link-wrapped images</li>
                     <li>Fixed: PHP notice triggered when using the Poll widget</li>
+                    <li>Updated: Updater script, which should improve license check load time</li>
                 </ul>
 
                 <h3>2.3.1 on April 18, 2019</h3>

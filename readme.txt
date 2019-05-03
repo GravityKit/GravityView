@@ -30,6 +30,7 @@ __Developer Updates:__
 * Fixed: `strtolower()` warnings in `class-frontend-views.php`
 * Fixed: `gravityview/fields/fileupload/link_atts` filter didn't work on link-wrapped images
 * Fixed: PHP notice triggered when using the Poll widget
+* Updated: Updater script, which should improve license check load time
 
 = 2.3.1 on April 18, 2019 =
 
