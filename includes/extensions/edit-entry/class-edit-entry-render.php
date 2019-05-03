@@ -1971,7 +1971,10 @@ class GravityView_Edit_Entry_Render {
 
 		if ( $remove_conditions_rule ) {
 			foreach ( $form['fields'] as &$field ) {
-				foreach ( $remove_conditions_rule as list( $rule_field_id, $rule_i ) ) {
+				foreach ( $remove_conditions_rule as $_remove_conditions_r ) {
+
+				    list( $rule_field_id, $rule_i ) = $_remove_conditions_r;
+
 					if ( $field['id'] == $rule_field_id ) {
 						unset( $field->conditionalLogic['rules'][ $rule_i ] );
 						gravityview()->log->debug( 'Removed conditional rule #{rule} for field {field_id}', array( 'rule' => $rule_i, 'field_id' => $field['id'] ) );
