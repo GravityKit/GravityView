@@ -176,14 +176,14 @@ class GravityView_Edit_Entry_Render {
 	 */
 	public function prevent_maybe_process_form() {
 
-		if( ! empty( $_POST ) ) {
-	        gravityview()->log->debug( 'GravityView_Edit_Entry[prevent_maybe_process_form] $_POSTed data (sanitized): ', array( 'data' => esc_html( print_r( $_POST, true ) ) ) );
+	    if( ! $this->is_edit_entry_submission() ) {
+			return;
 		}
 
-		if( $this->is_edit_entry_submission() ) {
-			remove_action( 'wp',  array( 'RGForms', 'maybe_process_form'), 9 );
-	        remove_action( 'wp',  array( 'GFForms', 'maybe_process_form'), 9 );
-		}
+		gravityview()->log->debug( 'GravityView_Edit_Entry[prevent_maybe_process_form] Removing GFForms::maybe_process_form() action.' );
+
+		remove_action( 'wp',  array( 'RGForms', 'maybe_process_form'), 9 );
+		remove_action( 'wp',  array( 'GFForms', 'maybe_process_form'), 9 );
 	}
 
 	/**
