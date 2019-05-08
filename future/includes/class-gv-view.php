@@ -680,9 +680,9 @@ class View implements \ArrayAccess {
 			) );
 		}
 
-		$view->joins = $view->get_joins( $post );
+		$view->joins = $view::get_joins( $post );
 
-		$view->unions = $view->get_unions( $post );
+		$view->unions = $view::get_unions( $post );
 
 		/**
 		 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array.
@@ -820,7 +820,7 @@ class View implements \ArrayAccess {
 	 * @deprecated
 	 * @since 2.0
 	 *
-	 * @return mixed The value of the requested view data key limited to GravityView_View_Data::$views element keys.
+	 * @return mixed The value of the requested view data key limited to GravityView_View_Data::$views element keys. If offset not found, return null.
 	 */
 	public function offsetGet( $offset ) {
 
@@ -845,6 +845,8 @@ class View implements \ArrayAccess {
 			case 'widgets':
 				return $this->widgets->as_configuration();
 		}
+
+		return null;
 	}
 
 	/**
@@ -988,7 +990,7 @@ class View implements \ArrayAccess {
 						if ( ! empty( $sort_field_id ) ) {
 							$order = new \GF_Query_Column( $sort_field_id, $this->form->ID );
 							if ( \GVCommon::is_field_numeric( $this->form->ID, $sort_field_id ) ) {
-								$order = \GF_Query_Call::CAST( $order, defined( 'GF_Query::TYPE_DECIMAL' ) ? GF_Query::TYPE_DECIMAL : GF_Query::TYPE_SIGNED );
+								$order = \GF_Query_Call::CAST( $order, defined( 'GF_Query::TYPE_DECIMAL' ) ? \GF_Query::TYPE_DECIMAL : \GF_Query::TYPE_SIGNED );
 							}
 
 							$query->order( $order, $sort_direction );

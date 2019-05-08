@@ -141,7 +141,7 @@ class GravityView_Ajax {
         $template_areas_single = apply_filters( 'gravityview_template_active_areas', array(), $template_id, 'single' );
 
 		// widget areas
-		$default_widget_areas = GravityView_Widget::get_default_widget_areas();
+		$default_widget_areas = \GV\Widget::get_default_widget_areas();
 
 		ob_start();
 		do_action('gravityview_render_active_areas', $template_id, 'widget', 'header', $default_widget_areas, $presets['widgets'] );

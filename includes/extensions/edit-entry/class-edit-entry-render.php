@@ -538,7 +538,7 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private function form_prepare_for_save() {
 
-		$form = $this->form;
+		$form = $this->filter_conditional_logic( $this->form );
 
 	    /** @var GF_Field $field */
 		foreach( $form['fields'] as $k => &$field ) {
@@ -1937,6 +1937,54 @@ class GravityView_Edit_Entry_Render {
 	 * @return array Modified form, if not using Conditional Logic
 	 */
 	private function filter_conditional_logic( $form ) {
+		/**
+		 * Fields that are tied to a conditional logic field that is not present in the view
+		 * have to still be displayed, if the condition is met.
+		 *
+		 * @see https://github.com/gravityview/GravityView/issues/840
+		 * @since develop
+		 */
+		$the_form = GFAPI::get_form( $form['id'] );
+		$editable_ids = array();
+		foreach ( $form['fields'] as $field ) {
+			$editable_ids[] = $field['id']; // wp_list_pluck is destructive in this context
+		}
+		$remove_conditions_rule = array();
+		foreach ( $the_form['fields'] as $field ) {
+			if ( ! empty( $field->conditionalLogic ) && ! empty( $field->conditionalLogic['rules'] ) ) {
+				foreach ( $field->conditionalLogic['rules'] as $i => $rule ) {
+					if ( ! in_array( $rule['fieldId'], $editable_ids ) ) {
+						/**
+						 * This conditional field is not editable in this View.
+						 * We need to remove the rule, but only if it matches.
+						 */
+						$value = GFAPI::get_field( $the_form, $rule['fieldId'] )->get_value_export( $this->entry );
+						$match = GFFormsModel::matches_operation( $value, $rule['value'], $rule['operator'] );
+						
+						if ( $match ) {
+							$remove_conditions_rule[] = array( $field['id'], $i );
+						}
+					}
+				}
+			}
+		}
+
+		if ( $remove_conditions_rule ) {
+			foreach ( $form['fields'] as &$field ) {
+				foreach ( $remove_conditions_rule as $_remove_conditions_r ) {
+
+				    list( $rule_field_id, $rule_i ) = $_remove_conditions_r;
+
+					if ( $field['id'] == $rule_field_id ) {
+						unset( $field->conditionalLogic['rules'][ $rule_i ] );
+						gravityview()->log->debug( 'Removed conditional rule #{rule} for field {field_id}', array( 'rule' => $rule_i, 'field_id' => $field['id'] ) );
+					}
+				}
+			}
+		}
+
+		/** Normalize the indices... */
+		$form['fields'] = array_values( $form['fields'] );
 
 		/**
 		 * @filter `gravityview/edit_entry/conditional_logic` Should the Edit Entry form use Gravity Forms conditional logic showing/hiding of fields?

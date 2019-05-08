@@ -21,6 +21,17 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.3.2 on May 3, 2019 =
+
+* Re-fixed: Conditional Logic breaks in Edit Entry if the condition field is not present
+
+__Developer Updates:__
+
+* Fixed: `strtolower()` warnings in `class-frontend-views.php`
+* Fixed: `gravityview/fields/fileupload/link_atts` filter didn't work on link-wrapped images
+* Fixed: PHP notice triggered when using the Poll widget
+* Updated: Updater script, which should improve license check load time
+
 = 2.3.1 on April 18, 2019 =
 
 * Added: Entry Approval now features a popover that allows you to select from all approval statuses

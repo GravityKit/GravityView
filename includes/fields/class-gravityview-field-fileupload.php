@@ -300,6 +300,8 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 						'class' => 'thickbox',
 					);
 
+					$lightbox_link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', $lightbox_link_atts, $field_compat, $context );
+
 					if ( $override_security ) {
 						$image_atts['src'] = $insecure_file_path;
 						$image = new GravityView_Image( $image_atts );
