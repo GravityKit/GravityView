@@ -140,6 +140,10 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 		wp_register_script( 'gravityview-field-approval', GRAVITYVIEW_URL . 'assets/js/field-approval'.$script_debug.'.js', array( 'jquery' ), GravityView_Plugin::version, true );
 
+		wp_register_script( 'gravityview-field-approval-popper', GRAVITYVIEW_URL . 'assets/lib/tippy/popper.min.js', array(), GravityView_Plugin::version, true );
+		wp_register_script( 'gravityview-field-approval-tippy', GRAVITYVIEW_URL . 'assets/lib/tippy/tippy.min.js', array(), GravityView_Plugin::version, true );
+		wp_register_style( 'gravityview-field-approval-tippy', GRAVITYVIEW_URL . 'assets/lib/tippy/tippy.css', array(), GravityView_Plugin::version, 'screen' );
+
 		$style_path = GRAVITYVIEW_DIR . 'templates/css/field-approval.css';
 
 		if( class_exists( 'GravityView_View' ) ) {
@@ -180,11 +184,16 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 		wp_enqueue_style( 'gravityview-field-approval' );
 
 		wp_enqueue_script( 'gravityview-field-approval' );
+		wp_enqueue_script( 'gravityview-field-approval-tippy' );
+		wp_enqueue_script( 'gravityview-field-approval-popper' );
+		wp_enqueue_style( 'gravityview-field-approval-tippy' );
 
 		wp_localize_script( 'gravityview-field-approval', 'gvApproval', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce('gravityview_entry_approval'),
 			'status' => GravityView_Entry_Approval_Status::get_all(),
+			'status_popover_template' => GravityView_Entry_Approval::get_popover_template(),
+			'status_popover_placement' => GravityView_Entry_Approval::get_popover_placement(),
 		));
 
 	}

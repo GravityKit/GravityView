@@ -1733,7 +1733,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		);
 	}
 
-	function test_hidden_conditional_edit_simple() {
+	function test_hidden_conditional_edit_simple_conditioned_not_visible() {
 		$this->_reset_context();
 
 		$administrator = $this->_generate_user( 'administrator' );
@@ -1758,7 +1758,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 				'user_edit' => true,
 			),
 			'fields' => array(
-				'single_table-columns' => array(
+				'edit_edit-fields' => array(
 					wp_generate_password( 4, false ) => array(
 						'id' => '1',
 					),
@@ -1775,6 +1775,56 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'My name', $entry['1'] );
 		$this->assertEquals( 'I have another name, though', $entry['2.1'] );
 		$this->assertEquals( 'Another name', $entry['3'] );
+
+		$this->_reset_context();
+	}
+
+	function test_hidden_conditional_edit_simple_conditioned_visible() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'conditionals.json' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+
+			'1'   => 'One name',
+			'2.1' => 'I have another name, though',
+			'3'   => 'Another name',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'user_edit' => true,
+			),
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '3',
+					),
+				),
+			)
+		) );
+
+		$_POST = array(
+			'input_1' => 'My name',
+			'input_3' => 'My other name',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'My name', $entry['1'] );
+		$this->assertEquals( 'I have another name, though', $entry['2.1'] );
+		$this->assertEquals( 'My other name', $entry['3'] );
 
 		$this->_reset_context();
 	}

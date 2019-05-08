@@ -175,6 +175,10 @@ abstract class Request {
 		* @param boolean $is_edit_entry
 		*/
 		if ( ( $entry = $this->is_entry( $form_id ) ) && apply_filters( 'gravityview_is_edit_entry', false ) ) {
+			if ( $entry->is_multi() ) {
+				return array_pop( $entry->entries );
+			}
+
 			return $entry;
 		}
 		return false;

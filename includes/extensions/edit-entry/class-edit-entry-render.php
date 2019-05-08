@@ -538,9 +538,7 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private function form_prepare_for_save() {
 
-		$form = $this->form;
-
-		$non_submitted_fields = array();
+		$form = $this->filter_conditional_logic( $this->form );
 
 	    /** @var GF_Field $field */
 		foreach( $form['fields'] as $k => &$field ) {
@@ -560,32 +558,6 @@ class GravityView_Edit_Entry_Render {
 				foreach( $field->inputs as $key => $input ) {
 				    $field->inputs[ $key ][ 'id' ] = (string)$input['id'];
 				}
-			}
-
-			/**
-			 * Unset fields that are used in conditionals, but only if these fields
-			 * are not present in the edit view fields.
-			 * @since develop
-			 */
-			if ( ! empty( $field['conditionalLogic'] ) && ! empty( $field['conditionalLogic']['rules'] ) ) {
-				foreach ( wp_list_pluck( $field['conditionalLogic']['rules'], 'fieldId' ) as $conditional_id ) {
-					$post_input_id = 'input_' . str_replace( '.', '_', $conditional_id );
-					if ( ! isset( $_POST[ $post_input_id ] ) ) {
-						$non_submitted_fields []= $conditional_id;
-					}
-				}
-			}
-		}
-
-		/**
-		 * Remove fields that are not submitted. For now we only do this with
-		 * fields that are used in conditional logic. In the future we may try
-		 * (or need) to remove all fields that are not being submitted. Or look
-		 * at the view edit configuration.
-		 */
-		foreach ( $form['fields'] as $k => $field ) {
-			if ( in_array( $field['id'], $non_submitted_fields ) ) {
-				unset( $form['fields'][ $k ] );
 			}
 		}
 
@@ -1583,7 +1555,8 @@ class GravityView_Edit_Entry_Render {
 				        }
 
 				        // count uploaded files and existent entry files
-				        $count_files = count( $file_names ) + count( $value );
+				        $count_files = ( is_array( $file_names ) ? count( $file_names ) : 0 ) +
+						               ( is_array( $value ) ? count( $value ) : 0 );
 
 				        if( $count_files > $field->maxFiles ) {
 				            $field->validation_message = __( 'Maximum number of files reached', 'gravityview' );
@@ -1964,6 +1937,54 @@ class GravityView_Edit_Entry_Render {
 	 * @return array Modified form, if not using Conditional Logic
 	 */
 	private function filter_conditional_logic( $form ) {
+		/**
+		 * Fields that are tied to a conditional logic field that is not present in the view
+		 * have to still be displayed, if the condition is met.
+		 *
+		 * @see https://github.com/gravityview/GravityView/issues/840
+		 * @since develop
+		 */
+		$the_form = GFAPI::get_form( $form['id'] );
+		$editable_ids = array();
+		foreach ( $form['fields'] as $field ) {
+			$editable_ids[] = $field['id']; // wp_list_pluck is destructive in this context
+		}
+		$remove_conditions_rule = array();
+		foreach ( $the_form['fields'] as $field ) {
+			if ( ! empty( $field->conditionalLogic ) && ! empty( $field->conditionalLogic['rules'] ) ) {
+				foreach ( $field->conditionalLogic['rules'] as $i => $rule ) {
+					if ( ! in_array( $rule['fieldId'], $editable_ids ) ) {
+						/**
+						 * This conditional field is not editable in this View.
+						 * We need to remove the rule, but only if it matches.
+						 */
+						$value = GFAPI::get_field( $the_form, $rule['fieldId'] )->get_value_export( $this->entry );
+						$match = GFFormsModel::matches_operation( $value, $rule['value'], $rule['operator'] );
+						
+						if ( $match ) {
+							$remove_conditions_rule[] = array( $field['id'], $i );
+						}
+					}
+				}
+			}
+		}
+
+		if ( $remove_conditions_rule ) {
+			foreach ( $form['fields'] as &$field ) {
+				foreach ( $remove_conditions_rule as $_remove_conditions_r ) {
+
+				    list( $rule_field_id, $rule_i ) = $_remove_conditions_r;
+
+					if ( $field['id'] == $rule_field_id ) {
+						unset( $field->conditionalLogic['rules'][ $rule_i ] );
+						gravityview()->log->debug( 'Removed conditional rule #{rule} for field {field_id}', array( 'rule' => $rule_i, 'field_id' => $field['id'] ) );
+					}
+				}
+			}
+		}
+
+		/** Normalize the indices... */
+		$form['fields'] = array_values( $form['fields'] );
 
 		/**
 		 * @filter `gravityview/edit_entry/conditional_logic` Should the Edit Entry form use Gravity Forms conditional logic showing/hiding of fields?

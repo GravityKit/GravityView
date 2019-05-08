@@ -58,7 +58,7 @@ class GVLogic_Shortcode {
 
 	/**
 	 * Special logged_in condition.
-	 * @since develop
+	 * @since 2.3
 	 * @var bool
 	 */
 	var $logged_in = null;
@@ -217,6 +217,7 @@ class GVLogic_Shortcode {
 
 		// Logged in operation
 		if ( ! is_null( $this->logged_in ) ) {
+			$this->setup_operation_and_comparison();
 		} else if ( false === $this->if ) {
 			gravityview()->log->error( '$atts->if is empty.', array( 'data' => $this->passed_atts ) );
 			return null;
@@ -265,10 +266,21 @@ class GVLogic_Shortcode {
 	 * @return void
 	 */
 	private function set_is_match() {
-		if ( ! is_null( $this->logged_in ) ) {
-			$this->is_match = ! $this->logged_in ^ is_user_logged_in(); // XNOR
+
+		$comparison_match = GVCommon::matches_operation( $this->if, $this->comparison, $this->operation );
+
+		if ( is_null( $this->logged_in ) ) {
+			$this->is_match = $comparison_match;
+			return;
+		}
+
+		$logged_in_match = ! $this->logged_in ^ is_user_logged_in(); // XNOR
+
+		// Only logged-in match
+		if( 1 === sizeof( $this->passed_atts ) ) {
+			$this->is_match = $logged_in_match;
 		} else {
-			$this->is_match = GVCommon::matches_operation( $this->if, $this->comparison, $this->operation );
+			$this->is_match = $logged_in_match && $comparison_match;
 		}
 	}
 
@@ -409,10 +421,10 @@ class GVLogic_Shortcode {
 
 		if ( isset( $this->atts['logged_in'] ) ) {
 			// Truthy
-			if ( in_array( strtolower( $this->atts['logged_in'] ), array( '1', 'true', 'yes' ) ) ) {
-				$this->logged_in = true;
-			} else {
+			if ( in_array( strtolower( $this->atts['logged_in'] ), array( '0', 'false', 'no' ) ) ) {
 				$this->logged_in = false;
+			} else {
+				$this->logged_in = true;
 			}
 		}
 

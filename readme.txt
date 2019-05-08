@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.4
-Tested up to: 5.0
+Tested up to: 5.1.1
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -21,25 +21,55 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop =
+= 2.3.2 on May 3, 2019 =
 
-* Added: Multi-Sorting! Example: Sort first by Last Name, then sort those results by First Name [Read more about multi-sorting](#TODO)
-* Added: [gvlogic logged_in="true"] support to easily check user login status
+* Re-fixed: Conditional Logic breaks in Edit Entry if the condition field is not present
+
+__Developer Updates:__
+
+* Fixed: `strtolower()` warnings in `class-frontend-views.php`
+* Fixed: `gravityview/fields/fileupload/link_atts` filter didn't work on link-wrapped images
+* Fixed: PHP notice triggered when using the Poll widget
+* Updated: Updater script, which should improve license check load time
+
+= 2.3.1 on April 18, 2019 =
+
+* Added: Entry Approval now features a popover that allows you to select from all approval statuses
+* Fixed: Issues accessing Edit Entry for Views using [Multiple Forms](https://gravityview.co/extensions/multiple-forms/)
+* Fixed: Issues with Edit Entry where fields were duplicated. This temporarily reverts the conditional logic fix added in 2.3.
+* Fixed: Maps will now properly use global API key settings on Multisite installations
+
+__Developer Updates:__
+
+* Fixed: Issues searching Address fields that contain custom states
+* Added: `gravityview/approve_entries/popover_placement` filter to modify the placement of the approval popover (default: right)
+
+= 2.3 on April 2, 2019 =
+
+**Gravity Forms 2.3 is required**. Some functionality will not work if you are using Gravity Forms 2.2. If this affects you, please [let us know](mailto:support@gravityview.co?subject=Gravity%20Forms%202.3%20Requirement)
+
+* Added: Multi-Sorting! Example: Sort first by Last Name, then sort those results by First Name [Read more about multi-sorting](https://docs.gravityview.co/article/570-sorting-by-multiple-columns)
+    - Works great with our [DataTables extension](https://gravityview.co/extensions/datatables/), too!
+* Added: `[gvlogic logged_in="true"]` support to easily check user login status - [read how it works](https://docs.gravityview.co/article/252-gvlogic-shortcode#logged-in-parameter)
 * Added: Dropdown, Radio and Link input support for searching product fields
 * Fixed: Conditional Logic breaks in Edit Entry if the condition field is not present
-* Fixed: CSV output of list and fileupload fields
+* Fixed: Sorting numbers with decimals
+* Fixed: CSV output of List and File Upload fields
 * Fixed: "Hide empty fields" setting not working Product and Quantity fields
-* Fixed: Month and day reversed in multi-input date fields
-* Fixed: Join issues with embedded Views
-* Fixed: Other entries empty text override was not working
+* Fixed: Month and day reversed in multi-input date search fields
+* Fixed: Join issues with embedded Views when using [Multiple Forms](https://gravityview.co/extensions/multiple-forms/)
+* Fixed: Other Entries empty text override was not working
 * Updated: 100% translated for Dutch, German, and French
 
 __Developer Updates:__
 
 * Added: `gravityview/search/created_by/text` filter to override dropdown and radio text in "created by" search UI
-* Modified: list and fileupload fields are now output as objects/arrays in REST API JSON
-* Modified: business_hours field support for CSV and JSON output
+* Added: `gravityview/approve_entries/after_submission` filter to prevent `is_approved` meta from being added automatically after entry creation
+* Modified: List and File Upload fields are now output as objects/arrays in REST API JSON
+* Modified: [Business Hours](https://wordpress.org/plugins/gravity-forms-business-hours/) field support in CSV and JSON output
 * Fixed: Fatal error when custom templates are loaded without `\GV\Template_Context`
+* Fixed: Potential PHP warning with PHP 7.2
+* Added notice for users to upgrade to PHP 5.6, since WordPress will be bumping the minimum version soon
 
 
 = 2.2.5 on February 4, 2019 =

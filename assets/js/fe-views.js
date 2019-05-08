@@ -28,6 +28,8 @@ jQuery(document).ready( function( $ ) {
 
 			$( '.gv-search-clear' ).on( 'click', this.clear_search );
 
+			$( 'a.gv-sort' ).on( 'click', this.multiclick_sort );
+
 		},
 
 		/**
@@ -167,6 +169,17 @@ jQuery(document).ready( function( $ ) {
 			var viewId = $( "#gravityview_back_link" ).attr( 'data-viewid' );
 			if ( $.cookie( 'gravityview_back_link_' + viewId ) !== null ) {
 				$( "#gravityview_back_link" ).attr( 'href', $.cookie( 'gravityview_back_link_' + viewId ) );
+			}
+		},
+
+		/**
+		 * When Shift-clicking sorting icons, use multi-sort URL instead of default
+		 * @since 2.3
+		 */
+		multiclick_sort: function ( e ) {
+			if ( e.shiftKey ) {
+				e.preventDefault();
+				location.href = $( this ).data('multisort-href');
 			}
 		}
 
