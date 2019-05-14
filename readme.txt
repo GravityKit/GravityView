@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Added: {date_updated} merge tag support.
+
 = 2.3.2 on May 3, 2019 =
 
 * Re-fixed: Conditional Logic breaks in Edit Entry if the condition field is not present

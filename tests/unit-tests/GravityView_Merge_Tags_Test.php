@@ -303,6 +303,10 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		}
 	}
 
+	function test_replace_date_updated() {
+		return $this->test_replace_date_created_and_updated( 'date_updated' );
+	}
+
 	/**
 	 * @covers GravityView_Field::replace_merge_tag
 	 * @covers GravityView_Field_Payment_Amount::replace_merge_tag
