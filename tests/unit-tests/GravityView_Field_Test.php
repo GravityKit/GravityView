@@ -297,4 +297,52 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 
 		$_GET         = 0;
 	}
+
+	function test_GravityView_Field_Sequence_single() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'page_size' => 3,
+			),
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'sequence',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$field = \GV\Internal_Field::by_id( 'sequence' );
+
+		$entry_0 = \GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+		) ) );
+
+		$context = \GV\Template_Context::from_template( array(
+			'view' => $view,
+			'entry' => $entry_0,
+			'field' => $field,
+			'request' => new \GV\Mock_Request(),
+		) );
+
+		$context->request->returns['is_entry'] = $entry_0;
+
+		foreach ( range( 1, 10 ) as $_ ) {
+			\GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'status' => 'active',
+			) ) );
+		}
+
+		$this->assertEquals( 11, $field->field->get_sequence( $context ) );
+
+		$field->reverse = true;
+
+		$this->assertEquals( 1, $field->field->get_sequence( $context ) );
+	}
 }
