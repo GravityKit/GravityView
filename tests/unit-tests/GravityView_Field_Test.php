@@ -220,4 +220,81 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 		$this->assertCount( 1, $entries );
 		$this->assertEquals( $valid_date_entry->ID, $entries[0]->ID );
 	}
+
+	function test_GravityView_Field_Sequence() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'page_size' => 3,
+			),
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'sequence',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$field = \GV\Internal_Field::by_id( 'sequence' );
+
+		$entry_0 = \GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+		) ) );
+
+		$context = \GV\Template_Context::from_template( array(
+			'view' => $view,
+			'entry' => $entry_0,
+			'field' => $field,
+		) );
+
+		$this->assertEquals( 0, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 1, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 2, $field->field->get_sequence( $context ) );
+
+		$field->UID   = wp_generate_password( 8, false );
+		$field->start = 1000;
+
+		$this->assertEquals( 1000, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 1001, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 1002, $field->field->get_sequence( $context ) );
+
+		$field->start = 1;
+		$field->UID   = wp_generate_password( 8, false );
+
+		$_GET['pagenum'] = 3;
+
+		$this->assertEquals( 7, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 8, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 9, $field->field->get_sequence( $context ) );
+
+		$field->UID   = wp_generate_password( 8, false );
+		$_GET['pagenum'] = 0;
+
+		foreach ( range( 1, 10 ) as $_ ) {
+			\GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'status' => 'active',
+			) ) );
+		}
+
+		$field->reverse = true;
+
+		$this->assertEquals( 11, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 10, $field->field->get_sequence( $context ) );
+		$this->assertEquals(  9, $field->field->get_sequence( $context ) );
+
+		$field->UID   = wp_generate_password( 8, false );
+		$_GET['pagenum'] = 3;
+
+		$this->assertEquals( 5, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 4, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 3, $field->field->get_sequence( $context ) );
+
+		$_GET         = 0;
+	}
 }

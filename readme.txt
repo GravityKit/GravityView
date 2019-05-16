@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Added: {date_updated} merge tag support.
+* Added: A new result number field and {sequence} merge tag.
 
 = 2.3.2 on May 3, 2019 =
 
