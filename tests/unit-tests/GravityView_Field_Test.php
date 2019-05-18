@@ -296,6 +296,13 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 		$this->assertEquals( 3, $field->field->get_sequence( $context ) );
 
 		$_GET         = 0;
+
+		$field->UID   = wp_generate_password( 8, false );
+		$field->start = 5;
+
+		$this->assertEquals( 15, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 14, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 13, $field->field->get_sequence( $context ) );
 	}
 
 	function test_GravityView_Field_Sequence_single() {

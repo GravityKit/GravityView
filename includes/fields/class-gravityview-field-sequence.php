@@ -101,6 +101,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 			if ( $context->field->reverse ) {
 				$startlines[ $context_key ] = $context->view->get_entries()->total() - ( $pagenum * $pagesize );
+				$startlines[ $context_key ] += $context->field->start - 1;
 			} else {
 				$startlines[ $context_key ] = ( $pagenum * $pagesize ) + $context->field->start;
 			}
