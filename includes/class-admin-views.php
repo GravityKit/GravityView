@@ -780,7 +780,7 @@ class GravityView_Admin_Views {
 		$entry_default_fields['sequence'] = array(
 			'label'	=> __('Result Number', 'gravityview'),
 			'type'	=> 'sequence',
-			'desc'	=> __('Display the sequential result number for this entry.', 'gravityview'),
+			'desc'	=> __('Display a sequential result number for each entry.', 'gravityview'),
 		);
 
 		/**
