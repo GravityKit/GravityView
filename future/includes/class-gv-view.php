@@ -1333,6 +1333,10 @@ class View implements \ArrayAccess {
 			fputs( $csv, "\xef\xbb\xbf" );
 		}
 
+		if ( $view->settings->get( 'csv_nolimit' ) ) {
+			$view->settings->update( array( 'page_size' => -1 ) );
+		}
+
 		$entries = $view->get_entries();
 
 		$headers_done = false;

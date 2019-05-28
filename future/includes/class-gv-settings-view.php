@@ -343,6 +343,18 @@ class View_Settings extends Settings {
 			),
 		),
 		array(
+			'csv_nolimit'           => array(
+				'label'             => __( 'Show all in CSV', 'gravityview' ),
+				'group'             => 'default',
+				'desc'              => __( 'Do not limit the number of entries output in the CSV.', 'gravityview' ),
+				'type'              => 'checkbox',
+				'value'             => '',
+				'tooltip'           => false,
+				'show_in_shortcode' => false,
+				'full_width'        => true,
+			),
+		),
+		array(
 			'post_id' => array(
 				'type'              => 'number',
 				'value'             => '',

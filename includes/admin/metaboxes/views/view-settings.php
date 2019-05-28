@@ -75,6 +75,11 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 	 */
 	GravityView_Render_Settings::render_setting_row( 'csv_enable', $current_settings );
 
+	/**
+	 * @since develop
+	 */
+	GravityView_Render_Settings::render_setting_row( 'csv_nolimit', $current_settings );
+
 	do_action( 'gravityview_admin_directory_settings', $current_settings );
 
 	?>

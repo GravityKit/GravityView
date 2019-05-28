@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Fixed: Settings compatibility issues on Multisite.
 * Added: {date_updated} merge tag support.
+* Added: Full CSV output option for Views.
 
 = 2.3.2 on May 3, 2019 =
 
