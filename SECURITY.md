@@ -12,5 +12,7 @@ These versions of GravityView currently being supported with security updates.
 
 ## Reporting a Vulnerability
 
+> Until the HackerOne page is ready, please email admin@gravityview.co with any security vulnerability information.
+
 Please report vulnerabilities using the [GravityView HackerOne page](https://hackerone.com/gravityview). 
 The HackerOne page also outlines our process for following up with reports.
