@@ -8017,6 +8017,66 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	public function test_view_csv_address() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1.1' => 'A1',
+			'1.2' => 'A2',
+			'1.3' => 'C',
+			'1.4' => 'S',
+			'1.5' => 'Z',
+			'1.6' => 'C',
+		) );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+            'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+						'label' => 'Address',
+						'show_map_link' => true,
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		set_query_var( 'csv', 1 );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$view->settings->update( array( 'csv_enable' => '1' ) );
+
+		add_filter( 'gform_include_bom_export_entries', '__return_false' );
+
+		ob_start();
+		$view::template_redirect();
+		$this->assertNotContains( 'google', $out = ob_get_clean() );
+		$this->assertContains( "A1\nA2\n", $out );
+
+		add_filter( 'gravityview/template/field/address/csv/delimiter', $callback = function() {
+			return ', ';
+		} );
+
+		ob_start();
+		$view::template_redirect();
+		$this->assertContains( "C, S Z", ob_get_clean());
+
+		remove_filter( 'gravityview/template/field/address/csv/delimiter', $callback );
+
+		remove_filter( 'gform_include_bom_export_entries', '__return_false' );
+
+		$this->_reset_context();
+	}
 }
 
 class GVFutureTest_Extension_Test_BC extends GravityView_Extension {
