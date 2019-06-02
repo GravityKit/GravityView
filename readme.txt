@@ -26,6 +26,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Settings compatibility issues on Multisite.
 * Added: {date_updated} merge tag support.
 * Added: Full CSV output option for Views.
+* Fixed: CSV output for address fields contained Google Maps link.
+* Added: `gravityview/template/field/address/csv/delimiter` filter for CSV output of addresses.
 * Change: *Breaking* users without the `unfiltered_html` capability can no longer edit Views.
 * Added: `gravityview/security/allow_unfiltered_html` to not require `unfiltered_html`. Dangerous!
 
