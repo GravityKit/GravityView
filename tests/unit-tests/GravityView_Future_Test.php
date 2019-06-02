@@ -150,6 +150,64 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertFalse( GravityView_frontend::is_single_entry() );
 	}
 
+	public function test_view_edit_create_permissions() {
+		$administrator = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'administrator' )
+		);
+
+		$author = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'author' )
+		);
+
+		$editor = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'editor' )
+		);
+
+		$contributor = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'contributor' )
+		);
+
+		$view = $this->factory->view->create_and_get();
+
+		wp_set_current_user( $administrator );
+
+		$this->assertTrue( current_user_can( 'edit_gravityviews' ) );
+		$this->assertTrue( current_user_can( 'edit_gravityview', $view->ID ) );
+
+		wp_set_current_user( $author );
+
+		wp_update_post( array(
+			'ID' => $view->ID,
+			'post_author' => $author,
+			'post_status' => 'draft',
+		) );
+
+		$this->assertFalse( current_user_can( 'edit_gravityviews' ) );
+		$this->assertFalse( current_user_can( 'edit_gravityview', $view->ID ) );
+
+		add_filter( 'gravityview/security/require_unfiltered_html', '__return_false' );
+
+		$this->assertTrue( current_user_can( 'edit_gravityviews' ) );
+		$this->assertTrue( current_user_can( 'edit_gravityview', $view->ID ) );
+
+		remove_filter( 'gravityview/security/require_unfiltered_html', '__return_false' );
+
+		$user = wp_get_current_user();
+		$user->add_cap( 'unfiltered_html' );
+		$user->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
+
+		$this->assertTrue( current_user_can( 'edit_gravityviews' ) );
+		$this->assertTrue( current_user_can( 'edit_gravityview', $view->ID ) );
+	}
+
 	/**
 	 * @covers \GV\GF_Entry::by_id()
 	 * @covers \GV\GF_Entry::by_slug()
@@ -1377,8 +1435,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertNotNull( $visible->get( '000b' ) );
 
 		remove_all_filters( 'gravityview/field/is_visible' );
-
-		$user = wp_get_current_user();
 
 		$user = wp_get_current_user();
 		$user->add_cap( 'manage_options' );

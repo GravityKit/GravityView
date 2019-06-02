@@ -26,6 +26,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Settings compatibility issues on Multisite.
 * Added: {date_updated} merge tag support.
 * Added: Full CSV output option for Views.
+* Change: *Breaking* users without the `unfiltered_html` capability can no longer edit Views.
+* Added: `gravityview/security/allow_unfiltered_html` to not require `unfiltered_html`. Dangerous!
 
 = 2.3.2 on May 3, 2019 =
 

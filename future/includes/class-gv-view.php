@@ -1410,6 +1410,51 @@ class View implements \ArrayAccess {
 		return $query_class;
 	}
 
+	/**
+	 * Restrict View access to specific capabilities.
+	 *
+	 * Hooked into `map_meta_cap` WordPress filter.
+	 *
+	 * @since develop
+	 *
+	 * @param $caps    array  The output capabilities.
+	 * @param $cap     string The cap that is being checked.
+	 * @param $user_id int    The User ID.
+	 * @param $args    array  Additional arguments to the capability.
+	 *
+	 * @return array   The resulting capabilities.
+	 */
+	public static function restrict( $caps, $cap, $user_id, $args ) {
+		/**
+		 * @filter `gravityview/security/require_unfiltered_html` Bypass restrictions on Views that require `unfiltered_html`.
+		 * @param[in,out] boolean
+		 */
+		if ( ! apply_filters( 'gravityview/security/require_unfiltered_html', true ) ) {
+			return $caps;
+		}
+
+		switch ( $cap ):
+			case 'edit_gravityview':
+			case 'edit_gravityviews':
+			case 'edit_others_gravityviews':
+			case 'edit_private_gravityviews':
+			case 'edit_published_gravityviews':
+				if ( ! user_can( $user_id, 'unfiltered_html' ) ) {
+					if ( ! user_can( $user_id, 'gravityview_full_access' ) ) {
+						return array( 'do_not_allow' );
+					}
+				}
+
+				return $caps;
+			case 'edit_post':
+				if ( get_post_type( array_pop( $args ) ) == 'gravityview' ) {
+					return self::restrict( $caps, 'edit_gravityview', $user_id, $args );
+				}
+		endswitch;
+
+		return $caps;
+	}
+
 	public function __get( $key ) {
 		if ( $this->post ) {
 			$raw_post = $this->post->filter( 'raw' );

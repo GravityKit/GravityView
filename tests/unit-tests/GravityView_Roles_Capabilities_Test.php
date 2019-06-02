@@ -238,7 +238,12 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 		$zero->add_cap( 'edit_published_gravityviews' );
 		$zero->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
 
-		// CAN edit own view
+		// Can't edit own view without unfilted_html
+		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'edit_gravityview', $zero_view_id ) );
+
+		$zero->add_cap( 'unfiltered_html' );
+		$zero->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
+
 		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'edit_gravityview', $zero_view_id ) );
 
 		// Still can't edit others' View

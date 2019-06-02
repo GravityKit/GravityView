@@ -146,6 +146,7 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
 		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
 		add_action( 'init', array( '\GV\View', 'add_rewrite_endpoint' ) );
+		add_filter( 'map_meta_cap', array( '\GV\View', 'restrict' ), 11, 4 );
 		add_action( 'template_redirect', array( '\GV\View', 'template_redirect' ) );
 		add_action( 'the_content', array( '\GV\View', 'content' ) );
 
