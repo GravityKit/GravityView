@@ -870,7 +870,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$_tmp_query_parts = $_tmp_query->_introspect();
 				$search_condition = $_tmp_query_parts['where'];
 
-				if ( empty( $filter['key'] ) &&  $search_condition->expressions ) {
+				if ( empty( $filter['key'] ) && $search_condition->expressions ) {
 					 foreach ( $search_condition->expressions as $condition ) {
 						$search_conditions[] = new GravityView_Widget_Search_All_GF_Query_Condition( $condition, $view );
 					 }
