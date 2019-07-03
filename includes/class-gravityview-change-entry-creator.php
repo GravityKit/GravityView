@@ -136,6 +136,10 @@ class GravityView_Change_Entry_Creator {
      */
     function set_screen_mode() {
 
+    	if( 'view' === \GV\Utils::_POST( 'screen_mode' ) ) {
+    		return;
+	    }
+
     	// If $_GET['screen_mode'] is set to edit, set $_POST value
         if( \GV\Utils::_GET( 'screen_mode' ) === 'edit' ) {
             $_POST["screen_mode"] = 'edit';
