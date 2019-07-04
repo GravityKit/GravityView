@@ -871,9 +871,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$search_condition = $_tmp_query_parts['where'];
 
 				if ( empty( $filter['key'] ) && $search_condition->expressions ) {
-					 foreach ( $search_condition->expressions as $condition ) {
-						$search_conditions[] = new GravityView_Widget_Search_All_GF_Query_Condition( $condition, $view );
-					 }
+					$search_conditions[] = $search_condition; // new GravityView_Widget_Search_All_GF_Query_Condition( $search_condition, $view );
 				} else {
 					$left = $search_condition->left;
 					$alias = $query->_alias( $left->field_id, $left->source, $left->is_entry_column() ? 't' : 'm' );
@@ -1894,25 +1892,20 @@ class GravityView_Widget_Search_All_GF_Query_Condition extends \GF_Query_Conditi
 	}
 
 	public function sql( $query ) {
-		// @todo Search limit to only known fields
-		$parameters = $query->_introspect();
-
 		// @todo We can search by properties as well in the future
 		$table = GFFormsModel::get_entry_meta_table_name();
 
 		$conditions = array();
 
-		foreach ( $parameters['aliases'] as $key => $alias ) {
-			if ( 'm' == $alias[0] && preg_match( '#\d+_\d+#', $key ) ) {
-				$conditions[] = sprintf( "EXISTS(SELECT * FROM `$table` WHERE `meta_value` %s %s AND `entry_id` = `%s`.`entry_id`)",
-					$this->search_condition->operator, $this->search_condition->right->sql( $query ), $alias );
-			}
+		if ( $this->search_condition->left->field_id === \GF_Query_Column::META ) {
+			$conditions[] = sprintf( "EXISTS(SELECT * FROM `$table` WHERE `meta_value` %s %s AND `entry_id` = `%s`.`id`)",
+				$this->search_condition->operator, $this->search_condition->right->sql( $query ), $query->search->left->alias );
 		}
 
-		if ( $conditions ) {
-			return '(' . implode( ' OR ', $conditions ) . ')';
+		if ( ! $conditions ) {
+			return '';
 		}
 
-		return '';
+		return '(' . implode( ' OR ', $conditions ) . ')';
 	}
 }

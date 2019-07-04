@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: `gravityview/template/field/address/csv/delimiter` filter for CSV output of addresses.
 * Change: *Breaking* users without the `unfiltered_html` capability can no longer edit Views.
 * Added: `gravityview/security/allow_unfiltered_html` to not require `unfiltered_html`. Dangerous!
+* Fixed: Search All Fields functionality with latest Gravity Forms.
 
 = 2.3.2 on May 3, 2019 =
 

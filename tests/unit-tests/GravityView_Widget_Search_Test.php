@@ -1272,7 +1272,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'status' => 'active',
 			'16' => 'wazzup',
-			'2' => 'Somewhat Better'
+			'2.2' => 'Somewhat Better'
 		) );
 
 		$hello = $this->factory->entry->create_and_get( array(
