@@ -150,6 +150,64 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertFalse( GravityView_frontend::is_single_entry() );
 	}
 
+	public function test_view_edit_create_permissions() {
+		$administrator = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'administrator' )
+		);
+
+		$author = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'author' )
+		);
+
+		$editor = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'editor' )
+		);
+
+		$contributor = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'contributor' )
+		);
+
+		$view = $this->factory->view->create_and_get();
+
+		wp_set_current_user( $administrator );
+
+		$this->assertTrue( current_user_can( 'edit_gravityviews' ) );
+		$this->assertTrue( current_user_can( 'edit_gravityview', $view->ID ) );
+
+		wp_set_current_user( $author );
+
+		wp_update_post( array(
+			'ID' => $view->ID,
+			'post_author' => $author,
+			'post_status' => 'draft',
+		) );
+
+		$this->assertFalse( current_user_can( 'edit_gravityviews' ) );
+		$this->assertFalse( current_user_can( 'edit_gravityview', $view->ID ) );
+
+		add_filter( 'gravityview/security/require_unfiltered_html', '__return_false' );
+
+		$this->assertTrue( current_user_can( 'edit_gravityviews' ) );
+		$this->assertTrue( current_user_can( 'edit_gravityview', $view->ID ) );
+
+		remove_filter( 'gravityview/security/require_unfiltered_html', '__return_false' );
+
+		$user = wp_get_current_user();
+		$user->add_cap( 'unfiltered_html' );
+		$user->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
+
+		$this->assertTrue( current_user_can( 'edit_gravityviews' ) );
+		$this->assertTrue( current_user_can( 'edit_gravityview', $view->ID ) );
+	}
+
 	/**
 	 * @covers \GV\GF_Entry::by_id()
 	 * @covers \GV\GF_Entry::by_slug()
@@ -1377,8 +1435,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertNotNull( $visible->get( '000b' ) );
 
 		remove_all_filters( 'gravityview/field/is_visible' );
-
-		$user = wp_get_current_user();
 
 		$user = wp_get_current_user();
 		$user->add_cap( 'manage_options' );
@@ -7818,6 +7874,66 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 	}
 
+	public function test_view_csv_nolimit() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form->ID,
+			'settings' => array(
+				'csv_enable' => '1',
+				'page_size'  => '3',
+			),
+			'template_id' => 'table',
+            'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'label' => '1',
+						'content' => 'hello',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'label' => '2',
+						'content' => 'world',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		foreach ( range( 1, 10 ) as $_ ) {
+			$entry = $this->factory->entry->create_and_get( array(
+				'form_id' => $form->ID,
+				'status' => 'active',
+				'4' => $_ . 'support@gravityview.co',
+			) );
+		}
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		set_query_var( 'csv', 1 );
+
+		add_filter( 'gform_include_bom_export_entries', '__return_false' );
+
+		ob_start();
+		$view::template_redirect();
+		$this->assertCount( 4, explode( "\n", ob_get_clean() ) );
+
+		$view->settings->update( array( 'csv_nolimit' => '1' ) );
+
+		ob_start();
+		$view::template_redirect();
+		$this->assertCount( 11, explode( "\n", ob_get_clean() ) );
+
+		remove_filter( 'gform_include_bom_export_entries', '__return_false' );
+
+		$this->_reset_context();
+	}
+
 	public function test_hide_empty_products() {
 		$this->_reset_context();
 
@@ -7954,6 +8070,66 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$future = $renderer->render( $entry, $view );
 
 		$this->assertContains( 'Product A', $future );
+
+		$this->_reset_context();
+	}
+
+	public function test_view_csv_address() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1.1' => 'A1',
+			'1.2' => 'A2',
+			'1.3' => 'C',
+			'1.4' => 'S',
+			'1.5' => 'Z',
+			'1.6' => 'C',
+		) );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+            'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+						'label' => 'Address',
+						'show_map_link' => true,
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		set_query_var( 'csv', 1 );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$view->settings->update( array( 'csv_enable' => '1' ) );
+
+		add_filter( 'gform_include_bom_export_entries', '__return_false' );
+
+		ob_start();
+		$view::template_redirect();
+		$this->assertNotContains( 'google', $out = ob_get_clean() );
+		$this->assertContains( "A1\nA2\n", $out );
+
+		add_filter( 'gravityview/template/field/address/csv/delimiter', $callback = function() {
+			return ', ';
+		} );
+
+		ob_start();
+		$view::template_redirect();
+		$this->assertContains( "C, S Z", ob_get_clean());
+
+		remove_filter( 'gravityview/template/field/address/csv/delimiter', $callback );
+
+		remove_filter( 'gform_include_bom_export_entries', '__return_false' );
 
 		$this->_reset_context();
 	}

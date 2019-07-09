@@ -1186,4 +1186,105 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$_GET = array();
 	}
+
+	public function test_search_all_basic() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 16, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$hello_world = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello world',
+		) );
+
+		$hello = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello',
+		) );
+
+		$world = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'world',
+		) );
+
+		$_GET = array();
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 3, $entries );
+
+		$_GET['gv_search'] = 'hello';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 2, $entries );
+
+		$_GET = array();
+	}
+
+	public function test_search_all_basic_choices() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 16, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+					wp_generate_password( 16, false ) => array(
+						'id' => '2',
+						'label' => 'Checkbox',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$hello_world = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'wazzup',
+			'2.2' => 'Somewhat Better'
+		) );
+
+		$hello = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello',
+		) );
+
+		$_GET['gv_search'] = 'better';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 1, $entries );
+
+		$_GET = array();
+	}
 }

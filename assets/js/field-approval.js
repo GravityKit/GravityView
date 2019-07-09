@@ -98,7 +98,7 @@
 					var new_status = parseInt( $( linkClickEvent.target ).attr( 'data-approved' ), 10 );
 
 					$entry_element._newStatus = new_status;
-					self.toggle_approval( $entry_element );
+					self.toggle_approval( linkClickEvent, $entry_element );
 
 					gv_select_status( showEvent.popper, new_status );
 				};
@@ -139,9 +139,9 @@
 		} );
 
 		$( self.selector ).on( 'click', function( e ) {
+			e.preventDefault();
 
 			if ( $( e.target ).hasClass( self.css_classes.loading ) ) {
-				e.preventDefault();
 				if ( self.debug ) {
 					console.log( 'add_toggle_approval_trigger', 'Cannot toggle approval while approval is pending.' );
 				}
@@ -155,12 +155,15 @@
 	 * Toggle a specific entry
 	 *
 	 * @param e The clicked entry event object
+	 * @param {jQuery} $target If passed, the clicked element passed from tippy.js
 	 * @returns {boolean}
 	 */
-	self.toggle_approval = function( e ) {
-		if ( e._newStatus ) {
-			var $link = $( e );
-			var new_status = e._newStatus;
+	self.toggle_approval = function( e, $target ) {
+		e.preventDefault();
+
+		if ( $target && $target._newStatus ) {
+			var $link = $target;
+			var new_status = $target._newStatus;
 		} else {
 			var $link = $( e.target ).is( 'span' ) ? $( e.target ).parent() : $( e.target );
 			var new_status = self.get_new_status( e, $link.attr( 'data-current-status' ) );

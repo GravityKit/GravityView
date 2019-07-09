@@ -250,18 +250,20 @@ class GravityView_Roles_Capabilities {
 			'gravityview_edit_settings',
 			'gravityview_uninstall', // Ability to trigger the Uninstall @todo
 			'gravityview_contact_support', // Whether able to send a message to support via the Support Port
+
+			'edit_gravityviews',
+			'edit_others_gravityviews',
+			'edit_private_gravityviews',
+			'edit_published_gravityviews',
 		);
 
 		// Edit, publish, delete own and others' stuff
 		$editor_caps = array(
-			'edit_others_gravityviews',
 			'read_private_gravityviews',
 			'delete_private_gravityviews',
 			'delete_others_gravityviews',
-			'edit_private_gravityviews',
 			'publish_gravityviews',
 			'delete_published_gravityviews',
-			'edit_published_gravityviews',
 			'copy_gravityviews', // For duplicate/clone View functionality
 
 			// GF caps_to_check
@@ -286,7 +288,6 @@ class GravityView_Roles_Capabilities {
 
 		// Edit and delete drafts but not publish
 		$contributor_caps = array(
-			'edit_gravityviews', // Affects if you're able to see the Views menu in the Admin, and also if you're able to override cache using ?nocache
 			'delete_gravityviews',
 			'gravityview_getting_started', // Getting Started page access
 			'gravityview_support_port', // Display GravityView Support Port
