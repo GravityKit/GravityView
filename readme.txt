@@ -23,15 +23,20 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+**We changed who can edit Views to improve security: users now need the ability to edit **
+
 * Added: A new result number field and {sequence} merge tag.
-* Added: {date_updated} merge tag support.
-* Added: Full CSV output option for Views.
-* Fixed: Settings compatibility issues on Multisite.
-* Fixed: CSV output for address fields contained Google Maps link.
-* Added: `gravityview/template/field/address/csv/delimiter` filter for CSV output of addresses.
-* Fixed: When editing an entry in Gravity Forms, clicking the "Cancel" button would not exit edit mode.
-* Change: *Breaking* users without the `unfiltered_html` capability can no longer edit Views.
-* Added: `gravityview/template/field/address/csv/delimiter` filter for CSV output of addresses.
+* Added: `{date_updated}` Merge Tag ([see all GravityView Merge Tags](https://docs.gravityview.co/article/76-merge-tags))
+* Added: CSV option to output all entries for a View
+* Fixed: Settings compatibility issues on Multisite
+* Fixed: CSV output for address fields contained Google Maps link
+* Fixed: When editing an entry in Gravity Forms, clicking the "Cancel" button would not exit edit mode
+
+__Developer Updates:__
+
+* Change: *Breaking* users without the `unfiltered_html` capability can no longer edit Views
+* Added: `gravityview/template/field/address/csv/delimiter` filter for CSV output of addresses
+* Added: `gravityview/template/field/address/csv/delimiter` filter for CSV output of addresses
 * Added: `gravityview/security/allow_unfiltered_html` to not require `unfiltered_html`. Dangerous!
 * Fixed: Search All Fields functionality with latest Gravity Forms.
 * Fixed: Some WSOD issues with Gravity Forms deactivated.
