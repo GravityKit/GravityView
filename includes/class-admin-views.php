@@ -775,6 +775,15 @@ class GravityView_Admin_Views {
 		);
 
 		/**
+		 * @since develop
+		 */
+		$entry_default_fields['sequence'] = array(
+			'label'	=> __('Result Number', 'gravityview'),
+			'type'	=> 'sequence',
+			'desc'	=> __('Display a sequential result number for each entry.', 'gravityview'),
+		);
+
+		/**
 		 * @filter `gravityview_entry_default_fields` Modify the default fields for each zone and context
 		 * @param array $entry_default_fields Array of fields shown by default
 		 * @param  string|array $form form_ID or form object

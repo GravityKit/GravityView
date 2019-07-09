@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Fixed: Settings compatibility issues on Multisite.
+* Added: A new result number field and {sequence} merge tag.
 * Added: {date_updated} merge tag support.
 * Added: Full CSV output option for Views.
 * Fixed: CSV output for address fields contained Google Maps link.
