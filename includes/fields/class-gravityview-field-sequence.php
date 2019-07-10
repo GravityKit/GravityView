@@ -38,10 +38,29 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 		$this->label = esc_html__( 'Result Number', 'gravityview' );
 
+		add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'field_tooltips') );
+
 		parent::__construct();
 	}
 
-	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+	/**
+	 * Add tooltips
+	 * @param  array $tooltips Existing tooltips
+	 * @return array           Modified tooltips
+	 */
+	public function field_tooltips( $tooltips ) {
+
+		$return = $tooltips;
+
+		$return['reverse_sequence'] = array(
+			'title' => __('Reverse the Sequence', 'gravityview'),
+			'value' => __('Output row numbers in descending order: the highest number will be first.', 'gravityview'),
+		);
+
+		return $return;
+	}
+
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		unset ( $field_options['search_filter'] );
 
@@ -54,7 +73,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 			'reverse' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Reverse the sequence', 'gravityview' ),
-				'tooltip' => __( 'Output row numbers in reverse order.', 'gravityview' ),
+				'tooltip' => 'reverse_sequence',
 				'value' => '',
 			),
 		);
