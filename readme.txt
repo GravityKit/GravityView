@@ -23,7 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
-**We changed who can edit Views to improve security: users now need the ability to edit **
+**We changed who can edit Views to improve security [TODO: WRITE DOC BEFORE RELEASE] **
 
 * Added: A new result number field and {sequence} merge tag.
 * Added: `{date_updated}` Merge Tag ([see all GravityView Merge Tags](https://docs.gravityview.co/article/76-merge-tags))
@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Settings compatibility issues on Multisite
 * Fixed: CSV output for address fields contained Google Maps link
 * Fixed: When editing an entry in Gravity Forms, clicking the "Cancel" button would not exit edit mode
+* Fixed: Some fatal errors when Gravity Forms is deactivated while GravityView is active.
 
 __Developer Updates:__
 
@@ -39,7 +40,6 @@ __Developer Updates:__
 * Added: `gravityview/template/field/address/csv/delimiter` filter for CSV output of addresses
 * Added: `gravityview/security/allow_unfiltered_html` to not require `unfiltered_html`. Dangerous!
 * Fixed: Search All Fields functionality with latest Gravity Forms.
-* Fixed: Some WSOD issues with Gravity Forms deactivated.
 
 = 2.3.2 on May 3, 2019 =
 
