@@ -53,8 +53,8 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		$return = $tooltips;
 
 		$return['reverse_sequence'] = array(
-			'title' => __('Reverse the Sequence', 'gravityview'),
-			'value' => __('Output row numbers in descending order: the highest number will be first.', 'gravityview'),
+			'title' => __('Reverse the order of the result numbers', 'gravityview'),
+			'value' => __('Output row numbers in descending order. If enabled, numbers will go from high to low.', 'gravityview'),
 		);
 
 		return $return;
@@ -67,13 +67,13 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		$new_fields = array(
 			'start' => array(
 				'type' => 'number',
-				'label' => __( 'First row number', 'gravityview' ),
+				'label' => __( 'First Row Number', 'gravityview' ),
 				'value' => '1',
 				'merge_tags' => false,
 			),
 			'reverse' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Reverse the sequence', 'gravityview' ),
+				'label' => __( 'Reverse the order of the result numbers', 'gravityview' ),
 				'tooltip' => 'reverse_sequence',
 				'value' => '',
 			),
@@ -108,7 +108,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		}
 
 		$return = $text;
-		
+
 		$context = new \GV\Template_Context();
 		$context->view = \GV\View::by_id( $view_data['view_id'] );
 		$context->entry = \GV\GF_Entry::from_entry( $entry );
