@@ -66,8 +66,6 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	 * Replace {sequence} Merge Tags inside Custom Content fields
 	 *
 	 * TODO:
-	 * - Add support for `:start:[1-9]+` modifier
-	 * - Add support for `:reverse` modifier
 	 * - Find a better way to infer current View data (without using legacy code)
 	 * - Add tests
 	 *
@@ -82,22 +80,52 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	 */
 	public function replace_merge_tag( $matches = array(), $text = '', $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
+
 		$view_data = gravityview_get_current_view_data(); // TODO: Don't use legacy code...
 
 		if ( empty( $view_data ) ) {
 			return '';
 		}
 
-		$gv_field = \GV\Internal_Field::by_id( 'sequence' );
-		$gv_field->reverse = false; // TODO: Allow overriding via Merge Tag modifiers
-		$gv_field->start = 1; // TODO: Allow overriding via Merge Tag modifiers
-
+		$return = $text;
+		
 		$context = new \GV\Template_Context();
 		$context->view = \GV\View::by_id( $view_data['view_id'] );
 		$context->entry = \GV\GF_Entry::from_entry( $entry );
-		$context->field = $gv_field;
 
-		return str_replace( '{sequence}', $this->get_sequence( $context ), $text );
+		$gv_field = \GV\Internal_Field::by_id( 'sequence' );
+
+		foreach ( $matches as $match ) {
+
+			$full_tag = $match[0];
+			$property = $match[1];
+
+			$gv_field->reverse = false;
+			$gv_field->start = 1;
+
+			$modifiers = explode( ',', trim( $property ) );
+
+			foreach ( $modifiers as $modifier ) {
+
+				$modifier = trim( $modifier );
+
+				if ( 'reverse' === $modifier ) {
+					$gv_field->reverse = true;
+				}
+
+				$maybe_start = explode( ':', $modifier );
+
+				if( 'start' === rgar( $maybe_start, 0 ) && is_numeric( rgar( $maybe_start, 1 ) ) ) {
+					$gv_field->start = (int) rgar( $maybe_start, 1 );
+				}
+			}
+
+			$context->field = $gv_field;
+
+			$return = str_replace( $full_tag, $this->get_sequence( $context ), $return );
+		}
+
+		return $return;
 	}
 
 	/**
