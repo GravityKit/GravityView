@@ -169,7 +169,9 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		 * Figure out the starting number.
 		 */
 		if ( $context->request && $entry = $context->request->is_entry() ) {
-			$sql_query = '';
+
+			$sql_query = array();
+
 			add_filter( 'gform_gf_query_sql', $callback = function( $sql ) use ( &$sql_query ) {
 				$sql_query = $sql;
 				return $sql;
