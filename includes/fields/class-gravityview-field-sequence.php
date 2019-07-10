@@ -69,6 +69,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 				'type' => 'number',
 				'label' => __( 'First row number', 'gravityview' ),
 				'value' => '1',
+				'merge_tags' => false,
 			),
 			'reverse' => array(
 				'type' => 'checkbox',
