@@ -17,14 +17,20 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 	/**
 	 * @var bool
-	 * @since 1.15.3
 	 */
 	var $is_sortable = false;
 
 	/**
 	 * @var bool
-	 * @since 1.15.3
-	 */ var $is_searchable = false;
+	 */
+	var $is_searchable = false;
+
+	/**
+	 * @var bool
+	 */
+	var $is_numeric = true;
+
+	var $_custom_merge_tag = 'sequence';
 
 	var $group = 'gravityview';
 
@@ -57,8 +63,48 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	}
 
 	/**
+	 * Replace {sequence} Merge Tags inside Custom Content fields
+	 *
+	 * TODO:
+	 * - Add support for `:start:[1-9]+` modifier
+	 * - Add support for `:reverse` modifier
+	 * - Find a better way to infer current View data (without using legacy code)
+	 * - Add tests
+	 *
+	 * @param array $matches
+	 * @param string $text
+	 * @param array $form
+	 * @param array $entry
+	 * @param bool $url_encode
+	 * @param bool $esc_html
+	 *
+	 * @return string
+	 */
+	public function replace_merge_tag( $matches = array(), $text = '', $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
+
+		$view_data = gravityview_get_current_view_data(); // TODO: Don't use legacy code...
+
+		if ( empty( $view_data ) ) {
+			return '';
+		}
+
+		$gv_field = \GV\Internal_Field::by_id( 'sequence' );
+		$gv_field->reverse = false; // TODO: Allow overriding via Merge Tag modifiers
+		$gv_field->start = 1; // TODO: Allow overriding via Merge Tag modifiers
+
+		$context = new \GV\Template_Context();
+		$context->view = \GV\View::by_id( $view_data['view_id'] );
+		$context->entry = \GV\GF_Entry::from_entry( $entry );
+		$context->field = $gv_field;
+
+		return str_replace( '{sequence}', $this->get_sequence( $context ), $text );
+	}
+
+	/**
 	 * Calculate the current sequence number for the context.
+	 *
 	 * @param  \GV\Template_Context $context The context.
+	 *
 	 * @return int The sequence number for the field/entry within the view results.
 	 */
 	public function get_sequence( $context ) {
@@ -67,7 +113,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		$context_key = md5( json_encode(
 			array(
 				$context->view->ID,
-				$context->field->UID,
+				\GV\Utils::get( $context, 'field/UID' ), //TODO: Generate UID when using Merge Tag
 			)
 		) );
 
