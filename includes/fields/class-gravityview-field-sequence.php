@@ -87,7 +87,6 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	 *
 	 * TODO:
 	 * - Find a better way to infer current View data (without using legacy code)
-	 * - Add tests
 	 *
 	 * @param array $matches
 	 * @param string $text
@@ -99,7 +98,11 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	 * @return string
 	 */
 	public function replace_merge_tag( $matches = array(), $text = '', $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
-
+		/**
+		 * An internal cache for sequence tag reuse within one field.
+		 * Avoids calling get_sequence over and over again, off-by-many increments, etc.
+		 */
+		static $merge_tag_sequences = array();
 
 		$view_data = gravityview_get_current_view_data(); // TODO: Don't use legacy code...
 
@@ -113,7 +116,12 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		$context->view = \GV\View::by_id( $view_data['view_id'] );
 		$context->entry = \GV\GF_Entry::from_entry( $entry );
 
+		$legacy_field = \GravityView_View::getInstance()->getCurrentField(); // TODO: Don't use legacy code...
+
 		$gv_field = \GV\Internal_Field::by_id( 'sequence' );
+		$merge_tag_context = $legacy_field['UID'];
+
+		$merge_tag_context = uniqid( 'sequence_', true ) . "/$merge_tag_context";
 
 		foreach ( $matches as $match ) {
 
@@ -135,14 +143,26 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 				$maybe_start = explode( ':', $modifier );
 
-				if( 'start' === rgar( $maybe_start, 0 ) && is_numeric( rgar( $maybe_start, 1 ) ) ) {
+				if ( 'start' === rgar( $maybe_start, 0 ) && is_numeric( rgar( $maybe_start, 1 ) ) ) {
 					$gv_field->start = (int) rgar( $maybe_start, 1 );
 				}
 			}
 
-			$context->field = $gv_field;
+			/**
+			 * We make sure that distinct sequence modifiers have their own
+			 * output counters.
+			 */
+			$merge_tag_context_modifiers = $merge_tag_context . '/' . var_export( $gv_field->reverse, true ) . '/' . $gv_field->start;
 
-			$return = str_replace( $full_tag, $this->get_sequence( $context ), $return );
+			if ( ! isset( $merge_tag_sequences[ $merge_tag_context_modifiers ] ) ) {
+				$gv_field->UID = $legacy_field['UID'] . '/' . var_export( $gv_field->reverse, true ) . '/' . $gv_field->start;
+				$context->field = $gv_field;
+				$sequence = $merge_tag_sequences[ $merge_tag_context_modifiers ] = $this->get_sequence( $context );
+			} else {
+				$sequence = $merge_tag_sequences[ $merge_tag_context_modifiers ];
+			}
+
+			$return = str_replace( $full_tag, $sequence, $return );
 		}
 
 		return $return;
@@ -161,7 +181,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		$context_key = md5( json_encode(
 			array(
 				$context->view->ID,
-				\GV\Utils::get( $context, 'field/UID' ), //TODO: Generate UID when using Merge Tag
+				\GV\Utils::get( $context, 'field/UID' ),
 			)
 		) );
 

@@ -8134,6 +8134,60 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	public function test_sequence_merge_tag_renders() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'content' => 'Row {sequence}, yes, {sequence start:10,reverse}',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'content' => 'Another row {sequence}, ha, {sequence start:3}',
+					),
+				),
+			)
+		) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+		) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+		) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+		) );
+
+		$view = \GV\View::from_post( $post );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$renderer = new \GV\View_Renderer();
+
+		$this->assertContains( 'Row 1, yes, 12', $out = $renderer->render( $view ) );
+		$this->assertContains( 'Row 2, yes, 11', $out );
+		$this->assertContains( 'Row 3, yes, 10', $out );
+		$this->assertContains( 'Another row 1, ha, 3', $out );
+		$this->assertContains( 'Another row 2, ha, 4', $out );
+		$this->assertContains( 'Another row 3, ha, 5', $out );
+
+		$this->_reset_context();
+	}
 }
 
 class GVFutureTest_Extension_Test_BC extends GravityView_Extension {
