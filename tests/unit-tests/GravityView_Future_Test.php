@@ -5064,11 +5064,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'\GravityView_View::form_id' => $view->form->ID,
 			'\GravityView_View::entries' => array(),
 			'\GravityView_View::fields' => $view->fields->by_visible()->as_configuration(),
-			'\GravityView_View::context' => 'directory',
+			'\GravityView_View::context' => 'single',
 			'\GravityView_View::total_entries' => 1,
 			'\GravityView_View::entries' => array_map( function( $e ) { return $e->as_entry(); }, $entries->all() ),
 			'\GravityView_View_Data::views' => $views,
-			'\GravityView_View::_current_field' => array(),
+			'\GravityView_View::_current_field' => \GravityView_View::getInstance()->getCurrentField(),
 		), \GV\Mocks\Legacy_Context::freeze() );
 
 		$view->settings->update( array( 'back_link_label' => 'Back to #{entry_id}', 'hide_until_searched' => 1 ) );
