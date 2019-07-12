@@ -129,8 +129,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 		$gv_field = \GV\Internal_Field::by_id( 'sequence' );
 		$merge_tag_context = \GV\Utils::get( $legacy_field, 'UID' );
-
-		$merge_tag_context = uniqid( 'sequence_', true ) . "/{$merge_tag_context}";
+		$merge_tag_context = $entry['id'] . "/{$merge_tag_context}";
 
 		foreach ( $matches as $match ) {
 
