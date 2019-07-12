@@ -7,7 +7,7 @@
 
 /**
  * Add a sequence field.
- * @since develop
+ * @since 2.3.3
  */
 class GravityView_Field_Sequence extends GravityView_Field {
 
@@ -142,6 +142,12 @@ class GravityView_Field_Sequence extends GravityView_Field {
 				}
 
 				$maybe_start = explode( ':', $modifier );
+
+				// If there is a field with the ID of the start number, the merge tag won't work.
+				// In that case, you can use "=" instead: `{sequence start=10}`
+				if( 1 === sizeof( $maybe_start ) ) {
+					$maybe_start = explode( '=', $modifier );
+				}
 
 				if ( 'start' === rgar( $maybe_start, 0 ) && is_numeric( rgar( $maybe_start, 1 ) ) ) {
 					$gv_field->start = (int) rgar( $maybe_start, 1 );

@@ -8135,6 +8135,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 	}
 
+	/**
+	 * @covers GravityView_Field_Sequence::replace_merge_tag
+	 * @since 2.3.3
+	 */
 	public function test_sequence_merge_tag_renders() {
 		$this->_reset_context();
 
@@ -8147,11 +8151,15 @@ class GVFuture_Test extends GV_UnitTestCase {
 				'directory_table-columns' => array(
 					wp_generate_password( 4, false ) => array(
 						'id' => 'custom',
-						'content' => 'Row {sequence}, yes, {sequence start:10,reverse}',
+						'content' => 'Row {sequence}, yes, {sequence:reverse}, {sequence start:11}, {sequence start:10,reverse} {sequence:reverse,start=10} {sequence:start=10,reverse}',
 					),
 					wp_generate_password( 4, false ) => array(
 						'id' => 'custom',
-						'content' => 'Another row {sequence}, ha, {sequence start:3}',
+						'content' => 'Another row {sequence}, ha, {sequence start=2}, {sequence:reverse} {sequence reverse}. This will be the field value: {sequence:start:2}.',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '2',
+						'label' => 'May Conflict with `start:2`, should work with `start=2`',
 					),
 				),
 			)
@@ -8160,16 +8168,18 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
 			'status' => 'active',
+			'2' => '150',
 		) );
 
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
 			'status' => 'active',
+			'2' => '300',
 		) );
 
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'status' => 'active',
+			'2' => '450',
 		) );
 
 		$view = \GV\View::from_post( $post );
@@ -8179,12 +8189,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$renderer = new \GV\View_Renderer();
 
-		$this->assertContains( 'Row 1, yes, 12', $out = $renderer->render( $view ) );
-		$this->assertContains( 'Row 2, yes, 11', $out );
-		$this->assertContains( 'Row 3, yes, 10', $out );
-		$this->assertContains( 'Another row 1, ha, 3', $out );
-		$this->assertContains( 'Another row 2, ha, 4', $out );
-		$this->assertContains( 'Another row 3, ha, 5', $out );
+		$this->assertContains( 'Row 1, yes, 3, 11, 12 12 12', $out = $renderer->render( $view ) );
+		$this->assertContains( 'Row 2, yes, 2, 12, 11 11 11', $out );
+		$this->assertContains( 'Row 3, yes, 1, 13, 10 10 10', $out );
+		$this->assertContains( 'Another row 1, ha, 2, 3 3. This will be the field value: 450.', $out );
+		$this->assertContains( 'Another row 2, ha, 3, 2 2. This will be the field value: 300.', $out );
+		$this->assertContains( 'Another row 3, ha, 4, 1 1. This will be the field value: 150.', $out );
 
 		$this->_reset_context();
 	}
