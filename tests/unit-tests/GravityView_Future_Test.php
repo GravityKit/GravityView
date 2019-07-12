@@ -8212,7 +8212,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( 'Another row 3, ha, 4, 1 1. This will be the field value: 150.', $out );
 
 		$this->assertContains( 'Widgets are working.', $out );
-		$this->assertContains( 'But as expected, "" is not working.', $out );
+		$this->assertContains( 'But as expected, "{sequence}" is not working.', $out );
 
 		$this->_reset_context();
 	}

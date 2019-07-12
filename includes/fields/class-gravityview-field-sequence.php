@@ -107,8 +107,18 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 		$view_data = gravityview_get_current_view_data(); // TODO: Don't use legacy code...
 
+		// If we're not in a View or embed, don't replace the merge tag
 		if ( empty( $view_data ) ) {
-			return '';
+			gravityview()->log->error( '{sequence} Merge Tag used outside of a GravityView View.', array( 'data' => $matches ) );
+			return $text;
+		}
+
+		$legacy_field = \GravityView_View::getInstance()->getCurrentField(); // TODO: Don't use legacy code...
+
+		// If we're outside field context (like a GV widget), don't replace the merge tag
+		if ( ! $legacy_field ) {
+			gravityview()->log->error( '{sequence} Merge Tag was used without outside of the GravityView entry loop.', array( 'data' => $matches ) );
+			return $text;
 		}
 
 		$return = $text;
@@ -116,8 +126,6 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		$context = new \GV\Template_Context();
 		$context->view = \GV\View::by_id( $view_data['view_id'] );
 		$context->entry = \GV\GF_Entry::from_entry( $entry );
-
-		$legacy_field = \GravityView_View::getInstance()->getCurrentField(); // TODO: Don't use legacy code...
 
 		$gv_field = \GV\Internal_Field::by_id( 'sequence' );
 		$merge_tag_context = \GV\Utils::get( $legacy_field, 'UID' );
@@ -128,13 +136,6 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 			$full_tag = $match[0];
 			$property = $match[1];
-
-			// If we're outside field context (like a GV widget), don't show the merge tag.
-			if ( ! $legacy_field ) {
-				$return = str_replace( $full_tag, '', $return );
-				gravityview()->log->error( $full_tag . ' Merge Tag was used without outside of the GravityView entry loop. Replaced with empty string.' );
-				continue;
-			}
 
 			$gv_field->reverse = false;
 			$gv_field->start = 1;
