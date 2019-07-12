@@ -8157,10 +8157,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 					wp_generate_password( 4, false ) => array(
 						'id' => 'custom',
 						'content' => 'Another row {sequence}, ha, {sequence start=2}, {sequence:reverse} {sequence reverse}. This will be the field value: {sequence:start:2}.',
+						'custom_class' => 'class-{sequence start:11}-custom-2',
 					),
 					wp_generate_password( 4, false ) => array(
 						'id' => '2',
-						'label' => 'May Conflict with `start:2`, should work with `start=2`',
+						'label' => 'Conflicts w/ `start:2`, Works w/ `start=2`',
 						'custom_class' => 'class-{sequence}-field-2',
 					),
 				),
@@ -8215,9 +8216,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( 'Row 3, yes, 1, 13, 10 10 10', $out );
 		$this->assertContains( 'class-3-custom-1', $out );
 		$this->assertContains( 'Another row 1, ha, 2, 3 3. This will be the field value: 450.', $out );
+		$this->assertContains( 'class-11-custom-2', $out );
 		$this->assertContains( 'Another row 2, ha, 3, 2 2. This will be the field value: 300.', $out );
+		$this->assertContains( 'class-12-custom-2', $out );
 		$this->assertContains( 'Another row 3, ha, 4, 1 1. This will be the field value: 150.', $out );
-		$this->assertContains( 'class-1-field-2', $out );
+		$this->assertContains( 'class-13-custom-2', $out );
+		$this->assertContains( 'class-3-field-2', $out );
 
 
 		$this->assertContains( 'Widgets are working.', $out );
