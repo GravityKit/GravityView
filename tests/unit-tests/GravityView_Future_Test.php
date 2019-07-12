@@ -8162,8 +8162,23 @@ class GVFuture_Test extends GV_UnitTestCase {
 						'label' => 'May Conflict with `start:2`, should work with `start=2`',
 					),
 				),
-			)
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => $widget_id = wp_generate_password( 4, false ) . '-widget',
+						'content' => 'Widgets are working.',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => $widget_id,
+						'content' => 'But as expected, "{sequence}" is not working.',
+					),
+				),
+			),
 		) );
+
+		/** Trigger registration under this ID */
+		new GVFutureTest_Widget_Test_Merge_Tag( 'Widget', $widget_id );
 
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
@@ -8196,6 +8211,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( 'Another row 2, ha, 3, 2 2. This will be the field value: 300.', $out );
 		$this->assertContains( 'Another row 3, ha, 4, 1 1. This will be the field value: 150.', $out );
 
+		$this->assertContains( 'Widgets are working.', $out );
+		$this->assertContains( 'But as expected, "" is not working.', $out );
+
 		$this->_reset_context();
 	}
 }
@@ -8223,6 +8241,16 @@ class GVFutureTest_Extension_Test extends \GV\Extension {
 }
 
 class GVFutureTest_Widget_Test_BC extends GravityView_Widget {
+}
+
+class GVFutureTest_Widget_Test_Merge_Tag extends \GV\Widget {
+	public function render_frontend( $widget_args, $content = '', $context = '' ) {
+		if ( ! $this->pre_render_frontend() ) {
+			return;
+		}
+
+		echo \GravityView_Merge_Tags::replace_variables( rgar( $widget_args, 'content' ) );
+	}
 }
 
 class GVFutureTest_Widget_Test extends \GV\Widget {

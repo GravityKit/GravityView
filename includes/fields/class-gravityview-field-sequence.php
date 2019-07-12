@@ -120,14 +120,21 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		$legacy_field = \GravityView_View::getInstance()->getCurrentField(); // TODO: Don't use legacy code...
 
 		$gv_field = \GV\Internal_Field::by_id( 'sequence' );
-		$merge_tag_context = $legacy_field['UID'];
+		$merge_tag_context = \GV\Utils::get( $legacy_field, 'UID' );
 
-		$merge_tag_context = uniqid( 'sequence_', true ) . "/$merge_tag_context";
+		$merge_tag_context = uniqid( 'sequence_', true ) . "/{$merge_tag_context}";
 
 		foreach ( $matches as $match ) {
 
 			$full_tag = $match[0];
 			$property = $match[1];
+
+			// If we're outside field context (like a GV widget), don't show the merge tag.
+			if ( ! $legacy_field ) {
+				$return = str_replace( $full_tag, '', $return );
+				gravityview()->log->error( $full_tag . ' Merge Tag was used without outside of the GravityView entry loop. Replaced with empty string.' );
+				continue;
+			}
 
 			$gv_field->reverse = false;
 			$gv_field->start = 1;
