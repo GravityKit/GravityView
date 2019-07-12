@@ -8147,6 +8147,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
+			'settings' => array(
+				'page_size'  => '25',
+			),
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 4, false ) => array(
@@ -8200,10 +8203,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'2' => '450',
 		) );
 
+		$this->assertCount( 3, \GFAPI::get_entries( $form['id'] ), 'Not all entries were created properly.' );
+
 		$view = \GV\View::from_post( $post );
 
 		gravityview()->request = new \GV\Mock_Request();
 		gravityview()->request->returns['is_view'] = $view;
+
+		$this->assertEquals( 3, $view->get_entries()->count(), 'View is not returning the entries as expected.' );
 
 		$renderer = new \GV\View_Renderer();
 
