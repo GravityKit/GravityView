@@ -8249,7 +8249,7 @@ class GVFutureTest_Widget_Test_Merge_Tag extends \GV\Widget {
 			return;
 		}
 
-		echo \GravityView_Merge_Tags::replace_variables( rgar( $widget_args, 'content' ) );
+		echo \GravityView_Merge_Tags::replace_variables( \GV\Utils::get( $widget_args, 'content' ) );
 	}
 }
 
