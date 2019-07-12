@@ -88,7 +88,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 	 *
 	 * @return GF_Field[] If Custom Content field exists, returns fields array with the fields inserted. Otherwise, returns unmodified fields array.
 	 */
-	public function show_field_in_edit_entry( $fields, $edit_fields = null, $form, $view_id = 0 ) {
+	public function show_field_in_edit_entry( $fields, $edit_fields = null, $form = array(), $view_id = 0 ) {
 
 		// Not configured; show all fields.
 		if ( is_null( $edit_fields ) ) {
