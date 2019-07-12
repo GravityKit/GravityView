@@ -54,7 +54,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 		$return['reverse_sequence'] = array(
 			'title' => __('Reverse the order of the result numbers', 'gravityview'),
-			'value' => __('Output row numbers in descending order. If enabled, numbers will count down from high to low.', 'gravityview'),
+			'value' => __('Output the number sequence in descending order. If enabled, numbers will count down from high to low.', 'gravityview'),
 		);
 
 		return $return;
