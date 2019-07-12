@@ -36,7 +36,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 	public function __construct() {
 
-		$this->label = esc_html__( 'Result Number', 'gravityview' );
+		$this->label = esc_html__( 'Number Sequence', 'gravityview' );
 
 		add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'field_tooltips') );
 
@@ -54,7 +54,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 		$return['reverse_sequence'] = array(
 			'title' => __('Reverse the order of the result numbers', 'gravityview'),
-			'value' => __('Output row numbers in descending order. If enabled, numbers will go from high to low.', 'gravityview'),
+			'value' => __('Output row numbers in descending order. If enabled, numbers will count down from high to low.', 'gravityview'),
 		);
 
 		return $return;
@@ -67,13 +67,14 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		$new_fields = array(
 			'start' => array(
 				'type' => 'number',
-				'label' => __( 'First Row Number', 'gravityview' ),
+				'label' => __( 'First Number in the Sequence', 'gravityview' ),
+				'desc' => __('For each entry, the displayed number will increase by one. When displaying ten entries, the first entry will display "1", and the last entry will show "10".', 'gravityview'),
 				'value' => '1',
 				'merge_tags' => false,
 			),
 			'reverse' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Reverse the order of the result numbers', 'gravityview' ),
+				'label' => __( 'Reverse the order of the number sequence (high to low)', 'gravityview' ),
 				'tooltip' => 'reverse_sequence',
 				'value' => '',
 			),
