@@ -8200,6 +8200,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
+			'status' => 'active',
 			'2' => '450',
 		) );
 
