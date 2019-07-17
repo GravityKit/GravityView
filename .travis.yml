@@ -36,6 +36,9 @@ matrix:
   allow_failures:
       - php: nightly
 
+before_install:
+  - composer config github-oauth.github.com "$GITHUB_ACCESS_TOKEN"
+
 install:
   - curl -s https://getcomposer.org/installer | php
   - php composer.phar install --no-interaction
