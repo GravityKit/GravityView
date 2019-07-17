@@ -252,16 +252,16 @@ class GravityView_Welcome {
             <div class="feature-section col two-col" style="margin:0 0 2em 0; padding: 0;">
 
                 <div class="col col-1">
-                    <div class="media-container"><img alt="Screenshot of multisort settings" src="<?php echo plugins_url( 'assets/images/screenshots/multisort.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
-                    <h4 class="higher">Multi-Sort</h4>
-                    <p>Sort your Views by multiple fields, like last name&hellip;<em>and then first name</em>.</p>
-                    <p><a href="https://docs.gravityview.co/article/570-sorting-by-multiple-columns" class="button button-primary button-large">Learn How to Use Multi-Sort</a></p>
+                    <div class="media-container"><iframe width="426" height="240" src="https://www.youtube-nocookie.com/embed/uqWCtSsmHIQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+                    <h4 class="higher">{sequence} Merge Tag</h4>
+                    <p>Add a simple counter to show what result number is currently being shown.</p>
+                    <p><a href="https://docs.gravityview.co/article/597-the-sequence-merge-tag" class="button button-primary button-large">Read about the <code>{sequence}</code> Merge Tag</a></p>
                 </div>
                 <div class="col col-2">
-                    <div class="media-container"><img alt="[gvlogic logged_in]" src="<?php echo plugins_url( 'assets/images/screenshots/logged_in.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
-                    <h4 class="higher">Check logged-in status with <code>[gvlogic]</code></h4>
-                    <p>Show or hide content based on whether the user is logged-in. Even better? Works with the existing <code>[gvlogic]</code> comparisons 💯</p>
-                    <p><a href="https://docs.gravityview.co/article/252-gvlogic-shortcode#logged-in-parameter" class="button button-primary button-large">Learn About <code>logged_in</code></a></p>
+                    <div class="media-container"><img alt="{date_created}" src="<?php echo plugins_url( 'assets/images/screenshots/date_updated.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
+                    <h4 class="higher">Show the date the entry was last updated with <code>{date_updated}</code></h4>
+                    <p>It is often useful to know when an entry was last changed. That's what the <code>{date_updated}</code> does.</p>
+                    <p><a href="https://docs.gravityview.co/article/76-merge-tags#added-by-gv" class="button button-primary button-large">Learn About <code>{date_updated}</code></a></p>
                 </div>
             </div>
 
@@ -270,6 +270,29 @@ class GravityView_Welcome {
                 <div class="headline-feature" style="max-width: 100%">
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
+
+                <h3>2.4 on July 16, 2019</h3>
+
+                <p><strong>We tightened security by limiting who can edit Views. <a href="https://docs.gravityview.co/article/598-non-administrator-edit-view">Read how to grant Authors and Editors access</a>.</strong></p>
+
+                <ul>
+                    <li>Added: A new Result Number field and <code>{sequence}</code> Merge Tag <a href="https://docs.gravityview.co/article/597-the-sequence-merge-tag">learn all about it!</a></li>
+                    <li>Added: <code>{date_updated}</code> Merge Tag (<a href="https://docs.gravityview.co/article/76-merge-tags">see all GravityView Merge Tags</a>)</li>
+                    <li>Added: Option to output all CSV entries, instead of a single page of results</li>
+                    <li>Fixed: Settings compatibility issues on Multisite</li>
+                    <li>Fixed: CSV output for address fields contained Google Maps link</li>
+                    <li>Fixed: When editing an entry in Gravity Forms, clicking the "Cancel" button would not exit edit mode</li>
+                    <li>Fixed: Some fatal errors when Gravity Forms is deactivated while GravityView is active</li>
+                    <li>Fixed: Search All Fields functionality with latest Gravity Forms</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Change: <strong>Breaking</strong> users without the <code>unfiltered_html</code> capability can no longer edit Views.</li>
+                    <li>Added: <code>gravityview/security/allow_unfiltered_html</code> to not require <code>unfiltered_html</code>. Dangerous!</li>
+                    <li>Added: <code>gravityview/template/field/address/csv/delimiter</code> filter for CSV output of addresses</li>
+                </ul>
 
                 <h3>2.3.2 on May 3, 2019</h3>
 
