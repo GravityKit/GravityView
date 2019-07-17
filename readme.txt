@@ -23,7 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 2.4 on July 15, 2019 =
 
-** We tightened security by limiting who can edit Views. [Read how to grant Authors and Editors access](https://docs.gravityview.co/article/598-non-administrator-edit-view). **
+**We tightened security by limiting who can edit Views. [Read how to grant Authors and Editors access](https://docs.gravityview.co/article/598-non-administrator-edit-view).**
 
 * Added: A new Result Number field and `{sequence}` Merge Tag [learn all about it!](https://docs.gravityview.co/article/597-the-sequence-merge-tag)
 * Added: `{date_updated}` Merge Tag ([see all GravityView Merge Tags](https://docs.gravityview.co/article/76-merge-tags))
