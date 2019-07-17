@@ -47,6 +47,10 @@
 			text-overflow: ellipsis;
 		}
 	}
+	.feature-section.three-col .col {
+		flex-basis: 30%;
+		max-width: 250px;
+	}
 	.feature-section img {
 		border: 1px solid #ccc;
 		max-width: 99%; // Allow for border on the right

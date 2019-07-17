@@ -288,6 +288,10 @@ abstract class Widget {
 			return;
 		}
 
+		if ( ! gravityview()->plugin->is_compatible() ) {
+			return;
+		}
+
 		if ( gravityview()->request->is_admin() ) {
 			return;
 		}

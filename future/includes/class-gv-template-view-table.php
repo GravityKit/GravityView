@@ -362,6 +362,13 @@ class View_Table_Template extends View_Template {
 		$form = $this->view->form;
 		$single_entry = $entry;
 
+		/**
+		 * Push legacy entry context.
+		 */
+		\GV\Mocks\Legacy_Context::load( array(
+			'field' => $field,
+		) );
+
 		if ( $entry->is_multi() ) {
 			if ( ! $single_entry = $entry->from_field( $field ) ) {
 				echo '<td></td>';

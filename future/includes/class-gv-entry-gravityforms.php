@@ -101,7 +101,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	/**
 	 * Construct a \GV\Entry instance from a Gravity Forms entry array.
 	 *
-	 * @param array $entry The array ID.
+	 * @param array $entry The entry array
 	 *
 	 * @return \GV\GF_Entry|null An instance of this entry or null if not found.
 	 */

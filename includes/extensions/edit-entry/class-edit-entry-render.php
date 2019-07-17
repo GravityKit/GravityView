@@ -176,14 +176,14 @@ class GravityView_Edit_Entry_Render {
 	 */
 	public function prevent_maybe_process_form() {
 
-		if( ! empty( $_POST ) ) {
-	        gravityview()->log->debug( 'GravityView_Edit_Entry[prevent_maybe_process_form] $_POSTed data (sanitized): ', array( 'data' => esc_html( print_r( $_POST, true ) ) ) );
+	    if( ! $this->is_edit_entry_submission() ) {
+			return;
 		}
 
-		if( $this->is_edit_entry_submission() ) {
-			remove_action( 'wp',  array( 'RGForms', 'maybe_process_form'), 9 );
-	        remove_action( 'wp',  array( 'GFForms', 'maybe_process_form'), 9 );
-		}
+		gravityview()->log->debug( 'GravityView_Edit_Entry[prevent_maybe_process_form] Removing GFForms::maybe_process_form() action.' );
+
+		remove_action( 'wp',  array( 'RGForms', 'maybe_process_form'), 9 );
+		remove_action( 'wp',  array( 'GFForms', 'maybe_process_form'), 9 );
 	}
 
 	/**
@@ -1958,7 +1958,14 @@ class GravityView_Edit_Entry_Render {
 						 * This conditional field is not editable in this View.
 						 * We need to remove the rule, but only if it matches.
 						 */
-						$value = GFAPI::get_field( $the_form, $rule['fieldId'] )->get_value_export( $this->entry );
+						if ( $_field = GFAPI::get_field( $the_form, $rule['fieldId'] ) ) {
+							$value = $_field->get_value_export( $this->entry );
+						} elseif ( isset( $this->entry[ $rule['fieldId'] ] ) ) {
+							$value = $this->entry[ $rule['fieldId'] ];
+						} else {
+							$value = gform_get_meta( $this->entry['id'], $rule['fieldId'] );
+						}
+
 						$match = GFFormsModel::matches_operation( $value, $rule['value'], $rule['operator'] );
 						
 						if ( $match ) {

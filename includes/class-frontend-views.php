@@ -1214,9 +1214,19 @@ class GravityView_frontend {
 
 	/**
 	 * Verify if user requested a single entry view
-	 * @return boolean|string false if not, single entry slug if true
+	 * @since 2.3.3 Added return null
+	 * @return boolean|string|null false if not, single entry slug if true, null if \GV\Entry doesn't exist yet
 	 */
 	public static function is_single_entry() {
+
+		// Since this is a public method, it can be called outside of the plugin. Don't assume things have been loaded properly.
+		if ( ! class_exists( '\GV\Entry' ) ) {
+
+			// Not using gravityview()->log->error(), since that may not exist yet either!
+			do_action( 'gravityview_log_error', '\GV\Entry not defined yet. Backtrace: ' . wp_debug_backtrace_summary()  );
+
+			return null;
+		}
 
 		$var_name = \GV\Entry::get_endpoint_name();
 
