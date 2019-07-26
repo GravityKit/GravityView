@@ -164,6 +164,11 @@ class GravityView_Admin_Views {
 	 */
 	public static function gform_toolbar_menu( $menu_items = array(), $id = NULL ) {
 
+		// Don't show on Trashed forms
+		if( 'trash' === rgget( 'filter') ) {
+			return $menu_items;
+		}
+
 		$connected_views = gravityview_get_connected_views( $id, array( 'post_status' => 'any' ) );
 
 		$priority = 0;
