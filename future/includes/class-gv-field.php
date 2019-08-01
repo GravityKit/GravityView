@@ -187,7 +187,7 @@ class Field {
 			return $field;
 		}
 
-		/** Determine the field implementation to use, and try to use. */
+		/** @var \GV\GF_Field|\GV\Internal_Field $field_class Determine the field implementation to use, and try to use. */
 		$field_class = is_numeric( $configuration['id'] ) ? '\GV\GF_Field' : '\GV\Internal_Field';
 
 		/**
