@@ -871,13 +871,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$search_condition = $_tmp_query_parts['where'];
 
 				if ( empty( $filter['key'] ) && $search_condition->expressions ) {
-					$search_conditions[] = $search_condition; // new GravityView_Widget_Search_All_GF_Query_Condition( $search_condition, $view );
+					$search_conditions[] = $search_condition;
 				} else {
 					$left = $search_condition->left;
 					$alias = $query->_alias( $left->field_id, $left->source, $left->is_entry_column() ? 't' : 'm' );
 
 					if ( $view->joins && $left->field_id == GF_Query_Column::META ) {
-						$search_conditions[] = new GravityView_Widget_Search_All_GF_Query_Condition( $search_condition, $view );
+						$search_conditions[] = $search_condition;
 					} else {
 						$search_conditions[] = new GF_Query_Condition(
 							new GF_Query_Column( $left->field_id, $left->source, $alias ),
@@ -1879,33 +1879,5 @@ class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Cond
 		$alias = $query->_alias( null );
 
 		return "(EXISTS (SELECT 1 FROM $wpdb->users u LEFT JOIN $wpdb->usermeta um ON u.ID = um.user_id WHERE (u.ID = `$alias`.`created_by` AND $conditions)))";
-	}
-}
-
-/**
- * A GF_Query condition that allows searching across all fields.
- */
-class GravityView_Widget_Search_All_GF_Query_Condition extends \GF_Query_Condition {
-	public function __construct( $search_condition, $view ) {
-		$this->search_condition = $search_condition;
-		$this->view = $view;
-	}
-
-	public function sql( $query ) {
-		// @todo We can search by properties as well in the future
-		$table = GFFormsModel::get_entry_meta_table_name();
-
-		$conditions = array();
-
-		if ( $this->search_condition->left->field_id === \GF_Query_Column::META ) {
-			$conditions[] = sprintf( "EXISTS(SELECT * FROM `$table` WHERE `meta_value` %s %s AND `entry_id` = `%s`.`id`)",
-				$this->search_condition->operator, $this->search_condition->right->sql( $query ), $query->search->left->alias );
-		}
-
-		if ( ! $conditions ) {
-			return '';
-		}
-
-		return '(' . implode( ' OR ', $conditions ) . ')';
 	}
 }
