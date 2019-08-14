@@ -300,6 +300,10 @@ final class Plugin {
 	public function activate() {
 		gravityview();
 
+		if ( ! $this->is_compatible() ) {
+			return;
+		}
+
 		/** Register the gravityview post type upon WordPress core init. */
 		require_once $this->dir( 'future/includes/class-gv-view.php' );
 		View::register_post_type();
