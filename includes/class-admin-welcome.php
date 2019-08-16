@@ -276,6 +276,7 @@ class GravityView_Welcome {
                     <li>Fixed: Inconsistent sorting behavior for Views using Table layouts</li>
                     <li>Fixed: Searching all fields not searching Multi Select fields</li>
                     <li>Fixed: Error activating GravityView when Gravity Forms is disabled</li>
+                    <li>Fixed: "Getting Started" and "List of Changes" page layouts in WordPress 5.3</li>
                     <li>Tweak: Don't show "Create a View" on trashed forms action menus</li>
                 </ul>
 
