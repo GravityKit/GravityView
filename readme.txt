@@ -21,7 +21,15 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.4 on July 15, 2019 =
+= 2.4.1 on August 16, 2019 =
+
+* Fixed: Inconsistent sorting behavior for Views using Table layouts
+* Fixed: Searching all fields not searching Multi Select fields
+* Fixed: Error activating GravityView when Gravity Forms is disabled
+* Fixed: "Getting Started" and "List of Changes" page layouts in WordPress 5.3
+* Tweak: Don't show "Create a View" on trashed forms action menus
+
+= 2.4 on July 17, 2019 =
 
 **We tightened security by limiting who can edit Views. [Read how to grant Authors and Editors access](https://docs.gravityview.co/article/598-non-administrator-edit-view).**
 
@@ -36,7 +44,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Updates:__
 
-* Change: *Breaking* users without the `unfiltered_html` capability can no longer edit Views.
+* **Breaking Change:** Users without the `unfiltered_html` capability can no longer edit Views.
 * Added: `gravityview/security/allow_unfiltered_html` to not require `unfiltered_html`. Dangerous!
 * Added: `gravityview/template/field/address/csv/delimiter` filter for CSV output of addresses
 

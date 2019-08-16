@@ -8238,6 +8238,83 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	public function test_sort_reset() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+
+		global $post;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form->ID,
+			'template_id' => 'table',
+            'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '4',
+						'label' => 'Email',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form->ID,
+			'status' => 'active',
+			'4' => 'gennady@gravityview.co',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form->ID,
+			'status' => 'active',
+			'4' => 'vlad@gravityview.co',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form->ID,
+			'status' => 'active',
+			'4' => 'rafael@gravityview.co',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form->ID,
+			'status' => 'active',
+			'4' => 'zack@gravityview.co',
+		) );
+
+		$renderer = new \GV\View_Renderer();
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$view->settings->set( 'sort_columns', '1' );
+
+		$_GET['sort'] = array( '4' => 'DESC', );
+
+		$output = $renderer->render( $view );
+
+		$this->assertContains( 'gv-icon-sort-asc', $output );
+		$this->assertContains( urlencode( 'sort[4]' ) . '"', $output );
+
+		$_GET['sort'] = array( '4' => 'ASC', );
+
+		$output = $renderer->render( $view );
+
+		$this->assertContains( 'gv-icon-sort-desc', $output );
+		$this->assertContains( urlencode( 'sort[4]' ) . '=desc', $output );
+
+		$_GET['sort'] = array( '4' => '', );
+
+		$output = $renderer->render( $view );
+
+		$this->assertContains( 'gv-icon-caret-up-down', $output );
+		$this->assertContains( urlencode( 'sort[4]' ) . '=asc', $output );
+
+		$this->_reset_context();
+	}
 }
 
 class GVFutureTest_Extension_Test_BC extends GravityView_Extension {
