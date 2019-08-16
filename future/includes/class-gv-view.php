@@ -959,7 +959,10 @@ class View implements \ArrayAccess {
 			}
 
 			if ( gravityview()->plugin->supports( Plugin::FEATURE_GFQUERY ) ) {
+
 				$query_class = $this->get_query_class();
+
+				/** @var \GF_Query $query */
 				$query = new $query_class( $this->form->ID, $parameters['search_criteria'], $parameters['sorting'] );
 
 				/**
@@ -968,18 +971,28 @@ class View implements \ArrayAccess {
 				if ( ! empty( $has_multisort ) ) {
 					$atts = $this->settings->as_atts();
 
-					if ( $this->settings->get( 'sort_columns' ) && ! empty( $_GET['sort'] ) && is_array( $_GET['sort'] ) ) {
+					$view_setting_sort_field_ids = \GV\Utils::get( $atts, 'sort_field', array() );
+					$view_setting_sort_directions = \GV\Utils::get( $atts, 'sort_direction', array() );
+
+					$has_sort_query_param = ! empty( $_GET['sort'] ) && is_array( $_GET['sort'] );
+
+					if( $has_sort_query_param ) {
+						$has_sort_query_param = array_filter( array_values( $_GET['sort'] ) );
+					}
+
+					if ( $this->settings->get( 'sort_columns' ) && $has_sort_query_param ) {
 						$sort_field_ids = array_keys( $_GET['sort'] );
 						$sort_directions = array_values( $_GET['sort'] );
 					} else {
-						$sort_field_ids = \GV\Utils::get( $atts, 'sort_field', array() );
-						$sort_directions = \GV\Utils::get( $atts, 'sort_direction', array() );
+						$sort_field_ids = $view_setting_sort_field_ids;
+						$sort_directions = $view_setting_sort_directions;
 					}
 
 					$skip_first = false;
 
 					foreach ( (array) $sort_field_ids as $key => $sort_field_id ) {
-						if ( ! $skip_first ) {
+
+						if ( ! $skip_first && ! $has_sort_query_param ) {
 							$skip_first = true; // Skip the first one, it's already in the query
 							continue;
 						}
