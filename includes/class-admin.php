@@ -106,7 +106,7 @@ class GravityView_Admin {
 			$error .= ' ' . esc_html__( 'Select another form as the data source for this View.', 'gravityview' );
 		} elseif ( $form_info->is_trash ) {
 			$error = esc_html__( 'The connected form is in the trash.', 'gravityview' );
-			$error .= ' ' . gravityview_get_link( admin_url( 'admin.php?page=gf_edit_forms&filter=trash' ), esc_html__( 'Restore the form from the trash', 'gravityview' ) );
+			$error .= ' ' . gravityview_get_link( admin_url( 'admin.php?page=gf_edit_forms&filter=trash&s=' . $form_info->title ), esc_html__( 'Restore the form from the trash', 'gravityview' ) );
 			$error .= ' ' . esc_html__( 'or select another form.', 'gravityview' );
 		}
 
