@@ -118,6 +118,8 @@ class GravityView_Admin {
 			</div>
 			<?php
 		}
+
+        remove_action( 'gravityview/metaboxes/data-source/before', array( 'GravityView_Admin', 'connected_form_warning' ) );
 	}
 
 	/**
