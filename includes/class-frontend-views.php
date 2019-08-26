@@ -1040,7 +1040,14 @@ class GravityView_frontend {
 	 */
 	public static function updateViewSorting( $args, $form_id ) {
 		$sorting = array();
-		$sort_field_id = isset( $_GET['sort'] ) ? $_GET['sort'] : \GV\Utils::get( $args, 'sort_field' );
+
+		$has_values = isset( $_GET['sort'] );
+
+		if ( $has_values && is_array( $_GET['sort'] ) ) {
+			$has_values = array_filter( array_values( $_GET['sort'] ) );
+		}
+
+		$sort_field_id = $has_values ? $_GET['sort'] : \GV\Utils::get( $args, 'sort_field' );
 		$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : \GV\Utils::get( $args, 'sort_direction' );
 
 		if ( is_array( $sort_field_id ) ) {
