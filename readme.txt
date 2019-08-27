@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.4
-Tested up to: 5.1.1
+Tested up to: 5.2.2
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -21,12 +21,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.4.1 on August 16, 2019 =
+= 2.4.1.1 on August 27, 2019 =
 
 * Fixed: Inconsistent sorting behavior for Views using Table layouts
 * Fixed: Searching all fields not searching Multi Select fields
 * Fixed: Error activating GravityView when Gravity Forms is disabled
 * Fixed: "Getting Started" and "List of Changes" page layouts in WordPress 5.3
+* Fixed: Don't show error messages twice when editing a View with a missing form
 * Tweak: Don't show "Create a View" on trashed forms action menus
 
 = 2.4 on July 17, 2019 =

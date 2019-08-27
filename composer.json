@@ -12,7 +12,11 @@
     }
   ],
   "require": {
-    "php": ">=5.3",
-    "katzwebservices/standalone-phpenkoder": "dev-master"
+    "php": ">=5.3"
+  },
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+    "phpcompatibility/phpcompatibility-wp": "*",
+    "wp-coding-standards/wpcs": "*"
   }
 }

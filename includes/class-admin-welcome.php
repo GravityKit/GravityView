@@ -270,13 +270,14 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
-                <h3>2.4.1 on August 16, 2019</h3>
+                <h3>2.4.1.1 on August 16, 2019</h3>
 
                 <ul>
                     <li>Fixed: Inconsistent sorting behavior for Views using Table layouts</li>
                     <li>Fixed: Searching all fields not searching Multi Select fields</li>
                     <li>Fixed: Error activating GravityView when Gravity Forms is disabled</li>
                     <li>Fixed: "Getting Started" and "List of Changes" page layouts in WordPress 5.3</li>
+                    <li>Fixed: Don't show error messages twice when editing a View with a missing form</li>
                     <li>Tweak: Don't show "Create a View" on trashed forms action menus</li>
                 </ul>
 
