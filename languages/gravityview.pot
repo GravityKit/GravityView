@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.4.1\n"
+"Project-Id-Version: GravityView 2.4.1.1\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -259,7 +259,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-addon.php:141
 #: future/includes/class-gv-settings-addon.php:754
-#: includes/class-admin-views.php:431 includes/class-admin.php:165
+#: includes/class-admin-views.php:431 includes/class-admin.php:167
 msgid "Settings"
 msgstr ""
 
@@ -1697,23 +1697,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:651
+#: includes/class-admin-welcome.php:653
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:672
+#: includes/class-admin-welcome.php:674
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:719
+#: includes/class-admin-welcome.php:721
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:745
+#: includes/class-admin-welcome.php:747
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:746
+#: includes/class-admin-welcome.php:748
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1751,15 +1751,15 @@ msgstr ""
 msgid "or select another form."
 msgstr ""
 
-#: includes/class-admin.php:169
+#: includes/class-admin.php:171
 msgid "Support"
 msgstr ""
 
-#: includes/class-admin.php:214
+#: includes/class-admin.php:216
 msgid "A new form was created for this View: \"%s\""
 msgstr ""
 
-#: includes/class-admin.php:215
+#: includes/class-admin.php:217
 msgid ""
 "%sThere are no entries for the new form, so the View will also be empty.%s "
 "To start collecting entries, you can add submissions through %sthe preview "
@@ -1771,75 +1771,75 @@ msgid ""
 "\t\t\t\t\t"
 msgstr ""
 
-#: includes/class-admin.php:228 includes/class-admin.php:230
-#: includes/class-admin.php:233
+#: includes/class-admin.php:230 includes/class-admin.php:232
+#: includes/class-admin.php:235
 #. translators: %s and %s are HTML tags linking to the View on the website
 msgid "View updated. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:231
+#: includes/class-admin.php:233
 msgid "View deleted."
 msgstr ""
 
-#: includes/class-admin.php:235
+#: includes/class-admin.php:237
 #. translators: %s: date and time of the revision
 msgid "View restored to revision from %s"
 msgstr ""
 
-#: includes/class-admin.php:237
+#: includes/class-admin.php:239
 #. translators: %s and %s are HTML tags linking to the View on the website
 msgid "View published. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:239
+#: includes/class-admin.php:241
 #. translators: %s and %s are HTML tags linking to the View on the website
 msgid "View saved. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:240
+#: includes/class-admin.php:242
 msgid "View submitted."
 msgstr ""
 
-#: includes/class-admin.php:243
+#: includes/class-admin.php:245
 #. translators: Date and time the View is scheduled to be published
 msgid "View scheduled for: %1$s."
 msgstr ""
 
-#: includes/class-admin.php:245
+#: includes/class-admin.php:247
 #. translators: Publish box date format, see http:php.net/date
 msgid "M j, Y @ G:i"
 msgstr ""
 
-#: includes/class-admin.php:248
+#: includes/class-admin.php:250
 #. translators: %s and %s are HTML tags linking to the View on the website
 msgid "View draft updated. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:254
+#: includes/class-admin.php:256
 msgid "%s View updated."
 msgid_plural "%s Views updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:255
+#: includes/class-admin.php:257
 msgid "%s View not updated, somebody is editing it."
 msgid_plural "%s Views not updated, somebody is editing them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:256
+#: includes/class-admin.php:258
 msgid "%s View permanently deleted."
 msgid_plural "%s Views permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:257
+#: includes/class-admin.php:259
 msgid "%s View moved to the Trash."
 msgid_plural "%s Views moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:258
+#: includes/class-admin.php:260
 msgid "%s View restored from the Trash."
 msgid_plural "%s Views restored from the Trash."
 msgstr[0] ""
