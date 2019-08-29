@@ -884,7 +884,7 @@ class Addon_Settings extends \GFAddOn {
 				'horizontal' => 1,
 				'choices' => array(
 					array(
-						'label' => _x( 'Show me beta versions if they are available.', 'gravityview' ),
+						'label' => esc_html__( 'Show me beta versions if they are available.', 'gravityview' ),
 						'value' => '1',
                         'name'  => 'beta',
 					),
