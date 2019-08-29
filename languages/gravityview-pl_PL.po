@@ -846,11 +846,11 @@ msgstr "Włącz dostęp CSV do tego Widoku."
 
 #: future/includes/class-gv-settings-view.php:347
 msgid "Show all in CSV"
-msgstr ""
+msgstr "Pokaż wszystko w CSV"
 
 #: future/includes/class-gv-settings-view.php:349
 msgid "Do not limit the number of entries output in the CSV."
-msgstr ""
+msgstr "Nie ograniczaj liczby pozycji w CSV."
 
 #: future/includes/class-gv-settings-view.php:366
 msgid "Random"
@@ -1701,11 +1701,11 @@ msgstr "Wstaw własny tekst lub HTML."
 
 #: includes/class-admin-views.php:781
 msgid "Result Number"
-msgstr ""
+msgstr "Liczba wynikowa"
 
 #: includes/class-admin-views.php:783
 msgid "Display a sequential result number for each entry."
-msgstr ""
+msgstr "Wyświetlanie kolejnych liczb wynikowych dla każdej pozycji."
 
 #: includes/class-admin-views.php:873
 msgid "Add Widget"
@@ -2689,7 +2689,7 @@ msgstr "Data Aktualizacji"
 
 #: includes/fields/class-gravityview-field-date-updated.php:22
 msgid "The date the entry was last updated."
-msgstr ""
+msgstr "Data ostatniej aktualizacji pozycji."
 
 #: includes/fields/class-gravityview-field-date.php:25
 #: includes/widgets/search-widget/class-search-widget.php:193
@@ -3040,21 +3040,23 @@ msgstr "Sekcja"
 
 #: includes/fields/class-gravityview-field-sequence.php:39
 msgid "Number Sequence"
-msgstr ""
+msgstr "Kolejność liczb"
 
 #: includes/fields/class-gravityview-field-sequence.php:56
 msgid "Reverse the order of the result numbers"
-msgstr ""
+msgstr "Odwróć kolejność liczb wynikowych"
 
 #: includes/fields/class-gravityview-field-sequence.php:57
 msgid ""
 "Output the number sequence in descending order. If enabled, numbers will "
 "count down from high to low."
 msgstr ""
+"Wyświetl sekwencję liczb w kolejności malejącej. Jeśli funkcja ta jest "
+"włączona, liczby będą odliczane od większych do mniejszych."
 
 #: includes/fields/class-gravityview-field-sequence.php:70
 msgid "First Number in the Sequence"
-msgstr ""
+msgstr "Pierwszy numer w sekwencji"
 
 #: includes/fields/class-gravityview-field-sequence.php:71
 msgid ""
@@ -3062,10 +3064,13 @@ msgid ""
 "ten entries, the first entry will display \"1\", and the last entry will "
 "show \"10\"."
 msgstr ""
+"Dla każdej pozycji wyświetlana liczba zwiększy się o jeden. Przy "
+"wyświetlaniu dziesięciu wpisów, pierwsza pozycja będzie przypisana do \"1\","
+" a ostatnia do \"10\"."
 
 #: includes/fields/class-gravityview-field-sequence.php:77
 msgid "Reverse the order of the number sequence (high to low)"
-msgstr ""
+msgstr "Odwróć kolejność sekwencji liczb (od większej do mniejszej)"
 
 #: includes/fields/class-gravityview-field-source-url.php:38
 msgid "Link to URL:"

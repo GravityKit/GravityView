@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Updated: Polish translation
+
 = 2.4.1.1 on August 27, 2019 =
 
 * Fixed: Inconsistent sorting behavior for Views using Table layouts
