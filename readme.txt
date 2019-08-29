@@ -475,7 +475,7 @@ This release is the biggest ever for developers! Even so, we have taken great ca
 * New REST API! Fetch GravityView details and entries using the WordPress REST API endpoint. It's disabled by default, but can be enabled or disabled globally on GravityView Settings screen, or per-View in View Settings. [Learn about the endpoints](https://github.com/gravityview/GravityView/wiki/REST-API).
 * New `gravityview()` API wrapper function, now used for easy access to everything you could want
 * New template structure ([learn how to migrate your custom template files](https://github.com/gravityview/GravityView/wiki/Template-Migration))
-* We have gotten rid of global state; actions and filters are now passed a `$context` argument, a [`\GV\Template_Context` object](https://github.com/gravityview/GravityView/blob/2.0/future/includes/class-gv-context-template.php)
+* We have gotten rid of global state; actions and filters are now passed a `$context` argument, a [`\GV\Template_Context` object](https://github.com/gravityview/GravityView/blob/v2.0/future/includes/class-gv-context-template.php)
 * When HTML 5 is enabled in Gravity Forms, now the Search All field will use `type="search"`
 * _Countless_ new filters and actions! Additional documentation will be coming, both on [docs.gravityview.co](https://docs.gravityview.co) as well as [codex.gravityview.co](https://codex.gravityview.co).
 
@@ -1007,7 +1007,7 @@ __Developer Notes__
 * Added: Option to show/hide "Show Answer Explanation" for Gravity Forms Quiz Addon fields
 * Tweak: Don't show GravityView Approve Entry column in Gravity Forms Entries table if there are no entries
 * Updated: Turkish translation. Thanks, [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)!
-* Tested and works with [Gravity Forms 2.0 Beta 1](https://www.gravityhelp.com/gravity-forms-v2-0-beta-1-released/)
+* Tested and works with [Gravity Forms 2.0 Beta 1](https://www.gravityforms.com/gravity-forms-v2-0-beta-1-released/)
 
 __Developer Notes:__
 
@@ -1352,7 +1352,7 @@ __Developer Notes:__
 = 1.9 on June 23 =
 * Added: Edit Entry now takes place in the Gravity Forms form layout, not in the previous layout. This means:
 	- Edit Entry now supports Conditional Logic - as expected, fields will show and hide based on the form configuration
-	- Edit Entry supports [Gravity Forms CSS Ready Classes](https://www.gravityhelp.com/css-ready-classes-for-gravity-forms/) - the layout you have configured for your form will be used for Edit Entry, too.
+	- Edit Entry supports [Gravity Forms CSS Ready Classes](https://docs.gravityforms.com/list-of-css-ready-classes/) - the layout you have configured for your form will be used for Edit Entry, too.
 	- If you customized the CSS of your Edit Entry layout, **you will need to update your stylesheet**. Sorry for the inconvenience!
 	- If visiting an invalid Edit Entry link, you are now provided with a back link
 	- Product fields are now hidden by default, since they aren't editable. If you want to instead display the old message that "product fields aren't editable," you can show them using the new `gravityview/edit_entry/hide-product-fields` filter
