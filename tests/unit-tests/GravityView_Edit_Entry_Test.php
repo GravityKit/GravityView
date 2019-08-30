@@ -469,7 +469,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	 * Emulate a valid edit view hit.
 	 *
 	 * @param $form A $form object returned by our factory.
-	 * @param $view A $view object returned by our factory.
+	 * @param $view A $view object returned by our factory, or a \GV\View.
 	 * @param $entry An $entry object returned by our factory.
 	 *
 	 * @return array With first item the rendered output,
@@ -478,6 +478,10 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	private function _emulate_render( $form, $view, $entry ) {
 		$loader = GravityView_Edit_Entry::getInstance();
 		$render = $loader->instances['render'];
+
+		if ( ! $view instanceof \WP_Post ) {
+			$view = get_post( $view->ID );
+		}
 
 		add_filter( 'gravityview/is_single_entry', '__return_true' );
 		$data = GravityView_View_Data::getInstance( $view );
@@ -1908,7 +1912,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		) );
 
 		gravityview()->request = new \GV\Mock_Request();
-		gravityview()->request->returns['is_view'] = \GV\View::from_post( $view );
+		gravityview()->request->returns['is_view'] = $view = \GV\View::from_post( $view );
 		gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
 
 		wp_set_current_user( $administrator );
@@ -1916,13 +1920,30 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		// Edit the entry
 		$_POST = array(
 			'input_1' => 'this is ' . wp_generate_password( 4, false ),
-			'input_2' => 'this is ' . wp_generate_password( 4, false ),
+			'input_2' => '666',
 		);
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
 		$this->assertNotContains( 'input_1', $output );
 		$this->assertNotContains( 'input_2', $output );
+		$this->assertEquals( 'this is one', $entry[1] );
+		$this->assertEquals( 'this is two', $entry[2] );
+
+		$view->fields = \GV\Field_Collection::from_configuration( array(
+			'edit_edit-fields' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => '2',
+				),
+			),
+		) );
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertNotContains( 'input_1', $output );
+		$this->assertContains( 'input_2', $output );
+		$this->assertEquals( 'this is one', $entry[1] );
+		$this->assertEquals( '666', $entry[2] );
 
 		$this->_reset_context();
 	}
