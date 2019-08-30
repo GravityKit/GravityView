@@ -1883,7 +1883,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 	}
 
-	public function test_field_visibility_and_editability() {
+	public function test_field_visibility_and_editability_admin() {
 		$this->_reset_context();
 
 		/** Create a user */
@@ -1942,6 +1942,135 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->assertNotContains( 'input_1', $output );
 		$this->assertContains( 'input_2', $output );
+		$this->assertEquals( 'this is one', $entry[1] );
+		$this->assertEquals( '666', $entry[2] );
+
+		$view->fields = \GV\Field_Collection::from_configuration( array(
+			'edit_edit-fields' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => '1',
+				),
+			),
+		) );
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertContains( 'input_1', $output );
+		$this->assertNotContains( 'input_2', $output );
+		$this->assertNotEquals( 'this is one', $entry[1] );
+		$this->assertEquals( '666', $entry[2] );
+
+		$this->_reset_context();
+	}
+
+	public function test_field_visibility_and_editability_caps() {
+		$this->_reset_context();
+
+		/** Create a user */
+		$subscriber1 = $this->_generate_user( 'subscriber' );
+		$subscriber2 = $this->_generate_user( 'subscriber' );
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		$form['fields'][0]->type = 'hidden';
+		$form['fields'][1]->visibility = 'hidden';
+
+		GFAPI::update_form( $form );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'this is one',
+			'2' => 'this is two',
+			'created_by' => $subscriber1,
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'user_edit' => true,
+			),
+		) );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view = \GV\View::from_post( $view );
+		gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		wp_set_current_user( $subscriber1 );
+
+		// Edit the entry
+		$_POST = array(
+			'input_1' => 'this is ' . wp_generate_password( 4, false ),
+			'input_2' => '666',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertNotContains( 'input_1', $output );
+		$this->assertNotContains( 'input_2', $output );
+		$this->assertEquals( 'this is one', $entry[1] );
+		$this->assertEquals( 'this is two', $entry[2] );
+
+		$view->fields = \GV\Field_Collection::from_configuration( array(
+			'edit_edit-fields' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => '2',
+					'allow_edit_cap' => 'manage_options',
+				),
+			),
+		) );
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertNotContains( 'input_1', $output );
+		$this->assertNotContains( 'input_2', $output );
+		$this->assertEquals( 'this is one', $entry[1] );
+		$this->assertEquals( 'this is two', $entry[2] );
+
+		$view->fields = \GV\Field_Collection::from_configuration( array(
+			'edit_edit-fields' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => '2',
+					'allow_edit_cap' => 'gravity_forms_edit_entry',
+				),
+			),
+		) );
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertNotContains( 'input_1', $output );
+		$this->assertNotContains( 'input_2', $output );
+		$this->assertEquals( 'this is one', $entry[1] );
+		$this->assertEquals( 'this is two', $entry[2] );
+
+		$view->fields = \GV\Field_Collection::from_configuration( array(
+			'edit_edit-fields' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => '2',
+					'allow_edit_cap' => 'read',
+				),
+			),
+		) );
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertNotContains( 'input_1', $output );
+		$this->assertContains( 'input_2', $output );
+		$this->assertEquals( 'this is one', $entry[1] );
+		$this->assertEquals( '666', $entry[2] );
+
+		wp_set_current_user( $subscriber2 );
+
+		$_POST = array(
+			'input_1' => 'this is ' . wp_generate_password( 4, false ),
+			'input_2' => '777',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertNotContains( 'input_1', $output );
+		$this->assertNotContains( 'input_2', $output );
 		$this->assertEquals( 'this is one', $entry[1] );
 		$this->assertEquals( '666', $entry[2] );
 
