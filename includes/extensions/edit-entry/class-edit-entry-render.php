@@ -1705,6 +1705,7 @@ class GravityView_Edit_Entry_Render {
 	/**
 	 * Filter area fields based on specified conditions
 	 *  - This filter removes the fields that have calculation configured
+	 *  - Hides fields that are hidden, etc.
 	 *
 	 * @uses GravityView_Edit_Entry::user_can_edit_field() Check caps
 	 * @access private
@@ -1739,8 +1740,22 @@ class GravityView_Edit_Entry_Render {
 		}
 
 		// The Edit tab has not been configured, so we return all fields by default.
-		if( empty( $configured_fields ) ) {
-			return array_values( $fields );
+		// But we do keep the hidden ones hidden please, for everyone :)
+		if ( empty( $configured_fields ) ) {
+			$out_fields = array();
+			foreach ( $fields as &$field ) {
+				if ( 'hidden' === $field->type ) {
+					continue; // A hidden field is just hidden
+				}
+
+				if ( 'hidden' == $field->visibility ) {
+					continue; // Same
+				}
+
+				$out_fields[] = $field;
+			}
+
+			return array_values( $out_fields );
 		}
 
 		// The edit tab has been configured, so we loop through to configured settings

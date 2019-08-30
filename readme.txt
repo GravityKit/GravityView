@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Updated: Polish translation
+* Fixed: Field visibility when editing entries. Hidden fields remain hidden unless explicitly allowed via field configuration.
 
 = 2.4.1.1 on August 27, 2019 =
 
