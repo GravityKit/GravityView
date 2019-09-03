@@ -7543,6 +7543,67 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 	}
 
+	public function test_time_field_sorts() {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form->ID,
+			'template_id' => 'table',
+			'settings' => array(
+				'sort_field' => array( '17' ),
+				'sort_direction' => array( \GV\Entry_Sort::ASC ),
+			),
+            'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '17',
+						'label' => 'Time',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$times = array(
+			// Field 16 contains the number of minutes passed since midnight
+			array( '16' => '0', '17' => '00:00' ),
+			array( '16' => '1', '17' => '12:01 am' ),
+			array( '16' => '2', '17' => '0:02' ),
+			array( '16' => '599', '17' => '9:59 am' ),
+			array( '16' => '600', '17' => '10:00' ),
+			array( '16' => '721', '17' => '12:01' ),
+			array( '16' => '727', '17' => '12:07 pm' ),
+			array( '16' => '837', '17' => '13:57' ),
+			array( '16' => '857', '17' => '2:17 pm' ),
+			array( '16' => '858', '17' => '14:18' ),
+			array( '16' => '1032', '17' => '5:12 pm' ),
+			array( '16' => '1321', '17' => '22:01' ),
+			array( '16' => '1391', '17' => '11:11 pm' )
+		);
+
+		shuffle( $times );
+
+		foreach ( $times as $t ) {
+			$t['form_id'] = $form->ID;
+			$t['status'] = 'active';
+			$e = $this->factory->entry->create_and_get( $t );
+		}
+
+		$times = wp_list_pluck( $times, '16' );
+		sort( $times );
+
+		$this->assertEquals( $times, $view->get_entries()->pluck( '16' ) );
+
+		$this->_reset_context();
+	}
+
 	public function test_view_csv_simple() {
 		$this->_reset_context();
 
