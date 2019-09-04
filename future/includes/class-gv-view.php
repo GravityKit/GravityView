@@ -1011,6 +1011,58 @@ class View implements \ArrayAccess {
 					}
 				}
 
+				/**
+				 * Merge time subfield sorts.
+				 */
+				add_filter( 'gform_gf_query_sql', function( $sql ) use ( &$query ) {
+					$q = $query->_introspect();
+					$orders = array();
+
+					$merged_time = false;
+
+					foreach ( $q['order'] as $oid => $order ) {
+						if ( $order[0] instanceof \GF_Query_Column ) {
+							$column = $order[0];
+						} else if ( $order[0] instanceof \GF_Query_Call ) {
+							if ( count( $order[0]->columns ) != 1 || ! $order[0]->columns[0] instanceof \GF_Query_Column ) {
+								$orders[ $oid ] = $order;
+								continue; // Need something that resembles a single sort
+							}
+							$column = $order[0]->columns[0];
+						}
+
+						if ( ( ! $field = \GFAPI::get_field( $column->source, $column->field_id ) ) || $field->type !== 'time' ) {
+							$orders[ $oid ] = $order;
+							continue; // Not a time field
+						}
+
+						if ( ! class_exists( '\GV\Mocks\GF_Query_Call_TIMESORT' ) ) {
+							require_once gravityview()->plugin->dir( 'future/_mocks.timesort.php' );
+						}
+
+						$orders[ $oid ] = array(
+							new \GV\Mocks\GF_Query_Call_TIMESORT( 'timesort', array( $column, $sql ) ),
+							$order[1] // Mock it!
+						);
+
+						$merged_time = true;
+					}
+
+					if ( $merged_time ) {
+						/**
+						 * ORDER again.
+						 */
+						if ( ! empty( $orders ) && $_orders = $query->_order_generate( $orders ) ) {
+							$sql['order'] = 'ORDER BY ' . implode( ', ', $_orders );
+						}
+					}
+
+					return $sql;
+				} );
+
+				$view_setting_sort_field_ids = \GV\Utils::get( $atts, 'sort_field', array() );
+				$view_setting_sort_directions = \GV\Utils::get( $atts, 'sort_direction', array() );
+
 				$query->limit( $parameters['paging']['page_size'] )
 					->offset( ( ( $page - 1 ) * $parameters['paging']['page_size'] ) + $this->settings->get( 'offset' ) );
 
