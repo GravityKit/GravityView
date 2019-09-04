@@ -1014,7 +1014,7 @@ class View implements \ArrayAccess {
 				/**
 				 * Merge time subfield sorts.
 				 */
-				add_filter( 'gform_gf_query_sql', function( $sql ) use ( &$query ) {
+				add_filter( 'gform_gf_query_sql', $gf_query_timesort_sql_callback = function( $sql ) use ( &$query ) {
 					$q = $query->_introspect();
 					$orders = array();
 
@@ -1059,9 +1059,6 @@ class View implements \ArrayAccess {
 
 					return $sql;
 				} );
-
-				$view_setting_sort_field_ids = \GV\Utils::get( $atts, 'sort_field', array() );
-				$view_setting_sort_directions = \GV\Utils::get( $atts, 'sort_direction', array() );
 
 				$query->limit( $parameters['paging']['page_size'] )
 					->offset( ( ( $page - 1 ) * $parameters['paging']['page_size'] ) + $this->settings->get( 'offset' ) );
@@ -1310,6 +1307,10 @@ class View implements \ArrayAccess {
 
 				if ( isset( $gf_query_sql_callback ) ) {
 					remove_action( 'gform_gf_query_sql', $gf_query_sql_callback );
+				}
+
+				if ( isset( $gf_query_timesort_sql_callback ) ) {
+					remove_action( 'gform_gf_query_sql', $gf_query_timesort_sql_callback );
 				}
 
 				/**

@@ -1498,6 +1498,22 @@ class GVCommon {
 			if( in_array( $field['type'], $blacklist_field_types ) ) {
 				unset( $fields[ $id ] );
 			}
+
+			/**
+			 * Merge time subfields.
+			 */
+			if ( 'time' === $field['type'] && ! empty( $field['parent'] ) ) {
+				$fields[ intval( $id ) ] = array(
+					'label' => \GV\Utils::get( $field, 'parent/label' ),
+					'parent' => null,
+					'type' => \GV\Utils::get( $field, 'parent/type' ),
+					'adminLabel' => \GV\Utils::get( $field, 'parent/adminLabel' ),
+					'adminOnly' => \GV\Utils::get( $field, 'parent/adminOnly' ),
+				);
+
+				unset( $fields[ $id ] );
+			}
+
 		}
 
         /**
