@@ -2855,6 +2855,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( 'decimals' => 3 ) );
 
 		$this->assertEquals( '7,982,489.239', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'number_format' => false ) );
+
+		$field->field->numberFormat = '';
+
+		$this->assertEquals( '7982489.239', $renderer->render( $field, $view, $form, $entry, $request ) );
 	}
 
 	/**
