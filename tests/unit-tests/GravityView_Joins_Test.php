@@ -744,6 +744,61 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'Marick Bonobo', $entries[0][ $souschefs['id'] ]['1'] );
 	}
 
+	public function test_search_widget_global_search() {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_JOINS ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$chefs = $this->factory->form->import_and_get( 'simple.json' );
+		$souschefs = $this->factory->form->import_and_get( 'simple.json' );
+
+		$this->factory->entry->create_and_get( array( 'form_id' => $chefs['id'], 'status' => 'active', '2' => 1, '1' => 'Maria Henry' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $chefs['id'], 'status' => 'active', '2' => 2, '1' => 'Henry Marrek' ) );
+
+		$this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 1, '1' => 'Mary Jane' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 1, '1' => 'Jane Henryson' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 2, '1' => 'Marick Bonobo' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 2, '1' => 'Henry Oswald' ) );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $chefs['id'],
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '2',
+						'label' => 'Group',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+						'label' => 'Name',
+					),
+				),
+			),
+			'joins' => array(
+				array( $chefs['id'], '2', $souschefs['id'], '2' ),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
+		}
+
+		$_GET = array( 'gv_search' => 'en' );
+		$this->assertEquals( 4, $view->get_entries()->count() );
+
+		$_GET = array( 'gv_search' => 'rick' );
+		$this->assertEquals( 1, $view->get_entries()->count() );
+	}
+
 	/**
 	 * https://github.com/gravityview/Multiple-Forms/issues/38
 	 */
