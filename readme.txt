@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Number format issues, precision, etc.
 * Fixed: Global search not working with joined forms (Multiple Forms plugin)
 * Fixed: Page Size widget breaks with multiple search filters defined
+* Fixed: Page Size widget resets state on search
 
 = 2.4.1.1 on August 27, 2019 =
 
