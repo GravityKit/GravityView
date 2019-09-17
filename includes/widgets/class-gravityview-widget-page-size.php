@@ -121,7 +121,13 @@ class Page_Size extends \GV\Widget {
                         $get = $_GET;
                         unset( $get['page_size'] );
 	                    foreach ( $get as $key => $value ) {
-		                    printf( '<input type="hidden" name="%s" value="%s" />', esc_attr( $key ), esc_attr( $value ) );
+							if ( is_array( $value ) ) {
+								foreach ( $value as $_key => $_value ) {
+									printf( '<input type="hidden" name="%s[%s]" value="%s" />', esc_attr( $key ), esc_attr( $_key ), esc_attr( $_value ) );
+								}
+							} else {
+								printf( '<input type="hidden" name="%s" value="%s" />', esc_attr( $key ), esc_attr( $value ) );
+							}
 	                    }
                     }
                     ?>

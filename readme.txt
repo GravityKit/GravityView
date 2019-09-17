@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Field visibility when editing entries. Hidden fields remain hidden unless explicitly allowed via field configuration.
 * Fixed: Number format issues, precision, etc.
 * Fixed: Global search not working with joined forms (Multiple Forms plugin)
+* Fixed: Page Size widget breaks with multiple search filters defined
 
 = 2.4.1.1 on August 27, 2019 =
 
