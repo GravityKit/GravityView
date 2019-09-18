@@ -8382,6 +8382,81 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	public function test_sort_shortcode_reset() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+
+		global $post;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form->ID,
+			'template_id' => 'table',
+            'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+
+					wp_generate_password( 4, false ) => array(
+						'id' => '4',
+						'label' => 'Email',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entries = array(
+			$this->factory->entry->create_and_get( array(
+				'form_id' => $form->ID,
+				'status' => 'active',
+				'4' => 'gennady@gravityview.co',
+			) ),
+
+			$this->factory->entry->create_and_get( array(
+				'form_id' => $form->ID,
+				'status' => 'active',
+				'4' => 'vlad@gravityview.co',
+			) ),
+
+			$this->factory->entry->create_and_get( array(
+				'form_id' => $form->ID,
+				'status' => 'active',
+				'4' => 'rafael@gravityview.co',
+			) ),
+
+			$this->factory->entry->create_and_get( array(
+				'form_id' => $form->ID,
+				'status' => 'active',
+				'4' => 'zack@gravityview.co',
+			) ),
+		);
+
+		$shortcode = new \GV\Shortcodes\gravityview();
+
+		$args = array(
+			'id' => $view->ID,
+			'sort_field' => 'id'
+		);
+
+		preg_match_all( '#data-label="Entry ID">(\d+)</td>#', $shortcode->callback( $args ), $matches );
+
+		$this->assertEquals( wp_list_pluck( array_reverse( $entries ), 'id' ), $matches[1] );
+
+		$_GET['sort'] = array( '4' => 'DESC', );
+
+		preg_match_all( '#data-label="Entry ID">(\d+)</td>#', $shortcode->callback( $args ), $matches );
+
+		$this->assertEquals( array(
+			$entries[3]['id'], $entries[1]['id'], $entries[2]['id'], $entries[0]['id'],
+		), $matches[1] );
+
+		$this->_reset_context();
+	}
 }
 
 class GVFutureTest_Extension_Test_BC extends GravityView_Extension {
