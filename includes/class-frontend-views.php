@@ -1044,11 +1044,22 @@ class GravityView_frontend {
 		$has_values = isset( $_GET['sort'] );
 
 		if ( $has_values && is_array( $_GET['sort'] ) ) {
-			$has_values = array_filter( array_values( $_GET['sort'] ) );
+			$sorts = array_keys( $_GET['sort'] );
+			$dirs  = array_values( $_GET['sort'] );
+
+			if ( $has_values = array_filter( $dirs ) ) {
+				$sort_field_id = end( $sorts );
+				$sort_direction = end( $dirs );
+			}
 		}
 
-		$sort_field_id = $has_values ? $_GET['sort'] : \GV\Utils::get( $args, 'sort_field' );
-		$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : \GV\Utils::get( $args, 'sort_direction' );
+		if ( ! isset( $sort_field_id ) ) {
+			$sort_field_id = isset( $_GET['sort'] ) ? $_GET['sort'] : \GV\Utils::get( $args, 'sort_field' );
+		}
+
+		if ( ! isset( $sort_direction ) ) {
+			$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : \GV\Utils::get( $args, 'sort_direction' );
+		}
 
 		if ( is_array( $sort_field_id ) ) {
 			$sort_field_id = array_pop( $sort_field_id );

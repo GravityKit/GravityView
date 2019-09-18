@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Global search not working with joined forms (Multiple Forms plugin)
 * Fixed: Page Size widget breaks with multiple search filters defined
 * Fixed: Page Size widget resets state on search
+* Fixed: User sorting does not work with shortcode sort attribute set
 
 = 2.4.1.1 on August 27, 2019 =
 
