@@ -4274,6 +4274,42 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @group field_html
 	 */
+	public function test_frontend_field_html_pipe_recorder() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$form['fields'][15]->type = 'pipe_recorder';
+		GFAPI::update_form( $form );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'16' => json_encode( array(
+				'thumbnail' => 'http://example.org/thumb.jpg',
+				'video' => 'http://example.org/video.mp4',
+			) ),
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '16' );
+
+		$field->update_configuration( array( 'embed' => true ) );
+
+		$this->assertContains( '<video', $out = $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertContains( 'thumb.jpg', $out );
+		$this->assertContains( 'video.mp4', $out );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @group field_html
+	 */
 	public function test_frontend_field_html_payment() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(

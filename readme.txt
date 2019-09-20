@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Page Size widget breaks with multiple search filters defined
 * Fixed: Page Size widget resets state on search
 * Fixed: User sorting does not work with shortcode sort attribute set
+* Added: Pipe Recorder field embed support
 
 = 2.4.1.1 on August 27, 2019 =
 
