@@ -193,7 +193,7 @@ class GravityView_Field_Time extends GravityView_Field {
 	}
 
 
-	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		// Set variables
 		parent::field_options( $field_options, $template_id, $field_id, $context, $input_type );

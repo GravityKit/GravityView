@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Page Size widget resets state on search
 * Fixed: User sorting does not work with shortcode sort attribute set
 * Added: Pipe Recorder field embed support
+* Added: $form_id parameter for the `gravityview_template_$field_type_options` filter
 
 = 2.4.1.1 on August 27, 2019 =
 
