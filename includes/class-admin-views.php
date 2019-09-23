@@ -829,7 +829,13 @@ class GravityView_Admin_Views {
 		// Move Custom Content to top
 		$fields = array( 'custom' => $fields['custom'] ) + $fields;
 
-		return $fields;
+		/**
+		 * @filter `gravityview/admin/available_fields` Modify the available fields that can be used in a View.
+		 * @param[in,out] array $fields The fields.
+		 * @param  string|array $form form_ID or form object
+		 * @param  string $zone Either 'single', 'directory', 'header', 'footer'
+		 */
+		return apply_filters( 'gravityview/admin/available_fields', $fields, $form, $zone );
 	}
 
 
