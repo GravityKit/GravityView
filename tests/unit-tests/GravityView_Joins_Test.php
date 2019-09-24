@@ -1139,4 +1139,69 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	public function test_joins_custom_content() {
+		$this->_reset_context();
+
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_JOINS ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$step1 = $this->factory->form->import_and_get( 'simple.json' );
+		$step2 = $this->factory->form->import_and_get( 'simple.json' );
+
+		$entry1_1 = $this->factory->entry->create_and_get( array(
+			'form_id' => $step1['id'],
+			'status' => 'active',
+			'1' => 'Entry 1',
+		) );
+
+		$entry1_2 = $this->factory->entry->create_and_get( array(
+			'form_id' => $step2['id'],
+			'status' => 'active',
+			'1' => 'After Entry 1',
+			'2' => $entry1_1['id'],
+		) );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $step1['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'form_id' => $step1['id'],
+						'id'      => 'custom',
+						'label'   => 'Step 1',
+						'content' => '{entry_id}',
+					),
+					wp_generate_password( 4, false ) => array(
+						'form_id' => $step2['id'],
+						'id'      => 'custom',
+						'label' => 'Step 2',
+						'content' => '{entry_id}',
+					),
+				),
+			),
+			'joins' => array(
+				array( $step1['id'], 'id', $step2['id'], '2' ),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
+		}
+
+		$renderer = new \GV\View_Renderer();
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$out = $renderer->render( $view );
+
+		$this->assertContains( sprintf( 'Step 1">%s<', $entry1_1['id'] ), $out );
+		$this->assertContains( sprintf( 'Step 2">%s<', $entry1_2['id'] ), $out );
+
+		$this->_reset_context();
+	}
 }
