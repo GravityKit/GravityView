@@ -21,13 +21,6 @@ if ( $gravityview->entry->is_multi() ) {
 	$entry = $gravityview->entry->as_entry();
 }
 
-$field_settings = $gravityview->field->as_configuration();
-
-/** Default to empty. */
-if ( empty( $gravityview->field->content ) ) {
-	$field_settings['content'] = '';
-}
-
 // Make sure the class is loaded in DataTables
 if ( ! class_exists( 'GFFormDisplay' ) ) {
 	include_once GFCommon::get_base_path() . '/form_display.php';
