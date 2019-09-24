@@ -1500,9 +1500,9 @@ class GVCommon {
 			}
 
 			/**
-			 * Merge time subfields.
+			 * Merge date and time subfields.
 			 */
-			if ( 'time' === $field['type'] && ! empty( $field['parent'] ) ) {
+			if ( in_array( $field['type'], array( 'date', 'time' ) ) && ! empty( $field['parent'] ) ) {
 				$fields[ intval( $id ) ] = array(
 					'label' => \GV\Utils::get( $field, 'parent/label' ),
 					'parent' => null,
