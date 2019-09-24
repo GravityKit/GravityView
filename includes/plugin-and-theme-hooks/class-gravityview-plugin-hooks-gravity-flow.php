@@ -35,6 +35,8 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 
 		add_filter( 'gravityview/search/searchable_fields', array( $this, 'modify_search_bar_fields_dropdown'), 10, 2 );
 
+		add_filter( 'gravityview/admin/available_fields', array( $this, 'maybe_add_non_default_fields' ), 10, 3 );
+
 	}
 	
 
@@ -101,6 +103,28 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 				'label' => esc_html__( 'Workflow Status', 'gravityview' ),
 				'type'  => 'select',
 			);
+		}
+
+		return $fields;
+	}
+
+	public function maybe_add_non_default_fields( $fields, $form, $zone ) {
+		if ( strpos( implode( ' ', array_keys( $fields ) ), 'workflow' ) !== false ) {
+			$keys   = array_keys( $fields );
+			$values = array_values( $fields );
+
+			if ( ( $insert_at = array_search( 'workflow_final_status', $keys ) ) !== false ) {
+				$keys_end = array_splice( $keys, $insert_at + 1 );
+				$values_end = array_splice( $values, $insert_at + 1 );
+
+				$keys[] = 'workflow_current_status_timestamp';
+				$values[] = array(
+					'label' => __( 'Workflow Current Status Timestamp', 'gravityview' ),
+					'type' => 'workflow_current_status_timestamp',
+				);
+
+				$fields = array_merge( array_combine( $keys, $values ), array_combine( $keys_end, $values_end ) );
+			}
 		}
 
 		return $fields;
