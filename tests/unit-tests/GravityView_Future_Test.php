@@ -5022,7 +5022,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $entry_1['id'], $entries['entries'][0]['id'] );
 
 		/** Test back-compatible filters */
-		add_filter( 'gravityview_search_criteria', function( $criteria ) {
+		add_filter( 'gravityview_search_criteria', $callback = function( $criteria ) {
 			$criteria['search_criteria']['field_filters'] []= array(
 				'key' => '1',
 				'value' => 'goes',
@@ -5033,7 +5033,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entries = GravityView_frontend::get_view_entries( $view->settings->as_atts(), $form->ID );
 		$this->assertEquals( 1, $entries['count'] );
 		$this->assertEquals( $entry_2['id'], $entries['entries'][0]['id'] );
-		remove_all_filters( 'gravityview_search_criteria' );
+		remove_filter( 'gravityview_search_criteria', $callback );
 
 		add_filter( 'gravityview_before_get_entries', function( $entries ) {
 			return array( 1 );
