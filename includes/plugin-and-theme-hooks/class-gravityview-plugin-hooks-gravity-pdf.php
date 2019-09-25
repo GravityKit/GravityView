@@ -38,8 +38,12 @@ class GravityView_Plugin_Hooks_Gravity_PDF extends GravityView_Plugin_and_Theme_
 			return $content;
 		}
 
+		if ( ! class_exists( 'GPDFAPI' ) ) {
+			return $content;
+		}
+
 		if ( ! $shortcodes = GPDFAPI::get_mvc_class( 'Model_Shortcodes' ) ) {
-			return;
+			return $content;
 		}
 
 		global $wpdb;
