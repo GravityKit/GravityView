@@ -11,7 +11,9 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$form = $gravityview->view->form->form;
+if ( ! $gravityview->field->form_id || ! ( $form = GFAPI::get_form( $gravityview->field->form_id ) ) ) {
+	$form = $gravityview->view->form->form;
+}
 
 if ( $gravityview->entry->is_multi() ) {
 	$entry = $gravityview->entry->from_field( $gravityview->field )->as_entry();

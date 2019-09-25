@@ -33,7 +33,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Proper sorting capabilities for Time and Date fields
 * Fixed: Custom Content field context for Multiple Forms plugin
 * Fixed: Gravity PDF support with Multiple Forms plugin and Custom Content fields
-* Fixed: Entry Link may be incorrect with Multiple Forms plugin
+* Fixed: Entry Link, Edit Link and Delete Link may be incorrect with some Multiple Forms setups
 * Added: Pipe Recorder field embed support
 * Added: $form_id parameter for the `gravityview_template_$field_type_options` filter
 * Added: Show as score setting for Survey fields
