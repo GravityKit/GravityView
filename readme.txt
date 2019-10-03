@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Updated: Polish translation
+* Fixed: GP Populate Anything warnings with search and no permalink settings
 * Fixed: Field visibility when editing entries. Hidden fields remain hidden unless explicitly allowed via field configuration.
 * Fixed: Number format issues, precision, etc.
 * Fixed: Global search not working with joined forms (Multiple Forms plugin)

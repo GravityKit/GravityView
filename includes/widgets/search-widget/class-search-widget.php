@@ -81,9 +81,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 			// frontend - add template path
 			add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
 
-			// Add hidden fields for "Default" permalink structure
-			add_filter( 'gravityview_widget_search_filters', array( $this, 'add_no_permalink_fields' ), 10, 3 );
-
 			// admin - add scripts - run at 1100 to make sure GravityView_Admin_Views::add_scripts_and_styles() runs first at 999
 			add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 1100 );
 			add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts') );
@@ -1359,6 +1356,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * @var array
 		 */
 		$gravityview_view->search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this, $widget_args, $context );
+
+		$gravityview_view->permalink_fields = $this->add_no_permalink_fields( array(), $this, $widget_args );
 
 		$gravityview_view->search_layout = ! empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'horizontal';
 
