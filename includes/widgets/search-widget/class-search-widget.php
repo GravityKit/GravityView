@@ -1523,6 +1523,18 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$filter['value'] = array( 'start' => '', 'end' => '' );
 		}
 
+		if ( ! empty( $filter['choices'] ) ) {
+			/**
+			 * @filter `gravityview/search/sieve_choices` Only output used choices for this field.
+			 * @param[in,out] bool Yes or no.
+			 * @param array $field The field configuration.
+			 * @param \GV\Context The context.
+			 */
+			if ( apply_filters( 'gravityview/search/sieve_choices', false, $field, $context ) ) {
+				$filter['choices'] = $this->sieve_filter_choices( $filter, $context );
+			}
+		}
+
 		/**
 		 * @filter `gravityview/search/filter_details` Filter the output filter details for the Search widget.
 		 * @param[in,out] array $filter The filter details
@@ -1534,6 +1546,49 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		return $filter;
 
+	}
+
+	/**
+	 * Sieve filter choices to only ones that are used.
+	 *
+	 * @param array $filter The filter configuration.
+	 * @param \GV\Context $context The context
+	 *
+	 * @since develop
+	 * @internal
+	 *
+	 * @return array The filter choices.
+	 */
+	private function sieve_filter_choices( $filter, $context ) {
+		if ( empty( $filter['key'] ) || empty( $filter['choices'] ) ) {
+			return $filter; // @todo Populate plugins might give us empty choices
+		}
+
+		if ( ! is_numeric( $filter['key'] ) ) {
+			return $filter;
+		}
+
+		$form_id = $context->view->form->ID; // @todo Support multiple forms (joins)
+
+		global $wpdb;
+
+		$table = GFFormsModel::get_entry_meta_table_name();
+
+		$key_like = $wpdb->esc_like( $filter['key'] ) . '.%';
+
+		$choices = $wpdb->get_col( $wpdb->prepare(
+			"SELECT DISTINCT meta_value FROM $table WHERE (meta_key LIKE %s OR meta_key = %d) AND form_id = %d",
+			$key_like, $filter['key'], $form_id
+		) );
+
+		$filter_choices = array();
+		foreach ( $filter['choices'] as $choice ) {
+			if ( in_array( $choice['text'], $choices, true ) || in_array( $choice['value'], $choices, true ) ) {
+				$filter_choices[] = $choice;
+			}
+		}
+
+		return $filter_choices;
 	}
 
 	/**
