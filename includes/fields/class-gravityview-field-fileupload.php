@@ -38,6 +38,14 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			'merge_tags' => false,
 		);
 
+		$add_options['image_width'] = array(
+			'type' => 'text',
+			'label' => __( 'Custom Width:', 'gravityview' ),
+			'desc' => __( 'Override the default image width (250).', 'gravityview' ),
+			'value' => '250',
+			'merge_tags' => false,
+		);
+
 		return $add_options + $field_options;
 	}
 
@@ -260,13 +268,14 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			// Images
 			} else if ( in_array( $extension, array( 'jpg', 'jpeg', 'jpe', 'gif', 'png' ) ) ) {
+				$width = \GV\Utils::get( $field_settings, 'image_width', 250 );
 				$image_atts = array(
 					'src'   => $file_path,
 					'class' => 'gv-image gv-field-id-' . $field_settings['id'],
 					'alt'   => $field_settings['label'],
-					'width' => ( $is_single ? null : 250 )
+					'width' => ( $is_single ? null : ( $width ? $width: 250 ) )
 				);
-
+				
 				if ( $is_secure ) {
 					$image_atts['validate_src'] = false;
 				}
