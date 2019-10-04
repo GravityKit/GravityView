@@ -39,7 +39,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: $form_id parameter for the `gravityview_template_$field_type_options` filter
 * Added: Show as score setting for Survey fields
 * Added: image_width setting for File Upload images the default 250px is now overrideable
-* Added: `gravityview/admin/available_fields` field for developers to add their own assignable fields to View configurations
+* Added: `gravityview/search/filter_details` filter for developers to modify search filter configurations
+* Added: `gravityview/admin/available_fields` filter for developers to add their own assignable fields to View configurations
 
 = 2.4.1.1 on August 27, 2019 =
 

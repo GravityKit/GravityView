@@ -1303,7 +1303,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$updated_field = $field;
 
-			$updated_field = $this->get_search_filter_details( $updated_field );
+			$updated_field = $this->get_search_filter_details( $updated_field, $context );
 
 			switch ( $field['field'] ) {
 
@@ -1484,9 +1484,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * Prepare search fields to frontend render with other details (label, field type, searched values)
 	 *
 	 * @param array $field
+	 * @param \GV\Context $context
+	 *
 	 * @return array
 	 */
-	private function get_search_filter_details( $field ) {
+	private function get_search_filter_details( $field, $context ) {
 
 		$gravityview_view = GravityView_View::getInstance();
 
@@ -1520,6 +1522,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 		if ( 'date_range' === $field['input'] && empty( $value ) ) {
 			$filter['value'] = array( 'start' => '', 'end' => '' );
 		}
+
+		/**
+		 * @filter `gravityview/search/filter_details` Filter the output filter details for the Search widget.
+		 * @param[in,out] array $filter The filter details
+		 * @param array $field The search field configuration
+		 * @param \GV\Context The context
+		 * @since develop
+		 */
+		$filter = apply_filters( 'gravityview/search/filter_details', $filter, $field, $context );
 
 		return $filter;
 
