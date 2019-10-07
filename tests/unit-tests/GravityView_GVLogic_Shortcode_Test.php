@@ -427,4 +427,32 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'logged in or not hello world', $renderer->render( $field, $view, null, $entry ) );
 	}
 
+	/**
+	 * https://github.com/gravityview/GravityView/issues/949
+	 */
+	function test_gv_shortcode_nested_gvlogic2() {
+		$GVLogic_Shortcode            = GVLogic_Shortcode::get_instance();
+		$GVLogic_Shortcode->shortcode = 'gvlogic2';
+
+		add_shortcode( 'gvlogic2', array( $GVLogic_Shortcode, 'shortcode' ) );
+
+		$value = do_shortcode( sprintf(
+			'[gvlogic if="%s" is="MATCH"]Match 1[else][gvlogic2 if="%s" is="MATCH"]Match 2[else]Match 3[/gvlogic2]Show me.[/gvlogic]',
+			'MATCH', ''
+		) );
+		$this->assertEquals( 'Match 1', $value );
+
+		$value = do_shortcode( sprintf(
+			'[gvlogic if="%s" is="MATCH"]Match 1[else][gvlogic2 if="%s" is="MATCH"]Match 2[else]Match 3[/gvlogic2]Show me.[/gvlogic]',
+			'', 'MATCH'
+		) );
+		$this->assertEquals( 'Match 2Show me.', $value );
+
+		$value = do_shortcode( sprintf(
+			'[gvlogic if="%s" is="MATCH"]Match 1[else][gvlogic2 if="%s" is="MATCH"]Match 2[else]Match 3[/gvlogic2]Show me.[/gvlogic]',
+			'', ''
+		) );
+		$this->assertEquals( 'Match 3Show me.', $value );
+	}
+
 }

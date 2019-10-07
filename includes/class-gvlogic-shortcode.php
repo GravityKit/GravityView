@@ -326,8 +326,8 @@ class GVLogic_Shortcode {
 
 		$passed_content = $this->passed_content;
 
-		list( $before_else, $after_else ) = array_pad( explode( '[else]', $passed_content ), 2, NULL );
-		list( $before_else_if, $after_else_if ) = array_pad( explode( '[else', $passed_content ), 2, NULL );
+		list( $before_else, $after_else ) = array_pad( explode( '[else]', $passed_content, 2 ), 2, NULL );
+		list( $before_else_if, $after_else_if ) = array_pad( explode( '[else', $passed_content, 2 ), 2, NULL );
 
 		$else_attr = isset( $this->atts['else'] ) ? $this->atts['else'] : NULL;
 		$else_content = isset( $after_else ) ? $after_else : $else_attr;
