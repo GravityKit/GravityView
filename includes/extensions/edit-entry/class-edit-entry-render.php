@@ -426,6 +426,10 @@ class GravityView_Edit_Entry_Render {
 
 	    foreach ( $this->entry as $input_id => $field_value ) {
 
+			if ( ! is_numeric( $input_id ) ) {
+				continue;
+			}
+
 		    $field = RGFormsModel::get_field( $this->form, $input_id );
 
 		    // Reset fields that are hidden
