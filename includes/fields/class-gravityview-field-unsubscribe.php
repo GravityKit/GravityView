@@ -25,7 +25,12 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 		parent::__construct();
 	}
 	
-	function add_hooks() {
+	/**
+	 * Hooks called from constructor.
+	 *
+	 * @return void
+	 */
+	public function add_hooks() {
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'filter_gravityview_entry_default_field' ), 10, 3 );
 
 		add_filter( 'gravityview/field/is_visible', array( $this, 'maybe_not_visible' ), 10, 2 );
@@ -33,6 +38,23 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 		add_filter( 'gravityview_field_entry_value_unsubscribe', array( $this, 'modify_entry_value_unsubscribe' ), 10, 4 );
 	}
 
+	/**
+	 * Configure the field options.
+	 *
+	 * Called from the `gravityview_entry_default_fields` filter.
+	 *
+	 * Remove the logged in, new window and show as link options.
+	 * Add the allow unsubscribe for all admins option.
+	 *
+	 * @param array $field_options The options.
+	 * @param string $template_id The template ID.
+	 * @param int|string|float $field The field ID.
+	 * @param string $context The configuration context (edit, single, etc.)
+	 * @param string $input_type The input type.
+	 * @param int $form_id The form ID.
+	 *
+	 * @return array The field options.
+	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		unset( $field_options['only_loggedin'] );
@@ -52,10 +74,35 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 		return $field_options + $add_options;
 	}
 
+	/**
+	 * Hide the field from the renderer. Perhaps.
+	 *
+	 * Called from `gravityview/field/is_visible`
+	 *
+	 * Hide the field for non-logged in users for sure.
+	 *
+	 * @param bool $visible Consider visible or not.
+	 * @param \GV\Field $field The field.
+	 *
+	 * @return bool Visible or not.
+	 */
 	public function maybe_not_visible( $visible, $field ) {
 		return is_user_logged_in() ? $visible : false;
 	}
 
+	/**
+	 * Add the unsubsribe to the configuration fields.
+	 *
+	 * Only if a subscription feed is active for the current form.
+	 *
+	 * Called from `gravityview_entry_default_fields`
+	 *
+	 * @param array $entry_default_fields An array of available for configuration.
+	 * @param array $form The form.
+	 * @param string $context The configuration context (edit, single, etc.)
+	 *
+	 * @return array The array of available default fields.
+	 */
 	public function filter_gravityview_entry_default_field( $entry_default_fields, $form, $context ) {
 		if ( is_wp_error( $feeds = GFAPI::get_feeds( null, $form ) ) ) {
 			return $entry_default_fields;
@@ -89,6 +136,18 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 		return $entry_default_fields;
 	}
 
+	/**
+	 * Modify the render content.
+	 *
+	 * Called from `gravityview_field_entry_value_unsubscribe`
+	 *
+	 * @param string $output The output.
+	 * @param \GV\Entry $entry The entry.
+	 * @param array $field_settings The field settings.
+	 * @param \GV\Field $field The field.
+	 *
+	 * @return string The content.
+	 */
 	public function modify_entry_value_unsubscribe( $output, $entry, $field_settings, $field ) {
 		if ( ! is_user_logged_in() ) {
 			return $output;
@@ -124,6 +183,18 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 		return sprintf( '<a href="%s">%s</button>', $link, __( 'Unsubscribe', 'gravityview' ) );
 	}
 
+	/**
+	 * Try to unsubscribe from the entry.
+	 *
+	 * Called during a POST request. Checks nonce, feeds, entry ID.
+	 * Does not check user permissions. This is left as an exercise for the caller.
+	 *
+	 * Entry View inclusion is checked ad-hoc during the rendering of the field.
+	 *
+	 * @param \GV\Entry $entry The entry
+	 *
+	 * @return void
+	 */
 	private function maybe_unsubscribe( $entry ) {
 		if ( ! wp_verify_nonce( \GV\Utils::_REQUEST( 'unsubscribe' ), 'unsubscribe_' . $entry['id'] ) ) {
 			return;
