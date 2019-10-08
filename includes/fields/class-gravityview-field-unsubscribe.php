@@ -153,7 +153,7 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 			return $output;
 		}
 
-		$can_current_user_edit = wp_get_current_user()->ID == $entry['created_by'];
+		$can_current_user_edit = is_numeric( $entry['created_by'] ) && ( wp_get_current_user()->ID === intval( $entry['created_by'] ) );
 
 		if ( ! $can_current_user_edit ) {
 			if ( empty( $field_settings['unsub_all'] ) || ! \GVCommon::has_cap( 'gravityforms_edit_entries', $entry['id'] ) ) {
@@ -164,13 +164,13 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 		$status = $entry['payment_status'];
 		// @todo Move to init, or AJAXify, but make sure that the entry is in the View before allowing
 		if ( $entry = $this->maybe_unsubscribe( $entry ) ) {
-			if ( $entry['payment_status'] != $status ) {
+			if ( $entry['payment_status'] !== $status ) {
 				// @todo Probably __( 'Unsubscribed', 'gravityview' );
 				return $entry['payment_status'];
 			}
 		}
 
-		if ( strtolower( $entry['payment_status'] ) != 'active' ) {
+		if ( strtolower( $entry['payment_status'] ) !== 'active' ) {
 			return $output;
 		}
 
@@ -180,7 +180,7 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 		$link = add_query_arg( 'unsubscribe', wp_create_nonce( 'unsubscribe_' . $entry['id'] ), $current_url );
 		$link = add_query_arg( 'uid', urlencode( $entry['id'] ), $link );
 
-		return sprintf( '<a href="%s">%s</button>', $link, __( 'Unsubscribe', 'gravityview' ) );
+		return sprintf( '<a href="%s">%s</a>', $link, __( 'Unsubscribe', 'gravityview' ) );
 	}
 
 	/**
@@ -200,7 +200,7 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 			return;
 		}
 
-		if ( ( ! $uid = \GV\Utils::_REQUEST( 'uid' ) ) || $uid != $entry['id'] ) {
+		if ( ( ! $uid = \GV\Utils::_REQUEST( 'uid' ) ) || ! is_numeric( $uid ) || ( intval( $uid ) !== intval( $entry['id'] ) ) ) {
 			return;
 		}
 
@@ -225,7 +225,7 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 			}
 
 			foreach ( $feed_ids as $feed_id ) {
-				if ( ( $feed = $subscription_addons[ $slug ]->get_feed( $feed_id ) ) && \GV\Utils::get( $feed, 'meta/transactionType' ) == 'subscription' ) {
+				if ( ( $feed = $subscription_addons[ $slug ]->get_feed( $feed_id ) ) && \GV\Utils::get( $feed, 'meta/transactionType' ) === 'subscription' ) {
 					if ( $subscription_addons[ $slug ]->cancel( $entry, $feed ) ) {
 						$subscription_addons[ $slug ]->cancel_subscription( $entry, $feed );
 						return \GFAPI::get_entry( $entry['id'] );
