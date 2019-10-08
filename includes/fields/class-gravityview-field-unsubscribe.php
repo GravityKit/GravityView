@@ -161,7 +161,10 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 			}
 		}
 
-		$status = $entry['payment_status'];
+		if ( ! $status = \GV\Utils::get( $entry, 'payment_status' ) ) {
+			return $output;
+		}
+
 		// @todo Move to init, or AJAXify, but make sure that the entry is in the View before allowing
 		if ( $entry = $this->maybe_unsubscribe( $entry ) ) {
 			if ( $entry['payment_status'] !== $status ) {
@@ -193,19 +196,19 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 	 *
 	 * @param \GV\Entry $entry The entry
 	 *
-	 * @return void
+	 * @return \GV\Entry $entry The entry
 	 */
 	private function maybe_unsubscribe( $entry ) {
 		if ( ! wp_verify_nonce( \GV\Utils::_REQUEST( 'unsubscribe' ), 'unsubscribe_' . $entry['id'] ) ) {
-			return;
+			return $entry;
 		}
 
 		if ( ( ! $uid = \GV\Utils::_REQUEST( 'uid' ) ) || ! is_numeric( $uid ) || ( intval( $uid ) !== intval( $entry['id'] ) ) ) {
-			return;
+			return $entry;
 		}
 
 		if ( ! $feeds = gform_get_meta( $uid, 'processed_feeds' ) ) {
-			return;
+			return $entry;
 		}
 
 		static $subscription_addons;
