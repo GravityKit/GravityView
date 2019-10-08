@@ -166,6 +166,8 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 		}
 
 		// @todo Move to init, or AJAXify, but make sure that the entry is in the View before allowing
+		// @todo Also make sure we check caps if moved from here
+		// @todo Also make sure test_GravityView_Field_Unsubscribe_unsubscribe_permissions is rewritten
 		if ( $entry = $this->maybe_unsubscribe( $entry ) ) {
 			if ( $entry['payment_status'] !== $status ) {
 				// @todo Probably __( 'Unsubscribed', 'gravityview' );
@@ -193,6 +195,7 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 	 * Does not check user permissions. This is left as an exercise for the caller.
 	 *
 	 * Entry View inclusion is checked ad-hoc during the rendering of the field.
+	 * User permissions are also checked ad-hoc during the rendering process.
 	 *
 	 * @param \GV\Entry $entry The entry
 	 *

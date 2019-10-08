@@ -385,6 +385,7 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $author, 'id' => 1, 'payment_status' => 'null' ), array( 'unsub_all' => true ), null ) );
 
 		$this->assertContains( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $author, 'id' => 1, 'payment_status' => 'active' ), array( 'unsub_all' => true ), null ) );
+		$this->assertContains( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $administrator, 'id' => 1, 'payment_status' => 'active' ), null, null ) );
 
 		wp_set_current_user( $author );
 
@@ -400,4 +401,89 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 
 		wp_set_current_user( 0 );
 	}
+
+	function test_GravityView_Field_Unsubscribe_unsubscribe_permissions() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		$administrator = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'administrator' )
+		);
+
+		$author = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'author' )
+		);
+
+		$field = \GV\Internal_Field::by_id( 'unsubscribe' )->field;
+
+		wp_set_current_user( $administrator );
+
+		$entry = \GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $administrator,
+			'status' => 'active',
+			'payment_status' => 'active',
+		) ) );
+
+		$this->assertContains( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', $entry, null, null ) );
+
+		$entry = \GV\GF_Entry::by_id( $entry['id'] )->as_entry();
+
+		$this->assertEquals( 'active', $entry['payment_status'] );
+
+		$_GET = array(
+			'unsubscribe' => wp_create_nonce( 'unsubscribe_' . $entry['id'] ),
+		);
+
+		$this->assertContains( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', $entry, null, null ) );
+
+		$entry = \GV\GF_Entry::by_id( $entry['id'] )->as_entry();
+
+		$this->assertEquals( 'active', $entry['payment_status'] );
+
+		$_GET = $_REQUEST = array(
+			'unsubscribe' => wp_create_nonce( 'unsubscribe_' . $entry['id'] ),
+			'uid' => $entry['id'],
+		);
+
+		$feed_id = \GFAPI::add_feed( $form['id'], array( 'transactionType' => 'subscription' ), 'gf_paymentaddon_test' );
+
+		gform_update_meta( $entry['id'], 'processed_feeds', array( 'gf_paymentaddon_test' => array( $feed_id ) ) );
+
+		$this->assertContains( 'Cancelled', $field->modify_entry_value_unsubscribe( 'sentinel', $entry, null, null ) );
+
+		$entry = \GV\GF_Entry::by_id( $entry['id'] )->as_entry();
+
+		$this->assertEquals( 'Cancelled', $entry['payment_status'] );
+
+		wp_set_current_user( $author );
+
+		wp_set_current_user( 0 );
+
+		$_GET = $_REQUEST = array();
+	}
 }
+
+GFForms::include_feed_addon_framework();
+
+class GF_PaymentAddon_Test extends GFFeedAddOn {
+	protected $_slug = 'gf_paymentaddon_test';
+
+	public static function get_instance() {
+		return new self;
+	}
+
+	public function cancel( $entry, $feed ) {
+		return true;
+	}
+
+	public function cancel_subscription( $entry, $feed ) {
+		$entry['payment_status'] = 'Cancelled';
+		GFAPI::update_entry( $entry );
+		$entry = GFAPI::get_entry( $entry['id'] );
+	}
+}
+GF_PaymentAddon_Test::register( 'GF_PaymentAddon_Test' );
