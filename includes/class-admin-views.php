@@ -556,20 +556,18 @@ class GravityView_Admin_Views {
 			}
 			$statii['template_settings'] = update_post_meta( $post_id, '_gravityview_template_settings', $_POST['template_settings'] );
 
-			$fields = array();
+			// guard against unloaded View configuration page
+			if ( isset( $_POST['gv_fields'] ) && isset( $_POST['gv_fields_done'] ) ) {
+				$fields = array();
 
-			// Directory&single Visible Fields
-			if( !empty( $preset_fields ) ) {
+				if ( ! empty( $_POST['gv_fields'] ) ) {
+					$fields = _gravityview_process_posted_fields();
+				}
 
-				$fields = $preset_fields;
+				$fields = wp_slash( $fields );
 
-			} elseif( !empty( $_POST['gv_fields'] ) ) {
-				$fields = _gravityview_process_posted_fields();
+				$statii['directory_fields'] = update_post_meta( $post_id, '_gravityview_directory_fields', $fields );
 			}
-
-			$fields = wp_slash( $fields );
-
-			$statii['directory_fields'] = update_post_meta( $post_id, '_gravityview_directory_fields', $fields );
 
 			// Directory Visible Widgets
 			if( empty( $_POST['widgets'] ) ) {

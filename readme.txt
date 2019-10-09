@@ -36,6 +36,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Gravity PDF support with Multiple Forms plugin and Custom Content fields
 * Fixed: Entry Link, Edit Link and Delete Link may be incorrect with some Multiple Forms setups
 * Fixed: GP Nested Forms compabitility issues
+* Fixed: View configuration save race condition. When Update clicked too early field configuration could become corrupted and reset
 * Fixed: Cookies will no longer be set for back links, they are not needed anymore
 * Added: Pipe Recorder field embed support
 * Added: $form_id parameter for the `gravityview_template_$field_type_options` filter

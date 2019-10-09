@@ -1526,6 +1526,7 @@
 			$fields.remove();
 
 			// Add a field to the form that contains all the data.
+			$post.find( ':input[name=gv_fields]' ).remove();
 			$post.append( $( '<input/>', {
 				'name': 'gv_fields',
 				'value': serialized_data,
