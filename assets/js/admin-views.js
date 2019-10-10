@@ -1516,14 +1516,21 @@
 
 			$post.data( 'gv-valid', false );
 
-			// Get all the fields where the `name` attribute start with `fields`
-			var $fields = $post.find( ':input[name^=fields]' );
+			if ( $post.data( 'gv-serialized' ) ) {
+				// Guard against double seralization/remove attempts
+				var serialized_data = $post.data( 'gv-serialized' );
+			} else {
+				// Get all the fields where the `name` attribute start with `fields`
+				var $fields = $post.find( ':input[name^=fields]' );
 
-			// Serialize the data
-			var serialized_data = $fields.serialize();
+				// Serialize the data
+				var serialized_data = $fields.serialize();
 
-			// Remove the fields from the $_POSTed data
-			$fields.remove();
+				// Remove the fields from the $_POSTed data
+				$fields.remove();
+
+				$post.data( 'gv-serialized', serialized_data );
+			}
 
 			// Add a field to the form that contains all the data.
 			$post.find( ':input[name=gv_fields]' ).remove();
