@@ -1576,10 +1576,20 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$key_like = $wpdb->esc_like( $filter['key'] ) . '.%';
 
-		$choices = $wpdb->get_col( $wpdb->prepare(
-			"SELECT DISTINCT meta_value FROM $table WHERE (meta_key LIKE %s OR meta_key = %d) AND form_id = %d",
-			$key_like, $filter['key'], $form_id
-		) );
+		switch ( \GV\Utils::get( $filter, 'type' ) ):
+			case 'post_category':
+				$choices = $wpdb->get_col( $wpdb->prepare(
+					"SELECT DISTINCT SUBSTRING_INDEX(meta_value, ':', 1) FROM $table WHERE (meta_key LIKE %s OR meta_key = %d) AND form_id = %d",
+					$key_like, $filter['key'], $form_id
+				) );
+				break;
+			default:
+				$choices = $wpdb->get_col( $wpdb->prepare(
+					"SELECT DISTINCT meta_value FROM $table WHERE (meta_key LIKE %s OR meta_key = %d) AND form_id = %d",
+					$key_like, $filter['key'], $form_id
+				) );
+				break;
+		endswitch;
 
 		$filter_choices = array();
 		foreach ( $filter['choices'] as $choice ) {
