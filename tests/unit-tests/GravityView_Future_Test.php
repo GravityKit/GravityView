@@ -7866,6 +7866,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 						'id' => '5',
 						'label' => 'File',
 					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '2',
+						'label' => 'Checkbox',
+					),
 				),
 			),
 		) );
@@ -7883,6 +7887,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 				'http://one.txt',
 				'http://two.mp3',
 			) ),
+			'2.1' => 'Much Better',
+			'2.2' => 'Somewhat Better',
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
@@ -7903,14 +7909,15 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$file = implode( "\n", array(
 			'http://one.txt', 'http://two.mp3'
 		) );
-		$expected = array( 'Email,"A List",File', sprintf( 'support@gravityview.co,"%s","%s"', $list, $file ) );
+		$checkbox = implode( "\n", array( 'Much Better', 'Somewhat Better' ) );
+		$expected = array( 'Email,"A List",File,Checkbox', sprintf( 'support@gravityview.co,"%s","%s","%s"', $list, $file, $checkbox ) );
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
 		add_filter( 'gravityview/template/csv/field/raw', '__return_false' );
 
 		ob_start();
 		$view::template_redirect();
-		$expected = array( 'Email,"A List",File', sprintf( '"<a href=\'mailto:support@gravityview.co\'>support@gravityview.co</a>","%s","%s"', $list, $file ) );
+		$expected = array( 'Email,"A List",File,Checkbox', sprintf( '"<a href=\'mailto:support@gravityview.co\'>support@gravityview.co</a>","%s","%s","%s"', $list, $file, $checkbox ) );
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
 		remove_filter( 'gravityview/template/csv/field/raw', '__return_false' );
