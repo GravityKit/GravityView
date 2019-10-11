@@ -2076,6 +2076,54 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	public function test_hidden_calculations() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$form = $this->factory->form->import_and_get( 'calculations.json' );
+
+		$form['fields'][2]->conditionalLogic = array(
+			'rules' => array(
+				array(
+					'fieldId' => '1',
+					'value' => 99, // Hide if 99
+					'operator' => 'is',
+				),
+			),
+			'logicType' => 'all',
+			'actionType' => 'hide',
+		);
+
+		\GFAPI::update_form( $form );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'status' => 'active',
+			'form_id' => $form['id'],
+			'1' => 96,
+			'2' => 3,
+			'3' => 5,
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+		$_POST = array(
+			'input_1' => '99', // 3 should be hidden
+			'input_2' => '7',
+		);
+
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( '99', $entry['1'] );
+		$this->assertEquals( '7', $entry['2'] );
+		$this->assertEmpty( $entry['3'] );
+
+		$this->_reset_context();
+	}
 }
 
 /** The GF_User_Registration mock if not exists. */
