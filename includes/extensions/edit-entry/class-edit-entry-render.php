@@ -412,6 +412,8 @@ class GravityView_Edit_Entry_Render {
 		 */
 		$unset_hidden_field_values = apply_filters( 'gravityview/edit_entry/unset_hidden_field_values', true, $this );
 
+		$this->unset_hidden_calculations = array();
+
 		if( ! $unset_hidden_field_values ) {
 			return;
 		}
@@ -440,6 +442,11 @@ class GravityView_Edit_Entry_Render {
 					is_array( $field->get_entry_inputs() ) ? array() : '',
 					$this->form, '', $this->entry['id'], $this->entry
 				);
+
+				if ( $field->has_calculation() ) {
+					$this->unset_hidden_calculations[] = $field->id; // Unset
+					$empty_value = '';
+				}
 
 			    $lead_detail_id = GFFormsModel::get_lead_detail_id( $current_fields, $input_id );
 
@@ -593,6 +600,11 @@ class GravityView_Edit_Entry_Render {
 			$allowed_fields = wp_list_pluck( $allowed_fields, 'id' );
 
 			foreach ( $this->fields_with_calculation as $field ) {
+
+				if ( in_array( $field->id, $this->unset_hidden_calculations, true ) ) {
+					continue;
+				}
+
 				$inputs = $field->get_entry_inputs();
 				if ( is_array( $inputs ) ) {
 				    foreach ( $inputs as $input ) {

@@ -2103,7 +2103,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'1' => 96,
 			'2' => 3,
-			'3' => 5,
+			'3' => 99,
 		) );
 
 		$view = $this->factory->view->create_and_get( array(
