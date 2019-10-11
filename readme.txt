@@ -1693,7 +1693,7 @@ __Developer Notes:__
 * Fixed (hopefully): Auto-updates for WordPress Multisite
 * Fixed: Clicking overlay to close field/widget settings no longer scrolls to top of page
 * Fixed: Make sure Gravity Forms scripts are added when embedding Gravity Forms shortcodes in a Custom Field
-* Fixed: Remove double images of Floaty in the warning message when Gravity View is disabled
+* Fixed: Remove double images of Floaty in the warning message when GravityView is disabled
 * Fixed: PHP warnings related to Section field descriptions
 * Fixed: When using an advanced input as a search field in the Search Bar, the label would always show the parent field's label (Eg: "Address" when it should have shown "City")
 	- Added: `gravityview_search_field_label` filter to allow modifying search bar labels
