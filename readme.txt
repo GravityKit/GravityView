@@ -36,6 +36,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Gravity PDF support with Multiple Forms plugin and Custom Content fields
 * Fixed: Entry Link, Edit Link and Delete Link may be incorrect with some Multiple Forms setups
 * Fixed: GP Nested Forms compabitility issues
+* Fixed: gvlogic2 and nested else issues in some cases
 * Fixed: View configuration save race condition. When Update clicked too early or too rapidly field configuration could become corrupted and reset
 * Fixed: Checkbox output in CSVs will no longer contain HTML
 * Fixed: Cookies will no longer be set for back links, they are not needed anymore
