@@ -21,35 +21,42 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop =
+= 2.4.2 on October 16, 2019 =
 
-* Updated: Polish translation
-* Fixed: GP Populate Anything warnings with search and no permalink settings
-* Fixed: Field visibility when editing entries. Hidden fields remain hidden unless explicitly allowed via field configuration.
-* Fixed: Number format issues, precision, etc.
-* Fixed: Global search not working with joined forms (Multiple Forms plugin)
-* Fixed: Page Size widget breaks with multiple search filters defined
-* Fixed: Page Size widget resets state on search
-* Fixed: User sorting does not work with shortcode sort attribute set
-* Fixed: Proper sorting capabilities for Time and Date fields
-* Fixed: Custom Content field context for Multiple Forms plugin
-* Fixed: Gravity PDF support with Multiple Forms plugin and Custom Content fields
-* Fixed: Entry Link, Edit Link and Delete Link may be incorrect with some Multiple Forms setups
-* Fixed: GP Nested Forms compabitility issues
-* Fixed: gvlogic2 and nested else issues in some cases
-* Fixed: View configuration save race condition. When Update clicked too early or too rapidly field configuration could become corrupted and reset
-* Fixed: Checkbox output in CSVs will no longer contain HTML
-* Fixed: Cookies will no longer be set for back links, they are not needed anymore
-* Fixed: Hidden calculation fields were being recalculated on Edit Entry
-* Added: Admin Title option for Custom Content fields
-* Added: Pipe Recorder field embed support
-* Added: $form_id parameter for the `gravityview_template_$field_type_options` filter
-* Added: Show as score setting for Survey fields
-* Added: image_width setting for File Upload images the default 250px is now overrideable
-* Added: `gravityview/search/sieve_choices` filter that sieves Search Widget field filter choices to only ones that have been used in entries
+* Added: You can now add labels for Custom Content in the View editor (this helps keep track of many Custom Content fields at once!)
+* Added: "Show as score" setting for Gravity Forms Survey fields
+* Added: Support for [Gravity Forms Pipe Add-On](https://www.gravityforms.com/add-ons/pipe-video-recording/)
+* Fixed: Number field decimal precision formatting not being respected
+* Fixed: Checkbox output in CSVs will no longer contain HTML by default
+* Fixed: View configuration could be lost when the "Update" button was clicked early in the page load or multiple times rapidly
+* Fixed: Edit Entry issues
+    * Fixed: Field visibility when editing entries. Hidden fields remain hidden unless explicitly allowed via field configuration.
+    * Fixed: Hidden calculation fields were being recalculated on Edit Entry
+* Fixed: Sorting and search issues
+    * Fixed: User sorting does not work when the `[gravityview]` shortcode defines a sorting order
+    * Fixed: Proper sorting capabilities for Time and Date fields
+    * Fixed: Page Size widget breaks when multiple search filters are set
+    * Fixed: Page Size widget resets itself when a search is performed
+* Fixed: Multiple Forms compatibility issues
+    * Fixed: Global search not working with joined forms (using the [Multiple Forms extension](https://gravityview.co/extensions/multiple-forms/))
+    * Fixed: Custom Content fields now work properly with the Multiple Forms extension
+    * Fixed: [Gravity PDF](https://gravitypdf.com) support with Multiple Forms plugin and Custom Content fields
+    * Fixed: Entry Link, Edit Link and Delete Link URLs may be incorrect with some Multiple Forms setups
+* Fixed: Compatibility with a couple of Gravity Perks
+    * Fixed: [GP Nested Forms](https://gravitywiz.com/documentation/gravity-forms-nested-forms/) compatibility issues
+    * Fixed: PHP warnings appeared when searching Views for sites running GP Populate Anything with "Default" permalinks enabled
+* Updated: Polish translation (Thanks, Dariusz!)
+
+__Developer Updates:__
+
+* Added: `gravityview/search/sieve_choices` filter that sieves Search Widget field filter choices to only ones that have been used in entries (a UI is coming soon)
 * Added: `gravityview/search/filter_details` filter for developers to modify search filter configurations
 * Added: `gravityview/admin/available_fields` filter for developers to add their own assignable fields to View configurations
-* Added: `gravityview/features/paged-edit` secret filter to enable early-bird paged form edit entries
+* Added: `gravityview/features/paged-edit` A super-secret early-bird filter to enable multiple page forms in Edit Entry
+* Added: `$form_id` parameter for the `gravityview_template_$field_type_options` filter
+* Fixed: Intermittent `[gvlogic2]` and nested `else` issues
+* Modified: Cookies will no longer be set for Single Entry back links
+* Modified: Default 250px `image_width` setting for File Upload images is now easily overrideable
 
 = 2.4.1.1 on August 27, 2019 =
 
