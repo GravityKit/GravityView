@@ -615,7 +615,12 @@
 		setCustomLabel: function ( dialog ) {
 
 			// Does the field have a custom label?
-			var $custom_label = $( '[name*=custom_label]', dialog );
+			var $admin_label = $( '[name*=admin_label]', dialog );
+			if ( ! $admin_label.length || ! $admin_label.val() ) {
+				var $custom_label = $( '[name*=custom_label]', dialog );
+			} else {
+				$custom_label = $admin_label; // We have an administrative label for this field
+			}
 
 			var $label = dialog.parents( '.gv-fields' ).find( '.gv-field-label' );
 
