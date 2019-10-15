@@ -116,6 +116,17 @@ class GravityView_Edit_Entry_Render {
 	 */
 	public $is_valid = NULL;
 
+	/**
+	 * Internal page button states.
+	 *
+	 * @var bool
+	 *
+	 * @since develop
+	 */
+	public $show_previous_button;
+	public $show_next_button;
+	public $show_update_button;
+
 	function __construct( GravityView_Edit_Entry $loader ) {
 		$this->loader = $loader;
 	}
@@ -1109,6 +1120,8 @@ class GravityView_Edit_Entry_Render {
 
 		add_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields'), 5000, 3 );
 		add_filter( 'gform_submit_button', array( $this, 'render_form_buttons') );
+		add_filter( 'gform_next_button', array( $this, 'render_form_buttons' ) );
+		add_filter( 'gform_previous_button', array( $this, 'render_form_buttons' ) );
 		add_filter( 'gform_disable_view_counter', '__return_true' );
 
 		add_filter( 'gform_field_input', array( $this, 'verify_user_can_edit_post' ), 5, 5 );
@@ -1117,7 +1130,37 @@ class GravityView_Edit_Entry_Render {
 		// We need to remove the fake $_GET['page'] arg to avoid rendering form as if in admin.
 		unset( $_GET['page'] );
 
+		$this->show_next_button = false;
+		$this->show_previous_button = false;
+
 		// TODO: Verify multiple-page forms
+		if ( GFCommon::has_pages( $this->form ) && apply_filters( 'gravityview/features/paged-edit', false ) ) {
+			if ( intval( $page_number = \GV\Utils::_POST( 'gform_target_page_number_' . $this->form['id'], 1 ) ) > 1 ) {
+				GFFormDisplay::$submission[ $this->form['id'] ][ 'form' ] = $this->form;
+				GFFormDisplay::$submission[ $this->form['id'] ][ 'is_valid' ] = true;
+				GFFormDisplay::$submission[ $this->form['id'] ][ 'page_number' ] = $page_number;
+			}
+
+			if ( ( $page_number = intval( $page_number ) ) < 2 ) {
+				$this->show_next_button = true; // First page
+			}
+
+			$last_page = \GFFormDisplay::get_max_page_number( $this->form );
+
+			$has_more_pages = $page_number < $last_page;
+
+			if ( $has_more_pages ) {
+				$this->show_next_button = true; // Not the last page
+			} else {
+				$this->show_update_button = true; // The last page
+			}
+
+			if ( $page_number > 1 ) {
+				$this->show_previous_button = true; // Not the first page
+			}
+		} else {
+			$this->show_update_button = true;
+		}
 
 		ob_start(); // Prevent PHP warnings possibly caused by prefilling list fields for conditional logic
 
@@ -1127,6 +1170,8 @@ class GravityView_Edit_Entry_Render {
 
 	    remove_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields' ), 5000 );
 		remove_filter( 'gform_submit_button', array( $this, 'render_form_buttons' ) );
+		remove_filter( 'gform_next_button', array( $this, 'render_form_buttons' ) );
+		remove_filter( 'gform_previous_button', array( $this, 'render_form_buttons' ) );
 		remove_filter( 'gform_disable_view_counter', '__return_true' );
 		remove_filter( 'gform_field_input', array( $this, 'verify_user_can_edit_post' ), 5 );
 		remove_filter( 'gform_field_input', array( $this, 'modify_edit_field_input' ), 10 );
@@ -1739,6 +1784,10 @@ class GravityView_Edit_Entry_Render {
 		$edit_fields = array();
 
 		$field_type_blacklist = $this->loader->get_field_blacklist( $this->entry );
+
+		if ( empty( $configured_fields ) && apply_filters( 'gravityview/features/paged-edit', false ) ) {
+			$field_type_blacklist = array_diff( $field_type_blacklist, array( 'page' ) );
+		}
 
 		// First, remove blacklist or calculation fields
 		foreach ( $fields as $key => $field ) {

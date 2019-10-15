@@ -48,6 +48,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: `gravityview/search/sieve_choices` filter that sieves Search Widget field filter choices to only ones that have been used in entries
 * Added: `gravityview/search/filter_details` filter for developers to modify search filter configurations
 * Added: `gravityview/admin/available_fields` filter for developers to add their own assignable fields to View configurations
+* Added: `gravityview/features/paged-edit` secret filter to enable early-bird paged form edit entries
 
 = 2.4.1.1 on August 27, 2019 =
 
