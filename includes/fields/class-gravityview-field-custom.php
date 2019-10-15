@@ -65,6 +65,12 @@ class GravityView_Field_Custom extends GravityView_Field {
 				'desc' => sprintf( _x( 'Automatically convert oEmbed URLs into embedded content (%slearn more%s).', 'HTML link pointing to WordPress article on oEmbed', 'gravityview' ), '<a href="https://codex.wordpress.org/Embeds" rel="external noopener noreferrer">', '</a>' ),
 				'value' => '',
 			),
+			'admin_label' => array(
+				'type' => 'text',
+				'label' => __( 'Admin Label', 'gravityview' ),
+				'desc' => __( 'A label that is only shown in the GravityView View configuration screen.', 'gravityview' ),
+				'value' => '',
+			),
 		);
 
 		if ( 'edit' === $context ) {

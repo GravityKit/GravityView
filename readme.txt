@@ -41,6 +41,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Checkbox output in CSVs will no longer contain HTML
 * Fixed: Cookies will no longer be set for back links, they are not needed anymore
 * Fixed: Hidden calculation fields were being recalculated on Edit Entry
+* Added: Admin Title option for Custom Content fields
 * Added: Pipe Recorder field embed support
 * Added: $form_id parameter for the `gravityview_template_$field_type_options` filter
 * Added: Show as score setting for Survey fields
