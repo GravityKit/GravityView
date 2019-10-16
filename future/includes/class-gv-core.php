@@ -28,7 +28,7 @@ final class Core {
 	public $plugin;
 
 	/**
-	 * @var \GV\Request The global request.
+	 * @var \GV\Admin_Request|\GV\Frontend_Request|\GV\Request The global request.
 	 *
 	 * @api
 	 * @since 2.0
@@ -169,7 +169,7 @@ final class Core {
 		add_action( 'init', array( '\GV\Shortcodes\gravityview', 'add' ) );
 		add_action( 'init', array( '\GV\Shortcodes\gventry', 'add' ) );
 		add_action( 'init', array( '\GV\Shortcodes\gvfield', 'add' ) );
-		
+
 		/** oEmbed */
 		require_once $this->plugin->dir( 'future/includes/class-gv-oembed.php' );
 		add_action( 'init', array( '\GV\oEmbed', 'init' ), 11 );
