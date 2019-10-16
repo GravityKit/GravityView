@@ -45,6 +45,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Pipe Recorder field embed support
 * Added: $form_id parameter for the `gravityview_template_$field_type_options` filter
 * Added: Show as score setting for Survey fields
+* Added: [gventry edit="1"] mode where edit entry shortcodes can be used now (experimental)
 * Added: image_width setting for File Upload images the default 250px is now overrideable
 * Added: `gravityview/search/sieve_choices` filter that sieves Search Widget field filter choices to only ones that have been used in entries
 * Added: `gravityview/search/filter_details` filter for developers to modify search filter configurations
