@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Added: Admin Title option for Custom Content fields
 * Added: [gventry edit="1"] mode where edit entry shortcodes can be used now (experimental)
+* Added: `gravityview/shortcodes/gventry/edit/success` filter to modify [gventry] edit success message
 
 = 2.4.2 on October 16, 2019 =
 
@@ -55,7 +56,6 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 __Developer Updates:__
 
 * Added: `gravityview/search/sieve_choices` filter that sieves Search Widget field filter choices to only ones that have been used in entries (a UI is coming soon)
->>>>>>> 476500e6ea2255d55443e8b3730497718228cc42
 * Added: `gravityview/search/filter_details` filter for developers to modify search filter configurations
 * Added: `gravityview/admin/available_fields` filter for developers to add their own assignable fields to View configurations
 * Added: `gravityview/features/paged-edit` A super-secret early-bird filter to enable multiple page forms in Edit Entry
