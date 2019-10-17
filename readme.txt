@@ -23,15 +23,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
-* Added: Admin Title option for Custom Content fields
 * Added: [gventry edit="1"] mode where edit entry shortcodes can be used now (experimental)
-* Added: `gravityview/shortcodes/gventry/edit/success` filter to modify [gventry] edit success message
-
-= 2.4.2 on October 16, 2019 =
-
 * Added: You can now add labels for Custom Content in the View editor (this helps keep track of many Custom Content fields at once!)
 * Added: "Show as score" setting for Gravity Forms Survey fields
 * Added: Support for [Gravity Forms Pipe Add-On](https://www.gravityforms.com/add-ons/pipe-video-recording/)
+* Modified: Multiple items in exported CSVs are now separated by a semicolon instead of new line. This is more consistent with formatting from other services.
 * Fixed: Number field decimal precision formatting not being respected
 * Fixed: Checkbox output in CSVs will no longer contain HTML by default
 * Fixed: View configuration could be lost when the "Update" button was clicked early in the page load or multiple times rapidly
@@ -55,6 +51,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Updates:__
 
+* Added: `gravityview/template/field/csv/glue` filter to modify the glue used to separate multiple values in the CSV export (previously "\n", now default is ';')
+* Added: `gravityview/shortcodes/gventry/edit/success` filter to modify [gventry] edit success message
 * Added: `gravityview/search/sieve_choices` filter that sieves Search Widget field filter choices to only ones that have been used in entries (a UI is coming soon)
 * Added: `gravityview/search/filter_details` filter for developers to modify search filter configurations
 * Added: `gravityview/admin/available_fields` filter for developers to add their own assignable fields to View configurations
