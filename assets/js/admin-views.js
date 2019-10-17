@@ -616,8 +616,10 @@
 
 			// Does the field have a custom label?
 			var $admin_label = $( '[name*=admin_label]', dialog );
+			var $custom_label;
+
 			if ( ! $admin_label.length || ! $admin_label.val() ) {
-				var $custom_label = $( '[name*=custom_label]', dialog );
+				$custom_label = $( '[name*=custom_label]', dialog );
 			} else {
 				$custom_label = $admin_label; // We have an administrative label for this field
 			}
@@ -1512,6 +1514,7 @@
 		serializeForm: function ( e ) {
 
 			var $post = $('#post');
+			var serialized_data, $fields;
 
 			if ( $post.data( 'gv-valid' ) ) {
 				return true;
@@ -1523,13 +1526,13 @@
 
 			if ( $post.data( 'gv-serialized' ) ) {
 				// Guard against double seralization/remove attempts
-				var serialized_data = $post.data( 'gv-serialized' );
+				serialized_data = $post.data( 'gv-serialized' );
 			} else {
 				// Get all the fields where the `name` attribute start with `fields`
-				var $fields = $post.find( ':input[name^=fields]' );
+				$fields = $post.find( ':input[name^=fields]' );
 
 				// Serialize the data
-				var serialized_data = $fields.serialize();
+				serialized_data = $fields.serialize();
 
 				// Remove the fields from the $_POSTed data
 				$fields.remove();
