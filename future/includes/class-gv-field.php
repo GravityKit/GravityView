@@ -294,7 +294,7 @@ class Field {
 	public function get_value( View $view = null, Source $source = null, Entry $entry = null, Request $request = null ) {
 		return $this->get_value_filters( null, $view, $source, $entry, $request );
 	}
-	
+
 	/**
 	 * Apply all the required filters after get_value() was called.
 	 *

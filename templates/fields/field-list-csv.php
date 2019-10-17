@@ -32,10 +32,20 @@ if ( $field->enableColumns && false !== $column_id ) {
 	echo GravityView_Field_List::column_value( $field, $value, $column_id, $format );
 
 } else {
+
+	/**
+	 * @filter `gravityview/template/field/csv/glue` The value used to separate multiple values in the CSV export
+	 * @since 2.4.2
+	 *
+	 * @param[in,out] string The glue. Default: ";" (semicolon)
+	 * @param \GV\Template_Context The context.
+	 */
+	$glue = apply_filters( 'gravityview/template/field/csv/glue', ";", $gravityview );
+
 	$value = unserialize( $value );
 	if ( $field->enableColumns ) {
 		$columns = array_keys( current( $value ) );
-		echo implode( ',', $columns ) . "\n";
+		echo implode( ',', $columns ) . $glue;
 	}
 
 	$output = array();
@@ -43,5 +53,5 @@ if ( $field->enableColumns && false !== $column_id ) {
 		$output[] = implode( ',', $column );
 	}
 
-	echo implode( "\n", $output );
+	echo implode( $glue, $output );
 }

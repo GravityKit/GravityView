@@ -7901,23 +7901,62 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		ob_start();
 		$view::template_redirect();
-		$list = implode( "\n", array(
+
+		$list = implode( ";", array(
 			'Column 1,Column 2',
 			'one,two',
 			'three,four',
 		) );
-		$file = implode( "\n", array(
-			'http://one.txt', 'http://two.mp3'
+
+		$file = implode( ";", array( 'http://one.txt', 'http://two.mp3' ) );
+
+
+		$checkbox = implode( ";", array( 'Much Better', 'Somewhat Better' ) );
+		$expected = array(
+			'Email,"A List",File,Checkbox',
+			sprintf( 'support@gravityview.co,"%s",%s,"%s"', $list, $file, $checkbox ),
+		);
+
+		$this->assertEquals( implode( "\n", $expected ), ob_get_flush() );
+
+
+		$view                                      = \GV\View::from_post( $post );
+		gravityview()->request->returns['is_view'] = $view;
+
+		ob_start();
+
+		add_filter( 'gravityview/template/field/csv/glue', function () {
+			return "\n";
+		} );
+		$view::template_redirect();
+
+		$list_newline     = implode( "\n", array(
+			'Column 1,Column 2',
+			'one,two',
+			'three,four',
 		) );
-		$checkbox = implode( "\n", array( 'Much Better', 'Somewhat Better' ) );
-		$expected = array( 'Email,"A List",File,Checkbox', sprintf( 'support@gravityview.co,"%s","%s","%s"', $list, $file, $checkbox ) );
-		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
+		$checkbox_newline = implode( "\n", array( 'Much Better', 'Somewhat Better' ) );
+		$file_newline     = implode( "\n", array(
+			'http://one.txt',
+			'http://two.mp3',
+		) );
+		$expected         = array(
+			'Email,"A List",File,Checkbox',
+			sprintf( 'support@gravityview.co,"%s","%s","%s"', $list_newline, $file_newline, $checkbox_newline ),
+		);
+
+		remove_all_filters( 'gravityview/template/field/csv/glue' );
+
+		$this->assertEquals( implode( "\n", $expected ), ob_get_flush() );
 
 		add_filter( 'gravityview/template/csv/field/raw', '__return_false' );
 
 		ob_start();
 		$view::template_redirect();
-		$expected = array( 'Email,"A List",File,Checkbox', sprintf( '"<a href=\'mailto:support@gravityview.co\'>support@gravityview.co</a>","%s","%s","%s"', $list, $file, $checkbox ) );
+		$expected = array(
+			'Email,"A List",File,Checkbox',
+			sprintf( '"<a href=\'mailto:support@gravityview.co\'>support@gravityview.co</a>","%s",%s,"%s"', $list, $file, $checkbox ),
+		);
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
 		remove_filter( 'gravityview/template/csv/field/raw', '__return_false' );
