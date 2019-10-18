@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Added: Views will be created with a number of default widgets preset
 * Added: [gventry edit="1"] mode where edit entry shortcodes can be used now (experimental)
 * Added: You can now add labels for Custom Content in the View editor (this helps keep track of many Custom Content fields at once!)
 * Added: "Show as score" setting for Gravity Forms Survey fields

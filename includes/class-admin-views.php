@@ -1000,8 +1000,52 @@ class GravityView_Admin_Views {
 		$default_widget_areas = \GV\Widget::get_default_widget_areas();
 
 		$widgets = array();
-		if( !empty( $post_id ) ) {
-			$widgets = gravityview_get_directory_widgets( $post_id );
+		if ( ! empty( $post_id ) ) {
+			if ( get_post_status( $post_id ) === 'auto-draft' ) {
+				// This is a new View, prefill the widgets
+				$widgets = array(
+					'header_top' => array(
+						substr( md5( microtime( true ) ), 0, 13 ) => array (
+							'id' => 'search_bar',
+							'label' => __( 'Search Bar', 'gravityview' ),
+							'search_layout' => 'horizontal',
+							'search_clear' => '0',
+							'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+							'search_mode' => 'any',
+						),
+					),
+					'header_left' => array(
+						substr( md5( microtime( true ) ), 0, 13 ) => array(
+							'id' => 'page_info',
+							'label' => __( 'Show Pagination Info', 'gravityview' ),
+						),
+					),
+					'header_right' => array(
+						substr( md5( microtime( true ) ), 0, 13 ) => array(
+							'id' => 'page_links',
+							'label' => __( 'Page Links', 'gravityview' ),
+							'show_all' => '0',
+						),
+					),
+					'footer_right' => array(
+						substr( md5( microtime( true ) ), 0, 13 ) => array(
+							'id' => 'page_links',
+							'label' => __( 'Page Links', 'gravityview' ),
+							'show_all' => '0',
+						),
+					),
+				);
+
+				/**
+				 * @filter `gravityview/view/widgets/default` Modify the default widgets for new Views
+				 * @param[in,out] array $widgets A Widget configuration array
+				 * @param strong $zone The widget zone that's being requested
+				 * @param int $post_id The auto-draft post ID
+				 */
+				$widgets = apply_filters( 'gravityview/view/widgets/default', $widgets, $template_id, $zone, $post_id );
+			} else {
+				$widgets = gravityview_get_directory_widgets( $post_id );
+			}
 		}
 
 		ob_start();
