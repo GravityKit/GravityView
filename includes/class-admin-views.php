@@ -1001,7 +1001,7 @@ class GravityView_Admin_Views {
 
 		$widgets = array();
 		if ( ! empty( $post_id ) ) {
-			if ( get_post_status( $post_id ) === 'auto-draft' ) {
+			if ( 'auto-draft' === get_post_status( $post_id ) ) {
 				// This is a new View, prefill the widgets
 				$widgets = array(
 					'header_top' => array(
@@ -1039,7 +1039,7 @@ class GravityView_Admin_Views {
 				/**
 				 * @filter `gravityview/view/widgets/default` Modify the default widgets for new Views
 				 * @param[in,out] array $widgets A Widget configuration array
-				 * @param strong $zone The widget zone that's being requested
+				 * @param string $zone The widget zone that's being requested
 				 * @param int $post_id The auto-draft post ID
 				 */
 				$widgets = apply_filters( 'gravityview/view/widgets/default', $widgets, $template_id, $zone, $post_id );
