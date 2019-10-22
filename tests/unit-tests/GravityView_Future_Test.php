@@ -7940,7 +7940,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gravityview/template/field/csv/glue' );
 
-		$this->assertEquals( implode( "\n", $expected ), ob_get_flush() );
+		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
 		add_filter( 'gravityview/template/csv/field/raw', '__return_false' );
 
