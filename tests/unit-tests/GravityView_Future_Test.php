@@ -7910,7 +7910,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			sprintf( 'support@gravityview.co,"%s",%s,"%s"', $list, $file, $checkbox ),
 		);
 
-		$this->assertEquals( implode( "\n", $expected ), ob_get_flush() );
+		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
 
 		$view                                      = \GV\View::from_post( $post );
