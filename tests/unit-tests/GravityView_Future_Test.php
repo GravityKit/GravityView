@@ -861,13 +861,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers \GV\Core::init()
-	 */
-	public function test_core_init() {
-		gravityview()->request = new \GV\Frontend_Request();
-	}
-
-	/**
 	 * @covers \GV\Frontend_Request::is_admin()
 	 */
 	public function test_default_request_is_admin() {
