@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Added: Duplicate Entry to accompany our Edit and Delete Entry fields.
 * Added: [gv_pageviews] shortcode integration with the lightweight [Pageviews](https://pageviews.io/) plugin.
 * Added: Views will be created with a number of default widgets preset
 * Added: [gventry edit="1"] mode where edit entry shortcodes can be used now (experimental)
