@@ -272,74 +272,73 @@ final class GravityView_Duplicate_Entry {
 	function process_duplicate() {
 
 		// If the form is submitted
-		if ( isset( $_GET['action'] ) && 'duplicate' === $_GET['action'] && isset( $_GET['entry_id'] ) ) {
+		if ( ! isset( $_GET['action'] ) || 'duplicate' !== $_GET['action'] || ! isset( $_GET['entry_id'] ) ) {
+			return;
+		}
 
-			// Make sure it's a GravityView request
-			$valid_nonce_key = wp_verify_nonce( $_GET['duplicate'], self::get_nonce_key( $_GET['entry_id'] ) );
+		// Make sure it's a GravityView request
+		$valid_nonce_key = wp_verify_nonce( $_GET['duplicate'], self::get_nonce_key( $_GET['entry_id'] ) );
 
-			if ( ! $valid_nonce_key ) {
-				gravityview()->log->debug( 'Duplicate entry not processed: nonce validation failed.' );
-				return;
-			}
+		if ( ! $valid_nonce_key ) {
+			gravityview()->log->debug( 'Duplicate entry not processed: nonce validation failed.' );
+			return;
+		}
 
-			// Get the entry slug
-			$entry_slug = esc_attr( $_GET['entry_id'] );
+		// Get the entry slug
+		$entry_slug = esc_attr( $_GET['entry_id'] );
 
-			// See if there's an entry there
-			$entry = gravityview_get_entry( $entry_slug, true, false );
+		// See if there's an entry there
+		$entry = gravityview_get_entry( $entry_slug, true, false );
 
-			if ( $entry ) {
+		if ( $entry ) {
 
-				$has_permission = $this->user_can_duplicate_entry( $entry );
+			$has_permission = $this->user_can_duplicate_entry( $entry );
 
-				if ( is_wp_error( $has_permission ) ) {
+			if ( is_wp_error( $has_permission ) ) {
+
+				$messages = array(
+					'message' => urlencode( $has_permission->get_error_message() ),
+					'status' => 'error',
+				);
+
+			} else {
+
+				// Duplicate the entry
+				$duplicate_response = $this->duplicate_entry( $entry );
+
+				if ( is_wp_error( $duplicate_response ) ) {
 
 					$messages = array(
-						'message' => urlencode( $has_permission->get_error_message() ),
+						'message' => urlencode( $duplicate_response->get_error_message() ),
 						'status' => 'error',
 					);
 
 				} else {
 
-					// Duplicate the entry
-					$duplicate_response = $this->duplicate_entry( $entry );
-
-					if ( is_wp_error( $duplicate_response ) ) {
-
-						$messages = array(
-							'message' => urlencode( $duplicate_response->get_error_message() ),
-							'status' => 'error',
-						);
-
-					} else {
-
-						$messages = array(
-							'status' => $duplicate_response,
-						);
-
-					}
+					$messages = array(
+						'status' => $duplicate_response,
+					);
 
 				}
 
-			} else {
-
-				gravityview()->log->debug( 'Duplicatee entry failed: there was no entry with the entry slug {entry_slug}', array( 'entry_slug' => $entry_slug ) );
-
-				$messages = array(
-					'message' => urlencode( __( 'The entry does not exist.', 'gravityview' ) ),
-					'status' => 'error',
-				);
 			}
 
-			$redirect_to_base = esc_url_raw( remove_query_arg( array( 'action', 'gvid' ) ) );
-			$redirect_to = add_query_arg( $messages, $redirect_to_base );
+		} else {
 
-			wp_safe_redirect( $redirect_to );
+			gravityview()->log->debug( 'Duplicatee entry failed: there was no entry with the entry slug {entry_slug}', array( 'entry_slug' => $entry_slug ) );
 
-			exit();
+			$messages = array(
+				'message' => urlencode( __( 'The entry does not exist.', 'gravityview' ) ),
+				'status' => 'error',
+			);
+		}
 
-		} // endif action is duplicate.
+		$redirect_to_base = esc_url_raw( remove_query_arg( array( 'action', 'gvid' ) ) );
+		$redirect_to = add_query_arg( $messages, $redirect_to_base );
 
+		wp_safe_redirect( $redirect_to );
+
+		exit();
 	}
 
 	/**
