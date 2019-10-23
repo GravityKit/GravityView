@@ -259,6 +259,7 @@ class GravityView_Roles_Capabilities {
 
 		// Edit, publish, delete own and others' stuff
 		$editor_caps = array(
+			'edit_gravityviews',
 			'read_private_gravityviews',
 			'delete_private_gravityviews',
 			'delete_others_gravityviews',
@@ -279,6 +280,7 @@ class GravityView_Roles_Capabilities {
 		// Edit, delete own stuff
 		$author_caps = array(
 			// GF caps_to_check
+			'edit_gravityviews',
 			'gravityview_edit_entries',
 			'gravityview_edit_entry',
 			'gravityview_edit_form_entries', // This is similar to `gravityview_edit_entries`, but checks against a Form ID $object_id
@@ -288,6 +290,7 @@ class GravityView_Roles_Capabilities {
 
 		// Edit and delete drafts but not publish
 		$contributor_caps = array(
+			'edit_gravityviews',
 			'delete_gravityviews',
 			'gravityview_getting_started', // Getting Started page access
 			'gravityview_support_port', // Display GravityView Support Port

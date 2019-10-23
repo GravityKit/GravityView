@@ -151,6 +151,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	public function test_view_edit_create_permissions() {
+		$this->_reset_context();
+
 		$administrator = $this->factory->user->create( array(
 			'user_login' => md5( microtime() ),
 			'user_email' => md5( microtime() ) . '@gravityview.tests',
@@ -206,6 +208,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertTrue( current_user_can( 'edit_gravityviews' ) );
 		$this->assertTrue( current_user_can( 'edit_gravityview', $view->ID ) );
+
+		$this->_reset_context();
 	}
 
 	/**
