@@ -2007,8 +2007,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
-		$this->assertNotContains( 'input_1', $output );
-		$this->assertNotContains( 'input_2', $output );
+		$this->assertNotContains( "name='input_1'", $output );
+		$this->assertNotContains( "name='input_2'", $output );
 		$this->assertEquals( 'this is one', $entry[1] );
 		$this->assertEquals( 'this is two', $entry[2] );
 
@@ -2023,8 +2023,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
-		$this->assertNotContains( 'input_1', $output );
-		$this->assertNotContains( 'input_2', $output );
+		$this->assertNotContains( "name='input_1'", $output );
+		$this->assertNotContains( "name='input_2'", $output );
 		$this->assertEquals( 'this is one', $entry[1] );
 		$this->assertEquals( 'this is two', $entry[2] );
 
@@ -2039,8 +2039,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
-		$this->assertNotContains( 'input_1', $output );
-		$this->assertNotContains( 'input_2', $output );
+		$this->assertNotContains( "name='input_1'", $output );
+		$this->assertNotContains( "name='input_2'", $output );
 		$this->assertEquals( 'this is one', $entry[1] );
 		$this->assertEquals( 'this is two', $entry[2] );
 
@@ -2055,8 +2055,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
-		$this->assertNotContains( 'input_1', $output );
-		$this->assertContains( 'input_2', $output );
+		$this->assertNotContains( "name='input_1'", $output );
+		$this->assertContains( "name='input_2'", $output );
 		$this->assertEquals( 'this is one', $entry[1] );
 		$this->assertEquals( '666', $entry[2] );
 
