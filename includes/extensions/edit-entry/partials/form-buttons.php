@@ -41,9 +41,9 @@ if ( current_filter() === 'gform_next_button' ) {
 
 
 	$labels = array(
-		'cancel' => __( 'Cancel', 'gravityview' ),
-		'submit' => __( 'Update', 'gravityview '),
-		'next'   => __( 'Next', 'gravityview' ),
+		'cancel'   => __( 'Cancel', 'gravityview' ),
+		'submit'   => __( 'Update', 'gravityview' ),
+		'next'     => __( 'Next', 'gravityview' ),
 		'previous' => __( 'Previous', 'gravityview' ),
 	);
 
