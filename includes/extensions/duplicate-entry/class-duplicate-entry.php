@@ -21,17 +21,25 @@ if ( ! defined( 'WPINC' ) ) {
  */
 final class GravityView_Duplicate_Entry {
 
+	/**
+	 * @var The location of this file.
+	 */
 	static $file;
+
+	/**
+	 * @var This instance.
+	 */
 	static $instance;
+
+	/**
+	 * @var Global state.
+	 */
 	var $entry;
-	var $form;
 	var $view_id;
-	var $is_valid = NULL;
 
 	function __construct() {
 
 		self::$file = plugin_dir_path( __FILE__ );
-
 		$this->add_hooks();
 	}
 
@@ -183,7 +191,7 @@ final class GravityView_Duplicate_Entry {
 		$caps = $visibility_caps;
 
 		// If we're configuring fields in the edit context, we want a limited selection
-		if ( $field_id === 'duplicate_link' ) {
+		if ( 'duplicate_link' === $field_id ) {
 
 			// Remove other built-in caps.
 			unset( $caps['publish_posts'], $caps['gravityforms_view_entries'], $caps['duplicate_others_posts'] );
@@ -200,8 +208,8 @@ final class GravityView_Duplicate_Entry {
 	 * @since develop
 	 * @param [type] $entry [description]
 	 */
-	function set_entry( $entry = null ) {
-		$this->entry = empty( $entry ) ? GravityView_View::getInstance()->entries[0] : $entry;
+	function set_entry( $entry ) {
+		$this->entry = $entry;
 	}
 
 	/**
@@ -226,12 +234,7 @@ final class GravityView_Duplicate_Entry {
 	 * @param  int         $view_id The View id. Not optional since 2.0
 	 * @return string|null If directory link is valid, the URL to process the duplicate request. Otherwise, `NULL`.
 	 */
-	public static function get_duplicate_link( $entry, $view_id = 0, $post_id = null ) {
-		if ( ! $view_id ) {
-			/** @deprecated path */
-			$view_id = gravityview_get_view_id();
-		}
-
+	public static function get_duplicate_link( $entry, $view_id, $post_id = null ) {
 		self::getInstance()->set_entry( $entry );
 
         $base = GravityView_API::directory_link( $post_id ? : $view_id, true );
@@ -342,12 +345,18 @@ final class GravityView_Duplicate_Entry {
 	}
 
 	/**
+	 * Duplicate the entry.
+	 *
+	 * Done after all the checks in self::process_duplicate.
+	 *
 	 * @since develop
 	 * @return WP_Error|boolean
 	 */
 	private function duplicate_entry( $entry ) {
 
-		$entry_id = $entry['id'];
+		if ( ! $entry_id = \GV\Utils::get( $entry, 'id' ) ) {
+			return new WP_Error( 'gravityview-duplicate-entry-missing', __( 'No such entry ID', 'gravityview' ) );
+		}
 		
 		gravityview()->log->debug( 'Starting duplicate entry: {entry_id}', array( 'entry_id' => $entry_id ) );
 
@@ -404,7 +413,8 @@ final class GravityView_Duplicate_Entry {
 			);
 		}
 
-		$row['ID'] = $duplicated_id;
+		// Update the row ID for later usage
+		$row['id'] = $duplicated_id;
 
 		/**
 		 * @filter `gravityview/entry/duplicate/meta` Modify the new entry meta details.
@@ -532,12 +542,7 @@ final class GravityView_Duplicate_Entry {
 	 * @param int $view_id Pass a View ID to check caps against. If not set, check against current View (@deprecated no longer optional)
 	 * @return bool
 	 */
-	public static function check_user_cap_duplicate_entry( $entry, $field = array(), $view_id = 0 ) {
-		if ( ! $view_id ) {
-			/** @deprecated path */
-			$view_id = GravityView_View::getInstance()->getViewId();
-		}
-
+	public static function check_user_cap_duplicate_entry( $entry, $field, $view_id ) {
 		$current_user = wp_get_current_user();
 
 		$entry_id = isset( $entry['id'] ) ? $entry['id'] : NULL;
@@ -565,7 +570,7 @@ final class GravityView_Duplicate_Entry {
 			if ( GVCommon::has_cap( $field['allow_duplicate_cap'] ) ) {
 
 				// Do not return true if cap is read, as we need to check if the current user created the entry
-				if ( $field['allow_duplicate_cap'] !== 'read' ) {
+				if ( 'read' !== $field['allow_duplicate_cap'] ) {
 					return true;
 				}
 
@@ -630,7 +635,7 @@ final class GravityView_Duplicate_Entry {
 		}
 
 		// Entry wasn't duplicateded from current View
-		if ( isset( $_GET['view_id'] ) && intval( $_GET['view_id'] ) !== intval( $current_view_id ) ) {
+		if ( isset( $_GET['view_id'] ) && ( intval( $_GET['view_id'] ) !== intval( $current_view_id ) ) ) {
 			return;
 		}
 
@@ -644,9 +649,6 @@ final class GravityView_Duplicate_Entry {
 				$class = ' gv-error error';
 				$error_message = __( 'There was an error duplicating the entry: %s', 'gravityview' );
 				$message = sprintf( $error_message, $message_from_url );
-				break;
-			case 'trashed':
-				$message = __( 'The entry was successfully moved to the trash.', 'gravityview' );
 				break;
 			default:
 				$message = __( 'The entry was successfully duplicated.', 'gravityview' );
