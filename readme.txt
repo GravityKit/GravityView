@@ -23,9 +23,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
-* Added: [gv_pageviews] shortcode integration with the lightweight [Pageviews](https://pageviews.io/) plugin.
-* Added: Views will be created with a number of default widgets preset
-* Added: [gventry edit="1"] mode where edit entry shortcodes can be used now (experimental)
+* Added: New Views will be created with a set of default widgets
+* Added: `[gv_pageviews]` shortcode integration with the lightweight [Pageviews](https://pageviews.io/) plugin.
 * Added: You can now add labels for Custom Content in the View editor (this helps keep track of many Custom Content fields at once!)
 * Added: "Show as score" setting for Gravity Forms Survey fields
 * Added: Support for [Gravity Forms Pipe Add-On](https://www.gravityforms.com/add-ons/pipe-video-recording/)
@@ -54,6 +53,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Updates:__
 
+* Added: `[gventry edit="1"]` mode where edit entry shortcodes can be used now (experimental)
 * Added: `gravityview/template/field/csv/glue` filter to modify the glue used to separate multiple values in the CSV export (previously "\n", now default is ';')
 * Added: `gravityview/shortcodes/gventry/edit/success` filter to modify [gventry] edit success message
 * Added: `gravityview/search/sieve_choices` filter that sieves Search Widget field filter choices to only ones that have been used in entries (a UI is coming soon)
