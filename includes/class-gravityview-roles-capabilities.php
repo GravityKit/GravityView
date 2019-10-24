@@ -251,7 +251,6 @@ class GravityView_Roles_Capabilities {
 			'gravityview_uninstall', // Ability to trigger the Uninstall @todo
 			'gravityview_contact_support', // Whether able to send a message to support via the Support Port
 
-			'edit_gravityviews',
 			'edit_others_gravityviews',
 			'edit_private_gravityviews',
 			'edit_published_gravityviews',
@@ -259,7 +258,6 @@ class GravityView_Roles_Capabilities {
 
 		// Edit, publish, delete own and others' stuff
 		$editor_caps = array(
-			'edit_gravityviews',
 			'read_private_gravityviews',
 			'delete_private_gravityviews',
 			'delete_others_gravityviews',
@@ -280,7 +278,6 @@ class GravityView_Roles_Capabilities {
 		// Edit, delete own stuff
 		$author_caps = array(
 			// GF caps_to_check
-			'edit_gravityviews',
 			'gravityview_edit_entries',
 			'gravityview_edit_entry',
 			'gravityview_edit_form_entries', // This is similar to `gravityview_edit_entries`, but checks against a Form ID $object_id
