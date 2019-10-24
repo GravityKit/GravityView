@@ -452,7 +452,21 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 			'[gvlogic if="%s" is="MATCH"]Match 1[else][gvlogic2 if="%s" is="MATCH"]Match 2[else]Match 3[/gvlogic2]Show me.[/gvlogic]',
 			'', ''
 		) );
-		$this->assertEquals( 'Match 3Show me.', $value );
+		$this->assertEquals( '(Before nested) Match 3Show me. (After nested)', $value );
+
+		/** @link https://github.com/gravityview/GravityView/issues/949#issuecomment-546121739 */
+		$value = do_shortcode( '[gvlogic if="1" is="1"]1 is 1.[else]Whoops.[/gvlogic]' );
+		$this->assertEquals( '1 is 1.', $value );
+
+		$value = do_shortcode( '[gvlogic2 if="2" is="3"]2 is 3.[else]2 is NOT three.[/gvlogic2]' );
+		$this->assertEquals( '2 is NOT three.', $value );
+
+		$value = do_shortcode( '[gvlogic2 if="2" is="3"]2 is 3.[else]2 is NOT three.[/gvlogic2]' );
+		$this->assertEquals( '2 is NOT three.', $value );
+
+		$value = do_shortcode( '[gvlogic if="1" is="1"]1 is 1. [gvlogic2 if="2" is="3"]2 is 3.[else]2 is NOT three.[/gvlogic2][else]1 isn\'t 1. Weird.[/gvlogic]' );
+		$this->assertEquals( '1 is 1. 2 is NOT three.', $value );
+
 	}
 
 }
