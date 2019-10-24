@@ -32,7 +32,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Modified: Multiple items in exported CSVs are now separated by a semicolon instead of new line. This is more consistent with formatting from other services.
 * Fixed: Number field decimal precision formatting not being respected
 * Fixed: Checkbox output in CSVs will no longer contain HTML by default
-* Fixed: Some issues with unfiltered_html being not enough to edit a View
+* Fixed: Some issues with `unfiltered_html` being not enough to edit a View
 * Fixed: View configuration could be lost when the "Update" button was clicked early in the page load or multiple times rapidly
 * Fixed: Edit Entry issues
     * Fixed: Field visibility when editing entries. Hidden fields remain hidden unless explicitly allowed via field configuration.
@@ -61,7 +61,7 @@ __Developer Updates:__
 * Added: `gravityview/admin/available_fields` filter for developers to add their own assignable fields to View configurations
 * Added: `gravityview/features/paged-edit` A super-secret early-bird filter to enable multiple page forms in Edit Entry
 * Added: `$form_id` parameter for the `gravityview_template_$field_type_options` filter
-* Added: `gravityview/security/require_unfiltered_html` filter now has 3 additional parameters: user_id, cap and args.
+* Added: `gravityview/security/require_unfiltered_html` filter now has 3 additional parameters: `user_id`, `cap` and `args`.
 * Fixed: Intermittent `[gvlogic2]` and nested `else` issues
 * Modified: Cookies will no longer be set for Single Entry back links
 * Modified: Default 250px `image_width` setting for File Upload images is now easily overrideable
