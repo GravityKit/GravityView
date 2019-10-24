@@ -90,6 +90,8 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 	 */
 	public function test_has_cap_cap_parameter() {
 
+		add_filter( 'gravityview/security/require_unfiltered_html', '__return_false' );
+
 		foreach( $this->default_roles as $role ) {
 
 			// Create a user with the default roles
@@ -106,6 +108,8 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 			}
 
 		}
+
+		remove_filter( 'gravityview/security/require_unfiltered_html', '__return_false' );
 	}
 
 	function authorless_view_statuses() {
