@@ -31,7 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Modified: Multiple items in exported CSVs are now separated by a semicolon instead of new line. This is more consistent with formatting from other services.
 * Fixed: Number field decimal precision formatting not being respected
 * Fixed: Checkbox output in CSVs will no longer contain HTML by default
-* Fixed: Some issues with `unfiltered_html` being not enough to edit a View
+* Fixed: Some issues with `unfiltered_html` user capabilities being not enough to edit a View
 * Fixed: View configuration could be lost when the "Update" button was clicked early in the page load or multiple times rapidly
 * Fixed: Edit Entry issues
     * Fixed: Field visibility when editing entries. Hidden fields remain hidden unless explicitly allowed via field configuration.
