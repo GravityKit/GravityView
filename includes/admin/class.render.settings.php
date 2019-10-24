@@ -41,6 +41,7 @@ class GravityView_Render_Settings {
 					'type' => 'text',
 					'label' => __( 'Custom Label:', 'gravityview' ),
 					'value' => '',
+					'class'      => 'widefat',
 					'merge_tags' => true,
 				),
 				'custom_class' => array(
@@ -50,6 +51,7 @@ class GravityView_Render_Settings {
 					'value' => '',
 					'merge_tags' => true,
 					'tooltip' => 'gv_css_merge_tags',
+					'class'      => 'widefat code',
 				),
 				'only_loggedin' => array(
 					'type' => 'checkbox',

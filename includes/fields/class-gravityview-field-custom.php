@@ -67,6 +67,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 			),
 			'admin_label' => array(
 				'type' => 'text',
+				'class' => 'widefat',
 				'label' => __( 'Admin Label', 'gravityview' ),
 				'desc' => __( 'A label that is only shown in the GravityView View configuration screen.', 'gravityview' ),
 				'value' => '',
