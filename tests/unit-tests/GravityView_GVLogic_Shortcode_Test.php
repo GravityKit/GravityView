@@ -449,7 +449,7 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'Match 2Show me.', $value );
 
 		$value = do_shortcode( sprintf(
-			'[gvlogic if="%s" is="MATCH"]Match 1[else][gvlogic2 if="%s" is="MATCH"]Match 2[else]Match 3[/gvlogic2]Show me.[/gvlogic]',
+			'(Before nested) [gvlogic if="%s" is="MATCH"]Match 1[else][gvlogic2 if="%s" is="MATCH"]Match 2[else]Match 3[/gvlogic2]Show me.[/gvlogic] (After nested)',
 			'', ''
 		) );
 		$this->assertEquals( '(Before nested) Match 3Show me. (After nested)', $value );
