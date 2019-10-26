@@ -25,10 +25,11 @@ class gravityview extends \GV\Shortcode {
 	 *
 	 * @param array $passed_atts The attributes passed.
 	 * @param string $content The content inside the shortcode.
+	 * @param string $tag The shortcode tag.
 	 *
 	 * @return string|null The output.
 	 */
-	public function callback( $passed_atts, $content = null ) {
+	public function callback( $passed_atts, $content = '', $tag = '' ) {
 		$request = gravityview()->request;
 
 		if ( $request->is_admin() ) {
