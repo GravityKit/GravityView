@@ -2124,6 +2124,54 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	function test_hidden_conditional_unrelated_field() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'conditionals.json', 1 );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+
+			'1' => '1',
+			'2' => '1-1',
+			'3' => '',
+			'4' => 'Processing',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'user_edit' => true,
+			),
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '4',
+					),
+				),
+			)
+		) );
+
+		$_POST = array(
+			'input_4' => 'New',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( '1', $entry['1'] );
+		$this->assertEquals( '1-1', $entry['2'] );
+		$this->assertEmpty( $entry['3'] );
+		$this->assertEquals( 'New', $entry['4'] );
+
+		$this->_reset_context();
+	}
 }
 
 /** The GF_User_Registration mock if not exists. */
