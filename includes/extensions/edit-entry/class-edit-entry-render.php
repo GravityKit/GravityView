@@ -126,6 +126,7 @@ class GravityView_Edit_Entry_Render {
 	public $show_previous_button;
 	public $show_next_button;
 	public $show_update_button;
+	public $is_paged_submitted;
 
 	function __construct( GravityView_Edit_Entry $loader ) {
 		$this->loader = $loader;
@@ -1043,6 +1044,27 @@ class GravityView_Edit_Entry_Render {
 
 		if ( \GV\Utils::_POST( 'action' ) === 'update' ) {
 
+			if ( GFCommon::has_pages( $this->form ) && apply_filters( 'gravityview/features/paged-edit', false ) ) {
+				$labels = array(
+					'cancel'   => __( 'Cancel', 'gravityview' ),
+					'submit'   => __( 'Update', 'gravityview' ),
+					'next'     => __( 'Next', 'gravityview' ),
+					'previous' => __( 'Previous', 'gravityview' ),
+				);
+
+				/**
+				* @filter `gravityview/edit_entry/button_labels` Modify the cancel/submit buttons' labels
+				* @since 1.16.3
+				* @param array $labels Default button labels associative array
+				* @param array $form The Gravity Forms form
+				* @param array $entry The Gravity Forms entry
+				* @param int $view_id The current View ID
+				*/
+				$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $this->form, $this->entry, $this->view_id );
+
+				$this->is_paged_submitted = \GV\Utils::_POST( 'save' ) === $labels['submit'];
+			}
+
 			$back_link = remove_query_arg( array( 'page', 'view', 'edit' ) );
 
 			if( ! $this->is_valid ){
@@ -1053,6 +1075,20 @@ class GravityView_Edit_Entry_Render {
 
 				echo GVCommon::generate_notice( $message , 'gv-error' );
 
+			} elseif ( false === $this->is_paged_submitted ) {
+				// Paged form that hasn't been submitted on the last page yet
+				$entry_updated_message = sprintf( esc_attr__( 'Entry Updated.', 'gravityview' ), '<a href="' . esc_url( $back_link ) . '">', '</a>' );
+
+				/**
+				 * @filter `gravityview/edit_entry/page/success` Modify the edit entry success message on pages
+				 * @since develop
+				 * @param string $entry_updated_message Existing message
+				 * @param int $view_id View ID
+				 * @param array $entry Gravity Forms entry array
+				 */
+				$message = apply_filters( 'gravityview/edit_entry/page/success', $entry_updated_message , $this->view_id, $this->entry );
+
+				echo GVCommon::generate_notice( $message );
 			} else {
 				$view = \GV\View::by_id( $this->view_id );
 				$edit_redirect = $view->settings->get( 'edit_redirect' );

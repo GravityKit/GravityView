@@ -62,6 +62,7 @@ __Developer Updates:__
 * Added: `gravityview/features/paged-edit` A super-secret early-bird filter to enable multiple page forms in Edit Entry
 * Added: `$form_id` parameter for the `gravityview_template_$field_type_options` filter
 * Added: `gravityview/security/require_unfiltered_html` filter now has 3 additional parameters: `user_id`, `cap` and `args`.
+* Added: `gravityview/edit_entry/page/success` filter to alter the message between edit entry pages.
 * Fixed: Intermittent `[gvlogic2]` and nested `else` issues
 * Modified: Cookies will no longer be set for Single Entry back links
 * Modified: Default 250px `image_width` setting for File Upload images is now easily overrideable
