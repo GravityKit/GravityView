@@ -1135,9 +1135,34 @@ class GravityView_Edit_Entry_Render {
 
 		// TODO: Verify multiple-page forms
 		if ( GFCommon::has_pages( $this->form ) && apply_filters( 'gravityview/features/paged-edit', false ) ) {
-			if ( intval( $page_number = \GV\Utils::_POST( 'gform_target_page_number_' . $this->form['id'], 1 ) ) > 1 ) {
+			if ( intval( $page_number = \GV\Utils::_POST( 'gform_source_page_number_' . $this->form['id'], 0 ) ) ) {
+
+				$labels = array(
+					'cancel'   => __( 'Cancel', 'gravityview' ),
+					'submit'   => __( 'Update', 'gravityview' ),
+					'next'     => __( 'Next', 'gravityview' ),
+					'previous' => __( 'Previous', 'gravityview' ),
+				);
+
+				/**
+				* @filter `gravityview/edit_entry/button_labels` Modify the cancel/submit buttons' labels
+				* @since 1.16.3
+				* @param array $labels Default button labels associative array
+				* @param array $form The Gravity Forms form
+				* @param array $entry The Gravity Forms entry
+				* @param int $view_id The current View ID
+				*/
+				$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $this->form, $this->entry, $this->view_id );
+
 				GFFormDisplay::$submission[ $this->form['id'] ][ 'form' ] = $this->form;
 				GFFormDisplay::$submission[ $this->form['id'] ][ 'is_valid' ] = true;
+
+				if ( \GV\Utils::_POST( 'save' ) === $labels['next'] ) {
+					$page_number++;
+				} elseif ( \GV\Utils::_POST( 'save' ) === $labels['previous'] ) {
+					$page_number--;
+				}
+
 				GFFormDisplay::$submission[ $this->form['id'] ][ 'page_number' ] = $page_number;
 			}
 
