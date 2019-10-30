@@ -520,6 +520,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		ob_start() && $render->init( $data, \GV\Entry::by_id( $entry['id'] ), $view );
 		$rendered_form = ob_get_clean();
 
+		remove_filter( 'gravityview/is_single_entry', '__return_true' );
+
 		return array( $rendered_form, $render, GFAPI::get_entry( $entry['id'] ) );
 	}
 
@@ -2125,7 +2127,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 	}
 
-	function test_hidden_conditional_unrelated_field() {
+	function test_hidden_conditional_unrelated_field_cache_prefill() {
 		$this->_reset_context();
 
 		$administrator = $this->_generate_user( 'administrator' );
@@ -2133,6 +2135,12 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		wp_set_current_user( $administrator );
 
 		$form = $this->factory->form->import_and_get( 'conditionals.json', 1 );
+
+		// Hydrate the cache (https://github.com/gravityview/GravityView/issues/840#issuecomment-547840611)
+		\GFFormsModel::get_field( $form['id'], '1' );
+		\GFFormsModel::get_field( $form['id'], '2' );
+		\GFFormsModel::get_field( $form['id'], '3' );
+		\GFFormsModel::get_field( $form['id'], '4' );
 
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
