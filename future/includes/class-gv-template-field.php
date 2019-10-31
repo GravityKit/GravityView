@@ -250,7 +250,9 @@ abstract class Field_Template extends Template {
 	 * @return void
 	 */
 	public function render() {
-		$entry = $this->entry->from_field( $this->field );
+		if ( ! $entry = $this->entry->from_field( $this->field ) ) {
+			return;
+		}
 
 		/** Retrieve the value. */
 		$display_value = $value = $this->field->get_value( $this->view, $this->source, $entry );
