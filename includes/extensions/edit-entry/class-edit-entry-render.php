@@ -1272,6 +1272,10 @@ class GravityView_Edit_Entry_Render {
 	 */
 	public function filter_modify_form_fields( $form, $ajax = false, $field_values = '' ) {
 
+		if( $form['id'] != $this->form_id ) {
+			return $form;
+		}
+
 		// In case we have validated the form, use it to inject the validation results into the form render
 		if( isset( $this->form_after_validation ) && $this->form_after_validation['id'] === $form['id'] ) {
 			$form = $this->form_after_validation;
