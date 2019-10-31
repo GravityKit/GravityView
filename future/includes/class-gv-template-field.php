@@ -251,6 +251,7 @@ abstract class Field_Template extends Template {
 	 */
 	public function render() {
 		if ( ! $entry = $this->entry->from_field( $this->field ) ) {
+			gravityview()->log->error( 'Entry is invalid for field. Returning empty.' );
 			return;
 		}
 
