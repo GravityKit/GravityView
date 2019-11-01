@@ -45,7 +45,7 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 4, false ) => array(
@@ -221,7 +221,7 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 4, false ) => array(
@@ -269,7 +269,7 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'single_table-columns' => array(
 					wp_generate_password( 4, false ) => array(
@@ -317,7 +317,7 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 4, false ) => array(
@@ -475,7 +475,7 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'single_table-columns' => array(
 					wp_generate_password( 4, false ) => array(

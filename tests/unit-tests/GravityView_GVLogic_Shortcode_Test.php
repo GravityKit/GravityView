@@ -236,7 +236,7 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form_id,
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'single_table-columns' => array(
 					wp_generate_password( 4, false ) => array(
@@ -291,7 +291,7 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form_id,
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'single_table-columns' => array(
 					wp_generate_password( 4, false ) => array(
@@ -342,7 +342,7 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form_id,
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'single_table-columns' => array(
 					wp_generate_password( 4, false ) => array(

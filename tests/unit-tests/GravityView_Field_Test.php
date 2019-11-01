@@ -118,7 +118,7 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'settings' => array(
 				'page_size' => 10,
 			),
@@ -225,7 +225,7 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'simple.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'settings' => array(
 				'page_size' => 3,
 			),
@@ -309,7 +309,7 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'simple.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'settings' => array(
 				'page_size' => 3,
 			),

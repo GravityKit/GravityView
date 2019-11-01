@@ -110,7 +110,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $orders['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 4, false ) => array(
@@ -228,7 +228,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $orders['id'],
-			'template_id' => 'preset_business_listings',
+			'template_id' => 'default_list',
 			'fields' => array(
 				'directory_list-title' => array(
 					wp_generate_password( 4, false ) => array(
@@ -310,7 +310,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		global $post;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $orders['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 4, false ) => array(
@@ -439,7 +439,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		global $post;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $orders['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 4, false ) => array(
@@ -559,7 +559,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		global $post;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $orders['id'],
-			'template_id' => 'preset_business_listings',
+			'template_id' => 'default_list',
 			'fields' => array(
 				'directory_list-title' => array(
 					wp_generate_password( 4, false ) => array(
@@ -931,7 +931,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		global $post;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form_1['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 4, false ) => array(
@@ -1039,7 +1039,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $step1['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 4, false ) => array(
@@ -1108,7 +1108,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $step1['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 4, false ) => array(
@@ -1165,7 +1165,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $step1['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 4, false ) => array(

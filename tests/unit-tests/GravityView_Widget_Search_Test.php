@@ -517,7 +517,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 4, false ) => array(
@@ -582,7 +582,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'settings' => array(
 				'show_only_approved' => true,
 			),
@@ -659,7 +659,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array( wp_generate_password( 4, false ) => array(
 						'id' => '4',
@@ -782,7 +782,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 16, false ) => array(
@@ -861,7 +861,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 16, false ) => array(
@@ -938,7 +938,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 16, false ) => array(
@@ -1057,7 +1057,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 16, false ) => array(
@@ -1120,7 +1120,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 16, false ) => array(
@@ -1191,7 +1191,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 16, false ) => array(
@@ -1244,7 +1244,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
-			'template_id' => 'table',
+			'template_id' => 'default_table',
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 16, false ) => array(
