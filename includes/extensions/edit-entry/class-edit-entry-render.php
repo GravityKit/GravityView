@@ -426,7 +426,7 @@ class GravityView_Edit_Entry_Render {
 
 		$this->unset_hidden_calculations = array();
 
-		if( ! $unset_hidden_field_values ) {
+		if ( ! $unset_hidden_field_values ) {
 			return;
 		}
 
@@ -444,11 +444,12 @@ class GravityView_Edit_Entry_Render {
 				continue;
 			}
 
-		    $field = RGFormsModel::get_field( $this->form, $input_id );
+			if ( ! $field = RGFormsModel::get_field( $this->form, $input_id ) ) {
+				continue;
+			}
 
-		    // Reset fields that are hidden
-		    // Don't pass $entry as fourth parameter; force using $_POST values to calculate conditional logic
-		    if ( GFFormsModel::is_field_hidden( $this->form, $field, array(), NULL ) ) {
+		    // Reset fields that are or would be hidden
+		    if ( GFFormsModel::is_field_hidden( $this->form, $field, array(), $this->entry ) ) {
 
 				$empty_value = $field->get_value_save_entry(
 					is_array( $field->get_entry_inputs() ) ? array() : '',

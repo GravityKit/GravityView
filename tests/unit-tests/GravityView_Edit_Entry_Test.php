@@ -2146,8 +2146,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'status' => 'active',
 
-			'1' => '1',
-			'2' => '1-1',
+			'1' => '2',
+			'2' => '2-1',
 			'3' => '',
 			'4' => 'Processing',
 		) );
@@ -2173,9 +2173,62 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
-		$this->assertEquals( '1', $entry['1'] );
-		$this->assertEquals( '1-1', $entry['2'] );
+		$this->assertEquals( '2', $entry['1'] );
+		$this->assertEquals( '2-1', $entry['2'] );
 		$this->assertEmpty( $entry['3'] );
+		$this->assertEquals( 'New', $entry['4'] );
+
+		$this->_reset_context();
+	}
+
+	function test_hidden_conditional_reset_hidden_value_once_more() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'conditionals.json', 1 );
+
+		// Hydrate the cache (https://github.com/gravityview/GravityView/issues/840#issuecomment-547840611)
+		\GFFormsModel::get_field( $form['id'], '1' );
+		\GFFormsModel::get_field( $form['id'], '2' );
+		\GFFormsModel::get_field( $form['id'], '3' );
+		\GFFormsModel::get_field( $form['id'], '4' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+
+			'1' => '2',
+			'2' => '2-1',
+			'3' => '',
+			'4' => 'Processing',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'user_edit' => true,
+			),
+			'fields' => array(
+				// All fields visible
+			)
+		) );
+
+		$_POST = array(
+			'input_1' => '3',
+			'input_2' => '2-1',
+			'input_3' => '3-1',
+			'input_4' => 'New',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( '3', $entry['1'] );
+		$this->assertEmpty( $entry['2'] );
+		$this->assertEquals( '3-1', $entry['3'] );
 		$this->assertEquals( 'New', $entry['4'] );
 
 		$this->_reset_context();
