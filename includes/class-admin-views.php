@@ -892,11 +892,7 @@ class GravityView_Admin_Views {
 		// if saved values, get available fields to label everyone
 		if( !empty( $values ) && ( !empty( $post->ID ) || !empty( $_POST['template_id'] ) ) ) {
 
-			if( !empty( $_POST['template_id'] ) ) {
-				$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
-			} else {
-				$form_id = $form = gravityview_get_form_id( $post->ID );
-			}
+			$form_id = $form = gravityview_get_form_id( $post->ID );
 
 			if ( 'field' === $type ) {
 				$available_items[ $form ] = $this->get_available_fields( $form, $zone );

@@ -277,10 +277,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$form = (int) $_POST['formid'];
 
-		} elseif ( ! empty( $_POST['template_id'] ) && class_exists( 'GravityView_Ajax' ) ) {
-
-			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
-
 		}
 
 		// fetch form id assigned to the view

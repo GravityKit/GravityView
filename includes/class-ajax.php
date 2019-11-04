@@ -68,12 +68,6 @@ class GravityView_Ajax {
 		if( !empty( $_POST['form_id'] ) ) {
 			do_action( 'gravityview_render_available_fields', (int) $_POST['form_id'], $context );
 			$this->_exit();
-		} elseif( !empty( $_POST['template_id'] ) ) {
-			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
-
-			/** @see GravityView_Admin_Views::render_available_fields */
-			do_action( 'gravityview_render_available_fields', $form, $context );
-			$this->_exit();
 		}
 
 		//if everything fails..
@@ -158,12 +152,6 @@ class GravityView_Ajax {
 		if( !empty( $_POST['form_id'] ) ) {
 
 			$form = (int) $_POST['form_id'];
-
-		}
-		// get form from preset
-		elseif( !empty( $_POST['template_id'] ) ) {
-
-			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
 
 		}
 
