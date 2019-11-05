@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: "Show as score" setting for Gravity Forms Survey fields
 * Added: Support for [Gravity Forms Pipe Add-On](https://www.gravityforms.com/add-ons/pipe-video-recording/)
 * Modified: Multiple items in exported CSVs are now separated by a semicolon instead of new line. This is more consistent with formatting from other services.
+* Fixed: Partial form was being passed to `gform_after_update_entry` filter after editing an entry. Full form will now be passed.
 * Fixed: Number field decimal precision formatting not being respected
 * Fixed: Checkbox output in CSVs will no longer contain HTML by default
 * Fixed: Textarea (Paragraph) output in CSVs will no longer contain `<br />` tags by default

@@ -916,8 +916,8 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private function after_update() {
 
-		do_action( 'gform_after_update_entry', $this->form, $this->entry['id'], self::$original_entry );
-		do_action( "gform_after_update_entry_{$this->form['id']}", $this->form, $this->entry['id'], self::$original_entry );
+		do_action( 'gform_after_update_entry', self::$original_form, $this->entry['id'], self::$original_entry );
+		do_action( "gform_after_update_entry_{$this->form['id']}", self::$original_form, $this->entry['id'], self::$original_entry );
 
 		// Re-define the entry now that we've updated it.
 		$entry = RGFormsModel::get_lead( $this->entry['id'] );
