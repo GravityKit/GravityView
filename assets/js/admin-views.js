@@ -1830,6 +1830,7 @@
 
 	// Expose globally methods to initialize/destroy tooltips and to display dialog window
 	window.gvAdminActions = {
+		viewConfiguration: viewConfiguration,
 		initTooltips: viewConfiguration.init_tooltips,
 		removeTooltips: viewConfiguration.remove_tooltips,
 		showDialog: viewConfiguration.showDialog,
