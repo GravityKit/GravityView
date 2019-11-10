@@ -2729,6 +2729,16 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field->update_configuration( array( 'show_map_link' => false ) );
 		$this->assertRegExp( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country$#", $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'show_map_link' => true ) );
+
+		add_filter( 'gravityview_map_link', $callback = function( $link ) {
+			return 'Sentinel Map Link';
+		} );
+
+		$this->assertContains( 'Sentinel Map Link', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		remove_filter( 'gravityview_map_link', $callback );
 	}
 
 	/**
