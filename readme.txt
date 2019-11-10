@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Modified: Multiple items in exported CSVs are now separated by a semicolon instead of new line. This is more consistent with formatting from other services.
 * Fixed: Partial form was being passed to `gform_after_update_entry` filter after editing an entry. Full form will now be passed.
 * Fixed: Number field decimal precision formatting not being respected
+* Fixed: `gravityview_map_link` filter not working at all
 * Fixed: Checkbox output in CSVs will no longer contain HTML by default
 * Fixed: Textarea (Paragraph) output in CSVs will no longer contain `<br />` tags by default
 * Fixed: Some issues with `unfiltered_html` user capabilities being not enough to edit a View

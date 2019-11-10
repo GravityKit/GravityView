@@ -2722,10 +2722,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$renderer = new \GV\Field_Renderer();
 
 		$field = \GV\GF_Field::by_id( $form, '1.1' );
+
 		$this->assertEquals( 'Address 1&lt;careful&gt;', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field = \GV\GF_Field::by_id( $form, '1' );
-		$this->assertRegExp( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country<br/><a href='http://maps.google.com/maps\?q=.*' target='_blank' class='map-it-link'>Map It</a>$#", $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'show_map_link' => true ) );
+
+		$this->assertRegExp( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country<br /><a class=\"map-it-link\" href=\"https://maps.google.com/maps\?q=.*\">Map It</a>$#", $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'show_map_link' => false ) );
 		$this->assertRegExp( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country$#", $renderer->render( $field, $view, $form, $entry, $request ) );
