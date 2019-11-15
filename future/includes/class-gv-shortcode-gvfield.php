@@ -18,12 +18,13 @@ class gvfield extends \GV\Shortcode {
 	/**
 	 * Process and output the [gvfield] shortcode.
 	 *
-	 * @param array $atts The attributes passed.
+	 * @param array $passed_atts The attributes passed.
 	 * @param string $content The content inside the shortcode.
+	 * @param string $tag The shortcode tag.
 	 *
-	 * @return string The output.
+	 * @return string|null The output.
 	 */
-	public function callback( $atts, $content = null ) {
+	public function callback( $atts, $content = '', $tag = '' ) {
 		$request = gravityview()->request;
 
 		if ( $request->is_admin() ) {

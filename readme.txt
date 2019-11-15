@@ -53,6 +53,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
     * Fixed: [GP Nested Forms](https://gravitywiz.com/documentation/gravity-forms-nested-forms/) compatibility issues
     * Fixed: PHP warnings appeared when searching Views for sites running GP Populate Anything with "Default" permalinks enabled
 * Updated: Polish translation (Thanks, Dariusz!)
+* Updated: The `[gvlogic]` shortcode has been rewritten for more stable, stateless behavior
 
 __Developer Updates:__
 
@@ -65,10 +66,13 @@ __Developer Updates:__
 * Added: `gravityview/features/paged-edit` A super-secret early-bird filter to enable multiple page forms in Edit Entry
 * Added: `$form_id` parameter for the `gravityview_template_$field_type_options` filter
 * Added: `gravityview/security/require_unfiltered_html` filter now has 3 additional parameters: `user_id`, `cap` and `args`.
+* Added: `gravityview/gvlogic/atts` filter for `[gvlogic]`
 * Added: `gravityview/edit_entry/page/success` filter to alter the message between edit entry pages.
 * Fixed: Intermittent `[gvlogic2]` and nested `else` issues
 * Modified: Cookies will no longer be set for Single Entry back links
 * Modified: Default 250px `image_width` setting for File Upload images is now easily overrideable
+* Removed: The `gravityview/gvlogic/parse_atts/after` action is no longer available. See `gravityview/gvlogic/atts` filter instead
+* Removed: The `GVLogic_Shortcode` class is now a lifeless stub. See `\GV\Shortcodes\gvlogic`.
 
 = 2.4.1.1 on August 27, 2019 =
 
