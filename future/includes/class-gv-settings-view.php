@@ -346,6 +346,7 @@ class View_Settings extends Settings {
 			'csv_nolimit'           => array(
 				'label'             => __( 'Show all in CSV', 'gravityview' ),
 				'group'             => 'default',
+				'requires'          => 'csv_enable',
 				'desc'              => __( 'Do not limit the number of entries output in the CSV.', 'gravityview' ),
 				'type'              => 'checkbox',
 				'value'             => '',
