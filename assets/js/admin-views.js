@@ -127,6 +127,9 @@
 				// When changing forms, update the form info helper links
 				.on( 'gravityview_form_change', vcfg.updateFormLinks )
 
+				// When changing forms, update the widget form_ids
+				.on( 'gravityview_form_change', vcfg.updateWidgetFormIds )
+
 				// Show fields that are being used as links to single entry
 				.on( 'change', ".gv-dialog-options input[name*=show_as_link]", vcfg.toggleShowAsEntry )
 
@@ -409,6 +412,18 @@
 
 				$( this ).attr( 'href', new_url );
 
+			} );
+		},
+
+		/**
+		 * Update Widget form IDs to the selected form
+		 * @return {void}
+		 */
+		updateWidgetFormIds: function() {
+			var vcfg = viewConfiguration;
+
+			$( '.field-form-id' ).each( function() {
+				$( this ).val( vcfg.gvSelectForm.val() );
 			} );
 		},
 

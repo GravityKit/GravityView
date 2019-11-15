@@ -34,6 +34,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: `gravityview_map_link` filter not working at all
 * Fixed: Checkbox output in CSVs will no longer contain HTML by default
 * Fixed: Textarea (Paragraph) output in CSVs will no longer contain `<br />` tags by default
+* Fixed: Widget form IDs would not change when form ID is changed
 * Fixed: Some issues with `unfiltered_html` user capabilities being not enough to edit a View
 * Fixed: View configuration could be lost when the "Update" button was clicked early in the page load or multiple times rapidly
 * Fixed: Edit Entry issues
