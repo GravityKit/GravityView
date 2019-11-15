@@ -29,8 +29,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: "Show as score" setting for Gravity Forms Survey fields
 * Added: Support for [Gravity Forms Pipe Add-On](https://www.gravityforms.com/add-ons/pipe-video-recording/)
 * Modified: Multiple items in exported CSVs are now separated by a semicolon instead of new line. This is more consistent with formatting from other services.
+* Fixed: Partial form was being passed to `gform_after_update_entry` filter after editing an entry. Full form will now be passed.
 * Fixed: Number field decimal precision formatting not being respected
+* Fixed: `gravityview_map_link` filter not working at all
 * Fixed: Checkbox output in CSVs will no longer contain HTML by default
+* Fixed: Textarea (Paragraph) output in CSVs will no longer contain `<br />` tags by default
 * Fixed: Some issues with `unfiltered_html` user capabilities being not enough to edit a View
 * Fixed: View configuration could be lost when the "Update" button was clicked early in the page load or multiple times rapidly
 * Fixed: Edit Entry issues
@@ -64,6 +67,7 @@ __Developer Updates:__
 * Added: `$form_id` parameter for the `gravityview_template_$field_type_options` filter
 * Added: `gravityview/security/require_unfiltered_html` filter now has 3 additional parameters: `user_id`, `cap` and `args`.
 * Added: `gravityview/gvlogic/atts` filter for `[gvlogic]`
+* Added: `gravityview/edit_entry/page/success` filter to alter the message between edit entry pages.
 * Fixed: Intermittent `[gvlogic2]` and nested `else` issues
 * Modified: Cookies will no longer be set for Single Entry back links
 * Modified: Default 250px `image_width` setting for File Upload images is now easily overrideable

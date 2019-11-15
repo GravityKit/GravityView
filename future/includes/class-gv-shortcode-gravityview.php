@@ -83,6 +83,7 @@ class gravityview extends \GV\Shortcode {
 
 		$atts = $this->parse_and_sanitize_atts( $atts );
 
+		$view->settings->update( array( 'shortcode_atts' => $atts ) );
 		$view->settings->update( $atts );
 
 		/**

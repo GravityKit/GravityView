@@ -126,6 +126,7 @@ class GravityView_Edit_Entry_Render {
 	public $show_previous_button;
 	public $show_next_button;
 	public $show_update_button;
+	public $is_paged_submitted;
 
 	function __construct( GravityView_Edit_Entry $loader ) {
 		$this->loader = $loader;
@@ -425,7 +426,7 @@ class GravityView_Edit_Entry_Render {
 
 		$this->unset_hidden_calculations = array();
 
-		if( ! $unset_hidden_field_values ) {
+		if ( ! $unset_hidden_field_values ) {
 			return;
 		}
 
@@ -443,11 +444,12 @@ class GravityView_Edit_Entry_Render {
 				continue;
 			}
 
-		    $field = RGFormsModel::get_field( $this->form, $input_id );
+			if ( ! $field = RGFormsModel::get_field( $this->form, $input_id ) ) {
+				continue;
+			}
 
-		    // Reset fields that are hidden
-		    // Don't pass $entry as fourth parameter; force using $_POST values to calculate conditional logic
-		    if ( GFFormsModel::is_field_hidden( $this->form, $field, array(), NULL ) ) {
+		    // Reset fields that are or would be hidden
+		    if ( GFFormsModel::is_field_hidden( $this->form, $field, array(), $this->entry ) ) {
 
 				$empty_value = $field->get_value_save_entry(
 					is_array( $field->get_entry_inputs() ) ? array() : '',
@@ -914,8 +916,8 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private function after_update() {
 
-		do_action( 'gform_after_update_entry', $this->form, $this->entry['id'], self::$original_entry );
-		do_action( "gform_after_update_entry_{$this->form['id']}", $this->form, $this->entry['id'], self::$original_entry );
+		do_action( 'gform_after_update_entry', self::$original_form, $this->entry['id'], self::$original_entry );
+		do_action( "gform_after_update_entry_{$this->form['id']}", self::$original_form, $this->entry['id'], self::$original_entry );
 
 		// Re-define the entry now that we've updated it.
 		$entry = RGFormsModel::get_lead( $this->entry['id'] );
@@ -1043,6 +1045,27 @@ class GravityView_Edit_Entry_Render {
 
 		if ( \GV\Utils::_POST( 'action' ) === 'update' ) {
 
+			if ( GFCommon::has_pages( $this->form ) && apply_filters( 'gravityview/features/paged-edit', false ) ) {
+				$labels = array(
+					'cancel'   => __( 'Cancel', 'gravityview' ),
+					'submit'   => __( 'Update', 'gravityview' ),
+					'next'     => __( 'Next', 'gravityview' ),
+					'previous' => __( 'Previous', 'gravityview' ),
+				);
+
+				/**
+				* @filter `gravityview/edit_entry/button_labels` Modify the cancel/submit buttons' labels
+				* @since 1.16.3
+				* @param array $labels Default button labels associative array
+				* @param array $form The Gravity Forms form
+				* @param array $entry The Gravity Forms entry
+				* @param int $view_id The current View ID
+				*/
+				$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $this->form, $this->entry, $this->view_id );
+
+				$this->is_paged_submitted = \GV\Utils::_POST( 'save' ) === $labels['submit'];
+			}
+
 			$back_link = remove_query_arg( array( 'page', 'view', 'edit' ) );
 
 			if( ! $this->is_valid ){
@@ -1053,6 +1076,20 @@ class GravityView_Edit_Entry_Render {
 
 				echo GVCommon::generate_notice( $message , 'gv-error' );
 
+			} elseif ( false === $this->is_paged_submitted ) {
+				// Paged form that hasn't been submitted on the last page yet
+				$entry_updated_message = sprintf( esc_attr__( 'Entry Updated.', 'gravityview' ), '<a href="' . esc_url( $back_link ) . '">', '</a>' );
+
+				/**
+				 * @filter `gravityview/edit_entry/page/success` Modify the edit entry success message on pages
+				 * @since develop
+				 * @param string $entry_updated_message Existing message
+				 * @param int $view_id View ID
+				 * @param array $entry Gravity Forms entry array
+				 */
+				$message = apply_filters( 'gravityview/edit_entry/page/success', $entry_updated_message , $this->view_id, $this->entry );
+
+				echo GVCommon::generate_notice( $message );
 			} else {
 				$view = \GV\View::by_id( $this->view_id );
 				$edit_redirect = $view->settings->get( 'edit_redirect' );
@@ -1135,9 +1172,34 @@ class GravityView_Edit_Entry_Render {
 
 		// TODO: Verify multiple-page forms
 		if ( GFCommon::has_pages( $this->form ) && apply_filters( 'gravityview/features/paged-edit', false ) ) {
-			if ( intval( $page_number = \GV\Utils::_POST( 'gform_target_page_number_' . $this->form['id'], 1 ) ) > 1 ) {
+			if ( intval( $page_number = \GV\Utils::_POST( 'gform_source_page_number_' . $this->form['id'], 0 ) ) ) {
+
+				$labels = array(
+					'cancel'   => __( 'Cancel', 'gravityview' ),
+					'submit'   => __( 'Update', 'gravityview' ),
+					'next'     => __( 'Next', 'gravityview' ),
+					'previous' => __( 'Previous', 'gravityview' ),
+				);
+
+				/**
+				* @filter `gravityview/edit_entry/button_labels` Modify the cancel/submit buttons' labels
+				* @since 1.16.3
+				* @param array $labels Default button labels associative array
+				* @param array $form The Gravity Forms form
+				* @param array $entry The Gravity Forms entry
+				* @param int $view_id The current View ID
+				*/
+				$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $this->form, $this->entry, $this->view_id );
+
 				GFFormDisplay::$submission[ $this->form['id'] ][ 'form' ] = $this->form;
 				GFFormDisplay::$submission[ $this->form['id'] ][ 'is_valid' ] = true;
+
+				if ( \GV\Utils::_POST( 'save' ) === $labels['next'] ) {
+					$page_number++;
+				} elseif ( \GV\Utils::_POST( 'save' ) === $labels['previous'] ) {
+					$page_number--;
+				}
+
 				GFFormDisplay::$submission[ $this->form['id'] ][ 'page_number' ] = $page_number;
 			}
 
@@ -1210,6 +1272,10 @@ class GravityView_Edit_Entry_Render {
 	 * @return array Modified form array
 	 */
 	public function filter_modify_form_fields( $form, $ajax = false, $field_values = '' ) {
+
+		if( $form['id'] != $this->form_id ) {
+			return $form;
+		}
 
 		// In case we have validated the form, use it to inject the validation results into the form render
 		if( isset( $this->form_after_validation ) && $this->form_after_validation['id'] === $form['id'] ) {

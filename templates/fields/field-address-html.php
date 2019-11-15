@@ -32,26 +32,28 @@ if ( ! $is_single_input ) {
 	}
 
 	/**
-	 * Add map link if it's not set (default, back compat) or if it's set to yes
+	 * Disable internal Gravity Forms map link.
+	 * Use our own legacy code and filter.
 	 */
-	if ( isset( $field_settings['show_map_link'] ) && ! $field_settings['show_map_link'] ) {
-		/** Add the map link as another line. */
-		add_filter( 'gform_disable_address_map_link', '__return_true' );
-		$map_disabled = true;
-	}
+	add_filter( 'gform_disable_address_map_link', '__return_true' );
 
 	/**
 	 * Use Gravity Forms' method to get the full address.
 	 */
 	$value_with_newline = GFCommon::get_lead_field_display( $field, $value, "", false, 'html' );
 
-	if ( ! empty( $map_disabled ) ) {
-		remove_filter( 'gform_disable_address_map_link', '__return_true' );
-	}
+	remove_filter( 'gform_disable_address_map_link', '__return_true' );
 
 	if ( empty( $value_with_newline ) ) { return; }
 
-	// Full address without the "Map It" link
+	/**
+	 * Add map link if it's not set (default, back compat) or if it's set to yes
+	 */
+	if ( $gravityview->field->show_map_link ) {
+		/** Add the map link as another line. */
+		$value_with_newline = "$value_with_newline\n" . gravityview_get_map_link( $value_with_newline );
+	}
+
 	echo str_replace( "\n", '<br />', $value_with_newline );
 
 } else {

@@ -30,7 +30,7 @@ class GravityView_Render_Settings_Test extends GV_UnitTestCase {
 		#<input type="hidden" class="field-key" name="fields[directory_table-columns][UNIQID_EXAMPLE][id]" value="12">'
 		$this->assertContains( 'name="fields[directory_table-columns][UNIQID_EXAMPLE][id]" value="12"', $output );
 		$this->assertContains( 'name="fields[directory_table-columns][UNIQID_EXAMPLE][label]" value="Example Field Label"', $output );
-		$this->assertContains( 'name="fields[directory_table-columns][UNIQID_EXAMPLE][form_id]" value="3"', $output );
+		$this->assertContains( 'name="fields[directory_table-columns][UNIQID_EXAMPLE][form_id]" value="' . $form['id'] . '"', $output );
 		$this->assertContains( 'name="fields[directory_table-columns][UNIQID_EXAMPLE][only_loggedin]" type="hidden" value="0"', $output );
 		$this->assertContains( 'show_label" type="checkbox" value="1"  checked=\'checked\' />', $output );
 
@@ -50,7 +50,7 @@ class GravityView_Render_Settings_Test extends GV_UnitTestCase {
 		$this->assertContains( 'only_loggedin" type="checkbox" value="1"  checked=\'checked\' />', $output );
 		$this->assertContains( 'show_label" type="checkbox" value="1"  />', $output );
 
-		remove_filter( 'gravityview_template_field_options', $_change_field_options );
+		$this->assertTrue( remove_filter( 'gravityview_template_field_options', $_change_field_options ) );
 	}
 
 	/**
