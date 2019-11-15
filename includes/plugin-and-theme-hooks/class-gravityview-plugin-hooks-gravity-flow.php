@@ -148,7 +148,7 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 					'type' => 'workflow_current_status_timestamp',
 				);
 
-				$fields = array_merge( array_combine( $keys, $values ), array_combine( $keys_end, $values_end ) );
+				$fields = array_combine( $keys, $values ) + array_combine( $keys_end, $values_end );
 			}
 		}
 

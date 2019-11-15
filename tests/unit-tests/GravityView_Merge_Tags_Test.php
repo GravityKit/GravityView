@@ -241,6 +241,13 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	 */
 	function test_replace_date_created_and_updated( $date_field = 'date_created' ) {
 
+		/**
+		 * GFCommon::format_date() requires at least 1 second difference in order to show human-formatted time properly
+		 *
+		 * @link https://travis-ci.org/gravityview/GravityView/jobs/604386139
+		 */
+		sleep( 1 ); // Let's see if this helps with tests.
+
 		$form = $this->factory->form->create_and_get();
 
 		$entry = $this->factory->entry->create_and_get( array(

@@ -131,14 +131,17 @@ final class Plugin {
 			gravityview()->log->notice( '\GV\Addon_Settings not loaded. Missing \GFAddOn.' );
 		}
 	}
-	
+
 	/**
 	 * Check whether GravityView is network activated.
 	 *
 	 * @return bool Whether it's network activated or not.
 	 */
 	public static function is_network_activated() {
-		return is_multisite() && ( function_exists( 'is_plugin_active_for_network' ) && is_plugin_active_for_network( 'gravityview/gravityview.php' ) );
+
+		$plugin_basename = plugin_basename( GRAVITYVIEW_FILE );
+
+		return is_multisite() && ( function_exists( 'is_plugin_active_for_network' ) && is_plugin_active_for_network( $plugin_basename ) );
 	}
 
 	/**

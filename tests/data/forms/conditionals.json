@@ -187,5 +187,309 @@
          }
       ]
    },
+   "1" : {
+      "postContentTemplateEnabled" : false,
+      "confirmations" : [
+         {
+            "type" : "message",
+            "url" : "",
+            "queryString" : "",
+            "isDefault" : true,
+            "name" : "Default Confirmation",
+            "message" : "Thanks for contacting us! We will get in touch with you shortly.",
+            "id" : "5db6d13879382",
+            "pageId" : ""
+         }
+      ],
+      "postTitleTemplateEnabled" : false,
+      "pagination" : null,
+      "button" : {
+         "imageUrl" : "",
+         "text" : "Submit",
+         "type" : "text"
+      },
+      "id" : 6,
+      "title" : "PRIMA",
+      "postContentTemplate" : "",
+      "nextFieldId" : 5,
+      "description" : "",
+      "descriptionPlacement" : "below",
+      "fields" : [
+         {
+            "calculationFormula" : "",
+            "productField" : "",
+            "fields" : "",
+            "isRequired" : false,
+            "allowsPrepopulate" : false,
+            "maxLength" : "",
+            "enablePrice" : "",
+            "inputMask" : false,
+            "inputType" : "",
+            "adminLabel" : "",
+            "choices" : [
+               {
+                  "text" : "2",
+                  "value" : "2",
+                  "isSelected" : false,
+                  "price" : ""
+               },
+               {
+                  "value" : "3",
+                  "isSelected" : false,
+                  "price" : "",
+                  "text" : "3"
+               }
+            ],
+            "formId" : 6,
+            "type" : "radio",
+            "conditionalLogic" : "",
+            "size" : "medium",
+            "placeholder" : "",
+            "labelPlacement" : "",
+            "noDuplicates" : false,
+            "calculationRounding" : "",
+            "inputName" : "",
+            "cssClass" : "",
+            "descriptionPlacement" : "",
+            "disableQuantity" : false,
+            "useRichTextEditor" : false,
+            "description" : "",
+            "label" : "Choice",
+            "displayOnly" : "",
+            "inputMaskIsCustom" : false,
+            "inputs" : null,
+            "id" : 1,
+            "enableCalculation" : "",
+            "defaultValue" : "",
+            "inputMaskValue" : "",
+            "errorMessage" : "",
+            "multipleFiles" : false,
+            "visibility" : "visible",
+            "maxFiles" : "",
+            "displayAllCategories" : false,
+            "enableOtherChoice" : "",
+            "subLabelPlacement" : ""
+         },
+         {
+            "cssClass" : "",
+            "descriptionPlacement" : "",
+            "disableQuantity" : false,
+            "useRichTextEditor" : false,
+            "description" : "",
+            "label" : "2",
+            "labelPlacement" : "",
+            "noDuplicates" : false,
+            "calculationRounding" : "",
+            "inputName" : "",
+            "visibility" : "visible",
+            "multipleFiles" : false,
+            "maxFiles" : "",
+            "displayAllCategories" : false,
+            "enableOtherChoice" : "",
+            "subLabelPlacement" : "",
+            "displayOnly" : "",
+            "inputMaskIsCustom" : false,
+            "inputs" : null,
+            "id" : 2,
+            "enableCalculation" : "",
+            "defaultValue" : "",
+            "errorMessage" : "",
+            "inputMaskValue" : "",
+            "calculationFormula" : "",
+            "productField" : "",
+            "fields" : "",
+            "isRequired" : false,
+            "allowsPrepopulate" : false,
+            "maxLength" : "",
+            "formId" : 6,
+            "choices" : [
+               {
+                  "price" : "",
+                  "isSelected" : false,
+                  "value" : "2 1",
+                  "text" : "2 1"
+               },
+               {
+                  "isSelected" : false,
+                  "value" : "2 2",
+                  "price" : "",
+                  "text" : "2 2"
+               },
+               {
+                  "value" : "2 3",
+                  "isSelected" : false,
+                  "price" : "",
+                  "text" : "2 3"
+               }
+            ],
+            "type" : "radio",
+            "conditionalLogic" : {
+               "actionType" : "show",
+               "rules" : [
+                  {
+                     "value" : "2",
+                     "operator" : "is",
+                     "fieldId" : "1"
+                  }
+               ],
+               "logicType" : "any"
+            },
+            "size" : "medium",
+            "placeholder" : "",
+            "enablePrice" : "",
+            "inputMask" : false,
+            "inputType" : "",
+            "adminLabel" : ""
+         },
+         {
+            "maxLength" : "",
+            "allowsPrepopulate" : false,
+            "isRequired" : false,
+            "fields" : "",
+            "calculationFormula" : "",
+            "productField" : "",
+            "adminLabel" : "",
+            "inputType" : "",
+            "inputMask" : false,
+            "enablePrice" : "",
+            "placeholder" : "",
+            "size" : "medium",
+            "conditionalLogic" : {
+               "logicType" : "any",
+               "actionType" : "show",
+               "rules" : [
+                  {
+                     "operator" : "is",
+                     "fieldId" : "1",
+                     "value" : "3"
+                  }
+               ]
+            },
+            "type" : "radio",
+            "choices" : [
+               {
+                  "text" : "3 1",
+                  "value" : "3 1",
+                  "isSelected" : false,
+                  "price" : ""
+               },
+               {
+                  "text" : "3 2",
+                  "value" : "3 2",
+                  "isSelected" : false,
+                  "price" : ""
+               },
+               {
+                  "text" : "3 3",
+                  "value" : "3 3",
+                  "isSelected" : false,
+                  "price" : ""
+               }
+            ],
+            "formId" : 6,
+            "inputName" : "",
+            "calculationRounding" : "",
+            "noDuplicates" : false,
+            "labelPlacement" : "",
+            "label" : "3",
+            "description" : "",
+            "disableQuantity" : false,
+            "useRichTextEditor" : false,
+            "descriptionPlacement" : "",
+            "cssClass" : "",
+            "errorMessage" : "",
+            "inputMaskValue" : "",
+            "defaultValue" : "",
+            "enableCalculation" : "",
+            "id" : 3,
+            "inputs" : null,
+            "inputMaskIsCustom" : false,
+            "displayOnly" : "",
+            "subLabelPlacement" : "",
+            "enableOtherChoice" : "",
+            "displayAllCategories" : false,
+            "maxFiles" : "",
+            "visibility" : "visible",
+            "multipleFiles" : false
+         },
+         {
+            "calculationFormula" : "",
+            "productField" : "",
+            "fields" : "",
+            "isRequired" : false,
+            "allowsPrepopulate" : false,
+            "maxLength" : "",
+            "choices" : [
+               {
+                  "isSelected" : false,
+                  "value" : "New",
+                  "price" : "",
+                  "text" : "New"
+               },
+               {
+                  "text" : "Processing",
+                  "value" : "Processing",
+                  "isSelected" : false,
+                  "price" : ""
+               },
+               {
+                  "price" : "",
+                  "value" : "Done",
+                  "isSelected" : false,
+                  "text" : "Done"
+               }
+            ],
+            "formId" : 6,
+            "type" : "select",
+            "conditionalLogic" : "",
+            "size" : "medium",
+            "placeholder" : "",
+            "enablePrice" : "",
+            "inputMask" : false,
+            "inputType" : "",
+            "adminLabel" : "",
+            "cssClass" : "",
+            "descriptionPlacement" : "",
+            "useRichTextEditor" : false,
+            "disableQuantity" : false,
+            "description" : "",
+            "label" : "Status",
+            "labelPlacement" : "",
+            "noDuplicates" : false,
+            "calculationRounding" : "",
+            "inputName" : "",
+            "multipleFiles" : false,
+            "visibility" : "visible",
+            "maxFiles" : "",
+            "displayAllCategories" : false,
+            "subLabelPlacement" : "",
+            "inputMaskIsCustom" : false,
+            "inputs" : null,
+            "enableCalculation" : "",
+            "id" : 4,
+            "defaultValue" : "",
+            "errorMessage" : "",
+            "inputMaskValue" : ""
+         }
+      ],
+      "lastPageButton" : null,
+      "version" : "2.4.14.4",
+      "firstPageCssClass" : null,
+      "postTitleTemplate" : "",
+      "notifications" : [
+         {
+            "to" : "{admin_email}",
+            "message" : "{all_fields}",
+            "name" : "Admin Notification",
+            "id" : "5db6d138772ec",
+            "isActive" : true,
+            "event" : "form_submission",
+            "subject" : "New submission from {form_title}",
+            "toType" : "email"
+         }
+      ],
+      "useCurrentUserAsAuthor" : true,
+      "labelPlacement" : "top_label"
+   },
    "version" : "2.4.5.10"
 }

@@ -1588,6 +1588,20 @@ class GravityView_Widget_Search extends \GV\Widget {
 					"SELECT DISTINCT meta_value FROM $table WHERE (meta_key LIKE %s OR meta_key = %d) AND form_id = %d",
 					$key_like, $filter['key'], $form_id
 				) );
+
+				if ( ( $field = gravityview_get_field( $form_id, $filter['key'] ) ) && 'json' === $field->storageType ) {
+					$choices = array_map( 'json_decode', $choices );
+					$_choices_array = array();
+					foreach ( $choices as $choice ) {
+						if ( is_array( $choice ) ) {
+							$_choices_array = array_merge( $_choices_array, $choice );
+						} else {
+							$_choices_array []= $choice;
+						}
+					}
+					$choices = array_unique( $_choices_array );
+				}
+
 				break;
 		endswitch;
 

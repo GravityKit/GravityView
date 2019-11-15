@@ -151,6 +151,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	public function test_view_edit_create_permissions() {
+		$this->_reset_context();
+
 		$administrator = $this->factory->user->create( array(
 			'user_login' => md5( microtime() ),
 			'user_email' => md5( microtime() ) . '@gravityview.tests',
@@ -206,6 +208,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertTrue( current_user_can( 'edit_gravityviews' ) );
 		$this->assertTrue( current_user_can( 'edit_gravityview', $view->ID ) );
+
+		$this->_reset_context();
 	}
 
 	/**
@@ -858,13 +862,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( array( -1, -2 ), $data->parse_post_content( '[gravityview id="-1"][gravityview id="-2"]' ) );
 		/** The above calls have a side-effect on the data state; make sure it's still intact. */
 		$this->assertEquals( $data->get_views(), array() );
-	}
-
-	/**
-	 * @covers \GV\Core::init()
-	 */
-	public function test_core_init() {
-		gravityview()->request = new \GV\Frontend_Request();
 	}
 
 	/**
@@ -2725,13 +2722,27 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$renderer = new \GV\Field_Renderer();
 
 		$field = \GV\GF_Field::by_id( $form, '1.1' );
+
 		$this->assertEquals( 'Address 1&lt;careful&gt;', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field = \GV\GF_Field::by_id( $form, '1' );
-		$this->assertRegExp( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country<br/><a href='http://maps.google.com/maps\?q=.*' target='_blank' class='map-it-link'>Map It</a>$#", $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'show_map_link' => true ) );
+
+		$this->assertRegExp( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country<br /><a class=\"map-it-link\" href=\"https://maps.google.com/maps\?q=.*\">Map It</a>$#", $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'show_map_link' => false ) );
 		$this->assertRegExp( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country$#", $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'show_map_link' => true ) );
+
+		add_filter( 'gravityview_map_link', $callback = function( $link ) {
+			return 'Sentinel Map Link';
+		} );
+
+		$this->assertContains( 'Sentinel Map Link', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		remove_filter( 'gravityview_map_link', $callback );
 	}
 
 	/**
@@ -7870,6 +7881,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 						'id' => '2',
 						'label' => 'Checkbox',
 					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
 				),
 			),
 		) );
@@ -7889,6 +7904,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			) ),
 			'2.1' => 'Much Better',
 			'2.2' => 'Somewhat Better',
+			'16'  => "This\nis\nan\nofficial\nletter.",
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
@@ -7910,14 +7926,16 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$file = implode( ";", array( 'http://one.txt', 'http://two.mp3' ) );
 
-
 		$checkbox = implode( ";", array( 'Much Better', 'Somewhat Better' ) );
+
+		$textarea = "This\nis\nan\nofficial\nletter.";
+
 		$expected = array(
-			'Email,"A List",File,Checkbox',
-			sprintf( 'support@gravityview.co,"%s",%s,"%s"', $list, $file, $checkbox ),
+			'Email,"A List",File,Checkbox,Textarea',
+			sprintf( 'support@gravityview.co,"%s",%s,"%s","%s"', $list, $file, $checkbox, $textarea ),
 		);
 
-		$this->assertEquals( implode( "\n", $expected ), ob_get_flush() );
+		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
 
 		$view                                      = \GV\View::from_post( $post );
@@ -7940,22 +7958,25 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'http://one.txt',
 			'http://two.mp3',
 		) );
+
 		$expected         = array(
-			'Email,"A List",File,Checkbox',
-			sprintf( 'support@gravityview.co,"%s","%s","%s"', $list_newline, $file_newline, $checkbox_newline ),
+			'Email,"A List",File,Checkbox,Textarea',
+			sprintf( 'support@gravityview.co,"%s","%s","%s","%s"', $list_newline, $file_newline, $checkbox_newline, $textarea ),
 		);
 
 		remove_all_filters( 'gravityview/template/field/csv/glue' );
 
-		$this->assertEquals( implode( "\n", $expected ), ob_get_flush() );
+		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
 		add_filter( 'gravityview/template/csv/field/raw', '__return_false' );
+
+		$textarea = str_replace( "\n", "<br />\n", $textarea );
 
 		ob_start();
 		$view::template_redirect();
 		$expected = array(
-			'Email,"A List",File,Checkbox',
-			sprintf( '"<a href=\'mailto:support@gravityview.co\'>support@gravityview.co</a>","%s",%s,"%s"', $list, $file, $checkbox ),
+			'Email,"A List",File,Checkbox,Textarea',
+			sprintf( '"<a href=\'mailto:support@gravityview.co\'>support@gravityview.co</a>","%s",%s,"%s","%s"', $list, $file, $checkbox, $textarea ),
 		);
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 

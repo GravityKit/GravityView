@@ -248,16 +248,25 @@ function gravityview_get_template_setting( $post_id, $key ) {
 
 /**
  * Get all available preset templates
+ *
+ * @param bool $presets Output the presets or not. Default: false;
+ * @since develop
+ *
  * @since 1.13.2
  * @return array Templates
  */
-function gravityview_get_registered_templates() {
+function gravityview_get_registered_templates( $presets = false ) {
 
 	/**
 	 * @filter `gravityview_register_directory_template` Fetch available View templates
 	 * @param array $templates Templates to show
 	 */
 	$templates = apply_filters( 'gravityview_register_directory_template', array() );
+
+	if ( ! $presets ) {
+		$templates = new \WP_List_Util( $templates );
+		return $templates->filter( array( 'type' => 'preset' ), 'NOT' );
+	}
 
 	return $templates;
 }

@@ -16,7 +16,8 @@ if ( ! $gravityview->field->form_id || ! ( $form = GFAPI::get_form( $gravityview
 }
 
 if ( $gravityview->entry->is_multi() ) {
-	$entry = ( $gravityview->entry[ $form['id'] ] )->as_entry();
+	$entry = $gravityview->entry[ $form['id'] ];
+	$entry = $entry->as_entry();
 } else {
 	$entry = $gravityview->entry->as_entry();
 }

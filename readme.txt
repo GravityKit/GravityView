@@ -24,15 +24,22 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Added: Duplicate Entry to accompany our Edit and Delete Entry fields.
-* Added: [gv_pageviews] shortcode integration with the lightweight [Pageviews](https://pageviews.io/) plugin.
+* Added: `[gv_pageviews]` shortcode integration with the lightweight [Pageviews](https://pageviews.io/) plugin.
 * Added: Views will be created with a number of default widgets preset
-* Added: [gventry edit="1"] mode where edit entry shortcodes can be used now (experimental)
+* Added: `[gventry edit="1"]` mode where edit entry shortcodes can be used now (experimental)
+* Added: New Views will be created with a set of default widgets
+* Added: `[gv_pageviews]` shortcode integration with the lightweight [Pageviews](https://pageviews.io/) plugin.
 * Added: You can now add labels for Custom Content in the View editor (this helps keep track of many Custom Content fields at once!)
 * Added: "Show as score" setting for Gravity Forms Survey fields
 * Added: Support for [Gravity Forms Pipe Add-On](https://www.gravityforms.com/add-ons/pipe-video-recording/)
 * Modified: Multiple items in exported CSVs are now separated by a semicolon instead of new line. This is more consistent with formatting from other services.
+* Fixed: Partial form was being passed to `gform_after_update_entry` filter after editing an entry. Full form will now be passed.
 * Fixed: Number field decimal precision formatting not being respected
+* Fixed: `gravityview_map_link` filter not working at all
 * Fixed: Checkbox output in CSVs will no longer contain HTML by default
+* Fixed: Textarea (Paragraph) output in CSVs will no longer contain `<br />` tags by default
+* Fixed: Widget form IDs would not change when form ID is changed
+* Fixed: Some issues with `unfiltered_html` user capabilities being not enough to edit a View
 * Fixed: View configuration could be lost when the "Update" button was clicked early in the page load or multiple times rapidly
 * Fixed: Edit Entry issues
     * Fixed: Field visibility when editing entries. Hidden fields remain hidden unless explicitly allowed via field configuration.
@@ -51,9 +58,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
     * Fixed: [GP Nested Forms](https://gravitywiz.com/documentation/gravity-forms-nested-forms/) compatibility issues
     * Fixed: PHP warnings appeared when searching Views for sites running GP Populate Anything with "Default" permalinks enabled
 * Updated: Polish translation (Thanks, Dariusz!)
+* Updated: The `[gvlogic]` shortcode has been rewritten for more stable, stateless behavior
 
 __Developer Updates:__
 
+* Added: `[gventry edit="1"]` mode where edit entry shortcodes can be used now (experimental)
 * Added: `gravityview/template/field/csv/glue` filter to modify the glue used to separate multiple values in the CSV export (previously "\n", now default is ';')
 * Added: `gravityview/shortcodes/gventry/edit/success` filter to modify [gventry] edit success message
 * Added: `gravityview/search/sieve_choices` filter that sieves Search Widget field filter choices to only ones that have been used in entries (a UI is coming soon)
@@ -61,9 +70,14 @@ __Developer Updates:__
 * Added: `gravityview/admin/available_fields` filter for developers to add their own assignable fields to View configurations
 * Added: `gravityview/features/paged-edit` A super-secret early-bird filter to enable multiple page forms in Edit Entry
 * Added: `$form_id` parameter for the `gravityview_template_$field_type_options` filter
+* Added: `gravityview/security/require_unfiltered_html` filter now has 3 additional parameters: `user_id`, `cap` and `args`.
+* Added: `gravityview/gvlogic/atts` filter for `[gvlogic]`
+* Added: `gravityview/edit_entry/page/success` filter to alter the message between edit entry pages.
 * Fixed: Intermittent `[gvlogic2]` and nested `else` issues
 * Modified: Cookies will no longer be set for Single Entry back links
 * Modified: Default 250px `image_width` setting for File Upload images is now easily overrideable
+* Removed: The `gravityview/gvlogic/parse_atts/after` action is no longer available. See `gravityview/gvlogic/atts` filter instead
+* Removed: The `GVLogic_Shortcode` class is now a lifeless stub. See `\GV\Shortcodes\gvlogic`.
 
 = 2.4.1.1 on August 27, 2019 =
 

@@ -197,6 +197,10 @@ abstract class Field_Template extends Template {
 				if ( $field_id ) {
 					$specifics []= sprintf( '%sform-%d-field-%d-%s.php', $slug_dir, $form_id, $field_id, $slug_name );
 					$specifics []= sprintf( '%sform-%d-field-%d.php', $slug_dir, $form_id, $field_id );
+
+					if ( $view_id ) {
+						$specifics []= sprintf( '%sview-%d-field-%d.php', $slug_dir, $view_id, $field_id );
+					}
 				}
 
 				if ( $field_type ) {
@@ -250,7 +254,10 @@ abstract class Field_Template extends Template {
 	 * @return void
 	 */
 	public function render() {
-		$entry = $this->entry->from_field( $this->field );
+		if ( ! $entry = $this->entry->from_field( $this->field ) ) {
+			gravityview()->log->error( 'Entry is invalid for field. Returning empty.' );
+			return;
+		}
 
 		/** Retrieve the value. */
 		$display_value = $value = $this->field->get_value( $this->view, $this->source, $entry );

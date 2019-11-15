@@ -1494,8 +1494,13 @@ class View implements \ArrayAccess {
 		/**
 		 * @filter `gravityview/security/require_unfiltered_html` Bypass restrictions on Views that require `unfiltered_html`.
 		 * @param[in,out] boolean
+		 *
+		 * @since develop
+		 * @param string $cap The capability requested.
+		 * @param int $user_id The user ID.
+		 * @param array $args Any additional args to map_meta_cap
 		 */
-		if ( ! apply_filters( 'gravityview/security/require_unfiltered_html', true ) ) {
+		if ( ! apply_filters( 'gravityview/security/require_unfiltered_html', true, $cap, $user_id ) ) {
 			return $caps;
 		}
 
