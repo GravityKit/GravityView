@@ -12,6 +12,12 @@ $view_id = $gravityview_view->getViewId();
 	// Output the Clear button, if enabled
 	GravityView_Widget_Search::the_clear_search_button();
 
+	if ( isset( $_GET['page_size'] ) ) {
+		?>
+		<input type="hidden" name="page_size" value="<?php echo esc_attr( $_GET['page_size'] ); ?>" />
+		<?php
+	}
+
 	?>
 	<input type="hidden" name="mode" value="<?php echo esc_attr( $gravityview_view->search_mode ); ?>" />
 	<input type="submit" class="button gv-search-button" id="gv_search_button_<?php echo $view_id; ?>" value="<?php esc_attr_e( 'Search', 'gravityview' ); ?>" />

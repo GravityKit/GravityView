@@ -41,7 +41,7 @@ class GravityView_Edit_Entry_Admin {
         add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'tooltips') );
 
         // custom fields' options for zone EDIT
-        add_filter( 'gravityview_template_field_options', array( $this, 'field_options' ), 10, 5 );
+        add_filter( 'gravityview_template_field_options', array( $this, 'field_options' ), 10, 6 );
     }
 
     /**
@@ -146,7 +146,7 @@ class GravityView_Edit_Entry_Admin {
      * @param  [type] $input_type    [description]
      * @return [type]                [description]
      */
-    function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
         // We only want to modify the settings for the edit context
         if( 'edit' !== $context ) {

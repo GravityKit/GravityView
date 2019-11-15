@@ -1,3 +1,5 @@
+<input name="gv_fields" type="hidden" value="<?php echo esc_attr( http_build_query( array( 'fields' => get_post_meta( $post->ID, '_gravityview_directory_fields', true ) ) ) ); ?>" />
+
 <div id="gv-view-configuration-tabs">
 
 	<ul class="nav-tab-wrapper">
@@ -86,5 +88,6 @@
 		</div>
 
 	</div> <?php // end edit view tab ?>
-
 </div> <?php // end tabs ?>
+
+<input type="hidden" name="gv_fields_done" value="1" />

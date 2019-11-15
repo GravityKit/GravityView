@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.4
-Tested up to: 5.1.1
+Tested up to: 5.2.2
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -21,9 +21,71 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Added: New Views will be created with a set of default widgets
+* Added: `[gv_pageviews]` shortcode integration with the lightweight [Pageviews](https://pageviews.io/) plugin.
+* Added: You can now add labels for Custom Content in the View editor (this helps keep track of many Custom Content fields at once!)
+* Added: "Show as score" setting for Gravity Forms Survey fields
+* Added: Support for [Gravity Forms Pipe Add-On](https://www.gravityforms.com/add-ons/pipe-video-recording/)
+* Modified: Multiple items in exported CSVs are now separated by a semicolon instead of new line. This is more consistent with formatting from other services.
+* Fixed: Partial form was being passed to `gform_after_update_entry` filter after editing an entry. Full form will now be passed.
+* Fixed: Number field decimal precision formatting not being respected
+* Fixed: `gravityview_map_link` filter not working at all
+* Fixed: Checkbox output in CSVs will no longer contain HTML by default
+* Fixed: Textarea (Paragraph) output in CSVs will no longer contain `<br />` tags by default
+* Fixed: Some issues with `unfiltered_html` user capabilities being not enough to edit a View
+* Fixed: View configuration could be lost when the "Update" button was clicked early in the page load or multiple times rapidly
+* Fixed: Edit Entry issues
+    * Fixed: Field visibility when editing entries. Hidden fields remain hidden unless explicitly allowed via field configuration.
+    * Fixed: Hidden calculation fields were being recalculated on Edit Entry
+* Fixed: Sorting and search issues
+    * Fixed: User sorting does not work when the `[gravityview]` shortcode defines a sorting order
+    * Fixed: Proper sorting capabilities for Time and Date fields
+    * Fixed: Page Size widget breaks when multiple search filters are set
+    * Fixed: Page Size widget resets itself when a search is performed
+* Fixed: Multiple Forms compatibility issues
+    * Fixed: Global search not working with joined forms (using the [Multiple Forms extension](https://gravityview.co/extensions/multiple-forms/))
+    * Fixed: Custom Content fields now work properly with the Multiple Forms extension
+    * Fixed: [Gravity PDF](https://gravitypdf.com) support with Multiple Forms plugin and Custom Content fields
+    * Fixed: Entry Link, Edit Link and Delete Link URLs may be incorrect with some Multiple Forms setups
+* Fixed: Compatibility with a couple of Gravity Perks
+    * Fixed: [GP Nested Forms](https://gravitywiz.com/documentation/gravity-forms-nested-forms/) compatibility issues
+    * Fixed: PHP warnings appeared when searching Views for sites running GP Populate Anything with "Default" permalinks enabled
+* Updated: Polish translation (Thanks, Dariusz!)
+* Updated: The `[gvlogic]` shortcode has been rewritten for more stable, stateless behavior
+
+__Developer Updates:__
+
+* Added: `[gventry edit="1"]` mode where edit entry shortcodes can be used now (experimental)
+* Added: `gravityview/template/field/csv/glue` filter to modify the glue used to separate multiple values in the CSV export (previously "\n", now default is ';')
+* Added: `gravityview/shortcodes/gventry/edit/success` filter to modify [gventry] edit success message
+* Added: `gravityview/search/sieve_choices` filter that sieves Search Widget field filter choices to only ones that have been used in entries (a UI is coming soon)
+* Added: `gravityview/search/filter_details` filter for developers to modify search filter configurations
+* Added: `gravityview/admin/available_fields` filter for developers to add their own assignable fields to View configurations
+* Added: `gravityview/features/paged-edit` A super-secret early-bird filter to enable multiple page forms in Edit Entry
+* Added: `$form_id` parameter for the `gravityview_template_$field_type_options` filter
+* Added: `gravityview/security/require_unfiltered_html` filter now has 3 additional parameters: `user_id`, `cap` and `args`.
+* Added: `gravityview/gvlogic/atts` filter for `[gvlogic]`
+* Added: `gravityview/edit_entry/page/success` filter to alter the message between edit entry pages.
+* Fixed: Intermittent `[gvlogic2]` and nested `else` issues
+* Modified: Cookies will no longer be set for Single Entry back links
+* Modified: Default 250px `image_width` setting for File Upload images is now easily overrideable
+* Removed: The `gravityview/gvlogic/parse_atts/after` action is no longer available. See `gravityview/gvlogic/atts` filter instead
+* Removed: The `GVLogic_Shortcode` class is now a lifeless stub. See `\GV\Shortcodes\gvlogic`.
+
+= 2.4.1.1 on August 27, 2019 =
+
+* Fixed: Inconsistent sorting behavior for Views using Table layouts
+* Fixed: Searching all fields not searching Multi Select fields
+* Fixed: Error activating GravityView when Gravity Forms is disabled
+* Fixed: "Getting Started" and "List of Changes" page layouts in WordPress 5.3
+* Fixed: Don't show error messages twice when editing a View with a missing form
+* Tweak: Don't show "Create a View" on trashed forms action menus
+
 = 2.4 on July 17, 2019 =
 
-**We tightened security by limiting who can edit Views. [Read how to grant Authors access](https://docs.gravityview.co/article/598-non-administrator-edit-view).**
+**We tightened security by limiting who can edit Views. [Read how to grant Authors and Editors access](https://docs.gravityview.co/article/598-non-administrator-edit-view).**
 
 * Added: A new Result Number field and `{sequence}` Merge Tag [learn all about it!](https://docs.gravityview.co/article/597-the-sequence-merge-tag)
 * Added: `{date_updated}` Merge Tag ([see all GravityView Merge Tags](https://docs.gravityview.co/article/76-merge-tags))
@@ -466,7 +528,7 @@ This release is the biggest ever for developers! Even so, we have taken great ca
 * New REST API! Fetch GravityView details and entries using the WordPress REST API endpoint. It's disabled by default, but can be enabled or disabled globally on GravityView Settings screen, or per-View in View Settings. [Learn about the endpoints](https://github.com/gravityview/GravityView/wiki/REST-API).
 * New `gravityview()` API wrapper function, now used for easy access to everything you could want
 * New template structure ([learn how to migrate your custom template files](https://github.com/gravityview/GravityView/wiki/Template-Migration))
-* We have gotten rid of global state; actions and filters are now passed a `$context` argument, a [`\GV\Template_Context` object](https://github.com/gravityview/GravityView/blob/2.0/future/includes/class-gv-context-template.php)
+* We have gotten rid of global state; actions and filters are now passed a `$context` argument, a [`\GV\Template_Context` object](https://github.com/gravityview/GravityView/blob/v2.0/future/includes/class-gv-context-template.php)
 * When HTML 5 is enabled in Gravity Forms, now the Search All field will use `type="search"`
 * _Countless_ new filters and actions! Additional documentation will be coming, both on [docs.gravityview.co](https://docs.gravityview.co) as well as [codex.gravityview.co](https://codex.gravityview.co).
 
@@ -998,7 +1060,7 @@ __Developer Notes__
 * Added: Option to show/hide "Show Answer Explanation" for Gravity Forms Quiz Addon fields
 * Tweak: Don't show GravityView Approve Entry column in Gravity Forms Entries table if there are no entries
 * Updated: Turkish translation. Thanks, [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)!
-* Tested and works with [Gravity Forms 2.0 Beta 1](https://www.gravityhelp.com/gravity-forms-v2-0-beta-1-released/)
+* Tested and works with [Gravity Forms 2.0 Beta 1](https://www.gravityforms.com/gravity-forms-v2-0-beta-1-released/)
 
 __Developer Notes:__
 
@@ -1343,7 +1405,7 @@ __Developer Notes:__
 = 1.9 on June 23 =
 * Added: Edit Entry now takes place in the Gravity Forms form layout, not in the previous layout. This means:
 	- Edit Entry now supports Conditional Logic - as expected, fields will show and hide based on the form configuration
-	- Edit Entry supports [Gravity Forms CSS Ready Classes](https://www.gravityhelp.com/css-ready-classes-for-gravity-forms/) - the layout you have configured for your form will be used for Edit Entry, too.
+	- Edit Entry supports [Gravity Forms CSS Ready Classes](https://docs.gravityforms.com/list-of-css-ready-classes/) - the layout you have configured for your form will be used for Edit Entry, too.
 	- If you customized the CSS of your Edit Entry layout, **you will need to update your stylesheet**. Sorry for the inconvenience!
 	- If visiting an invalid Edit Entry link, you are now provided with a back link
 	- Product fields are now hidden by default, since they aren't editable. If you want to instead display the old message that "product fields aren't editable," you can show them using the new `gravityview/edit_entry/hide-product-fields` filter
@@ -1654,7 +1716,7 @@ __Developer Notes:__
 * Fixed (hopefully): Auto-updates for WordPress Multisite
 * Fixed: Clicking overlay to close field/widget settings no longer scrolls to top of page
 * Fixed: Make sure Gravity Forms scripts are added when embedding Gravity Forms shortcodes in a Custom Field
-* Fixed: Remove double images of Floaty in the warning message when Gravity View is disabled
+* Fixed: Remove double images of Floaty in the warning message when GravityView is disabled
 * Fixed: PHP warnings related to Section field descriptions
 * Fixed: When using an advanced input as a search field in the Search Bar, the label would always show the parent field's label (Eg: "Address" when it should have shown "City")
 	- Added: `gravityview_search_field_label` filter to allow modifying search bar labels

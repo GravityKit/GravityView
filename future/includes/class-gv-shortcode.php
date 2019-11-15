@@ -35,12 +35,13 @@ class Shortcode {
 	/**
 	 * The WordPress Shortcode API callback for this shortcode.
 	 *
-	 * @param array $atts The callback shortcode attributes.
-	 * @param string|null $content The wrapped content. Default: null.
+	 * @param array $atts The attributes passed.
+	 * @param string $content The content inside the shortcode.
+	 * @param string $tag The tag.
 	 *
-	 * @return string The result of the shortcode logic.
+	 * @return string The output.
 	 */
-	public function callback( $atts, $content = null ) {
+	public function callback( $atts, $content = '', $tag = '' ) {
 		gravityview()->log->error( '[{shortcode}] shortcode {class}::callback method not implemented.', array( 'shortcode' => $this->name, 'class' => get_class( $this ) ) );
 		return '';
 	}
@@ -49,22 +50,26 @@ class Shortcode {
 	 * Register this shortcode class with the WordPress Shortcode API.
 	 *
 	 * @internal
-
+	 *
+	 * @since develop
+	 * @param string $name A shortcode name override. Default: self::$name
+	 *
 	 * @return \GV\Shortcode|null The only internally registered instance of this shortcode, or null on error.
 	 */
-	public static function add() {
+	public static function add( $name = null ) {
 		$shortcode = new static();
-		if ( shortcode_exists( $shortcode->name ) ) {
-			if ( empty( self::$shortcodes[ $shortcode->name ] ) ) {
-				gravityview()->log->error( 'Shortcode [{shortcode}] has already been registered elsewhere.', array( 'shortcode' => $shortcode->name ) );
+		$name = $name ? $name : $shortcode->name;
+		if ( shortcode_exists( $name ) ) {
+			if ( empty( self::$shortcodes[ $name ] ) ) {
+				gravityview()->log->error( 'Shortcode [{shortcode}] has already been registered elsewhere.', array( 'shortcode' => $name ) );
 				return null;
 			}
 		} else {
-			add_shortcode( $shortcode->name, array( $shortcode, 'callback' ) );
-			self::$shortcodes[ $shortcode->name ] = $shortcode;
+			add_shortcode( $name, array( $shortcode, 'callback' ) );
+			self::$shortcodes[ $name ] = $shortcode;
 		}
 
-		return self::$shortcodes[ $shortcode->name ];
+		return self::$shortcodes[ $name ];
 	}
 
 	/**

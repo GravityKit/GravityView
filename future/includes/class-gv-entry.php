@@ -219,7 +219,7 @@ abstract class Entry {
 	 *
 	 * @return \GV\Entry|null A \GV\Entry or null if not found.
 	 */
-	public function from_field( $field, $fallback = 0 ) {
+	public function from_field( $field, $fallback = null ) {
 		if ( ! $this->is_multi() ) {
 			return $this;
 		}

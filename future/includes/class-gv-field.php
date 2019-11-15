@@ -187,7 +187,7 @@ class Field {
 			return $field;
 		}
 
-		/** Determine the field implementation to use, and try to use. */
+		/** @var \GV\GF_Field|\GV\Internal_Field $field_class Determine the field implementation to use, and try to use. */
 		$field_class = is_numeric( $configuration['id'] ) ? '\GV\GF_Field' : '\GV\Internal_Field';
 
 		/**
@@ -294,7 +294,7 @@ class Field {
 	public function get_value( View $view = null, Source $source = null, Entry $entry = null, Request $request = null ) {
 		return $this->get_value_filters( null, $view, $source, $entry, $request );
 	}
-	
+
 	/**
 	 * Apply all the required filters after get_value() was called.
 	 *

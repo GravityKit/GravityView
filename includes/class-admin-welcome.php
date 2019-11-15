@@ -176,8 +176,8 @@ class GravityView_Welcome {
                 <p style="text-align:center; padding-top: 1em;"><a class="button button-primary button-hero" href="https://docs.gravityview.co/category/24-category">Read more: Setting Up Your First View</a></p>
             </div>
 
-			<div class="feature-section two-col">
-				<div class="col">
+			<div class="feature-section two-col has-2-columns is-fullwidth">
+				<div class="col column">
 					<h3>Create a View</h3>
 
                     <ol class="ol-decimal">
@@ -193,7 +193,7 @@ class GravityView_Welcome {
                         <li>On the View Configuration metabox, click on the "+Add Field" button to add form fields to the active areas of your View. These are the fields that will be displayed in the frontend.</li>
 					</ol>
 				</div>
-                <div class="col">
+                <div class="col column">
                     <h4>What is a View?</h4>
                     <p>When a form is submitted in Gravity Forms, an entry is created. Without GravityView, Gravity Forms entries are visible only in the WordPress dashboard, and only to users with permission.</p>
                     <p>GravityView allows you to display entries on the front of your site. In GravityView, when you arrange the fields you want displayed and save the configuration, it's called a "View".</p>
@@ -202,20 +202,20 @@ class GravityView_Welcome {
 
             <hr />
 
-            <div class="feature-section two-col">
-                <div class="col">
+            <div class="feature-section two-col has-2-columns is-fullwidth">
+                <div class="col column">
                     <h3>Embed Views in Posts &amp; Pages</h3>
                     <p>Views don&rsquo;t need to be embedded in a post or page, but you can if you want. Embed Views using the "Add View" button above your content editor.</p>
                 </div>
-                <div class="col">
+                <div class="col column">
                     <img src="<?php echo plugins_url( 'assets/images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" />
                 </div>
             </div>
 
             <hr />
 
-			<div class="feature-section two-col">
-                <div class="col">
+			<div class="feature-section two-col has-2-columns is-fullwidth">
+                <div class="col column">
                     <h3>Configure Multiple Entry, Single Entry, and Edit Entry Layouts</h3>
 
                     <p>You can configure what fields are displayed in <strong>Multiple Entry</strong>, <strong>Single Entry</strong>, and <strong>Edit Entry</strong> modes. These can be configured by clicking on the tabs in "View Configuration."</p>
@@ -227,7 +227,7 @@ class GravityView_Welcome {
                         <li>Click the <a href="#" style="text-decoration:none;"><i class="dashicons dashicons-admin-generic"></i></a> gear icon on each field to configure the <strong>Field Settings</strong></li>
                     </ul>
                 </div>
-                <div class="col">
+                <div class="col column">
                     <img src="<?php echo plugins_url( 'assets/images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" />
                 </div>
 			</div>
@@ -249,15 +249,14 @@ class GravityView_Welcome {
 
 			<?php $this->tabs(); ?>
 
-            <div class="feature-section col two-col" style="margin:0 0 2em 0; padding: 0;">
-
-                <div class="col col-1">
+            <div class="feature-section col two-col has-2-columns is-fullwidth" style="padding: 0;">
+                <div class="column col col-1">
                     <div class="media-container"><iframe width="426" height="240" src="https://www.youtube-nocookie.com/embed/uqWCtSsmHIQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
                     <h4 class="higher">{sequence} Merge Tag</h4>
                     <p>Add a simple counter to show what result number is currently being shown.</p>
                     <p><a href="https://docs.gravityview.co/article/597-the-sequence-merge-tag" class="button button-primary button-large">Read about the <code>{sequence}</code> Merge Tag</a></p>
                 </div>
-                <div class="col col-2">
+                <div class="column col col-2">
                     <div class="media-container"><img alt="{date_created}" src="<?php echo plugins_url( 'assets/images/screenshots/date_updated.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
                     <h4 class="higher">Show the date the entry was last updated with <code>{date_updated}</code></h4>
                     <p>It is often useful to know when an entry was last changed. That's what the <code>{date_updated}</code> does.</p>
@@ -270,6 +269,17 @@ class GravityView_Welcome {
                 <div class="headline-feature" style="max-width: 100%">
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
+
+                <h3>2.4.1.1 on August 16, 2019</h3>
+
+                <ul>
+                    <li>Fixed: Inconsistent sorting behavior for Views using Table layouts</li>
+                    <li>Fixed: Searching all fields not searching Multi Select fields</li>
+                    <li>Fixed: Error activating GravityView when Gravity Forms is disabled</li>
+                    <li>Fixed: "Getting Started" and "List of Changes" page layouts in WordPress 5.3</li>
+                    <li>Fixed: Don't show error messages twice when editing a View with a missing form</li>
+                    <li>Tweak: Don't show "Create a View" on trashed forms action menus</li>
+                </ul>
 
                 <h3>2.4 on July 16, 2019</h3>
 

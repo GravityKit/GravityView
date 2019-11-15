@@ -52,6 +52,10 @@ abstract class GravityView_Admin_View_Item {
 			unset( $item['type'] );
 		}
 
+		if ( $admin_label = \GV\Utils::get( $settings, 'admin_label' ) ) {
+			$title = $admin_label;
+		}
+
 		// Prevent items from not having index set
 		$item = wp_parse_args( $item, array(
 			'label_text'    => $title,

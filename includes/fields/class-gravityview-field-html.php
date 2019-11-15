@@ -25,7 +25,7 @@ class GravityView_Field_HTML extends GravityView_Field {
 		parent::__construct();
 	}
 
-	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		unset ( $field_options['search_filter'], $field_options['show_as_link'] );
 

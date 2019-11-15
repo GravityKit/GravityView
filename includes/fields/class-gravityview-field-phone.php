@@ -36,7 +36,7 @@ class GravityView_Field_Phone extends GravityView_Field {
 	 *
 	 * @return array
 	 */
-	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		if( 'edit' === $context ) {
 			return $field_options;

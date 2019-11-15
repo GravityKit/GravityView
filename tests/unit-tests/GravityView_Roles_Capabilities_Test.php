@@ -90,6 +90,8 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 	 */
 	public function test_has_cap_cap_parameter() {
 
+		add_filter( 'gravityview/security/require_unfiltered_html', '__return_false' );
+
 		foreach( $this->default_roles as $role ) {
 
 			// Create a user with the default roles
@@ -106,6 +108,8 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 			}
 
 		}
+
+		remove_filter( 'gravityview/security/require_unfiltered_html', '__return_false' );
 	}
 
 	function authorless_view_statuses() {
@@ -124,10 +128,10 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 		$editor = $this->factory->user->create_and_get( array( 'role' => 'editor' ) );
 		$contributor = $this->factory->user->create_and_get( array( 'role' => 'contributor' ) );
 
-		// editor can edit, view, and trash
-		$this->assertTrue( $editor->has_cap( 'edit_gravityview', $post ) );
+		// editor can edit only drafts (no unfiltered cap), view, and trash
+		$this->assertFalse( $editor->has_cap( 'edit_gravityview', $post ) );
 		$this->assertTrue( $editor->has_cap( 'delete_gravityview', $post ) );
-		$this->assertTrue( $editor->has_cap( 'read_gravityview', $post ) );
+		$this->assertEquals( $status !== 'draft', $editor->has_cap( 'read_gravityview', $post ) );
 
 		// a contributor cannot (except read a published post)
 		$this->assertFalse( $contributor->has_cap( 'edit_gravityview', $post ) );
@@ -151,6 +155,8 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( $zero, wp_get_current_user() );
 
+		add_filter( 'gravityview/security/require_unfiltered_html', '__return_false' );
+
 		foreach( $this->default_roles as $role ) {
 
 			$user_id = $this->factory->user->create( array(
@@ -166,6 +172,8 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 
 			$this->assertEquals( $zero, wp_get_current_user() );
 		}
+
+		remove_filter( 'gravityview/security/require_unfiltered_html', '__return_false' );
 
 		$this->assertEquals( $zero, wp_get_current_user() );
 	}

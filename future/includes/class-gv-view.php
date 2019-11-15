@@ -967,7 +967,10 @@ class View implements \ArrayAccess {
 			}
 
 			if ( gravityview()->plugin->supports( Plugin::FEATURE_GFQUERY ) ) {
+
 				$query_class = $this->get_query_class();
+
+				/** @var \GF_Query $query */
 				$query = new $query_class( $this->form->ID, $parameters['search_criteria'], $parameters['sorting'] );
 
 				/**
@@ -976,18 +979,28 @@ class View implements \ArrayAccess {
 				if ( ! empty( $has_multisort ) ) {
 					$atts = $this->settings->as_atts();
 
-					if ( $this->settings->get( 'sort_columns' ) && ! empty( $_GET['sort'] ) && is_array( $_GET['sort'] ) ) {
+					$view_setting_sort_field_ids = \GV\Utils::get( $atts, 'sort_field', array() );
+					$view_setting_sort_directions = \GV\Utils::get( $atts, 'sort_direction', array() );
+
+					$has_sort_query_param = ! empty( $_GET['sort'] ) && is_array( $_GET['sort'] );
+
+					if( $has_sort_query_param ) {
+						$has_sort_query_param = array_filter( array_values( $_GET['sort'] ) );
+					}
+
+					if ( $this->settings->get( 'sort_columns' ) && $has_sort_query_param ) {
 						$sort_field_ids = array_keys( $_GET['sort'] );
 						$sort_directions = array_values( $_GET['sort'] );
 					} else {
-						$sort_field_ids = \GV\Utils::get( $atts, 'sort_field', array() );
-						$sort_directions = \GV\Utils::get( $atts, 'sort_direction', array() );
+						$sort_field_ids = $view_setting_sort_field_ids;
+						$sort_directions = $view_setting_sort_directions;
 					}
 
 					$skip_first = false;
 
 					foreach ( (array) $sort_field_ids as $key => $sort_field_id ) {
-						if ( ! $skip_first ) {
+
+						if ( ! $skip_first && ! $has_sort_query_param ) {
 							$skip_first = true; // Skip the first one, it's already in the query
 							continue;
 						}
@@ -1005,6 +1018,55 @@ class View implements \ArrayAccess {
 						}
 					}
 				}
+
+				/**
+				 * Merge time subfield sorts.
+				 */
+				add_filter( 'gform_gf_query_sql', $gf_query_timesort_sql_callback = function( $sql ) use ( &$query ) {
+					$q = $query->_introspect();
+					$orders = array();
+
+					$merged_time = false;
+
+					foreach ( $q['order'] as $oid => $order ) {
+						if ( $order[0] instanceof \GF_Query_Column ) {
+							$column = $order[0];
+						} else if ( $order[0] instanceof \GF_Query_Call ) {
+							if ( count( $order[0]->columns ) != 1 || ! $order[0]->columns[0] instanceof \GF_Query_Column ) {
+								$orders[ $oid ] = $order;
+								continue; // Need something that resembles a single sort
+							}
+							$column = $order[0]->columns[0];
+						}
+
+						if ( ( ! $field = \GFAPI::get_field( $column->source, $column->field_id ) ) || $field->type !== 'time' ) {
+							$orders[ $oid ] = $order;
+							continue; // Not a time field
+						}
+
+						if ( ! class_exists( '\GV\Mocks\GF_Query_Call_TIMESORT' ) ) {
+							require_once gravityview()->plugin->dir( 'future/_mocks.timesort.php' );
+						}
+
+						$orders[ $oid ] = array(
+							new \GV\Mocks\GF_Query_Call_TIMESORT( 'timesort', array( $column, $sql ) ),
+							$order[1] // Mock it!
+						);
+
+						$merged_time = true;
+					}
+
+					if ( $merged_time ) {
+						/**
+						 * ORDER again.
+						 */
+						if ( ! empty( $orders ) && $_orders = $query->_order_generate( $orders ) ) {
+							$sql['order'] = 'ORDER BY ' . implode( ', ', $_orders );
+						}
+					}
+
+					return $sql;
+				} );
 
 				$query->limit( $parameters['paging']['page_size'] )
 					->offset( ( ( $page - 1 ) * $parameters['paging']['page_size'] ) + $this->settings->get( 'offset' ) );
@@ -1255,6 +1317,10 @@ class View implements \ArrayAccess {
 					remove_action( 'gform_gf_query_sql', $gf_query_sql_callback );
 				}
 
+				if ( isset( $gf_query_timesort_sql_callback ) ) {
+					remove_action( 'gform_gf_query_sql', $gf_query_timesort_sql_callback );
+				}
+
 				/**
 				 * Add total count callback.
 				 */
@@ -1436,8 +1502,13 @@ class View implements \ArrayAccess {
 		/**
 		 * @filter `gravityview/security/require_unfiltered_html` Bypass restrictions on Views that require `unfiltered_html`.
 		 * @param[in,out] boolean
+		 *
+		 * @since develop
+		 * @param string $cap The capability requested.
+		 * @param int $user_id The user ID.
+		 * @param array $args Any additional args to map_meta_cap
 		 */
-		if ( ! apply_filters( 'gravityview/security/require_unfiltered_html', true ) ) {
+		if ( ! apply_filters( 'gravityview/security/require_unfiltered_html', true, $cap, $user_id ) ) {
 			return $caps;
 		}
 

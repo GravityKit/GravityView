@@ -752,7 +752,6 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertNotContains( '[', $csv );
 		$this->assertContains( 'one.jpg', $csv );
 		$this->assertContains( 'two.mp3', $csv );
-		$this->assertStringEndsWith( '"', $csv );
 	}
 
 	public function test_get_items_raw() {

@@ -11,8 +11,17 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$form = $gravityview->view->form->form;
-$entry = $gravityview->entry->as_entry();
+if ( ! $gravityview->field->form_id || ! ( $form = GFAPI::get_form( $gravityview->field->form_id ) ) ) {
+	$form = $gravityview->view->form->form;
+}
+
+if ( $gravityview->entry->is_multi() ) {
+	$entry = $gravityview->entry[ $form['id'] ];
+	$entry = $entry->as_entry();
+} else {
+	$entry = $gravityview->entry->as_entry();
+}
+
 $field_settings = $gravityview->field->as_configuration();
 
 $link_text = empty( $field_settings['entry_link_text'] ) ? __( 'View Details', 'gravityview' ) : $field_settings['entry_link_text'];
