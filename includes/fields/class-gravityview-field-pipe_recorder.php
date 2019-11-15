@@ -32,7 +32,7 @@ class GravityView_Field_Pipe_Recorder extends GravityView_Field {
 			'type' => 'checkbox',
 			'label' => __( 'Display as embedded', 'gravityview' ),
 			'desc' => __( 'Display the video in a player, rather than a direct link to the video.', 'gravityview' ),
-			'value' => false,
+			'value' => true,
 			'merge_tags' => false,
 		);
 
