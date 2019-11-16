@@ -893,7 +893,7 @@ class View implements \ArrayAccess {
 			'form_id' => $this->form ? $this->form->ID : null,
 			'form' => $this->form ? gravityview_get_form( $this->form->ID ) : null,
 			'atts' => $this->settings->as_atts(),
-			'fields' => $this->fields->by_visible()->as_configuration(),
+			'fields' => $this->fields->by_visible( $this )->as_configuration(),
 			'template_id' => $this->settings->get( 'template' ),
 			'widgets' => $this->widgets->as_configuration(),
 		);
@@ -1408,7 +1408,7 @@ class View implements \ArrayAccess {
 		$headers_done = false;
 		$allowed = $headers = array();
 
-		foreach ( $view->fields->by_position( "directory_*" )->by_visible()->all() as $id => $field ) {
+		foreach ( $view->fields->by_position( "directory_*" )->by_visible( $view )->all() as $id => $field ) {
 			$allowed[] = $field;
 		}
 

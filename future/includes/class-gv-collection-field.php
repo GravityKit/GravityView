@@ -88,14 +88,16 @@ class Field_Collection extends Collection {
 	 * @api
 	 * @since
 	 *
+	 * @param $view \GV\View The view!
+	 *
 	 * @return \GV\Field_Collection A filtered collection of \GV\Fields, filtered by visibility.
 	 */
-	public function by_visible() {
+	public function by_visible( $view = null ) {
 		$fields = new self();
 
 		/** @var \GV\Field $field */
 		foreach ( $this->all() as $field ) {
-			if ( $field->is_visible() ) {
+			if ( $field->is_visible( $view ) ) {
 				$fields->add( $field );
 			}
 		}

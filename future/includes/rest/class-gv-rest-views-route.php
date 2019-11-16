@@ -113,7 +113,7 @@ class Views_Route extends Route {
 
 		// Only output the fields that should be displayed.
 		$allowed = array();
-		foreach ( $view->fields->by_position( "{$context}_*" )->by_visible()->all() as $field ) {
+		foreach ( $view->fields->by_position( "{$context}_*" )->by_visible( $view )->all() as $field ) {
 			$allowed[] = $field;
 		}
 
