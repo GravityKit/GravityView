@@ -289,6 +289,14 @@ class View implements \ArrayAccess {
 						return __( sprintf( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
 					}
 					break;
+				case 'in_trash':
+
+					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
+						return __( sprintf( 'This View is in the Trash. You can <a href="%s">restore the View here</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
+					}
+
+					return ''; // Do not show
+					break;
 				case 'no_direct_access':
 				case 'embed_only':
 				case 'not_public':
