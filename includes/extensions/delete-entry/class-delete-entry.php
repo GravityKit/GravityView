@@ -82,7 +82,7 @@ final class GravityView_Delete_Entry {
 	 * Hide the field or not.
 	 *
 	 * For non-logged in users.
-	 * For users that have no edit others entries caps.
+	 * For users that have no delete rights on any of the current entries.
 	 *
 	 * @param bool $visible Visible or not.
 	 * @param \GF\Field $field The field.
