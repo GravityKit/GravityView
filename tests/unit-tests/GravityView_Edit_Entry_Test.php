@@ -2290,6 +2290,125 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	function test_approval_transitions() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'approval.json', 0 );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+
+			'1' => 'hello',
+			'2' => 'world',
+			'3.1' => 'Approved',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+		) );
+
+		$_POST = array(
+			'input_1' => 'hellow',
+			'input_2' => 'orld',
+			'input_3_1' => 'Approved',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'hellow', $entry[1] );
+		$this->assertEquals( 'orld', $entry[2] );
+		$this->assertEquals( 'Approved', $entry['3.1'] );
+		$this->assertEquals( GravityView_Entry_Approval_Status::APPROVED, $entry['is_approved'] );
+
+		$this->_reset_context();
+
+		wp_set_current_user( $administrator );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '2',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '3',
+					),
+				),
+			),
+		) );
+
+		$_POST = array(
+			'input_1' => 'hellowo',
+			'input_2' => 'rld',
+			'input_3_1' => '',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'hellow', $entry[1] );
+		$this->assertEquals( 'rld', $entry[2] );
+		$this->assertEquals( '', $entry['3.1'] );
+		$this->assertEquals( GravityView_Entry_Approval_Status::DISAPPROVED, $entry['is_approved'] );
+
+		$entry['3.1'] = 'Approved';
+		GFAPI::update_entry( $entry );
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
+		$this->_reset_context();
+
+		wp_set_current_user( $administrator );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			),
+		) );
+
+		$_POST = array(
+			'input_1' => 'hellowo',
+			'input_2' => 'ld',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'hellowo', $entry[1] );
+		$this->assertEquals( 'rld', $entry[2] );
+		$this->assertEquals( 'Approved', $entry['3.1'] );
+		$this->assertEquals( GravityView_Entry_Approval_Status::APPROVED, $entry['is_approved'] );
+
+		$entry['3.1'] = '';
+		GFAPI::update_entry( $entry );
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::UNAPPROVED );
+
+		$_POST = array(
+			'input_1' => 'hellowo',
+			'input_2' => 'ld',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'hellowo', $entry[1] );
+		$this->assertEquals( 'rld', $entry[2] );
+		$this->assertEquals( '', $entry['3.1'] );
+		$this->assertEquals( GravityView_Entry_Approval_Status::UNAPPROVED, $entry['is_approved'] );
+
+		$this->_reset_context();
+	}
 }
 
 /** The GF_User_Registration mock if not exists. */
