@@ -121,13 +121,16 @@ class GravityView_Edit_Entry_Locking {
 	}
 
 	public function maybe_lock_object( $entry_id ) {
+		global $wp;
+		$current_url = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
+
 		if ( isset( $_GET['get-edit-lock'] ) ) {
 			$this->set_lock( $entry_id );
-			wp_safe_redirect( $edit_url );
-			exit();
+			echo '<script>window.location = ' . json_encode( remove_query_arg( 'get-edit-lock', $current_url ) ) . ';</script>';
 		} else if ( isset( $_GET['release-edit-lock'] ) ) {
 			$this->delete_lock_meta( $entry_id );
-			wp_safe_redirect( $redirect_url );
+			$current_url = remove_query_arg( 'edit', $current_url );
+			echo '<script>window.location = ' . json_encode( remove_query_arg( 'release-edit-lock', $current_url ) ) . ';</script>';
 			exit();
 		} else {
 			if ( ! $user_id = $this->check_lock( $entry_id ) ) {
