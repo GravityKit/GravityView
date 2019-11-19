@@ -379,6 +379,9 @@ class GravityView_Edit_Entry_Render {
 			// Process calculation fields
 			$this->update_calculation_fields();
 
+			// Handle hidden approval fields (or their absense)
+			$this->preset_approval_fields();
+
 			// Perform actions normally performed after updating a lead
 			$this->after_update();
 
@@ -471,6 +474,58 @@ class GravityView_Edit_Entry_Render {
 			    $_POST[ $post_input_id ] = '';
 		    }
 	    }
+	}
+
+	/**
+	 * Leverage `gravityview/approve_entries/update_unapproved_meta` to prevent
+	 * the missing/empty approval field to affect is_approved meta at all.
+	 *
+	 * Called before the Gravity Forms after_update triggers.
+	 *
+	 * @return void
+	 */
+	private function preset_approval_fields() {
+		$has_approved_field = false;
+
+		foreach ( self::$original_form['fields'] as $field ) {
+			if ( $field->gravityview_approved ) {
+				$has_approved_field = true;
+				break;
+			}
+		}
+
+		if ( ! $has_approved_field ) {
+			return;
+		}
+
+		$is_field_hidden = true;
+
+		foreach ( $this->form['fields'] as $field ) {
+			if ( $field->gravityview_approved ) {
+				$is_field_hidden = false;
+				break;
+			}
+		}
+
+		if ( ! $is_field_hidden ) {
+			return;
+		}
+
+		add_filter( 'gravityview/approve_entries/update_unapproved_meta', array( $this, 'prevent_update_unapproved_meta' ), 9, 3 );
+	}
+
+	/**
+	 * Done once from self::preset_approval_fields
+	 *
+	 * @return string UNAPPROVED unless something else is inside the entry.
+	 */
+	public function prevent_update_unapproved_meta( $value, $form, $entry ) {
+		remove_filter( 'gravityview/approve_entries/update_unapproved_meta', array( $this, 'prevent_update_unapproved_meta' ), 9 );
+		if ( ! $value = gform_get_meta( $entry['id'], 'is_approved' ) ) {
+			$value = GravityView_Entry_Approval_Status::UNAPPROVED;
+			$value = apply_filters( 'gravityview/approve_entries/after_submission/default_status', $value );
+		}
+		return $value;
 	}
 
 	/**
