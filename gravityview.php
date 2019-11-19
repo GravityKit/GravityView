@@ -61,7 +61,7 @@ define( 'GV_MIN_PHP_VERSION', '5.3.0' );
  * @since 1.19.2
  * @var string|false
  */
-define( 'GV_FUTURE_MIN_PHP_VERSION', '5.6.0' );
+define( 'GV_FUTURE_MIN_PHP_VERSION', '5.6.20' );
 
 /**
  * GravityView will soon require at least this version of Gravity Forms to function properly.
