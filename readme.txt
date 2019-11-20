@@ -28,6 +28,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: You can now add labels for Custom Content in the View editor (this helps keep track of many Custom Content fields at once!)
 * Added: "Show as score" setting for Gravity Forms Survey fields
 * Added: Support for [Gravity Forms Pipe Add-On](https://www.gravityforms.com/add-ons/pipe-video-recording/)
+* Fixed: Editing an entry with Approve/Disapprove field hidden would disapprove an unapproved entry. Bad.
+* Added: `gravityview/approve_entries/update_unapproved_meta` filter to modify entry update approval status.
 * Modified: Multiple items in exported CSVs are now separated by a semicolon instead of new line. This is more consistent with formatting from other services.
 * Fixed: Partial form was being passed to `gform_after_update_entry` filter after editing an entry. Full form will now be passed.
 * Fixed: Number field decimal precision formatting not being respected

@@ -308,6 +308,14 @@ class GravityView_Entry_Approval {
 			$value = GravityView_Entry_Approval_Status::APPROVED;
 		}
 
+		/**
+		 * @filter `gravityview/approve_entries/update_unapproved_meta` Filter the approval status on entry update.
+		 * @param[in,out] string $value The approval status.
+		 * @param array $form The form.
+		 * @param array $entry The entry.
+		 */
+		$value = apply_filters( 'gravityview/approve_entries/update_unapproved_meta', $value, $form, $entry );
+
 		self::update_approved_meta( $entry_id, $value, $form['id'] );
 	}
 
