@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Updated: GravityView now requires WordPress 4.7 or newer
 * Added: Duplicate Entry to accompany our Edit and Delete Entry fields.
 * Added: `[gv_pageviews]` shortcode integration with the lightweight [Pageviews](https://pageviews.io/) plugin.
 * Added: Views will be created with a number of default widgets preset
