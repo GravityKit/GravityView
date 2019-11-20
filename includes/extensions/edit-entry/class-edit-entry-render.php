@@ -481,6 +481,8 @@ class GravityView_Edit_Entry_Render {
 	 * the missing/empty approval field to affect is_approved meta at all.
 	 *
 	 * Called before the Gravity Forms after_update triggers.
+	 * 
+	 * @since 2.5
 	 *
 	 * @return void
 	 */
