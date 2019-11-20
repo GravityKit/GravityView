@@ -175,7 +175,7 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 			}
 		}
 
-		if ( strtolower( $entry['payment_status'] ) !== 'active' ) {
+		if ( 'active' !== mb_strtolower( $entry['payment_status'] ) ) {
 			return $output;
 		}
 
