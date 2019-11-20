@@ -183,9 +183,9 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 		$current_url = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
 
 		$link = add_query_arg( 'unsubscribe', wp_create_nonce( 'unsubscribe_' . $entry['id'] ), $current_url );
-		$link = add_query_arg( 'uid', urlencode( $entry['id'] ), $link );
+		$link = add_query_arg( 'uid', $entry['id'], $link );
 
-		return sprintf( '<a href="%s">%s</a>', $link, __( 'Unsubscribe', 'gravityview' ) );
+		return sprintf( '<a href="%s">%s</a>', esc_url( $link ), esc_html__( 'Unsubscribe', 'gravityview' ) );
 	}
 
 	/**
