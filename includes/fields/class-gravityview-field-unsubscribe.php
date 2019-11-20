@@ -112,7 +112,7 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 
 		if ( is_null( $subscription_addons ) ) {
 			foreach ( $registered = GFAddon::get_registered_addons() as $addon ) {
-				if ( method_exists( $addon, 'cancel_subscription' ) ) {
+				if ( method_exists( $addon, 'cancel_subscription' ) && is_callable( array( $addon, 'get_instance' ) ) ) {
 					$addon = $addon::get_instance();
 					$subscription_addons[ $addon->get_slug() ] = $addon;
 				}
