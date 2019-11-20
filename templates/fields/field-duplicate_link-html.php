@@ -1,9 +1,9 @@
 <?php
 /**
- * The default duplicat link field output template.
+ * The default duplicate link field output template.
  *
  * @global \GV\Template_Context $gravityview
- * @since 2.0
+ * @since 2.5
  */
 
 if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
