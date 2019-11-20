@@ -1,7 +1,7 @@
 <?php
 /**
  * @file class-gravityview-field-unsubscribe.php
- * @since develop
+ * @since 2.5
  * @package GravityView
  * @subpackage includes\fields
  */
@@ -48,7 +48,7 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 	 *
 	 * @param array $field_options The options.
 	 * @param string $template_id The template ID.
-	 * @param int|string|float $field The field ID.
+	 * @param int|string|float $field_id The field ID.
 	 * @param string $context The configuration context (edit, single, etc.)
 	 * @param string $input_type The input type.
 	 * @param int $form_id The form ID.
