@@ -519,14 +519,21 @@ class GravityView_Edit_Entry_Render {
 	/**
 	 * Done once from self::preset_approval_fields
 	 *
+	 * @since 2.5
+	 *
 	 * @return string UNAPPROVED unless something else is inside the entry.
 	 */
 	public function prevent_update_unapproved_meta( $value, $form, $entry ) {
+		
 		remove_filter( 'gravityview/approve_entries/update_unapproved_meta', array( $this, 'prevent_update_unapproved_meta' ), 9 );
+		
 		if ( ! $value = gform_get_meta( $entry['id'], 'is_approved' ) ) {
+			
 			$value = GravityView_Entry_Approval_Status::UNAPPROVED;
+			
 			$value = apply_filters( 'gravityview/approve_entries/after_submission/default_status', $value );
 		}
+		
 		return $value;
 	}
 
