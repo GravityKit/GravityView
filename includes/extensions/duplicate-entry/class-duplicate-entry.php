@@ -341,6 +341,12 @@ final class GravityView_Duplicate_Entry {
 						'status' => 'error',
 					);
 
+					gravityview()->log->error( 'Entry {entry_slug} cannot be duplicated: {error_code} {error_message}', array(
+						'entry_slug'    => $entry_slug,
+						'error_code'    => $duplicate_response->get_error_code(),
+						'error_message' => $duplicate_response->get_error_message(),
+					) );
+
 				} else {
 
 					$messages = array(
@@ -353,7 +359,7 @@ final class GravityView_Duplicate_Entry {
 
 		} else {
 
-			gravityview()->log->debug( 'Duplicatee entry failed: there was no entry with the entry slug {entry_slug}', array( 'entry_slug' => $entry_slug ) );
+			gravityview()->log->error( 'Duplicate entry failed: there was no entry with the entry slug {entry_slug}', array( 'entry_slug' => $entry_slug ) );
 
 			$messages = array(
 				'message' => urlencode( __( 'The entry does not exist.', 'gravityview' ) ),
@@ -383,9 +389,9 @@ final class GravityView_Duplicate_Entry {
 	private function duplicate_entry( $entry ) {
 
 		if ( ! $entry_id = \GV\Utils::get( $entry, 'id' ) ) {
-			return new WP_Error( 'gravityview-duplicate-entry-missing', __( 'No such entry ID', 'gravityview' ) );
+			return new WP_Error( 'gravityview-duplicate-entry-missing', __( 'The entry does not exist.', 'gravityview' ) );
 		}
-		
+
 		gravityview()->log->debug( 'Starting duplicate entry: {entry_id}', array( 'entry_id' => $entry_id ) );
 
 		global $wpdb;
@@ -394,7 +400,7 @@ final class GravityView_Duplicate_Entry {
 		$entry_meta_table = GFFormsModel::get_entry_meta_table_name();
 
 		if ( ! $row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $entry_table WHERE ID = %d", $entry_id ), ARRAY_A ) ) {
-			return new WP_Error( 'gravityview-duplicate-entry-missing', __( 'No such entry ID', 'gravityview' ) );
+			return new WP_Error( 'gravityview-duplicate-entry-missing', __( 'The entry does not exist.', 'gravityview' ) );
 		}
 
 		$row['id'] = null;
@@ -416,7 +422,7 @@ final class GravityView_Duplicate_Entry {
 		$row = apply_filters( 'gravityview/entry/duplicate/details', $row, $entry );
 
 		if ( ! $wpdb->insert( $entry_table, $row ) ) {
-			return new WP_Error( 'gravityview-duplicate-entry-db', __( 'Database error', 'gravityview' ) );
+			return new WP_Error( 'gravityview-duplicate-entry-db-details', __( 'There was an error duplicating the entry.', 'gravityview' ) );
 		}
 
 		$duplicated_id = $wpdb->insert_id;
@@ -456,7 +462,7 @@ final class GravityView_Duplicate_Entry {
 			$data['entry_id'] = $duplicated_id;
 
 			if ( ! $wpdb->insert( $entry_meta_table, $data ) ) {
-				return new WP_Error( 'gravityview-duplicate-entry-db', __( 'Database error', 'gravityview' ) );
+				return new WP_Error( 'gravityview-duplicate-entry-db-meta', __( 'There was an error duplicating the entry.', 'gravityview' ) );
 			}
 		}
 

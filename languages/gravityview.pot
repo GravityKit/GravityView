@@ -209,14 +209,14 @@ msgid ""
 "look strange. Don't be concerned!"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:589
-#: includes/class-gravityview-entry-approval.php:450
+#: future/includes/class-gv-plugin.php:590
+#: includes/class-gravityview-entry-approval.php:458
 #: tests/unit-tests/GravityView_Uninstall_Test.php:191
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:590
-#: includes/class-gravityview-entry-approval.php:444
+#: future/includes/class-gv-plugin.php:591
+#: includes/class-gravityview-entry-approval.php:452
 #: tests/unit-tests/GravityView_Uninstall_Test.php:192
 msgid "Approved the Entry for GravityView"
 msgstr ""
@@ -228,7 +228,7 @@ msgstr ""
 #: includes/class-gravityview-entry-link-shortcode.php:233
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1000
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1064
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 #: templates/fields/field-edit_link-html.php:38
 msgid "Edit Entry"
@@ -1269,8 +1269,8 @@ msgstr ""
 
 #: includes/class-admin-add-shortcode.php:138
 #: includes/class-admin-views.php:1195
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1050
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1178
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1114
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1242
 #: includes/extensions/edit-entry/partials/form-buttons.php:44
 msgid "Cancel"
 msgstr ""
@@ -2117,11 +2117,11 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:213
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2233
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2297
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
-#: includes/class-gravityview-entry-approval.php:447
+#: includes/class-gravityview-entry-approval.php:455
 msgid "Reset Entry approval for GravityView"
 msgstr ""
 
@@ -2131,6 +2131,7 @@ msgstr ""
 #: includes/extensions/delete-entry/class-delete-entry.php:164
 #: includes/extensions/delete-entry/fields/delete_link.php:14
 #: templates/fields/field-delete_link-html.php:38
+#: templates/fields/field-duplicate_link-html.php:38
 msgid "Delete Entry"
 msgstr ""
 
@@ -2163,6 +2164,9 @@ msgid "Delete"
 msgstr ""
 
 #: includes/extensions/delete-entry/class-delete-entry.php:376
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:365
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:392
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:403
 msgid "The entry does not exist."
 msgstr ""
 
@@ -2202,6 +2206,49 @@ msgstr ""
 msgid "The entry was successfully deleted."
 msgstr ""
 
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:125
+msgid "Duplicate Link Text"
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:127
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:159
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:180
+msgid "Duplicate Entry"
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:133
+msgid "Allow the following users to duplicate the entry:"
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:161
+msgid "A link to duplicate the entry. Respects the Duplicate Entry permissions."
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:425
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:465
+msgid "There was an error duplicating the entry."
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:525
+msgid "Are you sure you want to duplicate this entry?"
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:555
+msgid "The link to duplicate this entry is not valid; it may have expired."
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:559
+msgid "You do not have permission to duplicate this entry."
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:690
+msgid "There was an error duplicating the entry: %s"
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:694
+msgid "The entry was successfully duplicated."
+msgstr ""
+
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:60
 msgid "A link to edit the entry. Visible based on View settings."
 msgstr ""
@@ -2229,61 +2276,61 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1051
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1179
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1115
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1243
 #: includes/extensions/edit-entry/partials/form-buttons.php:45
 msgid "Update"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1052
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1180
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1116
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1244
 #: includes/extensions/edit-entry/partials/form-buttons.php:46
 msgid "Next"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1053
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1181
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1117
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1245
 #: includes/extensions/edit-entry/partials/form-buttons.php:47
 msgid "Previous"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1074
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1138
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1074
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1138
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1081
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1145
 msgid "Entry Updated."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1118
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1182
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1329
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1393
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1336
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1400
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1689
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1753
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2227
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2291
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2237
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2301
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2277
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2341
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -3765,31 +3812,32 @@ msgid "None"
 msgstr ""
 
 #: includes/extensions/delete-entry/class-delete-entry.php:196
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:214
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:89
 msgctxt "User capability"
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1102
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1166
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %sReturning to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1107
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1171
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the title of the page where the "
 "user will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sReturning to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1113
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1177
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the URL where the user will be "
 "taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sRedirecting to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2253
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2317
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
