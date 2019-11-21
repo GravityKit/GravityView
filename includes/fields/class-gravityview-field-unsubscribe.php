@@ -87,6 +87,9 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 	 * @return bool Visible or not.
 	 */
 	public function maybe_not_visible( $visible, $field ) {
+		if ( $this->name !== $field->ID ) {
+			return $visible;
+		}
 		return is_user_logged_in() ? $visible : false;
 	}
 
