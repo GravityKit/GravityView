@@ -19,12 +19,12 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 	public function __construct() {
 		$this->label = esc_html__( 'Unsubscribe', 'gravityview' );
 		$this->description =  esc_attr__( 'Unsubscribe from a Payment-based entry.', 'gravityview' );
-		
+
 		$this->add_hooks();
-		
+
 		parent::__construct();
 	}
-	
+
 	/**
 	 * Hooks called from constructor.
 	 *
@@ -142,7 +142,7 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 	 * Called from `gravityview_field_entry_value_unsubscribe`
 	 *
 	 * @param string $output The output.
-	 * @param \GV\Entry $entry The entry.
+	 * @param array $entry The entry.
 	 * @param array $field_settings The field settings.
 	 * @param \GV\Field $field The field.
 	 *
@@ -197,11 +197,12 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 	 * Entry View inclusion is checked ad-hoc during the rendering of the field.
 	 * User permissions are also checked ad-hoc during the rendering process.
 	 *
-	 * @param \GV\Entry $entry The entry
+	 * @param array $entry The entry
 	 *
-	 * @return \GV\Entry $entry The entry
+	 * @return array $entry The entry
 	 */
 	private function maybe_unsubscribe( $entry ) {
+
 		if ( ! wp_verify_nonce( \GV\Utils::_REQUEST( 'unsubscribe' ), 'unsubscribe_' . $entry['id'] ) ) {
 			return $entry;
 		}
@@ -226,14 +227,20 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 		}
 
 		foreach ( $feeds as $slug => $feed_ids ) {
+
 			if ( ! isset( $subscription_addons[ $slug ] ) ) {
 				continue;
 			}
 
 			foreach ( $feed_ids as $feed_id ) {
-				if ( ( $feed = $subscription_addons[ $slug ]->get_feed( $feed_id ) ) && \GV\Utils::get( $feed, 'meta/transactionType' ) === 'subscription' ) {
+
+				$feed = $subscription_addons[ $slug ]->get_feed( $feed_id );
+
+				if ( $feed && 'subscription' === \GV\Utils::get( $feed, 'meta/transactionType' ) ) {
 					if ( $subscription_addons[ $slug ]->cancel( $entry, $feed ) ) {
+
 						$subscription_addons[ $slug ]->cancel_subscription( $entry, $feed );
+
 						return \GFAPI::get_entry( $entry['id'] );
 					}
 				}
