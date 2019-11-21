@@ -370,13 +370,15 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 
 		wp_set_current_user( 0 );
 
-		$this->assertFalse( $field->maybe_not_visible( true, null ) );
+		$the_field = \GV\Internal_Field::by_id( 'unsubscribe' );
+
+		$this->assertFalse( $field->maybe_not_visible( true, $the_field ) );
 		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', null, null, null ) );
 
 		wp_set_current_user( $administrator );
 
-		$this->assertTrue( $field->maybe_not_visible( true, null ) );
-		$this->assertFalse( $field->maybe_not_visible( false, null ) );
+		$this->assertTrue( $field->maybe_not_visible( true, $the_field ) );
+		$this->assertFalse( $field->maybe_not_visible( false, $the_field ) );
 		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', null, null, null ) );
 		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => -1 ), null, null ) );
 		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $administrator ), null, null ) );
@@ -389,8 +391,8 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 
 		wp_set_current_user( $author );
 
-		$this->assertTrue( $field->maybe_not_visible( true, null ) );
-		$this->assertFalse( $field->maybe_not_visible( false, null ) );
+		$this->assertTrue( $field->maybe_not_visible( true, $the_field ) );
+		$this->assertFalse( $field->maybe_not_visible( false, $the_field ) );
 		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', null, null, null ) );
 		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => -1 ), null, null ) );
 		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $administrator ), null, null ) );
