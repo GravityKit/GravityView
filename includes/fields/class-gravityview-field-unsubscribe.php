@@ -120,7 +120,7 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 		}
 
 		foreach ( $feeds as $feed ) {
-			if ( isset( $subscription_addons[ $feed['addon_slug'] ] ) && \GV\Utils::get( $feed, 'meta/transactionType' ) == 'subscription' ) {
+			if ( isset( $subscription_addons[ $feed['addon_slug'] ] ) && 'subscription' === \GV\Utils::get( $feed, 'meta/transactionType' ) ) {
 				if ( ! isset( $entry_default_fields["{$this->name}"] ) && 'edit' !== $context ) {
 					$entry_default_fields["{$this->name}"] = array(
 						'label' => $this->label,
