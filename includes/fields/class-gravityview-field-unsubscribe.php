@@ -104,19 +104,29 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 	 * @return array The array of available default fields.
 	 */
 	public function filter_gravityview_entry_default_field( $entry_default_fields, $form, $context ) {
-		if ( is_wp_error( $feeds = GFAPI::get_feeds( null, $form ) ) ) {
+
+		$feeds = GFAPI::get_feeds( null, $form );
+
+		if ( is_wp_error( $feeds ) ) {
 			return $entry_default_fields;
 		}
 
 		static $subscription_addons;
 
 		if ( is_null( $subscription_addons ) ) {
-			foreach ( $registered = GFAddon::get_registered_addons() as $addon ) {
+
+			$registered = GFAddon::get_registered_addons();
+
+			foreach ( $registered as $addon ) {
 				if ( method_exists( $addon, 'cancel_subscription' ) && is_callable( array( $addon, 'get_instance' ) ) ) {
 					$addon = $addon::get_instance();
 					$subscription_addons[ $addon->get_slug() ] = $addon;
 				}
 			}
+		}
+
+		if ( empty( $subscription_addons ) ) {
+			return $entry_default_fields;
 		}
 
 		foreach ( $feeds as $feed ) {
@@ -218,12 +228,19 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 		static $subscription_addons;
 
 		if ( is_null( $subscription_addons ) ) {
-			foreach ( $registered = GFAddon::get_registered_addons() as $addon ) {
+
+			$registered = GFAddon::get_registered_addons();
+
+			foreach ( $registered as $addon ) {
 				if ( method_exists( $addon, 'cancel_subscription' ) ) {
 					$addon = $addon::get_instance();
 					$subscription_addons[ $addon->get_slug() ] = $addon;
 				}
 			}
+		}
+
+		if ( empty( $subscription_addons ) ) {
+			return $entry;
 		}
 
 		foreach ( $feeds as $slug => $feed_ids ) {
@@ -237,6 +254,7 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 				$feed = $subscription_addons[ $slug ]->get_feed( $feed_id );
 
 				if ( $feed && 'subscription' === \GV\Utils::get( $feed, 'meta/transactionType' ) ) {
+
 					if ( $subscription_addons[ $slug ]->cancel( $entry, $feed ) ) {
 
 						$subscription_addons[ $slug ]->cancel_subscription( $entry, $feed );
