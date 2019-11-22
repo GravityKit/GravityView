@@ -1259,12 +1259,16 @@ class GravityView_Edit_Entry_Render {
 				GFFormDisplay::$submission[ $this->form['id'] ][ 'is_valid' ] = true;
 
 				if ( \GV\Utils::_POST( 'save' ) === $labels['next'] ) {
-					$page_number++;
+					$last_page = \GFFormDisplay::get_max_page_number( $this->form );
+
+					while ( ++$page_number < $last_page && RGFormsModel::is_page_hidden( $this->form, $page_number, \GV\Utils::_POST( 'gform_field_values' ) ) ) {
+					} // Advance to next visible page
 				} elseif ( \GV\Utils::_POST( 'save' ) === $labels['previous'] ) {
-					$page_number--;
+					while ( --$page_number > 1 && RGFormsModel::is_page_hidden( $this->form, $page_number, \GV\Utils::_POST( 'gform_field_values' ) ) ) {
+					} // Advance to next visible page
 				}
 
-				GFFormDisplay::$submission[ $this->form['id'] ][ 'page_number' ] = $page_number;
+				GFFormDisplay::$submission[ $this->form['id'] ]['page_number'] = $page_number;
 			}
 
 			if ( ( $page_number = intval( $page_number ) ) < 2 ) {
