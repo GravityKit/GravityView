@@ -239,7 +239,7 @@ final class GravityView_Duplicate_Entry {
 	 *
 	 * @return string           Key used to validate request
 	 */
-	protected static function get_nonce_key( $entry_id ) {
+	public static function get_nonce_key( $entry_id ) {
 		return sprintf( 'duplicate_%s', $entry_id );
 	}
 
@@ -267,19 +267,14 @@ final class GravityView_Duplicate_Entry {
 			return NULL;
 		}
 
-		// Use the slug instead of the ID for consistent security
-		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
-
 		$actionurl = add_query_arg( array(
 			'action'	=> 'duplicate',
-			'entry_id'	=> $entry_slug,
+			'entry_id'	=> $entry['id'],
 			'gvid' => $view_id,
             'view_id' => $view_id,
 		), $base );
 
-		$url = wp_nonce_url( $actionurl, 'duplicate_'.$entry_slug, 'duplicate' );
-
-		return $url;
+		return add_query_arg( 'duplicate', wp_create_nonce( self::get_nonce_key( $entry['id'] ) ), $actionurl );
 	}
 
 	/**
