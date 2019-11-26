@@ -223,4 +223,149 @@ class GravityView_Duplicate_Entry_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( $expected, $template_paths );
 	}
+
+	/**
+	 * @group capabilities
+	 * @covers GravityView_Duplicate_Entry::check_user_cap_duplicate_entry()
+	 */
+	public function test_check_user_cap_duplicate_entry() {
+
+		$form = $this->factory->form->create_and_get();
+
+		$view = $this->factory->view->create_and_get(array(
+			'form_id' => $form['id'],
+			'settings' => array(
+				'user_duplicate' => true,
+			)
+		) );
+
+		$author = $this->factory->user->create_and_get( array(
+			'user_login' => 'author',
+			'role' => 'author'
+		) );
+
+		$author_id = $author->ID;
+
+		$contributor = $this->factory->user->create_and_get( array(
+			'user_login' => 'contributor',
+			'role' => 'contributor'
+		) );
+
+		$contributor_id = $contributor->ID;
+
+		$editor_id = $this->factory->user->create( array(
+			'user_login' => 'editor',
+			'role' => 'editor'
+		) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $contributor_id
+		) );
+
+		$subscriber_id = $this->factory->user->create( array(
+			'user_login' => 'subscriber',
+			'role' => 'subscriber'
+		) );
+
+		#####
+		##### Test Caps & Permissions always being able to duplicate
+		#####
+		$this->_add_and_remove_caps_test( $entry, $view );
+
+		#####
+		##### Test Entry with "Created By"
+		#####
+		$this->factory->user->set( $contributor_id );
+
+		// User Duplicate Enabled
+		$this->assertTrue( GravityView_Duplicate_Entry::check_user_cap_duplicate_entry( $entry, array(), $view->ID ) );
+
+		$view_user_duplicate_disabled = $this->factory->view->create_and_get(array(
+			'form_id' => $form['id'],
+			'settings' => array(
+				'user_duplicate' => false,
+			)
+		));
+
+		// User Duplicate Disabled
+		$this->assertFalse( GravityView_Duplicate_Entry::check_user_cap_duplicate_entry( $entry, array(), $view_user_duplicate_disabled->ID ) );
+
+		/** @var WP_User $admin */
+		$admin = $this->factory->user->create_and_get( array(
+			'user_login' => 'administrator',
+			'role' => 'administrator'
+		) );
+
+		$admin_id = $admin->ID;
+
+		#####
+		##### Test Admin always being able to duplicate
+		#####
+
+		$this->factory->user->set( $admin_id );
+
+		// Admin always can duplicate
+		$this->assertTrue( GravityView_Duplicate_Entry::check_user_cap_duplicate_entry( $entry, array(), $view->ID ) );
+
+		// Admin always can duplicate
+		$this->assertTrue( GravityView_Duplicate_Entry::check_user_cap_duplicate_entry( $entry, array(), $view_user_duplicate_disabled->ID ) );
+
+		#####
+		##### Test Entry _without_ "Created By"
+		#####
+
+		$entry_without_created_by = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $contributor_id
+		) );
+
+		unset( $entry_without_created_by['created_by'] );
+
+		$this->factory->user->set( $admin_id );
+
+		// Admin always can duplicate, even without "created_by"
+		$this->assertTrue( GravityView_Duplicate_Entry::check_user_cap_duplicate_entry( $entry_without_created_by, array(), $view_user_duplicate_disabled->ID ) );
+
+		$this->factory->user->set( $contributor_id );
+
+		$this->assertFalse( GravityView_Duplicate_Entry::check_user_cap_duplicate_entry( $entry_without_created_by, array(), $view->ID ) );
+	}
+
+	/**
+	 * Test Caps & Permissions always being able to duplicate
+	 *
+	 * @param $entry
+	 * @param $view
+	 */
+	public function _add_and_remove_caps_test( $entry, $view ) {
+
+		$user = $this->factory->user->create_and_set( array( 'role' => 'zero' ) );
+
+		$current_user = wp_get_current_user();
+
+		$this->assertEquals( $user->ID, $current_user->ID );
+
+		$full_access = array(
+			'gravityview_full_access',
+			'gform_full_access',
+			'gravityforms_edit_entries',
+		);
+
+		foreach ( $full_access as $cap ) {
+			$user->remove_all_caps();
+			$user->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
+
+			// Can't duplicate now
+			$this->assertFalse( current_user_can( $cap ), $cap );
+			$this->assertFalse( GravityView_Duplicate_Entry::check_user_cap_duplicate_entry( $entry, array(), $view->ID ), $cap );
+
+			$user->add_cap( $cap );
+			$user->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
+
+			// Can duplicate now
+			$this->assertTrue( current_user_can( $cap ), $cap );
+			$this->assertTrue( GravityView_Duplicate_Entry::check_user_cap_duplicate_entry( $entry, array(), $view->ID ), $cap );
+		}
+	}
 }
