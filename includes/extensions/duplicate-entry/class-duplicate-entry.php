@@ -582,7 +582,7 @@ final class GravityView_Duplicate_Entry {
 		$entry_id = isset( $entry['id'] ) ? $entry['id'] : NULL;
 
 		// Or if they can duplicate any entries (as defined in Gravity Forms), we're good.
-		if ( GVCommon::has_cap( array( 'gravityforms_edit_entries' ), $entry_id ) ) {
+		if ( GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gform_full_access', 'gravityview_full_access' ), $entry_id ) ) {
 
 			gravityview()->log->debug( 'Current user has `gravityforms_edit_entries` capability.' );
 
@@ -627,9 +627,8 @@ final class GravityView_Duplicate_Entry {
 		// Only checks user_duplicate view option if view is already set
 		if ( $view_id ) {
 
-			$current_view = gravityview_get_current_view_data( $view_id );
-
-			$user_duplicate = isset( $current_view['atts']['user_duplicate'] ) ? $current_view['atts']['user_duplicate'] : false;
+			$view = \GV\View::by_id( $view_id );
+			$user_duplicate = $view->settings->get( 'user_duplicate', false );
 
 			if ( empty( $user_duplicate ) ) {
 
