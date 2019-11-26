@@ -439,6 +439,9 @@ class GravityView_Duplicate_Entry_Test extends GV_UnitTestCase {
 
 		$wpdb->suppress_errors( false );
 
+
+		$_server_bak = $_SERVER;
+
 		$_SERVER['HTTP_USER_AGENT'] = 'Tests';
 		$_SERVER['REQUEST_URI'] = 'http://tests?action=duplicate';
 
@@ -467,6 +470,8 @@ class GravityView_Duplicate_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( '127.0.0.1', $duplicate_entry['ip'] );
 
 		$this->assertEquals( $admin->ID, $duplicate_entry['created_by'] );
+
+		$_SERVER = $_server_bak;
 
 		$this->_reset_context();
 	}
