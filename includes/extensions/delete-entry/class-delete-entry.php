@@ -664,11 +664,13 @@ final class GravityView_Delete_Entry {
 		// Only checks user_delete view option if view is already set
 		if( $view_id ) {
 
-			$current_view = gravityview_get_current_view_data( $view_id );
+			if ( ! $view = \GV\View::by_id( $view_id ) ) {
+				return false;
+			}
 
-			$user_delete = isset( $current_view['atts']['user_delete'] ) ? $current_view['atts']['user_delete'] : false;
+			$user_delete = $view->settings->get( 'user_delete', false );
 
-			if( empty( $user_delete ) ) {
+			if ( empty( $user_delete ) ) {
 
 				gravityview()->log->debug( 'User Delete is disabled. Returning false.' );
 

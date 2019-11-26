@@ -627,7 +627,10 @@ final class GravityView_Duplicate_Entry {
 		// Only checks user_duplicate view option if view is already set
 		if ( $view_id ) {
 
-			$view = \GV\View::by_id( $view_id );
+			if ( ! $view = \GV\View::by_id( $view_id ) ) {
+				return false;
+			}
+
 			$user_duplicate = $view->settings->get( 'user_duplicate', false );
 
 			if ( empty( $user_duplicate ) ) {
