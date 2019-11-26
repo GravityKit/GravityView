@@ -290,7 +290,7 @@ final class GravityView_Duplicate_Entry {
 	 *
 	 * @uses wp_safe_redirect()
 	 *
-	 * @return void
+	 * @return void|string $url URL during tests instead of redirect.
 	 */
 	public function process_duplicate() {
 
@@ -300,7 +300,7 @@ final class GravityView_Duplicate_Entry {
 		}
 
 		// Make sure it's a GravityView request
-		$valid_nonce_key = wp_verify_nonce( $_GET['duplicate'], self::get_nonce_key( $_GET['entry_id'] ) );
+		$valid_nonce_key = wp_verify_nonce( \GV\Utils::_GET( 'duplicate' ), self::get_nonce_key( $_GET['entry_id'] ) );
 
 		if ( ! $valid_nonce_key ) {
 			gravityview()->log->debug( 'Duplicate entry not processed: nonce validation failed.' );
@@ -364,6 +364,10 @@ final class GravityView_Duplicate_Entry {
 
 		$redirect_to_base = esc_url_raw( remove_query_arg( array( 'action', 'gvid' ) ) );
 		$redirect_to = add_query_arg( $messages, $redirect_to_base );
+
+		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
+			return $redirect_to;
+		}
 
 		wp_safe_redirect( $redirect_to );
 

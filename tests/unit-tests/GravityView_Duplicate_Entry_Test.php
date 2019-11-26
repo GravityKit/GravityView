@@ -7,7 +7,7 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  */
 class GravityView_Duplicate_Entry_Test extends GV_UnitTestCase {
 	/**
-	 * Reset the edit entry context.
+	 * Reset the duplicate entry context.
 	 *
 	 * @return void
 	 */
@@ -367,5 +367,107 @@ class GravityView_Duplicate_Entry_Test extends GV_UnitTestCase {
 			$this->assertTrue( current_user_can( $cap ), $cap );
 			$this->assertTrue( GravityView_Duplicate_Entry::check_user_cap_duplicate_entry( $entry, array(), $view->ID ), $cap );
 		}
+	}
+
+	/**
+	 * @covers GravityView_Duplicate_Entry::get_nonce_key()
+	 */
+	public function test_get_nonce_key() {
+		$entry_id = 3;
+
+		$nonce_key = GravityView_Duplicate_Entry::get_nonce_key( $entry_id );
+
+		$this->assertEquals( $nonce_key, sprintf( 'duplicate_%d', $entry_id ) );
+	}
+
+	public function test_duplicate_basic() {
+		$this->_reset_context();
+
+		$duplicate = GravityView_Duplicate_Entry::getInstance();
+
+		$admin = $this->factory->user->create_and_get( array(
+			'user_login' => 'administrator',
+			'role' => 'administrator'
+		) );
+
+		$contributor = $this->factory->user->create_and_get( array(
+			'user_login' => 'contributor',
+			'role' => 'contributor'
+		) );
+
+		$form = $this->factory->form->create_and_get();
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $contributor->ID,
+			'date_created' => '2012-01-02 03:04:05',
+			'date_updated' => '2012-01-02 03:04:05',
+			'ip' => '8.8.8.8',
+			'is_starred' => true,
+			'is_read' => true,
+		) );
+
+		$this->assertNull( $duplicate->process_duplicate() ); // No action
+
+		$_GET['action'] = 'duplicate';
+		$_GET['entry_id'] = $entry['id'] + 99;
+
+		$this->assertNull( $duplicate->process_duplicate() ); // Missing nonce
+
+		$_GET['duplicate'] = 'hello';
+
+		$this->assertNull( $duplicate->process_duplicate() ); // Invalid nonce
+
+		$_GET['duplicate'] = wp_create_nonce( GravityView_Duplicate_Entry::get_nonce_key( $_GET['entry_id'] ) );
+
+		$this->assertContains( 'The+entry+does+not+exist', $duplicate->process_duplicate() ); // Invalid entry
+
+		$_GET['entry_id'] = $entry['id'];
+		$_GET['duplicate'] = wp_create_nonce( GravityView_Duplicate_Entry::get_nonce_key( $_GET['entry_id'] ) );
+
+		$this->assertContains( 'You+do+not+have+permission+to+duplicate+this+entry', $duplicate->process_duplicate() ); // Not allowed
+
+		$this->factory->user->set( $admin->ID );
+
+		$_GET['duplicate'] = wp_create_nonce( GravityView_Duplicate_Entry::get_nonce_key( $_GET['entry_id'] ) );
+
+		global $wpdb;
+
+		$wpdb->suppress_errors( true );
+
+		$this->assertContains( 'There+was+an+error+duplicating+the+entry.', $duplicate->process_duplicate() ); // User agent cannot be NULL
+
+		$wpdb->suppress_errors( false );
+
+		$_SERVER['HTTP_USER_AGENT'] = 'Tests';
+		$_SERVER['REQUEST_URI'] = 'http://tests?action=duplicate';
+
+		$this->assertCount( 1, GFAPI::get_entries( $form['id'] ) );
+
+		$this->assertContains( '?status=duplicated', $duplicate->process_duplicate() ); // OK
+
+		$this->assertCount( 2, list( $duplicate_entry, $source_entry ) = GFAPI::get_entries( $form['id'] ) );
+
+		$this->assertNotEmpty( $duplicate_entry['date_updated'] );
+		$this->assertNotEmpty( $duplicate_entry['date_created'] );
+
+		$this->assertNotEquals( $duplicate_entry['date_updated'], $source_entry['date_updated'] );
+		$this->assertNotEquals( $duplicate_entry['date_created'], $source_entry['date_created'] );
+
+		$this->assertNotEquals( $duplicate_entry['id'], $source_entry['id'] );
+		$this->assertNotEquals( $duplicate_entry['source_url'], $source_entry['source_url'] );
+
+		$this->assertContains( 'tests', $duplicate_entry['source_url'] );
+
+		$this->assertEquals( 'Tests', $duplicate_entry['user_agent'] );
+
+		$this->assertEmpty( $duplicate_entry['is_starred'] );
+		$this->assertEmpty( $duplicate_entry['is_read'] );
+
+		$this->assertEquals( '127.0.0.1', $duplicate_entry['ip'] );
+
+		$this->assertEquals( $admin->ID, $duplicate_entry['created_by'] );
+
+		$this->_reset_context();
 	}
 }
