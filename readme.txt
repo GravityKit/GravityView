@@ -86,6 +86,7 @@ __Developer Updates:__
 * Modified: Default 250px `image_width` setting for File Upload images is now easily overrideable
 * Removed: The `gravityview/gvlogic/parse_atts/after` action is no longer available. See `gravityview/gvlogic/atts` filter instead
 * Removed: The `GVLogic_Shortcode` class is now a lifeless stub. See `\GV\Shortcodes\gvlogic`.
+* Deprecated: `gravityview_get_current_view_data` use the `\GV\View` API.
 
 = 2.4.1.1 on August 27, 2019 =
 
