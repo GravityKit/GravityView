@@ -1329,7 +1329,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
-		add_filter( $filter = 'gravityview/search/searchable_fields/frontend', $callback = function( $fields, $view, $with_full ) {
+		add_filter( $filter = 'gravityview/search/searchable_fields/whitelist', $callback = function( $fields, $view, $with_full ) {
 			if ( $with_full ) {
 				return array(
 					array(

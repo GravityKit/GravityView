@@ -77,6 +77,7 @@ __Developer Updates:__
 * Added: `gravityview/gvlogic/atts` filter for `[gvlogic]`
 * Added: `gravityview/edit_entry/page/success` filter to alter the message between edit entry pages.
 * Added: `gravityview/approve_entries/update_unapproved_meta` filter to modify entry update approval status.
+* Added: `gravityview/search/searchable_fields/whitelist` filter to modify allowed URL-based searches.
 * Fixed: Some issues with `unfiltered_html` user capabilities being not enough to edit a View
 * Fixed: Partial form was being passed to `gform_after_update_entry` filter after editing an entry. Full form will now be passed.
 * Fixed: Widget form IDs would not change when form ID is changed in the View Configuration screen

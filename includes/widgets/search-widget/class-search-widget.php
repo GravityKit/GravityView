@@ -511,14 +511,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		/**
-		 * @filter `gravityview/search/searchable_fields/frontend` Modifies the fields able to be searched using the Search Bar
+		 * @filter `gravityview/search/searchable_fields/whitelist` Modifies the fields able to be searched using the Search Bar
 		 * @since 2.5.1
 		 *
 		 * @param array $searchable_fields Array of GravityView-formatted fields or only the field ID? Example: [ '1.2', 'created_by' ]
 		 * @param \GV\View $view Object of View being searched.
 		 * @param bool $with_full_field Does $searchable_fields contain the full field array or just field ID? Default: false (just field ID)
 		 */
-		return apply_filters( 'gravityview/search/searchable_fields/frontend', $searchable_fields, $view, $with_full_field );
+		return apply_filters( 'gravityview/search/searchable_fields/whitelist', $searchable_fields, $view, $with_full_field );
 	}
 
 	/** --- Frontend --- */
