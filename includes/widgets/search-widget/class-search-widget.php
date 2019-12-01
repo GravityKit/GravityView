@@ -1018,7 +1018,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		// get form field array
-		$form_field = is_numeric( $field_id ) ? \GV\GF_Field::by_id( $form, $field_id ) : \GV\Internal_Field::by_id( $field_id );
+		if ( ! $form_field = is_numeric( $field_id ) ? \GV\GF_Field::by_id( $form, $field_id ) : \GV\Internal_Field::by_id( $field_id ) ) {
+			return false;
+		}
 
 		// default filter array
 		$filter = array(
