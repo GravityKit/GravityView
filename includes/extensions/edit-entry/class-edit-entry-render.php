@@ -21,13 +21,13 @@ class GravityView_Edit_Entry_Render {
 	protected $loader;
 
 	/**
-	 * @var string String used to generate unique nonce for the entry/form/view combination. Allows access to edit page.
+	 * @var string $nonce_key String used to generate unique nonce for the entry/form/view combination. Allows access to edit page.
 	 */
 	static $nonce_key;
 
 	/**
 	 * @since 1.9
-	 * @var string String used for check valid edit entry form submission. Allows saving edit form values.
+	 * @var string $nonce_field String used for check valid edit entry form submission. Allows saving edit form values.
 	 */
 	private static $nonce_field = 'is_gv_edit_entry';
 
@@ -104,7 +104,7 @@ class GravityView_Edit_Entry_Render {
 	 * ID of the current post. May also be ID of the current View.
      *
      * @since 2.0.13
-     * 
+	 *
      * @var int
 	 */
 	public $post_id;
@@ -373,7 +373,7 @@ class GravityView_Edit_Entry_Render {
 
 	        // Delete the values for hidden inputs
 	        $this->unset_hidden_field_values();
-			
+
 			$this->entry['date_created'] = $date_created;
 
 			// Process calculation fields
@@ -481,7 +481,7 @@ class GravityView_Edit_Entry_Render {
 	 * the missing/empty approval field to affect is_approved meta at all.
 	 *
 	 * Called before the Gravity Forms after_update triggers.
-	 * 
+	 *
 	 * @since 2.5
 	 *
 	 * @return void
@@ -524,16 +524,16 @@ class GravityView_Edit_Entry_Render {
 	 * @return string UNAPPROVED unless something else is inside the entry.
 	 */
 	public function prevent_update_unapproved_meta( $value, $form, $entry ) {
-		
+
 		remove_filter( 'gravityview/approve_entries/update_unapproved_meta', array( $this, 'prevent_update_unapproved_meta' ), 9 );
-		
+
 		if ( ! $value = gform_get_meta( $entry['id'], 'is_approved' ) ) {
-			
+
 			$value = GravityView_Entry_Approval_Status::UNAPPROVED;
-			
+
 			$value = apply_filters( 'gravityview/approve_entries/after_submission/default_status', $value );
 		}
-		
+
 		return $value;
 	}
 
@@ -2188,7 +2188,7 @@ class GravityView_Edit_Entry_Render {
 						}
 
 						$match = GFFormsModel::matches_operation( $value, $rule['value'], $rule['operator'] );
-						
+
 						if ( $match ) {
 							$remove_conditions_rule[] = array( $field['id'], $i );
 						}
