@@ -83,6 +83,7 @@ __Developer Updates:__
 * Fixed: Widget form IDs would not change when form ID is changed in the View Configuration screen
 * Fixed: Intermittent `[gvlogic2]` and nested `else` issues
     * The `[gvlogic]` shortcode has been rewritten for more stable, stateless behavior
+* Fixed: `GravityView_Entry_Notes::get_notes()` can return null; cast `$notes` as an array in `templates/fields/field-notes-html.php` and `includes/extensions/entry-notes/fields/notes.php` template files
 * Modified: Cookies will no longer be set for Single Entry back links
 * Modified: Default 250px `image_width` setting for File Upload images is now easily overrideable
 * Removed: The `gravityview/gvlogic/parse_atts/after` action is no longer available. See `gravityview/gvlogic/atts` filter instead

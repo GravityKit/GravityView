@@ -24,9 +24,9 @@ require_once( GFCommon::get_base_path() . '/entry_detail.php' );
  */
 do_action( 'gravityview/field/notes/scripts' );
 
-$entry = $gravityview_view->getCurrentEntry();
-$notes = GravityView_Entry_Notes::get_notes( $entry['id'] );
-$strings = GravityView_Field_Notes::strings();
+$entry      = $gravityview_view->getCurrentEntry();
+$notes      = (array) GravityView_Entry_Notes::get_notes( $entry['id'] );
+$strings    = GravityView_Field_Notes::strings();
 $entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
 
 $show_add = ! empty( $visibility_settings['add'] );
