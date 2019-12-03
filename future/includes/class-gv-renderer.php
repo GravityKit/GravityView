@@ -44,9 +44,14 @@ class Renderer {
 
 		$reserved_slugs = array(
 			$wp_rewrite->search_base,
-			apply_filters( 'gravityview_slug', 'view' ),
 			apply_filters( 'gravityview_directory_endpoint', 'entry' ),
 		);
+
+		foreach( get_post_types() as $post_type ) {
+			if ( $slug = \GV\Utils::get( get_post_type_object( $post_type )->rewrite, 'slug' ) ) {
+				$reserved_slugs[] = $slug;
+			}
+		}
 
 		/**
 		 * @filter `gravityview/rewrite/reserved_slugs` Modify the reserved embed slugs that trigger a warning.
@@ -56,6 +61,8 @@ class Renderer {
 		$reserved = apply_filters( 'gravityview/rewrite/reserved_slugs', $reserved_slugs, $gravityview );
 
 		if ( in_array( $wp->request, $reserved_slugs, true ) ) {
+			gravityview()->log->error( '{slug} page URL is reserved.', array( 'slug' => $wp->request ) );
+
 			$title = esc_html__( 'GravityView will not work correctly on this page.', 'gravityview' );
 			$message = __( 'Please refer to the <a href="%s">documentation</a> for more information.', 'gravityview' );
 			$message .= '<br />' . esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
