@@ -23,6 +23,7 @@ class Renderer {
 
 	/**
 	 * Print unconfigured notices to admins.
+	 * Print reserved slug warnings.
 	 *
 	 * @param \GV\Template_Context $gravityview The $gravityview template object.
 	 *
@@ -35,6 +36,38 @@ class Renderer {
 			return;
 		}
 
+		/**
+		 * Check reserved slugs.
+		 */
+		global $wp;
+		global $wp_rewrite;
+
+		$reserved_slugs = array(
+			$wp_rewrite->search_base,
+			apply_filters( 'gravityview_slug', 'view' ),
+			apply_filters( 'gravityview_directory_endpoint', 'entry' ),
+		);
+
+		/**
+		 * @filter `gravityview/rewrite/reserved_slugs` Modify the reserved embed slugs that trigger a warning.
+		 * @param[in,out] array $reserved_slugs An array of strings, reserved slugs.
+		 * @param \GV\Template_Context $gravityview The context.
+		 */
+		$reserved = apply_filters( 'gravityview/rewrite/reserved_slugs', $reserved_slugs, $gravityview );
+
+		if ( in_array( $wp->request, $reserved_slugs, true ) ) {
+			$title = esc_html__( 'GravityView will not work correctly on this page.', 'gravityview' );
+			$message = __( 'Please refer to the <a href="%s">documentation</a> for more information.', 'gravityview' );
+			$message .= '<br />' . esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
+
+			$output = sprintf( '<h3>%s</h3><p>%s</p>', $title, sprintf( $message, 'https://secure.helpscout.net/docs/566dfabbc6979143615564bf/article/5de618682c7d3a7e9ae4a707/' ) );
+
+			echo \GVCommon::generate_notice( $output, 'gv-error error', 'edit_gravityview', $gravityview->view->ID );
+		}
+
+		/**
+		 * Check empty configuration.
+		 */
 		switch ( true ) {
 			case ( $gravityview->request->is_edit_entry() ):
 				$tab = __( 'Edit Entry', 'gravityview' );
