@@ -8,12 +8,24 @@ if ( ! class_exists( 'GFForms' ) ) {
  * An entry locking class that syncs with GFEntryLocking.
  */
 class GravityView_Edit_Entry_Locking {
+	/**
+	 * Load extension entry point.
+	 *
+	 * @return void
+	 */
 	public function load() {
 		if ( ! has_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) ) ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		}
 	}
 
+	/**
+	 * Enqueue the required scripts and styles from Gravity Forms.
+	 *
+	 * Called via load() and `wp_enqueue_scripts`
+	 *
+	 * @return void
+	 */
 	public function enqueue_scripts() {
 		if ( ! $entry = gravityview()->request->is_edit_entry() ) {
 			return;
@@ -49,6 +61,16 @@ class GravityView_Edit_Entry_Locking {
 		wp_localize_script( 'gforms_locking', 'gflockingVars', $vars );
 	}
 
+	/**
+	 * Returns a string with the Lock UI HTML markup.
+	 *
+	 * Called script enqueing, added to JavaScript gforms_locking global variable.
+	 *
+	 * @param int $user_id The User ID that has the current lock. Will be empty if entry is not locked
+	 *                     or is locked to the current user. See self::check_lock
+	 *
+	 * @return string The Lock UI dialog box, etc.
+	 */
 	public function get_lock_ui( $user_id ) {
 		$user = get_userdata( $user_id );
 
@@ -96,6 +118,13 @@ class GravityView_Edit_Entry_Locking {
 		return $html;
 	}
 
+	/**
+	 * Localized string for the UI.
+	 *
+	 * Uses gravityforms textdomain unchanged.
+	 *
+	 * @return array An array of translations.
+	 */
 	public function get_strings() {
 		$translations = array(
 			'currently_locked'  => __( 'This entry is currently locked. Click on the "Request Control" button to let %s know you\'d like to take over.', 'gravityforms' ), 'currently_editing' => '%s is currently editing this entry',
@@ -116,10 +145,30 @@ class GravityView_Edit_Entry_Locking {
 		return $translations;
 	}
 
+	/**
+	 * Get a localized string.
+	 *
+	 * @param string $string The string to get.
+	 *
+	 * @return string A localized string. See self::get_strings()
+	 */
 	public function get_string( $string ) {
 		return \GV\Utils::get( $this->get_strings(), $string, '' );
 	}
 
+	/**
+	 * Lock the entry... maybe.
+	 *
+	 * Has 3 modes of locking:
+	 *
+	 *  - acquire (get), which reloads the page after locking the entry
+	 *  - release, which reloads the page after unlocking the entry
+	 *  - default action to lock on load if not locked
+	 *
+	 * @param int $entry_id The entry ID.
+	 *
+	 * @return void
+	 */
 	public function maybe_lock_object( $entry_id ) {
 		global $wp;
 		$current_url = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
@@ -127,6 +176,7 @@ class GravityView_Edit_Entry_Locking {
 		if ( isset( $_GET['get-edit-lock'] ) ) {
 			$this->set_lock( $entry_id );
 			echo '<script>window.location = ' . json_encode( remove_query_arg( 'get-edit-lock', $current_url ) ) . ';</script>';
+			exit();
 		} else if ( isset( $_GET['release-edit-lock'] ) ) {
 			$this->delete_lock_meta( $entry_id );
 			$current_url = remove_query_arg( 'edit', $current_url );
@@ -139,6 +189,13 @@ class GravityView_Edit_Entry_Locking {
 		}
 	}
 
+	/**
+	 * Is this entry locked to some other user?
+	 *
+	 * @param int $entry_id The entry ID.
+	 *
+	 * @return boolean Yes or no.
+	 */
 	public function check_lock( $entry_id ) {
 		if ( ! $user_id = $this->get_lock_meta( $entry_id ) ) {
 			return false;
@@ -151,18 +208,49 @@ class GravityView_Edit_Entry_Locking {
 		return false;
 	}
 
+	/**
+	 * The lock for an entry.
+	 *
+	 * Leverages Gravity Forms' persistent caching mechanisms.
+	 *
+	 * @param int $entry_id The entry ID.
+	 *
+	 * @return int|null The User ID or null.
+	 */
 	public function get_lock_meta( $entry_id ) {
 		return GFCache::get( 'lock_entry_' . $entry_id );
 	}
 
+	/**
+	 * Set the lock for an entry.
+	 *
+	 * @param int $entry_id The entry ID.
+	 * @param int $user_id The user ID to lock the entry to.
+	 *
+	 * @return void
+	 */
 	public function update_lock_meta( $entry_id, $user_id ) {
 		GFCache::set( 'lock_entry_' . $entry_id, $user_id, true, 1500 );
 	}
 
+	/**
+	 * Release the lock for an entry.
+	 *
+	 * @param int $entry_id The entry ID.
+	 *
+	 * @return void
+	 */
 	public function delete_lock_meta( $entry_id ) {
 		GFCache::delete( 'lock_entry_' . $entry_id );
 	}
 
+	/**
+	 * Lock the entry to the current user.
+	 *
+	 * @param int $entry_id The entry ID.
+	 *
+	 * @return int|false Locked or not.
+	 */
 	public function set_lock( $entry_id ) {
 		if ( 0 == ( $user_id = get_current_user_id() ) ) {
 			return false;
