@@ -231,7 +231,7 @@ class gvlogic extends \GV\Shortcode {
 
 		$operators = array(
 			'is', 'isnot', 'contains', 'starts_with', 'ends_with',
-			'greater_than', 'less_than', 'in', 'not_in', 'isnot',
+			'greater_than', 'less_than', 'in', 'not_in',
 			'contains', 'equals', 'greater_than_or_is', 'greater_than_or_equals',
 			'less_than_or_is', 'less_than_or_equals', 'not_contains',
 		);
