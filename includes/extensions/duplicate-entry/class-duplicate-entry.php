@@ -113,8 +113,8 @@ final class GravityView_Duplicate_Entry {
 	 */
 	public function duplicate_link_field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
-		// Always a link, never a filter
-		unset( $field_options['show_as_link'], $field_options['search_filter'] );
+		// Always a link, never a filter, always same window
+		unset( $field_options['show_as_link'], $field_options['search_filter'], $field_options['new_window'] );
 
 
 		// Duplicate Entry link should only appear to visitors capable of editing entries
