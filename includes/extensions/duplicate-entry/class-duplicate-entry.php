@@ -450,8 +450,8 @@ final class GravityView_Duplicate_Entry {
 
 		/**
 		 * @filter `gravityview/entry/duplicate/meta` Modify the new entry meta details.
-		 * @param[in,out] array $dulicate_meta The duplicate meta. Use/add meta_key, meta_value, item_index.
-		 * @param array $duplicate_entry The duplicated entry
+		 * @param[in,out] array $save_this_meta The duplicate meta. Use/add meta_key, meta_value, item_index.
+		 * @param array $row The duplicated entry
 		 * @param array $entry The original entry
 		 */
 		$save_this_meta = apply_filters( 'gravityview/entry/duplicate/meta', $save_this_meta, $row, $entry );
@@ -470,7 +470,7 @@ final class GravityView_Duplicate_Entry {
 		$duplicate_response = 'duplicated';
 
 		/**
-		 * @action `gravityview/entry/duplicated` Triggered when an entry is duplicated
+		 * @action `gravityview/duplicate-entry/duplicated` Triggered when an entry is duplicated
 		 * @since 2.5
 		 * @param  array $duplicated_entry The duplicated entry
 		 * @param  array $entry The original entry
