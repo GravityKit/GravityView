@@ -58,9 +58,11 @@ class Renderer {
 		 * @param[in,out] array $reserved_slugs An array of strings, reserved slugs.
 		 * @param \GV\Template_Context $gravityview The context.
 		 */
-		$reserved = apply_filters( 'gravityview/rewrite/reserved_slugs', $reserved_slugs, $gravityview );
+		$reserved_slugs = apply_filters( 'gravityview/rewrite/reserved_slugs', $reserved_slugs, $gravityview );
 
-		if ( in_array( $wp->request, $reserved_slugs, true ) ) {
+		$reserved_slugs = array_map( 'strtolower', $reserved_slugs );
+
+		if ( in_array( strtolower( $wp->request ), $reserved_slugs, true ) ) {
 			gravityview()->log->error( '{slug} page URL is reserved.', array( 'slug' => $wp->request ) );
 
 			$title = esc_html__( 'GravityView will not work correctly on this page.', 'gravityview' );
