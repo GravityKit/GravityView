@@ -607,11 +607,6 @@ class View implements \ArrayAccess {
 	public static function get_unions( $post ) {
 		$unions = array();
 
-		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_UNIONS ) ) {
-			gravityview()->log->error( 'Cannot get unions; unions feature not supported.' );
-			return $unions;
-		}
-
 		if ( ! $post || 'gravityview' !== get_post_type( $post ) ) {
 			gravityview()->log->error( 'Only "gravityview" post types can be \GV\View instances.' );
 			return $unions;
@@ -642,6 +637,12 @@ class View implements \ArrayAccess {
 			}
 
 			break;
+		}
+
+		if ( $unions ) {
+			if ( ! gravityview()->plugin->supports( Plugin::FEATURE_UNIONS ) ) {
+				gravityview()->log->error( 'Cannot get unions; unions feature not supported.' );
+			}
 		}
 
 		// @todo We'll probably need to backfill null unions
