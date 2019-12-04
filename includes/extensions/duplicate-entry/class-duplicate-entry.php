@@ -524,10 +524,15 @@ final class GravityView_Duplicate_Entry {
 		$confirm = __( 'Are you sure you want to duplicate this entry?', 'gravityview' );
 
 		/**
-		 * @filter `gravityview/duplicate-entry/confirm-text` Modify the Duplicate Entry Javascript confirmation text
-		 * @param string $confirm Default: "Are you sure you want to duplicate this entry?"
+		 * @filter `gravityview/duplicate-entry/confirm-text` Modify the Duplicate Entry Javascript confirmation text (will be sanitized when output)
+		 *
+		 * @param string $confirm Default: "Are you sure you want to duplicate this entry?". If empty, disable confirmation dialog.
 		 */
 		$confirm = apply_filters( 'gravityview/duplicate-entry/confirm-text', $confirm );
+
+		if ( empty( $confirm ) ) {
+			return '';
+		}
 
 		return 'return window.confirm(\''. esc_js( $confirm ) .'\');';
 	}
