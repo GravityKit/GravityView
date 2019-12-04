@@ -581,11 +581,11 @@ final class GravityView_Duplicate_Entry {
 	 *
 	 * @param  array $entry Gravity Forms entry array
 	 * @param array $field Field settings (optional)
-	 * @param int $view_id Pass a View ID to check caps against. If not set, check against current View (@deprecated no longer optional)
+	 * @param int $view_id Pass a View ID to check caps against. If not set, check against current View
 	 *
 	 * @return bool
 	 */
-	public static function check_user_cap_duplicate_entry( $entry, $field, $view_id ) {
+	public static function check_user_cap_duplicate_entry( $entry, $field = array(), $view_id = 0 ) {
 		$current_user = wp_get_current_user();
 
 		$entry_id = isset( $entry['id'] ) ? $entry['id'] : NULL;
@@ -680,7 +680,7 @@ final class GravityView_Duplicate_Entry {
 			return;
 		}
 
-		// Entry wasn't duplicateded from current View
+		// Entry wasn't duplicated from current View
 		if ( isset( $_GET['view_id'] ) && ( intval( $_GET['view_id'] ) !== intval( $current_view_id ) ) ) {
 			return;
 		}
