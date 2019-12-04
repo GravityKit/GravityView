@@ -1041,10 +1041,17 @@ class GravityView_Edit_Entry_Render {
 	 */
 	public function edit_entry_form() {
 
+		$locking = new GravityView_Edit_Entry_Locking;
+		$locking->maybe_lock_object( $this->entry['id'] );
+
 		?>
 
-		<div class="gv-edit-entry-wrapper"><?php
+		<div id="wpfooter"></div><!-- used for locking message -->
+		<script>
+			var ajaxurl = '<?php echo admin_url( 'admin-ajax.php', 'relative' ); ?>';
+		</script>
 
+		<div class="gv-edit-entry-wrapper"><?php
 			$javascript = gravityview_ob_include( GravityView_Edit_Entry::$file .'/partials/inline-javascript.php', $this );
 
 			/**
