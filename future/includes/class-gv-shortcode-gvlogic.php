@@ -25,6 +25,7 @@ class gvlogic extends \GV\Shortcode {
 		 * ...some aliases.
 		 */
 		parent::add( 'gvlogic2' );
+		parent::add( 'gvlogic3' ); // This level of nesting is not supported by GravityView support...but go for it!
 		parent::add( 'gvlogicelse' );
 	}
 
