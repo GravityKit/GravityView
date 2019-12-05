@@ -156,6 +156,8 @@ class GravityView_Edit_Entry_Locking {
 			'request_rejected'  => __( 'Your request was rejected', 'gravityforms' ),
 		);
 
+		$translations = array_map( 'wp_strip_all_tags', $translations );
+
 		return $translations;
 	}
 
