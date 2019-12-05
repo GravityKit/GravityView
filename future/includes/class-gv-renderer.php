@@ -72,9 +72,9 @@ class Renderer {
 		if ( in_array( strtolower( $wp->request ), $reserved_slugs, true ) ) {
 			gravityview()->log->error( '{slug} page URL is reserved.', array( 'slug' => $wp->request ) );
 
-			$title = esc_html__( 'GravityView will not work correctly on this page.', 'gravityview' );
-			$message = __( 'Please refer to the <a href="%s">documentation</a> for more information.', 'gravityview' );
-			$message .= '<br />' . esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
+			$title   = esc_html__( 'GravityView will not work correctly on this page because of the URL Slug.', 'gravityview' );
+			$message = __( 'Please <a href="%s">read this article</a> for more information.', 'gravityview' );
+			$message .= ' ' . esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
 
 			$output = sprintf( '<h3>%s</h3><p>%s</p>', $title, sprintf( $message, 'https://docs.gravityview.co/article/659-reserved-urls' ) );
 
