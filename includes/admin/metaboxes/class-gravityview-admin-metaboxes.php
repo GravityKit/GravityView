@@ -190,11 +190,10 @@ class GravityView_Admin_Metaboxes {
 	/**
 	 * Render html for 'select form' metabox
 	 *
-	 * @access public
 	 * @param object $post
 	 * @return void
 	 */
-	function render_data_source_metabox( $post ) {
+	public function render_data_source_metabox( $post ) {
 
 		include self::$metaboxes_dir . 'views/data-source.php';
 
@@ -203,11 +202,10 @@ class GravityView_Admin_Metaboxes {
 	/**
 	 * Render html for 'select template' metabox
 	 *
-	 * @access public
 	 * @param object $post
 	 * @return void
 	 */
-	function render_select_template_metabox( $post ) {
+	public function render_select_template_metabox( $post ) {
 
 		include self::$metaboxes_dir . 'views/select-template.php';
 	}

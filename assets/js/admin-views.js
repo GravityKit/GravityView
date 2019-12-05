@@ -127,6 +127,9 @@
 				// When changing forms, update the form info helper links
 				.on( 'gravityview_form_change', vcfg.updateFormLinks )
 
+				// When changing forms, update the widget form_ids
+				.on( 'gravityview_form_change', vcfg.updateWidgetFormIds )
+
 				// Show fields that are being used as links to single entry
 				.on( 'change', ".gv-dialog-options input[name*=show_as_link]", vcfg.toggleShowAsEntry )
 
@@ -413,6 +416,18 @@
 		},
 
 		/**
+		 * Update Widget form IDs to the selected form
+		 * @return {void}
+		 */
+		updateWidgetFormIds: function() {
+			var vcfg = viewConfiguration;
+
+			$( '.field-form-id' ).each( function() {
+				$( this ).val( vcfg.gvSelectForm.val() );
+			} );
+		},
+
+		/**
 		 * Show/Hide
 		 * @return {[type]} [description]
 		 */
@@ -615,7 +630,14 @@
 		setCustomLabel: function ( dialog ) {
 
 			// Does the field have a custom label?
-			var $custom_label = $( '[name*=custom_label]', dialog );
+			var $admin_label = $( '[name*=admin_label]', dialog );
+			var $custom_label;
+
+			if ( ! $admin_label.length || ! $admin_label.val() ) {
+				$custom_label = $( '[name*=custom_label]', dialog );
+			} else {
+				$custom_label = $admin_label; // We have an administrative label for this field
+			}
 
 			var $label = dialog.parents( '.gv-fields' ).find( '.gv-field-label' );
 
@@ -1507,6 +1529,7 @@
 		serializeForm: function ( e ) {
 
 			var $post = $('#post');
+			var serialized_data, $fields;
 
 			if ( $post.data( 'gv-valid' ) ) {
 				return true;
@@ -1516,16 +1539,24 @@
 
 			$post.data( 'gv-valid', false );
 
-			// Get all the fields where the `name` attribute start with `fields`
-			var $fields = $post.find( ':input[name^=fields]' );
+			if ( $post.data( 'gv-serialized' ) ) {
+				// Guard against double seralization/remove attempts
+				serialized_data = $post.data( 'gv-serialized' );
+			} else {
+				// Get all the fields where the `name` attribute start with `fields`
+				$fields = $post.find( ':input[name^=fields]' );
 
-			// Serialize the data
-			var serialized_data = $fields.serialize();
+				// Serialize the data
+				serialized_data = $fields.serialize();
 
-			// Remove the fields from the $_POSTed data
-			$fields.remove();
+				// Remove the fields from the $_POSTed data
+				$fields.remove();
+
+				$post.data( 'gv-serialized', serialized_data );
+			}
 
 			// Add a field to the form that contains all the data.
+			$post.find( ':input[name=gv_fields]' ).remove();
 			$post.append( $( '<input/>', {
 				'name': 'gv_fields',
 				'value': serialized_data,
@@ -1814,6 +1845,7 @@
 
 	// Expose globally methods to initialize/destroy tooltips and to display dialog window
 	window.gvAdminActions = {
+		viewConfiguration: viewConfiguration,
 		initTooltips: viewConfiguration.init_tooltips,
 		removeTooltips: viewConfiguration.remove_tooltips,
 		showDialog: viewConfiguration.showDialog,

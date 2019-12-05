@@ -38,7 +38,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 		parent::__construct();
 	}
 
-	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		unset ( $field_options['search_filter'], $field_options['show_as_link'] );
 
@@ -63,6 +63,13 @@ class GravityView_Field_Custom extends GravityView_Field {
 				'type' => 'checkbox',
 				'label' => __( 'Render oEmbeds', 'gravityview' ),
 				'desc' => sprintf( _x( 'Automatically convert oEmbed URLs into embedded content (%slearn more%s).', 'HTML link pointing to WordPress article on oEmbed', 'gravityview' ), '<a href="https://codex.wordpress.org/Embeds" rel="external noopener noreferrer">', '</a>' ),
+				'value' => '',
+			),
+			'admin_label' => array(
+				'type' => 'text',
+				'class' => 'widefat',
+				'label' => __( 'Admin Label', 'gravityview' ),
+				'desc' => __( 'A label that is only shown in the GravityView View configuration screen.', 'gravityview' ),
 				'value' => '',
 			),
 		);

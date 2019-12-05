@@ -289,6 +289,14 @@ class View implements \ArrayAccess {
 						return __( sprintf( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
 					}
 					break;
+				case 'in_trash':
+
+					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
+						return __( sprintf( 'This View is in the Trash. You can <a href="%s">restore the View here</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
+					}
+
+					return ''; // Do not show
+					break;
 				case 'no_direct_access':
 				case 'embed_only':
 				case 'not_public':
@@ -599,11 +607,6 @@ class View implements \ArrayAccess {
 	public static function get_unions( $post ) {
 		$unions = array();
 
-		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_UNIONS ) ) {
-			gravityview()->log->error( 'Cannot get unions; unions feature not supported.' );
-			return $unions;
-		}
-
 		if ( ! $post || 'gravityview' !== get_post_type( $post ) ) {
 			gravityview()->log->error( 'Only "gravityview" post types can be \GV\View instances.' );
 			return $unions;
@@ -634,6 +637,12 @@ class View implements \ArrayAccess {
 			}
 
 			break;
+		}
+
+		if ( $unions ) {
+			if ( ! gravityview()->plugin->supports( Plugin::FEATURE_UNIONS ) ) {
+				gravityview()->log->error( 'Cannot get unions; unions feature not supported.' );
+			}
 		}
 
 		// @todo We'll probably need to backfill null unions
@@ -893,7 +902,7 @@ class View implements \ArrayAccess {
 			'form_id' => $this->form ? $this->form->ID : null,
 			'form' => $this->form ? gravityview_get_form( $this->form->ID ) : null,
 			'atts' => $this->settings->as_atts(),
-			'fields' => $this->fields->by_visible()->as_configuration(),
+			'fields' => $this->fields->by_visible( $this )->as_configuration(),
 			'template_id' => $this->settings->get( 'template' ),
 			'widgets' => $this->widgets->as_configuration(),
 		);
@@ -1010,6 +1019,55 @@ class View implements \ArrayAccess {
 						}
 					}
 				}
+
+				/**
+				 * Merge time subfield sorts.
+				 */
+				add_filter( 'gform_gf_query_sql', $gf_query_timesort_sql_callback = function( $sql ) use ( &$query ) {
+					$q = $query->_introspect();
+					$orders = array();
+
+					$merged_time = false;
+
+					foreach ( $q['order'] as $oid => $order ) {
+						if ( $order[0] instanceof \GF_Query_Column ) {
+							$column = $order[0];
+						} else if ( $order[0] instanceof \GF_Query_Call ) {
+							if ( count( $order[0]->columns ) != 1 || ! $order[0]->columns[0] instanceof \GF_Query_Column ) {
+								$orders[ $oid ] = $order;
+								continue; // Need something that resembles a single sort
+							}
+							$column = $order[0]->columns[0];
+						}
+
+						if ( ( ! $field = \GFAPI::get_field( $column->source, $column->field_id ) ) || $field->type !== 'time' ) {
+							$orders[ $oid ] = $order;
+							continue; // Not a time field
+						}
+
+						if ( ! class_exists( '\GV\Mocks\GF_Query_Call_TIMESORT' ) ) {
+							require_once gravityview()->plugin->dir( 'future/_mocks.timesort.php' );
+						}
+
+						$orders[ $oid ] = array(
+							new \GV\Mocks\GF_Query_Call_TIMESORT( 'timesort', array( $column, $sql ) ),
+							$order[1] // Mock it!
+						);
+
+						$merged_time = true;
+					}
+
+					if ( $merged_time ) {
+						/**
+						 * ORDER again.
+						 */
+						if ( ! empty( $orders ) && $_orders = $query->_order_generate( $orders ) ) {
+							$sql['order'] = 'ORDER BY ' . implode( ', ', $_orders );
+						}
+					}
+
+					return $sql;
+				} );
 
 				$query->limit( $parameters['paging']['page_size'] )
 					->offset( ( ( $page - 1 ) * $parameters['paging']['page_size'] ) + $this->settings->get( 'offset' ) );
@@ -1260,6 +1318,10 @@ class View implements \ArrayAccess {
 					remove_action( 'gform_gf_query_sql', $gf_query_sql_callback );
 				}
 
+				if ( isset( $gf_query_timesort_sql_callback ) ) {
+					remove_action( 'gform_gf_query_sql', $gf_query_timesort_sql_callback );
+				}
+
 				/**
 				 * Add total count callback.
 				 */
@@ -1355,7 +1417,7 @@ class View implements \ArrayAccess {
 		$headers_done = false;
 		$allowed = $headers = array();
 
-		foreach ( $view->fields->by_position( "directory_*" )->by_visible()->all() as $id => $field ) {
+		foreach ( $view->fields->by_position( "directory_*" )->by_visible( $view )->all() as $id => $field ) {
 			$allowed[] = $field;
 		}
 
@@ -1441,8 +1503,13 @@ class View implements \ArrayAccess {
 		/**
 		 * @filter `gravityview/security/require_unfiltered_html` Bypass restrictions on Views that require `unfiltered_html`.
 		 * @param[in,out] boolean
+		 *
+		 * @since develop
+		 * @param string $cap The capability requested.
+		 * @param int $user_id The user ID.
+		 * @param array $args Any additional args to map_meta_cap
 		 */
-		if ( ! apply_filters( 'gravityview/security/require_unfiltered_html', true ) ) {
+		if ( ! apply_filters( 'gravityview/security/require_unfiltered_html', true, $cap, $user_id ) ) {
 			return $caps;
 		}
 

@@ -25,6 +25,9 @@
 
 		wp_widget_id: 'gravityview_search',
 
+		// The default search should be a single "Search All" field
+		default_search_fields: '[{"field":"search_all","input":"input_text"}]',
+
 		init: function( wrapClass ) {
 
 			gvSearchWidget.wrapClass = wrapClass;
@@ -669,18 +672,19 @@
 			gvSearchWidget.selectFields = null;
 			$('.gv-search-fields-value').each( function() {
 				$(this).parents('.'+ gvSearchWidget.wrapClass ).find('table').remove();
-				$(this).val('');
+				$( this ).val( gvSearchWidget.default_search_fields );
 			});
+
 		},
 
 		/**
 		 * [Specific for Search WP Widget]
-		 * When view changes clear select fields cache, remove table and refresh the data
+		 * When View changes clear select fields cache, remove table and refresh the data
 		 */
 		clearWidgetSearchData: function() {
 			gvSearchWidget.resetWidgetData( $(this) );
 			gvSearchWidget.widgetTarget.removeData( 'gvSelectFields' );
-			$( '.gv-search-fields-value', gvSearchWidget.widgetTarget ).val('');
+			$( '.gv-search-fields-value', gvSearchWidget.widgetTarget ).val( gvSearchWidget.default_search_fields );
 
 			var widget = gvSearchWidget.widgetTarget.closest('div.widget');
 

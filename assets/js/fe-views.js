@@ -17,11 +17,6 @@ jQuery(document).ready( function( $ ) {
 	var gvFront = {
 
 		init: function () {
-
-			if( gvGlobals.hasOwnProperty('cookiepath') ) {
-				this.cookies();
-			}
-
 			this.datepicker();
 
 			$( '.gv-widget-search' ).on( 'keypress change', this.form_changed );
@@ -139,36 +134,6 @@ jQuery(document).ready( function( $ ) {
 					element.datepicker( gvGlobals.datepicker );
 				} );
 
-			}
-		},
-
-		cookies: function () {
-
-			if ( $( "#gravityview_back_link" ).length > 0 ) {
-
-				gvFront.backGetCookie();
-
-			} else {
-
-				var $view_ids = $( ".gravityview-view-id" );
-
-				if ( $view_ids.length > 0 ) {
-					$view_ids.each( gvFront.backSetCookie );
-				}
-			}
-		},
-
-		// Set the back link cookie
-		backSetCookie: function () {
-			var viewId = $( this ).val();
-			$.cookie( 'gravityview_back_link_' + viewId, window.location.href, { path: gvGlobals.cookiepath } );
-		},
-
-		// Get the back link cookie and replace the back link href
-		backGetCookie: function () {
-			var viewId = $( "#gravityview_back_link" ).attr( 'data-viewid' );
-			if ( $.cookie( 'gravityview_back_link_' + viewId ) !== null ) {
-				$( "#gravityview_back_link" ).attr( 'href', $.cookie( 'gravityview_back_link_' + viewId ) );
 			}
 		},
 

@@ -21,13 +21,13 @@ class GravityView_Edit_Entry_Render {
 	protected $loader;
 
 	/**
-	 * @var string String used to generate unique nonce for the entry/form/view combination. Allows access to edit page.
+	 * @var string $nonce_key String used to generate unique nonce for the entry/form/view combination. Allows access to edit page.
 	 */
 	static $nonce_key;
 
 	/**
 	 * @since 1.9
-	 * @var string String used for check valid edit entry form submission. Allows saving edit form values.
+	 * @var string $nonce_field String used for check valid edit entry form submission. Allows saving edit form values.
 	 */
 	private static $nonce_field = 'is_gv_edit_entry';
 
@@ -104,7 +104,7 @@ class GravityView_Edit_Entry_Render {
 	 * ID of the current post. May also be ID of the current View.
      *
      * @since 2.0.13
-     * 
+	 *
      * @var int
 	 */
 	public $post_id;
@@ -115,6 +115,18 @@ class GravityView_Edit_Entry_Render {
 	 * @var array
 	 */
 	public $is_valid = NULL;
+
+	/**
+	 * Internal page button states.
+	 *
+	 * @var bool
+	 *
+	 * @since develop
+	 */
+	public $show_previous_button;
+	public $show_next_button;
+	public $show_update_button;
+	public $is_paged_submitted;
 
 	function __construct( GravityView_Edit_Entry $loader ) {
 		$this->loader = $loader;
@@ -361,11 +373,14 @@ class GravityView_Edit_Entry_Render {
 
 	        // Delete the values for hidden inputs
 	        $this->unset_hidden_field_values();
-			
+
 			$this->entry['date_created'] = $date_created;
 
 			// Process calculation fields
 			$this->update_calculation_fields();
+
+			// Handle hidden approval fields (or their absense)
+			$this->preset_approval_fields();
 
 			// Perform actions normally performed after updating a lead
 			$this->after_update();
@@ -412,7 +427,9 @@ class GravityView_Edit_Entry_Render {
 		 */
 		$unset_hidden_field_values = apply_filters( 'gravityview/edit_entry/unset_hidden_field_values', true, $this );
 
-		if( ! $unset_hidden_field_values ) {
+		$this->unset_hidden_calculations = array();
+
+		if ( ! $unset_hidden_field_values ) {
 			return;
 		}
 
@@ -426,16 +443,26 @@ class GravityView_Edit_Entry_Render {
 
 	    foreach ( $this->entry as $input_id => $field_value ) {
 
-		    $field = RGFormsModel::get_field( $this->form, $input_id );
+			if ( ! is_numeric( $input_id ) ) {
+				continue;
+			}
 
-		    // Reset fields that are hidden
-		    // Don't pass $entry as fourth parameter; force using $_POST values to calculate conditional logic
-		    if ( GFFormsModel::is_field_hidden( $this->form, $field, array(), NULL ) ) {
+			if ( ! $field = RGFormsModel::get_field( $this->form, $input_id ) ) {
+				continue;
+			}
+
+		    // Reset fields that are or would be hidden
+		    if ( GFFormsModel::is_field_hidden( $this->form, $field, array(), $this->entry ) ) {
 
 				$empty_value = $field->get_value_save_entry(
 					is_array( $field->get_entry_inputs() ) ? array() : '',
 					$this->form, '', $this->entry['id'], $this->entry
 				);
+
+				if ( $field->has_calculation() ) {
+					$this->unset_hidden_calculations[] = $field->id; // Unset
+					$empty_value = '';
+				}
 
 			    $lead_detail_id = GFFormsModel::get_lead_detail_id( $current_fields, $input_id );
 
@@ -447,6 +474,67 @@ class GravityView_Edit_Entry_Render {
 			    $_POST[ $post_input_id ] = '';
 		    }
 	    }
+	}
+
+	/**
+	 * Leverage `gravityview/approve_entries/update_unapproved_meta` to prevent
+	 * the missing/empty approval field to affect is_approved meta at all.
+	 *
+	 * Called before the Gravity Forms after_update triggers.
+	 *
+	 * @since 2.5
+	 *
+	 * @return void
+	 */
+	private function preset_approval_fields() {
+		$has_approved_field = false;
+
+		foreach ( self::$original_form['fields'] as $field ) {
+			if ( $field->gravityview_approved ) {
+				$has_approved_field = true;
+				break;
+			}
+		}
+
+		if ( ! $has_approved_field ) {
+			return;
+		}
+
+		$is_field_hidden = true;
+
+		foreach ( $this->form['fields'] as $field ) {
+			if ( $field->gravityview_approved ) {
+				$is_field_hidden = false;
+				break;
+			}
+		}
+
+		if ( ! $is_field_hidden ) {
+			return;
+		}
+
+		add_filter( 'gravityview/approve_entries/update_unapproved_meta', array( $this, 'prevent_update_unapproved_meta' ), 9, 3 );
+	}
+
+	/**
+	 * Done once from self::preset_approval_fields
+	 *
+	 * @since 2.5
+	 *
+	 * @return string UNAPPROVED unless something else is inside the entry.
+	 */
+	public function prevent_update_unapproved_meta( $value, $form, $entry ) {
+
+		remove_filter( 'gravityview/approve_entries/update_unapproved_meta', array( $this, 'prevent_update_unapproved_meta' ), 9 );
+
+		if ( ! $value = gform_get_meta( $entry['id'], 'is_approved' ) ) {
+
+			$value = GravityView_Entry_Approval_Status::UNAPPROVED;
+
+			$value = apply_filters( 'gravityview/approve_entries/after_submission/default_status', $value );
+		}
+
+		return $value;
 	}
 
 	/**
@@ -505,8 +593,8 @@ class GravityView_Edit_Entry_Render {
 
 		/** No file is being uploaded. */
 		if ( empty( $_FILES[ $input_name ]['name'] ) ) {
-			/** So return the original upload */
-			return $entry[ $input_id ];
+			/** So return the original upload, with $value as backup (it can be empty during edit form rendering) */
+			return rgar( $entry, $input_id, $value );
 		}
 
 		return $value;
@@ -589,6 +677,11 @@ class GravityView_Edit_Entry_Render {
 			$allowed_fields = wp_list_pluck( $allowed_fields, 'id' );
 
 			foreach ( $this->fields_with_calculation as $field ) {
+
+				if ( in_array( $field->id, $this->unset_hidden_calculations, true ) ) {
+					continue;
+				}
+
 				$inputs = $field->get_entry_inputs();
 				if ( is_array( $inputs ) ) {
 				    foreach ( $inputs as $input ) {
@@ -887,8 +980,8 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private function after_update() {
 
-		do_action( 'gform_after_update_entry', $this->form, $this->entry['id'], self::$original_entry );
-		do_action( "gform_after_update_entry_{$this->form['id']}", $this->form, $this->entry['id'], self::$original_entry );
+		do_action( 'gform_after_update_entry', self::$original_form, $this->entry['id'], self::$original_entry );
+		do_action( "gform_after_update_entry_{$this->form['id']}", self::$original_form, $this->entry['id'], self::$original_entry );
 
 		// Re-define the entry now that we've updated it.
 		$entry = RGFormsModel::get_lead( $this->entry['id'] );
@@ -1016,6 +1109,27 @@ class GravityView_Edit_Entry_Render {
 
 		if ( \GV\Utils::_POST( 'action' ) === 'update' ) {
 
+			if ( GFCommon::has_pages( $this->form ) && apply_filters( 'gravityview/features/paged-edit', false ) ) {
+				$labels = array(
+					'cancel'   => __( 'Cancel', 'gravityview' ),
+					'submit'   => __( 'Update', 'gravityview' ),
+					'next'     => __( 'Next', 'gravityview' ),
+					'previous' => __( 'Previous', 'gravityview' ),
+				);
+
+				/**
+				* @filter `gravityview/edit_entry/button_labels` Modify the cancel/submit buttons' labels
+				* @since 1.16.3
+				* @param array $labels Default button labels associative array
+				* @param array $form The Gravity Forms form
+				* @param array $entry The Gravity Forms entry
+				* @param int $view_id The current View ID
+				*/
+				$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $this->form, $this->entry, $this->view_id );
+
+				$this->is_paged_submitted = \GV\Utils::_POST( 'save' ) === $labels['submit'];
+			}
+
 			$back_link = remove_query_arg( array( 'page', 'view', 'edit' ) );
 
 			if( ! $this->is_valid ){
@@ -1026,6 +1140,20 @@ class GravityView_Edit_Entry_Render {
 
 				echo GVCommon::generate_notice( $message , 'gv-error' );
 
+			} elseif ( false === $this->is_paged_submitted ) {
+				// Paged form that hasn't been submitted on the last page yet
+				$entry_updated_message = sprintf( esc_attr__( 'Entry Updated.', 'gravityview' ), '<a href="' . esc_url( $back_link ) . '">', '</a>' );
+
+				/**
+				 * @filter `gravityview/edit_entry/page/success` Modify the edit entry success message on pages
+				 * @since develop
+				 * @param string $entry_updated_message Existing message
+				 * @param int $view_id View ID
+				 * @param array $entry Gravity Forms entry array
+				 */
+				$message = apply_filters( 'gravityview/edit_entry/page/success', $entry_updated_message , $this->view_id, $this->entry );
+
+				echo GVCommon::generate_notice( $message );
 			} else {
 				$view = \GV\View::by_id( $this->view_id );
 				$edit_redirect = $view->settings->get( 'edit_redirect' );
@@ -1093,6 +1221,8 @@ class GravityView_Edit_Entry_Render {
 
 		add_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields'), 5000, 3 );
 		add_filter( 'gform_submit_button', array( $this, 'render_form_buttons') );
+		add_filter( 'gform_next_button', array( $this, 'render_form_buttons' ) );
+		add_filter( 'gform_previous_button', array( $this, 'render_form_buttons' ) );
 		add_filter( 'gform_disable_view_counter', '__return_true' );
 
 		add_filter( 'gform_field_input', array( $this, 'verify_user_can_edit_post' ), 5, 5 );
@@ -1101,7 +1231,66 @@ class GravityView_Edit_Entry_Render {
 		// We need to remove the fake $_GET['page'] arg to avoid rendering form as if in admin.
 		unset( $_GET['page'] );
 
+		$this->show_next_button = false;
+		$this->show_previous_button = false;
+
 		// TODO: Verify multiple-page forms
+		if ( GFCommon::has_pages( $this->form ) && apply_filters( 'gravityview/features/paged-edit', false ) ) {
+			if ( intval( $page_number = \GV\Utils::_POST( 'gform_source_page_number_' . $this->form['id'], 0 ) ) ) {
+
+				$labels = array(
+					'cancel'   => __( 'Cancel', 'gravityview' ),
+					'submit'   => __( 'Update', 'gravityview' ),
+					'next'     => __( 'Next', 'gravityview' ),
+					'previous' => __( 'Previous', 'gravityview' ),
+				);
+
+				/**
+				* @filter `gravityview/edit_entry/button_labels` Modify the cancel/submit buttons' labels
+				* @since 1.16.3
+				* @param array $labels Default button labels associative array
+				* @param array $form The Gravity Forms form
+				* @param array $entry The Gravity Forms entry
+				* @param int $view_id The current View ID
+				*/
+				$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $this->form, $this->entry, $this->view_id );
+
+				GFFormDisplay::$submission[ $this->form['id'] ][ 'form' ] = $this->form;
+				GFFormDisplay::$submission[ $this->form['id'] ][ 'is_valid' ] = true;
+
+				if ( \GV\Utils::_POST( 'save' ) === $labels['next'] ) {
+					$last_page = \GFFormDisplay::get_max_page_number( $this->form );
+
+					while ( ++$page_number < $last_page && RGFormsModel::is_page_hidden( $this->form, $page_number, \GV\Utils::_POST( 'gform_field_values' ) ) ) {
+					} // Advance to next visible page
+				} elseif ( \GV\Utils::_POST( 'save' ) === $labels['previous'] ) {
+					while ( --$page_number > 1 && RGFormsModel::is_page_hidden( $this->form, $page_number, \GV\Utils::_POST( 'gform_field_values' ) ) ) {
+					} // Advance to next visible page
+				}
+
+				GFFormDisplay::$submission[ $this->form['id'] ]['page_number'] = $page_number;
+			}
+
+			if ( ( $page_number = intval( $page_number ) ) < 2 ) {
+				$this->show_next_button = true; // First page
+			}
+
+			$last_page = \GFFormDisplay::get_max_page_number( $this->form );
+
+			$has_more_pages = $page_number < $last_page;
+
+			if ( $has_more_pages ) {
+				$this->show_next_button = true; // Not the last page
+			} else {
+				$this->show_update_button = true; // The last page
+			}
+
+			if ( $page_number > 1 ) {
+				$this->show_previous_button = true; // Not the first page
+			}
+		} else {
+			$this->show_update_button = true;
+		}
 
 		ob_start(); // Prevent PHP warnings possibly caused by prefilling list fields for conditional logic
 
@@ -1111,6 +1300,8 @@ class GravityView_Edit_Entry_Render {
 
 	    remove_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields' ), 5000 );
 		remove_filter( 'gform_submit_button', array( $this, 'render_form_buttons' ) );
+		remove_filter( 'gform_next_button', array( $this, 'render_form_buttons' ) );
+		remove_filter( 'gform_previous_button', array( $this, 'render_form_buttons' ) );
 		remove_filter( 'gform_disable_view_counter', '__return_true' );
 		remove_filter( 'gform_field_input', array( $this, 'verify_user_can_edit_post' ), 5 );
 		remove_filter( 'gform_field_input', array( $this, 'modify_edit_field_input' ), 10 );
@@ -1150,8 +1341,12 @@ class GravityView_Edit_Entry_Render {
 	 */
 	public function filter_modify_form_fields( $form, $ajax = false, $field_values = '' ) {
 
+		if( $form['id'] != $this->form_id ) {
+			return $form;
+		}
+
 		// In case we have validated the form, use it to inject the validation results into the form render
-		if( isset( $this->form_after_validation ) ) {
+		if( isset( $this->form_after_validation ) && $this->form_after_validation['id'] === $form['id'] ) {
 			$form = $this->form_after_validation;
 		} else {
 			$form['fields'] = $this->get_configured_edit_fields( $form, $this->view_id );
@@ -1705,6 +1900,7 @@ class GravityView_Edit_Entry_Render {
 	/**
 	 * Filter area fields based on specified conditions
 	 *  - This filter removes the fields that have calculation configured
+	 *  - Hides fields that are hidden, etc.
 	 *
 	 * @uses GravityView_Edit_Entry::user_can_edit_field() Check caps
 	 * @access private
@@ -1723,6 +1919,10 @@ class GravityView_Edit_Entry_Render {
 
 		$field_type_blacklist = $this->loader->get_field_blacklist( $this->entry );
 
+		if ( empty( $configured_fields ) && apply_filters( 'gravityview/features/paged-edit', false ) ) {
+			$field_type_blacklist = array_diff( $field_type_blacklist, array( 'page' ) );
+		}
+
 		// First, remove blacklist or calculation fields
 		foreach ( $fields as $key => $field ) {
 
@@ -1739,8 +1939,22 @@ class GravityView_Edit_Entry_Render {
 		}
 
 		// The Edit tab has not been configured, so we return all fields by default.
-		if( empty( $configured_fields ) ) {
-			return array_values( $fields );
+		// But we do keep the hidden ones hidden please, for everyone :)
+		if ( empty( $configured_fields ) ) {
+			$out_fields = array();
+			foreach ( $fields as &$field ) {
+				if ( 'hidden' === $field->type ) {
+					continue; // A hidden field is just hidden
+				}
+
+				if ( 'hidden' == $field->visibility ) {
+					continue; // Same
+				}
+
+				$out_fields[] = $field;
+			}
+
+			return array_values( $out_fields );
 		}
 
 		// The edit tab has been configured, so we loop through to configured settings
@@ -1967,7 +2181,7 @@ class GravityView_Edit_Entry_Render {
 						}
 
 						$match = GFFormsModel::matches_operation( $value, $rule['value'], $rule['operator'] );
-						
+
 						if ( $match ) {
 							$remove_conditions_rule[] = array( $field['id'], $i );
 						}

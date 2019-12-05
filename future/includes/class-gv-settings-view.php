@@ -145,6 +145,15 @@ class View_Settings extends Settings {
 				'type'              => 'checkbox',
 				'show_in_shortcode' => true,
 			),
+			'user_duplicate' => array(
+				'label'             => __( 'Allow User Duplicate', 'gravityview' ),
+				'group'             => 'default',
+				'desc'              => __( 'Allow logged-in users to duplicate entries they created.', 'gravityview' ),
+				'value'             => 0,
+				'tooltip'           => __( 'Display "Duplicate Entry" fields to non-administrator users if they created the entry. Duplicate Entry fields will always be displayed to site administrators.', 'gravityview' ),
+				'type'              => 'checkbox',
+				'show_in_shortcode' => true,
+			),
 			'sort_field' => array(
 				'label'             => __( 'Sort by field', 'gravityview' ),
 				'type'              => 'select',
@@ -346,6 +355,7 @@ class View_Settings extends Settings {
 			'csv_nolimit'           => array(
 				'label'             => __( 'Show all in CSV', 'gravityview' ),
 				'group'             => 'default',
+				'requires'          => 'csv_enable',
 				'desc'              => __( 'Do not limit the number of entries output in the CSV.', 'gravityview' ),
 				'type'              => 'checkbox',
 				'value'             => '',

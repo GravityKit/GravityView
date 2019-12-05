@@ -60,7 +60,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		return $return;
 	}
 
-	public function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		unset ( $field_options['search_filter'] );
 

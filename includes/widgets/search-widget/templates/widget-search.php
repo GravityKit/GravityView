@@ -26,7 +26,7 @@ $search_method = GravityView_Widget_Search::getInstance()->get_search_method();
 	 */
 	do_action( 'gravityview_search_widget_fields_before', $this );
 
-	foreach( $this->search_fields as $search_field ) {
+	foreach( array_merge( $this->search_fields, $this->permalink_fields ) as $search_field ) {
 
 		/**
 		 * @action `gravityview_search_widget_field_before` Before each search input is rendered (other than the submit button)

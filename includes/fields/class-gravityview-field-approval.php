@@ -44,7 +44,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	 *
 	 * @return array
 	 */
-	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		unset( $field_options['only_loggedin'] );
 

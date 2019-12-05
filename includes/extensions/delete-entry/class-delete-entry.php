@@ -59,6 +59,8 @@ final class GravityView_Delete_Entry {
 
 		add_action ( 'gravityview/delete-entry/deleted', array( $this, 'process_connected_posts' ), 10, 2 );
 		add_action ( 'gravityview/delete-entry/trashed', array( $this, 'process_connected_posts' ), 10, 2 );
+
+		add_filter( 'gravityview/field/is_visible', array( $this, 'maybe_not_visible' ), 10, 3 );
 	}
 
 	/**
@@ -74,6 +76,50 @@ final class GravityView_Delete_Entry {
 		}
 
 		return self::$instance;
+	}
+
+	/**
+	 * Hide the field or not.
+	 *
+	 * For non-logged in users.
+	 * For users that have no delete rights on any of the current entries.
+	 *
+	 * @param bool $visible Visible or not.
+	 * @param \GF\Field $field The field.
+	 * @param \GV\View $view The View context.
+	 *
+	 * @return bool
+	 */
+	public function maybe_not_visible( $visible, $field, $view ) {
+		if ( 'delete_link' !== $field->ID ) {
+			return $visible;
+		}
+
+		if ( ! is_user_logged_in() ) {
+			return false;
+		}
+
+		if ( ! $view ) {
+			return $visible;
+		}
+
+		static $visiblity_cache_for_view = array();
+
+		if ( ! is_null( $result = \GV\Utils::get( $visiblity_cache_for_view, $view->ID, null ) ) ) {
+			return $result;
+		}
+
+		foreach ( $view->get_entries()->all() as $entry ) {
+			if ( self::check_user_cap_delete_entry( $entry->as_entry(), $field->as_configuration(), $view ) ) {
+				// At least one entry is deletable for this user
+				$visiblity_cache_for_view[ $view->ID ] = true;
+				return true;
+			}
+		}
+
+		$visiblity_cache_for_view[ $view->ID ] = false;
+
+		return false;
 	}
 
 	/**
@@ -605,13 +651,19 @@ final class GravityView_Delete_Entry {
 	 *
 	 * @param  array $entry Gravity Forms entry array
 	 * @param array $field Field settings (optional)
-	 * @param int $view_id Pass a View ID to check caps against. If not set, check against current View (@deprecated no longer optional)
+	 * @param int|\GV\View $view Pass a View ID to check caps against. If not set, check against current View (@deprecated no longer optional)
 	 * @return bool
 	 */
-	public static function check_user_cap_delete_entry( $entry, $field = array(), $view_id = 0 ) {
-		if ( ! $view_id ) {
+	public static function check_user_cap_delete_entry( $entry, $field = array(), $view = 0 ) {
+		if ( ! $view ) {
 			/** @deprecated path */
 			$view_id = GravityView_View::getInstance()->getViewId();
+			$view = \GV\View::by_id( $view_id );
+		} else {
+			if ( ! $view instanceof \GV\View ) {
+				$view = \GV\View::by_id ( $view );
+			}
+			$view_id = $view->ID;
 		}
 
 		$current_user = wp_get_current_user();
@@ -662,18 +714,9 @@ final class GravityView_Delete_Entry {
 		}
 
 		// Only checks user_delete view option if view is already set
-		if( $view_id ) {
-
-			$current_view = gravityview_get_current_view_data( $view_id );
-
-			$user_delete = isset( $current_view['atts']['user_delete'] ) ? $current_view['atts']['user_delete'] : false;
-
-			if( empty( $user_delete ) ) {
-
-				gravityview()->log->debug( 'User Delete is disabled. Returning false.' );
-
-				return false;
-			}
+		if ( $view && empty( $view->settings->get( 'user_delete' ) ) ) {
+			gravityview()->log->debug( 'User Delete is disabled. Returning false.' );
+			return false;
 		}
 
 		// If the logged-in user is the same as the user who created the entry, we're good.

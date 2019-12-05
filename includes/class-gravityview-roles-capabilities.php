@@ -251,7 +251,6 @@ class GravityView_Roles_Capabilities {
 			'gravityview_uninstall', // Ability to trigger the Uninstall @todo
 			'gravityview_contact_support', // Whether able to send a message to support via the Support Port
 
-			'edit_gravityviews',
 			'edit_others_gravityviews',
 			'edit_private_gravityviews',
 			'edit_published_gravityviews',
@@ -288,6 +287,7 @@ class GravityView_Roles_Capabilities {
 
 		// Edit and delete drafts but not publish
 		$contributor_caps = array(
+			'edit_gravityviews',
 			'delete_gravityviews',
 			'gravityview_getting_started', // Getting Started page access
 			'gravityview_support_port', // Display GravityView Support Port

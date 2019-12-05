@@ -1011,10 +1011,19 @@ function gravityview_get_current_views() {
 /**
  * Get data for a specific view
  *
+ * @deprecated use \GV\View API instead
+ * @since 2.5
+ *
  * @see  GravityView_View_Data::get_view()
  * @return array View data with `id`, `view_id`, `form_id`, `template_id`, `atts`, `fields`, `widgets`, `form` keys.
  */
 function gravityview_get_current_view_data( $view_id = 0 ) {
+	if ( $view_id ) {
+		if ( $view = \GV\View::by_id( $view_id ) ) {
+			return $view; // implements ArrayAccess
+		}
+		return array();
+	}
 
 	$fe = GravityView_frontend::getInstance();
 

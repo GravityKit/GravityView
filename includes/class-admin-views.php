@@ -556,20 +556,18 @@ class GravityView_Admin_Views {
 			}
 			$statii['template_settings'] = update_post_meta( $post_id, '_gravityview_template_settings', $_POST['template_settings'] );
 
-			$fields = array();
+			// guard against unloaded View configuration page
+			if ( isset( $_POST['gv_fields'] ) && isset( $_POST['gv_fields_done'] ) ) {
+				$fields = array();
 
-			// Directory&single Visible Fields
-			if( !empty( $preset_fields ) ) {
+				if ( ! empty( $_POST['gv_fields'] ) ) {
+					$fields = _gravityview_process_posted_fields();
+				}
 
-				$fields = $preset_fields;
+				$fields = wp_slash( $fields );
 
-			} elseif( !empty( $_POST['gv_fields'] ) ) {
-				$fields = _gravityview_process_posted_fields();
+				$statii['directory_fields'] = update_post_meta( $post_id, '_gravityview_directory_fields', $fields );
 			}
-
-			$fields = wp_slash( $fields );
-
-			$statii['directory_fields'] = update_post_meta( $post_id, '_gravityview_directory_fields', $fields );
 
 			// Directory Visible Widgets
 			if( empty( $_POST['widgets'] ) ) {
@@ -829,7 +827,13 @@ class GravityView_Admin_Views {
 		// Move Custom Content to top
 		$fields = array( 'custom' => $fields['custom'] ) + $fields;
 
-		return $fields;
+		/**
+		 * @filter `gravityview/admin/available_fields` Modify the available fields that can be used in a View.
+		 * @param[in,out] array $fields The fields.
+		 * @param  string|array $form form_ID or form object
+		 * @param  string $zone Either 'single', 'directory', 'header', 'footer'
+		 */
+		return apply_filters( 'gravityview/admin/available_fields', $fields, $form, $zone );
 	}
 
 
@@ -996,8 +1000,52 @@ class GravityView_Admin_Views {
 		$default_widget_areas = \GV\Widget::get_default_widget_areas();
 
 		$widgets = array();
-		if( !empty( $post_id ) ) {
-			$widgets = gravityview_get_directory_widgets( $post_id );
+		if ( ! empty( $post_id ) ) {
+			if ( 'auto-draft' === get_post_status( $post_id ) ) {
+				// This is a new View, prefill the widgets
+				$widgets = array(
+					'header_top' => array(
+						substr( md5( microtime( true ) ), 0, 13 ) => array (
+							'id' => 'search_bar',
+							'label' => __( 'Search Bar', 'gravityview' ),
+							'search_layout' => 'horizontal',
+							'search_clear' => '0',
+							'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+							'search_mode' => 'any',
+						),
+					),
+					'header_left' => array(
+						substr( md5( microtime( true ) ), 0, 13 ) => array(
+							'id' => 'page_info',
+							'label' => __( 'Show Pagination Info', 'gravityview' ),
+						),
+					),
+					'header_right' => array(
+						substr( md5( microtime( true ) ), 0, 13 ) => array(
+							'id' => 'page_links',
+							'label' => __( 'Page Links', 'gravityview' ),
+							'show_all' => '0',
+						),
+					),
+					'footer_right' => array(
+						substr( md5( microtime( true ) ), 0, 13 ) => array(
+							'id' => 'page_links',
+							'label' => __( 'Page Links', 'gravityview' ),
+							'show_all' => '0',
+						),
+					),
+				);
+
+				/**
+				 * @filter `gravityview/view/widgets/default` Modify the default widgets for new Views
+				 * @param[in,out] array $widgets A Widget configuration array
+				 * @param string $zone The widget zone that's being requested
+				 * @param int $post_id The auto-draft post ID
+				 */
+				$widgets = apply_filters( 'gravityview/view/widgets/default', $widgets, $template_id, $zone, $post_id );
+			} else {
+				$widgets = gravityview_get_directory_widgets( $post_id );
+			}
 		}
 
 		ob_start();

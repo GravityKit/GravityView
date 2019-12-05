@@ -109,7 +109,7 @@ class View_List_Template extends View_Template {
 		$vars = array();
 		foreach ( $zones as $zone ) {
 			$zone_var = str_replace( '-', '_', $zone );
-			$vars[ $zone_var ] = $this->view->fields->by_position( 'directory_list-' . $zone )->by_visible();
+			$vars[ $zone_var ] = $this->view->fields->by_position( 'directory_list-' . $zone )->by_visible( $this->view );
 			$vars[ "has_$zone_var" ] = $vars[ $zone_var ]->count();
 		}
 

@@ -130,7 +130,7 @@ abstract class GravityView_Field {
 	public function __construct() {
 
 		// Modify the field options based on the name of the field type
-		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 5 );
+		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 6 );
 
 		add_filter( 'gravityview/sortable/field_blacklist', array( $this, '_filter_sortable_fields' ), 1 );
 
@@ -458,7 +458,7 @@ abstract class GravityView_Field {
 	 * @param  string      $input_type    [description]
 	 * @return array                     [description]
 	 */
-	public function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		$this->_field_options = $field_options;
 		$this->_field_id = $field_id;

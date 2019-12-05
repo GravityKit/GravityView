@@ -308,6 +308,14 @@ class GravityView_Entry_Approval {
 			$value = GravityView_Entry_Approval_Status::APPROVED;
 		}
 
+		/**
+		 * @filter `gravityview/approve_entries/update_unapproved_meta` Filter the approval status on entry update.
+		 * @param[in,out] string $value The approval status.
+		 * @param array $form The form.
+		 * @param array $entry The entry.
+		 */
+		$value = apply_filters( 'gravityview/approve_entries/update_unapproved_meta', $value, $form, $entry );
+
 		self::update_approved_meta( $entry_id, $value, $form['id'] );
 	}
 
@@ -324,7 +332,7 @@ class GravityView_Entry_Approval {
 	 * @param int $form_id The Gravity Forms Form ID
 	 * @return boolean|null True: successfully updated all entries. False: there was an error updating at least one entry. NULL: an error occurred (see log)
 	 */
-	public static function update_bulk( $entries = array(), $approved, $form_id ) {
+	public static function update_bulk( $entries = array(), $approved = 0, $form_id = 0 ) {
 
 		if( empty($entries) || ( $entries !== true && !is_array($entries) ) ) {
 			gravityview()->log->error( 'Entries were empty or malformed.', array( 'data' => $entries ) );

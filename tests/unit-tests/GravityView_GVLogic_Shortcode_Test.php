@@ -10,8 +10,6 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 
 	/**
 	 * Just covers that it renders something
-	 * @covers GVLogic_Shortcode::get_instance
-	 * @covers GVLogic_Shortcode::add_hooks
 	 */
 	function test_shortcode() {
 
@@ -21,9 +19,6 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 
 	}
 
-	/**
-	 * @covers GVLogic_Shortcode::shortcode
-	 */
 	function test_comparisons( $shortcode = 'gvlogic') {
 
 		$correct = array(
@@ -64,9 +59,6 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 		}
 	}
 
-	/**
-	 *
-	 */
 	function test_basic_if_else() {
 
 		$value = do_shortcode( '[gvlogic if="4" is="4"]Correct 1[else]Incorrect[/gvlogic]' );
@@ -100,6 +92,13 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 		$empty_value = do_shortcode( '[gvlogic if=""]Empty because Incorrect 2[/gvlogic]' );
 
 		$this->assertEquals( '', $empty_value );
+
+		// Sanity checks.
+		$this->assertEquals( 'No shortcode.', do_shortcode( 'No shortcode.' ) );
+		$this->assertEquals( '(Before shortcode)', do_shortcode( '(Before shortcode)[gvlogic]' ) );
+		$this->assertEquals( '(Before shortcode)', do_shortcode( '(Before shortcode)[gvlogic if="asd" is=""]NO[/gvlogic]' ) );
+		$this->assertEquals( '(Before shortcode)(after shortcode)', do_shortcode( '(Before shortcode)[gvlogic if="asd" is=""]NO[/gvlogic](after shortcode)' ) );
+		$this->assertEquals( "(Before shortcode)\n\nYES\n(after shortcode)", do_shortcode( "(Before shortcode)\n[gvlogic if='a' is='']\nNO[else]\nYES\n[/gvlogic](after shortcode)" ) );
 
 	}
 
@@ -139,9 +138,6 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 	/**
 	 * Test the advanced [else if] functionality
 	 * @since 1.22.2
-	 *
-	 * @covers GVLogic_Shortcode::set_content_and_else_content
-	 * @covers GVLogic_Shortcode::process_elseif
 	 *
 	 * @group gvlogicelseif
 	 */
@@ -376,19 +372,17 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'not logged in', $renderer->render( $field, $view, null, $entry ) );
 
 		$field->content = '[gvlogic logged_in]logged in[else]not logged in[/gvlogic]';
-		$this->assertEquals( 'not logged in', $renderer->render( $field, $view, null, $entry ) );
+		$this->assertEquals( '', $renderer->render( $field, $view, null, $entry ) ); // Incomplete gvlogic clause
 
 		wp_set_current_user( $administrator );
 
+		$field->content = '[gvlogic logged_in]logged in[else]not logged in[/gvlogic]';
+		$this->assertEquals( '', $renderer->render( $field, $view, null, $entry ) ); // Incomplete gvlogic clause
+
+		$field->content = '[gvlogic logged_in="true"]logged in[else]not logged in[/gvlogic]';
 		$this->assertEquals( 'logged in', $renderer->render( $field, $view, null, $entry ) );
 
 		$field->content = '[gvlogic logged_in="false"]not logged in[else]logged in[/gvlogic]';
-		$this->assertEquals( 'logged in', $renderer->render( $field, $view, null, $entry ) );
-
-		$field->content = '[gvlogic logged_in]not logged in[else]logged in[/gvlogic]';
-		$this->assertEquals( 'logged in', $renderer->render( $field, $view, null, $entry ) );
-
-		$field->content = '[gvlogic logged_in]not logged in[else]logged in[/gvlogic]';
 		$this->assertEquals( 'logged in', $renderer->render( $field, $view, null, $entry ) );
 
 		$field->content = '[gvlogic logged_in="no"]not logged in[else]logged in[/gvlogic]';
@@ -425,6 +419,52 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 
 		$field->content = '[gvlogic if="{example:1}" isnot="hello world" logged_in="0"]not logged in and hello world[else]logged in or not hello world[/gvlogic]';
 		$this->assertEquals( 'logged in or not hello world', $renderer->render( $field, $view, null, $entry ) );
+	}
+
+	/**
+	 * https://github.com/gravityview/GravityView/issues/949
+	 */
+	function test_gv_shortcode_nested_gvlogic2() {
+		$GVLogic_Shortcode            = GVLogic_Shortcode::get_instance();
+		$GVLogic_Shortcode->shortcode = 'gvlogic2';
+
+		add_shortcode( 'gvlogic2', array( $GVLogic_Shortcode, 'shortcode' ) );
+
+		$value = do_shortcode( '[gvlogic if="1" is="1"]1 is 1. [gvlogic2 if="2" is="3"]2 is 3.[else]2 is NOT three.[/gvlogic2][else]1 isn\'t 1. Weird.[/gvlogic]' );
+		$this->assertEquals( '1 is 1. 2 is NOT three.', $value );
+
+		$value = do_shortcode( sprintf(
+			'[gvlogic if="MATCH" is="%s"]Match 1[else][gvlogic2 if="MATCH" is="%s"]Match 2[else]Match 3[/gvlogic2]Show me.[/gvlogic]',
+			'MATCH', ''
+		) );
+		$this->assertEquals( 'Match 1', $value );
+
+		$value = do_shortcode( sprintf(
+			'[gvlogic if="MATCH" is="%s"]Match 1[else][gvlogic2 if="MATCH" is="%s"]Match 2[else]Match 3[/gvlogic2]Show me.[/gvlogic]',
+			'', 'MATCH'
+		) );
+		$this->assertEquals( 'Match 2Show me.', $value );
+
+		$value = do_shortcode( sprintf(
+			'(Before nested) [gvlogic if="MATCH" is="%s"]Match 1[else][gvlogic2 if="MATCH" is="%s"]Match 2[else]Match 3[/gvlogic2]Show me.[/gvlogic] (After nested)',
+			'', ''
+		) );
+		$this->assertEquals( '(Before nested) Match 3Show me. (After nested)', $value );
+
+		/** @link https://github.com/gravityview/GravityView/issues/949#issuecomment-546121739 */
+		$value = do_shortcode( '[gvlogic if="1" is="1"]1 is 1.[else]Whoops.[/gvlogic]' );
+		$this->assertEquals( '1 is 1.', $value );
+
+		$value = do_shortcode( '[gvlogic2 if="2" is="3"]2 is 3.[else]2 is NOT three.[/gvlogic2]' );
+		$this->assertEquals( '2 is NOT three.', $value );
+
+		$value = do_shortcode( '[gvlogic2 if="2" is="3"]2 is 3.[else]2 is NOT three.[/gvlogic2]' );
+		$this->assertEquals( '2 is NOT three.', $value );
+
+		$value = do_shortcode( '[gvlogic if="1" is="1"]1 is 1. [gvlogic2 if="2" is="3"]2 is 3.[else]2 is NOT three.[/gvlogic2][else]1 isn\'t 1. Weird.[/gvlogic]' );
+		$this->assertEquals( '1 is 1. 2 is NOT three.', $value );
+
+		$this->assertEquals( "(Before shortcode) \n\t\nYES\nYES2\n(after shortcode)", do_shortcode( "(Before shortcode) \n\t[gvlogic if='a' is='']\nNO[else]\nYES\n[gvlogic2 if='' isnot='']NO\n[else]YES2\n[/gvlogic2][/gvlogic](after shortcode)" ), 'We have a whitespace issue' );
 	}
 
 }
