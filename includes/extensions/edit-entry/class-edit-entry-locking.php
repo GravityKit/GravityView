@@ -79,7 +79,7 @@ class GravityView_Edit_Entry_Locking {
 	 * @see GravityView_Edit_Entry_Locking::check_lock
 	 *
 	 * @param int $user_id The User ID that has the current lock. Will be empty if entry is not locked
-	 *                     or is locked to the current user. See self::check_lock
+	 *                     or is locked to the current user.
 	 *
 	 * @return string The Lock UI dialog box, etc.
 	 */
@@ -93,12 +93,12 @@ class GravityView_Edit_Entry_Locking {
 
 			$message = '<div class="gform-locked-message">
                             <div class="gform-locked-avatar">' . get_avatar( $user->ID, 64 ) . '</div>
-                            <p class="currently-editing" tabindex="0">' . sprintf( $this->get_string( 'currently_locked' ), $user->display_name ) . '</p>
+                            <p class="currently-editing" tabindex="0">' . esc_html( sprintf( $this->get_string( 'currently_locked' ), _x( 'the person who is editing the entry', 'Referring to the user who is currently editing a locked entry', 'gravityview' ) ) ) . '</p>
                             <p>
 
-                                <a id="gform-take-over-button" style="display:none" class="button button-primary wp-tab-first" href="' . esc_url( add_query_arg( 'get-edit-lock', '1' ) ) . '">' . __( 'Take Over', 'gravityforms' ) . '</a>
-                                <button id="gform-lock-request-button" class="button button-primary wp-tab-last">' . __( 'Request Control', 'gravityforms' ) . '</button>
-                                <a class="button" onclick="history.back(-1); return false;">' . $this->get_string( 'cancel' ) . '</a>
+                                <a id="gform-take-over-button" style="display:none" class="button button-primary wp-tab-first" href="' . esc_url( add_query_arg( 'get-edit-lock', '1' ) ) . '">' . esc_html__( 'Take Over', 'gravityforms' ) . '</a>
+                                <button id="gform-lock-request-button" class="button button-primary wp-tab-last">' . esc_html__( 'Request Control', 'gravityforms' ) . '</button>
+                                <a class="button" onclick="history.back(-1); return false;">' . esc_html( $this->get_string( 'cancel' ) ) . '</a>
                             </p>
                             <div id="gform-lock-request-status">
                                 <!-- placeholder -->
@@ -113,8 +113,8 @@ class GravityView_Edit_Entry_Locking {
                                 <span class="currently-editing"></span><br>
                             </p>
                             <p>
-                                <a id="gform-release-lock-button" class="button button-primary wp-tab-last"  href="' . esc_url( add_query_arg( 'release-edit-lock', '1' ) ) . '">' . $this->get_string( 'accept' ) . '</a>
-                                <button id="gform-reject-lock-request-button" style="display:none"  class="button button-primary wp-tab-last">' . __( 'Reject Request', 'gravityforms' ) . '</button>
+                                <a id="gform-release-lock-button" class="button button-primary wp-tab-last"  href="' . esc_url( add_query_arg( 'release-edit-lock', '1' ) ) . '">' . esc_html( $this->get_string( 'accept' ) ) . '</a>
+                                <button id="gform-reject-lock-request-button" style="display:none"  class="button button-primary wp-tab-last">' . esc_html__( 'Reject Request', 'gravityforms' ) . '</button>
                             </p>
                         </div>';
 
