@@ -63,6 +63,12 @@ final class GravityView_Duplicate_Entry {
 
 		// add template path to check for field
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
+
+		// Entry duplication in the backend
+		add_action( 'gform_entries_first_column_actions', array( $this, 'make_duplicate_link_row' ), 10, 5 );
+
+		// Handle duplicate action in the backend
+		add_action( 'gform_pre_entry_list', array( $this, 'maybe_duplicate_list' ) );
 	}
 
 	/**
@@ -714,6 +720,89 @@ final class GravityView_Duplicate_Entry {
 		echo '<div class="gv-notice' . esc_attr( $class ) .'">'. $message .'</div>';
 	}
 
+	/**
+	 * Add a Duplicate link to the row of actions on the entry list in the backend.
+	 *
+	 * @param int $form_id The form ID.
+	 * @param int $field_id The field ID.
+	 * @param string $value The value.
+	 * @param array $entry The entryvalue The value.
+	 * @param array $entry The entry.
+	 * @param string $query_string The query.
+	 *
+	 * @return void
+	 */
+	public function make_duplicate_link_row( $form_id, $field_id, $value, $entry, $query_string ) {
+		/**
+		 * @filter `gravityview/duplicate/backend/enable` Allows developers to disable the duplicate link on the backend.
+		 * @param[in,out] boolean $enable True by default. Enabled.
+		 * @param int $form_id The form ID.
+		 */
+		if ( ! apply_filters( 'gravityview/duplicate/backend/enable', true, $form_id ) ) {
+			return;
+		}
+
+		?>
+		<span class="duplicate">
+			|
+			<a href="<?php echo wp_nonce_url( add_query_arg( 'entry_id', $entry['id'] ), self::get_nonce_key( $entry['id'] ), 'duplicate' ); ?>"><?php esc_html_e( 'Duplicate', 'gravityview' ); ?></a>
+		</span>
+		<?php
+	}
+
+	/**
+	 * Perhaps duplicate this entry if the action has been corrected.
+	 *
+	 * @param int $form_id The form ID.
+	 *
+	 * @return void
+	 */
+	public function maybe_duplicate_list( $form_id ) {
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		if ( 'success' === \GV\Utils::_GET( 'result' ) ) {
+			add_filter( 'gform_admin_messages', function( $messages ) {
+				if ( ! is_array( $messages ) ) {
+					$messages = array( $messages );
+				}
+				$messages[] = __( 'Entry duplicated.', 'gravityview' );
+				return $messages;
+			} );
+
+		}
+
+		if ( 'error' === \GV\Utils::_GET( 'result' ) ) {
+			add_filter( 'gform_admin_error_messages', function( $messages ) {
+				if ( ! is_array( $messages ) ) {
+					$messages = array( $messages );
+				}
+				$messages[] = __( 'There was an error duplicating the entry. Check the logs for more information.', 'gravityview' );
+				return $messages;
+			} );
+
+				$message[] = __( 'There was an error duplicating the error. Check the logs for more information.', 'gravityview' );
+		}
+
+		if ( ! wp_verify_nonce( \GV\Utils::_GET( 'duplicate' ), self::get_nonce_key( $entry_id = \GV\Utils::_GET( 'entry_id' ) ) ) ) {
+			return;
+		}
+
+		if ( ! GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gform_full_access', 'gravityview_full_access' ), $entry_id ) ) {
+			return;
+		}
+
+		if ( is_wp_error( $error = $this->duplicate_entry( GFAPI::get_entry( $entry_id ) ) ) ) {
+			gravityview()->log->error( 'Error duplicating {id}: {error}', array( 'id' => $entry_id, 'error' => $error->get_error_message() ) );
+		}
+
+		$return_url = remove_query_arg( 'duplicate' );
+		$return_url = add_query_arg( 'result', is_wp_error( $error ) ? 'error' : 'success', $return_url );
+		echo '<script>window.location.href = ' . json_encode( $return_url ) . ';</script>';
+		exit;
+	}
+	
 
 } // end class
 
