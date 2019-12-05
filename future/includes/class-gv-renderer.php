@@ -16,8 +16,8 @@ class Renderer {
 	 * Initialization.
 	 */
 	public function __construct() {
-		if ( ! has_action( 'gravityview/template/after', array( __CLASS__, 'maybe_print_notices' ) ) ) {
-			add_action( 'gravityview/template/after', array( __CLASS__, 'maybe_print_notices' ) );
+		if ( ! has_action( 'gravityview/template/before', array( __CLASS__, 'maybe_print_notices' ) ) ) {
+			add_action( 'gravityview/template/before', array( __CLASS__, 'maybe_print_notices' ) );
 		}
 	}
 
