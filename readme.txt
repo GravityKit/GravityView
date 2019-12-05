@@ -21,15 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.5 on November 20, 2019 =
+= 2.5 on December 5, 2019 =
 
-This is a major update that includes
+This is a **big update**! Lots of improvements and fixes.
 
-* GravityView now requires WordPress 4.7 or newer
-* Added: Duplicate Entry field type to duplicate entries from a View
+#### All changes:
 
-**All changes:**
-
+* **GravityView now requires WordPress 4.7 or newer.**
+* Added: A new "Duplicate Entry" allows you to duplicate entries from the front-end
 * View Configuration
     * Added: You can now add labels for Custom Content in the View editor (this helps keep track of many Custom Content fields at once!)
     * Modified: New Views will be created with a number of default widgets preset
@@ -49,7 +48,7 @@ This is a major update that includes
     * Fixed: Proper sorting capabilities for Time and Date fields
     * Fixed: Page Size widget breaks when multiple search filters are set
     * Fixed: Page Size widget resets itself when a search is performed
-* [Multiple Forms](https://gravityview.co/extensions/multiple-forms/) issues
+* [Multiple Forms](https://gravityview.co/extensions/multiple-forms/) fixes
     * Fixed: Global search not working with joined forms
     * Fixed: Custom Content fields now work properly with Multiple Forms
     * Fixed: [Gravity PDF](https://gravitypdf.com) support with Multiple Forms plugin and Custom Content fields
@@ -60,6 +59,7 @@ This is a major update that includes
     * Added: Track the number of pageviews entries get by using the new `[gv_pageviews]` shortcode integration with the lightweight [Pageviews](https://pageviews.io/) plugin
     * Fixed: [GP Nested Forms](https://gravitywiz.com/documentation/gravity-forms-nested-forms/) compatibility issues
     * Fixed: PHP warnings appeared when searching Views for sites running GP Populate Anything with "Default" permalinks enabled
+* Improved: When a View is embedded on a post or page with an incompatible URL Slug, show a warning ([read more](https://docs.gravityview.co/article/659-reserved-urls))
 * Fixed: Number field decimal precision formatting not being respected
 * Updated: Polish translation (Thanks, Dariusz!)
 
@@ -89,7 +89,7 @@ __Developer Updates:__
 * Modified: Default 250px `image_width` setting for File Upload images is now easily overrideable
 * Removed: The `gravityview/gvlogic/parse_atts/after` action is no longer available. See `gravityview/gvlogic/atts` filter instead
 * Removed: The `GVLogic_Shortcode` class is now a lifeless stub. See `\GV\Shortcodes\gvlogic`.
-* Deprecated: `gravityview_get_current_view_data` use the `\GV\View` API.
+* Deprecated: `gravityview_get_current_view_data` — use the `\GV\View` API instead
 
 = 2.4.1.1 on August 27, 2019 =
 
