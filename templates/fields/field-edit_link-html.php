@@ -46,22 +46,4 @@ $output = apply_filters( 'gravityview_entry_link', GravityView_API::replace_vari
 
 $href = GravityView_Edit_Entry::get_edit_link( $entry, $gravityview->view->ID, $post ? $post->ID : null );
 
-$locking = new GravityView_Edit_Entry_Locking();
-
-$link = gravityview_get_link( $href, $output, $link_atts );
-
-if ( $locking->check_lock( $entry['id'] ) ) {
-	$locked = __( 'Locked', 'gravityview' ); // @todo icon maybe?
-
-	/**
-	 * @filter `gravityview/edit_entry/locked_link` Alter the locked message/icon/link
-	 *
-	 * @param[in,out] string $locked The locked link value. Supports HTML
-	 * @param string $link The link.
-	 * @param string $locked The locked message.
-	 * @param \GV\Template_Context $gravityview The context.
-	 */
-	echo apply_filters( 'gravityview/edit_entry/locked_link', $link . " ($locked)", $link, $locked, $gravityview );
-} else {
-	echo $link;
-}
+echo gravityview_get_link( $href, $output, $link_atts );
