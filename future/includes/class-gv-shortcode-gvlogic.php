@@ -161,7 +161,8 @@ class gvlogic extends \GV\Shortcode {
 		$found = false; // found split position
 
 		while ( $content ) { // scan
-			if ( ! preg_match( '#(.*?)(\[\/?(gvlogic|else).*?])(.*)#', $content, $matches ) ) {
+
+			if ( ! preg_match( '#(.*?)(\[\/?(gvlogic|else).*?])(.*)#s', $content, $matches ) ) {
 				if ( ! $found ) { // We're still iffing.
 					$if .= $content;
 				} else { // We are elsing
