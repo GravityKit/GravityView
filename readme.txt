@@ -61,6 +61,7 @@ This is a **big update**! Lots of improvements and fixes.
     * Fixed: PHP warnings appeared when searching Views for sites running GP Populate Anything with "Default" permalinks enabled
 * Improved: When a View is embedded on a post or page with an incompatible URL Slug, show a warning ([read more](https://docs.gravityview.co/article/659-reserved-urls))
 * Fixed: Number field decimal precision formatting not being respected
+* Fixed: Lifetime licenses showed "0" instead of "Unlimited" sites available
 * Updated: Polish translation (Thanks, Dariusz!)
 
 __Developer Updates:__

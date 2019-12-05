@@ -316,6 +316,7 @@ class GravityView_Welcome {
                         </ul></li>
                     <li>Improved: When a View is embedded on a post or page with an incompatible URL Slug, show a warning (<a href="https://docs.gravityview.co/article/659-reserved-urls">read more</a>)</li>
                     <li>Fixed: Number field decimal precision formatting not being respected</li>
+                    <li>Fixed: Lifetime licenses showed "0" instead of "Unlimited" sites available</li>
                     <li>Updated: Polish translation (Thanks, Dariusz!)</li>
                 </ul>
 
