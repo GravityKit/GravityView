@@ -76,7 +76,7 @@ class Renderer {
 			$message = __( 'Please refer to the <a href="%s">documentation</a> for more information.', 'gravityview' );
 			$message .= '<br />' . esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
 
-			$output = sprintf( '<h3>%s</h3><p>%s</p>', $title, sprintf( $message, 'https://secure.helpscout.net/docs/566dfabbc6979143615564bf/article/5de618682c7d3a7e9ae4a707/' ) );
+			$output = sprintf( '<h3>%s</h3><p>%s</p>', $title, sprintf( $message, 'https://docs.gravityview.co/article/659-reserved-urls' ) );
 
 			echo \GVCommon::generate_notice( $output, 'gv-error error', 'edit_gravityview', $gravityview->view->ID );
 		}
