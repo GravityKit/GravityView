@@ -1,15 +1,20 @@
 <?php
 
-if ( ! class_exists( 'GFForms' ) ) {
+/** If this file is called directly, abort. */
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
 }
 
 /**
  * An entry locking class that syncs with GFEntryLocking.
+ *
+ * @since 2.5
  */
 class GravityView_Edit_Entry_Locking {
 	/**
 	 * Load extension entry point.
+	 *
+	 * @since 2.5
 	 *
 	 * @return void
 	 */
@@ -24,9 +29,12 @@ class GravityView_Edit_Entry_Locking {
 	 *
 	 * Called via load() and `wp_enqueue_scripts`
 	 *
+	 * @since 2.5
+	 *
 	 * @return void
 	 */
 	public function enqueue_scripts() {
+
 		if ( ! $entry = gravityview()->request->is_edit_entry() ) {
 			return;
 		}
@@ -64,7 +72,11 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Returns a string with the Lock UI HTML markup.
 	 *
-	 * Called script enqueing, added to JavaScript gforms_locking global variable.
+	 * Called script enqueuing, added to JavaScript gforms_locking global variable.
+	 *
+	 * @since 2.5
+	 *
+	 * @see GravityView_Edit_Entry_Locking::check_lock
 	 *
 	 * @param int $user_id The User ID that has the current lock. Will be empty if entry is not locked
 	 *                     or is locked to the current user. See self::check_lock
@@ -123,6 +135,8 @@ class GravityView_Edit_Entry_Locking {
 	 *
 	 * Uses gravityforms textdomain unchanged.
 	 *
+	 * @since 2.5
+	 *
 	 * @return array An array of translations.
 	 */
 	public function get_strings() {
@@ -171,6 +185,7 @@ class GravityView_Edit_Entry_Locking {
 	 */
 	public function maybe_lock_object( $entry_id ) {
 		global $wp;
+
 		$current_url = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
 
 		if ( isset( $_GET['get-edit-lock'] ) ) {
@@ -247,11 +262,16 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Lock the entry to the current user.
 	 *
+	 * @since 2.5
+	 *
 	 * @param int $entry_id The entry ID.
 	 *
 	 * @return int|false Locked or not.
 	 */
 	public function set_lock( $entry_id ) {
+
+		// Todo: check caps
+
 		if ( 0 == ( $user_id = get_current_user_id() ) ) {
 			return false;
 		}
