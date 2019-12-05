@@ -1019,14 +1019,16 @@ class GravityView_Widget_Search extends \GV\Widget {
 				return false;
 			}
 		}
-		
+
 		if ( ! $form ) {
 			// fallback
 			$form = $view->form;
 		}
 
 		// get form field array
-		if ( ! $form_field = is_numeric( $field_id ) ? \GV\GF_Field::by_id( $form, $field_id ) : \GV\Internal_Field::by_id( $field_id ) ) {
+		$form_field = is_numeric( $field_id ) ? \GV\GF_Field::by_id( $form, $field_id ) : \GV\Internal_Field::by_id( $field_id );
+
+		if ( ! $form_field ) {
 			return false;
 		}
 
@@ -1344,7 +1346,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$updated_field['value'] = $this->rgget_or_rgpost( 'gv_by' );
 					$updated_field['choices'] = self::get_created_by_choices( $view );
 					break;
-				
+
 				case 'is_approved':
 					$updated_field['key'] = 'is_approved';
 					$updated_field['value'] = $this->rgget_or_rgpost( 'filter_is_approved' );

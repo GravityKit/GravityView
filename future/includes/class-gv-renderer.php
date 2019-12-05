@@ -47,14 +47,21 @@ class Renderer {
 			apply_filters( 'gravityview_directory_endpoint', 'entry' ),
 		);
 
-		foreach( get_post_types() as $post_type ) {
-			if ( $slug = \GV\Utils::get( get_post_type_object( $post_type )->rewrite, 'slug' ) ) {
+		$post_types = get_post_types();
+
+		foreach( $post_types as $post_type ) {
+			$post_type_rewrite = get_post_type_object( $post_type )->rewrite;
+
+			if ( $slug = \GV\Utils::get( $post_type_rewrite, 'slug' ) ) {
 				$reserved_slugs[] = $slug;
 			}
 		}
 
+		unset( $post_types, $post_type_rewrite );
+
 		/**
 		 * @filter `gravityview/rewrite/reserved_slugs` Modify the reserved embed slugs that trigger a warning.
+		 * @since 2.5
 		 * @param[in,out] array $reserved_slugs An array of strings, reserved slugs.
 		 * @param \GV\Template_Context $gravityview The context.
 		 */
@@ -97,7 +104,7 @@ class Renderer {
 		if ( $gravityview->fields->by_position( sprintf( '%s_%s-*', $context, $slug ) )->by_visible( $gravityview->view )->count() ) {
 			return;
 		}
-		
+
 		$title = sprintf( esc_html_x( 'The %s layout has not been configured.', 'Displayed when a View is not configured. %s is replaced by the tab label', 'gravityview' ), $tab );
 		$edit_link = admin_url( sprintf( 'post.php?post=%d&action=edit#%s-view', $gravityview->view->ID, $context ) );
 		$action_text = sprintf( esc_html__( 'Add fields to %s', 'gravityview' ), $tab );
