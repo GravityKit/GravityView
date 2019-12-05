@@ -320,6 +320,9 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 					$rendered = gravityview_get_link( $file_path, $image->html(), $lightbox_link_atts );
 				} else {
+					if ( ! empty( $field_settings['show_as_link'] ) && $is_secure ) {
+						gravityview()->log->error( 'Lightbox functionality has been suppressed due to security considerations.' );
+					}
 					$rendered = $image->html();
 				}
 
