@@ -208,8 +208,13 @@ class gvlogic extends \GV\Shortcode {
 			$content = $after_shortcode;
 		}
 
-		gravityview()->log->error( 'if => {if}, else => {else}', array( 'if' => $if, 'else' => $else ) );
-		
+		gravityview()->log->debug( '[gvlogic] output parsing:', array(
+			'data' => array(
+				'if'   => $if,
+				'else' => $else,
+			),
+		) );
+
 		if ( ! $match ) {
 			while ( ( $position = strpos( $if, '[else if=' ) ) !== false ) {
 				// Try to match one of the elseif's
