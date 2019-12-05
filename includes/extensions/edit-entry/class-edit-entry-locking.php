@@ -141,13 +141,12 @@ class GravityView_Edit_Entry_Locking {
 	 */
 	public function get_strings() {
 		$translations = array(
-			'currently_locked'  => __( 'This entry is currently locked. Click on the "Request Control" button to let %s know you\'d like to take over.', 'gravityforms' ), 'currently_editing' => '%s is currently editing this entry',
+			'currently_locked'  => __( 'This entry is currently locked. Click on the "Request Control" button to let %s know you\'d like to take over.', 'gravityforms' ),
+			'currently_editing' => __( '%s is currently editing this entry', 'gravityforms' ),
 			'taken_over'        => __( '%s has taken over and is currently editing this entry.', 'gravityforms' ),
 			'lock_requested'    => __( '%s has requested permission to take over control of this entry.', 'gravityforms' ),
 			'accept'            => __( 'Accept', 'gravityforms' ),
 			'cancel'            => __( 'Cancel', 'gravityforms' ),
-			'currently_editing' => __( '%s is currently editing', 'gravityforms' ),
-			'taken_over'        => __( '%s has taken over and is currently editing.', 'gravityforms' ),
 			'gained_control'    => __( 'You now have control', 'gravityforms' ),
 			'request_pending'   => __( 'Pending', 'gravityforms' ),
 			'no_response'       => __( 'No response', 'gravityforms' ),
