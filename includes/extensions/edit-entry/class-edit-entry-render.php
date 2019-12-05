@@ -593,8 +593,8 @@ class GravityView_Edit_Entry_Render {
 
 		/** No file is being uploaded. */
 		if ( empty( $_FILES[ $input_name ]['name'] ) ) {
-			/** So return the original upload */
-			return $entry[ $input_id ];
+			/** So return the original upload, with $value as backup (it can be empty during edit form rendering) */
+			return rgar( $entry, $input_id, $value );
 		}
 
 		return $value;
