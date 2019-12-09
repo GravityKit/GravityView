@@ -198,45 +198,56 @@ class GF_Patched_Query extends GF_Query {
 
 		if ( ! empty( $start_date ) ) {
 
-			$start_date           = new DateTime( $search_criteria['start_date'] );
-			$start_datetime_str = $start_date->format( 'Y-m-d H:i:s' );
-			$start_date_str       = $start_date->format( 'Y-m-d' );
-			if ( $start_datetime_str == $start_date_str  . ' 00:00:00' ) {
-				$start_date_str = $start_date_str . ' 00:00:00';
-			} else {
-				$start_date_str = $start_date->format( 'Y-m-d H:i:s' );
+			try {
+				$start_date         = new DateTime( $search_criteria['start_date'] );
+				$start_datetime_str = $start_date->format( 'Y-m-d H:i:s' );
+				$start_date_str     = $start_date->format( 'Y-m-d' );
+				if ( $start_datetime_str == $start_date_str . ' 00:00:00' ) {
+					$start_date_str = $start_date_str . ' 00:00:00';
+				} else {
+					$start_date_str = $start_date->format( 'Y-m-d H:i:s' );
+				}
+
+				$start_date_str_utc = get_gmt_from_date( $start_date_str );
+
+				$property_conditions[] = new GF_Query_Condition(
+					$column,
+					GF_Query_Condition::GTE,
+					new GF_Query_Literal( $start_date_str_utc )
+				);
+			} catch ( Exception $e ) {
+				GFAPI::log_error( __METHOD__ . '(): Invalid start_date; ' . $e->getMessage() );
 			}
 
-			$start_date_str_utc = get_gmt_from_date( $start_date_str );
-
-			$property_conditions[] = new GF_Query_Condition(
-				$column,
-				GF_Query_Condition::GTE,
-				new GF_Query_Literal( $start_date_str_utc )
-			);
 		}
 
 		if ( ! empty( $end_date ) ) {
-			$end_date         = new DateTime( $search_criteria['end_date'] );
-			$end_datetime_str = $end_date->format( 'Y-m-d H:i:s' );
-			$end_date_str     = $end_date->format( 'Y-m-d' );
 
-			// extend end date till the end of the day unless a time was specified. 00:00:00 is ignored.
-			if ( $end_datetime_str == $end_date_str . ' 00:00:00' ) {
-				$end_date_str = $end_date->format( 'Y-m-d' ) . ' 23:59:59';
-			} else {
-				$end_date_str = $end_date->format( 'Y-m-d H:i:s' );
+			try {
+				$end_date         = new DateTime( $search_criteria['end_date'] );
+				$end_datetime_str = $end_date->format( 'Y-m-d H:i:s' );
+				$end_date_str     = $end_date->format( 'Y-m-d' );
+
+				// extend end date till the end of the day unless a time was specified. 00:00:00 is ignored.
+				if ( $end_datetime_str == $end_date_str . ' 00:00:00' ) {
+					$end_date_str = $end_date->format( 'Y-m-d' ) . ' 23:59:59';
+				} else {
+					$end_date_str = $end_date->format( 'Y-m-d H:i:s' );
+				}
+
+				$end_date_str_utc = get_gmt_from_date( $end_date_str );
+
+				if ( ! empty( $end_date ) ) {
+					$property_conditions[] = new GF_Query_Condition(
+						$column,
+						GF_Query_Condition::LTE,
+						new GF_Query_Literal( $end_date_str_utc )
+					);
+				}
+			} catch ( Exception $e ) {
+				GFAPI::log_error( __METHOD__ . '(): Invalid end_date; ' . $e->getMessage() );
 			}
 
-			$end_date_str_utc = get_gmt_from_date( $end_date_str );
-
-			if ( ! empty( $end_date ) ) {
-				$property_conditions[] = new GF_Query_Condition(
-					$column,
-					GF_Query_Condition::LTE,
-					new GF_Query_Literal( $end_date_str_utc )
-				);
-			}
 		}
 
 		if ( ! empty( $property_conditions ) ) {
@@ -742,6 +753,13 @@ class GF_Patched_Query extends GF_Query {
 
 		$paginate = implode( ' ', array_filter( array( $limit, $offset ), 'strlen' ) );
 
+		/**
+		 * Filter the SQL query fragments to allow low-level advanced analysis and modification before the query is run.
+		 *
+		 * @since 2.4.3
+		 *
+		 * @param array $sql An array with all the SQL fragments: select, from, join, where, order, paginate.
+		 */
 		$sql = apply_filters( 'gform_gf_query_sql', compact( 'select', 'from', 'join', 'where', 'order', 'paginate' ) );
 		$sql = implode( ' ', array_filter( $sql, 'strlen' ) );
 
@@ -1109,7 +1127,7 @@ class GF_Patched_Query extends GF_Query {
 	 *
 	 * @return array
 	 */
-	public function _prime_joins( $explicit_joins, $where_inference_joins = null, $order_inference_joins = null ) {
+	public function _prime_joins( $explicit_joins, $where_inference_joins, $order_inference_joins ) {
 		$joins = array_unique( $explicit_joins );
 
 		$explicit_join_aliases = array();
@@ -1413,7 +1431,7 @@ class GF_Patched_Query extends GF_Query {
 			'form_entry_meta' => array(),
 		);
 
-		$meta_clauses = $entry_meta = array();
+		$meta_clauses = array();
 
 		foreach ( $entryset as $entry ) {
 			$form_id = absint( $entry['form_id'] );
