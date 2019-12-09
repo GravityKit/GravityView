@@ -1127,7 +1127,7 @@ class GF_Patched_Query extends GF_Query {
 	 *
 	 * @return array
 	 */
-	public function _prime_joins( $explicit_joins, $where_inference_joins, $order_inference_joins ) {
+	public function _prime_joins( $explicit_joins, $where_inference_joins = null, $order_inference_joins = null ) {
 		$joins = array_unique( $explicit_joins );
 
 		$explicit_join_aliases = array();
