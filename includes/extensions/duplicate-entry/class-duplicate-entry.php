@@ -31,11 +31,6 @@ final class GravityView_Duplicate_Entry {
 	 */
 	static $instance;
 
-	/**
-	 * @var array Global entry state.
-	 */
-	var $entry;
-
 	var $view_id;
 
 	function __construct() {
@@ -121,7 +116,6 @@ final class GravityView_Duplicate_Entry {
 
 		// Always a link, never a filter, always same window
 		unset( $field_options['show_as_link'], $field_options['search_filter'], $field_options['new_window'] );
-
 
 		// Duplicate Entry link should only appear to visitors capable of editing entries
 		unset( $field_options['only_loggedin'], $field_options['only_loggedin_cap'] );
@@ -224,19 +218,6 @@ final class GravityView_Duplicate_Entry {
 	}
 
 	/**
-	 * Make sure there's an entry
-	 *
-	 * @since 2.5
-	 *
-	 * @param array $entry Current entry array
-	 *
-	 * @return void
-	 */
-	public function set_entry( $entry ) {
-		$this->entry = $entry;
-	}
-
-	/**
 	 * Generate a consistent nonce key based on the Entry ID
 	 *
 	 * @since 2.5
@@ -264,7 +245,6 @@ final class GravityView_Duplicate_Entry {
 	 * @return string|null If directory link is valid, the URL to process the duplicate request. Otherwise, `NULL`.
 	 */
 	public static function get_duplicate_link( $entry, $view_id, $post_id = null ) {
-		self::getInstance()->set_entry( $entry );
 
         $base = GravityView_API::directory_link( $post_id ? : $view_id, true );
 
