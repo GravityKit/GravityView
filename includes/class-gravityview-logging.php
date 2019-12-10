@@ -120,6 +120,30 @@ final class GravityView_Logging {
 		}
 	}
 
+	/**
+	 * Check whether a plugin is active
+	 *
+	 * @param string $plugin
+	 *
+	 * @since 2.5.1
+	 *
+	 * @param string $plugin The slug for the plugin used when setting up logging (default: "gravityview")
+	 *
+	 * @return bool
+	 */
+	static function is_logging_active( $plugin = 'gravityview' ) {
+
+		if( ! class_exists( 'GFLogging') ) {
+			return false;
+		}
+
+		GFLogging::include_logger();
+
+		$plugin_setting = GFLogging::get_instance()->get_plugin_setting( $plugin );
+
+		return ! rgempty( 'enable', $plugin_setting );
+	}
+
 }
 
 new GravityView_Logging;
