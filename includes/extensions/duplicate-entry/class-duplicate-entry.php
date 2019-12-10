@@ -789,7 +789,11 @@ final class GravityView_Duplicate_Entry {
 
 		$entry = GFAPI::get_entry( $entry_id );
 
-		$is_duplicated = $this->duplicate_entry( $entry );
+		if ( is_wp_error( $entry ) ) {
+			$is_duplicated = $entry;
+		} else {
+			$is_duplicated = $this->duplicate_entry( $entry );
+		}
 
 		if ( is_wp_error( $is_duplicated ) ) {
 			gravityview()->log->error( 'Error duplicating {id}: {error}', array( 'id' => $entry_id, 'error' => $is_duplicated->get_error_message() ) );
