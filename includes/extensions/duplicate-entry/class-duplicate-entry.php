@@ -594,7 +594,7 @@ final class GravityView_Duplicate_Entry {
 	public static function check_user_cap_duplicate_entry( $entry, $field = array(), $view_id = 0 ) {
 		$current_user = wp_get_current_user();
 
-		$entry_id = isset( $entry['id'] ) ? $entry['id'] : NULL;
+		$entry_id = isset( $entry['id'] ) ? $entry['id'] : null;
 
 		// Or if they can duplicate any entries (as defined in Gravity Forms), we're good.
 		if ( GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gform_full_access', 'gravityview_full_access' ), $entry_id ) ) {
@@ -760,6 +760,7 @@ final class GravityView_Duplicate_Entry {
 	 * @return void
 	 */
 	public function maybe_duplicate_list( $form_id ) {
+
 		if ( ! is_admin() ) {
 			return;
 		}
@@ -803,12 +804,16 @@ final class GravityView_Duplicate_Entry {
 			return;
 		}
 
-		if ( is_wp_error( $error = $this->duplicate_entry( GFAPI::get_entry( $entry_id ) ) ) ) {
-			gravityview()->log->error( 'Error duplicating {id}: {error}', array( 'id' => $entry_id, 'error' => $error->get_error_message() ) );
+		$entry = GFAPI::get_entry( $entry_id );
+
+		$is_duplicated = $this->duplicate_entry( $entry );
+
+		if ( is_wp_error( $is_duplicated ) ) {
+			gravityview()->log->error( 'Error duplicating {id}: {error}', array( 'id' => $entry_id, 'error' => $is_duplicated->get_error_message() ) );
 		}
 
 		$return_url = remove_query_arg( 'duplicate' );
-		$return_url = add_query_arg( 'result', is_wp_error( $error ) ? 'error' : 'success', $return_url );
+		$return_url = add_query_arg( 'result', is_wp_error( $is_duplicated ) ? 'error' : 'success', $return_url );
 		echo '<script>window.location.href = ' . json_encode( $return_url ) . ';</script>';
 		exit;
 	}
