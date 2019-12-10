@@ -307,13 +307,13 @@
 		 * Init the search fields table
 		 */
 		addTable: function() {
-			return $('<table class="form-table widefat">' +
+			return $('<table class="form-table widefat" role="presentation">' +
 						'<thead>'+
 							'<tr>' +
 								'<th class="cell-sort">&nbsp;</th>' +
-								'<th class="cell-search-fields">' + gvSearchVar.label_searchfield +'</th>' +
-			                    '<th class="cell-input-label">' + gvSearchVar.label_label +'</th>' +
-								'<th class="cell-input-types">' + gvSearchVar.label_inputtype +'</th>' +
+								'<th class="cell-search-fields" scope="col">' + gvSearchVar.label_searchfield +'</th>' +
+			                    '<th class="cell-input-label" scope="col">' + gvSearchVar.label_label +'</th>' +
+								'<th class="cell-input-types" scope="col">' + gvSearchVar.label_inputtype +'</th>' +
 								'<th class="cell-add-remove">&nbsp;</th>' +
 							'</tr>' +
 						'</thead>'+
@@ -338,11 +338,11 @@
 		addRow: function( table, row, curr ) {
 
 			var rowString = $('<tr class="gv-search-field-row new-row hide-if-js" />')
-				.append('<td class="cell-sort"><span class="icon gv-icon-caret-up-down" style="display:none;" /></td>')
+				.append('<td class="cell-sort"><span class="icon gv-icon-caret-up-down" style="display:none;" aria-label="' + gvGlobals.label_reorder_search_fields + '" /></td>')
 				.append('<td class="cell-search-fields">'+ gvSearchWidget.getSelectFields() +'</td>')
 				.append('<td class="cell-input-label"><input type="text" class="widefat gv-search-labels" /></td>')
 				.append('<td class="cell-input-types"><select class="gv-search-inputs" /></td>')
-				.append('<td class="cell-add-remove"><a href="#addSearchField" class="dashicons dashicons-plus-alt" /><a href="#removeSearchField" class="dashicons dashicons-dismiss" /></td>');
+				.append('<td class="cell-add-remove"><a href="#addSearchField" class="dashicons dashicons-plus-alt" aria-label="' + gvGlobals.label_add_search_field + '" /><a href="#removeSearchField" class="dashicons dashicons-dismiss" aria-label="' + gvGlobals.label_remove_search_field + '" /></td>');
 
 			// add row
 			if( row !== null && row.length ) {
