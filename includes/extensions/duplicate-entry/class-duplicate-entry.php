@@ -781,8 +781,6 @@ final class GravityView_Duplicate_Entry {
 				$messages[] = esc_html__( 'There was an error duplicating the entry.', 'gravityview' ) . $check_logs_message;
 				return $messages;
 			} );
-
-				$message[] = __( 'There was an error duplicating the error. Check the logs for more information.', 'gravityview' );
 		}
 
 		if ( ! wp_verify_nonce( \GV\Utils::_GET( 'duplicate' ), self::get_nonce_key( $entry_id = \GV\Utils::_GET( 'entry_id' ) ) ) ) {
