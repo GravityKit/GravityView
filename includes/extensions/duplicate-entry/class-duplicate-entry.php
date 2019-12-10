@@ -767,7 +767,7 @@ final class GravityView_Duplicate_Entry {
 				if ( ! is_array( $messages ) ) {
 					$messages = array( $messages );
 				}
-				$messages[] = __( 'Entry duplicated.', 'gravityview' );
+				$messages[] = esc_html__( 'Entry duplicated.', 'gravityview' );
 				return $messages;
 			} );
 
@@ -778,7 +778,7 @@ final class GravityView_Duplicate_Entry {
 				if ( ! is_array( $messages ) ) {
 					$messages = array( $messages );
 				}
-				$messages[] = __( 'There was an error duplicating the entry. Check the logs for more information.', 'gravityview' );
+				$messages[] = esc_html__( 'There was an error duplicating the entry.', 'gravityview' ) . $check_logs_message;
 				return $messages;
 			} );
 
