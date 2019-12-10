@@ -753,6 +753,8 @@ final class GravityView_Duplicate_Entry {
 	/**
 	 * Perhaps duplicate this entry if the action has been corrected.
 	 *
+	 * @since 2.5.1
+	 *
 	 * @param int $form_id The form ID.
 	 *
 	 * @return void
