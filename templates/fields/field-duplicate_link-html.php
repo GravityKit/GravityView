@@ -35,7 +35,7 @@ if ( ! GravityView_Duplicate_Entry::check_user_cap_duplicate_entry( $entry, $fie
 	return;
 }
 
-$link_text = \GV\Utils::get( $field_settings, 'duplicate_link', __( 'Delete Entry', 'gravityview' ) );
+$link_text = \GV\Utils::get( $field_settings, 'duplicate_link', esc_html__( 'Delete Entry', 'gravityview' ) );
 
 $link_text = apply_filters( 'gravityview_entry_link', GravityView_API::replace_variables( $link_text, $form, $entry ), $gravityview );
 
