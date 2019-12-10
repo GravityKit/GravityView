@@ -764,21 +764,19 @@ final class GravityView_Duplicate_Entry {
 
 		if ( 'success' === \GV\Utils::_GET( 'result' ) ) {
 			add_filter( 'gform_admin_messages', function( $messages ) {
-				if ( ! is_array( $messages ) ) {
-					$messages = array( $messages );
-				}
+				$messages = (array) $messages;
+
 				$messages[] = esc_html__( 'Entry duplicated.', 'gravityview' );
 				return $messages;
 			} );
-
 		}
 
 		if ( 'error' === \GV\Utils::_GET( 'result' ) ) {
 			add_filter( 'gform_admin_error_messages', function( $messages ) {
-				if ( ! is_array( $messages ) ) {
-					$messages = array( $messages );
-				}
+				$messages = (array) $messages;
+
 				$messages[] = esc_html__( 'There was an error duplicating the entry.', 'gravityview' ) . $check_logs_message;
+
 				return $messages;
 			} );
 		}
