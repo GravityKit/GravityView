@@ -703,6 +703,8 @@ final class GravityView_Duplicate_Entry {
 	/**
 	 * Add a Duplicate link to the row of actions on the entry list in the backend.
 	 *
+	 * @since 2.5.1
+	 *
 	 * @param int $form_id The form ID.
 	 * @param int $field_id The field ID.
 	 * @param string $value The value.
@@ -713,6 +715,7 @@ final class GravityView_Duplicate_Entry {
 	 * @return void
 	 */
 	public function make_duplicate_link_row( $form_id, $field_id, $value, $entry, $query_string ) {
+
 		/**
 		 * @filter `gravityview/duplicate/backend/enable` Allows developers to disable the duplicate link on the backend.
 		 * @param[in,out] boolean $enable True by default. Enabled.
@@ -794,7 +797,9 @@ final class GravityView_Duplicate_Entry {
 
 		$return_url = remove_query_arg( 'duplicate' );
 		$return_url = add_query_arg( 'result', is_wp_error( $is_duplicated ) ? 'error' : 'success', $return_url );
+
 		echo '<script>window.location.href = ' . json_encode( $return_url ) . ';</script>';
+
 		exit;
 	}
 
