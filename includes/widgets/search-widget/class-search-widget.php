@@ -859,8 +859,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$search_conditions = array();
 
 		if ( $filters = array_filter( $search_criteria['field_filters'] ) ) {
-
-			foreach ( $filters as $filter ) {
+			foreach ( $filters as &$filter ) {
 				if ( ! is_array( $filter ) ) {
 					continue;
 				}
