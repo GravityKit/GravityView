@@ -972,12 +972,13 @@
 				close: function () {
 					$( this ).attr( 'data-tooltip', null );
 				},
-		        open: function() {
+		        open: function( event, tooltip ) {
 
 					$( this )
 						.attr( 'data-tooltip', 'active' )
 						.attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
 
+					$( 'input[type=search]', tooltip.tooltip ).focus();
 		        },
 				closeOnEscape: true,
 				disabled: true, // Don't open on hover
