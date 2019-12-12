@@ -135,6 +135,12 @@ $gv-overlay-index: 10000;
 	clear: left;
 }
 
+#edit-active-fields,
+#single-active-fields,
+#directory-footer-widgets {
+	margin-bottom: 0;
+}
+
 /* GV Sections
 --------------------------------------- */
 
@@ -481,6 +487,7 @@ hr {
 
 .gv-droppable-area {
 	margin-bottom: 1.25em;
+
 	border: 1px dotted #b5bcc2;
 	border-radius: 4px;
 
