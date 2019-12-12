@@ -825,21 +825,28 @@ hr {
 
 			//width: 40px;
 
-			a {
-				font-size: 18px;
+			button {
+				border: none;
+				background: none;
+				padding: 0;
+				cursor: pointer;
 
-				&.dashicons {
+				.dashicons {
+					font-size: 18px;
+					height: 18px;
+					width: 18px;
 					opacity: .8;
+
 					&:hover {
 						opacity: 1;
 					}
 				}
 
-				&.dashicons-plus-alt {
+				.dashicons-plus-alt {
 					color: #328540;
 				}
 
-				&.dashicons-dismiss {
+				.dashicons-dismiss {
 					color: $dismiss-red;
 				}
 			}

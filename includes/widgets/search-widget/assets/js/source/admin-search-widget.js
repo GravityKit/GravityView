@@ -43,9 +43,9 @@
 				.bind( 'click.widgets-toggle', gvSearchWidget.openWidget )
 
 				// [View, WP widget] hook to add/remove rows
-				.on( 'click', "." + wrapClass +" a[href='#addSearchField']", gvSearchWidget.addField )
+				.on( 'click', "." + wrapClass +" .gv-add-search-field", gvSearchWidget.addField )
 
-				.on( 'click', "." + wrapClass +" a[href='#removeSearchField']", gvSearchWidget.removeField )
+				.on( 'click', "." + wrapClass +" .gv-remove-search-field", gvSearchWidget.removeField )
 
 				// [View, WP widget] hook to update row input types
 				.on( 'change', "." + wrapClass +" select.gv-search-fields", gvSearchWidget.updateRow )
@@ -326,7 +326,7 @@
 		 * @param  {{jQuery DOM object}} table  The table DOM object
 		 */
 		addEmptyMsg: function( table ) {
-			$( table ).append('<tr class="no-search-fields"><td colspan="5">'+ gvSearchVar.label_nofields +'&nbsp; <a href="#addSearchField">'+ gvSearchVar.label_addfield +'</a></td></tr>');
+			$( table ).append('<tr class="no-search-fields"><td colspan="5">'+ gvSearchVar.label_nofields +'&nbsp; <button class="gv-add-search-field">'+ gvSearchVar.label_addfield + '</button></td></tr>');
 		},
 
 		/**
@@ -342,7 +342,7 @@
 				.append('<td class="cell-search-fields">'+ gvSearchWidget.getSelectFields() +'</td>')
 				.append('<td class="cell-input-label"><input type="text" class="widefat gv-search-labels" /></td>')
 				.append('<td class="cell-input-types"><select class="gv-search-inputs" /></td>')
-				.append('<td class="cell-add-remove"><a href="#addSearchField" class="dashicons dashicons-plus-alt" aria-label="' + gvGlobals.label_add_search_field + '" /><a href="#removeSearchField" class="dashicons dashicons-dismiss" aria-label="' + gvGlobals.label_remove_search_field + '" /></td>');
+				.append('<td class="cell-add-remove"><button class="gv-add-search-field" aria-label="' + gvGlobals.label_add_search_field + '"><span class="dashicons dashicons-plus-alt"></span></button><button class="gv-remove-search-field" aria-label="' + gvGlobals.label_remove_search_field + '"><span class="dashicons dashicons-dismiss"></span></button></td>');
 
 			// add row
 			if( row !== null && row.length ) {
