@@ -25,31 +25,33 @@
 
 $dismiss-red: #C62D2D;
 
+/**
+ * Convert buttons to not having any style
+ */
 .gv-reset-button-style {
-	// From normalize.css
+
+	/**
+	 * Begin from normalize.css
+	 */
 	font-family: inherit; /* 1 */
 	font-size: 100%; /* 1 */
-	//line-height: 1.15; /* 1 */
 	margin: 0; /* 2 */
 	overflow: visible;
 	text-transform: none;
 	-webkit-appearance: button;
 
-	/**
-	 * Remove the inner border and padding in Firefox.
-	 */
-
+	// Remove the inner border and padding in Firefox.
 	&::-moz-focus-inner {
 		border-style: none;
 		padding: 0;
 	}
-
-	/**
-	 * Restore the focus styles unset by the previous rule.
-	 */
+	// Restore the focus styles unset by the previous rule.
 	&:-moz-focusring {
 		outline: 1px dotted ButtonText;
 	}
+	/**
+	 * End from normalize.css
+	 */
 
 	border: none;
 	background: none;
