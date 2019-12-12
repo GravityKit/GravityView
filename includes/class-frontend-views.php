@@ -1315,10 +1315,6 @@ class GravityView_frontend {
 					 */
 					$js_dependency = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
 
-					if ( ! empty( $wp_filter[ 'gravity_view_lightbox_style' ] ) ) {
-						gravityview()->log->warning( 'gravity_view_lightbox_style filter is deprecated use gravityview_lightbox_style instead' );
-					}
-
 					/**
 					 * @filter `gravity_view_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
@@ -1326,6 +1322,10 @@ class GravityView_frontend {
 					 */
 					apply_filters( 'gravityview_lightbox_script', $js_dependency, $view );
 					$js_dependencies[] = $js_dependency;
+
+					if ( ! empty( $wp_filter[ 'gravity_view_lightbox_style' ] ) ) {
+						gravityview()->log->warning( 'gravity_view_lightbox_style filter is deprecated use gravityview_lightbox_style instead' );
+					}
 
 					/**
 					 * @filter `gravity_view_lightbox_style` Modify the lightbox CSS slug. Default: `thickbox`
