@@ -25,7 +25,5 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 
 	GravityView_Render_Settings::render_setting_row( 'hide_empty', $current_settings );
 
-
-	do_action( 'gravityview_admin_directory_settings', $current_settings );
 ?>
 </table>

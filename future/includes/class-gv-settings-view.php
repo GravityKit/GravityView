@@ -365,7 +365,7 @@ class View_Settings extends Settings {
 				'desc'              => __( 'Enable CSV access to this View.', 'gravityview' ),
 				'type'              => 'checkbox',
 				'value'             => '',
-				'tooltip'           => false,
+				'tooltip'           => __( 'If enabled, entries can be exported for this View by adding "/csv/" to the View URL. Each configured field will be a column in the exported CSV.', 'gravityview' ),
 				'show_in_shortcode' => false,
 				'full_width'        => true,
 			),

@@ -163,6 +163,14 @@ class GravityView_Admin_Metaboxes {
 				'callback' => '',
 				'callback_args' => '',
 			),
+			array(
+				'id' => 'permissions', // Use the same ID as View Settings for backward compatibility
+				'title' => __( 'Permissions', 'gravityview' ),
+				'file' => 'permissions.php',
+				'icon-class' => 'dashicons-lock',
+				'callback' => '',
+				'callback_args' => '',
+			),
 		);
 
 		/**
