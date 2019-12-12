@@ -157,7 +157,7 @@ $gv-overlay-index: 10000;
 .gv-section h4 span {
 	font-size: 14px;
 	display: block;
-	color: #666;
+	color: #636D77;
 	font-weight: normal;
 }
 
@@ -423,10 +423,10 @@ $gv-overlay-index: 10000;
 					border-bottom: 1px solid #fff;
 				}
 
-				// Active text is #555 - we want a bit lighter
+				// Active text is #555D66 - we want a bit lighter
 				// since it's bolder.
 				.dashicons {
-					color: #666;
+					color: #636D77;
 				}
 			}
 
@@ -482,7 +482,7 @@ hr {
 .gv-droppable-area {
 	margin-bottom: 1.25em;
 	border: 1px dotted #b5bcc2;
-	border-radius: 3px;
+	border-radius: 4px;
 
 	.gv-droppable-area-action {
 		padding: 7px 9px 5px;
@@ -502,7 +502,7 @@ hr {
 	.gv-droppable-area-title {
 		margin: 0;
 		font-size: .9rem;
-		color: #555;
+		color: #555D66;
 		font-weight: normal!important;
 	}
 
@@ -510,7 +510,7 @@ hr {
 		margin: 0.25em 0 0 0;
 		padding: 0;
 		font-size: .8rem;
-		color: #666;
+		color: #636D77;
 	}
 
 	.button-secondary {
@@ -533,7 +533,7 @@ hr {
 	position: relative;
 
 	.drop-message {
-		color: #999;
+		color: #6D7883;
 		margin: 0;
 		display: block;
 		text-align: center;
@@ -610,7 +610,7 @@ hr {
 
 		h5 small,
 		.gv-field-info {
-			color: #666;
+			color: #636D77;
 		}
 	}
 
