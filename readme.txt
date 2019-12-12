@@ -24,6 +24,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Fixed: Search All with Multiple Forms plugin now works as expected in both any and all modes.
+* Added: User Fields now has many more options, including avatars, names, etc.
+* Added: `gravityview/field/created_by/name_display` filter for custom User Field output.
+* Added: `gravityview/field/created_by/name_display/raw` allow raw (unescaped) output for `gravityview/field/created_by/name_display`.
 * Added: `gravityview_lightbox_script` and `gravityview_lightbox_style` filters.
 * Deprecated: `gravity_view_lightbox_script` and `gravity_view_lightbox_style` filters. See `gravityview_lightbox_script` and `gravityview_lightbox_style` instead.
 
