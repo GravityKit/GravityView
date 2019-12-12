@@ -127,7 +127,7 @@ class View_Settings extends Settings {
 			),
 			'user_edit' => array(
 				'label'             => __( 'Allow User Edit', 'gravityview' ), 'group'             => 'default',
-				'desc'              => __( 'Allow logged-in users to edit entries they created.', 'gravityview' ),
+				'desc'              => __( 'Allow logged-in users to edit entries they created.', 'gravityview' ) . ' ' . sprintf( __( 'Administrators are able to %s regardless of this setting.', 'gravityview' ), _x( 'edit entries', 'an action that admins can perform', 'gravityview' ) ),
 				'value'             => 0,
 				'tooltip'           => __( 'Display "Edit Entry" fields to non-administrator users if they created the entry. Edit Entry fields will always be displayed to site administrators.', 'gravityview' ),
 				'type'              => 'checkbox',
@@ -146,7 +146,7 @@ class View_Settings extends Settings {
 			'user_delete' => array(
 				'label'             => __( 'Allow User Delete', 'gravityview' ),
 				'group'             => 'default',
-				'desc'              => __( 'Allow logged-in users to delete entries they created.', 'gravityview' ),
+				'desc'              => __( 'Allow logged-in users to delete entries they created.', 'gravityview' ) . ' ' . sprintf( __( 'Administrators are able to %s regardless of this setting.', 'gravityview' ), _x( 'delete entries', 'an action that admins can perform', 'gravityview' ) ),
 				'value'             => 0,
 				'tooltip'           => __( 'Display "Delete Entry" fields to non-administrator users if they created the entry. Delete Entry fields will always be displayed to site administrators.', 'gravityview' ),
 				'type'              => 'checkbox',
@@ -155,7 +155,7 @@ class View_Settings extends Settings {
 			'user_duplicate' => array(
 				'label'             => __( 'Allow User Duplicate', 'gravityview' ),
 				'group'             => 'default',
-				'desc'              => __( 'Allow logged-in users to duplicate entries they created.', 'gravityview' ),
+				'desc'              => __( 'Allow logged-in users to duplicate entries they created.', 'gravityview' ) . ' ' . sprintf( __( 'Administrators are able to %s regardless of this setting.', 'gravityview' ), _x( 'duplicate entries', 'an action that admins can perform', 'gravityview' ) ),
 				'value'             => 0,
 				'tooltip'           => __( 'Display "Duplicate Entry" fields to non-administrator users if they created the entry. Duplicate Entry fields will always be displayed to site administrators.', 'gravityview' ),
 				'type'              => 'checkbox',
