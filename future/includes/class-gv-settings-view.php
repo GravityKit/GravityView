@@ -296,6 +296,8 @@ class View_Settings extends Settings {
 					'0'  => __( 'Redirect to Single Entry', 'gravityview' ),
 					'1' => __( 'Redirect to Multiple Entries', 'gravityview' ),
 					'2' => __( 'Redirect to URL', 'gravityview' ),
+				)
+			),
 			'edit_return_context' => array(
 				'label'             => __( 'Editing Returns To&hellip;', 'gravityview' ),
 				'type'              => 'radio',
