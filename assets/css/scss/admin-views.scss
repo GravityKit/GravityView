@@ -870,10 +870,14 @@ hr {
 			button {
 				@extend .gv-reset-button-style;
 
+				&.gv-remove-search-field {
+					margin-left: 6px;
+				}
+
 				.dashicons {
-					font-size: 18px;
-					height: 18px;
-					width: 18px;
+					font-size: 20px;
+					height: 20px;
+					width: 20px;
 					opacity: .8;
 					cursor: pointer;
 
@@ -887,6 +891,10 @@ hr {
 				}
 
 				.dashicons-dismiss {
+					margin-top: 2px;
+					font-size: 17px;
+					height: 17px;
+					width: 17px;
 					color: $dismiss-red;
 				}
 			}
