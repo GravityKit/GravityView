@@ -307,7 +307,7 @@
 		 * Init the search fields table
 		 */
 		addTable: function() {
-			return $('<table class="form-table widefat" role="presentation">' +
+			return $('<table class="form-table widefat">' +
 						'<thead>'+
 							'<tr>' +
 								'<th class="cell-sort">&nbsp;</th>' +
