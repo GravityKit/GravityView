@@ -25,6 +25,38 @@
 
 $dismiss-red: #C62D2D;
 
+.gv-reset-button-style {
+	// From normalize.css
+	font-family: inherit; /* 1 */
+	font-size: 100%; /* 1 */
+	line-height: 1.15; /* 1 */
+	margin: 0; /* 2 */
+	overflow: visible;
+	text-transform: none;
+	-webkit-appearance: button;
+
+	/**
+	 * Remove the inner border and padding in Firefox.
+	 */
+
+	&::-moz-focus-inner {
+		border-style: none;
+		padding: 0;
+	}
+
+	/**
+	 * Restore the focus styles unset by the previous rule.
+	 */
+	&:-moz-focusring {
+		outline: 1px dotted ButtonText;
+	}
+
+	border: none;
+	background: none;
+	padding: 0;
+	cursor: pointer;
+}
+
 $gv-overlay-index: 10000;
 
 /* GV Grid
@@ -183,7 +215,7 @@ $gv-overlay-index: 10000;
 		right: 5px;
 		opacity: .5;
 
-		&:hover {
+		&:hover, &:focus {
 			opacity: 1;
 		}
 	}
@@ -565,32 +597,42 @@ hr {
 		}
 	}
 
-	.gv-field-controls .dashicons {
+	.gv-field-controls button {
 
-		width: 24px; // Give a larger click target
-		font-size: 18px;
-		line-height: 20px;
+		@extend .gv-reset-button-style;
 
-		&:hover,
-		&:active {
-			color: #2ea2cc;
+		&.gv-remove-field {
+			float: right;
 		}
 
-		&.dashicons-dismiss {
-			float: right;
-			color: #999;
+		.dashicons {
+
+			width: 24px; // Give a larger click target
+			font-size: 18px;
+			line-height: 20px;
+
 			&:hover,
 			&:active {
-				color: $dismiss-red;
+				color: #2ea2cc;
 			}
-		}
 
-		&.dashicons-admin-links {
-			color: #aaa;
-			width: 20px;
-			font-size: 16px;
-			line-height: 20px;
-			cursor: default;
+			&.dashicons-dismiss {
+				color: #999;
+
+				&:hover,
+				&:active,
+				&:focus {
+					color: $dismiss-red;
+				}
+			}
+
+			&.dashicons-admin-links {
+				color: #aaa;
+				width: 20px;
+				font-size: 16px;
+				line-height: 20px;
+				cursor: default;
+			}
 		}
 	}
 
@@ -826,18 +868,16 @@ hr {
 			//width: 40px;
 
 			button {
-				border: none;
-				background: none;
-				padding: 0;
-				cursor: pointer;
+				@extend .gv-reset-button-style;
 
 				.dashicons {
 					font-size: 18px;
 					height: 18px;
 					width: 18px;
 					opacity: .8;
+					cursor: pointer;
 
-					&:hover {
+					&:hover, &:focus {
 						opacity: 1;
 					}
 				}

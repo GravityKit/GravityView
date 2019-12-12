@@ -184,7 +184,7 @@ abstract class GravityView_Admin_View_Item {
 		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . $this->get_item_info( false ) . '">' . $label . '</span>';
 
 
-		$output .= '<span class="gv-field-controls">' . $settings_link . $show_as_link . '<a href="#remove" class="dashicons-dismiss dashicons" title="' . esc_attr( $delete_title ) . '"></a></span>';
+		$output .= '<span class="gv-field-controls">' . $settings_link . $show_as_link . '<button class="gv-remove-field" aria-label="' . esc_attr( $delete_title ) . '" title="' . esc_attr( $delete_title ) . '"><span class="dashicons-dismiss dashicons"></span></button></span>';
 
 		// Displays only in the field/widget picker.
 		if ( $field_info = $this->get_item_info() ) {
