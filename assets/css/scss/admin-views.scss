@@ -557,11 +557,12 @@ hr {
 	border: 1px solid #ddd;
 	background: #f7f7f7;
 	overflow: hidden;
-	padding: 0.5em .75em;
+	padding: 0.6em .75em;
 	margin: 5px 0;
 	width: 100%;
 	z-index: 100; // Above .drop-message
 	box-sizing: border-box;
+	border-radius: 3px;
 
 	h5 {
 		float: left;
