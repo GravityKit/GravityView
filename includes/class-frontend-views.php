@@ -1305,14 +1305,32 @@ class GravityView_frontend {
 					/**
 					 * @filter `gravity_view_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
+					 * @deprecated Naming. See `gravityview_lightbox_script` instead.
 					 */
-					$js_dependencies[] = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
+					$js_dependency = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
+
+					/**
+					 * @filter `gravity_view_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
+					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
+					 * @param \GV\View The View.
+					 */
+					apply_filters( 'gravityview_lightbox_script', $js_dependency, $view );
+					$js_dependencies[] = $js_dependency;
 
 					/**
 					 * @filter `gravity_view_lightbox_style` Modify the lightbox CSS slug. Default: `thickbox`
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of its CSS file here.
+					 * @deprecated Naming. See `gravityview_lightbox_style` instead.
 					 */
-					$css_dependencies[] = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
+					$css_dependency = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
+
+					/**
+					 * @filter `gravity_view_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
+					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
+					 * @param \GV\View The View.
+					 */
+					$css_dependency = apply_filters( 'gravityview_lightbox_style', $css_dependency, $view );
+					$css_dependencies[] = $css_dependency;
 				}
 
 				/**

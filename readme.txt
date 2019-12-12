@@ -21,6 +21,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Search All with Multiple Forms plugin now works as expected in both any and all modes.
+* Added: `gravityview_lightbox_script` and `gravityview_lightbox_style` filters.
+* Deprecated: `gravity_view_lightbox_script` and `gravity_view_lightbox_style` filters. See `gravityview_lightbox_script` and `gravityview_lightbox_style` instead.
+
 = 2.5 on December 5, 2019 =
 
 This is a **big update**! Lots of improvements and fixes.
