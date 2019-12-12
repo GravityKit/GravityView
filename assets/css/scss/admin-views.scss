@@ -29,7 +29,7 @@ $dismiss-red: #C62D2D;
 	// From normalize.css
 	font-family: inherit; /* 1 */
 	font-size: 100%; /* 1 */
-	line-height: 1.15; /* 1 */
+	//line-height: 1.15; /* 1 */
 	margin: 0; /* 2 */
 	overflow: visible;
 	text-transform: none;
@@ -601,6 +601,8 @@ hr {
 
 		@extend .gv-reset-button-style;
 
+		color: #0073aa;
+
 		&.gv-remove-field {
 			float: right;
 		}
@@ -608,8 +610,10 @@ hr {
 		.dashicons {
 
 			width: 24px; // Give a larger click target
-			font-size: 18px;
+			font-size: 20px;
+			height: 20px;
 			line-height: 20px;
+			margin-top: -1px;
 
 			&:hover,
 			&:active {

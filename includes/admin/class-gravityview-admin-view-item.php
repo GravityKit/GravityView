@@ -155,7 +155,7 @@ abstract class GravityView_Admin_View_Item {
 		// $settings_html will just be hidden inputs if empty. Otherwise, it'll have an <ul>. Ugly hack, I know.
 		// TODO: Un-hack this
 		$hide_settings_link = ( empty( $this->item['settings_html'] ) || strpos( $this->item['settings_html'], '<!-- No Options -->' ) > 0 ) ? 'hide-if-js' : '';
-		$settings_link      = sprintf( '<a href="#settings" class="dashicons-admin-generic dashicons %s" title="%s"></a>', $hide_settings_link, esc_attr( $settings_title ) );
+		$settings_link      = sprintf( '<button class="gv-field-settings" title="%s" aria-label="%s"><span class="dashicons-admin-generic dashicons %s"></span></button>', $hide_settings_link, $hide_settings_link, esc_attr( $settings_title ) );
 
 		// Should we show the icon that the field is being used as a link to single entry?
 		$hide_show_as_link_class = empty( $this->settings['show_as_link'] ) ? 'hide-if-js' : '';

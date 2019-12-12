@@ -137,7 +137,7 @@
 				.on( 'click', ".gv-field-controls .gv-remove-field", vcfg.removeField )
 
 				// Clicking a settings link opens settings
-				.on( 'click', ".gv-field-controls a[href='#settings']", vcfg.openFieldSettings )
+				.on( 'click', ".gv-field-controls .gv-field-settings", vcfg.openFieldSettings )
 
 				// Double-clicking a field/widget label opens settings
 				.on( 'dblclick', ".gv-fields", vcfg.openFieldSettings )
