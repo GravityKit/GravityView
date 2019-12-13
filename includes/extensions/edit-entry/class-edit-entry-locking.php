@@ -8,13 +8,16 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 /**
  * An entry locking class that syncs with GFEntryLocking.
  *
- * @since 2.5
+ * @since 2.5.2
  */
 class GravityView_Edit_Entry_Locking {
 	/**
 	 * Load extension entry point.
 	 *
-	 * @since 2.5
+	 * DO NOT RENAME this method. Required by the class-edit-entry.php component loader.
+	 * @see GravityView_Edit_Entry::load_components()
+	 *
+	 * @since 2.5.2
 	 *
 	 * @return void
 	 */
@@ -29,7 +32,7 @@ class GravityView_Edit_Entry_Locking {
 	 *
 	 * Called via load() and `wp_enqueue_scripts`
 	 *
-	 * @since 2.5
+	 * @since 2.5.2
 	 *
 	 * @return void
 	 */
@@ -74,7 +77,7 @@ class GravityView_Edit_Entry_Locking {
 	 *
 	 * Called script enqueuing, added to JavaScript gforms_locking global variable.
 	 *
-	 * @since 2.5
+	 * @since 2.5.2
 	 *
 	 * @see GravityView_Edit_Entry_Locking::check_lock
 	 *
@@ -135,7 +138,7 @@ class GravityView_Edit_Entry_Locking {
 	 *
 	 * Uses gravityforms textdomain unchanged.
 	 *
-	 * @since 2.5
+	 * @since 2.5.2
 	 *
 	 * @return array An array of translations.
 	 */
@@ -263,7 +266,7 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Lock the entry to the current user.
 	 *
-	 * @since 2.5
+	 * @since 2.5.2
 	 *
 	 * @param int $entry_id The entry ID.
 	 *
