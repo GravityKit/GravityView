@@ -250,17 +250,10 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 
             <div class="feature-section col two-col has-2-columns is-fullwidth" style="padding: 0;">
-                <div class="column col col-1">
-                    <div class="media-container"><iframe width="426" height="240" src="https://www.youtube-nocookie.com/embed/uqWCtSsmHIQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
-                    <h4 class="higher">{sequence} Merge Tag</h4>
-                    <p>Add a simple counter to show what result number is currently being shown.</p>
-                    <p><a href="https://docs.gravityview.co/article/597-the-sequence-merge-tag" class="button button-primary button-large">Read about the <code>{sequence}</code> Merge Tag</a></p>
-                </div>
                 <div class="column col col-2">
-                    <div class="media-container"><img alt="{date_created}" src="<?php echo plugins_url( 'assets/images/screenshots/date_updated.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
-                    <h4 class="higher">Show the date the entry was last updated with <code>{date_updated}</code></h4>
-                    <p>It is often useful to know when an entry was last changed. That's what the <code>{date_updated}</code> does.</p>
-                    <p><a href="https://docs.gravityview.co/article/76-merge-tags#added-by-gv" class="button button-primary button-large">Learn About <code>{date_updated}</code></a></p>
+                    <div class="media-container"><img alt="{date_created}" src="<?php echo plugins_url( 'assets/images/screenshots/duplicate-entries.jpg', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
+                    <h4 class="higher">New: Duplicate Entry field!</h4>
+                    <p>Add a Duplicate Entry field to your View and easily duplicate entries from the front-end with a single click!</p>
                 </div>
             </div>
 
@@ -269,6 +262,95 @@ class GravityView_Welcome {
                 <div class="headline-feature" style="max-width: 100%">
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
+
+                <h3>2.5 on December 5, 2019</h3>
+
+                <p>This is a <strong>big update</strong>! Lots of improvements and fixes.</p>
+
+                <h4>All changes:</h4>
+
+                <ul>
+                    <li><strong>GravityView now requires WordPress 4.7 or newer.</strong></li>
+                    <li>Added: A new "Duplicate Entry" allows you to duplicate entries from the front-end</li>
+                    <li>View Configuration
+                        <ul>
+                            <li>Added: You can now add labels for Custom Content in the View editor (this helps keep track of many Custom Content fields at once!)</li>
+                            <li>Modified: New Views will be created with a number of default widgets preset</li>
+                            <li>Fixed: View configuration could be lost when the "Update" button was clicked early in the page load or multiple times rapidly</li>
+                            <li>Fixed: Some users were unable to edit a View, although having the correct permissions</li>
+                        </ul></li>
+                    <li>Improved CSV output
+                        <ul>
+                            <li>Modified: Multiple items in exported CSVs are now separated by a semicolon instead of new line. This is more consistent with formatting from other services.</li>
+                            <li>Fixed: Checkbox output in CSVs will no longer contain HTML by default</li>
+                            <li>Fixed: Textarea (Paragraph) output in CSVs will no longer contain <code>&lt;br /&gt;</code> tags by default</li>
+                        </ul></li>
+                    <li>Edit Entry
+                        <ul>
+                            <li>Added: Directly embed the Edit Entry screen using the shortcode <code>[gventry edit="1"]</code></li>
+                            <li>Fixed: Editing an entry with Approve/Disapprove field hidden would disapprove an unapproved entry</li>
+                            <li>Fixed: Field visibility when editing entries. Hidden fields remain hidden unless explicitly allowed via field configuration.</li>
+                            <li>Fixed: Hidden calculation fields were being recalculated on Edit Entry</li>
+                        </ul></li>
+                    <li>Sorting and Search
+                        <ul>
+                            <li>Fixed: User sorting does not work when the <code>[gravityview]</code> shortcode defines a sorting order</li>
+                            <li>Fixed: Proper sorting capabilities for Time and Date fields</li>
+                            <li>Fixed: Page Size widget breaks when multiple search filters are set</li>
+                            <li>Fixed: Page Size widget resets itself when a search is performed</li>
+                        </ul></li>
+                    <li><a href="https://gravityview.co/extensions/multiple-forms/">Multiple Forms</a> fixes
+                        <ul>
+                            <li>Fixed: Global search not working with joined forms</li>
+                            <li>Fixed: Custom Content fields now work properly with Multiple Forms</li>
+                            <li>Fixed: <a href="https://gravitypdf.com">Gravity PDF</a> support with Multiple Forms plugin and Custom Content fields</li>
+                            <li>Fixed: Entry Link, Edit Link and Delete Link URLs may be incorrect with some Multiple Forms setups</li>
+                        </ul></li>
+                    <li>Integrations
+                        <ul>
+                            <li>Added: "Show as score" setting for Gravity Forms Survey fields</li>
+                            <li>Added: Support for <a href="https://www.gravityforms.com/add-ons/pipe-video-recording/">Gravity Forms Pipe Add-On</a></li>
+                            <li>Added: Track the number of pageviews entries get by using the new <code>[gv_pageviews]</code> shortcode integration with the lightweight <a href="https://pageviews.io/">Pageviews</a> plugin</li>
+                            <li>Fixed: <a href="https://gravitywiz.com/documentation/gravity-forms-nested-forms/">GP Nested Forms</a> compatibility issues</li>
+                            <li>Fixed: PHP warnings appeared when searching Views for sites running GP Populate Anything with "Default" permalinks enabled</li>
+                        </ul></li>
+                    <li>Improved: When a View is embedded on a post or page with an incompatible URL Slug, show a warning (<a href="https://docs.gravityview.co/article/659-reserved-urls">read more</a>)</li>
+                    <li>Fixed: Number field decimal precision formatting not being respected</li>
+                    <li>Fixed: Lifetime licenses showed "0" instead of "Unlimited" sites available</li>
+                    <li>Updated: Polish translation (Thanks, Dariusz!)</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Added: <code>[gventry edit="1"]</code> mode where edit entry shortcodes can be used now (experimental)</li>
+                    <li>Added: <code>gravityview/template/field/csv/glue</code> filter to modify the glue used to separate multiple values in the CSV export (previously "\n", now default is ';')</li>
+                    <li>Added: <code>gravityview/shortcodes/gventry/edit/success</code> filter to modify [gventry] edit success message</li>
+                    <li>Added: <code>gravityview/search/sieve_choices</code> filter that sieves Search Widget field filter choices to only ones that have been used in entries (a UI is coming soon)</li>
+                    <li>Added: <code>gravityview/search/filter_details</code> filter for developers to modify search filter configurations</li>
+                    <li>Added: <code>gravityview/admin/available_fields</code> filter for developers to add their own assignable fields to View configurations</li>
+                    <li>Added: <code>gravityview/features/paged-edit</code> A super-secret early-bird filter to enable multiple page forms in Edit Entry</li>
+                    <li>Added: <code>$form_id</code> parameter for the <code>gravityview_template_$field_type_options</code> filter</li>
+                    <li>Added: <code>gravityview/security/require_unfiltered_html</code> filter now has 3 additional parameters: <code>user_id</code>, <code>cap</code> and <code>args</code>.</li>
+                    <li>Added: <code>gravityview/gvlogic/atts</code> filter for <code>[gvlogic]</code></li>
+                    <li>Added: <code>gravityview/edit_entry/page/success</code> filter to alter the message between edit entry pages.</li>
+                    <li>Added: <code>gravityview/approve_entries/update_unapproved_meta</code> filter to modify entry update approval status.</li>
+                    <li>Added: <code>gravityview/search/searchable_fields/whitelist</code> filter to modify allowed URL-based searches.</li>
+                    <li>Fixed: Some issues with <code>unfiltered_html</code> user capabilities being not enough to edit a View</li>
+                    <li>Fixed: Partial form was being passed to <code>gform_after_update_entry</code> filter after editing an entry. Full form will now be passed.</li>
+                    <li>Fixed: Widget form IDs would not change when form ID is changed in the View Configuration screen</li>
+                    <li>Fixed: Intermittent <code>[gvlogic2]</code> and nested <code>else</code> issues
+                        <ul>
+                            <li>The <code>[gvlogic]</code> shortcode has been rewritten for more stable, stateless behavior</li>
+                        </ul></li>
+                    <li>Fixed: <code>GravityView_Entry_Notes::get_notes()</code> can return null; cast <code>$notes</code> as an array in <code>templates/fields/field-notes-html.php</code> and <code>includes/extensions/entry-notes/fields/notes.php</code> template files</li>
+                    <li>Fixed: Prevent error logs from filling with "union features not supported"</li>
+                    <li>Modified: Cookies will no longer be set for Single Entry back links</li>
+                    <li>Modified: Default 250px <code>image_width</code> setting for File Upload images is now easily overrideable</li>
+                    <li>Removed: The <code>gravityview/gvlogic/parse_atts/after</code> action is no longer available. See <code>gravityview/gvlogic/atts</code> filter instead</li>
+                    <li>Removed: The <code>GVLogic_Shortcode</code> class is now a lifeless stub. See <code>\GV\Shortcodes\gvlogic</code>.</li>
+                    <li>Deprecated: <code>gravityview_get_current_view_data</code> — use the <code>\GV\View</code> API instead</li>
+                </ul>
 
                 <h3>2.4.1.1 on August 16, 2019</h3>
 
@@ -304,352 +386,7 @@ class GravityView_Welcome {
                     <li>Added: <code>gravityview/template/field/address/csv/delimiter</code> filter for CSV output of addresses</li>
                 </ul>
 
-                <h3>2.3.2 on May 3, 2019</h3>
-
-                <ul>
-                    <li>Re-fixed: Conditional Logic breaks in Edit Entry if the condition field is not present</li>
-                </ul>
-
-                <p><strong>Developer Updates:</strong></p>
-
-                <ul>
-                    <li>Fixed: <code>strtolower()</code> warnings in <code>class-frontend-views.php</code></li>
-                    <li>Fixed: <code>gravityview/fields/fileupload/link_atts</code> filter didn't work on link-wrapped images</li>
-                    <li>Fixed: PHP notice triggered when using the Poll widget</li>
-                    <li>Updated: Updater script, which should improve license check load time</li>
-                </ul>
-
-                <h3>2.3.1 on April 18, 2019</h3>
-
-                <ul>
-                    <li>Added: Entry Approval now features a popover that allows you to select from all approval statuses</li>
-                    <li>Fixed: Issues accessing Edit Entry for Views using <a href="https://gravityview.co/extensions/multiple-forms/">Multiple Forms</a></li>
-                    <li>Fixed: Issues with Edit Entry where fields were duplicated. This temporarily reverts the conditional logic fix added in 2.3.</li>
-                    <li>Fixed: Maps will now properly use global API key settings on Multisite installations</li>
-                </ul>
-
-                <p><strong>Developer Updates:</strong></p>
-
-                <ul>
-                    <li>Fixed: Issues searching Address fields that contain custom states</li>
-                    <li>Added: <code>gravityview/approve_entries/popover_placement</code> filter to modify the placement of the approval popover (default: right)</li>
-                </ul>
-
-                <h3>2.3 on April 2, 2019</h3>
-
-                <p><strong>Gravity Forms 2.3 is required</strong>. Some functionality will not work if you are using Gravity Forms 2.2. If this affects you, please <a href="mailto:support@gravityview.co?subject=Gravity%20Forms%202.3%20Requirement">let us know</a></p>
-
-                <ul>
-                    <li>Added: Multi-Sorting! Example: Sort first by Last Name, then sort those results by First Name <a href="https://docs.gravityview.co/article/570-sorting-by-multiple-columns">Read more about multi-sorting</a>
-                        <ul>
-                            <li>Works great with our <a href="https://gravityview.co/extensions/datatables/">DataTables extension</a>, too!</li>
-                        </ul></li>
-                    <li>Added: <code>[gvlogic logged_in="true"]</code> support to easily check user login status - <a href="https://docs.gravityview.co/article/252-gvlogic-shortcode#logged-in-parameter">read how it works</a></li>
-                    <li>Added: Dropdown, Radio and Link input support for searching product fields</li>
-                    <li>Fixed: Conditional Logic breaks in Edit Entry if the condition field is not present</li>
-                    <li>Fixed: Sorting numbers with decimals</li>
-                    <li>Fixed: CSV output of List and File Upload fields</li>
-                    <li>Fixed: "Hide empty fields" setting not working Product and Quantity fields</li>
-                    <li>Fixed: Month and day reversed in multi-input date search fields</li>
-                    <li>Fixed: Join issues with embedded Views when using <a href="https://gravityview.co/extensions/multiple-forms/">Multiple Forms</a></li>
-                    <li>Fixed: Other Entries empty text override was not working</li>
-                    <li>Updated: 100% translated for Dutch, German, and French</li>
-                </ul>
-
-                <p><strong>Developer Updates:</strong></p>
-
-                <ul>
-                    <li>Added: <code>gravityview/search/created_by/text</code> filter to override dropdown and radio text in "created by" search UI</li>
-                    <li>Added: <code>gravityview/approve_entries/after_submission</code> filter to prevent <code>is_approved</code> meta from being added automatically after entry creation</li>
-                    <li>Modified: List and File Upload fields are now output as objects/arrays in REST API JSON</li>
-                    <li>Modified: <a href="https://wordpress.org/plugins/gravity-forms-business-hours/">Business Hours</a> field support in CSV and JSON output</li>
-                    <li>Fixed: Fatal error when custom templates are loaded without <code>\GV\Template_Context</code></li>
-                    <li>Fixed: Potential PHP warning with PHP 7.2</li>
-                    <li>Added notice for users to upgrade to PHP 5.6, since WordPress will be bumping the minimum version soon</li>
-                </ul>
-
-                <h3>2.2.5 on February 4, 2019</h3>
-
-                <ul>
-                    <li>Added: Support for nested dropdown selection in Search Bar</li>
-                    <li>Fixed: State search dropdown type for custom address types</li>
-                    <li>Fixed: Don't show Credit Card fields on the Edit Entry screen (#1219)</li>
-                    <li>REST API and CSV fixes
-                        <ul>
-                            <li>Fixed: Email field being output as links in CSV</li>
-                            <li>Fixed: CSVs could not contain more than one special field (Entry ID, Custom Content, etc.)</li>
-                            <li>Fixed: CSV and JSON REST API did not output duplicate headers (Entry ID, Custom Content, etc.)</li>
-                            <li>Fixed: JSON REST API endpoint did not render Custom Content fields</li>
-                            <li>Modified: In the REST API duplicate keys are now suffixed with (n), for example: id(1), id(2), instead of not showing them at all</li>
-                        </ul></li>
-                    <li>Updated: Script used to provide built-in Support Port</li>
-                    <li>Updated: Russian translation by <a href="https://www.transifex.com/user/profile/awsswa59/">@awsswa59</a></li>
-                </ul>
-
-                <p><strong>Developer Updates:</strong></p>
-
-                <ul>
-                    <li>Added: <code>gravityview/edit_entry/before_update</code> hook</li>
-                    <li>Added: <code>gravityview/api/field/key</code> filter to customize the generated REST API entry JSON keys</li>
-                    <li>Added: <code>gravityview/template/csv/field/raw</code> filter to allow raw output of specific fields</li>
-                    <li>Modified: CSV REST API endpoint returns binary data instead of JSON-encoded data</li>
-                </ul>
-
-
-                <h3>2.2.4 on January 14, 2019</h3>
-
-                <ul>
-                    <li>Fixed: Other Entries field would display all entries without filtering</li>
-                    <li>Fixed: Entry Date searches not working (broken in 2.2)</li>
-                    <li>Fixed: CSV outputting wrong date formats for Date and Date Created fields</li>
-                    <li>Fixed: CSV outputting empty content for Custom Content fields</li>
-                    <li>Fixed: Changelog formatting so that the 2.2.1, 2.2.2, and 2.2.3 updates are shown</li>
-                    <li>Fixed: The picture of Floaty was <em>really big</em> in the Getting Started screen</li>
-                </ul>
-
-
-                <h3>2.2.3 on December 20, 2018</h3>
-
-                <ul>
-                    <li>Fixed: Issue loading translation files on Windows IIS servers</li>
-                </ul>
-
-                <p><strong>Developer Updates:</strong></p>
-
-                <ul>
-                    <li>Added: Third argument to <code>gravityview_search_operator</code> filter (the current <code>\GV\View</code> object)</li>
-                    <li>Added: <code>GravityView_Image::is_valid_extension()</code> to determine whether an extension is valid for an image</li>
-                    <li>Fixed: Search operator overrides that broke in 2.2</li>
-                    <li>Modified: SVG files are now processed as images in GravityView</li>
-                    <li>Modified: Changed translation file loading order to remove paths that didn't work! <a href="https://docs.gravityview.co/article/530-translation-string-loading-order">See this article for the updated paths</a>.</li>
-                </ul>
-
-
-                <h3>2.2.2 on December 11, 2018</h3>
-
-                <ul>
-                    <li>Added: Support for the new <a href="https://gravityview.co/extensions/multiple-forms/">Multiple Forms beta</a>!</li>
-                    <li><strong>Minor CSS Change</strong>: Reduced Search Bar negative margins to fix the Search Bar not aligning properly</li>
-                    <li>Fixed: Calculation fields that were not added to the Edit Entry fields were being emptied (except the price)</li>
-                    <li>Updated translations - thank you, translators!
-                        <ul>
-                            <li>Turkish translated by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
-                            <li>Russian translated by <a href="https://www.transifex.com/user/profile/awsswa59/">@awsswa59</a></li>
-                            <li>Polish translated by <a href="https://www.transifex.com/user/profile/dariusz.zielonka/">@dariusz.zielonka</a></li>
-                        </ul></li>
-                </ul>
-
-                <p><strong>Developer Updates:</strong></p>
-
-                <ul>
-                    <li>Template Change: Updated <code>widget-poll.php</code> template to display poll results for all Multiple Forms fields</li>
-                    <li>Added: <code>gravityview/query/class</code> filter to allow query class overrides, needed for Multiple Forms extension</li>
-                    <li>Added: <code>gravityview/approve_entries/autounapprove/status</code> filter to change the approval status set when an entry is modified in Edit Entry</li>
-                </ul>
-
-
-                <h3>2.2.1 on December 4, 2018</h3>
-
-                <ul>
-                    <li>Confirmed compatibility with WordPress 5.0 and the new Gutenberg editor (<a href="https://docs.gravityview.co/article/526-does-gravityview-support-gutenberg">use the shortcode block to embed</a>)</li>
-                    <li>Added: Support for upcoming <a href="https://gravityview.co/extensions/multiple-forms/">Multiple Forms plugin</a></li>
-                    <li>Fixed: Edit Entry writes incorrectly-formatted empty values in some cases.</li>
-                    <li>Fixed: "Hide View data until search is performed" not working for <a href="https://gravityview.co/extensions/maps/">Maps layout</a></li>
-                    <li>Fixed: Entries are not accessible when linked to from second page of results</li>
-                    <li>Fixed: Search redirects to home page when previewing an unpublished View</li>
-                </ul>
-
-                <p><strong>Developer Updates:</strong></p>
-
-                <ul>
-                    <li>Fixed: Error loading GravityView when server has not defined <code>GLOB_BRACE</code> value for the <code>glob()</code> function</li>
-                    <li>Added: <code>gravityview/entry/slug</code> filter to modify entry slug. It runs after the slug has been generated by <code>GravityView_API::get_entry_slug()</code></li>
-                    <li>Added: <code>\GV\Entry::is_multi()</code> method to check whether the request's entry is a <code>Multi_Entry</code> (contains data from multiple entries because of joins)</li>
-                </ul>
-
-
-                <h3>2.2 on November 28, 2018</h3>
-
-                <ul>
-                    <li>Yes, GravityView is fully compatible with Gravity Forms 2.4!</li>
-                    <li>Added: Choose where users go after editing an entry</li>
-                    <li>Added: Search entries by approval status with new "Approval Status" field in the Search Bar</li>
-                    <li>Added: More search input types added for "Created By" searches</li>
-                    <li>Added: When searching "Created By", set the input type to "text" to search by user email, login and name fields</li>
-                    <li>Fixed: Issue installing plugins from the Extensions page on a Multisite network</li>
-                    <li>Fixed: When a View is embedded on the homepage of a site, Single Entry and Edit Entry did not work (404 not found error)</li>
-                    <li>Fixed: Stray "Advanced Custom Fields" editor at the bottom of Edit View pages</li>
-                    <li>Fixed: Labels and quantities removed when editing an entry that had product calculations</li>
-                    <li>Fixed: When multiple Views are embedded on a page, Single Entry could sometimes show "You are not allowed to view this content"</li>
-                    <li>Fixed: Major search and filtering any/all mode combination issues, especially with "Show only approved entries" mode, A-Z Filters, Featured Entries, Advanced Filtering plugins</li>
-                    <li>Fixed: Support all <a href="https://docs.gravityview.co/article/115-changing-the-format-of-the-search-widgets-date-picker">documented date formats</a> in Search Bar date fields</li>
-                    <li>Fixed: Issues with <a href="https://gravityview.co/extensions/advanced-filter/">Advanced Filtering</a> date fields (including human strings, less than, greater than)</li>
-                    <li>Fixed: Security issue when Advanced Filter was configured with an "Any form field" filter (single entries were not properly secured)</li>
-                    <li>Fixed: The Quiz Letter Grade is lost if Edit Entry does not contain all Gravity Forms Quiz Add-On fields</li>
-                </ul>
-
-                <p><strong>Developer Updates:</strong></p>
-
-                <ul>
-                    <li>Updated: <code>search-field-select.php</code> template to gracefully handle array values</li>
-                    <li>Added: Filters for new "Created By" search. <a href="https://docs.gravityview.co/article/523-created-by-text-search">Learn how to modify what fields are searched</a>.</li>
-                </ul>
-
-
-                <h3>2.1.1 on October 26, 2018</h3>
-
-                <ul>
-                    <li>Added: A "Connected Views" menu on the Gravity Forms Forms page - hover over a form to see the new Connected Views menu!</li>
-                    <li>Fixed: Additional slashes being added to the custom date format for Date fields</li>
-                    <li>Fixed: Quiz letter grade not updated after editing an entry that has Gravity Forms Quiz fields</li>
-                    <li>Fixed: Single Entry screen is inaccessible when the category is part of a URL path (using the <code>%category%</code> tag in the site's Permalinks settings)</li>
-                    <li>Fixed: Issue where GravityView CSS isn't loading in the Dashboard for some customers</li>
-                    <li>Fixed: Display uploaded files using Gravity Forms' secure link URL format, if enabled</li>
-                </ul>
-
-                <p><strong>Developer Updates:</strong></p>
-
-                <ul>
-                    <li>Fixed: Fixed an issue when using <a href="https://docs.gravityview.co/article/57-customizing-urls">custom entry slugs</a> where non-unique values across forms cause the entries to not be accessible</li>
-                    <li>Added: <code>gravityview/template/table/use-legacy-style</code> filter to  use the legacy Table layout stylesheet without any responsive layout styles (added in GravityView 2.1) - <a href="https://gist.github.com/zackkatz/45d869e096cd5114a87952d292116d3f">Here's code you can use</a></li>
-                    <li>Added: <code>gravityview/view/can_render</code> filter to allow you to override whether a View can be rendered or not</li>
-                    <li>Added: <code>gravityview/widgets/search/datepicker/format</code> filter to allow you to modify only the format used, rather than using the <code>gravityview_search_datepicker_class</code> filter</li>
-                    <li>Fixed: Undefined index PHP warning in the GravityView Extensions screen</li>
-                    <li>Fixed: Removed internal usage of deprecated GravityView functions</li>
-                    <li>Limitation: "Enable lightbox for images" will not work on images when using Gravity Forms secure URL format. <a href="mailto:support@gravityview.co">Contact support</a> for a work-around, or use a <a href="https://docs.gravityview.co/article/277-using-the-foobox-lightbox-plugin-instead-of-the-default">different lightbox script</a>.</li>
-                </ul>
-
-                <h3>2.1.0.2 &amp; 2.1.0.3 on September 28, 2018</h3>
-
-                <ul>
-                    <li>Fixed: Slashes being added to field quotes</li>
-                    <li>Fixed: Images showing as links for File Upload fields</li>
-                </ul>
-
-                <h3>2.1.0.1 on September 27, 2018</h3>
-
-                <ul>
-                    <li>Fixed: Responsive table layout labels showing sorting icon HTML</li>
-                    <li>Fixed: Responsive table layout showing table footer</li>
-                </ul>
-
-                <h2>2.1 on September 27, 2018</h2>
-
-                <ul>
-                    <li>Added: You can now send email notifications when an entry is approved, disapproved, or the approval status has changed. <a href="https://docs.gravityview.co/article/488-notification-when-entry-approved">Learn how</a></li>
-                    <li>Added: Automatically un-approve an entry when it has been updated by an user without the ability to moderate entries</li>
-                    <li>Added: Easy way to install GravityView Extensions and our stand-alone plugins <a href="https://docs.gravityview.co/article/489-managing-extensions">Learn how</a></li>
-                    <li>Added: Enable CSV output for Views <a href="https://docs.gravityview.co/article/491-csv-export">Learn how</a></li>
-                    <li>Added: A "Page Size" widget allows users to change the number of entries per page</li>
-                    <li>Added: Support for displaying a single input value of a Chained Select field</li>
-                    <li>Added: The Table layout is now mobile-responsive!</li>
-                    <li>Improved: Added a shortcut to reset entry approval on the front-end of a View: "Option + Click" on the Entry Approval field</li>
-                    <li>Fixed: Custom date format not working with the <code>{date_created}</code> Merge Tag</li>
-                    <li>Fixed: Embedding a View inside an embedded entry didn't work</li>
-                    <li>Fixed: "Link to entry" setting not working for File Upload fields</li>
-                    <li>Fixed: Approval Status field not showing anything</li>
-                    <li>Updated translations - thank you, translators!
-                        <ul>
-                            <li>Polish translated by <a href="https://www.transifex.com/user/profile/dariusz.zielonka/">@dariusz.zielonka</a></li>
-                            <li>Russian translated by <a href="https://www.transifex.com/user/profile/awsswa59/">@awsswa59</a></li>
-                            <li>Turkish translated by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
-                            <li>Chinese translated by <a href="https://www.transifex.com/user/profile/michaeledi/">@michaeledi</a></li>
-                        </ul></li>
-                </ul>
-
-                <p><strong>Developer Notes:</strong></p>
-
-                <ul>
-                    <li>Added: Process shortcodes inside [gv<em>entry</em>link] shortcodes</li>
-                    <li>Added: <code>gravityview/shortcodes/gv_entry_link/output</code> filter to modify output of the <code>[gv_entry_link]</code> shortcode</li>
-                    <li>Added <code>gravityview/widget/page_size/settings</code> and <code>gravityview/widget/page_size/page_sizes</code> filters to modify new Page Size widget</li>
-                    <li>Modified: Added <code>data-label</code> attributes to all Table layout cells to make responsive layout CSS-only</li>
-                    <li>Modified: Added responsive CSS to the Table layout CSS ("table-view.css")</li>
-                    <li>Improved: Reduced database lookups when using custom entry slugs</li>
-                    <li>Introduced <code>\GV\View-&gt;can_render()</code> method to reduce code duplication</li>
-                    <li>Fixed: Don't add <code>gvid</code> unless multiple Views embedded in a post</li>
-                    <li>Fixed: PHP 5.3 warning in when using <code>array_combine()</code> on empty arrays</li>
-                    <li>Fixed: Apply <code>addslashes</code> to View Configuration when saving, fixing <code>{date_created}</code> format</li>
-                    <li>REST API: Allow setting parent post or page with the REST API request using <code>post_id={id}</code> (<a href="https://docs.gravityview.co/article/468-rest-api">learn more</a>)</li>
-                    <li>REST API: Added <code>X-Item-Total</code> header and meta to REST API response</li>
-                </ul>
-
-                <h3>2.0.14.1 on July 19, 2018</h3>
-
-                <ul>
-                    <li>Fixed: Potential XSS ("Cross Site Scripting") security issue. <strong>Please update.</strong></li>
-                    <li>Fixed: GravityView styles weren't being loaded for some users</li>
-                </ul>
-
-                <h3>2.0.14 on July 9, 2018</h3>
-
-                <ul>
-                    <li>Added: Allow filtering entries by Unapproved status in Gravity Forms</li>
-                    <li>Added: Reset entry approval status by holding down Option/Alt when clicking entry approval icon</li>
-                    <li>Fixed: Merge Tags not working in field Custom Labels</li>
-                    <li>Fixed: Enable sorting by approval status all the time, not just when a form has an Approval field</li>
-                    <li>Fixed: When a View is saved without a connected form, don't show "no longer exists" message</li>
-                    <li>Fixed: Inline Edit plugin not updating properly when GravityView is active</li>
-                </ul>
-
-                <p><strong>Developer Notes:</strong></p>
-
-                <ul>
-                    <li>Added: <code>gravityview/approve_entries/after_submission/default_status</code> filter to modify the default status of an entry as it is created.</li>
-                    <li>Modified: No longer delete <code>is_approved</code> entry meta when updating entry status - leave the value to be <code>GravityView_Entry_Approval_Status::UNAPPROVED</code> (3)</li>
-                    <li>Fixed: Allow for "in" and "not_in" comparisons when using <code>GravityView_GFFormsModel::is_value_match</code></li>
-                    <li>Tweak: If "Search Mode" key is set, but there is no value, use "all"</li>
-                    <li>Tweak: Reduced number of database queries when rendering a View</li>
-                </ul>
-
-                <h3>2.0.13.1 on June 26, 2018</h3>
-
-                <ul>
-                    <li>Fixed: Custom Content fields not working with DIY Layout</li>
-                    <li>Fixed: Error when displaying plugin updates on a single site of a Multisite installation</li>
-                </ul>
-                
-                <h3>2.0.13 on June 25, 2018</h3>
-
-                <ul>
-                    <li>Fixed: Custom Content fields not working with DIY Layout since 2.0.11</li>
-                    <li>Fixed: Fatal error when migrating settings from (very) old versions of GravityView</li>
-                    <li>Added: Code for Entry Notes to work properly with future version of DataTables</li>
-                </ul>
-
-                <h3>2.0.12 on June 13, 2018</h3>
-
-                <ul>
-                    <li>Fixed: On the Plugins page, "Update now" not working for GravityView Premium Plugins, Views & Extensions</li>
-                    <li>Fixed: Always show that plugin updates are available, even if a license is expired</li>
-                </ul>
-
-                <h3>2.0.11 on June 12, 2018</h3>
-
-                <ul>
-                    <li>Added: Search for fields by name when adding fields to your View configuration (it's really great!)</li>
-                    <li>Fixed: GravityView license details not saving when the license was activated (only when the Update Settings button was clicked)</li>
-                    <li>Fixed: Entry filtering for single entries</li>
-                    <li>Fixed: Per-user language setting not being used in WordPress 4.7 or newer</li>
-                </ul>
-
-                <p><strong>Developer Notes</strong></p>
-
-                <ul>
-                    <li>Added: <code>\GV\View::get_joins()</code> method to fetch array of <code>\GV\Joins</code> connected with a View</li>
-                    <li>Added: <code>\GV\View::get_joined_forms()</code> method to get array of <code>\GV\GF_Forms</code> connected with a View</li>
-                </ul>
-
-
-                <h3>2.0.10 on June 6, 2018</h3>
-
-                <ul>
-                    <li>Added: Search for fields by name when adding fields to your View configuration (it's really great!)</li>
-                    <li>Fixed: Password-protected Views were showing "You are not allowed to view this content" instead of the password form</li>
-                    <li>Fixed: When Map View is embedded, Search Bar pointed to View URL, not page URL</li>
-                </ul>
-
-				<p style="text-align: center">
+				<p style="text-align: center;">
 					<a href="https://gravityview.co/changelog/" class="aligncenter button button-primary button-hero" style="margin: 0 auto; display: inline-block; text-transform: capitalize"><?php esc_html_e( 'View change history', 'gravityview' ); ?></a>
 				</p>
 

@@ -23,7 +23,41 @@
 	}
 }
 
-$dismiss-red: #d03a3a;
+$dismiss-red: #C62D2D;
+
+/**
+ * Convert buttons to not having any style
+ */
+.gv-reset-button-style {
+
+	/**
+	 * Begin from normalize.css
+	 */
+	font-family: inherit; /* 1 */
+	font-size: 100%; /* 1 */
+	margin: 0; /* 2 */
+	overflow: visible;
+	text-transform: none;
+	-webkit-appearance: button;
+
+	// Remove the inner border and padding in Firefox.
+	&::-moz-focus-inner {
+		border-style: none;
+		padding: 0;
+	}
+	// Restore the focus styles unset by the previous rule.
+	&:-moz-focusring {
+		outline: 1px dotted ButtonText;
+	}
+	/**
+	 * End from normalize.css
+	 */
+
+	border: none;
+	background: none;
+	padding: 0;
+	cursor: pointer;
+}
 
 $gv-overlay-index: 10000;
 
@@ -59,29 +93,37 @@ $gv-overlay-index: 10000;
 
 [class*='gv-grid-col-'] {
 	float: left;
-	padding-right: 1em;
+	padding-right: 1%;
 	box-sizing: border-box;
 }
 
-.gv-grid-col-1-3 {
-	width: 33.33%;
-}
 
 .gv-grid-col-1-4 {
 	width: 25%;
 }
 
 .gv-grid-col-1-2 {
-	width: 50%;
+	width: 49.5%;
+	padding-right: 2%;
+}
+.gv-grid-col-1-2 + .gv-grid-col-1-2 {
+	padding-right: 0;
 }
 
 .gv-grid-col-1-8 {
 	width: 12.5%;
 }
 
+.gv-grid-col-1-3 {
+	width: 33.33%;
+	padding-right: 2%;
+}
 .gv-grid-col-2-3 {
 	width: 66.66%;
+	padding-right: 1%;
 }
+
+
 
 .gv-grid-col-1-1 {
 	width: 100%;
@@ -91,6 +133,12 @@ $gv-overlay-index: 10000;
 .gv-grid-col-1-1 + .gv-grid-col-1-3 + .gv-grid-col-2-3 + .gv-grid-col-1-2,
 .gv-grid-col-1-1 + .gv-grid-col-2-3 + .gv-grid-col-1-3 + .gv-grid-col-1-2 {
 	clear: left;
+}
+
+#edit-active-fields,
+#single-active-fields,
+#directory-footer-widgets {
+	margin-bottom: 0;
 }
 
 /* GV Sections
@@ -107,14 +155,15 @@ $gv-overlay-index: 10000;
 }
 
 .gv-section h4 {
-	font-size: 14px;
+	font-size: 1.25em;
 	font-weight: bold;
+	margin-bottom: .75em;
 }
 
 .gv-section h4 span {
 	font-size: 14px;
-	float: right;
-	color: #999;
+	display: block;
+	color: #636D77;
 	font-weight: normal;
 }
 
@@ -183,7 +232,7 @@ $gv-overlay-index: 10000;
 		right: 5px;
 		opacity: .5;
 
-		&:hover {
+		&:hover, &:focus {
 			opacity: 1;
 		}
 	}
@@ -380,10 +429,10 @@ $gv-overlay-index: 10000;
 					border-bottom: 1px solid #fff;
 				}
 
-				// Active text is #555 - we want a bit lighter
+				// Active text is #555D66 - we want a bit lighter
 				// since it's bolder.
 				.dashicons {
-					color: #666;
+					color: #636D77;
 				}
 			}
 
@@ -399,7 +448,8 @@ $gv-overlay-index: 10000;
 		display: block;
 		padding: 1em;
 		background: #fff;
-		border: 1px solid #ddd;
+		border: none;
+		border-top: 1px solid #ccc;
 	}
 
 	.ui-tabs-hide {
@@ -436,12 +486,14 @@ hr {
 --------------------------------------- */
 
 .gv-droppable-area {
-	border: 1px solid #ccc;
-	margin-bottom: 1em;
+	margin-bottom: 1.25em;
+
+	border: 1px dotted #b5bcc2;
+	border-radius: 4px;
 
 	.gv-droppable-area-action {
+		padding: 7px 9px 5px;
 		background: #eee;
-		padding: 0.5em;
 	}
 
 	.gv-droppable-area-action:before,
@@ -456,18 +508,21 @@ hr {
 
 	.gv-droppable-area-title {
 		margin: 0;
-		padding: 0;
+		font-size: .9rem;
+		color: #555D66;
+		font-weight: normal!important;
 	}
 
 	.gv-droppable-area-subtitle {
 		margin: 0.25em 0 0 0;
 		padding: 0;
-		font-size: 12px;
-		color: #999;
+		font-size: .8rem;
+		color: #636D77;
 	}
 
 	.button-secondary {
 		float: right;
+		margin-top: 5px;
 		margin-right: .5em;
 
 		&:first-child {
@@ -480,12 +535,12 @@ hr {
 // End .gv-droppable-area
 
 .active-drop {
-	padding: 3px 7px;
+	padding: 5px 8px;
 	min-height: 44px;
 	position: relative;
 
 	.drop-message {
-		color: #bbb;
+		color: #6D7883;
 		margin: 0;
 		display: block;
 		text-align: center;
@@ -523,11 +578,12 @@ hr {
 	border: 1px solid #ddd;
 	background: #f7f7f7;
 	overflow: hidden;
-	padding: 0.5em .75em;
+	padding: 0.6em .75em;
 	margin: 5px 0;
 	width: 100%;
 	z-index: 100; // Above .drop-message
 	box-sizing: border-box;
+	border-radius: 3px;
 
 	h5 {
 		float: left;
@@ -561,36 +617,50 @@ hr {
 
 		h5 small,
 		.gv-field-info {
-			color: #666;
+			color: #636D77;
 		}
 	}
 
-	.gv-field-controls .dashicons {
+	.gv-field-controls button {
 
-		width: 24px; // Give a larger click target
-		font-size: 18px;
-		line-height: 20px;
+		@extend .gv-reset-button-style;
 
-		&:hover,
-		&:active {
-			color: #2ea2cc;
+		color: #0073aa;
+
+		&.gv-remove-field {
+			float: right;
 		}
 
-		&.dashicons-dismiss {
-			float: right;
-			color: #999;
+		.dashicons {
+
+			width: 24px; // Give a larger click target
+			font-size: 20px;
+			height: 20px;
+			line-height: 20px;
+			margin-top: -1px;
+
 			&:hover,
 			&:active {
-				color: $dismiss-red;
+				color: #2ea2cc;
 			}
-		}
 
-		&.dashicons-admin-links {
-			color: #aaa;
-			width: 20px;
-			font-size: 16px;
-			line-height: 20px;
-			cursor: default;
+			&.dashicons-dismiss {
+				color: #999;
+
+				&:hover,
+				&:active,
+				&:focus {
+					color: $dismiss-red;
+				}
+			}
+
+			&.dashicons-admin-links {
+				color: #aaa;
+				width: 20px;
+				font-size: 16px;
+				line-height: 20px;
+				cursor: default;
+			}
 		}
 	}
 
@@ -825,21 +895,34 @@ hr {
 
 			//width: 40px;
 
-			a {
-				font-size: 18px;
+			button {
+				@extend .gv-reset-button-style;
 
-				&.dashicons {
+				&.gv-remove-search-field {
+					margin-left: 6px;
+				}
+
+				.dashicons {
+					font-size: 20px;
+					height: 20px;
+					width: 20px;
 					opacity: .8;
-					&:hover {
+					cursor: pointer;
+
+					&:hover, &:focus {
 						opacity: 1;
 					}
 				}
 
-				&.dashicons-plus-alt {
-					color: green;
+				.dashicons-plus-alt {
+					color: #328540;
 				}
 
-				&.dashicons-dismiss {
+				.dashicons-dismiss {
+					margin-top: 2px;
+					font-size: 17px;
+					height: 17px;
+					width: 17px;
 					color: $dismiss-red;
 				}
 			}

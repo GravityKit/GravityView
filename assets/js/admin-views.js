@@ -134,10 +134,10 @@
 				.on( 'change', ".gv-dialog-options input[name*=show_as_link]", vcfg.toggleShowAsEntry )
 
 				// show field buttons: Settings & Remove
-				.on( 'click', ".gv-field-controls a[href='#remove']", vcfg.removeField )
+				.on( 'click', ".gv-field-controls .gv-remove-field", vcfg.removeField )
 
 				// Clicking a settings link opens settings
-				.on( 'click', ".gv-field-controls a[href='#settings']", vcfg.openFieldSettings )
+				.on( 'click', ".gv-field-controls .gv-field-settings", vcfg.openFieldSettings )
 
 				// Double-clicking a field/widget label opens settings
 				.on( 'dblclick', ".gv-fields", vcfg.openFieldSettings )
@@ -972,12 +972,13 @@
 				close: function () {
 					$( this ).attr( 'data-tooltip', null );
 				},
-		        open: function() {
+		        open: function( event, tooltip ) {
 
 					$( this )
 						.attr( 'data-tooltip', 'active' )
 						.attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
 
+					$( 'input[type=search]', tooltip.tooltip ).focus();
 		        },
 				closeOnEscape: true,
 				disabled: true, // Don't open on hover
@@ -1154,7 +1155,7 @@
 			var areaId = clicked.parents( '.ui-tooltip' ).attr( 'id' );
 			var templateId = $( "#gravityview_directory_template" ).val();
 			var tooltipId = clicked.parents( '.ui-tooltip' ).attr( 'id' );
-			var addButton = $( 'a.gv-add-field[data-tooltip-id="' + tooltipId + '"]' );
+			var addButton = $( '.gv-add-field[data-tooltip-id="' + tooltipId + '"]' );
 
 			var data = {
 				action: 'gv_field_options',
@@ -1196,7 +1197,7 @@
 				}
 
 				// append the new field to the active drop
-				$( 'a[data-tooltip-id="' + areaId + '"]' ).parents( '.gv-droppable-area' ).find( '.active-drop' ).append( newField ).end().attr( 'data-tooltip-id', '' );
+				$( '[data-tooltip-id="' + areaId + '"]' ).parents( '.gv-droppable-area' ).find( '.active-drop' ).append( newField ).end().attr( 'data-tooltip-id', '' );
 
 				$('body').trigger( 'gravityview/field-added', newField );
 

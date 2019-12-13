@@ -510,7 +510,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 		}
 
-		return $searchable_fields;
+		/**
+		 * @filter `gravityview/search/searchable_fields/whitelist` Modifies the fields able to be searched using the Search Bar
+		 * @since 2.5.1
+		 *
+		 * @param array $searchable_fields Array of GravityView-formatted fields or only the field ID? Example: [ '1.2', 'created_by' ]
+		 * @param \GV\View $view Object of View being searched.
+		 * @param bool $with_full_field Does $searchable_fields contain the full field array or just field ID? Default: false (just field ID)
+		 */
+		return apply_filters( 'gravityview/search/searchable_fields/whitelist', $searchable_fields, $view, $with_full_field );
 	}
 
 	/** --- Frontend --- */
@@ -851,8 +859,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$search_conditions = array();
 
 		if ( $filters = array_filter( $search_criteria['field_filters'] ) ) {
-
-			foreach ( $filters as $filter ) {
+			foreach ( $filters as &$filter ) {
 				if ( ! is_array( $filter ) ) {
 					continue;
 				}
@@ -878,18 +885,19 @@ class GravityView_Widget_Search extends \GV\Widget {
 							$on = $_join->join_on;
 							$join = $_join->join;
 
-							// Join
-							$search_conditions[] = new GF_Query_Condition(
-								new GF_Query_Column( GF_Query_Column::META, $join->ID, $query->_alias( GF_Query_Column::META, $join->ID, 'm' ) ),
-								$search_condition->operator,
-								$search_condition->right
-							);
-
-							// On
-							$search_conditions[] = new GF_Query_Condition(
-								new GF_Query_Column( GF_Query_Column::META, $on->ID, $query->_alias( GF_Query_Column::META, $on->ID, 'm' ) ),
-								$search_condition->operator,
-								$search_condition->right
+							$search_conditions[] = GF_Query_Condition::_or(
+								// Join
+								new GF_Query_Condition(
+									new GF_Query_Column( GF_Query_Column::META, $join->ID, $query->_alias( GF_Query_Column::META, $join->ID, 'm' ) ),
+									$search_condition->operator,
+									$search_condition->right
+								),
+								// On
+								new GF_Query_Condition(
+									new GF_Query_Column( GF_Query_Column::META, $on->ID, $query->_alias( GF_Query_Column::META, $on->ID, 'm' ) ),
+									$search_condition->operator,
+									$search_condition->right
+								)
 							);
 						}
 					} else {
@@ -1011,7 +1019,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				return false;
 			}
 		}
-		
+
 		if ( ! $form ) {
 			// fallback
 			$form = $view->form;
@@ -1019,6 +1027,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		// get form field array
 		$form_field = is_numeric( $field_id ) ? \GV\GF_Field::by_id( $form, $field_id ) : \GV\Internal_Field::by_id( $field_id );
+
+		if ( ! $form_field ) {
+			return false;
+		}
 
 		// default filter array
 		$filter = array(
@@ -1334,7 +1346,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$updated_field['value'] = $this->rgget_or_rgpost( 'gv_by' );
 					$updated_field['choices'] = self::get_created_by_choices( $view );
 					break;
-				
+
 				case 'is_approved':
 					$updated_field['key'] = 'is_approved';
 					$updated_field['value'] = $this->rgget_or_rgpost( 'filter_is_approved' );

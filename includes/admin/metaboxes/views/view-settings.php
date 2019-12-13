@@ -55,6 +55,11 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 	GravityView_Render_Settings::render_setting_row( 'user_delete', $current_settings );
 
 	/**
+	 * @since  2.5
+	 */
+	GravityView_Render_Settings::render_setting_row( 'user_duplicate', $current_settings );
+
+	/**
 	 * @since 1.15.2
 	 */
 	GravityView_Render_Settings::render_setting_row( 'embed_only', $current_settings );

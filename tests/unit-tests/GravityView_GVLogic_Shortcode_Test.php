@@ -93,6 +93,13 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( '', $empty_value );
 
+		// Sanity checks.
+		$this->assertEquals( 'No shortcode.', do_shortcode( 'No shortcode.' ) );
+		$this->assertEquals( '(Before shortcode)', do_shortcode( '(Before shortcode)[gvlogic]' ) );
+		$this->assertEquals( '(Before shortcode)', do_shortcode( '(Before shortcode)[gvlogic if="asd" is=""]NO[/gvlogic]' ) );
+		$this->assertEquals( '(Before shortcode)(after shortcode)', do_shortcode( '(Before shortcode)[gvlogic if="asd" is=""]NO[/gvlogic](after shortcode)' ) );
+		$this->assertEquals( "(Before shortcode)\n\nYES\n(after shortcode)", do_shortcode( "(Before shortcode)\n[gvlogic if='a' is='']\nNO[else]\nYES\n[/gvlogic](after shortcode)" ) );
+
 	}
 
 	/**
@@ -457,6 +464,7 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 		$value = do_shortcode( '[gvlogic if="1" is="1"]1 is 1. [gvlogic2 if="2" is="3"]2 is 3.[else]2 is NOT three.[/gvlogic2][else]1 isn\'t 1. Weird.[/gvlogic]' );
 		$this->assertEquals( '1 is 1. 2 is NOT three.', $value );
 
+		$this->assertEquals( "(Before shortcode) \n\t\nYES\nYES2\n(after shortcode)", do_shortcode( "(Before shortcode) \n\t[gvlogic if='a' is='']\nNO[else]\nYES\n[gvlogic2 if='' isnot='']NO\n[else]YES2\n[/gvlogic2][/gvlogic](after shortcode)" ), 'We have a whitespace issue' );
 	}
 
 }

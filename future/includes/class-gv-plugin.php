@@ -203,6 +203,7 @@ final class Plugin {
 		// @todo: Convert to a scan of the directory or a method where this all lives
 		include_once $this->dir( 'includes/extensions/edit-entry/class-edit-entry.php' );
 		include_once $this->dir( 'includes/extensions/delete-entry/class-delete-entry.php' );
+		include_once $this->dir( 'includes/extensions/duplicate-entry/class-duplicate-entry.php' );
 		include_once $this->dir( 'includes/extensions/entry-notes/class-gravityview-field-notes.php' );
 
 		// Load WordPress Widgets

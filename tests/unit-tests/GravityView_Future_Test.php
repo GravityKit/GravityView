@@ -8399,6 +8399,129 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( 'Widgets are working.', $out );
 		$this->assertContains( 'But as expected, "{sequence}" is not working.', $out );
 
+		$this->_reset_context();
+	}
+
+	public function test_notice_reserved_slugs() {
+		$this->_reset_context();
+
+		$administrator = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'administrator' )
+		);
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form->ID,
+			'template_id' => 'table',
+            'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '4',
+						'label' => 'Email',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form->ID,
+			'status' => 'active',
+			'4' => 'gennady@gravityview.co',
+		) );
+
+		register_post_type( $post_type = 'test_' . wp_generate_password( 4, false ), array(
+			'rewrite' => array(
+				'slug' => $post_type,
+			)
+		) );
+
+		$post = $this->factory->post->create_and_get( array( 'post_name' => 'view', 'post_content' => '[gravityview id="' . $view->ID . '"]' ) );
+
+		$this->set_permalink_structure( '/%postname%/' );
+		\GV\Entry::add_rewrite_endpoint();
+		flush_rewrite_rules();
+		
+		$this->go_to( get_permalink( $post ) );
+
+		// Only admins see the notice
+		$this->assertNotContains( 'on this page', $content = apply_filters( 'the_content', $post->post_content ) );
+		$this->assertNotContains( 'error', $content );
+
+		wp_set_current_user( $administrator );
+
+		$this->assertContains( 'on this page', $content = apply_filters( 'the_content', $post->post_content ) );
+		$this->assertContains( 'error', $content );
+
+		// No permalink should work fine, though
+		$this->set_permalink_structure( '' );
+		\GV\Entry::add_rewrite_endpoint();
+		flush_rewrite_rules();
+
+		$this->go_to( get_permalink( $post ) );
+
+		$this->assertNotContains( 'on this page', $content = apply_filters( 'the_content', $post->post_content ) );
+		$this->assertNotContains( 'error', $content );
+
+		wp_delete_post( $post->ID );
+
+		$this->set_permalink_structure( '/%postname%/' );
+		\GV\Entry::add_rewrite_endpoint();
+		flush_rewrite_rules();
+
+		// [gravityview] shortcode
+		$posts = array(
+			$this->factory->post->create_and_get( array( 'post_name' => 'view', 'post_content' => '[gravityview id="' . $view->ID . '"]' ) ),
+			$this->factory->post->create_and_get( array( 'post_name' => 'entry', 'post_content' => '[gravityview id="' . $view->ID . '"]' ) ),
+			$this->factory->post->create_and_get( array( 'post_name' => 'search', 'post_content' => '[gravityview id="' . $view->ID . '"]' ) ),
+			$this->factory->post->create_and_get( array( 'post_name' => $post_type, 'post_content' => '[gravityview id="' . $view->ID . '"]' ) ),
+			$this->factory->post->create_and_get( array( 'post_name' => 'filtered', 'post_content' => '[gravityview id="' . $view->ID . '"]' ) ),
+		);
+
+		add_filter( 'gravityview/rewrite/reserved_slugs', function( $slugs ) {
+			$slugs[] = 'filtered';
+			return $slugs;
+		} );
+
+		foreach ( $posts as $post ) {
+			$this->go_to( get_permalink( $post ) );
+
+			$this->assertContains( 'on this page', $content = apply_filters( 'the_content', $post->post_content ), $post->post_name );
+			$this->assertContains( 'error', $content, $post->post_name );
+
+			wp_delete_post( $post->ID ); // Remove for next test
+		}
+
+		$permalink = add_query_arg( 'entry', $entry['id'], get_permalink( $view->ID ) );
+
+		// oEmbed
+		$posts = array(
+			$this->factory->post->create_and_get( array( 'post_name' => 'view', 'post_content' => $permalink ) ),
+			$this->factory->post->create_and_get( array( 'post_name' => 'entry', 'post_content' => $permalink ) ),
+			$this->factory->post->create_and_get( array( 'post_name' => 'search', 'post_content' => $permalink ) ),
+			$this->factory->post->create_and_get( array( 'post_name' => $post_type, 'post_content' => $permalink ) ),
+			$this->factory->post->create_and_get( array( 'post_name' => 'filtered', 'post_content' => $permalink ) ),
+		);
+
+		foreach ( $posts as $post ) {
+			$this->go_to( get_permalink( $post ) );
+
+			$content = $GLOBALS['wp_embed']->autoembed( $post->post_content );
+			$this->assertContains( 'on this page', $content, $post->post_name );
+			$this->assertContains( 'error', $content, $post->post_name );
+
+			wp_delete_post( $post->ID ); // Remove for next test
+		}
+
+		remove_all_filters( 'gravityview/rewrite/reserved_slugs' );
+
+		$this->set_permalink_structure( '' );
+		\GV\Entry::add_rewrite_endpoint();
+		flush_rewrite_rules();
 
 		$this->_reset_context();
 	}
