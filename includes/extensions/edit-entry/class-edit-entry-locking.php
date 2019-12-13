@@ -5,26 +5,12 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
 }
 
-require_once( GFCommon::get_base_path() . '/includes/locking/locking.php' );
-
 /**
  * An entry locking class that syncs with GFEntryLocking.
  *
  * @since 2.5
  */
-class GravityView_Edit_Entry_Locking extends GFEntryLocking {
-	/**
-	 * GravityView_Edit_Entry_Locking constructor.
-	 */
-	public function __construct() {
-		global $wp;
-
-		$current_url = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
-
-		parent::__construct( 'entry', $current_url, $edit_url, $capabilities );
-	}
-
-
+class GravityView_Edit_Entry_Locking {
 	/**
 	 * Load extension entry point.
 	 *
@@ -32,13 +18,10 @@ class GravityView_Edit_Entry_Locking extends GFEntryLocking {
 	 *
 	 * @return void
 	 */
-	public function init_edit_lock() {
-
-		if ( has_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) ) ) {
-			return;
+	public function load() {
+		if ( ! has_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) ) ) {
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		}
-
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
 
 	/**
@@ -220,6 +203,61 @@ class GravityView_Edit_Entry_Locking extends GFEntryLocking {
 				$this->set_lock( $entry_id );
 			}
 		}
+	}
+
+	/**
+	 * Is this entry locked to some other user?
+	 *
+	 * @param int $entry_id The entry ID.
+	 *
+	 * @return boolean Yes or no.
+	 */
+	public function check_lock( $entry_id ) {
+		if ( ! $user_id = $this->get_lock_meta( $entry_id ) ) {
+			return false;
+		}
+
+		if ( $user_id != get_current_user_id() ) {
+			return $user_id;
+		}
+
+		return false;
+	}
+
+	/**
+	 * The lock for an entry.
+	 *
+	 * Leverages Gravity Forms' persistent caching mechanisms.
+	 *
+	 * @param int $entry_id The entry ID.
+	 *
+	 * @return int|null The User ID or null.
+	 */
+	public function get_lock_meta( $entry_id ) {
+		return GFCache::get( 'lock_entry_' . $entry_id );
+	}
+
+	/**
+	 * Set the lock for an entry.
+	 *
+	 * @param int $entry_id The entry ID.
+	 * @param int $user_id The user ID to lock the entry to.
+	 *
+	 * @return void
+	 */
+	public function update_lock_meta( $entry_id, $user_id ) {
+		GFCache::set( 'lock_entry_' . $entry_id, $user_id, true, 1500 );
+	}
+
+	/**
+	 * Release the lock for an entry.
+	 *
+	 * @param int $entry_id The entry ID.
+	 *
+	 * @return void
+	 */
+	public function delete_lock_meta( $entry_id ) {
+		GFCache::delete( 'lock_entry_' . $entry_id );
 	}
 
 	/**
