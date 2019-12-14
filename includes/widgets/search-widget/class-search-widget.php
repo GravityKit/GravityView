@@ -859,8 +859,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$search_conditions = array();
 
 		if ( $filters = array_filter( $search_criteria['field_filters'] ) ) {
-
-			foreach ( $filters as $filter ) {
+			foreach ( $filters as &$filter ) {
 				if ( ! is_array( $filter ) ) {
 					continue;
 				}
@@ -886,18 +885,19 @@ class GravityView_Widget_Search extends \GV\Widget {
 							$on = $_join->join_on;
 							$join = $_join->join;
 
-							// Join
-							$search_conditions[] = new GF_Query_Condition(
-								new GF_Query_Column( GF_Query_Column::META, $join->ID, $query->_alias( GF_Query_Column::META, $join->ID, 'm' ) ),
-								$search_condition->operator,
-								$search_condition->right
-							);
-
-							// On
-							$search_conditions[] = new GF_Query_Condition(
-								new GF_Query_Column( GF_Query_Column::META, $on->ID, $query->_alias( GF_Query_Column::META, $on->ID, 'm' ) ),
-								$search_condition->operator,
-								$search_condition->right
+							$search_conditions[] = GF_Query_Condition::_or(
+								// Join
+								new GF_Query_Condition(
+									new GF_Query_Column( GF_Query_Column::META, $join->ID, $query->_alias( GF_Query_Column::META, $join->ID, 'm' ) ),
+									$search_condition->operator,
+									$search_condition->right
+								),
+								// On
+								new GF_Query_Condition(
+									new GF_Query_Column( GF_Query_Column::META, $on->ID, $query->_alias( GF_Query_Column::META, $on->ID, 'm' ) ),
+									$search_condition->operator,
+									$search_condition->right
+								)
 							);
 						}
 					} else {

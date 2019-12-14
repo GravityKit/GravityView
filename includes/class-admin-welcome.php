@@ -263,7 +263,32 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
-                <h3>2.5 on December 5, 2019</h3>
+				<h3>2.5.1 on December 14, 2019</h3>
+
+				<ul>
+					<li>Modified: "Show Label" is now off by default for non-table layouts</li>
+					<li>Improved: The View Configuration screen has been visually simplified. Fewer borders, larger items, and rounder corners.</li>
+					<li>Accessibility improvements. Thanks to <a href="https://rianrietveld.com">Rian Rietveld</a> and Gravity Forms for their support.
+						<ul>
+							<li>Color contrast ratios now meet <a href="https://www.w3.org/TR/WCAG20/">Web Content Accessibility Guidelines (WCAG) 2.0</a> recommendations</li>
+							<li>Converted links that act as buttons to actual buttons</li>
+							<li>Added keyboard navigation support for "Add Field" and "Add Widget" pickers</li>
+							<li>Auto-focus the field search field when Add Field is opened</li>
+							<li>Improved Search Bar HTML structure for a better screen reader experience</li>
+							<li>Added ARIA labels for Search Bar configuration buttons</li>
+							<li>Improved touch target size and spacing for Search Bar add/remove field buttons</li>
+						</ul></li>
+					<li>Fixed: "Search All" with Multiple Forms plugin now works as expected in both "any" and "all" search modes.</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: <code>gravityview_lightbox_script</code> and <code>gravityview_lightbox_style</code> filters.</li>
+					<li>Deprecated: <code>gravity_view_lightbox_script</code> and <code>gravity_view_lightbox_style</code> filters. Use <code>gravityview_lightbox_script</code> and <code>gravityview_lightbox_style</code> instead.</li>
+				</ul>
+
+				<h3>2.5 on December 5, 2019</h3>
 
                 <p>This is a <strong>big update</strong>! Lots of improvements and fixes.</p>
 
@@ -458,7 +483,7 @@ class GravityView_Welcome {
 					<h2><?php esc_attr_e( 'Contributors', 'gravityview' ); ?></h2>
 
 					<ul class="wp-people-group">
-						<li class="wp-person">Core &amp; Extension development by <a href="http://tinygod.pt" class="block">Luis Godinho</a> and <a href="https://codeseekah.com" class="block">Gennady Kovshenin</a></li>
+						<li class="wp-person">Core &amp; Extension development by <a href="http://tinygod.pt" class="block">Luis Godinho</a>, <a href="https://codeseekah.com" class="block">Gennady Kovshenin</a>, and <a href="https://mrcasual.com" class="block">Vlad K.</a></li>
 						<li class="wp-person">Bengali translation by <a href="https://www.transifex.com/accounts/profile/tareqhi/">@tareqhi</a></li>
 						<li class="wp-person">German translation by <a href="https://www.transifex.com/user/profile/hubert123456/">@hubert123456</a>, <a href="https://www.transifex.com/accounts/profile/seschwarz/">@seschwarz</a>, <a href="https://www.transifex.com/accounts/profile/abdmc/">@abdmc</a>, <a href="https://www.transifex.com/accounts/profile/deckerweb/">@deckerweb</a></li>
 						<li class="wp-person">Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
@@ -478,6 +503,7 @@ class GravityView_Welcome {
                         <li class="wp-person">Persian translation by <a href="https://www.transifex.com/user/profile/azadmojtaba/">@azadmojtaba</a>, <a href="https://www.transifex.com/user/profile/amirbe/">@amirbe</a>, <a href="https://www.transifex.com/user/profile/Moein.Rm/">@Moein.Rm</a></li>
 						<li class="wp-person">Russian translation by <a href="https://www.transifex.com/user/profile/gkovaleff/">@gkovaleff</a>, <a href="https://www.transifex.com/user/profile/awsswa59/">@awsswa59</a></li>
                         <li class="wp-person">Polish translation by <a href="https://www.transifex.com/user/profile/dariusz.zielonka/">@dariusz.zielonka</a></li>
+						<li class="wp-person">Accessibility contributions by <a href="https://github.com/RianRietveld">@RianRietveld</a></li>
 						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, <a href="https://github.com/mgratch">@mgratch</a>, <a href="https://github.com/ViewFromTheBox">@ViewFromTheBox</a>, <a href="https://github.com/stevehenty">@stevehenty</a>, <a href="https://github.com/naomicbush">@naomicbush</a>, and <a href="https://github.com/mrcasual">@mrcasual</a></li>
 					</ul>
 

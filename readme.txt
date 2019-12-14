@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.4
-Tested up to: 5.2.2
+Tested up to: 5.3.1
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -20,6 +20,25 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.5.1 on December 14, 2019 =
+
+* Modified: "Show Label" is now off by default for non-table layouts
+* Improved: The View Configuration screen has been visually simplified. Fewer borders, larger items, and rounder corners.
+* Accessibility improvements. Thanks to [Rian Rietveld](https://rianrietveld.com) and Gravity Forms for their support.
+	- Color contrast ratios now meet [Web Content Accessibility Guidelines (WCAG) 2.0](https://www.w3.org/TR/WCAG20/) recommendations
+	- Converted links that act as buttons to actual buttons
+	- Added keyboard navigation support for "Add Field" and "Add Widget" pickers
+	- Auto-focus the field search field when Add Field is opened
+	- Improved Search Bar HTML structure for a better screen reader experience
+	- Added ARIA labels for Search Bar configuration buttons
+	- Improved touch target size and spacing for Search Bar add/remove field buttons
+* Fixed: "Search All" with Multiple Forms plugin now works as expected in both "any" and "all" search modes.
+
+__Developer Updates:__
+
+* Added: `gravityview_lightbox_script` and `gravityview_lightbox_style` filters.
+* Deprecated: `gravity_view_lightbox_script` and `gravity_view_lightbox_style` filters. Use `gravityview_lightbox_script` and `gravityview_lightbox_style` instead.
 
 = 2.5 on December 5, 2019 =
 

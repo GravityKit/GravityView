@@ -259,7 +259,7 @@ msgstr ""
 "просмотр."
 
 #: future/includes/class-gv-renderer.php:89
-#: includes/admin/metaboxes/views/view-configuration.php:8
+#: includes/admin/metaboxes/views/view-configuration.php:11
 #: includes/class-frontend-views.php:560
 #: includes/class-gravityview-admin-bar.php:104
 #: includes/class-gravityview-entry-link-shortcode.php:233
@@ -273,13 +273,13 @@ msgstr "Редактировать запись"
 
 #: future/includes/class-gv-renderer.php:93
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:132
-#: includes/admin/metaboxes/views/view-configuration.php:7
+#: includes/admin/metaboxes/views/view-configuration.php:10
 #: includes/class-frontend-views.php:564
 msgid "Single Entry"
 msgstr "Одиночная запись"
 
 #: future/includes/class-gv-renderer.php:97
-#: includes/admin/metaboxes/views/view-configuration.php:6
+#: includes/admin/metaboxes/views/view-configuration.php:9
 #: includes/class-frontend-views.php:557
 msgid "Multiple Entries"
 msgstr "Набор записей"
@@ -946,7 +946,7 @@ msgid "Create views based on a Gravity Forms form"
 msgstr "Создать представление на основе формы Gravity Forms "
 
 #: future/includes/class-gv-widget.php:156
-#: includes/admin/class.render.settings.php:49
+#: includes/admin/class.render.settings.php:51
 msgid "Custom CSS Class:"
 msgstr "Произвольный класс CSS:"
 
@@ -1073,6 +1073,10 @@ msgstr "Удалить %s"
 msgid "This field links to the Single Entry"
 msgstr "Это поле связано с одиночной записью"
 
+#: includes/admin/class-gravityview-admin-view-item.php:175
+msgid "Add \"%s\""
+msgstr ""
+
 #: includes/admin/class-gravityview-support-port.php:81
 msgid "GravityView Support"
 msgstr "Поддержка GravityView"
@@ -1150,64 +1154,64 @@ msgstr "Портал поддержки GravityView "
 msgid "Show GravityView Support Port when on a GravityView-related page"
 msgstr "Показать портал поддержки GravityView на связанной странице"
 
-#: includes/admin/class.render.settings.php:37
+#: includes/admin/class.render.settings.php:39
 msgid "Show Label"
 msgstr "Показывать название"
 
-#: includes/admin/class.render.settings.php:42
+#: includes/admin/class.render.settings.php:44
 msgid "Custom Label:"
 msgstr "Произвольное название:"
 
-#: includes/admin/class.render.settings.php:50
+#: includes/admin/class.render.settings.php:52
 msgid "This class will be added to the field container"
 msgstr "Этот класс будет добавлен к контейнеру поля"
 
-#: includes/admin/class.render.settings.php:58
+#: includes/admin/class.render.settings.php:60
 msgid "Make visible only to logged-in users?"
 msgstr "Показывать только для залогиненных пользователей?"
 
-#: includes/admin/class.render.settings.php:63
+#: includes/admin/class.render.settings.php:65
 msgid "Make visible for:"
 msgstr "Показывать для:"
 
-#: includes/admin/class.render.settings.php:74
+#: includes/admin/class.render.settings.php:76
 msgid "Percent Width"
 msgstr "Ширина в процентах"
 
-#: includes/admin/class.render.settings.php:75
+#: includes/admin/class.render.settings.php:77
 msgid "Leave blank for column width to be based on the field content."
 msgstr ""
 "Оставьте пустым для автоматической подгонки ширины по содержанию поля."
 
-#: includes/admin/class.render.settings.php:122
+#: includes/admin/class.render.settings.php:124
 msgid "Any Logged-In User"
 msgstr "Любой залогиненый пользователь"
 
-#: includes/admin/class.render.settings.php:123
+#: includes/admin/class.render.settings.php:125
 msgid "Author Or Higher"
 msgstr "Автор или выше"
 
-#: includes/admin/class.render.settings.php:124
+#: includes/admin/class.render.settings.php:126
 msgid "Can View Gravity Forms Entries"
 msgstr "Разрешено просматривать записи Gravity Forms"
 
-#: includes/admin/class.render.settings.php:125
+#: includes/admin/class.render.settings.php:127
 msgid "Editor Or Higher"
 msgstr "Редактор или выше"
 
-#: includes/admin/class.render.settings.php:126
+#: includes/admin/class.render.settings.php:128
 msgid "Can Edit Gravity Forms Entries"
 msgstr "Разрешено редактировать записи Gravity Forms"
 
-#: includes/admin/class.render.settings.php:127
+#: includes/admin/class.render.settings.php:129
 msgid "Administrator"
 msgstr "Администратор"
 
-#: includes/admin/class.render.settings.php:131
+#: includes/admin/class.render.settings.php:133
 msgid "Multisite Super Admin"
 msgstr "Супер-админ мультисайта"
 
-#: includes/admin/class.render.settings.php:200
+#: includes/admin/class.render.settings.php:202
 msgid "Options: %s"
 msgstr "Варианты: %s"
 
@@ -1316,39 +1320,44 @@ msgstr ""
 "Для встраивания этого представления на страницу или запись используйте "
 "шорткод."
 
-#: includes/admin/metaboxes/views/view-configuration.php:15
+#: includes/admin/metaboxes/views/view-configuration.php:18
 msgid "Above Entries Widgets"
 msgstr "Верхний блок виджетов"
 
-#: includes/admin/metaboxes/views/view-configuration.php:15
+#: includes/admin/metaboxes/views/view-configuration.php:18
 msgid "These widgets will be shown above entries."
 msgstr "Эти виджеты будут показаны над записями."
 
-#: includes/admin/metaboxes/views/view-configuration.php:19
+#: includes/admin/metaboxes/views/view-configuration.php:22
 msgid "Entries Fields"
 msgstr "Поля записи"
 
-#: includes/admin/metaboxes/views/view-configuration.php:19
+#: includes/admin/metaboxes/views/view-configuration.php:22
 msgid "These fields will be shown for each entry."
 msgstr "Эти поля будут показаны для каждой записи."
 
-#: includes/admin/metaboxes/views/view-configuration.php:27
+#: includes/admin/metaboxes/views/view-configuration.php:30
 msgid "Below Entries Widgets"
 msgstr "Нижний блок виджетов"
 
-#: includes/admin/metaboxes/views/view-configuration.php:27
+#: includes/admin/metaboxes/views/view-configuration.php:30
 msgid "These widgets will be shown below entries."
 msgstr "Эти виджеты будут показаны под записями."
 
-#: includes/admin/metaboxes/views/view-configuration.php:56
+#: includes/admin/metaboxes/views/view-configuration.php:42
+#: includes/class-admin-views.php:1083 includes/class-admin-views.php:1194
+msgid "Close"
+msgstr "Закрыть"
+
+#: includes/admin/metaboxes/views/view-configuration.php:59
 msgid "These fields will be shown in Single Entry view."
 msgstr "Эти поля будут показаны для представления одиночной записи."
 
-#: includes/admin/metaboxes/views/view-configuration.php:76
+#: includes/admin/metaboxes/views/view-configuration.php:79
 msgid "Fields shown when editing an entry."
 msgstr "Поля доступны при редактировании записи."
 
-#: includes/admin/metaboxes/views/view-configuration.php:76
+#: includes/admin/metaboxes/views/view-configuration.php:79
 msgid "If not configured, all form fields will be displayed."
 msgstr "Если не настроено, все поля формы будут показаны."
 
@@ -1745,43 +1754,43 @@ msgstr "Добавить виджет"
 msgid "Add Field"
 msgstr "Добавить поле"
 
-#: includes/class-admin-views.php:975
+#: includes/class-admin-views.php:973
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr "\"+ %s\" или перетащите существующий %ss сюда."
 
-#: includes/class-admin-views.php:1010
+#: includes/class-admin-views.php:1007
 #: includes/widgets/search-widget/class-search-widget.php:95
 msgid "Search Bar"
 msgstr "Строка поиска"
 
-#: includes/class-admin-views.php:1020
+#: includes/class-admin-views.php:1017
 #: includes/widgets/class-gravityview-widget-pagination-info.php:28
 msgid "Show Pagination Info"
 msgstr "Показать информацию разбития на страницы"
 
-#: includes/class-admin-views.php:1026 includes/class-admin-views.php:1033
+#: includes/class-admin-views.php:1023 includes/class-admin-views.php:1030
 #: includes/widgets/class-gravityview-widget-page-links.php:23
 msgid "Page Links"
 msgstr "Ссылки на страницы"
 
-#: includes/class-admin-views.php:1088
+#: includes/class-admin-views.php:1085
 msgid "Filter Fields:"
 msgstr "Поля фильтра:"
 
-#: includes/class-admin-views.php:1089
+#: includes/class-admin-views.php:1086
 msgid "Filter fields by name or label"
 msgstr "Поля фильтра по имени или метке"
 
-#: includes/class-admin-views.php:1096
+#: includes/class-admin-views.php:1093
 msgid "No fields were found matching the search."
 msgstr "Не найдено полей соответствующих запросу."
 
-#: includes/class-admin-views.php:1130
+#: includes/class-admin-views.php:1127
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 "Это представление использует тип %s, который в данный момент запрещен."
 
-#: includes/class-admin-views.php:1131
+#: includes/class-admin-views.php:1128
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
@@ -1789,13 +1798,22 @@ msgstr ""
 "Данные не потеряны. Повторно активируйте плагин и настройки будут "
 "восстановлены."
 
-#: includes/class-admin-views.php:1193
+#: includes/class-admin-views.php:1190
 msgid "Enter View name here"
 msgstr "Укажите название представления здесь"
 
-#: includes/class-admin-views.php:1194
-msgid "Close"
-msgstr "Закрыть"
+#: includes/class-admin-views.php:1191
+msgid "Reorder Search Fields"
+msgstr ""
+
+#: includes/class-admin-views.php:1192
+#: includes/widgets/search-widget/class-search-widget.php:235
+msgid "Add Search Field"
+msgstr "Добавить поле поиска"
+
+#: includes/class-admin-views.php:1193
+msgid "Remove Search Field"
+msgstr ""
 
 #: includes/class-admin-views.php:1196
 msgid "Continue"
@@ -1870,23 +1888,23 @@ msgstr "Список изменений"
 msgid "What&rsquo;s New"
 msgstr "Что&rsquo;s нового"
 
-#: includes/class-admin-welcome.php:389
+#: includes/class-admin-welcome.php:415
 msgid "View change history"
 msgstr "Посмотреть историю изменений"
 
-#: includes/class-admin-welcome.php:410
+#: includes/class-admin-welcome.php:436
 msgid "GravityView is brought to you by:"
 msgstr "Плагин GravityView разработан:"
 
-#: includes/class-admin-welcome.php:457
+#: includes/class-admin-welcome.php:483
 msgid "Contributors"
 msgstr "Помошники"
 
-#: includes/class-admin-welcome.php:483
+#: includes/class-admin-welcome.php:510
 msgid "Want to contribute?"
 msgstr "Хотите помочь?"
 
-#: includes/class-admin-welcome.php:484
+#: includes/class-admin-welcome.php:511
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -3740,10 +3758,6 @@ msgstr "Диапазон дат"
 msgid "No search fields configured yet."
 msgstr "Пока поля поиска на настроены."
 
-#: includes/widgets/search-widget/class-search-widget.php:235
-msgid "Add Search Field"
-msgstr "Добавить поле поиска"
-
 #: includes/widgets/search-widget/class-search-widget.php:236
 msgid "Label"
 msgstr "Название"
@@ -4007,12 +4021,12 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "Пусто"
 
-#: includes/class-frontend-views.php:1348
+#: includes/class-frontend-views.php:1378
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr "Очистить"
 
-#: includes/class-frontend-views.php:1349
+#: includes/class-frontend-views.php:1379
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr "Сбросить"

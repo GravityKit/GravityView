@@ -77,7 +77,7 @@
 			//select form dropdown
 			vcfg.gvSelectForm = $( '#gravityview_form_id' );
 
-			vcfg.gvSwitchView = $('a[href="#gv_switch_view"]');
+			vcfg.gvSwitchView = $('#gv_switch_view_button');
 
 			//current form selection
 			vcfg.currentFormId = vcfg.gvSelectForm.val();
@@ -113,10 +113,10 @@
 				.on( 'click mouseup keyup', vcfg.closeTooltips )
 
 				// switch View (for existing forms)
-				.on( 'click', 'a[href="#gv_switch_view"]', vcfg.switchView )
+				.on( 'click', '#gv_switch_view_button', vcfg.switchView )
 
 				// select template
-				.on( 'click', 'a[href="#gv_select_template"]', vcfg.selectTemplate )
+				.on( 'click', '.gv_select_template', vcfg.selectTemplate )
 
 				// bind Add Field fields to the addField method
 				.on( 'click', '.ui-tooltip-content .gv-fields', vcfg.startAddField )
@@ -134,10 +134,10 @@
 				.on( 'change', ".gv-dialog-options input[name*=show_as_link]", vcfg.toggleShowAsEntry )
 
 				// show field buttons: Settings & Remove
-				.on( 'click', ".gv-field-controls a[href='#remove']", vcfg.removeField )
+				.on( 'click', ".gv-field-controls .gv-remove-field", vcfg.removeField )
 
 				// Clicking a settings link opens settings
-				.on( 'click', ".gv-field-controls a[href='#settings']", vcfg.openFieldSettings )
+				.on( 'click', ".gv-field-controls .gv-field-settings", vcfg.openFieldSettings )
 
 				// Double-clicking a field/widget label opens settings
 				.on( 'dblclick', ".gv-fields", vcfg.openFieldSettings )
@@ -823,7 +823,7 @@
 		selectTemplateHover: function ( e ) {
 			e.preventDefault();
 			e.stopImmediatePropagation();
-			$( this ).find( 'a[href="#gv_select_template"]' ).trigger( 'click' );
+			$( this ).find( '.gv_select_template' ).trigger( 'click' );
 		},
 
 		openExternalLinks: function () {
@@ -972,12 +972,20 @@
 				close: function () {
 					$( this ).attr( 'data-tooltip', null );
 				},
-		        open: function() {
+		        open: function( event, tooltip ) {
 
 					$( this )
 						.attr( 'data-tooltip', 'active' )
 						.attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
 
+					$focus_item = $( 'input[type=search]', tooltip.tooltip );
+
+					// Widgets don't have a search field; select the first "Add Widget" button instead
+					if ( ! $focus_item.length) {
+						$focus_item = $( 'button', tooltip.tooltip ).first();
+					}
+
+					$focus_item.focus();
 		        },
 				closeOnEscape: true,
 				disabled: true, // Don't open on hover
@@ -1154,7 +1162,7 @@
 			var areaId = clicked.parents( '.ui-tooltip' ).attr( 'id' );
 			var templateId = $( "#gravityview_directory_template" ).val();
 			var tooltipId = clicked.parents( '.ui-tooltip' ).attr( 'id' );
-			var addButton = $( 'a.gv-add-field[data-tooltip-id="' + tooltipId + '"]' );
+			var addButton = $( '.gv-add-field[data-tooltip-id="' + tooltipId + '"]' );
 
 			var data = {
 				action: 'gv_field_options',
@@ -1196,7 +1204,7 @@
 				}
 
 				// append the new field to the active drop
-				$( 'a[data-tooltip-id="' + areaId + '"]' ).parents( '.gv-droppable-area' ).find( '.active-drop' ).append( newField ).end().attr( 'data-tooltip-id', '' );
+				$( '[data-tooltip-id="' + areaId + '"]' ).parents( '.gv-droppable-area' ).find( '.active-drop' ).append( newField ).end().attr( 'data-tooltip-id', '' );
 
 				$('body').trigger( 'gravityview/field-added', newField );
 

@@ -250,7 +250,7 @@ msgid "You can only see this message because you are able to edit this View."
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:89
-#: includes/admin/metaboxes/views/view-configuration.php:8
+#: includes/admin/metaboxes/views/view-configuration.php:11
 #: includes/class-frontend-views.php:560
 #: includes/class-gravityview-admin-bar.php:104
 #: includes/class-gravityview-entry-link-shortcode.php:233
@@ -264,13 +264,13 @@ msgstr "এন্ট্রি সম্পাদন করুন"
 
 #: future/includes/class-gv-renderer.php:93
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:132
-#: includes/admin/metaboxes/views/view-configuration.php:7
+#: includes/admin/metaboxes/views/view-configuration.php:10
 #: includes/class-frontend-views.php:564
 msgid "Single Entry"
 msgstr "একক এন্ট্রি"
 
 #: future/includes/class-gv-renderer.php:97
-#: includes/admin/metaboxes/views/view-configuration.php:6
+#: includes/admin/metaboxes/views/view-configuration.php:9
 #: includes/class-frontend-views.php:557
 msgid "Multiple Entries"
 msgstr "একাধিক এন্ট্রি"
@@ -915,7 +915,7 @@ msgid "Create views based on a Gravity Forms form"
 msgstr "গ্রাভিটি ফর্মের ভিত্তিতে দৃশ্য তৈরি করুন"
 
 #: future/includes/class-gv-widget.php:156
-#: includes/admin/class.render.settings.php:49
+#: includes/admin/class.render.settings.php:51
 msgid "Custom CSS Class:"
 msgstr "নিজস্ব সিএসএস ক্লাসঃ"
 
@@ -1035,6 +1035,10 @@ msgstr "মুছে ফেলুন %s"
 msgid "This field links to the Single Entry"
 msgstr "এই ফিল্ড একক এন্ট্রির লিংক"
 
+#: includes/admin/class-gravityview-admin-view-item.php:175
+msgid "Add \"%s\""
+msgstr ""
+
 #: includes/admin/class-gravityview-support-port.php:81
 msgid "GravityView Support"
 msgstr "গ্রাভিটি ভিউ দেখুন সাপোর্ট"
@@ -1114,64 +1118,64 @@ msgstr ""
 "দেখান মাধ্যাকর্ষণ দেখুন সাপোর্ট পোর্ট যখন একটি মাধ্যাকর্ষণ দেখুন সংক্রান্ত "
 "পাতায়"
 
-#: includes/admin/class.render.settings.php:37
+#: includes/admin/class.render.settings.php:39
 msgid "Show Label"
 msgstr "লেবেল দেখান"
 
-#: includes/admin/class.render.settings.php:42
+#: includes/admin/class.render.settings.php:44
 msgid "Custom Label:"
 msgstr "নিজস্ব লেবেলঃ"
 
-#: includes/admin/class.render.settings.php:50
+#: includes/admin/class.render.settings.php:52
 msgid "This class will be added to the field container"
 msgstr "এটি ফিল্ড কন্টেইনার-এ যুক্ত হবে"
 
-#: includes/admin/class.render.settings.php:58
+#: includes/admin/class.render.settings.php:60
 msgid "Make visible only to logged-in users?"
 msgstr "শুধুমাত্র লগইন করা ব্যবহারকারী দেখবে?"
 
-#: includes/admin/class.render.settings.php:63
+#: includes/admin/class.render.settings.php:65
 msgid "Make visible for:"
 msgstr "দৃশ্যমান করুন:"
 
-#: includes/admin/class.render.settings.php:74
+#: includes/admin/class.render.settings.php:76
 msgid "Percent Width"
 msgstr "শতাংশ প্রস্থ"
 
-#: includes/admin/class.render.settings.php:75
+#: includes/admin/class.render.settings.php:77
 msgid "Leave blank for column width to be based on the field content."
 msgstr ""
 "কলামের প্রস্থ ক্ষেত্রের বিষয়বস্তুর উপর ভিত্তি করে করা জন্য ফাঁকা ছেড়ে দিন."
 
-#: includes/admin/class.render.settings.php:122
+#: includes/admin/class.render.settings.php:124
 msgid "Any Logged-In User"
 msgstr "যে কোন লগইন করা ব্যবহারকারী"
 
-#: includes/admin/class.render.settings.php:123
+#: includes/admin/class.render.settings.php:125
 msgid "Author Or Higher"
 msgstr "সম্পাদক অথবা উচ্চতর"
 
-#: includes/admin/class.render.settings.php:124
+#: includes/admin/class.render.settings.php:126
 msgid "Can View Gravity Forms Entries"
 msgstr "গ্রাভিটি ফর্মের এন্ট্রিগুলো দেখতে পাবে"
 
-#: includes/admin/class.render.settings.php:125
+#: includes/admin/class.render.settings.php:127
 msgid "Editor Or Higher"
 msgstr "সম্পাদক অথবা ঊর্ধ্বতন"
 
-#: includes/admin/class.render.settings.php:126
+#: includes/admin/class.render.settings.php:128
 msgid "Can Edit Gravity Forms Entries"
 msgstr "গ্রাভিটি ফর্মের এন্ট্রিগুলো সম্পাদন করতে পারবে"
 
-#: includes/admin/class.render.settings.php:127
+#: includes/admin/class.render.settings.php:129
 msgid "Administrator"
 msgstr "প্রশাসক"
 
-#: includes/admin/class.render.settings.php:131
+#: includes/admin/class.render.settings.php:133
 msgid "Multisite Super Admin"
 msgstr "একাধিক সাইটের সুপার এডমিন"
 
-#: includes/admin/class.render.settings.php:200
+#: includes/admin/class.render.settings.php:202
 msgid "Options: %s"
 msgstr "বাছাই: %s"
 
@@ -1278,39 +1282,44 @@ msgstr "সর্টকোড যুক্ত হয়েছে"
 msgid "Add this shortcode to a post or page to embed this view."
 msgstr "এই দৃশ্যের এই সর্টকোড কোন পোস্ট অথবা পেজে যুক্ত করুন।"
 
-#: includes/admin/metaboxes/views/view-configuration.php:15
+#: includes/admin/metaboxes/views/view-configuration.php:18
 msgid "Above Entries Widgets"
 msgstr "এন্ট্রির উপরের উইজেড"
 
-#: includes/admin/metaboxes/views/view-configuration.php:15
+#: includes/admin/metaboxes/views/view-configuration.php:18
 msgid "These widgets will be shown above entries."
 msgstr "এই উইজেট এন্ট্রির উপরে দেখাবে"
 
-#: includes/admin/metaboxes/views/view-configuration.php:19
+#: includes/admin/metaboxes/views/view-configuration.php:22
 msgid "Entries Fields"
 msgstr "এন্ট্রি ফিল্ড"
 
-#: includes/admin/metaboxes/views/view-configuration.php:19
+#: includes/admin/metaboxes/views/view-configuration.php:22
 msgid "These fields will be shown for each entry."
 msgstr "এই ফিল্ডটি সকল এন্ট্রির জন্য দেখাবে"
 
-#: includes/admin/metaboxes/views/view-configuration.php:27
+#: includes/admin/metaboxes/views/view-configuration.php:30
 msgid "Below Entries Widgets"
 msgstr "এন্ট্রি উইজেডের নিছে"
 
-#: includes/admin/metaboxes/views/view-configuration.php:27
+#: includes/admin/metaboxes/views/view-configuration.php:30
 msgid "These widgets will be shown below entries."
 msgstr "এই উইজেট এন্ট্রির নিছে দেখাবে"
 
-#: includes/admin/metaboxes/views/view-configuration.php:56
+#: includes/admin/metaboxes/views/view-configuration.php:42
+#: includes/class-admin-views.php:1083 includes/class-admin-views.php:1194
+msgid "Close"
+msgstr "বন্ধ"
+
+#: includes/admin/metaboxes/views/view-configuration.php:59
 msgid "These fields will be shown in Single Entry view."
 msgstr "এই ফিল্ডগুলো একক দৃশ্যে দেখাবে"
 
-#: includes/admin/metaboxes/views/view-configuration.php:76
+#: includes/admin/metaboxes/views/view-configuration.php:79
 msgid "Fields shown when editing an entry."
 msgstr "এন্ট্রি সম্পাদন করার সময় ফিল্ড দেখানো হচ্ছে।"
 
-#: includes/admin/metaboxes/views/view-configuration.php:76
+#: includes/admin/metaboxes/views/view-configuration.php:79
 msgid "If not configured, all form fields will be displayed."
 msgstr "যদি কনফিগার করা না হয়, সব ফিল্ড দেখানো হবে।"
 
@@ -1700,43 +1709,43 @@ msgstr "উইজেড যোগ করুন"
 msgid "Add Field"
 msgstr "ফিল্ড যোগ করুন"
 
-#: includes/class-admin-views.php:975
+#: includes/class-admin-views.php:973
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr "\"+ %s\" অথবা এখানে পুরাতনগুলো টেনে আনুন %ss"
 
-#: includes/class-admin-views.php:1010
+#: includes/class-admin-views.php:1007
 #: includes/widgets/search-widget/class-search-widget.php:95
 msgid "Search Bar"
 msgstr "অনুসন্ধান বার"
 
-#: includes/class-admin-views.php:1020
+#: includes/class-admin-views.php:1017
 #: includes/widgets/class-gravityview-widget-pagination-info.php:28
 msgid "Show Pagination Info"
 msgstr "পত্রাঙ্কনের তথ্য দেখান"
 
-#: includes/class-admin-views.php:1026 includes/class-admin-views.php:1033
+#: includes/class-admin-views.php:1023 includes/class-admin-views.php:1030
 #: includes/widgets/class-gravityview-widget-page-links.php:23
 msgid "Page Links"
 msgstr "পেইজ লিংক"
 
-#: includes/class-admin-views.php:1088
+#: includes/class-admin-views.php:1085
 msgid "Filter Fields:"
 msgstr ""
 
-#: includes/class-admin-views.php:1089
+#: includes/class-admin-views.php:1086
 msgid "Filter fields by name or label"
 msgstr ""
 
-#: includes/class-admin-views.php:1096
+#: includes/class-admin-views.php:1093
 msgid "No fields were found matching the search."
 msgstr ""
 
-#: includes/class-admin-views.php:1130
+#: includes/class-admin-views.php:1127
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 "এই দৃশ্যটি %s দৃশ্য ব্যবহার করে কনফিগার করা হয়েছে, যেটি নিস্ক্রিয় রয়েছে।"
 
-#: includes/class-admin-views.php:1131
+#: includes/class-admin-views.php:1128
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
@@ -1744,13 +1753,22 @@ msgstr ""
 "তথ্য হারিয়ে যায়নি। সংশ্লিষ্ঠ প্লাগইন্সটি সক্রিয় করুন এবং কনফিগারেশন পুনরায় "
 "দেখাবে।"
 
-#: includes/class-admin-views.php:1193
+#: includes/class-admin-views.php:1190
 msgid "Enter View name here"
 msgstr "দৃশ্যের নাম এখানে প্রবেশ করান"
 
-#: includes/class-admin-views.php:1194
-msgid "Close"
-msgstr "বন্ধ"
+#: includes/class-admin-views.php:1191
+msgid "Reorder Search Fields"
+msgstr ""
+
+#: includes/class-admin-views.php:1192
+#: includes/widgets/search-widget/class-search-widget.php:235
+msgid "Add Search Field"
+msgstr "ফিল্ড অনুসন্ধান করো"
+
+#: includes/class-admin-views.php:1193
+msgid "Remove Search Field"
+msgstr ""
 
 #: includes/class-admin-views.php:1196
 msgid "Continue"
@@ -1824,23 +1842,23 @@ msgstr "পরিবর্তনের লিস্ট"
 msgid "What&rsquo;s New"
 msgstr "নতুন &rsquo; কি"
 
-#: includes/class-admin-welcome.php:389
+#: includes/class-admin-welcome.php:415
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:410
+#: includes/class-admin-welcome.php:436
 msgid "GravityView is brought to you by:"
 msgstr "গ্রাভিটি ভিউ আপনার জন্য নিয়ে এল:"
 
-#: includes/class-admin-welcome.php:457
+#: includes/class-admin-welcome.php:483
 msgid "Contributors"
 msgstr "সহযোগী যারা"
 
-#: includes/class-admin-welcome.php:483
+#: includes/class-admin-welcome.php:510
 msgid "Want to contribute?"
 msgstr "সহযোগীতা করতে চান?"
 
-#: includes/class-admin-welcome.php:484
+#: includes/class-admin-welcome.php:511
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -3659,10 +3677,6 @@ msgstr "তারিখের পরিসীমা"
 msgid "No search fields configured yet."
 msgstr "কোন সার্চ ক্ষেত্র এখনো কনফিগার।"
 
-#: includes/widgets/search-widget/class-search-widget.php:235
-msgid "Add Search Field"
-msgstr "ফিল্ড অনুসন্ধান করো"
-
 #: includes/widgets/search-widget/class-search-widget.php:236
 msgid "Label"
 msgstr "লেবেল"
@@ -3926,12 +3940,12 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "খালি"
 
-#: includes/class-frontend-views.php:1348
+#: includes/class-frontend-views.php:1378
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr "পরিস্কার"
 
-#: includes/class-frontend-views.php:1349
+#: includes/class-frontend-views.php:1379
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr "রিসেট"

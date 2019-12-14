@@ -921,9 +921,7 @@ class GravityView_Admin_Views {
 
 						<div class="gv-droppable-area" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>">
 							<div class="active-drop active-drop-<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
-
 								<?php // render saved fields
-
 								if( ! empty( $values[ $zone .'_'. $area['areaid'] ] ) ) {
 
 									foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) {
@@ -975,8 +973,7 @@ class GravityView_Admin_Views {
 								<span class="drop-message"><?php echo sprintf(esc_attr__('"+ %s" or drag existing %ss here.', 'gravityview'), $button_label, $type ); ?></span>
 							</div>
 							<div class="gv-droppable-area-action">
-								<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>" data-formid="<?php echo $view ? esc_attr( $view->form ? $view->form->ID : '' ) : ''; ?>"><?php echo '+ '.esc_html( $button_label ); ?></a>
-
+								<button class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>" data-formid="<?php echo $view ? esc_attr( $view->form ? $view->form->ID : '' ) : ''; ?>"><?php echo '+ '.esc_html( $button_label ); ?></button>
 								<p class="gv-droppable-area-title"><strong><?php echo esc_html( $area['title'] ); ?></strong><?php if( !empty( $area['subtitle'] ) ) { ?><span class="gv-droppable-area-subtitle"> &ndash; <?php echo esc_html( $area['subtitle'] ); ?></span><?php } ?></p>
 							</div>
 						</div>
@@ -1051,7 +1048,7 @@ class GravityView_Admin_Views {
 		ob_start();
 		?>
 
-		<div class="gv-grid gv-grid-pad gv-grid-border" id="directory-<?php echo $zone; ?>-widgets">
+		<div class="gv-grid" id="directory-<?php echo $zone; ?>-widgets">
 			<?php $this->render_active_areas( $template_id, 'widget', $zone, $default_widget_areas, $widgets ); ?>
 		</div>
 
@@ -1083,7 +1080,7 @@ class GravityView_Admin_Views {
 			$filter_field_id = sprintf( 'gv-field-filter-%s-%d', $context, $form_id );
 			?>
             <div id="<?php echo esc_html( $context ); ?>-available-fields-<?php echo esc_attr( $form_id ); ?>" class="hide-if-js gv-tooltip">
-                <span class="close"><i class="dashicons dashicons-dismiss"></i></span>
+                <span class="close" role="button" aria-label="<?php esc_html_e( 'Close', 'gravityview' ); ?>"><i class="dashicons dashicons-dismiss"></i></span>
                 <div class="gv-field-filter-form">
                     <label class="screen-reader-text" for="<?php echo esc_html( $filter_field_id ); ?>"><?php esc_html_e( 'Filter Fields:', 'gravityview' ); ?></label>
                     <input type="search" class="widefat gv-field-filter" aria-controls="<?php echo $filter_field_id; ?>" id="<?php echo esc_html( $filter_field_id ); ?>" placeholder="<?php esc_html_e( 'Filter fields by name or label', 'gravityview' ); ?>" />
@@ -1191,6 +1188,9 @@ class GravityView_Admin_Views {
             'passed_form_id' => (bool) \GV\Utils::_GET( 'form_id' ),
             'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ),
             'label_viewname' => __( 'Enter View name here', 'gravityview' ),
+            'label_reorder_search_fields' => __( 'Reorder Search Fields', 'gravityview' ),
+            'label_add_search_field' => __( 'Add Search Field', 'gravityview' ),
+            'label_remove_search_field' => __( 'Remove Search Field', 'gravityview' ),
             'label_close' => __( 'Close', 'gravityview' ),
             'label_cancel' => __( 'Cancel', 'gravityview' ),
             'label_continue' => __( 'Continue', 'gravityview' ),

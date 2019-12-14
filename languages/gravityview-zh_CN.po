@@ -240,7 +240,7 @@ msgid "You can only see this message because you are able to edit this View."
 msgstr "你只能看到这条消息，因为你可以编辑这个视图。"
 
 #: future/includes/class-gv-renderer.php:89
-#: includes/admin/metaboxes/views/view-configuration.php:8
+#: includes/admin/metaboxes/views/view-configuration.php:11
 #: includes/class-frontend-views.php:560
 #: includes/class-gravityview-admin-bar.php:104
 #: includes/class-gravityview-entry-link-shortcode.php:233
@@ -254,13 +254,13 @@ msgstr "编辑条目"
 
 #: future/includes/class-gv-renderer.php:93
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:132
-#: includes/admin/metaboxes/views/view-configuration.php:7
+#: includes/admin/metaboxes/views/view-configuration.php:10
 #: includes/class-frontend-views.php:564
 msgid "Single Entry"
 msgstr "单个条目"
 
 #: future/includes/class-gv-renderer.php:97
-#: includes/admin/metaboxes/views/view-configuration.php:6
+#: includes/admin/metaboxes/views/view-configuration.php:9
 #: includes/class-frontend-views.php:557
 msgid "Multiple Entries"
 msgstr "多个条目"
@@ -878,7 +878,7 @@ msgid "Create views based on a Gravity Forms form"
 msgstr "基于Gravity Forms表单创建视图"
 
 #: future/includes/class-gv-widget.php:156
-#: includes/admin/class.render.settings.php:49
+#: includes/admin/class.render.settings.php:51
 msgid "Custom CSS Class:"
 msgstr "自定义CSS类："
 
@@ -999,6 +999,10 @@ msgstr "移除 %s"
 msgid "This field links to the Single Entry"
 msgstr "这个字段链接到单个条目"
 
+#: includes/admin/class-gravityview-admin-view-item.php:175
+msgid "Add \"%s\""
+msgstr ""
+
 #: includes/admin/class-gravityview-support-port.php:81
 msgid "GravityView Support"
 msgstr "GravityView 支持"
@@ -1072,63 +1076,63 @@ msgstr "GravityView帮助按钮"
 msgid "Show GravityView Support Port when on a GravityView-related page"
 msgstr "当在一个 GravityView 相关页面上时，显示 GravityView 支持端口。"
 
-#: includes/admin/class.render.settings.php:37
+#: includes/admin/class.render.settings.php:39
 msgid "Show Label"
 msgstr "显示标签"
 
-#: includes/admin/class.render.settings.php:42
+#: includes/admin/class.render.settings.php:44
 msgid "Custom Label:"
 msgstr "自定义标签 ︰"
 
-#: includes/admin/class.render.settings.php:50
+#: includes/admin/class.render.settings.php:52
 msgid "This class will be added to the field container"
 msgstr "这个类将添加到该字段的容器中"
 
-#: includes/admin/class.render.settings.php:58
+#: includes/admin/class.render.settings.php:60
 msgid "Make visible only to logged-in users?"
 msgstr "仅限于已登录用户可见？"
 
-#: includes/admin/class.render.settings.php:63
+#: includes/admin/class.render.settings.php:65
 msgid "Make visible for:"
 msgstr "使可见："
 
-#: includes/admin/class.render.settings.php:74
+#: includes/admin/class.render.settings.php:76
 msgid "Percent Width"
 msgstr "宽度百分比"
 
-#: includes/admin/class.render.settings.php:75
+#: includes/admin/class.render.settings.php:77
 msgid "Leave blank for column width to be based on the field content."
 msgstr "若要列宽按照内容宽度，请留空。"
 
-#: includes/admin/class.render.settings.php:122
+#: includes/admin/class.render.settings.php:124
 msgid "Any Logged-In User"
 msgstr "任何已登录的用户"
 
-#: includes/admin/class.render.settings.php:123
+#: includes/admin/class.render.settings.php:125
 msgid "Author Or Higher"
 msgstr "作者或更高"
 
-#: includes/admin/class.render.settings.php:124
+#: includes/admin/class.render.settings.php:126
 msgid "Can View Gravity Forms Entries"
 msgstr "可以查看条目的用户"
 
-#: includes/admin/class.render.settings.php:125
+#: includes/admin/class.render.settings.php:127
 msgid "Editor Or Higher"
 msgstr "编辑或更高"
 
-#: includes/admin/class.render.settings.php:126
+#: includes/admin/class.render.settings.php:128
 msgid "Can Edit Gravity Forms Entries"
 msgstr "可以编辑条目的用户"
 
-#: includes/admin/class.render.settings.php:127
+#: includes/admin/class.render.settings.php:129
 msgid "Administrator"
 msgstr "管理员"
 
-#: includes/admin/class.render.settings.php:131
+#: includes/admin/class.render.settings.php:133
 msgid "Multisite Super Admin"
 msgstr "多站点超级管理员"
 
-#: includes/admin/class.render.settings.php:200
+#: includes/admin/class.render.settings.php:202
 msgid "Options: %s"
 msgstr "选项：%s"
 
@@ -1231,39 +1235,44 @@ msgstr "嵌入简码"
 msgid "Add this shortcode to a post or page to embed this view."
 msgstr "添加一个简码到一篇文章或页面去嵌入这个视图。"
 
-#: includes/admin/metaboxes/views/view-configuration.php:15
+#: includes/admin/metaboxes/views/view-configuration.php:18
 msgid "Above Entries Widgets"
 msgstr "条目上方工具"
 
-#: includes/admin/metaboxes/views/view-configuration.php:15
+#: includes/admin/metaboxes/views/view-configuration.php:18
 msgid "These widgets will be shown above entries."
 msgstr "这些小部件将在条目上方显示。"
 
-#: includes/admin/metaboxes/views/view-configuration.php:19
+#: includes/admin/metaboxes/views/view-configuration.php:22
 msgid "Entries Fields"
 msgstr "条目字段"
 
-#: includes/admin/metaboxes/views/view-configuration.php:19
+#: includes/admin/metaboxes/views/view-configuration.php:22
 msgid "These fields will be shown for each entry."
 msgstr "这些字段将为每个条目显示。"
 
-#: includes/admin/metaboxes/views/view-configuration.php:27
+#: includes/admin/metaboxes/views/view-configuration.php:30
 msgid "Below Entries Widgets"
 msgstr "在本页下面的条目小部件"
 
-#: includes/admin/metaboxes/views/view-configuration.php:27
+#: includes/admin/metaboxes/views/view-configuration.php:30
 msgid "These widgets will be shown below entries."
 msgstr "这些小部件将在下面的条目显示。"
 
-#: includes/admin/metaboxes/views/view-configuration.php:56
+#: includes/admin/metaboxes/views/view-configuration.php:42
+#: includes/class-admin-views.php:1083 includes/class-admin-views.php:1194
+msgid "Close"
+msgstr "关闭"
+
+#: includes/admin/metaboxes/views/view-configuration.php:59
 msgid "These fields will be shown in Single Entry view."
 msgstr "这些字段将在单个条目视图中显示。"
 
-#: includes/admin/metaboxes/views/view-configuration.php:76
+#: includes/admin/metaboxes/views/view-configuration.php:79
 msgid "Fields shown when editing an entry."
 msgstr "字段在编辑一个条目时显示。"
 
-#: includes/admin/metaboxes/views/view-configuration.php:76
+#: includes/admin/metaboxes/views/view-configuration.php:79
 msgid "If not configured, all form fields will be displayed."
 msgstr "如果不配置，所有表单字段将显示出来。"
 
@@ -1647,54 +1656,63 @@ msgstr "添加小工具"
 msgid "Add Field"
 msgstr "添加字段"
 
-#: includes/class-admin-views.php:975
+#: includes/class-admin-views.php:973
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr "“+ %s” 或拖动现有的 %ss 到这里。"
 
-#: includes/class-admin-views.php:1010
+#: includes/class-admin-views.php:1007
 #: includes/widgets/search-widget/class-search-widget.php:95
 msgid "Search Bar"
 msgstr "搜索栏"
 
-#: includes/class-admin-views.php:1020
+#: includes/class-admin-views.php:1017
 #: includes/widgets/class-gravityview-widget-pagination-info.php:28
 msgid "Show Pagination Info"
 msgstr "显示分页信息"
 
-#: includes/class-admin-views.php:1026 includes/class-admin-views.php:1033
+#: includes/class-admin-views.php:1023 includes/class-admin-views.php:1030
 #: includes/widgets/class-gravityview-widget-page-links.php:23
 msgid "Page Links"
 msgstr "页面链接"
 
-#: includes/class-admin-views.php:1088
+#: includes/class-admin-views.php:1085
 msgid "Filter Fields:"
 msgstr "筛选字段："
 
-#: includes/class-admin-views.php:1089
+#: includes/class-admin-views.php:1086
 msgid "Filter fields by name or label"
 msgstr "通过名称和标签筛选字段"
 
-#: includes/class-admin-views.php:1096
+#: includes/class-admin-views.php:1093
 msgid "No fields were found matching the search."
 msgstr "没有符合搜索结果的字段。"
 
-#: includes/class-admin-views.php:1130
+#: includes/class-admin-views.php:1127
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr "这个视图配置使用 %s 视图类型，这是禁用的。"
 
-#: includes/class-admin-views.php:1131
+#: includes/class-admin-views.php:1128
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
 msgstr "数据并没有丢失，它将在重新启动插件和配置时重新出现。"
 
-#: includes/class-admin-views.php:1193
+#: includes/class-admin-views.php:1190
 msgid "Enter View name here"
 msgstr "在这里输入视图的名称"
 
-#: includes/class-admin-views.php:1194
-msgid "Close"
-msgstr "关闭"
+#: includes/class-admin-views.php:1191
+msgid "Reorder Search Fields"
+msgstr ""
+
+#: includes/class-admin-views.php:1192
+#: includes/widgets/search-widget/class-search-widget.php:235
+msgid "Add Search Field"
+msgstr "添加搜索字段"
+
+#: includes/class-admin-views.php:1193
+msgid "Remove Search Field"
+msgstr ""
 
 #: includes/class-admin-views.php:1196
 msgid "Continue"
@@ -1761,23 +1779,23 @@ msgstr "更改列表"
 msgid "What&rsquo;s New"
 msgstr "新鲜事"
 
-#: includes/class-admin-welcome.php:389
+#: includes/class-admin-welcome.php:415
 msgid "View change history"
 msgstr "查看更改历史"
 
-#: includes/class-admin-welcome.php:410
+#: includes/class-admin-welcome.php:436
 msgid "GravityView is brought to you by:"
 msgstr "重力视图由以下团队呈现："
 
-#: includes/class-admin-welcome.php:457
+#: includes/class-admin-welcome.php:483
 msgid "Contributors"
 msgstr "贡献者"
 
-#: includes/class-admin-welcome.php:483
+#: includes/class-admin-welcome.php:510
 msgid "Want to contribute?"
 msgstr "想要贡献?"
 
-#: includes/class-admin-welcome.php:484
+#: includes/class-admin-welcome.php:511
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -3550,10 +3568,6 @@ msgstr "日期范围"
 msgid "No search fields configured yet."
 msgstr "还未配置搜索字段。"
 
-#: includes/widgets/search-widget/class-search-widget.php:235
-msgid "Add Search Field"
-msgstr "添加搜索字段"
-
 #: includes/widgets/search-widget/class-search-widget.php:236
 msgid "Label"
 msgstr "标签"
@@ -3811,12 +3825,12 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "空的"
 
-#: includes/class-frontend-views.php:1348
+#: includes/class-frontend-views.php:1378
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr "清空"
 
-#: includes/class-frontend-views.php:1349
+#: includes/class-frontend-views.php:1379
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr "重置"
