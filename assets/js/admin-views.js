@@ -978,7 +978,14 @@
 						.attr( 'data-tooltip', 'active' )
 						.attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
 
-					$( 'input[type=search]', tooltip.tooltip ).focus();
+					$focus_item = $( 'input[type=search]', tooltip.tooltip );
+
+					// Widgets don't have a search field; select the first "Add Widget" button instead
+					if ( ! $focus_item.length) {
+						$focus_item = $( 'button', tooltip.tooltip ).first();
+					}
+
+					$focus_item.focus();
 		        },
 				closeOnEscape: true,
 				disabled: true, // Don't open on hover
