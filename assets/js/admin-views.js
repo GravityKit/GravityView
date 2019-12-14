@@ -77,7 +77,7 @@
 			//select form dropdown
 			vcfg.gvSelectForm = $( '#gravityview_form_id' );
 
-			vcfg.gvSwitchView = $('a[href="#gv_switch_view"]');
+			vcfg.gvSwitchView = $('#gv_switch_view_button');
 
 			//current form selection
 			vcfg.currentFormId = vcfg.gvSelectForm.val();
@@ -113,10 +113,10 @@
 				.on( 'click mouseup keyup', vcfg.closeTooltips )
 
 				// switch View (for existing forms)
-				.on( 'click', 'a[href="#gv_switch_view"]', vcfg.switchView )
+				.on( 'click', '#gv_switch_view_button', vcfg.switchView )
 
 				// select template
-				.on( 'click', 'a[href="#gv_select_template"]', vcfg.selectTemplate )
+				.on( 'click', '.gv_select_template', vcfg.selectTemplate )
 
 				// bind Add Field fields to the addField method
 				.on( 'click', '.ui-tooltip-content .gv-fields', vcfg.startAddField )
@@ -823,7 +823,7 @@
 		selectTemplateHover: function ( e ) {
 			e.preventDefault();
 			e.stopImmediatePropagation();
-			$( this ).find( 'a[href="#gv_select_template"]' ).trigger( 'click' );
+			$( this ).find( '.gv_select_template' ).trigger( 'click' );
 		},
 
 		openExternalLinks: function () {

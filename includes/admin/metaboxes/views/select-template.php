@@ -32,7 +32,7 @@ $templates = gravityview_get_registered_templates();
 						<?php if( !empty( $template['buy_source'] ) ) { ?>
 							<p><a href="<?php echo esc_url( $template['buy_source'] ); ?>" class="button-primary button-buy-now"><?php esc_html_e( 'Buy Now', 'gravityview'); ?></a></p>
 						<?php } else { ?>
-							<p><a href="#gv_select_template" class="button button-large button-primary" data-templateid="<?php echo esc_attr( $id ); ?>"><?php esc_html_e( 'Select', 'gravityview'); ?></a></p>
+							<p><button href="#gv_select_template" class="gv_select_template button button-hero button-primary" data-templateid="<?php echo esc_attr( $id ); ?>"><?php esc_html_e( 'Select', 'gravityview'); ?></button></p>
 							<?php if( !empty( $template['preview'] ) ) { ?>
 								<a href="<?php echo esc_url( $template['preview'] ); ?>" rel="external" class="gv-site-preview"><i class="dashicons dashicons-admin-links" title="<?php esc_html_e( 'View a live demo of this preset', 'gravityview'); ?>"></i></a>
 							<?php } ?>
@@ -41,8 +41,8 @@ $templates = gravityview_get_registered_templates();
 				</div>
 				<div class="gv-view-types-normal">
 					<img src="<?php echo esc_url( $template['logo'] ); ?>" alt="<?php echo esc_attr( $template['label'] ); ?>">
-					<h5><?php echo esc_attr( $template['label'] ); ?></h5>
-					<p class="description"><?php echo esc_attr( $template['description'] ); ?></p>
+					<h5><?php echo esc_html( $template['label'] ); ?></h5>
+					<p class="description"><?php echo esc_html( $template['description'] ); ?></p>
 				</div>
 			</div>
 		</div>
