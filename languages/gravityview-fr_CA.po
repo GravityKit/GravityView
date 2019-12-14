@@ -253,7 +253,7 @@ msgstr ""
 "Vous pouvez seulement voir ce message car vous pouvez modifier cette Vue."
 
 #: future/includes/class-gv-renderer.php:89
-#: includes/admin/metaboxes/views/view-configuration.php:8
+#: includes/admin/metaboxes/views/view-configuration.php:11
 #: includes/class-frontend-views.php:560
 #: includes/class-gravityview-admin-bar.php:104
 #: includes/class-gravityview-entry-link-shortcode.php:233
@@ -267,13 +267,13 @@ msgstr "Modifier l'entrée"
 
 #: future/includes/class-gv-renderer.php:93
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:132
-#: includes/admin/metaboxes/views/view-configuration.php:7
+#: includes/admin/metaboxes/views/view-configuration.php:10
 #: includes/class-frontend-views.php:564
 msgid "Single Entry"
 msgstr "Entrée unique"
 
 #: future/includes/class-gv-renderer.php:97
-#: includes/admin/metaboxes/views/view-configuration.php:6
+#: includes/admin/metaboxes/views/view-configuration.php:9
 #: includes/class-frontend-views.php:557
 msgid "Multiple Entries"
 msgstr "Entrées multiples"
@@ -943,7 +943,7 @@ msgid "Create views based on a Gravity Forms form"
 msgstr "Créer des Vues issues d'un formulaire Gravity Forms"
 
 #: future/includes/class-gv-widget.php:156
-#: includes/admin/class.render.settings.php:49
+#: includes/admin/class.render.settings.php:51
 msgid "Custom CSS Class:"
 msgstr "Classe CSS personnalisée :"
 
@@ -1073,6 +1073,10 @@ msgstr "Supprimer %s"
 msgid "This field links to the Single Entry"
 msgstr "Ce champ est lié à l'unique entrée"
 
+#: includes/admin/class-gravityview-admin-view-item.php:175
+msgid "Add \"%s\""
+msgstr ""
+
 #: includes/admin/class-gravityview-support-port.php:81
 msgid "GravityView Support"
 msgstr "Assistance GravityView"
@@ -1152,65 +1156,65 @@ msgstr ""
 "Montrer le Support Port de GravityView lorsque vous êtes sur une page liée à"
 " GravityView"
 
-#: includes/admin/class.render.settings.php:37
+#: includes/admin/class.render.settings.php:39
 msgid "Show Label"
 msgstr "Montrer l'étiquette"
 
-#: includes/admin/class.render.settings.php:42
+#: includes/admin/class.render.settings.php:44
 msgid "Custom Label:"
 msgstr "Etiquette personnalisée :"
 
-#: includes/admin/class.render.settings.php:50
+#: includes/admin/class.render.settings.php:52
 msgid "This class will be added to the field container"
 msgstr "Cette classe sera ajoutée au champ"
 
-#: includes/admin/class.render.settings.php:58
+#: includes/admin/class.render.settings.php:60
 msgid "Make visible only to logged-in users?"
 msgstr "Rendre visible seulement aux utilisateurs connectés ?"
 
-#: includes/admin/class.render.settings.php:63
+#: includes/admin/class.render.settings.php:65
 msgid "Make visible for:"
 msgstr "Rendre visible pour :"
 
-#: includes/admin/class.render.settings.php:74
+#: includes/admin/class.render.settings.php:76
 msgid "Percent Width"
 msgstr "Pourcentage de la largeur"
 
-#: includes/admin/class.render.settings.php:75
+#: includes/admin/class.render.settings.php:77
 msgid "Leave blank for column width to be based on the field content."
 msgstr ""
 "Laisse un blanc pour la largeur de la colonne qui sera basée sur le contenu "
 "du champ."
 
-#: includes/admin/class.render.settings.php:122
+#: includes/admin/class.render.settings.php:124
 msgid "Any Logged-In User"
 msgstr "N'importe quel utilisateur connecté"
 
-#: includes/admin/class.render.settings.php:123
+#: includes/admin/class.render.settings.php:125
 msgid "Author Or Higher"
 msgstr "Auteur ou supérieur"
 
-#: includes/admin/class.render.settings.php:124
+#: includes/admin/class.render.settings.php:126
 msgid "Can View Gravity Forms Entries"
 msgstr "Peut voir les entrées de Gravity Forms"
 
-#: includes/admin/class.render.settings.php:125
+#: includes/admin/class.render.settings.php:127
 msgid "Editor Or Higher"
 msgstr "Editeur ou supérieur"
 
-#: includes/admin/class.render.settings.php:126
+#: includes/admin/class.render.settings.php:128
 msgid "Can Edit Gravity Forms Entries"
 msgstr "Peut modifier les entrées de Gravity Forms"
 
-#: includes/admin/class.render.settings.php:127
+#: includes/admin/class.render.settings.php:129
 msgid "Administrator"
 msgstr "Administrateur"
 
-#: includes/admin/class.render.settings.php:131
+#: includes/admin/class.render.settings.php:133
 msgid "Multisite Super Admin"
 msgstr "Super administrateur multisite"
 
-#: includes/admin/class.render.settings.php:200
+#: includes/admin/class.render.settings.php:202
 msgid "Options: %s"
 msgstr "Options : %s"
 
@@ -1319,39 +1323,44 @@ msgstr ""
 "Ajouter ce Shortcode à une publication ou à une page afin d'intégrer cette "
 "vue."
 
-#: includes/admin/metaboxes/views/view-configuration.php:15
+#: includes/admin/metaboxes/views/view-configuration.php:18
 msgid "Above Entries Widgets"
 msgstr "Widgets d'entrées au dessus"
 
-#: includes/admin/metaboxes/views/view-configuration.php:15
+#: includes/admin/metaboxes/views/view-configuration.php:18
 msgid "These widgets will be shown above entries."
 msgstr "Ces widgets seront affichés au-dessus des entrées."
 
-#: includes/admin/metaboxes/views/view-configuration.php:19
+#: includes/admin/metaboxes/views/view-configuration.php:22
 msgid "Entries Fields"
 msgstr "Champs des entrées"
 
-#: includes/admin/metaboxes/views/view-configuration.php:19
+#: includes/admin/metaboxes/views/view-configuration.php:22
 msgid "These fields will be shown for each entry."
 msgstr "Ces champs seront affichés pour chaque entrée."
 
-#: includes/admin/metaboxes/views/view-configuration.php:27
+#: includes/admin/metaboxes/views/view-configuration.php:30
 msgid "Below Entries Widgets"
 msgstr "Widgets d'entrées en dessous"
 
-#: includes/admin/metaboxes/views/view-configuration.php:27
+#: includes/admin/metaboxes/views/view-configuration.php:30
 msgid "These widgets will be shown below entries."
 msgstr "Ces widgets seront affichés sous les entrées."
 
-#: includes/admin/metaboxes/views/view-configuration.php:56
+#: includes/admin/metaboxes/views/view-configuration.php:42
+#: includes/class-admin-views.php:1083 includes/class-admin-views.php:1194
+msgid "Close"
+msgstr "Fermer"
+
+#: includes/admin/metaboxes/views/view-configuration.php:59
 msgid "These fields will be shown in Single Entry view."
 msgstr "Ces champs seront affichés dans la Vue d'entrée unique."
 
-#: includes/admin/metaboxes/views/view-configuration.php:76
+#: includes/admin/metaboxes/views/view-configuration.php:79
 msgid "Fields shown when editing an entry."
 msgstr "Champs montrés lors de la modification d'une entrée."
 
-#: includes/admin/metaboxes/views/view-configuration.php:76
+#: includes/admin/metaboxes/views/view-configuration.php:79
 msgid "If not configured, all form fields will be displayed."
 msgstr ""
 "S'ils ne sont pas configurés, tous les champs de formulaire seront affichés."
@@ -1748,43 +1757,43 @@ msgstr "Ajouter un Widget"
 msgid "Add Field"
 msgstr "Ajouter un Champ"
 
-#: includes/class-admin-views.php:975
+#: includes/class-admin-views.php:973
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr "\"+ %s\" ou glisser ici le %ss existant."
 
-#: includes/class-admin-views.php:1010
+#: includes/class-admin-views.php:1007
 #: includes/widgets/search-widget/class-search-widget.php:95
 msgid "Search Bar"
 msgstr "Barre de recherche"
 
-#: includes/class-admin-views.php:1020
+#: includes/class-admin-views.php:1017
 #: includes/widgets/class-gravityview-widget-pagination-info.php:28
 msgid "Show Pagination Info"
 msgstr "Afficher les informations de pagination"
 
-#: includes/class-admin-views.php:1026 includes/class-admin-views.php:1033
+#: includes/class-admin-views.php:1023 includes/class-admin-views.php:1030
 #: includes/widgets/class-gravityview-widget-page-links.php:23
 msgid "Page Links"
 msgstr "Liens de la page"
 
-#: includes/class-admin-views.php:1088
+#: includes/class-admin-views.php:1085
 msgid "Filter Fields:"
 msgstr ""
 
-#: includes/class-admin-views.php:1089
+#: includes/class-admin-views.php:1086
 msgid "Filter fields by name or label"
 msgstr ""
 
-#: includes/class-admin-views.php:1096
+#: includes/class-admin-views.php:1093
 msgid "No fields were found matching the search."
 msgstr ""
 
-#: includes/class-admin-views.php:1130
+#: includes/class-admin-views.php:1127
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 "Cette Vue est configurée en utilisant le type de Vue %s qui est désactivée."
 
-#: includes/class-admin-views.php:1131
+#: includes/class-admin-views.php:1128
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
@@ -1792,13 +1801,22 @@ msgstr ""
 "Les données ne sont pas perdues, réactivez le plugin associé et la "
 "configuration réapparaîtra."
 
-#: includes/class-admin-views.php:1193
+#: includes/class-admin-views.php:1190
 msgid "Enter View name here"
 msgstr "Entrer ici le nom de la Vue"
 
-#: includes/class-admin-views.php:1194
-msgid "Close"
-msgstr "Fermer"
+#: includes/class-admin-views.php:1191
+msgid "Reorder Search Fields"
+msgstr ""
+
+#: includes/class-admin-views.php:1192
+#: includes/widgets/search-widget/class-search-widget.php:235
+msgid "Add Search Field"
+msgstr "Ajouter un champ de recherche"
+
+#: includes/class-admin-views.php:1193
+msgid "Remove Search Field"
+msgstr ""
 
 #: includes/class-admin-views.php:1196
 msgid "Continue"
@@ -1873,23 +1891,23 @@ msgstr "Liste des changements"
 msgid "What&rsquo;s New"
 msgstr "Quoi de neuf"
 
-#: includes/class-admin-welcome.php:389
+#: includes/class-admin-welcome.php:415
 msgid "View change history"
 msgstr "Afficher l’historique des modifications"
 
-#: includes/class-admin-welcome.php:410
+#: includes/class-admin-welcome.php:436
 msgid "GravityView is brought to you by:"
 msgstr "GravityView vous est proposé par:"
 
-#: includes/class-admin-welcome.php:457
+#: includes/class-admin-welcome.php:483
 msgid "Contributors"
 msgstr "Contributeurs"
 
-#: includes/class-admin-welcome.php:483
+#: includes/class-admin-welcome.php:510
 msgid "Want to contribute?"
 msgstr "Voulez-vous contribuer ?"
 
-#: includes/class-admin-welcome.php:484
+#: includes/class-admin-welcome.php:511
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -3763,10 +3781,6 @@ msgstr "Intervalle de dates"
 msgid "No search fields configured yet."
 msgstr "Aucun champ de recherche n'a encore été configuré."
 
-#: includes/widgets/search-widget/class-search-widget.php:235
-msgid "Add Search Field"
-msgstr "Ajouter un champ de recherche"
-
 #: includes/widgets/search-widget/class-search-widget.php:236
 msgid "Label"
 msgstr "Étiquette"
@@ -4030,12 +4044,12 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "Vide"
 
-#: includes/class-frontend-views.php:1348
+#: includes/class-frontend-views.php:1378
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr "Effacer"
 
-#: includes/class-frontend-views.php:1349
+#: includes/class-frontend-views.php:1379
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr "Réinitialiser"
