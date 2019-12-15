@@ -64,7 +64,7 @@ class views {
 		 * From various contexts.
 		 */
 		if ( is_null( $view ) ) {
-			if ( in_array( get_class( gravityview()->request ), array( 'GV\Frontend_Request', 'GV\Mock_Request' ) ) && $view = gravityview()->request->is_view() ) {
+			if ( gravityview()->request->is_renderable() && $view = gravityview()->request->is_view() ) {
 				return $view;
 			}
 

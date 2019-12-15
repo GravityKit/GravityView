@@ -16,6 +16,26 @@ abstract class Request {
 	}
 
 	/**
+	 * Whether this request is something that is renderable.
+	 *
+	 * @return bool Yes or no.
+	 */
+	public function is_renderable() {
+		$is_renderable = in_array( get_class( $this ), array(
+			'GV\Frontend_Request',
+			'GV\Mock_Request',
+			'GV\REST\Request',
+		), true );
+
+		/**
+		 * @filter `gravityview/request/is_renderable` Is this request renderable?
+		 * @param[in,out] boolean $is_renderable Huh?
+		 * @param \GV\Request $this This.
+		 */
+		return apply_filters( 'gravityview/request/is_renderable', $is_renderable, $this );
+	}
+
+	/**
 	 * Check if WordPress is_admin(), and make sure not DOING_AJAX.
 	 *
 	 * @return boolean
