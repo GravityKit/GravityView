@@ -1080,7 +1080,7 @@ class GravityView_Admin_Views {
 			$filter_field_id = sprintf( 'gv-field-filter-%s-%d', $context, $form_id );
 			?>
             <div id="<?php echo esc_html( $context ); ?>-available-fields-<?php echo esc_attr( $form_id ); ?>" class="hide-if-js gv-tooltip">
-                <span class="close"><i class="dashicons dashicons-dismiss"></i></span>
+                <span class="close" role="button" aria-label="<?php esc_html_e( 'Close', 'gravityview' ); ?>"><i class="dashicons dashicons-dismiss"></i></span>
                 <div class="gv-field-filter-form">
                     <label class="screen-reader-text" for="<?php echo esc_html( $filter_field_id ); ?>"><?php esc_html_e( 'Filter Fields:', 'gravityview' ); ?></label>
                     <input type="search" class="widefat gv-field-filter" aria-controls="<?php echo $filter_field_id; ?>" id="<?php echo esc_html( $filter_field_id ); ?>" placeholder="<?php esc_html_e( 'Filter fields by name or label', 'gravityview' ); ?>" />

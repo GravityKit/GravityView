@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv2 or later.=!>
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.5\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/gravityview\n"
-"POT-Creation-Date: 2019-12-12 23:06:53+00:00\n"
+"Project-Id-Version: GravityView 2.5.1\n"
+"Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
+"POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1278,6 +1278,11 @@ msgstr ""
 msgid "These widgets will be shown below entries."
 msgstr ""
 
+#: includes/admin/metaboxes/views/view-configuration.php:42
+#: includes/class-admin-views.php:1083 includes/class-admin-views.php:1194
+msgid "Close"
+msgstr ""
+
 #: includes/admin/metaboxes/views/view-configuration.php:59
 msgid "These fields will be shown in Single Entry view."
 msgstr ""
@@ -1786,19 +1791,19 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:390
+#: includes/class-admin-welcome.php:415
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:411
+#: includes/class-admin-welcome.php:436
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:458
+#: includes/class-admin-welcome.php:483
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:484
+#: includes/class-admin-welcome.php:510
 msgid "Want to contribute?"
 msgstr ""
 
@@ -3799,6 +3804,278 @@ msgstr ""
 #: templates/deprecated/fields/gquiz_grade.php:24
 #: templates/fields/field-gquiz_grade-html.php:28
 msgid "Letter"
+msgstr ""
+
+#: templates/deprecated/fields/gquiz_is_pass.php:27
+#: templates/fields/field-gquiz_is_pass-html.php:32
+msgid "Pass/Fail"
+msgstr ""
+
+#: templates/fields/field-pipe_recorder-html.php:20
+msgid "Your browser does not support the video tag."
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:287
+msgctxt "1: Customer name; 2: Customer email"
+msgid "Licensed to: %1$s (%2$s)"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:329
+msgctxt "1: GravityView upgrade name, 2: Cost of upgrade"
+msgid "Upgrade to %1$s for %2$s"
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:108
+#: includes/class-frontend-views.php:569
+msgctxt "Displayed when a View is not configured. %s is replaced by the tab label"
+msgid "The %s layout has not been configured."
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:324
+msgctxt "A scale from 0 (bad) to 10 (good)"
+msgid "%s (\"Not at all likely\") to %s (\"Extremely likely\")"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:827
+msgctxt "Setting: Show or Hide"
+msgid "Show"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:831
+msgctxt "Setting: Show or Hide"
+msgid "Hide"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:846
+msgctxt "Setting: On or off"
+msgid "On"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:850
+msgctxt "Setting: On or off"
+msgid "Off"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:868
+msgctxt "Setting: Enable or Disable"
+msgid "Enable"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:872
+msgctxt "Setting: Enable or Disable"
+msgid "Disable"
+msgstr ""
+
+#: future/includes/class-gv-view.php:142
+msgctxt "Post Type General Name"
+msgid "Views"
+msgstr ""
+
+#: future/includes/class-gv-view.php:143
+msgctxt "Post Type Singular Name"
+msgid "View"
+msgstr ""
+
+#: future/includes/class-gv-view.php:144
+msgctxt "Menu name"
+msgid "Views"
+msgstr ""
+
+#: future/includes/class-gv-view.php:147
+msgctxt "View Item"
+msgid "View"
+msgstr ""
+
+#: includes/admin/class-gravityview-admin-view-item.php:165
+msgctxt "Label in field picker for empty label"
+msgid "Field #%s (No Label)"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:84
+msgctxt "a support form search has returned empty for the following word"
+msgid "No results found for"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:93
+msgctxt "Error shown when submitting support request and there is no subject provided"
+msgid "Please enter a subject"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:95
+msgctxt "Error shown when submitting support request and there is no message provided"
+msgid "Please enter a message"
+msgstr ""
+
+#: includes/class-admin-installer.php:100
+msgctxt ""
+"Extensions are WordPress plugins that add functionality to GravityView and "
+"Gravity Forms"
+msgid "Extensions"
+msgstr ""
+
+#: includes/class-admin-views.php:483
+msgctxt "Column title that shows what template is being used for Views"
+msgid "Template"
+msgstr ""
+
+#: includes/class-debug-bar.php:175
+msgctxt "Debugging output data is empty."
+msgid "Empty"
+msgstr ""
+
+#: includes/class-frontend-views.php:1378
+msgctxt "Clear all data from the form"
+msgid "Clear"
+msgstr ""
+
+#: includes/class-frontend-views.php:1379
+msgctxt "Reset the search form to the state that existed on page load"
+msgid "Reset"
+msgstr ""
+
+#: includes/class-gravityview-admin-bar.php:144
+msgctxt "Edit View with the ID of %d"
+msgid "Edit View #%d"
+msgstr ""
+
+#: includes/class-gravityview-change-entry-creator.php:72
+msgctxt "First parameter: Success or error of the action. Second: User ID number"
+msgid "%s: Assigned User ID #%d as the entry creator."
+msgstr ""
+
+#: includes/class-gravityview-change-entry-creator.php:177
+msgctxt "The name and the ID of users who initiated changes to entry ownership"
+msgid "%s (ID #%d)"
+msgstr ""
+
+#: includes/class-gravityview-change-entry-creator.php:179
+msgctxt "To show that the entry was unassigned from an actual user to no user."
+msgid "No User"
+msgstr ""
+
+#: includes/class-gravityview-change-entry-creator.php:234
+msgctxt "No user assigned to the entry"
+msgid "No User"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval.php:117
+msgctxt "The title for an event in a notifications drop down list."
+msgid "Entry is approved"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval.php:118
+msgctxt "The title for an event in a notifications drop down list."
+msgid "Entry is disapproved"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval.php:119
+msgctxt "The title for an event in a notifications drop down list."
+msgid "Entry approval is reset"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval.php:120
+msgctxt "The title for an event in a notifications drop down list."
+msgid "Entry approval is changed"
+msgstr ""
+
+#: includes/class-gravityview-html-elements.php:122
+msgctxt "all dropdown items"
+msgid "All"
+msgstr ""
+
+#: includes/class-gravityview-html-elements.php:123
+msgctxt "no dropdown items"
+msgid "None"
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:242
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:214
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:89
+msgctxt "User capability"
+msgid "Entry Creator"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1166
+msgctxt "Replacements are HTML"
+msgid "Entry Updated. %sReturning to Entry%s"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1171
+msgctxt ""
+"Replacement 1 is HTML. Replacement 2 is the title of the page where the "
+"user will be taken. Replacement 3 is HTML."
+msgid "Entry Updated. %sReturning to %s%s"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1177
+msgctxt ""
+"Replacement 1 is HTML. Replacement 2 is the URL where the user will be "
+"taken. Replacement 3 is HTML."
+msgid "Entry Updated. %sRedirecting to %s%s"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2321
+msgctxt "Link shown when invalid Edit Entry link is clicked"
+msgid "Go back."
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:378
+msgctxt "%s is opening and closing HTML link"
+msgid ""
+"Only users with specific capabilities will be able to view, add and delete "
+"notes. %sRead more%s."
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:430
+msgctxt "Example email address used as a placeholder"
+msgid "you@example.com"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:438
+msgctxt "Message to display when submitting a note without content."
+msgid "Note cannot be blank."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-custom.php:65
+msgctxt "HTML link pointing to WordPress article on oEmbed"
+msgid "Automatically convert oEmbed URLs into embedded content (%slearn more%s)."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:93
+msgctxt "Gravity Flow Workflow Step Status"
+msgid "Status: %s"
+msgstr ""
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:26
+msgctxt "The string placeholders are for emphasis HTML"
+msgid ""
+"Note: this will display poll results for %sall form entries%s, not only the "
+"entries displayed in the View."
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:1759
+msgctxt "Close calendar"
+msgid "Close"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:1760
+msgctxt "Previous month in calendar"
+msgid "Prev"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:1761
+msgctxt "Next month in calendar"
+msgid "Next"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:1762
+msgctxt "Today in calendar"
+msgid "Today"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:1763
+msgctxt "Week in calendar"
+msgid "Week"
 msgstr ""
 
 #: templates/deprecated/fields/gquiz_grade.php:25
