@@ -94,6 +94,17 @@ final class Core {
 		$this->log = apply_filters( 'gravityview/logger', new WP_Action_Logger() );
 
 		/**
+		 * Stop all further functionality from loading if the WordPress
+		 * plugin is incompatible with the current environment.
+		 *
+		 * Saves some time and memory.
+		 */
+		if ( ! $this->plugin->is_compatible() ) {
+			$this->log->error( 'GravityView 2.0 is not compatible with this environment. Stopped loading.' );
+			return;
+		}
+
+		/**
 		 * Utilities.
 		 */
 		require_once $this->plugin->dir( 'future/includes/class-gv-utils.php' );
@@ -130,17 +141,6 @@ final class Core {
 
 		/** More legacy core. @todo Deprecate */
 		$this->plugin->include_legacy_core();
-
-		/**
-		 * Stop all further functionality from loading if the WordPress
-		 * plugin is incompatible with the current environment.
-		 *
-		 * Saves some time and memory.
-		 */
-		if ( ! $this->plugin->is_compatible() ) {
-			$this->log->error( 'GravityView 2.0 is not compatible with this environment. Stopped loading.' );
-			return;
-		}
 
 		/** Register the gravityview post type upon WordPress core init. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
