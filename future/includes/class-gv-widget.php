@@ -375,7 +375,7 @@ abstract class Widget {
 	 *
 	 * @param array $atts The Widget shortcode args.
 	 * @param string $content The content.
-	 * @param string $context The context, if available.
+	 * @param string|\GV\Template_Context $context The context, if available.
 	 *
 	 * @return string Whatever the widget echoed.
 	 */

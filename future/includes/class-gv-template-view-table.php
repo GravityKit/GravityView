@@ -197,7 +197,7 @@ class View_Table_Template extends View_Template {
 	public function the_columns() {
 		$fields = $this->view->fields->by_position( 'directory_table-columns' );
 
-		foreach ( $fields->by_visible()->all() as $field ) {
+		foreach ( $fields->by_visible( $this->view )->all() as $field ) {
 			$context = Template_Context::from_template( $this, compact( 'field' ) );
 
 			$args = array(
@@ -252,7 +252,7 @@ class View_Table_Template extends View_Template {
 	 */
 	public function the_entry( \GV\Entry $entry, $attributes ) {
 
-		$fields = $this->view->fields->by_position( 'directory_table-columns' )->by_visible();
+		$fields = $this->view->fields->by_position( 'directory_table-columns' )->by_visible( $this->view );
 
 		$context = Template_Context::from_template( $this, compact( 'entry', 'fields' ) );
 

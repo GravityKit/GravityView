@@ -21,13 +21,13 @@ class GravityView_Edit_Entry_Render {
 	protected $loader;
 
 	/**
-	 * @var string String used to generate unique nonce for the entry/form/view combination. Allows access to edit page.
+	 * @var string $nonce_key String used to generate unique nonce for the entry/form/view combination. Allows access to edit page.
 	 */
 	static $nonce_key;
 
 	/**
 	 * @since 1.9
-	 * @var string String used for check valid edit entry form submission. Allows saving edit form values.
+	 * @var string $nonce_field String used for check valid edit entry form submission. Allows saving edit form values.
 	 */
 	private static $nonce_field = 'is_gv_edit_entry';
 
@@ -104,7 +104,7 @@ class GravityView_Edit_Entry_Render {
 	 * ID of the current post. May also be ID of the current View.
      *
      * @since 2.0.13
-     * 
+	 *
      * @var int
 	 */
 	public $post_id;
@@ -373,11 +373,14 @@ class GravityView_Edit_Entry_Render {
 
 	        // Delete the values for hidden inputs
 	        $this->unset_hidden_field_values();
-			
+
 			$this->entry['date_created'] = $date_created;
 
 			// Process calculation fields
 			$this->update_calculation_fields();
+
+			// Handle hidden approval fields (or their absense)
+			$this->preset_approval_fields();
 
 			// Perform actions normally performed after updating a lead
 			$this->after_update();
@@ -474,6 +477,67 @@ class GravityView_Edit_Entry_Render {
 	}
 
 	/**
+	 * Leverage `gravityview/approve_entries/update_unapproved_meta` to prevent
+	 * the missing/empty approval field to affect is_approved meta at all.
+	 *
+	 * Called before the Gravity Forms after_update triggers.
+	 *
+	 * @since 2.5
+	 *
+	 * @return void
+	 */
+	private function preset_approval_fields() {
+		$has_approved_field = false;
+
+		foreach ( self::$original_form['fields'] as $field ) {
+			if ( $field->gravityview_approved ) {
+				$has_approved_field = true;
+				break;
+			}
+		}
+
+		if ( ! $has_approved_field ) {
+			return;
+		}
+
+		$is_field_hidden = true;
+
+		foreach ( $this->form['fields'] as $field ) {
+			if ( $field->gravityview_approved ) {
+				$is_field_hidden = false;
+				break;
+			}
+		}
+
+		if ( ! $is_field_hidden ) {
+			return;
+		}
+
+		add_filter( 'gravityview/approve_entries/update_unapproved_meta', array( $this, 'prevent_update_unapproved_meta' ), 9, 3 );
+	}
+
+	/**
+	 * Done once from self::preset_approval_fields
+	 *
+	 * @since 2.5
+	 *
+	 * @return string UNAPPROVED unless something else is inside the entry.
+	 */
+	public function prevent_update_unapproved_meta( $value, $form, $entry ) {
+
+		remove_filter( 'gravityview/approve_entries/update_unapproved_meta', array( $this, 'prevent_update_unapproved_meta' ), 9 );
+
+		if ( ! $value = gform_get_meta( $entry['id'], 'is_approved' ) ) {
+
+			$value = GravityView_Entry_Approval_Status::UNAPPROVED;
+
+			$value = apply_filters( 'gravityview/approve_entries/after_submission/default_status', $value );
+		}
+
+		return $value;
+	}
+
+	/**
 	 * Have GF handle file uploads
 	 *
 	 * Copy of code from GFFormDisplay::process_form()
@@ -529,8 +593,8 @@ class GravityView_Edit_Entry_Render {
 
 		/** No file is being uploaded. */
 		if ( empty( $_FILES[ $input_name ]['name'] ) ) {
-			/** So return the original upload */
-			return $entry[ $input_id ];
+			/** So return the original upload, with $value as backup (it can be empty during edit form rendering) */
+			return rgar( $entry, $input_id, $value );
 		}
 
 		return $value;
@@ -916,8 +980,8 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private function after_update() {
 
-		do_action( 'gform_after_update_entry', $this->form, $this->entry['id'], self::$original_entry );
-		do_action( "gform_after_update_entry_{$this->form['id']}", $this->form, $this->entry['id'], self::$original_entry );
+		do_action( 'gform_after_update_entry', self::$original_form, $this->entry['id'], self::$original_entry );
+		do_action( "gform_after_update_entry_{$this->form['id']}", self::$original_form, $this->entry['id'], self::$original_entry );
 
 		// Re-define the entry now that we've updated it.
 		$entry = RGFormsModel::get_lead( $this->entry['id'] );
@@ -1195,12 +1259,16 @@ class GravityView_Edit_Entry_Render {
 				GFFormDisplay::$submission[ $this->form['id'] ][ 'is_valid' ] = true;
 
 				if ( \GV\Utils::_POST( 'save' ) === $labels['next'] ) {
-					$page_number++;
+					$last_page = \GFFormDisplay::get_max_page_number( $this->form );
+
+					while ( ++$page_number < $last_page && RGFormsModel::is_page_hidden( $this->form, $page_number, \GV\Utils::_POST( 'gform_field_values' ) ) ) {
+					} // Advance to next visible page
 				} elseif ( \GV\Utils::_POST( 'save' ) === $labels['previous'] ) {
-					$page_number--;
+					while ( --$page_number > 1 && RGFormsModel::is_page_hidden( $this->form, $page_number, \GV\Utils::_POST( 'gform_field_values' ) ) ) {
+					} // Advance to next visible page
 				}
 
-				GFFormDisplay::$submission[ $this->form['id'] ][ 'page_number' ] = $page_number;
+				GFFormDisplay::$submission[ $this->form['id'] ]['page_number'] = $page_number;
 			}
 
 			if ( ( $page_number = intval( $page_number ) ) < 2 ) {
@@ -2113,7 +2181,7 @@ class GravityView_Edit_Entry_Render {
 						}
 
 						$match = GFFormsModel::matches_operation( $value, $rule['value'], $rule['operator'] );
-						
+
 						if ( $match ) {
 							$remove_conditions_rule[] = array( $field['id'], $i );
 						}

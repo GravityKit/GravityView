@@ -744,7 +744,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'Marick Bonobo', $entries[0][ $souschefs['id'] ]['1'] );
 	}
 
-	public function test_search_widget_global_search() {
+	public function test_search_widget_global_search( $mode = 'any' ) {
 		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_JOINS ) ) {
 			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
 		}
@@ -782,6 +782,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 					wp_generate_password( 4, false ) => array(
 						'id' => 'search_bar',
 						'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+						'search_mode' => $mode,
 					),
 				),
 			),
@@ -792,11 +793,15 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
 		}
 
-		$_GET = array( 'gv_search' => 'en' );
+		$_GET = array( 'gv_search' => 'en', 'mode' => $mode );
 		$this->assertEquals( 4, $view->get_entries()->count() );
 
-		$_GET = array( 'gv_search' => 'rick' );
+		$_GET = array( 'gv_search' => 'rick', 'mode' => $mode );
 		$this->assertEquals( 1, $view->get_entries()->count() );
+	}
+
+	public function test_search_widget_global_search_all() {
+		return $this->test_search_widget_global_search( 'all' );
 	}
 
 	/**

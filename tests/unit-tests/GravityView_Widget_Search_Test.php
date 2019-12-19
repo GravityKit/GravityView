@@ -1287,4 +1287,78 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$_GET = array();
 	}
+
+	public function test_searchable_field_restrictions_filter() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array( '_' => array(
+				array( 'id' => '1.1' ),
+			) ),
+			'widgets' => array( '_' => array(
+				array(
+					'id' => 'search_bar',
+					'search_fields' => json_encode( array(
+						array( 'field' => '1.1', 'input' => 'text' ),
+					) ),
+				),
+			) ),
+		) );
+
+		$view = \GV\View::from_post( $post );
+
+		$_GET = array(
+			'gv_start' => '2017-01-01',
+			'gv_end' => '2017-12-31',
+			'filter_1_1' => 'hello',
+			'filter_16' => 'world',
+		);
+
+		$search_criteria = array(
+			'field_filters' => array(
+				'mode' => 'any',
+				array(
+					'key' => '1.1',
+					'value' => 'hello',
+					'form_id' => $view->form->ID,
+					'operator' => 'contains'
+				),
+			),
+		);
+
+		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
+
+		add_filter( $filter = 'gravityview/search/searchable_fields/whitelist', $callback = function( $fields, $view, $with_full ) {
+			if ( $with_full ) {
+				return array(
+					array(
+						'field' => '16',
+						'form_id' => $view->form->ID,
+						'input' => 'text',
+					),
+				);
+			} else {
+				return array( '16' );
+			}
+
+			return $fields;
+		}, 10, 3 );
+
+		$search_criteria = array(
+			'field_filters' => array(
+				'mode' => 'any',
+				array(
+					'key' => '16',
+					'value' => 'world',
+					'form_id' => $view->form->ID,
+					'operator' => 'contains'
+				),
+			),
+		);
+
+		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
+
+		remove_filter( $filter, $callback );
+	}
 }

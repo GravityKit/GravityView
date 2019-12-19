@@ -908,7 +908,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$logic_shortcode = \GVLogic_Shortcode::get_instance();
 		$this->assertEquals( $logic_shortcode->shortcode( array( 'if' => 'true', 'is' => 'true' ), 'sentinel' ), 'sentinel' );
 		set_current_screen( 'dashboard' );
-		$this->assertNull( $logic_shortcode->shortcode( array( 'if' => 'true', 'is' => 'true' ), 'sentinel' ), 'sentinel' );
+		$this->assertEmpty( $logic_shortcode->shortcode( array( 'if' => 'true', 'is' => 'true' ), 'sentinel' ), 'sentinel' );
 
 		/** \GravityView_Widget::add_shortcode short circuits and adds no tags if is_admin() */
 		set_current_screen( 'front' );
@@ -2722,13 +2722,27 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$renderer = new \GV\Field_Renderer();
 
 		$field = \GV\GF_Field::by_id( $form, '1.1' );
+
 		$this->assertEquals( 'Address 1&lt;careful&gt;', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field = \GV\GF_Field::by_id( $form, '1' );
-		$this->assertRegExp( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country<br/><a href='http://maps.google.com/maps\?q=.*' target='_blank' class='map-it-link'>Map It</a>$#", $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'show_map_link' => true ) );
+
+		$this->assertRegExp( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country<br /><a class=\"map-it-link\" href=\"https://maps.google.com/maps\?q=.*\">Map It</a>$#", $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'show_map_link' => false ) );
 		$this->assertRegExp( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country$#", $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'show_map_link' => true ) );
+
+		add_filter( 'gravityview_map_link', $callback = function( $link ) {
+			return 'Sentinel Map Link';
+		} );
+
+		$this->assertContains( 'Sentinel Map Link', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		remove_filter( 'gravityview_map_link', $callback );
 	}
 
 	/**
@@ -5071,7 +5085,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'view' => $view,
 			'entry' => \GV\GF_Entry::by_id( $entry['id'] ),
 			'entries' => $entries,
-			'fields'=> $view->fields->by_visible(),
+			'fields'=> $view->fields->by_visible( $view ),
 		) );
 
 		$this->assertEquals( array(
@@ -5096,7 +5110,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'\GravityView_View::form' => $view->form->form,
 			'\GravityView_View::form_id' => $view->form->ID,
 			'\GravityView_View::entries' => array(),
-			'\GravityView_View::fields' => $view->fields->by_visible()->as_configuration(),
+			'\GravityView_View::fields' => $view->fields->by_visible( $view )->as_configuration(),
 			'\GravityView_View::context' => 'single',
 			'\GravityView_View::total_entries' => 1,
 			'\GravityView_View::entries' => array_map( function( $e ) { return $e->as_entry(); }, $entries->all() ),
@@ -7867,6 +7881,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 						'id' => '2',
 						'label' => 'Checkbox',
 					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
 				),
 			),
 		) );
@@ -7886,6 +7904,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			) ),
 			'2.1' => 'Much Better',
 			'2.2' => 'Somewhat Better',
+			'16'  => "This\nis\nan\nofficial\nletter.",
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
@@ -7907,11 +7926,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$file = implode( ";", array( 'http://one.txt', 'http://two.mp3' ) );
 
-
 		$checkbox = implode( ";", array( 'Much Better', 'Somewhat Better' ) );
+
+		$textarea = "This\nis\nan\nofficial\nletter.";
+
 		$expected = array(
-			'Email,"A List",File,Checkbox',
-			sprintf( 'support@gravityview.co,"%s",%s,"%s"', $list, $file, $checkbox ),
+			'Email,"A List",File,Checkbox,Textarea',
+			sprintf( 'support@gravityview.co,"%s",%s,"%s","%s"', $list, $file, $checkbox, $textarea ),
 		);
 
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
@@ -7937,9 +7958,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'http://one.txt',
 			'http://two.mp3',
 		) );
+
 		$expected         = array(
-			'Email,"A List",File,Checkbox',
-			sprintf( 'support@gravityview.co,"%s","%s","%s"', $list_newline, $file_newline, $checkbox_newline ),
+			'Email,"A List",File,Checkbox,Textarea',
+			sprintf( 'support@gravityview.co,"%s","%s","%s","%s"', $list_newline, $file_newline, $checkbox_newline, $textarea ),
 		);
 
 		remove_all_filters( 'gravityview/template/field/csv/glue' );
@@ -7948,11 +7970,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/template/csv/field/raw', '__return_false' );
 
+		$textarea = str_replace( "\n", "<br />\n", $textarea );
+
 		ob_start();
 		$view::template_redirect();
 		$expected = array(
-			'Email,"A List",File,Checkbox',
-			sprintf( '"<a href=\'mailto:support@gravityview.co\'>support@gravityview.co</a>","%s",%s,"%s"', $list, $file, $checkbox ),
+			'Email,"A List",File,Checkbox,Textarea',
+			sprintf( '"<a href=\'mailto:support@gravityview.co\'>support@gravityview.co</a>","%s",%s,"%s","%s"', $list, $file, $checkbox, $textarea ),
 		);
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
@@ -8375,6 +8399,129 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( 'Widgets are working.', $out );
 		$this->assertContains( 'But as expected, "{sequence}" is not working.', $out );
 
+		$this->_reset_context();
+	}
+
+	public function test_notice_reserved_slugs() {
+		$this->_reset_context();
+
+		$administrator = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'administrator' )
+		);
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form->ID,
+			'template_id' => 'table',
+            'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '4',
+						'label' => 'Email',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form->ID,
+			'status' => 'active',
+			'4' => 'gennady@gravityview.co',
+		) );
+
+		register_post_type( $post_type = 'test_' . wp_generate_password( 4, false ), array(
+			'rewrite' => array(
+				'slug' => $post_type,
+			)
+		) );
+
+		$post = $this->factory->post->create_and_get( array( 'post_name' => 'view', 'post_content' => '[gravityview id="' . $view->ID . '"]' ) );
+
+		$this->set_permalink_structure( '/%postname%/' );
+		\GV\Entry::add_rewrite_endpoint();
+		flush_rewrite_rules();
+		
+		$this->go_to( get_permalink( $post ) );
+
+		// Only admins see the notice
+		$this->assertNotContains( 'on this page', $content = apply_filters( 'the_content', $post->post_content ) );
+		$this->assertNotContains( 'error', $content );
+
+		wp_set_current_user( $administrator );
+
+		$this->assertContains( 'on this page', $content = apply_filters( 'the_content', $post->post_content ) );
+		$this->assertContains( 'error', $content );
+
+		// No permalink should work fine, though
+		$this->set_permalink_structure( '' );
+		\GV\Entry::add_rewrite_endpoint();
+		flush_rewrite_rules();
+
+		$this->go_to( get_permalink( $post ) );
+
+		$this->assertNotContains( 'on this page', $content = apply_filters( 'the_content', $post->post_content ) );
+		$this->assertNotContains( 'error', $content );
+
+		wp_delete_post( $post->ID );
+
+		$this->set_permalink_structure( '/%postname%/' );
+		\GV\Entry::add_rewrite_endpoint();
+		flush_rewrite_rules();
+
+		// [gravityview] shortcode
+		$posts = array(
+			$this->factory->post->create_and_get( array( 'post_name' => 'view', 'post_content' => '[gravityview id="' . $view->ID . '"]' ) ),
+			$this->factory->post->create_and_get( array( 'post_name' => 'entry', 'post_content' => '[gravityview id="' . $view->ID . '"]' ) ),
+			$this->factory->post->create_and_get( array( 'post_name' => 'search', 'post_content' => '[gravityview id="' . $view->ID . '"]' ) ),
+			$this->factory->post->create_and_get( array( 'post_name' => $post_type, 'post_content' => '[gravityview id="' . $view->ID . '"]' ) ),
+			$this->factory->post->create_and_get( array( 'post_name' => 'filtered', 'post_content' => '[gravityview id="' . $view->ID . '"]' ) ),
+		);
+
+		add_filter( 'gravityview/rewrite/reserved_slugs', function( $slugs ) {
+			$slugs[] = 'filtered';
+			return $slugs;
+		} );
+
+		foreach ( $posts as $post ) {
+			$this->go_to( get_permalink( $post ) );
+
+			$this->assertContains( 'on this page', $content = apply_filters( 'the_content', $post->post_content ), $post->post_name );
+			$this->assertContains( 'error', $content, $post->post_name );
+
+			wp_delete_post( $post->ID ); // Remove for next test
+		}
+
+		$permalink = add_query_arg( 'entry', $entry['id'], get_permalink( $view->ID ) );
+
+		// oEmbed
+		$posts = array(
+			$this->factory->post->create_and_get( array( 'post_name' => 'view', 'post_content' => $permalink ) ),
+			$this->factory->post->create_and_get( array( 'post_name' => 'entry', 'post_content' => $permalink ) ),
+			$this->factory->post->create_and_get( array( 'post_name' => 'search', 'post_content' => $permalink ) ),
+			$this->factory->post->create_and_get( array( 'post_name' => $post_type, 'post_content' => $permalink ) ),
+			$this->factory->post->create_and_get( array( 'post_name' => 'filtered', 'post_content' => $permalink ) ),
+		);
+
+		foreach ( $posts as $post ) {
+			$this->go_to( get_permalink( $post ) );
+
+			$content = $GLOBALS['wp_embed']->autoembed( $post->post_content );
+			$this->assertContains( 'on this page', $content, $post->post_name );
+			$this->assertContains( 'error', $content, $post->post_name );
+
+			wp_delete_post( $post->ID ); // Remove for next test
+		}
+
+		remove_all_filters( 'gravityview/rewrite/reserved_slugs' );
+
+		$this->set_permalink_structure( '' );
+		\GV\Entry::add_rewrite_endpoint();
+		flush_rewrite_rules();
 
 		$this->_reset_context();
 	}
