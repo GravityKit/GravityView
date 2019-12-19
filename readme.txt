@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Added: `gravityview/request/is_renderable` filter to modify what request classes represent valid GravityView requests
 * Added: `gravityview/widget/search/form/action` filter to change search submission URL as needed.
 
 = 2.5.1 on December 14, 2019 =
