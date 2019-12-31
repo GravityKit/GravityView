@@ -1434,7 +1434,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$url = add_query_arg( array(), get_permalink( $post_id ) );
 
-		return esc_url( $url );
+		/** 
+		 * @filter `gravityview/widget/search/form/action` Override the search URL.
+		 * @param[in,out] string $action Where the form submits to.
+		 *
+		 * Further parameters will be added once adhoc context is added.
+		 * Use gravityview()->request until then.
+		 */
+		return apply_filters( 'gravityview/widget/search/form/action', $url );
 	}
 
 	/**
