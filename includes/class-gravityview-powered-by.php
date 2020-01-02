@@ -49,7 +49,7 @@ class GravityView_Powered_By {
 		 */
 		$anchor_text = apply_filters( 'gravityview/powered_by/text', __( 'Powered by GravityView', 'gravityview' ) );
 
-		printf( '<a class="gv-powered-by" href="%s">%s</a>', esc_url( $url ), esc_html( $anchor_text ) );
+		printf( '<span class="gv-powered-by"><a href="%s">%s</a></span>', esc_url( $url ), esc_html( $anchor_text ) );
 	}
 
 	/**
