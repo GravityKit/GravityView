@@ -520,6 +520,7 @@ class Addon_Settings extends \GFAddOn {
 			'flexbox_search'       => '1',
 			'rest_api'             => '0',
 			'beta'                 => '0',
+			'powered_by'           => '0',
 		);
 
 		/**
@@ -890,6 +891,31 @@ class Addon_Settings extends \GFAddOn {
 					),
 				),
 				'description'   => __( 'You will have early access to the latest GravityView features and improvements. There may be bugs! If you encounter an issue, help make GravityView better by reporting it!', 'gravityview' ),
+			),
+			array(
+				'name' => 'powered_by',
+				'type' => 'checkbox',
+				'label' => __( 'Display "Powered By" Link', 'gravityview' ),
+				'default_value' => $default_settings['powered_by'],
+				'horizontal' => 1,
+				'choices' => array(
+					array(
+						'label' => esc_html__( 'Display a "Powered by GravityView" link below Views.', 'gravityview' ),
+						'value' => '1',
+						'name'  => 'powered_by',
+					),
+				),
+				'description'   => __( 'When enabled, a "powered by" link will be displayed in the footer of Views. Help us spread the word!', 'gravityview' ),
+			),
+			array(
+				'name' => 'affiliate_id',
+				'type' => 'text',
+				'input_type' => 'number',
+				'default_value' => null,
+				'label' => __( 'Affiliate ID', 'gravityview' ),
+				'description' => __( 'Earn affiliate credit when referring customers to GravityView.', 'gravityview' ),
+				'class' => 'code',
+				'dependency' => 'powered_by', // TODO: Hide this setting when Powered By is disabled
 			),
 		);
 
