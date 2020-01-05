@@ -758,7 +758,7 @@ final class GravityView_Delete_Entry {
 
 	public function display_message() {
 
-		if ( empty( $_GET['status'] ) ) {
+		if ( empty( $_GET['status'] ) || empty( $_GET['delete'] ) ) {
 			return;
 		}
 
