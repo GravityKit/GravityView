@@ -220,7 +220,13 @@ class GravityView_Edit_Entry {
 		    $url = add_query_arg( $params, $url );
 	    }
 
-        return $url;
+		/**
+		 * @filter `gravityview/edit/link` Filter the edit URL link.
+		 * @param[in,out] string $url The url.
+		 * @param array $entry The entry.
+		 * @param \GV\View $view The View.
+		 */
+		return apply_filters( 'gravityview/edit/link', $url, $entry, \GV\View::by_id( $view_id  ) );
     }
 
 	/**
