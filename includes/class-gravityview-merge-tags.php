@@ -308,8 +308,6 @@ class GravityView_Merge_Tags {
 	 * @since 1.15.1 - Add support for $url_encode and $esc_html arguments
 	 * @since 1.22.4 - Added $nl2br, $format, $aux_data args
 	 *
-	 * @param  string           $text       Text to replace variables in
-	 * @param  array            $form        GF Form array
 	 * @param  array            $entry        GF Entry array
 	 * @param  bool             $url_encode   Pass return value through `url_encode()`
 	 * @param  bool             $esc_html     Pass return value through `esc_html()`
