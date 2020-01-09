@@ -48,7 +48,7 @@ final class GravityView_Duplicate_Entry {
 
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ), 10, 3 );
 
-		add_action( 'gravityview_before', array( $this, 'display_message' ) );
+		add_action( 'gravityview_before', array( $this, 'maybe_display_message' ) );
 
 		// For the Duplicate Entry Link, you don't want visible to all users.
 		add_filter( 'gravityview_field_visibility_caps', array( $this, 'modify_visibility_caps' ), 10, 5 );
@@ -348,7 +348,7 @@ final class GravityView_Duplicate_Entry {
 			);
 		}
 
-		$redirect_to_base = esc_url_raw( remove_query_arg( array( 'action', 'gvid' ) ) );
+		$redirect_to_base = esc_url_raw( remove_query_arg( array( 'action', 'gvid', 'entry_id' ) ) );
 		$redirect_to = add_query_arg( $messages, $redirect_to_base );
 
 		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
@@ -660,14 +660,21 @@ final class GravityView_Duplicate_Entry {
 	 *
 	 * @return void
 	 */
-	public function display_message( $current_view_id = 0 ) {
-
+	public function maybe_display_message( $current_view_id = 0 ) {
 		if ( empty( $_GET['status'] ) || ! self::verify_nonce() ) {
 			return;
 		}
 
 		// Entry wasn't duplicated from current View
 		if ( isset( $_GET['view_id'] ) && ( intval( $_GET['view_id'] ) !== intval( $current_view_id ) ) ) {
+			return;
+		}
+
+		$this->display_message();
+	}
+
+	public function display_message() {
+		if ( empty( $_GET['status'] ) || empty( $_GET['duplicate'] ) ) {
 			return;
 		}
 
