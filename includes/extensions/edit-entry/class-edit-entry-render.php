@@ -142,7 +142,8 @@ class GravityView_Edit_Entry_Render {
 		add_action( 'wp_footer', array( $this, 'prevent_render_form' ) );
 
 		// Stop Gravity Forms processing what is ours!
-		add_filter( 'wp', array( $this, 'prevent_maybe_process_form'), 8 );
+		add_action( 'wp', array( $this, 'prevent_maybe_process_form' ), 8 );
+		add_action( 'admin_init', array( $this, 'prevent_maybe_process_form' ), 8 );
 
 		add_filter( 'gravityview_is_edit_entry', array( $this, 'is_edit_entry') );
 
@@ -196,6 +197,9 @@ class GravityView_Edit_Entry_Render {
 
 		remove_action( 'wp',  array( 'RGForms', 'maybe_process_form'), 9 );
 		remove_action( 'wp',  array( 'GFForms', 'maybe_process_form'), 9 );
+
+		remove_action( 'admin_init',  array( 'GFForms', 'maybe_process_form'), 9 );
+		remove_action( 'admin_init',  array( 'RGForms', 'maybe_process_form'), 9 );
 	}
 
 	/**
