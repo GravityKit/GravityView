@@ -836,6 +836,37 @@ class GVCommon_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * https://github.com/gravityview/GravityView/issues/929
+	 */
+	function test_check_entry_display_gf_query_filters() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'1' => '10',
+			'2' => '1000',
+		) );
+
+		add_filter( 'gravityview/view/query', $query_callback = function( $query ) {
+			$q = $query->_introspect();
+
+			$condition = new GF_Query_Condition(
+				new GF_Query_Column( 'status' ),
+				GF_Query_Condition::EQ,
+				new GF_Query_Literal( 'does not exist' )
+			);
+
+			$query->where( \GF_Query_Condition::_and( $q['where'], $condition ) );
+		} );
+
+		$result = GVCommon::check_entry_display( $entry, \GV\View::by_id( $view ) );
+		$this->assertWPError( $result );
+
+		remove_filter( 'gravityview/view/query', $query_callback );
+	}
+
+	/**
 	 * @since 1.20
 	 * @covers GVCommon::calculate_get_entries_criteria()
 	 * @covers GravityView_frontend::set_context_view_id()
