@@ -316,19 +316,24 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
+		$form2 = $this->factory->form->create_and_get();
+		$entry2 = $this->factory->entry->create_and_get( array( 'form_id' => $form2['id'] ) );
+
+		$view = \GV\View::from_post( $view );
+
 		// Entry is empty
 		/** @var WP_Error $empty_array */
-		$empty_array = GVCommon::check_entry_display( array() );
+		$empty_array = GVCommon::check_entry_display( array(), $view );
 		$this->assertWPError( $empty_array );
 		$this->assertEquals( 'entry_not_found', $empty_array->get_error_code() );
 
 		// Entry is WP_Error
-		$wp_error_entry = GVCommon::check_entry_display( new WP_Error('example', 'example!') );
+		$wp_error_entry = GVCommon::check_entry_display( new WP_Error('example', 'example!'), $view );
 		$this->assertWPError( $wp_error_entry );
 		$this->assertEquals( 'entry_not_found', $wp_error_entry->get_error_code() );
 
 		// Empty $entry['form_id'] should return false
-		$form_id_not_set = GVCommon::check_entry_display( array( 'not_empty' => true, 'doesnt_have_form_id' => true ) );
+		$form_id_not_set = GVCommon::check_entry_display( array( 'not_empty' => true, 'doesnt_have_form_id' => true ), $view );
 		$this->assertWPError( $form_id_not_set );
 		$this->assertEquals( 'form_id_not_set', $form_id_not_set->get_error_code() );
 
@@ -343,41 +348,24 @@ class GVCommon_Test extends GV_UnitTestCase {
 
 		// Test empty( $criteria['search_criteria'] )
 		add_filter( 'gravityview_search_criteria', function() { return array( 'search_criteria' => null ); } );
-		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry ), 'Empty search criteria should have returned original entry' );
+		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry, $view ), 'Empty search criteria should have returned original entry' );
 		remove_all_filters( 'gravityview_search_criteria' );
 
 		// Test ! is_array( $criteria['search_criteria'] )
 		add_filter( 'gravityview_search_criteria', function() { return array( 'search_criteria' => 1 ); } );
-		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry ), 'Search criteria not being an array should have returned original entry' );
+		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry, $view ), 'Search criteria not being an array should have returned original entry' );
 		remove_all_filters( 'gravityview_search_criteria' );
 
 		// Test whether the current View is connected to the same form as the Entry
 		add_filter( 'gravityview_search_criteria', function() use ( $view ) {
 			return array(
 				'search_criteria' => array( 'example' => 'not_empty'),
-			    'context_view_id' => ( $view->ID + 1 ) // Anything but the View ID
 			);
 		} );
-		$view_id_not_match = GVCommon::check_entry_display( $entry );
+		$view_id_not_match = GVCommon::check_entry_display( $entry2, $view );
 		$this->assertWPError( $view_id_not_match );
 		$this->assertEquals( 'view_id_not_match', $view_id_not_match->get_error_code() );
 		remove_all_filters( 'gravityview_search_criteria' );
-
-
-		// Test whether the current View is connected to the same form as the Entry
-		add_filter( 'gravityview_search_criteria', function() use ( $view ) {
-			return array(
-				'search_criteria' => array(
-					'status' => 'asdsadasdsad' // some crazy status
-				),
-				'context_view_id' => $view->ID,
-			);
-		} );
-		$status_not_valid = GVCommon::check_entry_display( $entry );
-		$this->assertWPError( $status_not_valid );
-		$this->assertEquals( 'status_not_valid', $status_not_valid->get_error_code() );
-		remove_all_filters( 'gravityview_search_criteria' );
-
 
 		// Test field_filters not array
 		add_filter( 'gravityview_search_criteria', function() use ( $view, $entry ) {
@@ -389,7 +377,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 				'context_view_id' => $view->ID,
 			);
 		} );
-		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry ) );
+		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry, $view ) );
 		remove_all_filters( 'gravityview_search_criteria' );
 
 
@@ -403,7 +391,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 				'context_view_id' => $view->ID,
 			);
 		} );
-		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry ) );
+		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry, $view ) );
 		remove_all_filters( 'gravityview_search_criteria' );
 
 		// Test PASS ALL
@@ -426,7 +414,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 				'context_view_id' => $view->ID,
 			);
 		} );
-		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry ), 'Should have passed ALL' );
+		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry, $view ), 'Should have passed ALL' );
 		remove_all_filters( 'gravityview_search_criteria' );
 
 
@@ -450,7 +438,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 				'context_view_id' => $view->ID,
 			);
 		} );
-		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry ), 'Should have passed ANY' );
+		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry, $view ), 'Should have passed ANY' );
 		remove_all_filters( 'gravityview_search_criteria' );
 
 
@@ -474,7 +462,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 				'context_view_id' => $view->ID,
 			);
 		} );
-		$failed_criteria = GVCommon::check_entry_display( $entry );
+		$failed_criteria = GVCommon::check_entry_display( $entry, $view );
 		$this->assertWPError( $failed_criteria );
 		$this->assertEquals( 'failed_criteria', $failed_criteria->get_error_code() );
 		remove_all_filters( 'gravityview_search_criteria' );
@@ -500,11 +488,17 @@ class GVCommon_Test extends GV_UnitTestCase {
 				'context_view_id' => $view->ID,
 			);
 		} );
-		$failed_criteria = GVCommon::check_entry_display( $entry );
+		$failed_criteria = GVCommon::check_entry_display( $entry, $view );
 		$this->assertWPError( $failed_criteria );
 		$this->assertEquals( 'failed_criteria', $failed_criteria->get_error_code() );
-		remove_all_filters( 'gravityview_search_criteria' );
 
+		// View is not given
+		/** @var WP_Error $empty_array */
+		$no_view = GVCommon::check_entry_display( $entry );
+		$this->assertWPError( $no_view );
+		$this->assertEquals( 'view_not_supplied', $no_view->get_error_code() );
+
+		remove_all_filters( 'gravityview_search_criteria' );
 	}
 
 	/**
@@ -513,6 +507,8 @@ class GVCommon_Test extends GV_UnitTestCase {
 	function test_check_entry_display_dates() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$view = \GV\View::from_post( $view );
 
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
@@ -535,7 +531,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			);
 		} );
 
-		$result = GVCommon::check_entry_display( $entry );
+		$result = GVCommon::check_entry_display( $entry, $view );
 		$this->assertEquals( $entry['id'], $result['id'] );
 
 		remove_all_filters( 'gravityview_search_criteria' );
@@ -556,7 +552,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			);
 		} );
 
-		$result = GVCommon::check_entry_display( $entry );
+		$result = GVCommon::check_entry_display( $entry, $view );
 		$this->assertWPError( $result );
 
 		remove_all_filters( 'gravityview_search_criteria' );
@@ -577,7 +573,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			);
 		} );
 
-		$result = GVCommon::check_entry_display( $entry );
+		$result = GVCommon::check_entry_display( $entry, $view );
 		$this->assertWPError( $result );
 
 		remove_all_filters( 'gravityview_search_criteria' );
@@ -598,7 +594,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			);
 		} );
 
-		$result = GVCommon::check_entry_display( $entry );
+		$result = GVCommon::check_entry_display( $entry, $view );
 		$this->assertEquals( $entry['id'], $result['id'] );
 
 		remove_all_filters( 'gravityview_search_criteria' );
@@ -610,6 +606,8 @@ class GVCommon_Test extends GV_UnitTestCase {
 	function test_check_entry_display_date_strings() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$view = \GV\View::from_post( $view );
 
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
@@ -624,7 +622,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 						array(
 							'key' => '3',
 							'operator' => 'is',
-							'value' => 'today',
+							'value' => date( 'Y-m-d', strtotime( 'today' ) ),
 						),
 					),
 				),
@@ -632,7 +630,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			);
 		} );
 
-		$result = GVCommon::check_entry_display( $entry );
+		$result = GVCommon::check_entry_display( $entry, $view );
 		$this->assertEquals( $entry['id'], $result['id'] );
 
 		remove_all_filters( 'gravityview_search_criteria' );
@@ -645,7 +643,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 						array(
 							'key' => '3',
 							'operator' => 'is not',
-							'value' => 'today',
+							'value' => date( 'Y-m-d', strtotime( 'today' ) ),
 						),
 					),
 				),
@@ -653,7 +651,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			);
 		} );
 
-		$result = GVCommon::check_entry_display( $entry );
+		$result = GVCommon::check_entry_display( $entry, $view );
 		$this->assertWPError( $result );
 
 		remove_all_filters( 'gravityview_search_criteria' );
@@ -674,7 +672,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			);
 		} );
 
-		$result = GVCommon::check_entry_display( $entry );
+		$result = GVCommon::check_entry_display( $entry, $view );
 		$this->assertEquals( $entry['id'], $result['id'] );
 
 		remove_all_filters( 'gravityview_search_criteria' );
@@ -695,7 +693,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			);
 		} );
 
-		$result = GVCommon::check_entry_display( $entry );
+		$result = GVCommon::check_entry_display( $entry, $view );
 		$this->assertWPError( $result );
 
 		remove_all_filters( 'gravityview_search_criteria' );
@@ -707,6 +705,8 @@ class GVCommon_Test extends GV_UnitTestCase {
 	function test_check_entry_display_any_fields() {
 		$form = $this->factory->form->import_and_get( 'simple.json' );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$view = \GV\View::from_post( $view );
 
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
@@ -729,7 +729,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			);
 		} );
 
-		$result = GVCommon::check_entry_display( $entry );
+		$result = GVCommon::check_entry_display( $entry, $view );
 		$this->assertWPError( $result );
 
 		remove_all_filters( 'gravityview_search_criteria' );
@@ -749,7 +749,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			);
 		} );
 
-		$result = GVCommon::check_entry_display( $entry );
+		$result = GVCommon::check_entry_display( $entry, $view );
 		$this->assertEquals( $entry['id'], $result['id'] );
 
 		remove_all_filters( 'gravityview_search_criteria' );
@@ -769,7 +769,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			);
 		} );
 
-		$result = GVCommon::check_entry_display( $entry );
+		$result = GVCommon::check_entry_display( $entry, $view );
 		$this->assertEquals( $entry['id'], $result['id'] );
 
 		remove_all_filters( 'gravityview_search_criteria' );
@@ -789,7 +789,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			);
 		} );
 
-		$result = GVCommon::check_entry_display( $entry );
+		$result = GVCommon::check_entry_display( $entry, $view );
 		$this->assertEquals( $entry['id'], $result['id'] );
 
 		remove_all_filters( 'gravityview_search_criteria' );
@@ -809,7 +809,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			);
 		} );
 
-		$result = GVCommon::check_entry_display( $entry );
+		$result = GVCommon::check_entry_display( $entry, $view );
 		$this->assertWPError( $result );
 
 		remove_all_filters( 'gravityview_search_criteria' );
@@ -829,7 +829,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			);
 		} );
 
-		$result = GVCommon::check_entry_display( $entry );
+		$result = GVCommon::check_entry_display( $entry, $view );
 		$this->assertEquals( $entry['id'], $result['id'] );
 
 		remove_all_filters( 'gravityview_search_criteria' );
@@ -860,7 +860,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			$query->where( \GF_Query_Condition::_and( $q['where'], $condition ) );
 		} );
 
-		$result = GVCommon::check_entry_display( $entry, \GV\View::by_id( $view ) );
+		$result = GVCommon::check_entry_display( $entry, \GV\View::from_post( $view ) );
 		$this->assertWPError( $result );
 
 		remove_filter( 'gravityview/view/query', $query_callback );

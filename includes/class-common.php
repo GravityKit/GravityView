@@ -439,7 +439,7 @@ class GVCommon {
 
 		$criteria = wp_parse_args( $passed_criteria, $search_criteria_defaults );
 
-		if ( ! empty( $criteria['search_criteria']['field_filters'] ) ) {
+		if ( ! empty( $criteria['search_criteria']['field_filters'] ) && is_array( $criteria['search_criteria']['field_filters'] ) ) {
 			foreach ( $criteria['search_criteria']['field_filters'] as &$filter ) {
 
 				if ( ! is_array( $filter ) ) {
@@ -850,189 +850,93 @@ class GVCommon {
 			return new WP_Error( 'form_id_not_set', '[apply_filters_to_entry] Entry is empty!', $entry );
 		}
 
-		if ( $view && gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
-			$view_form_id = $view->form->ID;
+		if ( is_null( $view ) ) {
+			gravityview()->log->warning( '$view was not supplied to check_entry_display, results will be non-typical.' );
+			return new WP_Error( 'view_not_supplied', 'View is not supplied!', $entry );
+		}
 
-			if ( $view->joins ) {
-				if ( in_array( (int)$entry['form_id'], array_keys( $view::get_joined_forms( $view->ID ) ), true ) ) {
-					$view_form_id = $entry['form_id'];
-				}
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			return new WP_Error( 'no_gf_query', 'GF_Query is missing.', $entry );
+		}
+
+		$view_form_id = $view->form->ID;
+
+		if ( $view->joins ) {
+			if ( in_array( (int)$entry['form_id'], array_keys( $view::get_joined_forms( $view->ID ) ), true ) ) {
+				$view_form_id = $entry['form_id'];
 			}
+		}
 
-			/**
-			 * Check whether the entry is in the entries subset by running a modified query.
-			 */
-			add_action( 'gravityview/view/query', $entry_subset_callback = function( &$query, $view, $request ) use ( $entry, $view_form_id ) {
-				$_tmp_query       = new \GF_Query( $view_form_id, array(
-					'field_filters' => array(
-						'mode' => 'all',
-						array(
-							'key' => 'id',
-							'operation' => 'is',
-							'value' => $entry['id']
-						)
+		if ( $view_form_id != $entry['form_id'] ) {
+			return new WP_Error( 'view_id_not_match', 'View form source does not match entry form source ID.', $entry );
+		}
+
+		/**
+		 * Check whether the entry is in the entries subset by running a modified query.
+		 */
+		add_action( 'gravityview/view/query', $entry_subset_callback = function( &$query, $view, $request ) use ( $entry, $view_form_id ) {
+			$_tmp_query       = new \GF_Query( $view_form_id, array(
+				'field_filters' => array(
+					'mode' => 'all',
+					array(
+						'key' => 'id',
+						'operation' => 'is',
+						'value' => $entry['id']
 					)
-				) );
+				)
+			) );
 
-				$_tmp_query_parts = $_tmp_query->_introspect();
+			$_tmp_query_parts = $_tmp_query->_introspect();
 
-				/** @var \GF_Query $query */
-				$query_parts      = $query->_introspect();
+			/** @var \GF_Query $query */
+			$query_parts      = $query->_introspect();
 
-				$query->where( \GF_Query_Condition::_and( $_tmp_query_parts['where'], $query_parts['where'] ) );
+			$query->where( \GF_Query_Condition::_and( $_tmp_query_parts['where'], $query_parts['where'] ) );
 
-			}, 10, 3 );
+		}, 10, 3 );
 
-			// Prevent page offset from being applied to the single entry query; it's used to return to the referring page number
-			add_filter( 'gravityview_search_criteria', $remove_pagenum = function( $criteria ) {
+		// Prevent page offset from being applied to the single entry query; it's used to return to the referring page number
+		add_filter( 'gravityview_search_criteria', $remove_pagenum = function( $criteria ) {
 
-				$criteria['paging'] = array(
-					'offset' => 0,
-					'page_size' => 25
-				);
+			$criteria['paging'] = array(
+				'offset' => 0,
+				'page_size' => 25
+			);
 
-				return $criteria;
-			} );
+			return $criteria;
+		} );
 
-			$entries = $view->get_entries()->all();
+		$entries = $view->get_entries()->all();
 
-			// Remove the modifying filter
-			remove_filter( 'gravityview_search_criteria', $remove_pagenum );
+		// Remove the modifying filter
+		remove_filter( 'gravityview_search_criteria', $remove_pagenum );
 
-			if ( ! $entries ) {
-				remove_action( 'gravityview/view/query', $entry_subset_callback );
-				return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
-			}
-
-			// This entry is on a View with joins
-			if ( $entries[0]->is_multi() ) {
-
-				$multi_entry_ids = array();
-
-				foreach ( $entries[0]->entries as $multi_entry ) {
-					$multi_entry_ids[] = (int) $multi_entry->ID;
-				}
-
-				if ( ! in_array( (int) $entry['id'], $multi_entry_ids, true ) ) {
-					remove_action( 'gravityview/view/query', $entry_subset_callback );
-					return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
-				}
-
-			} elseif ( (int) $entries[0]->ID !== (int) $entry['id'] ) {
-				remove_action( 'gravityview/view/query', $entry_subset_callback );
-				return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
-			}
-
+		if ( ! $entries ) {
 			remove_action( 'gravityview/view/query', $entry_subset_callback );
-			return $entry;
+			return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
 		}
 
-		$criteria = self::calculate_get_entries_criteria( array(
-			'context_view_id' => $view ? $view->ID : null,
-		) );
+		// This entry is on a View with joins
+		if ( $entries[0]->is_multi() ) {
 
-		if ( empty( $criteria['search_criteria'] ) || ! is_array( $criteria['search_criteria'] ) ) {
-			gravityview()->log->debug( '[apply_filters_to_entry] Entry approved! No search criteria found:', array( 'data' => $criteria ) );
-			return $entry;
-		}
+			$multi_entry_ids = array();
 
-		// Make sure the current View is connected to the same form as the Entry
-		if( ! empty( $criteria['context_view_id'] ) ) {
-			$context_view_id = intval( $criteria['context_view_id'] );
-			$context_form_id = gravityview_get_form_id( $context_view_id );
-			if( intval( $context_form_id ) !== intval( $entry['form_id'] ) ) {
-				return new WP_Error( 'view_id_not_match', sprintf( '[apply_filters_to_entry] Entry form ID does not match current View connected form ID:', $entry['form_id'] ), $criteria['context_view_id'] );
-			}
-		}
-
-		$search_criteria = $criteria['search_criteria'];
-
-		// check entry status
-		if ( array_key_exists( 'status', $search_criteria ) && $search_criteria['status'] != $entry['status'] ) {
-			return new WP_Error( 'status_not_valid', sprintf( '[apply_filters_to_entry] Entry status - %s - is not valid according to filter:', $entry['status'] ), $search_criteria );
-		}
-
-		// check entry date
-		// @todo: Does it make sense to apply the Date create filters to the single entry?
-
-		// field_filters
-		if ( empty( $search_criteria['field_filters'] ) || ! is_array( $search_criteria['field_filters'] ) ) {
-			gravityview()->log->debug( '[apply_filters_to_entry] Entry approved! No field filters criteria found:', array( 'data' => $search_criteria ) );
-			return $entry;
-		}
-
-		$filters = $search_criteria['field_filters'];
-
-		$mode = array_key_exists( 'mode', $filters ) ? strtolower( $filters['mode'] ) : 'all';
-
-		$mode = $mode ? : 'all'; // If mode is an empty string, assume it's 'all'
-
-		// Prevent the mode from being processed below
-		unset( $filters['mode'] );
-
-		$form = self::get_form( $entry['form_id'] );
-
-		foreach ( $filters as $filter ) {
-			$operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
-
-			if ( ! isset( $filter['key'] ) ) {
-				gravityview()->log->debug( '[apply_filters_to_entry] Filter key not set, any field mode', array( 'filter' => $filter ) );
-				/**
-				 * This is a cross-field search. Let's start digging'.
-				 */
-				foreach ( \GV\Utils::get( $form, 'fields', array() ) as $field ) {
-					$field_value = GFFormsModel::get_lead_field_value( $entry, $field );
-					if ( $is_value_match = GravityView_GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field ) ) {
-						if ( 'any' === $mode) {
-							return $entry; // All good here
-						} // mode === 'all'
-						continue 2; // Next filter
-					}
-					// If none of the values match and we're in all mode, drop down to the error below.
-				}
-
-				if ( 'all' === $mode ) {
-					return new WP_Error('failed_criteria', '[apply_filters_to_entry] Entry cannot be displayed. Failed a subcriterium for any field in ALL mode', $filter );
-				}
-
-				continue;
+			foreach ( $entries[0]->entries as $multi_entry ) {
+				$multi_entry_ids[] = (int) $multi_entry->ID;
 			}
 
-			$k = $filter['key'];
-
-			$field = self::get_field( $form, $k );
-
-			if ( is_null( $field ) ) {
-				$field_value = isset( $entry[ $k ] ) ? $entry[ $k ] : null;
-				$field = $k;
-			} else {
-				$field_value  = GFFormsModel::get_lead_field_value( $entry, $field );
-				 // If it's a complex field, then fetch the input's value, if exists at the current key. Otherwise, let GF handle it
-				$field_value = ( is_array( $field_value ) && isset( $field_value[ $k ] ) ) ? \GV\Utils::get( $field_value, $k ) : $field_value;
+			if ( ! in_array( (int) $entry['id'], $multi_entry_ids, true ) ) {
+				remove_action( 'gravityview/view/query', $entry_subset_callback );
+				return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
 			}
 
-			$is_value_match = GravityView_GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field );
-
-			// Any match is all we need to know
-			if ( $is_value_match && 'any' === $mode ) {
-				return $entry;
-			}
-
-			// Any failed match is a total fail
-			if ( ! $is_value_match && 'all' === $mode ) {
-				return new WP_Error('failed_criteria', '[apply_filters_to_entry] Entry cannot be displayed. Failed a criterium for ALL mode', $filter );
-			}
+		} elseif ( (int) $entries[0]->ID !== (int) $entry['id'] ) {
+			remove_action( 'gravityview/view/query', $entry_subset_callback );
+			return new \WP_Error( 'failed_criteria', 'Entry failed search_criteria and field_filters' );
 		}
 
-		// at this point, if in ALL mode, then entry is approved - all conditions were met.
-		// Or, for ANY mode, means none of the conditions were satisfied, so entry is not approved
-		if ( 'all' === $mode ) {
-			gravityview()->log->debug( '[apply_filters_to_entry] Entry approved: all conditions were met' );
-			return $entry;
-		} else {
-			return new WP_Error('failed_any_criteria', '[apply_filters_to_entry] Entry cannot be displayed. Failed all the criteria for ANY mode', $filters );
-		}
-
+		remove_action( 'gravityview/view/query', $entry_subset_callback );
+		return $entry;
 	}
 
 
