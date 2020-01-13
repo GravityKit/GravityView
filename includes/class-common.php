@@ -668,9 +668,10 @@ class GVCommon {
 	 * @param string|int $entry_slug Either entry ID or entry slug string
 	 * @param boolean $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
 	 * @param boolean $check_entry_display Check whether the entry is visible for the current View configuration. Default: true. {@since 1.14}
+	 * @param \GV\View $view The View if $check_entry_display is set to true. {@since develop}
 	 * @return array|boolean
 	 */
-	public static function get_entry( $entry_slug, $force_allow_ids = false, $check_entry_display = true ) {
+	public static function get_entry( $entry_slug, $force_allow_ids = false, $check_entry_display = true, $view = null ) {
 
 		if ( ! class_exists( 'GFAPI' ) || empty( $entry_slug ) ) {
 			return false;
@@ -690,12 +691,13 @@ class GVCommon {
 		 * @since 1.16.2
 		 * @param bool $check_entry_display Check whether the entry is visible for the current View configuration. Default: true.
 		 * @param array $entry Gravity Forms entry array
+		 * @param \GV\View $view The View {@since develop}
 		 */
-		$check_entry_display = apply_filters( 'gravityview/common/get_entry/check_entry_display', $check_entry_display, $entry );
+		$check_entry_display = apply_filters( 'gravityview/common/get_entry/check_entry_display', $check_entry_display, $entry, $view );
 
 		if( $check_entry_display ) {
 			// Is the entry allowed
-			$entry = self::check_entry_display( $entry );
+			$entry = self::check_entry_display( $entry, $view );
 		}
 
 		if( is_wp_error( $entry ) ) {

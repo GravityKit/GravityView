@@ -27,6 +27,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: `gravityview/widget/search/form/action` filter to change search submission URL as needed.
 * Added: `gravityview/entry-list/link` filter to modify Other Entries links as needed.
 * Added: `gravityview/edit/link` filter to modify Edit Entry link as needed.
+* Modified: `GVCommon::check_entry_display` now requires a View object as the second parameter. Not passing it will return an error.
+* Modified: Important! `gravityview_get_entry` and `GVCommon::get_entry` require a View object as the fourth parameter. While the View will be retrieved from the context if the parameter is missing, it's important to supply it adhoc.
+* Modified: `gravityview/common/get_entry/check_entry_display` filter has a third View parameter passed from `GVCommon::get_entry`.
 
 = 2.5.1 on December 14, 2019 =
 
