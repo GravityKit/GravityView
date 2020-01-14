@@ -696,6 +696,11 @@ class GVCommon {
 		$check_entry_display = apply_filters( 'gravityview/common/get_entry/check_entry_display', $check_entry_display, $entry, $view );
 
 		if( $check_entry_display ) {
+			if ( ! $view ) {
+				$view = \GV\View::by_id( \GravityView_View::getInstance()->getViewId() ); // @todo Bad legacy context, provide $view parameter!
+				gravityview()->log->warning( '$view parameter not provided! Context assumed from legacy context mocks. Unreliable!' );
+			}
+
 			// Is the entry allowed
 			$entry = self::check_entry_display( $entry, $view );
 		}
