@@ -500,6 +500,72 @@ class GVCommon_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gravityview_search_criteria' );
 	}
+	
+	/**
+	 * https://github.com/gravityview/GravityView/issues/929
+	 */
+	public function test_check_entry_display_categories() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$view = \GV\View::from_post( $view );
+
+		$cat_1 = wp_create_category( 'Category 1' );
+		$cat_2 = wp_create_category( 'Category 2' );
+
+		foreach ( $form['fields'] as &$field ) {
+			if ( $field->type == 'post_category' ) {
+				$field = GFCommon::add_categories_as_choices( $field, '' );
+			}
+		}
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'23.1' => "Category 1:$cat_1",
+		) );
+
+		add_filter( 'gravityview_search_criteria', function() use ( $view, $cat_1, $cat_2 ) {
+			return array(
+				'search_criteria' => array(
+					'field_filters' => array(
+						'mode' => 'all',
+						array(
+							'key' => '23.1',
+							'operator' => 'is',
+							'value' => "Category 1:$cat_1", // just like with dates below converting to this format is done by AF or custom code.
+						),
+					),
+				),
+				'context_view_id' => $view->ID,
+			);
+		} );
+
+		$result = GVCommon::check_entry_display( $entry, $view );
+		$this->assertEquals( $entry['id'], $result['id'] );
+
+		remove_all_filters( 'gravityview_search_criteria' );
+
+		add_filter( 'gravityview_search_criteria', function() use ( $view, $cat_1, $cat_2 ) {
+			return array(
+				'search_criteria' => array(
+					'field_filters' => array(
+						'mode' => 'all',
+						array(
+							'key' => '23.1',
+							'operator' => 'is',
+							'value' => "Category 2:$cat_2",
+						),
+					),
+				),
+				'context_view_id' => $view->ID,
+			);
+		} );
+
+		$result = GVCommon::check_entry_display( $entry, $view );
+		$this->assertWPError( $result );
+
+		remove_all_filters( 'gravityview_search_criteria' );
+	}
 
 	/**
 	 * https://github.com/gravityview/GravityView/issues/1185
