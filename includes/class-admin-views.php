@@ -1061,40 +1061,38 @@ class GravityView_Admin_Views {
 	}
 
 	/**
-     * Renders "Add Field" tooltips
-     *
-     * @since 2.0.11
-     *
+	 * Renders "Add Field" tooltips
+	 *
+	 * @since 2.0.11
+	 *
 	 * @param string $context "directory", "single", or "edit"
-     *
-     * @return void
+	 * @param int    $form_id (default: null) Form ID
+	 *
+	 * @return void
 	 */
-	function render_field_pickers( $context = 'directory' ) {
+	function render_field_pickers( $context = 'directory', $form_id = null ) {
 
-		// list of available fields to be shown in the popup
-		$forms = gravityview_get_forms( 'any' );
+		global $post;
 
-		$form_ids = array_map( function ($form) { return $form['id']; }, $forms);
+		$form_id         = $form_id || gravityview_get_form_id( $post->ID );
+		$filter_field_id = sprintf( 'gv-field-filter-%s-%d', $context, $form_id );
 
-		foreach ( $form_ids as $form_id ) {
-			$filter_field_id = sprintf( 'gv-field-filter-%s-%d', $context, $form_id );
-			?>
-            <div id="<?php echo esc_html( $context ); ?>-available-fields-<?php echo esc_attr( $form_id ); ?>" class="hide-if-js gv-tooltip">
-                <span class="close" role="button" aria-label="<?php esc_html_e( 'Close', 'gravityview' ); ?>"><i class="dashicons dashicons-dismiss"></i></span>
-                <div class="gv-field-filter-form">
-                    <label class="screen-reader-text" for="<?php echo esc_html( $filter_field_id ); ?>"><?php esc_html_e( 'Filter Fields:', 'gravityview' ); ?></label>
-                    <input type="search" class="widefat gv-field-filter" aria-controls="<?php echo $filter_field_id; ?>" id="<?php echo esc_html( $filter_field_id ); ?>" placeholder="<?php esc_html_e( 'Filter fields by name or label', 'gravityview' ); ?>" />
-                </div>
-
-                <div id="available-fields-<?php echo $filter_field_id; ?>" aria-live="polite" role="listbox">
-                <?php do_action('gravityview_render_available_fields', $form_id, $context ); ?>
-                </div>
-
-                <div class="gv-no-results hidden description"><?php esc_html_e( 'No fields were found matching the search.', 'gravityview' ); ?></div>
+		?>
+        <div id="<?php echo esc_html( $context ); ?>-available-fields-<?php echo esc_attr( $form_id ); ?>" class="hide-if-js gv-tooltip">
+            <span class="close" role="button" aria-label="<?php esc_html_e( 'Close', 'gravityview' ); ?>"><i class="dashicons dashicons-dismiss"></i></span>
+            <div class="gv-field-filter-form">
+                <label class="screen-reader-text" for="<?php echo esc_html( $filter_field_id ); ?>"><?php esc_html_e( 'Filter Fields:', 'gravityview' ); ?></label>
+                <input type="search" class="widefat gv-field-filter" aria-controls="<?php echo $filter_field_id; ?>" id="<?php echo esc_html( $filter_field_id ); ?>" placeholder="<?php esc_html_e( 'Filter fields by name or label', 'gravityview' ); ?>" />
             </div>
-			<?php
-		}
-    }
+
+            <div id="available-fields-<?php echo $filter_field_id; ?>" aria-live="polite" role="listbox">
+				<?php do_action( 'gravityview_render_available_fields', $form_id, $context ); ?>
+            </div>
+
+            <div class="gv-no-results hidden description"><?php esc_html_e( 'No fields were found matching the search.', 'gravityview' ); ?></div>
+        </div>
+		<?php
+	}
 
 	/**
 	 * Render the Template Active Areas and configured active fields for a given template id and post id
