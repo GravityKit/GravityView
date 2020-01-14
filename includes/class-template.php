@@ -534,7 +534,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	 * @param boolean $do_replace Perform merge tag and shortcode processing on the label. Default: true.
 	 * @since 2.0
 	 *
-	 * @deprecated Use $template->get_back_label();
+	 * @deprecated TODO Use $template->get_back_label();
 	 *
 	 * @return string
 	 */
@@ -650,6 +650,8 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	 */
 	public function renderZone( $zone = '', $atts = array(), $echo = true ) {
 
+		_doing_it_wrong( __METHOD__, 'This method will no longer be available soon. Refer to \GV\View_Template::render().', '2.0' );
+
 		if ( empty( $zone ) ) {
 			gravityview()->log->error( 'No zone defined.');
 			return NULL;
@@ -677,7 +679,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 			 * @filter `gravityview_table_cells` Modify the fields displayed in a table
 			 * @param array $fields
 			 * @param \GravityView_View $this
-			 * @deprecated Use `gravityview/template/table/fields`
+			 * @deprecated TODO Use `gravityview/template/table/fields`
 			 */
 			$fields = apply_filters("gravityview_table_cells", $fields, $this );
 		}

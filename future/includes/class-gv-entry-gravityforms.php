@@ -67,6 +67,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @api
 	 * @since 2.0
+	 *
 	 * @return \GV\GF_Entry|null An instance of this entry or null if not found.
 	 */
 	public static function by_slug( $entry_slug, $form_id = 0 ) {
@@ -82,8 +83,10 @@ class GF_Entry extends Entry implements \ArrayAccess {
 
 		$sql = "$sql WHERE meta_key = 'gravityview_unique_id' AND";
 
+		/** @see GVCommon::get_entry_id_from_slug() for documentation */
+		$form_id = apply_filters( 'gravityview/common/get_entry_id_from_slug/form_id', $form_id );
 
-		if ( $form_id = apply_filters( 'gravityview/common/get_entry_id_from_slug/form_id', $form_id ) ) {
+		if ( $form_id ) {
 			$sql = $wpdb->prepare( "$sql meta_value = %s AND form_id = %s", $entry_slug, $form_id );
 		} else {
 			$sql = $wpdb->prepare( "$sql meta_value = %s", $entry_slug );
@@ -123,12 +126,14 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 * ArrayAccess compatibility layer with a Gravity Forms entry array.
 	 *
 	 * @internal
-	 * @deprecated
 	 * @since 2.0
+	 *
+	 * @param string $offset An offset to check for.
+	 *
 	 * @return bool Whether the offset exists or not.
 	 */
 	public function offsetExists( $offset ) {
-		return isset( $this->entry[$offset] );
+		return isset( $this->entry[ $offset ] );
 	}
 
 	/**
@@ -137,37 +142,44 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 * Maps the old keys to the new data;
 	 *
 	 * @internal
-	 * @deprecated
 	 * @since 2.0
+	 *
+	 * @param string $offset An offset to check for.
 	 *
 	 * @return mixed The value of the requested entry data.
 	 */
 	public function offsetGet( $offset ) {
-		return $this->entry[$offset];
+		return $this->entry[ $offset ];
 	}
 
 	/**
 	 * ArrayAccess compatibility layer with a Gravity Forms entry array.
 	 *
 	 * @internal
-	 * @deprecated
 	 * @since 2.0
+	 *
+	 * @param string $offset The offset to assign the value to.
+	 * @param mixed $value   The value to set.
 	 *
 	 * @return void
 	 */
 	public function offsetSet( $offset, $value ) {
 		gravityview()->log->error( 'The underlying Gravity Forms entry is immutable. This is a \GV\Entry object and should not be accessed as an array.' );
+		_doing_it_wrong( __METHOD__, 'The underlying Gravity Forms entry is immutable. This is a \GV\Entry object and should not be accessed as an array.', '2.0' );
 	}
 
 	/**
 	 * ArrayAccess compatibility layer with a Gravity Forms entry array.
 	 *
 	 * @internal
-	 * @deprecated
 	 * @since 2.0
+	 *
+	 * @param string $offset The offset to unset.
+	 *
 	 * @return void
 	 */
 	public function offsetUnset( $offset ) {
 		gravityview()->log->error( 'The underlying Gravity Forms entry is immutable. This is a \GV\Entry object and should not be accessed as an array.' );
+		_doing_it_wrong( __METHOD__, 'The underlying Gravity Forms entry is immutable. This is a \GV\Entry object and should not be accessed as an array.', '2.0' );
 	}
 }

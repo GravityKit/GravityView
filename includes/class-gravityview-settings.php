@@ -12,7 +12,6 @@ if ( ! class_exists( '\GV\Addon_Settings' ) ) {
 class GravityView_Settings extends \GV\Addon_Settings {
 	/**
 	 * @deprecated Use gravityview()->plugin->settings
-	 * @return \GV\Global_Settings
 	 */
 	private function __wakeup() {}
 	private function __clone() {}
@@ -22,7 +21,7 @@ class GravityView_Settings extends \GV\Addon_Settings {
 	 * @return \GV\Addon_Settings
 	 */
 	public static function get_instance() {
-		gravityview()->log->warning( '\GravityView_Settings is deprecated. Use gravityview()->plugin->settings instead.' );
+		_deprecated_function( __METHOD__, '2.0', 'gravityview()->plugin->settings()' );
 		return gravityview()->plugin->settings;
 	}
 }

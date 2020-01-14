@@ -312,7 +312,7 @@ class GravityView_Admin_Views {
 		 * @param array $gv_tooltips Associative array with unique keys containing array of `title` and `value` keys, as expected by `gform_tooltips` filter
 		 * @deprecated Renamed to `gravityview/metaboxes/tooltips`
 		 */
-		$gv_tooltips = apply_filters( 'gravityview_tooltips', $gv_tooltips );
+		$gv_tooltips = apply_filters_deprecated( 'gravityview_tooltips', $gv_tooltips, '2.0.1', 'gravityview/metaboxes/tooltips' );
 
 		/**
 		 * @filter `gravityview/metaboxes/tooltips` The tooltips GravityView adds to the Gravity Forms tooltip array
@@ -843,7 +843,7 @@ class GravityView_Admin_Views {
 	 */
 	function render_available_widgets() {
 
-		$widgets = $this->get_registered_widgets();
+		$widgets = \GV\Widget::registered();
 
 		if( !empty( $widgets ) ) {
 
@@ -862,7 +862,8 @@ class GravityView_Admin_Views {
 	 * @since 1.13.1
 	 * @return array
 	 */
-	function get_registered_widgets() {
+	public function get_registered_widgets() {
+		_deprecated_function( __METHOD__, '2.0.1', '\GV\Widget::registered()' );
 		return \GV\Widget::registered();
 	}
 

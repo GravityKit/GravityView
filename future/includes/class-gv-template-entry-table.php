@@ -47,7 +47,7 @@ class Entry_Table_Template extends Entry_Template {
 		 * @filter `gravityview_table_cells` Modify the fields displayed in a table
 		 * @param array $fields
 		 * @param \GravityView_View $this
-		 * @deprecated Use `gravityview/template/table/fields`
+		 * @deprecated TODO Use `gravityview/template/table/fields`
 		 */
 		$fields = apply_filters( 'gravityview_table_cells', $fields->as_configuration(), \GravityView_View::getInstance() );
 		$fields = Field_Collection::from_configuration( $fields );
@@ -71,7 +71,7 @@ class Entry_Table_Template extends Entry_Template {
 			}
 
 			/**
-			 * @deprecated Here for back-compatibility.
+			 * @deprecated TODO Here for back-compatibility.
 			 */
 			$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form, $entry ), $field->as_configuration() );
 			$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, $entry->as_entry() );

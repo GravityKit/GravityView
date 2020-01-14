@@ -78,7 +78,4 @@ $list->output();
  * @since 1.7.6
  * @deprecated since 1.11
  */
-$deprecated = apply_filters( 'gravityview/field/other_entries/args', array(), $field );
-if ( !empty( $deprecated ) ) {
-    _deprecated_function(  'The "gravityview/field/other_entries/args" filter', 'GravityView 1.11', 'gravityview/field/other_entries/criteria' );
-}
+$deprecated = apply_filters_deprecated( 'gravityview/field/other_entries/args', array( array(), $field ), '1.11', 'gravityview/field/other_entries/criteria' );

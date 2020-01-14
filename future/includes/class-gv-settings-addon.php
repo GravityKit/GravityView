@@ -428,6 +428,7 @@ class Addon_Settings extends \GFAddOn {
 	 * @return mixed The setting or null
 	 */
 	public function get_app_setting( $setting_name ) {
+		_deprecated_function( __METHOD__, '2.0', '\GV\Addon_Settings::get' );
 		return $this->get( $setting_name );
 	}
 
@@ -463,6 +464,9 @@ class Addon_Settings extends \GFAddOn {
 	 * @return mixed
 	 */
 	static public function getSetting( $key ) {
+
+		_deprecated_function( __METHOD__, '2.0', 'gravityview()->plugin->settings->get()' );
+
 		if ( gravityview()->plugin->settings instanceof Addon_Settings ) {
 			return gravityview()->plugin->settings->get( $key );
 		}
@@ -476,6 +480,7 @@ class Addon_Settings extends \GFAddOn {
 	 * @return array The settings.
 	 */
 	public function get_app_settings() {
+		_deprecated_function( __METHOD__, '2.0', '\GV\Addon_Settings::all()' );
 		return $this->all();
 	}
 
@@ -500,6 +505,9 @@ class Addon_Settings extends \GFAddOn {
 	 * @return array The defaults.
 	 */
 	public function get_default_settings() {
+
+		_deprecated_function( __METHOD__, '2.0', '\GV\Addon_Settings::defaults()' );
+
 		return $this->defaults();
 	}
 
@@ -572,7 +580,7 @@ class Addon_Settings extends \GFAddOn {
 	 * @deprecated Use \GV\Addon_Settings::as_html
 	 */
 	public function settings_submit( $field, $echo = true ) {
-		gravityview()->log->warning( '\GV\Addon_Settings::settings_submit has been deprecated for \GV\Addon_Settings::as_html' );
+		_deprecated_function( __METHOD__, '2.0', '\GV\Addon_Settings::as_html' );
 		return $this->as_html( $field, $echo );
 	}
 
@@ -900,7 +908,7 @@ class Addon_Settings extends \GFAddOn {
 		 * @param array $fields The fields to filter.
 		 * @deprecated Use `gravityview/settings/fields`.
 		 */
-		$fields = apply_filters( 'gravityview_settings_fields', $fields );
+		$fields = apply_filters_deprecated( 'gravityview_settings_fields', array( $fields ), '2.0', 'gravityview/settings/fields' );
 
 		/**
 		 * @filter `gravityview/settings/fields` Filter the settings fields.
@@ -991,6 +999,7 @@ class Addon_Settings extends \GFAddOn {
 	 * @return boolean False if value was not updated and true if value was updated.
 	 */
 	public function update_app_settings( $settings ) {
+		_deprecated_function( __METHOD__, '2.0', '\GV\Addon_Settings::update()' );
 		return $this->update( $settings );
 	}
 

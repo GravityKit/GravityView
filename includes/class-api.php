@@ -37,6 +37,8 @@ class GravityView_API {
 			return \GV\Mocks\GravityView_API_field_label( $form, $field, $entry, $force_show_label );
 		}
 
+		_deprecated_function( __METHOD__, '2.0.1', '\GV\Field::get_label()' );
+
 		$label = '';
 
 		if( !empty( $field['show_label'] ) || $force_show_label ) {
@@ -95,7 +97,7 @@ class GravityView_API {
 		 *
 		 * @deprecated Use the context-aware version `gravityview/template/field/label`
 		 */
-		$label = apply_filters( 'gravityview/template/field_label', $label, $field, $form, $entry );
+		$label = apply_filters_deprecated( 'gravityview/template/field_label', array( $label, $field, $form, $entry ), '2.0.1', 'gravityview/template/field/label', 'The new filter is context-aware by passing $view' );
 
 		return $label;
 	}
@@ -185,7 +187,7 @@ class GravityView_API {
 			if( !empty( $form ) && !empty( $form['id'] ) ) {
 				$form_id = '-'.$form['id'];
 			} else {
-				// @deprecated path. Form should always be given.
+				/** @deprecated path. Form should always be given. */
 				gravityview()->log->warning( 'GravityView_View::getInstance() legacy API called' );
 				$gravityview_view = GravityView_View::getInstance();
 				$form_id = $gravityview_view->getFormId() ? '-'. $gravityview_view->getFormId() : '';
@@ -216,6 +218,8 @@ class GravityView_API {
 			if ( ! empty( $form ) && ! empty( $form['id'] ) ) {
 				$form_id = '-' . $form['id'];
 			} else {
+				_doing_it_wrong( __METHOD__, 'GravityView_View::getInstance() legacy API called. The $form argument should always be passed.', '2.0' );
+
 				// @deprecated path. Form should always be given.
 				gravityview()->log->warning( 'GravityView_View::getInstance() legacy API called' );
 				$gravityview_view = GravityView_View::getInstance();
@@ -240,7 +244,7 @@ class GravityView_API {
 	 * @return null|string
 	 */
 	public static function field_value( $entry, $field_settings, $format = 'html' ) {
-		gravityview()->log->notice( '\GravityView_API::field_value is deprecated. Use \GV\Field_Template::render() or \GV\Field::get_value()' );
+		_deprecated_function( __METHOD__, '2.0', 'Use \GV\Field_Template::render() or the more low-level \GV\Field::get_value()' );
 		return \GV\Mocks\GravityView_API_field_value( $entry, $field_settings, $format );
 	}
 
@@ -325,7 +329,7 @@ class GravityView_API {
 		 * @return string The modified text.
 		 * @deprecated Use `gravityview/template/text/no_entries`
 		 */
-		$output = apply_filters( 'gravitview_no_entries_text', $output, $is_search );
+		$output = apply_filters_deprecated( 'gravitview_no_entries_text', array( $output, $is_search ), '2.0', 'gravityview/template/text/no_entries' );
 
 		/**
 		 * @filter `gravityview/template/text/no_entries` Modify the text displayed when there are no entries.
@@ -371,6 +375,9 @@ class GravityView_API {
 						$post_id = $context->view ? $context->view->ID : false;
 					}
 				} else {
+
+					_doing_it_wrong( __METHOD__, '\GV\Template_Context must be passed as third argument.', '2.0' );
+
 					/** @deprecated path of execution */
 					$gravityview_view = GravityView_View::getInstance();
 
@@ -446,7 +453,7 @@ class GravityView_API {
 		 * @filter `gravityview/view/links/directory` Modify the URL to the View "directory" context
 		 * @since 2.0
 		 * @param string $link URL to the View's "directory" context (Multiple Entries screen)
-		 * @param \GV\Template_Context $context 
+		 * @param \GV\Template_Context $context
 		 */
 		return apply_filters( 'gravityview/view/links/directory', $link, $context );
 	}
@@ -598,6 +605,9 @@ class GravityView_API {
 		if ( ! empty( $entry ) && ! is_array( $entry ) ) {
 			$entry = GVCommon::get_entry( $entry );
 		} else if( empty( $entry ) ) {
+
+			_doing_it_wrong( __METHOD__, '$entry must not be empty.', '2.0' );
+
 			// @deprecated path
 			$entry = GravityView_frontend::getInstance()->getEntry();
 		}
@@ -692,6 +702,7 @@ class GravityView_API {
  * @deprecated Use \GV\Field::get_label()
  */
 function gv_label( $field, $entry = NULL ) {
+	_deprecated_function( __FUNCTION__, '2.0', '\GV\Field::get_label()' );
 	return GravityView_API::field_label( $field, $entry );
 }
 
@@ -729,6 +740,7 @@ function gv_container_class( $passed_css_class = '', $echo = true, $context = nu
 			$total_entries = 1;
 		}
 	} else {
+		_doing_it_wrong( __METHOD__, '\GV\Template_Context should be passed as third argument.', '2.0' );
 		/** @deprecated legacy execution path */
 		$view_id = GravityView_View::getInstance()->getViewId();
 		$hide_until_searched = GravityView_View::getInstance()->isHideUntilSearched();
@@ -771,6 +783,8 @@ function gv_container_class( $passed_css_class = '', $echo = true, $context = nu
  * @deprecated Use \GV\Field_Template::render()
  */
 function gv_value( $entry, $field ) {
+
+	_deprecated_function( __FUNCTION__, '2.0', '\GV\Field_Template::render()' );
 
 	$value = GravityView_API::field_value( $entry, $field );
 
@@ -815,7 +829,7 @@ function gravityview_back_link( $context = null ) {
 	 * @param string $href Existing label URL
 	 * @deprecated Use `gravityview/template/links/back/url`
 	 */
-	$href = apply_filters( 'gravityview_go_back_url', $href );
+	$href = apply_filters_deprecated( 'gravityview_go_back_url', array( $href ), '2.0.1', 'gravityview/template/links/back/url' );
 
 	/**
 	 * @filter `gravityview/template/links/back/url` Modify the back link URL
@@ -834,6 +848,7 @@ function gravityview_back_link( $context = null ) {
 		$view_id = $context->view->ID;
 		$view_label = $context->template->get_back_label();
 	} else {
+		_doing_it_wrong( __FUNCTION__, '\GV\Template_Context should be passed as an argument.', '2.0' );
 		/** @deprecated legacy path */
 		$gravityview_view = GravityView_View::getInstance();
 		$view_id = $gravityview_view->getViewId();
@@ -849,7 +864,7 @@ function gravityview_back_link( $context = null ) {
 	 * @param string $label Existing label text
 	 * @deprecated Use `gravityview/template/links/back/label`
 	 */
-	$label = apply_filters( 'gravityview_go_back_label', $label );
+	$label = apply_filters_deprecated( 'gravityview_go_back_label', array( $label ), '2.0.1', 'gravityview/template/links/back/label' );
 
 	/**
 	 * @filter `gravityview/template/links/back/label` Modify the back link text
@@ -1055,16 +1070,18 @@ function gravityview_before() {
 			/**
 			 * @deprecated Use `gravityview/template/before`
 			 */
-			return do_action( 'gravityview_before', $gravityview->view->ID );
+			do_action_deprecated( 'gravityview_before', array( $gravityview->view->ID ), '2.0.1', 'gravityview/template/before' );
+
+			return;
 		}
 	}
 
 	/**
 	 * @action `gravityview_before` Prepend content to the View container `<div>`
-	 * @deprecated Use `gravityview/template/before`.
+	 * @deprecated 2.0.1 Use `gravityview/template/before`.
 	 * @param int $view_id The ID of the View being displayed
 	 */
-	do_action( 'gravityview_before', gravityview_get_view_id() );
+	do_action_deprecated( 'gravityview_before', array( gravityview_get_view_id() ), '2.0.1', 'gravityview/template/before' );
 }
 
 function gravityview_header() {
@@ -1084,7 +1101,8 @@ function gravityview_header() {
 			/**
 			 * @deprecated Use `gravityview/template/header`
 			 */
-			return do_action( 'gravityview_header', $gravityview->view->ID );
+			do_action_deprecated( 'gravityview_header', array( $gravityview->view->ID ), '2.0.1', 'gravityview/template/header' );
+			return;
 		}
 	}
 
@@ -1093,7 +1111,7 @@ function gravityview_header() {
 	 * @deprecated Use `gravityview/template/header`.
 	 * @param int $view_id The ID of the View being displayed
 	 */
-	do_action( 'gravityview_header', gravityview_get_view_id() );
+	do_action_deprecated( 'gravityview_header', array( gravityview_get_view_id() ), '2.0.1', 'gravityview/template/header' );
 }
 
 function gravityview_footer() {
@@ -1113,7 +1131,9 @@ function gravityview_footer() {
 			/**
 			 * @deprecated Use `gravityview/template/footer`
 			 */
-			return do_action( 'gravityview_footer', $gravityview->view->ID );
+			do_action_deprecated( 'gravityview_footer', array( $gravityview->view->ID ), '2.0.1', 'gravityview/template/footer' );
+
+			return;
 		}
 	}
 
@@ -1122,7 +1142,7 @@ function gravityview_footer() {
 	 * @deprecated Use `gravityview/template/footer`.
 	 * @param int $view_id The ID of the View being displayed
 	 */
-	do_action( 'gravityview_footer', gravityview_get_view_id() );
+	do_action_deprecated( 'gravityview_footer', array( gravityview_get_view_id() ), '2.0.1', 'gravityview/template/footer' );
 }
 
 function gravityview_after() {
@@ -1138,7 +1158,7 @@ function gravityview_after() {
 			/**
 			 * @deprecated Use `gravityview/template/after`
 			 */
-			do_action( 'gravityview_after', $gravityview->view->ID );
+			do_action_deprecated( 'gravityview_after', array( $gravityview->view->ID ), '2.0.1', 'gravityview/template/after' );
 
 			return;
 		}
@@ -1149,7 +1169,7 @@ function gravityview_after() {
 	 * @deprecated Use `gravityview/template/after`
 	 * @param int $view_id The ID of the View being displayed
 	 */
-	do_action( 'gravityview_after', gravityview_get_view_id() );
+	do_action_deprecated( 'gravityview_after', array( gravityview_get_view_id() ), '2.0.1', 'gravityview/template/after' );
 }
 
 /**
@@ -1183,6 +1203,8 @@ function gravityview_get_view_id() {
  */
 function gravityview_get_context() {
 	global $wp_query;
+
+	_deprecated_function( __FUNCTION__, '2.0.6.2', 'gravityview()->request' );
 
 	if ( isset( $wp_query ) && $wp_query->post_count > 1 ) {
 		return '';
@@ -1296,6 +1318,7 @@ function gravityview_get_map_link( $address ) {
  * @return string Field output. If empty value and hide empty is true, return empty.
  */
 function gravityview_field_output( $passed_args, $context = null ) {
+
 	$defaults = array(
 		'entry' => null,
 		'field' => null,
@@ -1316,7 +1339,7 @@ function gravityview_field_output( $passed_args, $context = null ) {
 	 * @param array $passed_args Original associative array with field data. `field` and `form` are required.
 	 * @since 2.0
 	 * @param \GV\Template_Context $context The context.
-	 * @deprecated
+	 * @deprecated TODO
 	 */
 	$args = apply_filters( 'gravityview/field_output/args', $args, $passed_args, $context );
 
@@ -1335,6 +1358,7 @@ function gravityview_field_output( $passed_args, $context = null ) {
 			return '';
 		}
 	} else {
+		_doing_it_wrong( __FUNCTION__, '\GV\Template_Context should be passed as the second argument.', '2.0' );
 		// @deprecated path
 		// Required fields.
 		if ( empty( $args['field'] ) || empty( $args['form'] ) ) {

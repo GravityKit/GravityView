@@ -26,6 +26,7 @@ class GravityView_Post_Types {
 	 * @return void
 	 */
 	public static function init_post_types() {
+		_deprecated_function( __METHOD__, '2.0', '\GV\View::register_post_type' );
 		return \GV\View::register_post_type();
 	}
 
@@ -38,6 +39,7 @@ class GravityView_Post_Types {
 	 * @return void
 	 */
 	public static function init_rewrite() {
+		_deprecated_function( __METHOD__, '2.0', '\GV\Entry::add_rewrite_endpoint()' );
 		return \GV\Entry::add_rewrite_endpoint();
 	}
 
@@ -50,6 +52,7 @@ class GravityView_Post_Types {
 	 * @return string Default: "entry"
 	 */
 	public static function get_entry_var_name() {
+		_deprecated_function( __METHOD__, '2.0', '\GV\Entry::get_endpoint_name()' );
 		return \GV\Entry::get_endpoint_name();
 	}
 }

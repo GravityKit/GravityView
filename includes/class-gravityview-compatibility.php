@@ -91,6 +91,7 @@ class GravityView_Compatibility {
 	 * @return bool
 	 */
 	public static function is_valid() {
+		_deprecated_function( __METHOD__, '1.19.4', 'gravityview()->plugin->is_compatible()' );
 		return gravityview()->plugin->is_compatible();
 	}
 
@@ -102,6 +103,7 @@ class GravityView_Compatibility {
 	 * @see \GV\Plugin::is_compatible_wordpress() accessible via gravityview()->plugin->is_compatible_wordpress()
 	 */
 	private static function is_valid_wordpress() {
+		_deprecated_function( __METHOD__, '1.19.4', 'gravityview()->plugin->is_compatible_wordpress()' );
 		return gravityview()->plugin->is_compatible_wordpress();
 	}
 
@@ -114,6 +116,7 @@ class GravityView_Compatibility {
 	 * @return bool
 	 */
 	private static function is_valid_gravity_forms() {
+		_deprecated_function( __METHOD__, '1.19.4', 'gravityview()->plugin->is_compatible_gravityforms()' );
 		return gravityview()->plugin->is_compatible_gravityforms();
 	}
 
@@ -126,19 +129,20 @@ class GravityView_Compatibility {
 	 * @return bool
 	 */
 	private static function is_valid_php() {
+		_deprecated_function( __METHOD__, '1.19.4', 'gravityview()->plugin->is_compatible_php()' );
 		return gravityview()->plugin->is_compatible_php();
 	}
 
 	/**
 	 * @since 1.12
-	 * @return bool
+	 * @return void
 	 */
 	private function add_fallback_shortcode() {
 
 		// If Gravity Forms doesn't exist or is outdated, load the admin view class to
 		// show the notice, but not load any post types or process shortcodes.
 		// Without Gravity Forms, there is no GravityView. Beautiful, really.
-		if( ! self::is_valid() ) {
+		if( ! gravityview()->plugin->is_compatible() ) {
 
 			// If the plugin's not loaded, might as well hide the shortcode for people.
 			add_shortcode( 'gravityview', array( $this, '_shortcode_gf_notice') );

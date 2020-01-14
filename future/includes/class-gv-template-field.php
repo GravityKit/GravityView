@@ -190,7 +190,7 @@ abstract class Field_Template extends Template {
 				$specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $slug_name );
 				$specifics []= sprintf( '%spost-%d-field.php', $slug_dir, $post->ID );
 			}
-			
+
 			/** Field-specific */
 			if ( $field_id && $form_id ) {
 
@@ -319,7 +319,7 @@ abstract class Field_Template extends Template {
 			 * @deprecated Use the `gravityview/field/value/empty` filter instead
 			 * @param string $value (empty string)
 			 */
-			$output = apply_filters( 'gravityview_empty_value', $output );
+			$output = apply_filters_deprecated( 'gravityview_empty_value', array( $output ), '2.0', 'gravityview/field/value/empty' );
 
 			/**
 			 * @filter `gravityview/field/value/empty` What to display when this field is empty.
@@ -368,7 +368,7 @@ abstract class Field_Template extends Template {
 			 * @param array  $field_settings Settings for the particular GV field
 			 * @param array  $field Field array, as fetched from GravityView_View::getCurrentField()
 			 *
-			 * @deprecated Use the `gravityview/field/{$field_type}/output` or `gravityview/field/output` filters instead.
+			 * @deprecated TODO Use the `gravityview/field/{$field_type}/output` or `gravityview/field/output` filters instead.
 			 */
 			$output = apply_filters( "gravityview_field_entry_value_{$field->type}_pre_link", $output, $context->entry->as_entry(), $field->as_configuration(), $field_compat );
 
@@ -393,7 +393,7 @@ abstract class Field_Template extends Template {
 				 * @param array $field_settings Settings for the particular GV field
 				 * @deprecated Use `gravityview/template/field/entry_link`
 				 */
-				$output = apply_filters( 'gravityview_field_entry_link', $output, $permalink, $context->entry->as_entry(), $field->as_configuration() );
+				$output = apply_filters_deprecated( 'gravityview_field_entry_link', array( $output, $permalink, $context->entry->as_entry(), $field->as_configuration() ), '2.0', 'gravityview/template/field/entry_link' );
 
 				/**
 				 * @filter `gravityview/template/field/entry_link` Modify the link HTML
@@ -421,7 +421,7 @@ abstract class Field_Template extends Template {
 			 *
 			 * @deprecated Use the `gravityview/field/{$field_type}/output` or `gravityview/field/output` filters instead.
 			 */
-			$output = apply_filters( "gravityview_field_entry_value_{$field->type}", $output, $context->entry->as_entry(), $field->as_configuration(), $field_compat );
+			$output = apply_filters_deprecated( "gravityview_field_entry_value_{$field->type}", array( $output, $context->entry->as_entry(), $field->as_configuration(), $field_compat ), '2.0', 'gravityview/field/{$field_type}/output' );
 
 			/**
 			 * @filter `gravityview_field_entry_value` Modify the field value output for all field types
@@ -432,7 +432,7 @@ abstract class Field_Template extends Template {
 			 *
 			 * @deprecated Use the `gravityview/field/{$field_type}/output` or `gravityview/field/output` filters instead.
 			 */
-			$output = apply_filters( 'gravityview_field_entry_value', $output, $context->entry->as_entry(), $field->as_configuration(), $field_compat );
+			$output = apply_filters_deprecated( 'gravityview_field_entry_value', array( $output, $context->entry->as_entry(), $field->as_configuration(), $field_compat ), '2.0', 'gravityview/field/output' );
 
 			/**
 			 * @filter `gravityview/template/field/{$field_type}/output` Modify the field output for a field type.

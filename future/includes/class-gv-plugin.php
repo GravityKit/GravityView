@@ -170,7 +170,7 @@ final class Plugin {
 		 *
 		 * Nice place to insert extensions' frontend stuff
 		 */
-		do_action( 'gravityview_include_frontend_actions' );
+		do_action_deprecated( 'gravityview_include_frontend_actions', array(), '2.0', 'gravityview/loaded (along with \GV\Request::is_admin())' );
 	}
 
 	/**

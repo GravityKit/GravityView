@@ -49,7 +49,7 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 
 	/**
 	 * Define the keys to be parsed by the `gravityview/data/parse/meta_keys` hook
-	 * @see GravityView_View_Data::parse_post_meta
+	 * @see \GravityView_View_Data::parse_post_meta
 	 * @deprecated 2.0
 	 * @since 1.15.2
 	 * @type array

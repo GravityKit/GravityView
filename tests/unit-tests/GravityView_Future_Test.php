@@ -814,6 +814,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GravityView_View_Data::parse_post_content()
 	 */
 	public function test_shortcode_parse() {
+
+		if ( function_exists( 'apply_filters_deprecated' ) ) {
+			$this->expected_deprecated[] = 'GravityView_View_Data::parse_post_content';
+			$this->expected_deprecated[] = 'GravityView_View_Data::get_views';
+		}
+
 		$original_shortcode = $GLOBALS['shortcode_tags']['gravityview'];
 		remove_shortcode( 'gravityview' ); /** Conflicts with existing shortcode right now. */
 		\GV\Shortcodes\gravityview::add();
@@ -1810,6 +1816,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		gravityview()->request = new \GV\Mock_Request();
 		gravityview()->request->returns['is_view'] = $view;
 
+		$this->expected_deprecated[] = '\GravityView_frontend::insert_view_in_content';
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
 		$future = $renderer->render( $view );
 
@@ -5950,6 +5957,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 	public function test_addon_settings() {
 		$settings = gravityview()->plugin->settings;
 		$settings->update( array() );
+		$this->expected_deprecated[] = '\GravityView_Settings::get_instance';
+		$this->expected_deprecated[] = 'Addon_Settings::get_default_settings';
 		$this->assertSame( \GravityView_Settings::get_instance(), $settings );
 		$this->assertEquals( array_keys( $settings->get_default_settings() ), array( 'license_key', 'license_key_response', 'license_key_status', 'support-email', 'no-conflict-mode', 'support_port', 'flexbox_search', 'rest_api', 'beta' ) );
 
@@ -6039,6 +6048,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	public function test_widget_class() {
 		add_filter( 'gravityview/widget/enable_custom_class', '__return_true' );
 
+		$this->expected_deprecated[] = 'GravityView_Widget';
 		$legacy_w = new GVFutureTest_Widget_Test_BC( 'What is this', 'old-widget', array(), array( 'what' => 'heh' ) );
 		$w = new GVFutureTest_Widget_Test( 'This is New', 'new-widget' );
 
@@ -6050,6 +6060,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertNotEmpty( \GV\Widget::get_default_widget_areas() );
 
+		$this->expected_deprecated = 'gravityview_widget_active_areas';
 		add_filter( 'gravityview_widget_active_areas', $callback = function() { return array( '1' ); } );
 
 		$this->assertEquals( \GV\Widget::get_default_widget_areas(), array( '1' ) );
@@ -8445,7 +8456,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->set_permalink_structure( '/%postname%/' );
 		\GV\Entry::add_rewrite_endpoint();
 		flush_rewrite_rules();
-		
+
 		$this->go_to( get_permalink( $post ) );
 
 		// Only admins see the notice

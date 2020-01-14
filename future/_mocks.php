@@ -81,13 +81,9 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 
 	do_action( 'gravityview_log_debug', '[gravityview_get_entries] Final Parameters', $criteria );
 
-	/** ...and all the (now deprectated) filters that usually follow `gravityview_get_entries` */
+	/** ...and all the (now deprecated) filters that usually follow `gravityview_get_entries` */
 
-	/**
-	 * @deprecated
-	 * Do not use this filter anymore.
-	 */
-	$entries = apply_filters_ref_array( 'gravityview_before_get_entries', array( null, $criteria, $parameters, &$count ) );
+	$entries = apply_filters_deprecated( 'gravityview_before_get_entries', array( null, $criteria, $parameters, &$count ), '2.0' );
 
 	if ( ! is_null( $entries ) ) {
 		/**
@@ -119,11 +115,7 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 
 	/** Just one more filter, for compatibility's sake! */
 
-	/**
-	 * @deprecated
-	 * Do not use this filter anymore.
-	 */
-	$entries = apply_filters_ref_array( 'gravityview_entries', array( $entries, $criteria, $parameters, &$count ) );
+	$entries = apply_filters_deprecated( 'gravityview_entries', array( $entries, $criteria, $parameters, &$count ), '2.0', 'gravityview/view/entries' );
 
 	return array( $entries, $paging, $count );
 }
@@ -135,13 +127,16 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
  *  our field renderers are ready.
  *
  * @see \GravityView_API::field_value
- * @deprecated Use \GV\Field_Template::render()
+ * @deprecated 2.0 Use \GV\Field_Template::render() instead
  * @internal
  * @since 2.0
  *
  * @return null|string The value of a field in an entry.
  */
 function GravityView_API_field_value( $entry, $field_settings, $format ) {
+
+	_deprecated_function( __FUNCTION__, '2.0', '\GV\Field_Template::render()' );
+
 	if ( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
 		gravityview()->log->error( 'No entry or field_settings[id] supplied', array( 'data' => array( func_get_args() ) ) );
 		return null;

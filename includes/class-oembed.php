@@ -30,7 +30,7 @@ class GravityView_oEmbed {
 	 * @deprecated Use \GV\oEmbed instead.
 	 */
 	public function initialize() {
-		gravityview()->log->notice( '\GravityView_oEmbed is deprecated. Use \GV\oEmbed instead.' );
+		_deprecated_function( __METHOD__, '2.0', '\GV\oEmbed' );
 	}
 
 	/**
@@ -40,7 +40,7 @@ class GravityView_oEmbed {
 	 * @since 1.6
 	 */
 	static function getInstance() {
-		gravityview()->log->notice( '\GravityView_oEmbed is deprecated. Use \GV\oEmbed instead.' );
+		_deprecated_function( __METHOD__, '2.0', '\GravityView_oEmbed is deprecated. Use \GV\oEmbed instead.' );
 
 		if( empty( self::$instance ) ) {
 			self::$instance = new self;
@@ -58,8 +58,7 @@ class GravityView_oEmbed {
 	 * @since 1.6
 	 */
 	function register_handler() {
-		gravityview()->log->notice( '\GravityView_oEmbed is deprecated. Use \GV\oEmbed instead.' );
-
+		_deprecated_function( __METHOD__, '2.0', '\GravityView_oEmbed is deprecated. Use \GV\oEmbed instead.' );
 	}
 
 	/**
@@ -70,7 +69,7 @@ class GravityView_oEmbed {
 	 * @return void
 	 */
 	function add_provider() {
-		gravityview()->log->notice( '\GravityView_oEmbed is deprecated. Use \GV\oEmbed instead.' );
+		_deprecated_function( __METHOD__, '2.0', '\GravityView_oEmbed is deprecated. Use \GV\oEmbed instead.' );
 	}
 
 	/**
@@ -87,7 +86,7 @@ class GravityView_oEmbed {
 	 * @return void
 	 */
 	function render_provider_request() {
-		gravityview()->log->notice( '\GravityView_oEmbed is deprecated. Use \GV\oEmbed instead.' );
+		_deprecated_function( __METHOD__, '2.0', '\GravityView_oEmbed is deprecated. Use \GV\oEmbed instead.' );
 	}
 
 	/**
@@ -100,7 +99,7 @@ class GravityView_oEmbed {
 	 * @return int|null
 	 */
 	public function get_entry_id() {
-		gravityview()->log->notice( '\GravityView_oEmbed is deprecated. Use \GV\oEmbed instead.' );
+		_deprecated_function( __METHOD__, '2.0', '\GravityView_oEmbed is deprecated. Use \GV\oEmbed instead.' );
 		return $this->entry_id;
 	}
 
@@ -117,7 +116,7 @@ class GravityView_oEmbed {
 	 * @return string The embed HTML.
 	 */
 	public function render_handler( $matches, $attr, $url, $rawattr ) {
-		gravityview()->log->notice( '\GravityView_oEmbed is deprecated. Use \GV\oEmbed instead.' );
+		_deprecated_function( __METHOD__, '2.0', '\GravityView_oEmbed is deprecated. Use \GV\oEmbed instead.' );
 		return '';
 	}
 
@@ -133,7 +132,7 @@ class GravityView_oEmbed {
 	 * @return int The current entry ID
 	 */
 	public function set_single_entry_id( $is_single_entry = false ) {
-		gravityview()->log->notice( '\GravityView_oEmbed is deprecated. Use \GV\oEmbed instead.' );
+		_deprecated_function( __METHOD__, '2.0', '\GravityView_oEmbed is deprecated. Use \GV\oEmbed instead.' );
 		return $this->entry_id;
 	}
 }

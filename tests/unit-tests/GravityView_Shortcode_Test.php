@@ -419,6 +419,7 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 	}
 
 	public function test_shortcode_search() {
+
 		$form = $this->factory->form->import_and_get( 'simple.json' );
 
 		$post = $this->factory->view->create_and_get( array(

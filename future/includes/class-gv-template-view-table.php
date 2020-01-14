@@ -267,7 +267,7 @@ class View_Table_Template extends View_Template {
 		 * @filter `gravityview_table_cells` Modify the fields displayed in a table
 		 * @param array $fields
 		 * @param \GravityView_View $this
-		 * @deprecated Use `gravityview/template/table/fields`
+		 * @deprecated TODO Use `gravityview/template/table/fields`
 		 */
 		$fields = apply_filters( 'gravityview_table_cells', $fields->as_configuration(), \GravityView_View::getInstance() );
 		$fields = Field_Collection::from_configuration( $fields );
@@ -315,7 +315,7 @@ class View_Table_Template extends View_Template {
 				 * @param \GravityView_View $this Current GravityView_View object
 				 * @deprecated Use `gravityview/template/table/cells/before`
                  */
-                do_action( 'gravityview_table_cells_before', \GravityView_View::getInstance() );
+                do_action_deprecated( 'gravityview_table_cells_before', array( \GravityView_View::getInstance() ), '2.0', 'gravityview/template/table/cells/before' );
 
                 foreach ( $fields->all() as $field ) {
 					if ( isset( $this->view->unions[ $entry['form_id'] ] ) ) {
@@ -343,7 +343,7 @@ class View_Table_Template extends View_Template {
 				 * @param \GravityView_View $this Current GravityView_View object
 				 * @deprecated Use `gravityview/template/table/cells/after`
                  */
-                do_action( 'gravityview_table_cells_after', \GravityView_View::getInstance() );
+                do_action_deprecated( 'gravityview_table_cells_after', array( \GravityView_View::getInstance() ), '2.0', 'gravityview/template/table/cells/after' );
 
 				?>
 			</tr>
@@ -423,7 +423,7 @@ class View_Table_Template extends View_Template {
 		* @since 1.0.7
 		* @param \GravityView_View $gravityview_view Current GravityView_View object.
 		*/
-		do_action( 'gravityview_table_body_before', \GravityView_View::getInstance() /** ugh! */ );
+		do_action_deprecated( 'gravityview_table_body_before', array( \GravityView_View::getInstance() /** ugh! */ ), '2.0', 'gravityview/template/table/body/before' );
 	}
 
 	/**
@@ -449,7 +449,7 @@ class View_Table_Template extends View_Template {
 		* @since 1.0.7
 		* @param \GravityView_View $gravityview_view Current GravityView_View object.
 		*/
-		do_action( 'gravityview_table_body_after', \GravityView_View::getInstance() /** ugh! */ );
+		do_action_deprecated( 'gravityview_table_body_after', array( \GravityView_View::getInstance() /** ugh! */ ), '2.0', 'gravityview/template/table/body/after' );
 	}
 
 	/**
@@ -475,7 +475,7 @@ class View_Table_Template extends View_Template {
 		 * @deprecated USe `gravityview/template/table/tr/before`
 		 * @param \GravityView_View $gravityview_view Current GraivtyView_View object.
 		 */
-		do_action( 'gravityview_table_tr_before', \GravityView_View::getInstance() /** ugh! */ );
+		do_action_deprecated( 'gravityview_table_tr_before', array( \GravityView_View::getInstance() /** ugh! */ ), '2.0', 'gravityview/template/table/tr/before' );
 	}
 
 	/**
@@ -501,7 +501,7 @@ class View_Table_Template extends View_Template {
 		 * @deprecated USe `gravityview/template/table/tr/after`
 		 * @param \GravityView_View $gravityview_view Current GravityView_View object.
 		 */
-		do_action( 'gravityview_table_tr_after', \GravityView_View::getInstance() /** ugh! */ );
+		do_action_deprecated( 'gravityview_table_tr_after', array( \GravityView_View::getInstance() /** ugh! */ ), '2.0', 'gravityview/template/table/tr/after' );
 	}
 
 	/**
@@ -524,7 +524,7 @@ class View_Table_Template extends View_Template {
 		 * @deprecated Use `gravityview/template/table/entry/class`
 		 * @return string The modified class.
 		 */
-		$class = apply_filters( 'gravityview_entry_class', $class, $entry->as_entry(), \GravityView_View::getInstance() );
+		$class = apply_filters_deprecated( 'gravityview_entry_class', array( $class, $entry->as_entry(), \GravityView_View::getInstance() ), '2.0', 'gravityview/template/table/entry/class' );
 
 		/**
 		 * @filter `gravityview/template/table/entry/class` Modify the class aplied to the entry row.

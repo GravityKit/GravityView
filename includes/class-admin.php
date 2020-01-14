@@ -270,6 +270,7 @@ class GravityView_Admin {
 	 * @return array
 	 */
 	public static function get_notices() {
+		_deprecated_function( __METHOD__, '1.12', 'GravityView_Admin_Notices::get_notices()' );
 		return GravityView_Admin_Notices::get_notices();
 	}
 
@@ -279,6 +280,7 @@ class GravityView_Admin {
 	 * @param array $notice Array with `class` and `message` keys. The message is not escaped.
 	 */
 	public static function add_notice( $notice = array() ) {
+		_deprecated_function( __METHOD__, '1.12', 'GravityView_Admin_Notices::add_notice()' );
 		GravityView_Admin_Notices::add_notice( $notice );
 	}
 
@@ -290,6 +292,7 @@ class GravityView_Admin {
 	 * @return boolean True: checks have been passed; GV is fine to run; False: checks have failed, don't continue loading
 	 */
 	public static function check_gravityforms() {
+		_deprecated_function( __METHOD__, '1.12', 'GravityView_Compatibility::check_gravityforms()' );
 		return GravityView_Compatibility::check_gravityforms();
 	}
 
@@ -302,6 +305,7 @@ class GravityView_Admin {
 	 * @return boolean|string True: plugin is active; False: plugin file doesn't exist at path; 'inactive' it's inactive
 	 */
 	static function get_plugin_status( $location = '' ) {
+		_deprecated_function( __METHOD__, '1.12', 'GravityView_Compatibility::get_plugin_status()' );
 		return GravityView_Compatibility::get_plugin_status( $location );
 	}
 
@@ -315,7 +319,7 @@ class GravityView_Admin {
 	 * @return bool|string If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
 	 */
 	static function is_admin_page( $hook = '', $page = NULL ) {
-		gravityview()->log->warning( 'The \GravityView_Admin::is_admin_page() method is deprecated. Use gravityview()->request->is_admin' );
+		_deprecated_function( __METHOD__, '2.0.1', 'gravityview()->request->is_admin() or `\GV\Request::is_admin()`' );
 		return gravityview()->request->is_admin( $hook, $page );
 	}
 }
@@ -333,6 +337,6 @@ new GravityView_Admin;
  * @return bool|string If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
  */
 function gravityview_is_admin_page( $hook = '', $page = NULL ) {
-	gravityview()->log->warning( 'The gravityview_is_admin_page() function is deprecated. Use gravityview()->request->is_admin' );
+	_deprecated_function( __METHOD__, '2.0.1', 'gravityview()->request->is_admin() or `\GV\Request::is_admin()`' );
 	return gravityview()->request->is_admin( $hook, $page );
 }

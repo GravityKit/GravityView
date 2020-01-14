@@ -86,7 +86,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 	 * @return array           Array of file output, with `file_path` and `html` keys (see comments above)
 	 */
 	static function get_files_array( $value, $gv_class, $context = null ) {
-		
+
 		if ( $context instanceof \GV\Template_Context ) {
 			$field = $context->field->field;
 			$field_settings = $context->field->as_configuration();
@@ -113,7 +113,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			);
 		} else {
 
-			_doing_it_wrong( __METHOD__, '2.0', 'Please pass a \GV\Template_Context object as the 3rd parameter' );
+			_doing_it_wrong( __METHOD__, '2.0', 'You must pass a \GV\Template_Context object as the 3rd parameter' );
 
 			$gravityview_view = GravityView_View::getInstance();
 			/** @deprecated path */
@@ -275,7 +275,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					'alt'   => $field_settings['label'],
 					'width' => ( $is_single ? null : ( $width ? $width: 250 ) )
 				);
-				
+
 				if ( $is_secure ) {
 					$image_atts['validate_src'] = false;
 				}
@@ -340,7 +340,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			 */
 			$disable_wrapped_link = apply_filters( 'gravityview/fields/fileupload/disable_link', false, $field_compat, $context );
 
-			// Output textualized content where 
+			// Output textualized content where
 			if ( ! $disable_wrapped_link && ( ! empty( $field_settings['link_to_file'] ) || ! empty( $field_settings['show_as_link'] ) ) ) {
 				/**
 				 * Modify the link text (defaults to the file name)

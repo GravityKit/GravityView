@@ -136,7 +136,7 @@ class View_List_Template extends View_Template {
 		 * @deprecated Use `gravityview/template/list/entry/class`
 		 * @return string The modified class.
 		 */
-		$class = apply_filters( 'gravityview_entry_class', $class, $entry->as_entry(), \GravityView_View::getInstance() );
+		$class = apply_filters_deprecated( 'gravityview_entry_class', array( $class, $entry->as_entry(), \GravityView_View::getInstance() ), '2.0', 'gravityview/template/list/entry/class' );
 
 		/**
 		 * @filter `gravityview/template/list/entry/class` Modify the class aplied to the entry row.
@@ -170,7 +170,7 @@ class View_List_Template extends View_Template {
 		* @since 1.0.7
 		* @param \GravityView_View $gravityview_view Current GravityView_View object.
 		*/
-		do_action( 'gravityview_list_body_before', \GravityView_View::getInstance() /** ugh! */ );
+		do_action_deprecated( 'gravityview_list_body_before', array( \GravityView_View::getInstance() ), '2.0', 'gravityview/template/list/body/before' );
 	}
 
 	/**
@@ -196,7 +196,7 @@ class View_List_Template extends View_Template {
 		* @since 1.0.7
 		* @param \GravityView_View $gravityview_view Current GravityView_View object.
 		*/
-		do_action( 'gravityview_list_body_after', \GravityView_View::getInstance() /** ugh! */ );
+		do_action_deprecated( 'gravityview_list_body_after', array( \GravityView_View::getInstance() /** ugh! */ ), '2.0', 'gravityview/template/list/body/after' );
 	}
 
 	/**
@@ -231,7 +231,7 @@ class View_List_Template extends View_Template {
 		* @since 1.0.7
 		* @param \GravityView_View $gravityview_view Current GravityView_View object.
 		*/
-		do_action( sprintf( 'gravityview_list_entry%sbefore', $zone ), $entry->as_entry(), \GravityView_View::getInstance() /** ugh! */ );
+		do_action_deprecated( sprintf( 'gravityview_list_entry%sbefore', $zone ), array( $entry->as_entry(), \GravityView_View::getInstance() /** ugh! */ ), '2.0', 'gravityview/template/list/entry/$zone/before' );
 	}
 
 	/**
@@ -266,6 +266,6 @@ class View_List_Template extends View_Template {
 		* @since 1.0.7
 		* @param \GravityView_View $gravityview_view Current GravityView_View object.
 		*/
-		do_action( sprintf( 'gravityview_list_entry%safter', $zone ), $entry->as_entry(), \GravityView_View::getInstance() /** ugh! */ );
+		do_action_deprecated( sprintf( 'gravityview_list_entry%safter', $zone ), array( $entry->as_entry(), \GravityView_View::getInstance() /** ugh! */ ), '2.0', 'gravityview/template/list/entry/$zone/after' );
 	}
 }

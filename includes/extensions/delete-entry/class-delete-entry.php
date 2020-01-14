@@ -278,7 +278,9 @@ final class GravityView_Delete_Entry {
 	 * @return string|null If directory link is valid, the URL to process the delete request. Otherwise, `NULL`.
 	 */
 	public static function get_delete_link( $entry, $view_id = 0, $post_id = null ) {
+
 		if ( ! $view_id ) {
+			_doing_it_wrong( __METHOD__, '$view_id is required.', '2.0' );
 			/** @deprecated path */
 			$view_id = gravityview_get_view_id();
 		}
@@ -460,7 +462,7 @@ final class GravityView_Delete_Entry {
 	private function delete_or_trash_entry( $entry ) {
 
 		$entry_id = $entry['id'];
-		
+
 		$mode = $this->get_delete_mode();
 
 		if( 'delete' === $mode ) {
@@ -533,7 +535,7 @@ final class GravityView_Delete_Entry {
 		 * @param boolean $delete_post If trashing an entry, trash the post. If deleting an entry, delete the post. Default: true
 		 */
 		$delete_post = apply_filters( 'gravityview/delete-entry/delete-connected-post', true );
-		
+
 		if( false === $delete_post ) {
 			return;
 		}
@@ -656,6 +658,7 @@ final class GravityView_Delete_Entry {
 	 */
 	public static function check_user_cap_delete_entry( $entry, $field = array(), $view = 0 ) {
 		if ( ! $view ) {
+			_doing_it_wrong( __METHOD__, '\GV\View $view (third argument) is required.', '2.0' );
 			/** @deprecated path */
 			$view_id = GravityView_View::getInstance()->getViewId();
 			$view = \GV\View::by_id( $view_id );

@@ -35,6 +35,7 @@ class GravityView_View_Data {
 	 * @return boolean
 	 */
 	public function has_multiple_views() {
+		_deprecated_function( __METHOD__, '2.0.1', '\GV\View_Collection::count' );
 		return $this->views->count() > 1;
 	}
 
@@ -58,6 +59,8 @@ class GravityView_View_Data {
 	 */
 	public function maybe_get_view_id( $passed_post ) {
 		$ids = array();
+
+		_deprecated_function( __METHOD__, '2.0.1', '\GV\View_Collection::from_post and \GV\Shortcode::parse' );
 
 		if ( ! empty( $passed_post ) ) {
 
@@ -131,6 +134,9 @@ class GravityView_View_Data {
 	 * @see \GV\View_Collection::all()
 	 */
 	function get_views() {
+
+		_deprecated_function( __METHOD__, '2.0.1', '\GV\View_Collection::all()' );
+
 		if ( ! $this->views->count() ) {
 			return array();
 		}
@@ -145,6 +151,9 @@ class GravityView_View_Data {
 	 * @see \GV\View_Collection::get()
 	 */
 	function get_view( $view_id, $atts = NULL ) {
+
+		_deprecated_function( __METHOD__, '1.20.2', '\GV\View_Collection::get()' );
+
 		if ( ! $view = $this->views->get( $view_id ) ) {
 			if ( ! \GV\View::exists( $view_id ) ) {
 				return false;
@@ -176,6 +185,7 @@ class GravityView_View_Data {
 	 * @since    1.0.0
 	 */
 	function view_exists( $view_id ) {
+		_deprecated_function( __METHOD__, '1.20.2', '\GV\View::exists()' );
 		return \GV\View::exists( $view_id );
 	}
 
@@ -192,6 +202,7 @@ class GravityView_View_Data {
 	 * @return array|false All views if $view_id is array, a view data array if $view_id is an int, false on errors.
 	 */
 	function add_view( $view_id, $atts = NULL ) {
+		_deprecated_function( __METHOD__, '2.0.1', '\GV\View_Collection::append' );
 		return \GV\Mocks\GravityView_View_Data_add_view( $view_id, $atts, $this );
 	}
 
@@ -207,21 +218,28 @@ class GravityView_View_Data {
 	 * @return array|null Array of fields as passed by `gravityview_get_directory_fields()`
 	 */
 	function get_fields( $view_id ) {
+		_deprecated_function( __METHOD__, '2.0.1', '\GV\View::$fields - See the code in this deprecated method for an example.' );
+
 		if ( \GV\View::exists( $view_id ) ) {
 			$view = \GV\View::by_id( $view_id );
 			return $view->fields->by_visible( $view )->as_configuration();
 		}
+
+		return null;
 	}
 
 	/**
 	 * Retrieves view ID from an array.
 	 *
 	 * @param array $atts
-	 * @deprecated Dead code, was probably superceded by GravityView_View_Data::parse_post_content
+	 * @deprecated Dead code, was probably superseded by GravityView_View_Data::parse_post_content
 	 *
 	 * @return int|null A view ID cast to int, or null.
 	 */
 	function get_id_from_atts( $atts ) {
+
+		_deprecated_function( __METHOD__, '1.21' );
+
 		$settings = \GV\View_Settings::with_defaults();
 		$settings->update( shortcode_parse_atts( $atts ) );
 		$view_id = $settings->get( 'view_id' );
@@ -243,6 +261,9 @@ class GravityView_View_Data {
 	 * @return int|null|array If a single View is found, the ID of the View. If there are multiple views in the content, array of IDs parsed. If not found, NULL
 	 */
 	public function parse_post_content( $content ) {
+
+		_deprecated_function( __METHOD__, '2.0', '\GV\View_Collection::from_content()' );
+
 		$ids = array();
 		foreach ( \GV\Shortcode::parse( $content ) as $shortcode ) {
 			if ( $shortcode->name == 'gravityview' && is_numeric( $shortcode->atts['id'] ) ) {
@@ -251,7 +272,7 @@ class GravityView_View_Data {
 				}
 				/**
 				 * The original function outputs the ID even though it wasn't added by ::add_view()
-				 * Wether this is a bug or not remains a mystery. But we need to emulate this behavior
+				 * Whether this is a bug or not remains a mystery. But we need to emulate this behavior
 				 * until better times.
 				 */
 				$ids []= $shortcode->atts['id'];
@@ -372,6 +393,9 @@ class GravityView_View_Data {
 	 * @see \GV\View_Settings::defaults()
 	 */
 	public static function get_default_args( $with_details = false, $group = NULL ) {
+
+		_deprecated_function( __METHOD__, '2.0', '\GV\View_Settings::defaults()' );
+
 		return \GV\View_Settings::defaults( $with_details, $group );
 	}
 }

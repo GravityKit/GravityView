@@ -287,8 +287,11 @@ class GravityView_Edit_Entry {
      *
      * Needs to be used combined with GravityView_Edit_Entry::user_can_edit_entry for maximum security!!
      *
+     * @since 1.9.2 Added $view_id parameter
+     * @since 2.0 $view_id is now $view and accepts \GV\View. Now required.
+     *
      * @param  array $entry Gravity Forms entry array
-     * @param \GV\View int $view_id ID of the view you want to check visibility against {@since 1.9.2}. Required since 2.0
+     * @param \GV\View|int $view View object or ID of the view you want to check visibility against {@since 1.9.2}. Required since 2.0
      * @return bool
      */
     public static function check_user_cap_edit_entry( $entry, $view = 0 ) {
@@ -298,6 +301,7 @@ class GravityView_Edit_Entry {
 
 		// get user_edit setting
 		if ( empty( $view ) ) {
+			_doing_it_wrong( __METHOD__, '\GV\View $view (second argument) is required.', '2.0' );
 			// @deprecated path
 			$view_id = GravityView_View::getInstance()->getViewId();
 			$user_edit = GravityView_View::getInstance()->getAtts( 'user_edit' );

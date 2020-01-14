@@ -51,7 +51,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		parent::__construct();
 	}
-	
+
 	/**
 	 * Add AJAX hooks, [gv_note_add] shortcode, and template loading paths
 	 *
@@ -77,7 +77,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts') );
 		add_action( 'gravityview/field/notes/scripts', array( $this, 'enqueue_scripts' ) );
-		
+
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_entry_default_field' ), 10, 3 );
 	}
 
@@ -123,9 +123,9 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 	/**
 	 * Enqueue, localize field scripts and styles
-	 * 
+	 *
 	 * @since 1.17
-	 * 
+	 *
 	 * @return void
 	 */
 	public function enqueue_scripts() {
@@ -223,7 +223,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		} else {
 
 			$valid = wp_verify_nonce( $data['gv_note_add'], 'gv_note_add_' . $data['entry-slug'] );
-			
+
 			$has_cap = GVCommon::has_cap( 'gravityview_add_entry_notes' );
 
 			if( ! $has_cap ) {
@@ -509,6 +509,9 @@ class GravityView_Field_Notes extends GravityView_Field {
 			$context->template->get_template_part( 'note', $note_row_template, true );
 			$note_row = ob_get_clean();
 		} else {
+
+			_doing_it_wrong( __METHOD__, '2.0', 'You must pass a \GV\Template_Context object as the 3rd parameter' );
+
 			/** @deprecated path */
 			ob_start();
 			GravityView_View::getInstance()->get_template_part( 'note', 'detail' );

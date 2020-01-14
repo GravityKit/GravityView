@@ -87,7 +87,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 * @api
 	 * @since 2.0
 	 *
-	 * @return \GV\Entry_Collection The \GV\Entry_Collection
+	 * @return Entry_Collection The \GV\Entry_Collection
 	 */
 	public function get_entries() {
 		$entries = new \GV\Entry_Collection();
@@ -213,8 +213,10 @@ class GF_Form extends Form implements \ArrayAccess {
 	 * ArrayAccess compatibility layer with a Gravity Forms form array.
 	 *
 	 * @internal
-	 * @deprecated
 	 * @since 2.0
+	 *
+	 * @param string $offset An offset to check for.
+	 *
 	 * @return bool Whether the offset exists or not.
 	 */
 	public function offsetExists( $offset ) {
@@ -227,8 +229,9 @@ class GF_Form extends Form implements \ArrayAccess {
 	 * Maps the old keys to the new data;
 	 *
 	 * @internal
-	 * @deprecated
 	 * @since 2.0
+	 *
+	 * @param string $offset An offset to check for.
 	 *
 	 * @return mixed The value of the requested form data.
 	 */
@@ -240,24 +243,30 @@ class GF_Form extends Form implements \ArrayAccess {
 	 * ArrayAccess compatibility layer with a Gravity Forms form array.
 	 *
 	 * @internal
-	 * @deprecated
 	 * @since 2.0
+	 *
+	 * @param string $offset The offset to assign the value to.
+	 * @param mixed $value   The value to set.
 	 *
 	 * @return void
 	 */
 	public function offsetSet( $offset, $value ) {
 		gravityview()->log->error( 'The underlying Gravity Forms form is immutable. This is a \GV\Form object and should not be accessed as an array.' );
+		_doing_it_wrong( __METHOD__, 'The underlying Gravity Forms entry is immutable. This is a \GV\Entry object and should not be accessed as an array.', '2.0' );
 	}
 
 	/**
 	 * ArrayAccess compatibility layer with a Gravity Forms form array.
 	 *
 	 * @internal
-	 * @deprecated
 	 * @since 2.0
+	 *
+	 * @param string $offset The offset to unset.
+	 *
 	 * @return void
 	 */
 	public function offsetUnset( $offset ) {
 		gravityview()->log->error( 'The underlying Gravity Forms form is immutable. This is a \GV\Form object and should not be accessed as an array.' );
+		_doing_it_wrong( __METHOD__, 'The underlying Gravity Forms entry is immutable. This is a \GV\Entry object and should not be accessed as an array.', '2.0' );
 	}
 }

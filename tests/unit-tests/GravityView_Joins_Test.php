@@ -488,7 +488,26 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 	}
 
+	private function _register_expected_deprecations() {
+		if ( function_exists( 'apply_filters_deprecated' ) ) {
+			$this->expected_deprecated = array_merge( $this->expected_deprecated, array(
+				'gravityview_before',
+				'gravityview_get_context',
+				'gv_container_class',
+				'gravityview_field_output',
+				'gv_value',
+				'GravityView_API::field_value',
+				'GV\Mocks\GravityView_API_field_value',
+				'gv_label',
+				'gravityview_footer',
+				'gravityview_after',
+			) );
+		}
+	}
+
 	public function test_legacy_template_list_joins() {
+
+		$this->_register_expected_deprecations();
 		$this->_reset_context();
 
 		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_JOINS ) ) {

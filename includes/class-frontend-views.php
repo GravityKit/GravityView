@@ -502,7 +502,7 @@ class GravityView_frontend {
 	 * @return string Add the View output into View CPT content
 	 */
 	public function insert_view_in_content( $content ) {
-		gravityview()->log->notice( '\GravityView_frontend::insert_view_in_content is deprecated. Use \GV\View::content()' );
+		_deprecated_function( __METHOD__, '2.0', '\GV\View::content()' );
 		return \GV\View::content( $content );
 	}
 
@@ -602,7 +602,8 @@ class GravityView_frontend {
 	 * @return string|null HTML output of a View, NULL if View isn't found
 	 */
 	public function render_view( $passed_args ) {
-		gravityview()->log->notice( '\GravityView_frontend::render_view is deprecated. Use \GV\View_Renderer etc.' );
+
+		_deprecated_function( __METHOD__, '2.0', '\GV\View_Renderer::render()' );
 
 		/**
 		 * We can use a shortcode here, since it's pretty much the same.
@@ -902,7 +903,7 @@ class GravityView_frontend {
 		 * @param array $args View settings associative array
 		 * @var array
 		 */
-		$entries = apply_filters( 'gravityview_view_entries', $entries, $args );
+		$entries = apply_filters_deprecated( 'gravityview_view_entries', array( $entries, $args ), '1.5.2', 'gravityview/view/entries' );
 
 		$return = array(
 			'count' => $count,
@@ -1317,7 +1318,7 @@ class GravityView_frontend {
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
 					 * @deprecated 2.5.1 Naming. See `gravityview_lightbox_script` instead.
 					 */
-					$js_dependency = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
+					$js_dependency = apply_filters_deprecated( 'gravity_view_lightbox_script', array( 'thickbox' ), '2.5.1', 'gravityview_lightbox_script' );
 
 					/**
 					 * @filter `gravityview_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
@@ -1337,7 +1338,7 @@ class GravityView_frontend {
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of its CSS file here.
 					 * @deprecated 2.5.1 Naming. See `gravityview_lightbox_style` instead.
 					 */
-					$css_dependency = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
+					$css_dependency = apply_filters_deprecated( 'gravity_view_lightbox_style', array( 'thickbox' ), '2.5.1', 'gravityview_lightbox_style' );
 
 					/**
 					 * @filter `gravityview_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
@@ -1351,7 +1352,7 @@ class GravityView_frontend {
 
 				/**
 				 * If the form has checkbox fields, enqueue dashicons
-				 * @see https://github.com/katzwebservices/GravityView/issues/536
+				 * @see https://github.com/gravityview/GravityView/issues/536
 				 * @since 1.15
 				 */
 				if( gravityview_view_has_single_checkbox_or_radio( $data['form'], $data['fields'] ) ) {

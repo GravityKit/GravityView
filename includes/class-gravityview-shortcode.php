@@ -21,6 +21,7 @@
 class GravityView_Shortcode {
 
 	function __construct() {
+		_deprecated_constructor( __CLASS__, '2.0.3' );
 		$this->add_hooks();
 	}
 
@@ -39,6 +40,8 @@ class GravityView_Shortcode {
 	 * @return null|string If admin, null. Otherwise, output of $this->render_view()
 	 */
 	function shortcode( $passed_atts, $content = null ) {
+
+		_deprecated_function( __METHOD__, '2.0.3', '\GV\Shortcodes\gravityview' );
 
 		// Don't process when saving post.
 		if ( is_admin() ) {

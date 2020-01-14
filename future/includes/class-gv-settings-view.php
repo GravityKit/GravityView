@@ -401,7 +401,7 @@ class View_Settings extends Settings {
 		 * @deprecated
 		 * @see filter `gravityview/view/settings/defaults`
 		 */
-		$default_settings = apply_filters( 'gravityview_default_args', $default_settings );
+		$default_settings = apply_filters_deprecated( 'gravityview_default_args', array( $default_settings ), '2.0', 'gravityview/view/settings/defaults' );
 
 		/**
 		 * @filter `gravityview/view/defaults` Modify the default settings for new Views
@@ -437,7 +437,7 @@ class View_Settings extends Settings {
 	 * Turn to an $atts array as used around the old codebase.
 	 *
 	 * @internal
-	 * @deprecated
+	 * @deprecated TODO
 	 *
 	 * @return array
 	 */

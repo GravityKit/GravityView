@@ -96,6 +96,9 @@ final class GravityView_Plugin {
 	 * @return GravityView_Plugin GravityView_Plugin object
 	 */
 	public static function getInstance() {
+
+		_deprecated_function( __METHOD__, '2.0', 'gravityview()->plugin and \GV\Plugin');
+
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self;
 		}
@@ -107,7 +110,7 @@ final class GravityView_Plugin {
 	 * @deprecated See \GV\Plugin
 	 */
 	private function __construct() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
+		_deprecated_function( __METHOD__, '2.0', '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
 	}
 
 	/**
@@ -118,7 +121,7 @@ final class GravityView_Plugin {
 	 * @since 1.12
 	 */
 	public function include_files() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
+		_deprecated_function( __METHOD__, '2.0', 'gravityview()->plugin->include_legacy_core()' );
 		gravityview()->plugin->include_legacy_core();
 	}
 
@@ -131,7 +134,7 @@ final class GravityView_Plugin {
 	 * @return bool
 	 */
 	public static function is_network_activated() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
+		_deprecated_function( __METHOD__, '2.0', 'gravityview()->plugin->is_network_activated()' );
 		return gravityview()->plugin->is_network_activated();
 	}
 
@@ -144,7 +147,7 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public static function activate() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
+		_deprecated_function( __METHOD__, '2.0', '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
 	}
 
 
@@ -156,7 +159,7 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public static function deactivate() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
+		_deprecated_function( __METHOD__, '2.0', '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
 	}
 
 	/**
@@ -168,7 +171,7 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public static function include_extension_framework() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
+		// The extension framework is included by default now.
 	}
 
 	/**
@@ -179,7 +182,7 @@ final class GravityView_Plugin {
 	 * @since 1.7.5.1
 	 */
 	public static function include_widget_class() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
+		_deprecated_function( __METHOD__, '2.0', 'This method is no longer used.' );
 	}
 
 
@@ -192,7 +195,7 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public function load_plugin_textdomain() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
+		_deprecated_function( __METHOD__, '2.0', 'gravityview()->plugin->load_textdomain()' );
 		gravityview()->plugin->load_textdomain();
 	}
 
@@ -204,7 +207,7 @@ final class GravityView_Plugin {
 	 * @return bool
 	 */
 	public static function is_admin() {
-		gravityview()->log->notice( '\GravityView_Plugin::is_admin() is deprecated. Use \GV\Request::is_admin() instead.' );
+		_deprecated_function( __METHOD__, '2.0', 'gravityview()->request->is_admin()' );
 		return gravityview()->request->is_admin();
 	}
 
@@ -220,19 +223,20 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public function frontend_actions( $force = false ) {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
+		_deprecated_function( __METHOD__, '2.0', 'gravityview()->plugin->include_legacy_frontend( $force )' );
 		gravityview()->plugin->include_legacy_frontend( $force );
 	}
 
 	/**
 	 * Helper function to define the default widget areas.
 	 *
-	 * @deprecated Moved to GravityView_Widget::get_default_widget_areas()
+	 * @deprecated Moved to \GV\Widget::get_default_widget_areas()
 	 *
 	 * @return array definition for default widget areas
 	 */
 	public static function get_default_widget_areas() {
-		return GravityView_Widget::get_default_widget_areas();
+		_deprecated_function( __METHOD__, '2.0', '\GV\Widget::get_default_widget_areas()' );
+		return \GV\Widget::get_default_widget_areas();
 	}
 
 	/** DEBUG */
@@ -245,7 +249,7 @@ final class GravityView_Plugin {
      * @return void
      */
     public static function log_debug( $message, $data = null ){
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
+	    _deprecated_function( __METHOD__, '2.0', 'gravityview()->log->debug( $message, $data )' );
 		gravityview()->log->debug( $message, $data );
     }
 
@@ -256,7 +260,7 @@ final class GravityView_Plugin {
      * @return void
      */
     public static function log_error( $message, $data = null ){
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
+	    _deprecated_function( __METHOD__, '2.0', 'gravityview()->log->error( $message, $data )' );
 		gravityview()->log->error( $message, $data );
     }
 } // end class GravityView_Plugin

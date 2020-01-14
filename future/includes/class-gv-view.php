@@ -226,7 +226,7 @@ class View implements \ArrayAccess {
 		$slug = apply_filters( 'gravityview_slug', 'view' );
 		$rule = array( sprintf( '%s/([^/]+)/csv/?', $slug ), 'index.php?gravityview=$matches[1]&csv=1', 'top' );
 
-		add_filter( 'query_vars', function( $query_vars ) { 
+		add_filter( 'query_vars', function( $query_vars ) {
 			$query_vars[] = 'csv';
 			return $query_vars;
 		} );
@@ -460,16 +460,18 @@ class View implements \ArrayAccess {
 			 * @param[in,out] boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded. Default: `true`
 			 * @param int $view_id The ID of the View currently being requested. `0` for general setting
 			 */
-			$direct_access = apply_filters( 'gravityview_direct_access', true, $this->ID );
+			$direct_access = apply_filters_deprecated( 'gravityview_direct_access', array( true, $this->ID ), '2.0', 'gravityview/view/output/direct' );
 
 			/**
-			 * @filter `gravityview/request/output/direct` Should this View be directly accessbile?
+			 * @filter `gravityview/request/output/direct` Should this View be directly accessible?
 			 * @since 2.0
-			 * @param[in,out] boolean Accessible or not. Default: accessbile.
+			 * @param[in,out] boolean Accessible or not. Default: accessible.
 			 * @param \GV\View $view The View we're trying to directly render here.
 			 * @param \GV\Request $request The current request.
 			 */
-			if ( ! apply_filters( 'gravityview/view/output/direct', $direct_access, $this, $request ) ) {
+			$direct_access = apply_filters( 'gravityview/view/output/direct', $direct_access, $this, $request );
+
+			if ( ! $direct_access ) {
 				return new \WP_Error( 'gravityview/no_direct_access' );
 			}
 
@@ -697,7 +699,7 @@ class View implements \ArrayAccess {
 		 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array.
 		 * @since 1.6.5
 		 *
-		 * @deprecated Use `gravityview/view/configuration/fields` or `gravityview/view/fields` filters.
+		 * @deprecated TODO Use `gravityview/view/configuration/fields` or `gravityview/view/fields` filters.
 		 *
 		 * @param $fields array Multi-array of fields with first level being the field zones.
 		 * @param $view_id int The View the fields are being pulled for.
@@ -811,8 +813,10 @@ class View implements \ArrayAccess {
 	 * ArrayAccess compatibility layer with GravityView_View_Data::$views
 	 *
 	 * @internal
-	 * @deprecated
 	 * @since 2.0
+	 *
+	 * @param string $offset An offset to check for.
+	 *
 	 * @return bool Whether the offset exists or not, limited to GravityView_View_Data::$views element keys.
 	 */
 	public function offsetExists( $offset ) {
@@ -826,8 +830,9 @@ class View implements \ArrayAccess {
 	 * Maps the old keys to the new data;
 	 *
 	 * @internal
-	 * @deprecated
 	 * @since 2.0
+	 *
+	 * @param string $offset An offset to check for.
 	 *
 	 * @return mixed The value of the requested view data key limited to GravityView_View_Data::$views element keys. If offset not found, return null.
 	 */
@@ -862,8 +867,10 @@ class View implements \ArrayAccess {
 	 * ArrayAccess compatibility layer with GravityView_View_Data::$views
 	 *
 	 * @internal
-	 * @deprecated
 	 * @since 2.0
+	 *
+	 * @param string $offset The offset to assign the value to.
+	 * @param mixed $value   The value to set.
 	 *
 	 * @return void
 	 */
@@ -877,6 +884,9 @@ class View implements \ArrayAccess {
 	 * @internal
 	 * @deprecated
 	 * @since 2.0
+	 *
+	 * @param string $offset The offset to unset.
+	 *
 	 * @return void
 	 */
 	public function offsetUnset( $offset ) {
@@ -891,7 +901,7 @@ class View implements \ArrayAccess {
 	 *  for back-compatibility.
 	 *
 	 * @internal
-	 * @deprecated
+	 * @deprecated TODO
 	 * @since 2.0
 	 * @return array
 	 */
@@ -1168,7 +1178,7 @@ class View implements \ArrayAccess {
 							$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
 						}
 					}
-				
+
 				/**
 				 * Unions?
 				 */
@@ -1276,7 +1286,7 @@ class View implements \ArrayAccess {
 
 						// Add all the order columns into the selects, so we can order by the whole union group
 						preg_match_all( '#(`[motc]\d+`.`.*?`)#', $sql['order'], $order_matches );
-						
+
 						$columns = array(
 							sprintf( '%s AS %s', $select_match[1], $column_to_alias( $select_match[1] ) )
 						);

@@ -5,18 +5,18 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 }
 
 /**
- * @deprecated Use \GV\License_Handler instead.
+ * @deprecated 2.0 Use \GV\License_Handler instead.
  */
 class GV_License_Handler extends \GV\License_Handler {
 	/**
 	 * @param \GV\Addon_Settings $GFAddOn
 	 *
-	 * @deprecated Use \GV\License_Handler::get instead
+	 * @deprecated 2.0 Use \GV\License_Handler::get instead
 	 *
 	 * @return GV\License_Handler
 	 */
 	public static function get_instance( $settings ) {
-		gravityview()->log->warning( 'GV_License_Handler::get_instance() is deprated in favor of \GV\License_Handler::get()' );
+		_deprecated_function( __METHOD__, '2.0', '\GV\License_Handler::get()' );
 		return \GV\License_Handler::get( $settings );
 	}
 }

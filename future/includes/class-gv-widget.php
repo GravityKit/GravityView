@@ -212,7 +212,7 @@ abstract class Widget {
 		 * @deprecated 2.0: Use gravityview/widget/active_areas instead
 		 * @param array $default_areas Definition for default widget areas
 		 */
-		$default_areas = apply_filters( 'gravityview_widget_active_areas', $default_areas );
+		$default_areas = apply_filters_deprecated( 'gravityview_widget_active_areas', array( $default_areas ), '2.0', 'gravityview/widget/active_areas' );
 
 		/**
 		 * @filter `gravityview/widget/active_areas` Array of zones available for widgets to be dropped into
@@ -447,7 +447,7 @@ abstract class Widget {
 		 * @deprecated Use `gravityview/widgets/register`
 		 * @param array $registered_widgets Empty array
 		 */
-		$registered_widgets = apply_filters( 'gravityview_register_directory_widgets', array() );
+		$registered_widgets = apply_filters_deprecated( 'gravityview_register_directory_widgets', array( array() ), '2.0', 'gravityview_register_directory_widgets' );
 
 		/**
 		 * @filter `gravityview/widgets/register` Each item is used to instantiate a GravityView_Admin_View_Widget object

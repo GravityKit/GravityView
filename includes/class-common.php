@@ -522,13 +522,13 @@ class GVCommon {
 	 * @param mixed $passed_criteria (default: null)
 	 * @param mixed &$total Optional. An output parameter containing the total number of entries. Pass a non-null value to generate the total count. (default: null)
 	 *
-	 * @deprecated See \GV\View::get_entries.
+	 * @deprecated 2.1 See \GV\View::get_entries
 	 *
 	 * @return mixed False: Error fetching entries. Array: Multi-dimensional array of Gravity Forms entry arrays
 	 */
 	public static function get_entries( $form_ids = null, $passed_criteria = null, &$total = null ) {
 
-		gravityview()->log->notice( '\GVCommon::get_entries is deprecated. Use \GV\View::get_entries instead.' );
+		_deprecated_function( __METHOD__, '2.1', '\GV\View::get_entries()' );
 
 		// Filter the criteria before query (includes Adv Filter)
 		$criteria = self::calculate_get_entries_criteria( $passed_criteria, $form_ids );
@@ -565,10 +565,10 @@ class GVCommon {
 			 * @param  array $criteria The final search criteria used to generate the request to `GFAPI::get_entries()`
 			 * @param array $passed_criteria The original search criteria passed to `GVCommon::get_entries()`
 			 * @param  int|null $total Optional. An output parameter containing the total number of entries. Pass a non-null value to generate
-			 * @since 2.1 The $total parameter can now be overriden by reference.
+			 * @since 2.1 The $total parameter can now be overridden by reference.
 			 * @deprecated
 			 */
-			$entries = apply_filters_ref_array( 'gravityview_before_get_entries', array( null, $criteria, $passed_criteria, &$total ) );
+			$entries = apply_filters_deprecated( 'gravityview_before_get_entries', array( null, $criteria, $passed_criteria, &$total ), '1.21.3' );
 
 			// No entries returned from gravityview_before_get_entries
 			if( is_null( $entries ) ) {
@@ -603,10 +603,10 @@ class GVCommon {
 		 * @param  array $criteria The final search criteria used to generate the request to `GFAPI::get_entries()`
 		 * @param array $passed_criteria The original search criteria passed to `GVCommon::get_entries()`
 		 * @param  int|null $total Optional. An output parameter containing the total number of entries. Pass a non-null value to generate
-		 * @since 2.1 The $total parameter can now be overriden by reference.
+		 * @since 2.1 The $total parameter can now be overridden by reference.
 		 * @deprecated
 		 */
-		$return = apply_filters_ref_array( 'gravityview_entries', array( $return, $criteria, $passed_criteria, &$total ) );
+		$return = apply_filters_deprecated( 'gravityview_entries', array( $return, $criteria, $passed_criteria, &$total ), '2.1' );
 
 		return $return;
 	}
