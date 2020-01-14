@@ -689,16 +689,17 @@ class GVCommon {
 		/**
 		 * @filter `gravityview/common/get_entry/check_entry_display` Override whether to check entry display rules against filters
 		 * @since 1.16.2
+		 * @since 2.6 Added $view parameter
 		 * @param bool $check_entry_display Check whether the entry is visible for the current View configuration. Default: true.
 		 * @param array $entry Gravity Forms entry array
-		 * @param \GV\View $view The View {@since develop}
+		 * @param \GV\View $view The View
 		 */
 		$check_entry_display = apply_filters( 'gravityview/common/get_entry/check_entry_display', $check_entry_display, $entry, $view );
 
 		if( $check_entry_display ) {
 			if ( ! $view ) {
 				$view = \GV\View::by_id( \GravityView_View::getInstance()->getViewId() ); // @todo Bad legacy context, provide $view parameter!
-				gravityview()->log->warning( '$view parameter not provided! Context assumed from legacy context mocks. Unreliable!' );
+				gravityview()->log->warning( '$view parameter not provided! Context assumed from legacy context mocks. This is unreliable!' );
 			}
 
 			// Is the entry allowed
@@ -839,10 +840,9 @@ class GVCommon {
 	 * @see GFFormsModel::is_value_match()
 	 *
 	 * @since 1.7.4
+	 * @since 2.1 Added $view parameter
 	 *
 	 * @param array $entry Gravity Forms Entry object
-	 *
-	 * @since 2.1
 	 * @param \GV\View $view The View.
 	 *
 	 * @return WP_Error|array Returns WP_Error if entry is not valid according to the view search filters (Adv Filter). Returns original $entry value if passes.
