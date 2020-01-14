@@ -38,7 +38,7 @@ class GravityView_Admin_Views {
 
 		add_action( 'gravityview_render_directory_active_areas', array( $this, 'render_directory_active_areas'), 10, 4 );
 		add_action( 'gravityview_render_widgets_active_areas', array( $this, 'render_widgets_active_areas'), 10, 3 );
-		add_action( 'gravityview_render_field_pickers', array( $this, 'render_field_pickers') );
+		add_action( 'gravityview_render_field_pickers', array( $this, 'render_field_pickers'), 10, 2 );
 		add_action( 'gravityview_render_available_fields', array( $this, 'render_available_fields'), 10, 2 );
 		add_action( 'gravityview_render_available_widgets', array( $this, 'render_available_widgets') );
 		add_action( 'gravityview_render_active_areas', array( $this, 'render_active_areas'), 10, 5 );
@@ -1065,33 +1065,43 @@ class GravityView_Admin_Views {
 	 *
 	 * @since 2.0.11
 	 *
-	 * @param string $context "directory", "single", or "edit"
-	 * @param int    $form_id (default: null) Form ID
+	 * @param string $context  "directory", "single", or "edit"
+	 * @param int    $form_ids (default: array) Array of form IDs
 	 *
 	 * @return void
 	 */
-	function render_field_pickers( $context = 'directory', $form_id = null ) {
+	function render_field_pickers( $context = 'directory', $form_ids = array() ) {
 
 		global $post;
 
-		$form_id         = $form_id || gravityview_get_form_id( $post->ID );
-		$filter_field_id = sprintf( 'gv-field-filter-%s-%d', $context, $form_id );
+		if ( $post ) {
+			$joined_forms = \GV\View::get_joined_forms( $post->ID );
 
-		?>
-        <div id="<?php echo esc_html( $context ); ?>-available-fields-<?php echo esc_attr( $form_id ); ?>" class="hide-if-js gv-tooltip">
-            <span class="close" role="button" aria-label="<?php esc_html_e( 'Close', 'gravityview' ); ?>"><i class="dashicons dashicons-dismiss"></i></span>
-            <div class="gv-field-filter-form">
-                <label class="screen-reader-text" for="<?php echo esc_html( $filter_field_id ); ?>"><?php esc_html_e( 'Filter Fields:', 'gravityview' ); ?></label>
-                <input type="search" class="widefat gv-field-filter" aria-controls="<?php echo $filter_field_id; ?>" id="<?php echo esc_html( $filter_field_id ); ?>" placeholder="<?php esc_html_e( 'Filter fields by name or label', 'gravityview' ); ?>" />
+			foreach ( $joined_forms as $joined_form ) {
+				$form_ids[] = $joined_form->ID;
+			}
+		}
+
+		foreach ( array_unique( $form_ids ) as $form_id ) {
+			$filter_field_id = sprintf( 'gv-field-filter-%s-%d', $context, $form_id );
+
+			?>
+            <div id="<?php echo esc_html( $context ); ?>-available-fields-<?php echo esc_attr( $form_id ); ?>" class="hide-if-js gv-tooltip">
+                <span class="close" role="button" aria-label="<?php esc_html_e( 'Close', 'gravityview' ); ?>"><i class="dashicons dashicons-dismiss"></i></span>
+
+                <div class="gv-field-filter-form">
+                    <label class="screen-reader-text" for="<?php echo esc_html( $filter_field_id ); ?>"><?php esc_html_e( 'Filter Fields:', 'gravityview' ); ?></label>
+                    <input type="search" class="widefat gv-field-filter" aria-controls="<?php echo $filter_field_id; ?>" id="<?php echo esc_html( $filter_field_id ); ?>" placeholder="<?php esc_html_e( 'Filter fields by name or label', 'gravityview' ); ?>" />
+                </div>
+
+                <div id="available-fields-<?php echo $filter_field_id; ?>" aria-live="polite" role="listbox">
+					<?php do_action( 'gravityview_render_available_fields', $form_id, $context ); ?>
+                </div>
+
+                <div class="gv-no-results hidden description"><?php esc_html_e( 'No fields were found matching the search.', 'gravityview' ); ?></div>
             </div>
-
-            <div id="available-fields-<?php echo $filter_field_id; ?>" aria-live="polite" role="listbox">
-				<?php do_action( 'gravityview_render_available_fields', $form_id, $context ); ?>
-            </div>
-
-            <div class="gv-no-results hidden description"><?php esc_html_e( 'No fields were found matching the search.', 'gravityview' ); ?></div>
-        </div>
-		<?php
+			<?php
+		}
 	}
 
 	/**
