@@ -1066,7 +1066,7 @@ class GravityView_Admin_Views {
 	 * @since 2.0.11
 	 *
 	 * @param string $context  "directory", "single", or "edit"
-	 * @param int    $form_ids (default: array) Array of form IDs
+	 * @param array  $form_ids (default: array) Array of form IDs
 	 *
 	 * @return void
 	 */
