@@ -126,7 +126,7 @@ class Utils {
 	 *
 	 * @param mixed $value The value to return from the closure.
 	 *
-	 * @return Closure The closure with the $value bound.
+	 * @return \Closure The closure with the $value bound.
 	 */
 	public static function _return( $value ) {
 		return function() use ( $value ) { return $value; };

@@ -1026,7 +1026,7 @@ function gravityview_get_current_views() {
 /**
  * Get data for a specific view
  *
- * @deprecated use \GV\View API instead
+ * @deprecated TODO use \GV\View API instead
  * @since 2.5
  *
  * @see  GravityView_View_Data::get_view()
