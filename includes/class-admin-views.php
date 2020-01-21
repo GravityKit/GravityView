@@ -1075,6 +1075,7 @@ class GravityView_Admin_Views {
 		global $post;
 
 		if ( $post ) {
+			$form_ids[]   = gravityview_get_form_id( $post->ID );
 			$joined_forms = \GV\View::get_joined_forms( $post->ID );
 
 			foreach ( $joined_forms as $joined_form ) {
