@@ -1068,6 +1068,8 @@
 
 			vcfg.toggleDropMessage();
 
+			$( '#directory-active-fields, #single-active-fields, #edit-active-fields' ).find( '.gv-fields' ).remove();
+
 			var data = {
 				action: 'gv_available_fields',
 				nonce: gvGlobals.nonce,
