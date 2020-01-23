@@ -609,6 +609,9 @@ class GravityView_Admin_Views {
 	 */
 	function render_available_fields( $form = 0, $context = 'single' ) {
 
+	    // Determine if form is a preset and convert it to an array with fields
+		$form = ( is_string( $form ) && preg_match( '/^preset_/', $form ) ) ? GravityView_Ajax::pre_get_form_fields( $form ) : $form;
+
 		/**
 		 * @filter  `gravityview_blacklist_field_types` Modify the types of fields that shouldn't be shown in a View.
 		 * @param[in,out] array $blacklist_field_types Array of field types to block for this context.
@@ -1075,16 +1078,18 @@ class GravityView_Admin_Views {
 		global $post;
 
 		if ( $post ) {
-			$form_ids[]   = gravityview_get_form_id( $post->ID );
-			$joined_forms = \GV\View::get_joined_forms( $post->ID );
+			$source_form_id = gravityview_get_form_id( $post->ID );
+			if ( $source_form_id ) {
+				$form_ids[] = $source_form_id;
+			}
 
+			$joined_forms = \GV\View::get_joined_forms( $post->ID );
 			foreach ( $joined_forms as $joined_form ) {
 				$form_ids[] = $joined_form->ID;
 			}
 		}
-
 		foreach ( array_unique( $form_ids ) as $form_id ) {
-			$filter_field_id = sprintf( 'gv-field-filter-%s-%d', $context, $form_id );
+			$filter_field_id = sprintf( 'gv-field-filter-%s-%s', $context, $form_id );
 
 			?>
             <div id="<?php echo esc_html( $context ); ?>-available-fields-<?php echo esc_attr( $form_id ); ?>" class="hide-if-js gv-tooltip">
