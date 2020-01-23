@@ -1062,7 +1062,7 @@
 		 * @param  {string}    templateid      The "slug" of the View template
 		 * @return void
 		 */
-		getAvailableFields: function ( preset, templateid ) {
+		getAvailableFields: function( preset, templateid ) {
 
 			var vcfg = viewConfiguration;
 
@@ -1073,20 +1073,18 @@
 				nonce: gvGlobals.nonce,
 			};
 
-			var id = '';
-
 			if ( preset !== undefined && 'preset' === preset ) {
-				data.template_id = id = templateid;
+				data.form_preset_ids = [ templateid ];
 			} else {
 				/**
 				 * TODO: Update to support multiple fields in Joins
 				 * @see GravityView_Ajax::gv_available_fields()
 				 * */
-				data.form_id = id = vcfg.gvSelectForm.val();
+				data.form_preset_ids = [ vcfg.gvSelectForm.val() ];
 			}
 
 			// Do not fetch fields if we already have them for the given form or template
-			if ($('#directory-available-fields-' + id).length) {
+			if ( $( '#directory-available-fields-' + data.form_preset_ids[ 0 ] ).length ) {
 				return;
 			}
 

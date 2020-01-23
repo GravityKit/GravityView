@@ -56,7 +56,7 @@ class GravityView_Ajax {
 	}
 
 	/**
-	 * AJAX action to get HTML markup for form or template fields
+	 * AJAX action to get HTML markup for form(s) or template fields
 	 * AJAX callback
 	 *
 	 * @access public
@@ -71,11 +71,8 @@ class GravityView_Ajax {
 			? array( esc_attr( rgpost( 'context' ) ) => '' )
 			: array( 'directory' => '', 'edit' => '', 'single' => '' );
 
-		$form_ids = array();
-		if ( rgpost( 'form_id' ) ) {
-			$form_ids[] = (int) rgpost( 'form_id' );
-		} elseif ( rgpost( 'template_id' ) ) {
-			$form_ids[] = esc_attr( rgpost( 'template_id' ) );
+		if ( is_array( rgpost( 'form_preset_ids' ) ) ) {
+			$form_ids = rgpost( 'form_preset_ids' );
 		} else {
 			$this->_exit( false );
 		}
