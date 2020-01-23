@@ -532,10 +532,8 @@
 				// Let merge tags know not to initialize
 				$( 'body' ).trigger( 'gravityview_form_change' ).addClass( 'gv-form-changed' );
 				vcfg.templateFilter( 'custom' );
-				vcfg.showViewTypeMetabox();
 				vcfg.getAvailableFields();
 				vcfg.getSortableFields();
-				vcfg.gvSwitchView.fadeOut( 150 );
 			}
 		},
 
