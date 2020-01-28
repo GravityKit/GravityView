@@ -75,6 +75,7 @@ class GravityView_Ajax {
 			$form_ids = rgpost( 'form_preset_ids' );
 		} else {
 			$this->_exit( false );
+			return; // If inside unit tests, which don't exit, don't continue.
 		}
 
 		foreach ( $data as $context => $markup ) {
