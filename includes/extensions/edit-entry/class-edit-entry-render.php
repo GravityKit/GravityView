@@ -594,7 +594,7 @@ class GravityView_Edit_Entry_Render {
 		/** No file is being uploaded. */
 		if ( empty( $_FILES[ $input_name ]['name'] ) ) {
 			/** So return the original upload */
-			return $entry[ $input_id ];
+			return \GV\Utils::get( $entry, $input_id, $value );
 		}
 
 		return $value;
