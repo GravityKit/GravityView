@@ -17,7 +17,7 @@ class GravityView_Render_Settings {
 	 * Get the default options for a standard field.
 	 *
 	 * @param  string      $field_type  Type of field options to render (`field` or `widget`)
-	 * @param  string      $template_id Table slug
+	 * @param  string      $template_id Layout slug (`default_table`, `default_list`, `datatables_table`, etc.
 	 * @param  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
 	 * @param  string      $context     What context are we in? Example: `single` or `directory`
 	 * @param  string      $input_type  (textarea, list, select, etc.)
@@ -28,6 +28,8 @@ class GravityView_Render_Settings {
 
 		$field_options = array();
 
+		$is_table_layout = preg_match( '/table/ism', $template_id );
+
 		if( 'field' === $field_type ) {
 
 			// Default options - fields
@@ -35,7 +37,7 @@ class GravityView_Render_Settings {
 				'show_label' => array(
 					'type' => 'checkbox',
 					'label' => __( 'Show Label', 'gravityview' ),
-					'value' => true,
+					'value' => ! empty ( $is_table_layout ),
 				),
 				'custom_label' => array(
 					'type' => 'text',
@@ -68,7 +70,7 @@ class GravityView_Render_Settings {
 			);
 
 			// Match Table as well as DataTables
-			if( preg_match( '/table/ism', $template_id ) && 'directory' === $context ) {
+			if( $is_table_layout && 'directory' === $context ) {
 				$field_options['width'] = array(
 					'type' => 'number',
 					'label' => __('Percent Width', 'gravityview'),

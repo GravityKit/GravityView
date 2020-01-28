@@ -1,3 +1,6 @@
+<?php
+/** @global string $curr_template GravityView_Template::template_id value. Empty string if not. */
+?>
 <input name="gv_fields" type="hidden" value="<?php echo esc_attr( http_build_query( array( 'fields' => get_post_meta( $post->ID, '_gravityview_directory_fields', true ) ) ) ); ?>" />
 
 <div id="gv-view-configuration-tabs">
@@ -18,7 +21,7 @@
 
 			<h4><?php esc_html_e( 'Entries Fields', 'gravityview'); ?> <span><?php esc_html_e( 'These fields will be shown for each entry.', 'gravityview'); ?></span></h4>
 
-			<div id="directory-active-fields" class="gv-grid gv-grid-pad gv-grid-border">
+			<div id="directory-active-fields" class="gv-grid">
 				<?php if(!empty( $curr_template ) ) {
 					do_action('gravityview_render_directory_active_areas', $curr_template, 'directory', $post->ID, true );
 				} ?>
@@ -36,7 +39,7 @@
 
 			<?php // list of available widgets to be shown in the popup ?>
             <div id="directory-available-widgets" class="hide-if-js gv-tooltip">
-                <span class="close"><i class="dashicons dashicons-dismiss"></i></span>
+                <span class="close" role="button" aria-label="<?php esc_html_e( 'Close', 'gravityview' ); ?>"><i class="dashicons dashicons-dismiss"></i></span>
 				<?php do_action('gravityview_render_available_widgets' ); ?>
             </div>
 
@@ -55,7 +58,7 @@
 
 			<h4><?php esc_html_e( 'These fields will be shown in Single Entry view.', 'gravityview'); ?></h4>
 
-			<div id="single-active-fields" class="gv-grid gv-grid-pad gv-grid-border">
+			<div id="single-active-fields" class="gv-grid">
 				<?php
                 if(!empty( $curr_template ) ) {
 				    do_action('gravityview_render_directory_active_areas', $curr_template, 'single', $post->ID, true );
@@ -75,7 +78,7 @@
 
 			<h4><?php esc_html_e( 'Fields shown when editing an entry.', 'gravityview'); ?> <span><?php esc_html_e('If not configured, all form fields will be displayed.', 'gravityview'); ?></span></h4>
 
-			<div id="edit-active-fields" class="gv-grid gv-grid-pad gv-grid-border">
+			<div id="edit-active-fields" class="gv-grid">
 				<?php
 				do_action('gravityview_render_directory_active_areas', apply_filters( 'gravityview/template/edit', 'default_table_edit' ), 'edit', $post->ID, true );
 				?>

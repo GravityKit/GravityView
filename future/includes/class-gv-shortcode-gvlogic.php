@@ -25,6 +25,7 @@ class gvlogic extends \GV\Shortcode {
 		 * ...some aliases.
 		 */
 		parent::add( 'gvlogic2' );
+		parent::add( 'gvlogic3' ); // This level of nesting is not supported by GravityView support...but go for it!
 		parent::add( 'gvlogicelse' );
 	}
 
@@ -66,8 +67,10 @@ class gvlogic extends \GV\Shortcode {
 			$match = $authed && \GVCommon::matches_operation( $atts['if'], $value, $operator );
 		}
 
+		$output = $this->get_output( $match, $atts, $content );
+
 		// Output and get recursive!
-		$output = do_shortcode( $this->get_output( $match, $atts, $content ) );
+		$output = do_shortcode( $output );
 		$output = \GFCommon::replace_variables( $output, array(), array(), false, true, false );
 
 		return apply_filters( 'gravityview/shortcodes/gvlogic/output', $output, $atts );
@@ -81,9 +84,13 @@ class gvlogic extends \GV\Shortcode {
 	 * @return bool Yes, or no.
 	 */
 	private function authorized( $atts ) {
-		if ( is_null( $needs_login  = \GV\Utils::get( $atts, 'logged_in', null ) ) ) {
+
+		$needs_login = \GV\Utils::get( $atts, 'logged_in', null );
+
+		if ( is_null( $needs_login ) ) {
 			return true; // No auth requirements have been set
 		}
+
 		return ! $needs_login ^ is_user_logged_in(); // XNOR
 	}
 
@@ -154,7 +161,8 @@ class gvlogic extends \GV\Shortcode {
 		$found = false; // found split position
 
 		while ( $content ) { // scan
-			if ( ! preg_match( '#(.*?)(\[\/?(gvlogic|else).*?])(.*)#', $content, $matches ) ) {
+
+			if ( ! preg_match( '#(.*?)(\[\/?(gvlogic|else).*?])(.*)#s', $content, $matches ) ) {
 				if ( ! $found ) { // We're still iffing.
 					$if .= $content;
 				} else { // We are elsing
@@ -171,22 +179,22 @@ class gvlogic extends \GV\Shortcode {
 				$else .= $before_shortcode;
 			}
 
-			if ( strpos( $shortcode, '[else]' ) === 0 && $opens === 0 ) {
+			if ( 0 === strpos( $shortcode, '[else]' ) && 0 === $opens ) {
 				// This is the else we need!
 				$found = true;
 				if ( $match ) {
 					break; // We just need the if on a match, no need to analyze further
 				}
-			} else if ( $match && strpos( $shortcode, '[else if' ) === 0 && $opens === 0 ) {
+			} else if ( $match && 0 === strpos( $shortcode, '[else if' ) && 0 === $opens ) {
 				$found = true; // We found a match, do not process further
 				break;
 			} else {
 				// Increment inner tracking counters
-				if ( strpos( $shortcode, '[gvlogic' ) === 0 ) {
+				if ( 0 === strpos( $shortcode, '[gvlogic' ) ) {
 					$opens++;
 				}
 
-				if ( strpos( $shortcode, '[/gvlogic' ) === 0 ) {
+				if ( 0 === strpos( $shortcode, '[/gvlogic' ) ) {
 					$opens--;
 				}
 
@@ -201,8 +209,13 @@ class gvlogic extends \GV\Shortcode {
 			$content = $after_shortcode;
 		}
 
-		gravityview()->log->error( 'if => {if}, else => {else}', array( 'if' => $if, 'else' => $else ) );
-		
+		gravityview()->log->debug( '[gvlogic] output parsing:', array(
+			'data' => array(
+				'if'   => $if,
+				'else' => $else,
+			),
+		) );
+
 		if ( ! $match ) {
 			while ( ( $position = strpos( $if, '[else if=' ) ) !== false ) {
 				// Try to match one of the elseif's
@@ -231,13 +244,13 @@ class gvlogic extends \GV\Shortcode {
 
 		$operators = array(
 			'is', 'isnot', 'contains', 'starts_with', 'ends_with',
-			'greater_than', 'less_than', 'in', 'not_in', 'isnot',
+			'greater_than', 'less_than', 'in', 'not_in',
 			'contains', 'equals', 'greater_than_or_is', 'greater_than_or_equals',
 			'less_than_or_is', 'less_than_or_equals', 'not_contains',
 		);
 
 		if ( $with_values ) {
-			return array_combine( 
+			return array_combine(
 				$operators,
 				array_fill( 0, count( $operators ), '' )
 			);
@@ -248,14 +261,12 @@ class gvlogic extends \GV\Shortcode {
 
 	/**
 	 * Process the attributes passed to the shortcode. Make sure they're valid
-	 * @return void
+	 *
+	 * @return array Array of attributes parsed for the shortcode
 	 */
 	private function parse_atts( $atts, $content, $tag ) {
-		$supplied_atts = $atts;
 
-		if ( empty( $supplied_atts ) ) {
-			$supplied_atts = array();
-		}
+		$supplied_atts = ! empty( $atts ) ? $atts : array();
 
 		$atts = shortcode_atts( array(
 			'if'        => null,
@@ -285,7 +296,7 @@ class gvlogic extends \GV\Shortcode {
 		/**
 		 * @filter `gravityview/gvlogic/atts` The logic attributes.
 		 *
-		 * @since develop
+		 * @since 2.5
 		 *
 		 * @param[in,out] array $atts The logic attributes.
 		 */

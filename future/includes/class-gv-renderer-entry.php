@@ -30,7 +30,7 @@ class Entry_Renderer extends Renderer {
 			$request = &gravityview()->request;
 		}
 
-		if ( ! in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request', 'GV\REST\Request' ) ) ) {
+		if ( ! $request->is_renderable() ) {
 			gravityview()->log->error( 'Renderer unable to render Entry in {request_class} context', array( 'request_class' => get_class( $request ) ) );
 			return null;
 		}

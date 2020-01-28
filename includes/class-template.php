@@ -24,120 +24,127 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 
 	/**
 	 * Prefix for filter names.
-	 * @var string
+	 *
+	 * @var string $filter_prefix
 	 */
 	protected $filter_prefix = 'gravityview';
 
 	/**
 	 * Directory name where custom templates for this plugin should be found in the theme.
-	 * @var string
+	 *
+	 * @var string $theme_template_directory
 	 */
 	protected $theme_template_directory = 'gravityview';
 
 	/**
 	 * Reference to the root directory path of this plugin.
-	 * @var string
+	 *
+	 * @var string $plugin_directory
 	 */
 	protected $plugin_directory = GRAVITYVIEW_DIR;
 
 	/**
 	 * Store templates locations that have already been located
-	 * @var array
+	 *
+	 * @var array $located_templates
 	 */
 	protected $located_templates = array();
 
 	/**
 	 * The name of the template, like "list", "table", or "datatables"
-	 * @var string
+	 *
+	 * @var string $template_part_slug
 	 */
 	protected $template_part_slug = '';
 
 	/**
 	 * The name of the file part, like "body" or "single"
-	 * @var string
+	 *
+	 * @var string $template_part_name
 	 */
 	protected $template_part_name = '';
 
 	/**
-	 * @var int Gravity Forms form ID
+	 * @var int $form_id Gravity Forms form ID
 	 */
-	protected $form_id = NULL;
+	protected $form_id = null;
 
 	/**
-	 * @var int View ID
+	 * @var int $view_id View ID
 	 * @todo: this needs to be public until extensions support 1.7+
 	 */
-	public $view_id = NULL;
+	public $view_id = null;
 
 	/**
-	 * @var array Fields for the form
+	 * @var array $fields Fields for the form
 	 */
 	protected $fields = array();
 
 	/**
-	 * @var string Current screen. Defaults to "directory" or "single"
+	 * @var string $context Current screen. Defaults to "directory" or "single"
 	 */
 	protected $context = 'directory';
 
 	/**
-	 * @var int|null If in embedded post or page, the ID of it
+	 * @var int|null $post_id If in embedded post or page, the ID of it
 	 */
-	protected $post_id = NULL;
+	protected $post_id = null;
 
 	/**
-	 * @var array Gravity Forms form array at ID $form_id
+	 * @var array $form Gravity Forms form array at ID $form_id
 	 */
-	protected $form = NULL;
+	protected $form = null;
 
 	/**
-	 * @var array Configuration for the View
+	 * @var array $atts Configuration for the View
 	 */
 	protected $atts = array();
 
 	/**
-	 * @var array Entries for the current result. Single item in array for single entry View
+	 * @var array $entries Entries for the current result. Single item in array for single entry View
 	 */
 	protected $entries = array();
 
 	/**
-	 * @var int Total entries count for the current result.
+	 * @var int $total_entries Total entries count for the current result.
 	 */
 	protected $total_entries = 0;
 
 	/**
-	 * @var string The label to display back links
+	 * @var string $back_link_label The label to display back links
 	 */
 	protected $back_link_label = '';
 
 	/**
-	 * @var array Array with `offset` and `page_size` keys
+	 * @var array $paging Array with `offset` and `page_size` keys
 	 */
 	protected $paging = array();
 
 	/**
-	 * @var array Array with `sort_field` and `sort_direction` keys
+	 * @var array $sorting Array with `sort_field` and `sort_direction` keys
 	 */
 	protected $sorting = array();
 
 	/**
-	 * @var bool Whether to hide the results until a search is performed
+	 * @var bool $hide_until_searched Whether to hide the results until a search is performed
 	 * @since 1.5.4
 	 */
 	protected $hide_until_searched = false;
 
 	/**
 	 * Current entry in the loop
-	 * @var array
+	 *
+	 * @var array $_current_entry
 	 */
 	protected $_current_entry = array();
 
 	/**
-	 * @var array
+	 * @var array $_current_field
 	 */
 	protected $_current_field = array();
 
 	/**
-	 * @var GravityView_View
+	 * @var GravityView_View $instance
 	 */
 	static $instance = NULL;
 
@@ -467,7 +474,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	 * Get an array with pagination information
 	 *
 	 * @since 1.13
-	 * 
+	 *
 	 * @return array {
 	 *  @type int $first The starting entry number (counter, not ID)
 	 *  @type int $last The last displayed entry number (counter, not ID)
@@ -812,7 +819,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		$this->setTemplatePartSlug( $slug );
 
 		$this->setTemplatePartName( $name );
-		
+
 		$template_file = $this->get_template_part( $slug, $name, false );
 
 		gravityview()->log->debug( 'Rendering Template File: {path}', array( 'path' => $template_file ) );

@@ -97,6 +97,24 @@ class GravityView_Duplicate_Entry_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers GravityView_Duplicate_Entry::get_confirm_dialog
+	 */
+	public function test_get_confirm_dialog() {
+
+		$confirm_dialog = GravityView_Duplicate_Entry::get_confirm_dialog();
+
+		$this->assertContains( 'return window.confirm', $confirm_dialog, 'confirm JS is not in the confirm dialog response' );
+
+		add_filter( 'gravityview/duplicate-entry/confirm-text', '__return_empty_string' );
+
+		$confirm_dialog = GravityView_Duplicate_Entry::get_confirm_dialog();
+
+		$this->assertEquals( '', $confirm_dialog, 'filter did not apply' );
+
+		remove_all_filters( 'gravityview/duplicate-entry/confirm-text' );
+	}
+
+	/**
 	 * @covers GravityView_Duplicate_Entry::get_duplicate_link()
 	 * @see https://github.com/gravityview/GravityView/issues/842
 	 */

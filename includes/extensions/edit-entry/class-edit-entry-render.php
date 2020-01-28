@@ -21,13 +21,13 @@ class GravityView_Edit_Entry_Render {
 	protected $loader;
 
 	/**
-	 * @var string String used to generate unique nonce for the entry/form/view combination. Allows access to edit page.
+	 * @var string $nonce_key String used to generate unique nonce for the entry/form/view combination. Allows access to edit page.
 	 */
 	static $nonce_key;
 
 	/**
 	 * @since 1.9
-	 * @var string String used for check valid edit entry form submission. Allows saving edit form values.
+	 * @var string $nonce_field String used for check valid edit entry form submission. Allows saving edit form values.
 	 */
 	private static $nonce_field = 'is_gv_edit_entry';
 
@@ -104,7 +104,7 @@ class GravityView_Edit_Entry_Render {
 	 * ID of the current post. May also be ID of the current View.
      *
      * @since 2.0.13
-     * 
+	 *
      * @var int
 	 */
 	public $post_id;
@@ -142,7 +142,8 @@ class GravityView_Edit_Entry_Render {
 		add_action( 'wp_footer', array( $this, 'prevent_render_form' ) );
 
 		// Stop Gravity Forms processing what is ours!
-		add_filter( 'wp', array( $this, 'prevent_maybe_process_form'), 8 );
+		add_action( 'wp', array( $this, 'prevent_maybe_process_form' ), 8 );
+		add_action( 'admin_init', array( $this, 'prevent_maybe_process_form' ), 8 );
 
 		add_filter( 'gravityview_is_edit_entry', array( $this, 'is_edit_entry') );
 
@@ -196,6 +197,9 @@ class GravityView_Edit_Entry_Render {
 
 		remove_action( 'wp',  array( 'RGForms', 'maybe_process_form'), 9 );
 		remove_action( 'wp',  array( 'GFForms', 'maybe_process_form'), 9 );
+
+		remove_action( 'admin_init',  array( 'GFForms', 'maybe_process_form'), 9 );
+		remove_action( 'admin_init',  array( 'RGForms', 'maybe_process_form'), 9 );
 	}
 
 	/**
@@ -204,7 +208,9 @@ class GravityView_Edit_Entry_Render {
 	 */
 	public function is_edit_entry() {
 
-		$is_edit_entry = GravityView_frontend::is_single_entry() && ! empty( $_GET['edit'] );
+		$is_edit_entry =
+			( GravityView_frontend::is_single_entry() || ( ! empty( gravityview()->request->is_entry() ) ) )
+			&& ( ! empty( $_GET['edit'] ) );
 
 		return ( $is_edit_entry || $this->is_edit_entry_submission() );
 	}
@@ -373,7 +379,7 @@ class GravityView_Edit_Entry_Render {
 
 	        // Delete the values for hidden inputs
 	        $this->unset_hidden_field_values();
-			
+
 			$this->entry['date_created'] = $date_created;
 
 			// Process calculation fields
@@ -481,7 +487,7 @@ class GravityView_Edit_Entry_Render {
 	 * the missing/empty approval field to affect is_approved meta at all.
 	 *
 	 * Called before the Gravity Forms after_update triggers.
-	 * 
+	 *
 	 * @since 2.5
 	 *
 	 * @return void
@@ -524,16 +530,16 @@ class GravityView_Edit_Entry_Render {
 	 * @return string UNAPPROVED unless something else is inside the entry.
 	 */
 	public function prevent_update_unapproved_meta( $value, $form, $entry ) {
-		
+
 		remove_filter( 'gravityview/approve_entries/update_unapproved_meta', array( $this, 'prevent_update_unapproved_meta' ), 9 );
-		
+
 		if ( ! $value = gform_get_meta( $entry['id'], 'is_approved' ) ) {
-			
+
 			$value = GravityView_Entry_Approval_Status::UNAPPROVED;
-			
+
 			$value = apply_filters( 'gravityview/approve_entries/after_submission/default_status', $value );
 		}
-		
+
 		return $value;
 	}
 
@@ -593,8 +599,8 @@ class GravityView_Edit_Entry_Render {
 
 		/** No file is being uploaded. */
 		if ( empty( $_FILES[ $input_name ]['name'] ) ) {
-			/** So return the original upload */
-			return \GV\Utils::get( $entry, $input_id, $value );
+			/** So return the original upload, with $value as backup (it can be empty during edit form rendering) */
+			return rgar( $entry, $input_id, $value );
 		}
 
 		return $value;
@@ -2181,7 +2187,7 @@ class GravityView_Edit_Entry_Render {
 						}
 
 						$match = GFFormsModel::matches_operation( $value, $rule['value'], $rule['operator'] );
-						
+
 						if ( $match ) {
 							$remove_conditions_rule[] = array( $field['id'], $i );
 						}
