@@ -66,10 +66,20 @@ class GravityView_Ajax {
 
 		$this->check_ajax_nonce();
 
+		$context = rgpost( 'context' );
+
 		// Return markup for a single or multiple contexts
-		$data = rgpost( 'context' )
-			? array( esc_attr( rgpost( 'context' ) ) => '' )
-			: array( 'directory' => '', 'edit' => '', 'single' => '' );
+		if( $context ) {
+			$data = array(
+				esc_attr( $context ) => ''
+			);
+		} else {
+			$data = array(
+				'directory' => '',
+				'edit' => '',
+				'single' => ''
+			);
+		}
 
 		if ( is_array( rgpost( 'form_preset_ids' ) ) ) {
 			$form_ids = rgpost( 'form_preset_ids' );
