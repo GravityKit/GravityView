@@ -531,12 +531,9 @@
 
 				// Let merge tags know not to initialize
 				$( 'body' ).trigger( 'gravityview_form_change' ).addClass( 'gv-form-changed' );
-
 				vcfg.templateFilter( 'custom' );
-				vcfg.showViewTypeMetabox();
 				vcfg.getAvailableFields();
 				vcfg.getSortableFields();
-				vcfg.gvSwitchView.fadeOut( 150 );
 			}
 		},
 
@@ -959,12 +956,13 @@
 					//	var context = ( $(this).parents('#single-view').length ) ? 'single' : 'directory';
 					var context = $( this ).attr( 'data-context' );
 					var formId = $( this ).attr( 'data-formid' ) || $( '#gravityview_form_id' ).val();
+					var templateId = $( '#gravityview_directory_template' ).val();
 
 					switch ( $( this ).attr( 'data-objecttype' ) ) {
 						case 'field':
 							// If in Single context, show fields available in single
 							// If it Directory, same for directory
-							return $( "#" + context + "-available-fields-" + formId ).html();
+							return $( '#' + context + '-available-fields-' + ( formId || templateId ) ).html();
 						case 'widget':
 							return $( "#directory-available-widgets" ).html();
 					}
@@ -1062,58 +1060,48 @@
 		 * @param  {string}    templateid      The "slug" of the View template
 		 * @return void
 		 */
-		getAvailableFields: function ( preset, templateid ) {
+		getAvailableFields: function( preset, templateid ) {
 
 			var vcfg = viewConfiguration;
 
-			$( "#directory-available-fields, #single-available-fields, #edit-available-fields" ).find( ".gv-fields" ).remove();
-			$( "#directory-active-fields, #single-active-fields, #edit-active-fields" ).find( ".gv-fields" ).remove();
-
 			vcfg.toggleDropMessage();
+
+			$( '#directory-active-fields, #single-active-fields, #edit-active-fields' ).find( '.gv-fields' ).remove();
 
 			var data = {
 				action: 'gv_available_fields',
 				nonce: gvGlobals.nonce,
-				context: 'directory'
 			};
 
 			if ( preset !== undefined && 'preset' === preset ) {
-				data.template_id = templateid;
+				data.form_preset_ids = [ templateid ];
 			} else {
 				/**
 				 * TODO: Update to support multiple fields in Joins
 				 * @see GravityView_Ajax::gv_available_fields()
 				 * */
-				data.form_id = vcfg.gvSelectForm.val();
+				data.form_preset_ids = [ vcfg.gvSelectForm.val() ];
 			}
 
+			// Do not fetch fields if we already have them for the given form or template
+			if ( $( '#directory-available-fields-' + data.form_preset_ids[ 0 ] ).length ) {
+				return;
+			}
 
-			// Get the fields for the directory context
-			$.post( ajaxurl, data, function ( response ) {
-				if ( response ) {
-					$( "#directory-available-fields" ).append( response );
-				}
+			$.ajax( {
+				type: 'post',
+				url: ajaxurl,
+				data: data,
+				success: function( response ) {
+					if ( ! response.success && ! response.data ) {
+						return;
+					}
+
+					$.each( response.data, function( context,markup ) {
+						$( '#' + context + '-fields' ).append( markup );
+					} );
+				},
 			} );
-
-
-			// Now get the fields for the single context
-			data.context = 'single';
-
-			$.post( ajaxurl, data, function ( response ) {
-				if ( response ) {
-					$( "#single-available-fields" ).append( response );
-				}
-			} );
-
-			// Now get the fields for the edit context
-			data.context = 'edit';
-
-			$.post( ajaxurl, data, function ( response ) {
-				if ( response ) {
-					$( "#edit-available-fields" ).append( response );
-				}
-			} );
-
 		},
 
 		/**
