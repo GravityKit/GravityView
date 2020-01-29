@@ -281,7 +281,7 @@ final class GravityView_Duplicate_Entry {
 	public function process_duplicate() {
 
 		// If the form is submitted
-		if ( ! isset( $_GET['action'] ) || 'duplicate' !== $_GET['action'] || ! isset( $_GET['entry_id'] ) ) {
+		if ( ( ! isset( $_GET['action'] ) ) || 'duplicate' !== $_GET['action'] || ( ! isset( $_GET['entry_id'] ) ) ) {
 			return;
 		}
 
