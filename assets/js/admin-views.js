@@ -79,8 +79,9 @@
 
 			vcfg.gvSwitchView = $('#gv_switch_view_button');
 
-			//current form selection
+			//current form/template selection
 			vcfg.currentFormId = vcfg.gvSelectForm.val();
+			vcfg.currentTemplateId = $("#gravityview_directory_template").val();
 
 			// Start by showing/hiding on load
 			vcfg.toggleInitialVisibility( vcfg );
@@ -464,13 +465,11 @@
 			e.preventDefault();
 			var vcfg = viewConfiguration;
 
-			//todo: what to do if you start fresh and then select another form!?
-			//
 			vcfg.startFreshStatus = true;
 
-			// If the form has been chosen and there are GF forms to choose from
-			if ( vcfg.currentFormId !== '' && vcfg.gvSelectForm.length > 0 ) {
-				vcfg.showDialog( '#gravityview_form_id_dialog' );
+			// If fields are configured (either via a form or preset selection), warn against making changes
+			if ( vcfg.getConfiguredFields().length ) {
+				vcfg.showDialog( '#gravityview_select_preset_dialog' );
 			} else {
 				vcfg.startFreshContinue();
 			}
@@ -485,6 +484,8 @@
 			// Reset the selected form value
 			$( '#gravityview_form_id' ).val( '' );
 
+			vcfg.currentFormId = '';
+			vcfg.currentTemplateId = '';
 			vcfg.gvSwitchView.hide();
 
 			// show templates
@@ -504,6 +505,7 @@
 		 */
 		formChange: function ( e ) {
 			e.preventDefault();
+
 			var vcfg = viewConfiguration;
 
 			// Holding down on the alt key while switching forms allows you to change forms without resetting configurations
@@ -513,8 +515,8 @@
 
 			vcfg.startFreshStatus = false;
 
-			if ( vcfg.currentFormId !== '' && vcfg.currentFormId !== $( this ).val() ) {
-				vcfg.showDialog( '#gravityview_form_id_dialog' );
+			if ( vcfg.getConfiguredFields().length ) {
+				vcfg.showDialog( '#gravityview_change_form_dialog' );
 			} else {
 				vcfg.formChangeContinue();
 			}
@@ -525,16 +527,30 @@
 		formChangeContinue: function () {
 			var vcfg = viewConfiguration;
 
-			if ( '' === vcfg.gvSelectForm.val() ) {
+			if ( ! vcfg.gvSelectForm.val() ) {
+				vcfg.getConfiguredFields().remove();
 				vcfg.hideView();
+				vcfg.gvSwitchView.fadeOut( 150 );
 			} else {
 
 				// Let merge tags know not to initialize
 				$( 'body' ).trigger( 'gravityview_form_change' ).addClass( 'gv-form-changed' );
+
 				vcfg.templateFilter( 'custom' );
+
 				vcfg.getAvailableFields();
 				vcfg.getSortableFields();
+
+				if ( ! vcfg.currentFormId && ! vcfg.currentTemplateId ) {
+					vcfg.showViewTypeMetabox();
+					vcfg.gvSwitchView.fadeOut( 150 );
+				} else {
+					vcfg.gvSwitchView.show();
+				}
 			}
+
+			vcfg.currentTemplateId = '';
+			vcfg.currentFormId = vcfg.gvSelectForm.val();
 		},
 
 		showDialog: function ( dialogSelector, buttons ) {
@@ -546,7 +562,7 @@
 			var cancel_button = {
 				text: gvGlobals.label_cancel,
 				click: function () {
-					if ( thisDialog.is( '#gravityview_form_id_dialog' ) ) {
+					if ( thisDialog.is( '#gravityview_change_form_dialog' ) ) {
 						vcfg.startFreshStatus = false;
 						vcfg.gvSelectForm.val( vcfg.currentFormId );
 					}
@@ -560,9 +576,9 @@
 			};
 
 			var continue_button = {
-			text: gvGlobals.label_continue,
-			click: function () {
-					if ( thisDialog.is( '#gravityview_form_id_dialog' ) ) {
+				text: gvGlobals.label_continue,
+				click: function() {
+					if ( thisDialog.is( '#gravityview_change_form_dialog' ) || thisDialog.is( '#gravityview_select_preset_dialog' ) ) {
 						if ( vcfg.startFreshStatus ) {
 							vcfg.startFreshContinue();
 						} else {
@@ -576,7 +592,7 @@
 					}
 
 					thisDialog.dialog( 'close' );
-				}
+				},
 			};
 
 			var default_buttons = [ cancel_button, continue_button ];
@@ -741,7 +757,7 @@
 		/**
 		 * @param {jQueryEvent} e
 		 */
-		selectTemplate: function ( e ) {
+		selectTemplate: function( e ) {
 			var vcfg = viewConfiguration;
 
 			e.preventDefault();
@@ -749,22 +765,26 @@
 
 			// get selected template
 			vcfg.wantedTemplate = $( this );
-			var currTemplateId = $( "#gravityview_directory_template" ).val(),
-			selectedTemplateId = vcfg.wantedTemplate.attr( "data-templateid" ),
-			regexMatch = /(.*?)_(.*?)$/i,
-			currTemplateIdSlug = currTemplateId.replace( regexMatch, '$2' ),
-			selectedTemplateIdSlug = selectedTemplateId.replace( regexMatch, '$2' ),
-			slugmatch = ( selectedTemplateIdSlug === currTemplateIdSlug ),
-			has_fields = $( '#directory-fields, #single-fields' ).find('.gv-droppable-area .gv-fields').length;
+			var selectedTemplateId = vcfg.wantedTemplate.attr( 'data-templateid' );
+			var regexMatch = /(.*?)_(.*?)$/i;
+			var currTemplateIdSlug = vcfg.currentTemplateId.replace( regexMatch, '$2' );
+			var selectedTemplateIdSlug = selectedTemplateId.replace( regexMatch, '$2' );
+			var slugmatch = ( selectedTemplateIdSlug === currTemplateIdSlug );
 
 			// check if template is being changed
-			if ( currTemplateId === '' || slugmatch || 0 === has_fields ) {
-				$( "#gravityview_select_template" ).slideUp( 150 );
+			if ( ! vcfg.currentTemplateId || slugmatch || ! vcfg.getConfiguredFields().length ) {
+				$( '#gravityview_select_template' ).slideUp( 150 );
 				vcfg.selectTemplateContinue( slugmatch );
-			} else if ( currTemplateId !== selectedTemplateId ) {
-				vcfg.showDialog( '#gravityview_switch_template_dialog' );
+			} else if ( vcfg.currentTemplateId !== selectedTemplateId ) {
+				// warn if fields are configured
+				if ( vcfg.getConfiguredFields().length ) {
+					vcfg.showDialog( '#gravityview_switch_template_dialog' );
+				} else {
+					vcfg.toggleViewTypeMetabox();
+					vcfg.selectTemplateContinue( slugmatch );
+				}
 			} else {
-				// show the same situation as before clicking in Start Fresh.
+				// revert back to how things before before clicking "use a form preset"
 				vcfg.toggleViewTypeMetabox();
 				vcfg.showViewConfig();
 			}
@@ -810,6 +830,7 @@
 
 			}
 
+			vcfg.currentTemplateId = selectedTemplateId;
 		},
 
 		/**
@@ -1055,6 +1076,15 @@
 
 
 		/**
+		 * Get fields configured in each context
+		 *
+		 * @return array
+		 */
+		getConfiguredFields: function () {
+			return $( '#directory-active-fields, #single-active-fields, #edit-active-fields' ).find( '.gv-fields' );
+		},
+
+		/**
 		 * Fetch the Available Fields for a given Form ID or Preset Template ID
 		 * @param  {null|string}    preset
 		 * @param  {string}    templateid      The "slug" of the View template
@@ -1066,7 +1096,7 @@
 
 			vcfg.toggleDropMessage();
 
-			$( '#directory-active-fields, #single-active-fields, #edit-active-fields' ).find( '.gv-fields' ).remove();
+			vcfg.getConfiguredFields().remove();
 
 			var data = {
 				action: 'gv_available_fields',
