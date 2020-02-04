@@ -21,8 +21,19 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.6 on January 14, 2020 =
+= 2.6 on February 5, 2020 =
 
+* Added: Implement Gravity Forms Entry Locking - see when others are editing an entry at the same time
+* Added: Easily duplicate entries in Gravity Forms using the new "Duplicate" link in Gravity Forms Entries screen
+* Improved: Speed up loading of Edit View screen
+* Improved: Speed of adding fields in the View Configuration screen
+* Modified: Reorganized some settings to be clearer
+* Fixed: Potential fatal error when activating extensions with GravityView not active
+* Updated: Russian translation (thank you, Victor S!)
+
+__Developer Updates:__
+
+* Added: `gravityview/duplicate/backend/enable` filter to disable adding a "Duplicate" link for entries
 * Added: `gravityview/request/is_renderable` filter to modify what request classes represent valid GravityView requests
 * Added: `gravityview/widget/search/form/action` filter to change search submission URL as needed.
 * Added: `gravityview/entry-list/link` filter to modify Other Entries links as needed.
