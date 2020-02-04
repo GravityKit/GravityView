@@ -733,7 +733,7 @@ final class GravityView_Duplicate_Entry {
 		}
 
 		?>
-		<span class="duplicate">
+		<span class="gv-duplicate">
 			|
 			<a href="<?php echo wp_nonce_url( add_query_arg( 'entry_id', $entry['id'] ), self::get_nonce_key( $entry['id'] ), 'duplicate' ); ?>"><?php esc_html_e( 'Duplicate', 'gravityview' ); ?></a>
 		</span>
