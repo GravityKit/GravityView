@@ -724,7 +724,7 @@ final class GravityView_Duplicate_Entry {
 	public function make_duplicate_link_row( $form_id, $field_id, $value, $entry, $query_string ) {
 
 		/**
-		 * @filter `gravityview/duplicate/backend/enable` Allows developers to disable the duplicate link on the backend.
+		 * @filter `gravityview/duplicate/backend/enable` Disables the duplicate link on the backend.
 		 * @param[in,out] boolean $enable True by default. Enabled.
 		 * @param int $form_id The form ID.
 		 */
