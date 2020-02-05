@@ -274,9 +274,13 @@ class GravityView_Edit_Entry_Locking {
 	 */
 	public function set_lock( $entry_id ) {
 
-		// Todo: check caps
+		$entry = GFAPI::get_entry( $entry_id );
 
-		if ( 0 == ( $user_id = get_current_user_id() ) ) {
+		if ( ! GravityView_Edit_Entry::check_user_cap_edit_entry( $entry ) ) {
+			return false;
+		}
+
+		if ( 0 === ( $user_id = get_current_user_id() ) ) {
 			return false;
 		}
 
