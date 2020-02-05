@@ -532,10 +532,6 @@
 				vcfg.hideView();
 				vcfg.gvSwitchView.fadeOut( 150 );
 			} else {
-
-				// Let merge tags know not to initialize
-				$( 'body' ).trigger( 'gravityview_form_change' ).addClass( 'gv-form-changed' );
-
 				vcfg.templateFilter( 'custom' );
 
 				vcfg.getAvailableFields();
@@ -551,6 +547,7 @@
 
 			vcfg.currentTemplateId = '';
 			vcfg.currentFormId = vcfg.gvSelectForm.val();
+			$( 'body' ).trigger( 'gravityview_form_change' ).addClass( 'gv-form-changed' );
 		},
 
 		showDialog: function ( dialogSelector, buttons ) {
@@ -714,8 +711,11 @@
 			$( document ).trigger( 'gv_admin_views_hideViewConfig' );
 		},
 
+		/**
+		 * Show metaboxes related to view configuration.
+		 * @return {void}
+		 */
 		showViewConfig: function () {
-
 			$( '#gravityview_view_config' ).slideDown( 150 );
 
 			viewGeneralSettings.metaboxObj.show();
