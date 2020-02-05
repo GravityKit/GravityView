@@ -40,6 +40,7 @@ class GravityView_Edit_Entry {
             $this->load_components( 'admin' );
         }
 
+		$this->load_components( 'locking' );
 
         $this->load_components( 'render' );
 
