@@ -1,0 +1,11 @@
+{
+	"view_id": {
+		"default": ""
+	},
+	"id": {
+		"default": ""
+	},
+	"preview": {
+		"default": false
+	}
+}

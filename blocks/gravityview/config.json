@@ -1,0 +1,53 @@
+{
+	"id": {
+		"default": ""
+	},
+	"page_size": {
+		"default": ""
+	},
+	"sort_field": {
+		"default": ""
+	},
+	"sort_direction": {
+		"default": ""
+	},
+	"search_field": {
+		"default": ""
+	},
+	"search_value": {
+		"default": ""
+	},
+	"search_operator": {
+		"default": "contains"
+	},
+	"start_date": {
+		"default": ""
+	},
+	"start_date_type": {
+		"default": "static"
+	},
+	"end_date": {
+		"default": ""
+	},
+	"end_date_type": {
+		"default": "static"
+	},
+	"class": {
+		"default": ""
+	},
+	"offset": {
+		"default": ""
+	},
+	"single_title": {
+		"default": ""
+	},
+	"back_link_label": {
+		"default": ""
+	},
+	"post_id": {
+		"default": ""
+	},
+	"preview": {
+		"default": false
+	}
+}

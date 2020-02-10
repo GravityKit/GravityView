@@ -1,0 +1,17 @@
+{
+	"view_id": {
+		"default": ""
+	},
+	"entry_id": {
+		"default": ""
+	},
+	"field_id": {
+		"default": ""
+	},
+	"custom_label": {
+		"default": ""
+	},
+	"preview": {
+		"default": false
+	}
+}

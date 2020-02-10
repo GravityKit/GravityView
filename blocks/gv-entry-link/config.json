@@ -1,0 +1,38 @@
+{
+	"view_id": {
+		"default": ""
+	},
+	"entry_id": {
+		"default": ""
+	},
+	"action": {
+		"default": "read"
+	},
+	"post_id": {
+		"default": ""
+	},
+	"return": {
+		"default": "html"
+	},
+	"link_atts": {
+		"default": ""
+	},
+	"field_values": {
+		"default": ""
+	},
+	"content": {
+		"default": ""
+	},
+	"preview": {
+		"default": false
+	}
+}
+
+
+
+
+
+
+
+
+
