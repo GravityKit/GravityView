@@ -1,4 +1,5 @@
 <?php
+
 if ( ! function_exists( 'gravityview_block_render_gventry' ) ) {
 	return;
 }
@@ -13,22 +14,22 @@ if ( ! function_exists( 'gravityview_block_render_gventry' ) ) {
  * @return string $output
  */
 function gravityview_block_render_gventry( $attributes ) {
-	
+
 	$shortcode = '[gventry ';
-	
+
 	if ( ! empty( $attributes['view_id'] ) ) {
 		$view_id   = esc_attr( sanitize_text_field( $attributes['view_id'] ) );
 		$shortcode .= "view_id='$view_id' ";
 	}
-	
+
 	if ( ! empty( $attributes['id'] ) ) {
 		$id        = esc_attr( sanitize_text_field( $attributes['id'] ) );
 		$shortcode .= "id='$id' ";
 	}
-	
+
 	$shortcode .= ']';
-	
+
 	$output = do_shortcode( $shortcode );
-	
+
 	return $output;
 }

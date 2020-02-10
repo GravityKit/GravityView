@@ -1,4 +1,5 @@
 <?php
+
 if ( ! function_exists( 'gravityview_block_render_gravityview' ) ) {
 	return;
 }
@@ -25,81 +26,82 @@ if ( ! function_exists( 'gravityview_block_render_gravityview' ) ) {
  * @return string $output
  */
 function gravityview_block_render_gravityview( $attributes ) {
-	
+
 	$shortcode = '[gravityview ';
-	
+
 	if ( ! empty( $attributes['id'] ) ) {
 		$id        = esc_attr( sanitize_text_field( $attributes['id'] ) );
 		$shortcode .= "id='$id' ";
 	}
-	
+
 	if ( ! empty( $attributes['page_size'] ) ) {
 		$page_size = esc_attr( sanitize_text_field( $attributes['page_size'] ) );
 		$shortcode .= "page_size='$page_size' ";
 	}
-	
+
 	if ( ! empty( $attributes['sort_field'] ) ) {
 		$sort_field = esc_attr( sanitize_text_field( $attributes['sort_field'] ) );
 		$shortcode  .= "sort_field='$sort_field' ";
 	}
-	
+
 	if ( ! empty( $attributes['sort_direction'] ) ) {
 		$sort_direction = esc_attr( sanitize_text_field( $attributes['sort_direction'] ) );
 		$shortcode      .= "sort_direction='$sort_direction' ";
 	}
-	
+
 	if ( ! empty( $attributes['search_field'] ) ) {
 		$search_field = esc_attr( sanitize_text_field( $attributes['search_field'] ) );
 		$shortcode    .= "search_field='$search_field' ";
 	}
-	
+
 	if ( ! empty( $attributes['search_value'] ) ) {
 		$search_value = esc_attr( sanitize_text_field( $attributes['search_value'] ) );
 		$shortcode    .= "search_value='$search_value' ";
 	}
-	
+
 	if ( ! empty( $attributes['search_operator'] ) ) {
 		$search_operator = esc_attr( sanitize_text_field( $attributes['search_operator'] ) );
 		$shortcode       .= "search_operator='$search_operator' ";
 	}
-	
+
 	if ( ! empty( $attributes['start_date'] ) ) {
 		$start_date = esc_attr( sanitize_text_field( $attributes['start_date'] ) );
 		$shortcode  .= "start_date='$start_date' ";
 	}
-	
+
 	if ( ! empty( $attributes['end_date'] ) ) {
 		$end_date  = esc_attr( sanitize_text_field( $attributes['end_date'] ) );
 		$shortcode .= "end_date='$end_date' ";
 	}
-	
+
 	if ( ! empty( $attributes['class'] ) ) {
 		$class     = esc_attr( sanitize_text_field( $attributes['class'] ) );
 		$shortcode .= "class='$class' ";
 	}
-	
+
 	if ( ! empty( $attributes['offset'] ) ) {
 		$offset    = esc_attr( sanitize_text_field( $attributes['offset'] ) );
 		$shortcode .= "offset='$offset' ";
 	}
-	
+
 	if ( ! empty( $attributes['single_title'] ) ) {
 		$single_title = esc_attr( sanitize_text_field( $attributes['single_title'] ) );
 		$shortcode    .= "single_title='$single_title' ";
 	}
-	
+
 	if ( ! empty( $attributes['back_link_label'] ) ) {
 		$back_link_label = esc_attr( sanitize_text_field( $attributes['back_link_label'] ) );
 		$shortcode       .= "back_link_label='$back_link_label' ";
 	}
-	
+
 	if ( ! empty( $attributes['post_id'] ) ) {
 		$post_id   = esc_attr( sanitize_text_field( $attributes['post_id'] ) );
 		$shortcode .= "post_id='$post_id' ";
 	}
-	
+
 	$shortcode .= ']';
-	
+
 	$output = do_shortcode( $shortcode );
+
 	return $output;
 }

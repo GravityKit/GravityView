@@ -1,4 +1,5 @@
 <?php
+
 if ( ! function_exists( 'gravityview_block_render_gv_entry_link' ) ) {
 	return;
 }
@@ -19,52 +20,52 @@ if ( ! function_exists( 'gravityview_block_render_gv_entry_link' ) ) {
  * @return string $output
  */
 function gravityview_block_render_gv_entry_link( $attributes ) {
-	
+
 	$shortcode = '[gv_entry_link ';
-	
+
 	if ( ! empty( $attributes['view_id'] ) ) {
 		$view_id   = esc_attr( sanitize_text_field( $attributes['view_id'] ) );
 		$shortcode .= "view_id='$view_id' ";
 	}
-	
+
 	if ( ! empty( $attributes['entry_id'] ) ) {
 		$entry_id  = esc_attr( sanitize_text_field( $attributes['entry_id'] ) );
 		$shortcode .= "entry_id='$entry_id' ";
 	}
-	
+
 	if ( ! empty( $attributes['action'] ) ) {
 		$action    = esc_attr( sanitize_text_field( $attributes['action'] ) );
 		$shortcode .= "action='$action' ";
 	}
-	
+
 	if ( ! empty( $attributes['post_id'] ) ) {
 		$post_id   = esc_attr( sanitize_text_field( $attributes['post_id'] ) );
 		$shortcode .= "post_id='$post_id' ";
 	}
-	
+
 	if ( ! empty( $attributes['return'] ) ) {
 		$return    = esc_attr( sanitize_text_field( $attributes['return'] ) );
 		$shortcode .= "return='$return' ";
 	}
-	
+
 	if ( ! empty( $attributes['link_atts'] ) ) {
 		$link_atts = esc_attr( sanitize_text_field( $attributes['link_atts'] ) );
 		$shortcode .= "link_atts='$link_atts'";
 	}
-	
+
 	if ( ! empty( $attributes['field_values'] ) ) {
 		$field_values = esc_attr( sanitize_text_field( $attributes['field_values'] ) );
 		$shortcode    .= "$field_values='$field_values'";
 	}
-	
+
 	if ( ! empty( $attributes['content'] ) ) {
 		$content   = wp_kses_post( $attributes['content'] );
 		$shortcode .= ']' . $content . '[/gv_entry_link]';
 	} else {
 		$shortcode .= '/]';
 	}
-	
+
 	$output = do_shortcode( $shortcode );
-	
+
 	return $output;
 }

@@ -1,4 +1,5 @@
 <?php
+
 if ( ! function_exists( 'gravityview_block_render_gravityview_details' ) ) {
 	return;
 }
@@ -13,21 +14,22 @@ if ( ! function_exists( 'gravityview_block_render_gravityview_details' ) ) {
  * @return string $output
  */
 function gravityview_block_render_gravityview_details( $attributes ) {
-	
+
 	$shortcode = '[gravityview ';
-	
+
 	if ( ! empty( $attributes['id'] ) ) {
 		$id        = esc_attr( sanitize_text_field( $attributes['id'] ) );
 		$shortcode .= "id='$id' ";
 	}
-	
+
 	if ( ! empty( $attributes['detail'] ) ) {
 		$detail    = esc_attr( sanitize_text_field( $attributes['detail'] ) );
 		$shortcode .= "detail='$detail' ";
 	}
-	
+
 	$shortcode .= ']';
-	
+
 	$output = do_shortcode( $shortcode );
+
 	return $output;
 }
