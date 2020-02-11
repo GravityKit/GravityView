@@ -16,9 +16,13 @@ $form = $gravityview->view->form->form;
 $display_value = $gravityview->display_value;
 $field_settings = $gravityview->field->as_configuration();
 
-if ( $value !== '' && ! empty( $field_settings['number_format'] ) ) {
+if ( $value !== '' ) {
 	$decimals = ( isset( $field_settings['decimals'] ) && $field_settings['decimals'] !== '' ) ? $field_settings['decimals'] : '';
-	echo gravityview_number_format( $value, $decimals );
+	if ( empty( $field_settings['number_format'] ) && $gravityview->field->field->numberFormat === 'currency' ) {
+		echo $display_value;
+	} else {
+		echo gravityview_number_format( $value, $decimals, ! empty( $field_settings['number_format'] ) );
+	}
 } else {
 	echo $display_value;
 }

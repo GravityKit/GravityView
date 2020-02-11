@@ -38,7 +38,7 @@ PROJECT_NAME           = GravityView
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         = 2.1.1
+PROJECT_NUMBER         = 2.5
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
@@ -897,7 +897,9 @@ RECURSIVE              = YES
 EXCLUDE                = ../tests \
                          ../node_modules \
                          ../includes/lib \
-                         ../readme.md
+                         ../readme.md \
+                         ../vendor \
+                         ../wpcs
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded

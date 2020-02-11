@@ -25,6 +25,9 @@
 
 		wp_widget_id: 'gravityview_search',
 
+		// The default search should be a single "Search All" field
+		default_search_fields: '[{"field":"search_all","input":"input_text"}]',
+
 		init: function( wrapClass ) {
 
 			gvSearchWidget.wrapClass = wrapClass;
@@ -40,9 +43,9 @@
 				.bind( 'click.widgets-toggle', gvSearchWidget.openWidget )
 
 				// [View, WP widget] hook to add/remove rows
-				.on( 'click', "." + wrapClass +" a[href='#addSearchField']", gvSearchWidget.addField )
+				.on( 'click', "." + wrapClass +" .gv-add-search-field", gvSearchWidget.addField )
 
-				.on( 'click', "." + wrapClass +" a[href='#removeSearchField']", gvSearchWidget.removeField )
+				.on( 'click', "." + wrapClass +" .gv-remove-search-field", gvSearchWidget.removeField )
 
 				// [View, WP widget] hook to update row input types
 				.on( 'change', "." + wrapClass +" select.gv-search-fields", gvSearchWidget.updateRow )
@@ -308,9 +311,9 @@
 						'<thead>'+
 							'<tr>' +
 								'<th class="cell-sort">&nbsp;</th>' +
-								'<th class="cell-search-fields">' + gvSearchVar.label_searchfield +'</th>' +
-			                    '<th class="cell-input-label">' + gvSearchVar.label_label +'</th>' +
-								'<th class="cell-input-types">' + gvSearchVar.label_inputtype +'</th>' +
+								'<th class="cell-search-fields" scope="col">' + gvSearchVar.label_searchfield +'</th>' +
+			                    '<th class="cell-input-label" scope="col">' + gvSearchVar.label_label +'</th>' +
+								'<th class="cell-input-types" scope="col">' + gvSearchVar.label_inputtype +'</th>' +
 								'<th class="cell-add-remove">&nbsp;</th>' +
 							'</tr>' +
 						'</thead>'+
@@ -323,7 +326,7 @@
 		 * @param  {{jQuery DOM object}} table  The table DOM object
 		 */
 		addEmptyMsg: function( table ) {
-			$( table ).append('<tr class="no-search-fields"><td colspan="5">'+ gvSearchVar.label_nofields +'&nbsp; <a href="#addSearchField">'+ gvSearchVar.label_addfield +'</a></td></tr>');
+			$( table ).append('<tr class="no-search-fields"><td colspan="5">'+ gvSearchVar.label_nofields +'&nbsp; <button class="gv-add-search-field">'+ gvSearchVar.label_addfield + '</button></td></tr>');
 		},
 
 		/**
@@ -335,11 +338,11 @@
 		addRow: function( table, row, curr ) {
 
 			var rowString = $('<tr class="gv-search-field-row new-row hide-if-js" />')
-				.append('<td class="cell-sort"><span class="icon gv-icon-caret-up-down" style="display:none;" /></td>')
+				.append('<td class="cell-sort"><span class="icon gv-icon-caret-up-down" style="display:none;" aria-label="' + gvGlobals.label_reorder_search_fields + '" /></td>')
 				.append('<td class="cell-search-fields">'+ gvSearchWidget.getSelectFields() +'</td>')
 				.append('<td class="cell-input-label"><input type="text" class="widefat gv-search-labels" /></td>')
 				.append('<td class="cell-input-types"><select class="gv-search-inputs" /></td>')
-				.append('<td class="cell-add-remove"><a href="#addSearchField" class="dashicons dashicons-plus-alt" /><a href="#removeSearchField" class="dashicons dashicons-dismiss" /></td>');
+				.append('<td class="cell-add-remove"><button class="gv-add-search-field" aria-label="' + gvGlobals.label_add_search_field + '"><span class="dashicons dashicons-plus-alt"></span></button><button class="gv-remove-search-field" aria-label="' + gvGlobals.label_remove_search_field + '"><span class="dashicons dashicons-dismiss"></span></button></td>');
 
 			// add row
 			if( row !== null && row.length ) {
@@ -669,18 +672,19 @@
 			gvSearchWidget.selectFields = null;
 			$('.gv-search-fields-value').each( function() {
 				$(this).parents('.'+ gvSearchWidget.wrapClass ).find('table').remove();
-				$(this).val('');
+				$( this ).val( gvSearchWidget.default_search_fields );
 			});
+
 		},
 
 		/**
 		 * [Specific for Search WP Widget]
-		 * When view changes clear select fields cache, remove table and refresh the data
+		 * When View changes clear select fields cache, remove table and refresh the data
 		 */
 		clearWidgetSearchData: function() {
 			gvSearchWidget.resetWidgetData( $(this) );
 			gvSearchWidget.widgetTarget.removeData( 'gvSelectFields' );
-			$( '.gv-search-fields-value', gvSearchWidget.widgetTarget ).val('');
+			$( '.gv-search-fields-value', gvSearchWidget.widgetTarget ).val( gvSearchWidget.default_search_fields );
 
 			var widget = gvSearchWidget.widgetTarget.closest('div.widget');
 

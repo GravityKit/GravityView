@@ -268,7 +268,7 @@ class GravityView_Field_Address extends GravityView_Field {
 		return $input_type;
 	}
 
-	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		// If this is NOT the full address field, return default options.
 		if( floor( $field_id ) !== floatval( $field_id ) ) {

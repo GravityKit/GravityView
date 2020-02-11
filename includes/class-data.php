@@ -209,7 +209,7 @@ class GravityView_View_Data {
 	function get_fields( $view_id ) {
 		if ( \GV\View::exists( $view_id ) ) {
 			$view = \GV\View::by_id( $view_id );
-			return $view->fields->by_visible()->as_configuration();
+			return $view->fields->by_visible( $view )->as_configuration();
 		}
 	}
 

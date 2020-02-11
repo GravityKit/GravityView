@@ -186,7 +186,7 @@ module.exports = function(grunt) {
 
 		// Pull in the latest translations
 		exec: {
-			transifex: 'tx pull -a',
+			transifex: 'tx pull -a --parallel',
 
 			// Create a ZIP file
 			zip: {

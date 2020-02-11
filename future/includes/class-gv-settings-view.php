@@ -111,6 +111,13 @@ class View_Settings extends Settings {
 				'value'             => 1,
 				'show_in_shortcode' => false,
 			),
+			'hide_empty_single' => array(
+				'label'             => __( 'Hide empty fields', 'gravityview' ),
+				'group'             => 'default',
+				'type'              => 'checkbox',
+				'value'             => 1,
+				'show_in_shortcode' => false,
+			),
 			'edit_feeds' => array(
 				'label'             => __( 'Feeds', 'gravityview' ),
 				'group'             => 'default',
@@ -120,7 +127,7 @@ class View_Settings extends Settings {
 			),
 			'user_edit' => array(
 				'label'             => __( 'Allow User Edit', 'gravityview' ), 'group'             => 'default',
-				'desc'              => __( 'Allow logged-in users to edit entries they created.', 'gravityview' ),
+				'desc'              => __( 'Allow logged-in users to edit entries they created.', 'gravityview' ) . ' ' . sprintf( __( 'Administrators are able to %s regardless of this setting.', 'gravityview' ), _x( 'edit entries', 'an action that admins can perform', 'gravityview' ) ),
 				'value'             => 0,
 				'tooltip'           => __( 'Display "Edit Entry" fields to non-administrator users if they created the entry. Edit Entry fields will always be displayed to site administrators.', 'gravityview' ),
 				'type'              => 'checkbox',
@@ -139,9 +146,18 @@ class View_Settings extends Settings {
 			'user_delete' => array(
 				'label'             => __( 'Allow User Delete', 'gravityview' ),
 				'group'             => 'default',
-				'desc'              => __( 'Allow logged-in users to delete entries they created.', 'gravityview' ),
+				'desc'              => __( 'Allow logged-in users to delete entries they created.', 'gravityview' ) . ' ' . sprintf( __( 'Administrators are able to %s regardless of this setting.', 'gravityview' ), _x( 'delete entries', 'an action that admins can perform', 'gravityview' ) ),
 				'value'             => 0,
 				'tooltip'           => __( 'Display "Delete Entry" fields to non-administrator users if they created the entry. Delete Entry fields will always be displayed to site administrators.', 'gravityview' ),
+				'type'              => 'checkbox',
+				'show_in_shortcode' => true,
+			),
+			'user_duplicate' => array(
+				'label'             => __( 'Allow User Duplicate', 'gravityview' ),
+				'group'             => 'default',
+				'desc'              => __( 'Allow logged-in users to duplicate entries they created.', 'gravityview' ) . ' ' . sprintf( __( 'Administrators are able to %s regardless of this setting.', 'gravityview' ), _x( 'duplicate entries', 'an action that admins can perform', 'gravityview' ) ),
+				'value'             => 0,
+				'tooltip'           => __( 'Display "Duplicate Entry" fields to non-administrator users if they created the entry. Duplicate Entry fields will always be displayed to site administrators.', 'gravityview' ),
 				'type'              => 'checkbox',
 				'show_in_shortcode' => true,
 			),
@@ -280,6 +296,18 @@ class View_Settings extends Settings {
 					'0'  => __( 'Redirect to Single Entry', 'gravityview' ),
 					'1' => __( 'Redirect to Multiple Entries', 'gravityview' ),
 					'2' => __( 'Redirect to URL', 'gravityview' ),
+				)
+			),
+			'edit_return_context' => array(
+				'label'             => __( 'Editing Returns To&hellip;', 'gravityview' ),
+				'type'              => 'radio',
+				'desc'              => __( 'After editing an entry or clicking Cancel, where should the user be sent?', 'gravityview' ),
+				'group'             => 'default',
+				'value'             => 'single',
+				'options'           => array(
+					'multiple' => __( 'Multiple Entries', 'gravityview' ),
+					'single'   => __( 'Single Entry', 'gravityview' ),
+					'custom'   => __( 'Other URL', 'gravityview' ),
 				),
 				'show_in_shortcode' => false,
 				'full_width'        => true,
@@ -337,7 +365,7 @@ class View_Settings extends Settings {
 				'desc'              => __( 'Enable CSV access to this View.', 'gravityview' ),
 				'type'              => 'checkbox',
 				'value'             => '',
-				'tooltip'           => false,
+				'tooltip'           => __( 'If enabled, entries can be exported for this View by adding "/csv/" to the View URL. Each configured field will be a column in the exported CSV.', 'gravityview' ),
 				'show_in_shortcode' => false,
 				'full_width'        => true,
 			),
@@ -346,6 +374,7 @@ class View_Settings extends Settings {
 			'csv_nolimit'           => array(
 				'label'             => __( 'Show all in CSV', 'gravityview' ),
 				'group'             => 'default',
+				'requires'          => 'csv_enable',
 				'desc'              => __( 'Do not limit the number of entries output in the CSV.', 'gravityview' ),
 				'type'              => 'checkbox',
 				'value'             => '',

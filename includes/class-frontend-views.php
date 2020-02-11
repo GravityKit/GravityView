@@ -805,6 +805,10 @@ class GravityView_frontend {
 		 */
 		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', $search_criteria, $form_id, $args );
 
+		if ( ! is_array( $search_criteria ) ) {
+			return array();
+		}
+
 		$original_search_criteria = $search_criteria;
 
 		gravityview()->log->debug( '[get_search_criteria] Search Criteria after hook gravityview_fe_search_criteria: ', array( 'data' =>$search_criteria ) );
@@ -1044,11 +1048,22 @@ class GravityView_frontend {
 		$has_values = isset( $_GET['sort'] );
 
 		if ( $has_values && is_array( $_GET['sort'] ) ) {
-			$has_values = array_filter( array_values( $_GET['sort'] ) );
+			$sorts = array_keys( $_GET['sort'] );
+			$dirs  = array_values( $_GET['sort'] );
+
+			if ( $has_values = array_filter( $dirs ) ) {
+				$sort_field_id = end( $sorts );
+				$sort_direction = end( $dirs );
+			}
 		}
 
-		$sort_field_id = $has_values ? $_GET['sort'] : \GV\Utils::get( $args, 'sort_field' );
-		$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : \GV\Utils::get( $args, 'sort_direction' );
+		if ( ! isset( $sort_field_id ) ) {
+			$sort_field_id = isset( $_GET['sort'] ) ? $_GET['sort'] : \GV\Utils::get( $args, 'sort_field' );
+		}
+
+		if ( ! isset( $sort_direction ) ) {
+			$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : \GV\Utils::get( $args, 'sort_direction' );
+		}
 
 		if ( is_array( $sort_field_id ) ) {
 			$sort_field_id = array_pop( $sort_field_id );
@@ -1291,17 +1306,47 @@ class GravityView_frontend {
 				// If the thickbox is enqueued, add dependencies
 				if ( $lightbox ) {
 
+					global $wp_filter;
+
+					if ( ! empty( $wp_filter[ 'gravity_view_lightbox_script' ] ) ) {
+						gravityview()->log->warning( 'gravity_view_lightbox_script filter is deprecated use gravityview_lightbox_script instead' );
+					}
+
 					/**
 					 * @filter `gravity_view_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
+					 * @deprecated 2.5.1 Naming. See `gravityview_lightbox_script` instead.
 					 */
-					$js_dependencies[] = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
+					$js_dependency = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
+
+					/**
+					 * @filter `gravityview_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
+					 * @since 2.5.1
+					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
+					 * @param \GV\View The View.
+					 */
+					apply_filters( 'gravityview_lightbox_script', $js_dependency, $view );
+					$js_dependencies[] = $js_dependency;
+
+					if ( ! empty( $wp_filter[ 'gravity_view_lightbox_style' ] ) ) {
+						gravityview()->log->warning( 'gravity_view_lightbox_style filter is deprecated use gravityview_lightbox_style instead' );
+					}
 
 					/**
 					 * @filter `gravity_view_lightbox_style` Modify the lightbox CSS slug. Default: `thickbox`
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of its CSS file here.
+					 * @deprecated 2.5.1 Naming. See `gravityview_lightbox_style` instead.
 					 */
-					$css_dependencies[] = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
+					$css_dependency = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
+
+					/**
+					 * @filter `gravityview_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
+					 * @since 2.5.1
+					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
+					 * @param \GV\View The View.
+					 */
+					$css_dependency = apply_filters( 'gravityview_lightbox_style', $css_dependency, $view );
+					$css_dependencies[] = $css_dependency;
 				}
 
 				/**

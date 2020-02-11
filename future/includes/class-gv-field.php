@@ -294,7 +294,7 @@ class Field {
 	public function get_value( View $view = null, Source $source = null, Entry $entry = null, Request $request = null ) {
 		return $this->get_value_filters( null, $view, $source, $entry, $request );
 	}
-	
+
 	/**
 	 * Apply all the required filters after get_value() was called.
 	 *
@@ -332,14 +332,23 @@ class Field {
 		return apply_filters( 'gravityview/field/value', $value, $this, $view, $source, $entry, $request );
 	}
 
-	public function is_visible() {
+	/**
+	 * Whether or not this field is visible.
+	 *
+	 * @param \GV\View|null Is visible where exactly?
+	 * @since develop
+	 *
+	 * @return bool
+	 */
+	public function is_visible( $view = null ) {
 		/**
 		 * @filter `gravityview/field/is_visible` Should this field be visible?
 		 *
 		 * @param boolean $visible Visible or not, defaults to the set field capability requirement if defined.
 		 * @param \GV\Field $field The field we're looking at.
+		 * @param \GV\View|null A context view. Since @develop
 		 */
-		return apply_filters( 'gravityview/field/is_visible', ( ! $this->cap || \GVCommon::has_cap( $this->cap ) ), $this );
+		return apply_filters( 'gravityview/field/is_visible', ( ! $this->cap || \GVCommon::has_cap( $this->cap ) ), $this, $view );
 	}
 
 	/**

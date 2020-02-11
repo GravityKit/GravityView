@@ -18,13 +18,13 @@ class gventry extends \GV\Shortcode {
 	/**
 	 * Process and output the [gventry] shortcode.
 	 *
-	 * @param array $atts The attributes passed.
+	 * @param array $passed_atts The attributes passed.
 	 * @param string $content The content inside the shortcode.
+	 * @param string $tag The shortcode tag.
 	 *
 	 * @return string|null The output.
 	 */
-	public function callback( $atts, $content = null ) {
-
+	public function callback( $atts, $content = '', $tag = '' ) {
 		$request = gravityview()->request;
 
 		if ( $request->is_admin() ) {
@@ -35,6 +35,7 @@ class gventry extends \GV\Shortcode {
 			'id'        => 0,
 			'entry_id'  => 0,
 			'view_id'   => 0,
+			'edit'      => 0,
 		) );
 
 		$atts = gv_map_deep( $atts, array( 'GravityView_Merge_Tags', 'replace_get_variables' ) );
@@ -159,17 +160,63 @@ class gventry extends \GV\Shortcode {
 			}
 		}
 
-		/** Remove the back link. */
-		add_filter( 'gravityview/template/links/back/url', '__return_false' );
+		if ( $atts['edit'] ) {
+			/**
+			 * Based on code in our unit-tests.
+			 * Mocks old context, etc.
+			 */
+			$loader = \GravityView_Edit_Entry::getInstance();
+			$render = $loader->instances['render'];
 
-		$renderer = new \GV\Entry_Renderer();
+			add_filter( 'gravityview/is_single_entry', '__return_true' );
 
-		$request = new \GV\Mock_Request();
-		$request->returns['is_entry'] = $entry;
+			$form = \GFAPI::get_form( $entry['form_id'] );
 
-		$output = $renderer->render( $entry, $view, $request );
+			$data = \GravityView_View_Data::getInstance( $view );
+			$template = \GravityView_View::getInstance( array(
+				'form' => $form,
+				'form_id' => $form['id'],
+				'view_id' => $view->ID,
+				'entries' => array( $entry ),
+				'atts' => \GVCommon::get_template_settings( $view->ID ),
+			) );
 
-		remove_filter( 'gravityview/template/links/back/url', '__return_false' );
+			$_GET['edit'] = wp_create_nonce(
+				\GravityView_Edit_Entry::get_nonce_key( $view->ID, $form['id'], $entry['id'] )
+			);
+
+			add_filter( 'gravityview/edit_entry/success', $callback = function( $message ) use ( $view, $entry, $atts ) {
+				$message = __( 'Entry Updated', 'gravityview' );
+
+				/**
+				 * @filter `gravityview/shortcodes/gventry/edit/success` Modify the edit entry success message in [gventry].
+				 * @since develop
+				 * @param[in,out] string $message The message.
+				 * @param \GV\View $view The View.
+				 * @param \GV\Entry $entry The entry.
+				 * @param array $atts The attributes.
+				 */
+				return apply_filters( 'gravityview/shortcodes/gventry/edit/success', $message, $view, $entry, $atts );
+			} );
+
+			ob_start() && $render->init( $data, \GV\Entry::by_id( $entry['id'] ), $view );
+			$output = ob_get_clean(); // Render :)
+
+			remove_filter( 'gravityview/is_single_entry', '__return_true' );
+			remove_filter( 'gravityview/edit_entry/success', $callback );
+		} else {
+			/** Remove the back link. */
+			add_filter( 'gravityview/template/links/back/url', '__return_false' );
+
+			$renderer = new \GV\Entry_Renderer();
+
+			$request = new \GV\Mock_Request();
+			$request->returns['is_entry'] = $entry;
+
+			$output = $renderer->render( $entry, $view, $request );
+
+			remove_filter( 'gravityview/template/links/back/url', '__return_false' );
+		}
 
 		/**
 		 * @filter `gravityview/shortcodes/gventry/output` Filter the [gventry] output.

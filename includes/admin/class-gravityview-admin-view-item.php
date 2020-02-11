@@ -52,6 +52,10 @@ abstract class GravityView_Admin_View_Item {
 			unset( $item['type'] );
 		}
 
+		if ( $admin_label = \GV\Utils::get( $settings, 'admin_label' ) ) {
+			$title = $admin_label;
+		}
+
 		// Prevent items from not having index set
 		$item = wp_parse_args( $item, array(
 			'label_text'    => $title,
@@ -150,8 +154,8 @@ abstract class GravityView_Admin_View_Item {
 
 		// $settings_html will just be hidden inputs if empty. Otherwise, it'll have an <ul>. Ugly hack, I know.
 		// TODO: Un-hack this
-		$hide_settings_link = ( empty( $this->item['settings_html'] ) || strpos( $this->item['settings_html'], '<!-- No Options -->' ) > 0 ) ? 'hide-if-js' : '';
-		$settings_link      = sprintf( '<a href="#settings" class="dashicons-admin-generic dashicons %s" title="%s"></a>', $hide_settings_link, esc_attr( $settings_title ) );
+		$hide_settings_link_class = ( empty( $this->item['settings_html'] ) || strpos( $this->item['settings_html'], '<!-- No Options -->' ) > 0 ) ? 'hide-if-js' : '';
+		$settings_link      = sprintf( '<button class="gv-field-settings" title="%1$s" aria-label="%1$s"><span class="dashicons-admin-generic dashicons %2$s"></span></button>', esc_attr( $settings_title ), $hide_settings_link_class );
 
 		// Should we show the icon that the field is being used as a link to single entry?
 		$hide_show_as_link_class = empty( $this->settings['show_as_link'] ) ? 'hide-if-js' : '';
@@ -166,10 +170,11 @@ abstract class GravityView_Admin_View_Item {
 		} else if ( ! empty( $this->item['customLabel'] ) ) {
 			$label = $this->item['customLabel'];
 		}
-
-		$output = '<h5 class="selectable gfield field-id-' . esc_attr( $this->id ) . '">';
-
 		$label = esc_attr( $label );
+
+		$output = '<button class="gv-add-field screen-reader-text">' . sprintf( esc_html__( 'Add "%s"', 'gravityview' ), $label ) . '</button>';
+
+		$output .= '<h5 class="selectable gfield field-id-' . esc_attr( $this->id ) . '">';
 
 		if ( ! empty( $this->item['parent'] ) ) {
 			$label .= ' <small>(' . esc_attr( $this->item['parent']['label'] ) . ')</small>';
@@ -179,7 +184,7 @@ abstract class GravityView_Admin_View_Item {
 		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . $this->get_item_info( false ) . '">' . $label . '</span>';
 
 
-		$output .= '<span class="gv-field-controls">' . $settings_link . $show_as_link . '<a href="#remove" class="dashicons-dismiss dashicons" title="' . esc_attr( $delete_title ) . '"></a></span>';
+		$output .= '<span class="gv-field-controls">' . $settings_link . $show_as_link . '<button class="gv-remove-field" aria-label="' . esc_attr( $delete_title ) . '" title="' . esc_attr( $delete_title ) . '"><span class="dashicons-dismiss dashicons"></span></button></span>';
 
 		// Displays only in the field/widget picker.
 		if ( $field_info = $this->get_item_info() ) {

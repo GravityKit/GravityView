@@ -169,7 +169,7 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 		return $return;
 	}
 
-	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		$field_options['approved_label'] = array(
 			'type' => 'text',

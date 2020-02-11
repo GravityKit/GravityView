@@ -258,6 +258,14 @@ class GravityView_Entry_List {
 
 		$link = GravityView_API::entry_link( $entry, $this->post_id );
 
+		/**
+		 * @filter `gravityview/entry-list/link` The link to this other entry now.
+		 * @param[in,out] string $link The link.
+		 * @param array $entry The entry.
+		 * @param \GravityView_Entry_List $this The current entry list object.
+		 */
+		$link = apply_filters( 'gravityview/entry-list/link', $link, $entry, $this );
+
 		$item_output = gravityview_get_link( $link, $this->link_format );
 
 		if( !empty( $this->after_link ) ) {

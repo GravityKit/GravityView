@@ -240,11 +240,12 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	 * @group date_created
 	 */
 	function test_replace_date_created_and_updated( $date_field = 'date_created' ) {
-
 		$form = $this->factory->form->create_and_get();
 
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
+			'date_created' => '2019-11-16 10:00:00',
+			'date_updated' => '2019-11-16 10:00:00',
 		) );
 
 		$date_value = \GV\Utils::get( $entry, $date_field );
@@ -255,6 +256,15 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		 */
 		$entry_gmt_time   = mysql2date( 'G', $date_value );
 		$entry_local_time = GFCommon::get_local_timestamp( $entry_gmt_time );
+
+		$time_now = $entry_gmt_time + 1; // 1 second difference for human_time_diff calls
+
+		add_filter( 'human_time_diff', $callback = function( $since, $diff, $from, $to ) use ( $time_now ) {
+			if ( $to !== $time_now ) {
+				return human_time_diff( $from, $time_now );
+			}
+			return $since;
+		}, 10, 4 );
 
 		$tests = array(
 
@@ -281,12 +291,12 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 
 			// 1 second ago
 			"{{$date_field}:diff}" => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
-			"{{$date_field}:diff:format:%s is so long ago}" => sprintf( '%s is so long ago', human_time_diff( $entry_gmt_time ) ),
+			"{{$date_field}:diff:format:%s is so long ago}" => sprintf( '%s is so long ago', human_time_diff( $entry_gmt_time, $time_now ) ),
 
 			// Relative should NOT process other modifiers
-			"{{$date_field}:diff:time}" => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
-			"{{$date_field}:diff:human}" => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
-			"{{$date_field}:human:diff}" => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			"{{$date_field}:diff:time}" => sprintf( '%s ago', human_time_diff( $entry_gmt_time, $time_now ) ),
+			"{{$date_field}:diff:human}" => sprintf( '%s ago', human_time_diff( $entry_gmt_time, $time_now ) ),
+			"{{$date_field}:human:diff}" => sprintf( '%s ago', human_time_diff( $entry_gmt_time, $time_now ) ),
 
 			"{{$date_field}:format:mdy}" => GFCommon::format_date( $date_value, false, 'mdy', false ),
 			"{{$date_field}:human:format:m/d/Y }" => GFCommon::format_date( $date_value, true, 'm/d/Y', false ),
@@ -301,6 +311,8 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		foreach ( $tests as $merge_tag => $expected ) {
 			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
 		}
+
+		$this->assertTrue( remove_filter( 'human_time_diff', $callback ) );
 	}
 
 	function test_replace_date_updated() {

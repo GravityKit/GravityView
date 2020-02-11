@@ -177,7 +177,7 @@ class Legacy_Override_Template extends \GV\Gamajo_Template_Loader {
 				'entry' => $this->entry,
 				'entries' => $entries,
 				'request' => $request,
-				'fields' => $this->view->fields->by_visible(),
+				'fields' => $this->view->fields->by_visible( $this->view ),
 				'in_the_loop' => true,
 			) );
 
@@ -219,7 +219,7 @@ class Legacy_Override_Template extends \GV\Gamajo_Template_Loader {
 					'view' => $this->view,
 					'entries' => $entries,
 					'request' => $request,
-					'fields' => $this->view->fields->by_visible(),
+					'fields' => $this->view->fields->by_visible( $this->view ),
 					'in_the_loop' => true,
 				), empty( $parameters ) ? array() : array(
 					'paging' => $parameters['paging'],

@@ -112,15 +112,16 @@ class GravityView_Entry_Notes {
 	 * @see GFFormsModel::get_lead_notes
 	 * @param int $entry_id Entry to get notes for
 	 *
-	 * @return stdClass[] Integer-keyed array of note objects
+	 * @return stdClass[]|null Integer-keyed array of note objects
 	 */
 	public static function get_notes( $entry_id ) {
+
 		$notes = GFFormsModel::get_lead_notes( $entry_id );
 
 		/**
 		 * @filter `gravityview/entry_notes/get_notes` Modify the notes array for an entry
 		 * @since 1.15
-		 * @param stdClass[] $notes Integer-keyed array of note objects
+		 * @param stdClass[]|null $notes Integer-keyed array of note objects
 		 * @param int $entry_id Entry to get notes for
 		 */
 		$notes = apply_filters( 'gravityview/entry_notes/get_notes', $notes, $entry_id );

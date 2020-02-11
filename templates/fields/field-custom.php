@@ -11,13 +11,15 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$form = $gravityview->view->form->form;
-$entry = $gravityview->entry->as_entry();
-$field_settings = $gravityview->field->as_configuration();
+if ( ! $gravityview->field->form_id || ! ( $form = GFAPI::get_form( $gravityview->field->form_id ) ) ) {
+	$form = $gravityview->view->form->form;
+}
 
-/** Default to empty. */
-if ( empty( $gravityview->field->content ) ) {
-	$field_settings['content'] = '';
+if ( $gravityview->entry->is_multi() ) {
+	$entry = $gravityview->entry[ $form['id'] ];
+	$entry = $entry->as_entry();
+} else {
+	$entry = $gravityview->entry->as_entry();
 }
 
 // Make sure the class is loaded in DataTables

@@ -17,15 +17,18 @@ class GravityView_Render_Settings {
 	 * Get the default options for a standard field.
 	 *
 	 * @param  string      $field_type  Type of field options to render (`field` or `widget`)
-	 * @param  string      $template_id Table slug
+	 * @param  string      $template_id Layout slug (`default_table`, `default_list`, `datatables_table`, etc.
 	 * @param  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
 	 * @param  string      $context     What context are we in? Example: `single` or `directory`
 	 * @param  string      $input_type  (textarea, list, select, etc.)
+	 * @param  int         $form_id     The form ID. @since develop
 	 * @return array       Array of field options with `label`, `value`, `type`, `default` keys
 	 */
-	public static function get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type ) {
+	public static function get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		$field_options = array();
+
+		$is_table_layout = preg_match( '/table/ism', $template_id );
 
 		if( 'field' === $field_type ) {
 
@@ -34,12 +37,13 @@ class GravityView_Render_Settings {
 				'show_label' => array(
 					'type' => 'checkbox',
 					'label' => __( 'Show Label', 'gravityview' ),
-					'value' => true,
+					'value' => ! empty ( $is_table_layout ),
 				),
 				'custom_label' => array(
 					'type' => 'text',
 					'label' => __( 'Custom Label:', 'gravityview' ),
 					'value' => '',
+					'class'      => 'widefat',
 					'merge_tags' => true,
 				),
 				'custom_class' => array(
@@ -49,6 +53,7 @@ class GravityView_Render_Settings {
 					'value' => '',
 					'merge_tags' => true,
 					'tooltip' => 'gv_css_merge_tags',
+					'class'      => 'widefat code',
 				),
 				'only_loggedin' => array(
 					'type' => 'checkbox',
@@ -65,7 +70,7 @@ class GravityView_Render_Settings {
 			);
 
 			// Match Table as well as DataTables
-			if( preg_match( '/table/ism', $template_id ) && 'directory' === $context ) {
+			if( $is_table_layout && 'directory' === $context ) {
 				$field_options['width'] = array(
 					'type' => 'number',
 					'label' => __('Percent Width', 'gravityview'),
@@ -84,8 +89,9 @@ class GravityView_Render_Settings {
 		 * @param[in]  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
 		 * @param[in]  string      $context     What context are we in? Example: `single` or `directory`
 		 * @param[in]  string      $input_type  (textarea, list, select, etc.)
+		 * @param[in]  int         $form_id     The form ID. @since develop
 		 */
-		$field_options = apply_filters( "gravityview_template_{$field_type}_options", $field_options, $template_id, $field_id, $context, $input_type );
+		$field_options = apply_filters( "gravityview_template_{$field_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
 		/**
 		 * @filter `gravityview_template_{$input_type}_options` Filter the field options by input type (`$input_type` examples: `textarea`, `list`, `select`, etc.)
@@ -94,8 +100,9 @@ class GravityView_Render_Settings {
 		 * @param[in]  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
 		 * @param[in]  string      $context     What context are we in? Example: `single` or `directory`
 		 * @param[in]  string      $input_type  (textarea, list, select, etc.)
+		 * @param[in]  int         $form_id     The form ID. @since develop
 		 */
-		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type );
+		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
 		return $field_options;
 	}
@@ -170,7 +177,7 @@ class GravityView_Render_Settings {
 		}
 
 		// get field/widget options
-		$options = self::get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type );
+		$options = self::get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type, $form_id );
 
 		// two different post arrays, depending of the field type
 		$name_prefix = $field_type .'s' .'['. $area .']['. $uniqid .']';
