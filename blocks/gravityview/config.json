@@ -1,53 +1,70 @@
 {
-	"id": {
-		"default": ""
-	},
-	"page_size": {
-		"default": ""
-	},
-	"sort_field": {
-		"default": ""
-	},
-	"sort_direction": {
-		"default": ""
-	},
-	"search_field": {
-		"default": ""
-	},
-	"search_value": {
-		"default": ""
-	},
-	"search_operator": {
-		"default": "contains"
-	},
-	"start_date": {
-		"default": ""
-	},
-	"start_date_type": {
-		"default": "static"
-	},
-	"end_date": {
-		"default": ""
-	},
-	"end_date_type": {
-		"default": "static"
-	},
-	"class": {
-		"default": ""
-	},
-	"offset": {
-		"default": ""
-	},
-	"single_title": {
-		"default": ""
-	},
-	"back_link_label": {
-		"default": ""
-	},
-	"post_id": {
-		"default": ""
-	},
-	"preview": {
-		"default": false
-	}
+  "id": {
+    "default": "",
+    "type": "number"
+  },
+  "page_size": {
+    "default": "",
+    "type": "number"
+  },
+  "sort_field": {
+    "default": "",
+    "type": "string"
+  },
+  "sort_direction": {
+    "default": "",
+    "type": "string"
+  },
+  "search_field": {
+    "default": "",
+    "type": "string"
+  },
+  "search_value": {
+    "default": "",
+    "type": "string"
+  },
+  "search_operator": {
+    "default": "contains",
+    "type": "string"
+  },
+  "start_date": {
+    "default": "",
+    "type": "string"
+  },
+  "start_date_type": {
+    "default": "static",
+    "type": "string"
+  },
+  "end_date": {
+    "default": "",
+    "type": "string"
+  },
+  "end_date_type": {
+    "default": "static",
+    "type": "string"
+  },
+  "class": {
+    "default": "",
+    "type": "string"
+  },
+  "offset": {
+    "default": "",
+    "type": "number"
+  },
+  "single_title": {
+    "default": "",
+    "type": "string"
+  },
+  "back_link_label": {
+    "default": "",
+    "type": "string"
+  },
+  "post_id": {
+    "default": "",
+    "type": "number"
+  },
+  "preview": {
+    "default": false,
+    "type": "boolean"
+  }
 }

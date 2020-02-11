@@ -1,11 +1,14 @@
 {
-	"view_id": {
-		"default": ""
-	},
-	"id": {
-		"default": ""
-	},
-	"preview": {
-		"default": false
-	}
+  "view_id": {
+    "default": "",
+    "type": "number"
+  },
+  "id": {
+    "default": "",
+    "type": "number"
+  },
+  "preview": {
+    "default": false,
+    "type": "boolean"
+  }
 }
