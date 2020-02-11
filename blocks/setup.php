@@ -22,33 +22,38 @@ function gv_gut_plugin_gutenberg_assets() {
 		plugins_url( 'assets/js/blocks.js', dirname( __FILE__ ) ),
 		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-components', 'wp-hooks', 'jquery' )
 	);
-	$view_list_array = array();
+
+	$views_list_array = array();
 
 	if ( class_exists( 'GVCommon' ) ) {
 
-		$view_list = GVCommon::get_all_views();
-		foreach ( $view_list as $view ) {
+		$views = GVCommon::get_all_views(
+			array(
+				'orderby' => 'post_title',
+				'order'   => 'ASC'
+			)
+		);
 
-			$view_list_array[] = array(
+		$views_list_array = array_map( function ( $view ) {
+
+			return array(
 				'value' => $view->ID,
 				'label' => $view->post_title
 			);
-
-		}
-
+		}, $views );
 	}
 
-	// JS Variables
-	$jsVars
-		= array(
-		'home_page' => home_url(),
-		'ajax_url'  => admin_url( 'admin-ajax.php' ),
-		'img_url'   => GRAVITYVIEW_GUTENBERG_PLUGIN_URL . 'assets/img/',
-		'view_list' => $view_list_array
+	wp_localize_script(
+		'gv_gut-gutenberg-js',
+		'wp_gv_gut_php',
+		array(
+			'home_page' => home_url(),
+			'ajax_url'  => admin_url( 'admin-ajax.php' ),
+			'img_url'   => GRAVITYVIEW_GUTENBERG_PLUGIN_URL . 'assets/img/',
+			'view_list' => $views_list_array
+		)
 	);
-	wp_localize_script( 'gv_gut-gutenberg-js', 'wp_gv_gut_php', $jsVars );
 
-	// Styles.
 	wp_enqueue_style(
 		'gv_gut-gutenberg-css',
 		plugins_url( 'assets/css/gutenberg.min.css', dirname( __FILE__ ) ),
