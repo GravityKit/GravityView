@@ -90,32 +90,12 @@ foreach ( glob( GRAVITYVIEW_GUTENBERG_PLUGIN_PATH . 'blocks/*/render.php' ) as $
 	$block_name      = 'gravityview/' . $block_cat;
 	$block_callback  = 'gravityview_block_render_' . str_replace( '-', '_', $block_cat );
 	$attributes_file = file_get_contents( $block_path . '/config.json' );
-	$attributes      = json_decode( $attributes_file );
+	$attributes      = json_decode( $attributes_file, true );
 
 	if ( function_exists( $block_callback ) ) {
 		register_block_type( $block_name, array(
 			'render_callback' => $block_callback,
-			'attributes'      => gv_gut_objectToArray( $attributes ),
+			'attributes'      => $attributes,
 		) );
-	}
-}
-
-/**
- * Convert Objects to array
- *
- * @param object $d
- *
- * @return array $d
- */
-function gv_gut_objectToArray( $d ) {
-
-	if ( is_object( $d ) ) {
-		$d = get_object_vars( $d );
-	}
-
-	if ( is_array( $d ) ) {
-		return array_map( __FUNCTION__, $d );
-	} else {
-		return $d;
 	}
 }
