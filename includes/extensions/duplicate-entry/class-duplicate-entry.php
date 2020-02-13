@@ -395,8 +395,8 @@ final class GravityView_Duplicate_Entry {
 		$row['date_updated'] = $row['date_created'];
 		$row['is_starred'] = false;
 		$row['is_read'] = false;
-		$row['source_url'] = esc_url_raw( remove_query_arg( array( 'action', 'gvid' ) ) );
 		$row['ip'] = rgars( $form, 'personalData/preventIP' ) ? '' : GFFormsModel::get_ip();
+		$row['source_url'] = esc_url_raw( remove_query_arg( array( 'action', 'gvid', 'result', 'duplicate', 'entry_id' ) ) );
 		$row['user_agent'] = \GV\Utils::_SERVER( 'HTTP_USER_AGENT' );
 		$row['created_by'] = wp_get_current_user()->ID;
 
