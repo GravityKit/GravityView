@@ -5,7 +5,7 @@ if ( ! function_exists( 'gravityview_block_render_gv_entry_link' ) ) {
 }
 
 /**
- * This function generates the gv_entry_link shortcode.
+ * This function generates the gv_entry_link shortcode
  *
  * @param array $attributes
  *                         array['view_id']         string  The ID for the View where the entry is displayed
@@ -21,48 +21,35 @@ if ( ! function_exists( 'gravityview_block_render_gv_entry_link' ) ) {
  */
 function gravityview_block_render_gv_entry_link( $attributes ) {
 
-	$shortcode = '[gv_entry_link ';
+	$accepted_attributes = array(
+		'view_id',
+		'entry_id',
+		'action',
+		'post_id',
+		'return',
+		'link_atts',
+		'field_values',
+		'content'
+	);
 
-	if ( ! empty( $attributes['view_id'] ) ) {
-		$view_id   = esc_attr( sanitize_text_field( $attributes['view_id'] ) );
-		$shortcode .= "view_id='$view_id' ";
-	}
+	$shortcode_attributes = array();
 
-	if ( ! empty( $attributes['entry_id'] ) ) {
-		$entry_id  = esc_attr( sanitize_text_field( $attributes['entry_id'] ) );
-		$shortcode .= "entry_id='$entry_id' ";
-	}
+	foreach ( $attributes as $attribute => $value ) {
+		$value = esc_attr( sanitize_text_field( $value ) );
 
-	if ( ! empty( $attributes['action'] ) ) {
-		$action    = esc_attr( sanitize_text_field( $attributes['action'] ) );
-		$shortcode .= "action='$action' ";
-	}
-
-	if ( ! empty( $attributes['post_id'] ) ) {
-		$post_id   = esc_attr( sanitize_text_field( $attributes['post_id'] ) );
-		$shortcode .= "post_id='$post_id' ";
-	}
-
-	if ( ! empty( $attributes['return'] ) ) {
-		$return    = esc_attr( sanitize_text_field( $attributes['return'] ) );
-		$shortcode .= "return='$return' ";
-	}
-
-	if ( ! empty( $attributes['link_atts'] ) ) {
-		$link_atts = esc_attr( sanitize_text_field( $attributes['link_atts'] ) );
-		$shortcode .= "link_atts='$link_atts'";
-	}
-
-	if ( ! empty( $attributes['field_values'] ) ) {
-		$field_values = esc_attr( sanitize_text_field( $attributes['field_values'] ) );
-		$shortcode    .= "$field_values='$field_values'";
+		if ( 'content' !== $attribute && in_array( $attribute, $accepted_attributes ) && ! empty( $value ) ) {
+			$shortcode_attributes[] = "{$attribute}={$value}";
+		}
 	}
 
 	if ( ! empty( $attributes['content'] ) ) {
-		$content   = wp_kses_post( $attributes['content'] );
-		$shortcode .= ']' . $content . '[/gv_entry_link]';
+		$shortcode = sprintf(
+			'[gv_entry_link %s]%s[/gv_entry_link]',
+			join( ' ', $shortcode_attributes ),
+			wp_kses_post( $attributes['content'] ),
+		);
 	} else {
-		$shortcode .= '/]';
+		$shortcode = sprintf( '[gv_entry_link %s/]', join( ' ', $shortcode_attributes ) );
 	}
 
 	$output = do_shortcode( $shortcode );

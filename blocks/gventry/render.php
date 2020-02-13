@@ -5,7 +5,7 @@ if ( ! function_exists( 'gravityview_block_render_gventry' ) ) {
 }
 
 /**
- * This function generates the gventry shortcode.
+ * This function generates the gventry shortcode
  *
  * @param array $attributes
  *                         array['view_id']     string  The numeric View ID the entry should be displayed from.
@@ -15,19 +15,22 @@ if ( ! function_exists( 'gravityview_block_render_gventry' ) ) {
  */
 function gravityview_block_render_gventry( $attributes ) {
 
-	$shortcode = '[gventry ';
+	$accepted_attributes = array(
+		'id',
+		'view_id',
+	);
 
-	if ( ! empty( $attributes['view_id'] ) ) {
-		$view_id   = esc_attr( sanitize_text_field( $attributes['view_id'] ) );
-		$shortcode .= "view_id='$view_id' ";
+	$shortcode_attributes = array();
+
+	foreach ( $attributes as $attribute => $value ) {
+		$value = esc_attr( sanitize_text_field( $value ) );
+
+		if ( in_array( $attribute, $accepted_attributes ) && ! empty( $value ) ) {
+			$shortcode_attributes[] = "{$attribute}={$value}";
+		}
 	}
 
-	if ( ! empty( $attributes['id'] ) ) {
-		$id        = esc_attr( sanitize_text_field( $attributes['id'] ) );
-		$shortcode .= "id='$id' ";
-	}
-
-	$shortcode .= ']';
+	$shortcode = sprintf( '[gventry %s]', join( ' ', $shortcode_attributes ) );
 
 	$output = do_shortcode( $shortcode );
 

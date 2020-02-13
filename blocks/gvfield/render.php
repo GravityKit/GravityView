@@ -5,7 +5,7 @@ if ( ! function_exists( 'gravityview_block_render_gvfield' ) ) {
 }
 
 /**
- * This function generates the gvfield shortcode.
+ * This function generates the gvfield shortcode
  *
  * @param array $attributes
  *                         array['view_id']         string  The numeric View ID the entry should be displayed from
@@ -17,29 +17,24 @@ if ( ! function_exists( 'gravityview_block_render_gvfield' ) ) {
  */
 function gravityview_block_render_gvfield( $attributes ) {
 
-	$shortcode = '[gvfield ';
+	$accepted_attributes = array(
+		'vew_id',
+		'entry_id',
+		'field_id',
+		'custom_label',
+	);
 
-	if ( ! empty( $attributes['view_id'] ) ) {
-		$view_id   = esc_attr( sanitize_text_field( $attributes['view_id'] ) );
-		$shortcode .= "view_id='$view_id' ";
+	$shortcode_attributes = array();
+
+	foreach ( $attributes as $attribute => $value ) {
+		$value = esc_attr( sanitize_text_field( $value ) );
+
+		if ( in_array( $attribute, $accepted_attributes ) && ! empty( $value ) ) {
+			$shortcode_attributes[] = "{$attribute}={$value}";
+		}
 	}
 
-	if ( ! empty( $attributes['entry_id'] ) ) {
-		$entry_id  = esc_attr( sanitize_text_field( $attributes['entry_id'] ) );
-		$shortcode .= "entry_id='$entry_id' ";
-	}
-
-	if ( ! empty( $attributes['field_id'] ) ) {
-		$field_id  = esc_attr( sanitize_text_field( $attributes['field_id'] ) );
-		$shortcode .= "field_id='$field_id' ";
-	}
-
-	if ( ! empty( $attributes['custom_label'] ) ) {
-		$custom_label = esc_attr( sanitize_text_field( $attributes['custom_label'] ) );
-		$shortcode    .= "custom_label='$custom_label' ";
-	}
-
-	$shortcode .= "]";
+	$shortcode = sprintf( '[gvfield %s]', join( ' ', $shortcode_attributes ) );
 
 	$output = do_shortcode( $shortcode );
 
