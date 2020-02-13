@@ -388,13 +388,15 @@ final class GravityView_Duplicate_Entry {
 			return new WP_Error( 'gravityview-duplicate-entry-missing', __( 'The entry does not exist.', 'gravityview' ) );
 		}
 
+		$form = GFAPI::get_form( $entry['form_id'] );
+
 		$row['id'] = null;
 		$row['date_created'] = date( 'Y-m-d H:i:s', time() );
 		$row['date_updated'] = $row['date_created'];
 		$row['is_starred'] = false;
 		$row['is_read'] = false;
-		$row['ip'] = GFFormsModel::get_ip();
 		$row['source_url'] = esc_url_raw( remove_query_arg( array( 'action', 'gvid' ) ) );
+		$row['ip'] = rgars( $form, 'personalData/preventIP' ) ? '' : GFFormsModel::get_ip();
 		$row['user_agent'] = \GV\Utils::_SERVER( 'HTTP_USER_AGENT' );
 		$row['created_by'] = wp_get_current_user()->ID;
 
