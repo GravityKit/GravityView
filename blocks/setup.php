@@ -13,13 +13,14 @@ if ( ! function_exists( 'register_block_type' ) ) {
 /**
  * Register required script and style files for Gutenberg editor.
  */
-function gv_gut_plugin_gutenberg_assets() {
+
+// Hook: Editor assets.
+add_action( 'enqueue_block_editor_assets', function () {
 
 	// Scripts.
 	wp_enqueue_script(
-		'gv_gut-gutenberg-js',
-		// plugins_url ( 'assets/js/gutenberg.min.js', dirname ( __FILE__ ) ),
-		plugins_url( 'assets/js/blocks.js', dirname( __FILE__ ) ),
+		'gv-gutenberg-js',
+		plugins_url( 'assets/js/gv-gutenberg.js', dirname( __FILE__ ) ),
 		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-components', 'wp-hooks', 'jquery' )
 	);
 
@@ -44,8 +45,8 @@ function gv_gut_plugin_gutenberg_assets() {
 	}
 
 	wp_localize_script(
-		'gv_gut-gutenberg-js',
-		'wp_gv_gut_php',
+		'gv-gutenberg-js',
+		'GV_GUTENBERG',
 		array(
 			'home_page' => home_url(),
 			'ajax_url'  => admin_url( 'admin-ajax.php' ),
@@ -55,14 +56,11 @@ function gv_gut_plugin_gutenberg_assets() {
 	);
 
 	wp_enqueue_style(
-		'gv_gut-gutenberg-css',
-		plugins_url( 'assets/css/gutenberg.min.css', dirname( __FILE__ ) ),
+		'gv-gutenberg-css',
+		plugins_url( 'assets/css/gv-gutenberg.css', dirname( __FILE__ ) ),
 		array( 'wp-edit-blocks' )
 	);
-}
-
-// Hook: Editor assets.
-add_action( 'enqueue_block_editor_assets', 'gv_gut_plugin_gutenberg_assets' );
+} );
 
 /**
  * Register categories
@@ -72,7 +70,7 @@ add_filter( 'block_categories', function ( $categories, $post ) {
 	return array_merge(
 		$categories,
 		array(
-			array( 'slug' => 'gravityview', 'title' => __( 'GravityView', 'gravityviewgutenberg' ) )
+			array( 'slug' => 'gravityview', 'title' => __( 'GravityView', 'gv-gutenberg' ) )
 		)
 	);
 }, 10, 2 );
