@@ -11,6 +11,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * @since 2.5.2
  */
 class GravityView_Edit_Entry_Locking {
+
 	/**
 	 * Load extension entry point.
 	 *
@@ -25,6 +26,68 @@ class GravityView_Edit_Entry_Locking {
 		if ( ! has_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) ) ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		}
+
+		add_action( 'wp_ajax_gf_lock_request_entry', array( $this, 'ajax_lock_request' ), 1 );
+		add_action( 'wp_ajax_gf_reject_lock_request_entry', array( $this, 'ajax_reject_lock_request' ), 1 );
+		add_action( 'wp_ajax_nopriv_gf_lock_request_entry', array( $this, 'ajax_lock_request' ) );
+		add_action( 'wp_ajax_nopriv_gf_reject_lock_request_entry', array( $this, 'ajax_reject_lock_request' ) );
+	}
+
+	// TODO: Convert to extending Gravity Forms
+	public function ajax_lock_request() {
+		$object_id = rgget( 'object_id' );
+		$response  = $this->request_lock( $object_id );
+		echo json_encode( $response );
+		die();
+	}
+
+	// TODO: Convert to extending Gravity Forms
+	public function ajax_reject_lock_request() {
+		$object_id = rgget( 'object_id' );
+		$response  = $this->delete_lock_request_meta( $object_id );
+		echo json_encode( $response );
+		die();
+	}
+
+	// TODO: Convert to extending Gravity Forms
+	protected function delete_lock_request_meta( $object_id ) {
+		GFCache::delete( 'lock_request_entry_' . $object_id );
+
+		return true;
+	}
+
+	// TODO: Convert to extending Gravity Forms
+	protected function request_lock( $object_id ) {
+		if ( 0 == ( $user_id = get_current_user_id() ) ) {
+			return false;
+		}
+
+		$lock_holder_user_id = $this->check_lock( $object_id );
+
+		$result = array();
+		if ( ! $lock_holder_user_id ) {
+			$this->set_lock( $object_id );
+			$result['html']   = __( 'You now have control', 'gravityforms' );
+			$result['status'] = 'lock_obtained';
+		} else {
+
+			if( GVCommon::has_cap( 'gravityforms_edit_entries' ) ) {
+				$user = get_userdata( $lock_holder_user_id );
+				$result['html']   = sprintf( __( 'Your request has been sent to %s.', 'gravityforms' ), $user->display_name );
+			} else {
+				$result['html']   = __( 'Your request has been sent.', 'gravityforms' );
+			}
+
+			$this->update_lock_request_meta( $object_id, $user_id );
+
+			$result['status'] = 'lock_requested';
+		}
+
+		return $result;
+	}
+
+	protected function update_lock_request_meta( $object_id, $lock_request_value ) {
+		GFCache::set( 'lock_request_entry_' . $object_id, $lock_request_value, true, 120 );
 	}
 
 	/**
