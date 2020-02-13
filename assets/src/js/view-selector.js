@@ -13,7 +13,7 @@ export default class SelectViewItem extends Component {
 					value: '',
 					label: __( 'Select a View', 'gravityviewgutenberg' ),
 				},
-				...wp_gv_gut_php.view_list,
+				...GV_GUTENBERG.view_list,
 			],
 		};
 	}
