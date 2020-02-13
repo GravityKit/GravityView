@@ -94,9 +94,18 @@ class GravityView_Edit_Entry_Locking {
 		$hidden = $locked ? '' : ' hidden';
 		if ( $locked ) {
 
+			if( GVCommon::has_cap( 'gravityforms_edit_entries' ) ) {
+				$avatar = get_avatar( $user->ID, 64 );
+				$person_editing_text = $user->display_name;
+			} else {
+				$current_user = wp_get_current_user();
+				$avatar = get_avatar( $current_user->ID, 64 );
+				$person_editing_text = _x( 'the person who is editing the entry', 'Referring to the user who is currently editing a locked entry', 'gravityview' );
+			}
+
 			$message = '<div class="gform-locked-message">
-                            <div class="gform-locked-avatar">' . get_avatar( $user->ID, 64 ) . '</div>
-                            <p class="currently-editing" tabindex="0">' . esc_html( sprintf( $this->get_string( 'currently_locked' ), _x( 'the person who is editing the entry', 'Referring to the user who is currently editing a locked entry', 'gravityview' ) ) ) . '</p>
+                            <div class="gform-locked-avatar">' . $avatar . '</div>
+                            <p class="currently-editing" tabindex="0">' . esc_html( sprintf( $this->get_string( 'currently_locked' ), $person_editing_text ) ) . '</p>
                             <p>
 
                                 <a id="gform-take-over-button" style="display:none" class="button button-primary wp-tab-first" href="' . esc_url( add_query_arg( 'get-edit-lock', '1' ) ) . '">' . esc_html__( 'Take Over', 'gravityforms' ) . '</a>
