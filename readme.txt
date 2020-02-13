@@ -21,10 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.6 on February 5, 2020 =
+= 2.6 on February 12, 2020 =
 
-* Added: Implement Gravity Forms Entry Locking - see when others are editing an entry at the same time
-* Added: Easily duplicate entries in Gravity Forms using the new "Duplicate" link in Gravity Forms Entries screen
+* Added: Implement Gravity Forms Entry Locking - see when others are editing an entry at the same time ([learn more](https://docs.gravityview.co/article/676-entry-locking))
+* Added: Easily duplicate entries in Gravity Forms using the new "Duplicate" link in Gravity Forms Entries screen ([read how](https://docs.gravityview.co/article/675-duplicate-gravity-forms-entry))
 * Improved: Speed up loading of Edit View screen
 * Improved: Speed of adding fields in the View Configuration screen
 * Modified: Reorganized some settings to be clearer

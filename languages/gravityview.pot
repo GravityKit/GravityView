@@ -243,7 +243,7 @@ msgstr ""
 #: includes/class-gravityview-entry-link-shortcode.php:233
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1070
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1079
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 #: templates/fields/field-edit_link-html.php:38
 msgid "Edit Entry"
@@ -1218,6 +1218,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/data-source.php:59
 #: includes/admin/metaboxes/views/data-source.php:64
+#: includes/admin/metaboxes/views/data-source.php:69
 msgid "Attention"
 msgstr ""
 
@@ -1234,6 +1235,12 @@ msgid ""
 msgstr ""
 
 #: includes/admin/metaboxes/views/data-source.php:70
+msgid ""
+"Using a preset will reset your field configuration. Changes will be "
+"permanent once you save the View."
+msgstr ""
+
+#: includes/admin/metaboxes/views/data-source.php:75
 msgid "GravityView requires Javascript to be enabled."
 msgstr ""
 
@@ -1337,8 +1344,8 @@ msgstr ""
 #: includes/class-admin-add-shortcode.php:138
 #: includes/class-admin-views.php:1209
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:152
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1120
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1248
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1129
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1257
 #: includes/extensions/edit-entry/partials/form-buttons.php:44
 msgid "Cancel"
 msgstr ""
@@ -2194,7 +2201,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:213
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2307
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2316
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
@@ -2416,61 +2423,61 @@ msgstr ""
 msgid "Your request was rejected"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1121
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1249
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1130
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1258
 #: includes/extensions/edit-entry/partials/form-buttons.php:45
 msgid "Update"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1122
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1250
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1131
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1259
 #: includes/extensions/edit-entry/partials/form-buttons.php:46
 msgid "Next"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1123
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1251
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1132
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1260
 #: includes/extensions/edit-entry/partials/form-buttons.php:47
 msgid "Previous"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1144
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1153
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1144
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1153
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1151
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1160
 msgid "Entry Updated."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1188
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1197
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1403
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1412
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1410
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1419
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1763
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1772
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2301
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2310
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2311
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2320
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2351
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2360
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -3996,26 +4003,26 @@ msgctxt "Referring to the user who is currently editing a locked entry"
 msgid "the person who is editing the entry"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1172
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1181
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %sReturning to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1177
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1186
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the title of the page where the "
 "user will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sReturning to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1183
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1192
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the URL where the user will be "
 "taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sRedirecting to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2327
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2336
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
