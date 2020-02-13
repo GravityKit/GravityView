@@ -253,7 +253,7 @@ class GravityView_Welcome {
                 <div class="column col col-2">
                     <div class="media-container"><img alt="{date_created}" src="<?php echo plugins_url( 'assets/images/screenshots/duplicate-entries.jpg', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
                     <h4 class="higher">New: Duplicate Entry field!</h4>
-                    <p>Add a Duplicate Entry field to your View and easily duplicate entries from the front-end with a single click!</p>
+                    <p>Add a Duplicate Entry field to your View and easily duplicate entries from the front-end or the back-end with a single click!</p>
                 </div>
             </div>
 
@@ -262,6 +262,33 @@ class GravityView_Welcome {
                 <div class="headline-feature" style="max-width: 100%">
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
+
+				<h3>2.6 on February 12, 2020</h3>
+
+				<ul>
+					<li>Added: Implement Gravity Forms Entry Locking - see when others are editing an entry at the same time (<a href="https://docs.gravityview.co/article/676-entry-locking">learn more</a>)</li>
+					<li>Added: Easily duplicate entries in Gravity Forms using the new "Duplicate" link in Gravity Forms Entries screen (<a href="https://docs.gravityview.co/article/675-duplicate-gravity-forms-entry">read how</a>)</li>
+					<li>Improved: Speed up loading of Edit View screen</li>
+					<li>Improved: Speed of adding fields in the View Configuration screen</li>
+					<li>Modified: Reorganized some settings to be clearer</li>
+					<li>Fixed: Potential fatal error when activating extensions with GravityView not active</li>
+					<li>Updated: Russian translation (thank you, Victor S!)</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: <code>gravityview/duplicate/backend/enable</code> filter to disable adding a "Duplicate" link for entries</li>
+					<li>Added: <code>gravityview/request/is_renderable</code> filter to modify what request classes represent valid GravityView requests</li>
+					<li>Added: <code>gravityview/widget/search/form/action</code> filter to change search submission URL as needed</li>
+					<li>Added: <code>gravityview/entry-list/link</code> filter to modify Other Entries links as needed</li>
+					<li>Added: <code>gravityview/edit/link</code> filter to modify Edit Entry link as needed</li>
+					<li>Fixed: A rare issue where a single entry is prevented from displaying with Post Category filters</li>
+					<li>Modified: Important! <code>gravityview_get_entry()</code> and <code>GVCommon::get_entry()</code> require a View object as the fourth parameter. While the View will be retrieved from the context if the parameter is missing, it's important to supply it.</li>
+					<li>Modified: <code>GVCommon::check_entry_display</code> now requires a View object as the second parameter. Not passing it will return an error.</li>
+					<li>Modified: <code>gravityview/common/get_entry/check_entry_display</code> filter has a third View parameter passed from <code>GVCommon::get_entry</code></li>
+					<li>Modified: Bumped future minimum Gravity Forms version to 2.4</li>
+				</ul>
 
 				<h3>2.5.1 on December 14, 2019</h3>
 

@@ -805,6 +805,10 @@ class GravityView_frontend {
 		 */
 		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', $search_criteria, $form_id, $args );
 
+		if ( ! is_array( $search_criteria ) ) {
+			return array();
+		}
+
 		$original_search_criteria = $search_criteria;
 
 		gravityview()->log->debug( '[get_search_criteria] Search Criteria after hook gravityview_fe_search_criteria: ', array( 'data' =>$search_criteria ) );

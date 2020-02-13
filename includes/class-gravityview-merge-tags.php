@@ -114,7 +114,7 @@ class GravityView_Merge_Tags {
 		 * @param GF_Field $field The current field.
 		 */
 		$return = apply_filters( 'gravityview/merge_tags/modifiers/value', $return, $raw_value, $value, $merge_tag, $modifier, $field );
-		
+
 		return $return;
 	}
 
@@ -144,10 +144,10 @@ class GravityView_Merge_Tags {
 
 	/**
 	 * Trim the Merge Tag's length in words.
-	 * 
-	 * Notes: 
+	 *
+	 * Notes:
 	 * - HTML tags are preserved
-	 * - HTML entities are encoded, but if they are separated by word breaks, they will be counted as words 
+	 * - HTML entities are encoded, but if they are separated by word breaks, they will be counted as words
 	 *   Example: "one & two" will be counted as three words, but "one& two" will be counted as two words
 	 *
 	 * @since 1.17
@@ -308,8 +308,8 @@ class GravityView_Merge_Tags {
 	 * @since 1.15.1 - Add support for $url_encode and $esc_html arguments
 	 * @since 1.22.4 - Added $nl2br, $format, $aux_data args
 	 *
-	 * @param  string           $text       Text to replace variables in
-	 * @param  array            $form        GF Form array
+	 * @param  string           $text         Text to replace variables in.
+	 * @param  array            $form         GF Form array
 	 * @param  array            $entry        GF Entry array
 	 * @param  bool             $url_encode   Pass return value through `url_encode()`
 	 * @param  bool             $esc_html     Pass return value through `esc_html()`
@@ -321,7 +321,7 @@ class GravityView_Merge_Tags {
 	public static function replace_variables( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = true, $nl2br = true, $format = 'html', $aux_data = array() ) {
 
 		if ( ! is_string( $text ) ) {
-			gravityview()->log->error( '$text is not a string.', array( 'data' => $text ) );
+			gravityview()->log->notice( '$text is not a string.', array( 'data' => $text ) );
 			return $text;
 		}
 

@@ -12,7 +12,31 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * Knows more about the request than anyone else.
  */
 abstract class Request {
-	public function __construct() {
+
+	public function __construct() {}
+
+	/**
+	 * Whether this request is something that is renderable.
+	 *
+	 * @since 2.5.2
+	 *
+	 * @return bool Yes or no.
+	 */
+	public function is_renderable() {
+
+		$is_renderable = in_array( get_class( $this ), array(
+			'GV\Frontend_Request',
+			'GV\Mock_Request',
+			'GV\REST\Request',
+		), true );
+
+		/**
+		 * @filter `gravityview/request/is_renderable` Is this request renderable?
+		 * @since 2.5.2
+		 * @param[in,out] boolean $is_renderable Huh?
+		 * @param \GV\Request $this This.
+		 */
+		return apply_filters( 'gravityview/request/is_renderable', $is_renderable, $this );
 	}
 
 	/**

@@ -44,7 +44,7 @@ final class GravityView_Delete_Entry {
 
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field'), 10, 3 );
 
-		add_action( 'gravityview_before', array( $this, 'display_message' ) );
+		add_action( 'gravityview_before', array( $this, 'maybe_display_message' ) );
 
 		// For the Delete Entry Link, you don't want visible to all users.
 		add_filter( 'gravityview_field_visibility_caps', array( $this, 'modify_visibility_caps'), 10, 5 );
@@ -383,7 +383,7 @@ final class GravityView_Delete_Entry {
 
 			if( $entry ) {
 
-				$has_permission = $this->user_can_delete_entry( $entry );
+				$has_permission = $this->user_can_delete_entry( $entry, \GV\Utils::_GET( 'gvid', \GV\Utils::_GET( 'view_id' ) ) );
 
 				if( is_wp_error( $has_permission ) ) {
 
@@ -424,7 +424,7 @@ final class GravityView_Delete_Entry {
 				);
 			}
 
-			$redirect_to_base = esc_url_raw( remove_query_arg( array( 'action', 'gvid' ) ) );
+			$redirect_to_base = esc_url_raw( remove_query_arg( array( 'action', 'gvid', 'entry_id' ) ) );
 			$redirect_to = add_query_arg( $messages, $redirect_to_base );
 
 			wp_safe_redirect( $redirect_to );
@@ -713,8 +713,10 @@ final class GravityView_Delete_Entry {
 			return false;
 		}
 
+		$user_delete = $view->settings->get( 'user_delete' );
+
 		// Only checks user_delete view option if view is already set
-		if ( $view && empty( $view->settings->get( 'user_delete' ) ) ) {
+		if ( $view && empty( $user_delete ) ) {
 			gravityview()->log->debug( 'User Delete is disabled. Returning false.' );
 			return false;
 		}
@@ -743,14 +745,22 @@ final class GravityView_Delete_Entry {
 	 * @param int $current_view_id The ID of the View being rendered
 	 * @return void
 	 */
-	public function display_message( $current_view_id = 0 ) {
-
+	public function maybe_display_message( $current_view_id = 0 ) {
 		if( empty( $_GET['status'] ) || ! self::verify_nonce() ) {
 			return;
 		}
 
 		// Entry wasn't deleted from current View
 		if( isset( $_GET['view_id'] ) && intval( $_GET['view_id'] ) !== intval( $current_view_id ) ) {
+			return;
+		}
+
+		$this->display_message();
+	}
+
+	public function display_message() {
+
+		if ( empty( $_GET['status'] ) || empty( $_GET['delete'] ) ) {
 			return;
 		}
 

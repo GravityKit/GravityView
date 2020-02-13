@@ -56,35 +56,52 @@ class GravityView_Ajax {
 	}
 
 	/**
-	 * Returns available fields given a form ID or a preset template ID
+	 * AJAX action to get HTML markup for form(s) or template fields
 	 * AJAX callback
 	 *
 	 * @access public
-	 * @return void
+	 * @return array|void Terminate request, exit with JSON response or return HTML markup
 	 */
 	function get_available_fields_html() {
 
-		//check nonce
 		$this->check_ajax_nonce();
 
-		$context = isset($_POST['context']) ? esc_attr( $_POST['context'] ) : 'directory';
+		$context = rgpost( 'context' );
 
-		// If Form was changed, JS sends form ID, if start fresh, JS sends template_id
-		if( !empty( $_POST['form_id'] ) ) {
-			do_action( 'gravityview_render_available_fields', (int) $_POST['form_id'], $context );
-			$this->_exit();
-		} elseif( !empty( $_POST['template_id'] ) ) {
-			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
-
-			/** @see GravityView_Admin_Views::render_available_fields */
-			do_action( 'gravityview_render_available_fields', $form, $context );
-			$this->_exit();
+		// Return markup for a single or multiple contexts
+		if( $context ) {
+			$data = array(
+				esc_attr( $context ) => ''
+			);
+		} else {
+			$data = array(
+				'directory' => '',
+				'edit' => '',
+				'single' => ''
+			);
 		}
 
-		//if everything fails..
-		$this->_exit( false );
-	}
+		if ( is_array( rgpost( 'form_preset_ids' ) ) ) {
+			$form_ids = rgpost( 'form_preset_ids' );
+		} else {
+			$this->_exit( false );
+			return; // If inside unit tests, which don't exit, don't continue.
+		}
 
+		foreach ( $data as $context => $markup ) {
+			ob_start();
+
+			do_action( 'gravityview_render_field_pickers', $context, $form_ids );
+
+			$data[ $context ] = trim( ob_get_clean() );
+		}
+
+		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) {
+			return $data;
+		}
+
+		wp_send_json_success( $data );
+	}
 
 	/**
 	 * Returns template active areas given a template ID
@@ -239,7 +256,7 @@ class GravityView_Ajax {
 	 */
 	function get_field_options() {
 		$this->check_ajax_nonce();
-		
+
 		if( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) ) {
 			gravityview()->log->error( 'Required fields were not set in the $_POST request. ' );
 			$this->_exit( false );

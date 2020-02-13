@@ -21,6 +21,29 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.6 on February 12, 2020 =
+
+* Added: Implement Gravity Forms Entry Locking - see when others are editing an entry at the same time ([learn more](https://docs.gravityview.co/article/676-entry-locking))
+* Added: Easily duplicate entries in Gravity Forms using the new "Duplicate" link in Gravity Forms Entries screen ([read how](https://docs.gravityview.co/article/675-duplicate-gravity-forms-entry))
+* Improved: Speed up loading of Edit View screen
+* Improved: Speed of adding fields in the View Configuration screen
+* Modified: Reorganized some settings to be clearer
+* Fixed: Potential fatal error when activating extensions with GravityView not active
+* Updated: Russian translation (thank you, Victor S!)
+
+__Developer Updates:__
+
+* Added: `gravityview/duplicate/backend/enable` filter to disable adding a "Duplicate" link for entries
+* Added: `gravityview/request/is_renderable` filter to modify what request classes represent valid GravityView requests
+* Added: `gravityview/widget/search/form/action` filter to change search submission URL as needed
+* Added: `gravityview/entry-list/link` filter to modify Other Entries links as needed
+* Added: `gravityview/edit/link` filter to modify Edit Entry link as needed
+* Fixed: A rare issue where a single entry is prevented from displaying with Post Category filters
+* Modified: Important! `gravityview_get_entry()` and `GVCommon::get_entry()` require a View object as the fourth parameter. While the View will be retrieved from the context if the parameter is missing, it's important to supply it.
+* Modified: `GVCommon::check_entry_display` now requires a View object as the second parameter. Not passing it will return an error.
+* Modified: `gravityview/common/get_entry/check_entry_display` filter has a third View parameter passed from `GVCommon::get_entry`
+* Modified: Bumped future minimum Gravity Forms version to 2.4
+
 = 2.5.1 on December 14, 2019 =
 
 * Modified: "Show Label" is now off by default for non-table layouts

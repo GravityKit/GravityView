@@ -38,7 +38,7 @@ class GravityView_Admin_Views {
 
 		add_action( 'gravityview_render_directory_active_areas', array( $this, 'render_directory_active_areas'), 10, 4 );
 		add_action( 'gravityview_render_widgets_active_areas', array( $this, 'render_widgets_active_areas'), 10, 3 );
-		add_action( 'gravityview_render_field_pickers', array( $this, 'render_field_pickers') );
+		add_action( 'gravityview_render_field_pickers', array( $this, 'render_field_pickers'), 10, 2 );
 		add_action( 'gravityview_render_available_fields', array( $this, 'render_available_fields'), 10, 2 );
 		add_action( 'gravityview_render_available_widgets', array( $this, 'render_available_widgets') );
 		add_action( 'gravityview_render_active_areas', array( $this, 'render_active_areas'), 10, 5 );
@@ -609,6 +609,9 @@ class GravityView_Admin_Views {
 	 */
 	function render_available_fields( $form = 0, $context = 'single' ) {
 
+	    // Determine if form is a preset and convert it to an array with fields
+		$form = ( is_string( $form ) && preg_match( '/^preset_/', $form ) ) ? GravityView_Ajax::pre_get_form_fields( $form ) : $form;
+
 		/**
 		 * @filter  `gravityview_blacklist_field_types` Modify the types of fields that shouldn't be shown in a View.
 		 * @param[in,out] array $blacklist_field_types Array of field types to block for this context.
@@ -1061,40 +1064,51 @@ class GravityView_Admin_Views {
 	}
 
 	/**
-     * Renders "Add Field" tooltips
-     *
-     * @since 2.0.11
-     *
-	 * @param string $context "directory", "single", or "edit"
-     *
-     * @return void
+	 * Renders "Add Field" tooltips
+	 *
+	 * @since 2.0.11
+	 *
+	 * @param string $context  "directory", "single", or "edit"
+	 * @param array  $form_ids (default: array) Array of form IDs
+	 *
+	 * @return void
 	 */
-	function render_field_pickers( $context = 'directory' ) {
+	function render_field_pickers( $context = 'directory', $form_ids = array() ) {
 
-		// list of available fields to be shown in the popup
-		$forms = gravityview_get_forms( 'any' );
+		global $post;
 
-		$form_ids = array_map( function ($form) { return $form['id']; }, $forms);
+		if ( $post ) {
+			$source_form_id = gravityview_get_form_id( $post->ID );
+			if ( $source_form_id ) {
+				$form_ids[] = $source_form_id;
+			}
 
-		foreach ( $form_ids as $form_id ) {
-			$filter_field_id = sprintf( 'gv-field-filter-%s-%d', $context, $form_id );
+			$joined_forms = \GV\View::get_joined_forms( $post->ID );
+			foreach ( $joined_forms as $joined_form ) {
+				$form_ids[] = $joined_form->ID;
+			}
+		}
+		foreach ( array_unique( $form_ids ) as $form_id ) {
+			$filter_field_id = sprintf( 'gv-field-filter-%s-%s', $context, $form_id );
+
 			?>
             <div id="<?php echo esc_html( $context ); ?>-available-fields-<?php echo esc_attr( $form_id ); ?>" class="hide-if-js gv-tooltip">
                 <span class="close" role="button" aria-label="<?php esc_html_e( 'Close', 'gravityview' ); ?>"><i class="dashicons dashicons-dismiss"></i></span>
+
                 <div class="gv-field-filter-form">
                     <label class="screen-reader-text" for="<?php echo esc_html( $filter_field_id ); ?>"><?php esc_html_e( 'Filter Fields:', 'gravityview' ); ?></label>
                     <input type="search" class="widefat gv-field-filter" aria-controls="<?php echo $filter_field_id; ?>" id="<?php echo esc_html( $filter_field_id ); ?>" placeholder="<?php esc_html_e( 'Filter fields by name or label', 'gravityview' ); ?>" />
                 </div>
 
                 <div id="available-fields-<?php echo $filter_field_id; ?>" aria-live="polite" role="listbox">
-                <?php do_action('gravityview_render_available_fields', $form_id, $context ); ?>
+					<?php do_action( 'gravityview_render_available_fields', $form_id, $context ); ?>
                 </div>
 
                 <div class="gv-no-results hidden description"><?php esc_html_e( 'No fields were found matching the search.', 'gravityview' ); ?></div>
             </div>
 			<?php
 		}
-    }
+	}
 
 	/**
 	 * Render the Template Active Areas and configured active fields for a given template id and post id

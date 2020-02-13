@@ -936,8 +936,21 @@ class View implements \ArrayAccess {
 			 * @todo: Stop using _frontend and use something like $request->get_search_criteria() instead
 			 */
 			$parameters = \GravityView_frontend::get_view_entries_parameters( $parameters, $this->form->ID );
+
 			$parameters['context_view_id'] = $this->ID;
 			$parameters = \GVCommon::calculate_get_entries_criteria( $parameters, $this->form->ID );
+
+			if ( ! is_array( $parameters ) ) {
+				$parameters = array();
+			}
+
+			if ( ! is_array( $parameters['search_criteria'] ) ) {
+				$parameters['search_criteria'] = array();
+			}
+
+			if ( ( ! isset( $parameters['search_criteria']['field_filters'] ) ) || ( ! is_array( $parameters['search_criteria']['field_filters'] ) ) ) {
+				$parameters['search_criteria']['field_filters'] = array();
+			}
 
 			if ( $request instanceof REST\Request ) {
 				$atts = $this->settings->as_atts();
@@ -948,13 +961,13 @@ class View implements \ArrayAccess {
 			}
 
 			$page = Utils::get( $parameters['paging'], 'current_page' ) ?
-				: ( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
+				: ( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / \GV\Utils::get( $parameters, 'paging/page_size', 25 ) ) + 1 );
 
 			/**
 			 * Cleanup duplicate field_filter parameters to simplify the query.
 			 */
 			$unique_field_filters = array();
-			foreach ( $parameters['search_criteria']['field_filters'] as $key => $filter ) {
+			foreach ( Utils::get( $parameters, 'search_criteria/field_filters', array() ) as $key => $filter ) {
 				if ( 'mode' === $key ) {
 					$unique_field_filters['mode'] = $filter;
 				} else if ( ! in_array( $filter, $unique_field_filters ) ) {
@@ -972,7 +985,7 @@ class View implements \ArrayAccess {
 				$query_class = $this->get_query_class();
 
 				/** @var \GF_Query $query */
-				$query = new $query_class( $this->form->ID, $parameters['search_criteria'], $parameters['sorting'] );
+				$query = new $query_class( $this->form->ID, $parameters['search_criteria'], Utils::get( $parameters, 'sorting' ) );
 
 				/**
 				 * Apply multisort.

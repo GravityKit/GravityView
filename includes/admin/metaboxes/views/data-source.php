@@ -56,7 +56,7 @@ do_action( 'gravityview/metaboxes/data-source/before', $current_form, $forms );
 </p>
 
 <?php // confirm dialog box ?>
-<div id="gravityview_form_id_dialog" class="gv-dialog-options gv-dialog-warning" title="<?php esc_attr_e( 'Attention', 'gravityview' ); ?>">
+<div id="gravityview_change_form_dialog" class="gv-dialog-options gv-dialog-warning" title="<?php esc_attr_e( 'Attention', 'gravityview' ); ?>">
 	<p><?php esc_html_e( 'Changing the form will reset your field configuration. Changes will be permanent once you save the View.', 'gravityview' ); ?></p>
 </div>
 
@@ -64,6 +64,11 @@ do_action( 'gravityview/metaboxes/data-source/before', $current_form, $forms );
 <div id="gravityview_switch_template_dialog" class="gv-dialog-options gv-dialog-warning" title="<?php esc_attr_e( 'Attention', 'gravityview' ); ?>">
 	<p><?php esc_html_e( 'Changing the View Type will reset your field configuration. Changes will be permanent once you save the View.', 'gravityview' ); ?></p>
 </div>
+
+<?php // confirm template dialog box ?>
+    <div id="gravityview_select_preset_dialog" class="gv-dialog-options gv-dialog-warning" title="<?php esc_attr_e( 'Attention', 'gravityview' ); ?>">
+        <p><?php esc_html_e( 'Using a preset will reset your field configuration. Changes will be permanent once you save the View.', 'gravityview' ); ?></p>
+    </div>
 
 <?php // no js notice ?>
 <div class="error hide-if-js">

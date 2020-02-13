@@ -92,7 +92,6 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 		}
 		return is_user_logged_in() ? $visible : false;
 	}
-
 	/**
 	 * Add the unsubsribe to the configuration fields.
 	 *
@@ -100,13 +99,17 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 	 *
 	 * Called from `gravityview_entry_default_fields`
 	 *
-	 * @param array $entry_default_fields An array of available for configuration.
-	 * @param array $form The form.
-	 * @param string $context The configuration context (edit, single, etc.)
+	 * @param array         $entry_default_fields An array of available for configuration
+	 * @param array|int     $form                 Form ID or array
+	 * @param string        $context              The configuration context (edit, single, etc.)
 	 *
 	 * @return array The array of available default fields.
 	 */
 	public function filter_gravityview_entry_default_field( $entry_default_fields, $form, $context ) {
+
+		if ( is_array( $form ) ) {
+			return $entry_default_fields;
+		}
 
 		$feeds = GFAPI::get_feeds( null, $form );
 
