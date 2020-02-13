@@ -9,8 +9,8 @@ const production = process.env.NODE_ENV === '';
 module.exports = {
 	...defaultConfig,
 	entry: {
-		'gv-gutenberg': path.resolve( process.cwd(), 'assets/src/js', 'blocks.js' ),
-		'style': path.resolve( process.cwd(), 'assets/src/css', 'blocks.scss' ),
+		'gv-blocks': path.resolve( process.cwd(), 'assets/src/js', 'blocks.js' ),
+		'gv-blocks-style': path.resolve( process.cwd(), 'assets/src/css', 'blocks.scss' ),
 	},
 	output: {
 		filename: '[name].js',
@@ -28,7 +28,7 @@ module.exports = {
 		splitChunks: {
 			cacheGroups: {
 				editor: {
-					name: 'style',
+					name: 'gv-blocks-style',
 					test: /blocks\.scss$/,
 					chunks: 'all',
 					enforce: true,
@@ -87,8 +87,8 @@ module.exports = {
 	plugins: [
 		...defaultConfig.plugins,
 		new MiniCssExtractPlugin( {
-			filename: '../css/gv-gutenberg.css',
+			filename: '../css/gv-blocks.css',
 		} ),
-		new IgnoreEmitPlugin( [ 'style.js' ] ),
+		new IgnoreEmitPlugin( [ 'gv-blocks-style.js' ] ),
 	],
 };

@@ -10,28 +10,28 @@ const { __ } = wp.i18n;
 /**
  * Register block
  */
-export default registerBlockType( 'gravityview/gravityview-details', {
+export default registerBlockType( 'gv-blocks/entry', {
 	category: 'gravityview',
-	title: __( 'GravityView View Details', 'gv-gutenberg' ),
+	title: __( 'GravityView Entry', 'gv-blocks' ),
 	icon,
-	keywords: [ 'gv', __( 'GravityView View Details', 'gv-gutenberg' ) ],
+	keywords: [ 'gv', __( 'GravityView', 'gv-blocks' ) ],
 	attributes,
 	transforms: {
 		from: [
 			{
 				type: 'shortcode',
-				tag: [ 'gravityview' ],
+				tag: [ 'gventry' ],
 				attributes: {
+					view_id: {
+						type: 'string',
+						shortcode: ( ref ) => {
+							return ref.named.view_id;
+						},
+					},
 					id: {
 						type: 'string',
 						shortcode: ( ref ) => {
 							return ref.named.id;
-						},
-					},
-					detail: {
-						type: 'string',
-						shortcode: ( ref ) => {
-							return ref.named.detail;
 						},
 					},
 				},
@@ -43,25 +43,25 @@ export default registerBlockType( 'gravityview/gravityview-details', {
 		const viewLists = [
 			{
 				value: '',
-				label: __( 'Select a View', 'gv-gutenberg' ),
+				label: __( 'Select a View', 'gv-blocks' ),
 			},
-			...GV_GUTENBERG.view_list,
+			...GV_BLOCKS.view_list,
 		];
 
 		return [
 			<Inspector { ...{ setAttributes, ...props } } />,
 			<Fragment>
 				{
-					( ! attributes.preview || attributes.id === '' || attributes.id === 'Select a View' ) &&
+					( ! attributes.preview || attributes.view_id === '' || attributes.view_id === 'Select a View' || attributes.id === '' ) &&
 					<div className="gravity-view-shortcode-preview">
-						<img src={ `${ GV_GUTENBERG.img_url }logo.png` } alt={ __( 'GravityView', 'gv-gutenberg' ) } />
+						<img src={ `${ GV_BLOCKS.img_url }gv-logo.png` } alt={ __( 'GravityView', 'gv-blocks' ) } />
 						<div className="field-container">
 							<SelectControl
-								value={ attributes.id }
+								value={ attributes.view_id }
 								options={ viewLists }
-								onChange={ id => {
+								onChange={ view_id => {
 									setAttributes( {
-										id,
+										view_id,
 									} );
 								} }
 							/>
@@ -69,9 +69,9 @@ export default registerBlockType( 'gravityview/gravityview-details', {
 					</div>
 				}
 				{
-					( attributes.preview && attributes.id !== '' && attributes.id !== 'Select a View' ) &&
+					( attributes.preview && attributes.view_id !== '' && attributes.view_id !== 'Select a View' && attributes.id !== '' ) &&
 					<ServerSideRender
-						block="gravityview/gravityview-details"
+						block="gv-blocks/entry"
 						attributes={ attributes }
 					/>
 				}

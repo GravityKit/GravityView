@@ -1,11 +1,11 @@
 <?php
 
-if ( ! function_exists( 'gravityview_block_render_gvfield' ) ) {
+if ( ! function_exists( 'gv_blocks_render_field' ) ) {
 	return;
 }
 
 /**
- * This function generates the gvfield shortcode
+ * This function generates the [gvfield] shortcode
  *
  * @param array $attributes
  *                         array['view_id']         string  The numeric View ID the entry should be displayed from
@@ -15,7 +15,7 @@ if ( ! function_exists( 'gravityview_block_render_gvfield' ) ) {
  *
  * @return string $output
  */
-function gravityview_block_render_gvfield( $attributes ) {
+function gv_blocks_render_field( $attributes ) {
 
 	$accepted_attributes = array(
 		'vew_id',

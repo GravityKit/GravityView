@@ -1,30 +1,30 @@
 {
-	"name": "gravityview-gutenberg",
-	"version": "0.1.0",
-	"description": "Example block written with ESNext standard and JSX support – build step required.",
-	"author": "The WordPress Contributors",
-	"license": "GPL-2.0-or-later",
-	"main": "build/index.js",
-	"scripts": {
-		"build": "wp-scripts build",
-		"lint:css": "wp-scripts lint-style",
-		"lint:js": "wp-scripts lint-js",
-		"start": "wp-scripts start",
-		"packages-update": "wp-scripts packages-update"
-	},
-	"devDependencies": {
-		"@wordpress/api-fetch": "^3.11.0",
-		"@wordpress/scripts": "^7.1.0",
-		"css-loader": "^3.4.2",
-		"ignore-emit-webpack-plugin": "^2.0.2",
-		"mini-css-extract-plugin": "^0.9.0",
-		"moment": "^2.24.0",
-		"node-sass": "^4.13.1",
-		"path": "^0.12.7",
-		"postcss-loader": "^3.0.0",
-		"postcss-preset-env": "^6.7.0",
-		"react-datepicker": "^2.12.1",
-		"react-select": "^3.0.8",
-		"sass-loader": "^8.0.2"
-	}
+  "name": "gravityview-blocks",
+  "version": "1.0.0",
+  "description": "Add GravityView layouts to Wordpress posts and pages using Gutenberg editor",
+  "author": "GravityView",
+  "license": "GPL-2.0-or-later",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "wp-scripts build",
+    "lint:css": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
+    "start": "wp-scripts start",
+    "packages-update": "wp-scripts packages-update"
+  },
+  "devDependencies": {
+    "@wordpress/api-fetch": "^3.11.0",
+    "@wordpress/scripts": "^7.1.0",
+    "css-loader": "^3.4.2",
+    "ignore-emit-webpack-plugin": "^2.0.2",
+    "mini-css-extract-plugin": "^0.9.0",
+    "moment": "^2.24.0",
+    "node-sass": "^4.13.1",
+    "path": "^0.12.7",
+    "postcss-loader": "^3.0.0",
+    "postcss-preset-env": "^6.7.0",
+    "react-datepicker": "^2.12.1",
+    "react-select": "^3.0.8",
+    "sass-loader": "^8.0.2"
+  }
 }

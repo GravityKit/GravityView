@@ -1,11 +1,11 @@
 <?php
 
-if ( ! function_exists( 'gravityview_block_render_gravityview_details' ) ) {
+if ( ! function_exists( 'gv_blocks_render_view_details' ) ) {
 	return;
 }
 
 /**
- * This function generates the gravityview shortcode
+ * This function generates the [gravityview] shortcode
  *
  * @param array $attributes
  *                         array['id']     string  The ID of the View you want to display
@@ -13,7 +13,7 @@ if ( ! function_exists( 'gravityview_block_render_gravityview_details' ) ) {
  *
  * @return string $output
  */
-function gravityview_block_render_gravityview_details( $attributes ) {
+function gv_blocks_render_view_details( $attributes ) {
 
 	$accepted_attributes = array(
 		'id',

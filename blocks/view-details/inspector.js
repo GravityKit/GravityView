@@ -15,14 +15,14 @@ export default class Inspector extends Component {
 		const viewLists = [
 			{
 				value: '',
-				label: __( 'Select a View', 'gv-gutenberg' ),
+				label: __( 'Select a View', 'gv-blocks' ),
 			},
-			...GV_GUTENBERG.view_list,
+			...GV_BLOCKS.view_list,
 		];
 		return (
 			<InspectorControls>
 				<PanelBody
-					title={ __( 'View Settings', 'gv-gutenberg' ) }>
+					title={ __( 'View Settings', 'gv-blocks' ) }>
 					<SelectControl
 						value={ attributes.id }
 						options={ viewLists }
@@ -37,13 +37,13 @@ export default class Inspector extends Component {
 						<Fragment>
 							<hr />
 							<SelectControl
-								label={ __( 'Details', 'gv-gutenberg' ) }
+								label={ __( 'Details', 'gv-blocks' ) }
 								value={ attributes.detail }
 								options={ [
-									{ value: 'total_entries', label: __( 'Total Entries', 'gv-gutenberg' ) },
-									{ value: 'first_entry', label: __( 'First Entry', 'gv-gutenberg' ) },
-									{ value: 'last_entry', label: __( 'Last Entry', 'gv-gutenberg' ) },
-									{ value: 'page_size', label: __( 'Page Size', 'gv-gutenberg' ) },
+									{ value: 'total_entries', label: __( 'Total Entries', 'gv-blocks' ) },
+									{ value: 'first_entry', label: __( 'First Entry', 'gv-blocks' ) },
+									{ value: 'last_entry', label: __( 'Last Entry', 'gv-blocks' ) },
+									{ value: 'page_size', label: __( 'Page Size', 'gv-blocks' ) },
 								] }
 								onChange={ detail => {
 									setAttributes( {
@@ -53,7 +53,7 @@ export default class Inspector extends Component {
 							/>
 							<hr />
 							<ToggleControl
-								label={ __( 'Preview', 'gv-gutenberg' ) }
+								label={ __( 'Preview', 'gv-blocks' ) }
 								checked={ attributes.preview }
 								onChange={ preview => {
 									setAttributes( {

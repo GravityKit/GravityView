@@ -10,11 +10,11 @@ const { __ } = wp.i18n;
 /**
  * Register block
  */
-export default registerBlockType( 'gravityview/gv-entry-link', {
+export default registerBlockType( 'gv-blocks/entry-link', {
 	category: 'gravityview',
-	title: __( 'GravityView Entry Link', 'gv-gutenberg' ),
+	title: __( 'GravityView Entry Link', 'gv-blocks' ),
 	icon,
-	keywords: [ 'gv', __( 'GravityView', 'gv-gutenberg' ) ],
+	keywords: [ 'gv', __( 'GravityView', 'gv-blocks' ) ],
 	attributes,
 	transforms: {
 		from: [
@@ -80,9 +80,9 @@ export default registerBlockType( 'gravityview/gv-entry-link', {
 		const viewLists = [
 			{
 				value: '',
-				label: __( 'Select a View', 'gv-gutenberg' ),
+				label: __( 'Select a View', 'gv-blocks' ),
 			},
-			...GV_GUTENBERG.view_list,
+			...GV_BLOCKS.view_list,
 		];
 
 		return [
@@ -91,7 +91,7 @@ export default registerBlockType( 'gravityview/gv-entry-link', {
 				{
 					( ! attributes.preview || attributes.view_id === '' || attributes.view_id === 'Select a View' || attributes.entry_id === '' ) &&
 					<div className="gravity-view-shortcode-preview">
-						<img src={ `${ GV_GUTENBERG.img_url }logo.png` } alt={ __( 'GravityView', 'gv-gutenberg' ) } />
+						<img src={ `${ GV_BLOCKS.img_url }gv-logo.png` } alt={ __( 'GravityView', 'gv-blocks' ) } />
 						<div className="field-container">
 							<SelectControl
 								value={ attributes.view_id }
@@ -105,7 +105,7 @@ export default registerBlockType( 'gravityview/gv-entry-link', {
 							{
 								attributes.view_id !== '' && attributes.view_id !== 'Select a View' &&
 								<TextControl
-									placeholder={ __( 'Entry ID', 'gv-gutenberg' ) }
+									placeholder={ __( 'Entry ID', 'gv-blocks' ) }
 									value={ attributes.entry_id }
 									type="number"
 									min="0"
@@ -119,7 +119,7 @@ export default registerBlockType( 'gravityview/gv-entry-link', {
 							{
 								attributes.view_id !== '' && attributes.view_id !== 'Select a View' && attributes.entry_id !== '' &&
 								<TextControl
-									placeholder={ __( 'Link Text', 'gv-gutenberg' ) }
+									placeholder={ __( 'Link Text', 'gv-blocks' ) }
 									value={ attributes.content }
 									onChange={ content => {
 										setAttributes( {
@@ -134,7 +134,7 @@ export default registerBlockType( 'gravityview/gv-entry-link', {
 				{
 					( attributes.preview && attributes.view_id !== '' && attributes.view_id !== 'Select a View' && attributes.entry_id !== '' ) &&
 					<ServerSideRender
-						block="gravityview/gv-entry-link"
+						block="gv-blocks/entry-link"
 						attributes={ attributes }
 					/>
 				}

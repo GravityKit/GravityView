@@ -11,9 +11,9 @@ export default class SelectViewItem extends Component {
 			viewLists: [
 				{
 					value: '',
-					label: __( 'Select a View', 'gravityviewgutenberg' ),
+					label: __( 'Select a View', 'gv-blocks' ),
 				},
-				...GV_GUTENBERG.view_list,
+				...GV_BLOCKS.view_list,
 			],
 		};
 	}

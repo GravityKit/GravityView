@@ -1,27 +1,30 @@
 <?php
 
-// Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+// Exit if accessed directly or Gutenberg is not enabled
+if ( ! defined( 'ABSPATH' ) || ! function_exists( 'register_block_type' ) ) {
 	exit;
 }
 
-// Bail if Gutenberg is not activated.
-if ( ! function_exists( 'register_block_type' ) ) {
-	return;
-}
-
 /**
- * Register required script and style files for Gutenberg editor.
+ * Enqueue UI assets
  */
-
-// Hook: Editor assets.
 add_action( 'enqueue_block_editor_assets', function () {
 
-	// Scripts.
+	$script = 'assets/js/gv-blocks.js';
+	$style  = 'assets/css/gv-blocks.css';
+
 	wp_enqueue_script(
-		'gv-gutenberg-js',
-		plugins_url( 'assets/js/gv-gutenberg.js', dirname( __FILE__ ) ),
-		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-components', 'wp-hooks', 'jquery' )
+		'gv-blocks-js',
+		GV_BLOCKS_PLUGIN_URL . $script,
+		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-components', 'wp-hooks', 'jquery' ),
+		filemtime( GV_BLOCKS_PLUGIN_PATH . $script )
+	);
+
+	wp_enqueue_style(
+		'gv-blocks-css',
+		GV_BLOCKS_PLUGIN_URL . $style,
+		array( 'wp-edit-blocks' ),
+		filemtime( GV_BLOCKS_PLUGIN_PATH . $style )
 	);
 
 	$views_list_array = array();
@@ -45,48 +48,40 @@ add_action( 'enqueue_block_editor_assets', function () {
 	}
 
 	wp_localize_script(
-		'gv-gutenberg-js',
-		'GV_GUTENBERG',
+		'gv-blocks-js',
+		'GV_BLOCKS',
 		array(
 			'home_page' => home_url(),
 			'ajax_url'  => admin_url( 'admin-ajax.php' ),
-			'img_url'   => GRAVITYVIEW_GUTENBERG_PLUGIN_URL . 'assets/img/',
+			'img_url'   => GV_BLOCKS_PLUGIN_URL . 'assets/img/',
 			'view_list' => $views_list_array
 		)
 	);
 
-	wp_enqueue_style(
-		'gv-gutenberg-css',
-		plugins_url( 'assets/css/gv-gutenberg.css', dirname( __FILE__ ) ),
-		array( 'wp-edit-blocks' )
-	);
 } );
 
 /**
- * Register categories
+ * Register blocks
  */
 add_filter( 'block_categories', function ( $categories, $post ) {
 
 	return array_merge(
 		$categories,
 		array(
-			array( 'slug' => 'gravityview', 'title' => __( 'GravityView', 'gv-gutenberg' ) )
+			array( 'slug' => 'gravityview', 'title' => __( 'GravityView', 'gv-blocks' ) )
 		)
 	);
 }, 10, 2 );
 
-// Include all components
-foreach ( glob( GRAVITYVIEW_GUTENBERG_PLUGIN_PATH . 'components/*/*.php' ) as $file ) {
-	include $file;
-}
-
-// Include all render files
-foreach ( glob( GRAVITYVIEW_GUTENBERG_PLUGIN_PATH . 'blocks/*/render.php' ) as $file ) {
+/**
+ * Register block renderers
+ */
+foreach ( glob( GV_BLOCKS_PLUGIN_PATH . 'blocks/*/render.php' ) as $file ) {
 	include $file;
 	$block_path      = dirname( $file );
 	$block_cat       = basename( $block_path );
-	$block_name      = 'gravityview/' . $block_cat;
-	$block_callback  = 'gravityview_block_render_' . str_replace( '-', '_', $block_cat );
+	$block_name      = 'gv-blocks/' . $block_cat;
+	$block_callback  = 'gv_blocks_render_' . str_replace( '-', '_', $block_cat );
 	$attributes_file = file_get_contents( $block_path . '/config.json' );
 	$attributes      = json_decode( $attributes_file, true );
 

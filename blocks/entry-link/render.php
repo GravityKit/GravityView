@@ -1,11 +1,11 @@
 <?php
 
-if ( ! function_exists( 'gravityview_block_render_gv_entry_link' ) ) {
+if ( ! function_exists( 'gv_blocks_render_entry_link' ) ) {
 	return;
 }
 
 /**
- * This function generates the gv_entry_link shortcode
+ * This function generates the [gv_entry_link] shortcode
  *
  * @param array $attributes
  *                         array['view_id']         string  The ID for the View where the entry is displayed
@@ -19,7 +19,7 @@ if ( ! function_exists( 'gravityview_block_render_gv_entry_link' ) ) {
  *
  * @return string $output
  */
-function gravityview_block_render_gv_entry_link( $attributes ) {
+function gv_blocks_render_entry_link( $attributes ) {
 
 	$accepted_attributes = array(
 		'view_id',
@@ -46,7 +46,7 @@ function gravityview_block_render_gv_entry_link( $attributes ) {
 		$shortcode = sprintf(
 			'[gv_entry_link %s]%s[/gv_entry_link]',
 			join( ' ', $shortcode_attributes ),
-			wp_kses_post( $attributes['content'] ),
+			wp_kses_post( $attributes['content'] )
 		);
 	} else {
 		$shortcode = sprintf( '[gv_entry_link %s/]', join( ' ', $shortcode_attributes ) );

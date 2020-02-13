@@ -11,11 +11,11 @@ const { __ } = wp.i18n;
 /**
  * Register block
  */
-export default registerBlockType( 'gravityview/gravityview', {
+export default registerBlockType( 'gv-blocks/view', {
 	category: 'gravityview',
-	title: __( 'GravityView', 'gv-gutenberg' ),
+	title: __( 'GravityView View', 'gv-blocks' ),
 	icon,
-	keywords: [ 'gv', __( 'GravityView', 'gv-gutenberg' ) ],
+	keywords: [ 'gv', __( 'GravityView', 'gv-blocks' ) ],
 	attributes,
 	transforms: {
 		from: [
@@ -125,7 +125,7 @@ export default registerBlockType( 'gravityview/gravityview', {
 				{
 					( ! attributes.preview || attributes.id === '' || attributes.id === 'Select a View' ) &&
 					<div className="gravity-view-shortcode-preview">
-						<img src={ `${ GV_GUTENBERG.img_url }logo.png` } alt={ __( 'GravityView', 'gv-gutenberg' ) } />
+						<img src={ `${ GV_BLOCKS.img_url }gv-logo.png` } alt={ __( 'GravityView', 'gv-blocks' ) } />
 						<div className="field-container">
 							<SelectViewItem  { ...{ setAttributes, ...props } } />
 						</div>
@@ -134,7 +134,7 @@ export default registerBlockType( 'gravityview/gravityview', {
 				{
 					( attributes.preview && attributes.id !== '' && attributes.id !== 'Select a View' ) &&
 					<ServerSideRender
-						block="gravityview/gravityview"
+						block="gv-blocks/view"
 						attributes={ attributes }
 					/>
 				}

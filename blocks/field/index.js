@@ -10,17 +10,17 @@ const { __ } = wp.i18n;
 /**
  * Register block
  */
-export default registerBlockType( 'gravityview/gventry', {
+export default registerBlockType( 'gv-blocks/field', {
 	category: 'gravityview',
-	title: __( 'GravityView Entry', 'gv-gutenberg' ),
+	title: __( 'GravityView Field', 'gv-blocks' ),
 	icon,
-	keywords: [ 'gv', __( 'GravityView', 'gv-gutenberg' ) ],
+	keywords: [ 'gv', __( 'GravityView', 'gv-blocks' ) ],
 	attributes,
 	transforms: {
 		from: [
 			{
 				type: 'shortcode',
-				tag: [ 'gventry' ],
+				tag: [ 'gvfield' ],
 				attributes: {
 					view_id: {
 						type: 'string',
@@ -28,10 +28,22 @@ export default registerBlockType( 'gravityview/gventry', {
 							return ref.named.view_id;
 						},
 					},
-					id: {
+					entry_id: {
 						type: 'string',
 						shortcode: ( ref ) => {
-							return ref.named.id;
+							return ref.named.entry_id;
+						},
+					},
+					field_id: {
+						type: 'string',
+						shortcode: ( ref ) => {
+							return ref.named.field_id;
+						},
+					},
+					custom_label: {
+						type: 'string',
+						shortcode: ( ref ) => {
+							return ref.named.custom_label;
 						},
 					},
 				},
@@ -43,18 +55,18 @@ export default registerBlockType( 'gravityview/gventry', {
 		const viewLists = [
 			{
 				value: '',
-				label: __( 'Select a View', 'gv-gutenberg' ),
+				label: __( 'Select a View', 'gv-blocks' ),
 			},
-			...GV_GUTENBERG.view_list,
+			...GV_BLOCKS.view_list,
 		];
 
 		return [
 			<Inspector { ...{ setAttributes, ...props } } />,
 			<Fragment>
 				{
-					( ! attributes.preview || attributes.view_id === '' || attributes.view_id === 'Select a View' || attributes.id === '' ) &&
+					( ! attributes.preview || attributes.view_id === '' || attributes.view_id === 'Select a View' || attributes.entry_id === '' || attributes.field_id === '' ) &&
 					<div className="gravity-view-shortcode-preview">
-						<img src={ `${ GV_GUTENBERG.img_url }logo.png` } alt={ __( 'GravityView', 'gv-gutenberg' ) } />
+						<img src={ `${ GV_BLOCKS.img_url }gv-logo.png` } alt={ __( 'GravityView', 'gv-blocks' ) } />
 						<div className="field-container">
 							<SelectControl
 								value={ attributes.view_id }
@@ -69,13 +81,15 @@ export default registerBlockType( 'gravityview/gventry', {
 					</div>
 				}
 				{
-					( attributes.preview && attributes.view_id !== '' && attributes.view_id !== 'Select a View' && attributes.id !== '' ) &&
+					( attributes.preview && attributes.view_id !== '' && attributes.view_id !== 'Select a View' && attributes.entry_id !== '' && attributes.field_id !== '' ) &&
 					<ServerSideRender
-						block="gravityview/gventry"
+						block="gv-blocks/field"
 						attributes={ attributes }
 					/>
 				}
+
 			</Fragment>,
+
 		];
 	},
 	save() {

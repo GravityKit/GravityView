@@ -31,7 +31,7 @@ export default class Inspector extends Component {
 				urlAutoCompleteLoading: true,
 			} );
 			if ( this.state.urlAutoComplete.length === 0 ) {
-				apiFetch( { path: `${ GV_GUTENBERG.home_page }/wp-json/wp/v2/posts/?per_page=-1` } ).then( ( response ) => {
+				apiFetch( { path: `${ GV_BLOCKS.home_page }/wp-json/wp/v2/posts/?per_page=-1` } ).then( ( response ) => {
 					this.setState( {
 						urlAutoComplete: response,
 					} );
@@ -50,7 +50,7 @@ export default class Inspector extends Component {
 		return (
 			<InspectorControls>
 				<PanelBody
-					title={ __( 'View Settings', 'gv-gutenberg' ) }>
+					title={ __( 'View Settings', 'gv-blocks' ) }>
 					<SelectViewItem  { ...{ setAttributes, ...this.props } } />
 					{
 						attributes.id !== '' && attributes.id !== 'Select a View' &&
@@ -60,7 +60,7 @@ export default class Inspector extends Component {
 								<label style={ {
 									marginBottom: 10,
 									display: 'block',
-								} }>{ __( 'Start Date', 'gv-gutenberg' ) }</label>
+								} }>{ __( 'Start Date', 'gv-blocks' ) }</label>
 								<ButtonGroup
 									className="btn-group-double">
 									<Button
@@ -73,7 +73,7 @@ export default class Inspector extends Component {
 										} }
 
 									>
-										{ __( 'Static (Calendar)', 'gv-gutenberg' ) }
+										{ __( 'Static (Calendar)', 'gv-blocks' ) }
 									</Button>
 									<Button
 										isDefault
@@ -85,7 +85,7 @@ export default class Inspector extends Component {
 										} }
 
 									>
-										{ __( 'Relative', 'gv-gutenberg' ) }
+										{ __( 'Relative', 'gv-blocks' ) }
 									</Button>
 								</ButtonGroup>
 								{
@@ -102,7 +102,7 @@ export default class Inspector extends Component {
 								{
 									attributes.start_date_type === 'relative' &&
 									<TextControl
-										placeholder={ __( 'Relative Date', 'gv-gutenberg' ) }
+										placeholder={ __( 'Relative Date', 'gv-blocks' ) }
 										value={ attributes.start_date }
 										onChange={ start_date => {
 											setAttributes( {
@@ -118,7 +118,7 @@ export default class Inspector extends Component {
 								<label style={ {
 									marginBottom: 10,
 									display: 'block',
-								} }>{ __( 'End Date', 'gv-gutenberg' ) }</label>
+								} }>{ __( 'End Date', 'gv-blocks' ) }</label>
 								<ButtonGroup
 									className="btn-group-double">
 									<Button
@@ -131,7 +131,7 @@ export default class Inspector extends Component {
 										} }
 
 									>
-										{ __( 'Static (Calendar)', 'gv-gutenberg' ) }
+										{ __( 'Static (Calendar)', 'gv-blocks' ) }
 									</Button>
 									<Button
 										isDefault
@@ -143,7 +143,7 @@ export default class Inspector extends Component {
 										} }
 
 									>
-										{ __( 'Relative', 'gv-gutenberg' ) }
+										{ __( 'Relative', 'gv-blocks' ) }
 									</Button>
 								</ButtonGroup>
 								{
@@ -160,7 +160,7 @@ export default class Inspector extends Component {
 								{
 									attributes.end_date_type === 'relative' &&
 									<TextControl
-										placeholder={ __( 'Relative Date', 'gv-gutenberg' ) }
+										placeholder={ __( 'Relative Date', 'gv-blocks' ) }
 										value={ attributes.end_date }
 										onChange={ end_date => {
 											setAttributes( {
@@ -173,7 +173,7 @@ export default class Inspector extends Component {
 							</div>
 							<hr />
 							<ToggleControl
-								label={ __( 'Preview', 'gv-gutenberg' ) }
+								label={ __( 'Preview', 'gv-blocks' ) }
 								checked={ attributes.preview }
 								onChange={ preview => {
 									setAttributes( {
@@ -188,9 +188,9 @@ export default class Inspector extends Component {
 					attributes.id !== '' && attributes.id !== 'Select a View' &&
 					<PanelBody
 						initialOpen={ false }
-						title={ __( 'More Settings', 'gv-gutenberg' ) }>
+						title={ __( 'More Settings', 'gv-blocks' ) }>
 						<TextControl
-							label={ __( 'Page Size', 'gv-gutenberg' ) }
+							label={ __( 'Page Size', 'gv-blocks' ) }
 							value={ attributes.page_size }
 							type="number"
 							min="0"
@@ -202,7 +202,7 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<TextControl
-							label={ __( 'Sort Field', 'gv-gutenberg' ) }
+							label={ __( 'Sort Field', 'gv-blocks' ) }
 							value={ attributes.sort_field }
 							onChange={ sort_field => {
 								setAttributes( {
@@ -212,16 +212,16 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<SelectControl
-							label={ __( 'Sort Direction', 'gv-gutenberg' ) }
+							label={ __( 'Sort Direction', 'gv-blocks' ) }
 							value={ attributes.sort_direction }
 							options={ [
 								{
 									value: 'ASC',
-									label: __( 'Ascending', 'gv-gutenberg', 'gv-gutenberg' ),
+									label: __( 'Ascending', 'gv-blocks', 'gv-blocks' ),
 								},
 								{
 									value: 'DESC',
-									label: __( 'Descending', 'gv-gutenberg', 'gv-gutenberg' ),
+									label: __( 'Descending', 'gv-blocks', 'gv-blocks' ),
 								},
 							] }
 							onChange={ sort_direction => {
@@ -232,7 +232,7 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<TextControl
-							label={ __( 'Search Field', 'gv-gutenberg' ) }
+							label={ __( 'Search Field', 'gv-blocks' ) }
 							value={ attributes.search_field }
 							onChange={ search_field => {
 								setAttributes( {
@@ -242,7 +242,7 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<TextControl
-							label={ __( 'Search Value', 'gv-gutenberg' ) }
+							label={ __( 'Search Value', 'gv-blocks' ) }
 							value={ attributes.search_value }
 							onChange={ search_value => {
 								setAttributes( {
@@ -252,7 +252,7 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<SelectControl
-							label={ __( 'Search Operator', 'gv-gutenberg' ) }
+							label={ __( 'Search Operator', 'gv-blocks' ) }
 							value={ attributes.search_operator }
 							options={ [
 								{ value: 'is', label: 'is' },
@@ -277,7 +277,7 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<TextControl
-							label={ __( 'Class', 'gv-gutenberg' ) }
+							label={ __( 'Class', 'gv-blocks' ) }
 							value={ attributes.class }
 							onChange={ classVal => {
 								setAttributes( {
@@ -287,7 +287,7 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<TextControl
-							label={ __( 'Offset', 'gv-gutenberg' ) }
+							label={ __( 'Offset', 'gv-blocks' ) }
 							value={ attributes.offset }
 							type="number"
 							min="0"
@@ -299,7 +299,7 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<TextControl
-							label={ __( 'Single Title', 'gv-gutenberg' ) }
+							label={ __( 'Single Title', 'gv-blocks' ) }
 							value={ attributes.single_title }
 							onChange={ single_title => {
 								setAttributes( {
@@ -309,7 +309,7 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<TextControl
-							label={ __( 'Back Link Label', 'gv-gutenberg' ) }
+							label={ __( 'Back Link Label', 'gv-blocks' ) }
 							value={ attributes.back_link_label }
 							onChange={ back_link_label => {
 								setAttributes( {
@@ -320,7 +320,7 @@ export default class Inspector extends Component {
 						<hr />
 						<div className="autocomplete-box">
 							<TextControl
-								label={ __( 'Post ID', 'gv-gutenberg' ) }
+								label={ __( 'Post ID', 'gv-blocks' ) }
 								value={ attributes.post_id }
 								type="number"
 								min="0"

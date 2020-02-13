@@ -1,11 +1,11 @@
 <?php
 
-if ( ! function_exists( 'gravityview_block_render_gventry' ) ) {
+if ( ! function_exists( 'gv_blocks_render_entry' ) ) {
 	return;
 }
 
 /**
- * This function generates the gventry shortcode
+ * This function generates the [gventry] shortcode
  *
  * @param array $attributes
  *                         array['view_id']     string  The numeric View ID the entry should be displayed from.
@@ -13,7 +13,7 @@ if ( ! function_exists( 'gravityview_block_render_gventry' ) ) {
  *
  * @return string $output
  */
-function gravityview_block_render_gventry( $attributes ) {
+function gv_blocks_render_entry( $attributes ) {
 
 	$accepted_attributes = array(
 		'id',
