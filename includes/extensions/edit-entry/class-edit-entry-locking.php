@@ -5,12 +5,25 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
 }
 
+if ( ! class_exists( 'GFCommon' ) ) {
+	return;
+}
+
+require_once( GFCommon::get_base_path() . '/includes/locking/class-gf-locking.php' );
+
 /**
  * An entry locking class that syncs with GFEntryLocking.
  *
  * @since 2.5.2
  */
-class GravityView_Edit_Entry_Locking {
+class GravityView_Edit_Entry_Locking extends GFLocking {
+
+	/**
+	 * GravityView_Edit_Entry_Locking constructor.
+	 *
+	 * @noinspection PhpMissingParentConstructorInspection
+	 */
+	public function __construct() {}
 
 	/**
 	 * Load extension entry point.
@@ -23,71 +36,46 @@ class GravityView_Edit_Entry_Locking {
 	 * @return void
 	 */
 	public function load() {
-		if ( ! has_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) ) ) {
-			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			$this->init_ajax();
 		}
 
-		add_action( 'wp_ajax_gf_lock_request_entry', array( $this, 'ajax_lock_request' ), 1 );
-		add_action( 'wp_ajax_gf_reject_lock_request_entry', array( $this, 'ajax_reject_lock_request' ), 1 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ), 1 );
+
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ), 100 );
+
+		$this->_object_id = $this->get_object_id();
+		$this->maybe_lock_object( $this->_object_id );
+	}
+
+	public function init_ajax() {
+
 		add_action( 'wp_ajax_nopriv_gf_lock_request_entry', array( $this, 'ajax_lock_request' ) );
 		add_action( 'wp_ajax_nopriv_gf_reject_lock_request_entry', array( $this, 'ajax_reject_lock_request' ) );
+
+		parent::init_ajax();
+
 	}
 
-	// TODO: Convert to extending Gravity Forms
-	public function ajax_lock_request() {
-		$object_id = rgget( 'object_id' );
-		$response  = $this->request_lock( $object_id );
-		echo json_encode( $response );
-		die();
+	protected function is_edit_page() {
+		return 'edit' === gravityview_get_context();
 	}
 
-	// TODO: Convert to extending Gravity Forms
-	public function ajax_reject_lock_request() {
-		$object_id = rgget( 'object_id' );
-		$response  = $this->delete_lock_request_meta( $object_id );
-		echo json_encode( $response );
-		die();
-	}
+	/**
+	 * Override this method to provide the class with the correct object id.
+	 *
+	 * @return int
+	 */
+	protected function get_object_id() {
 
-	// TODO: Convert to extending Gravity Forms
-	protected function delete_lock_request_meta( $object_id ) {
-		GFCache::delete( 'lock_request_entry_' . $object_id );
-
-		return true;
-	}
-
-	// TODO: Convert to extending Gravity Forms
-	protected function request_lock( $object_id ) {
-		if ( 0 == ( $user_id = get_current_user_id() ) ) {
-			return false;
+		if( ! did_action( 'gravityview/loaded') ) {
+			return 0;
 		}
 
-		$lock_holder_user_id = $this->check_lock( $object_id );
+		$entry = gravityview()->request->is_edit_entry();
 
-		$result = array();
-		if ( ! $lock_holder_user_id ) {
-			$this->set_lock( $object_id );
-			$result['html']   = __( 'You now have control', 'gravityforms' );
-			$result['status'] = 'lock_obtained';
-		} else {
-
-			if( GVCommon::has_cap( 'gravityforms_edit_entries' ) ) {
-				$user = get_userdata( $lock_holder_user_id );
-				$result['html']   = sprintf( __( 'Your request has been sent to %s.', 'gravityforms' ), $user->display_name );
-			} else {
-				$result['html']   = __( 'Your request has been sent.', 'gravityforms' );
-			}
-
-			$this->update_lock_request_meta( $object_id, $user_id );
-
-			$result['status'] = 'lock_requested';
-		}
-
-		return $result;
-	}
-
-	protected function update_lock_request_meta( $object_id, $lock_request_value ) {
-		GFCache::set( 'lock_request_entry_' . $object_id, $lock_request_value, true, 120 );
+		return $entry ? $entry->ID : 0;
 	}
 
 	/**
@@ -95,7 +83,7 @@ class GravityView_Edit_Entry_Locking {
 	 *
 	 * Called via load() and `wp_enqueue_scripts`
 	 *
-	 * @since 2.5.2
+	 * @since 2.6
 	 *
 	 * @return void
 	 */
@@ -105,30 +93,32 @@ class GravityView_Edit_Entry_Locking {
 			return;
 		}
 
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
-		$locking_path = GFCommon::get_base_url() . '/includes/locking/';
+		$this->_object_id = (int) $entry['id'];
+		$this->_object_type = 'entry';
+		wp_enqueue_style( 'edit' );
+		wp_enqueue_script( 'heartbeat' );
 
-		wp_enqueue_script( 'gforms_locking', $locking_path . "js/locking{$min}.js", array( 'jquery', 'heartbeat' ), GFCommon::$version );
-		wp_enqueue_style( 'gforms_locking_css', $locking_path . "css/locking{$min}.css", array( 'edit' ), GFCommon::$version );
+		// Below is a copy of GFLocking::enqueue_scripts()
+		// We had to copy/paste because $_object_id and $_object_type aren't overridable because they're private vars
 
-		$translations = array_map( 'wp_strip_all_tags', $this->get_strings() );
+		wp_enqueue_script( 'gforms_locking' );
+		wp_enqueue_style( 'gforms_locking_css' );
+		$lock_user_id = $this->check_lock( $this->get_object_id() );
 
 		$strings = array(
-			'noResponse'    => $translations['no_response'],
-			'requestAgain'  => $translations['request_again'],
-			'requestError'  => $translations['request_error'],
-			'gainedControl' => $translations['gained_control'],
-			'rejected'      => $translations['request_rejected'],
-			'pending'       => $translations['request_pending'],
+			'noResponse'    => $this->get_string( 'no_response' ),
+			'requestAgain'  => $this->get_string( 'request_again' ),
+			'requestError'  => $this->get_string( 'request_error' ),
+			'gainedControl' => $this->get_string( 'gained_control' ),
+			'rejected'      => $this->get_string( 'request_rejected' ),
+			'pending'       => $this->get_string( 'request_pending' )
 		);
-
-		$lock_user_id = $this->check_lock( $entry['id'] );
 
 		$vars = array(
 			'hasLock'    => ! $lock_user_id ? 1 : 0,
 			'lockUI'     => $this->get_lock_ui( $lock_user_id ),
-			'objectID'   => $entry['id'],
-			'objectType' => 'entry',
+			'objectID'   => $this->_object_id,
+			'objectType' => $this->_object_type,
 			'strings'    => $strings,
 		);
 
@@ -140,9 +130,9 @@ class GravityView_Edit_Entry_Locking {
 	 *
 	 * Called script enqueuing, added to JavaScript gforms_locking global variable.
 	 *
-	 * @since 2.5.2
+	 * @since 2.6
 	 *
-	 * @see GravityView_Edit_Entry_Locking::check_lock
+	 * @see check_lock
 	 *
 	 * @param int $user_id The User ID that has the current lock. Will be empty if entry is not locked
 	 *                     or is locked to the current user.
@@ -150,11 +140,13 @@ class GravityView_Edit_Entry_Locking {
 	 * @return string The Lock UI dialog box, etc.
 	 */
 	public function get_lock_ui( $user_id ) {
+
 		$user = get_userdata( $user_id );
 
 		$locked = $user_id && $user;
 
 		$hidden = $locked ? '' : ' hidden';
+
 		if ( $locked ) {
 
 			if( GVCommon::has_cap( 'gravityforms_edit_entries' ) ) {
@@ -171,8 +163,8 @@ class GravityView_Edit_Entry_Locking {
                             <p class="currently-editing" tabindex="0">' . esc_html( sprintf( $this->get_string( 'currently_locked' ), $person_editing_text ) ) . '</p>
                             <p>
 
-                                <a id="gform-take-over-button" style="display:none" class="button button-primary wp-tab-first" href="' . esc_url( add_query_arg( 'get-edit-lock', '1' ) ) . '">' . esc_html__( 'Take Over', 'gravityforms' ) . '</a>
-                                <button id="gform-lock-request-button" class="button button-primary wp-tab-last">' . esc_html__( 'Request Control', 'gravityforms' ) . '</button>
+                                <a id="gform-take-over-button" style="display:none" class="button button-primary wp-tab-first" href="' . esc_url( add_query_arg( 'get-edit-lock', '1' ) ) . '">' . esc_html__( 'Take Over', 'gravityview' ) . '</a>
+                                <button id="gform-lock-request-button" class="button button-primary wp-tab-last">' . esc_html__( 'Request Control', 'gravityview' ) . '</button>
                                 <a class="button" onclick="history.back(-1); return false;">' . esc_html( $this->get_string( 'cancel' ) ) . '</a>
                             </p>
                             <div id="gform-lock-request-status">
@@ -189,7 +181,7 @@ class GravityView_Edit_Entry_Locking {
                             </p>
                             <p>
                                 <a id="gform-release-lock-button" class="button button-primary wp-tab-last"  href="' . esc_url( add_query_arg( 'release-edit-lock', '1' ) ) . '">' . esc_html( $this->get_string( 'accept' ) ) . '</a>
-                                <button id="gform-reject-lock-request-button" style="display:none"  class="button button-primary wp-tab-last">' . esc_html__( 'Reject Request', 'gravityforms' ) . '</button>
+                                <button id="gform-reject-lock-request-button" style="display:none"  class="button button-primary wp-tab-last">' . esc_html__( 'Reject Request', 'gravityview' ) . '</button>
                             </p>
                         </div>';
 
@@ -205,46 +197,6 @@ class GravityView_Edit_Entry_Locking {
 		return $html;
 	}
 
-	/**
-	 * Localized string for the UI.
-	 *
-	 * Uses gravityforms textdomain unchanged.
-	 *
-	 * @since 2.5.2
-	 *
-	 * @return array An array of translations.
-	 */
-	public function get_strings() {
-		$translations = array(
-			'currently_locked'  => __( 'This entry is currently locked. Click on the "Request Control" button to let %s know you\'d like to take over.', 'gravityforms' ),
-			'currently_editing' => __( '%s is currently editing this entry', 'gravityforms' ),
-			'taken_over'        => __( '%s has taken over and is currently editing this entry.', 'gravityforms' ),
-			'lock_requested'    => __( '%s has requested permission to take over control of this entry.', 'gravityforms' ),
-			'accept'            => __( 'Accept', 'gravityforms' ),
-			'cancel'            => __( 'Cancel', 'gravityforms' ),
-			'gained_control'    => __( 'You now have control', 'gravityforms' ),
-			'request_pending'   => __( 'Pending', 'gravityforms' ),
-			'no_response'       => __( 'No response', 'gravityforms' ),
-			'request_again'     => __( 'Request again', 'gravityforms' ),
-			'request_error'     => __( 'Error', 'gravityforms' ),
-			'request_rejected'  => __( 'Your request was rejected', 'gravityforms' ),
-		);
-
-		$translations = array_map( 'wp_strip_all_tags', $translations );
-
-		return $translations;
-	}
-
-	/**
-	 * Get a localized string.
-	 *
-	 * @param string $string The string to get.
-	 *
-	 * @return string A localized string. See self::get_strings()
-	 */
-	public function get_string( $string ) {
-		return \GV\Utils::get( $this->get_strings(), $string, '' );
-	}
 
 	/**
 	 * Lock the entry... maybe.
@@ -261,6 +213,10 @@ class GravityView_Edit_Entry_Locking {
 	 */
 	public function maybe_lock_object( $entry_id ) {
 		global $wp;
+
+		if( ! $wp ) {
+			return;
+		}
 
 		$current_url = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
 
@@ -281,70 +237,17 @@ class GravityView_Edit_Entry_Locking {
 	}
 
 	/**
-	 * Is this entry locked to some other user?
+	 * Lock the entry to the current user. Override Gravity Forms permissions check with check_user_cap_edit_entry
+	 *
+	 * @uses GravityView_Edit_Entry::check_user_cap_edit_entry
+	 *
+	 * @since 2.6
 	 *
 	 * @param int $entry_id The entry ID.
 	 *
-	 * @return boolean Yes or no.
+	 * @return int|false User ID the current user if the lock was set. False if not.
 	 */
-	public function check_lock( $entry_id ) {
-		if ( ! $user_id = $this->get_lock_meta( $entry_id ) ) {
-			return false;
-		}
-
-		if ( $user_id != get_current_user_id() ) {
-			return $user_id;
-		}
-
-		return false;
-	}
-
-	/**
-	 * The lock for an entry.
-	 *
-	 * Leverages Gravity Forms' persistent caching mechanisms.
-	 *
-	 * @param int $entry_id The entry ID.
-	 *
-	 * @return int|null The User ID or null.
-	 */
-	public function get_lock_meta( $entry_id ) {
-		return GFCache::get( 'lock_entry_' . $entry_id );
-	}
-
-	/**
-	 * Set the lock for an entry.
-	 *
-	 * @param int $entry_id The entry ID.
-	 * @param int $user_id The user ID to lock the entry to.
-	 *
-	 * @return void
-	 */
-	public function update_lock_meta( $entry_id, $user_id ) {
-		GFCache::set( 'lock_entry_' . $entry_id, $user_id, true, 1500 );
-	}
-
-	/**
-	 * Release the lock for an entry.
-	 *
-	 * @param int $entry_id The entry ID.
-	 *
-	 * @return void
-	 */
-	public function delete_lock_meta( $entry_id ) {
-		GFCache::delete( 'lock_entry_' . $entry_id );
-	}
-
-	/**
-	 * Lock the entry to the current user.
-	 *
-	 * @since 2.5.2
-	 *
-	 * @param int $entry_id The entry ID.
-	 *
-	 * @return int|false Locked or not.
-	 */
-	public function set_lock( $entry_id ) {
+	protected function set_lock( $entry_id ) {
 
 		$entry = GFAPI::get_entry( $entry_id );
 
@@ -352,7 +255,7 @@ class GravityView_Edit_Entry_Locking {
 			return false;
 		}
 
-		if ( 0 === ( $user_id = get_current_user_id() ) ) {
+		if ( 0 == ( $user_id = get_current_user_id() ) ) {
 			return false;
 		}
 
