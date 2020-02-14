@@ -18,7 +18,7 @@ if ( ! function_exists( 'gv_blocks_render_field' ) ) {
 function gv_blocks_render_field( $attributes ) {
 
 	$accepted_attributes = array(
-		'vew_id',
+		'view_id',
 		'entry_id',
 		'field_id',
 		'custom_label',

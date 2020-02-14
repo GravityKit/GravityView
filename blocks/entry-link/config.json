@@ -1,11 +1,11 @@
 {
   "view_id": {
     "default": "",
-    "type": "number"
+    "type": "string"
   },
   "entry_id": {
     "default": "",
-    "type": "number"
+    "type": "string"
   },
   "action": {
     "default": "read",
@@ -13,7 +13,7 @@
   },
   "post_id": {
     "default": "",
-    "type": "number"
+    "type": "string"
   },
   "return": {
     "default": "html",

@@ -1,7 +1,7 @@
 {
   "view_id": {
     "default": "",
-    "type": "number"
+    "type": "string"
   },
   "id": {
     "default": "",

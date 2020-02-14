@@ -10,7 +10,9 @@ const { __ } = wp.i18n;
 /**
  * Register block
  */
-export default registerBlockType( 'gv-blocks/entry', {
+const blockName = 'gv-blocks/entry';
+
+export default registerBlockType( blockName, {
 	category: 'gravityview',
 	title: __( 'GravityView Entry', 'gv-blocks' ),
 	icon,
@@ -71,7 +73,7 @@ export default registerBlockType( 'gv-blocks/entry', {
 				{
 					( attributes.preview && attributes.view_id !== '' && attributes.view_id !== 'Select a View' && attributes.id !== '' ) &&
 					<ServerSideRender
-						block="gv-blocks/entry"
+						block={ blockName }
 						attributes={ attributes }
 					/>
 				}
