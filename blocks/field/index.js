@@ -67,7 +67,7 @@ export default registerBlockType( blockName, {
 			<Fragment>
 				{
 					( ! attributes.preview || attributes.view_id === '' || attributes.view_id === 'Select a View' || attributes.entry_id === '' || attributes.field_id === '' ) &&
-					<div className="gravity-view-shortcode-preview">
+					<div className="gravityview-shortcode-preview">
 						<img src={ `${ GV_BLOCKS.img_url }gv-logo.png` } alt={ __( 'GravityView', 'gv-blocks' ) } />
 						<div className="field-container">
 							<SelectControl
