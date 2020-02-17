@@ -19,14 +19,14 @@ function gv_blocks_enqueue_assets() {
 		'gv-blocks-js',
 		GV_BLOCKS_PLUGIN_URL . $script,
 		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-components', 'wp-hooks', 'jquery' ),
-		filemtime( GV_BLOCKS_PLUGIN_PATH . $script ),
+		filemtime( GV_BLOCKS_PLUGIN_PATH . $script )
 	);
 
 	wp_enqueue_style(
 		'gv-blocks-css',
 		GV_BLOCKS_PLUGIN_URL . $style,
 		array( 'wp-edit-blocks' ),
-		filemtime( GV_BLOCKS_PLUGIN_PATH . $style ),
+		filemtime( GV_BLOCKS_PLUGIN_PATH . $style )
 	);
 
 	$views_list_array = array();
