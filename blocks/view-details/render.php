@@ -1,7 +1,8 @@
 <?php
 
-if ( ! function_exists( 'gv_blocks_render_view_details' ) ) {
-	return;
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 /**
@@ -17,7 +18,7 @@ function gv_blocks_render_view_details( $attributes ) {
 
 	$accepted_attributes = array(
 		'id',
-		'detail'
+		'detail',
 	);
 
 	foreach ( $attributes as $attribute => $value ) {

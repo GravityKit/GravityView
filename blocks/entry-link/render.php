@@ -1,7 +1,8 @@
 <?php
 
-if ( ! function_exists( 'gv_blocks_render_entry_link' ) ) {
-	return;
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 /**
@@ -29,7 +30,7 @@ function gv_blocks_render_entry_link( $attributes ) {
 		'return',
 		'link_atts',
 		'field_values',
-		'content'
+		'content',
 	);
 
 	$shortcode_attributes = array();

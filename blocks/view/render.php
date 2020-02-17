@@ -1,7 +1,8 @@
 <?php
 
-if ( ! function_exists( 'gv_blocks_render_view' ) ) {
-	return;
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 /**
