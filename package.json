@@ -1,7 +1,7 @@
 {
   "name": "gravityview-blocks",
   "version": "1.0.0",
-  "description": "Add GravityView layouts to Wordpress posts and pages using Gutenberg editor",
+  "description": "Add GravityView layouts to WordPress posts and pages using Gutenberg editor",
   "author": "GravityView",
   "license": "GPL-2.0-or-later",
   "main": "build/index.js",
