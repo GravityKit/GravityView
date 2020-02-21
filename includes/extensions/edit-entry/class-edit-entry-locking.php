@@ -23,8 +23,8 @@ class GravityView_Edit_Entry_Locking {
 	 * @return void
 	 */
 	public function load() {
-		if ( ! has_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) ) ) {
-			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		if ( ! has_action( 'wp_enqueue_scripts', array( $this, 'maybe_enqueue_scripts' ) ) ) {
+			add_action( 'wp_enqueue_scripts', array( $this, 'maybe_enqueue_scripts' ) );
 		}
 
 		add_action( 'wp_ajax_gf_lock_request_entry', array( $this, 'ajax_lock_request' ), 1 );
@@ -91,19 +91,77 @@ class GravityView_Edit_Entry_Locking {
 	}
 
 	/**
+	 * Checks whether to enqueue scripts based on:
+	 *
+	 * - Is it Edit Entry?
+	 * - Is the entry connected to a View that has `edit_locking` enabled?
+	 * - Is the entry connected to a form connected to a currently-loaded View?
+	 *
+	 * @internal
+	 * @since 2.6.1
+	 *
+	 * @global WP_Post $post
+	 *
+	 * @return void
+	 */
+	public function maybe_enqueue_scripts() {
+		global $post;
+
+		if ( ! $entry = gravityview()->request->is_edit_entry() ) {
+			return;
+		}
+
+		if ( ! $post || ! is_a( $post, 'WP_Post' ) ) {
+			return;
+		}
+
+		$views = \GV\View_Collection::from_post( $post );
+
+		$entry_array = $entry->as_entry();
+
+		$continue_enqueuing = false;
+
+		// If any Views being loaded have entry locking, enqueue the scripts
+		foreach( $views->all() as $view ) {
+
+			// Make sure the View has edit locking enabled
+			if( ! $view->settings->get( 'edit_locking' ) ) {
+				continue;
+			}
+
+			// Make sure that the entry belongs to one of the forms connected to one of the Views in this request
+			$joined_forms = $view::get_joined_forms( $view->ID );
+
+			$entry_form_id = $entry_array['form_id'];
+
+			if( ! isset( $joined_forms[ $entry_form_id ] ) ) {
+				continue;
+			}
+
+			$continue_enqueuing = true;
+
+			break;
+		}
+
+		if( ! $continue_enqueuing ) {
+			return;
+		}
+
+		$this->enqueue_scripts( $entry_array );
+	}
+
+	/**
 	 * Enqueue the required scripts and styles from Gravity Forms.
 	 *
 	 * Called via load() and `wp_enqueue_scripts`
 	 *
 	 * @since 2.5.2
 	 *
+	 * @param array $entry Gravity Forms entry array
+	 *
 	 * @return void
 	 */
-	public function enqueue_scripts() {
-
-		if ( ! $entry = gravityview()->request->is_edit_entry() ) {
-			return;
-		}
+	protected function enqueue_scripts( $entry ) {
 
 		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
 		$locking_path = GFCommon::get_base_url() . '/includes/locking/';

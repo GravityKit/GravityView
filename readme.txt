@@ -26,6 +26,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: "Enable Edit Locking" View setting to toggle on and off entry locking (in the "Edit Entry" tab of the View Settings)
 * Fixed: Broken Toolbar link to Gravity Forms' entry editing while editing an entry in GravityView
 
+__Developer Updates:__
+
+* `GravityView_Edit_Entry_Locking::enqueue_scripts()` visibility is now protected
+
 = 2.6 on February 12, 2020 =
 
 * Added: Implement Gravity Forms Entry Locking - see when others are editing an entry at the same time ([learn more](https://docs.gravityview.co/article/676-entry-locking))
