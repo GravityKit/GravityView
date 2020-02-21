@@ -322,6 +322,15 @@ class View_Settings extends Settings {
 				'requires'          => 'edit_redirect=2',
 				'merge_tags'        => 'force',
 			),
+			'edit_locking' => array(
+				'label'             => __( 'Enable Edit Locking', 'gravityview' ),
+				'group'             => 'default',
+				'desc'              => __( 'Prevent multiple users from editing the same entry at the same time.', 'gravityview' ),
+				'type'              => 'checkbox',
+				'full_width'        => true,
+				'class'             => 'code widefat',
+				'value'             => true,
+			),
 			'embed_only' => array(
 				'label'             => __( 'Prevent Direct Access', 'gravityview' ),
 				'group'             => 'default',

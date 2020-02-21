@@ -1047,8 +1047,12 @@ class GravityView_Edit_Entry_Render {
 	 */
 	public function edit_entry_form() {
 
-		$locking = new GravityView_Edit_Entry_Locking();
-		$locking->maybe_lock_object( $this->entry['id'] );
+		$view = \GV\View::by_id( $this->view_id );
+
+		if( $view->settings->get( 'edit_locking' ) ) {
+			$locking = new GravityView_Edit_Entry_Locking();
+			$locking->maybe_lock_object( $this->entry['id'] );
+		}
 
 		?>
 

@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.6.1 on February 20, 2020 =
+
+* Added: "Enable Edit Locking" View setting to toggle on and off entry locking (in the "Edit Entry" tab of the View Settings)
+
 = 2.6 on February 12, 2020 =
 
 * Added: Implement Gravity Forms Entry Locking - see when others are editing an entry at the same time ([learn more](https://docs.gravityview.co/article/676-entry-locking))
