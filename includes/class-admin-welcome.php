@@ -263,6 +263,24 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
+				<h3>2.7 on February 20, 2020 =</h3>
+
+				<ul>
+					<li>Added: "Enable Edit Locking" View setting to toggle on and off entry locking (in the "Edit Entry" tab of the View Settings)</li>
+					<li>Fixed: Broken Toolbar link to Gravity Forms' entry editing while editing an entry in GravityView</li>
+					<li>Fixed: PHP undefined index when editing an entry with empty File Upload field</li>
+					<li>Modified: Hidden Fields are now rendered when no Edit Entry fields are configured. <a href="https://docs.gravityview.co/article/678-edit-entry-hidden-fields-field-visibility#timeline">Read what has changed around Hidden Fields</a></li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Fixed: Rendering Hidden Fields as <code>input=hidden</code> when no fields are configured in Edit Entry (fixing a regression in 2.5)</li>
+					<li>Modified: The default value for the <code>gravityview/edit_entry/reveal_hidden_field</code> filter is now <code>false</code></li>
+					<li>Added: <code>gravityview/edit_entry/render_hidden_field</code> filter to modify whether to render Hidden Field HTML in Edit Entry (default: <code>true</code>)</li>
+					<li>Modified: Changed <code>GravityView_Edit_Entry_Locking::enqueue_scripts()</code> visibility to protected</li>
+				</ul>
+
 				<h3>2.6 on February 12, 2020</h3>
 
 				<ul>

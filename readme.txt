@@ -29,11 +29,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Updates:__
 
-* Modified the way that Hidden Fields are rendered in Edit Entry
-	* Changed the default value for a filter: `gravityview/edit_entry/reveal_hidden_field` is now `false` by default
+* Modified: The way Hidden Fields are rendered in Edit Entry no fields are configured. [Read what has changed around Hidden Fields](https://docs.gravityview.co/article/678-edit-entry-hidden-fields-field-visibility#timeline)
+	* Fixed: Rendering Hidden Fields as `input=hidden` when no fields are configured in Edit Entry (fixing a regression in 2.5)
+	* Modified: The default value for the `gravityview/edit_entry/reveal_hidden_field` filter is now `false`
 	* Added: `gravityview/edit_entry/render_hidden_field` filter to modify whether to render Hidden Field HTML in Edit Entry (default: `true`)
-	* [Read what has changed](https://docs.gravityview.co/article/678-edit-entry-hidden-fields-field-visibility#timeline)
-* `GravityView_Edit_Entry_Locking::enqueue_scripts()` visibility is now protected
+* Modified: Changed `GravityView_Edit_Entry_Locking::enqueue_scripts()` visibility to protected
 
 = 2.6 on February 12, 2020 =
 
