@@ -101,7 +101,7 @@ class GravityView_Admin_Bar {
 				'parent' => 'gravityview',
 				'title' => __( 'Edit Entry', 'gravityview' ),
 				'meta' => array(
-					'title' => sprintf( __( 'Edit Entry %s', 'gravityview' ), \GravityView_API::get_entry_slug( $entry->ID, $entry ) ),
+					'title' => sprintf( __( 'Edit Entry %s', 'gravityview' ), $entry->get_slug() ),
 				),
 				'href' => esc_url_raw( admin_url( sprintf( 'admin.php?page=gf_entries&amp;screen_mode=edit&amp;view=entry&amp;id=%d&lid=%d', $entry['form_id'], $entry['id'] ) ) ),
 			) );
