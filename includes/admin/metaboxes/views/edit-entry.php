@@ -14,7 +14,7 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 <table class="form-table striped"><?php
 
 	/**
-	 * @since 2.6.1
+	 * @since 2.7
 	 */
 	GravityView_Render_Settings::render_setting_row( 'edit_locking', $current_settings );
 

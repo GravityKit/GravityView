@@ -98,7 +98,7 @@ class GravityView_Edit_Entry_Locking {
 	 * - Is the entry connected to a form connected to a currently-loaded View?
 	 *
 	 * @internal
-	 * @since 2.6.1
+	 * @since 2.7
 	 *
 	 * @global WP_Post $post
 	 *
