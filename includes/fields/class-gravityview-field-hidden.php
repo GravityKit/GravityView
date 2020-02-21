@@ -50,6 +50,7 @@ class GravityView_Field_Hidden extends GravityView_Field {
 
 		/** @var GF_Field $field */
 		foreach( $fields as &$field ) {
+
 			if ( 'hidden' === $field->type ) {
 
 				/**

@@ -32,7 +32,7 @@ abstract class Entry {
 	 * @var mixed The backing entry.
 	 */
 	protected $entry;
-	
+
 	/**
 	 * Adds the necessary rewrites for single Entries.
 	 *
@@ -131,7 +131,7 @@ abstract class Entry {
 				}
 			}
 		}
-		
+
 		/** Fallback to regular view base. */
 		if ( is_null( $permalink ) ) {
 			$permalink = get_permalink( $view_id );

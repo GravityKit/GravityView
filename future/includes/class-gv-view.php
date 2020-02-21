@@ -226,7 +226,7 @@ class View implements \ArrayAccess {
 		$slug = apply_filters( 'gravityview_slug', 'view' );
 		$rule = array( sprintf( '%s/([^/]+)/csv/?', $slug ), 'index.php?gravityview=$matches[1]&csv=1', 'top' );
 
-		add_filter( 'query_vars', function( $query_vars ) { 
+		add_filter( 'query_vars', function( $query_vars ) {
 			$query_vars[] = 'csv';
 			return $query_vars;
 		} );
@@ -1168,7 +1168,7 @@ class View implements \ArrayAccess {
 							$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
 						}
 					}
-				
+
 				/**
 				 * Unions?
 				 */
@@ -1276,7 +1276,7 @@ class View implements \ArrayAccess {
 
 						// Add all the order columns into the selects, so we can order by the whole union group
 						preg_match_all( '#(`[motc]\d+`.`.*?`)#', $sql['order'], $order_matches );
-						
+
 						$columns = array(
 							sprintf( '%s AS %s', $select_match[1], $column_to_alias( $select_match[1] ) )
 						);
