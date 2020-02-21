@@ -269,15 +269,18 @@ class GravityView_Welcome {
 					<li>Added: "Enable Edit Locking" View setting to toggle on and off entry locking (in the "Edit Entry" tab of the View Settings)</li>
 					<li>Fixed: Broken Toolbar link to Gravity Forms' entry editing while editing an entry in GravityView</li>
 					<li>Fixed: PHP undefined index when editing an entry with empty File Upload field</li>
-					<li>Modified: Hidden Fields are now rendered when no Edit Entry fields are configured. <a href="https://docs.gravityview.co/article/678-edit-entry-hidden-fields-field-visibility#timeline">Read what has changed around Hidden Fields</a></li>
+					<li>Fixed: When adding a field in the View Configuration, the browser window would resize</li>
 				</ul>
 
 				<p><strong>Developer Updates:</strong></p>
 
 				<ul>
-					<li>Fixed: Rendering Hidden Fields as <code>input=hidden</code> when no fields are configured in Edit Entry (fixing a regression in 2.5)</li>
-					<li>Modified: The default value for the <code>gravityview/edit_entry/reveal_hidden_field</code> filter is now <code>false</code></li>
-					<li>Added: <code>gravityview/edit_entry/render_hidden_field</code> filter to modify whether to render Hidden Field HTML in Edit Entry (default: <code>true</code>)</li>
+					<li>Modified: The way Hidden Fields are rendered in Edit Entry no fields are configured. <a href="https://docs.gravityview.co/article/678-edit-entry-hidden-fields-field-visibility#timeline">Read what has changed around Hidden Fields</a>
+						<ul>
+							<li>Fixed: Rendering Hidden Fields as <code>input=hidden</code> when no fields are configured in Edit Entry (fixing a regression in 2.5)</li>
+							<li>Modified: The default value for the <code>gravityview/edit_entry/reveal_hidden_field</code> filter is now <code>false</code></li>
+							<li>Added: <code>gravityview/edit_entry/render_hidden_field</code> filter to modify whether to render Hidden Field HTML in Edit Entry (default: <code>true</code>)</li>
+						</ul></li>
 					<li>Modified: Changed <code>GravityView_Edit_Entry_Locking::enqueue_scripts()</code> visibility to protected</li>
 				</ul>
 
