@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Added: "Enable Edit Locking" View setting to toggle on and off entry locking (in the "Edit Entry" tab of the View Settings)
 * Fixed: Broken Toolbar link to Gravity Forms' entry editing while editing an entry in GravityView
+* Fixed: PHP undefined index when editing an entry with empty File Upload field
 
 __Developer Updates:__
 
