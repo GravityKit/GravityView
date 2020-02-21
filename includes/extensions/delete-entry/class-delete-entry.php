@@ -292,8 +292,10 @@ final class GravityView_Delete_Entry {
 			return NULL;
 		}
 
+		$gv_entry = \GV\GF_Entry::from_entry( $entry );
+
 		// Use the slug instead of the ID for consistent security
-		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
+		$entry_slug = $gv_entry->get_slug();
 
 		$actionurl = add_query_arg( array(
 			'action'	=> 'delete',

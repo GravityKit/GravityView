@@ -14,6 +14,9 @@ body .ui-tooltip {
 	border-radius: 4px;
 	box-shadow: 0 0 5px #aaa;
 
+	// Fixes https://github.com/gravityview/GravityView/issues/1416
+	overflow-y: hidden;
+
 	// Fix issue in Gravity Forms tooltips with line breaks
 	br { display: none; }
 

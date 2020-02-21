@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.4
-Tested up to: 5.3.1
+Tested up to: 5.3.2
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -20,6 +20,21 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.7 on February 20, 2020 =
+
+* Added: "Enable Edit Locking" View setting to toggle on and off entry locking (in the "Edit Entry" tab of the View Settings)
+* Fixed: Broken Toolbar link to Gravity Forms' entry editing while editing an entry in GravityView
+* Fixed: PHP undefined index when editing an entry with empty File Upload field
+* Fixed: When adding a field in the View Configuration, the browser window would resize
+
+__Developer Updates:__
+
+* Modified: The way Hidden Fields are rendered in Edit Entry no fields are configured. [Read what has changed around Hidden Fields](https://docs.gravityview.co/article/678-edit-entry-hidden-fields-field-visibility#timeline)
+	* Fixed: Rendering Hidden Fields as `input=hidden` when no fields are configured in Edit Entry (fixing a regression in 2.5)
+	* Modified: The default value for the `gravityview/edit_entry/reveal_hidden_field` filter is now `false`
+	* Added: `gravityview/edit_entry/render_hidden_field` filter to modify whether to render Hidden Field HTML in Edit Entry (default: `true`)
+* Modified: Changed `GravityView_Edit_Entry_Locking::enqueue_scripts()` visibility to protected
 
 = 2.6 on February 12, 2020 =
 
