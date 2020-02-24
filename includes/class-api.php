@@ -620,15 +620,27 @@ class GravityView_API {
 		if ( ! empty( $entry['_multi'] ) ) {
 			$entry_slugs = array();
 			foreach ( $entry['_multi'] as $_multi ) {
-				$gv_multi = \GV\GF_Entry::from_entry( $_multi );
-				$entry_slugs[] = $gv_multi->get_slug();
-				$forms[] = $_multi['form_id'];
+
+				if( $gv_multi = \GV\GF_Entry::from_entry( $_multi ) ) {
+					$entry_slugs[] = $gv_multi->get_slug();
+				} else {
+					$entry_slugs[] = \GravityView_API::get_entry_slug( $entry['id'], $entry );
+				}
+
 				unset( $gv_multi );
+
+				$forms[] = $_multi['form_id'];
 			}
 			$entry_slug = implode( ',', $entry_slugs );
 		} else {
-			$gv_entry = \GV\GF_Entry::from_entry( $entry );
-			$entry_slug = $gv_entry->get_slug();
+
+			// Fallback when
+			if( $gv_entry = \GV\GF_Entry::from_entry( $entry ) ) {
+				$entry_slug = $gv_entry->get_slug();
+			} else {
+				$entry_slug = \GravityView_API::get_entry_slug( $entry['id'], $entry );
+			}
+
 			unset( $gv_entry );
 		}
 
