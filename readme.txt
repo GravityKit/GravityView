@@ -23,7 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 2.7.1 on February 24, 2020 =
 
-* Fixed: PHP error when editing entries
+* Fixed: Fatal error when viewing entries using WPML or Social Sharing & SEO extensions
 
 = 2.7 on February 20, 2020 =
 
