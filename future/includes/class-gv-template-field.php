@@ -190,7 +190,7 @@ abstract class Field_Template extends Template {
 				$specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $slug_name );
 				$specifics []= sprintf( '%spost-%d-field.php', $slug_dir, $post->ID );
 			}
-			
+
 			/** Field-specific */
 			if ( $field_id && $form_id ) {
 
@@ -352,6 +352,8 @@ abstract class Field_Template extends Template {
 		/**
 		 * Wrap output in a link, if enabled in the field settings
 		 *
+		 * @todo Cleanup
+		 *
 		 * @param string $output HTML value output
 		 * @param \GV\Template_Context $context
 		 *
@@ -408,6 +410,7 @@ abstract class Field_Template extends Template {
 			return $output;
 		};
 
+		// TODO Cleanup
 		$post_link_compat_callback = function( $output, $context ) use ( $field_compat ) {
 			$field = $context->field;
 
