@@ -619,18 +619,21 @@ class GravityView_API {
 
 		if ( ! empty( $entry['_multi'] ) ) {
 			$entry_slugs = array();
+
 			foreach ( $entry['_multi'] as $_multi ) {
 
 				if( $gv_multi = \GV\GF_Entry::from_entry( $_multi ) ) {
 					$entry_slugs[] = $gv_multi->get_slug();
 				} else {
-					$entry_slugs[] = \GravityView_API::get_entry_slug( $entry['id'], $entry );
+					// TODO: This path isn't covered by unit tests
+					$entry_slugs[] = \GravityView_API::get_entry_slug( $_multi['id'], $_multi );
 				}
 
 				unset( $gv_multi );
 
 				$forms[] = $_multi['form_id'];
 			}
+
 			$entry_slug = implode( ',', $entry_slugs );
 		} else {
 
@@ -638,6 +641,7 @@ class GravityView_API {
 			if( $gv_entry = \GV\GF_Entry::from_entry( $entry ) ) {
 				$entry_slug = $gv_entry->get_slug();
 			} else {
+				// TODO: This path isn't covered by unit tests
 				$entry_slug = \GravityView_API::get_entry_slug( $entry['id'], $entry );
 			}
 
