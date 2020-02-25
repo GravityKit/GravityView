@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.7.1 on February 24, 2020 =
+
+* Fixed: PHP error when editing entries
+
 = 2.7 on February 20, 2020 =
 
 * Added: "Enable Edit Locking" View setting to toggle on and off entry locking (in the "Edit Entry" tab of the View Settings)
