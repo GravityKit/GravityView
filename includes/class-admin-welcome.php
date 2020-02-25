@@ -266,7 +266,7 @@ class GravityView_Welcome {
 				<h3>2.7.1 on February 24, 2020</h3>
 
 				<ul>
-					<li>Fixed: PHP error when editing entries</li>
+					<li>Fixed: Fatal error when viewing entries using WPML or Social Sharing & SEO extensions</li>
 				</ul>
 
 				<h3>2.7 on February 20, 2020 =</h3>
