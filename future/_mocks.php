@@ -113,7 +113,7 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 		/**
 		 * GF_Query does not subtract the offset, we have to subtract it ourselves.
 		 */
-		$count = $entries->total() - ( gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ? $view->settings->get( 'offset' ) : 0 );
+		$count = $entries->total();
 		$entries = array_map( function( $e ) { return $e->as_entry(); }, $entries->all() );
 	}
 
