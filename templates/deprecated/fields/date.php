@@ -32,7 +32,7 @@ if( !empty( $field_settings ) && !empty( $field_settings['date_display'] ) && !e
 	// If there is a custom PHP date format passed via the date_display setting,
 	// use PHP's date format
 	$format = $field_settings['date_display'];
-	$output = date_i18n( $format, strtotime( $value ) );
+	$output = gravityview_format_date( $format, strtotime( $value ) );
 
 } else {
 

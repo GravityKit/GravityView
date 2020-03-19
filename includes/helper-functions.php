@@ -7,10 +7,10 @@
 
 /**
  * Get the URL for a CSS file
- * 
+ *
  * If there's a CSS file with the same name as a GravityView CSS file in the current theme directory, it will be used.
- * Place the CSS file in a `/gravityview/css/` sub-directory. 
- * 
+ * Place the CSS file in a `/gravityview/css/` sub-directory.
+ *
  * Example: /twentysixteen/gravityview/css/gv-default-styles.css
  *
  * Will use, in order:
@@ -42,7 +42,7 @@ function gravityview_css_url( $css_file = '', $dir_path = '' ) {
 		if( '' === $dir_path ) {
 			$dir_path = GRAVITYVIEW_DIR . 'templates/css/';
 		}
-		
+
 		// plugins_url() expects a path to a file, not directory. We append a file to be stripped.
 		$path = plugins_url( $css_file, trailingslashit( $dir_path )  . 'stripped-by-plugin_basename.php' );
 	}
@@ -554,6 +554,40 @@ function gravityview_is_valid_datetime( $datetime, $expected_format = 'Y-m-d' ) 
 	 * @see http://stackoverflow.com/a/19271434/480856
 	 */
 	return ( $formatted_date && $formatted_date->format( $expected_format ) === $datetime );
+}
+
+/**
+ * Format date according to locale and using the timezone offset
+ *
+ * `wp_date()` is used if available; otherwise, timezone offset is added to the timestamp before it is passed to `date_i18n()`
+ *
+ * @since 2.7.2
+ *
+ * @param string $format Date format
+ * @param string $timestamp Timestamp
+ *
+ * @return string|false Formatted date or false if the timestamp is invalid
+ */
+function gravityview_format_date( $format, $timestamp ) {
+
+	if ( function_exists( 'wp_date' ) ) {
+		return wp_date( $format, $timestamp );
+	}
+
+	$timezone_str = get_option( 'timezone_string' ) ?: 'UTC';
+	$timezone     = new \DateTimeZone( $timezone_str );
+
+	// Get date in local TZ
+	$date = new \DateTime( null, $timezone );
+	$date->setTimestamp( $timestamp );
+	$date_str = $date->format( 'Y-m-d H:i:s' );
+
+	//  Get UTC timestamp
+	$utc_timezone = new \DateTimeZone( 'UTC' );
+	$utc_date     = new \DateTime( $date_str, $utc_timezone );
+	$timestamp    = $utc_date->getTimestamp();
+
+	return date_i18n( $format, $timestamp );
 }
 
 /**
