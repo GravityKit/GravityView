@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.7.2 on XXX, 2020 =
+
+* Fixed: Dates not respecting timezone offset on certain hosts
+
 = 2.7.1 on February 24, 2020 =
 
 * Fixed: Fatal error when viewing entries using WPML or Social Sharing & SEO extensions
