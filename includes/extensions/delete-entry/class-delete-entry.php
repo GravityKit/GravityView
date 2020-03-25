@@ -85,7 +85,7 @@ final class GravityView_Delete_Entry {
 	 * For users that have no delete rights on any of the current entries.
 	 *
 	 * @param bool $visible Visible or not.
-	 * @param \GF\Field $field The field.
+	 * @param \GF_Field $field The field.
 	 * @param \GV\View $view The View context.
 	 *
 	 * @return bool
@@ -103,21 +103,21 @@ final class GravityView_Delete_Entry {
 			return $visible;
 		}
 
-		static $visiblity_cache_for_view = array();
+		static $visibility_cache_for_view = array();
 
-		if ( ! is_null( $result = \GV\Utils::get( $visiblity_cache_for_view, $view->ID, null ) ) ) {
+		if ( ! is_null( $result = \GV\Utils::get( $visibility_cache_for_view, $view->ID, null ) ) ) {
 			return $result;
 		}
 
 		foreach ( $view->get_entries()->all() as $entry ) {
 			if ( self::check_user_cap_delete_entry( $entry->as_entry(), $field->as_configuration(), $view ) ) {
 				// At least one entry is deletable for this user
-				$visiblity_cache_for_view[ $view->ID ] = true;
+				$visibility_cache_for_view[ $view->ID ] = true;
 				return true;
 			}
 		}
 
-		$visiblity_cache_for_view[ $view->ID ] = false;
+		$visibility_cache_for_view[ $view->ID ] = false;
 
 		return false;
 	}
@@ -462,7 +462,7 @@ final class GravityView_Delete_Entry {
 	private function delete_or_trash_entry( $entry ) {
 
 		$entry_id = $entry['id'];
-		
+
 		$mode = $this->get_delete_mode();
 
 		if( 'delete' === $mode ) {
@@ -535,7 +535,7 @@ final class GravityView_Delete_Entry {
 		 * @param boolean $delete_post If trashing an entry, trash the post. If deleting an entry, delete the post. Default: true
 		 */
 		$delete_post = apply_filters( 'gravityview/delete-entry/delete-connected-post', true );
-		
+
 		if( false === $delete_post ) {
 			return;
 		}

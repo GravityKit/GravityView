@@ -115,12 +115,13 @@ class GravityView_Edit_Entry {
 	 * For users that have no edit rights on any of the current entries.
 	 *
 	 * @param bool $visible Visible or not.
-	 * @param \GF\Field $field The field.
+	 * @param \GF_Field $field The field.
 	 * @param \GV\View $view The View context.
 	 *
 	 * @return bool
 	 */
 	public function maybe_not_visible( $visible, $field, $view ) {
+
 		if ( 'edit_link' !== $field->ID ) {
 			return $visible;
 		}
@@ -133,21 +134,21 @@ class GravityView_Edit_Entry {
 			return $visible;
 		}
 
-		static $visiblity_cache_for_view = array();
+		static $visibility_cache_for_view = array();
 
-		if ( ! is_null( $result = \GV\Utils::get( $visiblity_cache_for_view, $view->ID, null ) ) ) {
+		if ( ! is_null( $result = \GV\Utils::get( $visibility_cache_for_view, $view->ID, null ) ) ) {
 			return $result;
 		}
 
 		foreach ( $view->get_entries()->all() as $entry ) {
 			if ( self::check_user_cap_edit_entry( $entry->as_entry(), $view ) ) {
 				// At least one entry is deletable for this user
-				$visiblity_cache_for_view[ $view->ID ] = true;
+				$visibility_cache_for_view[ $view->ID ] = true;
 				return true;
 			}
 		}
 
-		$visiblity_cache_for_view[ $view->ID ] = false;
+		$visibility_cache_for_view[ $view->ID ] = false;
 
 		return false;
 	}
