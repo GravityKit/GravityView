@@ -274,11 +274,6 @@ class GVCommon {
 			$forms = GFAPI::get_forms( $active, $trash );
 		}
 
-		// WordPress 4.7
-		if ( ! function_exists( 'wp_list_sort' ) ) {
-			return $forms;
-		}
-
 		$forms = wp_list_sort( $forms, $order_by, $order, true );
 
 		return $forms;

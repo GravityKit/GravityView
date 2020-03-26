@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
-Requires at least: 4.4
-Tested up to: 5.3.2
+Requires at least: 4.7
+Tested up to: 5.4
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
