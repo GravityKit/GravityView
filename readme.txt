@@ -21,6 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Improved: Sort forms by title in Edit View (rather than Date Created)
+
+__Developer Updates:__
+
+* Modified: `gravityview_get_forms()` and `GVCommon::get_forms()` have new `$order_by` and `$order` parameters (Thanks, Rochelle!)
+
 = 2.7.1 on February 24, 2020 =
 
 * Fixed: Fatal error when viewing entries using WPML or Social Sharing & SEO extensions

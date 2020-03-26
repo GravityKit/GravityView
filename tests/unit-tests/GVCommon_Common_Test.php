@@ -182,7 +182,13 @@ class GVCommon_Test extends GV_UnitTestCase {
 	 */
 	function test_get_forms() {
 
-		$this->factory->form->create_many( 5 );
+		$this->factory->form->create_many( 10 );
+
+		$i = 0;
+		while ( $i < 20 ) {
+			GFAPI::add_form( [ 'title' => rand_long_str( 3 ), 'fields' => array() ] );
+			$i++;
+		}
 
 		$forms = GFAPI::get_forms();
 
@@ -196,6 +202,14 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$last_gv_form = array_pop( $gv_forms );
 
 		$this->assertEquals( $last_form, $last_gv_form );
+
+		$gv_forms_asc = GVCommon::get_forms( true, false, 'title', 'ASC' );
+		$gv_forms_desc = GVCommon::get_forms( true, false, 'title', 'DESC' );
+
+		$asc_titles = wp_list_pluck( $gv_forms_asc, 'title' );
+		$desc_titles = wp_list_pluck( $gv_forms_desc, 'title' );
+
+		$this->assertSame( array_reverse( $asc_titles, true ), $desc_titles );
 	}
 
 	/**
@@ -500,7 +514,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gravityview_search_criteria' );
 	}
-	
+
 	/**
 	 * https://github.com/gravityview/GravityView/issues/929
 	 */

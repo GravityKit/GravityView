@@ -16,7 +16,7 @@ $current_form = (int) \GV\Utils::_GET( 'form_id', gravityview_get_form_id( $post
 GravityView_Admin::connected_form_warning( $current_form );
 
 // check for available gravity forms
-$forms = gravityview_get_forms('any');
+$forms = gravityview_get_forms('any', false, 'title' );
 
 /**
  * @param int $current_form Form currently selected in the View (0 if none selected)
