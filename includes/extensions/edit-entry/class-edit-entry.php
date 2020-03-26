@@ -115,7 +115,7 @@ class GravityView_Edit_Entry {
 	 * For users that have no edit rights on any of the current entries.
 	 *
 	 * @param bool $visible Visible or not.
-	 * @param \GF_Field $field The field.
+	 * @param \GV\Field $field The field.
 	 * @param \GV\View $view The View context.
 	 *
 	 * @return bool
@@ -124,10 +124,6 @@ class GravityView_Edit_Entry {
 
 		if ( 'edit_link' !== $field->ID ) {
 			return $visible;
-		}
-
-		if ( ! is_user_logged_in() ) {
-			return false;
 		}
 
 		if ( ! $view ) {
@@ -290,7 +286,7 @@ class GravityView_Edit_Entry {
      * Needs to be used combined with GravityView_Edit_Entry::user_can_edit_entry for maximum security!!
      *
      * @param  array $entry Gravity Forms entry array
-     * @param \GV\View int $view_id ID of the view you want to check visibility against {@since 1.9.2}. Required since 2.0
+     * @param \GV\View|int $view ID of the view you want to check visibility against {@since 1.9.2}. Required since 2.0
      * @return bool
      */
     public static function check_user_cap_edit_entry( $entry, $view = 0 ) {
@@ -331,7 +327,6 @@ class GravityView_Edit_Entry {
 
         } else {
 
-
             $current_user = wp_get_current_user();
 
             // User edit is disabled
@@ -352,6 +347,8 @@ class GravityView_Edit_Entry {
             } else if( ! is_user_logged_in() ) {
 
                 gravityview()->log->debug( 'No user defined; edit entry requires logged in user' );
+
+	            $user_can_edit = false; // Here just for clarity
             }
 
         }
@@ -365,7 +362,7 @@ class GravityView_Edit_Entry {
          */
         $user_can_edit = apply_filters( 'gravityview/edit_entry/user_can_edit_entry', $user_can_edit, $entry, $view_id );
 
-        return (bool)$user_can_edit;
+        return (bool) $user_can_edit;
     }
 
 

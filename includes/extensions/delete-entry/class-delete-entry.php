@@ -85,7 +85,7 @@ final class GravityView_Delete_Entry {
 	 * For users that have no delete rights on any of the current entries.
 	 *
 	 * @param bool $visible Visible or not.
-	 * @param \GF_Field $field The field.
+	 * @param \GV\Field $field The field.
 	 * @param \GV\View $view The View context.
 	 *
 	 * @return bool
@@ -93,10 +93,6 @@ final class GravityView_Delete_Entry {
 	public function maybe_not_visible( $visible, $field, $view ) {
 		if ( 'delete_link' !== $field->ID ) {
 			return $visible;
-		}
-
-		if ( ! is_user_logged_in() ) {
-			return false;
 		}
 
 		if ( ! $view ) {

@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Updates:__
 
+* Fixed: `gravityview/edit_entry/user_can_edit_entry` and `gravityview/capabilities/allow_logged_out` were not reachable in Edit Entry and Delete Entry since Version 2.5
 * Modified: `gravityview_get_forms()` and `GVCommon::get_forms()` have new `$order_by` and `$order` parameters (Thanks, Rochelle!)
 
 = 2.7.1 on February 24, 2020 =
