@@ -23,26 +23,31 @@ $templates = gravityview_get_registered_templates();
 <?php // list all the available templates (type= fresh or custom ) ?>
 <div class="gv-grid">
 	<?php foreach( $templates as $id => $template ) {
-		$selected = ( $id == $current_template ) ? ' gv-selected' : ''; ?>
+		$selected = ( $id == $current_template ) ? ' gv-selected' : '';
+
+		$upsell = ! empty( $template['buy_source'] );
+		?>
 
 		<div class="gv-grid-col-1-3">
-			<div class="gv-view-types-module<?php echo $selected; ?>" data-filter="<?php echo esc_attr( $template['type'] ); ?>">
+			<div class="gv-view-types-module<?php echo $selected; if( $upsell ) { echo ' gv-view-template-upsell'; } ?>" data-filter="<?php echo esc_attr( $template['type'] ); ?>">
+				<div class="gv-view-types-normal">
+					<img src="<?php echo esc_url( $template['logo'] ); ?>" alt="<?php echo esc_attr( $template['label'] ); ?>">
+					<h5><?php echo esc_html( $template['label'] ); ?></h5>
+					<p class="description"><?php echo esc_html( $template['description'] ); ?></p>
+				</div>
 				<div class="gv-view-types-hover">
 					<div>
-						<?php if( !empty( $template['buy_source'] ) ) { ?>
-							<p><a href="<?php echo esc_url( $template['buy_source'] ); ?>" class="button-primary button-buy-now"><?php esc_html_e( 'Buy Now', 'gravityview'); ?></a></p>
+						<?php if( $upsell ) { ?>
+							<p><a href="<?php echo esc_url( $template['buy_source'] ); ?>" class="button button-primary button-hero"><?php esc_html_e( 'Buy Now', 'gravityview'); ?></a></p>
+							<p><a href="<?php echo esc_url( $template['preview'] ); ?>" rel="external" class="button button-secondary"><i class="dashicons dashicons-admin-links" title="<?php esc_html_e( 'View a live demo of this preset', 'gravityview'); ?>"></i> Try a demo</a></p>
+							<p>Included in GravityView All Access</p>
 						<?php } else { ?>
-							<p><button href="#gv_select_template" class="gv_select_template button button-hero button-primary" data-templateid="<?php echo esc_attr( $id ); ?>"><?php esc_html_e( 'Select', 'gravityview'); ?></button></p>
+							<p><a href="#gv_select_template" role="button" class="gv_select_template button button-hero button-primary" data-templateid="<?php echo esc_attr( $id ); ?>"><?php esc_html_e( 'Select', 'gravityview'); ?></a></p>
 							<?php if( !empty( $template['preview'] ) ) { ?>
 								<a href="<?php echo esc_url( $template['preview'] ); ?>" rel="external" class="gv-site-preview"><i class="dashicons dashicons-admin-links" title="<?php esc_html_e( 'View a live demo of this preset', 'gravityview'); ?>"></i></a>
 							<?php } ?>
 						<?php } ?>
 					</div>
-				</div>
-				<div class="gv-view-types-normal">
-					<img src="<?php echo esc_url( $template['logo'] ); ?>" alt="<?php echo esc_attr( $template['label'] ); ?>">
-					<h5><?php echo esc_html( $template['label'] ); ?></h5>
-					<p class="description"><?php echo esc_html( $template['description'] ); ?></p>
 				</div>
 			</div>
 		</div>
