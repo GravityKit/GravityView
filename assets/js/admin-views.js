@@ -836,9 +836,14 @@
 		/**
 		 * When clicking the hover overlay, select the template by clicking the #gv_select_template button
 		 * @param  {jQueryEvent}    e     jQuery event object
-		 * @return void
 		 */
 		selectTemplateHover: function ( e ) {
+
+			// If we're internally linking
+			if ( $( e.target ).is( '[rel=internal]') ) {
+				return true;
+			}
+
 			e.preventDefault();
 			e.stopImmediatePropagation();
 			$( this ).find( '.gv_select_template' ).trigger( 'click' );

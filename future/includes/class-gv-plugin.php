@@ -230,7 +230,6 @@ final class Plugin {
 		include_once $this->dir( 'includes/class-gravityview-entry-link-shortcode.php' );
 		include_once $this->dir( 'includes/class-gvlogic-shortcode.php' );
 		include_once $this->dir( 'includes/presets/register-default-templates.php' );
-		include_once $this->dir( 'includes/class-gravityview-upsells.php' );
 
 		if ( class_exists( '\GFFormsModel' ) ) {
 			include_once $this->dir( 'includes/class-gravityview-gfformsmodel.php' );
