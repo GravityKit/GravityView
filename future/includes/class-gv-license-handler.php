@@ -190,9 +190,7 @@ class License_Handler {
 
 			$is_check_action_button = ( 'check_license' === Utils::get( $data, 'edd_action' ) && defined( 'DOING_AJAX' ) && DOING_AJAX );
 
-			if ( 'deactivate_license' === Utils::get( $data, 'edd_action' ) ) {
-				do_action('gravityview/admin_installer/delete_downloads_data', true );
-			}
+			do_action('gravityview/admin_installer/delete_downloads_data', true );
 
 			if ( $is_check_action_button ) {
 				delete_transient( self::status_transient_key );
