@@ -165,7 +165,6 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 		 */
 		global $sitepress, $post, $wpml_url_converter;
 
-		if ( $entry_slug = GravityView_frontend::getInstance()->getSingleEntry() ) {
 
 			if ( ! method_exists( $sitepress, 'get_setting' ) ) {
 				gravityview()->log->error( 'This version of WPML is outdated and does not include the required method get_setting().' );
@@ -175,11 +174,16 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 			$trid         = $sitepress->get_element_trid( $post->ID );
 			$translations = $sitepress->get_element_translations( $trid );
 			$language_url_setting = $sitepress->get_setting( 'language_negotiation_type' );
+		$entry = gravityview()->request->is_entry();
 
 			$this->remove_url_hooks();
+		if ( ! $entry ) {
+			return $languages;
+		}
 
 			if( $translations ) {
 				foreach ( $languages as $lang_code => $language ) {
+		$entry_slug = $entry->get_slug();
 
 					if( ! isset( $translations[ $lang_code ] ) || ! is_object( $translations[ $lang_code ] ) ) {
 						continue;
