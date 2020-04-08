@@ -11,7 +11,7 @@ jobs:
       - run:
           name: Run acceptance tests
           command: |
-            docker-compose -f tests/docker/docker-compose.yml run gravityview_codeception --debug -vvv --html --xml
+            docker-compose -f tests/acceptance/docker/docker-compose.yml run gravityview_codeception --debug -vvv --html --xml
       - store_artifacts:
           path: tests/_output
       - store_test_results:
