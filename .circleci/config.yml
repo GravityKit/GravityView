@@ -1,0 +1,24 @@
+version: 2
+jobs:
+  acceptance_tests:
+    working_directory: /home/circleci/gravityview
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: "Set up virtual host"
+          command: echo 127.0.0.1 wordpress | sudo tee -a /etc/hosts
+      - run:
+          name: Run acceptance tests
+          command: |
+            docker-compose -f tests/docker/docker-compose.yml run gravityview_codeception --debug -vvv --html --xml
+      - store_artifacts:
+          path: tests/_output
+      - store_test_results:
+          path: tests/_output
+
+workflows:
+  version: 2
+  acceptance_tests:
+    jobs:
+      - acceptance_tests
