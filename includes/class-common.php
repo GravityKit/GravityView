@@ -705,31 +705,9 @@ class GVCommon {
 		 */
 		$check_entry_display = apply_filters( 'gravityview/common/get_entry/check_entry_display', $check_entry_display, $entry, $view );
 
+		// Is the entry allowed
 		if( $check_entry_display ) {
-
-			global $post;
-
-			if ( ! $view && $post ) {
-
-				gravityview()->log->warning( '$view parameter not provided! Context assumed from legacy context mocks. This is unreliable!' );
-
-				$views = \GV\View_Collection::from_post( $post );
-
-				foreach( $views->all() as $view ) {
-
-					// Is the entry allowed
-					$check_entry = self::check_entry_display( $entry, $view );
-
-					if( is_wp_error( $entry ) ) {
-						continue;
-					}
-
-					$entry = $check_entry;
-				}
-			} else {
-				// Is the entry allowed
-				$entry = self::check_entry_display( $entry, $view );
-			}
+			$entry = self::check_entry_display( $entry, $view );
 		}
 
 		if( is_wp_error( $entry ) ) {
@@ -869,7 +847,7 @@ class GVCommon {
 	 * @since 2.1 Added $view parameter
 	 *
 	 * @param array $entry Gravity Forms Entry object
-	 * @param \GV\View $view The View.
+	 * @param \GV\View|\GV\View_Collection $view The View or a View Collection
 	 *
 	 * @return WP_Error|array Returns WP_Error if entry is not valid according to the view search filters (Adv Filter). Returns original $entry value if passes.
 	 */
@@ -883,9 +861,36 @@ class GVCommon {
 			return new WP_Error( 'form_id_not_set', '[apply_filters_to_entry] Entry is empty!', $entry );
 		}
 
+		global $post;
+
+		if ( ! $view && $post ) {
+
+			gravityview()->log->warning( '$view parameter not provided! Context assumed from legacy context mocks. This is unreliable!' );
+
+			$view = \GV\View_Collection::from_post( $post );
+		}
+
 		if ( is_null( $view ) ) {
 			gravityview()->log->warning( '$view was not supplied to check_entry_display, results will be non-typical.' );
 			return new WP_Error( 'view_not_supplied', 'View is not supplied!', $entry );
+		}
+
+		if ( $view instanceof \GV\View_Collection ) {
+
+			$passed_entry = $entry;
+
+			foreach( $view->all() as $single_view ) {
+
+				// Is the entry allowed
+				$entry = self::check_entry_display( $passed_entry, $single_view );
+
+				// Once we find an entry that is allowed for any of the current Views, show it
+				if( ! is_wp_error( $entry ) ) {
+					break;
+				}
+			}
+
+			return $entry;
 		}
 
 		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
