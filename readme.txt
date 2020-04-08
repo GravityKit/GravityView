@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
-Requires at least: 4.4
-Tested up to: 5.3.2
+Requires at least: 4.7
+Tested up to: 5.4
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -21,9 +21,16 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.7.2 on XXX, 2020 =
+= develop =
 
+* Improved: Sort forms by title in Edit View (rather than Date Created)
 * Fixed: Dates not respecting timezone offset on certain hosts
+
+__Developer Updates:__
+
+* Added: `gravityview/search/sieve_choices` filter in Version 2.5 that enables only showing choices in the Search Bar that exist in entries ([learn more about this filter](https://docs.gravityview.co/article/701-show-choices-that-exist))
+* Fixed: `gravityview/edit_entry/user_can_edit_entry` and `gravityview/capabilities/allow_logged_out` were not reachable in Edit Entry and Delete Entry since Version 2.5
+* Modified: `gravityview_get_forms()` and `GVCommon::get_forms()` have new `$order_by` and `$order` parameters (Thanks, Rochelle!)
 
 = 2.7.1 on February 24, 2020 =
 

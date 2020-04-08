@@ -717,7 +717,6 @@ final class GravityView_Duplicate_Entry {
 	 * @param int $form_id The form ID.
 	 * @param int $field_id The field ID.
 	 * @param string $value The value.
-	 * @param array $entry The entryvalue The value.
 	 * @param array $entry The entry.
 	 * @param string $query_string The query.
 	 *

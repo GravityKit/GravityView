@@ -251,23 +251,31 @@ class GVCommon {
 	 * @see GFAPI::get_forms()
 	 *
 	 * @since 1.19 Allow "any" $active status option
+	 * @since 2.7.2 Allow sorting forms using wp_list_sort()
 	 *
 	 * @param bool|string $active Status of forms. Use `any` to get array of forms with any status. Default: `true`
 	 * @param bool $trash Include forms in trash? Default: `false`
+	 * @param string|array $order_by Optional. Either the field name to order by or an array of multiple orderby fields as $orderby => $order.
+	 * @param string $order Optional. Either 'ASC' or 'DESC'. Only used if $orderby is a string.
 	 *
 	 * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
 	 */
-	public static function get_forms(  $active = true, $trash = false ) {
+	public static function get_forms(  $active = true, $trash = false, $order_by = 'date_created', $order = 'ASC' ) {
 		$forms = array();
-		if ( class_exists( 'GFAPI' ) ) {
-			if( 'any' === $active ) {
-				$active_forms = GFAPI::get_forms( true, $trash );
-				$inactive_forms = GFAPI::get_forms( false, $trash );
-				$forms = array_merge( array_filter( $active_forms ), array_filter( $inactive_forms ) );
-			} else {
-				$forms = GFAPI::get_forms( $active, $trash );
-			}
+		if ( ! class_exists( 'GFAPI' ) ) {
+			return array();
 		}
+
+		if( 'any' === $active ) {
+			$active_forms = GFAPI::get_forms( true, $trash );
+			$inactive_forms = GFAPI::get_forms( false, $trash );
+			$forms = array_merge( array_filter( $active_forms ), array_filter( $inactive_forms ) );
+		} else {
+			$forms = GFAPI::get_forms( $active, $trash );
+		}
+
+		$forms = wp_list_sort( $forms, $order_by, $order, true );
+
 		return $forms;
 	}
 
@@ -668,7 +676,7 @@ class GVCommon {
 	 * @param string|int $entry_slug Either entry ID or entry slug string
 	 * @param boolean $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
 	 * @param boolean $check_entry_display Check whether the entry is visible for the current View configuration. Default: true. {@since 1.14}
-	 * @param \GV\View $view The View if $check_entry_display is set to true. {@since develop}
+	 * @param \GV\View|null $view The View if $check_entry_display is set to true. In legacy context mocks, can be null. {@since develop}
 	 * @return array|boolean
 	 */
 	public static function get_entry( $entry_slug, $force_allow_ids = false, $check_entry_display = true, $view = null ) {
@@ -676,6 +684,7 @@ class GVCommon {
 		if ( ! class_exists( 'GFAPI' ) || empty( $entry_slug ) ) {
 			return false;
 		}
+
 
 		$entry_id = self::get_entry_id( $entry_slug, $force_allow_ids );
 
@@ -692,17 +701,12 @@ class GVCommon {
 		 * @since 2.6 Added $view parameter
 		 * @param bool $check_entry_display Check whether the entry is visible for the current View configuration. Default: true.
 		 * @param array $entry Gravity Forms entry array
-		 * @param \GV\View $view The View
+		 * @param \GV\View|null $view The View
 		 */
 		$check_entry_display = apply_filters( 'gravityview/common/get_entry/check_entry_display', $check_entry_display, $entry, $view );
 
+		// Is the entry allowed
 		if( $check_entry_display ) {
-			if ( ! $view ) {
-				$view = \GV\View::by_id( \GravityView_View::getInstance()->getViewId() ); // @todo Bad legacy context, provide $view parameter!
-				gravityview()->log->warning( '$view parameter not provided! Context assumed from legacy context mocks. This is unreliable!' );
-			}
-
-			// Is the entry allowed
 			$entry = self::check_entry_display( $entry, $view );
 		}
 
@@ -843,7 +847,7 @@ class GVCommon {
 	 * @since 2.1 Added $view parameter
 	 *
 	 * @param array $entry Gravity Forms Entry object
-	 * @param \GV\View $view The View.
+	 * @param \GV\View|\GV\View_Collection $view The View or a View Collection
 	 *
 	 * @return WP_Error|array Returns WP_Error if entry is not valid according to the view search filters (Adv Filter). Returns original $entry value if passes.
 	 */
@@ -857,9 +861,36 @@ class GVCommon {
 			return new WP_Error( 'form_id_not_set', '[apply_filters_to_entry] Entry is empty!', $entry );
 		}
 
+		global $post;
+
+		if ( ! $view && $post ) {
+
+			gravityview()->log->warning( '$view parameter not provided! Context assumed from legacy context mocks. This is unreliable!' );
+
+			$view = \GV\View_Collection::from_post( $post );
+		}
+
 		if ( is_null( $view ) ) {
 			gravityview()->log->warning( '$view was not supplied to check_entry_display, results will be non-typical.' );
 			return new WP_Error( 'view_not_supplied', 'View is not supplied!', $entry );
+		}
+
+		if ( $view instanceof \GV\View_Collection ) {
+
+			$passed_entry = $entry;
+
+			foreach( $view->all() as $single_view ) {
+
+				// Is the entry allowed
+				$entry = self::check_entry_display( $passed_entry, $single_view );
+
+				// Once we find an entry that is allowed for any of the current Views, show it
+				if( ! is_wp_error( $entry ) ) {
+					break;
+				}
+			}
+
+			return $entry;
 		}
 
 		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
