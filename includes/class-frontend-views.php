@@ -467,8 +467,14 @@ class GravityView_frontend {
 		if ( $multiple_views && ! empty( $context_view_id ) ) {
 			$view_meta = $this->getGvOutputData()->get_view( $context_view_id );
 		} else {
-			foreach ( $this->getGvOutputData()->get_views() as $view_id => $view_data ) {
-				if ( intval( $view_data['form_id'] ) === intval( $entry['form_id'] ) ) {
+			$views = $this->getGvOutputData()->get_views();
+
+			foreach ( $views as $view_id => $view_data ) {
+
+				$entry_form_id = \GV\Utils::get( $entry, 'form_id' );
+				$view_form_id = $view_data['form_id'];
+
+				if ( (int) $view_form_id === (int) $entry_form_id ) {
 					$view_meta = $view_data;
 					break;
 				}
@@ -485,7 +491,6 @@ class GravityView_frontend {
 
 			$title = do_shortcode( $title );
 		}
-
 
 		return $title;
 	}

@@ -676,7 +676,7 @@ class GVCommon {
 	 * @param string|int $entry_slug Either entry ID or entry slug string
 	 * @param boolean $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
 	 * @param boolean $check_entry_display Check whether the entry is visible for the current View configuration. Default: true. {@since 1.14}
-	 * @param \GV\View $view The View if $check_entry_display is set to true. {@since develop}
+	 * @param \GV\View|null $view The View if $check_entry_display is set to true. In legacy context mocks, can be null. {@since develop}
 	 * @return array|boolean
 	 */
 	public static function get_entry( $entry_slug, $force_allow_ids = false, $check_entry_display = true, $view = null ) {
@@ -684,6 +684,7 @@ class GVCommon {
 		if ( ! class_exists( 'GFAPI' ) || empty( $entry_slug ) ) {
 			return false;
 		}
+
 
 		$entry_id = self::get_entry_id( $entry_slug, $force_allow_ids );
 
@@ -700,18 +701,35 @@ class GVCommon {
 		 * @since 2.6 Added $view parameter
 		 * @param bool $check_entry_display Check whether the entry is visible for the current View configuration. Default: true.
 		 * @param array $entry Gravity Forms entry array
-		 * @param \GV\View $view The View
+		 * @param \GV\View|null $view The View
 		 */
 		$check_entry_display = apply_filters( 'gravityview/common/get_entry/check_entry_display', $check_entry_display, $entry, $view );
 
 		if( $check_entry_display ) {
-			if ( ! $view ) {
-				$view = \GV\View::by_id( \GravityView_View::getInstance()->getViewId() ); // @todo Bad legacy context, provide $view parameter!
-				gravityview()->log->warning( '$view parameter not provided! Context assumed from legacy context mocks. This is unreliable!' );
-			}
 
-			// Is the entry allowed
-			$entry = self::check_entry_display( $entry, $view );
+			global $post;
+
+			if ( ! $view && $post ) {
+
+				gravityview()->log->warning( '$view parameter not provided! Context assumed from legacy context mocks. This is unreliable!' );
+
+				$views = \GV\View_Collection::from_post( $post );
+
+				foreach( $views->all() as $view ) {
+
+					// Is the entry allowed
+					$check_entry = self::check_entry_display( $entry, $view );
+
+					if( is_wp_error( $entry ) ) {
+						continue;
+					}
+
+					$entry = $check_entry;
+				}
+			} else {
+				// Is the entry allowed
+				$entry = self::check_entry_display( $entry, $view );
+			}
 		}
 
 		if( is_wp_error( $entry ) ) {
