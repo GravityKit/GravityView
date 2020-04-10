@@ -23,10 +23,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Added: A new [Gravatar (Globally Recognized Avatar)](https://en.gravatar.com) field
 * Improved: Sort forms by title in Edit View (rather than Date Created)
 
 __Developer Updates:__
 
+* Added: `gravityview/fields/gravatar/settings` filter to modify the new Gravatar field's settings
 * Added: `gravityview/search/sieve_choices` filter in Version 2.5 that enables only showing choices in the Search Bar that exist in entries ([learn more about this filter](https://docs.gravityview.co/article/701-show-choices-that-exist))
 * Fixed: `gravityview/edit_entry/user_can_edit_entry` and `gravityview/capabilities/allow_logged_out` were not reachable in Edit Entry and Delete Entry since Version 2.5
 * Modified: `gravityview_get_forms()` and `GVCommon::get_forms()` have new `$order_by` and `$order` parameters (Thanks, Rochelle!)
