@@ -59,46 +59,6 @@ class GravityView_Field_Gravatar extends GravityView_Field {
 	}
 
 	/**
-	 * Get either a Gravatar URL or complete image tag for a specified email address.
-	 *
-	 * @source https://gravatar.com/site/implement/images/php/
-	 *
-	 * @param string $email The email address. Required.
-	 * @param int $size Size in pixels, 1 - 2048. Default: 80
-	 * @param string $default Default imageset to use. Options: '404', 'mp', 'identicon', 'monsterid', 'wavatar', 'retro', 'robohash', 'blank', or a custom URL you provide to your preferred default image. Default: 'mp'
-	 * @param string $rating Maximum rating (inclusive) Options: 'g', 'pg', 'r', 'x'. Default: 'g'
-	 * @param bool $img True to return a complete IMG tag False for just the URL. Default: true
-	 * @param array $atts Optional, additional key/value attributes to include in the IMG tag
-	 *
-	 * @return string containing either just a URL or a complete image tag
-	 */
-	static public function get_gravatar( $email, $size = 80, $default = 'mp', $rating = 'g', $img = true, $atts = array() ) {
-
-		$size = (int) $size;
-
-		if ( $size > 2048 ) {
-			$size = 2048;
-		} elseif ( $size < 1 ) {
-			$size = 1;
-		}
-
-		$url = 'https://www.gravatar.com/avatar/';
-		$url .= md5( strtolower( trim( $email ) ) );
-		$url .= "?s={$size}&default={$default}&rating={$rating}";
-		if ( $img ) {
-			$url = '<img src="' . esc_url( $url ) . '"';
-
-			foreach ( $atts as $key => $val ) {
-				$url .= ' ' . esc_attr( $key ) . '="' . esc_attr( $val ) . '"';
-			}
-
-			$url .= ' />';
-		}
-
-		return $url;
-	}
-
-	/**
 	 * Get the email address to use, based on field settings
 	 *
 	 * @internal May change in the future! Don't rely on this.
@@ -154,15 +114,15 @@ class GravityView_Field_Gravatar extends GravityView_Field {
 			'type'    => 'select',
 			'label'   => __( 'Default Image', 'gravityview' ),
 			'desc'    => __( 'Choose the default image to be shown when an email has no Gravatar.', 'gravityview' ) . ' <a href="https://en.gravatar.com/site/implement/images/">' . esc_html( sprintf( __( 'Read more about %s', 'gravityview' ), __( 'Default Image', 'gravityview' ) ) ) . '</a>',
-			'value'   => 'mp',
+			'value'   => get_option( 'avatar_default', 'mystery' ),
 			'choices' => array(
-				'mp'        => __( 'Silhouetted Person', 'gravityview' ),
-				''          => __( 'Gravatar Icon', 'gravityview' ),
-				'identicon' => __( 'Abstract Geometric Patterns', 'gravityview' ),
-				'monsterid' => __( 'Monster Faces', 'gravityview' ),
-				'retro'     => __( 'Arcade-style Faces', 'gravityview' ),
-				'robohash'  => __( 'Robot Faces', 'gravityview' ),
-				'blank'     => __( 'Transparent Image', 'gravityview' ),
+				'mystery'          => __( 'Silhouetted Person', 'gravityview' ),
+				'gravatar_default' => __( 'Gravatar Icon', 'gravityview' ),
+				'identicon'        => __( 'Abstract Geometric Patterns', 'gravityview' ),
+				'monsterid'        => __( 'Monster Faces', 'gravityview' ),
+				'retro'            => __( 'Arcade-style Faces', 'gravityview' ),
+				'robohash'         => __( 'Robot Faces', 'gravityview' ),
+				'blank'            => __( 'Transparent Image', 'gravityview' ),
 			),
 		);
 
@@ -172,19 +132,6 @@ class GravityView_Field_Gravatar extends GravityView_Field {
 			'value' => 80,
 			'max'   => 2048,
 			'min'   => 1,
-		);
-
-		$field_options['rating'] = array(
-			'type'    => 'radio',
-			'label'   => __( 'Maximum Rating', 'gravityview' ),
-			'desc'    => __( 'Gravatar allows users to self-rate their images so that they can indicate if an image is appropriate for a certain audience. Specify one of the following ratings to request images up to and including that rating.', 'gravityview' ) . ' <a href="https://en.gravatar.com/site/implement/images/#rating">' . esc_html( sprintf( __( 'Read more about %s', 'gravityview' ), __( 'Ratings', 'gravityview' ) ) ) . '</a>',
-			'value'   => 'g',
-			'choices' => array(
-				'g'  => 'G',
-				'pg' => 'PG',
-				'r'  => 'R',
-				'x'  => 'X',
-			),
 		);
 
 		return $field_options;

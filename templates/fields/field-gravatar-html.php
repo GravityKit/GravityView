@@ -22,18 +22,21 @@ $settings = $field_settings;
 
 $settings['email'] = GravityView_Field_Gravatar::get_email( $field_settings, $gravityview->entry->as_entry() );
 
+$settings['args'] = array(
+	'force_display' => true,
+);
+
 /**
  * @filter `gravityview/fields/gravatar/settings` Modify the Gravatar settings for the field
- * @param[in,out] $settings array Settings passed to {@see GravityView_Field_Gravatar::get_gravatar} for parameters.
+ * @param[in,out] $settings array Settings passed to {@see get_avatar()} for parameters.
  * @param \GV\Template_Context $gravityview Current context
  */
 $settings = apply_filters( 'gravityview/fields/gravatar/settings', $settings, $gravityview );
 
-echo GravityView_Field_Gravatar::get_gravatar(
+echo get_avatar(
 	\GV\Utils::get( $settings, 'email' ),
-	\GV\Utils::get( $settings, 'size', 80 ),
-	\GV\Utils::get( $settings, 'default', 'mp' ),
-	\GV\Utils::get( $settings, 'rating', 'g' ),
-	\GV\Utils::get( $settings, 'image', true ),
-	\GV\Utils::get( $settings, 'atts', array() ), // You can override via filter
+	\GV\Utils::get( $settings, 'size', 96 ),
+	\GV\Utils::get( $settings, 'default', '' ),
+	\GV\Utils::get( $settings, 'alt', '' ),
+	\GV\Utils::get( $settings, 'args', array() ) // You can set via filter above
 );
