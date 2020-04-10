@@ -20,11 +20,11 @@ class GravityView_FieldType_number extends GravityView_FieldType_text {
 
 		$show_mt = $this->show_merge_tags();
 
-        $class .= !empty( $this->field['class'] ) ? $this->field['class'] : 'widefat';
 		if ( $show_mt && $this->field['merge_tags'] !== false || $this->field['merge_tags'] === 'force' ) {
 			$class = 'merge-tag-support mt-position-right mt-hide_all_fields ';
 		}
 
+		$class .= \GV\Utils::get( $this->field, 'class', 'widefat' );
 
 		?>
 		<input name="<?php echo esc_attr( $this->name ); ?>" id="<?php echo $this->get_field_id(); ?>" type="number" value="<?php echo esc_attr( $this->value ); ?>" class="<?php echo esc_attr( $class ); ?>">
