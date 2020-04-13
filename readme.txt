@@ -23,12 +23,15 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Added: User Fields now has many more options, including avatars, first and last name cominbations, and more
 * Added: A new [Gravatar (Globally Recognized Avatar)](https://en.gravatar.com) field
 * Improved: Sort forms by title in Edit View (rather than Date Created)
 * Fixed: The "Single Entry Title" setting was not working properly
 
 __Developer Updates:__
 
+* Added: `gravityview/field/created_by/name_display` filter for custom User Field output.
+* Added: `gravityview/field/created_by/name_display/raw` allow raw (unescaped) output for `gravityview/field/created_by/name_display`.
 * Added: `gravityview/fields/gravatar/settings` filter to modify the new Gravatar field's settings
 * Added: `gravityview/search/sieve_choices` filter in Version 2.5 that enables only showing choices in the Search Bar that exist in entries ([learn more about this filter](https://docs.gravityview.co/article/701-show-choices-that-exist))
 * Fixed: `gravityview/edit_entry/user_can_edit_entry` and `gravityview/capabilities/allow_logged_out` were not reachable in Edit Entry and Delete Entry since Version 2.5

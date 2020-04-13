@@ -3307,7 +3307,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $user->ID, $renderer->render( $field, $view, null, $entry, $request ) );
 
 		$field->update_configuration( array( 'name_display' => 'custom_field_1' ) );
-		$this->assertEquals( esc_html( $user->custom_field_1 ), $renderer->render( $field, $view, null, $entry, $request ) );
+		$this->assertEmpty( $renderer->render( $field, $view, null, $entry, $request ) );
 	}
 
 	/**

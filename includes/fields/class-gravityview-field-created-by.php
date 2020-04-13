@@ -123,11 +123,24 @@ class GravityView_Field_Created_By extends GravityView_Field {
 		$field_options['name_display'] = array(
 			'type' => 'select',
 			'label' => __( 'User Format', 'gravityview' ),
-			'desc' => __( 'How should the User information be displayed?', 'gravityview'),
+			'desc' => __( 'How should the User information be displayed?', 'gravityview' ),
 			'choices' => array(
-				'display_name' => __('Display Name (Example: "Ellen Ripley")', 'gravityview'),
-				'user_login' => __('Username (Example: "nostromo")', 'gravityview'),
-				'ID' => __('User ID # (Example: 426)', 'gravityview'),
+				// column
+				'ID' => __( 'User ID # (Example: 426)', 'gravityview' ),
+				'user_login' => __( 'Username (Example: "nostromo")', 'gravityview' ),
+				'display_name' => __( 'Display Name (Example: "Ellen Ripley")', 'gravityview' ),
+				'user_email' => __( 'User Email (Example: "ellen@gravityview.co")', 'gravityview' ),
+				'user_registered' => __( 'User Registered (Example: "2019-10-18 08:30:11")', 'gravityview' ),
+
+				// meta
+				'nickname' => __( 'User nickname', 'gravityview' ),
+				'description' => __( 'Description', 'gravityview' ),
+				'first_name' => __( 'First Name', 'gravityview' ),
+				'last_name' => __( 'Last Name', 'gravityview' ),
+
+				// misc
+				'first_last_name' => __( 'First and Last Name', 'gravityview' ),
+				'last_first_name' => __( 'Last and First Name', 'gravityview' ),
 			),
 			'value' => 'display_name'
 		);
