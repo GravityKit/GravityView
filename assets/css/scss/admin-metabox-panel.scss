@@ -7,15 +7,8 @@
 
 #gravityview-metabox-content-container {
 
-  // Pre-JS loading
-  max-height: 442px;
+  max-height: 640px; // Most common resolution - see https://gs.statcounter.com/screen-resolution-stats/mobile/worldwide
   overflow-y: auto;
-
-  // Once the JS has loaded
-  &.ui-tabs-panel {
-    max-height: none;
-    overflow-y: visible;
-  }
 
   background: white; // Allow .striped rows to show
   float: left;

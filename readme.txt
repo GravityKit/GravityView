@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
-Requires at least: 4.4
-Tested up to: 5.2.2
+Requires at least: 4.7
+Tested up to: 5.4
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -23,12 +23,79 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
-* Fixed: Search All with Multiple Forms plugin now works as expected in both any and all modes.
-* Added: User Fields now has many more options, including avatars, names, etc.
+* Added: User Fields now has many more options, including avatars, first and last name cominbations, and more
+* Added: A new [Gravatar (Globally Recognized Avatar)](https://en.gravatar.com) field
+* Improved: Sort forms by title in Edit View (rather than Date Created)
+
+__Developer Updates:__
+
 * Added: `gravityview/field/created_by/name_display` filter for custom User Field output.
 * Added: `gravityview/field/created_by/name_display/raw` allow raw (unescaped) output for `gravityview/field/created_by/name_display`.
+* Added: `gravityview/fields/gravatar/settings` filter to modify the new Gravatar field's settings
+* Added: `gravityview/search/sieve_choices` filter in Version 2.5 that enables only showing choices in the Search Bar that exist in entries ([learn more about this filter](https://docs.gravityview.co/article/701-show-choices-that-exist))
+* Fixed: `gravityview/edit_entry/user_can_edit_entry` and `gravityview/capabilities/allow_logged_out` were not reachable in Edit Entry and Delete Entry since Version 2.5
+* Modified: `gravityview_get_forms()` and `GVCommon::get_forms()` have new `$order_by` and `$order` parameters (Thanks, Rochelle!)
+
+= 2.7.1 on February 24, 2020 =
+
+* Fixed: Fatal error when viewing entries using WPML or Social Sharing & SEO extensions
+
+= 2.7 on February 20, 2020 =
+
+* Added: "Enable Edit Locking" View setting to toggle on and off entry locking (in the "Edit Entry" tab of the View Settings)
+* Fixed: Broken Toolbar link to Gravity Forms' entry editing while editing an entry in GravityView
+* Fixed: PHP undefined index when editing an entry with empty File Upload field
+* Fixed: When adding a field in the View Configuration, the browser window would resize
+
+__Developer Updates:__
+
+* Modified: The way Hidden Fields are rendered in Edit Entry no fields are configured. [Read what has changed around Hidden Fields](https://docs.gravityview.co/article/678-edit-entry-hidden-fields-field-visibility#timeline)
+	* Fixed: Rendering Hidden Fields as `input=hidden` when no fields are configured in Edit Entry (fixing a regression in 2.5)
+	* Modified: The default value for the `gravityview/edit_entry/reveal_hidden_field` filter is now `false`
+	* Added: `gravityview/edit_entry/render_hidden_field` filter to modify whether to render Hidden Field HTML in Edit Entry (default: `true`)
+* Modified: Changed `GravityView_Edit_Entry_Locking::enqueue_scripts()` visibility to protected
+
+= 2.6 on February 12, 2020 =
+
+* Added: Implement Gravity Forms Entry Locking - see when others are editing an entry at the same time ([learn more](https://docs.gravityview.co/article/676-entry-locking))
+* Added: Easily duplicate entries in Gravity Forms using the new "Duplicate" link in Gravity Forms Entries screen ([read how](https://docs.gravityview.co/article/675-duplicate-gravity-forms-entry))
+* Improved: Speed up loading of Edit View screen
+* Improved: Speed of adding fields in the View Configuration screen
+* Modified: Reorganized some settings to be clearer
+* Fixed: Potential fatal error when activating extensions with GravityView not active
+* Updated: Russian translation (thank you, Victor S!)
+
+__Developer Updates:__
+
+* Added: `gravityview/duplicate/backend/enable` filter to disable adding a "Duplicate" link for entries
+* Added: `gravityview/request/is_renderable` filter to modify what request classes represent valid GravityView requests
+* Added: `gravityview/widget/search/form/action` filter to change search submission URL as needed
+* Added: `gravityview/entry-list/link` filter to modify Other Entries links as needed
+* Added: `gravityview/edit/link` filter to modify Edit Entry link as needed
+* Fixed: A rare issue where a single entry is prevented from displaying with Post Category filters
+* Modified: Important! `gravityview_get_entry()` and `GVCommon::get_entry()` require a View object as the fourth parameter. While the View will be retrieved from the context if the parameter is missing, it's important to supply it.
+* Modified: `GVCommon::check_entry_display` now requires a View object as the second parameter. Not passing it will return an error.
+* Modified: `gravityview/common/get_entry/check_entry_display` filter has a third View parameter passed from `GVCommon::get_entry`
+* Modified: Bumped future minimum Gravity Forms version to 2.4
+
+= 2.5.1 on December 14, 2019 =
+
+* Modified: "Show Label" is now off by default for non-table layouts
+* Improved: The View Configuration screen has been visually simplified. Fewer borders, larger items, and rounder corners.
+* Accessibility improvements. Thanks to [Rian Rietveld](https://rianrietveld.com) and Gravity Forms for their support.
+	- Color contrast ratios now meet [Web Content Accessibility Guidelines (WCAG) 2.0](https://www.w3.org/TR/WCAG20/) recommendations
+	- Converted links that act as buttons to actual buttons
+	- Added keyboard navigation support for "Add Field" and "Add Widget" pickers
+	- Auto-focus the field search field when Add Field is opened
+	- Improved Search Bar HTML structure for a better screen reader experience
+	- Added ARIA labels for Search Bar configuration buttons
+	- Improved touch target size and spacing for Search Bar add/remove field buttons
+* Fixed: "Search All" with Multiple Forms plugin now works as expected in both "any" and "all" search modes.
+
+__Developer Updates:__
+
 * Added: `gravityview_lightbox_script` and `gravityview_lightbox_style` filters.
-* Deprecated: `gravity_view_lightbox_script` and `gravity_view_lightbox_style` filters. See `gravityview_lightbox_script` and `gravityview_lightbox_style` instead.
+* Deprecated: `gravity_view_lightbox_script` and `gravity_view_lightbox_style` filters. Use `gravityview_lightbox_script` and `gravityview_lightbox_style` instead.
 
 = 2.5 on December 5, 2019 =
 

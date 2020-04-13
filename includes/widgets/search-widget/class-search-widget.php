@@ -1287,11 +1287,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * Renders the Search Widget
 	 * @param array $widget_args
 	 * @param string $content
-	 * @param string $context
+	 * @param string|\GV\Template_Context $context
 	 *
 	 * @return void
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
+
 		/** @var GravityView_View $gravityview_view */
 		$gravityview_view = GravityView_View::getInstance();
 
@@ -1300,6 +1301,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			return;
 		}
 
+		$view = \GV\View::by_id( $gravityview_view->view_id );
+
 		// get configured search fields
 		$search_fields = ! empty( $widget_args['search_fields'] ) ? json_decode( $widget_args['search_fields'], true ) : '';
 
@@ -1307,8 +1310,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 			gravityview()->log->debug( 'No search fields configured for widget:', array( 'data' => $widget_args ) );
 			return;
 		}
-
-		$view = \GV\View::by_id( $gravityview_view->view_id );
 
 		// prepare fields
 		foreach ( $search_fields as $k => $field ) {
@@ -1434,7 +1435,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$url = add_query_arg( array(), get_permalink( $post_id ) );
 
-		return esc_url( $url );
+		/**
+		 * @filter `gravityview/widget/search/form/action` Override the search URL.
+		 * @param[in,out] string $action Where the form submits to.
+		 *
+		 * Further parameters will be added once adhoc context is added.
+		 * Use gravityview()->request until then.
+		 */
+		return apply_filters( 'gravityview/widget/search/form/action', $url );
 	}
 
 	/**
@@ -1515,17 +1523,19 @@ class GravityView_Widget_Search extends \GV\Widget {
 		// get form field details
 		$form_field = gravityview_get_field( $form, $field['field'] );
 
+		$form_field_type = \GV\Utils::get( $form_field, 'type' );
+
 		$filter = array(
-			'key' => $field['field'],
+			'key' => \GV\Utils::get( $field, 'field' ),
 			'name' => $name,
 			'label' => self::get_field_label( $field, $form_field ),
-			'input' => $field['input'],
+			'input' => \GV\Utils::get( $field, 'input' ),
 			'value' => $value,
-			'type' => $form_field['type'],
+			'type' => $form_field_type,
 		);
 
 		// collect choices
-		if ( 'post_category' === $form_field['type'] && ! empty( $form_field['displayAllCategories'] ) && empty( $form_field['choices'] ) ) {
+		if ( 'post_category' === $form_field_type && ! empty( $form_field['displayAllCategories'] ) && empty( $form_field['choices'] ) ) {
 			$filter['choices'] = gravityview_get_terms_choices();
 		} elseif ( ! empty( $form_field['choices'] ) ) {
 			$filter['choices'] = $form_field['choices'];
@@ -1972,7 +1982,7 @@ class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Cond
 		$user_meta_fields = apply_filters( 'gravityview/widgets/search/created_by/user_meta_fields', $user_meta_fields, $this->view );
 
 		$user_fields = array(
-			'user_nicename', 'user_login', 'display_name', 'user_email', 
+			'user_nicename', 'user_login', 'display_name', 'user_email',
 		);
 
 		/**

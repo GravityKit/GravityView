@@ -446,7 +446,7 @@ class GravityView_API {
 		 * @filter `gravityview/view/links/directory` Modify the URL to the View "directory" context
 		 * @since 2.0
 		 * @param string $link URL to the View's "directory" context (Multiple Entries screen)
-		 * @param \GV\Template_Context $context 
+		 * @param \GV\Template_Context $context
 		 */
 		return apply_filters( 'gravityview/view/links/directory', $link, $context );
 	}
@@ -619,13 +619,33 @@ class GravityView_API {
 
 		if ( ! empty( $entry['_multi'] ) ) {
 			$entry_slugs = array();
+
 			foreach ( $entry['_multi'] as $_multi ) {
-				$entry_slugs[] = self::get_entry_slug( $_multi['id'], $_multi );
+
+				if( $gv_multi = \GV\GF_Entry::from_entry( $_multi ) ) {
+					$entry_slugs[] = $gv_multi->get_slug();
+				} else {
+					// TODO: This path isn't covered by unit tests
+					$entry_slugs[] = \GravityView_API::get_entry_slug( $_multi['id'], $_multi );
+				}
+
+				unset( $gv_multi );
+
 				$forms[] = $_multi['form_id'];
 			}
+
 			$entry_slug = implode( ',', $entry_slugs );
 		} else {
-			$entry_slug = self::get_entry_slug( $entry['id'], $entry );
+
+			// Fallback when
+			if( $gv_entry = \GV\GF_Entry::from_entry( $entry ) ) {
+				$entry_slug = $gv_entry->get_slug();
+			} else {
+				// TODO: This path isn't covered by unit tests
+				$entry_slug = \GravityView_API::get_entry_slug( $entry['id'], $entry );
+			}
+
+			unset( $gv_entry );
 		}
 
 		if ( get_option('permalink_structure') && !is_preview() ) {

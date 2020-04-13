@@ -142,7 +142,8 @@ class GravityView_Edit_Entry_Render {
 		add_action( 'wp_footer', array( $this, 'prevent_render_form' ) );
 
 		// Stop Gravity Forms processing what is ours!
-		add_filter( 'wp', array( $this, 'prevent_maybe_process_form'), 8 );
+		add_action( 'wp', array( $this, 'prevent_maybe_process_form' ), 8 );
+		add_action( 'admin_init', array( $this, 'prevent_maybe_process_form' ), 8 );
 
 		add_filter( 'gravityview_is_edit_entry', array( $this, 'is_edit_entry') );
 
@@ -196,6 +197,9 @@ class GravityView_Edit_Entry_Render {
 
 		remove_action( 'wp',  array( 'RGForms', 'maybe_process_form'), 9 );
 		remove_action( 'wp',  array( 'GFForms', 'maybe_process_form'), 9 );
+
+		remove_action( 'admin_init',  array( 'GFForms', 'maybe_process_form'), 9 );
+		remove_action( 'admin_init',  array( 'RGForms', 'maybe_process_form'), 9 );
 	}
 
 	/**
@@ -204,7 +208,9 @@ class GravityView_Edit_Entry_Render {
 	 */
 	public function is_edit_entry() {
 
-		$is_edit_entry = GravityView_frontend::is_single_entry() && ! empty( $_GET['edit'] );
+		$is_edit_entry =
+			( GravityView_frontend::is_single_entry() || ( ! empty( gravityview()->request->is_entry() ) ) )
+			&& ( ! empty( $_GET['edit'] ) );
 
 		return ( $is_edit_entry || $this->is_edit_entry_submission() );
 	}
@@ -231,7 +237,7 @@ class GravityView_Edit_Entry_Render {
 	    self::$original_entry = $entries[0];
 	    $this->entry = $entries[0];
 
-		self::$original_form = $gravityview_view->getForm();
+		self::$original_form = GFAPI::get_form( $this->entry['form_id'] );
 		$this->form = $gravityview_view->getForm();
 		$this->form_id = $this->entry['form_id'];
 		$this->view_id = $gravityview_view->getViewId();
@@ -586,7 +592,7 @@ class GravityView_Edit_Entry_Render {
 
 		if ( $field->multipleFiles ) {
 			if ( empty( $value ) ) {
-				return json_decode( $entry[ $input_id ], true );
+				return json_decode( \GV\Utils::get( $entry, $input_id, '' ), true );
 			}
 			return $value;
 		}
@@ -1041,7 +1047,20 @@ class GravityView_Edit_Entry_Render {
 	 */
 	public function edit_entry_form() {
 
+		$view = \GV\View::by_id( $this->view_id );
+
+		if( $view->settings->get( 'edit_locking' ) ) {
+			$locking = new GravityView_Edit_Entry_Locking();
+			$locking->maybe_lock_object( $this->entry['id'] );
+		}
+
 		?>
+
+		<div id="wpfooter"></div><!-- used for locking message -->
+
+		<script>
+			var ajaxurl = '<?php echo admin_url( 'admin-ajax.php', 'relative' ); ?>';
+		</script>
 
 		<div class="gv-edit-entry-wrapper"><?php
 
@@ -1941,14 +1960,26 @@ class GravityView_Edit_Entry_Render {
 		// The Edit tab has not been configured, so we return all fields by default.
 		// But we do keep the hidden ones hidden please, for everyone :)
 		if ( empty( $configured_fields ) ) {
+
 			$out_fields = array();
+
 			foreach ( $fields as &$field ) {
-				if ( 'hidden' === $field->type ) {
-					continue; // A hidden field is just hidden
+
+				/**
+				 * @filter `gravityview/edit_entry/render_hidden_field`
+				 * @see https://docs.gravityview.co/article/678-edit-entry-hidden-fields-field-visibility
+				 * @since 2.7
+				 * @param[in,out] bool $render_hidden_field Whether to render this Hidden field in HTML. Default: true
+				 * @param GF_Field $field The field to possibly remove
+				 */
+				$render_hidden_field = apply_filters( 'gravityview/edit_entry/render_hidden_field', true, $field );
+
+				if ( 'hidden' === $field->type && ! $render_hidden_field ) {
+					continue; // Don't include hidden fields in the output
 				}
 
 				if ( 'hidden' == $field->visibility ) {
-					continue; // Same
+					continue; // Never include when no fields are configured
 				}
 
 				$out_fields[] = $field;

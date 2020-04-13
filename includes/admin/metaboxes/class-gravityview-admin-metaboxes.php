@@ -97,6 +97,8 @@ class GravityView_Admin_Metaboxes {
 	function settings_metabox_render( $post ) {
 
 		/**
+		 * @action `gravityview/metaboxes/before_render` Before rendering GravityView metaboxes
+		 * @since 1.8
 		 * @param WP_Post $post
 		 */
 		do_action( 'gravityview/metaboxes/before_render', $post );
@@ -107,6 +109,8 @@ class GravityView_Admin_Metaboxes {
 		include self::$metaboxes_dir . 'views/gravityview-content.php';
 
 		/**
+		 * @action `gravityview/metaboxes/after_render` After rendering GravityView metaboxes
+		 * @since 1.8
 		 * @param WP_Post $post
 		 */
 		do_action( 'gravityview/metaboxes/after_render', $post );
@@ -128,6 +132,14 @@ class GravityView_Admin_Metaboxes {
 				'callback_args' => '',
 			),
 			array(
+				'id' => 'multiple_entries',
+				'title' => __( 'Multiple Entries', 'gravityview' ),
+				'file' => 'multiple-entries.php',
+				'icon-class' => 'dashicons-admin-page',
+				'callback' => '',
+				'callback_args' => '',
+			),
+			array(
 				'id' => 'single_entry', // Use the same ID as View Settings for backward compatibility
 				'title' => __( 'Single Entry', 'gravityview' ),
 				'file' => 'single-entry.php',
@@ -136,10 +148,26 @@ class GravityView_Admin_Metaboxes {
 				'callback_args' => '',
 			),
 			array(
+				'id' => 'edit_entry', // Use the same ID as View Settings for backward compatibility
+				'title' => __( 'Edit Entry', 'gravityview' ),
+				'file' => 'edit-entry.php',
+				'icon-class' => 'dashicons-welcome-write-blog',
+				'callback' => '',
+				'callback_args' => '',
+			),
+			array(
 				'id' => 'sort_filter',
 				'title' => __( 'Filter &amp; Sort', 'gravityview' ),
 				'file' => 'sort-filter.php',
 				'icon-class' => 'dashicons-sort',
+				'callback' => '',
+				'callback_args' => '',
+			),
+			array(
+				'id' => 'permissions', // Use the same ID as View Settings for backward compatibility
+				'title' => __( 'Permissions', 'gravityview' ),
+				'file' => 'permissions.php',
+				'icon-class' => 'dashicons-lock',
 				'callback' => '',
 				'callback_args' => '',
 			),

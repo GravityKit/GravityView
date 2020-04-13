@@ -77,10 +77,11 @@
 			//select form dropdown
 			vcfg.gvSelectForm = $( '#gravityview_form_id' );
 
-			vcfg.gvSwitchView = $('a[href="#gv_switch_view"]');
+			vcfg.gvSwitchView = $('#gv_switch_view_button');
 
-			//current form selection
+			//current form/template selection
 			vcfg.currentFormId = vcfg.gvSelectForm.val();
+			vcfg.currentTemplateId = $("#gravityview_directory_template").val();
 
 			// Start by showing/hiding on load
 			vcfg.toggleInitialVisibility( vcfg );
@@ -113,10 +114,10 @@
 				.on( 'click mouseup keyup', vcfg.closeTooltips )
 
 				// switch View (for existing forms)
-				.on( 'click', 'a[href="#gv_switch_view"]', vcfg.switchView )
+				.on( 'click', '#gv_switch_view_button', vcfg.switchView )
 
 				// select template
-				.on( 'click', 'a[href="#gv_select_template"]', vcfg.selectTemplate )
+				.on( 'click', '.gv_select_template', vcfg.selectTemplate )
 
 				// bind Add Field fields to the addField method
 				.on( 'click', '.ui-tooltip-content .gv-fields', vcfg.startAddField )
@@ -134,10 +135,10 @@
 				.on( 'change', ".gv-dialog-options input[name*=show_as_link]", vcfg.toggleShowAsEntry )
 
 				// show field buttons: Settings & Remove
-				.on( 'click', ".gv-field-controls a[href='#remove']", vcfg.removeField )
+				.on( 'click', ".gv-field-controls .gv-remove-field", vcfg.removeField )
 
 				// Clicking a settings link opens settings
-				.on( 'click', ".gv-field-controls a[href='#settings']", vcfg.openFieldSettings )
+				.on( 'click', ".gv-field-controls .gv-field-settings", vcfg.openFieldSettings )
 
 				// Double-clicking a field/widget label opens settings
 				.on( 'dblclick', ".gv-fields", vcfg.openFieldSettings )
@@ -464,13 +465,11 @@
 			e.preventDefault();
 			var vcfg = viewConfiguration;
 
-			//todo: what to do if you start fresh and then select another form!?
-			//
 			vcfg.startFreshStatus = true;
 
-			// If the form has been chosen and there are GF forms to choose from
-			if ( vcfg.currentFormId !== '' && vcfg.gvSelectForm.length > 0 ) {
-				vcfg.showDialog( '#gravityview_form_id_dialog' );
+			// If fields are configured (either via a form or preset selection), warn against making changes
+			if ( vcfg.getConfiguredFields().length ) {
+				vcfg.showDialog( '#gravityview_select_preset_dialog' );
 			} else {
 				vcfg.startFreshContinue();
 			}
@@ -485,6 +484,8 @@
 			// Reset the selected form value
 			$( '#gravityview_form_id' ).val( '' );
 
+			vcfg.currentFormId = '';
+			vcfg.currentTemplateId = '';
 			vcfg.gvSwitchView.hide();
 
 			// show templates
@@ -504,6 +505,7 @@
 		 */
 		formChange: function ( e ) {
 			e.preventDefault();
+
 			var vcfg = viewConfiguration;
 
 			// Holding down on the alt key while switching forms allows you to change forms without resetting configurations
@@ -513,8 +515,8 @@
 
 			vcfg.startFreshStatus = false;
 
-			if ( vcfg.currentFormId !== '' && vcfg.currentFormId !== $( this ).val() ) {
-				vcfg.showDialog( '#gravityview_form_id_dialog' );
+			if ( vcfg.getConfiguredFields().length ) {
+				vcfg.showDialog( '#gravityview_change_form_dialog' );
 			} else {
 				vcfg.formChangeContinue();
 			}
@@ -525,19 +527,27 @@
 		formChangeContinue: function () {
 			var vcfg = viewConfiguration;
 
-			if ( '' === vcfg.gvSelectForm.val() ) {
+			if ( ! vcfg.gvSelectForm.val() ) {
+				vcfg.getConfiguredFields().remove();
 				vcfg.hideView();
+				vcfg.gvSwitchView.fadeOut( 150 );
 			} else {
-
-				// Let merge tags know not to initialize
-				$( 'body' ).trigger( 'gravityview_form_change' ).addClass( 'gv-form-changed' );
-
 				vcfg.templateFilter( 'custom' );
-				vcfg.showViewTypeMetabox();
+
 				vcfg.getAvailableFields();
 				vcfg.getSortableFields();
-				vcfg.gvSwitchView.fadeOut( 150 );
+
+				if ( ! vcfg.currentFormId && ! vcfg.currentTemplateId ) {
+					vcfg.showViewTypeMetabox();
+					vcfg.gvSwitchView.fadeOut( 150 );
+				} else {
+					vcfg.gvSwitchView.show();
+				}
 			}
+
+			vcfg.currentTemplateId = '';
+			vcfg.currentFormId = vcfg.gvSelectForm.val();
+			$( 'body' ).trigger( 'gravityview_form_change' ).addClass( 'gv-form-changed' );
 		},
 
 		showDialog: function ( dialogSelector, buttons ) {
@@ -549,7 +559,7 @@
 			var cancel_button = {
 				text: gvGlobals.label_cancel,
 				click: function () {
-					if ( thisDialog.is( '#gravityview_form_id_dialog' ) ) {
+					if ( thisDialog.is( '#gravityview_change_form_dialog' ) ) {
 						vcfg.startFreshStatus = false;
 						vcfg.gvSelectForm.val( vcfg.currentFormId );
 					}
@@ -563,9 +573,9 @@
 			};
 
 			var continue_button = {
-			text: gvGlobals.label_continue,
-			click: function () {
-					if ( thisDialog.is( '#gravityview_form_id_dialog' ) ) {
+				text: gvGlobals.label_continue,
+				click: function() {
+					if ( thisDialog.is( '#gravityview_change_form_dialog' ) || thisDialog.is( '#gravityview_select_preset_dialog' ) ) {
 						if ( vcfg.startFreshStatus ) {
 							vcfg.startFreshContinue();
 						} else {
@@ -579,7 +589,7 @@
 					}
 
 					thisDialog.dialog( 'close' );
-				}
+				},
 			};
 
 			var default_buttons = [ cancel_button, continue_button ];
@@ -701,8 +711,11 @@
 			$( document ).trigger( 'gv_admin_views_hideViewConfig' );
 		},
 
+		/**
+		 * Show metaboxes related to view configuration.
+		 * @return {void}
+		 */
 		showViewConfig: function () {
-
 			$( '#gravityview_view_config' ).slideDown( 150 );
 
 			viewGeneralSettings.metaboxObj.show();
@@ -744,7 +757,7 @@
 		/**
 		 * @param {jQueryEvent} e
 		 */
-		selectTemplate: function ( e ) {
+		selectTemplate: function( e ) {
 			var vcfg = viewConfiguration;
 
 			e.preventDefault();
@@ -752,22 +765,26 @@
 
 			// get selected template
 			vcfg.wantedTemplate = $( this );
-			var currTemplateId = $( "#gravityview_directory_template" ).val(),
-			selectedTemplateId = vcfg.wantedTemplate.attr( "data-templateid" ),
-			regexMatch = /(.*?)_(.*?)$/i,
-			currTemplateIdSlug = currTemplateId.replace( regexMatch, '$2' ),
-			selectedTemplateIdSlug = selectedTemplateId.replace( regexMatch, '$2' ),
-			slugmatch = ( selectedTemplateIdSlug === currTemplateIdSlug ),
-			has_fields = $( '#directory-fields, #single-fields' ).find('.gv-droppable-area .gv-fields').length;
+			var selectedTemplateId = vcfg.wantedTemplate.attr( 'data-templateid' );
+			var regexMatch = /(.*?)_(.*?)$/i;
+			var currTemplateIdSlug = vcfg.currentTemplateId.replace( regexMatch, '$2' );
+			var selectedTemplateIdSlug = selectedTemplateId.replace( regexMatch, '$2' );
+			var slugmatch = ( selectedTemplateIdSlug === currTemplateIdSlug );
 
 			// check if template is being changed
-			if ( currTemplateId === '' || slugmatch || 0 === has_fields ) {
-				$( "#gravityview_select_template" ).slideUp( 150 );
+			if ( ! vcfg.currentTemplateId || slugmatch || ! vcfg.getConfiguredFields().length ) {
+				$( '#gravityview_select_template' ).slideUp( 150 );
 				vcfg.selectTemplateContinue( slugmatch );
-			} else if ( currTemplateId !== selectedTemplateId ) {
-				vcfg.showDialog( '#gravityview_switch_template_dialog' );
+			} else if ( vcfg.currentTemplateId !== selectedTemplateId ) {
+				// warn if fields are configured
+				if ( vcfg.getConfiguredFields().length ) {
+					vcfg.showDialog( '#gravityview_switch_template_dialog' );
+				} else {
+					vcfg.toggleViewTypeMetabox();
+					vcfg.selectTemplateContinue( slugmatch );
+				}
 			} else {
-				// show the same situation as before clicking in Start Fresh.
+				// revert back to how things before before clicking "use a form preset"
 				vcfg.toggleViewTypeMetabox();
 				vcfg.showViewConfig();
 			}
@@ -813,6 +830,7 @@
 
 			}
 
+			vcfg.currentTemplateId = selectedTemplateId;
 		},
 
 		/**
@@ -823,7 +841,7 @@
 		selectTemplateHover: function ( e ) {
 			e.preventDefault();
 			e.stopImmediatePropagation();
-			$( this ).find( 'a[href="#gv_select_template"]' ).trigger( 'click' );
+			$( this ).find( '.gv_select_template' ).trigger( 'click' );
 		},
 
 		openExternalLinks: function () {
@@ -959,12 +977,13 @@
 					//	var context = ( $(this).parents('#single-view').length ) ? 'single' : 'directory';
 					var context = $( this ).attr( 'data-context' );
 					var formId = $( this ).attr( 'data-formid' ) || $( '#gravityview_form_id' ).val();
+					var templateId = $( '#gravityview_directory_template' ).val();
 
 					switch ( $( this ).attr( 'data-objecttype' ) ) {
 						case 'field':
 							// If in Single context, show fields available in single
 							// If it Directory, same for directory
-							return $( "#" + context + "-available-fields-" + formId ).html();
+							return $( '#' + context + '-available-fields-' + ( formId || templateId ) ).html();
 						case 'widget':
 							return $( "#directory-available-widgets" ).html();
 					}
@@ -978,7 +997,14 @@
 						.attr( 'data-tooltip', 'active' )
 						.attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
 
-					$( 'input[type=search]', tooltip.tooltip ).focus();
+					$focus_item = $( 'input[type=search]', tooltip.tooltip );
+
+					// Widgets don't have a search field; select the first "Add Widget" button instead
+					if ( ! $focus_item.length) {
+						$focus_item = $( 'button', tooltip.tooltip ).first();
+					}
+
+					$focus_item.focus();
 		        },
 				closeOnEscape: true,
 				disabled: true, // Don't open on hover
@@ -1050,63 +1076,62 @@
 
 
 		/**
+		 * Get fields configured in each context
+		 *
+		 * @return array
+		 */
+		getConfiguredFields: function () {
+			return $( '#directory-active-fields, #single-active-fields, #edit-active-fields' ).find( '.gv-fields' );
+		},
+
+		/**
 		 * Fetch the Available Fields for a given Form ID or Preset Template ID
 		 * @param  {null|string}    preset
 		 * @param  {string}    templateid      The "slug" of the View template
 		 * @return void
 		 */
-		getAvailableFields: function ( preset, templateid ) {
+		getAvailableFields: function( preset, templateid ) {
 
 			var vcfg = viewConfiguration;
 
-			$( "#directory-available-fields, #single-available-fields, #edit-available-fields" ).find( ".gv-fields" ).remove();
-			$( "#directory-active-fields, #single-active-fields, #edit-active-fields" ).find( ".gv-fields" ).remove();
-
 			vcfg.toggleDropMessage();
+
+			vcfg.getConfiguredFields().remove();
 
 			var data = {
 				action: 'gv_available_fields',
 				nonce: gvGlobals.nonce,
-				context: 'directory'
 			};
 
 			if ( preset !== undefined && 'preset' === preset ) {
-				data.template_id = templateid;
+				data.form_preset_ids = [ templateid ];
 			} else {
 				/**
 				 * TODO: Update to support multiple fields in Joins
 				 * @see GravityView_Ajax::gv_available_fields()
 				 * */
-				data.form_id = vcfg.gvSelectForm.val();
+				data.form_preset_ids = [ vcfg.gvSelectForm.val() ];
 			}
 
+			// Do not fetch fields if we already have them for the given form or template
+			if ( $( '#directory-available-fields-' + data.form_preset_ids[ 0 ] ).length ) {
+				return;
+			}
 
-			// Get the fields for the directory context
-			$.post( ajaxurl, data, function ( response ) {
-				if ( response ) {
-					$( "#directory-available-fields" ).append( response );
-				}
+			$.ajax( {
+				type: 'post',
+				url: ajaxurl,
+				data: data,
+				success: function( response ) {
+					if ( ! response.success && ! response.data ) {
+						return;
+					}
+
+					$.each( response.data, function( context,markup ) {
+						$( '#' + context + '-fields' ).append( markup );
+					} );
+				},
 			} );
-
-
-			// Now get the fields for the single context
-			data.context = 'single';
-
-			$.post( ajaxurl, data, function ( response ) {
-				if ( response ) {
-					$( "#single-available-fields" ).append( response );
-				}
-			} );
-
-			// Now get the fields for the edit context
-			data.context = 'edit';
-
-			$.post( ajaxurl, data, function ( response ) {
-				if ( response ) {
-					$( "#edit-available-fields" ).append( response );
-				}
-			} );
-
 		},
 
 		/**
@@ -1155,7 +1180,7 @@
 			var areaId = clicked.parents( '.ui-tooltip' ).attr( 'id' );
 			var templateId = $( "#gravityview_directory_template" ).val();
 			var tooltipId = clicked.parents( '.ui-tooltip' ).attr( 'id' );
-			var addButton = $( 'a.gv-add-field[data-tooltip-id="' + tooltipId + '"]' );
+			var addButton = $( '.gv-add-field[data-tooltip-id="' + tooltipId + '"]' );
 
 			var data = {
 				action: 'gv_field_options',
@@ -1197,7 +1222,7 @@
 				}
 
 				// append the new field to the active drop
-				$( 'a[data-tooltip-id="' + areaId + '"]' ).parents( '.gv-droppable-area' ).find( '.active-drop' ).append( newField ).end().attr( 'data-tooltip-id', '' );
+				$( '[data-tooltip-id="' + areaId + '"]' ).parents( '.gv-droppable-area' ).find( '.active-drop' ).append( newField ).end().attr( 'data-tooltip-id', '' );
 
 				$('body').trigger( 'gravityview/field-added', newField );
 
@@ -1846,7 +1871,6 @@
 
 	// Expose globally methods to initialize/destroy tooltips and to display dialog window
 	window.gvAdminActions = {
-		viewConfiguration: viewConfiguration,
 		initTooltips: viewConfiguration.init_tooltips,
 		removeTooltips: viewConfiguration.remove_tooltips,
 		showDialog: viewConfiguration.showDialog,

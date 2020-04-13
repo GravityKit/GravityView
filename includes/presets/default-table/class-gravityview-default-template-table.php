@@ -24,7 +24,7 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 		$table_settings = array(
 			'slug'        => 'table',
 			'type'        => 'custom',
-			'label'       => __( 'Table (default)', 'gravityview' ),
+			'label'       => __( 'Table', 'gravityview' ),
 			'description' => __( 'Display items in a table view.', 'gravityview' ),
 			'logo'        => plugins_url( 'includes/presets/default-table/logo-default-table.png', GRAVITYVIEW_FILE ),
 			'css_source'  => gravityview_css_url( $css_filename, GRAVITYVIEW_DIR . 'templates/css/' ),

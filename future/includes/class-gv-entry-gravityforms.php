@@ -114,7 +114,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 		$self->entry = $entry;
 
 		$self->ID = $self->entry['id'];
-		$self->slug = \GravityView_API::get_entry_slug( $self->ID, $self->as_entry() );
+		$self->slug = $self->get_slug();
 
 		return $self;
 	}

@@ -42,14 +42,17 @@ function gravityview_get_form_from_entry_id( $entry_slug ) {
  * @see GFAPI::get_forms()
  *
  * @since 1.19 Allow "any" $active status option
+ * @since 2.7.2 Allow sorting forms using wp_list_sort()
  *
  * @param bool|string $active Status of forms. Use `any` to get array of forms with any status. Default: `true`
  * @param bool $trash Include forms in trash? Default: `false`
+ * @param string|array $order_by Optional. Either the field name to order by or an array of multiple orderby fields as $orderby => $order.
+ * @param string $order Optional. Either 'ASC' or 'DESC'. Only used if $orderby is a string.
  *
  * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
  */
-function gravityview_get_forms( $active = true, $trash = false ) {
-	return GVCommon::get_forms( $active, $trash );
+function gravityview_get_forms( $active = true, $trash = false, $order_by = 'date_created', $order = 'ASC' ) {
+	return GVCommon::get_forms( $active, $trash, $order_by, $order );
 }
 
 /**
@@ -107,13 +110,18 @@ function gravityview_get_entries( $form_ids = null, $passed_criteria = null, &$t
  * Since 1.4, supports custom entry slugs. The way that GravityView fetches an entry based on the custom slug is by searching `gravityview_unique_id` meta. The `$entry_slug` is fetched by getting the current query var set by `is_single_entry()`
  *
  * @access public
- * @param mixed $entry_id
+ *
+ * @since 1.4 Supports custom entry slugs
+ * @since 2.6 Added $view parameter
+ *
+ * @param int|string $entry_slug Entry ID or slug
  * @param boolean $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
  * @param boolean $check_entry_display Check whether the entry is visible for the current View configuration. Default: true {@since 1.14}
+ * @param \GV\View $view The View if $check_entry_display is set to true. {@since develop}
  * @return array|boolean
  */
-function gravityview_get_entry( $entry_slug, $force_allow_ids = false, $check_entry_display = true ) {
-	return GVCommon::get_entry( $entry_slug, $force_allow_ids, $check_entry_display );
+function gravityview_get_entry( $entry_slug, $force_allow_ids = false, $check_entry_display = true, $view = null ) {
+	return GVCommon::get_entry( $entry_slug, $force_allow_ids, $check_entry_display, $view );
 }
 
 /**
@@ -248,25 +256,16 @@ function gravityview_get_template_setting( $post_id, $key ) {
 
 /**
  * Get all available preset templates
- *
- * @param bool $presets Output the presets or not. Default: false;
- * @since develop
- *
  * @since 1.13.2
  * @return array Templates
  */
-function gravityview_get_registered_templates( $presets = false ) {
+function gravityview_get_registered_templates() {
 
 	/**
 	 * @filter `gravityview_register_directory_template` Fetch available View templates
 	 * @param array $templates Templates to show
 	 */
 	$templates = apply_filters( 'gravityview_register_directory_template', array() );
-
-	if ( ! $presets ) {
-		$templates = new \WP_List_Util( $templates );
-		return $templates->filter( array( 'type' => 'preset' ), 'NOT' );
-	}
 
 	return $templates;
 }

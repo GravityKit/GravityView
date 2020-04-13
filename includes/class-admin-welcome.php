@@ -253,7 +253,7 @@ class GravityView_Welcome {
                 <div class="column col col-2">
                     <div class="media-container"><img alt="{date_created}" src="<?php echo plugins_url( 'assets/images/screenshots/duplicate-entries.jpg', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
                     <h4 class="higher">New: Duplicate Entry field!</h4>
-                    <p>Add a Duplicate Entry field to your View and easily duplicate entries from the front-end with a single click!</p>
+                    <p>Add a Duplicate Entry field to your View and easily duplicate entries from the front-end or the back-end with a single click!</p>
                 </div>
             </div>
 
@@ -263,7 +263,86 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
-                <h3>2.5 on December 5, 2019</h3>
+				<h3>2.7.1 on February 24, 2020</h3>
+
+				<ul>
+					<li>Fixed: Fatal error when viewing entries using WPML or Social Sharing & SEO extensions</li>
+				</ul>
+
+				<h3>2.7 on February 20, 2020 =</h3>
+
+				<ul>
+					<li>Added: "Enable Edit Locking" View setting to toggle on and off entry locking (in the "Edit Entry" tab of the View Settings)</li>
+					<li>Fixed: Broken Toolbar link to Gravity Forms' entry editing while editing an entry in GravityView</li>
+					<li>Fixed: PHP undefined index when editing an entry with empty File Upload field</li>
+					<li>Fixed: When adding a field in the View Configuration, the browser window would resize</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Modified: The way Hidden Fields are rendered in Edit Entry no fields are configured. <a href="https://docs.gravityview.co/article/678-edit-entry-hidden-fields-field-visibility#timeline">Read what has changed around Hidden Fields</a>
+						<ul>
+							<li>Fixed: Rendering Hidden Fields as <code>input=hidden</code> when no fields are configured in Edit Entry (fixing a regression in 2.5)</li>
+							<li>Modified: The default value for the <code>gravityview/edit_entry/reveal_hidden_field</code> filter is now <code>false</code></li>
+							<li>Added: <code>gravityview/edit_entry/render_hidden_field</code> filter to modify whether to render Hidden Field HTML in Edit Entry (default: <code>true</code>)</li>
+						</ul></li>
+					<li>Modified: Changed <code>GravityView_Edit_Entry_Locking::enqueue_scripts()</code> visibility to protected</li>
+				</ul>
+
+				<h3>2.6 on February 12, 2020</h3>
+
+				<ul>
+					<li>Added: Implement Gravity Forms Entry Locking - see when others are editing an entry at the same time (<a href="https://docs.gravityview.co/article/676-entry-locking">learn more</a>)</li>
+					<li>Added: Easily duplicate entries in Gravity Forms using the new "Duplicate" link in Gravity Forms Entries screen (<a href="https://docs.gravityview.co/article/675-duplicate-gravity-forms-entry">read how</a>)</li>
+					<li>Improved: Speed up loading of Edit View screen</li>
+					<li>Improved: Speed of adding fields in the View Configuration screen</li>
+					<li>Modified: Reorganized some settings to be clearer</li>
+					<li>Fixed: Potential fatal error when activating extensions with GravityView not active</li>
+					<li>Updated: Russian translation (thank you, Victor S!)</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: <code>gravityview/duplicate/backend/enable</code> filter to disable adding a "Duplicate" link for entries</li>
+					<li>Added: <code>gravityview/request/is_renderable</code> filter to modify what request classes represent valid GravityView requests</li>
+					<li>Added: <code>gravityview/widget/search/form/action</code> filter to change search submission URL as needed</li>
+					<li>Added: <code>gravityview/entry-list/link</code> filter to modify Other Entries links as needed</li>
+					<li>Added: <code>gravityview/edit/link</code> filter to modify Edit Entry link as needed</li>
+					<li>Fixed: A rare issue where a single entry is prevented from displaying with Post Category filters</li>
+					<li>Modified: Important! <code>gravityview_get_entry()</code> and <code>GVCommon::get_entry()</code> require a View object as the fourth parameter. While the View will be retrieved from the context if the parameter is missing, it's important to supply it.</li>
+					<li>Modified: <code>GVCommon::check_entry_display</code> now requires a View object as the second parameter. Not passing it will return an error.</li>
+					<li>Modified: <code>gravityview/common/get_entry/check_entry_display</code> filter has a third View parameter passed from <code>GVCommon::get_entry</code></li>
+					<li>Modified: Bumped future minimum Gravity Forms version to 2.4</li>
+				</ul>
+
+				<h3>2.5.1 on December 14, 2019</h3>
+
+				<ul>
+					<li>Modified: "Show Label" is now off by default for non-table layouts</li>
+					<li>Improved: The View Configuration screen has been visually simplified. Fewer borders, larger items, and rounder corners.</li>
+					<li>Accessibility improvements. Thanks to <a href="https://rianrietveld.com">Rian Rietveld</a> and Gravity Forms for their support.
+						<ul>
+							<li>Color contrast ratios now meet <a href="https://www.w3.org/TR/WCAG20/">Web Content Accessibility Guidelines (WCAG) 2.0</a> recommendations</li>
+							<li>Converted links that act as buttons to actual buttons</li>
+							<li>Added keyboard navigation support for "Add Field" and "Add Widget" pickers</li>
+							<li>Auto-focus the field search field when Add Field is opened</li>
+							<li>Improved Search Bar HTML structure for a better screen reader experience</li>
+							<li>Added ARIA labels for Search Bar configuration buttons</li>
+							<li>Improved touch target size and spacing for Search Bar add/remove field buttons</li>
+						</ul></li>
+					<li>Fixed: "Search All" with Multiple Forms plugin now works as expected in both "any" and "all" search modes.</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: <code>gravityview_lightbox_script</code> and <code>gravityview_lightbox_style</code> filters.</li>
+					<li>Deprecated: <code>gravity_view_lightbox_script</code> and <code>gravity_view_lightbox_style</code> filters. Use <code>gravityview_lightbox_script</code> and <code>gravityview_lightbox_style</code> instead.</li>
+				</ul>
+
+				<h3>2.5 on December 5, 2019</h3>
 
                 <p>This is a <strong>big update</strong>! Lots of improvements and fixes.</p>
 
@@ -458,7 +537,7 @@ class GravityView_Welcome {
 					<h2><?php esc_attr_e( 'Contributors', 'gravityview' ); ?></h2>
 
 					<ul class="wp-people-group">
-						<li class="wp-person">Core &amp; Extension development by <a href="http://tinygod.pt" class="block">Luis Godinho</a> and <a href="https://codeseekah.com" class="block">Gennady Kovshenin</a></li>
+						<li class="wp-person">Core &amp; Extension development by <a href="http://tinygod.pt" class="block">Luis Godinho</a>, <a href="https://codeseekah.com" class="block">Gennady Kovshenin</a>, and <a href="https://mrcasual.com" class="block">Vlad K.</a></li>
 						<li class="wp-person">Bengali translation by <a href="https://www.transifex.com/accounts/profile/tareqhi/">@tareqhi</a></li>
 						<li class="wp-person">German translation by <a href="https://www.transifex.com/user/profile/hubert123456/">@hubert123456</a>, <a href="https://www.transifex.com/accounts/profile/seschwarz/">@seschwarz</a>, <a href="https://www.transifex.com/accounts/profile/abdmc/">@abdmc</a>, <a href="https://www.transifex.com/accounts/profile/deckerweb/">@deckerweb</a></li>
 						<li class="wp-person">Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
@@ -478,6 +557,7 @@ class GravityView_Welcome {
                         <li class="wp-person">Persian translation by <a href="https://www.transifex.com/user/profile/azadmojtaba/">@azadmojtaba</a>, <a href="https://www.transifex.com/user/profile/amirbe/">@amirbe</a>, <a href="https://www.transifex.com/user/profile/Moein.Rm/">@Moein.Rm</a></li>
 						<li class="wp-person">Russian translation by <a href="https://www.transifex.com/user/profile/gkovaleff/">@gkovaleff</a>, <a href="https://www.transifex.com/user/profile/awsswa59/">@awsswa59</a></li>
                         <li class="wp-person">Polish translation by <a href="https://www.transifex.com/user/profile/dariusz.zielonka/">@dariusz.zielonka</a></li>
+						<li class="wp-person">Accessibility contributions by <a href="https://github.com/RianRietveld">@RianRietveld</a></li>
 						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, <a href="https://github.com/mgratch">@mgratch</a>, <a href="https://github.com/ViewFromTheBox">@ViewFromTheBox</a>, <a href="https://github.com/stevehenty">@stevehenty</a>, <a href="https://github.com/naomicbush">@naomicbush</a>, and <a href="https://github.com/mrcasual">@mrcasual</a></li>
 					</ul>
 

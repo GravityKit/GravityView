@@ -32,7 +32,7 @@ abstract class Entry {
 	 * @var mixed The backing entry.
 	 */
 	protected $entry;
-	
+
 	/**
 	 * Adds the necessary rewrites for single Entries.
 	 *
@@ -131,7 +131,7 @@ abstract class Entry {
 				}
 			}
 		}
-		
+
 		/** Fallback to regular view base. */
 		if ( is_null( $permalink ) ) {
 			$permalink = get_permalink( $view_id );
@@ -146,18 +146,8 @@ abstract class Entry {
 		$permalink = apply_filters( 'gravityview_directory_link', $permalink, $request->is_view() ? $view_id : ( $post ? $post->ID : null ) );
 
 		$entry_endpoint_name = \GV\Entry::get_endpoint_name();
-		$entry_slug = \GravityView_API::get_entry_slug( $this->ID, $this->as_entry() );
 
-		/**
-		 * @filter `gravityview/entry/slug` Modify the entry URL slug as needed.
-		 * @since 2.2.1
-		 * @param[in,out] string $entry_slug The slug, sanitized with sanitize_title()
-		 * @param \GV\Entry $this The entry object.
-		 * @param \GV\View $view The view object.
-		 * @param \GV\Request $request The request.
-		 * @param boolean $track_directory Whether the directory is tracked.
-		 */
-		$entry_slug = apply_filters( 'gravityview/entry/slug', $entry_slug, $this, $view, $request, $track_directory );
+		$entry_slug = $this->get_slug( true, $view, $request, $track_directory );
 
 		/** Assemble the permalink. */
 		if ( get_option( 'permalink_structure' ) && ! is_preview() ) {
@@ -196,6 +186,45 @@ abstract class Entry {
 		 * @param \GV\Request $request The request context.
 		 */
 		return apply_filters( 'gravityview/entry/permalink', $permalink, $this, $view, $request );
+	}
+
+	/**
+	 * Get the entry slug
+	 *
+	 * @internal (for now!)
+	 * @todo Should $apply_filter be default true or false? Unit tests pass either way...
+	 *
+	 * @since 2.7
+	 *
+	 * @uses \GravityView_API::get_entry_slug
+	 *
+	 * @param bool $apply_filter Whether to apply the `gravityview/entry/slug` filter. Default: false.
+	 * @param \GV\View|null $view The View context.
+	 * @param \GV\Request $request The Request (current if null).
+	 * @param boolean $track_directory Keep the housing directory arguments intact (used for breadcrumbs, for example). Default: true.
+	 *
+	 * @return string Unique slug ID, passed through `sanitize_title()`, with `gravityview/entry/slug` filter applied
+	 */
+	public function get_slug( $apply_filter = false, \GV\View $view = null, \GV\Request $request = null, $track_directory = true ) {
+
+		$entry_slug = \GravityView_API::get_entry_slug( $this->ID, $this->as_entry() );
+
+		if( ! $apply_filter ) {
+			return $entry_slug;
+		}
+
+		/**
+		 * @filter `gravityview/entry/slug` Modify the entry URL slug as needed.
+		 * @since 2.2.1
+		 * @param[in,out] string $entry_slug The slug, sanitized with sanitize_title()
+		 * @param null|\GV\Entry $this The entry object.
+		 * @param null|\GV\View $view The view object.
+		 * @param null|\GV\Request $request The request.
+		 * @param bool $track_directory Whether the directory is tracked.
+		 */
+		$entry_slug = apply_filters( 'gravityview/entry/slug', $entry_slug, $this, $view, $request, $track_directory );
+
+		return $entry_slug;
 	}
 
 	/**
