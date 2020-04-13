@@ -1,0 +1,76 @@
+version: '3.2'
+
+services:
+  gravityview_codeception:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    depends_on:
+      - wordpress
+    volumes:
+      - ../../..:/project
+      - wp-core:/wp-core
+      - ../../..:/wp-core/wp-content/plugins/gravityview
+    entrypoint: /docker-entrypoint.sh
+    environment:
+      - GRAVITYFORMS_KEY=${GRAVITYFORMS_KEY}
+      - WORDPRESS_DB_PASSWORD=wordpress
+      - WORDPRESS_DB_USER=wordpress
+      - WORDPRESS_DB_NAME=wordpress
+      - WORDPRESS_DB_HOST=mysql
+      - WORDPRESS_ADMIN_USER=admin
+      - WORDPRESS_ADMIN_PASS=admin
+      - WORDPRESS_ADMIN_EMAIL=admin@test.com
+      - WORDPRESS_URL=wordpress
+  wordpress:
+    image: wordpress:5.3.2-php7.2-apache
+    depends_on:
+      - mysql
+      - chrome
+    volumes:
+      - wp-core:/var/www/html
+      - ../../..:/var/www/html/wp-content/plugins/gravityview
+    ports:
+      - 9080:80
+    environment:
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    networks:
+      default:
+        aliases:
+          - test.local
+
+  mysql:
+    image: circleci/mysql:5.7-ram
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    healthcheck:
+      test: mysql --user=wordpress --password=wordpress -e 'SELECT 1'
+      timeout: 20s
+      retries: 10
+    volumes:
+      - /dev/shm:/dev/shm
+    ports:
+      - 3308:3306
+
+  chrome:
+    environment:
+      - DBUS_SESSION_BUS_ADDRESS=/dev/null
+    volumes:
+      - /dev/shm:/dev/shm
+    image: selenium/standalone-chrome-debug:3.141.59-dubnium
+    ports:
+      - 4444
+      - 5901:5900
+
+volumes:
+  wp-core:

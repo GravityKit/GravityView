@@ -119,64 +119,68 @@ abstract class Request {
 	 * @return \GV\GF_Entry|false The entry requested or false.
 	 */
 	public function is_entry( $form_id = 0 ) {
-		$entry = false;
 
-		if ( $id = get_query_var( Entry::get_endpoint_name() ) ) {
+		$id = get_query_var( Entry::get_endpoint_name() );
 
-			static $entries = array();
+		if ( ! $id ) {
+			return false;
+		}
 
-			if ( isset( $entries[ "$form_id:$id" ] ) ) {
-				return $entries[ "$form_id:$id" ];
-			}
+		static $entries = array();
 
-			if ( ! $view = $this->is_view() ) {
-				/**
-				 * A shortcode probably.
-				 */
-				$view = gravityview()->views->get();
-			}
+		if ( isset( $entries[ "$form_id:$id" ] ) ) {
+			return $entries[ "$form_id:$id" ];
+		}
 
-			/**
-			 * A joined request.
-			 */
-			if ( $view && ( $joins = $view->joins ) ) {
-				$forms = array_merge( wp_list_pluck( $joins, 'join' ), wp_list_pluck( $joins, 'join_on' ) );
-				$valid_forms = array_unique( wp_list_pluck( $forms, 'ID' ) );
+		$view = $this->is_view();
 
-				$multientry = array();
-				foreach ( $ids = explode( ',', $id ) as $i => $id ) {
+		/**
+		 * Not CPT, so probably a shortcode
+		 */
+		if ( ! $view ) {
+			$view = gravityview()->views->get();
+		}
 
-					$valid_form = \GV\Utils::get( $valid_forms, $i, 0 );
+		/**
+		 * A joined request.
+		 */
+		if ( $view && ( $joins = $view->joins ) ) {
+			$forms = array_merge( wp_list_pluck( $joins, 'join' ), wp_list_pluck( $joins, 'join_on' ) );
+			$valid_forms = array_unique( wp_list_pluck( $forms, 'ID' ) );
 
-					if ( ! $e = GF_Entry::by_id( $id, $valid_form ) ) {
-						return false;
-					}
+			$multientry = array();
+			foreach ( $ids = explode( ',', $id ) as $i => $id ) {
 
-					if ( ! in_array( $e['form_id'], $valid_forms ) ) {
-						return false;
-					}
+				$valid_form = \GV\Utils::get( $valid_forms, $i, 0 );
 
-					array_push( $multientry, $e );
-				}
-
-				// Allow Edit Entry to only edit a single entry on a multi-entry
-				$is_edit_entry = apply_filters( 'gravityview_is_edit_entry', false );
-
-				// Edit entry links are single-entry based
-				if ( $is_edit_entry && 1 !== count( $multientry ) ) {
+				if ( ! $e = GF_Entry::by_id( $id, $valid_form ) ) {
 					return false;
 				}
 
-				$entry = Multi_Entry::from_entries( array_filter( $multientry ) );
-			}  else {
-				/**
-				 * A regular one.
-				 */
-				$entry = GF_Entry::by_id( $id, $form_id );
+				if ( ! in_array( $e['form_id'], $valid_forms ) ) {
+					return false;
+				}
+
+				array_push( $multientry, $e );
 			}
 
-			$entries[ "$form_id:$id" ] = $entry;
+			// Allow Edit Entry to only edit a single entry on a multi-entry
+			$is_edit_entry = apply_filters( 'gravityview_is_edit_entry', false );
+
+			// Edit entry links are single-entry based
+			if ( $is_edit_entry && 1 !== count( $multientry ) ) {
+				return false;
+			}
+
+			$entry = Multi_Entry::from_entries( array_filter( $multientry ) );
+		}  else {
+			/**
+			 * A regular one.
+			 */
+			$entry = GF_Entry::by_id( $id, $form_id );
 		}
+
+		$entries[ "$form_id:$id" ] = $entry;
 
 		return $entry;
 	}

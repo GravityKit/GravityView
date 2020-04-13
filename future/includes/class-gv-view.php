@@ -391,7 +391,7 @@ class View implements \ArrayAccess {
 	 *                             Can any and as many of one of:
 	 *                                 edit      An edit context.
 	 *                                 single    A single context.
-	 *                                 cpt       The custom post type single page acessed.
+	 *                                 cpt       The custom post type single page accessed.
 	 *                                 shortcode Embedded as a shortcode.
 	 *                                 oembed    Embedded as an oEmbed.
 	 *                                 rest      A REST call.

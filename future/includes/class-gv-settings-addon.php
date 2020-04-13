@@ -1177,12 +1177,18 @@ class Addon_Settings extends \GFAddOn {
 		$local_key = Utils::get( $posted_settings, 'license_key' );
 		$response_key = Utils::get( $posted_settings, 'license_key_response/license_key' );
 
+		static $added_message = false;
+
 		// If the posted key doesn't match the activated/deactivated key (set using the Activate License button, AJAX response),
 		// then we assume it's changed. If it's changed, unset the status and the previous response.
-		if ( $local_key !== $response_key ) {
+		if ( ! $added_message && ( $local_key !== $response_key ) ) {
+
 			unset( $posted_settings['license_key_response'] );
 			unset( $posted_settings['license_key_status'] );
+
 			\GFCommon::add_error_message( __('The license key you entered has been saved, but not activated. Please activate the license.', 'gravityview' ) );
+
+			$added_message = true;
 		}
 		return $posted_settings;
 	}
