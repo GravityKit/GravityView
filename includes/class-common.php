@@ -870,6 +870,12 @@ class GVCommon {
 			return new WP_Error( 'no_gf_query', 'GF_Query is missing.', $entry );
 		}
 
+		$_gvid = \GV\Utils::_GET( 'gvid' );
+
+		if ( $_gvid && $view->ID !== (int) $_gvid ) {
+			return new WP_Error( 'view_id_not_match_gvid', 'View does not match passed $_GET["gvid"].', $view->ID );
+		}
+
 		$view_form_id = $view->form->ID;
 
 		if ( $view->joins ) {

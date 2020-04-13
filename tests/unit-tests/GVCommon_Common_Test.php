@@ -328,12 +328,12 @@ class GVCommon_Test extends GV_UnitTestCase {
 
 		$form = $this->factory->form->create_and_get();
 		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
-		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view_cpt = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
 		$form2 = $this->factory->form->create_and_get();
+		$view = \GV\View::from_post( $view_cpt );
 		$entry2 = $this->factory->entry->create_and_get( array( 'form_id' => $form2['id'] ) );
 
-		$view = \GV\View::from_post( $view );
 
 		// Entry is empty
 		/** @var WP_Error $empty_array */
@@ -358,7 +358,6 @@ class GVCommon_Test extends GV_UnitTestCase {
 			'cache' => true,
 			'context_view_id' => null,
 		);
-
 
 		// Test empty( $criteria['search_criteria'] )
 		add_filter( 'gravityview_search_criteria', function() { return array( 'search_criteria' => null ); } );
@@ -513,6 +512,53 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'view_not_supplied', $no_view->get_error_code() );
 
 		remove_all_filters( 'gravityview_search_criteria' );
+	}
+
+	/**
+	 * Check that entries aren't displayed when $_GET['gvid'] doesn't match current View
+	 *
+	 * Note: This fails intermittently in local testing with PHPUnit 7.5.20 for an unknown reason. I believe this to be
+	 * purely a PHPUnit issue, because I don't understand why there would be a race condition related to $_GET['gvid'].
+	 * I've spent far too long trying to understand why it would trigger "Entry failed search_criteria and field_filters"
+	 * WP_Error. Let's hope remote unit testing doesn't have the same problems. {@see https://i.gravityview.co/tdNq84+}
+	 *
+	 * @since 2.7.2
+	 *
+	 * @covers GVCommon::check_entry_display()
+	 */
+	public function test_check_entry_display_gvid() {
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$view = \GV\View::from_post( $view );
+
+		$_GET = array(
+			'gvid' => $view->ID,
+		);
+
+		$gvid_no_view = GVCommon::check_entry_display( $entry );
+		$this->assertWPError( $gvid_no_view, print_r( $gvid_no_view, true ) );
+
+		$gvid = GVCommon::check_entry_display( $entry, $view );
+		$this->assertEquals( $entry, $gvid, print_r( $gvid, true ) );
+
+		$this->clean_up_global_scope();
+
+		// View ID and $_GET['gvid'] mismatch
+		$_GET = array(
+			'gvid' => ( $view->ID + 1 ),
+		);
+
+		$gvid_mismatch_no_view = GVCommon::check_entry_display( $entry );
+		$this->assertWPError( $gvid_mismatch_no_view );
+
+		$gvid_mismatch = GVCommon::check_entry_display( $entry, $view );
+		$this->assertWPError( $gvid_mismatch );
+		$this->assertEquals( 'view_id_not_match_gvid', $gvid_mismatch->get_error_code() );
+
+		$this->clean_up_global_scope();
 	}
 
 	/**
