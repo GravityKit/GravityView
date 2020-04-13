@@ -351,14 +351,6 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$this->assertWPError( $form_id_not_set );
 		$this->assertEquals( 'form_id_not_set', $form_id_not_set->get_error_code() );
 
-		$search_criteria = array(
-			'search_criteria' => null,
-			'sorting' => null,
-			'paging' => null,
-			'cache' => true,
-			'context_view_id' => null,
-		);
-
 		// Test empty( $criteria['search_criteria'] )
 		add_filter( 'gravityview_search_criteria', function() { return array( 'search_criteria' => null ); } );
 		$this->assertEquals( $entry, GVCommon::check_entry_display( $entry, $view ), 'Empty search criteria should have returned original entry' );
@@ -538,6 +530,14 @@ class GVCommon_Test extends GV_UnitTestCase {
 			'gvid' => $view->ID,
 		);
 
+		// Set context_view_id via filter so search performs properly
+		add_filter( 'gravityview_search_criteria', function() use ( $view ) {
+			return array(
+				'search_criteria' => array(),
+				'context_view_id' => $view->ID,
+			);
+		} );
+
 		$gvid_no_view = GVCommon::check_entry_display( $entry );
 		$this->assertWPError( $gvid_no_view, print_r( $gvid_no_view, true ) );
 
@@ -545,6 +545,8 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$this->assertEquals( $entry, $gvid, print_r( $gvid, true ) );
 
 		$this->clean_up_global_scope();
+
+		remove_all_filters( 'gravityview_search_criteria' );
 
 		// View ID and $_GET['gvid'] mismatch
 		$_GET = array(
