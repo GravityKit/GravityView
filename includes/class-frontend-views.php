@@ -479,6 +479,10 @@ class GravityView_frontend {
 
 		global $post;
 
+		if ( ! $post ) {
+			return $passed_title;
+		}
+
 		$view_collection = \GV\View_Collection::from_post( $post );
 
 		// We have multiple Views, but no gvid...this isn't valid security
@@ -506,11 +510,25 @@ class GravityView_frontend {
 			return $passed_title;
 		}
 
-		$check_display = GVCommon::check_entry_display( $entry, $view );
+		/**
+		 * @filter `gravityview/single/title/check_entry_display` Override whether to check entry display rules against filters
+		 * @internal This might change in the future! Don't rely on it.
+		 * @since 2.7.2
+		 * @param bool $check_entry_display Check whether the entry is visible for the current View configuration. Default: true.
+		 * @param array $entry Gravity Forms entry array
+		 * @param \GV\View $view The View
+		 */
+		$check_entry_display = apply_filters( 'gravityview/single/title/check_entry_display', true, $entry, $view );
 
-		if( is_wp_error( $check_display ) ) {
-			return $passed_title;
+		if( $check_entry_display ) {
+
+			$check_display = GVCommon::check_entry_display( $entry, $view );
+
+			if( is_wp_error( $check_display ) ) {
+				return $passed_title;
+			}
 		}
+
 
 		$title = $view->settings->get( 'single_title', $passed_title );
 
