@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Added: A new [Gravatar (Globally Recognized Avatar)](https://en.gravatar.com) field
 * Improved: Sort forms by title in Edit View (rather than Date Created)
+* Fixed: The "Single Entry Title" setting was not working properly
 
 __Developer Updates:__
 
