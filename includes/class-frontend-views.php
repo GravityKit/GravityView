@@ -502,7 +502,7 @@ class GravityView_frontend {
 	 * @param array $entry
 	 * @param string $passed_title
 	 *
-	 * @return mixed|string|null
+	 * @return string
 	 */
 	private function _get_single_entry_title( $view, $entry = array(), $passed_title = '' ) {
 
@@ -528,7 +528,6 @@ class GravityView_frontend {
 				return $passed_title;
 			}
 		}
-
 
 		$title = $view->settings->get( 'single_title', $passed_title );
 
