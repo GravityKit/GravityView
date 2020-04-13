@@ -707,6 +707,13 @@ class GVCommon {
 
 		// Is the entry allowed
 		if( $check_entry_display ) {
+
+			$gvid = \GV\Utils::_GET( 'gvid' );
+
+			if( $gvid ) {
+				$view = \GV\View::by_id( $gvid );
+			}
+
 			$entry = self::check_entry_display( $entry, $view );
 		}
 
