@@ -861,36 +861,9 @@ class GVCommon {
 			return new WP_Error( 'form_id_not_set', '[apply_filters_to_entry] Entry is empty!', $entry );
 		}
 
-		global $post;
-
-		if ( ! $view && $post ) {
-
-			gravityview()->log->warning( '$view parameter not provided! Context assumed from legacy context mocks. This is unreliable!' );
-
-			$view = \GV\View_Collection::from_post( $post );
-		}
-
 		if ( is_null( $view ) ) {
 			gravityview()->log->warning( '$view was not supplied to check_entry_display, results will be non-typical.' );
 			return new WP_Error( 'view_not_supplied', 'View is not supplied!', $entry );
-		}
-
-		if ( $view instanceof \GV\View_Collection ) {
-
-			$passed_entry = $entry;
-
-			foreach( $view->all() as $single_view ) {
-
-				// Is the entry allowed
-				$entry = self::check_entry_display( $passed_entry, $single_view );
-
-				// Once we find an entry that is allowed for any of the current Views, show it
-				if( ! is_wp_error( $entry ) ) {
-					break;
-				}
-			}
-
-			return $entry;
 		}
 
 		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
@@ -900,12 +873,12 @@ class GVCommon {
 		$view_form_id = $view->form->ID;
 
 		if ( $view->joins ) {
-			if ( in_array( (int)$entry['form_id'], array_keys( $view::get_joined_forms( $view->ID ) ), true ) ) {
+			if ( in_array( (int) $entry['form_id'], array_keys( $view::get_joined_forms( $view->ID ) ), true ) ) {
 				$view_form_id = $entry['form_id'];
 			}
 		}
 
-		if ( $view_form_id != $entry['form_id'] ) {
+		if ( (int) $view_form_id !== (int) $entry['form_id'] ) {
 			return new WP_Error( 'view_id_not_match', 'View form source does not match entry form source ID.', $entry );
 		}
 
