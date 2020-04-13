@@ -45,29 +45,4 @@ switch ( true ):
 	case 'last_first_name':
 		echo esc_html( trim( sprintf( '%s %s', get_user_meta( $user->ID, 'last_name', true ), get_user_meta( $user->ID, 'first_name', true ) ) ) );
 		break;
-	case 'avatar':
-		// Use `pre_get_avatar` WordPress filter for everything else
-		echo get_avatar( $user->ID );
-		break;
-	case 'custom':
-		/**
-		 * @filter `gravityview/field/created_by/name_display` Custom name output for created by field.
-		 * @param[in,out] string Output. HTML not escaped!
-		 * @param WP_User $user The user.
-		 * @param \GV\Template_Context $gravityview The current context.
-		 */
-		$output = apply_filters( 'gravityview/field/created_by/name_display', '', $user, $gravityview );
-
-		/**
-		 * @filter `gravityview/field/created_by/name_display/raw` Output raw.
-		 * @param[in,out] bool Output as raw or escape HTML. Danger!
-		 * @param WP_User $user The user.
-		 * @param \GV\Template_Context $gravityview The current context.
-		 */
-		if ( apply_filters( 'gravityview/field/created_by/name_display/raw', false, $user, $gravityview ) ) {
-			echo $output;
-		} else {
-			echo esc_html( $output ); // Safety
-		}
-		break;
 endswitch;

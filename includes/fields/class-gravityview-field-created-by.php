@@ -141,8 +141,6 @@ class GravityView_Field_Created_By extends GravityView_Field {
 				// misc
 				'first_last_name' => __( 'First and Last Name', 'gravityview' ),
 				'last_first_name' => __( 'Last and First Name', 'gravityview' ),
-				'avatar' => __( 'User Avatar (Use: pre_get_avatar filter)', 'gravityview' ),
-				'custom' => __( 'Custom (Use: gravityview/field/created_by/name_display filter)', 'gravityview' ),
 			),
 			'value' => 'display_name'
 		);
