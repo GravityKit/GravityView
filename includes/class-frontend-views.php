@@ -234,18 +234,18 @@ class GravityView_frontend {
 
 		if ( ! empty( $view_id ) ) {
 
-			$this->context_view_id = $view_id;
+			$this->context_view_id = (int) $view_id;
 
 		} elseif ( isset( $_GET['gvid'] ) && $multiple_views ) {
 			/**
 			 * used on a has_multiple_views context
 			 * @see GravityView_API::entry_link
 			 */
-			$this->context_view_id = $_GET['gvid'];
+			$this->context_view_id = (int) $_GET['gvid'];
 
 		} elseif ( ! $multiple_views ) {
 			$array_keys = array_keys( $this->getGvOutputData()->get_views() );
-			$this->context_view_id = array_pop( $array_keys );
+			$this->context_view_id = (int) array_pop( $array_keys );
 			unset( $array_keys );
 		}
 
@@ -256,7 +256,7 @@ class GravityView_frontend {
 	 *
 	 * @since 1.5.4
 	 *
-	 * @return string
+	 * @return int|null
 	 */
 	public function get_context_view_id() {
 		return $this->context_view_id;
@@ -423,74 +423,103 @@ class GravityView_frontend {
 	/**
 	 * Filter the title for the single entry view
 	 *
-	 *
-	 * @param  string $title   current title
+	 * @param  string $passed_title  Current title
 	 * @param  int $passed_post_id Post ID
-	 * @return string          (modified) title
+	 * @return string (modified) title
 	 */
-	public function single_entry_title( $title, $passed_post_id = null ) {
+	public function single_entry_title( $passed_title, $passed_post_id = null ) {
 		global $post;
 
+		$gventry = gravityview()->request->is_entry();
+
 		// If this is the directory view, return.
-		if ( ! $this->getSingleEntry() ) {
-			return $title;
+		if( ! $gventry ) {
+			return $passed_title;
 		}
 
-		$entry = $this->getEntry();
+		$entry = $gventry->as_entry();
 
 		/**
 		 * @filter `gravityview/single/title/out_loop` Apply the Single Entry Title filter outside the WordPress loop?
 		 * @param boolean $in_the_loop Whether to apply the filter to the menu title and the meta tag <title> - outside the loop
 		 * @param array $entry Current entry
 		 */
-		$apply_outside_loop = apply_filters( 'gravityview/single/title/out_loop' , in_the_loop(), $entry );
+		$apply_outside_loop = apply_filters( 'gravityview/single/title/out_loop', in_the_loop(), $entry );
 
 		if ( ! $apply_outside_loop ) {
-			return $title;
+			return $passed_title;
 		}
 
-		// User reported WooCommerce doesn't pass two args.
+		// WooCommerce doesn't $post_id
 		if ( empty( $passed_post_id ) )  {
-			return $title;
+			return $passed_title;
 		}
 
 		// Don't modify the title for anything other than the current view/post.
 		// This is true for embedded shortcodes and Views.
 		if ( is_object( $post ) && (int) $post->ID !== (int) $passed_post_id ) {
-			return $title;
+			return $passed_title;
 		}
 
-		$context_view_id = $this->get_context_view_id();
+		$view = gravityview()->request->is_view();
 
-		$multiple_views = $this->getGvOutputData()->has_multiple_views();
-
-		if ( $multiple_views && ! empty( $context_view_id ) ) {
-			$view_meta = $this->getGvOutputData()->get_view( $context_view_id );
-		} else {
-			$views = $this->getGvOutputData()->get_views();
-
-			foreach ( $views as $view_id => $view_data ) {
-
-				$entry_form_id = \GV\Utils::get( $entry, 'form_id' );
-				$view_form_id = $view_data['form_id'];
-
-				if ( (int) $view_form_id === (int) $entry_form_id ) {
-					$view_meta = $view_data;
-					break;
-				}
-			}
+		if( $view ) {
+			return $this->_get_single_entry_title( $view, $entry, $passed_title );
 		}
 
-		/** Deprecated stuff in the future. See the branch above. */
-		if ( ! empty( $view_meta['atts']['single_title'] ) ) {
+		$_gvid = \GV\Utils::_GET( 'gvid', null );
 
-			$title = $view_meta['atts']['single_title'];
+		// $_GET['gvid'] is set; we know what View to render
+		if ( $_gvid ) {
 
-			// We are allowing HTML in the fields, so no escaping the output
-			$title = GravityView_API::replace_variables( $title, $view_meta['form'], $entry );
+			$view = \GV\View::by_id( $_gvid );
 
-			$title = do_shortcode( $title );
+			return $this->_get_single_entry_title( $view, $entry, $passed_title );
 		}
+
+		global $post;
+
+		$view_collection = \GV\View_Collection::from_post( $post );
+
+		// We have multiple Views, but no gvid...this isn't valid security
+		if( 1 < $view_collection->count() ) {
+			return $passed_title;
+		}
+
+		return $this->_get_single_entry_title( $view_collection->first(), $entry, $passed_title );
+	}
+
+	/**
+	 * Returns the single entry title for a View with variables replaced and shortcodes parsed
+	 *
+	 * @since 2.7.2
+	 *
+	 * @param \GV\View|null $view
+	 * @param array $entry
+	 * @param string $passed_title
+	 *
+	 * @return mixed|string|null
+	 */
+	private function _get_single_entry_title( $view, $entry = array(), $passed_title = '' ) {
+
+		if ( ! $view ) {
+			return $passed_title;
+		}
+
+		$check_display = GVCommon::check_entry_display( $entry, $view );
+
+		if( is_wp_error( $check_display ) ) {
+			return $passed_title;
+		}
+
+		$title = $view->settings->get( 'single_title', $passed_title );
+
+		$form = GVCommon::get_form( $entry['form_id'] );
+
+		// We are allowing HTML in the fields, so no escaping the output
+		$title = GravityView_API::replace_variables( $title, $form, $entry );
+
+		$title = do_shortcode( $title );
 
 		return $title;
 	}
