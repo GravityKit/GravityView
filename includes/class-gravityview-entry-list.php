@@ -87,7 +87,7 @@ class GravityView_Entry_List {
 	 * @since 2.0 Added $template_context parameter
 	 * @since 2.7.2 Added $view_id parameter
 	 *
-	 * @param array $entries
+	 * @param array|GV\Entry[] $entries
 	 * @param int $post_id
 	 * @param array $form
 	 * @param string $link_format
@@ -205,6 +205,10 @@ class GravityView_Entry_List {
 		$output .= '<'. $this->wrapper_tag .'>';
 
 		foreach( $this->entries as $entry ) {
+
+			if ( $entry instanceof \GV\Entry ) {
+				$entry = $entry->as_entry();
+			}
 
 			if( $this->skip_entry( $entry, $current_entry ) ) {
 				continue;
