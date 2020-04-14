@@ -1,0 +1,22 @@
+{
+  "view_id": {
+    "default": "",
+    "type": "string"
+  },
+  "entry_id": {
+    "default": "",
+    "type": "string"
+  },
+  "field_id": {
+    "default": "",
+    "type": "string"
+  },
+  "custom_label": {
+    "default": "",
+    "type": "string"
+  },
+  "preview": {
+    "default": false,
+    "type": "boolean"
+  }
+}
