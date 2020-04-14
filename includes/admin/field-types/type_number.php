@@ -30,6 +30,7 @@ class GravityView_FieldType_number extends GravityView_FieldType_text {
 		$min  = \GV\Utils::get( $this->field, 'min', null );
 		$step = \GV\Utils::get( $this->field, 'step', null );
 
+		$atts = '';
 		$atts .= $max ? ' max="' . (int) $max . '"' : '';
 		$atts .= $min ? ' min="' . (int) $min . '"' : '';
 		$atts .= $step ? ' step="' . (int) $step . '"' : '';
