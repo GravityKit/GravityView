@@ -27,6 +27,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: A new [Gravatar (Globally Recognized Avatar)](https://en.gravatar.com) field
 * Improved: Sort forms by title in Edit View (rather than Date Created)
 * Fixed: The "Single Entry Title" setting was not working properly
+* Changes to [`{created_by}` Merge Tag](https://docs.gravityview.co/article/281-the-createdby-merge-tag)
+	* Modified: When an entry was created by a logged-out user, `{created_by}` will now show details for a logged-out user (ID `0`), instead of returning an unmodified Merge Tag
+	* Modified: When `{created_by}` is passed without any modifiers, it now will return the ID of the user who created the entry
+	* Fixed: PHP warning when `{created_by}` Merge Tag was passed without any modifiers
 
 __Developer Updates:__
 
