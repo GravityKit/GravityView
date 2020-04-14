@@ -155,7 +155,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		 * Generate list output
 		 * @since 1.7.2
 		 */
-		$List = new GravityView_Entry_List( $entries, $entry_link_post_id, $form, $instance['link_format'], $instance['after_link'], 'recent-entries-widget' );
+		$List = new GravityView_Entry_List( $entries, $entry_link_post_id, $form, $instance['link_format'], $instance['after_link'], 'recent-entries-widget', null, $instance['view_id'] );
 
 		$output = $List->get_output();
 
@@ -174,6 +174,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 	 * Get the entries that will be shown in the current widget
 	 *
 	 * @param  array $instance Settings for the current widget
+	 * @param  string $form_id Form ID int, as string
 	 *
 	 * @return array $entries Multidimensional array of Gravity Forms entries
 	 */
@@ -201,9 +202,12 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		$criteria['search_criteria']['status'] = apply_filters( 'gravityview_status', 'active', $view_settings );
 
 		/**
-		 * Modify the search parameters before the entries are fetched
+		 * @filter `gravityview/widget/recent-entries/criteria` Modify the search parameters before the entries are fetched
+		 * @param array $criteria
+		 * @param array $instance Settings for the current widget
+		 * @param int $form_id ID of the connected form
 		 */
-		$criteria = apply_filters('gravityview/widget/recent-entries/criteria', $criteria, $instance, $form_id );
+		$criteria = apply_filters('gravityview/widget/recent-entries/criteria', $criteria, $instance, (int) $form_id );
 
 		$results = GVCommon::get_entries( $form_id, $criteria );
 
