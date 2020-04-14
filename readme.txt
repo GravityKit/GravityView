@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Added: User Fields now has many more options, including avatars, first and last name cominbations, and more
 * Added: A new [Gravatar (Globally Recognized Avatar)](https://en.gravatar.com) field
+* Added: "Display as HTML" option for Paragraph fields - By default, safe HTML will be shown. If disabled, only text will be shown.
 * Improved: Sort forms by title in Edit View (rather than Date Created)
 * Fixed: The "Single Entry Title" setting was not working properly
 * Fixed: Recent Entries widget filters not being applied
@@ -35,6 +36,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Updates:__
 
+* Added: `gravityview/fields/textarea/allow_html` filter to toggle whether Paragraph field output should allow HTML or should be sanitized with `esc_html()`
 * Added: `gravityview/field/created_by/name_display` filter for custom User Field output.
 * Added: `gravityview/field/created_by/name_display/raw` allow raw (unescaped) output for `gravityview/field/created_by/name_display`.
 * Added: `gravityview/fields/gravatar/settings` filter to modify the new Gravatar field's settings
