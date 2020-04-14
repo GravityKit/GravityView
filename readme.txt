@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: User Fields now has many more options, including avatars, first and last name cominbations, and more
 * Added: A new [Gravatar (Globally Recognized Avatar)](https://en.gravatar.com) field
 * Added: "Display as HTML" option for Paragraph fields - By default, safe HTML will be shown. If disabled, only text will be shown.
+* Added: Support for Gravity Forms Partial Entries Add-On. When editing an entry, the entry's "Progress" will now be updated.
 * Improved: Sort forms by title in Edit View (rather than Date Created)
 * Fixed: The "Single Entry Title" setting was not working properly
 * Fixed: Recent Entries widget filters not being applied
