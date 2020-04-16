@@ -260,7 +260,7 @@ class GVCommon {
 	 *
 	 * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
 	 */
-	public static function get_forms(  $active = true, $trash = false, $order_by = 'date_created', $order = 'ASC' ) {
+	public static function get_forms(  $active = true, $trash = false, $order_by = 'id', $order = 'ASC' ) {
 		$forms = array();
 		if ( ! class_exists( 'GFAPI' ) ) {
 			return array();
