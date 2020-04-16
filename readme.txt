@@ -34,6 +34,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 	* Modified: When an entry was created by a logged-out user, `{created_by}` will now show details for a logged-out user (ID `0`), instead of returning an unmodified Merge Tag
 	* Modified: When `{created_by}` is passed without any modifiers, it now will return the ID of the user who created the entry
 	* Fixed: PHP warning when `{created_by}` Merge Tag was passed without any modifiers
+* Updated translations: Added Formal German translation (thanks, Felix K!) and updated Polish translation (thanks, Dariusz!)
 
 __Developer Updates:__
 
