@@ -17,6 +17,8 @@ class GravityView_Field_Created_By extends GravityView_Field {
 
 	var $_custom_merge_tag = 'created_by';
 
+	var $icon = 'dashicons-admin-users';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Created By', 'gravityview' );
 		$this->default_search_label = __( 'Submitted by:', 'gravityview' );
