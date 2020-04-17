@@ -21,18 +21,30 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop =
+= 2.8 on April 16, 2020 =
 
+* Added: User Fields now has many more options, including avatars, first and last name combinations, and more
 * Added: A new [Gravatar (Globally Recognized Avatar)](https://en.gravatar.com) field
-* Improved: Sort forms by title in Edit View (rather than Date Created)
+* Added: "Display as HTML" option for Paragraph fields - By default, safe HTML will be shown. If disabled, only text will be shown.
+* Added: Support for Gravity Forms Partial Entries Add-On. When editing an entry, the entry's "Progress" will now be updated.
+* Modified: Sort forms by title in Edit View, rather than Date Created (thanks, Rochelle!)
+* Modified: The [`{created_by}` Merge Tag](https://docs.gravityview.co/article/281-the-createdby-merge-tag)
+	* When an entry was created by a logged-out user, `{created_by}` will now show details for a logged-out user (ID `0`), instead of returning an unmodified Merge Tag
+	* When `{created_by}` is passed without any modifiers, it now will return the ID of the user who created the entry
+	* Fixed PHP warning when `{created_by}` Merge Tag was passed without any modifiers
 * Fixed: The "Single Entry Title" setting was not working properly
+* Fixed: Recent Entries widget filters not being applied
+* Updated translations: Added Formal German translation (thanks, Felix K!) and updated Polish translation (thanks, Dariusz!)
 
 __Developer Updates:__
 
+* Added: `gravityview/fields/textarea/allow_html` filter to toggle whether Paragraph field output should allow HTML or should be sanitized with `esc_html()`
+* Added: `gravityview/field/created_by/name_display` filter for custom User Field output.
+* Added: `gravityview/field/created_by/name_display/raw` allow raw (unescaped) output for `gravityview/field/created_by/name_display`.
 * Added: `gravityview/fields/gravatar/settings` filter to modify the new Gravatar field's settings
 * Added: `gravityview/search/sieve_choices` filter in Version 2.5 that enables only showing choices in the Search Bar that exist in entries ([learn more about this filter](https://docs.gravityview.co/article/701-show-choices-that-exist))
-* Fixed: `gravityview/edit_entry/user_can_edit_entry` and `gravityview/capabilities/allow_logged_out` were not reachable in Edit Entry and Delete Entry since Version 2.5
 * Modified: `gravityview_get_forms()` and `GVCommon::get_forms()` have new `$order_by` and `$order` parameters (Thanks, Rochelle!)
+* Fixed: `gravityview/edit_entry/user_can_edit_entry` and `gravityview/capabilities/allow_logged_out` were not reachable in Edit Entry and Delete Entry since Version 2.5
 
 = 2.7.1 on February 24, 2020 =
 

@@ -47,6 +47,14 @@ class GravityView_Field_Textarea extends GravityView_Field {
             'tooltip' => __( 'Converts URI, www, FTP, and email addresses in HTML links', 'gravityview' ),
         );
 
+		$field_options['allow_html'] = array(
+			'type' => 'checkbox',
+			'merge_tags' => false,
+			'value' => 1,
+			'label' => __( 'Display as HTML', 'gravityview' ),
+			'tooltip' => esc_html__( 'If enabled, safe HTML will be displayed and unsafe or unrecognized HTML tags will be stripped. If disabled, the field value will be displayed as text.', 'gravityview' ),
+		);
+
 		return $field_options;
 	}
 
