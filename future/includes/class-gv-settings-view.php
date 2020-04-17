@@ -151,6 +151,11 @@ class View_Settings extends Settings {
 				'tooltip'           => __( 'Display "Delete Entry" fields to non-administrator users if they created the entry. Delete Entry fields will always be displayed to site administrators.', 'gravityview' ),
 				'type'              => 'checkbox',
 				'show_in_shortcode' => true,
+				'article'           => array(
+					'id' => '54c67bb9e4b0512429885512',
+					'url' => 'https://docs.gravityview.co/article/66-configuring-delete-entry',
+					'type' => 'inline',
+				),
 			),
 			'user_duplicate' => array(
 				'label'             => __( 'Allow User Duplicate', 'gravityview' ),
@@ -158,6 +163,11 @@ class View_Settings extends Settings {
 				'desc'              => __( 'Allow logged-in users to duplicate entries they created.', 'gravityview' ) . ' ' . sprintf( __( 'Administrators are able to %s regardless of this setting.', 'gravityview' ), _x( 'duplicate entries', 'an action that admins can perform', 'gravityview' ) ),
 				'value'             => 0,
 				'tooltip'           => __( 'Display "Duplicate Entry" fields to non-administrator users if they created the entry. Duplicate Entry fields will always be displayed to site administrators.', 'gravityview' ),
+				'article'           => array(
+					'id' => '5df11eb704286364bc92bf36',
+					'url' => 'https://docs.gravityview.co/article/66-configuring-delete-entry',
+					'type' => 'inline',
+				),
 				'type'              => 'checkbox',
 				'show_in_shortcode' => true,
 			),
