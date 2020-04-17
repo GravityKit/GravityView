@@ -873,7 +873,7 @@ class GravityView_Admin_Views {
 	 * Generic function to render rows and columns of active areas for widgets & fields
 	 * @param  string $template_id The current slug of the selected View template
 	 * @param  string $type   Either 'widget' or 'field'
-	 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
+	 * @param  string $zone   Either 'single', 'directory', 'edit', 'header', 'footer'
 	 * @param  array $rows    The layout structure: rows, columns and areas
 	 * @param  array $values  Saved objects
 	 * @return void
@@ -886,6 +886,20 @@ class GravityView_Admin_Views {
 		} else {
 			$button_label = __( 'Add Field', 'gravityview' );
 		}
+
+		/**
+		 * @internal Don't rely on this filter! This is for internal use and may change.
+		 *
+		 * @since 2.8.1
+		 *
+		 * @param string $button_label Text for button: "Add Widget" or "Add Field"
+		 * @param array $atts {
+		 *   @type string $type 'widget' or 'field'
+		 *   @type string $template_id The current slug of the selected View template
+		 *   @type string $zone Where is this button being shown? Either 'single', 'directory', 'edit', 'header', 'footer'
+		 * }
+		 */
+		$button_label = apply_filters( 'gravityview/admin/add_button_label', $button_label, array( 'type' => $type, 'template_id' => $template_id, 'zone' => $zone ) );
 
 		$available_items = array();
 
@@ -973,7 +987,7 @@ class GravityView_Admin_Views {
 
 								} // End if zone is not empty ?>
 
-								<span class="drop-message"><?php echo sprintf(esc_attr__('"+ %s" or drag existing %ss here.', 'gravityview'), $button_label, $type ); ?></span>
+								<span class="drop-message"><?php echo sprintf( esc_html__('"+ %s" or drag existing %ss here.', 'gravityview'), esc_html( $button_label ), esc_html( $type ) ); ?></span>
 							</div>
 							<div class="gv-droppable-area-action">
 								<button class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>" data-formid="<?php echo $view ? esc_attr( $view->form ? $view->form->ID : '' ) : ''; ?>"><?php echo '+ '.esc_html( $button_label ); ?></button>
