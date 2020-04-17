@@ -6,7 +6,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.7.2\n"
+"Project-Id-Version: GravityView 2.8\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
@@ -201,7 +201,7 @@ msgstr "Sprawdź licencję"
 #: future/includes/class-gv-view.php:324 future/includes/class-gv-view.php:330
 #: future/includes/class-gv-view.php:353 future/includes/class-gv-view.php:358
 #: future/includes/class-gv-view.php:364 future/includes/class-gv-view.php:372
-#: includes/class-frontend-views.php:623
+#: includes/class-frontend-views.php:674
 msgid "You are not allowed to view this content."
 msgstr "Nie masz uprawnień do wyświetlania tej treści."
 
@@ -253,7 +253,7 @@ msgstr ""
 
 #: future/includes/class-gv-renderer.php:77
 #: future/includes/class-gv-renderer.php:111
-#: includes/class-frontend-views.php:572
+#: includes/class-frontend-views.php:623
 msgid "You can only see this message because you are able to edit this View."
 msgstr ""
 "Możesz zobaczyć tę wiadomość tylko dlatego, że możesz edytować ten Widok."
@@ -261,7 +261,7 @@ msgstr ""
 #: future/includes/class-gv-renderer.php:89
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:152
 #: includes/admin/metaboxes/views/view-configuration.php:11
-#: includes/class-frontend-views.php:560
+#: includes/class-frontend-views.php:611
 #: includes/class-gravityview-admin-bar.php:102
 #: includes/class-gravityview-entry-link-shortcode.php:233
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
@@ -276,7 +276,7 @@ msgstr "Edycja pozycji"
 #: future/includes/class-gv-settings-view.php:309
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:144
 #: includes/admin/metaboxes/views/view-configuration.php:10
-#: includes/class-frontend-views.php:564
+#: includes/class-frontend-views.php:615
 msgid "Single Entry"
 msgstr "Pojedyncza pozycja"
 
@@ -284,12 +284,12 @@ msgstr "Pojedyncza pozycja"
 #: future/includes/class-gv-settings-view.php:308
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:136
 #: includes/admin/metaboxes/views/view-configuration.php:9
-#: includes/class-frontend-views.php:557
+#: includes/class-frontend-views.php:608
 msgid "Multiple Entries"
 msgstr "Wiele pozycji"
 
 #: future/includes/class-gv-renderer.php:110
-#: includes/class-frontend-views.php:571
+#: includes/class-frontend-views.php:622
 msgid "Add fields to %s"
 msgstr "Dodaj pola do %s"
 
@@ -547,7 +547,7 @@ msgstr ""
 msgid "You are running GravityView version %s"
 msgstr "Korzystasz GravityView w wersji %s"
 
-#: future/includes/class-gv-settings-addon.php:1185
+#: future/includes/class-gv-settings-addon.php:1189
 msgid ""
 "The license key you entered has been saved, but not activated. Please "
 "activate the license."
@@ -709,13 +709,13 @@ msgstr "Domyślnie pozycje są sortowane według ID wpisu."
 
 #: future/includes/class-gv-settings-view.php:171
 #: future/includes/class-gv-settings-view.php:193
-#: includes/class-common.php:1355
+#: includes/class-common.php:1372
 msgid "Default"
 msgstr "Domyślne"
 
 #: future/includes/class-gv-settings-view.php:172
 #: future/includes/class-gv-settings-view.php:194
-#: includes/class-common.php:1398
+#: includes/class-common.php:1415
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
 msgstr "Data utworzenia"
@@ -1036,7 +1036,7 @@ msgstr "Należy ustawić nazwę trasy w podklasie."
 msgid "Must set route sub type in subclass."
 msgstr "Należy ustawić podtyp trasy w podklasie."
 
-#: future/includes/rest/class-gv-rest-route.php:386
+#: future/includes/rest/class-gv-rest-route.php:385
 msgid "Endpoint Not Yet Implemented."
 msgstr "Endpoint nie został jeszcze wdrożony."
 
@@ -1460,7 +1460,7 @@ msgstr ""
 "używaniu shortcode'ów.%s"
 
 #: includes/class-admin-add-shortcode.php:105
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:316
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:297
 msgid "Select a View"
 msgstr "Wybierz Widok"
 
@@ -1469,7 +1469,7 @@ msgid "&mdash; Select a View to Insert &mdash;"
 msgstr "&mdash; Wybierz Widok, aby wstawić &ndash;"
 
 #: includes/class-admin-add-shortcode.php:111
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:322
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:303
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:193
 msgid "(no title)"
 msgstr "(bez tytułu)"
@@ -1962,27 +1962,27 @@ msgstr ""
 msgid "List of Changes"
 msgstr "Lista zmian"
 
-#: includes/class-admin-welcome.php:263
+#: includes/class-admin-welcome.php:269
 msgid "What&rsquo;s New"
 msgstr "Co nowego"
 
-#: includes/class-admin-welcome.php:475
+#: includes/class-admin-welcome.php:483
 msgid "View change history"
 msgstr "Wyświetl historię zmian"
 
-#: includes/class-admin-welcome.php:496
+#: includes/class-admin-welcome.php:504
 msgid "GravityView is brought to you by:"
 msgstr "GravityView jest dostarczany przez:"
 
-#: includes/class-admin-welcome.php:543
+#: includes/class-admin-welcome.php:551
 msgid "Contributors"
 msgstr "Współtwórcy"
 
-#: includes/class-admin-welcome.php:570
+#: includes/class-admin-welcome.php:578
 msgid "Want to contribute?"
 msgstr "Chcesz się przyczynić?"
 
-#: includes/class-admin-welcome.php:571
+#: includes/class-admin-welcome.php:579
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -2133,30 +2133,30 @@ msgstr[3] "%s Widoków przywrócono z kosza."
 msgid "This search returned no results."
 msgstr "To wyszukiwanie nie zwróciło żadnych wyników."
 
-#: includes/class-api.php:317 includes/class-gravityview-entry-list.php:96
+#: includes/class-api.php:317 includes/class-gravityview-entry-list.php:107
 msgid "No entries match your request."
 msgstr "Żadne pozycje nie pasują do Twojego żądania."
 
-#: includes/class-api.php:864
+#: includes/class-api.php:870
 msgid "&larr; Go back"
 msgstr "&larr; Wstecz"
 
-#: includes/class-api.php:1285
+#: includes/class-api.php:1291
 msgid "Map It"
 msgstr "Pokaż na mapie"
 
-#: includes/class-common.php:346
+#: includes/class-common.php:354
 #: includes/fields/class-gravityview-field-post-id.php:28
 msgid "Post ID"
 msgstr "ID Wpisu"
 
 #. translators: %s: relative time from now, used for generic date comparisons.
 #. "1 day ago", or "20 seconds ago"
-#: includes/class-common.php:998
+#: includes/class-common.php:1015
 msgid "%s ago"
 msgstr "%s temu"
 
-#: includes/class-common.php:1524
+#: includes/class-common.php:1541
 msgid "Email hidden; Javascript is required."
 msgstr ""
 "E-mail został ukryty; Włączenie JavaScript jest wymagane aby go ujawnić."
@@ -2174,7 +2174,7 @@ msgstr ""
 "identyfikator wpisu lub strony, na której jest osadzony Widok."
 
 #: includes/class-data.php:301
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:350
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:331
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:221
 msgid "Learn more&hellip;"
 msgstr "Dowiedz się więcej&hellip;"
@@ -2413,9 +2413,9 @@ msgid "Reset Entry approval for GravityView"
 msgstr "Zresetuj Zatwierdzenie pozycji dla GravityView"
 
 #: includes/class-gravityview-entry-link-shortcode.php:236
-#: includes/extensions/delete-entry/class-delete-entry.php:163
-#: includes/extensions/delete-entry/class-delete-entry.php:193
-#: includes/extensions/delete-entry/class-delete-entry.php:210
+#: includes/extensions/delete-entry/class-delete-entry.php:159
+#: includes/extensions/delete-entry/class-delete-entry.php:189
+#: includes/extensions/delete-entry/class-delete-entry.php:206
 #: includes/extensions/delete-entry/fields/delete_link.php:14
 #: templates/fields/field-delete_link-html.php:38
 #: templates/fields/field-duplicate_link-html.php:38
@@ -2433,63 +2433,63 @@ msgstr "Pokaż szczegóły"
 msgid "Select a field"
 msgstr "Wybierz pole"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:161
+#: includes/extensions/delete-entry/class-delete-entry.php:157
 msgid "Delete Link Text"
 msgstr "Tekst linku usuwania"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:169
+#: includes/extensions/delete-entry/class-delete-entry.php:165
 msgid "Allow the following users to delete the entry:"
 msgstr "Zezwól następującym użytkownikom na usunięcie pozycji:"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:195
+#: includes/extensions/delete-entry/class-delete-entry.php:191
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
 msgstr "Link do usunięcia pozycji. Uwzględnia uprawnienia Usuwania pozycji."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:350
+#: includes/extensions/delete-entry/class-delete-entry.php:346
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:422
 msgid "Delete"
 msgstr "Usuń"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:424
+#: includes/extensions/delete-entry/class-delete-entry.php:420
 #: includes/extensions/duplicate-entry/class-duplicate-entry.php:346
 #: includes/extensions/duplicate-entry/class-duplicate-entry.php:377
 #: includes/extensions/duplicate-entry/class-duplicate-entry.php:388
 msgid "The entry does not exist."
 msgstr "Podana pozycja nie istnieje."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:497
+#: includes/extensions/delete-entry/class-delete-entry.php:493
 msgid "Moving the entry to the trash failed."
 msgstr "Przeniesienie pozycji do kosza nie powiodło się."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:595
+#: includes/extensions/delete-entry/class-delete-entry.php:591
 msgid "Are you sure you want to delete this entry? This cannot be undone."
 msgstr "Czy na pewno chcesz usunąć tą pozycję? Tego nie da się cofnąć."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:622
+#: includes/extensions/delete-entry/class-delete-entry.php:618
 msgid "The link to delete this entry is not valid; it may have expired."
 msgstr "Link do usunięcia tej pozycji jest niepoprawny; mógł on wygasnąć."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:626
+#: includes/extensions/delete-entry/class-delete-entry.php:622
 msgid "You do not have permission to delete this entry."
 msgstr "Nie masz uprawnień do usunięcia tej pozycji."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:631
+#: includes/extensions/delete-entry/class-delete-entry.php:627
 msgid "The entry is already in the trash."
 msgstr "Ta pozycja jest już w koszu."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:633
+#: includes/extensions/delete-entry/class-delete-entry.php:629
 msgid "You cannot delete the entry; it is already in the trash."
 msgstr "Nie możesz usunąć pozycji; znajduje się już w koszu."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:777
+#: includes/extensions/delete-entry/class-delete-entry.php:773
 msgid "There was an error deleting the entry: %s"
 msgstr "Wystąpił błąd podczas usuwania pozycji: %s"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:781
+#: includes/extensions/delete-entry/class-delete-entry.php:777
 msgid "The entry was successfully moved to the trash."
 msgstr "Pozycja została pomyślnie przeniesiona do kosza."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:784
+#: includes/extensions/delete-entry/class-delete-entry.php:780
 msgid "The entry was successfully deleted."
 msgstr "Pozycja została usunięta pomyślnie."
 
@@ -2515,7 +2515,7 @@ msgstr ""
 
 #: includes/extensions/duplicate-entry/class-duplicate-entry.php:412
 #: includes/extensions/duplicate-entry/class-duplicate-entry.php:452
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:785
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:784
 msgid "There was an error duplicating the entry."
 msgstr "Pojawił się błąd podczas powielania pozycji."
 
@@ -2539,11 +2539,11 @@ msgstr "Pojawił się błąd podczas powielania pozycji: %s"
 msgid "The entry was successfully duplicated."
 msgstr "Pozycja została pomyślnie powielona."
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:740
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:739
 msgid "Duplicate"
 msgstr "Zduplikuj"
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:764
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:763
 msgid "Entry duplicated."
 msgstr "Pozycja została zduplikowana."
 
@@ -2568,7 +2568,7 @@ msgstr ""
 "pozycję, mógł edytować to pole."
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:159
-#: includes/fields/class-gravityview-field.php:408
+#: includes/fields/class-gravityview-field.php:412
 msgid "Open link in a new tab or window?"
 msgstr "Otworzyć link w nowej karcie lub oknie?"
 
@@ -2897,6 +2897,7 @@ msgid "Entry Creator: Display Name"
 msgstr "Autor pozycji: Nazwa Wyświetlana"
 
 #: includes/fields/class-gravityview-field-created-by.php:44
+#: includes/fields/class-gravityview-field-gravatar.php:150
 msgid "Entry Creator: Email"
 msgstr "Autor pozycji: E-mail"
 
@@ -2912,25 +2913,57 @@ msgstr "Autor pozycji: ID użytkownika"
 msgid "Entry Creator: Roles"
 msgstr "Autor pozycji: Role"
 
-#: includes/fields/class-gravityview-field-created-by.php:125
+#: includes/fields/class-gravityview-field-created-by.php:128
 msgid "User Format"
 msgstr "Format użytkownika"
 
-#: includes/fields/class-gravityview-field-created-by.php:126
+#: includes/fields/class-gravityview-field-created-by.php:129
 msgid "How should the User information be displayed?"
 msgstr "W jaki sposób powinny być wyświetlane informacje o użytkowniku?"
 
-#: includes/fields/class-gravityview-field-created-by.php:128
-msgid "Display Name (Example: \"Ellen Ripley\")"
-msgstr "Nazwa wyświetlana (Przykład: \"Ellen Ripley\")"
+#: includes/fields/class-gravityview-field-created-by.php:132
+msgid "User ID # (Example: 426)"
+msgstr "ID użytkownika # (Przykład: 426)"
 
-#: includes/fields/class-gravityview-field-created-by.php:129
+#: includes/fields/class-gravityview-field-created-by.php:133
 msgid "Username (Example: \"nostromo\")"
 msgstr "Nazwa użytkownika (Przykład: \"nostromo\")"
 
-#: includes/fields/class-gravityview-field-created-by.php:130
-msgid "User ID # (Example: 426)"
-msgstr "ID użytkownika # (Przykład: 426)"
+#: includes/fields/class-gravityview-field-created-by.php:134
+msgid "Display Name (Example: \"Ellen Ripley\")"
+msgstr "Nazwa wyświetlana (Przykład: \"Ellen Ripley\")"
+
+#: includes/fields/class-gravityview-field-created-by.php:135
+msgid "User Email (Example: \"ellen@gravityview.co\")"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:136
+msgid "User Registered (Example: \"2019-10-18 08:30:11\")"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:139
+msgid "User nickname"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:140
+msgid "Description"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:141
+msgid "First Name"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:142
+msgid "Last Name"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:145
+msgid "First and Last Name"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:146
+msgid "Last and First Name"
+msgstr ""
 
 #: includes/fields/class-gravityview-field-creditcard.php:19
 msgid "Credit Card"
@@ -2947,6 +2980,10 @@ msgid ""
 msgstr ""
 "Wprowadź tekst lub HTML. Obsługuje są również shortcode'y. Możesz pokazać "
 "lub ukryć dane za pomocą shortcode'u %s (%sdowiedz się więcej%s)."
+
+#: includes/fields/class-gravityview-field-custom.php:49
+msgid "Click the arrow icon next to the content area to add %sMerge Tags%s."
+msgstr ""
 
 #: includes/fields/class-gravityview-field-custom.php:58
 #: includes/widgets/class-gravityview-widget-custom-content.php:39
@@ -3070,6 +3107,73 @@ msgstr ""
 "Wyświetl wynik jako ułamek: \"[wynik]/[wynik maks.]\". Jeśli odznaczone, "
 "wyświetli wynik."
 
+#: includes/fields/class-gravityview-field-gravatar.php:22
+msgid "Gravatar"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:23
+msgid ""
+"A Gravatar is an image that represents a person online based on their email."
+" Powered by gravatar.com."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:107
+msgid "Email to Use"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:109
+msgid "Which email should be used to generate the Gravatar?"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:115
+#: includes/fields/class-gravityview-field-gravatar.php:116
+msgid "Default Image"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:116
+msgid "Choose the default image to be shown when an email has no Gravatar."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:116
+msgid "Read more about %s"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:119
+msgid "Silhouetted Person"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:120
+msgid "Gravatar Icon"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:121
+msgid "Abstract Geometric Patterns"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:122
+msgid "Monster Faces"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:123
+msgid "Arcade-style Faces"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:124
+msgid "Robot Faces"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:125
+msgid "Transparent Image"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:131
+msgid "Size in Pixels"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:164
+msgid "Field: %s"
+msgstr ""
+
 #: includes/fields/class-gravityview-field-hidden.php:21
 msgid "Hidden"
 msgstr "Ukryte"
@@ -3149,6 +3253,7 @@ msgid "There was an error updating the entry."
 msgstr "Wystąpił błąd podczas aktualizowania pozycji."
 
 #: includes/fields/class-gravityview-field-list.php:39
+#: includes/presets/default-list/class-gravityview-default-template-list.php:16
 msgid "List"
 msgstr "Lista"
 
@@ -3185,17 +3290,17 @@ msgstr ""
 "dokładności."
 
 #: includes/fields/class-gravityview-field-other-entries.php:49
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:363
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:344
 msgid "Entry link text (required)"
 msgstr "Tekst linku do widoku pozycji (wymagane)"
 
 #: includes/fields/class-gravityview-field-other-entries.php:50
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:269
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:250
 msgid "Entry #{entry_id}"
 msgstr "Pozycja #{entry_id}"
 
 #: includes/fields/class-gravityview-field-other-entries.php:56
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:370
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:351
 msgid "Text or HTML to display after the link (optional)"
 msgstr "Tekst lub HTML do wyświetlenia po odnośniku (opcjonalnie)"
 
@@ -3438,6 +3543,16 @@ msgstr "Konwertuj adresy URL tekstów na linki HTML"
 msgid "Converts URI, www, FTP, and email addresses in HTML links"
 msgstr "Konwertuje adresy URI, www, FTP i e-mail w łączach HTML"
 
+#: includes/fields/class-gravityview-field-textarea.php:54
+msgid "Display as HTML"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-textarea.php:55
+msgid ""
+"If enabled, safe HTML will be displayed and unsafe or unrecognized HTML tags"
+" will be stripped. If disabled, the field value will be displayed as text."
+msgstr ""
+
 #: includes/fields/class-gravityview-field-time.php:59
 msgid "Time"
 msgstr "Czas"
@@ -3531,19 +3646,19 @@ msgstr "Krok przepływu pracy"
 msgid "Workflow Complete"
 msgstr "Przepływ pracy zakończony"
 
-#: includes/fields/class-gravityview-field.php:380
+#: includes/fields/class-gravityview-field.php:384
 msgid "Link to the post"
 msgstr "Link do wpisu"
 
-#: includes/fields/class-gravityview-field.php:381
+#: includes/fields/class-gravityview-field.php:385
 msgid "Link to the post created by the entry."
 msgstr "Link do wpisu utworzonego przez pozycję."
 
-#: includes/fields/class-gravityview-field.php:386
+#: includes/fields/class-gravityview-field.php:390
 msgid "Link to the category or tag"
 msgstr "Link do kategorii lub tagu"
 
-#: includes/fields/class-gravityview-field.php:387
+#: includes/fields/class-gravityview-field.php:391
 msgid ""
 "Link to the current category or tag. \"Link to single entry\" must be "
 "unchecked."
@@ -3551,19 +3666,19 @@ msgstr ""
 "Link do bieżącej kategorii lub tagu. \"Link do pojedynczej pozycji\" musi "
 "być odznaczony."
 
-#: includes/fields/class-gravityview-field.php:392
+#: includes/fields/class-gravityview-field.php:396
 msgid "Use the live post data"
 msgstr "Użyj bieżących danych z wpisu"
 
-#: includes/fields/class-gravityview-field.php:393
+#: includes/fields/class-gravityview-field.php:397
 msgid "Instead of using the entry data, instead use the current post data."
 msgstr "Zamiast korzystać z danych wejściowych, użyj bieżących danych wpisu."
 
-#: includes/fields/class-gravityview-field.php:398
+#: includes/fields/class-gravityview-field.php:402
 msgid "Override Date Format"
 msgstr "Zmień format daty"
 
-#: includes/fields/class-gravityview-field.php:399
+#: includes/fields/class-gravityview-field.php:403
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
 msgstr ""
 "Określ, w jaki sposób wyświetlana jest data (za pomocą %sformatu daty PHP%s)"
@@ -3642,10 +3757,6 @@ msgstr "Wyświetl elementy w widoku tabeli."
 msgid "Visible Edit Fields"
 msgstr "Widoczne pola edycji"
 
-#: includes/presets/default-list/class-gravityview-default-template-list.php:16
-msgid "List (default)"
-msgstr "Lista (domyślnie)"
-
 #: includes/presets/default-list/class-gravityview-default-template-list.php:17
 msgid "Display items in a listing view."
 msgstr "Wyświetl elementy w widoku listy."
@@ -3692,8 +3803,8 @@ msgid "Footer Right"
 msgstr "Prawa część stopki"
 
 #: includes/presets/default-table/class-gravityview-default-template-table.php:27
-msgid "Table (default)"
-msgstr "Tabela (domyślnie)"
+msgid "Table"
+msgstr ""
 
 #: includes/presets/default-table/class-gravityview-default-template-table.php:53
 msgid "Visible Table Columns"
@@ -3956,23 +4067,23 @@ msgstr "Przeszukaj wszystko"
 msgid "Entry Creator"
 msgstr "Autor pozycji"
 
-#: includes/widgets/search-widget/class-search-widget.php:1463
+#: includes/widgets/search-widget/class-search-widget.php:1464
 msgid "Search Entries:"
 msgstr "Wyszukiwanie w pozycjach:"
 
-#: includes/widgets/search-widget/class-search-widget.php:1466
+#: includes/widgets/search-widget/class-search-widget.php:1467
 msgid "Filter by date:"
 msgstr "Filtrowanie według daty:"
 
-#: includes/widgets/search-widget/class-search-widget.php:1469
+#: includes/widgets/search-widget/class-search-widget.php:1470
 msgid "Entry ID:"
 msgstr "ID pozycji:"
 
-#: includes/widgets/search-widget/class-search-widget.php:1705
+#: includes/widgets/search-widget/class-search-widget.php:1708
 msgid "Clear"
 msgstr "Wyszyść"
 
-#: includes/widgets/search-widget/class-search-widget.php:1771
+#: includes/widgets/search-widget/class-search-widget.php:1774
 msgid "Show a different month"
 msgstr "Pokaż inny miesiąc"
 
@@ -4002,30 +4113,30 @@ msgstr "Ostatnie pozycje w GravityView"
 msgid "Display the most recent entries for a View"
 msgstr "Wyświetl najnowsze pozycje Widoku"
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:265
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:246
 msgid "Recent Entries"
 msgstr "Ostatnie pozycje"
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:279
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:260
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:170
 msgid "Title:"
 msgstr "Tytuł:"
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:308
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:289
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:180
 msgid "Please select a View to search."
 msgstr "Wybierz Widok do przeszukania."
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:318
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:299
 msgid "&mdash; Select a View as Entries Source &mdash;"
 msgstr "&mdash;Wybierz Widok mający posłużyć jako źródło pozycji&mdash;"
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:346
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:327
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:217
 msgid "If Embedded, Page ID:"
 msgstr "Jeśli osadzono, ID strony:"
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:349
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:330
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:220
 msgid ""
 "To have a search performed on an embedded View, enter the ID of the post or "
@@ -4034,7 +4145,7 @@ msgstr ""
 "Aby przeprowadzić wyszukiwanie w osadzonym Widoku, wprowadź ID wpisu lub "
 "strony, na której osadzono Widok."
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:356
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:337
 msgid "Number of entries to show:"
 msgstr "Liczba pozycji do wyświetlenia:"
 
@@ -4095,7 +4206,7 @@ msgid "Upgrade to %1$s for %2$s"
 msgstr "Zaktualizuj do %1$s za %2$s"
 
 #: future/includes/class-gv-renderer.php:108
-#: includes/class-frontend-views.php:569
+#: includes/class-frontend-views.php:620
 msgctxt ""
 "Displayed when a View is not configured. %s is replaced by the tab label"
 msgid "The %s layout has not been configured."
@@ -4210,12 +4321,12 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "Puste"
 
-#: includes/class-frontend-views.php:1382
+#: includes/class-frontend-views.php:1433
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr "Wyczyść"
 
-#: includes/class-frontend-views.php:1383
+#: includes/class-frontend-views.php:1434
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr "Resetuj"
@@ -4278,14 +4389,14 @@ msgctxt "no dropdown items"
 msgid "None"
 msgstr "Brak"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:242
+#: includes/extensions/delete-entry/class-delete-entry.php:238
 #: includes/extensions/duplicate-entry/class-duplicate-entry.php:214
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:89
 msgctxt "User capability"
 msgid "Entry Creator"
 msgstr "Autor pozycji"
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:778
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:777
 msgctxt "Error message links to logging page"
 msgid "Check the GravityView logs for more information."
 msgstr "Sprawdź logi GravityView, aby uzyskać więcej informacji."
@@ -4360,27 +4471,27 @@ msgstr ""
 "Uwaga: wyświetlane zostaną wyniki ankiety dla %swszystkich pozycji wpisów "
 "formularza%s, nie tylko pozycje wyświetlane w Widoku."
 
-#: includes/widgets/search-widget/class-search-widget.php:1766
+#: includes/widgets/search-widget/class-search-widget.php:1769
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "Zamknij"
 
-#: includes/widgets/search-widget/class-search-widget.php:1767
+#: includes/widgets/search-widget/class-search-widget.php:1770
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr "Poprzedni"
 
-#: includes/widgets/search-widget/class-search-widget.php:1768
+#: includes/widgets/search-widget/class-search-widget.php:1771
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr "Następny"
 
-#: includes/widgets/search-widget/class-search-widget.php:1769
+#: includes/widgets/search-widget/class-search-widget.php:1772
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr "Dzisiaj"
 
-#: includes/widgets/search-widget/class-search-widget.php:1770
+#: includes/widgets/search-widget/class-search-widget.php:1773
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr "Tydzień"
