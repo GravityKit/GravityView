@@ -250,10 +250,16 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 
             <div class="feature-section col two-col has-2-columns is-fullwidth" style="padding: 0;">
+	            <div class="column col col-2">
+		            <div class="media-container"><img alt="Gravatar" src="<?php echo plugins_url( 'assets/images/screenshots/gravatar.jpg', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
+		            <h4 class="higher">New: Gravatar field!</h4>
+		            <p>Gravatars are images that represent you online. They're associated with email addresses and can be managed at <a href="https://gravatar.com">Gravatar.com</a>. Now, GravityView has a Gravatar
+		            field where you can choose to show the Gravatar of the entry creator or the image associated with a submitted email.</p>
+	            </div>
                 <div class="column col col-2">
-                    <div class="media-container"><img alt="{date_created}" src="<?php echo plugins_url( 'assets/images/screenshots/duplicate-entries.jpg', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
-                    <h4 class="higher">New: Duplicate Entry field!</h4>
-                    <p>Add a Duplicate Entry field to your View and easily duplicate entries from the front-end or the back-end with a single click!</p>
+                    <div class="media-container"><img alt="Partial Entries" src="<?php echo plugins_url( 'assets/images/screenshots/partial-entries.jpg', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
+                    <h4 class="higher">Improved Gravity Forms Partial Entries support</h4>
+                    <p>GravityView now updates entry "Progress" in <a href="https://www.gravityforms.com/add-ons/partial-entries/" rel="external">Gravity Forms' Partial Entries Add-On</a> when an entry is edited.</p>
                 </div>
             </div>
 
@@ -262,6 +268,37 @@ class GravityView_Welcome {
                 <div class="headline-feature" style="max-width: 100%">
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
+
+				<h3>2.8 on April 16, 2020 </h3>
+
+				<ul>
+					<li>Added: User Fields now has many more options, including avatars, first and last name combinations, and more</li>
+					<li>Added: A new <a href="https://en.gravatar.com">Gravatar (Globally Recognized Avatar)</a> field</li>
+					<li>Added: "Display as HTML" option for Paragraph fields - By default, safe HTML will be shown. If disabled, only text will be shown.</li>
+					<li>Added: Support for Gravity Forms Partial Entries Add-On. When editing an entry, the entry's "Progress" will now be updated.</li>
+					<li>Modified: Sort forms by title in Edit View, rather than Date Created (thanks, Rochelle!)</li>
+					<li>Modified: The <a href="https://docs.gravityview.co/article/281-the-createdby-merge-tag"><code>{created_by}</code> Merge Tag</a>
+						<ul>
+							<li>When an entry was created by a logged-out user, <code>{created_by}</code> will now show details for a logged-out user (ID <code>0</code>), instead of returning an unmodified Merge Tag</li>
+							<li>When <code>{created_by}</code> is passed without any modifiers, it now will return the ID of the user who created the entry</li>
+							<li>Fixed PHP warning when <code>{created_by}</code> Merge Tag was passed without any modifiers</li>
+						</ul></li>
+					<li>Fixed: The "Single Entry Title" setting was not working properly</li>
+					<li>Fixed: Recent Entries widget filters not being applied</li>
+					<li>Updated translations: Added Formal German translation (thanks, Felix K!) and updated Polish translation (thanks, Dariusz!)</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: <code>gravityview/fields/textarea/allow_html</code> filter to toggle whether Paragraph field output should allow HTML or should be sanitized with <code>esc_html()</code></li>
+					<li>Added: <code>gravityview/field/created_by/name_display</code> filter for custom User Field output.</li>
+					<li>Added: <code>gravityview/field/created_by/name_display/raw</code> allow raw (unescaped) output for <code>gravityview/field/created_by/name_display</code>.</li>
+					<li>Added: <code>gravityview/fields/gravatar/settings</code> filter to modify the new Gravatar field's settings</li>
+					<li>Added: <code>gravityview/search/sieve_choices</code> filter in Version 2.5 that enables only showing choices in the Search Bar that exist in entries (<a href="https://docs.gravityview.co/article/701-show-choices-that-exist">learn more about this filter</a>)</li>
+					<li>Modified: <code>gravityview_get_forms()</code> and <code>GVCommon::get_forms()</code> have new <code>$order_by</code> and <code>$order</code> parameters (Thanks, Rochelle!)</li>
+					<li>Fixed: <code>gravityview/edit_entry/user_can_edit_entry</code> and <code>gravityview/capabilities/allow_logged_out</code> were not reachable in Edit Entry and Delete Entry since Version 2.5</li>
+				</ul>
 
 				<h3>2.7.1 on February 24, 2020</h3>
 
@@ -440,29 +477,6 @@ class GravityView_Welcome {
                     <li>Fixed: "Getting Started" and "List of Changes" page layouts in WordPress 5.3</li>
                     <li>Fixed: Don't show error messages twice when editing a View with a missing form</li>
                     <li>Tweak: Don't show "Create a View" on trashed forms action menus</li>
-                </ul>
-
-                <h3>2.4 on July 16, 2019</h3>
-
-                <p><strong>We tightened security by limiting who can edit Views. <a href="https://docs.gravityview.co/article/598-non-administrator-edit-view">Read how to grant Authors and Editors access</a>.</strong></p>
-
-                <ul>
-                    <li>Added: A new Result Number field and <code>{sequence}</code> Merge Tag <a href="https://docs.gravityview.co/article/597-the-sequence-merge-tag">learn all about it!</a></li>
-                    <li>Added: <code>{date_updated}</code> Merge Tag (<a href="https://docs.gravityview.co/article/76-merge-tags">see all GravityView Merge Tags</a>)</li>
-                    <li>Added: Option to output all CSV entries, instead of a single page of results</li>
-                    <li>Fixed: Settings compatibility issues on Multisite</li>
-                    <li>Fixed: CSV output for address fields contained Google Maps link</li>
-                    <li>Fixed: When editing an entry in Gravity Forms, clicking the "Cancel" button would not exit edit mode</li>
-                    <li>Fixed: Some fatal errors when Gravity Forms is deactivated while GravityView is active</li>
-                    <li>Fixed: Search All Fields functionality with latest Gravity Forms</li>
-                </ul>
-
-                <p><strong>Developer Updates:</strong></p>
-
-                <ul>
-                    <li>Change: <strong>Breaking</strong> users without the <code>unfiltered_html</code> capability can no longer edit Views.</li>
-                    <li>Added: <code>gravityview/security/allow_unfiltered_html</code> to not require <code>unfiltered_html</code>. Dangerous!</li>
-                    <li>Added: <code>gravityview/template/field/address/csv/delimiter</code> filter for CSV output of addresses</li>
                 </ul>
 
 				<p style="text-align: center;">

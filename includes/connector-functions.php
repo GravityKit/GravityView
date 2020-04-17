@@ -42,14 +42,17 @@ function gravityview_get_form_from_entry_id( $entry_slug ) {
  * @see GFAPI::get_forms()
  *
  * @since 1.19 Allow "any" $active status option
+ * @since 2.7.2 Allow sorting forms using wp_list_sort()
  *
  * @param bool|string $active Status of forms. Use `any` to get array of forms with any status. Default: `true`
  * @param bool $trash Include forms in trash? Default: `false`
+ * @param string|array $order_by Optional. Either the field name to order by or an array of multiple orderby fields as $orderby => $order.
+ * @param string $order Optional. Either 'ASC' or 'DESC'. Only used if $orderby is a string.
  *
  * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
  */
-function gravityview_get_forms( $active = true, $trash = false ) {
-	return GVCommon::get_forms( $active, $trash );
+function gravityview_get_forms( $active = true, $trash = false, $order_by = 'date_created', $order = 'ASC' ) {
+	return GVCommon::get_forms( $active, $trash, $order_by, $order );
 }
 
 /**

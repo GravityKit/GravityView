@@ -13,7 +13,7 @@ class GravityView_Default_Template_List extends GravityView_Template {
 		$list_settings = array(
 			'slug'        => 'list',
 			'type'        => 'custom',
-			'label'       => __( 'List (default)', 'gravityview' ),
+			'label'       => __( 'List', 'gravityview' ),
 			'description' => __( 'Display items in a listing view.', 'gravityview' ),
 			'logo'        => plugins_url( 'includes/presets/default-list/logo-default-list.png', GRAVITYVIEW_FILE ),
 			'css_source'  => gravityview_css_url( 'list-view' . $rtl . '.css', GRAVITYVIEW_DIR . 'templates/css/' ),

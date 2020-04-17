@@ -182,7 +182,13 @@ class GVCommon_Test extends GV_UnitTestCase {
 	 */
 	function test_get_forms() {
 
-		$this->factory->form->create_many( 5 );
+		$this->factory->form->create_many( 10 );
+
+		$i = 0;
+		while ( $i < 20 ) {
+			GFAPI::add_form( [ 'title' => rand_long_str( 3 ), 'fields' => array() ] );
+			$i++;
+		}
 
 		$forms = GFAPI::get_forms();
 
@@ -196,6 +202,14 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$last_gv_form = array_pop( $gv_forms );
 
 		$this->assertEquals( $last_form, $last_gv_form );
+
+		$gv_forms_asc = GVCommon::get_forms( true, false, 'title', 'ASC' );
+		$gv_forms_desc = GVCommon::get_forms( true, false, 'title', 'DESC' );
+
+		$asc_titles = wp_list_pluck( $gv_forms_asc, 'title' );
+		$desc_titles = wp_list_pluck( $gv_forms_desc, 'title' );
+
+		$this->assertSame( array_reverse( $asc_titles, true ), $desc_titles );
 	}
 
 	/**
@@ -314,12 +328,12 @@ class GVCommon_Test extends GV_UnitTestCase {
 
 		$form = $this->factory->form->create_and_get();
 		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
-		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view_cpt = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
 		$form2 = $this->factory->form->create_and_get();
+		$view = \GV\View::from_post( $view_cpt );
 		$entry2 = $this->factory->entry->create_and_get( array( 'form_id' => $form2['id'] ) );
 
-		$view = \GV\View::from_post( $view );
 
 		// Entry is empty
 		/** @var WP_Error $empty_array */
@@ -336,15 +350,6 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$form_id_not_set = GVCommon::check_entry_display( array( 'not_empty' => true, 'doesnt_have_form_id' => true ), $view );
 		$this->assertWPError( $form_id_not_set );
 		$this->assertEquals( 'form_id_not_set', $form_id_not_set->get_error_code() );
-
-		$search_criteria = array(
-			'search_criteria' => null,
-			'sorting' => null,
-			'paging' => null,
-			'cache' => true,
-			'context_view_id' => null,
-		);
-
 
 		// Test empty( $criteria['search_criteria'] )
 		add_filter( 'gravityview_search_criteria', function() { return array( 'search_criteria' => null ); } );
@@ -500,7 +505,64 @@ class GVCommon_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gravityview_search_criteria' );
 	}
-	
+
+	/**
+	 * Check that entries aren't displayed when $_GET['gvid'] doesn't match current View
+	 *
+	 * Note: This fails intermittently in local testing with PHPUnit 7.5.20 for an unknown reason. I believe this to be
+	 * purely a PHPUnit issue, because I don't understand why there would be a race condition related to $_GET['gvid'].
+	 * I've spent far too long trying to understand why it would trigger "Entry failed search_criteria and field_filters"
+	 * WP_Error. Let's hope remote unit testing doesn't have the same problems. {@see https://i.gravityview.co/tdNq84+}
+	 *
+	 * @since 2.7.2
+	 *
+	 * @covers GVCommon::check_entry_display()
+	 */
+	public function test_check_entry_display_gvid() {
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$view = \GV\View::from_post( $view );
+
+		$_GET = array(
+			'gvid' => $view->ID,
+		);
+
+		// Set context_view_id via filter so search performs properly
+		add_filter( 'gravityview_search_criteria', function() use ( $view ) {
+			return array(
+				'search_criteria' => array(),
+				'context_view_id' => $view->ID,
+			);
+		} );
+
+		$gvid_no_view = GVCommon::check_entry_display( $entry );
+		$this->assertWPError( $gvid_no_view, print_r( $gvid_no_view, true ) );
+
+		$gvid = GVCommon::check_entry_display( $entry, $view );
+		$this->assertEquals( $entry, $gvid, print_r( $gvid, true ) );
+
+		$this->clean_up_global_scope();
+
+		remove_all_filters( 'gravityview_search_criteria' );
+
+		// View ID and $_GET['gvid'] mismatch
+		$_GET = array(
+			'gvid' => ( $view->ID + 1 ),
+		);
+
+		$gvid_mismatch_no_view = GVCommon::check_entry_display( $entry );
+		$this->assertWPError( $gvid_mismatch_no_view );
+
+		$gvid_mismatch = GVCommon::check_entry_display( $entry, $view );
+		$this->assertWPError( $gvid_mismatch );
+		$this->assertEquals( 'view_id_not_match_gvid', $gvid_mismatch->get_error_code() );
+
+		$this->clean_up_global_scope();
+	}
+
 	/**
 	 * https://github.com/gravityview/GravityView/issues/929
 	 */

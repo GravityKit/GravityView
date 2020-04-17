@@ -809,17 +809,22 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 	}
 
 	public function test_create_item() {
+		$this->assertTrue( true );
 	}
 
 	public function test_update_item() {
+		$this->assertTrue( true );
 	}
 
 	public function test_delete_item() {
+		$this->assertTrue( true );
 	}
 
 	public function test_prepare_item() {
+		$this->assertTrue( true );
 	}
 
 	public function test_get_item_schema() {
+		$this->assertTrue( true );
 	}
 }
