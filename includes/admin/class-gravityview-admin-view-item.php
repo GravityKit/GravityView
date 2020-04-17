@@ -44,7 +44,7 @@ abstract class GravityView_Admin_View_Item {
 	 */
 	protected $form_id;
 
-	function __construct( $title = '', $item_id, $item = array(), $settings = array(), $form_id = null) {
+	function __construct( $title = '', $item_id = '', $item = array(), $settings = array(), $form_id = null) {
 
 		// Backward compat
 		if ( ! empty( $item['type'] ) ) {
@@ -59,15 +59,15 @@ abstract class GravityView_Admin_View_Item {
 		// Prevent items from not having index set
 		$item = wp_parse_args( $item, array(
 			'label_text'    => $title,
-			'field_id'      => NULL,
-			'parent_label'  => NULL,
-			'label_type'    => NULL,
-			'input_type'    => NULL,
-			'settings_html' => NULL,
-			'adminLabel'    => NULL,
-			'adminOnly'     => NULL,
-			'subtitle'      => NULL,
-			'placeholder'   => NULL,
+			'field_id'      => null,
+			'parent_label'  => null,
+			'label_type'    => null,
+			'input_type'    => null,
+			'settings_html' => null,
+			'adminLabel'    => null,
+			'adminOnly'     => null,
+			'subtitle'      => null,
+			'placeholder'   => null,
 		) );
 
 		$this->title      = $title;

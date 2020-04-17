@@ -371,7 +371,7 @@ class GravityView_Render_Settings {
 		}
 
 		// output
-		echo '<tr valign="top" '. $show_if .'>' . $output . '</tr>';
+		echo '<tr style="vertical-align: top;" '. $show_if .'>' . $output . '</tr>';
 
 	}
 

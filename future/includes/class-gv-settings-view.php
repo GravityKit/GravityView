@@ -168,9 +168,9 @@ class View_Settings extends Settings {
 				'value'             => '',
 				'group'             => 'sort',
 				'options'           => array(
-										''             => __( 'Default', 'gravityview' ),
-										'date_created' => __( 'Date Created', 'gravityview' ),
-									),
+					''             => __( 'Default', 'gravityview' ),
+					'date_created' => __( 'Date Created', 'gravityview' ),
+				),
 				'show_in_shortcode' => true,
 			),
 			'sort_direction' => array(
