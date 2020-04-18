@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Added: Better inline documentation for settings
+* Modified: Changed default settings for new Views to "Show only approved entries"
+
 = 2.8 on April 16, 2020 =
 
 * Added: User Fields now has many more options, including avatars, first and last name combinations, and more

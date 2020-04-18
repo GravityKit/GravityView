@@ -87,7 +87,7 @@ class View_Settings extends Settings {
 				'label'             => __( 'Show only approved entries', 'gravityview' ),
 				'type'              => 'checkbox',
 				'group'             => 'default',
-				'desc'              => __( 'By default, only approved entries are displayed in a View. When enabled, this setting prevents unapproved or disapproved entries from appearing in results. If disabled, entries with all statuses will be visible, including disapproved entries.', 'gravityview' ),
+				'desc'              => __( 'By default, only approved entries are displayed in a View. When enabled, this setting prevents unapproved or disapproved entries from appearing in results. If disabled, entries with all approval statuses will be visible, including disapproved entries.', 'gravityview' ),
 				'tooltip'           => false,
 				'value'             => 1,
 				'show_in_shortcode' => true,
