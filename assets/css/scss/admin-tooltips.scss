@@ -1,14 +1,19 @@
 
 /** tooltip for docs */
 .gv_tooltip {
-	display: inline-block;
-	font: normal normal normal 14px/1 FontAwesome;
-	font-size: inherit;
-	text-rendering: auto;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	&:after {
-		content: "\f05a";
+
+	font-size: 0.001px;
+	color: transparent;
+
+	&:before {
+		// @see .fa in FontAwesome
+		display: inline-block;
+		font-size: inherit;
+		text-rendering: auto;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		font: normal normal normal 14px/1 FontAwesome;
+		content: "\f059";
 	}
 }
 

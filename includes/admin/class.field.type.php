@@ -95,59 +95,73 @@ abstract class GravityView_FieldType {
     /**
      * Displays the tooltip
      *
+     * @since 2.8.1
+     *
      * @global $__gf_tooltips
      *
      * @param string $name      The name of the tooltip to be displayed
      * @param string $css_class Optional. The CSS class to apply toi the element. Defaults to empty string.
      * @param bool   $return    Optional. If the tooltip should be returned instead of output. Defaults to false (output)
-     * @param array  $article   Optional.
+     * @param array  $article   Optional. Details about support doc article connected to the tooltip. {
+     *   @type string $id   Unique ID of article for Beacon API
+     *   @type string $url  URL of support doc article
+     *   @type string $type Type of Beacon element to open. {@see https://developer.helpscout.com/beacon-2/web/javascript-api/#beaconarticle}
+     * }
      *
      * @return string
      */
     function tooltip( $name, $css_class = '', $return = false, $article = array() ) {
-	    global $__gf_tooltips; //declared as global to improve WPML performance
+		global $__gf_tooltips; //declared as global to improve WPML performance
 
-	    $css_class     = empty( $css_class ) ? 'tooltip' : $css_class;
+		$css_class = empty( $css_class ) ? 'tooltip' : $css_class;
+		/**
+		 * Filters the tooltips available
+		 *
+		 * @param array $__gf_tooltips Array containing the available tooltips
+		 */
+		$__gf_tooltips = apply_filters( 'gform_tooltips', $__gf_tooltips );
+
+		//AC: the $name parameter is a key when it has only one word. Maybe try to improve this later.
+		$parameter_is_key = count( explode( ' ', $name ) ) == 1;
+
+		$tooltip_text  = $parameter_is_key ? rgar( $__gf_tooltips, $name ) : $name;
+		$tooltip_class = isset( $__gf_tooltips[ $name ] ) ? "tooltip_{$name}" : '';
+		$tooltip_class = esc_attr( $tooltip_class );
+
 	    /**
-	     * Filters the tooltips available
-	     *
-	     * @param array $__gf_tooltips Array containing the available tooltips
+	     * Below this line has been modified by GravityView.
 	     */
-	    $__gf_tooltips = apply_filters( 'gform_tooltips', $__gf_tooltips );
 
-	    //AC: the $name parameter is a key when it has only one word. Maybe try to improve this later.
-	    $parameter_is_key = count( explode( ' ', $name ) ) == 1;
+		if ( empty( $tooltip_text ) && empty( $article['id'] ) ) {
+			return '';
+		}
 
-	    $tooltip_text  = $parameter_is_key ? rgar( $__gf_tooltips, $name ) : $name;
-	    $tooltip_class = isset( $__gf_tooltips[ $name ] ) ? "tooltip_{$name}" : '';
-	    $tooltip_class = esc_attr( $tooltip_class );
+		$url = '#';
+	    $atts = 'onclick="return false;" onkeypress="return false;"';
+	    $anchor_text = '<i class=\'fa fa-question-circle\'></i>';
+		$css_class = gravityview_sanitize_html_class( 'gf_tooltip ' . $css_class . ' ' . $tooltip_class );
 
-	    if ( empty( $tooltip_text ) ) {
-		    return '';
-	    }
+		$tooltip = sprintf( '<a href="%s" %s class="%s" title="%s" role="button">%s</a>',
+			esc_url( $url ),
+			$atts,
+			$css_class,
+			esc_attr( $tooltip_text ),
+			$anchor_text
+		);
 
-	    if ( ! empty( $article['id'] ) ) {
+	    /**
+	     * Modify the tooltip HTML before outputting
+	     * @internal
+	     * @see GravityView_Support_Port::maybe_add_article_to_tooltip()
+	     */
+		$tooltip = apply_filters( 'gravityview/tooltips/tooltip', $tooltip, $article, $url, $atts, $css_class, $tooltip_text, $anchor_text );
 
-	    	if ( empty( $article['type'] ) ) {
-			    $beacon = 'data-beacon-article=\'' . esc_attr( $article['id'] ) . '\'';
-		    } else {
-			    $beacon = 'data-beacon-article-' . esc_attr( $article['type'] ) . '=\'' . esc_attr( $article['id'] ) . '\'';
-		    }
+		if ( ! $return ) {
+			echo $tooltip;
+		}
 
-		    $url = esc_url( $article['url'] );
-
-	        $tooltip = "<a href='{$url}' {$beacon}><i class='fa fa-info-circle'></i></a>";
-	    } else {
-		    $tooltip = "<a href='#' onclick='return false;' onkeypress='return false;' class='gf_tooltip " . esc_attr( $css_class ) . " {$tooltip_class}' title='" . esc_attr( $tooltip_text ) . "'><i class='fa fa-question-circle'></i></a>";
-	    }
-
-
-	    if ( ! $return ) {
-	    	echo $tooltip;
-	    }
-
-	    return $tooltip;
-    }
+		return $tooltip;
+	}
 
     /**
      * Build input id based on the name
