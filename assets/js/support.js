@@ -22,3 +22,9 @@ Beacon("identify", gvSupport.data );
 if ( gvSupport.suggest.length ) {
 	Beacon( "suggest", gvSupport.suggest );
 }
+
+Beacon( 'on', 'article-viewed',function() {
+	document.querySelectorAll('.ui-tooltip').forEach(function(el) {
+		el.style.display = 'none';
+	});
+});
