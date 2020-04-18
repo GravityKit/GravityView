@@ -588,12 +588,18 @@ class GravityView_API {
 
 	/**
 	 * return href for single entry
+	 *
+	 * @since 1.7.3 Added $add_directory_args parameter
+	 * @since 2.7.2 Added $view_id parameter
+	 *
 	 * @param  array|int $entry   Entry array or entry ID
 	 * @param  int|null $post_id If wanting to define the parent post, pass a post ID
-	 * @param boolean $add_directory_args True: Add args to help return to directory; False: only include args required to get to entry {@since 1.7.3}
-	 * @return string          Link to the entry with the directory parent slug, or empty string if embedded post or View doesn't exist
+	 * @param boolean $add_directory_args True: Add args to help return to directory; False: only include args required to get to entry
+	 * @param int $view_id
+	 *
+	 * @return string Link to the entry with the directory parent slug, or empty string if embedded post or View doesn't exist
 	 */
-	public static function entry_link( $entry, $post_id = NULL, $add_directory_args = true ) {
+	public static function entry_link( $entry, $post_id = NULL, $add_directory_args = true, $view_id = 0 ) {
 
 		if ( ! empty( $entry ) && ! is_array( $entry ) ) {
 			$entry = GVCommon::get_entry( $entry );
@@ -695,7 +701,7 @@ class GravityView_API {
 		}
 
 		if ( $has_multiple_views ) {
-			$args['gvid'] = gravityview_get_view_id();
+			$args['gvid'] = $view_id ? $view_id : gravityview_get_view_id();
 		}
 
 		return add_query_arg( $args, $directory_link );

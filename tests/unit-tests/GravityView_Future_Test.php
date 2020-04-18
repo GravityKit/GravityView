@@ -3153,6 +3153,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		remove_all_filters( 'gravityview/fields/textarea/allowed_kses' );
+
+		$field->update_configuration( array( 'allow_html' => false, 'new_window' => false, 'make_clickable' => true ) );
+		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; <a href="http://gravityview.co/" rel="nofollow">http://gravityview.co/</a> &lt;b&gt;beep, I allow it!&lt;/b&gt;</p>' . "\n";
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'allow_html' => false, 'new_window' => false, 'make_clickable' => false ) );
+		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; http://gravityview.co/ &lt;b&gt;beep, I allow it!&lt;/b&gt;</p>' . "\n";
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 	}
 
 	/**
@@ -3307,7 +3315,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $user->ID, $renderer->render( $field, $view, null, $entry, $request ) );
 
 		$field->update_configuration( array( 'name_display' => 'custom_field_1' ) );
-		$this->assertEquals( esc_html( $user->custom_field_1 ), $renderer->render( $field, $view, null, $entry, $request ) );
+		$this->assertEmpty( $renderer->render( $field, $view, null, $entry, $request ) );
 	}
 
 	/**
@@ -8445,7 +8453,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->set_permalink_structure( '/%postname%/' );
 		\GV\Entry::add_rewrite_endpoint();
 		flush_rewrite_rules();
-		
+
 		$this->go_to( get_permalink( $post ) );
 
 		// Only admins see the notice

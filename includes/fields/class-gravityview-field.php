@@ -156,7 +156,11 @@ abstract class GravityView_Field {
 			$this->label = ucfirst( GF_Fields::get( $this->name )->get_form_editor_field_title() );
 		}
 
-		GravityView_Fields::register( $this );
+		try {
+			GravityView_Fields::register( $this );
+		} catch ( Exception $exception ) {
+			gravityview()->log->critical( $exception->getMessage() );
+		}
 	}
 
 	/**
