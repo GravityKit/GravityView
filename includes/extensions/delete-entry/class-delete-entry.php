@@ -207,7 +207,7 @@ final class GravityView_Delete_Entry {
 			'field_id' => 'delete_link',
 			'label_type' => 'field',
 			'input_type' => 'delete_link',
-			'field_options' => NULL
+			'field_options' => null,
 		);
 
 		return $available_fields;

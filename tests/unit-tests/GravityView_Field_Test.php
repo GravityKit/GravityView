@@ -121,6 +121,7 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 			'template_id' => 'table',
 			'settings' => array(
 				'page_size' => 10,
+				'show_only_approved' => 0,
 			),
 			'fields' => array(
 				'directory_table-columns' => array(
@@ -228,6 +229,7 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 			'template_id' => 'table',
 			'settings' => array(
 				'page_size' => 3,
+				'show_only_approved' => 0,
 			),
 			'fields' => array(
 				'directory_table-columns' => array(
@@ -312,6 +314,7 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 			'template_id' => 'table',
 			'settings' => array(
 				'page_size' => 3,
+				'show_only_approved' => 0,
 			),
 			'fields' => array(
 				'single_table-columns' => array(

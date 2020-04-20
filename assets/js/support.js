@@ -14,7 +14,7 @@ window.Beacon( "config", {
 	messagingEnabled: ( 1 === gvSupport.contactEnabled * 1 ),
 	topArticles: true,
 	iconImage: 'question',
-	zIndex: 9991
+	zIndex: ( 10000 + 10 ) // Above #adminmenuwrap, which is 9990 and modal content, which is 10000 + 1
 });
 
 Beacon("identify", gvSupport.data );
@@ -22,3 +22,9 @@ Beacon("identify", gvSupport.data );
 if ( gvSupport.suggest.length ) {
 	Beacon( "suggest", gvSupport.suggest );
 }
+
+Beacon( 'on', 'article-viewed',function() {
+	document.querySelectorAll('.ui-tooltip').forEach(function(el) {
+		el.style.display = 'none';
+	});
+});

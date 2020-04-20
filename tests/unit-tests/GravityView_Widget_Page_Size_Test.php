@@ -45,6 +45,8 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 
         global $post;
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
         $post = $this->factory->view->create_and_get( array(
             'form_id' => $form['id'],
             'template_id' => 'table',
@@ -67,6 +69,7 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
                     ),
                 ),
             ),
+            'settings' => $settings,
         ) );
 
         $view = \GV\View::from_post( $post );
@@ -160,6 +163,8 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 
 	    $form = $this->factory->form->import_and_get( 'complete.json' );
 
+	    $settings = \GV\View_Settings::defaults();
+	    $settings['show_only_approved'] = 0;
 	    $post = $this->factory->view->create_and_get( array(
 		    'form_id' => $form['id'],
 		    'template_id' => 'table',
@@ -182,6 +187,7 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 				    ),
 			    ),
 		    ),
+		    'settings' => $settings,
 	    ) );
 
 	    $view = \GV\View::from_post( $post );
@@ -232,6 +238,8 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 
         global $post;
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
         $post = $this->factory->view->create_and_get( array(
             'form_id' => $form['id'],
             'template_id' => 'table',
@@ -254,6 +262,7 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
                     ),
                 ),
             ),
+            'settings' => $settings,
         ) );
 
         $view = \GV\View::from_post( $post );
@@ -299,12 +308,13 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 
 		$this->assertTrue( remove_filter( 'gravityview/widget/page_size/page_sizes', $page_sizes_callback ) );
     }
-	
+
 	public function test_page_size_widget_not_present() {
         $form = $this->factory->form->import_and_get( 'complete.json' );
 
         global $post;
-
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
         $post = $this->factory->view->create_and_get( array(
             'form_id' => $form['id'],
             'template_id' => 'table',
@@ -320,6 +330,7 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
                     ),
                 ),
             ),
+            'settings' => $settings,
         ) );
 
         $view = \GV\View::from_post( $post );

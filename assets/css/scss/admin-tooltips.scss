@@ -1,4 +1,23 @@
 
+/** tooltip for docs */
+.gv_tooltip {
+
+	font-size: 0.001px;
+	color: transparent;
+
+	&:before {
+		// @see .fa in FontAwesome
+		display: inline-block;
+		font-size: inherit;
+		text-rendering: auto;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		font: normal normal normal 14px/1 FontAwesome;
+		content: "\f059";
+	}
+}
+
+
 /** tooltips for fields + widgets */
 
 $tooltip_background: #eee;

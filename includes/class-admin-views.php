@@ -639,11 +639,11 @@ class GravityView_Admin_Views {
 				}
 
 				// Edit mode only allows editing the parent fields, not single inputs.
-				if( $context === 'edit' && !empty( $details['parent'] ) ) {
+				if( $context === 'edit' && ! empty( $details['parent'] ) ) {
 					continue;
 				}
 
-				$output .= new GravityView_Admin_View_Field( $details['label'], $id, $details, $settings = array(), $form );
+				$output .= new GravityView_Admin_View_Field( $details['label'], $id, $details, array(), $form );
 
 			} // End foreach
 		}
@@ -678,9 +678,9 @@ class GravityView_Admin_Views {
 				'desc' => __('Add all the available fields at once.', 'gravityview'),
 				'field_id' => 'all-fields',
 				'label_type' => 'field',
-				'input_type' => NULL,
-				'field_options' => NULL,
-				'settings_html'	=> NULL,
+				'input_type' => null,
+				'field_options' => null,
+				'settings_html'	=> null,
 			)
 		));
 
@@ -689,12 +689,12 @@ class GravityView_Admin_Views {
 
 				// Prevent items from not having index set
 				$item = wp_parse_args( $item, array(
-					'label_text' => NULL,
-					'field_id' => NULL,
-					'label_type' => NULL,
-					'input_type' => NULL,
-					'field_options' => NULL,
-					'settings_html'	=> NULL,
+					'label_text' => null,
+					'field_id' => null,
+					'label_type' => null,
+					'input_type' => null,
+					'field_options' => null,
+					'settings_html'	=> null,
 				));
 
 				// Backward compat.
@@ -968,7 +968,7 @@ class GravityView_Admin_Views {
 										$item = array(
 											'input_type' => $input_type,
 											'settings_html' => $field_options,
-											'label_type' => $type
+											'label_type' => $type,
 										);
 
 										// Merge the values with the current item to pass things like widget descriptions and original field names
