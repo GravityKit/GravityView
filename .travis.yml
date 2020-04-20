@@ -42,6 +42,7 @@ matrix:
 before_install:
   - composer config github-oauth.github.com "$GITHUB_ACCESS_TOKEN"
   - echo 'memory_limit = 2048M' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - travis_retry composer install --ignore-platform-reqs --no-interaction --prefer-source
 
 install:
   - curl -s https://getcomposer.org/installer | php
