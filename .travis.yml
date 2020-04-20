@@ -1,8 +1,8 @@
 language: php
 
-sudo: false
-
 dist: trusty
+
+os: linux
 
 notifications:
   email:
@@ -28,7 +28,7 @@ env:
   - WP_VERSION=latest WP_MULTISITE=0
   - WP_VERSION=nightly WP_MULTISITE=0
 
-matrix:
+jobs:
   include:
     - php: 7.3
     - php: 5.3
@@ -42,7 +42,6 @@ matrix:
 before_install:
   - composer config github-oauth.github.com "$GITHUB_ACCESS_TOKEN"
   - echo 'memory_limit = 2048M' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  - travis_retry composer install --ignore-platform-reqs --no-interaction --prefer-source
 
 install:
   - curl -s https://getcomposer.org/installer | php
