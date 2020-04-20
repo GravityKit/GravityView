@@ -37,6 +37,7 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'settings' => array(
 				'page_size' => 10,
+				'show_only_approved' => 0,
 			)
 		) );
 		$view = \GV\View::from_post( $post );
@@ -107,6 +108,7 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'settings' => array(
 				'page_size' => 10,
+				'show_only_approved' => 0,
 			)
 		) );
 		$view = \GV\View::from_post( $post );
@@ -373,7 +375,8 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 
 	public function test_shortcode_single_view_from_directory() {
 		$form = $this->factory->form->import_and_get( 'simple.json' );
-
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'fields' => array(
@@ -393,6 +396,7 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -420,7 +424,8 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 
 	public function test_shortcode_search() {
 		$form = $this->factory->form->import_and_get( 'simple.json' );
-
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'fields' => array(
@@ -435,6 +440,7 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
