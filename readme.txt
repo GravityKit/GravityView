@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Added: Better inline documentation for settings
+* Improved: When clicking "Add All Form Fields" in the "+ Add Field" picker
 * Modified: Changed default settings for new Views to "Show only approved entries"
 
 = 2.8 on April 16, 2020 =
