@@ -668,11 +668,7 @@ class GravityView_Admin_Views {
 	 */
 	public function render_additional_fields( $form = 0, $context = 'single' ) {
 
-		/**
-		 * @filter `gravityview_additional_fields` non-standard Fields to show at the bottom of the field picker
-		 * @param array $additional_fields Associative array of field arrays, with `label_text`, `desc`, `field_id`, `label_type`, `input_type`, `field_options`, and `settings_html` keys
-		 */
-		$additional_fields = apply_filters( 'gravityview_additional_fields', array(
+		$additional_fields = array(
 			array(
 				'label_text' => '+ ' . __( 'Add All Form Fields', 'gravityview' ),
 				'desc' => __('Insert all the form fields at once.', 'gravityview'),
@@ -682,31 +678,35 @@ class GravityView_Admin_Views {
 				'field_options' => null,
 				'settings_html'	=> null,
 			)
-		));
+		);
 
-		if( !empty( $additional_fields )) {
-			foreach ( (array)$additional_fields as $item ) {
+		/**
+		 * @filter `gravityview_additional_fields` non-standard Fields to show at the bottom of the field picker
+		 * @param array $additional_fields Associative array of field arrays, with `label_text`, `desc`, `field_id`, `label_type`, `input_type`, `field_options`, and `settings_html` keys
+		 */
+		$additional_fields = apply_filters( 'gravityview_additional_fields', $additional_fields );
 
-				// Prevent items from not having index set
-				$item = wp_parse_args( $item, array(
-					'label_text' => null,
-					'field_id' => null,
-					'label_type' => null,
-					'input_type' => null,
-					'field_options' => null,
-					'settings_html'	=> null,
-				));
+		foreach ( (array) $additional_fields as $item ) {
 
-				// Backward compat.
-				if( !empty( $item['field_options'] ) ) {
-					// Use settings_html from now on.
-					$item['settings_html'] = $item['field_options'];
-				}
+			// Prevent items from not having index set
+			$item = wp_parse_args( $item, array(
+				'label_text' => null,
+				'field_id' => null,
+				'label_type' => null,
+				'input_type' => null,
+				'field_options' => null,
+				'settings_html'	=> null,
+			));
 
-				// Render a label for each of them
-				echo new GravityView_Admin_View_Field( $item['label_text'], $item['field_id'], $item, $settings = array(), $form );
-
+			// Backward compat.
+			if( !empty( $item['field_options'] ) ) {
+				// Use settings_html from now on.
+				$item['settings_html'] = $item['field_options'];
 			}
+
+			// Render a label for each of them
+			echo new GravityView_Admin_View_Field( $item['label_text'], $item['field_id'], $item, $settings = array(), $form );
+
 		}
 
 	}
