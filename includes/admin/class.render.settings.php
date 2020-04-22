@@ -246,7 +246,7 @@ class GravityView_Render_Settings {
 	 * @param  mixed      $curr_value Current value of option
 	 * @return string     HTML output of option
 	 */
-	public static function render_field_option( $name = '', $option, $curr_value = NULL ) {
+	public static function render_field_option( $name = '', $option = array(), $curr_value = NULL ) {
 
 		$output = '';
 
@@ -371,7 +371,7 @@ class GravityView_Render_Settings {
 		}
 
 		// output
-		echo '<tr valign="top" '. $show_if .'>' . $output . '</tr>';
+		echo '<tr style="vertical-align: top;" '. $show_if .'>' . $output . '</tr>';
 
 	}
 
@@ -394,21 +394,19 @@ class GravityView_Render_Settings {
 		 */
 		$type_class = apply_filters( "gravityview/setting/class/{$field['type']}", 'GravityView_FieldType_' . $field['type'], $field );
 
-		if( !class_exists( $type_class ) ) {
+		if( class_exists( $type_class ) ) {
+			return $type_class;
+		}
 
-			/**
-			 * @filter `gravityview/setting/class_file/{field_type}`
-			 * @param string  $field_type_include_path field class file path
-			 * @param array $field  field data
-			 */
-			$class_file = apply_filters( "gravityview/setting/class_file/{$field['type']}", GRAVITYVIEW_DIR . "includes/admin/field-types/type_{$field['type']}.php", $field );
+		/**
+		 * @filter `gravityview/setting/class_file/{field_type}`
+		 * @param string  $field_type_include_path field class file path
+		 * @param array $field  field data
+		 */
+		$class_file = apply_filters( "gravityview/setting/class_file/{$field['type']}", GRAVITYVIEW_DIR . "includes/admin/field-types/type_{$field['type']}.php", $field );
 
-			if( $class_file ) {
-				if( file_exists( $class_file ) ) {
-					require_once( $class_file );
-				}
-			}
-
+		if( $class_file && file_exists( $class_file ) ) {
+			require_once( $class_file );
 		}
 
 		return $type_class;

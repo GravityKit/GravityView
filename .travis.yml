@@ -1,8 +1,8 @@
 language: php
 
-sudo: false
-
 dist: trusty
+
+os: linux
 
 notifications:
   email:
@@ -28,7 +28,7 @@ env:
   - WP_VERSION=latest WP_MULTISITE=0
   - WP_VERSION=nightly WP_MULTISITE=0
 
-matrix:
+jobs:
   include:
     - php: 7.3
     - php: 5.3

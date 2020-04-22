@@ -21,6 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.8.1 on April 22, 2020 =
+
+* Added: Better inline documentation for View Settings
+* Improved: When clicking "Add All Form Fields" in the "+ Add Field" picker
+* Modified: Changed default settings for new Views to "Show only approved entries"
+* Modified: When adding a field to a table-based layout, "+ Add Field" now says "+ Add Column"
+* Fixed: Single Entry "Hide empty fields" not working in Table and DataTables layouts
+
 = 2.8 on April 16, 2020 =
 
 * Added: User Fields now has many more options, including avatars, first and last name combinations, and more

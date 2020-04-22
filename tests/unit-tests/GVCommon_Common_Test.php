@@ -328,7 +328,12 @@ class GVCommon_Test extends GV_UnitTestCase {
 
 		$form = $this->factory->form->create_and_get();
 		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
-		$view_cpt = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+		$view_cpt = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'settings' => $settings,
+		) );
 
 		$form2 = $this->factory->form->create_and_get();
 		$view = \GV\View::from_post( $view_cpt );

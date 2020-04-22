@@ -58,33 +58,34 @@ class GravityView_Field_Address extends GravityView_Field {
 
 		foreach ( $search_fields as & $search_field ) {
 
-			if ( 'address' === \GV\Utils::get( $search_field, 'type' ) ) {
+			if ( 'address' !== \GV\Utils::get( $search_field, 'type' ) ) {
+				continue;
+			}
 
-				$field_id = intval( floor( $search_field['key'] ) );
-				$input_id = gravityview_get_input_id_from_id( $search_field['key'] );
-				$form = GravityView_View::getInstance()->getForm();
+			$field_id = intval( floor( $search_field['key'] ) );
+			$input_id = gravityview_get_input_id_from_id( $search_field['key'] );
+			$form = GravityView_View::getInstance()->getForm();
 
-				/** @var GF_Field_Address $address_field */
-				$address_field = GFFormsModel::get_field( $form, $field_id );
+			/** @var GF_Field_Address $address_field */
+			$address_field = GFFormsModel::get_field( $form, $field_id );
 
-				$choices = array();
+			$choices = array();
 
-				$method_name = 'get_choices_' . self::get_input_type_from_input_id( $input_id );
-				if( method_exists( $this, $method_name ) ) {
-					/**
-					 * @uses GravityView_Field_Address::get_choices_country()
-					 * @uses GravityView_Field_Address::get_choices_state()
-					 */
-					$choices = $this->{$method_name}( $address_field, $form );
-				}
+			$method_name = 'get_choices_' . self::get_input_type_from_input_id( $input_id );
+			if( method_exists( $this, $method_name ) ) {
+				/**
+				 * @uses GravityView_Field_Address::get_choices_country()
+				 * @uses GravityView_Field_Address::get_choices_state()
+				 */
+				$choices = $this->{$method_name}( $address_field, $form );
+			}
 
-				if( ! empty( $choices ) ) {
-					$search_field['choices'] = $choices;
-					$search_field['type'] = \GV\Utils::get( $search_field, 'input');
-				} else {
-					$search_field['type'] = 'text';
-					$search_field['input'] = 'input_text';
-				}
+			if( ! empty( $choices ) ) {
+				$search_field['choices'] = $choices;
+				$search_field['type'] = \GV\Utils::get( $search_field, 'input');
+			} else {
+				$search_field['type'] = 'text';
+				$search_field['input'] = 'input_text';
 			}
 		}
 
@@ -219,12 +220,13 @@ class GravityView_Field_Address extends GravityView_Field {
 		// Is this search field for an input (eg: 4.2) or the whole address field (eg: 4)?
 		$input_id = gravityview_get_input_id_from_id( $field_id );
 
-		if( 'address' === $field_type && $input_id ) {
+		if( 'address' !== $field_type && $input_id ) {
+			return $input_type;
+		}
 
-			// If the input ID matches an expected address input, set to that. Otherwise, keep existing input type.
-			if( $address_field_name = self::get_input_type_from_input_id( $input_id ) ) {
-				$input_type = $address_field_name;
-			}
+		// If the input ID matches an expected address input, set to that. Otherwise, keep existing input type.
+		if( $address_field_name = self::get_input_type_from_input_id( $input_id ) ) {
+			$input_type = $address_field_name;
 		}
 
 		return $input_type;

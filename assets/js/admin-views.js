@@ -1157,7 +1157,15 @@
 		 */
 		addAllFields: function ( clicked ) {
 
-			clicked.siblings( '.gv-fields' ).each( function () {
+			clicked.siblings( '.gv-fields' ).filter( function () {
+
+				var field_id = $( this ).data( 'fieldid' );
+
+				// Is the (number +)Field ID the same as the integer (not an input)?
+				// If so, form field. If not, entry meta or custom field type.
+				return ( +field_id === parseInt( field_id, 10 ) );
+
+			} ).each( function () {
 				$( this ).trigger( 'click' );
 			} );
 

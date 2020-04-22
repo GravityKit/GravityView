@@ -44,7 +44,7 @@ abstract class GravityView_Admin_View_Item {
 	 */
 	protected $form_id;
 
-	function __construct( $title = '', $item_id, $item = array(), $settings = array(), $form_id = null) {
+	function __construct( $title = '', $item_id = '', $item = array(), $settings = array(), $form_id = null) {
 
 		// Backward compat
 		if ( ! empty( $item['type'] ) ) {
@@ -59,15 +59,15 @@ abstract class GravityView_Admin_View_Item {
 		// Prevent items from not having index set
 		$item = wp_parse_args( $item, array(
 			'label_text'    => $title,
-			'field_id'      => NULL,
-			'parent_label'  => NULL,
-			'label_type'    => NULL,
-			'input_type'    => NULL,
-			'settings_html' => NULL,
-			'adminLabel'    => NULL,
-			'adminOnly'     => NULL,
-			'subtitle'      => NULL,
-			'placeholder'   => NULL,
+			'field_id'      => null,
+			'parent_label'  => null,
+			'label_type'    => null,
+			'input_type'    => null,
+			'settings_html' => null,
+			'adminLabel'    => null,
+			'adminOnly'     => null,
+			'subtitle'      => null,
+			'placeholder'   => null,
 		) );
 
 		$this->title      = $title;
@@ -176,13 +176,13 @@ abstract class GravityView_Admin_View_Item {
 
 		$output .= '<h5 class="selectable gfield field-id-' . esc_attr( $this->id ) . '">';
 
+		$parent_label = '';
 		if ( ! empty( $this->item['parent'] ) ) {
-			$label .= ' <small>(' . esc_attr( $this->item['parent']['label'] ) . ')</small>';
+			$parent_label = ' <small>(' . esc_attr( $this->item['parent']['label'] ) . ')</small>';
 		}
 
 		// Name of field / widget
-		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . $this->get_item_info( false ) . '">' . $label . '</span>';
-
+		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . $this->get_item_info( false ) . '">' . $label . $parent_label . '</span>';
 
 		$output .= '<span class="gv-field-controls">' . $settings_link . $show_as_link . '<button class="gv-remove-field" aria-label="' . esc_attr( $delete_title ) . '" title="' . esc_attr( $delete_title ) . '"><span class="dashicons-dismiss dashicons"></span></button></span>';
 

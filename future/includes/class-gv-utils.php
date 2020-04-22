@@ -148,4 +148,40 @@ class Utils {
 			'where' => $query->_where_unwrap( $introspect['where'] )
 		);
 	}
+
+	/**
+	 * Strips aliases in columns
+	 *
+	 * @see https://github.com/gravityview/GravityView/issues/1308#issuecomment-617075190
+	 *
+	 * @internal
+	 *
+	 * @since 2.8.1
+	 *
+	 * @param \GF_Query_Condition $condition The condition to strip column aliases from.
+	 *
+	 * @return \GF_Query_Condition
+	 */
+	public static function gf_query_strip_condition_column_aliases( $condition ) {
+		if ( $condition->expressions ) {
+			$conditions = array();
+			foreach ( $condition->expressions as $expression ) {
+				$conditions[] = self::gf_query_strip_condition_column_aliases( $expression );
+			}
+			return call_user_func_array(
+				array( '\GF_Query_Condition', $condition->operator == 'AND' ? '_and' : '_or' ),
+				$conditions
+			);
+		} else {
+			if ( $condition->left instanceof \GF_Query_Column ) {
+				return new \GF_Query_Condition(
+					new \GF_Query_Column( $condition->left->field_id ),
+					$condition->operator,
+					$condition->right
+				);
+			}
+		}
+
+		return $condition;
+	}
 }
