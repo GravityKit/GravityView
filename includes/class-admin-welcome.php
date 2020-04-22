@@ -269,6 +269,15 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
+				<h3>2.8.1 on April 22, 2020</h3>
+
+				<ul>
+					<li>Added: Better inline documentation for View Settings</li>
+					<li>Improved: When clicking "Add All Form Fields" in the "+ Add Field" picker</li>
+					<li>Modified: Changed default settings for new Views to "Show only approved entries"</li>
+					<li>Fixed: Single Entry "Hide empty fields" not working in Table and DataTables layouts</li>
+				</ul>
+
 				<h3>2.8 on April 16, 2020 </h3>
 
 				<ul>
