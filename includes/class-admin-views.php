@@ -674,8 +674,8 @@ class GravityView_Admin_Views {
 		 */
 		$additional_fields = apply_filters( 'gravityview_additional_fields', array(
 			array(
-				'label_text' => __( '+ Add All Fields', 'gravityview' ),
-				'desc' => __('Add all the available fields at once.', 'gravityview'),
+				'label_text' => '+ ' . __( 'Add All Form Fields', 'gravityview' ),
+				'desc' => __('Insert all the form fields at once.', 'gravityview'),
 				'field_id' => 'all-fields',
 				'label_type' => 'field',
 				'input_type' => null,
