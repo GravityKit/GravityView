@@ -2,15 +2,15 @@
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # Zachary Katz <zack@katz.co>, 2018
-# Süha Karalar <suhakaralar@gmail.com>, 2019
+# Süha Karalar <suhakaralar@gmail.com>, 2020
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.8\n"
+"Project-Id-Version: GravityView 2.8.1\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
-"Last-Translator: Süha Karalar <suhakaralar@gmail.com>, 2019\n"
+"Last-Translator: Süha Karalar <suhakaralar@gmail.com>, 2020\n"
 "Language-Team: Turkish (Turkey) (https://www.transifex.com/katzwebservices/teams/18775/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -269,7 +269,7 @@ msgid "Edit Entry"
 msgstr "Kaydı Düzenle"
 
 #: future/includes/class-gv-renderer.php:93
-#: future/includes/class-gv-settings-view.php:309
+#: future/includes/class-gv-settings-view.php:379
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:144
 #: includes/admin/metaboxes/views/view-configuration.php:10
 #: includes/class-frontend-views.php:615
@@ -277,7 +277,7 @@ msgid "Single Entry"
 msgstr "Tekil Kayıt"
 
 #: future/includes/class-gv-renderer.php:97
-#: future/includes/class-gv-settings-view.php:308
+#: future/includes/class-gv-settings-view.php:378
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:136
 #: includes/admin/metaboxes/views/view-configuration.php:9
 #: includes/class-frontend-views.php:608
@@ -567,19 +567,34 @@ msgstr "Şu sayıdan itibaren başlayan kayıtları kaydır"
 msgid "Enable lightbox for images"
 msgstr "Resimler için Lightbox etkinleştir."
 
-#: future/includes/class-gv-settings-view.php:83
+#: future/includes/class-gv-settings-view.php:79
+msgid ""
+"If enabled, images will open full-size in a \"lightbox\". A lightbox "
+"displays images and videos by filling the screen and dimming out the rest of"
+" the web page."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:87
 msgid "Show only approved entries"
 msgstr "Sadece onaylı kayıtları göster"
 
 #: future/includes/class-gv-settings-view.php:90
+msgid ""
+"By default, only approved entries are displayed in a View. When enabled, "
+"this setting prevents unapproved or disapproved entries from appearing in "
+"results. If disabled, entries with all approval statuses will be visible, "
+"including disapproved entries."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:100
 msgid "Show all entries to administrators"
 msgstr "Yönetici yetkisindeki herkese tüm kayıtları göster"
 
-#: future/includes/class-gv-settings-view.php:91
+#: future/includes/class-gv-settings-view.php:101
 msgid "Administrators will be able to see entries with any approval status."
 msgstr "Yöneticiler tüm kayıtları görebilecektir."
 
-#: future/includes/class-gv-settings-view.php:92
+#: future/includes/class-gv-settings-view.php:102
 msgid ""
 "Logged-out visitors and non-administrators will only see approved entries, "
 "while administrators will see entries with all statuses. This makes it "
@@ -590,40 +605,47 @@ msgstr ""
 "görüntüleyebilirler. Bu sayede yöneticiler kayıtları Görünüm'ler içinde "
 "kolayca düzenleyebilirler."
 
-#: future/includes/class-gv-settings-view.php:100
+#: future/includes/class-gv-settings-view.php:110
 msgid "Hide View data until search is performed"
 msgstr "Arama gerçekleşmeden Görünüm verisini gösterme"
 
-#: future/includes/class-gv-settings-view.php:103
+#: future/includes/class-gv-settings-view.php:113
 msgid ""
 "When enabled it will only show any View entries after a search is performed."
 msgstr ""
 "Etkinleştirildiğinde arama yapıldıktan sonra Görünüm kayıtlarını gösterir."
 
-#: future/includes/class-gv-settings-view.php:108
-#: future/includes/class-gv-settings-view.php:115
+#: future/includes/class-gv-settings-view.php:122
+#: future/includes/class-gv-settings-view.php:131
 msgid "Hide empty fields"
 msgstr "Boş Alanları Gizle"
 
-#: future/includes/class-gv-settings-view.php:122
+#: future/includes/class-gv-settings-view.php:125
+#: future/includes/class-gv-settings-view.php:134
+msgid ""
+"When enabled, empty fields will be not be displayed. If disabled, fields and"
+" their labels will be displayed with no content."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:140
 msgid "Feeds"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:129
+#: future/includes/class-gv-settings-view.php:147
 msgid "Allow User Edit"
 msgstr "Kullanıcı Müdahalesine İzin Ver"
 
-#: future/includes/class-gv-settings-view.php:130
+#: future/includes/class-gv-settings-view.php:148
 msgid "Allow logged-in users to edit entries they created."
 msgstr "Giriş yapmış kullanıcılara kendi kayıtlarını düzenleme izni ver."
 
-#: future/includes/class-gv-settings-view.php:130
-#: future/includes/class-gv-settings-view.php:149
-#: future/includes/class-gv-settings-view.php:158
+#: future/includes/class-gv-settings-view.php:148
+#: future/includes/class-gv-settings-view.php:175
+#: future/includes/class-gv-settings-view.php:188
 msgid "Administrators are able to %s regardless of this setting."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:132
+#: future/includes/class-gv-settings-view.php:150
 msgid ""
 "Display \"Edit Entry\" fields to non-administrator users if they created the"
 " entry. Edit Entry fields will always be displayed to site administrators."
@@ -632,11 +654,11 @@ msgstr ""
 "Düzenle\" seçeneğini göster. Bu seçenek site yöneticilerine sürekli görünür "
 "olacaktır."
 
-#: future/includes/class-gv-settings-view.php:137
+#: future/includes/class-gv-settings-view.php:159
 msgid "Unapprove Entries After Edit"
 msgstr "Düzenlemeden sonra kayıtlardaki onayı kaldır"
 
-#: future/includes/class-gv-settings-view.php:140
+#: future/includes/class-gv-settings-view.php:162
 msgid ""
 "When an entry is edited by a non-administrator, reset the approval status to"
 " \"Unapproved\"."
@@ -644,7 +666,7 @@ msgstr ""
 "Herhangi bir kayıt yönetici olmayan biri tarafından düzenlendiğinde, "
 "\"Onaylanmamış\" olarak işaretle."
 
-#: future/includes/class-gv-settings-view.php:141
+#: future/includes/class-gv-settings-view.php:163
 msgid ""
 "If the \"Show only approved entries\" setting is enabled, the entry will "
 "need to be re-approved by an administrator before it is shown in the View."
@@ -653,16 +675,16 @@ msgstr ""
 "bir görüntülenmeden önce bir yönetici tarafından yeniden onaylanması "
 "gerekir."
 
-#: future/includes/class-gv-settings-view.php:147
+#: future/includes/class-gv-settings-view.php:173
 msgid "Allow User Delete"
 msgstr "Kayıt Silmeye İzin Ver"
 
-#: future/includes/class-gv-settings-view.php:149
+#: future/includes/class-gv-settings-view.php:175
 msgid "Allow logged-in users to delete entries they created."
 msgstr ""
 "Giriş yapmış kullanıcılara, sahibi oldukları kayıtları silmelerine izin ver."
 
-#: future/includes/class-gv-settings-view.php:151
+#: future/includes/class-gv-settings-view.php:177
 msgid ""
 "Display \"Delete Entry\" fields to non-administrator users if they created "
 "the entry. Delete Entry fields will always be displayed to site "
@@ -672,77 +694,77 @@ msgstr ""
 "Sil\" menüsünü görünür yap. Ayrıca yöneticiler için Kayıt Sil menüsü her "
 "zaman görünür."
 
-#: future/includes/class-gv-settings-view.php:156
+#: future/includes/class-gv-settings-view.php:186
 msgid "Allow User Duplicate"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:158
+#: future/includes/class-gv-settings-view.php:188
 msgid "Allow logged-in users to duplicate entries they created."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:160
+#: future/includes/class-gv-settings-view.php:190
 msgid ""
 "Display \"Duplicate Entry\" fields to non-administrator users if they "
 "created the entry. Duplicate Entry fields will always be displayed to site "
 "administrators."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:165
+#: future/includes/class-gv-settings-view.php:200
 msgid "Sort by field"
 msgstr "Alana göre sırala"
 
-#: future/includes/class-gv-settings-view.php:167
+#: future/includes/class-gv-settings-view.php:202
 msgid "By default, entries are sorted by Entry ID."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:171
-#: future/includes/class-gv-settings-view.php:193
+#: future/includes/class-gv-settings-view.php:206
+#: future/includes/class-gv-settings-view.php:236
 #: includes/class-common.php:1372
 msgid "Default"
 msgstr "Varsayılan"
 
-#: future/includes/class-gv-settings-view.php:172
-#: future/includes/class-gv-settings-view.php:194
+#: future/includes/class-gv-settings-view.php:207
+#: future/includes/class-gv-settings-view.php:237
 #: includes/class-common.php:1415
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
 msgstr "Oluşturulma Tarihi"
 
-#: future/includes/class-gv-settings-view.php:177
+#: future/includes/class-gv-settings-view.php:216
 msgid "Sort direction"
 msgstr "Sıralama yönü"
 
-#: future/includes/class-gv-settings-view.php:182
-#: future/includes/class-gv-settings-view.php:205
+#: future/includes/class-gv-settings-view.php:221
+#: future/includes/class-gv-settings-view.php:252
 msgid "ASC"
 msgstr "Artan"
 
-#: future/includes/class-gv-settings-view.php:183
-#: future/includes/class-gv-settings-view.php:206
+#: future/includes/class-gv-settings-view.php:222
+#: future/includes/class-gv-settings-view.php:253
 msgid "DESC"
 msgstr "Azalan"
 
-#: future/includes/class-gv-settings-view.php:188
+#: future/includes/class-gv-settings-view.php:231
 msgid "Sort by secondary field"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:200
+#: future/includes/class-gv-settings-view.php:247
 msgid "Secondary sort direction"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:212
+#: future/includes/class-gv-settings-view.php:263
 msgid "Enable sorting by column"
 msgstr "Sütuna göre sıralamayı etkinleştir"
 
-#: future/includes/class-gv-settings-view.php:213
+#: future/includes/class-gv-settings-view.php:264
 msgid "Column Sorting"
 msgstr "Sütun Sıralama"
 
-#: future/includes/class-gv-settings-view.php:222
+#: future/includes/class-gv-settings-view.php:277
 msgid "Filter by Start Date"
 msgstr "Başlangıç Tarihine Göre Sırala"
 
-#: future/includes/class-gv-settings-view.php:224
+#: future/includes/class-gv-settings-view.php:279
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
@@ -750,11 +772,11 @@ msgstr ""
 "Bu tarihten sonra gönderilen kayıtları göster. Önceki tarihler "
 "desteklenmektedir. \"-1 hafta\" yada \"-1 ay\" gibi."
 
-#: future/includes/class-gv-settings-view.php:231
+#: future/includes/class-gv-settings-view.php:290
 msgid "Filter by End Date"
 msgstr "Bitiş Tarihine Göre Sırala"
 
-#: future/includes/class-gv-settings-view.php:233
+#: future/includes/class-gv-settings-view.php:292
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
@@ -762,28 +784,28 @@ msgstr ""
 "Bu tarihten önce gönderilen kayıtları göster. Önceki tarihler "
 "desteklenmektedir. \"şimdi\" yada \"-3 gün\" gibi."
 
-#: future/includes/class-gv-settings-view.php:240
+#: future/includes/class-gv-settings-view.php:303
 msgid "CSS Class"
 msgstr "Özel CSS Sınıfı:"
 
-#: future/includes/class-gv-settings-view.php:241
+#: future/includes/class-gv-settings-view.php:304
 msgid "CSS class to add to the wrapping HTML container."
 msgstr "HTML bloğunu çevreleyen CSS sınıfı."
 
-#: future/includes/class-gv-settings-view.php:248
+#: future/includes/class-gv-settings-view.php:311
 msgid "Search Value"
 msgstr "Değer Ara"
 
-#: future/includes/class-gv-settings-view.php:249
+#: future/includes/class-gv-settings-view.php:312
 msgid "Define a default search value for the View"
 msgstr "Görünüm için varsayılan arama değeri belirle"
 
-#: future/includes/class-gv-settings-view.php:256
+#: future/includes/class-gv-settings-view.php:319
 #: includes/widgets/search-widget/class-search-widget.php:237
 msgid "Search Field"
 msgstr "Alanlarda Ara"
 
-#: future/includes/class-gv-settings-view.php:257
+#: future/includes/class-gv-settings-view.php:320
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
@@ -791,15 +813,15 @@ msgstr ""
 "Eğer Arama Değeri atandıysa, belirli bir alanda arama yapabiliriniz. Aksi "
 "takdirde tüm alanlar aranacaktır."
 
-#: future/includes/class-gv-settings-view.php:264
+#: future/includes/class-gv-settings-view.php:327
 msgid "Search Operator"
 msgstr "Arama Operatörü"
 
-#: future/includes/class-gv-settings-view.php:271
+#: future/includes/class-gv-settings-view.php:334
 msgid "Single Entry Title"
 msgstr "Tekil Kayıt Başlığı"
 
-#: future/includes/class-gv-settings-view.php:273
+#: future/includes/class-gv-settings-view.php:336
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and Single"
@@ -809,114 +831,118 @@ msgstr ""
 "değiştirebilirsiniz. Aksi takdirde Çoklu Kayıt ve Tekil Kayıt görünümleri "
 "arasında geçiş yaptığınızda başlık aynı kalır."
 
-#: future/includes/class-gv-settings-view.php:280
+#: future/includes/class-gv-settings-view.php:347
 msgid "Back Link Label"
 msgstr "Geri Dönüş Bağlantısı Etiketi"
 
-#: future/includes/class-gv-settings-view.php:282
+#: future/includes/class-gv-settings-view.php:349
 msgid "The text of the link that returns to the multiple entries view."
 msgstr "Çoklu kayıt görünümüne dönüş yapan bağlantının yazısı."
 
-#: future/includes/class-gv-settings-view.php:289
+#: future/includes/class-gv-settings-view.php:352 includes/class-api.php:870
+msgid "&larr; Go back"
+msgstr "&larr; Geri dön"
+
+#: future/includes/class-gv-settings-view.php:359
 msgid "Redirect After Editing"
 msgstr "Düzenlemeden Sonra Yönlendir"
 
-#: future/includes/class-gv-settings-view.php:291
+#: future/includes/class-gv-settings-view.php:361
 msgid "The page to redirect to after editing an entry."
 msgstr "Düzenlemeden sonra yönlendirilecek sayfa."
 
-#: future/includes/class-gv-settings-view.php:295
+#: future/includes/class-gv-settings-view.php:365
 msgid "Stay on Edit Entry"
 msgstr "Kayıt Düzenleme Aşamasında Kal"
 
-#: future/includes/class-gv-settings-view.php:296
+#: future/includes/class-gv-settings-view.php:366
 msgid "Redirect to Single Entry"
 msgstr "Tekil Kayıta Yönlendir"
 
-#: future/includes/class-gv-settings-view.php:297
+#: future/includes/class-gv-settings-view.php:367
 msgid "Redirect to Multiple Entries"
 msgstr "Çoklu Kayıtlara Yönlendir"
 
-#: future/includes/class-gv-settings-view.php:298
+#: future/includes/class-gv-settings-view.php:368
 msgid "Redirect to URL"
 msgstr "URL Adresine Yönlendir"
 
-#: future/includes/class-gv-settings-view.php:302
+#: future/includes/class-gv-settings-view.php:372
 msgid "Editing Returns To&hellip;"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:304
+#: future/includes/class-gv-settings-view.php:374
 msgid ""
 "After editing an entry or clicking Cancel, where should the user be sent?"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:310
+#: future/includes/class-gv-settings-view.php:380
 msgid "Other URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:316
+#: future/includes/class-gv-settings-view.php:390
 msgid "Edit Entry Redirect URL"
 msgstr "Yönlendirilecek URL Adresi"
 
-#: future/includes/class-gv-settings-view.php:318
+#: future/includes/class-gv-settings-view.php:392
 msgid "After editing an entry, the user will be taken to this URL."
 msgstr "Kayıt düzenlemeden sonra, kullanıcı bu adrese yönlendirilecek."
 
-#: future/includes/class-gv-settings-view.php:326
+#: future/includes/class-gv-settings-view.php:400
 msgid "Enable Edit Locking"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:328
+#: future/includes/class-gv-settings-view.php:402
 msgid "Prevent multiple users from editing the same entry at the same time."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:335
+#: future/includes/class-gv-settings-view.php:413
 msgid "Prevent Direct Access"
 msgstr "Doğrudan Erişimi Kapat"
 
-#: future/includes/class-gv-settings-view.php:337
+#: future/includes/class-gv-settings-view.php:415
 msgid "Only allow access to this View when embedded using the shortcode."
 msgstr "Sadece kısakod ile gömülüyse bu Görünüme erişime izin ver."
 
-#: future/includes/class-gv-settings-view.php:347
+#: future/includes/class-gv-settings-view.php:425
 msgid "Prevent REST Access"
 msgstr "REST erişimini engelle"
 
-#: future/includes/class-gv-settings-view.php:349
+#: future/includes/class-gv-settings-view.php:427
 msgid "Disable REST access to this View."
 msgstr "Bu Görünüme REST erişimini engelle."
 
-#: future/includes/class-gv-settings-view.php:360
+#: future/includes/class-gv-settings-view.php:438
 msgid "Allow REST Access"
 msgstr "REST erişimine izin ver"
 
-#: future/includes/class-gv-settings-view.php:362
+#: future/includes/class-gv-settings-view.php:440
 msgid "Enable REST access to this View."
 msgstr "Bu Görünümde REST erişimini etkinleştir."
 
-#: future/includes/class-gv-settings-view.php:372
+#: future/includes/class-gv-settings-view.php:450
 msgid "Allow CSV Access"
 msgstr "CSV Erişimine İzin Ver"
 
-#: future/includes/class-gv-settings-view.php:374
+#: future/includes/class-gv-settings-view.php:452
 msgid "Enable CSV access to this View."
 msgstr "Bu Görünümde CSV Erişimine İzin Ver"
 
-#: future/includes/class-gv-settings-view.php:377
+#: future/includes/class-gv-settings-view.php:455
 msgid ""
 "If enabled, entries can be exported for this View by adding \"/csv/\" to the"
 " View URL. Each configured field will be a column in the exported CSV."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:384
+#: future/includes/class-gv-settings-view.php:466
 msgid "Show all in CSV"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:387
+#: future/includes/class-gv-settings-view.php:469
 msgid "Do not limit the number of entries output in the CSV."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:404
+#: future/includes/class-gv-settings-view.php:486
 msgid "Random"
 msgstr "Rastgele"
 
@@ -1117,15 +1143,24 @@ msgstr "Bu alan Tekil Kayıt'a bağlanmıştır"
 msgid "Add \"%s\""
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:81
+#: includes/admin/class-gravityview-support-port.php:79
+msgid "Click %s icon for additional information."
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:80
+#: includes/class-admin-installer.php:463
+msgid "Learn More"
+msgstr "Daha Fazla"
+
+#: includes/admin/class-gravityview-support-port.php:138
 msgid "GravityView Support"
 msgstr "GravityView Destek"
 
-#: includes/admin/class-gravityview-support-port.php:82
+#: includes/admin/class-gravityview-support-port.php:139
 msgid "Search GravityView Docs"
 msgstr "GravityView Dökümanlarında Ara"
 
-#: includes/admin/class-gravityview-support-port.php:83
+#: includes/admin/class-gravityview-support-port.php:140
 msgid ""
 "Your search timed out. Please double-check your internet connection and try "
 "again."
@@ -1133,49 +1168,49 @@ msgstr ""
 "Aramanız zaman aşımına uğradı. Lütfen internet bağlantınızı kontrol ederek "
 "tekrar deneyin."
 
-#: includes/admin/class-gravityview-support-port.php:85
+#: includes/admin/class-gravityview-support-port.php:142
 msgid "Contact Support"
 msgstr "Destek İletişim"
 
-#: includes/admin/class-gravityview-support-port.php:86
+#: includes/admin/class-gravityview-support-port.php:143
 msgid "Attach a screenshot or file"
 msgstr "Ekran görüntüsü yada dosya ekle"
 
-#: includes/admin/class-gravityview-support-port.php:87
+#: includes/admin/class-gravityview-support-port.php:144
 msgid "The maximum file size is 10 MB"
 msgstr "Azami dosya boyutu 10 MB'dir."
 
-#: includes/admin/class-gravityview-support-port.php:88
+#: includes/admin/class-gravityview-support-port.php:145
 msgid "Your Name"
 msgstr "Adınız"
 
-#: includes/admin/class-gravityview-support-port.php:89
+#: includes/admin/class-gravityview-support-port.php:146
 msgid "Please enter your name"
 msgstr "Lütfen adınızı giriniz"
 
-#: includes/admin/class-gravityview-support-port.php:90
+#: includes/admin/class-gravityview-support-port.php:147
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:429
 msgid "Email address"
 msgstr "Eposta adresi"
 
-#: includes/admin/class-gravityview-support-port.php:91
+#: includes/admin/class-gravityview-support-port.php:148
 msgid "Please enter a valid email address"
 msgstr "Lütfen geçerli bir eposta adresi giriniz"
 
-#: includes/admin/class-gravityview-support-port.php:92
+#: includes/admin/class-gravityview-support-port.php:149
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:431
 msgid "Subject"
 msgstr "Konu"
 
-#: includes/admin/class-gravityview-support-port.php:94
+#: includes/admin/class-gravityview-support-port.php:151
 msgid "How can we help you?"
 msgstr "Size nasıl yardımcı olabiliriz?"
 
-#: includes/admin/class-gravityview-support-port.php:96
+#: includes/admin/class-gravityview-support-port.php:153
 msgid "Message sent!"
 msgstr "Mesajınız gönderildi!"
 
-#: includes/admin/class-gravityview-support-port.php:97
+#: includes/admin/class-gravityview-support-port.php:154
 msgid ""
 "Thanks for reaching out! Someone from the GravityView team will get back to "
 "you soon."
@@ -1185,12 +1220,12 @@ msgstr ""
 
 #. translators: "Support Port" can be translated as "Support Portal" or
 #. "Support Window"
-#: includes/admin/class-gravityview-support-port.php:280
-#: includes/admin/class-gravityview-support-port.php:286
+#: includes/admin/class-gravityview-support-port.php:337
+#: includes/admin/class-gravityview-support-port.php:343
 msgid "GravityView Support Port"
 msgstr "GravityView Destek Portalı"
 
-#: includes/admin/class-gravityview-support-port.php:291
+#: includes/admin/class-gravityview-support-port.php:348
 msgid "Show GravityView Support Port when on a GravityView-related page"
 msgstr "GravityView ile alakalı bir sayfadaysam Destek Portalını göster"
 
@@ -1396,7 +1431,7 @@ msgid "These widgets will be shown below entries."
 msgstr "Bu bileşenler kayıt dökümünün alt kısımında gösterilir."
 
 #: includes/admin/metaboxes/views/view-configuration.php:42
-#: includes/class-admin-views.php:1096 includes/class-admin-views.php:1208
+#: includes/class-admin-views.php:1110 includes/class-admin-views.php:1222
 msgid "Close"
 msgstr "Kapat"
 
@@ -1449,7 +1484,7 @@ msgid "(no title)"
 msgstr "(başlıksız)"
 
 #: includes/class-admin-add-shortcode.php:138
-#: includes/class-admin-views.php:1209
+#: includes/class-admin-views.php:1223
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:282
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1133
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1261
@@ -1458,7 +1493,7 @@ msgid "Cancel"
 msgstr "İptal"
 
 #: includes/class-admin-add-shortcode.php:183
-#: includes/class-admin-views.php:1213
+#: includes/class-admin-views.php:1227
 msgid "Loading&hellip;"
 msgstr "data&hellip; yükleniyor"
 
@@ -1593,10 +1628,6 @@ msgstr "Erişimi için %s sürümüne güncelleyin"
 msgid "Coming Soon"
 msgstr "Çok Yakında"
 
-#: includes/class-admin-installer.php:463
-msgid "Learn More"
-msgstr "Daha Fazla"
-
 #: includes/class-admin-installer.php:481
 msgid "Not Installed"
 msgstr "Yüklü Değil"
@@ -1703,13 +1734,13 @@ msgstr "Form Önizleme"
 msgid "Preview this form"
 msgstr "Form Önizleme"
 
-#: includes/class-admin-views.php:677
-msgid "+ Add All Fields"
-msgstr "+ Tüm Alanları Ekle"
+#: includes/class-admin-views.php:673
+msgid "Add All Form Fields"
+msgstr ""
 
-#: includes/class-admin-views.php:678
-msgid "Add all the available fields at once."
-msgstr "Mevcut tüm alanları tek seferde ekle."
+#: includes/class-admin-views.php:674
+msgid "Insert all the form fields at once."
+msgstr ""
 
 #: includes/class-admin-views.php:728
 #: includes/widgets/search-widget/class-search-widget.php:318
@@ -1803,42 +1834,42 @@ msgstr "Bileşen Ekle"
 msgid "Add Field"
 msgstr "Alan Ekle"
 
-#: includes/class-admin-views.php:976
+#: includes/class-admin-views.php:990
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr "\"+ %s\" yada mevcut %ss buraya sürükleyin."
 
-#: includes/class-admin-views.php:1010
+#: includes/class-admin-views.php:1024
 #: includes/widgets/search-widget/class-search-widget.php:95
 msgid "Search Bar"
 msgstr "Arama Kutusu"
 
-#: includes/class-admin-views.php:1020
+#: includes/class-admin-views.php:1034
 #: includes/widgets/class-gravityview-widget-pagination-info.php:28
 msgid "Show Pagination Info"
 msgstr "Sayfalama Bilgisini Göster"
 
-#: includes/class-admin-views.php:1026 includes/class-admin-views.php:1033
+#: includes/class-admin-views.php:1040 includes/class-admin-views.php:1047
 #: includes/widgets/class-gravityview-widget-page-links.php:23
 msgid "Page Links"
 msgstr "Sayfa Bağlantıları"
 
-#: includes/class-admin-views.php:1099
+#: includes/class-admin-views.php:1113
 msgid "Filter Fields:"
 msgstr "Alanları Sırala:"
 
-#: includes/class-admin-views.php:1100
+#: includes/class-admin-views.php:1114
 msgid "Filter fields by name or label"
 msgstr "Alanları ara yada etikete göre sırala"
 
-#: includes/class-admin-views.php:1107
+#: includes/class-admin-views.php:1121
 msgid "No fields were found matching the search."
 msgstr "Aramaya uygun alan bulunamadı."
 
-#: includes/class-admin-views.php:1141
+#: includes/class-admin-views.php:1155
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr "Görünüm, kullanılmayan %s Görünüm türü ile ayarlanmış."
 
-#: includes/class-admin-views.php:1142
+#: includes/class-admin-views.php:1156
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
@@ -1846,32 +1877,32 @@ msgstr ""
 "Veriler kaybolmadı; alakalı eklentiyi yeniden etkinleştirdiğinizde "
 "yapılandırma seçenekleri yeniden görüntülenecektir."
 
-#: includes/class-admin-views.php:1204
+#: includes/class-admin-views.php:1218
 msgid "Enter View name here"
 msgstr "Görünüm Adını buraya girin"
 
-#: includes/class-admin-views.php:1205
+#: includes/class-admin-views.php:1219
 msgid "Reorder Search Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1206
+#: includes/class-admin-views.php:1220
 #: includes/widgets/search-widget/class-search-widget.php:235
 msgid "Add Search Field"
 msgstr "Arama Alanı Ekle"
 
-#: includes/class-admin-views.php:1207
+#: includes/class-admin-views.php:1221
 msgid "Remove Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1210
+#: includes/class-admin-views.php:1224
 msgid "Continue"
 msgstr "Devam Et"
 
-#: includes/class-admin-views.php:1211
+#: includes/class-admin-views.php:1225
 msgid "Ok"
 msgstr "Tamam"
 
-#: includes/class-admin-views.php:1212
+#: includes/class-admin-views.php:1226
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
@@ -1879,11 +1910,11 @@ msgstr ""
 "Görünüm oluşturulurken hata oluştu. Lütfen ayarları kontrol edin yada "
 "GravityView destek bölümüne başvurun."
 
-#: includes/class-admin-views.php:1214
+#: includes/class-admin-views.php:1228
 msgid "There was an error loading dynamic content."
 msgstr "Dinamik içeriği yüklerken bir hata oluştu."
 
-#: includes/class-admin-views.php:1215
+#: includes/class-admin-views.php:1229
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
@@ -1891,7 +1922,7 @@ msgstr ""
 "Alanı eklerken hata oluştu. Lütfen tekrar deneyin yada GravityView destek "
 "bölümüne başvurun."
 
-#: includes/class-admin-views.php:1216
+#: includes/class-admin-views.php:1230
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -2095,10 +2126,6 @@ msgstr "Bu aramada hiç sonuç bulunamadı"
 #: includes/class-api.php:317 includes/class-gravityview-entry-list.php:107
 msgid "No entries match your request."
 msgstr "Talebinize uyan kayıt bulunamadı."
-
-#: includes/class-api.php:870
-msgid "&larr; Go back"
-msgstr "&larr; Geri dön"
 
 #: includes/class-api.php:1291
 msgid "Map It"
@@ -2776,11 +2803,11 @@ msgstr "Not boştur."
 msgid "Address"
 msgstr "Adres"
 
-#: includes/fields/class-gravityview-field-address.php:286
+#: includes/fields/class-gravityview-field-address.php:288
 msgid "Show Map Link:"
 msgstr "Harita Bağlantısı Göster:"
 
-#: includes/fields/class-gravityview-field-address.php:287
+#: includes/fields/class-gravityview-field-address.php:289
 msgid "Display a \"Map It\" link below the address"
 msgstr "\"Haritada Bul\" bağlantısını  adresin altında göster."
 
@@ -2903,7 +2930,7 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-created-by.php:140
 msgid "Description"
-msgstr ""
+msgstr "Açıklama"
 
 #: includes/fields/class-gravityview-field-created-by.php:141
 msgid "First Name"
@@ -3129,7 +3156,7 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-gravatar.php:164
 msgid "Field: %s"
-msgstr ""
+msgstr "Alan: %s"
 
 #: includes/fields/class-gravityview-field-hidden.php:21
 msgid "Hidden"
@@ -3756,6 +3783,10 @@ msgstr "Görünür Tablo Sütunları"
 msgid "Each field will be displayed as a column in the table."
 msgstr "Her alan tabloda sütun şeklinde görünecektir."
 
+#: includes/presets/default-table/class-gravityview-default-template-table.php:103
+msgid "Add Table Column"
+msgstr ""
+
 #: includes/presets/event-listings/class-gravityview-preset-event-listings.php:24
 msgid "Event Listings"
 msgstr "Etkinlik Takvimi"
@@ -4186,17 +4217,17 @@ msgctxt "Setting: Enable or Disable"
 msgid "Disable"
 msgstr "Kapat"
 
-#: future/includes/class-gv-settings-view.php:130
+#: future/includes/class-gv-settings-view.php:148
 msgctxt "an action that admins can perform"
 msgid "edit entries"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:149
+#: future/includes/class-gv-settings-view.php:175
 msgctxt "an action that admins can perform"
 msgid "delete entries"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:158
+#: future/includes/class-gv-settings-view.php:188
 msgctxt "an action that admins can perform"
 msgid "duplicate entries"
 msgstr ""
@@ -4226,18 +4257,18 @@ msgctxt "Label in field picker for empty label"
 msgid "Field #%s (No Label)"
 msgstr "Alan #%s (Etiket Yok)"
 
-#: includes/admin/class-gravityview-support-port.php:84
+#: includes/admin/class-gravityview-support-port.php:141
 msgctxt "a support form search has returned empty for the following word"
 msgid "No results found for"
 msgstr "Şu değere göre sonuç bulunamadı: "
 
-#: includes/admin/class-gravityview-support-port.php:93
+#: includes/admin/class-gravityview-support-port.php:150
 msgctxt ""
 "Error shown when submitting support request and there is no subject provided"
 msgid "Please enter a subject"
 msgstr "Lütfen konu giriniz"
 
-#: includes/admin/class-gravityview-support-port.php:95
+#: includes/admin/class-gravityview-support-port.php:152
 msgctxt ""
 "Error shown when submitting support request and there is no message provided"
 msgid "Please enter a message"
