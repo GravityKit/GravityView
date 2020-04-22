@@ -7064,7 +7064,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'template_id' => 'table',
 			'settings' => array(
-				'hide_empty' => false,
+				'hide_empty' => true,
+				'hide_empty_single' => false,
 				'show_only_approved' => 0,
 			),
 			'fields' => array(
