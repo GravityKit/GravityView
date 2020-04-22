@@ -275,6 +275,7 @@ class GravityView_Welcome {
 					<li>Added: Better inline documentation for View Settings</li>
 					<li>Improved: When clicking "Add All Form Fields" in the "+ Add Field" picker</li>
 					<li>Modified: Changed default settings for new Views to "Show only approved entries"</li>
+					<li>Modified: When adding a field to a table-based layout, "+ Add Field" now says "+ Add Column"</li>
 					<li>Fixed: Single Entry "Hide empty fields" not working in Table and DataTables layouts</li>
 				</ul>
 

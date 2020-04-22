@@ -150,9 +150,17 @@ class Utils {
 	}
 
 	/**
-	 * Strips aliases in columns: https://github.com/gravityview/GravityView/issues/1308#issuecomment-617075190
+	 * Strips aliases in columns
+	 *
+	 * @see https://github.com/gravityview/GravityView/issues/1308#issuecomment-617075190
+	 *
+	 * @internal
+	 *
+	 * @since 2.8.1
 	 *
 	 * @param \GF_Query_Condition $condition The condition to strip column aliases from.
+	 *
+	 * @return \GF_Query_Condition
 	 */
 	public static function gf_query_strip_condition_column_aliases( $condition ) {
 		if ( $condition->expressions ) {
