@@ -14,26 +14,12 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 <table class="form-table striped"><?php
 
 	/**
-	 * @since 2.7
+	 * Render Edit Entry metabox settings, if enabled
+	 * @see GravityView_Edit_Entry_Admin::view_settings_metabox
+	 * @since 2.9
+	 * @param array $current_settings
 	 */
-	GravityView_Render_Settings::render_setting_row( 'edit_locking', $current_settings );
+	do_action( 'gravityview/metaboxes/edit_entry', $current_settings );
 
-	GravityView_Render_Settings::render_setting_row( 'user_edit', $current_settings );
-
-	/**
-	 * @since 2.1
-	 */
-	GravityView_Render_Settings::render_setting_row( 'unapprove_edit', $current_settings );
-
-	/**
-	 * @since 2.2
-	 */
-	GravityView_Render_Settings::render_setting_row( 'edit_redirect', $current_settings );
-
-	/**
-	 * @since 2.2
-	 */
-	GravityView_Render_Settings::render_setting_row( 'edit_redirect_url', $current_settings );
-
-	?>
+?>
 </table>
