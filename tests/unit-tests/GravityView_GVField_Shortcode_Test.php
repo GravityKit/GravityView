@@ -207,6 +207,7 @@ class GravityView_GVField_Shortcode_Test extends GV_UnitTestCase {
 		) );
 
 		add_filter( 'gravityview_get_entries', $callback = function( $parameters ) {
+			$parameters['sorting']['key'] = 'id';
 			$parameters['sorting']['direction'] = 'DESC';
 			return $parameters;
 		} );

@@ -4545,7 +4545,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		gravityview()->request = $request;
 		$request->returns['is_view'] = $view;
 
-		$template = new \GV\View_Table_Template( $view, $view->form->entries, $request );
+		$template = new \GV\View_Table_Template( $view, $view->form->get_entries( $view ), $request );
 
 		/** Test the column ouput. */
 		$expected = sprintf( '<th id="gv-field-%1$d-1" class="gv-field-%1$d-1" data-label="This is field one"><span class="gv-field-label">This is field one</span></th><th id="gv-field-%1$d-2" class="gv-field-%1$d-2" data-label="This is field two"><span class="gv-field-label">This is field two</span></th>', $view->form->ID );
@@ -4567,7 +4567,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		unset( $_GET['sort'] );
 
-		$entries = $view->form->entries->all();
+		$entries = $view->form->get_entries( $view )->all();
 
 		$attributes = array( 'class' => 'hello-button', 'data-row' => '1' );
 
@@ -4613,7 +4613,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		gravityview()->request = $request;
 		$request->returns['is_view'] = $view;
 
-		$template = new \GV\View_Table_Template( $view, $view->form->entries, $request );
+		$template = new \GV\View_Table_Template( $view, $view->form->get_entries( $view ), $request );
 
 		$gv_field = new \GV\Field();
 		$gv_field->ID = 1;
@@ -4819,6 +4819,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'2' => -100,
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form->ID ) );
+		$view = \GV\View::from_post( $view );
 
 		$entries = new \GV\Entry_Collection();
 
@@ -4836,61 +4837,60 @@ class GVFuture_Test extends GV_UnitTestCase {
 			) );
 		}
 
-		$this->assertEquals( $form->entries->total(), 501 );
-		$this->assertEquals( $form->entries->count(), 0 );
+		$this->assertEquals( $form->get_entries( $view )->total(), 501 );
+		$this->assertEquals( $form->get_entries( $view )->count(), 20 );
 
 		$filter_1 = \GV\GF_Entry_Filter::from_search_criteria( array( 'field_filters' => array(
 			'mode' => 'any', /** OR */
 			array( 'key' => '2', 'value' => '200' ),
 			array( 'key' => '2', 'value' => '300' ),
 		) ) );
-		$this->assertEquals( $form->entries->filter( $filter_1 )->count(), 0 );
-		$this->assertEquals( $form->entries->filter( $filter_1 )->total(), 2 );
+
+		$this->assertEquals( $form->get_entries( $view )->filter( $filter_1 )->count(), 2 );
+		$this->assertEquals( $form->get_entries( $view )->filter( $filter_1 )->total(), 2 );
 
 		$filter_2 = \GV\GF_Entry_Filter::from_search_criteria( array( 'field_filters' => array(
 			'mode' => 'any', /** OR */
 			array( 'key' => '2', 'value' => '150' ),
 			array( 'key' => '2', 'value' => '450' ),
 		) ) );
-		$this->assertEquals( 4, $form->entries->filter( $filter_1 )->filter( $filter_2 )->total() );
+		$this->assertEquals( 4, $form->get_entries( $view )->filter( $filter_1 )->filter( $filter_2 )->total() );
 
-		$this->assertCount( 20, $form->entries->all() ); /** The default count... */
-		$this->assertCount( 4, $form->entries->filter( $filter_1 )->filter( $filter_2 )->all() );
+		$this->assertCount( 20, $form->get_entries( $view )->all() ); /** The default count... */
+		$this->assertCount( 4, $form->get_entries( $view )->filter( $filter_1 )->filter( $filter_2 )->all() );
 
 		/** Try limiting and offsetting (a.k.a. pagination)... */
-		$this->assertCount( 5, $form->entries->limit( 5 )->all() );
-		$this->assertEquals( 501, $form->entries->limit( 5 )->total() );
-		$this->assertEquals( 0, $form->entries->limit( 5 )->count() );
+		$this->assertCount( 5, $form->get_entries( $view )->limit( 5 )->all() );
+		$this->assertEquals( 501, $form->get_entries( $view )->limit( 5 )->total() );
+		$this->assertEquals( 5, $form->get_entries( $view )->limit( 5 )->count() );
 
-		$entries = $form->entries->limit( 2 )->offset( 0 )->all();
+		$entries = $form->get_entries( $view )->limit( 2 )->offset( 0 )->all();
 		$this->assertCount( 2, $entries );
 		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '500', '499' ) );
 
-		$entries = $form->entries->limit( 2 )->offset( 6 )->all();
+		$entries = $form->get_entries( $view )->limit( 2 )->offset( 6 )->all();
 		$this->assertCount( 2, $entries );
 		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '494', '493' ) );
 
-		$entries = $form->entries->limit( 2 )->offset( 6 );
+		$entries = $form->get_entries( $view )->limit( 2 )->offset( 6 );
 		$entries->fetch();
 		$this->assertEquals( $entries->count(), 2 );
 		$entries->fetch();
 		$this->assertEquals( $entries->count(), 2 );
 
-		$last = $form->entries->limit( 2 )->offset( 6 )->last();
+		$last = $form->get_entries( $view )->limit( 2 )->offset( 6 )->last();
 		$this->assertEquals( $last['2'], '493' );
 
 		/** Hey, how about some sorting love? */
-		$view = \GV\View::from_post( $view );
-
 		$field = new \GV\Field();
 		$field->ID = '2'; /** @todo What about them joins? Should a field have a form link or the other way around? */
 		$sort = new \GV\Entry_Sort( $field, \GV\Entry_Sort::ASC );
-		$entries = $form->entries->limit( 2 )->sort( $sort )->offset( 18 )->all();
+		$entries = $form->get_entries( $view )->limit( 2 )->sort( $sort )->offset( 18 )->all();
 
 		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '114', '115' ) );
 
 		/** Pagination */
-		$page_1 = $form->entries->limit( 2 )->offset( 1 )->sort( $sort );
+		$page_1 = $form->get_entries( $view )->limit( 2 )->offset( 1 )->sort( $sort );
 		$this->assertEquals( 1, $page_1->current_page );
 		$this->assertEquals( $page_1->total(), 500 );
 
@@ -4925,7 +4925,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'2' => 0.13,
 		) );
 
-		$entries = $form->entries->filter( \GV\GF_Entry_Filter::from_search_criteria( array( 'field_filters' => array(
+		$entries = $form->get_entries( $view )->filter( \GV\GF_Entry_Filter::from_search_criteria( array( 'field_filters' => array(
 			'mode' => 'all',
 			array( 'key' => '1', 'value' => 'floaty-numbered', 'operator' => 'contains' ),
 		) ) ) );

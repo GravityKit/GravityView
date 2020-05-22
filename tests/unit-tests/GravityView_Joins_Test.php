@@ -140,7 +140,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $view );
 
-		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+		if ( $view->form->get_query_class( $view ) !== '\GF_Patched_Query' ) {
 			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
 		}
 
@@ -269,7 +269,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $view );
 
-		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+		if ( $view->form->get_query_class( $view ) !== '\GF_Patched_Query' ) {
 			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
 		}
 
@@ -348,7 +348,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $post );
 
-		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+		if ( $view->form->get_query_class( $view ) !== '\GF_Patched_Query' ) {
 			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
 		}
 
@@ -481,7 +481,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $post );
 
-		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+		if ( $view->form->get_query_class( $view ) !== '\GF_Patched_Query' ) {
 			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
 		}
 
@@ -612,7 +612,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $post );
 
-		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+		if ( $view->form->get_query_class( $view ) !== '\GF_Patched_Query' ) {
 			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
 		}
 
@@ -683,7 +683,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $post );
 
-		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+		if ( $view->form->get_query_class( $view ) !== '\GF_Patched_Query' ) {
 			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
 		}
 
@@ -820,7 +820,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $post );
 
-		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+		if ( $view->form->get_query_class( $view ) !== '\GF_Patched_Query' ) {
 			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
 		}
 
@@ -1108,7 +1108,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $post );
 
-		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+		if ( $view->form->get_query_class( $view ) !== '\GF_Patched_Query' ) {
 			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
 		}
 
@@ -1181,7 +1181,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $post );
 
-		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+		if ( $view->form->get_query_class( $view ) !== '\GF_Patched_Query' ) {
 			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
 		}
 
@@ -1244,7 +1244,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $post );
 
-		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+		if ( $view->form->get_query_class( $view ) !== '\GF_Patched_Query' ) {
 			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
 		}
 

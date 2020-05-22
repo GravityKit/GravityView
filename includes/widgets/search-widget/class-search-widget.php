@@ -754,7 +754,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', $search_criteria, $view->form->ID, $view->settings->as_atts() );
 		add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ), 10, 3 );
 
-		$query_class = $view->get_query_class();
+		$query_class = $view->form->get_query_class( $view );
 
 		if ( empty( $search_criteria['field_filters'] ) ) {
 			return;

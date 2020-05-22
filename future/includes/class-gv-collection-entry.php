@@ -119,6 +119,18 @@ class Entry_Collection extends Collection {
 	}
 
 	/**
+	 * Get the total number of entries that are fetched.
+	 *
+	 * @api
+	 * @since develop
+	 *
+	 * @return int The number of entries fetched now.
+	 */
+	public function count() {
+		return count( $this->fetch()->all() );
+	}
+
+	/**
 	 * Get the entries as an array.
 	 *
 	 * @api

@@ -58,43 +58,14 @@ class gventry extends \GV\Shortcode {
 
 		switch( $entry_id ):
 			case 'last':
-				if ( class_exists( '\GF_Query' ) ) {
-					/**
-					 * @todo Remove once we refactor the use of get_view_entries_parameters.
-					 *
-					 * Since we're using \GF_Query shorthand initialization we have to reverse the order parameters here.
-					 */
-					add_filter( 'gravityview_get_entries', $filter = function( $parameters, $args, $form_id ) {
-						if ( ! empty( $parameters['sorting'] ) ) {
-							/**
-							 * Reverse existing sorts.
-							 */
-							$sort = &$parameters['sorting'];
-							$sort['direction'] = $sort['direction'] == 'RAND' ? : ( $sort['direction'] == 'ASC' ? 'DESC' : 'ASC' );
-						} else {
-							/**
-							 * Otherwise, sort by date_created.
-							 */
-							$parameters['sorting'] = array(
-								'key' => 'id',
-								'direction' => 'ASC',
-								'is_numeric' => true
-							);
-						}
-						return $parameters;
-					}, 10, 3 );
-					$entries = $view->get_entries( null );
-					remove_filter( 'gravityview_get_entries', $filter );
-				} else {
-					$entries = $view->get_entries( null );
+				$entries = $view->get_entries( null );
 
-					/** If a sort already exists, reverse it. */
-					if ( $sort = end( $entries->sorts ) ) {
-						$entries = $entries->sort( new \GV\Entry_Sort( $sort->field, $sort->direction == \GV\Entry_Sort::RAND ? : ( $sort->direction == \GV\Entry_Sort::ASC ? \GV\Entry_Sort::DESC : \GV\Entry_Sort::ASC ) ), $sort->mode );
-					} else {
-						/** Otherwise, sort by date_created */
-						$entries = $entries->sort( new \GV\Entry_Sort( \GV\Internal_Field::by_id( 'id' ), \GV\Entry_Sort::ASC ), \GV\Entry_Sort::NUMERIC );
-					}
+				/** If a sort already exists, reverse it. */
+				if ( $sort = end( $entries->sorts ) ) {
+					$entries = $entries->sort( new \GV\Entry_Sort( $sort->field, $sort->direction == \GV\Entry_Sort::RAND ? : ( $sort->direction == \GV\Entry_Sort::ASC ? \GV\Entry_Sort::DESC : \GV\Entry_Sort::ASC ) ), $sort->mode );
+				} else {
+					/** Otherwise, sort by date_created */
+					$entries = $entries->sort( new \GV\Entry_Sort( \GV\Internal_Field::by_id( 'id' ), \GV\Entry_Sort::ASC ), \GV\Entry_Sort::NUMERIC );
 				}
 
 				if ( ! $entry = $entries->first() ) {
