@@ -148,7 +148,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		}
 
 		// Process each file path
-		foreach ( $file_paths as $file_path ) {
+		foreach ( $file_paths as $index => $file_path ) {
 
 			$rendered = null;
 
@@ -187,7 +187,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			 * @param array  $field_settings Array of GravityView field settings
 			 * @param \GV\Template_Context $context The context.
 			 */
-			$file_path = apply_filters( 'gravityview/fields/fileupload/file_path', $file_path, $field_settings, $context );
+			$file_path = apply_filters( 'gravityview/fields/fileupload/file_path', $file_path, $field_settings, $context, $index );
 
 			// Audio
 			if ( in_array( $extension, wp_get_audio_extensions() ) ) {
