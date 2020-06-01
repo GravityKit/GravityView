@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 5.4
+Tested up to: 5.4.1
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -20,6 +20,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.8.2 on June 1, 2020 =
+
+* Added: Settings for changing the "No Results" text and "No Search Results" text
 
 = 2.8.1 on April 22, 2020 =
 
