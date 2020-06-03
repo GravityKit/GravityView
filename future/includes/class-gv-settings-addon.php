@@ -490,14 +490,14 @@ class Addon_Settings extends \GFAddOn {
 	 */
 	public function all() {
 
-		$option_name  = 'gravityformsaddon_' . $this->_slug . '_app_settings';
+		$option_name = 'gravityformsaddon_' . $this->_slug . '_app_settings';
 
-		if( ! $this->has_per_site_settings() ) {
-			$defaults = get_blog_option( get_main_site_id(), $option_name );
-			$option_value = get_blog_option( get_main_site_id(), $option_name );
-		} else {
-			$defaults = $this->defaults();
+		if ( $this->has_site_settings() ) {
+			$defaults     = $this->defaults();
 			$option_value = get_option( $option_name, array() );
+		} else {
+			$defaults     = get_blog_option( get_main_site_id(), $option_name );
+			$option_value = get_blog_option( get_main_site_id(), $option_name );
 		}
 
 		return wp_parse_args( $option_value, $defaults );
@@ -742,13 +742,17 @@ class Addon_Settings extends \GFAddOn {
 	}
 
 	/**
+	 * Does the current site have its own settings?
 	 *
-	 * If not multisite, always show.
-	 * If multisite and the plugin is network activated, show; we need to register the submenu page for the Network Admin settings to work.
-	 * If multisite and not network admin, we don't want the settings to show.
-	 * @since 1.7.6
+	 * - If not multisite, returns true.
+	 * - If multisite and the plugin is network activated, returns true; we need to register the submenu page for the Network Admin settings to work.
+	 * - If multisite and not network admin, return false.
+	 *
+	 * @since 2.8.2
+	 *
+	 * @return bool
 	 */
-	private function has_per_site_settings() {
+	private function has_site_settings() {
 		return ( ! is_multisite() ) || is_main_site() || ( ! gravityview()->plugin->is_network_activated() ) || ( is_network_admin() && gravityview()->plugin->is_network_activated() );
 	}
 
@@ -763,11 +767,13 @@ class Addon_Settings extends \GFAddOn {
 		 * @since 1.7.6
 		 * @param bool $hide_if_network_activated Default: true
 		 */
-		$show_submenu = apply_filters( 'gravityview/show-settings-menu', $this->has_per_site_settings() );
+		$show_submenu = apply_filters( 'gravityview/show-settings-menu', $this->has_site_settings() );
 
-		if ( $show_submenu ) {
-			add_submenu_page( 'edit.php?post_type=gravityview', __( 'Settings', 'gravityview' ), __( 'Settings', 'gravityview' ), $this->_capabilities_app_settings, $this->_slug . '_settings', array( $this, 'app_tab_page' ) );
+		if ( ! $show_submenu ) {
+			return;
 		}
+
+		add_submenu_page( 'edit.php?post_type=gravityview', __( 'Settings', 'gravityview' ), __( 'Settings', 'gravityview' ), $this->_capabilities_app_settings, $this->_slug . '_settings', array( $this, 'app_tab_page' ) );
 	}
 
 	/**
