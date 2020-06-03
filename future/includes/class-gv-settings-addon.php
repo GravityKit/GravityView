@@ -602,7 +602,7 @@ class Addon_Settings extends \GFAddOn {
 
 	    if( $this->is_save_postback() ) {
 		    $settings = $this->get_posted_settings();
-		    $license_key = \GV\Utils::get( $settings, 'license_key' );
+		    $license_key = defined( 'GRAVITYVIEW_LICENSE_KEY' ) ? GRAVITYVIEW_LICENSE_KEY : \GV\Utils::get( $settings, 'license_key' );
 		    $license_status = \GV\Utils::get( $settings, 'license_key_status', 'inactive' );
         } else {
 		    $license_status = $this->get( 'license_key_status', 'inactive' );
@@ -789,7 +789,7 @@ class Addon_Settings extends \GFAddOn {
 			),
 			array(
 				'name' => 'license_key',
-				'required' => true,
+				'required' => ! defined( 'GRAVITYVIEW_LICENSE_KEY' ) || ! GRAVITYVIEW_LICENSE_KEY,
 				'label' => __( 'License Key', 'gravityview' ),
 				'description' => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ) . $this->get_license_handler()->license_details( $this->get_app_setting( 'license_key_response' ) ),
 				'type' => 'edd_license',
@@ -1179,6 +1179,11 @@ class Addon_Settings extends \GFAddOn {
 		$posted_settings = parent::get_posted_settings();
 
 		$local_key = Utils::get( $posted_settings, 'license_key' );
+
+		if ( ! $local_key && defined( 'GRAVITYVIEW_LICENSE_KEY' ) ) {
+			$local_key = GRAVITYVIEW_LICENSE_KEY;
+		}
+
 		$response_key = Utils::get( $posted_settings, 'license_key_response/license_key' );
 
 		static $added_message = false;
