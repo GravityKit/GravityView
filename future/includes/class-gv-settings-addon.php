@@ -451,6 +451,10 @@ class Addon_Settings extends \GFAddOn {
 			);
 		}
 
+		if ( 'license_key' === $key && defined( 'GRAVITYVIEW_LICENSE_KEY' ) ) {
+			return GRAVITYVIEW_LICENSE_KEY;
+		}
+
 		return Utils::get( $this->all(), $key, $default );
 	}
 
