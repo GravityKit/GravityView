@@ -489,11 +489,18 @@ class Addon_Settings extends \GFAddOn {
 	 * @return array The settings.
 	 */
 	public function all() {
+
 		$option_name  = 'gravityformsaddon_' . $this->_slug . '_app_settings';
 
-		$option_value = get_option( $option_name, array() );
+		if( ! $this->has_per_site_settings() ) {
+			$defaults = get_blog_option( get_main_site_id(), $option_name );
+			$option_value = get_blog_option( get_main_site_id(), $option_name );
+		} else {
+			$defaults = $this->defaults();
+			$option_value = get_option( $option_name, array() );
+		}
 
-		return wp_parse_args( $option_value, $this->defaults() );
+		return wp_parse_args( $option_value, $defaults );
 	}
 
 	/**
@@ -735,24 +742,28 @@ class Addon_Settings extends \GFAddOn {
 	}
 
 	/**
+	 *
+	 * If not multisite, always show.
+	 * If multisite and the plugin is network activated, show; we need to register the submenu page for the Network Admin settings to work.
+	 * If multisite and not network admin, we don't want the settings to show.
+	 * @since 1.7.6
+	 */
+	private function has_per_site_settings() {
+		return ( ! is_multisite() ) || is_main_site() || ( ! gravityview()->plugin->is_network_activated() ) || ( is_network_admin() && gravityview()->plugin->is_network_activated() );
+	}
+
+	/**
 	 * Add Settings link to GravityView menu
 	 * @return void
 	 */
 	public function create_app_menu() {
-		/**
-		 * If not multisite, always show.
-		 * If multisite and the plugin is network activated, show; we need to register the submenu page for the Network Admin settings to work.
-		 * If multisite and not network admin, we don't want the settings to show.
-		 * @since 1.7.6
-		 */
-		$show_submenu = ( ! is_multisite() ) ||  is_main_site() || ( ! gravityview()->plugin->is_network_activated() ) || ( is_network_admin() && gravityview()->plugin->is_network_activated() );
 
 		/**
 		 * Override whether to show the Settings menu on a per-blog basis.
 		 * @since 1.7.6
 		 * @param bool $hide_if_network_activated Default: true
 		 */
-		$show_submenu = apply_filters( 'gravityview/show-settings-menu', $show_submenu );
+		$show_submenu = apply_filters( 'gravityview/show-settings-menu', $this->has_per_site_settings() );
 
 		if ( $show_submenu ) {
 			add_submenu_page( 'edit.php?post_type=gravityview', __( 'Settings', 'gravityview' ), __( 'Settings', 'gravityview' ), $this->_capabilities_app_settings, $this->_slug . '_settings', array( $this, 'app_tab_page' ) );
