@@ -63,14 +63,23 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 			),
 		);
 
-		add_filter( 'gravityview/widget/hide_until_searched/allowlist', function( $whitelist ) {
-
-			$whitelist[] = 'gravityforms';
-
-			return $whitelist;
-		} );
+		add_filter( 'gravityview/widget/hide_until_searched/whitelist', array( $this, 'add_to_allowlist' ) );
 
 		parent::__construct( __( 'Gravity Forms', 'gravityview' ) , 'gravityforms', $default_values, $settings );
+	}
+
+	/**
+	 * Add widget to a list of allowed "Hide Until Searched" items
+	 *
+	 * @param array $allowlist Array of widgets to show before a search is performed, if the setting is enabled.
+	 *
+	 * @return array
+	 */
+	function add_to_allowlist( $allowlist ) {
+
+		$allowlist[] = 'gravityforms';
+
+		return $allowlist;
 	}
 
 	/**
