@@ -21,9 +21,24 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.8.2 on June 1, 2020 =
+= 2.9 on June 10, 2020 =
 
+* Added: A "Gravity Forms" widget to easily embed a form above and below a View
 * Added: Settings for changing the "No Results" text and "No Search Results" text
+* Added: "Date Updated" field to field picker and sorting options
+* Modified: When clicking the "GravityView" link in the Admin Toolbar, go to GravityView settings
+* Improved: Add new Yoast SEO plugin scripts to the No-Conflict approved list
+* Improved: Add Wicked Folders plugin scripts to the No-Conflict approved list
+* Fixed: Don't allow sorting by the Duplicate field
+* Fixed: Multi-site licenses not being properly shared with single sites when GravityView is not Network Activated
+
+__Developer Updates:__
+
+* Moved lots of `GF_Query` code out of `\GV\View` and into respective places
+* Fixed: Settings not able to be saved when using the `GRAVITYVIEW_LICENSE_KEY` constant
+* Fixed: License not able to be activated when using the `GRAVITYVIEW_LICENSE_KEY` constant
+* Fixed: Potential PHP warning when using the `{created_by}` Merge Tag
+* Modified: Added index of the current file in the loop to the `gravityview/fields/fileupload/file_path` filter
 
 = 2.8.1 on April 22, 2020 =
 

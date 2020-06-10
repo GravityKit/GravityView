@@ -269,6 +269,29 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
+				<h3>2.9 on June 10, 2020</h3>
+
+				<ul>
+					<li>Added: A "Gravity Forms" widget to easily embed a form above and below a View</li>
+					<li>Added: Settings for changing the "No Results" text and "No Search Results" text</li>
+					<li>Added: "Date Updated" field to field picker and sorting options</li>
+					<li>Modified: When clicking the "GravityView" link in the Admin Toolbar, go to GravityView settings</li>
+					<li>Improved: Add new Yoast SEO plugin scripts to the No-Conflict approved list</li>
+					<li>Improved: Add Wicked Folders plugin scripts to the No-Conflict approved list</li>
+					<li>Fixed: Don't allow sorting by the Duplicate field</li>
+					<li>Fixed: Multi-site licenses not being properly shared with single sites when GravityView is not Network Activated</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Moved lots of <code>GF_Query</code> code out of <code>\GV\View</code> and into respective places</li>
+					<li>Fixed: Settings not able to be saved when using the <code>GRAVITYVIEW_LICENSE_KEY</code> constant</li>
+					<li>Fixed: License not able to be activated when using the <code>GRAVITYVIEW_LICENSE_KEY</code> constant</li>
+					<li>Fixed: Potential PHP warning when using the <code>{created_by}</code> Merge Tag</li>
+					<li>Modified: Added index of the current file in the loop to the <code>gravityview/fields/fileupload/file_path</code> filter</li>
+				</ul>
+
 				<h3>2.8.1 on April 22, 2020</h3>
 
 				<ul>
