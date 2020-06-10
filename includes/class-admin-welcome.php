@@ -250,17 +250,17 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 
             <div class="feature-section col two-col has-2-columns is-fullwidth" style="padding: 0;">
+				<div class="column col col-2">
+					<div class="media-container"><img alt="Gravity Forms" src="<?php echo plugins_url( 'assets/images/screenshots/gravityforms.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
+					<h4 class="higher">New: Gravity Forms Widget</h4>
+					<p>If you want to allow easily adding new entries to your View, it&rsquo;s now simple to embed a Gravity Forms form as a Widget: click "Add Widget" and select Gravity Forms. Configure the widget, and you&rsquo;re all set.</p>
+				</div>
 	            <div class="column col col-2">
 		            <div class="media-container"><img alt="Gravatar" src="<?php echo plugins_url( 'assets/images/screenshots/gravatar.jpg', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
-		            <h4 class="higher">New: Gravatar field!</h4>
+		            <h4 class="higher">Gravatar field</h4>
 		            <p>Gravatars are images that represent you online. They're associated with email addresses and can be managed at <a href="https://gravatar.com">Gravatar.com</a>. Now, GravityView has a Gravatar
 		            field where you can choose to show the Gravatar of the entry creator or the image associated with a submitted email.</p>
 	            </div>
-                <div class="column col col-2">
-                    <div class="media-container"><img alt="Partial Entries" src="<?php echo plugins_url( 'assets/images/screenshots/partial-entries.jpg', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
-                    <h4 class="higher">Improved Gravity Forms Partial Entries support</h4>
-                    <p>GravityView now updates entry "Progress" in <a href="https://www.gravityforms.com/add-ons/partial-entries/" rel="external">Gravity Forms' Partial Entries Add-On</a> when an entry is edited.</p>
-                </div>
             </div>
 
 			<div class="changelog point-releases" style="border-bottom: 0">
