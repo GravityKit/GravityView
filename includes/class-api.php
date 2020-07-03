@@ -813,6 +813,10 @@ function gv_container_class( $passed_css_class = '', $echo = true, $context = nu
 		$default_css_class .= ' gv-container-no-results';
 	}
 
+	if ( $context instanceof \GV\Template_Context && $context->view ) {
+		$default_css_class .= ' ' . $context->view->settings->get( 'class', '' );
+	}
+
 	$css_class = trim( $passed_css_class . ' '. $default_css_class );
 
 	/**
