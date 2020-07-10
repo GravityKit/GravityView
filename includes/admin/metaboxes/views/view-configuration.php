@@ -1,3 +1,8 @@
+<?php
+/** @global string $curr_template GravityView_Template::template_id value. Empty string if not. */
+?>
+<input name="gv_fields" type="hidden" value="<?php echo esc_attr( http_build_query( array( 'fields' => get_post_meta( $post->ID, '_gravityview_directory_fields', true ) ) ) ); ?>" />
+
 <div id="gv-view-configuration-tabs">
 
 	<ul class="nav-tab-wrapper">
@@ -10,11 +15,9 @@
 
 		<div id="directory-fields" class="gv-section">
 
-			<h4><?php esc_html_e( 'Above Entries Widgets', 'gravityview'); ?> <span><?php esc_html_e( 'These widgets will be shown above entries.', 'gravityview'); ?></span></h4>
+			<h4><?php esc_html_e( 'Above Entries', 'gravityview'); ?> <span><?php esc_html_e( 'These widgets will be shown above entries.', 'gravityview'); ?></span></h4>
 
 			<?php do_action('gravityview_render_widgets_active_areas', $curr_template, 'header', $post->ID ); ?>
-
-			<h4><?php esc_html_e( 'Entries Fields', 'gravityview'); ?> <span><?php esc_html_e( 'These fields will be shown for each entry.', 'gravityview'); ?></span></h4>
 
 			<div id="directory-active-fields" class="gv-grid">
 				<?php if(!empty( $curr_template ) ) {
@@ -22,7 +25,7 @@
 				} ?>
 			</div>
 
-			<h4><?php esc_html_e( 'Below Entries Widgets', 'gravityview'); ?> <span><?php esc_html_e( 'These widgets will be shown below entries.', 'gravityview'); ?></span></h4>
+			<h4><?php esc_html_e( 'Below Entries', 'gravityview'); ?> <span><?php esc_html_e( 'These widgets will be shown below entries.', 'gravityview'); ?></span></h4>
 
 			<?php
 
@@ -34,7 +37,7 @@
 
 			<?php // list of available widgets to be shown in the popup ?>
             <div id="directory-available-widgets" class="hide-if-js gv-tooltip">
-                <span class="close"><i class="dashicons dashicons-dismiss"></i></span>
+                <span class="close" role="button" aria-label="<?php esc_html_e( 'Close', 'gravityview' ); ?>"><i class="dashicons dashicons-dismiss"></i></span>
 				<?php do_action('gravityview_render_available_widgets' ); ?>
             </div>
 
@@ -86,5 +89,6 @@
 		</div>
 
 	</div> <?php // end edit view tab ?>
-
 </div> <?php // end tabs ?>
+
+<input type="hidden" name="gv_fields_done" value="1" />

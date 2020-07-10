@@ -164,6 +164,11 @@ class GravityView_Admin_Views {
 	 */
 	public static function gform_toolbar_menu( $menu_items = array(), $id = NULL ) {
 
+		// Don't show on Trashed forms
+		if ( 'trash' === rgget( 'filter' ) ) {
+			return $menu_items;
+		}
+
 		$connected_views = gravityview_get_connected_views( $id, array( 'post_status' => 'any' ) );
 
 		$priority = 0;
@@ -551,20 +556,18 @@ class GravityView_Admin_Views {
 			}
 			$statii['template_settings'] = update_post_meta( $post_id, '_gravityview_template_settings', $_POST['template_settings'] );
 
-			$fields = array();
+			// guard against unloaded View configuration page
+			if ( isset( $_POST['gv_fields'] ) && isset( $_POST['gv_fields_done'] ) ) {
+				$fields = array();
 
-			// Directory&single Visible Fields
-			if( !empty( $preset_fields ) ) {
+				if ( ! empty( $_POST['gv_fields'] ) ) {
+					$fields = _gravityview_process_posted_fields();
+				}
 
-				$fields = $preset_fields;
+				$fields = wp_slash( $fields );
 
-			} elseif( !empty( $_POST['gv_fields'] ) ) {
-				$fields = _gravityview_process_posted_fields();
+				$statii['directory_fields'] = update_post_meta( $post_id, '_gravityview_directory_fields', $fields );
 			}
-
-			$fields = wp_slash( $fields );
-
-			$statii['directory_fields'] = update_post_meta( $post_id, '_gravityview_directory_fields', $fields );
 
 			// Directory Visible Widgets
 			if( empty( $_POST['widgets'] ) ) {
@@ -775,6 +778,15 @@ class GravityView_Admin_Views {
 		);
 
 		/**
+		 * @since develop
+		 */
+		$entry_default_fields['sequence'] = array(
+			'label' => __( 'Result Number', 'gravityview' ),
+			'type'  => 'sequence',
+			'desc'  => __( 'Display a sequential result number for each entry.', 'gravityview' ),
+		);
+
+		/**
 		 * @filter `gravityview_entry_default_fields` Modify the default fields for each zone and context
 		 * @param array $entry_default_fields Array of fields shown by default
 		 * @param  string|array $form form_ID or form object
@@ -815,7 +827,14 @@ class GravityView_Admin_Views {
 		// Move Custom Content to top
 		$fields = array( 'custom' => $fields['custom'] ) + $fields;
 
-		return $fields;
+		/**
+		 * @filter `gravityview/admin/available_fields` Modify the available fields that can be used in a View.
+		 *
+		 * @param[in,out] array $fields The fields.
+		 * @param  string|array $form form_ID or form object
+		 * @param  string $zone Either 'single', 'directory', 'header', 'footer'
+		 */
+		return apply_filters( 'gravityview/admin/available_fields', $fields, $form, $zone );
 	}
 
 
@@ -889,7 +908,7 @@ class GravityView_Admin_Views {
                     $available_items[ $form->ID ] = $this->get_available_fields( $form->ID, $zone );
                 }
 			} else {
-				$available_items[ $form ] = $this->get_registered_widgets();
+				$available_items[ $form ] = \GV\Widget::registered();
 			}
 		}
 
@@ -902,6 +921,11 @@ class GravityView_Admin_Views {
 					<?php foreach( $areas as $area ) : 	?>
 
 						<div class="gv-droppable-area" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>">
+                            <p class="gv-droppable-area-title"><strong <?php if ( 'widget' === $type ) {
+									echo 'class="screen-reader-text"';
+								} ?>><?php echo esc_html( $area['title'] ); ?></strong><?php if ( ! empty( $area['subtitle'] ) ) { ?>
+                                    <span class="gv-droppable-area-subtitle">
+                                    &ndash; <?php echo esc_html( $area['subtitle'] ); ?></span><?php } ?></p>
 							<div class="active-drop active-drop-<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
 
 								<?php // render saved fields
@@ -957,9 +981,11 @@ class GravityView_Admin_Views {
 								<span class="drop-message"><?php echo sprintf(esc_attr__('"+ %s" or drag existing %ss here.', 'gravityview'), $button_label, $type ); ?></span>
 							</div>
 							<div class="gv-droppable-area-action">
-								<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>" data-formid="<?php echo $view ? esc_attr( $view->form ? $view->form->ID : '' ) : ''; ?>"><?php echo '+ '.esc_html( $button_label ); ?></a>
-
-								<p class="gv-droppable-area-title"><strong><?php echo esc_html( $area['title'] ); ?></strong><?php if( !empty( $area['subtitle'] ) ) { ?><span class="gv-droppable-area-subtitle"> &ndash; <?php echo esc_html( $area['subtitle'] ); ?></span><?php } ?></p>
+                                <a href="#" class="gv-add-field button button-link button-large" title=""
+                                   data-objecttype="<?php echo esc_attr( $type ); ?>"
+                                   data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>"
+                                   data-context="<?php echo esc_attr( $zone ); ?>"
+                                   data-formid="<?php echo $view ? esc_attr( $view->form ? $view->form->ID : '' ) : ''; ?>"><?php echo '+ ' . esc_html( $button_label ); ?></a>
 							</div>
 						</div>
 
@@ -972,13 +998,16 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Render the widget active areas
+	 *
+	 * @param  string $template_id The current slug of the selected View template
 	 * @param  string $zone    Either 'header' or 'footer'
 	 * @param  string $post_id Current Post ID (view)
+	 *
 	 * @return string          html
 	 */
-	function render_widgets_active_areas( $template_id = '', $zone, $post_id = '' ) {
+	function render_widgets_active_areas( $template_id = '', $zone = '', $post_id = '' ) {
 
-		$default_widget_areas = GravityView_Widget::get_default_widget_areas();
+		$default_widget_areas = \GV\Widget::get_default_widget_areas();
 
 		$widgets = array();
 		if( !empty( $post_id ) ) {
@@ -988,7 +1017,7 @@ class GravityView_Admin_Views {
 		ob_start();
 		?>
 
-		<div class="gv-grid" id="directory-<?php echo $zone; ?>-widgets">
+        <div class="gv-grid gv-grid-pad gv-grid-border" id="directory-<?php echo $zone; ?>-widgets">
 			<?php $this->render_active_areas( $template_id, 'widget', $zone, $default_widget_areas, $widgets ); ?>
 		</div>
 

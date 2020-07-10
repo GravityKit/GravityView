@@ -152,11 +152,12 @@ abstract class Widget {
 
 		if ( $enable_custom_class ) {
 			$settings['custom_class'] = array(
-				'type' => 'text',
-				'label' => __( 'Custom CSS Class:', 'gravityview' ),
-				'desc' => __( 'This class will be added to the widget container', 'gravityview' ),
-				'value' => '',
+				'type'       => 'text',
+				'label'      => __( 'Custom CSS Class:', 'gravityview' ),
+				'desc'       => __( 'This class will be added to the widget container', 'gravityview' ),
+				'value'      => '',
 				'merge_tags' => true,
+				'class'      => 'widefat code',
 			);
 		}
 
