@@ -91,7 +91,23 @@ class Addon_Settings extends \GFAddOn {
 		/** @since 1.7.6 */
 		add_action( 'network_admin_menu', array( $this, 'add_network_menu' ) );
 
+		add_filter( 'gravityview_noconflict_styles', array( $this, 'register_no_conflict') , 1);
+
 		parent::init_admin();
+	}
+
+	/**
+	 * Allow GF styles to load in no-conflict mode
+	 *
+	 * @param array $items Styles to exclude from no-conflict
+	 *
+	 * @return array
+	 */
+	public function register_no_conflict( $items ) {
+
+	    $items[] = 'gform_settings';
+
+		return $items;
 	}
 
 	/**
