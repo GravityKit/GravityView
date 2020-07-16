@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Improved: Add Wicked Folders plugin scripts to the No-Conflict approved list
 * Fixed: Don't allow sorting by the Duplicate field
 * Fixed: Multi-site licenses not being properly shared with single sites when GravityView is not Network Activated
+* Fixed: Potential fatal error for Enfold theme
 
 __Developer Updates:__
 
