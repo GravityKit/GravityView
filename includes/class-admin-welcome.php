@@ -269,7 +269,7 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
-				<h3>2.9 on June 10, 2020</h3>
+				<h3>2.9 on July 16, 2020</h3>
 
 				<ul>
 					<li>Added: A "Gravity Forms" widget to easily embed a form above and below a View</li>
@@ -280,12 +280,12 @@ class GravityView_Welcome {
 					<li>Improved: Add Wicked Folders plugin scripts to the No-Conflict approved list</li>
 					<li>Fixed: Don't allow sorting by the Duplicate field</li>
 					<li>Fixed: Multi-site licenses not being properly shared with single sites when GravityView is not Network Activated</li>
+					<li>Fixed: Potential fatal error for Enfold theme</li>
 				</ul>
 
 				<p><strong>Developer Updates:</strong></p>
 
 				<ul>
-					<li>Moved lots of <code>GF_Query</code> code out of <code>\GV\View</code> and into respective places</li>
 					<li>Fixed: Settings not able to be saved when using the <code>GRAVITYVIEW_LICENSE_KEY</code> constant</li>
 					<li>Fixed: License not able to be activated when using the <code>GRAVITYVIEW_LICENSE_KEY</code> constant</li>
 					<li>Fixed: Potential PHP warning when using the <code>{created_by}</code> Merge Tag</li>

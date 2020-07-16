@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.9 on June 10, 2020 =
+= 2.9 on July 16, 2020 =
 
 * Added: A "Gravity Forms" widget to easily embed a form above and below a View
 * Added: Settings for changing the "No Results" text and "No Search Results" text
@@ -35,7 +35,6 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Updates:__
 
-* Moved lots of `GF_Query` code out of `\GV\View` and into respective places
 * Fixed: Settings not able to be saved when using the `GRAVITYVIEW_LICENSE_KEY` constant
 * Fixed: License not able to be activated when using the `GRAVITYVIEW_LICENSE_KEY` constant
 * Fixed: Potential PHP warning when using the `{created_by}` Merge Tag
