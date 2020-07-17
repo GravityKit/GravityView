@@ -56,7 +56,7 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 	 * @param array  $field_settings Settings for the particular GV field
 	 * @param array  $field Current field being displayed
 	 *
-	 * @return String values for this field based on the numeric values used by Gravity Forms
+	 * @return string values for this field based on the numeric values used by Gravity Forms
 	 */
 	public function get_content( $output = '', $entry = array(), $field_settings = array(), $field = array() ) {
 

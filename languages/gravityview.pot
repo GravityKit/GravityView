@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.8.1\n"
+"Project-Id-Version: GravityView 2.9\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -138,14 +138,14 @@ msgid ""
 msgstr ""
 
 #: future/includes/class-gv-license-handler.php:394
-#: future/includes/class-gv-settings-addon.php:1162
+#: future/includes/class-gv-settings-addon.php:1183
 msgid "You don't have the ability to edit plugin settings."
 msgstr ""
 
 #: future/includes/class-gv-license-handler.php:396
 #: future/includes/class-gv-license-handler.php:509
 #: future/includes/class-gv-license-handler.php:523
-#: future/includes/class-gv-settings-addon.php:793
+#: future/includes/class-gv-settings-addon.php:814
 msgid "Verifying license&hellip;"
 msgstr ""
 
@@ -175,19 +175,19 @@ msgstr ""
 #: future/includes/class-gv-oembed.php:212
 #: future/includes/class-gv-oembed.php:217
 #: future/includes/class-gv-oembed.php:223
-#: future/includes/class-gv-shortcode-gravityview.php:112
-#: future/includes/class-gv-shortcode-gravityview.php:140
-#: future/includes/class-gv-shortcode-gravityview.php:145
-#: future/includes/class-gv-shortcode-gravityview.php:151
-#: future/includes/class-gv-shortcode-gravityview.php:174
-#: future/includes/class-gv-shortcode-gravityview.php:179
-#: future/includes/class-gv-shortcode-gravityview.php:185
-#: future/includes/class-gv-shortcode-gravityview.php:193
+#: future/includes/class-gv-shortcode-gravityview.php:113
+#: future/includes/class-gv-shortcode-gravityview.php:141
+#: future/includes/class-gv-shortcode-gravityview.php:146
+#: future/includes/class-gv-shortcode-gravityview.php:152
+#: future/includes/class-gv-shortcode-gravityview.php:175
+#: future/includes/class-gv-shortcode-gravityview.php:180
+#: future/includes/class-gv-shortcode-gravityview.php:186
+#: future/includes/class-gv-shortcode-gravityview.php:194
 #: future/includes/class-gv-view.php:305 future/includes/class-gv-view.php:319
 #: future/includes/class-gv-view.php:324 future/includes/class-gv-view.php:330
 #: future/includes/class-gv-view.php:353 future/includes/class-gv-view.php:358
 #: future/includes/class-gv-view.php:364 future/includes/class-gv-view.php:372
-#: includes/class-frontend-views.php:674
+#: includes/class-frontend-views.php:679
 msgid "You are not allowed to view this content."
 msgstr ""
 
@@ -231,18 +231,18 @@ msgstr ""
 
 #: future/includes/class-gv-renderer.php:77
 #: future/includes/class-gv-renderer.php:111
-#: includes/class-frontend-views.php:623
+#: includes/class-frontend-views.php:628
 msgid "You can only see this message because you are able to edit this View."
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:89
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:152
 #: includes/admin/metaboxes/views/view-configuration.php:11
-#: includes/class-frontend-views.php:611
+#: includes/class-frontend-views.php:616
 #: includes/class-gravityview-admin-bar.php:102
 #: includes/class-gravityview-entry-link-shortcode.php:233
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:58
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:116
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:83
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:141
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1083
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 #: templates/fields/field-edit_link-html.php:38
@@ -250,23 +250,23 @@ msgid "Edit Entry"
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:93
-#: future/includes/class-gv-settings-view.php:379
+#: future/includes/class-gv-settings-view.php:403
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:144
 #: includes/admin/metaboxes/views/view-configuration.php:10
-#: includes/class-frontend-views.php:615
+#: includes/class-frontend-views.php:620
 msgid "Single Entry"
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:97
-#: future/includes/class-gv-settings-view.php:378
+#: future/includes/class-gv-settings-view.php:402
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:136
 #: includes/admin/metaboxes/views/view-configuration.php:9
-#: includes/class-frontend-views.php:608
+#: includes/class-frontend-views.php:613
 msgid "Multiple Entries"
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:110
-#: includes/class-frontend-views.php:622
+#: includes/class-frontend-views.php:627
 msgid "Add fields to %s"
 msgstr ""
 
@@ -275,7 +275,7 @@ msgid "GravityView Settings"
 msgstr ""
 
 #: future/includes/class-gv-settings-addon.php:141
-#: future/includes/class-gv-settings-addon.php:754
+#: future/includes/class-gv-settings-addon.php:776
 #: includes/class-admin-views.php:431 includes/class-admin.php:167
 msgid "Settings"
 msgstr ""
@@ -365,137 +365,137 @@ msgstr ""
 msgid "Uninstall %s"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:552
-#: future/includes/class-gv-settings-addon.php:1102
+#: future/includes/class-gv-settings-addon.php:563
+#: future/includes/class-gv-settings-addon.php:1123
 msgid "Update Settings"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:610
+#: future/includes/class-gv-settings-addon.php:621
 msgid ""
 "Your GravityView license %s. This means you&rsquo;re missing out on updates "
 "and support! %sActivate your license%s or %sget a license here%s."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:620
+#: future/includes/class-gv-settings-addon.php:631
 msgid "Inactive License"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:628
+#: future/includes/class-gv-settings-addon.php:639
 msgid "Expired License"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:633
+#: future/includes/class-gv-settings-addon.php:644
 msgid "Invalid License"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:634
+#: future/includes/class-gv-settings-addon.php:645
 msgid "is invalid"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:637
+#: future/includes/class-gv-settings-addon.php:648
 msgid "is inactive"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:638
-#: future/includes/class-gv-settings-addon.php:647
+#: future/includes/class-gv-settings-addon.php:649
+#: future/includes/class-gv-settings-addon.php:658
 msgid "Activate your license key below."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:646
+#: future/includes/class-gv-settings-addon.php:657
 msgid "has not been activated"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:767
+#: future/includes/class-gv-settings-addon.php:788
 msgid "Required"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:789
+#: future/includes/class-gv-settings-addon.php:810
 msgid "License Key"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:790
+#: future/includes/class-gv-settings-addon.php:811
 msgid ""
 "Enter the license key that was sent to you on purchase. This enables plugin "
 "updates &amp; support."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:812
+#: future/includes/class-gv-settings-addon.php:833
 msgid "Support Email"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:813
+#: future/includes/class-gv-settings-addon.php:834
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:822
+#: future/includes/class-gv-settings-addon.php:843
 msgid "Show Support Port?"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:835
+#: future/includes/class-gv-settings-addon.php:856
 msgid "The Support Port looks like this."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:835
+#: future/includes/class-gv-settings-addon.php:856
 msgid ""
 "The Support Port provides quick access to how-to articles and tutorials. "
 "For administrators, it also makes it easy to contact support."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:836
+#: future/includes/class-gv-settings-addon.php:857
 msgid "Show the Support Port on GravityView pages?"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:841
+#: future/includes/class-gv-settings-addon.php:862
 msgid "No-Conflict Mode"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:854
+#: future/includes/class-gv-settings-addon.php:875
 msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
 "themes."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:854
+#: future/includes/class-gv-settings-addon.php:875
 msgid "If your Edit View tabs are ugly, enable this setting."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:863
+#: future/includes/class-gv-settings-addon.php:884
 msgid "REST API"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:876
+#: future/includes/class-gv-settings-addon.php:897
 msgid ""
 "Enable View and Entry access via the REST API? Regular per-View "
 "restrictions apply (private, password protected, etc.)."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:877
+#: future/includes/class-gv-settings-addon.php:898
 msgid "If you are unsure, choose the Disable setting."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:882
+#: future/includes/class-gv-settings-addon.php:903
 msgid "Become a Beta Tester"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:887
+#: future/includes/class-gv-settings-addon.php:908
 msgid "Show me beta versions if they are available."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:892
+#: future/includes/class-gv-settings-addon.php:913
 msgid ""
 "You will have early access to the latest GravityView features and "
 "improvements. There may be bugs! If you encounter an issue, help make "
 "GravityView better by reporting it!"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:932
+#: future/includes/class-gv-settings-addon.php:953
 msgid "You are running GravityView version %s"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1189
+#: future/includes/class-gv-settings-addon.php:1215
 msgid ""
 "The license key you entered has been saved, but not activated. Please "
 "activate the license."
@@ -537,339 +537,356 @@ msgid ""
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:100
+msgid "\"No Results\" Text"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:106 includes/class-api.php:326
+#: includes/class-gravityview-entry-list.php:107
+msgid "No entries match your request."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:112
+msgid "\"No Search Results\" Text"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:118 includes/class-api.php:318
+msgid "This search returned no results."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:124
 msgid "Show all entries to administrators"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:101
+#: future/includes/class-gv-settings-view.php:125
 msgid "Administrators will be able to see entries with any approval status."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:102
+#: future/includes/class-gv-settings-view.php:126
 msgid ""
 "Logged-out visitors and non-administrators will only see approved entries, "
 "while administrators will see entries with all statuses. This makes it "
 "easier for administrators to moderate entries from a View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:110
+#: future/includes/class-gv-settings-view.php:134
 msgid "Hide View data until search is performed"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:113
+#: future/includes/class-gv-settings-view.php:137
 msgid "When enabled it will only show any View entries after a search is performed."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:122
-#: future/includes/class-gv-settings-view.php:131
+#: future/includes/class-gv-settings-view.php:146
+#: future/includes/class-gv-settings-view.php:155
 msgid "Hide empty fields"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:125
-#: future/includes/class-gv-settings-view.php:134
+#: future/includes/class-gv-settings-view.php:149
+#: future/includes/class-gv-settings-view.php:158
 msgid ""
 "When enabled, empty fields will be not be displayed. If disabled, fields "
 "and their labels will be displayed with no content."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:140
+#: future/includes/class-gv-settings-view.php:164
 msgid "Feeds"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:147
+#: future/includes/class-gv-settings-view.php:171
 msgid "Allow User Edit"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:148
+#: future/includes/class-gv-settings-view.php:172
 msgid "Allow logged-in users to edit entries they created."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:148
-#: future/includes/class-gv-settings-view.php:175
-#: future/includes/class-gv-settings-view.php:188
+#: future/includes/class-gv-settings-view.php:172
+#: future/includes/class-gv-settings-view.php:199
+#: future/includes/class-gv-settings-view.php:212
 msgid "Administrators are able to %s regardless of this setting."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:150
+#: future/includes/class-gv-settings-view.php:174
 msgid ""
 "Display \"Edit Entry\" fields to non-administrator users if they created "
 "the entry. Edit Entry fields will always be displayed to site "
 "administrators."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:159
+#: future/includes/class-gv-settings-view.php:183
 msgid "Unapprove Entries After Edit"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:162
+#: future/includes/class-gv-settings-view.php:186
 msgid ""
 "When an entry is edited by a non-administrator, reset the approval status "
 "to \"Unapproved\"."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:163
+#: future/includes/class-gv-settings-view.php:187
 msgid ""
 "If the \"Show only approved entries\" setting is enabled, the entry will "
 "need to be re-approved by an administrator before it is shown in the View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:173
+#: future/includes/class-gv-settings-view.php:197
 msgid "Allow User Delete"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:175
+#: future/includes/class-gv-settings-view.php:199
 msgid "Allow logged-in users to delete entries they created."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:177
+#: future/includes/class-gv-settings-view.php:201
 msgid ""
 "Display \"Delete Entry\" fields to non-administrator users if they created "
 "the entry. Delete Entry fields will always be displayed to site "
 "administrators."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:186
+#: future/includes/class-gv-settings-view.php:210
 msgid "Allow User Duplicate"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:188
+#: future/includes/class-gv-settings-view.php:212
 msgid "Allow logged-in users to duplicate entries they created."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:190
+#: future/includes/class-gv-settings-view.php:214
 msgid ""
 "Display \"Duplicate Entry\" fields to non-administrator users if they "
 "created the entry. Duplicate Entry fields will always be displayed to site "
 "administrators."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:200
+#: future/includes/class-gv-settings-view.php:224
 msgid "Sort by field"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:202
+#: future/includes/class-gv-settings-view.php:226
 msgid "By default, entries are sorted by Entry ID."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:206
-#: future/includes/class-gv-settings-view.php:236
+#: future/includes/class-gv-settings-view.php:230
+#: future/includes/class-gv-settings-view.php:260
 #: includes/class-common.php:1372
 msgid "Default"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:207
-#: future/includes/class-gv-settings-view.php:237
+#: future/includes/class-gv-settings-view.php:231
+#: future/includes/class-gv-settings-view.php:261
 #: includes/class-common.php:1415
 #: includes/fields/class-gravityview-field-date-created.php:27
 msgid "Date Created"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:216
+#: future/includes/class-gv-settings-view.php:240
 msgid "Sort direction"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:221
-#: future/includes/class-gv-settings-view.php:252
+#: future/includes/class-gv-settings-view.php:245
+#: future/includes/class-gv-settings-view.php:276
 msgid "ASC"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:222
-#: future/includes/class-gv-settings-view.php:253
+#: future/includes/class-gv-settings-view.php:246
+#: future/includes/class-gv-settings-view.php:277
 msgid "DESC"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:231
+#: future/includes/class-gv-settings-view.php:255
 msgid "Sort by secondary field"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:247
+#: future/includes/class-gv-settings-view.php:271
 msgid "Secondary sort direction"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:263
+#: future/includes/class-gv-settings-view.php:287
 msgid "Enable sorting by column"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:264
+#: future/includes/class-gv-settings-view.php:288
 msgid "Column Sorting"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:277
+#: future/includes/class-gv-settings-view.php:301
 msgid "Filter by Start Date"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:279
+#: future/includes/class-gv-settings-view.php:303
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:290
+#: future/includes/class-gv-settings-view.php:314
 msgid "Filter by End Date"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:292
+#: future/includes/class-gv-settings-view.php:316
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:303
+#: future/includes/class-gv-settings-view.php:327
 msgid "CSS Class"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:304
+#: future/includes/class-gv-settings-view.php:328
 msgid "CSS class to add to the wrapping HTML container."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:311
+#: future/includes/class-gv-settings-view.php:335
 msgid "Search Value"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:312
+#: future/includes/class-gv-settings-view.php:336
 msgid "Define a default search value for the View"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:319
+#: future/includes/class-gv-settings-view.php:343
 #: includes/widgets/search-widget/class-search-widget.php:237
 msgid "Search Field"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:320
+#: future/includes/class-gv-settings-view.php:344
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:327
+#: future/includes/class-gv-settings-view.php:351
 msgid "Search Operator"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:334
+#: future/includes/class-gv-settings-view.php:358
 msgid "Single Entry Title"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:336
+#: future/includes/class-gv-settings-view.php:360
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and "
 "Single Entry views."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:347
+#: future/includes/class-gv-settings-view.php:371
 msgid "Back Link Label"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:349
+#: future/includes/class-gv-settings-view.php:373
 msgid "The text of the link that returns to the multiple entries view."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:352 includes/class-api.php:870
+#: future/includes/class-gv-settings-view.php:376 includes/class-api.php:914
 msgid "&larr; Go back"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:359
+#: future/includes/class-gv-settings-view.php:383
 msgid "Redirect After Editing"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:361
+#: future/includes/class-gv-settings-view.php:385
 msgid "The page to redirect to after editing an entry."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:365
+#: future/includes/class-gv-settings-view.php:389
 msgid "Stay on Edit Entry"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:366
+#: future/includes/class-gv-settings-view.php:390
 msgid "Redirect to Single Entry"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:367
+#: future/includes/class-gv-settings-view.php:391
 msgid "Redirect to Multiple Entries"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:368
+#: future/includes/class-gv-settings-view.php:392
 msgid "Redirect to URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:372
+#: future/includes/class-gv-settings-view.php:396
 msgid "Editing Returns To&hellip;"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:374
+#: future/includes/class-gv-settings-view.php:398
 msgid "After editing an entry or clicking Cancel, where should the user be sent?"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:380
+#: future/includes/class-gv-settings-view.php:404
 msgid "Other URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:390
+#: future/includes/class-gv-settings-view.php:414
 msgid "Edit Entry Redirect URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:392
+#: future/includes/class-gv-settings-view.php:416
 msgid "After editing an entry, the user will be taken to this URL."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:400
+#: future/includes/class-gv-settings-view.php:424
 msgid "Enable Edit Locking"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:402
+#: future/includes/class-gv-settings-view.php:426
 msgid "Prevent multiple users from editing the same entry at the same time."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:413
+#: future/includes/class-gv-settings-view.php:437
 msgid "Prevent Direct Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:415
+#: future/includes/class-gv-settings-view.php:439
 msgid "Only allow access to this View when embedded using the shortcode."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:425
+#: future/includes/class-gv-settings-view.php:449
 msgid "Prevent REST Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:427
+#: future/includes/class-gv-settings-view.php:451
 msgid "Disable REST access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:438
+#: future/includes/class-gv-settings-view.php:462
 msgid "Allow REST Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:440
+#: future/includes/class-gv-settings-view.php:464
 msgid "Enable REST access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:450
+#: future/includes/class-gv-settings-view.php:474
 msgid "Allow CSV Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:452
+#: future/includes/class-gv-settings-view.php:476
 msgid "Enable CSV access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:455
+#: future/includes/class-gv-settings-view.php:479
 msgid ""
 "If enabled, entries can be exported for this View by adding \"/csv/\" to "
 "the View URL. Each configured field will be a column in the exported CSV."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:466
+#: future/includes/class-gv-settings-view.php:490
 msgid "Show all in CSV"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:469
+#: future/includes/class-gv-settings-view.php:493
 msgid "Do not limit the number of entries output in the CSV."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:486
+#: future/includes/class-gv-settings-view.php:510
 msgid "Random"
 msgstr ""
 
-#: future/includes/class-gv-shortcode-gventry.php:189
+#: future/includes/class-gv-shortcode-gventry.php:160
 msgid "Entry Updated"
 msgstr ""
 
@@ -1248,6 +1265,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/data-source.php:46
 #: includes/class-gravityview-html-elements.php:39
+#: includes/widgets/class-gravityview-widget-gravityforms.php:27
 msgid "list of forms"
 msgstr ""
 
@@ -1334,7 +1352,7 @@ msgid "These widgets will be shown below entries."
 msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:42
-#: includes/class-admin-views.php:1110 includes/class-admin-views.php:1222
+#: includes/class-admin-views.php:1115 includes/class-admin-views.php:1227
 msgid "Close"
 msgstr ""
 
@@ -1385,7 +1403,7 @@ msgid "(no title)"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:138
-#: includes/class-admin-views.php:1223
+#: includes/class-admin-views.php:1228
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:282
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1133
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1261
@@ -1394,7 +1412,7 @@ msgid "Cancel"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:183
-#: includes/class-admin-views.php:1227
+#: includes/class-admin-views.php:1232
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -1653,52 +1671,62 @@ msgstr ""
 msgid "The date the entry was created."
 msgstr ""
 
-#: includes/class-admin-views.php:738
+#: includes/class-admin-views.php:738 includes/class-common.php:1419
+#: includes/fields/class-gravityview-field-date-updated.php:27
+msgid "Date Updated"
+msgstr ""
+
+#: includes/class-admin-views.php:739
+#: includes/fields/class-gravityview-field-date-updated.php:29
+msgid "The date the entry was last updated."
+msgstr ""
+
+#: includes/class-admin-views.php:743
 #: includes/fields/class-gravityview-field-source-url.php:22
 msgid "Source URL"
 msgstr ""
 
-#: includes/class-admin-views.php:740
+#: includes/class-admin-views.php:745
 msgid "The URL of the page where the form was submitted."
 msgstr ""
 
-#: includes/class-admin-views.php:743
+#: includes/class-admin-views.php:748
 msgid "User IP"
 msgstr ""
 
-#: includes/class-admin-views.php:745
+#: includes/class-admin-views.php:750
 msgid "The IP Address of the user who created the entry."
 msgstr ""
 
-#: includes/class-admin-views.php:748
+#: includes/class-admin-views.php:753
 msgid "User"
 msgstr ""
 
-#: includes/class-admin-views.php:750
+#: includes/class-admin-views.php:755
 msgid "Details of the logged-in user who created the entry (if any)."
 msgstr ""
 
-#: includes/class-admin-views.php:757
+#: includes/class-admin-views.php:762
 #: includes/fields/class-gravityview-field-other-entries.php:27
 msgid "Other Entries"
 msgstr ""
 
-#: includes/class-admin-views.php:759
+#: includes/class-admin-views.php:764
 #: includes/fields/class-gravityview-field-other-entries.php:28
 msgid "Display other entries created by the entry creator."
 msgstr ""
 
-#: includes/class-admin-views.php:766
+#: includes/class-admin-views.php:771
 #: includes/fields/class-gravityview-field-entry-link.php:32
 msgid "Link to Entry"
 msgstr ""
 
-#: includes/class-admin-views.php:767
+#: includes/class-admin-views.php:772
 #: includes/fields/class-gravityview-field-entry-link.php:33
 msgid "A dedicated link to the single entry with customizable text."
 msgstr ""
 
-#: includes/class-admin-views.php:778
+#: includes/class-admin-views.php:783
 #: includes/fields/class-gravityview-field-custom.php:34
 #: includes/fields/class-gravityview-field-custom.php:48
 #: includes/widgets/class-gravityview-widget-custom-content.php:30
@@ -1706,109 +1734,109 @@ msgstr ""
 msgid "Custom Content"
 msgstr ""
 
-#: includes/class-admin-views.php:780
+#: includes/class-admin-views.php:785
 msgid "Insert custom text or HTML."
 msgstr ""
 
-#: includes/class-admin-views.php:787
+#: includes/class-admin-views.php:792
 msgid "Result Number"
 msgstr ""
 
-#: includes/class-admin-views.php:789
+#: includes/class-admin-views.php:794
 msgid "Display a sequential result number for each entry."
 msgstr ""
 
-#: includes/class-admin-views.php:885
+#: includes/class-admin-views.php:890
 msgid "Add Widget"
 msgstr ""
 
-#: includes/class-admin-views.php:887
+#: includes/class-admin-views.php:892
 msgid "Add Field"
 msgstr ""
 
-#: includes/class-admin-views.php:990
+#: includes/class-admin-views.php:995
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr ""
 
-#: includes/class-admin-views.php:1024
+#: includes/class-admin-views.php:1029
 #: includes/widgets/search-widget/class-search-widget.php:95
 msgid "Search Bar"
 msgstr ""
 
-#: includes/class-admin-views.php:1034
+#: includes/class-admin-views.php:1039
 #: includes/widgets/class-gravityview-widget-pagination-info.php:28
 msgid "Show Pagination Info"
 msgstr ""
 
-#: includes/class-admin-views.php:1040 includes/class-admin-views.php:1047
+#: includes/class-admin-views.php:1045 includes/class-admin-views.php:1052
 #: includes/widgets/class-gravityview-widget-page-links.php:23
 msgid "Page Links"
 msgstr ""
 
-#: includes/class-admin-views.php:1113
+#: includes/class-admin-views.php:1118
 msgid "Filter Fields:"
 msgstr ""
 
-#: includes/class-admin-views.php:1114
+#: includes/class-admin-views.php:1119
 msgid "Filter fields by name or label"
 msgstr ""
 
-#: includes/class-admin-views.php:1121
+#: includes/class-admin-views.php:1126
 msgid "No fields were found matching the search."
 msgstr ""
 
-#: includes/class-admin-views.php:1155
+#: includes/class-admin-views.php:1160
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:1156
+#: includes/class-admin-views.php:1161
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1218
+#: includes/class-admin-views.php:1223
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:1219
+#: includes/class-admin-views.php:1224
 msgid "Reorder Search Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1220
+#: includes/class-admin-views.php:1225
 #: includes/widgets/search-widget/class-search-widget.php:235
 msgid "Add Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1221
+#: includes/class-admin-views.php:1226
 msgid "Remove Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1224
+#: includes/class-admin-views.php:1229
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:1225
+#: includes/class-admin-views.php:1230
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:1226
+#: includes/class-admin-views.php:1231
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1228
+#: includes/class-admin-views.php:1233
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1229
+#: includes/class-admin-views.php:1234
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:1230
+#: includes/class-admin-views.php:1235
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -1849,23 +1877,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:483
+#: includes/class-admin-welcome.php:516
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:504
+#: includes/class-admin-welcome.php:537
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:551
+#: includes/class-admin-welcome.php:588
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:578
+#: includes/class-admin-welcome.php:615
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:579
+#: includes/class-admin-welcome.php:616
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1997,15 +2025,7 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-api.php:315
-msgid "This search returned no results."
-msgstr ""
-
-#: includes/class-api.php:317 includes/class-gravityview-entry-list.php:107
-msgid "No entries match your request."
-msgstr ""
-
-#: includes/class-api.php:1291
+#: includes/class-api.php:1335
 msgid "Map It"
 msgstr ""
 
@@ -2020,7 +2040,7 @@ msgstr ""
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1541
+#: includes/class-common.php:1545
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -2245,9 +2265,9 @@ msgid "Reset Entry approval for GravityView"
 msgstr ""
 
 #: includes/class-gravityview-entry-link-shortcode.php:236
-#: includes/extensions/delete-entry/class-delete-entry.php:159
-#: includes/extensions/delete-entry/class-delete-entry.php:189
-#: includes/extensions/delete-entry/class-delete-entry.php:206
+#: includes/extensions/delete-entry/class-delete-entry.php:161
+#: includes/extensions/delete-entry/class-delete-entry.php:191
+#: includes/extensions/delete-entry/class-delete-entry.php:208
 #: includes/extensions/delete-entry/fields/delete_link.php:14
 #: templates/fields/field-delete_link-html.php:38
 #: templates/fields/field-duplicate_link-html.php:38
@@ -2265,142 +2285,142 @@ msgstr ""
 msgid "Select a field"
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:157
+#: includes/extensions/delete-entry/class-delete-entry.php:159
 msgid "Delete Link Text"
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:165
+#: includes/extensions/delete-entry/class-delete-entry.php:167
 msgid "Allow the following users to delete the entry:"
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:191
+#: includes/extensions/delete-entry/class-delete-entry.php:193
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:346
+#: includes/extensions/delete-entry/class-delete-entry.php:363
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:422
 msgid "Delete"
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:420
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:346
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:377
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:388
+#: includes/extensions/delete-entry/class-delete-entry.php:437
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:366
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:397
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:408
 msgid "The entry does not exist."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:493
+#: includes/extensions/delete-entry/class-delete-entry.php:510
 msgid "Moving the entry to the trash failed."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:591
+#: includes/extensions/delete-entry/class-delete-entry.php:608
 msgid "Are you sure you want to delete this entry? This cannot be undone."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:618
+#: includes/extensions/delete-entry/class-delete-entry.php:635
 msgid "The link to delete this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:622
+#: includes/extensions/delete-entry/class-delete-entry.php:639
 msgid "You do not have permission to delete this entry."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:627
+#: includes/extensions/delete-entry/class-delete-entry.php:644
 msgid "The entry is already in the trash."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:629
+#: includes/extensions/delete-entry/class-delete-entry.php:646
 msgid "You cannot delete the entry; it is already in the trash."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:773
+#: includes/extensions/delete-entry/class-delete-entry.php:790
 msgid "There was an error deleting the entry: %s"
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:777
+#: includes/extensions/delete-entry/class-delete-entry.php:794
 msgid "The entry was successfully moved to the trash."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:780
+#: includes/extensions/delete-entry/class-delete-entry.php:797
 msgid "The entry was successfully deleted."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:125
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:145
 msgid "Duplicate Link Text"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:127
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:159
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:180
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:147
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:179
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:200
 msgid "Duplicate Entry"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:133
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:153
 msgid "Allow the following users to duplicate the entry:"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:161
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:181
 msgid "A link to duplicate the entry. Respects the Duplicate Entry permissions."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:412
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:452
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:784
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:432
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:472
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:804
 msgid "There was an error duplicating the entry."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:512
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:532
 msgid "Are you sure you want to duplicate this entry?"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:547
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:567
 msgid "The link to duplicate this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:551
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:571
 msgid "You do not have permission to duplicate this entry."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:691
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:711
 msgid "There was an error duplicating the entry: %s"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:695
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:715
 msgid "The entry was successfully duplicated."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:739
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:759
 msgid "Duplicate"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:763
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:783
 msgid "Entry duplicated."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:60
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:85
 msgid "A link to edit the entry. Visible based on View settings."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:114
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:139
 msgid "Edit Link Text"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:133
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:158
 msgid "Limiting Edit Access"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:134
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:159
 msgid ""
 "Change this setting if you don't want the user who created the entry to be "
 "able to edit this field."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:159
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:184
 #: includes/fields/class-gravityview-field.php:412
 msgid "Open link in a new tab or window?"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:172
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:197
 msgid "Make field editable to:"
 msgstr ""
 
@@ -2826,14 +2846,6 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-custom.php:72
 msgid "A label that is only shown in the GravityView View configuration screen."
-msgstr ""
-
-#: includes/fields/class-gravityview-field-date-updated.php:20
-msgid "Date Updated"
-msgstr ""
-
-#: includes/fields/class-gravityview-field-date-updated.php:22
-msgid "The date the entry was last updated."
 msgstr ""
 
 #: includes/fields/class-gravityview-field-date.php:25
@@ -3415,18 +3427,18 @@ msgid "Open link in the same window?"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-workflow_current_status_timestamp.php:22
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:120
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:147
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:135
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:162
 msgid "Workflow Current Status Timestamp"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-workflow_final_status.php:16
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:104
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:119
 msgid "Workflow Status"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-workflow_step.php:16
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:99
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:114
 msgid "Workflow Step"
 msgstr ""
 
@@ -3658,6 +3670,34 @@ msgstr ""
 
 #: includes/widgets/class-gravityview-widget-custom-content.php:31
 msgid "Enter text or HTML. Also supports shortcodes."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:16
+msgid "Display a Gravity Forms form."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:37
+msgid "Form to display"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:43
+msgid "Show form title?"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:48
+msgid "Show form description?"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:53
+msgid "Enable AJAX"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:60
+msgid "Field value parameters"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:68
+msgid "Gravity Forms"
 msgstr ""
 
 #: includes/widgets/class-gravityview-widget-page-links.php:14
@@ -3969,7 +4009,7 @@ msgid "Upgrade to %1$s for %2$s"
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:108
-#: includes/class-frontend-views.php:620
+#: includes/class-frontend-views.php:625
 msgctxt "Displayed when a View is not configured. %s is replaced by the tab label"
 msgid "The %s layout has not been configured."
 msgstr ""
@@ -3979,47 +4019,47 @@ msgctxt "A scale from 0 (bad) to 10 (good)"
 msgid "%s (\"Not at all likely\") to %s (\"Extremely likely\")"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:827
+#: future/includes/class-gv-settings-addon.php:848
 msgctxt "Setting: Show or Hide"
 msgid "Show"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:831
+#: future/includes/class-gv-settings-addon.php:852
 msgctxt "Setting: Show or Hide"
 msgid "Hide"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:846
+#: future/includes/class-gv-settings-addon.php:867
 msgctxt "Setting: On or off"
 msgid "On"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:850
+#: future/includes/class-gv-settings-addon.php:871
 msgctxt "Setting: On or off"
 msgid "Off"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:868
+#: future/includes/class-gv-settings-addon.php:889
 msgctxt "Setting: Enable or Disable"
 msgid "Enable"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:872
+#: future/includes/class-gv-settings-addon.php:893
 msgctxt "Setting: Enable or Disable"
 msgid "Disable"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:148
+#: future/includes/class-gv-settings-view.php:172
 msgctxt "an action that admins can perform"
 msgid "edit entries"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:175
+#: future/includes/class-gv-settings-view.php:199
 msgctxt "an action that admins can perform"
 msgid "delete entries"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:188
+#: future/includes/class-gv-settings-view.php:212
 msgctxt "an action that admins can perform"
 msgid "duplicate entries"
 msgstr ""
@@ -4081,12 +4121,12 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr ""
 
-#: includes/class-frontend-views.php:1433
+#: includes/class-frontend-views.php:1438
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-frontend-views.php:1434
+#: includes/class-frontend-views.php:1439
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""
@@ -4146,14 +4186,14 @@ msgctxt "no dropdown items"
 msgid "None"
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:238
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:214
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:89
+#: includes/extensions/delete-entry/class-delete-entry.php:255
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:234
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:114
 msgctxt "User capability"
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:777
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:797
 msgctxt "Error message links to logging page"
 msgid "Check the GravityView logs for more information."
 msgstr ""
@@ -4209,7 +4249,7 @@ msgctxt "HTML link pointing to WordPress article on oEmbed"
 msgid "Automatically convert oEmbed URLs into embedded content (%slearn more%s)."
 msgstr ""
 
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:93
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:108
 msgctxt "Gravity Flow Workflow Step Status"
 msgid "Status: %s"
 msgstr ""

@@ -725,7 +725,7 @@ class License_Handler {
 			$extensions = array();
 			foreach ( $active_plugins as $active_plugin ) {
 				// Match gravityview, gravity-forms, gravityforms, gravitate
-				if ( ! preg_match( '/(gravityview|gravity-?forms|gravitate)/ism', $active_plugin ) ) {
+				if ( ! preg_match( '/(gravityview|gravity-?forms|gravitate|perk|gravity|gf)/ism', $active_plugin ) ) {
 					continue;
 				}
 

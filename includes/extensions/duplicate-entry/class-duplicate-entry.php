@@ -64,6 +64,8 @@ final class GravityView_Duplicate_Entry {
 
 		// Handle duplicate action in the backend
 		add_action( 'gform_pre_entry_list', array( $this, 'maybe_duplicate_list' ) );
+
+		add_filter( 'gravityview/sortable/field_blacklist', array( $this, '_filter_sortable_fields' ), 1 );
 	}
 
 	/**
@@ -79,6 +81,24 @@ final class GravityView_Duplicate_Entry {
 		}
 
 		return self::$instance;
+	}
+
+	/**
+	 * Prevent users from being able to sort by the Duplicate field
+	 *
+	 * @since 2.8.3
+	 *
+	 * @param array $fields Array of field types not editable by users
+	 *
+	 * @return array
+	 */
+	public function _filter_sortable_fields( $fields ) {
+
+		$fields = (array) $fields;
+
+		$fields[] = 'duplicate_link';
+
+		return $fields;
 	}
 
 	/**

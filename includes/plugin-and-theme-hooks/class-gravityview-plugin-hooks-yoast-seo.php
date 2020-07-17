@@ -40,6 +40,12 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 		'metabox-tabs',
 		'metabox-classic',
 		'metabox-fresh',
+		'yoast-seo-admin-global',
+		'yoast-seo-dismissible',
+		'yoast-seo-monorepo',
+		'yoast-seo-admin-css',
+		'yoast-seo-adminbar',
+		'yoast-seo-search-appearance',
 	);
 
 	/**
@@ -56,6 +62,9 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 		'yoast-seo-shortcode-plugin',
 		'jquery-qtip',
 		'jquery-ui-autocomplete',
+		'yoast-seo-admin-global-script',
+		'yoast-seo-admin-media',
+		'yoast-seo-admin-script',
 	);
 
 	/**

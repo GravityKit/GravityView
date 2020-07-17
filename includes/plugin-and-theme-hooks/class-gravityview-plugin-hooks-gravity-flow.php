@@ -38,8 +38,23 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 		add_filter( 'gravityview/admin/available_fields', array( $this, 'maybe_add_non_default_fields' ), 10, 3 );
 
 		add_filter( 'gravityview/adv_filter/field_filters', array( $this, 'maybe_add_non_default_filter_fields' ), 10, 2 );
+
+		add_action( 'gravityflow_post_process_workflow', array( $this, 'clear_cache_after_workflow' ), 10, 4 );
 	}
-	
+
+	/**
+	 * Clears GravityView entry cache after running a Gravity Flow Workflow
+	 *
+	 * @param array $form
+	 * @param int $entry_id
+	 * @param int $step_id
+	 * @param int $starting_step_id
+	 *
+	 * @return void
+	 */
+	public function clear_cache_after_workflow( $form, $entry_id, $step_id, $starting_step_id ) {
+		do_action( 'gravityview_clear_form_cache', $form['id'] );
+	}
 
 	/**
 	 * Get the available status choices from Gravity Flow

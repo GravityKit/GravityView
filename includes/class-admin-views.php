@@ -734,6 +734,11 @@ class GravityView_Admin_Views {
 					'desc'	=> __('The date the entry was created.', 'gravityview'),
 					'type' => 'date_created',
 				),
+				'date_updated' => array(
+						'label' => __( 'Date Updated', 'gravityview'),
+						'desc'	=> __('The date the entry was last updated.', 'gravityview'),
+						'type' => 'date_updated',
+				),
 				'source_url' => array(
 					'label' => __('Source URL', 'gravityview'),
 					'type' => 'source_url',

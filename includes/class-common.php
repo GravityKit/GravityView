@@ -1414,6 +1414,10 @@ class GVCommon {
 				'type' => 'date_created',
 				'label' => __( 'Date Created', 'gravityview' ),
 			),
+			'date_updated' => array(
+				'type' => 'date_updated',
+				'label' => __( 'Date Updated', 'gravityview' ),
+			),
 		);
 
         $fields = $date_created + $fields;
