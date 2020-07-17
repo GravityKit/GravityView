@@ -5,6 +5,9 @@
 .gitignore export-ignore
 .gitmodules export-ignore
 .editorconfig export-ignore
+bower.json export-ignore
+codeception.dist.yml export-ignore
+SECURITY.md export-ignore
 Gruntfile.js export-ignore
 package.json export-ignore
 phpunit.xml export-ignore
@@ -19,9 +22,17 @@ Rakefile export-ignore
 
 # Folders
 
-/.idea export-ignore
-/.tx export-ignore
-/node_modules export-ignore
+.circleci export-ignore
+.circleci/* export-ignore
+.github export-ignore
+.github/* export-ignore
+.idea export-ignore
+.idea/* export-ignore
+.tx export-ignore
+.tx/* export-ignore
+node_modules export-ignore
+node_modules/* export-ignore
+docs export-ignore
 /docs export-ignore
 /docs/* export-ignore
 /tests export-ignore
