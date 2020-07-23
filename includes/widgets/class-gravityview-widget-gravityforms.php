@@ -29,7 +29,7 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 		 * gravityview_get_forms() is currently running too early as widgets_init runs before init and
 		 * when most Gravity Forms plugins register their own fields like GP Terms of Service.
 		 */
-		if( \GV\Admin_Request::is_admin() ) {
+		if( \GV\Admin_Request::is_admin() && ! GFForms::is_gravity_page() ) {
 			// check for available gravity forms
 			$forms = gravityview_get_forms();
 
