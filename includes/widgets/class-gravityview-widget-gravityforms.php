@@ -20,15 +20,22 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 			'footer' => 1,
 		);
 
-		// check for available gravity forms
-		$forms = gravityview_get_forms();
 
 		$choices = array(
 			0 => '&mdash; ' . esc_html__( 'list of forms', 'gravityview' ) . '&mdash;',
 		);
 
-		foreach ( $forms as $form ) {
-			$choices[ $form['id'] ] = $form['title'];
+		/**
+		 * gravityview_get_forms() is currently running too early as widgets_init runs before init and
+		 * when most Gravity Forms plugins register their own fields like GP Terms of Service.
+		 */
+		if( \GV\Admin_Request::is_admin() ) {
+			// check for available gravity forms
+			$forms = gravityview_get_forms();
+
+			foreach ( $forms as $form ) {
+				$choices[ $form['id'] ] = $form['title'];
+			}
 		}
 
 		$settings = array(
