@@ -275,8 +275,9 @@ class GravityView_Welcome {
 					<li>Fixed: Loading all Gravity Forms forms on the frontend
 						<ul>
 							<li>Fixes Map Icons field not working</li>
-							<li>Fixes conflict with gAppointments and Gravity Perks add-ons</li>
+							<li>Fixes conflict with gAppointments and Gravity Perks</li>
 						</ul></li>
+					<li>Fixed: Fatal error when Gravity Forms is inactive</li>
 				</ul>
 
 				<h3>2.9 on July 16, 2020</h3>

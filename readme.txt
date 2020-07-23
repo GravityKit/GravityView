@@ -25,7 +25,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Fixed: Loading all Gravity Forms forms on the frontend
 	* Fixes Map Icons field not working
-	* Fixes conflict with gAppointments and Gravity Perks add-ons
+	* Fixes conflict with gAppointments and Gravity Perks
+* Fixed: Fatal error when Gravity Forms is inactive
 
 = 2.9 on July 16, 2020 =
 
