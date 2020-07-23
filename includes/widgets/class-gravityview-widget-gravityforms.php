@@ -20,23 +20,12 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 			'footer' => 1,
 		);
 
-		// check for available gravity forms
-		$forms = gravityview_get_forms();
-
-		$choices = array(
-			0 => '&mdash; ' . esc_html__( 'list of forms', 'gravityview' ) . '&mdash;',
-		);
-
-		foreach ( $forms as $form ) {
-			$choices[ $form['id'] ] = $form['title'];
-		}
-
 		$settings = array(
 			'form_id' => array(
 				'type' => 'select',
 				'label' => __( 'Form to display', 'gravityview' ),
 				'value' => '',
-				'options' => $choices,
+				'options' => $this->_get_form_choices(),
 			),
 			'title' => array(
 				'type' => 'checkbox',
@@ -66,6 +55,40 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 		add_filter( 'gravityview/widget/hide_until_searched/whitelist', array( $this, 'add_to_allowlist' ) );
 
 		parent::__construct( __( 'Gravity Forms', 'gravityview' ) , 'gravityforms', $default_values, $settings );
+	}
+
+	/**
+	 * Returns an array of active forms to show as choices for the widget
+	 *
+	 * @since 2.9.0.1
+	 *
+	 * @return array Array with key set to Form ID => Form Title, with `0` as default placeholder.
+	 */
+	private function _get_form_choices() {
+
+		$choices = array(
+			0 => '&mdash; ' . esc_html__( 'list of forms', 'gravityview' ) . '&mdash;',
+		);
+
+		if ( ! class_exists( 'GFAPI' ) ) {
+			return $choices;
+		}
+
+		/**
+		 * gravityview_get_forms() is currently running too early as widgets_init runs before init and
+		 * when most Gravity Forms plugins register their own fields like GP Terms of Service.
+		 */
+		if( \GV\Admin_Request::is_admin() && ! GFForms::is_gravity_page() ) {
+
+			// check for available gravity forms
+			$forms = gravityview_get_forms();
+
+			foreach ( $forms as $form ) {
+				$choices[ $form['id'] ] = $form['title'];
+			}
+		}
+
+		return $choices;
 	}
 
 	/**

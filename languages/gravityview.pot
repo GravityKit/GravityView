@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.9\n"
+"Project-Id-Version: GravityView 2.9.0.1\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -886,7 +886,7 @@ msgstr ""
 msgid "Random"
 msgstr ""
 
-#: future/includes/class-gv-shortcode-gventry.php:160
+#: future/includes/class-gv-shortcode-gventry.php:189
 msgid "Entry Updated"
 msgstr ""
 
@@ -1265,7 +1265,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/data-source.php:46
 #: includes/class-gravityview-html-elements.php:39
-#: includes/widgets/class-gravityview-widget-gravityforms.php:27
+#: includes/widgets/class-gravityview-widget-gravityforms.php:25
 msgid "list of forms"
 msgstr ""
 
@@ -1877,23 +1877,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:516
+#: includes/class-admin-welcome.php:526
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:537
+#: includes/class-admin-welcome.php:547
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:588
+#: includes/class-admin-welcome.php:598
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:615
+#: includes/class-admin-welcome.php:625
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:616
+#: includes/class-admin-welcome.php:626
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -3676,27 +3676,27 @@ msgstr ""
 msgid "Display a Gravity Forms form."
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-gravityforms.php:37
+#: includes/widgets/class-gravityview-widget-gravityforms.php:44
 msgid "Form to display"
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-gravityforms.php:43
+#: includes/widgets/class-gravityview-widget-gravityforms.php:50
 msgid "Show form title?"
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-gravityforms.php:48
+#: includes/widgets/class-gravityview-widget-gravityforms.php:55
 msgid "Show form description?"
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-gravityforms.php:53
+#: includes/widgets/class-gravityview-widget-gravityforms.php:60
 msgid "Enable AJAX"
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-gravityforms.php:60
+#: includes/widgets/class-gravityview-widget-gravityforms.php:67
 msgid "Field value parameters"
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-gravityforms.php:68
+#: includes/widgets/class-gravityview-widget-gravityforms.php:75
 msgid "Gravity Forms"
 msgstr ""
 

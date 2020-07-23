@@ -21,6 +21,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.9.0.1 on July 23, 2020 =
+
+* Fixed: Loading all Gravity Forms forms on the frontend
+	* Fixes Map Icons field not working
+	* Fixes conflict with gAppointments and Gravity Perks
+* Fixed: Fatal error when Gravity Forms is inactive
+
 = 2.9 on July 16, 2020 =
 
 * Added: A "Gravity Forms" widget to easily embed a form above and below a View

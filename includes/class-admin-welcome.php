@@ -269,6 +269,17 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
+				<h3>2.9.0.1 on July 23, 2020</h3>
+
+				<ul>
+					<li>Fixed: Loading all Gravity Forms forms on the frontend
+						<ul>
+							<li>Fixes Map Icons field not working</li>
+							<li>Fixes conflict with gAppointments and Gravity Perks</li>
+						</ul></li>
+					<li>Fixed: Fatal error when Gravity Forms is inactive</li>
+				</ul>
+
 				<h3>2.9 on July 16, 2020</h3>
 
 				<ul>
