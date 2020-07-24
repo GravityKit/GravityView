@@ -1,4 +1,4 @@
-<img src="https://gravityview.co/wp-content/themes/gravityview/images/GravityView-262x80@2x.png" width="262" height="80" alt="GravityView (Floaty loves you!)" />
+<img src="https://gravityview.co/wp-content/themes/Website/images/GravityView-262x80@2x.png" width="262" height="80" alt="GravityView (Floaty loves you!)" />
 
 [![Build Status](https://travis-ci.org/gravityview/GravityView.svg?branch=develop)](https://travis-ci.org/gravityview/GravityView) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/gravityview/GravityView/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/gravityview/GravityView/?branch=2.0) [![Coverage Status](https://coveralls.io/repos/gravityview/GravityView/badge.svg?branch=2.0&service=github)](https://coveralls.io/github/gravityview/GravityView?branch=develop)
 
