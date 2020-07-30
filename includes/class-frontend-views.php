@@ -1381,7 +1381,7 @@ class GravityView_frontend {
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
 					 * @param \GV\View The View.
 					 */
-					apply_filters( 'gravityview_lightbox_script', $js_dependency, $view );
+					$js_dependency = apply_filters( 'gravityview_lightbox_script', $js_dependency, $view );
 					$js_dependencies[] = $js_dependency;
 
 					if ( ! empty( $wp_filter[ 'gravity_view_lightbox_style' ] ) ) {
