@@ -83,7 +83,16 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	 */
 	public function allowed_atts( $atts = array() ) {
 
-		$atts['data-fancybox'] = null;
+		$atts['data-fancybox']         = null;
+		$atts['data-fancybox-trigger'] = null;
+		$atts['data-src']              = null;
+		$atts['data-type']             = null;
+		$atts['data-width']            = null;
+		$atts['data-height']           = null;
+		$atts['data-srcset']           = null;
+		$atts['data-caption']          = null;
+		$atts['data-options']          = null;
+		$atts['data-filter']           = null;
 
 		return $atts;
 	}
