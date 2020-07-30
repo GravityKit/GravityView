@@ -23,15 +23,15 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	protected function default_settings() {
 
 		$defaults = array(
-				'animationEffect' => 'fade',
-				'toolbar'         => true,
-				'closeExisting'   => true,
-				'arrows'          => true,
-				'buttons'         => array(
+				'animationEffect'   => 'fade',
+				'toolbar'           => true,
+				'closeExisting'     => true,
+				'arrows'            => true,
+				'buttons'           => array(
 						'thumbs',
 						'close',
 				),
-				'i18n'            => array(
+				'i18n'              => array(
 						'en' => array(
 								'CLOSE'       => __( 'Close', 'gravityview' ),
 								'NEXT'        => __( 'Next', 'gravityview' ),
@@ -100,6 +100,7 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 
 		$atts['data-fancybox']         = null;
 		$atts['data-fancybox-trigger'] = null;
+		$atts['data-fancybox-index']   = null;
 		$atts['data-src']              = null;
 		$atts['data-type']             = null;
 		$atts['data-width']            = null;
@@ -125,7 +126,7 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 
 		if ( $context && ! empty( $context->field->field ) ) {
 			if ( $context->field->field->multipleFiles ) {
-				$link_atts['data-fancybox'] = 'gallery';
+				$link_atts['data-fancybox'] = 'gallery-' . sprintf( "%s-%s-%s", $context->field->ID, $context->field->form_id, $context->entry->get_slug() );
 			}
 		}
 
