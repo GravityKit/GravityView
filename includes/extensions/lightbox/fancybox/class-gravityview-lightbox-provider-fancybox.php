@@ -23,14 +23,29 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	protected function default_settings() {
 
 		$defaults = array(
-			'animationEffect' => 'fade',
-			'toolbar'         => true,
-			'closeExisting'   => true,
-			'arrows'          => true,
-			'buttons'         => array(
-					'thumbs',
-					'close',
-			),
+				'animationEffect' => 'fade',
+				'toolbar'         => true,
+				'closeExisting'   => true,
+				'arrows'          => true,
+				'buttons'         => array(
+						'thumbs',
+						'close',
+				),
+				'i18n'            => array(
+						'en' => array(
+								'CLOSE'       => __( 'Close', 'gravityview' ),
+								'NEXT'        => __( 'Next', 'gravityview' ),
+								'PREV'        => __( 'Previous', 'gravityview' ),
+								'ERROR'       => __( 'The requested content cannot be loaded. <br/> Please try again later.', 'gravityview' ),
+								'PLAY_START'  => __( 'Start slideshow', 'gravityview' ),
+								'PLAY_STOP'   => __( 'Pause slideshow', 'gravityview' ),
+								'FULL_SCREEN' => __( 'Full screen', 'gravityview' ),
+								'THUMBS'      => __( 'Thumbnails', 'gravityview' ),
+								'DOWNLOAD'    => __( 'Download', 'gravityview' ),
+								'SHARE'       => __( 'Share', 'gravityview' ),
+								'ZOOM'        => __( 'Zoo', 'gravityview' ),
+						),
+				)
 		);
 
 		return $defaults;
