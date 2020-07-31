@@ -14,10 +14,9 @@ abstract class GravityView_Lightbox_Provider {
 	public static $style_slug;
 
 	/**
-	 * GravityView_Lightbox_Provider constructor.
+	 * Adds actions and that modify GravityView to use this lightbox provider
 	 */
-	public function __construct() {
-
+	public function add_hooks() {
 		add_filter( 'gravityview_lightbox_script', array( $this, 'filter_lightbox_script' ), 1000 );
 		add_filter( 'gravityview_lightbox_style', array( $this, 'filter_lightbox_style' ), 1000 );
 
