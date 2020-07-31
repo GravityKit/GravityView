@@ -36,14 +36,14 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 								'CLOSE'       => __( 'Close', 'gravityview' ),
 								'NEXT'        => __( 'Next', 'gravityview' ),
 								'PREV'        => __( 'Previous', 'gravityview' ),
-								'ERROR'       => __( 'The requested content cannot be loaded. <br/> Please try again later.', 'gravityview' ),
+								'ERROR'       => __( 'The requested content cannot be loaded. Please try again later.', 'gravityview' ),
 								'PLAY_START'  => __( 'Start slideshow', 'gravityview' ),
 								'PLAY_STOP'   => __( 'Pause slideshow', 'gravityview' ),
 								'FULL_SCREEN' => __( 'Full screen', 'gravityview' ),
 								'THUMBS'      => __( 'Thumbnails', 'gravityview' ),
 								'DOWNLOAD'    => __( 'Download', 'gravityview' ),
 								'SHARE'       => __( 'Share', 'gravityview' ),
-								'ZOOM'        => __( 'Zoo', 'gravityview' ),
+								'ZOOM'        => __( 'Zoom', 'gravityview' ),
 						),
 				)
 		);
