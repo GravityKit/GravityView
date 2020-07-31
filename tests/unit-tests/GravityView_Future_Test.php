@@ -3884,6 +3884,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$expected = '<a class="gravityview-fancybox" data-fancybox="gallery-' . $form->ID . '-5-' . $entry->ID . '" href="http://one.jpg" rel="noopener noreferrer" target="_blank">one.jpg</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
+		do_action('gravityview/lightbox/provider', 'featherlight' );
+
+		$expected = '<a class="gravityview-featherlight-gallery" href="http://one.jpg" rel="noopener noreferrer" target="_blank">one.jpg</a>';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		do_action('gravityview/lightbox/provider', 'fancybox' );
+
 		$field->update_configuration( array( $display_as_url => false ) );
 		$field->update_configuration( array( $link_to_entry => true ) );
 

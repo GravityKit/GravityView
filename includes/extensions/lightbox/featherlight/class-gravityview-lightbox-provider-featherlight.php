@@ -46,8 +46,8 @@ class GravityView_Lightbox_Provider_Featherlight extends GravityView_Lightbox_Pr
 
 		?>
 		<script>
-			jQuery( '.gv-featherlight' ).featherlight(<?php echo $settings; ?>);
-			jQuery( '.gv-featherlight-gallery' ).featherlightGallery(<?php echo $settings; ?>);
+			jQuery( '.gravityview-featherlight' ).featherlight(<?php echo $settings; ?>);
+			jQuery( '.gravityview-featherlight-gallery' ).featherlightGallery(<?php echo $settings; ?>);
 		</script>
 		<?php
 	}
@@ -101,10 +101,12 @@ class GravityView_Lightbox_Provider_Featherlight extends GravityView_Lightbox_Pr
 		// Featherlight doesn't like the `rel` used by thickbox
 		unset( $link_atts['rel'] );
 
+		$link_atts['class'] = \GV\Utils::get( $link_atts, 'class' );
+
 		if ( $context && ! empty( $context->field->field ) && $context->field->field->multipleFiles ) {
-			$link_atts['class'] .= ' gv-featherlight-gallery';
+			$link_atts['class'] .= ' gravityview-featherlight-gallery';
 		} else {
-			$link_atts['class'] .= ' gv-featherlight';
+			$link_atts['class'] .= ' gravityview-featherlight';
 		}
 
 		$link_atts['class'] = gravityview_sanitize_html_class( $link_atts['class'] );

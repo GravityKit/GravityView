@@ -30,6 +30,27 @@ abstract class GravityView_Lightbox_Provider {
 	}
 
 	/**
+	 * Removes actions that were added by {@see GravityView_Lightbox_Provider::add_hooks}
+	 * @internal Do not call directly. Instead, use:
+	 *
+	 * <code>
+	 * do_action( 'gravityview/lightbox/provider', 'slug' );
+	 * </code>
+	 */
+	public function remove_hooks() {
+		remove_filter( 'gravityview_lightbox_script', array( $this, 'filter_lightbox_script' ), 1000 );
+		remove_filter( 'gravityview_lightbox_style', array( $this, 'filter_lightbox_style' ), 1000 );
+
+		remove_filter( 'gravityview/fields/fileupload/link_atts', array( $this, 'fileupload_link_atts' ), 10 );
+		remove_filter( 'gravityview/get_link/allowed_atts', array( $this, 'allowed_atts' ) );
+
+		remove_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts') );
+		remove_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles') );
+
+		remove_action( 'wp_footer', array( $this, 'output_footer' ) );
+	}
+
+	/**
 	 * Modifies the name of the stylesheet to be enqueued when loading thickbox
 	 *
 	 * @param string $script
