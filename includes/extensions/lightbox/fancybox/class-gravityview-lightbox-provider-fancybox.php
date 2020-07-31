@@ -122,11 +122,14 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 			return $link_atts;
 		}
 
-		$link_atts['class'] = 'gv-fancybox';
+		$link_atts['class'] = \GV\Utils::get( $link_atts, 'class' ) . ' gravityview-fancybox';
+
+		$link_atts['class'] = sanitize_html_class( $link_atts['class'] );
 
 		if ( $context && ! empty( $context->field->field ) ) {
 			if ( $context->field->field->multipleFiles ) {
-				$link_atts['data-fancybox'] = 'gallery-' . sprintf( "%s-%s-%s", $context->field->ID, $context->field->form_id, $context->entry->get_slug() );
+				$entry = $context->entry->as_entry();
+				$link_atts['data-fancybox'] = 'gallery-' . sprintf( "%s-%s-%s", $entry['form_id'], $context->field->ID, $context->entry->get_slug() );
 			}
 		}
 
