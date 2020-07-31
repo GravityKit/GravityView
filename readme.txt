@@ -21,6 +21,22 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop since XXX ==
+
+* New: New gallery support!
+* Fixed: Lightbox didn't work with secure images
+
+__Developer Updates:__
+
+* New: FancyBox is now being used for the lightbox
+	- Thickbox is no longer used
+	- Modify settings using `gravityview/lightbox/provider/fancybox/settings`
+	- [See options available here](https://fancyapps.com/fancybox/3/docs/#options)
+	- If you prefer, a [Featherlight lightbox option is available](https://github.com/gravityview/gv-snippets/tree/addon/featherlight-lightbox)
+* Fixed: `gravityview_lightbox_script` wasn't being applied
+* Modified: Formally deprecated `gravity_view_lightbox_script` and `gravity_view_lightbox_style` filters
+* Removed `gravityview/fields/fileupload/allow_insecure_lightbox` filter, since it's no longer needed
+
 = 2.9.0.1 on July 23, 2020 =
 
 * Fixed: Loading all Gravity Forms forms on the frontend
