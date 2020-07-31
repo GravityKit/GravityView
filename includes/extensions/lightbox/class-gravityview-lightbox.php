@@ -21,24 +21,32 @@ class GravityView_Lightbox {
 		require_once gravityview()->plugin->dir( 'includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php' );
 		require_once gravityview()->plugin->dir( 'includes/extensions/lightbox/featherlight/class-gravityview-lightbox-provider-featherlight.php' );
 
-		add_action( 'gravityview/loaded', array( $this, 'setup_providers' ) );
+		// Using plugins_loaded instead of gravityview/loaded because Addon_Settings waits for all plugins to load.
+		add_action( 'plugins_loaded', array( $this, 'setup_providers' ), 11 );
 	}
 
 	/**
-	 * Instantiates the registered lightbox providers
+	 * Activate the lightbox provider chosen in settings
 	 *
 	 * @internal
 	 */
 	public function setup_providers() {
 
-		foreach ( self::$providers as $provider ) {
-
-			if ( ! class_exists( $provider ) ) {
-				continue;
-			}
-
-			new $provider;
+		if( gravityview()->request->is_admin() ) {
+			return;
 		}
+
+		$provider = gravityview()->plugin->settings->get( 'lightbox' );
+
+		if ( ! isset( self::$providers[ $provider ] ) ) {
+			return;
+		}
+
+		if ( ! class_exists( self::$providers[ $provider ] ) ) {
+			return;
+		}
+
+		new self::$providers[ $provider ];
 	}
 
 	/**
