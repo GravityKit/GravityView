@@ -19,6 +19,7 @@ class GravityView_Lightbox {
 
 		require_once gravityview()->plugin->dir( 'includes/extensions/lightbox/class-gravityview-lightbox-provider.php' );
 		require_once gravityview()->plugin->dir( 'includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php' );
+		require_once gravityview()->plugin->dir( 'includes/extensions/lightbox/featherlight/class-gravityview-lightbox-provider-featherlight.php' );
 
 		add_action( 'gravityview/loaded', array( $this, 'setup_providers' ) );
 	}
