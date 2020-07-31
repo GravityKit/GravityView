@@ -875,24 +875,6 @@ class Addon_Settings extends \GFAddOn {
 				),
 				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ) . ' ' . __( 'If your Edit View tabs are ugly, enable this setting.', 'gravityview' ),
 			),
-			array(
-				'name' => 'lightbox',
-				'type' => 'radio',
-				'label' => __( 'Lightbox Script', 'gravityview' ),
-				'default_value' => $default_settings['lightbox'],
-				'horizontal' => 1,
-				'choices' => array(
-					array(
-						'label' => _x( 'FancyBox', 'Setting: On or off', 'gravityview' ),
-						'value' => 'fancybox',
-					),
-					array(
-						'label' => _x( 'Featherlight', 'Setting: On or off', 'gravityview' ),
-						'value' => 'featherlight',
-					),
-				),
-				'description'   => '', // TODO
-			),
 			/**
 			 * @since 2.0 Added REST API
 			 */

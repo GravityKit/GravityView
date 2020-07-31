@@ -3,8 +3,7 @@
   "dependencies": {
 	"flexibility": "*",
 	"jquery.cookie": "*",
-	"fancybox": "*",
-	"featherlight": "*"
+	"fancybox": "*"
   },
   "ignoredDependencies": [
 	"jquery"
