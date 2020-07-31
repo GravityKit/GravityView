@@ -374,11 +374,12 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		/**
 		 * @filter `gravityview/fields/fileupload/files_array` Modify the files array
 		 * @since 1.7
-		 * @param array $output_arr Associative array of files \n
-		 *  @type string $file_path The path to the file as stored in Gravity Forms \n
-		 *  @type string $content The generated output for the file \n
-		 * @param array $field_compat Current GravityView field array
-		 * @since 2.0
+		 * @since 2.0 Added $context
+		 * @param array $output_arr Associative array of files. {
+		 *  @type string $file_path The path to the file as stored in Gravity Forms.
+		 *  @type string $content The generated output for the file.
+		 * }
+		 * @param array $field_compat Current GravityView field array.
 		 * @param \GV\Template_Context $context The context.
 		 */
 		$output_arr = apply_filters( 'gravityview/fields/fileupload/files_array', $output_arr, $field_compat, $context );

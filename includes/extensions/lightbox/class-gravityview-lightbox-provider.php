@@ -7,11 +7,11 @@
  */
 abstract class GravityView_Lightbox_Provider {
 
-	public static $slug = 'thickbox';
+	public static $slug;
 
-	public static $script_slug = 'thickbox';
+	public static $script_slug;
 
-	public static $style_slug = 'thickbox';
+	public static $style_slug;
 
 	/**
 	 * GravityView_Lightbox_Provider constructor.
@@ -23,8 +23,6 @@ abstract class GravityView_Lightbox_Provider {
 
 		add_filter( 'gravityview/fields/fileupload/link_atts', array( $this, 'fileupload_link_atts' ), 10, 3 );
 		add_filter( 'gravityview/get_link/allowed_atts', array( $this, 'allowed_atts' ) );
-
-		add_filter( 'gravityview/fields/fileupload/allow_insecure_lightbox', '__return_true' );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts') );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles') );
@@ -46,7 +44,7 @@ abstract class GravityView_Lightbox_Provider {
 	/**
 	 * Modifies the name of the stylesheet to be enqueued when loading thickbox
 	 *
-	 * @param string $script
+	 * @param string $style
 	 *
 	 * @return string
 	 */

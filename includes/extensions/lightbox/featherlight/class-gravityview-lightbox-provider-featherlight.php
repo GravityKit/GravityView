@@ -1,4 +1,9 @@
 <?php
+/**
+ * Integrate with the Featherlight lightbox and gallery scripts
+ * @see https://github.com/noelboss/featherlight/
+ * @since TODO
+ */
 
 /**
  * Register the Featherlight lightbox
