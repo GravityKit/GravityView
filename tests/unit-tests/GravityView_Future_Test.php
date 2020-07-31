@@ -3873,7 +3873,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( $display_as_url => false ) );
 		$field->update_configuration( array( $link_to_entry => false ) );
 
-		$expected = '<a class="thickbox" href="http://one.jpg" rel="gv-field-' . $form->ID . '-5-' . $entry->ID . '">';
+		$expected = '<a class="gravityview-fancybox" data-fancybox="gallery-' . $form->ID . '-5-' . $entry->ID . '" href="http://one.jpg" rel="gv-field-' . $form->ID . '-5-' . $entry->ID . '">';
 			$expected .= '<img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" />';
 		$expected .= '</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
@@ -3881,7 +3881,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( $display_as_url => true ) );
 		$field->update_configuration( array( $link_to_entry => false ) );
 
-		$expected = '<a href="http://one.jpg" rel="noopener noreferrer" target="_blank">one.jpg</a>';
+		$expected = '<a class="gravityview-fancybox" data-fancybox="gallery-' . $form->ID . '-5-' . $entry->ID . '" href="http://one.jpg" rel="noopener noreferrer" target="_blank">one.jpg</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( $display_as_url => false ) );
@@ -3901,7 +3901,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( $display_as_url => false ) );
 		$field->update_configuration( array( $link_to_entry => false ) );
 
-		$expected = '<a class="thickbox" href="http://one.jpg" rel="gv-field-' . $form->ID . '-5-' . $entry->ID . '">';
+		$expected = '<a class="gravityview-fancybox" data-fancybox="gallery-' . $form->ID . '-5-' . $entry->ID . '" href="http://one.jpg" rel="gv-field-' . $form->ID . '-5-' . $entry->ID . '">';
 			$expected .= '<img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" />';
 		$expected .= '</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
@@ -3909,7 +3909,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( $display_as_url => true ) );
 		$field->update_configuration( array( $link_to_entry => false ) );
 
-		$expected = '<a class="thickbox" href="http://one.jpg" rel="gv-field-' . $form->ID . '-5-' . $entry->ID . '"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>';
+		$expected = '<a class="gravityview-fancybox" data-fancybox="gallery-' . $form->ID . '-5-' . $entry->ID . '" href="http://one.jpg" rel="gv-field-' . $form->ID . '-5-' . $entry->ID . '"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( $display_as_url => false ) );
@@ -4221,7 +4221,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Post Image */
 		$field = \GV\GF_Field::by_id( $form, '24' );
-		$expected = '<div class="gv-image"><a class="thickbox" href="' . $filename . '" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $filename . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <div class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</div></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></div>';
+		$expected = '<div class="gv-image"><a class="gravityview-fancybox" href="' . $filename . '" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $filename . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <div class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</div></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></div>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'link_to_post' => true ) );

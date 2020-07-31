@@ -636,7 +636,13 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 		$secure_file = $field->field->get_download_url( $file );
 
-		$expected = '<img src="' . $secure_file . '" width="250" class="gv-image gv-field-id-5" />';
+		$expected = sprintf(
+			'<a class="gravityview-fancybox" data-fancybox="%s" href="%s" rel="gv-field-%d-5-%d"><img src="' . $file . '" width="250" class="gv-image gv-field-id-5" /></a>',
+			'gallery-' . sprintf( "%s-%s-%s", $form->ID, $field->ID, $entry->get_slug() ),
+			esc_attr( $file ),
+			$form->ID,
+			$entry->ID
+		);
 
 		$this->assertEquals( $expected, $output );
 
@@ -644,7 +650,6 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 		$output = $renderer->render( $field, $view, $form, $entry, $request );
 
-		$expected = sprintf( '<a class="thickbox" href="%s" rel="gv-field-%d-5-%d"><img src="' . $file . '" width="250" class="gv-image gv-field-id-5" /></a>', esc_attr( $file ), $form->ID, $entry->ID );
 		$this->assertEquals( $expected, $output );
 	}
 
