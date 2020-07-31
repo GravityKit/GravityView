@@ -80,11 +80,6 @@ assets/lib/fancybox/*
 !assets/lib/fancybox/dist/*.js
 !assets/lib/fancybox/dist/*.css
 
-assets/lib/featherlight/*
-!assets/lib/featherlight/release
-!assets/lib/featherlight/release/*.js
-!assets/lib/featherlight/release/*.css
-
 # Unit tests
 /tmp
 /tests/bin/tmp
