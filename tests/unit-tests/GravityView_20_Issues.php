@@ -634,8 +634,6 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 		$output = $renderer->render( $field, $view, $form, $entry, $request );
 
-		$secure_file = $field->field->get_download_url( $file );
-
 		$expected = sprintf(
 			'<a class="gravityview-fancybox" data-fancybox="%s" href="%s" rel="gv-field-%d-5-%d"><img src="' . $file . '" width="250" class="gv-image gv-field-id-5" /></a>',
 			'gallery-' . sprintf( "%s-%s-%s", $form->ID, $field->ID, $entry->get_slug() ),
@@ -646,11 +644,6 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( $expected, $output );
 
-		add_filter( 'gravityview/fields/fileupload/allow_insecure_lightbox', '__return_true' ); /** ALARM! ALARM!! */
-
-		$output = $renderer->render( $field, $view, $form, $entry, $request );
-
-		$this->assertEquals( $expected, $output );
 	}
 
 	/**
