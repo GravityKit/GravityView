@@ -32,7 +32,7 @@ abstract class Entry {
 	 * @var mixed The backing entry.
 	 */
 	protected $entry;
-	
+
 	/**
 	 * Adds the necessary rewrites for single Entries.
 	 *
@@ -45,11 +45,11 @@ abstract class Entry {
 		$endpoint = self::get_endpoint_name();
 
 		/** Let's make sure the endpoint array is not polluted. */
-		if ( in_array( array( EP_ALL, $endpoint, $endpoint ), $wp_rewrite->endpoints ) ) {
+		if ( in_array( array( EP_PERMALINK | EP_PERMALINK | EP_ROOT, $endpoint, $endpoint ), $wp_rewrite->endpoints ) ) {
 			return;
 		}
 
-		add_rewrite_endpoint( $endpoint, EP_ALL );
+		add_rewrite_endpoint( $endpoint, EP_PAGES | EP_PERMALINK | EP_ROOT );
 	}
 
 	/**
@@ -123,10 +123,15 @@ abstract class Entry {
 			/** Must be an embed of some sort. */
 			if ( is_object( $post ) && is_numeric( $post->ID ) ) {
 				$permalink = get_permalink( $post->ID );
-				$args['gvid'] = $view_id;
+
+				$view_collection = View_Collection::from_post( $post );
+
+				if( 1 < $view_collection->count() ) {
+					$args['gvid'] = $view_id;
+				}
 			}
 		}
-		
+
 		/** Fallback to regular view base. */
 		if ( is_null( $permalink ) ) {
 			$permalink = get_permalink( $view_id );
@@ -141,7 +146,8 @@ abstract class Entry {
 		$permalink = apply_filters( 'gravityview_directory_link', $permalink, $request->is_view() ? $view_id : ( $post ? $post->ID : null ) );
 
 		$entry_endpoint_name = \GV\Entry::get_endpoint_name();
-		$entry_slug = \GravityView_API::get_entry_slug( $this->ID, $this->as_entry() );
+
+		$entry_slug = $this->get_slug( true, $view, $request, $track_directory );
 
 		/** Assemble the permalink. */
 		if ( get_option( 'permalink_structure' ) && ! is_preview() ) {
@@ -177,8 +183,75 @@ abstract class Entry {
 		 * @param string $permalink The permalink.
 		 * @param \GV\Entry $entry The entry we're retrieving it for.
 		 * @param \GV\View|null $view The view context.
-		 * @param \GV\Request $reqeust The request context.
+		 * @param \GV\Request $request The request context.
 		 */
 		return apply_filters( 'gravityview/entry/permalink', $permalink, $this, $view, $request );
+	}
+
+	/**
+	 * Get the entry slug
+	 *
+	 * @internal (for now!)
+	 * @todo Should $apply_filter be default true or false? Unit tests pass either way...
+	 *
+	 * @since 2.7
+	 *
+	 * @uses \GravityView_API::get_entry_slug
+	 *
+	 * @param bool $apply_filter Whether to apply the `gravityview/entry/slug` filter. Default: false.
+	 * @param \GV\View|null $view The View context.
+	 * @param \GV\Request $request The Request (current if null).
+	 * @param boolean $track_directory Keep the housing directory arguments intact (used for breadcrumbs, for example). Default: true.
+	 *
+	 * @return string Unique slug ID, passed through `sanitize_title()`, with `gravityview/entry/slug` filter applied
+	 */
+	public function get_slug( $apply_filter = false, \GV\View $view = null, \GV\Request $request = null, $track_directory = true ) {
+
+		$entry_slug = \GravityView_API::get_entry_slug( $this->ID, $this->as_entry() );
+
+		if( ! $apply_filter ) {
+			return $entry_slug;
+		}
+
+		/**
+		 * @filter `gravityview/entry/slug` Modify the entry URL slug as needed.
+		 * @since 2.2.1
+		 * @param[in,out] string $entry_slug The slug, sanitized with sanitize_title()
+		 * @param null|\GV\Entry $this The entry object.
+		 * @param null|\GV\View $view The view object.
+		 * @param null|\GV\Request $request The request.
+		 * @param bool $track_directory Whether the directory is tracked.
+		 */
+		$entry_slug = apply_filters( 'gravityview/entry/slug', $entry_slug, $this, $view, $request, $track_directory );
+
+		return $entry_slug;
+	}
+
+	/**
+	 * Is this a multi-entry (joined entry).
+	 *
+	 * @since 2.2
+	 *
+	 * @return boolean
+	 */
+	public function is_multi() {
+		return $this instanceof Multi_Entry;
+	}
+
+	/**
+	 * If this is a Multi_Entry filter it by Field
+	 *
+	 * @since 2.2
+	 *
+	 * @param \GV\Field $field The field to filter by.
+	 * @param int $fallback A fallback form_id if the field supplied is invalid.
+	 *
+	 * @return \GV\Entry|null A \GV\Entry or null if not found.
+	 */
+	public function from_field( $field, $fallback = null ) {
+		if ( ! $this->is_multi() ) {
+			return $this;
+		}
+		return Utils::get( $this, $field->form_id, $fallback );
 	}
 }

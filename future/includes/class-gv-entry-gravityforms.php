@@ -33,12 +33,13 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 * Construct a \GV\Entry instance by ID.
 	 *
 	 * @param int|string $entry_id The internal entry ID.
+	 * @param int $form_id The form ID, since slugs can be non-unique. Default: 0.
 	 *
 	 * @api
 	 * @since 2.0
 	 * @return \GV\GF_Entry|null An instance of this entry or null if not found.
 	 */
-	public static function by_id( $entry_id ) {
+	public static function by_id( $entry_id, $form_id = 0 ) {
 		$entry = null;
 
 		/** Always try to grab by numeric ID first. */
@@ -49,7 +50,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 		if ( ! $entry || is_wp_error( $entry ) ) {
 			/** Hmm, slugs? Must be. */
 			if ( apply_filters( 'gravityview_custom_entry_slug', false ) ) {
-				return self::by_slug( $entry_id );
+				return self::by_slug( $entry_id, $form_id );
 			}
 
 			return null;
@@ -100,7 +101,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	/**
 	 * Construct a \GV\Entry instance from a Gravity Forms entry array.
 	 *
-	 * @param array $entry The array ID.
+	 * @param array $entry The entry array
 	 *
 	 * @return \GV\GF_Entry|null An instance of this entry or null if not found.
 	 */
@@ -113,7 +114,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 		$self->entry = $entry;
 
 		$self->ID = $self->entry['id'];
-		$self->slug = \GravityView_API::get_entry_slug( $self->ID, $self->as_entry() );
+		$self->slug = $self->get_slug();
 
 		return $self;
 	}

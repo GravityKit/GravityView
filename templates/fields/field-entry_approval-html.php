@@ -11,6 +11,12 @@
  * @global \GV\Template_Context $gravityview
  * @since 2.0
  */
+
+if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
+	gravityview()->log->error( '{file} template loaded without context', array( 'file' => __FILE__ ) );
+	return;
+}
+
 $entry = $gravityview->entry->as_entry();
 
 /**
@@ -29,4 +35,4 @@ $anchor = GravityView_Field_Entry_Approval::get_anchor_text( $current_status );
 $title = GravityView_Field_Entry_Approval::get_title_attr( $current_status );
 $class = GravityView_Field_Entry_Approval::get_css_class( $current_status );
 
-?><a href="#" aria-role="button" aria-live="polite" aria-busy="false" class="gv-approval-toggle <?php echo $class; ?>" title="<?php echo esc_attr( $title ); ?>" data-current-status="<?php echo esc_attr( $current_status ); ?>" data-entry-slug="<?php echo esc_attr( $entry_slug ); ?>" data-form-id="<?php echo esc_attr( $entry['form_id'] ); ?>"><span class="screen-reader-text"><?php echo $anchor; ?></span></a><?php
+?><a href="#" aria-role="button" aria-live="polite" aria-busy="false" class="gv-approval-toggle selected <?php echo $class; ?>" title="<?php echo esc_attr( $title ); ?>" data-current-status="<?php echo esc_attr( $current_status ); ?>" data-entry-slug="<?php echo esc_attr( $entry_slug ); ?>" data-form-id="<?php echo esc_attr( $entry['form_id'] ); ?>"><span class="screen-reader-text"><?php echo $anchor; ?></span></a><?php

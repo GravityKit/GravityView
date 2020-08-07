@@ -300,17 +300,62 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		$user = $this->factory->user->create_and_set( array( 'role' => 'administrator' ) );
 		$form = $this->factory->form->create_and_get();
-		$post = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$form2 = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view2 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 		$entry = $this->factory->entry->create_and_get( array(
 			'created_by' => $user->ID,
 			'form_id' => $form['id'],
 		) );
+		$entry2 = $this->factory->entry->create_and_get( array(
+			'created_by' => $user->ID,
+			'form_id' => $form2['id'],
+		) );
 
-		GravityView_View::getInstance()->setPostId( $post->ID );
+		$multi_entry = \GV\Multi_Entry::from_entries( array(
+			\GV\GF_Entry::from_entry( $entry ), \GV\GF_Entry::from_entry( $entry2 )
+		) );
 
-		$href = GravityView_API::entry_link( $entry, $post->ID );
+		GravityView_View::getInstance()->setPostId( $view->ID );
 
-		$this->assertEquals( site_url('?gravityview='.$post->post_name.'&entry='.$entry['id'] ), $href );
+		$href = GravityView_API::entry_link( $entry, $view->ID );
+
+		$this->assertEquals( site_url('?gravityview='.$view->post_name.'&entry='.$entry['id'] ), $href );
+
+		$post_with_embeds = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $view->ID .'"] and then [gravityview id="' . $view2->ID .'"]') );
+
+		GravityView_View::getInstance()->setPostId( $post_with_embeds->ID );
+		GravityView_View::getInstance()->setViewId( $view->ID );
+
+		$href = GravityView_API::entry_link( $entry, $post_with_embeds->ID );
+
+		// Reproduces GH#1190
+		$this->assertEquals( site_url('?p='.$post_with_embeds->ID .'&entry='.$entry['id'] . '&gvid=' . $view->ID ), $href );
+
+		GravityView_View::getInstance()->setViewId( $view2->ID );
+		$href = GravityView_API::entry_link( $entry, $post_with_embeds->ID );
+
+		$this->assertEquals( site_url('?p='.$post_with_embeds->ID .'&entry='.$entry['id'] . '&gvid=' . $view2->ID ), $href );
+
+		$post_with_single_embed = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $view->ID .'"]') );
+
+		GravityView_View::getInstance()->setPostId( $post_with_single_embed->ID );
+
+		$href = GravityView_API::entry_link( $entry, $post_with_single_embed->ID );
+
+		$this->assertEquals( site_url('?p='.$post_with_single_embed->ID .'&entry='.$entry['id'] ), $href );
+
+		$href = GravityView_API::entry_link( $multi_entry->as_entry(), $post_with_single_embed->ID );
+		$this->assertEquals( site_url('?p='.$post_with_single_embed->ID .'&entry='.$entry['id'] . ',' . $entry2['id'] ), $href );
+
+		add_filter( 'gravityview_custom_entry_slug', '__return_true' );
+
+		$href = GravityView_API::entry_link( $multi_entry->as_entry(), $post_with_single_embed->ID );
+		$entry1_slug = GravityView_API::get_entry_slug( $entry['id'] );
+		$entry2_slug = GravityView_API::get_entry_slug( $entry2['id'] );
+		$this->assertEquals( site_url('?p='.$post_with_single_embed->ID .'&entry='.$entry1_slug . ',' . $entry2_slug ), $href );
+
+		remove_filter( 'gravityview_custom_entry_slug', '__return_true' );
 	}
 
 	/**
@@ -336,17 +381,39 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'This search returned no results.', GravityView_API::no_results( false ) );
 		$this->assertEquals( '<p>This search returned no results.</p>'."\n", GravityView_API::no_results( true ) );
 
+		$context = new \GV\Template_Context();
+		$context->request = new \GV\Mock_Request();
+		$context->request->returns['is_search'] = true;
+		$context->view = new \GV\View();
+		$this->assertEquals( 'This search returned no results.', GravityView_API::no_results( false, $context ) );
+		$context->view->settings->set( 'no_search_results_text', '' ); // When empty, use default
+		$this->assertEquals( 'This search returned no results.', GravityView_API::no_results( false, $context ) );
+		$context->view->settings->set( 'no_search_results_text', 'NO ENTRIES <strong>IN</strong> <example>THIS</example> SEARCH' );
+		$this->assertEquals( 'NO ENTRIES <strong>IN</strong> <example>THIS</example> SEARCH', $context->view->settings->get( 'no_search_results_text' ) );
+		$this->assertEquals( 'NO ENTRIES <strong>IN</strong> THIS SEARCH', GravityView_API::no_results( false, $context ) );
+		$this->assertEquals( '<p>NO ENTRIES <strong>IN</strong> THIS SEARCH</p>' . "\n", GravityView_API::no_results( true, $context ) );
+
+
+		$context->request->returns['is_search'] = false;
+		$context->view = new \GV\View();
+		$this->assertEquals( 'No entries match your request.', GravityView_API::no_results( false, $context ) );
+		$context->view->settings->set( 'no_results_text', '' ); // When empty, use default
+		$this->assertEquals( 'No entries match your request.', GravityView_API::no_results( false, $context ) );
+		$context->view->settings->set( 'no_results_text', 'NO ENTRIES <strong>IN</strong> <example>NOT</example> SEARCH' );
+		$this->assertEquals( 'NO ENTRIES <strong>IN</strong> <example>NOT</example> SEARCH', $context->view->settings->get( 'no_results_text' ) );
+		$this->assertEquals( 'NO ENTRIES <strong>IN</strong> NOT SEARCH', GravityView_API::no_results( false, $context ) );
+		$this->assertEquals( '<p>NO ENTRIES <strong>IN</strong> NOT SEARCH</p>' . "\n", GravityView_API::no_results( true, $context ) );
 
 		// Add the filter that modifies output
 		add_filter( 'gravitview_no_entries_text', array( $this, '_override_no_entries_text_output' ), 10, 2 );
 
 		// Test to make sure the $is_search parameter is passed correctly
-		$this->assertEquals( 'SEARCH override the no entries text output', GravityView_API::no_results( false ) );
+		$this->assertEquals( 'SEARCH <example>override</example> the no entries text output', GravityView_API::no_results( false ), 'HTML should be allowed from filters' );
 
 		$gravityview_view->curr_search = false;
 
 		// Test to make sure the $is_search parameter is passed correctly
-		$this->assertEquals( 'NO SEARCH override the no entries text output', GravityView_API::no_results( false ) );
+		$this->assertEquals( 'NO SEARCH <example>override</example> the no entries text output', GravityView_API::no_results( false ), 'HTML should be allowed from filters' );
 
 		// Remove the filter for later
 		remove_filter( 'gravitview_no_entries_text', array( $this, '_override_no_entries_text_output' ) );
@@ -356,9 +423,9 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	public function _override_no_entries_text_output( $previous, $is_search = false ) {
 
 		if ( $is_search ) {
-			return 'SEARCH override the no entries text output';
+			return 'SEARCH <example>override</example> the no entries text output';
 		} else {
-			return 'NO SEARCH override the no entries text output';
+			return 'NO SEARCH <example>override</example> the no entries text output';
 		}
 
 	}
@@ -451,77 +518,6 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$field['width'] = 500000;
 		$width = GravityView_API::field_width( $field, $format );
 		$this->assertEquals( '500000', $width );
-	}
-
-	public function test_gv_value() {
-
-	}
-
-	/**
-	 * @group fieldoutput
-	 * @see gravityview_field_output
-	 * @covers ::gravityview_field_output()
-	 */
-	public function test_gravityview_field_output() {
-
-		/**
-		 *
-		 * 'entry' => null,
-		 * 'field' => null,
-		 * 'form' => null,
-		 * 'hide_empty' => true,
-		 * 'markup' => '<div id="{{ field_id }}" class="{{ class }}">{{label}}{{value}}</div>',
-		 * 'label_markup' => '',
-		 * 'wpautop' => false,
-		 * 'zone_id' => null,
-		 */
-
-		$form = $this->factory->form->create_and_get();
-
-		$entry = $this->factory->entry->create_and_get( array(
-			'form_id' => $form['id'],
-		));
-
-		$markup = '<div id="{{ field_id }}" class="{{ class }}">{{label}}{{value}}</div>';
-		$markup_without_spaces = '<div id="{{field_id}}" class="{{class}}">{{label}}{{value}}</div>';
-		$markup_just_label = '{{label}}';
-		$markup_just_value = '{{value}}';
-
-		$args = array(
-			'entry' => $entry,
-			'form' => $form,
-			'hide_empty' => isset( $this->atts ) ? $this->atts['hide_empty'] : true,
-		);
-
-		return;
-
-		foreach ( $entry as $field_id => $raw_field_value ) {
-
-			if( ! is_numeric( $field_id ) ) {
-				continue;
-			}
-
-			$field = gravityview_get_field( $form, $field_id );
-			$args['field'] = $field;
-
-			$value = gv_value( $entry, $args['field'] );
-
-			$args['markup'] = $markup;
-
-			$output = gravityview_field_output( $args );
-
-			//$this->assertEquals( , $output );
-
-			// Test hide empty
-		}
-
-		// Test gravityview/field_output/args filter
-
-		add_filter( 'gravityview/field_output/args', array( $this, '_filter_test_gravityview_field_output_args' ), 10, 2 );
-
-
-		remove_filter( 'gravityview/field_output/args', array( $this, '_filter_test_gravityview_field_output_args' ) );
-
 	}
 
 	/**

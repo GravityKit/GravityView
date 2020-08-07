@@ -12,7 +12,31 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * Knows more about the request than anyone else.
  */
 abstract class Request {
-	public function __construct() {
+
+	public function __construct() {}
+
+	/**
+	 * Whether this request is something that is renderable.
+	 *
+	 * @since 2.5.2
+	 *
+	 * @return bool Yes or no.
+	 */
+	public function is_renderable() {
+
+		$is_renderable = in_array( get_class( $this ), array(
+			'GV\Frontend_Request',
+			'GV\Mock_Request',
+			'GV\REST\Request',
+		), true );
+
+		/**
+		 * @filter `gravityview/request/is_renderable` Is this request renderable?
+		 * @since 2.5.2
+		 * @param[in,out] boolean $is_renderable Huh?
+		 * @param \GV\Request $this This.
+		 */
+		return apply_filters( 'gravityview/request/is_renderable', $is_renderable, $this );
 	}
 
 	/**
@@ -90,27 +114,75 @@ abstract class Request {
 	 * @since 2.0
 	 * @todo tests
 	 *
+	 * @param int $form_id The form ID, since slugs can be non-unique. Default: 0.
+	 *
 	 * @return \GV\GF_Entry|false The entry requested or false.
 	 */
-	public function is_entry() {
+	public function is_entry( $form_id = 0 ) {
 
-		if ( $id = get_query_var( \GV\Entry::get_endpoint_name() ) ) {
+		$id = get_query_var( Entry::get_endpoint_name() );
 
-			static $entries = array();
-
-			if ( isset( $entries[ $id ] ) ) {
-				return $entries[ $id ];
-			}
-
-			if ( $entry = \GV\GF_Entry::by_id( $id ) ) {
-				$entries[ $id ] = $entry;
-				return $entry;
-			}
-
-			$entries[ $id ] = false;
+		if ( ! $id ) {
+			return false;
 		}
 
-		return false;
+		static $entries = array();
+
+		if ( isset( $entries[ "$form_id:$id" ] ) ) {
+			return $entries[ "$form_id:$id" ];
+		}
+
+		$view = $this->is_view();
+
+		/**
+		 * Not CPT, so probably a shortcode
+		 */
+		if ( ! $view ) {
+			$view = gravityview()->views->get();
+		}
+
+		/**
+		 * A joined request.
+		 */
+		if ( $view && ( $joins = $view->joins ) ) {
+			$forms = array_merge( wp_list_pluck( $joins, 'join' ), wp_list_pluck( $joins, 'join_on' ) );
+			$valid_forms = array_unique( wp_list_pluck( $forms, 'ID' ) );
+
+			$multientry = array();
+			foreach ( $ids = explode( ',', $id ) as $i => $id ) {
+
+				$valid_form = \GV\Utils::get( $valid_forms, $i, 0 );
+
+				if ( ! $e = GF_Entry::by_id( $id, $valid_form ) ) {
+					return false;
+				}
+
+				if ( ! in_array( $e['form_id'], $valid_forms ) ) {
+					return false;
+				}
+
+				array_push( $multientry, $e );
+			}
+
+			// Allow Edit Entry to only edit a single entry on a multi-entry
+			$is_edit_entry = apply_filters( 'gravityview_is_edit_entry', false );
+
+			// Edit entry links are single-entry based
+			if ( $is_edit_entry && 1 !== count( $multientry ) ) {
+				return false;
+			}
+
+			$entry = Multi_Entry::from_entries( array_filter( $multientry ) );
+		}  else {
+			/**
+			 * A regular one.
+			 */
+			$entry = GF_Entry::by_id( $id, $form_id );
+		}
+
+		$entries[ "$form_id:$id" ] = $entry;
+
+		return $entry;
 	}
 
 	/**
@@ -120,15 +192,21 @@ abstract class Request {
 	 * @since 2.0
 	 * @todo tests
 	 *
+	 * @param int $form_id The form ID, since slugs can be non-unique. Default: 0.
+	 *
 	 * @return \GV\Entry|false The entry requested or false.
 	 */
-	public function is_edit_entry() {
+	public function is_edit_entry( $form_id = 0 ) {
 		/**
 		* @filter `gravityview_is_edit_entry` Whether we're currently on the Edit Entry screen \n
 		* The Edit Entry functionality overrides this value.
 		* @param boolean $is_edit_entry
 		*/
-		if ( ( $entry = $this->is_entry() ) && apply_filters( 'gravityview_is_edit_entry', false ) ) {
+		if ( ( $entry = $this->is_entry( $form_id ) ) && apply_filters( 'gravityview_is_edit_entry', false ) ) {
+			if ( $entry->is_multi() ) {
+				return array_pop( $entry->entries );
+			}
+
 			return $entry;
 		}
 		return false;

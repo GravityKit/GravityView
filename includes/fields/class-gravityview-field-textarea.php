@@ -25,7 +25,7 @@ class GravityView_Field_Textarea extends GravityView_Field {
 		parent::__construct();
 	}
 
-	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		if( 'edit' === $context ) {
 			return $field_options;
@@ -46,6 +46,14 @@ class GravityView_Field_Textarea extends GravityView_Field {
             'label' => __( 'Convert text URLs to HTML links', 'gravityview' ),
             'tooltip' => __( 'Converts URI, www, FTP, and email addresses in HTML links', 'gravityview' ),
         );
+
+		$field_options['allow_html'] = array(
+			'type' => 'checkbox',
+			'merge_tags' => false,
+			'value' => 1,
+			'label' => __( 'Display as HTML', 'gravityview' ),
+			'tooltip' => esc_html__( 'If enabled, safe HTML will be displayed and unsafe or unrecognized HTML tags will be stripped. If disabled, the field value will be displayed as text.', 'gravityview' ),
+		);
 
 		return $field_options;
 	}

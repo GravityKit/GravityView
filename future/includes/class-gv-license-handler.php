@@ -50,7 +50,7 @@ class License_Handler {
 	private function __construct( $settings ) {
 
 		$this->settings = $settings;
-		
+
 		if ( ! $this->settings instanceof Addon_Settings ) {
 			$this->settings = gravityview()->plugin->settings;
 		}
@@ -188,6 +188,10 @@ class License_Handler {
 
 			$is_check_action_button = ( 'check_license' === Utils::get( $data, 'edd_action' ) && defined( 'DOING_AJAX' ) && DOING_AJAX );
 
+			if ( 'deactivate_license' === Utils::get( $data, 'edd_action' ) ) {
+				do_action('gravityview/admin_installer/delete_downloads_data', true );
+			}
+
 			if ( $is_check_action_button ) {
 				delete_transient( self::status_transient_key );
 
@@ -274,12 +278,14 @@ class License_Handler {
 				// Make sure all the keys are set
 				$response = wp_parse_args( $response, $response_keys );
 
-				$login_link = sprintf( '<a href="%s" class="howto" rel="external">%s</a>', esc_url( sprintf( 'https://gravityview.co/wp-login.php?username=%s', $response['customer_email'] ) ), esc_html__( 'Access your GravityView account', 'gravityview' ) );
-				$local_text = ( ! empty( $response['is_local'] ) ? '<span class="howto">' . __( 'This development site does not count toward license activation limits', 'gravityview' ) . '</span>' : '' );
+				$login_link    = sprintf( '<a href="%s" class="howto" rel="external">%s</a>', esc_url( sprintf( 'https://gravityview.co/wp-login.php?username=%s', $response['customer_email'] ) ), esc_html__( 'Access your GravityView account', 'gravityview' ) );
+				$local_text    = ( ! empty( $response['is_local'] ) ? '<span class="howto">' . __( 'This development site does not count toward license activation limits', 'gravityview' ) . '</span>' : '' );
+				$license_limit = empty( $response['license_limit'] ) ? __( 'Unlimited', 'gravityview' ) : (int) $response['license_limit'];
+
 				$details    = array(
 					'license'     => sprintf( esc_html__( 'License level: %s', 'gravityview' ), esc_html( $response['license_name'] ), esc_html( $response['license_limit'] ) ),
 					'licensed_to' => sprintf( esc_html_x( 'Licensed to: %1$s (%2$s)', '1: Customer name; 2: Customer email', 'gravityview' ), esc_html__( $response['customer_name'], 'gravityview' ), esc_html__( $response['customer_email'], 'gravityview' ) ) . $login_link,
-					'activations' => sprintf( esc_html__( 'Activations: %d of %s sites', 'gravityview' ), intval( $response['site_count'] ), esc_html( $response['license_limit'] ) ) . $local_text,
+					'activations' => sprintf( esc_html__( 'Activations: %d of %s sites', 'gravityview' ), intval( $response['site_count'] ), esc_html( $license_limit ) ) . $local_text,
 					'expires'     => 'lifetime' === $response['expires'] ? '' : sprintf( esc_html__( 'Renew on: %s', 'gravityview' ), date_i18n( get_option( 'date_format' ), strtotime( $response['expires'] ) - DAY_IN_SECONDS ) ),
 					'upgrade'     => $this->get_upgrade_html( $response['upgrades'] ),
 				);
@@ -366,11 +372,12 @@ class License_Handler {
 	/**
 	 * Override the text used in the GravityView EDD license Javascript
 	 *
-	 * @param  array|null $status Status to get. If empty, get all strings.
-	 * @param  object|null $license_data Object with license data
-	 * @return array          Modified array of content
+	 * @param  string $status Status to get. If empty, get all strings.
+	 * @param  object|array|null $license_data Object with license data, used to generate link to license renewal URL
+	 * @return string Modified array of content
 	 */
 	public function strings( $status = NULL, $license_data = null ) {
+
 		$strings = array(
 			'status' => esc_html__( 'Status', 'gravityview' ),
 			'error' => esc_html__( 'There was an error processing the request.', 'gravityview' ),
@@ -391,6 +398,12 @@ class License_Handler {
 			'deactivate_license' => esc_html__( 'Deactivate License', 'gravityview' ),
 			'check_license' => esc_html__( 'Verify License', 'gravityview' ),
 		);
+
+		/**
+		 * @internal Do not rely on this filter.
+		 * @since 2.1
+		 */
+		$strings = apply_filters( 'gravityview/admin/license/strings', $strings );
 
 		return Utils::get( $strings, $status, null );
 	}
@@ -712,7 +725,7 @@ class License_Handler {
 			$extensions = array();
 			foreach ( $active_plugins as $active_plugin ) {
 				// Match gravityview, gravity-forms, gravityforms, gravitate
-				if ( ! preg_match( '/(gravityview|gravity-?forms|gravitate)/ism', $active_plugin ) ) {
+				if ( ! preg_match( '/(gravityview|gravity-?forms|gravitate|perk|gravity|gf)/ism', $active_plugin ) ) {
 					continue;
 				}
 

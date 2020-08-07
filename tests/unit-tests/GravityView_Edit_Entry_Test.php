@@ -468,9 +468,9 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	/**
 	 * Emulate a valid edit view hit.
 	 *
-	 * @param $form A $view object returned by our factory.
-	 * @param $view A $view object returned by our factory.
-	 * @param $entry An $entry object returned by our factory.
+	 * @param array $form A $form object returned by our factory.
+	 * @param \GV\View $view $view object returned by our factory, or a \GV\View.
+	 * @param array $entry $entry object returned by our factory.
 	 *
 	 * @return array With first item the rendered output,
 	 *  and second item the render instance, and third item is the reloaded entry.
@@ -478,6 +478,10 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	private function _emulate_render( $form, $view, $entry ) {
 		$loader = GravityView_Edit_Entry::getInstance();
 		$render = $loader->instances['render'];
+
+		if ( ! $view instanceof \WP_Post ) {
+			$view = get_post( $view->ID );
+		}
 
 		add_filter( 'gravityview/is_single_entry', '__return_true' );
 		$data = GravityView_View_Data::getInstance( $view );
@@ -493,9 +497,30 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			GravityView_Edit_Entry::get_nonce_key( $view->ID, $form['id'], $entry['id'] )
 		);
 
+		if ( ! empty( $_POST ) ) {
+			$state = array();
+			foreach ( $entry as $key => $value ) {
+				if ( is_numeric( $key ) ) {
+					$state[ 'input_' . str_replace( '.', '_', $key ) ] = $value;
+				}
+			}
+
+			$_POST += array(
+				'action' => 'update',
+				'lid' => $entry['id'],
+				'is_submit_' . $form['id'] => true,
+				'state_' . $form['id'] => GFFormDisplay::get_state( $form, $state ),
+			);
+		}
+
 		/** Render */
-		ob_start() && $render->init( $data );
+		if ( ! $view instanceof \GV\View ) {
+			$view = \GV\View::from_post( $view );
+		}
+		ob_start() && $render->init( $data, \GV\Entry::by_id( $entry['id'] ), $view );
 		$rendered_form = ob_get_clean();
+
+		remove_filter( 'gravityview/is_single_entry', '__return_true' );
 
 		return array( $rendered_form, $render, GFAPI::get_entry( $entry['id'] ) );
 	}
@@ -603,9 +628,10 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		ob_start() && $render->init( $data ); ob_get_clean();
 
 		/** Great, now how about some saving? The default form. Although we should be testing specific forms as well. */
-		$_POST = array();
-		$_POST['lid'] = $entry['id'];
-		$_POST['is_submit_' . $form['id']] = true;
+		$_POST = array(
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+		);
 		foreach ( $form['fields'] as $field ) {
 			/** Emulate a $_POST */
 			foreach ( $field->inputs ? : array( array( 'id' => $field->id ) ) as $input ) {
@@ -617,7 +643,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			}
 		}
 		$_POST['input_1'] = "This has been changed";
-		ob_start() && $render->init( $data ); ob_get_clean();
+		ob_start() && $render->init( $data, \GV\Entry::by_id( $entry['id'] ), \GV\View::from_post( $view ) ); ob_get_clean();
 		$this->assertEquals( $_POST['input_1'], $render->entry[1] );
 
 		/**
@@ -657,10 +683,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		wp_set_current_user( $administrator );
 
 		$_POST = array(
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'input_1' => 'we changed it',
 			'input_2' => 102,
 		);
@@ -669,6 +691,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		/** Check updates */
 		$this->assertEquals( $entry['1'], 'we changed it' );
 		$this->assertEquals( $entry['2'], 102 );
+
+		$this->assertContains( 'Entry Updated', $output );
 
 		/** Cleanup */
 		$this->_reset_context();
@@ -701,10 +725,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		/** Try saving a change, but no touching the upload field. */
 		$_POST = array(
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'gform_uploaded_files' => json_encode( array( 'input_1' => $entry['1'] ) ),
 			'input_2' => '40',
 			'input_3' => '',
@@ -717,10 +737,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		wp_set_current_user( $administrator );
 
 		$_POST = array(
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'gform_uploaded_files' => json_encode( array( 'input_1' => $entry['1'] ) ),
 			'input_2' => '29',
 			'input_3' => '',
@@ -796,10 +812,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		/** Let's get failing... */
 
 		$post = array(
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
-			/** Fields */
 			'input_1' => 'we changed it',
 			'input_2' => 102310,
 		);
@@ -832,7 +844,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/edit_entry/form_fields', function( $fields, $edit_fields, $form, $view_id ) {
 			unset( $fields[0] ); /** The first text field is now hidden. */
-			return $fields;
+			return array_values( $fields );
 		}, 10, 4 );
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
@@ -894,9 +906,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		/** Try saving a change, but not touching the image upload field. */
 		$_POST = array(
-			'lid' => $entry['id'],
-			'is_submit_' . $form['id'] => true,
-
 			'input_1' => $filename,
 			'input_2' => 'wut',
 			'input_1_1' => 'this is a title',
@@ -1146,6 +1155,1276 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		/** Cleanup. */
 		GravityView_Edit_Entry::$instance = null;
 	}
+
+	/**
+	 * @covers GravityView_Entry_Approval::autounapprove
+	 */
+	public function test_unapprove_on_edit() {
+		$subscriber = $this->factory->user->create( array(
+				'user_login' => md5( microtime() ),
+				'user_email' => md5( microtime() ) . '@gravityview.tests',
+				'role' => 'subscriber' )
+		);
+
+		$administrator = $this->factory->user->create( array(
+				'user_login' => md5( microtime() ),
+				'user_email' => md5( microtime() ) . '@gravityview.tests',
+				'role' => 'administrator' )
+		);
+
+		wp_set_current_user( 0 );
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'show_only_approved' => true,
+				'user_edit' => true,
+			),
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			)
+		) );
+		$view = \GV\View::from_post( $post );
+
+		// Create an initial entry by $subscriber
+		$entry = $this->factory->entry->create_and_get( array(
+			'created_by' => $subscriber,
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'this is one'
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+		gravityview()->request->returns['is_entry'] = $entry;
+
+		// The entry is not approved for viewing
+		$this->assertContains( 'are not allowed', \GV\View::content( 'entry' ) );
+
+		// Approve the entry
+		gform_update_meta( $entry->ID, \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
+		// The entry is approved for viewing
+		$this->assertNotContains( 'are not allowed', \GV\View::content( 'entry' ) );
+
+		wp_set_current_user( $subscriber );
+
+		// Edit the entry
+		$_POST = array(
+			'input_1' => 'this is two',
+		);
+		$this->_emulate_render( $form, $view, $entry->as_entry() );
+
+		// It's still approved and modified
+		$this->assertNotContains( 'this is two', \GV\View::content( 'entry' ) );
+
+		// Update the View settings
+		$view->settings->update( array( 'unapprove_edit' => true ) );
+
+		// Edit the entry
+		$_POST = array(
+			'input_1' => 'this is three',
+		);
+		$this->_emulate_render( $form, $view, $entry->as_entry() );
+
+		wp_set_current_user( 0 );
+
+		// The entry is no longer approved
+		$this->assertContains( 'are not allowed', \GV\View::content( 'entry' ) );
+
+		// Approve it
+		gform_update_meta( $entry->ID, \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
+		wp_set_current_user( $administrator );
+
+		// Edit the entry (by admin)
+		$_POST = array(
+			'input_1' => 'this is four',
+		);
+		$this->_emulate_render( $form, $view, $entry->as_entry() );
+
+		// It's still approved and modified
+		$this->assertNotContains( 'this is four', \GV\View::content( 'entry' ) );
+
+		$this->_reset_context();
+	}
+
+	public function test_form_render_default_fields() {
+		/** Create a user */
+		$administrator = $this->_generate_user( 'administrator' );
+
+		/** Create the form, entry and view */
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$form['fields'][1]->choices[4]['isSelected'] = true;;
+		\GFAPI::update_form( $form );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'created_by' => $administrator,
+			'status' => 'active',
+			'form_id' => $form['id'],
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+		/** Request the rendered form */
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertNotContains( "value='Much Worse' checked='checked'", $output );
+
+		$this->_reset_context();
+
+		$form['fields'][1]->choices[4]['isSelected'] = true;;
+		\GFAPI::update_form( $form );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'created_by' => $administrator,
+			'status' => 'active',
+			'form_id' => $form['id'],
+			'2.1' => 'Much Better',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+		/** Request the rendered form */
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertContains( "value='Much Better' checked='checked'", $output );
+		$this->assertNotContains( "value='Much Worse' checked='checked'", $output );
+
+		$this->_reset_context();
+	}
+
+	public function test_simple_calculations() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$form = $this->factory->form->import_and_get( 'calculations.json' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'status' => 'active',
+			'form_id' => $form['id'],
+			'1' => 2,
+			'2' => 3,
+			'3' => 5,
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
+			unset( $fields[2] ); // Hide the total field
+			return array_values( $fields );
+		} );
+
+		$_POST = array(
+			'input_1' => '5',
+			'input_2' => '3',
+		);
+
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( '5', $entry['1'] );
+		$this->assertEquals( '3', $entry['2'] );
+		$this->assertEquals( '8', $entry['3'] );
+
+		$this->_reset_context();
+
+		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
+			unset( $fields[1] ); // Hide the second field
+			unset( $fields[2] ); // Hide the total field
+			return array_values( $fields );
+		} );
+
+		$_POST = array(
+			'input_1' => '7',
+		);
+
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( '7', $entry['1'] );
+		$this->assertEquals( '3', $entry['2'] );
+		$this->assertEquals( '10', $entry['3'] );
+
+		$this->_reset_context();
+
+		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
+			unset( $fields[0] ); // Hide the first field
+			return array_values( $fields );
+		} );
+
+		$_POST = array(
+			'input_1' => '0', // Test security
+			'input_2' => '4',
+			'input_3' => '-1', // Test security
+		);
+
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( '7', $entry['1'] );
+		$this->assertEquals( '4', $entry['2'] );
+		$this->assertEquals( '11', $entry['3'] );
+
+		$this->_reset_context();
+	}
+
+	public function test_simple_product_calculations() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'calculations.json' );
+
+		unset( $form['fields'][5] ); // Remove the calculation product
+		$form['fields'] = array_values( $form['fields'] );
+		\GFAPI::update_form( $form );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'status' => 'active',
+			'form_id' => $form['id'],
+
+			// No transaction data
+			'payment_status' => '',
+			'payment_date'   => '',
+			'transaction_id' => '',
+			'payment_amount' => '',
+			'payment_method' => '',
+
+			'4.1' => 'A',
+			'4.2' => '$ 66.00',
+			'4.3' => '1',
+
+			'5.1' => 'B',
+			'5.2' => '$ 12.00',
+			'5.3' => '1',
+
+			'7' => '78',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+		$_POST = array(
+			'input_4_1' => $entry['4.1'],
+			'input_4_2' => $entry['4.2'],
+			'input_4_3' => '5',
+
+			'input_5_1' => $entry['5.1'],
+			'input_5_2' => $entry['5.2'],
+			'input_5_3' => $entry['5.3'],
+
+			'input_7' => $entry['7'],
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'A', $entry['4.1'] );
+		$this->assertEquals( 'B', $entry['5.1'] );
+
+		$this->assertEquals( '$ 66.00', $entry['4.2'] );
+		$this->assertEquals( '$ 12.00', $entry['5.2'] );
+
+		$this->assertEquals( '5', $entry['4.3'] );
+		$this->assertEquals( '1', $entry['5.3'] );
+
+		$this->assertEquals( '342', $entry['7'] );
+
+		$this->_reset_context();
+
+		wp_set_current_user( $administrator );
+
+		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
+			unset( $fields[4] ); // Hide the $12 one
+			unset( $fields[7] ); // Hide the total
+			return array_values( $fields );
+		} );
+
+		$_POST = array(
+			'input_4_1' => $entry['4.1'],
+			'input_4_2' => $entry['4.2'],
+			'input_4_3' => '7',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'A', $entry['4.1'] );
+		$this->assertEquals( 'B', $entry['5.1'] );
+
+		$this->assertEquals( '$ 66.00', $entry['4.2'] );
+		$this->assertEquals( '$ 12.00', $entry['5.2'] );
+
+		$this->assertEquals( '7', $entry['4.3'] );
+		$this->assertEquals( '1', $entry['5.3'] );
+
+		$this->assertEquals( '474', $entry['7'] );
+
+		$this->_reset_context();
+	}
+
+	public function test_product_calculations_with_formula() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'calculations.json' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'status' => 'active',
+			'form_id' => $form['id'],
+
+			// No transaction data
+			'payment_status' => '',
+			'payment_date'   => '',
+			'transaction_id' => '',
+			'payment_amount' => '',
+			'payment_method' => '',
+
+			'1' => '3',
+			'2' => '',
+			'3' => '3',
+
+			'4.1' => 'A',
+			'4.2' => '$ 66.00',
+			'4.3' => '1',
+
+			'5.1' => 'B',
+			'5.2' => '$ 12.00',
+			'5.3' => '1',
+
+			'6.1' => 'C',
+			'6.2' => '$ 36.00',
+			'6.3' => '3',
+
+			'7' => '186',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+		$_POST = array(
+			'input_1' => '5',
+			'input_2' => $entry['2'],
+			'input_3' => $entry['3'],
+
+			'input_4_1' => $entry['4.1'],
+			'input_4_2' => $entry['4.2'],
+			'input_4_3' => $entry['4.3'],
+
+			'input_5_1' => $entry['5.1'],
+			'input_5_2' => $entry['5.2'],
+			'input_5_3' => $entry['5.3'],
+
+			'input_6_1' => $entry['6.1'],
+			'input_6_2' => $entry['6.2'],
+			'input_6_3' => $entry['6.3'],
+
+			'input_7' => $entry['7'],
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'A', $entry['4.1'] );
+		$this->assertEquals( 'B', $entry['5.1'] );
+		$this->assertEquals( 'C', $entry['6.1'] );
+
+		$this->assertEquals( '$ 66.00', $entry['4.2'] );
+		$this->assertEquals( '$ 12.00', $entry['5.2'] );
+		$this->assertEquals( '$60.00', $entry['6.2'] ); // Lol, GF recalculation removes the space :)
+
+		$this->assertEquals( '1', $entry['4.3'] );
+		$this->assertEquals( '1', $entry['5.3'] );
+		$this->assertEquals( '3', $entry['6.3'] );
+
+		$this->assertEquals( '258', $entry['7'] );
+
+		$this->_reset_context();
+
+		wp_set_current_user( $administrator );
+
+		add_filter( 'gravityview/edit_entry/form_fields', function( $fields ) {
+			unset( $fields[1] ); // Hide the second number
+			unset( $fields[2] ); // Hide the calculation number
+			unset( $fields[4] ); // Hide the $12 one
+			unset( $fields[6] ); // Hide the total
+			return array_values( $fields );
+		} );
+
+		$_POST = array(
+			'input_1' => '9',
+
+			'input_4_1' => $entry['4.1'],
+			'input_4_2' => $entry['4.2'],
+			'input_4_3' => '7',
+
+			'input_6_1' => $entry['6.1'],
+			'input_6_2' => $entry['6.2'],
+			'input_6_3' => '9',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'A', $entry['4.1'] );
+		$this->assertEquals( 'B', $entry['5.1'] );
+		$this->assertEquals( 'C', $entry['6.1'] );
+
+		$this->assertEquals( '$ 66.00', $entry['4.2'] );
+		$this->assertEquals( '$ 12.00', $entry['5.2'] );
+		$this->assertEquals( '$108.00', $entry['6.2'] );
+
+		$this->assertEquals( '7', $entry['4.3'] );
+		$this->assertEquals( '1', $entry['5.3'] );
+		$this->assertEquals( '9', $entry['6.3'] );
+
+		$this->assertEquals( '1446', $entry['7'] );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * https://secure.helpscout.net/conversation/676085022/16972/
+	 */
+	public function test_product_calculations_filtered_fields() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'calculations.json', 1 );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'status'  => 'active',
+			'form_id' => $form['id'],
+
+			// No transaction data
+			'payment_status' => '',
+			'payment_date'   => '',
+			'transaction_id' => '',
+			'payment_amount' => '',
+			'payment_method' => '',
+
+			'1'    => 'hello',
+
+			'81.1' => 'Shipping',
+			'81.2' => '$ 2.00',
+			'81.3' => '5',
+
+			'111'  => '1',
+
+			'7'    => '66',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			)
+		) );
+
+		$_POST = array(
+			'input_1' => 'world',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'world', $entry['1'] );
+		$this->assertEquals( 'Shipping', $entry['81.1'] );
+		$this->assertEquals( '$2.00', $entry['81.2'] );
+		$this->assertEquals( '5', $entry['81.3'] );
+		$this->assertEquals( '1', $entry['111'] );
+		$this->assertEquals( '2', $entry['7'] );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @dataProvider get_redirect_after_edit_data
+	 */
+	public function test_redirect_after_edit( $edit_redirect, $location, $edit_redirect_url = false ) {
+		/** Create a user */
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'this is one'
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'show_only_approved' => true,
+				'user_edit' => true,
+				'edit_redirect' => $edit_redirect,
+				'edit_redirect_url' => $edit_redirect_url
+			),
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			)
+		) );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = \GV\View::from_post( $view );
+		gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+
+		// Edit the entry
+		$_POST = array(
+			'input_1' => 'this is ' . wp_generate_password( 4, false ),
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertContains( 'Entry Updated', $output );
+
+		if ( $location !== false ) {
+			$output = str_replace( json_encode( get_permalink( $view ) ), '"{permalink}"', $output );
+			$this->assertContains( sprintf( 'location.href = %s', json_encode( $location ) ), $output );
+
+			$location = str_replace( '{permalink}', get_permalink( $view ), $location );
+			$this->assertContains( sprintf( '<meta http-equiv="refresh" content="0;URL=%s" /></noscript>', esc_attr( $location ) ), $output );
+		} else {
+			$this->assertNotContains( 'location.href', $output );
+		}
+
+		$this->_reset_context();
+	}
+
+	function get_redirect_after_edit_data() {
+
+		$custom_url = 'https://gravityview.co/floaty-loves-you/?with=<>&wild[]=! &characters=",';
+
+		return array(
+			array( '', false ),
+			array( '0', '' /** homepage; the view is here */ ),
+			array( '1', '{permalink}' ),
+			array( '2', $custom_url, $custom_url ),
+		);
+	}
+
+	function test_hidden_conditional_edit_simple_conditioned_not_visible() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'conditionals.json' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+
+			'1'   => 'One name',
+			'2.1' => 'I have another name, though',
+			'3'   => 'Another name',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'user_edit' => true,
+			),
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			)
+		) );
+
+		$_POST = array(
+			'input_1' => 'My name',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'My name', $entry['1'] );
+		$this->assertEquals( 'I have another name, though', $entry['2.1'] );
+		$this->assertEquals( 'Another name', $entry['3'] );
+
+		$this->_reset_context();
+	}
+
+	function test_hidden_conditional_edit_simple_conditioned_visible() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'conditionals.json' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+
+			'1'   => 'One name',
+			'2.1' => 'I have another name, though',
+			'3'   => 'Another name',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'user_edit' => true,
+			),
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '3',
+					),
+				),
+			)
+		) );
+
+		$_POST = array(
+			'input_1' => 'My name',
+			'input_3' => 'My other name',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'My name', $entry['1'] );
+		$this->assertEquals( 'I have another name, though', $entry['2.1'] );
+		$this->assertEquals( 'My other name', $entry['3'] );
+
+		$this->_reset_context();
+	}
+
+	public function test_edit_entry_feeds() {
+		$this->_reset_context();
+
+		/** Create a user */
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'this is one'
+		) );
+
+		$feed_id = GFAPI::add_feed( $form['id'], array(), 'GravityView_Edit_Entry_Test_Feed' );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'show_only_approved' => true,
+				'user_edit' => true,
+				'edit_feeds' => array( $feed_id, ),
+			),
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			)
+		) );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = \GV\View::from_post( $view );
+		gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		wp_set_current_user( $administrator );
+
+		// Edit the entry
+		$_POST = array(
+			'input_1' => 'this is ' . wp_generate_password( 4, false ),
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( array( $entry['id'] ), GravityView_Edit_Entry_Test_Feed::$processed );
+
+		$this->_reset_context();
+	}
+
+	public function test_field_visibility_and_editability_admin() {
+		$this->_reset_context();
+
+		/** Create a user */
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		$form['fields'][0]->type = 'hidden';
+		$form['fields'][1]->visibility= 'hidden';
+
+		GFAPI::update_form( $form );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'this is one',
+			'2' => 'this is two',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'user_edit' => true,
+			),
+		) );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view = \GV\View::from_post( $view );
+		gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		wp_set_current_user( $administrator );
+
+		$random_string = wp_generate_password( 4, false );
+
+		// Edit the entry
+		$_POST = array(
+			'input_1' => 'this is ' . $random_string,
+			'input_2' => '666',
+		);
+
+		add_filter( 'gravityview/edit_entry/render_hidden_field', '__return_false' );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		remove_filter( 'gravityview/edit_entry/render_hidden_field', '__return_false' );
+
+		$this->assertNotContains( "name='input_1'", $output );
+		$this->assertNotContains( "name='input_2'", $output );
+		$this->assertEquals( 'this is one', $entry[1], 'The value should not be updated when the Hidden field is not being rendered.' );
+		$this->assertEquals( 'this is two', $entry[2] );
+
+		// Since input 1 is now rendered, the value will be updated by _emulate_render()
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertContains( "name='input_1'", $output );
+		$this->assertNotContains( "name='input_2'", $output );
+		$this->assertEquals( 'this is ' . $random_string, $entry[1] );
+		$this->assertEquals( 'this is two', $entry[2] );
+
+		// Reset the value after _emulate_render modifies it
+		GFAPI::update_entry_field( $entry['id'], '1', 'this is one' );
+
+		$view->fields = \GV\Field_Collection::from_configuration( array(
+			'edit_edit-fields' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => '2',
+				),
+			),
+		) );
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertNotContains( "name='input_1'", $output );
+		$this->assertContains( "name='input_2'", $output );
+		$this->assertEquals( 'this is one', $entry[1] );
+		$this->assertEquals( '666', $entry[2] );
+
+		$view->fields = \GV\Field_Collection::from_configuration( array(
+			'edit_edit-fields' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => '1',
+				),
+			),
+		) );
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertContains( "name='input_1'", $output );
+		$this->assertNotContains( "name='input_2'", $output );
+		$this->assertNotEquals( 'this is one', $entry[1] );
+		$this->assertEquals( '666', $entry[2] );
+
+		$this->_reset_context();
+	}
+
+	public function test_field_visibility_and_editability_caps() {
+		$this->_reset_context();
+
+		/** Create a user */
+		$subscriber1 = $this->_generate_user( 'subscriber' );
+		$subscriber2 = $this->_generate_user( 'subscriber' );
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		$form['fields'][0]->type = 'hidden';
+		$form['fields'][1]->visibility = 'hidden';
+
+		GFAPI::update_form( $form );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'this is one',
+			'2' => 'this is two',
+			'created_by' => $subscriber1,
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'user_edit' => true,
+			),
+		) );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view = \GV\View::from_post( $view );
+		gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		wp_set_current_user( $subscriber1 );
+
+		// Edit the entry
+		$_POST = array(
+			'input_1' => 'this is ' . wp_generate_password( 4, false ),
+			'input_2' => '666',
+		);
+
+		add_filter( 'gravityview/edit_entry/render_hidden_field', '__return_false' );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		remove_filter( 'gravityview/edit_entry/render_hidden_field', '__return_false' );
+
+		$this->assertNotContains( "name='input_1'", $output );
+		$this->assertNotContains( "name='input_2'", $output );
+		$this->assertEquals( 'this is one', $entry[1] );
+		$this->assertEquals( 'this is two', $entry[2] );
+
+		$view->fields = \GV\Field_Collection::from_configuration( array(
+			'edit_edit-fields' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => '2',
+					'allow_edit_cap' => 'manage_options',
+				),
+			),
+		) );
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertNotContains( "name='input_1'", $output );
+		$this->assertNotContains( "name='input_2'", $output );
+		$this->assertEquals( 'this is one', $entry[1] );
+		$this->assertEquals( 'this is two', $entry[2] );
+
+		$view->fields = \GV\Field_Collection::from_configuration( array(
+			'edit_edit-fields' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => '2',
+					'allow_edit_cap' => 'gravity_forms_edit_entry',
+				),
+			),
+		) );
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertNotContains( "name='input_1'", $output );
+		$this->assertNotContains( "name='input_2'", $output );
+		$this->assertEquals( 'this is one', $entry[1] );
+		$this->assertEquals( 'this is two', $entry[2] );
+
+		$view->fields = \GV\Field_Collection::from_configuration( array(
+			'edit_edit-fields' => array(
+				wp_generate_password( 4, false ) => array(
+					'id' => '2',
+					'allow_edit_cap' => 'read',
+				),
+			),
+		) );
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertNotContains( "name='input_1'", $output );
+		$this->assertContains( "name='input_2'", $output );
+		$this->assertEquals( 'this is one', $entry[1] );
+		$this->assertEquals( '666', $entry[2] );
+
+		wp_set_current_user( $subscriber2 );
+
+		$_POST = array(
+			'input_1' => 'this is ' . wp_generate_password( 4, false ),
+			'input_2' => '777',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertNotContains( 'input_1', $output );
+		$this->assertNotContains( 'input_2', $output );
+		$this->assertEquals( 'this is one', $entry[1] );
+		$this->assertEquals( '666', $entry[2] );
+
+		$this->_reset_context();
+	}
+
+	public function test_hidden_calculations() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$form = $this->factory->form->import_and_get( 'calculations.json' );
+
+		$form['fields'][2]->conditionalLogic = array(
+			'rules' => array(
+				array(
+					'fieldId' => '1',
+					'value' => 99, // Hide if 99
+					'operator' => 'is',
+				),
+			),
+			'logicType' => 'all',
+			'actionType' => 'hide',
+		);
+
+		\GFAPI::update_form( $form );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'status' => 'active',
+			'form_id' => $form['id'],
+			'1' => 96,
+			'2' => 3,
+			'3' => 99,
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+		$_POST = array(
+			'input_1' => '99', // 3 should be hidden
+			'input_2' => '7',
+		);
+
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( '99', $entry['1'] );
+		$this->assertEquals( '7', $entry['2'] );
+		$this->assertEmpty( $entry['3'] );
+
+		$this->_reset_context();
+	}
+
+	function test_hidden_conditional_unrelated_field_cache_prefill() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'conditionals.json', 1 );
+
+		// Hydrate the cache (https://github.com/gravityview/GravityView/issues/840#issuecomment-547840611)
+		\GFFormsModel::get_field( $form['id'], '1' );
+		\GFFormsModel::get_field( $form['id'], '2' );
+		\GFFormsModel::get_field( $form['id'], '3' );
+		\GFFormsModel::get_field( $form['id'], '4' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+
+			'1' => '2',
+			'2' => '2-1',
+			'3' => '',
+			'4' => 'Processing',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'user_edit' => true,
+			),
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '4',
+					),
+				),
+			)
+		) );
+
+		$_POST = array(
+			'input_4' => 'New',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( '2', $entry['1'] );
+		$this->assertEquals( '2-1', $entry['2'] );
+		$this->assertEmpty( $entry['3'] );
+		$this->assertEquals( 'New', $entry['4'] );
+
+		$this->_reset_context();
+	}
+
+	function test_hidden_conditional_reset_hidden_value_once_more() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'conditionals.json', 1 );
+
+		// Hydrate the cache (https://github.com/gravityview/GravityView/issues/840#issuecomment-547840611)
+		\GFFormsModel::get_field( $form['id'], '1' );
+		\GFFormsModel::get_field( $form['id'], '2' );
+		\GFFormsModel::get_field( $form['id'], '3' );
+		\GFFormsModel::get_field( $form['id'], '4' );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+
+			'1' => '2',
+			'2' => '2-1',
+			'3' => '',
+			'4' => 'Processing',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'user_edit' => true,
+			),
+			'fields' => array(
+				// All fields visible
+			)
+		) );
+
+		$_POST = array(
+			'input_1' => '3',
+			'input_2' => '2-1',
+			'input_3' => '3-1',
+			'input_4' => 'New',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( '3', $entry['1'] );
+		$this->assertEmpty( $entry['2'] );
+		$this->assertEquals( '3-1', $entry['3'] );
+		$this->assertEquals( 'New', $entry['4'] );
+
+		$this->_reset_context();
+	}
+
+	function test_partial_form_after_update() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'conditionals.json', 1 );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+
+			'1' => '2',
+			'2' => '2-1',
+			'3' => '',
+			'4' => 'Processing',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'user_edit' => true,
+			),
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '4',
+					),
+				),
+			)
+		) );
+
+		$_POST = array(
+			'input_1' => '3',
+			'input_2' => '2-1',
+			'input_3' => '3-1',
+			'input_4' => 'New',
+		);
+
+		$test = &$this;
+		$done_callback = false;
+		add_action( 'gform_after_update_entry', $callback = function( $form ) use ( $test, &$done_callback ) {
+			$test->assertCount( 4, $form['fields'] );
+			$done_callback = true;
+		} );
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertTrue( $done_callback );
+
+		remove_action( 'gform_after_update_entry', $callback );
+
+		$this->_reset_context();
+	}
+
+	function test_approval_transitions() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		wp_set_current_user( $administrator );
+
+		$form = $this->factory->form->import_and_get( 'approval.json', 0 );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+
+			'1' => 'hello',
+			'2' => 'world',
+			'3.1' => 'Approved',
+		) );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+		) );
+
+		$_POST = array(
+			'input_1' => 'hellow',
+			'input_2' => 'orld',
+			'input_3_1' => 'Approved',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'hellow', $entry[1] );
+		$this->assertEquals( 'orld', $entry[2] );
+		$this->assertEquals( 'Approved', $entry['3.1'] );
+		$this->assertEquals( GravityView_Entry_Approval_Status::APPROVED, $entry['is_approved'] );
+
+		$this->_reset_context();
+
+		wp_set_current_user( $administrator );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '2',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '3',
+					),
+				),
+			),
+		) );
+
+		$_POST = array(
+			'input_1' => 'hellowo',
+			'input_2' => 'rld',
+			'input_3_1' => '',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'hellow', $entry[1] );
+		$this->assertEquals( 'rld', $entry[2] );
+		$this->assertEquals( '', $entry['3.1'] );
+		$this->assertEquals( GravityView_Entry_Approval_Status::DISAPPROVED, $entry['is_approved'] );
+
+		$entry['3.1'] = 'Approved';
+		GFAPI::update_entry( $entry );
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
+		$this->_reset_context();
+
+		wp_set_current_user( $administrator );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			),
+		) );
+
+		$_POST = array(
+			'input_1' => 'hellowo',
+			'input_2' => 'ld',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'hellowo', $entry[1] );
+		$this->assertEquals( 'rld', $entry[2] );
+		$this->assertEquals( 'Approved', $entry['3.1'] );
+		$this->assertEquals( GravityView_Entry_Approval_Status::APPROVED, $entry['is_approved'] );
+
+		$entry['3.1'] = '';
+		GFAPI::update_entry( $entry );
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::UNAPPROVED );
+
+		$_POST = array(
+			'input_1' => 'hellowo',
+			'input_2' => 'ld',
+		);
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( 'hellowo', $entry[1] );
+		$this->assertEquals( 'rld', $entry[2] );
+		$this->assertEquals( '', $entry['3.1'] );
+		$this->assertEquals( GravityView_Entry_Approval_Status::UNAPPROVED, $entry['is_approved'] );
+
+		$this->_reset_context();
+	}
 }
 
 /** The GF_User_Registration mock if not exists. */
@@ -1182,4 +2461,31 @@ if ( ! class_exists( 'GF_User_Registration' ) ) {
 			}
 		}
 	}
+}
+
+if ( ! class_exists( 'GravityView_Edit_Entry_Test_Feed' ) ) {
+	GFForms::include_feed_addon_framework();
+
+	class GravityView_Edit_Entry_Test_Feed extends GFFeedAddOn {
+		public static $processed = array();
+
+		protected $_slug = 'GravityView_Edit_Entry_Test_Feed';
+
+		public function process_feed( $feed, $entry, $form ) {
+			self::$processed[] = $entry['id'];
+		}
+
+		public static function reset() {
+			self::$processed = array();
+		}
+
+		public static function get_instance() {
+			return new self;
+		}
+	}
+
+	$feed = new GravityView_Edit_Entry_Test_Feed();
+	$feed->setup();
+
+	GFAddon::register( 'GravityView_Edit_Entry_Test_Feed' );
 }

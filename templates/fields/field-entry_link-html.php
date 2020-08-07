@@ -5,8 +5,23 @@
  * @global \GV\Template_Context $gravityview
  * @since 2.0
  */
-$form = $gravityview->view->form->form;
-$entry = $gravityview->entry->as_entry();
+
+if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
+	gravityview()->log->error( '{file} template loaded without context', array( 'file' => __FILE__ ) );
+	return;
+}
+
+if ( ! $gravityview->field->form_id || ! ( $form = GFAPI::get_form( $gravityview->field->form_id ) ) ) {
+	$form = $gravityview->view->form->form;
+}
+
+if ( $gravityview->entry->is_multi() ) {
+	$entry = $gravityview->entry[ $form['id'] ];
+	$entry = $entry->as_entry();
+} else {
+	$entry = $gravityview->entry->as_entry();
+}
+
 $field_settings = $gravityview->field->as_configuration();
 
 $link_text = empty( $field_settings['entry_link_text'] ) ? __( 'View Details', 'gravityview' ) : $field_settings['entry_link_text'];
@@ -21,4 +36,17 @@ if ( ! empty( $field_settings['new_window'] ) ) {
 
 global $post;
 
-echo GravityView_API::entry_link_html( $entry, $output, $tag_atts, $field_settings, $post ? $post->ID : $gravityview->view->ID );
+$href = $gravityview->entry->get_permalink( $gravityview->view, $gravityview->request, $tag_atts );
+
+$link = gravityview_get_link( $href, $output, $tag_atts );
+
+/**
+ * @filter `gravityview_field_entry_link` Modify the link HTML (here for backward compatibility)
+ * @param string $link HTML output of the link
+ * @param string $href URL of the link
+ * @param array  $entry The GF entry array
+ * @param  array $field_settings Settings for the particular GV field
+ */
+$output = apply_filters( 'gravityview_field_entry_link', $link, $href, $entry, $field_settings );
+
+echo $output;

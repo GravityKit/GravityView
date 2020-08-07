@@ -8,13 +8,26 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 
 	function __construct( $id = 'default_table', $settings = array(), $field_options = array(), $areas = array() ) {
 
+		/**
+		 * @filter `gravityview/template/table/use-legacy-style` Should GravityView use the legacy Table layout stylesheet (from before Version 2.1)?
+		 * @since 2.1.1
+		 * @param bool $use_legacy_table_style If true, loads `table-view-legacy.css`. If false, loads `table-view.css`. Default: `false`
+		 */
+		$use_legacy_table_style = apply_filters( 'gravityview/template/table/use-legacy-style', false );
+
+		$css_filename = 'table-view.css';
+
+		if ( $use_legacy_table_style ) {
+			$css_filename = 'table-view-legacy.css';
+		}
+
 		$table_settings = array(
 			'slug'        => 'table',
 			'type'        => 'custom',
-			'label'       => __( 'Table (default)', 'gravityview' ),
+			'label'       => __( 'Table', 'gravityview' ),
 			'description' => __( 'Display items in a table view.', 'gravityview' ),
 			'logo'        => plugins_url( 'includes/presets/default-table/logo-default-table.png', GRAVITYVIEW_FILE ),
-			'css_source'  => gravityview_css_url( 'table-view.css', GRAVITYVIEW_DIR . 'templates/css/' ),
+			'css_source'  => gravityview_css_url( $css_filename, GRAVITYVIEW_DIR . 'templates/css/' ),
 		);
 
 		$settings = wp_parse_args( $settings, $table_settings );
@@ -44,9 +57,50 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 			)
 		);
 
+		$this->add_hooks();
 
 		parent::__construct( $id, $settings, $field_options, $areas );
 
+	}
+
+	/**
+	 * Adds hooks specific to this template
+	 *
+	 * @since 2.8.1
+	 */
+	private function add_hooks() {
+		add_filter( 'gravityview/admin/add_button_label', array( $this, 'maybe_modify_button_label' ), 10, 2 );
+	}
+
+	/**
+	 * Changes the button label to reflect that fields = rows
+	 *
+	 * @internal
+	 *
+	 * @param string $label Text for button: "Add Widget" or "Add Field"
+	 * @param array $atts {
+	 *   @type string $type 'widget' or 'field'
+	 *   @type string $template_id The current slug of the selected View template
+	 *   @type string $zone Where is this button being shown? Either 'single', 'directory', 'edit', 'header', 'footer'
+	 * }
+	 *
+	 * @return string|void
+	 */
+	public function maybe_modify_button_label( $label = '', $atts = array() ) {
+
+		if( $this->template_id !== \GV\Utils::get( $atts, 'template_id' ) ) {
+			return $label;
+		}
+
+		if( 'field' !== \GV\Utils::get( $atts, 'type' ) ) {
+			return $label;
+		}
+
+		if( 'edit' === \GV\Utils::get( $atts, 'zone' ) ) {
+			return $label;
+		}
+
+		return __( 'Add Table Column', 'gravityview' );
 	}
 }
 

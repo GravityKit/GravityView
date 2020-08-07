@@ -1,0 +1,49 @@
+actor: AcceptanceTester
+bootstrap: _bootstrap.php
+paths:
+  log: _output
+  data: _data
+  helpers: _support
+settings:
+  colors: true
+  memory_limit: 1024M
+modules:
+  config:
+    WPDb:
+      dsn: 'mysql:host=mysql;dbname=wordpress'
+      user: wordpress
+      password: wordpress
+      dump: 'tests/acceptance/_data/wordpress.sql'
+      populate: true
+      cleanup: true
+      reconnect: false
+      url: 'http://wordpress'
+      tablePrefix: 'wp_'
+    WPWebDriver:
+      host: chrome
+      url: 'http://wordpress'
+      browser: chrome
+      port: 4444
+      window_size: '1024x768'
+      restart: true
+      wait: 0
+      adminUsername: admin
+      adminPassword: admin
+      adminPath: /wp-admin
+    WPCLI:
+      path: /wp-core
+      throw: true
+    WPLoader:
+      loadOnly: true
+      wpRootFolder: /wp-core
+      dbName: wordpress
+      dbHost: mysql
+      dbUser: wordpress
+      dbPassword: wordpress
+  enabled:
+    - WPDb
+    - WPLoader
+    - WPWebDriver
+    - \Helper\Acceptance
+    - Asserts
+    - WPCLI

@@ -10,8 +10,6 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 
 	/**
 	 * Just covers that it renders something
-	 * @covers GVLogic_Shortcode::get_instance
-	 * @covers GVLogic_Shortcode::add_hooks
 	 */
 	function test_shortcode() {
 
@@ -21,9 +19,6 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 
 	}
 
-	/**
-	 * @covers GVLogic_Shortcode::shortcode
-	 */
 	function test_comparisons( $shortcode = 'gvlogic') {
 
 		$correct = array(
@@ -64,9 +59,6 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 		}
 	}
 
-	/**
-	 *
-	 */
 	function test_basic_if_else() {
 
 		$value = do_shortcode( '[gvlogic if="4" is="4"]Correct 1[else]Incorrect[/gvlogic]' );
@@ -100,6 +92,13 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 		$empty_value = do_shortcode( '[gvlogic if=""]Empty because Incorrect 2[/gvlogic]' );
 
 		$this->assertEquals( '', $empty_value );
+
+		// Sanity checks.
+		$this->assertEquals( 'No shortcode.', do_shortcode( 'No shortcode.' ) );
+		$this->assertEquals( '(Before shortcode)', do_shortcode( '(Before shortcode)[gvlogic]' ) );
+		$this->assertEquals( '(Before shortcode)', do_shortcode( '(Before shortcode)[gvlogic if="asd" is=""]NO[/gvlogic]' ) );
+		$this->assertEquals( '(Before shortcode)(after shortcode)', do_shortcode( '(Before shortcode)[gvlogic if="asd" is=""]NO[/gvlogic](after shortcode)' ) );
+		$this->assertEquals( "(Before shortcode)\n\nYES\n(after shortcode)", do_shortcode( "(Before shortcode)\n[gvlogic if='a' is='']\nNO[else]\nYES\n[/gvlogic](after shortcode)" ) );
 
 	}
 
@@ -140,9 +139,6 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 	 * Test the advanced [else if] functionality
 	 * @since 1.22.2
 	 *
-	 * @covers GVLogic_Shortcode::set_content_and_else_content
-	 * @covers GVLogic_Shortcode::process_elseif
-	 *
 	 * @group gvlogicelseif
 	 */
 	function test_elseif() {
@@ -182,6 +178,293 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( 'Test 7 Correct', $value );
 
+	}
+
+	/**
+	 * Make sure a basic "logged-in" check works
+	 */
+	function test_gv_shortcode_for_user_id_logged_in() {
+
+		$this->expected_deprecated[] = 'WP_User->id';
+
+		$administrator = $this->factory->user->create( array(
+				'user_login' => md5( microtime() ),
+				'user_email' => md5( microtime() ) . '@gravityview.tests',
+				'role' => 'administrator' )
+		);
+
+		wp_set_current_user( 0 );
+
+		// $current_user->id bypasses false, which gets replaced with empty string.
+		$this->assertEquals( '0', GFCommon::replace_variables_prepopulate( '{user:id}' ) );
+
+		// $current_user->get("ID") returns false, which gets replaced with empty string.
+		$this->assertEquals( '', GFCommon::replace_variables_prepopulate( '{user:ID}' ) );
+
+		$this->assertEquals( 'Logged-Out', do_shortcode( GFCommon::replace_variables_prepopulate( '[gvlogic if="{user:id}" is="0"]Logged-Out[else]Logged-In[/gvlogic]' ) ) );
+		$this->assertEquals( 'Logged-Out', do_shortcode( GFCommon::replace_variables_prepopulate( '[gvlogic if="{user:ID}" is=""]Logged-Out[else]Logged-In[/gvlogic]' ) ) );
+		$this->assertEquals( 'Logged-Out', do_shortcode( GFCommon::replace_variables_prepopulate( '[gvlogic if="{user:id}" greater_than="0"]Logged-In[else]Logged-Out[/gvlogic]' ) ) );
+		$this->assertEquals( 'Logged-Out', do_shortcode( GFCommon::replace_variables_prepopulate( '[gvlogic if="{user:ID}" greater_than="0"]Logged-In[else]Logged-Out[/gvlogic]' ) ) );
+
+		wp_set_current_user( $administrator );
+
+		$this->assertEquals( "{$administrator}", GFCommon::replace_variables_prepopulate( '{user:id}' ) );
+		$this->assertEquals( "{$administrator}", GFCommon::replace_variables_prepopulate( '{user:ID}' ) );
+
+		$this->assertEquals( 'Logged-In', do_shortcode( GFCommon::replace_variables_prepopulate( '[gvlogic if="{user:id}" is="0"]Logged-Out[else]Logged-In[/gvlogic]' ) ) );
+		$this->assertEquals( 'Logged-In', do_shortcode( GFCommon::replace_variables_prepopulate( '[gvlogic if="{user:ID}" is=""]Logged-Out[else]Logged-In[/gvlogic]' ) ) );
+		$this->assertEquals( 'Logged-In', do_shortcode( GFCommon::replace_variables_prepopulate( '[gvlogic if="{user:id}" greater_than="0"]Logged-In[else]Logged-Out[/gvlogic]' ) ) );
+		$this->assertEquals( 'Logged-In', do_shortcode( GFCommon::replace_variables_prepopulate( '[gvlogic if="{user:ID}" greater_than="0"]Logged-In[else]Logged-Out[/gvlogic]' ) ) );
+	}
+
+	/**
+	 * @dataProvider get_test_gv_shortcode_date_comparison
+	 */
+	function test_gv_shortcode_date_comparison( $date1, $date2, $op, $result ) {
+		$form_id = \GFAPI::add_form( array(
+			'title'  => __FUNCTION__,
+			'fields' => array(
+				array( 'id' => 1, 'label' => 'Date 1', 'type'  => 'date' ),
+				array( 'id' => 2, 'label' => 'Date 2', 'type'  => 'date' ),
+			),
+		) );
+		$form = \GV\GF_Form::by_id( $form_id );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form_id,
+			'template_id' => 'table',
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'content' => 'You are here.',
+					),
+				),
+			)
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form_id,
+			'status' => 'active',
+			'1' => $date1,
+			'2' => $date2,
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$renderer = new \GV\Field_Renderer();
+		$field = \GV\Internal_Field::by_id( 'custom' );
+
+		$field->content = sprintf( '[gvlogic if="{Date Field:1}" %s="{Date Field 2:2}"]CORRECT[/gvlogic]', $op );
+		$this->assertEquals( $result ? 'CORRECT' : '', $renderer->render( $field, $view, null, $entry ) );
+	}
+
+	function get_test_gv_shortcode_date_comparison() {
+		return array(
+			array( '2019-01-13', '2019-01-13', 'equals', true ),
+			array( '2019-01-14', '2019-01-13', 'equals', false ),
+			array( '2019-01-14', '2019-01-13', 'isnot', true ),
+			array( '2019-01-14', '2019-01-14', 'isnot', false ),
+			array( '2019-01-11', '2019-01-14', 'greater_than', false ),
+			array( '2019-01-11', '2019-01-14', 'less_than', true ),
+			array( '2019-01-17', '2019-01-14', 'greater_than_or_is', true ),
+			array( '2019-01-17', '2019-01-14', 'less_than_or_is', false ),
+		);
+	}
+
+	/**
+	 * @dataProvider get_test_gv_shortcode_date_comparison_format
+	 */
+	function test_gv_shortcode_date_comparison_format( $date1, $date2, $op, $result ) {
+		$form_id = \GFAPI::add_form( array(
+			'title'  => __FUNCTION__,
+			'fields' => array(
+				array( 'id' => 1, 'label' => 'Date 1', 'type'  => 'date', 'date_format' => 'mdy' ),
+				array( 'id' => 2, 'label' => 'Date 2', 'type'  => 'date', 'date_format' => 'ymd_slash' ),
+			),
+		) );
+		$form = \GV\GF_Form::by_id( $form_id );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form_id,
+			'template_id' => 'table',
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'content' => 'You are here.',
+					),
+				),
+			)
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form_id,
+			'status' => 'active',
+			'1' => $date1,
+			'2' => $date2,
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$renderer = new \GV\Field_Renderer();
+		$field = \GV\Internal_Field::by_id( 'custom' );
+
+		$field->content = sprintf( '[gvlogic if="{Date Field:1}" %s="{Date Field 2:2}"]CORRECT[/gvlogic]', $op );
+		$this->assertEquals( $result ? 'CORRECT' : '', $renderer->render( $field, $view, null, $entry ) );
+	}
+
+	function get_test_gv_shortcode_date_comparison_format() {
+		return array(
+			array( '2019-01-13', '2019-01-13', 'equals', true ),
+			array( '2019-01-14', '2019-01-13', 'equals', false ),
+			array( '2019-01-14', '2019-01-13', 'isnot', true ),
+			array( '2019-01-14', '2019-01-14', 'isnot', false ),
+			array( '2019-01-11', '2019-01-14', 'greater_than', false ),
+			array( '2019-01-11', '2019-01-14', 'less_than', true ),
+			array( '2019-01-17', '2019-01-14', 'greater_than_or_is', true ),
+			array( '2019-01-17', '2019-01-14', 'less_than_or_is', false ),
+		);
+	}
+
+	function test_gv_shortcode_loggedin() {
+		$form_id = \GFAPI::add_form( array(
+			'title'  => __FUNCTION__,
+			'fields' => array(
+				array( 'id' => 1, 'label' => 'Text', 'type'  => 'text' ),
+			),
+		) );
+		$form = \GV\GF_Form::by_id( $form_id );
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form_id,
+			'template_id' => 'table',
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'content' => 'You are here.',
+					),
+				),
+			)
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form_id,
+			'status' => 'active',
+			'1' => 'hello world',
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$administrator = $this->factory->user->create( array(
+				'user_login' => md5( microtime() ),
+				'user_email' => md5( microtime() ) . '@gravityview.tests',
+				'role' => 'administrator' )
+		);
+
+		wp_set_current_user( 0 );
+
+		$renderer = new \GV\Field_Renderer();
+		$field = \GV\Internal_Field::by_id( 'custom' );
+
+		$field->content = '[gvlogic logged_in="true"]logged in[else]not logged in[/gvlogic]';
+		$this->assertEquals( 'not logged in', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic logged_in]logged in[else]not logged in[/gvlogic]';
+		$this->assertEquals( '', $renderer->render( $field, $view, null, $entry ) ); // Incomplete gvlogic clause
+
+		wp_set_current_user( $administrator );
+
+		$field->content = '[gvlogic logged_in]logged in[else]not logged in[/gvlogic]';
+		$this->assertEquals( '', $renderer->render( $field, $view, null, $entry ) ); // Incomplete gvlogic clause
+
+		$field->content = '[gvlogic logged_in="true"]logged in[else]not logged in[/gvlogic]';
+		$this->assertEquals( 'logged in', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic logged_in="false"]not logged in[else]logged in[/gvlogic]';
+		$this->assertEquals( 'logged in', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic logged_in="no"]not logged in[else]logged in[/gvlogic]';
+		$this->assertEquals( 'logged in', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic logged_in="true"]logged in[else]not logged in[/gvlogic]';
+		$this->assertEquals( 'logged in', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic if="{Example:1}" isnot="hello world"]not passed: {Example:1}[else]passed[/gvlogic]';
+		$this->assertEquals( 'passed', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '{Example:1}';
+		$this->assertEquals( 'hello world', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic if="{Example:1}" is="hello world"]passed[else]not passed: {Example:1}[/gvlogic]';
+		$this->assertEquals( 'passed', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic if="{Text:1}" is="hello world" logged_in="false"]not logged in or not hello world[else]logged in and hello world[/gvlogic]';
+		$this->assertEquals( 'logged in and hello world', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic if="{example:1}" is="hello world" logged_in="1"]logged in and hello world[else]not logged in or not hello world[/gvlogic]';
+		$this->assertEquals( 'logged in and hello world', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic if="asdasdasdas" is="hello world" logged_in="1" else="inline else for the win"]logged in and hello world[/gvlogic]';
+		$this->assertEquals( 'inline else for the win', $renderer->render( $field, $view, null, $entry ), 'testing inline else' );
+
+		wp_set_current_user( 0 );
+
+		$field->content = '[gvlogic logged_in="true"]logged in[else]not logged in[/gvlogic]';
+		$this->assertEquals( 'not logged in', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic if="{example:1}" is="hello world" logged_in="0"]not logged in and hello world[else]logged in or not hello world[/gvlogic]';
+		$this->assertEquals( 'not logged in and hello world', $renderer->render( $field, $view, null, $entry ) );
+
+		$field->content = '[gvlogic if="{example:1}" isnot="hello world" logged_in="0"]not logged in and hello world[else]logged in or not hello world[/gvlogic]';
+		$this->assertEquals( 'logged in or not hello world', $renderer->render( $field, $view, null, $entry ) );
+	}
+
+	/**
+	 * https://github.com/gravityview/GravityView/issues/949
+	 */
+	function test_gv_shortcode_nested_gvlogic2() {
+		$GVLogic_Shortcode            = GVLogic_Shortcode::get_instance();
+		$GVLogic_Shortcode->shortcode = 'gvlogic2';
+
+		add_shortcode( 'gvlogic2', array( $GVLogic_Shortcode, 'shortcode' ) );
+
+		$value = do_shortcode( '[gvlogic if="1" is="1"]1 is 1. [gvlogic2 if="2" is="3"]2 is 3.[else]2 is NOT three.[/gvlogic2][else]1 isn\'t 1. Weird.[/gvlogic]' );
+		$this->assertEquals( '1 is 1. 2 is NOT three.', $value );
+
+		$value = do_shortcode( sprintf(
+			'[gvlogic if="MATCH" is="%s"]Match 1[else][gvlogic2 if="MATCH" is="%s"]Match 2[else]Match 3[/gvlogic2]Show me.[/gvlogic]',
+			'MATCH', ''
+		) );
+		$this->assertEquals( 'Match 1', $value );
+
+		$value = do_shortcode( sprintf(
+			'[gvlogic if="MATCH" is="%s"]Match 1[else][gvlogic2 if="MATCH" is="%s"]Match 2[else]Match 3[/gvlogic2]Show me.[/gvlogic]',
+			'', 'MATCH'
+		) );
+		$this->assertEquals( 'Match 2Show me.', $value );
+
+		$value = do_shortcode( sprintf(
+			'(Before nested) [gvlogic if="MATCH" is="%s"]Match 1[else][gvlogic2 if="MATCH" is="%s"]Match 2[else]Match 3[/gvlogic2]Show me.[/gvlogic] (After nested)',
+			'', ''
+		) );
+		$this->assertEquals( '(Before nested) Match 3Show me. (After nested)', $value );
+
+		/** @link https://github.com/gravityview/GravityView/issues/949#issuecomment-546121739 */
+		$value = do_shortcode( '[gvlogic if="1" is="1"]1 is 1.[else]Whoops.[/gvlogic]' );
+		$this->assertEquals( '1 is 1.', $value );
+
+		$value = do_shortcode( '[gvlogic2 if="2" is="3"]2 is 3.[else]2 is NOT three.[/gvlogic2]' );
+		$this->assertEquals( '2 is NOT three.', $value );
+
+		$value = do_shortcode( '[gvlogic2 if="2" is="3"]2 is 3.[else]2 is NOT three.[/gvlogic2]' );
+		$this->assertEquals( '2 is NOT three.', $value );
+
+		$value = do_shortcode( '[gvlogic if="1" is="1"]1 is 1. [gvlogic2 if="2" is="3"]2 is 3.[else]2 is NOT three.[/gvlogic2][else]1 isn\'t 1. Weird.[/gvlogic]' );
+		$this->assertEquals( '1 is 1. 2 is NOT three.', $value );
+
+		$this->assertEquals( "(Before shortcode) \n\t\nYES\nYES2\n(after shortcode)", do_shortcode( "(Before shortcode) \n\t[gvlogic if='a' is='']\nNO[else]\nYES\n[gvlogic2 if='' isnot='']NO\n[else]YES2\n[/gvlogic2][/gvlogic](after shortcode)" ), 'We have a whitespace issue' );
 	}
 
 }

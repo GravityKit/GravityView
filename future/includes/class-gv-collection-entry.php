@@ -134,6 +134,27 @@ class Entry_Collection extends Collection {
 	}
 
 	/**
+	 * Pluck by key.
+	 *
+	 * @api
+	 * @since develop
+	 *
+	 * @param string $key The key to pluck by.
+	 *
+	 * @return array The plucked values.
+	 */
+	public function pluck( $key ) {
+		$result = array();
+
+		foreach ( $this->all() as $entry ) {
+			$entry = $entry->as_entry();
+			$result[] = Utils::get( $entry, $key, null );
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Get the last \GV\Entry in this collection.
 	 *
 	 * @api
@@ -192,7 +213,7 @@ class Entry_Collection extends Collection {
 			$this->merge( $callback[1]( $this->filters, $this->sorts, $offset ) );
 		}
 
-		$this->fetched = $this->count();
+		$this->fetched = parent::count();
 
 		return $this;
 	}

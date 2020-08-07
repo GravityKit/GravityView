@@ -20,7 +20,12 @@ composer.lock
 vendor/.git
 vendor/*/.git
 vendor/composer/
+vendor/bin/
 vendor/autoload.php
+vendor/phpcompatibility/
+vendor/squizlabs/
+vendor/dealerdirect/
+wpcs/
 
 ### Node ###
 node_modules/*
@@ -34,6 +39,8 @@ package-lock.json
 .tx
 languages/gravityview-pt.mo
 languages/gravityview-pt.po
+languages/gravityview-de.mo
+languages/gravityview-de.po
 
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
@@ -77,10 +84,6 @@ assets/lib/flexibility/*
 
 # JIRA plugin
 atlassian-ide-plugin.xml
-languages/gravityview-de.mo
-
-
-languages/gravityview-de.po
 
 # DoxyGen
 docs/config.doxygen

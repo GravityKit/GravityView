@@ -1,44 +1,54 @@
 // ================================================
-// Table View Template Styles for GravityView
+// Responsive Table View Template Styles for GravityView
 // https://gravityview.co
 // ================================================
 
-// 1. Variables
-// ================================================
+@import "table-view-legacy";
 
-// 1.1. Colors
-// Change accordingly to your website styles
-// ------------------------------------------------
+/**
+ * @see https://j.eremy.net/responsive-table/
+ *
+ * Note: max-width based on Bootstrap: https://getbootstrap.com/docs/4.1/layout/overview/#responsive-breakpoints
+ */
+@media screen and ( max-width: 575.98px ) {
+	.gv-table-view {
+		thead,
+		tfoot {
+			display: none;
+		}
 
-.gv-table-view {
-	table-layout: fixed;
-	width: 100%;
-}
+		tr {
+			display: block;
+			position: relative;
+			padding: 1.2em 0;
+			overflow-x: auto;
 
-.gv-table-view th,
-.gv-table-view td {
-	padding: .3em;
-}
+			&:first-of-type {
+				border-top: 1px solid #ccc;
+			}
 
-.gv-table-view-content {
+			td {
+				display: table-row;
 
-	table-layout: fixed;
+				&:before {
+					content: attr( data-label );
+					font-weight: bold;
+					display: table-cell;
+					padding: 0.2em 0.6em 0.2em 0;
+					text-align: right;
+					width: 40%;
+				}
 
-	// The single entry view left column
-	th {
-		width: 35%;
-		vertical-align: top;
+				&:last-child:after {
+					content: '';
+					position: absolute;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					border-bottom: 1px solid #ccc;
+					width: 100%;
+				}
+			}
+		}
 	}
-}
-
-// 2. Sorting links
-// Change accordingly to your website styles
-// ------------------------------------------------
-
-a.gv-sort.gv-icon-caret-up-down {
-    opacity: 0.5;
-
-    &:hover {
-      opacity: 1;
-    }
 }

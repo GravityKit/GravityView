@@ -87,7 +87,8 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 	 * @deprecated
 	 * Do not use this filter anymore.
 	 */
-	$entries = apply_filters( 'gravityview_before_get_entries', null, $criteria, $parameters, $count );
+	$entries = apply_filters_ref_array( 'gravityview_before_get_entries', array( null, $criteria, $parameters, &$count ) );
+
 	if ( ! is_null( $entries ) ) {
 		/**
 		 * We've been given an entries result that we can return,
@@ -147,6 +148,7 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
 	}
 
 	if ( ! empty( $entry['_multi'] ) && ! empty( $field_settings['form_id'] ) && ! empty( $entry['_multi'][ $field_settings['form_id'] ] ) ) {
+		$multientry = \GV\Multi_Entry::from_entries( array_map( '\GV\GF_Entry::from_entry', $entry['_multi'] ) );
 		$entry = $entry['_multi'][ $field_settings['form_id'] ];
 	}
 
@@ -195,7 +197,7 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
 	$field->update_configuration( $field_settings );
 
 	$renderer = new \GV\Field_Renderer();
-	return $renderer->render( $field, gravityview()->views->get(), $source == \GV\Source::BACKEND_GRAVITYFORMS ? $form : null, $entry, gravityview()->request );
+	return $renderer->render( $field, gravityview()->views->get(), $source == \GV\Source::BACKEND_GRAVITYFORMS ? $form : null, isset( $multientry ) ? $multientry : $entry, gravityview()->request );
 }
 
 /**
@@ -428,6 +430,7 @@ final class Legacy_Context {
 			'\GravityView_View::context' => \GravityView_View::getInstance()->getContext(),
 			'\GravityView_View::total_entries' => \GravityView_View::getInstance()->getTotalEntries(),
 			'\GravityView_View::post_id' => \GravityView_View::getInstance()->getPostId(),
+			'\GravityView_View::hide_until_searched' => \GravityView_View::getInstance()->isHideUntilSearched(),
 			'\GravityView_frontend::post_id' => \GravityView_frontend::getInstance()->getPostId(),
 			'\GravityView_frontend::context_view_id' => \GravityView_frontend::getInstance()->get_context_view_id(),
 			'\GravityView_frontend::is_gravityview_post_type' => \GravityView_frontend::getInstance()->isGravityviewPostType(),
@@ -440,6 +443,7 @@ final class Legacy_Context {
 			'\GravityView_frontend::entry' => \GravityView_frontend::getInstance()->getEntry(),
 			'\GravityView_View::_current_entry' => \GravityView_View::getInstance()->getCurrentEntry(),
 			'\GravityView_View::fields' => \GravityView_View::getInstance()->getFields(),
+			'\GravityView_View::_current_field' => \GravityView_View::getInstance()->getCurrentField(),
 			'wp_actions[loop_start]' => empty( $wp_actions['loop_start'] ) ? 0 : $wp_actions['loop_start'],
 			'wp_query::in_the_loop' => $wp_query->in_the_loop,
 		);
@@ -482,6 +486,9 @@ final class Legacy_Context {
 					break;
 				case '\GravityView_View::post_id':
 					\GravityView_View::getInstance()->setPostId( $value );
+					break;
+				case '\GravityView_View::is_hide_until_searched':
+					\GravityView_View::getInstance()->setHideUntilSearched( $value );
 					break;
 				case '\GravityView_frontend::post_id':
 					\GravityView_frontend::getInstance()->setPostId( $value );
@@ -555,6 +562,7 @@ final class Legacy_Context {
 						'\GravityView_View::back_link_label' => $value->settings->get( 'back_link_label', null ),
 						'\GravityView_View::form' => $value->form ? $value->form->form : null,
 						'\GravityView_View::form_id' => $value->form ? $value->form->ID : null,
+						'\GravityView_View::is_hide_until_searched' => $value->settings->get( 'hide_until_searched', null ) && ! gravityview()->request->is_search(),
 
 						'\GravityView_View_Data::views' => $views,
 						'\GravityView_frontend::gv_output_data' => \GravityView_View_Data::getInstance(),
@@ -609,6 +617,7 @@ final class Legacy_Context {
 							'form' => \GravityView_View::getInstance()->getForm(),
 							'field_type' => $value->type, /** {@since 1.6} */
 							'entry' => \GravityView_View::getInstance()->getCurrentEntry(),
+							'UID' => $value->UID,
 
 							// 'field_path' => $field_path, /** {@since 1.16} */
 							// 'value' => $value,
@@ -621,7 +630,7 @@ final class Legacy_Context {
 					self::thaw( array(
 						'\GravityView_View::context' => (
 							$value->is_entry() ? 'single' :
-								( $value->is_edit_entry() ? 'edit' :
+							( $value->is_edit_entry() ? 'edit' :
 									( $value->is_view() ? 'directory': null )
 								)
 						),
@@ -782,4 +791,12 @@ add_action( 'gravityview/template/after', function( $gravityview = null ) {
 			}
 		}
 	}
+} );
+
+add_filter( 'gravityview/query/is_null_condition', function() {
+	if ( ! class_exists( $class = '\GV\Mocks\GF_Query_Condition_IS_NULL' ) ) {
+		require_once gravityview()->plugin->dir( 'future/_mocks.isnull.php' );
+	}
+
+	return $class;
 } );

@@ -239,68 +239,84 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	 * @covers GravityView_Field_Date_Created::replace_merge_tag
 	 * @group date_created
 	 */
-	function test_replace_date_created() {
-
+	function test_replace_date_created_and_updated( $date_field = 'date_created' ) {
 		$form = $this->factory->form->create_and_get();
 
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
+			'date_created' => '2019-11-16 10:00:00',
+			'date_updated' => '2019-11-16 10:00:00',
 		) );
 
-		$date_created = \GV\Utils::get( $entry, 'date_created' );
+		$date_value = \GV\Utils::get( $entry, $date_field );
 
 		/**
 		 * adjusting date to local configured Time Zone
 		 * @see GFCommon::format_date()
 		 */
-		$entry_gmt_time   = mysql2date( 'G', $date_created );
+		$entry_gmt_time   = mysql2date( 'G', $date_value );
 		$entry_local_time = GFCommon::get_local_timestamp( $entry_gmt_time );
+
+		$time_now = $entry_gmt_time + 1; // 1 second difference for human_time_diff calls
+
+		add_filter( 'human_time_diff', $callback = function( $since, $diff, $from, $to ) use ( $time_now ) {
+			if ( $to !== $time_now ) {
+				return human_time_diff( $from, $time_now );
+			}
+			return $since;
+		}, 10, 4 );
 
 		$tests = array(
 
-			'{date_created:raw}' => $date_created,
-			'{date_created:raw:timestamp}' => $date_created, // Raw logic is first, it wins
-			'{date_created:raw:time}' => $date_created,
-			'{date_created:raw:human}' => $date_created,
-			'{date_created:raw:format:example}' => $date_created,
+			"{{$date_field}:raw}" => $date_value,
+			"{{$date_field}:raw:timestamp}" => $date_value, // Raw logic is first, it wins
+			"{{$date_field}:raw:time}" => $date_value,
+			"{{$date_field}:raw:human}" => $date_value,
+			"{{$date_field}:raw:format:example}" => $date_value,
 
-			'{date_created:timestamp:raw}' => $date_created, // Raw logic is first, it wins
-			'{date_created:timestamp}' => $entry_local_time,
-			'{date_created:timestamp:time}' => $entry_local_time,
-			'{date_created:timestamp:human}' => $entry_local_time,
-			'{date_created:timestamp:format:example}' => $entry_local_time,
-
-			// Blog date format
-			'{date_created}' => GFCommon::format_date( $date_created, false, '', false ),
+			"{{$date_field}:timestamp:raw}" => $date_value, // Raw logic is first, it wins
+			"{{$date_field}:timestamp}" => $entry_local_time,
+			"{{$date_field}:timestamp:time}" => $entry_local_time,
+			"{{$date_field}:timestamp:human}" => $entry_local_time,
+			"{{$date_field}:timestamp:format:example}" => $entry_local_time,
 
 			// Blog date format
-			'{date_created:human}' => GFCommon::format_date( $date_created, true, '', false ),
+			"{{$date_field}}" => GFCommon::format_date( $date_value, false, '', false ),
+
+			// Blog date format
+			"{{$date_field}:human}" => GFCommon::format_date( $date_value, true, '', false ),
 
 			// Blog "date at time" format ("%s at %s")
-			'{date_created:time}' => GFCommon::format_date( $date_created, false, '', true ),
+			"{{$date_field}:time}" => GFCommon::format_date( $date_value, false, '', true ),
 
 			// 1 second ago
-			'{date_created:diff}' => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
-			'{date_created:diff:format:%s is so long ago}' => sprintf( '%s is so long ago', human_time_diff( $entry_gmt_time ) ),
+			"{{$date_field}:diff}" => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			"{{$date_field}:diff:format:%s is so long ago}" => sprintf( '%s is so long ago', human_time_diff( $entry_gmt_time, $time_now ) ),
 
 			// Relative should NOT process other modifiers
-			'{date_created:diff:time}' => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
-			'{date_created:diff:human}' => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
-			'{date_created:human:diff}' => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			"{{$date_field}:diff:time}" => sprintf( '%s ago', human_time_diff( $entry_gmt_time, $time_now ) ),
+			"{{$date_field}:diff:human}" => sprintf( '%s ago', human_time_diff( $entry_gmt_time, $time_now ) ),
+			"{{$date_field}:human:diff}" => sprintf( '%s ago', human_time_diff( $entry_gmt_time, $time_now ) ),
 
-			'{date_created:format:mdy}' => GFCommon::format_date( $date_created, false, 'mdy', false ),
-			'{date_created:human:format:m/d/Y }' => GFCommon::format_date( $date_created, true, 'm/d/Y', false ),
+			"{{$date_field}:format:mdy}" => GFCommon::format_date( $date_value, false, 'mdy', false ),
+			"{{$date_field}:human:format:m/d/Y }" => GFCommon::format_date( $date_value, true, 'm/d/Y', false ),
 
-			'{date_created:time:format:d}' => GFCommon::format_date( $date_created, false, 'd', true ),
-			'{date_created:human:time:format:mdy}' => GFCommon::format_date( $date_created, true, 'mdy', true ),
+			"{{$date_field}:time:format:d}" => GFCommon::format_date( $date_value, false, 'd', true ),
+			"{{$date_field}:human:time:format:mdy}" => GFCommon::format_date( $date_value, true, 'mdy', true ),
 
-			'{date_created:format:m/d/Y}' => date_i18n( 'm/d/Y', $entry_local_time, true ),
-			'{date_created:format:m/d/Y\ \w\i\t\h\ \t\i\m\e\ h\:i\:s}' => date_i18n( 'm/d/Y\ \w\i\t\h\ \t\i\m\e\ h:i:s', $entry_local_time, true ),
+			"{{$date_field}:format:m/d/Y}" => date_i18n( 'm/d/Y', $entry_local_time, true ),
+			"{{$date_field}:format:m/d/Y\ \w\i\\t\h\ \\t\i\m\\e\ h\:i\:s}" => date_i18n( 'm/d/Y\ \w\i\t\h\ \t\i\m\e\ h:i:s', $entry_local_time, true ),
 		);
 
 		foreach ( $tests as $merge_tag => $expected ) {
 			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
 		}
+
+		$this->assertTrue( remove_filter( 'human_time_diff', $callback ) );
+	}
+
+	function test_replace_date_updated() {
+		return $this->test_replace_date_created_and_updated( 'date_updated' );
 	}
 
 	/**

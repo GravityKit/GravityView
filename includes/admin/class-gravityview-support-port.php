@@ -11,6 +11,12 @@ class GravityView_Support_Port {
 	 */
 	const user_pref_name = 'gravityview_support_port';
 
+	/**
+	 * @var string The hash key used to generate secure message history
+     * @since 2.2.5
+	 */
+	const beacon_key = 'lCXlwbQR707kipR+J0MCqcxrhGOHjGF0ldD6yNbGM0w=';
+
 	public function __construct() {
 		$this->add_hooks();
 	}
@@ -23,12 +29,69 @@ class GravityView_Support_Port {
 		add_action( 'personal_options_update', array( $this, 'update_user_meta_value' ) );
 		add_action( 'edit_user_profile_update', array( $this, 'update_user_meta_value' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'maybe_enqueue_script' ), 1000 );
+		add_filter( 'gravityview/tooltips/tooltip', array( $this, 'maybe_add_article_to_tooltip' ), 10, 6 );
+	}
+
+	/**
+	 * Modify tooltips to add Beacon article
+	 *
+	 * @since 2.8.1
+	 *
+	 * @param string $tooltip HTML of original tooltip
+	 * @param array  $article   Optional. Details about support doc article connected to the tooltip. {
+	 *   @type string $id   Unique ID of article for Beacon API
+	 *   @type string $url  URL of support doc article
+	 *   @type string $type Type of Beacon element to open. {@see https://developer.helpscout.com/beacon-2/web/javascript-api/#beaconarticle}
+	 * }
+	 * @param string $url
+	 * @param string $atts
+	 * @param string $css_class
+	 * @param string $anchor_text
+	 * @param string $link_text
+	 *
+	 * @return string If no article information exists, original tooltip. Otherwise, modified!
+	 */
+	public function maybe_add_article_to_tooltip( $tooltip = '', $article = array(), $url = '', $atts = '', $css_class = '', $anchor_text = '' ) {
+
+		if ( empty( $article['id'] ) ) {
+			return $tooltip;
+		}
+
+		static $show_support_port;
+
+		if ( ! isset( $show_support_port ) ) {
+			$show_support_port = self::show_for_user();
+		}
+
+		if ( ! $show_support_port ) {
+			return $tooltip;
+		}
+
+		$css_class .= ' gv_tooltip';
+
+		if ( ! empty( $article['type'] ) ) {
+			$atts = sprintf( 'data-beacon-article-%s="%s"', $article['type'], $article['id'] );
+		} else {
+			$atts = sprintf( 'data-beacon-article="%s"', $article['id'] );
+		}
+
+		$url = \GV\Utils::get( $article, 'url', '#' );
+		$anchor_text .= '<p class="description" style="font-size: 15px; text-align: center;"><strong>' . sprintf( esc_html__( 'Click %s icon for additional information.', 'gravityview' ), '<i class=\'fa fa-question-circle\'></i>' ) . '</strong></p>';
+		$link_text = esc_html__( 'Learn More', 'gravityview' );
+
+		return sprintf( '<a href="%s" %s class="%s" title="%s" role="button">%s</a>',
+			esc_url( $url ),
+			$atts,
+			$css_class,
+			esc_attr( $anchor_text ),
+			$link_text
+		);
 	}
 
 	/**
 	 * Enqueue Support Port script if user has it enabled and we're on a GravityView plugin page
 	 *
-	 * @uses gravityview_is_admin_page()
+	 * @uses \GV\Admin_Request::is_admin()
 	 * @uses wp_enqueue_script()
 	 * @since 1.15
 	 *
@@ -38,7 +101,7 @@ class GravityView_Support_Port {
 		global $pagenow;
 
 		// Don't show if not GravityView page, or if we're on the Widgets page
-		if ( ! gravityview_is_admin_page( $hook ) || $pagenow === 'widgets.php' ) {
+		if ( ! gravityview()->request->is_admin( $hook ) || $pagenow === 'widgets.php' ) {
 			return;
 		}
 
@@ -57,7 +120,7 @@ class GravityView_Support_Port {
 
 		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-		wp_enqueue_script( 'gravityview-support', plugins_url( 'assets/js/support' . $script_debug . '.js', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version, true );
+		wp_enqueue_script( 'gravityview-support', plugins_url( 'assets/js/support' . $script_debug . '.js', GRAVITYVIEW_FILE ), array(), \GV\Plugin::$version, true );
 
 		self::_localize_script();
 	}
@@ -74,20 +137,20 @@ class GravityView_Support_Port {
 		$translation = array(
 			'agentLabel'                => __( 'GravityView Support', 'gravityview' ),
 			'searchLabel'               => __( 'Search GravityView Docs', 'gravityview' ),
-			'searchErrorLabel'          => __( 'Your search timed out. Please double-check your internet connection and try again.', 'gravityview' ),
+			'docsSearchErrorText'          => __( 'Your search timed out. Please double-check your internet connection and try again.', 'gravityview' ),
 			'noResultsLabel'            => _x( 'No results found for', 'a support form search has returned empty for the following word', 'gravityview' ),
 			'contactLabel'              => __( 'Contact Support', 'gravityview' ),
-			'attachFileLabel'           => __( 'Attach a screenshot or file', 'gravityview' ),
-			'attachFileError'           => __( 'The maximum file size is 10 MB', 'gravityview' ),
+			'attachAFile'               => __( 'Attach a screenshot or file', 'gravityview' ),
+			'attachmentSizeErrorText'   => __( 'The maximum file size is 10 MB', 'gravityview' ),
 			'nameLabel'                 => __( 'Your Name', 'gravityview' ),
 			'nameError'                 => __( 'Please enter your name', 'gravityview' ),
 			'emailLabel'                => __( 'Email address', 'gravityview' ),
-			'emailError'                => __( 'Please enter a valid email address', 'gravityview' ),
+			'emailValidationLabel'      => __( 'Please enter a valid email address', 'gravityview' ),
 			'subjectLabel'              => __( 'Subject', 'gravityview' ),
 			'subjectError'              => _x( 'Please enter a subject', 'Error shown when submitting support request and there is no subject provided', 'gravityview' ),
 			'messageLabel'              => __( 'How can we help you?', 'gravityview' ),
 			'messageError'              => _x( 'Please enter a message', 'Error shown when submitting support request and there is no message provided', 'gravityview' ),
-			'contactSuccessLabel'       => __( 'Message sent!', 'gravityview' ),
+			'weAreOnIt'                 => __( 'Message sent!', 'gravityview' ),
 			'contactSuccessDescription' => __( 'Thanks for reaching out! Someone from the GravityView team will get back to you soon.', 'gravityview' ),
 		);
 
@@ -113,40 +176,50 @@ class GravityView_Support_Port {
 		switch ( intval( $response['price_id'] ) ) {
 			default:
 			case 1:
-				$package = 'Sol';
+				$package = 'Core';
 				break;
 			case 2:
-				$package = 'Interstellar';
+				$package = 'Extensions';
 				break;
 			case 3:
-				$package = 'Galactic';
+				$package = 'All Access';
 				break;
             case 4:
                 $package = 'Lifetime';
                 break;
 		}
 
+		$current_user = wp_get_current_user();
+		$no_conflict_mode = gravityview()->plugin->settings->get( 'no-conflict-mode' );
+
+		// Prevent any PHP warnings
+		ob_start();
+
 		$data = array(
-			'email'                 => gravityview()->plugin->settings->get( 'support-email' ),
-			'name'                  => $response['customer_name'],
-			'Valid License?'        => ucwords( $response['license'] ),
-			'License Key'           => $response['license_key'],
+			'email'                 => $current_user->user_email,
+			'name'                  => mb_substr( $current_user->display_name, 0, 80 ),
+			'signature'             => hash_hmac( 'sha256', $current_user->user_email, self::beacon_key ),
+			'License Key'           => $response['license_key'] . ' (' . ucwords( $response['license'] ) . ')',
 			'License Level'         => $package,
-			'Site Admin Email'      => get_bloginfo( 'admin_email' ),
-			'Support Email'         => gravityview()->plugin->settings->get( 'support-email' ),
-			'License Limit'         => $response['license_limit'],
-			'Site Count'            => $response['site_count'],
-			'License Expires'       => $response['expires'],
-			'Activations Left'      => $response['activations_left'],
-			'Payment ID'            => $response['payment_id'],
-			'Payment Name'          => $response['customer_name'],
-			'Payment Email'         => $response['customer_email'],
+			'Alt Emails'            => sprintf( "Admin: %s, GV Support: %s", get_bloginfo( 'admin_email' ), gravityview()->plugin->settings->get( 'support-email' ) ),
+			'Payment Details'       => $response['customer_name'] . ' ' . $response['customer_email'],
 			'WordPress Version'     => get_bloginfo( 'version', 'display' ),
-			'PHP Version'           => phpversion(),
+			'PHP Version'           => phpversion() . ' on ' . esc_html( $_SERVER['SERVER_SOFTWARE'] ),
+			'No-Conflict Mode'      => empty( $no_conflict_mode ) ? 'Disabled' : 'Enabled',
 			'GravityView Version'   => \GV\Plugin::$version,
 			'Gravity Forms Version' => GFForms::$version,
-			'Plugins & Extensions'  => \GV\License_Handler::get_related_plugins_and_extensions(),
 		);
+
+		// End prevent any PHP warnings
+		ob_get_clean();
+
+		// Help Scout length limit is 200 characters
+		foreach( $data as $key => $value ) {
+			if ( ! is_string( $value ) ) {
+                continue;
+			}
+		    $data[ $key ] = mb_substr( $value, 0, 200 );
+        }
 
 		$localization_data = array(
 			'contactEnabled' => (int)GVCommon::has_cap( 'gravityview_contact_support' ),

@@ -26,20 +26,25 @@ class Entry_List_Template extends Entry_Template {
 	 * @return string
 	 */
 	public function the_field( \GV\Field $field, $extras = null ) {
-		$form = $this->view->form;
+		$form = \GV\GF_Form::by_id( $field->form_id ) ? : $this->view->form;
+		$entry = $this->entry->from_field( $field );
+
+		if ( ! $entry ) {
+			return '';
+		}
 
 		$renderer = new Field_Renderer();
-		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
+		$source = is_numeric( $field->ID ) ? ( GF_Form::by_id( $field->form_id ) ? : $this->view->form ) : new Internal_Source();
 		
-		$value = $renderer->render( $field, $this->view, $source, $this->entry, $this->request );
+		$value = $renderer->render( $field, $this->view, $source, $entry, $this->request );
 		
-		$context = Template_Context::from_template( $this, compact( 'field' ) );
+		$context = Template_Context::from_template( $this, compact( 'field', 'entry' ) );
 
 		/**
 		 * @deprecated Here for back-compatibility.
 		 */
-		$label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form, $this->entry ), $field->as_configuration() );
-		$label = apply_filters( 'gravityview/template/field_label', $label, $field->as_configuration(), $form->form ? $form->form : null, $this->entry->as_entry() );
+		$label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form, $entry ), $field->as_configuration() );
+		$label = apply_filters( 'gravityview/template/field_label', $label, $field->as_configuration(), is_numeric( $field->ID ) ? ( $source->form ? $source->form : null ) : null, $entry->as_entry() );
 
 		/**
 		 * @filter `gravityview/template/field/label` Override the field label.
@@ -56,6 +61,11 @@ class Entry_List_Template extends Entry_Template {
 		 */
 		$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', Utils::get( $extras, 'hide_empty', $this->view->settings->get( 'hide_empty', false ) ), $context );
 
+		if ( is_numeric( $field->ID ) ) {
+			$extras['field'] = $field->as_configuration();
+		}
+
+		$extras['entry'] = $this->entry->as_entry();
 		$extras['hide_empty'] = $hide_empty;
 		$extras['label'] = $label;
 		$extras['value'] = $value;
@@ -80,7 +90,7 @@ class Entry_List_Template extends Entry_Template {
 		$vars = array();
 		foreach ( $zones as $zone ) {
 			$zone_var = str_replace( '-', '_', $zone );
-			$vars[ $zone_var ] = $this->view->fields->by_position( 'single_list-' . $zone )->by_visible();
+			$vars[ $zone_var ] = $this->view->fields->by_position( 'single_list-' . $zone )->by_visible( $this->view );
 			$vars[ "has_$zone_var" ] = $vars[ $zone_var ]->count();
 		}
 

@@ -61,17 +61,18 @@ class GravityView_Change_Entry_Creator {
     	}
 
     	// Update the entry. The `false` prevents checking Akismet; `true` disables the user updated hook from firing
-    	$result = RGFormsModel::update_lead_property( $entry['id'], 'created_by', $user_id, false, true );
+    	$result = RGFormsModel::update_entry_property( (int) $entry['id'], 'created_by', (int) $user_id, false, true );
 
-    	if( empty( $result ) ) {
+    	if ( false === $result ) {
     		$status = __('Error', 'gravityview');
+    		global $wpdb;
+		    $note = sprintf( '%s: Failed to assign User ID #%d as the entry creator (Last database error: "%s")', $status, $user_id, $wpdb->last_error );
     	} else {
     		$status = __('Success', 'gravityview');
+    	    $note = sprintf( _x('%s: Assigned User ID #%d as the entry creator.', 'First parameter: Success or error of the action. Second: User ID number', 'gravityview'), $status, $user_id );
     	}
 
-    	$note = sprintf( _x('%s: Assigned User ID #%d as the entry creator.', 'First parameter: Success or error of the action. Second: User ID number', 'gravityview'), $status, $user_id );
-
-    	gravityview()->log->debug( 'GravityView_Change_Entry_Creator[assign_new_user_to_lead] - {note}', array( 'note', $note ) );
+    	gravityview()->log->debug( 'GravityView_Change_Entry_Creator[assign_new_user_to_lead] - {note}', array( 'note' => $note ) );
 
 	    /**
 	     * @filter `gravityview_disable_change_entry_creator_note` Disable adding a note when changing the entry creator
@@ -96,19 +97,6 @@ class GravityView_Change_Entry_Creator {
     	// @link https://gravityview.co/support/documentation/201991205/
     	remove_action("gform_entry_info", 'gravityview_change_entry_creator_form', 10 );
     	remove_action("gform_after_update_entry", 'gravityview_update_entry_creator', 10 );
-
-    	// Disable for Gravity Forms Add-ons 3.6.2 and lower
-    	if( class_exists( 'KWS_GF_Change_Lead_Creator' ) ) {
-
-    		$Old_Lead_Creator = new KWS_GF_Change_Lead_Creator;
-
-    		// Now, no validation is required in the methods; let's hook in.
-    		remove_action('admin_init', array( $Old_Lead_Creator, 'set_screen_mode' ) );
-
-    		remove_action("gform_entry_info", array( $Old_Lead_Creator, 'add_select' ), 10 );
-
-    		remove_action("gform_after_update_entry", array( $Old_Lead_Creator, 'update_entry_creator' ), 10 );
-    	}
 
     }
 
@@ -147,6 +135,10 @@ class GravityView_Change_Entry_Creator {
      * @return void
      */
     function set_screen_mode() {
+
+    	if( 'view' === \GV\Utils::_POST( 'screen_mode' ) ) {
+    		return;
+	    }
 
     	// If $_GET['screen_mode'] is set to edit, set $_POST value
         if( \GV\Utils::_GET( 'screen_mode' ) === 'edit' ) {

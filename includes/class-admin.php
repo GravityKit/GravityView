@@ -63,7 +63,7 @@ class GravityView_Admin {
 	 * @return string HTML message with no container tags.
 	 */
 	public static function no_views_text() {
-		
+
 		if ( isset( $_REQUEST['post_status'] ) && 'trash' === $_REQUEST['post_status'] ) {
 			return __( 'No Views found in Trash', 'gravityview' );
 		} elseif( ! empty( $_GET['s'] ) ) {
@@ -106,7 +106,7 @@ class GravityView_Admin {
 			$error .= ' ' . esc_html__( 'Select another form as the data source for this View.', 'gravityview' );
 		} elseif ( $form_info->is_trash ) {
 			$error = esc_html__( 'The connected form is in the trash.', 'gravityview' );
-			$error .= ' ' . gravityview_get_link( admin_url( 'admin.php?page=gf_edit_forms&filter=trash' ), esc_html__( 'Restore the form from the trash', 'gravityview' ) );
+			$error .= ' ' . gravityview_get_link( admin_url( 'admin.php?page=gf_edit_forms&filter=trash&s=' . $form_info->title ), esc_html__( 'Restore the form from the trash', 'gravityview' ) );
 			$error .= ' ' . esc_html__( 'or select another form.', 'gravityview' );
 		}
 
@@ -118,6 +118,8 @@ class GravityView_Admin {
 			</div>
 			<?php
 		}
+
+        remove_action( 'gravityview/metaboxes/data-source/before', array( 'GravityView_Admin', 'connected_form_warning' ) );
 	}
 
 	/**
@@ -136,6 +138,7 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/admin/class-gravityview-admin-view-widget.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-views.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-welcome.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/class-admin-installer.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 

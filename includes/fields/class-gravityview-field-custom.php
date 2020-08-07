@@ -38,7 +38,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 		parent::__construct();
 	}
 
-	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		unset ( $field_options['search_filter'], $field_options['show_as_link'] );
 
@@ -46,7 +46,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 			'content' => array(
 				'type' => 'textarea',
 				'label' => __( 'Custom Content', 'gravityview' ),
-				'desc' => sprintf( __( 'Enter text or HTML. Also supports shortcodes. You can show or hide data using the %s shortcode (%slearn more%s).', 'gravityview' ), '<code>[gvlogic]</code>', '<a href="https://docs.gravityview.co/article/252-gvlogic-shortcode">', '</a>' ),
+				'desc' => sprintf( __( 'Enter text or HTML. Also supports shortcodes. You can show or hide data using the %s shortcode (%slearn more%s).', 'gravityview' ), '<code>[gvlogic]</code>', '<a href="https://docs.gravityview.co/article/252-gvlogic-shortcode" data-beacon-article-sidebar="552355bfe4b0221aadf2572b">', '</a>' ) . ' ' . sprintf( __( 'Click the arrow icon next to the content area to add %sMerge Tags%s.', 'gravityview' ), '<a href="https://docs.gravityview.co/article/76-merge-tags" data-beacon-article-inline="54c67bbbe4b051242988551d">', '</a>' ),
 				'value' => '',
 				'class'	=> 'code',
 				'merge_tags' => 'force',
@@ -63,6 +63,13 @@ class GravityView_Field_Custom extends GravityView_Field {
 				'type' => 'checkbox',
 				'label' => __( 'Render oEmbeds', 'gravityview' ),
 				'desc' => sprintf( _x( 'Automatically convert oEmbed URLs into embedded content (%slearn more%s).', 'HTML link pointing to WordPress article on oEmbed', 'gravityview' ), '<a href="https://codex.wordpress.org/Embeds" rel="external noopener noreferrer">', '</a>' ),
+				'value' => '',
+			),
+			'admin_label' => array(
+				'type' => 'text',
+				'class' => 'widefat',
+				'label' => __( 'Admin Label', 'gravityview' ),
+				'desc' => __( 'A label that is only shown in the GravityView View configuration screen.', 'gravityview' ),
 				'value' => '',
 			),
 		);
@@ -88,7 +95,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 	 *
 	 * @return GF_Field[] If Custom Content field exists, returns fields array with the fields inserted. Otherwise, returns unmodified fields array.
 	 */
-	public function show_field_in_edit_entry( $fields, $edit_fields = null, $form, $view_id = 0 ) {
+	public function show_field_in_edit_entry( $fields, $edit_fields = null, $form = array(), $view_id = 0 ) {
 
 		// Not configured; show all fields.
 		if ( is_null( $edit_fields ) ) {

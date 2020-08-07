@@ -103,43 +103,98 @@ class Views_Route extends Route {
 	 * @param \GV\Entry $entry WordPress representation of the item.
 	 * @param \WP_REST_Request $request Request object.
 	 * @param string $context The context (directory, single)
+	 * @param string $class The value renderer. Default: null (raw value)
+	 *
+	 * @since 2.1 Add value renderer override $class parameter.
+	 *
 	 * @return mixed The data that is sent.
 	 */
-	public function prepare_entry_for_response( $view, $entry, \WP_REST_Request $request, $context ) {
-		$return = $entry->as_entry();
+	public function prepare_entry_for_response( $view, $entry, \WP_REST_Request $request, $context, $class = null ) {
 
 		// Only output the fields that should be displayed.
 		$allowed = array();
-		foreach ( $view->fields->by_position( "{$context}_*" )->by_visible()->all() as $field ) {
-			$allowed[] = $field->ID;
+		foreach ( $view->fields->by_position( "{$context}_*" )->by_visible( $view )->all() as $field ) {
+			$allowed[] = $field;
 		}
 
 		/**
 		 * @filter `gravityview/rest/entry/fields` Whitelist more entry fields that are output in regular REST requests.
 		 * @param[in,out] array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the view.
 		 * @param \GV\View $view The view.
-		 * @param \GV\Entry $entry WordPress representation of the item.
+		 * @param \GV\Entry $entry The entry.
 		 * @param \WP_REST_Request $request Request object.
 		 * @param string $context The context (directory, single)
 		 */
-		$allowed = apply_filters( 'gravityview/rest/entry/fields', $allowed, $view, $entry, $request, $context );
+		$allowed_field_ids = apply_filters( 'gravityview/rest/entry/fields', wp_list_pluck( $allowed, 'ID' ), $view, $entry, $request, $context );
 
-		foreach ( $return as $key => $value ) {
-			if ( ! in_array( $key, $allowed ) ) {
-				unset( $return[ $key ] );
-			}
+		$allowed = array_filter( $allowed, function( $field ) use ( $allowed_field_ids ) {
+			return in_array( $field->ID, $allowed_field_ids, true );
+		} );
+
+		// Tack on additional fields if needed
+		foreach ( array_diff( $allowed_field_ids, wp_list_pluck( $allowed, 'ID' ) ) as $field_id ) {
+			$allowed[] = is_numeric( $field_id ) ? \GV\GF_Field::by_id( $view->form, $field_id ) : \GV\Internal_Field::by_id( $field_id );
 		}
 
 		$r = new Request( $request );
+		$return = array();
+
+		$renderer = new \GV\Field_Renderer();
+		
+		$used_ids = array();
 
 		foreach ( $allowed as $field ) {
-			$source = is_numeric( $field ) ? $view->form : new \GV\Internal_Source();
-			$field  = is_numeric( $field ) ? \GV\GF_Field::by_id( $view->form, $field ) : \GV\Internal_Field::by_id( $field );
+			$source = is_numeric( $field->ID ) ? $view->form : new \GV\Internal_Source();
 
-			$return[ $field->ID ] = $field->get_value( $view, $source, $entry, $r );
+			$field_id = $field->ID;
+			$index = null;
+
+			if ( ! isset( $used_ids[ $field_id ] ) ) {
+				$used_ids[ $field_id ] = 0;
+			} else {
+				$index = ++$used_ids[ $field_id ];
+			}
+
+			if ( $index ) {
+				/**
+				 * Modify non-unique IDs (custom, id, etc.) to be unique and not gobbled up.
+				 */
+				$field_id = sprintf( '%s(%d)', $field_id, $index + 1 );
+			}
+
+			/**
+			 * @filter `gravityview/api/field/key` Filter the key name in the results for JSON output.
+			 * @param[in,out] string $field_id The ID. Should be unique or keys will be gobbled up.
+			 * @param \GV\View $view The view.
+			 * @param \GV\Entry $entry The entry.
+			 * @param \WP_REST_Request $request Request object.
+			 * @param string $context The context (directory, single)
+			 */
+			$field_id = apply_filters( 'gravityview/api/field/key', $field_id, $view, $entry, $request, $context );
+
+			if ( ! $class && in_array( $field->ID, array( 'custom' ) ) ) {
+				/**
+				 * Custom fields (and perhaps some others) will require rendering as they don't
+				 * contain an intrinsic value (for custom their value is stored in the view and requires a renderer).
+				 * We force the CSV template to take over in such cases, it's good enough for most cases.
+				 */
+				$return[ $field_id ] = $renderer->render( $field, $view, $source, $entry, $r, '\GV\Field_CSV_Template' );
+			} else if ( $class ) {
+				$return[ $field_id ] = $renderer->render( $field, $view, $source, $entry, $r, $class );
+			} else {
+				switch ( $field->type ):
+					case 'list':
+						$return[ $field_id ] = unserialize( $field->get_value( $view, $source, $entry, $r ) );
+						break;
+					case 'fileupload':
+					case 'business_hours':
+						$return[ $field_id ] = json_decode( $field->get_value( $view, $source, $entry, $r ) );
+						break;
+					default;
+						$return[ $field_id ] = $field->get_value( $view, $source, $entry, $r );
+				endswitch;
+			}
 		}
-
-		// @todo Set the labels!
 
 		return $return;
 	}
@@ -159,34 +214,56 @@ class Views_Route extends Route {
 		$view_id = intval( $url['id'] );
 		$format  = \GV\Utils::get( $url, 'format', 'json' );
 
+		if( $post_id = $request->get_param('post_id') ) {
+			global $post;
+
+			$post = get_post( $post_id );
+
+			if ( ! $post || is_wp_error( $post ) ) {
+				return new \WP_Error( 'gravityview-post-not-found', sprintf( 'A post with ID #%d was not found.', $post_id ) );
+			}
+
+			$collection = \GV\View_Collection::from_post( $post );
+
+			if ( ! $collection->contains( $view_id ) ) {
+				return new \WP_Error( 'gravityview-post-not-contains', sprintf( 'The post with ID #%d does not contain a View with ID #%d', $post_id, $view_id ) );
+			}
+		}
+
 		$view = \GV\View::by_id( $view_id );
 
-		if ( $format == 'html' ) {
+		if ( 'html' === $format ) {
 
 			$renderer = new \GV\View_Renderer();
-			$total = 0;
+			$count = $total = 0;
 
-			add_action( 'gravityview/template/view/render', function( $context ) use ( &$total ) {
-				$total = $context->entries->count();
+			/** @var \GV\Template_Context $context */
+			add_action( 'gravityview/template/view/render', function( $context ) use ( &$count, &$total ) {
+				$count = $context->entries->count();
+				$total = $context->entries->total();
 			} );
 
 			$output = $renderer->render( $view, new Request( $request ) );
 
 			/**
 			 * @filter `gravityview/rest/entries/html/insert_meta` Whether to include `http-equiv` meta tags in the HTML output describing the data
+			 * @since 2.0
 			 * @param bool $insert_meta Add <meta> tags? [Default: true]
-			 * @param int $total The number of entries being rendered
+			 * @param int $count The number of entries being rendered
 			 * @param \GV\View $view The view.
 			 * @param \WP_REST_Request $request Request object.
+			 * @param int $total The number of total entries for the request
 			 */
-			$insert_meta = apply_filters( 'gravityview/rest/entries/html/insert_meta', true, $total, $view, $request );
+			$insert_meta = apply_filters( 'gravityview/rest/entries/html/insert_meta', true, $count, $view, $request, $total );
 
 			if ( $insert_meta ) {
-				$output = '<meta http-equiv="X-Item-Count" content="' . $total . '" />' . $output;
+				$output = '<meta http-equiv="X-Item-Count" content="' . $count . '" />' . $output;
+				$output = '<meta http-equiv="X-Item-Total" content="' . $total . '" />' . $output;
 			}
 
 			$response = new \WP_REST_Response( $output, 200 );
-			$response->header( 'X-Item-Count', $total );
+			$response->header( 'X-Item-Count', $count );
+			$response->header( 'X-Item-Total', $total );
 
 			return $response;
 		}
@@ -195,6 +272,49 @@ class Views_Route extends Route {
 
 		if ( ! $entries->all() ) {
 			return new \WP_Error( 'gravityview-no-entries', __( 'No Entries found.', 'gravityview' ) );
+		}
+
+		if ( 'csv' === $format ) {
+			ob_start();
+
+			$csv = fopen( 'php://output', 'w' );
+
+			/** Da' BOM :) */
+			if ( apply_filters( 'gform_include_bom_export_entries', true, $view->form ? $view->form->form : null ) ) {
+				fputs( $csv, "\xef\xbb\xbf" );
+			}
+
+			$headers_done = false;
+
+			foreach ( $entries->all() as $entry ) {
+				$entry = $this->prepare_entry_for_response( $view, $entry, $request, 'directory', '\GV\Field_CSV_Template' );
+
+				if ( ! $headers_done ) {
+					$headers_done = fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), array_keys( $entry ) ) );
+				}
+
+				fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), $entry ) );
+			}
+
+			$response = new \WP_REST_Response( '', 200 );
+			$response->header( 'X-Item-Count', $entries->count() );
+			$response->header( 'X-Item-Total', $entries->total() );
+			$response->header( 'Content-Type', 'text/csv' );
+
+			fflush( $csv );
+
+			$data = rtrim( ob_get_clean() );
+
+			add_filter( 'rest_pre_serve_request', function() use ( $data ) {
+				echo $data;
+				return true;
+			} );
+
+			if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) {
+				echo $data; // rest_pre_serve_request is not called in tests
+			}
+
+			return $response;
 		}
 
 		$data = array( 'entries' => $entries->all(), 'total' => $entries->total() );
@@ -225,7 +345,7 @@ class Views_Route extends Route {
 		$view  = \GV\View::by_id( $view_id );
 		$entry = \GV\GF_Entry::by_id( $entry_id );
 
-		if ( $format == 'html' ) {
+		if ( $format === 'html' ) {
 			$renderer = new \GV\Entry_Renderer();
 			return $renderer->render( $entry, $view, new Request( $request ) );
 		}
@@ -285,8 +405,13 @@ class Views_Route extends Route {
 		return $return;
 	}
 
+	/**
+	 * @param \WP_REST_Request $request
+	 *
+	 * @return bool|\WP_Error
+	 */
 	public function get_item_permissions_check( $request ) {
-		if ( func_num_args() == 2 ) {
+		if ( func_num_args() === 2 ) {
 			$view_id = func_get_arg( 1 ); // $view_id override
 		} else {
 			$url     = $request->get_url_params();
@@ -297,31 +422,24 @@ class Views_Route extends Route {
 			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
 		}
 
-		if ( post_password_required( $view->ID ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
-		}
+		while ( $error = $view->can_render( array( 'rest' ), $request ) ) {
 
-		$public_states = get_post_stati( array( 'public' => true ) );
-		if ( ! in_array( $view->post_status, $public_states ) && ! \GVCommon::has_cap( 'read_gravityview', $view->ID ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
-		}
+			if ( ! is_wp_error( $error ) ) {
+				break;
+			}
 
-		// Shortcodes only
-		$direct_access = apply_filters( 'gravityview_direct_access', true, $view->ID );
-		if ( ! apply_filters( 'gravityview/view/output/direct', $direct_access, $view, $request ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
-		}
-
-		// Embed only
-		if ( $view->settings->get( 'embed_only' ) && ! \GVCommon::has_cap( 'read_private_gravityviews' ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
-		}
-
-		// REST
-		if ( gravityview()->plugin->settings->get( 'rest_api' ) === '1' && $view->settings->get( 'rest_disable' ) === '1' ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
-		} elseif ( gravityview()->plugin->settings->get( 'rest_api' ) !== '1' && $view->settings->get( 'rest_enable' ) !== '1' ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+			switch ( str_replace( 'gravityview/', '', $error->get_error_code() ) ) {
+				case 'rest_disabled':
+				case 'post_password_required':
+				case 'not_public':
+				case 'embed_only':
+				case 'no_direct_access':
+					return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+				case 'no_form_attached':
+					return new \WP_Error( 'rest_forbidden', __( 'This View is not configured properly.', 'gravityview' ) );
+				default:
+					return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+			}
 		}
 
 		/**

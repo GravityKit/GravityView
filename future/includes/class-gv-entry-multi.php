@@ -73,6 +73,34 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 	}
 
 	/**
+	 * Return the link to this multi entry in the supplied context.
+	 *
+	 * @api
+	 * @since 2.2
+	 *
+	 * @param \GV\View|null $view The View context.
+	 * @param \GV\Request $request The Request (current if null).
+	 * @param boolean $track_directory Keep the housing directory arguments intact (used for breadcrumbs, for example). Default: true.
+	 *
+	 * @return string The permalink to this entry.
+	 */
+	public function get_permalink( \GV\View $view = null, \GV\Request $request = null, $track_directory = true ) {
+		$slugs = array();
+		add_filter( 'gravityview/entry/slug', $callback = function( $slug ) use ( &$slugs ) {
+			$slugs[] = $slug;
+			return implode( ',', $slugs );
+		}, 10, 1 );
+
+		foreach ( $this->entries as $entry ) {
+			$permalink = call_user_func_array( array( $entry, __FUNCTION__ ), func_get_args() );
+		}
+
+		remove_filter( 'gravityview/entry/slug', $callback );
+
+		return $permalink;
+	}
+
+	/**
 	 * ArrayAccess compatibility layer with a Gravity Forms entry array.
 	 *
 	 * @internal

@@ -5,6 +5,11 @@
  * @global \GV\Template_Context $gravityview
  */
 
+if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
+	gravityview()->log->error( '{file} template loaded without context', array( 'file' => __FILE__ ) );
+	return;
+}
+
 $entry = $gravityview->entry;
 
 \GV\Mocks\Legacy_Context::push( array( 'view' => $gravityview->view ) );

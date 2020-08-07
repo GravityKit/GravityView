@@ -5,6 +5,12 @@
  * @global \GV\Template_Context $gravityview
  */
 
+if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
+	gravityview()->log->error( '{file} template loaded without context', array( 'file' => __FILE__ ) );
+	return;
+}
+
+/** @var \GV\View_Table_Template $template */
 $template = $gravityview->template;
 ?>
 	<tbody>
@@ -22,7 +28,7 @@ $template = $gravityview->template;
 				$template::tr_before( $gravityview );
 
                 ?>
-				<td colspan="<?php echo $gravityview->fields->by_position( 'directory_table-columns' )->by_visible()->count() ? : ''; ?>" class="gv-no-results">
+				<td colspan="<?php echo $gravityview->fields->by_position( 'directory_table-columns' )->by_visible( $gravityview->view )->count() ? : ''; ?>" class="gv-no-results">
 					<?php echo gv_no_results( true, $gravityview ); ?>
 				</td>
 				<?php
@@ -46,7 +52,7 @@ $template = $gravityview->template;
 					'class' => $class,
 				);
 
-				$gravityview->template->the_entry( $entry, $attributes );
+				$template->the_entry( $entry, $attributes );
 			}
 		}
 

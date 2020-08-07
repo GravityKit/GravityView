@@ -5,7 +5,13 @@
  * @global \GV\Template_Context $gravityview
  * @since 2.0
  */
-$value = $gravityview->value;
+
+if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
+	gravityview()->log->error( '{file} template loaded without context', array( 'file' => __FILE__ ) );
+	return;
+}
+
+$display_value = $gravityview->display_value;
 $form = $gravityview->view->form->form;
 $field_settings = $gravityview->field->as_configuration();
 

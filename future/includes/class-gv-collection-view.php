@@ -10,6 +10,15 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * A collection of \GV\View objects.
  */
 class View_Collection extends Collection {
+
+	/**
+	 * @inheritDoc
+	 * @return View[]
+	 */
+	public function all() {
+		return parent::all();
+	}
+
 	/**
 	 * Add a \GV\View to this collection.
 	 *
@@ -78,7 +87,9 @@ class View_Collection extends Collection {
 	public static function from_post( \WP_Post $post ) {
 		$views = new self();
 
-		if ( get_post_type( $post ) == 'gravityview' ) {
+		$post_type = get_post_type( $post );
+
+		if ( 'gravityview' === $post_type ) {
 			/** A straight up gravityview post. */
 			$views->add( View::from_post( $post ) );
 		} else {
@@ -112,10 +123,35 @@ class View_Collection extends Collection {
 
 			/** What about inside post meta values? */
 			foreach ( $meta_keys as $meta_key ) {
-				if ( is_string( $post->$meta_key ) ) {
-					$views->merge( self::from_content( $post->$meta_key ) );
-				}
+				$views = self::merge_deep( $views, $post->{$meta_key} );
 			}
+		}
+
+		return $views;
+	}
+
+	/**
+	 * Process meta values when stored singular (string) or multiple (array). Supports nested arrays and JSON strings.
+	 *
+	 * @since 2.1
+	 *
+	 * @param \GV\View_Collection $views Existing View Collection to merge with
+	 * @param string|array $meta_value Value to parse. Normally the value of $post->{$meta_key}.
+	 *
+	 * @return \GV\View_Collection $views View Collection containing any additional Views found
+	 */
+	private static function merge_deep( $views, $meta_value ) {
+
+		$meta_value = gv_maybe_json_decode( $meta_value, true );
+
+		if ( is_array( $meta_value ) ) {
+			foreach ( $meta_value as $index => $item ) {
+				$meta_value[ $index ] = self::merge_deep( $views, $item );
+			}
+		}
+
+		if ( is_string( $meta_value ) ) {
+			$views->merge( self::from_content( $meta_value ) );
 		}
 
 		return $views;
@@ -146,7 +182,7 @@ class View_Collection extends Collection {
 				if ( ! $view ) {
 					continue;
 				}
-				
+
 				$view->settings->update( $shortcode->atts );
 				$views->add( $view );
 			}

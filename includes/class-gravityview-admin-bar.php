@@ -50,7 +50,7 @@ class GravityView_Admin_Bar {
 		$wp_admin_bar->add_menu( array(
 			'id' => 'gravityview',
 			'title' => __( 'GravityView', 'gravityview' ),
-			'href' => '#',
+			'href' => admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ),
 		) );
 
 		$this->add_edit_view_and_form_link();
@@ -92,18 +92,16 @@ class GravityView_Admin_Bar {
 		/** @var WP_Admin_Bar $wp_admin_bar */
 		global $wp_admin_bar;
 
-		$entry_id = $this->gravityview_view->getSingleEntry();
+		$entry = gravityview()->request->is_entry();
 
-		if ( $entry_id && GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_entries' ), $entry_id ) ) {
-
-			$entry = $this->gravityview_view->getEntry();
+		if ( $entry && GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_entries' ), $entry->ID ) ) {
 
 			$wp_admin_bar->add_menu( array(
 				'id' => 'edit-entry',
 				'parent' => 'gravityview',
 				'title' => __( 'Edit Entry', 'gravityview' ),
 				'meta' => array(
-					'title' => sprintf( __( 'Edit Entry %s', 'gravityview' ), GravityView_API::get_entry_slug( $entry['id'], $entry ) ),
+					'title' => sprintf( __( 'Edit Entry %s', 'gravityview' ), $entry->get_slug() ),
 				),
 				'href' => esc_url_raw( admin_url( sprintf( 'admin.php?page=gf_entries&amp;screen_mode=edit&amp;view=entry&amp;id=%d&lid=%d', $entry['form_id'], $entry['id'] ) ) ),
 			) );

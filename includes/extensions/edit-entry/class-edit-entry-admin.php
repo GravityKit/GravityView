@@ -41,8 +41,33 @@ class GravityView_Edit_Entry_Admin {
         add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'tooltips') );
 
         // custom fields' options for zone EDIT
-        add_filter( 'gravityview_template_field_options', array( $this, 'field_options' ), 10, 5 );
+        add_filter( 'gravityview_template_field_options', array( $this, 'field_options' ), 10, 6 );
+
+        // Add Edit Entry settings to View Settings
+        add_action( 'gravityview/metaboxes/edit_entry', array( $this, 'view_settings_metabox' ) );
     }
+
+	/**
+	 * Render Edit Entry View metabox settings
+	 *
+	 * @since 2.9
+	 *
+	 * @param $current_settings
+	 *
+	 * @return void
+	 */
+	public function view_settings_metabox( $current_settings ) {
+
+		GravityView_Render_Settings::render_setting_row( 'edit_locking', $current_settings );
+
+		GravityView_Render_Settings::render_setting_row( 'user_edit', $current_settings );
+
+		GravityView_Render_Settings::render_setting_row( 'unapprove_edit', $current_settings );
+
+		GravityView_Render_Settings::render_setting_row( 'edit_redirect', $current_settings );
+
+		GravityView_Render_Settings::render_setting_row( 'edit_redirect_url', $current_settings );
+	}
 
     /**
      * Add Edit Link as a default field, outside those set in the Gravity Form form
@@ -146,7 +171,7 @@ class GravityView_Edit_Entry_Admin {
      * @param  [type] $input_type    [description]
      * @return [type]                [description]
      */
-    function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
         // We only want to modify the settings for the edit context
         if( 'edit' !== $context ) {

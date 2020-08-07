@@ -19,6 +19,6 @@ if [ $1 == 'before' ]; then
     fi
 
     # install php-coveralls to send coverage info
-    composer require satooshi/php-coveralls --dev
+    composer require php-coveralls/php-coveralls --dev
 
 fi

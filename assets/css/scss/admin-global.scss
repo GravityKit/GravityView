@@ -23,6 +23,10 @@
 	@extend .gv-icon-astronaut-head__before;
 }
 
+#menu-posts-gravityview .wp-submenu .dashicons {
+	padding: 0 .2em;
+}
+
 // Fix Make theme overriding button width
 .wp-editor-tools #add_gravityview {
 	width: auto;
@@ -41,7 +45,12 @@
 			max-width: 100%;
 			overflow: hidden;
 			text-overflow: ellipsis;
+			height: auto;
 		}
+	}
+	.feature-section.three-col .col {
+		flex-basis: 30%;
+		max-width: 250px;
 	}
 	.feature-section img {
 		border: 1px solid #ccc;
@@ -50,7 +59,7 @@
 }
 
 // Form Toolbar for connected views
-#gf_form_toolbar .gv_connected_forms {
+#wpwrap .gv_connected_forms {
 
 	.gv-icon {
 		font-size: 19px;

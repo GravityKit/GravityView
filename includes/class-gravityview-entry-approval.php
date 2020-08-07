@@ -47,6 +47,79 @@ class GravityView_Entry_Approval {
 		// process ajax approve entry requests
 		add_action('wp_ajax_gv_update_approved', array( $this, 'ajax_update_approved'));
 
+		// autounapprove
+		add_action( 'gravityview/edit_entry/after_update', array( __CLASS__, 'autounapprove' ), 10, 4 );
+
+		add_filter( 'gform_notification_events', array( __CLASS__, 'add_approval_notification_events' ), 10, 2 );
+
+		add_action( 'gravityview/approve_entries/approved', array( $this, '_trigger_notifications' ) );
+		add_action( 'gravityview/approve_entries/disapproved', array( $this, '_trigger_notifications' ) );
+		add_action( 'gravityview/approve_entries/unapproved', array( $this, '_trigger_notifications' ) );
+		add_action( 'gravityview/approve_entries/updated', array( $this, '_trigger_notifications' ) );
+	}
+
+	/**
+	 * Passes approval notification and action hook to the send_notifications method
+	 *
+	 * @see GravityView_Entry_Approval::send_notifications()
+	 *
+	 * @internal Developers, do not use!
+	 *
+	 * @since 2.1
+	 *
+	 * @param int $entry_id ID of entry being updated
+	 *
+	 * @return void
+	 */
+	public function _trigger_notifications( $entry_id = 0 ) {
+		$this->_send_notifications( $entry_id, current_action() );
+	}
+
+	/**
+	 * Passes along notification triggers to GFAPI::send_notifications()
+	 *
+	 * @since 2.1
+	 *
+	 * @param int $entry_id ID of entry being updated
+	 * @param string $event Hook that triggered the notification. This is used as the key in the GF notifications array.
+	 *
+	 * @return void
+	 */
+	private function _send_notifications( $entry_id = '', $event = '' ) {
+
+		$entry = GFAPI::get_entry( $entry_id );
+
+		if ( ! $entry || is_wp_error( $entry ) ) {
+			gravityview()->log->error( 'Entry not found at ID #{entry_id}', array( 'entry_id' => $entry_id ) );
+			return;
+		}
+
+		$form = GFAPI::get_form( $entry['form_id'] );
+
+		if ( ! $form ) {
+			gravityview()->log->error( 'Form not found at ID #{form_id} for entry #{entry_id}', array( 'form_id' => $entry['form_id'], 'entry_id' => $entry_id ) );
+			return;
+		}
+
+		GFAPI::send_notifications( $form, $entry, $event );
+	}
+
+	/**
+	 * Adds entry approval status change custom notification events
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $notification_events The notification events.
+	 * @param array $form The current form.
+	 */
+	public static function add_approval_notification_events( $notification_events = array(), $form = array() ) {
+
+		$notification_events['gravityview/approve_entries/approved'] = 'GravityView - ' . esc_html_x( 'Entry is approved', 'The title for an event in a notifications drop down list.', 'gravityview' );
+		$notification_events['gravityview/approve_entries/disapproved'] = 'GravityView - ' . esc_html_x( 'Entry is disapproved', 'The title for an event in a notifications drop down list.', 'gravityview' );
+		$notification_events['gravityview/approve_entries/unapproved'] = 'GravityView - ' . esc_html_x( 'Entry approval is reset', 'The title for an event in a notifications drop down list.', 'gravityview' );
+		$notification_events['gravityview/approve_entries/updated'] = 'GravityView - ' . esc_html_x( 'Entry approval is changed', 'The title for an event in a notifications drop down list.', 'gravityview' );
+
+		return $notification_events;
 	}
 
 	/**
@@ -172,6 +245,17 @@ class GravityView_Entry_Approval {
 	 */
 	public function after_submission( $entry, $form ) {
 
+		/**
+		 * @filter `gravityview/approve_entries/after_submission` Modify whether to run the after_submission process
+		 * @since 2.3
+		 * @param bool $process_after_submission default: true
+		 */
+		$process_after_submission = apply_filters( 'gravityview/approve_entries/after_submission', true );
+
+		if ( ! $process_after_submission ) {
+			return;
+		}
+
 		$default_status = GravityView_Entry_Approval_Status::UNAPPROVED;
 
 		/**
@@ -224,6 +308,14 @@ class GravityView_Entry_Approval {
 			$value = GravityView_Entry_Approval_Status::APPROVED;
 		}
 
+		/**
+		 * @filter `gravityview/approve_entries/update_unapproved_meta` Filter the approval status on entry update.
+		 * @param[in,out] string $value The approval status.
+		 * @param array $form The form.
+		 * @param array $entry The entry.
+		 */
+		$value = apply_filters( 'gravityview/approve_entries/update_unapproved_meta', $value, $form, $entry );
+
 		self::update_approved_meta( $entry_id, $value, $form['id'] );
 	}
 
@@ -240,7 +332,7 @@ class GravityView_Entry_Approval {
 	 * @param int $form_id The Gravity Forms Form ID
 	 * @return boolean|null True: successfully updated all entries. False: there was an error updating at least one entry. NULL: an error occurred (see log)
 	 */
-	public static function update_bulk( $entries = array(), $approved, $form_id ) {
+	public static function update_bulk( $entries = array(), $approved = 0, $form_id = 0 ) {
 
 		if( empty($entries) || ( $entries !== true && !is_array($entries) ) ) {
 			gravityview()->log->error( 'Entries were empty or malformed.', array( 'data' => $entries ) );
@@ -508,8 +600,7 @@ class GravityView_Entry_Approval {
 		$action = GravityView_Entry_Approval_Status::get_key( $status );
 
 		/**
-		 * @action `gravityview/approve_entries/{$action}` Triggered when an entry approval is reset.
-		 * $action can be 'approved', 'unapproved', or 'disapproved'
+		 * @action `gravityview/approve_entries/{$action}` Triggered when an entry approval is set. {$action} can be 'approved', 'unapproved', or 'disapproved'
 		 * Note: If you want this to work with Bulk Actions, run in a plugin rather than a theme; the bulk updates hook runs before themes are loaded.
 		 * @since 1.7.6.1
 		 * @since 1.18 Added "unapproved"
@@ -567,6 +658,94 @@ class GravityView_Entry_Approval {
 		return $approved_column_id;
 	}
 
+	/**
+	 * Maybe unapprove entry on edit.
+	 *
+	 * Called from gravityview/edit_entry/after_update
+	 *
+	 * @param array $form Gravity Forms form array
+	 * @param string $entry_id Numeric ID of the entry that was updated
+	 * @param GravityView_Edit_Entry_Render $edit This object
+	 * @param GravityView_View_Data $gv_data The View data
+	 *
+	 * @return void
+	 */
+	public static function autounapprove( $form, $entry_id, $edit, $gv_data ) {
+
+		$view_keys = array_keys( $gv_data->get_views() );
+
+		$view = \GV\View::by_id( $view_keys[0] );
+
+		if ( ! $view->settings->get( 'unapprove_edit' ) ) {
+			return;
+		}
+
+		if ( GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
+			return;
+		}
+
+		/**
+		 * @filter `gravityview/approve_entries/autounapprove/status`
+		 * @since 2.2.2
+		 * @param[in,out] int|false $approval_status Approval status integer, or false if you want to not update status. Use GravityView_Entry_Approval_Status constants. Default: 3 (GravityView_Entry_Approval_Status::UNAPPROVED)
+		 * @param array $form Gravity Forms form array
+		 * @param string $entry_id Numeric ID of the entry that was updated
+		 * @param \GV\View $view Current View where the entry was edited
+		 */
+		$approval_status = apply_filters( 'gravityview/approve_entries/autounapprove/status', GravityView_Entry_Approval_Status::UNAPPROVED, $form, $entry_id, $view );
+
+		// Allow returning false to exit
+		if ( false === $approval_status ) {
+			return;
+		}
+
+		if( ! GravityView_Entry_Approval_Status::is_valid( $approval_status ) ) {
+			$approval_status = GravityView_Entry_Approval_Status::UNAPPROVED;
+		}
+
+		self::update_approved_meta( $entry_id, $approval_status, $form['id'] );
+	}
+
+	/**
+	 * Where should the popover be placed?
+	 *
+	 * @since 2.3.1
+	 *
+	 * @return string Where to place the popover; 'right' (default ltr), 'left' (default rtl), 'top', or 'bottom'
+	 */
+	public static function get_popover_placement() {
+
+		$placement = is_rtl() ? 'left' : 'right';
+
+		/**
+		 * @filter `gravityview/approve_entries/popover_placement` Where should the popover be placed?
+		 * @since 2.3.1
+		 * @param string $placement Where to place the popover; 'right' (default ltr), 'left' (default rtl), 'top', or 'bottom'
+		 */
+		$placement = apply_filters( 'gravityview/approve_entries/popover_placement', $placement );
+
+		return $placement;
+	}
+
+	/**
+	 * Get HTML template for a popover used to display approval statuses
+	 *
+	 * @since 2.3.1
+	 *
+	 * @internal For internal use only!
+	 *
+	 * @return string HTML code
+	 */
+	public static function get_popover_template() {
+
+		$choices = GravityView_Entry_Approval_Status::get_all();
+
+		return <<<TEMPLATE
+<a href="#" data-approved="{$choices['approved']['value']}" aria-role="button"  aria-live="polite" class="gv-approval-toggle gv-approval-approved popover" title="{$choices['approved']['action']}"><span class="screen-reader-text">{$choices['approved']['action']}</span></a>
+<a href="#" data-approved="{$choices['disapproved']['value']}" aria-role="button"  aria-live="polite" class="gv-approval-toggle gv-approval-disapproved popover" title="{$choices['disapproved']['action']}"><span class="screen-reader-text">{$choices['disapproved']['action']}</span></a>
+<a href="#" data-approved="{$choices['unapproved']['value']}" aria-role="button"  aria-live="polite" class="gv-approval-toggle gv-approval-unapproved popover" title="{$choices['unapproved']['action']}"><span class="screen-reader-text">{$choices['unapproved']['action']}</span></a>
+TEMPLATE;
+	}
 }
 
 new GravityView_Entry_Approval;

@@ -38,7 +38,7 @@ PROJECT_NAME           = GravityView
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         = 1.19.4
+PROJECT_NUMBER         = 2.5
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
@@ -791,7 +791,36 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = ../
+INPUT                  = ../ \
+                         ../future \
+                         ../includes \
+                         ../includes/plugin-and-theme-hooks \
+                         ../includes/admin/ \
+                         ../future/includes \
+                         ../includes/admin/metaboxes/ \
+                         ../includes/admin/metaboxes/views/ \
+                         ../includes/admin/field-types/ \
+                         ../includes/fields/ \
+                         ../includes/widgets/ \
+                         ../includes/widgets/search-widget/ \
+                         ../includes/widgets/search-widget/templates/ \
+                         ../includes/widgets/search-widget/assets/js/source/ \
+                         ../includes/widgets/poll/ \
+                         ../includes/widgets/poll/templates/ \
+                         ../includes/widgets/wordpress-widgets/ \
+                         ../includes/presets/ \
+                         ../includes/extensions/ \
+                         ../includes/extensions/edit-entry/ \
+                         ../includes/extensions/entry-notes/ \
+                         ../includes/extensions/delete-entry/ \
+                         ../templates/ \
+                         ../templates/fields/ \
+                         ../templates/css/ \
+                         ../templates/deprecated/ \
+                         ../templates/views/ \
+                         ../templates/entries/ \
+                         ../includes/lib/ \
+                         ../future/lib/
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -868,7 +897,9 @@ RECURSIVE              = YES
 EXCLUDE                = ../tests \
                          ../node_modules \
                          ../includes/lib \
-                         ../readme.md
+                         ../readme.md \
+                         ../vendor \
+                         ../wpcs
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded

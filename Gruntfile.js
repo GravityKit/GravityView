@@ -69,6 +69,7 @@ module.exports = function(grunt) {
 			"assets/js/admin-post-edit.js",
 			"assets/js/admin-widgets.js",
 			"assets/js/admin-entries-list.js",
+			"assets/js/admin-installer.js",
 			"assets/js/fe-views.js",
 			"includes/extensions/entry-notes/assets/js/entry-notes.js",
 			"includes/widgets/search-widget/assets/js/source/admin-widgets.js"
@@ -185,7 +186,7 @@ module.exports = function(grunt) {
 
 		// Pull in the latest translations
 		exec: {
-			transifex: 'tx pull -a',
+			transifex: 'tx pull -a --parallel',
 
 			// Create a ZIP file
 			zip: {
@@ -279,7 +280,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-wp-i18n');
 
 	// Regular CSS/JS/Image Compression stuff
-	grunt.registerTask( 'default', [ 'exec:bower', 'sass', 'postcss', 'uglify', 'imagemin', 'translate', 'watch' ] );
+	grunt.registerTask( 'default', [ 'exec:bower', 'sass', 'postcss', 'uglify', 'imagemin', 'translate' ] );
 
 	// Translation stuff
 	grunt.registerTask( 'translate', [ 'exec:transifex', 'potomo', 'addtextdomain', 'makepot' ] );

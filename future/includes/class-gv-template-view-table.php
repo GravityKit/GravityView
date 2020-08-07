@@ -59,33 +59,134 @@ class View_Table_Template extends View_Template {
 			return $column_label;
 		}
 
-		$sorting = \GravityView_View::getInstance()->getSorting();
+		$sorting = array();
+
+		$directions = $context->view->settings->get( 'sort_direction' );
+
+		$sorts = Utils::_GET( 'sort' );
+
+		if ( $sorts ) {
+			if ( is_array( $sorts ) ) {
+				foreach ( (array)$sorts as $key => $direction ) {
+					if ( $key == $context->field->ID ) {
+						$sorting['key'] = $context->field->ID;
+						$sorting['direction'] = strtolower( $direction );
+						break;
+					}
+				}
+			} else {
+				if ( $sorts == $context->field->ID ) {
+					$sorting['key'] = $context->field->ID;
+					$sorting['direction'] = strtolower( Utils::_GET( 'dir', '' ) );
+				}
+			}
+		} else {
+			foreach ( (array)$context->view->settings->get( 'sort_field', array() ) as $i => $sort_field ) {
+				if ( $sort_field == $context->field->ID ) {
+					$sorting['key'] = $sort_field;
+					$sorting['direction'] = strtolower( Utils::get( $directions, $i, '' ) );
+					break; // Only get the first sort
+				}
+			}
+		}
 
 		$class = 'gv-sort';
 
 		$sort_field_id = \GravityView_frontend::_override_sorting_id_by_field_type( $context->field->ID, $context->view->form->ID );
 
 		$sort_args = array(
-			'sort' => $context->field->ID,
-			'dir' => 'asc',
+			sprintf( 'sort[%s]', $context->field->ID ),
+			'asc'
 		);
 
+		// If we are already sorting by the current field...
 		if ( ! empty( $sorting['key'] ) && (string) $sort_field_id === (string) $sorting['key'] ) {
-			//toggle sorting direction.
-			if ( 'asc' === $sorting['direction'] ) {
-				$sort_args['dir'] = 'desc';
-				$class .= ' gv-icon-sort-desc';
-			} else {
-				$sort_args['dir'] = 'asc';
-				$class .= ' gv-icon-sort-asc';
-			}
+
+		    switch( $sorting['direction'] ) {
+		        // No sort
+                case '':
+	                $sort_args[1] = 'asc';
+	                $class .= ' gv-icon-caret-up-down';
+                    break;
+                case 'desc':
+	                $sort_args[1] = '';
+	                $class .= ' gv-icon-sort-asc';
+	                break;
+                case 'asc':
+                default:
+                    $sort_args[1] = 'desc';
+                    $class .= ' gv-icon-sort-desc';
+                    break;
+            }
+
 		} else {
 			$class .= ' gv-icon-caret-up-down';
 		}
 
-		$url = add_query_arg( $sort_args, remove_query_arg( array('pagenum') ) );
+		$url = remove_query_arg( array( 'pagenum' ) );
+		$url = remove_query_arg( 'sort', $url );
+		$multisort_url = self::_get_multisort_url( $url, $sort_args, $context->field->ID );
 
-		return '<a href="'. esc_url_raw( $url ) .'" class="'. $class .'" ></a>&nbsp;'. $column_label;
+    	$url = add_query_arg( $sort_args[0], $sort_args[1], $url );
+
+		$return = '<a href="'. esc_url_raw( $url ) .'"';
+
+		if ( ! empty( $multisort_url ) ) {
+			$return .= ' data-multisort-href="'. esc_url_raw( $multisort_url ) . '"';
+		}
+
+		$return .= ' class="'. $class .'" ></a>&nbsp;'. $column_label;
+
+		return $return;
+	}
+
+	/**
+     * Get the multi-sort URL used in the sorting links
+     *
+     * @todo Consider moving to Utils?
+     *
+     * @since 2.3
+     *
+     * @see add_columns_sort_links
+	 * @param string $url Single-sort URL
+	 * @param array $sort_args Single sorting for rules, in [ field_id, dir ] format
+     * @param string|int $field_id ID of the current field being displayed
+     *
+     * @return string Multisort URL, if there are multiple sorts. Otherwise, existing $url
+	 */
+	static public function _get_multisort_url( $url, $sort_args, $field_id ) {
+
+		$sorts = Utils::_GET( 'sort' );
+
+		if ( ! is_array( $sorts ) ) {
+            return $url;
+		}
+
+        $multisort_url = $url;
+
+		// If the field has already been sorted by, add the field to the URL
+        if ( ! in_array( $field_id, $keys = array_keys( $sorts ) ) ) {
+            if ( count( $keys ) ) {
+                $multisort_url = add_query_arg( sprintf( 'sort[%s]', end( $keys ) ), $sorts[ end( $keys ) ], $multisort_url );
+                $multisort_url = add_query_arg( $sort_args[0], $sort_args[1], $multisort_url );
+            } else {
+                $multisort_url = add_query_arg( $sort_args[0], $sort_args[1], $multisort_url );
+            }
+        }
+        // Otherwise, we are just updating the sort order
+        else {
+
+            // Pass empty value to unset
+            if( '' === $sort_args[1] ) {
+	            unset( $sorts[ $field_id ] );
+            } else {
+	            $sorts[ $field_id ] = $sort_args[1];
+            }
+
+            $multisort_url = add_query_arg( array( 'sort' => $sorts ), $multisort_url );
+        }
+
+		return $multisort_url;
 	}
 
 	/**
@@ -96,35 +197,50 @@ class View_Table_Template extends View_Template {
 	public function the_columns() {
 		$fields = $this->view->fields->by_position( 'directory_table-columns' );
 
-		foreach ( $fields->by_visible()->all() as $field ) {
+		foreach ( $fields->by_visible( $this->view )->all() as $field ) {
 			$context = Template_Context::from_template( $this, compact( 'field' ) );
-			$form = $field->form_id ? GF_Form::by_id( $field->form_id ) : $this->view->form;
-
-			/**
-			 * @deprecated Here for back-compatibility.
-			 */
-			$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form ), $field->as_configuration() );
-			$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, null );
-
-			/**
-			 * @filter `gravityview/template/field/label` Override the field label.
-			 * @since 2.0
-			 * @param[in,out] string $column_label The label to override.
-			 * @param \GV\Template_Context $context The context. Does not have entry set here.
-			 */
-			$column_label = apply_filters( 'gravityview/template/field/label', $column_label, $context );
 
 			$args = array(
+				'field' => is_numeric( $field->ID ) ? $field->as_configuration() : null,
 				'hide_empty' => false,
 				'zone_id' => 'directory_table-columns',
-				'markup' => '<th id="{{ field_id }}" class="{{ class }}" style="{{width:style}}">{{label}}</th>',
+				'markup' => '<th id="{{ field_id }}" class="{{ class }}" style="{{width:style}}" data-label="{{label_value:data-label}}">{{label}}</th>',
 				'label_markup' => '<span class="gv-field-label">{{ label }}</span>',
-				'label' => $column_label,
+				'label' => self::get_field_column_label( $field, $context ),
 			);
 
 			echo \gravityview_field_output( $args, $context );
 		}
 	}
+
+	/**
+     * Returns the label for a column, with support for all deprecated filters
+     *
+     * @since 2.1
+     *
+	 * @param \GV\Field $field
+	 * @param \GV\Template_Context $context
+	 */
+	protected static function get_field_column_label( $field, $context = null ) {
+
+		$form = $field->form_id ? GF_Form::by_id( $field->form_id ) : $context->view->form;
+
+		/**
+		 * @deprecated Here for back-compatibility.
+		 */
+		$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $context->view, $form ), $field->as_configuration() );
+		$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), ( $form && $form->form ) ? $form->form : null, null );
+
+		/**
+		 * @filter `gravityview/template/field/label` Override the field label.
+		 * @since 2.0
+		 * @param[in,out] string $column_label The label to override.
+		 * @param \GV\Template_Context $context The context. Does not have entry set here.
+		 */
+		$column_label = apply_filters( 'gravityview/template/field/label', $column_label, $context );
+
+		return $column_label;
+    }
 
 	/**
 	 * Output the entry row.
@@ -136,7 +252,7 @@ class View_Table_Template extends View_Template {
 	 */
 	public function the_entry( \GV\Entry $entry, $attributes ) {
 
-		$fields = $this->view->fields->by_position( 'directory_table-columns' )->by_visible();
+		$fields = $this->view->fields->by_position( 'directory_table-columns' )->by_visible( $this->view );
 
 		$context = Template_Context::from_template( $this, compact( 'entry', 'fields' ) );
 
@@ -202,6 +318,15 @@ class View_Table_Template extends View_Template {
                 do_action( 'gravityview_table_cells_before', \GravityView_View::getInstance() );
 
                 foreach ( $fields->all() as $field ) {
+					if ( isset( $this->view->unions[ $entry['form_id'] ] ) ) {
+						if ( isset( $this->view->unions[ $entry['form_id'] ][ $field->ID ] ) ) {
+							$field = $this->view->unions[ $entry['form_id'] ][ $field->ID ];
+						} else {
+							if ( ! $field instanceof Internal_Field ) {
+								$field = Internal_Field::from_configuration( array( 'id' => 'custom' ) );
+							}
+						}
+					}
 					$this->the_field( $field, $entry );
 				}
 
@@ -235,26 +360,39 @@ class View_Table_Template extends View_Template {
 	 */
 	public function the_field( \GV\Field $field, \GV\Entry $entry ) {
 		$form = $this->view->form;
+		$single_entry = $entry;
 
-		if ( $entry instanceof Multi_Entry ) {
-			if ( ! $entry = Utils::get( $entry, $field->form_id ) ) {
+		/**
+		 * Push legacy entry context.
+		 */
+		\GV\Mocks\Legacy_Context::load( array(
+			'field' => $field,
+		) );
+
+		if ( $entry->is_multi() ) {
+			if ( ! $single_entry = $entry->from_field( $field ) ) {
+				echo '<td></td>';
 				return;
 			}
 			$form = GF_Form::by_id( $field->form_id );
 		}
 
-		$context = Template_Context::from_template( $this, compact( 'field', 'entry' ) );
-
 		$renderer = new Field_Renderer();
-		$source = is_numeric( $field->ID ) ? $this->view->form : new Internal_Source();
+		$source = is_numeric( $field->ID ) ? $form : new Internal_Source();
 
 		$value = $renderer->render( $field, $this->view, $source, $entry, $this->request );
 
+		$context = Template_Context::from_template( $this, compact( 'field' ) );
+		$context->entry = $single_entry;
+
 		$args = array(
+			'entry' => $entry->as_entry(),
+			'field' => is_numeric( $field->ID ) ? $field->as_configuration() : null,
 			'value' => $value,
 			'hide_empty' => false,
 			'zone_id' => 'directory_table-columns',
-			'markup' => '<td id="{{ field_id }}" class="{{ class }}">{{ value }}</td>',
+            'label' => self::get_field_column_label( $field, $context ),
+			'markup' => '<td id="{{ field_id }}" class="{{ class }}" data-label="{{label_value:data-label}}">{{ value }}</td>',
             'form' => $form,
 		);
 

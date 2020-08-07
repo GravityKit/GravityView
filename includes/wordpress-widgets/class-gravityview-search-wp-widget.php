@@ -60,6 +60,11 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 			return;
 		}
 
+		if ( ! class_exists( 'GravityView_View' ) ) {
+			gravityview()->log->debug( 'GravityView_View does not exist. Not showing the widget.' );
+			return;
+		}
+
 		/** This filter is documented in wp-includes/default-widgets.php */
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
 

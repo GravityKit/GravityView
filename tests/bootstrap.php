@@ -120,6 +120,8 @@ class GV_Unit_Tests_Bootstrap {
 			require_once '/tmp/gravityforms/gravityforms.php';
 		}
 
+		require_once( GFCommon::get_base_path() . '/form_display.php' );
+
 		/** Enable the REST API */
 		add_action( 'gravityview/settings/defaults', function( $defaults ) {
 			$defaults['rest_api'] = '1';
@@ -130,6 +132,14 @@ class GV_Unit_Tests_Bootstrap {
 
 		/* Remove temporary tables which causes problems with GF */
 		remove_all_filters( 'query', 10 );
+
+		add_filter( 'gravityview/query/class', 'gravityview_joins_patch_query' );
+		function gravityview_joins_patch_query() {
+			if ( class_exists( 'GF_Query' ) ) {
+				require_once dirname( __FILE__ ) . '/class-gf-query.php';
+				return '\GF_Patched_Query';
+			}
+		}
 
 		// set up Gravity Forms database
 		if ( function_exists( 'gf_upgrade' ) ) {

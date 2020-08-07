@@ -26,26 +26,39 @@ class Admin_Request extends Request {
 		/**
 		 * Regular check.
 		 */
-		if ( ! ( $args = func_get_args() ) || count( $args ) != 2 ) {
+		if ( ! ( $args = func_get_args() ) ) {
 			return true;
 		}
 
-		$context = $args[1];
+		$hook    = \GV\Utils::get( $args, 0, '' );
+		$context = \GV\Utils::get( $args, 1, null );
 
 		/**
 		 * Assume false by default.
 		 */
 		$is_page = false;
 
-		if ( function_exists( '\get_current_screen' ) || function_exists( 'get_current_screen' ) ) {
-			if ( ( $current_screen = \get_current_screen() ) && $current_screen->post_type == 'gravityview' ) {
-				if ( $is_gv_edit_list = $current_screen->base == 'edit' ) {
-					$is_page = 'views';
-				} else if ( $is_gv_edit_single = $current_screen->base == 'post' ) {
-					$is_page = 'single';
-				} else if ( $is_gv_settings = $current_screen->id == 'gravityview_page_gravityview_settings' ) {
-					$is_page = 'settings';
-				}
+		if( function_exists( '\get_current_screen' ) || function_exists( 'get_current_screen' ) ) {
+			$current_screen = \get_current_screen();
+		} else {
+			$current_screen = false;
+		}
+
+		if ( $current_screen && $current_screen->post_type == 'gravityview' ) {
+			if ( $is_gv_edit_list = 'edit' === $current_screen->base ) {
+				$is_page = 'views';
+			} elseif ( $is_gv_edit_single = 'post' === $current_screen->base ) {
+				$is_page = 'single';
+			} elseif ( $is_gv_settings = 'gravityview_page_gravityview_settings' === $current_screen->id ) {
+				$is_page = 'settings';
+			} elseif( $is_extensions = 'gravityview_page_gv-admin-installer' === $current_screen->id ) {
+				$is_page = 'downloads';
+			} elseif( $is_changelog = 'gravityview_page_gv-changelog' === $current_screen->id ) {
+				$is_page = 'changelog';
+			} elseif( $is_getting_started = 'gravityview_page_gv-getting-started' === $current_screen->id ) {
+				$is_page = 'getting-started';
+			} elseif( $is_credits = 'gravityview_page_gv-credits' === $current_screen->id ) {
+				$is_page = 'credits';
 			}
 		}
 
@@ -54,7 +67,7 @@ class Admin_Request extends Request {
 		 * @param[in,out] string|bool $is_page If false, no. If string, the name of the page (`single`, `settings`, or `views`)
 		 * @param[in] string $hook The name of the page to check against. Is passed to the method.
 		 */
-		$is_page = apply_filters( 'gravityview_is_admin_page', $is_page, $args[0] );
+		$is_page = apply_filters( 'gravityview_is_admin_page', $is_page, $hook );
 
 		// If the current page is the same as the compared page
 		if ( ! empty( $context ) ) {

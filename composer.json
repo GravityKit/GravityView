@@ -1,5 +1,5 @@
 {
-  "name": "gravityview/GravityView",
+  "name": "gravityview/gravityview",
   "type": "wordpress-plugin",
   "description": "The best way to display Gravity Forms entries on your website.",
   "keywords": ["gravityview", "gravity view", "gravity forms directory", "gravity forms"],
@@ -12,7 +12,13 @@
     }
   ],
   "require": {
-    "php": ">=5.2.4",
-    "katzwebservices/standalone-phpenkoder": "dev-master"
+    "php": ">=5.3",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+    "lucatume/wp-browser": "2.2.24",
+    "phpcompatibility/phpcompatibility-wp": "*",
+    "wp-coding-standards/wpcs": "*"
   }
 }

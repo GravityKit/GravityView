@@ -5,6 +5,12 @@
  * @global \GV\Template_Context $gravityview
  * @since 2.0
  */
+
+if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
+	gravityview()->log->error( '{file} template loaded without context', array( 'file' => __FILE__ ) );
+	return;
+}
+
 $entry = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();
 
@@ -30,8 +36,8 @@ require_once( GFCommon::get_base_path() . '/entry_detail.php' );
  */
 do_action( 'gravityview/field/notes/scripts', $gravityview );
 
-$notes = GravityView_Entry_Notes::get_notes( $entry['id'] );
-$strings = GravityView_Field_Notes::strings();
+$notes      = (array) GravityView_Entry_Notes::get_notes( $entry['id'] );
+$strings    = GravityView_Field_Notes::strings();
 $entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
 
 $show_add = ! empty( $visibility_settings['add'] );

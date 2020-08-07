@@ -37,6 +37,7 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'settings' => array(
 				'page_size' => 10,
+				'show_only_approved' => 0,
 			)
 		) );
 		$view = \GV\View::from_post( $post );
@@ -107,6 +108,7 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'settings' => array(
 				'page_size' => 10,
+				'show_only_approved' => 0,
 			)
 		) );
 		$view = \GV\View::from_post( $post );
@@ -270,6 +272,38 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 				)
 			),
 
+			'Search operators that are valid should not be stripped' => array(
+				'original' => array(
+					'id' => 123,
+					'search_operator' => 'is',
+				),
+				'expected' => array(
+					'id' => 123,
+					'search_operator' => 'is',
+				)
+			),
+
+			'More search operators that are valid should not be stripped' => array(
+				'original' => array(
+					'id' => 123,
+					'search_operator' => 'contains',
+				),
+				'expected' => array(
+					'id' => 123,
+					'search_operator' => 'contains',
+				)
+			),
+
+			'Search operators that do not exist should be stripped' => array(
+				'original' => array(
+					'id' => 123,
+					'search_operator' => 'this is not valid',
+				),
+				'expected' => array(
+					'id' => 123,
+				)
+			),
+
 			'{get} should not pass unsanitized stuff' => array(
 				'get' => array(
 					'danger' => '<script>alert()</script>'
@@ -337,5 +371,104 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 	public function test_shortcode_abstract() {
 		$shortcode = new \GV\Shortcode();
 		$this->assertEmpty( $shortcode->callback( array() ) );
+	}
+
+	public function test_shortcode_single_view_from_directory() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+				),
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+				),
+			),
+			'settings' => $settings,
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => $field = sprintf( '[%d] Entry %s', 1, wp_generate_password( 12, false ) ),
+		) );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$request = new \GV\Mock_Request();
+		$request->returns['is_entry'] = $entry;
+		gravityview()->request = $request;
+
+		global $post;
+
+		$post = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $view->ID . '"]' ) );
+
+		$shorcode = new \GV\Shortcodes\gravityview();
+
+		$this->assertContains( $field, $shorcode->callback( array( 'id' => $view->ID ) ) );
+
+		gravityview()->request = new \GV\Frontend_Request();
+	}
+
+	public function test_shortcode_search() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+						'label' => 'Text',
+					),
+				),
+			),
+			'settings' => $settings,
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'abcxyz',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'abc',
+		) );
+
+		$shortcode = new \GV\Shortcodes\gravityview();
+		$content = $shortcode->callback( array( 'id' => $view->ID ) );
+		$this->assertContains( 'data-label="Text">abc</td>', $content );
+		$this->assertContains( 'data-label="Text">abcxyz</td>', $content );
+
+		$shortcode = new \GV\Shortcodes\gravityview();
+		$content = $shortcode->callback( array( 'id' => $view->ID, 'search_field' => '1', 'search_value' => 'abcxyz' ) );
+		$this->assertNotContains( 'data-label="Text">abc</td>', $content );
+		$this->assertContains( 'data-label="Text">abcxyz</td>', $content );
+
+		$shortcode = new \GV\Shortcodes\gravityview();
+		$content = $shortcode->callback( array( 'id' => $view->ID, 'search_field' => '1', 'search_value' => 'abc', 'search_operator' => 'is' ) );
+		$this->assertContains( 'data-label="Text">abc</td>', $content );
+		$this->assertNotContains( 'data-label="Text">abcxyz</td>', $content );
 	}
 }

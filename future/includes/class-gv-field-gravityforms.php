@@ -7,10 +7,10 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 }
 
 /**
- * The Gravity Forms \GF_Field field object wrapper.
+ * The Gravity Forms {@see \GF_Field} field object wrapper.
  */
 class GF_Field extends Field {
-	
+
 	/**
 	 * @var \GF_Field The backing Gravity Forms field.
 	 */
@@ -144,7 +144,7 @@ class GF_Field extends Field {
 		}
 
 		$value = \RGFormsModel::get_lead_field_value( $entry->as_entry(), $this->field );
-		
+
 		/** Apply parent filters. */
 		return $this->get_value_filters( $value, $view, $source, $entry, $request );
 	}
