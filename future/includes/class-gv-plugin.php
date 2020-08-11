@@ -103,7 +103,6 @@ final class Plugin {
 		return self::$__instance;
 	}
 
-
 	private function __construct() {
 		/**
 		 * Load translations.
@@ -133,7 +132,19 @@ final class Plugin {
 	}
 
 	/**
-	 * Check whether GravityView is network activated.
+	 * Check whether Gravity Forms is v2.5-beta or newer
+	 *
+	 * @todo add @since
+	 *
+	 * @return bool
+	 */
+	public function is_GF_25() {
+
+		return version_compare( '2.5-beta', \GFForms::$version, '<=' );
+	}
+
+	/**
+	 * Check whether GravityView `is network activated.
 	 *
 	 * @return bool Whether it's network activated or not.
 	 */
@@ -562,9 +573,10 @@ final class Plugin {
 		$tables = array();
 
 		if ( version_compare( \GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) ) {
-			$tables []= \GFFormsModel::get_entry_meta_table_name();
+			$tables [] = \GFFormsModel::get_entry_meta_table_name();
+		} elseif ( ! $this->is_GF_25() ) {
+			$tables [] = \GFFormsModel::get_lead_meta_table_name();
 		}
-		$tables []= \GFFormsModel::get_lead_meta_table_name();
 
 		foreach ( $tables as $meta_table ) {
 			$sql = "
@@ -583,9 +595,9 @@ final class Plugin {
 
 		if ( version_compare( \GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) && method_exists( 'GFFormsModel', 'get_entry_notes_table_name' ) ) {
 			$tables[] = \GFFormsModel::get_entry_notes_table_name();
+		} elseif ( ! $this->is_GF_25() ) {
+			$tables[] = \GFFormsModel::get_lead_notes_table_name();
 		}
-
-		$tables[] = \GFFormsModel::get_lead_notes_table_name();
 
 		$disapproved = __('Disapproved the Entry for GravityView', 'gravityview');
 		$approved = __('Approved the Entry for GravityView', 'gravityview');

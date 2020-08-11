@@ -1,6 +1,8 @@
 <?php
 namespace GV;
 
+use GV\Shortcodes\gravityview;
+
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
@@ -227,6 +229,9 @@ class License_Handler {
 	private function get_license_message( $license_data ) {
 		if ( empty( $license_data ) ) {
 			$message = '';
+			if (gravityview()->plugin->is_GF_25()) {
+				$message = $this->generate_license_box( $message, 'hide' );
+			}
 		} else {
 			if( ! empty( $license_data->error ) ) {
 				$class = 'error';
@@ -263,6 +268,10 @@ class License_Handler {
 			$return .= '<h3>' . esc_html__( 'License Details:', 'gravityview' ) . '</h3>';
 
 			if ( in_array( Utils::get( $response, 'license' ), array( 'invalid', 'deactivated' ) ) ) {
+				if ( gravityview()->plugin->is_GF_25() ) {
+					return sprintf( $wrapper, '' ); // Do not show redundant information - invalid/deactivated notice will be displayed by generate_license_box()
+				}
+
 				$return .= $this->strings( $response['license'], $response );
 			} elseif ( ! empty( $response['license_name'] ) ) {
 				$response_keys = array(
@@ -356,13 +365,31 @@ class License_Handler {
 	 * Generate the status message box HTML based on the current status
 	 *
 	 * @since 1.7.4
-	 * @param $message
+	 * @param string $message
 	 * @param string $class
 	 *
 	 * @return string
 	 */
 	private function generate_license_box( $message, $class = '' ) {
-		$template = '<div id="gv-edd-status" aria-live="polite" aria-busy="false" class="gv-edd-message inline %s">%s</div>';
+
+		$message = ! empty( $message ) ? $message : '<p><strong></strong></p>';
+
+		if ( gravityview()->plugin->is_GF_25() ) {
+			switch ( $class ) {
+				case 'valid':
+					$class .= ' success';
+					break;
+				case 'invalid':
+					$class .= ' error';
+					break;
+				default:
+					$class .= ' warning';
+			}
+
+			$template = '<div id="gv-edd-status" aria-live="polite" aria-busy="false" class="alert %s">%s</div>';
+		} else {
+			$template = '<div id="gv-edd-status" aria-live="polite" aria-busy="false" class="gv-edd-message inline %s">%s</div>';
+		}
 
 		$output = sprintf( $template, esc_attr( $class ), $message );
 
@@ -388,11 +415,11 @@ class License_Handler {
 			'deactivated' => esc_html__( 'The license has been deactivated.', 'gravityview' ),
 			'valid' => esc_html__( 'The license key is valid and active.', 'gravityview' ),
 			'invalid' => esc_html__( 'The license key entered is invalid.', 'gravityview' ),
-			'missing' => esc_html__( 'Invalid license key.', 'gravityview' ),
+			'invalid_item_id' => esc_html__( 'This license key does not have access to this plugin.', 'gravityview' ),
+			'missing' => esc_html__( 'The license key was not defined.', 'gravityview' ), // Missing is "the license couldn't be found", not "you submitted an empty license"
 			'revoked' => esc_html__( 'This license key has been revoked.', 'gravityview' ),
 			'expired' => sprintf( esc_html__( 'This license key has expired. %sRenew your license on the GravityView website%s to receive updates and support.', 'gravityview' ), '<a href="'. esc_url( $this->get_license_renewal_url( $license_data ) ) .'">', '</a>' ),
 			'capability' => esc_html__( 'You don\'t have the ability to edit plugin settings.', 'gravityview' ),
-
 			'verifying_license' => esc_html__( 'Verifying license&hellip;', 'gravityview' ),
 			'activate_license' => esc_html__( 'Activate License', 'gravityview' ),
 			'deactivate_license' => esc_html__( 'Deactivate License', 'gravityview' ),
@@ -484,14 +511,36 @@ class License_Handler {
 	}
 
 	public function settings_edd_license_activation( $field, $echo ) {
+
 		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		wp_enqueue_script( 'gv-admin-edd-license', GRAVITYVIEW_URL . 'assets/js/admin-edd-license' . $script_debug . '.js', array( 'jquery' ) );
 
+		// GF 2.5 compatibility
+		if ( gravityview()->plugin->is_GF_25() ) {
+			wp_register_style( 'gv-admin-edd-license', false );
+			wp_enqueue_style( 'gv-admin-edd-license' );
+
+			$style = <<<CSS
+.gv-edd-button-wrapper {
+	margin: 10px 0 10px 0;
+}
+
+.gv-edd-button-wrapper > input[name*="activate"] {
+	margin-left: 0 !important;
+}
+
+#gv-edd-status {
+	margin-bottom: 10px;
+}
+CSS;
+			wp_add_inline_style( 'gv-admin-edd-license', $style );
+		}
+
 		$status = trim( $this->settings->get( 'license_key_status' ) );
 		$key = trim( $this->settings->get( 'license_key' ) );
 
-		if ( ! empty( $key ) ) {
+		if (  !empty( $key ) ) {
 			$response = $this->settings->get( 'license_key_response' );
 			$response = is_array( $response ) ? (object) $response : json_decode( $response );
 		} else {
@@ -502,20 +551,21 @@ class License_Handler {
 			'license_box' => $this->get_license_message( $response )
 		) );
 
+
 		$fields = array(
 			array(
 				'name'  => 'edd-activate',
 				'value' => __( 'Activate License', 'gravityview' ),
 				'data-pending_text' => __( 'Verifying license&hellip;', 'gravityview' ),
 				'data-edd_action' => 'activate_license',
-				'class' => 'button-primary',
+				'class' => 'button-primary primary',
 			),
 			array(
 				'name'  => 'edd-deactivate',
 				'value' => __( 'Deactivate License', 'gravityview' ),
 				'data-pending_text' => __( 'Deactivating license&hellip;', 'gravityview' ),
 				'data-edd_action' => 'deactivate_license',
-				'class' => ( empty( $status ) ? 'button-primary hide' : 'button-primary' ),
+				'class' => ( empty( $status ) ? 'button-primary primary hide' : 'button-primary primary' ),
 			),
 			array(
 				'name'  => 'edd-check',

@@ -38,6 +38,7 @@
 		},
 
 		add_status_container: function() {
+			console.log(GVGlobals.license_box);
 			$( GVGlobals.license_box ).insertBefore( GV_EDD.license_field );
 		},
 
@@ -105,9 +106,15 @@
 					.animate( { opacity: 0.5 }, 1000 );
 
 			$( '#gv-edd-status' )
-				.addClass('pending')
 				.attr( 'aria-busy', 'true' )
-				.html( '<p>' + message + '</p>');
+				.removeClass('hide')
+				.removeClass('success')
+				.removeClass('warning')
+				.removeClass('error')
+				.addClass('pending')
+				.addClass('info')
+				.html( $( '#gv-edd-status' ).html().replace( /(<strong>)(.*?)(<\/strong)>/, '$1' + message  ) );
+
 		},
 
 		clicked: function( e ) {
@@ -157,7 +164,7 @@
 					response_object = $.parseJSON( second_try );
 
 				} catch( e ) {
-					
+
 					console.log( '*** \n*** \n*** Error-causing response:\n***\n***\n', string );
 
 					var error_message = 'JSON failed: another plugin caused a conflict with completing this request. Check your browser\'s Javascript console to view the invalid content.';
