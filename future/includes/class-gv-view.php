@@ -1305,6 +1305,17 @@ class View implements \ArrayAccess {
 				}
 
 				/**
+				 * If a PHP filtersort has been set remove all the pagination limits and offset.
+				 *
+				 * Since we're sorting and/or filtering in PHP we need to grab the whole dataset.
+				 * We will apply manual offest and pagination afterwards.
+				 */
+				if ( has_filter( 'gravityview/entries/filter' ) || has_filter( 'gravityview/entries/sort' ) ) {
+					$has_filtersort = true;
+					$query->limit( 0 )->offset( 0 );
+				}
+
+				/**
 				 * @action `gravityview/view/query` Override the \GF_Query before the get() call.
 				 * @param \GF_Query $query The current query object reference
 				 * @param \GV\View $this The current view object
@@ -1335,12 +1346,63 @@ class View implements \ArrayAccess {
 					remove_action( 'gform_gf_query_sql', $gf_query_timesort_sql_callback );
 				}
 
-				/**
-				 * Add total count callback.
-				 */
-				$entries->add_count_callback( function() use ( $query ) {
-					return $query->total_found;
-				} );
+				if ( isset( $has_filtersort ) ) {
+					$v = &$this;
+
+					/**
+					 * A PHP filtersort has been set.
+					 * Execute the main filter and sort callback logic.
+					 * Then, set the actual total found.
+					 * Finally truncate to the correct pagination and offsets.
+					 */
+
+					$filtered = $entries->all(); // Nyah all the things.
+
+					foreach ( $filtered as &$entry ) {
+						/**
+						 * @filter `gravityview/entries/filter` Filter entries on the PHP side of things.
+						 * @param \GV\Entry $entry The entry object. Return null to filter out.
+						 * @param \GV\View $view The view.
+						 * @param \GV\Request $request The request.
+						 */
+						$entry = apply_filters( 'gravityview/entries/filter', $entry, $this, $request );
+					}
+
+					$filtered = array_filter( $filtered );
+
+					$entries = new \GV\Entry_Collection();
+
+					if ( has_filter( 'gravityview/entries/sort' ) ) {
+						usort( $filtered, function( $entry1, $entry2 ) use ( $v, $request ) {
+							/**
+							 * @filter `gravityview/entries/sort` Sort filtered entries on the PHP side of things.
+							 * @param int $compare -1 if entry1 < entry2, 0 if they're equal, 1 if entry1 > entry2
+							 * @param \GV\Entry $entry1 One entry object.
+							 * @param \GV\Entry $entry2 Another entry object.
+							 * @param \GV\View $view The view.
+							 * @param \GV\Request $request The request.
+							 */
+							return apply_filters( 'gravityview/entries/sort', null, $entry1, $entry2, $v, $request );
+						} );
+					}
+
+					array_map( array( $entries, 'add'), array_slice(
+						$filtered,
+						( ( $page - 1 ) * $parameters['paging']['page_size'] ) + $this->settings->get( 'offset' ), // Offset and page
+						$parameters['paging']['page_size'] // Per page
+					) );
+
+					$entries->add_count_callback( function() use ( $filtered, $v ) {
+						return count( $filtered ) - $v->settings->get( 'offset' );
+					} );
+				} else {
+					/**
+					 * Add total count callback.
+					 */
+					$entries->add_count_callback( function() use ( $query ) {
+						return $query->total_found;
+					} );
+				}
 			} else {
 				$entries = $this->form->entries
 					->filter( \GV\GF_Entry_Filter::from_search_criteria( $parameters['search_criteria'] ) )
