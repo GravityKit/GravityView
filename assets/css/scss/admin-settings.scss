@@ -7,6 +7,13 @@
 .toplevel_page_gravityview_settings // Single site admin
 {
 
+	.gform-settings__navigation {
+		display: none;
+	}
+	.gform-settings__wrapper {
+		grid-template-columns: none;
+	}
+
 	#gv-uninstall-wrapper {
 		margin-top: 10px;
 		clear: both;
@@ -141,6 +148,41 @@
 		display: none;
 	}
 
+	&.gf-2-5 {
+		background: #F6F9FC url('../images/star-chart.png') left top no-repeat;
+		background-size: contain;
+
+		#wpwrap {
+			background: rgba( 255, 255, 255, .8 );
+		}
+
+		.gform-settings-header {
+			background-size: cover;
+			background: transparent;
+			box-shadow: none;
+			outline: none;
+
+			.gform-settings__wrapper {
+				img {
+					display: none;
+				}
+
+				background: url('../images/GravityView.svg') 8px 10px no-repeat;
+				height: 70px;
+			}
+		}
+
+		.notice {
+			padding: .75em 1em .5em;
+		}
+	}
+
+
+
+	.gform-settings-field {
+		margin-bottom: 1.5em;
+	}
+
 	// Add the stars to the top
 	#gform-settings #gaddon-setting-row-gv_header {
 		padding: 0;
@@ -149,7 +191,7 @@
 		td {
 
 			padding: 0 !important;
-
+			background: transparent none;
 			height: 130px;
 			position: relative;
 			overflow: hidden;

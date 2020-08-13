@@ -84,14 +84,71 @@ class Addon_Settings extends \GFAddOn {
 	public function init_admin() {
 		$this->_load_license_handler();
 
+		add_filter( 'admin_body_class', array( $this, 'body_class' ) );
+
 		add_action( 'admin_head', array( $this, 'license_key_notice' ) );
 
 		add_filter( 'gform_addon_app_settings_menu_gravityview', array( $this, 'modify_app_settings_menu_title' ) );
+
+		add_filter( 'gform_settings_save_button', array( $this, 'modify_gform_settings_save_button' ), 10, 2 );
 
 		/** @since 1.7.6 */
 		add_action( 'network_admin_menu', array( $this, 'add_network_menu' ) );
 
 		parent::init_admin();
+	}
+
+	/**
+	 * Adds a CSS class to the <body> of the admin page if running GF 2.5 or newer
+	 *
+	 * @param $css_class
+	 *
+	 * @return string
+	 */
+	public function body_class( $css_class ) {
+
+		if ( ! gravityview()->request->is_admin( '', 'settings' ) ) {
+			return $css_class;
+		}
+
+		if ( version_compare( '2.5-beta', \GFForms::$version, '<' ) ) {
+			$css_class .= ' gf-2-5';
+		}
+
+		return $css_class;
+	}
+
+	/**
+	 *
+	 * @param string                               $html HTML of the save button.
+	 * @param \Rocketgenius\Gravity_Forms\Settings $framework Current instance of the Settings Framework.
+	 */
+	public function modify_gform_settings_save_button( $html, $framework ) {
+
+		if ( ! gravityview()->request->is_admin( '', 'settings' ) ) {
+			return $html;
+		}
+
+		if ( ! ( $this->current_user_can_any( $this->_capabilities_uninstall ) && ( ! function_exists( 'is_multisite' ) || ! is_multisite() || is_super_admin() ) ) ) {
+			return $html;
+		}
+
+		if ( version_compare( '2.5-beta', \GFForms::$version, '<' ) ) {
+			$html_class = 'button outline secondary alignright';
+		} else {
+			$html_class = 'button button-secondary button-large alignright button-danger';
+		}
+
+		$href = add_query_arg( array( 'post_type' => 'gravityview', 'page' => 'gravityview_settings', 'view' => 'uninstall' ), admin_url( 'edit.php' ) );
+
+		$uninstall_button = '<a href="' . esc_url( $href ) . '" class="' . gravityview_sanitize_html_class( $html_class ). '">' . esc_html__( 'Uninstall GravityView', 'gravityview' ) . '</a>';
+
+		$html .= $uninstall_button;
+
+		return $html;
+	}
+	public function page_header_bar() {
+
 	}
 
 	/**
@@ -316,8 +373,8 @@ class Addon_Settings extends \GFAddOn {
 					<?php
 					$i = 0;
 					while( $i < 11 ) {
-						echo '<li class="inline number-scale"><label><input name="likely_to_refer" id="likely_to_refer_'.$i.'" value="'.$i.'" type="radio"> '.$i.'</label></li>';
-						$i++;
+						echo '<li class="inline number-scale"><label><input name="likely_to_refer" id="likely_to_refer_' . $i . '" value="' . $i . '" type="radio"> ' . $i . '</label></li>';
+						$i ++;
 					}
 					?>
                 </ul>
@@ -348,49 +405,6 @@ class Addon_Settings extends \GFAddOn {
 		$form = ob_get_clean();
 
 		return $form;
-	}
-
-	public function app_settings_uninstall_tab() {
-		if ( $this->maybe_uninstall() ) {
-			parent::app_settings_uninstall_tab();
-			return;
-		}
-
-		if ( ! ( $this->current_user_can_any( $this->_capabilities_uninstall ) && ( ! function_exists( 'is_multisite' ) || ! is_multisite() || is_super_admin() ) ) ) {
-			return;
-		}
-
-		?>
-		<script>
-			jQuery( document ).on( 'click', 'a[rel="gv-uninstall-wrapper"]', function( e ) {
-				e.preventDefault();
-				jQuery( '#gv-uninstall-wrapper' ).slideToggle();
-			} );
-		</script>
-
-		<a rel="gv-uninstall-wrapper" href="#gv-uninstall-wrapper" class="button button-large alignright button-danger">Uninstall GravityView</a>
-
-		<div id="gv-uninstall-wrapper">
-			<form action="" method="post">
-				<?php wp_nonce_field( 'uninstall', 'gf_addon_uninstall' ) ?>
-				<div class="delete-alert alert_red">
-
-					<h3>
-						<i class="fa fa-exclamation-triangle gf_invalid"></i> <?php esc_html_e( 'Delete all GravityView content and settings', 'gravityview' ); ?>
-					</h3>
-
-					<div class="gf_delete_notice">
-						<?php echo $this->uninstall_warning_message() ?>
-					</div>
-
-					<?php
-					echo '<input type="submit" name="uninstall" value="' . sprintf( esc_attr__( 'Uninstall %s', 'gravityview' ), $this->get_short_title() ) . '" class="button button-hero" onclick="return confirm( ' . json_encode( $this->uninstall_confirm_message() ) . ' );" onkeypress="return confirm( ' . json_encode( $this->uninstall_confirm_message() ) . ' );"/>';
-					?>
-
-				</div>
-			</form>
-		</div>
-	<?php
 	}
 
 	public function app_settings_tab() {
@@ -805,27 +819,6 @@ class Addon_Settings extends \GFAddOn {
 				'type' => 'html',
 			),
 			array(
-				'name' => 'license_key',
-				'required' => ! defined( 'GRAVITYVIEW_LICENSE_KEY' ) || ! GRAVITYVIEW_LICENSE_KEY,
-				'label' => __( 'License Key', 'gravityview' ),
-				'description' => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ) . $this->get_license_handler()->license_details( $this->get_app_setting( 'license_key_response' ) ),
-				'type' => 'edd_license',
-				'disabled' => ( defined( 'GRAVITYVIEW_LICENSE_KEY' )  && GRAVITYVIEW_LICENSE_KEY ),
-				'data-pending-text' => __( 'Verifying license&hellip;', 'gravityview' ),
-				'default_value' => $default_settings['license_key'],
-				'class' => ( '' == $this->get( 'license_key' ) ) ? 'activate code regular-text edd-license-key' : 'deactivate code regular-text edd-license-key',
-			),
-			array(
-				'name' => 'license_key_response',
-				'default_value' => $default_settings['license_key_response'],
-				'type' => 'hidden',
-			),
-			array(
-				'name' => 'license_key_status',
-				'default_value' => $default_settings['license_key_status'],
-				'type' => 'hidden',
-			),
-			array(
 				'name' => 'support-email',
 				'type' => 'text',
 				'validate' => 'email',
@@ -949,21 +942,40 @@ class Addon_Settings extends \GFAddOn {
 		}
 
         $sections = array(
+			array(
+				'title' => '',
+				'description' => '',
+				'class'       => 'gform-settings-panel--full',
+				'fields'      => array(
+						array(
+								'name' => 'license_key',
+								'required' => ! defined( 'GRAVITYVIEW_LICENSE_KEY' ) || ! GRAVITYVIEW_LICENSE_KEY,
+								'label' => __( 'License Key', 'gravityview' ),
+								'description' => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ) . $this->get_license_handler()->license_details( $this->get_app_setting( 'license_key_response' ) ),
+								'type' => 'edd_license',
+								'disabled' => ( defined( 'GRAVITYVIEW_LICENSE_KEY' )  && GRAVITYVIEW_LICENSE_KEY ),
+								'data-pending-text' => __( 'Verifying license&hellip;', 'gravityview' ),
+								'default_value' => $default_settings['license_key'],
+								'class' => ( '' == $this->get( 'license_key' ) ) ? 'activate code regular-text edd-license-key' : 'deactivate code regular-text edd-license-key',
+						),
+						array(
+								'name' => 'license_key_response',
+								'default_value' => $default_settings['license_key_response'],
+								'type' => 'hidden',
+						),
+						array(
+								'name' => 'license_key_status',
+								'default_value' => $default_settings['license_key_status'],
+								'type' => 'hidden',
+						),
+				),
+			),
             array(
-                'description' => sprintf( '<span class="version-info description">%s</span>', sprintf( __( 'You are running GravityView version %s', 'gravityview' ), Plugin::$version ) ),
+				'title' => ( version_compare( '2.5-beta', \GFForms::$version, '<' ) ? __( 'GravityView Settings', 'gravityview' ) : null ),
+                'description' => sprintf( __( 'You are running GravityView version %s', 'gravityview' ), Plugin::$version ),
                 'fields'      => $fields,
-            )
+            ),
         );
-
-        // custom 'update settings' button
-        $button = array(
-            'class' => 'button button-primary button-hero',
-            'type' => 'save',
-        );
-
-		if ( $disabled_attribute ) {
-			$button['disabled'] = $disabled_attribute;
-		}
 
         /**
          * @filter `gravityview/settings/extension/sections` Modify the GravityView settings page
@@ -989,13 +1001,8 @@ class Addon_Settings extends \GFAddOn {
 				}
 			}
 
-            $k = count( $extension_sections ) - 1 ;
-            $extension_sections[ $k ]['fields'][] = $button;
-			$sections = array_merge( $sections, $extension_sections );
-		} else {
-            // add the 'update settings' button to the general section
-            $sections[0]['fields'][] = $button;
-        }
+         	$sections = array_merge( $sections, $extension_sections );
+		}
 
 		return $sections;
 	}
@@ -1108,32 +1115,6 @@ class Addon_Settings extends \GFAddOn {
 		<?php
 	}
 
-	/**
-	 * Allow customizing the Save field parameters
-	 *
-	 * @param array $field
-	 * @param bool $echo
-	 *
-	 * @return string
-	 */
-	public function settings_save( $field, $echo = true ) {
-		$field['type']  = 'submit';
-		$field['name']  = 'gform-settings-save';
-		$field['class'] = isset( $field['class'] ) ? $field['class'] : 'button-primary gfbutton';
-		$field['value'] = Utils::get( $field, 'value', __( 'Update Settings', 'gravityview' ) );
-
-		$output = $this->settings_submit( $field, false );
-
-		ob_start();
-		$this->app_settings_uninstall_tab();
-		$output .= ob_get_clean();
-
-		if ( $echo ) {
-			echo $output;
-		}
-
-		return $output;
-	}
 
 	/**
      * Keep GravityView styling for `$field['description']`, even though Gravity Forms added support for it
