@@ -755,7 +755,7 @@ HTML;
 			/** @since 1.17 */
 			case 'expired':
 				$title   = __( 'Expired License', 'gravityview' );
-				$status  = 'expired';
+				$status  = __( 'has expired', 'gravityview' );
 				$message = $this->get_license_handler()->strings( 'expired', $this->get( 'license_key_response' ) );
 				break;
 			case 'invalid':
