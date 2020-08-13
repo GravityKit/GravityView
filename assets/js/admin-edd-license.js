@@ -19,7 +19,6 @@
 			$( '.version-info' ).insertBefore('#gform_tab_group');
 
 			$( document )
-				.on( 'ready keyup', GV_EDD.license_field, GV_EDD.key_change )
 				.on( 'click', ".gv-edd-action", GV_EDD.clicked )
 				.on( 'gv-edd-failed gv-edd-invalid', GV_EDD.failed )
 				.on( 'gv-edd-valid', GV_EDD.valid )
@@ -215,11 +214,18 @@
 						$( this ).remove();
 					});
 				} );
+
+			if ( GV_EDD.get_prefers_reduced_motion ) {
+				$( '.gv-license-warning' ).hide();
+			} else {
+				$( '.gv-license-warning' ).slideUp( 'fast' );
+			}
 		},
 
 		failed: function( e ) {
 			GV_EDD.deactivate_button.removeClass( 'button-disabled' );
 			GV_EDD.activate_button.removeClass( 'button-disabled' );
+			$( '.gv-license-warning' ).slideDown( 'fast' );
 		},
 
 		deactivated: function( e ) {
@@ -234,6 +240,11 @@
 					});
 				} );
 
+			if ( GV_EDD.get_prefers_reduced_motion ) {
+				$( '.gv-license-warning' ).show();
+			} else {
+				$( '.gv-license-warning' ).slideDown( 'fast' );
+			}
 		},
 
 		other: function( e ) {
@@ -243,6 +254,24 @@
 					.fadeIn()
 					.css( "display", "inline-block" );
 			} );
+		},
+
+		/**
+		 * Checks whether the browser is set to reduce motion
+		 *
+		 * @return {boolean}
+		 */
+		get_prefers_reduced_motion: function () {
+
+			if ( ! window.hasOwnProperty( 'matchMedia' ) ) {
+				return false;
+			}
+
+			var QUERY = '(prefers-reduced-motion: no-preference)';
+			var mediaQueryList = window.matchMedia( QUERY );
+			var prefersReducedMotion = !mediaQueryList.matches;
+
+			return prefersReducedMotion;
 		}
 	};
 
