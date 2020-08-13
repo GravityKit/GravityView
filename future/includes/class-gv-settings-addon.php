@@ -1067,7 +1067,7 @@ HTML;
 										'name' => 'license_key',
 										'required' => ! defined( 'GRAVITYVIEW_LICENSE_KEY' ) || ! GRAVITYVIEW_LICENSE_KEY,
 										'label' => __( 'License Key', 'gravityview' ),
-										'description' => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ) . $this->get_license_handler()->license_details( $this->get_app_setting( 'license_key_response' ) ),
+										'description' => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ),
 										'type' => 'edd_license',
 										'disabled' => ( defined( 'GRAVITYVIEW_LICENSE_KEY' ) && GRAVITYVIEW_LICENSE_KEY ),
 										'data-pending-text' => __( 'Verifying license&hellip;', 'gravityview' ),
@@ -1186,6 +1186,8 @@ HTML;
 		$activation = $this->License_Handler->settings_edd_license_activation( $field, false );
 
 		$return = $text . $activation;
+
+		$return .= $this->get_license_handler()->license_details( \GV\Addon_Settings::get( 'license_key_response' ) );
 
 		if ( $echo ) {
 			echo $return;
