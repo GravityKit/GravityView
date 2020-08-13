@@ -156,6 +156,53 @@
 			background: rgba( 255, 255, 255, .8 );
 		}
 
+		.gv-license-details {
+
+			h3 {
+				border-top: 1px solid rgb(235, 235, 242);
+				font-size: 1em;
+				margin-top: 20px;
+				padding-top: 20px;
+				font-weight: 500;
+			}
+
+			ul {
+				display: flex;
+
+				li {
+					width: 33%;
+					flex: 1;
+					padding: 5px 2% 5px 0;
+				}
+			}
+
+			.gv-license-detail {
+				display: block;
+				font-weight: bold;
+				margin-top: .5em;
+				a {
+					font-weight: normal;
+				}
+			}
+		}
+
+		.gv-edd-button-wrapper {
+			margin: 10px 0 10px 0;
+		}
+
+		.gv-edd-button-wrapper > input[name*="activate"] {
+			margin-left: 0 !important;
+		}
+
+		#gv-edd-status {
+			margin-bottom: 10px;
+		}
+
+		.gform-settings-field__edd_license .gform-settings-input__container {
+			clear: both;
+			display: block;
+		}
+
 		.gform-settings-header {
 			background-size: cover;
 			background: transparent;

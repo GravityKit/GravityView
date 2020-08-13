@@ -791,7 +791,7 @@ HTML;
 
 		\GravityView_Admin_Notices::add_notice( array(
 				'message' => $message,
-				'class'   => 'notice notice-warning',
+				'class'   => 'notice notice-warning gv-license-warning',
 				'title'   => $title,
 				'cap'     => 'gravityview_edit_settings',
 				'dismiss' => sha1( $license_status . '_' . $license_id . '_' . date( 'z' ) ), // Show every day, instead of every 8 weeks (which is the default)

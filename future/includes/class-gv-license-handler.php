@@ -265,7 +265,7 @@ class License_Handler {
 		$wrapper = '<span class="gv-license-details" aria-live="polite" aria-busy="false">%s</span>';
 
 		if ( ! empty( $response['license_key'] ) ) {
-			$return .= '<h3>' . esc_html__( 'License Details:', 'gravityview' ) . '</h3>';
+			$return .= '<h3>' . rtrim( esc_html__( 'License Details:', 'gravityview' ), ':' ) . '</h3>';
 
 			if ( in_array( Utils::get( $response, 'license' ), array( 'invalid', 'deactivated' ) ) ) {
 				if ( gravityview()->plugin->is_GF_25() ) {
@@ -292,9 +292,9 @@ class License_Handler {
 				$license_limit = empty( $response['license_limit'] ) ? __( 'Unlimited', 'gravityview' ) : (int) $response['license_limit'];
 
 				$details    = array(
-					'license'     => sprintf( esc_html__( 'License level: %s', 'gravityview' ), esc_html( $response['license_name'] ), esc_html( $response['license_limit'] ) ),
-					'licensed_to' => sprintf( esc_html_x( 'Licensed to: %1$s (%2$s)', '1: Customer name; 2: Customer email', 'gravityview' ), esc_html__( $response['customer_name'], 'gravityview' ), esc_html__( $response['customer_email'], 'gravityview' ) ) . $login_link,
-					'activations' => sprintf( esc_html__( 'Activations: %d of %s sites', 'gravityview' ), intval( $response['site_count'] ), esc_html( $license_limit ) ) . $local_text,
+					'license'     => sprintf( esc_html__( 'License level: %s', 'gravityview' ), '<span class="gv-license-detail">' . esc_html( $response['license_name'] ) . '</span>' ),
+					'licensed_to' => sprintf( esc_html_x( 'Licensed to: %1$s (%2$s)', '1: Customer name; 2: Customer email', 'gravityview' ),  '<span class="gv-license-detail">' . esc_html__( $response['customer_name'], 'gravityview' ), esc_html__( $response['customer_email'], 'gravityview' ) ) . $login_link . '</span>',
+					'activations' => sprintf( str_replace( '%d', '%s', esc_html__( 'Activations: %d of %s sites', 'gravityview' ) ), '<span class="gv-license-detail">' . intval( $response['site_count'] ), esc_html( $license_limit ) ) . '</span>' . $local_text,
 					'expires'     => 'lifetime' === $response['expires'] ? '' : sprintf( esc_html__( 'Renew on: %s', 'gravityview' ), date_i18n( get_option( 'date_format' ), strtotime( $response['expires'] ) - DAY_IN_SECONDS ) ),
 					'upgrade'     => $this->get_upgrade_html( $response['upgrades'] ),
 				);
@@ -416,7 +416,7 @@ class License_Handler {
 			'valid' => esc_html__( 'The license key is valid and active.', 'gravityview' ),
 			'invalid' => esc_html__( 'The license key entered is invalid.', 'gravityview' ),
 			'invalid_item_id' => esc_html__( 'This license key does not have access to this plugin.', 'gravityview' ),
-			'missing' => esc_html__( 'The license key was not defined.', 'gravityview' ), // Missing is "the license couldn't be found", not "you submitted an empty license"
+			'missing' => esc_html__( 'The license key entered is invalid.', 'gravityview' ), // Missing is "the license couldn't be found", not "you submitted an empty license"
 			'revoked' => esc_html__( 'This license key has been revoked.', 'gravityview' ),
 			'expired' => sprintf( esc_html__( 'This license key has expired. %sRenew your license on the GravityView website%s to receive updates and support.', 'gravityview' ), '<a href="'. esc_url( $this->get_license_renewal_url( $license_data ) ) .'">', '</a>' ),
 			'capability' => esc_html__( 'You don\'t have the ability to edit plugin settings.', 'gravityview' ),
@@ -520,21 +520,6 @@ class License_Handler {
 		if ( gravityview()->plugin->is_GF_25() ) {
 			wp_register_style( 'gv-admin-edd-license', false );
 			wp_enqueue_style( 'gv-admin-edd-license' );
-
-			$style = <<<CSS
-.gv-edd-button-wrapper {
-	margin: 10px 0 10px 0;
-}
-
-.gv-edd-button-wrapper > input[name*="activate"] {
-	margin-left: 0 !important;
-}
-
-#gv-edd-status {
-	margin-bottom: 10px;
-}
-CSS;
-			wp_add_inline_style( 'gv-admin-edd-license', $style );
 		}
 
 		$status = trim( $this->settings->get( 'license_key_status' ) );
