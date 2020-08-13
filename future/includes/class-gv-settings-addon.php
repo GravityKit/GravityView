@@ -1058,38 +1058,44 @@ HTML;
 			}
 		}
 
+		$license_fields = array(
+			array(
+					'name' => 'license_key',
+					'required' => ! defined( 'GRAVITYVIEW_LICENSE_KEY' ) || ! GRAVITYVIEW_LICENSE_KEY,
+					'label' => __( 'License Key', 'gravityview' ),
+					'description' => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ),
+					'type' => 'edd_license',
+					'disabled' => ( defined( 'GRAVITYVIEW_LICENSE_KEY' ) && GRAVITYVIEW_LICENSE_KEY ),
+					'data-pending-text' => __( 'Verifying license&hellip;', 'gravityview' ),
+					'default_value' => $default_settings['license_key'],
+					'class' => ( '' == $this->get( 'license_key' ) ) ? 'activate code regular-text edd-license-key' : 'deactivate code regular-text edd-license-key',
+			),
+			array(
+					'name' => 'license_key_response',
+					'default_value' => $default_settings['license_key_response'],
+					'type' => 'hidden',
+			),
+			array(
+					'name' => 'license_key_status',
+					'default_value' => $default_settings['license_key_status'],
+					'type' => 'hidden',
+			),
+		);
+
+		if( \gravityview()->plugin->is_GF_25() ) {
+			$fields = array_merge( $license_fields, $fields );
+		}
+
 		$sections = array(
 				array(
-						'title' => __( 'GravityView License', 'gravityview' ),
-						'class'       => 'gform-settings-panel--full',
-						'fields'      => array(
-								array(
-										'name' => 'license_key',
-										'required' => ! defined( 'GRAVITYVIEW_LICENSE_KEY' ) || ! GRAVITYVIEW_LICENSE_KEY,
-										'label' => __( 'License Key', 'gravityview' ),
-										'description' => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ),
-										'type' => 'edd_license',
-										'disabled' => ( defined( 'GRAVITYVIEW_LICENSE_KEY' ) && GRAVITYVIEW_LICENSE_KEY ),
-										'data-pending-text' => __( 'Verifying license&hellip;', 'gravityview' ),
-										'default_value' => $default_settings['license_key'],
-										'class' => ( '' == $this->get( 'license_key' ) ) ? 'activate code regular-text edd-license-key' : 'deactivate code regular-text edd-license-key',
-								),
-								array(
-										'name' => 'license_key_response',
-										'default_value' => $default_settings['license_key_response'],
-										'type' => 'hidden',
-								),
-								array(
-										'name' => 'license_key_status',
-										'default_value' => $default_settings['license_key_status'],
-										'type' => 'hidden',
-								),
-						),
+					'title' => __( 'GravityView License', 'gravityview' ),
+					'class'       => 'gform-settings-panel--full',
+					'fields'      => $license_fields,
 				),
 				array(
-						'title' => ( gravityview()->plugin->is_GF_25() ? __( 'GravityView Settings', 'gravityview' ) : null ),
-						'description' => sprintf( __( 'You are running GravityView version %s', 'gravityview' ), Plugin::$version ),
-						'fields'      => $fields,
+					'title' => ( gravityview()->plugin->is_GF_25() ? __( 'GravityView Settings', 'gravityview' ) : null ),
+					'description' => sprintf( __( 'You are running GravityView version %s', 'gravityview' ), Plugin::$version ),
+					'fields'      => $fields,
 				),
 		);
 
