@@ -7,284 +7,290 @@
 .toplevel_page_gravityview_settings // Single site admin
 {
 
-  #gv-uninstall-wrapper {
-    margin-top: 10px;
-    clear: both;
-    width: 100%;
-    display: none;
-  }
+	#gv-uninstall-wrapper {
+		margin-top: 10px;
+		clear: both;
+		width: 100%;
+		display: none;
+	}
 
-  .button-danger:active, .button-danger:hover {
-    border: 1px solid #DD3D36;
-    background: #DD3D36;
-    color: #FFF;
-    -webkit-box-shadow: inset 0 2px 5px -3px rgba(173, 12, 17, .5);
-    box-shadow: inset 0 2px 5px -3px rgba(173, 12, 17, .5);
-    text-shadow: none !important
-  }
+	.button-danger:active, .button-danger:hover {
+		border: 1px solid #DD3D36;
+		background: #DD3D36;
+		color: #FFF;
+		-webkit-box-shadow: inset 0 2px 5px -3px rgba(173, 12, 17, .5);
+		box-shadow: inset 0 2px 5px -3px rgba(173, 12, 17, .5);
+		text-shadow: none !important
+	}
 
-  #gaddon-setting-row-license_key th {
-    position: relative;
-  }
+	#gaddon-setting-row-license_key th {
+		position: relative;
+	}
 
-  #gaddon-setting-row-license_key td {
-      vertical-align: top;
-  }
+	#gaddon-setting-row-license_key td {
+		vertical-align: top;
+	}
 
-  .gv-refresh-page {
-    font-weight: bold;
-    font-size: 1.1em;
-  }
+	.gv-refresh-page {
+		font-weight: bold;
+		font-size: 1.1em;
+	}
 
-  .gv-license-details {
+	.gv-license-details {
 
-    display: block;
-    clear: both;
-    position: relative;
-    font-size: 1.1em;
+		display: block;
+		clear: both;
+		position: relative;
+		font-size: 1.1em;
 
-    li {
-      margin: 0;
-    }
+		li {
+			margin: 0;
+		}
 
-    ul.ul-disc {
-      margin-left: 0;
-      padding-left: 1.3em;
+		ul.ul-disc {
+			margin-left: 0;
+			padding-left: 1.3em;
 
-      li {
-        padding-left: .1em;
-        list-style: disc outside;
-        overflow: visible; // Required to show the bullet
-      }
-    }
-    h3 {
-      text-transform: uppercase;
-      font-weight: 400;
-      font-size: 1em;
-      margin: .5em 0;
-    }
-    h4 {
-      margin: 0 0 .5em 0;
-    }
-    .description {
-      padding-top: .25em; // Overwrite GF .description
-    }
-  }
+			li {
+				padding-left: .1em;
+				list-style: disc outside;
+				overflow: visible; // Required to show the bullet
+			}
+		}
 
-  .gform_tab_content > h3 {
-    position: absolute;
-    top: .5em;
-    right:10px;
-  }
+		h3 {
+			text-transform: uppercase;
+			font-weight: 400;
+			font-size: 1em;
+			margin: .5em 0;
+		}
 
-  .version-info {
-    position: absolute;
-    right: 10px;
-    top: .5em
-  }
+		h4 {
+			margin: 0 0 .5em 0;
+		}
 
-  .gv-edd-message {
-    min-height: 20px;
-    padding: 8px 19px;
-    margin: 10px 0!important;
-    border: 1px solid;
-    border-radius: 4px;
-    position: relative;
+		.description {
+			padding-top: .25em; // Overwrite GF .description
+		}
+	}
 
-    display: block!important; // Overwrite .inline class declaration
+	.gform_tab_content > h3 {
+		position: absolute;
+		top: .5em;
+		right: 10px;
+	}
 
-    background-color: #eeeeee;
-    border-color: #cccccc;
-    color: #666666;
+	.version-info {
+		position: absolute;
+		right: 10px;
+		top: .5em
+	}
 
-    &.valid {
-      background-color: #c4ee91;
-      border-color: #71af5d;
-      color: #4d7615;
-    }
+	.gv-edd-message {
+		min-height: 20px;
+		padding: 8px 19px;
+		margin: 10px 0 !important;
+		border: 1px solid;
+		border-radius: 4px;
+		position: relative;
 
-    &.error,
-    &.invalid,
-    &.failed {
-      background-color: #fba1a3;
-      border-color: #b84f5b;
-      color: #981225
-    }
+		display: block !important; // Overwrite .inline class declaration
 
-    &.site_inactive,
-    &.deactivated {
-      background-color: #fbeba4;
-      border-color: #d7c281;
-      color: #958234
-    }
+		background-color: #eeeeee;
+		border-color: #cccccc;
+		color: #666666;
 
-    &.pending {
-      background-color: #d3e4f4;
-      border-color: #a9b6c2;
-      color: #5c80a1;
-    }
+		&.valid {
+			background-color: #c4ee91;
+			border-color: #71af5d;
+			color: #4d7615;
+		}
 
-    p:first-child {
-      margin: 0;
-      padding: 2px;
-    }
-  }
+		&.error,
+		&.invalid,
+		&.failed {
+			background-color: #fba1a3;
+			border-color: #b84f5b;
+			color: #981225
+		}
 
-  .inline.hide:empty {
-    display: none!important;
-  }
+		&.site_inactive,
+		&.deactivated {
+			background-color: #fbeba4;
+			border-color: #d7c281;
+			color: #958234
+		}
 
-  .hide {
-    display: none;
-  }
+		&.pending {
+			background-color: #d3e4f4;
+			border-color: #a9b6c2;
+			color: #5c80a1;
+		}
 
-  // Add the stars to the top
-  #gform-settings #gaddon-setting-row-gv_header {
-    padding: 0;
-    background: url(../images/stars.jpg) left top repeat-x;
+		p:first-child {
+			margin: 0;
+			padding: 2px;
+		}
+	}
 
-    td {
+	.inline.hide:empty {
+		display: none !important;
+	}
 
-      padding: 0!important;
+	.hide {
+		display: none;
+	}
 
-      height: 130px;
-      position: relative;
-      overflow: hidden;
+	// Add the stars to the top
+	#gform-settings #gaddon-setting-row-gv_header {
+		padding: 0;
+		background: url(../images/stars.jpg) left top repeat-x;
 
-      // Add Floaty
-      &:before {
-        content: '';
-        display: block;
-        position: absolute;
-        left: 0;
-        bottom: -150px;
+		td {
 
-        height: 263px;
-        background: transparent url(../images/astronaut-200x263.png) -30px 0 no-repeat;
-        margin: 0;
-        padding: 10px 0 0 160px;
-      }
-    }
-  }
+			padding: 0 !important;
 
-  .gform_tab_group {
-    position: relative;
+			height: 130px;
+			position: relative;
+			overflow: hidden;
 
-    // Don't change the position of the inputs when the .updated div slideUps
-    #message {
-      position: absolute;
+			// Add Floaty
+			&:before {
+				content: '';
+				display: block;
+				position: absolute;
+				left: 0;
+				bottom: -150px;
 
-      // As wide as it needs to be
-      width: auto;
-      white-space: nowrap;
+				height: 263px;
+				background: transparent url(../images/astronaut-200x263.png) -30px 0 no-repeat;
+				margin: 0;
+				padding: 10px 0 0 160px;
+			}
+		}
+	}
 
-      // Make it look like Floaty is saying it
-      top: 35px;
-      left: 150px;
+	.gform_tab_group {
+		position: relative;
 
-      margin-bottom: 10px; // For when JS is off, make sure it has some space
+		// Don't change the position of the inputs when the .updated div slideUps
+		#message {
+			position: absolute;
 
-      padding-top: 5px;
-      padding-bottom: 5px;
-      z-index: 1000;
-      opacity: .95;
+			// As wide as it needs to be
+			width: auto;
+			white-space: nowrap;
 
-      p {
-        margin: 0;
-        padding: .25em 5px;
-        font-size: 16px;
-          strong {
-            font-weight: 400;
-          }
-      }
-    }
-  }
+			// Make it look like Floaty is saying it
+			top: 35px;
+			left: 150px;
 
-  // Don't have tab margins
-  #gform_tab_container {
-    margin-left: 0;
-    background-color: #fff;
-    padding: 20px 20px 0 20px;
-  }
+			margin-bottom: 10px; // For when JS is off, make sure it has some space
 
-  // Hide the tabs
-  #gform_tabs {
-    margin-top: 0;
-    display: none;
-  }
+			padding-top: 5px;
+			padding-bottom: 5px;
+			z-index: 1000;
+			opacity: .95;
+
+			p {
+				margin: 0;
+				padding: .25em 5px;
+				font-size: 16px;
+
+				strong {
+					font-weight: 400;
+				}
+			}
+		}
+	}
+
+	// Don't have tab margins
+	#gform_tab_container {
+		margin-left: 0;
+		background-color: #fff;
+		padding: 20px 20px 0 20px;
+	}
+
+	// Hide the tabs
+	#gform_tabs {
+		margin-top: 0;
+		display: none;
+	}
 
 
-  #gform-settings {
+	#gform-settings {
 
-    clear: both;
+		clear: both;
 
-    tr {
-      border-top:1px solid #E7E7E7;
-    }
+		tr {
+			border-top: 1px solid #E7E7E7;
+		}
 
-    tr:first-child {
-      border-top: none;
-      td, th {
-        padding-top: 10px!important;
-      }
-    }
+		tr:first-child {
+			border-top: none;
 
-    .gaddon-section {
-      padding-top: 0;
-      & > h4 {
-        color: #777;
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 22px;
-      }
-    }
+			td, th {
+				padding-top: 10px !important;
+			}
+		}
 
-    table:last-child > tr:first-child,
-    table:last-child > tr:last-child {
+		.gaddon-section {
+			padding-top: 0;
 
-      td, th {
-        padding-bottom: 10px!important;
-      }
-    }
+			& > h4 {
+				color: #777;
+				font-size: 16px;
+				font-weight: 400;
+				line-height: 22px;
+			}
+		}
 
-    th, td {
-      margin: 0;
-      padding: 20px 10px 20px 0;
-      width: auto;
-    }
+		table:last-child > tr:first-child,
+		table:last-child > tr:last-child {
 
-    td {
-      width: 60%;
+			td, th {
+				padding-bottom: 10px !important;
+			}
+		}
 
-      &[colspan] {
-        width: 100%;
-      }
+		th, td {
+			margin: 0;
+			padding: 20px 10px 20px 0;
+			width: auto;
+		}
 
-      div {
-        //padding-left: 10px;
-      }
-    }
+		td {
+			width: 60%;
 
-    th {
-      font-weight: bold;
-      display: block;
-    }
+			&[colspan] {
+				width: 100%;
+			}
 
-    /**
-     * On smaller screens, the radio inputs were displaying on different lines than the labels.
-     * This keeps the <span>s and the <input>s together.
-     */
-    label {
-      display: inline-block;
-    }
+			div {
+				//padding-left: 10px;
+			}
+		}
 
-    span.description {
-      display: block;
-      font-style: normal;
-      font-weight: 400;
-      color: #666;
-    }
+		th {
+			font-weight: bold;
+			display: block;
+		}
 
-  }
+		/**
+		 * On smaller screens, the radio inputs were displaying on different lines than the labels.
+		 * This keeps the <span>s and the <input>s together.
+		 */
+		label {
+			display: inline-block;
+		}
+
+		span.description {
+			display: block;
+			font-style: normal;
+			font-weight: 400;
+			color: #666;
+		}
+
+	}
 
 }
