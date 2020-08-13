@@ -19,11 +19,13 @@
 			$( '.version-info' ).insertBefore('#gform_tab_group');
 
 			$( document )
+				.on( 'ready keyup gv-init', GV_EDD.license_field, GV_EDD.key_change )
 				.on( 'click', ".gv-edd-action", GV_EDD.clicked )
 				.on( 'gv-edd-failed gv-edd-invalid', GV_EDD.failed )
 				.on( 'gv-edd-valid', GV_EDD.valid )
 				.on( 'gv-edd-deactivated', GV_EDD.deactivated )
-				.on( 'gv-edd-inactive gv-edd-other', GV_EDD.other );
+				.on( 'gv-edd-inactive gv-edd-other', GV_EDD.other )
+				.trigger( 'gv-init' );
 
 		},
 
