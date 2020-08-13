@@ -3,7 +3,8 @@
 .gv_tooltip {
 
 	font-size: 0.001px;
-	color: transparent;
+	color: inherit;
+	background: transparent;
 
 	&:before {
 		// @see .fa in FontAwesome
@@ -22,14 +23,15 @@
 
 $tooltip_background: #eee;
 
-body .ui-tooltip {
+body .ui-tooltip.ui-widget-content {
 	padding: 8px;
 	position:absolute;
 	width: 400px;
+	font-size: 14px;
+	line-height: 18.2px;
 	max-width: 100%; // Resize for responsive, if necessary
 	z-index: 999999!important; // Gravity Forms tooltips - need to make sure they're higher z-index to be above the field settings
 	background: $tooltip_background;
-	border: 4px solid #999;
 	border-radius: 4px;
 	box-shadow: 0 0 5px #aaa;
 
@@ -39,6 +41,15 @@ body .ui-tooltip {
 	// Fix issue in Gravity Forms tooltips with line breaks
 	br { display: none; }
 
+	// Keep Gravity Forms < 2.5 styling for now
+	color: #191e23; // Looks better than #000
+	text-shadow: 1px 1px 1px #fff;
+	border: 4px solid #999;
+	text-align: left;
+
+	h6 {
+		color: #0e6085;
+	}
 }
 /* Fades and background-images don't work well together in IE6, drop the image */
 * html .ui-tooltip {

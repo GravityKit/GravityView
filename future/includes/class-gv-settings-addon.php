@@ -88,9 +88,13 @@ class Addon_Settings extends \GFAddOn {
 
 		$this->_load_license_handler();
 
+		add_filter( 'admin_body_class', array( $this, 'body_class' ) );
+
 		add_action( 'admin_head', array( $this, 'license_key_notice' ) );
 
 		add_filter( 'gform_addon_app_settings_menu_gravityview', array( $this, 'modify_app_settings_menu_title' ) );
+
+		add_filter( 'gform_settings_save_button', array( $this, 'modify_gform_settings_save_button' ), 10, 2 );
 
 		/** @since 1.7.6 */
 		add_action( 'network_admin_menu', array( $this, 'add_network_menu' ) );
@@ -142,6 +146,56 @@ class Addon_Settings extends \GFAddOn {
 		$items[] = 'gv-admin-edd-license';
 
 		return $items;
+	}
+
+	/**
+	 * Adds a CSS class to the <body> of the admin page if running GF 2.5 or newer
+	 *
+	 * @param $css_class
+	 *
+	 * @return string
+	 */
+	public function body_class( $css_class ) {
+
+		if ( ! gravityview()->request->is_admin( '', 'settings' ) ) {
+			return $css_class;
+		}
+
+		if ( version_compare( '2.5-beta', \GFForms::$version, '<' ) ) {
+			$css_class .= ' gf-2-5';
+		}
+
+		return $css_class;
+	}
+
+	/**
+	 *
+	 * @param string                               $html HTML of the save button.
+	 * @param \Rocketgenius\Gravity_Forms\Settings $framework Current instance of the Settings Framework.
+	 */
+	public function modify_gform_settings_save_button( $html, $framework ) {
+
+		if ( ! gravityview()->request->is_admin( '', 'settings' ) ) {
+			return $html;
+		}
+
+		if ( ! ( $this->current_user_can_any( $this->_capabilities_uninstall ) && ( ! function_exists( 'is_multisite' ) || ! is_multisite() || is_super_admin() ) ) ) {
+			return $html;
+		}
+
+		if ( version_compare( '2.5-beta', \GFForms::$version, '<' ) ) {
+			$html_class = 'button outline secondary alignright';
+		} else {
+			$html_class = 'button button-secondary button-large alignright button-danger';
+		}
+
+		$href = add_query_arg( array( 'post_type' => 'gravityview', 'page' => 'gravityview_settings', 'view' => 'uninstall' ), admin_url( 'edit.php' ) );
+
+		$uninstall_button = '<a href="' . esc_url( $href ) . '" class="' . gravityview_sanitize_html_class( $html_class ). '">' . esc_html__( 'Uninstall GravityView', 'gravityview' ) . '</a>';
+
+		$html .= $uninstall_button;
+
+		return $html;
 	}
 
 	/**
@@ -257,22 +311,22 @@ class Addon_Settings extends \GFAddOn {
 	private function get_uninstall_reasons() {
 
 		$reasons = array(
-			'will-continue'  => array(
-				'label' => esc_html__( 'I am going to continue using GravityView', 'gravityview' ),
-			),
-			'no-longer-need' => array(
-				'label' => esc_html__( 'I no longer need GravityView', 'gravityview' ),
-			),
-			'doesnt-work'    => array(
-				'label' => esc_html__( 'The plugin doesn\'t work', 'gravityview' ),
-			),
-			'found-other'    => array(
-				'label'    => esc_html__( 'I found a better plugin', 'gravityview' ),
-				'followup' => esc_attr__( 'What plugin you are using, and why?', 'gravityview' ),
-			),
-			'other'          => array(
-				'label' => esc_html__( 'Other', 'gravityview' ),
-			),
+				'will-continue'  => array(
+						'label' => esc_html__( 'I am going to continue using GravityView', 'gravityview' ),
+				),
+				'no-longer-need' => array(
+						'label' => esc_html__( 'I no longer need GravityView', 'gravityview' ),
+				),
+				'doesnt-work'    => array(
+						'label' => esc_html__( 'The plugin doesn\'t work', 'gravityview' ),
+				),
+				'found-other'    => array(
+						'label'    => esc_html__( 'I found a better plugin', 'gravityview' ),
+						'followup' => esc_attr__( 'What plugin you are using, and why?', 'gravityview' ),
+				),
+				'other'          => array(
+						'label' => esc_html__( 'Other', 'gravityview' ),
+				),
 		);
 
 		shuffle( $reasons );
@@ -293,35 +347,35 @@ class Addon_Settings extends \GFAddOn {
 
 		$user = wp_get_current_user();
 		?>
-        <style>
-            #gv-reason-details {
-                min-height: 100px;
-            }
+		<style>
+			#gv-reason-details {
+				min-height: 100px;
+			}
 
-            .number-scale label {
-                border: 1px solid #cccccc;
-                padding: .5em .75em;
-                margin: .1em;
-            }
+			.number-scale label {
+				border: 1px solid #cccccc;
+				padding: .5em .75em;
+				margin: .1em;
+			}
 
-            #gv-uninstall-thanks p {
-                font-size: 1.2em;
-            }
+			#gv-uninstall-thanks p {
+				font-size: 1.2em;
+			}
 
-            .scale-description ul {
-                margin-bottom: 0;
-                padding-bottom: 0;
-            }
+			.scale-description ul {
+				margin-bottom: 0;
+				padding-bottom: 0;
+			}
 
-            .scale-description p.description {
-                margin-top: 0 !important;
-                padding-top: 0 !important;
-            }
+			.scale-description p.description {
+				margin-top: 0 !important;
+				padding-top: 0 !important;
+			}
 
-            .gv-form-field-wrapper {
-                margin-top: 30px;
-            }
-        </style>
+			.gv-form-field-wrapper {
+				margin-top: 30px;
+			}
+		</style>
 
 		<?php
 		if ( gravityview()->plugin->is_GF_25() ) {
@@ -339,65 +393,65 @@ HTML;
 			echo '<div class="gv-uninstall-form-wrapper" style="font-size: 110%; padding: 15px 0;">';
 		}
 		?>
-        <script>
-					jQuery( function( $ ) {
-						$( '#gv-uninstall-feedback' ).on( 'change', function( e ) {
+		<script>
+			jQuery( function( $ ) {
+				$( '#gv-uninstall-feedback' ).on( 'change', function( e ) {
 
-							if ( ! $( e.target ).is( ':input' ) ) {
-								return;
-							}
-							var $textarea = $( '.gv-followup' ).find( 'textarea' );
-							var followup_text = $( e.target ).attr( 'data-followup' );
-							if ( ! followup_text ) {
-								followup_text = $textarea.attr( 'data-default' );
-							}
+					if ( ! $( e.target ).is( ':input' ) ) {
+						return;
+					}
+					var $textarea = $( '.gv-followup' ).find( 'textarea' );
+					var followup_text = $( e.target ).attr( 'data-followup' );
+					if ( ! followup_text ) {
+						followup_text = $textarea.attr( 'data-default' );
+					}
 
-							$textarea.attr( 'placeholder', followup_text );
+					$textarea.attr( 'placeholder', followup_text );
 
-						} ).on( 'submit', function( e ) {
-							e.preventDefault();
+				} ).on( 'submit', function( e ) {
+					e.preventDefault();
 
-							$.post( $( this ).attr( 'action' ), $( this ).serialize() )
-								.done( function( data ) {
-									if ( 'success' !== data.status ) {
-										gv_feedback_append_error_message();
-									} else {
-										$( '#gv-uninstall-thanks' ).fadeIn();
-									}
-								} )
-								.fail( function( data ) {
+					$.post( $( this ).attr( 'action' ), $( this ).serialize() )
+							.done( function( data ) {
+								if ( 'success' !== data.status ) {
 									gv_feedback_append_error_message();
-								} )
-								.always( function() {
-									$( e.target ).remove();
-								} );
+								} else {
+									$( '#gv-uninstall-thanks' ).fadeIn();
+								}
+							} )
+							.fail( function( data ) {
+								gv_feedback_append_error_message();
+							} )
+							.always( function() {
+								$( e.target ).remove();
+							} );
 
-							return false;
-						} );
+					return false;
+				} );
 
-						function gv_feedback_append_error_message() {
-							$( '#gv-uninstall-thanks' ).append( '<div class="notice error">' + <?php echo json_encode( esc_html( __( 'There was an error sharing your feedback. Sorry! Please email us at support@gravityview.co', 'gravityview' ) ) ) ?> +'</div>' );
-						}
-					} );
-        </script>
+				function gv_feedback_append_error_message() {
+					$( '#gv-uninstall-thanks' ).append( '<div class="notice error">' + <?php echo json_encode( esc_html( __( 'There was an error sharing your feedback. Sorry! Please email us at support@gravityview.co', 'gravityview' ) ) ) ?> +'</div>' );
+				}
+			} );
+		</script>
 
-        <form id="gv-uninstall-feedback" method="post" action="https://hooks.zapier.com/hooks/catch/28670/6haevn/">
-            <h2><?php esc_html_e( 'Why did you uninstall GravityView?', 'gravityview' ); ?></h2>
-            <ul>
+		<form id="gv-uninstall-feedback" method="post" action="https://hooks.zapier.com/hooks/catch/28670/6haevn/">
+			<h2><?php esc_html_e( 'Why did you uninstall GravityView?', 'gravityview' ); ?></h2>
+			<ul>
 				<?php
 				$reasons = $this->get_uninstall_reasons();
 				foreach ( $reasons as $reason ) {
 					printf( '<li><label><input name="reason" type="radio" value="other" data-followup="%s"> %s</label></li>', Utils::get( $reason, 'followup' ), Utils::get( $reason, 'label' ) );
 				}
 				?>
-            </ul>
-            <div class="gv-followup widefat">
-                <p><strong><label for="gv-reason-details"><?php esc_html_e( 'Comments', 'gravityview' ); ?></label></strong></p>
-                <textarea id="gv-reason-details" name="reason_details" data-default="<?php esc_attr_e( 'Please share your thoughts about GravityView', 'gravityview' ) ?>" placeholder="<?php esc_attr_e( 'Please share your thoughts about GravityView', 'gravityview' ); ?>" class="large-text"></textarea>
-            </div>
-            <div class="scale-description">
-                <p><strong><?php esc_html_e( 'How likely are you to recommend GravityView?', 'gravityview' ); ?></strong></p>
-                <ul class="inline">
+			</ul>
+			<div class="gv-followup widefat">
+				<p><strong><label for="gv-reason-details"><?php esc_html_e( 'Comments', 'gravityview' ); ?></label></strong></p>
+				<textarea id="gv-reason-details" name="reason_details" data-default="<?php esc_attr_e( 'Please share your thoughts about GravityView', 'gravityview' ) ?>" placeholder="<?php esc_attr_e( 'Please share your thoughts about GravityView', 'gravityview' ); ?>" class="large-text"></textarea>
+			</div>
+			<div class="scale-description">
+				<p><strong><?php esc_html_e( 'How likely are you to recommend GravityView?', 'gravityview' ); ?></strong></p>
+				<ul class="inline">
 					<?php
 					$i = 0;
 					while ( $i < 11 ) {
@@ -405,30 +459,30 @@ HTML;
 						$i ++;
 					}
 					?>
-                </ul>
-                <p class="description"><?php printf( esc_html_x( '%s ("Not at all likely") to %s ("Extremely likely")', 'A scale from 0 (bad) to 10 (good)', 'gravityview' ), '<label for="likely_to_refer_0"><code>0</code></label>', '<label for="likely_to_refer_10"><code>10</code></label>' ); ?></p>
-            </div>
+				</ul>
+				<p class="description"><?php printf( esc_html_x( '%s ("Not at all likely") to %s ("Extremely likely")', 'A scale from 0 (bad) to 10 (good)', 'gravityview' ), '<label for="likely_to_refer_0"><code>0</code></label>', '<label for="likely_to_refer_10"><code>10</code></label>' ); ?></p>
+			</div>
 
-            <div class="gv-form-field-wrapper">
-                <label><input type="checkbox" class="checkbox" name="follow_up_with_me" value="1" /> <?php esc_html_e( 'Please follow up with me about my feedback', 'gravityview' ); ?></label>
-            </div>
+			<div class="gv-form-field-wrapper">
+				<label><input type="checkbox" class="checkbox" name="follow_up_with_me" value="1" /> <?php esc_html_e( 'Please follow up with me about my feedback', 'gravityview' ); ?></label>
+			</div>
 
-            <div class="submit">
-                <input type="hidden" name="siteurl" value="<?php echo esc_url( get_bloginfo( 'url' ) ); ?>" />
-                <input type="hidden" name="email" value="<?php echo esc_attr( $user->user_email ); ?>" />
-                <input type="hidden" name="display_name" value="<?php echo esc_attr( $user->display_name ); ?>" />
-                <input type="submit" value="<?php esc_html_e( 'Send Us Your Feedback', 'gravityview' ); ?>" class="button button-primary primary button-hero" />
-            </div>
-        </form>
+			<div class="submit">
+				<input type="hidden" name="siteurl" value="<?php echo esc_url( get_bloginfo( 'url' ) ); ?>" />
+				<input type="hidden" name="email" value="<?php echo esc_attr( $user->user_email ); ?>" />
+				<input type="hidden" name="display_name" value="<?php echo esc_attr( $user->display_name ); ?>" />
+				<input type="submit" value="<?php esc_html_e( 'Send Us Your Feedback', 'gravityview' ); ?>" class="button button-primary primary button-hero" />
+			</div>
+		</form>
 
-        <div id="gv-uninstall-thanks" class="<?php echo ( gravityview()->plugin->is_GF_25() ) ? 'notice-large' : 'notice notice-large notice-updated below-h2'; ?>" style="display:none;">
-            <h3 class="notice-title"><?php esc_html_e( 'Thank you for using GravityView!', 'gravityview' ); ?></h3>
-            <p><?php echo gravityview_get_floaty(); ?>
+		<div id="gv-uninstall-thanks" class="<?php echo ( gravityview()->plugin->is_GF_25() ) ? 'notice-large' : 'notice notice-large notice-updated below-h2'; ?>" style="display:none;">
+			<h3 class="notice-title"><?php esc_html_e( 'Thank you for using GravityView!', 'gravityview' ); ?></h3>
+			<p><?php echo gravityview_get_floaty(); ?>
 				<?php echo make_clickable( esc_html__( 'Your feedback helps us improve GravityView. If you have any questions or comments, email us: support@gravityview.co', 'gravityview' ) ); ?>
-            </p>
-            <div class="wp-clearfix"></div>
-        </div>
-        </div>
+			</p>
+			<div class="wp-clearfix"></div>
+		</div>
+		</div>
 		<?php
 		if ( gravityview()->plugin->is_GF_25() ) {
 			echo '</div>';
@@ -437,97 +491,6 @@ HTML;
 		$form = ob_get_clean();
 
 		return $form;
-	}
-
-	public function app_settings_uninstall_tab() {
-
-		if ( $this->maybe_uninstall() ) {
-			if ( gravityview()->plugin->is_GF_25() ) {
-				echo $this->uninstall_form();
-
-				return;
-			} else {
-				parent::app_settings_uninstall_tab();
-
-				return;
-			}
-		}
-
-		if ( ! ( $this->current_user_can_any( $this->_capabilities_uninstall ) && ( ! function_exists( 'is_multisite' ) || ! is_multisite() || is_super_admin() ) ) ) {
-			return;
-		}
-
-		if ( gravityview()->plugin->is_GF_25() ) {
-			return $this->app_settings_uninstall_tab_GF_25();
-		}
-
-		?>
-        <script>
-					jQuery( document ).on( 'click', 'a[rel="gv-uninstall-wrapper"]', function( e ) {
-						e.preventDefault();
-						jQuery( '#gv-uninstall-wrapper' ).slideToggle();
-					} );
-        </script>
-
-        <a rel="gv-uninstall-wrapper" href="#gv-uninstall-wrapper" class="button button-large alignright button-danger">Uninstall GravityView</a>
-
-        <div id="gv-uninstall-wrapper">
-            <form action="" method="post">
-				<?php wp_nonce_field( 'uninstall', 'gf_addon_uninstall' ) ?>
-                <div class="delete-alert alert_red">
-
-                    <h3>
-                        <i class="fa fa-exclamation-triangle gf_invalid"></i> <?php esc_html_e( 'Delete all GravityView content and settings', 'gravityview' ); ?>
-                    </h3>
-
-                    <div class="gf_delete_notice">
-						<?php echo $this->uninstall_warning_message() ?>
-                    </div>
-
-					<?php
-					echo '<input type="submit" name="uninstall" value="' . sprintf( esc_attr__( 'Uninstall %s', 'gravityview' ), $this->get_short_title() ) . '" class="button button-hero" onclick="return confirm( ' . json_encode( $this->uninstall_confirm_message() ) . ' );" onkeypress="return confirm( ' . json_encode( $this->uninstall_confirm_message() ) . ' );"/>';
-					?>
-
-                </div>
-            </form>
-        </div>
-		<?php
-	}
-
-	public function app_settings_uninstall_tab_GF_25() {
-
-		?>
-        <div class="gform-settings-panel">
-            <header class="gform-settings-panel__header">
-                <h4 class="gform-settings-panel__title"><?php esc_html_e( 'Uninstall GravityView', 'gravityview' ); ?></h4>
-            </header>
-            <div class="gform-settings-panel__content">
-
-                <p class="alert error">
-					<?php esc_html_e( 'If you delete then re-install GravityView, it will be like installing GravityView for the first time.', 'gravityview' ); ?>
-                </p>
-                <form action="" method="post">
-
-					<?php
-					wp_nonce_field( 'uninstall', 'gf_addon_uninstall' );
-
-					$uninstall_button = sprintf(
-						'<input type="submit" name="uninstall" class="button red" value="%1$s" onclick="return confirm( \'%2$s\' );" onkeypress="return confirm( \'%2$s\' );" />',
-						esc_attr__( 'Uninstall GravityView', 'gravityview' ),
-						esc_js( sprintf( "%s\n\n%s\n\n%s",
-								esc_html__( 'Warning!', 'gravityview' ),
-								esc_html__( 'All Views, GravityView entry approval status, GravityView-generated entry notes (including approval and entry creator changes), and GravityView plugin settings will be deleted. This action cannot be undone.', 'gravityview' ),
-								esc_html__( "'OK' to delete, 'Cancel' to stop.", 'gravityview' )
-							)
-						)
-					);
-
-					echo $uninstall_button;
-					?>
-                </form>
-            </div>
-        </div>
-		<?php
 	}
 
 	public function app_settings_tab() {
@@ -587,9 +550,9 @@ HTML;
 		 */
 		if ( $key === 'license' ) {
 			return array(
-				'license'  => $this->get( 'license_key' ),
-				'status'   => $this->get( 'license_key_status' ),
-				'response' => $this->get( 'license_key_response' ),
+					'license'  => $this->get( 'license_key' ),
+					'status'   => $this->get( 'license_key_status' ),
+					'response' => $this->get( 'license_key_response' ),
 			);
 		}
 
@@ -825,11 +788,11 @@ HTML;
 		}
 
 		\GravityView_Admin_Notices::add_notice( array(
-			'message' => $message,
-			'class'   => 'notice notice-warning',
-			'title'   => $title,
-			'cap'     => 'gravityview_edit_settings',
-			'dismiss' => sha1( $license_status . '_' . $license_id . '_' . date( 'z' ) ), // Show every day, instead of every 8 weeks (which is the default)
+				'message' => $message,
+				'class'   => 'notice notice-warning',
+				'title'   => $title,
+				'cap'     => 'gravityview_edit_settings',
+				'dismiss' => sha1( $license_status . '_' . $license_id . '_' . date( 'z' ) ), // Show every day, instead of every 8 weeks (which is the default)
 		) );
 	}
 
@@ -859,12 +822,12 @@ HTML;
 		$scripts = parent::scripts();
 
 		$scripts[] = array(
-			'handle'  => 'gform_tooltip_init',
-			'enqueue' => array(
-				array(
-					'admin_page' => array( 'app_settings' ),
+				'handle'  => 'gform_tooltip_init',
+				'enqueue' => array(
+						array(
+								'admin_page' => array( 'app_settings' ),
+						),
 				),
-			),
 		);
 
 		return $scripts;
@@ -880,22 +843,22 @@ HTML;
 		$styles = parent::styles();
 
 		$styles[] = array(
-			'handle'  => 'gravityview_settings',
-			'src'     => plugins_url( 'assets/css/admin-settings.css', GRAVITYVIEW_FILE ),
-			'version' => Plugin::$version,
-			'deps'    => array(
-				'gform_admin',
-				'gaddon_form_settings_css',
-				'gform_tooltip',
-				'gform_font_awesome',
-			),
-			'enqueue' => array(
-				array(
-					'admin_page' => array(
-						'app_settings',
-					),
+				'handle'  => 'gravityview_settings',
+				'src'     => plugins_url( 'assets/css/admin-settings.css', GRAVITYVIEW_FILE ),
+				'version' => Plugin::$version,
+				'deps'    => array(
+						'gform_admin',
+						'gaddon_form_settings_css',
+						'gform_tooltip',
+						'gform_font_awesome',
 				),
-			),
+				'enqueue' => array(
+						array(
+								'admin_page' => array(
+										'app_settings',
+								),
+						),
+				),
 		);
 
 		return $styles;
@@ -964,119 +927,119 @@ HTML;
 		$disabled_attribute = \GVCommon::has_cap( 'gravityview_edit_settings' ) ? false : 'disabled';
 
 		$fields = array(
-			array(
-				'name'  => 'gv_header',
-				'value' => '',
-				'type'  => 'html',
-			),
-			array(
-				'name'              => 'license_key',
-				'required'          => ! defined( 'GRAVITYVIEW_LICENSE_KEY' ) || ! GRAVITYVIEW_LICENSE_KEY,
-				'label'             => __( 'License Key', 'gravityview' ),
-				'description'       => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ) . $this->get_license_handler()->license_details( \GV\Addon_Settings::get( 'license_key_response' ) ),
-				'type'              => 'edd_license',
-				'disabled'          => ( defined( 'GRAVITYVIEW_LICENSE_KEY' ) && GRAVITYVIEW_LICENSE_KEY ),
-				'data-pending-text' => __( 'Verifying license&hellip;', 'gravityview' ),
-				'default_value'     => $default_settings['license_key'],
-				'class'             => ( '' == $this->get( 'license_key' ) ) ? 'activate code regular-text edd-license-key' : 'deactivate code regular-text edd-license-key',
-			),
-			array(
-				'name'          => 'license_key_response',
-				'default_value' => $default_settings['license_key_response'],
-				'type'          => 'hidden',
-			),
-			array(
-				'name'          => 'license_key_status',
-				'default_value' => $default_settings['license_key_status'],
-				'type'          => 'hidden',
-			),
-			array(
-				'name'          => 'support-email',
-				'type'          => 'text',
-				'validate'      => 'email',
-				'default_value' => $default_settings['support-email'],
-				'label'         => __( 'Support Email', 'gravityview' ),
-				'description'   => __( 'In order to provide responses to your support requests, please provide your email address.', 'gravityview' ),
-				'class'         => 'code regular-text',
-			),
-			/**
-			 * @since 1.15 Added Support Port support
-			 */
-			array(
-				'name'          => 'support_port',
-				'type'          => 'radio',
-				'label'         => __( 'Show Support Port?', 'gravityview' ),
-				'default_value' => $default_settings['support_port'],
-				'horizontal'    => 1,
-				'choices'       => array(
-					array(
-						'label' => _x( 'Show', 'Setting: Show or Hide', 'gravityview' ),
-						'value' => '1',
-					),
-					array(
-						'label' => _x( 'Hide', 'Setting: Show or Hide', 'gravityview' ),
-						'value' => '0',
-					),
-				),
-				'tooltip'       => '<p><img src="' . esc_url_raw( plugins_url( 'assets/images/beacon.png', GRAVITYVIEW_FILE ) ) . '" alt="' . esc_attr__( 'The Support Port looks like this.', 'gravityview' ) . '" class="alignright" style="max-width:40px; margin:.5em;" />' . esc_html__( 'The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support.', 'gravityview' ) . '</p>',
-				'description'   => __( 'Show the Support Port on GravityView pages?', 'gravityview' ),
-			),
-			array(
-				'name'          => 'no-conflict-mode',
-				'type'          => 'radio',
-				'label'         => __( 'No-Conflict Mode', 'gravityview' ),
-				'default_value' => $default_settings['no-conflict-mode'],
-				'horizontal'    => 1,
-				'choices'       => array(
-					array(
-						'label' => _x( 'On', 'Setting: On or off', 'gravityview' ),
-						'value' => '1',
-					),
-					array(
-						'label' => _x( 'Off', 'Setting: On or off', 'gravityview' ),
-						'value' => '0',
-					),
-				),
-				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ) . ' ' . __( 'If your Edit View tabs are ugly, enable this setting.', 'gravityview' ),
-			),
-			/**
-			 * @since 2.0 Added REST API
-			 */
-			gravityview()->plugin->supports( Plugin::FEATURE_REST ) ?
 				array(
-					'name'          => 'rest_api',
-					'type'          => 'radio',
-					'label'         => __( 'REST API', 'gravityview' ),
-					'default_value' => $default_settings['rest_api'],
-					'horizontal'    => 1,
-					'choices'       => array(
-						array(
-							'label' => _x( 'Enable', 'Setting: Enable or Disable', 'gravityview' ),
-							'value' => '1',
-						),
-						array(
-							'label' => _x( 'Disable', 'Setting: Enable or Disable', 'gravityview' ),
-							'value' => '0',
-						),
-					),
-					'description'   => __( 'Enable View and Entry access via the REST API? Regular per-View restrictions apply (private, password protected, etc.).', 'gravityview' ),
-					'tooltip'       => '<p>' . esc_html__( 'If you are unsure, choose the Disable setting.', 'gravityview' ) . '</p>',
-				) : array(),
-			array(
-				'name'          => 'beta',
-				'type'          => 'checkbox',
-				'label'         => __( 'Become a Beta Tester', 'gravityview' ),
-				'default_value' => $default_settings['beta'],
-				'horizontal'    => 1,
-				'choices'       => array(
-					array(
-						'label' => esc_html__( 'Show me beta versions if they are available.', 'gravityview' ),
-						'value' => '1',
-						'name'  => 'beta',
-					),
+						'name'  => 'gv_header',
+						'value' => '',
+						'type'  => 'html',
 				),
-				'description'   => __( 'You will have early access to the latest GravityView features and improvements. There may be bugs! If you encounter an issue, help make GravityView better by reporting it!', 'gravityview' ),
-			),
+				array(
+						'name'              => 'license_key',
+						'required'          => ! defined( 'GRAVITYVIEW_LICENSE_KEY' ) || ! GRAVITYVIEW_LICENSE_KEY,
+						'label'             => __( 'License Key', 'gravityview' ),
+						'description'       => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ) . $this->get_license_handler()->license_details( \GV\Addon_Settings::get( 'license_key_response' ) ),
+						'type'              => 'edd_license',
+						'disabled'          => ( defined( 'GRAVITYVIEW_LICENSE_KEY' ) && GRAVITYVIEW_LICENSE_KEY ),
+						'data-pending-text' => __( 'Verifying license&hellip;', 'gravityview' ),
+						'default_value'     => $default_settings['license_key'],
+						'class'             => ( '' == $this->get( 'license_key' ) ) ? 'activate code regular-text edd-license-key' : 'deactivate code regular-text edd-license-key',
+				),
+				array(
+						'name'          => 'license_key_response',
+						'default_value' => $default_settings['license_key_response'],
+						'type'          => 'hidden',
+				),
+				array(
+						'name'          => 'license_key_status',
+						'default_value' => $default_settings['license_key_status'],
+						'type'          => 'hidden',
+				),
+				array(
+						'name'          => 'support-email',
+						'type'          => 'text',
+						'validate'      => 'email',
+						'default_value' => $default_settings['support-email'],
+						'label'         => __( 'Support Email', 'gravityview' ),
+						'description'   => __( 'In order to provide responses to your support requests, please provide your email address.', 'gravityview' ),
+						'class'         => 'code regular-text',
+				),
+				/**
+				 * @since 1.15 Added Support Port support
+				 */
+				array(
+						'name'          => 'support_port',
+						'type'          => 'radio',
+						'label'         => __( 'Show Support Port?', 'gravityview' ),
+						'default_value' => $default_settings['support_port'],
+						'horizontal'    => 1,
+						'choices'       => array(
+								array(
+										'label' => _x( 'Show', 'Setting: Show or Hide', 'gravityview' ),
+										'value' => '1',
+								),
+								array(
+										'label' => _x( 'Hide', 'Setting: Show or Hide', 'gravityview' ),
+										'value' => '0',
+								),
+						),
+						'tooltip'       => '<p><img src="' . esc_url_raw( plugins_url( 'assets/images/beacon.png', GRAVITYVIEW_FILE ) ) . '" alt="' . esc_attr__( 'The Support Port looks like this.', 'gravityview' ) . '" class="alignright" style="max-width:40px; margin:.5em;" />' . esc_html__( 'The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support.', 'gravityview' ) . '</p>',
+						'description'   => __( 'Show the Support Port on GravityView pages?', 'gravityview' ),
+				),
+				array(
+						'name'          => 'no-conflict-mode',
+						'type'          => 'radio',
+						'label'         => __( 'No-Conflict Mode', 'gravityview' ),
+						'default_value' => $default_settings['no-conflict-mode'],
+						'horizontal'    => 1,
+						'choices'       => array(
+								array(
+										'label' => _x( 'On', 'Setting: On or off', 'gravityview' ),
+										'value' => '1',
+								),
+								array(
+										'label' => _x( 'Off', 'Setting: On or off', 'gravityview' ),
+										'value' => '0',
+								),
+						),
+						'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ) . ' ' . __( 'If your Edit View tabs are ugly, enable this setting.', 'gravityview' ),
+				),
+				/**
+				 * @since 2.0 Added REST API
+				 */
+				gravityview()->plugin->supports( Plugin::FEATURE_REST ) ?
+						array(
+								'name'          => 'rest_api',
+								'type'          => 'radio',
+								'label'         => __( 'REST API', 'gravityview' ),
+								'default_value' => $default_settings['rest_api'],
+								'horizontal'    => 1,
+								'choices'       => array(
+										array(
+												'label' => _x( 'Enable', 'Setting: Enable or Disable', 'gravityview' ),
+												'value' => '1',
+										),
+										array(
+												'label' => _x( 'Disable', 'Setting: Enable or Disable', 'gravityview' ),
+												'value' => '0',
+										),
+								),
+								'description'   => __( 'Enable View and Entry access via the REST API? Regular per-View restrictions apply (private, password protected, etc.).', 'gravityview' ),
+								'tooltip'       => '<p>' . esc_html__( 'If you are unsure, choose the Disable setting.', 'gravityview' ) . '</p>',
+						) : array(),
+				array(
+						'name'          => 'beta',
+						'type'          => 'checkbox',
+						'label'         => __( 'Become a Beta Tester', 'gravityview' ),
+						'default_value' => $default_settings['beta'],
+						'horizontal'    => 1,
+						'choices'       => array(
+								array(
+										'label' => esc_html__( 'Show me beta versions if they are available.', 'gravityview' ),
+										'value' => '1',
+										'name'  => 'beta',
+								),
+						),
+						'description'   => __( 'You will have early access to the latest GravityView features and improvements. There may be bugs! If you encounter an issue, help make GravityView better by reporting it!', 'gravityview' ),
+				),
 		);
 
 		$fields = array_filter( $fields, 'count' );
@@ -1115,21 +1078,40 @@ HTML;
 		}
 
 		$sections = array(
-			array(
-				'description' => sprintf( '<span class="version-info description">%s</span>', sprintf( __( 'You are running GravityView version %s', 'gravityview' ), Plugin::$version ) ),
-				'fields'      => $fields,
-			),
+				array(
+						'title' => '',
+						'description' => '',
+						'class'       => 'gform-settings-panel--full',
+						'fields'      => array(
+								array(
+										'name' => 'license_key',
+										'required' => ! defined( 'GRAVITYVIEW_LICENSE_KEY' ) || ! GRAVITYVIEW_LICENSE_KEY,
+										'label' => __( 'License Key', 'gravityview' ),
+										'description' => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ) . $this->get_license_handler()->license_details( $this->get_app_setting( 'license_key_response' ) ),
+										'type' => 'edd_license',
+										'disabled' => ( defined( 'GRAVITYVIEW_LICENSE_KEY' )  && GRAVITYVIEW_LICENSE_KEY ),
+										'data-pending-text' => __( 'Verifying license&hellip;', 'gravityview' ),
+										'default_value' => $default_settings['license_key'],
+										'class' => ( '' == $this->get( 'license_key' ) ) ? 'activate code regular-text edd-license-key' : 'deactivate code regular-text edd-license-key',
+								),
+								array(
+										'name' => 'license_key_response',
+										'default_value' => $default_settings['license_key_response'],
+										'type' => 'hidden',
+								),
+								array(
+										'name' => 'license_key_status',
+										'default_value' => $default_settings['license_key_status'],
+										'type' => 'hidden',
+								),
+						),
+				),
+				array(
+						'title' => ( version_compare( '2.5-beta', \GFForms::$version, '<' ) ? __( 'GravityView Settings', 'gravityview' ) : null ),
+						'description' => sprintf( __( 'You are running GravityView version %s', 'gravityview' ), Plugin::$version ),
+						'fields'      => $fields,
+				),
 		);
-
-		// custom 'update settings' button
-		$button = array(
-			'class' => 'button button-primary primary button-hero',
-			'type'  => 'save',
-		);
-
-		if ( $disabled_attribute ) {
-			$button['disabled'] = $disabled_attribute;
-		}
 
 		/**
 		 * @filter `gravityview/settings/extension/sections` Modify the GravityView settings page
@@ -1155,12 +1137,7 @@ HTML;
 				}
 			}
 
-			$k                                    = count( $extension_sections ) - 1;
-			$extension_sections[ $k ]['fields'][] = $button;
-			$sections                             = array_merge( $sections, $extension_sections );
-		} else {
-			// add the 'update settings' button to the general section
-			$sections[0]['fields'][] = $button;
+			$sections = array_merge( $sections, $extension_sections );
 		}
 
 		return $sections;
@@ -1271,41 +1248,13 @@ HTML;
 
 		?>
 
-        <tr id="gaddon-setting-row-<?php echo esc_attr( $field['name'] ); ?>">
-            <td colspan="2">
+		<tr id="gaddon-setting-row-<?php echo esc_attr( $field['name'] ); ?>">
+			<td colspan="2">
 				<?php $this->single_setting( $field ); ?>
-            </td>
-        </tr>
+			</td>
+		</tr>
 
 		<?php
-	}
-
-	/**
-	 * Allow customizing the Save field parameters
-	 *
-	 * @param array $field
-	 * @param bool  $echo
-	 *
-	 * @return string
-	 */
-	public function settings_save( $field, $echo = true ) {
-
-		$field['type']  = 'submit';
-		$field['name']  = 'gform-settings-save';
-		$field['class'] = isset( $field['class'] ) ? $field['class'] : 'button-primary primary gfbutton';
-		$field['value'] = Utils::get( $field, 'value', __( 'Update Settings', 'gravityview' ) );
-
-		$output = $this->settings_submit( $field, false );
-
-		ob_start();
-		$this->app_settings_uninstall_tab();
-		$output .= ob_get_clean();
-
-		if ( $echo ) {
-			echo $output;
-		}
-
-		return $output;
 	}
 
 	/**
