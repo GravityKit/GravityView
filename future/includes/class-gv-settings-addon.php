@@ -1082,10 +1082,6 @@ HTML;
 			),
 		);
 
-		if( \gravityview()->plugin->is_GF_25() ) {
-			$fields = array_merge( $license_fields, $fields );
-		}
-
 		$sections = array(
 				array(
 					'title' => __( 'GravityView License', 'gravityview' ),
