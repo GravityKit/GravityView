@@ -213,30 +213,59 @@ class GravityView_Admin_Views {
 		    $sub_menu_items[] = array(
 			    'label' => esc_attr__( 'Create a View', 'gravityview' ),
                 'link_class' => 'gv-create-view',
+			    'icon' => '<i>&nbsp;+&nbsp;</i>',
 			    'title' => esc_attr__( 'Create a View using this form as a data source', 'gravityview' ),
 			    'url'   => admin_url( 'post-new.php?post_type=gravityview&form_id=' . $id ),
 			    'capabilities'   => array( 'edit_gravityviews' ),
             );
 
-			// Make sure Gravity Forms uses the submenu; if there's only one item, it uses a link instead of a dropdown
-			$sub_menu_items[] = array(
-				'url' => '#',
-				'label' => '',
-				'menu_class' => 'hidden',
-				'capabilities' => '',
-			);
 
-			$menu_items['gravityview'] = array(
-				'label'          => __( 'Connected Views', 'gravityview' ),
-				'icon'           => '<i class="fa fa-lg gv-icon-astronaut-head gv-icon"></i>',
-				'title'          => __( 'GravityView Views using this form as a data source', 'gravityview' ),
-				'url'            => '#',
-				'onclick'        => 'return false;',
-				'menu_class'     => 'gv_connected_forms gf_form_toolbar_settings',
-				'sub_menu_items' => $sub_menu_items,
-				'priority'       => $priority,
-				'capabilities'   => array( 'edit_gravityviews' ),
-			);
+			/**
+			 * In Gravity Forms 2.5, they got rid of the sub-menu items, so we are now forced to add them to the main dropdown
+			 */
+			if ( ! ( 'gf_edit_forms' === rgget( 'page' ) && '' === rgget( 'view' ) ) || version_compare( '2.5-beta', GFForms::$version, '>' ) ) {
+
+				// Make sure Gravity Forms uses the submenu; if there's only one item, it uses a link instead of a dropdown
+				$sub_menu_items[] = array(
+					'url' => '#',
+					'label' => '',
+					'menu_class' => 'hidden',
+					'capabilities' => '',
+				);
+
+				$menu_items['gravityview'] = array(
+					'label'          => __( 'Connected Views', 'gravityview' ),
+					'icon'           => '<i class="fa fa-lg gv-icon-astronaut-head gv-icon"></i>',
+					'title'          => __( 'GravityView Views using this form as a data source', 'gravityview' ),
+					'url'            => '#',
+					'onclick'        => 'return false;',
+					'menu_class'     => 'gv_connected_forms gf_form_toolbar_settings',
+					'sub_menu_items' => $sub_menu_items,
+					'priority'       => $priority,
+					'capabilities'   => array( 'edit_gravityviews' ),
+				);
+
+			} else {
+
+				$menu_items[ 'gravityview'] = array(
+					'label' => __( 'Connected Views', 'gravityview' ),
+					'url'   => '#gravityview-group-heading',
+					'icon'  => '<i class="fa fa-lg gv-icon-astronaut-head gv-icon"></i>',
+				);
+				foreach ( $sub_menu_items as $key => $sub_menu_item ) {
+
+					$menu_items[ 'gravityview-' . $key ] = array(
+						'label'        => rgar( $sub_menu_item, 'label', '' ),
+						'icon'         => rgar( $sub_menu_item, 'icon', '<i>&nbsp;&bull;&nbsp;</i>' ),
+						'title'        => rgar( $sub_menu_item, 'title', '' ),
+						'url'          => rgar( $sub_menu_item, 'url', '' ),
+						'menu_class'   => 'gv_calendar gf_form_toolbar_settings',
+						'priority'     => $priority,
+						'capabilities' => array( 'edit_gravityviews' ),
+					);
+
+				}
+			}
 		}
 
 		return $menu_items;
