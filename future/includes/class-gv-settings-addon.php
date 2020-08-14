@@ -961,11 +961,6 @@ HTML;
 
 		$fields = array(
 				array(
-						'name'  => 'gv_header',
-						'value' => '',
-						'type'  => 'html',
-				),
-				array(
 						'name'          => 'support-email',
 						'type'          => 'text',
 						'validate'      => 'email',
@@ -1097,6 +1092,7 @@ HTML;
 					'description' => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ),
 					'type' => 'edd_license',
 					'disabled' => ( defined( 'GRAVITYVIEW_LICENSE_KEY' ) && GRAVITYVIEW_LICENSE_KEY ),
+					'title' => __( 'The license key is defined by your site\'s configuration file.', 'gravityview' ),
 					'data-pending-text' => __( 'Verifying license&hellip;', 'gravityview' ),
 					'default_value' => $default_settings['license_key'],
 					'class' => ( '' == $this->get( 'license_key' ) ) ? 'activate code regular-text edd-license-key' : 'deactivate code regular-text edd-license-key',
@@ -1113,17 +1109,33 @@ HTML;
 			),
 		);
 
-		$sections = array(
-				array(
-					'title' => __( 'GravityView License', 'gravityview' ),
-					'class'       => 'gform-settings-panel--full',
+		$sections = array();
+		$version_info = '<span class="gv-version-info" title="' . sprintf( __( 'You are running GravityView version %s', 'gravityview' ), Plugin::$version ) . '">Version ' . esc_html( Plugin::$version ) . '</span>';
+
+		if ( \gravityview()->plugin->is_GF_25() ) {
+
+			$sections[] = array(
+					'title'       => __( 'GravityView License', 'gravityview' ),
+					'class'       => 'gform-settings-panel--full gv-settings-panel--license',
+					'description' => $version_info,
 					'fields'      => $license_fields,
-				),
-				array(
-					'title' => ( gravityview()->plugin->is_GF_25() ? __( 'GravityView Settings', 'gravityview' ) : null ),
-					'description' => sprintf( __( 'You are running GravityView version %s', 'gravityview' ), Plugin::$version ),
-					'fields'      => $fields,
-				),
+			);
+
+		} else {
+
+			$fields = array_merge( $license_fields, $fields );
+
+			array_unshift( $fields, array(
+					'name'  => 'gv_header',
+					'value' => $version_info,
+					'type'  => 'html',
+			) );
+		}
+
+		$sections[] = array(
+			'title' => ( gravityview()->plugin->is_GF_25() ? __( 'GravityView Settings', 'gravityview' ) : null ),
+			'class' => 'gform-settings-panel--full gv-settings-panel--core',
+			'fields'      => $fields,
 		);
 
 		/**
