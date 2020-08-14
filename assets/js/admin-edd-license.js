@@ -26,6 +26,7 @@
 				.on( 'gv-edd-valid', GV_EDD.valid )
 				.on( 'gv-edd-deactivated', GV_EDD.deactivated )
 				.on( 'gv-edd-inactive gv-edd-other', GV_EDD.other )
+				.on( 'click', 'a[rel*=external]', GV_EDD.open_external_links )
 				.trigger( 'gv-init' );
 
 		},
@@ -137,6 +138,15 @@
 
 			GV_EDD.post_data( theData );
 
+		},
+
+		/**
+		 * Opens links in new tab/windows
+		 * @return {boolean}
+		 */
+		open_external_links: function () {
+			window.open( this.href );
+			return false;
 		},
 
 		/**
