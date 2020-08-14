@@ -271,9 +271,8 @@
 
 			var QUERY = '(prefers-reduced-motion: no-preference)';
 			var mediaQueryList = window.matchMedia( QUERY );
-			var prefersReducedMotion = !mediaQueryList.matches;
 
-			return prefersReducedMotion;
+			return !mediaQueryList.matches;
 		}
 	};
 
