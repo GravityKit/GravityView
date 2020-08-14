@@ -59,7 +59,6 @@ class GravityView_Admin_Views {
 		add_action( 'pre_get_posts', array( $this, 'filter_pre_get_posts_by_gravityview_form_id' ) );
 
 		add_filter( 'gravityview/support_port/localization_data', array( $this, 'suggest_support_articles' ) );
-
 	}
 
 	/**
@@ -1219,7 +1218,16 @@ class GravityView_Admin_Views {
 	static function add_scripts_and_styles( $hook ) {
 		global $plugin_page, $pagenow;
 
+		$script_debug    = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$is_widgets_page = ( $pagenow === 'widgets.php' );
+
+		// Add legacy (2.4 and older) Gravity Forms tooltip script/style
+		if ( gravityview()->plugin->is_GF_25() ) {
+			wp_dequeue_script( 'gform_tooltip_init' );
+			wp_dequeue_style( 'gform_tooltip' );
+			wp_enqueue_style( 'gravityview_gf_tooltip', plugins_url( 'assets/css/gf_tooltip.css', GRAVITYVIEW_FILE ), array(), \GV\Plugin::$version );
+			wp_enqueue_script( 'gravityview_gf_tooltip', plugins_url( 'assets/js/gf_tooltip' . $script_debug . '.js', GRAVITYVIEW_FILE ), array(), \GV\Plugin::$version );
+		}
 
 		// Add the GV font (with the Astronaut)
         wp_enqueue_style( 'gravityview_global', plugins_url('assets/css/admin-global.css', GRAVITYVIEW_FILE), array(), \GV\Plugin::$version );
@@ -1240,9 +1248,7 @@ class GravityView_Admin_Views {
         wp_enqueue_script( 'jquery-ui-datepicker' );
         wp_enqueue_style( 'gravityview_views_datepicker', plugins_url('assets/css/admin-datepicker.css', GRAVITYVIEW_FILE), \GV\Plugin::$version );
 
-        $script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
-
-        //enqueue scripts
+        // Enqueue scripts
         wp_enqueue_script( 'gravityview_views_scripts', plugins_url( 'assets/js/admin-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie', 'jquery-ui-datepicker', 'underscore' ), \GV\Plugin::$version );
 
         wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
@@ -1322,11 +1328,12 @@ class GravityView_Admin_Views {
 				'gravityview-support',
 				'gravityview-jquery-cookie',
 				'gravityview_views_datepicker',
+				'gravityview_gf_tooltip',
 				'sack',
 				'gform_gravityforms',
 				'gform_forms',
 				'gform_form_admin',
-				'jquery-ui-autocomplete'
+				'jquery-ui-autocomplete',
 			);
 
 		} elseif ( preg_match( '/style/ism', $filter ) ) {
@@ -1336,7 +1343,8 @@ class GravityView_Admin_Views {
 				'wp-jquery-ui-dialog',
 				'gravityview_views_styles',
 				'gravityview_global',
-				'gravityview_views_datepicker'
+				'gravityview_views_datepicker',
+				'gravityview_gf_tooltip',
 			);
 		}
 
