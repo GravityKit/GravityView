@@ -255,15 +255,20 @@
 			}
 		}
 
+		.gform-settings-field {
+			margin-bottom: 2em;
+		}
+
+		.gform-settings-label {
+			font-size: 1rem;
+		}
+		.gform-settings-description {
+			font-size: .9rem;
+		}
+
 		.notice {
 			padding: .75em 1em .5em;
 		}
-	}
-
-
-
-	.gform-settings-field {
-		margin-bottom: 1.5em;
 	}
 
 	// Add the stars to the top
