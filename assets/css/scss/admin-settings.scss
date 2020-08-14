@@ -38,6 +38,11 @@
 		vertical-align: top;
 	}
 
+	.edd-license-key[disabled] {
+		color: #555D66;
+		cursor: not-allowed;
+	}
+
 	.gv-refresh-page {
 		font-weight: bold;
 		font-size: 1.1em;
@@ -87,10 +92,23 @@
 		right: 10px;
 	}
 
-	.version-info {
-		position: absolute;
-		right: 10px;
-		top: .5em
+	.gform-settings-header_buttons {
+		position: relative;
+		display: block;
+		width: 100%;
+		height: 100%;
+		text-align: right;
+	}
+
+	.gv-version-info {
+		height: 70px;
+		display: inline-block;
+		padding: 1.375rem 1em 0;
+		margin-top: 20px;
+		font-size: 16px;
+		color: white;
+		font-weight: bold;
+		vertical-align: middle;
 	}
 
 	.gv-edd-message {
@@ -148,12 +166,25 @@
 		display: none;
 	}
 
+	// Uninstall button
+	.alignright.button-danger {
+		margin: 10px 0 20px 0;
+	}
+
 	&.gf-2-5 {
 		background: #F6F9FC url('../images/star-chart.png') left top no-repeat;
 		background-size: contain;
 
 		#wpwrap {
-			background: rgba( 255, 255, 255, .8 );
+			background: rgba( 255, 255, 255, .85 );
+		}
+
+		.gv-version-info {
+			text-align: right;
+			color: #191e23;
+			padding-right: 0;
+			margin-top: 15px;
+			text-shadow: #d3e4f4 0 0 2px;
 		}
 
 		.gv-license-details {
@@ -214,7 +245,7 @@
 					display: none;
 				}
 
-				background: url('../images/GravityView.svg') 8px 10px no-repeat;
+				background: url('../images/GravityView.svg') 9px 10px no-repeat;
 				height: 70px;
 			}
 		}
@@ -236,12 +267,12 @@
 		background: url(../images/stars.jpg) left top repeat-x;
 
 		td {
-
 			padding: 0 !important;
 			background: transparent none;
 			height: 130px;
 			position: relative;
 			overflow: hidden;
+			text-align: right;
 
 			// Add Floaty
 			&:before {

@@ -171,11 +171,14 @@ class Addon_Settings extends \GFAddOn {
 	}
 
 	/**
+	 * Adds an "Uninstall" button next to the GF 2.5 Save Settings button
+	 *
+	 * @since 2.9.1
 	 *
 	 * @param string                               $html HTML of the save button.
-	 * @param \Rocketgenius\Gravity_Forms\Settings $framework Current instance of the Settings Framework.
+	 * @param \Rocketgenius\Gravity_Forms\Settings|null $framework Current instance of the Settings Framework. Or null if < 2.5.
 	 */
-	public function modify_gform_settings_save_button( $html, $framework ) {
+	public function modify_gform_settings_save_button( $html, $framework = null ) {
 
 		if ( ! gravityview()->request->is_admin( '', 'settings' ) ) {
 			return $html;
@@ -186,7 +189,7 @@ class Addon_Settings extends \GFAddOn {
 		}
 
 		if ( gravityview()->plugin->is_GF_25() ) {
-			$html_class = 'button outline secondary alignright';
+			$html_class = 'button outline secondary alignright button-danger';
 		} else {
 			$html_class = 'button button-secondary button-large alignright button-danger';
 		}
@@ -196,6 +199,34 @@ class Addon_Settings extends \GFAddOn {
 		$uninstall_button = '<a href="' . esc_url( $href ) . '" class="' . gravityview_sanitize_html_class( $html_class ). '">' . esc_html__( 'Uninstall GravityView', 'gravityview' ) . '</a>';
 
 		$html .= $uninstall_button;
+
+		return $html;
+	}
+
+	/**
+	 * Roll our own "Hero" Save button with an Unsubscribe button attached
+	 *
+	 * @since 2.9.1
+	 *
+	 * @param array $field
+	 * @param bool $echo
+	 *
+	 * @return string|null HTML of the button.
+	 */
+	public function settings_save( $field, $echo = true ) {
+
+		$field['type']  = 'submit';
+		$field['name']  = 'gform-settings-save';
+		$field['class'] = 'button button-primary primary button-hero';
+		$field['value'] = Utils::get( $field, 'value', __( 'Update Settings', 'gravityview' ) );
+
+		$html = $this->as_html( $field, false );
+
+		$html = $this->modify_gform_settings_save_button( $html );
+
+		if ( $echo ) {
+			echo $html;
+		}
 
 		return $html;
 	}
