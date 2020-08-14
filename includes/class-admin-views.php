@@ -1222,7 +1222,7 @@ class GravityView_Admin_Views {
 		$is_widgets_page = ( $pagenow === 'widgets.php' );
 
 		// Add legacy (2.4 and older) Gravity Forms tooltip script/style
-		if ( gravityview()->plugin->is_GF_25() ) {
+		if ( gravityview()->plugin->is_GF_25() && gravityview()->request->is_admin( '', 'single' ) ) {
 			wp_dequeue_script( 'gform_tooltip_init' );
 			wp_dequeue_style( 'gform_tooltip' );
 			wp_enqueue_style( 'gravityview_gf_tooltip', plugins_url( 'assets/css/gf_tooltip.css', GRAVITYVIEW_FILE ), array(), \GV\Plugin::$version );
