@@ -9,11 +9,15 @@ window.Beacon('init', 'b4f6255a-91bc-436c-a5a2-4cca051ad00f');
 
 window.Beacon( "config", {
 	color: '#4d9bbe',
+	display: {
+		style: 'iconAndText',
+		text: gvSupport.translation.needHelp,
+		iconImage: 'buoy',
+	},
 	poweredBy: false,
 	docsEnabled: true,
 	messagingEnabled: ( 1 === gvSupport.contactEnabled * 1 ),
 	topArticles: true,
-	iconImage: 'question',
 	zIndex: ( 10000 + 10 ) // Above #adminmenuwrap, which is 9990 and modal content, which is 10000 + 1
 });
 

@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.9.1 on August XX, 2020 =
+
+* Improved: Add new Yoast SEO plugin scripts to the No-Conflict approved list
+
 = 2.9.0.1 on July 23, 2020 =
 
 * Fixed: Loading all Gravity Forms forms on the frontend
