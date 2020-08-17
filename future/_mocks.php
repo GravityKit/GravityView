@@ -443,6 +443,7 @@ final class Legacy_Context {
 			'\GravityView_frontend::entry' => \GravityView_frontend::getInstance()->getEntry(),
 			'\GravityView_View::_current_entry' => \GravityView_View::getInstance()->getCurrentEntry(),
 			'\GravityView_View::fields' => \GravityView_View::getInstance()->getFields(),
+			'\GravityView_View::_current_field' => \GravityView_View::getInstance()->getCurrentField(),
 			'wp_actions[loop_start]' => empty( $wp_actions['loop_start'] ) ? 0 : $wp_actions['loop_start'],
 			'wp_query::in_the_loop' => $wp_query->in_the_loop,
 		);
@@ -616,6 +617,7 @@ final class Legacy_Context {
 							'form' => \GravityView_View::getInstance()->getForm(),
 							'field_type' => $value->type, /** {@since 1.6} */
 							'entry' => \GravityView_View::getInstance()->getCurrentEntry(),
+							'UID' => $value->UID,
 
 							// 'field_path' => $field_path, /** {@since 1.16} */
 							// 'value' => $value,
@@ -789,4 +791,12 @@ add_action( 'gravityview/template/after', function( $gravityview = null ) {
 			}
 		}
 	}
+} );
+
+add_filter( 'gravityview/query/is_null_condition', function() {
+	if ( ! class_exists( $class = '\GV\Mocks\GF_Query_Condition_IS_NULL' ) ) {
+		require_once gravityview()->plugin->dir( 'future/_mocks.isnull.php' );
+	}
+
+	return $class;
 } );

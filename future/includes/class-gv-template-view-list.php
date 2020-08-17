@@ -62,7 +62,7 @@ class View_List_Template extends View_Template {
 		/**
 		 * @deprecated Here for back-compatibility.
 		 */
-		$label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form ), $field->as_configuration() );
+		$label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form, $entry ), $field->as_configuration() );
 		$label = apply_filters( 'gravityview/template/field_label', $label, $field->as_configuration(), $form->form ? $form->form : null, null );
 
 		/**
@@ -109,7 +109,7 @@ class View_List_Template extends View_Template {
 		$vars = array();
 		foreach ( $zones as $zone ) {
 			$zone_var = str_replace( '-', '_', $zone );
-			$vars[ $zone_var ] = $this->view->fields->by_position( 'directory_list-' . $zone )->by_visible();
+			$vars[ $zone_var ] = $this->view->fields->by_position( 'directory_list-' . $zone )->by_visible( $this->view );
 			$vars[ "has_$zone_var" ] = $vars[ $zone_var ]->count();
 		}
 

@@ -5,10 +5,19 @@
  * @global \GV\Template_Context $gravityview
  * @since 2.0
  */
-$form = $gravityview->view->form->form;
+
+if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
+	gravityview()->log->error( '{file} template loaded without context', array( 'file' => __FILE__ ) );
+	return;
+}
+
+if ( ! $gravityview->field->form_id || ! ( $form = GFAPI::get_form( $gravityview->field->form_id ) ) ) {
+	$form = $gravityview->view->form->form;
+}
 
 if ( $gravityview->entry->is_multi() ) {
-	$entry = $gravityview->entry->from_field( $gravityview->field )->as_entry();
+	$entry = $gravityview->entry->from_field( $gravityview->field );
+	$entry = $entry->as_entry();
 } else {
 	$entry = $gravityview->entry->as_entry();
 }

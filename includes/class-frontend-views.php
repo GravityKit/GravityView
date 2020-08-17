@@ -234,18 +234,18 @@ class GravityView_frontend {
 
 		if ( ! empty( $view_id ) ) {
 
-			$this->context_view_id = $view_id;
+			$this->context_view_id = (int) $view_id;
 
 		} elseif ( isset( $_GET['gvid'] ) && $multiple_views ) {
 			/**
 			 * used on a has_multiple_views context
 			 * @see GravityView_API::entry_link
 			 */
-			$this->context_view_id = $_GET['gvid'];
+			$this->context_view_id = (int) $_GET['gvid'];
 
 		} elseif ( ! $multiple_views ) {
 			$array_keys = array_keys( $this->getGvOutputData()->get_views() );
-			$this->context_view_id = array_pop( $array_keys );
+			$this->context_view_id = (int) array_pop( $array_keys );
 			unset( $array_keys );
 		}
 
@@ -256,7 +256,7 @@ class GravityView_frontend {
 	 *
 	 * @since 1.5.4
 	 *
-	 * @return string
+	 * @return int|null
 	 */
 	public function get_context_view_id() {
 		return $this->context_view_id;
@@ -423,69 +423,125 @@ class GravityView_frontend {
 	/**
 	 * Filter the title for the single entry view
 	 *
-	 *
-	 * @param  string $title   current title
+	 * @param  string $passed_title  Current title
 	 * @param  int $passed_post_id Post ID
-	 * @return string          (modified) title
+	 * @return string (modified) title
 	 */
-	public function single_entry_title( $title, $passed_post_id = null ) {
+	public function single_entry_title( $passed_title, $passed_post_id = null ) {
 		global $post;
 
-		// If this is the directory view, return.
-		if ( ! $this->getSingleEntry() ) {
-			return $title;
+		// Since this is a public method, it can be called outside of the plugin. Don't assume things have been loaded properly.
+		if ( ! class_exists( '\GV\Entry' ) ) {
+			return $passed_title;
 		}
 
-		$entry = $this->getEntry();
+		$gventry = gravityview()->request->is_entry();
+
+		// If this is the directory view, return.
+		if( ! $gventry ) {
+			return $passed_title;
+		}
+
+		$entry = $gventry->as_entry();
 
 		/**
 		 * @filter `gravityview/single/title/out_loop` Apply the Single Entry Title filter outside the WordPress loop?
 		 * @param boolean $in_the_loop Whether to apply the filter to the menu title and the meta tag <title> - outside the loop
 		 * @param array $entry Current entry
 		 */
-		$apply_outside_loop = apply_filters( 'gravityview/single/title/out_loop' , in_the_loop(), $entry );
+		$apply_outside_loop = apply_filters( 'gravityview/single/title/out_loop', in_the_loop(), $entry );
 
 		if ( ! $apply_outside_loop ) {
-			return $title;
+			return $passed_title;
 		}
 
-		// User reported WooCommerce doesn't pass two args.
+		// WooCommerce doesn't $post_id
 		if ( empty( $passed_post_id ) )  {
-			return $title;
+			return $passed_title;
 		}
 
 		// Don't modify the title for anything other than the current view/post.
 		// This is true for embedded shortcodes and Views.
 		if ( is_object( $post ) && (int) $post->ID !== (int) $passed_post_id ) {
-			return $title;
+			return $passed_title;
 		}
 
-		$context_view_id = $this->get_context_view_id();
+		$view = gravityview()->request->is_view();
 
-		$multiple_views = $this->getGvOutputData()->has_multiple_views();
+		if( $view ) {
+			return $this->_get_single_entry_title( $view, $entry, $passed_title );
+		}
 
-		if ( $multiple_views && ! empty( $context_view_id ) ) {
-			$view_meta = $this->getGvOutputData()->get_view( $context_view_id );
-		} else {
-			foreach ( $this->getGvOutputData()->get_views() as $view_id => $view_data ) {
-				if ( intval( $view_data['form_id'] ) === intval( $entry['form_id'] ) ) {
-					$view_meta = $view_data;
-					break;
-				}
+		$_gvid = \GV\Utils::_GET( 'gvid', null );
+
+		// $_GET['gvid'] is set; we know what View to render
+		if ( $_gvid ) {
+
+			$view = \GV\View::by_id( $_gvid );
+
+			return $this->_get_single_entry_title( $view, $entry, $passed_title );
+		}
+
+		global $post;
+
+		if ( ! $post ) {
+			return $passed_title;
+		}
+
+		$view_collection = \GV\View_Collection::from_post( $post );
+
+		// We have multiple Views, but no gvid...this isn't valid security
+		if( 1 < $view_collection->count() ) {
+			return $passed_title;
+		}
+
+		return $this->_get_single_entry_title( $view_collection->first(), $entry, $passed_title );
+	}
+
+	/**
+	 * Returns the single entry title for a View with variables replaced and shortcodes parsed
+	 *
+	 * @since 2.7.2
+	 *
+	 * @param \GV\View|null $view
+	 * @param array $entry
+	 * @param string $passed_title
+	 *
+	 * @return string
+	 */
+	private function _get_single_entry_title( $view, $entry = array(), $passed_title = '' ) {
+
+		if ( ! $view ) {
+			return $passed_title;
+		}
+
+		/**
+		 * @filter `gravityview/single/title/check_entry_display` Override whether to check entry display rules against filters
+		 * @internal This might change in the future! Don't rely on it.
+		 * @since 2.7.2
+		 * @param bool $check_entry_display Check whether the entry is visible for the current View configuration. Default: true.
+		 * @param array $entry Gravity Forms entry array
+		 * @param \GV\View $view The View
+		 */
+		$check_entry_display = apply_filters( 'gravityview/single/title/check_entry_display', true, $entry, $view );
+
+		if( $check_entry_display ) {
+
+			$check_display = GVCommon::check_entry_display( $entry, $view );
+
+			if( is_wp_error( $check_display ) ) {
+				return $passed_title;
 			}
 		}
 
-		/** Deprecated stuff in the future. See the branch above. */
-		if ( ! empty( $view_meta['atts']['single_title'] ) ) {
+		$title = $view->settings->get( 'single_title', $passed_title );
 
-			$title = $view_meta['atts']['single_title'];
+		$form = GVCommon::get_form( $entry['form_id'] );
 
-			// We are allowing HTML in the fields, so no escaping the output
-			$title = GravityView_API::replace_variables( $title, $view_meta['form'], $entry );
+		// We are allowing HTML in the fields, so no escaping the output
+		$title = GravityView_API::replace_variables( $title, $form, $entry );
 
-			$title = do_shortcode( $title );
-		}
-
+		$title = do_shortcode( $title );
 
 		return $title;
 	}
@@ -805,6 +861,10 @@ class GravityView_frontend {
 		 */
 		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', $search_criteria, $form_id, $args );
 
+		if ( ! is_array( $search_criteria ) ) {
+			return array();
+		}
+
 		$original_search_criteria = $search_criteria;
 
 		gravityview()->log->debug( '[get_search_criteria] Search Criteria after hook gravityview_fe_search_criteria: ', array( 'data' =>$search_criteria ) );
@@ -1040,40 +1100,72 @@ class GravityView_frontend {
 	 */
 	public static function updateViewSorting( $args, $form_id ) {
 		$sorting = array();
-		$sort_field_id = isset( $_GET['sort'] ) ? $_GET['sort'] : \GV\Utils::get( $args, 'sort_field' );
-		$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : \GV\Utils::get( $args, 'sort_direction' );
 
-		$sort_field_id = self::_override_sorting_id_by_field_type( $sort_field_id, $form_id );
+		$has_values = isset( $_GET['sort'] );
+
+		if ( $has_values && is_array( $_GET['sort'] ) ) {
+			$sorts = array_keys( $_GET['sort'] );
+			$dirs  = array_values( $_GET['sort'] );
+
+			if ( $has_values = array_filter( $dirs ) ) {
+				$sort_field_id = end( $sorts );
+				$sort_direction = end( $dirs );
+			}
+		}
+
+		if ( ! isset( $sort_field_id ) ) {
+			$sort_field_id = isset( $_GET['sort'] ) ? $_GET['sort'] : \GV\Utils::get( $args, 'sort_field' );
+		}
+
+		if ( ! isset( $sort_direction ) ) {
+			$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : \GV\Utils::get( $args, 'sort_direction' );
+		}
+
+		if ( is_array( $sort_field_id ) ) {
+			$sort_field_id = array_pop( $sort_field_id );
+		}
+
+		if ( is_array( $sort_direction ) ) {
+			$sort_direction = array_pop( $sort_direction );
+		}
 
 		if ( ! empty( $sort_field_id ) ) {
+			if ( is_array( $sort_field_id ) ) {
+				$sort_direction = array_values( $sort_field_id );
+				$sort_field_id = array_keys( $sort_field_id );
+
+				$sort_field_id = reset( $sort_field_id );
+				$sort_direction = reset( $sort_direction );
+			}
+
+			$sort_field_id = self::_override_sorting_id_by_field_type( $sort_field_id, $form_id );
 			$sorting = array(
 				'key' => $sort_field_id,
 				'direction' => strtolower( $sort_direction ),
 				'is_numeric' => GVCommon::is_field_numeric( $form_id, $sort_field_id )
 			);
-		}
 
-		if ( 'RAND' === $sort_direction ) {
+			if ( 'RAND' === $sort_direction ) {
 
-			$form = GFAPI::get_form( $form_id );
+				$form = GFAPI::get_form( $form_id );
 
-			// Get the first GF_Field field ID, set as the key for entry randomization
-			if( ! empty( $form['fields'] ) ) {
+				// Get the first GF_Field field ID, set as the key for entry randomization
+				if ( ! empty( $form['fields'] ) ) {
 
-				/** @var GF_Field $field */
-				foreach ( $form['fields'] as $field ) {
+					/** @var GF_Field $field */
+					foreach ( $form['fields'] as $field ) {
+						if ( ! is_a( $field, 'GF_Field' ) ) {
+							continue;
+						}
 
-					if( ! is_a( $field, 'GF_Field' ) ) {
-						continue;
+						$sorting = array(
+							'key'        => $field->id,
+							'is_numeric' => false,
+							'direction'  => 'RAND',
+						);
+
+						break;
 					}
-
-					$sorting = array(
-						'key'        => $field->id,
-						'is_numeric' => false,
-						'direction'  => 'RAND',
-					);
-
-					break;
 				}
 			}
 		}
@@ -1096,12 +1188,20 @@ class GravityView_frontend {
 	 * @since 1.7.4
 	 * @internal Hi developer! Although this is public, don't call this method; we're going to replace it.
 	 *
-	 * @param int|string $sort_field_id Field used for sorting (`id` or `1.2`)
+	 * @param int|string|array $sort_field_id Field used for sorting (`id` or `1.2`), or an array for multisorts
 	 * @param int $form_id GF Form ID
 	 *
 	 * @return string Possibly modified sorting ID
 	 */
 	public static function _override_sorting_id_by_field_type( $sort_field_id, $form_id ) {
+
+		if ( is_array( $sort_field_id ) ) {
+			$modified_ids = array();
+			foreach ( $sort_field_id as $_sort_field_id ) {
+				$modified_ids []= self::_override_sorting_id_by_field_type( $_sort_field_id, $form_id );
+			}
+			return $modified_ids;
+		}
 
 		$form = gravityview_get_form( $form_id );
 
@@ -1192,9 +1292,19 @@ class GravityView_frontend {
 
 	/**
 	 * Verify if user requested a single entry view
-	 * @return boolean|string false if not, single entry slug if true
+	 * @since 2.3.3 Added return null
+	 * @return boolean|string|null false if not, single entry slug if true, null if \GV\Entry doesn't exist yet
 	 */
 	public static function is_single_entry() {
+
+		// Since this is a public method, it can be called outside of the plugin. Don't assume things have been loaded properly.
+		if ( ! class_exists( '\GV\Entry' ) ) {
+
+			// Not using gravityview()->log->error(), since that may not exist yet either!
+			do_action( 'gravityview_log_error', '\GV\Entry not defined yet. Backtrace: ' . wp_debug_backtrace_summary()  );
+
+			return null;
+		}
 
 		$var_name = \GV\Entry::get_endpoint_name();
 
@@ -1252,17 +1362,47 @@ class GravityView_frontend {
 				// If the thickbox is enqueued, add dependencies
 				if ( $lightbox ) {
 
+					global $wp_filter;
+
+					if ( ! empty( $wp_filter[ 'gravity_view_lightbox_script' ] ) ) {
+						gravityview()->log->warning( 'gravity_view_lightbox_script filter is deprecated use gravityview_lightbox_script instead' );
+					}
+
 					/**
 					 * @filter `gravity_view_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
+					 * @deprecated 2.5.1 Naming. See `gravityview_lightbox_script` instead.
 					 */
-					$js_dependencies[] = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
+					$js_dependency = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
+
+					/**
+					 * @filter `gravityview_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
+					 * @since 2.5.1
+					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
+					 * @param \GV\View The View.
+					 */
+					apply_filters( 'gravityview_lightbox_script', $js_dependency, $view );
+					$js_dependencies[] = $js_dependency;
+
+					if ( ! empty( $wp_filter[ 'gravity_view_lightbox_style' ] ) ) {
+						gravityview()->log->warning( 'gravity_view_lightbox_style filter is deprecated use gravityview_lightbox_style instead' );
+					}
 
 					/**
 					 * @filter `gravity_view_lightbox_style` Modify the lightbox CSS slug. Default: `thickbox`
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of its CSS file here.
+					 * @deprecated 2.5.1 Naming. See `gravityview_lightbox_style` instead.
 					 */
-					$css_dependencies[] = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
+					$css_dependency = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
+
+					/**
+					 * @filter `gravityview_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
+					 * @since 2.5.1
+					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
+					 * @param \GV\View The View.
+					 */
+					$css_dependency = apply_filters( 'gravityview_lightbox_style', $css_dependency, $view );
+					$css_dependencies[] = $css_dependency;
 				}
 
 				/**

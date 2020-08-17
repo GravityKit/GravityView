@@ -99,7 +99,7 @@ abstract class Route extends \WP_REST_Controller {
 		) );
 
 		$sub_type = $this->get_sub_type();
-		
+
 		$format = '(?:\.(?P<format>html|json|csv))?';
 
 		register_rest_route( $namespace, '/' . $base . '/(?P<id>[\d]+)' . '/' . $sub_type . $format, array(
@@ -353,7 +353,7 @@ abstract class Route extends \WP_REST_Controller {
 	/**
 	 * Prepare the item for create or update operation
 	 *
-	 * @todo ZACK - Use this as genric prepare to save or remove from usage.
+	 * @todo ZACK - Use this as generic prepare to save or remove from usage.
 	 * @param \WP_REST_Request $request Request object
 	 * @return \WP_REST_Response
 	 */
@@ -375,14 +375,13 @@ abstract class Route extends \WP_REST_Controller {
 		return $this->not_implemented();
 	}
 
-
 	/**
 	 * Generic response for routes not yet implemented
 	 *
 	 * @since 2.0
 	 * @return \WP_REST_Response
 	 */
-	protected function not_implemented(  ) {
+	protected function not_implemented() {
 		$error = new \WP_Error( 'not-implemented-yet', __( 'Endpoint Not Yet Implemented.', 'gravityview' )  );
 		return new \WP_REST_Response( $error, 501 );
 	}

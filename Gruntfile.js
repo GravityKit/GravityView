@@ -186,7 +186,7 @@ module.exports = function(grunt) {
 
 		// Pull in the latest translations
 		exec: {
-			transifex: 'tx pull -a',
+			transifex: 'tx pull -a --parallel',
 
 			// Create a ZIP file
 			zip: {
@@ -280,7 +280,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-wp-i18n');
 
 	// Regular CSS/JS/Image Compression stuff
-	grunt.registerTask( 'default', [ 'exec:bower', 'sass', 'postcss', 'uglify', 'imagemin', 'translate', 'watch' ] );
+	grunt.registerTask( 'default', [ 'exec:bower', 'sass', 'postcss', 'uglify', 'imagemin', 'translate' ] );
 
 	// Translation stuff
 	grunt.registerTask( 'translate', [ 'exec:transifex', 'potomo', 'addtextdomain', 'makepot' ] );

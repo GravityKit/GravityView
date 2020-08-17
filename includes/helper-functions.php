@@ -234,10 +234,11 @@ function gravityview_get_floaty( $height = 87, $css_class = null ) {
  *
  * @param int|float|string|double $number A number to format
  * @param int|string $decimals Optional. Precision of the number of decimal places. Default '' (use existing number of decimals)
+ * @param boolean $separator Separate with dots or commas, etc. Default: true.
  *
  * @return string Converted number in string format.
  */
-function gravityview_number_format( $number, $decimals = '' ) {
+function gravityview_number_format( $number, $decimals = '', $separator = true ) {
 	global $wp_locale;
 
 	if( '' === $decimals ) {
@@ -251,7 +252,11 @@ function gravityview_number_format( $number, $decimals = '' ) {
 		$decimals = strlen( substr( strrchr( $number, $decimal_point ), 1 ) );
 	}
 
-	$number = number_format_i18n( $number, (int)$decimals );
+	if ( $separator ) {
+		$number = number_format_i18n( $number, (int)$decimals );
+	} else {
+		$number = sprintf( "%.{$decimals}f", $number );
+	}
 
 	return $number;
 }

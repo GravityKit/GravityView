@@ -540,9 +540,10 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'field_filters' => array(
 				'mode' => 'any',
 				array(
-					'key' => 3,
+					'key' => '3',
 					'value' => '2018-02-01',
 					'form_id' => $form['id'],
+					'operator' => 'is'
 				),
 			),
 		);
@@ -778,6 +779,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$this->assertTrue( is_int( $gamma ) && ! empty( $gamma ) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
@@ -798,6 +801,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -857,6 +861,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'user_email' => md5( microtime() ) . '@gravityview.tests',
 		) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
@@ -877,6 +883,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -935,6 +942,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	 */
 	public function test_override_search_operator() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
@@ -954,6 +963,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -1054,6 +1064,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	 */
 	public function test_search_date_created() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
@@ -1073,6 +1085,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -1113,5 +1126,262 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
 
 		$_GET = array();
+	}
+
+	public function test_operator_url_overrides() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 16, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"16","input":"input_text"}]',
+					),
+				),
+			),
+			'settings' => $settings,
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$hello_world = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello world',
+		) );
+
+		$hello = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello',
+		) );
+
+		$world = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'world',
+		) );
+
+		$_GET = array();
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 3, $entries );
+
+		$_GET['filter_16'] = 'hello';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 2, $entries );
+
+		$_GET['filter_16'] = 'hello';
+		$_GET['filter_16|op'] = '!='; // Override doesn't work, as '!=' is not in whitelist
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 2, $entries );
+		$this->assertEquals( $hello['id'], $entries[0]['id'] );
+		$this->assertEquals( $hello_world['id'], $entries[1]['id'] );
+
+		add_filter( 'gravityview/search/operator_whitelist', $callback = function() {
+			return array( '!=' );
+		} );
+
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 2, $entries );
+		$this->assertEquals( $world['id'], $entries[0]['id'] );
+		$this->assertEquals( $hello_world['id'], $entries[1]['id'] );
+
+		remove_filter( 'gravityview/search/operator_whitelist', $callback );
+
+		$_GET = array();
+	}
+
+	public function test_search_all_basic() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 16, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+					),
+				),
+			),
+			'settings' => $settings,
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$hello_world = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello world',
+		) );
+
+		$hello = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello',
+		) );
+
+		$world = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'world',
+		) );
+
+		$_GET = array();
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 3, $entries );
+
+		$_GET['gv_search'] = 'hello';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 2, $entries );
+
+		$_GET = array();
+	}
+
+	public function test_search_all_basic_choices() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 16, false ) => array(
+						'id' => '16',
+						'label' => 'Textarea',
+					),
+					wp_generate_password( 16, false ) => array(
+						'id' => '2',
+						'label' => 'Checkbox',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+					),
+				),
+			),
+			'settings' => $settings,
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$hello_world = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'wazzup',
+			'2.2' => 'Somewhat Better'
+		) );
+
+		$hello = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'16' => 'hello',
+		) );
+
+		$_GET['gv_search'] = 'better';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 1, $entries );
+
+		$_GET = array();
+	}
+
+	public function test_searchable_field_restrictions_filter() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'fields' => array( '_' => array(
+				array( 'id' => '1.1' ),
+			) ),
+			'widgets' => array( '_' => array(
+				array(
+					'id' => 'search_bar',
+					'search_fields' => json_encode( array(
+						array( 'field' => '1.1', 'input' => 'text' ),
+					) ),
+				),
+			) ),
+			'settings' => $settings,
+		) );
+
+		$view = \GV\View::from_post( $post );
+
+		$_GET = array(
+			'gv_start' => '2017-01-01',
+			'gv_end' => '2017-12-31',
+			'filter_1_1' => 'hello',
+			'filter_16' => 'world',
+		);
+
+		$search_criteria = array(
+			'field_filters' => array(
+				'mode' => 'any',
+				array(
+					'key' => '1.1',
+					'value' => 'hello',
+					'form_id' => $view->form->ID,
+					'operator' => 'contains'
+				),
+			),
+		);
+
+		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
+
+		add_filter( $filter = 'gravityview/search/searchable_fields/whitelist', $callback = function( $fields, $view, $with_full ) {
+			if ( $with_full ) {
+				return array(
+					array(
+						'field' => '16',
+						'form_id' => $view->form->ID,
+						'input' => 'text',
+					),
+				);
+			} else {
+				return array( '16' );
+			}
+
+			return $fields;
+		}, 10, 3 );
+
+		$search_criteria = array(
+			'field_filters' => array(
+				'mode' => 'any',
+				array(
+					'key' => '16',
+					'value' => 'world',
+					'form_id' => $view->form->ID,
+					'operator' => 'contains'
+				),
+			),
+		);
+
+		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
+
+		remove_filter( $filter, $callback );
 	}
 }

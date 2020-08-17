@@ -108,6 +108,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'16' => 'Keyboard',
 		) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $orders['id'],
 			'template_id' => 'table',
@@ -133,6 +136,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'joins' => array(
 				array( $orders['id'], '9', $customers['id'], '2' ),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $view );
 
@@ -226,6 +230,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'16' => 'Keyboard',
 		) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $orders['id'],
 			'template_id' => 'preset_business_listings',
@@ -258,6 +265,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'joins' => array(
 				array( $orders['id'], '9', $customers['id'], '2' ),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $view );
 
@@ -307,6 +315,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'16' => 'Shoes',
 		) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		global $post;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $orders['id'],
@@ -333,6 +344,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'joins' => array(
 				array( $orders['id'], '9', $customers['id'], '2' ),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -436,6 +448,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'16' => 'Keyboard',
 		) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		global $post;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $orders['id'],
@@ -462,6 +477,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'joins' => array(
 				array( $orders['id'], '9', $customers['id'], '2' ),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -556,6 +572,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'16' => 'Keyboard',
 		) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		global $post;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $orders['id'],
@@ -589,6 +608,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'joins' => array(
 				array( $orders['id'], '9', $customers['id'], '2' ),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -631,6 +651,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		$this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 2, '1' => 'Marick Bonobo' ) );
 		$this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 2, '1' => 'Henry Oswald' ) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $chefs['id'],
 			'fields' => array(
@@ -656,6 +679,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -690,6 +714,8 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		$entries = $view->get_entries()->all();
 		$this->assertCount( 4, $entries );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $chefs['id'],
 			'fields' => array(
@@ -715,6 +741,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -744,6 +771,181 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'Marick Bonobo', $entries[0][ $souschefs['id'] ]['1'] );
 	}
 
+	public function test_search_widget_global_search( $mode = 'any' ) {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_JOINS ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$chefs = $this->factory->form->import_and_get( 'simple.json' );
+		$souschefs = $this->factory->form->import_and_get( 'simple.json' );
+
+		$this->factory->entry->create_and_get( array( 'form_id' => $chefs['id'], 'status' => 'active', '2' => 1, '1' => 'Maria Henry' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $chefs['id'], 'status' => 'active', '2' => 2, '1' => 'Henry Marrek' ) );
+
+		$this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 1, '1' => 'Mary Jane' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 1, '1' => 'Jane Henryson' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 2, '1' => 'Marick Bonobo' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 2, '1' => 'Henry Oswald' ) );
+
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $chefs['id'],
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '2',
+						'label' => 'Group',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+						'label' => 'Name',
+					),
+				),
+			),
+			'joins' => array(
+				array( $chefs['id'], '2', $souschefs['id'], '2' ),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+						'search_mode' => $mode,
+					),
+				),
+			),
+			'settings' => $settings,
+		) );
+		$view = \GV\View::from_post( $post );
+
+		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
+		}
+
+		$_GET = array( 'gv_search' => 'en', 'mode' => $mode );
+		$this->assertEquals( 4, $view->get_entries()->count() );
+
+		$_GET = array( 'gv_search' => 'rick', 'mode' => $mode );
+		$this->assertEquals( 1, $view->get_entries()->count() );
+	}
+
+	public function test_search_widget_global_search_all() {
+		return $this->test_search_widget_global_search( 'all' );
+	}
+
+	/**
+	 * https://github.com/gravityview/Multiple-Forms/issues/38
+	 */
+	public function test_single_entry_join_permissions() {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_JOINS ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$chefs = $this->factory->form->import_and_get( 'simple.json' );
+		$souschefs = $this->factory->form->import_and_get( 'simple.json' );
+
+		$none = $this->factory->form->import_and_get( 'simple.json' );
+
+		$c1 = $this->factory->entry->create_and_get( array( 'form_id' => $chefs['id'], 'status' => 'active', '2' => 1, '1' => 'Maria Henry' ) );
+		$c2 = $this->factory->entry->create_and_get( array( 'form_id' => $chefs['id'], 'status' => 'active', '2' => 2, '1' => 'Henry Marrek' ) );
+
+		$s1 = $this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 1, '1' => 'Mary Jane' ) );
+		$s2 = $this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 1, '1' => 'Jane Henryson' ) );
+		$s3 = $this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 2, '1' => 'Marick Bonobo' ) );
+		$s4 = $this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 2, '1' => 'Henry Oswald' ) );
+
+		$n1 = $this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '1' => 'None' ) );
+
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $chefs['id'],
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'form_id' => $chefs['id'],
+						'label' => 'Entry ID',
+						'show_as_link' => true,
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'form_id' => $souschefs['id'],
+						'label' => 'Entry ID',
+						'show_as_link' => true,
+					),
+				),
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'form_id' => $chefs['id'],
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'form_id' => $souschefs['id'],
+						'label' => 'Entry ID',
+					),
+				),
+			),
+			'joins' => array(
+				array( $chefs['id'], '2', $souschefs['id'], '2' ),
+			),
+			'settings' => $settings,
+		) );
+		$view = \GV\View::from_post( $post );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$output = do_shortcode( '[gravityview id=' . $view->ID . ']' );
+
+		$this->assertContains( 'entry=' . implode( ',', array( $c1['id'], $s1['id'] ) ), $output );
+		$this->assertContains( 'entry=' . implode( ',', array( $c1['id'], $s2['id'] ) ), $output );
+		$this->assertContains( 'entry=' . implode( ',', array( $c2['id'], $s3['id'] ) ), $output );
+		$this->assertContains( 'entry=' . implode( ',', array( $c2['id'], $s4['id'] ) ), $output );
+
+		$output = $view->content( '' );
+
+		$this->assertContains( 'entry=' . implode( ',', array( $c1['id'], $s1['id'] ) ), $output );
+		$this->assertContains( 'entry=' . implode( ',', array( $c1['id'], $s2['id'] ) ), $output );
+		$this->assertContains( 'entry=' . implode( ',', array( $c2['id'], $s3['id'] ) ), $output );
+		$this->assertContains( 'entry=' . implode( ',', array( $c2['id'], $s4['id'] ) ), $output );
+
+		gravityview()->request->returns['is_entry'] = \GV\Multi_Entry::from_entries( array(
+			\GV\GF_Entry::by_id( $c1['id'] ), \GV\GF_Entry::by_id( $s1['id'] ),
+		) );
+
+		$output = do_shortcode( '[gravityview id=' . $view->ID . ']' );
+		$this->assertNotContains( 'not allowed', $output );
+
+		$output = $view->content( '' );
+		$this->assertNotContains( 'not allowed', $output );
+
+		gravityview()->request->returns['is_entry'] = \GV\Multi_Entry::from_entries( array(
+			\GV\GF_Entry::by_id( $c2['id'] ), \GV\GF_Entry::by_id( $s3['id'] ),
+		) );
+
+		$output = do_shortcode( '[gravityview id=' . $view->ID . ']' );
+		$this->assertNotContains( 'not allowed', $output );
+
+		$output = $view->content( '' );
+		$this->assertNotContains( 'not allowed', $output );
+
+		gravityview()->request->returns['is_entry'] = \GV\Multi_Entry::from_entries( array(
+			\GV\GF_Entry::by_id( $c1['id'] ), \GV\GF_Entry::by_id( $n1['id'] ),
+		) );
+
+		$output = do_shortcode( '[gravityview id=' . $view->ID . ']' );
+		$this->assertContains( 'not allowed', $output );
+
+		$output = $view->content( '' );
+		$this->assertContains( 'not allowed', $output );
+	}
+
 	/**
 	 * @since 2.2.2
 	 */
@@ -765,6 +967,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		$this->factory->entry->create_and_get( array( 'form_id' => $form_1['id'], 'status' => 'active', '1'  => 'uranus@gravityview.co' ) );
 		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'jupiter@gravityview.co' ) );
 		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'mercury@gravityview.co' ) );
+
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 
 		global $post;
 		$post = $this->factory->view->create_and_get( array(
@@ -790,6 +995,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -840,4 +1046,297 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		$this->assertEquals( $expected, $actual );
 	}
 
+	public function test_joins_on_entry_columns() {
+		$this->_reset_context();
+
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_JOINS ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$step1 = $this->factory->form->import_and_get( 'simple.json' );
+		$step2 = $this->factory->form->import_and_get( 'simple.json' );
+
+		$entry1_1 = $this->factory->entry->create_and_get( array(
+			'form_id' => $step1['id'],
+			'status' => 'active',
+			'1' => 'Entry 1',
+		) );
+
+		$entry1_2 = $this->factory->entry->create_and_get( array(
+			'form_id' => $step2['id'],
+			'status' => 'active',
+			'1' => 'After Entry 1',
+			'2' => $entry1_1['id'],
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $step1['id'],
+			'status' => 'active',
+			'1' => 'Unrelated 1',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $step2['id'],
+			'status' => 'active',
+			'1' => 'Unrelated 2',
+		) );
+
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $step1['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'form_id' => $step1['id'],
+						'id'      => 'id',
+						'label'   => 'Step 1',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'form_id' => $step2['id'],
+						'label' => 'Step 2',
+					),
+				),
+			),
+			'joins' => array(
+				array( $step1['id'], 'id', $step2['id'], '2' ),
+			),
+			'settings' => $settings,
+		) );
+		$view = \GV\View::from_post( $post );
+
+		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
+		}
+
+		$entries = $view->get_entries()->all();
+
+		$this->assertCount( 2, $entries );
+		$this->assertCount( 1, $entries[0]->entries );
+		$this->assertCount( 2, $entries[1]->entries );
+		$this->assertEquals( $entry1_1['id'], $entries[1][$step1['id']]['id'] );
+		$this->assertEquals( $entry1_2['id'], $entries[1][$step2['id']]['id'] );
+		$this->assertEquals( $entries[1][$step1['id']]['id'], $entries[1][$step2['id']]['2'] );
+
+		$this->_reset_context();
+	}
+
+	public function test_joins_joined_status() {
+		$this->_reset_context();
+
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_JOINS ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$step1 = $this->factory->form->import_and_get( 'simple.json' );
+		$step2 = $this->factory->form->import_and_get( 'simple.json' );
+
+		$entry1_1 = $this->factory->entry->create_and_get( array(
+			'form_id' => $step1['id'],
+			'status' => 'active',
+			'1' => 'Entry 1',
+		) );
+
+		$entry1_2 = $this->factory->entry->create_and_get( array(
+			'form_id' => $step2['id'],
+			'status' => 'active',
+			'1' => 'After Entry 1',
+			'2' => $entry1_1['id'],
+		) );
+
+		$inactive = $this->factory->entry->create_and_get( array(
+			'form_id' => $step2['id'],
+			'status' => 'trash',
+			'1' => 'Not active',
+			'2' => $entry1_1['id'],
+		) );
+
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $step1['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'form_id' => $step1['id'],
+						'id'      => 'id',
+						'label'   => 'Step 1',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'form_id' => $step2['id'],
+						'label' => 'Step 2',
+					),
+				),
+			),
+			'joins' => array(
+				array( $step1['id'], 'id', $step2['id'], '2' ),
+			),
+			'settings' => $settings,
+		) );
+		$view = \GV\View::from_post( $post );
+
+		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
+		}
+
+		$entries = $view->get_entries()->all();
+
+		$this->assertCount( 1, $entries );
+
+		$this->_reset_context();
+	}
+
+	public function test_joins_custom_content() {
+		$this->_reset_context();
+
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_JOINS ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$step1 = $this->factory->form->import_and_get( 'simple.json' );
+		$step2 = $this->factory->form->import_and_get( 'simple.json' );
+
+		$entry1_1 = $this->factory->entry->create_and_get( array(
+			'form_id' => $step1['id'],
+			'status' => 'active',
+			'1' => 'Entry 1',
+		) );
+
+		$entry1_2 = $this->factory->entry->create_and_get( array(
+			'form_id' => $step2['id'],
+			'status' => 'active',
+			'1' => 'After Entry 1',
+			'2' => $entry1_1['id'],
+		) );
+
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $step1['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'form_id' => $step1['id'],
+						'id'      => 'custom',
+						'label'   => 'Step 1',
+						'content' => '{entry_id}',
+					),
+					wp_generate_password( 4, false ) => array(
+						'form_id' => $step2['id'],
+						'id'      => 'custom',
+						'label' => 'Step 2',
+						'content' => '{entry_id}',
+					),
+				),
+			),
+			'joins' => array(
+				array( $step1['id'], 'id', $step2['id'], '2' ),
+			),
+			'settings' => $settings,
+		) );
+		$view = \GV\View::from_post( $post );
+
+		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
+		}
+
+		$renderer = new \GV\View_Renderer();
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$out = $renderer->render( $view );
+
+		$this->assertContains( sprintf( 'Step 1">%s<', $entry1_1['id'] ), $out );
+		$this->assertContains( sprintf( 'Step 2">%s<', $entry1_2['id'] ), $out );
+
+		$this->_reset_context();
+	}
+
+	public function test_joins_on_entry_meta() {
+		$this->_reset_context();
+
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_JOINS ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$step1 = $this->factory->form->import_and_get( 'simple.json' );
+		$step2 = $this->factory->form->import_and_get( 'simple.json' );
+
+		$entry1_1 = $this->factory->entry->create_and_get( array(
+			'form_id' => $step1['id'],
+			'status' => 'active',
+			'1' => 'Entry 1',
+		) );
+
+		$entry1_2 = $this->factory->entry->create_and_get( array(
+			'form_id' => $step2['id'],
+			'status' => 'active',
+			'1' => 'After Entry 1',
+		) );
+
+		gform_update_meta( $entry1_2['id'], 'child', $entry1_1['id'] );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $step1['id'],
+			'status' => 'active',
+			'1' => 'Unrelated 1',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $step2['id'],
+			'status' => 'active',
+			'1' => 'Unrelated 2',
+		) );
+
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $step1['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'form_id' => $step1['id'],
+						'id'      => 'id',
+						'label'   => 'Step 1',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'form_id' => $step2['id'],
+						'label' => 'Step 2',
+					),
+				),
+			),
+			'joins' => array(
+				array( $step1['id'], 'id', $step2['id'], 'child' ),
+			),
+			'settings' => $settings,
+		) );
+		$view = \GV\View::from_post( $post );
+
+		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
+		}
+
+		$entries = $view->get_entries()->all();
+
+		$this->assertCount( 2, $entries );
+		$this->assertCount( 1, $entries[0]->entries );
+		$this->assertCount( 2, $entries[1]->entries );
+		$this->assertEquals( $entry1_1['id'], $entries[1][$step1['id']]['id'] );
+		$this->assertEquals( $entry1_2['id'], $entries[1][$step2['id']]['id'] );
+		$this->assertEquals( $entries[1][$step1['id']]['id'], gform_get_meta( $entries[1][$step2['id']]['id'], 'child' ) );
+
+		$this->_reset_context();
+	}
 }

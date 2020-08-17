@@ -45,7 +45,12 @@
 			max-width: 100%;
 			overflow: hidden;
 			text-overflow: ellipsis;
+			height: auto;
 		}
+	}
+	.feature-section.three-col .col {
+		flex-basis: 30%;
+		max-width: 250px;
 	}
 	.feature-section img {
 		border: 1px solid #ccc;
@@ -98,6 +103,27 @@
 		display: block;
 		width: auto;
 	}
+}
+
+.dashicons-spacer {
+
+}
+
+.gf-popover__button[data-url="#gravityview-group-heading"] {
+	font-weight: 500;
+	color: #40464d;
+	padding-top: 12px;
+	padding-bottom: 6px;
+	border-radius: 0;
+	cursor: default !important;
+}
+.gf-popover__button__icon:empty {
+	display: none;
+}
+
+.gf-popover__button[data-url="#gravityview-group-heading"]:hover {
+	background: white;
+	color: #40464d;
 }
 
 // On all Admin pages

@@ -121,6 +121,7 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 			'template_id' => 'table',
 			'settings' => array(
 				'page_size' => 10,
+				'show_only_approved' => 0,
 			),
 			'fields' => array(
 				'directory_table-columns' => array(
@@ -220,4 +221,274 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 		$this->assertCount( 1, $entries );
 		$this->assertEquals( $valid_date_entry->ID, $entries[0]->ID );
 	}
+
+	function test_GravityView_Field_Sequence() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'page_size' => 3,
+				'show_only_approved' => 0,
+			),
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'sequence',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$field = \GV\Internal_Field::by_id( 'sequence' );
+
+		$entry_0 = \GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+		) ) );
+
+		$context = \GV\Template_Context::from_template( array(
+			'view' => $view,
+			'entry' => $entry_0,
+			'field' => $field,
+		) );
+
+		$this->assertEquals( 0, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 1, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 2, $field->field->get_sequence( $context ) );
+
+		$field->UID   = wp_generate_password( 8, false );
+		$field->start = 1000;
+
+		$this->assertEquals( 1000, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 1001, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 1002, $field->field->get_sequence( $context ) );
+
+		$field->start = 1;
+		$field->UID   = wp_generate_password( 8, false );
+
+		$_GET['pagenum'] = 3;
+
+		$this->assertEquals( 7, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 8, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 9, $field->field->get_sequence( $context ) );
+
+		$field->UID   = wp_generate_password( 8, false );
+		$_GET['pagenum'] = 0;
+
+		foreach ( range( 1, 10 ) as $_ ) {
+			\GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'status' => 'active',
+			) ) );
+		}
+
+		$field->reverse = true;
+
+		$this->assertEquals( 11, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 10, $field->field->get_sequence( $context ) );
+		$this->assertEquals(  9, $field->field->get_sequence( $context ) );
+
+		$field->UID   = wp_generate_password( 8, false );
+		$_GET['pagenum'] = 3;
+
+		$this->assertEquals( 5, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 4, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 3, $field->field->get_sequence( $context ) );
+
+		$_GET         = 0;
+
+		$field->UID   = wp_generate_password( 8, false );
+		$field->start = 5;
+
+		$this->assertEquals( 15, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 14, $field->field->get_sequence( $context ) );
+		$this->assertEquals( 13, $field->field->get_sequence( $context ) );
+	}
+
+	function test_GravityView_Field_Sequence_single() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => array(
+				'page_size' => 3,
+				'show_only_approved' => 0,
+			),
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'sequence',
+					),
+				),
+			),
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$field = \GV\Internal_Field::by_id( 'sequence' );
+
+		$entry_0 = \GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+		) ) );
+
+		$context = \GV\Template_Context::from_template( array(
+			'view' => $view,
+			'entry' => $entry_0,
+			'field' => $field,
+			'request' => new \GV\Mock_Request(),
+		) );
+
+		$context->request->returns['is_entry'] = $entry_0;
+
+		foreach ( range( 1, 10 ) as $_ ) {
+			\GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'status' => 'active',
+			) ) );
+		}
+
+		$this->assertEquals( 11, $field->field->get_sequence( $context ) );
+
+		$field->reverse = true;
+
+		$this->assertEquals( 1, $field->field->get_sequence( $context ) );
+	}
+
+	function test_GravityView_Field_Unsubscribe_render_permissions() {
+		$administrator = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'administrator' )
+		);
+
+		$author = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'author' )
+		);
+
+		$field = \GV\Internal_Field::by_id( 'unsubscribe' )->field;
+
+		wp_set_current_user( 0 );
+
+		$the_field = \GV\Internal_Field::by_id( 'unsubscribe' );
+
+		$this->assertFalse( $field->maybe_not_visible( true, $the_field ) );
+		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', null, null, null ) );
+
+		wp_set_current_user( $administrator );
+
+		$this->assertTrue( $field->maybe_not_visible( true, $the_field ) );
+		$this->assertFalse( $field->maybe_not_visible( false, $the_field ) );
+		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', null, null, null ) );
+		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => -1 ), null, null ) );
+		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $administrator ), null, null ) );
+		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $author ), null, null ) );
+		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $author, 'id' => 1 ), array( 'unsub_all' => true ), null ) );
+		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $author, 'id' => 1, 'payment_status' => 'null' ), array( 'unsub_all' => true ), null ) );
+
+		$this->assertContains( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $author, 'id' => 1, 'payment_status' => 'active' ), array( 'unsub_all' => true ), null ) );
+		$this->assertContains( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $administrator, 'id' => 1, 'payment_status' => 'active' ), null, null ) );
+
+		wp_set_current_user( $author );
+
+		$this->assertTrue( $field->maybe_not_visible( true, $the_field ) );
+		$this->assertFalse( $field->maybe_not_visible( false, $the_field ) );
+		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', null, null, null ) );
+		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => -1 ), null, null ) );
+		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $administrator ), null, null ) );
+		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $author ), null, null ) );
+		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $author, 'id' => 1, 'payment_status' => 'null' ), null, null ) );
+
+		$this->assertContains( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $author, 'id' => 1, 'payment_status' => 'active' ), null, null ) );
+
+		wp_set_current_user( 0 );
+	}
+
+	function test_GravityView_Field_Unsubscribe_unsubscribe_permissions() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		$administrator = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'administrator' )
+		);
+
+		$author = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'author' )
+		);
+
+		$field = \GV\Internal_Field::by_id( 'unsubscribe' )->field;
+
+		wp_set_current_user( $administrator );
+
+		$entry = \GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'created_by' => $administrator,
+			'status' => 'active',
+			'payment_status' => 'active',
+		) ) );
+
+		$this->assertContains( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', $entry, null, null ) );
+
+		$entry = \GV\GF_Entry::by_id( $entry['id'] )->as_entry();
+
+		$this->assertEquals( 'active', $entry['payment_status'] );
+
+		$_GET = array(
+			'unsubscribe' => wp_create_nonce( 'unsubscribe_' . $entry['id'] ),
+		);
+
+		$this->assertContains( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', $entry, null, null ) );
+
+		$entry = \GV\GF_Entry::by_id( $entry['id'] )->as_entry();
+
+		$this->assertEquals( 'active', $entry['payment_status'] );
+
+		$_GET = $_REQUEST = array(
+			'unsubscribe' => wp_create_nonce( 'unsubscribe_' . $entry['id'] ),
+			'uid' => $entry['id'],
+		);
+
+		$feed_id = \GFAPI::add_feed( $form['id'], array( 'transactionType' => 'subscription' ), 'gf_paymentaddon_test' );
+
+		gform_update_meta( $entry['id'], 'processed_feeds', array( 'gf_paymentaddon_test' => array( $feed_id ) ) );
+
+		$this->assertContains( 'Cancelled', $field->modify_entry_value_unsubscribe( 'sentinel', $entry, null, null ) );
+
+		$entry = \GV\GF_Entry::by_id( $entry['id'] )->as_entry();
+
+		$this->assertEquals( 'Cancelled', $entry['payment_status'] );
+
+		wp_set_current_user( $author );
+
+		wp_set_current_user( 0 );
+
+		$_GET = $_REQUEST = array();
+	}
 }
+
+GFForms::include_feed_addon_framework();
+
+class GF_PaymentAddon_Test extends GFFeedAddOn {
+	protected $_slug = 'gf_paymentaddon_test';
+
+	public static function get_instance() {
+		return new self;
+	}
+
+	public function cancel( $entry, $feed ) {
+		return true;
+	}
+
+	public function cancel_subscription( $entry, $feed ) {
+		$entry['payment_status'] = 'Cancelled';
+		GFAPI::update_entry( $entry );
+		$entry = GFAPI::get_entry( $entry['id'] );
+	}
+}
+GF_PaymentAddon_Test::register( 'GF_PaymentAddon_Test' );

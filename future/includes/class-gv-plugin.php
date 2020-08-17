@@ -1,4 +1,5 @@
 <?php
+
 namespace GV;
 
 /** If this file is called directly, abort. */
@@ -15,11 +16,12 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * Accessible via gravityview()->plugin
  */
 final class Plugin {
+
 	/**
+	 * @since 2.0
+	 * @api
 	 * @var string The plugin version.
 	 *
-	 * @api
-	 * @since 2.0
 	 */
 	public static $version = GV_PLUGIN_VERSION;
 
@@ -64,10 +66,10 @@ final class Plugin {
 	private static $__instance = null;
 
 	/**
+	 * @since 2.0
+	 * @api
 	 * @var \GV\Addon_Settings The plugin "addon" settings.
 	 *
-	 * @api
-	 * @since 2.0
 	 */
 	public $settings;
 
@@ -89,7 +91,7 @@ final class Plugin {
 	/**
 	 * @var string The REST API functionality identifier.
 	 */
-	const FEATURE_REST  = 'rest_api';
+	const FEATURE_REST = 'rest_api';
 
 	/**
 	 * Get the global instance of \GV\Plugin.
@@ -97,14 +99,16 @@ final class Plugin {
 	 * @return \GV\Plugin The global instance of GravityView Plugin.
 	 */
 	public static function get() {
+
 		if ( ! self::$__instance instanceof self ) {
 			self::$__instance = new self;
 		}
+
 		return self::$__instance;
 	}
 
-
 	private function __construct() {
+
 		/**
 		 * Load translations.
 		 */
@@ -122,6 +126,7 @@ final class Plugin {
 	}
 
 	public function load_license_settings() {
+
 		require_once $this->dir( 'future/includes/class-gv-license-handler.php' );
 		require_once $this->dir( 'future/includes/class-gv-settings-addon.php' );
 		if ( class_exists( '\GV\Addon_Settings' ) ) {
@@ -131,14 +136,29 @@ final class Plugin {
 			gravityview()->log->notice( '\GV\Addon_Settings not loaded. Missing \GFAddOn.' );
 		}
 	}
-	
+
 	/**
-	 * Check whether GravityView is network activated.
+	 * Check whether Gravity Forms is v2.5-beta or newer
+	 *
+	 * @return bool
+	 * @todo add @since
+	 *
+	 */
+	public function is_GF_25() {
+
+		return version_compare( '2.5-beta', \GFForms::$version, '<=' );
+	}
+
+	/**
+	 * Check whether GravityView `is network activated.
 	 *
 	 * @return bool Whether it's network activated or not.
 	 */
 	public static function is_network_activated() {
-		return is_multisite() && ( function_exists( 'is_plugin_active_for_network' ) && is_plugin_active_for_network( 'gravityview/gravityview.php' ) );
+
+		$plugin_basename = plugin_basename( GRAVITYVIEW_FILE );
+
+		return is_multisite() && ( function_exists( 'is_plugin_active_for_network' ) && is_plugin_active_for_network( $plugin_basename ) );
 	}
 
 	/**
@@ -161,7 +181,7 @@ final class Plugin {
 		include_once $this->dir( 'includes/class-gravityview-change-entry-creator.php' );
 
 		/**
-		 * @action `gravityview_include_frontend_actions` Triggered after all GravityView frontend files are loaded
+		 * @action     `gravityview_include_frontend_actions` Triggered after all GravityView frontend files are loaded
 		 *
 		 * @deprecated Use `gravityview/loaded` along with \GV\Request::is_admin(), etc.
 		 *
@@ -176,6 +196,11 @@ final class Plugin {
 	 * @return void
 	 */
 	public function include_legacy_core() {
+
+		if ( ! class_exists( '\GravityView_Extension' ) ) {
+			include_once $this->dir( 'includes/class-gravityview-extension.php' );
+		}
+
 		// Load fields
 		include_once $this->dir( 'includes/fields/class-gravityview-fields.php' );
 		include_once $this->dir( 'includes/fields/class-gravityview-field.php' );
@@ -195,6 +220,7 @@ final class Plugin {
 		// @todo: Convert to a scan of the directory or a method where this all lives
 		include_once $this->dir( 'includes/extensions/edit-entry/class-edit-entry.php' );
 		include_once $this->dir( 'includes/extensions/delete-entry/class-delete-entry.php' );
+		include_once $this->dir( 'includes/extensions/duplicate-entry/class-duplicate-entry.php' );
 		include_once $this->dir( 'includes/extensions/entry-notes/class-gravityview-field-notes.php' );
 
 		// Load WordPress Widgets
@@ -215,7 +241,8 @@ final class Plugin {
 		include_once $this->dir( 'includes/class-frontend-views.php' );
 		include_once $this->dir( 'includes/class-gravityview-admin-bar.php' );
 		include_once $this->dir( 'includes/class-gravityview-entry-list.php' );
-		include_once $this->dir( 'includes/class-gravityview-merge-tags.php'); /** @since 1.8.4 */
+		include_once $this->dir( 'includes/class-gravityview-merge-tags.php' );
+		/** @since 1.8.4 */
 		include_once $this->dir( 'includes/class-data.php' );
 		include_once $this->dir( 'includes/class-gravityview-shortcode.php' );
 		include_once $this->dir( 'includes/class-gravityview-entry-link-shortcode.php' );
@@ -224,10 +251,6 @@ final class Plugin {
 
 		if ( class_exists( '\GFFormsModel' ) ) {
 			include_once $this->dir( 'includes/class-gravityview-gfformsmodel.php' );
-		}
-
-		if ( ! class_exists( '\GravityView_Extension' ) ) {
-			include_once $this->dir( 'includes/class-gravityview-extension.php' );
 		}
 	}
 
@@ -269,11 +292,11 @@ final class Plugin {
 
 		// Pre-4.6 loading
 		// TODO: Remove when GV minimum version is WordPress 4.6.0
-		$locale = apply_filters( 'plugin_locale', ( ( function_exists('get_user_locale') && is_admin() ) ? get_user_locale() : get_locale() ), 'gravityview' );
+		$locale = apply_filters( 'plugin_locale', ( ( function_exists( 'get_user_locale' ) && is_admin() ) ? get_user_locale() : get_locale() ), 'gravityview' );
 
-		$loaded = load_textdomain( 'gravityview', sprintf( '%s/%s-%s.mo', $this->dir('languages'), $domain, $locale ) );
+		$loaded = load_textdomain( 'gravityview', sprintf( '%s/%s-%s.mo', $this->dir( 'languages' ), $domain, $locale ) );
 
-		if( $loaded ) {
+		if ( $loaded ) {
 			return;
 		}
 
@@ -286,6 +309,7 @@ final class Plugin {
 	 * @return void
 	 */
 	public function register_activation_hooks() {
+
 		register_activation_hook( $this->dir( 'gravityview.php' ), array( $this, 'activate' ) );
 		register_deactivation_hook( $this->dir( 'gravityview.php' ), array( $this, 'deactivate' ) );
 	}
@@ -293,11 +317,16 @@ final class Plugin {
 	/**
 	 * Plugin activation function.
 	 *
-	 * @internal
 	 * @return void
+	 * @internal
 	 */
 	public function activate() {
+
 		gravityview();
+
+		if ( ! $this->is_compatible() ) {
+			return;
+		}
 
 		/** Register the gravityview post type upon WordPress core init. */
 		require_once $this->dir( 'future/includes/class-gv-view.php' );
@@ -324,34 +353,36 @@ final class Plugin {
 	/**
 	 * Plugin deactivation function.
 	 *
-	 * @internal
 	 * @return void
+	 * @internal
 	 */
 	public function deactivate() {
+
 		flush_rewrite_rules();
 	}
 
 	/**
 	 * Retrieve an absolute path within the GravityView plugin directory.
 	 *
-	 * @api
 	 * @since 2.0
 	 *
 	 * @param string $path Optional. Append this extra path component.
 	 * @return string The absolute path to the plugin directory.
+	 * @api
 	 */
 	public function dir( $path = '' ) {
+
 		return wp_normalize_path( GRAVITYVIEW_DIR . ltrim( $path, '/' ) );
 	}
 
 	/**
 	 * Retrieve a relative path to the GravityView plugin directory from the WordPress plugin directory
 	 *
-	 * @api
 	 * @since 2.2.3
 	 *
 	 * @param string $path Optional. Append this extra path component.
 	 * @return string The relative path to the plugin directory from the plugin directory.
+	 * @api
 	 */
 	public function relpath( $path = '' ) {
 
@@ -363,25 +394,27 @@ final class Plugin {
 	/**
 	 * Retrieve a URL within the GravityView plugin directory.
 	 *
-	 * @api
 	 * @since 2.0
 	 *
 	 * @param string $path Optional. Extra path appended to the URL.
 	 * @return string The URL to this plugin, with trailing slash.
+	 * @api
 	 */
 	public function url( $path = '/' ) {
+
 		return plugins_url( $path, $this->dir( 'gravityview.php' ) );
 	}
 
 	/**
 	 * Is everything compatible with this version of GravityView?
 	 *
-	 * @api
 	 * @since 2.0
 	 *
 	 * @return bool
+	 * @api
 	 */
 	public function is_compatible() {
+
 		return
 			$this->is_compatible_php()
 			&& $this->is_compatible_wordpress()
@@ -391,40 +424,42 @@ final class Plugin {
 	/**
 	 * Is this version of GravityView compatible with the current version of PHP?
 	 *
-	 * @api
 	 * @since 2.0
 	 *
 	 * @return bool true if compatible, false otherwise.
+	 * @api
 	 */
 	public function is_compatible_php() {
+
 		return version_compare( $this->get_php_version(), self::$min_php_version, '>=' );
 	}
 
 	/**
 	 * Is this version of GravityView compatible with the future required version of PHP?
 	 *
-	 * @api
 	 * @since 2.0
 	 *
 	 * @return bool true if compatible, false otherwise.
+	 * @api
 	 */
 	public function is_compatible_future_php() {
+
 		return version_compare( $this->get_php_version(), self::$future_min_php_version, '>=' );
 	}
 
 	/**
 	 * Is this version of GravityView compatible with the current version of WordPress?
 	 *
-	 * @api
 	 * @since 2.0
 	 *
 	 * @param string $version Version to check against; otherwise uses GV_MIN_WP_VERSION
 	 *
 	 * @return bool true if compatible, false otherwise.
+	 * @api
 	 */
 	public function is_compatible_wordpress( $version = null ) {
 
-		if( ! $version ) {
+		if ( ! $version ) {
 			$version = self::$min_wp_version;
 		}
 
@@ -434,26 +469,30 @@ final class Plugin {
 	/**
 	 * Is this version of GravityView compatible with the current version of Gravity Forms?
 	 *
-	 * @api
 	 * @since 2.0
 	 *
 	 * @return bool true if compatible, false otherwise (or not active/installed).
+	 * @api
 	 */
 	public function is_compatible_gravityforms() {
+
 		$version = $this->get_gravityforms_version();
+
 		return $version ? version_compare( $version, self::$min_gf_version, '>=' ) : false;
 	}
 
 	/**
 	 * Is this version of GravityView compatible with the future version of Gravity Forms?
 	 *
-	 * @api
 	 * @since 2.0
 	 *
 	 * @return bool true if compatible, false otherwise (or not active/installed).
+	 * @api
 	 */
 	public function is_compatible_future_gravityforms() {
+
 		$version = $this->get_gravityforms_version();
+
 		return $version ? version_compare( $version, self::$future_min_gf_version, '>=' ) : false;
 	}
 
@@ -465,6 +504,7 @@ final class Plugin {
 	 * @return string The version of PHP.
 	 */
 	private function get_php_version() {
+
 		return ! empty( $GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] ) ?
 			$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] : phpversion();
 	}
@@ -477,6 +517,7 @@ final class Plugin {
 	 * @return string The version of WordPress.
 	 */
 	private function get_wordpress_version() {
+
 		return ! empty( $GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] ) ?
 			$GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] : $GLOBALS['wp_version'];
 	}
@@ -489,8 +530,10 @@ final class Plugin {
 	 * @return string|null The version of Gravity Forms or null if inactive.
 	 */
 	private function get_gravityforms_version() {
+
 		if ( ! class_exists( '\GFCommon' ) || ! empty( $GLOBALS['GRAVITYVIEW_TESTS_GF_INACTIVE_OVERRIDE'] ) ) {
 			gravityview()->log->error( 'Gravity Forms is inactive or not installed.' );
+
 			return null;
 		}
 
@@ -506,18 +549,19 @@ final class Plugin {
 	 * @return boolean
 	 */
 	public function supports( $feature ) {
+
 		if ( ! is_null( $supports = apply_filters( "gravityview/plugin/feature/$feature", null ) ) ) {
 			return $supports;
 		}
 
 		switch ( $feature ):
-				case self::FEATURE_GFQUERY:
-					return class_exists( '\GF_Query' );
-				case self::FEATURE_JOINS:
-				case self::FEATURE_UNIONS:
-					return apply_filters( 'gravityview/query/class', false ) === '\GF_Patched_Query';
-				case self::FEATURE_REST:
-					return class_exists( '\WP_REST_Controller' );
+			case self::FEATURE_GFQUERY:
+				return class_exists( '\GF_Query' );
+			case self::FEATURE_JOINS:
+			case self::FEATURE_UNIONS:
+				return apply_filters( 'gravityview/query/class', false ) === '\GF_Patched_Query';
+			case self::FEATURE_REST:
+				return class_exists( '\WP_REST_Controller' );
 			default:
 				return false;
 		endswitch;
@@ -529,6 +573,7 @@ final class Plugin {
 	 * @return void
 	 */
 	public function uninstall() {
+
 		global $wpdb;
 
 		$suppress = $wpdb->suppress_errors();
@@ -537,10 +582,10 @@ final class Plugin {
 		 * Posts.
 		 */
 		$items = get_posts( array(
-			'post_type' => 'gravityview',
+			'post_type'   => 'gravityview',
 			'post_status' => 'any',
-			'numberposts' => -1,
-			'fields' => 'ids'
+			'numberposts' => - 1,
+			'fields'      => 'ids',
 		) );
 
 		foreach ( $items as $item ) {
@@ -553,9 +598,10 @@ final class Plugin {
 		$tables = array();
 
 		if ( version_compare( \GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) ) {
-			$tables []= \GFFormsModel::get_entry_meta_table_name();
+			$tables [] = \GFFormsModel::get_entry_meta_table_name();
+		} elseif ( ! $this->is_GF_25() ) {
+			$tables [] = \GFFormsModel::get_lead_meta_table_name();
 		}
-		$tables []= \GFFormsModel::get_lead_meta_table_name();
 
 		foreach ( $tables as $meta_table ) {
 			$sql = "
@@ -574,12 +620,12 @@ final class Plugin {
 
 		if ( version_compare( \GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) && method_exists( 'GFFormsModel', 'get_entry_notes_table_name' ) ) {
 			$tables[] = \GFFormsModel::get_entry_notes_table_name();
+		} elseif ( ! $this->is_GF_25() ) {
+			$tables[] = \GFFormsModel::get_lead_notes_table_name();
 		}
 
-		$tables[] = \GFFormsModel::get_lead_notes_table_name();
-
-		$disapproved = __('Disapproved the Entry for GravityView', 'gravityview');
-		$approved = __('Approved the Entry for GravityView', 'gravityview');
+		$disapproved = __( 'Disapproved the Entry for GravityView', 'gravityview' );
+		$approved    = __( 'Approved the Entry for GravityView', 'gravityview' );
 
 		$suppress = $wpdb->suppress_errors();
 		foreach ( $tables as $notes_table ) {
@@ -612,7 +658,9 @@ final class Plugin {
 		delete_site_transient( 'gravityview_related_plugins' );
 	}
 
-	private function __clone() { }
+	private function __clone() {
+	}
 
-	private function __wakeup() { }
+	private function __wakeup() {
+	}
 }

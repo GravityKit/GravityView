@@ -78,4 +78,87 @@ class GravityView_frontend_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'all', $criteria['field_filters']['mode'] );
 	}
 
+	/**
+	 * @covers GravityView_frontend::single_entry_title()
+	 */
+	public function test_single_entry_title() {
+
+		// We test check_entry_display elsewhere
+		add_filter( 'gravityview/single/title/check_entry_display', '__return_false' );
+
+		$form = $this->factory->form->create_and_get();
+		$_entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
+		$_view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$view = \GV\View::from_post( $_view );
+		$entry = \GV\GF_Entry::by_id( $_entry['id'] );
+
+		global $post;
+
+		$post = $_view;
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+		gravityview()->request->returns['is_entry'] = $entry;
+
+		$view->settings->set( 'single_title', '{:1} is the title' );
+
+		$outside_loop = GravityView_frontend::getInstance()->single_entry_title( 'Original Title' );
+		$this->assertEquals( 'Original Title', $outside_loop, 'we are outside the loop; this should return the original' );
+
+		add_filter( 'gravityview/single/title/out_loop', '__return_true' );
+
+		$no_post_id = GravityView_frontend::getInstance()->single_entry_title( 'Original Title' );
+		$this->assertEquals( 'Original Title', $no_post_id, 'We did not pass a $post ID; this should return the original' );
+
+		$different_ids = GravityView_frontend::getInstance()->single_entry_title( 'Original Title', ( $_view->ID + 1 ) );
+		$this->assertEquals( 'Original Title', $different_ids, 'The global $post ID and the passed post id are different; this should return the original' );
+
+		$should_work = GravityView_frontend::getInstance()->single_entry_title( 'Original Title', $_view->ID );
+		$this->assertEquals( sprintf( '%s is the title', $_entry['1'] ), $should_work );
+
+		$single_entry_title = GravityView_frontend::getInstance()->single_entry_title( 'Original Title', $_view->ID );
+		$this->assertEquals( sprintf( '%s is the title', $_entry['1'] ), $single_entry_title );
+
+		$form2 = $this->factory->form->create_and_get();
+		$_entry2 = $this->factory->entry->create_and_get( array( 'form_id' => $form2['id'] ) );
+		$_view2 = $this->factory->view->create_and_get( array( 'form_id' => $form2['id'] ) );
+		$view2 = \GV\View::from_post( $_view2 );
+		$view2->settings->set( 'single_title', '{:1} is the title for two' );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = false;
+		gravityview()->request->returns['is_entry'] = $entry;
+
+		global $post;
+		$post = $this->factory->post->create_and_get( array(
+			'post_content' => '[gravityview id="' . $view->ID . '"][gravityview id="' . $view2->ID . '"]'
+		) );
+
+		$single_entry_title = GravityView_frontend::getInstance()->single_entry_title( 'Original Title No GVID', $post->ID );
+		$this->assertEquals( 'Original Title No GVID', $single_entry_title, 'The post has two Views but no GVID; should return original' );
+
+		$_GET = array(
+			'gvid' => $view->ID
+		);
+		$entry_1_should_win = GravityView_frontend::getInstance()->single_entry_title( 'Original Title Entry 1', $post->ID );
+		$this->assertEquals( sprintf( '%s is the title', $_entry['1'] ), $entry_1_should_win );
+
+		$_GET = array(
+			'gvid' => $view2->ID
+		);
+		$entry_2_should_win = GravityView_frontend::getInstance()->single_entry_title( 'Original Title Entry 2', $post->ID );
+		$this->assertEquals( sprintf( '%s is the title for two', $_entry2['1'] ), $entry_2_should_win );
+
+		$post_id = $post->ID;
+		unset( $post );
+		$_GET = array();
+		$single_entry_title = GravityView_frontend::getInstance()->single_entry_title( 'Original Title', $post_id );
+		$this->assertEquals( 'Original Title', $single_entry_title, 'There is no global $post and no GVID; should return original' );
+
+		remove_filter( 'gravityview/single/title/out_loop', '__return_true' );
+		remove_filter( 'gravityview/single/title/check_entry_display', '__return_false' );
+		$_GET = array();
+	}
+
 }

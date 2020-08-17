@@ -29,7 +29,7 @@ class GravityView_Field_Post_ID extends GravityView_Field {
 		parent::__construct();
 	}
 
-	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		$this->add_field_support('link_to_post', $field_options );
 

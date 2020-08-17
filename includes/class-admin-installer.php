@@ -68,7 +68,7 @@ class GravityView_Admin_Installer {
 
 	    $downloads_data = get_site_transient( self::DOWNLOADS_DATA_TRANSIENT );
 
-	    if ( ! $downloads_data ) {
+	    if ( ! $downloads_data && ! isset( $_GET['cache'] ) ) {
 			return;
 		}
 
@@ -99,7 +99,7 @@ class GravityView_Admin_Installer {
 
 	    $menu_text = _x( 'Extensions', 'Extensions are WordPress plugins that add functionality to GravityView and Gravity Forms', 'gravityview' );
 
-		$menu_text = sprintf( '<span title="%s" style="margin: 0;">%s</span>', esc_attr__( 'Plugins that extend GravityView and Gravity Forms functionality.', 'gravityview' ), $menu_text );
+		$menu_text = sprintf( '<span title="%s" style="margin: 0">%s</span>', esc_attr__( 'Plugins that extend GravityView and Gravity Forms functionality.', 'gravityview' ), $menu_text );
 
 		add_submenu_page(
 			'edit.php?post_type=gravityview',

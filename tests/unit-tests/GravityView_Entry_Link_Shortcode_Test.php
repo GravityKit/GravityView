@@ -64,7 +64,7 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 			'entry_id' => $entry['id'],
 			'view_id' => $view->ID,
 		);
-		
+
 		$this->_test_read( $view, $entry, $atts );
 		$this->_test_edit( $view, $entry, $atts );
 		$this->_test_delete( $view, $entry, $atts );
@@ -212,6 +212,9 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 
 		$form = $this->factory->form->import_and_get( 'simple.json' );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
@@ -226,7 +229,8 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 						'content' => '[gv_entry_link entry_id="{entry_id}"]Only Entry ID[/gv_entry_link]',
 					),
 				),
-			)
+			),
+			'settings' => $settings,
 		) );
 
 		$entry = $this->factory->entry->create_and_get( array(

@@ -23,7 +23,7 @@ class GravityView_Field_Source_URL extends GravityView_Field {
 		parent::__construct();
 	}
 
-	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		// Don't link to entry; doesn't make sense.
 		unset( $field_options['show_as_link'] );

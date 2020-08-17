@@ -245,6 +245,17 @@ class GravityView_Entry_Approval {
 	 */
 	public function after_submission( $entry, $form ) {
 
+		/**
+		 * @filter `gravityview/approve_entries/after_submission` Modify whether to run the after_submission process
+		 * @since 2.3
+		 * @param bool $process_after_submission default: true
+		 */
+		$process_after_submission = apply_filters( 'gravityview/approve_entries/after_submission', true );
+
+		if ( ! $process_after_submission ) {
+			return;
+		}
+
 		$default_status = GravityView_Entry_Approval_Status::UNAPPROVED;
 
 		/**
@@ -297,6 +308,14 @@ class GravityView_Entry_Approval {
 			$value = GravityView_Entry_Approval_Status::APPROVED;
 		}
 
+		/**
+		 * @filter `gravityview/approve_entries/update_unapproved_meta` Filter the approval status on entry update.
+		 * @param[in,out] string $value The approval status.
+		 * @param array $form The form.
+		 * @param array $entry The entry.
+		 */
+		$value = apply_filters( 'gravityview/approve_entries/update_unapproved_meta', $value, $form, $entry );
+
 		self::update_approved_meta( $entry_id, $value, $form['id'] );
 	}
 
@@ -313,7 +332,7 @@ class GravityView_Entry_Approval {
 	 * @param int $form_id The Gravity Forms Form ID
 	 * @return boolean|null True: successfully updated all entries. False: there was an error updating at least one entry. NULL: an error occurred (see log)
 	 */
-	public static function update_bulk( $entries = array(), $approved, $form_id ) {
+	public static function update_bulk( $entries = array(), $approved = 0, $form_id = 0 ) {
 
 		if( empty($entries) || ( $entries !== true && !is_array($entries) ) ) {
 			gravityview()->log->error( 'Entries were empty or malformed.', array( 'data' => $entries ) );
@@ -687,6 +706,46 @@ class GravityView_Entry_Approval {
 		self::update_approved_meta( $entry_id, $approval_status, $form['id'] );
 	}
 
+	/**
+	 * Where should the popover be placed?
+	 *
+	 * @since 2.3.1
+	 *
+	 * @return string Where to place the popover; 'right' (default ltr), 'left' (default rtl), 'top', or 'bottom'
+	 */
+	public static function get_popover_placement() {
+
+		$placement = is_rtl() ? 'left' : 'right';
+
+		/**
+		 * @filter `gravityview/approve_entries/popover_placement` Where should the popover be placed?
+		 * @since 2.3.1
+		 * @param string $placement Where to place the popover; 'right' (default ltr), 'left' (default rtl), 'top', or 'bottom'
+		 */
+		$placement = apply_filters( 'gravityview/approve_entries/popover_placement', $placement );
+
+		return $placement;
+	}
+
+	/**
+	 * Get HTML template for a popover used to display approval statuses
+	 *
+	 * @since 2.3.1
+	 *
+	 * @internal For internal use only!
+	 *
+	 * @return string HTML code
+	 */
+	public static function get_popover_template() {
+
+		$choices = GravityView_Entry_Approval_Status::get_all();
+
+		return <<<TEMPLATE
+<a href="#" data-approved="{$choices['approved']['value']}" aria-role="button"  aria-live="polite" class="gv-approval-toggle gv-approval-approved popover" title="{$choices['approved']['action']}"><span class="screen-reader-text">{$choices['approved']['action']}</span></a>
+<a href="#" data-approved="{$choices['disapproved']['value']}" aria-role="button"  aria-live="polite" class="gv-approval-toggle gv-approval-disapproved popover" title="{$choices['disapproved']['action']}"><span class="screen-reader-text">{$choices['disapproved']['action']}</span></a>
+<a href="#" data-approved="{$choices['unapproved']['value']}" aria-role="button"  aria-live="polite" class="gv-approval-toggle gv-approval-unapproved popover" title="{$choices['unapproved']['action']}"><span class="screen-reader-text">{$choices['unapproved']['action']}</span></a>
+TEMPLATE;
+	}
 }
 
 new GravityView_Entry_Approval;

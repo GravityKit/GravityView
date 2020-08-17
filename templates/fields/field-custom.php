@@ -5,13 +5,21 @@
  * @global \GV\Template_Context $gravityview
  * @since 2.0
  */
-$form = $gravityview->view->form->form;
-$entry = $gravityview->entry->as_entry();
-$field_settings = $gravityview->field->as_configuration();
 
-/** Default to empty. */
-if ( empty( $gravityview->field->content ) ) {
-	$field_settings['content'] = '';
+if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
+	gravityview()->log->error( '{file} template loaded without context', array( 'file' => __FILE__ ) );
+	return;
+}
+
+if ( ! $gravityview->field->form_id || ! ( $form = GFAPI::get_form( $gravityview->field->form_id ) ) ) {
+	$form = $gravityview->view->form->form;
+}
+
+if ( $gravityview->entry->is_multi() ) {
+	$entry = $gravityview->entry[ $form['id'] ];
+	$entry = $entry->as_entry();
+} else {
+	$entry = $gravityview->entry->as_entry();
 }
 
 // Make sure the class is loaded in DataTables

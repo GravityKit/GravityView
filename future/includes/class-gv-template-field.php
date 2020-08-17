@@ -190,13 +190,17 @@ abstract class Field_Template extends Template {
 				$specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $slug_name );
 				$specifics []= sprintf( '%spost-%d-field.php', $slug_dir, $post->ID );
 			}
-			
+
 			/** Field-specific */
 			if ( $field_id && $form_id ) {
 
 				if ( $field_id ) {
 					$specifics []= sprintf( '%sform-%d-field-%d-%s.php', $slug_dir, $form_id, $field_id, $slug_name );
 					$specifics []= sprintf( '%sform-%d-field-%d.php', $slug_dir, $form_id, $field_id );
+
+					if ( $view_id ) {
+						$specifics []= sprintf( '%sview-%d-field-%d.php', $slug_dir, $view_id, $field_id );
+					}
 				}
 
 				if ( $field_type ) {
@@ -250,7 +254,10 @@ abstract class Field_Template extends Template {
 	 * @return void
 	 */
 	public function render() {
-		$entry = $this->entry->from_field( $this->field );
+		if ( ! $entry = $this->entry->from_field( $this->field ) ) {
+			gravityview()->log->error( 'Entry is invalid for field. Returning empty.' );
+			return;
+		}
 
 		/** Retrieve the value. */
 		$display_value = $value = $this->field->get_value( $this->view, $this->source, $entry );
@@ -273,8 +280,15 @@ abstract class Field_Template extends Template {
 				gravityview()->log->error( 'Errors when calling GFCommon::get_lead_field_display()', array( 'data' => $errors ) );
 			}
 
+			// `gform_entry_field_value` expects a GF_Field, but $this->field->field can be NULL
+			if ( ! $this->field->field instanceof GF_Field ) {
+				$gf_field = \GF_Fields::create( $this->field->field );
+			}
+
 			/** Call the Gravity Forms field value filter. */
-			$display_value = apply_filters( 'gform_entry_field_value', $display_value, $this->field->field, $entry->as_entry(), $this->source->form );
+			$display_value = apply_filters( 'gform_entry_field_value', $display_value, $gf_field, $entry->as_entry(), $this->source->form );
+
+			unset( $gf_field );
 
 			/** Replace merge tags for admin-only fields. */
 			if ( ! empty( $this->field->field->adminOnly ) ) {
@@ -338,6 +352,8 @@ abstract class Field_Template extends Template {
 		/**
 		 * Wrap output in a link, if enabled in the field settings
 		 *
+		 * @todo Cleanup
+		 *
 		 * @param string $output HTML value output
 		 * @param \GV\Template_Context $context
 		 *
@@ -394,6 +410,7 @@ abstract class Field_Template extends Template {
 			return $output;
 		};
 
+		// TODO Cleanup
 		$post_link_compat_callback = function( $output, $context ) use ( $field_compat ) {
 			$field = $context->field;
 

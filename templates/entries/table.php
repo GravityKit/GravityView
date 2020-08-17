@@ -5,6 +5,11 @@
  * @global \GV\Template_Context $gravityview
  */
 
+if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
+	gravityview()->log->error( '{file} template loaded without context', array( 'file' => __FILE__ ) );
+	return;
+}
+
 \GV\Mocks\Legacy_Context::push( array( 'view' => $gravityview->view ) );
 
 gravityview_before( $gravityview );
@@ -13,7 +18,7 @@ gravityview_before( $gravityview );
 
 <div class="<?php gv_container_class( 'gv-table-view gv-table-container gv-table-single-container', true, $gravityview ); ?>">
 	<table class="gv-table-view-content">
-		<?php if ( $gravityview->fields->by_position( 'single_table-columns' )->by_visible()->count() ): ?>
+		<?php if ( $gravityview->fields->by_position( 'single_table-columns' )->by_visible( $gravityview->view )->count() ): ?>
 			<thead>
 				<?php gravityview_header( $gravityview ); ?>
 			</thead>

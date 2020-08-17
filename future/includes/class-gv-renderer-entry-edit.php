@@ -37,7 +37,7 @@ class Edit_Entry_Renderer extends Entry_Renderer {
 		) );
 
 		ob_start();
-		do_action( 'gravityview_edit_entry', null );
+		do_action( 'gravityview_edit_entry', null, $entry, $view, $request );
 
 		\GV\Mocks\Legacy_Context::pop();
 

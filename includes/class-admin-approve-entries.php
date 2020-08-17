@@ -291,7 +291,7 @@ class GravityView_Admin_ApproveEntries {
 
 		// The action is formatted like: gvapprove-16 or gvunapprove-16, where the first word is the name of the action and the second is the ID of the form.
 		$bulk_action = $this->get_gv_bulk_action();
-		
+
 		// gforms_entry_list is the nonce that confirms we're on the right page
 		// gforms_update_note is sent when bulk editing entry notes. We don't want to process then.
 		if ( $bulk_action && \GV\Utils::_POST( 'gforms_entry_list' ) && empty( $_POST['gforms_update_note'] ) ) {
@@ -489,6 +489,10 @@ class GravityView_Admin_ApproveEntries {
 
 		wp_enqueue_script( 'gravityview_gf_entries_scripts', plugins_url('assets/js/admin-entries-list'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version );
 
+		wp_enqueue_script( 'gravityview_entries_list-popper', plugins_url( 'assets/lib/tippy/popper.min.js', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version );
+		wp_enqueue_script( 'gravityview_entries_list-tippy', plugins_url( 'assets/lib/tippy/tippy.min.js', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version );
+		wp_enqueue_style( 'gravityview_entries_list-tippy', plugins_url( 'assets/lib/tippy/tippy.css', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version );
+
 		wp_localize_script( 'gravityview_gf_entries_scripts', 'gvGlobals', array(
 			'nonce' => wp_create_nonce( 'gravityview_entry_approval'),
 			'admin_nonce' => wp_create_nonce( 'gravityview_admin_entry_approval'),
@@ -505,6 +509,8 @@ class GravityView_Admin_ApproveEntries {
 			'disapprove_title' => GravityView_Entry_Approval_Status::get_title_attr('approved'),
 			'column_title' => __( 'Show entry in directory view?', 'gravityview'),
 			'column_link' => esc_url( $this->get_sort_link() ),
+            'status_popover_template' => GravityView_Entry_Approval::get_popover_template(),
+			'status_popover_placement' => GravityView_Entry_Approval::get_popover_placement(),
 		) );
 
 	}
@@ -625,11 +631,14 @@ class GravityView_Admin_ApproveEntries {
 
 	function register_gform_noconflict_script( $scripts ) {
 		$scripts[] = 'gravityview_gf_entries_scripts';
+		$scripts[] = 'gravityview_entries_list-popper';
+		$scripts[] = 'gravityview_entries_list-tippy';
 		return $scripts;
 	}
 
 	function register_gform_noconflict_style( $styles ) {
 		$styles[] = 'gravityview_entries_list';
+		$styles[] = 'gravityview_entries_list-tippy';
 		return $styles;
 	}
 

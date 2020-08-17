@@ -101,7 +101,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	/**
 	 * Construct a \GV\Entry instance from a Gravity Forms entry array.
 	 *
-	 * @param array $entry The array ID.
+	 * @param array $entry The entry array
 	 *
 	 * @return \GV\GF_Entry|null An instance of this entry or null if not found.
 	 */
@@ -114,7 +114,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 		$self->entry = $entry;
 
 		$self->ID = $self->entry['id'];
-		$self->slug = \GravityView_API::get_entry_slug( $self->ID, $self->as_entry() );
+		$self->slug = $self->get_slug();
 
 		return $self;
 	}

@@ -19,6 +19,8 @@
 
 			<?php do_action('gravityview_render_widgets_active_areas', $curr_template, 'header', $post->ID ); ?>
 
+			<h4><?php esc_html_e( 'Entries Fields', 'gravityview'); ?> <span><?php esc_html_e( 'These fields will be shown for each entry.', 'gravityview'); ?></span></h4>
+
 			<div id="directory-active-fields" class="gv-grid">
 				<?php if(!empty( $curr_template ) ) {
 					do_action('gravityview_render_directory_active_areas', $curr_template, 'directory', $post->ID, true );

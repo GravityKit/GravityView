@@ -29,7 +29,7 @@ class GravityView_Field_Date extends GravityView_Field {
 		parent::__construct();
 	}
 
-	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		if( 'edit' === $context ) {
 			return $field_options;
@@ -85,10 +85,10 @@ class GravityView_Field_Date extends GravityView_Field {
 		$date_field_output = '';
 		switch( $field_input_id ) {
 			case 1:
-				$date_field_output = \GV\Utils::get( $parsed_date, 'day' );
+				$date_field_output = \GV\Utils::get( $parsed_date, 'month' );
 				break;
 			case 2:
-				$date_field_output = \GV\Utils::get( $parsed_date, 'month' );
+				$date_field_output = \GV\Utils::get( $parsed_date, 'day' );
 				break;
 			case 3:
 				$date_field_output = \GV\Utils::get( $parsed_date, 'year' );

@@ -28,7 +28,7 @@ final class Core {
 	public $plugin;
 
 	/**
-	 * @var \GV\Request The global request.
+	 * @var \GV\Admin_Request|\GV\Frontend_Request|\GV\Request The global request.
 	 *
 	 * @api
 	 * @since 2.0
@@ -146,6 +146,7 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
 		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
 		add_action( 'init', array( '\GV\View', 'add_rewrite_endpoint' ) );
+		add_filter( 'map_meta_cap', array( '\GV\View', 'restrict' ), 11, 4 );
 		add_action( 'template_redirect', array( '\GV\View', 'template_redirect' ) );
 		add_action( 'the_content', array( '\GV\View', 'content' ) );
 
@@ -165,10 +166,12 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gravityview.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gventry.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gvfield.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gvlogic.php' );
 		add_action( 'init', array( '\GV\Shortcodes\gravityview', 'add' ) );
 		add_action( 'init', array( '\GV\Shortcodes\gventry', 'add' ) );
 		add_action( 'init', array( '\GV\Shortcodes\gvfield', 'add' ) );
-		
+		add_action( 'init', array( '\GV\Shortcodes\gvlogic', 'add' ) );
+
 		/** oEmbed */
 		require_once $this->plugin->dir( 'future/includes/class-gv-oembed.php' );
 		add_action( 'init', array( '\GV\oEmbed', 'init' ), 11 );

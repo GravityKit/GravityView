@@ -44,7 +44,7 @@ final class GravityView_Delete_Entry {
 
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field'), 10, 3 );
 
-		add_action( 'gravityview_before', array( $this, 'display_message' ) );
+		add_action( 'gravityview_before', array( $this, 'maybe_display_message' ) );
 
 		// For the Delete Entry Link, you don't want visible to all users.
 		add_filter( 'gravityview_field_visibility_caps', array( $this, 'modify_visibility_caps'), 10, 5 );
@@ -59,6 +59,10 @@ final class GravityView_Delete_Entry {
 
 		add_action ( 'gravityview/delete-entry/deleted', array( $this, 'process_connected_posts' ), 10, 2 );
 		add_action ( 'gravityview/delete-entry/trashed', array( $this, 'process_connected_posts' ), 10, 2 );
+
+		add_filter( 'gravityview/field/is_visible', array( $this, 'maybe_not_visible' ), 10, 3 );
+
+		add_action( 'gravityview/metaboxes/permissions_after', array( $this, 'view_settings_permissions_metabox' ) );
 	}
 
 	/**
@@ -74,6 +78,46 @@ final class GravityView_Delete_Entry {
 		}
 
 		return self::$instance;
+	}
+
+	/**
+	 * Hide the field or not.
+	 *
+	 * For non-logged in users.
+	 * For users that have no delete rights on any of the current entries.
+	 *
+	 * @param bool $visible Visible or not.
+	 * @param \GV\Field $field The field.
+	 * @param \GV\View $view The View context.
+	 *
+	 * @return bool
+	 */
+	public function maybe_not_visible( $visible, $field, $view ) {
+		if ( 'delete_link' !== $field->ID ) {
+			return $visible;
+		}
+
+		if ( ! $view ) {
+			return $visible;
+		}
+
+		static $visibility_cache_for_view = array();
+
+		if ( ! is_null( $result = \GV\Utils::get( $visibility_cache_for_view, $view->ID, null ) ) ) {
+			return $result;
+		}
+
+		foreach ( $view->get_entries()->all() as $entry ) {
+			if ( self::check_user_cap_delete_entry( $entry->as_entry(), $field->as_configuration(), $view ) ) {
+				// At least one entry is deletable for this user
+				$visibility_cache_for_view[ $view->ID ] = true;
+				return true;
+			}
+		}
+
+		$visibility_cache_for_view[ $view->ID ] = false;
+
+		return false;
 	}
 
 	/**
@@ -165,10 +209,25 @@ final class GravityView_Delete_Entry {
 			'field_id' => 'delete_link',
 			'label_type' => 'field',
 			'input_type' => 'delete_link',
-			'field_options' => NULL
+			'field_options' => null,
 		);
 
 		return $available_fields;
+	}
+
+	/**
+	 * Render Delete Entry Permissions settings
+	 *
+	 * @since 2.9
+	 *
+	 * @param $current_settings
+	 *
+	 * @return void
+	 */
+	public function view_settings_permissions_metabox( $current_settings ) {
+
+		GravityView_Render_Settings::render_setting_row( 'user_delete', $current_settings );
+
 	}
 
 	/**
@@ -246,8 +305,10 @@ final class GravityView_Delete_Entry {
 			return NULL;
 		}
 
+		$gv_entry = \GV\GF_Entry::from_entry( $entry );
+
 		// Use the slug instead of the ID for consistent security
-		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
+		$entry_slug = $gv_entry->get_slug();
 
 		$actionurl = add_query_arg( array(
 			'action'	=> 'delete',
@@ -337,7 +398,7 @@ final class GravityView_Delete_Entry {
 
 			if( $entry ) {
 
-				$has_permission = $this->user_can_delete_entry( $entry );
+				$has_permission = $this->user_can_delete_entry( $entry, \GV\Utils::_GET( 'gvid', \GV\Utils::_GET( 'view_id' ) ) );
 
 				if( is_wp_error( $has_permission ) ) {
 
@@ -378,7 +439,7 @@ final class GravityView_Delete_Entry {
 				);
 			}
 
-			$redirect_to_base = esc_url_raw( remove_query_arg( array( 'action', 'gvid' ) ) );
+			$redirect_to_base = esc_url_raw( remove_query_arg( array( 'action', 'gvid', 'entry_id' ) ) );
 			$redirect_to = add_query_arg( $messages, $redirect_to_base );
 
 			wp_safe_redirect( $redirect_to );
@@ -414,7 +475,7 @@ final class GravityView_Delete_Entry {
 	private function delete_or_trash_entry( $entry ) {
 
 		$entry_id = $entry['id'];
-		
+
 		$mode = $this->get_delete_mode();
 
 		if( 'delete' === $mode ) {
@@ -487,7 +548,7 @@ final class GravityView_Delete_Entry {
 		 * @param boolean $delete_post If trashing an entry, trash the post. If deleting an entry, delete the post. Default: true
 		 */
 		$delete_post = apply_filters( 'gravityview/delete-entry/delete-connected-post', true );
-		
+
 		if( false === $delete_post ) {
 			return;
 		}
@@ -605,13 +666,19 @@ final class GravityView_Delete_Entry {
 	 *
 	 * @param  array $entry Gravity Forms entry array
 	 * @param array $field Field settings (optional)
-	 * @param int $view_id Pass a View ID to check caps against. If not set, check against current View (@deprecated no longer optional)
+	 * @param int|\GV\View $view Pass a View ID to check caps against. If not set, check against current View (@deprecated no longer optional)
 	 * @return bool
 	 */
-	public static function check_user_cap_delete_entry( $entry, $field = array(), $view_id = 0 ) {
-		if ( ! $view_id ) {
+	public static function check_user_cap_delete_entry( $entry, $field = array(), $view = 0 ) {
+		if ( ! $view ) {
 			/** @deprecated path */
 			$view_id = GravityView_View::getInstance()->getViewId();
+			$view = \GV\View::by_id( $view_id );
+		} else {
+			if ( ! $view instanceof \GV\View ) {
+				$view = \GV\View::by_id ( $view );
+			}
+			$view_id = $view->ID;
 		}
 
 		$current_user = wp_get_current_user();
@@ -661,19 +728,12 @@ final class GravityView_Delete_Entry {
 			return false;
 		}
 
+		$user_delete = $view->settings->get( 'user_delete' );
+
 		// Only checks user_delete view option if view is already set
-		if( $view_id ) {
-
-			$current_view = gravityview_get_current_view_data( $view_id );
-
-			$user_delete = isset( $current_view['atts']['user_delete'] ) ? $current_view['atts']['user_delete'] : false;
-
-			if( empty( $user_delete ) ) {
-
-				gravityview()->log->debug( 'User Delete is disabled. Returning false.' );
-
-				return false;
-			}
+		if ( $view && empty( $user_delete ) ) {
+			gravityview()->log->debug( 'User Delete is disabled. Returning false.' );
+			return false;
 		}
 
 		// If the logged-in user is the same as the user who created the entry, we're good.
@@ -700,14 +760,22 @@ final class GravityView_Delete_Entry {
 	 * @param int $current_view_id The ID of the View being rendered
 	 * @return void
 	 */
-	public function display_message( $current_view_id = 0 ) {
-
+	public function maybe_display_message( $current_view_id = 0 ) {
 		if( empty( $_GET['status'] ) || ! self::verify_nonce() ) {
 			return;
 		}
 
 		// Entry wasn't deleted from current View
 		if( isset( $_GET['view_id'] ) && intval( $_GET['view_id'] ) !== intval( $current_view_id ) ) {
+			return;
+		}
+
+		$this->display_message();
+	}
+
+	public function display_message() {
+
+		if ( empty( $_GET['status'] ) || empty( $_GET['delete'] ) ) {
 			return;
 		}
 
