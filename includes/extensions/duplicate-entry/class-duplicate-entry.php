@@ -179,6 +179,7 @@ final class GravityView_Duplicate_Entry {
 				'label' => __( 'Duplicate Entry', 'gravityview' ),
 				'type'  => 'duplicate_link',
 				'desc'  => __( 'A link to duplicate the entry. Respects the Duplicate Entry permissions.', 'gravityview' ),
+				'icon'  => 'dashicons-controls-repeat',
 			);
 		}
 

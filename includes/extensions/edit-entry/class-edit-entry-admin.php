@@ -83,6 +83,7 @@ class GravityView_Edit_Entry_Admin {
                 'label' => __('Edit Entry', 'gravityview'),
                 'type' => 'edit_link',
                 'desc'	=> __('A link to edit the entry. Visible based on View settings.', 'gravityview'),
+                'icon' => 'dashicons-welcome-write-blog',
             );
 
         }
