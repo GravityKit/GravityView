@@ -381,17 +381,39 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'This search returned no results.', GravityView_API::no_results( false ) );
 		$this->assertEquals( '<p>This search returned no results.</p>'."\n", GravityView_API::no_results( true ) );
 
+		$context = new \GV\Template_Context();
+		$context->request = new \GV\Mock_Request();
+		$context->request->returns['is_search'] = true;
+		$context->view = new \GV\View();
+		$this->assertEquals( 'This search returned no results.', GravityView_API::no_results( false, $context ) );
+		$context->view->settings->set( 'no_search_results_text', '' ); // When empty, use default
+		$this->assertEquals( 'This search returned no results.', GravityView_API::no_results( false, $context ) );
+		$context->view->settings->set( 'no_search_results_text', 'NO ENTRIES <strong>IN</strong> <example>THIS</example> SEARCH' );
+		$this->assertEquals( 'NO ENTRIES <strong>IN</strong> <example>THIS</example> SEARCH', $context->view->settings->get( 'no_search_results_text' ) );
+		$this->assertEquals( 'NO ENTRIES <strong>IN</strong> THIS SEARCH', GravityView_API::no_results( false, $context ) );
+		$this->assertEquals( '<p>NO ENTRIES <strong>IN</strong> THIS SEARCH</p>' . "\n", GravityView_API::no_results( true, $context ) );
+
+
+		$context->request->returns['is_search'] = false;
+		$context->view = new \GV\View();
+		$this->assertEquals( 'No entries match your request.', GravityView_API::no_results( false, $context ) );
+		$context->view->settings->set( 'no_results_text', '' ); // When empty, use default
+		$this->assertEquals( 'No entries match your request.', GravityView_API::no_results( false, $context ) );
+		$context->view->settings->set( 'no_results_text', 'NO ENTRIES <strong>IN</strong> <example>NOT</example> SEARCH' );
+		$this->assertEquals( 'NO ENTRIES <strong>IN</strong> <example>NOT</example> SEARCH', $context->view->settings->get( 'no_results_text' ) );
+		$this->assertEquals( 'NO ENTRIES <strong>IN</strong> NOT SEARCH', GravityView_API::no_results( false, $context ) );
+		$this->assertEquals( '<p>NO ENTRIES <strong>IN</strong> NOT SEARCH</p>' . "\n", GravityView_API::no_results( true, $context ) );
 
 		// Add the filter that modifies output
 		add_filter( 'gravitview_no_entries_text', array( $this, '_override_no_entries_text_output' ), 10, 2 );
 
 		// Test to make sure the $is_search parameter is passed correctly
-		$this->assertEquals( 'SEARCH override the no entries text output', GravityView_API::no_results( false ) );
+		$this->assertEquals( 'SEARCH <example>override</example> the no entries text output', GravityView_API::no_results( false ), 'HTML should be allowed from filters' );
 
 		$gravityview_view->curr_search = false;
 
 		// Test to make sure the $is_search parameter is passed correctly
-		$this->assertEquals( 'NO SEARCH override the no entries text output', GravityView_API::no_results( false ) );
+		$this->assertEquals( 'NO SEARCH <example>override</example> the no entries text output', GravityView_API::no_results( false ), 'HTML should be allowed from filters' );
 
 		// Remove the filter for later
 		remove_filter( 'gravitview_no_entries_text', array( $this, '_override_no_entries_text_output' ) );
@@ -401,9 +423,9 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	public function _override_no_entries_text_output( $previous, $is_search = false ) {
 
 		if ( $is_search ) {
-			return 'SEARCH override the no entries text output';
+			return 'SEARCH <example>override</example> the no entries text output';
 		} else {
-			return 'NO SEARCH override the no entries text output';
+			return 'NO SEARCH <example>override</example> the no entries text output';
 		}
 
 	}

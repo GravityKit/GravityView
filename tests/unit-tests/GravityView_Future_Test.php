@@ -1655,6 +1655,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 
         global $post;
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
         $post = $this->factory->view->create_and_get( array(
             'form_id' => $form['id'],
             'template_id' => 'table',
@@ -1684,6 +1687,7 @@ class GVFuture_Test extends GV_UnitTestCase {
                     ),
                 ),
             ),
+            'settings' => $settings,
         ) );
 
         $view = \GV\View::from_post( $post );
@@ -1771,6 +1775,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		global $post;
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
@@ -1800,6 +1807,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 		$view->settings->update( array( 'page_size' => 3 ) );
@@ -2158,6 +2166,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		global $post;
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
@@ -2193,6 +2204,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 
 		$view = \GV\View::from_post( $post );
@@ -2233,9 +2245,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		global $post;
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -2289,6 +2305,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'settings' => array(
 				'single_title' => 'Entry ~@{entry_id}@~',
 				'back_link_label' => "Let's go back!",
+				'show_only_approved' => 0,
 			),
 		) );
 		$view = \GV\View::from_post( $post );
@@ -2401,9 +2418,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		global $post;
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'preset_business_listings',
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -2538,6 +2559,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'settings' => array(
 				'single_title' => 'Entry ~@{entry_id}@~',
 				'back_link_label' => "Let's go back!",
+				'show_only_approved' => 0,
 			),
 		) );
 		$view = \GV\View::from_post( $post );
@@ -2887,7 +2909,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'created_by' => $user_1,
 			'status' => 'active',
 		) );
-		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'settings' => $settings,
+		) );
 
 		$form = \GV\GF_Form::by_id( $form['id'] );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
@@ -4993,7 +5020,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'1' => 'set all the fields!',
 			'2' => -100,
 		) );
-		$view = \GV\View::by_id( $this->factory->view->create( array( 'form_id' => $form->ID ) ) );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+		$view = \GV\View::by_id( $this->factory->view->create( array(
+			'form_id' => $form->ID,
+			'settings' => $settings,
+		) ) );
 
 		$entries = GravityView_frontend::get_view_entries( $view->settings->as_atts(), $form->ID );
 		$this->assertEquals( 1, $entries['count'] );
@@ -5166,6 +5198,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'template_id' => 'table',
 			'settings' => array(
 				'page_size' => 33,
+				'show_only_approved' => 0,
 			),
 			'fields' => array(
 				'directory_table-columns' => array(
@@ -5698,7 +5731,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			),
 		) );
 		$view = \GV\View::from_post( $post );
-
+		$request = new \GV\Mock_Request();
 		$future = array( '\GV\oEmbed', 'render' );
 
 		/** Trash */
@@ -6157,9 +6190,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 			) );
 		}
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
+			'settings' => $settings,
 			'fields' => array(
 				'directory_table-columns' => array(
 					wp_generate_password( 4, false ) => array(
@@ -6602,9 +6639,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$mode = $really_directory ? 'directory' : 'single';
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'preset_business_listings',
+			'settings' => $settings,
 			'fields' => array(
 				$mode . '_list-title' => array(
 					wp_generate_password( 4, false ) => array(
@@ -7023,7 +7064,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'template_id' => 'table',
 			'settings' => array(
-				'hide_empty' => false,
+				'hide_empty' => true,
+				'hide_empty_single' => false,
+				'show_only_approved' => 0,
 			),
 			'fields' => array(
 				'directory_table-columns' => array(
@@ -7096,6 +7139,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'template_id' => 'preset_business_listings',
 			'settings' => array(
 				'hide_empty' => false,
+				'show_only_approved' => 0,
 			),
 			'fields' => array(
 				'directory_list-title' => array(
@@ -7204,6 +7248,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'template_id' => 'table',
 			'settings' => array(
 				'hide_empty' => false,
+				'show_only_approved' => 0,
 			),
 			'fields' => array(
 				'directory_table-columns' => array(
@@ -7451,6 +7496,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'settings' => array(
 				'sort_field' => array( 16, 4 ),
 				'sort_direction' => array( \GV\Entry_Sort::ASC, \GV\Entry_Sort::DESC ),
+				'show_only_approved' => 0,
 			),
             'fields' => array(
 				'directory_table-columns' => array(
@@ -7511,6 +7557,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$form = $this->factory->form->import_and_get( 'simple.json' );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
@@ -7521,7 +7570,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 						'content' => 'You are here.',
 					),
 				),
-			)
+			),
+			'settings' => $settings,
 		) );
 
 		$entry = $this->factory->entry->create_and_get( array(
@@ -7542,7 +7592,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 						'oembed' => true,
 					),
 				),
-			)
+			),
+			'settings' => $settings,
 		) );
 
 		$entry = $this->factory->entry->create_and_get( array(
@@ -7614,6 +7665,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'settings' => array(
 				'sort_field' => array( '17' ),
 				'sort_direction' => array( \GV\Entry_Sort::ASC ),
+				'show_only_approved' => 0,
 			),
             'fields' => array(
 				'directory_table-columns' => array(
@@ -7664,7 +7716,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$form = \GV\GF_Form::by_id( $form['id'] );
-
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form->ID,
 			'template_id' => 'table',
@@ -7688,6 +7741,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -7746,7 +7800,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$form = \GV\GF_Form::by_id( $form['id'] );
-
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form->ID,
 			'template_id' => 'table',
@@ -7762,6 +7817,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -7806,7 +7862,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$form = \GV\GF_Form::by_id( $form['id'] );
-
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form->ID,
 			'template_id' => 'table',
@@ -7826,6 +7883,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -7869,6 +7927,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'form_id' => $form->ID,
 			'settings' => array(
 				'csv_enable' => '1',
+				'show_only_approved' => 0,
 			),
 			'template_id' => 'table',
             'fields' => array(
@@ -8004,6 +8063,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'form_id' => $form->ID,
 			'settings' => array(
 				'csv_enable' => '1',
+				'show_only_approved' => 0,
 			),
 			'template_id' => 'table',
             'fields' => array(
@@ -8058,6 +8118,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'settings' => array(
 				'csv_enable' => '1',
 				'page_size'  => '3',
+				'show_only_approved' => '0',
 			),
 			'template_id' => 'table',
             'fields' => array(
@@ -8139,6 +8200,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			),
 			'settings' => array(
 				'hide_empty' => true,
+				'show_only_approved' => 0,
 			),
 		) );
 		$view = \GV\View::from_post( $post );
@@ -8263,6 +8325,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'1.6' => 'C',
 		) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
@@ -8275,6 +8340,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -8321,6 +8387,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'template_id' => 'table',
 			'settings' => array(
 				'page_size'  => '25',
+				'show_only_approved' => 0,
 			),
 			'fields' => array(
 				'directory_table-columns' => array(
@@ -8422,6 +8489,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$form = \GV\GF_Form::by_id( $form['id'] );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form->ID,
 			'template_id' => 'table',
@@ -8433,6 +8503,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -8542,6 +8613,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		global $post;
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form->ID,
 			'template_id' => 'table',
@@ -8553,6 +8627,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -8619,6 +8694,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		global $post;
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form->ID,
 			'template_id' => 'table',
@@ -8635,6 +8713,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 

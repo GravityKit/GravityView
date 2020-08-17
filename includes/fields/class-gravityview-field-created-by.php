@@ -83,7 +83,7 @@ class GravityView_Field_Created_By extends GravityView_Field {
 	public function replace_merge_tag( $matches = array(), $text = '', $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
 		// If there are no matches OR the Entry `created_by` isn't set or is 0 (no user)
-		if( empty( $matches ) ) {
+		if( empty( $matches ) || empty( $entry['created_by'] ) ) {
 			return $text;
 		}
 

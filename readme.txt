@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 5.4
+Tested up to: 5.4.2
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -20,6 +20,44 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.9.1 on August XX, 2020 =
+
+* Improved: Add new Yoast SEO plugin scripts to the No-Conflict approved list
+
+= 2.9.0.1 on July 23, 2020 =
+
+* Fixed: Loading all Gravity Forms forms on the frontend
+	* Fixes Map Icons field not working
+	* Fixes conflict with gAppointments and Gravity Perks
+* Fixed: Fatal error when Gravity Forms is inactive
+
+= 2.9 on July 16, 2020 =
+
+* Added: A "Gravity Forms" widget to easily embed a form above and below a View
+* Added: Settings for changing the "No Results" text and "No Search Results" text
+* Added: "Date Updated" field to field picker and sorting options
+* Modified: When clicking the "GravityView" link in the Admin Toolbar, go to GravityView settings
+* Improved: Add new Yoast SEO plugin scripts to the No-Conflict approved list
+* Improved: Add Wicked Folders plugin scripts to the No-Conflict approved list
+* Fixed: Don't allow sorting by the Duplicate field
+* Fixed: Multi-site licenses not being properly shared with single sites when GravityView is not Network Activated
+* Fixed: Potential fatal error for Enfold theme
+
+__Developer Updates:__
+
+* Fixed: Settings not able to be saved when using the `GRAVITYVIEW_LICENSE_KEY` constant
+* Fixed: License not able to be activated when using the `GRAVITYVIEW_LICENSE_KEY` constant
+* Fixed: Potential PHP warning when using the `{created_by}` Merge Tag
+* Modified: Added index of the current file in the loop to the `gravityview/fields/fileupload/file_path` filter
+
+= 2.8.1 on April 22, 2020 =
+
+* Added: Better inline documentation for View Settings
+* Improved: When clicking "Add All Form Fields" in the "+ Add Field" picker
+* Modified: Changed default settings for new Views to "Show only approved entries"
+* Modified: When adding a field to a table-based layout, "+ Add Field" now says "+ Add Column"
+* Fixed: Single Entry "Hide empty fields" not working in Table and DataTables layouts
 
 = 2.8 on April 16, 2020 =
 

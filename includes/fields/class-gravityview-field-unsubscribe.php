@@ -165,7 +165,8 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 	 * @return string The content.
 	 */
 	public function modify_entry_value_unsubscribe( $output, $entry, $field_settings, $field ) {
-		if ( ! is_user_logged_in() ) {
+
+		if ( ! is_user_logged_in() || ! $entry ) {
 			return $output;
 		}
 

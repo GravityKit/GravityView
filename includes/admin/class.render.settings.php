@@ -246,7 +246,7 @@ class GravityView_Render_Settings {
 	 * @param  mixed      $curr_value Current value of option
 	 * @return string     HTML output of option
 	 */
-	public static function render_field_option( $name = '', $option, $curr_value = NULL ) {
+	public static function render_field_option( $name = '', $option = array(), $curr_value = NULL ) {
 
 		$output = '';
 

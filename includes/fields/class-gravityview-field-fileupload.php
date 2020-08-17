@@ -150,7 +150,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		}
 
 		// Process each file path
-		foreach ( $file_paths as $file_path ) {
+		foreach ( $file_paths as $index => $file_path ) {
 
 			$rendered = null;
 
@@ -185,11 +185,13 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			 * @filter `gravityview/fields/fileupload/file_path` Modify the file path before generating a link to it
 			 * @since 1.22.3
 			 * @since 2.0 Added $context parameter
+			 * @since 2.8.2
 			 * @param string $file_path Path to the file uploaded by Gravity Forms
 			 * @param array  $field_settings Array of GravityView field settings
 			 * @param \GV\Template_Context $context The context.
+			 * @param int $index The current index of the $file_paths array being processed
 			 */
-			$file_path = apply_filters( 'gravityview/fields/fileupload/file_path', $file_path, $field_settings, $context );
+			$file_path = apply_filters( 'gravityview/fields/fileupload/file_path', $file_path, $field_settings, $context, $index );
 
 			// Audio
 			if ( in_array( $extension, wp_get_audio_extensions() ) ) {

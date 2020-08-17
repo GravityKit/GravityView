@@ -108,6 +108,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'16' => 'Keyboard',
 		) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $orders['id'],
 			'template_id' => 'table',
@@ -133,6 +136,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'joins' => array(
 				array( $orders['id'], '9', $customers['id'], '2' ),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $view );
 
@@ -226,6 +230,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'16' => 'Keyboard',
 		) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $orders['id'],
 			'template_id' => 'preset_business_listings',
@@ -258,6 +265,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'joins' => array(
 				array( $orders['id'], '9', $customers['id'], '2' ),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $view );
 
@@ -307,6 +315,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'16' => 'Shoes',
 		) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		global $post;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $orders['id'],
@@ -333,6 +344,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'joins' => array(
 				array( $orders['id'], '9', $customers['id'], '2' ),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -436,6 +448,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'16' => 'Keyboard',
 		) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		global $post;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $orders['id'],
@@ -462,6 +477,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'joins' => array(
 				array( $orders['id'], '9', $customers['id'], '2' ),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -556,6 +572,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'16' => 'Keyboard',
 		) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		global $post;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $orders['id'],
@@ -589,6 +608,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'joins' => array(
 				array( $orders['id'], '9', $customers['id'], '2' ),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -631,6 +651,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		$this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 2, '1' => 'Marick Bonobo' ) );
 		$this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 2, '1' => 'Henry Oswald' ) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $chefs['id'],
 			'fields' => array(
@@ -656,6 +679,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -690,6 +714,8 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		$entries = $view->get_entries()->all();
 		$this->assertCount( 4, $entries );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $chefs['id'],
 			'fields' => array(
@@ -715,6 +741,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -760,6 +787,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		$this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 2, '1' => 'Marick Bonobo' ) );
 		$this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '2' => 2, '1' => 'Henry Oswald' ) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $chefs['id'],
 			'fields' => array(
@@ -786,6 +816,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -827,6 +858,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 
 		$n1 = $this->factory->entry->create_and_get( array( 'form_id' => $souschefs['id'], 'status' => 'active', '1' => 'None' ) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $chefs['id'],
 			'fields' => array(
@@ -860,6 +894,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'joins' => array(
 				array( $chefs['id'], '2', $souschefs['id'], '2' ),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -933,6 +968,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'jupiter@gravityview.co' ) );
 		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'mercury@gravityview.co' ) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		global $post;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form_1['id'],
@@ -957,6 +995,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -1042,6 +1081,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'1' => 'Unrelated 2',
 		) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $step1['id'],
 			'template_id' => 'table',
@@ -1062,6 +1104,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'joins' => array(
 				array( $step1['id'], 'id', $step2['id'], '2' ),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -1111,6 +1154,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'2' => $entry1_1['id'],
 		) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $step1['id'],
 			'template_id' => 'table',
@@ -1131,6 +1177,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'joins' => array(
 				array( $step1['id'], 'id', $step2['id'], '2' ),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -1168,6 +1215,9 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'2' => $entry1_1['id'],
 		) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $step1['id'],
 			'template_id' => 'table',
@@ -1190,6 +1240,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 			'joins' => array(
 				array( $step1['id'], 'id', $step2['id'], '2' ),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -1206,6 +1257,85 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 
 		$this->assertContains( sprintf( 'Step 1">%s<', $entry1_1['id'] ), $out );
 		$this->assertContains( sprintf( 'Step 2">%s<', $entry1_2['id'] ), $out );
+
+		$this->_reset_context();
+	}
+
+	public function test_joins_on_entry_meta() {
+		$this->_reset_context();
+
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_JOINS ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$step1 = $this->factory->form->import_and_get( 'simple.json' );
+		$step2 = $this->factory->form->import_and_get( 'simple.json' );
+
+		$entry1_1 = $this->factory->entry->create_and_get( array(
+			'form_id' => $step1['id'],
+			'status' => 'active',
+			'1' => 'Entry 1',
+		) );
+
+		$entry1_2 = $this->factory->entry->create_and_get( array(
+			'form_id' => $step2['id'],
+			'status' => 'active',
+			'1' => 'After Entry 1',
+		) );
+
+		gform_update_meta( $entry1_2['id'], 'child', $entry1_1['id'] );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $step1['id'],
+			'status' => 'active',
+			'1' => 'Unrelated 1',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $step2['id'],
+			'status' => 'active',
+			'1' => 'Unrelated 2',
+		) );
+
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $step1['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'form_id' => $step1['id'],
+						'id'      => 'id',
+						'label'   => 'Step 1',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'form_id' => $step2['id'],
+						'label' => 'Step 2',
+					),
+				),
+			),
+			'joins' => array(
+				array( $step1['id'], 'id', $step2['id'], 'child' ),
+			),
+			'settings' => $settings,
+		) );
+		$view = \GV\View::from_post( $post );
+
+		if ( $view->get_query_class() !== '\GF_Patched_Query' ) {
+			$this->markTestSkipped( 'Requires \GF_Patched_Query' );
+		}
+
+		$entries = $view->get_entries()->all();
+
+		$this->assertCount( 2, $entries );
+		$this->assertCount( 1, $entries[0]->entries );
+		$this->assertCount( 2, $entries[1]->entries );
+		$this->assertEquals( $entry1_1['id'], $entries[1][$step1['id']]['id'] );
+		$this->assertEquals( $entry1_2['id'], $entries[1][$step2['id']]['id'] );
+		$this->assertEquals( $entries[1][$step1['id']]['id'], gform_get_meta( $entries[1][$step2['id']]['id'], 'child' ) );
 
 		$this->_reset_context();
 	}

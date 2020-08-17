@@ -40,8 +40,9 @@ class gravityview extends \GV\Shortcode {
 			'id' => 0,
 			'view_id' => 0,
 			'detail' => null,
+			'class' => '',
 		) );
-		
+
 		if ( ! $view_id = $atts['id'] ? : $atts['view_id'] ) {
 			if ( $atts['detail'] && $view = $request->is_view() ) {
 				$view_id = $view->ID;
@@ -202,7 +203,7 @@ class gravityview extends \GV\Shortcode {
 		 */
 		} else {
 			if ( $is_reembedded ) {
-				
+
 				// Mock the request with the actual View, not the global one
 				$mock_request = new \GV\Mock_Request();
 				$mock_request->returns['is_view'] = $view;

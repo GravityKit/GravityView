@@ -430,6 +430,11 @@ class GravityView_frontend {
 	public function single_entry_title( $passed_title, $passed_post_id = null ) {
 		global $post;
 
+		// Since this is a public method, it can be called outside of the plugin. Don't assume things have been loaded properly.
+		if ( ! class_exists( '\GV\Entry' ) ) {
+			return $passed_title;
+		}
+
 		$gventry = gravityview()->request->is_entry();
 
 		// If this is the directory view, return.

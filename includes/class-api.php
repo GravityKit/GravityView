@@ -311,11 +311,51 @@ class GravityView_API {
 			}
 		}
 
+		$setting = '';
+
 		if ( $is_search ) {
-			$output = __( 'This search returned no results.', 'gravityview' );
+
+			$output = esc_html__( 'This search returned no results.', 'gravityview' );
+
+			if( $context ) {
+				$setting = $context->view->settings->get( 'no_search_results_text', $output );
+			}
+
 		} else {
-			$output = __( 'No entries match your request.', 'gravityview' );
+
+			$output = esc_html__( 'No entries match your request.', 'gravityview' );
+
+			if( $context ) {
+				$setting = $context->view->settings->get( 'no_results_text', $output );
+			}
 		}
+
+		if ( '' !== $setting ) {
+			$output = $setting;
+		}
+
+		/**
+		 * Added now that users are able to modify via View settings
+		 * @since 2.8.2
+		 */
+		$output = wp_kses(
+			$output,
+			array(
+				'p'      => array( 'class' => array(), 'id' => array() ),
+				'h1'     => array( 'class' => array(), 'id' => array() ),
+				'h2'     => array( 'class' => array(), 'id' => array() ),
+				'h3'     => array( 'class' => array(), 'id' => array() ),
+				'h4'     => array( 'class' => array(), 'id' => array() ),
+				'h5'     => array( 'class' => array(), 'id' => array() ),
+				'strong' => array( 'class' => array(), 'id' => array() ),
+				'span'   => array( 'class' => array(), 'id' => array() ),
+				'b'      => array( 'class' => array(), 'id' => array() ),
+				'em'     => array( 'class' => array(), 'id' => array() ),
+				'a'      => array( 'class' => array(), 'id' => array(), 'href' => array(), 'title' => array(), 'rel' => array(), 'target' => array() ),
+				'div'    => array( 'class' => array(), 'id' => array() ),
+				'br'     => array(),
+			)
+		);
 
 		/**
 		 * @filter `gravitview_no_entries_text` Modify the text displayed when there are no entries.
@@ -771,6 +811,10 @@ function gv_container_class( $passed_css_class = '', $echo = true, $context = nu
 
 	if ( 0 === $total_entries ) {
 		$default_css_class .= ' gv-container-no-results';
+	}
+
+	if ( $context instanceof \GV\Template_Context && $context->view ) {
+		$default_css_class .= ' ' . $context->view->settings->get( 'class', '' );
 	}
 
 	$css_class = trim( $passed_css_class . ' '. $default_css_class );
