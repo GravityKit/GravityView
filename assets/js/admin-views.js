@@ -1338,10 +1338,10 @@
 				revert: 75,
 				connectWith: ".active-drop-widget",
 				start: function( event, ui ) {
-					$( '#directory-fields, #single-fields' ).find( ".active-drop-widget" ).addClass('is-receivable');
+					$( '#directory-fields, #single-fields' ).find( ".active-drop-container-widget" ).addClass('is-receivable');
 				},
 				stop: function( event, ui ) {
-					$( '#directory-fields, #single-fields' ).find( ".active-drop-widget" ).removeClass('is-receivable');
+					$( '#directory-fields, #single-fields' ).find( ".active-drop-container-widget" ).removeClass('is-receivable');
 				},
 				receive: function ( event, ui ) {
 					// Check if field comes from another active area and if so, update name attributes.
@@ -1365,6 +1365,12 @@
 				distance: 2,
 				revert: 75,
 				connectWith: ".active-drop-field",
+				start: function( event, ui ) {
+					$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-container-field" ).addClass('is-receivable');
+				},
+				stop: function( event, ui ) {
+					$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-container-field" ).removeClass('is-receivable');
+				},
 				receive: function ( event, ui ) {
 					// Check if field comes from another active area and if so, update name attributes.
 					if ( ui.item.find( ".gv-dialog-options" ).length > 0 ) {
