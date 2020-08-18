@@ -1520,7 +1520,7 @@
 		 */
 		toggleVisibility: function ( $checkbox, $toggled, first_run ) {
 
-			var speed = first_run ? 0 : 'fast';
+			var speed = 0;
 
 			if ( $checkbox.is( ':checked' ) ) {
 				$toggled.parents( '.gv-setting-container' ).fadeIn( speed );
