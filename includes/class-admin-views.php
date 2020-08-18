@@ -758,16 +758,19 @@ class GravityView_Admin_Views {
 					'label' => __('Entry ID', 'gravityview'),
 					'type' => 'id',
 					'desc'	=> __('The unique ID of the entry.', 'gravityview'),
+					'icon' => 'dashicons-code-standards',
 				),
 				'date_created' => array(
 					'label' => __('Entry Date', 'gravityview'),
 					'desc'	=> __('The date the entry was created.', 'gravityview'),
 					'type' => 'date_created',
+					'icon' => 'dashicons-calendar-alt',
 				),
 				'date_updated' => array(
 					'label' => __( 'Date Updated', 'gravityview'),
 					'desc'	=> __('The date the entry was last updated.', 'gravityview'),
 					'type' => 'date_updated',
+					'icon' => 'dashicons-calendar-alt',
 				),
 				'source_url' => array(
 					'label' => __('Source URL', 'gravityview'),

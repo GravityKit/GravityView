@@ -18,6 +18,8 @@ class GravityView_Field_Source_URL extends GravityView_Field {
 
 	var $group = 'meta';
 
+	var $icon = 'dashicons-admin-links';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Source URL', 'gravityview' );
 		parent::__construct();

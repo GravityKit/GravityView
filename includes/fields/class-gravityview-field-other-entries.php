@@ -21,6 +21,8 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 
 	var $group = 'gravityview';
 
+	var $icon = 'dashicons-admin-page';
+
 	private $context;
 
 	public function __construct() {
