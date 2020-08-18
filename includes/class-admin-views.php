@@ -973,7 +973,7 @@ class GravityView_Admin_Views {
                             <p class="gv-droppable-area-title"><strong <?php if ( 'widget' === $type ) {
 									echo 'class="screen-reader-text"';
 								} ?>><?php echo esc_html( $area['title'] ); ?></strong><?php if ( ! empty( $area['subtitle'] ) ) { ?>
-                                    <span class="gv-droppable-area-subtitle">
+                                    <span class="gv-droppable-area-subtitle gf_tooltip gv_tooltip tooltip">
                                     &ndash; <?php echo esc_html( $area['subtitle'] ); ?></span><?php } ?></p>
 							<div class="active-drop active-drop-<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
 								<?php // render saved fields
@@ -1028,11 +1028,11 @@ class GravityView_Admin_Views {
 								<span class="drop-message"><?php echo sprintf( esc_html__('"+ %s" or drag existing %ss here.', 'gravityview'), esc_html( $button_label ), esc_html( $type ) ); ?></span>
 							</div>
 							<div class="gv-droppable-area-action">
-                                <a href="#" class="gv-add-field button button-link button-large" title=""
+                                <a href="#" class="gv-add-field button button-link button-hero" title=""
                                    data-objecttype="<?php echo esc_attr( $type ); ?>"
                                    data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>"
                                    data-context="<?php echo esc_attr( $zone ); ?>"
-                                   data-formid="<?php echo $view ? esc_attr( $view->form ? $view->form->ID : '' ) : ''; ?>"><?php echo '+ ' . esc_html( $button_label ); ?></a>
+                                   data-formid="<?php echo $view ? esc_attr( $view->form ? $view->form->ID : '' ) : ''; ?>"><?php echo '<span class="dashicons dashicons-plus-alt"></span>' . esc_html( $button_label ); ?></a>
 							</div>
 						</div>
 

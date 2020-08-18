@@ -1337,6 +1337,12 @@
 				distance: 2,
 				revert: 75,
 				connectWith: ".active-drop-widget",
+				start: function( event, ui ) {
+					$( '#directory-fields, #single-fields' ).find( ".active-drop-widget" ).addClass('is-receivable');
+				},
+				stop: function( event, ui ) {
+					$( '#directory-fields, #single-fields' ).find( ".active-drop-widget" ).removeClass('is-receivable');
+				},
 				receive: function ( event, ui ) {
 					// Check if field comes from another active area and if so, update name attributes.
 

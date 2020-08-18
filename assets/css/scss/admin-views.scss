@@ -14,6 +14,20 @@
 @import "admin-tooltips";
 @import "admin-metabox";
 
+// Colors
+$color-111: #191E23 !default;
+$color-222: #23282D !default;
+$color-333: #32373C !default;
+$color-444: #40464D !default;
+$color-555: #555D66 !default;
+$color-666: #6C7781 !default;
+$color-777: #7E8993 !default;
+$color-888: #8F98A1 !default;
+$color-ddd: #d7dade !default;
+$color-off-white: #f3f4f5 !default;
+$color-green: #328540 !default;
+$color-red: #c0461e !default;
+
 // http://blog.teamtreehouse.com/a-better-clearfix-with-sass
 %clearfix {
 	&:after {
@@ -67,47 +81,24 @@ $gv-overlay-index: 10000;
 .gv-grid {
 	box-sizing: border-box;
 	margin-bottom: 2em;
-}
 
-.gv-grid:before,
-.gv-grid:after {
-	content: " ";
-	display: table;
-}
+	display: grid;
+	grid-template-columns: repeat( 12, 1fr );
+	grid-template-rows: repeat( auto-fill, auto );
+	grid-column-gap: 2rem;
+	grid-row-gap: 1rem;
 
-.gv-grid:after {
-	clear: both;
+	// TODO: Make receivers same height
+	.gv-droppable-area .active-drop-widget {
+	}
 }
-
-.gv-grid-pad {
-	padding: 1em 0 0 1em;
-}
-
-.gv-grid-pad > [class*='gv-grid-col-'] {
-	padding-right: 1em;
-}
-
-.gv-grid-border {
-	border: none;//border: 1px solid #999;
-}
-
-[class*='gv-grid-col-'] {
-	float: left;
-	padding-right: 1%;
-	box-sizing: border-box;
-}
-
 
 .gv-grid-col-1-4 {
-	width: 25%;
+	grid-column: span 3;
 }
 
 .gv-grid-col-1-2 {
-	width: 49.5%;
-	padding-right: 2%;
-}
-.gv-grid-col-1-2 + .gv-grid-col-1-2 {
-	padding-right: 0;
+	grid-column: span 6;
 }
 
 .gv-grid-col-1-8 {
@@ -115,24 +106,36 @@ $gv-overlay-index: 10000;
 }
 
 .gv-grid-col-1-3 {
-	width: 33.33%;
-	padding-right: 2%;
+	grid-column: span 4;
 }
+
 .gv-grid-col-2-3 {
-	width: 66.66%;
-	padding-right: 1%;
+	grid-column: span 8;
 }
-
-
 
 .gv-grid-col-1-1 {
-	width: 100%;
+	grid-column: 1 / -1;
 }
 
-// Clear the left footer area
-.gv-grid-col-1-1 + .gv-grid-col-1-3 + .gv-grid-col-2-3 + .gv-grid-col-1-2,
-.gv-grid-col-1-1 + .gv-grid-col-2-3 + .gv-grid-col-1-3 + .gv-grid-col-1-2 {
-	clear: left;
+@media (max-width: 840px) {
+
+	.gv-grid-col-1-3 {
+		grid-column: 1 / -1;
+	}
+
+	.gv-grid-col-1-4 {
+		grid-column: span 6;
+	}
+
+}
+
+@media (max-width: 640px) {
+
+	.gv-grid-col-1-2,
+	.gv-grid-col-1-4 {
+		grid-column: 1 / -1;
+	}
+
 }
 
 #edit-active-fields,
@@ -155,9 +158,11 @@ $gv-overlay-index: 10000;
 }
 
 .gv-section h4 {
-	font-size: 1.25em;
+	font-size: 22px;
 	font-weight: bold;
-	margin-bottom: .75em;
+	margin-bottom: 1em;
+	padding-bottom: .5em;
+	border-bottom: 1px solid $color-ddd;
 }
 
 .gv-section h4 span {
@@ -490,14 +495,13 @@ hr {
 --------------------------------------- */
 
 .gv-droppable-area {
-	margin-bottom: 1.25em;
 
-	border: 1px dotted #b5bcc2;
-	border-radius: 4px;
+	transition: all 200ms;
+	margin-bottom: 1em;
+	text-align: center;
 
 	.gv-droppable-area-action {
-		padding: 7px 9px 5px;
-		background: #eee;
+		padding: 0.5em;
 	}
 
 	.gv-droppable-area-action:before,
@@ -511,17 +515,23 @@ hr {
 	}
 
 	.gv-droppable-area-title {
-		margin: 0;
-		padding: .5em;
+		padding: .5em 0;
 		text-align: left;
-		color: #555D66;
-		font-weight: normal!important;
+
+		margin: 0 12px 0 0;
+		color: $color-777;
+		text-transform: uppercase;
+		font-size: 13px;
+		font-weight: 500;
+		span {
+			text-transform: none;
+			font-weight: normal;
+		}
 	}
 
 	.gv-droppable-area-subtitle {
 		margin: 0.25em 0 0 0;
 		padding: 0;
-		font-size: .8rem;
 		color: #636D77;
 	}
 
@@ -533,6 +543,12 @@ hr {
 		}
 	}
 
+	.is-receivable {
+		border: none;
+		box-shadow: 0 0 0 2px rgba(210, 224, 235, .7);
+		transition: all 200ms;
+	}
+
 }
 
 // End .gv-droppable-area
@@ -541,22 +557,23 @@ hr {
 	padding: 5px 8px;
 	min-height: 44px;
 	position: relative;
+	box-shadow: 0 0 0 2px rgba(210, 224, 235, .6);
+	border-radius: 5px;
 
 	.drop-message {
 		color: #6D7883;
-		margin: 0;
+		margin: -8px 0 0 0;
 		display: block;
 		text-align: center;
 		width: 90%;
 		padding: 0 5%;
 		z-index: 1;
-		min-height: 40px;
-		font-size: 13px;
+		min-height: 42px;
+		font-size: 14px;
 
 		// Vertically center
 		position: absolute;
 		top: 50%;
-		margin-top: -8px;
 		line-height: 16px;
 
 	}
@@ -571,18 +588,30 @@ hr {
 }
 
 .fields-placeholder {
-	margin: 5px 2px;
-	height: 32px; // .active-drop height - margin-top - margin-bottom - 2px border
-	border: 1px dashed #ccc;
+	margin: 8px 2px;
+	height: 40px; // .active-drop height 2px border
+	border: 1px dashed #636D77;
+	background: rgba(210, 224, 235, .4);
+	border-radius: 3px;
+}
+
+#directory-fields .gv-fields {
+	box-shadow: 2px 2px 2px #F6F9FC;
+
+	&.ui-sortable-helper {
+		box-shadow: 2px 2px 5px rgba(210, 224, 235, .4);
+	}
 }
 
 .gv-fields {
+
+
 	cursor: move;
 	border: 1px solid #ddd;
 	background: #f7f7f7;
 	overflow: hidden;
-	padding: 0.6em .75em;
-	margin: 5px 0;
+	padding: 0.75em;
+	margin: 8px 0;
 	width: 100%;
 	z-index: 100; // Above .drop-message
 	box-sizing: border-box;
@@ -857,7 +886,6 @@ hr {
 				padding-left: 1.7em;
 			}
 		}
-
 	}
 
 	input[type="text"] {
@@ -1011,5 +1039,17 @@ hr {
 		left: -1px;
 		font-size: 20px;
 		line-height: 1;
+	}
+}
+
+.button.button-link.gv-add-field {
+	text-decoration: none;
+	border-radius: 5px;
+	min-height: 40px;
+	line-height: 40px;
+	padding: 0 1.25rem;
+	.dashicons {
+		padding: 0 .25em;
+		line-height: 40px;
 	}
 }
