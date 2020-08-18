@@ -1458,6 +1458,7 @@
 			var buttons = [
 				{
 					text: gvGlobals.label_close,
+					class: 'button button-link',
 					click: function () {
 						$( this ).dialog( 'close' );
 					}

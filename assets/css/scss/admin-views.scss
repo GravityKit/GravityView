@@ -386,6 +386,7 @@ $gv-overlay-index: 10000;
 	padding: .1em;
 	zoom: 1;
 	margin-top: 1em;
+	transition: none;
 
 	.ui-tabs-nav {
 		margin: 0;
@@ -397,6 +398,7 @@ $gv-overlay-index: 10000;
 		-webkit-padding-start: 0;
 
 		li {
+			transition: none;
 			list-style: none;
 			float: left;
 			position: relative;
@@ -409,7 +411,7 @@ $gv-overlay-index: 10000;
 
 			// The tab anchor link
 			.nav-tab {
-				border-radius: 2px 2px 0 0;
+				border-radius: 3px 3px 0 0;
 				float: left;
 				padding: .5em 1em;
 				text-decoration: none;
@@ -501,7 +503,7 @@ hr {
 	text-align: center;
 
 	.gv-droppable-area-action {
-		padding: 0.5em;
+		padding: 2px 0.5em .5em .5em;
 	}
 
 	.gv-droppable-area-action:before,
@@ -543,22 +545,35 @@ hr {
 		}
 	}
 
-	.is-receivable {
-		border: none;
-		box-shadow: 0 0 0 2px rgba(210, 224, 235, .7);
-		transition: all 200ms;
-	}
-
 }
 
 // End .gv-droppable-area
 
-.active-drop {
-	padding: 5px 8px;
-	min-height: 44px;
-	position: relative;
+.active-drop-container {
 	box-shadow: 0 0 0 2px rgba(210, 224, 235, .6);
-	border-radius: 5px;
+	min-height: 44px;
+	border-radius: 3px;
+
+	&.is-receivable {
+		&:empty {
+			min-height: 44px;
+		}
+		border: none;
+	//	box-shadow: 0 0 0 2px $color-888;
+		transition: all 200ms;
+
+		.active-drop {
+			min-height: 60px;
+			background: rgba(210, 224, 235, .4);
+			transition: all 200ms;
+		}
+	}
+}
+.active-drop {
+	border-radius: 3px;
+	padding: 5px 8px 8px;
+	position: relative;
+	transition: all 200ms;
 
 	.drop-message {
 		color: #6D7883;
@@ -591,7 +606,9 @@ hr {
 	margin: 8px 2px;
 	height: 40px; // .active-drop height 2px border
 	border: 1px dashed #636D77;
+	border: none;
 	background: rgba(210, 224, 235, .4);
+	background: rgba(99, 109, 119, .2);
 	border-radius: 3px;
 }
 
@@ -604,14 +621,13 @@ hr {
 }
 
 .gv-fields {
-
-
 	cursor: move;
 	border: 1px solid #ddd;
 	background: #f7f7f7;
 	overflow: hidden;
 	padding: 0.75em;
 	margin: 8px 0;
+
 	width: 100%;
 	z-index: 100; // Above .drop-message
 	box-sizing: border-box;
@@ -773,11 +789,62 @@ hr {
 	display: block;
 }
 
-.ui-dialog-titlebar {
-	min-height: 1.25em;
-	line-height: 1.25;
-	padding: 10px;
-	height: auto;
+.gv-dialog {
+
+	&.ui-widget-content {
+		padding: 10px;
+	}
+
+	.ui-dialog-titlebar,
+	.ui-dialog-buttonpane {
+		min-height: 1.25em;
+		line-height: 1.25;
+		padding: 5px; // TODO: Convert to padding .ui-widget-content instead of this and .gv-setting-container
+		height: auto;
+		background: white;
+		border: none;
+		text-align: left;
+		font-weight: 300;
+		font-size: 1.5rem;
+	}
+
+	.ui-dialog-buttonpane button {
+		min-height: 32px;
+		line-height: 2.30769231; /* 30px */
+		padding: 0 12px;
+		font-size: 14px;
+		border-radius: 3px;
+	}
+
+	.ui-button.ui-dialog-titlebar-close {
+
+		padding: 3px;
+		top: 5px;
+		right: 5px;
+		border-radius: 3px;
+
+		&:hover {
+			background: #f1f1f1;
+		}
+
+		// Replace the jQuery UI "X" with Dashicons
+		.ui-button-icon-primary.ui-icon.ui-icon-closethick {
+			background: none;
+			display: none;
+
+		}
+
+		&:after {
+			//content: "\f158";
+			content: "\f335";
+			font-family: Dashicons, sans-serif;
+			font-size: 30px;
+			line-height: 30px;
+			speak: none;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		}
+	}
 }
 
 .gv-dialog-options {
@@ -816,7 +883,7 @@ hr {
 	.gv-setting-container {
 		@extend %clearfix;
 		margin: 0;
-		padding: .4em 15px .8em;
+		padding: .4em 5px .8em;
 		// border-bottom: 1px solid #f9f9f9;
 		display: block;
 		font-size: 1.1em;
@@ -845,6 +912,9 @@ hr {
 			font-family: Dashicons, sans-serif;
 			font-size: 1em;
 			line-height: 1em;
+			speak: none;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
 		}
 
 		.howto {
@@ -1015,7 +1085,15 @@ hr {
 .gv-label {
 	display: inline-block;
 	clear: right;
-	margin-bottom: .1em;
+	margin: .25em 0;
+	color: $color-666;
+	text-transform: uppercase;
+	font-size: 13px;
+	font-weight: 500;
+}
+
+.gv-label-select select {
+	display: block;
 }
 
 .gv-label-checkbox {
@@ -1044,10 +1122,13 @@ hr {
 
 .button.button-link.gv-add-field {
 	text-decoration: none;
-	border-radius: 5px;
+	border-radius: 3px;
 	min-height: 40px;
 	line-height: 40px;
 	padding: 0 1.25rem;
+
+	margin-top: -4px;
+
 	.dashicons {
 		padding: 0 .25em;
 		line-height: 40px;

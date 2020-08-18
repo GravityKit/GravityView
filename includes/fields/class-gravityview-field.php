@@ -129,7 +129,10 @@ abstract class GravityView_Field {
 	 */
 	public function __construct() {
 
-		// Modify the field options based on the name of the field type
+		/**
+		 * Modify the field options based on the name of the field type
+		 * @see GravityView_Render_Settings::get_default_field_options
+		 */
 		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 6 );
 
 		add_filter( 'gravityview/sortable/field_blacklist', array( $this, '_filter_sortable_fields' ), 1 );

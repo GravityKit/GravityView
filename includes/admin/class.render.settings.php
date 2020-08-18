@@ -43,7 +43,6 @@ class GravityView_Render_Settings {
 					'type' => 'text',
 					'label' => __( 'Custom Label:', 'gravityview' ),
 					'value' => '',
-					'class'      => 'widefat',
 					'merge_tags' => true,
 					'class'      => 'widefat',
 				),
@@ -81,6 +80,11 @@ class GravityView_Render_Settings {
 				);
 			}
 
+		}
+
+		// Remove suffix ":" from the labels to standardize style. Using trim() instead of rtrim() for i18n.
+		foreach ( $field_options as $key => $field_option ) {
+			$field_options[ $key ]['label'] = trim( $field_options[ $key ]['label'], ':' );
 		}
 
 		/**
@@ -200,7 +204,7 @@ class GravityView_Render_Settings {
 			return $output;
 		}
 
-		$output .= '<div class="gv-dialog-options" title="'. esc_attr( sprintf( __( 'Options: %s', 'gravityview' ) , strip_tags( html_entity_decode( $field_label ) ) ) ) .'">';
+		$output .= '<div class="gv-dialog-options" title="'. esc_attr( sprintf( __( '%s Settings', 'gravityview' ) , strip_tags( html_entity_decode( $field_label ) ) ) ) .'">';
 
 		/**
 		 * @since 1.8
