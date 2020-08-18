@@ -6,16 +6,16 @@
 <div id="gv-view-configuration-tabs">
 
 	<ul class="nav-tab-wrapper">
-		<li><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page"></i> <?php esc_html_e( 'Multiple Entries', 'gravityview' ); ?></a></li>
-		<li><a href="#single-view" class="nav-tab"><i class="dashicons dashicons-media-default"></i> <?php esc_html_e( 'Single Entry', 'gravityview' ); ?></a></li>
-		<li><a href="#edit-view" class="nav-tab"><i class="dashicons dashicons-welcome-write-blog"></i> <?php esc_html_e( 'Edit Entry', 'gravityview' ); ?></a></li>
+		<li><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page"></i> <?php echo esc_html( sprintf( __( '%s Layout', 'gravityview' ), esc_html__( 'Multiple Entries', 'gravityview' ) ) ); ?></a></li>
+		<li><a href="#single-view" class="nav-tab"><i class="dashicons dashicons-media-default"></i> <?php echo esc_html( sprintf( __( '%s Layout', 'gravityview' ), esc_html__( 'Single Entry', 'gravityview' ) ) ); ?></a></li>
+		<li><a href="#edit-view" class="nav-tab"><i class="dashicons dashicons-welcome-write-blog"></i> <?php echo esc_html( sprintf( __( '%s Layout', 'gravityview' ), esc_html__( 'Edit Entry', 'gravityview' ) ) ); ?></a></li>
 	</ul>
 
 	<div id="directory-view">
 
 		<div id="directory-fields" class="gv-section">
 
-			<h4><?php esc_html_e( 'Above Entries', 'gravityview'); ?> <span><?php esc_html_e( 'These widgets will be shown above entries.', 'gravityview'); ?></span></h4>
+			<h4><?php esc_html_e( 'Top Widgets', 'gravityview'); ?> <span><?php esc_html_e( 'These widgets will be shown above entries.', 'gravityview'); ?></span></h4>
 
 			<?php do_action('gravityview_render_widgets_active_areas', $curr_template, 'header', $post->ID ); ?>
 
@@ -27,7 +27,7 @@
 				} ?>
 			</div>
 
-			<h4><?php esc_html_e( 'Below Entries', 'gravityview'); ?> <span><?php esc_html_e( 'These widgets will be shown below entries.', 'gravityview'); ?></span></h4>
+			<h4><?php esc_html_e( 'Bottom Widgets', 'gravityview'); ?> <i class="gf_tooltip gv_tooltip" title="<?php esc_attr_e( 'These widgets will be shown below entries.', 'gravityview'); ?>"></i></h4>
 
 			<?php
 
