@@ -28,21 +28,20 @@
 }
 
 
+
 /** tooltips for fields + widgets */
 
 $tooltip_background: #eee;
 
-body .ui-tooltip.ui-widget-content {
-	padding: 8px;
+body .ui-tooltip {
+	padding: 0;
 	position:absolute;
-	width: 400px;
-	font-size: 14px;
-	line-height: 18.2px;
+	width: 460px;
 	max-width: 100%; // Resize for responsive, if necessary
 	z-index: 999999!important; // Gravity Forms tooltips - need to make sure they're higher z-index to be above the field settings
-	background: $tooltip_background;
-	border-radius: 4px;
-	box-shadow: 0 0 5px #aaa;
+	background: white; //$tooltip_background;
+	border: 1px solid #e2e4e7;
+	box-shadow: 0 3px 30px rgba(25, 30, 35, 0.1);
 
 	// Fixes https://github.com/gravityview/GravityView/issues/1416
 	overflow-y: hidden;
@@ -50,15 +49,6 @@ body .ui-tooltip.ui-widget-content {
 	// Fix issue in Gravity Forms tooltips with line breaks
 	br { display: none; }
 
-	// Keep Gravity Forms < 2.5 styling for now
-	color: #191e23; // Looks better than #000
-	text-shadow: 1px 1px 1px #fff;
-	border: 4px solid #999;
-	text-align: left;
-
-	h6 {
-		color: #0e6085;
-	}
 }
 /* Fades and background-images don't work well together in IE6, drop the image */
 * html .ui-tooltip {
@@ -66,77 +56,164 @@ body .ui-tooltip.ui-widget-content {
 }
 
 .ui-tooltip-content {
-	padding: 0 10px;
-	max-height: 325px;
+	padding: 0;
+	max-height: 500px;
 	overflow-y: auto;
+	position: relative;
 
 	&:after {
-	  content: "";
-	  display: table;
-	  clear: both;
+		content: "";
+		display: table;
+		clear: both;
 	}
 
 	.close {
-		position: absolute;
-		padding: 5px;
-		top: -25px;
-		left: -25px;
-		cursor: pointer;
-	}
-	.close i {
-		font-size: 25px;
-		color: #555;
-
-		&:hover,
-		&:active {
-			color: #000;
-		}
+		display: none;
 	}
 
 	.gv-field-controls {
 		display: none;
 	}
 
+	div[role=listbox] {
+		padding: 16px;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: space-around;
+	}
+
 	.gv-fields {
+		background: transparent;
+		border: 1px solid white;
+
+		&:hover {
+			border: 1px solid #555D66;
+		}
+
 		cursor: pointer;
 		border-radius: 4px;
 		padding: .5em .75em;
+		margin-bottom: 10px;
+		width: 32%;
+		text-align: center;
+
+		h5 {
+			float: none;
+			width: 100%;
+			font-weight: normal;
+		}
+
+		.gv-field-info {
+			display: none;
+			display: block;
+			font-weight: normal;
+			color: #999;
+			text-shadow: none;
+			margin-top: .5rem;
+
+			span {
+				&:after {
+					content: ", ";
+				}
+
+				&.gv-sublabel,
+				&:last-child {
+					@extend %clearfix;
+				}
+			}
+		}
+		.gv-field-label {
+			margin-bottom: 10px;
+		}
+
+		.dashicons,
+		.material-icons {
+			display: block;
+			text-align: center;
+			margin: 0 auto 10px;
+			font-size: 24px;
+			width: 24px;
+			height: 24px;
+		}
 
 		// Indent the child fields a bit.
 		&.gv-child-field {
-			width: 95%;
-			margin-left: 5%;
+			display: none!important;
 		}
 
+		&[data-fieldid="all-fields"] {
+			width: 100%;
+		}
+	}
+
+	.gv-items-picker-container[data-layout="list"] {
+		.gv-fields {
+			width: 100%;
+			min-height: 36px;
+			font-size: 13px;
+			padding: 6px 12px;
+			margin: 0;
+			text-align: left;
+		}
+		.dashicons {
+			display: inline-block;
+			margin-bottom: 0;
+			margin-right: 8px;
+		}
+		.gv-field-info {
+			display: inline;
+			display: none;
+		}
 	}
 
 	.gv-field-filter-form {
+		z-index: 10000;
+		position: sticky;
+		top: 0;
+		width: 460px;
+		background: white;
+		margin: 0;
+		padding: 16px 16px;
+		box-sizing: border-box;
 		input {
+			top: 0;
+			left: 0;
+			width: 80%;
 			height: 2.5em;
 		}
-		margin: 0 0 1em 0;
-		padding-bottom: 1em;
-		border-bottom: 1px solid rgba(204, 204, 204, .6 );
+
+		span[role=button] {
+			display: inline-block;
+			padding: 8px;
+			color: #8F98A1;
+			border-radius: 3px;
+
+			&.active {
+				background: rgba(210, 224, 235, .6);
+				color: #40464D;
+			}
+		}
+
+		border-bottom: 1px solid rgba(210, 224, 235, .6);
 	}
 
 	.gv-no-results {
-		font-size: 14px;
+		text-align: center;
+		font-size: 16px;
+		font-style: italic;
+		padding: 0 24px 32px 24px;
 		margin: 1em 0;
-	}
-
-	.gv-fields h5 {
-		float: none;
-		width: 100%;
+		vertical-align: top;
 	}
 
 
 }
 
 .top .ui-tooltip-content::after {
-    bottom: -14px;
-    left: 48%;
-    border-color: #999 transparent;
-    border-width: 10px 10px 0;
+	bottom: -14px;
+	left: 48%;
+	border-color: #999 transparent;
+	border-width: 10px 10px 0;
 }
 
 /**
@@ -144,5 +221,5 @@ body .ui-tooltip.ui-widget-content {
  * @see https://github.com/katzwebservices/GravityView/issues/438
  */
 .gv-dialog .ui-dialog-titlebar-close:before {
-    content: '';
+	content: '';
 }

@@ -1175,9 +1175,11 @@ class GravityView_Admin_Views {
                 <div class="gv-field-filter-form">
                     <label class="screen-reader-text" for="<?php echo esc_html( $filter_field_id ); ?>"><?php esc_html_e( 'Filter Fields:', 'gravityview' ); ?></label>
                     <input type="search" class="widefat gv-field-filter" aria-controls="<?php echo $filter_field_id; ?>" id="<?php echo esc_html( $filter_field_id ); ?>" placeholder="<?php esc_html_e( 'Filter fields by name or label', 'gravityview' ); ?>" />
+					<span role="button" class="dashicons dashicons-grid-view gv-items-picker gv-items-picker--grid active" data-value="grid"></span>
+					<span role="button" class="dashicons dashicons-list-view gv-items-picker gv-items-picker--list" data-value="list"></span>
                 </div>
 
-                <div id="available-fields-<?php echo $filter_field_id; ?>" aria-live="polite" role="listbox">
+                <div id="available-fields-<?php echo $filter_field_id; ?>" aria-live="polite" role="listbox" class="gv-items-picker-container" data-layout="grid">
 					<?php do_action( 'gravityview_render_available_fields', $form_id, $context ); ?>
                 </div>
 

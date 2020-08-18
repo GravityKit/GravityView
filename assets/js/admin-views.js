@@ -113,6 +113,9 @@
 				// close all tooltips if user clicks outside the tooltip
 				.on( 'click mouseup keyup', vcfg.closeTooltips )
 
+				// close all tooltips if user clicks outside the tooltip
+				.on( 'click', '.gv-field-filter-form span[role="button"]', vcfg.switchTooltipLayout )
+
 				// switch View (for existing forms)
 				.on( 'click', '#gv_switch_view_button', vcfg.switchView )
 
@@ -233,6 +236,24 @@
 				}
 			});
 
+		},
+
+		/**
+		 * When clicking the field picker layout, change the tooltip class
+		 *
+		 * @param  {jQueryEvent} e [description]
+		 * @return {bool}   [description]
+		 */
+		switchTooltipLayout: function ( e ) {
+
+			var layout = $( this ).data( 'value' );
+
+			console.log( layout );
+
+			$( '.gv-items-picker' ).removeClass( 'active' );
+			$( this ).addClass( 'active' );
+
+			$( '.gv-items-picker-container' ).attr( 'data-layout', layout );
 		},
 
 		/**
