@@ -705,8 +705,10 @@ class GravityView_Admin_Views {
 				'input_type' => null,
 				'field_options' => null,
 				'settings_html'	=> null,
-			)
+				'icon' => null,
+			),
 		);
+
 
 		/**
 		 * @filter `gravityview_additional_fields` non-standard Fields to show at the bottom of the field picker
@@ -862,6 +864,16 @@ class GravityView_Admin_Views {
 
 		// Move Custom Content to top
 		$fields = array( 'custom' => $fields['custom'] ) + $fields;
+
+		$gv_fields = GravityView_Fields::get_all();
+
+		foreach ( $fields as &$field ) {
+			foreach ( $gv_fields as $gv_field ) {
+				if ( $field['type'] === $gv_field->name ) {
+					$field['icon'] = $gv_field->icon;
+				}
+			}
+		}
 
 		/**
 		 * @filter `gravityview/admin/available_fields` Modify the available fields that can be used in a View.
