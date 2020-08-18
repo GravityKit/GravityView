@@ -765,24 +765,27 @@ class GravityView_Admin_Views {
 					'type' => 'date_created',
 				),
 				'date_updated' => array(
-						'label' => __( 'Date Updated', 'gravityview'),
-						'desc'	=> __('The date the entry was last updated.', 'gravityview'),
-						'type' => 'date_updated',
+					'label' => __( 'Date Updated', 'gravityview'),
+					'desc'	=> __('The date the entry was last updated.', 'gravityview'),
+					'type' => 'date_updated',
 				),
 				'source_url' => array(
 					'label' => __('Source URL', 'gravityview'),
 					'type' => 'source_url',
 					'desc'	=> __('The URL of the page where the form was submitted.', 'gravityview'),
+					'icon' => 'dashicons-admin-links',
 				),
 				'ip' => array(
 					'label' => __('User IP', 'gravityview'),
 					'type' => 'ip',
 					'desc'	=> __('The IP Address of the user who created the entry.', 'gravityview'),
+					'icon' => 'dashicons-laptop',
 				),
 				'created_by' => array(
 					'label' => __('User', 'gravityview'),
 					'type' => 'created_by',
 					'desc'	=> __('Details of the logged-in user who created the entry (if any).', 'gravityview'),
+					'icon' => 'dashicons-admin-users',
 				),
 
 				/**
@@ -822,6 +825,7 @@ class GravityView_Admin_Views {
 			'label' => __( 'Result Number', 'gravityview' ),
 			'type'  => 'sequence',
 			'desc'  => __( 'Display a sequential result number for each entry.', 'gravityview' ),
+			'icon'  => 'dashicons-editor-ol',
 		);
 
 		/**

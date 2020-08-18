@@ -53,6 +53,7 @@ class GravityView_Field_Gravatar extends GravityView_Field {
 			'label' => $this->label,
 			'desc'  => $this->description,
 			'type'  => $this->name,
+			'icon'  => 'dashicons-id',
 		);
 
 		return $entry_default_fields;

@@ -21,6 +21,8 @@ class GravityView_Field_Select extends GravityView_Field {
 
 	var $group = 'standard';
 
+	var $icon = 'dashicons-arrow-down';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Select', 'gravityview' );
 		parent::__construct();
@@ -56,7 +58,7 @@ class GravityView_Field_Select extends GravityView_Field {
 				),
 			);
 		}
-		
+
 		return $field_options;
 	}
 

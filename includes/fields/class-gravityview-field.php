@@ -102,7 +102,7 @@ abstract class GravityView_Field {
 	/**
 	 * @var string An icon that represents the field type in the field picker
 	 */
-	public $icon = null;
+	public $icon = 'dashicons-admin-generic';
 
 	/**
 	 * @since 1.15.2
