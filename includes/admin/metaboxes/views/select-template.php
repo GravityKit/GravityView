@@ -25,7 +25,7 @@ $templates = gravityview_get_registered_templates();
 	<?php foreach( $templates as $id => $template ) {
 		$selected = ( $id == $current_template ) ? ' gv-selected' : ''; ?>
 
-		<div class="gv-grid-col-1-3">
+		<div class="gv-grid-col-1-4">
 			<div class="gv-view-types-module<?php echo $selected; ?>" data-filter="<?php echo esc_attr( $template['type'] ); ?>">
 				<div class="gv-view-types-hover">
 					<div>

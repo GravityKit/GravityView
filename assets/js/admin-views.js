@@ -153,6 +153,12 @@
 
 				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters );
 
+			$( '.gv-add-field').on('focus', function() {
+				$( this ).parent('.gv-fields').addClass('focused');
+			}).on('blur', function() {
+				$( this ).parent('.gv-fields').removeClass('focused');
+			});
+
 			// End bind to $('body')
 
 			if( gvGlobals.passed_form_id ) {
@@ -248,8 +254,6 @@
 
 			var layout = $( this ).data( 'value' );
 
-			console.log( layout );
-
 			$( '.gv-items-picker' ).removeClass( 'active' );
 			$( this ).addClass( 'active' );
 
@@ -276,6 +280,12 @@
 					if ( e.keyCode === 27 ) {
 						close = $( '.gv-field-filter-form input[data-has-search]:focus' ).length === 0;
 						return_false = close;
+
+						// The Beacon escape key behavior is flaky. Make it work better.
+						// And
+						if ( window.Beacon  ) {
+							Beacon('close');
+						}
 					}
 
 					break;
@@ -1899,9 +1909,11 @@
 			activate_tab = $( location.hash ).index() - 1;
 		}
 
-		// View Configuration - Tabs (persisten after refresh)
+		// View Configuration - Tabs (and persist after refresh)
 		$( "#gv-view-configuration-tabs" ).tabs( {
 			active: activate_tab,
+			hide: false,
+			show: false,
 			activate: function ( event, ui ) {
 
 				// When the tab is activated, set a new cookie

@@ -39,7 +39,7 @@
 
 			<?php // list of available widgets to be shown in the popup ?>
             <div id="directory-available-widgets" class="hide-if-js gv-tooltip">
-				<div aria-live="polite" role="listbox" class="gv-items-picker-container gv-widget-picker-container" data-layout="grid">
+				<div aria-live="polite" role="listbox" class="gv-items-picker-container gv-widget-picker-container" data-layout="list">
                 	<span class="close" role="button" aria-label="<?php esc_html_e( 'Close', 'gravityview' ); ?>"><i class="dashicons dashicons-dismiss"></i></span>
 					<?php do_action('gravityview_render_available_widgets' ); ?>
 				</div>

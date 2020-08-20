@@ -7,105 +7,113 @@
 
 #gravityview-metabox-content-container {
 
-  max-height: 640px; // Most common resolution - see https://gs.statcounter.com/screen-resolution-stats/mobile/worldwide
-  overflow-y: auto;
+	max-height: 640px; // Most common resolution - see https://gs.statcounter.com/screen-resolution-stats/mobile/worldwide
+	overflow-y: auto;
 
-  background: white; // Allow .striped rows to show
-  float: left;
-  width: 80%;
-  border-left: 1px solid #eee;
-  @include borderbox();
+	background: white; // Allow .striped rows to show
+	float: left;
+	width: 70%;
+	border-left: 1px solid #eee;
+	padding: 16px;
+	@include borderbox();
 
 
-  #side-sortables & {
-    width: 100%;
+	#side-sortables & {
+		width: 100%;
 
-    th, td {
-      @include clearfix();
-      display: block;
-      padding: 10px 10px 3px;
-    }
+		th, td {
+			@include clearfix();
+			display: block;
+			padding: 10px 10px 3px;
+		}
 
-  }
+	}
 
-  .form-table {
-    margin-top: 0;
-    padding-top: 0;
+	.form-table {
+		width: 100%;
+		margin-top: 0;
+		padding-top: 0;
 
-    caption {
-      text-align: left;
-      .rtl & {
-        text-align: right;
-      }
+		.alternate {
+			background: #fff;
+		}
 
-      font-size: 14px;
-      padding: 8px 10px;
-      margin: 0;
-      line-height: 1.4;
-      font-weight: 600;
-    }
+		caption {
+			text-align: left;
 
-    label {
-      .howto {
-        margin-top: 5px;
-      }
-    }
-  }
+			.rtl & {
+				text-align: right;
+			}
 
-  .ui-tabs-panel {
+			font-size: 14px;
+			padding: 8px 10px;
+			margin: 0;
+			line-height: 1.4;
+			font-weight: 600;
+		}
 
-    @include clearfix();
-    @include borderbox();
+		label {
+			.howto {
+				margin-top: 5px;
+				line-height: 1.4;
+			}
+		}
+	}
 
-    // Overrides
-    padding: 0;
-    border: none;
+	.ui-tabs-panel {
 
-    #side-sortables & {
-      margin-top: 1px; // Move away a bit from the border radius
-      border-top: 2px solid #ccc;
-    }
+		@include clearfix();
+		@include borderbox();
 
-    p {
-      margin: 9px 0 9px;
-    }
+		// Overrides
+		padding: 0;
+		border: none;
 
-    p.form-field,
-    fieldset.form-field {
-      padding: 5px 20px 5px 162px !important; /** Padding for aligning labels left - 12px + 150 label width **/
-    }
+		#side-sortables & {
+			margin-top: 1px; // Move away a bit from the border radius
+			border-top: 2px solid #ccc;
+		}
 
-    .description {
-      padding: 0;
-      margin: 0 0 0 7px;
-      clear: none;
-      display: inline;
-    }
+		p {
+			margin: 9px 0 9px;
+		}
 
-    div + input {
-    	margin-top: 5px;
-    }
+		p.form-field,
+		fieldset.form-field {
+			padding: 5px 20px 5px 162px !important; /** Padding for aligning labels left - 12px + 150 label width **/
+		}
 
-    textarea,
-    input,
-    select {
-      margin: 0;
+		.description {
+			padding: 0;
+			margin: 0 0 0 7px;
+			clear: none;
+			display: inline;
+		}
 
-      &[type="checkbox"]{
-      	margin-top: -4px;
-      }
-    }
+		div + input {
+			margin-top: 5px;
+		}
 
-    textarea {
-      vertical-align: top;
-      height: 3.5em;
-      line-height: 1.5em;
-    }
+		textarea,
+		input,
+		select {
+			margin: 0;
 
-    input.button {
-      width: auto;
-      margin-left: 8px;
-    }
+			&[type="checkbox"] {
+				margin-top: -4px;
+			}
+		}
 
-  }
+		textarea {
+			vertical-align: top;
+			height: 3.5em;
+			line-height: 1.5em;
+		}
+
+		input.button {
+			width: auto;
+			margin-left: 8px;
+		}
+
+	}
 }

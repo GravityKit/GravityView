@@ -7,7 +7,6 @@
 
 #gravityview_settings {
 
-  @import "admin-metabox-panel";
 
   padding: 0;
 
@@ -20,24 +19,26 @@
     padding: .5em 0 0;
   }
 
+  // The wrapper for the entire metabox
   .inside {
     padding: 0;
     margin: 0;
-    background: #fafafa;
+    background: #fff;
 
     @include clearfix();
   }
 
+  // The left nav
   ul.ui-tabs-nav {
     line-height: 1em;
     float: left;
-    width: 20%;
+    width: 30%;
 
     margin: 0;
     position: relative;
     padding: 0 0 30px;
-    background-color: #fafafa;
-    @include borderbox();
+    background-color: #fff;
+    box-sizing: border-box;
 
     #side-sortables & {
       width: 100%;
@@ -49,6 +50,7 @@
       display: block;
       padding: 0;
       margin: 0;
+      top: 0;
       width: 100%;
 
       &.ui-state-disabled {
@@ -58,8 +60,8 @@
       a {
         @include borderbox();
 
-        padding: 10px;
-        line-height: 20px !important;
+        padding: 13px;
+        line-height: 24px !important;
         margin: 0;
         display: block;
         width: 100%;
@@ -67,7 +69,8 @@
         border: none;
         outline: none;
         box-shadow: none; // Prevent the blue glow in Safari OSX
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid $color-bg-active;
+        color: $color-444;
         background: none;
         transition-duration: 0;
 
@@ -82,13 +85,22 @@
         }
       }
 
+      &.ui-state-hover {
+	      a {
+		      background-color: $color-bg-inactive;
+		      color: $color-333;
+	      }
+      }
       &.ui-state-active {
         a {
           position: relative;
-          background-color: #eee;
-          color: #555;
+          background-color: $color-bg-active;
+          color: $color-111;
         }
       }
     }
   }
+
+  // The right panel
+  @import "admin-metabox-panel";
 }

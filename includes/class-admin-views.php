@@ -705,10 +705,8 @@ class GravityView_Admin_Views {
 				'input_type' => null,
 				'field_options' => null,
 				'settings_html'	=> null,
-				'icon' => null,
-			),
+			)
 		);
-
 
 		/**
 		 * @filter `gravityview_additional_fields` non-standard Fields to show at the bottom of the field picker
@@ -1000,8 +998,8 @@ class GravityView_Admin_Views {
                             <p class="gv-droppable-area-title"><strong <?php if ( 'widget' === $type ) {
 									echo 'class="screen-reader-text"';
 								} ?>><?php echo esc_html( $area['title'] ); ?></strong><?php if ( ! empty( $area['subtitle'] ) ) { ?>
-                                    <span class="gv-droppable-area-subtitle gf_tooltip gv_tooltip tooltip">
-                                    &ndash; <?php echo esc_html( $area['subtitle'] ); ?></span><?php } ?></p>
+                                    <span class="gv-droppable-area-subtitle"><span class="gf_tooltip gv_tooltip tooltip">
+                                    &ndash; <?php echo esc_html( $area['subtitle'] ); ?></span></span><?php } ?></p>
 							<div class="active-drop-container active-drop-container-<?php echo esc_attr( $type ); ?>">
 							<div class="active-drop active-drop-<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
 								<?php // render saved fields
@@ -1185,11 +1183,11 @@ class GravityView_Admin_Views {
                     <input type="search" class="widefat gv-field-filter" aria-controls="<?php echo $filter_field_id; ?>" id="<?php echo esc_html( $filter_field_id ); ?>" placeholder="<?php esc_html_e( 'Filter fields by name or label', 'gravityview' ); ?>" />
 					<div class="button-group">
 						<span role="button" class="button button-large gv-items-picker gv-items-picker--grid" data-value="grid"><i class="dashicons dashicons-grid-view "></i></span>
-						<span role="button" class="button button-large gv-items-picker gv-items-picker--list" data-value="list"><i class="dashicons dashicons-list-view"></i></span>
+						<span role="button" class="button button-large gv-items-picker gv-items-picker--list active" data-value="list"><i class="dashicons dashicons-list-view"></i></span>
 					</div>
                 </div>
 
-                <div id="available-fields-<?php echo $filter_field_id; ?>" aria-live="polite" role="listbox" class="gv-items-picker-container" data-layout="grid">
+                <div id="available-fields-<?php echo $filter_field_id; ?>" aria-live="polite" role="listbox" class="gv-items-picker-container" data-layout="list">
 					<?php do_action( 'gravityview_render_available_fields', $form_id, $context ); ?>
                 </div>
 

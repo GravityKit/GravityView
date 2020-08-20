@@ -16,11 +16,13 @@
 		font: normal normal normal 14px/1 FontAwesome;
 		content: "\f059";
 	}
-
-	margin-left: 0;
+	display: inline-block;
 	text-align: center;
 	border-radius: 100px;
 	padding: .2rem;
+	position: absolute;
+	margin: 0 2px;
+	height: 16px;
 	width: 16px;
 	text-decoration: none;
 	color: #424242;
@@ -45,6 +47,7 @@ body .ui-tooltip {
 	background: white; //$tooltip_background;
 	border: 1px solid #e2e4e7;
 	box-shadow: 0 3px 30px rgba(25, 30, 35, 0.1);
+	font-size: 1em;
 
 	// Fixes https://github.com/gravityview/GravityView/issues/1416
 	overflow-y: hidden;
@@ -59,7 +62,23 @@ body .ui-tooltip {
 }
 
 .ui-tooltip-content {
-	padding: 0;
+
+	padding: 20px;
+	color: $color-444;
+
+	h6 {
+		font-size: 17px;
+		color: $color-444;
+	}
+
+	p {
+		font-size: 14px;
+	}
+
+	.gravityview-item-picker-tooltip & {
+		padding: 0;
+	}
+
 	max-height: 500px;
 	overflow-y: auto;
 	position: relative;
@@ -90,7 +109,14 @@ body .ui-tooltip {
 		border: 1px solid white;
 
 		&:hover {
-			border: 1px solid #555D66;
+			border: 1px solid $color-777;
+			.gv-field-info {
+				//display: block!important;
+			}
+		}
+		&:active {
+			border-color: #32373C;
+			background: rgba(210, 224, 235, .7);
 		}
 
 		cursor: pointer;
@@ -104,10 +130,11 @@ body .ui-tooltip {
 			float: none;
 			width: 100%;
 			font-weight: normal;
+			text-align: center;
 		}
 
 		.gv-field-info {
-			display: none;
+			text-align: center;
 			display: block;
 			font-weight: normal;
 			color: #999;
@@ -148,6 +175,10 @@ body .ui-tooltip {
 
 		&[data-fieldid="all-fields"] {
 			width: 100%;
+			padding-left: 12px!important;
+			* {
+				text-align: center!important;
+			}
 		}
 	}
 
@@ -156,18 +187,33 @@ body .ui-tooltip {
 			width: 100%;
 			min-height: 36px;
 			font-size: 13px;
-			padding: 6px 12px;
+			padding: 8px 12px 6px 38px;
 			margin: 0;
-			text-align: left;
+			line-height: 24px;
+			* {
+				text-align: left;
+			}
 		}
 		.dashicons {
 			display: inline-block;
-			margin-bottom: 0;
-			margin-right: 8px;
+			margin: 0 8px 0 -36px;
 		}
 		.gv-field-info {
-			display: inline;
 			display: none;
+		}
+
+		&.gv-widget-picker-container {
+			.gv-fields {
+				width: 50%;
+				padding: 16px 12px;
+				line-height: 1.25em;
+				h5 {
+					font-weight: 500;
+				}
+			}
+			.gv-field-info {
+				display: block;
+			}
 		}
 	}
 
@@ -178,24 +224,44 @@ body .ui-tooltip {
 		width: 460px;
 		background: white;
 		margin: 0;
-		padding: 16px 16px;
+		padding: 16px;
 		box-sizing: border-box;
 		input {
 			top: 0;
 			left: 0;
-			width: 80%;
+			width: 75%;
 			height: 2.5em;
 		}
 
-		span[role=button] {
-			display: inline-block;
-			padding: 8px;
-			color: #8F98A1;
+		.button-group {
+			float: right;
+			height: 35px;
 			border-radius: 3px;
+		}
+		span[role=button] {
+			&:first-child {
+				border-right: 0;
+			}
+			//float: right;
+			display: inline-block;
+			cursor: pointer;
+			margin: 0;
+			border-color: #7e8993;
+			color: #8F98A1;
+			/*border: none;*/
+			border-radius: 3px;
+			height: 35px;
+			.dashicons {
+				line-height: 35px;
+			}
 
+			&:hover {
+				background: rgba(210, 224, 235, .2);
+			}
 			&.active {
 				background: rgba(210, 224, 235, .6);
 				color: #40464D;
+				border-color: #7e8993;
 			}
 		}
 
@@ -210,7 +276,6 @@ body .ui-tooltip {
 		margin: 1em 0;
 		vertical-align: top;
 	}
-
 
 }
 
