@@ -759,36 +759,42 @@ class GravityView_Admin_Views {
 					'type' => 'id',
 					'desc'	=> __('The unique ID of the entry.', 'gravityview'),
 					'icon' => 'dashicons-code-standards',
+					'group' => 'meta',
 				),
 				'date_created' => array(
 					'label' => __('Entry Date', 'gravityview'),
 					'desc'	=> __('The date the entry was created.', 'gravityview'),
 					'type' => 'date_created',
 					'icon' => 'dashicons-calendar-alt',
+					'group' => 'meta',
 				),
 				'date_updated' => array(
 					'label' => __( 'Date Updated', 'gravityview'),
 					'desc'	=> __('The date the entry was last updated.', 'gravityview'),
 					'type' => 'date_updated',
 					'icon' => 'dashicons-calendar-alt',
+					'group' => 'meta',
 				),
 				'source_url' => array(
 					'label' => __('Source URL', 'gravityview'),
 					'type' => 'source_url',
 					'desc'	=> __('The URL of the page where the form was submitted.', 'gravityview'),
 					'icon' => 'dashicons-admin-links',
+					'group' => 'meta',
 				),
 				'ip' => array(
 					'label' => __('User IP', 'gravityview'),
 					'type' => 'ip',
 					'desc'	=> __('The IP Address of the user who created the entry.', 'gravityview'),
 					'icon' => 'dashicons-laptop',
+					'group' => 'meta',
 				),
 				'created_by' => array(
 					'label' => __('User', 'gravityview'),
 					'type' => 'created_by',
 					'desc'	=> __('Details of the logged-in user who created the entry (if any).', 'gravityview'),
 					'icon' => 'dashicons-admin-users',
+					'group' => 'meta',
 				),
 
 				/**
@@ -798,6 +804,7 @@ class GravityView_Admin_Views {
 				    'label'	=> __('Other Entries', 'gravityview'),
 				    'type'	=> 'other_entries',
 				    'desc'	=> __('Display other entries created by the entry creator.', 'gravityview'),
+					'group' => 'gravityview',
 			    ),
 	        );
 
@@ -807,6 +814,7 @@ class GravityView_Admin_Views {
 					'label' => __('Link to Entry', 'gravityview'),
 					'desc'	=> __('A dedicated link to the single entry with customizable text.', 'gravityview'),
 					'type' => 'entry_link',
+					'group' => 'gravityview',
 				);
 			}
 
@@ -1175,8 +1183,10 @@ class GravityView_Admin_Views {
                 <div class="gv-field-filter-form">
                     <label class="screen-reader-text" for="<?php echo esc_html( $filter_field_id ); ?>"><?php esc_html_e( 'Filter Fields:', 'gravityview' ); ?></label>
                     <input type="search" class="widefat gv-field-filter" aria-controls="<?php echo $filter_field_id; ?>" id="<?php echo esc_html( $filter_field_id ); ?>" placeholder="<?php esc_html_e( 'Filter fields by name or label', 'gravityview' ); ?>" />
-					<span role="button" class="dashicons dashicons-grid-view gv-items-picker gv-items-picker--grid active" data-value="grid"></span>
-					<span role="button" class="dashicons dashicons-list-view gv-items-picker gv-items-picker--list" data-value="list"></span>
+					<div class="button-group">
+						<span role="button" class="button button-large gv-items-picker gv-items-picker--grid" data-value="grid"><i class="dashicons dashicons-grid-view "></i></span>
+						<span role="button" class="button button-large gv-items-picker gv-items-picker--list" data-value="list"><i class="dashicons dashicons-list-view"></i></span>
+					</div>
                 </div>
 
                 <div id="available-fields-<?php echo $filter_field_id; ?>" aria-live="polite" role="listbox" class="gv-items-picker-container" data-layout="grid">
