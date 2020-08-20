@@ -34,6 +34,8 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 	var $group = 'gravityview';
 
+	var $icon = 'dashicons-editor-ol';
+
 	public function __construct() {
 
 		$this->label = esc_html__( 'Number Sequence', 'gravityview' );

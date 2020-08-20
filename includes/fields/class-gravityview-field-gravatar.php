@@ -18,6 +18,8 @@ class GravityView_Field_Gravatar extends GravityView_Field {
 
 	var $contexts = array( 'single', 'multiple', 'export' );
 
+	var $icon = 'dashicons-id';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Gravatar', 'gravityview' );
 		$this->description = esc_html__( 'A Gravatar is an image that represents a person online based on their email. Powered by gravatar.com.', 'gravityview' );

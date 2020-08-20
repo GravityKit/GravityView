@@ -19,6 +19,8 @@ class GravityView_Field_Date_Updated extends GravityView_Field_Date_Created {
 
 	var $contexts = array( 'single', 'multiple', 'export' );
 
+	var $icon = 'dashicons-calendar-alt';
+
 	/**
 	 * GravityView_Field_Date_Updated constructor.
 	 */

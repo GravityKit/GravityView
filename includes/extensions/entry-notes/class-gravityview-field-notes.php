@@ -40,6 +40,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 */
 	var $name = 'notes';
 
+	var $icon = 'dashicons-admin-comments';
+
 	function __construct() {
 
 		self::$path = plugin_dir_path( __FILE__ );
