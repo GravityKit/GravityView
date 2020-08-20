@@ -1033,7 +1033,7 @@
 					my: "center bottom",
 					at: "center top-12"
 				},
-				tooltipClass: 'top'
+				tooltipClass: 'gravityview-item-picker-tooltip top'
 			} )
 			// add title attribute so the tooltip can continue to work (jquery ui bug?)
 			.attr( "title", "" ).on( 'mouseout focusout', function ( e ) {
