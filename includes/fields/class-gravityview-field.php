@@ -427,7 +427,7 @@ abstract class GravityView_Field {
 		return apply_filters( 'gravityview_field_support_options', $options );
 	}
 
-	function add_field_support( $key = '', &$field_options ) {
+	function add_field_support( $key, &$field_options ) {
 
 		$options = $this->field_support_options();
 
