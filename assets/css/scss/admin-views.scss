@@ -9,24 +9,11 @@
  *
  * @since 1.0.0
  */
+@import "variables";
 @import "admin-widgets-php";
 @import "admin-merge-tags";
 @import "admin-tooltips";
 @import "admin-metabox";
-
-// Colors
-$color-111: #191E23 !default;
-$color-222: #23282D !default;
-$color-333: #32373C !default;
-$color-444: #40464D !default;
-$color-555: #555D66 !default;
-$color-666: #6C7781 !default;
-$color-777: #7E8993 !default;
-$color-888: #8F98A1 !default;
-$color-ddd: #d7dade !default;
-$color-off-white: #f3f4f5 !default;
-$color-green: #328540 !default;
-$color-red: #c0461e !default;
 
 // http://blog.teamtreehouse.com/a-better-clearfix-with-sass
 %clearfix {
