@@ -19,7 +19,7 @@ $include_path = GRAVITYVIEW_DIR . 'includes/plugin-and-theme-hooks/';
 // Abstract class
 require $include_path . 'abstract-gravityview-plugin-and-theme-hooks.php';
 
-$glob_flags = defined( 'GLOB_BRACE' ) ? GLOB_BRACE : 1024;
+$glob_flags = defined( 'GLOB_BRACE' ) ? GLOB_BRACE : 0;
 
 $plugin_theme_hooks_files = glob( $include_path . 'class-gravityview-{plugin,theme}-hooks-*.php', $glob_flags );
 
