@@ -1422,6 +1422,17 @@ class GVCommon {
 
         $fields = $date_created + $fields;
 
+		// Are there custom content fields?
+		if ( is_admin() ) {
+			$view = \GV\View::by_id( \GV\Utils::_GET( 'post' ) );
+			foreach ( $view->fields->by_type( 'custom' )->all() as $custom ) {
+				$fields[ 'custom_' . $custom->UID ] = array(
+					'type' => 'custom',
+					'label' => __( 'Custom Content', 'gravityview' ) . ': ' . $custom->admin_label,
+				);
+			}
+		}
+
 		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', $blacklist, NULL );
 
 		// TODO: Convert to using array_filter

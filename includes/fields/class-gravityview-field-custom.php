@@ -19,7 +19,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 	 * @var bool
 	 * @since 1.15.3
 	 */
-	var $is_sortable = false;
+	var $is_sortable = true;
 
 	/**
 	 * @var bool
@@ -34,6 +34,8 @@ class GravityView_Field_Custom extends GravityView_Field {
 		$this->label = esc_html__( 'Custom Content', 'gravityview' );
 
 		add_filter( 'gravityview/edit_entry/form_fields', array( $this, 'show_field_in_edit_entry' ), 10, 4 );
+
+		add_filter( 'gravityview/view/add_filtersorts', array( $this, 'add_filtersorts' ), 10, 2 );
 
 		parent::__construct();
 	}
@@ -138,6 +140,56 @@ class GravityView_Field_Custom extends GravityView_Field {
 		}
 
 		return $new_fields;
+	}
+
+	/**
+	 * Sort by custom content field if required!
+	 *
+	 * @param \GV\View $view The view.
+	 * @param \GV\Request $request The request.
+	 *
+	 * @return void
+	 */
+	public function add_filtersorts( $view, $request ) {
+		if ( $view->fields->by_type( 'custom' )->count() ) {
+			add_filter( 'gravityview/entries/sort', $callback = function( $compare, $entry1, $entry2, $view, $request ) {
+				if ( ! $sorts = \GV\Utils::_GET( 'sort' ) ) {
+					$sorts = array_combine( $view->settings->get( 'sort_field' ), $view->settings->get( 'sort_direction' ) );
+				}
+
+				/**
+				 * We'll actually need to sort everything on the PHP side now.
+				 * This is weird...
+				 */
+				$renderer = new \GV\Field_Renderer();
+
+				foreach ( $sorts as $key => $direction ) {
+					if ( strpos( $key, 'custom_' ) === 0 ) {
+						$field = $view->fields->get( str_replace( 'custom_', '', $key ) );
+					} else {
+						$field  = is_numeric( $key ) ? \GV\GF_Field::by_id( $view->form, $key ) : \GV\Internal_Field::by_id( $key );
+					}
+
+					$source = is_numeric( $key ) ? $view->form : new \GV\Internal_Source();
+
+					$value1 = $renderer->render( $field, $view, $source, $entry1, $request );
+					$value2 = $renderer->render( $field, $view, $source, $entry2, $request );
+
+					// @todo numerics
+					if ( $value1 === $value2 ) {
+						continue;
+					}
+
+					return ( ( $value1 > $value2 ) ? -1 : 1 ) * ( strtolower( $direction ) == 'asc' ) ? 1 : -1;
+				}
+
+				return 0; // They're the same.
+			}, 10, 5 );
+
+			add_action( 'gravityview/view/remove_filtersorts', function() use ( $callback ) {
+				remove_action( 'gravityview/entries/sort', $callback );
+			} );
+		}
 	}
 
 }

@@ -917,6 +917,7 @@ class View implements \ArrayAccess {
 	 */
 	public function get_entries( $request = null ) {
 		$entries = new \GV\Entry_Collection();
+
 		if ( $this->form ) {
 			$parameters = $this->settings->as_atts();
 
@@ -1305,6 +1306,17 @@ class View implements \ArrayAccess {
 				}
 
 				/**
+				 * @action `gravityview/view/add_filtersorts` The best place to create filtersorts.
+				 * @see `gravityview/view/remove_filtersorts` filter to remove filtersorts afterwards.
+				 *
+				 * @param \GV\View $view This view.
+				 * @param \GV\Request $request The request.
+				 *
+				 * @since develop
+				 */
+				do_action( 'gravityview/view/add_filtersorts', $this, $request );
+
+				/**
 				 * If a PHP filtersort has been set remove all the pagination limits and offset.
 				 *
 				 * Since we're sorting and/or filtering in PHP we need to grab the whole dataset.
@@ -1395,6 +1407,17 @@ class View implements \ArrayAccess {
 					$entries->add_count_callback( function() use ( $filtered, $v ) {
 						return count( $filtered ) - $v->settings->get( 'offset' );
 					} );
+
+					/**
+					 * @action `gravityview/view/remove_filtersorts` The best place to remove filtersorts once they're done.
+					 * @see `gravityview/view/add_filtersorts` filter to add filtersorts.
+					 *
+					 * @param \GV\View $view This view.
+					 * @param \GV\Request $request The request.
+					 *
+					 * @since develop
+					 */
+					do_action( 'gravityview/view/add_filtersorts', $this, $request );
 				} else {
 					/**
 					 * Add total count callback.

@@ -59,6 +59,29 @@ class Field_Collection extends Collection {
 	}
 
 	/**
+	 * Get a copy of this \GV\Field_Collection filtered by type.
+	 *
+	 * @param string $type The type of the field to get.
+	 *
+	 * @api
+	 * @since develop
+	 *
+	 * @return \GV\Field_Collection A filtered collection of \GV\Fields, filtered by type.
+	 */
+	public function by_type( $type ) {
+		$fields = new self();
+
+		$search = implode( '.*', array_map( 'preg_quote', explode( '*', $type ) ) );
+
+		foreach ( $this->all() as $field ) {
+			if ( preg_match( "#^{$search}$#", $field->type ) ) {
+				$fields->add( $field );
+			}
+		}
+		return $fields;
+	}
+
+	/**
 	 * Get a copy of this \GV\Field_Collection filtered by position.
 	 *
 	 * @param string $position The position to get the fields for.

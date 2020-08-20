@@ -55,6 +55,12 @@ class View_Table_Template extends View_Template {
             return $column_label;
 		}
 
+		if ( 'custom' === $context->field->type ) {
+			$field_id = 'custom_' . $context->field->UID;
+		} else {
+			$field_id = $context->field->ID;
+		}
+
 		if ( ! \GravityView_frontend::getInstance()->is_field_sortable( $context->field->ID, $context->view->form->form ) ) {
 			return $column_label;
 		}
@@ -68,21 +74,21 @@ class View_Table_Template extends View_Template {
 		if ( $sorts ) {
 			if ( is_array( $sorts ) ) {
 				foreach ( (array)$sorts as $key => $direction ) {
-					if ( $key == $context->field->ID ) {
-						$sorting['key'] = $context->field->ID;
+					if ( $key == $field_id ) {
+						$sorting['key'] = $field_id;
 						$sorting['direction'] = strtolower( $direction );
 						break;
 					}
 				}
 			} else {
-				if ( $sorts == $context->field->ID ) {
-					$sorting['key'] = $context->field->ID;
+				if ( $sorts == $field_id ) {
+					$sorting['key'] = $context_id;
 					$sorting['direction'] = strtolower( Utils::_GET( 'dir', '' ) );
 				}
 			}
 		} else {
 			foreach ( (array)$context->view->settings->get( 'sort_field', array() ) as $i => $sort_field ) {
-				if ( $sort_field == $context->field->ID ) {
+				if ( $sort_field == $field_id ) {
 					$sorting['key'] = $sort_field;
 					$sorting['direction'] = strtolower( Utils::get( $directions, $i, '' ) );
 					break; // Only get the first sort
@@ -93,9 +99,12 @@ class View_Table_Template extends View_Template {
 		$class = 'gv-sort';
 
 		$sort_field_id = \GravityView_frontend::_override_sorting_id_by_field_type( $context->field->ID, $context->view->form->ID );
+		if ( 'custom' === $context->field->type ) {
+			$sort_field_id = 'custom_' . $context->field->UID;
+		}
 
 		$sort_args = array(
-			sprintf( 'sort[%s]', $context->field->ID ),
+			sprintf( 'sort[%s]', $field_id ),
 			'asc'
 		);
 
@@ -125,7 +134,7 @@ class View_Table_Template extends View_Template {
 
 		$url = remove_query_arg( array( 'pagenum' ) );
 		$url = remove_query_arg( 'sort', $url );
-		$multisort_url = self::_get_multisort_url( $url, $sort_args, $context->field->ID );
+		$multisort_url = self::_get_multisort_url( $url, $sort_args, $context->field );
 
     	$url = add_query_arg( $sort_args[0], $sort_args[1], $url );
 
@@ -150,11 +159,11 @@ class View_Table_Template extends View_Template {
      * @see add_columns_sort_links
 	 * @param string $url Single-sort URL
 	 * @param array $sort_args Single sorting for rules, in [ field_id, dir ] format
-     * @param string|int $field_id ID of the current field being displayed
+     * @param \GV\Field $field The current field
      *
      * @return string Multisort URL, if there are multiple sorts. Otherwise, existing $url
 	 */
-	static public function _get_multisort_url( $url, $sort_args, $field_id ) {
+	static public function _get_multisort_url( $url, $sort_args, $field ) {
 
 		$sorts = Utils::_GET( 'sort' );
 
@@ -163,6 +172,12 @@ class View_Table_Template extends View_Template {
 		}
 
         $multisort_url = $url;
+
+		if ( 'custom' === $field->type ) {
+			$field_id = 'custom_' . $field->UID;
+		} else {
+			$field_id = $field->ID;
+		}
 
 		// If the field has already been sorted by, add the field to the URL
         if ( ! in_array( $field_id, $keys = array_keys( $sorts ) ) ) {
