@@ -40,6 +40,10 @@ class GravityView_Field_Custom extends GravityView_Field {
 		parent::__construct();
 	}
 
+	/**
+	 * @inheritDoc
+	 * @since 2.9.1 Added "This content is numeric" setting
+	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		unset ( $field_options['search_filter'], $field_options['show_as_link'] );
@@ -75,6 +79,8 @@ class GravityView_Field_Custom extends GravityView_Field {
 				'value' => '',
 			),
 		);
+
+		$this->add_field_support( 'is_numeric', $new_fields );
 
 		if ( 'edit' === $context ) {
 			unset( $field_options['custom_label'], $field_options['show_label'], $field_options['allow_edit_cap'], $new_fields['wpautop'], $new_fields['oembed'] );
