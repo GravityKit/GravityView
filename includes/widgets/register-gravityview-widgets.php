@@ -3,19 +3,15 @@
  * GravityView default widgets and generic widget class
  *
  * @package   GravityView
- * @author    Zack Katz <zack@katzwebservices.com>
- * @license   ToBeDefined
- * @link      http://gravityview.co
- * @copyright Copyright 2014, Katz Web Services, Inc.
- *
- * @since 1.0.0
+ * @license   GPL2+
+ * @link      https://gravityview.co
+ * @copyright Copyright 2020, Katz Web Services, Inc.
  */
 
 
 
 /**
  * Register the default widgets
- * @todo Move somehere logical
  * @return void
  */
 function gravityview_register_gravityview_widgets() {
@@ -26,6 +22,7 @@ function gravityview_register_gravityview_widgets() {
 	include_once( GRAVITYVIEW_DIR .'includes/widgets/class-gravityview-widget-page-links.php' );
 	include_once( GRAVITYVIEW_DIR .'includes/widgets/class-gravityview-widget-page-size.php' );
 	include_once( GRAVITYVIEW_DIR .'includes/widgets/class-gravityview-widget-custom-content.php' );
+	include_once( GRAVITYVIEW_DIR .'includes/widgets/class-gravityview-widget-gravityforms.php' );
 	include_once( GRAVITYVIEW_DIR .'includes/widgets/search-widget/class-search-widget.php' );
 
 	if( class_exists('GFPolls') ) {

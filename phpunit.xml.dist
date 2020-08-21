@@ -33,6 +33,6 @@
 		</whitelist>
 	</filter>
 	<logging>
-		<log type="coverage-clover" target="/tmp/clover.xml" charset="UTF-8" />
+		<log type="coverage-clover" target="/tmp/clover.xml" />
 	</logging>
 </phpunit>

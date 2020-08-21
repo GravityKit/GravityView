@@ -1540,7 +1540,7 @@ class View implements \ArrayAccess {
 
 				return $caps;
 			case 'edit_post':
-				if ( get_post_type( array_pop( $args ) ) == 'gravityview' ) {
+				if ( 'gravityview' === get_post_type( array_pop( $args ) ) ) {
 					return self::restrict( $caps, 'edit_gravityview', $user_id, $args );
 				}
 		endswitch;

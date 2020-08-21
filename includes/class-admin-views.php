@@ -639,11 +639,11 @@ class GravityView_Admin_Views {
 				}
 
 				// Edit mode only allows editing the parent fields, not single inputs.
-				if( $context === 'edit' && !empty( $details['parent'] ) ) {
+				if( $context === 'edit' && ! empty( $details['parent'] ) ) {
 					continue;
 				}
 
-				$output .= new GravityView_Admin_View_Field( $details['label'], $id, $details, $settings = array(), $form );
+				$output .= new GravityView_Admin_View_Field( $details['label'], $id, $details, array(), $form );
 
 			} // End foreach
 		}
@@ -668,45 +668,45 @@ class GravityView_Admin_Views {
 	 */
 	public function render_additional_fields( $form = 0, $context = 'single' ) {
 
+		$additional_fields = array(
+			array(
+				'label_text' => '+ ' . __( 'Add All Form Fields', 'gravityview' ),
+				'desc' => __('Insert all the form fields at once.', 'gravityview'),
+				'field_id' => 'all-fields',
+				'label_type' => 'field',
+				'input_type' => null,
+				'field_options' => null,
+				'settings_html'	=> null,
+			)
+		);
+
 		/**
 		 * @filter `gravityview_additional_fields` non-standard Fields to show at the bottom of the field picker
 		 * @param array $additional_fields Associative array of field arrays, with `label_text`, `desc`, `field_id`, `label_type`, `input_type`, `field_options`, and `settings_html` keys
 		 */
-		$additional_fields = apply_filters( 'gravityview_additional_fields', array(
-			array(
-				'label_text' => __( '+ Add All Fields', 'gravityview' ),
-				'desc' => __('Add all the available fields at once.', 'gravityview'),
-				'field_id' => 'all-fields',
-				'label_type' => 'field',
-				'input_type' => NULL,
-				'field_options' => NULL,
-				'settings_html'	=> NULL,
-			)
-		));
+		$additional_fields = apply_filters( 'gravityview_additional_fields', $additional_fields );
 
-		if( !empty( $additional_fields )) {
-			foreach ( (array)$additional_fields as $item ) {
+		foreach ( (array) $additional_fields as $item ) {
 
-				// Prevent items from not having index set
-				$item = wp_parse_args( $item, array(
-					'label_text' => NULL,
-					'field_id' => NULL,
-					'label_type' => NULL,
-					'input_type' => NULL,
-					'field_options' => NULL,
-					'settings_html'	=> NULL,
-				));
+			// Prevent items from not having index set
+			$item = wp_parse_args( $item, array(
+				'label_text' => null,
+				'field_id' => null,
+				'label_type' => null,
+				'input_type' => null,
+				'field_options' => null,
+				'settings_html'	=> null,
+			));
 
-				// Backward compat.
-				if( !empty( $item['field_options'] ) ) {
-					// Use settings_html from now on.
-					$item['settings_html'] = $item['field_options'];
-				}
-
-				// Render a label for each of them
-				echo new GravityView_Admin_View_Field( $item['label_text'], $item['field_id'], $item, $settings = array(), $form );
-
+			// Backward compat.
+			if( !empty( $item['field_options'] ) ) {
+				// Use settings_html from now on.
+				$item['settings_html'] = $item['field_options'];
 			}
+
+			// Render a label for each of them
+			echo new GravityView_Admin_View_Field( $item['label_text'], $item['field_id'], $item, $settings = array(), $form );
+
 		}
 
 	}
@@ -733,6 +733,11 @@ class GravityView_Admin_Views {
 					'label' => __('Entry Date', 'gravityview'),
 					'desc'	=> __('The date the entry was created.', 'gravityview'),
 					'type' => 'date_created',
+				),
+				'date_updated' => array(
+						'label' => __( 'Date Updated', 'gravityview'),
+						'desc'	=> __('The date the entry was last updated.', 'gravityview'),
+						'type' => 'date_updated',
 				),
 				'source_url' => array(
 					'label' => __('Source URL', 'gravityview'),
@@ -968,7 +973,7 @@ class GravityView_Admin_Views {
 										$item = array(
 											'input_type' => $input_type,
 											'settings_html' => $field_options,
-											'label_type' => $type
+											'label_type' => $type,
 										);
 
 										// Merge the values with the current item to pass things like widget descriptions and original field names

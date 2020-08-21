@@ -366,8 +366,8 @@ class GravityView_Edit_Entry_Render {
 			unset( $this->entry['date_created'] );
 
 			/**
-			 * @action `gravityview/edit_entry/before_update` Perform an action after the entry has been updated using Edit Entry
-			 * @since develop
+			 * @action `gravityview/edit_entry/before_update` Perform an action before the entry has been updated using Edit Entry
+			 * @since 2.1
 			 * @param array $form Gravity Forms form array
 			 * @param string $entry_id Numeric ID of the entry that is being updated
 			 * @param GravityView_Edit_Entry_Render $this This object

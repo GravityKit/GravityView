@@ -61,6 +61,8 @@ final class GravityView_Delete_Entry {
 		add_action ( 'gravityview/delete-entry/trashed', array( $this, 'process_connected_posts' ), 10, 2 );
 
 		add_filter( 'gravityview/field/is_visible', array( $this, 'maybe_not_visible' ), 10, 3 );
+
+		add_action( 'gravityview/metaboxes/permissions_after', array( $this, 'view_settings_permissions_metabox' ) );
 	}
 
 	/**
@@ -207,10 +209,25 @@ final class GravityView_Delete_Entry {
 			'field_id' => 'delete_link',
 			'label_type' => 'field',
 			'input_type' => 'delete_link',
-			'field_options' => NULL
+			'field_options' => null,
 		);
 
 		return $available_fields;
+	}
+
+	/**
+	 * Render Delete Entry Permissions settings
+	 *
+	 * @since 2.9
+	 *
+	 * @param $current_settings
+	 *
+	 * @return void
+	 */
+	public function view_settings_permissions_metabox( $current_settings ) {
+
+		GravityView_Render_Settings::render_setting_row( 'user_delete', $current_settings );
+
 	}
 
 	/**
