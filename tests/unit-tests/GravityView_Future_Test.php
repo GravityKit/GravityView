@@ -4618,27 +4618,27 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$gv_field = new \GV\Field();
 		$gv_field->ID = 1;
 
-		$url = $template->_get_multisort_url( '/example/', array( '1', 'asc' ), '1' );
+		$url = $template->_get_multisort_url( '/example/', array( '1', 'asc' ), $gv_field );
 
 		$this->assertEquals( '/example/', $url );
 
 		$_GET = array();
 
 		$_GET['sort'] = array( '1' => 'asc' );
-		$url = $template->_get_multisort_url( '/example/', array( '1', 'desc' ), '1' );
+		$url = $template->_get_multisort_url( '/example/', array( '1', 'desc' ), $gv_field );
 		$this->assertEquals( '/example/?sort[1]=desc', urldecode( $url ) );
 
 		// Sorting by first name, desc
 		$_GET['sort'] = array( '1' => 'desc' );
 		// So the link shows asc
-		$url = $template->_get_multisort_url( '/example/', array( 'sort[1]', 'asc' ), '1' );
+		$url = $template->_get_multisort_url( '/example/', array( 'sort[1]', 'asc' ), $gv_field );
 		$this->assertEquals( '/example/?sort[1]=asc', urldecode( $url ) );
 
 
 		// Sorting by last name asc
 		$_GET['sort'] = array( '2' => 'desc' );
 		// And if we were just single-sorting, we would expect to be sorted by default values
-		$url = $template->_get_multisort_url( '/example/', array( 'sort[1]', 'asc' ), '1' );
+		$url = $template->_get_multisort_url( '/example/', array( 'sort[1]', 'asc' ), $gv_field );
 
 		// But since we're multisorting, I expect sorting by last name desc, then by first name asc
 		$this->assertEquals( '/example/?sort[2]=desc&sort[1]=asc', urldecode( $url ) );
@@ -4650,7 +4650,7 @@ class GVFuture_Test extends GV_UnitTestCase {
             '1' => 'asc',
         );
 		// And if we were just single-sorting, we would expect to be sorted by default values
-		$url = $template->_get_multisort_url( '/example/', array( 'sort[1]', 'desc' ), '1' );
+		$url = $template->_get_multisort_url( '/example/', array( 'sort[1]', 'desc' ), $gv_field );
 
 		// But since we're multisorting, I expect sorting by last name desc, then by first name asc
 		$this->assertEquals( '/example/?sort[2]=desc&sort[1]=desc', urldecode( $url ) );
@@ -4661,7 +4661,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'2' => 'desc',
 		);
 		// And if we were just single-sorting, we would expect to be sorted by default values
-		$url = $template->_get_multisort_url( '/example/', array( 'sort[1]', 'desc' ), '1' );
+		$url = $template->_get_multisort_url( '/example/', array( 'sort[1]', 'desc' ), $gv_field );
 
 		// But since we're multisorting, I expect sorting by last name desc, then by first name asc
 		$this->assertEquals( '/example/?sort[1]=desc&sort[2]=desc', urldecode( $url ) );

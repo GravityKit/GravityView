@@ -173,6 +173,10 @@ class View_Table_Template extends View_Template {
 
         $multisort_url = $url;
 
+		if ( ! $field ) {
+			return $url;
+		}
+
 		if ( 'custom' === $field->type ) {
 			$field_id = 'custom_' . $field->UID;
 		} else {

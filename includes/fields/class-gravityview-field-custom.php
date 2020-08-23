@@ -157,45 +157,63 @@ class GravityView_Field_Custom extends GravityView_Field {
 	 * @return void
 	 */
 	public function add_filtersorts( $view, $request ) {
-		if ( $view->fields->by_type( 'custom' )->count() ) {
-			add_filter( 'gravityview/entries/sort', $callback = function( $compare, $entry1, $entry2, $view, $request ) {
-				if ( ! $sorts = \GV\Utils::_GET( 'sort' ) ) {
-					$sorts = array_combine( $view->settings->get( 'sort_field' ), $view->settings->get( 'sort_direction' ) );
-				}
-
-				/**
-				 * We'll actually need to sort everything on the PHP side now.
-				 * This is weird...
-				 */
-				$renderer = new \GV\Field_Renderer();
-
-				foreach ( $sorts as $key => $direction ) {
-					if ( strpos( $key, 'custom_' ) === 0 ) {
-						$field = $view->fields->get( str_replace( 'custom_', '', $key ) );
-					} else {
-						$field  = is_numeric( $key ) ? \GV\GF_Field::by_id( $view->form, $key ) : \GV\Internal_Field::by_id( $key );
-					}
-
-					$source = is_numeric( $key ) ? $view->form : new \GV\Internal_Source();
-
-					$value1 = $renderer->render( $field, $view, $source, $entry1, $request );
-					$value2 = $renderer->render( $field, $view, $source, $entry2, $request );
-
-					// @todo numerics
-					if ( $value1 === $value2 ) {
-						continue;
-					}
-
-					return ( ( $value1 > $value2 ) ? -1 : 1 ) * ( strtolower( $direction ) == 'asc' ) ? 1 : -1;
-				}
-
-				return 0; // They're the same.
-			}, 10, 5 );
-
-			add_action( 'gravityview/view/remove_filtersorts', function() use ( $callback ) {
-				remove_action( 'gravityview/entries/sort', $callback );
-			} );
+		if ( ! $view->fields->by_type( 'custom' )->count() ) {
+			return; // No sorts.
 		}
+
+		if ( ! $sorts = \GV\Utils::_GET( 'sort' ) ) {
+			$sorts = array_combine( (array)$view->settings->get( 'sort_field' ), (array)$view->settings->get( 'sort_direction' ) );
+		}
+
+		if ( strpos( implode( ':', array_keys( $sorts ) ), 'custom_' ) === false ) {
+			return; // No custom sorts here.
+		}
+
+		add_filter( 'gravityview/entries/sort', $callback = function( $compare, $entry1, $entry2, $view, $request ) use ( $sorts ) {
+			/**
+			 * We'll actually need to sort everything on the PHP side now.
+			 * This is weird...
+			 */
+			$renderer = new \GV\Field_Renderer();
+
+			foreach ( $sorts as $key => $direction ) {
+				if ( strpos( $key, 'custom_' ) === 0 ) {
+					$field = $view->fields->get( str_replace( 'custom_', '', $key ) );
+				} else {
+					$field  = is_numeric( $key ) ? \GV\GF_Field::by_id( $view->form, $key ) : \GV\Internal_Field::by_id( $key );
+				}
+
+				$source = is_numeric( $key ) ? $view->form : new \GV\Internal_Source();
+
+				$value1 = $renderer->render( $field, $view, $source, $entry1, $request );
+				$value2 = $renderer->render( $field, $view, $source, $entry2, $request );
+
+				if ( $value1 === $value2 ) {
+					continue;
+				}
+
+				if ( $field->is_numeric ) { // @todo do we not have a filter that controls sorting?
+					if ( is_numeric( $value1 ) ) {
+						$value1 = floatval( $value1 );
+					}
+
+					if ( is_numeric( $value2 ) ) {
+						$value2 = floatval( $value2 );
+					}
+
+					return strnatcmp( $value1, $value2 ) * ( ( strtolower( $direction ) == 'desc' ) ? -1 : 1 );
+				} else {
+					return strcmp( $value1, $value2 ) * ( ( strtolower( $direction ) == 'desc' ) ? -1 : 1 );
+				}
+
+			}
+
+			return 0; // They're the same.
+		}, 10, 5 );
+
+		add_action( 'gravityview/view/remove_filtersorts', function() use ( $callback ) {
+			remove_action( 'gravityview/entries/sort', $callback );
+		} );
 	}
 
 }
