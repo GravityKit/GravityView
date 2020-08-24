@@ -672,7 +672,6 @@ hr {
 	border: 1px solid $color-ddd;
 	background: #f7f7f7;
 	overflow: hidden;
-	padding: 0.75em;
 	margin: 8px 0;
 
 	width: 100%;
@@ -686,7 +685,8 @@ hr {
 		font-weight: 600;
 		font-size: 14px;
 		margin: 0;
-		padding: 0 0 0 .25em;
+		//padding: 0 0 0 .25em;
+		padding: 0;
 		user-select: none;
 		box-sizing: border-box;
 		text-align: left;
@@ -723,15 +723,23 @@ hr {
 
 		@extend .gv-reset-button-style;
 
-		padding: 5px 3px;
-		border-radius: 15px;
-		position: absolute;
-		top: -5px;
+		background-color: #f7f7f7;
+		&:hover {
+			background-color: #fefefe;
+		}
+		margin: 0 .5em 0 -5px;
+		background: $color-bg-active;
+		padding: .5em;
+//		border-radius: 15px;
 
 		color: #0073aa;
 
 		&.gv-remove-field {
+			position: absolute;
+			top: 0;
 			right: -3px;
+			background: none;
+			margin: 0;
 		}
 
 		.dashicons {
@@ -958,6 +966,10 @@ hr {
 			display: inline-block;
 			padding-right: .75em;
 			max-width: 100%; // Fix https://github.com/katzwebservices/GravityView-AZ-Filters/issues/14
+
+			* {
+				font-weight: normal;
+			}
 		}
 
 		label[for*=show_as_link]::after {

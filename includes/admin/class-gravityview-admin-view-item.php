@@ -181,6 +181,8 @@ abstract class GravityView_Admin_View_Item {
 
 		$output .= '<h5 class="selectable gfield field-id-' . esc_attr( $this->id ) . '">';
 
+		$output .= '<span class="gv-field-controls">' . $settings_link . $show_as_link . '<button class="gv-remove-field" aria-label="' . esc_attr( $delete_title ) . '" title="' . esc_attr( $delete_title ) . '"><span class="dashicons-dismiss dashicons"></span></button></span>';
+
 		$parent_label = '';
 
 		if ( ! empty( $this->item['parent'] ) ) {
@@ -190,7 +192,6 @@ abstract class GravityView_Admin_View_Item {
 		// Name of field / widget
 		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . $this->get_item_info( false ) . '">' . $label . $parent_label . '</span>';
 
-		$output .= '<span class="gv-field-controls">' . $settings_link . $show_as_link . '<button class="gv-remove-field" aria-label="' . esc_attr( $delete_title ) . '" title="' . esc_attr( $delete_title ) . '"><span class="dashicons-dismiss dashicons"></span></button></span>';
 
 		// Displays only in the field/widget picker.
 		if ( $field_info = $this->get_item_info() ) {
