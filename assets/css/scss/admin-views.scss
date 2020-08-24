@@ -671,6 +671,7 @@ hr {
 	cursor: move;
 	border: 1px solid $color-ddd;
 	background: #f7f7f7;
+	background: $color-off-white;
 	overflow: hidden;
 	margin: 8px 0;
 
@@ -679,13 +680,15 @@ hr {
 	box-sizing: border-box;
 	border-radius: 3px;
 
+	transition: border-color 50ms;
+
 	h5 {
 		float: left;
 		width: 100%;
 		font-weight: 600;
-		font-size: 14px;
+		font-size: 15px;
+		line-height: 26px;
 		margin: 0;
-		//padding: 0 0 0 .25em;
 		padding: 0;
 		user-select: none;
 		box-sizing: border-box;
@@ -701,13 +704,16 @@ hr {
 	}
 
 	span.gv-field-controls {
-		padding-left: .33em; // Give some space.
 		box-sizing: border-box;
 	}
 
 	&:hover {
 
-		background: #fefefe;
+		border-color: $color-888;
+
+		.gv-field-controls button {
+			//background-color: $color-bg-active;
+		}
 
 		.gv-field-controls .dashicons {
 			color: #136cb9;
@@ -723,16 +729,33 @@ hr {
 
 		@extend .gv-reset-button-style;
 
-		background-color: #f7f7f7;
-		&:hover {
-			background-color: #fefefe;
-		}
-		margin: 0 .5em 0 -5px;
-		background: $color-bg-active;
-		padding: .5em;
-//		border-radius: 15px;
+		border-right: 1px solid transparent;
+		transition: all .05s;
 
-		color: #0073aa;
+		&:hover,
+		&:active,
+		&.active {
+			background: #fefefe;
+			border-right: 1px solid $color-ddd;
+			box-shadow: 0 0 2px $color-ddd;
+			margin-right: 8px;
+
+			.dashicons {
+				text-shadow: 0 0 2px $color-blue-tint-75;
+			}
+		}
+		margin: 0 -3px 0 0;
+		background: transparent;
+		padding: 11px 10px;
+		border-radius: 0;
+		color: $color-blue-wp;
+
+		&.hide-if-js {
+			display: inline-block;
+			visibility: hidden;
+			width: 0;
+			margin: 0;
+		}
 
 		&.gv-remove-field {
 			position: absolute;
@@ -748,11 +771,6 @@ hr {
 			font-size: 20px;
 			height: 20px;
 			line-height: 20px;
-
-			&:hover,
-			&:active {
-				color: #2ea2cc;
-			}
 
 			&.dashicons-dismiss {
 				color: #999;

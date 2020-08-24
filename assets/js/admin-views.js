@@ -282,7 +282,6 @@
 						return_false = close;
 
 						// The Beacon escape key behavior is flaky. Make it work better.
-						// And
 						if ( window.Beacon  ) {
 							Beacon('close');
 						}
@@ -649,6 +648,8 @@
 				},
 				close: function ( e ) {
 					e.preventDefault();
+
+					$( '.gv-field-settings.active', '#gravityview_view_config' ).removeClass( 'active' );
 
 					vcfg.setCustomLabel( thisDialog );
 
@@ -1480,6 +1481,8 @@
 			} else {
 				parent = $( e.currentTarget ).parents( '.gv-fields' );
 			}
+
+			$( '.gv-field-settings', parent ).addClass( 'active' );
 
 			vcfg.updateVisibilitySettings( e, true );
 
