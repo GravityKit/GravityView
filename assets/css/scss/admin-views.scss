@@ -112,10 +112,8 @@ $gv-overlay-index: 10000;
 
 @media (max-width: 840px) {
 
-	.gv-grid-col-1-3 {
-		grid-column: 1 / -1;
-	}
-
+	.gv-grid-col-1-3,
+	.gv-grid-col-2-3,
 	.gv-grid-col-1-2,
 	.gv-grid-col-1-4 {
 		grid-column: span 6;
@@ -381,6 +379,18 @@ $gv-overlay-index: 10000;
 #gravityview_sort_filter,
 #gravityview_view_config {
 	display: none;
+}
+
+.postbox {
+	border-radius: 5px;
+
+	.handle-actions {
+		position: absolute;
+		left: -9999px;
+	}
+
+	.postbox-header {
+	}
 }
 
 #gravityview_view_config {
@@ -767,24 +777,33 @@ hr {
 
 		@extend .gv-reset-button-style;
 
-		border-right: 1px solid transparent;
-		transition: all .05s;
+		border-left: 1px solid transparent;
+		border-right: 1px solid $color-ddd;
+		padding: 11px 12px;
+		margin: 0 8px 0 0;
+		background-color: $color-off-white;
+
+		transition: all 200ms;
+
+		.rtl & {
+			margin: 0 0 0 8px;
+		}
+
+		.dashicons {
+			transition: transform 200ms;
+		}
 
 		&:hover,
 		&:active,
 		&.active {
 			background: #fefefe;
-			border-right: 1px solid $color-ddd;
 			box-shadow: 0 0 2px $color-ddd;
-			margin-right: 8px;
 
-			.dashicons {
+			.dashicons-admin-generic {
+				transform: rotate(30deg);
 				text-shadow: 0 0 2px $color-blue-tint-75;
 			}
 		}
-		margin: 0 -3px 0 0;
-		background: transparent;
-		padding: 11px 10px;
 		border-radius: 0;
 		color: $color-blue-wp;
 
@@ -799,16 +818,18 @@ hr {
 			position: absolute;
 			top: 0;
 			right: -3px;
-			background: none;
 			margin: 0;
+			background-color: transparent;
 
 			&:hover,
 			&:active,
 			&:focus {
+				background: #fefefe;
 				border-right-color: transparent;
 				border-left: 1px solid $color-ddd;
 
 				.dashicons {
+					transform: none;
 					color: $dismiss-red;
 				}
 			}
@@ -816,7 +837,7 @@ hr {
 
 		.dashicons {
 
-			width: 24px; // Give a larger click target
+			width: 20px; // Give a larger click target
 			font-size: 20px;
 			height: 20px;
 			line-height: 20px;
@@ -850,6 +871,8 @@ hr {
 		// that's being handled by tooltips
 		display: none;
 		text-align: left;
+
+		line-height: 1.25em;
 
 		// In the field picker, display the field info.
 		.ui-tooltip & {
