@@ -14,6 +14,19 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 
 		$field_info_items = array();
 
+		if( !empty( $this->item['label'] ) ) {
+			$field_info_items[] = array(
+				'value' => sprintf( __('Label: %s', 'gravityview' ), $this->item['label'] ),
+			);
+		}
+
+		if( !empty( $this->item['adminLabel'] ) ) {
+			$field_info_items[] = array(
+				'value' => sprintf( __('Admin Label: %s', 'gravityview' ), $this->item['adminLabel'] ),
+				'class'	=> 'gv-sublabel'
+			);
+		}
+
 		// Fields with IDs, not like Source URL or Entry ID
 		if( is_numeric( $this->id ) ) {
 
@@ -31,13 +44,6 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 		if( !empty( $this->item['desc'] ) ) {
 			$field_info_items[] = array(
 				'value' => $this->item['desc']
-			);
-		}
-
-		if( !empty( $this->item['adminLabel'] ) ) {
-			$field_info_items[] = array(
-				'value' => sprintf( __('Admin Label: %s', 'gravityview' ), $this->item['adminLabel'] ),
-				'class'	=> 'gv-sublabel'
 			);
 		}
 
