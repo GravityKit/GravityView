@@ -135,7 +135,7 @@ abstract class GravityView_Admin_View_Item {
 
 			$values = wp_list_pluck( $field_info_items, 'value' );
 
-			$output = esc_html( implode( ', ', $values ) );
+			$output = esc_html( implode( "\n", $values ) );
 
 		}
 
