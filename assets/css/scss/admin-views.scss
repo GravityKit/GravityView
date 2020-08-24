@@ -481,7 +481,7 @@ $gv-overlay-index: 10000;
 				font-size: 15px;
 				font-weight: 400;
 				background-color: $color-off-white;
-				color: $color-555;
+				color: $color-444;
 				box-sizing: border-box;
 
 				&:link, &:visited, &:hover, &:active, &:focus {
@@ -509,7 +509,7 @@ $gv-overlay-index: 10000;
 				a {
 					background-color: #fff;
 					border-bottom: 1px solid #fff;
-					color: $color-333;
+					color: $color-222;
 				}
 
 				// Active text is #555D66 - we want a bit lighter
@@ -521,7 +521,8 @@ $gv-overlay-index: 10000;
 
 			&.ui-state-hover {
 				a {
-					color: $color-333;
+					background-color: rgba( 255, 255, 255, .5 );
+					color: $color-222;
 				}
 				.dashicons {
 					color: $color-666;
