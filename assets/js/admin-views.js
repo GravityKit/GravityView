@@ -1258,7 +1258,7 @@
 
 				// If there are field options, show the settings gear.
 				if ( $( '.gv-dialog-options', newField ).length > 0 ) {
-					$( '.dashicons-admin-generic', newField ).removeClass( 'hide-if-js' );
+					$( '.gv-field-settings', newField ).removeClass( 'hide-if-js' );
 				}
 
 				// append the new field to the active drop
@@ -1460,7 +1460,7 @@
 				return;
 			}
 
-			$( e.currentTarget ).parents( '.gv-fields' ).fadeOut( 'normal', function () {
+			$( e.currentTarget ).parents( '.gv-fields' ).fadeOut( 'fast', function () {
 				$( this ).remove();
 				vcfg.toggleDropMessage();
 			} );
