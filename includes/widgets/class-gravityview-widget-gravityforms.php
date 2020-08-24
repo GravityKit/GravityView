@@ -45,9 +45,9 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 			),
 			'field_values' => array(
 				'type' => 'text',
-				'class' => 'code',
+				'class' => 'code widefat',
 				'label' => __( 'Field value parameters', 'gravityview' ),
-				'desc' => '',
+				'desc' => '<a href="https://docs.gravityforms.com/using-dynamic-population/" rel="external">' . esc_html__( 'Learn how to dynamically populate a field.', 'gravityview' ) . '</a>',
 				'value' => '',
 			),
 		);
