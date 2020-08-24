@@ -690,6 +690,7 @@ hr {
 		user-select: none;
 		box-sizing: border-box;
 		text-align: left;
+		position: relative;
 
 
 		// Parent field name
@@ -722,10 +723,15 @@ hr {
 
 		@extend .gv-reset-button-style;
 
+		padding: 5px 3px;
+		border-radius: 15px;
+		position: absolute;
+		top: -5px;
+
 		color: #0073aa;
 
 		&.gv-remove-field {
-			float: right;
+			right: -3px;
 		}
 
 		.dashicons {
@@ -734,7 +740,6 @@ hr {
 			font-size: 20px;
 			height: 20px;
 			line-height: 20px;
-			margin-top: -1px;
 
 			&:hover,
 			&:active {
