@@ -106,6 +106,8 @@ $gv-overlay-index: 10000;
 
 .gv-grid-col-1-1 {
 	grid-column: 1 / -1;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 @media (max-width: 840px) {
@@ -381,6 +383,28 @@ $gv-overlay-index: 10000;
 	display: none;
 }
 
+#gravityview_view_config {
+	background: transparent;
+	box-shadow: none;
+	border: none;
+
+	.postbox-header {
+		display: none;
+	}
+
+	> .inside {
+		padding: 0;
+		border-radius: 5px;
+	}
+	#gv-view-configuration-tabs {
+		padding: 0;
+		.ui-tabs-panel {
+			border-radius: 0 0 5px 5px;
+			border: 1px solid #ccd0d4;
+		}
+	}
+}
+
 /** Show spinner cursor while the View is being AJAX updated. **/
 .gv-wait,
 .gv-wait a {
@@ -400,9 +424,14 @@ $gv-overlay-index: 10000;
 	margin-top: 1em;
 	transition: none;
 
+	#gv-view-configuration-tabs-tooltip {
+		position: absolute;
+		right: 0;
+	}
+
 	.ui-tabs-nav {
 		margin: 0;
-		padding: .1em .1em 0;
+		padding: 0;
 		-webkit-margin-before: 0;
 		-webkit-margin-after: 0;
 		-webkit-margin-start: 0;
@@ -419,7 +448,7 @@ $gv-overlay-index: 10000;
 			float: left;
 			position: relative;
 			top: 2px;
-			margin: 0 .2em 1px 0;
+			margin: 0 .5em 1px 0;
 			border-bottom: 0;
 			padding: 0;
 			white-space: nowrap;
@@ -432,11 +461,14 @@ $gv-overlay-index: 10000;
 
 			// The tab anchor link
 			.nav-tab {
+				transition: none;
 				border-radius: 3px 3px 0 0;
 				float: left;
-				padding: .5em 1em;
+				padding: .666em 1.333em;
+				margin: 0 5px 0 0;
+
 				text-decoration: none;
-				font-size: 16px;
+				font-size: 15px;
 				font-weight: 400;
 				background-color: $color-off-white;
 				color: $color-555;
@@ -492,7 +524,7 @@ $gv-overlay-index: 10000;
 	// Tab content area
 	.ui-tabs-panel {
 		display: block;
-		padding: 1em;
+		padding: 0 20px 16px 20px;
 		background: #fff;
 		border: none;
 		border-top: 1px solid #ccc;
@@ -507,13 +539,18 @@ $gv-overlay-index: 10000;
 	}
 }
 
-#gv-view-configuration-tabs .nav-tab {
-	@media (max-width: 840px) {
-		border-radius: 3px;
-		margin: 3px 0;
-		width: 100%;
-		box-sizing: border-box;
-		border: 1px solid $color-aaa !important;
+@media (max-width: 840px) {
+	#gv-view-configuration-tabs {
+		&.ui-tabs.ui-tabs-nav {
+			margin-bottom: 10px;
+		}
+		.nav-tab {
+			border-radius: 3px;
+			margin-bottom: 3px;
+			width: 100%;
+			box-sizing: border-box;
+			border: 1px solid $color-aaa !important;
+		}
 	}
 }
 .gv-dialog {
@@ -600,6 +637,7 @@ hr {
 	box-shadow: 0 0 0 2px rgba(210, 224, 235, .6);
 	min-height: 44px;
 	border-radius: 3px;
+	max-width: 100%;
 
 	&.is-receivable {
 		&:empty {
@@ -763,6 +801,17 @@ hr {
 			right: -3px;
 			background: none;
 			margin: 0;
+
+			&:hover,
+			&:active,
+			&:focus {
+				border-right-color: transparent;
+				border-left: 1px solid $color-ddd;
+
+				.dashicons {
+					color: $dismiss-red;
+				}
+			}
 		}
 
 		.dashicons {
