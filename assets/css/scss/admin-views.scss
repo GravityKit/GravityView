@@ -303,7 +303,7 @@ $gv-overlay-index: 10000;
       display: none;
     }
 
-	color: #ddd;
+	color: $color-ddd;
 	font-weight: normal;
 	padding: 0 0 0 10px;
 
@@ -536,7 +536,7 @@ $gv-overlay-index: 10000;
 hr {
 	border: 0;
 	height: 0;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid $color-ddd;
 	margin: 2em 0 2em 0;
 }
 
@@ -669,7 +669,7 @@ hr {
 
 .gv-fields {
 	cursor: move;
-	border: 1px solid #ddd;
+	border: 1px solid $color-ddd;
 	background: #f7f7f7;
 	overflow: hidden;
 	padding: 0.75em;
@@ -928,7 +928,7 @@ hr {
 		line-height: .8;
 		float: right;
 		text-align: right;
-		color: #ddd;
+		color: $color-ddd;
 	}
 
 	// Each setting row ( Used to be ul and ul li )
