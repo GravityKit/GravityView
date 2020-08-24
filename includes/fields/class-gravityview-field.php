@@ -432,7 +432,8 @@ abstract class GravityView_Field {
 				 * @filter `gravityview_date_format` Override the date format with a [PHP date format](https://codex.wordpress.org/Formatting_Date_and_Time)
 				 * @param[in,out] null|string $date_format Date Format (default: null)
 				 */
-				'value' => apply_filters( 'gravityview_date_format', null )
+				'value' => apply_filters( 'gravityview_date_format', null ),
+				'class' => 'code',
 			),
 			'new_window' => array(
 				'type' => 'checkbox',
