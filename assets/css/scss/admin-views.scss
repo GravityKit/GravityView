@@ -954,6 +954,7 @@ hr {
 		label {
 			margin: 0;
 			font-weight: normal;
+			color: $color-444;
 			display: inline-block;
 			padding-right: .75em;
 			max-width: 100%; // Fix https://github.com/katzwebservices/GravityView-AZ-Filters/issues/14
@@ -970,7 +971,8 @@ hr {
 		}
 
 		.howto {
-			margin: 0 0 .25em;
+			margin: .25em 0 .5em;
+			font-weight: normal;
 		}
 
 		/**
@@ -1156,6 +1158,7 @@ hr {
 	padding-right: 1em;
 	display: block;
 	width: 100%;
+	font-weight: 500;
 }
 
 .gv-label-textarea,
