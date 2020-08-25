@@ -62,6 +62,7 @@ class Field_Collection extends Collection {
 	 * Get a copy of this \GV\Field_Collection filtered by type.
 	 *
 	 * @param string $type The type of the field to get.
+	 *  Can be a wildcard *
 	 *
 	 * @api
 	 * @since develop
@@ -71,9 +72,11 @@ class Field_Collection extends Collection {
 	public function by_type( $type ) {
 		$fields = new self();
 
+		// Turn a wildcard into a regular expression.
 		$search = implode( '.*', array_map( 'preg_quote', explode( '*', $type ) ) );
 
 		foreach ( $this->all() as $field ) {
+			// Only add fields for which the type matches the regular expression.
 			if ( preg_match( "#^{$search}$#", $field->type ) ) {
 				$fields->add( $field );
 			}
@@ -95,9 +98,11 @@ class Field_Collection extends Collection {
 	public function by_position( $position ) {
 		$fields = new self();
 
+		// Turn a wildcard into a regular expression.
 		$search = implode( '.*', array_map( 'preg_quote', explode( '*', $position ) ) );
 
 		foreach ( $this->all() as $field ) {
+			// Only add fields for which the position matches the regular expression.
 			if ( preg_match( "#^{$search}$#", $field->position ) ) {
 				$fields->add( $field );
 			}
