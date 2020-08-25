@@ -222,11 +222,11 @@ class View_Settings extends Settings {
 			'sort_field' => array(
 				'label'             => __( 'Sort by field', 'gravityview' ),
 				'type'              => 'select',
-				'desc'              => __( 'By default, entries are sorted by Entry ID.', 'gravityview' ),
+				'desc'              => '',
 				'value'             => '',
 				'group'             => 'sort',
 				'options'           => array(
-					''             => __( 'Default', 'gravityview' ),
+					''             => __( 'Default (Entry ID)', 'gravityview' ),
 					'date_created' => __( 'Date Created', 'gravityview' ),
 				),
 				'show_in_shortcode' => true,
