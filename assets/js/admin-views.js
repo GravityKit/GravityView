@@ -1020,6 +1020,11 @@
 		},
 
 		openExternalLinks: function () {
+
+			if ( !! window.Beacon && ( $( this ).is( '[data-beacon-article]' ) || $( this ).is( '[data-beacon-article-modal]' ) || $( this ).is( '[data-beacon-article-sidebar]' ) || $( this ).is( '[data-beacon-article-inline]' ) ) ) {
+				return false;
+			}
+
 			window.open( this.href );
 			return false;
 		},
