@@ -37,6 +37,12 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 		add_filter( 'gravityview/view/add_filtersorts', array( $this, 'add_filtersorts' ), 10, 2 );
 
+		/**
+		 * @filter `gravityview/fields/custom/sortable` Whether the custom content field should be sortable or not.
+		 * @param bool $sortable
+		 */
+		$this->is_sortable = apply_filters( 'gravityview/fields/custom/sortable', $this->is_sortable );
+
 		parent::__construct();
 	}
 
