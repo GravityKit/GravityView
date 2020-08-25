@@ -215,7 +215,6 @@ class View_Settings extends Settings {
 				'article'           => array(
 					'id' => '5df11eb704286364bc92bf36',
 					'url' => 'https://docs.gravityview.co/article/66-configuring-delete-entry',
-					'type' => 'inline',
 				),
 				'type'              => 'checkbox',
 				'show_in_shortcode' => true,
