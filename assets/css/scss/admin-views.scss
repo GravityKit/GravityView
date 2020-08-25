@@ -540,6 +540,8 @@ $gv-overlay-index: 10000;
 		border: none;
 		border-top: 1px solid #ccc;
 
+		min-width: 352px;
+
 		@media (max-width: 840px) {
 			border-top: 0;
 		}
@@ -941,7 +943,6 @@ hr {
 }
 
 .gv-dialog {
-	max-width: 99%;
 
 	&.ui-widget-content {
 		padding: 10px;
