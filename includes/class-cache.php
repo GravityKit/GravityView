@@ -103,12 +103,10 @@ class GravityView_Cache {
 	 */
 	public function entry_status_changed( $lead_id, $property_value = '', $previous_value = '' ) {
 
-		/** @var array $entry */
 		$entry = GFAPI::get_entry( $lead_id );
 
 		if ( is_wp_error( $entry ) ) {
 
-			/** @var WP_Error $entry */
 			gravityview()->log->error( 'Could not retrieve entry {entry_id} to delete it: {error}', array( 'entry_id' => $lead_id, 'error' => $entry->get_error_message() ) );
 
 			return;
@@ -282,7 +280,7 @@ class GravityView_Cache {
 	 *
 	 * @param  int|array $form_ids Form IDs to check if in blacklist
 	 *
-	 * @return [type] [description]
+	 * @return bool
 	 */
 	function in_blacklist( $form_ids = NULL ) {
 
@@ -358,8 +356,10 @@ class GravityView_Cache {
 	 *
 	 * Cache time defaults to 1 week
 	 *
-	 * @param [type] $content     [description]
-	 * @param [type] $filter_name Name used to modify the cache time. Will be set to `gravityview_cache_time_{$filter_name}`.
+	 * @param mixed $content     [description]
+	 * @param string $filter_name Name used to modify the cache time. Will be set to `gravityview_cache_time_{$filter_name}`.
+	 *
+	 * @return bool If $content is not set, false. Otherwise, returns true if transient was set and false if not.
 	 */
 	public function set( $content, $filter_name = '' ) {
 
@@ -392,7 +392,7 @@ class GravityView_Cache {
 	 *
 	 * @param  int|array $form_ids Form IDs to delete
 	 *
-	 * @return [type]           [description]
+	 * @return void
 	 */
 	public function delete( $form_ids = NULL ) {
 		global $wpdb;

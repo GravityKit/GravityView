@@ -4,7 +4,7 @@
  *
  * @package   GravityView-DataTables-Ext
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
@@ -25,7 +25,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * whether search method is GET or POST ( default: GET )
 	 * @since 1.16.4
-	 * @var string
+	 * @var string $search_method
 	 */
 	private $search_method = 'get';
 
@@ -149,7 +149,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 		/**
 		 * Input Type groups
 		 * @see admin-search-widget.js (getSelectInput)
-		 * @var array
 		 */
 		$input_types = array(
 			'text' => array( 'input_text' ),
@@ -186,7 +185,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 		/**
 		 * Input Type labels l10n
 		 * @see admin-search-widget.js (getSelectInput)
-		 * @var array
 		 */
 		$input_labels = array(
 			'input_text' => esc_html__( 'Text', 'gravityview' ),
@@ -260,7 +258,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * Ajax
 	 * Returns the form fields ( only the searchable ones )
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public static function get_searchable_fields() {
@@ -1296,7 +1293,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
 
-		/** @var GravityView_View $gravityview_view */
 		$gravityview_view = GravityView_View::getInstance();
 
 		if ( empty( $gravityview_view ) ) {
@@ -1369,7 +1365,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * @param GravityView_Widget_Search $this Current widget object
 		 * @param array $widget_args Args passed to this method. {@since 1.8}
 		 * @param \GV\Template_Context $context {@since 2.0}
-		 * @var array
+		 * @type array
 		 */
 		$gravityview_view->search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this, $widget_args, $context );
 

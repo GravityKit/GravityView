@@ -2,7 +2,7 @@
 /**
  * Display the search single CHECKBOX input field ( on/off type)
  *
- * @see class-search-widget.php
+ * @file class-search-widget.php See for usage
  */
 
 $gravityview_view = GravityView_View::getInstance();

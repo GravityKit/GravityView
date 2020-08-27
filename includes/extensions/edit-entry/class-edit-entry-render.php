@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
@@ -634,13 +634,12 @@ class GravityView_Edit_Entry_Render {
 
 		$form = $this->filter_conditional_logic( $this->form );
 
-	    /** @var GF_Field $field */
+	    /** @type GF_Field $field */
 		foreach( $form['fields'] as $k => &$field ) {
 
 			/**
 			 * Remove the fields with calculation formulas before save to avoid conflicts with GF logic
 			 * @since 1.16.3
-			 * @var GF_Field $field
 			 */
 			if( $field->has_calculation() ) {
 				unset( $form['fields'][ $k ] );
@@ -1725,8 +1724,13 @@ class GravityView_Edit_Entry_Render {
 	 * fields. This goes through all the fields and if they're an invalid post field, we
 	 * set them as valid. If there are still issues, we'll return false.
 	 *
-	 * @param  [type] $validation_results [description]
-	 * @return [type]                     [description]
+	 * @param  $validation_results {
+	 *   @type bool $is_valid
+	 *   @type array $form
+	 *   @type int $failed_validation_page The page number which has failed validation.
+	 * }
+	 *
+	 * @return array
 	 */
 	public function custom_validation( $validation_results ) {
 

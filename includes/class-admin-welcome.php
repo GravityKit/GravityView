@@ -43,7 +43,6 @@ class GravityView_Welcome {
 	 * Register the Dashboard Pages which are later hidden but these pages
 	 * are used to render the Welcome pages.
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */
@@ -97,7 +96,6 @@ class GravityView_Welcome {
 	/**
 	 * Hide Individual Dashboard Pages
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */
@@ -121,7 +119,6 @@ class GravityView_Welcome {
 	/**
 	 * Navigation tabs
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */
@@ -156,7 +153,6 @@ class GravityView_Welcome {
 	/**
 	 * Render About Screen
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */
@@ -537,7 +533,6 @@ class GravityView_Welcome {
 	/**
 	 * Render Credits Screen
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */
@@ -659,7 +654,6 @@ class GravityView_Welcome {
 	 * Sends user to the Welcome page on first activation of GravityView as well as each
 	 * time GravityView is upgraded to a new version
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */

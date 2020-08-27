@@ -672,7 +672,6 @@ class License_Handler {
 	 * Retrieves site data (plugin versions, integrations, etc) to be sent along with the license check.
 	 *
 	 * @since 1.9
-	 * @access public
 	 *
 	 * @return array
 	 */
