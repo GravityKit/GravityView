@@ -1122,9 +1122,15 @@ hr {
 		clear: left;
 	}
 
-	table, table select {
+	table select {
 		width: 95%;
 		margin: 0 auto;
+		white-space: nowrap;
+	}
+
+	table {
+		width: 100%;
+		border: none;
 	}
 
 }
@@ -1146,10 +1152,25 @@ hr {
 			text-align: center;
 			font-size: 15px;
 			padding: 15px 0;
+
+			.gv-add-search-field {
+				display: block;
+				margin: 1em auto;
+			}
 		}
 
 		.cell-sort {
 			cursor: ns-resize;
+
+			.icon {
+				border-radius: 5px;
+				padding: 7px 7px 6px;
+				background-color: $color-off-white;
+			}
+
+			&:hover .icon {
+				background-color: $color-ddd;
+			}
 
 			&.no-sort {
 				cursor: default;
