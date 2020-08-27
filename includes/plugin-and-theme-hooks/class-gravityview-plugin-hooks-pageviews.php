@@ -5,7 +5,7 @@
  * @file      class-gravityview-plugin-hooks-gravity-flow.php
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      https://gravityview.co
  * @copyright Copyright 2016, Katz Web Services, Inc.
  *

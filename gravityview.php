@@ -139,7 +139,6 @@ final class GravityView_Plugin {
 	/**
 	 * Plugin activate function.
 	 *
-	 * @access public
 	 * @static
 	 * @return void
 	 */
@@ -151,7 +150,6 @@ final class GravityView_Plugin {
 	/**
 	 * Plugin deactivate function.
 	 *
-	 * @access public
 	 * @deprecated see \GV\Plugin::deactivate()
 	 * @return void
 	 */
@@ -188,7 +186,6 @@ final class GravityView_Plugin {
 	 *
 	 * @deprecated Use \GV\Plugin::load_textdomain()
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public function load_plugin_textdomain() {
@@ -213,7 +210,6 @@ final class GravityView_Plugin {
 	 *
 	 * @since 1.17 Added $force param
 	 *
-	 * @access public
 	 *
 	 * @param bool $force Whether to force loading
 	 *

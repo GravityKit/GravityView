@@ -125,7 +125,6 @@ class GravityView_Admin {
 	/**
 	 * Function to launch admin objects
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public function backend_actions() {
@@ -154,7 +153,6 @@ class GravityView_Admin {
 	 * Modify plugin action links at plugins screen
 	 *
 	 * @since 1.15 Added check for `gravityview_view_settings` and `gravityview_support_port` capabilities
-	 * @access public
 	 * @static
 	 * @param array $links Array of action links under GravityView on the plugin page
 	 * @return array Action links with Settings and Support included, if the user has the appropriate caps

@@ -3,7 +3,7 @@
  * @file class-admin-approve-entries.php
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -160,7 +160,6 @@ class GravityView_Admin_ApproveEntries {
 	/**
 	 * Inject new add field buttons in the gravity form editor page
 	 *
-	 * @access public
 	 * @param mixed $field_groups
 	 * @return array Array of fields
 	 */
@@ -196,7 +195,6 @@ class GravityView_Admin_ApproveEntries {
 	 * At edit form page, set the field Approve defaults
 	 *
 	 * @todo Convert to a partial include file
-	 * @access public
 	 * @return void
 	 */
 	function set_defaults() {
@@ -280,7 +278,6 @@ class GravityView_Admin_ApproveEntries {
 	 * Capture bulk actions - gf_entries table
 	 *
 	 * @uses  GravityView_frontend::get_search_criteria() Convert the $_POST search request into a properly formatted request.
-	 * @access public
 	 * @return void|boolean
 	 */
 	public function process_bulk_action() {
