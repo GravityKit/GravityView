@@ -50,9 +50,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 				),
 			),
 			'search_clear' => array(
-				'type' => 'checkbox',
+				'type'  => 'checkbox',
 				'label' => __( 'Show Clear button', 'gravityview' ),
-				'value' => false,
+				'desc'  => __( 'When a search is performed, display a button that removes all search values.', 'gravityview'),
+				'value' => true,
 			),
 			'search_fields' => array(
 				'type' => 'hidden',
