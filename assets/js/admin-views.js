@@ -151,7 +151,12 @@
 
 				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )
 
-				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters );
+				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters )
+
+				// TODO: Show/hide warnings on configuration tabs to let users know context has been configured.
+				.on( 'gravityview/field-added gravityview/field-removed gravityview/all-fields-removed', function() {
+
+				});
 
 			$( '.gv-add-field').on('focus', function() {
 				$( this ).parent('.gv-fields').addClass('focused');
@@ -357,7 +362,6 @@
 			var icon = parent.find( '.gv-field-controls .dashicons-admin-links' );
 
 			icon.toggleClass( 'hide-if-js', $( e.target ).not( ':checked' ) );
-
 		},
 
 		/**
@@ -1454,6 +1458,9 @@
 				// If yes, remove all, otherwise don't do anything
 				if ( remove_all ) {
 					$( area ).find( '.gv-fields' ).remove();
+
+					$('body').trigger( 'gravityview/all-fields-removed' );
+
 					vcfg.toggleDropMessage();
 				}
 
@@ -1461,6 +1468,9 @@
 			}
 
 			$( e.currentTarget ).parents( '.gv-fields' ).fadeOut( 'fast', function () {
+
+				$('body').trigger( 'gravityview/field-removed', $( this ) );
+
 				$( this ).remove();
 				vcfg.toggleDropMessage();
 			} );
