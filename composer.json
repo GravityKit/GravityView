@@ -5,6 +5,8 @@
   "keywords": ["gravityview", "gravity view", "gravity forms directory", "gravity forms"],
   "homepage": "https://gravityview.co/",
   "license": "GPL-2.0+",
+  "minimum-stability": "alpha",
+  "prefer-stable": false,
   "repositories": [
     {
       "type": "vcs",
@@ -13,7 +15,8 @@
   ],
   "require": {
     "php": ">=5.3",
-    "ext-json": "*"
+    "ext-json": "*",
+    "phpdocumentor/phpdocumentor": "2.*"
   },
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",

@@ -112,7 +112,7 @@ abstract class View_Template extends Template {
 			$specifics []= sprintf( '%spost-%d-%s.php', $slug_dir, $post->ID, $slug_name );
 		}
 
-		
+
 		$specifics []= sprintf( '%sview-%d-%s.php', $slug_dir, $this->view->ID, $slug_name );
 		$specifics []= sprintf( '%sform-%d-%s.php', $slug_dir, $this->view->form->ID, $slug_name );
 

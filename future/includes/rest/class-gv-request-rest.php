@@ -10,16 +10,18 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * The default REST Request class.
  */
 class Request extends \GV\Request {
+
+	/** @var \WP_REST_Request */
 	private $request;
 
-	/** 
+	/**
 	 * @param \WP_REST_Request $request The WordPress REST request object.
 	 */
 	public function __construct( \WP_REST_Request $request ) {
 		$this->request = $request;
 	}
 
-	/** 
+	/**
 	 * Retrieve paging parameters if any.
 	 *
 	 * @return array

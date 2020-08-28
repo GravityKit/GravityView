@@ -63,7 +63,9 @@ class GravityView_Edit_Entry {
         return self::$instance;
     }
 
-
+	/**
+	 * @param string $component Name of the edit entry component to include the file for and initiate the object (eg: "render").
+	 */
     private function load_components( $component ) {
 
         $dir = trailingslashit( self::$file );

@@ -13,6 +13,8 @@
  */
 
 /**
+ * Integrate with Gravity Perks
+ *
  * @inheritDoc
  * @since 1.17.5
  */

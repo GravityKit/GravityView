@@ -140,7 +140,7 @@ class Views_Route extends Route {
 		$return = array();
 
 		$renderer = new \GV\Field_Renderer();
-		
+
 		$used_ids = array();
 
 		foreach ( $allowed as $field ) {
@@ -397,7 +397,7 @@ class Views_Route extends Route {
 			unset( $return['settings'] );
 			unset( $return['search_criteria'] );
 		}
-		
+
 		if ( ! \GFCommon::current_user_can_any( 'gravityforms_edit_forms' ) ) {
 			unset( $return['form'] );
 		}

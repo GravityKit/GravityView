@@ -1,0 +1,17 @@
+bin/*
+!bin/phpdoc
+build.properties
+build.xml
+build/*
+.vagrant
+phpunit.xml.dist
+ansible
+docs
+features
+tests
+.*
+Vagrantfile
+package.xml
+phpmd.xml.dist
+behat.yml
+box.json

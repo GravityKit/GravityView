@@ -19,7 +19,7 @@ class GravityView_Admin_No_Conflict {
 	public function __construct() {
 
 		if( ! is_admin() ) { return; }
-		
+
 		$this->add_hooks();
 	}
 

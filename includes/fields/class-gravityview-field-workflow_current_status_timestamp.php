@@ -8,22 +8,43 @@
 
 class GravityView_Field_Workflow_Current_Status_Timestamp extends GravityView_Field {
 
+	/**
+	 * @inheritDoc
+	 */
 	var $name = 'workflow_current_status_timestamp';
 
+	/**
+	 * @inheritDoc
+	 */
 	var $group = 'meta';
 
+	/**
+	 * @inheritDoc
+	 */
 	var $contexts = array( 'multiple', 'single' );
 
+	/**
+	 * @inheritDoc
+	 */
 	var $entry_meta_key = 'workflow_current_status_timestamp';
 
+	/**
+	 * @inheritDoc
+	 */
 	var $is_numeric = true;
 
+	/**
+	 * @inheritDoc
+	 */
 	public function __construct() {
 		$this->label = esc_html__( 'Workflow Current Status Timestamp', 'gravityview' );
 		$this->add_hooks();
 		parent::__construct();
 	}
 
+	/**
+	 * Adds hooks for the Gravity Flow Workflow functionality
+	 */
 	function add_hooks() {
 		add_filter( 'gravityview_field_entry_value_workflow_current_status_timestamp', array( $this, 'modify_entry_value_workflow_current_status_timestamp' ), 10, 4 );
 	}
@@ -50,6 +71,9 @@ class GravityView_Field_Workflow_Current_Status_Timestamp extends GravityView_Fi
 		return GVCommon::format_date( date( 'Y-m-d H:i:s', $timestamp ), 'format=' . \GV\Utils::get( $field_settings, 'date_display' ) );
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 		if ( $context == 'edit' ) {
 			return $field_options;

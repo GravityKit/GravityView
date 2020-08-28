@@ -1,0 +1,31 @@
+language: php
+
+php:
+  - '5.4'
+  - '5.5'
+  - '5.6'
+  - '7.0'
+  - '7.1'
+  - '7.2'
+  - nightly
+
+matrix:
+  include:
+    - php: 5.3
+      dist: precise
+  fast_finish: true
+  allow_failures:
+    - php: nightly
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+before_script:
+    - composer install --no-interaction --prefer-dist
+
+script:
+    - php -d zend.enable_gc=0 vendor/bin/phpunit --coverage-text
+
+notifications:
+  email: false

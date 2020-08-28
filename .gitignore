@@ -88,6 +88,7 @@ atlassian-ide-plugin.xml
 # DoxyGen
 docs/config.doxygen
 docs/html
+phpdoc-cache-*/
 
 # VIM
 *.swp

@@ -16,6 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
+/**
+ * Holds commonly-used helper methods.
+ */
 class GVCommon {
 
 	/**
@@ -183,8 +186,6 @@ class GVCommon {
 			return false;
 		}
 
-		$has_transaction_data = false;
-
 		$payment_meta = array( 'payment_status', 'payment_date', 'transaction_id', 'payment_amount', 'payment_method' );
 
 		foreach ( $payment_meta as $meta ) {
@@ -212,7 +213,6 @@ class GVCommon {
 	 * @return int|null       The entry ID, if exists; `NULL` if not
 	 */
 	public static function get_entry_id_from_slug( $slug ) {
-		global $wpdb;
 
 		$search_criteria = array(
 			'field_filters' => array(
@@ -260,7 +260,7 @@ class GVCommon {
 	 * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
 	 */
 	public static function get_forms(  $active = true, $trash = false, $order_by = 'id', $order = 'ASC' ) {
-		$forms = array();
+
 		if ( ! class_exists( 'GFAPI' ) ) {
 			return array();
 		}
@@ -281,7 +281,7 @@ class GVCommon {
 	/**
 	 * Return array of fields' id and label, for a given Form ID
 	 *
-	 * @param string|array $form_id (default: '') or $form object
+	 * @param string|array $form (default: '') or $form object
 	 * @param bool $add_default_properties
 	 * @param bool $include_parent_field
 	 * @return array
@@ -388,7 +388,10 @@ class GVCommon {
 
 	/**
 	 * get extra fields from entry meta
-	 * @param  string $form_id (default: '')
+	 *
+	 * @param string $form_id (default: '')
+	 * @param bool $only_default_column Whether to retrieve only default columns, which are displayed by default on the entry list without having to edit and add the column for display. Default: true.
+	 *
 	 * @return array
 	 */
 	public static function get_entry_meta( $form_id, $only_default_column = true ) {
@@ -410,9 +413,12 @@ class GVCommon {
 	/**
 	 * Wrapper for the Gravity Forms GFFormsModel::search_lead_ids() method
 	 *
-	 * @see  GFEntryList::leads_page()
-	 * @param  int $form_id ID of the Gravity Forms form
 	 * @since  1.1.6
+	 * @see  GFEntryList::leads_page()
+	 *
+	 * @param int $form_id ID of the Gravity Forms form
+	 * @param array $search_criteria Optional. An array containing the search criteria. Defaults to empty array.
+	 *
 	 * @return array|void          Array of entry IDs. Void if Gravity Forms isn't active.
 	 */
 	public static function get_entry_ids( $form_id, $search_criteria = array() ) {
@@ -1107,9 +1113,13 @@ class GVCommon {
 
 	/**
 	 * Placeholder until the recursive has_shortcode() patch is merged
+	 *
 	 * @see https://core.trac.wordpress.org/ticket/26343#comment:10
+	 *
 	 * @param string $content Content to check whether there's a shortcode
 	 * @param string $tag Current shortcode tag
+	 *
+	 * @return false|array
 	 */
 	public static function has_shortcode_r( $content, $tag = 'gravityview' ) {
 		if ( false === strpos( $content, '[' ) ) {
@@ -1358,7 +1368,9 @@ class GVCommon {
 	/**
 	 * Render dropdown (select) with the list of sortable fields from a form ID
 	 *
-	 * @param  int $formid Form ID
+	 * @param int $formid Form ID
+	 * @param string $current ID of the currently-selected field.
+	 *
 	 * @return string         html
 	 */
 	public static function get_sortable_fields( $formid, $current = '' ) {
@@ -1387,6 +1399,7 @@ class GVCommon {
 	}
 
 	/**
+	 * Returns an array of fields that are declared sortable
 	 *
 	 * @param int $formid Gravity Forms form ID
 	 * @param array $blacklist Field types to exclude
@@ -1745,9 +1758,10 @@ class GVCommon {
      *
      * @since 1.19.2 Added $cap and $object_id parameters
      *
-     * @param string $notice text/HTML of notice
-     * @param string $class CSS class for notice (`updated` or `error`)
+     * @param string $notice Text/HTML of notice.
+     * @param string $class CSS class for notice (`updated` or `error`).
      * @param string $cap [Optional] Define a capability required to show a notice. If not set, displays to all caps.
+     * @param int    $object_id [Optional] Check whether the user has capabilities for a specific object, such as a post or user. If not, don't show notice.
      *
      * @return string
      */

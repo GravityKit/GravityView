@@ -7,10 +7,10 @@
 
 /**
  * Get the URL for a CSS file
- * 
+ *
  * If there's a CSS file with the same name as a GravityView CSS file in the current theme directory, it will be used.
- * Place the CSS file in a `/gravityview/css/` sub-directory. 
- * 
+ * Place the CSS file in a `/gravityview/css/` sub-directory.
+ *
  * Example: /twentysixteen/gravityview/css/gv-default-styles.css
  *
  * Will use, in order:
@@ -42,7 +42,7 @@ function gravityview_css_url( $css_file = '', $dir_path = '' ) {
 		if( '' === $dir_path ) {
 			$dir_path = GRAVITYVIEW_DIR . 'templates/css/';
 		}
-		
+
 		// plugins_url() expects a path to a file, not directory. We append a file to be stripped.
 		$path = plugins_url( $css_file, trailingslashit( $dir_path )  . 'stripped-by-plugin_basename.php' );
 	}

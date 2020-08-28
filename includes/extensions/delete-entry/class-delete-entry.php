@@ -237,9 +237,8 @@ final class GravityView_Delete_Entry {
 	 *
 	 * @since 1.5.1
 	 * @param  array 	   $visibility_caps        Array of capabilities to display in field dropdown.
-	 * @param  string      $field_type  Type of field options to render (`field` or `widget`)
 	 * @param  string      $template_id Table slug
-	 * @param  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+	 * @param  string      $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
 	 * @param  string      $context     What context are we in? Example: `single` or `directory`
 	 * @param  string      $input_type  (textarea, list, select, etc.)
 	 * @return array                   Array of field options with `label`, `value`, `type`, `default` keys
@@ -264,7 +263,7 @@ final class GravityView_Delete_Entry {
 	 * Make sure there's an entry
 	 *
 	 * @since 1.5.1
-	 * @param [type] $entry [description]
+	 * @param array $entry Gravity Forms entry array
 	 */
 	function set_entry( $entry = null ) {
 		$this->entry = empty( $entry ) ? GravityView_View::getInstance()->entries[0] : $entry;
@@ -312,14 +311,14 @@ final class GravityView_Delete_Entry {
 		// Use the slug instead of the ID for consistent security
 		$entry_slug = $gv_entry->get_slug();
 
-		$actionurl = add_query_arg( array(
+		$action_url = add_query_arg( array(
 			'action'	=> 'delete',
 			'entry_id'		=> $entry_slug,
 			'gvid' => $view_id,
             'view_id' => $view_id,
 		), $base );
 
-		$url = wp_nonce_url( $actionurl, 'delete_'.$entry_slug, 'delete' );
+		$url = wp_nonce_url( $action_url, 'delete_' . $entry_slug, 'delete' );
 
 		return $url;
 	}

@@ -126,6 +126,11 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 
 	/**
 	 * Add the current status timestamp field to available Advanced Filters.
+	 *
+	 * @param array $field_filters configured filters
+	 * @param int   $view_id
+	 *
+	 * @return array
 	 */
 	public function maybe_add_non_default_filter_fields( $fields, $view_id ) {
 		if ( ( $insert_at = array_search( 'workflow_final_status', wp_list_pluck( $fields, 'key' ) ) ) !== false ) {

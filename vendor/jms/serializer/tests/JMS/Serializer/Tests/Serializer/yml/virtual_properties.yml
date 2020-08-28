@@ -1,0 +1,4 @@
+exist_field: value
+virtual_value: value
+test: other-name
+typed_virtual_property: 1
