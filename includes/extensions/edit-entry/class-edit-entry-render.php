@@ -209,7 +209,7 @@ class GravityView_Edit_Entry_Render {
 	public function is_edit_entry() {
 
 		$is_edit_entry =
-			( GravityView_frontend::is_single_entry() || ( ! empty( gravityview()->request->is_entry() ) ) )
+			( GravityView_frontend::is_single_entry() || gravityview()->request->is_entry() )
 			&& ( ! empty( $_GET['edit'] ) );
 
 		return ( $is_edit_entry || $this->is_edit_entry_submission() );
