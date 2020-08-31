@@ -733,6 +733,14 @@ hr {
 
 	transition: border-color 50ms;
 
+	&.has-single-entry-link {
+		background-color: $color-blue-tint-90;
+		.dashicons-admin-links {
+			line-height: 44px;
+			margin: -2px 6px 0 3px;
+		}
+	}
+
 	h5 {
 		float: left;
 		width: 100%;

@@ -359,9 +359,9 @@
 
 			var parent = $( e.target ).parents( '.gv-fields' );
 
-			var icon = parent.find( '.gv-field-controls .dashicons-admin-links' );
+			parent.toggleClass( 'has-single-entry-link', $( e.target ).is( ':checked' ) );
 
-			icon.toggleClass( 'hide-if-js', $( e.target ).not( ':checked' ) );
+			parent.find( '.gv-field-controls .dashicons-admin-links' ).toggleClass( 'hide-if-js', $( e.target ).not( ':checked' ) );
 		},
 
 		/**
