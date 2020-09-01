@@ -480,7 +480,7 @@ $gv-overlay-index: 10000;
 				text-decoration: none;
 				font-size: 15px;
 				font-weight: 400;
-				background-color: $color-off-white;
+				background-color: $color-light-grey-200;
 				color: $color-444;
 				box-sizing: border-box;
 
@@ -722,7 +722,7 @@ hr {
 	cursor: move;
 	border: 1px solid $color-ddd;
 	background: #f7f7f7;
-	background: $color-off-white;
+	background: $color-light-grey-200;
 	overflow: hidden;
 	margin: 8px 0;
 
@@ -792,7 +792,7 @@ hr {
 		border-right: 1px solid $color-ddd;
 		padding: 11px 12px;
 		margin: 0 8px 0 0;
-		background-color: $color-off-white;
+		background-color: $color-light-grey-200;
 
 		transition: all 200ms;
 
@@ -1173,7 +1173,7 @@ hr {
 			.icon {
 				border-radius: 5px;
 				padding: 7px 7px 6px;
-				background-color: $color-off-white;
+				background-color: $color-light-grey-200;
 			}
 
 			&:hover .icon {
