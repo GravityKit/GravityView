@@ -45,9 +45,9 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 			),
 			'field_values' => array(
 				'type' => 'text',
-				'class' => 'code',
+				'class' => 'code widefat',
 				'label' => __( 'Field value parameters', 'gravityview' ),
-				'desc' => '',
+				'desc' => '<a href="https://docs.gravityforms.com/using-dynamic-population/" rel="external">' . esc_html__( 'Learn how to dynamically populate a field.', 'gravityview' ) . '</a>',
 				'value' => '',
 			),
 		);
@@ -74,11 +74,14 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 			return $choices;
 		}
 
+		// Inside GV's widget AJAX request
+		$doing_ajax = defined( 'DOING_AJAX' ) && 'gv_field_options' === \GV\Utils::_POST( 'action' );
+
 		/**
 		 * gravityview_get_forms() is currently running too early as widgets_init runs before init and
 		 * when most Gravity Forms plugins register their own fields like GP Terms of Service.
 		 */
-		if( \GV\Admin_Request::is_admin() && ! GFForms::is_gravity_page() ) {
+		if( $doing_ajax || ( \GV\Admin_Request::is_admin() && ! GFForms::is_gravity_page() ) ) {
 
 			// check for available gravity forms
 			$forms = gravityview_get_forms();

@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -155,7 +155,6 @@ class GravityView_Render_Settings {
 	 * @see GravityView_Ajax::get_field_options
 	 * @see GravityView_Admin_Views::render_active_areas
 	 *
-	 * @access public
 	 * @param string $form_id
 	 * @param string $field_type field / widget
 	 * @param string $template_id
@@ -266,7 +265,7 @@ class GravityView_Render_Settings {
 
 			if( class_exists( $type_class ) ) {
 
-				/** @var GravityView_FieldType $render_type */
+				/** @type GravityView_FieldType $render_type */
 				$render_type = new $type_class( $name, $option, $curr_value );
 
 				ob_start();
@@ -345,7 +344,7 @@ class GravityView_Render_Settings {
 		// render the setting
 		$type_class = self::load_type_class( $setting );
 		if( class_exists( $type_class ) ) {
-			/** @var GravityView_FieldType $render_type */
+			/** @type GravityView_FieldType $render_type */
 			$render_type = new $type_class( $name, $setting, $curr_value );
 			ob_start();
 			$render_type->render_setting( $override_input );

@@ -853,7 +853,7 @@ class Addon_Settings extends \GFAddOn {
 						'value' => '0',
 					),
 				),
-				'tooltip' => '<p><img src="' . esc_url_raw( plugins_url( 'assets/images/beacon.png', GRAVITYVIEW_FILE ) ) . '" alt="' . esc_attr__( 'The Support Port looks like this.', 'gravityview' ) . '" class="alignright" style="max-width:40px; margin:.5em;" />' . esc_html__( 'The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support.', 'gravityview' ) . '</p>',
+				'tooltip' => '<p>' . esc_html__( 'The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support.', 'gravityview' ) . '<img src="' . esc_url_raw( plugins_url( 'assets/images/beacon.png', GRAVITYVIEW_FILE ) ) . '" alt="' . esc_attr__( 'The Support Port looks like this.', 'gravityview' ) . '" class="aligncenter" style="display: block; max-width:100%; margin:1em auto;" /></p>',
 				'description' => __( 'Show the Support Port on GravityView pages?', 'gravityview' ),
 			),
 			array(

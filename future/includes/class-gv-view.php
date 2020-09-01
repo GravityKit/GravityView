@@ -984,7 +984,7 @@ class View implements \ArrayAccess {
 
 				$query_class = $this->get_query_class();
 
-				/** @var \GF_Query $query */
+				/** @type \GF_Query $query */
 				$query = new $query_class( $this->form->ID, $parameters['search_criteria'], Utils::get( $parameters, 'sorting' ) );
 
 				/**
@@ -1214,7 +1214,7 @@ class View implements \ArrayAccess {
 						// Build a new query for every unioned form
 						$query_class = $this->get_query_class();
 
-						/** @var \GF_Query|\GF_Patched_Query $q */
+						/** @type \GF_Query|\GF_Patched_Query $q */
 						$q = new $query_class( $form_id );
 
 						// Copy the WHERE clauses but substitute the field_ids to the respective ones
@@ -1540,7 +1540,7 @@ class View implements \ArrayAccess {
 
 				return $caps;
 			case 'edit_post':
-				if ( get_post_type( array_pop( $args ) ) == 'gravityview' ) {
+				if ( 'gravityview' === get_post_type( array_pop( $args ) ) ) {
 					return self::restrict( $caps, 'edit_gravityview', $user_id, $args );
 				}
 		endswitch;

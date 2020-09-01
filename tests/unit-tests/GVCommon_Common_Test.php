@@ -1001,9 +1001,9 @@ class GVCommon_Test extends GV_UnitTestCase {
 
 	/**
 	 * @since 1.20
-	 * @covers GVCommon::calculate_get_entries_criteria()
-	 * @covers GravityView_frontend::set_context_view_id()
-	 * @covers GVCommon::check_entry_display()
+	 * @covers \GVCommon::calculate_get_entries_criteria()
+	 * @covers \GravityView_frontend::set_context_view_id()
+	 * @covers \GVCommon::check_entry_display()
 	 *
 	 * @group calculate_get_entries_criteria
 	 */

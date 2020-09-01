@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 5.4.2
+Tested up to: 5.5.1
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -20,6 +20,19 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.9.1 on September 1, 2020 =
+
+* Improved: Changed the Support Port icon & text to make it clearer
+* Updated: Updater script now handles WordPress 5.5 auto-updates
+* Fixed: Add Yoast SEO 14.7 scripts to the No-Conflict approved list
+* Fixed: Available Gravity Forms forms weren't appearing in the Gravity Forms widget when configuring a View
+
+__Developer Updates:__
+
+* Improved: Gravity Forms 2.5 beta support
+* Fixed: Issue when server doesn't support `GLOB_BRACE`
+* Fixed: Removed references to non-existent source map files
 
 = 2.9.0.1 on July 23, 2020 =
 

@@ -14,7 +14,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 class GF_Entry_Filter extends Entry_Filter {
 
 	/**
-	 * @var array the $search_criteria for Gravity Forms
+	 * @var array $search_criteria The $search_criteria array used by Gravity Forms
 	 */
 	private $search_criteria = array();
 

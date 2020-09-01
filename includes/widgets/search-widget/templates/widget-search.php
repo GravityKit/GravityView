@@ -2,7 +2,7 @@
 /**
  * Display the Search widget
  *
- * @see class-search-widget.php
+ * @file class-search-widget.php See for usage
  * @global GravityView_Widget_Search $this
  */
 

@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -247,7 +247,6 @@ class GravityView_Admin_Views {
 	 *
 	 * @param array $array Existing field types to add to a blacklist
 	 * @param string|null $context Context for the blacklist. Default: NULL.
-	 * @access public
 	 * @return array Default blacklist fields merged with existing blacklist fields
 	 */
 	function default_field_blacklist( $array = array(), $context = NULL ) {
@@ -491,7 +490,6 @@ class GravityView_Admin_Views {
 	/**
 	 * Save View configuration
 	 *
-	 * @access public
 	 * @param int $post_id Currently saved Post ID
 	 * @return void
 	 */
@@ -597,11 +595,9 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Render html for displaying available fields based on a Form ID
-	 * $blacklist_field_types - contains the field types which are not proper to be shown in a directory.
 	 *
      * @see GravityView_Ajax::get_available_fields_html() Triggers `gravityview_render_available_fields` action
-	 * @access public
-     *
+	 *
 	 * @param int $form Gravity Forms Form ID (default: '')
 	 * @param string $context (default: 'single')
      *
@@ -661,7 +657,6 @@ class GravityView_Admin_Views {
 	/**
 	 * Render html for displaying additional fields based on a Form ID
 	 *
-	 * @access public
 	 * @param int $form Gravity Forms Form ID (default: '')
 	 * @param string $context (default: 'single')
 	 * @return void
@@ -1132,7 +1127,6 @@ class GravityView_Admin_Views {
 	/**
 	 * Render the Template Active Areas and configured active fields for a given template id and post id
 	 *
-	 * @access public
 	 * @param string $template_id (default: '') Template ID, like `default_list`, `default_table`, `preset_business_data`, etc. {@see GravityView_Template::__construct()}
 	 * @param string $post_id (default: '')
 	 * @param string $context (default: 'single')
@@ -1183,7 +1177,6 @@ class GravityView_Admin_Views {
 	/**
 	 * Enqueue scripts and styles at Views editor
 	 *
-	 * @access public
 	 * @param mixed $hook
 	 * @return void
 	 */
