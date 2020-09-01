@@ -904,15 +904,14 @@ class GravityView_Admin_Views {
 	 */
 	function render_available_widgets() {
 
-		$widgets = $this->get_registered_widgets();
+		$widgets = \GV\Widget::registered();
 
-		if( !empty( $widgets ) ) {
+		if ( empty( $widgets ) ) {
+			return;
+		}
 
-			foreach( $widgets as $id => $details ) {
-
-				echo new GravityView_Admin_View_Widget( $details['label'], $id, $details );
-
-			}
+		foreach ( $widgets as $id => $details ) {
+			echo new GravityView_Admin_View_Widget( $details['label'], $id, $details );
 		}
 
 	}
@@ -924,6 +923,9 @@ class GravityView_Admin_Views {
 	 * @return array
 	 */
 	function get_registered_widgets() {
+
+		_deprecated_function( __METHOD__, '2.0', '\GV\Widget::registered()' );
+
 		return \GV\Widget::registered();
 	}
 
@@ -1187,7 +1189,7 @@ class GravityView_Admin_Views {
 					</div>
                 </div>
 
-                <div id="available-fields-<?php echo $filter_field_id; ?>" aria-live="polite" role="listbox" class="gv-items-picker-container" data-layout="list">
+                <div id="available-fields-<?php echo $filter_field_id; ?>" aria-live="polite" role="listbox" class="gv-items-picker-container">
 					<?php do_action( 'gravityview_render_available_fields', $form_id, $context ); ?>
                 </div>
 

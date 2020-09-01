@@ -86,6 +86,8 @@ abstract class Widget {
 	 */
 	public $configuration;
 
+	public $icon;
+
 	/**
 	 * Constructor.
 	 *
@@ -239,6 +241,7 @@ abstract class Widget {
 			'label' => $this->widget_label ,
 			'description' => $this->widget_description,
 			'subtitle' => $this->widget_subtitle,
+			'icon' => $this->icon,
 			'class' => get_called_class(),
 		);
 

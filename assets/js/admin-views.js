@@ -272,8 +272,6 @@
 
 			$( '.gv-items-picker' ).not( '.gv-items-picker--' + layout ).removeClass( 'active' );
 
-			$( '.gv-items-picker-container' ).attr( 'data-layout', layout );
-
 			// When choice is made, set a new cookie
 			$.cookie( 'gv-items-picker-layout', layout, { path: gvGlobals.admin_cookiepath } );
 		},
@@ -1077,10 +1075,20 @@
 						$focus_item = $( 'button', tooltip.tooltip ).first();
 					}
 
-			        var activate_layout = $.cookie( 'gv-items-picker-layout' );
-			        if ( !activate_layout || activate_layout === 'undefined' ) {
-				        activate_layout = 'list';
-			        }
+			        var activate_layout = 'list';
+
+					// If layout is coded in HTML, use it.
+					if ( $( tooltip ).find('.gv-items-picker-container[data-layout]').length ) {
+						activate_layout = $( tooltip ).find( '.gv-items-picker-container[data-layout]' ).attr( 'data-layout' );
+					} else {
+
+						// Otherwise, check for cookies
+						layout_cookie = $.cookie( 'gv-items-picker-layout' );
+
+						if ( layout_cookie && layout_cookie !== 'undefined' ) {
+							activate_layout = layout_cookie;
+						}
+					}
 
 			        viewConfiguration.setTooltipLayout( activate_layout );
 

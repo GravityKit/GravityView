@@ -7,6 +7,8 @@
  */
 class GravityView_Widget_Page_Links extends \GV\Widget {
 
+	public $icon = 'dashicons-controls-forward';
+
 	protected $show_on_single = false;
 
 	function __construct() {
@@ -37,7 +39,7 @@ class GravityView_Widget_Page_Links extends \GV\Widget {
 			'show_all' => !empty( $this->settings['show_all']['default'] ),
 			'current' => (int) \GV\Utils::_GET( 'pagenum', 1 ),
 		), $widget_args, 'gravityview_widget_page_links' );
-		
+
 		$page_link_args = array(
 			'base' => add_query_arg('pagenum','%#%', gv_directory_link() ),
 			'format' => '&pagenum=%#%',

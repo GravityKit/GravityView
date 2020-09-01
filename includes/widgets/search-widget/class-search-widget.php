@@ -15,6 +15,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 class GravityView_Widget_Search extends \GV\Widget {
 
+	public $icon = 'dashicons-search';
+
 	public static $file;
 	public static $instance;
 

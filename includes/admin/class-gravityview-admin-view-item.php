@@ -179,7 +179,17 @@ abstract class GravityView_Admin_View_Item {
 		$label = esc_attr( $label );
 
 		if ( $this->item['icon'] && ! \GV\Utils::get( $this->item, 'parent' ) ) {
-			$label = '<i class="dashicons ' . esc_attr( $this->item['icon'] ) . '"></i> ' . $label;
+
+			if ( 0 === strpos( $this->item['icon'], 'data:' ) ) {
+				// Inline icon SVG
+				$label = '<i class="dashicons background-icon" style="background-image: url(\'' . esc_attr( $this->item['icon'] ) . '\');"></i>' . $label;
+			} elseif ( false === strpos( $this->item['icon'], 'dashicons' ) ) {
+				// Not dashicon icon
+				$label = '<i class="' . esc_attr( $this->item['icon'] ) . '"></i> ' . $label;
+			} else {
+				// Dashicon; prefix with "dashicons"
+				$label = '<i class="dashicons ' . esc_attr( $this->item['icon'] ) . '"></i> ' . $label;
+			}
 		}
 
 		$output = '<button class="gv-add-field screen-reader-text">' . sprintf( esc_html__( 'Add "%s"', 'gravityview' ), $label ) . '</button>';

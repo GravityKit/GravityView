@@ -104,6 +104,10 @@ body .ui-tooltip {
 		justify-content: space-around;
 	}
 
+	[data-cols="2"] .gv-fields {
+		width: 50%;
+	}
+
 	.gv-fields {
 		background: transparent;
 		border: 1px solid white;
@@ -125,6 +129,7 @@ body .ui-tooltip {
 		padding: .5em .75em;
 		margin-bottom: 10px;
 		width: 32%;
+
 		text-align: center;
 
 		h5 {
@@ -183,6 +188,32 @@ body .ui-tooltip {
 		}
 	}
 
+	.gv-items-picker-container {
+
+		.gv-fields {
+			padding: 16px 12px;
+		}
+
+		.dashicons {
+			display: inline-block;
+			margin: 0 .2em 0 0;
+			color: $color-666;
+			width: .9em;
+
+			&.background-icon {
+				filter: brightness(1);
+			}
+		}
+
+		.gv-fields:hover .dashicons {
+			color: $color-444;
+
+			&.background-icon {
+				filter: brightness(.666);
+			}
+		}
+	}
+
 	.gv-items-picker-container[data-layout="list"] {
 		.gv-fields {
 			width: 100%;
@@ -194,21 +225,33 @@ body .ui-tooltip {
 			* {
 				text-align: left;
 			}
+		}
 
-			&:hover .dashicons {
-				color: $color-444;
-			}
-		}
 		.dashicons {
-			display: inline-block;
 			margin: 0 8px 0 -36px;
-			color: $color-777;
 		}
+
 		.gv-field-info {
 			display: none;
 		}
 
 		&.gv-widget-picker-container {
+
+			* {
+				text-align: center;
+			}
+
+			.dashicons {
+				display: block;
+				font-size: 30px;
+				width: 28px;
+				height: 32px;
+				line-height: 32px;
+				float: none;
+				margin: 0 auto 6px auto!important;
+				padding: 0;
+			}
+
 			.gv-fields {
 				width: 50%;
 				padding: 16px 12px;
