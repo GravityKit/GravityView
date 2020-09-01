@@ -259,10 +259,19 @@
 
 			var layout = $( this ).data( 'value' );
 
-			$( '.gv-items-picker' ).removeClass( 'active' );
-			$( this ).addClass( 'active' );
+			viewConfiguration.setTooltipLayout( layout );
+		},
+
+		setTooltipLayout: function ( layout ) {
+
+			$( '.gv-items-picker--' + layout ).addClass( 'active' );
+
+			$( '.gv-items-picker' ).not( '.gv-items-picker--' + layout ).removeClass( 'active' );
 
 			$( '.gv-items-picker-container' ).attr( 'data-layout', layout );
+
+			// When choice is made, set a new cookie
+			$.cookie( 'gv-items-picker-layout', layout, { path: gvGlobals.admin_cookiepath } );
 		},
 
 		/**
@@ -1029,9 +1038,9 @@
 				},
 		        open: function( event, tooltip ) {
 
-					$( this )
-						.attr( 'data-tooltip', 'active' )
-						.attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
+			        $( this )
+				        .attr( 'data-tooltip', 'active' )
+				        .attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
 
 					$focus_item = $( 'input[type=search]', tooltip.tooltip );
 
@@ -1040,7 +1049,14 @@
 						$focus_item = $( 'button', tooltip.tooltip ).first();
 					}
 
-					$focus_item.focus();
+			        var activate_layout = $.cookie( 'gv-items-picker-layout' );
+			        if ( !activate_layout || activate_layout === 'undefined' ) {
+				        activate_layout = 'list';
+			        }
+
+			        viewConfiguration.setTooltipLayout( activate_layout );
+
+			        $focus_item.focus();
 		        },
 				closeOnEscape: true,
 				disabled: true, // Don't open on hover

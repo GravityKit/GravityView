@@ -1293,6 +1293,7 @@ class GravityView_Admin_Views {
 
         wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
             'cookiepath' => COOKIEPATH,
+            'admin_cookiepath' => ADMIN_COOKIE_PATH,
             'passed_form_id' => (bool) \GV\Utils::_GET( 'form_id' ),
             'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ),
             'label_viewname' => __( 'Enter View name here', 'gravityview' ),
