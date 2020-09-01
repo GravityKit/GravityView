@@ -152,6 +152,7 @@ abstract class GravityView_Admin_View_Item {
 		$settings_title    = sprintf( __( 'Configure %s Settings', 'gravityview' ), ucfirst( $this->label_type ) );
 		$delete_title      = sprintf( __( 'Remove %s', 'gravityview' ), ucfirst( $this->label_type ) );
 		$single_link_title = __( 'This field links to the Single Entry', 'gravityview' );
+		$visibility_title = __( 'This field has modified visibility', 'gravityview' );
 
 		// $settings_html will just be hidden inputs if empty. Otherwise, it'll have an <ul>. Ugly hack, I know.
 		// TODO: Un-hack this
@@ -161,6 +162,10 @@ abstract class GravityView_Admin_View_Item {
 		// Should we show the icon that the field is being used as a link to single entry?
 		$hide_show_as_link_class = empty( $this->settings['show_as_link'] ) ? 'hide-if-js' : '';
 		$show_as_link            = '<span class="dashicons dashicons-admin-links ' . $hide_show_as_link_class . '" title="' . esc_attr( $single_link_title ) . '"></span>';
+
+		// Should we show the icon that the field is being used as a link to single entry?
+		$hide_visibility_class = ( 'read' === \GV\Utils::get( $this->settings, 'only_loggedin' ) && empty( $this->settings['allow_edit_cap'] ) ) ? 'hide-if-js' : '';
+		$visibility_icon         = '<span class="dashicons dashicons-lock icon-custom-visibility ' . $hide_visibility_class . '" title="' . esc_attr( $visibility_title ) . '"></span>';
 
 		// When a field label is empty, use the Field ID
 		$label = empty( $this->title ) ? sprintf( _x( 'Field #%s (No Label)', 'Label in field picker for empty label', 'gravityview' ), $this->id ) : $this->title;
@@ -181,7 +186,7 @@ abstract class GravityView_Admin_View_Item {
 
 		$output .= '<h5 class="selectable gfield field-id-' . esc_attr( $this->id ) . '">';
 
-		$output .= '<span class="gv-field-controls">' . $settings_link . $show_as_link . '<button class="gv-remove-field" aria-label="' . esc_attr( $delete_title ) . '" title="' . esc_attr( $delete_title ) . '"><span class="dashicons-dismiss dashicons"></span></button></span>';
+		$output .= '<span class="gv-field-controls">' . $settings_link . $show_as_link . $visibility_icon . '<button class="gv-remove-field" aria-label="' . esc_attr( $delete_title ) . '" title="' . esc_attr( $delete_title ) . '"><span class="dashicons-dismiss dashicons"></span></button></span>';
 
 		$parent_label = '';
 

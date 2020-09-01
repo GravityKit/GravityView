@@ -474,7 +474,7 @@ $gv-overlay-index: 10000;
 				transition: none;
 				border-radius: 3px 3px 0 0;
 				float: left;
-				padding: .666em 1.333em;
+				padding: .666em .666em .666em 1.333em;
 				margin: 0 5px 0 0;
 
 				text-decoration: none;
@@ -503,7 +503,25 @@ $gv-overlay-index: 10000;
 				width: 24px;
 			}
 
+			.configuration-status-icons {
+				padding: 0 .666em;
+				display: block;
+				.dashicons {
+					font-size: 18px;
+					height: 18px;
+					width: 18px;
+					line-height: 24px;
+					display: inline-block;
+					padding: 0 .111em;
+
+					&:hover {
+						color: $color-blue-tone-100;
+					}
+				}
+			}
+
 			&.ui-state-active,
+			&.ui-state-active.tab-not-configured,
 			&.ui-state-active.ui-state-hover {
 
 				a {
@@ -514,8 +532,12 @@ $gv-overlay-index: 10000;
 
 				// Active text is #555D66 - we want a bit lighter
 				// since it's bolder.
-				.dashicons {
+				.dashicons.tab-icon {
 					color: $color-444;
+				}
+
+				.configuration-status-icons .dashicons {
+					color: $color-blue-tone-100;
 				}
 			}
 
@@ -529,6 +551,25 @@ $gv-overlay-index: 10000;
 				}
 			}
 
+			.configuration-status-icons {
+				display: inline-block;
+				padding-left: .666em;
+				.dashicons {
+					display: inline-block;
+				}
+			}
+
+			&.tab-not-configured {
+				.configuration-status-icons {
+					.dashicons {
+						color: $color-red;
+					}
+				}
+				a {
+					//color: $color-red;
+					background-color: $color-light-grey-200;
+				}
+			}
 		}
 	}
 
@@ -735,10 +776,26 @@ hr {
 
 	&.has-single-entry-link {
 		background-color: $color-blue-tint-90;
-		.dashicons-admin-links {
+		.gv-field-controls .dashicons-admin-links {
 			line-height: 44px;
 			margin: -2px 6px 0 3px;
 		}
+	}
+
+	.gv-field-controls {
+		.dashicons-admin-links,
+		.icon-custom-visibility {
+			cursor: help;
+		}
+		.icon-custom-visibility {
+			display: none;
+			line-height: 44px;
+			margin: -2px 6px 0 3px;
+		}
+	}
+
+	&.has-custom-visibility .gv-field-controls .icon-custom-visibility {
+		display: inline-block;
 	}
 
 	h5 {
@@ -1065,7 +1122,7 @@ hr {
 			font-weight: normal;
 			color: $color-444;
 			display: inline-block;
-			padding-right: .75em;
+			padding-right: .666em;
 			max-width: 100%; // Fix https://github.com/katzwebservices/GravityView-AZ-Filters/issues/14
 
 			* {
@@ -1073,14 +1130,21 @@ hr {
 			}
 		}
 
+		label[for$=only_loggedin]::after,
 		label[for*=show_as_link]::after {
-			content: "\f103";
+			content: "\f160";
 			font-family: Dashicons, sans-serif;
-			font-size: 1em;
-			line-height: 1em;
+			font-size: 16px;
+			height: 16px;
+			width: 16px;
+			line-height: 16px;
 			speak: none;
 			-webkit-font-smoothing: antialiased;
 			-moz-osx-font-smoothing: grayscale;
+		}
+
+		label[for*=show_as_link]::after {
+			content: "\f103";
 		}
 
 		.howto {

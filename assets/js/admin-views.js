@@ -137,6 +137,10 @@
 				// Show fields that are being used as links to single entry
 				.on( 'change', ".gv-dialog-options input[name*=show_as_link]", vcfg.toggleShowAsEntry )
 
+				.on( 'change', '.gv-dialog-options input[name*=only_loggedin]', vcfg.toggleCustomVisibility )
+
+				.on( 'change', '.gv-dialog-options input[name*=allow_edit_cap]', vcfg.toggleCustomVisibility )
+
 				// show field buttons: Settings & Remove
 				.on( 'click', ".gv-field-controls .gv-remove-field", vcfg.removeField )
 
@@ -371,6 +375,30 @@
 			parent.toggleClass( 'has-single-entry-link', $( e.target ).is( ':checked' ) );
 
 			parent.find( '.gv-field-controls .dashicons-admin-links' ).toggleClass( 'hide-if-js', $( e.target ).not( ':checked' ) );
+
+			$( 'body' ).trigger( 'gravityview/show-as-entry', $( e.target ).is( ':checked' ) );
+		},
+
+		/**
+		 * Toggle the dashicon link representing whether the field has custom visibility settings
+		 * @param  {jQueryEvent} e jQuery event object
+		 * @return {void}
+		 */
+		toggleCustomVisibility: function ( e ) {
+
+			var custom_visibility;
+
+			if ( $( e.target ).is('select') ) {
+				custom_visibility = 'read' !== $( e.target ).val();
+			} else {
+				custom_visibility = $( e.target ).is( ':checked' );
+			}
+
+			var parent = $( e.target ).parents( '.gv-fields' );
+
+			parent.toggleClass( 'has-custom-visibility', custom_visibility );
+
+			parent.find( '.gv-field-controls .icon-custom-visibility' ).toggleClass( 'hide-if-js', ! custom_visibility );
 		},
 
 		/**
