@@ -158,7 +158,7 @@
 				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters )
 
 				// TODO: Show/hide warnings on configuration tabs to let users know context has been configured.
-				.on( 'gravityview/field-added gravityview/field-removed gravityview/all-fields-removed', function() {
+				.on( 'gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry', function() {
 
 				});
 
@@ -1976,6 +1976,8 @@
 
 				// When the tab is activated, set a new cookie
 				$.cookie( cookie_key, ui.newTab.index(), { path: gvGlobals.cookiepath } );
+
+				$( 'body' ).trigger( 'gravityview/tabs-ready' );
 			}
 		} );
 
