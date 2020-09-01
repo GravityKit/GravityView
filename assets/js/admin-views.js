@@ -1513,9 +1513,10 @@
 
 			$( e.currentTarget ).parents( '.gv-fields' ).fadeOut( 'fast', function () {
 
+				$( this ).remove();
+
 				$('body').trigger( 'gravityview/field-removed', $( this ) );
 
-				$( this ).remove();
 				vcfg.toggleDropMessage();
 			} );
 
