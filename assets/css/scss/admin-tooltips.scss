@@ -223,7 +223,7 @@ body .ui-tooltip {
 		position: sticky;
 		top: 0;
 		width: 460px;
-		background: white;
+		background: $color-light-grey-150;
 		margin: 0;
 		padding: 16px;
 		box-sizing: border-box;
@@ -265,8 +265,6 @@ body .ui-tooltip {
 				border-color: #7e8993;
 			}
 		}
-
-		border-bottom: 1px solid rgba(210, 224, 235, .6);
 	}
 
 	.gv-no-results {
