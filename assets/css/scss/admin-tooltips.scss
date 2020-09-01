@@ -232,6 +232,27 @@ body .ui-tooltip {
 			left: 0;
 			width: 75%;
 			height: 2.5em;
+			padding-left: 30px;
+			display: inline-block;
+			line-height: 1em;
+
+			&::placeholder,
+			&:placeholder-shown {
+				line-height: 2.5em;
+			}
+		}
+
+		&:before {
+			font-family: Dashicons, sans-serif;
+			content: "\f179";
+			display: block;
+			height: 26px;
+			width: 26px;
+			margin-left: 3px;
+			line-height: 35px;
+			font-size: 26px;
+			position: absolute;
+			color: $color-ccc;
 		}
 
 		.button-group {
