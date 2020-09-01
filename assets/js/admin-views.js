@@ -156,6 +156,11 @@
 				// TODO: Show/hide warnings on configuration tabs to let users know context has been configured.
 				.on( 'gravityview/field-added gravityview/field-removed gravityview/all-fields-removed', function() {
 
+					var has_single_entry_link = $( '.gv-dialog-options input[name*=show_as_link]:checked').length;
+					var has_edit_entry_link = $( '.gv-fields .field-key[value="edit_link"]').length;
+
+					$( 'li[aria-controls="single-view"]' ).toggleClass( 'tab-not-configured', has_single_entry_link === 0 );
+					$( 'li[aria-controls="edit-view"]' ).toggleClass( 'tab-not-configured', has_edit_entry_link === 0 );
 				});
 
 			$( '.gv-add-field').on('focus', function() {
@@ -1042,12 +1047,12 @@
 				        .attr( 'data-tooltip', 'active' )
 				        .attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
 
-					$focus_item = $( 'input[type=search]', tooltip.tooltip );
+			        $focus_item = $( 'input[type=search]', tooltip.tooltip );
 
-					// Widgets don't have a search field; select the first "Add Widget" button instead
-					if ( ! $focus_item.length) {
-						$focus_item = $( 'button', tooltip.tooltip ).first();
-					}
+			        // Widgets don't have a search field; select the first "Add Widget" button instead
+			        if ( !$focus_item.length ) {
+				        $focus_item = $( 'button', tooltip.tooltip ).first();
+			        }
 
 			        var activate_layout = $.cookie( 'gv-items-picker-layout' );
 			        if ( !activate_layout || activate_layout === 'undefined' ) {
