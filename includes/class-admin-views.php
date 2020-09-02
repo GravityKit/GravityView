@@ -283,11 +283,6 @@ class GravityView_Admin_Views {
 			// By default, use `tooltip` if defined.
 			$tooltip = empty( $arg['tooltip'] ) ? NULL : $arg['tooltip'];
 
-			// Otherwise, use the description as a tooltip.
-			if( empty( $tooltip ) && !empty( $arg['desc'] ) ) {
-				$tooltip = $arg['desc'];
-			}
-
 			// If there's no tooltip set, continue
 			if( empty( $tooltip ) ) {
 				continue;
