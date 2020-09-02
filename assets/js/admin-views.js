@@ -367,7 +367,7 @@
 
 						// The Beacon escape key behavior is flaky. Make it work better.
 						if ( window.Beacon  ) {
-							Beacon('close');
+							window.Beacon('close');
 						}
 					}
 
