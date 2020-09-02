@@ -255,6 +255,11 @@
 					if ( e.keyCode === 27 ) {
 						close = $( '.gv-field-filter-form input[data-has-search]:focus' ).length === 0;
 						return_false = close;
+
+						// The Beacon escape key behavior is flaky. Make it work better.
+						if ( window.Beacon  ) {
+							window.Beacon('close');
+						}
 					}
 
 					break;
