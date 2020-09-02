@@ -38,6 +38,7 @@ class GravityView_Render_Settings {
 					'type' => 'checkbox',
 					'label' => __( 'Show Label', 'gravityview' ),
 					'value' => ! empty ( $is_table_layout ),
+					'priority' => 1000,
 				),
 				'custom_label' => array(
 					'type' => 'text',
@@ -45,6 +46,7 @@ class GravityView_Render_Settings {
 					'value' => '',
 					'merge_tags' => true,
 					'class'      => 'widefat',
+					'priority' => 1100,
 				),
 				'custom_class' => array(
 					'type'       => 'text',
@@ -54,11 +56,13 @@ class GravityView_Render_Settings {
 					'merge_tags' => true,
 					'tooltip'    => 'gv_css_merge_tags',
 					'class'      => 'widefat code',
+					'priority' => 5000,
 				),
 				'only_loggedin' => array(
 					'type' => 'checkbox',
 					'label' => __( 'Make visible only to logged-in users?', 'gravityview' ),
-					'value' => ''
+					'value' => '',
+					'priority' => 4000,
 				),
 				'only_loggedin_cap' => array(
 					'type' => 'select',
@@ -66,6 +70,7 @@ class GravityView_Render_Settings {
 					'options' => self::get_cap_choices( $template_id, $field_id, $context, $input_type ),
 					'class' => 'widefat',
 					'value' => 'read',
+					'priority' => 4100,
 				),
 			);
 
@@ -77,6 +82,7 @@ class GravityView_Render_Settings {
 					'desc' => __( 'Leave blank for column width to be based on the field content.', 'gravityview'),
 					'class' => 'code widefat',
 					'value' => '',
+					'priority' => 200,
 				);
 			}
 
@@ -109,7 +115,32 @@ class GravityView_Render_Settings {
 		 */
 		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
+		uasort( $field_options, array( __CLASS__, '_sort_by_priority' ) );
+
 		return $field_options;
+	}
+
+	/**
+	 * Sort field settings by the `priority` key
+	 *
+	 * Default priority is 1001. Lower is higher.
+	 *
+	 * @since 3.0
+	 * @internal
+	 *
+	 * @param array $a
+	 * @param array $b
+	 */
+	static public function _sort_by_priority( $a, $b ) {
+
+		$a_priority = \GV\Utils::get( $a, 'priority', 1001 );
+		$b_priority = \GV\Utils::get( $b, 'priority', 1001 );
+
+		if ( $a_priority === $b_priority ) {
+			return 0;
+		}
+
+		return ( $a_priority < $b_priority ) ? - 1 : 1;
 	}
 
 	/**

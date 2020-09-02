@@ -54,18 +54,21 @@ class GravityView_Field_Custom extends GravityView_Field {
 				'merge_tags' => 'force',
 				'rows' => 15,
 				'show_all_fields' => true, // Show the `{all_fields}` and `{pricing_fields}` merge tags
+				'priority' => 900,
 			),
 			'wpautop' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Automatically add paragraphs to content', 'gravityview' ),
 				'tooltip' => __( 'Wrap each block of text in an HTML paragraph tag (recommended for text).', 'gravityview' ),
 				'value' => '',
+				'priority' => 950,
 			),
 			'oembed' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Render oEmbeds', 'gravityview' ),
 				'desc' => sprintf( _x( 'Automatically convert oEmbed URLs into embedded content (%slearn more%s).', 'HTML link pointing to WordPress article on oEmbed', 'gravityview' ), '<a href="https://codex.wordpress.org/Embeds" rel="external noopener noreferrer">', '</a>' ),
 				'value' => '',
+				'priority' => 970,
 			),
 			'admin_label' => array(
 				'type' => 'text',
@@ -73,6 +76,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 				'label' => __( 'Admin Label', 'gravityview' ),
 				'desc' => __( 'A label that is only shown in the GravityView View configuration screen.', 'gravityview' ),
 				'value' => '',
+				'priority' => 1000,
 			),
 		);
 
