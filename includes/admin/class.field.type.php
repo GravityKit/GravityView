@@ -85,7 +85,7 @@ abstract class GravityView_FieldType {
 
 	    $article = wp_parse_args( \GV\Utils::get( $this->field, 'article', array() ), array(
 	    	'id' => '',
-	    	'type' => 'inline',
+	    	'type' => 'modal',
 	    	'url' => '#',
 	    ) );
 
