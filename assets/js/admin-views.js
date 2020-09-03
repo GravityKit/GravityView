@@ -137,6 +137,10 @@
 				// Show fields that are being used as links to single entry
 				.on( 'change', ".gv-dialog-options input[name*=show_as_link]", vcfg.toggleShowAsEntry )
 
+				.on( 'change', '.gv-dialog-options input[name*=only_loggedin]', vcfg.toggleCustomVisibility )
+
+				.on( 'change', '.gv-dialog-options input[name*=allow_edit_cap]', vcfg.toggleCustomVisibility )
+
 				// show field buttons: Settings & Remove
 				.on( 'click', ".gv-field-controls .gv-remove-field", vcfg.removeField )
 
@@ -154,10 +158,10 @@
 				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters )
 
 				// TODO: Show/hide warnings on configuration tabs to let users know context has been configured.
-				.on( 'gravityview/field-added gravityview/field-removed gravityview/all-fields-removed', function() {
 
 					var has_single_entry_link = $( '.gv-dialog-options input[name*=show_as_link]:checked').length;
 					var has_edit_entry_link = $( '.gv-fields .field-key[value="edit_link"]').length;
+				.on( 'gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry', function() {
 
 					$( 'li[aria-controls="single-view"]' ).toggleClass( 'tab-not-configured', has_single_entry_link === 0 );
 					$( 'li[aria-controls="edit-view"]' ).toggleClass( 'tab-not-configured', has_edit_entry_link === 0 );
@@ -273,8 +277,6 @@
 
 			$( '.gv-items-picker' ).not( '.gv-items-picker--' + layout ).removeClass( 'active' );
 
-			$( '.gv-items-picker-container' ).attr( 'data-layout', layout );
-
 			// When choice is made, set a new cookie
 			$.cookie( 'gv-items-picker-layout', layout, { path: gvGlobals.admin_cookiepath } );
 		},
@@ -376,6 +378,30 @@
 			parent.toggleClass( 'has-single-entry-link', $( e.target ).is( ':checked' ) );
 
 			parent.find( '.gv-field-controls .dashicons-admin-links' ).toggleClass( 'hide-if-js', $( e.target ).not( ':checked' ) );
+
+			$( 'body' ).trigger( 'gravityview/show-as-entry', $( e.target ).is( ':checked' ) );
+		},
+
+		/**
+		 * Toggle the dashicon link representing whether the field has custom visibility settings
+		 * @param  {jQueryEvent} e jQuery event object
+		 * @return {void}
+		 */
+		toggleCustomVisibility: function ( e ) {
+
+			var custom_visibility;
+
+			if ( $( e.target ).is('select') ) {
+				custom_visibility = 'read' !== $( e.target ).val();
+			} else {
+				custom_visibility = $( e.target ).is( ':checked' );
+			}
+
+			var parent = $( e.target ).parents( '.gv-fields' );
+
+			parent.toggleClass( 'has-custom-visibility', custom_visibility );
+
+			parent.find( '.gv-field-controls .icon-custom-visibility' ).toggleClass( 'hide-if-js', ! custom_visibility );
 		},
 
 		/**
@@ -1049,20 +1075,30 @@
 
 			        $focus_item = $( 'input[type=search]', tooltip.tooltip );
 
-			        // Widgets don't have a search field; select the first "Add Widget" button instead
-			        if ( !$focus_item.length ) {
-				        $focus_item = $( 'button', tooltip.tooltip ).first();
-			        }
+					// Widgets don't have a search field; select the first "Add Widget" button instead
+					if ( ! $focus_item.length) {
+						$focus_item = $( 'button', tooltip.tooltip ).first();
+					}
 
-			        var activate_layout = $.cookie( 'gv-items-picker-layout' );
-			        if ( !activate_layout || activate_layout === 'undefined' ) {
-				        activate_layout = 'list';
-			        }
+					var activate_layout = 'list';
 
-			        viewConfiguration.setTooltipLayout( activate_layout );
+					// If layout is coded in HTML, use it.
+					if ( $( tooltip ).find('.gv-items-picker-container[data-layout]').length ) {
+						activate_layout = $( tooltip ).find( '.gv-items-picker-container[data-layout]' ).attr( 'data-layout' );
+					} else {
 
-			        $focus_item.focus();
-		        },
+						// Otherwise, check for cookies
+						layout_cookie = $.cookie( 'gv-items-picker-layout' );
+
+						if ( layout_cookie && layout_cookie !== 'undefined' ) {
+							activate_layout = layout_cookie;
+						}
+					}
+
+					viewConfiguration.setTooltipLayout( activate_layout );
+
+					$focus_item.focus();
+				},
 				closeOnEscape: true,
 				disabled: true, // Don't open on hover
 				position: {
@@ -1952,6 +1988,8 @@
 
 				// When the tab is activated, set a new cookie
 				$.cookie( cookie_key, ui.newTab.index(), { path: gvGlobals.cookiepath } );
+
+				$( 'body' ).trigger( 'gravityview/tabs-ready' );
 			}
 		} );
 
