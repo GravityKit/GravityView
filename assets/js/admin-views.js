@@ -158,10 +158,13 @@
 				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters )
 
 				// TODO: Show/hide warnings on configuration tabs to let users know context has been configured.
+				.on( 'gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry', function() {
 
 					var has_single_entry_link = $( '.gv-dialog-options input[name*=show_as_link]:checked').length;
 					var has_edit_entry_link = $( '.gv-fields .field-key[value="edit_link"]').length;
-				.on( 'gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry', function() {
+
+					$( '#single-fields' ).find( '.notice-warning' ).toggle( has_single_entry_link === 0 );
+					$( '#edit-fields' ).find( '.notice-warning' ).toggle( has_edit_entry_link === 0 );
 
 					$( 'li[aria-controls="single-view"]' ).toggleClass( 'tab-not-configured', has_single_entry_link === 0 );
 					$( 'li[aria-controls="edit-view"]' ).toggleClass( 'tab-not-configured', has_edit_entry_link === 0 );
@@ -1985,7 +1988,6 @@
 			hide: false,
 			show: false,
 			activate: function ( event, ui ) {
-
 				// When the tab is activated, set a new cookie
 				$.cookie( cookie_key, ui.newTab.index(), { path: gvGlobals.cookiepath } );
 
@@ -1993,6 +1995,7 @@
 			}
 		} );
 
+		$( 'body' ).trigger( 'gravityview/loaded' );
 	} );
 
 	// Expose globally methods to initialize/destroy tooltips and to display dialog window

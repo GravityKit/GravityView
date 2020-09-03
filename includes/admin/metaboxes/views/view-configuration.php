@@ -58,6 +58,8 @@
 
 		<div id="single-fields" class="gv-section">
 
+			<div class="notice notice-warning inline"><h3><?php printf( esc_html__( 'Note: %s', 'gravityview' ), esc_html__( 'There are no fields that link here.', 'gravityview') ); ?></h3></div>
+
 			<h4><?php esc_html_e( 'These fields will be shown in Single Entry view.', 'gravityview'); ?></h4>
 
 			<div id="single-active-fields" class="gv-grid">
@@ -77,6 +79,8 @@
 	<div id="edit-view">
 
 		<div id="edit-fields" class="gv-section">
+
+			<div class="notice notice-warning inline"><h3><?php printf( esc_html__( 'Note: %s', 'gravityview' ), esc_html__( 'There are no fields that link here.', 'gravityview') ); ?></h3></div>
 
 			<h4><?php esc_html_e( 'Fields shown when editing an entry.', 'gravityview'); ?> <span><?php esc_html_e('If not configured, all form fields will be displayed.', 'gravityview'); ?></span></h4>
 
