@@ -6,9 +6,9 @@
 <div id="gv-view-configuration-tabs">
 
 	<ul class="nav-tab-wrapper">
-		<li><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page"></i> <?php echo esc_html( sprintf( __( '%s Layout', 'gravityview' ), esc_html__( 'Multiple Entries', 'gravityview' ) ) ); ?></a></li>
-		<li><a href="#single-view" class="nav-tab"><i class="dashicons dashicons-media-default"></i> <?php echo esc_html( sprintf( __( '%s Layout', 'gravityview' ), esc_html__( 'Single Entry', 'gravityview' ) ) ); ?></a></li>
-		<li><a href="#edit-view" class="nav-tab"><i class="dashicons dashicons-welcome-write-blog"></i> <?php echo esc_html( sprintf( __( '%s Layout', 'gravityview' ), esc_html__( 'Edit Entry', 'gravityview' ) ) ); ?></a></li>
+		<li><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page tab-icon"></i> <?php echo esc_html( sprintf( __( '%s Layout', 'gravityview' ), esc_html__( 'Multiple Entries', 'gravityview' ) ) ); ?><span class="configuration-status-icons"><i class="dashicons dashicons-yes-alt"></i></span></a></li>
+		<li><a href="#single-view" class="nav-tab"><i class="dashicons dashicons-media-default tab-icon"></i> <?php echo esc_html( sprintf( __( '%s Layout', 'gravityview' ), esc_html__( 'Single Entry', 'gravityview' ) ) ); ?><span class="configuration-status-icons"><i class="dashicons dashicons-yes-alt"></i><i class="dashicons dashicons-admin-links"></i></span></a></li>
+		<li><a href="#edit-view" class="nav-tab"><i class="dashicons dashicons-welcome-write-blog tab-icon"></i> <?php echo esc_html( sprintf( __( '%s Layout', 'gravityview' ), esc_html__( 'Edit Entry', 'gravityview' ) ) ); ?><span class="configuration-status-icons"><i class="dashicons dashicons-yes-alt"></i><i class="dashicons dashicons-admin-links"></i></span></a></li>
 	</ul>
 
 	<div id="directory-view">
@@ -58,6 +58,8 @@
 
 		<div id="single-fields" class="gv-section">
 
+			<div class="notice notice-warning inline"><h3><?php printf( esc_html__( 'Note: %s', 'gravityview' ), esc_html__( 'There are no fields that link here.', 'gravityview') ); ?></h3></div>
+
 			<h4><?php esc_html_e( 'These fields will be shown in Single Entry view.', 'gravityview'); ?></h4>
 
 			<div id="single-active-fields" class="gv-grid">
@@ -77,6 +79,8 @@
 	<div id="edit-view">
 
 		<div id="edit-fields" class="gv-section">
+
+			<div class="notice notice-warning inline"><h3><?php printf( esc_html__( 'Note: %s', 'gravityview' ), esc_html__( 'There are no fields that link here.', 'gravityview') ); ?></h3></div>
 
 			<h4><?php esc_html_e( 'Fields shown when editing an entry.', 'gravityview'); ?> <span><?php esc_html_e('If not configured, all form fields will be displayed.', 'gravityview'); ?></span></h4>
 
