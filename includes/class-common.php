@@ -1425,11 +1425,14 @@ class GVCommon {
 		// Are there custom content fields?
 		if ( is_admin() ) {
 			$view = \GV\View::by_id( \GV\Utils::_GET( 'post' ) );
-			foreach ( $view->fields->by_type( 'custom' )->all() as $custom ) {
-				$fields[ 'custom_' . $custom->UID ] = array(
-					'type' => 'custom',
-					'label' => __( 'Custom Content', 'gravityview' ) . ': ' . $custom->admin_label,
-				);
+
+			if ( $view ) {
+				foreach ( $view->fields->by_type( 'custom' )->all() as $custom ) {
+					$fields[ 'custom_' . $custom->UID ] = array(
+						'type'  => 'custom',
+						'label' => __( 'Custom Content', 'gravityview' ) . ': ' . $custom->admin_label,
+					);
+				}
 			}
 		}
 
