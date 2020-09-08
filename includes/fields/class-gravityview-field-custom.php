@@ -167,8 +167,21 @@ class GravityView_Field_Custom extends GravityView_Field {
 			return; // No sorts.
 		}
 
-		if ( ! $sorts = \GV\Utils::_GET( 'sort' ) ) {
-			$sorts = array_combine( (array)$view->settings->get( 'sort_field' ), (array)$view->settings->get( 'sort_direction' ) );
+		$sorts = \GV\Utils::_GET( 'sort' );
+
+		if ( ! $sorts ) {
+
+			$sort_field = $view->settings->get( 'sort_field' );
+
+			if ( empty( $sort_field ) ) {
+				return; // Default sorting may be empty string
+			}
+
+			$sorts = array_combine( (array) $view->settings->get( 'sort_field' ), (array) $view->settings->get( 'sort_direction' ) );
+		}
+
+		if ( empty( $sorts ) || ! is_array( $sorts ) ) {
+			return; // Sanity check
 		}
 
 		if ( strpos( implode( ':', array_keys( $sorts ) ), 'custom_' ) === false ) {
