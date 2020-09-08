@@ -3,7 +3,7 @@
  * @file class-gravityview-entry-approval.php
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      https://gravityview.co
  * @copyright Copyright 2016, Katz Web Services, Inc.
  *
@@ -165,13 +165,13 @@ class GravityView_Entry_Approval {
 	 * @return void Prints result using wp_send_json_success() and wp_send_json_error()
 	 */
 	public function ajax_update_approved() {
-		
+
 		$form_id = intval( \GV\Utils::_POST( 'form_id' ) );
 
 		// We always want requests from the admin to allow entry IDs, but not from the frontend
 		// There's another nonce sent when approving entries in the admin that we check
 		$force_entry_ids = \GV\Utils::_POST( 'admin_nonce' ) && wp_verify_nonce( \GV\Utils::_POST( 'admin_nonce' ), 'gravityview_admin_entry_approval' );
-		
+
 		$entry_id = GVCommon::get_entry_id( \GV\Utils::_POST( 'entry_slug' ), $force_entry_ids );
 
 		$approval_status = \GV\Utils::_POST( 'approved' );
@@ -325,7 +325,6 @@ class GravityView_Entry_Approval {
 	 * @since 1.18 Moved to GravityView_Entry_Approval
 	 * @since 1.18 Made public
 	 *
-	 * @access public
 	 * @static
 	 * @param array|boolean $entries If array, array of entry IDs that are to be updated. If true: update all entries.
 	 * @param int $approved Approved status. If `0`: unapproved, if not empty, `Approved`
@@ -370,7 +369,6 @@ class GravityView_Entry_Approval {
 	 *
 	 * @since 1.18 Moved to GravityView_Entry_Approval class
 	 *
-	 * @access public
 	 * @static
 	 * @param int $entry_id (default: 0)
 	 * @param int $approved (default: 2)
@@ -526,7 +524,7 @@ class GravityView_Entry_Approval {
 		 * @var true|WP_Error $result
 		 */
 		$result = GFAPI::update_entry( $entry );
-		
+
 		return $result;
 	}
 
@@ -612,7 +610,6 @@ class GravityView_Entry_Approval {
 	/**
 	 * Calculate the approve field.input id
 	 *
-	 * @access public
 	 * @static
 	 * @param mixed $form GF Form or Form ID
 	 * @return false|null|string Returns the input ID of the approved field. Returns NULL if no approved fields were found. Returns false if $form_id wasn't set.

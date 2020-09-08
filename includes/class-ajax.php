@@ -59,7 +59,6 @@ class GravityView_Ajax {
 	 * AJAX action to get HTML markup for form(s) or template fields
 	 * AJAX callback
 	 *
-	 * @access public
 	 * @return array|void Terminate request, exit with JSON response or return HTML markup
 	 */
 	function get_available_fields_html() {
@@ -107,7 +106,6 @@ class GravityView_Ajax {
 	 * Returns template active areas given a template ID
 	 * AJAX callback
 	 *
-	 * @access public
 	 * @return void
 	 */
 	function get_active_areas() {
@@ -251,7 +249,6 @@ class GravityView_Ajax {
 	 * Returns field options - called by ajax when dropping fields into active areas
 	 * AJAX callback
 	 *
-	 * @access public
 	 * @return void
 	 */
 	function get_field_options() {
@@ -285,7 +282,6 @@ class GravityView_Ajax {
 	 * AJAX callback
 	 *
 	 *
-	 * @access public
 	 * @return void
 	 */
 	function get_sortable_fields() {

@@ -275,7 +275,6 @@ class GravityView_Admin_Metaboxes {
 	/**
 	 * Render html for 'View Configuration' metabox
 	 *
-	 * @access public
 	 * @param mixed $post
 	 * @return void
 	 */
@@ -300,7 +299,6 @@ class GravityView_Admin_Metaboxes {
 	/**
 	 * Render html View General Settings
 	 *
-	 * @access public
 	 * @param object $post
 	 * @return void
 	 */
@@ -318,7 +316,6 @@ class GravityView_Admin_Metaboxes {
 	/**
 	 * Render shortcode hint in the Publish metabox
 	 *
-	 * @access public
 	 * @return void
 	 */
 	function render_shortcode_hint() {

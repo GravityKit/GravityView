@@ -5,7 +5,7 @@
  * @file      class-gravityview-plugin-hooks-gravity-forms-survey.php
  * @package   GravityView
  * @license   GPL2
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2016, Katz Web Services, Inc.
  *

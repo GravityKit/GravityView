@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
@@ -119,12 +119,14 @@ class GravityView_Edit_Entry_Admin {
 
     /**
      * Add "Edit Link Text" setting to the edit_link field settings
-     * @param  [type] $field_options [description]
-     * @param  [type] $template_id   [description]
-     * @param  [type] $field_id      [description]
-     * @param  [type] $context       [description]
-     * @param  [type] $input_type    [description]
-     * @return [type]                [description]
+     *
+     * @param array  $field_options
+     * @param string $template_id
+     * @param string $field_id
+     * @param string $context
+     * @param string $input_type
+     *
+     * @return array $field_options, with "Edit Link Text" field option
      */
     function edit_link_field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
@@ -162,15 +164,18 @@ class GravityView_Edit_Entry_Admin {
         return $return;
     }
 
-    /**
-     * Manipulate the fields' options for the EDIT ENTRY screen
-     * @param  [type] $field_options [description]
-     * @param  [type] $template_id   [description]
-     * @param  [type] $field_id      [description]
-     * @param  [type] $context       [description]
-     * @param  [type] $input_type    [description]
-     * @return [type]                [description]
-     */
+	/**
+	 * Add "Edit Link Text" setting to the edit_link field settings
+	 *
+	 * @param array  $field_options
+	 * @param string $template_id
+	 * @param string $field_id
+	 * @param string $context
+	 * @param string $input_type
+	 * @param int    $form_id
+	 *
+	 * @return array $field_options, with added field options
+	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
         // We only want to modify the settings for the edit context

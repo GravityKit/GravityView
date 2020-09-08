@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -845,6 +845,11 @@
 		},
 
 		openExternalLinks: function () {
+
+			if ( !! window.Beacon && ( $( this ).is( '[data-beacon-article]' ) || $( this ).is( '[data-beacon-article-modal]' ) || $( this ).is( '[data-beacon-article-sidebar]' ) || $( this ).is( '[data-beacon-article-inline]' ) ) ) {
+				return false;
+			}
+
 			window.open( this.href );
 			return false;
 		},

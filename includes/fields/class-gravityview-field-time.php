@@ -98,38 +98,40 @@ class GravityView_Field_Time extends GravityView_Field {
 	 * @param array $form_ids Forms to search
 	 * @param int $view_id ID of the view being used to search
 	 *
-	 * @return $criteria If a match, the sorting will be updated to set `is_numeric` to true and make sure the field ID is an int
+	 * @return array $criteria If a match, the sorting will be updated to set `is_numeric` to true and make sure the field ID is an int
 	 */
 	public function _maybe_filter_gravity_forms_query( $criteria, $form_ids, $view_id ) {
 
-		// If the search is being sorted
-		if( ! empty( $criteria['sorting']['key'] ) ) {
-
-			$pieces = explode( $this->_sort_divider, $criteria['sorting']['key'] );
-
-			/**
-			 * And the sort key matches the key set in modify_sort_id(), then modify the Gravity Forms query SQL
-			 * @see modify_sort_id()
-			 */
-			if( ! empty( $pieces[1] ) ) {
-
-				// Pass these to the _modify_query_sort_by_time_hack() method
-				$this->_time_format = $pieces[1];
-				$this->_date_format = $pieces[2];
-
-				// Remove fake input IDs (5.1 doesn't exist. Use 5)
-				$criteria['sorting']['key'] = floor( $pieces[0] );
-
-				/**
-				 * Make sure sorting is numeric (# of seconds). IMPORTANT.
-				 * @see GVCommon::is_field_numeric() is_numeric should also be set here
-				 */
-				$criteria['sorting']['is_numeric'] = true;
-
-				// Modify the Gravity Forms WP Query
-				add_filter('query', array( $this, '_modify_query_sort_by_time_hack' ) );
-			}
+		// If the search is not being sorted, return early
+		if( empty( $criteria['sorting']['key'] ) ) {
+			return $criteria;
 		}
+
+		$pieces = explode( $this->_sort_divider, $criteria['sorting']['key'] );
+
+		/**
+		 * If the sort key does not match the key set in modify_sort_id(), do not modify the Gravity Forms query SQL
+		 * @see modify_sort_id()
+		 */
+		if( empty( $pieces[1] ) ) {
+			return $criteria;
+		}
+
+		// Pass these to the _modify_query_sort_by_time_hack() method
+		$this->_time_format = $pieces[1];
+		$this->_date_format = $pieces[2];
+
+		// Remove fake input IDs (5.1 doesn't exist. Use 5)
+		$criteria['sorting']['key'] = floor( $pieces[0] );
+
+		/**
+		 * Make sure sorting is numeric (# of seconds). IMPORTANT.
+		 * @see GVCommon::is_field_numeric() is_numeric should also be set here
+		 */
+		$criteria['sorting']['is_numeric'] = true;
+
+		// Modify the Gravity Forms WP Query
+		add_filter('query', array( $this, '_modify_query_sort_by_time_hack' ) );
 
 		return $criteria;
 	}

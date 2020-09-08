@@ -400,12 +400,13 @@ abstract class GravityView_Field {
 			'date_display' => array(
 				'type' => 'text',
 				'label' => __( 'Override Date Format', 'gravityview' ),
-				'desc' => sprintf( __( 'Define how the date is displayed (using %sthe PHP date format%s)', 'gravityview'), '<a href="https://codex.wordpress.org/Formatting_Date_and_Time">', '</a>' ),
+				'desc' => sprintf( __( 'Define how the date is displayed (using %sthe PHP date format%s)', 'gravityview'), '<a href="https://wordpress.org/support/article/formatting-date-and-time/" rel="external">', '</a>' ),
 				/**
 				 * @filter `gravityview_date_format` Override the date format with a [PHP date format](https://codex.wordpress.org/Formatting_Date_and_Time)
 				 * @param[in,out] null|string $date_format Date Format (default: null)
 				 */
-				'value' => apply_filters( 'gravityview_date_format', null )
+				'value' => apply_filters( 'gravityview_date_format', null ),
+				'class' => 'code',
 			),
 			'new_window' => array(
 				'type' => 'checkbox',

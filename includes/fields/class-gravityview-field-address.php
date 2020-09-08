@@ -66,7 +66,7 @@ class GravityView_Field_Address extends GravityView_Field {
 			$input_id = gravityview_get_input_id_from_id( $search_field['key'] );
 			$form = GravityView_View::getInstance()->getForm();
 
-			/** @var GF_Field_Address $address_field */
+			/** @type GF_Field_Address $address_field */
 			$address_field = GFFormsModel::get_field( $form, $field_id );
 
 			$choices = array();
