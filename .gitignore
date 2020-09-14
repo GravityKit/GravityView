@@ -91,3 +91,7 @@ docs/html
 
 # VIM
 *.swp
+
+# environment file (used for local unit tests)
+.env
+
