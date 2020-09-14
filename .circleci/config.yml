@@ -1,24 +1,196 @@
-version: 2
+version: 2.1
+
+anchors:
+  context: &context
+    context: unit-tests
+
+  default_job_config: &default_job_config
+    working_directory: /home/circleci/gravityview
+    machine:
+      image: ubuntu-1604:202007-01
+
+  test_job_config: &test_job_config
+    <<: *context
+    requires:
+      - prepare_unit_tests
+
 jobs:
   acceptance_tests:
-    working_directory: /home/circleci/gravityview
-    machine: true
+    <<: *default_job_config
     steps:
       - checkout
       - run:
-          name: "Set up virtual host"
+          name: Set up virtual host
           command: echo 127.0.0.1 wordpress | sudo tee -a /etc/hosts
       - run:
           name: Run acceptance tests
           command: |
             docker-compose -f tests/acceptance/docker/docker-compose.yml run gravityview_codeception --debug -vvv --html --xml
       - store_artifacts:
-          path: tests/_output
+          path: acceptance_tests/_output
       - store_test_results:
-          path: tests/_output
+          path: acceptance_tests/_output
+
+  prepare_unit_tests:
+    <<: *default_job_config
+    steps:
+      - checkout
+      - run:
+          name: Initiale a Tooling git submodule
+          command: |
+            git submodule update --init --recursive --remote
+      - restore_cache:
+          keys:
+            - test-dependencies-{{ epoch }}
+            - test-dependencies-
+      - run:
+          name: Setting up tests
+          command: |
+            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh download_phpunit download_gravity_forms download_test_suits configure_test_suits
+      - save_cache:
+          key: test-dependencies-{{ epoch }}
+          paths:
+            - .test_dependencies
+      - persist_to_workspace:
+          root: /home/circleci/gravityview
+          paths:
+            - .
+
+  php_54_unit_test:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: /home/circleci/gravityview
+      - run:
+          name: Running PHP 5.4 unit tests
+          command: |
+            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh test_54
+
+  php_55_unit_test:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: /home/circleci/gravityview
+      - run:
+          name: Running PHP 5.5 unit tests
+          command: |
+            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh test_55
+
+  php_56_unit_test:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: /home/circleci/gravityview
+      - run:
+          name: Running PHP 5.6 unit tests
+          command: |
+            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh test_56
+
+  php_70_unit_test:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: /home/circleci/gravityview
+      - run:
+          name: Running PHP 7.0 unit tests
+          command: |
+            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh test_70
+
+  php_71_unit_test:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: /home/circleci/gravityview
+      - run:
+          name: Running PHP 7.1 unit tests
+          command: |
+            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh test_71
+
+  php_72_unit_test:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: /home/circleci/gravityview
+      - run:
+          name: Running PHP 7.2 unit tests
+          command: |
+            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh test_72
+
+  php_73_unit_test:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: /home/circleci/gravityview
+      - run:
+          name: Running PHP 7.3 unit tests
+          command: |
+            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh test_73
+
+  php_74_unit_test:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: /home/circleci/gravityview
+      - run:
+          name: Running PHP 7.4 unit tests
+          command: |
+            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh test_74
+
+  build_and_package:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: /home/circleci/gravityview
+      - run:
+          name: Build and package
+          command: |
+            /bin/bash tooling/build-tools/build_tools.sh npm -o install
+            /bin/bash tooling/build-tools/build_tools.sh grunt -o "exec:bower sass postcss uglify imagemin"
+            /bin/bash tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php --include-hash"
+            mkdir .release
+            mv gravityview-*.zip .release
+      - store_artifacts:
+          when: on_success
+          path: .release
+          destination: release
+      - run:
+          name: Notify GravityView Release Manager
+          when: on_success
+          command: |
+            /bin/bash tooling/build-tools/build_tools.sh announce_build -o gravityview.php
 
 workflows:
   version: 2
-  acceptance_tests:
+  test_and_package:
     jobs:
+      - prepare_unit_tests:
+          <<: *context
+      - php_54_unit_test:
+          <<: *test_job_config
+      - php_55_unit_test:
+          <<: *test_job_config
+      - php_56_unit_test:
+          <<: *test_job_config
+      - php_70_unit_test:
+          <<: *test_job_config
+      - php_71_unit_test:
+          <<: *test_job_config
+      - php_72_unit_test:
+          <<: *test_job_config
+      - php_73_unit_test:
+          <<: *test_job_config
+      - php_74_unit_test:
+          <<: *test_job_config
       - acceptance_tests
+      - build_and_package:
+          <<: *context
+          requires:
+            - php_54_unit_test
+            - php_55_unit_test
+            - php_56_unit_test
+            - php_70_unit_test
+            - php_71_unit_test
+            - php_72_unit_test
+            - php_73_unit_test
+            - php_74_unit_test
+            - acceptance_tests
