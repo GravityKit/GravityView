@@ -276,6 +276,13 @@ body .ui-tooltip {
 		margin: 0;
 		padding: 16px;
 		box-sizing: border-box;
+
+		border-bottom: 1px solid $color-gf-eee;
+		background-color: $color-gf-fff;
+
+		border-bottom-left-radius: 6px;
+		border-bottom-right-radius: 6px;
+
 		input {
 			top: 0;
 			left: 0;
