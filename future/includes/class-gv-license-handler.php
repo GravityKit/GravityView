@@ -385,6 +385,7 @@ class License_Handler {
 			'no_activations_left' => esc_html__( 'Invalid: this license has reached its activation limit.', 'gravityview' ) . ' ' . sprintf( esc_html__( 'You can manage license activations %son your GravityView account page%s.', 'gravityview' ), '<a href="https://gravityview.co/account/#licenses">', '</a>' ),
 			'deactivated' => esc_html__( 'The license has been deactivated.', 'gravityview' ),
 			'valid' => esc_html__( 'The license key is valid and active.', 'gravityview' ),
+			'disabled' => sprintf( esc_html__( 'This license key is disabled. For updates and support, %spurchase a new license%s.', 'gravityview' ), '<a href="https://gravityview.co/account/">', '</a>' ),
 			'invalid' => esc_html__( 'The license key entered is invalid.', 'gravityview' ),
 			'missing' => esc_html__( 'Invalid license key.', 'gravityview' ),
 			'revoked' => esc_html__( 'This license key has been revoked.', 'gravityview' ),
