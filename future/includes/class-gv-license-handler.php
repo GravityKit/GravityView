@@ -412,6 +412,7 @@ class License_Handler {
 			'no_activations_left' => esc_html__( 'Invalid: this license has reached its activation limit.', 'gravityview' ) . ' ' . sprintf( esc_html__( 'You can manage license activations %son your GravityView account page%s.', 'gravityview' ), '<a href="https://gravityview.co/account/#licenses">', '</a>' ),
 			'deactivated' => esc_html__( 'The license has been deactivated.', 'gravityview' ),
 			'valid' => esc_html__( 'The license key is valid and active.', 'gravityview' ),
+			'disabled' => sprintf( esc_html__( 'This license key is disabled. For updates and support, %spurchase a new license%s.', 'gravityview' ), '<a href="https://gravityview.co/account/">', '</a>' ),
 			'invalid' => esc_html__( 'The license key entered is invalid.', 'gravityview' ),
 			'invalid_item_id' => esc_html__( 'This license key does not have access to this plugin.', 'gravityview' ),
 			'missing' => esc_html__( 'The license key entered is invalid.', 'gravityview' ), // Missing is "the license couldn't be found", not "you submitted an empty license"
