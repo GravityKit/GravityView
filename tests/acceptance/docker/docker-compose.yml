@@ -14,6 +14,7 @@ services:
     entrypoint: /docker-entrypoint.sh
     environment:
       - GRAVITYFORMS_KEY=${GRAVITYFORMS_KEY}
+      - GRAVITYVIEW_KEY=${GRAVITYVIEW_KEY}
       - WORDPRESS_DB_PASSWORD=wordpress
       - WORDPRESS_DB_USER=wordpress
       - WORDPRESS_DB_NAME=wordpress
