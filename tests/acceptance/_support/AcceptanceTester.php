@@ -35,9 +35,9 @@ class AcceptanceTester extends \Codeception\Actor {
 		return sprintf( '[data-automation-id="%s"]', $id );
 	}
 
-	public function goToPluginPage() {
+	public function goToPluginPage( $page ) {
 
-		return $this->openPluginPage();
+		return $this->openPluginPage( $page );
 	}
 
 	public function openPluginPage( $page = 'views' ) {
