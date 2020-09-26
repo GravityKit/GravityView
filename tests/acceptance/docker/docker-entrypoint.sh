@@ -26,12 +26,20 @@ if ! $(wp-su core is-installed); then
 
 fi
 
-# Install Gravity Forms
+# Install Gravity Forms CLI
 if ! $(wp-su plugin is-installed gravityformscli); then
 
-	echo "Installing Gravity Forms"
+	echo "Installing Gravity Forms CLI"
 
 	wp-su plugin install gravityformscli --activate
+
+fi
+
+# Install Gravity Forms
+
+if ! $(wp-su plugin is-installed gravityforms); then
+
+	echo "Installing Gravity Forms"
 
 	wp-su gf install --key=${GRAVITYFORMS_KEY} --activate
 
