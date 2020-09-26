@@ -21,6 +21,13 @@ The plugin uses PHPUnit as part of development process. Installing the testing e
 
 __If you want to generate a code coverage report__ you can run the following `phpunit --coverage-html "./tmp/coverage"` and then a report will be generated in the `/tmp/coverage/` subdirectory of the GravityView plugin.
 
+### Run Acceptance Tests
+
+1. `cd` into the GravityView plugin directory sub-directory `tests/acceptance/docker`
+1. Run `export GRAVITYFORMS_KEY=[YOUR GRAVITY FORMS KEY HERE]`
+1. Run `export GRAVITYVIEW_KEY=[YOUR GRAVITYVIEW KEY HERE]`
+1. Run `docker-compose run gravityview_codeception`. See [Codeception commands reference](https://codeception.com/docs/reference/Commands) for a full list of available flags.
+
 ----------
 
 #### Thanks to:
