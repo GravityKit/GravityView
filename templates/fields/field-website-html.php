@@ -33,7 +33,11 @@ if ( ! empty( $value ) && function_exists( 'gravityview_format_link' ) ) {
 		$anchor_text = empty( $field_settings['truncatelink'] ) ? $value : gravityview_format_link( $value );
 	}
 
-	$attributes = empty( $field_settings['open_same_window'] ) ? 'target=_blank' : '';
+	$attributes = '';
+
+	if ( empty( $field_settings['open_same_window'] )  && ! empty( $field_settings['new_window'] ) ) {
+		$attributes = 'target=_blank';
+	}
 
 	echo gravityview_get_link( $value, $anchor_text, $attributes );
 } else {
