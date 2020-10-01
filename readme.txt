@@ -21,6 +21,15 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Modified: Removed "Open link in the same window?" setting from Website field
+	- Note: For existing Views, if both "Open link in the same window?" and "Open link in a new tab or window?" settings were checked, the link will now _not open in a new tab_. We hope no one had them both checked; this would have caused a rift in space-time and a room full of dark-matter rainbows.
+
+__Developer Updates:__
+
+* Changed: `/templates/fields/field-website-html.php` and `/templates/deprecated/fields/website.php` to use new `target=_blank` logic
+
 = 2.9.1 on September 1, 2020 =
 
 * Improved: Changed the Support Port icon & text to make it clearer
