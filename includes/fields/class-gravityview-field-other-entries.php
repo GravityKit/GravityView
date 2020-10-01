@@ -65,9 +65,10 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 		$new_options['page_size'] = array(
 			'type'  => 'number',
 			'label' => __( 'Entries to Display', 'gravityview' ),
-			'desc'  => __( 'What is the maximum number of entries that should be shown?', 'gravityview' ),
+			'desc'  => __( 'What is the maximum number of entries that should be shown?', 'gravityview' ) . ' ' . sprintf( _x( 'Set to %s for no maximum.', '%s replaced with a formatted 0', 'gravityview' ), '<code>0</code>' ),
 			'value' => '10',
 			'merge_tags' => false,
+			'min'   => 0,
 		);
 
 		$new_options['no_entries_hide'] = array(
