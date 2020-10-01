@@ -1506,6 +1506,14 @@
 				$( 'input:checkbox[name*=show_as_link]', $parent ).attr( 'disabled', true );
 			}
 
+			// Link to single entry should be disabled when Make Phone Number Clickable is checked
+			if ( $( 'input:checkbox[name*=link_phone]', $parent ).is( ':checked' ) ) {
+				$( 'input:checkbox[name*=show_as_link]', $parent ).attr( 'disabled', true );
+			} else if ( $( 'input:checkbox[name*=show_as_link]', $parent ).is( ':checked' ) ) {
+				// Link to Make Phone Number Clickable should be disabled when Link to single entry is checked
+				$( 'input:checkbox[name*=link_phone]', $parent ).attr( 'disabled', true );
+			}
+
 			// Logged in capability selector should only show when Logged In checkbox is checked
 			vcfg.toggleVisibility( $( 'input:checkbox[name*=only_loggedin]', $parent ), $( '[name*=only_loggedin_cap]', $parent ), first_run );
 
