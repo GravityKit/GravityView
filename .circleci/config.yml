@@ -25,7 +25,7 @@ jobs:
       - run:
           name: Run acceptance tests
           command: |
-            docker-compose -f tests/acceptance/docker/docker-compose.yml run gravityview_codeception --debug -vvv --html --xml
+            PLUGIN_DIR=/home/circleci/gravityview docker-compose -f tests/acceptance/docker/docker-compose.yml run gravityview_codeception --debug -vvv --html --xml
       - store_artifacts:
           path: acceptance_tests/_output
       - store_test_results:
