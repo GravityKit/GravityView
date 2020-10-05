@@ -1489,6 +1489,9 @@
 			// Toggle Source URL fields
 			vcfg.toggleVisibility( $( 'input:checkbox[name*=link_to_source]', $parent ), $( '[name*=source_link_text]', $parent ), first_run );
 
+			// Other Entries "Hide if no entries"
+			vcfg.toggleVisibility( $( 'input:checkbox[name*=no_entries_hide]', $parent ), $( '[name*=no_entries_text]', $parent ), first_run, true );
+
 			$( ".gv-setting-list", $parent ).trigger( 'change' );
 
 			$( 'input:checkbox', $parent ).attr( 'disabled', null );
@@ -1503,6 +1506,14 @@
 				$( 'input:checkbox[name*=show_as_link]', $parent ).attr( 'disabled', true );
 			}
 
+			// Link to single entry should be disabled when Make Phone Number Clickable is checked
+			if ( $( 'input:checkbox[name*=link_phone]', $parent ).is( ':checked' ) ) {
+				$( 'input:checkbox[name*=show_as_link]', $parent ).attr( 'disabled', true );
+			} else if ( $( 'input:checkbox[name*=show_as_link]', $parent ).is( ':checked' ) ) {
+				// Link to Make Phone Number Clickable should be disabled when Link to single entry is checked
+				$( 'input:checkbox[name*=link_phone]', $parent ).attr( 'disabled', true );
+			}
+
 			// Logged in capability selector should only show when Logged In checkbox is checked
 			vcfg.toggleVisibility( $( 'input:checkbox[name*=only_loggedin]', $parent ), $( '[name*=only_loggedin_cap]', $parent ), first_run );
 
@@ -1514,13 +1525,18 @@
 		 * @param  {jQuery} $checkbox The checkbox to use when determining show/hide. Checked: show; unchecked: hide
 		 * @param  {jQuery} $toggled  The field whose container to show/hide
 		 * @param  {boolean} first_run Is this the first run (on load)? If so, show/hide immediately
+		 * @param  {boolean} inverse   Should the logic be flipped (unchecked = show)?
 		 * @return {void}
 		 */
-		toggleVisibility: function ( $checkbox, $toggled, first_run ) {
+		toggleVisibility: function ( $checkbox, $toggled, first_run, inverse ) {
 
 			var speed = first_run ? 0 : 'fast';
 
-			if ( $checkbox.is( ':checked' ) ) {
+			var checked = $checkbox.is( ':checked' );
+
+			checked = inverse ? ! checked : checked;
+
+			if ( checked ) {
 				$toggled.parents( '.gv-setting-container' ).fadeIn( speed );
 			} else {
 				$toggled.parents( '.gv-setting-container' ).fadeOut( speed );
