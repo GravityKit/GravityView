@@ -26,7 +26,8 @@ __If you want to generate a code coverage report__ you can run the following `ph
 1. `cd` into the GravityView plugin directory sub-directory `tests/acceptance/docker`
 1. Run `export GRAVITYFORMS_KEY=[YOUR GRAVITY FORMS KEY HERE]`
 1. Run `export GRAVITYVIEW_KEY=[YOUR GRAVITYVIEW KEY HERE]`
-1. Run `docker-compose run gravityview_codeception`. See [Codeception commands reference](https://codeception.com/docs/reference/Commands) for a full list of available flags.
+1. Run `export PLUGIN_DIR=[/path/to/gravityview]`
+1. Run `docker-compose run codeception`. See [Codeception commands reference](https://codeception.com/docs/reference/Commands) for a full list of available flags.
 
 ----------
 
