@@ -201,6 +201,10 @@ final class Plugin {
 			include_once $this->dir( 'includes/class-gravityview-extension.php' );
 		}
 
+		if ( ! gravityview()->plugin->is_compatible() ) {
+			return;
+		}
+
 		// Load fields
 		include_once $this->dir( 'includes/fields/class-gravityview-fields.php' );
 		include_once $this->dir( 'includes/fields/class-gravityview-field.php' );
