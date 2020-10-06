@@ -287,7 +287,8 @@ class License_Handler {
 				// Make sure all the keys are set
 				$response = wp_parse_args( $response, $response_keys );
 
-				$login_link    = sprintf( '<a href="%s" class="button button-outline outline gv-access-account" rel="external">%s</a>', esc_url( sprintf( 'https://gravityview.co/wp-login.php?username=%s', $response['customer_email'] ) ), esc_html__( 'Access your GravityView account', 'gravityview' ) );
+				$login_link_class = gravityview()->plugin->is_GF_25() ? 'button button-outline outline' : 'text-link';
+				$login_link    = sprintf( '<a href="%s" class="gv-access-account ' . $login_link_class . '" rel="external">%s</a>', esc_url( sprintf( 'https://gravityview.co/wp-login.php?username=%s', $response['customer_email'] ) ), esc_html__( 'Access your GravityView account', 'gravityview' ) );
 				$local_text    = ( ! empty( $response['is_local'] ) ? '<span class="howto">' . __( 'This development site does not count toward license activation limits', 'gravityview' ) . '</span>' : '' );
 				$license_limit = empty( $response['license_limit'] ) ? __( 'Unlimited', 'gravityview' ) : (int) $response['license_limit'];
 
