@@ -1633,7 +1633,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		GravityView_View::getInstance()->setForm( $form->form );
 
 		$field_settings = array(
-			'id' => '14',
+			'id'         => '14',
+			'new_window' => true,
 		);
 		$this->assertEquals( '<a href="http://apple.com" rel="noopener noreferrer" target="_blank">http://apple.com</a>', GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
 	}
