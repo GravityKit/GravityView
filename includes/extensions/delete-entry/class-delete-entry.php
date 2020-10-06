@@ -402,13 +402,25 @@ final class GravityView_Delete_Entry {
 	 * @uses wp_safe_redirect()
 	 * @return void
 	 */
-	function process_delete() {
+	public function process_delete() {
+
+		/* Unslash and Parse $_GET array. */
+		$get_fields = wp_parse_args(
+			wp_unslash( $_GET ),
+			array(
+				'action'   => '',
+				'entry_id' => '',
+				'gvid'     => '',
+				'view_id'  => '',
+				'delete'   => '',
+			)
+		);
 
 		// If the form is submitted
-		if ( isset( $_GET['action'] ) && 'delete' === $_GET['action'] && isset( $_GET['entry_id'] ) ) {
+		if ( 'delete' === $get_fields['action'] && ! empty( $get_fields['entry_id'] ) ) {
 
 			// Make sure it's a GravityView request
-			$valid_nonce_key = wp_verify_nonce( $_GET['delete'], self::get_nonce_key( $_GET['entry_id'] ) );
+			$valid_nonce_key = wp_verify_nonce( $get_fields['delete'], self::get_nonce_key( $get_fields['entry_id'] ) );
 
 			if ( ! $valid_nonce_key ) {
 				gravityview()->log->debug( 'Delete entry not processed: nonce validation failed.' );
@@ -416,7 +428,7 @@ final class GravityView_Delete_Entry {
 			}
 
 			// Get the entry slug
-			$entry_slug = esc_attr( $_GET['entry_id'] );
+			$entry_slug = esc_attr( $get_fields['entry_id'] );
 
 			// See if there's an entry there
 			$entry = gravityview_get_entry( $entry_slug, true, false );
@@ -463,12 +475,12 @@ final class GravityView_Delete_Entry {
 			}
 
 			// Redirect after deleting the entry.
-			$view                = \GV\View::by_id( $_GET['view_id'] );
+			$view                = \GV\View::by_id( $get_fields['view_id'] );
 			$delete_redirect     = $view->settings->get( 'delete_redirect' );
 			$delete_redirect_url = $view->settings->get( 'delete_redirect_url' );
 
 			if ( '1' !== $delete_redirect ) {
-				$delete_redirect_url = get_post_permalink( $_GET['view_id'] );
+				$delete_redirect_url = get_post_permalink( $get_fields['view_id'] );
 			}
 
 			wp_safe_redirect( $delete_redirect_url );
