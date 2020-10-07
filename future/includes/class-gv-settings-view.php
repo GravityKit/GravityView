@@ -519,6 +519,7 @@ class View_Settings extends Settings {
 					'tooltip'           => false,
 					'show_in_shortcode' => false,
 					'full_width'        => true,
+					'requires'          => 'csv_enable=1',
 				),
 			),
 			array(
