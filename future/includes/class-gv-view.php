@@ -1459,7 +1459,7 @@ class View implements \ArrayAccess {
 			foreach ( $allowed as $field ) {
 				$source = is_numeric( $field->ID ) ? $view->form : new \GV\Internal_Source();
 
-				$return[] = $renderer->render( $field, $view, $source, $entry, gravityview()->request, '\GV\Field_CSV_Template' );
+				$return[] = strip_tags( $renderer->render( $field, $view, $source, $entry, gravityview()->request, '\GV\Field_CSV_Template' ) );
 
 				if ( ! $headers_done ) {
 					$label = $field->get_label( $view, $source, $entry );
