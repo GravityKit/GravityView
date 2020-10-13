@@ -155,7 +155,7 @@ jobs:
               tooling/build-tools/build_tools.sh grunt
               [[ $(git diff languages/gravityview.pot | grep +msgid) ]] && tooling/build-tools/build_tools.sh tx -o "push -s"
               tooling/build-tools/build_tools.sh tx -o "pull -f -a --parallel --no-interactive"
-              tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php $([[ $(git log -n 1 | grep "\[skip release\]") ]] && echo --include-hash"
+              tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php $([[ $(git log -n 1 | grep "\[skip release\]") ]] && echo --include-hash)"
             fi
             mkdir .release
             cp gravityview-*.zip .release
