@@ -31,6 +31,10 @@ __Developer Updates:__
 
 * Changed: `/templates/fields/field-website-html.php` and `/templates/deprecated/fields/website.php` to use new `target=_blank` logic
 
+= 2.9.2 on October XX, 2020 =
+
+* Fixed: Export of View entries as a CSV would result in a 404 error on some hosts
+
 = 2.9.1 on September 1, 2020 =
 
 * Improved: Changed the Support Port icon & text to make it clearer
