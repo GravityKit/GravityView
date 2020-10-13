@@ -12,41 +12,45 @@ anchors:
   test_job_config: &test_job_config
     <<: *context
     requires:
-      - prepare_unit_tests
+      - prepare_test_and_build_environment
 
 jobs:
-  acceptance_tests:
+  run_acceptance_tests:
     <<: *default_job_config
     steps:
       - checkout
       - run:
-          name: Set up virtual host
+          name: Setting up virtual host
           command: echo 127.0.0.1 wordpress | sudo tee -a /etc/hosts
       - run:
           name: Run acceptance tests
           command: |
             PLUGIN_DIR=/home/circleci/gravityview docker-compose -f tests/acceptance/docker/docker-compose.yml run codeception --debug -vvv --html --xml
       - store_artifacts:
-          path: acceptance_tests/_output
+          path: run_acceptance_tests/_output
       - store_test_results:
-          path: acceptance_tests/_output
+          path: run_acceptance_tests/_output
 
-  prepare_unit_tests:
+  prepare_test_and_build_environment:
     <<: *default_job_config
     steps:
       - checkout
       - run:
-          name: Initiale a Tooling git submodule
+          name: Getting GV test/build tools
           command: |
-            git submodule update --init --recursive --remote
+            git clone git@github.com:gravityview/Tooling.git tooling
       - restore_cache:
           keys:
             - test-dependencies-{{ epoch }}
             - test-dependencies-
       - run:
-          name: Setting up tests
+          name: Installing build dependencies
           command: |
-            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh download_phpunit download_gravity_forms download_test_suits configure_test_suits
+            tooling/build-tools/build_tools.sh npm -o install
+      - run:
+          name: Configuring tests environment
+          command: |
+            tooling/docker-unit-tests/docker-unit-tests.sh download_phpunit download_gravity_forms download_test_suits configure_test_suits
       - save_cache:
           key: test-dependencies-{{ epoch }}
           paths:
@@ -56,7 +60,7 @@ jobs:
           paths:
             - .
 
-  php_54_unit_test:
+  run_php_54_unit_tests:
     <<: *default_job_config
     steps:
       - attach_workspace:
@@ -64,9 +68,9 @@ jobs:
       - run:
           name: Running PHP 5.4 unit tests
           command: |
-            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh test_54
+            tooling/docker-unit-tests/docker-unit-tests.sh test_54
 
-  php_55_unit_test:
+  run_php_55_unit_tests:
     <<: *default_job_config
     steps:
       - attach_workspace:
@@ -74,9 +78,9 @@ jobs:
       - run:
           name: Running PHP 5.5 unit tests
           command: |
-            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh test_55
+            tooling/docker-unit-tests/docker-unit-tests.sh test_55
 
-  php_56_unit_test:
+  run_php_56_unit_tests:
     <<: *default_job_config
     steps:
       - attach_workspace:
@@ -84,9 +88,9 @@ jobs:
       - run:
           name: Running PHP 5.6 unit tests
           command: |
-            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh test_56
+            tooling/docker-unit-tests/docker-unit-tests.sh test_56
 
-  php_70_unit_test:
+  run_php_70_unit_tests:
     <<: *default_job_config
     steps:
       - attach_workspace:
@@ -94,9 +98,9 @@ jobs:
       - run:
           name: Running PHP 7.0 unit tests
           command: |
-            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh test_70
+            tooling/docker-unit-tests/docker-unit-tests.sh test_70
 
-  php_71_unit_test:
+  run_php_71_unit_tests:
     <<: *default_job_config
     steps:
       - attach_workspace:
@@ -104,9 +108,9 @@ jobs:
       - run:
           name: Running PHP 7.1 unit tests
           command: |
-            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh test_71
+            tooling/docker-unit-tests/docker-unit-tests.sh test_71
 
-  php_72_unit_test:
+  run_php_72_unit_tests:
     <<: *default_job_config
     steps:
       - attach_workspace:
@@ -114,9 +118,9 @@ jobs:
       - run:
           name: Running PHP 7.2 unit tests
           command: |
-            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh test_72
+            tooling/docker-unit-tests/docker-unit-tests.sh test_72
 
-  php_73_unit_test:
+  run_php_73_unit_tests:
     <<: *default_job_config
     steps:
       - attach_workspace:
@@ -124,9 +128,9 @@ jobs:
       - run:
           name: Running PHP 7.3 unit tests
           command: |
-            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh test_73
+            tooling/docker-unit-tests/docker-unit-tests.sh test_73
 
-  php_74_unit_test:
+  run_php_74_unit_tests:
     <<: *default_job_config
     steps:
       - attach_workspace:
@@ -134,63 +138,79 @@ jobs:
       - run:
           name: Running PHP 7.4 unit tests
           command: |
-            cd tooling/docker-unit-tests && /bin/bash docker-unit-tests.sh test_74
+            tooling/docker-unit-tests/docker-unit-tests.sh test_74
 
-  build_and_package:
+  build_package_release:
     <<: *default_job_config
     steps:
       - attach_workspace:
           at: /home/circleci/gravityview
       - run:
-          name: Build and package
+          name: Building and packaging
           command: |
-            /bin/bash tooling/build-tools/build_tools.sh npm -o install
-            /bin/bash tooling/build-tools/build_tools.sh grunt -o "exec:bower sass postcss uglify imagemin"
-            /bin/bash tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php --include-hash"
+            if [ "${CIRCLE_BRANCH}" != "main" ]; then
+              tooling/build-tools/build_tools.sh grunt -o "exec:bower sass postcss uglify imagemin"
+              tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php --include-hash"
+            else
+              tooling/build-tools/build_tools.sh grunt
+              [[ $(git diff languages/gravityview.pot | grep +msgid) ]] && tooling/build-tools/build_tools.sh tx -o "push -s"
+              tooling/build-tools/build_tools.sh tx -o "pull -f -a --parallel --no-interactive"
+              tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php $([[ $(git log -n 1 | grep "\[skip release\]") ]] && echo --include-hash"
+            fi
             mkdir .release
-            mv gravityview-*.zip .release
+            cp gravityview-*.zip .release
+      - run:
+          name: Creating a Github release
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "main" ]; then
+              git config user.email "support@gravityview.co"
+              git config user.name "GravityView - CI"
+              tooling/build-tools/build_tools.sh create_release -o "gravityview.php $(ls gravityview-*.zip)"
+            fi
+      - run:
+          name: Notifying GravityView Release Manager
+          command: |
+            tooling/build-tools/build_tools.sh announce_build -o "gravityview.php $(ls gravityview-*.zip) --with-circle"
       - store_artifacts:
-          when: on_success
           path: .release
           destination: release
-      - run:
-          name: Notify GravityView Release Manager
-          when: on_success
-          command: |
-            /bin/bash tooling/build-tools/build_tools.sh announce_build -o gravityview.php
 
 workflows:
   version: 2
   test_and_package:
     jobs:
-      - prepare_unit_tests:
+      - prepare_test_and_build_environment:
           <<: *context
-      - php_54_unit_test:
+      - run_php_54_unit_tests:
           <<: *test_job_config
-      - php_55_unit_test:
+      - run_php_55_unit_tests:
           <<: *test_job_config
-      - php_56_unit_test:
+      - run_php_56_unit_tests:
           <<: *test_job_config
-      - php_70_unit_test:
+      - run_php_70_unit_tests:
           <<: *test_job_config
-      - php_71_unit_test:
+      - run_php_71_unit_tests:
           <<: *test_job_config
-      - php_72_unit_test:
+      - run_php_72_unit_tests:
           <<: *test_job_config
-      - php_73_unit_test:
+      - run_php_73_unit_tests:
           <<: *test_job_config
-      - php_74_unit_test:
+      - run_php_74_unit_tests:
           <<: *test_job_config
-      - acceptance_tests
-      - build_and_package:
+      - run_acceptance_tests
+      - build_package_release:
           <<: *context
           requires:
-            - php_54_unit_test
-            - php_55_unit_test
-            - php_56_unit_test
-            - php_70_unit_test
-            - php_71_unit_test
-            - php_72_unit_test
-            - php_73_unit_test
-            - php_74_unit_test
-            - acceptance_tests
+            - run_php_54_unit_tests
+            - run_php_55_unit_tests
+            - run_php_56_unit_tests
+            - run_php_70_unit_tests
+            - run_php_71_unit_tests
+            - run_php_72_unit_tests
+            - run_php_73_unit_tests
+            - run_php_74_unit_tests
+            - run_acceptance_tests
+      - notify_release_manager:
+          <<: *context
+          requires:
+            - build_package_release
