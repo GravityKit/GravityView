@@ -1,4 +1,0 @@
-[submodule "tooling"]
-	path = tooling
-	url = git@github.com:gravityview/Tooling.git
-	branch = main
