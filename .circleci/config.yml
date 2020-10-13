@@ -210,7 +210,4 @@ workflows:
             - run_php_73_unit_tests
             - run_php_74_unit_tests
             - run_acceptance_tests
-      - notify_release_manager:
-          <<: *context
-          requires:
-            - build_package_release
+
