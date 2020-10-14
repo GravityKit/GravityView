@@ -76,15 +76,49 @@ class View_Settings extends Settings {
 				'type'              => 'checkbox',
 				'group'             => 'default',
 				'value'             => 1,
-				'tooltip'           => NULL,
+				'tooltip'           => __( 'If enabled, images will open full-size in a "lightbox". A lightbox displays images and videos by filling the screen and dimming out the rest of the web page.', 'gravityview' ),
 				'show_in_shortcode' => true,
+				'article'           => array(
+					'id' => '5e9a1f8904286364bc98931f',
+					'url' => 'https://docs.gravityview.co/article/705-view-settings-enable-lightbox-for-images',
+				),
 			),
 			'show_only_approved'    => array(
 				'label'             => __( 'Show only approved entries', 'gravityview' ),
 				'type'              => 'checkbox',
 				'group'             => 'default',
-				'value'             => 0,
+				'desc'              => __( 'By default, only approved entries are displayed in a View. When enabled, this setting prevents unapproved or disapproved entries from appearing in results. If disabled, entries with all approval statuses will be visible, including disapproved entries.', 'gravityview' ),
+				'tooltip'           => false,
+				'value'             => 1,
 				'show_in_shortcode' => true,
+				'article'           => array(
+					'id' => '5bad1a33042863158cc6d396',
+					'url' => 'https://docs.gravityview.co/article/490-entry-approval-gravity-forms',
+				),
+			),
+			'no_results_text'       => array(
+				'label'             => __( '"No Results" Text', 'gravityview' ),
+				'type'              => 'text',
+				'group'             => 'default',
+				'desc'              => '',
+				'tooltip'           => false,
+				'value'             => '',
+				'placeholder'       => __( 'No entries match your request.', 'gravityview' ),
+				'show_in_shortcode' => true,
+				'class'             => 'widefat',
+				'full_width'        => true,
+			),
+			'no_search_results_text' => array(
+				'label'             => __( '"No Search Results" Text', 'gravityview' ),
+				'type'              => 'text',
+				'group'             => 'default',
+				'desc'              => '',
+				'tooltip'           => false,
+				'value'             => '',
+				'placeholder'       => __( 'This search returned no results.', 'gravityview' ),
+				'show_in_shortcode' => true,
+				'class'             => 'widefat',
+				'full_width'        => true,
 			),
 			'admin_show_all_statuses' => array(
 				'label'             => __( 'Show all entries to administrators', 'gravityview' ),
@@ -103,19 +137,27 @@ class View_Settings extends Settings {
 				'tooltip'           => __( 'When enabled it will only show any View entries after a search is performed.', 'gravityview' ),
 				'value'             => 0,
 				'show_in_shortcode' => false,
+				'article'           => array(
+					'id' => '5c772fa02c7d3a0cb9320a84',
+					'url' => 'https://docs.gravityview.co/article/536-how-to-hide-results-and-only-display-them-if-a-search-is-performed',
+				),
 			),
 			'hide_empty' => array(
 				'label'             => __( 'Hide empty fields', 'gravityview' ),
 				'group'             => 'default',
 				'type'              => 'checkbox',
+				'desc'              => __( 'When enabled, empty fields will be not be displayed. If disabled, fields and their labels will be displayed with no content.', 'gravityview' ),
 				'value'             => 1,
+				'tooltip'           => false,
 				'show_in_shortcode' => false,
 			),
 			'hide_empty_single' => array(
 				'label'             => __( 'Hide empty fields', 'gravityview' ),
 				'group'             => 'default',
 				'type'              => 'checkbox',
+				'desc'              => __( 'When enabled, empty fields will be not be displayed. If disabled, fields and their labels will be displayed with no content.', 'gravityview' ),
 				'value'             => 1,
+				'tooltip'           => false,
 				'show_in_shortcode' => false,
 			),
 			'edit_feeds' => array(
@@ -132,6 +174,10 @@ class View_Settings extends Settings {
 				'tooltip'           => __( 'Display "Edit Entry" fields to non-administrator users if they created the entry. Edit Entry fields will always be displayed to site administrators.', 'gravityview' ),
 				'type'              => 'checkbox',
 				'show_in_shortcode' => true,
+				'article'           => array(
+					'id' => '54c67bbbe4b07997ea3f3f6b',
+					'url' => 'https://docs.gravityview.co/article/77-user-edit-allow-users-to-edit-their-own-entries',
+				),
 			),
 			'unapprove_edit' => array(
 				'label'             => __( 'Unapprove Entries After Edit', 'gravityview' ),
@@ -142,6 +188,10 @@ class View_Settings extends Settings {
 				'value'             => 0,
 				'type'              => 'checkbox',
 				'show_in_shortcode' => true,
+				'article'           => array(
+					'id' => '5ddd81d504286364bc923957',
+					'url' => 'https://docs.gravityview.co/article/657-unapproving-edited-entries-automatically',
+				),
 			),
 			'user_delete' => array(
 				'label'             => __( 'Allow User Delete', 'gravityview' ),
@@ -151,6 +201,10 @@ class View_Settings extends Settings {
 				'tooltip'           => __( 'Display "Delete Entry" fields to non-administrator users if they created the entry. Delete Entry fields will always be displayed to site administrators.', 'gravityview' ),
 				'type'              => 'checkbox',
 				'show_in_shortcode' => true,
+				'article'           => array(
+					'id' => '54c67bb9e4b0512429885512',
+					'url' => 'https://docs.gravityview.co/article/66-configuring-delete-entry',
+				),
 			),
 			'user_duplicate' => array(
 				'label'             => __( 'Allow User Duplicate', 'gravityview' ),
@@ -158,6 +212,10 @@ class View_Settings extends Settings {
 				'desc'              => __( 'Allow logged-in users to duplicate entries they created.', 'gravityview' ) . ' ' . sprintf( __( 'Administrators are able to %s regardless of this setting.', 'gravityview' ), _x( 'duplicate entries', 'an action that admins can perform', 'gravityview' ) ),
 				'value'             => 0,
 				'tooltip'           => __( 'Display "Duplicate Entry" fields to non-administrator users if they created the entry. Duplicate Entry fields will always be displayed to site administrators.', 'gravityview' ),
+				'article'           => array(
+					'id' => '5df11eb704286364bc92bf36',
+					'url' => 'https://docs.gravityview.co/article/66-configuring-delete-entry',
+				),
 				'type'              => 'checkbox',
 				'show_in_shortcode' => true,
 			),
@@ -168,10 +226,14 @@ class View_Settings extends Settings {
 				'value'             => '',
 				'group'             => 'sort',
 				'options'           => array(
-										''             => __( 'Default', 'gravityview' ),
-										'date_created' => __( 'Date Created', 'gravityview' ),
-									),
+					''             => __( 'Default', 'gravityview' ),
+					'date_created' => __( 'Date Created', 'gravityview' ),
+				),
 				'show_in_shortcode' => true,
+				'article'           => array(
+					'id' => '54c67bbbe4b051242988551a',
+					'url' => 'https://docs.gravityview.co/article/74-sorting-results-by-field-value',
+				),
 			),
 			'sort_direction' => array(
 				'label'             => __( 'Sort direction', 'gravityview' ),
@@ -183,6 +245,10 @@ class View_Settings extends Settings {
 										'DESC' => __( 'DESC', 'gravityview' ),
 				),
 				'show_in_shortcode' => true,
+				'article'           => array(
+					'id' => '5c9d338a2c7d3a1544617f9b',
+					'url' => 'https://docs.gravityview.co/article/570-sorting-by-multiple-columns',
+				),
 			),
 			'sort_field_2' => array(
 				'label'             => __( 'Sort by secondary field', 'gravityview' ),
@@ -195,6 +261,10 @@ class View_Settings extends Settings {
 				),
 				'requires_not'          => 'sort_direction][=RAND', // ][ is for toggleRequired, so it ends in []
 				'show_in_shortcode' => true,
+				'article'           => array(
+					'id' => '5c9d338a2c7d3a1544617f9b',
+					'url' => 'https://docs.gravityview.co/article/570-sorting-by-multiple-columns',
+				),
 			),
 			'sort_direction_2' => array(
 				'label'             => __( 'Secondary sort direction', 'gravityview' ),
@@ -207,6 +277,10 @@ class View_Settings extends Settings {
 				),
 				'requires_not'      => 'sort_direction][=RAND', // ][ is for toggleRequired, so it ends in []
 				'show_in_shortcode' => true,
+				'article'           => array(
+					'id' => '5c9d338a2c7d3a1544617f9b',
+					'url' => 'https://docs.gravityview.co/article/570-sorting-by-multiple-columns',
+				),
 			),
 			'sort_columns' => array(
 				'label'             => __( 'Enable sorting by column', 'gravityview' ),
@@ -217,6 +291,10 @@ class View_Settings extends Settings {
 				'tooltip'           => NULL,
 				'show_in_shortcode' => true,
 				'show_in_template'  => array( 'default_table', 'preset_business_data', 'preset_issue_tracker', 'preset_resume_board', 'preset_job_board' ),
+				'article'           => array(
+					'id' => '54ee1246e4b034c37ea91c11',
+					'url' => 'https://docs.gravityview.co/article/230-enabling-the-table-column-sorting-feature',
+				),
 			),
 			'start_date' => array(
 				'label'             => __( 'Filter by Start Date', 'gravityview' ),
@@ -226,6 +304,10 @@ class View_Settings extends Settings {
 				'value'             => '',
 				'group'             => 'filter',
 				'show_in_shortcode' => true,
+				'article'           => array(
+					'id' => '54c67bbbe4b0512429885520',
+					'url' => 'https://docs.gravityview.co/article/79-using-relative-start-dates-and-end-dates',
+				),
 			),
 			'end_date' => array(
 				'label'             => __( 'Filter by End Date', 'gravityview' ),
@@ -235,6 +317,10 @@ class View_Settings extends Settings {
 				'value'             => '',
 				'group'             => 'filter',
 				'show_in_shortcode' => true,
+				'article'           => array(
+					'id' => '54c67bbbe4b0512429885520',
+					'url' => 'https://docs.gravityview.co/article/79-using-relative-start-dates-and-end-dates',
+				),
 			),
 			'class' => array(
 				'label'             => __( 'CSS Class', 'gravityview' ),
@@ -275,6 +361,10 @@ class View_Settings extends Settings {
 				'value'             => '',
 				'show_in_shortcode' => false,
 				'full_width'        => true,
+				'article'           => array(
+					'id' => '54c67bcee4b07997ea3f3f9a',
+					'url' => 'https://docs.gravityview.co/article/121-changing-the-single-entry-page-title',
+				),
 			),
 			'back_link_label' => array(
 				'label'             => __( 'Back Link Label', 'gravityview' ),
@@ -282,6 +372,9 @@ class View_Settings extends Settings {
 				'desc'              => __( 'The text of the link that returns to the multiple entries view.', 'gravityview' ),
 				'type'              => 'text',
 				'value'             => '',
+				'placeholder'       => __( '&larr; Go back', 'gravityview' ),
+				'class'             => 'widefat',
+				'merge_tags'        => 'force',
 				'show_in_shortcode' => false,
 				'full_width'        => true,
 			),
@@ -311,6 +404,10 @@ class View_Settings extends Settings {
 				),
 				'show_in_shortcode' => false,
 				'full_width'        => true,
+				'article'           => array(
+					'id' => '5e9a3e0c2c7d3a7e9aeb2efb',
+					'url' => 'https://docs.gravityview.co/article/707-view-settings-redirect-after-editing',
+				),
 			),
 			'edit_redirect_url' => array(
 				'label'             => __( 'Edit Entry Redirect URL', 'gravityview' ),
@@ -330,6 +427,10 @@ class View_Settings extends Settings {
 				'full_width'        => true,
 				'class'             => 'code widefat',
 				'value'             => true,
+				'article'           => array(
+					'id' => '5e4449d72c7d3a7e9ae7a54c',
+					'url' => 'https://docs.gravityview.co/article/676-entry-locking',
+				),
 			),
 			'embed_only' => array(
 				'label'             => __( 'Prevent Direct Access', 'gravityview' ),
@@ -377,6 +478,10 @@ class View_Settings extends Settings {
 				'tooltip'           => __( 'If enabled, entries can be exported for this View by adding "/csv/" to the View URL. Each configured field will be a column in the exported CSV.', 'gravityview' ),
 				'show_in_shortcode' => false,
 				'full_width'        => true,
+				'article'          => array(
+					'id' => '5bad2a0c042863158cc6d4ac',
+					'url' => 'https://docs.gravityview.co/article/491-csv-export',
+				),
 			),
 		),
 		array(

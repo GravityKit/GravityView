@@ -43,7 +43,6 @@ class GravityView_Welcome {
 	 * Register the Dashboard Pages which are later hidden but these pages
 	 * are used to render the Welcome pages.
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */
@@ -97,7 +96,6 @@ class GravityView_Welcome {
 	/**
 	 * Hide Individual Dashboard Pages
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */
@@ -121,7 +119,6 @@ class GravityView_Welcome {
 	/**
 	 * Navigation tabs
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */
@@ -156,7 +153,6 @@ class GravityView_Welcome {
 	/**
 	 * Render About Screen
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */
@@ -250,11 +246,17 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 
             <div class="feature-section col two-col has-2-columns is-fullwidth" style="padding: 0;">
-                <div class="column col col-2">
-                    <div class="media-container"><img alt="{date_created}" src="<?php echo plugins_url( 'assets/images/screenshots/duplicate-entries.jpg', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
-                    <h4 class="higher">New: Duplicate Entry field!</h4>
-                    <p>Add a Duplicate Entry field to your View and easily duplicate entries from the front-end or the back-end with a single click!</p>
-                </div>
+				<div class="column col col-2">
+					<div class="media-container"><img alt="Gravity Forms" src="<?php echo plugins_url( 'assets/images/screenshots/gravityforms.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
+					<h4 class="higher">New: Gravity Forms Widget</h4>
+					<p>If you want to allow easily adding new entries to your View, it&rsquo;s now simple to embed a Gravity Forms form as a Widget: click "Add Widget" and select Gravity Forms. Configure the widget, and you&rsquo;re all set.</p>
+				</div>
+	            <div class="column col col-2">
+		            <div class="media-container"><img alt="Gravatar" src="<?php echo plugins_url( 'assets/images/screenshots/gravatar.jpg', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
+		            <h4 class="higher">Gravatar field</h4>
+		            <p>Gravatars are images that represent you online. They're associated with email addresses and can be managed at <a href="https://gravatar.com">Gravatar.com</a>. Now, GravityView has a Gravatar
+		            field where you can choose to show the Gravatar of the entry creator or the image associated with a submitted email.</p>
+	            </div>
             </div>
 
 			<div class="changelog point-releases" style="border-bottom: 0">
@@ -262,6 +264,98 @@ class GravityView_Welcome {
                 <div class="headline-feature" style="max-width: 100%">
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
+
+				<h3>2.9.1 on September 1, 2020</h3>
+
+				<ul>
+					<li>Improved: Changed the Support Port icon &amp; text to make it clearer</li>
+					<li>Updated: Updater script now handles WordPress 5.5 auto-updates</li>
+					<li>Fixed: Add Yoast SEO 14.7 scripts to the No-Conflict approved list</li>
+					<li>Fixed: Available Gravity Forms forms weren't appearing in the Gravity Forms widget when configuring a View</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Improved: Gravity Forms 2.5 beta support</li>
+					<li>Fixed: Issue when server doesn't support <code>GLOB_BRACE</code></li>
+					<li>Fixed: Removed references to non-existent source map files</li>
+				</ul>
+
+				<h3>2.9.0.1 on July 23, 2020</h3>
+
+				<ul>
+					<li>Fixed: Loading all Gravity Forms forms on the frontend
+						<ul>
+							<li>Fixes Map Icons field not working</li>
+							<li>Fixes conflict with gAppointments and Gravity Perks</li>
+						</ul></li>
+					<li>Fixed: Fatal error when Gravity Forms is inactive</li>
+				</ul>
+
+				<h3>2.9 on July 16, 2020</h3>
+
+				<ul>
+					<li>Added: A "Gravity Forms" widget to easily embed a form above and below a View</li>
+					<li>Added: Settings for changing the "No Results" text and "No Search Results" text</li>
+					<li>Added: "Date Updated" field to field picker and sorting options</li>
+					<li>Modified: When clicking the "GravityView" link in the Admin Toolbar, go to GravityView settings</li>
+					<li>Improved: Add new Yoast SEO plugin scripts to the No-Conflict approved list</li>
+					<li>Improved: Add Wicked Folders plugin scripts to the No-Conflict approved list</li>
+					<li>Fixed: Don't allow sorting by the Duplicate field</li>
+					<li>Fixed: Multi-site licenses not being properly shared with single sites when GravityView is not Network Activated</li>
+					<li>Fixed: Potential fatal error for Enfold theme</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Fixed: Settings not able to be saved when using the <code>GRAVITYVIEW_LICENSE_KEY</code> constant</li>
+					<li>Fixed: License not able to be activated when using the <code>GRAVITYVIEW_LICENSE_KEY</code> constant</li>
+					<li>Fixed: Potential PHP warning when using the <code>{created_by}</code> Merge Tag</li>
+					<li>Modified: Added index of the current file in the loop to the <code>gravityview/fields/fileupload/file_path</code> filter</li>
+				</ul>
+
+				<h3>2.8.1 on April 22, 2020</h3>
+
+				<ul>
+					<li>Added: Better inline documentation for View Settings</li>
+					<li>Improved: When clicking "Add All Form Fields" in the "+ Add Field" picker</li>
+					<li>Modified: Changed default settings for new Views to "Show only approved entries"</li>
+					<li>Modified: When adding a field to a table-based layout, "+ Add Field" now says "+ Add Column"</li>
+					<li>Fixed: Single Entry "Hide empty fields" not working in Table and DataTables layouts</li>
+				</ul>
+
+				<h3>2.8 on April 16, 2020 </h3>
+
+				<ul>
+					<li>Added: User Fields now has many more options, including avatars, first and last name combinations, and more</li>
+					<li>Added: A new <a href="https://en.gravatar.com">Gravatar (Globally Recognized Avatar)</a> field</li>
+					<li>Added: "Display as HTML" option for Paragraph fields - By default, safe HTML will be shown. If disabled, only text will be shown.</li>
+					<li>Added: Support for Gravity Forms Partial Entries Add-On. When editing an entry, the entry's "Progress" will now be updated.</li>
+					<li>Modified: Sort forms by title in Edit View, rather than Date Created (thanks, Rochelle!)</li>
+					<li>Modified: The <a href="https://docs.gravityview.co/article/281-the-createdby-merge-tag"><code>{created_by}</code> Merge Tag</a>
+						<ul>
+							<li>When an entry was created by a logged-out user, <code>{created_by}</code> will now show details for a logged-out user (ID <code>0</code>), instead of returning an unmodified Merge Tag</li>
+							<li>When <code>{created_by}</code> is passed without any modifiers, it now will return the ID of the user who created the entry</li>
+							<li>Fixed PHP warning when <code>{created_by}</code> Merge Tag was passed without any modifiers</li>
+						</ul></li>
+					<li>Fixed: The "Single Entry Title" setting was not working properly</li>
+					<li>Fixed: Recent Entries widget filters not being applied</li>
+					<li>Updated translations: Added Formal German translation (thanks, Felix K!) and updated Polish translation (thanks, Dariusz!)</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: <code>gravityview/fields/textarea/allow_html</code> filter to toggle whether Paragraph field output should allow HTML or should be sanitized with <code>esc_html()</code></li>
+					<li>Added: <code>gravityview/field/created_by/name_display</code> filter for custom User Field output.</li>
+					<li>Added: <code>gravityview/field/created_by/name_display/raw</code> allow raw (unescaped) output for <code>gravityview/field/created_by/name_display</code>.</li>
+					<li>Added: <code>gravityview/fields/gravatar/settings</code> filter to modify the new Gravatar field's settings</li>
+					<li>Added: <code>gravityview/search/sieve_choices</code> filter in Version 2.5 that enables only showing choices in the Search Bar that exist in entries (<a href="https://docs.gravityview.co/article/701-show-choices-that-exist">learn more about this filter</a>)</li>
+					<li>Modified: <code>gravityview_get_forms()</code> and <code>GVCommon::get_forms()</code> have new <code>$order_by</code> and <code>$order</code> parameters (Thanks, Rochelle!)</li>
+					<li>Fixed: <code>gravityview/edit_entry/user_can_edit_entry</code> and <code>gravityview/capabilities/allow_logged_out</code> were not reachable in Edit Entry and Delete Entry since Version 2.5</li>
+				</ul>
 
 				<h3>2.7.1 on February 24, 2020</h3>
 
@@ -442,29 +536,6 @@ class GravityView_Welcome {
                     <li>Tweak: Don't show "Create a View" on trashed forms action menus</li>
                 </ul>
 
-                <h3>2.4 on July 16, 2019</h3>
-
-                <p><strong>We tightened security by limiting who can edit Views. <a href="https://docs.gravityview.co/article/598-non-administrator-edit-view">Read how to grant Authors and Editors access</a>.</strong></p>
-
-                <ul>
-                    <li>Added: A new Result Number field and <code>{sequence}</code> Merge Tag <a href="https://docs.gravityview.co/article/597-the-sequence-merge-tag">learn all about it!</a></li>
-                    <li>Added: <code>{date_updated}</code> Merge Tag (<a href="https://docs.gravityview.co/article/76-merge-tags">see all GravityView Merge Tags</a>)</li>
-                    <li>Added: Option to output all CSV entries, instead of a single page of results</li>
-                    <li>Fixed: Settings compatibility issues on Multisite</li>
-                    <li>Fixed: CSV output for address fields contained Google Maps link</li>
-                    <li>Fixed: When editing an entry in Gravity Forms, clicking the "Cancel" button would not exit edit mode</li>
-                    <li>Fixed: Some fatal errors when Gravity Forms is deactivated while GravityView is active</li>
-                    <li>Fixed: Search All Fields functionality with latest Gravity Forms</li>
-                </ul>
-
-                <p><strong>Developer Updates:</strong></p>
-
-                <ul>
-                    <li>Change: <strong>Breaking</strong> users without the <code>unfiltered_html</code> capability can no longer edit Views.</li>
-                    <li>Added: <code>gravityview/security/allow_unfiltered_html</code> to not require <code>unfiltered_html</code>. Dangerous!</li>
-                    <li>Added: <code>gravityview/template/field/address/csv/delimiter</code> filter for CSV output of addresses</li>
-                </ul>
-
 				<p style="text-align: center;">
 					<a href="https://gravityview.co/changelog/" class="aligncenter button button-primary button-hero" style="margin: 0 auto; display: inline-block; text-transform: capitalize"><?php esc_html_e( 'View change history', 'gravityview' ); ?></a>
 				</p>
@@ -479,7 +550,6 @@ class GravityView_Welcome {
 	/**
 	 * Render Credits Screen
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */
@@ -496,8 +566,18 @@ class GravityView_Welcome {
                     margin-left: .2em;
                     line-height: 1em;
                 }
+				.about-wrap .cols {
+					display: flex;
+					flex-wrap: wrap;
+					flex-direction: row;
+					justify-content: space-between;
+				}
+				.col {
+					width: 45%;
+					margin-right: 5%;
+				}
             </style>
-			<div class="feature-section three-col">
+			<div class="cols">
 
 				<div class="col">
 					<h3>Zack Katz <a href="https://twitter.com/zackkatz"><span class="dashicons dashicons-twitter" title="Follow Zack on Twitter"></span></a> <a href="https://katz.co" title="View Zack&rsquo;s website"><span class="dashicons dashicons-admin-site"></span></a></h3>
@@ -506,16 +586,10 @@ class GravityView_Welcome {
 				</div>
 
                 <div class="col">
-					<h3>Rafael Ehlers <a href="https://twitter.com/rafaehlers" title="Follow Rafael on Twitter"><span class="dashicons dashicons-twitter"></span></a> <a href="https://heropress.com/essays/journey-resilience/" title="View Rafael&rsquo;s WordPress Journey"><span class="dashicons dashicons-admin-site"></span></a></p></h3>
+					<h3>Rafael Ehlers <a href="https://twitter.com/rafaehlers" title="Follow Rafael on Twitter"><span class="dashicons dashicons-twitter"></span></a> <a href="https://heropress.com/essays/journey-resilience/" title="View Rafael&rsquo;s WordPress Journey"><span class="dashicons dashicons-admin-site"></span></a></h3>
 					<h4 style="font-weight:0; margin-top:0">Project Manager, Support Lead &amp; Customer&nbsp;Advocate</h4>
 					<p><img alt="Rafael Ehlers" style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/rafael.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Rafael helps guide GravityView development priorities and keep us on track. He&rsquo;s the face of our customer support and helps customers get the most out of the product. Rafael hails from <a href="https://wikipedia.org/wiki/Porto_Alegre">Porto Alegre, Brazil</a>.</p>
 				</div>
-
-                <div class="col">
-                    <h3>Gennady Kovshenin <a href="https://twitter.com/soulseekah" title="Follow Gennady on Twitter"><span class="dashicons dashicons-twitter"></span></a> <a href="https://codeseekah.com" title="View Gennady&rsquo;s Blog"><span class="dashicons dashicons-admin-site"></span></a></h3>
-                    <h4 style="font-weight:0; margin-top:0">Core Developer</h4>
-                    <p><img alt="Gennady Kovshenin" style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/gennady.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Gennady works on the GravityView core, improving everything behind the scenes. He is an active member of the WordPress community and loves exotic tea. Gennady lives and runs long distances in <a href="https://wikipedia.org/wiki/Saint_Petersburg" rel="external">St. Petersburg, Russia</a>.</p>
-                </div>
 
                 <div class="col">
                     <h3>Vlad K.</h3>
@@ -523,11 +597,11 @@ class GravityView_Welcome {
                     <p><img alt="Vlad K." style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/vlad.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Vlad, while being the &ldquo;new kid on the block&rdquo; at GravityView, is not new to WordPress, having previously worked on the top newsletter plugin. He&rsquo;s a full-stack developer who focuses on GravityView's user-facing code in the Dashboard and front end. Vlad comes from Russia and lives in Canada.</p>
                 </div>
 
-                <div class="col last-feature">
-                    <h3>Jerry Grisham <a href="https://twitter.com/jlgrisham" title="Follow Jerry on Twitter"><span class="dashicons dashicons-twitter"></span></a></h3>
-                    <h4 style="font-weight:0; margin-top:0">Support Specialist</h4>
-                    <img alt="Jerry Grisham" style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/jerry.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Jerry provides great customer experiences at GravityView. With over 15 years of experience in customer support, exceeding customer expectations is one of his passions. Bowling is another one. Jerry is a native <a href="https://wikipedia.org/wiki/New_England">New Englander</a> currently living in <a href="https://wikipedia.org/wiki/Atlanta">Atlanta</a>.</p>
-                </div>
+				<div class="col">
+					<h3>Rafael Bennemann <a href="https://twitter.com/rafaelbe" title="Follow Rafael on Twitter"><span class="dashicons dashicons-twitter"></span></a></h3>
+					<h4 style="font-weight:0; margin-top:0">Support Specialist</h4>
+					<p><img alt="Rafael Bennemann" style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/rafaelb.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Rafael dedicated most of his adult life to helping people and companies take their ideas to the web, first as a developer and now as a Customer Advocate at GravityView. He will do his best to help you too, all the while sipping a <a href="https://en.wikipedia.org/wiki/Spritz_Veneziano">Spritz Veneziano</a> in Northern Italy, where he currently lives with his family.</p>
+				</div>
 			</div>
 
 			<hr class="clear" />
@@ -597,7 +671,6 @@ class GravityView_Welcome {
 	 * Sends user to the Welcome page on first activation of GravityView as well as each
 	 * time GravityView is upgraded to a new version
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */

@@ -7,7 +7,7 @@ These versions of GravityView currently being supported with security updates.
 | Version | Supported          |
 | ------- | ------------------ |
 | 2.x   | :white_check_mark: |
-| 1.22.x   | :white_check_mark: |
+| 1.22.x   | :x: |
 | < 1.22   | :x:                |
 
 ## Reporting a Vulnerability

@@ -224,6 +224,7 @@ class View implements \ArrayAccess {
 		global $wp_rewrite;
 
 		$slug = apply_filters( 'gravityview_slug', 'view' );
+		$slug = ( '/' !== $wp_rewrite->front ) ? sprintf( '%s/%s', trim( $wp_rewrite->front, '/' ), $slug ) : $slug;
 		$rule = array( sprintf( '%s/([^/]+)/csv/?', $slug ), 'index.php?gravityview=$matches[1]&csv=1', 'top' );
 
 		add_filter( 'query_vars', function( $query_vars ) {
@@ -391,7 +392,7 @@ class View implements \ArrayAccess {
 	 *                             Can any and as many of one of:
 	 *                                 edit      An edit context.
 	 *                                 single    A single context.
-	 *                                 cpt       The custom post type single page acessed.
+	 *                                 cpt       The custom post type single page accessed.
 	 *                                 shortcode Embedded as a shortcode.
 	 *                                 oembed    Embedded as an oEmbed.
 	 *                                 rest      A REST call.
@@ -984,7 +985,7 @@ class View implements \ArrayAccess {
 
 				$query_class = $this->get_query_class();
 
-				/** @var \GF_Query $query */
+				/** @type \GF_Query $query */
 				$query = new $query_class( $this->form->ID, $parameters['search_criteria'], Utils::get( $parameters, 'sorting' ) );
 
 				/**
@@ -1214,7 +1215,7 @@ class View implements \ArrayAccess {
 						// Build a new query for every unioned form
 						$query_class = $this->get_query_class();
 
-						/** @var \GF_Query|\GF_Patched_Query $q */
+						/** @type \GF_Query|\GF_Patched_Query $q */
 						$q = new $query_class( $form_id );
 
 						// Copy the WHERE clauses but substitute the field_ids to the respective ones
@@ -1540,7 +1541,7 @@ class View implements \ArrayAccess {
 
 				return $caps;
 			case 'edit_post':
-				if ( get_post_type( array_pop( $args ) ) == 'gravityview' ) {
+				if ( 'gravityview' === get_post_type( array_pop( $args ) ) ) {
 					return self::restrict( $caps, 'edit_gravityview', $user_id, $args );
 				}
 		endswitch;

@@ -50,7 +50,7 @@ class GravityView_Admin_Bar {
 		$wp_admin_bar->add_menu( array(
 			'id' => 'gravityview',
 			'title' => __( 'GravityView', 'gravityview' ),
-			'href' => '#',
+			'href' => admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ),
 		) );
 
 		$this->add_edit_view_and_form_link();

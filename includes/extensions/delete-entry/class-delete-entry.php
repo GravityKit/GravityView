@@ -7,7 +7,7 @@
  * @since     1.5.1
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
@@ -61,6 +61,8 @@ final class GravityView_Delete_Entry {
 		add_action ( 'gravityview/delete-entry/trashed', array( $this, 'process_connected_posts' ), 10, 2 );
 
 		add_filter( 'gravityview/field/is_visible', array( $this, 'maybe_not_visible' ), 10, 3 );
+
+		add_action( 'gravityview/metaboxes/permissions_after', array( $this, 'view_settings_permissions_metabox' ) );
 	}
 
 	/**
@@ -136,13 +138,15 @@ final class GravityView_Delete_Entry {
 	/**
 	 * Add "Delete Link Text" setting to the edit_link field settings
 	 *
-	 * @since  1.5.1
-	 * @param  [type] $field_options [description]
-	 * @param  [type] $template_id   [description]
-	 * @param  [type] $field_id      [description]
-	 * @param  [type] $context       [description]
-	 * @param  [type] $input_type    [description]
-	 * @return [type]                [description]
+	 * @since 1.5.1
+	 *
+	 * @param array  $field_options
+	 * @param string $template_id
+	 * @param string $field_id
+	 * @param string $context
+	 * @param string $input_type
+	 *
+	 * @return array $field_options, with "Delete Link Text" and "Allow the following users to delete the entry:" field options.
 	 */
 	function delete_link_field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
@@ -207,10 +211,25 @@ final class GravityView_Delete_Entry {
 			'field_id' => 'delete_link',
 			'label_type' => 'field',
 			'input_type' => 'delete_link',
-			'field_options' => NULL
+			'field_options' => null,
 		);
 
 		return $available_fields;
+	}
+
+	/**
+	 * Render Delete Entry Permissions settings
+	 *
+	 * @since 2.9
+	 *
+	 * @param $current_settings
+	 *
+	 * @return void
+	 */
+	public function view_settings_permissions_metabox( $current_settings ) {
+
+		GravityView_Render_Settings::render_setting_row( 'user_delete', $current_settings );
+
 	}
 
 	/**
@@ -307,7 +326,7 @@ final class GravityView_Delete_Entry {
 
 
 	/**
-	 * Add a Delete button to the #publishing-action section of the Delete Entry form
+	 * Add a Delete button to the "#publishing-action" section of the Delete Entry form
 	 *
 	 * @since 1.5.1
 	 * @since 2.0.13 Added $post_id

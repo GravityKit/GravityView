@@ -113,7 +113,7 @@ class Renderer {
 		$image =  sprintf( '<img alt="%s" src="%s" style="margin-top: 10px;" />', $tab, esc_url( plugins_url( sprintf( 'assets/images/tab-%s.png', $context ), GRAVITYVIEW_FILE ) ) );
 		$output = sprintf( '<h3>%s <strong><a href="%s">%s</a></strong></h3><p>%s</p>', $title, esc_url( $edit_link ), $action_text, $message );
 
-		echo \GVCommon::generate_notice( $output . $image, 'gv-error error', 'edit_gravityview', $gravityview->view->ID );
+		echo \GVCommon::generate_notice( $output . $image, 'gv-warning warning', 'edit_gravityview', $gravityview->view->ID );
 	}
 
 	/**

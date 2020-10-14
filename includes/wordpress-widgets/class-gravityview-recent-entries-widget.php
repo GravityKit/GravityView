@@ -155,7 +155,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		 * Generate list output
 		 * @since 1.7.2
 		 */
-		$List = new GravityView_Entry_List( $entries, $entry_link_post_id, $form, $instance['link_format'], $instance['after_link'], 'recent-entries-widget' );
+		$List = new GravityView_Entry_List( $entries, $entry_link_post_id, $form, $instance['link_format'], $instance['after_link'], 'recent-entries-widget', null, $instance['view_id'] );
 
 		$output = $List->get_output();
 
@@ -174,40 +174,21 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 	 * Get the entries that will be shown in the current widget
 	 *
 	 * @param  array $instance Settings for the current widget
+	 * @param  string $form_id Form ID int, as string
 	 *
-	 * @return array $entries Multidimensional array of Gravity Forms entries
+	 * @return array|GV\Entry[] $entries Multidimensional array of Gravity Forms entries or GravityView Entry objects
 	 */
 	private function get_entries( $instance, $form_id ) {
 
-		// Get the settings for the View ID
-		$view_settings = gravityview_get_template_settings( $instance['view_id'] );
+		$view = \GV\View::by_id( $instance['view_id'] );
 
-        // Set the context view ID to avoid conflicts with the Advanced Filter extension.
-        $criteria['context_view_id'] = $instance['view_id'];
+		$limit = isset( $instance['limit'] ) ? $instance['limit'] : 10;
 
-		$instance['limit'] = isset( $instance['limit'] ) ? $instance['limit'] : 10;
-		$view_settings['id'] = $instance['view_id'];
-		$view_settings['page_size'] = $instance['limit'];
+		$view->settings->set( 'page_size', $limit );
 
-		// Prepare paging criteria
-		$criteria['paging'] = array(
-			'offset' => 0,
-			'page_size' => $instance['limit']
-		);
+		$entries = $view->get_entries();
 
-		// Prepare Search Criteria
-		$criteria['search_criteria'] = array( 'field_filters' => array() );
-		$criteria['search_criteria'] = GravityView_frontend::process_search_only_approved( $view_settings, $criteria['search_criteria']);
-		$criteria['search_criteria']['status'] = apply_filters( 'gravityview_status', 'active', $view_settings );
-
-		/**
-		 * Modify the search parameters before the entries are fetched
-		 */
-		$criteria = apply_filters('gravityview/widget/recent-entries/criteria', $criteria, $instance, $form_id );
-
-		$results = GVCommon::get_entries( $form_id, $criteria );
-
-		return $results;
+		return $entries->all();
 	}
 
 	/**

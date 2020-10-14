@@ -188,9 +188,7 @@ class License_Handler {
 
 			$is_check_action_button = ( 'check_license' === Utils::get( $data, 'edd_action' ) && defined( 'DOING_AJAX' ) && DOING_AJAX );
 
-			if ( 'deactivate_license' === Utils::get( $data, 'edd_action' ) ) {
-				do_action('gravityview/admin_installer/delete_downloads_data', true );
-			}
+			do_action('gravityview/admin_installer/delete_downloads_data', true );
 
 			if ( $is_check_action_button ) {
 				delete_transient( self::status_transient_key );
@@ -387,6 +385,7 @@ class License_Handler {
 			'no_activations_left' => esc_html__( 'Invalid: this license has reached its activation limit.', 'gravityview' ) . ' ' . sprintf( esc_html__( 'You can manage license activations %son your GravityView account page%s.', 'gravityview' ), '<a href="https://gravityview.co/account/#licenses">', '</a>' ),
 			'deactivated' => esc_html__( 'The license has been deactivated.', 'gravityview' ),
 			'valid' => esc_html__( 'The license key is valid and active.', 'gravityview' ),
+			'disabled' => sprintf( esc_html__( 'This license key is disabled. For updates and support, %spurchase a new license%s.', 'gravityview' ), '<a href="https://gravityview.co/account/">', '</a>' ),
 			'invalid' => esc_html__( 'The license key entered is invalid.', 'gravityview' ),
 			'missing' => esc_html__( 'Invalid license key.', 'gravityview' ),
 			'revoked' => esc_html__( 'This license key has been revoked.', 'gravityview' ),
@@ -639,7 +638,6 @@ class License_Handler {
 	 * Retrieves site data (plugin versions, integrations, etc) to be sent along with the license check.
 	 *
 	 * @since 1.9
-	 * @access public
 	 *
 	 * @return array
 	 */
@@ -725,7 +723,7 @@ class License_Handler {
 			$extensions = array();
 			foreach ( $active_plugins as $active_plugin ) {
 				// Match gravityview, gravity-forms, gravityforms, gravitate
-				if ( ! preg_match( '/(gravityview|gravity-?forms|gravitate)/ism', $active_plugin ) ) {
+				if ( ! preg_match( '/(gravityview|gravity-?forms|gravitate|perk|gravity|gf)/ism', $active_plugin ) ) {
 					continue;
 				}
 

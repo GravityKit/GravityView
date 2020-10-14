@@ -451,6 +451,10 @@ class Addon_Settings extends \GFAddOn {
 			);
 		}
 
+		if ( 'license_key' === $key && defined( 'GRAVITYVIEW_LICENSE_KEY' ) ) {
+			return GRAVITYVIEW_LICENSE_KEY;
+		}
+
 		return Utils::get( $this->all(), $key, $default );
 	}
 
@@ -485,11 +489,18 @@ class Addon_Settings extends \GFAddOn {
 	 * @return array The settings.
 	 */
 	public function all() {
-		$option_name  = 'gravityformsaddon_' . $this->_slug . '_app_settings';
 
-		$option_value = get_option( $option_name, array() );
+		$option_name = 'gravityformsaddon_' . $this->_slug . '_app_settings';
 
-		return wp_parse_args( $option_value, $this->defaults() );
+		if ( $this->has_site_settings() ) {
+			$defaults     = $this->defaults();
+			$option_value = get_option( $option_name, array() );
+		} else {
+			$defaults     = get_blog_option( get_main_site_id(), $option_name );
+			$option_value = get_blog_option( get_main_site_id(), $option_name );
+		}
+
+		return wp_parse_args( $option_value, $defaults );
 	}
 
 	/**
@@ -598,7 +609,7 @@ class Addon_Settings extends \GFAddOn {
 
 	    if( $this->is_save_postback() ) {
 		    $settings = $this->get_posted_settings();
-		    $license_key = \GV\Utils::get( $settings, 'license_key' );
+		    $license_key = defined( 'GRAVITYVIEW_LICENSE_KEY' ) ? GRAVITYVIEW_LICENSE_KEY : \GV\Utils::get( $settings, 'license_key' );
 		    $license_status = \GV\Utils::get( $settings, 'license_key_status', 'inactive' );
         } else {
 		    $license_status = $this->get( 'license_key_status', 'inactive' );
@@ -731,28 +742,38 @@ class Addon_Settings extends \GFAddOn {
 	}
 
 	/**
+	 * Does the current site have its own settings?
+	 *
+	 * - If not multisite, returns true.
+	 * - If multisite and the plugin is network activated, returns true; we need to register the submenu page for the Network Admin settings to work.
+	 * - If multisite and not network admin, return false.
+	 *
+	 * @since 2.8.2
+	 *
+	 * @return bool
+	 */
+	private function has_site_settings() {
+		return ( ! is_multisite() ) || is_main_site() || ( ! gravityview()->plugin->is_network_activated() ) || ( is_network_admin() && gravityview()->plugin->is_network_activated() );
+	}
+
+	/**
 	 * Add Settings link to GravityView menu
 	 * @return void
 	 */
 	public function create_app_menu() {
-		/**
-		 * If not multisite, always show.
-		 * If multisite and the plugin is network activated, show; we need to register the submenu page for the Network Admin settings to work.
-		 * If multisite and not network admin, we don't want the settings to show.
-		 * @since 1.7.6
-		 */
-		$show_submenu = ( ! is_multisite() ) ||  is_main_site() || ( ! gravityview()->plugin->is_network_activated() ) || ( is_network_admin() && gravityview()->plugin->is_network_activated() );
 
 		/**
 		 * Override whether to show the Settings menu on a per-blog basis.
 		 * @since 1.7.6
 		 * @param bool $hide_if_network_activated Default: true
 		 */
-		$show_submenu = apply_filters( 'gravityview/show-settings-menu', $show_submenu );
+		$show_submenu = apply_filters( 'gravityview/show-settings-menu', $this->has_site_settings() );
 
-		if ( $show_submenu ) {
-			add_submenu_page( 'edit.php?post_type=gravityview', __( 'Settings', 'gravityview' ), __( 'Settings', 'gravityview' ), $this->_capabilities_app_settings, $this->_slug . '_settings', array( $this, 'app_tab_page' ) );
+		if ( ! $show_submenu ) {
+			return;
 		}
+
+		add_submenu_page( 'edit.php?post_type=gravityview', __( 'Settings', 'gravityview' ), __( 'Settings', 'gravityview' ), $this->_capabilities_app_settings, $this->_slug . '_settings', array( $this, 'app_tab_page' ) );
 	}
 
 	/**
@@ -785,7 +806,7 @@ class Addon_Settings extends \GFAddOn {
 			),
 			array(
 				'name' => 'license_key',
-				'required' => true,
+				'required' => ! defined( 'GRAVITYVIEW_LICENSE_KEY' ) || ! GRAVITYVIEW_LICENSE_KEY,
 				'label' => __( 'License Key', 'gravityview' ),
 				'description' => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ) . $this->get_license_handler()->license_details( $this->get_app_setting( 'license_key_response' ) ),
 				'type' => 'edd_license',
@@ -832,7 +853,7 @@ class Addon_Settings extends \GFAddOn {
 						'value' => '0',
 					),
 				),
-				'tooltip' => '<p><img src="' . esc_url_raw( plugins_url( 'assets/images/beacon.png', GRAVITYVIEW_FILE ) ) . '" alt="' . esc_attr__( 'The Support Port looks like this.', 'gravityview' ) . '" class="alignright" style="max-width:40px; margin:.5em;" />' . esc_html__( 'The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support.', 'gravityview' ) . '</p>',
+				'tooltip' => '<p>' . esc_html__( 'The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support.', 'gravityview' ) . '<img src="' . esc_url_raw( plugins_url( 'assets/images/beacon.png', GRAVITYVIEW_FILE ) ) . '" alt="' . esc_attr__( 'The Support Port looks like this.', 'gravityview' ) . '" class="aligncenter" style="display: block; max-width:100%; margin:1em auto;" /></p>',
 				'description' => __( 'Show the Support Port on GravityView pages?', 'gravityview' ),
 			),
 			array(
@@ -1175,6 +1196,11 @@ class Addon_Settings extends \GFAddOn {
 		$posted_settings = parent::get_posted_settings();
 
 		$local_key = Utils::get( $posted_settings, 'license_key' );
+
+		if ( ! $local_key && defined( 'GRAVITYVIEW_LICENSE_KEY' ) ) {
+			$local_key = GRAVITYVIEW_LICENSE_KEY;
+		}
+
 		$response_key = Utils::get( $posted_settings, 'license_key_response/license_key' );
 
 		static $added_message = false;

@@ -1,8 +1,17 @@
-#hs-beacon {
+#hs-beacon,
+#beacon-container {
 
   iframe {
 
-    z-index: 9991!important; // Above #adminmenuwrap, which is 9990
+	  // Inline popup
+	  &[style*="max-height"] {
+        z-index: 10000 + 10 !important; // Above #adminmenuwrap, which is 9990 and modal content, which is 10000 + 1
+	  }
+
+	  // Sidebar with toolbar
+	  .admin-bar &[style*="bottom: 0"] {
+		  padding-top: 32px;
+	  }
 
     // The Button iframe
     &[data-reactid-hs=".0.0"] {

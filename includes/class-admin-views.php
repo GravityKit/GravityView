@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -247,7 +247,6 @@ class GravityView_Admin_Views {
 	 *
 	 * @param array $array Existing field types to add to a blacklist
 	 * @param string|null $context Context for the blacklist. Default: NULL.
-	 * @access public
 	 * @return array Default blacklist fields merged with existing blacklist fields
 	 */
 	function default_field_blacklist( $array = array(), $context = NULL ) {
@@ -283,11 +282,6 @@ class GravityView_Admin_Views {
 
 			// By default, use `tooltip` if defined.
 			$tooltip = empty( $arg['tooltip'] ) ? NULL : $arg['tooltip'];
-
-			// Otherwise, use the description as a tooltip.
-			if( empty( $tooltip ) && !empty( $arg['desc'] ) ) {
-				$tooltip = $arg['desc'];
-			}
 
 			// If there's no tooltip set, continue
 			if( empty( $tooltip ) ) {
@@ -491,7 +485,6 @@ class GravityView_Admin_Views {
 	/**
 	 * Save View configuration
 	 *
-	 * @access public
 	 * @param int $post_id Currently saved Post ID
 	 * @return void
 	 */
@@ -597,11 +590,9 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Render html for displaying available fields based on a Form ID
-	 * $blacklist_field_types - contains the field types which are not proper to be shown in a directory.
 	 *
      * @see GravityView_Ajax::get_available_fields_html() Triggers `gravityview_render_available_fields` action
-	 * @access public
-     *
+	 *
 	 * @param int $form Gravity Forms Form ID (default: '')
 	 * @param string $context (default: 'single')
      *
@@ -639,11 +630,11 @@ class GravityView_Admin_Views {
 				}
 
 				// Edit mode only allows editing the parent fields, not single inputs.
-				if( $context === 'edit' && !empty( $details['parent'] ) ) {
+				if( $context === 'edit' && ! empty( $details['parent'] ) ) {
 					continue;
 				}
 
-				$output .= new GravityView_Admin_View_Field( $details['label'], $id, $details, $settings = array(), $form );
+				$output .= new GravityView_Admin_View_Field( $details['label'], $id, $details, array(), $form );
 
 			} // End foreach
 		}
@@ -661,52 +652,51 @@ class GravityView_Admin_Views {
 	/**
 	 * Render html for displaying additional fields based on a Form ID
 	 *
-	 * @access public
 	 * @param int $form Gravity Forms Form ID (default: '')
 	 * @param string $context (default: 'single')
 	 * @return void
 	 */
 	public function render_additional_fields( $form = 0, $context = 'single' ) {
 
+		$additional_fields = array(
+			array(
+				'label_text' => '+ ' . __( 'Add All Form Fields', 'gravityview' ),
+				'desc' => __('Insert all the form fields at once.', 'gravityview'),
+				'field_id' => 'all-fields',
+				'label_type' => 'field',
+				'input_type' => null,
+				'field_options' => null,
+				'settings_html'	=> null,
+			)
+		);
+
 		/**
 		 * @filter `gravityview_additional_fields` non-standard Fields to show at the bottom of the field picker
 		 * @param array $additional_fields Associative array of field arrays, with `label_text`, `desc`, `field_id`, `label_type`, `input_type`, `field_options`, and `settings_html` keys
 		 */
-		$additional_fields = apply_filters( 'gravityview_additional_fields', array(
-			array(
-				'label_text' => __( '+ Add All Fields', 'gravityview' ),
-				'desc' => __('Add all the available fields at once.', 'gravityview'),
-				'field_id' => 'all-fields',
-				'label_type' => 'field',
-				'input_type' => NULL,
-				'field_options' => NULL,
-				'settings_html'	=> NULL,
-			)
-		));
+		$additional_fields = apply_filters( 'gravityview_additional_fields', $additional_fields );
 
-		if( !empty( $additional_fields )) {
-			foreach ( (array)$additional_fields as $item ) {
+		foreach ( (array) $additional_fields as $item ) {
 
-				// Prevent items from not having index set
-				$item = wp_parse_args( $item, array(
-					'label_text' => NULL,
-					'field_id' => NULL,
-					'label_type' => NULL,
-					'input_type' => NULL,
-					'field_options' => NULL,
-					'settings_html'	=> NULL,
-				));
+			// Prevent items from not having index set
+			$item = wp_parse_args( $item, array(
+				'label_text' => null,
+				'field_id' => null,
+				'label_type' => null,
+				'input_type' => null,
+				'field_options' => null,
+				'settings_html'	=> null,
+			));
 
-				// Backward compat.
-				if( !empty( $item['field_options'] ) ) {
-					// Use settings_html from now on.
-					$item['settings_html'] = $item['field_options'];
-				}
-
-				// Render a label for each of them
-				echo new GravityView_Admin_View_Field( $item['label_text'], $item['field_id'], $item, $settings = array(), $form );
-
+			// Backward compat.
+			if( !empty( $item['field_options'] ) ) {
+				// Use settings_html from now on.
+				$item['settings_html'] = $item['field_options'];
 			}
+
+			// Render a label for each of them
+			echo new GravityView_Admin_View_Field( $item['label_text'], $item['field_id'], $item, $settings = array(), $form );
+
 		}
 
 	}
@@ -733,6 +723,11 @@ class GravityView_Admin_Views {
 					'label' => __('Entry Date', 'gravityview'),
 					'desc'	=> __('The date the entry was created.', 'gravityview'),
 					'type' => 'date_created',
+				),
+				'date_updated' => array(
+						'label' => __( 'Date Updated', 'gravityview'),
+						'desc'	=> __('The date the entry was last updated.', 'gravityview'),
+						'type' => 'date_updated',
 				),
 				'source_url' => array(
 					'label' => __('Source URL', 'gravityview'),
@@ -873,7 +868,7 @@ class GravityView_Admin_Views {
 	 * Generic function to render rows and columns of active areas for widgets & fields
 	 * @param  string $template_id The current slug of the selected View template
 	 * @param  string $type   Either 'widget' or 'field'
-	 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
+	 * @param  string $zone   Either 'single', 'directory', 'edit', 'header', 'footer'
 	 * @param  array $rows    The layout structure: rows, columns and areas
 	 * @param  array $values  Saved objects
 	 * @return void
@@ -886,6 +881,20 @@ class GravityView_Admin_Views {
 		} else {
 			$button_label = __( 'Add Field', 'gravityview' );
 		}
+
+		/**
+		 * @internal Don't rely on this filter! This is for internal use and may change.
+		 *
+		 * @since 2.8.1
+		 *
+		 * @param string $button_label Text for button: "Add Widget" or "Add Field"
+		 * @param array $atts {
+		 *   @type string $type 'widget' or 'field'
+		 *   @type string $template_id The current slug of the selected View template
+		 *   @type string $zone Where is this button being shown? Either 'single', 'directory', 'edit', 'header', 'footer'
+		 * }
+		 */
+		$button_label = apply_filters( 'gravityview/admin/add_button_label', $button_label, array( 'type' => $type, 'template_id' => $template_id, 'zone' => $zone ) );
 
 		$available_items = array();
 
@@ -954,7 +963,7 @@ class GravityView_Admin_Views {
 										$item = array(
 											'input_type' => $input_type,
 											'settings_html' => $field_options,
-											'label_type' => $type
+											'label_type' => $type,
 										);
 
 										// Merge the values with the current item to pass things like widget descriptions and original field names
@@ -973,7 +982,7 @@ class GravityView_Admin_Views {
 
 								} // End if zone is not empty ?>
 
-								<span class="drop-message"><?php echo sprintf(esc_attr__('"+ %s" or drag existing %ss here.', 'gravityview'), $button_label, $type ); ?></span>
+								<span class="drop-message"><?php echo sprintf( esc_html__('"+ %s" or drag existing %ss here.', 'gravityview'), esc_html( $button_label ), esc_html( $type ) ); ?></span>
 							</div>
 							<div class="gv-droppable-area-action">
 								<button class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>" data-formid="<?php echo $view ? esc_attr( $view->form ? $view->form->ID : '' ) : ''; ?>"><?php echo '+ '.esc_html( $button_label ); ?></button>
@@ -1113,7 +1122,6 @@ class GravityView_Admin_Views {
 	/**
 	 * Render the Template Active Areas and configured active fields for a given template id and post id
 	 *
-	 * @access public
 	 * @param string $template_id (default: '') Template ID, like `default_list`, `default_table`, `preset_business_data`, etc. {@see GravityView_Template::__construct()}
 	 * @param string $post_id (default: '')
 	 * @param string $context (default: 'single')
@@ -1164,7 +1172,6 @@ class GravityView_Admin_Views {
 	/**
 	 * Enqueue scripts and styles at Views editor
 	 *
-	 * @access public
 	 * @param mixed $hook
 	 * @return void
 	 */

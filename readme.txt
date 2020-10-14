@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 5.4
+Tested up to: 5.5.1
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -23,14 +23,89 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
-* Improved: Sort forms by title in Edit View (rather than Date Created)
-* Fixed: Dates not respecting timezone offset on certain hosts
+* Modified: Removed "Open link in the same window?" setting from Website field
+	- Note: For existing Views, if both "Open link in the same window?" and "Open link in a new tab or window?" settings were checked, the link will now _not open in a new tab_. We hope no one had them both checked; this would have caused a rift in space-time and a room full of dark-matter rainbows.
+* Fixed: When "Make Phone Number Clickable" is checked, disable the "Link to single entry" setting in Phone field settings
 
 __Developer Updates:__
 
+* Changed: `/templates/fields/field-website-html.php` and `/templates/deprecated/fields/website.php` to use new `target=_blank` logic
+
+= 2.9.2 on October XX, 2020 =
+
+* Fixed: Export of View entries as a CSV would result in a 404 error on some hosts
+
+= 2.9.1 on September 1, 2020 =
+
+* Improved: Changed the Support Port icon & text to make it clearer
+* Updated: Updater script now handles WordPress 5.5 auto-updates
+* Fixed: Add Yoast SEO 14.7 scripts to the No-Conflict approved list
+* Fixed: Available Gravity Forms forms weren't appearing in the Gravity Forms widget when configuring a View
+
+__Developer Updates:__
+
+* Improved: Gravity Forms 2.5 beta support
+* Fixed: Issue when server doesn't support `GLOB_BRACE`
+* Fixed: Removed references to non-existent source map files
+
+= 2.9.0.1 on July 23, 2020 =
+
+* Fixed: Loading all Gravity Forms forms on the frontend
+	* Fixes Map Icons field not working
+	* Fixes conflict with gAppointments and Gravity Perks
+* Fixed: Fatal error when Gravity Forms is inactive
+
+= 2.9 on July 16, 2020 =
+
+* Added: A "Gravity Forms" widget to easily embed a form above and below a View
+* Added: Settings for changing the "No Results" text and "No Search Results" text
+* Added: "Date Updated" field to field picker and sorting options
+* Modified: When clicking the "GravityView" link in the Admin Toolbar, go to GravityView settings
+* Improved: Add new Yoast SEO plugin scripts to the No-Conflict approved list
+* Improved: Add Wicked Folders plugin scripts to the No-Conflict approved list
+* Fixed: Don't allow sorting by the Duplicate field
+* Fixed: Multi-site licenses not being properly shared with single sites when GravityView is not Network Activated
+* Fixed: Potential fatal error for Enfold theme
+
+__Developer Updates:__
+
+* Fixed: Settings not able to be saved when using the `GRAVITYVIEW_LICENSE_KEY` constant
+* Fixed: License not able to be activated when using the `GRAVITYVIEW_LICENSE_KEY` constant
+* Fixed: Potential PHP warning when using the `{created_by}` Merge Tag
+* Modified: Added index of the current file in the loop to the `gravityview/fields/fileupload/file_path` filter
+
+= 2.8.1 on April 22, 2020 =
+
+* Added: Better inline documentation for View Settings
+* Improved: When clicking "Add All Form Fields" in the "+ Add Field" picker
+* Modified: Changed default settings for new Views to "Show only approved entries"
+* Modified: When adding a field to a table-based layout, "+ Add Field" now says "+ Add Column"
+* Fixed: Single Entry "Hide empty fields" not working in Table and DataTables layouts
+
+= 2.8 on April 16, 2020 =
+
+* Added: User Fields now has many more options, including avatars, first and last name combinations, and more
+* Added: A new [Gravatar (Globally Recognized Avatar)](https://en.gravatar.com) field
+* Added: "Display as HTML" option for Paragraph fields - By default, safe HTML will be shown. If disabled, only text will be shown.
+* Added: Support for Gravity Forms Partial Entries Add-On. When editing an entry, the entry's "Progress" will now be updated.
+* Modified: Sort forms by title in Edit View, rather than Date Created (thanks, Rochelle!)
+* Modified: The [`{created_by}` Merge Tag](https://docs.gravityview.co/article/281-the-createdby-merge-tag)
+	* When an entry was created by a logged-out user, `{created_by}` will now show details for a logged-out user (ID `0`), instead of returning an unmodified Merge Tag
+	* When `{created_by}` is passed without any modifiers, it now will return the ID of the user who created the entry
+	* Fixed PHP warning when `{created_by}` Merge Tag was passed without any modifiers
+* Fixed: The "Single Entry Title" setting was not working properly
+* Fixed: Recent Entries widget filters not being applied
+* Updated translations: Added Formal German translation (thanks, Felix K!) and updated Polish translation (thanks, Dariusz!)
+
+__Developer Updates:__
+
+* Added: `gravityview/fields/textarea/allow_html` filter to toggle whether Paragraph field output should allow HTML or should be sanitized with `esc_html()`
+* Added: `gravityview/field/created_by/name_display` filter for custom User Field output.
+* Added: `gravityview/field/created_by/name_display/raw` allow raw (unescaped) output for `gravityview/field/created_by/name_display`.
+* Added: `gravityview/fields/gravatar/settings` filter to modify the new Gravatar field's settings
 * Added: `gravityview/search/sieve_choices` filter in Version 2.5 that enables only showing choices in the Search Bar that exist in entries ([learn more about this filter](https://docs.gravityview.co/article/701-show-choices-that-exist))
-* Fixed: `gravityview/edit_entry/user_can_edit_entry` and `gravityview/capabilities/allow_logged_out` were not reachable in Edit Entry and Delete Entry since Version 2.5
 * Modified: `gravityview_get_forms()` and `GVCommon::get_forms()` have new `$order_by` and `$order` parameters (Thanks, Rochelle!)
+* Fixed: `gravityview/edit_entry/user_can_edit_entry` and `gravityview/capabilities/allow_logged_out` were not reachable in Edit Entry and Delete Entry since Version 2.5
 
 = 2.7.1 on February 24, 2020 =
 
@@ -587,7 +662,7 @@ __Developer Notes__
 
 = Version 2.0 on May 8, 2018 =
 
-We are proud to share this release with you: we have been working on this release since 2016, and although most of the changes won’t be seen, GravityView has a brand-new engine that will power the plugin into the future! 🚀
+We are proud to share this release with you: we have been working on this release since 2016, and although most of the changes won’t be seen, GravityView has a brand-new engine that will power the plugin into the future! �
 \- Zack with GravityView
 
 ---
@@ -622,7 +697,7 @@ This release is the biggest ever for developers! Even so, we have taken great ca
 * When HTML 5 is enabled in Gravity Forms, now the Search All field will use `type="search"`
 * _Countless_ new filters and actions! Additional documentation will be coming, both on [docs.gravityview.co](https://docs.gravityview.co) as well as [codex.gravityview.co](https://codex.gravityview.co).
 
-A special thanks to [Gennady](https://codeseekah.com) for your tireless pursuit of better code, insistence on backward compatibility, and your positive attitude. 👏
+A special thanks to [Gennady](https://codeseekah.com) for your tireless pursuit of better code, insistence on backward compatibility, and your positive attitude. �
 
 = 1.22.6 on April 4, 2018 =
 
@@ -684,7 +759,7 @@ __Developer Updates:__
 
 = 1.22.1 on November 29, 2017 =
 
-* Moved "Custom Content" field to top of field picker, in what Rafael calls the "Best idea of 2017 🏆"
+* Moved "Custom Content" field to top of field picker, in what Rafael calls the "Best idea of 2017 �"
 * Added: When Gravity Forms 2.3 is released, support for "Random" entry order will be enabled
 * Fixed: Entry oEmbeds not working when using "Plain" URL formats to embed
 * Fixed: Only published Views showing in Gravity Forms "Connected Views" menu
@@ -777,7 +852,7 @@ __Developer Updates:__
 
 = 1.21.1 on March 30, 2017 =
 
-* Fixed: Advanced Filters no longer filtered 😕
+* Fixed: Advanced Filters no longer filtered �
 * Fixed: Fatal error when viewing Single Entry with a Single Entry Title setting that included Merge Tags
 * Fixed: Cache wasn't cleared when an entry was created using Gravity Forms API (thanks Steve with Gravity Flow!)
 
@@ -844,9 +919,9 @@ __Developer Notes:__
 * Fixed: WPML conflict where Single Entry or Edit Entry screens are inaccessible
 * Fixed: Prevent PHP error when displaying GravityView using `get_gravityview()`
 * Updated translations:
-    - 🇩🇰 Danish *100% translated*
-    - 🇳🇴 Norwegian *100% translated*
-    - 🇸🇪 Swedish translation updated
+    - �� Danish *100% translated*
+    - �� Norwegian *100% translated*
+    - �� Swedish translation updated
 
 __Developer Notes: __
 
@@ -865,11 +940,11 @@ First update of 2017! We've got great things planned for GravityView and our Ext
 * Fixed: The `[gravityview]` shortcode would not be parsed properly due to HTML encoding when using certain page builders, including OptimizePress
 * Fixed: Potential errors when non-standard form fields are added to Edit Entry configurations ("Creating default object from empty value" and "Cannot use object of type stdClass as array")
 * Updated translations:
-    - 🇨🇳 Chinese *100% translated* (thank you, Michael Edi!)
-    - 🇫🇷 French *100% translated*
-    - 🇧🇷 Brazilian Portuguese *100% translated* (thanks, Rafael!)
-    - 🇳🇱 Dutch translation updated (thank you, Erik van Beek!)
-    - 🇸🇪 Swedish translation updated
+    - �� Chinese *100% translated* (thank you, Michael Edi!)
+    - �� French *100% translated*
+    - �� Brazilian Portuguese *100% translated* (thanks, Rafael!)
+    - �� Dutch translation updated (thank you, Erik van Beek!)
+    - �� Swedish translation updated
     - Updated Spanish (Spain + Mexican) and German (`de` + `de_DE`) with each other
 
 __Developer Notes:__

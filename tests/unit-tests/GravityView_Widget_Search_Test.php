@@ -8,7 +8,9 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  */
 class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
-	/** @var GravityView_Widget_Search */
+	/**
+	 * @var \GravityView_Widget_Search $widget
+	 */
 	public $widget;
 
 	function setUp() {
@@ -779,6 +781,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$this->assertTrue( is_int( $gamma ) && ! empty( $gamma ) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
@@ -799,6 +803,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -858,6 +863,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'user_email' => md5( microtime() ) . '@gravityview.tests',
 		) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
@@ -878,6 +885,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -936,6 +944,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	 */
 	public function test_override_search_operator() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
@@ -955,6 +965,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -1055,6 +1066,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	 */
 	public function test_search_date_created() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
@@ -1074,6 +1087,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -1118,6 +1132,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 	public function test_operator_url_overrides() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
@@ -1137,6 +1153,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -1189,6 +1206,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 	public function test_search_all_basic() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
@@ -1208,6 +1227,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -1242,6 +1262,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 	public function test_search_all_basic_choices() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
@@ -1265,6 +1287,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -1290,7 +1313,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 	public function test_searchable_field_restrictions_filter() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
-
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'fields' => array( '_' => array(
@@ -1304,6 +1328,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					) ),
 				),
 			) ),
+			'settings' => $settings,
 		) );
 
 		$view = \GV\View::from_post( $post );

@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -21,7 +21,6 @@ class GVCommon {
 	/**
 	 * Returns the form object for a given Form ID.
 	 *
-	 * @access public
 	 * @param mixed $form_id
 	 * @return array|false Array: Form object returned from Gravity Forms; False: no form ID specified or Gravity Forms isn't active.
 	 */
@@ -260,7 +259,7 @@ class GVCommon {
 	 *
 	 * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
 	 */
-	public static function get_forms(  $active = true, $trash = false, $order_by = 'date_created', $order = 'ASC' ) {
+	public static function get_forms(  $active = true, $trash = false, $order_by = 'id', $order = 'ASC' ) {
 		$forms = array();
 		if ( ! class_exists( 'GFAPI' ) ) {
 			return array();
@@ -282,7 +281,6 @@ class GVCommon {
 	/**
 	 * Return array of fields' id and label, for a given Form ID
 	 *
-	 * @access public
 	 * @param string|array $form_id (default: '') or $form object
 	 * @param bool $add_default_properties
 	 * @param bool $include_parent_field
@@ -525,7 +523,6 @@ class GVCommon {
 	 *
 	 * @see  GFAPI::get_entries()
 	 * @see GFFormsModel::get_field_filters_where()
-	 * @access public
 	 * @param int|array $form_ids The ID of the form or an array IDs of the Forms. Zero for all forms.
 	 * @param mixed $passed_criteria (default: null)
 	 * @param mixed &$total Optional. An output parameter containing the total number of entries. Pass a non-null value to generate the total count. (default: null)
@@ -672,7 +669,6 @@ class GVCommon {
 	 *
 	 * Since 1.4, supports custom entry slugs. The way that GravityView fetches an entry based on the custom slug is by searching `gravityview_unique_id` meta. The `$entry_slug` is fetched by getting the current query var set by `is_single_entry()`
 	 *
-	 * @access public
 	 * @param string|int $entry_slug Either entry ID or entry slug string
 	 * @param boolean $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
 	 * @param boolean $check_entry_display Check whether the entry is visible for the current View configuration. Default: true. {@since 1.14}
@@ -707,6 +703,13 @@ class GVCommon {
 
 		// Is the entry allowed
 		if( $check_entry_display ) {
+
+			$gvid = \GV\Utils::_GET( 'gvid' );
+
+			if( $gvid ) {
+				$view = \GV\View::by_id( $gvid );
+			}
+
 			$entry = self::check_entry_display( $entry, $view );
 		}
 
@@ -861,51 +864,30 @@ class GVCommon {
 			return new WP_Error( 'form_id_not_set', '[apply_filters_to_entry] Entry is empty!', $entry );
 		}
 
-		global $post;
-
-		if ( ! $view && $post ) {
-
-			gravityview()->log->warning( '$view parameter not provided! Context assumed from legacy context mocks. This is unreliable!' );
-
-			$view = \GV\View_Collection::from_post( $post );
-		}
-
 		if ( is_null( $view ) ) {
 			gravityview()->log->warning( '$view was not supplied to check_entry_display, results will be non-typical.' );
 			return new WP_Error( 'view_not_supplied', 'View is not supplied!', $entry );
-		}
-
-		if ( $view instanceof \GV\View_Collection ) {
-
-			$passed_entry = $entry;
-
-			foreach( $view->all() as $single_view ) {
-
-				// Is the entry allowed
-				$entry = self::check_entry_display( $passed_entry, $single_view );
-
-				// Once we find an entry that is allowed for any of the current Views, show it
-				if( ! is_wp_error( $entry ) ) {
-					break;
-				}
-			}
-
-			return $entry;
 		}
 
 		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
 			return new WP_Error( 'no_gf_query', 'GF_Query is missing.', $entry );
 		}
 
+		$_gvid = \GV\Utils::_GET( 'gvid' );
+
+		if ( $_gvid && $view->ID !== (int) $_gvid ) {
+			return new WP_Error( 'view_id_not_match_gvid', 'View does not match passed $_GET["gvid"].', $view->ID );
+		}
+
 		$view_form_id = $view->form->ID;
 
 		if ( $view->joins ) {
-			if ( in_array( (int)$entry['form_id'], array_keys( $view::get_joined_forms( $view->ID ) ), true ) ) {
+			if ( in_array( (int) $entry['form_id'], array_keys( $view::get_joined_forms( $view->ID ) ), true ) ) {
 				$view_form_id = $entry['form_id'];
 			}
 		}
 
-		if ( $view_form_id != $entry['form_id'] ) {
+		if ( (int) $view_form_id !== (int) $entry['form_id'] ) {
 			return new WP_Error( 'view_id_not_match', 'View form source does not match entry form source ID.', $entry );
 		}
 
@@ -926,7 +908,7 @@ class GVCommon {
 
 			$_tmp_query_parts = $_tmp_query->_introspect();
 
-			/** @var \GF_Query $query */
+			/** @type \GF_Query $query */
 			$query_parts      = $query->_introspect();
 
 			$query->where( \GF_Query_Condition::_and( $_tmp_query_parts['where'], $query_parts['where'] ) );
@@ -1048,7 +1030,6 @@ class GVCommon {
 	/**
 	 * Retrieve the label of a given field id (for a specific form)
 	 *
-	 * @access public
 	 * @since 1.17 Added $field_value parameter
 	 *
 	 * @param array $form Gravity Forms form array
@@ -1083,7 +1064,6 @@ class GVCommon {
 	 *
 	 * @uses GFFormsModel::get_field
 	 * @see GFFormsModel::get_field
-	 * @access public
 	 * @param array|int $form Form array or ID
 	 * @param string|int $field_id
 	 * @return GF_Field|null Gravity Forms field object, or NULL: Gravity Forms GFFormsModel does not exist or field at $field_id doesn't exist.
@@ -1378,7 +1358,6 @@ class GVCommon {
 	/**
 	 * Render dropdown (select) with the list of sortable fields from a form ID
 	 *
-	 * @access public
 	 * @param  int $formid Form ID
 	 * @return string         html
 	 */
@@ -1427,6 +1406,10 @@ class GVCommon {
 			'date_created' => array(
 				'type' => 'date_created',
 				'label' => __( 'Date Created', 'gravityview' ),
+			),
+			'date_updated' => array(
+				'type' => 'date_updated',
+				'label' => __( 'Date Updated', 'gravityview' ),
 			),
 		);
 
@@ -1577,7 +1560,7 @@ class GVCommon {
 	 * @return bool true or false if $string is an empty string
 	 * @since  1.5.3
 	 *
-	 * @author rubo77 at https://gist.github.com/rubo77/6821632
+	 * @see https://gist.github.com/rubo77/6821632
 	 **/
 	public static function gv_parse_str( $string, &$result ) {
 		if ( empty( $string ) ) {
@@ -1653,6 +1636,7 @@ class GVCommon {
 
 		/**
 		 * @filter `gravityview/get_link/allowed_atts` Modify the attributes that are allowed to be used in generating links
+		 * @since 1.6
 		 * @param array $allowed_atts Array of attributes allowed
 		 */
 		$allowed_atts = apply_filters( 'gravityview/get_link/allowed_atts', $allowed_atts );
@@ -1708,8 +1692,8 @@ class GVCommon {
 	 * @param array $array1
 	 * @param array $array2
 	 * @return array
-	 * @author Daniel <daniel (at) danielsmedegaardbuus (dot) dk>
-	 * @author Gabriel Sobrinho <gabriel (dot) sobrinho (at) gmail (dot) com>
+	 * @author Daniel <daniel@danielsmedegaardbuus.dk>
+	 * @author Gabriel Sobrinho <gabriel.sobrinho@gmail.com>
 	 */
 	public static function array_merge_recursive_distinct( array &$array1, array &$array2 ) {
 		$merged = $array1;

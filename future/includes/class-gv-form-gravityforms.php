@@ -139,7 +139,7 @@ class GF_Form extends Form implements \ArrayAccess {
 			$sorting = array();
 
 			/** Apply the filters */
-			/** @var \GV\GF_Entry_Filter|\GV\Entry_Filter $filter */
+			/** @type \GV\GF_Entry_Filter|\GV\Entry_Filter $filter */
 			foreach ( $filters as $filter ) {
 				$search_criteria = $filter::merge_search_criteria( $search_criteria, $filter->as_search_criteria() );
 			}
