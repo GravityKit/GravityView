@@ -184,7 +184,15 @@
 				})
 
 				// TODO: Show/hide warnings on configuration tabs to let users know context has been configured.
-				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry', vcfg.toggleTabConfigurationWarnings );
+				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry', vcfg.toggleTabConfigurationWarnings )
+
+				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters )
+
+				// Trigger settings setup that have `data-requires` and `data-requires-not` (toggleCheckboxes)
+				.find( '#gravityview_settings' )
+
+				.trigger( 'change' );
+				// End bind to $('body')
 
 			$( '.gv-add-field').on('focus', function() {
 				$( this ).parent('.gv-fields').addClass('focused');
@@ -192,7 +200,6 @@
 				$( this ).parent('.gv-fields').removeClass('focused');
 			});
 
-			// End bind to $('body')
 
 			if( gvGlobals.passed_form_id ) {
 				vcfg.gvSelectForm.trigger( 'change' );
