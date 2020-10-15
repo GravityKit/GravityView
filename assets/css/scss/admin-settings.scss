@@ -176,7 +176,7 @@
 	}
 
 	&.gf-2-5 {
-		background: #F6F9FC url('../images/star-chart.png') left top no-repeat;
+		background: #F6F9FC url('../images/star-chart.png') top center repeat-x;
 		background-size: contain;
 
 		#wpwrap {
@@ -255,7 +255,8 @@
 				}
 
 				background: url('../images/GravityView.svg') 9px 10px no-repeat;
-				height: 70px;
+				background-size: contain;
+				height: 60px;
 			}
 		}
 
