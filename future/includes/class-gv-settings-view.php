@@ -389,7 +389,11 @@ class View_Settings extends Settings {
 					'0'  => __( 'Redirect to Single Entry', 'gravityview' ),
 					'1' => __( 'Redirect to Multiple Entries', 'gravityview' ),
 					'2' => __( 'Redirect to URL', 'gravityview' ),
-				)
+				),
+				'article'           => array(
+					'id' => '5e9a3e0c2c7d3a7e9aeb2efb',
+					'url' => 'https://docs.gravityview.co/article/707-view-settings-redirect-after-editing',
+				),
 			),
 			'edit_return_context' => array(
 				'label'             => __( 'Editing Returns To&hellip;', 'gravityview' ),
