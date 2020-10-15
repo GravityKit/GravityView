@@ -173,13 +173,15 @@ class GravityView_Admin_ApproveEntries {
 					'class' => 'button',
 					'value' => __( 'Approve/Reject', 'gravityview' ),
 					'onclick' => "StartAddField('gravityviewapproved_admin');",
-					'data-type' => 'gravityviewapproved_admin'
+					'data-type' => 'gravityviewapproved_admin',
+					'data-icon' => 'dashicons-yes-alt'
 				),
 				array(
 					'class' => 'button',
 					'value' => __( 'User Opt-In', 'gravityview' ),
 					'onclick' => "StartAddField('gravityviewapproved');",
-					'data-type' => 'gravityviewapproved'
+					'data-type' => 'gravityviewapproved',
+					'data-icon' => 'dashicons-media-text',
 				),
 			)
 		);

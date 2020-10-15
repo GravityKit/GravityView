@@ -418,6 +418,7 @@ class View_Settings extends Settings {
 					'type'              => 'text',
 					'class'             => 'code widefat',
 					'value'             => '',
+					'placeholder'       => 'https://www.example.com/landing-page/',
 					'requires'          => 'edit_redirect=2',
 					'merge_tags'        => 'force',
 				),
@@ -452,7 +453,8 @@ class View_Settings extends Settings {
 					'type'              => 'text',
 					'class'             => 'code widefat',
 					'value'             => '',
-					'requires'          => 'delete_redirect=1',
+					'placeholder'       => 'https://www.example.com/landing-page/',
+					'requires'          => '',
 					'merge_tags'        => 'force',
 				),
 				'embed_only' => array(
@@ -527,7 +529,7 @@ class View_Settings extends Settings {
 					'value'             => '',
 					'show_in_shortcode' => false,
 				),
-			)
+			),
 		);
 
 		if ( version_compare( \GFCommon::$version, '2.3-beta-4', '>=' ) ) {

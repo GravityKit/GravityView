@@ -230,6 +230,7 @@ final class GravityView_Delete_Entry {
 			'label_type' => 'field',
 			'input_type' => 'delete_link',
 			'field_options' => null,
+			'icon' => 'dashicons-trash',
 		);
 
 		return $available_fields;

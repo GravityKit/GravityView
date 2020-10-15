@@ -224,6 +224,7 @@ class View implements \ArrayAccess {
 		global $wp_rewrite;
 
 		$slug = apply_filters( 'gravityview_slug', 'view' );
+		$slug = ( '/' !== $wp_rewrite->front ) ? sprintf( '%s/%s', trim( $wp_rewrite->front, '/' ), $slug ) : $slug;
 		$rule = array( sprintf( '%s/([^/]+)/csv/?', $slug ), 'index.php?gravityview=$matches[1]&csv=1', 'top' );
 
 		add_filter( 'query_vars', function( $query_vars ) {
