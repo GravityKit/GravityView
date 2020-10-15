@@ -81,7 +81,7 @@ final class GravityView_Delete_Entry {
 
 		add_filter( 'gravityview/field/is_visible', array( $this, 'maybe_not_visible' ), 10, 3 );
 
-		add_action( 'gravityview/metaboxes/permissions_after', array( $this, 'view_settings_permissions_metabox' ) );
+		add_action( 'gravityview/metaboxes/delete_entry', array( $this, 'view_settings_delete_entry_metabox' ), 7 );
 	}
 
 	/**
@@ -245,7 +245,7 @@ final class GravityView_Delete_Entry {
 	 *
 	 * @return void
 	 */
-	public function view_settings_permissions_metabox( $current_settings ) {
+	public function view_settings_delete_entry_metabox( $current_settings ) {
 
 		GravityView_Render_Settings::render_setting_row( 'user_delete', $current_settings );
 

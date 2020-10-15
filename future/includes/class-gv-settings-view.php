@@ -454,7 +454,7 @@ class View_Settings extends Settings {
 					'class'             => 'code widefat',
 					'value'             => '',
 					'placeholder'       => 'https://www.example.com/landing-page/',
-					'requires'          => '',
+					'requires'          => 'delete_redirect=1',
 					'merge_tags'        => 'force',
 				),
 				'embed_only' => array(
