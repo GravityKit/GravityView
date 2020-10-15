@@ -7,7 +7,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2016, Katz Web Services, Inc.
  * @since     1.22.1
@@ -19,7 +19,6 @@ class GravityView_HTML_Elements {
 	/**
 	 * Renders an HTML Dropdown of all the Products (Downloads)
 	 *
-	 * @access public
 	 * @since 1.22.1
 	 * @param array $args Arguments for the dropdown
 	 * @return string $output Dropdown of forms
@@ -63,7 +62,6 @@ class GravityView_HTML_Elements {
 	/**
 	 * Renders an HTML Dropdown of all the fields in a form
 	 *
-	 * @access public
 	 * @param array $args Arguments for the dropdown
 	 * @return string $output Product dropdown
 	 */

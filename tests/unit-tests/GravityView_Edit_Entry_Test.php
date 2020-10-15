@@ -933,7 +933,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$loader = GravityView_Edit_Entry::getInstance();
 
-		/** @var GravityView_Edit_Entry_User_Registration $registration */
+		/** @type GravityView_Edit_Entry_User_Registration $registration */
 		$registration = $loader->instances['user-registration'];
 		$this->assertInstanceOf( 'GravityView_Edit_Entry_User_Registration', $registration );
 		$_user_before_update_prop = new ReflectionProperty( 'GravityView_Edit_Entry_User_Registration', '_user_before_update' );
@@ -1067,7 +1067,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$loader = GravityView_Edit_Entry::getInstance();
 
-		/** @var GravityView_Edit_Entry_User_Registration $registration */
+		/** @type GravityView_Edit_Entry_User_Registration $registration */
 		$registration = $loader->instances['user-registration'];
 		$this->assertInstanceOf( 'GravityView_Edit_Entry_User_Registration', $registration );
 
@@ -1122,7 +1122,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$loader = GravityView_Edit_Entry::getInstance();
 
-		/** @var GravityView_Edit_Entry_User_Registration $registration */
+		/** @type GravityView_Edit_Entry_User_Registration $registration */
 		$registration = $loader->instances['user-registration'];
 		$this->assertInstanceOf( 'GravityView_Edit_Entry_User_Registration', $registration );
 

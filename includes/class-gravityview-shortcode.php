@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
@@ -32,7 +32,6 @@ class GravityView_Shortcode {
 	 *
 	 * @since 1.13
 	 *
-	 * @access public
 	 * @static
 	 * @param mixed $passed_atts
 	 * @param string|null $content Content passed inside the shortcode

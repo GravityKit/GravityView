@@ -43,7 +43,6 @@ class GravityView_Welcome {
 	 * Register the Dashboard Pages which are later hidden but these pages
 	 * are used to render the Welcome pages.
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */
@@ -97,7 +96,6 @@ class GravityView_Welcome {
 	/**
 	 * Hide Individual Dashboard Pages
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */
@@ -121,7 +119,6 @@ class GravityView_Welcome {
 	/**
 	 * Navigation tabs
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */
@@ -156,7 +153,6 @@ class GravityView_Welcome {
 	/**
 	 * Render About Screen
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */
@@ -268,6 +264,23 @@ class GravityView_Welcome {
                 <div class="headline-feature" style="max-width: 100%">
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
+
+				<h3>2.9.1 on September 1, 2020</h3>
+
+				<ul>
+					<li>Improved: Changed the Support Port icon &amp; text to make it clearer</li>
+					<li>Updated: Updater script now handles WordPress 5.5 auto-updates</li>
+					<li>Fixed: Add Yoast SEO 14.7 scripts to the No-Conflict approved list</li>
+					<li>Fixed: Available Gravity Forms forms weren't appearing in the Gravity Forms widget when configuring a View</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Improved: Gravity Forms 2.5 beta support</li>
+					<li>Fixed: Issue when server doesn't support <code>GLOB_BRACE</code></li>
+					<li>Fixed: Removed references to non-existent source map files</li>
+				</ul>
 
 				<h3>2.9.0.1 on July 23, 2020</h3>
 
@@ -537,7 +550,6 @@ class GravityView_Welcome {
 	/**
 	 * Render Credits Screen
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */
@@ -659,7 +671,6 @@ class GravityView_Welcome {
 	 * Sends user to the Welcome page on first activation of GravityView as well as each
 	 * time GravityView is upgraded to a new version
 	 *
-	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */

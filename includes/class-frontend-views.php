@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -552,7 +552,6 @@ class GravityView_frontend {
 	 *
 	 * @deprecated Use \GV\View::content() instead.
 	 *
-	 * @access public
 	 * @static
 	 * @param mixed $content
 	 * @return string Add the View output into View CPT content
@@ -637,7 +636,6 @@ class GravityView_frontend {
 	/**
 	 * Core function to render a View based on a set of arguments
 	 *
-	 * @access public
 	 * @static
 	 * @param array $passed_args {
 	 *
@@ -924,7 +922,6 @@ class GravityView_frontend {
 	 *
 	 *
 	 * @uses  gravityview_get_entries()
-	 * @access public
 	 * @param array $args\n
 	 *   - $id - View id
 	 *   - $page_size - Page
@@ -1329,7 +1326,6 @@ class GravityView_frontend {
 	/**
 	 * Register styles and scripts
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public function add_scripts_and_styles() {

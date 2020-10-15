@@ -75,7 +75,7 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 	 * Parameters and criteria are pretty much the same thing here, just
 	 *  different naming, where `$parameters` are the initial parameters
 	 *  calculated for hte view, and `$criteria` are the filtered ones
-	 *  retrieved via `GVCommon::calculate_get_entries_criteria`.
+	 *  retrieved via \GVCommon::calculate_get_entries_criteria()
 	 */
 	$criteria = \GVCommon::calculate_get_entries_criteria( $parameters, $form->ID );
 
@@ -545,7 +545,7 @@ final class Legacy_Context {
 	/**
 	 * Hydrates the legacy context globals as needed.
 	 *
-	 * @see self::push() for format.
+	 * @see Legacy_Context::push() for format.
 	 *
 	 * @return void
 	 */

@@ -36,6 +36,12 @@ class GravityView_Field_Website extends GravityView_Field {
 		}
 
 		/**
+		 * Set default to opening in new links for back-compatibility with Version 1.5.1
+		 * @link https://github.com/gravityview/GravityView/commit/e12e76e2d032754227728d41e65103042d4f75ec
+		 */
+		$field_options['new_window']['value'] = true;
+
+		/**
 		 * @since 1.8
 		 */
 		$field_options['anchor_text'] = array(
@@ -52,12 +58,6 @@ class GravityView_Field_Website extends GravityView_Field {
 			'label' => __( 'Shorten Link Display', 'gravityview' ),
 			'tooltip' => __( 'Only show the domain for a URL instead of the whole link.', 'gravityview' ),
 			'desc' => __( 'Don&rsquo;t show the full URL, only show the domain.', 'gravityview' )
-		);
-
-		$field_options['open_same_window'] = array(
-			'type' => 'checkbox',
-			'value' => false,
-			'label' => __( 'Open link in the same window?', 'gravityview' ),
 		);
 
 		return $field_options;

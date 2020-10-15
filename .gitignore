@@ -96,3 +96,14 @@ docs/html
 
 # VIM
 *.swp
+
+# environment file (used for local unit tests)
+.env
+
+# docker files and folders used for local unit tests
+docker-compose.yml
+docker-unit-tests.sh
+phpunit/
+wordpress-51-tests-lib/
+wordpress-latest-tests-lib/
+

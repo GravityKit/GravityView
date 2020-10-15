@@ -119,7 +119,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			/** @deprecated path */
 			$gv_field_array = $gravityview_view->getCurrentField();
 
-			/** @var GF_Field_FileUpload $field */
+			/** @type GF_Field_FileUpload $field */
 			$field = \GV\Utils::get( $gv_field_array, 'field' );
 			$field_settings = \GV\Utils::get( $gv_field_array, 'field_settings' );
 			$entry = \GV\Utils::get( $gv_field_array, 'entry' );

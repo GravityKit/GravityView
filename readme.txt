@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 5.4.2
+Tested up to: 5.5.1
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -21,21 +21,32 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop since XXX ==
+= develop =
 
-* New: New gallery support!
-* Fixed: Lightbox didn't work with secure images
+* Modified: Removed "Open link in the same window?" setting from Website field
+	- Note: For existing Views, if both "Open link in the same window?" and "Open link in a new tab or window?" settings were checked, the link will now _not open in a new tab_. We hope no one had them both checked; this would have caused a rift in space-time and a room full of dark-matter rainbows.
+* Fixed: When "Make Phone Number Clickable" is checked, disable the "Link to single entry" setting in Phone field settings
 
 __Developer Updates:__
 
-* New: FancyBox is now being used for the lightbox
-	- Thickbox is no longer used
-	- Modify settings using `gravityview/lightbox/provider/fancybox/settings`
-	- [See options available here](https://fancyapps.com/fancybox/3/docs/#options)
-	- If you prefer, a [Featherlight lightbox option is available](https://github.com/gravityview/gv-snippets/tree/addon/featherlight-lightbox)
-* Fixed: `gravityview_lightbox_script` wasn't being applied
-* Modified: Formally deprecated `gravity_view_lightbox_script` and `gravity_view_lightbox_style` filters
-* Removed `gravityview/fields/fileupload/allow_insecure_lightbox` filter, since it's no longer needed
+* Changed: `/templates/fields/field-website-html.php` and `/templates/deprecated/fields/website.php` to use new `target=_blank` logic
+
+= 2.9.2 on October XX, 2020 =
+
+* Fixed: Export of View entries as a CSV would result in a 404 error on some hosts
+
+= 2.9.1 on September 1, 2020 =
+
+* Improved: Changed the Support Port icon & text to make it clearer
+* Updated: Updater script now handles WordPress 5.5 auto-updates
+* Fixed: Add Yoast SEO 14.7 scripts to the No-Conflict approved list
+* Fixed: Available Gravity Forms forms weren't appearing in the Gravity Forms widget when configuring a View
+
+__Developer Updates:__
+
+* Improved: Gravity Forms 2.5 beta support
+* Fixed: Issue when server doesn't support `GLOB_BRACE`
+* Fixed: Removed references to non-existent source map files
 
 = 2.9.0.1 on July 23, 2020 =
 

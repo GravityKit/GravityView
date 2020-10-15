@@ -8,7 +8,9 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  */
 class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
-	/** @var GravityView_Widget_Search */
+	/**
+	 * @var \GravityView_Widget_Search $widget
+	 */
 	public $widget;
 
 	function setUp() {

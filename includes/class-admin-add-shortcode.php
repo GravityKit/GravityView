@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -35,7 +35,6 @@ class GravityView_Admin_Add_Shortcode {
 	/**
 	 * check if screen post editor and is not related with post type 'gravityview'
 	 *
-	 * @access public
 	 * @return bool
 	 */
 	function is_post_editor_screen() {
@@ -47,7 +46,6 @@ class GravityView_Admin_Add_Shortcode {
 	/**
 	 * Add shortcode button to the Add Media right
 	 *
-	 * @access public
 	 * @return void
 	 */
 	function add_shortcode_button() {
@@ -73,7 +71,6 @@ class GravityView_Admin_Add_Shortcode {
 	/**
 	 * Add shortcode popup div
 	 *
-	 * @access public
 	 * @return void
 	 */
 	function add_shortcode_popup() {
@@ -151,7 +148,6 @@ class GravityView_Admin_Add_Shortcode {
 	/**
 	 * Enqueue scripts and styles
 	 *
-	 * @access public
 	 * @return void
 	 */
 	function add_scripts_and_styles() {
@@ -192,7 +188,6 @@ class GravityView_Admin_Add_Shortcode {
 	 * Ajax
 	 * Given a View id, calculates the assigned form, and returns the form fields (only the sortable ones )
 	 *
-	 * @access public
 	 * @return void
 	 */
 	function get_sortable_fields() {

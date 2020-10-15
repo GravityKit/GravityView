@@ -10,7 +10,7 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-/** @var \GV\View_Table_Template $template */
+/** @type \GV\View_Table_Template $template */
 $template = $gravityview->template;
 ?>
 	<tbody>

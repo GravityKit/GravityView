@@ -2,7 +2,7 @@
 /**
  * Display the search CHECKBOX input field (supports multi-select)
  *
- * @see class-search-widget.php
+ * @file class-search-widget.php See for usage
  */
 
 $gravityview_view = GravityView_View::getInstance();

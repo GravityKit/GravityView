@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -18,7 +18,6 @@ class GravityView_API {
 	 *
 	 * @deprecated Use \GV\Field::get_label()
 	 *
-	 * @access public
 	 * @static
 	 * @param array $field GravityView field array
 	 * @param array $entry Gravity Forms entry array
@@ -151,7 +150,6 @@ class GravityView_API {
 	/**
 	 * Fetch Field class
 	 *
-	 * @access public
 	 * @static
 	 * @param mixed $field
 	 * @return string
@@ -202,7 +200,6 @@ class GravityView_API {
 	 *
 	 * @since 1.11
 	 *
-	 * @access public
 	 * @static
 	 * @param array $field GravityView field array passed to gravityview_field_output()
 	 * @param array $form Gravity Forms form array, if set.
@@ -234,7 +231,6 @@ class GravityView_API {
 	 *
 	 * @deprecated Use \GV\Field_Template::render() or the more low-level \GV\Field::get_value()
 	 *
-	 * @access public
 	 * @param array $entry
 	 * @param array $field
 	 * @return null|string
