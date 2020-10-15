@@ -415,78 +415,78 @@ final class GravityView_Delete_Entry {
 			)
 		);
 
-		// If the form is submitted
-		if ( 'delete' === $get_fields['action'] && ! empty( $get_fields['entry_id'] ) ) {
+		// If the form is not submitted, return early
+		if ( 'delete' !== $get_fields['action'] || empty( $get_fields['entry_id'] ) ) {
+			return;
+		}
 
-			// Make sure it's a GravityView request
-			$valid_nonce_key = wp_verify_nonce( $get_fields['delete'], self::get_nonce_key( $get_fields['entry_id'] ) );
+		// Make sure it's a GravityView request
+		$valid_nonce_key = wp_verify_nonce( $get_fields['delete'], self::get_nonce_key( $get_fields['entry_id'] ) );
 
-			if ( ! $valid_nonce_key ) {
-				gravityview()->log->debug( 'Delete entry not processed: nonce validation failed.' );
-				return;
-			}
+		if ( ! $valid_nonce_key ) {
+			gravityview()->log->debug( 'Delete entry not processed: nonce validation failed.' );
+			return;
+		}
 
-			// Get the entry slug
-			$entry_slug = esc_attr( $get_fields['entry_id'] );
+		// Get the entry slug
+		$entry_slug = esc_attr( $get_fields['entry_id'] );
 
-			// See if there's an entry there
-			$entry = gravityview_get_entry( $entry_slug, true, false );
+		// See if there's an entry there
+		$entry = gravityview_get_entry( $entry_slug, true, false );
 
-			if ( $entry ) {
+		if ( $entry ) {
 
-				$has_permission = $this->user_can_delete_entry( $entry, \GV\Utils::_GET( 'gvid', \GV\Utils::_GET( 'view_id' ) ) );
+			$has_permission = $this->user_can_delete_entry( $entry, \GV\Utils::_GET( 'gvid', \GV\Utils::_GET( 'view_id' ) ) );
 
-				if ( is_wp_error( $has_permission ) ) {
+			if ( is_wp_error( $has_permission ) ) {
+
+				$messages = array(
+					'message' => urlencode( $has_permission->get_error_message() ),
+					'status' => 'error',
+				);
+
+			} else {
+
+				// Delete the entry
+				$delete_response = $this->delete_or_trash_entry( $entry );
+
+				if ( is_wp_error( $delete_response ) ) {
 
 					$messages = array(
-						'message' => urlencode( $has_permission->get_error_message() ),
+						'message' => urlencode( $delete_response->get_error_message() ),
 						'status' => 'error',
 					);
 
 				} else {
 
-					// Delete the entry
-					$delete_response = $this->delete_or_trash_entry( $entry );
+					$messages = array(
+						'status' => $delete_response,
+					);
 
-					if ( is_wp_error( $delete_response ) ) {
-
-						$messages = array(
-							'message' => urlencode( $delete_response->get_error_message() ),
-							'status' => 'error',
-						);
-
-					} else {
-
-						$messages = array(
-							'status' => $delete_response,
-						);
-
-					}
 				}
-			} else {
-
-				gravityview()->log->debug( 'Delete entry failed: there was no entry with the entry slug {entry_slug}', array( 'entry_slug' => $entry_slug ) );
-
-				$messages = array(
-					'message' => urlencode( __( 'The entry does not exist.', 'gravityview' ) ),
-					'status' => 'error',
-				);
 			}
+		} else {
 
-			// Redirect after deleting the entry.
-			$view                = \GV\View::by_id( $get_fields['view_id'] );
-			$delete_redirect     = $view->settings->get( 'delete_redirect' );
-			$delete_redirect_url = $view->settings->get( 'delete_redirect_url' );
+			gravityview()->log->debug( 'Delete entry failed: there was no entry with the entry slug {entry_slug}', array( 'entry_slug' => $entry_slug ) );
 
-			if ( '1' !== $delete_redirect ) {
-				$delete_redirect_url = get_post_permalink( $get_fields['view_id'] );
-			}
+			$messages = array(
+				'message' => urlencode( __( 'The entry does not exist.', 'gravityview' ) ),
+				'status' => 'error',
+			);
+		}
+
+		// Redirect after deleting the entry.
+		$view                = \GV\View::by_id( $get_fields['view_id'] );
+		$delete_redirect     = $view->settings->get( 'delete_redirect' );
+		$delete_redirect_url = $view->settings->get( 'delete_redirect_url' );
 
 			wp_safe_redirect( $delete_redirect_url );
+		if ( '1' !== $delete_redirect ) {
+			$delete_redirect_url = get_post_permalink( $get_fields['view_id'] );
+		}
 
-			exit();
 
-		} // endif action is delete.
+		exit();
 
 	}
 
