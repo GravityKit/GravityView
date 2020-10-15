@@ -24,7 +24,7 @@ class GravityView_Field_Address extends GravityView_Field {
 	 * @since 2.8.1
 	 * @var string
 	 */
-	var $icon = 'dashicons-location';
+	var $icon = 'dashicons-location-alt';
 
 	var $_gf_field_class_name = 'GF_Field_Address';
 

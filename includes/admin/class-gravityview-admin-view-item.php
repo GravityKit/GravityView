@@ -179,7 +179,6 @@ abstract class GravityView_Admin_View_Item {
 		$label = esc_attr( $label );
 
 		if ( $this->item['icon'] && ! \GV\Utils::get( $this->item, 'parent' ) ) {
-
 			if ( 0 === strpos( $this->item['icon'], 'data:' ) ) {
 				// Inline icon SVG
 				$label = '<i class="dashicons background-icon" style="background-image: url(\'' . esc_attr( $this->item['icon'] ) . '\');"></i>' . $label;
@@ -200,7 +199,7 @@ abstract class GravityView_Admin_View_Item {
 
 		$parent_label = '';
 
-		if ( ! empty( $this->item['parent'] ) ) {
+    	if ( ! empty( $this->item['parent'] ) ) {
 			$parent_label = ' <small>(' . esc_attr( $this->item['parent']['label'] ) . ')</small>';
 		}
 

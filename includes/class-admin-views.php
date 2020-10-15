@@ -696,6 +696,7 @@ class GravityView_Admin_Views {
 				'input_type' => null,
 				'field_options' => null,
 				'settings_html'	=> null,
+				'icon' => null,
 			)
 		);
 
