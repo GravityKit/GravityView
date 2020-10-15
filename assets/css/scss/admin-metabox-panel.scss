@@ -91,6 +91,10 @@
       &[type="checkbox"]{
       	margin-top: -4px;
       }
+
+      &::placeholder {
+	      color: #8F98A1;
+      }
     }
 
     textarea {
