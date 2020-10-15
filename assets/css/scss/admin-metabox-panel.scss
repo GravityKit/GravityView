@@ -8,8 +8,6 @@
 #gravityview-metabox-content-container {
 
   max-height: 640px; // Most common resolution - see https://gs.statcounter.com/screen-resolution-stats/mobile/worldwide
-  overflow-y: auto;
-
   background: white; // Allow .striped rows to show
   float: left;
   width: 80%;
