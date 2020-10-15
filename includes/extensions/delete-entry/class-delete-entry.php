@@ -396,10 +396,10 @@ final class GravityView_Delete_Entry {
 	 * 2. Make sure there's an entry with the slug of $_GET['entry_id']
 	 * 3. If so, attempt to delete the entry. If not, set the error status
 	 * 4. Remove `action=delete` from the URL
-	 * 5. Redirect to the page using `wp_safe_redirect()`
+	 * 5. Redirect to the page using `wp_redirect()`
 	 *
 	 * @since 1.5.1
-	 * @uses wp_safe_redirect()
+	 * @uses wp_redirect()
 	 * @return void
 	 */
 	public function process_delete() {
@@ -481,11 +481,11 @@ final class GravityView_Delete_Entry {
 		$delete_redirect     = $view->settings->get( 'delete_redirect' );
 		$delete_redirect_url = $view->settings->get( 'delete_redirect_url' );
 
-			wp_safe_redirect( $delete_redirect_url );
 		if ( '1' !== $delete_redirect ) {
 			$delete_redirect_url = get_post_permalink( $get_fields['view_id'] );
 		}
 
+		wp_redirect( $delete_redirect_url );
 
 		exit();
 
