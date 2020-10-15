@@ -160,7 +160,7 @@ class GravityView_Admin_Metaboxes {
 				'id' => 'delete_entry',
 				'title' => __( 'Delete Entry', 'gravityview' ),
 				'file' => 'delete-entry.php',
-				'icon-class' => 'dashicons-remove',
+				'icon-class' => 'dashicons-trash',
 				'callback' => '',
 				'callback_args' => '',
 			),
