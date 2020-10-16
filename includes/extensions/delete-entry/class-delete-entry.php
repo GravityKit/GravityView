@@ -885,8 +885,7 @@ final class GravityView_Delete_Entry {
 		 */
 		$message = apply_filters( 'gravityview/delete-entry/message', esc_attr( $message ), $status, $message_from_url );
 
-		// DISPLAY ERROR/SUCCESS MESSAGE
-		echo '<div class="gv-notice' . esc_attr( $class ) . '">' . $message . '</div>';
+		echo GVCommon::generate_notice( $message, $class );
 	}
 
 
