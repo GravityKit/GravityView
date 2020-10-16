@@ -74,6 +74,7 @@ final class GravityView_Delete_Entry {
 
 		// Loads component and pass extension's instance so that component can talk each other.
 		require_once $filename;
+
 		$this->instances[ $component ] = new $classname( $this );
 		$this->instances[ $component ]->load();
 	}
@@ -190,7 +191,6 @@ final class GravityView_Delete_Entry {
 		return sprintf( 'delete_%s', $entry_id );
 	}
 
-
 	/**
 	 * Generate a nonce link with the base URL of the current View embed
 	 *
@@ -206,10 +206,12 @@ final class GravityView_Delete_Entry {
 			/** @deprecated path */
 			$view_id = gravityview_get_view_id();
 		}
-		$base = GravityView_API::directory_link( $post_id ? : $view_id, true );
+
+		$base = GravityView_API::directory_link( $post_id ?: $view_id, true );
 
 		if ( empty( $base ) ) {
 			gravityview()->log->error( 'Post ID does not exist: {post_id}', array( 'post_id' => $post_id ) );
+
 			return null;
 		}
 
@@ -220,10 +222,10 @@ final class GravityView_Delete_Entry {
 
 		$actionurl = add_query_arg(
 			array(
-				'action'    => 'delete',
-				'entry_id'      => $entry_slug,
-				'gvid' => $view_id,
-				'view_id' => $view_id,
+				'action'   => 'delete',
+				'entry_id' => $entry_slug,
+				'gvid'     => $view_id,
+				'view_id'  => $view_id,
 			),
 			$base
 		);
@@ -312,6 +314,7 @@ final class GravityView_Delete_Entry {
 
 		if ( ! $valid_nonce_key ) {
 			gravityview()->log->debug( 'Delete entry not processed: nonce validation failed.' );
+
 			return;
 		}
 
@@ -396,8 +399,11 @@ final class GravityView_Delete_Entry {
 
 	/**
 	 * @since 1.13.1
-	 * @see GFAPI::delete_entry()
-	 * @return WP_Error|boolean GFAPI::delete_entry() returns a WP_Error on error
+	 *
+	 * @uses GFAPI::delete_entry()
+	 * @uses GFAPI::update_entry_property()
+	 *
+	 * @return WP_Error|string "deleted" or "trashed" if successful, WP_Error if GFAPI::delete_entry() or updating entry failed.
 	 */
 	private function delete_or_trash_entry( $entry ) {
 
@@ -697,6 +703,7 @@ final class GravityView_Delete_Entry {
 	 * @return void
 	 */
 	public function maybe_display_message( $current_view_id = 0 ) {
+
 		if ( empty( $_GET['status'] ) || ! self::verify_nonce() ) {
 			return;
 		}
