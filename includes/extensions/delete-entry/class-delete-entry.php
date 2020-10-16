@@ -28,6 +28,18 @@ final class GravityView_Delete_Entry {
 	var $view_id;
 	var $is_valid = null;
 
+	/**
+	 * The value of the `delete_redirect` option when the setting is to redirect to Multiple Entries after delete
+	 * @since 2.9.2
+	 */
+	const REDIRECT_TO_MULTIPLE_ENTRIES_VALUE = 1;
+
+	/**
+	 * The value of the `delete_redirect` option when the setting is to redirect to URL
+	 * @since 2.9.2
+	 */
+	const REDIRECT_TO_URL_VALUE = 2;
+
 	function __construct() {
 
 		self::$file = plugin_dir_path( __FILE__ );
@@ -458,6 +470,7 @@ final class GravityView_Delete_Entry {
 					);
 
 				} else {
+		if ( (int) $view->settings->get( 'delete_redirect' ) === self::REDIRECT_TO_URL_VALUE ) {
 
 					$messages = array(
 						'status' => $delete_response,
@@ -480,7 +493,6 @@ final class GravityView_Delete_Entry {
 		$delete_redirect     = $view->settings->get( 'delete_redirect' );
 		$delete_redirect_url = $view->settings->get( 'delete_redirect_url' );
 
-		if ( '1' !== $delete_redirect ) {
 			$delete_redirect_url = get_post_permalink( $get_fields['view_id'] );
 		}
 

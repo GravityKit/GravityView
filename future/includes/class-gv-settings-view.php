@@ -440,10 +440,10 @@ class View_Settings extends Settings {
 					'group'             => 'default',
 					'desc'              => __( 'The page to redirect to after deleting an entry.', 'gravityview' ),
 					'type'              => 'select',
-					'value'             => '',
+					'value'             => '1',
 					'options'           => array(
-						''  => __( 'Redirect to Multiple Entries', 'gravityview' ),
-						'1' => __( 'Redirect to URL', 'gravityview' ),
+						\GravityView_Delete_Entry::REDIRECT_TO_MULTIPLE_ENTRIES_VALUE  => __( 'Redirect to Multiple Entries', 'gravityview' ),
+						\GravityView_Delete_Entry::REDIRECT_TO_URL_VALUE  => __( 'Redirect to URL', 'gravityview' ),
 					),
 				),
 				'delete_redirect_url' => array(
@@ -454,7 +454,7 @@ class View_Settings extends Settings {
 					'class'             => 'code widefat',
 					'value'             => '',
 					'placeholder'       => 'https://www.example.com/landing-page/',
-					'requires'          => 'delete_redirect=1',
+					'requires'          => 'delete_redirect=' . \GravityView_Delete_Entry::REDIRECT_TO_URL_VALUE,
 					'merge_tags'        => 'force',
 				),
 				'embed_only' => array(
