@@ -706,6 +706,9 @@
 					return $( window ).width() - 10;
 				},
 				open: function () {
+
+					vcfg.setupFieldDetails( thisDialog );
+
 					$( '<div class="gv-overlay" />' ).prependTo( '#wpwrap' );
 					return true;
 				},
@@ -1719,13 +1722,13 @@
 		},
 
 		/**
-		 * Serialize all GV field data and submit it all as one field value
+		 * Serialize all GV field data and submit it all as one field value
 		 *
 		 * To fix issues where there are too many array items, causing PHP max_input_vars threshold to be met
 		 *
 		 * @param  {jQueryEvent} e jQuery event object
 		 *
-		 * @return {false}
+		 * @return {boolean}
 		 */
 		serializeForm: function ( e ) {
 

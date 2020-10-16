@@ -504,7 +504,7 @@ $gv-overlay-index: 10000;
 			}
 
 			.configuration-status-icons {
-				padding: 0 .666em;
+				padding: 0;
 				display: block;
 				.dashicons {
 					font-size: 18px;
@@ -559,11 +559,27 @@ $gv-overlay-index: 10000;
 				}
 			}
 
+/*			.dashicons-yes {
+				position: absolute;
+				right: .5em;
+				top: .5em;
+				color: $color-green!important;
+			}*/
+
 			&.tab-not-configured {
 				.configuration-status-icons {
-					.dashicons {
-						color: $color-red;
+
+					padding-right: 0;
+
+					.dashicons-yes {
+						display: none;
 					}
+
+					.dashicons-info {
+						display: inline-block;
+						color: $color-yellow;
+					}
+
 				}
 				a {
 					//color: $color-red;
@@ -676,7 +692,7 @@ hr {
 	}
 
 	.button-secondary {
-		margin: 0 auto;
+		margin: 0 .5em;
 
 		&:first-child {
 			margin: 0;
@@ -1009,8 +1025,15 @@ hr {
 
 .gv-dialog {
 
-	&.ui-widget-content {
-		padding: 10px;
+	$dialog-padding: 25px;
+
+	&.ui-widget-content > div {
+		padding-left: $dialog-padding;
+		padding-right: $dialog-padding;
+	}
+
+	.ui-dialog-content {
+		padding: $dialog-padding !important;
 	}
 
 	.ui-dialog-titlebar,
@@ -1026,6 +1049,12 @@ hr {
 		font-size: 1.5rem;
 	}
 
+	.ui-dialog-titlebar {
+		border-radius: 0;
+		background: $color-gf-fff;
+		border-bottom: 1px solid $color-gf-eee;
+		padding: $dialog-padding ($dialog-padding / 2) ($dialog-padding / 4);
+	}
 
 	.gv-field-details--toggle {
 		width: 100%;
@@ -1033,7 +1062,7 @@ hr {
 		font-size: .875rem;
 		font-weight: 400;
 		border: none;
-		margin: 1.5rem 0 .5rem;
+		margin: 1.5rem 0 $dialog-padding / 2;
 		padding: 0;
 		color: $color-666;
 	}
@@ -1043,14 +1072,17 @@ hr {
 		width: 100%;
 		font-size: 1rem;
 		color: $color-555;
-		padding-bottom: $dialog-padding / 4;
+		padding-bottom: $dialog-padding / 2;
 
 		&.gv-field-details--closed {
 			display: none;
 		}
 
 		.gv-field-detail {
-			flex: 33%;
+			flex: 25%;
+		}
+		.gv-field-detail--form {
+			flex: 50%;
 		}
 		.gv-field-detail--label {
 			font-weight: 500;
@@ -1085,6 +1117,10 @@ hr {
 			background: none;
 			display: none;
 
+		}
+
+		&:before {
+			line-height: 32px!important;
 		}
 
 		&:after {
@@ -1136,7 +1172,7 @@ hr {
 	.gv-setting-container {
 		@extend %clearfix;
 		margin: 0;
-		padding: .4em 5px .8em;
+		padding: .4em 0 .8em;
 		// border-bottom: 1px solid #f9f9f9;
 		display: block;
 		font-size: 1.1em;
