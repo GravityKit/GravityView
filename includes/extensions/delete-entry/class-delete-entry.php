@@ -298,7 +298,7 @@ final class GravityView_Delete_Entry {
 	 * @param [type] $entry [description]
 	 */
 	function set_entry( $entry = null ) {
-		$this->entry = empty( $entry ) ? GravityView_View::getInstance()->entries[0] : $entry;
+		_deprecated_function( __METHOD__, '2.9.2' );
 	}
 
 	/**
@@ -328,9 +328,6 @@ final class GravityView_Delete_Entry {
 			/** @deprecated path */
 			$view_id = gravityview_get_view_id();
 		}
-
-		self::getInstance()->set_entry( $entry );
-
 		$base = GravityView_API::directory_link( $post_id ? : $view_id, true );
 
 		if ( empty( $base ) ) {
