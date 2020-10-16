@@ -1026,6 +1026,41 @@ hr {
 		font-size: 1.5rem;
 	}
 
+
+	.gv-field-details--toggle {
+		width: 100%;
+		display: block;
+		font-size: .875rem;
+		font-weight: 400;
+		border: none;
+		margin: 1.5rem 0 .5rem;
+		padding: 0;
+		color: $color-666;
+	}
+
+	.gv-field-details {
+		display: flex;
+		width: 100%;
+		font-size: 1rem;
+		color: $color-555;
+		padding-bottom: $dialog-padding / 4;
+
+		&.gv-field-details--closed {
+			display: none;
+		}
+
+		.gv-field-detail {
+			flex: 33%;
+		}
+		.gv-field-detail--label {
+			font-weight: 500;
+			display: block;
+			&:after {
+				content: ': ';
+			}
+		}
+	}
+
 	.ui-dialog-buttonpane button {
 		min-height: 32px;
 		line-height: 2.30769231; /* 30px */

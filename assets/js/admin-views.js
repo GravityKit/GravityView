@@ -155,6 +155,20 @@
 
 				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )
 
+				.on( 'click', '.gv-field-details--toggle', function( e ) {
+
+					var $dialog = $( this ).parents('.ui-dialog');
+
+					var was_closed = $( '.gv-field-details', $dialog ).hasClass('gv-field-details--closed');
+
+					viewConfiguration.toggleFieldDetails( was_closed );
+
+					// When toggled, set a new cookie
+					$.cookie( 'gv-field-details-expanded', was_closed, { path: gvGlobals.admin_cookiepath } );
+
+					return false;
+				})
+
 				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters )
 
 				// TODO: Show/hide warnings on configuration tabs to let users know context has been configured.
@@ -712,6 +726,39 @@
 				buttons: buttons
 			} );
 
+		},
+
+		/**
+		 * When opening a dialog, restore the Field Details visibility based on cookie
+		 * @since 2.10
+		 * @param {jQuery} dialog
+		 */
+		setupFieldDetails: function ( dialog ) {
+
+			//if (  dialog.find('.gv-field-details--container') )
+			// Add the details to the title bar
+			$( '.gv-field-details--container', dialog ).insertAfter( '.ui-dialog-title:visible' );
+
+			// When the dialog opens, read the cookie
+			// Otherwise, check for cookies
+			var show_details_cookie = $.cookie( 'gv-field-details-expanded' );
+
+			var show_details = ( show_details_cookie && 'false' !== show_details_cookie && show_details_cookie !== 'undefined' );
+
+			viewConfiguration.toggleFieldDetails( show_details );
+		},
+
+		/**
+		 * Toggle visibility for field details
+		 * @since 2.10
+		 * @param {boolean} show_details Whether to show the field details or not
+		 */
+		toggleFieldDetails: function ( show_details ) {
+			$( '.gv-dialog:visible' )
+				.find( '.gv-field-details' ).toggleClass( 'gv-field-details--closed', ! show_details ).end()
+				.find( '.gv-field-details--toggle .dashicons' )
+				.toggleClass( 'dashicons-arrow-down', show_details )
+				.toggleClass( 'dashicons-arrow-right', ! show_details ).end();
 		},
 
 		/**
