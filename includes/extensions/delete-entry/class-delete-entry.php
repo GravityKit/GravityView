@@ -456,63 +456,83 @@ final class GravityView_Delete_Entry {
 		// Get the entry slug
 		$entry_slug = esc_attr( $get_fields['entry_id'] );
 
+		// Redirect after deleting the entry.
+		$view = \GV\View::by_id( $get_fields['view_id'] );
+
 		// See if there's an entry there
-		$entry = gravityview_get_entry( $entry_slug, true, false );
+		$entry = gravityview_get_entry( $entry_slug, true, false, $view );
 
-		if ( $entry ) {
+		$delete_redirect_base = esc_url_raw( remove_query_arg( array( 'action', 'gvid', 'entry_id' ) ) );
 
-			$has_permission = $this->user_can_delete_entry( $entry, \GV\Utils::_GET( 'gvid', \GV\Utils::_GET( 'view_id' ) ) );
-
-			if ( is_wp_error( $has_permission ) ) {
-
-				$messages = array(
-					'message' => urlencode( $has_permission->get_error_message() ),
-					'status' => 'error',
-				);
-
-			} else {
-
-				// Delete the entry
-				$delete_response = $this->delete_or_trash_entry( $entry );
-
-				if ( is_wp_error( $delete_response ) ) {
-
-					$messages = array(
-						'message' => urlencode( $delete_response->get_error_message() ),
-						'status' => 'error',
-					);
-
-				} else {
-		if ( (int) $view->settings->get( 'delete_redirect' ) === self::REDIRECT_TO_URL_VALUE ) {
-
-					$messages = array(
-						'status' => $delete_response,
-					);
-
-				}
-			}
-		} else {
+		if ( ! $entry ) {
 
 			gravityview()->log->debug( 'Delete entry failed: there was no entry with the entry slug {entry_slug}', array( 'entry_slug' => $entry_slug ) );
 
-			$messages = array(
-				'message' => urlencode( __( 'The entry does not exist.', 'gravityview' ) ),
-				'status' => 'error',
-			);
+			$this->_redirect_and_exit( $delete_redirect_base, __( 'The entry does not exist.', 'gravityview' ), 'error' );
 		}
 
-		// Redirect after deleting the entry.
-		$view                = \GV\View::by_id( $get_fields['view_id'] );
-		$delete_redirect     = $view->settings->get( 'delete_redirect' );
-		$delete_redirect_url = $view->settings->get( 'delete_redirect_url' );
+		$has_permission = $this->user_can_delete_entry( $entry, \GV\Utils::_GET( 'gvid', \GV\Utils::_GET( 'view_id' ) ) );
 
-			$delete_redirect_url = get_post_permalink( $get_fields['view_id'] );
+		if ( is_wp_error( $has_permission ) ) {
+			$this->_redirect_and_exit( $delete_redirect_base, $has_permission->get_error_message(), 'error' );
 		}
 
-		wp_redirect( $delete_redirect_url );
+		// Delete the entry
+		$delete_response = $this->delete_or_trash_entry( $entry );
+
+		if ( is_wp_error( $delete_response ) ) {
+			$this->_redirect_and_exit( $delete_redirect_base, $delete_response->get_error_message(), 'error' );
+		}
+
+		if ( (int) $view->settings->get( 'delete_redirect' ) === self::REDIRECT_TO_URL_VALUE ) {
+
+			$form                 = GFAPI::get_form( $entry['form_id'] );
+			$redirect_url_setting = $view->settings->get( 'delete_redirect_url' );
+			$redirect_url         = GFCommon::replace_variables( $redirect_url_setting, $form, $entry, false, false, false, 'text' );
+
+			$this->_redirect_and_exit( $redirect_url, '', '', false );
+		}
+
+		// Redirect to multiple entries
+		$this->_redirect_and_exit( $delete_redirect_base, '', $delete_response, true );
+	}
+
+	/**
+	 * Redirects the user to a URL and exits.
+	 *
+	 * @since 2.9.2
+	 *
+	 * @param string $url The URL to redirect to.
+	 * @param string $message Message to pass through URL.
+	 * @param string $status The deletion status ("deleted", "trashed", or "error").
+	 * @param bool   $safe_redirect Whether to use wp_safe_redirect() or not.
+	 */
+	private function _redirect_and_exit( $url, $message = '', $status = '', $safe_redirect = true ) {
+
+		$delete_redirect_args = array(
+			'status'  => $status,
+			'message' => $message,
+		);
+
+		$delete_redirect_args = array_filter( $delete_redirect_args );
+
+		/**
+		 * @filter `gravityview/delete-entry/redirect-args` Modify the query args added to the delete entry redirect
+		 * @since 2.9.2
+		 *
+		 * @param array $delete_redirect_args Array with `_delete_nonce`, `message` and `status` keys
+		 */
+		$delete_redirect_args = apply_filters( 'gravityview/delete-entry/redirect-args', $delete_redirect_args );
+
+		$delete_redirect_url = add_query_arg( $delete_redirect_args, $url );
+
+		if ( $safe_redirect ) {
+			wp_safe_redirect( $delete_redirect_url );
+		} else {
+			wp_redirect( $delete_redirect_url );
+		}
 
 		exit();
-
 	}
 
 	/**
