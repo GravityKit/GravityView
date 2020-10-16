@@ -64,12 +64,15 @@ class GravityView_Delete_Entry_Admin {
 	 * Change wording for the Edit context to read Entry Creator
 	 *
 	 * @since 1.5.1
-	 * @param  array       $visibility_caps        Array of capabilities to display in field dropdown.
-	 * @param  string      $field_type  Type of field options to render (`field` or `widget`)
-	 * @param  string      $template_id Table slug
-	 * @param  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
-	 * @param  string      $context     What context are we in? Example: `single` or `directory`
-	 * @param  string      $input_type  (textarea, list, select, etc.)
+	 * @since 2.9.2 Moved here from GravityView_Delete_Entry
+	 *
+	 * @param array $visibility_caps Array of capabilities to display in field dropdown.
+	 * @param string $field_type Type of field options to render (`field` or `widget`)
+	 * @param string $template_id Table slug
+	 * @param float $field_id GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+	 * @param string $context What context are we in? Example: `single` or `directory`
+	 * @param string $input_type (textarea, list, select, etc.)
+	 *
 	 * @return array                   Array of field options with `label`, `value`, `type`, `default` keys
 	 */
 	public function modify_visibility_caps( $visibility_caps = array(), $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
@@ -92,8 +95,9 @@ class GravityView_Delete_Entry_Admin {
 	 * Add "Delete Link Text" setting to the edit_link field settings
 	 *
 	 * @since 1.5.1
+	 * @since 2.9.2 Moved here from GravityView_Delete_Entry
 	 *
-	 * @param array  $field_options
+	 * @param array $field_options
 	 * @param string $template_id
 	 * @param string $field_id
 	 * @param string $context
@@ -110,20 +114,20 @@ class GravityView_Delete_Entry_Admin {
 		unset( $field_options['only_loggedin'], $field_options['only_loggedin_cap'] );
 
 		$add_option['delete_link'] = array(
-			'type' => 'text',
-			'label' => __( 'Delete Link Text', 'gravityview' ),
-			'desc' => null,
-			'value' => __( 'Delete Entry', 'gravityview' ),
+			'type'       => 'text',
+			'label'      => __( 'Delete Link Text', 'gravityview' ),
+			'desc'       => null,
+			'value'      => __( 'Delete Entry', 'gravityview' ),
 			'merge_tags' => true,
 		);
 
 		$field_options['allow_edit_cap'] = array(
-			'type' => 'select',
-			'label' => __( 'Allow the following users to delete the entry:', 'gravityview' ),
+			'type'    => 'select',
+			'label'   => __( 'Allow the following users to delete the entry:', 'gravityview' ),
 			'choices' => GravityView_Render_Settings::get_cap_choices( $template_id, $field_id, $context, $input_type ),
 			'tooltip' => 'allow_edit_cap',
-			'class' => 'widefat',
-			'value' => 'read', // Default: entry creator
+			'class'   => 'widefat',
+			'value'   => 'read', // Default: entry creator
 		);
 
 		return array_merge( $add_option, $field_options );
@@ -132,18 +136,23 @@ class GravityView_Delete_Entry_Admin {
 
 	/**
 	 * Add Delete Entry Link to the Add Field dialog
+	 *
 	 * @since 1.5.1
+	 * @since 2.9.2 Moved here from GravityView_Delete_Entry
+	 *
 	 * @param array $available_fields
+	 *
+	 * @return array
 	 */
 	public function add_available_field( $available_fields = array() ) {
 
 		$available_fields['delete_link'] = array(
-			'label_text' => __( 'Delete Entry', 'gravityview' ),
-			'field_id' => 'delete_link',
-			'label_type' => 'field',
-			'input_type' => 'delete_link',
+			'label_text'    => __( 'Delete Entry', 'gravityview' ),
+			'field_id'      => 'delete_link',
+			'label_type'    => 'field',
+			'input_type'    => 'delete_link',
 			'field_options' => null,
-			'icon' => 'dashicons-trash',
+			'icon'          => 'dashicons-trash',
 		);
 
 		return $available_fields;
@@ -152,7 +161,7 @@ class GravityView_Delete_Entry_Admin {
 	/**
 	 * Render Delete Entry Permissions settings
 	 *
-	 * @since 2.9
+	 * @since 2.9.2
 	 *
 	 * @param $current_settings
 	 *
@@ -168,9 +177,13 @@ class GravityView_Delete_Entry_Admin {
 	 * Add Edit Link as a default field, outside those set in the Gravity Form form
 	 *
 	 * @since 1.5.1
+	 * @since 2.9.2 Moved here from GravityView_Delete_Entry
+	 *
 	 * @param array $entry_default_fields Existing fields
-	 * @param  string|array $form form_ID or form object
-	 * @param  string $zone   Either 'single', 'directory', 'edit', 'header', 'footer'
+	 * @param string|array $form form_ID or form object
+	 * @param string $zone Either 'single', 'directory', 'edit', 'header', 'footer'
+	 *
+	 * @return array
 	 */
 	public function add_default_field( $entry_default_fields, $form = array(), $zone = '' ) {
 
