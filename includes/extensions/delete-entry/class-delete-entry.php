@@ -29,6 +29,13 @@ final class GravityView_Delete_Entry {
 	var $is_valid = null;
 
 	/**
+	 * Component instances.
+	 * @since 2.9.2
+	 * @var array
+	 */
+	public $instances = array();
+
+	/**
 	 * The value of the `delete_redirect` option when the setting is to redirect to Multiple Entries after delete
 	 * @since 2.9.2
 	 */
@@ -51,6 +58,13 @@ final class GravityView_Delete_Entry {
 		$this->add_hooks();
 	}
 
+	/**
+	 * Load other files related to Delete Entry functionality
+	 *
+	 * @since 2.9.2
+	 *
+	 * @param $component
+	 */
 	private function load_components( $component ) {
 
 		$dir = trailingslashit( self::$file );
@@ -58,12 +72,10 @@ final class GravityView_Delete_Entry {
 		$filename  = $dir . 'class-delete-entry-' . $component . '.php';
 		$classname = 'GravityView_Delete_Entry_' . str_replace( ' ', '_', ucwords( str_replace( '-', ' ', $component ) ) );
 
-		// Loads component and pass extension's instance so that component can
-		// talk each other.
+		// Loads component and pass extension's instance so that component can talk each other.
 		require_once $filename;
 		$this->instances[ $component ] = new $classname( $this );
 		$this->instances[ $component ]->load();
-
 	}
 
 	/**
