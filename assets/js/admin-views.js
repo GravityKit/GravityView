@@ -280,6 +280,8 @@
 
 			$( '.gv-items-picker' ).not( '.gv-items-picker--' + layout ).removeClass( 'active' );
 
+			$( '.gv-items-picker-container' ).attr( 'data-layout', layout );
+
 			// When choice is made, set a new cookie
 			$.cookie( 'gv-items-picker-layout', layout, { path: gvGlobals.admin_cookiepath } );
 		},
