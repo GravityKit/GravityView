@@ -30,8 +30,8 @@ final class GravityView_Delete_Entry {
 
 	/**
 	 * Component instances.
-	 * @since 2.9.2
 	 * @var array
+	 * @since 2.9.2
 	 */
 	public $instances = array();
 
