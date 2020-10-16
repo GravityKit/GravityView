@@ -752,60 +752,13 @@ class GravityView_Admin_Views {
 
 		if( in_array( $zone, array( 'directory', 'single' ) ) ) {
 
-			$entry_default_fields = array(
-				'id' => array(
-					'label' => __('Entry ID', 'gravityview'),
-					'type' => 'id',
-					'desc'	=> __('The unique ID of the entry.', 'gravityview'),
-					'icon' => 'dashicons-code-standards',
-					'group' => 'meta',
-				),
-				'date_created' => array(
-					'label' => __('Entry Date', 'gravityview'),
-					'desc'	=> __('The date the entry was created.', 'gravityview'),
-					'type' => 'date_created',
-					'icon' => 'dashicons-calendar-alt',
-					'group' => 'meta',
-				),
-				'date_updated' => array(
-					'label' => __( 'Date Updated', 'gravityview'),
-					'desc'	=> __('The date the entry was last updated.', 'gravityview'),
-					'type' => 'date_updated',
-					'icon' => 'dashicons-calendar-alt',
-					'group' => 'meta',
-				),
-				'source_url' => array(
-					'label' => __('Source URL', 'gravityview'),
-					'type' => 'source_url',
-					'desc'	=> __('The URL of the page where the form was submitted.', 'gravityview'),
-					'icon' => 'dashicons-admin-links',
-					'group' => 'meta',
-				),
-				'ip' => array(
-					'label' => __('User IP', 'gravityview'),
-					'type' => 'ip',
-					'desc'	=> __('The IP Address of the user who created the entry.', 'gravityview'),
-					'icon' => 'dashicons-laptop',
-					'group' => 'meta',
-				),
-				'created_by' => array(
-					'label' => __('User', 'gravityview'),
-					'type' => 'created_by',
-					'desc'	=> __('Details of the logged-in user who created the entry (if any).', 'gravityview'),
-					'icon' => 'dashicons-admin-users',
-					'group' => 'meta',
-				),
+			$meta_fields = GravityView_Fields::get_all( array( 'meta', 'gravityview' ) );
 
-				/**
-				 * @since 1.7.2
-				 */
-			    'other_entries' => array(
-				    'label'	=> __('Other Entries', 'gravityview'),
-				    'type'	=> 'other_entries',
-				    'desc'	=> __('Display other entries created by the entry creator.', 'gravityview'),
-					'group' => 'gravityview',
-			    ),
-	        );
+			$entry_default_fields = array();
+
+			foreach ( $meta_fields as $meta_field ) {
+				$entry_default_fields += $meta_field->as_array();
+			}
 
 			if( 'single' !== $zone) {
 

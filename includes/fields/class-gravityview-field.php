@@ -172,6 +172,25 @@ abstract class GravityView_Field {
 	}
 
 	/**
+	 * Returns the field as an array to be used in field pickers
+	 *
+	 * @since 2.10
+	 *
+	 * @return array[]
+	 */
+	public function as_array() {
+		return array(
+			$this->name => array(
+				'label' => $this->label,
+				'desc'  => $this->description,
+				'type'  => $this->name,
+				'icon'  => $this->icon,
+				'group' => $this->group,
+			),
+		);
+	}
+
+	/**
 	 * Add the field to the Filter & Sort available fields
 	 *
 	 * @since 1.19

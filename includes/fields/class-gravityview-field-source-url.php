@@ -21,7 +21,8 @@ class GravityView_Field_Source_URL extends GravityView_Field {
 	var $icon = 'dashicons-admin-links';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Source URL', 'gravityview' );
+		$this->label       = esc_html__( 'Source URL', 'gravityview' );
+		$this->description = esc_html__( 'The URL of the page where the form was submitted.', 'gravityview' );
 		parent::__construct();
 	}
 
