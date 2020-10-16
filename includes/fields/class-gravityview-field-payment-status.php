@@ -18,6 +18,8 @@ class GravityView_Field_Payment_Status extends GravityView_Field {
 
 	var $_custom_merge_tag = 'payment_status';
 
+	var $icon = 'dashicons-cart';
+
 	/**
 	 * GravityView_Field_Payment_Status constructor.
 	 */
