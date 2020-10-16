@@ -410,7 +410,7 @@ $gv-overlay-index: 10000;
 		padding: 0;
 		.ui-tabs-panel {
 			border-radius: 0 0 5px 5px;
-			border: 1px solid #ccd0d4;
+			border: 1px solid $color-ccc;
 		}
 	}
 }
