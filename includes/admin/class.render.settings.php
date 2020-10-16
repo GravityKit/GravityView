@@ -219,31 +219,28 @@ class GravityView_Render_Settings {
 		$name_prefix = $field_type .'s' .'['. $area .']['. $uniqid .']';
 
 		// build output
-		$output = '';
-		$output .= '<input type="hidden" class="field-key" name="'. $name_prefix .'[id]" value="'. esc_attr( $field_id ) .'">';
-		$output .= '<input type="hidden" class="field-label" name="'. $name_prefix .'[label]" value="'. esc_attr( $field_label ) .'">';
+		$hidden_fields  = '<input type="hidden" class="field-key" name="'. $name_prefix .'[id]" value="'. esc_attr( $field_id ) .'">';
+		$hidden_fields .= '<input type="hidden" class="field-label" name="'. $name_prefix .'[label]" value="'. esc_attr( $field_label ) .'">';
+
+		$form_title = '';
 		if ( $form_id ) {
-			$output .= '<input type="hidden" class="field-form-id" name="'. $name_prefix .'[form_id]" value="'. esc_attr( $form_id ) .'">';
+			$hidden_fields .= '<input type="hidden" class="field-form-id" name="'. $name_prefix .'[form_id]" value="'. esc_attr( $form_id ) .'">';
+			$form = GVCommon::get_form( $form_id );
+			$form_title = $form['title'];
 		}
 
 		// If there are no options, return what we got.
 		if(empty($options)) {
-
-			// This is here for checking if the output is empty in render_label()
-			$output .= '<!-- No Options -->';
-
-			return $output;
+			return $hidden_fields . '<!-- No Options -->'; // The HTML comment is here for checking if the output is empty in render_label()
 		}
 
-		$output .= '<div class="gv-dialog-options" title="'. esc_attr( sprintf( __( '%s Settings', 'gravityview' ) , strip_tags( html_entity_decode( $field_label ) ) ) ) .'">';
+		$settings_title = esc_attr( sprintf( __( '%s Settings', 'gravityview' ) , strip_tags( html_entity_decode( $field_label ) ) ) );
+		$subtitle = ! empty( $item['subtitle'] ) ? '<div class="subtitle">' . $item['subtitle'] . '</div>' : '';
 
-		/**
-		 * @since 1.8
-		 */
-		if( !empty( $item['subtitle'] ) ) {
-			$output .= '<div class="subtitle">' . $item['subtitle'] . '</div>';
-		}
+		$field_details = '';
 
+
+		$field_settings = '';
 		foreach( $options as $key => $option ) {
 
 			$value = isset( $current[ $key ] ) ? $current[ $key ] : NULL;
@@ -258,15 +255,35 @@ class GravityView_Render_Settings {
 			switch( $option['type'] ) {
 				// Hide hidden fields
 				case 'hidden':
-					$output .= '<div class="gv-setting-container gv-setting-container-'. esc_attr( $key ) . ' screen-reader-text">'. $field_output . '</div>';
+					$field_settings .= '<div class="gv-setting-container gv-setting-container-'. esc_attr( $key ) . ' screen-reader-text">'. $field_output . '</div>';
 					break;
 				default:
-					$output .= '<div class="gv-setting-container gv-setting-container-'. esc_attr( $key ) . '">'. $field_output .'</div>';
+					$field_settings .= '<div class="gv-setting-container gv-setting-container-'. esc_attr( $key ) . '">'. $field_output .'</div>';
 			}
 		}
 
-		// close options window
-		$output .= '</div>';
+$template = <<<EOD
+		<div class="gv-dialog-options" title="{{settings_title}}">
+			{{field_details}}
+			{{subtitle}}
+			{{field_settings}}
+			{{hidden_fields}}
+		</div>
+EOD;
+
+		$output = $template;
+
+		$replacements = array(
+			'settings_title',
+			'hidden_fields',
+			'subtitle',
+			'field_settings',
+			'field_details',
+		);
+
+		foreach ( $replacements as $replacement ) {
+			$output = str_replace( '{{' . $replacement . '}}', ${$replacement}, $output );
+		}
 
 		return $output;
 
