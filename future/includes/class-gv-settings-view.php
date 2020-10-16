@@ -529,7 +529,7 @@ class View_Settings extends Settings {
 					'value'             => '',
 					'show_in_shortcode' => false,
 				),
-			),
+			)
 		);
 
 		if ( version_compare( \GFCommon::$version, '2.3-beta-4', '>=' ) ) {
