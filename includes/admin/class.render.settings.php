@@ -240,6 +240,15 @@ class GravityView_Render_Settings {
 		$field_details = '';
 
 
+		// Get the pretty name for the input type
+		$gv_field = GravityView_Fields::get( $input_type );
+
+		if( $gv_field ) {
+			$input_type_label = $gv_field->label;
+		} else {
+			$input_type_label = $input_type;
+		}
+
 		$field_settings = '';
 		foreach( $options as $key => $option ) {
 
@@ -268,7 +277,7 @@ $template = <<<EOD
 				<label class="gv-field-details--toggle">Field Details <i class="dashicons dashicons-arrow-down"></i></label>
 				<section class="gv-field-details gv-field-details--closed">
 					<div class="gv-field-detail gv-field-detail--type">
-						<span class="gv-field-detail--label">Type</span><span class="gv-field-detail--value">{$input_type}</span>
+						<span class="gv-field-detail--label">Type</span><span class="gv-field-detail--value">{$input_type_label}</span>
 					</div>
 					<div class="gv-field-detail gv-field-detail--field">
 						<span class="gv-field-detail--label">Field ID</span><span class="gv-field-detail--value">{$field_id}</span>
