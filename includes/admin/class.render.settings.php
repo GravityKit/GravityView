@@ -271,8 +271,10 @@ class GravityView_Render_Settings {
 			}
 		}
 
-$template = <<<EOD
-		<div class="gv-dialog-options" title="{{settings_title}}">
+		$field_details = '';
+
+		if( 'field' === $field_type ) {
+			$field_details = <<<EOD
 			<div class="gv-field-details--container">
 				<label class="gv-field-details--toggle">Field Details <i class="dashicons dashicons-arrow-down"></i></label>
 				<section class="gv-field-details gv-field-details--closed">
@@ -287,6 +289,11 @@ $template = <<<EOD
 					</div>
 				</section>
 			</div>
+EOD;
+		}
+
+$template = <<<EOD
+		<div class="gv-dialog-options" title="{{settings_title}}">
 			{{field_details}}
 			{{subtitle}}
 			{{field_settings}}
