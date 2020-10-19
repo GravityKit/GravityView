@@ -27,9 +27,9 @@ jobs:
           command: |
             PLUGIN_DIR=/home/circleci/gravityview docker-compose -f tests/acceptance/docker/docker-compose.yml run codeception --debug -vvv --html --xml
       - store_artifacts:
-          path: run_acceptance_tests/_output
+          path: tests/acceptance/_output
       - store_test_results:
-          path: run_acceptance_tests/_output
+          path: tests/acceptance/_output
 
   prepare_test_and_build_environment:
     <<: *default_job_config
