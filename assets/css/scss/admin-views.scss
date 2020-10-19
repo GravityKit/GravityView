@@ -1111,27 +1111,26 @@ hr {
 	.ui-button.ui-dialog-titlebar-close {
 
 		padding: 3px;
-		top: 5px;
-		right: 5px;
+		top: $dialog-button-padding;
+		right: $dialog-button-padding;
 		border-radius: 3px;
+		text-indent: -99999px;
 
 		&:hover {
 			background: #f1f1f1;
 		}
 
 		// Replace the jQuery UI "X" with Dashicons
-		.ui-button-icon-primary.ui-icon.ui-icon-closethick {
-			background: none;
+		.ui-icon.ui-icon-closethick {
 			display: none;
 
 		}
 
 		&:before {
-			line-height: 32px!important;
-		}
-
-		&:after {
-			//content: "\f158";
+			text-indent: 0;
+			position: absolute;
+			left: 0;
+			top: 3px;
 			content: "\f335";
 			font-family: Dashicons, sans-serif;
 			font-size: 30px;
