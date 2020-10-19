@@ -82,6 +82,7 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 			'label' => __( 'No Entries Text', 'gravityview' ),
 			'desc'  => __( 'The text that is shown if the entry creator has no other entries (and "Hide if no entries" is disabled).', 'gravityview' ),
 			'value' => __( 'This user has no other entries.', 'gravityview' ),
+			'class' => 'widefat',
 		);
 
 		return $new_options + $field_options;
