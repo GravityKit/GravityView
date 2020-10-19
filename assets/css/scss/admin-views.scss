@@ -1050,6 +1050,11 @@ hr {
 		font-size: 1.5rem;
 	}
 
+	.ui-dialog-title {
+		display: block;
+		width: 95%; // Prevent encroaching on close button
+	}
+
 	.ui-dialog-titlebar {
 		border-radius: 0;
 		background: $color-gf-fff;
@@ -1086,8 +1091,15 @@ hr {
 		}
 
 		.gv-field-detail {
-			flex: 31%;
 			padding-right: 2%;
+			flex: 33%;
+			align-self: flex-start;
+			flex-shrink: 1;
+		}
+
+		.gv-field-detail--form {
+			flex: 50%;
+			flex-shrink: 0;
 		}
 
 		.gv-field-detail--label {
@@ -1096,9 +1108,11 @@ hr {
 			&:after {
 				content: ': ';
 			}
-		}
-		.gv-field-detail--value {
-			padding: 0 .33rem;
+
+			padding-right: .33rem;
+			.rtl & {
+				padding-left: .33rem;
+			}
 		}
 	}
 
