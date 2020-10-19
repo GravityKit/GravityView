@@ -160,6 +160,9 @@ module.exports = function(grunt) {
 			docs: {
 				files: ['docs/*.scss'],
 				tasks: ['sass:docs']
+			},
+			options: {
+				spawn: false
 			}
 		},
 
