@@ -722,7 +722,7 @@ class GravityView_frontend {
 
 				if( ! empty( $search_criteria[ $key ] ) ) {
 
-					$search_date = strtotime( $search_criteria[ $key ] );
+					$search_date = GFCommon::get_gmt_timestamp( strtotime( $search_criteria[ $key ] ));
 
 					// The search is for entries before the start date defined by the settings
 					switch ( $key ) {
