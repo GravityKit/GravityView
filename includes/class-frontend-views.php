@@ -708,8 +708,7 @@ class GravityView_frontend {
 			if ( ! empty( $args[ $key ] ) ) {
 
 				// Get a timestamp and see if it's a valid date format
-				$date = new DateTimeImmutable( $args[$key], new DateTimeZone( wp_timezone_string() ) );
-				$date = $date->getTimestamp();
+				$date = GFCommon::get_gmt_timestamp( strtotime($args[$key]) );
 
 				// The date was invalid
 				if ( empty( $date ) ) {
