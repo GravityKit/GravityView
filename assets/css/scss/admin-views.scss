@@ -1026,6 +1026,7 @@ hr {
 .gv-dialog {
 
 	$dialog-padding: 25px;
+	$dialog-button-padding: 5px;
 
 	&.ui-widget-content > div {
 		padding-left: $dialog-padding;
@@ -1040,7 +1041,7 @@ hr {
 	.ui-dialog-buttonpane {
 		min-height: 1.25em;
 		line-height: 1.25;
-		padding: 5px; // TODO: Convert to padding .ui-widget-content instead of this and .gv-setting-container
+		padding: $dialog-button-padding;
 		height: auto;
 		background: white;
 		border: none;
@@ -1093,6 +1094,12 @@ hr {
 		}
 	}
 
+	.ui-dialog-buttonpane {
+		padding-left: $dialog-button-padding !important;
+		padding-right: $dialog-button-padding !important;
+	}
+
+	// Dialog footer button
 	.ui-dialog-buttonpane button {
 		min-height: 32px;
 		line-height: 2.30769231; /* 30px */
