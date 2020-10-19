@@ -1661,6 +1661,8 @@
 			// "Link to Post" should hide when "Link to single entry" is checked
 			vcfg.toggleDisabled( $( 'input:checkbox[name*=link_to_]', $parent ), $( 'input:checkbox[name*=show_as_link]', $parent ) );
 
+			// "Make Phone Number Clickable" should hide when "Link to single entry" is checked
+			vcfg.toggleDisabled( $( 'input:checkbox[name*=link_phone]', $parent ), $( 'input:checkbox[name*=show_as_link]', $parent ) );
 
 			// Logged in capability selector should only show when Logged In checkbox is checked
 			vcfg.toggleVisibility( $( 'input:checkbox[name*=only_loggedin]', $parent ), $( '[name*=only_loggedin_cap]', $parent ), first_run );
