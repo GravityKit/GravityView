@@ -6027,7 +6027,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$settings->init_admin();
 		$settings->init_ajax();
 		$settings->add_network_menu();
-		$this->assertEquals( $settings->modify_app_settings_menu_title( array( array() ) ), array( array( 'label' => 'GravityView Settings' ) ) );
+
+		$this->assertEquals( $settings->modify_app_settings_menu_title( array( array() ) ), array( array( 'label' => 'GravityView Settings', 'icon' => 'dashicons-admin-settings' ) ) );
 		$this->assertFalse( $settings->current_user_can_any( array( 'oops' ) ) );
 
 		$this->assertContains( 'delete then', $settings->uninstall_warning_message() );
@@ -6049,11 +6050,17 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( 'ALL GravityView settings will be deleted', ob_get_clean() );
 
 		ob_start();
+		set_current_screen( 'dashboard' );
 		$settings->app_settings_tab();
 		$this->assertContains( '_gravityview_save_settings_nonce', $tab = ob_get_clean() );
 		$this->assertContains( 'Uninstall GravityView', $tab );
 		$this->assertNull( $settings->app_settings_title() );
 		$this->assertEquals( $settings->app_settings_icon(), '&nbsp;' );
+
+		ob_start();
+		set_current_screen( 'front' );
+		$settings->app_settings_tab();
+		$this->assertNotContains( 'Uninstall GravityView', $tab = ob_get_clean() );
 
 		$settings->scripts();
 		$settings->styles();
