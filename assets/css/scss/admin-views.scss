@@ -1069,7 +1069,7 @@ hr {
 		font-weight: 400;
 		border: none;
 		line-height: 1.5rem;
-		margin: 1rem 0 0;
+		margin: 1rem 0 0 -( $dialog-padding / 4 );
 		padding: 0;
 		color: $color-666;
 
