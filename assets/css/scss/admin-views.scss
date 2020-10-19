@@ -1054,18 +1054,23 @@ hr {
 		border-radius: 0;
 		background: $color-gf-fff;
 		border-bottom: 1px solid $color-gf-eee;
-		padding: $dialog-padding ($dialog-padding / 2) ($dialog-padding / 4);
+		padding: $dialog-padding ($dialog-padding / 2) $dialog-padding;
 	}
 
 	.gv-field-details--toggle {
 		width: 100%;
 		display: block;
-		font-size: .875rem;
+		font-size: .8rem;
 		font-weight: 400;
 		border: none;
-		margin: 1.5rem 0 $dialog-padding / 2;
+		line-height: 1.5rem;
+		margin: 1rem 0 0;
 		padding: 0;
 		color: $color-666;
+
+		.dashicons {
+			margin-top: .1em;
+		}
 	}
 
 	.gv-field-details {
@@ -1073,24 +1078,27 @@ hr {
 		width: 100%;
 		font-size: 1rem;
 		color: $color-555;
-		padding-bottom: $dialog-padding / 2;
+		padding-bottom: 0;
+		margin-top: $dialog-padding / 2;
 
 		&.gv-field-details--closed {
 			display: none;
 		}
 
 		.gv-field-detail {
-			flex: 25%;
+			flex: 31%;
+			padding-right: 2%;
 		}
-		.gv-field-detail--form {
-			flex: 50%;
-		}
+
 		.gv-field-detail--label {
 			font-weight: 500;
-			display: block;
+			display: inline-block;
 			&:after {
 				content: ': ';
 			}
+		}
+		.gv-field-detail--value {
+			padding: 0 .33rem;
 		}
 	}
 
@@ -1123,7 +1131,6 @@ hr {
 		// Replace the jQuery UI "X" with Dashicons
 		.ui-icon.ui-icon-closethick {
 			display: none;
-
 		}
 
 		&:before {
