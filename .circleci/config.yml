@@ -50,7 +50,7 @@ jobs:
       - run:
           name: Configuring tests environment
           command: |
-            tooling/docker-unit-tests/docker-unit-tests.sh download_phpunit download_gravity_forms download_test_suits configure_test_suits
+            tooling/docker-unit-tests/docker-unit-tests.sh download_phpunit download_gravity_forms download_test_suites configure_test_suites
       - save_cache:
           key: test-dependencies-{{ epoch }}
           paths:
