@@ -7965,6 +7965,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 						'id' => '16',
 						'label' => 'Textarea',
 					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '18',
+						'label' => 'Website',
+					),
 				),
 			),
 		) );
@@ -7985,6 +7989,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'2.1' => 'Much Better',
 			'2.2' => 'Somewhat Better',
 			'16'  => "This\nis\nan\nofficial\nletter.",
+			'18'  => 'https://example.com?query=vars',
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
@@ -8010,9 +8015,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$textarea = "This\nis\nan\nofficial\nletter.";
 
+		$website  = 'https://example.com?query=vars';
+
 		$expected = array(
-			'Email,"A List",File,Checkbox,Textarea',
-			sprintf( 'support@gravityview.co,"%s",%s,"%s","%s"', $list, $file, $checkbox, $textarea ),
+			'Email,"A List",File,Checkbox,Textarea,Website',
+			sprintf( 'support@gravityview.co,"%s",%s,"%s","%s",%s', $list, $file, $checkbox, $textarea, $website ),
 		);
 
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
@@ -8040,27 +8047,27 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 
 		$expected         = array(
-			'Email,"A List",File,Checkbox,Textarea',
-			sprintf( 'support@gravityview.co,"%s","%s","%s","%s"', $list_newline, $file_newline, $checkbox_newline, $textarea ),
+			'Email,"A List",File,Checkbox,Textarea,Website',
+			sprintf( 'support@gravityview.co,"%s","%s","%s","%s",%s', $list_newline, $file_newline, $checkbox_newline, $textarea, $website ),
 		);
 
 		remove_all_filters( 'gravityview/template/field/csv/glue' );
 
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
-		add_filter( 'gravityview/template/csv/field/raw', '__return_false' );
+		add_filter( 'gravityview/template/csv/field/raw', '__return_empty_array' );
 
 		$textarea = str_replace( "\n", "<br />\n", $textarea );
 
 		ob_start();
 		$view::template_redirect();
 		$expected = array(
-			'Email,"A List",File,Checkbox,Textarea',
-			sprintf( '"<a href=\'mailto:support@gravityview.co\'>support@gravityview.co</a>","%s",%s,"%s","%s"', $list, $file, $checkbox, $textarea ),
+			'Email,"A List",File,Checkbox,Textarea,Website',
+			sprintf( '"<a href=\'mailto:support@gravityview.co\'>support@gravityview.co</a>","%s",%s,"%s","%s","<a href=\'https://example.com?query=vars\' target=\'_blank\'>https://example.com?query=vars</a>"', $list, $file, $checkbox, $textarea ),
 		);
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
-		remove_filter( 'gravityview/template/csv/field/raw', '__return_false' );
+		remove_filter( 'gravityview/template/csv/field/raw', '__return_empty_array' );
 		remove_filter( 'gform_include_bom_export_entries', '__return_false' );
 
 		$this->_reset_context();
