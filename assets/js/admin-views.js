@@ -148,7 +148,12 @@
 
 				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )
 
-				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters );
+				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters )
+
+				// Trigger settings setup that have `data-requires` and `data-requires-not` (toggleCheckboxes)
+				.find( '#gravityview_settings' )
+
+					.trigger( 'change' );
 
 			// End bind to $('body')
 
