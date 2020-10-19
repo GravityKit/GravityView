@@ -778,6 +778,8 @@ class Addon_Settings extends \GFAddOn {
 
 		$disabled_attribute = \GVCommon::has_cap( 'gravityview_edit_settings' ) ? false : 'disabled';
 
+		$affiliate_link = 'https://gravityview.co/account/affiliates/';
+
 		$fields = array(
 			array(
 				'name' => 'gv_header',
@@ -913,7 +915,7 @@ class Addon_Settings extends \GFAddOn {
 				'input_type' => 'number',
 				'default_value' => null,
 				'label' => __( 'Affiliate ID', 'gravityview' ),
-				'description' => __( 'Earn affiliate credit when referring customers to GravityView.', 'gravityview' ),
+				'description' => sprintf( __( 'Earn affiliate credit when referring customers to GravityView. <a href="%s"> Register as an affliate </a>', 'gravityview' ), $affiliate_link ),
 				'class' => 'code',
 				'dependency' => 'powered_by', // TODO: Hide this setting when Powered By is disabled
 			),
