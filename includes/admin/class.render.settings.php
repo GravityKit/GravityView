@@ -274,22 +274,27 @@ class GravityView_Render_Settings {
 		$field_details = '';
 
 		if( 'field' === $field_type ) {
-			$field_details = <<<EOD
+			$field_details .= '
 			<div class="gv-field-details--container">
-				<label class="gv-field-details--toggle">Field Details <i class="dashicons dashicons-arrow-down"></i></label>
-				<section class="gv-field-details gv-field-details--closed">
-					<div class="gv-field-detail gv-field-detail--type">
-						<span class="gv-field-detail--label">Type</span><span class="gv-field-detail--value">{$input_type_label}</span>
-					</div>
+				<label class="gv-field-details--toggle">' . esc_html__( 'Field Details', 'gravityview' ) .' <i class="dashicons dashicons-arrow-down"></i></label>
+				<section class="gv-field-details gv-field-details--closed">';
+
+				if ( $field_id && is_numeric( $field_id ) ) {
+				$field_details .= '
 					<div class="gv-field-detail gv-field-detail--field">
-						<span class="gv-field-detail--label">Field ID</span><span class="gv-field-detail--value">{$field_id}</span>
+						<span class="gv-field-detail--label">' . esc_html__( 'ID', 'gravityview' ) .'</span><span class="gv-field-detail--value">#{{field_id}}</span>
+					</div>';
+			    }
+
+				$field_details .= '
+					<div class="gv-field-detail gv-field-detail--type">
+						<span class="gv-field-detail--label">' . esc_html_x( 'Type', 'The type of field being configured (eg: "Single Line Text")', 'gravityview' ) .'</span><span class="gv-field-detail--value">{{input_type_label}}</span>
 					</div>
 					<div class="gv-field-detail gv-field-detail--form">
-						<span class="gv-field-detail--label">Form</span><span class="gv-field-detail--value">{$form_title} (#{$form_id})</span>
+						<span class="gv-field-detail--label">' . esc_html__( 'Form', 'gravityview' ) .'</span><span class="gv-field-detail--value">{{form_title}} (#{{form_id}})</span>
 					</div>
 				</section>
-			</div>
-EOD;
+			</div>';
 		}
 
 $template = <<<EOD
@@ -309,6 +314,10 @@ EOD;
 			'subtitle',
 			'field_settings',
 			'field_details',
+			'input_type_label',
+			'field_id',
+			'form_title',
+			'form_id',
 		);
 
 		foreach ( $replacements as $replacement ) {
