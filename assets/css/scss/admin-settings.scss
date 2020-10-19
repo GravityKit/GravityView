@@ -162,7 +162,7 @@
 		}
 	}
 
-	.inline.hide:empty {
+	.inline.hide:empty, .gv-edd-message.hide {
 		display: none !important;
 	}
 

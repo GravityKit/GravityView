@@ -1091,8 +1091,6 @@ HTML;
 					'label' => __( 'License Key', 'gravityview' ),
 					'description' => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ),
 					'type' => 'edd_license',
-					'disabled' => ( defined( 'GRAVITYVIEW_LICENSE_KEY' ) && GRAVITYVIEW_LICENSE_KEY ),
-					'title' => __( 'The license key is defined by your site\'s configuration file.', 'gravityview' ),
 					'data-pending-text' => __( 'Verifying license&hellip;', 'gravityview' ),
 					'default_value' => $default_settings['license_key'],
 					'class' => ( '' == $this->get( 'license_key' ) ) ? 'activate code regular-text edd-license-key' : 'deactivate code regular-text edd-license-key',
@@ -1108,6 +1106,13 @@ HTML;
 					'type' => 'hidden',
 			),
 		);
+
+		if ( defined( 'GRAVITYVIEW_LICENSE_KEY' ) && GRAVITYVIEW_LICENSE_KEY ) {
+			$license_fields[0] = array_merge( $license_fields[0], array(
+				'disabled' => true,
+				'title'    => __( 'The license key is defined by your site\'s configuration file.', 'gravityview' ),
+			) );
+		}
 
 		$sections = array();
 		$version_info = '<span class="gv-version-info" title="' . sprintf( __( 'You are running GravityView version %s', 'gravityview' ), Plugin::$version ) . '">Version ' . esc_html( Plugin::$version ) . '</span>';
