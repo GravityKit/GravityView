@@ -174,6 +174,11 @@
 				// TODO: Show/hide warnings on configuration tabs to let users know context has been configured.
 				.on( 'gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry', function() {
 
+					$( '.gv-section[id$="-fields"' ).each(function (  ) {
+
+
+					});
+
 					var has_single_entry_link = $( '.gv-dialog-options input[name*=show_as_link]:checked').length;
 					var has_edit_entry_link = $( '.gv-fields .field-key[value="edit_link"]').length;
 
@@ -1653,19 +1658,32 @@
 
 			$( 'input:checkbox', $parent ).attr( 'disabled', null );
 
-			// Link to Post should be disabled when Single Entry is checked
-			if ( $( 'input:checkbox[name*=show_as_link]', $parent ).is( ':checked' ) ) {
-				$( 'input:checkbox[name*=link_to_]', $parent ).attr( 'disabled', true );
-			}
+			// "Link to Post" should hide when "Link to single entry" is checked
+			vcfg.toggleDisabled( $( 'input:checkbox[name*=link_to_]', $parent ), $( 'input:checkbox[name*=show_as_link]', $parent ) );
 
-			// Link to Post should hide when Single Entry is checked
-			if ( $( 'input:checkbox[name*=link_to_]:checked', $parent ).length > 0 ) {
-				$( 'input:checkbox[name*=show_as_link]', $parent ).attr( 'disabled', true );
-			}
 
 			// Logged in capability selector should only show when Logged In checkbox is checked
 			vcfg.toggleVisibility( $( 'input:checkbox[name*=only_loggedin]', $parent ), $( '[name*=only_loggedin_cap]', $parent ), first_run );
 
+		},
+
+		/**
+		 * If one setting is enabled, disable the other. Requires the input support `:checked` attribute.
+		 *
+		 * @since 2.10
+		 *
+		 * @param {jQuery} $one
+		 * @param {jQuery} $two
+		 */
+		toggleDisabled: function ( $one, $two ) {
+
+			if ( $one.is( ':checked' ) ) {
+				$two.attr( 'disabled', true );
+			}
+
+			if ( $two.filter(':checked').length > 0 ) {
+				$one.attr( 'disabled', true );
+			}
 		},
 
 		/**
