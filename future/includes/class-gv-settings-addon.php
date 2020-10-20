@@ -960,7 +960,7 @@ HTML;
 
 		$disabled_attribute = \GVCommon::has_cap( 'gravityview_edit_settings' ) ? false : 'disabled';
 
-		$affiliate_link = 'https://gravityview.co?utm_source=in-plugin&utm_medium=setting&utm_content=Register as an affiliate';
+		$affiliate_link = 'https://gravityview.co/account/affiliate/?utm_source=in-plugin&utm_medium=setting&utm_content=Register as an affiliate';
 
 		$fields = array(
 				array(
