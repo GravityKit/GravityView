@@ -1075,7 +1075,6 @@ HTML;
 						),
 						'description'   => __( 'You will have early access to the latest GravityView features and improvements. There may be bugs! If you encounter an issue, help make GravityView better by reporting it!', 'gravityview' ),
 				),
-			),
 		);
 
 		$fields = array_filter( $fields, 'count' );
