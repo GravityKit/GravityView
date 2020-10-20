@@ -960,7 +960,7 @@ HTML;
 
 		$disabled_attribute = \GVCommon::has_cap( 'gravityview_edit_settings' ) ? false : 'disabled';
 
-		$affiliate_link = 'https://gravityview.co/account/affiliates/';
+		$affiliate_link = 'https://gravityview.co?utm_source=in-plugin&utm_medium=setting&utm_content=Register as an affiliate';
 
 		$fields = array(
 				array(
@@ -1055,7 +1055,7 @@ HTML;
 					'input_type' => 'number',
 					'default_value' => null,
 					'label' => __( 'Affiliate ID', 'gravityview' ),
-					'description' => sprintf( __( 'Earn money when people clicking your links become GravityView customers. <a href="%s">Register as an affiliate</a>!', 'gravityview' ), $affiliate_link ),
+					'description' => sprintf( __( 'Earn money when people clicking your links become GravityView customers. <a href="%s" rel="external">Register as an affiliate</a>!', 'gravityview' ), esc_url( $affiliate_link ) ),
 					'class' => 'code',
 					'placeholder' => '123',
 					'data-requires' => 'powered_by',
