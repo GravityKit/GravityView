@@ -1,4 +1,9 @@
 <?php
+/**
+ * @global array $entry
+ * @global array $form
+ * @global array $field_settings
+ */
 
 $gravityview_view = GravityView_View::getInstance();
 
@@ -6,7 +11,7 @@ $view_id = $gravityview_view->getViewId();
 
 extract( $gravityview_view->getCurrentField() );
 
-// Only show the link to logged-in users with the rigth caps.
+// Only show the link to logged-in users with the right caps.
 if( !GravityView_Delete_Entry::check_user_cap_delete_entry( $entry, $field_settings ) ) {
 	return;
 }

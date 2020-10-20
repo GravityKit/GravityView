@@ -77,15 +77,25 @@ class GravityView_Entry_List {
 	public $template_context;
 
 	/**
-	 * @param array $entries
+	 * The ID of the View connected to the entries being displayed
+	 * @since 2.7.2
+	 * @var int
+	 */
+	public $view_id = 0;
+
+	/**
+	 * @since 2.0 Added $template_context parameter
+	 * @since 2.7.2 Added $view_id parameter
+	 *
+	 * @param array|GV\Entry[] $entries
 	 * @param int $post_id
 	 * @param array $form
 	 * @param string $link_format
 	 * @param string $after_link
-	 * @since 2.0
 	 * @param \GV\Template_Context $template_context The context
+	 * @param int|null $view_id View to link to when displaying on a page with multiple Views
 	 */
-	function __construct( $entries = array(), $post_id = 0, $form = array(), $link_format = '', $after_link = '', $context = '', $template_context = null ) {
+	function __construct( $entries = array(), $post_id = 0, $form = array(), $link_format = '', $after_link = '', $context = '', $template_context = null, $view_id = 0 ) {
 		$this->entries = $entries;
 		$this->post_id = $post_id;
 		$this->form = $form;
@@ -93,6 +103,7 @@ class GravityView_Entry_List {
 		$this->after_link = $after_link;
 		$this->context = $context;
 		$this->template_context = $template_context;
+		$this->view_id = $view_id;
 		$this->empty_message = function_exists( 'gv_no_results' ) ? gv_no_results( $template_context ) : __( 'No entries match your request.', 'gravityview' );
 	}
 
@@ -195,6 +206,10 @@ class GravityView_Entry_List {
 
 		foreach( $this->entries as $entry ) {
 
+			if ( $entry instanceof \GV\Entry ) {
+				$entry = $entry->as_entry();
+			}
+
 			if( $this->skip_entry( $entry, $current_entry ) ) {
 				continue;
 			}
@@ -256,7 +271,15 @@ class GravityView_Entry_List {
 	 */
 	private function get_item_output( $entry ) {
 
-		$link = GravityView_API::entry_link( $entry, $this->post_id );
+		$link = GravityView_API::entry_link( $entry, $this->post_id, true, $this->view_id );
+
+		/**
+		 * @filter `gravityview/entry-list/link` The link to this other entry now.
+		 * @param[in,out] string $link The link.
+		 * @param array $entry The entry.
+		 * @param \GravityView_Entry_List $this The current entry list object.
+		 */
+		$link = apply_filters( 'gravityview/entry-list/link', $link, $entry, $this );
 
 		$item_output = gravityview_get_link( $link, $this->link_format );
 

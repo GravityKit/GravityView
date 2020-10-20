@@ -160,6 +160,9 @@ module.exports = function(grunt) {
 			docs: {
 				files: ['docs/*.scss'],
 				tasks: ['sass:docs']
+			},
+			options: {
+				spawn: false
 			}
 		},
 
@@ -186,7 +189,7 @@ module.exports = function(grunt) {
 
 		// Pull in the latest translations
 		exec: {
-			transifex: 'tx pull -a',
+			transifex: 'tx pull -a --parallel',
 
 			// Create a ZIP file
 			zip: {

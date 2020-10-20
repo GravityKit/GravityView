@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
@@ -42,7 +42,32 @@ class GravityView_Edit_Entry_Admin {
 
         // custom fields' options for zone EDIT
         add_filter( 'gravityview_template_field_options', array( $this, 'field_options' ), 10, 6 );
+
+        // Add Edit Entry settings to View Settings
+        add_action( 'gravityview/metaboxes/edit_entry', array( $this, 'view_settings_metabox' ) );
     }
+
+	/**
+	 * Render Edit Entry View metabox settings
+	 *
+	 * @since 2.9
+	 *
+	 * @param $current_settings
+	 *
+	 * @return void
+	 */
+	public function view_settings_metabox( $current_settings ) {
+
+		GravityView_Render_Settings::render_setting_row( 'edit_locking', $current_settings );
+
+		GravityView_Render_Settings::render_setting_row( 'user_edit', $current_settings );
+
+		GravityView_Render_Settings::render_setting_row( 'unapprove_edit', $current_settings );
+
+		GravityView_Render_Settings::render_setting_row( 'edit_redirect', $current_settings );
+
+		GravityView_Render_Settings::render_setting_row( 'edit_redirect_url', $current_settings );
+	}
 
     /**
      * Add Edit Link as a default field, outside those set in the Gravity Form form
@@ -58,6 +83,7 @@ class GravityView_Edit_Entry_Admin {
                 'label' => __('Edit Entry', 'gravityview'),
                 'type' => 'edit_link',
                 'desc'	=> __('A link to edit the entry. Visible based on View settings.', 'gravityview'),
+                'icon' => 'dashicons-welcome-write-blog',
             );
 
         }
@@ -94,12 +120,14 @@ class GravityView_Edit_Entry_Admin {
 
     /**
      * Add "Edit Link Text" setting to the edit_link field settings
-     * @param  [type] $field_options [description]
-     * @param  [type] $template_id   [description]
-     * @param  [type] $field_id      [description]
-     * @param  [type] $context       [description]
-     * @param  [type] $input_type    [description]
-     * @return [type]                [description]
+     *
+     * @param array  $field_options
+     * @param string $template_id
+     * @param string $field_id
+     * @param string $context
+     * @param string $input_type
+     *
+     * @return array $field_options, with "Edit Link Text" field option
      */
     function edit_link_field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
@@ -137,15 +165,18 @@ class GravityView_Edit_Entry_Admin {
         return $return;
     }
 
-    /**
-     * Manipulate the fields' options for the EDIT ENTRY screen
-     * @param  [type] $field_options [description]
-     * @param  [type] $template_id   [description]
-     * @param  [type] $field_id      [description]
-     * @param  [type] $context       [description]
-     * @param  [type] $input_type    [description]
-     * @return [type]                [description]
-     */
+	/**
+	 * Add "Edit Link Text" setting to the edit_link field settings
+	 *
+	 * @param array  $field_options
+	 * @param string $template_id
+	 * @param string $field_id
+	 * @param string $context
+	 * @param string $input_type
+	 * @param int    $form_id
+	 *
+	 * @return array $field_options, with added field options
+	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
         // We only want to modify the settings for the edit context

@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -18,7 +18,6 @@ class GravityView_API {
 	 *
 	 * @deprecated Use \GV\Field::get_label()
 	 *
-	 * @access public
 	 * @static
 	 * @param array $field GravityView field array
 	 * @param array $entry Gravity Forms entry array
@@ -151,7 +150,6 @@ class GravityView_API {
 	/**
 	 * Fetch Field class
 	 *
-	 * @access public
 	 * @static
 	 * @param mixed $field
 	 * @return string
@@ -202,7 +200,6 @@ class GravityView_API {
 	 *
 	 * @since 1.11
 	 *
-	 * @access public
 	 * @static
 	 * @param array $field GravityView field array passed to gravityview_field_output()
 	 * @param array $form Gravity Forms form array, if set.
@@ -234,7 +231,6 @@ class GravityView_API {
 	 *
 	 * @deprecated Use \GV\Field_Template::render() or the more low-level \GV\Field::get_value()
 	 *
-	 * @access public
 	 * @param array $entry
 	 * @param array $field
 	 * @return null|string
@@ -311,11 +307,51 @@ class GravityView_API {
 			}
 		}
 
+		$setting = '';
+
 		if ( $is_search ) {
-			$output = __( 'This search returned no results.', 'gravityview' );
+
+			$output = esc_html__( 'This search returned no results.', 'gravityview' );
+
+			if( $context ) {
+				$setting = $context->view->settings->get( 'no_search_results_text', $output );
+			}
+
 		} else {
-			$output = __( 'No entries match your request.', 'gravityview' );
+
+			$output = esc_html__( 'No entries match your request.', 'gravityview' );
+
+			if( $context ) {
+				$setting = $context->view->settings->get( 'no_results_text', $output );
+			}
 		}
+
+		if ( '' !== $setting ) {
+			$output = $setting;
+		}
+
+		/**
+		 * Added now that users are able to modify via View settings
+		 * @since 2.8.2
+		 */
+		$output = wp_kses(
+			$output,
+			array(
+				'p'      => array( 'class' => array(), 'id' => array() ),
+				'h1'     => array( 'class' => array(), 'id' => array() ),
+				'h2'     => array( 'class' => array(), 'id' => array() ),
+				'h3'     => array( 'class' => array(), 'id' => array() ),
+				'h4'     => array( 'class' => array(), 'id' => array() ),
+				'h5'     => array( 'class' => array(), 'id' => array() ),
+				'strong' => array( 'class' => array(), 'id' => array() ),
+				'span'   => array( 'class' => array(), 'id' => array() ),
+				'b'      => array( 'class' => array(), 'id' => array() ),
+				'em'     => array( 'class' => array(), 'id' => array() ),
+				'a'      => array( 'class' => array(), 'id' => array(), 'href' => array(), 'title' => array(), 'rel' => array(), 'target' => array() ),
+				'div'    => array( 'class' => array(), 'id' => array() ),
+				'br'     => array(),
+			)
+		);
 
 		/**
 		 * @filter `gravitview_no_entries_text` Modify the text displayed when there are no entries.
@@ -446,7 +482,7 @@ class GravityView_API {
 		 * @filter `gravityview/view/links/directory` Modify the URL to the View "directory" context
 		 * @since 2.0
 		 * @param string $link URL to the View's "directory" context (Multiple Entries screen)
-		 * @param \GV\Template_Context $context 
+		 * @param \GV\Template_Context $context
 		 */
 		return apply_filters( 'gravityview/view/links/directory', $link, $context );
 	}
@@ -588,12 +624,18 @@ class GravityView_API {
 
 	/**
 	 * return href for single entry
+	 *
+	 * @since 1.7.3 Added $add_directory_args parameter
+	 * @since 2.7.2 Added $view_id parameter
+	 *
 	 * @param  array|int $entry   Entry array or entry ID
 	 * @param  int|null $post_id If wanting to define the parent post, pass a post ID
-	 * @param boolean $add_directory_args True: Add args to help return to directory; False: only include args required to get to entry {@since 1.7.3}
-	 * @return string          Link to the entry with the directory parent slug, or empty string if embedded post or View doesn't exist
+	 * @param boolean $add_directory_args True: Add args to help return to directory; False: only include args required to get to entry
+	 * @param int $view_id
+	 *
+	 * @return string Link to the entry with the directory parent slug, or empty string if embedded post or View doesn't exist
 	 */
-	public static function entry_link( $entry, $post_id = NULL, $add_directory_args = true ) {
+	public static function entry_link( $entry, $post_id = NULL, $add_directory_args = true, $view_id = 0 ) {
 
 		if ( ! empty( $entry ) && ! is_array( $entry ) ) {
 			$entry = GVCommon::get_entry( $entry );
@@ -619,13 +661,33 @@ class GravityView_API {
 
 		if ( ! empty( $entry['_multi'] ) ) {
 			$entry_slugs = array();
+
 			foreach ( $entry['_multi'] as $_multi ) {
-				$entry_slugs[] = self::get_entry_slug( $_multi['id'], $_multi );
+
+				if( $gv_multi = \GV\GF_Entry::from_entry( $_multi ) ) {
+					$entry_slugs[] = $gv_multi->get_slug();
+				} else {
+					// TODO: This path isn't covered by unit tests
+					$entry_slugs[] = \GravityView_API::get_entry_slug( $_multi['id'], $_multi );
+				}
+
+				unset( $gv_multi );
+
 				$forms[] = $_multi['form_id'];
 			}
+
 			$entry_slug = implode( ',', $entry_slugs );
 		} else {
-			$entry_slug = self::get_entry_slug( $entry['id'], $entry );
+
+			// Fallback when
+			if( $gv_entry = \GV\GF_Entry::from_entry( $entry ) ) {
+				$entry_slug = $gv_entry->get_slug();
+			} else {
+				// TODO: This path isn't covered by unit tests
+				$entry_slug = \GravityView_API::get_entry_slug( $entry['id'], $entry );
+			}
+
+			unset( $gv_entry );
 		}
 
 		if ( get_option('permalink_structure') && !is_preview() ) {
@@ -675,7 +737,7 @@ class GravityView_API {
 		}
 
 		if ( $has_multiple_views ) {
-			$args['gvid'] = gravityview_get_view_id();
+			$args['gvid'] = $view_id ? $view_id : gravityview_get_view_id();
 		}
 
 		return add_query_arg( $args, $directory_link );
@@ -745,6 +807,10 @@ function gv_container_class( $passed_css_class = '', $echo = true, $context = nu
 
 	if ( 0 === $total_entries ) {
 		$default_css_class .= ' gv-container-no-results';
+	}
+
+	if ( $context instanceof \GV\Template_Context && $context->view ) {
+		$default_css_class .= ' ' . $context->view->settings->get( 'class', '' );
 	}
 
 	$css_class = trim( $passed_css_class . ' '. $default_css_class );

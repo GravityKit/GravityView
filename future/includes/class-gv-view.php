@@ -224,9 +224,10 @@ class View implements \ArrayAccess {
 		global $wp_rewrite;
 
 		$slug = apply_filters( 'gravityview_slug', 'view' );
+		$slug = ( '/' !== $wp_rewrite->front ) ? sprintf( '%s/%s', trim( $wp_rewrite->front, '/' ), $slug ) : $slug;
 		$rule = array( sprintf( '%s/([^/]+)/csv/?', $slug ), 'index.php?gravityview=$matches[1]&csv=1', 'top' );
 
-		add_filter( 'query_vars', function( $query_vars ) { 
+		add_filter( 'query_vars', function( $query_vars ) {
 			$query_vars[] = 'csv';
 			return $query_vars;
 		} );
@@ -391,7 +392,7 @@ class View implements \ArrayAccess {
 	 *                             Can any and as many of one of:
 	 *                                 edit      An edit context.
 	 *                                 single    A single context.
-	 *                                 cpt       The custom post type single page acessed.
+	 *                                 cpt       The custom post type single page accessed.
 	 *                                 shortcode Embedded as a shortcode.
 	 *                                 oembed    Embedded as an oEmbed.
 	 *                                 rest      A REST call.
@@ -936,8 +937,21 @@ class View implements \ArrayAccess {
 			 * @todo: Stop using _frontend and use something like $request->get_search_criteria() instead
 			 */
 			$parameters = \GravityView_frontend::get_view_entries_parameters( $parameters, $this->form->ID );
+
 			$parameters['context_view_id'] = $this->ID;
 			$parameters = \GVCommon::calculate_get_entries_criteria( $parameters, $this->form->ID );
+
+			if ( ! is_array( $parameters ) ) {
+				$parameters = array();
+			}
+
+			if ( ! is_array( $parameters['search_criteria'] ) ) {
+				$parameters['search_criteria'] = array();
+			}
+
+			if ( ( ! isset( $parameters['search_criteria']['field_filters'] ) ) || ( ! is_array( $parameters['search_criteria']['field_filters'] ) ) ) {
+				$parameters['search_criteria']['field_filters'] = array();
+			}
 
 			if ( $request instanceof REST\Request ) {
 				$atts = $this->settings->as_atts();
@@ -948,13 +962,13 @@ class View implements \ArrayAccess {
 			}
 
 			$page = Utils::get( $parameters['paging'], 'current_page' ) ?
-				: ( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
+				: ( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / \GV\Utils::get( $parameters, 'paging/page_size', 25 ) ) + 1 );
 
 			/**
 			 * Cleanup duplicate field_filter parameters to simplify the query.
 			 */
 			$unique_field_filters = array();
-			foreach ( $parameters['search_criteria']['field_filters'] as $key => $filter ) {
+			foreach ( Utils::get( $parameters, 'search_criteria/field_filters', array() ) as $key => $filter ) {
 				if ( 'mode' === $key ) {
 					$unique_field_filters['mode'] = $filter;
 				} else if ( ! in_array( $filter, $unique_field_filters ) ) {
@@ -971,8 +985,8 @@ class View implements \ArrayAccess {
 
 				$query_class = $this->get_query_class();
 
-				/** @var \GF_Query $query */
-				$query = new $query_class( $this->form->ID, $parameters['search_criteria'], $parameters['sorting'] );
+				/** @type \GF_Query $query */
+				$query = new $query_class( $this->form->ID, $parameters['search_criteria'], Utils::get( $parameters, 'sorting' ) );
 
 				/**
 				 * Apply multisort.
@@ -1155,7 +1169,7 @@ class View implements \ArrayAccess {
 							$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
 						}
 					}
-				
+
 				/**
 				 * Unions?
 				 */
@@ -1201,7 +1215,7 @@ class View implements \ArrayAccess {
 						// Build a new query for every unioned form
 						$query_class = $this->get_query_class();
 
-						/** @var \GF_Query|\GF_Patched_Query $q */
+						/** @type \GF_Query|\GF_Patched_Query $q */
 						$q = new $query_class( $form_id );
 
 						// Copy the WHERE clauses but substitute the field_ids to the respective ones
@@ -1263,7 +1277,7 @@ class View implements \ArrayAccess {
 
 						// Add all the order columns into the selects, so we can order by the whole union group
 						preg_match_all( '#(`[motc]\d+`.`.*?`)#', $sql['order'], $order_matches );
-						
+
 						$columns = array(
 							sprintf( '%s AS %s', $select_match[1], $column_to_alias( $select_match[1] ) )
 						);
@@ -1527,7 +1541,7 @@ class View implements \ArrayAccess {
 
 				return $caps;
 			case 'edit_post':
-				if ( get_post_type( array_pop( $args ) ) == 'gravityview' ) {
+				if ( 'gravityview' === get_post_type( array_pop( $args ) ) ) {
 					return self::restrict( $caps, 'edit_gravityview', $user_id, $args );
 				}
 		endswitch;

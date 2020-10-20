@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -79,8 +79,9 @@
 
 			vcfg.gvSwitchView = $('#gv_switch_view_button');
 
-			//current form selection
+			//current form/template selection
 			vcfg.currentFormId = vcfg.gvSelectForm.val();
+			vcfg.currentTemplateId = $("#gravityview_directory_template").val();
 
 			// Start by showing/hiding on load
 			vcfg.toggleInitialVisibility( vcfg );
@@ -147,7 +148,12 @@
 
 				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )
 
-				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters );
+				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters )
+
+				// Trigger settings setup that have `data-requires` and `data-requires-not` (toggleCheckboxes)
+				.find( '#gravityview_settings' )
+
+					.trigger( 'change' );
 
 			// End bind to $('body')
 
@@ -254,6 +260,11 @@
 					if ( e.keyCode === 27 ) {
 						close = $( '.gv-field-filter-form input[data-has-search]:focus' ).length === 0;
 						return_false = close;
+
+						// The Beacon escape key behavior is flaky. Make it work better.
+						if ( window.Beacon  ) {
+							window.Beacon('close');
+						}
 					}
 
 					break;
@@ -464,13 +475,11 @@
 			e.preventDefault();
 			var vcfg = viewConfiguration;
 
-			//todo: what to do if you start fresh and then select another form!?
-			//
 			vcfg.startFreshStatus = true;
 
-			// If the form has been chosen and there are GF forms to choose from
-			if ( vcfg.currentFormId !== '' && vcfg.gvSelectForm.length > 0 ) {
-				vcfg.showDialog( '#gravityview_form_id_dialog' );
+			// If fields are configured (either via a form or preset selection), warn against making changes
+			if ( vcfg.getConfiguredFields().length ) {
+				vcfg.showDialog( '#gravityview_select_preset_dialog' );
 			} else {
 				vcfg.startFreshContinue();
 			}
@@ -485,6 +494,8 @@
 			// Reset the selected form value
 			$( '#gravityview_form_id' ).val( '' );
 
+			vcfg.currentFormId = '';
+			vcfg.currentTemplateId = '';
 			vcfg.gvSwitchView.hide();
 
 			// show templates
@@ -504,6 +515,7 @@
 		 */
 		formChange: function ( e ) {
 			e.preventDefault();
+
 			var vcfg = viewConfiguration;
 
 			// Holding down on the alt key while switching forms allows you to change forms without resetting configurations
@@ -513,8 +525,8 @@
 
 			vcfg.startFreshStatus = false;
 
-			if ( vcfg.currentFormId !== '' && vcfg.currentFormId !== $( this ).val() ) {
-				vcfg.showDialog( '#gravityview_form_id_dialog' );
+			if ( vcfg.getConfiguredFields().length ) {
+				vcfg.showDialog( '#gravityview_change_form_dialog' );
 			} else {
 				vcfg.formChangeContinue();
 			}
@@ -525,19 +537,27 @@
 		formChangeContinue: function () {
 			var vcfg = viewConfiguration;
 
-			if ( '' === vcfg.gvSelectForm.val() ) {
+			if ( ! vcfg.gvSelectForm.val() ) {
+				vcfg.getConfiguredFields().remove();
 				vcfg.hideView();
+				vcfg.gvSwitchView.fadeOut( 150 );
 			} else {
-
-				// Let merge tags know not to initialize
-				$( 'body' ).trigger( 'gravityview_form_change' ).addClass( 'gv-form-changed' );
-
 				vcfg.templateFilter( 'custom' );
-				vcfg.showViewTypeMetabox();
+
 				vcfg.getAvailableFields();
 				vcfg.getSortableFields();
-				vcfg.gvSwitchView.fadeOut( 150 );
+
+				if ( ! vcfg.currentFormId && ! vcfg.currentTemplateId ) {
+					vcfg.showViewTypeMetabox();
+					vcfg.gvSwitchView.fadeOut( 150 );
+				} else {
+					vcfg.gvSwitchView.show();
+				}
 			}
+
+			vcfg.currentTemplateId = '';
+			vcfg.currentFormId = vcfg.gvSelectForm.val();
+			$( 'body' ).trigger( 'gravityview_form_change' ).addClass( 'gv-form-changed' );
 		},
 
 		showDialog: function ( dialogSelector, buttons ) {
@@ -549,7 +569,7 @@
 			var cancel_button = {
 				text: gvGlobals.label_cancel,
 				click: function () {
-					if ( thisDialog.is( '#gravityview_form_id_dialog' ) ) {
+					if ( thisDialog.is( '#gravityview_change_form_dialog' ) ) {
 						vcfg.startFreshStatus = false;
 						vcfg.gvSelectForm.val( vcfg.currentFormId );
 					}
@@ -563,9 +583,9 @@
 			};
 
 			var continue_button = {
-			text: gvGlobals.label_continue,
-			click: function () {
-					if ( thisDialog.is( '#gravityview_form_id_dialog' ) ) {
+				text: gvGlobals.label_continue,
+				click: function() {
+					if ( thisDialog.is( '#gravityview_change_form_dialog' ) || thisDialog.is( '#gravityview_select_preset_dialog' ) ) {
 						if ( vcfg.startFreshStatus ) {
 							vcfg.startFreshContinue();
 						} else {
@@ -579,7 +599,7 @@
 					}
 
 					thisDialog.dialog( 'close' );
-				}
+				},
 			};
 
 			var default_buttons = [ cancel_button, continue_button ];
@@ -701,8 +721,11 @@
 			$( document ).trigger( 'gv_admin_views_hideViewConfig' );
 		},
 
+		/**
+		 * Show metaboxes related to view configuration.
+		 * @return {void}
+		 */
 		showViewConfig: function () {
-
 			$( '#gravityview_view_config' ).slideDown( 150 );
 
 			viewGeneralSettings.metaboxObj.show();
@@ -744,7 +767,7 @@
 		/**
 		 * @param {jQueryEvent} e
 		 */
-		selectTemplate: function ( e ) {
+		selectTemplate: function( e ) {
 			var vcfg = viewConfiguration;
 
 			e.preventDefault();
@@ -752,22 +775,26 @@
 
 			// get selected template
 			vcfg.wantedTemplate = $( this );
-			var currTemplateId = $( "#gravityview_directory_template" ).val(),
-			selectedTemplateId = vcfg.wantedTemplate.attr( "data-templateid" ),
-			regexMatch = /(.*?)_(.*?)$/i,
-			currTemplateIdSlug = currTemplateId.replace( regexMatch, '$2' ),
-			selectedTemplateIdSlug = selectedTemplateId.replace( regexMatch, '$2' ),
-			slugmatch = ( selectedTemplateIdSlug === currTemplateIdSlug ),
-			has_fields = $( '#directory-fields, #single-fields' ).find('.gv-droppable-area .gv-fields').length;
+			var selectedTemplateId = vcfg.wantedTemplate.attr( 'data-templateid' );
+			var regexMatch = /(.*?)_(.*?)$/i;
+			var currTemplateIdSlug = vcfg.currentTemplateId.replace( regexMatch, '$2' );
+			var selectedTemplateIdSlug = selectedTemplateId.replace( regexMatch, '$2' );
+			var slugmatch = ( selectedTemplateIdSlug === currTemplateIdSlug );
 
 			// check if template is being changed
-			if ( currTemplateId === '' || slugmatch || 0 === has_fields ) {
-				$( "#gravityview_select_template" ).slideUp( 150 );
+			if ( ! vcfg.currentTemplateId || slugmatch || ! vcfg.getConfiguredFields().length ) {
+				$( '#gravityview_select_template' ).slideUp( 150 );
 				vcfg.selectTemplateContinue( slugmatch );
-			} else if ( currTemplateId !== selectedTemplateId ) {
-				vcfg.showDialog( '#gravityview_switch_template_dialog' );
+			} else if ( vcfg.currentTemplateId !== selectedTemplateId ) {
+				// warn if fields are configured
+				if ( vcfg.getConfiguredFields().length ) {
+					vcfg.showDialog( '#gravityview_switch_template_dialog' );
+				} else {
+					vcfg.toggleViewTypeMetabox();
+					vcfg.selectTemplateContinue( slugmatch );
+				}
 			} else {
-				// show the same situation as before clicking in Start Fresh.
+				// revert back to how things before before clicking "use a form preset"
 				vcfg.toggleViewTypeMetabox();
 				vcfg.showViewConfig();
 			}
@@ -813,6 +840,7 @@
 
 			}
 
+			vcfg.currentTemplateId = selectedTemplateId;
 		},
 
 		/**
@@ -827,6 +855,11 @@
 		},
 
 		openExternalLinks: function () {
+
+			if ( !! window.Beacon && ( $( this ).is( '[data-beacon-article]' ) || $( this ).is( '[data-beacon-article-modal]' ) || $( this ).is( '[data-beacon-article-sidebar]' ) || $( this ).is( '[data-beacon-article-inline]' ) ) ) {
+				return false;
+			}
+
 			window.open( this.href );
 			return false;
 		},
@@ -959,12 +992,13 @@
 					//	var context = ( $(this).parents('#single-view').length ) ? 'single' : 'directory';
 					var context = $( this ).attr( 'data-context' );
 					var formId = $( this ).attr( 'data-formid' ) || $( '#gravityview_form_id' ).val();
+					var templateId = $( '#gravityview_directory_template' ).val();
 
 					switch ( $( this ).attr( 'data-objecttype' ) ) {
 						case 'field':
 							// If in Single context, show fields available in single
 							// If it Directory, same for directory
-							return $( "#" + context + "-available-fields-" + formId ).html();
+							return $( '#' + context + '-available-fields-' + ( formId || templateId ) ).html();
 						case 'widget':
 							return $( "#directory-available-widgets" ).html();
 					}
@@ -1057,63 +1091,62 @@
 
 
 		/**
+		 * Get fields configured in each context
+		 *
+		 * @return array
+		 */
+		getConfiguredFields: function () {
+			return $( '#directory-active-fields, #single-active-fields, #edit-active-fields' ).find( '.gv-fields' );
+		},
+
+		/**
 		 * Fetch the Available Fields for a given Form ID or Preset Template ID
 		 * @param  {null|string}    preset
 		 * @param  {string}    templateid      The "slug" of the View template
 		 * @return void
 		 */
-		getAvailableFields: function ( preset, templateid ) {
+		getAvailableFields: function( preset, templateid ) {
 
 			var vcfg = viewConfiguration;
 
-			$( "#directory-available-fields, #single-available-fields, #edit-available-fields" ).find( ".gv-fields" ).remove();
-			$( "#directory-active-fields, #single-active-fields, #edit-active-fields" ).find( ".gv-fields" ).remove();
-
 			vcfg.toggleDropMessage();
+
+			vcfg.getConfiguredFields().remove();
 
 			var data = {
 				action: 'gv_available_fields',
 				nonce: gvGlobals.nonce,
-				context: 'directory'
 			};
 
 			if ( preset !== undefined && 'preset' === preset ) {
-				data.template_id = templateid;
+				data.form_preset_ids = [ templateid ];
 			} else {
 				/**
 				 * TODO: Update to support multiple fields in Joins
 				 * @see GravityView_Ajax::gv_available_fields()
 				 * */
-				data.form_id = vcfg.gvSelectForm.val();
+				data.form_preset_ids = [ vcfg.gvSelectForm.val() ];
 			}
 
+			// Do not fetch fields if we already have them for the given form or template
+			if ( $( '#directory-available-fields-' + data.form_preset_ids[ 0 ] ).length ) {
+				return;
+			}
 
-			// Get the fields for the directory context
-			$.post( ajaxurl, data, function ( response ) {
-				if ( response ) {
-					$( "#directory-available-fields" ).append( response );
-				}
+			$.ajax( {
+				type: 'post',
+				url: ajaxurl,
+				data: data,
+				success: function( response ) {
+					if ( ! response.success && ! response.data ) {
+						return;
+					}
+
+					$.each( response.data, function( context,markup ) {
+						$( '#' + context + '-fields' ).append( markup );
+					} );
+				},
 			} );
-
-
-			// Now get the fields for the single context
-			data.context = 'single';
-
-			$.post( ajaxurl, data, function ( response ) {
-				if ( response ) {
-					$( "#single-available-fields" ).append( response );
-				}
-			} );
-
-			// Now get the fields for the edit context
-			data.context = 'edit';
-
-			$.post( ajaxurl, data, function ( response ) {
-				if ( response ) {
-					$( "#edit-available-fields" ).append( response );
-				}
-			} );
-
 		},
 
 		/**
@@ -1139,7 +1172,15 @@
 		 */
 		addAllFields: function ( clicked ) {
 
-			clicked.siblings( '.gv-fields' ).each( function () {
+			clicked.siblings( '.gv-fields' ).filter( function () {
+
+				var field_id = $( this ).data( 'fieldid' );
+
+				// Is the (number +)Field ID the same as the integer (not an input)?
+				// If so, form field. If not, entry meta or custom field type.
+				return ( +field_id === parseInt( field_id, 10 ) );
+
+			} ).each( function () {
 				$( this ).trigger( 'click' );
 			} );
 
@@ -1453,6 +1494,9 @@
 			// Toggle Source URL fields
 			vcfg.toggleVisibility( $( 'input:checkbox[name*=link_to_source]', $parent ), $( '[name*=source_link_text]', $parent ), first_run );
 
+			// Other Entries "Hide if no entries"
+			vcfg.toggleVisibility( $( 'input:checkbox[name*=no_entries_hide]', $parent ), $( '[name*=no_entries_text]', $parent ), first_run, true );
+
 			$( ".gv-setting-list", $parent ).trigger( 'change' );
 
 			$( 'input:checkbox', $parent ).attr( 'disabled', null );
@@ -1467,6 +1511,14 @@
 				$( 'input:checkbox[name*=show_as_link]', $parent ).attr( 'disabled', true );
 			}
 
+			// Link to single entry should be disabled when Make Phone Number Clickable is checked
+			if ( $( 'input:checkbox[name*=link_phone]', $parent ).is( ':checked' ) ) {
+				$( 'input:checkbox[name*=show_as_link]', $parent ).attr( 'disabled', true );
+			} else if ( $( 'input:checkbox[name*=show_as_link]', $parent ).is( ':checked' ) ) {
+				// Link to Make Phone Number Clickable should be disabled when Link to single entry is checked
+				$( 'input:checkbox[name*=link_phone]', $parent ).attr( 'disabled', true );
+			}
+
 			// Logged in capability selector should only show when Logged In checkbox is checked
 			vcfg.toggleVisibility( $( 'input:checkbox[name*=only_loggedin]', $parent ), $( '[name*=only_loggedin_cap]', $parent ), first_run );
 
@@ -1478,13 +1530,18 @@
 		 * @param  {jQuery} $checkbox The checkbox to use when determining show/hide. Checked: show; unchecked: hide
 		 * @param  {jQuery} $toggled  The field whose container to show/hide
 		 * @param  {boolean} first_run Is this the first run (on load)? If so, show/hide immediately
+		 * @param  {boolean} inverse   Should the logic be flipped (unchecked = show)?
 		 * @return {void}
 		 */
-		toggleVisibility: function ( $checkbox, $toggled, first_run ) {
+		toggleVisibility: function ( $checkbox, $toggled, first_run, inverse ) {
 
 			var speed = first_run ? 0 : 'fast';
 
-			if ( $checkbox.is( ':checked' ) ) {
+			var checked = $checkbox.is( ':checked' );
+
+			checked = inverse ? ! checked : checked;
+
+			if ( checked ) {
 				$toggled.parents( '.gv-setting-container' ).fadeIn( speed );
 			} else {
 				$toggled.parents( '.gv-setting-container' ).fadeOut( speed );

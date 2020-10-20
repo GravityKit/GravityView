@@ -29,6 +29,63 @@ class GravityView_Support_Port {
 		add_action( 'personal_options_update', array( $this, 'update_user_meta_value' ) );
 		add_action( 'edit_user_profile_update', array( $this, 'update_user_meta_value' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'maybe_enqueue_script' ), 1000 );
+		add_filter( 'gravityview/tooltips/tooltip', array( $this, 'maybe_add_article_to_tooltip' ), 10, 6 );
+	}
+
+	/**
+	 * Modify tooltips to add Beacon article
+	 *
+	 * @since 2.8.1
+	 *
+	 * @param string $tooltip HTML of original tooltip
+	 * @param array  $article   Optional. Details about support doc article connected to the tooltip. {
+	 *   @type string $id   Unique ID of article for Beacon API
+	 *   @type string $url  URL of support doc article
+	 *   @type string $type Type of Beacon element to open. {@see https://developer.helpscout.com/beacon-2/web/javascript-api/#beaconarticle}
+	 * }
+	 * @param string $url
+	 * @param string $atts
+	 * @param string $css_class
+	 * @param string $anchor_text
+	 * @param string $link_text
+	 *
+	 * @return string If no article information exists, original tooltip. Otherwise, modified!
+	 */
+	public function maybe_add_article_to_tooltip( $tooltip = '', $article = array(), $url = '', $atts = '', $css_class = '', $anchor_text = '' ) {
+
+		if ( empty( $article['id'] ) ) {
+			return $tooltip;
+		}
+
+		static $show_support_port;
+
+		if ( ! isset( $show_support_port ) ) {
+			$show_support_port = self::show_for_user();
+		}
+
+		if ( ! $show_support_port ) {
+			return $tooltip;
+		}
+
+		$css_class .= ' gv_tooltip';
+
+		if ( ! empty( $article['type'] ) ) {
+			$atts = sprintf( 'data-beacon-article-%s="%s"', $article['type'], $article['id'] );
+		} else {
+			$atts = sprintf( 'data-beacon-article="%s"', $article['id'] );
+		}
+
+		$url = \GV\Utils::get( $article, 'url', '#' );
+		$anchor_text .= '<p class="description" style="font-size: 15px; text-align: center;"><strong>' . sprintf( esc_html__( 'Click %s icon for additional information.', 'gravityview' ), '<i class=\'fa fa-question-circle\'></i>' ) . '</strong></p>';
+		$link_text = esc_html__( 'Learn More', 'gravityview' );
+
+		return sprintf( '<a href="%s" %s class="%s" title="%s" role="button">%s</a>',
+			esc_url( $url ),
+			$atts,
+			$css_class,
+			esc_attr( $anchor_text ),
+			$link_text
+		);
 	}
 
 	/**
@@ -80,7 +137,7 @@ class GravityView_Support_Port {
 		$translation = array(
 			'agentLabel'                => __( 'GravityView Support', 'gravityview' ),
 			'searchLabel'               => __( 'Search GravityView Docs', 'gravityview' ),
-			'docsSearchErrorText'          => __( 'Your search timed out. Please double-check your internet connection and try again.', 'gravityview' ),
+			'docsSearchErrorText'       => __( 'Your search timed out. Please double-check your internet connection and try again.', 'gravityview' ),
 			'noResultsLabel'            => _x( 'No results found for', 'a support form search has returned empty for the following word', 'gravityview' ),
 			'contactLabel'              => __( 'Contact Support', 'gravityview' ),
 			'attachAFile'               => __( 'Attach a screenshot or file', 'gravityview' ),
@@ -95,6 +152,7 @@ class GravityView_Support_Port {
 			'messageError'              => _x( 'Please enter a message', 'Error shown when submitting support request and there is no message provided', 'gravityview' ),
 			'weAreOnIt'                 => __( 'Message sent!', 'gravityview' ),
 			'contactSuccessDescription' => __( 'Thanks for reaching out! Someone from the GravityView team will get back to you soon.', 'gravityview' ),
+			'needHelp'					=> __( 'Need Help?', 'gravityview' ),
 		);
 
 		$response = gravityview()->plugin->settings->get( 'license_key_response' );

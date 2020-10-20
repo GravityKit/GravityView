@@ -44,7 +44,7 @@ abstract class GravityView_Admin_View_Item {
 	 */
 	protected $form_id;
 
-	function __construct( $title = '', $item_id, $item = array(), $settings = array(), $form_id = null) {
+	function __construct( $title = '', $item_id = '', $item = array(), $settings = array(), $form_id = null) {
 
 		// Backward compat
 		if ( ! empty( $item['type'] ) ) {
@@ -59,15 +59,16 @@ abstract class GravityView_Admin_View_Item {
 		// Prevent items from not having index set
 		$item = wp_parse_args( $item, array(
 			'label_text'    => $title,
-			'field_id'      => NULL,
-			'parent_label'  => NULL,
-			'label_type'    => NULL,
-			'input_type'    => NULL,
-			'settings_html' => NULL,
-			'adminLabel'    => NULL,
-			'adminOnly'     => NULL,
-			'subtitle'      => NULL,
-			'placeholder'   => NULL,
+			'field_id'      => null,
+			'parent_label'  => null,
+			'label_type'    => null,
+			'input_type'    => null,
+			'settings_html' => null,
+			'adminLabel'    => null,
+			'adminOnly'     => null,
+			'subtitle'      => null,
+			'placeholder'   => null,
+			'icon'          => null,
 		) );
 
 		$this->title      = $title;
@@ -148,14 +149,14 @@ abstract class GravityView_Admin_View_Item {
 	 */
 	function getOutput() {
 
-		$settings_title    = sprintf( __( 'Configure %s Settings', 'gravityview' ), ucfirst( $this->label_type ) );
+		$settings_title    = sprintf( __( 'Configure %s Settings', 'gravityview' ), esc_html( rgar( $this->item, 'label', ucfirst( $this->label_type ) ) ) );
 		$delete_title      = sprintf( __( 'Remove %s', 'gravityview' ), ucfirst( $this->label_type ) );
 		$single_link_title = __( 'This field links to the Single Entry', 'gravityview' );
 
 		// $settings_html will just be hidden inputs if empty. Otherwise, it'll have an <ul>. Ugly hack, I know.
 		// TODO: Un-hack this
-		$hide_settings_link = ( empty( $this->item['settings_html'] ) || strpos( $this->item['settings_html'], '<!-- No Options -->' ) > 0 ) ? 'hide-if-js' : '';
-		$settings_link      = sprintf( '<button class="gv-field-settings" title="%s" aria-label="%s"><span class="dashicons-admin-generic dashicons %s"></span></button>', $hide_settings_link, $hide_settings_link, esc_attr( $settings_title ) );
+		$hide_settings_link_class = ( empty( $this->item['settings_html'] ) || strpos( $this->item['settings_html'], '<!-- No Options -->' ) > 0 ) ? 'hide-if-js' : '';
+		$settings_link      = sprintf( '<button class="gv-field-settings" title="%1$s" aria-label="%1$s"><span class="dashicons-admin-generic dashicons %2$s"></span></button>', esc_attr( $settings_title ), $hide_settings_link_class );
 
 		// Should we show the icon that the field is being used as a link to single entry?
 		$hide_show_as_link_class = empty( $this->settings['show_as_link'] ) ? 'hide-if-js' : '';
@@ -172,17 +173,22 @@ abstract class GravityView_Admin_View_Item {
 		}
 		$label = esc_attr( $label );
 
+		if ( $this->item['icon'] && ! \GV\Utils::get( $this->item, 'parent' ) ) {
+			$label = '<i class="dashicons ' . esc_attr( $this->item['icon'] ) . '"></i> ' . $label;
+		}
+
 		$output = '<button class="gv-add-field screen-reader-text">' . sprintf( esc_html__( 'Add "%s"', 'gravityview' ), $label ) . '</button>';
 
 		$output .= '<h5 class="selectable gfield field-id-' . esc_attr( $this->id ) . '">';
 
-		if ( ! empty( $this->item['parent'] ) ) {
-			$label .= ' <small>(' . esc_attr( $this->item['parent']['label'] ) . ')</small>';
+		$parent_label = '';
+
+    if ( ! empty( $this->item['parent'] ) ) {
+			$parent_label = ' <small>(' . esc_attr( $this->item['parent']['label'] ) . ')</small>';
 		}
 
 		// Name of field / widget
-		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . $this->get_item_info( false ) . '">' . $label . '</span>';
-
+		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . $this->get_item_info( false ) . '">' . $label . $parent_label . '</span>';
 
 		$output .= '<span class="gv-field-controls">' . $settings_link . $show_as_link . '<button class="gv-remove-field" aria-label="' . esc_attr( $delete_title ) . '" title="' . esc_attr( $delete_title ) . '"><span class="dashicons-dismiss dashicons"></span></button></span>';
 

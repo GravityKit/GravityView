@@ -6,7 +6,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
@@ -40,6 +40,7 @@ class GravityView_Edit_Entry {
             $this->load_components( 'admin' );
         }
 
+		$this->load_components( 'locking' );
 
         $this->load_components( 'render' );
 
@@ -114,39 +115,36 @@ class GravityView_Edit_Entry {
 	 * For users that have no edit rights on any of the current entries.
 	 *
 	 * @param bool $visible Visible or not.
-	 * @param \GF\Field $field The field.
+	 * @param \GV\Field $field The field.
 	 * @param \GV\View $view The View context.
 	 *
 	 * @return bool
 	 */
 	public function maybe_not_visible( $visible, $field, $view ) {
+
 		if ( 'edit_link' !== $field->ID ) {
 			return $visible;
-		}
-
-		if ( ! is_user_logged_in() ) {
-			return false;
 		}
 
 		if ( ! $view ) {
 			return $visible;
 		}
 
-		static $visiblity_cache_for_view = array();
+		static $visibility_cache_for_view = array();
 
-		if ( ! is_null( $result = \GV\Utils::get( $visiblity_cache_for_view, $view->ID, null ) ) ) {
+		if ( ! is_null( $result = \GV\Utils::get( $visibility_cache_for_view, $view->ID, null ) ) ) {
 			return $result;
 		}
 
 		foreach ( $view->get_entries()->all() as $entry ) {
 			if ( self::check_user_cap_edit_entry( $entry->as_entry(), $view ) ) {
 				// At least one entry is deletable for this user
-				$visiblity_cache_for_view[ $view->ID ] = true;
+				$visibility_cache_for_view[ $view->ID ] = true;
 				return true;
 			}
 		}
 
-		$visiblity_cache_for_view[ $view->ID ] = false;
+		$visibility_cache_for_view[ $view->ID ] = false;
 
 		return false;
 	}
@@ -220,7 +218,13 @@ class GravityView_Edit_Entry {
 		    $url = add_query_arg( $params, $url );
 	    }
 
-        return $url;
+		/**
+		 * @filter `gravityview/edit/link` Filter the edit URL link.
+		 * @param[in,out] string $url The url.
+		 * @param array $entry The entry.
+		 * @param \GV\View $view The View.
+		 */
+		return apply_filters( 'gravityview/edit/link', $url, $entry, \GV\View::by_id( $view_id  ) );
     }
 
 	/**
@@ -282,7 +286,7 @@ class GravityView_Edit_Entry {
      * Needs to be used combined with GravityView_Edit_Entry::user_can_edit_entry for maximum security!!
      *
      * @param  array $entry Gravity Forms entry array
-     * @param \GV\View int $view_id ID of the view you want to check visibility against {@since 1.9.2}. Required since 2.0
+     * @param \GV\View|int $view ID of the view you want to check visibility against {@since 1.9.2}. Required since 2.0
      * @return bool
      */
     public static function check_user_cap_edit_entry( $entry, $view = 0 ) {
@@ -323,7 +327,6 @@ class GravityView_Edit_Entry {
 
         } else {
 
-
             $current_user = wp_get_current_user();
 
             // User edit is disabled
@@ -344,6 +347,8 @@ class GravityView_Edit_Entry {
             } else if( ! is_user_logged_in() ) {
 
                 gravityview()->log->debug( 'No user defined; edit entry requires logged in user' );
+
+	            $user_can_edit = false; // Here just for clarity
             }
 
         }
@@ -357,7 +362,7 @@ class GravityView_Edit_Entry {
          */
         $user_can_edit = apply_filters( 'gravityview/edit_entry/user_can_edit_entry', $user_can_edit, $entry, $view_id );
 
-        return (bool)$user_can_edit;
+        return (bool) $user_can_edit;
     }
 
 

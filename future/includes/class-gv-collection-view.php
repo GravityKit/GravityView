@@ -10,6 +10,15 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * A collection of \GV\View objects.
  */
 class View_Collection extends Collection {
+
+	/**
+	 * @inheritDoc
+	 * @return View[]
+	 */
+	public function all() {
+		return parent::all();
+	}
+
 	/**
 	 * Add a \GV\View to this collection.
 	 *
@@ -173,7 +182,7 @@ class View_Collection extends Collection {
 				if ( ! $view ) {
 					continue;
 				}
-				
+
 				$view->settings->update( $shortcode->atts );
 				$views->add( $view );
 			}

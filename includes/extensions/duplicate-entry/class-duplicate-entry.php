@@ -7,7 +7,7 @@
  * @since     2.5
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
@@ -48,7 +48,7 @@ final class GravityView_Duplicate_Entry {
 
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ), 10, 3 );
 
-		add_action( 'gravityview_before', array( $this, 'display_message' ) );
+		add_action( 'gravityview_before', array( $this, 'maybe_display_message' ) );
 
 		// For the Duplicate Entry Link, you don't want visible to all users.
 		add_filter( 'gravityview_field_visibility_caps', array( $this, 'modify_visibility_caps' ), 10, 5 );
@@ -64,6 +64,8 @@ final class GravityView_Duplicate_Entry {
 
 		// Handle duplicate action in the backend
 		add_action( 'gform_pre_entry_list', array( $this, 'maybe_duplicate_list' ) );
+
+		add_filter( 'gravityview/sortable/field_blacklist', array( $this, '_filter_sortable_fields' ), 1 );
 	}
 
 	/**
@@ -79,6 +81,24 @@ final class GravityView_Duplicate_Entry {
 		}
 
 		return self::$instance;
+	}
+
+	/**
+	 * Prevent users from being able to sort by the Duplicate field
+	 *
+	 * @since 2.8.3
+	 *
+	 * @param array $fields Array of field types not editable by users
+	 *
+	 * @return array
+	 */
+	public function _filter_sortable_fields( $fields ) {
+
+		$fields = (array) $fields;
+
+		$fields[] = 'duplicate_link';
+
+		return $fields;
 	}
 
 	/**
@@ -159,6 +179,7 @@ final class GravityView_Duplicate_Entry {
 				'label' => __( 'Duplicate Entry', 'gravityview' ),
 				'type'  => 'duplicate_link',
 				'desc'  => __( 'A link to duplicate the entry. Respects the Duplicate Entry permissions.', 'gravityview' ),
+				'icon'  => 'dashicons-controls-repeat',
 			);
 		}
 
@@ -281,7 +302,7 @@ final class GravityView_Duplicate_Entry {
 	public function process_duplicate() {
 
 		// If the form is submitted
-		if ( ! isset( $_GET['action'] ) || 'duplicate' !== $_GET['action'] || ! isset( $_GET['entry_id'] ) ) {
+		if ( ( ! isset( $_GET['action'] ) ) || 'duplicate' !== $_GET['action'] || ( ! isset( $_GET['entry_id'] ) ) ) {
 			return;
 		}
 
@@ -348,7 +369,7 @@ final class GravityView_Duplicate_Entry {
 			);
 		}
 
-		$redirect_to_base = esc_url_raw( remove_query_arg( array( 'action', 'gvid' ) ) );
+		$redirect_to_base = esc_url_raw( remove_query_arg( array( 'action', 'gvid', 'entry_id' ) ) );
 		$redirect_to = add_query_arg( $messages, $redirect_to_base );
 
 		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
@@ -388,13 +409,15 @@ final class GravityView_Duplicate_Entry {
 			return new WP_Error( 'gravityview-duplicate-entry-missing', __( 'The entry does not exist.', 'gravityview' ) );
 		}
 
+		$form = GFAPI::get_form( $entry['form_id'] );
+
 		$row['id'] = null;
 		$row['date_created'] = date( 'Y-m-d H:i:s', time() );
 		$row['date_updated'] = $row['date_created'];
 		$row['is_starred'] = false;
 		$row['is_read'] = false;
-		$row['ip'] = GFFormsModel::get_ip();
-		$row['source_url'] = esc_url_raw( remove_query_arg( array( 'action', 'gvid' ) ) );
+		$row['ip'] = rgars( $form, 'personalData/preventIP' ) ? '' : GFFormsModel::get_ip();
+		$row['source_url'] = esc_url_raw( remove_query_arg( array( 'action', 'gvid', 'result', 'duplicate', 'entry_id' ) ) );
 		$row['user_agent'] = \GV\Utils::_SERVER( 'HTTP_USER_AGENT' );
 		$row['created_by'] = wp_get_current_user()->ID;
 
@@ -660,14 +683,21 @@ final class GravityView_Duplicate_Entry {
 	 *
 	 * @return void
 	 */
-	public function display_message( $current_view_id = 0 ) {
-
+	public function maybe_display_message( $current_view_id = 0 ) {
 		if ( empty( $_GET['status'] ) || ! self::verify_nonce() ) {
 			return;
 		}
 
 		// Entry wasn't duplicated from current View
 		if ( isset( $_GET['view_id'] ) && ( intval( $_GET['view_id'] ) !== intval( $current_view_id ) ) ) {
+			return;
+		}
+
+		$this->display_message();
+	}
+
+	public function display_message() {
+		if ( empty( $_GET['status'] ) || empty( $_GET['duplicate'] ) ) {
 			return;
 		}
 
@@ -708,7 +738,6 @@ final class GravityView_Duplicate_Entry {
 	 * @param int $form_id The form ID.
 	 * @param int $field_id The field ID.
 	 * @param string $value The value.
-	 * @param array $entry The entryvalue The value.
 	 * @param array $entry The entry.
 	 * @param string $query_string The query.
 	 *
@@ -717,7 +746,7 @@ final class GravityView_Duplicate_Entry {
 	public function make_duplicate_link_row( $form_id, $field_id, $value, $entry, $query_string ) {
 
 		/**
-		 * @filter `gravityview/duplicate/backend/enable` Allows developers to disable the duplicate link on the backend.
+		 * @filter `gravityview/duplicate/backend/enable` Disables the duplicate link on the backend.
 		 * @param[in,out] boolean $enable True by default. Enabled.
 		 * @param int $form_id The form ID.
 		 */
@@ -726,7 +755,7 @@ final class GravityView_Duplicate_Entry {
 		}
 
 		?>
-		<span class="duplicate">
+		<span class="gv-duplicate">
 			|
 			<a href="<?php echo wp_nonce_url( add_query_arg( 'entry_id', $entry['id'] ), self::get_nonce_key( $entry['id'] ), 'duplicate' ); ?>"><?php esc_html_e( 'Duplicate', 'gravityview' ); ?></a>
 		</span>

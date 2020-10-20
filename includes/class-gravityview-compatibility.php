@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
@@ -252,7 +252,6 @@ class GravityView_Compatibility {
 	 *
 	 * @since 1.12
 	 *
-	 * @access public
 	 * @return boolean True: checks have been passed; GV is fine to run; False: checks have failed, don't continue loading
 	 */
 	public static function check_gravityforms() {
@@ -375,9 +374,8 @@ class GravityView_Compatibility {
 	/**
 	 * Check if specified plugin is active, inactive or not installed
 	 *
-	 * @access public
-	 * @static
 	 * @param string $location (default: '')
+	 *
 	 * @return boolean|string True: plugin is active; False: plugin file doesn't exist at path; 'inactive' it's inactive
 	 */
 	public static function get_plugin_status( $location = '' ) {

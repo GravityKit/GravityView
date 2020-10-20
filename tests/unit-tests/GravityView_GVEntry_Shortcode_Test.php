@@ -8,6 +8,8 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
 class GravityView_GVEntry_Shortcode_Test extends GV_UnitTestCase {
 	public function test_shortcode() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'fields' => array(
@@ -22,6 +24,7 @@ class GravityView_GVEntry_Shortcode_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $view );
 
@@ -114,6 +117,8 @@ class GravityView_GVEntry_Shortcode_Test extends GV_UnitTestCase {
 		$this->assertEmpty( $gventry->callback( array() ) );
 
 		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'fields' => array(
@@ -128,6 +133,7 @@ class GravityView_GVEntry_Shortcode_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $view );
 

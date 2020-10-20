@@ -14,9 +14,16 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 <table class="form-table striped"><?php
 
 	/**
-	 * @since  1.5.1
+	 * Render additional Permissions metabox settings
+	 * @since 2.9
+	 * @param array $current_settings
 	 */
-	GravityView_Render_Settings::render_setting_row( 'user_delete', $current_settings );
+	do_action( 'gravityview/metaboxes/permissions_before', $current_settings );
+
+	/**
+	 * @since 1.15.2
+	 */
+	GravityView_Render_Settings::render_setting_row( 'embed_only', $current_settings );
 
 	/**
 	 * @since  2.5
@@ -40,9 +47,15 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 	GravityView_Render_Settings::render_setting_row( 'csv_enable', $current_settings );
 
 	/**
-	 * @since develop
+	 * @since 2.4
 	 */
 	GravityView_Render_Settings::render_setting_row( 'csv_nolimit', $current_settings );
 
+	/**
+	 * Render additional Permissions metabox settings, like Delete Entry (if available)
+	 * @since 2.9
+	 * @param array $current_settings
+	 */
+	do_action( 'gravityview/metaboxes/permissions_after', $current_settings );
 	?>
 </table>
