@@ -1040,15 +1040,14 @@ HTML;
 					'type' => 'checkbox',
 					'label' => __( 'Display "Powered By" Link', 'gravityview' ),
 					'default_value' => $default_settings['powered_by'],
-					'horizontal' => 1,
 					'choices' => array(
 						array(
-							'label' => esc_html__( 'Display a "Powered by GravityView" link below Views.', 'gravityview' ),
+							'label' => esc_html__( 'Display a "Powered by GravityView" link', 'gravityview' ),
 							'value' => '1',
 							'name'  => 'powered_by',
 						),
 					),
-					'description'   => __( 'When enabled, a "powered by" link will be displayed in the footer of Views. Help us spread the word!', 'gravityview' ),
+					'description'   => __( 'When enabled, a "Powered by GravityView" link will be displayed below Views. Help us spread the word!', 'gravityview' ),
 				),
 				array(
 					'name' => 'affiliate_id',
@@ -1056,9 +1055,10 @@ HTML;
 					'input_type' => 'number',
 					'default_value' => null,
 					'label' => __( 'Affiliate ID', 'gravityview' ),
-					'description' => sprintf( __( 'Earn affiliate credit when referring customers to GravityView. <a href="%s"> Register as an affliate </a>', 'gravityview' ), $affiliate_link ),
+					'description' => sprintf( __( 'Earn money when people clicking your links become GravityView customers. <a href="%s">Register as an affiliate</a>!', 'gravityview' ), $affiliate_link ),
 					'class' => 'code',
-					'dependency' => 'powered_by', // TODO: Hide this setting when Powered By is disabled
+					'placeholder' => '123',
+					'data-requires' => 'powered_by',
 				),
 				array(
 						'name'          => 'beta',
