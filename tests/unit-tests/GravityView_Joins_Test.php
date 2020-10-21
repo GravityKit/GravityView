@@ -696,19 +696,23 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 
 		$_GET = array( 'filter_1' => 'Mari' );
 		$entries = $view->get_entries()->all();
+		$entries_chefs = array( $entries[0][ $chefs['id'] ]['1'], $entries[1][ $chefs['id'] ]['1'] );
+		$entries_souschefs = array( $entries[0][ $souschefs['id'] ]['1'], $entries[1][ $souschefs['id'] ]['1'] );
 		$this->assertCount( 2, $entries );
-		$this->assertEquals( 'Maria Henry', $entries[0][ $chefs['id'] ]['1'] );
-		$this->assertEquals( 'Mary Jane', $entries[0][ $souschefs['id'] ]['1'] );
-		$this->assertEquals( 'Maria Henry', $entries[1][ $chefs['id'] ]['1'] );
-		$this->assertEquals( 'Jane Henryson', $entries[1][ $souschefs['id'] ]['1'] );
+		$this->assertContains( 'Maria Henry', $entries_chefs );
+		$this->assertContains( 'Mary Jane', $entries_souschefs );
+		$this->assertContains( 'Maria Henry', $entries_chefs );
+		$this->assertContains( 'Jane Henryson', $entries_souschefs );
 
 		$_GET = array( 'filter_1:' . $chefs['id'] => 'Marr' );
 		$entries = $view->get_entries()->all();
+		$entries_chefs = array( $entries[0][ $chefs['id'] ]['1'], $entries[1][ $chefs['id'] ]['1'] );
+		$entries_souschefs = array( $entries[0][ $souschefs['id'] ]['1'], $entries[1][ $souschefs['id'] ]['1'] );
 		$this->assertCount( 2, $entries );
-		$this->assertEquals( 'Henry Marrek', $entries[0][ $chefs['id'] ]['1'] );
-		$this->assertEquals( 'Marick Bonobo', $entries[0][ $souschefs['id'] ]['1'] );
-		$this->assertEquals( 'Henry Marrek', $entries[1][ $chefs['id'] ]['1'] );
-		$this->assertEquals( 'Henry Oswald', $entries[1][ $souschefs['id'] ]['1'] );
+		$this->assertContains( 'Henry Marrek', $entries_chefs );
+		$this->assertContains( 'Marick Bonobo', $entries_souschefs );
+		$this->assertContains( 'Henry Marrek', $entries_chefs );
+		$this->assertContains( 'Henry Oswald', $entries_souschefs );
 
 		$_GET = array( 'filter_1:' . $souschefs['id'] => 'Marr' );
 		$entries = $view->get_entries()->all();
@@ -753,10 +757,12 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 
 		$_GET = array( 'filter_1' => 'Mari' );
 		$entries = $view->get_entries()->all();
-		$this->assertEquals( 'Maria Henry', $entries[0][ $chefs['id'] ]['1'] );
-		$this->assertEquals( 'Mary Jane', $entries[0][ $souschefs['id'] ]['1'] );
-		$this->assertEquals( 'Maria Henry', $entries[1][ $chefs['id'] ]['1'] );
-		$this->assertEquals( 'Jane Henryson', $entries[1][ $souschefs['id'] ]['1'] );
+		$entries_chefs = array( $entries[0][ $chefs['id'] ]['1'], $entries[1][ $chefs['id'] ]['1'] );
+		$entries_souschefs = array( $entries[0][ $souschefs['id'] ]['1'], $entries[1][ $souschefs['id'] ]['1'] );
+		$this->assertContains( 'Maria Henry', $entries_chefs );
+		$this->assertContains( 'Mary Jane', $entries_souschefs );
+		$this->assertContains( 'Maria Henry', $entries_chefs );
+		$this->assertContains( 'Jane Henryson', $entries_souschefs );
 
 		$_GET = array( 'filter_1:' . $chefs['id'] => 'Marr' );
 		$this->assertCount( 4, $view->get_entries()->all() );

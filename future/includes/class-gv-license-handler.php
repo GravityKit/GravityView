@@ -226,10 +226,8 @@ class License_Handler {
 	 */
 	private function get_license_message( $license_data ) {
 		if ( empty( $license_data ) ) {
+			$class   = 'hide';
 			$message = '';
-			if (gravityview()->plugin->is_GF_25()) {
-				$message = $this->generate_license_box( $message, 'hide' );
-			}
 		} else {
 			if( ! empty( $license_data->error ) ) {
 				$class = 'error';
@@ -239,11 +237,9 @@ class License_Handler {
 			}
 
 			$message = sprintf( '<p><strong>%s: %s</strong></p>', $this->strings( 'status' ), $this->strings( $string_key, $license_data ) );
-
-			$message = $this->generate_license_box( $message, $class );
 		}
 
-		return $message;
+		return $this->generate_license_box( $message, $class );
 	}
 
 	/**
