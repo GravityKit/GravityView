@@ -265,6 +265,37 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
+				<h3>2.9.2 on October 21, 2020</h3>
+
+				<ul>
+					<li>Added: GravityView is now 100% compatible with upcoming <a href="https://www.gravityforms.com/gravity-forms-2-5-beta-2/">Gravity Forms 2.5</a>!</li>
+					<li>Added: New View setting to redirect users to a custom URL after deleting an entry</li>
+					<li>Added: An option to display "Powered by GravityView" link under your Views. If you're a <a href="https://gravityview.co/account/affiliate/">GravityView affiliate</a>, you can earn 20% of sales generated from your link!</li>
+					<li>Improved: Duplicate Entry field is only visible for logged-in users with edit or duplicate entry permissions</li>
+					<li>Modified: Remove HTML from Website and Email fields in CSV output</li>
+					<li>Fixed: Possible fatal error when Gravity Forms is inactive</li>
+					<li>Fixed: Export of View entries as a CSV would result in a 404 error on some hosts</li>
+					<li>Fixed: When "Make Phone Number Clickable" is checked, disable the "Link to single entry" setting in Phone field settings</li>
+					<li>Fixed: Entries filtered by creation date using relative dates (e.g., "today", "-1 day") respects WordPress's timezone offset</li>
+					<li>Fixed: Partial edited in GravityView were being duplicated</li>
+					<li>Fixed: Add a better error message when trying to activate a disabled license due to a refund</li>
+					<li>Tweak: Improvements to tooltip behavior in View editor</li>
+					<li>Tweak: Don't show "Open links in new window" for Custom Content field</li>
+					<li>Tweak: Removed "Open link in the same window?" setting from Website field
+						<ul>
+							<li>Note: For existing Views, if both "Open link in the same window?" and "Open link in a new tab or window?" settings were checked, the link will now <em>not open in a new tab</em>. We hope no one had them both checked; this would have caused a rift in space-time and a room full of dark-matter rainbows.</li>
+						</ul></li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added brand-new unit testing and acceptance testing...stay tuned for a write-up on how to easily run the GravityView test suite</li>
+					<li>Changed: <code>/templates/fields/field-website-html.php</code> and <code>/templates/deprecated/fields/website.php</code> to use new <code>target=_blank</code> logic</li>
+					<li>Fixed: License key activation when <code>GRAVITYVIEW_LICENSE_KEY</code> was defined</li>
+					<li>Deprecated: Never used method <code>GravityView_Delete_Entry::set_entry()</code></li>
+				</ul>
+
 				<h3>2.9.1 on September 1, 2020</h3>
 
 				<ul>
