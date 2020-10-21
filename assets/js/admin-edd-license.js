@@ -27,6 +27,7 @@
 				.on( 'gv-edd-deactivated', GV_EDD.deactivated )
 				.on( 'gv-edd-inactive gv-edd-other', GV_EDD.other )
 				.on( 'click', 'a[rel*=external]', GV_EDD.open_external_links )
+				.on( 'change', '#gform-settings', GV_EDD.toggle_checkboxes )
 				.trigger( 'gv-init' );
 
 		},
@@ -283,7 +284,56 @@
 			var mediaQueryList = window.matchMedia( QUERY );
 
 			return !mediaQueryList.matches;
-		}
+		},
+
+		/**
+		 * Show/hide checkboxes that have visibility conditionals
+		 * @param  {jQuery} e
+		 */
+		toggle_checkboxes: function (  e ) {
+			GV_EDD.toggle_required( e.currentTarget, 'requires', false );
+			GV_EDD.toggle_required( e.currentTarget, 'requires-not', true );
+		},
+
+		/**
+		 * Process conditional show/hide logic
+		 *
+		 * @since 2.9.2
+		 *
+		 * @param {jQueryEvent} currentTarget
+		 * @param {string} data_attr The attribute to find in the target, like `requires` or `requires-not`
+		 * @param {boolean} reverse_logic If true, find items that do not match the attribute value. True = `requires-not`; false = `requires`
+		 */
+		toggle_required: function( currentTarget, data_attr, reverse_logic ) {
+
+			var $parent = $( currentTarget );
+
+			$parent
+				.find( '[data-' + data_attr + ']' )
+				.each( function ()  {
+					var requires = $( this ).data( data_attr ),
+						requires_array = requires.split('='),
+						requires_name = requires_array[0],
+						requires_value = requires_array[1];
+
+					var $input = $parent.find(':input[name$="' + requires_name + '"]').not('[type=hidden]');
+
+					if ( $input.is(':checkbox') ) {
+						if ( reverse_logic ) {
+							$(this).parents('.gform-settings-field').toggle( $input.not(':checked') );
+						} else {
+							$(this).parents('.gform-settings-field').toggle( $input.is(':checked') );
+						}
+					} else if ( requires_value !== undefined ) {
+						if ( reverse_logic ) {
+							$(this).parents('.gform-settings-field').toggle( $input.val() !== requires_value );
+						} else {
+							$(this).parents('.gform-settings-field').toggle( $input.val() === requires_value );
+						}
+					}
+				});
+
+		},
 	};
 
 	GV_EDD.init();

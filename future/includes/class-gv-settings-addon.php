@@ -673,6 +673,7 @@ HTML;
 			'flexbox_search'       => '1',
 			'rest_api'             => '0',
 			'beta'                 => '0',
+			'powered_by'           => '0',
 		);
 
 		/**
@@ -959,6 +960,8 @@ HTML;
 
 		$disabled_attribute = \GVCommon::has_cap( 'gravityview_edit_settings' ) ? false : 'disabled';
 
+		$affiliate_link = 'https://gravityview.co/account/affiliate/?utm_source=in-plugin&utm_medium=setting&utm_content=Register as an affiliate';
+
 		$fields = array(
 				array(
 						'name'          => 'support-email',
@@ -1032,6 +1035,31 @@ HTML;
 								'description'   => __( 'Enable View and Entry access via the REST API? Regular per-View restrictions apply (private, password protected, etc.).', 'gravityview' ),
 								'tooltip'       => '<p>' . esc_html__( 'If you are unsure, choose the Disable setting.', 'gravityview' ) . '</p>',
 						) : array(),
+				array(
+					'name' => 'powered_by',
+					'type' => 'checkbox',
+					'label' => __( 'Display "Powered By" Link', 'gravityview' ),
+					'default_value' => $default_settings['powered_by'],
+					'choices' => array(
+						array(
+							'label' => esc_html__( 'Display a "Powered by GravityView" link', 'gravityview' ),
+							'value' => '1',
+							'name'  => 'powered_by',
+						),
+					),
+					'description'   => __( 'When enabled, a "Powered by GravityView" link will be displayed below Views. Help us spread the word!', 'gravityview' ),
+				),
+				array(
+					'name' => 'affiliate_id',
+					'type' => 'text',
+					'input_type' => 'number',
+					'default_value' => null,
+					'label' => __( 'Affiliate ID', 'gravityview' ),
+					'description' => sprintf( __( 'Earn money when people clicking your links become GravityView customers. <a href="%s" rel="external">Register as an affiliate</a>!', 'gravityview' ), esc_url( $affiliate_link ) ),
+					'class' => 'code',
+					'placeholder' => '123',
+					'data-requires' => 'powered_by',
+				),
 				array(
 						'name'          => 'beta',
 						'type'          => 'checkbox',
