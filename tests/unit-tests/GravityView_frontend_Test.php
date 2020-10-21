@@ -28,7 +28,6 @@ class GravityView_frontend_Test extends GV_UnitTestCase {
 			'end_date' => '2015-12-31',
 		);
 
-
 		$search_dates = GravityView_frontend::process_search_dates( array(), $date_range_2015 );
 		$this->assertEquals( $date_range_2015, $search_dates, 'No View settings to override; use the passed array' );
 
@@ -38,7 +37,6 @@ class GravityView_frontend_Test extends GV_UnitTestCase {
 			'start_date' => $date_range_2015['start_date'],
 			'end_date' => $date_range_2014['end_date'],
 		), $search_dates, 'The start date is after the end date, which logs a GravityView error but doesn\'t throw any exceptions. This is expected behavior.' );
-
 
 		$search_dates = GravityView_frontend::process_search_dates( $date_range_2015, $date_range_june_2015 );
 		$this->assertEquals( $date_range_june_2015, $search_dates, 'The 2015 June passed values are all inside 2015 View settings. Use the passed values.' );
@@ -122,11 +120,12 @@ class GravityView_frontend_Test extends GV_UnitTestCase {
 			$this->assertEquals( array( 'start_date' => $wp_date_relative[ $key ] ), $result );
 		}
 
-		# Revert back to original function definitions
+		# Revert back to original function definitions/timezone
 		runkit7_function_remove( 'time' );
 		runkit7_function_remove( 'strtotime' );
 		runkit7_function_copy( 'time_original', 'time' );
 		runkit7_function_copy( 'strtotime_original', 'strtotime' );
+		update_option( 'gmt_offset', '0' );
 	}
 
 	/**
