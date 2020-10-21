@@ -16,9 +16,11 @@ Rakefile export-ignore
 .travis.yml export-ignore
 .bowerrc export-ignore
 .coveralls.yml export-ignore
+phpcs.xml.dist export-ignore
+codeception.dist.yml export-ignore
+bower.json export-ignore
 
 # Folders
-
 /.idea export-ignore
 /.tx export-ignore
 /node_modules export-ignore
@@ -27,3 +29,6 @@ Rakefile export-ignore
 /tests export-ignore
 /tests/* export-ignore
 /tests/unit-tests/* export-ignore
+/.circleci export-ignore
+/.github export-ignore
+/assets/css/scss export-ignore

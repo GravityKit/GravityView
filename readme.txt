@@ -23,11 +23,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Improved: Duplicate Entry field is only visible for logged-in users with edit or duplicate entry permissions
 * Modified: Removed "Open link in the same window?" setting from Website field
 	- Note: For existing Views, if both "Open link in the same window?" and "Open link in a new tab or window?" settings were checked, the link will now _not open in a new tab_. We hope no one had them both checked; this would have caused a rift in space-time and a room full of dark-matter rainbows.
 * Fixed: Exporting entries using the `/csv/` endpoint not working on some Multisite installations
 * Fixed: When "Make Phone Number Clickable" is checked, disable the "Link to single entry" setting in Phone field settings
 * Fixed: Entries filtered by creation date using relative dates (e.g., "today", "-1 day") respects WordPress's timezone offset
+* Fixed: Partial entries being duplicated when editing them from the View
 
 __Developer Updates:__
 

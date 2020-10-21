@@ -65,6 +65,10 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Partial_Entries extends GravityView
 
 		$partial_entry_id = \GV\Utils::get( $entry, 'partial_entry_id' );
 
+		if ( empty( $partial_entry_id ) ) {
+			return;
+		}
+
 		// Set the expected $_POST key for the Add-On to use
 		$_POST['partial_entry_id'] = $partial_entry_id;
 
