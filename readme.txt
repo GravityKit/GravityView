@@ -30,11 +30,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Modified: Remove HTML from Website and Email fields in CSV output
 * Fixed: Possible fatal error when Gravity Forms is inactive
 * Fixed: Export of View entries as a CSV would result in a 404 error on some hosts
-* Fixed: When "Make Phone Number Clickable" is checked, disable the "Link to single entry" setting in Phone field settings
-* Fixed: Entries filtered by creation date using relative dates (e.g., "today", "-1 day") respects WordPress's timezone offset
-* Fixed: Partial edited in GravityView were being duplicated
-* Fixed: Add a better error message when trying to activate a disabled license due to a refund
+* Fixed: Entries filtered by creation date using relative dates (e.g., "today", "-1 day") did not respect WordPress's timezone offset
+* Fixed: Partial entries edited in GravityView were being duplicated
+* Fixed: Trying to activate a license disabled due to a refund showed an empty error message
 * Tweak: Improvements to tooltip behavior in View editor
+* Tweak: When "Make Phone Number Clickable" is checked, disable the "Link to single entry" setting in Phone field settings
 * Tweak: Don't show "Open links in new window" for Custom Content field
 * Tweak: Removed "Open link in the same window?" setting from Website field
 	- Note: For existing Views, if both "Open link in the same window?" and "Open link in a new tab or window?" settings were checked, the link will now _not open in a new tab_. We hope no one had them both checked; this would have caused a rift in space-time and a room full of dark-matter rainbows.
