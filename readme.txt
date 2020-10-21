@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Improved: Duplicate Entry field is only visible for logged-in users with edit or duplicate entry permissions
 * Modified: Removed "Open link in the same window?" setting from Website field
 	- Note: For existing Views, if both "Open link in the same window?" and "Open link in a new tab or window?" settings were checked, the link will now _not open in a new tab_. We hope no one had them both checked; this would have caused a rift in space-time and a room full of dark-matter rainbows.
 * Fixed: Exporting entries using the `/csv/` endpoint not working on some Multisite installations
