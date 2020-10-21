@@ -35,9 +35,9 @@ class AcceptanceTester extends \Codeception\Actor {
 		return sprintf( '[data-automation-id="%s"]', $id );
 	}
 
-	public function goToPluginPage() {
+	public function goToPluginPage( $page ) {
 
-		return $this->openPluginPage();
+		return $this->openPluginPage( $page );
 	}
 
 	public function openPluginPage( $page = 'views' ) {
@@ -68,6 +68,14 @@ class AcceptanceTester extends \Codeception\Actor {
 		$I->amOnPage( "/view/{$view_slug}/entry/{$entry_id}" );
 	}
 
+	/**
+	 * Import a form file located at {path to gravityview}/tests/data/forms/{$json}
+	 *
+	 * @param string $json Name of file in /tests/acceptance/data/forms/
+	 * @param null $title Override the title of the fY
+	 *
+	 * @return int Form ID as created in Gravity Forms
+	 */
 	public function importForm( $json, $title = null ) {
 
 		$json = json_decode( file_get_contents( codecept_data_dir() . "forms/{$json}" ), true );
@@ -87,6 +95,11 @@ class AcceptanceTester extends \Codeception\Actor {
 		return (int) $result[0];
 	}
 
+	/**
+	 * Deletes a Gravity Forms form
+	 *
+	 * @param int $form_id ID of the form to delete
+	 */
 	public function deleteForm( $form_id ) {
 
 		$result = \GFAPI::delete_form( $form_id );

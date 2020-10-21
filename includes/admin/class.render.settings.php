@@ -89,7 +89,7 @@ class GravityView_Render_Settings {
 		 * @param[in]  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
 		 * @param[in]  string      $context     What context are we in? Example: `single` or `directory`
 		 * @param[in]  string      $input_type  (textarea, list, select, etc.)
-		 * @param[in]  int         $form_id     The form ID. @since develop
+		 * @param[in]  int         $form_id     The form ID. {@since 2.5}
 		 */
 		$field_options = apply_filters( "gravityview_template_{$field_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
@@ -100,7 +100,7 @@ class GravityView_Render_Settings {
 		 * @param[in]  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
 		 * @param[in]  string      $context     What context are we in? Example: `single` or `directory`
 		 * @param[in]  string      $input_type  (textarea, list, select, etc.)
-		 * @param[in]  int         $form_id     The form ID. @since develop
+		 * @param[in]  int         $form_id     The form ID. {@since 2.5}
 		 */
 		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
