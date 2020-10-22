@@ -273,6 +273,7 @@ module.exports = function(grunt) {
 						'!vendor/**',
 						'!includes/lib/xml-parsers/**',
 						'!includes/lib/jquery-cookie/**',
+						'!.test_dependencies/**',
 					]
 				}
 			}
