@@ -64,7 +64,7 @@ jobs:
     <<: *default_job_config
     steps:
       - attach_workspace:
-          at: /home/circleci/plugin
+          at: /home/circleci
       - run:
           name: Running PHP 5.4 unit tests
           command: |
@@ -74,7 +74,7 @@ jobs:
     <<: *default_job_config
     steps:
       - attach_workspace:
-          at: /home/circleci/plugin
+          at: /home/circleci
       - run:
           name: Running PHP 5.5 unit tests
           command: |
@@ -84,7 +84,7 @@ jobs:
     <<: *default_job_config
     steps:
       - attach_workspace:
-          at: /home/circleci/plugin
+          at: /home/circleci
       - run:
           name: Running PHP 5.6 unit tests
           command: |
@@ -94,7 +94,7 @@ jobs:
     <<: *default_job_config
     steps:
       - attach_workspace:
-          at: /home/circleci/plugin
+          at: /home/circleci
       - run:
           name: Running PHP 7.0 unit tests
           command: |
@@ -104,7 +104,7 @@ jobs:
     <<: *default_job_config
     steps:
       - attach_workspace:
-          at: /home/circleci/plugin
+          at: /home/circleci
       - run:
           name: Running PHP 7.1 unit tests
           command: |
@@ -114,7 +114,7 @@ jobs:
     <<: *default_job_config
     steps:
       - attach_workspace:
-          at: /home/circleci/plugin
+          at: /home/circleci
       - run:
           name: Running PHP 7.2 unit tests
           command: |
@@ -124,7 +124,7 @@ jobs:
     <<: *default_job_config
     steps:
       - attach_workspace:
-          at: /home/circleci/plugin
+          at: /home/circleci
       - run:
           name: Running PHP 7.3 unit tests
           command: |
@@ -134,7 +134,7 @@ jobs:
     <<: *default_job_config
     steps:
       - attach_workspace:
-          at: /home/circleci/plugin
+          at: /home/circleci
       - run:
           name: Running PHP 7.4 unit tests
           command: |
@@ -144,7 +144,7 @@ jobs:
     <<: *default_job_config
     steps:
       - attach_workspace:
-          at: /home/circleci/plugin
+          at: /home/circleci
       - run:
           name: Building and packaging
           command: |
