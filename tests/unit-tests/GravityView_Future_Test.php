@@ -51,20 +51,22 @@ class GVFuture_Test extends GV_UnitTestCase {
      * @covers \GV\Plugin::relpath()
 	 */
 	public function test_plugin_dir_and_url_and_relpath() {
+		$plugin_folder_name = basename(GRAVITYVIEW_DIR);
 	    $this->assertEquals( GRAVITYVIEW_DIR, gravityview()->plugin->dir() );
-		$this->assertStringEndsWith( '/gravityview/test/this.php', strtolower( gravityview()->plugin->dir( 'test/this.php' ) ) );
-		$this->assertStringEndsWith( '/gravityview/and/this.php', strtolower( gravityview()->plugin->dir( '/and/this.php' ) ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name}/test/this.php", strtolower( gravityview()->plugin->dir( 'test/this.php' ) ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name}/and/this.php", strtolower( gravityview()->plugin->dir( '/and/this.php' ) ) );
 
 		$dirname = trailingslashit( dirname( plugin_basename( GRAVITYVIEW_FILE ) ) );
+
 		$this->assertEquals( $dirname, gravityview()->plugin->relpath() );
 		$this->assertEquals( $dirname . 'languages/', gravityview()->plugin->relpath('/languages/') );
 		$this->assertEquals( $dirname . 'languages', gravityview()->plugin->relpath('languages') );
 
 		/** Due to how WP_PLUGIN_DIR is different in test mode, we are only able to check bits of the URL */
 		$this->assertStringStartsWith( 'http', strtolower( gravityview()->plugin->url() ) );
-		$this->assertStringEndsWith( '/gravityview/', strtolower( gravityview()->plugin->url() ) );
-		$this->assertStringEndsWith( '/gravityview/test/this.php', strtolower( gravityview()->plugin->url( 'test/this.php' ) ) );
-		$this->assertStringEndsWith( '/gravityview/and/this.php', strtolower( gravityview()->plugin->url( '/and/this.php' ) ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name}/", strtolower( gravityview()->plugin->url() ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name}/test/this.php", strtolower( gravityview()->plugin->url( 'test/this.php' ) ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name}/and/this.php", strtolower( gravityview()->plugin->url( '/and/this.php' ) ) );
 	}
 
 	/**
