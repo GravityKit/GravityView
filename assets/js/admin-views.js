@@ -181,7 +181,7 @@
 				})
 
 				// TODO: Show/hide warnings on configuration tabs to let users know context has been configured.
-				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry', vcfg.toggleTabIcons );
+				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry', vcfg.toggleTabConfigurationWarnings );
 
 			$( '.gv-add-field').on('focus', function() {
 				$( this ).parent('.gv-fields').addClass('focused');
@@ -204,34 +204,38 @@
 			return cookie;
 		},
 
-		toggleTabIcons: function ( e ) {
+		/**
+		 * Show or hide tab warning icons
+		 *
+		 * @since 2.10
+		 * @param e
+		 */
+		toggleTabConfigurationWarnings: function ( e ) {
 
-			var has_single_entry_link = $( '.gv-dialog-options input[name*=show_as_link]:checked').length;
-			var has_edit_entry_link = $( '.gv-fields .field-key[value="edit_link"]').length;
+			var tabs = {
+				single: {
+					configured: $( '.gv-dialog-options input[name*=show_as_link]:checked' ).length,
+					icon: 'dashicons-media-default',
+				},
+				edit: {
+					configured: $( '.gv-fields .field-key[value="edit_link"]' ).length,
+					icon: 'dashicons-welcome-write-blog',
+				}
+			};
 
-			var dismissed_single_warning = viewConfiguration.getCookieVal( $.cookie( 'warning-dismissed-single-fields' ) );
-			var dismissed_edit_warning = viewConfiguration.getCookieVal( $.cookie( 'warning-dismissed-edit-fields' ) );
+			$.each( tabs,  function ( index, value ) {
 
-			console.log( { 'single cookie': dismissed_single_warning } );
-			console.log( { 'edit cookie': dismissed_edit_warning } );
+				var dismissed_warning = viewConfiguration.getCookieVal( $.cookie( 'warning-dismissed-' + index + '-fields' ) );
 
-			var show_single_warning = ! dismissed_single_warning && has_single_entry_link === 0;
+				var show_warning = ! dismissed_warning && value.configured === 0;
 
-			$( '#single-fields' ).find( '.notice-warning' ).toggle( show_single_warning );
-			$( 'li[aria-controls="single-view"]' )
-				.toggleClass( 'tab-not-configured', show_single_warning )
-				.find( '.tab-icon' )
-					.toggleClass( 'dashicons-warning', show_single_warning )
-					.toggleClass( 'dashicons-media-default', ! show_single_warning );
-
-			var show_warning = ! dismissed_edit_warning && has_edit_entry_link === 0;
-
-			$( '#edit-fields' ).find( '.notice-warning' ).toggle( show_warning );
-			$( 'li[aria-controls="edit-view"]' )
-				.toggleClass( 'tab-not-configured', show_warning )
-				.find( '.tab-icon' )
-					.toggleClass( 'dashicons-warning', show_warning )
-					.toggleClass( 'dashicons-welcome-write-blog', ! show_warning );
+				$( '#' + index + '-fields' ).find( '.notice-warning' ).toggle( show_warning );
+				$( 'li[aria-controls="' + index + '-view"]' )
+					.toggleClass( 'tab-not-configured', show_warning )
+					.find( '.tab-icon' )
+						.toggleClass( 'dashicons-warning', show_warning )
+						.toggleClass( value.icon, ! show_warning );
+			});
 		},
 
 		/**
