@@ -171,23 +171,17 @@
 
 				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters )
 
+				.on( 'click', '.gv-section .is-dismissible', function( e ) {
+
+					var warning_name = $( this ).parents( '.gv-section' ).attr( 'id' );
+
+					$.cookie( 'warning-dismissed-' + warning_name, 1, { path: gvGlobals.admin_cookiepath } );
+
+					$( 'body' ).trigger( 'gravityview/tabs-ready' );
+				})
+
 				// TODO: Show/hide warnings on configuration tabs to let users know context has been configured.
-				.on( 'gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry', function() {
-
-					$( '.gv-section[id$="-fields"' ).each(function (  ) {
-
-
-					});
-
-					var has_single_entry_link = $( '.gv-dialog-options input[name*=show_as_link]:checked').length;
-					var has_edit_entry_link = $( '.gv-fields .field-key[value="edit_link"]').length;
-
-					$( '#single-fields' ).find( '.notice-warning' ).toggle( has_single_entry_link === 0 );
-					$( '#edit-fields' ).find( '.notice-warning' ).toggle( has_edit_entry_link === 0 );
-
-					$( 'li[aria-controls="single-view"]' ).toggleClass( 'tab-not-configured', has_single_entry_link === 0 );
-					$( 'li[aria-controls="edit-view"]' ).toggleClass( 'tab-not-configured', has_edit_entry_link === 0 );
-				});
+				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry', vcfg.toggleTabIcons );
 
 			$( '.gv-add-field').on('focus', function() {
 				$( this ).parent('.gv-fields').addClass('focused');
@@ -200,6 +194,44 @@
 			if( gvGlobals.passed_form_id ) {
 				vcfg.gvSelectForm.trigger( 'change' );
 			}
+		},
+
+		getCookieVal: function ( cookie ) {
+			if ( ! cookie || cookie === 'undefined' || 'false' === cookie ) {
+				return false;
+			}
+
+			return cookie;
+		},
+
+		toggleTabIcons: function ( e ) {
+
+			var has_single_entry_link = $( '.gv-dialog-options input[name*=show_as_link]:checked').length;
+			var has_edit_entry_link = $( '.gv-fields .field-key[value="edit_link"]').length;
+
+			var dismissed_single_warning = viewConfiguration.getCookieVal( $.cookie( 'warning-dismissed-single-fields' ) );
+			var dismissed_edit_warning = viewConfiguration.getCookieVal( $.cookie( 'warning-dismissed-edit-fields' ) );
+
+			console.log( { 'single cookie': dismissed_single_warning } );
+			console.log( { 'edit cookie': dismissed_edit_warning } );
+
+			var show_single_warning = ! dismissed_single_warning && has_single_entry_link === 0;
+
+			$( '#single-fields' ).find( '.notice-warning' ).toggle( show_single_warning );
+			$( 'li[aria-controls="single-view"]' )
+				.toggleClass( 'tab-not-configured', show_single_warning )
+				.find( '.tab-icon' )
+					.toggleClass( 'dashicons-warning', show_single_warning )
+					.toggleClass( 'dashicons-media-default', ! show_single_warning );
+
+			var show_warning = ! dismissed_edit_warning && has_edit_entry_link === 0;
+
+			$( '#edit-fields' ).find( '.notice-warning' ).toggle( show_warning );
+			$( 'li[aria-controls="edit-view"]' )
+				.toggleClass( 'tab-not-configured', show_warning )
+				.find( '.tab-icon' )
+					.toggleClass( 'dashicons-warning', show_warning )
+					.toggleClass( 'dashicons-welcome-write-blog', ! show_warning );
 		},
 
 		/**
@@ -751,7 +783,7 @@
 			// Otherwise, check for cookies
 			var show_details_cookie = $.cookie( 'gv-field-details-expanded' );
 
-			var show_details = ( show_details_cookie && 'false' !== show_details_cookie && show_details_cookie !== 'undefined' );
+			var show_details = viewConfiguration.getCookieVal( show_details_cookie );
 
 			viewConfiguration.toggleFieldDetails( show_details );
 		},
@@ -1150,7 +1182,7 @@
 						// Otherwise, check for cookies
 						layout_cookie = $.cookie( 'gv-items-picker-layout' );
 
-						if ( layout_cookie && layout_cookie !== 'undefined' ) {
+						if ( viewConfiguration.getCookieVal( layout_cookie ) ) {
 							activate_layout = layout_cookie;
 						}
 					}
@@ -2047,7 +2079,8 @@
 
 		// The default tab is the first (0)
 		var activate_tab = $.cookie( cookie_key );
-		if ( activate_tab === 'undefined' ) {
+
+		if ( false === viewConfiguration.getCookieVal( activate_tab ) ) {
 			activate_tab = 0;
 		}
 

@@ -498,14 +498,23 @@ $gv-overlay-index: 10000;
 			// Non-active state
 			.dashicons {
 				color: $color-aaa;
+
 				font-size: 24px;
 				height: 24px;
 				width: 24px;
 			}
 
+			&.tab-not-configured .dashicons {
+				color: $color-yellow-tone-20;
+			}
+
 			.configuration-status-icons {
+				position: absolute;
 				padding: 0;
+				left: 0;
+				top: -1em;
 				display: block;
+
 				.dashicons {
 					font-size: 18px;
 					height: 18px;
@@ -571,10 +580,6 @@ $gv-overlay-index: 10000;
 
 					padding-right: 0;
 
-					.dashicons-yes {
-						display: none;
-					}
-
 					.dashicons-info {
 						display: inline-block;
 						color: $color-yellow;
@@ -592,7 +597,7 @@ $gv-overlay-index: 10000;
 	// Tab content area
 	.ui-tabs-panel {
 		display: block;
-		padding: 0 20px 16px 20px;
+		padding: 20px;
 		background: #fff;
 		border: none;
 		border-top: 1px solid #ccc;
@@ -827,6 +832,13 @@ hr {
 		text-align: left;
 		position: relative;
 
+		.gv-field-label {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: inline-block;
+			width: 50%;
+			height: 1.5em;
+		}
 
 		// Parent field name
 		small {
@@ -1117,8 +1129,9 @@ hr {
 	}
 
 	.ui-dialog-buttonpane {
-		padding-left: $dialog-button-padding !important;
-		padding-right: $dialog-button-padding !important;
+		padding-left: $dialog-button-padding * 2 !important;
+		padding-right: $dialog-button-padding * 2 !important;
+		padding-bottom: $dialog-button-padding * 2 !important;
 	}
 
 	// Dialog footer button
@@ -1182,7 +1195,7 @@ hr {
 	&.gv-dialog-warning p {
 		font-size: 1.1em;
         margin: 0 !important;
-        padding: 1.5em !important;
+        padding: 0 0 1em!important;
 	}
 
 	&.gv-dialog-warning .dashicons {
