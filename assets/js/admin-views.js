@@ -171,7 +171,10 @@
 
 				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters )
 
-				.on( 'click', '.gv-section .is-dismissible', function( e ) {
+				/**
+				 * When dismissing tab configuration warnings, don't show to the user again
+				 */
+				.on( 'click', '.gv-section .is-dismissible .notice-dismiss', function( e ) {
 
 					var warning_name = $( this ).parents( '.gv-section' ).attr( 'id' );
 
