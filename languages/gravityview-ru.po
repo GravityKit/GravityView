@@ -8,7 +8,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.9.2\n"
+"Project-Id-Version: GravityView 2.9.2.1\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
@@ -58,51 +58,51 @@ msgid "License Details:"
 msgstr "Подробности лицензии:"
 
 #: future/includes/class-gv-license-handler.php:285
+msgid "Renew on: %s"
+msgstr "Обновлено до: %s"
+
+#: future/includes/class-gv-license-handler.php:286
 msgid "Access your GravityView account"
 msgstr "Войти в ваш аккаунт GravityView"
 
-#: future/includes/class-gv-license-handler.php:286
+#: future/includes/class-gv-license-handler.php:287
 msgid "This development site does not count toward license activation limits"
 msgstr ""
 "Лицензия для разработчика не имеет ограничений на количество использований"
 
-#: future/includes/class-gv-license-handler.php:287
+#: future/includes/class-gv-license-handler.php:288
 msgid "Unlimited"
 msgstr "Неограниченный"
 
-#: future/includes/class-gv-license-handler.php:290
+#: future/includes/class-gv-license-handler.php:292
 msgid "License level: %s"
 msgstr "Уровень лицензии: %s"
 
-#: future/includes/class-gv-license-handler.php:292
+#: future/includes/class-gv-license-handler.php:294
 msgid "Activations: %d of %s sites"
 msgstr "Активировано для: %d из %s сайтов"
 
-#: future/includes/class-gv-license-handler.php:293
-msgid "Renew on: %s"
-msgstr "Обновлено до: %s"
-
-#: future/includes/class-gv-license-handler.php:327
+#: future/includes/class-gv-license-handler.php:334
 msgid "Upgrades available:"
 msgstr "Доступны обновления:"
 
-#: future/includes/class-gv-license-handler.php:342
+#: future/includes/class-gv-license-handler.php:349
 msgid "Get access to Extensions"
 msgstr "Получить доступ к дополнениям"
 
-#: future/includes/class-gv-license-handler.php:346
+#: future/includes/class-gv-license-handler.php:353
 msgid "Get access to Entry Importer and other Premium plugins"
 msgstr "Получить доступ к Entry Importer и другим премиальным плагинам"
 
-#: future/includes/class-gv-license-handler.php:404
+#: future/includes/class-gv-license-handler.php:411
 msgid "Status"
 msgstr "Статус"
 
-#: future/includes/class-gv-license-handler.php:405
+#: future/includes/class-gv-license-handler.php:412
 msgid "There was an error processing the request."
 msgstr "Ошибка при выполнении запроса."
 
-#: future/includes/class-gv-license-handler.php:406
+#: future/includes/class-gv-license-handler.php:413
 msgid ""
 "Could not deactivate the license. The license key you attempted to "
 "deactivate may not be active or valid."
@@ -110,51 +110,51 @@ msgstr ""
 "Невозможно деактивировать лицензию. Лицензионный код не активирован или "
 "недействителен."
 
-#: future/includes/class-gv-license-handler.php:407
-#: future/includes/class-gv-license-handler.php:408
+#: future/includes/class-gv-license-handler.php:414
+#: future/includes/class-gv-license-handler.php:415
 msgid "The license key is valid, but it has not been activated for this site."
 msgstr ""
 "Это действительный лицензионный ключ, но он не был активирован для этого "
 "сайта."
 
-#: future/includes/class-gv-license-handler.php:409
+#: future/includes/class-gv-license-handler.php:416
 msgid "Invalid: this license has reached its activation limit."
 msgstr "Ошибка: превышено число активаций лицензии."
 
-#: future/includes/class-gv-license-handler.php:409
+#: future/includes/class-gv-license-handler.php:416
 msgid ""
 "You can manage license activations %son your GravityView account page%s."
 msgstr ""
 "Вы можете управлять активациями %sна странице вашего аккаунта GravityView%s."
 
-#: future/includes/class-gv-license-handler.php:410
+#: future/includes/class-gv-license-handler.php:417
 msgid "The license has been deactivated."
 msgstr "Лицензия была деактивирована."
 
-#: future/includes/class-gv-license-handler.php:411
+#: future/includes/class-gv-license-handler.php:418
 msgid "The license key is valid and active."
 msgstr "Активирован верный лицензионный ключ."
 
-#: future/includes/class-gv-license-handler.php:412
+#: future/includes/class-gv-license-handler.php:419
 msgid ""
 "This license key is disabled. For updates and support, %spurchase a new "
 "license%s."
 msgstr ""
 
-#: future/includes/class-gv-license-handler.php:413
-#: future/includes/class-gv-license-handler.php:415
+#: future/includes/class-gv-license-handler.php:420
+#: future/includes/class-gv-license-handler.php:422
 msgid "The license key entered is invalid."
 msgstr "Введен неверный лицензионный ключ."
 
-#: future/includes/class-gv-license-handler.php:414
+#: future/includes/class-gv-license-handler.php:421
 msgid "This license key does not have access to this plugin."
 msgstr "Этот лицензионный ключ не имеет доступа к этому плагину."
 
-#: future/includes/class-gv-license-handler.php:416
+#: future/includes/class-gv-license-handler.php:423
 msgid "This license key has been revoked."
 msgstr "Этот лицензионный ключ отозван."
 
-#: future/includes/class-gv-license-handler.php:417
+#: future/includes/class-gv-license-handler.php:424
 msgid ""
 "This license key has expired. %sRenew your license on the GravityView "
 "website%s to receive updates and support."
@@ -162,37 +162,37 @@ msgstr ""
 "Истек срок действия лицензионного ключа. %sОбновите свою лицензию на сайте "
 "GravityView %s для получения обновлений и поддержки."
 
-#: future/includes/class-gv-license-handler.php:418
+#: future/includes/class-gv-license-handler.php:425
 #: future/includes/class-gv-settings-addon.php:1368
 msgid "You don't have the ability to edit plugin settings."
 msgstr "У вас нет возможности редактировать настройки плагина."
 
-#: future/includes/class-gv-license-handler.php:419
-#: future/includes/class-gv-license-handler.php:540
-#: future/includes/class-gv-license-handler.php:554
+#: future/includes/class-gv-license-handler.php:426
+#: future/includes/class-gv-license-handler.php:547
+#: future/includes/class-gv-license-handler.php:561
 #: future/includes/class-gv-settings-addon.php:1122
 msgid "Verifying license&hellip;"
 msgstr "Проверить лицензию &hellip;"
 
-#: future/includes/class-gv-license-handler.php:420
-#: future/includes/class-gv-license-handler.php:539
+#: future/includes/class-gv-license-handler.php:427
+#: future/includes/class-gv-license-handler.php:546
 msgid "Activate License"
 msgstr "Активировать лицензию"
 
-#: future/includes/class-gv-license-handler.php:421
-#: future/includes/class-gv-license-handler.php:546
+#: future/includes/class-gv-license-handler.php:428
+#: future/includes/class-gv-license-handler.php:553
 msgid "Deactivate License"
 msgstr "Деактивировать лицензию"
 
-#: future/includes/class-gv-license-handler.php:422
+#: future/includes/class-gv-license-handler.php:429
 msgid "Verify License"
 msgstr "Проверить лицензию"
 
-#: future/includes/class-gv-license-handler.php:547
+#: future/includes/class-gv-license-handler.php:554
 msgid "Deactivating license&hellip;"
 msgstr "Деактивация лицензии&hellip;"
 
-#: future/includes/class-gv-license-handler.php:553
+#: future/includes/class-gv-license-handler.php:560
 msgid "Check License"
 msgstr "Проверить лицензию"
 
@@ -1307,12 +1307,12 @@ msgstr ""
 
 #. translators: "Support Port" can be translated as "Support Portal" or
 #. "Support Window"
-#: includes/admin/class-gravityview-support-port.php:338
-#: includes/admin/class-gravityview-support-port.php:344
+#: includes/admin/class-gravityview-support-port.php:340
+#: includes/admin/class-gravityview-support-port.php:346
 msgid "GravityView Support Port"
 msgstr "Портал поддержки GravityView "
 
-#: includes/admin/class-gravityview-support-port.php:349
+#: includes/admin/class-gravityview-support-port.php:351
 msgid "Show GravityView Support Port when on a GravityView-related page"
 msgstr "Показать портал поддержки GravityView на связанной странице"
 
@@ -2082,23 +2082,23 @@ msgstr "Список изменений"
 msgid "What&rsquo;s New"
 msgstr "Что&rsquo;s нового"
 
-#: includes/class-admin-welcome.php:571
+#: includes/class-admin-welcome.php:578
 msgid "View change history"
 msgstr "Посмотреть историю изменений"
 
-#: includes/class-admin-welcome.php:591
+#: includes/class-admin-welcome.php:598
 msgid "GravityView is brought to you by:"
 msgstr "Плагин GravityView разработан:"
 
-#: includes/class-admin-welcome.php:642
+#: includes/class-admin-welcome.php:649
 msgid "Contributors"
 msgstr "Помощники"
 
-#: includes/class-admin-welcome.php:669
+#: includes/class-admin-welcome.php:676
 msgid "Want to contribute?"
 msgstr "Хотите помочь?"
 
-#: includes/class-admin-welcome.php:670
+#: includes/class-admin-welcome.php:677
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -4299,12 +4299,12 @@ msgstr "Прошел/Не прошел"
 msgid "Your browser does not support the video tag."
 msgstr "Ваш браузер не поддерживает видеотег."
 
-#: future/includes/class-gv-license-handler.php:291
+#: future/includes/class-gv-license-handler.php:293
 msgctxt "1: Customer name; 2: Customer email"
 msgid "Licensed to: %1$s (%2$s)"
 msgstr "Лицензировано для: %1$s (%2$s)"
 
-#: future/includes/class-gv-license-handler.php:333
+#: future/includes/class-gv-license-handler.php:340
 msgctxt "1: GravityView upgrade name, 2: Cost of upgrade"
 msgid "Upgrade to %1$s for %2$s"
 msgstr "Обновлено %1$s из %2$s"
