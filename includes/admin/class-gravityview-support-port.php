@@ -200,6 +200,8 @@ class GravityView_Support_Port {
 			'email'                 => $current_user->user_email,
 			'name'                  => mb_substr( $current_user->display_name, 0, 80 ),
 			'signature'             => hash_hmac( 'sha256', $current_user->user_email, self::beacon_key ),
+			'affiliate_id'			=> gravityview()->plugin->settings->get( 'affiliate_id' ),
+			'is_super_admin'		=> is_super_admin(),
 			'License Key'           => $response['license_key'] . ' (' . ucwords( $response['license'] ) . ')',
 			'License Level'         => $package,
 			'Alt Emails'            => sprintf( "Admin: %s, GV Support: %s", get_bloginfo( 'admin_email' ), gravityview()->plugin->settings->get( 'support-email' ) ),

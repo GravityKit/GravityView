@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.9.2.1 on October 26, 2020 =
+
+* Improved: Plugin license information layout when running Gravity Forms 2.5
+* Fixed: View Settings overflow their container (introduced in 2.9.2)
+
 = 2.9.2 on October 21, 2020 =
 
 * Added: GravityView is now 100% compatible with upcoming [Gravity Forms 2.5](https://www.gravityforms.com/gravity-forms-2-5-beta-2/)!
