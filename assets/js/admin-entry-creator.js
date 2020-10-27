@@ -12,44 +12,46 @@
  * globals jQuery, GVEntryCreator
  */
 
-(function( $ ) {
+(function($) {
 
-	"use strict";
+    "use strict";
 
-	$(document).ready(function(){
+    $(document).ready(function() {
 
-		var gv_nonce = $('#gv_entry_creator_nonce').val();
+        var gv_nonce = $('#gv_entry_creator_nonce').val();
 
-		$('#change_created_by').selectWoo({
+        $('#change_created_by').selectWoo({
             minimumInputLength: 3,
             ajax: {
-	            type: 'POST',
-	            url: GVEntryCreator.ajaxurl,
-	            dataType: 'json',
-	            delay: 250,
-	            data: function (params) {
-	              return {
-	                q: params.term, // search term
-	                page: params.page,
-	                action: GVEntryCreator.action,
-	                gv_nonce: gv_nonce
-	              };
-	            },
-	            processResults: function (data, params) {
-	                var terms = [];
-	                if ( data ) {
-	                    $.each( data, function( index, user ) {
-	                        terms.push( { id: user.ID, text: user.display_name+' ('+user.user_nicename+')' } );
-	                    });
-	                }
-	                return {
-	                    results: terms
-	                };
-	            },
-	            cache: true
-          	},
-            // escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+                type: 'POST',
+                url: GVEntryCreator.ajaxurl,
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term, // search term
+                        page: params.page,
+                        action: GVEntryCreator.action,
+                        gv_nonce: gv_nonce
+                    };
+                },
+                processResults: function(data, params) {
+                    var terms = [];
+                    if (data) {
+                        $.each(data, function(index, user) {
+                            terms.push({
+                                id: user.ID,
+                                text: user.display_name + ' (' + user.user_nicename + ')'
+                            });
+                        });
+                    }
+                    return {
+                        results: terms
+                    };
+                },
+                cache: true
+            },
         });
-	});
+    });
 
-} (jQuery) );
+}(jQuery));
