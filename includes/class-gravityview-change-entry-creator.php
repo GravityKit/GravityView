@@ -85,8 +85,8 @@ class GravityView_Change_Entry_Creator {
         if( !wp_verify_nonce( $post_var['gv_nonce'], 'gv_entry_creator' )) {
             die();
         }
-        
-        $search_string = isset( $_POST['q'] ) ? $_POST['q'] : '';
+
+        $search_string = $post_var['q'];
 
         $user_args = array(
             'search'         => '*' . $search_string . '*',
