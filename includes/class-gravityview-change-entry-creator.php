@@ -88,10 +88,17 @@ class GravityView_Change_Entry_Creator {
 
         $search_string = $post_var['q'];
 
-        $user_args = array(
-            'search'         => $search_string . '*',
-            'search_columns' => array( 'ID', 'user_login', 'user_email', 'user_nicename', 'display_name' ),
-        );
+        if( is_numeric( $search_string ) ) {
+            $user_args = array(
+                'search'         => $search_string . '*',
+                'search_columns' => array( 'ID' ),
+            );
+        } else {
+            $user_args = array(
+                'search'         => '*' . $search_string . '*',
+                'search_columns' => array( 'user_login', 'user_email', 'user_nicename', 'display_name' ),
+            );
+        }
 
         $users = GVCommon::get_users( 'change_entry_creator', $user_args );
 
