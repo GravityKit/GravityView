@@ -32,6 +32,72 @@ class GravityView_Change_Entry_Creator {
 
     	add_action('plugins_loaded', array( $this, 'prevent_conflicts') );
 
+        // Enqueues SelectWoo script and style.
+        add_action( 'admin_enqueue_scripts', array( $this, 'add_selectwoo_assets') );
+
+        // Ajax callback to get users to change entry creator.
+        add_action( 'wp_ajax_entry_creator_get_users', array( $this, 'entry_creator_get_users' ) );
+
+    }
+
+    /**
+     * Enqueues SelectWoo script and style.
+     *
+     * @since  2.9.1
+     *
+     */
+    function add_selectwoo_assets() {
+
+        $version      = GravityView_Plugin::version;
+        $script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+        wp_enqueue_script( 'gravityview-selectWoo', plugins_url( 'assets/lib/selectWoo/selectWoo.full.min.js', GRAVITYVIEW_FILE ), array(), $version );
+        wp_enqueue_style( 'gravityview-selectWoo', plugins_url( 'assets/lib/selectWoo/selectWoo.min.css', GRAVITYVIEW_FILE ), array(), $version );
+
+        wp_enqueue_script( 'gravityview_entry_creator', plugins_url( 'assets/js/admin-entry-creator' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'gravityview-selectWoo' ), $version );
+
+        wp_localize_script(
+            'gravityview_entry_creator',
+            'GVEntryCreator',
+            array(
+                'ajaxurl' => admin_url( 'admin-ajax.php' ),
+                'action'  => 'entry_creator_get_users',
+            ) 
+        );
+    }
+
+    /**
+     * Get users list for entry creator.
+     *
+     * @since  2.9.1
+     *
+     */
+    function entry_creator_get_users() {
+
+        $post_var = wp_parse_args(
+            wp_unslash( $_POST ),
+            array(
+                'q' => '',
+                'gv_nonce' => '',
+            )
+        );
+
+        if( !wp_verify_nonce( $post_var['gv_nonce'], 'gv_entry_creator' )) {
+            die();
+        }
+        
+        $search_string = isset( $_POST['q'] ) ? $_POST['q'] : '';
+
+        $user_args = array(
+            'search'         => '*' . $search_string . '*',
+            'search_columns' => array( 'user_login', 'user_email', 'user_nicename', 'display_name' ),
+        );
+
+        $users = GVCommon::get_users( 'change_entry_creator', $user_args );
+
+        echo json_encode( $users );
+
+        die();
     }
 
     /**
@@ -205,40 +271,26 @@ class GravityView_Change_Entry_Creator {
             return;
         }
 
-        $created_by_id = \GV\Utils::get( $entry, 'created_by' );
-
-        $users = GVCommon::get_users( 'change_entry_creator' );
-
-        $is_created_by_in_users = wp_list_filter( $users, array( 'ID' => $created_by_id ) );
-
-        // Make sure that the entry creator is included in the users list. If not, add them.
-        if ( ! empty( $created_by_id ) && empty( $is_created_by_in_users ) ) {
-
-	        if ( $created_by_user = GVCommon::get_users( 'change_entry_creator', array( 'include' => $created_by_id ) ) ) {
-	            $users = array_merge( $users, $created_by_user );
-	        }
-	    }
 
         $output = '<label for="change_created_by">';
         $output .= esc_html__('Change Entry Creator:', 'gravityview');
         $output .= '</label>';
 
-	    // If there are users who are not being shown, show a warning.
-	    // TODO: Use AJAX instead of <select>
-	    $count_users = count_users();
-	    if( sizeof( $users ) < $count_users['total_users'] ) {
-		    $output .= '<p><i class="dashicons dashicons-warning"></i> ' . sprintf( esc_html__( 'The displayed list of users has been trimmed due to the large number of users. %sLearn how to remove this limit%s.', 'gravityview' ), '<a href="https://docs.gravityview.co/article/251-i-only-see-some-users-in-the-change-entry-creator-dropdown" rel="external">', '</a>' ) . '</p>';
-	    }
-
 	    $output .= '<select name="created_by" id="change_created_by" class="widefat">';
-        $output .= '<option value="' . selected( $entry['created_by'], '0', false ) . '"> &mdash; '.esc_attr_x( 'No User', 'No user assigned to the entry', 'gravityview').' &mdash; </option>';
-        foreach($users as $user) {
-            $output .= '<option value="'. $user->ID .'"'. selected( $entry['created_by'], $user->ID, false ).'>'.esc_attr( $user->display_name.' ('.$user->user_nicename.')' ).'</option>';
+
+        $created_by_id = \GV\Utils::get( $entry, 'created_by' );
+        $created_by_user = GVCommon::get_users( 'change_entry_creator', array( 'include' => $created_by_id ) );
+        $created_by_user = isset($created_by_user[0]) ? $created_by_user[0] : array();
+
+        if( empty( $created_by_user ) ) {
+            $output .= '<option value="0"> &mdash; '.esc_attr_x( 'No User', 'No user assigned to the entry', 'gravityview').' &mdash; </option>';
+        } else {
+            $output .= '<option value="'. $created_by_user->ID .'" "selected">'.esc_attr( $created_by_user->display_name.' ('.$created_by_user->user_nicename.')' ).'</option>';
         }
+
         $output .= '</select>';
         $output .= '<input name="originally_created_by" value="'.esc_attr( $entry['created_by'] ).'" type="hidden" />';
-
-	    unset( $is_created_by_in_users, $created_by_user, $users, $created_by_id, $count_users );
+        $output .= wp_nonce_field( 'gv_entry_creator', 'gv_entry_creator_nonce', false, false );
 
         echo $output;
     }
