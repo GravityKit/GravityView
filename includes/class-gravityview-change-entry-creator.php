@@ -77,8 +77,9 @@ class GravityView_Change_Entry_Creator {
         $post_var = wp_parse_args(
             wp_unslash( $_POST ),
             array(
-                'q' => '',
+                'q'        => '',
                 'gv_nonce' => '',
+                'on_load'  => '',
             )
         );
 
@@ -98,6 +99,10 @@ class GravityView_Change_Entry_Creator {
                 'search'         => '*' . $search_string . '*',
                 'search_columns' => array( 'user_login', 'user_email', 'user_nicename', 'display_name' ),
             );
+        }
+
+        if( 1 == $post_var['on_load'] ) {
+            $user_args[ 'number' ] = 100;
         }
 
         $users = GVCommon::get_users( 'change_entry_creator', $user_args );

@@ -21,16 +21,20 @@
         var gv_nonce = $('#gv_entry_creator_nonce').val();
 
         $('#change_created_by').selectWoo({
-            minimumInputLength: 3,
             ajax: {
                 type: 'POST',
                 url: GVEntryCreator.ajaxurl,
                 dataType: 'json',
                 delay: 250,
                 data: function(params) {
+                    var on_load = 0;
+                    if (typeof params.term == 'undefined') {
+                        on_load = 1;
+                    }
                     return {
-                        q: params.term, // search term
+                        q: params.term,
                         page: params.page,
+                        on_load: on_load,
                         action: GVEntryCreator.action,
                         gv_nonce: gv_nonce
                     };
