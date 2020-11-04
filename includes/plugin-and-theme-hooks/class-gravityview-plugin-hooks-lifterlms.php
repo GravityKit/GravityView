@@ -39,6 +39,11 @@ class GravityView_Plugin_Hooks_LifterLMS extends GravityView_Plugin_and_Theme_Ho
 
 new GravityView_Plugin_Hooks_LifterLMS;
 
+
+if ( ! class_exists( 'LLMS_Abstract_Integration' ) ) {
+	return;
+}
+
 /**
  * GravityView Integration
  *
