@@ -16,15 +16,19 @@
 			GV_EDD.message_fadeout();
 			GV_EDD.add_status_container();
 
-			$( '.version-info' ).insertBefore('#gform_tab_group');
+			$( '.gv-version-info' ).appendTo( '.gform-settings-header_buttons' );
+			$( '#gform-settings-save' ).addClass('button').removeClass('gfbutton');
 
 			$( document )
-				.on( 'ready keyup', GV_EDD.license_field, GV_EDD.key_change )
+				.on( 'ready keyup gv-init', GV_EDD.license_field, GV_EDD.key_change )
 				.on( 'click', ".gv-edd-action", GV_EDD.clicked )
 				.on( 'gv-edd-failed gv-edd-invalid', GV_EDD.failed )
 				.on( 'gv-edd-valid', GV_EDD.valid )
 				.on( 'gv-edd-deactivated', GV_EDD.deactivated )
-				.on( 'gv-edd-inactive gv-edd-other', GV_EDD.other );
+				.on( 'gv-edd-inactive gv-edd-other', GV_EDD.other )
+				.on( 'click', 'a[rel*=external]', GV_EDD.open_external_links )
+				.on( 'change', '#gform-settings', GV_EDD.toggle_checkboxes )
+				.trigger( 'gv-init' );
 
 		},
 
@@ -105,9 +109,15 @@
 					.animate( { opacity: 0.5 }, 1000 );
 
 			$( '#gv-edd-status' )
-				.addClass('pending')
 				.attr( 'aria-busy', 'true' )
-				.html( '<p>' + message + '</p>');
+				.removeClass('hide')
+				.removeClass('success')
+				.removeClass('warning')
+				.removeClass('error')
+				.addClass('pending')
+				.addClass('info')
+				.html( $( '#gv-edd-status' ).html().replace( /(<strong>)(.*?)(<\/strong)>/, '$1' + message  ) );
+
 		},
 
 		clicked: function( e ) {
@@ -129,6 +139,15 @@
 
 			GV_EDD.post_data( theData );
 
+		},
+
+		/**
+		 * Opens links in new tab/windows
+		 * @return {boolean}
+		 */
+		open_external_links: function () {
+			window.open( this.href );
+			return false;
 		},
 
 		/**
@@ -157,7 +176,7 @@
 					response_object = $.parseJSON( second_try );
 
 				} catch( e ) {
-					
+
 					console.log( '*** \n*** \n*** Error-causing response:\n***\n***\n', string );
 
 					var error_message = 'JSON failed: another plugin caused a conflict with completing this request. Check your browser\'s Javascript console to view the invalid content.';
@@ -208,11 +227,18 @@
 						$( this ).remove();
 					});
 				} );
+
+			if ( GV_EDD.get_prefers_reduced_motion ) {
+				$( '.gv-license-warning' ).hide();
+			} else {
+				$( '.gv-license-warning' ).slideUp( 'fast' );
+			}
 		},
 
 		failed: function( e ) {
 			GV_EDD.deactivate_button.removeClass( 'button-disabled' );
 			GV_EDD.activate_button.removeClass( 'button-disabled' );
+			$( '.gv-license-warning' ).slideDown( 'fast' );
 		},
 
 		deactivated: function( e ) {
@@ -227,6 +253,11 @@
 					});
 				} );
 
+			if ( GV_EDD.get_prefers_reduced_motion ) {
+				$( '.gv-license-warning' ).show();
+			} else {
+				$( '.gv-license-warning' ).slideDown( 'fast' );
+			}
 		},
 
 		other: function( e ) {
@@ -236,7 +267,73 @@
 					.fadeIn()
 					.css( "display", "inline-block" );
 			} );
-		}
+		},
+
+		/**
+		 * Checks whether the browser is set to reduce motion
+		 *
+		 * @return {boolean}
+		 */
+		get_prefers_reduced_motion: function () {
+
+			if ( ! window.hasOwnProperty( 'matchMedia' ) ) {
+				return false;
+			}
+
+			var QUERY = '(prefers-reduced-motion: no-preference)';
+			var mediaQueryList = window.matchMedia( QUERY );
+
+			return !mediaQueryList.matches;
+		},
+
+		/**
+		 * Show/hide checkboxes that have visibility conditionals
+		 * @param  {jQuery} e
+		 */
+		toggle_checkboxes: function (  e ) {
+			GV_EDD.toggle_required( e.currentTarget, 'requires', false );
+			GV_EDD.toggle_required( e.currentTarget, 'requires-not', true );
+		},
+
+		/**
+		 * Process conditional show/hide logic
+		 *
+		 * @since 2.9.2
+		 *
+		 * @param {jQueryEvent} currentTarget
+		 * @param {string} data_attr The attribute to find in the target, like `requires` or `requires-not`
+		 * @param {boolean} reverse_logic If true, find items that do not match the attribute value. True = `requires-not`; false = `requires`
+		 */
+		toggle_required: function( currentTarget, data_attr, reverse_logic ) {
+
+			var $parent = $( currentTarget );
+
+			$parent
+				.find( '[data-' + data_attr + ']' )
+				.each( function ()  {
+					var requires = $( this ).data( data_attr ),
+						requires_array = requires.split('='),
+						requires_name = requires_array[0],
+						requires_value = requires_array[1];
+
+					var $input = $parent.find(':input[name$="' + requires_name + '"]').not('[type=hidden]');
+
+					if ( $input.is(':checkbox') ) {
+						if ( reverse_logic ) {
+							$(this).parents('.gform-settings-field').toggle( $input.not(':checked') );
+						} else {
+							$(this).parents('.gform-settings-field').toggle( $input.is(':checked') );
+						}
+					} else if ( requires_value !== undefined ) {
+						if ( reverse_logic ) {
+							$(this).parents('.gform-settings-field').toggle( $input.val() !== requires_value );
+						} else {
+							$(this).parents('.gform-settings-field').toggle( $input.val() === requires_value );
+						}
+					}
+				});
+
+		},
 	};
 
 	GV_EDD.init();

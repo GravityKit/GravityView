@@ -20,6 +20,12 @@ class GravityView_Field_Address extends GravityView_Field {
 
 	var $search_operators = array( 'is', 'isnot', 'contains' );
 
+	/**
+	 * @since 2.8.1
+	 * @var string
+	 */
+	var $icon = 'dashicons-location-alt';
+
 	var $_gf_field_class_name = 'GF_Field_Address';
 
 	public function __construct() {
