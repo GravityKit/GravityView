@@ -1734,7 +1734,7 @@ class GVCommon {
 		 * `$context` is where are we using this information (e.g. change_entry_creator, search_widget ..)
 		 * @param array $settings Settings array, with `number` key defining the # of users to display
 		 */
-		$get_users_settings = apply_filters( 'gravityview/get_users/'. $context, apply_filters_deprecated( 'gravityview_change_entry_creator_user_parameters', $get_users_settings ) );
+		$get_users_settings = apply_filters( 'gravityview/get_users/'. $context, apply_filters( 'gravityview_change_entry_creator_user_parameters', $get_users_settings ) );
 
 		return get_users( $get_users_settings );
 	}
