@@ -122,6 +122,10 @@ class View_Renderer extends Renderer {
 
 		global $post;
 
+		if ( empty( $post->id ) ) {
+			$post = $view->__get( 'post' );
+		}
+
 		/** Mock the legacy state for the widgets and whatnot */
 		\GV\Mocks\Legacy_Context::push( array_merge( array(
 			'view' => $view,
