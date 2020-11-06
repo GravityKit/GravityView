@@ -1,26 +1,76 @@
 /**
- * JS for Entry Creator function.
+ * Entry Creator UI logic
  *
  * @package   GravityView
  * @license   GPL2+
  * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
- * @copyright Copyright 2014, Katz Web Services, Inc.
+ * @copyright Copyright 2020, Katz Web Services, Inc.
  *
- * @since TODO
+ * @since 2.9.3
  *
  * globals jQuery, GVEntryCreator
  */
 
 ( function( $ ) {
-
 	'use strict';
 
+	// Custom AJAX adapter that returns predefined results when select element is first initialized and when search input field is cleared
+	// Adapted from https://github.com/select2/select2/issues/3828
+	$.fn.selectWoo.amd.define( 'select2/data/extended-ajax', [ './ajax', './tags', '../utils', 'module', 'jquery' ], function( AjaxAdapter, Tags, Utils, module, $ ) {
+		function ExtendedAjaxAdapter( $element, options ) {
+			this.minimumInputLength = options.get( 'minimumInputLength' );
+			this.defaultResults = options.get( 'defaultResults' );
+			ExtendedAjaxAdapter.__super__.constructor.call( this, $element, options );
+		}
+
+		Utils.Extend( ExtendedAjaxAdapter, AjaxAdapter );
+
+		// Override original query function to support default results
+		var originalQuery = AjaxAdapter.prototype.query;
+
+		ExtendedAjaxAdapter.prototype.query = function( params, callback ) {
+			var defaultResults = ( typeof this.defaultResults == 'function' ) ? this.defaultResults.call( this ) : this.defaultResults;
+			if ( defaultResults && defaultResults.length && ( ! params.term || params.term.length < this.minimumInputLength ) ) {
+				var data = { results: defaultResults };
+				var processedResults = this.processResults( data, params );
+				callback( processedResults );
+			} else if ( params.term && params.term.length >= this.minimumInputLength ) {
+				originalQuery.call( this, params, callback );
+			} else {
+				this.trigger( 'results:message', {
+					message: 'inputTooShort',
+					args: {
+						minimum: this.minimumInputLength,
+						input: '',
+						params: params,
+					},
+				} );
+			}
+		};
+
+		return ExtendedAjaxAdapter;
+	} );
+
 	$( document ).ready( function() {
-
 		var gv_nonce = $( '#gv_entry_creator_nonce' ).val();
+		var $select = $( '#change_created_by' );
 
-		$( '#change_created_by' ).selectWoo( {
+		// Get options with "value" attributes that are not selected by default
+		var $defaultResults = $( 'option[value]:not([selected])', $select );
+		var defaultResults = [];
+		$defaultResults.each( function() {
+			var $option = $( this );
+
+			defaultResults.push( {
+				id: $option.attr( 'value' ),
+				text: $option.text(),
+				disabled: $option.attr( 'disabled' ),
+			} );
+		} );
+
+		$select.selectWoo( {
+			dropdownCssClass: 'gv-entry-creator',
 			minimumInputLength: 3,
 			ajax: {
 				type: 'POST',
@@ -35,23 +85,38 @@
 						gv_nonce: gv_nonce,
 					};
 				},
-				processResults: function( data, params ) {
-					var terms = [];
-					if ( data ) {
-						$.each( data, function( index, user ) {
-							terms.push( {
-								id: user.ID,
-								text: user.display_name + ' (' + user.user_nicename + ')',
-							} );
-						} );
+				processResults: function( data ) {
+					var results = [];
+
+					if ( ! data ) {
+						return results;
 					}
+
+					if ( data.results ) {
+						return data;
+					}
+
+					$.each( data, function( index, user ) {
+						results.push( {
+							id: user.ID,
+							text: user.display_name + ' (' + user.user_nicename + ')',
+						} );
+					} );
+
 					return {
-						results: terms,
+						results: results,
 					};
 				},
 				cache: true,
 			},
+			dataAdapter: $.fn.selectWoo.amd.require( 'select2/data/extended-ajax' ),
+			defaultResults: defaultResults,
+		} );
+
+		$select.on( 'select2:open', function() {
+			$( 'input.select2-search__field' )
+				.prop( 'placeholder', GVEntryCreator.language.search_placeholder )
+				.attr( 'aria-label', GVEntryCreator.language.search_placeholder );
 		} );
 	} );
-
 }( jQuery ) );

@@ -5,6 +5,11 @@
  */
 class GravityView_Change_Entry_Creator {
 
+	/*
+	 * @var int Number of users to show in the select element
+	 */
+	const DEFAULT_NUMBER_OF_USERS = 100;
+
 	function __construct() {
 
 		/**
@@ -62,8 +67,11 @@ class GravityView_Change_Entry_Creator {
 			'gravityview_entry_creator',
 			'GVEntryCreator',
 			array(
-				'ajaxurl' => admin_url( 'admin-ajax.php' ),
-				'action'  => 'entry_creator_get_users',
+				'ajaxurl'  => admin_url( 'admin-ajax.php' ),
+				'action'   => 'entry_creator_get_users',
+				'language' => array(
+					'search_placeholder' => esc_html__( 'Search for username or other user attribute', 'gravityview' ),
+				),
 			)
 		);
 	}
@@ -274,10 +282,11 @@ class GravityView_Change_Entry_Creator {
 	}
 
 	/**
-	 * Output the select to change the entry creator
+	 * Output select element used to change the entry creator
 	 *
 	 * @param int   $form_id GF Form ID
 	 * @param array $entry   GF entry array
+	 *
 	 * @return void
 	 */
 	function add_select( $form_id, $entry ) {
@@ -289,17 +298,33 @@ class GravityView_Change_Entry_Creator {
 		$output = '<label for="change_created_by">';
 		$output .= esc_html__( 'Change Entry Creator:', 'gravityview' );
 		$output .= '</label>';
-
 		$output .= '<select name="created_by" id="change_created_by" class="widefat">';
 
-		$created_by_id   = \GV\Utils::get( $entry, 'created_by' );
-		$created_by_user = GVCommon::get_users( 'change_entry_creator', array( 'include' => $created_by_id ) );
-		$created_by_user = isset( $created_by_user[0] ) ? $created_by_user[0] : array();
+		$entry_creator_user_id = \GV\Utils::get( $entry, 'created_by' );
 
-		if ( empty( $created_by_user ) ) {
+		$entry_creator_user = GVCommon::get_users( 'change_entry_creator', array( 'include' => $entry_creator_user_id ) );
+		$entry_creator_user = isset( $entry_creator_user[0] ) ? $entry_creator_user[0] : array();
+
+		if ( empty( $entry_creator_user ) ) {
 			$output .= '<option value="0"> &mdash; ' . esc_attr_x( 'No User', 'No user assigned to the entry', 'gravityview' ) . ' &mdash; </option>';
 		} else {
-			$output .= '<option value="' . $created_by_user->ID . '" "selected">' . esc_attr( $created_by_user->display_name . ' (' . $created_by_user->user_nicename . ')' ) . '</option>';
+			$output .= '<option value="' . $entry_creator_user->ID . '" "selected">' . esc_attr( $entry_creator_user->display_name . ' (' . $entry_creator_user->user_nicename . ')' ) . '</option>';
+		}
+
+		$all_users = GVCommon::get_users( 'change_entry_creator', array( 'number' => self::DEFAULT_NUMBER_OF_USERS ) );
+		foreach ( $all_users as $user ) {
+			if ( $entry_creator_user_id === $user->ID ) {
+				continue;
+			}
+
+			$output .= '<option value="' . $user->ID . '">' . esc_attr( $user->display_name . ' (' . $user->user_nicename . ')' ) . '</option>';
+		}
+
+		$user_count = count_users();
+
+		if ( $user_count['total_users'] > self::DEFAULT_NUMBER_OF_USERS ) {
+			$message = esc_html__( 'Use the search field to look through additional %d users.', '%d is replaced by user count', 'gravityview' );
+			$output  .= '<option value="_disabled" disabled="disabled">' . sprintf( $message, $user_count['total_users'] - self::DEFAULT_NUMBER_OF_USERS ) . '</option>';
 		}
 
 		$output .= '</select>';
@@ -308,7 +333,6 @@ class GravityView_Change_Entry_Creator {
 
 		echo $output;
 	}
-
 }
 
 new GravityView_Change_Entry_Creator;
