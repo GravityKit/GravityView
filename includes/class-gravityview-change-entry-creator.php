@@ -36,7 +36,7 @@ class GravityView_Change_Entry_Creator {
 		add_action( 'plugins_loaded', array( $this, 'prevent_conflicts' ) );
 
 		// Enqueues SelectWoo script and style.
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_selectwoo_assets' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_selectwoo_assets' ) );
 
 		// Ajax callback to get users to change entry creator.
 		add_action( 'wp_ajax_entry_creator_get_users', array( $this, 'entry_creator_get_users' ) );
@@ -44,12 +44,11 @@ class GravityView_Change_Entry_Creator {
 	}
 
 	/**
-	 * Enqueues SelectWoo script and style.
+	 * Enqueue selectWoo script and style.
 	 *
 	 * @since  2.9.1
-	 *
 	 */
-	function add_selectwoo_assets() {
+	function enqueue_selectwoo_assets() {
 
 		$version      = GravityView_Plugin::version;
 		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
