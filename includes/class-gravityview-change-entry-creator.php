@@ -66,7 +66,7 @@ class GravityView_Change_Entry_Creator {
 		wp_enqueue_script( 'gravityview-selectWoo', plugins_url( 'assets/lib/selectWoo/selectWoo.full.min.js', GRAVITYVIEW_FILE ), array(), $version );
 		wp_enqueue_style( 'gravityview-selectWoo', plugins_url( 'assets/lib/selectWoo/selectWoo.min.css', GRAVITYVIEW_FILE ), array(), $version );
 
-		wp_enqueue_script( 'gravityview_entry_creator', plugins_url( 'assets/js/admin-entry-creator' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'gravityview-selectWoo' ), $version );
+		wp_enqueue_script( 'gravityview_entry_creator', plugins_url( 'assets/js/admin-entry-creator' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery', 'gravityview-selectWoo' ), $version );
 
 		wp_localize_script(
 			'gravityview_entry_creator',
