@@ -56,11 +56,11 @@ class GravityView_Change_Entry_Creator {
 	function enqueue_selectwoo_assets() {
 		global $current_screen;
 
-		$version      = GravityView_Plugin::version;
 		if ( ! $current_screen || 'forms_page_gf_entries' !== $current_screen->base ) {
 			return;
 		}
 
+		$version      = \GV\Plugin::$version;
 		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		wp_enqueue_script( 'gravityview-selectWoo', plugins_url( 'assets/lib/selectWoo/selectWoo.full.min.js', GRAVITYVIEW_FILE ), array(), $version );
