@@ -212,7 +212,7 @@ class GravityView_Change_Entry_Creator {
 		// Now, no validation is required in the methods; let's hook in.
 		add_action( 'admin_init', array( &$this, 'set_screen_mode' ) );
 
-		add_action( "gform_entry_info", array( &$this, 'add_select' ), 10, 2 );
+		add_action( 'gform_entry_info', array( &$this, 'add_select' ), 10, 2 );
 
 		add_action( "gform_after_update_entry", array( &$this, 'update_entry_creator' ), 10, 2 );
 
@@ -294,7 +294,7 @@ class GravityView_Change_Entry_Creator {
 	 */
 	function add_select( $form_id, $entry ) {
 
-		if ( \GV\Utils::_POST( 'screen_mode' ) !== 'edit' ) {
+		if ( 'edit' !== \GV\Utils::_POST( 'screen_mode' ) ) {
 			return;
 		}
 
@@ -323,9 +323,9 @@ class GravityView_Change_Entry_Creator {
 			$output .= '<option value="' . $user->ID . '">' . esc_attr( $user->display_name . ' (' . $user->user_nicename . ')' ) . '</option>';
 		}
 
-		$user_count = count_users();
-		$user_count = $user_count['total_users'];
-		$users_displayed = self::DEFAULT_NUMBER_OF_USERS + ( !empty( $entry_creator_user ) ? 1 : 0);
+		$user_count      = count_users();
+		$user_count      = $user_count['total_users'];
+		$users_displayed = self::DEFAULT_NUMBER_OF_USERS + ( ! empty( $entry_creator_user ) ? 1 : 0 );
 		if ( $user_count > $users_displayed ) {
 			$message = esc_html_x( 'Use the input field above to search through the remaining %d users.', '%d is replaced by user count', 'gravityview' );
 			$message = sprintf( $message, $user_count - $users_displayed );
