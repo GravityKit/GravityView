@@ -112,9 +112,7 @@ class GravityView_Change_Entry_Creator {
 
 		$users = GVCommon::get_users( 'change_entry_creator', $user_args );
 
-		echo wp_send_json( $users, 200 );
-
-		die();
+		wp_send_json( $users, 200 );
 	}
 
 	/**
