@@ -17,7 +17,7 @@
 
 	// Custom AJAX adapter that returns predefined results when select element is first initialized and when search input field is cleared
 	// Adapted from https://github.com/select2/select2/issues/3828
-	$.fn.select2.amd.define( 'select2/data/extended-ajax', [ './ajax', './tags', '../utils', 'module', 'jquery' ], function( AjaxAdapter, Tags, Utils, module, $ ) {
+	$.fn.selectWoo.amd.define( 'select2/data/extended-ajax', [ './ajax', './tags', '../utils', 'module', 'jquery' ], function( AjaxAdapter, Tags, Utils, module, $ ) {
 		function ExtendedAjaxAdapter( $element, options ) {
 			this.minimumInputLength = options.get( 'minimumInputLength' );
 			this.defaultResults = options.get( 'defaultResults' );
@@ -123,7 +123,7 @@
 			$( '.gv-entry-creator-dropdown' ).addClass( GVEntryCreator.gf25 ? 'gf25' : '' );
 			$( '.gv-entry-creator-dropdown input.select2-search__field' )
 				.prop( 'placeholder', GVEntryCreator.language.search_placeholder )
-				.attr( 'aria-label', GVEntryCreator.language.search_placeholder );
+				.attr( 'aria-label', GVEntryCreator.language.search_placeholder )
 		} );
 	} );
 }( jQuery ) );
