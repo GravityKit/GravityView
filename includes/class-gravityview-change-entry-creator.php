@@ -40,7 +40,7 @@ class GravityView_Change_Entry_Creator {
 
 		add_action( 'plugins_loaded', array( $this, 'prevent_conflicts' ) );
 
-		// Enqueues SelectWoo script and style.
+		// Enqueues selectWoo script and style.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_selectwoo_assets' ) );
 
 		// Ajax callback to get users to change entry creator.
@@ -54,6 +54,7 @@ class GravityView_Change_Entry_Creator {
 	 * @since  2.9.1
 	 */
 	function enqueue_selectwoo_assets() {
+
 		global $current_screen;
 
 		if ( ! $current_screen || 'forms_page_gf_entries' !== $current_screen->base ) {
@@ -62,6 +63,11 @@ class GravityView_Change_Entry_Creator {
 
 		$version      = \GV\Plugin::$version;
 		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+		if ( gravityview()->plugin->is_GF_25() ) {
+			wp_deregister_script( 'gform_selectwoo' );
+			wp_dequeue_script( 'gform_selectwoo' );
+		}
 
 		wp_enqueue_script( 'gravityview-selectWoo', plugins_url( 'assets/lib/selectWoo/selectWoo.full.min.js', GRAVITYVIEW_FILE ), array(), $version );
 		wp_enqueue_style( 'gravityview-selectWoo', plugins_url( 'assets/lib/selectWoo/selectWoo.min.css', GRAVITYVIEW_FILE ), array(), $version );
@@ -74,6 +80,7 @@ class GravityView_Change_Entry_Creator {
 			array(
 				'ajaxurl'  => admin_url( 'admin-ajax.php' ),
 				'action'   => 'entry_creator_get_users',
+				'gf25'    => (bool) gravityview()->plugin->is_GF_25(),
 				'language' => array(
 					'search_placeholder' => esc_html__( 'Search for username or other user attribute', 'gravityview' ),
 				),

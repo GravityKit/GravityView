@@ -17,7 +17,7 @@
 
 	// Custom AJAX adapter that returns predefined results when select element is first initialized and when search input field is cleared
 	// Adapted from https://github.com/select2/select2/issues/3828
-	$.fn.selectWoo.amd.define( 'select2/data/extended-ajax', [ './ajax', './tags', '../utils', 'module', 'jquery' ], function( AjaxAdapter, Tags, Utils, module, $ ) {
+	$.fn.select2.amd.define( 'select2/data/extended-ajax', [ './ajax', './tags', '../utils', 'module', 'jquery' ], function( AjaxAdapter, Tags, Utils, module, $ ) {
 		function ExtendedAjaxAdapter( $element, options ) {
 			this.minimumInputLength = options.get( 'minimumInputLength' );
 			this.defaultResults = options.get( 'defaultResults' );
@@ -53,6 +53,7 @@
 	} );
 
 	$( document ).ready( function() {
+
 		var gv_nonce = $( '#gv_entry_creator_nonce' ).val();
 		var $select = $( '#change_created_by' );
 
@@ -70,7 +71,7 @@
 		} );
 
 		$select.selectWoo( {
-			dropdownCssClass: 'gv-entry-creator',
+			dropdownCssClass: 'gv-entry-creator-dropdown',
 			minimumInputLength: 3,
 			ajax: {
 				type: 'POST',
@@ -113,8 +114,14 @@
 			defaultResults: defaultResults,
 		} );
 
+		$( '#select2-change_created_by-container' )
+			.parents( '.select2-container--default' )
+			.addClass( 'gv-entry-creator-container' )
+			.addClass( GVEntryCreator.gf25 ? 'gf25' : '' );
+
 		$select.on( 'select2:open', function() {
-			$( 'input.select2-search__field' )
+			$( '.gv-entry-creator-dropdown' ).addClass( GVEntryCreator.gf25 ? 'gf25' : '' );
+			$( '.gv-entry-creator-dropdown input.select2-search__field' )
 				.prop( 'placeholder', GVEntryCreator.language.search_placeholder )
 				.attr( 'aria-label', GVEntryCreator.language.search_placeholder );
 		} );
