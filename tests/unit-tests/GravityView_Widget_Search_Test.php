@@ -1130,6 +1130,50 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$_GET = array();
 	}
 
+	public function test_payment_date_search() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+		$post = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 16, false ) => array(
+						'id' => 'payment_date',
+						'label' => 'Payment Date',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"payment_date","input":"date"}]',
+					),
+				),
+			),
+			'settings' => $settings,
+		) );
+		$view = \GV\View::from_post( $post );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'payment_date' => '2020-11-20 12:00:00',
+		) );
+
+		$_GET = array();
+
+		$_GET['filter_payment_date'] = '12/20/2020';
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
+
+		$_GET['filter_payment_date'] = '11/20/2020';
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
+		$_GET = array();
+	}
+
 	public function test_operator_url_overrides() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$settings = \GV\View_Settings::defaults();

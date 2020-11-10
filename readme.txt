@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Search entries by Payment Date would not yield results
+
 = 2.9.2.1 on October 26, 2020 =
 
 * Improved: Plugin license information layout when running Gravity Forms 2.5
