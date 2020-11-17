@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Fixed: Search entries by Payment Date would not yield results
 * Improved: Add search field to the Entry Creator drop-down menu
 
 = 2.9.2.1 on October 26, 2020 =

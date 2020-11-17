@@ -1150,6 +1150,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 				break;
 
+			case 'payment_date':
 			case 'date':
 
 				$date_format = $this->get_datepicker_format( true );
@@ -1187,9 +1188,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$filter['operator'] = $this->get_operator( $get, $key, array( 'is' ), 'is' );
 				}
 
+				if ('payment_date' === $key) {
+					$filter['operator'] = 'contains';
+				}
+
 				break;
-
-
 		} // switch field type
 
 		return $filter;
