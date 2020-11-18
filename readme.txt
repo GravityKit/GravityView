@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Fixed: Search entries by Payment Date would not yield results
 * Fixed: Lightbox didn't work with secure images
 * New: New lightbox gallery mode for File Upload fields with Multi-File Upload enabled
 
@@ -694,7 +695,7 @@ __Developer Notes__
 
 = Version 2.0 on May 8, 2018 =
 
-We are proud to share this release with you: we have been working on this release since 2016, and although most of the changes won‚Äôt be seen, GravityView has a brand-new engine that will power the plugin into the future! ÔøΩÄ
+We are proud to share this release with you: we have been working on this release since 2016, and although most of the changes won‚Äôt be seen, GravityView has a brand-new engine that will power the plugin into the future! ÔøΩÔøΩ
 \- Zack with GravityView
 
 ---
@@ -729,7 +730,7 @@ This release is the biggest ever for developers! Even so, we have taken great ca
 * When HTML 5 is enabled in Gravity Forms, now the Search All field will use `type="search"`
 * _Countless_ new filters and actions! Additional documentation will be coming, both on [docs.gravityview.co](https://docs.gravityview.co) as well as [codex.gravityview.co](https://codex.gravityview.co).
 
-A special thanks to [Gennady](https://codeseekah.com) for your tireless pursuit of better code, insistence on backward compatibility, and your positive attitude. ÔøΩè
+A special thanks to [Gennady](https://codeseekah.com) for your tireless pursuit of better code, insistence on backward compatibility, and your positive attitude. ÔøΩÔøΩ
 
 = 1.22.6 on April 4, 2018 =
 
@@ -884,7 +885,7 @@ __Developer Updates:__
 
 = 1.21.1 on March 30, 2017 =
 
-* Fixed: Advanced Filters no longer filtered ÔøΩï
+* Fixed: Advanced Filters no longer filtered ÔøΩÔøΩ
 * Fixed: Fatal error when viewing Single Entry with a Single Entry Title setting that included Merge Tags
 * Fixed: Cache wasn't cleared when an entry was created using Gravity Forms API (thanks Steve with Gravity Flow!)
 

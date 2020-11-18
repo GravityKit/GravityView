@@ -176,7 +176,7 @@ class Addon_Settings extends \GFAddOn {
 	 * @since 2.9.1
 	 *
 	 * @param string                               $html HTML of the save button.
-	 * @param \Rocketgenius\Gravity_Forms\Settings|null $framework Current instance of the Settings Framework. Or null if < 2.5.
+	 * @param \Gravity_Forms\Gravity_Forms\Settings|null $framework Current instance of the Settings Framework. Or null if < 2.5.
 	 */
 	public function modify_gform_settings_save_button( $html, $framework = null ) {
 
