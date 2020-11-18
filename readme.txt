@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Tweak: Improvements to certain events that recorded when logging is enabled within Gravity Forms
 * Fixed: Search entries by Payment Date would not yield results
 
 __Developer Updates:__
