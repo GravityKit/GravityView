@@ -689,7 +689,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 		// get the other search filters
 		foreach ( $get as $key => $value ) {
 
-			$value = $trim_search_value ? trim( $value ) : $value;
+			if ( $trim_search_value ) {
+				$value = is_array( $value ) ? array_map( 'trim', $value ) : trim( $value );
+			}
 
 			if ( 0 !== strpos( $key, 'filter_' ) || gv_empty( $value, false, false ) || ( is_array( $value ) && count( $value ) === 1 && gv_empty( $value[0], false, false ) ) ) {
 				continue; // Not a filter, or empty
