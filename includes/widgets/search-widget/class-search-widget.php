@@ -564,27 +564,32 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$searchable_fields = $this->get_view_searchable_fields( $view );
 		$searchable_field_objects = $this->get_view_searchable_fields( $view, true );
 
+		/**
+		 * @filter `gravityview/search-all-split-words` Search for each word separately or the whole phrase?
+		 * @since 1.20.2
+		 * @param bool $split_words True: split a phrase into words; False: search whole word only [Default: true]
+		 */
+		$split_words = apply_filters( 'gravityview/search-all-split-words', true );
+
+		/**
+		 * @filter `gravityview/search-trim-input` Remove leading/trailing whitespaces from search value
+		 * @since 2.9.3
+		 * @param bool $trim_search_value True: remove whitespace; False: keep as is [Default: true]
+		 */
+		$trim_search_value = apply_filters( 'gravityview/search-trim-input', true );
+
 		// add free search
 		if ( isset( $get['gv_search'] ) && '' !== $get['gv_search'] && in_array( 'search_all', $searchable_fields ) ) {
 
-			$search_all_value = trim( $get['gv_search'] );
-
-			/**
-			 * @filter `gravityview/search-all-split-words` Search for each word separately or the whole phrase?
-			 * @since 1.20.2
-			 * @param bool $split_words True: split a phrase into words; False: search whole word only [Default: true]
-			 */
-			$split_words = apply_filters( 'gravityview/search-all-split-words', true );
+			$search_all_value = $trim_search_value ? trim( $get['gv_search'] ) : $get['gv_search'];
 
 			if ( $split_words ) {
-
 				// Search for a piece
 				$words = explode( ' ', $search_all_value );
 
 				$words = array_filter( $words );
 
 			} else {
-
 				// Replace multiple spaces with one space
 				$search_all_value = preg_replace( '/\s+/ism', ' ', $search_all_value );
 
@@ -684,6 +689,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 		// get the other search filters
 		foreach ( $get as $key => $value ) {
 
+			$value = $trim_search_value ? trim( $value ) : $value;
+
 			if ( 0 !== strpos( $key, 'filter_' ) || gv_empty( $value, false, false ) || ( is_array( $value ) && count( $value ) === 1 && gv_empty( $value[0], false, false ) ) ) {
 				continue; // Not a filter, or empty
 			}
@@ -703,6 +710,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			if ( isset( $filter[0]['value'] ) ) {
+				$filter[0]['value'] = $trim_search_value ? trim( $filter[0]['value'] ) : $filter[0]['value'];
+
 				$search_criteria['field_filters'] = array_merge( $search_criteria['field_filters'], $filter );
 
 				// if date range type, set search mode to ALL

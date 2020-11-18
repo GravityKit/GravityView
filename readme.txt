@@ -25,6 +25,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Fixed: Search entries by Payment Date would not yield results
 
+__Developer Updates:__
+
+* Added: `gravityview/search-trim-input` filter to strip or preserve leading/trailing whitespaces in Search Bar values
+
 = 2.9.2.1 on October 26, 2020 =
 
 * Improved: Plugin license information layout when running Gravity Forms 2.5
