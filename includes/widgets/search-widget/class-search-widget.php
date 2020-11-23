@@ -640,12 +640,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			/**
 			 * @filter `gravityview_date_created_adjust_timezone` Whether to adjust the timezone for entries. \n
-			 * date_created is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php)
+			 * `date_created` is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php). \n
+			 * This is for backward compatibility before \GF_Query started to automatically apply the timezone offset.
 			 * @since 1.12
-			 * @param[out,in] boolean $adjust_tz  Use timezone-adjusted datetime? If true, adjusts date based on blog's timezone setting. If false, uses UTC setting. Default: true
+			 * @param[out,in] boolean $adjust_tz  Use timezone-adjusted datetime? If true, adjusts date based on blog's timezone setting. If false, uses UTC setting. Default is `false`.
 			 * @param[in] string $context Where the filter is being called from. `search` in this case.
 			 */
-			$adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', true, 'search' );
+			$adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', false, 'search' );
 
 			/**
 			 * Don't set $search_criteria['start_date'] if start_date is empty as it may lead to bad query results (GFAPI::get_entries)

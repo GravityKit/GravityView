@@ -434,6 +434,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		remove_filter( 'pre_option_timezone_string', $callback );
 
+		add_filter('gravityview_date_created_adjust_timezone', '__return_true' );
 		add_filter( 'pre_option_timezone_string', $callback = function() {
 			return 'Etc/GMT+5';
 		} );
@@ -447,6 +448,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		);
 		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
+		add_filter('gravityview_date_created_adjust_timezone', '__return_true' );
 		remove_filter( 'pre_option_timezone_string', $callback );
 
 		$_GET = array();
