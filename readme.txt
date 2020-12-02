@@ -23,8 +23,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
-* Tweak: Improvements to certain events that recorded when logging is enabled within Gravity Forms
+* Tweak: Improvements to certain events that are recorded when logging is enabled within Gravity Forms
 * Fixed: Search entries by Payment Date would not yield results
+* Fixed: Uncaught error when one of GravityView's methods is used before WordPress finishes loading
 
 __Developer Updates:__
 
