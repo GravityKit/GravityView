@@ -379,6 +379,10 @@ $gv-overlay-index: 10000;
 			font-size: 15px;
 		}
 	}
+
+	li .nav-tab {
+		border-radius: 0;
+	}
 }
 
 // Hide until shown by JS
