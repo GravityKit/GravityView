@@ -334,9 +334,11 @@ class GravityView_Change_Entry_Creator {
 		$user_count      = $user_count['total_users'];
 		$users_displayed = self::DEFAULT_NUMBER_OF_USERS + ( ! empty( $entry_creator_user ) ? 1 : 0 );
 		if ( $user_count > $users_displayed ) {
-			$message = esc_html_x( 'Use the input field above to search through the remaining %d users.', '%d is replaced by user count', 'gravityview' );
-			$message = sprintf( $message, $user_count - $users_displayed );
-			$output  .= '<option value="_user_count" disabled="disabled">' . $message . '</option>';
+			$remaining_users = $user_count - $users_displayed;
+			$user_users = _n( esc_html__('user', 'gravityview' ), esc_html__('users', 'gravityview' ), $remaining_users );
+			$message = esc_html_x( 'Use the input above to search the remaining %d %s.', '%d is replaced with user count %s is replaced with "user" or "users"', 'gravityview' );
+			$message = sprintf( $message, $remaining_users, $user_users );
+			$output  .= '<option value="_user_count" disabled="disabled">' . esc_html( $message ) . '</option>';
 		}
 
 		$output .= '</select>';
