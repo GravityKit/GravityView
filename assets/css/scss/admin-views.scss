@@ -833,11 +833,20 @@ hr {
 		position: relative;
 
 		.gv-field-label {
-			overflow: hidden;
+			white-space: nowrap;
 			text-overflow: ellipsis;
 			display: inline-block;
-			width: 50%;
+			width: 80%;
 			height: 1.5em;
+			overflow: hidden;
+			[data-layout="list"] & {
+				overflow: visible;
+			}
+		}
+
+		.dashicons {
+			margin-top: .2em;
+			margin-bottom: -.2em;
 		}
 
 		// Parent field name
