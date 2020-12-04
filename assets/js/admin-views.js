@@ -447,7 +447,7 @@
 
 			parent.toggleClass( 'has-single-entry-link', $( e.target ).is( ':checked' ) );
 
-			parent.find( '.gv-field-controls .dashicons-admin-links' ).toggleClass( 'hide-if-js', $( e.target ).not( ':checked' ) );
+			parent.find( '.gv-field-controls .dashicons-media-default' ).toggleClass( 'hide-if-js', $( e.target ).not( ':checked' ) );
 
 			$( 'body' ).trigger( 'gravityview/show-as-entry', $( e.target ).is( ':checked' ) );
 		},

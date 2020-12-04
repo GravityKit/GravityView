@@ -799,7 +799,7 @@ hr {
 	&[data-fieldid=edit_link],
 	&.has-single-entry-link {
 		background-color: $color-blue-tint-90;
-		.gv-field-controls .dashicons-admin-links {
+		.gv-field-controls .dashicons-media-default {
 			line-height: 44px;
 			margin: -2px 6px 0 3px;
 		}
@@ -959,7 +959,7 @@ hr {
 				}
 			}
 
-			&.dashicons-admin-links {
+			&.dashicons-media-default {
 				color: #aaa;
 				width: 20px;
 				font-size: 16px;
@@ -1520,6 +1520,7 @@ hr {
 	}
 	.dashicons-welcome-write-blog,
 	.dashicons-editor-code,
+	.dashicons-media-default,
 	.dashicons-admin-links {
 		display: inline-block;
 	}

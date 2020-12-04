@@ -28,7 +28,7 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 
 	var $group = 'gravityview';
 
-	var $icon = 'dashicons-admin-links';
+	var $icon = 'dashicons-media-default';
 
 	public function __construct() {
 		$this->label = esc_html__( 'Link to Entry', 'gravityview' );
