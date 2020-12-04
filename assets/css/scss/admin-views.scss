@@ -797,6 +797,7 @@ hr {
 
 	&[data-fieldid=entry_link],
 	&[data-fieldid=edit_link],
+	&[data-fieldid=delete_link],
 	&.has-single-entry-link {
 		background-color: $color-blue-tint-90;
 		.gv-field-controls .dashicons-media-default {
@@ -806,7 +807,7 @@ hr {
 	}
 
 	.gv-field-controls {
-		.dashicons-admin-links,
+		.dashicons-media-default,
 		.icon-custom-visibility {
 			cursor: help;
 		}
@@ -850,6 +851,7 @@ hr {
 			margin-top: .2em;
 			margin-bottom: -.2em;
 		}
+
 
 		// Parent field name
 		small {
@@ -1519,6 +1521,10 @@ hr {
 		display: none;
 	}
 	.dashicons-welcome-write-blog,
+	.dashicons-trash,
+	.dashicons-controls-repeat,
+	.dashicons-admin-comments,
+	.dashicons-yes-alt,
 	.dashicons-editor-code,
 	.dashicons-media-default,
 	.dashicons-admin-links {
