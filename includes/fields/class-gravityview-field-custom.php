@@ -29,7 +29,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 	var $group = 'gravityview';
 
-	var $icon = 'dashicons-text';
+	var $icon = 'dashicons-editor-code';
 
 	public function __construct() {
 
