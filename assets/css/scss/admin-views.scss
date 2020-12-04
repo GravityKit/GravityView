@@ -836,22 +836,34 @@ hr {
 		position: relative;
 
 		.gv-field-label {
-			white-space: nowrap;
-			text-overflow: ellipsis;
 			display: inline-block;
-			width: 80%;
-			height: 1.5em;
-			overflow: hidden;
-			[data-layout="list"] & {
-				overflow: visible;
-			}
 
 			.dashicons {
 				margin-top: .2em;
 				margin-bottom: -.2em;
+
+				.gv-items-picker-container & {
+					margin-top: 0;
+					margin-bottom: 0;
+				}
 			}
 		}
 
+		.gv-field-label-text-container {
+			height: 1.5em;
+			display: inline-block;
+			overflow: hidden;
+			width: auto;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+
+			[data-layout="grid"] & {
+				max-width: 80%;
+			}
+			[data-layout="list"] & {
+				width: 100%;
+			}
+		}
 
 		// Parent field name
 		small {
