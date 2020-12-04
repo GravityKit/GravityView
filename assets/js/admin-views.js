@@ -831,7 +831,7 @@
 				$custom_label = $admin_label; // We have an administrative label for this field
 			}
 
-			var $label = dialog.parents( '.gv-fields' ).find( '.gv-field-label' );
+			var $label = dialog.parents( '.gv-fields' ).find( '.gv-field-label-text-container' );
 
 			// If there's a custom title, use it for the label.
 			if ( $custom_label.length ) {

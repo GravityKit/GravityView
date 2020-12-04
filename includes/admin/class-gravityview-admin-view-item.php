@@ -208,7 +208,7 @@ abstract class GravityView_Admin_View_Item {
 		}
 
 		// Name of field / widget
-		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . esc_attr( sprintf( __( 'Field: %s', 'gravityview' ), $label ) ) . "\n" . $this->get_item_info( false ) . '">' . $icon . $label . $parent_label . '</span>';
+		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . esc_attr( sprintf( __( 'Field: %s', 'gravityview' ), $label ) ) . "\n" . $this->get_item_info( false ) . '">' . $icon . '<span class="gv-field-label-text-container">' . $label . $parent_label . '</span></span>';
 
 
 		// Displays only in the field/widget picker.
