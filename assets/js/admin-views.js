@@ -176,7 +176,7 @@
 				 */
 				.on( 'click', '.gv-section .is-dismissible .notice-dismiss', function( e ) {
 
-					var warning_name = $( this ).parents( '.gv-section' ).attr( 'id' );
+					var warning_name = $( this ).parents( '.gv-section' ).attr( 'id' ) + '-' + $( '#post_ID' ).val();
 
 					$.cookie( 'warning-dismissed-' + warning_name, 1, { path: gvGlobals.admin_cookiepath } );
 
@@ -235,7 +235,7 @@
 
 			$.each( tabs,  function ( index, value ) {
 
-				var warning_name = index + '-fields';
+				var warning_name = index + '-fields' + '-' + $( '#post_ID' ).val();
 				var dismissed_warning = viewConfiguration.getCookieVal( $.cookie( 'warning-dismissed-' + warning_name ) );
 
 				var show_warning = ! dismissed_warning && value.configured === 0;
