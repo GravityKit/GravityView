@@ -52,8 +52,7 @@
 		return ExtendedAjaxAdapter;
 	} );
 
-	$( document ).ready( function() {
-
+	$( document ).on( 'ready', function() {
 		var gv_nonce = $( '#gv_entry_creator_nonce' ).val();
 		var $select = $( '#change_created_by' );
 
