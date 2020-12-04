@@ -82,7 +82,7 @@ class GravityView_Change_Entry_Creator {
 				'action'   => 'entry_creator_get_users',
 				'gf25'    => (bool) gravityview()->plugin->is_GF_25(),
 				'language' => array(
-					'search_placeholder' => esc_html__( 'Search for username or other user attribute', 'gravityview' ),
+					'search_placeholder' => esc_html__( 'Search by ID, login, email, or name.', 'gravityview' ),
 				),
 			)
 		);
