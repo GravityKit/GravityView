@@ -23,8 +23,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Tweak: Improvements to certain events that are recorded when logging is enabled within Gravity Forms
 * Fixed: Search entries by Payment Date would not yield results
 * Improved: Add search field to the Entry Creator drop-down menu
+* Fixed: Uncaught error when one of GravityView's methods is used before WordPress finishes loading
+
+__Developer Updates:__
+
+* Added: `gravityview/search-trim-input` filter to strip or preserve leading/trailing whitespaces in Search Bar values
 
 = 2.9.2.1 on October 26, 2020 =
 
