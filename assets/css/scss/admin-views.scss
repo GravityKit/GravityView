@@ -795,6 +795,8 @@ hr {
 
 	transition: border-color 50ms;
 
+	&[data-fieldid=entry_link],
+	&[data-fieldid=edit_link],
 	&.has-single-entry-link {
 		background-color: $color-blue-tint-90;
 		.gv-field-controls .dashicons-admin-links {
@@ -1515,5 +1517,9 @@ hr {
 .gv-field-label {
 	.dashicons {
 		display: none;
+	}
+	.dashicons-welcome-write-blog,
+	.dashicons-admin-links {
+		display: inline-block;
 	}
 }
