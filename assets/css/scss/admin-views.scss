@@ -1539,6 +1539,14 @@ hr {
 	}
 }
 
+// Multiple Forms buttons
+.gv-droppable-area .gv-add-field[data-formid] {
+	max-width: 100%!important;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+	margin-bottom: .5em;
+}
+
 .gv-field-label {
 	.dashicons {
 		display: none;
