@@ -178,17 +178,21 @@ abstract class GravityView_Admin_View_Item {
 		}
 		$label = esc_attr( $label );
 
+		$icon = '';
+
 		if ( $this->item['icon'] && ! \GV\Utils::get( $this->item, 'parent' ) ) {
 			if ( 0 === strpos( $this->item['icon'], 'data:' ) ) {
 				// Inline icon SVG
-				$label = '<i class="dashicons background-icon" style="background-image: url(\'' . esc_attr( $this->item['icon'] ) . '\');"></i>' . $label;
+				$icon = '<i class="dashicons background-icon" style="background-image: url(\'' . esc_attr( $this->item['icon'] ) . '\');"></i>';
 			} elseif ( false === strpos( $this->item['icon'], 'dashicons' ) ) {
 				// Not dashicon icon
-				$label = '<i class="' . esc_attr( $this->item['icon'] ) . '"></i> ' . $label;
+				$icon = '<i class="' . esc_attr( $this->item['icon'] ) . '"></i>';
 			} else {
 				// Dashicon; prefix with "dashicons"
-				$label = '<i class="dashicons ' . esc_attr( $this->item['icon'] ) . '"></i> ' . $label;
+				$icon = '<i class="dashicons ' . esc_attr( $this->item['icon'] ) . '"></i>';
 			}
+
+			$icon = $icon . ' ';
 		}
 
 		$output = '<button class="gv-add-field screen-reader-text">' . sprintf( esc_html__( 'Add "%s"', 'gravityview' ), $label ) . '</button>';
@@ -204,7 +208,7 @@ abstract class GravityView_Admin_View_Item {
 		}
 
 		// Name of field / widget
-		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . $this->get_item_info( false ) . '">' . $label . $parent_label . '</span>';
+		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . esc_attr( sprintf( __( 'Field: %s', 'gravityview' ), $label ) ) . "\n" . $this->get_item_info( false ) . '">' . $icon . $label . $parent_label . '</span>';
 
 
 		// Displays only in the field/widget picker.
