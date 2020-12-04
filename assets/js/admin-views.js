@@ -224,7 +224,7 @@
 
 			var tabs = {
 				single: {
-					configured: $( '.gv-dialog-options input[name*=show_as_link]:checked' ).length,
+					configured: ( $( '.gv-dialog-options input[name*=show_as_link]:checked', '#directory-active-fields' ).length || $( '[data-fieldid="entry_link"]', '#directory-active-fields' ).length ),
 					icon: 'dashicons-media-default',
 				},
 				edit: {
@@ -235,7 +235,8 @@
 
 			$.each( tabs,  function ( index, value ) {
 
-				var dismissed_warning = viewConfiguration.getCookieVal( $.cookie( 'warning-dismissed-' + index + '-fields' ) );
+				var warning_name = index + '-fields';
+				var dismissed_warning = viewConfiguration.getCookieVal( $.cookie( 'warning-dismissed-' + warning_name ) );
 
 				var show_warning = ! dismissed_warning && value.configured === 0;
 
