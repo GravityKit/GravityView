@@ -7,10 +7,19 @@
 
 #gravityview-metabox-content-container {
   max-height: 640px; // Most common resolution - see https://gs.statcounter.com/screen-resolution-stats/mobile/worldwide
-  background: white; // Allow .striped rows to show
+  background: transparent; // Allow .striped rows to show
   float: left;
-  width: 80%;
+  width: 100%;
   border-left: 1px solid #eee;
+
+  /**
+   * The sidebar is 30% wide, max-width 20em.
+   * This code below is to grow the content panel, without getting into flexbox
+   */
+  padding-left: 20em;
+  padding-left: calc( min( 30%, 20em ) );
+  margin-left: -20em;
+  margin-left: calc( min( 30%, 20em ) * -1 );
   @include borderbox();
 
 
