@@ -114,7 +114,7 @@ final class GravityView_Duplicate_Entry {
 		}
 
 		foreach ( $view->get_entries()->all() as $entry ) {
-			if ( self::check_user_cap_duplicate_entry( $entry->as_entry(), $view ) ) {
+			if ( self::check_user_cap_duplicate_entry( $entry->as_entry(), $field->as_configuration() ) ) {
 				// At least one entry is duplicable for this user
 				$visibility_cache_for_view[ $view->ID ] = true;
 				return true;
