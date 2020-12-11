@@ -164,7 +164,7 @@ abstract class GravityView_Admin_View_Item {
 		$show_as_link            = '<span class="dashicons dashicons-media-default ' . $hide_show_as_link_class . '" title="' . esc_attr( $single_link_title ) . '"></span>';
 
 		// Should we show the icon that the field is being used as a link to single entry?
-		$hide_visibility_class = ( 'read' === \GV\Utils::get( $this->settings, 'only_loggedin' ) && empty( $this->settings['allow_edit_cap'] ) ) ? 'hide-if-js' : '';
+		$hide_visibility_class = ( \GV\Utils::get( $this->settings, 'only_loggedin' ) || isset( $this->settings['allow_edit_cap'] ) && 'read' !== $this->settings['allow_edit_cap'] ) ? '' : 'hide-if-js';
 		$visibility_icon         = '<span class="dashicons dashicons-lock icon-custom-visibility ' . $hide_visibility_class . '" title="' . esc_attr( $visibility_title ) . '"></span>';
 
 		// When a field label is empty, use the Field ID
@@ -221,6 +221,8 @@ abstract class GravityView_Admin_View_Item {
 		$container_class = ! empty( $this->item['parent'] ) ? ' gv-child-field' : '';
 
 		$container_class .= empty( $this->settings['show_as_link'] ) ? '' : ' has-single-entry-link';
+
+		$container_class .= empty( $hide_visibility_class ) ? ' has-custom-visibility' : '';
 
 		$data_form_id   = ! empty( $this->form_id ) ? 'data-formid="' . esc_attr( $this->form_id ) . '"' : '';
 
