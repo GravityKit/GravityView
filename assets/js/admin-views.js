@@ -119,6 +119,8 @@
 				// switch View (for existing forms)
 				.on( 'click', '#gv_switch_view_button', vcfg.switchView )
 
+				.on( 'click', '.clear-all-fields', vcfg.removeAllFields )
+
 				// select template
 				.on( 'click', '.gv_select_template', vcfg.selectTemplate )
 
@@ -185,6 +187,8 @@
 
 				// TODO: Show/hide warnings on configuration tabs to let users know context has been configured.
 				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry', vcfg.toggleTabConfigurationWarnings )
+
+				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry', vcfg.toggleRemoveAllFields )
 
 				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters )
 
@@ -1620,18 +1624,7 @@
 
 			// Nice little easter egg: when holding down control, get rid of all fields in the zone at once.
 			if ( e.altKey && $( area ).find( '.gv-fields' ).length > 1 ) {
-
-				// Show a confirm dialog
-				var remove_all = window.confirm( gvGlobals.remove_all_fields );
-
-				// If yes, remove all, otherwise don't do anything
-				if ( remove_all ) {
-					$( area ).find( '.gv-fields' ).remove();
-
-					$('body').trigger( 'gravityview/all-fields-removed' );
-
-					vcfg.toggleDropMessage();
-				}
+				vcfg.removeAllFields( e, area );
 
 				return;
 			}
@@ -1645,6 +1638,49 @@
 				vcfg.toggleDropMessage();
 			} );
 
+		},
+
+		/**
+		 * Remove all fields from an area
+		 *
+		 * @param e
+		 * @param area If passed, the jQuery DOM object where .gv-fields are that should be removed.
+		 */
+		removeAllFields: function ( e, area ) {
+
+			e.preventDefault();
+
+			// Show a confirm dialog
+			var remove_all = window.confirm( gvGlobals.remove_all_fields );
+
+			// If yes, remove all, otherwise don't do anything
+			if ( ! remove_all ) {
+				return;
+			}
+
+			area = area || null;
+
+			// If the area name hasn;
+			if ( ! area ) {
+				area_id = $( e.originalEvent.target ).data( 'areaid' );
+				area = $( e.originalEvent.target ).parents( 'div[data-areaid="' + area_id + '"]' )[ 0 ];
+			}
+
+			$( area ).find( '.gv-fields' ).remove();
+
+			$('body').trigger( 'gravityview/all-fields-removed' );
+
+			viewConfiguration.toggleDropMessage();
+		},
+
+		toggleRemoveAllFields: function ( e, item ) {
+
+			has_fields = false;
+
+			$( ".active-drop:visible" ).each( function ( index, item ) {
+				has_fields = ( $( this ).find( '.gv-fields' ).length > 1 );
+				$( '.clear-all-fields', $( item ).parents('.gv-droppable-area') ).toggle( has_fields );
+			});
 		},
 
 		/**

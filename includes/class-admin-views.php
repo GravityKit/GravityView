@@ -946,6 +946,10 @@ class GravityView_Admin_Views {
                             <p class="gv-droppable-area-title">
 								<strong <?php if ( 'widget' === $type ) { echo 'class="screen-reader-text"'; } ?>><?php echo esc_html( $area['title'] ); ?></strong>
 
+								<?php if ( 'widget' !== $type ) { ?>
+									<a class="clear-all-fields alignright" role="button" href="#" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>"><?php esc_html_e( 'Clear all fields', 'gravityview' ); ?></a>
+								<?php } ?>
+
                                 <?php if ( ! empty( $area['subtitle'] ) ) { ?>
 									<span class="gv-droppable-area-subtitle"><span class="gf_tooltip gv_tooltip tooltip" title="<?php echo esc_attr( $area['subtitle'] ); ?>"></span></span>
 								<?php } ?>
@@ -1253,7 +1257,7 @@ class GravityView_Admin_Views {
             'loading_text' => esc_html__( 'Loading&hellip;', 'gravityview' ),
             'loading_error' => esc_html__( 'There was an error loading dynamic content.', 'gravityview' ),
             'field_loaderror' => __( 'Error while adding the field. Please try again or contact GravityView support.', 'gravityview' ),
-            'remove_all_fields' => __( 'Would you like to remove all fields in this zone? (You are seeing this message because you were holding down the ALT key)', 'gravityview' ),
+            'remove_all_fields' => __( 'Would you like to remove all fields in this zone?', 'gravityview' ),
         ));
 
 		wp_enqueue_style( 'gravityview_views_styles' );
