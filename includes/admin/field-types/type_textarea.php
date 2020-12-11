@@ -24,7 +24,7 @@ class GravityView_FieldType_textarea extends GravityView_FieldType {
 			return;
 		}
 
-		$class = 'widefat ';
+		$class = 'widefat mt-wp_editor codemirror ';
 
 		$show_mt = $this->show_merge_tags();
 

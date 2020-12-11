@@ -1919,4 +1919,21 @@
 		showDialog: viewConfiguration.showDialog,
 	};
 
+	// Enable inserting GF merge tags into WP's CodeMirror
+	$( window ).load( function() {
+		var _sendToEditor = window.send_to_editor;
+
+		window.send_to_editor = function( val ) {
+			var $el = $( '#' + window.wpActiveEditor );
+
+			if ( ! $el.hasClass( 'codemirror' ) ) {
+				return _sendToEditor( val );
+			}
+
+			var codeMirror = $el.next( '.CodeMirror' )[ 0 ].CodeMirror;
+			var cursorPosition = codeMirror.getCursor();
+			codeMirror.replaceRange( val, window.wp.CodeMirror.Pos( cursorPosition.line, cursorPosition.ch ) );
+		};
+	} );
+
 }(jQuery));
