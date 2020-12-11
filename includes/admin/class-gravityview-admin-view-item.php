@@ -173,21 +173,8 @@ abstract class GravityView_Admin_View_Item {
 		}
 		$label = esc_attr( $label );
 
-		$icon = '';
-
 		if ( $this->item['icon'] && ! \GV\Utils::get( $this->item, 'parent' ) ) {
-			if ( 0 === strpos( $this->item['icon'], 'data:' ) ) {
-				// Inline icon SVG
-				$icon = '<i class="dashicons background-icon" style="background-image: url(\'' . esc_attr( $this->item['icon'] ) . '\');"></i>';
-			} elseif ( false === strpos( $this->item['icon'], 'dashicons' ) ) {
-				// Not dashicon icon
-				$icon = '<i class="' . esc_attr( $this->item['icon'] ) . '"></i>';
-			} else {
-				// Dashicon; prefix with "dashicons"
-				$icon = '<i class="dashicons ' . esc_attr( $this->item['icon'] ) . '"></i>';
-			}
-
-			$icon = $icon . ' ';
+			$label = '<i class="dashicons ' . esc_attr( $this->item['icon'] ) . '"></i> ' . $label;
 		}
 
 		$output = '<button class="gv-add-field screen-reader-text">' . sprintf( esc_html__( 'Add "%s"', 'gravityview' ), $label ) . '</button>';
@@ -196,14 +183,16 @@ abstract class GravityView_Admin_View_Item {
 
 		$parent_label = '';
 
-        if ( ! empty( $this->item['parent'] ) ) {
+    if ( ! empty( $this->item['parent'] ) ) {
 			$parent_label = ' <small>(' . esc_attr( $this->item['parent']['label'] ) . ')</small>';
 		}
 
 		// Name of field / widget
-		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . esc_attr( sprintf( __( 'Field: %s', 'gravityview' ), $label ) ) . "\n" . $this->get_item_info( false ) . '">' . $icon . '<span class="gv-field-label-text-container">' . $label . $parent_label . '</span></span>';
+		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . $this->get_item_info( false ) . '">' . $label . $parent_label . '</span>';
 
-		// Displays only in the field/widget picker
+		$output .= '<span class="gv-field-controls">' . $settings_link . $show_as_link . '<button class="gv-remove-field" aria-label="' . esc_attr( $delete_title ) . '" title="' . esc_attr( $delete_title ) . '"><span class="dashicons-dismiss dashicons"></span></button></span>';
+
+		// Displays only in the field/widget picker.
 		if ( $field_info = $this->get_item_info() ) {
 			$output .= '<span class="gv-field-info">' . $field_info . '</span>';
 		}
