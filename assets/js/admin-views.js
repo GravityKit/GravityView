@@ -141,7 +141,7 @@
 
 				.on( 'change', '.gv-dialog-options input[name*=only_loggedin]', vcfg.toggleCustomVisibility )
 
-				.on( 'change', '.gv-dialog-options input[name*=allow_edit_cap]', vcfg.toggleCustomVisibility )
+				.on( 'change', '.gv-dialog-options [name*=allow_edit_cap]', vcfg.toggleCustomVisibility )
 
 				// show field buttons: Settings & Remove
 				.on( 'click', ".gv-field-controls .gv-remove-field", vcfg.removeField )
