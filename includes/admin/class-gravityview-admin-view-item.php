@@ -161,7 +161,7 @@ abstract class GravityView_Admin_View_Item {
 
 		// Should we show the icon that the field is being used as a link to single entry?
 		$hide_show_as_link_class = empty( $this->settings['show_as_link'] ) ? 'hide-if-js' : '';
-		$show_as_link            = '<span class="dashicons dashicons-admin-links ' . $hide_show_as_link_class . '" title="' . esc_attr( $single_link_title ) . '"></span>';
+		$show_as_link            = '<span class="dashicons dashicons-media-default ' . $hide_show_as_link_class . '" title="' . esc_attr( $single_link_title ) . '"></span>';
 
 		// Should we show the icon that the field is being used as a link to single entry?
 		$hide_visibility_class = ( 'read' === \GV\Utils::get( $this->settings, 'only_loggedin' ) && empty( $this->settings['allow_edit_cap'] ) ) ? 'hide-if-js' : '';
