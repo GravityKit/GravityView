@@ -95,7 +95,7 @@ class Field_Collection extends Collection {
 	public function by_visible( $view = null ) {
 		$fields = new self();
 
-		/** @var \GV\Field $field */
+		/** @type \GV\Field $field */
 		foreach ( $this->all() as $field ) {
 			if ( $field->is_visible( $view ) ) {
 				$fields->add( $field );

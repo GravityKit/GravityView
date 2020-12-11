@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -552,7 +552,6 @@ class GravityView_frontend {
 	 *
 	 * @deprecated Use \GV\View::content() instead.
 	 *
-	 * @access public
 	 * @static
 	 * @param mixed $content
 	 * @return string Add the View output into View CPT content
@@ -637,7 +636,6 @@ class GravityView_frontend {
 	/**
 	 * Core function to render a View based on a set of arguments
 	 *
-	 * @access public
 	 * @static
 	 * @param array $passed_args {
 	 *
@@ -710,7 +708,7 @@ class GravityView_frontend {
 			if ( ! empty( $args[ $key ] ) ) {
 
 				// Get a timestamp and see if it's a valid date format
-				$date = strtotime( $args[ $key ] );
+				$date = strtotime( $args[ $key ], GFCommon::get_local_timestamp() );
 
 				// The date was invalid
 				if ( empty( $date ) ) {
@@ -724,7 +722,7 @@ class GravityView_frontend {
 
 				if( ! empty( $search_criteria[ $key ] ) ) {
 
-					$search_date = strtotime( $search_criteria[ $key ] );
+					$search_date = strtotime( $search_criteria[ $key ], GFCommon::get_local_timestamp() );
 
 					// The search is for entries before the start date defined by the settings
 					switch ( $key ) {
@@ -737,7 +735,7 @@ class GravityView_frontend {
 							 *
 							 * @see GFFormsModel::get_date_range_where
 							 */
-							$datetime_format               = gravityview_is_valid_datetime( $args[ $key ] ) ? 'Y-m-d' : 'Y-m-d H:i:s';
+							$datetime_format               = gravityview_is_valid_datetime( $args[ $key ] ) ? 'Y-m-d' : $datetime_format;
 							$search_is_outside_view_bounds = ( $search_date > $date );
 							break;
 						case 'start_date':
@@ -924,7 +922,6 @@ class GravityView_frontend {
 	 *
 	 *
 	 * @uses  gravityview_get_entries()
-	 * @access public
 	 * @param array $args\n
 	 *   - $id - View id
 	 *   - $page_size - Page
@@ -1329,7 +1326,6 @@ class GravityView_frontend {
 	/**
 	 * Register styles and scripts
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public function add_scripts_and_styles() {

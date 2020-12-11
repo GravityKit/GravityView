@@ -137,7 +137,7 @@ class GravityView_Support_Port {
 		$translation = array(
 			'agentLabel'                => __( 'GravityView Support', 'gravityview' ),
 			'searchLabel'               => __( 'Search GravityView Docs', 'gravityview' ),
-			'docsSearchErrorText'          => __( 'Your search timed out. Please double-check your internet connection and try again.', 'gravityview' ),
+			'docsSearchErrorText'       => __( 'Your search timed out. Please double-check your internet connection and try again.', 'gravityview' ),
 			'noResultsLabel'            => _x( 'No results found for', 'a support form search has returned empty for the following word', 'gravityview' ),
 			'contactLabel'              => __( 'Contact Support', 'gravityview' ),
 			'attachAFile'               => __( 'Attach a screenshot or file', 'gravityview' ),
@@ -152,6 +152,7 @@ class GravityView_Support_Port {
 			'messageError'              => _x( 'Please enter a message', 'Error shown when submitting support request and there is no message provided', 'gravityview' ),
 			'weAreOnIt'                 => __( 'Message sent!', 'gravityview' ),
 			'contactSuccessDescription' => __( 'Thanks for reaching out! Someone from the GravityView team will get back to you soon.', 'gravityview' ),
+			'needHelp'					=> __( 'Need Help?', 'gravityview' ),
 		);
 
 		$response = gravityview()->plugin->settings->get( 'license_key_response' );
@@ -199,6 +200,8 @@ class GravityView_Support_Port {
 			'email'                 => $current_user->user_email,
 			'name'                  => mb_substr( $current_user->display_name, 0, 80 ),
 			'signature'             => hash_hmac( 'sha256', $current_user->user_email, self::beacon_key ),
+			'affiliate_id'			=> gravityview()->plugin->settings->get( 'affiliate_id' ),
+			'is_super_admin'		=> is_super_admin(),
 			'License Key'           => $response['license_key'] . ' (' . ucwords( $response['license'] ) . ')',
 			'License Level'         => $package,
 			'Alt Emails'            => sprintf( "Admin: %s, GV Support: %s", get_bloginfo( 'admin_email' ), gravityview()->plugin->settings->get( 'support-email' ) ),

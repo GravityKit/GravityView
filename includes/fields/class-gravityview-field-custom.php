@@ -29,6 +29,8 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 	var $group = 'gravityview';
 
+	var $icon = 'dashicons-text';
+
 	public function __construct() {
 
 		$this->label = esc_html__( 'Custom Content', 'gravityview' );
@@ -40,7 +42,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		unset ( $field_options['search_filter'], $field_options['show_as_link'] );
+		unset ( $field_options['search_filter'], $field_options['show_as_link'], $field_options['new_window'] );
 
 		$new_fields = array(
 			'content' => array(

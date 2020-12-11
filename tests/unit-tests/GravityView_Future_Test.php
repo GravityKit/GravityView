@@ -51,20 +51,22 @@ class GVFuture_Test extends GV_UnitTestCase {
      * @covers \GV\Plugin::relpath()
 	 */
 	public function test_plugin_dir_and_url_and_relpath() {
+		$plugin_folder_name = basename(GRAVITYVIEW_DIR);
 	    $this->assertEquals( GRAVITYVIEW_DIR, gravityview()->plugin->dir() );
-		$this->assertStringEndsWith( '/gravityview/test/this.php', strtolower( gravityview()->plugin->dir( 'test/this.php' ) ) );
-		$this->assertStringEndsWith( '/gravityview/and/this.php', strtolower( gravityview()->plugin->dir( '/and/this.php' ) ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name}/test/this.php", strtolower( gravityview()->plugin->dir( 'test/this.php' ) ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name}/and/this.php", strtolower( gravityview()->plugin->dir( '/and/this.php' ) ) );
 
 		$dirname = trailingslashit( dirname( plugin_basename( GRAVITYVIEW_FILE ) ) );
+
 		$this->assertEquals( $dirname, gravityview()->plugin->relpath() );
 		$this->assertEquals( $dirname . 'languages/', gravityview()->plugin->relpath('/languages/') );
 		$this->assertEquals( $dirname . 'languages', gravityview()->plugin->relpath('languages') );
 
 		/** Due to how WP_PLUGIN_DIR is different in test mode, we are only able to check bits of the URL */
 		$this->assertStringStartsWith( 'http', strtolower( gravityview()->plugin->url() ) );
-		$this->assertStringEndsWith( '/gravityview/', strtolower( gravityview()->plugin->url() ) );
-		$this->assertStringEndsWith( '/gravityview/test/this.php', strtolower( gravityview()->plugin->url( 'test/this.php' ) ) );
-		$this->assertStringEndsWith( '/gravityview/and/this.php', strtolower( gravityview()->plugin->url( '/and/this.php' ) ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name}/", strtolower( gravityview()->plugin->url() ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name}/test/this.php", strtolower( gravityview()->plugin->url( 'test/this.php' ) ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name}/and/this.php", strtolower( gravityview()->plugin->url( '/and/this.php' ) ) );
 	}
 
 	/**
@@ -1633,7 +1635,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		GravityView_View::getInstance()->setForm( $form->form );
 
 		$field_settings = array(
-			'id' => '14',
+			'id'         => '14',
+			'new_window' => true,
 		);
 		$this->assertEquals( '<a href="http://apple.com" rel="noopener noreferrer" target="_blank">http://apple.com</a>', GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
 	}
@@ -3291,21 +3294,26 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$renderer = new \GV\Field_Renderer();
 
 		$field = \GV\GF_Field::by_id( $form, '18' );
-		$expected = '<a href="https://gravityview.co/?scripta/script=scriptb/script&amp;1" rel="noopener noreferrer" target="_blank">https://gravityview.co/?scripta/script=scriptb/script&1</a>';
+		$expected = '<a href="https://gravityview.co/?scripta/script=scriptb/script&amp;1">https://gravityview.co/?scripta/script=scriptb/script&1</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'truncatelink' => true ) );
-		$expected = '<a href="https://gravityview.co/?scripta/script=scriptb/script&amp;1" rel="noopener noreferrer" target="_blank">gravityview.co</a>';
+		$expected = '<a href="https://gravityview.co/?scripta/script=scriptb/script&amp;1">gravityview.co</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		/** HTML is allowed. */
-		$field->update_configuration( array( 'anchor_text' => '<danger>ok {entry_id}' ) );
+		$field->update_configuration( array( 'anchor_text' => '<danger>ok {entry_id}', 'new_window' => true ) );
 		$expected = '<a href="https://gravityview.co/?scripta/script=scriptb/script&amp;1" rel="noopener noreferrer" target="_blank"><danger>ok ' . $entry->ID . '</a>';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'open_same_window' => true, 'new_window' => true ) );
+		$expected = '<a href="https://gravityview.co/?scripta/script=scriptb/script&amp;1"><danger>ok ' . $entry->ID . '</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'open_same_window' => true ) );
 		$expected = '<a href="https://gravityview.co/?scripta/script=scriptb/script&amp;1"><danger>ok ' . $entry->ID . '</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
 	}
 
 	/**
@@ -5992,7 +6000,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$settings = gravityview()->plugin->settings;
 		$settings->update( array() );
 		$this->assertSame( \GravityView_Settings::get_instance(), $settings );
-		$this->assertEquals( array_keys( $settings->get_default_settings() ), array( 'license_key', 'license_key_response', 'license_key_status', 'support-email', 'no-conflict-mode', 'support_port', 'flexbox_search', 'rest_api', 'beta' ) );
+		$this->assertEquals( array_keys( $settings->get_default_settings() ), array( 'license_key', 'license_key_response', 'license_key_status', 'support-email', 'no-conflict-mode', 'support_port', 'flexbox_search', 'rest_api', 'beta', 'powered_by' ) );
 
 		$this->assertNull( $settings->get( 'not' ) );
 		$this->assertEquals( $settings->get( 'not', 'default' ), 'default' );
@@ -6021,7 +6029,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$settings->init_admin();
 		$settings->init_ajax();
 		$settings->add_network_menu();
-		$this->assertEquals( $settings->modify_app_settings_menu_title( array( array() ) ), array( array( 'label' => 'GravityView Settings' ) ) );
+
+		$this->assertEquals( $settings->modify_app_settings_menu_title( array( array() ) ), array( array( 'label' => 'GravityView Settings', 'icon' => 'dashicons-admin-settings' ) ) );
 		$this->assertFalse( $settings->current_user_can_any( array( 'oops' ) ) );
 
 		$this->assertContains( 'delete then', $settings->uninstall_warning_message() );
@@ -6043,11 +6052,17 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( 'ALL GravityView settings will be deleted', ob_get_clean() );
 
 		ob_start();
+		set_current_screen( 'dashboard' );
 		$settings->app_settings_tab();
 		$this->assertContains( '_gravityview_save_settings_nonce', $tab = ob_get_clean() );
 		$this->assertContains( 'Uninstall GravityView', $tab );
 		$this->assertNull( $settings->app_settings_title() );
 		$this->assertEquals( $settings->app_settings_icon(), '&nbsp;' );
+
+		ob_start();
+		set_current_screen( 'front' );
+		$settings->app_settings_tab();
+		$this->assertNotContains( 'Uninstall GravityView', $tab = ob_get_clean() );
 
 		$settings->scripts();
 		$settings->styles();
@@ -7952,6 +7967,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 						'id' => '16',
 						'label' => 'Textarea',
 					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '18',
+						'label' => 'Website',
+					),
 				),
 			),
 		) );
@@ -7972,6 +7991,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'2.1' => 'Much Better',
 			'2.2' => 'Somewhat Better',
 			'16'  => "This\nis\nan\nofficial\nletter.",
+			'18'  => 'https://example.com?query=vars',
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
@@ -7997,9 +8017,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$textarea = "This\nis\nan\nofficial\nletter.";
 
+		$website  = 'https://example.com?query=vars';
+
 		$expected = array(
-			'Email,"A List",File,Checkbox,Textarea',
-			sprintf( 'support@gravityview.co,"%s",%s,"%s","%s"', $list, $file, $checkbox, $textarea ),
+			'Email,"A List",File,Checkbox,Textarea,Website',
+			sprintf( 'support@gravityview.co,"%s",%s,"%s","%s",%s', $list, $file, $checkbox, $textarea, $website ),
 		);
 
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
@@ -8027,27 +8049,27 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 
 		$expected         = array(
-			'Email,"A List",File,Checkbox,Textarea',
-			sprintf( 'support@gravityview.co,"%s","%s","%s","%s"', $list_newline, $file_newline, $checkbox_newline, $textarea ),
+			'Email,"A List",File,Checkbox,Textarea,Website',
+			sprintf( 'support@gravityview.co,"%s","%s","%s","%s",%s', $list_newline, $file_newline, $checkbox_newline, $textarea, $website ),
 		);
 
 		remove_all_filters( 'gravityview/template/field/csv/glue' );
 
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
-		add_filter( 'gravityview/template/csv/field/raw', '__return_false' );
+		add_filter( 'gravityview/template/csv/field/raw', '__return_empty_array' );
 
 		$textarea = str_replace( "\n", "<br />\n", $textarea );
 
 		ob_start();
 		$view::template_redirect();
 		$expected = array(
-			'Email,"A List",File,Checkbox,Textarea',
-			sprintf( '"<a href=\'mailto:support@gravityview.co\'>support@gravityview.co</a>","%s",%s,"%s","%s"', $list, $file, $checkbox, $textarea ),
+			'Email,"A List",File,Checkbox,Textarea,Website',
+			sprintf( '"<a href=\'mailto:support@gravityview.co\'>support@gravityview.co</a>","%s",%s,"%s","%s","<a href=\'https://example.com?query=vars\' target=\'_blank\'>https://example.com?query=vars</a>"', $list, $file, $checkbox, $textarea ),
 		);
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
-		remove_filter( 'gravityview/template/csv/field/raw', '__return_false' );
+		remove_filter( 'gravityview/template/csv/field/raw', '__return_empty_array' );
 		remove_filter( 'gform_include_bom_export_entries', '__return_false' );
 
 		$this->_reset_context();

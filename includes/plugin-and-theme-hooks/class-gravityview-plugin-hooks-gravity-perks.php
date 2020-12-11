@@ -5,7 +5,7 @@
  * @file      class-gravityview-plugin-hooks-gravity-perks.php
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      https://gravityview.co
  * @copyright Copyright 2016, Katz Web Services, Inc.
  *
@@ -49,7 +49,7 @@ class GravityView_Plugin_Hooks_Gravity_Perks extends GravityView_Plugin_and_Them
 	 */
 	public function edit_entry_fix_uid_fields( $fields ) {
 
-		/** @var GF_Field $field */
+		/** @type \GF_Field $field */
 		foreach( $fields as &$field ) {
 			if ( 'uid' === $field->type ) {
 

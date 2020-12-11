@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -65,7 +65,6 @@ class GravityView_Admin_Views {
 		add_action( 'pre_get_posts', array( $this, 'filter_pre_get_posts_by_gravityview_form_id' ) );
 
 		add_filter( 'gravityview/support_port/localization_data', array( $this, 'suggest_support_articles' ) );
-
 	}
 
 	/**
@@ -219,30 +218,59 @@ class GravityView_Admin_Views {
 		    $sub_menu_items[] = array(
 			    'label' => esc_attr__( 'Create a View', 'gravityview' ),
                 'link_class' => 'gv-create-view',
+			    'icon' => '<i>&nbsp;+&nbsp;</i>',
 			    'title' => esc_attr__( 'Create a View using this form as a data source', 'gravityview' ),
 			    'url'   => admin_url( 'post-new.php?post_type=gravityview&form_id=' . $id ),
 			    'capabilities'   => array( 'edit_gravityviews' ),
             );
 
-			// Make sure Gravity Forms uses the submenu; if there's only one item, it uses a link instead of a dropdown
-			$sub_menu_items[] = array(
-				'url' => '#',
-				'label' => '',
-				'menu_class' => 'hidden',
-				'capabilities' => '',
-			);
 
-			$menu_items['gravityview'] = array(
-				'label'          => __( 'Connected Views', 'gravityview' ),
-				'icon'           => '<i class="fa fa-lg gv-icon-astronaut-head gv-icon"></i>',
-				'title'          => __( 'GravityView Views using this form as a data source', 'gravityview' ),
-				'url'            => '#',
-				'onclick'        => 'return false;',
-				'menu_class'     => 'gv_connected_forms gf_form_toolbar_settings',
-				'sub_menu_items' => $sub_menu_items,
-				'priority'       => $priority,
-				'capabilities'   => array( 'edit_gravityviews' ),
-			);
+			/**
+			 * In Gravity Forms 2.5, they got rid of the sub-menu items, so we are now forced to add them to the main dropdown
+			 */
+			if ( ! ( 'gf_edit_forms' === rgget( 'page' ) && '' === rgget( 'view' ) ) || version_compare( '2.5-beta', GFForms::$version, '>' ) ) {
+
+				// Make sure Gravity Forms uses the submenu; if there's only one item, it uses a link instead of a dropdown
+				$sub_menu_items[] = array(
+					'url' => '#',
+					'label' => '',
+					'menu_class' => 'hidden',
+					'capabilities' => '',
+				);
+
+				$menu_items['gravityview'] = array(
+					'label'          => __( 'Connected Views', 'gravityview' ),
+					'icon'           => '<i class="fa fa-lg gv-icon-astronaut-head gv-icon"></i>',
+					'title'          => __( 'GravityView Views using this form as a data source', 'gravityview' ),
+					'url'            => '#',
+					'onclick'        => 'return false;',
+					'menu_class'     => 'gv_connected_forms gf_form_toolbar_settings',
+					'sub_menu_items' => $sub_menu_items,
+					'priority'       => $priority,
+					'capabilities'   => array( 'edit_gravityviews' ),
+				);
+
+			} else {
+
+				$menu_items[ 'gravityview'] = array(
+					'label' => __( 'Connected Views', 'gravityview' ),
+					'url'   => '#gravityview-group-heading',
+					'icon'  => '<i class="fa fa-lg gv-icon-astronaut-head gv-icon"></i>',
+				);
+				foreach ( $sub_menu_items as $key => $sub_menu_item ) {
+
+					$menu_items[ 'gravityview-' . $key ] = array(
+						'label'        => rgar( $sub_menu_item, 'label', '' ),
+						'icon'         => rgar( $sub_menu_item, 'icon', '<i>&nbsp;&bull;&nbsp;</i>' ),
+						'title'        => rgar( $sub_menu_item, 'title', '' ),
+						'url'          => rgar( $sub_menu_item, 'url', '' ),
+						'menu_class'   => 'gv_calendar gf_form_toolbar_settings',
+						'priority'     => $priority,
+						'capabilities' => array( 'edit_gravityviews' ),
+					);
+
+				}
+			}
 		}
 
 		return $menu_items;
@@ -253,7 +281,6 @@ class GravityView_Admin_Views {
 	 *
 	 * @param array $array Existing field types to add to a blacklist
 	 * @param string|null $context Context for the blacklist. Default: NULL.
-	 * @access public
 	 * @return array Default blacklist fields merged with existing blacklist fields
 	 */
 	function default_field_blacklist( $array = array(), $context = NULL ) {
@@ -289,11 +316,6 @@ class GravityView_Admin_Views {
 
 			// By default, use `tooltip` if defined.
 			$tooltip = empty( $arg['tooltip'] ) ? NULL : $arg['tooltip'];
-
-			// Otherwise, use the description as a tooltip.
-			if( empty( $tooltip ) && !empty( $arg['desc'] ) ) {
-				$tooltip = $arg['desc'];
-			}
 
 			// If there's no tooltip set, continue
 			if( empty( $tooltip ) ) {
@@ -497,7 +519,6 @@ class GravityView_Admin_Views {
 	/**
 	 * Save View configuration
 	 *
-	 * @access public
 	 * @param int $post_id Currently saved Post ID
 	 * @return void
 	 */
@@ -603,11 +624,9 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Render html for displaying available fields based on a Form ID
-	 * $blacklist_field_types - contains the field types which are not proper to be shown in a directory.
 	 *
      * @see GravityView_Ajax::get_available_fields_html() Triggers `gravityview_render_available_fields` action
-	 * @access public
-     *
+	 *
 	 * @param int $form Gravity Forms Form ID (default: '')
 	 * @param string $context (default: 'single')
      *
@@ -667,7 +686,6 @@ class GravityView_Admin_Views {
 	/**
 	 * Render html for displaying additional fields based on a Form ID
 	 *
-	 * @access public
 	 * @param int $form Gravity Forms Form ID (default: '')
 	 * @param string $context (default: 'single')
 	 * @return void
@@ -683,6 +701,7 @@ class GravityView_Admin_Views {
 				'input_type' => null,
 				'field_options' => null,
 				'settings_html'	=> null,
+				'icon' => null,
 			)
 		);
 
@@ -702,6 +721,7 @@ class GravityView_Admin_Views {
 				'input_type' => null,
 				'field_options' => null,
 				'settings_html'	=> null,
+				'icon' => null,
 			));
 
 			// Backward compat.
@@ -840,6 +860,16 @@ class GravityView_Admin_Views {
 
 		// Move Custom Content to top
 		$fields = array( 'custom' => $fields['custom'] ) + $fields;
+
+		$gv_fields = GravityView_Fields::get_all();
+
+		foreach ( $fields as &$field ) {
+			foreach ( $gv_fields as $gv_field ) {
+				if ( $field['type'] === $gv_field->name ) {
+					$field['icon'] = $gv_field->icon;
+				}
+			}
+		}
 
 		/**
 		 * @filter `gravityview/admin/available_fields` Modify the available fields that can be used in a View.
@@ -1138,7 +1168,6 @@ class GravityView_Admin_Views {
 	/**
 	 * Render the Template Active Areas and configured active fields for a given template id and post id
 	 *
-	 * @access public
 	 * @param string $template_id (default: '') Template ID, like `default_list`, `default_table`, `preset_business_data`, etc. {@see GravityView_Template::__construct()}
 	 * @param string $post_id (default: '')
 	 * @param string $context (default: 'single')
@@ -1189,14 +1218,22 @@ class GravityView_Admin_Views {
 	/**
 	 * Enqueue scripts and styles at Views editor
 	 *
-	 * @access public
 	 * @param mixed $hook
 	 * @return void
 	 */
 	static function add_scripts_and_styles( $hook ) {
 		global $plugin_page, $pagenow;
 
+		$script_debug    = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$is_widgets_page = ( $pagenow === 'widgets.php' );
+
+		// Add legacy (2.4 and older) Gravity Forms tooltip script/style
+		if ( gravityview()->plugin->is_GF_25() && gravityview()->request->is_admin( '', 'single' ) ) {
+			wp_dequeue_script( 'gform_tooltip_init' );
+			wp_dequeue_style( 'gform_tooltip' );
+			wp_enqueue_style( 'gravityview_gf_tooltip', plugins_url( 'assets/css/gf_tooltip.css', GRAVITYVIEW_FILE ), array(), \GV\Plugin::$version );
+			wp_enqueue_script( 'gravityview_gf_tooltip', plugins_url( 'assets/js/gf_tooltip' . $script_debug . '.js', GRAVITYVIEW_FILE ), array(), \GV\Plugin::$version );
+		}
 
 		// Add the GV font (with the Astronaut)
         wp_enqueue_style( 'gravityview_global', plugins_url('assets/css/admin-global.css', GRAVITYVIEW_FILE), array(), \GV\Plugin::$version );
@@ -1217,9 +1254,7 @@ class GravityView_Admin_Views {
         wp_enqueue_script( 'jquery-ui-datepicker' );
         wp_enqueue_style( 'gravityview_views_datepicker', plugins_url('assets/css/admin-datepicker.css', GRAVITYVIEW_FILE), \GV\Plugin::$version );
 
-        $script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
-
-        //enqueue scripts
+        // Enqueue scripts
         wp_enqueue_script( 'gravityview_views_scripts', plugins_url( 'assets/js/admin-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie', 'jquery-ui-datepicker', 'underscore' ), \GV\Plugin::$version );
 
         wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
@@ -1299,11 +1334,12 @@ class GravityView_Admin_Views {
 				'gravityview-support',
 				'gravityview-jquery-cookie',
 				'gravityview_views_datepicker',
+				'gravityview_gf_tooltip',
 				'sack',
 				'gform_gravityforms',
 				'gform_forms',
 				'gform_form_admin',
-				'jquery-ui-autocomplete'
+				'jquery-ui-autocomplete',
 			);
 
 		} elseif ( preg_match( '/style/ism', $filter ) ) {
@@ -1313,7 +1349,8 @@ class GravityView_Admin_Views {
 				'wp-jquery-ui-dialog',
 				'gravityview_views_styles',
 				'gravityview_global',
-				'gravityview_views_datepicker'
+				'gravityview_views_datepicker',
+				'gravityview_gf_tooltip',
 			);
 		}
 
