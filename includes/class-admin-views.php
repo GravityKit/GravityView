@@ -949,8 +949,7 @@ class GravityView_Admin_Views {
                                     <span class="gv-droppable-area-subtitle"><span class="gf_tooltip gv_tooltip tooltip">
                                     &ndash; <?php echo esc_html( $area['subtitle'] ); ?></span></span><?php } ?></p>
 							<div class="active-drop-container active-drop-container-<?php echo esc_attr( $type ); ?>">
-							<div class="active-drop active-drop-<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
-								<?php // render saved fields
+							<div class="active-drop active-drop-<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>"><?php // render saved fields
 								if( ! empty( $values[ $zone .'_'. $area['areaid'] ] ) ) {
 
 									foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) {
@@ -997,9 +996,7 @@ class GravityView_Admin_Views {
 										}
 									}
 
-								} // End if zone is not empty ?>
-
-							</div>
+								} // End if zone is not empty ?></div>
 								<div class="gv-droppable-area-action">
 									<a href="#" class="gv-add-field button button-link button-hero" title=""
 									   data-objecttype="<?php echo esc_attr( $type ); ?>"

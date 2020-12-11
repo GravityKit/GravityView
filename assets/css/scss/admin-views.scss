@@ -672,7 +672,11 @@ hr {
 	text-align: center;
 
 	.gv-droppable-area-action {
-		padding: 2px 0.5em 12px .5em;
+		padding: 4px 0.5em 12px .5em;
+	}
+
+	div:empty + .gv-droppable-area-action {
+		margin-top: .5em;
 	}
 
 	.gv-droppable-area-action:before,
