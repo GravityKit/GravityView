@@ -625,9 +625,57 @@
 				open: function () {
 					$( '<div class="gv-overlay" />' ).prependTo( '#wpwrap' );
 
-					$('textarea.code', thisDialog).each( function (  ) {
-						wp.codeEditor.initialize( $(this), { viewportMargin: 'Infinity', height: 'dynamic', minHeight: 200 } );
-					});
+					$( 'textarea.code', thisDialog ).each( function() {
+						var editor = wp.codeEditor.initialize( $( this ), {
+							viewportMargin: 'Infinity',
+							height: 'dynamic',
+							minHeight: 200
+						} );
+						var editorId = $( this ).attr( 'id' );
+						var mergeTags = window.gfMergeTags.getAutoCompleteMergeTags( $( this ) );
+						var mergeTag = '';
+						var initialEditorCursorPos = editor.codemirror.getCursor();
+
+						$( this ).autocomplete( {
+							focus: false,
+							minLength: 1,
+							source: mergeTags,
+							select: function( event, ui ) {
+								// insert the merge tag value without curly braces
+								var val = ui.item.value.replace( /^{|}$/gm, '' );
+								var currentEditorCursorPos = editor.codemirror.getCursor();
+
+								editor.codemirror.replaceRange( val, initialEditorCursorPos, window.wp.CodeMirror.Pos( currentEditorCursorPos.line, currentEditorCursorPos.ch ) );
+							},
+						} );
+
+						var closeAutocompletion = function() {
+							$( '#' + editorId ).autocomplete( 'close' );
+						};
+
+						editor.codemirror.on( 'mousedown', function() {
+							closeAutocompletion();
+						} );
+
+						editor.codemirror.on( 'change', function( e, obj ) {
+							// detect curly braces and update the cursor position
+							if ( obj.text[ 0 ] === '{}' ) {
+								initialEditorCursorPos = editor.codemirror.getCursor();
+							}
+
+							// select everything between the initial and current cursor positions
+							var currentEditorCursorPos = editor.codemirror.getCursor();
+							mergeTag = editor.codemirror.getRange( { ch: initialEditorCursorPos.ch - 1, line: initialEditorCursorPos.line }, currentEditorCursorPos );
+
+							// if the value starts with a curly braces, initiate autocompletion
+							if ( mergeTag[ 0 ] === '{' ) {
+								return $( '#' + editorId ).autocomplete( 'search', mergeTag );
+							}
+
+							closeAutocompletion();
+						} );
+					} );
+
 					return true;
 				},
 				close: function ( e ) {
