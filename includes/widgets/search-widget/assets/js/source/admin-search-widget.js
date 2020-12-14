@@ -289,7 +289,7 @@
 		 * @param  {string} fields JSON fields configuration
 		 */
 		populateRows: function( table, fields ) {
-			var rows = $.parseJSON( fields ),
+			var rows = JSON.parse( fields ),
 				pos = null;
 
 			if( !rows || rows.length === 0 ) {
@@ -590,8 +590,8 @@
 
 		getSelectInput: function( type ) {
 
-			var labels = $.parseJSON( gvSearchVar.input_labels ),
-				types = $.parseJSON( gvSearchVar.input_types ),
+			var labels = JSON.parse( gvSearchVar.input_labels ),
+				types = JSON.parse( gvSearchVar.input_types ),
 				options = [];
 
 			// get list of inputs
