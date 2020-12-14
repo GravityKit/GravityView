@@ -633,6 +633,12 @@
 				close: function ( e ) {
 					e.preventDefault();
 
+					$( 'textarea.code', thisDialog ).each( function() {
+						var codeMirror = $( this ).next( '.CodeMirror' )[ 0 ].CodeMirror;
+
+						codeMirror.toTextArea();
+					} );
+
 					vcfg.setCustomLabel( thisDialog );
 
 					$( '#wpwrap').find('> .gv-overlay' ).fadeOut( 'fast', function () {
