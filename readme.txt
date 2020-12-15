@@ -21,10 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop =
+= December 15, 2020 =
 
 * Tweak: Improvements to certain events that are recorded when logging is enabled within Gravity Forms
 * Improved: Add search field to the Entry Creator drop-down menu
+* Tweak: Hide field icons for now until our refreshed design is released 😉
 * Fixed: Search entries by Payment Date would not yield results
 * Fixed: Uncaught error when one of GravityView's methods is used before WordPress finishes loading
 * Fixed: Duplicate Entry link would only be displayed to users with an administrator role
