@@ -239,7 +239,7 @@ class GravityView_Compatibility {
 
 			self::$notices['wp_version'] = array(
 				'class' => 'error',
-				'message' => sprintf( __( "%sGravityView requires WordPress %s or newer.%s \n\nYou're using Version %s. Please upgrade your WordPress installation.", 'gravityview' ), '<h3>', GV_MIN_WP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.$wp_version.'</span>' ),
+				'message' => sprintf( __( "%sGravityView requires WordPress %s or newer.%s \n\nYou're using Version %s. Please upgrade your WordPress installation.", 'gravityview' ), '<h3>', GV_MIN_WP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">' . $wp_version . '</span>' ),
 			    'cap' => 'update_core',
 				'dismiss' => 'wp_version',
 			);
@@ -274,7 +274,7 @@ class GravityView_Compatibility {
 		if( class_exists( 'GFCommon' ) ) {
 
 			// Does the version meet future requirements?
-			if( true === version_compare( GFCommon::$version, GV_FUTURE_MIN_GF_VERSION, ">=" ) ) {
+			if( true === gravityview()->plugin->is_compatible_future_gravityforms() ) {
 				return true;
 			}
 
@@ -402,7 +402,7 @@ class GravityView_Compatibility {
 			return true;
 		}
 
-		if( !is_network_admin() && is_plugin_active( $location ) ) {
+		if( ! is_network_admin() && is_plugin_active( $location ) ) {
 			return true;
 		}
 
