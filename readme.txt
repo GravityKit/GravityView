@@ -34,6 +34,7 @@ Tweak: Hide field icons (for now) when editing a View...until our refreshed desi
 __Developer Updates:__
 
 * Added: `gravityview/search-trim-input` filter to strip or preserve leading/trailing whitespaces in Search Bar values
+* Added: Future WordPress version compatibility check
 * Tweak: Improved logging output
 * Modified: `gravityview_date_created_adjust_timezone` default is now set to false (use UTC value)
 

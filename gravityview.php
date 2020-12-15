@@ -70,6 +70,12 @@ define( 'GV_FUTURE_MIN_PHP_VERSION', '5.6.20' );
 define( 'GV_FUTURE_MIN_GF_VERSION', '2.4' );
 
 /**
+ * GravityView will soon require at least this version of WordPress to function properly.
+ * @since 2.9.3
+ */
+define( 'GV_FUTURE_MIN_WP_VERSION', '4.9.16' );
+
+/**
  * The future is here and now.
  */
 require GRAVITYVIEW_DIR . 'future/loader.php';
