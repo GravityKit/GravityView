@@ -119,6 +119,11 @@ abstract class Request {
 	 * @return \GV\GF_Entry|false The entry requested or false.
 	 */
 	public function is_entry( $form_id = 0 ) {
+		global $wp_query;
+
+		if ( ! $wp_query ) {
+			return false;
+		}
 
 		$id = get_query_var( Entry::get_endpoint_name() );
 

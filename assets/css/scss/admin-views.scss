@@ -1000,3 +1000,19 @@ hr {
 		line-height: 1;
 	}
 }
+
+.gv-field-label {
+	.dashicons {
+		display: none;
+	}
+	.dashicons-welcome-write-blog,
+	.dashicons-trash,
+	.dashicons-controls-repeat,
+	.dashicons-admin-comments,
+	.dashicons-yes-alt,
+	.dashicons-editor-code,
+	.dashicons-media-default,
+	.dashicons-admin-links {
+		display: inline-block;
+	}
+}

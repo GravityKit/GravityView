@@ -348,7 +348,7 @@
 		selectText: function ( e ) {
 			e.preventDefault();
 
-			$( this ).focus().select();
+			$( this ).trigger('focus').trigger('select');
 
 			return false;
 		},
@@ -805,7 +805,7 @@
 			var vcfg = viewConfiguration, selectedTemplateId = vcfg.wantedTemplate.attr( "data-templateid" );
 
 			// update template name
-			$( "#gravityview_directory_template" ).val( selectedTemplateId ).change();
+			$( "#gravityview_directory_template" ).val( selectedTemplateId ).trigger('change');
 
 			//add Selected class
 			var $parent = vcfg.wantedTemplate.parents( ".gv-view-types-module" );
@@ -946,7 +946,7 @@
 
 			$.post( ajaxurl, data, function ( response ) {
 				if ( response ) {
-					var content = $.parseJSON( response );
+					var content = JSON.parse( response );
 					$( '#directory-header-widgets' ).html( content.header );
 					$( '#directory-footer-widgets' ).html( content.footer );
 					$( '#directory-active-fields' ).append( content.directory );
@@ -1019,7 +1019,7 @@
 						$focus_item = $( 'button', tooltip.tooltip ).first();
 					}
 
-					$focus_item.focus();
+					$focus_item.trigger('focus');
 		        },
 				closeOnEscape: true,
 				disabled: true, // Don't open on hover
@@ -1055,7 +1055,7 @@
 		 */
 		setupFieldFilters: function( e ) {
 
-			var input = $.trim( $( this ).val() ),
+			var input = $( this ).val().trim(),
 				$tooltip = $( this ).parents( '.ui-tooltip-content' ),
 				$resultsNotFound = $tooltip.find( '.gv-no-results' );
 
@@ -1634,7 +1634,7 @@
 				$post.data( 'gv-valid', true );
 
 				if ( 'click' === e.type ) {
-					$( e.target ).click();
+					$( e.target ).trigger('click');
 				} else {
 					$post.submit();
 				}
@@ -1690,7 +1690,7 @@
 						if ( 'click' === e.type ) {
 							$target.click();
 						} else {
-							$('#post').submit();
+							$('#post').trigger('submit');
 						}
 
 					} else {
@@ -1739,7 +1739,7 @@
 
 			// Conditional display general settings & trigger display settings if template changes
 			$('#gravityview_directory_template')
-				.change( viewGeneralSettings.updateSettingsDisplay )
+				.on('change', viewGeneralSettings.updateSettingsDisplay)
 				.trigger('change');
 
 			$('body')
@@ -1866,7 +1866,7 @@
 
 	};  // end viewGeneralSettings object
 
-	jQuery( document ).ready( function ( $ ) {
+	jQuery(function ( $ ) {
 
 		// title placeholder
 		$( '#title-prompt-text' ).text( gvGlobals.label_viewname );

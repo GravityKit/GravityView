@@ -3,7 +3,7 @@
  *
  * @global jQuery
  */
-jQuery( document ).ready( function() {
+jQuery(function() {
 	gform_initialize_tooltips();
 } );
 
@@ -22,7 +22,7 @@ function gform_initialize_tooltips() {
 			jQuery( 'div.ui-tooltip' ).not( '#' + $id ).remove();
 		},
 		close: function( event, ui ) {
-			ui.tooltip.hover( function() {
+			ui.tooltip.on('hover', function() {
 					jQuery( this ).stop( true ).fadeTo( 400, 1 );
 				},
 				function() {
