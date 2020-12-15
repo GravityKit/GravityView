@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 5.5.2
+Tested up to: 5.6
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -21,11 +21,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= December 15, 2020 =
+= 2.9.3 on December 15, 2020 =
 
-* Tweak: Improvements to certain events that are recorded when logging is enabled within Gravity Forms
 * Improved: Add search field to the Entry Creator drop-down menu
-* Tweak: Hide field icons for now until our refreshed design is released 😉
+Tweak: Hide field icons (for now) when editing a View...until our refreshed design is released 😉
+* Fixed: Some JavaScript warnings on WordPress 5.6
+* Fixed: Duplicate Entry field doesn't appear for users with custom roles
 * Fixed: Search entries by Payment Date would not yield results
 * Fixed: Uncaught error when one of GravityView's methods is used before WordPress finishes loading
 * Fixed: Duplicate Entry link would only be displayed to users with an administrator role
@@ -33,6 +34,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 __Developer Updates:__
 
 * Added: `gravityview/search-trim-input` filter to strip or preserve leading/trailing whitespaces in Search Bar values
+* Tweak: Improved logging output
+* Modified: `gravityview_date_created_adjust_timezone` default is now set to false (use UTC value)
 
 = 2.9.2.1 on October 26, 2020 =
 
