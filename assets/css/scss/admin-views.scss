@@ -417,11 +417,15 @@ $gv-overlay-index: 10000;
 			}
 
 			// Non-active state
-			.dashicons {
+			.dashicons,
+			[class^='gv-icon-'],
+			[class^='gv-icon-']:before {
 				color: #999;
 				font-size: 24px;
 				height: 24px;
 				width: 24px;
+				vertical-align: top;
+				overflow: hidden;
 			}
 
 			&.ui-state-active,
@@ -434,12 +438,16 @@ $gv-overlay-index: 10000;
 
 				// Active text is #555D66 - we want a bit lighter
 				// since it's bolder.
-				.dashicons {
+				.dashicons,
+				[class^='gv-icon-'],
+				[class^='gv-icon-']:before {
 					color: #555D66;
 				}
 			}
 
-			&.ui-state-hover .dashicons {
+			&.ui-state-hover .dashicons,
+			&.ui-state-hover [class^='gv-icon-'],
+			&.ui-state-hover [class^='gv-icon-']:before {
 				color: #737373;
 			}
 
