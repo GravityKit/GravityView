@@ -766,6 +766,21 @@ class GVCommon {
 			$val1 = in_array( gravityview_get_context(), $matching_contexts ) ? $val2 : false;
 		}
 
+		// Are the values both dates? Let's find out.
+		try {
+
+			$val_1_date = new \DateTime( $val1 );
+			$val_2_date = new \DateTime( $val2 );
+
+			if ( $val_1_date && $val_2_date ) {
+				$val1 = $val_1_date->getTimestamp();
+				$val2 = $val_2_date->getTimestamp();
+			}
+
+		} catch ( Exception $e ) {
+			// The values are not dates. This is not an error.
+		}
+
 		switch ( $operation ) {
 			case 'equals':
 				$value = self::matches_operation( $val1, $val2, 'is' );
