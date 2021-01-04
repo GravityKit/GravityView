@@ -506,12 +506,16 @@ $gv-overlay-index: 10000;
 			}
 
 			// Non-active state
-			.dashicons {
+		  .dashicons,
+		  [class^='gv-icon-'],
+		  [class^='gv-icon-']:before {
 				color: $color-aaa;
 
 				font-size: 24px;
 				height: 24px;
 				width: 24px;
+				vertical-align: top;
+				overflow: hidden;
 			}
 
 			&.tab-not-configured .dashicons {
@@ -551,7 +555,10 @@ $gv-overlay-index: 10000;
 
 				// Active text is #555D66 - we want a bit lighter
 				// since it's bolder.
-				.dashicons.tab-icon {
+				.dashicons,
+				.dashicons.tab-icon,
+				[class^='gv-icon-'],
+				[class^='gv-icon-']:before {
 					color: $color-444;
 				}
 
@@ -565,7 +572,9 @@ $gv-overlay-index: 10000;
 					background-color: rgba( 255, 255, 255, .5 );
 					color: $color-222;
 				}
-				.dashicons {
+				.dashicons,
+				[class^='gv-icon-'],
+				[class^='gv-icon-']:before {
 					color: $color-666;
 				}
 			}

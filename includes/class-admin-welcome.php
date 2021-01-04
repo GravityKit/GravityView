@@ -265,6 +265,33 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
+				<h3>2.9.3 on December 15, 2020</h3>
+
+				<ul>
+					<li>Improved: Add search field to the Entry Creator drop-down menu</li>
+					<li>Tweak: Hide field icons (for now) when editing a View...until our refreshed design is released 😉</li>
+					<li>Fixed: Some JavaScript warnings on WordPress 5.6</li>
+					<li>Fixed: Duplicate Entry field doesn't appear for users with custom roles</li>
+					<li>Fixed: Search entries by Payment Date would not yield results</li>
+					<li>Fixed: Uncaught error when one of GravityView's methods is used before WordPress finishes loading</li>
+					<li>Fixed: Duplicate Entry link would only be displayed to users with an administrator role</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: <code>gravityview/search-trim-input</code> filter to strip or preserve leading/trailing whitespaces in Search Bar values</li>
+					<li>Tweak: Improved logging output</li>
+					<li>Modified: <code>gravityview_date_created_adjust_timezone</code> default is now set to false (use UTC value)</li>
+				</ul>
+
+				<h3>2.9.2.1 on October 26, 2020</h3>
+
+				<ul>
+					<li>Improved: Plugin license information layout when running Gravity Forms 2.5</li>
+					<li>Fixed: View Settings overflow their container (introduced in 2.9.2)</li>
+				</ul>
+
 				<h3>2.9.2 on October 21, 2020</h3>
 
 				<ul>

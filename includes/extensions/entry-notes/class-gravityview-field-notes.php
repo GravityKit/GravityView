@@ -166,33 +166,25 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 * @return void
 	 */
 	function maybe_add_note() {
-
-		if( ! GVCommon::has_cap( 'gravityview_add_entry_notes' ) ) {
-			gravityview()->log->error( 'The user isnt allowed to add entry notes.' );
+		if ( ! isset( $_POST['action'] ) || 'gv_note_add' !== $_POST['action'] ) {
 			return;
 		}
 
-		if( ! isset( $_POST['action'] ) ) {
+		if ( ! GVCommon::has_cap( 'gravityview_add_entry_notes' ) ) {
+			gravityview()->log->error( "The user isn't allowed to add entry notes." );
+
 			return;
 		}
 
-		if( 'gv_note_add' === $_POST['action'] ) {
+		$post = wp_unslash( $_POST );
 
-            if( ! GVCommon::has_cap( 'gravityview_add_entry_notes' ) ) {
-                do_action( 'gravityview_log_error', __METHOD__ . ': The user isnt allowed to add entry notes.' );
-                return;
-            }
-
-			$post = wp_unslash( $_POST );
-
-			if( $this->doing_ajax ) {
-				parse_str( $post['data'], $data );
-			} else {
-				$data = $post;
-			}
-
-			$this->process_add_note( (array) $data );
+		if ( $this->doing_ajax ) {
+			parse_str( $post['data'], $data );
+		} else {
+			$data = $post;
 		}
+
+		$this->process_add_note( (array) $data );
 	}
 
 	/**

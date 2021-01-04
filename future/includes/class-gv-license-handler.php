@@ -255,7 +255,7 @@ class License_Handler {
 
 		$response = (array) $response;
 
-		$return = '';
+		$return  = '';
 		$wrapper = '<span class="gv-license-details" aria-live="polite" aria-busy="false">%s</span>';
 
 		if ( ! empty( $response['license_key'] ) ) {
@@ -265,6 +265,7 @@ class License_Handler {
 				if ( gravityview()->plugin->is_GF_25() ) {
 					return sprintf( $wrapper, '' ); // Do not show redundant information - invalid/deactivated notice will be displayed by generate_license_box()
 				}
+
 
 				$return .= $this->strings( $response['license'], $response );
 			} elseif ( ! empty( $response['license_name'] ) ) {
@@ -282,24 +283,31 @@ class License_Handler {
 				$response = wp_parse_args( $response, $response_keys );
 
 				$login_link_class = gravityview()->plugin->is_GF_25() ? 'button button-outline outline' : 'text-link';
-				$login_link    = sprintf( '<a href="%s" class="gv-access-account ' . $login_link_class . '" rel="external">%s</a>', esc_url( sprintf( 'https://gravityview.co/wp-login.php?username=%s', $response['customer_email'] ) ), esc_html__( 'Access your GravityView account', 'gravityview' ) );
-				$local_text    = ( ! empty( $response['is_local'] ) ? '<span class="howto">' . __( 'This development site does not count toward license activation limits', 'gravityview' ) . '</span>' : '' );
-				$license_limit = empty( $response['license_limit'] ) ? __( 'Unlimited', 'gravityview' ) : (int) $response['license_limit'];
+				$renews_on = ( 'lifetime' === $response['expires'] ) ? '' : sprintf( esc_html__( 'Renew on: %s', 'gravityview' ), date_i18n( get_option( 'date_format' ), strtotime( $response['expires'] ) - DAY_IN_SECONDS ) );
+				$login_link       = sprintf( '<a href="%s" class="gv-access-account ' . $login_link_class . '" rel="external">%s</a>', esc_url( sprintf( 'https://gravityview.co/wp-login.php?username=%s', $response['customer_email'] ) ), esc_html__( 'Access your GravityView account', 'gravityview' ) );
+				$local_text       = ( ! empty( $response['is_local'] ) ? '<span class="howto">' . __( 'This development site does not count toward license activation limits', 'gravityview' ) . '</span>' : '' );
+				$license_limit    = empty( $response['license_limit'] ) ? __( 'Unlimited', 'gravityview' ) : (int) $response['license_limit'];
 
-				$details    = array(
+
+				$details = array(
 					'license'     => sprintf( esc_html__( 'License level: %s', 'gravityview' ), '<span class="gv-license-detail">' . esc_html( $response['license_name'] ) . '</span>' ),
-					'licensed_to' => sprintf( esc_html_x( 'Licensed to: %1$s (%2$s)', '1: Customer name; 2: Customer email', 'gravityview' ),  '<span class="gv-license-detail">' . esc_html__( $response['customer_name'], 'gravityview' ), esc_html__( $response['customer_email'], 'gravityview' ) ) . $login_link . '</span>',
+					'licensed_to' => sprintf( esc_html_x( 'Licensed to: %1$s (%2$s)', '1: Customer name; 2: Customer email', 'gravityview' ), '<span class="gv-license-detail">' . esc_html__( $response['customer_name'], 'gravityview' ), esc_html__( $response['customer_email'], 'gravityview' ) ) . '</span>' . $renews_on . $login_link,
 					'activations' => sprintf( str_replace( '%d', '%s', esc_html__( 'Activations: %d of %s sites', 'gravityview' ) ), '<span class="gv-license-detail">' . intval( $response['site_count'] ), esc_html( $license_limit ) ) . '</span>' . $local_text,
-					'expires'     => 'lifetime' === $response['expires'] ? '' : sprintf( esc_html__( 'Renew on: %s', 'gravityview' ), date_i18n( get_option( 'date_format' ), strtotime( $response['expires'] ) - DAY_IN_SECONDS ) ),
 					'upgrade'     => $this->get_upgrade_html( $response['upgrades'] ),
 				);
 
 				if ( ! empty( $response['error'] ) && 'expired' === $response['error'] ) {
 					unset( $details['upgrade'] );
-					$details['expires'] = '<div class="error inline"><p>' . $this->strings( 'expired', $response ) . '</p></div>';
+					$details['licensed_to'] .= '<div class="error inline"><p>' . $this->strings( 'expired', $response ) . '</p></div>';
 				}
 
-				$return .= '<ul><li>' . implode( '</li><li>', array_filter( $details ) ) . '</li></ul>';
+				$return .= '<ul>';
+
+				foreach ( $details as $key => $detail ) {
+					$return .= sprintf( '<li class="%s">%s</li>', 'license-detail--' . esc_attr( $key ), $detail );
+				}
+
+				$return .= '</ul>';
 			}
 		}
 
@@ -325,7 +333,7 @@ class License_Handler {
 			$is_english = ( 'en' === $locale_parts[0] );
 
 			$output .= '<h4>' . esc_html__( 'Upgrades available:', 'gravityview' ) . '</h4>';
-			$output .= '<ul class="ul-disc">';
+			$output .= '<ul>';
 
 			foreach ( $upgrades as $upgrade_id => $upgrade ) {
 				$upgrade = (object) $upgrade;

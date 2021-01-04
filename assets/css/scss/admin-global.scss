@@ -139,3 +139,35 @@
   }
 
 }
+
+// Entry Creator
+.gv-entry-creator-dropdown {
+	.select2-search__field {
+		padding: 0 4px 0 4px;
+	}
+
+	&.gf25 {
+		.select2-search__field {
+			line-height: 1.25rem;
+			padding: .6875rem 1rem;
+		}
+
+
+		&.select2-dropdown--below {
+			border-top: initial;
+			margin-top: -8px;
+		}
+	}
+}
+
+.gv-entry-creator-container.select2-container--default.gf25 {
+	min-height: 4em;
+
+	.select2-selection__arrow {
+		display: none;
+	}
+
+	.select2-selection__rendered {
+		margin: -1px;
+	}
+}

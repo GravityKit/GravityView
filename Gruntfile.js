@@ -162,7 +162,8 @@ module.exports = function(grunt) {
 				tasks: ['sass:docs']
 			},
 			options: {
-				spawn: false
+				spawn: false,
+				interrupt: true
 			}
 		},
 

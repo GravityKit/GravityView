@@ -123,7 +123,7 @@
 						return;
 					}
 
-					$( showEvent.popper ).find( 'a[data-approved="' + key + '"]' ).click();
+					$( showEvent.popper ).find( 'a[data-approved="' + key + '"]' ).trigger('click');
 				};
 
 				$( document ).on( 'keyup', document.gvStatusKeyPressHandler );

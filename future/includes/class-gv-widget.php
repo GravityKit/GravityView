@@ -310,7 +310,6 @@ abstract class Widget {
 		global $post;
 
 		if ( ! is_object( $post ) || empty( $post->post_content ) || ! Shortcode::parse( $post->post_content ) ) {
-			gravityview()->log->debug( 'No shortcode present; not adding render_frontend shortcode.' );
 			add_shortcode( $this->shortcode_name, '__return_null' );
 			return;
 		}
