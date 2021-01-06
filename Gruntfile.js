@@ -4,12 +4,15 @@ module.exports = function(grunt) {
 	// npm install --save-dev load-grunt-tasks
 	require('load-grunt-tasks')(grunt);
 
+	const sass = require('node-sass');
+
 	grunt.initConfig({
 
 		pkg: grunt.file.readJSON('package.json'),
 
 		sass: {
 			options: {
+				implementation: sass,
 				outputStyle: 'compressed',
 				sourceMap: false
 			},
