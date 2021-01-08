@@ -794,7 +794,6 @@
 		 */
 		setupFieldDetails: function ( dialog ) {
 
-			//if (  dialog.find('.gv-field-details--container') )
 			// Add the details to the title bar
 			$( '.gv-field-details--container', dialog ).insertAfter( '.ui-dialog-title:visible' );
 
