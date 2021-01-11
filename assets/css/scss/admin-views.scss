@@ -174,6 +174,9 @@ $gv-overlay-index: 10000;
 
 /* GV View Types
 --------------------------------------- */
+#gravityview_select_template .gv-grid {
+	grid-template-columns: repeat( auto-fill, minmax( 75px, 1fr ) ); // Force layouts to be smaller than full-size
+}
 
 .gv-view-types-module {
 	padding: 1em;
