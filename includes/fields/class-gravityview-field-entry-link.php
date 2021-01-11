@@ -31,7 +31,7 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 	var $icon = 'dashicons-media-default';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Link to Entry', 'gravityview' );
+		$this->label = esc_html__( 'Link to Single Entry', 'gravityview' );
 		$this->description = esc_html__('A dedicated link to the single entry with customizable text.', 'gravityview');
 		parent::__construct();
 	}

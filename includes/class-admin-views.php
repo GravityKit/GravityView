@@ -755,7 +755,7 @@ class GravityView_Admin_Views {
 			if( 'single' !== $zone) {
 
 				$entry_default_fields['entry_link'] = array(
-					'label' => __('Link to Entry', 'gravityview'),
+					'label' => __('Link to Single Entry', 'gravityview'),
 					'desc'	=> __('A dedicated link to the single entry with customizable text.', 'gravityview'),
 					'type' => 'entry_link',
 					'group' => 'gravityview',
