@@ -425,6 +425,58 @@ $gv-overlay-index: 10000;
 	}
 }
 
+.clear-all-fields {
+	text-decoration: none;
+	padding: 6px .5em 6px 1em; // Align the text to the gv-field edge and the button to the container edge
+
+	.rtl & {
+		padding: 6px 1em 6px .5em;
+	}
+
+	margin: -6px -1em;
+	border: 1px solid transparent;
+	color: $color-777;
+	font-size: 12px!important;
+	position: relative;
+	transition: .1s padding;
+
+	&:after {
+		content: "\f335";
+		font-family: Dashicons, sans-serif;
+		font-size: 12px;
+		line-height: 12px;
+		background-color: $color-ddd;
+		color: $color-777;
+		border-radius: 50px;
+		margin: .25em .5em 0;
+		text-decoration: none;
+		border: none;
+		position: absolute; // So that there is no border on the X
+		right: 0;
+		opacity: 0;
+		transition: .1s all;
+	}
+
+	&:hover {
+		padding: 6px calc( 1em + 12px) 6px 1em;
+		transition: .2s all;
+
+		&:after {
+			transition: .2s all;
+			opacity: 1;
+			background-color: $color-ccc;
+			color: $color-666;
+		}
+
+		position: relative;
+		background: #f1f1f1;
+		//border: 1px solid $color-888;
+		box-shadow: 0 0 2px $color-ddd;
+		border-radius: 3px;
+		text-decoration: underline;
+	}
+}
+
 /** Show spinner cursor while the View is being AJAX updated. **/
 .gv-wait,
 .gv-wait a {
@@ -702,7 +754,10 @@ hr {
 		padding: .5em 0;
 		text-align: left;
 
-		margin: 0 12px 0 0;
+		margin: 0 12px 6px 0;
+		.rtl & {
+			margin: 0 0 6px 12px;
+		}
 		color: $color-777;
 		text-transform: uppercase;
 		font-size: 13px;
