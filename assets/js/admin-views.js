@@ -185,10 +185,9 @@
 					$( 'body' ).trigger( 'gravityview/tabs-ready' );
 				})
 
-				// TODO: Show/hide warnings on configuration tabs to let users know context has been configured.
 				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry', vcfg.toggleTabConfigurationWarnings )
 
-				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry', vcfg.toggleRemoveAllFields )
+				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry gravityview/view-config-updated', vcfg.toggleRemoveAllFields )
 
 				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters )
 
@@ -1129,6 +1128,13 @@
 					$( '#single-active-fields' ).append( content.single );
 					vcfg.showViewConfig();
 					vcfg.waiting('stop');
+
+					/**
+					 * Triggers after the AJAX is loaded for the zone
+					 * @since 2.10
+					 * @param {object} JSON response with `header` `footer` (widgets) `directory` and `single` (contexts) properties
+					 */
+					$('body').trigger( 'gravityview/view-config-updated', content );
 				}
 			} );
 		},
