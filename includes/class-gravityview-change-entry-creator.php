@@ -40,12 +40,13 @@ class GravityView_Change_Entry_Creator {
 
 		add_action( 'plugins_loaded', array( $this, 'prevent_conflicts' ) );
 
-		// Enqueues selectWoo script and style.
+		// Enqueue and whitelist selectWoo UI assets
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_selectwoo_assets' ) );
+		add_filter( 'gform_noconflict_scripts', array( $this, 'register_gform_noconflict' ) );
+		add_filter( 'gform_noconflict_styles', array( $this, 'register_gform_noconflict' ) );
 
 		// Ajax callback to get users to change entry creator.
 		add_action( 'wp_ajax_entry_creator_get_users', array( $this, 'entry_creator_get_users' ) );
-
 	}
 
 	/**
@@ -69,10 +70,10 @@ class GravityView_Change_Entry_Creator {
 			wp_dequeue_script( 'gform_selectwoo' );
 		}
 
-		wp_enqueue_script( 'gravityview-selectWoo', plugins_url( 'assets/lib/selectWoo/selectWoo.full.min.js', GRAVITYVIEW_FILE ), array(), $version );
-		wp_enqueue_style( 'gravityview-selectWoo', plugins_url( 'assets/lib/selectWoo/selectWoo.min.css', GRAVITYVIEW_FILE ), array(), $version );
+		wp_enqueue_script( 'gravityview_selectwoo', plugins_url( 'assets/lib/selectWoo/selectWoo.full.min.js', GRAVITYVIEW_FILE ), array(), $version );
+		wp_enqueue_style( 'gravityview_selectwoo', plugins_url( 'assets/lib/selectWoo/selectWoo.min.css', GRAVITYVIEW_FILE ), array(), $version );
 
-		wp_enqueue_script( 'gravityview_entry_creator', plugins_url( 'assets/js/admin-entry-creator' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery', 'gravityview-selectWoo' ), $version );
+		wp_enqueue_script( 'gravityview_entry_creator', plugins_url( 'assets/js/admin-entry-creator' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery', 'gravityview_selectwoo' ), $version );
 
 		wp_localize_script(
 			'gravityview_entry_creator',
@@ -346,6 +347,20 @@ class GravityView_Change_Entry_Creator {
 		$output .= wp_nonce_field( 'gv_entry_creator', 'gv_entry_creator_nonce', false, false );
 
 		echo $output;
+	}
+
+	/**
+	 * Whitelist UI assets
+	 *
+	 * @param array $assets
+	 *
+	 * @return array
+	 */
+	function register_gform_noconflict( $assets ) {
+		$assets[] = 'gravityview_selectwoo';
+		$assets[] = 'gravityview_entry_creator';
+
+		return $assets;
 	}
 }
 
