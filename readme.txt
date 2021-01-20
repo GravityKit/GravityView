@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: "Change Entry Creator" would not work with Gravity Forms no-conflict mode enabled
+
 = 2.9.3 on December 15, 2020 =
 
 * Improved: Add search field to the Entry Creator drop-down menu
