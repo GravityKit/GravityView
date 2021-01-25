@@ -1,6 +1,6 @@
 <?php
 /**
- * @package GravityView
+ * @package    GravityView
  * @subpackage Gravityview/admin/metaboxes/views
  * @global $post
  */
@@ -14,7 +14,7 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 ?>
 
 <table class="form-table">
-<?php
+	<?php
 
 	GravityView_Render_Settings::render_setting_row( 'page_size', $current_settings );
 
@@ -29,5 +29,13 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 
 	GravityView_Render_Settings::render_setting_row( 'no_search_results_text', $current_settings );
 
-?>
+	/**
+	 * Render additional Multiple Entries settings
+	 *
+	 * @since 2.9.4
+	 *
+	 * @param array $current_settings Array of settings returned from {@see gravityview_get_template_settings()}.
+	 */
+	do_action( 'gravityview/metaboxes/multiple_entries/after', $current_settings );
+	?>
 </table>

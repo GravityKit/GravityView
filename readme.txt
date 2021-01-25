@@ -21,6 +21,16 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.9.4 on January 25, 2020 =
+
+* Added: Apply `{get}` merge tag replacements in `[gvlogic]` attributes and content
+* Modified: Made View Settings changes preparing for a big [Math by GravityView](https://gravityview.co/extensions/math/) update!
+* Fixed: "Change Entry Creator" would not work with Gravity Forms no-conflict mode enabled
+
+__Developer Updates:__
+
+* Added: `gravityview/metaboxes/multiple_entries/after` action to `includes/admin/metabox/views/multiple-entries.php` to allow extending Multiple Entries View settings
+
 = 2.9.3 on December 15, 2020 =
 
 * Improved: Add search field to the Entry Creator drop-down menu
