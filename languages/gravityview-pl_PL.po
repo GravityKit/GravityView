@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # Zachary Katz <zack@katz.co>, 2018
-# Dariusz Zielonka <info@dariusz-zielonka.pl>, 2020
+# Dariusz Zielonka <info@dariusz-zielonka.pl>, 2021
 # 
 msgid ""
 msgstr ""
@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
-"Last-Translator: Dariusz Zielonka <info@dariusz-zielonka.pl>, 2020\n"
+"Last-Translator: Dariusz Zielonka <info@dariusz-zielonka.pl>, 2021\n"
 "Language-Team: Polish (Poland) (https://www.transifex.com/katzwebservices/teams/18775/pl_PL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2398,7 +2398,7 @@ msgstr "Ukryj"
 
 #: includes/class-gravityview-change-entry-creator.php:85
 msgid "Search by ID, login, email, or name."
-msgstr ""
+msgstr "Szukaj według ID, loginu, e-maila lub nazwy."
 
 #: includes/class-gravityview-change-entry-creator.php:165
 msgid "Success"
@@ -2446,6 +2446,9 @@ msgid ""
 "\n"
 "You're using Version %s. Please upgrade your WordPress installation."
 msgstr ""
+"%sGravityView wkrótce będzie wymagać WordPressa %s%s\n"
+"\n"
+"Używasz wersji %s. Proszę zaktualizować swoją instalację WordPressa."
 
 #. translators: first placeholder is the future required version of Gravity
 #. Forms. The second placeholder is the current version of Gravity Forms.
@@ -4532,7 +4535,7 @@ msgstr "Brak użytkownika"
 #: includes/class-gravityview-change-entry-creator.php:339
 msgctxt "%d is replaced with user count %s is replaced with \"user\" or \"users\""
 msgid "Use the input above to search the remaining %d %s."
-msgstr ""
+msgstr "Użyj powyższego pola, aby wyszukać pozostałe %d %s."
 
 #: includes/class-gravityview-entry-approval.php:117
 msgctxt "The title for an event in a notifications drop down list."

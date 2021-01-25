@@ -1,14 +1,14 @@
-# Copyright (C) 2020 GravityView
+# Copyright (C) 2021 GravityView
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.9.3\n"
+"Project-Id-Version: GravityView 2.9.4\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2021-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Katz Web Services, Inc. <support@katz.co>\n"
 "Language-Team: Katz Web Services, Inc. <support@katz.co>\n"
 "X-Generator: grunt-wp-i18n 0.5.4\n"
@@ -1082,7 +1082,7 @@ msgid "You do not have permission to install plugin updates"
 msgstr ""
 
 #: future/lib/EDD_SL_Plugin_Updater.php:523
-#: includes/class-gravityview-change-entry-creator.php:161
+#: includes/class-gravityview-change-entry-creator.php:162
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:287
 #: includes/lib/EDD_SL_Plugin_Updater.php:517
 msgid "Error"
@@ -1956,23 +1956,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:598
+#: includes/class-admin-welcome.php:433
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:618
+#: includes/class-admin-welcome.php:453
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:669
+#: includes/class-admin-welcome.php:504
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:696
+#: includes/class-admin-welcome.php:531
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:697
+#: includes/class-admin-welcome.php:532
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -2206,19 +2206,19 @@ msgstr ""
 msgid "Dismiss"
 msgstr ""
 
-#: includes/class-gravityview-change-entry-creator.php:85
+#: includes/class-gravityview-change-entry-creator.php:86
 msgid "Search by ID, login, email, or name."
 msgstr ""
 
-#: includes/class-gravityview-change-entry-creator.php:165
+#: includes/class-gravityview-change-entry-creator.php:166
 msgid "Success"
 msgstr ""
 
-#: includes/class-gravityview-change-entry-creator.php:289
+#: includes/class-gravityview-change-entry-creator.php:290
 msgid "Changed entry creator from %s to %s"
 msgstr ""
 
-#: includes/class-gravityview-change-entry-creator.php:309
+#: includes/class-gravityview-change-entry-creator.php:310
 msgid "Change Entry Creator:"
 msgstr ""
 
@@ -4210,27 +4210,27 @@ msgctxt "Edit View with the ID of %d"
 msgid "Edit View #%d"
 msgstr ""
 
-#: includes/class-gravityview-change-entry-creator.php:166
+#: includes/class-gravityview-change-entry-creator.php:167
 msgctxt "First parameter: Success or error of the action. Second: User ID number"
 msgid "%s: Assigned User ID #%d as the entry creator."
 msgstr ""
 
-#: includes/class-gravityview-change-entry-creator.php:275
+#: includes/class-gravityview-change-entry-creator.php:276
 msgctxt "The name and the ID of users who initiated changes to entry ownership"
 msgid "%s (ID #%d)"
 msgstr ""
 
-#: includes/class-gravityview-change-entry-creator.php:277
+#: includes/class-gravityview-change-entry-creator.php:278
 msgctxt "To show that the entry was unassigned from an actual user to no user."
 msgid "No User"
 msgstr ""
 
-#: includes/class-gravityview-change-entry-creator.php:319
+#: includes/class-gravityview-change-entry-creator.php:320
 msgctxt "No user assigned to the entry"
 msgid "No User"
 msgstr ""
 
-#: includes/class-gravityview-change-entry-creator.php:339
+#: includes/class-gravityview-change-entry-creator.php:340
 msgctxt "%d is replaced with user count %s is replaced with \"user\" or \"users\""
 msgid "Use the input above to search the remaining %d %s."
 msgstr ""
