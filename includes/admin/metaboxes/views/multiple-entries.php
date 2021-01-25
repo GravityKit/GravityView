@@ -34,7 +34,7 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 	 *
 	 * @since 2.9.4
 	 *
-	 * @param array $current_settings
+	 * @param array $current_settings Array of settings returned from {@see gravityview_get_template_settings()}.
 	 */
 	do_action( 'gravityview/metaboxes/multiple_entries/after', $current_settings );
 	?>
