@@ -893,11 +893,12 @@ hr {
 
 	.gv-field-controls {
 		.dashicons-media-default,
-		.icon-custom-visibility {
+		.icon-custom-visibility,
+		.gv-indicator-icon {
 			cursor: help;
 		}
-		.icon-custom-visibility {
-			display: none;
+		.icon-custom-visibility,
+		.gv-indicator-icon {
 			line-height: 44px;
 			margin: -2px 6px 0 3px;
 		}
