@@ -253,9 +253,9 @@ abstract class GravityView_Admin_View_Item {
 		 * @filter `gravityview/admin/indicator_icons` Modify the icon output to add additional indicator icons
 		 * @internal This is currently internally used. Consider not relying on it until further notice :-)
 		 * @param array $icons Array of icons to be shown, with `visible`, `title`, `css_class` keys.
-		 * @param GravityView_Admin_View_Item $item
+		 * @param array $item_settings Settings for the current item (widget or field)
 		 */
-		$icons = (array) apply_filters( 'gravityview/admin/indicator_icons', $icons, $this );
+		$icons = (array) apply_filters( 'gravityview/admin/indicator_icons', $icons, $this->settings );
 
 		foreach ( $icons as $icon ) {
 
