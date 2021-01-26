@@ -159,14 +159,6 @@ abstract class GravityView_Admin_View_Item {
 		$hide_settings_link_class = ( empty( $this->item['settings_html'] ) || strpos( $this->item['settings_html'], '<!-- No Options -->' ) > 0 ) ? 'hide-if-js' : '';
 		$settings_link      = sprintf( '<button class="gv-field-settings %2$s" title="%1$s" aria-label="%1$s"><span class="dashicons-admin-generic dashicons"></span></button>', esc_attr( $settings_title ), $hide_settings_link_class );
 
-		// Should we show the icon that the field is being used as a link to single entry?
-		$hide_show_as_link_class = empty( $this->settings['show_as_link'] ) ? 'hide-if-js' : '';
-		$show_as_link            = '<span class="dashicons dashicons-media-default ' . $hide_show_as_link_class . '" title="' . esc_attr( $single_link_title ) . '"></span>';
-
-		// Should we show the icon that the field is being used as a link to single entry?
-		$hide_visibility_class = ( \GV\Utils::get( $this->settings, 'only_loggedin' ) || isset( $this->settings['allow_edit_cap'] ) && 'read' !== $this->settings['allow_edit_cap'] ) ? '' : 'hide-if-js';
-		$visibility_icon         = '<span class="dashicons dashicons-lock icon-custom-visibility ' . $hide_visibility_class . '" title="' . esc_attr( $visibility_title ) . '"></span>';
-
 		// When a field label is empty, use the Field ID
 		$label = empty( $this->title ) ? sprintf( _x( 'Field #%s (No Label)', 'Label in field picker for empty label', 'gravityview' ), $this->id ) : $this->title;
 
@@ -178,28 +170,28 @@ abstract class GravityView_Admin_View_Item {
 		}
 		$label = esc_attr( $label );
 
-		$icon = '';
+		$field_icon = '';
 
 		if ( $this->item['icon'] && ! \GV\Utils::get( $this->item, 'parent' ) ) {
 			if ( 0 === strpos( $this->item['icon'], 'data:' ) ) {
 				// Inline icon SVG
-				$icon = '<i class="dashicons background-icon" style="background-image: url(\'' . esc_attr( $this->item['icon'] ) . '\');"></i>';
+				$field_icon = '<i class="dashicons background-icon" style="background-image: url(\'' . esc_attr( $this->item['icon'] ) . '\');"></i>';
 			} elseif ( false === strpos( $this->item['icon'], 'dashicons' ) ) {
 				// Not dashicon icon
-				$icon = '<i class="' . esc_attr( $this->item['icon'] ) . '"></i>';
+				$field_icon = '<i class="' . esc_attr( $this->item['icon'] ) . '"></i>';
 			} else {
 				// Dashicon; prefix with "dashicons"
-				$icon = '<i class="dashicons ' . esc_attr( $this->item['icon'] ) . '"></i>';
+				$field_icon = '<i class="dashicons ' . esc_attr( $this->item['icon'] ) . '"></i>';
 			}
 
-			$icon = $icon . ' ';
+			$field_icon = $field_icon . ' ';
 		}
 
 		$output = '<button class="gv-add-field screen-reader-text">' . sprintf( esc_html__( 'Add "%s"', 'gravityview' ), $label ) . '</button>';
 
 		$output .= '<h5 class="selectable gfield field-id-' . esc_attr( $this->id ) . '">';
 
-		$output .= '<span class="gv-field-controls">' . $settings_link . $show_as_link . $visibility_icon . '<button class="gv-remove-field" aria-label="' . esc_attr( $delete_title ) . '" title="' . esc_attr( $delete_title ) . '"><span class="dashicons-dismiss dashicons"></span></button></span>';
+		$output .= '<span class="gv-field-controls">' . $settings_link . $this->get_indicator_icons() . '<button class="gv-remove-field" aria-label="' . esc_attr( $delete_title ) . '" title="' . esc_attr( $delete_title ) . '"><span class="dashicons-dismiss dashicons"></span></button></span>';
 
 		$parent_label = '';
 
@@ -208,7 +200,7 @@ abstract class GravityView_Admin_View_Item {
 		}
 
 		// Name of field / widget
-		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . esc_attr( sprintf( __( 'Field: %s', 'gravityview' ), $label ) ) . "\n" . $this->get_item_info( false ) . '">' . $icon . '<span class="gv-field-label-text-container">' . $label . $parent_label . '</span></span>';
+		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . esc_attr( sprintf( __( 'Field: %s', 'gravityview' ), $label ) ) . "\n" . $this->get_item_info( false ) . '">' . $field_icon . '<span class="gv-field-label-text-container">' . $label . $parent_label . '</span></span>';
 
 
 		// Displays only in the field/widget picker
@@ -227,6 +219,58 @@ abstract class GravityView_Admin_View_Item {
 		$data_form_id   = ! empty( $this->form_id ) ? 'data-formid="' . esc_attr( $this->form_id ) . '"' : '';
 
 		$output = '<div data-fieldid="' . esc_attr( $this->id ) . '" ' . $data_form_id . ' data-inputtype="' . esc_attr( $this->item['input_type'] ) . '" class="gv-fields' . $container_class . '">' . $output . $this->item['settings_html'] . '</div>';
+
+		return $output;
+	}
+
+	/**
+	 * Returns array of item icons used to represent field settings state
+	 *
+	 * Has `gravityview/admin/indicator_icons` filter for other components to modify displayed icons.
+	 *
+	 * @since 2.9.5
+	 *
+	 * @return string HTML output of icons
+	 */
+	private function get_indicator_icons() {
+
+		$icons = array(
+			'show_as_link' => array(
+				'visible' => ( ! empty( $this->settings['show_as_link'] ) ),
+				'title' => __( 'This field links to the Single Entry', 'gravityview' ),
+				'css_class' => 'dashicons dashicons-media-default icon-link-to-single-entry',
+			),
+			'only_loggedin' => array(
+				'visible' => ( \GV\Utils::get( $this->settings, 'only_loggedin' ) || isset( $this->settings['allow_edit_cap'] ) && 'read' !== $this->settings['allow_edit_cap'] ),
+				'title' => __( 'This field has modified visibility', 'gravityview' ),
+				'css_class' => 'dashicons dashicons-lock icon-custom-visibility',
+			),
+		);
+
+		$output = '';
+
+		/**
+		 * @filter `gravityview/admin/indicator_icons` Modify the icon output to add additional indicator icons
+		 * @internal This is currently internally used. Consider not relying on it until further notice :-)
+		 * @param array $icons Array of icons to be shown, with `visible`, `title`, `css_class` keys.
+		 * @param GravityView_Admin_View_Item $item
+		 */
+		$icons = (array) apply_filters( 'gravityview/admin/indicator_icons', $icons, $this );
+
+		foreach ( $icons as $icon ) {
+
+			if ( empty( $icon['css_class'] ) || empty( $icon['title'] ) ) {
+				continue;
+			}
+
+			$css_class = trim( $icon['css_class'] );
+
+			if ( empty( $icon['visible'] ) ) {
+				$css_class .= ' hide-if-js';
+			}
+
+			$output .= '<span class="' . gravityview_sanitize_html_class( $css_class ) . '" title="' . esc_attr( $icon['title'] ) . '"></span>';
+		}
 
 		return $output;
 	}
