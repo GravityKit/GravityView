@@ -287,13 +287,13 @@ class View implements \ArrayAccess {
 					 * ...apart from a nice message if the user can do anything about it.
 					 */
 					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-						return __( sprintf( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
+						return sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
 					}
 					break;
 				case 'in_trash':
 
 					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-						return __( sprintf( 'This View is in the Trash. You can <a href="%s">restore the View here</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
+						return sprintf( __( 'This View is in the Trash. You can <a href="%s">restore the View here</a>.', 'gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
 					}
 
 					return ''; // Do not show
