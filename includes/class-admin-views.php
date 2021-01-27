@@ -527,7 +527,14 @@ class GravityView_Admin_Views {
 		 */
 		$links = apply_filters( 'gravityview_connected_form_links', $links, $form );
 
-		$output .= '<div class="row-actions">'. implode( ' | ', $links ) .'</div>';
+		$css_class = 'row-actions';
+
+		// Is Screen Options > View mode set to "Extended view"? If so, keep actions visible.
+		if( 'excerpt' === get_user_setting( 'posts_list_mode', 'list' ) ) {
+			$css_class = 'row-actions visible';
+		}
+
+		$output .= '<div class="' . $css_class . '">'. implode( ' | ', $links ) .'</div>';
 
 		return $output;
 	}
