@@ -64,7 +64,17 @@ class Renderer {
 		}
 
 		// "Show Only Approved" is not enabled.
-		if ( ! $gravityview->view->settings->get( 'show_only_approved', false ) ) {
+		if ( ! $gravityview->view->settings->get( 'show_only_approved', 0 ) ) {
+			return;
+		}
+
+		// If "Show all entries to administrators" is enabled, approval status isn't the issue.
+		if ( $gravityview->view->settings->get( 'admin_show_all_statuses', 0 ) ) {
+			return;
+		}
+
+		// Don't show when no entries are being displayed due to "Hide View data until search is performed".
+		if ( $gravityview->view->settings->get( 'hide_until_searched', 0 ) ) {
 			return;
 		}
 
@@ -73,7 +83,6 @@ class Renderer {
 
 		if ( isset( $_GET['gv-dismiss'] ) && wp_verify_nonce( $_GET['gv-dismiss'], 'dismiss' ) ) {
 			add_user_meta( $current_user->ID, $user_meta_key, 1 ); // Prevent user from seeing this again for this View
-
 			return;
 		}
 
