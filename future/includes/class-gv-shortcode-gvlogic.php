@@ -47,6 +47,9 @@ class gvlogic extends \GV\Shortcode {
 
 		$atts = $this->parse_atts( $atts, $content, $tag );
 
+		$content = \GravityView_Merge_Tags::replace_get_variables( $content );
+		$atts = gv_map_deep( $atts, array( '\GravityView_Merge_Tags', 'replace_get_variables' ) );
+
 		// An invalid operation
 		if ( is_null( \GV\Utils::get( $atts, 'logged_in', null ) ) && false === \GV\Utils::get( $atts, 'if', false ) ) {
 			gravityview()->log->error( '$atts->if/logged_in is empty.', array( 'data' => $atts ) );

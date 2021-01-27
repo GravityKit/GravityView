@@ -36,9 +36,67 @@ class Renderer {
 			return;
 		}
 
-		/**
-		 * Check reserved slugs.
-		 */
+		self::maybe_print_reserved_slugs_notice( $gravityview );
+
+		self::maybe_print_configuration_notice( $gravityview );
+
+	}
+
+	/**
+	 * Check empty configuration.
+	 *
+	 * @since 2.9.5
+	 *
+	 * @param \GV\Template_Context $gravityview The $gravityview template object.
+	 *
+	 * @return void
+	 */
+	private static function maybe_print_configuration_notice( $gravityview ) {
+
+		switch ( true ) {
+			case ( $gravityview->request->is_edit_entry() ):
+				$tab = __( 'Edit Entry', 'gravityview' );
+				$context = 'edit';
+				break;
+			case ( $gravityview->request->is_entry( $gravityview->view->form ? $gravityview->view->form->ID : 0 ) ):
+				$tab = __( 'Single Entry', 'gravityview' );
+				$context = 'single';
+				break;
+			default:
+				$tab = __( 'Multiple Entries', 'gravityview' );
+				$context = 'directory';
+				break;
+		}
+
+		$cls = $gravityview->template;
+		$slug = property_exists( $cls, '_configuration_slug' ) ? $cls::$_configuration_slug : $cls::$slug;
+
+		// If the zone has been configured, don't display notice.
+		if ( $gravityview->fields->by_position( sprintf( '%s_%s-*', $context, $slug ) )->by_visible( $gravityview->view )->count() ) {
+			return;
+		}
+
+		$title = sprintf( esc_html_x( 'The %s layout has not been configured.', 'Displayed when a View is not configured. %s is replaced by the tab label', 'gravityview' ), $tab );
+		$edit_link = admin_url( sprintf( 'post.php?post=%d&action=edit#%s-view', $gravityview->view->ID, $context ) );
+		$action_text = sprintf( esc_html__( 'Add fields to %s', 'gravityview' ), $tab );
+		$message = esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
+
+		$image =  sprintf( '<img alt="%s" src="%s" style="margin-top: 10px;" />', $tab, esc_url( plugins_url( sprintf( 'assets/images/tab-%s.png', $context ), GRAVITYVIEW_FILE ) ) );
+		$output = sprintf( '<h3>%s <strong><a href="%s">%s</a></strong></h3><p>%s</p>', $title, esc_url( $edit_link ), $action_text, $message );
+
+		echo \GVCommon::generate_notice( $output . $image, 'gv-warning warning', 'edit_gravityview', $gravityview->view->ID );
+	}
+
+	/**
+	 * Print reserved slug warnings, if they exist.
+	 *
+	 * @since 2.9.5
+	 *
+	 * @param Template_Context $gravityview The $gravityview template object.
+	 *
+	 * @return void
+	 */
+	private static function maybe_print_reserved_slugs_notice( $gravityview ) {
 		global $wp;
 		global $wp_rewrite;
 
@@ -69,51 +127,19 @@ class Renderer {
 
 		$reserved_slugs = array_map( 'strtolower', $reserved_slugs );
 
-		if ( in_array( strtolower( $wp->request ), $reserved_slugs, true ) ) {
-			gravityview()->log->error( '{slug} page URL is reserved.', array( 'slug' => $wp->request ) );
-
-			$title   = esc_html__( 'GravityView will not work correctly on this page because of the URL Slug.', 'gravityview' );
-			$message = __( 'Please <a href="%s">read this article</a> for more information.', 'gravityview' );
-			$message .= ' ' . esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
-
-			$output = sprintf( '<h3>%s</h3><p>%s</p>', $title, sprintf( $message, 'https://docs.gravityview.co/article/659-reserved-urls' ) );
-
-			echo \GVCommon::generate_notice( $output, 'gv-error error', 'edit_gravityview', $gravityview->view->ID );
-		}
-
-		/**
-		 * Check empty configuration.
-		 */
-		switch ( true ) {
-			case ( $gravityview->request->is_edit_entry() ):
-				$tab = __( 'Edit Entry', 'gravityview' );
-				$context = 'edit';
-				break;
-			case ( $gravityview->request->is_entry( $gravityview->view->form ? $gravityview->view->form->ID : 0 ) ):
-				$tab = __( 'Single Entry', 'gravityview' );
-				$context = 'single';
-				break;
-			default:
-				$tab = __( 'Multiple Entries', 'gravityview' );
-				$context = 'directory';
-				break;
-		}
-
-		$cls = $gravityview->template;
-		$slug = property_exists( $cls, '_configuration_slug' ) ? $cls::$_configuration_slug : $cls::$slug;
-		if ( $gravityview->fields->by_position( sprintf( '%s_%s-*', $context, $slug ) )->by_visible( $gravityview->view )->count() ) {
+		if ( ! in_array( strtolower( $wp->request ), $reserved_slugs, true ) ) {
 			return;
 		}
 
-		$title = sprintf( esc_html_x( 'The %s layout has not been configured.', 'Displayed when a View is not configured. %s is replaced by the tab label', 'gravityview' ), $tab );
-		$edit_link = admin_url( sprintf( 'post.php?post=%d&action=edit#%s-view', $gravityview->view->ID, $context ) );
-		$action_text = sprintf( esc_html__( 'Add fields to %s', 'gravityview' ), $tab );
-		$message = esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
+		gravityview()->log->error( '{slug} page URL is reserved.', array( 'slug' => $wp->request ) );
 
-		$image =  sprintf( '<img alt="%s" src="%s" style="margin-top: 10px;" />', $tab, esc_url( plugins_url( sprintf( 'assets/images/tab-%s.png', $context ), GRAVITYVIEW_FILE ) ) );
-		$output = sprintf( '<h3>%s <strong><a href="%s">%s</a></strong></h3><p>%s</p>', $title, esc_url( $edit_link ), $action_text, $message );
+		$title   = esc_html__( 'GravityView will not work correctly on this page because of the URL Slug.', 'gravityview' );
+		$message = __( 'Please <a href="%s">read this article</a> for more information.', 'gravityview' );
+		$message .= ' ' . esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
 
-		echo \GVCommon::generate_notice( $output . $image, 'gv-warning warning', 'edit_gravityview', $gravityview->view->ID );
+		$output = sprintf( '<h3>%s</h3><p>%s</p>', $title, sprintf( $message, 'https://docs.gravityview.co/article/659-reserved-urls' ) );
+
+		echo \GVCommon::generate_notice( $output, 'gv-error error', 'edit_gravityview', $gravityview->view->ID );
 	}
 
 	/**

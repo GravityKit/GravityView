@@ -109,17 +109,12 @@ class View_Collection extends Collection {
 			 */
 			$meta_keys = apply_filters_ref_array( 'gravityview/view_collection/from_post/meta_keys', array( array(), $post, &$views ) );
 
-			if ( function_exists( 'apply_filters_deprecated' ) ) {
-				$meta_keys = (array) apply_filters_deprecated( 'gravityview/data/parse/meta_keys', array( $meta_keys, $post->ID ), '2.0.7', 'gravityview/view_collection/from_post/meta_keys' );
-			} else {
-				/**
-				 * @filter `gravityview/data/parse/meta_keys`
-				 * @deprecated
-				 * @todo Require WP 4.6.0 so that `apply_filters_deprecated` is always available
-				 * @see The `gravityview/view_collection/from_post/meta_keys` filter.
-				 */
-				$meta_keys = (array) apply_filters( 'gravityview/data/parse/meta_keys', $meta_keys, $post->ID );
-			}
+			/**
+			 * @filter `gravityview/data/parse/meta_keys`
+			 * @deprecated
+			 * @see The `gravityview/view_collection/from_post/meta_keys` filter.
+			 */
+			$meta_keys = (array) apply_filters_deprecated( 'gravityview/data/parse/meta_keys', array( $meta_keys, $post->ID ), '2.0.7', 'gravityview/view_collection/from_post/meta_keys' );
 
 			/** What about inside post meta values? */
 			foreach ( $meta_keys as $meta_key ) {

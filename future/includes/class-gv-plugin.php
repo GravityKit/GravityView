@@ -303,16 +303,6 @@ final class Plugin {
 			return;
 		}
 
-		// Pre-4.6 loading
-		// TODO: Remove when GV minimum version is WordPress 4.6.0
-		$locale = apply_filters( 'plugin_locale', ( ( function_exists( 'get_user_locale' ) && is_admin() ) ? get_user_locale() : get_locale() ), 'gravityview' );
-
-		$loaded = load_textdomain( 'gravityview', sprintf( '%s/%s-%s.mo', $this->dir( 'languages' ), $domain, $locale ) );
-
-		if ( $loaded ) {
-			return;
-		}
-
 		gravityview()->log->error( sprintf( 'Unable to load textdomain for %s locale.', $locale ) );
 	}
 

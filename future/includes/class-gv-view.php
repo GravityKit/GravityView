@@ -287,13 +287,22 @@ class View implements \ArrayAccess {
 					 * ...apart from a nice message if the user can do anything about it.
 					 */
 					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-						return __( sprintf( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
+
+						$title = sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
+
+						$message = esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
+
+						$image =  sprintf( '<img alt="%s" src="%s" style="margin-top: 10px;" />', esc_attr__( 'Data Source', 'gravityview' ), esc_url( plugins_url( 'assets/images/screenshots/data-source.png', GRAVITYVIEW_FILE ) ) );
+
+						return \GVCommon::generate_notice( '<h3>' . $title . '</h3>' . wpautop( $message . $image ), 'notice' );
 					}
 					break;
 				case 'in_trash':
 
 					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-						return __( sprintf( 'This View is in the Trash. You can <a href="%s">restore the View here</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
+						$notice = sprintf( __( 'This View is in the Trash. You can <a href="%s">restore the View here</a>.', 'gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
+
+						return \GVCommon::generate_notice( '<h3>' . $notice . '</h3>', 'notice', array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID );
 					}
 
 					return ''; // Do not show
