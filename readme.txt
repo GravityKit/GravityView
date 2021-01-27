@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Added: A dropdown in the "All Views" screen to filter Views by the layout (Table, List, DataTables, DIY, Map, etc.)
+
 = 2.9.4 on January 25, 2020 =
 
 * Added: Apply `{get}` merge tag replacements in `[gvlogic]` attributes and content
