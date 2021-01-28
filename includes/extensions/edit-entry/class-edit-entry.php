@@ -126,7 +126,7 @@ class GravityView_Edit_Entry {
 			return $visible;
 		}
 
-		if ( ! $view ) {
+		if ( ! $view instanceof \GV\View ) {
 			return $visible;
 		}
 
