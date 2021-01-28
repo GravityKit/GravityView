@@ -1337,7 +1337,7 @@ class GravityView_Admin_Views {
         // Enqueue scripts needed for merge tags
         self::enqueue_gravity_forms_scripts();
 
-        // 2.5 changed how Merge Tags are enqueued
+		// 2.5 changed how Merge Tags are enqueued
 		if ( is_callable( array( 'GFCommon', 'output_hooks_javascript') ) ) {
 			GFCommon::output_hooks_javascript();
 		}

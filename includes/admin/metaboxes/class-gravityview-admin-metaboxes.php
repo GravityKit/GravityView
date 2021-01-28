@@ -18,7 +18,8 @@ class GravityView_Admin_Metaboxes {
 	function __construct() {
 
 		if ( ! GravityView_Compatibility::is_valid() ) {
-			return; }
+			return;
+		}
 
 		self::$metaboxes_dir = GRAVITYVIEW_DIR . 'includes/admin/metaboxes/';
 
@@ -42,7 +43,6 @@ class GravityView_Admin_Metaboxes {
 
 		// information box
 		add_action( 'post_submitbox_misc_actions', array( $this, 'render_shortcode_hint' ) );
-
 	}
 
 	/**
