@@ -294,6 +294,42 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 	/**
 	 * @group entry_link
+	 * @since 2.10
+	 * @covers gv_get_query_args()
+	 */
+	public function test_gv_get_query_args() {
+
+		$_GET = array();
+
+		$this->assertEquals( array(), gv_get_query_args() );
+
+		$_GET = array( 'entry_id' => '1234' );
+		$this->assertEquals( array(), gv_get_query_args(), 'Should have ignored reserved args' );
+
+		$_GET = array( 'not_reserved' => '1234' );
+		$this->assertEquals( $_GET, gv_get_query_args(), 'Should have returned $_GET verbatim; not reserved' );
+
+		add_filter( 'gravityview/api/reserved_query_args', $add_not_reserved = function( $args ) {
+			$args[] = 'not_reserved';
+			return $args;
+		} );
+
+		$_GET = array( 'not_reserved' => '1234' );
+		$this->assertEquals( array(), gv_get_query_args(), 'Should have been blocked by adding `not_reserved` to reserved args using the filter.' );
+
+		remove_filter( 'gravityview/api/reserved_query_args', $add_not_reserved );
+
+		$_GET = array( 'gv_search' => 'anjela%27s%2c%20inc' );
+		$this->assertEquals( array( 'gv_search' => "anjela's, inc" ), gv_get_query_args(), 'Should have decoded URL args.' );
+
+		$_GET = array( 'gv_search' => '<script>Example</script>' );
+		$this->assertEquals( array( 'gv_search' => "<script>Example</script>" ), gv_get_query_args(), 'Should not have stripped or sanitized. That\'s for later in the cycle.' );
+
+		$_GET = array();
+	}
+
+	/**
+	 * @group entry_link
 	 * @covers GravityView_API::entry_link()
 	 */
 	public function test_entry_link() {
@@ -321,6 +357,22 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$href = GravityView_API::entry_link( $entry, $view->ID );
 
 		$this->assertEquals( site_url('?gravityview='.$view->post_name.'&entry='.$entry['id'] ), $href );
+
+		$_GET = array( 'entry' => '1746472' );
+		$href = GravityView_API::entry_link( $entry, $view->ID );
+		$this->assertEquals( site_url('?gravityview='.$view->post_name.'&entry='.$entry['id'] ), $href, 'Reserved $_GET args should have been ignored by gv_get_query_args()' );
+
+		$_GET = array( 'fortune' => 'brave' );
+		$href = GravityView_API::entry_link( $entry, $view->ID );
+		$this->assertEquals( site_url('?fortune=brave&gravityview='.$view->post_name.'&entry='.$entry['id'] ), $href, '$_GET args should have been added but weren\'t.' );
+
+		add_filter( 'gravityview/entry_link/add_query_args', '__return_false' );
+
+		$href = GravityView_API::entry_link( $entry, $view->ID );
+
+		$this->assertEquals( site_url('?gravityview='.$view->post_name.'&entry='.$entry['id'] ), $href, 'Filter should have prevented $_GET args from being added' );
+
+		remove_filter( 'gravityview/entry_link/add_query_args', '__return_false' );
 
 		$post_with_embeds = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $view->ID .'"] and then [gravityview id="' . $view2->ID .'"]') );
 

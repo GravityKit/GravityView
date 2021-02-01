@@ -25,6 +25,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Added: A dropdown in the "All Views" screen to filter Views by the layout (Table, List, DataTables, DIY, Map, etc.)
 
+__Developer Updates:__
+
+* Modified: `$_GET` args are now passed to links by default.
+	* Added: Prevent entry links (single, edit, delete, duplicate) from including $_GET query args by returning false to the filter `gravityview/entry_link/add_query_args`
+* Added: `gv_get_query_args()` function to return $_GET query args, with reserved args removed
+	* Added: `gravityview/api/reserved_query_args` filter to modify internal reserved URL query args
+* Modified: `templates/fields/field-entry_link-html.php` template to add `gv_get_query_args()` functionality
+
 = 2.9.4 on January 25, 2020 =
 
 * Added: Apply `{get}` merge tag replacements in `[gvlogic]` attributes and content
