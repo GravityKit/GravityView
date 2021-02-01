@@ -55,7 +55,7 @@ class Renderer {
 	 */
 	private static function maybe_print_entry_approval_notice( $gravityview ) {
 
-		if ( $gravityview->entries->count() ) {
+		if ( $gravityview->entries && $gravityview->entries->count() ) {
 			return;
 		}
 
