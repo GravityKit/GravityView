@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Added: A dropdown in the "All Views" screen to filter Views by the layout (Table, List, DataTables, DIY, Map, etc.)
+* Fixed: PHP notice `Undefined property: stdClass::$icons` appearing on Plugins page
 
 = 2.9.4 on January 25, 2021 =
 
