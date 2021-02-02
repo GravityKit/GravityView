@@ -496,12 +496,12 @@ class View_Settings extends Settings {
 			) : array(),
 			array(
 				'csv_enable'            => array(
-					'label'             => __( 'Allow CSV Access', 'gravityview' ),
+					'label'             => __( 'Allow Export', 'gravityview' ),
 					'group'             => 'default',
-					'desc'              => __( 'Enable CSV access to this View.', 'gravityview' ),
+					'desc'              => __( 'Enable users to download data as a CSV or TSV file.', 'gravityview' ),
 					'type'              => 'checkbox',
 					'value'             => '',
-					'tooltip'           => __( 'If enabled, entries can be exported for this View by adding "/csv/" to the View URL. Each configured field will be a column in the exported CSV.', 'gravityview' ),
+					'tooltip'           => __( 'If enabled, entries can be exported for this View by adding "/csv/" or "/tsv/" to the View URL. Each configured field will be a column in the exported file.', 'gravityview' ),
 					'show_in_shortcode' => false,
 					'full_width'        => true,
 					'article'          => array(
@@ -512,10 +512,9 @@ class View_Settings extends Settings {
 			),
 			array(
 				'csv_nolimit'           => array(
-					'label'             => __( 'Show all in CSV', 'gravityview' ),
+					'label'             => __( 'Show all in file', 'gravityview' ),
 					'group'             => 'default',
-					'requires'          => 'csv_enable',
-					'desc'              => __( 'Do not limit the number of entries output in the CSV.', 'gravityview' ),
+					'desc'              => __( 'Do not limit the number of entries output in the file.', 'gravityview' ),
 					'type'              => 'checkbox',
 					'value'             => '',
 					'tooltip'           => false,
