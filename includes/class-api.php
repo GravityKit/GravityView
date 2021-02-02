@@ -456,7 +456,7 @@ class GravityView_API {
 		// Deal with returning to proper pagination for embedded views
 		if ( $link && $add_query_args ) {
 
-			$args = isset( $_GET ) ? $_GET : array();
+			$args = array();
 
 			if( $pagenum = \GV\Utils::_GET( 'pagenum' ) ) {
 				$args['pagenum'] = intval( $pagenum );
