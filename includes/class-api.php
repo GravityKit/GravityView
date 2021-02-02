@@ -787,6 +787,7 @@ function gv_get_query_args() {
 	$query_args = $passed_get;
 
 	$reserved_args = array(
+		'entry',
 		'gvid',
 		'status',
 		'action',
