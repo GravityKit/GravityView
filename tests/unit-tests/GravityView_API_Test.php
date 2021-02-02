@@ -62,7 +62,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		GravityView_View::getInstance()->setEntries( array( array('id'), array('id') ) );
 		GravityView_View::getInstance()->setTotalEntries( 2 );
-		
+
 		// Test non-empty View
 		ob_start();
 		gv_container_class();
@@ -364,7 +364,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		$_GET = array( 'fortune' => 'brave' );
 		$href = GravityView_API::entry_link( $entry, $view->ID );
-		$this->assertEquals( site_url('?fortune=brave&gravityview='.$view->post_name.'&entry='.$entry['id'] ), $href, '$_GET args should have been added but weren\'t.' );
+		$this->assertEquals( site_url('?gravityview='.$view->post_name.'&fortune=brave&entry='.$entry['id'] ), $href, '$_GET args should have been added but weren\'t.' );
 
 		add_filter( 'gravityview/entry_link/add_query_args', '__return_false' );
 
