@@ -26,6 +26,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: A dropdown in the "All Views" screen to filter Views by the layout (Table, List, DataTables, DIY, Map, etc.)
 * Fixed: PHP notice `Undefined property: stdClass::$icons` appearing on Plugins page
 
+__Developer Updates:__
+
+* Breaking CSS change: Removed `.gv-list-view` CSS class from the List layout container `<div>`. The CSS class was also used in the looped entry containers, making it hard to style. This issue was introduced in GravityView 2.0. For background, see [the GitHub issue](https://github.com/gravityview/GravityView/issues/1026).
+
 = 2.9.4 on January 25, 2021 =
 
 * Added: Apply `{get}` merge tag replacements in `[gvlogic]` attributes and content
