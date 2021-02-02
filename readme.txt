@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Added: A dropdown in the "All Views" screen to filter Views by the layout (Table, List, DataTables, DIY, Map, etc.)
+* Fixed: PHP notice `Undefined property: stdClass::$icons` appearing on Plugins page
 
 __Developer Updates:__
 
@@ -33,7 +34,7 @@ __Developer Updates:__
 	* Added: `gravityview/api/reserved_query_args` filter to modify internal reserved URL query args
 * Modified: `templates/fields/field-entry_link-html.php` template to add `gv_get_query_args()` functionality
 
-= 2.9.4 on January 25, 2020 =
+= 2.9.4 on January 25, 2021 =
 
 * Added: Apply `{get}` merge tag replacements in `[gvlogic]` attributes and content
 * Modified: Made View Settings changes preparing for a big [Math by GravityView](https://gravityview.co/extensions/math/) update!
