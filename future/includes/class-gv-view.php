@@ -225,7 +225,8 @@ class View implements \ArrayAccess {
 
 		$slug = apply_filters( 'gravityview_slug', 'view' );
 		$slug = ( '/' !== $wp_rewrite->front ) ? sprintf( '%s/%s', trim( $wp_rewrite->front, '/' ), $slug ) : $slug;
-		$rule = array( sprintf( '%s/([^/]+)/csv/?', $slug ), 'index.php?gravityview=$matches[1]&csv=1', 'top' );
+		$csv_rule = array( sprintf( '%s/([^/]+)/csv/?', $slug ), 'index.php?gravityview=$matches[1]&csv=1', 'top' );
+		$tsv_rule = array( sprintf( '%s/([^/]+)/tsv/?', $slug ), 'index.php?gravityview=$matches[1]&tsv=1', 'top' );
 
 		add_filter( 'query_vars', function( $query_vars ) {
 			$query_vars[] = 'csv';
@@ -233,8 +234,9 @@ class View implements \ArrayAccess {
 			return $query_vars;
 		} );
 
-		if ( ! isset( $wp_rewrite->extra_rules_top[ $rule[0] ] ) ) {
-			call_user_func_array( 'add_rewrite_rule', $rule );
+		if ( ! isset( $wp_rewrite->extra_rules_top[ $csv_rule[0] ] ) ) {
+			call_user_func_array( 'add_rewrite_rule', $csv_rule );
+			call_user_func_array( 'add_rewrite_rule', $tsv_rule );
 		}
 	}
 
