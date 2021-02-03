@@ -41,7 +41,7 @@ $templates = gravityview_get_registered_templates();
 						<?php
 						if( $is_included ) {
 						?>
-							<p><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gv-admin-installer' ) ); ?>" class="button button-secondary button-hero" rel="internal"><?php esc_html_e( 'Manage Installation', 'gravityview'); ?></a></p>
+							<p><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gv-admin-installer' ) ); ?>" class="button button-secondary button-hero" rel="internal"><?php esc_html_e( 'Install Layout', 'gravityview'); ?></a></p>
 							<?php if( !empty( $template['license'] ) ) { ?>
 								<p class="gv-included-in"><?php echo sprintf( esc_html__( 'This layout is included in the %s license.', 'gravityview' ), esc_html( str_replace( ' ', '&nbsp;', $template['license'] ) ) ); ?></p>
 							<?php } ?>
@@ -55,7 +55,7 @@ $templates = gravityview_get_registered_templates();
 								<p><a href="<?php echo esc_url( $template['preview'] ); ?>" rel="noreferrer noopener external" class="button button-secondary"><i class="dashicons dashicons-external" style="vertical-align: middle;" title="<?php esc_html_e( 'View a live demo of this layout', 'gravityview'); ?>"></i> <?php esc_html_e( 'Try a demo', 'gravityview' ); ?></a></p>
 							<?php } ?>
 
-							<?php if( !empty( $template['license'] ) ) { ?>
+							<?php if( ! empty( $template['license'] ) ) { ?>
 								<p class="gv-included-in"><?php echo sprintf( esc_html__( 'This layout is included in the %s license.', 'gravityview' ), '<a href="https://gravityview.co/pricing/' . esc_attr( $utm_string ) . '" rel="noreferrer noopener external">' . esc_html( str_replace( ' ', '&nbsp;', $template['license'] ) ) . '</a>' ); ?></p>
 							<?php } ?>
 						<?php } else { ?>
