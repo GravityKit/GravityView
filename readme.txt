@@ -24,7 +24,17 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Added: A dropdown in the "All Views" screen to filter Views by the layout (Table, List, DataTables, DIY, Map, etc.)
+* Added: Show a notice when "Show only approve entries" setting is enabled for a View and no entries are displayed because of the setting
 * Fixed: PHP notice `Undefined property: stdClass::$icons` appearing on Plugins page
+* Fixed: We set the date of the last release as January 2020. Don't fear: the year is 2021!
+
+__Developer Updates:__
+
+* Modified: `$_GET` args are now passed to links by default.
+	* Added: Prevent entry links (single, edit, delete, duplicate) from including $_GET query args by returning false to the filter `gravityview/entry_link/add_query_args`
+* Added: `gv_get_query_args()` function to return $_GET query args, with reserved args removed
+	* Added: `gravityview/api/reserved_query_args` filter to modify internal reserved URL query args
+* Modified: `templates/fields/field-entry_link-html.php` template to add `gv_get_query_args()` functionality
 
 __Developer Updates:__
 
