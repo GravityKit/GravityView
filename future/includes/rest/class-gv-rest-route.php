@@ -100,7 +100,7 @@ abstract class Route extends \WP_REST_Controller {
 
 		$sub_type = $this->get_sub_type();
 
-		$format = '(?:\.(?P<format>html|json|csv))?';
+		$format = '(?:\.(?P<format>html|json|csv|tsv))?';
 
 		register_rest_route( $namespace, '/' . $base . '/(?P<id>[\d]+)' . '/' . $sub_type . $format, array(
 			array(

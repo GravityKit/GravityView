@@ -7727,7 +7727,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 	}
 
-	public function test_view_csv_simple() {
+	public function test_view_csv_tsv_simple() {
 		$this->_reset_context();
 
 		$form = $this->factory->form->import_and_get( 'complete.json' );
@@ -7800,6 +7800,31 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'"Order ID",Item,"Customer Name","Customer First Name"',
 			$entry2->ID . ',"\'=Broomsticks x 8","Harry Churchill",Harry',
 			$entry->ID . ',"A pair of shoes","Winston Potter",Winston',
+		);
+		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
+
+		remove_filter( 'gform_include_bom_export_entries', '__return_false' );
+
+		set_query_var( 'csv', null );
+		set_query_var( 'tsv', 1 );
+
+		$this->assertNull( $view::template_redirect() );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$this->assertNull( $view::template_redirect() );
+
+		$view->settings->update( array( 'csv_enable' => '1' ) );
+
+		add_filter( 'gform_include_bom_export_entries', '__return_false' );
+
+		ob_start();
+		$view::template_redirect();
+		$expected = array(
+				'"Order ID"' . "\t" . 'Item' . "\t" . '"Customer Name"' . "\t" . '"Customer First Name"',
+				$entry2->ID . "\t" . '"\'=Broomsticks x 8"' . "\t" . '"Harry Churchill"' . "\t" . 'Harry',
+				$entry->ID . "\t" . '"A pair of shoes"' . "\t" . '"Winston Potter"' . "\t" . 'Winston',
 		);
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
