@@ -313,9 +313,23 @@ class GravityView_Admin_Installer {
 
 				$wp_plugins = $this->get_wp_plugins_data();
 
+				echo '<div class="clearfix" style="width:100%;"><h3 class="h1">' . esc_html__( 'GravityView Layouts', 'gravityview' ) . '</h3></div>';
+
+				$this->render_section( $downloads_data, 'views', $wp_plugins );
+
+				echo '<div class="clearfix" style="width:100%;"><h3 class="h1">' . esc_html__( 'GravityView Extensions', 'gravityview' ) . '</h3></div>';
+
+				$this->render_section( $downloads_data, 'extensions', $wp_plugins );
+
+				echo '<div class="clearfix" style="width:100%;"><h3 class="h1">' . esc_html__( 'Gravity Forms Add-Ons by GravityView', 'gravityview' ) . '</h3></div>';
+
 				foreach ( $downloads_data as $extension ) {
 
 					if ( empty( $extension['info'] ) ) {
+						continue;
+					}
+
+					if ( 'plugins' !== \GV\Utils::get( $extension, 'info/category/0/slug' ) ) {
 						continue;
 					}
 
@@ -329,6 +343,22 @@ class GravityView_Admin_Installer {
             </div>
         </div>
 		<?php
+	}
+
+	private function render_section( $downloads_data, $section = '', $wp_plugins ) {
+
+		foreach ( $downloads_data as $extension ) {
+
+			if ( $section !== \GV\Utils::get( $extension, 'info/category/0/slug' ) && $section !== \GV\Utils::get( $extension, 'info/category/1/slug' ) ) {
+				continue;
+			}
+
+			if ( empty( $extension['info'] ) ) {
+				continue;
+			}
+
+			$this->render_download( $extension, $wp_plugins );
+		}
 	}
 
 	/**

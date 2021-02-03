@@ -7,9 +7,9 @@
  * @license   GPL2+
  * @author    Katz Web Services, Inc.
  * @link      http://gravityview.co
- * @copyright Copyright 2020, Katz Web Services, Inc.
+ * @copyright Copyright 2021, Katz Web Services, Inc.
  *
- * @since TODO
+ * @since 2.10
  */
 class GravityView_Placeholder_Template extends GravityView_Template {
 
