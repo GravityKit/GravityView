@@ -142,24 +142,13 @@ class Legacy_Override_Template extends \GV\Gamajo_Template_Loader {
 		 */
 		global $wp_filter;
 		foreach ( array( 'gravityview_before', 'gravityview_after' ) as $hook ) {
-			/** WordPress 4.6 and lower compatibility, when WP_Hook classes were still absent. */
-			if ( is_array( $wp_filter[ $hook ] ) ) {
-				if ( ! empty( $wp_filter[ $hook ][10] ) ) {
-					foreach ( $wp_filter[ $hook ][10] as $function_key => $callback ) {
-						if ( strpos( $function_key, 'render_widget_hooks' ) ) {
-							unset( $wp_filter[ $hook ][10][ $function_key ] );
-						}
-					}
-				}
-			} else {
-				foreach ( $wp_filter[ $hook ]->callbacks[10] as $function_key => $callback ) {
-					if ( strpos( $function_key, 'render_widget_hooks' ) ) {
-						unset( $wp_filter[ $hook ]->callbacks[10][ $function_key ] );
-					}
+			foreach ( $wp_filter[ $hook ]->callbacks[10] as $function_key => $callback ) {
+				if ( strpos( $function_key, 'render_widget_hooks' ) ) {
+					unset( $wp_filter[ $hook ]->callbacks[10][ $function_key ] );
 				}
 			}
 		}
-		
+
 		/**
 		 * Single entry view.
 		 */

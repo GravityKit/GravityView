@@ -13,7 +13,7 @@
  */
 
 
-jQuery( document ).ready( function( $ ) {
+jQuery(function( $ ) {
 
 	/**
 	 * Set the defaultValue property for select inputs, since they're not set by the DOM. This allows us to check whether they've been changed in insertViewShortcode()
@@ -30,7 +30,7 @@ jQuery( document ).ready( function( $ ) {
 
 		if ( $( "#gravityview_id" ).val() === '' ) {
 			alert( gvGlobals.alert_1 );
-			$( "#gravityview_view_id" ).focus();
+			$( "#gravityview_view_id" ).trigger('focus');
 			return false;
 		}
 
@@ -126,7 +126,7 @@ jQuery( document ).ready( function( $ ) {
 
 
 	// Select view id -> populate sort fields
-	$( "#gravityview_id" ).change( function () {
+	$( "#gravityview_id" ).on('change', function () {
 
 		var hide_if_js = $( '#select_gravityview_view_form' ).find( '.hide-if-js' );
 

@@ -192,6 +192,7 @@ class GravityView_Delete_Entry_Admin {
 				'label' => __( 'Delete Entry', 'gravityview' ),
 				'type'  => 'delete_link',
 				'desc'  => __( 'A link to delete the entry. Respects the Delete Entry permissions.', 'gravityview' ),
+				'icon'  => 'dashicons-trash',
 			);
 		}
 

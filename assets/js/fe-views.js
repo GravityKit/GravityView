@@ -12,7 +12,7 @@
  * globals jQuery
  */
 
-jQuery(document).ready( function( $ ) {
+jQuery(function( $ ) {
 
 	var gvFront = {
 

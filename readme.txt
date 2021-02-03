@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 5.5.2
+Tested up to: 5.6
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -23,8 +23,29 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
-* Tweak: Improvements to certain events that are recorded when logging is enabled within Gravity Forms
+* Added: A dropdown in the "All Views" screen to filter Views by the layout (Table, List, DataTables, DIY, Map, etc.)
+* Fixed: PHP notice `Undefined property: stdClass::$icons` appearing on Plugins page
+
+__Developer Updates:__
+
+* Breaking CSS change: Removed `.gv-list-view` CSS class from the List layout container `<div>`. The CSS class was also used in the looped entry containers, making it hard to style. This issue was introduced in GravityView 2.0. For background, see [the GitHub issue](https://github.com/gravityview/GravityView/issues/1026).
+
+= 2.9.4 on January 25, 2021 =
+
+* Added: Apply `{get}` merge tag replacements in `[gvlogic]` attributes and content
+* Modified: Made View Settings changes preparing for a big [Math by GravityView](https://gravityview.co/extensions/math/) update!
+* Fixed: "Change Entry Creator" would not work with Gravity Forms no-conflict mode enabled
+
+__Developer Updates:__
+
+* Added: `gravityview/metaboxes/multiple_entries/after` action to `includes/admin/metabox/views/multiple-entries.php` to allow extending Multiple Entries View settings
+
+= 2.9.3 on December 15, 2020 =
+
 * Improved: Add search field to the Entry Creator drop-down menu
+Tweak: Hide field icons (for now) when editing a View...until our refreshed design is released 😉
+* Fixed: Some JavaScript warnings on WordPress 5.6
+* Fixed: Duplicate Entry field doesn't appear for users with custom roles
 * Fixed: Search entries by Payment Date would not yield results
 * Fixed: Uncaught error when one of GravityView's methods is used before WordPress finishes loading
 * Fixed: Duplicate Entry link would only be displayed to users with an administrator role
@@ -32,6 +53,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 __Developer Updates:__
 
 * Added: `gravityview/search-trim-input` filter to strip or preserve leading/trailing whitespaces in Search Bar values
+* Added: Future WordPress version compatibility check
+* Tweak: Improved logging output
+* Modified: `gravityview_date_created_adjust_timezone` default is now set to false (use UTC value)
 
 = 2.9.2.1 on October 26, 2020 =
 
