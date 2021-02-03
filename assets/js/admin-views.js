@@ -148,7 +148,12 @@
 
 				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )
 
-				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters );
+				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters )
+
+				// Trigger settings setup that have `data-requires` and `data-requires-not` (toggleCheckboxes)
+				.find( '#gravityview_settings' )
+
+					.trigger( 'change' );
 
 			// End bind to $('body')
 
@@ -255,6 +260,11 @@
 					if ( e.keyCode === 27 ) {
 						close = $( '.gv-field-filter-form input[data-has-search]:focus' ).length === 0;
 						return_false = close;
+
+						// The Beacon escape key behavior is flaky. Make it work better.
+						if ( window.Beacon  ) {
+							window.Beacon('close');
+						}
 					}
 
 					break;
@@ -338,7 +348,7 @@
 		selectText: function ( e ) {
 			e.preventDefault();
 
-			$( this ).focus().select();
+			$( this ).trigger('focus').trigger('select');
 
 			return false;
 		},
@@ -795,7 +805,7 @@
 			var vcfg = viewConfiguration, selectedTemplateId = vcfg.wantedTemplate.attr( "data-templateid" );
 
 			// update template name
-			$( "#gravityview_directory_template" ).val( selectedTemplateId ).change();
+			$( "#gravityview_directory_template" ).val( selectedTemplateId ).trigger('change');
 
 			//add Selected class
 			var $parent = vcfg.wantedTemplate.parents( ".gv-view-types-module" );
@@ -936,7 +946,7 @@
 
 			$.post( ajaxurl, data, function ( response ) {
 				if ( response ) {
-					var content = $.parseJSON( response );
+					var content = JSON.parse( response );
 					$( '#directory-header-widgets' ).html( content.header );
 					$( '#directory-footer-widgets' ).html( content.footer );
 					$( '#directory-active-fields' ).append( content.directory );
@@ -1009,7 +1019,7 @@
 						$focus_item = $( 'button', tooltip.tooltip ).first();
 					}
 
-					$focus_item.focus();
+					$focus_item.trigger('focus');
 		        },
 				closeOnEscape: true,
 				disabled: true, // Don't open on hover
@@ -1045,7 +1055,7 @@
 		 */
 		setupFieldFilters: function( e ) {
 
-			var input = $.trim( $( this ).val() ),
+			var input = $( this ).val().trim(),
 				$tooltip = $( this ).parents( '.ui-tooltip-content' ),
 				$resultsNotFound = $tooltip.find( '.gv-no-results' );
 
@@ -1484,6 +1494,9 @@
 			// Toggle Source URL fields
 			vcfg.toggleVisibility( $( 'input:checkbox[name*=link_to_source]', $parent ), $( '[name*=source_link_text]', $parent ), first_run );
 
+			// Other Entries "Hide if no entries"
+			vcfg.toggleVisibility( $( 'input:checkbox[name*=no_entries_hide]', $parent ), $( '[name*=no_entries_text]', $parent ), first_run, true );
+
 			$( ".gv-setting-list", $parent ).trigger( 'change' );
 
 			$( 'input:checkbox', $parent ).attr( 'disabled', null );
@@ -1498,6 +1511,14 @@
 				$( 'input:checkbox[name*=show_as_link]', $parent ).attr( 'disabled', true );
 			}
 
+			// Link to single entry should be disabled when Make Phone Number Clickable is checked
+			if ( $( 'input:checkbox[name*=link_phone]', $parent ).is( ':checked' ) ) {
+				$( 'input:checkbox[name*=show_as_link]', $parent ).attr( 'disabled', true );
+			} else if ( $( 'input:checkbox[name*=show_as_link]', $parent ).is( ':checked' ) ) {
+				// Link to Make Phone Number Clickable should be disabled when Link to single entry is checked
+				$( 'input:checkbox[name*=link_phone]', $parent ).attr( 'disabled', true );
+			}
+
 			// Logged in capability selector should only show when Logged In checkbox is checked
 			vcfg.toggleVisibility( $( 'input:checkbox[name*=only_loggedin]', $parent ), $( '[name*=only_loggedin_cap]', $parent ), first_run );
 
@@ -1509,13 +1530,18 @@
 		 * @param  {jQuery} $checkbox The checkbox to use when determining show/hide. Checked: show; unchecked: hide
 		 * @param  {jQuery} $toggled  The field whose container to show/hide
 		 * @param  {boolean} first_run Is this the first run (on load)? If so, show/hide immediately
+		 * @param  {boolean} inverse   Should the logic be flipped (unchecked = show)?
 		 * @return {void}
 		 */
-		toggleVisibility: function ( $checkbox, $toggled, first_run ) {
+		toggleVisibility: function ( $checkbox, $toggled, first_run, inverse ) {
 
 			var speed = first_run ? 0 : 'fast';
 
-			if ( $checkbox.is( ':checked' ) ) {
+			var checked = $checkbox.is( ':checked' );
+
+			checked = inverse ? ! checked : checked;
+
+			if ( checked ) {
 				$toggled.parents( '.gv-setting-container' ).fadeIn( speed );
 			} else {
 				$toggled.parents( '.gv-setting-container' ).fadeOut( speed );
@@ -1608,7 +1634,7 @@
 				$post.data( 'gv-valid', true );
 
 				if ( 'click' === e.type ) {
-					$( e.target ).click();
+					$( e.target ).trigger('click');
 				} else {
 					$post.submit();
 				}
@@ -1664,7 +1690,7 @@
 						if ( 'click' === e.type ) {
 							$target.click();
 						} else {
-							$('#post').submit();
+							$('#post').trigger('submit');
 						}
 
 					} else {
@@ -1713,7 +1739,7 @@
 
 			// Conditional display general settings & trigger display settings if template changes
 			$('#gravityview_directory_template')
-				.change( viewGeneralSettings.updateSettingsDisplay )
+				.on('change', viewGeneralSettings.updateSettingsDisplay)
 				.trigger('change');
 
 			$('body')
@@ -1840,7 +1866,7 @@
 
 	};  // end viewGeneralSettings object
 
-	jQuery( document ).ready( function ( $ ) {
+	jQuery(function ( $ ) {
 
 		// title placeholder
 		$( '#title-prompt-text' ).text( gvGlobals.label_viewname );

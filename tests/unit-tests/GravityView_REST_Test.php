@@ -26,7 +26,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace(), $routes );
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views', $routes );
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)', $routes );
-		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)/entries(?:\.(?P<format>html|json|csv))?', $routes );
+		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)/entries(?:\.(?P<format>html|json|csv|tsv))?', $routes );
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)/entries/(?P<s_id>[\w-]+)(?:\.(?P<format>html|json))?', $routes );
 	}
 
@@ -215,6 +215,17 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 
 		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $csv );
 		$this->assertContains( $entry2['id'] . ',"set all the fields! 2"', $csv );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.tsv' );
+		ob_start(); // TSV binary data is output ad hoc
+		$response = rest_get_server()->dispatch( $request );
+		$tsv = ob_get_clean();
+		$this->assertEquals( 200, $response->status );
+		$this->assertEquals( 3, $response->headers['X-Item-Count'] );
+		$this->assertEquals( 'text/tsv', $response->headers['Content-Type'] );
+
+		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $tsv );
+		$this->assertContains( $entry2['id'] . "\t" . '"set all the fields! 2"', $tsv );
 	}
 
 	public function test_get_items_csv_complex() {

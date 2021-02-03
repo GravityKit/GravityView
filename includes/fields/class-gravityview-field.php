@@ -100,6 +100,11 @@ abstract class GravityView_Field {
 	public $contexts = array( 'single', 'multiple', 'edit', 'export' );
 
 	/**
+	 * @var string An icon that represents the field type in the field picker
+	 */
+	public $icon = null;
+
+	/**
 	 * @since 1.15.2
 	 * @since 1.16.2.2 Changed access to public (previously, protected)
 	 * @type string The name of a corresponding Gravity Forms GF_Field class, if exists

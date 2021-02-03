@@ -160,6 +160,10 @@ module.exports = function(grunt) {
 			docs: {
 				files: ['docs/*.scss'],
 				tasks: ['sass:docs']
+			},
+			options: {
+				spawn: false,
+				interrupt: true
 			}
 		},
 
@@ -270,6 +274,7 @@ module.exports = function(grunt) {
 						'!vendor/**',
 						'!includes/lib/xml-parsers/**',
 						'!includes/lib/jquery-cookie/**',
+						'!.test_dependencies/**',
 					]
 				}
 			}

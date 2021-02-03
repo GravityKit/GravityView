@@ -1,9 +1,9 @@
 
 /** tooltip for docs */
-.gv_tooltip {
+.gv_tooltip,
+.post-type-gravityview .gf_tooltip {
 
 	font-size: 0.001px;
-	color: inherit;
 	background: transparent;
 
 	&:before {
@@ -16,6 +16,15 @@
 		font: normal normal normal 14px/1 FontAwesome;
 		content: "\f059";
 	}
+
+	margin-left: 0;
+	width: 16px;
+	text-decoration: none;
+	color: #424242;
+	zoom: 1;
+	filter: alpha(opacity=50);
+	opacity: 0.5;
+	border: none;
 }
 
 

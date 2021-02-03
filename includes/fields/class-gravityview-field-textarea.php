@@ -20,6 +20,8 @@ class GravityView_Field_Textarea extends GravityView_Field {
 
 	var $group = 'standard';
 
+	var $icon = 'dashicons-editor-paragraph';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Paragraph Text', 'gravityview' );
 		parent::__construct();

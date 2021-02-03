@@ -773,18 +773,6 @@ add_action( 'gravityview/template/after', function( $gravityview = null ) {
 			return;
 		}
 
-		/** WordPress 4.6 and lower compatibility, when WP_Hook classes were still absent. */
-		if ( is_array( $wp_filter['gravityview_after'] ) ) {
-			if ( ! empty( $wp_filter['gravityview_after'][10] ) ) {
-				foreach ( $wp_filter['gravityview_after'][10] as $function_key => $callback ) {
-					if ( strpos( $function_key, 'context_not_configured_warning' ) ) {
-						unset( $wp_filter['gravityview_after'][10][ $function_key ] );
-					}
-				}
-			}
-			return;
-		}
-
 		foreach ( $wp_filter['gravityview_after']->callbacks[10] as $function_key => $callback ) {
 			if ( strpos( $function_key, 'context_not_configured_warning' ) ) {
 				unset( $wp_filter['gravityview_after']->callbacks[10][ $function_key ] );

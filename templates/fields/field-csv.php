@@ -20,7 +20,9 @@ $entry = $gravityview->entry->as_entry();
  * Fields that will output as raw data in CSV mode.
  */
 $raw_types = array(
-	'email', 'textarea',
+	'email',
+	'textarea',
+	'website',
 );
 
 /**

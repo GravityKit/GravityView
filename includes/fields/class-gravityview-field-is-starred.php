@@ -17,6 +17,8 @@ class GravityView_Field_Is_Starred extends GravityView_Field {
 
 	var $contexts = array( 'single', 'multiple', 'export' );
 
+	var $icon = 'dashicons-star-filled';
+
 	private static $has_star_field = false;
 
 	/**

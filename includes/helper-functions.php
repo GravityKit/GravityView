@@ -7,10 +7,10 @@
 
 /**
  * Get the URL for a CSS file
- * 
+ *
  * If there's a CSS file with the same name as a GravityView CSS file in the current theme directory, it will be used.
- * Place the CSS file in a `/gravityview/css/` sub-directory. 
- * 
+ * Place the CSS file in a `/gravityview/css/` sub-directory.
+ *
  * Example: /twentysixteen/gravityview/css/gv-default-styles.css
  *
  * Will use, in order:
@@ -42,7 +42,7 @@ function gravityview_css_url( $css_file = '', $dir_path = '' ) {
 		if( '' === $dir_path ) {
 			$dir_path = GRAVITYVIEW_DIR . 'templates/css/';
 		}
-		
+
 		// plugins_url() expects a path to a file, not directory. We append a file to be stripped.
 		$path = plugins_url( $css_file, trailingslashit( $dir_path )  . 'stripped-by-plugin_basename.php' );
 	}
@@ -509,28 +509,7 @@ function gv_maybe_json_decode( $value, $assoc = false, $depth = 512, $options = 
  * @return mixed The value with the callback applied to all non-arrays and non-objects inside it.
  */
 function gv_map_deep( $value, $callback ) {
-
-	// Use the original function, if exists.
-	// Requires WP 4.4+
-	if( function_exists( 'map_deep') ) {
-		return map_deep( $value, $callback );
-	}
-
-	// Exact copy of map_deep() code below:
-	if ( is_array( $value ) ) {
-		foreach ( $value as $index => $item ) {
-			$value[ $index ] = gv_map_deep( $item, $callback );
-		}
-	} elseif ( is_object( $value ) ) {
-		$object_vars = get_object_vars( $value );
-		foreach ( $object_vars as $property_name => $property_value ) {
-			$value->$property_name = gv_map_deep( $property_value, $callback );
-		}
-	} else {
-		$value = call_user_func( $callback, $value );
-	}
-
-	return $value;
+	return map_deep( $value, $callback );
 }
 
 /**
