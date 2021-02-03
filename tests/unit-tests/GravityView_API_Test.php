@@ -319,11 +319,14 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		remove_filter( 'gravityview/api/reserved_query_args', $add_not_reserved );
 
-		$_GET = array( 'gv_search' => 'anjela%27s%2c%20inc' );
-		$this->assertEquals( array( 'gv_search' => "anjela's, inc" ), gv_get_query_args(), 'Should have decoded URL args.' );
+		$_GET = array( 'example' => 'anjela%27s%2c%20inc' );
+		$this->assertEquals( array( 'example' => "anjela's, inc" ), gv_get_query_args(), 'Should have decoded URL args.' );
 
-		$_GET = array( 'gv_search' => '<script>Example</script>' );
-		$this->assertEquals( array( 'gv_search' => "<script>Example</script>" ), gv_get_query_args(), 'Should not have stripped or sanitized. That\'s for later in the cycle.' );
+		$_GET = array( 'example' => '<script>Example</script>' );
+		$this->assertEquals( array( 'example' => "<script>Example</script>" ), gv_get_query_args(), 'Should not have stripped or sanitized. That\'s for later in the cycle.' );
+
+		$_GET = array( 'gv_search' => 'testing', 'gv_start' => '2020-02-02', 'gv_end' => '2020-02-02', 'gv_id' => '1', 'gv_by' => '3', 'mode' => 'all' );
+		$this->assertEquals( array(), gv_get_query_args(), 'Search Bar should define search parameters as reserved.' );
 
 		$_GET = array();
 	}
