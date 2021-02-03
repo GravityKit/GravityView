@@ -372,6 +372,8 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( site_url('?gravityview='.$view->post_name.'&entry='.$entry['id'] ), $href, 'Filter should have prevented $_GET args from being added' );
 
+		$_GET = array();
+
 		remove_filter( 'gravityview/entry_link/add_query_args', '__return_false' );
 
 		$post_with_embeds = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $view->ID .'"] and then [gravityview id="' . $view2->ID .'"]') );
