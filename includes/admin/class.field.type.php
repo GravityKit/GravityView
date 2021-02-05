@@ -64,27 +64,104 @@ abstract class GravityView_FieldType {
     public static function get_field_defaults() {
         return array(
             'desc' => '',
-            'value' => NULL,
+            'value' => null,
             'label' => '',
-            'left_label' => NULL,
-            'id' => NULL,
+            'left_label' => null,
+            'id' => null,
             'type'  => 'text',
-            'options' => NULL,
+            'options' => null,
             'merge_tags' => true,
             'class' => '',
-            'tooltip' => NULL,
-            'requires' => NULL
+            'tooltip' => null,
+            'requires' => null
         );
     }
 
 
     function get_tooltip() {
-        if( !function_exists('gform_tooltip') ) {
-            return NULL;
+        if( ! function_exists('gform_tooltip') ) {
+            return null;
         }
 
-        return !empty( $this->field['tooltip'] ) ? ' '.gform_tooltip( $this->field['tooltip'] , false, true ) : NULL;
+	    $article = wp_parse_args( \GV\Utils::get( $this->field, 'article', array() ), array(
+	    	'id' => '',
+	    	'type' => 'modal',
+	    	'url' => '#',
+	    ) );
+
+        return !empty( $this->field['tooltip'] ) ? ' '. $this->tooltip( $this->field['tooltip'], false, true, $article ) : null;
     }
+
+    /**
+     * Displays the tooltip
+     *
+     * @since 2.8.1
+     *
+     * @global $__gf_tooltips
+     *
+     * @param string $name      The name of the tooltip to be displayed
+     * @param string $css_class Optional. The CSS class to apply toi the element. Defaults to empty string.
+     * @param bool   $return    Optional. If the tooltip should be returned instead of output. Defaults to false (output)
+     * @param array  $article   Optional. Details about support doc article connected to the tooltip. {
+     *   @type string $id   Unique ID of article for Beacon API
+     *   @type string $url  URL of support doc article
+     *   @type string $type Type of Beacon element to open. {@see https://developer.helpscout.com/beacon-2/web/javascript-api/#beaconarticle}
+     * }
+     *
+     * @return string
+     */
+    function tooltip( $name, $css_class = '', $return = false, $article = array() ) {
+		global $__gf_tooltips; //declared as global to improve WPML performance
+
+		$css_class = empty( $css_class ) ? 'tooltip' : $css_class;
+		/**
+		 * Filters the tooltips available
+		 *
+		 * @param array $__gf_tooltips Array containing the available tooltips
+		 */
+		$__gf_tooltips = apply_filters( 'gform_tooltips', $__gf_tooltips );
+
+		//AC: the $name parameter is a key when it has only one word. Maybe try to improve this later.
+		$parameter_is_key = count( explode( ' ', $name ) ) == 1;
+
+		$tooltip_text  = $parameter_is_key ? rgar( $__gf_tooltips, $name ) : $name;
+		$tooltip_class = isset( $__gf_tooltips[ $name ] ) ? "tooltip_{$name}" : '';
+		$tooltip_class = esc_attr( $tooltip_class );
+
+	    /**
+	     * Below this line has been modified by GravityView.
+	     */
+
+		if ( empty( $tooltip_text ) && empty( $article['id'] ) ) {
+			return '';
+		}
+
+		$url = '#';
+	    $atts = 'onclick="return false;" onkeypress="return false;"';
+	    $anchor_text = '<i class=\'fa fa-question-circle\'></i>';
+		$css_class = gravityview_sanitize_html_class( 'gf_tooltip ' . $css_class . ' ' . $tooltip_class );
+
+		$tooltip = sprintf( '<a href="%s" %s class="%s" title="%s" role="button">%s</a>',
+			esc_url( $url ),
+			$atts,
+			$css_class,
+			esc_attr( $tooltip_text ),
+			$anchor_text
+		);
+
+	    /**
+	     * Modify the tooltip HTML before outputting
+	     * @internal
+	     * @see GravityView_Support_Port::maybe_add_article_to_tooltip()
+	     */
+		$tooltip = apply_filters( 'gravityview/tooltips/tooltip', $tooltip, $article, $url, $atts, $css_class, $tooltip_text, $anchor_text );
+
+		if ( ! $return ) {
+			echo $tooltip;
+		}
+
+		return $tooltip;
+	}
 
     /**
      * Build input id based on the name

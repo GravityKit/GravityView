@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -89,7 +89,7 @@ class GravityView_Render_Settings {
 		 * @param[in]  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
 		 * @param[in]  string      $context     What context are we in? Example: `single` or `directory`
 		 * @param[in]  string      $input_type  (textarea, list, select, etc.)
-		 * @param[in]  int         $form_id     The form ID. @since develop
+		 * @param[in]  int         $form_id     The form ID. {@since 2.5}
 		 */
 		$field_options = apply_filters( "gravityview_template_{$field_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
@@ -100,7 +100,7 @@ class GravityView_Render_Settings {
 		 * @param[in]  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
 		 * @param[in]  string      $context     What context are we in? Example: `single` or `directory`
 		 * @param[in]  string      $input_type  (textarea, list, select, etc.)
-		 * @param[in]  int         $form_id     The form ID. @since develop
+		 * @param[in]  int         $form_id     The form ID. {@since 2.5}
 		 */
 		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
@@ -155,7 +155,6 @@ class GravityView_Render_Settings {
 	 * @see GravityView_Ajax::get_field_options
 	 * @see GravityView_Admin_Views::render_active_areas
 	 *
-	 * @access public
 	 * @param string $form_id
 	 * @param string $field_type field / widget
 	 * @param string $template_id
@@ -246,7 +245,7 @@ class GravityView_Render_Settings {
 	 * @param  mixed      $curr_value Current value of option
 	 * @return string     HTML output of option
 	 */
-	public static function render_field_option( $name = '', $option, $curr_value = NULL ) {
+	public static function render_field_option( $name = '', $option = array(), $curr_value = NULL ) {
 
 		$output = '';
 
@@ -266,7 +265,7 @@ class GravityView_Render_Settings {
 
 			if( class_exists( $type_class ) ) {
 
-				/** @var GravityView_FieldType $render_type */
+				/** @type GravityView_FieldType $render_type */
 				$render_type = new $type_class( $name, $option, $curr_value );
 
 				ob_start();
@@ -345,7 +344,7 @@ class GravityView_Render_Settings {
 		// render the setting
 		$type_class = self::load_type_class( $setting );
 		if( class_exists( $type_class ) ) {
-			/** @var GravityView_FieldType $render_type */
+			/** @type GravityView_FieldType $render_type */
 			$render_type = new $type_class( $name, $setting, $curr_value );
 			ob_start();
 			$render_type->render_setting( $override_input );
@@ -371,7 +370,7 @@ class GravityView_Render_Settings {
 		}
 
 		// output
-		echo '<tr valign="top" '. $show_if .'>' . $output . '</tr>';
+		echo '<tr style="vertical-align: top;" '. $show_if .'>' . $output . '</tr>';
 
 	}
 
@@ -394,21 +393,19 @@ class GravityView_Render_Settings {
 		 */
 		$type_class = apply_filters( "gravityview/setting/class/{$field['type']}", 'GravityView_FieldType_' . $field['type'], $field );
 
-		if( !class_exists( $type_class ) ) {
+		if( class_exists( $type_class ) ) {
+			return $type_class;
+		}
 
-			/**
-			 * @filter `gravityview/setting/class_file/{field_type}`
-			 * @param string  $field_type_include_path field class file path
-			 * @param array $field  field data
-			 */
-			$class_file = apply_filters( "gravityview/setting/class_file/{$field['type']}", GRAVITYVIEW_DIR . "includes/admin/field-types/type_{$field['type']}.php", $field );
+		/**
+		 * @filter `gravityview/setting/class_file/{field_type}`
+		 * @param string  $field_type_include_path field class file path
+		 * @param array $field  field data
+		 */
+		$class_file = apply_filters( "gravityview/setting/class_file/{$field['type']}", GRAVITYVIEW_DIR . "includes/admin/field-types/type_{$field['type']}.php", $field );
 
-			if( $class_file ) {
-				if( file_exists( $class_file ) ) {
-					require_once( $class_file );
-				}
-			}
-
+		if( $class_file && file_exists( $class_file ) ) {
+			require_once( $class_file );
 		}
 
 		return $type_class;

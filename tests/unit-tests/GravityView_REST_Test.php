@@ -26,7 +26,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace(), $routes );
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views', $routes );
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)', $routes );
-		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)/entries(?:\.(?P<format>html|json|csv))?', $routes );
+		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)/entries(?:\.(?P<format>html|json|csv|tsv))?', $routes );
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)/entries/(?P<s_id>[\w-]+)(?:\.(?P<format>html|json))?', $routes );
 	}
 
@@ -44,7 +44,12 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 			'1' => 'set all the fields!',
 			'2' => -100,
 		) );
-		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'settings' => $settings,
+		) );
 
 		$request  = new WP_REST_Request( 'OPTIONS', '/gravityview/v1/views/' . $view->ID );
 		$response = rest_get_server()->dispatch( $request );
@@ -71,6 +76,9 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 	public function test_get_items() {
 		$form = $this->factory->form->create_and_get();
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		// Views
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
@@ -86,6 +94,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view2 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 		$view3 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
@@ -206,10 +215,24 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 
 		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $csv );
 		$this->assertContains( $entry2['id'] . ',"set all the fields! 2"', $csv );
+
+		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.tsv' );
+		ob_start(); // TSV binary data is output ad hoc
+		$response = rest_get_server()->dispatch( $request );
+		$tsv = ob_get_clean();
+		$this->assertEquals( 200, $response->status );
+		$this->assertEquals( 3, $response->headers['X-Item-Count'] );
+		$this->assertEquals( 'text/tsv', $response->headers['Content-Type'] );
+
+		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $tsv );
+		$this->assertContains( $entry2['id'] . "\t" . '"set all the fields! 2"', $tsv );
 	}
 
 	public function test_get_items_csv_complex() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 
 		// Views
 		$view = $this->factory->view->create_and_get( array(
@@ -230,6 +253,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 
 		$entry = $this->factory->entry->create_and_get( array(
@@ -264,6 +288,9 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 
 	public function test_get_items_custom_content() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
 
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
@@ -309,6 +336,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 
 		$entry = $this->factory->entry->create_and_get( array(
@@ -357,6 +385,9 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 	public function test_get_entries_filter() {
 		$form = $this->factory->form->create_and_get();
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'fields' => array(
@@ -379,6 +410,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 
 		// Entries
@@ -413,6 +445,9 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 	public function test_get_item() {
 		$form = $this->factory->form->create_and_get();
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		// Views
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
@@ -433,6 +468,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID );
@@ -704,6 +740,9 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 	public function test_get_items_csv_raw() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		// Views
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
@@ -723,6 +762,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 
 		$entry = $this->factory->entry->create_and_get( array(
@@ -757,6 +797,9 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 	public function test_get_items_raw() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		// Views
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
@@ -776,6 +819,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 
 		$entry = $this->factory->entry->create_and_get( array(
@@ -809,17 +853,22 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 	}
 
 	public function test_create_item() {
+		$this->assertTrue( true );
 	}
 
 	public function test_update_item() {
+		$this->assertTrue( true );
 	}
 
 	public function test_delete_item() {
+		$this->assertTrue( true );
 	}
 
 	public function test_prepare_item() {
+		$this->assertTrue( true );
 	}
 
 	public function test_get_item_schema() {
+		$this->assertTrue( true );
 	}
 }

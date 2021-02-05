@@ -3,7 +3,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -105,6 +105,27 @@
 	}
 }
 
+.dashicons-spacer {
+
+}
+
+.gf-popover__button[data-url="#gravityview-group-heading"] {
+	font-weight: 500;
+	color: #40464d;
+	padding-top: 12px;
+	padding-bottom: 6px;
+	border-radius: 0;
+	cursor: default !important;
+}
+.gf-popover__button__icon:empty {
+	display: none;
+}
+
+.gf-popover__button[data-url="#gravityview-group-heading"]:hover {
+	background: white;
+	color: #40464d;
+}
+
 // On all Admin pages
 .post-type-gravityview {
 
@@ -117,4 +138,36 @@
 	}
   }
 
+}
+
+// Entry Creator
+.gv-entry-creator-dropdown {
+	.select2-search__field {
+		padding: 0 4px 0 4px;
+	}
+
+	&.gf25 {
+		.select2-search__field {
+			line-height: 1.25rem;
+			padding: .6875rem 1rem;
+		}
+
+
+		&.select2-dropdown--below {
+			border-top: initial;
+			margin-top: -8px;
+		}
+	}
+}
+
+.gv-entry-creator-container.select2-container--default.gf25 {
+	min-height: 4em;
+
+	.select2-selection__arrow {
+		display: none;
+	}
+
+	.select2-selection__rendered {
+		margin: -1px;
+	}
 }

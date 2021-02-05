@@ -12,5 +12,5 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 
 ?>
 <?php gravityview_before( $gravityview ); ?>
-<div class="<?php gv_container_class( 'gv-list-container gv-list-view gv-list-multiple-container', true, $gravityview ); ?>">
+<div class="<?php gv_container_class( 'gv-list-container gv-list-multiple-container', true, $gravityview ); ?>">
 	<?php gravityview_header( $gravityview ); ?>

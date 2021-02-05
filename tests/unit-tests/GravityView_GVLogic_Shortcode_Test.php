@@ -181,6 +181,53 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * Test the parsing of {get} Merge Tag
+	 *
+	 * @since 2.9.4
+	 */
+	function test_get_merge_tag() {
+
+		unset( $_GET['example'] );
+
+		$value = do_shortcode( '[gvlogic if="{get:example}" is=""]?example is blank[/gvlogic]' );
+
+		$this->assertEquals( '?example is blank', $value );
+
+		$_GET['example'] = 'correct';
+
+		$value = do_shortcode( '[gvlogic if="{get:example}" is="correct"]?example is "{get:example}"[/gvlogic]' );
+
+		$this->assertEquals( '?example is "correct"', $value );
+
+		$value = do_shortcode( '[gvlogic if="{get:example}" isnot="correct"]Not correct[else if="{get:example}" is="correct"]?example is "{get:example}"[/gvlogic]', 'testing else with atts' );
+
+		$this->assertEquals( '?example is "correct"', $value );
+
+		$value = do_shortcode( '[gvlogic if="{get:example}" isnot="correct"]Not correct[else if="{get:example}" isnot="correct"]Not correct[else]?example is "{get:example}"[/gvlogic]', 'testing else without atts' );
+
+		$_GET['example'] = '5';
+
+		$value = do_shortcode( '[gvlogic if="{get:example}" greater_than="5"]Not correct[else]?example is "{get:example}"[/gvlogic]' );
+
+		$this->assertEquals( '?example is "5"', $value );
+
+		$value = do_shortcode( '[gvlogic if="{get:example}" greater_than_or_is="5"]?example is "{get:example}"[/gvlogic]' );
+
+		$this->assertEquals( '?example is "5"', $value );
+
+		/**
+		 * An extra test to ensure {get} is HTML-escaped by default
+		 * @see \GravityView_Merge_Tags_Test::test_replace_get_variables for full test.
+		 */
+		$esc_html_string = '& < > \' " <script>tag</script>';
+		$_GET['example'] = $esc_html_string;
+		$value = do_shortcode( '[gvlogic if="1" is="1"]{get:example}[/gvlogic]' );
+		$this->assertEquals( esc_html( $esc_html_string ), $value );
+
+		unset( $_GET['example'] );
+	}
+
+	/**
 	 * Make sure a basic "logged-in" check works
 	 */
 	function test_gv_shortcode_for_user_id_logged_in() {

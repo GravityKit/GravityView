@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
@@ -60,7 +60,7 @@ class GravityView_Admin_Notices {
 	public function dismiss_notice() {
 
 		// No dismiss sent
-		if( empty( $_GET['gv-dismiss'] ) ) {
+		if( empty( $_GET['gv-dismiss'] ) || empty( $_GET['notice'] ) ) {
 			return;
 		}
 

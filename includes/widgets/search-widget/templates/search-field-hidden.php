@@ -2,7 +2,7 @@
 /**
  * Display hidden field input
  *
- * @see class-search-widget.php
+ * @file class-search-widget.php See for usage
  */
 
 $gravityview_view = GravityView_View::getInstance();

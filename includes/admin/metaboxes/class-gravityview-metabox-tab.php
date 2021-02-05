@@ -89,7 +89,7 @@ class GravityView_Metabox_Tab {
 	 * Create a new metabox tab
 	 *
 	 * @since 1.8
-	 * @param $id Metabox HTML ID, without `gravityview_` prefix
+	 * @param $id string Metabox HTML ID, without `gravityview_` prefix
 	 * @param string $title Name of the metabox. Shown in the tab.
 	 * @param string $file The file name of a file stored in the /gravityview/includes/admin/metaboxes/views/ directory to render the metabox output, or the full path to a file. If defined, `callback` is not used.
 	 * @param string $icon_class_name Icon class used in vertical tabs. Supports non-dashicon. If dashicons, no need for `dashicons ` prefix
@@ -112,7 +112,7 @@ class GravityView_Metabox_Tab {
 	 *
 	 * @since 1.8
 	 *
-	 * @param $icon_class_name Passed class name
+	 * @param string $icon_class_name Passed class name
 	 *
 	 * @return string sanitized CSS class
 	 */
