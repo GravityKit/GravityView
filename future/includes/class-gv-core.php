@@ -176,6 +176,9 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-oembed.php' );
 		add_action( 'init', array( '\GV\oEmbed', 'init' ), 11 );
 
+		/** Customizer */
+		require_once $this->plugin->dir( 'future/includes/customizer/class-gv-customizer.php' );
+
 		/** Our Source generic and beloved source and form backend implementations. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-source.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-source-internal.php' );
