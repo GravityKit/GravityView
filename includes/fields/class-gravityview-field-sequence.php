@@ -43,13 +43,13 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 		add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'field_tooltips') );
 
-		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ) );
+		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ), 10, 3 );
 
 		parent::__construct();
 	}
 
 	/**
-	 * Add Edit Link as a default field, outside those set in the Gravity Form form
+	 * Add as a default field, outside those set in the Gravity Form form
 	 *
 	 * @since 2.10 Moved here from GravityView_Admin_Views::get_entry_default_fields
 	 *
