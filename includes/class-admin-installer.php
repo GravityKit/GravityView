@@ -97,7 +97,7 @@ class GravityView_Admin_Installer {
 	 */
 	public function add_admin_menu() {
 
-	    $menu_text = _x( 'Extensions', 'Extensions are WordPress plugins that add functionality to GravityView and Gravity Forms', 'gravityview' );
+	    $menu_text = _x( 'Manage Add-Ons', 'Extensions are WordPress plugins that add functionality to GravityView and Gravity Forms', 'gravityview' );
 
 		$menu_text = sprintf( '<span title="%s" style="margin: 0">%s</span>', esc_attr__( 'Plugins that extend GravityView and Gravity Forms functionality.', 'gravityview' ), $menu_text );
 
