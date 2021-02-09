@@ -410,12 +410,7 @@ class GravityView_Cache {
 
 			$key = '_transient_gv-cache-';
 
-			// WordPress 4.0+
-			if ( is_callable( array( $wpdb, 'esc_like' ) ) ) {
-				$key = $wpdb->esc_like( $key );
-			} else {
-				$key = like_escape( $key );
-			}
+			$key = $wpdb->esc_like( $key );
 
 			$form_id = intval( $form_id );
 

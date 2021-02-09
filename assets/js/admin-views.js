@@ -58,6 +58,12 @@
 		startFreshStatus: false,
 
 		/**
+		 * @since 2.10
+		 * @type {bool} Whether to show "Are you sure you want to leave this page?" warning
+		 */
+		hasUnsavedChanges: false,
+
+		/**
 		 * @since 1.17.3
 		 * @type {bool} Whether the alt (modifier) key is currently being clicked
 		 */
@@ -156,6 +162,10 @@
 					.trigger( 'change' );
 
 			// End bind to $('body')
+
+			window.onbeforeunload = function() {
+				return vcfg.hasUnsavedChanges ? true : null;
+			};
 
 			if( gvGlobals.passed_form_id ) {
 				vcfg.gvSelectForm.trigger( 'change' );
@@ -348,7 +358,7 @@
 		selectText: function ( e ) {
 			e.preventDefault();
 
-			$( this ).focus().select();
+			$( this ).trigger('focus').trigger('select');
 
 			return false;
 		},
@@ -557,6 +567,7 @@
 
 			vcfg.currentTemplateId = '';
 			vcfg.currentFormId = vcfg.gvSelectForm.val();
+			vcfg.hasUnsavedChanges = true;
 			$( 'body' ).trigger( 'gravityview_form_change' ).addClass( 'gv-form-changed' );
 		},
 
@@ -676,7 +687,6 @@
 				}
 
 			}
-
 		},
 
 		/**
@@ -805,7 +815,7 @@
 			var vcfg = viewConfiguration, selectedTemplateId = vcfg.wantedTemplate.attr( "data-templateid" );
 
 			// update template name
-			$( "#gravityview_directory_template" ).val( selectedTemplateId ).change();
+			$( "#gravityview_directory_template" ).val( selectedTemplateId ).trigger('change');
 
 			//add Selected class
 			var $parent = vcfg.wantedTemplate.parents( ".gv-view-types-module" );
@@ -841,6 +851,7 @@
 			}
 
 			vcfg.currentTemplateId = selectedTemplateId;
+			vcfg.hasUnsavedChanges = true;
 		},
 
 		/**
@@ -946,7 +957,7 @@
 
 			$.post( ajaxurl, data, function ( response ) {
 				if ( response ) {
-					var content = $.parseJSON( response );
+					var content = JSON.parse( response );
 					$( '#directory-header-widgets' ).html( content.header );
 					$( '#directory-footer-widgets' ).html( content.footer );
 					$( '#directory-active-fields' ).append( content.directory );
@@ -955,6 +966,8 @@
 					vcfg.waiting('stop');
 				}
 			} );
+
+			vcfg.hasUnsavedChanges = true;
 		},
 
 		/**
@@ -1019,7 +1032,7 @@
 						$focus_item = $( 'button', tooltip.tooltip ).first();
 					}
 
-					$focus_item.focus();
+					$focus_item.trigger('focus');
 		        },
 				closeOnEscape: true,
 				disabled: true, // Don't open on hover
@@ -1055,7 +1068,7 @@
 		 */
 		setupFieldFilters: function( e ) {
 
-			var input = $.trim( $( this ).val() ),
+			var input = $( this ).val().trim(),
 				$tooltip = $( this ).parents( '.ui-tooltip-content' ),
 				$resultsNotFound = $tooltip.find( '.gv-no-results' );
 
@@ -1270,6 +1283,7 @@
 			} ).always( function () {
 
 				vcfg.toggleDropMessage();
+				vcfg.hasUnsavedChanges = true;
 
 			} );
 
@@ -1416,6 +1430,8 @@
 			var vcfg = viewConfiguration;
 			var area = $( e.currentTarget ).parents( ".active-drop" );
 
+			vcfg.hasUnsavedChanges = true;
+
 			// Nice little easter egg: when holding down control, get rid of all fields in the zone at once.
 			if ( e.altKey && $( area ).find( '.gv-fields' ).length > 1 ) {
 
@@ -1522,6 +1538,7 @@
 			// Logged in capability selector should only show when Logged In checkbox is checked
 			vcfg.toggleVisibility( $( 'input:checkbox[name*=only_loggedin]', $parent ), $( '[name*=only_loggedin_cap]', $parent ), first_run );
 
+			vcfg.hasUnsavedChanges = true;
 		},
 
 		/**
@@ -1634,7 +1651,7 @@
 				$post.data( 'gv-valid', true );
 
 				if ( 'click' === e.type ) {
-					$( e.target ).click();
+					$( e.target ).trigger('click');
 				} else {
 					$post.submit();
 				}
@@ -1690,7 +1707,7 @@
 						if ( 'click' === e.type ) {
 							$target.click();
 						} else {
-							$('#post').submit();
+							$('#post').trigger('submit');
 						}
 
 					} else {
@@ -1739,7 +1756,7 @@
 
 			// Conditional display general settings & trigger display settings if template changes
 			$('#gravityview_directory_template')
-				.change( viewGeneralSettings.updateSettingsDisplay )
+				.on('change', viewGeneralSettings.updateSettingsDisplay)
 				.trigger('change');
 
 			$('body')
@@ -1866,7 +1883,7 @@
 
 	};  // end viewGeneralSettings object
 
-	jQuery( document ).ready( function ( $ ) {
+	jQuery(function ( $ ) {
 
 		// title placeholder
 		$( '#title-prompt-text' ).text( gvGlobals.label_viewname );

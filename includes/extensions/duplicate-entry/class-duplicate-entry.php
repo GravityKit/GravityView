@@ -68,6 +68,24 @@ final class GravityView_Duplicate_Entry {
 		add_filter( 'gravityview/sortable/field_blacklist', array( $this, '_filter_sortable_fields' ), 1 );
 
 		add_filter( 'gravityview/field/is_visible', array( $this, 'maybe_not_visible' ), 10, 3 );
+
+		add_filter( 'gravityview/api/reserved_query_args', array( $this, 'add_reserved_arg' ) );
+	}
+
+	/**
+	 * Adds "duplicate" to the list of internal reserved query args
+	 *
+	 * @since 2.10
+	 *
+	 * @param array $args Existing reserved args
+	 *
+	 * @return array
+	 */
+	public function add_reserved_arg( $args ) {
+
+		$args[] = 'duplicate';
+
+		return $args;
 	}
 
 	/**
@@ -114,7 +132,7 @@ final class GravityView_Duplicate_Entry {
 		}
 
 		foreach ( $view->get_entries()->all() as $entry ) {
-			if ( self::check_user_cap_duplicate_entry( $entry->as_entry(), $view ) ) {
+			if ( self::check_user_cap_duplicate_entry( $entry->as_entry(), $field->as_configuration() ) ) {
 				// At least one entry is duplicable for this user
 				$visibility_cache_for_view[ $view->ID ] = true;
 				return true;

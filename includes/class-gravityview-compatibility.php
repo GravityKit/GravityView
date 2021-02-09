@@ -231,17 +231,31 @@ class GravityView_Compatibility {
 	public static function check_wordpress() {
 		global $wp_version;
 
+		if ( gravityview()->plugin->is_compatible_future_wordpress() ) {
+			return true;
+		}
+
 		if ( ! gravityview()->plugin->is_compatible_wordpress() ) {
 
 			self::$notices['wp_version'] = array(
 				'class' => 'error',
-				'message' => sprintf( __( "%sGravityView requires WordPress %s or newer.%s \n\nYou're using Version %s. Please upgrade your WordPress installation.", 'gravityview' ), '<h3>', GV_MIN_WP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.$wp_version.'</span>' ),
+				'message' => sprintf( __( "%sGravityView requires WordPress %s or newer.%s \n\nYou're using Version %s. Please upgrade your WordPress installation.", 'gravityview' ), '<h3>', GV_MIN_WP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">' . $wp_version . '</span>' ),
 			    'cap' => 'update_core',
 				'dismiss' => 'wp_version',
 			);
 
 			return false;
 		}
+
+		// Show the notice on every update. Yes, annoying, but not as annoying as a plugin breaking.
+		$key = sprintf( 'wp_%s_%s', GV_FUTURE_MIN_WP_VERSION, GV_PLUGIN_VERSION );
+
+		self::$notices[ $key ] = array(
+			'class' => 'notice-warning',
+			'message' => sprintf( __( "%sGravityView will soon require WordPress %s%s \n\nYou're using Version %s. Please upgrade your WordPress installation.", 'gravityview' ), '<h3>', GV_FUTURE_MIN_WP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">' . $wp_version . '</span>' ),
+			'cap' => 'update_core',
+			'dismiss' => $key,
+		);
 
 		return true;
 	}
@@ -260,7 +274,7 @@ class GravityView_Compatibility {
 		if( class_exists( 'GFCommon' ) ) {
 
 			// Does the version meet future requirements?
-			if( true === version_compare( GFCommon::$version, GV_FUTURE_MIN_GF_VERSION, ">=" ) ) {
+			if( true === gravityview()->plugin->is_compatible_future_gravityforms() ) {
 				return true;
 			}
 
@@ -388,7 +402,7 @@ class GravityView_Compatibility {
 			return true;
 		}
 
-		if( !is_network_admin() && is_plugin_active( $location ) ) {
+		if( ! is_network_admin() && is_plugin_active( $location ) ) {
 			return true;
 		}
 

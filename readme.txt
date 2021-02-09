@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 5.5.2
+Tested up to: 5.6
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -23,6 +23,41 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Added: A dropdown in the "All Views" screen to filter Views by the layout (Table, List, DataTables, DIY, Map, etc.)
+* Added: Show a notice when "Show only approve entries" setting is enabled for a View and no entries are displayed because of the setting
+* Added: Warning when leaving Edit View screen if there are unsaved changes
+* Fixed: PHP notice `Undefined property: stdClass::$icons` appearing on Plugins page
+* Fixed: We set the date of the last release as January 2020. Don't fear: the year is 2021!
+
+__Developer Updates:__
+
+* Modified: `$_GET` args are now passed to links by default.
+	* Added: Prevent entry links (single, edit, delete, duplicate) from including $_GET query args by returning false to the filter `gravityview/entry_link/add_query_args`
+* Added: `gv_get_query_args()` function to return $_GET query args, with reserved args removed
+	* Added: `gravityview/api/reserved_query_args` filter to modify internal reserved URL query args
+* Modified: `templates/fields/field-entry_link-html.php` template to add `gv_get_query_args()` functionality
+
+__Developer Updates:__
+
+* Breaking CSS change: Removed `.gv-list-view` CSS class from the List layout container `<div>`. The CSS class was also used in the looped entry containers, making it hard to style. This issue was introduced in GravityView 2.0. For background, see [the GitHub issue](https://github.com/gravityview/GravityView/issues/1026).
+
+= 2.9.4 on January 25, 2021 =
+
+* Added: Apply `{get}` merge tag replacements in `[gvlogic]` attributes and content
+* Modified: Made View Settings changes preparing for a big [Math by GravityView](https://gravityview.co/extensions/math/) update!
+* Fixed: "Change Entry Creator" would not work with Gravity Forms no-conflict mode enabled
+
+__Developer Updates:__
+
+* Added: `gravityview/metaboxes/multiple_entries/after` action to `includes/admin/metabox/views/multiple-entries.php` to allow extending Multiple Entries View settings
+
+= 2.9.3 on December 15, 2020 =
+
+* Improved: Add search field to the Entry Creator drop-down menu
+Tweak: Hide field icons (for now) when editing a View...until our refreshed design is released 😉
+* Fixed: Some JavaScript warnings on WordPress 5.6
+* Fixed: Uncaught error when one of GravityView's methods is used before WordPress finishes loading
+* Fixed: Duplicate Entry link would only be displayed to users with an administrator role
 * Fixed: Search entries by Payment Date would not yield results
 * Fixed: Lightbox didn't work with secure images
 * New: New lightbox gallery mode for File Upload fields with Multi-File Upload enabled
@@ -34,9 +69,13 @@ __Developer Updates:__
 	- Modify settings using `gravityview/lightbox/provider/fancybox/settings`
 	- [See options available here](https://fancyapps.com/fancybox/3/docs/#options)
 	- If you prefer, a [Featherlight lightbox option is available](https://github.com/gravityview/gv-snippets/tree/addon/featherlight-lightbox)
-* Fixed: `gravityview_lightbox_script` wasn't being applied
 * Modified: Formally deprecated `gravity_view_lightbox_script` and `gravity_view_lightbox_style` filters
+* Fixed: `gravityview_lightbox_script` filter wasn't being applied
 * Removed `gravityview/fields/fileupload/allow_insecure_lightbox` filter, since it's no longer needed
+* Added: `gravityview/search-trim-input` filter to strip or preserve leading/trailing whitespaces in Search Bar values
+* Added: Future WordPress version compatibility check
+* Modified: `gravityview_date_created_adjust_timezone` default is now set to false (use UTC value)
+* Tweak: Improved logging output
 
 = 2.9.2.1 on October 26, 2020 =
 

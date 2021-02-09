@@ -90,6 +90,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			add_action( 'wp_ajax_gv_searchable_fields', array( 'GravityView_Widget_Search', 'get_searchable_fields' ) );
 
 			add_action( 'gravityview_search_widget_fields_after', array( $this, 'add_preview_inputs' ) );
+
+			add_filter( 'gravityview/api/reserved_query_args', array( $this, 'add_reserved_args' ) );
 		}
 
 		parent::__construct( esc_html__( 'Search Bar', 'gravityview' ), null, $default_values, $settings );
@@ -106,6 +108,34 @@ class GravityView_Widget_Search extends \GV\Widget {
 			self::$instance = new GravityView_Widget_Search;
 		}
 		return self::$instance;
+	}
+
+	/**
+	 * @since 2.10
+	 *
+	 * @param $args
+	 *
+	 * @return mixed
+	 */
+	public function add_reserved_args( $args ) {
+
+		$args[] = 'gv_search';
+		$args[] = 'gv_start';
+		$args[] = 'gv_end';
+		$args[] = 'gv_id';
+		$args[] = 'gv_by';
+		$args[] = 'mode';
+
+		$get = (array) $_GET;
+
+		// If the fields being searched as reserved; not to be considered user-passed variables
+		foreach ( $get as $key => $value ) {
+			if ( $key !== $this->convert_request_key_to_filter_key( $key ) ) {
+				$args[] = $key;
+			}
+		}
+
+		return $args;
 	}
 
 	/**
@@ -564,27 +594,32 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$searchable_fields = $this->get_view_searchable_fields( $view );
 		$searchable_field_objects = $this->get_view_searchable_fields( $view, true );
 
+		/**
+		 * @filter `gravityview/search-all-split-words` Search for each word separately or the whole phrase?
+		 * @since 1.20.2
+		 * @param bool $split_words True: split a phrase into words; False: search whole word only [Default: true]
+		 */
+		$split_words = apply_filters( 'gravityview/search-all-split-words', true );
+
+		/**
+		 * @filter `gravityview/search-trim-input` Remove leading/trailing whitespaces from search value
+		 * @since 2.9.3
+		 * @param bool $trim_search_value True: remove whitespace; False: keep as is [Default: true]
+		 */
+		$trim_search_value = apply_filters( 'gravityview/search-trim-input', true );
+
 		// add free search
 		if ( isset( $get['gv_search'] ) && '' !== $get['gv_search'] && in_array( 'search_all', $searchable_fields ) ) {
 
-			$search_all_value = trim( $get['gv_search'] );
-
-			/**
-			 * @filter `gravityview/search-all-split-words` Search for each word separately or the whole phrase?
-			 * @since 1.20.2
-			 * @param bool $split_words True: split a phrase into words; False: search whole word only [Default: true]
-			 */
-			$split_words = apply_filters( 'gravityview/search-all-split-words', true );
+			$search_all_value = $trim_search_value ? trim( $get['gv_search'] ) : $get['gv_search'];
 
 			if ( $split_words ) {
-
 				// Search for a piece
 				$words = explode( ' ', $search_all_value );
 
 				$words = array_filter( $words );
 
 			} else {
-
 				// Replace multiple spaces with one space
 				$search_all_value = preg_replace( '/\s+/ism', ' ', $search_all_value );
 
@@ -635,12 +670,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			/**
 			 * @filter `gravityview_date_created_adjust_timezone` Whether to adjust the timezone for entries. \n
-			 * date_created is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php)
+			 * `date_created` is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php). \n
+			 * This is for backward compatibility before \GF_Query started to automatically apply the timezone offset.
 			 * @since 1.12
-			 * @param[out,in] boolean $adjust_tz  Use timezone-adjusted datetime? If true, adjusts date based on blog's timezone setting. If false, uses UTC setting. Default: true
+			 * @param[out,in] boolean $adjust_tz  Use timezone-adjusted datetime? If true, adjusts date based on blog's timezone setting. If false, uses UTC setting. Default is `false`.
 			 * @param[in] string $context Where the filter is being called from. `search` in this case.
 			 */
-			$adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', true, 'search' );
+			$adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', false, 'search' );
 
 			/**
 			 * Don't set $search_criteria['start_date'] if start_date is empty as it may lead to bad query results (GFAPI::get_entries)
@@ -684,6 +720,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 		// get the other search filters
 		foreach ( $get as $key => $value ) {
 
+			if ( $trim_search_value ) {
+				$value = is_array( $value ) ? array_map( 'trim', $value ) : trim( $value );
+			}
+
 			if ( 0 !== strpos( $key, 'filter_' ) || gv_empty( $value, false, false ) || ( is_array( $value ) && count( $value ) === 1 && gv_empty( $value[0], false, false ) ) ) {
 				continue; // Not a filter, or empty
 			}
@@ -703,6 +743,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			if ( isset( $filter[0]['value'] ) ) {
+				$filter[0]['value'] = $trim_search_value ? trim( $filter[0]['value'] ) : $filter[0]['value'];
+
 				$search_criteria['field_filters'] = array_merge( $search_criteria['field_filters'], $filter );
 
 				// if date range type, set search mode to ALL

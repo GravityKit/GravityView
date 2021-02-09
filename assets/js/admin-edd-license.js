@@ -20,7 +20,7 @@
 			$( '#gform-settings-save' ).addClass('button').removeClass('gfbutton');
 
 			$( document )
-				.on( 'ready keyup gv-init', GV_EDD.license_field, GV_EDD.key_change )
+				.on( 'keyup gv-init', GV_EDD.license_field, GV_EDD.key_change )
 				.on( 'click', ".gv-edd-action", GV_EDD.clicked )
 				.on( 'gv-edd-failed gv-edd-invalid', GV_EDD.failed )
 				.on( 'gv-edd-valid', GV_EDD.valid )
@@ -163,7 +163,7 @@
 			// Parse valid JSON
 			try {
 
-				response_object = $.parseJSON( string );
+				response_object = JSON.parse( string );
 
 			} catch( exception ) {
 
@@ -173,7 +173,7 @@
 
 				try {
 
-					response_object = $.parseJSON( second_try );
+					response_object = JSON.parse( second_try );
 
 				} catch( e ) {
 

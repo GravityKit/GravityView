@@ -51,10 +51,11 @@ class GVFuture_Test extends GV_UnitTestCase {
      * @covers \GV\Plugin::relpath()
 	 */
 	public function test_plugin_dir_and_url_and_relpath() {
-		$plugin_folder_name = basename(GRAVITYVIEW_DIR);
+		$plugin_folder_name = basename( GRAVITYVIEW_DIR );
+		$plugin_folder_name_lower = strtolower( $plugin_folder_name );
 	    $this->assertEquals( GRAVITYVIEW_DIR, gravityview()->plugin->dir() );
-		$this->assertStringEndsWith( "/{$plugin_folder_name}/test/this.php", strtolower( gravityview()->plugin->dir( 'test/this.php' ) ) );
-		$this->assertStringEndsWith( "/{$plugin_folder_name}/and/this.php", strtolower( gravityview()->plugin->dir( '/and/this.php' ) ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name_lower}/test/this.php", strtolower( gravityview()->plugin->dir( 'test/this.php' ) ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name_lower}/and/this.php", strtolower( gravityview()->plugin->dir( '/and/this.php' ) ) );
 
 		$dirname = trailingslashit( dirname( plugin_basename( GRAVITYVIEW_FILE ) ) );
 
@@ -64,9 +65,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Due to how WP_PLUGIN_DIR is different in test mode, we are only able to check bits of the URL */
 		$this->assertStringStartsWith( 'http', strtolower( gravityview()->plugin->url() ) );
-		$this->assertStringEndsWith( "/{$plugin_folder_name}/", strtolower( gravityview()->plugin->url() ) );
-		$this->assertStringEndsWith( "/{$plugin_folder_name}/test/this.php", strtolower( gravityview()->plugin->url( 'test/this.php' ) ) );
-		$this->assertStringEndsWith( "/{$plugin_folder_name}/and/this.php", strtolower( gravityview()->plugin->url( '/and/this.php' ) ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name_lower}/", strtolower( gravityview()->plugin->url() ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name_lower}/test/this.php", strtolower( gravityview()->plugin->url( 'test/this.php' ) ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name_lower}/and/this.php", strtolower( gravityview()->plugin->url( '/and/this.php' ) ) );
 	}
 
 	/**
@@ -7726,7 +7727,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 	}
 
-	public function test_view_csv_simple() {
+	public function test_view_csv_tsv_simple() {
 		$this->_reset_context();
 
 		$form = $this->factory->form->import_and_get( 'complete.json' );
@@ -7799,6 +7800,31 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'"Order ID",Item,"Customer Name","Customer First Name"',
 			$entry2->ID . ',"\'=Broomsticks x 8","Harry Churchill",Harry',
 			$entry->ID . ',"A pair of shoes","Winston Potter",Winston',
+		);
+		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
+
+		remove_filter( 'gform_include_bom_export_entries', '__return_false' );
+
+		set_query_var( 'csv', null );
+		set_query_var( 'tsv', 1 );
+
+		$this->assertNull( $view::template_redirect() );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$this->assertNull( $view::template_redirect() );
+
+		$view->settings->update( array( 'csv_enable' => '1' ) );
+
+		add_filter( 'gform_include_bom_export_entries', '__return_false' );
+
+		ob_start();
+		$view::template_redirect();
+		$expected = array(
+				'"Order ID"' . "\t" . 'Item' . "\t" . '"Customer Name"' . "\t" . '"Customer First Name"',
+				$entry2->ID . "\t" . '"\'=Broomsticks x 8"' . "\t" . '"Harry Churchill"' . "\t" . 'Harry',
+				$entry->ID . "\t" . '"A pair of shoes"' . "\t" . '"Winston Potter"' . "\t" . 'Winston',
 		);
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 

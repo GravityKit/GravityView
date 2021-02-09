@@ -434,6 +434,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		remove_filter( 'pre_option_timezone_string', $callback );
 
+		add_filter('gravityview_date_created_adjust_timezone', '__return_true' );
 		add_filter( 'pre_option_timezone_string', $callback = function() {
 			return 'Etc/GMT+5';
 		} );
@@ -447,6 +448,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		);
 		$this->assertEquals( $search_criteria_dates, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
+		add_filter('gravityview_date_created_adjust_timezone', '__return_true' );
 		remove_filter( 'pre_option_timezone_string', $callback );
 
 		$_GET = array();
@@ -1429,5 +1431,66 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
 		remove_filter( $filter, $callback );
+	}
+
+	public function test_search_value_trimming() {
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id'     => $form['id'],
+			'template_id' => 'table',
+			'settings'    => array(
+				'show_only_approved' => false,
+			),
+			'fields'      => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id'    => '16',
+						'label' => 'Textarea',
+					),
+				),
+			),
+			'widgets'     => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id'            => 'search_bar',
+						'search_fields' => '[{"field":"search_all","input":"input_text"},{"field":"16","input":"input_text"}]',
+						'search_mode'   => 'any',
+					),
+				),
+			),
+		) );
+
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status'  => 'active',
+			'16'      => 'Text ',
+		) );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status'  => 'active',
+			'16'      => 'Text',
+		) );
+
+		// Whitespaces are trimmed by default
+		$_GET = array( 'filter_16' => 'Text ' );
+		$this->assertEquals( 2, $view->get_entries()->count() );
+		$_GET = array( 'gv_search' => 'Text ' );
+		$this->assertEquals( 2, $view->get_entries()->count() );
+
+		// Retain whitespaces via a filter
+		add_filter( 'gravityview/search-trim-input', '__return_false' );
+		add_filter( 'gravityview/search-all-split-words', '__return_false' ); // This is to ensure that "Text " is not split to ["Text", ""]
+		$_GET = array( 'filter_16' => 'Text ' );
+		$this->assertEquals( 1, $view->get_entries()->count() );
+		$_GET = array( 'gv_search' => 'Text ' );
+		$this->assertEquals( 1, $view->get_entries()->count() );
+		remove_filter( 'gravityview/search-trim-input', '__return_false' );
+		remove_filter( 'gravityview/search-all-split-words', '__return_false' );
+
+		$_GET = array();
 	}
 }

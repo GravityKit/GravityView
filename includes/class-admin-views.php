@@ -56,7 +56,7 @@ class GravityView_Admin_Views {
 
 		add_action( 'restrict_manage_posts', array( $this, 'add_view_dropdown' ) );
 
-		add_action( 'pre_get_posts', array( $this, 'filter_pre_get_posts_by_gravityview_form_id' ) );
+		add_action( 'pre_get_posts', array( $this, 'filter_pre_get_posts' ) );
 
 		add_filter( 'gravityview/support_port/localization_data', array( $this, 'suggest_support_articles' ) );
 	}
@@ -92,30 +92,54 @@ class GravityView_Admin_Views {
 	 * @since 1.15
 	 * @param WP_Query $query
 	 */
-	public function filter_pre_get_posts_by_gravityview_form_id( &$query ) {
+	public function filter_pre_get_posts( &$query ) {
 		global $pagenow;
 
-		if ( !is_admin() ) {
+		if ( ! is_admin() ) {
 			return;
 		}
 
-		$form_id = isset( $_GET['gravityview_form_id'] ) ? (int) $_GET['gravityview_form_id'] : false;
-
-		if( 'edit.php' !== $pagenow || ! $form_id || ! isset( $query->query_vars[ 'post_type' ] ) ) {
+		if ( 'edit.php' !== $pagenow ) {
 			return;
 		}
 
-		if ( $query->query_vars[ 'post_type' ] == 'gravityview' ) {
-			$query->set( 'meta_query', array(
-				array(
-					'key' => '_gravityview_form_id',
+		if ( ! isset( $query->query_vars['post_type'] ) ) {
+			return;
+		}
+
+		if ( 'gravityview' !== $query->query_vars['post_type'] ) {
+			return;
+		}
+
+		$form_id = (int) \GV\Utils::_GET( 'gravityview_form_id' );
+
+		$meta_query = array();
+
+		if ( $form_id ) {
+			$meta_query[] = array(
+					'key'   => '_gravityview_form_id',
 					'value' => $form_id,
-				)
-			) );
+			);
 		}
+
+		$layout_id = \GV\Utils::_GET( 'gravityview_layout' );
+
+		if ( $layout_id ) {
+			$meta_query[] = array(
+					'key'   => '_gravityview_directory_template',
+					'value' => esc_attr( $layout_id ),
+			);
+		}
+
+		$query->set( 'meta_query', $meta_query );
 	}
 
-	function add_view_dropdown() {
+	/**
+	 * Adds dropdown selects to filter Views by connected form and layout
+	 *
+	 * @return void
+	 */
+	public function add_view_dropdown() {
 		$current_screen = get_current_screen();
 
 		if( 'gravityview' !== $current_screen->post_type ) {
@@ -124,13 +148,44 @@ class GravityView_Admin_Views {
 
 		$forms = gravityview_get_forms();
 		$current_form = \GV\Utils::_GET( 'gravityview_form_id' );
+
 		// If there are no forms to select, show no forms.
-		if( !empty( $forms ) ) { ?>
+		if( ! empty( $forms ) ) { ?>
+			<label for="gravityview_form_id" class="screen-reader-text"><?php esc_html_e( 'Filter Views by form', 'gravityview' ); ?></label>
 			<select name="gravityview_form_id" id="gravityview_form_id">
 				<option value="" <?php selected( '', $current_form, true ); ?>><?php esc_html_e( 'All forms', 'gravityview' ); ?></option>
 				<?php foreach( $forms as $form ) { ?>
-					<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current_form, true ); ?>><?php echo esc_html( $form['title'] ); ?></option>
+					<option value="<?php echo esc_attr( $form['id'] ); ?>" <?php selected( $form['id'], $current_form, true ); ?>><?php echo esc_html( $form['title'] ); ?></option>
 				<?php } ?>
+			</select>
+		<?php }
+
+		$layouts = gravityview_get_registered_templates();
+		$current_layout = \GV\Utils::_GET( 'gravityview_layout' );
+
+		// If there are no forms to select, show no forms.
+		if( ! empty( $layouts ) ) { ?>
+			<label for="gravityview_layout_name" class="screen-reader-text"><?php esc_html_e( 'Filter Views by layout', 'gravityview' ); ?></label>
+			<select name="gravityview_layout" id="gravityview_layout_name">
+				<option value="" <?php selected( '', $current_layout, true ); ?>><?php esc_html_e( 'All layouts', 'gravityview' ); ?></option>
+				<optgroup label="<?php esc_html_e( 'Layouts', 'gravityview' ); ?>">
+				<?php foreach( $layouts as $layout_id => $layout ) {
+					if ( in_array( $layout['type'], array( 'preset', 'internal' ), true ) ) {
+						continue;
+					}
+					?>
+					<option value="<?php echo esc_attr( $layout_id ); ?>" <?php selected( $layout_id, $current_layout, true ); ?>><?php echo esc_html( $layout['label'] ); ?></option>
+				<?php } ?>
+				</optgroup>
+				<optgroup label="<?php esc_html_e( 'Form Presets', 'gravityview' ); ?>">
+				<?php foreach( $layouts as $layout_id => $layout ) {
+					if ( ! in_array( $layout['type'], array( 'preset' ), true ) ) {
+						continue;
+					}
+					?>
+					<option value="<?php echo esc_attr( $layout_id ); ?>" <?php selected( $layout_id, $current_layout, true ); ?>><?php echo esc_html( $layout['label'] ); ?></option>
+				<?php } ?>
+				</optgroup>
 			</select>
 		<?php }
 	}
@@ -472,7 +527,14 @@ class GravityView_Admin_Views {
 		 */
 		$links = apply_filters( 'gravityview_connected_form_links', $links, $form );
 
-		$output .= '<div class="row-actions">'. implode( ' | ', $links ) .'</div>';
+		$css_class = 'row-actions';
+
+		// Is Screen Options > View mode set to "Extended view"? If so, keep actions visible.
+		if( 'excerpt' === get_user_setting( 'posts_list_mode', 'list' ) ) {
+			$css_class = 'row-actions visible';
+		}
+
+		$output .= '<div class="' . $css_class . '">'. implode( ' | ', $links ) .'</div>';
 
 		return $output;
 	}
@@ -1274,6 +1336,11 @@ class GravityView_Admin_Views {
 
         // Enqueue scripts needed for merge tags
         self::enqueue_gravity_forms_scripts();
+
+		// 2.5 changed how Merge Tags are enqueued
+		if ( is_callable( array( 'GFCommon', 'output_hooks_javascript') ) ) {
+			GFCommon::output_hooks_javascript();
+		}
 	}
 
 	/**
