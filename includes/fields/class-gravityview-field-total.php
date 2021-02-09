@@ -83,7 +83,7 @@ class GravityView_Field_Total extends GravityView_Field {
 
 			$entry = GFAPI::get_entry( $entry_id );
 
-			/** @var GF_Field_Total $total_field */
+			/** @type GF_Field_Total $total_field */
 			foreach ( $total_fields as $total_field ) {
 				$entry["{$total_field->id}"] = GFCommon::get_order_total( $original_form, $entry );
 			}

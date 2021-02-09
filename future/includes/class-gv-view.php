@@ -224,15 +224,19 @@ class View implements \ArrayAccess {
 		global $wp_rewrite;
 
 		$slug = apply_filters( 'gravityview_slug', 'view' );
-		$rule = array( sprintf( '%s/([^/]+)/csv/?', $slug ), 'index.php?gravityview=$matches[1]&csv=1', 'top' );
+		$slug = ( '/' !== $wp_rewrite->front ) ? sprintf( '%s/%s', trim( $wp_rewrite->front, '/' ), $slug ) : $slug;
+		$csv_rule = array( sprintf( '%s/([^/]+)/csv/?', $slug ), 'index.php?gravityview=$matches[1]&csv=1', 'top' );
+		$tsv_rule = array( sprintf( '%s/([^/]+)/tsv/?', $slug ), 'index.php?gravityview=$matches[1]&tsv=1', 'top' );
 
-		add_filter( 'query_vars', function( $query_vars ) { 
+		add_filter( 'query_vars', function( $query_vars ) {
 			$query_vars[] = 'csv';
+			$query_vars[] = 'tsv';
 			return $query_vars;
 		} );
 
-		if ( ! isset( $wp_rewrite->extra_rules_top[ $rule[0] ] ) ) {
-			call_user_func_array( 'add_rewrite_rule', $rule );
+		if ( ! isset( $wp_rewrite->extra_rules_top[ $csv_rule[0] ] ) ) {
+			call_user_func_array( 'add_rewrite_rule', $csv_rule );
+			call_user_func_array( 'add_rewrite_rule', $tsv_rule );
 		}
 	}
 
@@ -286,13 +290,22 @@ class View implements \ArrayAccess {
 					 * ...apart from a nice message if the user can do anything about it.
 					 */
 					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-						return __( sprintf( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
+
+						$title = sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
+
+						$message = esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
+
+						$image =  sprintf( '<img alt="%s" src="%s" style="margin-top: 10px;" />', esc_attr__( 'Data Source', 'gravityview' ), esc_url( plugins_url( 'assets/images/screenshots/data-source.png', GRAVITYVIEW_FILE ) ) );
+
+						return \GVCommon::generate_notice( '<h3>' . $title . '</h3>' . wpautop( $message . $image ), 'notice' );
 					}
 					break;
 				case 'in_trash':
 
 					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-						return __( sprintf( 'This View is in the Trash. You can <a href="%s">restore the View here</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
+						$notice = sprintf( __( 'This View is in the Trash. You can <a href="%s">restore the View here</a>.', 'gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
+
+						return \GVCommon::generate_notice( '<h3>' . $notice . '</h3>', 'notice', array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID );
 					}
 
 					return ''; // Do not show
@@ -391,7 +404,7 @@ class View implements \ArrayAccess {
 	 *                             Can any and as many of one of:
 	 *                                 edit      An edit context.
 	 *                                 single    A single context.
-	 *                                 cpt       The custom post type single page acessed.
+	 *                                 cpt       The custom post type single page accessed.
 	 *                                 shortcode Embedded as a shortcode.
 	 *                                 oembed    Embedded as an oEmbed.
 	 *                                 rest      A REST call.
@@ -961,7 +974,7 @@ class View implements \ArrayAccess {
 			}
 
 			$page = Utils::get( $parameters['paging'], 'current_page' ) ?
-				: ( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
+				: ( ( ( $parameters['paging']['offset'] - $this->settings->get( 'offset' ) ) / \GV\Utils::get( $parameters, 'paging/page_size', 25 ) ) + 1 );
 
 			/**
 			 * Cleanup duplicate field_filter parameters to simplify the query.
@@ -984,7 +997,7 @@ class View implements \ArrayAccess {
 
 				$query_class = $this->get_query_class();
 
-				/** @var \GF_Query $query */
+				/** @type \GF_Query $query */
 				$query = new $query_class( $this->form->ID, $parameters['search_criteria'], Utils::get( $parameters, 'sorting' ) );
 
 				/**
@@ -1168,7 +1181,7 @@ class View implements \ArrayAccess {
 							$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
 						}
 					}
-				
+
 				/**
 				 * Unions?
 				 */
@@ -1214,7 +1227,7 @@ class View implements \ArrayAccess {
 						// Build a new query for every unioned form
 						$query_class = $this->get_query_class();
 
-						/** @var \GF_Query|\GF_Patched_Query $q */
+						/** @type \GF_Query|\GF_Patched_Query $q */
 						$q = new $query_class( $form_id );
 
 						// Copy the WHERE clauses but substitute the field_ids to the respective ones
@@ -1276,7 +1289,7 @@ class View implements \ArrayAccess {
 
 						// Add all the order columns into the selects, so we can order by the whole union group
 						preg_match_all( '#(`[motc]\d+`.`.*?`)#', $sql['order'], $order_matches );
-						
+
 						$columns = array(
 							sprintf( '%s AS %s', $select_match[1], $column_to_alias( $select_match[1] ) )
 						);
@@ -1379,46 +1392,56 @@ class View implements \ArrayAccess {
 	 * @return void
 	 */
 	public static function template_redirect() {
+
+		$is_csv = get_query_var( 'csv' );
+		$is_tsv = get_query_var( 'tsv' );
+
 		/**
 		 * CSV output.
 		 */
-		if ( ! get_query_var( 'csv' ) ) {
+		if ( ! $is_csv && ! $is_tsv ) {
 			return;
 		}
 
-		if ( ! $view = gravityview()->request->is_view() ) {
+		$view = gravityview()->request->is_view();
+
+		if ( ! $view ) {
 			return;
 		}
 
-		if ( is_wp_error( $error = $view->can_render( array( 'csv' ) ) ) ) {
-			gravityview()->log->error( 'Not rendering CSV: ' . $error->get_error_message() );
+		$error_csv = $view->can_render( array( 'csv' ) );
+
+		if ( is_wp_error( $error_csv ) ) {
+			gravityview()->log->error( 'Not rendering CSV or TSV: ' . $error_csv->get_error_message() );
 			return;
 		}
+
+		$file_type = $is_csv ? 'csv' : 'tsv';
 
 		/**
-		 * Modify the name of the generated CSV file. Name will be sanitized using sanitize_file_name() before output.
+		 * @filter `gravityview/output/{csv|tsv}/filename` Modify the name of the generated CSV or TSV file. Name will be sanitized using sanitize_file_name() before output.
 		 * @see sanitize_file_name()
 		 * @since 2.1
-		 * @param string   $filename File name used when downloading a CSV. Default is "{View title}.csv"
+		 * @param string   $filename File name used when downloading a CSV or TSV. Default is "{View title}.csv" or "{View title}.tsv"
 		 * @param \GV\View $view Current View being rendered
 		 */
-		$filename = apply_filters( 'gravityview/output/csv/filename', get_the_title( $view->post ), $view );
+		$filename = apply_filters( 'gravityview/output/' . $file_type . '/filename', get_the_title( $view->post ), $view );
 
 		if ( ! defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
-			header( sprintf( 'Content-Disposition: attachment;filename="%s.csv"', sanitize_file_name( $filename ) ) );
+			header( sprintf( 'Content-Disposition: attachment;filename="%s.' . $file_type . '"', sanitize_file_name( $filename ) ) );
 			header( 'Content-Transfer-Encoding: binary' );
-			header( 'Content-Type: text/csv' );
+			header( 'Content-Type: text/' . $file_type );
 		}
 
 		ob_start();
-		$csv = fopen( 'php://output', 'w' );
+		$csv_or_tsv = fopen( 'php://output', 'w' );
 
 		/**
 		 * Add da' BOM if GF uses it
 		 * @see GFExport::start_export()
 		 */
 		if ( apply_filters( 'gform_include_bom_export_entries', true, $view->form ? $view->form->form : null ) ) {
-			fputs( $csv, "\xef\xbb\xbf" );
+			fputs( $csv_or_tsv, "\xef\xbb\xbf" );
 		}
 
 		if ( $view->settings->get( 'csv_nolimit' ) ) {
@@ -1467,14 +1490,17 @@ class View implements \ArrayAccess {
 				}
 			}
 
+			// If not "tsv" then use comma
+			$delimiter = ( 'tsv' === $file_type ) ? "\t" : ',';
+
 			if ( ! $headers_done ) {
-				$headers_done = fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), array_values( $headers ) ) );
+				$headers_done = fputcsv( $csv_or_tsv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), array_values( $headers ) ), $delimiter );
 			}
 
-			fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), $return ) );
+			fputcsv( $csv_or_tsv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), $return ), $delimiter );
 		}
 
-		fflush( $csv );
+		fflush( $csv_or_tsv );
 
 		echo rtrim( ob_get_clean() );
 
@@ -1540,7 +1566,7 @@ class View implements \ArrayAccess {
 
 				return $caps;
 			case 'edit_post':
-				if ( get_post_type( array_pop( $args ) ) == 'gravityview' ) {
+				if ( 'gravityview' === get_post_type( array_pop( $args ) ) ) {
 					return self::restrict( $caps, 'edit_gravityview', $user_id, $args );
 				}
 		endswitch;

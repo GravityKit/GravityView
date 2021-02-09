@@ -468,9 +468,9 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	/**
 	 * Emulate a valid edit view hit.
 	 *
-	 * @param $form A $form object returned by our factory.
-	 * @param $view A $view object returned by our factory, or a \GV\View.
-	 * @param $entry An $entry object returned by our factory.
+	 * @param array $form A $form object returned by our factory.
+	 * @param \GV\View $view $view object returned by our factory, or a \GV\View.
+	 * @param array $entry $entry object returned by our factory.
 	 *
 	 * @return array With first item the rendered output,
 	 *  and second item the render instance, and third item is the reloaded entry.
@@ -933,7 +933,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$loader = GravityView_Edit_Entry::getInstance();
 
-		/** @var GravityView_Edit_Entry_User_Registration $registration */
+		/** @type GravityView_Edit_Entry_User_Registration $registration */
 		$registration = $loader->instances['user-registration'];
 		$this->assertInstanceOf( 'GravityView_Edit_Entry_User_Registration', $registration );
 		$_user_before_update_prop = new ReflectionProperty( 'GravityView_Edit_Entry_User_Registration', '_user_before_update' );
@@ -1067,7 +1067,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$loader = GravityView_Edit_Entry::getInstance();
 
-		/** @var GravityView_Edit_Entry_User_Registration $registration */
+		/** @type GravityView_Edit_Entry_User_Registration $registration */
 		$registration = $loader->instances['user-registration'];
 		$this->assertInstanceOf( 'GravityView_Edit_Entry_User_Registration', $registration );
 
@@ -1122,7 +1122,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$loader = GravityView_Edit_Entry::getInstance();
 
-		/** @var GravityView_Edit_Entry_User_Registration $registration */
+		/** @type GravityView_Edit_Entry_User_Registration $registration */
 		$registration = $loader->instances['user-registration'];
 		$this->assertInstanceOf( 'GravityView_Edit_Entry_User_Registration', $registration );
 
@@ -1666,7 +1666,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 	}
 
-	/** 
+	/**
 	 * @dataProvider get_redirect_after_edit_data
 	 */
 	public function test_redirect_after_edit( $edit_redirect, $location, $edit_redirect_url = false ) {
@@ -1919,18 +1919,32 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		wp_set_current_user( $administrator );
 
+		$random_string = wp_generate_password( 4, false );
+
 		// Edit the entry
 		$_POST = array(
-			'input_1' => 'this is ' . wp_generate_password( 4, false ),
+			'input_1' => 'this is ' . $random_string,
 			'input_2' => '666',
 		);
 
+		add_filter( 'gravityview/edit_entry/render_hidden_field', '__return_false' );
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		remove_filter( 'gravityview/edit_entry/render_hidden_field', '__return_false' );
 
 		$this->assertNotContains( "name='input_1'", $output );
 		$this->assertNotContains( "name='input_2'", $output );
-		$this->assertEquals( 'this is one', $entry[1] );
+		$this->assertEquals( 'this is one', $entry[1], 'The value should not be updated when the Hidden field is not being rendered.' );
 		$this->assertEquals( 'this is two', $entry[2] );
+
+		// Since input 1 is now rendered, the value will be updated by _emulate_render()
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertContains( "name='input_1'", $output );
+		$this->assertNotContains( "name='input_2'", $output );
+		$this->assertEquals( 'this is ' . $random_string, $entry[1] );
+		$this->assertEquals( 'this is two', $entry[2] );
+
+		// Reset the value after _emulate_render modifies it
+		GFAPI::update_entry_field( $entry['id'], '1', 'this is one' );
 
 		$view->fields = \GV\Field_Collection::from_configuration( array(
 			'edit_edit-fields' => array(
@@ -2007,7 +2021,9 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			'input_2' => '666',
 		);
 
+		add_filter( 'gravityview/edit_entry/render_hidden_field', '__return_false' );
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		remove_filter( 'gravityview/edit_entry/render_hidden_field', '__return_false' );
 
 		$this->assertNotContains( "name='input_1'", $output );
 		$this->assertNotContains( "name='input_2'", $output );

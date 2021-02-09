@@ -2,7 +2,7 @@
 /**
  * Display the Poll widget
  *
- * @see ../class-gravityview-widget-poll.php
+ * @file ../class-gravityview-widget-poll.php
  */
 
 $gravityview_view = GravityView_View::getInstance();

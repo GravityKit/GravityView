@@ -100,6 +100,11 @@ abstract class GravityView_Field {
 	public $contexts = array( 'single', 'multiple', 'edit', 'export' );
 
 	/**
+	 * @var string An icon that represents the field type in the field picker
+	 */
+	public $icon = null;
+
+	/**
 	 * @since 1.15.2
 	 * @since 1.16.2.2 Changed access to public (previously, protected)
 	 * @type string The name of a corresponding Gravity Forms GF_Field class, if exists
@@ -156,7 +161,11 @@ abstract class GravityView_Field {
 			$this->label = ucfirst( GF_Fields::get( $this->name )->get_form_editor_field_title() );
 		}
 
-		GravityView_Fields::register( $this );
+		try {
+			GravityView_Fields::register( $this );
+		} catch ( Exception $exception ) {
+			gravityview()->log->critical( $exception->getMessage() );
+		}
 	}
 
 	/**
@@ -396,12 +405,13 @@ abstract class GravityView_Field {
 			'date_display' => array(
 				'type' => 'text',
 				'label' => __( 'Override Date Format', 'gravityview' ),
-				'desc' => sprintf( __( 'Define how the date is displayed (using %sthe PHP date format%s)', 'gravityview'), '<a href="https://codex.wordpress.org/Formatting_Date_and_Time">', '</a>' ),
+				'desc' => sprintf( __( 'Define how the date is displayed (using %sthe PHP date format%s)', 'gravityview'), '<a href="https://wordpress.org/support/article/formatting-date-and-time/" rel="external">', '</a>' ),
 				/**
 				 * @filter `gravityview_date_format` Override the date format with a [PHP date format](https://codex.wordpress.org/Formatting_Date_and_Time)
 				 * @param[in,out] null|string $date_format Date Format (default: null)
 				 */
-				'value' => apply_filters( 'gravityview_date_format', null )
+				'value' => apply_filters( 'gravityview_date_format', null ),
+				'class' => 'code',
 			),
 			'new_window' => array(
 				'type' => 'checkbox',

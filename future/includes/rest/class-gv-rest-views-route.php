@@ -274,34 +274,38 @@ class Views_Route extends Route {
 			return new \WP_Error( 'gravityview-no-entries', __( 'No Entries found.', 'gravityview' ) );
 		}
 
-		if ( 'csv' === $format ) {
+		if ( in_array( $format, array( 'csv', 'tsv' ), true ) ) {
+
 			ob_start();
 
-			$csv = fopen( 'php://output', 'w' );
+			$csv_or_tsv = fopen( 'php://output', 'w' );
 
 			/** Da' BOM :) */
 			if ( apply_filters( 'gform_include_bom_export_entries', true, $view->form ? $view->form->form : null ) ) {
-				fputs( $csv, "\xef\xbb\xbf" );
+				fputs( $csv_or_tsv, "\xef\xbb\xbf" );
 			}
 
 			$headers_done = false;
+
+			// If not "tsv" then use comma
+			$delimiter = ( 'tsv' === $format ) ? "\t" : ',';
 
 			foreach ( $entries->all() as $entry ) {
 				$entry = $this->prepare_entry_for_response( $view, $entry, $request, 'directory', '\GV\Field_CSV_Template' );
 
 				if ( ! $headers_done ) {
-					$headers_done = fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), array_keys( $entry ) ) );
+					$headers_done = fputcsv( $csv_or_tsv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), array_keys( $entry ) ), $delimiter );
 				}
 
-				fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), $entry ) );
+				fputcsv( $csv_or_tsv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), $entry ), $delimiter );
 			}
 
 			$response = new \WP_REST_Response( '', 200 );
 			$response->header( 'X-Item-Count', $entries->count() );
 			$response->header( 'X-Item-Total', $entries->total() );
-			$response->header( 'Content-Type', 'text/csv' );
+			$response->header( 'Content-Type', 'text/' . $format );
 
-			fflush( $csv );
+			fflush( $csv_or_tsv );
 
 			$data = rtrim( ob_get_clean() );
 
@@ -397,7 +401,7 @@ class Views_Route extends Route {
 			unset( $return['settings'] );
 			unset( $return['search_criteria'] );
 		}
-		
+
 		if ( ! \GFCommon::current_user_can_any( 'gravityforms_edit_forms' ) ) {
 			unset( $return['form'] );
 		}

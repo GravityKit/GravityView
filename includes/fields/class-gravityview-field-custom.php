@@ -29,6 +29,8 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 	var $group = 'gravityview';
 
+	var $icon = 'dashicons-text';
+
 	public function __construct() {
 
 		$this->label = esc_html__( 'Custom Content', 'gravityview' );
@@ -40,13 +42,13 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		unset ( $field_options['search_filter'], $field_options['show_as_link'] );
+		unset ( $field_options['search_filter'], $field_options['show_as_link'], $field_options['new_window'] );
 
 		$new_fields = array(
 			'content' => array(
 				'type' => 'textarea',
 				'label' => __( 'Custom Content', 'gravityview' ),
-				'desc' => sprintf( __( 'Enter text or HTML. Also supports shortcodes. You can show or hide data using the %s shortcode (%slearn more%s).', 'gravityview' ), '<code>[gvlogic]</code>', '<a href="https://docs.gravityview.co/article/252-gvlogic-shortcode">', '</a>' ),
+				'desc' => sprintf( __( 'Enter text or HTML. Also supports shortcodes. You can show or hide data using the %s shortcode (%slearn more%s).', 'gravityview' ), '<code>[gvlogic]</code>', '<a href="https://docs.gravityview.co/article/252-gvlogic-shortcode" data-beacon-article-sidebar="552355bfe4b0221aadf2572b">', '</a>' ) . ' ' . sprintf( __( 'Click the arrow icon next to the content area to add %sMerge Tags%s.', 'gravityview' ), '<a href="https://docs.gravityview.co/article/76-merge-tags" data-beacon-article-inline="54c67bbbe4b051242988551d">', '</a>' ),
 				'value' => '',
 				'class'	=> 'code',
 				'merge_tags' => 'force',

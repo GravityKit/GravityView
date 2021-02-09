@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -234,18 +234,18 @@ class GravityView_frontend {
 
 		if ( ! empty( $view_id ) ) {
 
-			$this->context_view_id = $view_id;
+			$this->context_view_id = (int) $view_id;
 
 		} elseif ( isset( $_GET['gvid'] ) && $multiple_views ) {
 			/**
 			 * used on a has_multiple_views context
 			 * @see GravityView_API::entry_link
 			 */
-			$this->context_view_id = $_GET['gvid'];
+			$this->context_view_id = (int) $_GET['gvid'];
 
 		} elseif ( ! $multiple_views ) {
 			$array_keys = array_keys( $this->getGvOutputData()->get_views() );
-			$this->context_view_id = array_pop( $array_keys );
+			$this->context_view_id = (int) array_pop( $array_keys );
 			unset( $array_keys );
 		}
 
@@ -256,7 +256,7 @@ class GravityView_frontend {
 	 *
 	 * @since 1.5.4
 	 *
-	 * @return string
+	 * @return int|null
 	 */
 	public function get_context_view_id() {
 		return $this->context_view_id;
@@ -423,69 +423,125 @@ class GravityView_frontend {
 	/**
 	 * Filter the title for the single entry view
 	 *
-	 *
-	 * @param  string $title   current title
+	 * @param  string $passed_title  Current title
 	 * @param  int $passed_post_id Post ID
-	 * @return string          (modified) title
+	 * @return string (modified) title
 	 */
-	public function single_entry_title( $title, $passed_post_id = null ) {
+	public function single_entry_title( $passed_title, $passed_post_id = null ) {
 		global $post;
 
-		// If this is the directory view, return.
-		if ( ! $this->getSingleEntry() ) {
-			return $title;
+		// Since this is a public method, it can be called outside of the plugin. Don't assume things have been loaded properly.
+		if ( ! class_exists( '\GV\Entry' ) ) {
+			return $passed_title;
 		}
 
-		$entry = $this->getEntry();
+		$gventry = gravityview()->request->is_entry();
+
+		// If this is the directory view, return.
+		if( ! $gventry ) {
+			return $passed_title;
+		}
+
+		$entry = $gventry->as_entry();
 
 		/**
 		 * @filter `gravityview/single/title/out_loop` Apply the Single Entry Title filter outside the WordPress loop?
 		 * @param boolean $in_the_loop Whether to apply the filter to the menu title and the meta tag <title> - outside the loop
 		 * @param array $entry Current entry
 		 */
-		$apply_outside_loop = apply_filters( 'gravityview/single/title/out_loop' , in_the_loop(), $entry );
+		$apply_outside_loop = apply_filters( 'gravityview/single/title/out_loop', in_the_loop(), $entry );
 
 		if ( ! $apply_outside_loop ) {
-			return $title;
+			return $passed_title;
 		}
 
-		// User reported WooCommerce doesn't pass two args.
+		// WooCommerce doesn't $post_id
 		if ( empty( $passed_post_id ) )  {
-			return $title;
+			return $passed_title;
 		}
 
 		// Don't modify the title for anything other than the current view/post.
 		// This is true for embedded shortcodes and Views.
 		if ( is_object( $post ) && (int) $post->ID !== (int) $passed_post_id ) {
-			return $title;
+			return $passed_title;
 		}
 
-		$context_view_id = $this->get_context_view_id();
+		$view = gravityview()->request->is_view();
 
-		$multiple_views = $this->getGvOutputData()->has_multiple_views();
+		if( $view ) {
+			return $this->_get_single_entry_title( $view, $entry, $passed_title );
+		}
 
-		if ( $multiple_views && ! empty( $context_view_id ) ) {
-			$view_meta = $this->getGvOutputData()->get_view( $context_view_id );
-		} else {
-			foreach ( $this->getGvOutputData()->get_views() as $view_id => $view_data ) {
-				if ( intval( $view_data['form_id'] ) === intval( $entry['form_id'] ) ) {
-					$view_meta = $view_data;
-					break;
-				}
+		$_gvid = \GV\Utils::_GET( 'gvid', null );
+
+		// $_GET['gvid'] is set; we know what View to render
+		if ( $_gvid ) {
+
+			$view = \GV\View::by_id( $_gvid );
+
+			return $this->_get_single_entry_title( $view, $entry, $passed_title );
+		}
+
+		global $post;
+
+		if ( ! $post ) {
+			return $passed_title;
+		}
+
+		$view_collection = \GV\View_Collection::from_post( $post );
+
+		// We have multiple Views, but no gvid...this isn't valid security
+		if( 1 < $view_collection->count() ) {
+			return $passed_title;
+		}
+
+		return $this->_get_single_entry_title( $view_collection->first(), $entry, $passed_title );
+	}
+
+	/**
+	 * Returns the single entry title for a View with variables replaced and shortcodes parsed
+	 *
+	 * @since 2.7.2
+	 *
+	 * @param \GV\View|null $view
+	 * @param array $entry
+	 * @param string $passed_title
+	 *
+	 * @return string
+	 */
+	private function _get_single_entry_title( $view, $entry = array(), $passed_title = '' ) {
+
+		if ( ! $view ) {
+			return $passed_title;
+		}
+
+		/**
+		 * @filter `gravityview/single/title/check_entry_display` Override whether to check entry display rules against filters
+		 * @internal This might change in the future! Don't rely on it.
+		 * @since 2.7.2
+		 * @param bool $check_entry_display Check whether the entry is visible for the current View configuration. Default: true.
+		 * @param array $entry Gravity Forms entry array
+		 * @param \GV\View $view The View
+		 */
+		$check_entry_display = apply_filters( 'gravityview/single/title/check_entry_display', true, $entry, $view );
+
+		if( $check_entry_display ) {
+
+			$check_display = GVCommon::check_entry_display( $entry, $view );
+
+			if( is_wp_error( $check_display ) ) {
+				return $passed_title;
 			}
 		}
 
-		/** Deprecated stuff in the future. See the branch above. */
-		if ( ! empty( $view_meta['atts']['single_title'] ) ) {
+		$title = $view->settings->get( 'single_title', $passed_title );
 
-			$title = $view_meta['atts']['single_title'];
+		$form = GVCommon::get_form( $entry['form_id'] );
 
-			// We are allowing HTML in the fields, so no escaping the output
-			$title = GravityView_API::replace_variables( $title, $view_meta['form'], $entry );
+		// We are allowing HTML in the fields, so no escaping the output
+		$title = GravityView_API::replace_variables( $title, $form, $entry );
 
-			$title = do_shortcode( $title );
-		}
-
+		$title = do_shortcode( $title );
 
 		return $title;
 	}
@@ -496,7 +552,6 @@ class GravityView_frontend {
 	 *
 	 * @deprecated Use \GV\View::content() instead.
 	 *
-	 * @access public
 	 * @static
 	 * @param mixed $content
 	 * @return string Add the View output into View CPT content
@@ -581,7 +636,6 @@ class GravityView_frontend {
 	/**
 	 * Core function to render a View based on a set of arguments
 	 *
-	 * @access public
 	 * @static
 	 * @param array $passed_args {
 	 *
@@ -654,7 +708,7 @@ class GravityView_frontend {
 			if ( ! empty( $args[ $key ] ) ) {
 
 				// Get a timestamp and see if it's a valid date format
-				$date = strtotime( $args[ $key ] );
+				$date = strtotime( $args[ $key ], GFCommon::get_local_timestamp() );
 
 				// The date was invalid
 				if ( empty( $date ) ) {
@@ -668,7 +722,7 @@ class GravityView_frontend {
 
 				if( ! empty( $search_criteria[ $key ] ) ) {
 
-					$search_date = strtotime( $search_criteria[ $key ] );
+					$search_date = strtotime( $search_criteria[ $key ], GFCommon::get_local_timestamp() );
 
 					// The search is for entries before the start date defined by the settings
 					switch ( $key ) {
@@ -681,7 +735,7 @@ class GravityView_frontend {
 							 *
 							 * @see GFFormsModel::get_date_range_where
 							 */
-							$datetime_format               = gravityview_is_valid_datetime( $args[ $key ] ) ? 'Y-m-d' : 'Y-m-d H:i:s';
+							$datetime_format               = gravityview_is_valid_datetime( $args[ $key ] ) ? 'Y-m-d' : $datetime_format;
 							$search_is_outside_view_bounds = ( $search_date > $date );
 							break;
 						case 'start_date':
@@ -868,7 +922,6 @@ class GravityView_frontend {
 	 *
 	 *
 	 * @uses  gravityview_get_entries()
-	 * @access public
 	 * @param array $args\n
 	 *   - $id - View id
 	 *   - $page_size - Page
@@ -1273,7 +1326,6 @@ class GravityView_frontend {
 	/**
 	 * Register styles and scripts
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public function add_scripts_and_styles() {

@@ -51,7 +51,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		parent::__construct();
 	}
-	
+
 	/**
 	 * Add AJAX hooks, [gv_note_add] shortcode, and template loading paths
 	 *
@@ -77,7 +77,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts') );
 		add_action( 'gravityview/field/notes/scripts', array( $this, 'enqueue_scripts' ) );
-		
+
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_entry_default_field' ), 10, 3 );
 	}
 
@@ -123,9 +123,9 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 	/**
 	 * Enqueue, localize field scripts and styles
-	 * 
+	 *
 	 * @since 1.17
-	 * 
+	 *
 	 * @return void
 	 */
 	public function enqueue_scripts() {
@@ -163,33 +163,25 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 * @return void
 	 */
 	function maybe_add_note() {
-
-		if( ! GVCommon::has_cap( 'gravityview_add_entry_notes' ) ) {
-			gravityview()->log->error( 'The user isnt allowed to add entry notes.' );
+		if ( ! isset( $_POST['action'] ) || 'gv_note_add' !== $_POST['action'] ) {
 			return;
 		}
 
-		if( ! isset( $_POST['action'] ) ) {
+		if ( ! GVCommon::has_cap( 'gravityview_add_entry_notes' ) ) {
+			gravityview()->log->error( "The user isn't allowed to add entry notes." );
+
 			return;
 		}
 
-		if( 'gv_note_add' === $_POST['action'] ) {
+		$post = wp_unslash( $_POST );
 
-            if( ! GVCommon::has_cap( 'gravityview_add_entry_notes' ) ) {
-                do_action( 'gravityview_log_error', __METHOD__ . ': The user isnt allowed to add entry notes.' );
-                return;
-            }
-
-			$post = wp_unslash( $_POST );
-
-			if( $this->doing_ajax ) {
-				parse_str( $post['data'], $data );
-			} else {
-				$data = $post;
-			}
-
-			$this->process_add_note( (array) $data );
+		if ( $this->doing_ajax ) {
+			parse_str( $post['data'], $data );
+		} else {
+			$data = $post;
 		}
+
+		$this->process_add_note( (array) $data );
 	}
 
 	/**
@@ -223,7 +215,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		} else {
 
 			$valid = wp_verify_nonce( $data['gv_note_add'], 'gv_note_add_' . $data['entry-slug'] );
-			
+
 			$has_cap = GVCommon::has_cap( 'gravityview_add_entry_notes' );
 
 			if( ! $has_cap ) {
@@ -594,7 +586,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			$add_note_html = ob_get_clean();
 
 			$visibility_settings = $context->field->notes;
-			$entry = $context->entry->as_entry();
+			$gv_entry = $context->entry;
 		} else {
 			$gravityview_view = GravityView_View::getInstance();
 
@@ -611,11 +603,14 @@ class GravityView_Field_Notes extends GravityView_Field {
 			if ( ! isset( $entry ) || ! $entry ) {
 				$entry = $gravityview_view->getCurrentEntry();
 			}
+
+			$gv_entry = \GV\GF_Entry::from_entry( $entry );
 		}
+
 
 		// Strip extra whitespace in template
 		$add_note_html = gravityview_strip_whitespace( $add_note_html );
-		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
+		$entry_slug = $gv_entry->get_slug();
 		$nonce_field = wp_nonce_field( 'gv_note_add_' . $entry_slug, 'gv_note_add', false, false );
 
 		// Only generate the dropdown if the field settings allow it

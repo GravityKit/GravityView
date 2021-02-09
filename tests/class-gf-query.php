@@ -897,6 +897,8 @@ class GF_Patched_Query extends GF_Query {
 	public function _join_generate( $joins ) {
 		$_joins = array();
 
+		global $wpdb;
+
 		foreach ( $joins as $join ) {
 			list( $on, $column ) = $join;
 			if ( ! $on instanceof GF_Query_Column || ! $column instanceof GF_Query_Column ) {
@@ -928,7 +930,7 @@ class GF_Patched_Query extends GF_Query {
 				/**
 				 * Make sure a WHERE clause exists on meta fields.
 				 */
-				$conditions[] = sprintf( '`%s`.`meta_key` = %s', $alias_on, $on->field_id );
+				$conditions[] = $wpdb->prepare( sprintf( '`%s`.`meta_key` = %%s', $alias_on ), $on->field_id );
 			}
 
 			$conditions[] = sprintf( '`%s`.`form_id` = %d', $alias_on, $on->source );

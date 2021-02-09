@@ -38,7 +38,7 @@ class Entry_Table_Template extends Entry_Template {
 	 */
 	public function the_entry() {
 
-		/** @var \GV\Field_Collection $fields */
+		/** @type \GV\Field_Collection $fields */
 		$fields = $this->view->fields->by_position( 'single_table-columns' )->by_visible( $this->view );
 
 		$context = Template_Context::from_template( $this, compact( 'fields' ) );
@@ -89,7 +89,7 @@ class Entry_Table_Template extends Entry_Template {
 			 * @param boolean $hide_empty Should the row be hidden if the value is empty? Default: don't hide.
 			 * @param \GV\Template_Context $context The context ;) Love it, cherish it. And don't you dare modify it!
 			 */
-			$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', $this->view->settings->get( 'hide_empty', false ), $context );
+			$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', $this->view->settings->get( 'hide_empty_single', false ), $context );
 
 			echo \gravityview_field_output( array(
 				'entry' => $this->entry->as_entry(),

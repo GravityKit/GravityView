@@ -44,7 +44,7 @@ abstract class GravityView_Admin_View_Item {
 	 */
 	protected $form_id;
 
-	function __construct( $title = '', $item_id, $item = array(), $settings = array(), $form_id = null) {
+	function __construct( $title = '', $item_id = '', $item = array(), $settings = array(), $form_id = null) {
 
 		// Backward compat
 		if ( ! empty( $item['type'] ) ) {
@@ -59,15 +59,16 @@ abstract class GravityView_Admin_View_Item {
 		// Prevent items from not having index set
 		$item = wp_parse_args( $item, array(
 			'label_text'    => $title,
-			'field_id'      => NULL,
-			'parent_label'  => NULL,
-			'label_type'    => NULL,
-			'input_type'    => NULL,
-			'settings_html' => NULL,
-			'adminLabel'    => NULL,
-			'adminOnly'     => NULL,
-			'subtitle'      => NULL,
-			'placeholder'   => NULL,
+			'field_id'      => null,
+			'parent_label'  => null,
+			'label_type'    => null,
+			'input_type'    => null,
+			'settings_html' => null,
+			'adminLabel'    => null,
+			'adminOnly'     => null,
+			'subtitle'      => null,
+			'placeholder'   => null,
+			'icon'          => null,
 		) );
 
 		$this->title      = $title;
@@ -148,7 +149,7 @@ abstract class GravityView_Admin_View_Item {
 	 */
 	function getOutput() {
 
-		$settings_title    = sprintf( __( 'Configure %s Settings', 'gravityview' ), ucfirst( $this->label_type ) );
+		$settings_title    = sprintf( __( 'Configure %s Settings', 'gravityview' ), esc_html( rgar( $this->item, 'label', ucfirst( $this->label_type ) ) ) );
 		$delete_title      = sprintf( __( 'Remove %s', 'gravityview' ), ucfirst( $this->label_type ) );
 		$single_link_title = __( 'This field links to the Single Entry', 'gravityview' );
 
@@ -172,21 +173,39 @@ abstract class GravityView_Admin_View_Item {
 		}
 		$label = esc_attr( $label );
 
+		$icon = '';
+
+		if ( $this->item['icon'] && ! \GV\Utils::get( $this->item, 'parent' ) ) {
+			if ( 0 === strpos( $this->item['icon'], 'data:' ) ) {
+				// Inline icon SVG
+				$icon = '<i class="dashicons background-icon" style="background-image: url(\'' . esc_attr( $this->item['icon'] ) . '\');"></i>';
+			} elseif ( false === strpos( $this->item['icon'], 'dashicons' ) ) {
+				// Not dashicon icon
+				$icon = '<i class="' . esc_attr( $this->item['icon'] ) . '"></i>';
+			} else {
+				// Dashicon; prefix with "dashicons"
+				$icon = '<i class="dashicons ' . esc_attr( $this->item['icon'] ) . '"></i>';
+			}
+
+			$icon = $icon . ' ';
+		}
+
 		$output = '<button class="gv-add-field screen-reader-text">' . sprintf( esc_html__( 'Add "%s"', 'gravityview' ), $label ) . '</button>';
 
 		$output .= '<h5 class="selectable gfield field-id-' . esc_attr( $this->id ) . '">';
 
-		if ( ! empty( $this->item['parent'] ) ) {
-			$label .= ' <small>(' . esc_attr( $this->item['parent']['label'] ) . ')</small>';
+		$parent_label = '';
+
+        if ( ! empty( $this->item['parent'] ) ) {
+			$parent_label = ' <small>(' . esc_attr( $this->item['parent']['label'] ) . ')</small>';
 		}
 
 		// Name of field / widget
-		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . $this->get_item_info( false ) . '">' . $label . '</span>';
-
+		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . esc_attr( sprintf( __( 'Field: %s', 'gravityview' ), $label ) ) . "\n" . $this->get_item_info( false ) . '">' . $icon . '<span class="gv-field-label-text-container">' . $label . $parent_label . '</span></span>';
 
 		$output .= '<span class="gv-field-controls">' . $settings_link . $show_as_link . '<button class="gv-remove-field" aria-label="' . esc_attr( $delete_title ) . '" title="' . esc_attr( $delete_title ) . '"><span class="dashicons-dismiss dashicons"></span></button></span>';
 
-		// Displays only in the field/widget picker.
+		// Displays only in the field/widget picker
 		if ( $field_info = $this->get_item_info() ) {
 			$output .= '<span class="gv-field-info">' . $field_info . '</span>';
 		}

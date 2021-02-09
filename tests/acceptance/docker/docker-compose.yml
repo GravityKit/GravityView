@@ -1,0 +1,77 @@
+version: '3.4'
+
+x-environment: &x-environment
+  MYSQL_ROOT_PASSWORD: root
+  MYSQL_PASSWORD: wordpress
+  MYSQL_USER: wordpress
+  MYSQL_DATABASE: gv_acceptance
+  MYSQL_HOST: mysql
+  WP_FOLDER: /wp-core
+  WP_ADMIN_USER: admin
+  WP_ADMIN_PASS: admin
+  WP_ADMIN_EMAIL: admin@test.com
+  WP_URL: wordpress
+  GRAVITYFORMS_KEY: ${GRAVITYFORMS_KEY}
+  GRAVITYVIEW_KEY: ${GRAVITYVIEW_KEY}
+
+services:
+  codeception:
+    container_name: gv-core-codeception
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    environment:
+      <<: *x-environment
+    depends_on:
+      - wordpress
+    networks:
+      - gv-core-network
+    volumes:
+      - gv-core-wp:/wp-core
+      - ${PLUGIN_DIR}:/wp-core/wp-content/plugins/gravityview
+    entrypoint: /docker-entrypoint.sh
+
+  wordpress:
+    container_name: gv-core-wp
+    image: wordpress:5.5.1-php7.4-apache
+    depends_on:
+      - mysql
+      - chrome
+    networks:
+      - gv-core-network
+    volumes:
+      - gv-core-wp:/var/www/html
+      - ${PLUGIN_DIR}:/var/www/html/wp-content/plugins/gravityview
+
+  mysql:
+    container_name: gv-core-db
+    image: mysql:5.7
+    environment:
+      <<: *x-environment
+    networks:
+      - gv-core-network
+    volumes:
+      - gv-core-db:/dev/shm
+
+  chrome:
+    container_name: gv-core-chrome
+    environment:
+      - DBUS_SESSION_BUS_ADDRESS=/dev/null
+    volumes:
+      - /dev/shm:/dev/shm
+      - gv-core-wp:/wp-core
+    image: selenium/standalone-chrome-debug:3.141.59-dubnium
+    networks:
+      - gv-core-network
+    ports:
+      - 4444
+      - 5901:5900
+
+volumes:
+  gv-core-wp:
+    name: gv-core-wp
+  gv-core-db:
+    name: gv-core-db
+
+networks:
+  gv-core-network:

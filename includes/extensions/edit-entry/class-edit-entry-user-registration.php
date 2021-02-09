@@ -5,7 +5,7 @@
  * @since 1.11
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2015, Katz Web Services, Inc.
  */
@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
 class GravityView_Edit_Entry_User_Registration {
 
 	/**
-	 * @var GravityView_Edit_Entry
+	 * @var GravityView_Edit_Entry $loader
 	 */
     protected $loader;
 
@@ -80,7 +80,6 @@ class GravityView_Edit_Entry_User_Registration {
 	        return;
         }
 
-        /** @var GF_User_Registration $gf_user_registration */
         $gf_user_registration = GF_User_Registration::get_instance();
 
         $entry = GFAPI::get_entry( $entry_id );
@@ -136,7 +135,6 @@ class GravityView_Edit_Entry_User_Registration {
 	 */
     public function get_feed_configuration( $entry, $form ) {
 
-	    /** @var GF_User_Registration $gf_user_registration */
 	    $gf_user_registration = GF_User_Registration::get_instance();
 
 	    $config = $gf_user_registration->get_single_submission_feed( $entry, $form );

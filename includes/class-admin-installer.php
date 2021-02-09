@@ -68,7 +68,7 @@ class GravityView_Admin_Installer {
 
 	    $downloads_data = get_site_transient( self::DOWNLOADS_DATA_TRANSIENT );
 
-	    if ( ! $downloads_data ) {
+	    if ( ! $downloads_data && ! isset( $_GET['cache'] ) ) {
 			return;
 		}
 

@@ -40,8 +40,9 @@ class gravityview extends \GV\Shortcode {
 			'id' => 0,
 			'view_id' => 0,
 			'detail' => null,
+			'class' => '',
 		) );
-		
+
 		if ( ! $view_id = $atts['id'] ? : $atts['view_id'] ) {
 			if ( $atts['detail'] && $view = $request->is_view() ) {
 				$view_id = $view->ID;
@@ -102,7 +103,7 @@ class gravityview extends \GV\Shortcode {
 					 * ...apart from a nice message if the user can do anything about it.
 					 */
 					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-						return self::_return( __( sprintf( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' ) );
+						return self::_return( sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) ) );
 					}
 					break;
 				case 'no_direct_access':
@@ -202,7 +203,7 @@ class gravityview extends \GV\Shortcode {
 		 */
 		} else {
 			if ( $is_reembedded ) {
-				
+
 				// Mock the request with the actual View, not the global one
 				$mock_request = new \GV\Mock_Request();
 				$mock_request->returns['is_view'] = $view;

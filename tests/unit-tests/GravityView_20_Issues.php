@@ -109,7 +109,7 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
 			'status' => 'active',
-			'3' => date( 'Y-m-d H:i:s', strtotime( '-366 days' ) ),
+			'3' => date( 'Y-m-d H:i:s', strtotime( '-367 days' ) ),
 		) );
 
 		global $post;
@@ -121,7 +121,7 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="3" /]' => '1',
 			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="3" format="%y years" /]' => '1 years',
 			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="3" format="%y year(s) %m months %d day(s)" /]' => '1 year(s) 0 months 1 day(s)',
-			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="3" format="%a days" /]' => '366 days',
+			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="3" format="%a days" /]' => '367 days',
 			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="30" /]' => 'Error: Field value not specified.',
 			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="30" hide_errors="1" /]' => '',
 			'[gv_age_2_0 entry_id="9999999" /]' => 'Error: Entry not found',
@@ -219,6 +219,9 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 	function test_shortcode_search_value_search_filter() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'template_id' => 'table',
@@ -234,6 +237,7 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 		$view = \GV\View::from_post( $post );
 
@@ -402,6 +406,9 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 			'1' => 'this is an another entry',
 		) );
 
+		$settings = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'fields' => array(
@@ -418,6 +425,7 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 
 		$another_view = $this->factory->view->create_and_get( array(
@@ -436,6 +444,7 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 					),
 				),
 			),
+			'settings' => $settings,
 		) );
 
 		$form          = \GV\GF_Form::by_id( $form['id'] );
