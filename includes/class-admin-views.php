@@ -797,6 +797,7 @@ class GravityView_Admin_Views {
 
 		$entry_default_fields = array();
 
+		// if not zone directory or single
 		if( in_array( $zone, array( 'directory', 'single' ) ) ) {
 
 			$meta_fields = GravityView_Fields::get_all( array( 'meta', 'gravityview' ) );
@@ -806,18 +807,7 @@ class GravityView_Admin_Views {
 			foreach ( $meta_fields as $meta_field ) {
 				$entry_default_fields += $meta_field->as_array();
 			}
-
-			if( 'single' !== $zone) {
-
-				$entry_default_fields['entry_link'] = array(
-					'label' => __('Link to Single Entry', 'gravityview'),
-					'desc'	=> __('A dedicated link to the single entry with customizable text.', 'gravityview'),
-					'type' => 'entry_link',
-					'group' => 'gravityview',
-				);
-			}
-
-		} // if not zone directory or single
+		}
 
 		/**
 		 * @filter `gravityview_entry_default_fields` Modify the default fields for each zone and context
