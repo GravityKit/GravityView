@@ -38,7 +38,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 		add_filter( 'gravityview/edit_entry/form_fields', array( $this, 'show_field_in_edit_entry' ), 10, 4 );
 
-		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ), 10, 3 );
+		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ), 100, 3 );
 
 		parent::__construct();
 	}
