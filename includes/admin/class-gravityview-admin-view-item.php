@@ -214,7 +214,7 @@ abstract class GravityView_Admin_View_Item {
 
 		$container_class .= empty( $this->settings['show_as_link'] ) ? '' : ' has-single-entry-link';
 
-		$container_class .= empty( $hide_visibility_class ) ? ' has-custom-visibility' : '';
+		$container_class .= empty( $this->settings['only_loggedin'] ) ? '' : ' has-custom-visibility';
 
 		$data_form_id   = ! empty( $this->form_id ) ? 'data-formid="' . esc_attr( $this->form_id ) . '"' : '';
 
