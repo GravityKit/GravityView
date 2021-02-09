@@ -58,6 +58,12 @@
 		startFreshStatus: false,
 
 		/**
+		 * @since 2.10
+		 * @type {bool} Whether to show "Are you sure you want to leave this page?" warning
+		 */
+		hasUnsavedChanges: false,
+
+		/**
 		 * @since 1.17.3
 		 * @type {bool} Whether the alt (modifier) key is currently being clicked
 		 */
@@ -156,6 +162,10 @@
 					.trigger( 'change' );
 
 			// End bind to $('body')
+
+			window.onbeforeunload = function() {
+				return vcfg.hasUnsavedChanges ? true : null;
+			};
 
 			if( gvGlobals.passed_form_id ) {
 				vcfg.gvSelectForm.trigger( 'change' );
@@ -557,6 +567,7 @@
 
 			vcfg.currentTemplateId = '';
 			vcfg.currentFormId = vcfg.gvSelectForm.val();
+			vcfg.hasUnsavedChanges = true;
 			$( 'body' ).trigger( 'gravityview_form_change' ).addClass( 'gv-form-changed' );
 		},
 
@@ -676,7 +687,6 @@
 				}
 
 			}
-
 		},
 
 		/**
@@ -841,6 +851,7 @@
 			}
 
 			vcfg.currentTemplateId = selectedTemplateId;
+			vcfg.hasUnsavedChanges = true;
 		},
 
 		/**
@@ -960,6 +971,8 @@
 					vcfg.waiting('stop');
 				}
 			} );
+
+			vcfg.hasUnsavedChanges = true;
 		},
 
 		/**
@@ -1275,6 +1288,7 @@
 			} ).always( function () {
 
 				vcfg.toggleDropMessage();
+				vcfg.hasUnsavedChanges = true;
 
 			} );
 
@@ -1421,6 +1435,8 @@
 			var vcfg = viewConfiguration;
 			var area = $( e.currentTarget ).parents( ".active-drop" );
 
+			vcfg.hasUnsavedChanges = true;
+
 			// Nice little easter egg: when holding down control, get rid of all fields in the zone at once.
 			if ( e.altKey && $( area ).find( '.gv-fields' ).length > 1 ) {
 
@@ -1527,6 +1543,7 @@
 			// Logged in capability selector should only show when Logged In checkbox is checked
 			vcfg.toggleVisibility( $( 'input:checkbox[name*=only_loggedin]', $parent ), $( '[name*=only_loggedin_cap]', $parent ), first_run );
 
+			vcfg.hasUnsavedChanges = true;
 		},
 
 		/**
