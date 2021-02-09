@@ -39,10 +39,40 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	public function __construct() {
 
 		$this->label = esc_html__( 'Number Sequence', 'gravityview' );
+		$this->description = esc_html__( 'Display a sequential result number for each entry.', 'gravityview' );
 
 		add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'field_tooltips') );
 
+		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ) );
+
 		parent::__construct();
+	}
+
+	/**
+	 * Add Edit Link as a default field, outside those set in the Gravity Form form
+	 *
+	 * @since 2.10 Moved here from GravityView_Admin_Views::get_entry_default_fields
+	 *
+	 * @param array $entry_default_fields Existing fields
+	 * @param string|array $form form_ID or form object
+	 * @param string $zone Either 'single', 'directory', 'edit', 'header', 'footer'
+	 *
+	 * @return array
+	 */
+	public function add_default_field( $entry_default_fields, $form = array(), $zone = '' ) {
+
+		if ( 'edit' === $zone ) {
+			return $entry_default_fields;
+		}
+
+		$entry_default_fields['sequence'] = array(
+			'label' => __( 'Result Number', 'gravityview' ),
+			'type'  => $this->name,
+			'desc'  => $this->description,
+			'icon'  => $this->icon,
+		);
+
+		return $entry_default_fields;
 	}
 
 	/**
