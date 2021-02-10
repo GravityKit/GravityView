@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: A dropdown in the "All Views" screen to filter Views by the layout (Table, List, DataTables, DIY, Map, etc.)
 * Added: Show a notice when "Show only approve entries" setting is enabled for a View and no entries are displayed because of the setting
 * Added: Warning when leaving Edit View screen if there are unsaved changes
+* Fixed: PHP warning `The magic method must have public visibility` appearing in PHP 8.0
 * Fixed: PHP notice `Undefined property: stdClass::$icons` appearing on Plugins page
 * Fixed: We set the date of the last release as January 2020. Don't fear: the year is 2021!
 

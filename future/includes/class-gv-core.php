@@ -243,9 +243,9 @@ final class Core {
 		do_action( 'gravityview/loaded' );
 	}
 
-	private function __clone() { }
+	public function __clone() { }
 
-	private function __wakeup() { }
+	public function __wakeup() { }
 
 	/**
 	 * Wrapper magic.
