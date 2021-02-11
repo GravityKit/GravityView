@@ -15,7 +15,7 @@ class GravityView_Placeholder_Template extends GravityView_Template {
 
 	function __construct( $id = 'template_placeholder', $settings = array() ) {
 
-		$table_settings = array(
+		$default_template_settings = array(
 			'type'        => 'custom',
 			'buy_source'  => 'https://gravityview.co/pricing/',
 			'slug'        => '',
@@ -23,9 +23,10 @@ class GravityView_Placeholder_Template extends GravityView_Template {
 			'description' => '',
 			'logo'        => '',
 			'price_id'    => '',
+			'textdomain'  => '',
 		);
 
-		$settings = wp_parse_args( $settings, $table_settings );
+		$settings = wp_parse_args( $settings, $default_template_settings );
 
 		$this->id = $id;
 		$this->settings = $settings;

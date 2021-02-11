@@ -27,8 +27,9 @@ $templates = gravityview_get_registered_templates();
 
 		$placeholder = ! empty( $template['buy_source'] );
 		$is_included = ! empty( $template['included'] );
+		$plugin_data = GravityView_Admin_Installer::get_wp_plugins_data( \GV\Utils::get( $template, 'textdomain', '' ) );
+		$button_text = ! empty( $plugin_data['active'] ) ? esc_html__( 'Install Layout', 'gravityview') : esc_html__( 'Activate Layout', 'gravityview' );
 		?>
-
 		<div class="gv-grid-col-1-3">
 			<div class="gv-view-types-module<?php echo $selected; if( $placeholder ) { echo ' gv-view-template-placeholder'; } ?>" data-filter="<?php echo esc_attr( $template['type'] ); ?>">
 				<div class="gv-view-types-normal">
@@ -41,7 +42,7 @@ $templates = gravityview_get_registered_templates();
 						<?php
 						if( $is_included ) {
 						?>
-							<p><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gv-admin-installer' ) ); ?>" class="button button-secondary button-hero" rel="internal"><?php esc_html_e( 'Install Layout', 'gravityview'); ?></a></p>
+							<p><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gv-admin-installer' ) ); ?>" class="button button-secondary button-hero" rel="internal"><?php echo esc_html( $button_text ); ?></a></p>
 							<?php if( !empty( $template['license'] ) ) { ?>
 								<p class="gv-included-in"><?php echo sprintf( esc_html__( 'This layout is included in the %s license.', 'gravityview' ), esc_html( str_replace( ' ', '&nbsp;', $template['license'] ) ) ); ?></p>
 							<?php } ?>

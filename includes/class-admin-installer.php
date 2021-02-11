@@ -130,13 +130,18 @@ class GravityView_Admin_Installer {
 	/**
 	 * Get an array of plugins with textdomains as keys
 	 *
+	 * @since 2.1
+	 * @since 2.10 Added $textdomain argument. Converted to static method. Made method public (from protected).
+	 *
+	 * @param string $textdomain If set, only return plugins that have a matching textdomain.
+	 *
 	 * @return array {
-	 * @type string $path Path to the plugin
-	 * @type string $version What version is the plugin
-	 * @type bool $activated Is the plugin activated
+	 * @type string $path Path to the plugin.
+	 * @type string $version What version is the plugin.
+	 * @type bool $activated Is the plugin activated.
 	 * }
 	 */
-	protected function get_wp_plugins_data() {
+	static public function get_wp_plugins_data( $textdomain = null ) {
 
 		$wp_plugins = array();
 
@@ -155,7 +160,7 @@ class GravityView_Admin_Installer {
 			);
 		}
 
-		return $wp_plugins;
+		return is_null( $textdomain ) ? $wp_plugins : \GV\Utils::get( $wp_plugins, $textdomain, array() );
 	}
 
 	/**
@@ -311,7 +316,7 @@ class GravityView_Admin_Installer {
             <div class="gv-admin-installer-container">
 				<?php
 
-				$wp_plugins = $this->get_wp_plugins_data();
+				$wp_plugins = self::get_wp_plugins_data();
 
 				$this->render_section( 'views', esc_html__( 'GravityView Layouts', 'gravityview' ), $downloads_data, $wp_plugins );
 

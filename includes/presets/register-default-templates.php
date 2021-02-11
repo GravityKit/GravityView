@@ -65,6 +65,7 @@ function gravityview_register_placeholder_templates() {
 			'preview' => 'https://try.gravityview.co/view/datatables/?utm_source=plugin&utm_medium=try_demo&utm_campaign=view_type&utm_term=datatables',
 			'license' => esc_html__( 'All Access', 'gravityview' ),
 			'price_id' => 2,
+			'textdomain' => 'gv-datatables',
 		),
 		'GravityView_Maps_Template_Map_Default' => array(
 			'slug' => 'map_placeholder',
@@ -75,6 +76,7 @@ function gravityview_register_placeholder_templates() {
 			'preview' => 'https://try.gravityview.co/view/map/?utm_source=plugin&utm_medium=try_demo&utm_campaign=view_type&utm_term=map',
 			'license' => esc_html__( 'All Access', 'gravityview' ),
 			'price_id' => 2,
+			'textdomain' => 'gravityview-maps',
 		),
 		'GravityView_DIY_Template' => array(
 			'slug'        => 'diy_placeholder',
@@ -85,6 +87,7 @@ function gravityview_register_placeholder_templates() {
 			'preview' => 'https://try.gravityview.co/view/diy/?utm_source=plugin&utm_medium=try_demo&utm_campaign=view_type&utm_term=diy',
 			'license' => esc_html__( 'All Access', 'gravityview' ),
 			'price_id' => 2,
+			'textdomain' => 'gravityview-diy',
 		),
 	);
 
