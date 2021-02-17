@@ -1084,7 +1084,7 @@
                     });
 
                     return defer.promise();
-                }
+                };
 
                 $.when(activate())
                     .always(function () {
