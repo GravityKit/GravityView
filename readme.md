@@ -10,7 +10,7 @@ If you are using the plugin on a live site, please purchase a valid license from
 
 #### Unit Tests
 
-The plugin uses [PHPUnit](https://phpunit.de/) as part of the development process. We offer preconfigured Docker containers and a custom Bash script to facilitate running tests against multiple PHP and WordPress versions in a predictable environment. Visit our [Tooling](https://github.com/gravityview/Tooling/blob/main/docker-unit-tests/) for information regarding how to configure and run tests.   
+The plugin uses [PHPUnit](https://phpunit.de/) as part of the development process. We offer preconfigured Docker containers and a custom Bash script to facilitate running tests against multiple PHP and WordPress versions in a predictable environment. Visit our [Tooling](https://github.com/gravityview/Tooling/blob/main/docker-unit-tests/) repo for information regarding how to configure and run tests.   
 
 ### Acceptance Tests
 
