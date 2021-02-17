@@ -36,7 +36,7 @@ $templates = gravityview_get_registered_templates();
 		$template_path = isset($plugin_data['path']) ? $plugin_data['path'] : '';
 
 		?>
-		<div class="gv-grid-col-1-3">
+		<div class="gv-grid-col-1-4">
 			<div class="gv-view-types-module<?php echo $selected; if( $placeholder ) { echo ' gv-view-template-placeholder'; } ?>" data-filter="<?php echo esc_attr( $template['type'] ); ?>">
 				<div class="gv-view-types-normal">
 					<img src="<?php echo esc_url( $template['logo'] ); ?>" alt="<?php echo esc_attr( $template['label'] ); ?>">
