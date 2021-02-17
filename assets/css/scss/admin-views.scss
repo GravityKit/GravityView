@@ -883,10 +883,9 @@ hr {
 	&[data-fieldid=edit_link],
 	&[data-fieldid=delete_link],
 	&.has-single-entry-link {
-		background-color: $color-blue-tint-90;
 
-		.gv-items-picker-container & {
-			background-color: transparent;
+		.active-drop-container & {
+			background-color: $color-blue-tint-90;
 		}
 
 		.gv-field-controls .dashicons-media-default {
