@@ -234,10 +234,8 @@ class GravityView_Render_Settings {
 		}
 
 		$settings_title = esc_attr( sprintf( __( '%s Settings', 'gravityview' ) , strip_tags( html_entity_decode( $field_label ) ) ) );
-		$subtitle = ! empty( $item['subtitle'] ) ? '<div class="subtitle">' . $item['subtitle'] . '</div>' : '';
 
 		$field_details = '';
-
 
 		// Get the pretty name for the input type
 		$gv_field = GravityView_Fields::get( $input_type );
@@ -270,40 +268,51 @@ class GravityView_Render_Settings {
 			}
 		}
 
-		$field_details = '';
+		$item_details = '';
+		$subtitle = '';
 
 		if( 'field' === $field_type ) {
-			$field_details .= '
+			$subtitle = ! empty( $item['subtitle'] ) ? '<div class="subtitle">' . $item['subtitle'] . '</div>' : '';
+
+			$item_details .= '
 			<div class="gv-field-details--container">
 				<label class="gv-field-details--toggle">' . esc_html__( 'Field Details', 'gravityview' ) .' <i class="dashicons dashicons-arrow-down"></i></label>
 				<section class="gv-field-details gv-field-details--closed">';
 
 				if ( $field_id && is_numeric( $field_id ) ) {
-				$field_details .= '
+				$item_details .= '
 					<div class="gv-field-detail gv-field-detail--field">
 						<span class="gv-field-detail--label">' . esc_html__( 'Field ID', 'gravityview' ) .'</span><span class="gv-field-detail--value">#{{field_id}}</span>
 					</div>';
 			    }
 
-				$field_details .= '
+				$item_details .= '
 					<div class="gv-field-detail gv-field-detail--type">
 						<span class="gv-field-detail--label">' . esc_html_x( 'Type', 'The type of field being configured (eg: "Single Line Text")', 'gravityview' ) .'</span><span class="gv-field-detail--value">{{input_type_label}}</span>
 					</div>';
 
 				if( $form_id ) {
-					$field_details .= '
+					$item_details .= '
 					<div class="gv-field-detail gv-field-detail--form">
 						<span class="gv-field-detail--label">' . esc_html__( 'Form', 'gravityview' ) .'</span><span class="gv-field-detail--value">{{form_title}} (#{{form_id}})</span>
 					</div>';
 				}
-				$field_details .= '
+				$item_details .= '
 				</section>
 			</div>';
+		} else {
+			$widget_details_content = $item['description'];
+			if( ! empty( $item['subtitle'] ) ) {
+				$widget_details_content .= "\n\n" . $item['subtitle'];
+			}
+
+			// Intentionally not escaping to allow HTML.
+			$item_details = '<div class="gv-field-details--container">' . wpautop( trim( $widget_details_content ) ) . '</div>';
 		}
 
 $template = <<<EOD
 		<div class="gv-dialog-options" title="{{settings_title}}">
-			{{field_details}}
+			{{item_details}}
 			{{subtitle}}
 			{{field_settings}}
 			{{hidden_fields}}
@@ -317,7 +326,7 @@ EOD;
 			'hidden_fields',
 			'subtitle',
 			'field_settings',
-			'field_details',
+			'item_details',
 			'input_type_label',
 			'field_id',
 			'form_title',

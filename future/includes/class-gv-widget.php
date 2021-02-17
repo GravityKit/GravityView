@@ -12,6 +12,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * An interface that most GravityView widgets would want to adhere to and inherit from.
  */
 abstract class Widget {
+
 	/**
 	 * Widget admin label
 	 * @var string
@@ -25,7 +26,7 @@ abstract class Widget {
 	protected $widget_description = '';
 
 	/**
-	 * Widget details, shown in the widget lightbox
+	 * Widget details, shown in the widget modal
 	 * @since 1.8
 	 * @var  string
 	 */
