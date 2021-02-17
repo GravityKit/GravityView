@@ -177,37 +177,71 @@ $gv-overlay-index: 10000;
 	position: relative;
 	border: 2px solid transparent;
 	box-sizing: border-box;
+
+	&:hover .gv-view-types-hover {
+		display: block;
+	}
+
+	&.gv-selected {
+		border: 2px solid #1e8cbe;
+	}
+
+	img {
+		display: block;
+		width: 100%;
+		height: auto;
+		margin: 0;
+		padding: 0;
+	}
+
+	h5 {
+		white-space: nowrap; // Prevent different size boxes in responsive because title wraps to two lines
+		margin: 0.5em 0;
+		padding: 0;
+		font-size: 18px;
+	}
+
+	.description {
+		margin: 0;
+		padding: 0;
+		height: 3em;
+		overflow: hidden;
+	}
+
+	.button.button-hero {
+		padding: 0;
+	}
+
+	&.gv-view-template-placeholder {
+		opacity: .7;
+		transition: all .1s;
+
+		&:hover {
+			opacity: 1;
+		}
+
+		.gv-view-types-hover {
+			background: rgba(255, 255, 255, .9);
+			font-size: 1rem;
+			position: absolute;
+		}
+
+		.gv-included-in {
+			background: #555D66;
+			color: white;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			padding: .5em;
+			margin-bottom: 0;
+
+			a {
+				color: white;
+			}
+		}
+	}
 }
 
-.gv-view-types-module:hover .gv-view-types-hover {
-	display: block;
-}
-
-.gv-view-types-module img {
-	display: block;
-	width: 100%;
-	height: auto;
-	margin: 0;
-	padding: 0;
-}
-
-.gv-view-types-module h5 {
-	white-space: nowrap; // Prevent different size boxes in responsive because title wraps to two lines
-	margin: 0.5em 0;
-	padding: 0;
-	font-size: 18px;
-}
-
-.gv-view-types-module .description {
-	margin: 0;
-	padding: 0;
-	height: 3em;
-	overflow: hidden;
-}
-
-.gv-view-types-module.gv-selected {
-	border: 2px solid #1e8cbe;
-}
 
 .gv-view-types-hover {
 	display: none;
@@ -221,21 +255,22 @@ $gv-overlay-index: 10000;
 	.gv-site-preview {
 		color: #fff;
 		text-decoration: none;
-	}
 
-	.dashicons {
-		font-size: 24px;
-		width: 24px;
-		height: 24px;
-		position: absolute;
-		top: 5px;
-		right: 5px;
-		opacity: .5;
+		.dashicons {
+			font-size: 24px;
+			width: 24px;
+			height: 24px;
+			position: absolute;
+			top: 5px;
+			right: 5px;
+			opacity: .5;
 
-		&:hover, &:focus {
-			opacity: 1;
+			&:hover, &:focus {
+				opacity: 1;
+			}
 		}
 	}
+
 }
 
 // Select / Preview buttons container
@@ -251,43 +286,12 @@ $gv-overlay-index: 10000;
 		padding: 0;
 		text-align: center;
 
-		a {
+		.button {
 			display: inline-block;
-			width: 60%;
+			width: 70%;
 		}
 	}
 
-}
-
-/* button buy now */
-.button-primary.button-buy-now {
-
-	background: #2ecc37;
-	border-color: #00a213;
-	box-shadow: inset 0 1px 0 rgba(120, 230, 129, .5), 0 1px 0 rgba(0, 0, 0, .15);
-
-	&.focus,
-	&:focus,
-	&.hover,
-	&:hover {
-		border-color: #00a213;
-		background: #1ebe41;
-		box-shadow: inset 0 1px 0 rgba(120, 230, 129, .6);
-	}
-
-	&.focus,
-	&:focus {
-		border-color: #0e5025;
-		box-shadow: inset 0 1px 0 rgba(120, 230, 129, .6), 1px 1px 2px rgba(0, 0, 0, .4);
-	}
-
-	&.active,
-	&.active:hover,
-	&.active:focus,
-	&:active {
-		border-color: #00842d;
-		background: #1ebe41;
-	}
 }
 
 // Don't display the arrow toggle for collapsing the metabox

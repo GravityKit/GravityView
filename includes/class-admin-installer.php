@@ -97,7 +97,7 @@ class GravityView_Admin_Installer {
 	 */
 	public function add_admin_menu() {
 
-	    $menu_text = _x( 'Extensions', 'Extensions are WordPress plugins that add functionality to GravityView and Gravity Forms', 'gravityview' );
+	    $menu_text = _x( 'Manage Add-Ons', 'Extensions are WordPress plugins that add functionality to GravityView and Gravity Forms', 'gravityview' );
 
 		$menu_text = sprintf( '<span title="%s" style="margin: 0">%s</span>', esc_attr__( 'Plugins that extend GravityView and Gravity Forms functionality.', 'gravityview' ), $menu_text );
 
@@ -130,13 +130,18 @@ class GravityView_Admin_Installer {
 	/**
 	 * Get an array of plugins with textdomains as keys
 	 *
+	 * @since 2.1
+	 * @since 2.10 Added $textdomain argument. Converted to static method. Made method public (from protected).
+	 *
+	 * @param string $textdomain If set, only return plugins that have a matching textdomain.
+	 *
 	 * @return array {
-	 * @type string $path Path to the plugin
-	 * @type string $version What version is the plugin
-	 * @type bool $activated Is the plugin activated
+	 * @type string $path Path to the plugin.
+	 * @type string $version What version is the plugin.
+	 * @type bool $activated Is the plugin activated.
 	 * }
 	 */
-	protected function get_wp_plugins_data() {
+	static public function get_wp_plugins_data( $textdomain = null ) {
 
 		$wp_plugins = array();
 
@@ -155,7 +160,7 @@ class GravityView_Admin_Installer {
 			);
 		}
 
-		return $wp_plugins;
+		return is_null( $textdomain ) ? $wp_plugins : \GV\Utils::get( $wp_plugins, $textdomain, array() );
 	}
 
 	/**
@@ -204,7 +209,7 @@ class GravityView_Admin_Installer {
 
 		$downloads_data = get_site_transient( self::DOWNLOADS_DATA_TRANSIENT );
 
-		if ( $downloads_data ) {
+		if ( $downloads_data && ! isset( $_GET['cache'] ) ) {
 			return $downloads_data;
 		}
 
@@ -311,24 +316,45 @@ class GravityView_Admin_Installer {
             <div class="gv-admin-installer-container">
 				<?php
 
-				$wp_plugins = $this->get_wp_plugins_data();
+				$wp_plugins = self::get_wp_plugins_data();
 
-				foreach ( $downloads_data as $extension ) {
+				$this->render_section( 'views', esc_html__( 'GravityView Layouts', 'gravityview' ), $downloads_data, $wp_plugins );
 
-					if ( empty( $extension['info'] ) ) {
-						continue;
-					}
+				$this->render_section( 'extensions', esc_html__( 'GravityView Extensions', 'gravityview' ), $downloads_data, $wp_plugins );
 
-					if ( 'gravityview' === \GV\Utils::get( $extension, 'info/slug' ) ) {
-						continue;
-					}
+				$this->render_section(  'plugins', esc_html__( 'Gravity Forms Add-Ons', 'gravityview' ), $downloads_data, $wp_plugins );
 
-					$this->render_download( $extension, $wp_plugins );
-				}
+				$this->render_section(  'friends', esc_html__( 'Friends of GravityView', 'gravityview' ), $downloads_data, $wp_plugins );
 				?>
             </div>
         </div>
 		<?php
+	}
+
+	private function render_section( $section_slug, $heading, $downloads_data, $wp_plugins = array() ) {
+
+		ob_start();
+
+		foreach ( $downloads_data as $download ) {
+
+			if ( $section_slug !== \GV\Utils::get( $download, 'info/category/0/slug' ) && $section_slug !== \GV\Utils::get( $download, 'info/category/1/slug' ) ) {
+				continue;
+			}
+
+			if ( empty( $download['info'] ) ) {
+				continue;
+			}
+
+			$this->render_download( $download, $wp_plugins );
+		}
+
+		$output = ob_get_clean();
+		$output = trim( $output );
+
+		if ( ! empty( $output ) ) {
+			echo '<div class="clearfix" style="width:100%;"><h3 style="font-size: 1.5em;">' . esc_html( $heading ) . '</h3></div>';
+			echo $output;
+		}
 	}
 
 	/**
@@ -340,7 +366,6 @@ class GravityView_Admin_Installer {
 	 * @return void
 	 */
 	protected function render_download( $download, $wp_plugins ) {
-
 
         $details = $this->get_download_display_details( $download, $wp_plugins );
 
