@@ -1366,13 +1366,16 @@ hr {
 		label[for*=show_as_link]::after {
 			content: "\f160";
 			font-family: Dashicons, sans-serif;
-			font-size: 16px;
-			height: 16px;
-			width: 16px;
-			line-height: 16px;
+			font-size: 20px;
+			height: 20px;
+			width: 20px;
+			line-height: 20px;
 			speak: none;
 			-webkit-font-smoothing: antialiased;
 			-moz-osx-font-smoothing: grayscale;
+			margin-left: .25em;
+			position: absolute;
+			color: #555D66;
 		}
 
 		label[for*=show_as_link]::after {
