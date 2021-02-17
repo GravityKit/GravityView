@@ -106,6 +106,12 @@ class GravityView_Edit_Entry_User_Registration {
 		    }
 	    }
 
+	    // Do not update user if the user hasn't been registered (happens when manual activation is enabled in User Registration feed)
+	    $username = \GV\Utils::get( $config, 'meta/username', null );
+	    if ( ! isset( $entry[ $username ] ) || ! get_user_by( 'login', $entry[ $username ] ) ) {
+		    return;
+	    }
+
         // The priority is set to 3 so that default priority (10) will still override it
         add_filter( 'send_password_change_email', '__return_false', 3 );
         add_filter( 'send_email_change_email', '__return_false', 3 );

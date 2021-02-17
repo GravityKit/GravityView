@@ -24,6 +24,7 @@ class Renderer {
 	/**
 	 * Print unconfigured notices to admins.
 	 * Print reserved slug warnings.
+	 * Print entry approval notice.
 	 *
 	 * @param \GV\Template_Context $gravityview The $gravityview template object.
 	 *
@@ -40,6 +41,102 @@ class Renderer {
 
 		self::maybe_print_configuration_notice( $gravityview );
 
+		self::maybe_print_entry_approval_notice( $gravityview );
+	}
+
+	/**
+	 * Print notice warning admins that "Show only approved" is enabled
+	 *
+	 * @since 2.9.5
+	 *
+	 * @param \GV\Template_Context $gravityview The $gravityview template object.
+	 *
+	 * @return void
+	 */
+	private static function maybe_print_entry_approval_notice( $gravityview ) {
+
+		if ( $gravityview->entries && $gravityview->entries->count() ) {
+			return;
+		}
+
+		if ( $gravityview->request->is_search() ) {
+			return;
+		}
+
+		// "Show Only Approved" is not enabled.
+		if ( ! $gravityview->view->settings->get( 'show_only_approved', 0 ) ) {
+			return;
+		}
+
+		// If "Show all entries to administrators" is enabled, approval status isn't the issue.
+		if ( $gravityview->view->settings->get( 'admin_show_all_statuses', 0 ) ) {
+			return;
+		}
+
+		// Don't show when no entries are being displayed due to "Hide View data until search is performed".
+		if ( $gravityview->view->settings->get( 'hide_until_searched', 0 ) ) {
+			return;
+		}
+
+		$current_user  = wp_get_current_user();
+		$user_meta_key = '_gv_dismissed_entry_approval_notice' . $gravityview->view->ID;
+
+		if ( isset( $_GET['gv-dismiss'] ) && wp_verify_nonce( $_GET['gv-dismiss'], 'dismiss' ) ) {
+			add_user_meta( $current_user->ID, $user_meta_key, 1 ); // Prevent user from seeing this again for this View
+			return;
+		}
+
+		// The user has already dismissed the notice
+		if ( get_user_meta( $current_user->ID, $user_meta_key, true ) ) {
+			return;
+		}
+
+		$form = $gravityview->view->form;
+
+		if ( ! $form ) {
+			return;
+		}
+
+		$count = \GFAPI::count_entries( $gravityview->view->form->ID, array(
+			'status'        => 'active',
+			'field_filters' => array(
+				array(
+					'key'      => 'is_approved',
+					'operator' => 'isnot',
+					'value'    => \GravityView_Entry_Approval_Status::APPROVED,
+				),
+			),
+		) );
+
+		// There aren't any entries to show!
+		if ( empty( $count ) ) {
+			return;
+		}
+
+		$notice_title = _n(
+			esc_html__( 'There is an unapproved entry that is not being shown.', 'gravityview' ),
+			esc_html__( 'There are %s unapproved entries that are not being shown.', 'gravityview' ),
+			$count
+		);
+
+		$float_dir = is_rtl() ? 'left' : 'right';
+		$hide_link = sprintf( '<a href="%s" style="float: ' . $float_dir . '; font-size: 1rem" role="button">%s</a>', esc_url( wp_nonce_url( add_query_arg( array( 'notice' => 'no_entries_' . $gravityview->view->ID ) ), 'dismiss', 'gv-dismiss' ) ), esc_html__( 'Hide this notice', 'gravityview' ) );
+
+		$message_strings = array(
+			'<h3>' . sprintf( $notice_title, number_format_i18n( $count ) ) . $hide_link . '</h3>',
+			esc_html__( 'The "Show only approved entries" setting is enabled, so only entries that have been approved are displayed.', 'gravityview' ),
+			sprintf( '<a href="%s">%s</a>', 'https://docs.gravityview.co/article/490-entry-approval-gravity-forms', esc_html__( 'Learn about entry approval.', 'gravityview' ) ),
+			"\n\n",
+			sprintf( esc_html_x( '%sEdit the View settings%s or %sApprove entries%s', 'Replacements are HTML links', 'gravityview' ), '<a href="' . esc_url( get_edit_post_link( $gravityview->view->ID, false ) ) . '" style="font-weight: bold;">', '</a>', '<a href="' . esc_url( admin_url( 'admin.php?page=gf_entries&id=' . $gravityview->view->form->ID ) ) . '" style="font-weight: bold;">', '</a>' ),
+			"\n\n",
+			sprintf( '<img alt="%s" src="%s" style="padding: 10px 0; max-width: 550px;" />', esc_html__( 'Show only approved entries', 'gravityview' ), esc_url( plugins_url( 'assets/images/screenshots/entry-approval.png', GRAVITYVIEW_FILE ) ) ),
+			"\n\n",
+			esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' ),
+		);
+
+		$notice = wpautop( implode( ' ', $message_strings ) );
+
+		echo \GVCommon::generate_notice( $notice, 'warning', 'edit_gravityview', $gravityview->view->ID );
 	}
 
 	/**

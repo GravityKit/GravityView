@@ -78,7 +78,7 @@ else {
 
 	// Only show the lightbox if linking to the file itself
 	if ( $gravityview->view->settings->get( 'lightbox' ) ) {
-		$link_atts['class'] = 'thickbox';
+		$link_atts['class'] = apply_filters( 'gravityview_lightbox_script', 'thickbox' );
 	}
 
 }

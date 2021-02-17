@@ -94,7 +94,24 @@ class GravityView_Edit_Entry {
 
 		add_filter( 'gravityview/field/is_visible', array( $this, 'maybe_not_visible' ), 10, 3 );
 
+		add_filter( 'gravityview/api/reserved_query_args', array( $this, 'add_reserved_arg' ) );
     }
+
+	/**
+	 * Adds "edit" to the list of internal reserved query args
+	 *
+	 * @since 2.10
+	 *
+	 * @param array $args Existing reserved args
+	 *
+	 * @return array
+	 */
+	public function add_reserved_arg( $args ) {
+
+		$args[] = 'edit';
+
+		return $args;
+	}
 
 	/**
 	 * Trigger hooks that are normally run in the admin for Addons, but need to be triggered manually because we're not in the admin
@@ -126,7 +143,7 @@ class GravityView_Edit_Entry {
 			return $visible;
 		}
 
-		if ( ! $view ) {
+		if ( ! $view instanceof \GV\View ) {
 			return $visible;
 		}
 

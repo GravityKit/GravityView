@@ -142,9 +142,9 @@ class EDD_SL_Plugin_Updater {
 				$no_update->new_version = $version_info->new_version;
 				$no_update->url         = $version_info->homepage;
 				$no_update->package     = $version_info->package;
-				$no_update->icons       = $version_info->icons;
-				$no_update->banners     = $version_info->banners;
-				$no_update->banners_rtl = array();
+				$no_update->icons       = isset( $version_info->icons ) ? $version_info->icons : array();
+				$no_update->banners     = isset( $version_info->banners ) ? $version_info->banners : array();
+				$no_update->banners_rtl = isset( $version_info->banners_rtl ) ? $version_info->banners_rtl : array();
 			}
 
 			$_transient_data->last_checked           = time();
@@ -233,8 +233,8 @@ class EDD_SL_Plugin_Updater {
 				$no_update->new_version = $version_info->new_version;
 				$no_update->url         = $version_info->homepage;
 				$no_update->package     = $version_info->package;
-				$no_update->icons       = $version_info->icons;
-				$no_update->banners     = $version_info->banners;
+				$no_update->icons       = isset( $version_info->icons ) ? $version_info->icons : array();
+				$no_update->banners     = isset( $version_info->banners ) ? $version_info->banners : array();
 				$no_update->banners_rtl = array();
 			}
 

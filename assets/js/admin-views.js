@@ -58,6 +58,12 @@
 		startFreshStatus: false,
 
 		/**
+		 * @since 2.10
+		 * @type {bool} Whether to show "Are you sure you want to leave this page?" warning
+		 */
+		hasUnsavedChanges: false,
+
+		/**
 		 * @since 1.17.3
 		 * @type {bool} Whether the alt (modifier) key is currently being clicked
 		 */
@@ -68,6 +74,12 @@
 		 * @type {int} The width of the modal dialogs to use for field and widget settings
 		 */
 		dialogWidth: 650,
+
+		/**
+		 * @since 2.10
+		 * @type {bool} Whether an AJAX action is being performed
+		 */
+		performingAjaxAction: false,
 
 		init: function () {
 
@@ -203,6 +215,10 @@
 				$( this ).parent('.gv-fields').removeClass('focused');
 			});
 
+
+			window.onbeforeunload = function() {
+				return vcfg.hasUnsavedChanges ? true : null;
+			};
 
 			if( gvGlobals.passed_form_id ) {
 				vcfg.gvSelectForm.trigger( 'change' );
@@ -695,6 +711,7 @@
 
 			vcfg.currentTemplateId = '';
 			vcfg.currentFormId = vcfg.gvSelectForm.val();
+			vcfg.hasUnsavedChanges = true;
 			$( 'body' ).trigger( 'gravityview_form_change' ).addClass( 'gv-form-changed' );
 		},
 
@@ -851,7 +868,6 @@
 				}
 
 			}
-
 		},
 
 		/**
@@ -1016,18 +1032,78 @@
 			}
 
 			vcfg.currentTemplateId = selectedTemplateId;
+			vcfg.hasUnsavedChanges = true;
 		},
 
 		/**
 		 * When clicking the hover overlay, select the template by clicking the #gv_select_template button
 		 * @param  {jQueryEvent}    e     jQuery event object
-		 * @return void
 		 */
 		selectTemplateHover: function ( e ) {
-			e.preventDefault();
-			e.stopImmediatePropagation();
-			$( this ).find( '.gv_select_template' ).trigger( 'click' );
-		},
+			var vcfg = viewConfiguration;
+		    var $link = $(e.target);
+			var $parent = $link.parents('.gv-view-types-module');
+
+            // If we're internally linking
+            if ($link.is('[rel=internal]') && !$link.hasClass('gv-layout-activate')) {
+                return true;
+            }
+
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            // Activate layout if it's already installed
+            if ($link.hasClass('gv-layout-activate')) {
+                if (vcfg.performingAjaxAction) {
+                    return;
+                }
+
+                var activate = function () {
+                    var defer = $.Deferred();
+
+                    $link.addClass('disabled');
+                    vcfg.performingAjaxAction = true;
+                    $('.gv-view-template-notice').hide();
+
+                    $.post(ajaxurl, {
+                        'action': 'gravityview_admin_installer_activate',
+                        'data': {path: $link.attr('data-template-path')}
+                    }, function (response) {
+                        if (!response.success) {
+                            return defer.reject(response.data.error);
+                        }
+
+                        $parent.find('.gv-view-types-hover > div:eq(0)').hide();
+                        $parent.find('.gv-view-types-hover > div:eq(1)').removeClass('hidden');
+                        $parent.removeClass('gv-view-template-placeholder');
+                        $parent.find('.gv-view-types-hover > div:eq(1) .gv_select_template').trigger('click');
+
+                        defer.resolve();
+                    }).fail(function () {
+                        defer.reject(gvAdminInstaller.activateErrorLabel);
+                    });
+
+                    return defer.promise();
+                }
+
+                $.when(activate())
+                    .always(function () {
+                        vcfg.performingAjaxAction = false;
+                        $link.removeClass('disabled');
+                    })
+                    .fail(function (error) {
+                        $('.gv-view-template-notice').show().find('p').text(error);
+
+                        document.querySelector('.gv-view-template-notice').scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    });
+
+                return;
+            }
+
+            $(this).find('.gv_select_template').trigger('click');
+        },
 
 		openExternalLinks: function () {
 
@@ -1137,6 +1213,8 @@
 					$('body').trigger( 'gravityview/view-config-updated', content );
 				}
 			} );
+
+			vcfg.hasUnsavedChanges = true;
 		},
 
 		/**
@@ -1469,6 +1547,7 @@
 			} ).always( function () {
 
 				vcfg.toggleDropMessage();
+				vcfg.hasUnsavedChanges = true;
 
 			} );
 
@@ -1627,6 +1706,8 @@
 			var vcfg = viewConfiguration;
 			var area = $( e.currentTarget ).parents( ".active-drop" );
 
+			vcfg.hasUnsavedChanges = true;
+
 			// Nice little easter egg: when holding down control, get rid of all fields in the zone at once.
 			if ( e.altKey && $( area ).find( '.gv-fields' ).length > 1 ) {
 				vcfg.removeAllFields( e, area );
@@ -1771,6 +1852,7 @@
 			// Logged in capability selector should only show when Logged In checkbox is checked
 			vcfg.toggleVisibility( $( 'input:checkbox[name*=only_loggedin]', $parent ), $( '[name*=only_loggedin_cap]', $parent ), first_run );
 
+			vcfg.hasUnsavedChanges = true;
 		},
 
 		/**

@@ -671,6 +671,7 @@ HTML;
 			'no-conflict-mode'     => '1',
 			'support_port'         => '1',
 			'flexbox_search'       => '1',
+			'lightbox'             => 'fancybox',
 			'rest_api'             => '0',
 			'beta'                 => '0',
 			'powered_by'           => '0',
