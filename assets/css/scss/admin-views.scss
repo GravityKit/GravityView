@@ -339,7 +339,8 @@ $gv-overlay-index: 10000;
 }
 
 #gravityview_select_template .inside {
-	max-height: 450px;
+	max-height: 500px; // For browsers that don't support vh
+	max-height: 50vh;
 	overflow-x: auto;
 }
 
