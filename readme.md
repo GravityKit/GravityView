@@ -15,11 +15,13 @@ The plugin uses [PHPUnit](https://phpunit.de/) as part of the development proces
 ### Acceptance Tests
 
 The plugin uses [Codeception](https://codeception.com/) for acceptance testing. To configure and run tests:
-1. `cd` into the GravityView plugin directory sub-directory `tests/acceptance/docker`
-2. Run `export GRAVITYFORMS_KEY=[YOUR GRAVITY FORMS KEY HERE]`
-3. Run `export GRAVITYVIEW_KEY=[YOUR GRAVITYVIEW KEY HERE]`
-4. Run `export PLUGIN_DIR=[/path/to/gravityview]`
-5. Run `docker-compose run codeception`
+
+1. Install and configure [Docker](https://www.docker.com/)
+2. Configure environment variables by running:
+   - `export GRAVITYFORMS_KEY=[YOUR GRAVITY FORMS KEY HERE]`
+   - `export GRAVITYVIEW_KEY=[YOUR GRAVITYVIEW KEY HERE]`
+   - `export PLUGIN_DIR=[/path/to/gravityview]`
+3. Finally, `cd` to the GravityView plugin directory and run `docker-compose -f tests/acceptance/docker/docker-compose.yml run codeception`
    
 See [Codeception commands reference](https://codeception.com/docs/reference/Commands) for a full list of available flags.
 
