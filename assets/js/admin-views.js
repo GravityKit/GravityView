@@ -831,7 +831,7 @@
 			$( '.gv-dialog:visible' )
 				.find( '.gv-field-details' ).toggleClass( 'gv-field-details--closed', ! show_details ).end()
 				.find( '.gv-field-details--toggle .dashicons' )
-				.toggleClass( 'dashicons-arrow-down', show_details )
+				.toggleClass( 'dashicons-arrow-down', !! show_details )
 				.toggleClass( 'dashicons-arrow-right', ! show_details ).end();
 		},
 
