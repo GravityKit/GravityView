@@ -112,6 +112,7 @@ body .ui-tooltip {
 		background: transparent;
 		border: 1px solid white;
 
+		&.trigger--hover,
 		&:hover {
 			border: 1px solid $color-777;
 			color: $color-111;
@@ -119,6 +120,8 @@ body .ui-tooltip {
 				//display: block!important;
 			}
 		}
+
+		&.trigger--active,
 		&:active {
 			border-color: #32373C;
 			background: rgba(210, 224, 235, .7);
@@ -174,11 +177,6 @@ body .ui-tooltip {
 			height: 24px;
 		}
 
-		// Indent the child fields a bit.
-		&.gv-child-field {
-			display: none!important;
-		}
-
 		&[data-fieldid="all-fields"] {
 			width: 100%;
 			padding-left: 12px!important;
@@ -205,6 +203,7 @@ body .ui-tooltip {
 			}
 		}
 
+		.gv-fields.trigger--hover .dashicons,
 		.gv-fields:hover .dashicons {
 			color: $color-444;
 

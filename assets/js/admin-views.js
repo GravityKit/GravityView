@@ -203,18 +203,33 @@
 
 				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters )
 
+				.on( 'focus', '.gv-add-field', function( e ) {
+					$( this ).parent('.gv-fields').addClass( 'trigger--hover' );
+				})
+
+				.on( 'blur', '.gv-add-field', function( e ) {
+					$( this ).parent('.gv-fields').removeClass( 'trigger--hover' );
+				})
+
+				.on( 'keydown', '.gv-add-field', function( e ) {
+					if ( 13 !== e.keyCode && 32 !== e.keyCode ) {
+						return true;
+					}
+					$( this ).parent( '.gv-fields' ).addClass( 'trigger--active' );
+				})
+
+				.on( 'keyup', '.gv-add-field', function( e ) {
+					if ( 13 !== e.keyCode && 32 !== e.keyCode ) {
+						return true;
+					}
+					$( this ).parent( '.gv-fields' ).removeClass( 'trigger--active' );
+				})
+
 				// Trigger settings setup that have `data-requires` and `data-requires-not` (toggleCheckboxes)
 				.find( '#gravityview_settings' )
 
 				.trigger( 'change' );
 				// End bind to $('body')
-
-			$( '.gv-add-field').on('focus', function() {
-				$( this ).parent('.gv-fields').addClass('focused');
-			}).on('blur', function() {
-				$( this ).parent('.gv-fields').removeClass('focused');
-			});
-
 
 			window.onbeforeunload = function() {
 				return vcfg.hasUnsavedChanges ? true : null;
@@ -1235,11 +1250,10 @@
 
 
 		// tooltips
-
-    remove_tooltips: function (el) {
-      if ($( el || '.gv-add-field' ).is(':ui-tooltip')) {
-      	$( '.gv-add-field' ).tooltip( 'destroy' ).off( 'click' );
-      }
+		remove_tooltips: function ( el ) {
+			if ( $( el || '.gv-add-field' ).is( ':ui-tooltip' ) ) {
+				$( '.gv-add-field' ).tooltip( 'destroy' ).off( 'click' );
+			}
 		},
 
 		init_tooltips: function (el) {
