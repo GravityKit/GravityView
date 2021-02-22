@@ -186,6 +186,13 @@ body .ui-tooltip {
 		}
 	}
 
+	// Indent the child fields a bit.
+	[data-layout="list"] .gv-child-field .gv-field-label {
+		&:before {
+			content: '- ';
+		}
+	}
+
 	.gv-items-picker-container {
 
 		.gv-fields {

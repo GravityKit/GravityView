@@ -26,8 +26,15 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 
 			$field_type_title = GFCommon::get_field_type_title( $this->item['input_type'] );
 
+			if ( ! empty( $this->item['parent'] ) ) {
+				$field_info_items[] = array(
+					'value' => sprintf( esc_html__( 'Parent: %s', 'gravityview' ), esc_attr( $this->item['parent']['label'] ) ),
+				);
+			}
+
 			$field_info_items[] = array(
-				'value' => sprintf( __('Type: %s', 'gravityview'), $field_type_title )
+				'value' => sprintf( __('Type: %s', 'gravityview'), $field_type_title ),
+				'hide_in_picker' => ! empty( $this->item['parent'] ),
 			);
 
 			$field_info_items[] = array(

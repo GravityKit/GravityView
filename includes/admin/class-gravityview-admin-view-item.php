@@ -200,15 +200,8 @@ abstract class GravityView_Admin_View_Item {
 
 		$output .= '<span class="gv-field-controls">' . $settings_link . $this->get_indicator_icons() . '<button class="gv-remove-field" aria-label="' . esc_attr( $delete_title ) . '" title="' . esc_attr( $delete_title ) . '"><span class="dashicons-dismiss dashicons"></span></button></span>';
 
-		$parent_label = '';
-
-    	if ( ! empty( $this->item['parent'] ) ) {
-			$parent_label = ' <small>(' . esc_attr( $this->item['parent']['label'] ) . ')</small>';
-		}
-
 		// Name of field / widget
-		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . esc_attr( sprintf( __( 'Field: %s', 'gravityview' ), $label ) ) . "\n" . $this->get_item_info( false ) . '">' . $field_icon . '<span class="gv-field-label-text-container">' . $label . $parent_label . '</span></span>';
-
+		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . esc_attr( sprintf( __( 'Field: %s', 'gravityview' ), $label ) ) . "\n" . $this->get_item_info( false ) . '">' . $field_icon . '<span class="gv-field-label-text-container">' . $label . '</span></span>';
 
 		// Displays only in the field/widget picker
 		if ( $field_info = $this->get_item_info() ) {
