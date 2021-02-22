@@ -750,7 +750,6 @@ class GravityView_Admin_Views {
 
 		$additional_fields = array(
 			array(
-				'icon' => 'dashicons-plus-alt',
 				'label_text' => __( 'Add All Form Fields', 'gravityview' ),
 				'desc' => __('Insert all the form fields at once.', 'gravityview'),
 				'field_id' => 'all-fields',
@@ -758,7 +757,7 @@ class GravityView_Admin_Views {
 				'input_type' => null,
 				'field_options' => null,
 				'settings_html'	=> null,
-				'icon' => null,
+				'icon' => 'dashicons-plus-alt',
 			)
 		);
 
