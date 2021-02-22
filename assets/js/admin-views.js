@@ -1343,7 +1343,12 @@
 			}
 
 			$tooltip.find( '.gv-fields' ).show().filter( function () {
-				return ! $( this ).find( '.gv-field-label' ).attr( 'data-original-title' ).match( new RegExp( input, 'i' ) );
+
+				var match_title = $( this ).find( '.gv-field-label' ).attr( 'data-original-title' ).match( new RegExp( input, 'i' ) );
+				var match_id    = $( this ).attr( 'data-fieldid' ).match( new RegExp( input, 'i' ) );
+				var match_parent = $( this ).attr( 'data-parent-label' ) ? $( this ).attr( 'data-parent-label' ).match( new RegExp( input, 'i' ) ) : false;
+
+				return ! match_title && ! match_id && ! match_parent;
 			} ).hide();
 
 			if ( ! $tooltip.find( '.gv-fields:visible' ).length ) {
