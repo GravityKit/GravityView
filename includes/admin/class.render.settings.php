@@ -301,9 +301,9 @@ class GravityView_Render_Settings {
 				</section>
 			</div>';
 		} else {
-			$widget_details_content = $item['description'];
-			if( ! empty( $item['subtitle'] ) ) {
-				$widget_details_content .= "\n\n" . $item['subtitle'];
+			$widget_details_content = rgar( $item, 'description', '' );
+			if ( ! empty( $item['subtitle'] ) ) {
+				$widget_details_content .= ( '' !== $widget_details_content ) ? "\n\n" . $item['subtitle'] : $item['subtitle'];
 			}
 
 			// Intentionally not escaping to allow HTML.
