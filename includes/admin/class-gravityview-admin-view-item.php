@@ -173,15 +173,22 @@ abstract class GravityView_Admin_View_Item {
 		$field_icon = '';
 
 		if ( $this->item['icon'] && ! \GV\Utils::get( $this->item, 'parent' ) ) {
+
+			$has_gf_icon = ( false !== strpos( $this->item['icon'], 'gform-icon' ) );
+			$has_dashicon = ( false !== strpos( $this->item['icon'], 'dashicons' ) );
+
 			if ( 0 === strpos( $this->item['icon'], 'data:' ) ) {
 				// Inline icon SVG
 				$field_icon = '<i class="dashicons background-icon" style="background-image: url(\'' . esc_attr( $this->item['icon'] ) . '\');"></i>';
-			} elseif ( false === strpos( $this->item['icon'], 'dashicons' ) ) {
-				// Not dashicon icon
-				$field_icon = '<i class="' . esc_attr( $this->item['icon'] ) . '"></i>';
-			} else {
+			} elseif( $has_gf_icon && gravityview()->plugin->is_GF_25() ) {
+				// Gravity Forms icon font
+				$field_icon = '<i class="gform-icon ' . esc_attr( $this->item['icon'] ) . '"></i>';
+			} elseif( $has_dashicon ) {
 				// Dashicon; prefix with "dashicons"
 				$field_icon = '<i class="dashicons ' . esc_attr( $this->item['icon'] ) . '"></i>';
+			} else {
+				// Not dashicon icon
+				$field_icon = '<i class="' . esc_attr( $this->item['icon'] ) . '"></i>';
 			}
 
 			$field_icon = $field_icon . ' ';
