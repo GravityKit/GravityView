@@ -36,7 +36,8 @@ abstract class GravityView_Field {
 	public $default_search_label;
 
 	/**
-	 * `standard`, `advanced`, `post`, `pricing`, `meta`, `gravityview`
+	 * `standard`, `advanced`, `post`, `pricing`, `meta`, `gravityview`, or `add-ons`
+	 *
 	 * @since 1.15.2
 	 * @type string The group belongs to this field in the field picker
 	 */

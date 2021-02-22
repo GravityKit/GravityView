@@ -8,9 +8,11 @@
 
 class GravityView_Field_Workflow_Step extends GravityView_Field {
 
-	var $name = 'workflow_step';
+	public $name = 'workflow_step';
 
-	var $group = 'meta';
+	public $group = 'add-ons';
+
+	public $icon = 'dashicons-admin-plugins';
 
 	public function __construct() {
 		$this->label = esc_html__( 'Workflow Step', 'gravityview' );

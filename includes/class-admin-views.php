@@ -804,10 +804,10 @@ class GravityView_Admin_Views {
 
 		$entry_default_fields = array();
 
-		// if not zone directory or single
-		if( in_array( $zone, array( 'directory', 'single' ) ) ) {
+		// if in zone directory or single
+		if( in_array( $zone, array( 'directory', 'single' ), true ) ) {
 
-			$meta_fields = GravityView_Fields::get_all( array( 'meta', 'gravityview' ) );
+			$meta_fields = GravityView_Fields::get_all( array( 'meta', 'gravityview', 'add-ons' ) );
 
 			$entry_default_fields = array();
 

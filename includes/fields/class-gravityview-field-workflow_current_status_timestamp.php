@@ -10,13 +10,15 @@ class GravityView_Field_Workflow_Current_Status_Timestamp extends GravityView_Fi
 
 	var $name = 'workflow_current_status_timestamp';
 
-	var $group = 'meta';
+	public $group = 'add-ons';
 
 	var $contexts = array( 'multiple', 'single' );
 
 	var $entry_meta_key = 'workflow_current_status_timestamp';
 
 	var $is_numeric = true;
+
+	var $icon = 'dashicons-admin-plugins';
 
 	public function __construct() {
 		$this->label = esc_html__( 'Workflow Current Status Timestamp', 'gravityview' );
