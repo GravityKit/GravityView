@@ -123,7 +123,7 @@ class GravityView_Render_Settings {
 	/**
 	 * Sort field settings by the `priority` key
 	 *
-	 * Default priority is 1001. Lower is higher.
+	 * Default priority is 10001. Lower is higher.
 	 *
 	 * @since 3.0
 	 * @internal
@@ -133,8 +133,8 @@ class GravityView_Render_Settings {
 	 */
 	static public function _sort_by_priority( $a, $b ) {
 
-		$a_priority = \GV\Utils::get( $a, 'priority', 1001 );
-		$b_priority = \GV\Utils::get( $b, 'priority', 1001 );
+		$a_priority = \GV\Utils::get( $a, 'priority', 10001 );
+		$b_priority = \GV\Utils::get( $b, 'priority', 10001 );
 
 		if ( $a_priority === $b_priority ) {
 			return 0;

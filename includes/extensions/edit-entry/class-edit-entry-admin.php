@@ -189,6 +189,7 @@ class GravityView_Edit_Entry_Admin {
                 'type' => 'checkbox',
                 'label' => __( 'Open link in a new tab or window?', 'gravityview' ),
                 'value' => false,
+                'priority' => 1300,
             );
 
             return $field_options;
