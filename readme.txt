@@ -56,7 +56,7 @@ __Developer Updates:__
 = 2.9.3 on December 15, 2020 =
 
 * Improved: Add search field to the Entry Creator drop-down menu
-Tweak: Hide field icons (for now) when editing a View...until our refreshed design is released 😉
+* Tweak: Hide field icons (for now) when editing a View...until our refreshed design is released 😉
 * Fixed: Some JavaScript warnings on WordPress 5.6
 * Fixed: Uncaught error when one of GravityView's methods is used before WordPress finishes loading
 * Fixed: Duplicate Entry link would only be displayed to users with an administrator role
