@@ -49,6 +49,7 @@ class GravityView_Field_Source_URL extends GravityView_Field {
 			'desc' => __('Customize the link text. If empty, the link text will be the URL.', 'gravityview'),
 			'value' => NULL,
 			'merge_tags' => true,
+			'requires' => 'link_to_source',
 		);
 
 		return $add_options + $field_options;

@@ -47,6 +47,7 @@ class GravityView_Render_Settings {
 					'merge_tags' => true,
 					'class'      => 'widefat',
 					'priority' => 1100,
+					'requires' => 'show_label',
 				),
 				'custom_class' => array(
 					'type'       => 'text',
@@ -71,6 +72,7 @@ class GravityView_Render_Settings {
 					'class' => 'widefat',
 					'value' => 'read',
 					'priority' => 4100,
+					'requires' => 'only_loggedin',
 				),
 			);
 
@@ -258,13 +260,22 @@ class GravityView_Render_Settings {
 				continue;
 			}
 
+			$show_if = '';
+			if( ! empty( $option['requires'] ) ) {
+				$show_if .= sprintf( ' data-requires="%s"', $option['requires'] );
+			}
+
+			if( ! empty( $option['requires_not'] ) ) {
+				$show_if .= sprintf( ' data-requires-not="%s"', $option['requires_not'] );
+			}
+
 			switch( $option['type'] ) {
 				// Hide hidden fields
 				case 'hidden':
 					$field_settings .= '<div class="gv-setting-container gv-setting-container-'. esc_attr( $key ) . ' screen-reader-text">'. $field_output . '</div>';
 					break;
 				default:
-					$field_settings .= '<div class="gv-setting-container gv-setting-container-'. esc_attr( $key ) . '">'. $field_output .'</div>';
+					$field_settings .= '<div class="gv-setting-container gv-setting-container-'. esc_attr( $key ) . '" ' . $show_if . '>'. $field_output .'</div>';
 			}
 		}
 

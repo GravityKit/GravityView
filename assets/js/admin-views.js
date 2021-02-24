@@ -165,7 +165,7 @@
 				.on( 'dblclick', ".gv-fields", vcfg.openFieldSettings )
 
 				// Update checkbox visibility when having dependency checkboxes
-				.on( 'change', ".gv-setting-list, #gravityview_settings", vcfg.toggleCheckboxes )
+				.on( 'change', ".gv-setting-list, #gravityview_settings, .gv-dialog-options", vcfg.toggleCheckboxes )
 
 				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )
 
@@ -223,12 +223,7 @@
 						return true;
 					}
 					$( this ).parent( '.gv-fields' ).removeClass( 'trigger--active' );
-				})
-
-				// Trigger settings setup that have `data-requires` and `data-requires-not` (toggleCheckboxes)
-				.find( '#gravityview_settings' )
-
-				.trigger( 'change' );
+				});
 				// End bind to $('body')
 
 			window.onbeforeunload = function() {
@@ -317,8 +312,38 @@
 		 * @param  {jQuery} e
 		 */
 		toggleCheckboxes: function (  e ) {
-			viewConfiguration.toggleRequired( e.currentTarget, 'requires', false );
-			viewConfiguration.toggleRequired( e.currentTarget, 'requires-not', true );
+
+			var target = e.currentTarget ? e.currentTarget : e;
+
+			viewConfiguration.toggleRequired( target, 'requires', false );
+			viewConfiguration.toggleRequired( target, 'requires-not', true );
+
+			var $parent = $( target ).is( '.gv-fields' ) ? $( target ) : $( target ).parents( '.gv-fields' );
+
+			// "Link to Post" should hide when "Link to single entry" is checked
+			viewConfiguration.toggleDisabled( $( 'input:checkbox[name*=link_to_]', $parent ), $( 'input:checkbox[name*=show_as_link]', $parent ) );
+
+			// "Make Phone Number Clickable" should hide when "Link to single entry" is checked
+			viewConfiguration.toggleDisabled( $( 'input:checkbox[name*=link_phone]', $parent ), $( 'input:checkbox[name*=show_as_link]', $parent ) );
+		},
+
+		/**
+		 * If one setting is enabled, disable the other. Requires the input support `:checked` attribute.
+		 *
+		 * @since 2.10
+		 *
+		 * @param {jQuery} $one
+		 * @param {jQuery} $two
+		 */
+		toggleDisabled: function ( $one, $two ) {
+
+			if ( $one.is( ':checked' ) ) {
+				$two.attr( 'disabled', true );
+			}
+
+			if ( $two.filter(':checked').length > 0 ) {
+				$one.attr( 'disabled', true );
+			}
 		},
 
 		/**
@@ -337,27 +362,29 @@
 			$parent
 				.find( '[data-' + data_attr + ']' )
 				.each( function ()  {
-				var requires = $( this ).data( data_attr ),
-					requires_array = requires.split('='),
-					requires_name = requires_array[0],
-					requires_value = requires_array[1];
+					var requires = $( this ).data( data_attr ),
+						requires_array = requires.split('='),
+						requires_name = requires_array[0],
+						requires_value = requires_array[1];
 
-				var $input = $parent.find(':input[name$="[' + requires_name + ']"]');
+					var $input = $parent.find(':input[name$="[' + requires_name + ']"]');
 
-				if ( $input.is(':checkbox') ) {
-					if ( reverse_logic ) {
-						$(this).toggle( $input.not(':checked') );
-					} else {
-						$(this).toggle( $input.is(':checked') );
+					console.log( { that: $( this ), input: $input } );
+
+					if ( $input.is(':checkbox') ) {
+						if ( reverse_logic ) {
+							$(this).toggle( $input.not(':checked') );
+						} else {
+							$(this).toggle( $input.is(':checked') );
+						}
+					} else if ( requires_value !== undefined ) {
+						if ( reverse_logic ) {
+							$(this).toggle( $input.val() !== requires_value );
+						} else {
+							$(this).toggle( $input.val() === requires_value );
+						}
 					}
-				} else if ( requires_value !== undefined ) {
-					if ( reverse_logic ) {
-						$(this).toggle( $input.val() !== requires_value );
-					} else {
-						$(this).toggle( $input.val() === requires_value );
-					}
-				}
-			});
+				});
 
 		},
 
@@ -794,6 +821,7 @@
 				},
 				open: function () {
 
+					vcfg.toggleCheckboxes( thisDialog );
 					vcfg.setupFieldDetails( thisDialog );
 
 					$( '<div class="gv-overlay" />' ).prependTo( '#wpwrap' );
@@ -1140,7 +1168,7 @@
 		previewTemplate: function ( e ) {
 			e.preventDefault();
 			e.stopImmediatePropagation();
-			var parent = $( event.currentTarget ).parents( ".gv-view-types-module" );
+			var parent = $( e.currentTarget ).parents( ".gv-view-types-module" );
 			parent.find( ".gv-template-preview" ).dialog( {
 				dialogClass: 'wp-dialog gv-dialog',
 				appendTo: $( "#gravityview_select_template" ),
@@ -1838,59 +1866,11 @@
 			// If coming from the openFieldSettings method, we need a different parent
 			var $parent = $( e.currentTarget ).is( '.gv-fields' ) ? $( e.currentTarget ) : $( e.currentTarget ).parents( '.gv-fields' );
 
-			// Custom Label should show only when "Show Label" checkbox is checked
-			vcfg.toggleVisibility( $( 'input:checkbox[name*=show_label]', $parent ), $( '[name*=custom_label]', $parent ), first_run );
-
-			// Toggle Email fields
-			vcfg.toggleVisibility( $( 'input:checkbox[name*=emailmailto]', $parent ), $( '[name*=emailsubject],[name*=emailbody]', $parent ), first_run );
-
-			// Toggle Source URL fields
-			vcfg.toggleVisibility( $( 'input:checkbox[name*=link_to_source]', $parent ), $( '[name*=source_link_text]', $parent ), first_run );
-
-			// Other Entries "Hide if no entries"
-			vcfg.toggleVisibility( $( 'input:checkbox[name*=no_entries_hide]', $parent ), $( '[name*=no_entries_text]', $parent ), first_run, true );
-
 			$( ".gv-setting-list", $parent ).trigger( 'change' );
 
 			$( 'input:checkbox', $parent ).attr( 'disabled', null );
 
-			// "Link to Post" should hide when "Link to single entry" is checked
-			vcfg.toggleDisabled( $( 'input:checkbox[name*=link_to_]', $parent ), $( 'input:checkbox[name*=show_as_link]', $parent ) );
-
-			// "Make Phone Number Clickable" should hide when "Link to single entry" is checked
-			vcfg.toggleDisabled( $( 'input:checkbox[name*=link_phone]', $parent ), $( 'input:checkbox[name*=show_as_link]', $parent ) );
-
-			// Link to single entry should be disabled when Make Phone Number Clickable is checked
-			if ( $( 'input:checkbox[name*=link_phone]', $parent ).is( ':checked' ) ) {
-				$( 'input:checkbox[name*=show_as_link]', $parent ).attr( 'disabled', true );
-			} else if ( $( 'input:checkbox[name*=show_as_link]', $parent ).is( ':checked' ) ) {
-				// Link to Make Phone Number Clickable should be disabled when Link to single entry is checked
-				$( 'input:checkbox[name*=link_phone]', $parent ).attr( 'disabled', true );
-			}
-
-			// Logged in capability selector should only show when Logged In checkbox is checked
-			vcfg.toggleVisibility( $( 'input:checkbox[name*=only_loggedin]', $parent ), $( '[name*=only_loggedin_cap]', $parent ), first_run );
-
 			vcfg.hasUnsavedChanges = true;
-		},
-
-		/**
-		 * If one setting is enabled, disable the other. Requires the input support `:checked` attribute.
-		 *
-		 * @since 2.10
-		 *
-		 * @param {jQuery} $one
-		 * @param {jQuery} $two
-		 */
-		toggleDisabled: function ( $one, $two ) {
-
-			if ( $one.is( ':checked' ) ) {
-				$two.attr( 'disabled', true );
-			}
-
-			if ( $two.filter(':checked').length > 0 ) {
-				$one.attr( 'disabled', true );
-			}
 		},
 
 		/**
