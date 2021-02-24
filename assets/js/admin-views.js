@@ -2057,7 +2057,7 @@
 
 						// Continue submitting the form, since we preventDefault() above
 						if ( 'click' === e.type ) {
-							$target.click();
+							$target.trigger( 'click' );
 						} else {
 							$('#post').trigger('submit');
 						}
