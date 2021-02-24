@@ -1941,10 +1941,10 @@
 			// If the View isn't a Start Fresh view, we just return true
 			// so that the click on the Publish button can process.
 			if ( !vcfg.startFreshStatus || templateId === '' ) {
+				vcfg.hasUnsavedChanges = false;
 
 				// Serialize the inputs so that `max_input_vars`
 				return vcfg.serializeForm( e );
-
 			}
 
 			return false;
