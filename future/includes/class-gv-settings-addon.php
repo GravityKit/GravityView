@@ -877,22 +877,27 @@ HTML;
 
 		$styles = parent::styles();
 
+		$deps = array(
+				'gform_admin',
+				'gaddon_form_settings_css',
+				'gform_font_awesome',
+		);
+
+		if( ! gravityview()->plugin->is_GF_25() ) {
+			$deps[] = 'gform_tooltip';
+		}
+
 		$styles[] = array(
 				'handle'  => 'gravityview_settings',
 				'src'     => plugins_url( 'assets/css/admin-settings.css', GRAVITYVIEW_FILE ),
 				'version' => Plugin::$version,
-				'deps'    => array(
-						'gform_admin',
-						'gaddon_form_settings_css',
-						'gform_tooltip',
-						'gform_font_awesome',
-				),
 				'enqueue' => array(
 						array(
 								'admin_page' => array(
 										'app_settings',
 								),
 						),
+			'deps'    => $deps,
 				),
 		);
 
