@@ -24,7 +24,20 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Added: A dropdown in the "All Views" screen to filter Views by the layout (Table, List, DataTables, DIY, Map, etc.)
+* Added: Show a notice when "Show only approve entries" setting is enabled for a View and no entries are displayed because of the setting
+* Added: Warning when leaving Edit View screen if there are unsaved changes
+* Fixed: Updating an entry associated with an unactivated user (Gravity Forms User Registration) would also change entry creator's information
+* Fixed: PHP warning `The magic method must have public visibility` appearing in PHP 8.0
 * Fixed: PHP notice `Undefined property: stdClass::$icons` appearing on Plugins page
+* Fixed: We set the date of the last release as January 2020. Don't fear: the year is 2021!
+
+__Developer Updates:__
+
+* Modified: `$_GET` args are now passed to links by default.
+	* Added: Prevent entry links (single, edit, delete, duplicate) from including $_GET query args by returning false to the filter `gravityview/entry_link/add_query_args`
+* Added: `gv_get_query_args()` function to return $_GET query args, with reserved args removed
+	* Added: `gravityview/api/reserved_query_args` filter to modify internal reserved URL query args
+* Modified: `templates/fields/field-entry_link-html.php` template to add `gv_get_query_args()` functionality
 
 __Developer Updates:__
 
@@ -43,19 +56,28 @@ __Developer Updates:__
 = 2.9.3 on December 15, 2020 =
 
 * Improved: Add search field to the Entry Creator drop-down menu
-Tweak: Hide field icons (for now) when editing a View...until our refreshed design is released 😉
+* Tweak: Hide field icons (for now) when editing a View...until our refreshed design is released 😉
 * Fixed: Some JavaScript warnings on WordPress 5.6
-* Fixed: Duplicate Entry field doesn't appear for users with custom roles
-* Fixed: Search entries by Payment Date would not yield results
 * Fixed: Uncaught error when one of GravityView's methods is used before WordPress finishes loading
 * Fixed: Duplicate Entry link would only be displayed to users with an administrator role
+* Fixed: Search entries by Payment Date would not yield results
+* Fixed: Lightbox didn't work with secure images
+* New: New lightbox gallery mode for File Upload fields with Multi-File Upload enabled
 
 __Developer Updates:__
 
+* New: FancyBox is now being used for the lightbox
+	- Thickbox is no longer used
+	- Modify settings using `gravityview/lightbox/provider/fancybox/settings`
+	- [See options available here](https://fancyapps.com/fancybox/3/docs/#options)
+	- If you prefer, a [Featherlight lightbox option is available](https://github.com/gravityview/gv-snippets/tree/addon/featherlight-lightbox)
+* Modified: Formally deprecated `gravity_view_lightbox_script` and `gravity_view_lightbox_style` filters
+* Fixed: `gravityview_lightbox_script` filter wasn't being applied
+* Removed `gravityview/fields/fileupload/allow_insecure_lightbox` filter, since it's no longer needed
 * Added: `gravityview/search-trim-input` filter to strip or preserve leading/trailing whitespaces in Search Bar values
 * Added: Future WordPress version compatibility check
-* Tweak: Improved logging output
 * Modified: `gravityview_date_created_adjust_timezone` default is now set to false (use UTC value)
+* Tweak: Improved logging output
 
 = 2.9.2.1 on October 26, 2020 =
 
@@ -714,7 +736,7 @@ __Developer Notes__
 
 = Version 2.0 on May 8, 2018 =
 
-We are proud to share this release with you: we have been working on this release since 2016, and although most of the changes won’t be seen, GravityView has a brand-new engine that will power the plugin into the future! 🚀
+We are proud to share this release with you: we have been working on this release since 2016, and although most of the changes won’t be seen, GravityView has a brand-new engine that will power the plugin into the future! ��
 \- Zack with GravityView
 
 ---
@@ -749,7 +771,7 @@ This release is the biggest ever for developers! Even so, we have taken great ca
 * When HTML 5 is enabled in Gravity Forms, now the Search All field will use `type="search"`
 * _Countless_ new filters and actions! Additional documentation will be coming, both on [docs.gravityview.co](https://docs.gravityview.co) as well as [codex.gravityview.co](https://codex.gravityview.co).
 
-A special thanks to [Gennady](https://codeseekah.com) for your tireless pursuit of better code, insistence on backward compatibility, and your positive attitude. 👏
+A special thanks to [Gennady](https://codeseekah.com) for your tireless pursuit of better code, insistence on backward compatibility, and your positive attitude. ��
 
 = 1.22.6 on April 4, 2018 =
 
@@ -811,7 +833,7 @@ __Developer Updates:__
 
 = 1.22.1 on November 29, 2017 =
 
-* Moved "Custom Content" field to top of field picker, in what Rafael calls the "Best idea of 2017 🏆"
+* Moved "Custom Content" field to top of field picker, in what Rafael calls the "Best idea of 2017 �""
 * Added: When Gravity Forms 2.3 is released, support for "Random" entry order will be enabled
 * Fixed: Entry oEmbeds not working when using "Plain" URL formats to embed
 * Fixed: Only published Views showing in Gravity Forms "Connected Views" menu
@@ -904,7 +926,7 @@ __Developer Updates:__
 
 = 1.21.1 on March 30, 2017 =
 
-* Fixed: Advanced Filters no longer filtered 😕
+* Fixed: Advanced Filters no longer filtered ��
 * Fixed: Fatal error when viewing Single Entry with a Single Entry Title setting that included Merge Tags
 * Fixed: Cache wasn't cleared when an entry was created using Gravity Forms API (thanks Steve with Gravity Flow!)
 
@@ -971,9 +993,9 @@ __Developer Notes:__
 * Fixed: WPML conflict where Single Entry or Edit Entry screens are inaccessible
 * Fixed: Prevent PHP error when displaying GravityView using `get_gravityview()`
 * Updated translations:
-    - 🇩🇰 Danish *100% translated*
-    - 🇳🇴 Norwegian *100% translated*
-    - 🇸🇪 Swedish translation updated
+    - �� Danish *100% translated*d*
+    - �� Norwegian *100% translated*d*
+    - �� Swedish translation updateded
 
 __Developer Notes: __
 
@@ -992,11 +1014,11 @@ First update of 2017! We've got great things planned for GravityView and our Ext
 * Fixed: The `[gravityview]` shortcode would not be parsed properly due to HTML encoding when using certain page builders, including OptimizePress
 * Fixed: Potential errors when non-standard form fields are added to Edit Entry configurations ("Creating default object from empty value" and "Cannot use object of type stdClass as array")
 * Updated translations:
-    - 🇨🇳 Chinese *100% translated* (thank you, Michael Edi!)
-    - 🇫🇷 French *100% translated*
-    - 🇧🇷 Brazilian Portuguese *100% translated* (thanks, Rafael!)
-    - 🇳🇱 Dutch translation updated (thank you, Erik van Beek!)
-    - 🇸🇪 Swedish translation updated
+    - �� Chinese *100% translated* (thank you, Michael Edi!)!)
+    - �� French *100% translated*d*
+    - �� Brazilian Portuguese *100% translated* (thanks, Rafael!)!)
+    - �� Dutch translation updated (thank you, Erik van Beek!)!)
+    - �� Swedish translation updateded
     - Updated Spanish (Spain + Mexican) and German (`de` + `de_DE`) with each other
 
 __Developer Notes:__

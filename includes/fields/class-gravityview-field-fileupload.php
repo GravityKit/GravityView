@@ -17,7 +17,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 	var $group = 'advanced';
 
-	var $icon = 'dashicons-paperclip';
+	var $icon = 'dashicons-upload';
 
 	public function __construct() {
 		$this->label = esc_html__( 'File Upload', 'gravityview' );
@@ -302,29 +302,15 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 				unset( $gv_entry );
 
-				/**
-				 * @filter `gravityview/fields/fileupload/allow_insecure_lightbox` Allow insecure links to be shown for the lighbox.
-				 * Thickbox doesn't work with secure URLs :(
-				 * @param[in,out] bool True or not. DANGER! DANGER! Default: false! Override at your own RISK!!!
-				 * @param array $field_settings The field settings.
-				 * @param \GV\Template_Context $context The context.
-				 */
-				$override_security = apply_filters( 'gravityview/fields/fileupload/allow_insecure_lightbox', false, $file_path, $field_settings, $context );
-
-				if ( $lightbox && empty( $field_settings['show_as_link'] ) && ( ! $is_secure || $override_security ) ) {
+				if ( $lightbox && empty( $field_settings['show_as_link'] ) ) {
 					$lightbox_link_atts = array(
 						'rel'   => sprintf( "%s-%s", $gv_class, $entry_slug ),
-						'class' => 'thickbox',
+						'class' => '',
 					);
 
 					$lightbox_link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', $lightbox_link_atts, $field_compat, $context );
 
-					if ( $override_security ) {
-						$image_atts['src'] = $insecure_file_path;
-						$image = new GravityView_Image( $image_atts );
-						$file_path = $insecure_file_path;
-						// :( a kitten died somewhere
-					}
+					$image = new GravityView_Image( $image_atts );
 
 					$rendered = gravityview_get_link( $file_path, $image->html(), $lightbox_link_atts );
 				} else {
@@ -388,11 +374,12 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		/**
 		 * @filter `gravityview/fields/fileupload/files_array` Modify the files array
 		 * @since 1.7
-		 * @param array $output_arr Associative array of files \n
-		 *  @type string $file_path The path to the file as stored in Gravity Forms \n
-		 *  @type string $content The generated output for the file \n
-		 * @param array $field_compat Current GravityView field array
-		 * @since 2.0
+		 * @since 2.0 Added $context
+		 * @param array $output_arr Associative array of files. {
+		 *  @type string $file_path The path to the file as stored in Gravity Forms.
+		 *  @type string $content The generated output for the file.
+		 * }
+		 * @param array $field_compat Current GravityView field array.
 		 * @param \GV\Template_Context $context The context.
 		 */
 		$output_arr = apply_filters( 'gravityview/fields/fileupload/files_array', $output_arr, $field_compat, $context );

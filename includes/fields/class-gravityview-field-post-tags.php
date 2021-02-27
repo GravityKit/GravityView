@@ -20,6 +20,8 @@ class GravityView_Field_Post_Tags extends GravityView_Field {
 
 	var $group = 'post';
 
+	var $icon = 'dashicons-tag';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Post Tags', 'gravityview' );
 		parent::__construct();

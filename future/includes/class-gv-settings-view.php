@@ -392,6 +392,10 @@ class View_Settings extends Settings {
 						'1' => __( 'Redirect to Multiple Entries', 'gravityview' ),
 						'2' => __( 'Redirect to URL', 'gravityview' ),
 					),
+					'article'           => array(
+						'id' => '5e9a3e0c2c7d3a7e9aeb2efb',
+						'url' => 'https://docs.gravityview.co/article/707-view-settings-redirect-after-editing',
+					),
 				),
 				'edit_return_context' => array(
 					'label'             => __( 'Editing Returns To&hellip;', 'gravityview' ),
@@ -558,7 +562,7 @@ class View_Settings extends Settings {
 			}
 			return $defaults;
 
-			// But sometimes, we want all the details.
+		// But sometimes, we want all the details.
 		} else {
 			foreach ( $default_settings as $key => $value ) {
 

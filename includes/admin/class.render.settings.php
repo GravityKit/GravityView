@@ -38,27 +38,32 @@ class GravityView_Render_Settings {
 					'type' => 'checkbox',
 					'label' => __( 'Show Label', 'gravityview' ),
 					'value' => ! empty ( $is_table_layout ),
+					'priority' => 1000,
 				),
 				'custom_label' => array(
 					'type' => 'text',
 					'label' => __( 'Custom Label:', 'gravityview' ),
 					'value' => '',
-					'class'      => 'widefat',
 					'merge_tags' => true,
+					'class'      => 'widefat',
+					'priority' => 1100,
+					'requires' => 'show_label',
 				),
 				'custom_class' => array(
-					'type' => 'text',
-					'label' => __( 'Custom CSS Class:', 'gravityview' ),
-					'desc' => __( 'This class will be added to the field container', 'gravityview'),
-					'value' => '',
+					'type'       => 'text',
+					'label'      => __( 'Custom CSS Class:', 'gravityview' ),
+					'desc'       => __( 'This class will be added to the field container', 'gravityview' ),
+					'value'      => '',
 					'merge_tags' => true,
-					'tooltip' => 'gv_css_merge_tags',
+					'tooltip'    => 'gv_css_merge_tags',
 					'class'      => 'widefat code',
+					'priority' => 5000,
 				),
 				'only_loggedin' => array(
 					'type' => 'checkbox',
 					'label' => __( 'Make visible only to logged-in users?', 'gravityview' ),
-					'value' => ''
+					'value' => '',
+					'priority' => 4000,
 				),
 				'only_loggedin_cap' => array(
 					'type' => 'select',
@@ -66,6 +71,8 @@ class GravityView_Render_Settings {
 					'options' => self::get_cap_choices( $template_id, $field_id, $context, $input_type ),
 					'class' => 'widefat',
 					'value' => 'read',
+					'priority' => 4100,
+					'requires' => 'only_loggedin',
 				),
 			);
 
@@ -77,9 +84,15 @@ class GravityView_Render_Settings {
 					'desc' => __( 'Leave blank for column width to be based on the field content.', 'gravityview'),
 					'class' => 'code widefat',
 					'value' => '',
+					'priority' => 200,
 				);
 			}
 
+		}
+
+		// Remove suffix ":" from the labels to standardize style. Using trim() instead of rtrim() for i18n.
+		foreach ( $field_options as $key => $field_option ) {
+			$field_options[ $key ]['label'] = trim( $field_options[ $key ]['label'], ':' );
 		}
 
 		/**
@@ -104,7 +117,32 @@ class GravityView_Render_Settings {
 		 */
 		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
+		uasort( $field_options, array( __CLASS__, '_sort_by_priority' ) );
+
 		return $field_options;
+	}
+
+	/**
+	 * Sort field settings by the `priority` key
+	 *
+	 * Default priority is 10001. Lower is higher.
+	 *
+	 * @since 3.0
+	 * @internal
+	 *
+	 * @param array $a
+	 * @param array $b
+	 */
+	static public function _sort_by_priority( $a, $b ) {
+
+		$a_priority = \GV\Utils::get( $a, 'priority', 10001 );
+		$b_priority = \GV\Utils::get( $b, 'priority', 10001 );
+
+		if ( $a_priority === $b_priority ) {
+			return 0;
+		}
+
+		return ( $a_priority < $b_priority ) ? - 1 : 1;
 	}
 
 	/**
@@ -182,31 +220,35 @@ class GravityView_Render_Settings {
 		$name_prefix = $field_type .'s' .'['. $area .']['. $uniqid .']';
 
 		// build output
-		$output = '';
-		$output .= '<input type="hidden" class="field-key" name="'. $name_prefix .'[id]" value="'. esc_attr( $field_id ) .'">';
-		$output .= '<input type="hidden" class="field-label" name="'. $name_prefix .'[label]" value="'. esc_attr( $field_label ) .'">';
+		$hidden_fields  = '<input type="hidden" class="field-key" name="'. $name_prefix .'[id]" value="'. esc_attr( $field_id ) .'">';
+		$hidden_fields .= '<input type="hidden" class="field-label" name="'. $name_prefix .'[label]" value="'. esc_attr( $field_label ) .'">';
+
+		$form_title = '';
 		if ( $form_id ) {
-			$output .= '<input type="hidden" class="field-form-id" name="'. $name_prefix .'[form_id]" value="'. esc_attr( $form_id ) .'">';
+			$hidden_fields .= '<input type="hidden" class="field-form-id" name="'. $name_prefix .'[form_id]" value="'. esc_attr( $form_id ) .'">';
+			$form = GVCommon::get_form( $form_id );
+			$form_title = $form['title'];
 		}
 
 		// If there are no options, return what we got.
 		if(empty($options)) {
-
-			// This is here for checking if the output is empty in render_label()
-			$output .= '<!-- No Options -->';
-
-			return $output;
+			return $hidden_fields . '<!-- No Options -->'; // The HTML comment is here for checking if the output is empty in render_label()
 		}
 
-		$output .= '<div class="gv-dialog-options" title="'. esc_attr( sprintf( __( 'Options: %s', 'gravityview' ) , strip_tags( html_entity_decode( $field_label ) ) ) ) .'">';
+		$settings_title = esc_attr( sprintf( __( '%s Settings', 'gravityview' ) , strip_tags( html_entity_decode( $field_label ) ) ) );
 
-		/**
-		 * @since 1.8
-		 */
-		if( !empty( $item['subtitle'] ) ) {
-			$output .= '<div class="subtitle">' . $item['subtitle'] . '</div>';
+		$field_details = '';
+
+		// Get the pretty name for the input type
+		$gv_field = GravityView_Fields::get( $input_type );
+
+		if( $gv_field ) {
+			$input_type_label = $gv_field->label;
+		} else {
+			$input_type_label = $input_type;
 		}
 
+		$field_settings = '';
 		foreach( $options as $key => $option ) {
 
 			$value = isset( $current[ $key ] ) ? $current[ $key ] : NULL;
@@ -218,18 +260,93 @@ class GravityView_Render_Settings {
 				continue;
 			}
 
+			$show_if = '';
+			if( ! empty( $option['requires'] ) ) {
+				$show_if .= sprintf( ' data-requires="%s"', $option['requires'] );
+			}
+
+			if( ! empty( $option['requires_not'] ) ) {
+				$show_if .= sprintf( ' data-requires-not="%s"', $option['requires_not'] );
+			}
+
 			switch( $option['type'] ) {
 				// Hide hidden fields
 				case 'hidden':
-					$output .= '<div class="gv-setting-container gv-setting-container-'. esc_attr( $key ) . ' screen-reader-text">'. $field_output . '</div>';
+					$field_settings .= '<div class="gv-setting-container gv-setting-container-'. esc_attr( $key ) . ' screen-reader-text">'. $field_output . '</div>';
 					break;
 				default:
-					$output .= '<div class="gv-setting-container gv-setting-container-'. esc_attr( $key ) . '">'. $field_output .'</div>';
+					$field_settings .= '<div class="gv-setting-container gv-setting-container-'. esc_attr( $key ) . '" ' . $show_if . '>'. $field_output .'</div>';
 			}
 		}
 
-		// close options window
-		$output .= '</div>';
+		$item_details = '';
+		$subtitle = '';
+
+		if( 'field' === $field_type ) {
+			$subtitle = ! empty( $item['subtitle'] ) ? '<div class="subtitle">' . $item['subtitle'] . '</div>' : '';
+
+			$item_details .= '
+			<div class="gv-field-details--container">
+				<label class="gv-field-details--toggle">' . esc_html__( 'Field Details', 'gravityview' ) .' <i class="dashicons dashicons-arrow-down"></i></label>
+				<section class="gv-field-details gv-field-details--closed">';
+
+				if ( $field_id && is_numeric( $field_id ) ) {
+				$item_details .= '
+					<div class="gv-field-detail gv-field-detail--field">
+						<span class="gv-field-detail--label">' . esc_html__( 'Field ID', 'gravityview' ) .'</span><span class="gv-field-detail--value">#{{field_id}}</span>
+					</div>';
+			    }
+
+				$item_details .= '
+					<div class="gv-field-detail gv-field-detail--type">
+						<span class="gv-field-detail--label">' . esc_html_x( 'Type', 'The type of field being configured (eg: "Single Line Text")', 'gravityview' ) .'</span><span class="gv-field-detail--value">{{input_type_label}}</span>
+					</div>';
+
+				if( $form_id ) {
+					$item_details .= '
+					<div class="gv-field-detail gv-field-detail--form">
+						<span class="gv-field-detail--label">' . esc_html__( 'Form', 'gravityview' ) .'</span><span class="gv-field-detail--value">{{form_title}} (#{{form_id}})</span>
+					</div>';
+				}
+				$item_details .= '
+				</section>
+			</div>';
+		} else {
+			$widget_details_content = rgar( $item, 'description', '' );
+			if ( ! empty( $item['subtitle'] ) ) {
+				$widget_details_content .= ( '' !== $widget_details_content ) ? "\n\n" . $item['subtitle'] : $item['subtitle'];
+			}
+
+			// Intentionally not escaping to allow HTML.
+			$item_details = '<div class="gv-field-details--container">' . wpautop( trim( $widget_details_content ) ) . '</div>';
+		}
+
+$template = <<<EOD
+		<div class="gv-dialog-options" title="{{settings_title}}">
+			{{item_details}}
+			{{subtitle}}
+			{{field_settings}}
+			{{hidden_fields}}
+		</div>
+EOD;
+
+		$output = $template;
+
+		$replacements = array(
+			'settings_title',
+			'hidden_fields',
+			'subtitle',
+			'field_settings',
+			'item_details',
+			'input_type_label',
+			'field_id',
+			'form_title',
+			'form_id',
+		);
+
+		foreach ( $replacements as $replacement ) {
+			$output = str_replace( '{{' . $replacement . '}}', ${$replacement}, $output );
+		}
 
 		return $output;
 

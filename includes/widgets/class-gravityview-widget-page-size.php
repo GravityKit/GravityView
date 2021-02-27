@@ -9,6 +9,8 @@ namespace GV\Widgets;
  */
 class Page_Size extends \GV\Widget {
 
+	public $icon = 'dashicons-admin-settings';
+
 	/**
 	 * Does this get displayed on a single entry?
 	 * @var boolean

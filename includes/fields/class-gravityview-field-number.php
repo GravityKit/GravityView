@@ -24,6 +24,8 @@ class GravityView_Field_Number extends GravityView_Field {
 
 	var $group = 'standard';
 
+	var $icon = 'dashicons-editor-ol';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Number', 'gravityview' );
 		parent::__construct();

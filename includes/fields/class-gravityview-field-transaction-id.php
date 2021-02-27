@@ -20,6 +20,8 @@ class GravityView_Field_Transaction_ID extends GravityView_Field {
 
 	var $_custom_merge_tag = 'transaction_id';
 
+	var $icon = 'dashicons-cart';
+
 	/**
 	 * GravityView_Field_Payment_Amount constructor.
 	 */

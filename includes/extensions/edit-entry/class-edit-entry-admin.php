@@ -80,7 +80,7 @@ class GravityView_Edit_Entry_Admin {
         if( $zone !== 'edit' ) {
 
             $entry_default_fields['edit_link'] = array(
-                'label' => __('Edit Entry', 'gravityview'),
+                'label' => __('Link to Edit Entry', 'gravityview'),
                 'type' => 'edit_link',
                 'desc'	=> __('A link to edit the entry. Visible based on View settings.', 'gravityview'),
                 'icon' => 'dashicons-welcome-write-blog',
@@ -141,7 +141,7 @@ class GravityView_Edit_Entry_Admin {
             'type' => 'text',
             'label' => __( 'Edit Link Text', 'gravityview' ),
             'desc' => NULL,
-            'value' => __('Edit Entry', 'gravityview'),
+            'value' => __('Link to Edit Entry', 'gravityview'),
             'merge_tags' => true,
         );
 
@@ -189,6 +189,7 @@ class GravityView_Edit_Entry_Admin {
                 'type' => 'checkbox',
                 'label' => __( 'Open link in a new tab or window?', 'gravityview' ),
                 'value' => false,
+                'priority' => 1300,
             );
 
             return $field_options;

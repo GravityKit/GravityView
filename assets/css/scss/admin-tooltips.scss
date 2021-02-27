@@ -16,8 +16,12 @@
 		font: normal normal normal 14px/1 FontAwesome;
 		content: "\f059";
 	}
-
-	margin-left: 0;
+	display: inline-block;
+	text-align: center;
+	border-radius: 100px;
+	padding: .2rem;
+	margin: 0 2px 0 0;
+	height: 16px;
 	width: 16px;
 	text-decoration: none;
 	color: #424242;
@@ -25,24 +29,25 @@
 	filter: alpha(opacity=50);
 	opacity: 0.5;
 	border: none;
+	cursor: help;
 }
+
 
 
 /** tooltips for fields + widgets */
 
 $tooltip_background: #eee;
 
-body .ui-tooltip.ui-widget-content {
-	padding: 8px;
+body .ui-tooltip {
+	padding: 0;
 	position:absolute;
-	width: 400px;
-	font-size: 14px;
-	line-height: 18.2px;
+	width: 460px;
 	max-width: 100%; // Resize for responsive, if necessary
 	z-index: 999999!important; // Gravity Forms tooltips - need to make sure they're higher z-index to be above the field settings
-	background: $tooltip_background;
-	border-radius: 4px;
-	box-shadow: 0 0 5px #aaa;
+	background: white; //$tooltip_background;
+	border: 1px solid #e2e4e7;
+	box-shadow: 0 3px 30px rgba(25, 30, 35, 0.1);
+	font-size: 1em;
 
 	// Fixes https://github.com/gravityview/GravityView/issues/1416
 	overflow-y: hidden;
@@ -50,15 +55,6 @@ body .ui-tooltip.ui-widget-content {
 	// Fix issue in Gravity Forms tooltips with line breaks
 	br { display: none; }
 
-	// Keep Gravity Forms < 2.5 styling for now
-	color: #191e23; // Looks better than #000
-	text-shadow: 1px 1px 1px #fff;
-	border: 4px solid #999;
-	text-align: left;
-
-	h6 {
-		color: #0e6085;
-	}
 }
 /* Fades and background-images don't work well together in IE6, drop the image */
 * html .ui-tooltip {
@@ -66,83 +62,308 @@ body .ui-tooltip.ui-widget-content {
 }
 
 .ui-tooltip-content {
-	padding: 0 10px;
-	max-height: 325px;
+
+	padding: 20px;
+	color: $color-444;
+
+	h6 {
+		font-size: 17px;
+		color: $color-444;
+	}
+
+	p {
+		font-size: 14px;
+	}
+
+	.gravityview-item-picker-tooltip & {
+		padding: 0;
+	}
+
+	max-height: 500px;
 	overflow-y: auto;
+	position: relative;
 
 	&:after {
-	  content: "";
-	  display: table;
-	  clear: both;
+		content: "";
+		display: table;
+		clear: both;
 	}
 
 	.close {
-		position: absolute;
-		padding: 5px;
-		top: -25px;
-		left: -25px;
-		cursor: pointer;
-	}
-	.close i {
-		font-size: 25px;
-		color: #555;
-
-		&:hover,
-		&:active {
-			color: #000;
-		}
+		display: none;
 	}
 
 	.gv-field-controls {
 		display: none;
 	}
 
+	div[role=listbox] {
+		padding: 8px;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: space-around;
+	}
+
+	[data-cols="2"] .gv-fields {
+		width: 50%;
+	}
+
 	.gv-fields {
+		background: transparent;
+		border: 1px solid white;
+
+		&.trigger--hover,
+		&:hover {
+			border: 1px solid $color-777;
+			color: $color-111;
+			.gv-field-info {
+				//display: block!important;
+			}
+		}
+
+		&.trigger--active,
+		&:active {
+			border-color: #32373C;
+			background: rgba(210, 224, 235, .7);
+		}
+
 		cursor: pointer;
 		border-radius: 4px;
 		padding: .5em .75em;
+		margin-bottom: 10px;
+		width: 50%;
 
-		// Indent the child fields a bit.
-		&.gv-child-field {
-			width: 95%;
-			margin-left: 5%;
+		text-align: center;
+
+		h5 {
+			float: none;
+			width: 100%;
+			font-weight: normal;
+			text-align: center;
 		}
 
+		.gv-field-info {
+			text-align: center;
+			display: block;
+			font-weight: normal;
+			color: #999;
+			text-shadow: none;
+			margin-top: .5rem;
+
+			span {
+				&:after {
+					content: ", ";
+				}
+
+				&.gv-sublabel,
+				&:last-child {
+					@extend %clearfix;
+				}
+			}
+		}
+		.gv-field-label {
+			display: block;
+			width: 100%;
+			margin-bottom: 0;
+		}
+
+		.dashicons,
+		.material-icons {
+			display: block;
+			text-align: center;
+			margin: 0 auto 10px;
+			font-size: 24px;
+			width: 24px;
+			height: 24px;
+		}
+
+		&[data-fieldid="all-fields"] {
+			width: 100%;
+			padding-left: 12px!important;
+			* {
+				text-align: center!important;
+			}
+		}
+	}
+
+	// Indent the child fields a bit.
+	[data-layout="list"] .gv-child-field .gv-field-label {
+		&:before {
+			content: '- ';
+		}
+	}
+
+	.gv-items-picker-container {
+
+		.gv-fields {
+			padding: 16px 12px;
+		}
+
+		.dashicons {
+			display: inline-block;
+			margin: 0 .2em 0 0;
+			color: $color-666;
+			width: .9em;
+
+			&.background-icon {
+				filter: brightness(1);
+			}
+		}
+
+		.gv-fields.trigger--hover .dashicons,
+		.gv-fields:hover .dashicons {
+			color: $color-444;
+
+			&.background-icon {
+				filter: brightness(.666);
+			}
+		}
+	}
+
+	.gv-items-picker-container[data-layout="list"] {
+		.gv-fields {
+			width: 100%;
+			min-height: 36px;
+			font-size: 13px;
+			padding: 8px 12px 6px (36px + 12px);
+			margin: 0;
+			line-height: 24px;
+			* {
+				text-align: left;
+			}
+		}
+
+		.dashicons {
+			margin: 0 8px 0 -36px;
+		}
+
+		.gv-field-info {
+			display: none;
+		}
+
+		&.gv-widget-picker-container {
+
+			* {
+				text-align: center;
+			}
+
+			.dashicons {
+				display: block;
+				font-size: 30px;
+				width: 28px;
+				height: 32px;
+				line-height: 32px;
+				float: none;
+				margin: 0 auto 6px auto!important;
+				padding: 0;
+			}
+
+			.gv-fields {
+				width: 50%;
+				padding: 16px 12px;
+				line-height: 1.25em;
+				h5 {
+					font-weight: 500;
+				}
+			}
+			.gv-field-info {
+				display: block;
+				margin: .25em 0 0 0;
+			}
+		}
 	}
 
 	.gv-field-filter-form {
+		z-index: 10000;
+		position: sticky;
+		top: 0;
+		width: 460px;
+		background: $color-light-grey-150;
+		margin: 0;
+		padding: 16px;
+		box-sizing: border-box;
+
+		border-bottom: 1px solid $color-gf-eee;
+		background-color: $color-gf-fff;
+
+		border-bottom-left-radius: 6px;
+		border-bottom-right-radius: 6px;
+
 		input {
+			top: 0;
+			left: 0;
+			width: 75%;
 			height: 2.5em;
+			padding-left: 30px;
+			display: inline-block;
+			line-height: 1em;
+
+			&::placeholder,
+			&:placeholder-shown {
+				line-height: 2.5em;
+			}
 		}
-		margin: 0 0 1em 0;
-		padding-bottom: 1em;
-		border-bottom: 1px solid rgba(204, 204, 204, .6 );
+
+		&:before {
+			font-family: Dashicons, sans-serif;
+			content: "\f179";
+			display: block;
+			height: 26px;
+			width: 26px;
+			margin-left: 3px;
+			line-height: 35px;
+			font-size: 26px;
+			position: absolute;
+			color: $color-ccc;
+		}
+
+		.button-group {
+			float: right;
+			height: 35px;
+			border-radius: 3px;
+		}
+		span[role=button] {
+			&:first-child {
+				border-right: 0;
+			}
+			//float: right;
+			display: inline-block;
+			cursor: pointer;
+			margin: 0;
+			border-color: $color-777;
+			color: $color-888;
+			/*border: none;*/
+			border-radius: 3px;
+			height: 35px;
+			.dashicons {
+				line-height: 35px;
+			}
+
+			&:hover {
+				background: rgba(210, 224, 235, .2);
+			}
+			&.active {
+				background: rgba(210, 224, 235, .6);
+				color: #40464D;
+				border-color: #7e8993;
+			}
+		}
 	}
 
 	.gv-no-results {
-		font-size: 14px;
+		text-align: center;
+		font-size: 16px;
+		font-style: italic;
+		padding: 0 24px 32px 24px;
 		margin: 1em 0;
+		vertical-align: top;
 	}
-
-	.gv-fields h5 {
-		float: none;
-		width: 100%;
-	}
-
 
 }
 
 .top .ui-tooltip-content::after {
-    bottom: -14px;
-    left: 48%;
-    border-color: #999 transparent;
-    border-width: 10px 10px 0;
-}
-
-/**
- * Fix double close icons in jQuery UI dialog boxes
- * @see https://github.com/katzwebservices/GravityView/issues/438
- */
-.gv-dialog .ui-dialog-titlebar-close:before {
-    content: '';
+	bottom: -14px;
+	left: 48%;
+	border-color: #999 transparent;
+	border-width: 10px 10px 0;
 }
