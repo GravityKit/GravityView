@@ -496,8 +496,9 @@ $gv-overlay-index: 10000;
 .CodeMirror-lint-tooltip {
   z-index: $gv-overlay-index + 1 !important;
 }
-.CodeMirror {
+.CodeMirror, .CodeMirror-hint {
 	height: auto;
+	font-size: 15px;
 }
 
 /** View configuration tabs */
