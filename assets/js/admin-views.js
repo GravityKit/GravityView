@@ -629,16 +629,31 @@
 						var editor = wp.codeEditor.initialize( $( this ), {
 							viewportMargin: 'Infinity',
 							height: 'dynamic',
-							minHeight: 200
+							minHeight: 200,
+							undoDepth: 1000
 						} );
-						var editorId = $( this ).attr( 'id' );
-						var mergeTags = window.gfMergeTags.getAutoCompleteMergeTags( $( this ) );
+
+						// Leave room for
+						editor.codemirror.setSize( '95%' );
+						var $textarea = $( this );
+						var editorId = $textarea.attr( 'id' );
+						var mergeTags = window.gfMergeTags.getAutoCompleteMergeTags( $textarea );
 						var mergeTag = '';
 						var initialEditorCursorPos = editor.codemirror.getCursor();
 
-						$( this ).autocomplete( {
+						// Move merge tag before before CodeMirror in DOM to fix floating issue
+						$textarea.parent().find( '.all-merge-tags' ).insertBefore( $textarea );
+
+						// Set up Merge Tag autocomplete
+						$textarea.autocomplete( {
+							appendTo: $textarea.parent(),
 							focus: false,
 							minLength: 1,
+							position: {
+								my: "center top",
+								at: "center bottom",
+								collision: "none"
+							},
 							source: mergeTags,
 							select: function( event, ui ) {
 								// insert the merge tag value without curly braces
