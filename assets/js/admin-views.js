@@ -820,93 +820,11 @@
 				open: function () {
 					$( '<div class="gv-overlay" />' ).prependTo( '#wpwrap' );
 
-					$( 'textarea.code', thisDialog ).each( function() {
-						var editor = wp.codeEditor.initialize( $( this ), {
-							viewportMargin: 'Infinity',
-							height: 'dynamic',
-							minHeight: 200,
-							undoDepth: 1000
-						} );
 
-						// Leave room for
-						editor.codemirror.setSize( '95%' );
-						var $textarea = $( this );
-						var editorId = $textarea.attr( 'id' );
-						var mergeTags = window.gfMergeTags.getAutoCompleteMergeTags( $textarea );
-						var mergeTag = '';
-						var initialEditorCursorPos = editor.codemirror.getCursor();
-
-						// Move merge tag before before CodeMirror in DOM to fix floating issue
-						$textarea.parent().find( '.all-merge-tags' ).insertBefore( $textarea );
-
-						// Set up Merge Tag autocomplete
-						$textarea.autocomplete( {
-							appendTo: $textarea.parent(),
-							autoFocus: true,
-							minLength: 1,
-							position: {
-								my: 'center top',
-								at: 'center bottom',
-								collision: 'none'
-							},
-							source: mergeTags,
-							select: function ( event, ui ) {
-								// insert the merge tag value without curly braces
-								var val = ui.item.value.replace( /^{|}$/gm, '' );
-								var currentEditorCursorPos = editor.codemirror.getCursor();
-
-								editor.codemirror.replaceRange( val, initialEditorCursorPos, window.wp.CodeMirror.Pos( currentEditorCursorPos.line, currentEditorCursorPos.ch ) );
-								editor.codemirror.focus();
-								editor.codemirror.setCursor( window.wp.CodeMirror.Pos( currentEditorCursorPos.line, currentEditorCursorPos.ch + val.length + 1 ) );
-							},
-						} );
-
-						var $autocompleteEl = $textarea.parent().find('ul.ui-autocomplete');
-
-						var closeAutocompletion = function() {
-							$( '#' + editorId ).autocomplete( 'close' );
-						};
-
-						editor.codemirror.on( 'mousedown', function() {
-							closeAutocompletion();
-						} );
-
-						editor.codemirror.on( 'keydown', function ( el, e ) {
-
-							if ( $autocompleteEl.is( ':visible' ) && 27 === e.which ) {
-								$textarea.autocomplete( 'close' );
-							}
-
-							if ( $autocompleteEl.is( ':visible' ) && ( e.which === 38 || e.which === 40 || e.which === 13 ) ) {
-								e.preventDefault();
-							}
-						} );
-
-						editor.codemirror.on( 'change', function( e, obj ) {
-							// detect curly braces and update the cursor position
-							if ( obj.text[ 0 ] === '{}' ) {
-								initialEditorCursorPos = editor.codemirror.getCursor();
-							}
-
-							// select everything between the initial and current cursor positions
-							var currentEditorCursorPos = editor.codemirror.getCursor();
-							mergeTag = editor.codemirror.getRange( { ch: initialEditorCursorPos.ch - 1, line: initialEditorCursorPos.line }, currentEditorCursorPos );
-
-							// if the value starts with a curly braces, initiate autocompletion
-							if ( mergeTag[ 0 ] === '{' ) {
-								$( '#' + editorId ).autocomplete( 'search', mergeTag );
-								$autocompleteEl.focus();
-
-								return;
-							}
-
-							closeAutocompletion();
-						} );
-					} );
 					vcfg.toggleCheckboxes( thisDialog );
 					vcfg.setupFieldDetails( thisDialog );
+					vcfg.setupCodeMirror( thisDialog );
 
-					$( '<div class="gv-overlay" />' ).prependTo( '#wpwrap' );
 					return true;
 				},
 				close: function ( e ) {
@@ -931,6 +849,102 @@
 				buttons: buttons
 			} );
 
+		},
+
+		/**
+		 * When opening a dialog, convert textareas with CSS class ".code" to codeMirror instances
+		 *
+		 * @since 2.10
+		 * @param {jQuery} dialog
+		 */
+		setupCodeMirror: function ( dialog ) {
+
+			$( 'textarea.code', dialog ).each( function () {
+				var editor = wp.codeEditor.initialize( $( this ), {
+					viewportMargin: 'Infinity',
+					height: 'dynamic',
+					minHeight: 200,
+					undoDepth: 1000
+				} );
+
+				// Leave room for
+				editor.codemirror.setSize( '95%' );
+				var $textarea = $( this );
+				var editorId = $textarea.attr( 'id' );
+				var mergeTags = window.gfMergeTags.getAutoCompleteMergeTags( $textarea );
+				var mergeTag = '';
+				var initialEditorCursorPos = editor.codemirror.getCursor();
+
+				// Move merge tag before before CodeMirror in DOM to fix floating issue
+				$textarea.parent().find( '.all-merge-tags' ).insertBefore( $textarea );
+
+				// Set up Merge Tag autocomplete
+				$textarea.autocomplete( {
+					appendTo: $textarea.parent(),
+					autoFocus: true,
+					minLength: 1,
+					position: {
+						my: 'center top',
+						at: 'center bottom',
+						collision: 'none'
+					},
+					source: mergeTags,
+					select: function ( event, ui ) {
+						// insert the merge tag value without curly braces
+						var val = ui.item.value.replace( /^{|}$/gm, '' );
+						var currentEditorCursorPos = editor.codemirror.getCursor();
+
+						editor.codemirror.replaceRange( val, initialEditorCursorPos, window.wp.CodeMirror.Pos( currentEditorCursorPos.line, currentEditorCursorPos.ch ) );
+						editor.codemirror.focus();
+						editor.codemirror.setCursor( window.wp.CodeMirror.Pos( currentEditorCursorPos.line, currentEditorCursorPos.ch + val.length + 1 ) );
+					},
+				} );
+
+				var $autocompleteEl = $textarea.parent().find( 'ul.ui-autocomplete' );
+
+				var closeAutocompletion = function () {
+					$( '#' + editorId ).autocomplete( 'close' );
+				};
+
+				editor.codemirror.on( 'mousedown', function () {
+					closeAutocompletion();
+				} );
+
+				editor.codemirror.on( 'keydown', function ( el, e ) {
+
+					if ( $autocompleteEl.is( ':visible' ) && 27 === e.which ) {
+						$textarea.autocomplete( 'close' );
+					}
+
+					if ( $autocompleteEl.is( ':visible' ) && (e.which === 38 || e.which === 40 || e.which === 13) ) {
+						e.preventDefault();
+					}
+				} );
+
+				editor.codemirror.on( 'change', function ( e, obj ) {
+					// detect curly braces and update the cursor position
+					if ( obj.text[ 0 ] === '{}' ) {
+						initialEditorCursorPos = editor.codemirror.getCursor();
+					}
+
+					// select everything between the initial and current cursor positions
+					var currentEditorCursorPos = editor.codemirror.getCursor();
+					mergeTag = editor.codemirror.getRange( {
+						ch: initialEditorCursorPos.ch - 1,
+						line: initialEditorCursorPos.line
+					}, currentEditorCursorPos );
+
+					// if the value starts with a curly braces, initiate autocompletion
+					if ( mergeTag[ 0 ] === '{' ) {
+						$( '#' + editorId ).autocomplete( 'search', mergeTag );
+						$autocompleteEl.focus();
+
+						return;
+					}
+
+					closeAutocompletion();
+				} );
+			} );
 		},
 
 		/**
