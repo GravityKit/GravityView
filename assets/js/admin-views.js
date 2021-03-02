@@ -842,22 +842,26 @@
 						// Set up Merge Tag autocomplete
 						$textarea.autocomplete( {
 							appendTo: $textarea.parent(),
-							focus: false,
+							autoFocus: true,
 							minLength: 1,
 							position: {
-								my: "center top",
-								at: "center bottom",
-								collision: "none"
+								my: 'center top',
+								at: 'center bottom',
+								collision: 'none'
 							},
 							source: mergeTags,
-							select: function( event, ui ) {
+							select: function ( event, ui ) {
 								// insert the merge tag value without curly braces
 								var val = ui.item.value.replace( /^{|}$/gm, '' );
 								var currentEditorCursorPos = editor.codemirror.getCursor();
 
 								editor.codemirror.replaceRange( val, initialEditorCursorPos, window.wp.CodeMirror.Pos( currentEditorCursorPos.line, currentEditorCursorPos.ch ) );
+								editor.codemirror.focus();
+								editor.codemirror.setCursor( window.wp.CodeMirror.Pos( currentEditorCursorPos.line, currentEditorCursorPos.ch + val.length + 1 ) );
 							},
 						} );
+
+						var $autocompleteEl = $textarea.parent().find('ul.ui-autocomplete');
 
 						var closeAutocompletion = function() {
 							$( '#' + editorId ).autocomplete( 'close' );
@@ -865,6 +869,12 @@
 
 						editor.codemirror.on( 'mousedown', function() {
 							closeAutocompletion();
+						} );
+
+						editor.codemirror.on( 'keydown', function ( el, e ) {
+							if ( $autocompleteEl.is( ':visible' ) && ( e.which === 38 || e.which === 40 || e.which === 13 ) ) {
+								e.preventDefault();
+							}
 						} );
 
 						editor.codemirror.on( 'change', function( e, obj ) {
@@ -879,7 +889,10 @@
 
 							// if the value starts with a curly braces, initiate autocompletion
 							if ( mergeTag[ 0 ] === '{' ) {
-								return $( '#' + editorId ).autocomplete( 'search', mergeTag );
+								$( '#' + editorId ).autocomplete( 'search', mergeTag );
+								$autocompleteEl.focus();
+
+								return;
 							}
 
 							closeAutocompletion();
