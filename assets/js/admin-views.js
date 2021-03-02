@@ -820,7 +820,6 @@
 				open: function () {
 					$( '<div class="gv-overlay" />' ).prependTo( '#wpwrap' );
 
-
 					vcfg.toggleCheckboxes( thisDialog );
 					vcfg.setupFieldDetails( thisDialog );
 					vcfg.setupCodeMirror( thisDialog );
@@ -830,11 +829,17 @@
 				close: function ( e ) {
 					e.preventDefault();
 
-					$( 'textarea.code', thisDialog ).each( function() {
-						var codeMirror = $( this ).next( '.CodeMirror' )[ 0 ].CodeMirror;
+					$( 'textarea.code', thisDialog ).each( function () {
 
-						codeMirror.toTextArea();
+						$CodeMirror = $( this ).next( '.CodeMirror' );
+
+						if ( 0 === $CodeMirror.length || ! $CodeMirror[0].hasOwnProperty('CodeMirror') ) {
+							return;
+						}
+
+						$CodeMirror[0].CodeMirror.toTextArea();
 					} );
+
 					$( '.gv-field-settings.active', '#gravityview_view_config' ).removeClass( 'active' );
 
 					vcfg.setCustomLabel( thisDialog );
