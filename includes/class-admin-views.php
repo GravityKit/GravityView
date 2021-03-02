@@ -43,6 +43,12 @@ class GravityView_Admin_Views {
 		add_action( 'gravityview_render_available_widgets', array( $this, 'render_available_widgets') );
 		add_action( 'gravityview_render_active_areas', array( $this, 'render_active_areas'), 10, 5 );
 
+		// Enqueue code editor and settings for manipulating HTML.
+		add_action('admin_enqueue_scripts', function() {
+
+		    $settings = wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
+		});
+
 		// @todo check if this hook is needed..
 		//add_action( 'gravityview_render_field_options', array( $this, 'render_field_options'), 10, 9 );
 

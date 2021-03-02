@@ -18,6 +18,12 @@
 .all-merge-tags.textarea {
 	position: absolute;
 	margin-top: 1px;
+	&.right {
+		right: 10px;
+	}
+	.rtl &.right {
+		left: 10px;
+	}
 }
 
 .all-merge-tags a.open-list {

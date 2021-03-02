@@ -224,7 +224,7 @@
 					}
 					$( this ).parent( '.gv-fields' ).removeClass( 'trigger--active' );
 				});
-				// End bind to $('body')
+			// End bind to $('body')
 
 			window.onbeforeunload = function() {
 				return vcfg.hasUnsavedChanges ? true : null;
@@ -273,8 +273,8 @@
 				$( 'li[aria-controls="' + index + '-view"]' )
 					.toggleClass( 'tab-not-configured', show_warning )
 					.find( '.tab-icon' )
-						.toggleClass( 'dashicons-warning', show_warning )
-						.toggleClass( value.icon, ! show_warning );
+					.toggleClass( 'dashicons-warning', show_warning )
+					.toggleClass( value.icon, ! show_warning );
 			});
 		},
 
@@ -369,8 +369,6 @@
 
 					var $input = $parent.find(':input[name$="[' + requires_name + ']"]');
 
-					console.log( { that: $( this ), input: $input } );
-
 					if ( $input.is(':checkbox') ) {
 						if ( reverse_logic ) {
 							$(this).toggle( $input.not(':checked') );
@@ -445,14 +443,14 @@
 				case 'mouseup':
 
 					if ( // If clicking inside the dialog or tooltip
-					$( e.target ).parents( '.ui-dialog,.ui-tooltip' ).length ||
+						$( e.target ).parents( '.ui-dialog,.ui-tooltip' ).length ||
 
-					// Or on the dialog or tooltip itself
-					$( e.target ).is( '.ui-dialog,.ui-tooltip' ) ) {
+						// Or on the dialog or tooltip itself
+						$( e.target ).is( '.ui-dialog,.ui-tooltip' ) ) {
 						close = false;
 					}
 
-					// For tooltips, clicking on anything outside of the tooltip
+						// For tooltips, clicking on anything outside of the tooltip
 					// should close it. Not for dialogs.
 					else if ( activeTooltips.length > 0 ) {
 						close = true;
@@ -820,7 +818,86 @@
 					return $( window ).width() - 10;
 				},
 				open: function () {
+					$( '<div class="gv-overlay" />' ).prependTo( '#wpwrap' );
 
+					$( 'textarea.code', thisDialog ).each( function() {
+						var editor = wp.codeEditor.initialize( $( this ), {
+							viewportMargin: 'Infinity',
+							height: 'dynamic',
+							minHeight: 200,
+							undoDepth: 1000
+						} );
+
+						// Leave room for
+						editor.codemirror.setSize( '95%' );
+						var $textarea = $( this );
+						var editorId = $textarea.attr( 'id' );
+						var mergeTags = window.gfMergeTags.getAutoCompleteMergeTags( $textarea );
+						var mergeTag = '';
+						var initialEditorCursorPos = editor.codemirror.getCursor();
+
+						// Move merge tag before before CodeMirror in DOM to fix floating issue
+						$textarea.parent().find( '.all-merge-tags' ).insertBefore( $textarea );
+
+						// Set up Merge Tag autocomplete
+						$textarea.autocomplete( {
+							appendTo: $textarea.parent(),
+							autoFocus: true,
+							minLength: 1,
+							position: {
+								my: 'center top',
+								at: 'center bottom',
+								collision: 'none'
+							},
+							source: mergeTags,
+							select: function ( event, ui ) {
+								// insert the merge tag value without curly braces
+								var val = ui.item.value.replace( /^{|}$/gm, '' );
+								var currentEditorCursorPos = editor.codemirror.getCursor();
+
+								editor.codemirror.replaceRange( val, initialEditorCursorPos, window.wp.CodeMirror.Pos( currentEditorCursorPos.line, currentEditorCursorPos.ch ) );
+								editor.codemirror.focus();
+								editor.codemirror.setCursor( window.wp.CodeMirror.Pos( currentEditorCursorPos.line, currentEditorCursorPos.ch + val.length + 1 ) );
+							},
+						} );
+
+						var $autocompleteEl = $textarea.parent().find('ul.ui-autocomplete');
+
+						var closeAutocompletion = function() {
+							$( '#' + editorId ).autocomplete( 'close' );
+						};
+
+						editor.codemirror.on( 'mousedown', function() {
+							closeAutocompletion();
+						} );
+
+						editor.codemirror.on( 'keydown', function ( el, e ) {
+							if ( $autocompleteEl.is( ':visible' ) && ( e.which === 38 || e.which === 40 || e.which === 13 ) ) {
+								e.preventDefault();
+							}
+						} );
+
+						editor.codemirror.on( 'change', function( e, obj ) {
+							// detect curly braces and update the cursor position
+							if ( obj.text[ 0 ] === '{}' ) {
+								initialEditorCursorPos = editor.codemirror.getCursor();
+							}
+
+							// select everything between the initial and current cursor positions
+							var currentEditorCursorPos = editor.codemirror.getCursor();
+							mergeTag = editor.codemirror.getRange( { ch: initialEditorCursorPos.ch - 1, line: initialEditorCursorPos.line }, currentEditorCursorPos );
+
+							// if the value starts with a curly braces, initiate autocompletion
+							if ( mergeTag[ 0 ] === '{' ) {
+								$( '#' + editorId ).autocomplete( 'search', mergeTag );
+								$autocompleteEl.focus();
+
+								return;
+							}
+
+							closeAutocompletion();
+						} );
+					} );
 					vcfg.toggleCheckboxes( thisDialog );
 					vcfg.setupFieldDetails( thisDialog );
 
@@ -830,6 +907,11 @@
 				close: function ( e ) {
 					e.preventDefault();
 
+					$( 'textarea.code', thisDialog ).each( function() {
+						var codeMirror = $( this ).next( '.CodeMirror' )[ 0 ].CodeMirror;
+
+						codeMirror.toTextArea();
+					} );
 					$( '.gv-field-settings.active', '#gravityview_view_config' ).removeClass( 'active' );
 
 					vcfg.setCustomLabel( thisDialog );
@@ -1084,69 +1166,69 @@
 		 */
 		selectTemplateHover: function ( e ) {
 			var vcfg = viewConfiguration;
-		    var $link = $(e.target);
+			var $link = $(e.target);
 			var $parent = $link.parents('.gv-view-types-module');
 
-            // If we're internally linking
-            if ($link.is('[rel=internal]') && !$link.hasClass('gv-layout-activate')) {
-                return true;
-            }
+			// If we're internally linking
+			if ($link.is('[rel=internal]') && !$link.hasClass('gv-layout-activate')) {
+				return true;
+			}
 
-            e.preventDefault();
-            e.stopImmediatePropagation();
+			e.preventDefault();
+			e.stopImmediatePropagation();
 
-            // Activate layout if it's already installed
-            if ($link.hasClass('gv-layout-activate')) {
-                if (vcfg.performingAjaxAction) {
-                    return;
-                }
+			// Activate layout if it's already installed
+			if ($link.hasClass('gv-layout-activate')) {
+				if (vcfg.performingAjaxAction) {
+					return;
+				}
 
-                var activate = function () {
-                    var defer = $.Deferred();
+				var activate = function () {
+					var defer = $.Deferred();
 
-                    $link.addClass('disabled');
-                    vcfg.performingAjaxAction = true;
-                    $('.gv-view-template-notice').hide();
+					$link.addClass('disabled');
+					vcfg.performingAjaxAction = true;
+					$('.gv-view-template-notice').hide();
 
-                    $.post(ajaxurl, {
-                        'action': 'gravityview_admin_installer_activate',
-                        'data': {path: $link.attr('data-template-path')}
-                    }, function (response) {
-                        if (!response.success) {
-                            return defer.reject(response.data.error);
-                        }
+					$.post(ajaxurl, {
+						'action': 'gravityview_admin_installer_activate',
+						'data': {path: $link.attr('data-template-path')}
+					}, function (response) {
+						if (!response.success) {
+							return defer.reject(response.data.error);
+						}
 
-                        $parent.find('.gv-view-types-hover > div:eq(0)').hide();
-                        $parent.find('.gv-view-types-hover > div:eq(1)').removeClass('hidden');
-                        $parent.removeClass('gv-view-template-placeholder');
-                        $parent.find('.gv-view-types-hover > div:eq(1) .gv_select_template').trigger('click');
+						$parent.find('.gv-view-types-hover > div:eq(0)').hide();
+						$parent.find('.gv-view-types-hover > div:eq(1)').removeClass('hidden');
+						$parent.removeClass('gv-view-template-placeholder');
+						$parent.find('.gv-view-types-hover > div:eq(1) .gv_select_template').trigger('click');
 
-                        defer.resolve();
-                    }).fail(function () {
-                        defer.reject(gvAdminInstaller.activateErrorLabel);
-                    });
+						defer.resolve();
+					}).fail(function () {
+						defer.reject(gvAdminInstaller.activateErrorLabel);
+					});
 
-                    return defer.promise();
-                };
+					return defer.promise();
+				};
 
-                $.when(activate())
-                    .always(function () {
-                        vcfg.performingAjaxAction = false;
-                        $link.removeClass('disabled');
-                    })
-                    .fail(function (error) {
-                        $('.gv-view-template-notice').show().find('p').text(error);
+				$.when(activate())
+					.always(function () {
+						vcfg.performingAjaxAction = false;
+						$link.removeClass('disabled');
+					})
+					.fail(function (error) {
+						$('.gv-view-template-notice').show().find('p').text(error);
 
-                        document.querySelector('.gv-view-template-notice').scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                    });
+						document.querySelector('.gv-view-template-notice').scrollIntoView({
+							behavior: 'smooth'
+						});
+					});
 
-                return;
-            }
+				return;
+			}
 
-            $(this).find('.gv_select_template').trigger('click');
-        },
+			$(this).find('.gv_select_template').trigger('click');
+		},
 
 		openExternalLinks: function () {
 
@@ -1308,13 +1390,13 @@
 				close: function () {
 					$( this ).attr( 'data-tooltip', null );
 				},
-		        open: function( event, tooltip ) {
+				open: function( event, tooltip ) {
 
-			        $( this )
-				        .attr( 'data-tooltip', 'active' )
-				        .attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
+					$( this )
+						.attr( 'data-tooltip', 'active' )
+						.attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
 
-			        $focus_item = $( 'input[type=search]', tooltip.tooltip );
+					$focus_item = $( 'input[type=search]', tooltip.tooltip );
 
 					// Widgets don't have a search field; select the first "Add Widget" button instead
 					if ( ! $focus_item.length) {
@@ -1348,20 +1430,20 @@
 				},
 				tooltipClass: 'gravityview-item-picker-tooltip top'
 			} )
-			// add title attribute so the tooltip can continue to work (jquery ui bug?)
-			.attr( "title", "" ).on( 'mouseout focusout', function ( e ) {
+				// add title attribute so the tooltip can continue to work (jquery ui bug?)
+				.attr( "title", "" ).on( 'mouseout focusout', function ( e ) {
 				e.stopImmediatePropagation();
 			} )
-			.on( 'click', function ( e ) {
-				// add title attribute so the tooltip can continue to work (jquery ui bug?)
-				$( this ).attr( "title", "" );
+				.on( 'click', function ( e ) {
+					// add title attribute so the tooltip can continue to work (jquery ui bug?)
+					$( this ).attr( "title", "" );
 
-				e.preventDefault();
-				//e.stopImmediatePropagation();
+					e.preventDefault();
+					//e.stopImmediatePropagation();
 
-				$( this ).tooltip( "open" );
+					$( this ).tooltip( "open" );
 
-			} );
+				} );
 
 		},
 
@@ -2268,5 +2350,22 @@
 		removeTooltips: viewConfiguration.remove_tooltips,
 		showDialog: viewConfiguration.showDialog,
 	};
+
+	// Enable inserting GF merge tags into WP's CodeMirror
+	$( window ).load( function() {
+		var _sendToEditor = window.send_to_editor;
+
+		window.send_to_editor = function( val ) {
+			var $el = $( '#' + window.wpActiveEditor );
+
+			if ( ! $el.hasClass( 'codemirror' ) ) {
+				return _sendToEditor( val );
+			}
+
+			var codeMirror = $el.next( '.CodeMirror' )[ 0 ].CodeMirror;
+			var cursorPosition = codeMirror.getCursor();
+			codeMirror.replaceRange( val, window.wp.CodeMirror.Pos( cursorPosition.line, cursorPosition.ch ) );
+		};
+	} );
 
 }(jQuery));

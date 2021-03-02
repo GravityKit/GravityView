@@ -491,8 +491,14 @@ $gv-overlay-index: 10000;
 }
 
 // Fix issue with theme conflicts where .gv-overlay gets in the way
-.ui-front {
+.ui-front,
+.CodeMirror-hints,
+.CodeMirror-lint-tooltip {
   z-index: $gv-overlay-index + 1 !important;
+}
+.CodeMirror, .CodeMirror-hint {
+	height: auto;
+	font-size: 15px;
 }
 
 /** View configuration tabs */
@@ -1156,10 +1162,10 @@ hr {
 	display: block;
 }
 
-.gv-dialog {
+$dialog-padding: 25px;
+$dialog-button-padding: 5px;
 
-	$dialog-padding: 25px;
-	$dialog-button-padding: 5px;
+.gv-dialog {
 
 	&.ui-widget-content > div {
 		padding-left: $dialog-padding;
@@ -1601,6 +1607,23 @@ hr {
 	width: 100%;
 	display: block;
 	margin-bottom: 0.5em;
+}
+
+.gv-label-textarea .ui-autocomplete {
+	top: auto !important; // Force autocomplete to start below the textarea
+	max-height: 300px; // Otherwise it clips at bottom of field settings modal but doesn't scroll
+	overflow-y: auto;
+	left: $dialog-padding !important;
+	right: $dialog-padding !important;
+	width: calc( 100% - ( #{$dialog-padding} * 2 ) - 2px ) !important; // Border is 1px * 2
+
+	.ui-menu-item:hover {
+		background: $color-light-grey-300;
+	}
+
+	.ui-menu-item:active {
+		background: $color-light-grey-500;
+	}
 }
 
 .gv-shortcode {
