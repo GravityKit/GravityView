@@ -61,6 +61,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 			'type'	=> $this->name,
 			'desc'	=> $this->description,
 			'icon'  => $this->icon,
+			'group' => $this->group,
 		);
 
 		return $entry_default_fields;
