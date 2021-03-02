@@ -497,7 +497,8 @@ $gv-overlay-index: 10000;
   z-index: $gv-overlay-index + 1 !important;
 }
 .CodeMirror, .CodeMirror-hint {
-	height: auto;
+	height: 35vh;
+	min-height: 15em;
 	font-size: 15px;
 }
 

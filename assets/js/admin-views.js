@@ -866,9 +866,6 @@
 
 			$( 'textarea.code', dialog ).each( function () {
 				var editor = wp.codeEditor.initialize( $( this ), {
-					viewportMargin: 'Infinity',
-					height: 'dynamic',
-					minHeight: 200,
 					undoDepth: 1000
 				} );
 
