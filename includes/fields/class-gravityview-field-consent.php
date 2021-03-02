@@ -110,10 +110,11 @@ class GravityView_Field_Consent extends GravityView_Field {
 			'value'   => $default,
 			'desc'    => '',
 			'choices' => array(
-				'both' => __( 'Consent image with description', 'gravityview' ),
-				'tick' => __( 'Consent image', 'gravityview' ),
+				'both'  => __( 'Consent image with description', 'gravityview' ),
+				'tick'  => __( 'Consent image', 'gravityview' ),
 				'label' => __( 'Consent description', 'gravityview' ),
 			),
+			'group'   => 'field',
 		);
 
 		return $field_options;

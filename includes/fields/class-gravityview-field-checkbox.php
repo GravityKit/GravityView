@@ -74,6 +74,7 @@ class GravityView_Field_Checkbox extends GravityView_Field {
 				'value'   => $default,
 				'desc'    => $desc,
 				'choices' => $choices,
+				'group'   => 'field',
 			);
 		}
 

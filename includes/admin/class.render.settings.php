@@ -16,15 +16,19 @@ class GravityView_Render_Settings {
 	/**
 	 * Get the default options for a standard field.
 	 *
+	 * @since 2.10 added $grouped parameter
+	 *
 	 * @param  string      $field_type  Type of field options to render (`field` or `widget`)
 	 * @param  string      $template_id Layout slug (`default_table`, `default_list`, `datatables_table`, etc.
 	 * @param  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
 	 * @param  string      $context     What context are we in? Example: `single` or `directory`
 	 * @param  string      $input_type  (textarea, list, select, etc.)
 	 * @param  int         $form_id     The form ID. @since develop
+	 * @param  bool        $grouped     Whether to group the field settings by `group` key
+	 *
 	 * @return array       Array of field options with `label`, `value`, `type`, `default` keys
 	 */
-	public static function get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type, $form_id ) {
+	public static function get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type, $form_id, $grouped = false ) {
 
 		$field_options = array();
 
@@ -39,6 +43,7 @@ class GravityView_Render_Settings {
 					'label' => __( 'Show Label', 'gravityview' ),
 					'value' => ! empty ( $is_table_layout ),
 					'priority' => 1000,
+					'group' => 'label',
 				),
 				'custom_label' => array(
 					'type' => 'text',
@@ -48,6 +53,7 @@ class GravityView_Render_Settings {
 					'class'      => 'widefat',
 					'priority' => 1100,
 					'requires' => 'show_label',
+					'group' => 'label',
 				),
 				'custom_class' => array(
 					'type'       => 'text',
@@ -58,12 +64,14 @@ class GravityView_Render_Settings {
 					'tooltip'    => 'gv_css_merge_tags',
 					'class'      => 'widefat code',
 					'priority' => 5000,
+					'group' => 'advanced',
 				),
 				'only_loggedin' => array(
 					'type' => 'checkbox',
 					'label' => __( 'Make visible only to logged-in users?', 'gravityview' ),
 					'value' => '',
 					'priority' => 4000,
+					'group' => 'visibility',
 				),
 				'only_loggedin_cap' => array(
 					'type' => 'select',
@@ -73,6 +81,7 @@ class GravityView_Render_Settings {
 					'value' => 'read',
 					'priority' => 4100,
 					'requires' => 'only_loggedin',
+					'group' => 'visibility',
 				),
 			);
 
@@ -85,6 +94,7 @@ class GravityView_Render_Settings {
 					'class' => 'code widefat',
 					'value' => '',
 					'priority' => 200,
+					'group' => 'display',
 				);
 			}
 
@@ -117,7 +127,26 @@ class GravityView_Render_Settings {
 		 */
 		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
-		uasort( $field_options, array( __CLASS__, '_sort_by_priority' ) );
+		if ( $grouped ) {
+
+			$option_groups = array();
+
+			foreach ( $field_options as $key => $field_option ) {
+
+				$_group = \GV\Utils::get( $field_option, 'group', 'default' );
+
+				$option_groups[ $_group ][ $key ] = $field_option;
+			}
+
+			foreach ( $option_groups as & $option_group ) {
+				uasort( $option_group, array( __CLASS__, '_sort_by_priority' ) );
+			}
+
+			$field_options = $option_groups;
+
+		} else {
+			uasort( $field_options, array( __CLASS__, '_sort_by_priority' ) );
+		}
 
 		return $field_options;
 	}
@@ -214,7 +243,7 @@ class GravityView_Render_Settings {
 		}
 
 		// get field/widget options
-		$options = self::get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type, $form_id );
+		$option_groups = self::get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type, $form_id, true );
 
 		// two different post arrays, depending of the field type
 		$name_prefix = $field_type .'s' .'['. $area .']['. $uniqid .']';
@@ -231,7 +260,7 @@ class GravityView_Render_Settings {
 		}
 
 		// If there are no options, return what we got.
-		if(empty($options)) {
+		if ( empty( $option_groups ) ) {
 			return $hidden_fields . '<!-- No Options -->'; // The HTML comment is here for checking if the output is empty in render_label()
 		}
 
@@ -249,33 +278,38 @@ class GravityView_Render_Settings {
 		}
 
 		$field_settings = '';
-		foreach( $options as $key => $option ) {
+		foreach ( $option_groups as $group_key => $option_group ) {
 
-			$value = isset( $current[ $key ] ) ? $current[ $key ] : NULL;
+			$field_settings .= '<h3>' . $group_key .'</h3>';
 
-			$field_output = self::render_field_option( $name_prefix . '['. $key .']' , $option, $value);
+			foreach ( $option_group as $key => $option ) {
 
-			// The setting is empty
-			if( empty( $field_output ) ) {
-				continue;
-			}
+				$value = isset( $current[ $key ] ) ? $current[ $key ] : null;
 
-			$show_if = '';
-			if( ! empty( $option['requires'] ) ) {
-				$show_if .= sprintf( ' data-requires="%s"', $option['requires'] );
-			}
+				$field_output = self::render_field_option( $name_prefix . '[' . $key . ']', $option, $value );
 
-			if( ! empty( $option['requires_not'] ) ) {
-				$show_if .= sprintf( ' data-requires-not="%s"', $option['requires_not'] );
-			}
+				// The setting is empty
+				if ( empty( $field_output ) ) {
+					continue;
+				}
 
-			switch( $option['type'] ) {
-				// Hide hidden fields
-				case 'hidden':
-					$field_settings .= '<div class="gv-setting-container gv-setting-container-'. esc_attr( $key ) . ' screen-reader-text">'. $field_output . '</div>';
-					break;
-				default:
-					$field_settings .= '<div class="gv-setting-container gv-setting-container-'. esc_attr( $key ) . '" ' . $show_if . '>'. $field_output .'</div>';
+				$show_if = '';
+				if ( ! empty( $option['requires'] ) ) {
+					$show_if .= sprintf( ' data-requires="%s"', $option['requires'] );
+				}
+
+				if ( ! empty( $option['requires_not'] ) ) {
+					$show_if .= sprintf( ' data-requires-not="%s"', $option['requires_not'] );
+				}
+
+				switch ( $option['type'] ) {
+					// Hide hidden fields
+					case 'hidden':
+						$field_settings .= '<div class="gv-setting-container gv-setting-container-' . esc_attr( $key ) . ' screen-reader-text">' . $field_output . '</div>';
+						break;
+					default:
+						$field_settings .= '<div class="gv-setting-container gv-setting-container-' . esc_attr( $key ) . '" ' . $show_if . '>' . $field_output . '</div>';
+				}
 			}
 		}
 

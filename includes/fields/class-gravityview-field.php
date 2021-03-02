@@ -413,6 +413,7 @@ abstract class GravityView_Field {
 				'desc' => __( 'Link to the post created by the entry.', 'gravityview' ),
 				'value' => false,
 				'priority' => 1200,
+				'group' => 'display',
 			),
 			'link_to_term' => array(
 				'type' => 'checkbox',
@@ -420,6 +421,7 @@ abstract class GravityView_Field {
 				'desc' => __( 'Link to the current category or tag. "Link to single entry" must be unchecked.', 'gravityview' ),
 				'value' => false,
 				'priority' => 1210,
+				'group' => 'display',
 			),
 			'dynamic_data' => array(
 				'type' => 'checkbox',
@@ -427,6 +429,7 @@ abstract class GravityView_Field {
 				'desc' => __( 'Instead of using the entry data, instead use the current post data.', 'gravityview' ),
 				'value' => true,
 				'priority' => 1220,
+				'group' => 'field',
 			),
 			'date_display' => array(
 				'type' => 'text',
@@ -439,12 +442,14 @@ abstract class GravityView_Field {
 				'value' => apply_filters( 'gravityview_date_format', null ),
 				'class' => 'code',
 				'priority' => 1500,
+				'group' => 'field',
 			),
 			'new_window' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Open link in a new tab or window?', 'gravityview' ),
 				'value' => false,
 				'priority' => 1300,
+				'group' => 'display',
 			),
 		);
 

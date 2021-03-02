@@ -190,6 +190,7 @@ class GravityView_Edit_Entry_Admin {
                 'label' => __( 'Open link in a new tab or window?', 'gravityview' ),
                 'value' => false,
                 'priority' => 1300,
+                'group' => 'display',
             );
 
             return $field_options;
@@ -206,6 +207,7 @@ class GravityView_Edit_Entry_Admin {
                 'tooltip' => 'allow_edit_cap',
                 'class' => 'widefat',
                 'value' => 'read', // Default: entry creator
+                'group' => 'visibility',
             ),
         );
 
