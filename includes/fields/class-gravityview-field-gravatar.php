@@ -135,6 +135,7 @@ class GravityView_Field_Gravatar extends GravityView_Field {
 			'value' => 80,
 			'max'   => 2048,
 			'min'   => 1,
+			'merge_tags' => false,
 		);
 
 		return $field_options;
