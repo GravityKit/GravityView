@@ -114,7 +114,8 @@ class GravityView_Field_Consent extends GravityView_Field {
 				'tick'  => __( 'Consent image', 'gravityview' ),
 				'label' => __( 'Consent description', 'gravityview' ),
 			),
-			'group'   => 'field',
+			'priorty' => 100,
+			'group'   => 'display',
 		);
 
 		return $field_options;
