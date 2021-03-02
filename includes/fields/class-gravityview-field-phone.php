@@ -18,6 +18,8 @@ class GravityView_Field_Phone extends GravityView_Field {
 
 	var $group = 'advanced';
 
+	var $icon = 'dashicons-smartphone';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Phone', 'gravityview' );
 		parent::__construct();

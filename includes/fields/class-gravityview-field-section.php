@@ -18,6 +18,8 @@ class GravityView_Field_Section extends GravityView_Field {
 
 	var $group = 'standard';
 
+	var $icon = 'dashicons-minus';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Section', 'gravityview' );
 

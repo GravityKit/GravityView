@@ -35,6 +35,8 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 
 	public $_custom_merge_tag = 'approval_status';
 
+	public $icon = 'dashicons-yes-alt';
+
 	public function __construct() {
 
 		$this->label = esc_html__( 'Approval Status', 'gravityview' );

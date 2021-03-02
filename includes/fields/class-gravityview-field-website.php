@@ -21,6 +21,8 @@ class GravityView_Field_Website extends GravityView_Field {
 
 	var $group = 'advanced';
 
+	var $icon = 'dashicons-admin-links';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Website', 'gravityview' );
 		parent::__construct();

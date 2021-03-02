@@ -17,7 +17,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 	var $group = 'advanced';
 
-	var $icon = 'dashicons-paperclip';
+	var $icon = 'dashicons-upload';
 
 	public function __construct() {
 		$this->label = esc_html__( 'File Upload', 'gravityview' );

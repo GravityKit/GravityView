@@ -144,7 +144,7 @@ class gvlogic extends \GV\Shortcode {
 	}
 
 	/**
-	 * Get the ouput content.
+	 * Get the output content.
 	 *
 	 * @param bool $match if or else?
 	 * @param array $atts The attributes.

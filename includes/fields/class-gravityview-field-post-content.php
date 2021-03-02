@@ -17,6 +17,8 @@ class GravityView_Field_Post_Content extends GravityView_Field {
 
 	var $group = 'post';
 
+	var $icon = 'dashicons-editor-alignleft';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Post Content', 'gravityview' );
 		parent::__construct();

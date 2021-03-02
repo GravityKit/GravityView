@@ -266,6 +266,7 @@ class License_Handler {
 					return sprintf( $wrapper, '' ); // Do not show redundant information - invalid/deactivated notice will be displayed by generate_license_box()
 				}
 
+
 				$return .= $this->strings( $response['license'], $response );
 			} elseif ( ! empty( $response['license_name'] ) ) {
 				$response_keys = array(

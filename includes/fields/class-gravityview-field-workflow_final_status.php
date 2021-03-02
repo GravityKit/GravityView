@@ -8,9 +8,11 @@
 
 class GravityView_Field_Workflow_Final_Status extends GravityView_Field {
 
-	var $name = 'workflow_final_status';
+	public $name = 'workflow_final_status';
 
-	var $group = 'meta';
+	public $group = 'add-ons';
+
+	public $icon = 'dashicons-admin-plugins';
 
 	public function __construct() {
 		$this->label = esc_html__( 'Workflow Status', 'gravityview' );

@@ -18,6 +18,8 @@ class GravityView_Field_Payment_Date extends GravityView_Field_Date_Created {
 
 	var $_custom_merge_tag = 'payment_date';
 
+	var $icon = 'dashicons-cart';
+
 	/**
 	 * GravityView_Field_Date_Created constructor.
 	 */

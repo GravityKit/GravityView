@@ -20,6 +20,8 @@ class GravityView_Field_Email extends GravityView_Field {
 
 	var $group = 'advanced';
 
+	var $icon = 'dashicons-email-alt2';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Email', 'gravityview' );
 		parent::__construct();
@@ -47,6 +49,7 @@ class GravityView_Field_Email extends GravityView_Field {
 				'value' => '',
 				'desc' => __( 'Set the default email subject line.', 'gravityview' ),
 				'merge_tags' => 'force',
+				'requires' => 'emailmailto',
 			),
 			'emailbody' => array(
 				'type' => 'textarea',
@@ -55,6 +58,7 @@ class GravityView_Field_Email extends GravityView_Field {
 				'desc' => __( 'Set the default email content.', 'gravityview' ),
 				'merge_tags' => 'force',
 				'class' => 'widefat',
+				'requires' => 'emailmailto',
 			),
 			'emailencrypt' => array(
 				'type' => 'checkbox',

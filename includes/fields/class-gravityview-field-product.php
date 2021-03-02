@@ -21,6 +21,8 @@ class GravityView_Field_Product extends GravityView_Field {
 
 	var $group = 'product';
 
+	var $icon = 'dashicons-cart';
+
 	/** @see GF_Field_Product */
 	var $_gf_field_class_name = 'GF_Field_Product';
 

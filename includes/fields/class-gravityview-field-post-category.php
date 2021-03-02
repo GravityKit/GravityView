@@ -17,6 +17,8 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 
 	var $group = 'post';
 
+	var $icon = 'dashicons-category';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Post Category', 'gravityview' );
 
