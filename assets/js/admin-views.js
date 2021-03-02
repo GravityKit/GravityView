@@ -872,6 +872,11 @@
 						} );
 
 						editor.codemirror.on( 'keydown', function ( el, e ) {
+
+							if ( $autocompleteEl.is( ':visible' ) && 27 === e.which ) {
+								$textarea.autocomplete( 'close' );
+							}
+
 							if ( $autocompleteEl.is( ':visible' ) && ( e.which === 38 || e.which === 40 || e.which === 13 ) ) {
 								e.preventDefault();
 							}
