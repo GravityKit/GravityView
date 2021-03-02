@@ -23,6 +23,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Added: Custom Content now supports syntax highlighting, making it much easier to write HTML
+	- To disable, click on the Users sidebar menu, select Profile. Check the box labeled "Disable syntax highlighting when editing code" and save your profile
 * Added: A dropdown in the "All Views" screen to filter Views by the layout (Table, List, DataTables, DIY, Map, etc.)
 * Added: Show a notice when "Show only approve entries" setting is enabled for a View and no entries are displayed because of the setting
 * Added: Warning when leaving Edit View screen if there are unsaved changes

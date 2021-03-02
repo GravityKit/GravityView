@@ -77,6 +77,7 @@ body .ui-tooltip {
 
 	.gravityview-item-picker-tooltip & {
 		padding: 0;
+		overflow-x: hidden;
 	}
 
 	max-height: 500px;

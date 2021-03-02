@@ -56,15 +56,12 @@ class GravityView_Field_Custom extends GravityView_Field {
 	 */
 	public function add_default_field( $entry_default_fields, $form = array(), $zone = '' ) {
 
-		if ( 'edit' === $zone ) {
-			return $entry_default_fields;
-		}
-
 		$entry_default_fields['custom']	= array(
 			'label'	=> $this->label,
 			'type'	=> $this->name,
 			'desc'	=> $this->description,
 			'icon'  => $this->icon,
+			'group' => $this->group,
 		);
 
 		return $entry_default_fields;
