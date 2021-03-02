@@ -450,6 +450,7 @@ abstract class GravityView_Field {
 				'value' => false,
 				'priority' => 1300,
 				'group' => 'display',
+				'requires' => 'show_as_link=1',
 			),
 		);
 

@@ -142,7 +142,15 @@ class GravityView_Render_Settings {
 				uasort( $option_group, array( __CLASS__, '_sort_by_priority' ) );
 			}
 
-			$field_options = $option_groups;
+			$field_options = array(
+				'field' => \GV\Utils::get( $option_groups, 'field', array() ),
+				'display' => \GV\Utils::get( $option_groups, 'display', array() ),
+				'label' => \GV\Utils::get( $option_groups, 'label', array() ),
+				'visibility' => \GV\Utils::get( $option_groups, 'visibility', array() ),
+				'advanced' => \GV\Utils::get( $option_groups, 'advanced', array() ),
+				'gv_math_footer_calc' => \GV\Utils::get( $option_groups, 'gv_math_footer_calc', array() ),
+				'default' => \GV\Utils::get( $option_groups, 'default', array() ),
+			);
 
 		} else {
 			uasort( $field_options, array( __CLASS__, '_sort_by_priority' ) );
@@ -242,8 +250,10 @@ class GravityView_Render_Settings {
 			$uniqid = uniqid('', false);
 		}
 
+		$grouped = ( 'field' === $field_type );
+
 		// get field/widget options
-		$option_groups = self::get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type, $form_id, true );
+		$option_groups = self::get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type, $form_id, $grouped );
 
 		// two different post arrays, depending of the field type
 		$name_prefix = $field_type .'s' .'['. $area .']['. $uniqid .']';
@@ -280,7 +290,14 @@ class GravityView_Render_Settings {
 		$field_settings = '';
 		foreach ( $option_groups as $group_key => $option_group ) {
 
-			$field_settings .= '<h3>' . $group_key .'</h3>';
+			if ( empty( $option_group ) ) {
+				continue;
+			}
+
+			if ( $grouped ) {
+				$field_settings .= '<fieldset class="item-settings-group item-settings-group-' . esc_attr( $group_key ) .'">';
+				$field_settings .= '<legend>' . ucwords( $group_key ) . '</legend>';
+			}
 
 			foreach ( $option_group as $key => $option ) {
 
@@ -310,6 +327,10 @@ class GravityView_Render_Settings {
 					default:
 						$field_settings .= '<div class="gv-setting-container gv-setting-container-' . esc_attr( $key ) . '" ' . $show_if . '>' . $field_output . '</div>';
 				}
+			}
+
+			if ( $grouped ) {
+				$field_settings .= '</fieldset>';
 			}
 		}
 

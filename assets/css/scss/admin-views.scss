@@ -1307,6 +1307,59 @@ $dialog-button-padding: 5px;
 
 	@extend %clearfix;
 
+	$gutter-width: 250px;
+
+	fieldset.item-settings-group {
+		border-bottom: 1px solid $color-light-grey-500;
+		min-height: 2rem;
+		display: block;
+		padding: 15px;
+		padding-left: $gutter-width;
+		margin-left: -$dialog-padding;
+		margin-right: -$dialog-padding;
+
+		&:first-child {
+			padding-top: 0;
+		}
+
+		&:last-of-type {
+			border-bottom: none;
+		}
+
+		&.item-settings-group-field {
+			margin-left: -$gutter-width;
+			legend {
+				display: none;
+			}
+		}
+
+		legend {
+			position: absolute;
+			font-size: 24px;
+			left: $dialog-padding;
+			padding: 0;
+			color: $color-222;
+			font-weight: 200;
+		}
+
+		@media (max-width: 840px) {
+
+			margin: 0;
+			padding-left: 0;
+
+			&.item-settings-group-field {
+				margin: 0;
+			}
+
+			legend {
+				padding-top: 15px;
+				position: relative;
+				left: auto;
+			}
+		}
+	}
+
+
 	display: none;
 	width: 90%;
 	padding: 10px 0 !important;

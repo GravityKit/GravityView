@@ -73,7 +73,7 @@
 		 * @since 1.14
 		 * @type {int} The width of the modal dialogs to use for field and widget settings
 		 */
-		dialogWidth: 650,
+		dialogWidth: 750,
 
 		/**
 		 * @since 2.10
