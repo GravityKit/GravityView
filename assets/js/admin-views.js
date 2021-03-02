@@ -824,6 +824,9 @@
 					vcfg.setupFieldDetails( thisDialog );
 					vcfg.setupCodeMirror( thisDialog );
 
+					$( '#directory-fields, #single-fields' ).find( ".active-drop-widget" ).sortable( 'disable' );
+					$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-field" ).sortable('disable');
+
 					return true;
 				},
 				close: function ( e ) {
@@ -847,6 +850,9 @@
 					$( '#wpwrap').find('> .gv-overlay' ).fadeOut( 'fast', function () {
 						$( this ).remove();
 					} );
+
+					$( '#directory-fields, #single-fields' ).find( ".active-drop-widget" ).sortable( 'enable' );
+					$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-field" ).sortable('enable');
 
 					$( 'body' ).trigger( 'gravityview/dialog-closed', thisDialog );
 				},
