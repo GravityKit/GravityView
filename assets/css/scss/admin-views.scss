@@ -716,6 +716,7 @@ $gv-overlay-index: 10000;
 .gv-dialog {
 	position: absolute;
 	z-index: $gv-overlay-index + 1 !important;
+	overflow: visible; // Allow GF tooltips to overflow modal window
 }
 
 .gv-overlay {
