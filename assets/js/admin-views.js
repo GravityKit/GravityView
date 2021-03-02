@@ -369,8 +369,6 @@
 
 					var $input = $parent.find(':input[name$="[' + requires_name + ']"]');
 
-					console.log( { that: $( this ), input: $input } );
-
 					if ( $input.is(':checkbox') ) {
 						if ( reverse_logic ) {
 							$(this).toggle( $input.not(':checked') );
