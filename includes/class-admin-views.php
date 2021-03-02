@@ -832,7 +832,9 @@ class GravityView_Admin_Views {
 		$fields = $fields + $meta_fields + $default_fields;
 
 		// Move Custom Content to top
-		$fields = array( 'custom' => $fields['custom'] ) + $fields;
+		if ( isset( $fields['custom'] ) ) {
+			$fields = array( 'custom' => $fields['custom'] ) + $fields;
+		}
 
 		$gv_fields = GravityView_Fields::get_all();
 
