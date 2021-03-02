@@ -1616,12 +1616,25 @@ $dialog-button-padding: 5px;
 	left: $dialog-padding !important;
 	right: $dialog-padding !important;
 	width: calc( 100% - ( #{$dialog-padding} * 2 ) - 2px ) !important; // Border is 1px * 2
+	outline: none; // We want to outline each item, not the whole box
 
+	// Override GF here and apply padding to each item in order to make keyboard navigation look better
+	li {
+		padding: 0;
+
+		.ui-menu-item-wrapper {
+			padding: 4px 10px;
+		}
+	}
+
+	// On hover and keyboard nav
+	.ui-menu-item .ui-state-active,
 	.ui-menu-item:hover {
 		background: $color-light-grey-300;
 	}
 
-	.ui-menu-item:active {
+	// On click
+	.ui-menu-item-wrapper:active {
 		background: $color-light-grey-500;
 	}
 }
