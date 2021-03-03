@@ -28,6 +28,7 @@ class GravityView_Default_Template_List extends GravityView_Template {
 				'value'   => false,
 				'context' => 'directory',
 				'priority' => 1190,
+				'group'    => 'display',
 			),
 		);
 

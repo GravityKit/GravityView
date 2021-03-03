@@ -295,6 +295,7 @@ class GravityView_Field_Address extends GravityView_Field {
 			'desc' => __('Display a "Map It" link below the address', 'gravityview'),
 			'value' => true,
 			'merge_tags' => false,
+			'group'      => 'display',
 		);
 
 		return $add_options + $field_options;
