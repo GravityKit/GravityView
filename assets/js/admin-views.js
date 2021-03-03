@@ -952,12 +952,15 @@
 				} );
 
 				editor.codemirror.on( 'keydown', function ( el, e ) {
-
-					if ( $autocompleteEl.is( ':visible' ) && 27 === e.which ) {
-						$textarea.autocomplete( 'close' );
+					if ( !$autocompleteEl.is( ':visible' ) ) {
+						return;
 					}
 
-					if ( $autocompleteEl.is( ':visible' ) && (e.which === 38 || e.which === 40 || e.which === 13) ) {
+					if ( 38 === e.which || 40 === e.which || 13 === e.which ) {
+						if ( $autocompleteEl.not( ':focus' ) ) {
+							$autocompleteEl.focus();
+						}
+
 						e.preventDefault();
 					}
 				} );
