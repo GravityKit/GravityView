@@ -425,6 +425,7 @@ $gv-overlay-index: 10000;
 	}
 	#gv-view-configuration-tabs {
 		padding: 0;
+
 		.ui-tabs-panel {
 			border-radius: 0 0 5px 5px;
 			border: 1px solid $color-ccc;
@@ -607,6 +608,10 @@ $gv-overlay-index: 10000;
 						color: $color-blue-tone-100;
 					}
 				}
+			}
+
+			a {
+				border-bottom: 1px solid #ccc;
 			}
 
 			&.ui-state-active,
