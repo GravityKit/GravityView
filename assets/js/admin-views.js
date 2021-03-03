@@ -226,6 +226,27 @@
 				});
 			// End bind to $('body')
 
+			$( window ).resize( function() {
+
+				var $open_dialog = $( ".ui-dialog:visible" ).find( '.ui-dialog-content' );
+
+				$open_dialog.dialog( 'option', 'position', {
+					my: 'center',
+					at: 'center',
+					of: window
+				} );
+
+				// If dialog width is greater than 95% of window width, set to 95% window width
+				var window_width = vcfg.dialogWidth;
+				var ninety_five_per = $( window ).width() * 0.95;
+
+				if ( vcfg.dialogWidth > ninety_five_per ) {
+					window_width = ninety_five_per;
+				}
+
+				$open_dialog.dialog( 'option', 'width', window_width );
+			});
+
 			window.onbeforeunload = function() {
 				return vcfg.hasUnsavedChanges ? true : null;
 			};
@@ -436,6 +457,11 @@
 						if ( window.Beacon  ) {
 							window.Beacon('close');
 						}
+					}
+
+					// The click was on the close link
+					if ( ( 13 === e.keyCode || 32 === e.keyCode ) && $( e.target ).is( '.close' ) || $( e.target ).is('.dashicons-dismiss') ) {
+						close = true;
 					}
 
 					break;
@@ -1427,7 +1453,7 @@
 
 					// Widgets don't have a search field; select the first "Add Widget" button instead
 					if ( ! $focus_item.length) {
-						$focus_item = $( 'button', tooltip.tooltip ).first();
+						$focus_item = $( tooltip.tooltip ).find( '.close' ).first();
 					}
 
 					var activate_layout = 'list';

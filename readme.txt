@@ -23,11 +23,25 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
-* Added: Custom Content now supports syntax highlighting, making it much easier to write HTML
-	- To disable, click on the Users sidebar menu, select Profile. Check the box labeled "Disable syntax highlighting when editing code" and save your profile
+* Ready for Gravity Forms 2.5!
+* New: Brand-new lightbox script, now using [Fancybox](http://fancyapps.com/fancybox/3/). It's fast, it's beautiful, and mobile-optimized.
+	- Fixes issue with Gravity Forms images not loading in lightboxes due to secure URLs
+* Edit View refresh
+	- Brand new field picker for more easily creating your View
+	- Visually see when Single Entry and Edit Entry layouts haven't been configured
+	- Added: Show a notice when "Show only approve entries" setting is enabled for a View and no entries are displayed because of the setting
+	- Added: Custom Content now supports syntax highlighting, making it much easier to write HTML (to disable, click on the Users sidebar menu, select Profile. Check the box labeled "Disable syntax highlighting when editing code" and save your profile)
+	- Added: Warning when leaving Edit View screen if there are unsaved changes
+	- Added: See the details of the current field while configuring field settings
+	- Added: "Clear all" link to remove all fields from the View editor at once
+	- See at a glance which fields link to Single Entry and Edit Entry
+	- Manage and activate layouts from the View editor
+	- Fixed: It was possible to drag and drop a field while the field settings screen was showing. Now it's not!
+* Added: Better support for the Consent field
+* Improved layout of the Manage Add-Ons screen
+	- Improved: Add `?cache` to the Manage Add-Ons screen to refresh access after upgrading a license
 * Added: A dropdown in the "All Views" screen to filter Views by the layout (Table, List, DataTables, DIY, Map, etc.)
-* Added: Show a notice when "Show only approve entries" setting is enabled for a View and no entries are displayed because of the setting
-* Added: Warning when leaving Edit View screen if there are unsaved changes
+* Added: Export entries in TSV format by adding `/tsv/` to the View URL
 * Fixed: Updating an entry associated with an unactivated user (Gravity Forms User Registration) would also change entry creator's information
 * Fixed: PHP warning `The magic method must have public visibility` appearing in PHP 8.0
 * Fixed: PHP notice `Undefined property: stdClass::$icons` appearing on Plugins page
@@ -35,14 +49,21 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Updates:__
 
+* New: FancyBox is now being used for the lightbox
+	- Thickbox is no longer used
+	- Modify settings using `gravityview/lightbox/provider/fancybox/settings`
+	- [See options available here](https://fancyapps.com/fancybox/3/docs/#options)
+	- If you prefer, a [Featherlight lightbox option is available](https://github.com/gravityview/gv-snippets/tree/addon/featherlight-lightbox)
+	- Easily add support for your own lightbox script by extending the new `GravityView_Lightbox_Provider` abstract class (the [Featherbox lightbox script](https://github.com/gravityview/gv-snippets/tree/addon/featherlight-lightbox) is a good example).
+	- Modified: Formally deprecated the mis-spelled `gravity_view_lightbox_script` and `gravity_view_lightbox_style` filters in favor of  `gravityview_lightbox_script` and `gravityview_lightbox_style` (finally!)
+	- Fixed: `gravityview_lightbox_script` filter wasn't being applied
+	- Removed `gravityview/fields/fileupload/allow_insecure_lightbox` filter, since it's no longer needed
+* Added: `gravityview/admin/indicator_icons` filter to modify the icon output to add additional indicator icons
 * Modified: `$_GET` args are now passed to links by default.
-	* Added: Prevent entry links (single, edit, delete, duplicate) from including $_GET query args by returning false to the filter `gravityview/entry_link/add_query_args`
+	- Added: Prevent entry links (single, edit, delete, duplicate) from including $_GET query args by returning false to the filter `gravityview/entry_link/add_query_args`
 * Added: `gv_get_query_args()` function to return $_GET query args, with reserved args removed
-	* Added: `gravityview/api/reserved_query_args` filter to modify internal reserved URL query args
+	- Added: `gravityview/api/reserved_query_args` filter to modify internal reserved URL query args
 * Modified: `templates/fields/field-entry_link-html.php` template to add `gv_get_query_args()` functionality
-
-__Developer Updates:__
-
 * Breaking CSS change: Removed `.gv-list-view` CSS class from the List layout container `<div>`. The CSS class was also used in the looped entry containers, making it hard to style. This issue was introduced in GravityView 2.0. For background, see [the GitHub issue](https://github.com/gravityview/GravityView/issues/1026).
 
 = 2.9.4 on January 25, 2021 =
@@ -68,18 +89,10 @@ __Developer Updates:__
 
 __Developer Updates:__
 
-* New: FancyBox is now being used for the lightbox
-	- Thickbox is no longer used
-	- Modify settings using `gravityview/lightbox/provider/fancybox/settings`
-	- [See options available here](https://fancyapps.com/fancybox/3/docs/#options)
-	- If you prefer, a [Featherlight lightbox option is available](https://github.com/gravityview/gv-snippets/tree/addon/featherlight-lightbox)
-* Modified: Formally deprecated `gravity_view_lightbox_script` and `gravity_view_lightbox_style` filters
-* Fixed: `gravityview_lightbox_script` filter wasn't being applied
-* Removed `gravityview/fields/fileupload/allow_insecure_lightbox` filter, since it's no longer needed
 * Added: `gravityview/search-trim-input` filter to strip or preserve leading/trailing whitespaces in Search Bar values
 * Added: Future WordPress version compatibility check
-* Modified: `gravityview_date_created_adjust_timezone` default is now set to false (use UTC value)
 * Tweak: Improved logging output
+* Modified: `gravityview_date_created_adjust_timezone` default is now set to false (use UTC value)
 
 = 2.9.2.1 on October 26, 2020 =
 

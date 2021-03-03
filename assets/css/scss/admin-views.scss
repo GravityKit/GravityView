@@ -425,6 +425,7 @@ $gv-overlay-index: 10000;
 	}
 	#gv-view-configuration-tabs {
 		padding: 0;
+
 		.ui-tabs-panel {
 			border-radius: 0 0 5px 5px;
 			border: 1px solid $color-ccc;
@@ -609,6 +610,10 @@ $gv-overlay-index: 10000;
 				}
 			}
 
+			a {
+				border-bottom: 1px solid #ccc;
+			}
+
 			&.ui-state-active,
 			&.ui-state-active.tab-not-configured,
 			&.ui-state-active.ui-state-hover {
@@ -716,6 +721,7 @@ $gv-overlay-index: 10000;
 .gv-dialog {
 	position: absolute;
 	z-index: $gv-overlay-index + 1 !important;
+	overflow: visible; // Allow GF tooltips to overflow modal window
 }
 
 .gv-overlay {
