@@ -450,6 +450,10 @@
 
 					// Escape key was pressed
 					if ( e.keyCode === 27 ) {
+						if ( $( '.ui-autocomplete' ).is( ':visible' ) ) {
+							return;
+						}
+
 						close = $( '.gv-field-filter-form input[data-has-search]:focus' ).length === 0;
 						return_false = close;
 
@@ -935,6 +939,14 @@
 					$( '#' + editorId ).autocomplete( 'close' );
 				};
 
+				$( 'body' ).on( 'keyup', function ( e ) {
+					if ( $autocompleteEl.is( ':visible' ) && 27 === e.which ) {
+						e.preventDefault();
+						closeAutocompletion();
+						$textarea.focus();
+					}
+				} )
+
 				editor.codemirror.on( 'mousedown', function () {
 					closeAutocompletion();
 				} );
@@ -966,7 +978,6 @@
 					// if the value starts with a curly braces, initiate autocompletion
 					if ( mergeTag[ 0 ] === '{' ) {
 						$( '#' + editorId ).autocomplete( 'search', mergeTag );
-						$autocompleteEl.focus();
 
 						return;
 					}
