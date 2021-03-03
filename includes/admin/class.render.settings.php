@@ -133,7 +133,16 @@ class GravityView_Render_Settings {
 
 			foreach ( $field_options as $key => $field_option ) {
 
-				$_group = \GV\Utils::get( $field_option, 'group', 'default' );
+				// TODO: Add filter to override instead of doing inline.
+				switch ( $key ) {
+					case 'show_as_link':
+						$_group = 'display';
+						$field_option['priority'] = 100;
+						break;
+					default:
+						$_group = \GV\Utils::get( $field_option, 'group', 'default' );
+						break;
+				}
 
 				$option_groups[ $_group ][ $key ] = $field_option;
 			}
