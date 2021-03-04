@@ -463,6 +463,11 @@
 						}
 					}
 
+					// The click was on the close link
+					if ( ( 13 === e.keyCode || 32 === e.keyCode ) && $( e.target ).is( '.close' ) || $( e.target ).is('.dashicons-dismiss') ) {
+						close = true;
+					}
+
 					break;
 
 				case 'mouseup':
@@ -1462,7 +1467,7 @@
 
 					// Widgets don't have a search field; select the first "Add Widget" button instead
 					if ( ! $focus_item.length) {
-						$focus_item = $( 'button', tooltip.tooltip ).first();
+						$focus_item = $( tooltip.tooltip ).find( '.close' ).first();
 					}
 
 					var activate_layout = 'list';
