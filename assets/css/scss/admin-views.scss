@@ -1334,7 +1334,10 @@ $dialog-button-padding: 5px;
 		}
 
 		&.item-settings-group-field {
-			margin-left: -$gutter-width;
+			.gv-setting-container {
+				padding-left: $dialog-padding;
+				margin-left: -$gutter-width;
+			}
 			legend {
 				display: none;
 			}
