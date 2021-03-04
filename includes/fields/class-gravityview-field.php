@@ -428,8 +428,8 @@ abstract class GravityView_Field {
 				'label' => __( 'Use the live post data', 'gravityview' ),
 				'desc' => __( 'Instead of using the entry data, instead use the current post data.', 'gravityview' ),
 				'value' => true,
-				'priority' => 1220,
-				'group' => 'field',
+				'priority' => 1100,
+				'group' => 'display',
 			),
 			'date_display' => array(
 				'type' => 'text',
@@ -442,15 +442,14 @@ abstract class GravityView_Field {
 				'value' => apply_filters( 'gravityview_date_format', null ),
 				'class' => 'code',
 				'priority' => 1500,
-				'group' => 'field',
+				'group' => 'display',
 			),
 			'new_window' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Open link in a new tab or window?', 'gravityview' ),
 				'value' => false,
-				'priority' => 1300,
 				'group' => 'display',
-				'requires' => 'show_as_link=1',
+				'priority' => 1300,
 			),
 		);
 

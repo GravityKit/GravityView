@@ -42,6 +42,7 @@ class GravityView_Field_Email extends GravityView_Field {
 				'value' => true,
 				'label' => __( 'Link the Email Address', 'gravityview' ),
 				'desc' => __( 'Clicking the link will generate a new email.', 'gravityview' ),
+				'group' => 'field',
 			),
 			'emailsubject' => array(
 				'type' => 'text',
@@ -50,6 +51,7 @@ class GravityView_Field_Email extends GravityView_Field {
 				'desc' => __( 'Set the default email subject line.', 'gravityview' ),
 				'merge_tags' => 'force',
 				'requires' => 'emailmailto',
+				'group' => 'field',
 			),
 			'emailbody' => array(
 				'type' => 'textarea',
@@ -59,12 +61,15 @@ class GravityView_Field_Email extends GravityView_Field {
 				'merge_tags' => 'force',
 				'class' => 'widefat',
 				'requires' => 'emailmailto',
+				'group' => 'field',
 			),
 			'emailencrypt' => array(
 				'type' => 'checkbox',
 				'value' => true,
 				'label' => __( 'Encrypt Email Address', 'gravityview' ),
-				'desc' => __( 'Make it harder for spammers to get email addresses from your entries. Email addresses will not be visible with Javascript disabled.', 'gravityview' )
+				'desc' => __( 'Make it harder for spammers to get email addresses from your entries. Email addresses will not be visible with Javascript disabled.', 'gravityview' ),
+				'group' => 'advanced',
+				'priority' => 1000,
 			)
 		);
 

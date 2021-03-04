@@ -140,7 +140,7 @@ class GravityView_Render_Settings {
 						$field_option['priority'] = 100;
 						break;
 					default:
-						$_group = \GV\Utils::get( $field_option, 'group', 'default' );
+						$_group = \GV\Utils::get( $field_option, 'group', 'display' );
 						break;
 				}
 
