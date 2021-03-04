@@ -919,7 +919,6 @@
 				// Set up Merge Tag autocomplete
 				$textarea.autocomplete( {
 					appendTo: $textarea.parent(),
-					autoFocus: true,
 					minLength: 1,
 					position: {
 						my: 'center top',
