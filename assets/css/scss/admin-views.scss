@@ -324,6 +324,13 @@ $gv-overlay-index: 10000;
 		visibility: visible;
 		padding: 0;
 		left: auto;
+
+		@media screen and (max-width: 782px) {
+			&,
+			& a {
+				display: inline!important;
+			}
+		}
 	}
 	.gv-form-title {
 		display: none;
@@ -502,9 +509,11 @@ $gv-overlay-index: 10000;
   z-index: $gv-overlay-index + 1 !important;
 }
 .CodeMirror, .CodeMirror-hint {
+	font-size: 15px;
+}
+.CodeMirror {
 	height: 35vh;
 	min-height: 15em;
-	font-size: 15px;
 }
 
 /** View configuration tabs */

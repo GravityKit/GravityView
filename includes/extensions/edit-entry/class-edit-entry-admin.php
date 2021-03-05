@@ -141,7 +141,7 @@ class GravityView_Edit_Entry_Admin {
             'type' => 'text',
             'label' => __( 'Edit Link Text', 'gravityview' ),
             'desc' => NULL,
-            'value' => __('Link to Edit Entry', 'gravityview'),
+            'value' => __('Edit Entry', 'gravityview'),
             'merge_tags' => true,
         );
 

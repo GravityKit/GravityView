@@ -450,6 +450,10 @@
 
 					// Escape key was pressed
 					if ( e.keyCode === 27 ) {
+						if ( $( '.ui-autocomplete' ).is( ':visible' ) ) {
+							return;
+						}
+
 						close = $( '.gv-field-filter-form input[data-has-search]:focus' ).length === 0;
 						return_false = close;
 
@@ -915,7 +919,6 @@
 				// Set up Merge Tag autocomplete
 				$textarea.autocomplete( {
 					appendTo: $textarea.parent(),
-					autoFocus: true,
 					minLength: 1,
 					position: {
 						my: 'center top',
@@ -940,17 +943,28 @@
 					$( '#' + editorId ).autocomplete( 'close' );
 				};
 
+				$( 'body' ).on( 'keyup', function ( e ) {
+					if ( $autocompleteEl.is( ':visible' ) && 27 === e.which ) {
+						e.preventDefault();
+						closeAutocompletion();
+						$textarea.focus();
+					}
+				} )
+
 				editor.codemirror.on( 'mousedown', function () {
 					closeAutocompletion();
 				} );
 
 				editor.codemirror.on( 'keydown', function ( el, e ) {
-
-					if ( $autocompleteEl.is( ':visible' ) && 27 === e.which ) {
-						$textarea.autocomplete( 'close' );
+					if ( !$autocompleteEl.is( ':visible' ) ) {
+						return;
 					}
 
-					if ( $autocompleteEl.is( ':visible' ) && (e.which === 38 || e.which === 40 || e.which === 13) ) {
+					if ( 38 === e.which || 40 === e.which || 13 === e.which ) {
+						if ( $autocompleteEl.not( ':focus' ) ) {
+							$autocompleteEl.focus();
+						}
+
 						e.preventDefault();
 					}
 				} );
@@ -971,7 +985,6 @@
 					// if the value starts with a curly braces, initiate autocompletion
 					if ( mergeTag[ 0 ] === '{' ) {
 						$( '#' + editorId ).autocomplete( 'search', mergeTag );
-						$autocompleteEl.focus();
 
 						return;
 					}
