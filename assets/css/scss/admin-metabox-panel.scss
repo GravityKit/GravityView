@@ -6,7 +6,6 @@
 @import "_mixins";
 
 #gravityview-metabox-content-container {
-  max-height: 640px; // Most common resolution - see https://gs.statcounter.com/screen-resolution-stats/mobile/worldwide
   background: transparent; // Allow .striped rows to show
   float: left;
   width: 100%;
