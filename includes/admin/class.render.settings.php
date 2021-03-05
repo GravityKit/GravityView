@@ -157,7 +157,6 @@ class GravityView_Render_Settings {
 				'label' => \GV\Utils::get( $option_groups, 'label', array() ),
 				'visibility' => \GV\Utils::get( $option_groups, 'visibility', array() ),
 				'advanced' => \GV\Utils::get( $option_groups, 'advanced', array() ),
-				'gv_math_footer_calc' => \GV\Utils::get( $option_groups, 'gv_math_footer_calc', array() ),
 				'default' => \GV\Utils::get( $option_groups, 'default', array() ),
 			);
 
