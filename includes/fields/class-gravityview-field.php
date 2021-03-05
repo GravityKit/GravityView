@@ -440,7 +440,7 @@ abstract class GravityView_Field {
 				 * @param[in,out] null|string $date_format Date Format (default: null)
 				 */
 				'value' => apply_filters( 'gravityview_date_format', null ),
-				'class' => 'code',
+				'class' => 'code widefat',
 				'priority' => 1500,
 				'group' => 'display',
 			),

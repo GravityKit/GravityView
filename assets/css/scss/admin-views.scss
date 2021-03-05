@@ -1361,6 +1361,13 @@ $dialog-button-padding: 5px;
 			margin: 0;
 			padding-left: 0;
 
+			&:first-child {
+				legend {
+					padding-top: 0;
+					padding-bottom: 15px;
+				}
+			}
+
 			&.item-settings-group-field {
 				margin: 0;
 			}
