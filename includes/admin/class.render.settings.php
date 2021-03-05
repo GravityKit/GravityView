@@ -264,6 +264,12 @@ class GravityView_Render_Settings {
 		// get field/widget options
 		$option_groups = self::get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type, $form_id, $grouped );
 
+		if( ! $grouped ) {
+			$option_groups = array( $option_groups );
+		}
+
+		$option_groups = array_filter( $option_groups );
+
 		// two different post arrays, depending of the field type
 		$name_prefix = $field_type .'s' .'['. $area .']['. $uniqid .']';
 
