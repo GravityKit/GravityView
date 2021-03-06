@@ -14,6 +14,26 @@
 class GravityView_Render_Settings {
 
 	/**
+	 * Get available field groups.
+	 *
+	 * @since 2.10
+	 *
+	 * @return array
+	 */
+	public static function get_field_groups() {
+
+		return array(
+			'field'               => _x( 'Field', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'display'             => _x( 'Display', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'label'               => _x( 'Label', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'visibility'          => _x( 'Visibility', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'advanced'            => _x( 'Advanced', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'gv_math_footer_calc' => _x( 'Math', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'default'             => _x( 'Default', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+		);
+	}
+
+	/**
 	 * Get the default options for a standard field.
 	 *
 	 * @since 2.10 added $grouped parameter
@@ -151,15 +171,10 @@ class GravityView_Render_Settings {
 				uasort( $option_group, array( __CLASS__, '_sort_by_priority' ) );
 			}
 
-			$field_options = array(
-				'field' => \GV\Utils::get( $option_groups, 'field', array() ),
-				'display' => \GV\Utils::get( $option_groups, 'display', array() ),
-				'label' => \GV\Utils::get( $option_groups, 'label', array() ),
-				'visibility' => \GV\Utils::get( $option_groups, 'visibility', array() ),
-				'advanced' => \GV\Utils::get( $option_groups, 'advanced', array() ),
-				'gv_math_footer_calc' => \GV\Utils::get( $option_groups, 'gv_math_footer_calc', array() ),
-				'default' => \GV\Utils::get( $option_groups, 'default', array() ),
-			);
+			$field_options = array();
+			foreach ( self::get_field_groups() as $group_key => $group_name  ) {
+				$field_options[ $group_key ] = \GV\Utils::get( $option_groups, $group_key, array() );
+			}
 
 		} else {
 			uasort( $field_options, array( __CLASS__, '_sort_by_priority' ) );
@@ -310,8 +325,9 @@ class GravityView_Render_Settings {
 			}
 
 			if ( $grouped ) {
-				$field_settings .= '<fieldset class="item-settings-group item-settings-group-' . esc_attr( $group_key ) .'">';
-				$field_settings .= '<legend>' . ucwords( $group_key ) . '</legend>';
+				$group_name     = rgar( self::get_field_groups(), $group_key, '' );
+				$field_settings .= '<fieldset class="item-settings-group item-settings-group-' . esc_attr( $group_key ) . '">';
+				$field_settings .= '<legend>' . esc_attr( $group_name ) . '</legend>';
 			}
 
 			foreach ( $option_group as $key => $option ) {
