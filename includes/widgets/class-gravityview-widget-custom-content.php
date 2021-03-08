@@ -63,7 +63,7 @@ class GravityView_Widget_Custom_Content extends \GV\Widget {
 			include_once( GFCommon::get_base_path() . '/form_display.php' );
 		}
 
-		$widget_args['content'] = trim( rtrim( $widget_args['content'] ) );
+		$widget_args['content'] = trim( rtrim( \GV\Utils::get( $widget_args, 'content' ) ) );
 
 		// No custom content
 		if( empty( $widget_args['content'] ) ) {
