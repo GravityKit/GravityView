@@ -109,7 +109,7 @@ function gravityview_register_placeholder_templates() {
 		}
 
 	} catch ( Exception $exception ) {
-
+		gravityview()->log->critical( $exception->getMessage() );
 	}
 
 }

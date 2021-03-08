@@ -331,6 +331,16 @@ class GravityView_Admin_Installer {
 		<?php
 	}
 
+	/**
+	 * Renders each category of download (Add-Ons, Extensions, Layouts)
+	 *
+	 * @since 2.10
+	 *
+	 * @param string $section_slug The slug to display downloads from (based on the category slug on gravityview.co)
+	 * @param string $heading The section heading text ("GravityView Layouts", "GravityView Extensions", "Gravity Forms Add-Ons")
+	 * @param array $downloads_data Downloads data from gravityview.co EDD API {@see get_downloads_data}
+	 * @param array $wp_plugins All active plugins, as returned by {@see \get_plugins()}
+	 */
 	private function render_section( $section_slug, $heading, $downloads_data, $wp_plugins = array() ) {
 
 		ob_start();

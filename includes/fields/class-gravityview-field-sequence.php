@@ -70,6 +70,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 			'type'  => $this->name,
 			'desc'  => $this->description,
 			'icon'  => $this->icon,
+			'group' => 'gravityview',
 		);
 
 		return $entry_default_fields;

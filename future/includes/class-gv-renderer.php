@@ -142,7 +142,7 @@ class Renderer {
 	/**
 	 * Check empty configuration.
 	 *
-	 * @since 2.9.5
+	 * @since 2.10
 	 *
 	 * @param \GV\Template_Context $gravityview The $gravityview template object.
 	 *

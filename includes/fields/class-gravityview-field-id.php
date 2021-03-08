@@ -1,9 +1,9 @@
 <?php
 /**
  * @file class-gravityview-field-id.php
- * @package GravityView
- * @subpackage includes\fields
  * @since 2.10
+ * @subpackage includes\fields
+ * @package GravityView
  */
 
 class GravityView_Field_ID extends GravityView_Field {
@@ -21,14 +21,14 @@ class GravityView_Field_ID extends GravityView_Field {
 	var $is_numeric = true;
 
 	public function __construct() {
-		$this->label = esc_html__( 'Entry ID', 'gravityview' );
-	    $this->description = __('The unique ID of the entry.', 'gravityview');
+		$this->label       = esc_html__( 'Entry ID', 'gravityview' );
+		$this->description = __( 'The unique ID of the entry.', 'gravityview' );
 		parent::__construct();
 	}
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		if( 'edit' === $context ) {
+		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 

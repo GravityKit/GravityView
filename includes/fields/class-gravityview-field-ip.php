@@ -1,9 +1,9 @@
 <?php
 /**
  * @file class-gravityview-field-id.php
- * @package GravityView
- * @subpackage includes\fields
  * @since 2.10
+ * @subpackage includes\fields
+ * @package GravityView
  */
 
 class GravityView_Field_IP extends GravityView_Field {
@@ -21,8 +21,8 @@ class GravityView_Field_IP extends GravityView_Field {
 	var $is_numeric = true;
 
 	public function __construct() {
-		$this->label = __('User IP', 'gravityview');
-	    $this->description = __('The IP Address of the user who created the entry.', 'gravityview');
+		$this->label       = __( 'User IP', 'gravityview' );
+		$this->description = __( 'The IP Address of the user who created the entry.', 'gravityview' );
 		parent::__construct();
 	}
 }
