@@ -170,6 +170,7 @@ body .ui-tooltip {
 			display: block;
 			width: 100%;
 			margin-bottom: 0;
+			text-align: center;
 		}
 
 		.dashicons,
@@ -261,13 +262,23 @@ body .ui-tooltip {
 			padding: 7px 12px 8px (36px + 12px);
 			margin: 0;
 			line-height: 24px;
+
+			.rtl & {
+				padding: 7px (36px + 12px) 8px 12px;
+			}
 			* {
 				text-align: left;
+				.rtl & {
+					text-align: right;
+				}
 			}
 		}
 
 		.dashicons {
 			margin: 0 8px 0 -36px;
+			.rtl & {
+				margin: 0 -36px 0 8px;
+			}
 		}
 
 		.gv-field-info {
@@ -322,18 +333,31 @@ body .ui-tooltip {
 		border-bottom-left-radius: 6px;
 		border-bottom-right-radius: 6px;
 
-		input {
+		.rtl & {
+			text-align: right;
+		}
+
+		input.gv-field-filter {
 			top: 0;
 			left: 0;
 			width: 75%;
 			height: 2.5em;
 			padding-left: 30px;
+
 			display: inline-block;
 			line-height: 1em;
 
 			&::placeholder,
 			&:placeholder-shown {
 				line-height: 2.5em;
+			}
+
+			.rtl & {
+				text-align: right;
+				padding-left: 8px;
+				padding-right: 30px;
+				left: auto;
+				right: 0;
 			}
 		}
 
@@ -348,24 +372,32 @@ body .ui-tooltip {
 			font-size: 26px;
 			position: absolute;
 			color: $color-ccc;
+
+			.rtl & {
+				left: auto;
+				margin-left: auto;
+				margin-right: 3px;
+			}
 		}
 
 		.button-group {
 			float: right;
 			height: 35px;
 			border-radius: 3px;
+
+			.rtl & {
+				float: left;
+			}
 		}
 		span[role=button] {
 			&:first-child {
 				border-right: 0;
 			}
-			//float: right;
 			display: inline-block;
 			cursor: pointer;
 			margin: 0;
 			border-color: $color-777;
 			color: $color-888;
-			/*border: none;*/
 			border-radius: 3px;
 			height: 35px;
 			.dashicons {
