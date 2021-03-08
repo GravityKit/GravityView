@@ -352,7 +352,7 @@ class GravityView_Admin_Installer {
 		$output = trim( $output );
 
 		if ( ! empty( $output ) ) {
-			echo '<div class="clearfix" style="width:100%;"><h3 style="font-size: 1.5em;">' . esc_html( $heading ) . '</h3></div>';
+			echo '<div class="gv-admin-installer-section"><h3>' . esc_html( $heading ) . '</h3></div>';
 			echo $output;
 		}
 	}

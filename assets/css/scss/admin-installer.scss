@@ -72,6 +72,14 @@
 	align-items: flex-start;
 	align-content: space-between;
 
+	.gv-admin-installer-section {
+		width: 100%;
+
+		h3 {
+			font-size: 1.5em;
+		}
+	}
+
 	&:after {
 		display: block;
 		flex: 999 999 auto;
