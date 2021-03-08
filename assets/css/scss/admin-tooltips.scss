@@ -7,14 +7,13 @@
 	background: transparent;
 
 	&:before {
-		// @see .fa in FontAwesome
 		display: inline-block;
 		font-size: inherit;
 		text-rendering: auto;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		font: normal normal normal 14px/1 FontAwesome;
-		content: "\f059";
+		font: normal normal normal 14px/1 'gravityview';
+		content: "\6b";
 	}
 	display: inline-block;
 	text-align: center;
