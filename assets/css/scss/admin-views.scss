@@ -447,6 +447,7 @@ $gv-overlay-index: 10000;
 .clear-all-fields {
 	text-decoration: none;
 	padding: 6px .5em 6px 1em; // Align the text to the gv-field edge and the button to the container edge
+	cursor: pointer;
 
 	.rtl & {
 		padding: 6px 1em 6px .5em;
