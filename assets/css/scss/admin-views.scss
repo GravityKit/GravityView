@@ -155,8 +155,7 @@ $gv-overlay-index: 10000;
 	font-size: 22px;
 	font-weight: bold;
 	margin-bottom: 1em;
-	padding-bottom: .5em;
-	border-bottom: 1px solid $color-ddd;
+	padding-bottom: 0;
 }
 
 .gv-section h4 span {
@@ -1745,6 +1744,7 @@ $dialog-button-padding: 5px;
 }
 
 .gv-field-label {
+	.gv-icon,
 	.dashicons {
 		display: none;
 	}

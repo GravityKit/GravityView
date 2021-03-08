@@ -207,7 +207,10 @@ body .ui-tooltip {
 			width: .9em;
 
 			&.background-icon {
-				filter: brightness(1);
+				background-repeat: no-repeat;
+				background-size: contain;
+				background-position: center center;
+				opacity: .6;
 			}
 		}
 
@@ -216,7 +219,7 @@ body .ui-tooltip {
 			color: $color-444;
 
 			&.background-icon {
-				filter: brightness(.666);
+				opacity: .8;
 			}
 		}
 
@@ -235,14 +238,18 @@ body .ui-tooltip {
 		}
 
 		&[data-layout="list"] .gv-fields.gv-child-field {
-			padding-top: 4px;
-			padding-bottom: 5px;
+			padding-top: 3px;
+			padding-bottom: 4px;
+		}
 
-			// Indent the child fields a bit.
-			.gv-field-label .gv-field-label-text-container {
-				&:before {
-					content: '- ';
-				}
+		.gv-child-field .gv-icon {
+			display: inline-block;
+			position: relative;
+			top: .1em;
+			opacity: .5;
+			transition: opacity 0.1s ease-in;
+			&:hover {
+				transition: opacity 0.1s ease-in;
 			}
 		}
 	}
@@ -252,7 +259,7 @@ body .ui-tooltip {
 			width: 100%;
 			min-height: 36px;
 			font-size: 13px;
-			padding: 8px 12px 6px (36px + 12px);
+			padding: 7px 12px 8px (36px + 12px);
 			margin: 0;
 			line-height: 24px;
 			* {
