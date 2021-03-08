@@ -49,6 +49,8 @@ class GravityView_Field_Phone extends GravityView_Field {
 	        'label' => __( 'Make Phone Number Clickable', 'gravityview' ),
 	        'desc' => __( 'Allow dialing a number by clicking it?', 'gravityview'),
 	        'value' => true,
+	        'group' => 'display',
+	        'priority' => 100,
         );
 
 		return $field_options;

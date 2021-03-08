@@ -14,7 +14,28 @@
 class GravityView_Render_Settings {
 
 	/**
+	 * Get available field groups.
+	 *
+	 * @since 2.10
+	 *
+	 * @return array
+	 */
+	public static function get_field_groups() {
+
+		return array(
+			'field'      => _x( 'Field', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'display'    => _x( 'Display', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'label'      => _x( 'Label', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'visibility' => _x( 'Visibility', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'advanced'   => _x( 'Advanced', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'default'    => _x( 'Default', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+		);
+	}
+
+	/**
 	 * Get the default options for a standard field.
+	 *
+	 * @since 2.10 added $grouped parameter
 	 *
 	 * @param  string      $field_type  Type of field options to render (`field` or `widget`)
 	 * @param  string      $template_id Layout slug (`default_table`, `default_list`, `datatables_table`, etc.
@@ -22,9 +43,11 @@ class GravityView_Render_Settings {
 	 * @param  string      $context     What context are we in? Example: `single` or `directory`
 	 * @param  string      $input_type  (textarea, list, select, etc.)
 	 * @param  int         $form_id     The form ID. @since develop
+	 * @param  bool        $grouped     Whether to group the field settings by `group` key
+	 *
 	 * @return array       Array of field options with `label`, `value`, `type`, `default` keys
 	 */
-	public static function get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type, $form_id ) {
+	public static function get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type, $form_id, $grouped = false ) {
 
 		$field_options = array();
 
@@ -39,6 +62,7 @@ class GravityView_Render_Settings {
 					'label' => __( 'Show Label', 'gravityview' ),
 					'value' => ! empty ( $is_table_layout ),
 					'priority' => 1000,
+					'group' => 'label',
 				),
 				'custom_label' => array(
 					'type' => 'text',
@@ -48,6 +72,7 @@ class GravityView_Render_Settings {
 					'class'      => 'widefat',
 					'priority' => 1100,
 					'requires' => 'show_label',
+					'group' => 'label',
 				),
 				'custom_class' => array(
 					'type'       => 'text',
@@ -58,12 +83,14 @@ class GravityView_Render_Settings {
 					'tooltip'    => 'gv_css_merge_tags',
 					'class'      => 'widefat code',
 					'priority' => 5000,
+					'group' => 'advanced',
 				),
 				'only_loggedin' => array(
 					'type' => 'checkbox',
 					'label' => __( 'Make visible only to logged-in users?', 'gravityview' ),
 					'value' => '',
 					'priority' => 4000,
+					'group' => 'visibility',
 				),
 				'only_loggedin_cap' => array(
 					'type' => 'select',
@@ -73,6 +100,7 @@ class GravityView_Render_Settings {
 					'value' => 'read',
 					'priority' => 4100,
 					'requires' => 'only_loggedin',
+					'group' => 'visibility',
 				),
 			);
 
@@ -85,6 +113,7 @@ class GravityView_Render_Settings {
 					'class' => 'code widefat',
 					'value' => '',
 					'priority' => 200,
+					'group' => 'display',
 				);
 			}
 
@@ -117,7 +146,38 @@ class GravityView_Render_Settings {
 		 */
 		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
-		uasort( $field_options, array( __CLASS__, '_sort_by_priority' ) );
+		if ( $grouped ) {
+
+			$option_groups = array();
+
+			foreach ( $field_options as $key => $field_option ) {
+
+				// TODO: Add filter to override instead of doing inline.
+				switch ( $key ) {
+					case 'show_as_link':
+						$_group = 'display';
+						$field_option['priority'] = 100;
+						break;
+					default:
+						$_group = \GV\Utils::get( $field_option, 'group', 'display' );
+						break;
+				}
+
+				$option_groups[ $_group ][ $key ] = $field_option;
+			}
+
+			foreach ( $option_groups as & $option_group ) {
+				uasort( $option_group, array( __CLASS__, '_sort_by_priority' ) );
+			}
+
+			$field_options = array();
+			foreach ( self::get_field_groups() as $group_key => $group_name  ) {
+				$field_options[ $group_key ] = \GV\Utils::get( $option_groups, $group_key, array() );
+			}
+
+		} else {
+			uasort( $field_options, array( __CLASS__, '_sort_by_priority' ) );
+		}
 
 		return $field_options;
 	}
@@ -213,8 +273,16 @@ class GravityView_Render_Settings {
 			$uniqid = uniqid('', false);
 		}
 
+		$grouped = ( 'field' === $field_type );
+
 		// get field/widget options
-		$options = self::get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type, $form_id );
+		$option_groups = self::get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type, $form_id, $grouped );
+
+		if( ! $grouped ) {
+			$option_groups = array( $option_groups );
+		}
+
+		$option_groups = array_filter( $option_groups );
 
 		// two different post arrays, depending of the field type
 		$name_prefix = $field_type .'s' .'['. $area .']['. $uniqid .']';
@@ -231,7 +299,7 @@ class GravityView_Render_Settings {
 		}
 
 		// If there are no options, return what we got.
-		if(empty($options)) {
+		if ( empty( $option_groups ) ) {
 			return $hidden_fields . '<!-- No Options -->'; // The HTML comment is here for checking if the output is empty in render_label()
 		}
 
@@ -249,33 +317,50 @@ class GravityView_Render_Settings {
 		}
 
 		$field_settings = '';
-		foreach( $options as $key => $option ) {
+		foreach ( $option_groups as $group_key => $option_group ) {
 
-			$value = isset( $current[ $key ] ) ? $current[ $key ] : NULL;
-
-			$field_output = self::render_field_option( $name_prefix . '['. $key .']' , $option, $value);
-
-			// The setting is empty
-			if( empty( $field_output ) ) {
+			if ( empty( $option_group ) ) {
 				continue;
 			}
 
-			$show_if = '';
-			if( ! empty( $option['requires'] ) ) {
-				$show_if .= sprintf( ' data-requires="%s"', $option['requires'] );
+			if ( $grouped ) {
+				$group_name     = rgar( self::get_field_groups(), $group_key, '' );
+				$field_settings .= '<fieldset class="item-settings-group item-settings-group-' . esc_attr( $group_key ) . '">';
+				$field_settings .= '<legend>' . esc_attr( $group_name ) . '</legend>';
 			}
 
-			if( ! empty( $option['requires_not'] ) ) {
-				$show_if .= sprintf( ' data-requires-not="%s"', $option['requires_not'] );
+			foreach ( $option_group as $key => $option ) {
+
+				$value = isset( $current[ $key ] ) ? $current[ $key ] : null;
+
+				$field_output = self::render_field_option( $name_prefix . '[' . $key . ']', $option, $value );
+
+				// The setting is empty
+				if ( empty( $field_output ) ) {
+					continue;
+				}
+
+				$show_if = '';
+				if ( ! empty( $option['requires'] ) ) {
+					$show_if .= sprintf( ' data-requires="%s"', $option['requires'] );
+				}
+
+				if ( ! empty( $option['requires_not'] ) ) {
+					$show_if .= sprintf( ' data-requires-not="%s"', $option['requires_not'] );
+				}
+
+				switch ( $option['type'] ) {
+					// Hide hidden fields
+					case 'hidden':
+						$field_settings .= '<div class="gv-setting-container gv-setting-container-' . esc_attr( $key ) . ' screen-reader-text">' . $field_output . '</div>';
+						break;
+					default:
+						$field_settings .= '<div class="gv-setting-container gv-setting-container-' . esc_attr( $key ) . '" ' . $show_if . '>' . $field_output . '</div>';
+				}
 			}
 
-			switch( $option['type'] ) {
-				// Hide hidden fields
-				case 'hidden':
-					$field_settings .= '<div class="gv-setting-container gv-setting-container-'. esc_attr( $key ) . ' screen-reader-text">'. $field_output . '</div>';
-					break;
-				default:
-					$field_settings .= '<div class="gv-setting-container gv-setting-container-'. esc_attr( $key ) . '" ' . $show_if . '>'. $field_output .'</div>';
+			if ( $grouped ) {
+				$field_settings .= '</fieldset>';
 			}
 		}
 

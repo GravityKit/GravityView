@@ -840,8 +840,8 @@ class GravityView_Admin_Views {
 
 		foreach ( $fields as &$field ) {
 			foreach ( $gv_fields as $gv_field ) {
-				if ( $field['type'] === $gv_field->name ) {
-					$field['icon'] = $gv_field->icon;
+				if ( \GV\Utils::get( $field, 'type' ) === $gv_field->name ) {
+					$field['icon'] = \GV\Utils::get( $gv_field, 'icon' );
 				}
 			}
 		}

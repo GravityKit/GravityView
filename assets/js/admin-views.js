@@ -73,7 +73,7 @@
 		 * @since 1.14
 		 * @type {int} The width of the modal dialogs to use for field and widget settings
 		 */
-		dialogWidth: 650,
+		dialogWidth: 750,
 
 		/**
 		 * @since 2.10
@@ -238,7 +238,7 @@
 
 				// If dialog width is greater than 95% of window width, set to 95% window width
 				var window_width = vcfg.dialogWidth;
-				var ninety_five_per = $( window ).width() * .95;
+				var ninety_five_per = $( window ).width() * 0.95;
 
 				if ( vcfg.dialogWidth > ninety_five_per ) {
 					window_width = ninety_five_per;

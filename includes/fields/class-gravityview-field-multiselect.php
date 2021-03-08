@@ -57,6 +57,7 @@ class GravityView_Field_MultiSelect extends GravityView_Field {
 					'value' => __( 'Value of the input', 'gravityview' ),
 					'label' => __( 'Label of the input', 'gravityview' ),
 				),
+				'group'   => 'display',
 			);
 		}
 
