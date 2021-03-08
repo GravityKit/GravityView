@@ -200,13 +200,15 @@ body .ui-tooltip {
 			}
 		}
 
-		.dashicons {
+		.dashicons,
+		.gv-icon {
 			display: inline-block;
 			margin: 0 .2em 0 0;
 			color: $color-666;
 			width: .9em;
 
 			&.background-icon {
+				transition: opacity 0.1s ease-in;
 				background-repeat: no-repeat;
 				background-size: contain;
 				background-position: center center;
@@ -215,14 +217,16 @@ body .ui-tooltip {
 		}
 
 		.gv-fields.trigger--hover .dashicons,
-		.gv-fields:hover .dashicons {
+		.gv-fields.trigger--hover .gv-icon,
+		.gv-fields:hover .dashicons,
+		.gv-fields:hover .gv-icon {
 			color: $color-444;
 
 			&.background-icon {
+				transition: opacity 0.1s ease-in;
 				opacity: .8;
 			}
 		}
-
 
 		&[data-layout="list"] .gv-field-label-text-container {
 			display: inline-block;
@@ -231,7 +235,6 @@ body .ui-tooltip {
 			overflow: hidden;
 			text-overflow: ellipsis;
 		}
-
 
 		&[data-layout="grid"] .gv-field-label-text-container {
 			max-width: 80%;
@@ -242,15 +245,11 @@ body .ui-tooltip {
 			padding-bottom: 4px;
 		}
 
-		.gv-child-field .gv-icon {
+		// Child field ↪ icon
+		.gv-child-field .gv-icon-level-down {
 			display: inline-block;
 			position: relative;
 			top: .1em;
-			opacity: .5;
-			transition: opacity 0.1s ease-in;
-			&:hover {
-				transition: opacity 0.1s ease-in;
-			}
 		}
 	}
 
