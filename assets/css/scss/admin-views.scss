@@ -1800,7 +1800,7 @@ $dialog-button-padding: 5px;
 			right: -1px;
 		}
 	}
-	.code.widefat {
+	.rtl & .code.widefat {
 		text-align: right;
 	}
 }
