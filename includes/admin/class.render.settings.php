@@ -23,13 +23,12 @@ class GravityView_Render_Settings {
 	public static function get_field_groups() {
 
 		return array(
-			'field'               => _x( 'Field', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
-			'display'             => _x( 'Display', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
-			'label'               => _x( 'Label', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
-			'visibility'          => _x( 'Visibility', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
-			'advanced'            => _x( 'Advanced', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
-			'gv_math_footer_calc' => _x( 'Math', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
-			'default'             => _x( 'Default', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'field'      => _x( 'Field', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'display'    => _x( 'Display', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'label'      => _x( 'Label', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'visibility' => _x( 'Visibility', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'advanced'   => _x( 'Advanced', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'default'    => _x( 'Default', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
 		);
 	}
 
