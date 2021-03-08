@@ -9,7 +9,7 @@
  */
 class GravityView_Widget_Custom_Content extends \GV\Widget {
 
-	public $icon = 'dashicons-text';
+	public $icon = 'dashicons-editor-code';
 
 	/**
 	 * Does this get displayed on a single entry?
