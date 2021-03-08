@@ -972,17 +972,6 @@ hr {
 			}
 		}
 
-		.gv-field-label-text-container {
-			display: inline-block;
-			overflow: hidden;
-			white-space: nowrap;
-			text-overflow: ellipsis;
-			max-width: 100%;
-
-			[data-layout="grid"] & {
-				max-width: 80%;
-			}
-		}
 
 		// Parent field name
 		small {

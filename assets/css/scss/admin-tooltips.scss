@@ -192,17 +192,13 @@ body .ui-tooltip {
 		}
 	}
 
-	// Indent the child fields a bit.
-	[data-layout="list"] .gv-child-field .gv-field-label .gv-field-label-text-container {
-		&:before {
-			content: '- ';
-		}
-	}
-
 	.gv-items-picker-container {
 
 		.gv-fields {
 			padding: 16px 12px;
+			* {
+				cursor: pointer!important;
+			}
 		}
 
 		.dashicons {
@@ -222,6 +218,32 @@ body .ui-tooltip {
 
 			&.background-icon {
 				filter: brightness(.666);
+			}
+		}
+
+
+		&[data-layout="list"] .gv-field-label-text-container {
+			display: inline-block;
+			white-space: nowrap;
+			max-width: 100%;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+
+		&[data-layout="grid"] .gv-field-label-text-container {
+			max-width: 80%;
+		}
+
+		&[data-layout="list"] .gv-fields.gv-child-field {
+			padding-top: 4px;
+			padding-bottom: 5px;
+
+			// Indent the child fields a bit.
+			.gv-field-label .gv-field-label-text-container {
+				&:before {
+					content: '- ';
+				}
 			}
 		}
 	}
