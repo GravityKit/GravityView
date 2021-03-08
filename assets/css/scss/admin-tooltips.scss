@@ -20,6 +20,9 @@
 	border-radius: 100px;
 	padding: .2rem;
 	margin: 0 2px 0 0;
+	.rtl & {
+		margin: 0 0 0 2px;
+	}
 	height: 16px;
 	width: 16px;
 	text-decoration: none;
@@ -92,6 +95,10 @@ body .ui-tooltip {
 	.close {
 		position:absolute;
 		left:-10000px;
+		.rtl & {
+			right: -100000px;
+			left: auto;
+		}
 		top:auto;
 		width:1px;
 		height:1px;
@@ -186,6 +193,10 @@ body .ui-tooltip {
 		&[data-fieldid="all-fields"] {
 			width: 100%;
 			padding-left: 12px!important;
+			.rtl & {
+				padding-right: 12px!important;
+				padding-left: 0!important;
+			}
 			* {
 				text-align: center!important;
 			}
@@ -208,12 +219,16 @@ body .ui-tooltip {
 			color: $color-666;
 			width: .9em;
 
+			.rtl & {
+				margin: 0 0 0 .2em;
+			}
+
 			&.background-icon {
 				transition: opacity 0.1s ease-in;
 				background-repeat: no-repeat;
 				background-size: contain;
 				background-position: center center;
-				opacity: .6;
+				opacity: .566;
 			}
 		}
 
@@ -225,7 +240,7 @@ body .ui-tooltip {
 
 			&.background-icon {
 				transition: opacity 0.1s ease-in;
-				opacity: .8;
+				opacity: .766;
 			}
 		}
 
