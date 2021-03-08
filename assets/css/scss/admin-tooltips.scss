@@ -193,7 +193,7 @@ body .ui-tooltip {
 	}
 
 	// Indent the child fields a bit.
-	[data-layout="list"] .gv-child-field .gv-field-label {
+	[data-layout="list"] .gv-child-field .gv-field-label .gv-field-label-text-container {
 		&:before {
 			content: '- ';
 		}
