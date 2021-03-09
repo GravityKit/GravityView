@@ -538,6 +538,14 @@ class GravityView_Admin_Installer {
 			$button_label = __( 'Deactivate', 'gravityview' );
 		}
 
+		$license_key = gravityview()->plugin->settings->get( 'license_key', '' );
+
+		if ( '#' !== $href ) {
+			$href = add_query_arg( array( 'license_key' => $license_key ), $href );
+		}
+
+		$download_info['link'] = add_query_arg( array( 'license_key' => $license_key ), $download_info['link'] );
+
 		return compact( 'download_info','plugin_path', 'status', 'status_label', 'button_title', 'button_class', 'button_label', 'href', 'spinner', 'item_class', 'required_license', 'is_active' );
     }
 
