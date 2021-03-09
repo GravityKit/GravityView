@@ -151,6 +151,10 @@ $gv-overlay-index: 10000;
 .gv-section h4 {
 	font-size: 22px;
 	font-weight: bold;
+	margin-top: 1em;
+	@media (max-width: 850px) {
+		margin-top: .5em;
+	}
 	margin-bottom: 1em;
 	padding-bottom: 0;
 }
@@ -325,7 +329,7 @@ $gv-overlay-index: 10000;
 		padding: 0;
 		left: auto;
 
-		@media screen and (max-width: 782px) {
+		@media screen and (max-width: 850px) {
 			&,
 			& a {
 				display: inline!important;
@@ -370,7 +374,7 @@ $gv-overlay-index: 10000;
 	th {
 		white-space: nowrap;
 		width: 30%;
-		min-width: 200px;
+		min-width: 100px;
 		max-width: 200px; // Default th width in forms.css
 		padding: 16px 10px;
 	}
@@ -440,6 +444,12 @@ $gv-overlay-index: 10000;
 		.ui-tabs-panel {
 			border-radius: 0 0 5px 5px;
 			border: 1px solid $color-ccc;
+		}
+
+		@media (min-width: 850px) and (max-width: 1199px) {
+			.gv-responsive-label--collapse {
+				display: none;
+			}
 		}
 	}
 }
@@ -543,7 +553,7 @@ $gv-overlay-index: 10000;
 		-webkit-margin-end: 0;
 		-webkit-padding-start: 0;
 
-		@media (max-width: 840px) {
+		@media (max-width: 850px) {
 			width: 100%;
 			box-sizing: border-box;
 		}
@@ -564,7 +574,7 @@ $gv-overlay-index: 10000;
 			white-space: nowrap;
 			outline: none;
 
-			@media (max-width: 840px) {
+			@media (max-width: 850px) {
 				width: 100%;
 				float: left;
 			}
@@ -594,8 +604,8 @@ $gv-overlay-index: 10000;
                   -webkit-box-shadow: none;
 				}
 
-				@media (max-width: 1024px) {
-					font-size: 14px;
+				@media (min-width: 851px) and (max-width: 1023px) {
+					font-size: 13px;
 				}
 
 			}
@@ -722,7 +732,7 @@ $gv-overlay-index: 10000;
 
 		max-width: 100%;
 
-		@media (max-width: 840px) {
+		@media (max-width: 850px) {
 			border-top: 0;
 		}
 	}
@@ -732,7 +742,7 @@ $gv-overlay-index: 10000;
 	}
 }
 
-@media (max-width: 840px) {
+@media (max-width: 850px) {
 	#gv-view-configuration-tabs {
 		&.ui-tabs.ui-tabs-nav {
 			margin-bottom: 10px;
@@ -1415,7 +1425,7 @@ $dialog-button-padding: 5px;
 			}
 		}
 
-		@media (max-width: 840px) {
+		@media (max-width: 850px) {
 
 			margin: 0;
 			padding-left: 0;

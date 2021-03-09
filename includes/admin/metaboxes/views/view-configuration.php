@@ -6,9 +6,9 @@
 <div id="gv-view-configuration-tabs">
 
 	<ul class="nav-tab-wrapper">
-		<li><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page tab-icon"></i> <?php echo esc_html( sprintf( __( '%s Layout', 'gravityview' ), esc_html__( 'Multiple Entries', 'gravityview' ) ) ); ?></a></li>
-		<li><a href="#single-view" class="nav-tab"><i class="dashicons dashicons-media-default tab-icon"></i> <?php echo esc_html( sprintf( __( '%s Layout', 'gravityview' ), esc_html__( 'Single Entry', 'gravityview' ) ) ); ?></a></li>
-		<li><a href="#edit-view" class="nav-tab"><i class="dashicons dashicons-welcome-write-blog tab-icon"></i> <?php echo esc_html( sprintf( __( '%s Layout', 'gravityview' ), esc_html__( 'Edit Entry', 'gravityview' ) ) ); ?></a></li>
+		<li><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page tab-icon"></i> <?php echo sprintf( esc_html__( '%s Layout', 'gravityview' ), esc_html__( 'Multiple Entries', 'gravityview' ) . '<span class="gv-responsive-label--collapse">' ); ?></span></a></li>
+		<li><a href="#single-view" class="nav-tab"><i class="dashicons dashicons-media-default tab-icon"></i> <?php echo sprintf( esc_html__( '%s Layout', 'gravityview' ), esc_html__( 'Single Entry', 'gravityview' ) . '<span class="gv-responsive-label--collapse">' ); ?></span></a></li>
+		<li><a href="#edit-view" class="nav-tab"><i class="dashicons dashicons-welcome-write-blog tab-icon"></i> <?php echo sprintf( esc_html__( '%s Layout', 'gravityview' ), esc_html__( 'Edit Entry', 'gravityview' ) . '<span class="gv-responsive-label--collapse">' ); ?></span></a></li>
 	</ul>
 
 	<div id="directory-view">
