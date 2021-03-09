@@ -20,7 +20,7 @@ class GravityView_Field_Email extends GravityView_Field {
 
 	var $group = 'advanced';
 
-	var $icon = 'dashicons-email-alt2';
+	var $icon = 'dashicons-email';
 
 	public function __construct() {
 		$this->label = esc_html__( 'Email', 'gravityview' );
