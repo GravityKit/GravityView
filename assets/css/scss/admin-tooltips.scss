@@ -245,7 +245,8 @@ body .ui-tooltip {
 		}
 
 		&[data-layout="list"] .gv-field-label-text-container {
-			display: inline-block;
+			display: inline-block; /** Intentionally left for older browsers */
+			display: inline-flex;
 			white-space: nowrap;
 			max-width: 100%;
 			overflow: hidden;
@@ -404,6 +405,7 @@ body .ui-tooltip {
 				float: left;
 			}
 		}
+
 		span[role=button] {
 			&:first-child {
 				border-right: 0;
