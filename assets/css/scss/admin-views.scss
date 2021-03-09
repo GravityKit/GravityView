@@ -379,6 +379,22 @@ $gv-overlay-index: 10000;
 		padding: 16px 10px;
 	}
 
+	// Stack label and values in smaller viewport
+	@media (max-width: 1199px) {
+		[scope="row"] {
+			white-space: normal;
+			display: inline-block;
+			max-width: 100%;
+			box-sizing: border-box;
+			width: 100%;
+			padding-bottom: 5px;
+			& + td {
+				padding-top: 0;
+				display: block;
+			}
+		}
+	}
+
 	th,
 	td {
 
