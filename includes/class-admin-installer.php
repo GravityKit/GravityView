@@ -468,7 +468,6 @@ class GravityView_Admin_Installer {
 		if( ! $is_active  && empty( $base_price ) ) {
 			$spinner      = false;
 			$status_label = '';
-			$button_class = 'disabled disabled-license';
 			$button_label = sprintf( __( 'Active %s License is Required.', 'gravityview' ), $required_license );
 		}
 

@@ -29,6 +29,13 @@
 					installUrl = $( this ).attr( 'href' );
 
 				var performAction = function () {
+
+					if ( '#' === pluginPath && installUrl.length ) {
+						$( item ).attr( 'rel', 'external noreferrer noopener' );
+						window.location = installUrl;
+						return defer.resolve();
+					}
+
 					$( '.gv-admin-installer-container a.button' ).addClass( 'disabled' );
 					$( item ).find( '.spinner' ).show();
 
