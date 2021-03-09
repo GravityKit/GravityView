@@ -381,6 +381,8 @@ $gv-overlay-index: 10000;
 
 	// Stack label and values in smaller viewport
 	@media (max-width: 1199px) {
+
+		#gravityview_maps_settings td,
 		[scope="row"] {
 			white-space: normal;
 			display: inline-block;
@@ -400,6 +402,13 @@ $gv-overlay-index: 10000;
 
 		span, input {
 			font-weight: normal !important;
+		}
+
+		select[multiple] {
+			display: block;
+			max-width: 100%;
+			width: 100%;
+			box-sizing: border-box;
 		}
 
 		label {
