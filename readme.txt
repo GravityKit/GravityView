@@ -59,7 +59,6 @@ __Developer Updates:__
 	- Modified: Formally deprecated the mis-spelled `gravity_view_lightbox_script` and `gravity_view_lightbox_style` filters in favor of  `gravityview_lightbox_script` and `gravityview_lightbox_style` (finally!)
 	- Fixed: `gravityview_lightbox_script` filter wasn't being applied
 	- Removed `gravityview/fields/fileupload/allow_insecure_lightbox` filter, since it's no longer needed
-* Added: `gravityview/admin/indicator_icons` filter to modify the icon output to add additional indicator icons
 * Modified: `$_GET` args are now passed to links by default.
 	- Added: Prevent entry links (single, edit, duplicate) from including $_GET query args by returning false to the filter `gravityview/entry_link/add_query_args`
 	- Added: Prevent entry links being added to *delete* links by returning false to the filter `gravityview/delete-entry/add_query_args`
