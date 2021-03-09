@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 5.6
+Tested up to: 5.7
 Requires PHP: 5.3
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -21,12 +21,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop =
+= Version 2.10 on March 9, 2021 =
 
-* Ready for Gravity Forms 2.5!
-* New: Brand-new lightbox script, now using [Fancybox](http://fancyapps.com/fancybox/3/). It's fast, it's beautiful, and mobile-optimized.
-	- Fixes issue with Gravity Forms images not loading in lightboxes due to secure URLs
-* Edit View refresh
+* A beautiful visual refresh for the View editor!
 	- Brand new field picker for more easily creating your View
 	- Visually see when Single Entry and Edit Entry layouts haven't been configured
 	- See at a glance which fields link to Single Entry and Edit Entry
@@ -38,6 +35,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 	- Added: "Clear all" link to remove all fields from the View editor at once
 	- Fixed: It was possible to drag and drop a field while the field settings screen was showing. Now it's not!
 	- Fixed: See when fields have been deleted from a form
+* New: Brand-new lightbox script, now using [Fancybox](http://fancyapps.com/fancybox/3/). It's fast, it's beautiful, and mobile-optimized.
+	- Fixes issue with Gravity Forms images not loading in lightboxes due to secure URLs
+* Ready for Gravity Forms 2.5!
 * Added: Better support for the Consent field
 * Improved layout of the Manage Add-Ons screen
 	- Added a "Refresh" link to the Manage Add-Ons screen. This is helpful if you've upgraded your license and are ready to get started!
@@ -48,7 +48,6 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Updating an entry associated with an unactivated user (Gravity Forms User Registration) would also change entry creator's information
 * Fixed: PHP warning `The magic method must have public visibility` appearing in PHP 8.0
 * Fixed: PHP notice `Undefined property: stdClass::$icons` appearing on Plugins page
-* Fixed: We set the date of the last release as January 2020. Don't fear: the year is 2021!
 
 __Developer Updates:__
 
