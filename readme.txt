@@ -60,7 +60,8 @@ __Developer Updates:__
 	- Removed `gravityview/fields/fileupload/allow_insecure_lightbox` filter, since it's no longer needed
 * Added: `gravityview/admin/indicator_icons` filter to modify the icon output to add additional indicator icons
 * Modified: `$_GET` args are now passed to links by default.
-	- Added: Prevent entry links (single, edit, delete, duplicate) from including $_GET query args by returning false to the filter `gravityview/entry_link/add_query_args`
+	- Added: Prevent entry links (single, edit, duplicate) from including $_GET query args by returning false to the filter `gravityview/entry_link/add_query_args`
+	- Added: Prevent entry links being added to *delete* links by returning false to the filter `gravityview/delete-entry/add_query_args`
 * Added: `gv_get_query_args()` function to return $_GET query args, with reserved args removed
 	- Added: `gravityview/api/reserved_query_args` filter to modify internal reserved URL query args
 * Modified: `templates/fields/field-entry_link-html.php` template to add `gv_get_query_args()` functionality

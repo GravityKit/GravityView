@@ -195,6 +195,8 @@ abstract class GravityView_Admin_View_Item {
 			}
 
 			$field_icon = $field_icon . ' ';
+		} elseif( \GV\Utils::get( $this->item, 'parent' ) ) {
+			$field_icon = '<i class="gv-icon gv-icon-level-down"></i>' . ' ';
 		}
 
 		$output = '<button class="gv-add-field screen-reader-text">' . sprintf( esc_html__( 'Add "%s"', 'gravityview' ), $label ) . '</button>';

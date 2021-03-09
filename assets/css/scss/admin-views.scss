@@ -155,8 +155,7 @@ $gv-overlay-index: 10000;
 	font-size: 22px;
 	font-weight: bold;
 	margin-bottom: 1em;
-	padding-bottom: .5em;
-	border-bottom: 1px solid $color-ddd;
+	padding-bottom: 0;
 }
 
 .gv-section h4 span {
@@ -242,6 +241,11 @@ $gv-overlay-index: 10000;
 			left: 0;
 			padding: .5em;
 			margin-bottom: 0;
+
+			.rtl & {
+				right: 0;
+				left: auto;
+			}
 
 			a {
 				color: white;
@@ -528,6 +532,10 @@ $gv-overlay-index: 10000;
 	#gv-view-configuration-tabs-tooltip {
 		position: absolute;
 		right: 0;
+		.rtl & {
+			right: auto;
+			left: 0;
+		}
 	}
 
 	.ui-tabs-nav {
@@ -550,6 +558,11 @@ $gv-overlay-index: 10000;
 			position: relative;
 			top: 2px;
 			margin: 0 .5em 1px 0;
+
+			.rtl & {
+				float: right;
+				margin: 0 0 1px .5em;
+			}
 			border-bottom: 0;
 			padding: 0;
 			white-space: nowrap;
@@ -565,8 +578,13 @@ $gv-overlay-index: 10000;
 				transition: none;
 				border-radius: 3px 3px 0 0;
 				float: left;
-				padding: .666em 1.333em .666em 1.333em;
+				padding: .666em 1.333em;
 				margin: 0 5px 0 0;
+
+				.rtl & {
+					float: right;
+					margin: 0 0 0 5px;
+				}
 
 				text-decoration: none;
 				font-size: 15px;
@@ -667,22 +685,22 @@ $gv-overlay-index: 10000;
 			.configuration-status-icons {
 				display: inline-block;
 				padding-left: .666em;
+				.rtl & {
+					padding-right: .666em;
+				}
 				.dashicons {
 					display: inline-block;
 				}
 			}
 
-/*			.dashicons-yes {
-				position: absolute;
-				right: .5em;
-				top: .5em;
-				color: $color-green!important;
-			}*/
-
 			&.tab-not-configured {
 				.configuration-status-icons {
 
 					padding-right: 0;
+
+					.rtl & {
+						padding-left: 0;
+					}
 
 					.dashicons-info {
 						display: inline-block;
@@ -767,7 +785,7 @@ hr {
 	text-align: center;
 
 	.gv-droppable-area-action {
-		padding: 4px 0.5em 12px .5em;
+		padding: 4px .5em 12px .5em;
 	}
 
 	div:empty + .gv-droppable-area-action {
@@ -791,6 +809,7 @@ hr {
 		margin: 0 12px 6px 0;
 		.rtl & {
 			margin: 0 0 6px 12px;
+			text-align: right;
 		}
 		color: $color-777;
 		text-transform: uppercase;
@@ -831,7 +850,6 @@ hr {
 			min-height: 44px;
 		}
 		border: none;
-	//	box-shadow: 0 0 0 2px $color-888;
 		transition: all 200ms;
 
 		.active-drop {
@@ -877,9 +895,7 @@ hr {
 .fields-placeholder {
 	margin: 8px 2px;
 	height: 40px; // .active-drop height 2px border
-	border: 1px dashed #636D77;
 	border: none;
-	background: rgba(210, 224, 235, .4);
 	background: rgba(99, 109, 119, .2);
 	border-radius: 3px;
 }
@@ -919,6 +935,10 @@ hr {
 		.gv-field-controls .dashicons-media-default {
 			line-height: 44px;
 			margin: -2px 6px 0 0;
+
+			.rtl & {
+				margin: -2px 0 0 6px;
+			}
 		}
 	}
 
@@ -932,6 +952,9 @@ hr {
 		.gv-indicator-icon {
 			line-height: 44px;
 			margin: -2px 6px 0 0;
+			.rtl & {
+				margin: -2px 0 0 6px;
+			}
 		}
 	}
 
@@ -951,6 +974,11 @@ hr {
 		box-sizing: border-box;
 		text-align: left;
 		position: relative;
+
+		.rtl & {
+			float: right;
+			text-align: right;
+		}
 
 		.gv-field-label {
 			display: inline-block;
@@ -988,10 +1016,6 @@ hr {
 
 		border-color: $color-888;
 
-		.gv-field-controls button {
-			//background-color: $color-bg-active;
-		}
-
 		.gv-field-controls .dashicons {
 			color: #136cb9;
 		}
@@ -1016,6 +1040,8 @@ hr {
 
 		.rtl & {
 			margin: 0 0 0 8px;
+			border-right: 1px solid transparent;
+			border-left: 1px solid $color-ddd;
 		}
 
 		.dashicons {
@@ -1050,12 +1076,22 @@ hr {
 			margin: 0;
 			background-color: transparent;
 
+			.rtl & {
+				left: -3px;
+				right: auto;
+			}
+
 			&:hover,
 			&:active,
 			&:focus {
 				background: #fefefe;
 				border-right-color: transparent;
 				border-left: 1px solid $color-ddd;
+
+				.rtl & {
+					border-left: none;
+					border-right: 1px solid $color-ddd;
+				}
 
 				.dashicons {
 					transform: none;
@@ -1100,6 +1136,10 @@ hr {
 		// that's being handled by tooltips
 		display: none;
 		text-align: left;
+
+		.rtl & {
+			text-align: right;
+		}
 
 		line-height: 1.25em;
 
@@ -1197,6 +1237,10 @@ $dialog-button-padding: 5px;
 		text-align: left;
 		font-weight: 300;
 		font-size: 1.5rem;
+
+		.rtl & {
+			text-align: right;
+		}
 	}
 
 	.ui-dialog-title {
@@ -1244,6 +1288,11 @@ $dialog-button-padding: 5px;
 			flex: 33%;
 			align-self: flex-start;
 			flex-shrink: 1;
+
+			.rtl & {
+				padding-left: 2%;
+				padding-right: 0;
+			}
 		}
 
 		.gv-field-detail--form {
@@ -1288,6 +1337,11 @@ $dialog-button-padding: 5px;
 		border-radius: 3px;
 		text-indent: -99999px;
 
+		.rtl & {
+			right: auto;
+			left: $dialog-button-padding;
+		}
+
 		&:hover {
 			background: #f1f1f1;
 		}
@@ -1328,6 +1382,11 @@ $dialog-button-padding: 5px;
 		margin-left: -$dialog-padding;
 		margin-right: -$dialog-padding;
 
+		.rtl & {
+			padding-left: 15px;
+			padding-right: $gutter-width;
+		}
+
 		&:first-child {
 			padding-top: 0;
 		}
@@ -1353,6 +1412,11 @@ $dialog-button-padding: 5px;
 			padding: 0;
 			color: $color-222;
 			font-weight: 200;
+
+			.rtl & {
+				right: $dialog-padding;
+				left: auto;
+			}
 		}
 
 		@media (max-width: 840px) {
@@ -1385,6 +1449,10 @@ $dialog-button-padding: 5px;
 	padding: 10px 0 !important;
 	text-align: left;
 
+	.rtl & {
+		text-align: right;
+	}
+
     /** @since 1.8 **/
     .subtitle {
       margin: 0 15px .8em;
@@ -1406,6 +1474,11 @@ $dialog-button-padding: 5px;
 		float: right;
 		text-align: right;
 		color: $color-ddd;
+
+		.rtl & {
+			text-align: left;
+			float: left;
+		}
 	}
 
 	// Each setting row ( Used to be ul and ul li )
@@ -1529,6 +1602,10 @@ $dialog-button-padding: 5px;
 
 		td, th {
 			text-align: left;
+
+			.rtl & {
+				text-align: right;
+			}
 
 			// Standard `.form-table td` is 15px 10px
 			padding: 10px 5px;
@@ -1718,6 +1795,13 @@ $dialog-button-padding: 5px;
 		left: -1px;
 		font-size: 20px;
 		line-height: 1;
+		.rtl & {
+			left: auto;
+			right: -1px;
+		}
+	}
+	.rtl & .code.widefat {
+		text-align: right;
 	}
 }
 
@@ -1745,6 +1829,7 @@ $dialog-button-padding: 5px;
 }
 
 .gv-field-label {
+	.gv-icon,
 	.dashicons {
 		display: none;
 	}
