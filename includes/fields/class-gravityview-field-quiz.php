@@ -1,6 +1,6 @@
 <?php
 /**
- * @file class-gravityview-field-gquiz_score.php
+ * @file class-gravityview-field-gquiz.php
  * @package GravityView
  * @subpackage includes\fields
  */
