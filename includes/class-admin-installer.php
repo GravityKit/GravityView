@@ -395,10 +395,12 @@ class GravityView_Admin_Installer {
                     </div>
 			        <?php } ?>
 
+					<?php if ( 'gravityview' !== $download_info['slug'] ) { ?>
                     <a data-status="<?php echo esc_attr( $details['status'] ); ?>" data-plugin-path="<?php echo esc_attr( $details['plugin_path'] ); ?>" href="<?php echo esc_url( $details['href'] ); ?>" class="button <?php echo esc_attr( $details['button_class'] ); ?>" title="<?php echo esc_attr( $details['button_title'] ); ?>">
                         <span class="title"><?php echo esc_html( $details['button_label'] ); ?></span>
                         <?php if( $details['spinner'] ) { ?><span class="spinner"></span><?php } ?>
                     </a>
+					<?php } ?>
                 </div>
 
                 <div class="addon-excerpt"><?php
