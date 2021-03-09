@@ -72,12 +72,12 @@ $gv-overlay-index: 10000;
 	display: grid;
 	grid-template-columns: repeat( 12, 1fr );
 	grid-template-rows: repeat( auto-fill, auto );
-	grid-column-gap: 2rem;
-	grid-row-gap: 1rem;
 
 	// TODO: Make receivers same height
 	.gv-droppable-area .active-drop-widget {
 	}
+	grid-column-gap: 24px;
+	grid-row-gap: 12px;
 }
 
 .gv-grid [class^="gv-grid-col-"] {
@@ -724,7 +724,7 @@ $gv-overlay-index: 10000;
 		border: none;
 		border-top: 1px solid #ccc;
 
-		min-width: 352px;
+		max-width: 100%;
 
 		@media (max-width: 840px) {
 			border-top: 0;
