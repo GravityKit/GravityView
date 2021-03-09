@@ -307,7 +307,9 @@ class GravityView_Admin_Installer {
 
             <h2><?php esc_html_e( 'The following plugins extend GravityView and Gravity Forms functionality:', 'gravityview' ); ?></h2>
 
-            <div class="wp-header-end"></div>
+			<a class="button button-secondary gv-admin-installer-refresh-link" href="<?php echo add_query_arg(array( 'cache' => 1 ) ); ?>"><i class="dashicons dashicons-update" style="margin-top: .2em"></i> <?php esc_html_e( 'Refresh', 'gravityview' ); ?></a>
+
+			<hr class="wp-header-end" />
 
             <div class="gv-admin-installer-notice notice inline error hidden is-dismissible">
                 <p><!-- Contents will be replaced by JavaScript if there is an error --></p>

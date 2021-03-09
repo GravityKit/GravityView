@@ -40,7 +40,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 	- Fixed: See when fields have been deleted from a form
 * Added: Better support for the Consent field
 * Improved layout of the Manage Add-Ons screen
-	- Improved: Add `?cache` to the Manage Add-Ons screen to refresh access after upgrading a license
+	- Added a "Refresh" link to the Manage Add-Ons screen. This is helpful if you've upgraded your license and are ready to get started!
 	- Allow enabling/disabling installed add-ons regardless of license status
 * Added: A dropdown in the "All Views" screen to filter Views by the layout (Table, List, DataTables, DIY, Map, etc.)
 * Added: Export entries in TSV format by adding `/tsv/` to the View URL
