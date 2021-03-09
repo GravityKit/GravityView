@@ -173,7 +173,7 @@ abstract class GravityView_Admin_View_Item {
 		$field_icon = '';
 
 		$form = ! empty( $this->form_id ) ? GVCommon::get_form( $this->form_id ) : false;
-		$nonexistent_form_field = $form && $this->id && preg_match('/^\d+\.\d+$|^\d+$/', $this->id) && !gravityview_get_field($form, $this->id);
+		$nonexistent_form_field = $form && $this->id && preg_match('/^\d+\.\d+$|^\d+$/', $this->id) && ! gravityview_get_field( $form, $this->id );
 
 		if ( $this->item['icon'] && ! \GV\Utils::get( $this->item, 'parent' ) ) {
 
@@ -205,8 +205,8 @@ abstract class GravityView_Admin_View_Item {
 			$title .= "\n" . $this->get_item_info( false );
 		} else {
 			$output        = '';
-			$title         = esc_attr( sprintf( __( 'Field: %s', 'gravityview' ), $label ) );
-			$settings_link = sprintf( '<button disabled class="gv-field-settings %2$s" title="%1$s" aria-label="%1$s"><span class="dashicons-warning dashicons"></span></button>', esc_attr( __( 'Form field no longer exists.', 'gravityview' ) ), $hide_settings_link_class );
+			$settings_link = sprintf( '<button disabled class="gv-field-settings %2$s" title="%1$s" aria-label="%1$s"><span class="dashicons-warning dashicons"></span></button>', $title, $hide_settings_link_class );
+			$label = esc_html( sprintf( __( 'The field connected to "%s" was deleted from the form. The associated entry data no longer exists.', 'gravityview' ), $label ) );
 		}
 
 		$output .= '<h5 class="selectable gfield field-id-' . esc_attr( $this->id ) . '">';

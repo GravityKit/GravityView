@@ -29,14 +29,15 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Edit View refresh
 	- Brand new field picker for more easily creating your View
 	- Visually see when Single Entry and Edit Entry layouts haven't been configured
+	- See at a glance which fields link to Single Entry and Edit Entry
+	- Manage and activate layouts from the View editor
 	- Added: Show a notice when "Show only approve entries" setting is enabled for a View and no entries are displayed because of the setting
 	- Added: Custom Content now supports syntax highlighting, making it much easier to write HTML (to disable, click on the Users sidebar menu, select Profile. Check the box labeled "Disable syntax highlighting when editing code" and save your profile)
 	- Added: Warning when leaving Edit View screen if there are unsaved changes
 	- Added: See the details of the current field while configuring field settings
 	- Added: "Clear all" link to remove all fields from the View editor at once
-	- See at a glance which fields link to Single Entry and Edit Entry
-	- Manage and activate layouts from the View editor
 	- Fixed: It was possible to drag and drop a field while the field settings screen was showing. Now it's not!
+	- Fixed: See when fields have been deleted from a form
 * Added: Better support for the Consent field
 * Improved layout of the Manage Add-Ons screen
 	- Improved: Add `?cache` to the Manage Add-Ons screen to refresh access after upgrading a license
