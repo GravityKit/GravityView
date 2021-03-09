@@ -475,6 +475,8 @@ class GravityView_Admin_Installer {
 			$spinner      = false;
 			$status_label = '';
 			$button_label = sprintf( __( 'Active %s License is Required.', 'gravityview' ), $required_license );
+			$href         = $download_info['link'];
+			$button_class = 'button button-primary';
 		}
 
 		// No access with the current license level, and the download is available to purchase
@@ -529,6 +531,7 @@ class GravityView_Admin_Installer {
 			$status_label = __( 'Inactive', 'gravityview' );
 			$button_label = __( 'Activate', 'gravityview' );
 			$plugin_path = $wp_plugin['path'];
+			$button_class = 'button-secondary';
 		}
 		// The plugin is installed and active
 		elseif ( ! empty( $wp_plugin['path'] ) ) {
@@ -536,6 +539,7 @@ class GravityView_Admin_Installer {
 			$status = 'active';
 			$status_label = __( 'Active', 'gravityview' );
 			$button_label = __( 'Deactivate', 'gravityview' );
+			$button_class = 'button-secondary';
 		}
 
 		$license_key = gravityview()->plugin->settings->get( 'license_key', '' );
