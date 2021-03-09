@@ -476,7 +476,7 @@ class GravityView_Admin_Installer {
 			$status_label = '';
 			$button_label = sprintf( __( 'Active %s License is Required.', 'gravityview' ), $required_license );
 			$href         = $download_info['link'];
-			$button_class = 'button button-primary';
+			$button_class = 'button-primary';
 		}
 
 		// No access with the current license level, and the download is available to purchase
