@@ -41,6 +41,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Better support for the Consent field
 * Improved layout of the Manage Add-Ons screen
 	- Improved: Add `?cache` to the Manage Add-Ons screen to refresh access after upgrading a license
+	- Allow enabling/disabling installed add-ons regardless of license status
 * Added: A dropdown in the "All Views" screen to filter Views by the layout (Table, List, DataTables, DIY, Map, etc.)
 * Added: Export entries in TSV format by adding `/tsv/` to the View URL
 * Fixed: Approval Status field contains HTML in CSV and TSV exports

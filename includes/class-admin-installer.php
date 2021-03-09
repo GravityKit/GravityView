@@ -421,6 +421,8 @@ class GravityView_Admin_Installer {
 	/**
      * Generates details array for the download to keep the render_download() method a bit tidier
      *
+	 * @since 2.10 Allow managing installed add-ons whether or not the user's license shows they have access.
+	 *
 	 * @param array $download Single download, as returned by {@see get_downloads_data}
 	 * @param array $wp_plugins All active plugins, as returned by {@see get_plugins()}
 	 *
@@ -517,23 +519,19 @@ class GravityView_Admin_Installer {
 
 		}
 
-		// Access and the plugin is installed but not active
-		elseif ( false === $wp_plugin['activated'] ) {
+		// The plugin is installed but not active
+		if ( false === \GV\Utils::get( $wp_plugin, 'activated' ) ) {
 			$status = 'inactive';
 			$status_label = __( 'Inactive', 'gravityview' );
 			$button_label = __( 'Activate', 'gravityview' );
 			$plugin_path = $wp_plugin['path'];
-
 		}
-
-		// Access and the plugin is installed and active
-		else {
-
+		// The plugin is installed and active
+		elseif ( ! empty( $wp_plugin['path'] ) ) {
 			$plugin_path = $wp_plugin['path'];
 			$status = 'active';
 			$status_label = __( 'Active', 'gravityview' );
 			$button_label = __( 'Deactivate', 'gravityview' );
-
 		}
 
 		return compact( 'download_info','plugin_path', 'status', 'status_label', 'button_title', 'button_class', 'button_label', 'href', 'spinner', 'item_class', 'required_license', 'is_active' );
