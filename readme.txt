@@ -43,6 +43,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 	- Improved: Add `?cache` to the Manage Add-Ons screen to refresh access after upgrading a license
 * Added: A dropdown in the "All Views" screen to filter Views by the layout (Table, List, DataTables, DIY, Map, etc.)
 * Added: Export entries in TSV format by adding `/tsv/` to the View URL
+* Fixed: Approval Status field contains HTML in CSV and TSV exports
 * Fixed: Updating an entry associated with an unactivated user (Gravity Forms User Registration) would also change entry creator's information
 * Fixed: PHP warning `The magic method must have public visibility` appearing in PHP 8.0
 * Fixed: PHP notice `Undefined property: stdClass::$icons` appearing on Plugins page
@@ -64,6 +65,8 @@ __Developer Updates:__
 	- Added: Prevent entry links being added to *delete* links by returning false to the filter `gravityview/delete-entry/add_query_args`
 * Added: `gv_get_query_args()` function to return $_GET query args, with reserved args removed
 	- Added: `gravityview/api/reserved_query_args` filter to modify internal reserved URL query args
+* Added: `field-is_approved-html.php` and `field-is_approved-csv.php` template files for the Is Approved field
+* Modified: Removed
 * Modified: `templates/fields/field-entry_link-html.php` template to add `gv_get_query_args()` functionality
 * Breaking CSS change: Removed `.gv-list-view` CSS class from the List layout container `<div>`. The CSS class was also used in the looped entry containers, making it hard to style. This issue was introduced in GravityView 2.0. For background, see [the GitHub issue](https://github.com/gravityview/GravityView/issues/1026).
 
