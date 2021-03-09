@@ -9,7 +9,7 @@
  * @link      http://gravityview.co
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
- * @since 1.15
+ * @since 2.10
  */
 
 // Load default templates
@@ -47,7 +47,7 @@ add_action( 'init', 'gravityview_register_placeholder_templates', 2000 );
 /**
  * Register the placeholder templates to make it clear what layouts are available
  *
- * @since TODO
+ * @since 2.10
  *
  * @return void
  */

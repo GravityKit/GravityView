@@ -6,7 +6,7 @@
  */
 
 /**
- * @since TODO
+ * @since 2.8
  */
 class GravityView_Field_Gravatar extends GravityView_Field {
 

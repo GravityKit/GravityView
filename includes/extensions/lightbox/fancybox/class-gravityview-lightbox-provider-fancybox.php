@@ -2,7 +2,7 @@
 /**
  * Integrate with the FancyBox lightbox and gallery scripts
  * @see https://fancyapps.com/fancybox/3/docs/#options
- * @since TODO
+ * @since 2.10
  */
 
 /**
