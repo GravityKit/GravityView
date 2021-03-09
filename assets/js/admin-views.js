@@ -162,7 +162,7 @@
 				.on( 'click', ".gv-field-controls .gv-field-settings", vcfg.openFieldSettings )
 
 				// Double-clicking a field/widget label opens settings
-				.on( 'dblclick', ".gv-fields", vcfg.openFieldSettings )
+				.on( 'dblclick', ".gv-fields:not(.gv-nonexistent-form-field)", vcfg.openFieldSettings )
 
 				// Update checkbox visibility when having dependency checkboxes
 				.on( 'change', ".gv-setting-list, #gravityview_settings, .gv-dialog-options", vcfg.toggleCheckboxes )

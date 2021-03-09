@@ -1756,8 +1756,23 @@ $dialog-button-padding: 5px;
 	.dashicons-yes-alt,
 	.dashicons-editor-code,
 	.dashicons-lock,
+	.dashicons-warning,
 	.dashicons-media-default,
 	.dashicons-admin-links {
 		display: inline-block;
+	}
+}
+
+.gv-fields.gv-nonexistent-form-field, .gv-fields.gv-nonexistent-form-field:hover {
+	button.gv-field-settings  {
+		cursor: auto;
+	}
+
+	span.gv-field-label-text-container {
+		text-decoration: line-through;
+	}
+
+	.dashicons-warning {
+		color: $color-yellow;
 	}
 }

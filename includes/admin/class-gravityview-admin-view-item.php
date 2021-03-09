@@ -172,6 +172,9 @@ abstract class GravityView_Admin_View_Item {
 
 		$field_icon = '';
 
+		$form = ! empty( $this->form_id ) ? GVCommon::get_form( $this->form_id ) : false;
+		$nonexistent_form_field = $form && $this->id && preg_match('/^\d+\.\d+$|^\d+$/', $this->id) && !gravityview_get_field($form, $this->id);
+
 		if ( $this->item['icon'] && ! \GV\Utils::get( $this->item, 'parent' ) ) {
 
 			$has_gf_icon = ( false !== strpos( $this->item['icon'], 'gform-icon' ) );
@@ -195,16 +198,23 @@ abstract class GravityView_Admin_View_Item {
 		}
 
 		$output = '<button class="gv-add-field screen-reader-text">' . sprintf( esc_html__( 'Add "%s"', 'gravityview' ), $label ) . '</button>';
+		$title = esc_attr( sprintf( __( 'Field: %s', 'gravityview' ), $label ) );
+		if ( ! $nonexistent_form_field ) {
+			$title .= "\n" . $this->get_item_info( false );
+		} else {
+			$output        = '';
+			$title         = esc_attr( sprintf( __( 'Field: %s', 'gravityview' ), $label ) );
+			$settings_link = sprintf( '<button disabled class="gv-field-settings %2$s" title="%1$s" aria-label="%1$s"><span class="dashicons-warning dashicons"></span></button>', esc_attr( __( 'Form field no longer exists.', 'gravityview' ) ), $hide_settings_link_class );
+		}
 
 		$output .= '<h5 class="selectable gfield field-id-' . esc_attr( $this->id ) . '">';
 
 		$output .= '<span class="gv-field-controls">' . $settings_link . $this->get_indicator_icons() . '<button class="gv-remove-field" aria-label="' . esc_attr( $delete_title ) . '" title="' . esc_attr( $delete_title ) . '"><span class="dashicons-dismiss dashicons"></span></button></span>';
 
-		// Name of field / widget
-		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . esc_attr( sprintf( __( 'Field: %s', 'gravityview' ), $label ) ) . "\n" . $this->get_item_info( false ) . '">' . $field_icon . '<span class="gv-field-label-text-container">' . $label . '</span></span>';
+		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . $title . '">' . $field_icon . '<span class="gv-field-label-text-container">' . $label . '</span></span>';
 
 		// Displays only in the field/widget picker
-		if ( $field_info = $this->get_item_info() ) {
+		if ( ! $nonexistent_form_field && $field_info = $this->get_item_info() ) {
 			$output .= '<span class="gv-field-info">' . $field_info . '</span>';
 		}
 
@@ -212,11 +222,13 @@ abstract class GravityView_Admin_View_Item {
 
 		$container_class = ! empty( $this->item['parent'] ) ? ' gv-child-field' : '';
 
+		$container_class .= $nonexistent_form_field ? ' gv-nonexistent-form-field' : '';
+
 		$container_class .= empty( $this->settings['show_as_link'] ) ? '' : ' has-single-entry-link';
 
 		$container_class .= empty( $this->settings['only_loggedin'] ) ? '' : ' has-custom-visibility';
 
-		$data_form_id   = ! empty( $this->form_id ) ? ' data-formid="' . esc_attr( $this->form_id ) . '"' : '';
+		$data_form_id   = $form ? ' data-formid="' . esc_attr( $this->form_id ) . '"' : '';
 
 		$data_parent_label = ! empty( $this->item['parent'] ) ? ' data-parent-label="' . esc_attr( $this->item['parent']['label'] ) . '"' : '';
 
