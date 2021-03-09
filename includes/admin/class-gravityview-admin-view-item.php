@@ -205,8 +205,8 @@ abstract class GravityView_Admin_View_Item {
 			$title .= "\n" . $this->get_item_info( false );
 		} else {
 			$output        = '';
-			$settings_link = sprintf( '<button disabled class="gv-field-settings %2$s" title="%1$s" aria-label="%1$s"><span class="dashicons-warning dashicons"></span></button>', $title, $hide_settings_link_class );
-			$label = esc_html( sprintf( __( 'The field connected to "%s" was deleted from the form. The associated entry data no longer exists.', 'gravityview' ), $label ) );
+			$settings_link = '';
+			$label = '<span class="dashicons-warning dashicons"></span> ' . esc_html( sprintf( __( 'The field connected to "%s" was deleted from the form. The associated entry data no longer exists.', 'gravityview' ), $label ) );
 		}
 
 		$output .= '<h5 class="selectable gfield field-id-' . esc_attr( $this->id ) . '">';
