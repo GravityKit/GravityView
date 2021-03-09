@@ -312,6 +312,7 @@ class GravityView_Welcome {
 					<li>Fixed: Updating an entry associated with an unactivated user (Gravity Forms User Registration) would also change entry creator's information</li>
 					<li>Fixed: PHP warning <code>The magic method must have public visibility</code> appearing in PHP 8.0</li>
 					<li>Fixed: PHP notice <code>Undefined property: stdClass::$icons</code> appearing on Plugins page</li>
+					<li>Fixed: "At least one field must be filled out" validation errors (thanks <a href="https://gravitypdf.com">Gravity PDF</a>!)</li>
 				</ul>
 
 				<p><strong>Developer Updates:</strong></p>

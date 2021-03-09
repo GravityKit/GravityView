@@ -48,6 +48,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Updating an entry associated with an unactivated user (Gravity Forms User Registration) would also change entry creator's information
 * Fixed: PHP warning `The magic method must have public visibility` appearing in PHP 8.0
 * Fixed: PHP notice `Undefined property: stdClass::$icons` appearing on Plugins page
+* Fixed: "At least one field must be filled out" validation errors (thanks <a href="https://gravitypdf.com">Gravity PDF</a>!)
 
 __Developer Updates:__
 
