@@ -637,6 +637,7 @@ $gv-overlay-index: 10000;
 
 			// Non-active state
 		  .dashicons,
+		  .gform-icon,
 		  [class^='gv-icon-'],
 		  [class^='gv-icon-']:before {
 				color: $color-aaa;
@@ -659,6 +660,7 @@ $gv-overlay-index: 10000;
 				top: -1em;
 				display: block;
 
+				.gform-icon,
 				.dashicons {
 					font-size: 18px;
 					height: 18px;
@@ -691,6 +693,7 @@ $gv-overlay-index: 10000;
 				// since it's bolder.
 				.dashicons,
 				.dashicons.tab-icon,
+				.gform-icon,
 				[class^='gv-icon-'],
 				[class^='gv-icon-']:before {
 					color: $color-444;
@@ -706,6 +709,7 @@ $gv-overlay-index: 10000;
 					background-color: rgba( 255, 255, 255, .5 );
 					color: $color-222;
 				}
+				.gform-icon,
 				.dashicons,
 				[class^='gv-icon-'],
 				[class^='gv-icon-']:before {
@@ -719,6 +723,7 @@ $gv-overlay-index: 10000;
 				.rtl & {
 					padding-right: .666em;
 				}
+				.gform-icon,
 				.dashicons {
 					display: inline-block;
 				}
@@ -1020,6 +1025,7 @@ hr {
 				max-width: 100%;
 			}
 
+			.gform-icon,
 			.dashicons {
 				margin-top: .2em;
 				margin-bottom: -.2em;
@@ -1075,6 +1081,7 @@ hr {
 			border-left: 1px solid $color-ddd;
 		}
 
+		.gform-icon,
 		.dashicons {
 			transition: transform 200ms;
 		}
@@ -1131,6 +1138,7 @@ hr {
 			}
 		}
 
+		.gform-icon,
 		.dashicons {
 
 			width: 20px; // Give a larger click target
@@ -1297,6 +1305,7 @@ $dialog-button-padding: 5px;
 		padding: 0;
 		color: $color-666;
 
+		.gform-icon,
 		.dashicons {
 			margin-top: .1em;
 		}
@@ -1861,6 +1870,7 @@ $dialog-button-padding: 5px;
 
 .gv-field-label {
 	.gv-icon,
+	.gform-icon,
 	.dashicons {
 		display: none;
 	}

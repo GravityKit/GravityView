@@ -841,7 +841,7 @@ class GravityView_Admin_Views {
 		foreach ( $fields as &$field ) {
 			foreach ( $gv_fields as $gv_field ) {
 				if ( \GV\Utils::get( $field, 'type' ) === $gv_field->name ) {
-					$field['icon'] = \GV\Utils::get( $gv_field, 'icon' );
+					$field['icon'] = $gv_field->get_icon();
 				}
 			}
 		}
@@ -1272,6 +1272,8 @@ class GravityView_Admin_Views {
             'remove_all_fields' => __( 'Would you like to remove all fields in this zone?', 'gravityview' ),
         ));
 
+		wp_enqueue_style( 'gform_admin_icons', GFCommon::get_base_url() . "/css/admin-icons.min.css", array( 'gform_admin_ie11' ) );
+
 		wp_enqueue_style( 'gravityview_views_styles' );
 
         // Enqueue scripts needed for merge tags
@@ -1340,6 +1342,7 @@ class GravityView_Admin_Views {
 				'gform_gravityforms',
 				'gform_forms',
 				'gform_form_admin',
+				'gform_admin_icons',
 				'jquery-ui-autocomplete',
 			);
 

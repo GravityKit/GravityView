@@ -192,6 +192,30 @@ abstract class GravityView_Field {
 	}
 
 	/**
+	 * Returns the icon for a field
+	 *
+	 * @since 2.10.1
+	 *
+	 * @return string
+	 */
+	public function get_icon() {
+
+		$icon = $this->icon;
+
+		if ( gravityview()->plugin->is_GF_25() && ! empty( $this->_gf_field_class_name ) && class_exists( $this->_gf_field_class_name ) ) {
+
+			/** @var GF_Field $gf_field */
+			$gf_field = GF_Fields::get( $this->name );
+
+			if( $gf_field && $gf_field instanceof GF_Field ) {
+				$icon = $gf_field->get_form_editor_field_icon();
+			}
+		}
+
+		return $icon;
+	}
+
+	/**
 	 * Add the field to the Filter & Sort available fields
 	 *
 	 * @since 1.19
