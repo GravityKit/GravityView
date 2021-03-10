@@ -21,6 +21,8 @@ class GravityView_Field_Time extends GravityView_Field {
 
 	var $group = 'advanced';
 
+	var $icon = 'dashicons-clock';
+
 	/**
 	 * @internal Do not define. This is overridden by the class using a filter.
 	 * @todo Fix using variable for time field

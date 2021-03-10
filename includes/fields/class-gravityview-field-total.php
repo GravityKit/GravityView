@@ -18,6 +18,8 @@ class GravityView_Field_Total extends GravityView_Field {
 
 	var $group = 'product';
 
+	var $icon = 'dashicons-cart';
+
 	/** @see GF_Field_Total */
 	var $_gf_field_class_name = 'GF_Field_Total';
 

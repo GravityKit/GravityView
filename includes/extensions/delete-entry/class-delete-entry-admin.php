@@ -128,6 +128,8 @@ class GravityView_Delete_Entry_Admin {
 			'tooltip' => 'allow_edit_cap',
 			'class'   => 'widefat',
 			'value'   => 'read', // Default: entry creator
+			'group'   => 'visibility',
+			'priority' => 100,
 		);
 
 		return array_merge( $add_option, $field_options );
@@ -192,6 +194,7 @@ class GravityView_Delete_Entry_Admin {
 				'label' => __( 'Delete Entry', 'gravityview' ),
 				'type'  => 'delete_link',
 				'desc'  => __( 'A link to delete the entry. Respects the Delete Entry permissions.', 'gravityview' ),
+				'icon'  => 'dashicons-trash',
 			);
 		}
 

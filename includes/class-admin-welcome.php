@@ -198,9 +198,19 @@ class GravityView_Welcome {
 
             <hr />
 
+			<div class="feature-section two-col has-2-columns is-fullwidth">
+				<div class="col column">
+					<h3>Embed Views in the Block Editor</h3>
+					<p>Embed Views using the "Add Shortcode" button above your content editor. <a href="https://docs.gravityview.co/article/73-using-the-shortcode">Learn how to use the <code>[gravityview]</code> shortcode.</a></p>
+				</div>
+				<div class="col column">
+					<img src="<?php echo plugins_url( 'assets/images/screenshots/shortcode-block.png', GRAVITYVIEW_FILE ); ?>" alt="Screenshot of the Shortcode block" />
+				</div>
+			</div>
+
             <div class="feature-section two-col has-2-columns is-fullwidth">
                 <div class="col column">
-                    <h3>Embed Views in Posts &amp; Pages</h3>
+                    <h3>Embed Views in Classic Editor</h3>
                     <p>Views don&rsquo;t need to be embedded in a post or page, but you can if you want. Embed Views using the "Add View" button above your content editor.</p>
                 </div>
                 <div class="col column">
@@ -245,27 +255,96 @@ class GravityView_Welcome {
 
 			<?php $this->tabs(); ?>
 
-            <div class="feature-section col two-col has-2-columns is-fullwidth" style="padding: 0;">
+            <div class="feature-section col two-col has-2-columns is-fullwidth">
 				<div class="column col col-2">
-					<div class="media-container"><img alt="Gravity Forms" src="<?php echo plugins_url( 'assets/images/screenshots/gravityforms.png', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
-					<h4 class="higher">New: Gravity Forms Widget</h4>
-					<p>If you want to allow easily adding new entries to your View, it&rsquo;s now simple to embed a Gravity Forms form as a Widget: click "Add Widget" and select Gravity Forms. Configure the widget, and you&rsquo;re all set.</p>
+					<p>We&rsquo;ve revamped the GravityView admin. It&rsquo;s easier to use, better organized, and it looks great!</p>
+					<h4>Here&rsquo;s a tour of the top 5 new features in 2.10:</h4>
+					<ol class="ol-decimal">
+						<li>A new field picker has a grid and list mode for browsing or quick selection.</li>
+						<li>The Field Details section comes in really handy while building a View</li>
+						<li>Custom Content field has a code editor built-in!</li>
+						<li>Export TSV and CSV</li>
+						<li>We&rsquo;re bundling a brand-new lightbox script!</li>
+					</ol>
 				</div>
-	            <div class="column col col-2">
-		            <div class="media-container"><img alt="Gravatar" src="<?php echo plugins_url( 'assets/images/screenshots/gravatar.jpg', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
-		            <h4 class="higher">Gravatar field</h4>
-		            <p>Gravatars are images that represent you online. They're associated with email addresses and can be managed at <a href="https://gravatar.com">Gravatar.com</a>. Now, GravityView has a Gravatar
-		            field where you can choose to show the Gravatar of the entry creator or the image associated with a submitted email.</p>
-	            </div>
+				<div class="column col col-2 last">
+					<iframe src="https://player.vimeo.com/video/521626074" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+				</div>
             </div>
 
-			<div class="changelog point-releases" style="border-bottom: 0">
+			<div class="changelog point-releases" style="margin-top: 3em; border-bottom: 0">
 
                 <div class="headline-feature" style="max-width: 100%">
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
-				<h3>2.9.4 on January 25, 2020</h3>
+				<h3>Version 2.10 on March 9, 2021</h3>
+
+				<ul>
+					<li>A beautiful visual refresh for the View editor!
+						<ul>
+							<li>Brand new field picker for more easily creating your View</li>
+							<li>Visually see when Single Entry and Edit Entry layouts haven't been configured</li>
+							<li>See at a glance which fields link to Single Entry and Edit Entry</li>
+							<li>Manage and activate layouts from the View editor</li>
+							<li>Added: Show a notice when "Show only approve entries" setting is enabled for a View and no entries are displayed because of the setting</li>
+							<li>Added: Custom Content now supports syntax highlighting, making it much easier to write HTML (to disable, click on the Users sidebar menu, select Profile. Check the box labeled "Disable syntax highlighting when editing code" and save your profile)</li>
+							<li>Added: Warning when leaving Edit View screen if there are unsaved changes</li>
+							<li>Added: See the details of the current field while configuring field settings</li>
+							<li>Added: "Clear all" link to remove all fields from the View editor at once</li>
+							<li>Fixed: It was possible to drag and drop a field while the field settings screen was showing. Now it's not!</li>
+							<li>Fixed: See when fields have been deleted from a form</li>
+						</ul></li>
+					<li>New: Brand-new lightbox script, now using <a href="http://fancyapps.com/fancybox/3/">Fancybox</a>. It's fast, it's beautiful, and mobile-optimized.
+						<ul>
+							<li>Fixes issue with Gravity Forms images not loading in lightboxes due to secure URLs</li>
+						</ul></li>
+					<li>Ready for Gravity Forms 2.5!</li>
+					<li>Added: Better support for the Consent field</li>
+					<li>Improved layout of the Manage Add-Ons screen
+						<ul>
+							<li>Added a "Refresh" link to the Manage Add-Ons screen. This is helpful if you've upgraded your license and are ready to get started!</li>
+							<li>Allow enabling/disabling installed add-ons regardless of license status</li>
+						</ul></li>
+					<li>Added: A dropdown in the "All Views" screen to filter Views by the layout (Table, List, DataTables, DIY, Map, etc.)</li>
+					<li>Added: Export entries in TSV format by adding <code>/tsv/</code> to the View URL</li>
+					<li>Fixed: Approval Status field contains HTML in CSV and TSV exports</li>
+					<li>Fixed: Updating an entry associated with an unactivated user (Gravity Forms User Registration) would also change entry creator's information</li>
+					<li>Fixed: PHP warning <code>The magic method must have public visibility</code> appearing in PHP 8.0</li>
+					<li>Fixed: PHP notice <code>Undefined property: stdClass::$icons</code> appearing on Plugins page</li>
+					<li>Fixed: "At least one field must be filled out" validation errors (thanks <a href="https://gravitypdf.com">Gravity PDF</a>!)</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>New: FancyBox is now being used for the lightbox
+						<ul>
+							<li>Thickbox is no longer used</li>
+							<li>Modify settings using <code>gravityview/lightbox/provider/fancybox/settings</code></li>
+							<li><a href="https://fancyapps.com/fancybox/3/docs/#options">See options available here</a></li>
+							<li>If you prefer, a <a href="https://github.com/gravityview/gv-snippets/tree/addon/featherlight-lightbox">Featherlight lightbox option is available</a></li>
+							<li>Easily add support for your own lightbox script by extending the new <code>GravityView_Lightbox_Provider</code> abstract class (the <a href="https://github.com/gravityview/gv-snippets/tree/addon/featherlight-lightbox">Featherbox lightbox script</a> is a good example).</li>
+							<li>Modified: Formally deprecated the mis-spelled <code>gravity_view_lightbox_script</code> and <code>gravity_view_lightbox_style</code> filters in favor of  <code>gravityview_lightbox_script</code> and <code>gravityview_lightbox_style</code> (finally!)</li>
+							<li>Fixed: <code>gravityview_lightbox_script</code> filter wasn't being applied</li>
+							<li>Removed <code>gravityview/fields/fileupload/allow_insecure_lightbox</code> filter, since it's no longer needed</li>
+						</ul></li>
+					<li>Modified: <code>$_GET</code> args are now passed to links by default.
+						<ul>
+							<li>Added: Prevent entry links (single, edit, duplicate) from including $_GET query args by returning false to the filter <code>gravityview/entry_link/add_query_args</code></li>
+							<li>Added: Prevent entry links being added to <em>delete</em> links by returning false to the filter <code>gravityview/delete-entry/add_query_args</code></li>
+						</ul></li>
+					<li>Added: <code>gv_get_query_args()</code> function to return $_GET query args, with reserved args removed
+						<ul>
+							<li>Added: <code>gravityview/api/reserved_query_args</code> filter to modify internal reserved URL query args</li>
+						</ul></li>
+					<li>Added: <code>field-is_approved-html.php</code> and <code>field-is_approved-csv.php</code> template files for the Is Approved field</li>
+					<li>Modified: Removed</li>
+					<li>Modified: <code>templates/fields/field-entry_link-html.php</code> template to add <code>gv_get_query_args()</code> functionality</li>
+					<li>Breaking CSS change: Removed <code>.gv-list-view</code> CSS class from the List layout container <code>&lt;div&gt;</code>. The CSS class was also used in the looped entry containers, making it hard to style. This issue was introduced in GravityView 2.0. For background, see <a href="https://github.com/gravityview/GravityView/issues/1026">the GitHub issue</a>.</li>
+				</ul>
+
+				<h3>2.9.4 on January 25, 2021</h3>
 
 				<ul>
 					<li>Added: Apply <code>{get}</code> merge tag replacements in <code>[gvlogic]</code> attributes and content</li>
@@ -388,47 +467,6 @@ class GravityView_Welcome {
 					<li>Modified: Added index of the current file in the loop to the <code>gravityview/fields/fileupload/file_path</code> filter</li>
 				</ul>
 
-				<h3>2.8.1 on April 22, 2020</h3>
-
-				<ul>
-					<li>Added: Better inline documentation for View Settings</li>
-					<li>Improved: When clicking "Add All Form Fields" in the "+ Add Field" picker</li>
-					<li>Modified: Changed default settings for new Views to "Show only approved entries"</li>
-					<li>Modified: When adding a field to a table-based layout, "+ Add Field" now says "+ Add Column"</li>
-					<li>Fixed: Single Entry "Hide empty fields" not working in Table and DataTables layouts</li>
-				</ul>
-
-				<h3>2.8 on April 16, 2020 </h3>
-
-				<ul>
-					<li>Added: User Fields now has many more options, including avatars, first and last name combinations, and more</li>
-					<li>Added: A new <a href="https://en.gravatar.com">Gravatar (Globally Recognized Avatar)</a> field</li>
-					<li>Added: "Display as HTML" option for Paragraph fields - By default, safe HTML will be shown. If disabled, only text will be shown.</li>
-					<li>Added: Support for Gravity Forms Partial Entries Add-On. When editing an entry, the entry's "Progress" will now be updated.</li>
-					<li>Modified: Sort forms by title in Edit View, rather than Date Created (thanks, Rochelle!)</li>
-					<li>Modified: The <a href="https://docs.gravityview.co/article/281-the-createdby-merge-tag"><code>{created_by}</code> Merge Tag</a>
-						<ul>
-							<li>When an entry was created by a logged-out user, <code>{created_by}</code> will now show details for a logged-out user (ID <code>0</code>), instead of returning an unmodified Merge Tag</li>
-							<li>When <code>{created_by}</code> is passed without any modifiers, it now will return the ID of the user who created the entry</li>
-							<li>Fixed PHP warning when <code>{created_by}</code> Merge Tag was passed without any modifiers</li>
-						</ul></li>
-					<li>Fixed: The "Single Entry Title" setting was not working properly</li>
-					<li>Fixed: Recent Entries widget filters not being applied</li>
-					<li>Updated translations: Added Formal German translation (thanks, Felix K!) and updated Polish translation (thanks, Dariusz!)</li>
-				</ul>
-
-				<p><strong>Developer Updates:</strong></p>
-
-				<ul>
-					<li>Added: <code>gravityview/fields/textarea/allow_html</code> filter to toggle whether Paragraph field output should allow HTML or should be sanitized with <code>esc_html()</code></li>
-					<li>Added: <code>gravityview/field/created_by/name_display</code> filter for custom User Field output.</li>
-					<li>Added: <code>gravityview/field/created_by/name_display/raw</code> allow raw (unescaped) output for <code>gravityview/field/created_by/name_display</code>.</li>
-					<li>Added: <code>gravityview/fields/gravatar/settings</code> filter to modify the new Gravatar field's settings</li>
-					<li>Added: <code>gravityview/search/sieve_choices</code> filter in Version 2.5 that enables only showing choices in the Search Bar that exist in entries (<a href="https://docs.gravityview.co/article/701-show-choices-that-exist">learn more about this filter</a>)</li>
-					<li>Modified: <code>gravityview_get_forms()</code> and <code>GVCommon::get_forms()</code> have new <code>$order_by</code> and <code>$order</code> parameters (Thanks, Rochelle!)</li>
-					<li>Fixed: <code>gravityview/edit_entry/user_can_edit_entry</code> and <code>gravityview/capabilities/allow_logged_out</code> were not reachable in Edit Entry and Delete Entry since Version 2.5</li>
-				</ul>
-
 				<p style="text-align: center;">
 					<a href="https://gravityview.co/changelog/" class="aligncenter button button-primary button-hero" style="margin: 0 auto; display: inline-block; text-transform: capitalize"><?php esc_html_e( 'View change history', 'gravityview' ); ?></a>
 				</p>
@@ -529,7 +567,7 @@ class GravityView_Welcome {
 					</ul>
 
 					<h4><?php esc_attr_e( 'Want to contribute?', 'gravityview' ); ?></h4>
-					<p><?php echo sprintf( esc_attr__( 'If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here.', 'gravityview'), '<a href="https://github.com/katzwebservices/GravityView">', '</a>' ); ?></p>
+					<p><?php echo sprintf( esc_attr__( 'If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here.', 'gravityview'), '<a href="https://github.com/gravityview/GravityView">', '</a>' ); ?></p>
 				</div>
 			</div>
 

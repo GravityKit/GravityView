@@ -24,7 +24,7 @@ if ( $gravityview->entry->is_multi() ) {
 
 $field_settings = $gravityview->field->as_configuration();
 
-$link_text = empty( $field_settings['entry_link_text'] ) ? __( 'View Details', 'gravityview' ) : $field_settings['entry_link_text'];
+$link_text = empty( $field_settings['entry_link_text'] ) ? esc_html__( 'View Details', 'gravityview' ) : $field_settings['entry_link_text'];
 
 $output = apply_filters( 'gravityview_entry_link', GravityView_API::replace_variables( $link_text, $form, $entry ), $gravityview );
 
@@ -37,6 +37,17 @@ if ( ! empty( $field_settings['new_window'] ) ) {
 global $post;
 
 $href = $gravityview->entry->get_permalink( $gravityview->view, $gravityview->request, $tag_atts );
+
+/**
+ * @filter `gravityview/entry_link/add_query_args` Modify whether to include passed $_GET parameters to the end of the url
+ * @since 2.10
+ * @param bool $add_query_params Whether to include passed $_GET parameters to the end of the Entry Link URL. Default: true.
+ */
+$add_query_args = apply_filters( 'gravityview/entry_link/add_query_args', true );
+
+if ( $add_query_args ) {
+	$href = add_query_arg( gv_get_query_args(), $href );
+}
 
 $link = gravityview_get_link( $href, $output, $tag_atts );
 

@@ -15,6 +15,8 @@ class GravityView_Field_Captcha extends GravityView_Field {
 
 	var $group = 'advanced';
 
+	var $icon = 'dashicons-shield-alt';
+
 	public function __construct() {
 		$this->label = esc_html__( 'CAPTCHA', 'gravityview' );
 		parent::__construct();

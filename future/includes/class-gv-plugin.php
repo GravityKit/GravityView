@@ -235,6 +235,7 @@ final class Plugin {
 		include_once $this->dir( 'includes/extensions/delete-entry/class-delete-entry.php' );
 		include_once $this->dir( 'includes/extensions/duplicate-entry/class-duplicate-entry.php' );
 		include_once $this->dir( 'includes/extensions/entry-notes/class-gravityview-field-notes.php' );
+		include_once $this->dir( 'includes/extensions/lightbox/class-gravityview-lightbox.php' );
 
 		// Load WordPress Widgets
 		include_once $this->dir( 'includes/wordpress-widgets/register-wordpress-widgets.php' );
@@ -298,16 +299,6 @@ final class Plugin {
 
 		// 4. /wp-content/plugins/gravityview/languages/gravityview-{locale}.mo
 		$loaded = load_plugin_textdomain( $domain, false, $this->relpath( '/languages/' ) );
-
-		if ( $loaded ) {
-			return;
-		}
-
-		// Pre-4.6 loading
-		// TODO: Remove when GV minimum version is WordPress 4.6.0
-		$locale = apply_filters( 'plugin_locale', ( ( function_exists( 'get_user_locale' ) && is_admin() ) ? get_user_locale() : get_locale() ), 'gravityview' );
-
-		$loaded = load_textdomain( 'gravityview', sprintf( '%s/%s-%s.mo', $this->dir( 'languages' ), $domain, $locale ) );
 
 		if ( $loaded ) {
 			return;
@@ -686,9 +677,9 @@ final class Plugin {
 		delete_site_transient( 'gravityview_related_plugins' );
 	}
 
-	private function __clone() {
+	public function __clone() {
 	}
 
-	private function __wakeup() {
+	public function __wakeup() {
 	}
 }

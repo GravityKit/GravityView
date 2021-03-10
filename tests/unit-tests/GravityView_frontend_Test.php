@@ -65,7 +65,7 @@ class GravityView_frontend_Test extends GV_UnitTestCase {
 	public function test_process_search_dates_with_timezone_offset() {
 		# Test relative dates using WP timezone offset
 		if ( ! function_exists( 'runkit7_function_copy' ) || !function_exists( 'runkit7_function_redefine' ) ) {
-			$this->markTestSkipped('Relative dates test with WP timezone offset requires ');
+			$this->markTestSkipped('Relative dates test with WP timezone offset requires runkit7_function_redefine(), which requires PHP 7.');
 		}
 
 		$server_date = 1603292400; // October 21, 2020 3:00:00 PM GMT

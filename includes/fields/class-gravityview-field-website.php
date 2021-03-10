@@ -21,6 +21,8 @@ class GravityView_Field_Website extends GravityView_Field {
 
 	var $group = 'advanced';
 
+	var $icon = 'dashicons-admin-links';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Website', 'gravityview' );
 		parent::__construct();
@@ -36,12 +38,6 @@ class GravityView_Field_Website extends GravityView_Field {
 		}
 
 		/**
-		 * Set default to opening in new links for back-compatibility with Version 1.5.1
-		 * @link https://github.com/gravityview/GravityView/commit/e12e76e2d032754227728d41e65103042d4f75ec
-		 */
-		$field_options['new_window']['value'] = true;
-
-		/**
 		 * @since 1.8
 		 */
 		$field_options['anchor_text'] = array(
@@ -50,6 +46,7 @@ class GravityView_Field_Website extends GravityView_Field {
 			'desc' => __( 'Define custom link text. Leave blank to display the URL', 'gravityview' ),
 			'value' => '',
 			'merge_tags' => 'force',
+			'priority' => 1000,
 		);
 
 		$field_options['truncatelink'] = array(
@@ -57,8 +54,18 @@ class GravityView_Field_Website extends GravityView_Field {
 			'value' => true,
 			'label' => __( 'Shorten Link Display', 'gravityview' ),
 			'tooltip' => __( 'Only show the domain for a URL instead of the whole link.', 'gravityview' ),
-			'desc' => __( 'Don&rsquo;t show the full URL, only show the domain.', 'gravityview' )
+			'desc' => __( 'Don&rsquo;t show the full URL, only show the domain.', 'gravityview' ),
+			'priority' => 1500,
 		);
+
+		$this->add_field_support( 'new_window', $field_options );
+
+		/**
+		 * Set default to opening in new links for back-compatibility with Version 1.5.1
+		 * @link https://github.com/gravityview/GravityView/commit/e12e76e2d032754227728d41e65103042d4f75ec
+		 */
+		$field_options['new_window']['value'] = true;
+		$field_options['new_window']['priority'] = 2000;
 
 		return $field_options;
 	}

@@ -80,7 +80,7 @@ class GravityView_Edit_Entry_Admin {
         if( $zone !== 'edit' ) {
 
             $entry_default_fields['edit_link'] = array(
-                'label' => __('Edit Entry', 'gravityview'),
+                'label' => __('Link to Edit Entry', 'gravityview'),
                 'type' => 'edit_link',
                 'desc'	=> __('A link to edit the entry. Visible based on View settings.', 'gravityview'),
                 'icon' => 'dashicons-welcome-write-blog',
@@ -181,16 +181,6 @@ class GravityView_Edit_Entry_Admin {
 
         // We only want to modify the settings for the edit context
         if( 'edit' !== $context ) {
-
-            /**
-             * @since 1.8.4
-             */
-            $field_options['new_window'] = array(
-                'type' => 'checkbox',
-                'label' => __( 'Open link in a new tab or window?', 'gravityview' ),
-                'value' => false,
-            );
-
             return $field_options;
         }
 
@@ -205,6 +195,7 @@ class GravityView_Edit_Entry_Admin {
                 'tooltip' => 'allow_edit_cap',
                 'class' => 'widefat',
                 'value' => 'read', // Default: entry creator
+                'group' => 'visibility',
             ),
         );
 

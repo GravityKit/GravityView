@@ -17,6 +17,8 @@ class GravityView_Field_Radio extends GravityView_Field {
 
 	var $group = 'standard';
 
+	var $icon = 'dashicons-marker';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Radio Buttons', 'gravityview' );
 		parent::__construct();
@@ -39,7 +41,7 @@ class GravityView_Field_Radio extends GravityView_Field {
 
 		// Set the $_field_id var
 		$field_options = parent::field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id );
-		
+
 		if( $this->is_choice_value_enabled() ) {
 			$field_options['choice_display'] = array(
 				'type'    => 'radio',
@@ -50,6 +52,7 @@ class GravityView_Field_Radio extends GravityView_Field {
 					'value' => __( 'Value of the input', 'gravityview' ),
 					'label' => __( 'Label of the input', 'gravityview' ),
 				),
+				'group'   => 'display',
 			);
 		}
 

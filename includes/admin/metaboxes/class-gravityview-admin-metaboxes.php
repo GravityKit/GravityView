@@ -18,7 +18,8 @@ class GravityView_Admin_Metaboxes {
 	function __construct() {
 
 		if ( ! GravityView_Compatibility::is_valid() ) {
-			return; }
+			return;
+		}
 
 		self::$metaboxes_dir = GRAVITYVIEW_DIR . 'includes/admin/metaboxes/';
 
@@ -42,7 +43,6 @@ class GravityView_Admin_Metaboxes {
 
 		// information box
 		add_action( 'post_submitbox_misc_actions', array( $this, 'render_shortcode_hint' ) );
-
 	}
 
 	/**
@@ -81,12 +81,12 @@ class GravityView_Admin_Metaboxes {
 		add_meta_box( 'gravityview_select_template', __( 'Choose a View Type', 'gravityview' ), array( $this, 'render_select_template_metabox' ), 'gravityview', 'normal', 'high' );
 
 		// View Configuration box
-		add_meta_box( 'gravityview_view_config', __( 'View Configuration', 'gravityview' ), array( $this, 'render_view_configuration_metabox' ), 'gravityview', 'normal', 'high' );
+		add_meta_box( 'gravityview_view_config', __( 'Layout', 'gravityview' ), array( $this, 'render_view_configuration_metabox' ), 'gravityview', 'normal', 'high' );
 
 		$this->add_settings_metabox_tabs();
 
 		// Other Settings box
-		add_meta_box( 'gravityview_settings', __( 'View Settings', 'gravityview' ), array( $this, 'settings_metabox_render' ), 'gravityview', 'normal', 'core' );
+		add_meta_box( 'gravityview_settings', __( 'Settings', 'gravityview' ), array( $this, 'settings_metabox_render' ), 'gravityview', 'normal', 'core' );
 
 	}
 

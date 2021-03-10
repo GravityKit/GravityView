@@ -15,6 +15,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 class GravityView_Widget_Search extends \GV\Widget {
 
+	public $icon = 'dashicons-search';
+
 	public static $file;
 	public static $instance;
 
@@ -31,6 +33,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$this->widget_id = 'search_bar';
 		$this->widget_description = esc_html__( 'Search form for searching entries.', 'gravityview' );
+		$this->widget_subtitle = '';
 
 		self::$instance = &$this;
 
@@ -50,9 +53,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 				),
 			),
 			'search_clear' => array(
-				'type' => 'checkbox',
+				'type'  => 'checkbox',
 				'label' => __( 'Show Clear button', 'gravityview' ),
-				'value' => false,
+				'desc'  => __( 'When a search is performed, display a button that removes all search values.', 'gravityview'),
+				'value' => true,
 			),
 			'search_fields' => array(
 				'type' => 'hidden',
@@ -90,6 +94,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			add_action( 'wp_ajax_gv_searchable_fields', array( 'GravityView_Widget_Search', 'get_searchable_fields' ) );
 
 			add_action( 'gravityview_search_widget_fields_after', array( $this, 'add_preview_inputs' ) );
+
+			add_filter( 'gravityview/api/reserved_query_args', array( $this, 'add_reserved_args' ) );
 		}
 
 		parent::__construct( esc_html__( 'Search Bar', 'gravityview' ), null, $default_values, $settings );
@@ -106,6 +112,34 @@ class GravityView_Widget_Search extends \GV\Widget {
 			self::$instance = new GravityView_Widget_Search;
 		}
 		return self::$instance;
+	}
+
+	/**
+	 * @since 2.10
+	 *
+	 * @param $args
+	 *
+	 * @return mixed
+	 */
+	public function add_reserved_args( $args ) {
+
+		$args[] = 'gv_search';
+		$args[] = 'gv_start';
+		$args[] = 'gv_end';
+		$args[] = 'gv_id';
+		$args[] = 'gv_by';
+		$args[] = 'mode';
+
+		$get = (array) $_GET;
+
+		// If the fields being searched as reserved; not to be considered user-passed variables
+		foreach ( $get as $key => $value ) {
+			if ( $key !== $this->convert_request_key_to_filter_key( $key ) ) {
+				$args[] = $key;
+			}
+		}
+
+		return $args;
 	}
 
 	/**

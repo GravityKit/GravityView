@@ -40,6 +40,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 */
 	var $name = 'notes';
 
+	var $icon = 'dashicons-admin-comments';
+
 	function __construct() {
 
 		self::$path = plugin_dir_path( __FILE__ );
@@ -102,6 +104,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 				'label' => __( 'Entry Notes', 'gravityview' ),
 				'type'  => 'notes',
 				'desc'  => __( 'Display, add, and delete notes for an entry.', 'gravityview' ),
+				'icon'  => 'dashicons-admin-comments',
 			);
 		}
 
