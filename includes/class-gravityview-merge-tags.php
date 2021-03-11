@@ -386,6 +386,8 @@ class GravityView_Merge_Tags {
 			return $text;
 		}
 
+		$text = self::replace_site_url( $text, $form, $entry, $url_encode, $esc_html );
+
 		$text = self::replace_get_variables( $text, $form, $entry, $url_encode );
 
 		$text = self::replace_current_post( $text, $form, $entry, $url_encode, $esc_html );
@@ -393,6 +395,38 @@ class GravityView_Merge_Tags {
 		$text = self::replace_entry_link( $text, $form, $entry, $url_encode, $esc_html );
 
 		return $text;
+	}
+
+	/**
+	 * Add a {site_url} Merge Tag
+	 *
+	 * @since 2.10.1
+	 *
+	 * @param string $original_text Text to replace
+	 * @param array $form Gravity Forms form array
+	 * @param array $entry Entry array
+	 * @param bool $url_encode Whether to URL-encode output
+	 * @param bool $esc_html Indicates if the esc_html function should be applied.
+	 *
+	 * @return string Original text, if no {site_url} Merge Tags found, otherwise text with Merge Tag replaced
+	 */
+	public static function replace_site_url( $original_text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
+
+		if ( false === strpos( $original_text, '{site_url}' ) ) {
+			return $original_text;
+		}
+
+		$site_url = get_site_url();
+
+		if( $url_encode ) {
+			$site_url = urlencode( $site_url );
+		}
+
+		if ( $esc_html ) {
+			$site_url = esc_html( $site_url );
+		}
+
+		return str_replace( '{site_url}', $site_url, $original_text );
 	}
 
 	/**
