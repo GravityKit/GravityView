@@ -489,6 +489,23 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 
 	/**
 	 * We want to make sure that GravityView doesn't affect core Gravity Forms Merge Tags output
+	 * @covers GravityView_Merge_Tags::replace_site_url()
+	 * @group gf_merge_tags
+	 * @since 2.10.1
+	 */
+	function test_replace_site_url() {
+
+		$this->assertEquals( 'No merge tag', GravityView_Merge_Tags::replace_variables( 'No merge tag' ) );
+
+		$this->assertEquals( sprintf( 'URL: %s, then content', get_site_url() ), GravityView_Merge_Tags::replace_variables( 'URL: {site_url}, then content' ) );
+
+		$this->assertEquals( sprintf( 'URL: %s, then content', urlencode( get_site_url() ) ), GravityView_Merge_Tags::replace_variables( 'URL: {site_url}, then content', [], [], true, false ) );
+
+		$this->assertEquals( sprintf( 'URL: %s, then content', esc_html( get_site_url() ) ), GravityView_Merge_Tags::replace_variables( 'URL: {site_url}, then content', [], [], false, true ) );
+	}
+
+	/**
+	 * We want to make sure that GravityView doesn't affect core Gravity Forms Merge Tags output
 	 * @covers GravityView_Merge_Tags::replace_variables()
 	 * @group gf_merge_tags
 	 * @since 1.15.1
