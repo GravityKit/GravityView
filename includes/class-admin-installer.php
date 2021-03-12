@@ -326,6 +326,8 @@ class GravityView_Admin_Installer {
 
 				$this->render_section(  'plugins', esc_html__( 'Gravity Forms Add-Ons', 'gravityview' ), $downloads_data, $wp_plugins );
 
+				$this->render_section(  'labs', esc_html__( 'GravityView Labs', 'gravityview' ), $downloads_data, $wp_plugins );
+
 				$this->render_section(  'friends', esc_html__( 'Friends of GravityView', 'gravityview' ), $downloads_data, $wp_plugins );
 				?>
             </div>
