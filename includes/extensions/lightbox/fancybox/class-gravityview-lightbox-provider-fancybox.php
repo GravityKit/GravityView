@@ -76,6 +76,11 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 			}
 		</style>
 		<script>
+			jQuery( '.gravityview-fancybox' ).each( function ( i, el ) {
+				if ( jQuery( el ).attr( 'href' ).match( /TB_iframe=true/ ) ) {
+					jQuery( el ).attr( 'data-type', 'iframe' );
+				}
+			} );
 			jQuery( '.gravityview-fancybox' ).fancybox(<?php echo $settings; ?>);
 		</script>
 		<?php
@@ -113,6 +118,7 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 		$atts['data-caption']          = null;
 		$atts['data-options']          = null;
 		$atts['data-filter']           = null;
+		$atts['data-type']             = null;
 
 		return $atts;
 	}
