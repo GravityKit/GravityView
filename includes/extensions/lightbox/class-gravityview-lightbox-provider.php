@@ -89,10 +89,11 @@ abstract class GravityView_Lightbox_Provider {
 	 * @return mixed|void
 	 */
 	protected function get_settings() {
-
 		$settings = static::default_settings();
 
-		return apply_filters( 'gravityview/lightbox/provider/' . self::$slug . '/settings', $settings );
+		$provider = gravityview()->plugin->settings->get( 'lightbox' );
+
+		return apply_filters( 'gravityview/lightbox/provider/' . $provider . '/settings', $settings );
 	}
 
 	/**
