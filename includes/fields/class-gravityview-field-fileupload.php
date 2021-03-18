@@ -268,7 +268,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			} else if ( $extension === 'pdf' ) {
 
 				// PDF needs to be displayed in an IFRAME
-				$file_path = add_query_arg( array( 'TB_iframe' => 'true' ), $file_path );
+				$file_path = add_query_arg( array( 'gv-iframe' => 'true' ), $file_path );
 
 			// Images
 			} else if ( in_array( $extension, array( 'jpg', 'jpeg', 'jpe', 'gif', 'png' ) ) ) {
