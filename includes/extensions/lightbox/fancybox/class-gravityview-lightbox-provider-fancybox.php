@@ -76,11 +76,6 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 			}
 		</style>
 		<script>
-			jQuery( '.gravityview-fancybox' ).each( function ( i, el ) {
-				if ( jQuery( el ).attr( 'href' ).match( /TB_iframe=true/ ) ) {
-					jQuery( el ).attr( 'data-type', 'iframe' );
-				}
-			} );
 			jQuery( '.gravityview-fancybox' ).fancybox(<?php echo $settings; ?>);
 		</script>
 		<?php
@@ -146,6 +141,20 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 				$entry = $context->entry->as_entry();
 				$link_atts['data-fancybox'] = 'gallery-' . sprintf( "%s-%s-%s", $entry['form_id'], $context->field->ID, $context->entry->get_slug() );
 			}
+		}
+
+		$file_path = \GV\Utils::get( $additional_details, 'file_path' );
+
+		if ( false !== strpos( $file_path, 'gv-iframe' ) ) {
+
+			$fancybox_settings = array(
+				'type' => 'iframe',
+				'iframe' => array(
+					'preload' => false,
+				),
+			);
+
+			$link_atts['data-options'] = json_encode( $fancybox_settings );
 		}
 
 		return $link_atts;
