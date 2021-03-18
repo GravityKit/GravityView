@@ -126,9 +126,14 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	/**
 	 * @inheritDoc
 	 */
-	public function fileupload_link_atts( $link_atts, $field_compat = array(), $context = null ) {
+	public function fileupload_link_atts( $link_atts, $field_compat = array(), $context = null, $additional_details = null ) {
 
 		if ( ! $context->view->settings->get( 'lightbox', false ) ) {
+			return $link_atts;
+		}
+
+		// Prevent empty content from getting added to the lightbox gallery
+		if ( is_array( $additional_details ) && empty( $additional_details['file_path'] ) ) {
 			return $link_atts;
 		}
 

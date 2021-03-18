@@ -353,12 +353,17 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				if ( empty( $field_settings['show_as_link'] ) ) {
 					/**
 					 * @filter `gravityview/fields/fileupload/link_atts` Modify the link attributes for a file upload field
+					 * @since 2.0 Added $context
+					 * @since 2.11 Added $additional_details
 					 * @param array|string $link_atts Array or attributes string
 					 * @param array $field_compat Current GravityView field array
-					 * @since 2.0
 					 * @param \GV\Template_Context $context The context.
+					 * @param array $additional_details Array of additional details about the file. {
+					 * @type string $file_path URL to file.
+					 * @type string $insecure_file_path URL to insecure file.
+					 * }
 					 */
-					$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', array( 'target' => '_blank' ), $field_compat, $context );
+					$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', array( 'target' => '_blank' ), $field_compat, $context, compact( 'file_path', 'insecure_file_path' ) );
 
 					$content = gravityview_get_link( $file_path, $content, $link_atts );
 				}
