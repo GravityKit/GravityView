@@ -3780,8 +3780,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$maybe_ie_nine = $audio_instance > 1 ? '' : "<!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->\n";
 			$expected .= "<li>$maybe_ie_nine";
 			$expected .= '<audio class="wp-audio-shortcode gv-audio gv-field-id-5" id="audio-0-' . $audio_instance . '" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="http://two.mp3?_=' . $audio_instance . '" /><a href="http://two.mp3">http://two.mp3</a></audio></li>';
-			// three.pdf
-			$expected .= '<li>three.pdf</li>';
+			// three.pdf (PDF always links to file as per https://github.com/gravityview/GravityView/pull/1577/commits/808063d2d2c6ea121ed7ccb2d53a16a863d4a69c)
+			$expected .= '<li><a href="http://three.pdf?gv-iframe=true" rel="noopener noreferrer" target="_blank">three.pdf</a></li>';
 			// four.mp4
 			$maybe_ie_nine = $video_instance > 1 ? '' : "<!--[if lt IE 9]><script>document.createElement('video');</script><![endif]-->\n";
 			$expected .= '<li><div style="width: 640px;" class="wp-video">' . $maybe_ie_nine;
@@ -3802,7 +3802,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			// two.mp3
 			$expected .= '<li><a href="http://two.mp3" rel="noopener noreferrer" target="_blank">two.mp3</a></li>';
 			// three.pdf
-			$expected .= '<li><a href="http://three.pdf?TB_iframe=true" rel="noopener noreferrer" target="_blank">three.pdf</a></li>';
+			$expected .= '<li><a href="http://three.pdf?gv-iframe=true" rel="noopener noreferrer" target="_blank">three.pdf</a></li>';
 			// four.mp4
 			$expected .= '<li><a href="http://four.mp4" rel="noopener noreferrer" target="_blank">four.mp4</a></li>';
 			// five.txt
