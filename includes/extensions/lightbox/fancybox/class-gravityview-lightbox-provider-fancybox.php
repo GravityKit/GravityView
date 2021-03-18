@@ -76,7 +76,9 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 			}
 		</style>
 		<script>
-			jQuery( '.gravityview-fancybox' ).fancybox(<?php echo $settings; ?>);
+			if ( window.jQuery ) {
+				jQuery( '.gravityview-fancybox' ).fancybox(<?php echo $settings; ?>);
+			}
 		</script>
 		<?php
 	}
