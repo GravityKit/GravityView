@@ -149,6 +149,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			return $output_arr;
 		}
 
+		$field_settings_backup = $field_settings;
 		// Process each file path
 		foreach ( $file_paths as $index => $file_path ) {
 
@@ -376,6 +377,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				'content' => $content
 			);
 
+			$field_settings = $field_settings_backup; // reset to default
 		} // End foreach loop
 
 		/**
