@@ -23,7 +23,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
-* Added `{site_url}` Merge Tag that returns the current site URL. This can be helpful when migrating sites or deploying from staging to live.
+* Added: Allow comparing multiple values when using `[gvlogic]` shortcode
+	- Use `&&` to match all values `[gvlogic if="abc" contains="a&&b"]`
+	- Use `||` to match any values `[gvlogic if="abc" equals="abc||efg"]`
+* Added: `{site_url}` Merge Tag that returns the current site URL. This can be helpful when migrating sites or deploying from staging to live.
 * Fixed: Don't show the icon for the "Source URL" field in the view editor
 * Fixed: Remove the "Link to single entry" field setting for Paragraph fields
 * Updated translations: Arabic translation (thanks Salman!), Dutch translation (thanks Desiree!)
