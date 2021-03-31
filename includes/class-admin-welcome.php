@@ -293,7 +293,32 @@ class GravityView_Welcome {
 					<li>Fixed: Lightbox script was being loaded for Views even if it was not being used</li>
 					<li>Fixed: Don't show the icon for the "Source URL" field in the View editor</li>
 					<li>Fixed: Change Entry Creator not working properly on non-English sites</li>
-					<li>Updated translations: Arabic translation (thanks Salman!), Dutch translation (thanks Desiree!)</li>
+					<li>Updated <em>so many translations</em>! Thank you to all the translators!
+						<ul>
+							<li>Arabic translation (thanks Salman!)</li>
+							<li>Dutch translation (thanks Desiree!)</li>
+							<li>Russian translation (thanks Victor S.!)</li>
+							<li>Romanian (thanks Cazare!)</li>
+							<li>Chinese (thanks Edi Weigh!)</li>
+							<li>Turkish (thanks Süha!)</li>
+							<li>Swedish (thanks Adam!)</li>
+							<li>Portuguese (thanks Luis and Rafael!)</li>
+							<li>Dutch (thanks Erik!)</li>
+							<li>Norwegian (thanks Aleksander!)</li>
+							<li>Italian (thanks Clara!)</li>
+							<li>Hungarian (thanks dbalage!)</li>
+							<li>Hebrew</li>
+							<li>French</li>
+							<li>Canadian French (thanks Nicolas!)</li>
+							<li>Finnish (thanks Jari!)</li>
+							<li>Iranian (thanks amir!)</li>
+							<li>Mexican Spanish (thanks Luis!)</li>
+							<li>Spanish (thanks Joaquin!)</li>
+							<li>German (thanks Hubert!)</li>
+							<li>Danish (thanks Lisbeth!)</li>
+							<li>Bosnian (thanks Damir!)</li>
+							<li>Bengali (thanks Akter!)</li>
+						</ul></li>
 				</ul>
 
 				<h3>Version 2.10 on March 9, 2021</h3>
