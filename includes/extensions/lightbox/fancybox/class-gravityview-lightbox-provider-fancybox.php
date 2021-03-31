@@ -19,6 +19,39 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	public static $style_slug = 'gravityview-fancybox';
 
 	/**
+	 * @inheritDoc
+	 */
+	public function print_scripts( $gravityview ) {
+
+		parent::print_scripts( $gravityview );
+
+		if ( ! self::is_active( $gravityview ) ) {
+			return;
+		}
+
+		$settings = self::get_settings();
+
+		$settings = json_encode( $settings );
+		?>
+		<style>
+			.fancybox-container {
+				z-index: 100000; /** Divi is 99999 */
+			}
+
+			.admin-bar .fancybox-container {
+				margin-top: 32px;
+			}
+		</style>
+		<script>
+			if ( window.jQuery ) {
+				jQuery( '.gravityview-fancybox' ).fancybox(<?php echo $settings; ?>);
+			}
+		</script>
+		<?php
+
+	}
+
+	/**
 	 * Options to pass to Fancybox
 	 *
 	 * @see https://fancyapps.com/fancybox/3/docs/#options
@@ -59,34 +92,9 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	/**
 	 * @inheritDoc
 	 */
-	public function output_footer() {
-
-		$settings = self::get_settings();
-
-		$settings = json_encode( $settings );
-
-		?>
-		<style>
-			.fancybox-container {
-				z-index: 100000; /** Divi is 99999 */
-			}
-
-			.admin-bar .fancybox-container {
-				margin-top: 32px;
-			}
-		</style>
-		<script>
-			jQuery( '.gravityview-fancybox' ).fancybox(<?php echo $settings; ?>);
-		</script>
-		<?php
-	}
-
-	/**
-	 * @inheritDoc
-	 */
 	public function enqueue_scripts() {
 		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_enqueue_script( self::$script_slug, plugins_url( 'assets/lib/fancybox/dist/jquery.fancybox' . $min . '.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GV_PLUGIN_VERSION );
+		wp_register_script( self::$script_slug, plugins_url( 'assets/lib/fancybox/dist/jquery.fancybox' . $min . '.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GV_PLUGIN_VERSION );
 	}
 
 	/**
@@ -94,7 +102,7 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	 */
 	public function enqueue_styles() {
 		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_enqueue_style( self::$style_slug, plugins_url( 'assets/lib/fancybox/dist/jquery.fancybox' . $min . '.css', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
+		wp_register_style( self::$style_slug, plugins_url( 'assets/lib/fancybox/dist/jquery.fancybox' . $min . '.css', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 	}
 
 	/**
@@ -113,6 +121,7 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 		$atts['data-caption']          = null;
 		$atts['data-options']          = null;
 		$atts['data-filter']           = null;
+		$atts['data-type']             = null;
 
 		return $atts;
 	}
@@ -120,9 +129,19 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	/**
 	 * @inheritDoc
 	 */
-	public function fileupload_link_atts( $link_atts, $field_compat = array(), $context = null ) {
+	public function fileupload_link_atts( $link_atts, $field_compat = array(), $context = null, $additional_details = null ) {
 
-		if ( ! $context->view->settings->get( 'lightbox', false ) ) {
+		if ( $context && ! $context->view->settings->get( 'lightbox', false ) ) {
+			return $link_atts;
+		}
+
+		// Prevent empty content from getting added to the lightbox gallery
+		if ( is_array( $additional_details ) && empty( $additional_details['file_path'] ) ) {
+			return $link_atts;
+		}
+
+		// Prevent empty content from getting added to the lightbox gallery
+		if ( is_array( $additional_details ) && ! empty( $additional_details['disable_lightbox'] ) ) {
 			return $link_atts;
 		}
 
@@ -135,6 +154,20 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 				$entry = $context->entry->as_entry();
 				$link_atts['data-fancybox'] = 'gallery-' . sprintf( "%s-%s-%s", $entry['form_id'], $context->field->ID, $context->entry->get_slug() );
 			}
+		}
+
+		$file_path = \GV\Utils::get( $additional_details, 'file_path' );
+
+		if ( false !== strpos( $file_path, 'gv-iframe' ) ) {
+
+			$fancybox_settings = array(
+				'type' => 'iframe',
+				'iframe' => array(
+					'preload' => false,
+				),
+			);
+
+			$link_atts['data-options'] = json_encode( $fancybox_settings );
 		}
 
 		return $link_atts;

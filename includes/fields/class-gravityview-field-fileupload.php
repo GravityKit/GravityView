@@ -149,6 +149,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			return $output_arr;
 		}
 
+		$field_settings_backup = $field_settings;
 		// Process each file path
 		foreach ( $file_paths as $index => $file_path ) {
 
@@ -171,6 +172,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			// Get the secure download URL
 			$is_secure = false;
+			$disable_lightbox = false;
 			$insecure_file_path = $file_path;
 			$secure_file_path = $field->get_download_url( $file_path );
 			$text = $basename;
@@ -264,11 +266,16 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					}
 				}
 
-			// PDF
-			} else if ( $extension === 'pdf' ) {
+			// PDF or Text
+			} else if ( in_array( $extension, array( 'pdf', 'txt' ), true ) ) {
 
-				// PDF needs to be displayed in an IFRAME
-				$file_path = add_query_arg( array( 'TB_iframe' => 'true' ), $file_path );
+				// Don't add query arg when exporting as CSV
+				if ( $context instanceof \GV\Template_Context && ! ( $context->template instanceof \GV\Field_CSV_Template ) ) {
+					// File needs to be displayed in an IFRAME
+					$file_path = add_query_arg( array( 'gv-iframe' => 'true' ), $file_path );
+				}
+
+				$field_settings['link_to_file'] = true;
 
 			// Images
 			} else if ( in_array( $extension, array( 'jpg', 'jpeg', 'jpe', 'gif', 'png' ) ) ) {
@@ -320,6 +327,11 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					$text = $rendered;
 				}
 			}
+			// For all other non-media file types (ZIP, for example), always show as a link regardless of setting.
+			else {
+				$field_settings['link_to_file'] = true;
+				$disable_lightbox = true;
+			}
 
 			/**
 			 * @filter `gravityview/fields/fileupload/disable_link` Filter to alter the default behaviour of wrapping images (or image names) with a link to the content object
@@ -349,12 +361,17 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				if ( empty( $field_settings['show_as_link'] ) ) {
 					/**
 					 * @filter `gravityview/fields/fileupload/link_atts` Modify the link attributes for a file upload field
+					 * @since 2.0 Added $context
+					 * @since 2.11 Added $additional_details
 					 * @param array|string $link_atts Array or attributes string
 					 * @param array $field_compat Current GravityView field array
-					 * @since 2.0
 					 * @param \GV\Template_Context $context The context.
+					 * @param array $additional_details Array of additional details about the file. {
+					 * @type string $file_path URL to file.
+					 * @type string $insecure_file_path URL to insecure file.
+					 * }
 					 */
-					$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', array( 'target' => '_blank' ), $field_compat, $context );
+					$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', array( 'target' => '_blank' ), $field_compat, $context, compact( 'file_path', 'insecure_file_path', 'disable_lightbox' ) );
 
 					$content = gravityview_get_link( $file_path, $content, $link_atts );
 				}
@@ -367,6 +384,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				'content' => $content
 			);
 
+			$field_settings = $field_settings_backup; // reset to default
 		} // End foreach loop
 
 		/**
