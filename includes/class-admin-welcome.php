@@ -224,13 +224,13 @@ class GravityView_Welcome {
                 <div class="col column">
                     <h3>Configure Multiple Entry, Single Entry, and Edit Entry Layouts</h3>
 
-                    <p>You can configure what fields are displayed in <strong>Multiple Entry</strong>, <strong>Single Entry</strong>, and <strong>Edit Entry</strong> modes. These can be configured by clicking on the tabs in "View Configuration."</p>
+                    <p>You can configure what fields are displayed in <strong>Multiple Entry</strong>, <strong>Single Entry</strong>, and <strong>Edit Entry</strong> modes. These can be configured by clicking on the three associated tabs when editing a View.</p>
 
                     <ul class="ul-disc">
                         <li>Click "+ Add Field" to add a field to a zone</li>
                         <li>Click the name of the field you want to display</li>
                         <li>Once added, fields can be dragged and dropped to be re-arranged. Hover over the field until you see a cursor with four arrows, then drag the field.</li>
-                        <li>Click the <a href="#" style="text-decoration:none;"><i class="dashicons dashicons-admin-generic"></i></a> gear icon on each field to configure the <strong>Field Settings</strong></li>
+                        <li>Click the <i class="dashicons dashicons-admin-generic"></i> gear icon on each field to configure the <strong>Field Settings</strong></li>
                     </ul>
                 </div>
                 <div class="col column">
@@ -277,6 +277,49 @@ class GravityView_Welcome {
                 <div class="headline-feature" style="max-width: 100%">
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
+
+				<h3>2.10.1 on March 31, 2021</h3>
+
+				<ul>
+					<li>Added: Allow comparing multiple values when using <code>[gvlogic]</code> shortcode
+						<ul>
+							<li>Use <code>&amp;&amp;</code> to match all values <code>[gvlogic if="abc" contains="a&amp;&amp;b"]</code></li>
+							<li>Use <code>||</code> to match any values <code>[gvlogic if="abc" equals="abc||efg"]</code></li>
+						</ul></li>
+					<li>Added: <code>{site_url}</code> Merge Tag that returns the current site URL. This can be helpful when migrating sites or deploying from staging to live.</li>
+					<li>Fixed: Paragraph fields have a "Link to single entry" field setting, even though it doesn't make sense</li>
+					<li>Fixed: PDF and Text files were not opened in a lightbox</li>
+					<li>Fixed: Show File Upload files as links if they aren't an image, audio, or video file (like a .zip, .txt, or .pdf file)</li>
+					<li>Fixed: Lightbox script was being loaded for Views even if it was not being used</li>
+					<li>Fixed: Don't show the icon for the "Source URL" field in the View editor</li>
+					<li>Fixed: Change Entry Creator not working properly on non-English sites</li>
+					<li>Updated <em>so many translations</em>! Thank you to all the translators!
+						<ul>
+							<li>Arabic translation (thanks Salman!)</li>
+							<li>Dutch translation (thanks Desiree!)</li>
+							<li>Russian translation (thanks Victor S.!)</li>
+							<li>Romanian (thanks Cazare!)</li>
+							<li>Chinese (thanks Edi Weigh!)</li>
+							<li>Turkish (thanks Süha!)</li>
+							<li>Swedish (thanks Adam!)</li>
+							<li>Portuguese (thanks Luis and Rafael!)</li>
+							<li>Dutch (thanks Erik!)</li>
+							<li>Norwegian (thanks Aleksander!)</li>
+							<li>Italian (thanks Clara!)</li>
+							<li>Hungarian (thanks dbalage!)</li>
+							<li>Hebrew</li>
+							<li>French</li>
+							<li>Canadian French (thanks Nicolas!)</li>
+							<li>Finnish (thanks Jari!)</li>
+							<li>Iranian (thanks amir!)</li>
+							<li>Mexican Spanish (thanks Luis!)</li>
+							<li>Spanish (thanks Joaquin!)</li>
+							<li>German (thanks Hubert!)</li>
+							<li>Danish (thanks Lisbeth!)</li>
+							<li>Bosnian (thanks Damir!)</li>
+							<li>Bengali (thanks Akter!)</li>
+						</ul></li>
+				</ul>
 
 				<h3>Version 2.10 on March 9, 2021</h3>
 

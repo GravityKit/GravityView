@@ -33,7 +33,30 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Lightbox script was being loaded for Views even if it was not being used
 * Fixed: Don't show the icon for the "Source URL" field in the View editor
 * Fixed: Change Entry Creator not working properly on non-English sites
-* Updated translations: Arabic translation (thanks Salman!), Dutch translation (thanks Desiree!)
+* Updated _so many translations_! Thank you to all the translators!
+	- Arabic translation (thanks Salman!)
+	- Dutch translation (thanks Desiree!)
+	- Russian translation (thanks Victor S.!)
+	- Romanian (thanks Cazare!)
+	- Chinese (thanks Edi Weigh!)
+	- Turkish (thanks Süha!)
+	- Swedish (thanks Adam!)
+	- Portuguese (thanks Luis and Rafael!)
+	- Dutch (thanks Erik!)
+	- Norwegian (thanks Aleksander!)
+	- Italian (thanks Clara!)
+	- Hungarian (thanks dbalage!)
+	- Hebrew
+	- French
+	- Canadian French (thanks Nicolas!)
+	- Finnish (thanks Jari!)
+	- Iranian (thanks amir!)
+	- Mexican Spanish (thanks Luis!)
+	- Spanish (thanks Joaquin!)
+	- German (thanks Hubert!)
+	- Danish (thanks Lisbeth!)
+	- Bosnian (thanks Damir!)
+	- Bengali (thanks Akter!)
 
 = Version 2.10 on March 9, 2021 =
 
