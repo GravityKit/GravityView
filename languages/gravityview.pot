@@ -2011,23 +2011,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:471
+#: includes/class-admin-welcome.php:514
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:491
+#: includes/class-admin-welcome.php:534
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:542
+#: includes/class-admin-welcome.php:585
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:569
+#: includes/class-admin-welcome.php:612
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:570
+#: includes/class-admin-welcome.php:613
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
