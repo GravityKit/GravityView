@@ -139,9 +139,7 @@ abstract class GravityView_Lightbox_Provider {
 	protected function get_settings() {
 		$settings = static::default_settings();
 
-		$provider = gravityview()->plugin->settings->get( 'lightbox' );
-
-		return apply_filters( 'gravityview/lightbox/provider/' . $provider . '/settings', $settings );
+		return apply_filters( 'gravityview/lightbox/provider/' . static::$slug . '/settings', $settings );
 	}
 
 	/**
