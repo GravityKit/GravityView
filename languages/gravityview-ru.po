@@ -2,17 +2,17 @@
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # Zachary Katz <zack@katz.co>, 2018
-# George Kovalev <gkovaleff@gmail.com>, 2019
 # Irina Fedulova <istartlin@gmail.com>, 2020
-# Viktor S <awsswa59@gmail.com>, 2020
+# George Kovalev <gkovaleff@gmail.com>, 2021
+# Viktor S <awsswa59@gmail.com>, 2021
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.10\n"
+"Project-Id-Version: GravityView 2.10.1\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
-"Last-Translator: Viktor S <awsswa59@gmail.com>, 2020\n"
+"Last-Translator: Viktor S <awsswa59@gmail.com>, 2021\n"
 "Language-Team: Russian (https://www.transifex.com/katzwebservices/teams/18775/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -919,7 +919,7 @@ msgstr "Название ссылки назад"
 msgid "The text of the link that returns to the multiple entries view."
 msgstr "Текст ссылки для возврата к просмотру набора записей."
 
-#: future/includes/class-gv-settings-view.php:377 includes/class-api.php:972
+#: future/includes/class-gv-settings-view.php:377 includes/class-api.php:977
 msgid "&larr; Go back"
 msgstr "&larr; Назад"
 
@@ -1210,7 +1210,7 @@ msgid "You do not have permission to install plugin updates"
 msgstr "У вас нет полномочий устанавилвать обновления плагина"
 
 #: future/lib/EDD_SL_Plugin_Updater.php:523
-#: includes/class-gravityview-change-entry-creator.php:162
+#: includes/class-gravityview-change-entry-creator.php:164
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:287
 #: includes/lib/EDD_SL_Plugin_Updater.php:517
 msgid "Error"
@@ -1292,7 +1292,7 @@ msgid "Click %s icon for additional information."
 msgstr "Нажмите %s на иконку для дополнительной информации."
 
 #: includes/admin/class-gravityview-support-port.php:80
-#: includes/class-admin-installer.php:505
+#: includes/class-admin-installer.php:507
 msgid "Learn More"
 msgstr "Узнать больше"
 
@@ -1450,11 +1450,11 @@ msgstr ""
 msgid "Form"
 msgstr ""
 
-#: includes/admin/entry-list.php:66
+#: includes/admin/entry-list.php:70
 msgid "Edit this entry"
 msgstr "Редактировать эту запись"
 
-#: includes/admin/entry-list.php:66
+#: includes/admin/entry-list.php:70
 msgid "Edit"
 msgstr "Редактировать"
 
@@ -1625,7 +1625,7 @@ msgstr "Эти виджеты будут показаны под записям�
 
 #: includes/admin/metaboxes/views/view-configuration.php:43
 #: includes/class-admin-views.php:1142 includes/class-admin-views.php:1264
-#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:41
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
 msgid "Close"
 msgstr "Закрыть"
 
@@ -1824,82 +1824,86 @@ msgid "Gravity Forms Add-Ons"
 msgstr ""
 
 #: includes/class-admin-installer.php:329
+msgid "GravityView Labs"
+msgstr ""
+
+#: includes/class-admin-installer.php:331
 msgid "Friends of GravityView"
 msgstr ""
 
-#: includes/class-admin-installer.php:389
+#: includes/class-admin-installer.php:391
 msgid "Visit the plugin page"
 msgstr "Посетите страницу плагина"
 
-#: includes/class-admin-installer.php:393
+#: includes/class-admin-installer.php:395
 msgid "Plugin status: %s"
 msgstr "Состояние плагина: %s"
 
-#: includes/class-admin-installer.php:471
+#: includes/class-admin-installer.php:473
 #: includes/presets/register-default-templates.php:66
 #: includes/presets/register-default-templates.php:77
 #: includes/presets/register-default-templates.php:88
 msgid "All Access"
 msgstr "Весь доступ"
 
-#: includes/class-admin-installer.php:471
+#: includes/class-admin-installer.php:473
 msgid "Core + Extensions"
 msgstr "Ядро + Расширения"
 
-#: includes/class-admin-installer.php:477
+#: includes/class-admin-installer.php:479
 msgid "Active %s License is Required."
 msgstr "Требуется активная %s лицензия."
 
-#: includes/class-admin-installer.php:486
+#: includes/class-admin-installer.php:488
 msgid "Purchase Now for %s"
 msgstr "Купить сейчас для %s"
 
-#: includes/class-admin-installer.php:496
+#: includes/class-admin-installer.php:498
 msgid "Upgrade to %s for Access"
 msgstr "Обновить %s для доступа"
 
-#: includes/class-admin-installer.php:504
+#: includes/class-admin-installer.php:506
 msgid "Coming Soon"
 msgstr "Скоро будет"
 
-#: includes/class-admin-installer.php:523
+#: includes/class-admin-installer.php:525
 msgid "Not Installed"
 msgstr "Не установлен"
 
-#: includes/class-admin-installer.php:524
+#: includes/class-admin-installer.php:526
 msgid "Install"
 msgstr "Установить"
 
-#: includes/class-admin-installer.php:531
-#: includes/class-admin-installer.php:645
+#: includes/class-admin-installer.php:533
+#: includes/class-admin-installer.php:647
 msgid "Inactive"
 msgstr "Неактивная"
 
-#: includes/class-admin-installer.php:532
-#: includes/class-admin-installer.php:646
+#: includes/class-admin-installer.php:534
+#: includes/class-admin-installer.php:648
 msgid "Activate"
 msgstr "Активировать"
 
-#: includes/class-admin-installer.php:540
-#: includes/class-admin-installer.php:644
+#: includes/class-admin-installer.php:542
+#: includes/class-admin-installer.php:646
 msgid "Active"
 msgstr "Активный"
 
-#: includes/class-admin-installer.php:541
-#: includes/class-admin-installer.php:647
+#: includes/class-admin-installer.php:543
+#: includes/class-admin-installer.php:649
 msgid "Deactivate"
 msgstr "Деактивировать"
 
-#: includes/class-admin-installer.php:594
+#: includes/class-admin-installer.php:596
 msgid "Plugin activation failed: %s"
 msgstr "Ошибка включения плагина: %s"
 
-#: includes/class-admin-installer.php:617
-#: includes/class-admin-installer.php:643
+#: includes/class-admin-installer.php:619
+#: includes/class-admin-installer.php:645
 msgid "Plugin deactivation failed."
 msgstr "Ошибка выключения плагина."
 
-#: includes/class-admin-installer.php:642
+#: includes/class-admin-installer.php:644
 msgid "Plugin activation failed."
 msgstr "Ошибка включения плагина."
 
@@ -2300,7 +2304,7 @@ msgstr[1] "%s представления восстановлены из кор�
 msgstr[2] "%s представлений восстановлены из корзины."
 msgstr[3] "%s представлений восстановлены из корзины."
 
-#: includes/class-api.php:1393
+#: includes/class-api.php:1398
 msgid "Map It"
 msgstr "Разместить"
 
@@ -2328,11 +2332,11 @@ msgstr "Дата обновления"
 msgid "Email hidden; Javascript is required."
 msgstr "Email скрыт; необходим Javascript."
 
-#: includes/class-data.php:290
+#: includes/class-data.php:295
 msgid "The ID is required."
 msgstr "Необходим ID."
 
-#: includes/class-data.php:298
+#: includes/class-data.php:303
 msgid ""
 "You did not enter a number. The value entered should be a number, "
 "representing the ID of the post or page the View is embedded on."
@@ -2340,17 +2344,17 @@ msgstr ""
 "Вы не ввели цифры. Введите номер  ID страницы или поста, в котором вы хотите"
 " разместить представление."
 
-#: includes/class-data.php:301
+#: includes/class-data.php:306
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:331
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:221
 msgid "Learn more&hellip;"
 msgstr "Узнать больше &hellip;"
 
-#: includes/class-data.php:309
+#: includes/class-data.php:314
 msgid "There is no post or page with that ID."
 msgstr "Нет страницы или поста с таким ID. "
 
-#: includes/class-data.php:320
+#: includes/class-data.php:325
 msgid ""
 "The Post ID entered is not valid. You may have entered a post or page that "
 "does not contain the selected View. Make sure the post contains the "
@@ -2359,7 +2363,7 @@ msgstr ""
 "Недопустимый ID. Вы ввели номер страницы, в которой нет такого "
 "представления.  Убедитесь, что страница или пост содержат шорткод: %s"
 
-#: includes/class-data.php:327
+#: includes/class-data.php:332
 msgid "The ID is already a View."
 msgstr "Этот ID уже занят другим представлением."
 
@@ -2415,19 +2419,19 @@ msgstr "Создание копии не завершено. Не могу на�
 msgid "Dismiss"
 msgstr "Завершить"
 
-#: includes/class-gravityview-change-entry-creator.php:86
+#: includes/class-gravityview-change-entry-creator.php:88
 msgid "Search by ID, login, email, or name."
 msgstr ""
 
-#: includes/class-gravityview-change-entry-creator.php:166
+#: includes/class-gravityview-change-entry-creator.php:168
 msgid "Success"
 msgstr "Успешно"
 
-#: includes/class-gravityview-change-entry-creator.php:290
+#: includes/class-gravityview-change-entry-creator.php:292
 msgid "Changed entry creator from %s to %s"
 msgstr "Создатель изменен для записей от %s до %s"
 
-#: includes/class-gravityview-change-entry-creator.php:310
+#: includes/class-gravityview-change-entry-creator.php:312
 msgid "Change Entry Creator:"
 msgstr "Изменить создателя записи:"
 
@@ -2810,14 +2814,14 @@ msgstr "Обновить"
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1134
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1262
 #: includes/extensions/edit-entry/partials/form-buttons.php:46
-#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:42
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:75
 msgid "Next"
 msgstr "Следующий"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1135
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1263
 #: includes/extensions/edit-entry/partials/form-buttons.php:47
-#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:43
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:76
 msgid "Previous"
 msgstr "Предыдущий"
 
@@ -2977,35 +2981,35 @@ msgstr "добавлено в  {date_created_formatted}"
 msgid "The note is empty."
 msgstr "Заметка пуста."
 
-#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:44
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:77
 msgid "The requested content cannot be loaded. Please try again later."
 msgstr ""
 
-#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:45
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:78
 msgid "Start slideshow"
 msgstr ""
 
-#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:46
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:79
 msgid "Pause slideshow"
 msgstr ""
 
-#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:47
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:80
 msgid "Full screen"
 msgstr ""
 
-#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:48
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:81
 msgid "Thumbnails"
 msgstr ""
 
-#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:49
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:82
 msgid "Download"
 msgstr ""
 
-#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:50
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:83
 msgid "Share"
 msgstr ""
 
-#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:51
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:84
 msgid "Zoom"
 msgstr ""
 
@@ -3794,11 +3798,11 @@ msgstr "Однострочный текст"
 msgid "Paragraph Text"
 msgstr "Многострочный текст"
 
-#: includes/fields/class-gravityview-field-textarea.php:40
+#: includes/fields/class-gravityview-field-textarea.php:42
 msgid "Maximum words shown"
 msgstr "Максимальное количество слов для показа"
 
-#: includes/fields/class-gravityview-field-textarea.php:41
+#: includes/fields/class-gravityview-field-textarea.php:43
 msgid ""
 "Enter the number of words to be shown. If specified it truncates the text. "
 "Leave it blank if you want to show the full text."
@@ -3806,19 +3810,19 @@ msgstr ""
 "Введите количество слов для показа. Если указано значение - текст будет "
 "усечен. Оставьте пустым для показа текста целиком."
 
-#: includes/fields/class-gravityview-field-textarea.php:48
+#: includes/fields/class-gravityview-field-textarea.php:50
 msgid "Convert text URLs to HTML links"
 msgstr "Конвертировать URL в HTML-ссылки"
 
-#: includes/fields/class-gravityview-field-textarea.php:49
+#: includes/fields/class-gravityview-field-textarea.php:51
 msgid "Converts URI, www, FTP, and email addresses in HTML links"
 msgstr "Конвертирует URI, www, FTP и email в ссылки HTML"
 
-#: includes/fields/class-gravityview-field-textarea.php:56
+#: includes/fields/class-gravityview-field-textarea.php:58
 msgid "Display as HTML"
 msgstr "Показать как HTML"
 
-#: includes/fields/class-gravityview-field-textarea.php:57
+#: includes/fields/class-gravityview-field-textarea.php:59
 msgid ""
 "If enabled, safe HTML will be displayed and unsafe or unrecognized HTML tags"
 " will be stripped. If disabled, the field value will be displayed as text."
@@ -4116,11 +4120,11 @@ msgstr "Список пользователей с индивидуальным�
 
 #: includes/presets/register-default-templates.php:61
 msgid "DataTables Table"
-msgstr ""
+msgstr "Таблица Таблицы данных"
 
 #: includes/presets/register-default-templates.php:62
 msgid "Display items in a dynamic table powered by DataTables."
-msgstr ""
+msgstr "Отображать элементы в динамической таблице на основе таблиц данных."
 
 #: includes/presets/register-default-templates.php:72
 msgid "Map"
@@ -4128,7 +4132,7 @@ msgstr ""
 
 #: includes/presets/register-default-templates.php:73
 msgid "Display entries on a map."
-msgstr ""
+msgstr "Отображение записей на карте."
 
 #: includes/presets/register-default-templates.php:84
 msgid "A flexible, powerful layout for designers & developers."
@@ -4638,7 +4642,7 @@ msgstr "Пожалуйста, введите сообщение"
 #: includes/admin/class.render.settings.php:26
 msgctxt "Denotes the name under which certain field settings are grouped"
 msgid "Field"
-msgstr ""
+msgstr "Поле"
 
 #: includes/admin/class.render.settings.php:27
 msgctxt "Denotes the name under which certain field settings are grouped"
@@ -4648,7 +4652,7 @@ msgstr ""
 #: includes/admin/class.render.settings.php:28
 msgctxt "Denotes the name under which certain field settings are grouped"
 msgid "Label"
-msgstr ""
+msgstr "Название"
 
 #: includes/admin/class.render.settings.php:29
 msgctxt "Denotes the name under which certain field settings are grouped"
@@ -4663,7 +4667,7 @@ msgstr ""
 #: includes/admin/class.render.settings.php:31
 msgctxt "Denotes the name under which certain field settings are grouped"
 msgid "Default"
-msgstr ""
+msgstr "По умолчанию"
 
 #: includes/admin/class.render.settings.php:387
 msgctxt "The type of field being configured (eg: \"Single Line Text\")"
@@ -4702,30 +4706,30 @@ msgctxt "Edit View with the ID of %d"
 msgid "Edit View #%d"
 msgstr "Редактировать представление #%d"
 
-#: includes/class-gravityview-change-entry-creator.php:167
+#: includes/class-gravityview-change-entry-creator.php:169
 msgctxt ""
 "First parameter: Success or error of the action. Second: User ID number"
 msgid "%s: Assigned User ID #%d as the entry creator."
 msgstr "%s: ID пользователя #%d в качестве создателя записи."
 
-#: includes/class-gravityview-change-entry-creator.php:276
+#: includes/class-gravityview-change-entry-creator.php:278
 msgctxt ""
 "The name and the ID of users who initiated changes to entry ownership"
 msgid "%s (ID #%d)"
 msgstr "%s (ID #%d)"
 
-#: includes/class-gravityview-change-entry-creator.php:278
+#: includes/class-gravityview-change-entry-creator.php:280
 msgctxt ""
 "To show that the entry was unassigned from an actual user to no user."
 msgid "No User"
 msgstr "Пользователь не найден"
 
-#: includes/class-gravityview-change-entry-creator.php:320
+#: includes/class-gravityview-change-entry-creator.php:322
 msgctxt "No user assigned to the entry"
 msgid "No User"
 msgstr "Пользователь не найден"
 
-#: includes/class-gravityview-change-entry-creator.php:340
+#: includes/class-gravityview-change-entry-creator.php:342
 msgctxt "%d is replaced with user count %s is replaced with \"user\" or \"users\""
 msgid "Use the input above to search the remaining %d %s."
 msgstr ""
