@@ -3787,7 +3787,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$expected .= '<li><div style="width: 640px;" class="wp-video">' . $maybe_ie_nine;
 			$expected .= '<video class="wp-video-shortcode gv-video gv-field-id-5" id="video-0-' . $video_instance . '" width="640" height="360" preload="metadata" controls="controls"><source type="video/mp4" src="http://four.mp4?_=' . $video_instance . '" /><a href="http://four.mp4">http://four.mp4</a></video></div></li>';
 			// five.txt
-			$expected .= '<li>five.txt</li>';
+			$expected .= '<li><a href="http://five.txt?gv-iframe=true" rel="noopener noreferrer" target="_blank">five.txt</a></li>';
 		$expected .= '</ul>';
 
 		$this->assertEquals( $expected, $output );
@@ -3806,7 +3806,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			// four.mp4
 			$expected .= '<li><a href="http://four.mp4" rel="noopener noreferrer" target="_blank">four.mp4</a></li>';
 			// five.txt
-			$expected .= '<li><a href="http://five.txt" rel="noopener noreferrer" target="_blank">five.txt</a></li>';
+			$expected .= '<li><a href="http://five.txt?gv-iframe=true" rel="noopener noreferrer" target="_blank">five.txt</a></li>';
 		$expected .= '</ul>';
 
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
@@ -8037,7 +8037,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'three,four',
 		) );
 
-		$file = implode( ";", array( 'http://one.txt', 'http://two.mp3' ) );
+		$file = implode( ";", array( 'http://one.txt?gv-iframe=true', 'http://two.mp3' ) );
 
 		$checkbox = implode( ";", array( 'Much Better', 'Somewhat Better' ) );
 
@@ -8070,7 +8070,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 		$checkbox_newline = implode( "\n", array( 'Much Better', 'Somewhat Better' ) );
 		$file_newline     = implode( "\n", array(
-			'http://one.txt',
+			'http://one.txt?gv-iframe=true',
 			'http://two.mp3',
 		) );
 
