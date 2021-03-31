@@ -147,7 +147,7 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 
 		$link_atts['class'] = \GV\Utils::get( $link_atts, 'class' ) . ' gravityview-fancybox';
 
-		$link_atts['class'] = sanitize_html_class( $link_atts['class'] );
+		$link_atts['class'] = gravityview_sanitize_html_class( $link_atts['class'] );
 
 		if ( $context && ! empty( $context->field->field ) ) {
 			if ( $context->field->field->multipleFiles ) {

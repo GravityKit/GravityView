@@ -159,6 +159,11 @@ class GravityView_View_Data {
 		} elseif ( $atts ) {
 			$view->settings->update( $atts );
 		}
+
+		if ( ! $view ) {
+			return false;
+		}
+
 		return $view->as_data();
 	}
 

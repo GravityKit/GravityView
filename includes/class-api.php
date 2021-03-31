@@ -407,6 +407,11 @@ class GravityView_API {
 						$post_id = $context->view ? $context->view->ID : false;
 					}
 				} else {
+
+					if ( ! class_exists( 'GravityView_View' ) ) {
+						gravityview()->plugin->include_legacy_frontend( true );
+					}
+
 					/** @deprecated path of execution */
 					$gravityview_view = GravityView_View::getInstance();
 

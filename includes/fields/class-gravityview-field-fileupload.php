@@ -317,8 +317,6 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 					$lightbox_link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', $lightbox_link_atts, $field_compat, $context );
 
-					$image = new GravityView_Image( $image_atts );
-
 					$rendered = gravityview_get_link( $file_path, $image->html(), $lightbox_link_atts );
 				} else {
 					$rendered = $image->html();
