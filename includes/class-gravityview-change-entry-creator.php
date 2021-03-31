@@ -56,9 +56,11 @@ class GravityView_Change_Entry_Creator {
 	 */
 	function enqueue_selectwoo_assets() {
 
-		global $current_screen;
+		if ( ! class_exists( 'GFForms' ) ) {
+			return;
+		}
 
-		if ( ! $current_screen || 'forms_page_gf_entries' !== $current_screen->base ) {
+		if ( ! in_array( GFForms::get_page(), array( 'entry_detail_edit' ) ) ) {
 			return;
 		}
 
