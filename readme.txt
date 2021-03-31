@@ -26,8 +26,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added `{site_url}` Merge Tag that returns the current site URL. This can be helpful when migrating sites or deploying from staging to live.
 * Fixed: Don't show the icon for the "Source URL" field in the view editor
 * Fixed: Remove the "Link to single entry" field setting for Paragraph fields
-* Fixed: PDF files would not open inside the Fancybox lightbox
+* Fixed: PDF and Text files were not opened in a lightbox
 * Fixed: Show File Upload files as links if they aren't an image, audio, or video file (like a .zip, .txt, or .pdf file)
+* Fixed: Lightbox script was being loaded for Views even if it was not being used
 * Updated translations: Arabic translation (thanks Salman!), Dutch translation (thanks Desiree!)
 
 = Version 2.10 on March 9, 2021 =
