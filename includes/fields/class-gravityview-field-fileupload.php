@@ -172,6 +172,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			// Get the secure download URL
 			$is_secure = false;
+			$disable_lightbox = false;
 			$insecure_file_path = $file_path;
 			$secure_file_path = $field->get_download_url( $file_path );
 			$text = $basename;
@@ -325,9 +326,10 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					$text = $rendered;
 				}
 			}
-			// For all other non-media file types (ZIP, TXT, etc.), always show as a link regardless of setting.
+			// For all other non-media file types (ZIP, for example), always show as a link regardless of setting.
 			else {
 				$field_settings['link_to_file'] = true;
+				$disable_lightbox = true;
 			}
 
 			/**
@@ -368,7 +370,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					 * @type string $insecure_file_path URL to insecure file.
 					 * }
 					 */
-					$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', array( 'target' => '_blank' ), $field_compat, $context, compact( 'file_path', 'insecure_file_path' ) );
+					$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', array( 'target' => '_blank' ), $field_compat, $context, compact( 'file_path', 'insecure_file_path', 'disable_lightbox' ) );
 
 					$content = gravityview_get_link( $file_path, $content, $link_atts );
 				}
