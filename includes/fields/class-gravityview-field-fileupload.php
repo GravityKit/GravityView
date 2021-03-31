@@ -325,6 +325,10 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					$text = $rendered;
 				}
 			}
+			// For all other non-media file types (ZIP, TXT, etc.), always show as a link regardless of setting.
+			else {
+				$field_settings['link_to_file'] = true;
+			}
 
 			/**
 			 * @filter `gravityview/fields/fileupload/disable_link` Filter to alter the default behaviour of wrapping images (or image names) with a link to the content object
