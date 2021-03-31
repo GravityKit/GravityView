@@ -19,6 +19,39 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	public static $style_slug = 'gravityview-fancybox';
 
 	/**
+	 * @inheritDoc
+	 */
+	public function print_scripts( $gravityview ) {
+
+		parent::print_scripts( $gravityview );
+
+		if ( ! self::is_active( $gravityview ) ) {
+			return;
+		}
+
+		$settings = self::get_settings();
+
+		$settings = json_encode( $settings );
+		?>
+		<style>
+			.fancybox-container {
+				z-index: 100000; /** Divi is 99999 */
+			}
+
+			.admin-bar .fancybox-container {
+				margin-top: 32px;
+			}
+		</style>
+		<script>
+			if ( window.jQuery ) {
+				jQuery( '.gravityview-fancybox' ).fancybox(<?php echo $settings; ?>);
+			}
+		</script>
+		<?php
+
+	}
+
+	/**
 	 * Options to pass to Fancybox
 	 *
 	 * @see https://fancyapps.com/fancybox/3/docs/#options
@@ -59,36 +92,9 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	/**
 	 * @inheritDoc
 	 */
-	public function output_footer() {
-
-		$settings = self::get_settings();
-
-		$settings = json_encode( $settings );
-
-		?>
-		<style>
-			.fancybox-container {
-				z-index: 100000; /** Divi is 99999 */
-			}
-
-			.admin-bar .fancybox-container {
-				margin-top: 32px;
-			}
-		</style>
-		<script>
-			if ( window.jQuery ) {
-				jQuery( '.gravityview-fancybox' ).fancybox(<?php echo $settings; ?>);
-			}
-		</script>
-		<?php
-	}
-
-	/**
-	 * @inheritDoc
-	 */
 	public function enqueue_scripts() {
 		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_enqueue_script( self::$script_slug, plugins_url( 'assets/lib/fancybox/dist/jquery.fancybox' . $min . '.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GV_PLUGIN_VERSION );
+		wp_register_script( self::$script_slug, plugins_url( 'assets/lib/fancybox/dist/jquery.fancybox' . $min . '.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GV_PLUGIN_VERSION );
 	}
 
 	/**
@@ -96,7 +102,7 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	 */
 	public function enqueue_styles() {
 		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_enqueue_style( self::$style_slug, plugins_url( 'assets/lib/fancybox/dist/jquery.fancybox' . $min . '.css', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
+		wp_register_style( self::$style_slug, plugins_url( 'assets/lib/fancybox/dist/jquery.fancybox' . $min . '.css', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 	}
 
 	/**

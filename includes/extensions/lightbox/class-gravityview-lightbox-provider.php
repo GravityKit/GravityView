@@ -26,7 +26,55 @@ abstract class GravityView_Lightbox_Provider {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts') );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles') );
 
+		add_action( 'gravityview/template/after', array( $this, 'print_scripts' ) );
+
 		add_action( 'wp_footer', array( $this, 'output_footer' ) );
+	}
+
+
+	/**
+	 * Prints scripts for lightbox after a View is rendered
+	 *
+	 * @since 2.10.1
+	 *
+	 * @param GV\Template_Context $gravityview
+	 *
+	 * @return void
+	 */
+	public function print_scripts( $gravityview ) {
+
+		if ( ! self::is_active( $gravityview ) ) {
+			return;
+		}
+
+		wp_print_scripts( static::$script_slug );
+		wp_print_styles( static::$script_slug );
+	}
+
+	/**
+	 * Returns whether the provider is active for this View
+	 *
+	 * @since 2.10.1
+	 *
+	 * @param GV\Template_Context $gravityview
+	 *
+	 * @return bool true: yes! false: no!
+	 */
+	protected static function is_active( $gravityview ) {
+
+		$lightbox = $gravityview->view->settings->get( 'lightbox' );
+
+		if ( ! $lightbox ) {
+			return false;
+		}
+
+		$provider = gravityview()->plugin->settings->get( 'lightbox' );
+
+		if ( static::$slug !== $provider ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
