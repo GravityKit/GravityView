@@ -8037,7 +8037,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'three,four',
 		) );
 
-		$file = implode( ";", array( 'http://one.txt?gv-iframe=true', 'http://two.mp3' ) );
+		$file = implode( ";", array( 'http://one.txt', 'http://two.mp3' ) );
 
 		$checkbox = implode( ";", array( 'Much Better', 'Somewhat Better' ) );
 
@@ -8070,7 +8070,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 		$checkbox_newline = implode( "\n", array( 'Much Better', 'Somewhat Better' ) );
 		$file_newline     = implode( "\n", array(
-			'http://one.txt?gv-iframe=true',
+			'http://one.txt',
 			'http://two.mp3',
 		) );
 
