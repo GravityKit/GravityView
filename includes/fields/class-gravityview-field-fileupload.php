@@ -269,8 +269,11 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			// PDF or Text
 			} else if ( in_array( $extension, array( 'pdf', 'txt' ), true ) ) {
 
-				// PDF needs to be displayed in an IFRAME
-				$file_path = add_query_arg( array( 'gv-iframe' => 'true' ), $file_path );
+				// Don't add query arg when exporting as CSV
+				if ( $context instanceof \GV\Template_Context && ! ( $context->template instanceof \GV\Field_CSV_Template ) ) {
+					// File needs to be displayed in an IFRAME
+					$file_path = add_query_arg( array( 'gv-iframe' => 'true' ), $file_path );
+				}
 
 				$field_settings['link_to_file'] = true;
 
