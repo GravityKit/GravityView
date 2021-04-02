@@ -1,0 +1,47 @@
+{
+  "view_id": {
+    "default": "",
+    "type": "string"
+  },
+  "entry_id": {
+    "default": "",
+    "type": "string"
+  },
+  "action": {
+    "default": "read",
+    "type": "string"
+  },
+  "post_id": {
+    "default": "",
+    "type": "string"
+  },
+  "return": {
+    "default": "html",
+    "type": "string"
+  },
+  "link_atts": {
+    "default": "",
+    "type": "string"
+  },
+  "field_values": {
+    "default": "",
+    "type": "string"
+  },
+  "content": {
+    "default": "",
+    "type": "string"
+  },
+  "preview": {
+    "default": false,
+    "type": "boolean"
+  }
+}
+
+
+
+
+
+
+
+
+

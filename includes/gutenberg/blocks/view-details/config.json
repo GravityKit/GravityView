@@ -1,0 +1,14 @@
+{
+  "id": {
+    "default": "",
+    "type": "number"
+  },
+  "detail": {
+    "default": "total_entries",
+    "type": "string"
+  },
+  "preview": {
+    "default": false,
+    "type": "boolean"
+  }
+}
