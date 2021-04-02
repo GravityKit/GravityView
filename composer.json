@@ -5,20 +5,65 @@
   "keywords": ["gravityview", "gravity view", "gravity forms directory", "gravity forms"],
   "homepage": "https://gravityview.co/",
   "license": "GPL-2.0+",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "repositories": [
     {
       "type": "vcs",
       "url": "https://github.com/katzwebservices/standalone-phpenkoder"
-    }
+    },
+	{
+	  "type": "github",
+	  "url":  "https://github.com/trustedlogin/trustedlogin-client.git",
+	  "no-api": true
+	}
   ],
   "require": {
     "php": ">=5.3",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-openssl": "*",
+	"trustedlogin/trustedlogin-client": "dev-feature/auth-screen"
   },
   "require-dev": {
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
-    "lucatume/wp-browser": "2.2.24",
-    "phpcompatibility/phpcompatibility-wp": "*",
-    "wp-coding-standards/wpcs": "*"
+    "coenjacobs/mozart": "^0.7.1"
+  },
+  "autoload": {
+	"classmap": [
+	  "vendor"
+	],
+	"psr-4": {
+	  "TrustedLogin\\": "src/",
+	  "KatzGrau\\KLogger\\": "src/"
+	}
+  },
+  "extra": {
+	"mozart": {
+	  "dep_namespace": "GravityView\\",
+	  "dep_directory": "/vendor/GravityView/",
+	  "classmap_directory": "/vendor/GravityView/",
+	  "classmap_prefix": "GV_",
+	  "packages": [
+		"trustedlogin/trustedlogin-client"
+	  ],
+	  "override_autoload": {
+		"katzgrau/klogger": {
+		  "psr-4": {
+			"Katzgrau\\KLogger\\": "src/"
+		  }
+		}
+	  },
+	  "delete_vendor_directories": true
+	}
+  },
+  "scripts": {
+	"comment" : "The `find vendor/` code deletes empty directories after install. This is optional.",
+	"post-install-cmd": [
+	  "\"vendor/bin/mozart\" compose",
+	  "composer dumpautoload"
+	],
+	"post-update-cmd": [
+	  "\"vendor/bin/mozart\" compose",
+	  "composer dumpautoload"
+	]
   }
 }

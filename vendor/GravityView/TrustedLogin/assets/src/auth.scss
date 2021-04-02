@@ -1,0 +1,255 @@
+/**
+ * Variables
+ */
+$gutter-width: 10px !default;
+$large-icon-size: 32px !default;
+$small-icon-size: 18px !default;
+$vertical-spacing: 24px !default;
+
+// Colors
+$color-111: #191E23 !default;
+$color-222: #23282D !default;
+$color-333: #32373C !default;
+$color-444: #40464D !default;
+$color-555: #555D66 !default;
+$color-666: #6C7781 !default;
+$color-777: #7E8993 !default;
+$color-888: #8F98A1 !default;
+$color-light-grey-200: #f3f4f5 !default;
+$color-green: #328540 !default;
+$color-red: #c0461e !default;
+
+.tl-#{$namespace}-auth {
+
+	min-width: 300px;
+	max-width: 680px;
+	display: block;
+	margin: 30px auto;
+	font-size: 1em;
+	text-align: center;
+	zoom: 1;
+
+	section {
+		background: #fff;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.13);
+		border-radius: 4px;
+		overflow: hidden;
+		padding: 40px 5% $gutter-width;
+
+		* {
+			text-align: left;
+		}
+	}
+
+	&.tl-#{$namespace}-grant-access section > div {
+		width: 80%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.tl-#{$namespace}-auth__details {
+
+		box-sizing: border-box;
+
+		div {
+			margin-bottom: $vertical-spacing;
+		}
+	}
+
+	&.tl-#{$namespace}-grant-access .tl-#{$namespace}-auth__details {
+		padding-left: $large-icon-size + $gutter-width;
+	}
+
+	.tl-#{$namespace}-auth__actions {
+		margin-bottom: 0;
+		padding-top: $vertical-spacing / 2;
+		padding-bottom: $vertical-spacing / 2;
+		text-align: center;
+    }
+
+	.dashicons--small {
+		height: $small-icon-size;
+		width: $small-icon-size;
+		font-size: $small-icon-size;
+		vertical-align: text-top;
+	}
+
+	.dashicons--large {
+		font-size: $large-icon-size;
+		height: $large-icon-size;
+		width: $large-icon-size;
+		vertical-align: bottom;
+	}
+
+	.dashicons--help {
+		color: $color-888;
+		cursor: help;
+	}
+
+	.tl-#{$namespace}-auth__response {
+		text-align: center;
+		font-size: 18px;
+		line-height: 1.375;
+		font-weight: bold;
+		text-shadow: $color-light-grey-200 0 0 3px;
+		transition: all 1s;
+	}
+
+	.tl-#{$namespace}-auth__response_pending {
+		padding: 120px 40px 0 40px;
+		width: 100%;
+		vertical-align: top;
+		background: url('https://i.gravityview.co/rEIncx+') center top no-repeat;
+		background-size: (192px * 1.4) (108px * 1.4);
+	}
+
+	.tl-#{$namespace}-auth__roles {
+
+		.tl-#{$namespace}-toggle {
+			cursor: pointer;
+
+			.dashicons {
+				margin-left: 0;
+				vertical-align: middle;
+			}
+		}
+
+		.tl-#{$namespace}-auth__role-container {
+			&.hidden {
+				display: none;
+			}
+		}
+
+		li {
+			color: $color-555;
+			margin-bottom: 12px;
+
+			.dashicons {
+				margin-right: $gutter-width;
+				vertical-align: middle;
+			}
+			.dashicons-yes-alt {
+				color: $color-green;
+			}
+			.dashicons-no {
+				color: $color-red;
+			}
+
+			.code {
+				display: inline-block;
+				margin-bottom: .25em;
+				font-size: 13px;
+			}
+			small {
+				display: block;
+				line-height: 1.375;
+				font-size: 14px;
+				margin-left: $small-icon-size + $gutter-width;
+			}
+		}
+
+		&:after {
+			content: '';
+			display: block;
+			clear: both;
+		}
+	}
+
+	h1, h2, h3, table {
+		color: $color-555;
+		border: 0;
+		clear: none;
+		margin: 0 0 24px;
+		padding: 0;
+	}
+
+	table {
+		margin-bottom: 36px;
+	}
+
+	h1 {
+		font-size: 1.8em;
+		font-weight: 300;
+	}
+
+	h2 {
+		font-size: 1.25em;
+		font-weight: 400;
+		line-height: 1.75;
+
+		.dashicons--large {
+			margin-left: ( $large-icon-size + $gutter-width ) * -1;
+			padding-right: $gutter-width;
+		}
+
+		small {
+			display: block;
+			color: $color-666;
+			font-size: 14px;
+		}
+	}
+
+	&.tl-#{$namespace}-has-access h2 {
+		margin-bottom: $vertical-spacing / 2;
+	}
+
+	h3 {
+		font-size: 1em;
+		margin-bottom: 12px;
+		font-weight: 700;
+	}
+
+	p, ul {
+		text-align: left;
+		color: $color-555;
+		font-size: .95em;
+		line-height: 1.75em;
+		margin: 0 0 24px;
+	}
+
+	p {
+		padding: 0;
+	}
+
+	a {
+		&:hover, &:focus {
+			color: $color-111;
+		}
+	}
+
+	.tl-#{$namespace}-auth__logo {
+		border: 0;
+		margin: 0 0 24px;
+		padding: 0;
+		text-align: center;
+
+		img {
+			max-width: 50%;
+			max-height: 120px;
+		}
+	}
+
+	footer {
+		padding: $vertical-spacing / 2;
+
+		ul {
+			list-style: none;
+			text-align: center;
+		}
+
+		li {
+			display: inline-block;
+
+			&:after {
+				color: lighten( $color-555, 20% ); // #wp-footer color
+				content: '•';
+				padding: 0 .75rem;
+			}
+
+			&:last-child:after {
+				content: '';
+				padding: 0;
+			}
+		}
+	}
+}
