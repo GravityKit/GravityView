@@ -81,6 +81,8 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 			'merge_tags' => true,
 		);
 
+		$this->add_field_support( 'new_window', $field_options );
+
 		return $add_options + $field_options;
 	}
 
