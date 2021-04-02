@@ -15,6 +15,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 class GravityView_Widget_Search extends \GV\Widget {
 
+	public $icon = 'dashicons-search';
+
 	public static $file;
 	public static $instance;
 
@@ -31,6 +33,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$this->widget_id = 'search_bar';
 		$this->widget_description = esc_html__( 'Search form for searching entries.', 'gravityview' );
+		$this->widget_subtitle = '';
 
 		self::$instance = &$this;
 
@@ -50,9 +53,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 				),
 			),
 			'search_clear' => array(
-				'type' => 'checkbox',
+				'type'  => 'checkbox',
 				'label' => __( 'Show Clear button', 'gravityview' ),
-				'value' => false,
+				'desc'  => __( 'When a search is performed, display a button that removes all search values.', 'gravityview'),
+				'value' => true,
 			),
 			'search_fields' => array(
 				'type' => 'hidden',

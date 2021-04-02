@@ -29,15 +29,42 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 	var $group = 'gravityview';
 
-	var $icon = 'dashicons-text';
+	var $icon = 'dashicons-editor-code';
 
 	public function __construct() {
 
 		$this->label = esc_html__( 'Custom Content', 'gravityview' );
+		$this->description = esc_html__( 'Insert custom text or HTML.', 'gravityview' );
 
 		add_filter( 'gravityview/edit_entry/form_fields', array( $this, 'show_field_in_edit_entry' ), 10, 4 );
 
+		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ), 100, 3 );
+
 		parent::__construct();
+	}
+
+	/**
+	 * Add as a default field, outside those set in the Gravity Form form
+	 *
+	 * @since 2.10 Moved here from GravityView_Admin_Views::get_entry_default_fields
+	 *
+	 * @param array $entry_default_fields Existing fields
+	 * @param string|array $form form_ID or form object
+	 * @param string $zone Either 'single', 'directory', 'edit', 'header', 'footer'
+	 *
+	 * @return array
+	 */
+	public function add_default_field( $entry_default_fields, $form = array(), $zone = '' ) {
+
+		$entry_default_fields['custom']	= array(
+			'label'	=> $this->label,
+			'type'	=> $this->name,
+			'desc'	=> $this->description,
+			'icon'  => $this->icon,
+			'group' => $this->group,
+		);
+
+		return $entry_default_fields;
 	}
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
@@ -54,18 +81,24 @@ class GravityView_Field_Custom extends GravityView_Field {
 				'merge_tags' => 'force',
 				'rows' => 15,
 				'show_all_fields' => true, // Show the `{all_fields}` and `{pricing_fields}` merge tags
+				'priority' => 900,
+				'group' => 'field',
 			),
 			'wpautop' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Automatically add paragraphs to content', 'gravityview' ),
 				'tooltip' => __( 'Wrap each block of text in an HTML paragraph tag (recommended for text).', 'gravityview' ),
 				'value' => '',
+				'priority' => 950,
+				'group' => 'field',
 			),
 			'oembed' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Render oEmbeds', 'gravityview' ),
 				'desc' => sprintf( _x( 'Automatically convert oEmbed URLs into embedded content (%slearn more%s).', 'HTML link pointing to WordPress article on oEmbed', 'gravityview' ), '<a href="https://codex.wordpress.org/Embeds" rel="external noopener noreferrer">', '</a>' ),
 				'value' => '',
+				'priority' => 970,
+				'group' => 'field',
 			),
 			'admin_label' => array(
 				'type' => 'text',
@@ -73,6 +106,8 @@ class GravityView_Field_Custom extends GravityView_Field {
 				'label' => __( 'Admin Label', 'gravityview' ),
 				'desc' => __( 'A label that is only shown in the GravityView View configuration screen.', 'gravityview' ),
 				'value' => '',
+				'priority' => 2000,
+				'group' => 'label',
 			),
 		);
 

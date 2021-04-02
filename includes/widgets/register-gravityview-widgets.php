@@ -18,12 +18,12 @@ function gravityview_register_gravityview_widgets() {
 
 	include_once( GRAVITYVIEW_DIR .'includes/widgets/class-gravityview-widget.php' );
 
-	include_once( GRAVITYVIEW_DIR .'includes/widgets/class-gravityview-widget-pagination-info.php' );
-	include_once( GRAVITYVIEW_DIR .'includes/widgets/class-gravityview-widget-page-links.php' );
-	include_once( GRAVITYVIEW_DIR .'includes/widgets/class-gravityview-widget-page-size.php' );
+	include_once( GRAVITYVIEW_DIR .'includes/widgets/search-widget/class-search-widget.php' );
 	include_once( GRAVITYVIEW_DIR .'includes/widgets/class-gravityview-widget-custom-content.php' );
 	include_once( GRAVITYVIEW_DIR .'includes/widgets/class-gravityview-widget-gravityforms.php' );
-	include_once( GRAVITYVIEW_DIR .'includes/widgets/search-widget/class-search-widget.php' );
+	include_once( GRAVITYVIEW_DIR .'includes/widgets/class-gravityview-widget-page-size.php' );
+	include_once( GRAVITYVIEW_DIR .'includes/widgets/class-gravityview-widget-pagination-info.php' );
+	include_once( GRAVITYVIEW_DIR .'includes/widgets/class-gravityview-widget-page-links.php' );
 
 	if( class_exists('GFPolls') ) {
 		include_once( GRAVITYVIEW_DIR .'includes/widgets/poll/class-gravityview-widget-poll.php' );

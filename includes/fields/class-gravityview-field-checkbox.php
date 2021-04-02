@@ -21,6 +21,8 @@ class GravityView_Field_Checkbox extends GravityView_Field {
 
 	var $group = 'standard';
 
+	var $icon = 'dashicons-yes';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Checkbox', 'gravityview' );
 		parent::__construct();
@@ -28,7 +30,7 @@ class GravityView_Field_Checkbox extends GravityView_Field {
 
 	/**
 	 * Add `choice_display` setting to the field
-	 * 
+	 *
 	 * @param array $field_options
 	 * @param string $template_id
 	 * @param string $field_id
@@ -72,6 +74,8 @@ class GravityView_Field_Checkbox extends GravityView_Field {
 				'value'   => $default,
 				'desc'    => $desc,
 				'choices' => $choices,
+				'group'   => 'display',
+				'priority' => 100,
 			);
 		}
 

@@ -36,7 +36,8 @@ abstract class GravityView_Field {
 	public $default_search_label;
 
 	/**
-	 * `standard`, `advanced`, `post`, `pricing`, `meta`, `gravityview`
+	 * `standard`, `advanced`, `post`, `pricing`, `meta`, `gravityview`, or `add-ons`
+	 *
 	 * @since 1.15.2
 	 * @type string The group belongs to this field in the field picker
 	 */
@@ -102,7 +103,7 @@ abstract class GravityView_Field {
 	/**
 	 * @var string An icon that represents the field type in the field picker
 	 */
-	public $icon = null;
+	public $icon = 'dashicons-admin-generic';
 
 	/**
 	 * @since 1.15.2
@@ -134,7 +135,10 @@ abstract class GravityView_Field {
 	 */
 	public function __construct() {
 
-		// Modify the field options based on the name of the field type
+		/**
+		 * Modify the field options based on the name of the field type
+		 * @see GravityView_Render_Settings::get_default_field_options
+		 */
 		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 6 );
 
 		add_filter( 'gravityview/sortable/field_blacklist', array( $this, '_filter_sortable_fields' ), 1 );
@@ -166,6 +170,25 @@ abstract class GravityView_Field {
 		} catch ( Exception $exception ) {
 			gravityview()->log->critical( $exception->getMessage() );
 		}
+	}
+
+	/**
+	 * Returns the field as an array to be used in field pickers
+	 *
+	 * @since 2.10
+	 *
+	 * @return array[]
+	 */
+	public function as_array() {
+		return array(
+			$this->name => array(
+				'label' => $this->label,
+				'desc'  => $this->description,
+				'type'  => $this->name,
+				'icon'  => $this->icon,
+				'group' => $this->group,
+			),
+		);
 	}
 
 	/**
@@ -389,18 +412,24 @@ abstract class GravityView_Field {
 				'label' => __( 'Link to the post', 'gravityview' ),
 				'desc' => __( 'Link to the post created by the entry.', 'gravityview' ),
 				'value' => false,
+				'priority' => 1200,
+				'group' => 'display',
 			),
 			'link_to_term' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Link to the category or tag', 'gravityview' ),
 				'desc' => __( 'Link to the current category or tag. "Link to single entry" must be unchecked.', 'gravityview' ),
 				'value' => false,
+				'priority' => 1210,
+				'group' => 'display',
 			),
 			'dynamic_data' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Use the live post data', 'gravityview' ),
 				'desc' => __( 'Instead of using the entry data, instead use the current post data.', 'gravityview' ),
 				'value' => true,
+				'priority' => 1100,
+				'group' => 'display',
 			),
 			'date_display' => array(
 				'type' => 'text',
@@ -411,12 +440,16 @@ abstract class GravityView_Field {
 				 * @param[in,out] null|string $date_format Date Format (default: null)
 				 */
 				'value' => apply_filters( 'gravityview_date_format', null ),
-				'class' => 'code',
+				'class' => 'code widefat',
+				'priority' => 1500,
+				'group' => 'display',
 			),
 			'new_window' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Open link in a new tab or window?', 'gravityview' ),
 				'value' => false,
+				'group' => 'display',
+				'priority' => 1300,
 			),
 		);
 

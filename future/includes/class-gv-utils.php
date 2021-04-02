@@ -63,7 +63,7 @@ class Utils {
 	 *
 	 * Supports nested arrays, objects via / key delimiters.
 	 *
-	 * @param array|object $array The array (or object)
+	 * @param array|object|mixed $array The array (or object). If not array or object, returns $default.
 	 * @param string $key The key.
 	 * @param mixed $default The default value. Default: null
 	 *

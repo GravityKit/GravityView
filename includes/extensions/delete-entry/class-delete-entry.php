@@ -237,6 +237,17 @@ final class GravityView_Delete_Entry {
 		// Use the slug instead of the ID for consistent security
 		$entry_slug = $gv_entry->get_slug();
 
+		/**
+		 * @filter `gravityview/delete-entry/add_query_args` Modify whether to include passed $_GET parameters to the end of the url
+		 * @since 2.10
+		 * @param bool $add_query_params Whether to include passed $_GET parameters to the end of the Delete Link URL. Default: true.
+		 */
+		$add_query_args = apply_filters( 'gravityview/delete-entry/add_query_args', true );
+
+		if ( $add_query_args ) {
+			$base = add_query_arg( gv_get_query_args(), $base );
+		}
+
 		$actionurl = add_query_arg(
 			array(
 				'action'   => 'delete',

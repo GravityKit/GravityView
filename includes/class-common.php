@@ -1362,7 +1362,7 @@ class GVCommon {
 	 * @return string         html
 	 */
 	public static function get_sortable_fields( $formid, $current = '' ) {
-		$output = '<option value="" ' . selected( '', $current, false ).'>' . esc_html__( 'Default', 'gravityview' ) .'</option>';
+		$output = '<option value="" ' . selected( '', $current, false ).'>' . esc_html__( 'Default (Entry ID)', 'gravityview' ) .'</option>';
 
 		if ( empty( $formid ) ) {
 			return $output;
