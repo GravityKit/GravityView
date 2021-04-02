@@ -20,6 +20,8 @@ class Blocks {
 			return;
 		}
 
+		require_once( plugin_dir_path( __FILE__ ) . 'blocks/block.php' );
+
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_assets' ) );
 		add_filter( 'block_categories', array( $this, 'add_block_category' ) );
 
@@ -34,22 +36,19 @@ class Blocks {
 	 * @return void
 	 */
 	public function load_blocks() {
-		foreach ( glob( plugin_dir_path( __FILE__ ) . 'blocks/*/render.php' ) as $file ) {
-			include $file;
+		foreach ( glob( plugin_dir_path( __FILE__ ) . 'blocks/*/block.php' ) as $file ) {
+			require_once( $file );
 
-			$block_path      = dirname( $file );
-			$block_cat       = basename( $block_path );
-			$block_name      = 'gv-blocks/' . $block_cat;
-			$block_callback  = 'gv_blocks_render_' . str_replace( '-', '_', $block_cat );
-			$attributes_file = file_get_contents( $block_path . '/config.json' );
-			$attributes      = json_decode( $attributes_file, true );
+			$block_name  = basename( dirname( $file ) );
+			$block_name  = explode( '-', $block_name );
+			$block_name  = implode( '_', array_map( 'ucfirst', $block_name ) );
+			$block_class = '\GV\Gutenberg\Blocks\Block\\' . $block_name;
 
-			if ( function_exists( $block_callback ) ) {
-				register_block_type( $block_name, array(
-					'render_callback' => $block_callback,
-					'attributes'      => $attributes,
-				) );
+			if ( ! is_callable( array( $block_class, 'render' ) ) ) {
+				continue;
 			}
+
+			$block_class::register();
 		}
 	}
 
