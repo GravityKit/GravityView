@@ -14,9 +14,9 @@ const blockName = 'gv-blocks/view-details';
 
 export default registerBlockType( blockName, {
 	category: 'gravityview',
-	title: __( 'GravityView View Details', 'gv-blocks' ),
+	title: __( 'GravityView View Details', 'gravityview' ),
 	icon,
-	keywords: [ 'gv', __( 'GravityView View Details', 'gv-blocks' ) ],
+	keywords: [ 'gv', __( 'GravityView View Details', 'gravityview' ) ],
 	attributes,
 	transforms: {
 		from: [
@@ -45,7 +45,7 @@ export default registerBlockType( blockName, {
 		const viewLists = [
 			{
 				value: '',
-				label: __( 'Select a View', 'gv-blocks' ),
+				label: __( 'Select a View', 'gravityview' ),
 			},
 			...GV_BLOCKS.view_list,
 		];
@@ -56,7 +56,7 @@ export default registerBlockType( blockName, {
 				{
 					( ! attributes.preview || attributes.id === '' || attributes.id === 'Select a View' ) &&
 					<div className="gravityview-shortcode-preview">
-						<img src={ `${ GV_BLOCKS.img_url }gv-logo.png` } alt={ __( 'GravityView', 'gv-blocks' ) } />
+						<img src={ `${ GV_BLOCKS.img_url }gv-logo.png` } alt={ __( 'GravityView', 'gravityview' ) } />
 						<div className="field-container">
 							<SelectControl
 								value={ attributes.id }

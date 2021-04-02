@@ -67,7 +67,7 @@ add_filter( 'block_categories', function ( $categories, $post ) {
 	return array_merge(
 		$categories,
 		array(
-			array( 'slug' => 'gravityview', 'title' => __( 'GravityView', 'gv-blocks' ) ),
+			array( 'slug' => 'gravityview', 'title' => __( 'GravityView', 'gravityview' ) ),
 		)
 	);
 }, 10, 2 );

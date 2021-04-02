@@ -50,7 +50,7 @@ export default class Inspector extends Component {
 		return (
 			<InspectorControls>
 				<PanelBody
-					title={ __( 'View Settings', 'gv-blocks' ) }>
+					title={ __( 'View Settings', 'gravityview' ) }>
 					<SelectViewItem  { ...{ setAttributes, ...this.props } } />
 					{
 						attributes.id !== '' && attributes.id !== 'Select a View' &&
@@ -60,7 +60,7 @@ export default class Inspector extends Component {
 								<label style={ {
 									marginBottom: 10,
 									display: 'block',
-								} }>{ __( 'Start Date', 'gv-blocks' ) }</label>
+								} }>{ __( 'Start Date', 'gravityview' ) }</label>
 								<ButtonGroup
 									className="btn-group-double">
 									<Button
@@ -73,7 +73,7 @@ export default class Inspector extends Component {
 										} }
 
 									>
-										{ __( 'Static (Calendar)', 'gv-blocks' ) }
+										{ __( 'Static (Calendar)', 'gravityview' ) }
 									</Button>
 									<Button
 										isDefault
@@ -85,7 +85,7 @@ export default class Inspector extends Component {
 										} }
 
 									>
-										{ __( 'Relative', 'gv-blocks' ) }
+										{ __( 'Relative', 'gravityview' ) }
 									</Button>
 								</ButtonGroup>
 								{
@@ -102,7 +102,7 @@ export default class Inspector extends Component {
 								{
 									attributes.start_date_type === 'relative' &&
 									<TextControl
-										placeholder={ __( 'Relative Date', 'gv-blocks' ) }
+										placeholder={ __( 'Relative Date', 'gravityview' ) }
 										value={ attributes.start_date }
 										onChange={ start_date => {
 											setAttributes( {
@@ -118,7 +118,7 @@ export default class Inspector extends Component {
 								<label style={ {
 									marginBottom: 10,
 									display: 'block',
-								} }>{ __( 'End Date', 'gv-blocks' ) }</label>
+								} }>{ __( 'End Date', 'gravityview' ) }</label>
 								<ButtonGroup
 									className="btn-group-double">
 									<Button
@@ -131,7 +131,7 @@ export default class Inspector extends Component {
 										} }
 
 									>
-										{ __( 'Static (Calendar)', 'gv-blocks' ) }
+										{ __( 'Static (Calendar)', 'gravityview' ) }
 									</Button>
 									<Button
 										isDefault
@@ -143,7 +143,7 @@ export default class Inspector extends Component {
 										} }
 
 									>
-										{ __( 'Relative', 'gv-blocks' ) }
+										{ __( 'Relative', 'gravityview' ) }
 									</Button>
 								</ButtonGroup>
 								{
@@ -160,7 +160,7 @@ export default class Inspector extends Component {
 								{
 									attributes.end_date_type === 'relative' &&
 									<TextControl
-										placeholder={ __( 'Relative Date', 'gv-blocks' ) }
+										placeholder={ __( 'Relative Date', 'gravityview' ) }
 										value={ attributes.end_date }
 										onChange={ end_date => {
 											setAttributes( {
@@ -173,7 +173,7 @@ export default class Inspector extends Component {
 							</div>
 							<hr />
 							<ToggleControl
-								label={ __( 'Preview', 'gv-blocks' ) }
+								label={ __( 'Preview', 'gravityview' ) }
 								checked={ attributes.preview }
 								onChange={ preview => {
 									setAttributes( {
@@ -188,9 +188,9 @@ export default class Inspector extends Component {
 					attributes.id !== '' && attributes.id !== 'Select a View' &&
 					<PanelBody
 						initialOpen={ false }
-						title={ __( 'More Settings', 'gv-blocks' ) }>
+						title={ __( 'More Settings', 'gravityview' ) }>
 						<TextControl
-							label={ __( 'Page Size', 'gv-blocks' ) }
+							label={ __( 'Page Size', 'gravityview' ) }
 							value={ attributes.page_size }
 							type="number"
 							min="0"
@@ -202,7 +202,7 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<TextControl
-							label={ __( 'Sort Field', 'gv-blocks' ) }
+							label={ __( 'Sort Field', 'gravityview' ) }
 							value={ attributes.sort_field }
 							onChange={ sort_field => {
 								setAttributes( {
@@ -212,16 +212,16 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<SelectControl
-							label={ __( 'Sort Direction', 'gv-blocks' ) }
+							label={ __( 'Sort Direction', 'gravityview' ) }
 							value={ attributes.sort_direction }
 							options={ [
 								{
 									value: 'ASC',
-									label: __( 'Ascending', 'gv-blocks', 'gv-blocks' ),
+									label: __( 'Ascending', 'gravityview', 'gravityview' ),
 								},
 								{
 									value: 'DESC',
-									label: __( 'Descending', 'gv-blocks', 'gv-blocks' ),
+									label: __( 'Descending', 'gravityview', 'gravityview' ),
 								},
 							] }
 							onChange={ sort_direction => {
@@ -232,7 +232,7 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<TextControl
-							label={ __( 'Search Field', 'gv-blocks' ) }
+							label={ __( 'Search Field', 'gravityview' ) }
 							value={ attributes.search_field }
 							onChange={ search_field => {
 								setAttributes( {
@@ -242,7 +242,7 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<TextControl
-							label={ __( 'Search Value', 'gv-blocks' ) }
+							label={ __( 'Search Value', 'gravityview' ) }
 							value={ attributes.search_value }
 							onChange={ search_value => {
 								setAttributes( {
@@ -252,7 +252,7 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<SelectControl
-							label={ __( 'Search Operator', 'gv-blocks' ) }
+							label={ __( 'Search Operator', 'gravityview' ) }
 							value={ attributes.search_operator }
 							options={ [
 								{ value: 'is', label: 'is' },
@@ -277,7 +277,7 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<TextControl
-							label={ __( 'Class', 'gv-blocks' ) }
+							label={ __( 'Class', 'gravityview' ) }
 							value={ attributes.class }
 							onChange={ classVal => {
 								setAttributes( {
@@ -287,7 +287,7 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<TextControl
-							label={ __( 'Offset', 'gv-blocks' ) }
+							label={ __( 'Offset', 'gravityview' ) }
 							value={ attributes.offset }
 							type="number"
 							min="0"
@@ -299,7 +299,7 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<TextControl
-							label={ __( 'Single Title', 'gv-blocks' ) }
+							label={ __( 'Single Title', 'gravityview' ) }
 							value={ attributes.single_title }
 							onChange={ single_title => {
 								setAttributes( {
@@ -309,7 +309,7 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<TextControl
-							label={ __( 'Back Link Label', 'gv-blocks' ) }
+							label={ __( 'Back Link Label', 'gravityview' ) }
 							value={ attributes.back_link_label }
 							onChange={ back_link_label => {
 								setAttributes( {
@@ -320,7 +320,7 @@ export default class Inspector extends Component {
 						<hr />
 						<div className="autocomplete-box">
 							<TextControl
-								label={ __( 'Post ID', 'gv-blocks' ) }
+								label={ __( 'Post ID', 'gravityview' ) }
 								value={ attributes.post_id }
 								type="number"
 								min="0"

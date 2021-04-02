@@ -21,7 +21,7 @@ export default class Inspector extends Component {
 		const viewLists = [
 			{
 				value: '',
-				label: __( 'Select a View', 'gv-blocks' ),
+				label: __( 'Select a View', 'gravityview' ),
 			},
 			...GV_BLOCKS.view_list,
 		];
@@ -29,7 +29,7 @@ export default class Inspector extends Component {
 		return (
 			<InspectorControls>
 				<PanelBody
-					title={ __( 'Main Settings', 'gv-blocks' ) }>
+					title={ __( 'Main Settings', 'gravityview' ) }>
 					<SelectControl
 						value={ attributes.view_id }
 						options={ viewLists }
@@ -43,7 +43,7 @@ export default class Inspector extends Component {
 						attributes.view_id !== '' && attributes.view_id !== 'Select a View' &&
 						<Fragment>
 							<hr />
-							<h3>{ __( 'Entry ID', 'gv-blocks' ) }</h3>
+							<h3>{ __( 'Entry ID', 'gravityview' ) }</h3>
 							<ButtonGroup
 								className="btn-group-triple">
 								<Button
@@ -59,7 +59,7 @@ export default class Inspector extends Component {
 									} }
 
 								>
-									{ __( 'ID', 'gv-blocks' ) }
+									{ __( 'ID', 'gravityview' ) }
 								</Button>
 								<Button
 									isDefault
@@ -74,7 +74,7 @@ export default class Inspector extends Component {
 									} }
 
 								>
-									{ __( 'First', 'gv-blocks' ) }
+									{ __( 'First', 'gravityview' ) }
 								</Button>
 								<Button
 									isDefault
@@ -89,14 +89,14 @@ export default class Inspector extends Component {
 									} }
 
 								>
-									{ __( 'Last', 'gv-blocks' ) }
+									{ __( 'Last', 'gravityview' ) }
 								</Button>
 							</ButtonGroup>
 							{
 								entry_id !== 'first' && entry_id !== 'last' &&
 								<Fragment>
 									<TextControl
-										placeholder={ __( 'Entry ID', 'gv-blocks' ) }
+										placeholder={ __( 'Entry ID', 'gravityview' ) }
 										value={ attributes.entry_id || this.state.tempEntryId }
 										type="number"
 										min="0"
@@ -116,7 +116,7 @@ export default class Inspector extends Component {
 								<Fragment>
 									<hr />
 									<TextControl
-										label={ __( 'Field ID', 'gv-blocks' ) }
+										label={ __( 'Field ID', 'gravityview' ) }
 										value={ attributes.field_id }
 										type="number"
 										min="0"
@@ -131,7 +131,7 @@ export default class Inspector extends Component {
 										<Fragment>
 											<hr />
 											<TextControl
-												label={ __( 'Custom Label', 'gv-blocks' ) }
+												label={ __( 'Custom Label', 'gravityview' ) }
 												value={ attributes.custom_label }
 												onChange={ custom_label => {
 													setAttributes( {
@@ -141,7 +141,7 @@ export default class Inspector extends Component {
 											/>
 											<hr />
 											<ToggleControl
-												label={ __( 'Preview', 'gv-blocks' ) }
+												label={ __( 'Preview', 'gravityview' ) }
 												checked={ attributes.preview }
 												onChange={ preview => {
 													setAttributes( {

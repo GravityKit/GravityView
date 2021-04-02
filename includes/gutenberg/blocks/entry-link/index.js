@@ -14,9 +14,9 @@ const blockName = 'gv-blocks/entry-link';
 
 export default registerBlockType( blockName, {
 	category: 'gravityview',
-	title: __( 'GravityView Entry Link', 'gv-blocks' ),
+	title: __( 'GravityView Entry Link', 'gravityview' ),
 	icon,
-	keywords: [ 'gv', __( 'GravityView', 'gv-blocks' ) ],
+	keywords: [ 'gv', __( 'GravityView', 'gravityview' ) ],
 	attributes,
 	transforms: {
 		from: [
@@ -82,7 +82,7 @@ export default registerBlockType( blockName, {
 		const viewLists = [
 			{
 				value: '',
-				label: __( 'Select a View', 'gv-blocks' ),
+				label: __( 'Select a View', 'gravityview' ),
 			},
 			...GV_BLOCKS.view_list,
 		];
@@ -93,7 +93,7 @@ export default registerBlockType( blockName, {
 				{
 					( ! attributes.preview || attributes.view_id === '' || attributes.view_id === 'Select a View' || attributes.entry_id === '' ) &&
 					<div className="gravityview-shortcode-preview">
-						<img src={ `${ GV_BLOCKS.img_url }gv-logo.png` } alt={ __( 'GravityView', 'gv-blocks' ) } />
+						<img src={ `${ GV_BLOCKS.img_url }gv-logo.png` } alt={ __( 'GravityView', 'gravityview' ) } />
 						<div className="field-container">
 							<SelectControl
 								value={ attributes.view_id }
@@ -107,7 +107,7 @@ export default registerBlockType( blockName, {
 							{
 								attributes.view_id !== '' && attributes.view_id !== 'Select a View' &&
 								<TextControl
-									placeholder={ __( 'Entry ID', 'gv-blocks' ) }
+									placeholder={ __( 'Entry ID', 'gravityview' ) }
 									value={ attributes.entry_id }
 									type="number"
 									min="0"
@@ -121,7 +121,7 @@ export default registerBlockType( blockName, {
 							{
 								attributes.view_id !== '' && attributes.view_id !== 'Select a View' && attributes.entry_id !== '' &&
 								<TextControl
-									placeholder={ __( 'Link Text', 'gv-blocks' ) }
+									placeholder={ __( 'Link Text', 'gravityview' ) }
 									value={ attributes.content }
 									onChange={ content => {
 										setAttributes( {

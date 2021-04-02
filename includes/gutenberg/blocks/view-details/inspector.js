@@ -15,14 +15,14 @@ export default class Inspector extends Component {
 		const viewLists = [
 			{
 				value: '',
-				label: __( 'Select a View', 'gv-blocks' ),
+				label: __( 'Select a View', 'gravityview' ),
 			},
 			...GV_BLOCKS.view_list,
 		];
 		return (
 			<InspectorControls>
 				<PanelBody
-					title={ __( 'View Settings', 'gv-blocks' ) }>
+					title={ __( 'View Settings', 'gravityview' ) }>
 					<SelectControl
 						value={ attributes.id }
 						options={ viewLists }
@@ -37,13 +37,13 @@ export default class Inspector extends Component {
 						<Fragment>
 							<hr />
 							<SelectControl
-								label={ __( 'Details', 'gv-blocks' ) }
+								label={ __( 'Details', 'gravityview' ) }
 								value={ attributes.detail }
 								options={ [
-									{ value: 'total_entries', label: __( 'Total Entries', 'gv-blocks' ) },
-									{ value: 'first_entry', label: __( 'First Entry', 'gv-blocks' ) },
-									{ value: 'last_entry', label: __( 'Last Entry', 'gv-blocks' ) },
-									{ value: 'page_size', label: __( 'Page Size', 'gv-blocks' ) },
+									{ value: 'total_entries', label: __( 'Total Entries', 'gravityview' ) },
+									{ value: 'first_entry', label: __( 'First Entry', 'gravityview' ) },
+									{ value: 'last_entry', label: __( 'Last Entry', 'gravityview' ) },
+									{ value: 'page_size', label: __( 'Page Size', 'gravityview' ) },
 								] }
 								onChange={ detail => {
 									setAttributes( {
@@ -53,7 +53,7 @@ export default class Inspector extends Component {
 							/>
 							<hr />
 							<ToggleControl
-								label={ __( 'Preview', 'gv-blocks' ) }
+								label={ __( 'Preview', 'gravityview' ) }
 								checked={ attributes.preview }
 								onChange={ preview => {
 									setAttributes( {

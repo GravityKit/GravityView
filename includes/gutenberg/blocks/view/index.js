@@ -14,9 +14,9 @@ const { __ } = wp.i18n;
 const blockName = 'gv-blocks/view';
 export default registerBlockType( blockName, {
 	category: 'gravityview',
-	title: __( 'GravityView View', 'gv-blocks' ),
+	title: __( 'GravityView View', 'gravityview' ),
 	icon,
-	keywords: [ 'gv', __( 'GravityView', 'gv-blocks' ) ],
+	keywords: [ 'gv', __( 'GravityView', 'gravityview' ) ],
 	attributes,
 	transforms: {
 		from: [
@@ -126,7 +126,7 @@ export default registerBlockType( blockName, {
 				{
 					( ! attributes.preview || attributes.id === '' || attributes.id === 'Select a View' ) &&
 					<div className="gravityview-shortcode-preview">
-						<img src={ `${ GV_BLOCKS.img_url }gv-logo.png` } alt={ __( 'GravityView', 'gv-blocks' ) } />
+						<img src={ `${ GV_BLOCKS.img_url }gv-logo.png` } alt={ __( 'GravityView', 'gravityview' ) } />
 						<div className="field-container">
 							<SelectViewItem  { ...{ setAttributes, ...props } } />
 						</div>

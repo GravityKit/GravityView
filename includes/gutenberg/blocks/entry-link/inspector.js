@@ -43,7 +43,7 @@ export default class Inspector extends Component {
 		const viewLists = [
 			{
 				value: '',
-				label: __( 'Select a View', 'gv-blocks' ),
+				label: __( 'Select a View', 'gravityview' ),
 			},
 			...GV_BLOCKS.view_list,
 		];
@@ -51,7 +51,7 @@ export default class Inspector extends Component {
 		return (
 			<InspectorControls>
 				<PanelBody
-					title={ __( 'Main Settings', 'gv-blocks' ) }>
+					title={ __( 'Main Settings', 'gravityview' ) }>
 					<SelectControl
 						value={ attributes.view_id }
 						options={ viewLists }
@@ -66,7 +66,7 @@ export default class Inspector extends Component {
 						<Fragment>
 							<hr />
 							<TextControl
-								label={ __( 'Entry ID', 'gv-blocks' ) }
+								label={ __( 'Entry ID', 'gravityview' ) }
 								value={ attributes.entry_id }
 								type="number"
 								min="0"
@@ -83,13 +83,13 @@ export default class Inspector extends Component {
 						<Fragment>
 							<hr />
 							<SelectControl
-								label={ __( 'Action', 'gv-blocks' ) }
+								label={ __( 'Action', 'gravityview' ) }
 								value={ attributes.action }
 								options={
 									[
-										{ value: 'read', label: __( 'View Details', 'gv-blocks' ) },
-										{ value: 'edit', label: __( 'Edit Entry', 'gv-blocks' ) },
-										{ value: 'delete', label: __( 'Delete Entry', 'gv-blocks' ) },
+										{ value: 'read', label: __( 'View Details', 'gravityview' ) },
+										{ value: 'edit', label: __( 'Edit Entry', 'gravityview' ) },
+										{ value: 'delete', label: __( 'Delete Entry', 'gravityview' ) },
 									]
 								}
 								onChange={ action => {
@@ -100,7 +100,7 @@ export default class Inspector extends Component {
 							/>
 							<hr />
 							<TextControl
-								label={ __( 'Link Text', 'gv-blocks' ) }
+								label={ __( 'Link Text', 'gravityview' ) }
 								value={ attributes.content }
 								onChange={ content => {
 									setAttributes( {
@@ -110,7 +110,7 @@ export default class Inspector extends Component {
 							/>
 							<hr />
 							<ToggleControl
-								label={ __( 'Preview', 'gv-blocks' ) }
+								label={ __( 'Preview', 'gravityview' ) }
 								checked={ attributes.preview }
 								onChange={ preview => {
 									setAttributes( {
@@ -125,13 +125,13 @@ export default class Inspector extends Component {
 					attributes.view_id !== '' && attributes.view_id !== 'Select a View' && attributes.entry_id !== '' &&
 					<PanelBody
 						initialOpen={ false }
-						title={ __( 'More Settings', 'gv-blocks' ) }>
+						title={ __( 'More Settings', 'gravityview' ) }>
 						<SelectControl
-							label={ __( 'Return Format', 'gv-blocks' ) }
+							label={ __( 'Return Format', 'gravityview' ) }
 							value={ attributes.return }
 							options={ [
-								{ value: 'html', label: __( 'HTML', 'gv-blocks' ) },
-								{ value: 'url', label: __( 'URL', 'gv-blocks' ) },
+								{ value: 'html', label: __( 'HTML', 'gravityview' ) },
+								{ value: 'url', label: __( 'URL', 'gravityview' ) },
 							] }
 							onChange={ returnVal => {
 								setAttributes( {
@@ -142,7 +142,7 @@ export default class Inspector extends Component {
 						<hr />
 						<div className="autocomplete-box">
 							<TextControl
-								label={ __( 'Post ID', 'gv-blocks' ) }
+								label={ __( 'Post ID', 'gravityview' ) }
 								value={ attributes.post_id }
 								type="number"
 								min="0"
@@ -177,7 +177,7 @@ export default class Inspector extends Component {
 						</div>
 						<hr />
 						<TextControl
-							label={ __( 'Link Attributes', 'gv-blocks' ) }
+							label={ __( 'Link Attributes', 'gravityview' ) }
 							value={ attributes.link_atts }
 							onChange={ link_atts => {
 								setAttributes( {
@@ -187,7 +187,7 @@ export default class Inspector extends Component {
 						/>
 						<hr />
 						<TextControl
-							label={ __( 'Field Values', 'gv-blocks' ) }
+							label={ __( 'Field Values', 'gravityview' ) }
 							value={ attributes.field_values }
 							onChange={ field_values => {
 								setAttributes( {
