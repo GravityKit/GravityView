@@ -78,13 +78,14 @@ class Blocks {
 	 * @return void
 	 */
 	public function enqueue_assets() {
-		$script = 'assets/js/gv-blocks.js';
-		$style  = 'assets/css/gv-blocks.css';
+		$script     = 'assets/js/gv-blocks.js';
+		$style      = 'assets/css/gv-blocks.css';
+		$asset_file = include( gravityview()->plugin->dir() . 'assets/js/gv-blocks.asset.php' );
 
 		wp_enqueue_script(
 			self::ASSETS_HANDLE,
 			gravityview()->plugin->url() . $script,
-			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-components', 'wp-hooks', 'jquery' ),
+			$asset_file['dependencies'],
 			filemtime( gravityview()->plugin->dir() . $script )
 		);
 
