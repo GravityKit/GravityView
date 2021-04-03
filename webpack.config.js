@@ -1,4 +1,4 @@
-const defaultConfig = require( './node_modules/@wordpress/scripts/config/webpack.config.js' );
+const defaultConfig = require( '@wordpress/scripts/config/webpack.config.js' );
 const path = require( 'path' );
 const PostcssPresetEnv = require( 'postcss-preset-env' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
@@ -9,8 +9,8 @@ const production = process.env.NODE_ENV === '';
 module.exports = {
 	...defaultConfig,
 	entry: {
-		'gv-blocks': path.resolve( process.cwd(), 'assets/src/js', 'blocks.js' ),
-		'gv-blocks-style': path.resolve( process.cwd(), 'assets/src/css', 'blocks.scss' ),
+		'gv-blocks': path.resolve( process.cwd(), 'includes/gutenberg/src/js', 'blocks.js' ),
+		'gv-blocks-style': path.resolve( process.cwd(), 'includes/gutenberg/src/css', 'blocks.scss' ),
 	},
 	output: {
 		filename: '[name].js',
@@ -19,8 +19,8 @@ module.exports = {
 	resolve: {
 		alias: {
 			...defaultConfig.resolve.alias,
-			Blocks: path.resolve( process.cwd(), 'blocks/' ),
-			AssetSources: path.resolve( process.cwd(), 'assets/src' ),
+			Blocks: path.resolve( process.cwd(), 'includes/gutenberg/blocks/' ),
+			AssetSources: path.resolve( process.cwd(), 'includes/gutenberg/src' ),
 		},
 	},
 	optimization: {

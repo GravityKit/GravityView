@@ -27,6 +27,7 @@ bower.json export-ignore
 /.idea export-ignore
 /.tx export-ignore
 /assets/css/scss export-ignore
+/includes/gutenberg/src export-ignore
 /docs export-ignore
 /docs/* export-ignore
 /node_modules export-ignore

@@ -1,6 +1,6 @@
 $color-1 : #e6f0f5;
 $color-2 : #ff0038;
-@import "../../../node_modules/react-datepicker/src/stylesheets/datepicker.scss";
+@import "../../node_modules/react-datepicker/src/stylesheets/datepicker.scss";
 .react-datepicker-popper {
 	z-index : 5;
 }

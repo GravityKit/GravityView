@@ -83,16 +83,16 @@ class Blocks {
 
 		wp_enqueue_script(
 			self::ASSETS_HANDLE,
-			plugins_url( '/', __FILE__ ) . $script,
+			gravityview()->plugin->url() . $script,
 			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-components', 'wp-hooks', 'jquery' ),
-			filemtime( plugin_dir_path( __FILE__ ) . $script )
+			filemtime( gravityview()->plugin->dir() . $script )
 		);
 
 		wp_enqueue_style(
 			self::ASSETS_HANDLE,
-			plugins_url( '/', __FILE__ ) . $style,
+			gravityview()->plugin->url() . $style,
 			array( 'wp-edit-blocks' ),
-			filemtime( plugin_dir_path( __FILE__ ) . $style )
+			filemtime( gravityview()->plugin->dir() . $style )
 		);
 
 		$views = \GVCommon::get_all_views(
@@ -115,7 +115,7 @@ class Blocks {
 			array(
 				'home_page' => home_url(),
 				'ajax_url'  => admin_url( 'admin-ajax.php' ),
-				'img_url'   => plugins_url( '/', __FILE__ ) . 'assets/img/',
+				'img_url'   => gravityview()->plugin->url() . 'assets/images/',
 				'view_list' => $views_list_array,
 			)
 		);
