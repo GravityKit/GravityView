@@ -13,9 +13,6 @@
 *.sublime-project
 *.sublime-workspace
 
-### Composer ###
-composer.lock
-
 ### Libraries ###
 vendor/.git
 vendor/*/.git
@@ -29,7 +26,6 @@ wpcs/
 
 ### Node ###
 node_modules/*
-package-lock.json
 
 ### CodeKit ####
 .sass-cache
