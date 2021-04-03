@@ -58,7 +58,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 	- Bosnian (thanks Damir!)
 	- Bengali (thanks Akter!)
 
-= Version 2.10 on March 9, 2021 =
+= 2.10 on March 9, 2021 =
 
 * A beautiful visual refresh for the View editor!
 	- Brand new field picker for more easily creating your View
