@@ -20,11 +20,12 @@ class View_Details extends Block {
 	 * @return string $output
 	 */
 	static function render( $attributes = array() ) {
-
 		$accepted_attributes = array(
 			'id',
 			'detail',
 		);
+
+		$shortcode_attributes = array();
 
 		foreach ( $attributes as $attribute => $value ) {
 			$value = esc_attr( sanitize_text_field( $value ) );
