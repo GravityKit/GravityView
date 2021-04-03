@@ -60,7 +60,7 @@ abstract class Block {
 	 */
 	public static function get_block_attributes() {
 		$reflector       = new \ReflectionClass( get_called_class() );
-		$attributes_file = basename( $reflector->getFileName() ) . '/config.json';
+		$attributes_file = dirname( $reflector->getFileName() ) . '/config.json';
 
 		if ( ! file_exists( $attributes_file ) ) {
 			return array();
