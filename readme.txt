@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Added: Gutenberg content blocks to embed GravityView elements
+
 = 2.10.1 on March 31, 2021 =
 
 * Added: Allow comparing multiple values when using `[gvlogic]` shortcode
