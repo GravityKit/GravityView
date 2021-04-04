@@ -5,7 +5,7 @@ import SelectViewItem from 'AssetSources/js/view-selector';
 
 const { Component, Fragment } = wp.element;
 const { __ } = wp.i18n;
-const { InspectorControls } = wp.editor;
+const { InspectorControls } = wp.blockEditor;
 const { ToggleControl, PanelBody, SelectControl, TextControl, ButtonGroup, Button, Spinner } = wp.components;
 
 export default class Inspector extends Component {

@@ -1,6 +1,6 @@
 const { Component, Fragment } = wp.element;
 const { __ } = wp.i18n;
-const { InspectorControls } = wp.editor;
+const { InspectorControls } = wp.blockEditor;
 const { Button, PanelBody, ToggleControl, SelectControl, TextControl, ButtonGroup } = wp.components;
 
 export default class Inspector extends Component {

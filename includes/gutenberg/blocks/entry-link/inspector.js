@@ -2,7 +2,7 @@ import apiFetch from '@wordpress/api-fetch';
 
 const { Component, Fragment } = wp.element;
 const { __ } = wp.i18n;
-const { InspectorControls } = wp.editor;
+const { InspectorControls } = wp.blockEditor;
 const { PanelBody, SelectControl, ToggleControl, TextControl, Spinner, Popover } = wp.components;
 
 export default class Inspector extends Component {
