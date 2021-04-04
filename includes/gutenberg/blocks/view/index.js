@@ -120,27 +120,29 @@ export default registerBlockType( blockName, {
 	},
 	edit: props => {
 		const { attributes, setAttributes } = props;
-		return [
-			<Inspector { ...{ setAttributes, ...props } } />,
+		return (
 			<Fragment>
-				{
-					( ! attributes.preview || attributes.id === '' || attributes.id === 'Select a View' ) &&
-					<div className="gravityview-shortcode-preview">
-						<img src={ `${ GV_BLOCKS.img_url }gv-logo.png` } alt={ __( 'GravityView', 'gravityview' ) } />
-						<div className="field-container">
-							<SelectViewItem  { ...{ setAttributes, ...props } } />
+				<Inspector { ...{ setAttributes, ...props } } />
+				<Fragment>
+					{
+						( !attributes.preview || attributes.id === '' || attributes.id === 'Select a View' ) &&
+						<div className="gravityview-shortcode-preview">
+							<img src={ `${ GV_BLOCKS.img_url }gv-logo.png` } alt={ __( 'GravityView', 'gravityview' ) }/>
+							<div className="field-container">
+								<SelectViewItem  { ...{ setAttributes, ...props } } />
+							</div>
 						</div>
-					</div>
-				}
-				{
-					( attributes.preview && attributes.id !== '' && attributes.id !== 'Select a View' ) &&
-					<ServerSideRender
-						block={ blockName }
-						attributes={ attributes }
-					/>
-				}
-			</Fragment>,
-		];
+					}
+					{
+						( attributes.preview && attributes.id !== '' && attributes.id !== 'Select a View' ) &&
+						<ServerSideRender
+							block={ blockName }
+							attributes={ attributes }
+						/>
+					}
+				</Fragment>
+			</Fragment>
+		);
 	},
 	save() {
 		// Rendering in PHP

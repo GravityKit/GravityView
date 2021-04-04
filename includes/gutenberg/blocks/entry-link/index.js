@@ -87,61 +87,63 @@ export default registerBlockType( blockName, {
 			...GV_BLOCKS.view_list,
 		];
 
-		return [
-			<Inspector { ...{ setAttributes, ...props } } />,
+		return (
 			<Fragment>
-				{
-					( ! attributes.preview || attributes.view_id === '' || attributes.view_id === 'Select a View' || attributes.entry_id === '' ) &&
-					<div className="gravityview-shortcode-preview">
-						<img src={ `${ GV_BLOCKS.img_url }gv-logo.png` } alt={ __( 'GravityView', 'gravityview' ) } />
-						<div className="field-container">
-							<SelectControl
-								value={ attributes.view_id }
-								options={ viewLists }
-								onChange={ view_id => {
-									setAttributes( {
-										view_id,
-									} );
-								} }
-							/>
-							{
-								attributes.view_id !== '' && attributes.view_id !== 'Select a View' &&
-								<TextControl
-									placeholder={ __( 'Entry ID', 'gravityview' ) }
-									value={ attributes.entry_id }
-									type="number"
-									min="0"
-									onChange={ entry_id => {
+				<Inspector { ...{ setAttributes, ...props } } />
+				<Fragment>
+					{
+						( !attributes.preview || attributes.view_id === '' || attributes.view_id === 'Select a View' || attributes.entry_id === '' ) &&
+						<div className="gravityview-shortcode-preview">
+							<img src={ `${ GV_BLOCKS.img_url }gv-logo.png` } alt={ __( 'GravityView', 'gravityview' ) }/>
+							<div className="field-container">
+								<SelectControl
+									value={ attributes.view_id }
+									options={ viewLists }
+									onChange={ view_id => {
 										setAttributes( {
-											entry_id,
+											view_id,
 										} );
 									} }
 								/>
-							}
-							{
-								attributes.view_id !== '' && attributes.view_id !== 'Select a View' && attributes.entry_id !== '' &&
-								<TextControl
-									placeholder={ __( 'Link Text', 'gravityview' ) }
-									value={ attributes.content }
-									onChange={ content => {
-										setAttributes( {
-											content,
-										} );
-									} }
-								/>
-							}
+								{
+									attributes.view_id !== '' && attributes.view_id !== 'Select a View' &&
+									<TextControl
+										placeholder={ __( 'Entry ID', 'gravityview' ) }
+										value={ attributes.entry_id }
+										type="number"
+										min="0"
+										onChange={ entry_id => {
+											setAttributes( {
+												entry_id,
+											} );
+										} }
+									/>
+								}
+								{
+									attributes.view_id !== '' && attributes.view_id !== 'Select a View' && attributes.entry_id !== '' &&
+									<TextControl
+										placeholder={ __( 'Link Text', 'gravityview' ) }
+										value={ attributes.content }
+										onChange={ content => {
+											setAttributes( {
+												content,
+											} );
+										} }
+									/>
+								}
+							</div>
 						</div>
-					</div>
-				}
-				{
-					( attributes.preview && attributes.view_id !== '' && attributes.view_id !== 'Select a View' && attributes.entry_id !== '' ) &&
-					<ServerSideRender
-						block={ blockName }
-						attributes={ attributes }
-					/>
-				}
-			</Fragment>,
-		];
+					}
+					{
+						( attributes.preview && attributes.view_id !== '' && attributes.view_id !== 'Select a View' && attributes.entry_id !== '' ) &&
+						<ServerSideRender
+							block={ blockName }
+							attributes={ attributes }
+						/>
+					}
+				</Fragment>
+			</Fragment>
+		);
 	},
 	save() {
 		// Rendering in PHP

@@ -62,37 +62,37 @@ export default registerBlockType( blockName, {
 			...GV_BLOCKS.view_list,
 		];
 
-		return [
-			<Inspector { ...{ setAttributes, ...props } } />,
+		return (
 			<Fragment>
-				{
-					( ! attributes.preview || attributes.view_id === '' || attributes.view_id === 'Select a View' || attributes.entry_id === '' || attributes.field_id === '' ) &&
-					<div className="gravityview-shortcode-preview">
-						<img src={ `${ GV_BLOCKS.img_url }gv-logo.png` } alt={ __( 'GravityView', 'gravityview' ) } />
-						<div className="field-container">
-							<SelectControl
-								value={ attributes.view_id }
-								options={ viewLists }
-								onChange={ view_id => {
-									setAttributes( {
-										view_id,
-									} );
-								} }
-							/>
+				<Inspector { ...{ setAttributes, ...props } } />
+				<Fragment>
+					{
+						( !attributes.preview || attributes.view_id === '' || attributes.view_id === 'Select a View' || attributes.entry_id === '' || attributes.field_id === '' ) &&
+						<div className="gravityview-shortcode-preview">
+							<img src={ `${ GV_BLOCKS.img_url }gv-logo.png` } alt={ __( 'GravityView', 'gravityview' ) }/>
+							<div className="field-container">
+								<SelectControl
+									value={ attributes.view_id }
+									options={ viewLists }
+									onChange={ view_id => {
+										setAttributes( {
+											view_id,
+										} );
+									} }
+								/>
+							</div>
 						</div>
-					</div>
-				}
-				{
-					( attributes.preview && attributes.view_id !== '' && attributes.view_id !== 'Select a View' && attributes.entry_id !== '' && attributes.field_id !== '' ) &&
-					<ServerSideRender
-						block={ blockName }
-						attributes={ attributes }
-					/>
-				}
-
-			</Fragment>,
-
-		];
+					}
+					{
+						( attributes.preview && attributes.view_id !== '' && attributes.view_id !== 'Select a View' && attributes.entry_id !== '' && attributes.field_id !== '' ) &&
+						<ServerSideRender
+							block={ blockName }
+							attributes={ attributes }
+						/>
+					}
+				</Fragment>
+			</Fragment>
+		);
 	},
 	save() {
 		// Rendering in PHP
