@@ -28,7 +28,7 @@
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.7.0",
     "react-datepicker": "^2.12.1",
-    "react-select": "^3.0.8",
+    "react-select": "^4.3.0",
     "sass-loader": "^10.1.0"
   },
   "repository": {
