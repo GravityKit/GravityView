@@ -14,9 +14,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Blocks {
 	const ASSETS_HANDLE = 'gv-blocks';
+	const MIN_WP_VERSION = '5.2';
 
 	function __construct() {
-		if ( ! class_exists( 'GravityView_Plugin' ) || ! function_exists( 'register_block_type' ) ) {
+		global $wp_version;
+
+		if ( ! class_exists( 'GravityView_Plugin' ) ||
+		     ! function_exists( 'register_block_type' ) ||
+		     version_compare( $wp_version, self::MIN_WP_VERSION, '<' )
+		) {
 			return;
 		}
 
