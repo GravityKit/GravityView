@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: Page number isn't removed from search results (removed `pagenum` URL parameter)
 = 2.10.1 on March 31, 2021 =
 
 * Added: Allow comparing multiple values when using `[gvlogic]` shortcode
