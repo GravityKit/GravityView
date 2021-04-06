@@ -2,7 +2,7 @@
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
 Tested up to: 5.7
-Requires PHP: 5.3
+Requires PHP: 5.3.0
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -21,7 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: "Open in new tab/window" checkbox is missing from Link to Single Entry and Link to Edit Entry links
 * Fixed: Page number isn't removed from search results (removed `pagenum` URL parameter)
+
 = 2.10.1 on March 31, 2021 =
 
 * Added: Allow comparing multiple values when using `[gvlogic]` shortcode
