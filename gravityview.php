@@ -45,10 +45,22 @@ define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
 define( 'GV_MIN_GF_VERSION', '2.3' );
 
 /**
+ * GravityView will soon require at least this version of Gravity Forms to function properly.
+ * @since 1.19.4
+ */
+define( 'GV_FUTURE_MIN_GF_VERSION', '2.4' );
+
+/**
  * GravityView requires at least this version of WordPress to function properly.
  * @since 1.12
  */
 define( 'GV_MIN_WP_VERSION', '4.7.0' );
+
+/**
+ * GravityView will soon require at least this version of WordPress to function properly.
+ * @since 2.9.3
+ */
+define( 'GV_FUTURE_MIN_WP_VERSION', '4.9.16' );
 
 /**
  * GravityView requires at least this version of PHP to function properly.
@@ -62,18 +74,6 @@ define( 'GV_MIN_PHP_VERSION', '5.3.0' );
  * @var string|false
  */
 define( 'GV_FUTURE_MIN_PHP_VERSION', '5.6.30' );
-
-/**
- * GravityView will soon require at least this version of Gravity Forms to function properly.
- * @since 1.19.4
- */
-define( 'GV_FUTURE_MIN_GF_VERSION', '2.4' );
-
-/**
- * GravityView will soon require at least this version of WordPress to function properly.
- * @since 2.9.3
- */
-define( 'GV_FUTURE_MIN_WP_VERSION', '4.9.16' );
 
 /**
  * The future is here and now.
