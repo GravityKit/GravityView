@@ -1981,7 +1981,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$operator = \GV\Utils::get( $get, "$key|op", $default );
 
 		/**
-		 * Filters the array of allowed operators for a field.
+		 * @description Do this and then that.
+		 * @summary Filters the array of allowed operators for a field.
 		 * @hook gravityview/search/operator_whitelist
 		 * @param {string[]} $allowed A whitelist of allowed operators.
 		 * @param {string} $key The filter name.

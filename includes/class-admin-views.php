@@ -370,8 +370,10 @@ class GravityView_Admin_Views {
 		$gv_tooltips = apply_filters( 'gravityview_tooltips', $gv_tooltips );
 
 		/**
-		 * @hook gravityview/metaboxes/tooltips The tooltips GravityView adds to the Gravity Forms tooltip array
-		 * @param array $gv_tooltips Associative array with unique keys containing array of `title` and `value` keys, as expected by `gform_tooltips` filter
+		 * The tooltips GravityView adds to the Gravity Forms tooltip array
+		 * @hook gravityview/metaboxes/tooltips
+		 * @param {array} $gv_tooltips Associative array with unique keys containing array of `title` and `value` keys, as expected by `gform_tooltips` filter
+		 * @returns {array}
 		 */
 		$gv_tooltips = apply_filters( 'gravityview/metaboxes/tooltips', $gv_tooltips );
 
@@ -389,11 +391,11 @@ class GravityView_Admin_Views {
 	 * Add the Data Source information
 	 *
 	 * @param null $column_name
-	 * @param $post_id
+	 * @param int $post_id
 	 *
 	 * @return void
 	 */
-	public function add_custom_column_content( $column_name = NULL, $post_id )	{
+	public function add_custom_column_content( $column_name = null, $post_id = 0 )	{
 
 		$output = '';
 
@@ -498,10 +500,11 @@ class GravityView_Admin_Views {
 		}
 
 		/**
-		 * @hook gravityview_connected_form_links Modify the links shown in the Connected Form links
+		 * Modify the links shown in the Connected Form links
+		 * @hook gravityview_connected_form_links
 		 * @since 1.6
-		 * @param array $links Links to show
-		 * @param array $form Gravity Forms form array
+		 * @param {array} $links Links to show
+		 * @param {array} $form Gravity Forms form array
 		 */
 		$links = apply_filters( 'gravityview_connected_form_links', $links, $form );
 
@@ -639,9 +642,10 @@ class GravityView_Admin_Views {
 		} // end save view configuration
 
 		/**
-		 * @hook gravityview_view_saved After a View has been saved in the admin
-		 * @param int $post_id ID of the View that has been saved
-		 * @param array $statii Array of statuses of the post meta saving processes. If saving worked, each key should be mapped to a value of the post ID (`directory_widgets` => `124`). If failed (or didn't change), the value will be false.
+		 * After a View has been saved in the admin
+		 * @hook gravityview_view_saved
+		 * @param {int} $post_id ID of the View that has been saved
+		 * @param {array} $statii Array of statuses of the post meta saving processes. If saving worked, each key should be mapped to a value of the post ID (`directory_widgets` => `124`). If failed (or didn't change), the value will be false.
 		 * @since 1.17.2
 		 */
 		do_action('gravityview_view_saved', $post_id, $statii );
@@ -740,8 +744,10 @@ class GravityView_Admin_Views {
 		);
 
 		/**
-		 * @hook gravityview_additional_fields non-standard Fields to show at the bottom of the field picker
-		 * @param array $additional_fields Associative array of field arrays, with `label_text`, `desc`, `field_id`, `label_type`, `input_type`, `field_options`, and `settings_html` keys
+		 * Add non-standard Fields to show at the bottom of the field picker
+		 * @hook gravityview_additional_fields
+		 * @param {array} $additional_fields Associative array of field arrays, with `label_text`, `desc`, `field_id`, `label_type`, `input_type`, `field_options`, and `settings_html` keys
+		 * @returns {array}
 		 */
 		$additional_fields = apply_filters( 'gravityview_additional_fields', $additional_fields );
 
@@ -796,9 +802,10 @@ class GravityView_Admin_Views {
 		/**
 		 * Filters the default fields for each zone and context
 		 * @hook gravityview_entry_default_fields
-		 * @param array $entry_default_fields Array of fields shown by default
-		 * @param  string|array $form form_ID or form object
-		 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
+		 * @param  {array} $entry_default_fields Array of fields shown by default
+		 * @param  {string|array} $form form_ID or form object
+		 * @param  {string} $zone   Either 'single', 'directory', 'header', 'footer'
+		 * @returns {array}
 		 */
 		return apply_filters( 'gravityview_entry_default_fields', $entry_default_fields, $form, $zone);
 	}
@@ -848,10 +855,12 @@ class GravityView_Admin_Views {
 		}
 
 		/**
-		 * @hook gravityview/admin/available_fields Modify the available fields that can be used in a View.
-		 * @param array $fields The fields.
-		 * @param  string|array $form form_ID or form object
-		 * @param  string $zone Either 'single', 'directory', 'header', 'footer'
+		 * Modify the available fields that can be used in a View.
+		 * @hook gravityview/admin/available_fields
+		 * @param  {array} $fields The fields.
+		 * @param  {string|array} $form form_ID or form object
+		 * @param  {string} $zone Either `single`, `directory`, `header`, `footer`
+		 * @returns {array}
 		 */
 		return apply_filters( 'gravityview/admin/available_fields', $fields, $form, $zone );
 	}
@@ -859,7 +868,7 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Render html for displaying available widgets
-	 * @return string html
+	 * @return void
 	 */
 	function render_available_widgets() {
 
@@ -911,12 +920,13 @@ class GravityView_Admin_Views {
 		 *
 		 * @since 2.8.1
 		 *
-		 * @param string $button_label Text for button: "Add Widget" or "Add Field"
-		 * @param array $atts {
-		 *   @type string $type 'widget' or 'field'
-		 *   @type string $template_id The current slug of the selected View template
-		 *   @type string $zone Where is this button being shown? Either 'single', 'directory', 'edit', 'header', 'footer'
+		 * @param {string} $button_label Text for button: "Add Widget" or "Add Field"
+		 * @param {array} $atts {
+		 *   @type {string} $type 'widget' or 'field'
+		 *   @type {string} $template_id The current slug of the selected View template
+		 *   @type {string} $zone Where is this button being shown? Either 'single', 'directory', 'edit', 'header', 'footer'
 		 * }
+		 * @returns {string} Text for button: "Add Widget" or "Add Field"
 		 */
 		$button_label = apply_filters( 'gravityview/admin/add_button_label', $button_label, array( 'type' => $type, 'template_id' => $template_id, 'zone' => $zone ) );
 
@@ -1084,10 +1094,11 @@ class GravityView_Admin_Views {
 				);
 
 				/**
-				 * @hook gravityview/view/widgets/default Modify the default widgets for new Views
-				 * @param array $widgets A Widget configuration array
-				 * @param string $zone The widget zone that's being requested
-				 * @param int $post_id The auto-draft post ID
+				 * Filters the default widgets for new Views
+				 * @hook gravityview/view/widgets/default
+				 * @param {array} $widgets A Widget configuration array
+				 * @param {string} $zone The widget zone that's being requested
+				 * @param {int} $post_id The auto-draft post ID
 				 */
 				$widgets = apply_filters( 'gravityview/view/widgets/default', $widgets, $template_id, $zone, $post_id );
 			} else {
@@ -1178,9 +1189,10 @@ class GravityView_Admin_Views {
 		/**
 		 * @hook gravityview_template_active_areas
 		 * @see GravityView_Template::assign_active_areas()
-		 * @param array $template_areas Empty array, to be filled in by the template class
-		 * @param string $template_id Template ID, like `default_list`, `default_table`, `preset_business_data`, etc. {@see GravityView_Template::__construct()}
-		 * @param string $context Current View context: `directory`, `single`, or `edit` (default: 'single')
+		 * @param {array} $template_areas Empty array, to be filled in by the template class
+		 * @param {string} $template_id Template ID, like `default_list`, `default_table`, `preset_business_data`, etc. {@see GravityView_Template::__construct()}
+		 * @param {string} $context Current View context: `directory`, `single`, or `edit` (default: 'single')
+		 * @returns {array} Array of areas to render
 		 */
 		$template_areas = apply_filters( 'gravityview_template_active_areas', array(), $template_id, $context );
 

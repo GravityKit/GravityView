@@ -185,8 +185,8 @@ abstract class Entry {
 		 * @since 2.0
 		 * @param {string} $permalink The permalink.
 		 * @param {\GV\Entry} $entry The entry we're retrieving it for.
-		 * @param {\GV\View|null} $view The view context.
-		 * @param {\GV\Request} $request The request context.
+		 * @param {GV~View|null} $view The view context.
+		 * @param {GV~Request} $request The request context.
 		 */
 		return apply_filters( 'gravityview/entry/permalink', $permalink, $this, $view, $request );
 	}

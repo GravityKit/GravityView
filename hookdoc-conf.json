@@ -8,7 +8,15 @@
   "source": {
 	"include": [
 	  "./",
-	  "includes"
+	  "includes",
+	  "future",
+	  "templates",
+	  "future/includes"
+	],
+	"exclude": [
+	  "node_modules",
+	  "tests",
+	  "vendor"
 	],
 	"includePattern": ".+\\.(php)?$"
   },

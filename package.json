@@ -32,6 +32,6 @@
     "bower": "^1.8.8"
   },
   "scripts": {
-    "build:docs": "rm -rf hookdocs/ && jsdoc -c hookdoc-conf.json"
+    "build:docs": "rm -rf ./hookdocs/ && jsdoc -c hookdoc-conf.json"
   }
 }

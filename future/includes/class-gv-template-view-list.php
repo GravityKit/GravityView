@@ -255,7 +255,7 @@ class View_List_Template extends View_Template {
 
 		/**
 		 * Output inside the `entry` of the list at the end.
-		 * @hook gravityview/template/list/entry/$zone/after
+		 * @hook gravityview/template/list/entry/{$zone}/after
 		 * @since 2.0
 		 * @param {\GV\Template_Context} $context The template context.
 		 */

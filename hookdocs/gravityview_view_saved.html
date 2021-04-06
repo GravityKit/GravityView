@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Action: gravityview/template/list/entry/title/after - 10up ElasticPress Hook Docs</title>
+    <title>Action: gravityview_view_saved - 10up ElasticPress Hook Docs</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -21,7 +21,7 @@
 <div id="main">
 
 	
-    <h1 class="page-title">Action: gravityview/template/list/entry/title/after</h1>
+    <h1 class="page-title">Action: gravityview_view_saved</h1>
 	
 
     
@@ -43,16 +43,92 @@
 
     
 
-    <h4 class="name" id="gravityview/template/list/entry/title/after">do_action( 'gravityview/template/list/entry/title/after' )</h4>
+    <h4 class="name" id="gravityview_view_saved">do_action( 'gravityview_view_saved', <span class="signature">$post_id, $statii )</span><span class="type-signature"></span></h4>
 
     
 
 
 
+<div class="description">
+    <p>After a View has been saved in the admin</p>
+</div>
 
 
 
 
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>$post_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>ID of the View that has been saved</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>$statii</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#array">array</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Array of statuses of the post meta saving processes. If saving worked, each key should be mapped to a value of the post ID (<code>directory_widgets</code> =&gt; <code>124</code>). If failed (or didn't change), the value will be false.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -63,6 +139,9 @@
 
     
 
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.17.2</li></ul></dd>
     
 
     
@@ -88,7 +167,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="templates_views_list_list-body.php.html">templates/views/list/list-body.php</a>, <a href="templates_views_list_list-body.php.html#line94">line 94</a>
+        <a href="includes_class-admin-views.php.html">includes/class-admin-views.php</a>, <a href="includes_class-admin-views.php.html#line644">line 644</a>
     </li></ul></dd>
     
 
@@ -142,16 +221,92 @@
 
     
 
-    <h4 class="name" id="gravityview/template/list/entry/title/after">do_action( 'gravityview/template/list/entry/title/after' )</h4>
+    <h4 class="name" id="gravityview_view_saved">do_action( 'gravityview_view_saved', <span class="signature">$post_id, $statii )</span><span class="type-signature"></span></h4>
 
     
 
 
 
+<div class="description">
+    <p>After a View has been saved in the admin</p>
+</div>
 
 
 
 
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>$post_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>ID of the View that has been saved</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>$statii</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#array">array</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Array of statuses of the post meta saving processes. If saving worked, each key should be mapped to a value of the post ID (<code>directory_widgets</code> =&gt; <code>124</code>). If failed (or didn't change), the value will be false.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -162,6 +317,9 @@
 
     
 
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.17.2</li></ul></dd>
     
 
     
@@ -187,7 +345,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="templates_views_list_list-body.php.html">templates/views/list/list-body.php</a>, <a href="templates_views_list_list-body.php.html#line94">line 94</a>
+        <a href="includes_class-admin-views.php.html">includes/class-admin-views.php</a>, <a href="includes_class-admin-views.php.html#line644">line 644</a>
     </li></ul></dd>
     
 

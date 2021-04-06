@@ -767,8 +767,10 @@ class View implements \ArrayAccess {
 		self::$cache[ "View::from_post:{$post->ID}" ] = &$view;
 
 		/**
-		 * @hook gravityview/view/get Override View.
-		 * @param \GV\View $view The View instance pointer.
+		 * Override View by reference
+		 *
+		 * @hook gravityview/view/get
+		 * @param {\GV\View} $view The View instance pointer.
 		 * @since 2.1
 		 */
 		do_action_ref_array( 'gravityview/view/get', array( &$view ) );

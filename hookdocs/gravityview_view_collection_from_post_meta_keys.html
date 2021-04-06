@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Action: gravityview/template/list/entry/title/after - 10up ElasticPress Hook Docs</title>
+    <title>Filter: gravityview/view_collection/from_post/meta_keys - 10up ElasticPress Hook Docs</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -21,7 +21,7 @@
 <div id="main">
 
 	
-    <h1 class="page-title">Action: gravityview/template/list/entry/title/after</h1>
+    <h1 class="page-title">Filter: gravityview/view_collection/from_post/meta_keys</h1>
 	
 
     
@@ -43,16 +43,111 @@
 
     
 
-    <h4 class="name" id="gravityview/template/list/entry/title/after">do_action( 'gravityview/template/list/entry/title/after' )</h4>
+    <h4 class="name" id="gravityview/view_collection/from_post/meta_keys">apply_filters( 'gravityview/view_collection/from_post/meta_keys', <span class="signature">$meta_keys, $post )</span><span class="type-signature"> &rarr; {<a href="global.html#array">array</a>}</span></h4>
 
     
 
 
 
+<div class="description">
+    <p>Define meta keys to parse to check for GravityView shortcode content.
+This is useful when using themes that store content that may contain shortcodes in custom post meta.</p>
+</div>
 
 
 
 
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>$meta_keys</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#array">array</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Array of key values to check. If empty, do not check. Default: empty array</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>$post</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WP_Post</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The post that is being checked</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code></code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -63,6 +158,9 @@
 
     
 
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>2.0.7 Added $views parameter, passed by reference</li></ul></dd>
     
 
     
@@ -88,7 +186,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="templates_views_list_list-body.php.html">templates/views/list/list-body.php</a>, <a href="templates_views_list_list-body.php.html#line94">line 94</a>
+        <a href="future_includes_class-gv-collection-view.php.html">future/includes/class-gv-collection-view.php</a>, <a href="future_includes_class-gv-collection-view.php.html#line98">line 98</a>
     </li></ul></dd>
     
 
@@ -111,6 +209,24 @@
 
 
 
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#array">array</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -142,16 +258,111 @@
 
     
 
-    <h4 class="name" id="gravityview/template/list/entry/title/after">do_action( 'gravityview/template/list/entry/title/after' )</h4>
+    <h4 class="name" id="gravityview/view_collection/from_post/meta_keys">apply_filters( 'gravityview/view_collection/from_post/meta_keys', <span class="signature">$meta_keys, $post )</span><span class="type-signature"> &rarr; {<a href="global.html#array">array</a>}</span></h4>
 
     
 
 
 
+<div class="description">
+    <p>Define meta keys to parse to check for GravityView shortcode content.
+This is useful when using themes that store content that may contain shortcodes in custom post meta.</p>
+</div>
 
 
 
 
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>$meta_keys</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#array">array</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Array of key values to check. If empty, do not check. Default: empty array</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>$post</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WP_Post</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The post that is being checked</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code></code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -162,6 +373,9 @@
 
     
 
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>2.0.7 Added $views parameter, passed by reference</li></ul></dd>
     
 
     
@@ -187,7 +401,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="templates_views_list_list-body.php.html">templates/views/list/list-body.php</a>, <a href="templates_views_list_list-body.php.html#line94">line 94</a>
+        <a href="future_includes_class-gv-collection-view.php.html">future/includes/class-gv-collection-view.php</a>, <a href="future_includes_class-gv-collection-view.php.html#line98">line 98</a>
     </li></ul></dd>
     
 
@@ -210,6 +424,239 @@
 
 
 
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#array">array</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+    
+    </div>
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    <h2></h2>
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="gravityview/view_collection/from_post/meta_keys">apply_filters( 'gravityview/view_collection/from_post/meta_keys', <span class="signature">$meta_keys, $post )</span><span class="type-signature"> &rarr; {<a href="global.html#array">array</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Define meta keys to parse to check for GravityView shortcode content.
+This is useful when using themes that store content that may contain shortcodes in custom post meta.</p>
+</div>
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>$meta_keys</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#array">array</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Array of key values to check. If empty, do not check. Default: empty array</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>$post</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WP_Post</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The post that is being checked</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code></code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>2.0.7 Added $views parameter, passed by reference</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="future_includes_class-gv-collection-view.php.html">future/includes/class-gv-collection-view.php</a>, <a href="future_includes_class-gv-collection-view.php.html#line98">line 98</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#array">array</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
