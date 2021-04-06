@@ -23,8 +23,8 @@ export default class Inspector extends Component {
 	render() {
 
 		const { attributes, setAttributes } = this.props;
-		const isStartDateValid = attributes.start_date.indexOf( '-' ) > 0 && moment( attributes.start_date ).isValid();
-		const isEndDateValid = attributes.start_date.indexOf( '-' ) > 0 && moment( attributes.end_date ).isValid();
+		const isStartDateValid = attributes.start_date && attributes.start_date.indexOf( '-' ) > 0 && moment( attributes.start_date ).isValid();
+		const isEndDateValid = attributes.end_date && attributes.start_date.indexOf( '-' ) > 0 && moment( attributes.end_date ).isValid();
 
 		const urlAutocompleter = ( post_id ) => {
 			this.setState( {
@@ -92,7 +92,7 @@ export default class Inspector extends Component {
 									attributes.start_date_type === 'static' &&
 									<DatePicker
 										dateFormat="yyyy-MM-dd"
-										selected={ isStartDateValid ? attributes.start_date : '' }
+										selected={ isStartDateValid ? moment( attributes.start_date ).toDate() : '' }
 										onChange={ start_date => {
 											setAttributes( {
 												start_date: moment( start_date ).format( 'YYYY-MM-DD' ),
@@ -150,7 +150,7 @@ export default class Inspector extends Component {
 									attributes.end_date_type === 'static' &&
 									<DatePicker
 										dateFormat="yyyy-MM-dd"
-										selected={ isEndDateValid ? attributes.end_date : '' }
+										selected={ isEndDateValid ? moment( attributes.end_date ).toDate() : '' }
 										onChange={ end_date => {
 											setAttributes( {
 												end_date: moment( end_date ).format( 'YYYY-MM-DD' ),
