@@ -167,7 +167,11 @@ module.exports = function(grunt) {
 			options: {
 				spawn: false,
 				interrupt: true
-			}
+			},
+			blocks: {
+				files: ['includes/gutenberg/src/css/blocks.scss', 'includes/gutenberg/src/js/blocks.js',  'includes/gutenberg/blocks/**/*.js'],
+				tasks: ['exec:build_blocks']
+			},
 		},
 
 		dirs: {
@@ -194,6 +198,8 @@ module.exports = function(grunt) {
 		// Pull in the latest translations
 		exec: {
 			transifex: 'tx pull -a --parallel',
+
+			build_blocks: 'npm run build',
 
 			// Create a ZIP file
 			zip: {
@@ -288,7 +294,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-wp-i18n');
 
 	// Regular CSS/JS/Image Compression stuff
-	grunt.registerTask( 'default', [ 'exec:bower', 'sass', 'postcss', 'uglify', 'imagemin', 'translate' ] );
+	grunt.registerTask( 'default', [ 'exec:bower', 'sass', 'postcss', 'uglify', 'imagemin', 'translate', 'exec:build_blocks' ] );
 
 	// Translation stuff
 	grunt.registerTask( 'translate', [ 'exec:transifex', 'potomo', 'addtextdomain', 'makepot' ] );
