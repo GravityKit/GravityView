@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: future/includes/class-gv-template-entry-table.php - 10up ElasticPress Hook Docs</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+
+	<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans:300,400|Playfair+Display:900&display=swap" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="styles-10up.css">
+</head>
+
+<body>
+
+<div id="main">
+
+	
+    <h1 class="page-title">Source: future/includes/class-gv-template-entry-table.php</h1>
+	
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;?php
+namespace GV;
+
+/** If this file is called directly, abort. */
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
+	die();
+}
+
+/**
+ * The Entry Table Template class .
+ *
+ * Renders a \GV\Entry using a \GV\Entry_Renderer.
+ */
+class Entry_Table_Template extends Entry_Template {
+	/**
+	 * @var string The template slug to be loaded (like "table", "list")
+	 */
+	public static $slug = 'table';
+
+	/**
+	 * Output a field cell.
+	 *
+	 * @param \GV\Field $field The field to be ouput.
+	 *
+	 * @return string|false The field output or false if "hide_empty" is set.
+	 */
+	public function the_field( \GV\Field $field ) {
+		$renderer = new Field_Renderer();
+		$source = is_numeric( $field->ID ) ? ( GF_Form::by_id( $field->form_id ) ? : $this->view->form ) : new Internal_Source();
+
+		return $renderer->render( $field, $this->view, $source, $this->entry->from_field( $field ), $this->request );
+	}
+
+	/**
+	 * Out the single entry table body.
+	 *
+	 * @return void
+	 */
+	public function the_entry() {
+
+		/** @type \GV\Field_Collection $fields */
+		$fields = $this->view->fields->by_position( 'single_table-columns' )->by_visible( $this->view );
+
+		$context = Template_Context::from_template( $this, compact( 'fields' ) );
+
+		/**
+		 * Modify the fields displayed in a table
+		 * @deprecated Use `gravityview/template/table/fields`
+		 * @hook gravityview_table_cells
+		 * @param {array} $fields
+		 * @param {GravityView_View} $this
+		 */
+		$fields = apply_filters( 'gravityview_table_cells', $fields->as_configuration(), \GravityView_View::getInstance() );
+		$fields = Field_Collection::from_configuration( $fields );
+
+		/**
+		 * Filters the fields displayed in this table.
+		 *
+		 * @hook gravityview/template/table/fields
+		 * @param {Field_Collection} $fields The fields.
+		 * @param {Template_Context} $context The context.
+		 * @since 2.0
+		 * @returns {Field_Collection} The fields.
+		 */
+		$fields = apply_filters( 'gravityview/template/table/fields', $fields, $context );
+
+		foreach ( $fields->all() as $field ) {
+			$context = Template_Context::from_template( $this, compact( 'field' ) );
+
+			$form = \GV\GF_Form::by_id( $field->form_id ) ? : $this->view->form;
+			$entry = $this->entry->from_field( $field );
+
+			if ( ! $entry ) {
+				continue;
+			}
+
+			/**
+			 * @deprecated Here for back-compatibility.
+			 */
+			$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form, $entry ), $field->as_configuration() );
+			$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, $entry->as_entry() );
+
+			/**
+			 *  Override the field label.
+			 * @hook gravityview/template/field/label
+			 * @since 2.0
+			 * @param {string} $column_label The label to override.
+			 * @param {\GV\Template_Context} $context The context.
+			 */
+			$column_label = apply_filters( 'gravityview/template/field/label', $column_label, $context );
+
+			/**
+			 * @hook gravityview/template/table/entry/hide_empty
+			 * @param {boolean} $hide_empty Should the row be hidden if the value is empty? Default: don't hide.
+			 * @param {\GV\Template_Context} $context The context ;) Love it, cherish it. And don't you dare modify it!
+			 */
+			$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', $this->view->settings->get( 'hide_empty_single', false ), $context );
+
+			echo \gravityview_field_output( array(
+				'entry' => $this->entry->as_entry(),
+				'field' => is_numeric( $field->ID ) ? $field->as_configuration() : null,
+				'label' => $column_label,
+				'value' => $this->the_field( $field ),
+				'markup' => '&lt;tr id="{{ field_id }}" class="{{ class }}">&lt;th scope="row">{{ label }}&lt;/th>&lt;td>{{ value }}&lt;/td>&lt;/tr>',
+				'hide_empty' => $hide_empty,
+				'zone_id' => 'single_table-columns',
+			), $context );
+		}
+	}
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+    <footer>
+		<a href="https://gravityview.co/">GravityView.co</a> &bull;
+		<a href="https://github.com/gravityview/GravityView/">GravityView on GitHub</a>
+	</footer>
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Actions</h3><ul><li><a href="admin_enqueue_scripts.html">admin_enqueue_scripts</a></li><li><a href="gravityview_approve_entries_autounapprove_status.html">gravityview/approve_entries/autounapprove/status</a></li><li><a href="gravityview_approve_entries_popover_placement.html">gravityview/approve_entries/popover_placement</a></li><li><a href="gravityview_common_get_entry_id_from_slug_form_id.html">gravityview/common/get_entry_id_from_slug/form_id</a></li><li><a href="gravityview_common_get_form_fields.html">gravityview/common/get_form_fields</a></li><li><a href="gravityview_data_parse_meta_keys.html">gravityview/data/parse/meta_keys</a></li><li><a href="gravityview_edit_entry_render_hidden_field.html">gravityview/edit_entry/render_hidden_field</a></li><li><a href="gravityview_entry_permalink.html">gravityview/entry/permalink</a></li><li><a href="gravityview_entry_slug.html">gravityview/entry/slug</a></li><li><a href="gravityview_field_quiz_percent_format.html">gravityview/field/quiz_percent/format</a></li><li><a href="gravityview_fields_fileupload_link_atts.html">gravityview/fields/fileupload/link_atts</a></li><li><a href="gravityview_loaded.html">gravityview/loaded</a></li><li><a href="gravityview_query_class.html">gravityview/query/class</a></li><li><a href="gravityview_search_operator_whitelist.html">gravityview/search/operator_whitelist</a></li><li><a href="gravityview_security_require_unfiltered_html.html">gravityview/security/require_unfiltered_html</a></li><li><a href="gravityview_setting_class_%25257Bfield_type%25257D.html">gravityview/setting/class/{field_type}</a></li><li><a href="gravityview_setting_class_file_%25257Bfield_type%25257D.html">gravityview/setting/class_file/{field_type}</a></li><li><a href="gravityview_template_entry_context.html">gravityview/template/entry/context</a></li><li><a href="gravityview_template_field_context.html">gravityview/template/field/context</a></li><li><a href="gravityview_template_field_label.html">gravityview/template/field/label</a></li><li><a href="gravityview_template_list_body_after.html">gravityview/template/list/body/after</a></li><li><a href="gravityview_template_list_body_before.html">gravityview/template/list/body/before</a></li><li><a href="gravityview_template_list_entry_$zone_after.html">gravityview/template/list/entry/$zone/after</a></li><li><a href="gravityview_template_list_entry_before.html">gravityview/template/list/entry/before</a></li><li><a href="gravityview_template_list_entry_class.html">gravityview/template/list/entry/class</a></li><li><a href="gravityview_template_list_entry_content_after.html">gravityview/template/list/entry/content/after</a></li><li><a href="gravityview_template_list_entry_content_before.html">gravityview/template/list/entry/content/before</a></li><li><a href="gravityview_template_list_entry_title_after.html">gravityview/template/list/entry/title/after</a></li><li><a href="gravityview_template_list_entry_title_before.html">gravityview/template/list/entry/title/before</a></li><li><a href="gravityview_template_table_body_after.html">gravityview/template/table/body/after</a></li><li><a href="gravityview_template_table_body_before.html">gravityview/template/table/body/before</a></li><li><a href="gravityview_template_table_entry_class.html">gravityview/template/table/entry/class</a></li><li><a href="gravityview_template_table_entry_hide_empty.html">gravityview/template/table/entry/hide_empty</a></li><li><a href="gravityview_template_table_tr_after.html">gravityview/template/table/tr/after</a></li><li><a href="gravityview_template_table_tr_before.html">gravityview/template/table/tr/before</a></li><li><a href="gravityview_template_view_context.html">gravityview/template/view/context</a></li><li><a href="gravityview_widgets_search_created_by_user_fields.html">gravityview/widgets/search/created_by/user_fields</a></li><li><a href="gravityview_widgets_search_created_by_user_meta_fields.html">gravityview/widgets/search/created_by/user_meta_fields</a></li><li><a href="gravityview_widgets_search_datepicker_format.html">gravityview/widgets/search/datepicker/format</a></li><li><a href="gravityview_directory_endpoint.html">gravityview_directory_endpoint</a></li><li><a href="gravityview_directory_link.html">gravityview_directory_link</a></li><li><a href="gravityview_entry_default_fields.html">gravityview_entry_default_fields</a></li><li><a href="gravityview_get_entries.html">gravityview_get_entries</a></li><li><a href="gravityview_pre_get_entries.html">gravityview_pre_get_entries</a></li><li><a href="gravityview_search_operator.html">gravityview_search_operator</a></li><li><a href="gravityview_table_cells.html">gravityview_table_cells</a></li><li><a href="gravityview_template_active_areas.html">gravityview_template_active_areas</a></li></ul><h3>Filters</h3><ul><li><a href="admin_title.html">admin_title</a></li><li><a href="gravityview_entry_link_add_query_args.html">gravityview/entry_link/add_query_args</a></li><li><a href="gravityview_template_table_fields.html">gravityview/template/table/fields</a></li><li><a href="gravityview_field_entry_link.html">gravityview_field_entry_link</a></li><li><a href="gravityview_search_criteria.html">gravityview_search_criteria</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

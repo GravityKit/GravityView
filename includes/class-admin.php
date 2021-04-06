@@ -142,7 +142,7 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 
 		/**
-		 * @action `gravityview_include_backend_actions` Triggered after all GravityView admin files are loaded
+		 * @hook gravityview_include_backend_actions Triggered after all GravityView admin files are loaded
 		 *
 		 * Nice place to insert extensions' backend stuff
 		 */

@@ -11,7 +11,7 @@
  */
 
 /**
- * @action `gravityview_list_body_before` Tap in before the entry loop has been displayed
+ * @hook gravityview_list_body_before Tap in before the entry loop has been displayed
  * @param \GravityView_View $this The GravityView_View instance
  */
 do_action( 'gravityview_list_body_before', $this );
@@ -42,7 +42,7 @@ if( ! $this->getTotalEntries() ) {
 		<?php
 
 		/**
-		 * @action `gravityview_entry_before` Tap in before the the entry is displayed, inside the entry container
+		 * @hook gravityview_entry_before Tap in before the the entry is displayed, inside the entry container
 		 * @param array $entry Gravity Forms Entry array
 		 * @param \GravityView_View $this The GravityView_View instance
 		 */
@@ -55,7 +55,7 @@ if( ! $this->getTotalEntries() ) {
 			<?php
 
 			/**
-			 * @action `gravityview_entry_title_before` Tap in before the the entry title is displayed
+			 * @hook gravityview_entry_title_before Tap in before the the entry title is displayed
 			 * @param array $entry Gravity Forms Entry array
 			 * @param \GravityView_View $this The GravityView_View instance
 			 */
@@ -99,7 +99,7 @@ if( ! $this->getTotalEntries() ) {
 			<?php
 
 			/**
-			 * @action `gravityview_entry_title_after` Tap in after the title block
+			 * @hook gravityview_entry_title_after Tap in after the title block
 			 * @param array $entry Gravity Forms Entry array
 			 * @param \GravityView_View $this The GravityView_View instance
 			 */
@@ -119,7 +119,7 @@ if( ! $this->getTotalEntries() ) {
 				<?php
 
 				/**
-				 * @action `gravityview_entry_content_before` Tap in inside the View Content wrapper <div>
+				 * @hook gravityview_entry_content_before Tap in inside the View Content wrapper <div>
 				 *
 				 * @param array $entry Gravity Forms Entry array
 				 * @param \GravityView_View $this The GravityView_View instance
@@ -140,7 +140,7 @@ if( ! $this->getTotalEntries() ) {
 				) );
 
 				/**
-				 * @action `gravityview_entry_content_after` Tap in at the end of the View Content wrapper <div>
+				 * @hook gravityview_entry_content_after Tap in at the end of the View Content wrapper <div>
 				 *
 				 * @param array $entry Gravity Forms Entry array
 				 * @param \GravityView_View $this The GravityView_View instance
@@ -158,7 +158,7 @@ if( ! $this->getTotalEntries() ) {
 		if ( $this->getField('directory_list-footer-left') || $this->getField('directory_list-footer-right') ) {
 
 			/**
-			 * @action `gravityview_entry_footer_before` Tap in before the footer wrapper
+			 * @hook gravityview_entry_footer_before Tap in before the footer wrapper
 			 * @param array $entry Gravity Forms Entry array
 			 * @param \GravityView_View $this The GravityView_View instance
 			 */
@@ -179,7 +179,7 @@ if( ! $this->getTotalEntries() ) {
 			<?php
 
 			/**
-			 * @action `gravityview_entry_footer_after` Tap in after the footer wrapper
+			 * @hook gravityview_entry_footer_after Tap in after the footer wrapper
 			 * @param array $entry Gravity Forms Entry array
 			 * @param \GravityView_View $this The GravityView_View instance
 			 */
@@ -189,7 +189,7 @@ if( ! $this->getTotalEntries() ) {
 
 
 		/**
-		 * @action `gravityview_entry_after` Tap in after the entry has been displayed, but before the container is closed
+		 * @hook gravityview_entry_after Tap in after the entry has been displayed, but before the container is closed
 		 * @param array $entry Gravity Forms Entry array
 		 * @param \GravityView_View $this The GravityView_View instance
 		 */
@@ -204,7 +204,7 @@ if( ! $this->getTotalEntries() ) {
 } // End if has entries
 
 /**
- * @action `gravityview_list_body_after` Tap in after the entry loop has been displayed
+ * @hook gravityview_list_body_after Tap in after the entry loop has been displayed
  * @param \GravityView_View $this The GravityView_View instance
  */
 do_action( 'gravityview_list_body_after', $this );

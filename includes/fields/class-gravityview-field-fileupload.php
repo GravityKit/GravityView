@@ -184,7 +184,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			}
 
 			/**
-			 * @filter `gravityview/fields/fileupload/file_path` Modify the file path before generating a link to it
+			 * @hook gravityview/fields/fileupload/file_path Modify the file path before generating a link to it
 			 * @since 1.22.3
 			 * @since 2.0 Added $context parameter
 			 * @since 2.8.2
@@ -200,7 +200,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				if ( shortcode_exists( 'audio' ) ) {
 
 					/**
-					 * @filter `gravityview_audio_settings` Modify the settings passed to the `wp_video_shortcode()` function
+					 * @hook gravityview_audio_settings Modify the settings passed to the `wp_video_shortcode()` function
 					 * @since  1.2
 					 * @param array $audio_settings Array with `src` and `class` keys
 					 * @since 2.0
@@ -236,7 +236,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				if ( shortcode_exists( 'video' ) ) {
 
 					/**
-					 * @filter `gravityview_video_settings` Modify the settings passed to the `wp_video_shortcode()` function
+					 * @hook gravityview_video_settings Modify the settings passed to the `wp_video_shortcode()` function
 					 * @since  1.2
 					 * @param array $video_settings Array with `src` and `class` keys
 					 * @since 2.0
@@ -334,7 +334,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			}
 
 			/**
-			 * @filter `gravityview/fields/fileupload/disable_link` Filter to alter the default behaviour of wrapping images (or image names) with a link to the content object
+			 * @hook gravityview/fields/fileupload/disable_link Filter to alter the default behaviour of wrapping images (or image names) with a link to the content object
 			 * @since 1.5.1
 			 * @param bool $disable_wrapped_link whether to wrap the content with a link to the content object.
 			 * @param array $field_compat Current GravityView field array
@@ -360,15 +360,16 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 				if ( empty( $field_settings['show_as_link'] ) ) {
 					/**
-					 * @filter `gravityview/fields/fileupload/link_atts` Modify the link attributes for a file upload field
-					 * @since 2.0 Added $context
-					 * @since 2.11 Added $additional_details
-					 * @param array|string $link_atts Array or attributes string
-					 * @param array $field_compat Current GravityView field array
-					 * @param \GV\Template_Context $context The context.
-					 * @param array $additional_details Array of additional details about the file. {
-					 * @type string $file_path URL to file.
-					 * @type string $insecure_file_path URL to insecure file.
+					 * Modify the link attributes for a file upload field
+					 *
+					 * @hook gravityview/fields/fileupload/link_atts
+					 * @since 2.0 Added $context; 2.11 Added $additional_details
+					 * @param {array|string} $link_atts Array or attributes string
+					 * @param {array} $field_compat Current GravityView field array
+					 * @param {\GV\Template_Context} $context The context.
+					 * @param {array} $additional_details Array of additional details about the file. {
+					 * @type {string} $file_path URL to file.
+					 * @type {string} $insecure_file_path URL to insecure file.
 					 * }
 					 */
 					$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', array( 'target' => '_blank' ), $field_compat, $context, compact( 'file_path', 'insecure_file_path', 'disable_lightbox' ) );
@@ -387,17 +388,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			$field_settings = $field_settings_backup; // reset to default
 		} // End foreach loop
 
-		/**
-		 * @filter `gravityview/fields/fileupload/files_array` Modify the files array
-		 * @since 1.7
-		 * @since 2.0 Added $context
-		 * @param array $output_arr Associative array of files. {
-		 *  @type string $file_path The path to the file as stored in Gravity Forms.
-		 *  @type string $content The generated output for the file.
-		 * }
-		 * @param array $field_compat Current GravityView field array.
-		 * @param \GV\Template_Context $context The context.
-		 */
+
 		$output_arr = apply_filters( 'gravityview/fields/fileupload/files_array', $output_arr, $field_compat, $context );
 
 		return $output_arr;

@@ -60,7 +60,7 @@ class GravityView_Widget_Pagination_Info extends \GV\Widget {
 		}
 
 		/**
-		 * @filter `gravityview_pagination_output` Modify the pagination widget output
+		 * @hook gravityview_pagination_output Modify the pagination widget output
 		 * @param string $output HTML output
 		 * @param int $first First entry #
 		 * @param int $last Last entry #

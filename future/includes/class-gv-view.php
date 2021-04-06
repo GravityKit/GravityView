@@ -115,7 +115,7 @@ class View implements \ArrayAccess {
 		}
 
 		/**
-		 * @filter `gravityview_is_hierarchical` Make GravityView Views hierarchical by returning TRUE
+		 * @hook gravityview_is_hierarchical Make GravityView Views hierarchical by returning TRUE
 		 * This will allow for Views to be nested with Parents and also allows for menu order to be set in the Page Attributes metabox
 		 * @since 1.13
 		 * @param boolean $is_hierarchical Default: false
@@ -165,10 +165,10 @@ class View implements \ArrayAccess {
 			'supports'            => $supports,
 			'hierarchical'        => $is_hierarchical,
 			/**
-			 * @filter `gravityview_direct_access` Should Views be directly accessible, or only visible using the shortcode?
+			 * @hook gravityview_direct_access Should Views be directly accessible, or only visible using the shortcode?
 			 * @see https://codex.wordpress.org/Function_Reference/register_post_type#public
 			 * @since 1.15.2
-			 * @param[in,out] boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded via shortcode. Default: `true`
+			 * @param boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded via shortcode. Default: `true`
 			 * @param int $view_id The ID of the View currently being requested. `0` for general setting
 			 */
 			'public'              => apply_filters( 'gravityview_direct_access', gravityview()->plugin->is_compatible(), 0 ),
@@ -180,7 +180,7 @@ class View implements \ArrayAccess {
 			'menu_icon'           => '',
 			'can_export'          => true,
 			/**
-			 * @filter `gravityview_has_archive` Enable Custom Post Type archive?
+			 * @hook gravityview_has_archive Enable Custom Post Type archive?
 			 * @since 1.7.3
 			 * @param boolean False: don't have frontend archive; True: yes, have archive. Default: false
 			 */
@@ -188,14 +188,14 @@ class View implements \ArrayAccess {
 			'exclude_from_search' => true,
 			'rewrite'             => array(
 				/**
-				 * @filter `gravityview_slug` Modify the url part for a View.
+				 * @hook gravityview_slug Modify the url part for a View.
 				 * @see https://docs.gravityview.co/article/62-changing-the-view-slug
 				 * @param string $slug The slug shown in the URL
 				 */
 				'slug' => apply_filters( 'gravityview_slug', 'view' ),
 
 				/**
-				 * @filter `gravityview/post_type/with_front` Should the permalink structure
+				 * @hook gravityview/post_type/with_front Should the permalink structure
 				 *  be prepended with the front base.
 				 *  (example: if your permalink structure is /blog/, then your links will be: false->/view/, true->/blog/view/).
 				 *  Defaults to true.
@@ -422,7 +422,7 @@ class View implements \ArrayAccess {
 		}
 
 		/**
-		 * @filter `gravityview/view/can_render` Whether the view can be rendered or not.
+		 * @hook gravityview/view/can_render Whether the view can be rendered or not.
 		 * @param bool|\WP_Error $result  The result. Default: null.
 		 * @param \GV\View       $view	The view.
 		 * @param string[]       $context See \GV\View::can_render
@@ -468,17 +468,17 @@ class View implements \ArrayAccess {
 			 */
 
 			/**
-			 * @filter `gravityview_direct_access` Should Views be directly accessible, or only visible using the shortcode?
+			 * @hook gravityview_direct_access Should Views be directly accessible, or only visible using the shortcode?
 			 * @deprecated
-			 * @param[in,out] boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded. Default: `true`
+			 * @param boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded. Default: `true`
 			 * @param int $view_id The ID of the View currently being requested. `0` for general setting
 			 */
 			$direct_access = apply_filters( 'gravityview_direct_access', true, $this->ID );
 
 			/**
-			 * @filter `gravityview/request/output/direct` Should this View be directly accessbile?
+			 * @hook gravityview/request/output/direct Should this View be directly accessbile?
 			 * @since 2.0
-			 * @param[in,out] boolean Accessible or not. Default: accessbile.
+			 * @param boolean Accessible or not. Default: accessbile.
 			 * @param \GV\View $view The View we're trying to directly render here.
 			 * @param \GV\Request $request The current request.
 			 */
@@ -681,7 +681,7 @@ class View implements \ArrayAccess {
 
 		if ( $view = Utils::get( self::$cache, "View::from_post:{$post->ID}" ) ) {
 			/**
-			 * @filter `gravityview/view/get` Override View.
+			 * @hook gravityview/view/get Override View.
 			 * @param \GV\View $view The View instance pointer.
 			 * @since 2.1
 			 */
@@ -707,7 +707,7 @@ class View implements \ArrayAccess {
 		$view->unions = $view::get_unions( $post );
 
 		/**
-		 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array.
+		 * @hook gravityview/configuration/fields Filter the View fields' configuration array.
 		 * @since 1.6.5
 		 *
 		 * @deprecated Use `gravityview/view/configuration/fields` or `gravityview/view/fields` filters.
@@ -718,7 +718,7 @@ class View implements \ArrayAccess {
 		$configuration = apply_filters( 'gravityview/configuration/fields', (array)$view->_gravityview_directory_fields, $view->ID );
 
 		/**
-		 * @filter `gravityview/view/configuration/fields` Filter the View fields' configuration array.
+		 * @hook gravityview/view/configuration/fields Filter the View fields' configuration array.
 		 * @since 2.0
 		 *
 		 * @param array $fields Multi-array of fields with first level being the field zones.
@@ -727,7 +727,7 @@ class View implements \ArrayAccess {
 		$configuration = apply_filters( 'gravityview/view/configuration/fields', $configuration, $view );
 
 		/**
-		 * @filter `gravityview/view/fields` Filter the Field Collection for this View.
+		 * @hook gravityview/view/fields Filter the Field Collection for this View.
 		 * @since 2.0
 		 *
 		 * @param \GV\Field_Collection $fields A collection of fields.
@@ -736,7 +736,7 @@ class View implements \ArrayAccess {
 		$view->fields = apply_filters( 'gravityview/view/fields', Field_Collection::from_configuration( $configuration ), $view );
 
 		/**
-		 * @filter `gravityview/view/configuration/widgets` Filter the View widgets' configuration array.
+		 * @hook gravityview/view/configuration/widgets Filter the View widgets' configuration array.
 		 * @since 2.0
 		 *
 		 * @param array $fields Multi-array of widgets with first level being the field zones.
@@ -745,7 +745,7 @@ class View implements \ArrayAccess {
 		$configuration = apply_filters( 'gravityview/view/configuration/widgets', (array)$view->_gravityview_directory_widgets, $view );
 
 		/**
-		 * @filter `gravityview/view/widgets` Filter the Widget Collection for this View.
+		 * @hook gravityview/view/widgets Filter the Widget Collection for this View.
 		 * @since 2.0
 		 *
 		 * @param \GV\Widget_Collection $widgets A collection of widgets.
@@ -767,7 +767,7 @@ class View implements \ArrayAccess {
 		self::$cache[ "View::from_post:{$post->ID}" ] = &$view;
 
 		/**
-		 * @filter `gravityview/view/get` Override View.
+		 * @hook gravityview/view/get Override View.
 		 * @param \GV\View $view The View instance pointer.
 		 * @since 2.1
 		 */
@@ -1318,7 +1318,7 @@ class View implements \ArrayAccess {
 				}
 
 				/**
-				 * @action `gravityview/view/query` Override the \GF_Query before the get() call.
+				 * @hook gravityview/view/query Override the \GF_Query before the get() call.
 				 * @param \GF_Query $query The current query object reference
 				 * @param \GV\View $this The current view object
 				 * @param \GV\Request $request The request object
@@ -1376,7 +1376,7 @@ class View implements \ArrayAccess {
 		}
 
 		/**
-		 * @filter `gravityview/view/entries` Modify the entry fetching filters, sorts, offsets, limits.
+		 * @hook gravityview/view/entries Modify the entry fetching filters, sorts, offsets, limits.
 		 * @param \GV\Entry_Collection $entries The entries for this view.
 		 * @param \GV\View $view The view.
 		 * @param \GV\Request $request The request.
@@ -1419,7 +1419,7 @@ class View implements \ArrayAccess {
 		$file_type = $is_csv ? 'csv' : 'tsv';
 
 		/**
-		 * @filter `gravityview/output/{csv|tsv}/filename` Modify the name of the generated CSV or TSV file. Name will be sanitized using sanitize_file_name() before output.
+		 * @hook gravityview/output/{csv|tsv}/filename Modify the name of the generated CSV or TSV file. Name will be sanitized using sanitize_file_name() before output.
 		 * @see sanitize_file_name()
 		 * @since 2.1
 		 * @param string   $filename File name used when downloading a CSV or TSV. Default is "{View title}.csv" or "{View title}.tsv"
@@ -1464,8 +1464,8 @@ class View implements \ArrayAccess {
 			$return = array();
 
 			/**
-			 * @filter `gravityview/csv/entry/fields` Whitelist more entry fields by ID that are output in CSV requests.
-			 * @param[in,out] array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the View.
+			 * @hook gravityview/csv/entry/fields Whitelist more entry fields by ID that are output in CSV requests.
+			 * @param array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the View.
 			 * @param \GV\View $view The view.
 			 * @param \GV\Entry $entry WordPress representation of the item.
 			 */
@@ -1516,9 +1516,9 @@ class View implements \ArrayAccess {
 	 */
 	public function get_query_class() {
 		/**
-		 * @filter `gravityview/query/class`
-		 * @param[in,out] string The query class. Default: GF_Query.
-		 * @param \GV\View $this The View.
+		 * @hook gravityview/query/class
+		 * @param {string} The query class. Default: `\GF_Query`.
+		 * @param {\GV\View} $this The View.
 		 */
 		$query_class = apply_filters( 'gravityview/query/class', '\GF_Query', $this );
 		return $query_class;
@@ -1540,13 +1540,13 @@ class View implements \ArrayAccess {
 	 */
 	public static function restrict( $caps, $cap, $user_id, $args ) {
 		/**
-		 * @filter `gravityview/security/require_unfiltered_html` Bypass restrictions on Views that require `unfiltered_html`.
-		 * @param[in,out] boolean
-		 *
-		 * @since develop
-		 * @param string $cap The capability requested.
-		 * @param int $user_id The user ID.
-		 * @param array $args Any additional args to map_meta_cap
+		 * Bypass restrictions on Views that require `unfiltered_html`.
+		 * @hook gravityview/security/require_unfiltered_html
+		 * @since 2.0
+		 * @param {boolean} $require_unfiltered_html Whether to require the `unfiltered_html` capability. Default: `true`.
+		 * @param {string} $cap The capability requested.
+		 * @param {int} $user_id The user ID.
+		 * @param {array} $args Any additional args to map_meta_cap
 		 */
 		if ( ! apply_filters( 'gravityview/security/require_unfiltered_html', true, $cap, $user_id ) ) {
 			return $caps;

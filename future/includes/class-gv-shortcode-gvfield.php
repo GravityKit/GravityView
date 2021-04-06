@@ -40,7 +40,7 @@ class gvfield extends \GV\Shortcode {
 		$atts = gv_map_deep( $atts, array( 'GravityView_Merge_Tags', 'replace_get_variables' ) );
 
 		/**
-		 * @filter `gravityview/shortcodes/gvfield/atts` Filter the [gvfield] shortcode attributes.
+		 * @hook gravityview/shortcodes/gvfield/atts Filter the [gvfield] shortcode attributes.
 		 * @param array $atts The initial attributes.
 		 * @since 2.0
 		 */
@@ -166,7 +166,7 @@ class gvfield extends \GV\Shortcode {
 		$output = $renderer->render( $field, $view, is_numeric( $field->ID ) ? $view->form : new \GV\Internal_Source(), $entry, gravityview()->request );
 
 		/**
-		 * @filter `gravityview/shortcodes/gvfield/output` Filter the [gvfield] output.
+		 * @hook gravityview/shortcodes/gvfield/output Filter the [gvfield] output.
 		 * @param string $output The output.
 		 * @param \GV\View|null $view The View detected or null.
 		 * @param \GV\Entry|null $entry The Entry or null.

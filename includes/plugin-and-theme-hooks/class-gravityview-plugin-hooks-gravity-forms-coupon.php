@@ -47,7 +47,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Coupon extends GravityView_Plugin_a
 		$has_transaction_data = GVCommon::entry_has_transaction_data( $entry );
 
 		/**
-		 * @filter `gravityview/edit_entry/hide-coupon-fields` Should Coupon fields be hidden in Edit Entry?
+		 * @hook gravityview/edit_entry/hide-coupon-fields Should Coupon fields be hidden in Edit Entry?
 		 * @since 1.20
 		 * @param bool $has_transaction_data If true (the Entry has transaction data), hide the fields. Otherwise (false), show the Coupon field
 		 */

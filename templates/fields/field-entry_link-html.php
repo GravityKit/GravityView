@@ -39,9 +39,11 @@ global $post;
 $href = $gravityview->entry->get_permalink( $gravityview->view, $gravityview->request, $tag_atts );
 
 /**
- * @filter `gravityview/entry_link/add_query_args` Modify whether to include passed $_GET parameters to the end of the url
+ * Filters whether to include passed `$_GET` parameters to the end of the url
+ * @hook gravityview/entry_link/add_query_args
  * @since 2.10
- * @param bool $add_query_params Whether to include passed $_GET parameters to the end of the Entry Link URL. Default: true.
+ * @param {bool} $add_query_params Whether to include passed $_GET parameters to the end of the Entry Link URL. Default: `true`.
+ * @returns {bool}
  */
 $add_query_args = apply_filters( 'gravityview/entry_link/add_query_args', true );
 
@@ -52,11 +54,13 @@ if ( $add_query_args ) {
 $link = gravityview_get_link( $href, $output, $tag_atts );
 
 /**
- * @filter `gravityview_field_entry_link` Modify the link HTML (here for backward compatibility)
- * @param string $link HTML output of the link
- * @param string $href URL of the link
- * @param array  $entry The GF entry array
- * @param  array $field_settings Settings for the particular GV field
+ * Filters the link HTML (here for backward compatibility)
+ * @hook gravityview_field_entry_link
+ * @param {string} $link HTML output of the link.
+ * @param {string} $href URL of the link.
+ * @param {array}  $entry The GF entry array.
+ * @param {array} $field_settings Settings for the particular GV field.
+ * @returns {string} HTML output of the link.
  */
 $output = apply_filters( 'gravityview_field_entry_link', $link, $href, $entry, $field_settings );
 

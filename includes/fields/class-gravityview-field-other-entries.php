@@ -163,7 +163,7 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 		);
 
 		/**
-		 * @filter `gravityview/field/other_entries/criteria` Modify the search parameters before the entries are fetched.
+		 * @hook gravityview/field/other_entries/criteria Modify the search parameters before the entries are fetched.
 		 *
 		 * @since 1.11
 		 *

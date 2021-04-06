@@ -118,7 +118,7 @@ class GravityView_Admin_Duplicate_View {
 		$new_view_author = wp_get_current_user();
 
 		/**
-		 * @filter `gravityview/duplicate-view/status` Modify the default status for a new View. Return empty for the new View to inherit existing View status
+		 * @hook gravityview/duplicate-view/status Modify the default status for a new View. Return empty for the new View to inherit existing View status
 		 * @since 1.6
 		 * @param string|null If string, the status to set for the new View. If empty, use existing View status.
 		 * @param WP_Post $post View being cloned
@@ -141,7 +141,7 @@ class GravityView_Admin_Duplicate_View {
 		);
 
 		/**
-		 * @filter `gravityview/duplicate-view/copy-date` When copying a View, should the date also be copied?
+		 * @hook gravityview/duplicate-view/copy-date When copying a View, should the date also be copied?
 		 * @since 1.6
 		 * @param boolean $copy_date Whether the copy the date from the existing View. Default: `false`
 		 * @param WP_Post $post View being cloned
@@ -154,7 +154,7 @@ class GravityView_Admin_Duplicate_View {
 		}
 
 		/**
-		 * @filter `gravityview/duplicate-view/new-view` Modify View configuration before creating the duplicated View.
+		 * @hook gravityview/duplicate-view/new-view Modify View configuration before creating the duplicated View.
 		 * @since 1.6
 		 * @param array $new_view Array of settings to be passed to wp_insert_post()
 		 * @param WP_Post $post View being cloned
@@ -179,7 +179,7 @@ class GravityView_Admin_Duplicate_View {
 		}
 
 		/**
-		 * @action `gv_duplicate_view` After a View is duplicated, perform an action
+		 * @hook gv_duplicate_view After a View is duplicated, perform an action
 		 * @since 1.6
 		 * @see GravityView_Admin_Duplicate_View::copy_view_meta_info
 		 * @param int $new_view_id The ID of the newly created View
@@ -292,7 +292,7 @@ class GravityView_Admin_Duplicate_View {
 		}
 
 		/**
-		 * @filter `gravityview/duplicate-view/get_clone_view_link` Modify the Clone View URL that is generated
+		 * @hook gravityview/duplicate-view/get_clone_view_link Modify the Clone View URL that is generated
 		 * @since 1.6
 		 * @param string $clone_view_link Link with `admin_url("admin.php")`, plus the action query string
 		 * @param int $view_id View ID

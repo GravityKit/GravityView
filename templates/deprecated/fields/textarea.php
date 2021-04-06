@@ -18,7 +18,7 @@ $gravityview_view = GravityView_View::getInstance();
 extract( $gravityview_view->getCurrentField() );
 
 /**
- * @filter `gravityview/fields/textarea/allowed_kses` Allow the following HTML tags and strip everything else.
+ * @hook gravityview/fields/textarea/allowed_kses Allow the following HTML tags and strip everything else.
  * @since 1.21.5.1
  * @see $allowedposttags global in kses.php for an example of the format for passing an array of allowed tags and atts
  * @see wp_kses_allowed_html() For allowed contexts
@@ -31,7 +31,7 @@ $value = wp_kses( $value, $allowed_html );
 if( !empty( $field_settings['trim_words'] ) ) {
 
 	/**
-	 * @filter `gravityview_excerpt_more` Modify the "Read more" link used when "Maximum Words" setting is enabled and the output is truncated
+	 * @hook gravityview_excerpt_more Modify the "Read more" link used when "Maximum Words" setting is enabled and the output is truncated
 	 * @since 1.16.1
 	 * @param string $excerpt_more Default: ` ...`
 	 */

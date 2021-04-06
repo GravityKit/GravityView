@@ -323,7 +323,7 @@ class gravityview extends \GV\Shortcode {
 		endswitch;
 
 		/**
-		 * @filter `gravityview/shortcode/detail/{$detail}` Filter the detail output returned from `[gravityview detail="$detail"]`
+		 * @hook gravityview/shortcode/detail/{$detail} Filter the detail output returned from `[gravityview detail="$detail"]`
 		 * @since 1.13
 		 * @param string[in,out] $output Existing output
 		 *

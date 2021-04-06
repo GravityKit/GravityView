@@ -21,7 +21,7 @@ if ( current_filter() === 'gform_next_button' ) {
 	<?php
 
     /**
-     * @filter `gravityview/edit_entry/cancel_link` Modify the cancel button link URL
+     * @hook gravityview/edit_entry/cancel_link Modify the cancel button link URL
      * @since 1.11.1
      * @param string $back_link Existing URL of the Cancel link
      * @param array $form The Gravity Forms form
@@ -31,7 +31,7 @@ if ( current_filter() === 'gform_next_button' ) {
     $back_link = apply_filters( 'gravityview/edit_entry/cancel_link', remove_query_arg( array( 'page', 'view', 'edit' ) ), $object->form, $object->entry, $object->view_id );
 
 	/**
-	 * @action `gravityview/edit-entry/publishing-action/before` Triggered before the submit buttons in the Edit Entry screen, inside the `<div id="publishing-action">` container.
+	 * @hook gravityview/edit-entry/publishing-action/before Triggered before the submit buttons in the Edit Entry screen, inside the `<div id="publishing-action">` container.
 	 * @since 1.5.1
 	 * @param array $form The Gravity Forms form
 	 * @param array $entry The Gravity Forms entry
@@ -48,7 +48,7 @@ if ( current_filter() === 'gform_next_button' ) {
 	);
 
 	/**
-	 * @filter `gravityview/edit_entry/button_labels` Modify the cancel/submit buttons' labels
+	 * @hook gravityview/edit_entry/button_labels Modify the cancel/submit buttons' labels
 	 * @since 1.16.3
 	 * @param array $labels Default button labels associative array
 	 * @param array $form The Gravity Forms form
@@ -85,7 +85,7 @@ if ( current_filter() === 'gform_next_button' ) {
 	<?php
 
 	/**
-	 * @action `gravityview/edit-entry/publishing-action/after` Triggered after the submit buttons in the Edit Entry screen, inside the `<div id="publishing-action">` container.
+	 * @hook gravityview/edit-entry/publishing-action/after Triggered after the submit buttons in the Edit Entry screen, inside the `<div id="publishing-action">` container.
 	 * @since 1.5.1
      * @since 2.0.13 Added $post_id
 	 * @param array $form The Gravity Forms form

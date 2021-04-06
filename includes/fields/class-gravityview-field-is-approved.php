@@ -85,10 +85,6 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 	}
 
 	/**
-	 *
-	 *
-	 * @filter `gravityview_entry_default_fields`
-	 *
 	 * @param  array $entry_default_fields Array of fields shown by default
 	 * @param  string|array $form form_ID or form object
 	 * @param  string $zone Either 'single', 'directory', 'header', 'footer'

@@ -21,7 +21,7 @@ if( is_array( $search_field['value'] ) ) {
 }
 
 /**
- * @filter `gravityview/extension/search/select_default` Define the text for the default option in a select (multi or single dropdown)
+ * @hook gravityview/extension/search/select_default Define the text for the default option in a select (multi or single dropdown)
  * @since 1.16.4
  * @param string $default_option Default: `&mdash;` (—)
  * @param string $field_type Field type: "select" or "multiselect"

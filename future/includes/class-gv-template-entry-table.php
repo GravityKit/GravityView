@@ -44,19 +44,23 @@ class Entry_Table_Template extends Entry_Template {
 		$context = Template_Context::from_template( $this, compact( 'fields' ) );
 
 		/**
-		 * @filter `gravityview_table_cells` Modify the fields displayed in a table
-		 * @param array $fields
-		 * @param \GravityView_View $this
+		 * Modify the fields displayed in a table
 		 * @deprecated Use `gravityview/template/table/fields`
+		 * @hook gravityview_table_cells
+		 * @param {array} $fields
+		 * @param {GravityView_View} $this
 		 */
 		$fields = apply_filters( 'gravityview_table_cells', $fields->as_configuration(), \GravityView_View::getInstance() );
 		$fields = Field_Collection::from_configuration( $fields );
 
 		/**
-		 * @filter `gravityview/template/table/fields` Modify the fields displayed in this tables.
-		 * @param \GV\Field_Collection $fields The fields.
-		 * @param \GV\Template_Context $context The context.
+		 * Filters the fields displayed in this table.
+		 *
+		 * @hook gravityview/template/table/fields
+		 * @param {Field_Collection} $fields The fields.
+		 * @param {Template_Context} $context The context.
 		 * @since 2.0
+		 * @returns {Field_Collection} The fields.
 		 */
 		$fields = apply_filters( 'gravityview/template/table/fields', $fields, $context );
 
@@ -77,17 +81,18 @@ class Entry_Table_Template extends Entry_Template {
 			$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, $entry->as_entry() );
 
 			/**
-			 * @filter `gravityview/template/field/label` Override the field label.
+			 *  Override the field label.
+			 * @hook gravityview/template/field/label
 			 * @since 2.0
-			 * @param[in,out] string $column_label The label to override.
-			 * @param \GV\Template_Context $context The context.
+			 * @param {string} $column_label The label to override.
+			 * @param {\GV\Template_Context} $context The context.
 			 */
 			$column_label = apply_filters( 'gravityview/template/field/label', $column_label, $context );
 
 			/**
-			 * @filter `gravityview/template/table/entry/hide_empty`
-			 * @param boolean $hide_empty Should the row be hidden if the value is empty? Default: don't hide.
-			 * @param \GV\Template_Context $context The context ;) Love it, cherish it. And don't you dare modify it!
+			 * @hook gravityview/template/table/entry/hide_empty
+			 * @param {boolean} $hide_empty Should the row be hidden if the value is empty? Default: don't hide.
+			 * @param {\GV\Template_Context} $context The context ;) Love it, cherish it. And don't you dare modify it!
 			 */
 			$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', $this->view->settings->get( 'hide_empty_single', false ), $context );
 

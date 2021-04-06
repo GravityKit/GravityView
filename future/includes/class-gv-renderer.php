@@ -215,9 +215,9 @@ class Renderer {
 		unset( $post_types, $post_type_rewrite );
 
 		/**
-		 * @filter `gravityview/rewrite/reserved_slugs` Modify the reserved embed slugs that trigger a warning.
+		 * @hook gravityview/rewrite/reserved_slugs Modify the reserved embed slugs that trigger a warning.
 		 * @since 2.5
-		 * @param[in,out] array $reserved_slugs An array of strings, reserved slugs.
+		 * @param array $reserved_slugs An array of strings, reserved slugs.
 		 * @param \GV\Template_Context $gravityview The context.
 		 */
 		$reserved_slugs = apply_filters( 'gravityview/rewrite/reserved_slugs', $reserved_slugs, $gravityview );

@@ -16,7 +16,7 @@ $template = $gravityview->template;
 	<tbody>
 		<?php
 
-		/** @action `gravityview/template/table/body/before` */
+		/** @hook gravityview/template/table/body/before */
 		$template::body_before( $gravityview );
 
 		if ( ! $gravityview->entries->count() ) {
@@ -24,7 +24,7 @@ $template = $gravityview->template;
 			<tr>
 				<?php
 
-				/** @action `gravityview/template/table/tr/before` */
+				/** @hook gravityview/template/table/tr/before */
 				$template::tr_before( $gravityview );
 
                 ?>
@@ -33,7 +33,7 @@ $template = $gravityview->template;
 				</td>
 				<?php
 
-				/** @action `gravityview/template/table/tr/after` */
+				/** @hook gravityview/template/table/tr/after */
 				$template::tr_after( $gravityview );
 
                 ?>
@@ -45,7 +45,7 @@ $template = $gravityview->template;
 				// Add `alt` class to alternate rows
 				$alt = empty( $alt ) ? 'alt' : '';
 
-				/** @filter `gravityview/template/table/entry/class` */
+				/** @hook gravityview/template/table/entry/class */
 				$class = $template::entry_class( $alt, $entry, $gravityview );
 
 				$attributes = array(
@@ -56,7 +56,7 @@ $template = $gravityview->template;
 			}
 		}
 
-		/** @action `gravityview/template/table/body/after` */
+		/** @hook gravityview/template/table/body/after */
 		$template::body_after( $gravityview );
 		?>
 	</tbody>

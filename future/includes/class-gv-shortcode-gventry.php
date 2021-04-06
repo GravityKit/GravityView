@@ -41,7 +41,7 @@ class gventry extends \GV\Shortcode {
 		$atts = gv_map_deep( $atts, array( 'GravityView_Merge_Tags', 'replace_get_variables' ) );
 
 		/**
-		 * @filter `gravityview/shortcodes/gventry/atts` Filter the [gventry] shortcode attributes.
+		 * @hook gravityview/shortcodes/gventry/atts Filter the [gventry] shortcode attributes.
 		 * @param array $atts The initial attributes.
 		 * @since 2.0
 		 */
@@ -189,9 +189,9 @@ class gventry extends \GV\Shortcode {
 				$message = __( 'Entry Updated', 'gravityview' );
 
 				/**
-				 * @filter `gravityview/shortcodes/gventry/edit/success` Modify the edit entry success message in [gventry].
+				 * @hook gravityview/shortcodes/gventry/edit/success Modify the edit entry success message in [gventry].
 				 * @since develop
-				 * @param[in,out] string $message The message.
+				 * @param string $message The message.
 				 * @param \GV\View $view The View.
 				 * @param \GV\Entry $entry The entry.
 				 * @param array $atts The attributes.
@@ -219,7 +219,7 @@ class gventry extends \GV\Shortcode {
 		}
 
 		/**
-		 * @filter `gravityview/shortcodes/gventry/output` Filter the [gventry] output.
+		 * @hook gravityview/shortcodes/gventry/output Filter the [gventry] output.
 		 * @param string $output The output.
 		 * @param \GV\View|null $view The View detected or null.
 		 * @param \GV\Entry|null $entry The Entry or null.

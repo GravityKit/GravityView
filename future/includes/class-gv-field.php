@@ -191,7 +191,7 @@ class Field {
 		$field_class = is_numeric( $configuration['id'] ) ? '\GV\GF_Field' : '\GV\Internal_Field';
 
 		/**
-		 * @filter `gravityview/field/class` Filter the field class about to be created from the configuration.
+		 * @hook gravityview/field/class Filter the field class about to be created from the configuration.
 		 * @param string $field_class The field class about to be used.
 		 * @param array $configuration The configuration as per \GV\Field::as_configuration()
 		 */
@@ -309,7 +309,7 @@ class Field {
 	protected function get_value_filters( $value, View $view = null, Source $source = null, Entry $entry = null, Request $request = null ) {
 		if ( $this->type ) {
 			/**
-			 * @filter `gravityview/field/$type/value` Override the displayed value here.
+			 * @hook gravityview/field/$type/value Override the displayed value here.
 			 * @param string $value The value.
 			 * @param \GV\Field The field we're doing this for.
 			 * @param \GV\View $view The view for this context if applicable.
@@ -321,7 +321,7 @@ class Field {
 		}
 
 		/**
-		 * @filter `gravityview/field/value` Override the displayed value here.
+		 * @hook gravityview/field/value Override the displayed value here.
 		 * @param string $value The value.
 		 * @param \GV\Field The field we're doing this for.
 		 * @param \GV\View $view The view for this context if applicable.
@@ -342,7 +342,7 @@ class Field {
 	 */
 	public function is_visible( $view = null ) {
 		/**
-		 * @filter `gravityview/field/is_visible` Should this field be visible?
+		 * @hook gravityview/field/is_visible Should this field be visible?
 		 *
 		 * @param boolean $visible Visible or not, defaults to the set field capability requirement if defined.
 		 * @param \GV\Field $field The field we're looking at.

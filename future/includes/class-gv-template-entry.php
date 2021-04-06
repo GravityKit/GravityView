@@ -141,7 +141,7 @@ abstract class Entry_Template extends Template {
 		 * Make various pieces of data available to the template
 		 *  under the $gravityview scoped variable.
 		 *
-		 * @filter `gravityview/template/entry/context`
+		 * @hook gravityview/template/entry/context
 		 * @param \GV\Template_Context $context The context for this template.
 		 * @param \GV\Entry_Template $template The current template.
 		 * @since 2.0

@@ -19,7 +19,7 @@ class GravityView_Admin_No_Conflict {
 	public function __construct() {
 
 		if( ! is_admin() ) { return; }
-		
+
 		$this->add_hooks();
 	}
 
@@ -159,7 +159,7 @@ class GravityView_Admin_No_Conflict {
 		$this->remove_conflicts( $wp_styles, $wp_allowed_styles, 'styles' );
 
 		/**
-		 * @action `gravityview_remove_conflicts_after` Runs after no-conflict styles are removed. You can re-add styles here.
+		 * @hook gravityview_remove_conflicts_after Runs after no-conflict styles are removed. You can re-add styles here.
 		 */
 		do_action('gravityview_remove_conflicts_after');
 	}
@@ -177,7 +177,7 @@ class GravityView_Admin_No_Conflict {
 	private function remove_conflicts( &$wp_objects, $required_objects, $type = 'scripts' ) {
 
 		/**
-		 * @filter `gravityview_noconflict_{$type}` Modify the list of no conflict scripts or styles\n
+		 * @hook gravityview_noconflict_{$type} Modify the list of no conflict scripts or styles\n
 		 * Filter is `gravityview_noconflict_scripts` or `gravityview_noconflict_styles`
 		 * @param array $required_objects
 		 */

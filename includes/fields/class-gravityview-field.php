@@ -436,8 +436,8 @@ abstract class GravityView_Field {
 				'label' => __( 'Override Date Format', 'gravityview' ),
 				'desc' => sprintf( __( 'Define how the date is displayed (using %sthe PHP date format%s)', 'gravityview'), '<a href="https://wordpress.org/support/article/formatting-date-and-time/" rel="external">', '</a>' ),
 				/**
-				 * @filter `gravityview_date_format` Override the date format with a [PHP date format](https://codex.wordpress.org/Formatting_Date_and_Time)
-				 * @param[in,out] null|string $date_format Date Format (default: null)
+				 * @hook gravityview_date_format Override the date format with a [PHP date format](https://codex.wordpress.org/Formatting_Date_and_Time)
+				 * @param null|string $date_format Date Format (default: null)
 				 */
 				'value' => apply_filters( 'gravityview_date_format', null ),
 				'class' => 'code widefat',
@@ -454,7 +454,7 @@ abstract class GravityView_Field {
 		);
 
 		/**
-		 * @filter `gravityview_field_support_options` Modify the settings that a field supports
+		 * @hook gravityview_field_support_options Modify the settings that a field supports
 		 * @param array $options Options multidimensional array with each key being the input name, with each array setting having `type`, `label`, `desc` and `value` (default values) keys
 		 */
 		return apply_filters( 'gravityview_field_support_options', $options );

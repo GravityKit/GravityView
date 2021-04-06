@@ -541,16 +541,16 @@ class View_Settings extends Settings {
 		}
 
 		/**
-		 * @filter `gravityview_default_args` Modify the default settings for new Views
-		 * @param[in,out] array $default_args Array of default args.
+		 * @hook gravityview_default_args Modify the default settings for new Views
+		 * @param array $default_args Array of default args.
 		 * @deprecated
 		 * @see filter `gravityview/view/settings/defaults`
 		 */
 		$default_settings = apply_filters( 'gravityview_default_args', $default_settings );
 
 		/**
-		 * @filter `gravityview/view/defaults` Modify the default settings for new Views
-		 * @param[in,out] array $default_settings Array of default settings.
+		 * @hook gravityview/view/defaults Modify the default settings for new Views
+		 * @param array $default_settings Array of default settings.
 		 */
 		$default_settings = apply_filters( 'gravityview/view/settings/defaults', $default_settings );
 

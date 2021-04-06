@@ -109,7 +109,7 @@ abstract class GravityView_Admin_View_Item {
 		$field_info_items = $this->additional_info();
 
 		/**
-		 * @filter `gravityview_admin_label_item_info` Tap in to modify the field information displayed next to an item
+		 * @hook gravityview_admin_label_item_info Tap in to modify the field information displayed next to an item
 		 *
 		 * @param array $field_info_items Additional information to display in a field
 		 * @param GravityView_Admin_View_Field $this Field shown in the admin
@@ -266,7 +266,7 @@ abstract class GravityView_Admin_View_Item {
 		$output = '';
 
 		/**
-		 * @filter `gravityview/admin/indicator_icons` Modify the icon output to add additional indicator icons
+		 * @hook gravityview/admin/indicator_icons Modify the icon output to add additional indicator icons
 		 * @internal This is currently internally used. Consider not relying on it until further notice :-)
 		 * @param array $icons Array of icons to be shown, with `visible`, `title`, `css_class` keys.
 		 * @param array $item_settings Settings for the current item (widget or field)

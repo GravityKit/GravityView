@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: future/includes/class-gv-template-field.php - 10up ElasticPress Hook Docs</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+
+	<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans:300,400|Playfair+Display:900&display=swap" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="styles-10up.css">
+</head>
+
+<body>
+
+<div id="main">
+
+	
+    <h1 class="page-title">Source: future/includes/class-gv-template-field.php</h1>
+	
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;?php
+namespace GV;
+
+/** If this file is called directly, abort. */
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
+	die();
+}
+
+/**
+ * Load up the Gamajo Template Loader.
+ *
+ * @see https://github.com/GaryJones/Gamajo-Template-Loader
+ */
+if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
+	require gravityview()->plugin->dir( 'future/lib/class-gamajo-template-loader.php' );
+}
+
+/**
+ * The Field Template class.
+ *
+ * Attached to a \GV\Field and used by a \GV\Field_Renderer.
+ */
+abstract class Field_Template extends Template {
+	/**
+	 * Prefix for filter names.
+	 * @var string
+	 */
+	protected $filter_prefix = 'gravityview/template/fields';
+
+	/**
+	 * Directory name where custom templates for this plugin should be found in the theme.
+	 * @var string
+	 */
+	protected $theme_template_directory = 'gravityview/fields/';
+
+	/**
+	 * Directory name where the default templates for this plugin are found.
+	 * @var string
+	 */
+	protected $plugin_template_directory = 'templates/fields/';
+
+	/**
+	 * @var \GV\Field The field connected to this template.
+	 */
+	public $field;
+
+	/**
+	 * @var \GV\View The view context.
+	 */
+	public $view;
+
+	/**
+	 * @var \GV\Source The source context.
+	 */
+	public $source;
+
+	/**
+	 * @var \GV\Entry The entry context.
+	 */
+	public $entry;
+
+	/**
+	 * @var \GV\Request The request context.
+	 */
+	public $request;
+
+	/**
+	 * @var string The template slug to be loaded (like "table", "list")
+	 */
+	public static $slug;
+
+	/**
+	 * Initializer.
+	 *
+	 * @param \GV\Field $field The field about to be rendered.
+	 * @param \GV\View $view The view in this context, if applicable.
+	 * @param \GV\Source $source The source (form) in this context, if applicable.
+	 * @param \GV\Entry $entry The entry in this context, if applicable.
+	 * @param \GV\Request $request The request in this context, if applicable.
+	 */
+	public function __construct( Field $field, View $view = null, Source $source = null, Entry $entry = null, Request $request = null ) {
+		$this->field = $field;
+		$this->view = $view;
+		$this->source = $source;
+		$this->entry = $entry;
+		$this->request = $request;
+
+		/** Add granular overrides. */
+		add_filter( $this->filter_prefix . '_get_template_part', $this->_add_id_specific_templates_callback = self::add_id_specific_templates( $this ), 10, 3 );
+
+		parent::__construct();
+	}
+
+	public function __destruct() {
+		remove_filter( $this->filter_prefix . '_get_template_part', $this->_add_id_specific_templates_callback );;
+	}
+
+	/**
+	 * Enable granular template overrides based on current post, view, form, field types, etc.
+	 *
+	 * Why? See https://github.com/gravityview/GravityView/issues/1024
+	 *
+	 * @param \GV\Field_Template $template The template instance.
+	 * @return callable The callback bound to `get_template_part`. See `\GV\Field_Template::__construct`
+	 */
+	public static function add_id_specific_templates( $template ) {
+
+		$inputType  = null;
+		$field_type = null;
+		$field_id   = null;
+		$view_id    = null;
+		$form_id    = null;
+		$is_view    = $template->request &amp;&amp; $template->request->is_view();
+
+		if ( $template->field ) {
+			$inputType  = $template->field->inputType;
+			$field_type = $template->field->type;
+			$field_id   = $template->field->ID;
+		}
+
+		if ( $template->view ) {
+			$view_id = $template->view->ID;
+			$form_id = $template->view->form ? $template->view->form->ID : null;
+		}
+
+		$class = get_class( $template );
+
+		/**
+		 * Enable granular template overrides based on current post, view, form, field types, etc.
+		 *
+		 * The hierarchy is as follows:
+		 *
+		 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field type]-html.php
+		 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field inputType]-html.php
+		 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-html.php
+		 * - post-[ID of post of page where view is embedded]-field-[Field type]-html.php
+		 * - post-[ID of post of page where view is embedded]-field-[Field inputType]-html.php
+		 * - post-[ID of post of page where view is embedded]-field-html.php
+		 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field type].php
+		 * - post-[ID of post of page where view is embedded]-view-[View ID]-field-[Field inputType].php
+		 * - post-[ID of post of page where view is embedded]-view-[View ID]-field.php
+		 * - post-[ID of post of page where view is embedded]-field-[Field type].php
+		 * - post-[ID of post of page where view is embedded]-field-[Field inputType].php
+		 * - post-[ID of post of page where view is embedded]-field.php
+		 * - form-[Form ID]-field-[Field ID]-html.php
+		 * - form-[Form ID]-field-[Field ID].php
+		 * - form-[Form ID]-field-[Field type]-html.php
+		 * - form-[Form ID]-field-[Field inputType]-html.php
+		 * - form-[Form ID]-field-[Field type].php
+		 * - form-[Form ID]-field-[Field inputType].php
+		 * - view-[View ID]-field-[Field type]-html.php
+		 * - view-[View ID]-field-[Field inputType]-html.php
+		 * - view-[View ID]-field-[Field type].php
+		 * - view-[View ID]-field-[Field inputType].php
+		 * - field-[Field type]-html.php
+		 * - field-[Field inputType]-html.php
+		 * - field-[Field type].php
+		 * - field-[Field inputType].php
+		 * - field-html.php
+		 * - field.php
+		 *
+		 * @see  Gamajo_Template_Loader::get_template_file_names() Where the filter is
+		 * @param array $templates Existing list of templates.
+		 * @param string $slug      Name of the template base, example: `html`, `json`, `xml`
+		 * @param string $name      Name of the template part.
+		 *
+		 * @return array $templates Modified template array, merged with existing $templates values
+		 */
+		return function( $templates, $slug, $name ) use ( $class, $inputType, $field_type, $view_id, $is_view, $form_id, $field_id ) {
+			$specifics = array();
+
+			list( $slug_dir, $slug_name ) = $class::split_slug( $slug, $name );
+
+			global $post;
+
+			if ( $is_view &amp;&amp; $post ) {
+				if ( $field_type ) {
+					$specifics []= sprintf( '%spost-%d-view-%d-field-%s-%s.php', $slug_dir, $post->ID, $view_id, $field_type, $slug_name );
+					$inputType &amp;&amp; $specifics []= sprintf( '%spost-%d-view-%d-field-%s-%s.php', $slug_dir, $post->ID, $view_id, $inputType, $slug_name );
+					$specifics []= sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $view_id, $field_type );
+					$inputType &amp;&amp; $specifics []= sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $view_id, $inputType );
+					$specifics []= sprintf( '%spost-%d-field-%s-%s.php', $slug_dir, $post->ID, $field_type, $slug_name );
+					$inputType &amp;&amp; $specifics []= sprintf( '%spost-%d-field-%s-%s.php', $slug_dir, $post->ID, $inputType, $slug_name );
+					$specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $field_type );
+					$inputType &amp;&amp;  $specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $inputType );
+				}
+
+				$specifics []= sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $view_id, $slug_name );
+				$specifics []= sprintf( '%spost-%d-view-%d-field.php', $slug_dir, $post->ID, $view_id );
+				$specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $slug_name );
+				$specifics []= sprintf( '%spost-%d-field.php', $slug_dir, $post->ID );
+			}
+
+			/** Field-specific */
+			if ( $field_id &amp;&amp; $form_id ) {
+
+				if ( $field_id ) {
+					$specifics []= sprintf( '%sform-%d-field-%d-%s.php', $slug_dir, $form_id, $field_id, $slug_name );
+					$specifics []= sprintf( '%sform-%d-field-%d.php', $slug_dir, $form_id, $field_id );
+
+					if ( $view_id ) {
+						$specifics []= sprintf( '%sview-%d-field-%d.php', $slug_dir, $view_id, $field_id );
+					}
+				}
+
+				if ( $field_type ) {
+					$specifics []= sprintf( '%sform-%d-field-%s-%s.php', $slug_dir, $form_id, $field_type, $slug_name );
+					$inputType &amp;&amp; $specifics []= sprintf( '%sform-%d-field-%s-%s.php', $slug_dir, $form_id, $inputType, $slug_name );
+					$specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $form_id, $field_type );
+					$inputType &amp;&amp; $specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $form_id, $inputType );
+
+					$specifics []= sprintf( '%sview-%d-field-%s-%s.php', $slug_dir, $view_id, $field_type, $slug_name );
+					$inputType &amp;&amp; $specifics []= sprintf( '%sview-%d-field-%s-%s.php', $slug_dir, $view_id, $inputType, $slug_name );
+					$specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $view_id, $field_type );
+					$inputType &amp;&amp; $specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $view_id, $inputType );
+
+					$specifics []= sprintf( '%sfield-%s-%s.php', $slug_dir, $field_type, $slug_name );
+					$inputType &amp;&amp; $specifics []= sprintf( '%sfield-%s-%s.php', $slug_dir, $inputType, $slug_name );
+					$specifics []= sprintf( '%sfield-%s.php', $slug_dir, $field_type );
+					$inputType &amp;&amp; $specifics []= sprintf( '%sfield-%s.php', $slug_dir, $inputType );
+				}
+			}
+
+			if ( $form_id ) {
+				/** Generic field templates */
+				$specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $view_id, $slug_name );
+				$specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $form_id, $slug_name );
+
+				$specifics []= sprintf( '%sview-%d-field.php', $slug_dir, $view_id );
+				$specifics []= sprintf( '%sform-%d-field.php', $slug_dir, $form_id );
+			}
+
+			/**
+			 * Legacy.
+			 * Ignore some types that conflict.
+			 */
+			if ( ! in_array( $field_type, array( 'notes' ) ) ) {
+				$specifics []= sprintf( '%s.php', $field_type );
+				$specifics []= sprintf( 'fields/%s.php', $field_type );
+			}
+
+			$specifics []= sprintf( '%sfield-%s.php', $slug_dir, $slug_name );
+			$specifics []= sprintf( '%sfield.php', $slug_dir );
+
+			return array_merge( $specifics, $templates );
+		};
+	}
+
+	/**
+	 * Output some HTML.
+	 *
+	 * @todo Move to \GV\Field_HTML_Template, but call filters here?
+	 *
+	 * @return void
+	 */
+	public function render() {
+		if ( ! $entry = $this->entry->from_field( $this->field ) ) {
+			gravityview()->log->error( 'Entry is invalid for field. Returning empty.' );
+			return;
+		}
+
+		/** Retrieve the value. */
+		$display_value = $value = $this->field->get_value( $this->view, $this->source, $entry );
+
+		$source = $this->source;
+		$source_backend = $source ? $source::$backend : null;
+
+		\GV\Mocks\Legacy_Context::load( array(
+			'field' => $this->field,
+		) );
+
+		/** Alter the display value according to Gravity Forms. */
+		if ( \GV\Source::BACKEND_GRAVITYFORMS === $source_backend &amp;&amp; ! $this->field instanceof Internal_Field ) {
+
+			/** Prevent any PHP warnings that may be generated. */
+			ob_start();
+
+			$display_value = \GFCommon::get_lead_field_display( $this->field->field, $value, $entry['currency'], false, 'html' );
+
+			if ( $errors = ob_get_clean() ) {
+				gravityview()->log->error( 'Errors when calling GFCommon::get_lead_field_display()', array( 'data' => $errors ) );
+			}
+
+			// `gform_entry_field_value` expects a GF_Field, but $this->field->field can be NULL
+			if ( ! $this->field->field instanceof GF_Field ) {
+				$gf_field = \GF_Fields::create( $this->field->field );
+			}
+
+			/** Call the Gravity Forms field value filter. */
+			$display_value = apply_filters( 'gform_entry_field_value', $display_value, $gf_field, $entry->as_entry(), $this->source->form );
+
+			unset( $gf_field );
+
+			/** Replace merge tags for admin-only fields. */
+			if ( ! empty( $this->field->field->adminOnly ) ) {
+				$display_value = \GravityView_API::replace_variables( $display_value, $this->form->form, $entry->as_entry(), false, false );
+			}
+		}
+
+		$context = Template_Context::from_template( $this, compact( 'display_value', 'value' ) );
+
+		/**
+		 * Make various pieces of data available to the template
+		 *  under the $gravityview scoped variable.
+		 *
+		 * @hook gravityview/template/field/context
+		 * @param \GV\Template_Context $context The context for this template.
+		 * @since 2.0
+		 */
+		$this->push_template_data( apply_filters( 'gravityview/template/field/context', $context ), 'gravityview' );
+
+		/** Bake the template. */
+		ob_start();
+		$this->located_template = $this->get_template_part( static::$slug );
+		$output = ob_get_clean();
+
+		if ( empty( $output ) ) {
+			/**
+			 * @hook gravityview_empty_value What to display when a field is empty
+			 * @deprecated Use the `gravityview/field/value/empty` filter instead
+			 * @param string $value (empty string)
+			 */
+			$output = apply_filters( 'gravityview_empty_value', $output );
+
+			/**
+			 * @hook gravityview/field/value/empty What to display when this field is empty.
+			 * @param string $value The value to display (Default: empty string)
+			 * @param \GV\Template_Context The template context this is being called from.
+			 */
+			$output = apply_filters( 'gravityview/field/value/empty', $output, Template_Context::from_template( $this ) );
+
+			$context = Template_Context::from_template( $this, compact( 'display_value', 'value' ) );
+		}
+
+		gravityview()->log->info( 'Field template for field #{field_id} loaded: {located_template}', array( 'field_id' => $this->field->ID, 'located_template' => $this->located_template ) );
+
+		$this->pop_template_data( 'gravityview' );
+
+		/** A compatibility array that's required by some of the deprecated filters. */
+		$field_compat = array(
+			'form' => $source_backend == \GV\Source::BACKEND_GRAVITYFORMS ? $this->source->form : ( $this->view->form ? $this->view->form->form : null ),
+			'field_id' => $this->field->ID,
+			'field' => $this->field->field,
+			'field_settings' => $this->field->as_configuration(),
+			'value' => $value,
+			'display_value' => $display_value,
+			'format' => 'html',
+			'entry' => $entry->as_entry(),
+			'field_type' => $this->field->type,
+			'field_path' => $this->located_template,
+		);
+
+		/**
+		 * Wrap output in a link, if enabled in the field settings
+		 *
+		 * @todo Cleanup
+		 *
+		 * @param string $output HTML value output
+		 * @param \GV\Template_Context $context
+		 *
+		 * @return mixed|string|void
+		 */
+		$pre_link_compat_callback = function( $output, $context ) use ( $field_compat ) {
+			$field = $context->field;
+
+			/**
+			 * @hook gravityview_field_entry_value_{$field_type}_pre_link Modify the field value output for a field type before Show As Link setting is applied. Example: `gravityview_field_entry_value_number_pre_link`
+			 * @since 1.16
+			 * @param string $output HTML value output
+			 * @param array  $entry The GF entry array
+			 * @param array  $field_settings Settings for the particular GV field
+			 * @param array  $field Field array, as fetched from GravityView_View::getCurrentField()
+			 *
+			 * @deprecated Use the `gravityview/field/{$field_type}/output` or `gravityview/field/output` filters instead.
+			 */
+			$output = apply_filters( "gravityview_field_entry_value_{$field->type}_pre_link", $output, $context->entry->as_entry(), $field->as_configuration(), $field_compat );
+
+			$output = apply_filters( 'gravityview_field_entry_value_pre_link', $output, $context->entry->as_entry(), $field->as_configuration(), $field_compat );
+
+			/**
+			 * Link to the single entry by wrapping the output in an anchor tag
+			 *
+			 * Fields can override this by modifying the field data variable inside the field. See /templates/fields/post_image.php for an example.
+			 */
+			if ( ! empty( $field->show_as_link ) &amp;&amp; ! \gv_empty( $output, false, false ) ) {
+				$link_atts = empty( $field->new_window ) ? array() : array( 'target' => '_blank' );
+
+				$permalink = $context->entry->get_permalink( $context->view, $context->request );
+				$output = \gravityview_get_link( $permalink, $output, $link_atts );
+
+				/**
+				 * @hook gravityview_field_entry_link Modify the link HTML
+				 * @param string $link HTML output of the link
+				 * @param string $href URL of the link
+				 * @param array  $entry The GF entry array
+				 * @param array $field_settings Settings for the particular GV field
+				 * @deprecated Use `gravityview/template/field/entry_link`
+				 */
+				$output = apply_filters( 'gravityview_field_entry_link', $output, $permalink, $context->entry->as_entry(), $field->as_configuration() );
+
+				/**
+				 * @hook gravityview/template/field/entry_link Modify the link HTML
+				 * @since 2.0
+				 * @param string $link HTML output of the link
+				 * @param string $href URL of the link
+				 * @param \GV\Template_Context $context The context
+				 */
+				$output = apply_filters( 'gravityview/template/field/entry_link', $output, $permalink, $context );
+			}
+
+			return $output;
+		};
+
+		// TODO Cleanup
+		$post_link_compat_callback = function( $output, $context ) use ( $field_compat ) {
+			$field = $context->field;
+
+			/**
+			 * @hook gravityview_field_entry_value_{$field_type} Modify the field value output for a field type. Example: `gravityview_field_entry_value_number`
+			 * @since 1.6
+			 * @param string $output HTML value output
+			 * @param array  $entry The GF entry array
+			 * @param  array $field_settings Settings for the particular GV field
+			 * @param array $field Current field being displayed
+			 *
+			 * @deprecated Use the `gravityview/field/{$field_type}/output` or `gravityview/field/output` filters instead.
+			 */
+			$output = apply_filters( "gravityview_field_entry_value_{$field->type}", $output, $context->entry->as_entry(), $field->as_configuration(), $field_compat );
+
+			/**
+			 * @hook gravityview_field_entry_value Modify the field value output for all field types
+			 * @param string $output HTML value output
+			 * @param array  $entry The GF entry array
+			 * @param  array $field_settings Settings for the particular GV field
+			 * @param array $field_data  {@since 1.6}
+			 *
+			 * @deprecated Use the `gravityview/field/{$field_type}/output` or `gravityview/field/output` filters instead.
+			 */
+			$output = apply_filters( 'gravityview_field_entry_value', $output, $context->entry->as_entry(), $field->as_configuration(), $field_compat );
+
+			/**
+			 * @hook gravityview/template/field/{$field_type}/output Modify the field output for a field type.
+			 *
+			 * @since 2.0
+			 *
+			 * @param string $output The current output.
+			 * @param \GV\Template_Context The template context this is being called from.
+			 */
+			return apply_filters( "gravityview/template/field/{$field->type}/output", $output, $context );
+		};
+
+		/**
+		 * Okay, what's this whole pre/post_link compat deal, huh?
+		 *
+		 * Well, the `gravityview_field_entry_value_{$field_type}_pre_link` filter
+		 *  is expected to be applied before the value is turned into an entry link.
+		 *
+		 * And then `gravityview_field_entry_value_{$field_type}` and `gravityview_field_entry_value`
+		 *  are called afterwards.
+		 *
+		 * So we're going to use filter priorities to make sure this happens inline with
+		 *  our new filters, in the correct sequence. Pre-link called with priority 5 and
+		 *  post-link called with priority 9. Then everything else.
+		 *
+		 * If a new code wants to alter the value before it is hyperlinked (hyperlinkified?),
+		 *  it should hook into a priority between -inf. and 8. Afterwards: 10 to +inf.
+		 */
+		add_filter( 'gravityview/template/field/output', $pre_link_compat_callback, 5, 2 );
+		add_filter( 'gravityview/template/field/output', $post_link_compat_callback, 9, 2 );
+
+		/**
+		 * @hook gravityview/template/field/output Modify the field output for a field.
+		 *
+		 * @since 2.0
+		 *
+		 * @param string $output The current output.
+		 * @param \GV\Template_Context The template this is being called from.
+		 */
+		echo apply_filters( "gravityview/template/field/output", $output, $context );
+
+		remove_filter( 'gravityview/template/field/output', $pre_link_compat_callback, 5 );
+		remove_filter( 'gravityview/template/field/output', $post_link_compat_callback, 9 );
+	}
+}
+
+/** Load implementations. */
+require gravityview()->plugin->dir( 'future/includes/class-gv-template-field-html.php' );
+require gravityview()->plugin->dir( 'future/includes/class-gv-template-field-csv.php' );
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+    <footer>
+		<a href="https://gravityview.co/">GravityView.co</a> &bull;
+		<a href="https://github.com/gravityview/GravityView/">GravityView on GitHub</a>
+	</footer>
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Actions</h3><ul><li><a href="admin_enqueue_scripts.html">admin_enqueue_scripts</a></li><li><a href="gravityview_approve_entries_autounapprove_status.html">gravityview/approve_entries/autounapprove/status</a></li><li><a href="gravityview_approve_entries_popover_placement.html">gravityview/approve_entries/popover_placement</a></li><li><a href="gravityview_common_get_entry_id_from_slug_form_id.html">gravityview/common/get_entry_id_from_slug/form_id</a></li><li><a href="gravityview_common_get_form_fields.html">gravityview/common/get_form_fields</a></li><li><a href="gravityview_data_parse_meta_keys.html">gravityview/data/parse/meta_keys</a></li><li><a href="gravityview_edit_entry_render_hidden_field.html">gravityview/edit_entry/render_hidden_field</a></li><li><a href="gravityview_entry_permalink.html">gravityview/entry/permalink</a></li><li><a href="gravityview_entry_slug.html">gravityview/entry/slug</a></li><li><a href="gravityview_field_quiz_percent_format.html">gravityview/field/quiz_percent/format</a></li><li><a href="gravityview_fields_fileupload_link_atts.html">gravityview/fields/fileupload/link_atts</a></li><li><a href="gravityview_loaded.html">gravityview/loaded</a></li><li><a href="gravityview_query_class.html">gravityview/query/class</a></li><li><a href="gravityview_search_operator_whitelist.html">gravityview/search/operator_whitelist</a></li><li><a href="gravityview_security_require_unfiltered_html.html">gravityview/security/require_unfiltered_html</a></li><li><a href="gravityview_setting_class_%25257Bfield_type%25257D.html">gravityview/setting/class/{field_type}</a></li><li><a href="gravityview_setting_class_file_%25257Bfield_type%25257D.html">gravityview/setting/class_file/{field_type}</a></li><li><a href="gravityview_template_entry_context.html">gravityview/template/entry/context</a></li><li><a href="gravityview_template_field_context.html">gravityview/template/field/context</a></li><li><a href="gravityview_template_field_label.html">gravityview/template/field/label</a></li><li><a href="gravityview_template_list_body_after.html">gravityview/template/list/body/after</a></li><li><a href="gravityview_template_list_body_before.html">gravityview/template/list/body/before</a></li><li><a href="gravityview_template_list_entry_$zone_after.html">gravityview/template/list/entry/$zone/after</a></li><li><a href="gravityview_template_list_entry_before.html">gravityview/template/list/entry/before</a></li><li><a href="gravityview_template_list_entry_class.html">gravityview/template/list/entry/class</a></li><li><a href="gravityview_template_list_entry_content_after.html">gravityview/template/list/entry/content/after</a></li><li><a href="gravityview_template_list_entry_content_before.html">gravityview/template/list/entry/content/before</a></li><li><a href="gravityview_template_list_entry_title_after.html">gravityview/template/list/entry/title/after</a></li><li><a href="gravityview_template_list_entry_title_before.html">gravityview/template/list/entry/title/before</a></li><li><a href="gravityview_template_table_body_after.html">gravityview/template/table/body/after</a></li><li><a href="gravityview_template_table_body_before.html">gravityview/template/table/body/before</a></li><li><a href="gravityview_template_table_entry_class.html">gravityview/template/table/entry/class</a></li><li><a href="gravityview_template_table_entry_hide_empty.html">gravityview/template/table/entry/hide_empty</a></li><li><a href="gravityview_template_table_tr_after.html">gravityview/template/table/tr/after</a></li><li><a href="gravityview_template_table_tr_before.html">gravityview/template/table/tr/before</a></li><li><a href="gravityview_template_view_context.html">gravityview/template/view/context</a></li><li><a href="gravityview_widgets_search_created_by_user_fields.html">gravityview/widgets/search/created_by/user_fields</a></li><li><a href="gravityview_widgets_search_created_by_user_meta_fields.html">gravityview/widgets/search/created_by/user_meta_fields</a></li><li><a href="gravityview_widgets_search_datepicker_format.html">gravityview/widgets/search/datepicker/format</a></li><li><a href="gravityview_directory_endpoint.html">gravityview_directory_endpoint</a></li><li><a href="gravityview_directory_link.html">gravityview_directory_link</a></li><li><a href="gravityview_entry_default_fields.html">gravityview_entry_default_fields</a></li><li><a href="gravityview_get_entries.html">gravityview_get_entries</a></li><li><a href="gravityview_pre_get_entries.html">gravityview_pre_get_entries</a></li><li><a href="gravityview_search_operator.html">gravityview_search_operator</a></li><li><a href="gravityview_table_cells.html">gravityview_table_cells</a></li><li><a href="gravityview_template_active_areas.html">gravityview_template_active_areas</a></li></ul><h3>Filters</h3><ul><li><a href="admin_title.html">admin_title</a></li><li><a href="gravityview_entry_link_add_query_args.html">gravityview/entry_link/add_query_args</a></li><li><a href="gravityview_template_table_fields.html">gravityview/template/table/fields</a></li><li><a href="gravityview_field_entry_link.html">gravityview_field_entry_link</a></li><li><a href="gravityview_search_criteria.html">gravityview_search_criteria</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

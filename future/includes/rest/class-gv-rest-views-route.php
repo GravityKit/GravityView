@@ -118,8 +118,8 @@ class Views_Route extends Route {
 		}
 
 		/**
-		 * @filter `gravityview/rest/entry/fields` Whitelist more entry fields that are output in regular REST requests.
-		 * @param[in,out] array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the view.
+		 * @hook gravityview/rest/entry/fields Whitelist more entry fields that are output in regular REST requests.
+		 * @param array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the view.
 		 * @param \GV\View $view The view.
 		 * @param \GV\Entry $entry The entry.
 		 * @param \WP_REST_Request $request Request object.
@@ -140,7 +140,7 @@ class Views_Route extends Route {
 		$return = array();
 
 		$renderer = new \GV\Field_Renderer();
-		
+
 		$used_ids = array();
 
 		foreach ( $allowed as $field ) {
@@ -163,8 +163,8 @@ class Views_Route extends Route {
 			}
 
 			/**
-			 * @filter `gravityview/api/field/key` Filter the key name in the results for JSON output.
-			 * @param[in,out] string $field_id The ID. Should be unique or keys will be gobbled up.
+			 * @hook gravityview/api/field/key Filter the key name in the results for JSON output.
+			 * @param string $field_id The ID. Should be unique or keys will be gobbled up.
 			 * @param \GV\View $view The view.
 			 * @param \GV\Entry $entry The entry.
 			 * @param \WP_REST_Request $request Request object.
@@ -246,7 +246,7 @@ class Views_Route extends Route {
 			$output = $renderer->render( $view, new Request( $request ) );
 
 			/**
-			 * @filter `gravityview/rest/entries/html/insert_meta` Whether to include `http-equiv` meta tags in the HTML output describing the data
+			 * @hook gravityview/rest/entries/html/insert_meta Whether to include `http-equiv` meta tags in the HTML output describing the data
 			 * @since 2.0
 			 * @param bool $insert_meta Add <meta> tags? [Default: true]
 			 * @param int $count The number of entries being rendered
@@ -447,8 +447,8 @@ class Views_Route extends Route {
 		}
 
 		/**
-		 * @filter `gravityview/view/output/rest` Disable rest output. Final chance.
-		 * @param[in,out] bool Enable or not.
+		 * @hook gravityview/view/output/rest Disable rest output. Final chance.
+		 * @param bool Enable or not.
 		 * @param \GV\View $view The view.
 		 */
 		if ( ! apply_filters( 'gravityview/view/output/rest', true, $view ) ) {

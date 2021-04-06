@@ -35,9 +35,9 @@ class Entry_List_Template extends Entry_Template {
 
 		$renderer = new Field_Renderer();
 		$source = is_numeric( $field->ID ) ? ( GF_Form::by_id( $field->form_id ) ? : $this->view->form ) : new Internal_Source();
-		
+
 		$value = $renderer->render( $field, $this->view, $source, $entry, $this->request );
-		
+
 		$context = Template_Context::from_template( $this, compact( 'field', 'entry' ) );
 
 		/**
@@ -47,15 +47,15 @@ class Entry_List_Template extends Entry_Template {
 		$label = apply_filters( 'gravityview/template/field_label', $label, $field->as_configuration(), is_numeric( $field->ID ) ? ( $source->form ? $source->form : null ) : null, $entry->as_entry() );
 
 		/**
-		 * @filter `gravityview/template/field/label` Override the field label.
+		 * @hook gravityview/template/field/label Override the field label.
 		 * @since 2.0
-		 * @param[in,out] string $label The label to override.
+		 * @param string $label The label to override.
 		 * @param \GV\Template_Context $context The context.
 		 */
 		$label = apply_filters( 'gravityview/template/field/label', $label, $context );
 
 		/**
-		 * @filter `gravityview/template/table/entry/hide_empty`
+		 * @hook gravityview/template/table/entry/hide_empty
 		 * @param boolean $hide_empty Should the row be hidden if the value is empty? Default: don't hide.
 		 * @param \GV\Template_Context $context The context ;) Love it, cherish it. And don't you dare modify it!
 		 */

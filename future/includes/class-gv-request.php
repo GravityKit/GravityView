@@ -31,9 +31,9 @@ abstract class Request {
 		), true );
 
 		/**
-		 * @filter `gravityview/request/is_renderable` Is this request renderable?
+		 * @hook gravityview/request/is_renderable Is this request renderable?
 		 * @since 2.5.2
-		 * @param[in,out] boolean $is_renderable Huh?
+		 * @param boolean $is_renderable Huh?
 		 * @param \GV\Request $this This.
 		 */
 		return apply_filters( 'gravityview/request/is_renderable', $is_renderable, $this );
@@ -203,7 +203,7 @@ abstract class Request {
 	 */
 	public function is_edit_entry( $form_id = 0 ) {
 		/**
-		* @filter `gravityview_is_edit_entry` Whether we're currently on the Edit Entry screen \n
+		* @hook gravityview_is_edit_entry Whether we're currently on the Edit Entry screen \n
 		* The Edit Entry functionality overrides this value.
 		* @param boolean $is_edit_entry
 		*/

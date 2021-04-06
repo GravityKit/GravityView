@@ -56,7 +56,7 @@ class GravityView_Field_Hidden extends GravityView_Field {
 			if ( 'hidden' === $field->type ) {
 
 				/**
-				 * @filter `gravityview/edit_entry/reveal_hidden_field` Convert Hidden fields into Text fields on Edit Entry
+				 * @hook gravityview/edit_entry/reveal_hidden_field Convert Hidden fields into Text fields on Edit Entry
 				 * @since 1.22.6
 				 * @since 2.7 Changed default value to `false` from `true`
 				 * @param bool $reveal_hidden_field True: Convert the hidden field to text; False: Leave hidden

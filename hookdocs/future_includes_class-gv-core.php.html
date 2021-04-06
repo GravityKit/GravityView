@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: future/includes/class-gv-core.php - 10up ElasticPress Hook Docs</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+
+	<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans:300,400|Playfair+Display:900&display=swap" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="styles-10up.css">
+</head>
+
+<body>
+
+<div id="main">
+
+	
+    <h1 class="page-title">Source: future/includes/class-gv-core.php</h1>
+	
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;?php
+namespace GV;
+
+/** If this file is called directly, abort. */
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
+	die();
+}
+
+/**
+ * The core GravityView API.
+ *
+ * Returned by the wrapper gravityview() global function, exposes
+ * all the required public functionality and classes, sets up global
+ * state depending on current request context, etc.
+ */
+final class Core {
+	/**
+	 * @var \GV\Core The \GV\Core static instance.
+	 */
+	private static $__instance = null;
+
+	/**
+	 * @var \GV\Plugin The WordPress plugin context.
+	 *
+	 * @api
+	 * @since 2.0
+	 */
+	public $plugin;
+
+	/**
+	 * @var \GV\Admin_Request|\GV\Frontend_Request|\GV\Request The global request.
+	 *
+	 * @api
+	 * @since 2.0
+	 */
+	public $request;
+
+	/**
+	 * @var \GV\Logger
+	 *
+	 * @api
+	 * @since 2.0
+	 */
+	public $log;
+
+	/**
+	 * Get the global instance of \GV\Core.
+	 *
+	 * @return \GV\Core The global instance of GravityView Core.
+	 */
+	public static function get() {
+		if ( ! self::$__instance instanceof self ) {
+			self::$__instance = new self;
+		}
+		return self::$__instance;
+	}
+
+	/**
+	 * Very early initialization.
+	 *
+	 * Activation handlers, rewrites, post type registration.
+	 */
+	public static function bootstrap() {
+		require_once dirname( __FILE__ ) . '/class-gv-plugin.php';
+		Plugin::get()->register_activation_hooks();
+	}
+
+	/**
+	 * Bootstrap.
+	 *
+	 * @return void
+	 */
+	private function __construct() {
+		self::$__instance = $this;
+		$this->init();
+	}
+
+	/**
+	 * Early initialization.
+	 *
+	 * Loads dependencies, sets up the object, adds hooks, etc.
+	 *
+	 * @return void
+	 */
+	private function init() {
+		$this->plugin = Plugin::get();
+
+		/** Enable logging. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-logger.php' );
+		/**
+		 * @hook gravityview/logger Filter the logger instance being used for logging.
+		 * @param {\GV\Logger} $logger The logger instance.
+		 */
+		$this->log = apply_filters( 'gravityview/logger', new WP_Action_Logger() );
+
+		/**
+		 * Utilities.
+		 */
+		require_once $this->plugin->dir( 'future/includes/class-gv-utils.php' );
+
+		/** The Settings. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-settings.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-settings-view.php' );
+
+		/** Request. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );
+
+		if ( Request::is_admin() ) {
+			$this->request = new Admin_Request();
+		} else {
+			$this->request = new Frontend_Request();
+		}
+
+		/** Require critical legacy core files. @todo Deprecate */
+		require_once $this->plugin->dir( 'includes/helper-functions.php' );
+		require_once $this->plugin->dir( 'includes/class-common.php');
+		require_once $this->plugin->dir( 'includes/connector-functions.php');
+		require_once $this->plugin->dir( 'includes/class-gravityview-compatibility.php' );
+		require_once $this->plugin->dir( 'includes/class-gravityview-roles-capabilities.php' );
+		require_once $this->plugin->dir( 'includes/class-gravityview-admin-notices.php' );
+		require_once $this->plugin->dir( 'includes/class-admin.php' );
+		require_once $this->plugin->dir( 'includes/class-post-types.php');
+		require_once $this->plugin->dir( 'includes/class-cache.php');
+
+		/**
+		 * GravityView extensions and widgets.
+		 */
+		require_once $this->plugin->dir( 'future/includes/class-gv-extension.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-widget.php' );
+
+		/** More legacy core. @todo Deprecate */
+		$this->plugin->include_legacy_core();
+
+		/**
+		 * Stop all further functionality from loading if the WordPress
+		 * plugin is incompatible with the current environment.
+		 *
+		 * Saves some time and memory.
+		 */
+		if ( ! $this->plugin->is_compatible() ) {
+			$this->log->error( 'GravityView 2.0 is not compatible with this environment. Stopped loading.' );
+			return;
+		}
+
+		/** Register the gravityview post type upon WordPress core init. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
+		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
+		add_action( 'init', array( '\GV\View', 'add_rewrite_endpoint' ) );
+		add_filter( 'map_meta_cap', array( '\GV\View', 'restrict' ), 11, 4 );
+		add_action( 'template_redirect', array( '\GV\View', 'template_redirect' ) );
+		add_action( 'the_content', array( '\GV\View', 'content' ) );
+
+		/** Add rewrite endpoint for single-entry URLs. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );
+		add_action( 'init', array( '\GV\Entry', 'add_rewrite_endpoint' ) );
+
+		/** REST API */
+		require_once $this->plugin->dir( 'future/includes/rest/class-gv-rest-core.php' );
+		add_action( 'rest_api_init', array( '\GV\REST\Core', 'init' ) );
+
+		/** Generate custom slugs on entry save. @todo Deprecate. */
+		add_action( 'gform_entry_created', array( '\GravityView_API', 'entry_create_custom_slug' ), 10, 2 );
+
+		/** Shortcodes */
+		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gravityview.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gventry.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gvfield.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gvlogic.php' );
+		add_action( 'init', array( '\GV\Shortcodes\gravityview', 'add' ) );
+		add_action( 'init', array( '\GV\Shortcodes\gventry', 'add' ) );
+		add_action( 'init', array( '\GV\Shortcodes\gvfield', 'add' ) );
+		add_action( 'init', array( '\GV\Shortcodes\gvlogic', 'add' ) );
+
+		/** oEmbed */
+		require_once $this->plugin->dir( 'future/includes/class-gv-oembed.php' );
+		add_action( 'init', array( '\GV\oEmbed', 'init' ), 11 );
+
+		/** Our Source generic and beloved source and form backend implementations. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-source.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-source-internal.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-form.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-form-gravityforms.php' );
+
+		/** Joins */
+		require_once $this->plugin->dir( 'future/includes/class-gv-form-join.php' );
+
+		/** Our Entry generic and beloved entry backend implementations. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-entry-gravityforms.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-entry-multi.php' );
+
+		/** Context is everything. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-context.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-context-template.php' );
+
+		/** Our Field generic and implementations. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-field.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-field-gravityforms.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-field-internal.php' );
+
+		/** Get the collections ready. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-form.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-field.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-entry.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-widget.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-view.php' );
+
+		/** The sorting, filtering and paging classes. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-entry-filter.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-entry-sort.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-entry-offset.php' );
+
+		/** The Renderers. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-renderer.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-renderer-view.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-renderer-entry.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-renderer-entry-edit.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-renderer-field.php' );
+
+		/** Templating. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-template.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-template-view.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-template-entry.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-template-field.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-template-legacy-override.php' );
+
+		/** Magic. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-wrappers.php' );
+
+
+		require_once $this->plugin->dir( 'includes/class-gravityview-powered-by.php' );
+
+		/** Cache busting. */
+		add_action( 'clean_post_cache', '\GV\View::_flush_cache' );
+
+		/**
+		 * GravityView core has been loaded.
+		 *
+		 * Note: this is a very early load hook, not all of WordPress core has been loaded here.
+		 *  `init` hasn't been called yet.
+		 * @hook gravityview/loaded
+		 */
+		do_action( 'gravityview/loaded' );
+	}
+
+	public function __clone() { }
+
+	public function __wakeup() { }
+
+	/**
+	 * Wrapper magic.
+	 *
+	 * Making developers happy, since 2017.
+	 */
+	public function __get( $key ) {
+		static $views;
+
+		switch ( $key ) {
+			case 'views':
+				if ( is_null( $views ) ) {
+					$views = new \GV\Wrappers\views();
+				}
+				return $views;
+		}
+	}
+
+	public function __set( $key, $value ) {
+	}
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+    <footer>
+		<a href="https://gravityview.co/">GravityView.co</a> &bull;
+		<a href="https://github.com/gravityview/GravityView/">GravityView on GitHub</a>
+	</footer>
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Actions</h3><ul><li><a href="admin_enqueue_scripts.html">admin_enqueue_scripts</a></li><li><a href="gravityview_approve_entries_autounapprove_status.html">gravityview/approve_entries/autounapprove/status</a></li><li><a href="gravityview_approve_entries_popover_placement.html">gravityview/approve_entries/popover_placement</a></li><li><a href="gravityview_common_get_entry_id_from_slug_form_id.html">gravityview/common/get_entry_id_from_slug/form_id</a></li><li><a href="gravityview_common_get_form_fields.html">gravityview/common/get_form_fields</a></li><li><a href="gravityview_data_parse_meta_keys.html">gravityview/data/parse/meta_keys</a></li><li><a href="gravityview_edit_entry_render_hidden_field.html">gravityview/edit_entry/render_hidden_field</a></li><li><a href="gravityview_entry_permalink.html">gravityview/entry/permalink</a></li><li><a href="gravityview_entry_slug.html">gravityview/entry/slug</a></li><li><a href="gravityview_field_quiz_percent_format.html">gravityview/field/quiz_percent/format</a></li><li><a href="gravityview_fields_fileupload_link_atts.html">gravityview/fields/fileupload/link_atts</a></li><li><a href="gravityview_loaded.html">gravityview/loaded</a></li><li><a href="gravityview_query_class.html">gravityview/query/class</a></li><li><a href="gravityview_search_operator_whitelist.html">gravityview/search/operator_whitelist</a></li><li><a href="gravityview_security_require_unfiltered_html.html">gravityview/security/require_unfiltered_html</a></li><li><a href="gravityview_setting_class_%25257Bfield_type%25257D.html">gravityview/setting/class/{field_type}</a></li><li><a href="gravityview_setting_class_file_%25257Bfield_type%25257D.html">gravityview/setting/class_file/{field_type}</a></li><li><a href="gravityview_template_entry_context.html">gravityview/template/entry/context</a></li><li><a href="gravityview_template_field_context.html">gravityview/template/field/context</a></li><li><a href="gravityview_template_field_label.html">gravityview/template/field/label</a></li><li><a href="gravityview_template_list_body_after.html">gravityview/template/list/body/after</a></li><li><a href="gravityview_template_list_body_before.html">gravityview/template/list/body/before</a></li><li><a href="gravityview_template_list_entry_$zone_after.html">gravityview/template/list/entry/$zone/after</a></li><li><a href="gravityview_template_list_entry_before.html">gravityview/template/list/entry/before</a></li><li><a href="gravityview_template_list_entry_class.html">gravityview/template/list/entry/class</a></li><li><a href="gravityview_template_list_entry_content_after.html">gravityview/template/list/entry/content/after</a></li><li><a href="gravityview_template_list_entry_content_before.html">gravityview/template/list/entry/content/before</a></li><li><a href="gravityview_template_list_entry_title_after.html">gravityview/template/list/entry/title/after</a></li><li><a href="gravityview_template_list_entry_title_before.html">gravityview/template/list/entry/title/before</a></li><li><a href="gravityview_template_table_body_after.html">gravityview/template/table/body/after</a></li><li><a href="gravityview_template_table_body_before.html">gravityview/template/table/body/before</a></li><li><a href="gravityview_template_table_entry_class.html">gravityview/template/table/entry/class</a></li><li><a href="gravityview_template_table_entry_hide_empty.html">gravityview/template/table/entry/hide_empty</a></li><li><a href="gravityview_template_table_tr_after.html">gravityview/template/table/tr/after</a></li><li><a href="gravityview_template_table_tr_before.html">gravityview/template/table/tr/before</a></li><li><a href="gravityview_template_view_context.html">gravityview/template/view/context</a></li><li><a href="gravityview_widgets_search_created_by_user_fields.html">gravityview/widgets/search/created_by/user_fields</a></li><li><a href="gravityview_widgets_search_created_by_user_meta_fields.html">gravityview/widgets/search/created_by/user_meta_fields</a></li><li><a href="gravityview_widgets_search_datepicker_format.html">gravityview/widgets/search/datepicker/format</a></li><li><a href="gravityview_directory_endpoint.html">gravityview_directory_endpoint</a></li><li><a href="gravityview_directory_link.html">gravityview_directory_link</a></li><li><a href="gravityview_entry_default_fields.html">gravityview_entry_default_fields</a></li><li><a href="gravityview_get_entries.html">gravityview_get_entries</a></li><li><a href="gravityview_pre_get_entries.html">gravityview_pre_get_entries</a></li><li><a href="gravityview_search_operator.html">gravityview_search_operator</a></li><li><a href="gravityview_table_cells.html">gravityview_table_cells</a></li><li><a href="gravityview_template_active_areas.html">gravityview_template_active_areas</a></li></ul><h3>Filters</h3><ul><li><a href="admin_title.html">admin_title</a></li><li><a href="gravityview_entry_link_add_query_args.html">gravityview/entry_link/add_query_args</a></li><li><a href="gravityview_template_table_fields.html">gravityview/template/table/fields</a></li><li><a href="gravityview_field_entry_link.html">gravityview_field_entry_link</a></li><li><a href="gravityview_search_criteria.html">gravityview_search_criteria</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

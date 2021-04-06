@@ -62,8 +62,9 @@ abstract class Entry {
 	 */
 	public static function get_endpoint_name() {
 		/**
-		 * @filter `gravityview_directory_endpoint` Change the slug used for single entries
-		 * @param[in,out] string $endpoint Slug to use when accessing single entry. Default: `entry`
+		 * Change the slug used for single entries
+		 * @hook gravityview_directory_endpoint
+		 * @param {string} $endpoint Slug to use when accessing single entry. Default: `entry`
 		 */
 		$endpoint = apply_filters( 'gravityview_directory_endpoint', 'entry' );
 
@@ -138,10 +139,11 @@ abstract class Entry {
 		}
 
 		/**
-		 * @filter `gravityview_directory_link` Modify the URL to the View "directory" context
+		 * Modify the URL to the View "directory" context
+		 * @hook gravityview_directory_link
 		 * @since 1.19.4
-		 * @param string $link URL to the View's "directory" context (Multiple Entries screen)
-		 * @param int $post_id ID of the post to link to. If the View is embedded, it is the post or page ID
+		 * @param {string} $link URL to the View's "directory" context (Multiple Entries screen)
+		 * @param {int} $post_id ID of the post to link to. If the View is embedded, it is the post or page ID
 		 */
 		$permalink = apply_filters( 'gravityview_directory_link', $permalink, $request->is_view() ? $view_id : ( $post ? $post->ID : null ) );
 
@@ -178,12 +180,13 @@ abstract class Entry {
 		$permalink = add_query_arg( $args, $permalink );
 
 		/**
-		 * @filter `gravityview/entry/permalink` The permalink of this entry.
+		 * Filters the permalink of this entry.
+		 * @hook gravityview/entry/permalink
 		 * @since 2.0
-		 * @param string $permalink The permalink.
-		 * @param \GV\Entry $entry The entry we're retrieving it for.
-		 * @param \GV\View|null $view The view context.
-		 * @param \GV\Request $request The request context.
+		 * @param {string} $permalink The permalink.
+		 * @param {\GV\Entry} $entry The entry we're retrieving it for.
+		 * @param {\GV\View|null} $view The view context.
+		 * @param {\GV\Request} $request The request context.
 		 */
 		return apply_filters( 'gravityview/entry/permalink', $permalink, $this, $view, $request );
 	}
@@ -214,13 +217,14 @@ abstract class Entry {
 		}
 
 		/**
-		 * @filter `gravityview/entry/slug` Modify the entry URL slug as needed.
+		 * Filters the entry URL slug.
+		 * @hook gravityview/entry/slug
 		 * @since 2.2.1
-		 * @param[in,out] string $entry_slug The slug, sanitized with sanitize_title()
-		 * @param null|\GV\Entry $this The entry object.
-		 * @param null|\GV\View $view The view object.
-		 * @param null|\GV\Request $request The request.
-		 * @param bool $track_directory Whether the directory is tracked.
+		 * @param {string} $entry_slug The slug, sanitized with sanitize_title()
+		 * @param {null|\GV\Entry} $this The entry object.
+		 * @param {null|\GV\View} $view The view object.
+		 * @param {null|\GV\Request} $request The request.
+		 * @param {bool} $track_directory Whether the directory is tracked.
 		 */
 		$entry_slug = apply_filters( 'gravityview/entry/slug', $entry_slug, $this, $view, $request, $track_directory );
 

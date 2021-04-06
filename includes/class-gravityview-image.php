@@ -90,7 +90,7 @@ class GravityView_Image {
 		$info = pathinfo( $this->src );
 
 		/**
-		 * @filter `gravityview_image_extensions` Extensions that GravityView recognizes as valid images to be shown in an `img` tag
+		 * @hook gravityview_image_extensions Extensions that GravityView recognizes as valid images to be shown in an `img` tag
 		 * @param array $image_exts Default: `['jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico']`
 		 */
 		$image_exts = apply_filters( 'gravityview_image_extensions', array( 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico' ));
@@ -129,7 +129,7 @@ class GravityView_Image {
 			else {
 
 				/**
-				 * @filter `gravityview_image_sizes` Modify the image size presets used by GravityView_Image class
+				 * @hook gravityview_image_sizes Modify the image size presets used by GravityView_Image class
 				 * @param array $image_sizes Array of image sizes with the key being the size slug, and the value being an array with `width` and `height` defined, in pixels
 				 */
 				$image_sizes = apply_filters( 'gravityview_image_sizes', array(
@@ -191,7 +191,7 @@ class GravityView_Image {
 		}
 
 		/**
-		 * @filter `gravityview_image_html` Filter the HTML image output
+		 * @hook gravityview_image_html Filter the HTML image output
 		 * @param string $html the generated image html
 		 * @param GravityView_Image $this The current image object
 		 */

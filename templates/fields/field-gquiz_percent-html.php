@@ -19,11 +19,11 @@ if ( gv_empty( $display_value, false, false ) ) {
 }
 
 /**
- * @filter `gravityview/field/quiz_percent/format` Modify the format of the display of Quiz Score (Percent) field.
- * @see http://php.net/manual/en/function.sprintf.php For formatting guide
- * @param string $format Format passed to printf() function. Default `%d%%`, which prints as "{number}%". Notice the double `%%`, this prints a literal '%' character.
- * @since 2.0
- * @param \GV\Template_Context $gravityview The context.
+ * Modify the format of the display of Quiz Score (Percent) field.
+ * @hook gravityview/field/quiz_percent/format
+ * @see https://php.net/manual/en/function.sprintf.php For formatting guide
+ * @param {string} $format Format passed to printf() function. Default `%d%%`, which prints as "{number}%". Notice the double `%%`, this prints a literal '%' character.
+ * @param {\GV\Template_Context} $gravityview The context. Added 2.0.
  */
 $format = apply_filters('gravityview/field/quiz_percent/format', '%d%%', $gravityview );
 

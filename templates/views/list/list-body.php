@@ -12,7 +12,7 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 
 $template = $gravityview->template;
 
-/** @action `gravityview/template/list/body/before` */
+/** @hook gravityview/template/list/body/before */
 $template::body_before( $gravityview );
 
 // There are no entries.
@@ -30,7 +30,7 @@ if ( ! $gravityview->entries->count() ) {
 
 		$entry_slug = GravityView_API::get_entry_slug( $entry->ID, $entry->as_entry() );
 
-		/** @filter `gravityview/template/list/entry/class` */
+		/** @hook gravityview/template/list/entry/class */
 		$entry_class = $template::entry_class( 'gv-list-view', $entry, $gravityview );
 
 	?>
@@ -38,7 +38,7 @@ if ( ! $gravityview->entries->count() ) {
 
 		<?php
 
-		/** @action `gravityview/template/list/entry/before` */
+		/** @hook gravityview/template/list/entry/before */
 		$template::entry_before( $entry, $gravityview );
 
 		/**
@@ -51,7 +51,7 @@ if ( ! $gravityview->entries->count() ) {
 
         if ( $has_title || $has_subtitle ) {
 
-			/** @action `gravityview/template/list/entry/title/before` */
+			/** @hook gravityview/template/list/entry/title/before */
 			$template::entry_before( $entry, $gravityview, 'title' );
 
             ?>
@@ -91,7 +91,7 @@ if ( ! $gravityview->entries->count() ) {
 			</div>
 		<?php
 
-			/** @action `gravityview/template/list/entry/title/after` */
+			/** @hook gravityview/template/list/entry/title/after */
 			$template::entry_after( $entry, $gravityview, 'title' );
 
         }
@@ -115,7 +115,7 @@ if ( ! $gravityview->entries->count() ) {
 
 				<?php
 
-					/** @action `gravityview/template/list/entry/content/before` */
+					/** @hook gravityview/template/list/entry/content/before */
 					$template::entry_before( $entry, $gravityview, 'content' );
 
 					if ( $has_image ) {
@@ -144,7 +144,7 @@ if ( ! $gravityview->entries->count() ) {
 						?></div><?php
 					}
 
-					/** @action `gravityview/template/list/entry/content/after` */
+					/** @hook gravityview/template/list/entry/content/after */
 					$template::entry_after( $entry, $gravityview, 'content' );
 			?>
 
@@ -163,7 +163,7 @@ if ( ! $gravityview->entries->count() ) {
 
 		// Is the footer configured?
 		if ( $has_footer_left || $has_footer_right ) {
-			/** @action `gravityview/template/list/entry/footer/before` */
+			/** @action gravityview/template/list/entry/footer/before */
 			$template::entry_before( $entry, $gravityview, 'footer' );
 			?>
 
@@ -187,12 +187,12 @@ if ( ! $gravityview->entries->count() ) {
 
 			<?php
 
-			/** @action `gravityview/template/list/entry/footer/after` */
+			/** @action gravityview/template/list/entry/footer/after */
 			$template::entry_after( $entry, $gravityview, 'footer' );
 
 		} // End if footer is configured
 
-		/** @action `gravityview/template/list/entry/after` */
+		/** @action gravityview/template/list/entry/after */
 		$template::entry_after( $entry, $gravityview );
 
 		?>
@@ -202,5 +202,5 @@ if ( ! $gravityview->entries->count() ) {
 	<?php }
 }
 
-/** @action `gravityview/template/list/body/after` */
+/** @hook gravityview/template/list/body/after */
 $template::body_after( $gravityview );

@@ -106,7 +106,7 @@ class GravityView_Support_Port {
 		}
 
 		/**
-		 * @filter `gravityview/support_port/display` Whether to display Support Port
+		 * @hook gravityview/support_port/display Whether to display Support Port
 		 * @since 1.15
 		 * @param boolean $display_beacon Default: `true`
 		 */
@@ -232,7 +232,7 @@ class GravityView_Support_Port {
 		);
 
 		/**
-         * @filter `gravityview/support_port/localization_data` Filter data passed to the Support Port, before localize_script is run
+         * @hook gravityview/support_port/localization_data Filter data passed to the Support Port, before localize_script is run
 		 * @since 2.0
          * @param array $localization_data {
          *   @type int $contactEnabled Can the user contact support?
@@ -323,7 +323,7 @@ class GravityView_Support_Port {
 		}
 
 		/**
-		 * @filter `gravityview/support_port/show_profile_setting` Should the "GravityView Support Port" setting be shown on user profiles?
+		 * @hook gravityview/support_port/show_profile_setting Should the "GravityView Support Port" setting be shown on user profiles?
 		 * @since 1.15
 		 * @param boolean $allow_profile_setting Default: `true`, if the user has the `gravityview_support_port` capability, which defaults to true for Contributors and higher
 		 * @param WP_User $user Current user object

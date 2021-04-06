@@ -40,14 +40,14 @@ class Field_Renderer extends Renderer {
 		}
 
 		/**
-		 * @filter `gravityview/template/field/class` Filter the template class that is about to be used to render the view.
+		 * @hook gravityview/template/field/class Filter the template class that is about to be used to render the view.
 		 * @since 2.0
-		 * @param string $class The chosen class - Default: \GV\Field_HTML_Template.
-		 * @param \GV\Field $field The field about to be rendered.
-		 * @param \GV\View $view The view in this context, if applicable.
-		 * @param \GV\Source $source The source (form) in this context, if applicable.
-		 * @param \GV\Entry $entry The entry in this context, if applicable.
-		 * @param \GV\Request $request The request in this context, if applicable.
+		 * @param {string} $class The chosen class - Default: \GV\Field_HTML_Template.
+		 * @param {\GV\Field} $field The field about to be rendered.
+		 * @param {\GV\View} $view The view in this context, if applicable.
+		 * @param {\GV\Source} $source The source (form) in this context, if applicable.
+		 * @param {\GV\Entry} $entry The entry in this context, if applicable.
+		 * @param {\GV\Request} $request The request in this context, if applicable.
 		 */
 		$class = apply_filters( 'gravityview/template/field/class', $class, $field, $view, $source, $entry, $request );
 		if ( ! $class || ! class_exists( $class ) ) {

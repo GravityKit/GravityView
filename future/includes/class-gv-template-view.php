@@ -112,7 +112,7 @@ abstract class View_Template extends Template {
 			$specifics []= sprintf( '%spost-%d-%s.php', $slug_dir, $post->ID, $slug_name );
 		}
 
-		
+
 		$specifics []= sprintf( '%sview-%d-%s.php', $slug_dir, $this->view->ID, $slug_name );
 		$specifics []= sprintf( '%sform-%d-%s.php', $slug_dir, $this->view->form->ID, $slug_name );
 
@@ -131,7 +131,7 @@ abstract class View_Template extends Template {
 		 * Make various pieces of data available to the template
 		 *  under the $gravityview scoped variable.
 		 *
-		 * @filter `gravityview/template/view/context`
+		 * @hook gravityview/template/view/context
 		 * @param \GV\Template_Context $context The context for this template.
 		 * @param \GV\View_Template $template The current template.
 		 * @since 2.0
@@ -139,7 +139,7 @@ abstract class View_Template extends Template {
 		$this->push_template_data( $context = apply_filters( 'gravityview/template/view/context', $context, $this ), 'gravityview' );
 
 		/**
-		 * @filter `gravityview/template/view/render` Before rendering.
+		 * @hook gravityview/template/view/render Before rendering.
 		 * @param \GV\View_Template $template The current template.
 		 * @since 2.0
 		 */

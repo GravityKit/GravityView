@@ -678,7 +678,7 @@ HTML;
 		);
 
 		/**
-		 * @filter `gravityview/settings/default` Filter default global settings.
+		 * @hook gravityview/settings/default Filter default global settings.
 		 * @param  [in,out] array The defaults.
 		 */
 		return apply_filters( 'gravityview/settings/defaults', $defaults );
@@ -1095,7 +1095,7 @@ HTML;
 		$fields = apply_filters( 'gravityview_settings_fields', $fields );
 
 		/**
-		 * @filter `gravityview/settings/fields` Filter the settings fields.
+		 * @hook gravityview/settings/fields Filter the settings fields.
 		 * @param array $fields The fields to filter.
 		 */
 		$fields = apply_filters( 'gravityview/settings/fields', $fields );
@@ -1180,7 +1180,7 @@ HTML;
 		);
 
 		/**
-		 * @filter `gravityview/settings/extension/sections` Modify the GravityView settings page
+		 * @hook gravityview/settings/extension/sections Modify the GravityView settings page
 		 * Extensions can tap in here to insert their own section and settings.
 		 * <code>
 		 *   $sections[] = array(

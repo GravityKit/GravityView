@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: templates/deprecated/fields/post_image.php - 10up ElasticPress Hook Docs</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+
+	<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans:300,400|Playfair+Display:900&display=swap" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="styles-10up.css">
+</head>
+
+<body>
+
+<div id="main">
+
+	
+    <h1 class="page-title">Source: templates/deprecated/fields/post_image.php</h1>
+	
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;?php
+/**
+ * Display the fileupload field type
+ *
+ * @package GravityView
+ * @subpackage GravityView/templates/fields
+ */
+
+$gravityview_view = GravityView_View::getInstance();
+
+extract( $gravityview_view->getCurrentField() );
+
+// Tell the renderer not to wrap this field in an anchor tag.
+$gravityview_view->setCurrentFieldSetting('show_as_link', false);
+
+/**
+ * Parse the stored value of the post image
+ *
+ * The image is stored with `|:|` dividing the fields. Break it into its parts and see what's set.
+ *
+ * @see GFCommon::get_lead_field_display()
+ * @var array
+ */
+$ary = explode("|:|", $value);
+$url = count($ary) > 0 ? $ary[0] : "";
+$title = count($ary) > 1 ? $ary[1] : "";
+$caption = count($ary) > 2 ? $ary[2] : "";
+$description = count($ary) > 3 ? $ary[3] : "";
+
+$link_atts = array();
+
+/**
+ * @since 1.5.4
+ *
+ * $field['postFeaturedImage'] - holds if the Post Image field is set as post featured image
+ * $field_settings['dynamic_data'] - whether the field content should be fetched from the Post (dynamic data) or from the GF entry
+ *
+ * Dynamic data (get post featured image instead of GF entry field)
+ */
+if( !empty( $field['postFeaturedImage'] ) &amp;&amp; !empty( $field_settings['dynamic_data'] ) &amp;&amp; !empty( $entry['post_id'] ) &amp;&amp; has_post_thumbnail( $entry['post_id'] ) ) {
+
+	/**
+	 * Modify what size is fetched for the post's Featured Image
+	 * @param string $size The size to be fetched using `wp_get_attachment_image_src()` (default: 'large')
+	 * @param array $entry Gravity Forms entry array
+	 */
+	$image_size = apply_filters( 'gravityview/fields/post_image/size', 'large', $entry );
+	$image_url = wp_get_attachment_image_src( get_post_thumbnail_id( $entry['post_id'] ), $image_size );
+
+	if( empty( $image_url[0] ) ) {
+		do_action('gravityview_log_debug', 'Dynamic featured image for post #'.$entry['post_id'].' doesnt exist (size: '.$image_size.').' );
+	} else {
+		$url = $image_url[0];
+	}
+}
+
+##
+## Get the link URL
+##
+
+// Link to the post created by the entry
+if( !empty( $field_settings['link_to_post'] ) ) {
+	$href = get_permalink( $entry['post_id'] );
+}
+// Link to the single entry
+else if ( !empty( $field_settings['show_as_link'] ) ) {
+	$href = gv_entry_link( $entry );
+}
+// Link to the file itself
+else {
+
+	$href = $url;
+
+	// Only show the lightbox if linking to the file itself
+	if( $gravityview_view->getAtts('lightbox') ) {
+		$link_atts['class'] = apply_filters( 'gravityview_lightbox_script', 'thickbox' );
+	}
+
+}
+
+
+// Set the attributes for the link
+$link_atts['href'] = $href;
+
+// Add the title as the link title, if exists. This will appear as caption in the lightbox.
+$link_atts['title'] = $title;
+
+
+##
+## Get the image
+##
+$image_atts = array(
+	'src'	=> $url,
+	'alt'	=> ( !empty( $caption ) ? $caption : $title ),
+	'validate_src'	=> false, // Already validated by GF
+);
+
+$image = new GravityView_Image( $image_atts );
+
+
+/**
+ * @hook gravityview_post_image_meta Modify the values used for the image meta.
+ * @see https://gravityview.co/support/documentation/201606759 Read more about the filter
+ * @var array $image_meta Associative array with `title`, `caption`, and `description` keys, each an array with `label`, `value`, `tag_label` and `tag_value` keys
+ */
+$image_meta = apply_filters('gravityview_post_image_meta', array(
+	'title' => array(
+		'label' => esc_attr_x( 'Title:', 'Post Image field title heading', 'gravityview'),
+		'value' => $title,
+		'tag_label' => 'span',
+		'tag_value' => 'div'
+	),
+	'caption' => array(
+		'label' => esc_attr_x( 'Caption:', 'Post Image field caption heading', 'gravityview'),
+		'value' => $caption,
+		'tag_label' => 'span',
+		'tag_value' => GFFormsModel::is_html5_enabled() ? 'figcaption' : 'div',
+	),
+	'description' => array(
+		'label' => esc_attr_x( 'Description:', 'Post Image field description heading', 'gravityview'),
+		'value' => $description,
+		'tag_label' => 'span',
+		'tag_value' => 'div'
+	),
+));
+
+// If HTML5 output is enabled, support the `figure` and `figcaption` tags
+$wrappertag = GFFormsModel::is_html5_enabled() ? 'figure' : 'div';
+
+/**
+ * @hook gravityview_post_image_meta_show_labels Whether to show labels for the image meta.
+ * @see https://gravityview.co/support/documentation/201606759 Read more about the filter
+ * @var boolean $showlabels True: Show labels; False: hide labels
+ */
+$showlabels = apply_filters( 'gravityview_post_image_meta_show_labels', true );
+
+// Wrapper tag
+$output = '&lt;'.$wrappertag.' class="gv-image">';
+
+// Image with link tag
+$output .= gravityview_get_link( $href, $image, $link_atts );
+
+foreach ( (array)$image_meta as $key => $meta ) {
+
+	if( !empty( $meta['value'] ) ) {
+
+		$output .= '&lt;div class="gv-image-'.esc_attr( $key ).'">';
+
+		// Display the label if the label's not empty
+		if( !empty( $showlabels ) &amp;&amp; !empty( $meta['label'] ) ) {
+			$output .= '&lt;'.esc_attr( $meta['tag_label'] ).' class="gv-image-label">';
+			$output .= esc_html( $meta['label'] );
+			$output .= '&lt;/'.esc_attr( $meta['tag_label'] ).'> ';
+		}
+
+		// Display the value
+		$output .= '&lt;'.esc_attr( $meta['tag_value'] ).' class="gv-image-value">';
+		$output .= esc_html( $meta['value'] );
+		$output .= '&lt;/'.esc_attr( $meta['tag_value'] ).'>';
+
+		$output .= '&lt;/div>';
+	}
+
+}
+
+$output .= '&lt;/'.$wrappertag.'>';
+
+echo $output;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+    <footer>
+		<a href="https://gravityview.co/">GravityView.co</a> &bull;
+		<a href="https://github.com/gravityview/GravityView/">GravityView on GitHub</a>
+	</footer>
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Actions</h3><ul><li><a href="admin_enqueue_scripts.html">admin_enqueue_scripts</a></li><li><a href="gravityview_approve_entries_autounapprove_status.html">gravityview/approve_entries/autounapprove/status</a></li><li><a href="gravityview_approve_entries_popover_placement.html">gravityview/approve_entries/popover_placement</a></li><li><a href="gravityview_common_get_entry_id_from_slug_form_id.html">gravityview/common/get_entry_id_from_slug/form_id</a></li><li><a href="gravityview_common_get_form_fields.html">gravityview/common/get_form_fields</a></li><li><a href="gravityview_data_parse_meta_keys.html">gravityview/data/parse/meta_keys</a></li><li><a href="gravityview_edit_entry_render_hidden_field.html">gravityview/edit_entry/render_hidden_field</a></li><li><a href="gravityview_entry_permalink.html">gravityview/entry/permalink</a></li><li><a href="gravityview_entry_slug.html">gravityview/entry/slug</a></li><li><a href="gravityview_field_quiz_percent_format.html">gravityview/field/quiz_percent/format</a></li><li><a href="gravityview_fields_fileupload_link_atts.html">gravityview/fields/fileupload/link_atts</a></li><li><a href="gravityview_loaded.html">gravityview/loaded</a></li><li><a href="gravityview_query_class.html">gravityview/query/class</a></li><li><a href="gravityview_search_operator_whitelist.html">gravityview/search/operator_whitelist</a></li><li><a href="gravityview_security_require_unfiltered_html.html">gravityview/security/require_unfiltered_html</a></li><li><a href="gravityview_setting_class_%25257Bfield_type%25257D.html">gravityview/setting/class/{field_type}</a></li><li><a href="gravityview_setting_class_file_%25257Bfield_type%25257D.html">gravityview/setting/class_file/{field_type}</a></li><li><a href="gravityview_template_entry_context.html">gravityview/template/entry/context</a></li><li><a href="gravityview_template_field_context.html">gravityview/template/field/context</a></li><li><a href="gravityview_template_field_label.html">gravityview/template/field/label</a></li><li><a href="gravityview_template_list_body_after.html">gravityview/template/list/body/after</a></li><li><a href="gravityview_template_list_body_before.html">gravityview/template/list/body/before</a></li><li><a href="gravityview_template_list_entry_$zone_after.html">gravityview/template/list/entry/$zone/after</a></li><li><a href="gravityview_template_list_entry_before.html">gravityview/template/list/entry/before</a></li><li><a href="gravityview_template_list_entry_class.html">gravityview/template/list/entry/class</a></li><li><a href="gravityview_template_list_entry_content_after.html">gravityview/template/list/entry/content/after</a></li><li><a href="gravityview_template_list_entry_content_before.html">gravityview/template/list/entry/content/before</a></li><li><a href="gravityview_template_list_entry_title_after.html">gravityview/template/list/entry/title/after</a></li><li><a href="gravityview_template_list_entry_title_before.html">gravityview/template/list/entry/title/before</a></li><li><a href="gravityview_template_table_body_after.html">gravityview/template/table/body/after</a></li><li><a href="gravityview_template_table_body_before.html">gravityview/template/table/body/before</a></li><li><a href="gravityview_template_table_entry_class.html">gravityview/template/table/entry/class</a></li><li><a href="gravityview_template_table_entry_hide_empty.html">gravityview/template/table/entry/hide_empty</a></li><li><a href="gravityview_template_table_tr_after.html">gravityview/template/table/tr/after</a></li><li><a href="gravityview_template_table_tr_before.html">gravityview/template/table/tr/before</a></li><li><a href="gravityview_template_view_context.html">gravityview/template/view/context</a></li><li><a href="gravityview_widgets_search_created_by_user_fields.html">gravityview/widgets/search/created_by/user_fields</a></li><li><a href="gravityview_widgets_search_created_by_user_meta_fields.html">gravityview/widgets/search/created_by/user_meta_fields</a></li><li><a href="gravityview_widgets_search_datepicker_format.html">gravityview/widgets/search/datepicker/format</a></li><li><a href="gravityview_directory_endpoint.html">gravityview_directory_endpoint</a></li><li><a href="gravityview_directory_link.html">gravityview_directory_link</a></li><li><a href="gravityview_entry_default_fields.html">gravityview_entry_default_fields</a></li><li><a href="gravityview_get_entries.html">gravityview_get_entries</a></li><li><a href="gravityview_pre_get_entries.html">gravityview_pre_get_entries</a></li><li><a href="gravityview_search_operator.html">gravityview_search_operator</a></li><li><a href="gravityview_table_cells.html">gravityview_table_cells</a></li><li><a href="gravityview_template_active_areas.html">gravityview_template_active_areas</a></li></ul><h3>Filters</h3><ul><li><a href="admin_title.html">admin_title</a></li><li><a href="gravityview_entry_link_add_query_args.html">gravityview/entry_link/add_query_args</a></li><li><a href="gravityview_template_table_fields.html">gravityview/template/table/fields</a></li><li><a href="gravityview_field_entry_link.html">gravityview_field_entry_link</a></li><li><a href="gravityview_search_criteria.html">gravityview_search_criteria</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

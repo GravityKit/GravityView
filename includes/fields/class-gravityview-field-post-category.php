@@ -70,7 +70,7 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 			$updated_categories = array_filter( $updated_categories );
 
 			/**
-			 * @filter `gravityview/edit_entry/post_categories/append` Should post categories be added to or replaced?
+			 * @hook gravityview/edit_entry/post_categories/append Should post categories be added to or replaced?
 			 * @since 1.17
 			 * @param bool $append If `true`, don't delete existing categories, just add on. If `false`, replace the categories with the submitted categories. Default: `false`
 			 */

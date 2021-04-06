@@ -236,8 +236,8 @@ class GravityView_Edit_Entry {
 	    }
 
 		/**
-		 * @filter `gravityview/edit/link` Filter the edit URL link.
-		 * @param[in,out] string $url The url.
+		 * @hook gravityview/edit/link Filter the edit URL link.
+		 * @param string $url The url.
 		 * @param array $entry The entry.
 		 * @param \GV\View $view The View.
 		 */
@@ -286,7 +286,7 @@ class GravityView_Edit_Entry {
 		);
 
 		/**
-		 * @filter `gravityview/edit_entry/field_blacklist` Array of fields that should not be displayed in Edit Entry
+		 * @hook gravityview/edit_entry/field_blacklist Array of fields that should not be displayed in Edit Entry
 		 * @since 1.20
 		 * @param array $fields Blacklist field type array
 		 * @param array $entry Gravity Forms entry array
@@ -371,9 +371,9 @@ class GravityView_Edit_Entry {
         }
 
         /**
-         * @filter `gravityview/edit_entry/user_can_edit_entry` Modify whether user can edit an entry.
+         * @hook gravityview/edit_entry/user_can_edit_entry Modify whether user can edit an entry.
          * @since 1.15 Added `$entry` and `$view_id` parameters
-         * @param[in,out] boolean $user_can_edit Can the current user edit the current entry? (Default: false)
+         * @param boolean $user_can_edit Can the current user edit the current entry? (Default: false)
          * @param[in] array $entry Gravity Forms entry array {@since 1.15}
          * @param[in] int $view_id ID of the view you want to check visibility against {@since 1.15}
          */

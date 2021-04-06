@@ -41,7 +41,7 @@ if ( ! $is_single_input ) {
 		default: // Backward compatibility
 			if ( '' !== $field_value ) {
 				/**
-				 * @filter `gravityview_field_tick` Change the output for a checkbox "check" symbol. Default is the "dashicons-yes" icon
+				 * @hook gravityview_field_tick Change the output for a checkbox "check" symbol. Default is the "dashicons-yes" icon
 				 * @see https://developer.wordpress.org/resource/dashicons/#yes
 				 *
 				 * @param string $output HTML span with `dashicons dashicons-yes` class

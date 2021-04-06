@@ -26,7 +26,7 @@ $raw_types = array(
 );
 
 /**
- * @filter `gravityview/template/csv/field/raw` Filters field types to output by value instead of display_value.
+ * @hook gravityview/template/csv/field/raw Filters field types to output by value instead of display_value.
  * @param[in, out] bool Raw or not. By default outputs raw for $raw_types.
  * @param \GV\Template_Context The context.
  * @since develop

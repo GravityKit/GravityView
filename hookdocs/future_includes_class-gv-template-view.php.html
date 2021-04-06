@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: future/includes/class-gv-template-view.php - 10up ElasticPress Hook Docs</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+
+	<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans:300,400|Playfair+Display:900&display=swap" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="styles-10up.css">
+</head>
+
+<body>
+
+<div id="main">
+
+	
+    <h1 class="page-title">Source: future/includes/class-gv-template-view.php</h1>
+	
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;?php
+namespace GV;
+
+/** If this file is called directly, abort. */
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
+	die();
+}
+
+/**
+ * Load up the Gamajo Template Loader.
+ *
+ * @see https://github.com/GaryJones/Gamajo-Template-Loader
+ */
+if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
+	require gravityview()->plugin->dir( 'future/lib/class-gamajo-template-loader.php' );
+}
+
+/**
+ * The View Template class .
+ *
+ * Renders a \GV\View and a \GV\Entry_Collection via a \GV\View_Renderer.
+ */
+abstract class View_Template extends Template {
+	/**
+	 * Prefix for filter names.
+	 * @var string
+	 */
+	protected $filter_prefix = 'gravityview/template/views';
+
+	/**
+	 * Directory name where custom templates for this plugin should be found in the theme.
+	 * @var string
+	 */
+	protected $theme_template_directory = 'gravityview/views/';
+
+	/**
+	 * Directory name where the default templates for this plugin are found.
+	 * @var string
+	 */
+	protected $plugin_template_directory = 'templates/views/';
+
+	/**
+	 * @var \GV\View The view connected to this template.
+	 */
+	public $view;
+
+	/**
+	 * @var \GV\Entry_Collection The entries that need to be rendered.
+	 */
+	public $entries;
+
+	/**
+	 * @var \GV\Request The request context.
+	 */
+	public $request;
+
+	/**
+	 * @var string The template slug to be loaded (like "table", "list")
+	 */
+	public static $slug;
+
+	/**
+	 * Initializer.
+	 *
+	 * @param \GV\View $view The View connected to this template.
+	 * @param \GV\Entry_Collection $entries A collection of entries for this view.
+	 * @param \GV\Request $request The request context.
+	 */
+	public function __construct( View $view, Entry_Collection $entries, Request $request ) {
+		$this->view = $view;
+		$this->entries = $entries;
+		$this->request = $request;
+
+		/** Add granular overrides. */
+		add_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ), 10, 3 );
+
+		parent::__construct();
+	}
+
+	public function __destruct() {
+		remove_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ) );
+	}
+
+	/**
+	 * Enable granular template overrides based on current post, view, form, etc.
+	 *
+	 * The loading order is:
+	 *
+	 * - post-[ID of post or page where view is embedded]-view-[View ID]-table-footer.php
+	 * - post-[ID of post or page where view is embedded]-table-footer.php
+	 * - view-[View ID]-table-footer.php
+	 * - form-[Form ID]-table-footer.php
+	 * - table-footer.php
+	 *
+	 * @see  Gamajo_Template_Loader::get_template_file_names() Where the filter is
+	 * @param array $templates Existing list of templates.
+	 * @param string $slug      Name of the template base, example: `table`, `list`, `datatables`, `map`
+	 * @param string $name      Name of the template part, example: `body`, `footer`, `head`, `single`
+	 *
+	 * @return array $templates Modified template array, merged with existing $templates values
+	 */
+	public function add_id_specific_templates( $templates, $slug, $name ) {
+
+		$specifics = array();
+
+		list( $slug_dir, $slug_name ) = self::split_slug( $slug, $name );
+
+		global $post;
+
+		if ( ! $this->request->is_view() &amp;&amp; $post ) {
+			$specifics []= sprintf( '%spost-%d-view-%d-%s.php', $slug_dir, $post->ID, $this->view->ID, $slug_name );
+			$specifics []= sprintf( '%spost-%d-%s.php', $slug_dir, $post->ID, $slug_name );
+		}
+
+
+		$specifics []= sprintf( '%sview-%d-%s.php', $slug_dir, $this->view->ID, $slug_name );
+		$specifics []= sprintf( '%sform-%d-%s.php', $slug_dir, $this->view->form->ID, $slug_name );
+
+		return array_merge( $specifics, $templates );
+	}
+
+	/**
+	 * Output some HTML.
+	 *
+	 * @return void
+	 */
+	public function render() {
+		$context = Template_Context::from_template( $this );
+
+		/**
+		 * Make various pieces of data available to the template
+		 *  under the $gravityview scoped variable.
+		 *
+		 * @hook gravityview/template/view/context
+		 * @param \GV\Template_Context $context The context for this template.
+		 * @param \GV\View_Template $template The current template.
+		 * @since 2.0
+		 */
+		$this->push_template_data( $context = apply_filters( 'gravityview/template/view/context', $context, $this ), 'gravityview' );
+
+		/**
+		 * @hook gravityview/template/view/render Before rendering.
+		 * @param \GV\View_Template $template The current template.
+		 * @since 2.0
+		 */
+		do_action( 'gravityview/template/view/render', $context );
+
+		/** Load the template. */
+		$this->get_template_part( static::$slug );
+		$this->pop_template_data( 'gravityview' );
+	}
+}
+
+/** Load implementations. */
+require gravityview()->plugin->dir( 'future/includes/class-gv-template-view-table.php' );
+require gravityview()->plugin->dir( 'future/includes/class-gv-template-view-list.php' );
+require gravityview()->plugin->dir( 'future/includes/class-gv-template-view-legacy.php' );
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+    <footer>
+		<a href="https://gravityview.co/">GravityView.co</a> &bull;
+		<a href="https://github.com/gravityview/GravityView/">GravityView on GitHub</a>
+	</footer>
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Actions</h3><ul><li><a href="admin_enqueue_scripts.html">admin_enqueue_scripts</a></li><li><a href="gravityview_approve_entries_autounapprove_status.html">gravityview/approve_entries/autounapprove/status</a></li><li><a href="gravityview_approve_entries_popover_placement.html">gravityview/approve_entries/popover_placement</a></li><li><a href="gravityview_common_get_entry_id_from_slug_form_id.html">gravityview/common/get_entry_id_from_slug/form_id</a></li><li><a href="gravityview_common_get_form_fields.html">gravityview/common/get_form_fields</a></li><li><a href="gravityview_data_parse_meta_keys.html">gravityview/data/parse/meta_keys</a></li><li><a href="gravityview_edit_entry_render_hidden_field.html">gravityview/edit_entry/render_hidden_field</a></li><li><a href="gravityview_entry_permalink.html">gravityview/entry/permalink</a></li><li><a href="gravityview_entry_slug.html">gravityview/entry/slug</a></li><li><a href="gravityview_field_quiz_percent_format.html">gravityview/field/quiz_percent/format</a></li><li><a href="gravityview_fields_fileupload_link_atts.html">gravityview/fields/fileupload/link_atts</a></li><li><a href="gravityview_loaded.html">gravityview/loaded</a></li><li><a href="gravityview_query_class.html">gravityview/query/class</a></li><li><a href="gravityview_search_operator_whitelist.html">gravityview/search/operator_whitelist</a></li><li><a href="gravityview_security_require_unfiltered_html.html">gravityview/security/require_unfiltered_html</a></li><li><a href="gravityview_setting_class_%25257Bfield_type%25257D.html">gravityview/setting/class/{field_type}</a></li><li><a href="gravityview_setting_class_file_%25257Bfield_type%25257D.html">gravityview/setting/class_file/{field_type}</a></li><li><a href="gravityview_template_entry_context.html">gravityview/template/entry/context</a></li><li><a href="gravityview_template_field_context.html">gravityview/template/field/context</a></li><li><a href="gravityview_template_field_label.html">gravityview/template/field/label</a></li><li><a href="gravityview_template_list_body_after.html">gravityview/template/list/body/after</a></li><li><a href="gravityview_template_list_body_before.html">gravityview/template/list/body/before</a></li><li><a href="gravityview_template_list_entry_$zone_after.html">gravityview/template/list/entry/$zone/after</a></li><li><a href="gravityview_template_list_entry_before.html">gravityview/template/list/entry/before</a></li><li><a href="gravityview_template_list_entry_class.html">gravityview/template/list/entry/class</a></li><li><a href="gravityview_template_list_entry_content_after.html">gravityview/template/list/entry/content/after</a></li><li><a href="gravityview_template_list_entry_content_before.html">gravityview/template/list/entry/content/before</a></li><li><a href="gravityview_template_list_entry_title_after.html">gravityview/template/list/entry/title/after</a></li><li><a href="gravityview_template_list_entry_title_before.html">gravityview/template/list/entry/title/before</a></li><li><a href="gravityview_template_table_body_after.html">gravityview/template/table/body/after</a></li><li><a href="gravityview_template_table_body_before.html">gravityview/template/table/body/before</a></li><li><a href="gravityview_template_table_entry_class.html">gravityview/template/table/entry/class</a></li><li><a href="gravityview_template_table_entry_hide_empty.html">gravityview/template/table/entry/hide_empty</a></li><li><a href="gravityview_template_table_tr_after.html">gravityview/template/table/tr/after</a></li><li><a href="gravityview_template_table_tr_before.html">gravityview/template/table/tr/before</a></li><li><a href="gravityview_template_view_context.html">gravityview/template/view/context</a></li><li><a href="gravityview_widgets_search_created_by_user_fields.html">gravityview/widgets/search/created_by/user_fields</a></li><li><a href="gravityview_widgets_search_created_by_user_meta_fields.html">gravityview/widgets/search/created_by/user_meta_fields</a></li><li><a href="gravityview_widgets_search_datepicker_format.html">gravityview/widgets/search/datepicker/format</a></li><li><a href="gravityview_directory_endpoint.html">gravityview_directory_endpoint</a></li><li><a href="gravityview_directory_link.html">gravityview_directory_link</a></li><li><a href="gravityview_entry_default_fields.html">gravityview_entry_default_fields</a></li><li><a href="gravityview_get_entries.html">gravityview_get_entries</a></li><li><a href="gravityview_pre_get_entries.html">gravityview_pre_get_entries</a></li><li><a href="gravityview_search_operator.html">gravityview_search_operator</a></li><li><a href="gravityview_table_cells.html">gravityview_table_cells</a></li><li><a href="gravityview_template_active_areas.html">gravityview_template_active_areas</a></li></ul><h3>Filters</h3><ul><li><a href="admin_title.html">admin_title</a></li><li><a href="gravityview_entry_link_add_query_args.html">gravityview/entry_link/add_query_args</a></li><li><a href="gravityview_template_table_fields.html">gravityview/template/table/fields</a></li><li><a href="gravityview_field_entry_link.html">gravityview_field_entry_link</a></li><li><a href="gravityview_search_criteria.html">gravityview_search_criteria</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

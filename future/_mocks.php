@@ -225,17 +225,17 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 			}
 
 			/**
-			 * @filter `gravityview_render_after_label` Append content to a field label
-			 * @param[in,out] string $appended_content Content you can add after a label. Empty by default.
+			 * @hook gravityview_render_after_label Append content to a field label
+			 * @param string $appended_content Content you can add after a label. Empty by default.
 			 * @param[in] array $field GravityView field array
 			 */
 			$label .= apply_filters( 'gravityview_render_after_label', '', $field_settings );
 		}
 
 		/**
-		 * @filter `gravityview/template/field_label` Modify field label output
+		 * @hook gravityview/template/field_label Modify field label output
 		 * @since 1.7
-		 * @param[in,out] string $label Field label HTML
+		 * @param string $label Field label HTML
 		 * @param[in] array $field GravityView field array
 		 * @param[in] array $form Gravity Forms form array
 		 * @param[in] array $entry Gravity Forms entry array
@@ -319,8 +319,8 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 		$label = $field->get_label( null, isset( $gf_form ) ? $gf_form : null, $entry );
 
 		/**
-		 * @filter `gravityview_render_after_label` Append content to a field label
-		 * @param[in,out] string $appended_content Content you can add after a label. Empty by default.
+		 * @hook gravityview_render_after_label Append content to a field label
+		 * @param string $appended_content Content you can add after a label. Empty by default.
 		 * @param[in] array $field GravityView field array
 		 */
 		$label .= apply_filters( 'gravityview_render_after_label', '', $field->as_configuration() );
@@ -328,9 +328,9 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 	}
 
 	/**
-	 * @filter `gravityview/template/field_label` Modify field label output
+	 * @hook gravityview/template/field_label Modify field label output
 	 * @since 1.7
-	 * @param[in,out] string $label Field label HTML
+	 * @param string $label Field label HTML
 	 * @param[in] array $field GravityView field array
 	 * @param[in] array $form Gravity Forms form array
 	 * @param[in] array $entry Gravity Forms entry array
