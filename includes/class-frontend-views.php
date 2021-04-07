@@ -1188,7 +1188,7 @@ class GravityView_frontend {
 	 * @param int|string|array $sort_field_id Field used for sorting (`id` or `1.2`), or an array for multisorts
 	 * @param int $form_id GF Form ID
 	 *
-	 * @return string Possibly modified sorting ID
+	 * @return string|array Possibly modified sorting ID. Array if $sort_field_id is passed as array.
 	 */
 	public static function _override_sorting_id_by_field_type( $sort_field_id, $form_id ) {
 
