@@ -345,7 +345,7 @@ class GravityView_frontend {
 		$is_GV_post_type = 'gravityview' === get_post_type( $post );
 
 		// Calculate requested Views
-		if ( ! $is_GV_post_type ) {
+		if ( $post && ! $is_GV_post_type ) {
 			$post->post_content = do_blocks( $post->post_content );
 		}
 
