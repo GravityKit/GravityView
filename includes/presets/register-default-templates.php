@@ -102,8 +102,11 @@ function gravityview_register_placeholder_templates() {
 				continue;
 			}
 
+			$license_price_id = (int) \GV\Utils::get( $license, 'price_id', 0 );
+			$placeholder_price_id = (int) \GV\Utils::get( $placeholder, 'price_id' );
+
 			$placeholder['type']     = 'custom';
-			$placeholder['included'] = ( (int) $license['price_id'] >= $placeholder['price_id'] );
+			$placeholder['included'] = ( $license_price_id >= $placeholder_price_id );
 
 			new GravityView_Placeholder_Template( $placeholder['slug'], $placeholder );
 		}

@@ -145,6 +145,14 @@ class GravityView_Edit_Entry_Admin {
             'merge_tags' => true,
         );
 
+	    $add_option['new_window'] = array(
+		    'type' => 'checkbox',
+		    'label' => __( 'Open link in a new tab or window?', 'gravityview' ),
+		    'value' => false,
+		    'group' => 'display',
+		    'priority' => 1300,
+	    );
+
         return array_merge( $add_option, $field_options );
     }
 
