@@ -278,6 +278,15 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
+				<h3>2.10.2 on April 12, 2021</h3>
+
+				<ul>
+					<li>Fixed: Using the GravityView shortcode inside a <a href="https://wordpress.org/news/2021/02/gutenberg-tutorial-reusable-blocks/">reusable block</a> in the WordPress Editor would prevent CSS and JavaScript from loading</li>
+					<li>Fixed: "Open in new tab/window" checkbox is missing from Link to Single Entry and Link to Edit Entry links</li>
+					<li>Fixed: Searching while on a paginated search result fails; it shows no entries because the page number isn't removed</li>
+					<li>Fixed: Sorting by Entry ID resulted in a MySQL error</li>
+				</ul>
+
 				<h3>2.10.1 on March 31, 2021</h3>
 
 				<ul>

@@ -23,9 +23,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 2.10.2 on April 12, 2021 =
 
-* Fixed: Using GravityView shortcode inside a reusable Gutenberg content block would prevent UI assets from loading
+* Fixed: Using the GravityView shortcode inside a [reusable block](https://wordpress.org/news/2021/02/gutenberg-tutorial-reusable-blocks/) in the WordPress Editor would prevent CSS and JavaScript from loading
 * Fixed: "Open in new tab/window" checkbox is missing from Link to Single Entry and Link to Edit Entry links
-* Fixed: Page number isn't removed from search results (removed `pagenum` URL parameter)
+* Fixed: Searching while on a paginated search result fails; it shows no entries because the page number isn't removed
 * Fixed: Sorting by Entry ID resulted in a MySQL error
 
 = 2.10.1 on March 31, 2021 =
