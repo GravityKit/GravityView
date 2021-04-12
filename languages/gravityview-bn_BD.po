@@ -6,7 +6,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.10.1\n"
+"Project-Id-Version: GravityView 2.10.2\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
@@ -205,7 +205,7 @@ msgstr "লাইসেন্সটি চেক"
 #: future/includes/class-gv-view.php:337 future/includes/class-gv-view.php:343
 #: future/includes/class-gv-view.php:366 future/includes/class-gv-view.php:371
 #: future/includes/class-gv-view.php:377 future/includes/class-gv-view.php:385
-#: includes/class-frontend-views.php:677
+#: includes/class-frontend-views.php:683
 msgid "You are not allowed to view this content."
 msgstr "আপনি এই কন্টেন্ট দেখতে অনুমতি দেওয়া হয় না।"
 
@@ -263,7 +263,7 @@ msgstr "শুধুমাত্র অনুমোদিত এন্ট্র�
 #: future/includes/class-gv-renderer.php:134
 #: future/includes/class-gv-renderer.php:179
 #: future/includes/class-gv-renderer.php:235
-#: future/includes/class-gv-view.php:296 includes/class-frontend-views.php:627
+#: future/includes/class-gv-view.php:296 includes/class-frontend-views.php:633
 msgid "You can only see this message because you are able to edit this View."
 msgstr ""
 
@@ -272,7 +272,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/view-configuration.php:11
 #: includes/admin/metaboxes/views/view-configuration.php:87
 #: includes/admin/metaboxes/views/view-configuration.php:88
-#: includes/class-frontend-views.php:615
+#: includes/class-frontend-views.php:621
 #: includes/class-gravityview-admin-bar.php:102
 #: includes/class-gravityview-entry-link-shortcode.php:233
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:144
@@ -288,7 +288,7 @@ msgstr "এন্ট্রি সম্পাদন করুন"
 #: includes/admin/metaboxes/views/view-configuration.php:10
 #: includes/admin/metaboxes/views/view-configuration.php:62
 #: includes/admin/metaboxes/views/view-configuration.php:63
-#: includes/class-frontend-views.php:619
+#: includes/class-frontend-views.php:625
 msgid "Single Entry"
 msgstr "একক এন্ট্রি"
 
@@ -296,12 +296,12 @@ msgstr "একক এন্ট্রি"
 #: future/includes/class-gv-settings-view.php:407
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:137
 #: includes/admin/metaboxes/views/view-configuration.php:9
-#: includes/class-frontend-views.php:612
+#: includes/class-frontend-views.php:618
 msgid "Multiple Entries"
 msgstr "একাধিক এন্ট্রি"
 
 #: future/includes/class-gv-renderer.php:178
-#: includes/class-frontend-views.php:626
+#: includes/class-frontend-views.php:632
 msgid "Add fields to %s"
 msgstr ""
 
@@ -883,7 +883,7 @@ msgstr "পিছেনের লিংকের লেবেল"
 msgid "The text of the link that returns to the multiple entries view."
 msgstr "একাধিক এন্ট্রি দৃশ্য ফিরে যাওয়ার লিংকের শব্দ।"
 
-#: future/includes/class-gv-settings-view.php:377 includes/class-api.php:977
+#: future/includes/class-gv-settings-view.php:377 includes/class-api.php:978
 msgid "&larr; Go back"
 msgstr "&larr; পিছনে ফিরে যান"
 
@@ -2085,23 +2085,23 @@ msgstr "পরিবর্তনের লিস্ট"
 msgid "What&rsquo;s New"
 msgstr "নতুন &rsquo; কি"
 
-#: includes/class-admin-welcome.php:471
+#: includes/class-admin-welcome.php:523
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:491
+#: includes/class-admin-welcome.php:543
 msgid "GravityView is brought to you by:"
 msgstr "গ্রাভিটি ভিউ আপনার জন্য নিয়ে এল:"
 
-#: includes/class-admin-welcome.php:542
+#: includes/class-admin-welcome.php:594
 msgid "Contributors"
 msgstr "সহযোগী যারা"
 
-#: includes/class-admin-welcome.php:569
+#: includes/class-admin-welcome.php:621
 msgid "Want to contribute?"
 msgstr "সহযোগীতা করতে চান?"
 
-#: includes/class-admin-welcome.php:570
+#: includes/class-admin-welcome.php:622
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -2236,7 +2236,7 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-api.php:1398
+#: includes/class-api.php:1399
 msgid "Map It"
 msgstr "মানচিত্রে এটি"
 
@@ -2648,11 +2648,16 @@ msgstr ""
 msgid "Edit Link Text"
 msgstr "সম্পাদনা লিংক শিরোনাম"
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:161
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:150
+#: includes/fields/class-gravityview-field.php:449
+msgid "Open link in a new tab or window?"
+msgstr "একটি নতুন ট্যাব বা উইন্ডোতে লিঙ্ক খুলুন?"
+
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:169
 msgid "Limiting Edit Access"
 msgstr "সম্পাদনা অ্যাক্সেস সীমিত"
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:162
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:170
 msgid ""
 "Change this setting if you don't want the user who created the entry to be "
 "able to edit this field."
@@ -2660,7 +2665,7 @@ msgstr ""
 "আপনি এই ক্ষেত্র সম্পাদন পাবে এন্ট্রি তৈরি যারা ইউজার না চান তাহলে এই "
 "ব্যবহারটি নির্ধারণ করতে."
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:193
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:201
 msgid "Make field editable to:"
 msgstr "ক্ষেত্রের সম্পাদনযোগ্য করুন:"
 
@@ -3859,10 +3864,6 @@ msgstr "তারিখ ফরম্যাট পুনঃস্থাপন ক
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
 msgstr "তারিখ কিভাবে দেখাবে তা দেখান (%sপিএইচপি তারিখ ফরম্যাট%s)"
 
-#: includes/fields/class-gravityview-field.php:449
-msgid "Open link in a new tab or window?"
-msgstr "একটি নতুন ট্যাব বা উইন্ডোতে লিঙ্ক খুলুন?"
-
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:54
 msgid "Quiz Score Total"
 msgstr "মোট কুইজের স্কোর"
@@ -4446,7 +4447,7 @@ msgid "%sEdit the View settings%s or %sApprove entries%s"
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:176
-#: includes/class-frontend-views.php:624
+#: includes/class-frontend-views.php:630
 msgctxt ""
 "Displayed when a View is not configured. %s is replaced by the tab label"
 msgid "The %s layout has not been configured."
@@ -4596,12 +4597,12 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "খালি"
 
-#: includes/class-frontend-views.php:1426
+#: includes/class-frontend-views.php:1432
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr "পরিস্কার"
 
-#: includes/class-frontend-views.php:1427
+#: includes/class-frontend-views.php:1433
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr "রিসেট"
