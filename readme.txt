@@ -23,9 +23,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
-* Fixed: Using GravityView shortcode inside a reusable Gutenberg content would prevent UI assets from loading
+* Fixed: Using GravityView shortcode inside a reusable Gutenberg content block would prevent UI assets from loading
 * Fixed: "Open in new tab/window" checkbox is missing from Link to Single Entry and Link to Edit Entry links
 * Fixed: Page number isn't removed from search results (removed `pagenum` URL parameter)
+* Fixed: Sorting by Entry ID did resulted in a MySQL error
 
 = 2.10.1 on March 31, 2021 =
 
