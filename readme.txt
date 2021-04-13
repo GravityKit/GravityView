@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.10.2.1 on April 13, 2021 =
+
+* Fixed: Issue introduced by Version 2.10.2 that affected HTML rendering of some posts and pages
+
 = 2.10.2 on April 12, 2021 =
 
 * Fixed: Using the GravityView shortcode inside a [reusable block](https://wordpress.org/news/2021/02/gutenberg-tutorial-reusable-blocks/) in the WordPress Editor would prevent CSS and JavaScript from loading
