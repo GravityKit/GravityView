@@ -345,20 +345,22 @@ class GravityView_frontend {
 		$is_GV_post_type = 'gravityview' === get_post_type( $post );
 
 		// Calculate requested Views
+		$post_content = ! empty( $post->post_content ) ? $post->post_content : null;
 		if ( $post && ! $is_GV_post_type ) {
-			$post->post_content = do_blocks( $post->post_content );
+			$post_content = do_blocks( $post_content );
+			$this->setGvOutputData( GravityView_View_Data::getInstance( $post_content ) );
+		} else {
+			$this->setGvOutputData( GravityView_View_Data::getInstance( $post ) );
 		}
-
-		$this->setGvOutputData( GravityView_View_Data::getInstance( $post ) );
 
 		// !important: we need to run this before getting single entry (to kick the advanced filter)
 		$this->set_context_view_id();
 
 		$this->setIsGravityviewPostType( $is_GV_post_type );
 
-		$post_id = $this->getPostId() ? $this->getPostId() : (isset( $post ) ? $post->ID : null );
+		$post_id = $this->getPostId() ? $this->getPostId() : ( isset( $post ) ? $post->ID : null );
 		$this->setPostId( $post_id );
-		$post_has_shortcode = ! empty( $post->post_content ) ? gravityview_has_shortcode_r( $post->post_content, 'gravityview' ) : false;
+		$post_has_shortcode = $post_content ? gravityview_has_shortcode_r( $post_content, 'gravityview' ) : false;
 		$this->setPostHasShortcode( $this->isGravityviewPostType() ? null : ! empty( $post_has_shortcode ) );
 
 		// check if the View is showing search results (only for multiple entries View)
