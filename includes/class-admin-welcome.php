@@ -278,6 +278,12 @@ class GravityView_Welcome {
                     <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
                 </div>
 
+				<h3>2.10.2.1 on April 13, 2021</h3>
+
+				<ul>
+					<li>Fixed: Issue introduced by Version 2.10.2 that affected HTML rendering of some posts and pages</li>
+				</ul>
+
 				<h3>2.10.2 on April 12, 2021</h3>
 
 				<ul>
