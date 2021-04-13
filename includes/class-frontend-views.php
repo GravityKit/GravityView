@@ -346,9 +346,13 @@ class GravityView_frontend {
 
 		// Calculate requested Views
 		$post_content = ! empty( $post->post_content ) ? $post->post_content : null;
-		if ( $post && ! $is_GV_post_type ) {
+
+		if ( ! $is_GV_post_type && function_exists( 'do_blocks' ) ) {
+
 			$post_content = do_blocks( $post_content );
+
 			$this->setGvOutputData( GravityView_View_Data::getInstance( $post_content ) );
+
 		} else {
 			$this->setGvOutputData( GravityView_View_Data::getInstance( $post ) );
 		}

@@ -56,7 +56,7 @@ class GravityView_View_Data {
 	 *
 	 * @return int|null|array ID of the View. If there are multiple views in the content, array of IDs parsed.
 	 */
-	public function maybe_get_view_id( $passed_post ) {
+	public function maybe_get_view_id( $passed_post = null ) {
 
 		if ( empty( $passed_post ) ) {
 			return null;
