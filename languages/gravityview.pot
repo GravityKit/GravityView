@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.10.2\n"
+"Project-Id-Version: GravityView 2.10.2.1\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -194,7 +194,7 @@ msgstr ""
 #: future/includes/class-gv-view.php:337 future/includes/class-gv-view.php:343
 #: future/includes/class-gv-view.php:366 future/includes/class-gv-view.php:371
 #: future/includes/class-gv-view.php:377 future/includes/class-gv-view.php:385
-#: includes/class-frontend-views.php:683
+#: includes/class-frontend-views.php:689
 msgid "You are not allowed to view this content."
 msgstr ""
 
@@ -250,7 +250,7 @@ msgstr ""
 #: future/includes/class-gv-renderer.php:134
 #: future/includes/class-gv-renderer.php:179
 #: future/includes/class-gv-renderer.php:235
-#: future/includes/class-gv-view.php:296 includes/class-frontend-views.php:633
+#: future/includes/class-gv-view.php:296 includes/class-frontend-views.php:639
 msgid "You can only see this message because you are able to edit this View."
 msgstr ""
 
@@ -259,7 +259,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/view-configuration.php:11
 #: includes/admin/metaboxes/views/view-configuration.php:87
 #: includes/admin/metaboxes/views/view-configuration.php:88
-#: includes/class-frontend-views.php:621
+#: includes/class-frontend-views.php:627
 #: includes/class-gravityview-admin-bar.php:102
 #: includes/class-gravityview-entry-link-shortcode.php:233
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:144
@@ -275,7 +275,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/view-configuration.php:10
 #: includes/admin/metaboxes/views/view-configuration.php:62
 #: includes/admin/metaboxes/views/view-configuration.php:63
-#: includes/class-frontend-views.php:625
+#: includes/class-frontend-views.php:631
 msgid "Single Entry"
 msgstr ""
 
@@ -283,12 +283,12 @@ msgstr ""
 #: future/includes/class-gv-settings-view.php:407
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:137
 #: includes/admin/metaboxes/views/view-configuration.php:9
-#: includes/class-frontend-views.php:618
+#: includes/class-frontend-views.php:624
 msgid "Multiple Entries"
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:178
-#: includes/class-frontend-views.php:632
+#: includes/class-frontend-views.php:638
 msgid "Add fields to %s"
 msgstr ""
 
@@ -2011,23 +2011,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:523
+#: includes/class-admin-welcome.php:529
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:543
+#: includes/class-admin-welcome.php:549
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:594
+#: includes/class-admin-welcome.php:600
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:621
+#: includes/class-admin-welcome.php:627
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:622
+#: includes/class-admin-welcome.php:628
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -2187,34 +2187,34 @@ msgstr ""
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
-#: includes/class-data.php:295
+#: includes/class-data.php:297
 msgid "The ID is required."
 msgstr ""
 
-#: includes/class-data.php:303
+#: includes/class-data.php:305
 msgid ""
 "You did not enter a number. The value entered should be a number, "
 "representing the ID of the post or page the View is embedded on."
 msgstr ""
 
-#: includes/class-data.php:306
+#: includes/class-data.php:308
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:331
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:221
 msgid "Learn more&hellip;"
 msgstr ""
 
-#: includes/class-data.php:314
+#: includes/class-data.php:316
 msgid "There is no post or page with that ID."
 msgstr ""
 
-#: includes/class-data.php:325
+#: includes/class-data.php:327
 msgid ""
 "The Post ID entered is not valid. You may have entered a post or page that "
 "does not contain the selected View. Make sure the post contains the "
 "following shortcode: %s"
 msgstr ""
 
-#: includes/class-data.php:332
+#: includes/class-data.php:334
 msgid "The ID is already a View."
 msgstr ""
 
@@ -4311,7 +4311,7 @@ msgid "%sEdit the View settings%s or %sApprove entries%s"
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:176
-#: includes/class-frontend-views.php:630
+#: includes/class-frontend-views.php:636
 msgctxt "Displayed when a View is not configured. %s is replaced by the tab label"
 msgid "The %s layout has not been configured."
 msgstr ""
@@ -4458,12 +4458,12 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr ""
 
-#: includes/class-frontend-views.php:1432
+#: includes/class-frontend-views.php:1438
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-frontend-views.php:1433
+#: includes/class-frontend-views.php:1439
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""
