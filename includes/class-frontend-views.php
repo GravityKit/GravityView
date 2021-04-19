@@ -347,12 +347,22 @@ class GravityView_frontend {
 		// Calculate requested Views
 		$post_content = ! empty( $post->post_content ) ? $post->post_content : null;
 
-		if ( ! $is_GV_post_type && function_exists( 'do_blocks' ) ) {
+		if ( ! $is_GV_post_type && function_exists( 'parse_blocks' ) && preg_match_all( '/"ref":\d+/', $post_content ) ) {
+			$blocks = parse_blocks( $post_content );
 
-			$post_content = do_blocks( $post_content );
+			foreach ( $blocks as $block ) {
+				if ( empty( $block['attrs']['ref'] ) ) {
+					continue;
+				}
+
+				$block_post = get_post( $block['attrs']['ref'] );
+
+				if ( $block_post ) {
+					$post_content .= $block_post->post_content;
+				}
+			}
 
 			$this->setGvOutputData( GravityView_View_Data::getInstance( $post_content ) );
-
 		} else {
 			$this->setGvOutputData( GravityView_View_Data::getInstance( $post ) );
 		}

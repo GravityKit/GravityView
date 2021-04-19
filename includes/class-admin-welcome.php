@@ -108,7 +108,7 @@ class GravityView_Welcome {
 		if( !$this->is_dashboard_page() ) { return; }
 
 		?>
-        <style type="text/css" media="screen" xmlns="http://www.w3.org/1999/html">
+		<style type="text/css" media="screen" xmlns="http://www.w3.org/1999/html">
 		/*<![CDATA[*/
 		.update-nag { display: none; }
 		/*]]>*/
@@ -164,19 +164,19 @@ class GravityView_Welcome {
 
 		<div class="about-wrap">
 
-            <h2 class="about-headline-callout">Configuring a View</h2>
+			<h2 class="about-headline-callout">Configuring a View</h2>
 
-            <div class="feature-video"  style="text-align:center;">
-                <iframe height="315" src="https://www.youtube-nocookie.com/embed/WrXsZhqKRY8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+			<div class="feature-video"  style="text-align:center;">
+				<iframe height="315" src="https://www.youtube-nocookie.com/embed/WrXsZhqKRY8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
 
-                <p style="text-align:center; padding-top: 1em;"><a class="button button-primary button-hero" href="https://docs.gravityview.co/category/24-category">Read more: Setting Up Your First View</a></p>
-            </div>
+				<p style="text-align:center; padding-top: 1em;"><a class="button button-primary button-hero" href="https://docs.gravityview.co/category/24-category">Read more: Setting Up Your First View</a></p>
+			</div>
 
 			<div class="feature-section two-col has-2-columns is-fullwidth">
 				<div class="col column">
 					<h3>Create a View</h3>
 
-                    <ol class="ol-decimal">
+					<ol class="ol-decimal">
 						<li>Go to <a href="<?php echo admin_url('post-new.php?post_type=gravityview'); ?>">Views &gt; New View</a></li>
 						<li>If you want to <strong>create a new form</strong>, click the "Use a Form Preset" button</li>
 						<li>If you want to <strong>use an existing form&rsquo;s entries</strong>, select from the dropdown.</li>
@@ -186,17 +186,17 @@ class GravityView_Welcome {
 								<li><strong>Listing Views</strong> display entries in a more visual layout.</li>
 							</ul>
 						</li>
-                        <li>On the View Configuration metabox, click on the "+Add Field" button to add form fields to the active areas of your View. These are the fields that will be displayed in the frontend.</li>
+						<li>On the View Configuration metabox, click on the "+Add Field" button to add form fields to the active areas of your View. These are the fields that will be displayed in the frontend.</li>
 					</ol>
 				</div>
-                <div class="col column">
-                    <h4>What is a View?</h4>
-                    <p>When a form is submitted in Gravity Forms, an entry is created. Without GravityView, Gravity Forms entries are visible only in the WordPress dashboard, and only to users with permission.</p>
-                    <p>GravityView allows you to display entries on the front of your site. In GravityView, when you arrange the fields you want displayed and save the configuration, it's called a "View".</p>
-                </div>
+				<div class="col column">
+					<h4>What is a View?</h4>
+					<p>When a form is submitted in Gravity Forms, an entry is created. Without GravityView, Gravity Forms entries are visible only in the WordPress dashboard, and only to users with permission.</p>
+					<p>GravityView allows you to display entries on the front of your site. In GravityView, when you arrange the fields you want displayed and save the configuration, it's called a "View".</p>
+				</div>
 			</div>
 
-            <hr />
+			<hr />
 
 			<div class="feature-section two-col has-2-columns is-fullwidth">
 				<div class="col column">
@@ -208,34 +208,34 @@ class GravityView_Welcome {
 				</div>
 			</div>
 
-            <div class="feature-section two-col has-2-columns is-fullwidth">
-                <div class="col column">
-                    <h3>Embed Views in Classic Editor</h3>
-                    <p>Views don&rsquo;t need to be embedded in a post or page, but you can if you want. Embed Views using the "Add View" button above your content editor.</p>
-                </div>
-                <div class="col column">
-                    <img src="<?php echo plugins_url( 'assets/images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" alt="Screenshot of Add View button" />
-                </div>
-            </div>
+			<div class="feature-section two-col has-2-columns is-fullwidth">
+				<div class="col column">
+					<h3>Embed Views in Classic Editor</h3>
+					<p>Views don&rsquo;t need to be embedded in a post or page, but you can if you want. Embed Views using the "Add View" button above your content editor.</p>
+				</div>
+				<div class="col column">
+					<img src="<?php echo plugins_url( 'assets/images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" alt="Screenshot of Add View button" />
+				</div>
+			</div>
 
-            <hr />
+			<hr />
 
 			<div class="feature-section two-col has-2-columns is-fullwidth">
-                <div class="col column">
-                    <h3>Configure Multiple Entry, Single Entry, and Edit Entry Layouts</h3>
+				<div class="col column">
+					<h3>Configure Multiple Entry, Single Entry, and Edit Entry Layouts</h3>
 
-                    <p>You can configure what fields are displayed in <strong>Multiple Entry</strong>, <strong>Single Entry</strong>, and <strong>Edit Entry</strong> modes. These can be configured by clicking on the three associated tabs when editing a View.</p>
+					<p>You can configure what fields are displayed in <strong>Multiple Entry</strong>, <strong>Single Entry</strong>, and <strong>Edit Entry</strong> modes. These can be configured by clicking on the three associated tabs when editing a View.</p>
 
-                    <ul class="ul-disc">
-                        <li>Click "+ Add Field" to add a field to a zone</li>
-                        <li>Click the name of the field you want to display</li>
-                        <li>Once added, fields can be dragged and dropped to be re-arranged. Hover over the field until you see a cursor with four arrows, then drag the field.</li>
-                        <li>Click the <i class="dashicons dashicons-admin-generic"></i> gear icon on each field to configure the <strong>Field Settings</strong></li>
-                    </ul>
-                </div>
-                <div class="col column">
-                    <img src="<?php echo plugins_url( 'assets/images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" />
-                </div>
+					<ul class="ul-disc">
+						<li>Click "+ Add Field" to add a field to a zone</li>
+						<li>Click the name of the field you want to display</li>
+						<li>Once added, fields can be dragged and dropped to be re-arranged. Hover over the field until you see a cursor with four arrows, then drag the field.</li>
+						<li>Click the <i class="dashicons dashicons-admin-generic"></i> gear icon on each field to configure the <strong>Field Settings</strong></li>
+					</ul>
+				</div>
+				<div class="col column">
+					<img src="<?php echo plugins_url( 'assets/images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" />
+				</div>
 			</div>
 		</div>
 		<?php
@@ -255,7 +255,7 @@ class GravityView_Welcome {
 
 			<?php $this->tabs(); ?>
 
-            <div class="feature-section col two-col has-2-columns is-fullwidth">
+			<div class="feature-section col two-col has-2-columns is-fullwidth">
 				<div class="column col col-2">
 					<p>We&rsquo;ve revamped the GravityView admin. It&rsquo;s easier to use, better organized, and it looks great!</p>
 					<h4>Here&rsquo;s a tour of the top 5 new features in 2.10:</h4>
@@ -270,13 +270,19 @@ class GravityView_Welcome {
 				<div class="column col col-2 last">
 					<iframe src="https://player.vimeo.com/video/521626074" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
 				</div>
-            </div>
+			</div>
 
 			<div class="changelog point-releases" style="margin-top: 3em; border-bottom: 0">
 
-                <div class="headline-feature" style="max-width: 100%">
-                    <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
-                </div>
+				<div class="headline-feature" style="max-width: 100%">
+					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
+				</div>
+
+				<h3>2.10.2.2 on April 19, 2021</h3>
+
+				<ul>
+					<li>Improved: Previous fix for an issue that affected HTML rendering of some posts and pages</li>
+				</ul>
 
 				<h3>2.10.2.1 on April 13, 2021</h3>
 
@@ -548,13 +554,13 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 			<p class="about-description"><?php _e( 'GravityView is brought to you by:', 'gravityview' ); ?></p>
 
-            <style>
-                .feature-section h3 a {
-                    text-decoration: none;
-                    display: inline-block;
-                    margin-left: .2em;
-                    line-height: 1em;
-                }
+			<style>
+				.feature-section h3 a {
+					text-decoration: none;
+					display: inline-block;
+					margin-left: .2em;
+					line-height: 1em;
+				}
 				.about-wrap .cols {
 					display: flex;
 					flex-wrap: wrap;
@@ -565,7 +571,7 @@ class GravityView_Welcome {
 					width: 45%;
 					margin-right: 5%;
 				}
-            </style>
+			</style>
 			<div class="cols">
 
 				<div class="col">
@@ -574,17 +580,17 @@ class GravityView_Welcome {
 					<p><img alt="Zack Katz" style="float:left; margin: 0 15px 10px 0;" src="<?php echo plugins_url( 'assets/images/zack.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Zack has been developing integrations with Gravity Forms since 2009. He runs GravityView and lives with his wife (and cat) in <a href="https://wikipedia.org/wiki/Denver">Denver, Colorado</a>.</p>
 				</div>
 
-                <div class="col">
+				<div class="col">
 					<h3>Rafael Ehlers <a href="https://twitter.com/rafaehlers" title="Follow Rafael on Twitter"><span class="dashicons dashicons-twitter"></span></a> <a href="https://heropress.com/essays/journey-resilience/" title="View Rafael&rsquo;s WordPress Journey"><span class="dashicons dashicons-admin-site"></span></a></h3>
 					<h4 style="font-weight:0; margin-top:0">Project Manager, Support Lead &amp; Customer&nbsp;Advocate</h4>
 					<p><img alt="Rafael Ehlers" style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/rafael.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Rafael helps guide GravityView development priorities and keep us on track. He&rsquo;s the face of our customer support and helps customers get the most out of the product. Rafael hails from <a href="https://wikipedia.org/wiki/Porto_Alegre">Porto Alegre, Brazil</a>.</p>
 				</div>
 
-                <div class="col">
-                    <h3>Vlad K.</h3>
-                    <h4 style="font-weight:0; margin-top:0">Core Developer</h4>
-                    <p><img alt="Vlad K." style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/vlad.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Vlad, while being the &ldquo;new kid on the block&rdquo; at GravityView, is not new to WordPress, having previously worked on the top newsletter plugin. He&rsquo;s a full-stack developer who focuses on GravityView's user-facing code in the Dashboard and front end. Vlad comes from Russia and lives in Canada.</p>
-                </div>
+				<div class="col">
+					<h3>Vlad K.</h3>
+					<h4 style="font-weight:0; margin-top:0">Core Developer</h4>
+					<p><img alt="Vlad K." style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/vlad.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Vlad, while being the &ldquo;new kid on the block&rdquo; at GravityView, is not new to WordPress, having previously worked on the top newsletter plugin. He&rsquo;s a full-stack developer who focuses on GravityView's user-facing code in the Dashboard and front end. Vlad comes from Russia and lives in Canada.</p>
+				</div>
 
 				<div class="col">
 					<h3>Rafael Bennemann <a href="https://twitter.com/rafaelbe" title="Follow Rafael on Twitter"><span class="dashicons dashicons-twitter"></span></a></h3>
@@ -617,9 +623,9 @@ class GravityView_Welcome {
 						<li class="wp-person">Norwegian translation by <a href="https://www.transifex.com/accounts/profile/aleksanderespegard/">@aleksanderespegard</a></li>
 						<li class="wp-person">Danish translation by <a href="https://www.transifex.com/accounts/profile/jaegerbo/">@jaegerbo</a></li>
 						<li class="wp-person">Chinese translation by <a href="https://www.transifex.com/user/profile/michaeledi/">@michaeledi</a></li>
-                        <li class="wp-person">Persian translation by <a href="https://www.transifex.com/user/profile/azadmojtaba/">@azadmojtaba</a>, <a href="https://www.transifex.com/user/profile/amirbe/">@amirbe</a>, <a href="https://www.transifex.com/user/profile/Moein.Rm/">@Moein.Rm</a></li>
+						<li class="wp-person">Persian translation by <a href="https://www.transifex.com/user/profile/azadmojtaba/">@azadmojtaba</a>, <a href="https://www.transifex.com/user/profile/amirbe/">@amirbe</a>, <a href="https://www.transifex.com/user/profile/Moein.Rm/">@Moein.Rm</a></li>
 						<li class="wp-person">Russian translation by <a href="https://www.transifex.com/user/profile/gkovaleff/">@gkovaleff</a>, <a href="https://www.transifex.com/user/profile/awsswa59/">@awsswa59</a></li>
-                        <li class="wp-person">Polish translation by <a href="https://www.transifex.com/user/profile/dariusz.zielonka/">@dariusz.zielonka</a></li>
+						<li class="wp-person">Polish translation by <a href="https://www.transifex.com/user/profile/dariusz.zielonka/">@dariusz.zielonka</a></li>
 						<li class="wp-person">Accessibility contributions by <a href="https://github.com/RianRietveld">@RianRietveld</a></li>
 						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, <a href="https://github.com/mgratch">@mgratch</a>, <a href="https://github.com/ViewFromTheBox">@ViewFromTheBox</a>, <a href="https://github.com/stevehenty">@stevehenty</a>, <a href="https://github.com/naomicbush">@naomicbush</a>, and <a href="https://github.com/mrcasual">@mrcasual</a></li>
 					</ul>
