@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.10.2.2 on April 19, 2021 =
+
+* Improved: Previous fix for an issue that affected HTML rendering of some posts and pages
+
 = 2.10.2.1 on April 13, 2021 =
 
 * Fixed: Issue introduced in Version 2.10.2 that affected HTML rendering of some posts and pages
