@@ -357,7 +357,9 @@ class GravityView_frontend {
 
 				$block_post = get_post( $block['attrs']['ref'] );
 
-				$post_content .= $block_post->post_content;
+				if ( $block_post ) {
+					$post_content .= $block_post->post_content;
+				}
 			}
 
 			$this->setGvOutputData( GravityView_View_Data::getInstance( $post_content ) );
