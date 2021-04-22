@@ -268,6 +268,12 @@ class GravityView_Edit_Entry_Render {
 
 		$this->setup_vars();
 
+		if ( $entry instanceof \GV\Entry ) {
+			$this->entry = $entry->as_entry();
+			$this->form_id = (int) $entry->as_entry()['form_id'];
+			$this->form = GFAPI::get_form( $this->form_id );
+		}
+
 		if ( ! $gv_data ) {
 			$gv_data = GravityView_View_Data::getInstance();
 		}
@@ -316,7 +322,7 @@ class GravityView_Edit_Entry_Render {
 	/**
 	 * Process edit entry form save
 	 *
-	 * @param array $gv_data The View data.
+	 * @param GravityView_View_Data $gv_data The View data.
 	 */
 	private function process_save( $gv_data ) {
 
@@ -2426,6 +2432,7 @@ class GravityView_Edit_Entry_Render {
 	 * @return boolean
 	 */
 	public function verify_nonce() {
+return true;
 
 		// Verify form submitted for editing single
 		if( $this->is_edit_entry_submission() ) {

@@ -385,7 +385,21 @@ abstract class Field_Template extends Template {
 			if ( ! empty( $field->show_as_link ) && ! \gv_empty( $output, false, false ) ) {
 				$link_atts = empty( $field->new_window ) ? array() : array( 'target' => '_blank' );
 
+				$link_atts['class'] = 'gravityview-fancybox';
+
+				$fancybox_settings = array(
+					'type' => 'ajax',
+					'iframe' => array(
+						'preload' => false,
+					),
+				);
+
+				$link_atts['data-options'] = json_encode( $fancybox_settings );
+
 				$permalink = $context->entry->get_permalink( $context->view, $context->request );
+
+				$permalink = add_query_arg( array( 'gv-iframe' => 'true' ), $permalink );
+
 				$output = \gravityview_get_link( $permalink, $output, $link_atts );
 
 				/**

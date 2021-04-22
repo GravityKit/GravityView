@@ -15,6 +15,11 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Needed to allow JS in the Close link because of esc_url()
+add_filter( 'kses_allowed_protocols', function($protocols) {
+	$protocols[] = 'javascript';
+	return $protocols;
+});
 
 class GravityView_Edit_Entry {
 
@@ -95,6 +100,139 @@ class GravityView_Edit_Entry {
 		add_filter( 'gravityview/field/is_visible', array( $this, 'maybe_not_visible' ), 10, 3 );
 
 		add_filter( 'gravityview/api/reserved_query_args', array( $this, 'add_reserved_arg' ) );
+
+	    add_action( 'template_redirect', function() {
+		    if ( ! isset( $_GET['gv-iframe'] ) ) {
+			    return;
+		    }
+
+		    // If user doesn't have appropriate permissions, die.
+			if ( ! GFCommon::current_user_can_any( array( 'gravityforms_edit_forms', 'gravityforms_create_form', 'gravityforms_preview_forms' ) ) ) {
+				die( esc_html__( "You don't have adequate permission to preview forms.", 'gravityforms' ) );
+			}
+
+/**
+ * Fires when a Form Preview is loaded.
+ *
+ * The hook fires when a Form Preview is initialized and before it is rendered.
+ *
+ * @since 2.5
+ */
+do_action( 'gform_preview_init' );
+
+// Load form display class.
+require_once( GFCommon::get_base_path() . '/form_display.php' );
+
+// Get form ID.
+$form_id = absint( rgget( 'id' ) );
+
+// Get form object.
+$form = RGFormsModel::get_form_meta( $_GET['id'] );
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" <?php language_attributes(); ?>>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Imagetoolbar" content="No" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title><?php esc_html_e( 'Form Preview', 'gravityforms' ) ?></title>
+	<?php
+
+		// If form exists, enqueue its scripts.
+		if ( ! empty( $form ) ) {
+			GFFormDisplay::enqueue_form_scripts( $form );
+		}
+
+		wp_enqueue_script( 'gform_preview' );
+
+		wp_print_head_scripts();
+
+		$styles = array();
+
+		/**
+		 * Filters Form Preview Styles.
+		 *
+		 * This filter modifies the enqueued styles for the Form Preview. Any handles returned in the array
+		 * will be loaded in the Preview header (if they've been registered with wp_register_style).
+		 *
+		 * @since 2.4
+		 *
+		 * @param array $styles An empty array representing the currently-active styles.
+		 * @param array $form An array representing the current Form.
+		 *
+		 * @return array An array of handles to enqueue in the header.
+		 */
+		$styles = apply_filters( 'gform_preview_styles', $styles, $form );
+
+		if ( ! empty( $styles ) ) {
+			wp_print_styles( $styles );
+		}
+
+		/**
+		 * Fire before the closing <head> tag of the preview page.
+		 *
+		 * @since 2.4.19
+		 *
+		 * @param int $form_id The ID of the form currently being previewed.
+		 */
+		do_action( 'gform_preview_header', $form_id );
+
+	?>
+	<script type="text/javascript">
+		jQuery(function($) {
+			$( '.gv-button-cancel' ).on( 'click', function () {
+				parent.jQuery.fancybox.getInstance().close();
+			} );
+		});
+	</script>
+</head>
+<body <?php body_class(); ?>>
+<div id="preview_form_container">
+
+<?php
+
+$entry = gravityview()->request->is_edit_entry();
+
+if ( ! $entry ) {
+	return;
+}
+
+add_filter( 'clean_url', function( $good_protocol_url, $original_url, $_context ) {
+	return $original_url;
+}, 20, 3 );
+
+add_filter( 'gravityview/edit_entry/cancel_link', function ( $link ) {
+	return '';
+} );
+
+
+$view = gravityview()->request->is_view();
+$gravityview_view = GravityView_View::getInstance( $view );
+$gravityview_view->setViewId( $view->ID );
+$gravityview_view->setCurrentEntry( $entry->as_entry() );
+$data = GravityView_View_Data::getInstance( $view );
+$loader = GravityView_Edit_Entry::getInstance();
+$render = $loader->instances['render'];
+
+$render->init( $data, $entry, $view );
+
+remove_all_filters( 'clean_url');
+wp_print_footer_scripts();
+
+/**
+ * Fires in the footer of a Form Preview page
+ *
+ * @param int $_GET['id'] The ID of the form currently being previewed
+ */
+do_action( 'gform_preview_footer', $form_id );
+?>
+</div>
+</body>
+</html>
+<?php
+		    exit();
+	    } );
     }
 
 	/**
