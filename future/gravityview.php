@@ -42,6 +42,7 @@ add_action( 'plugins_loaded', function() {
 			'slug' => 'edit.php?post_type=gravityview',
 			'title' => esc_html__( 'Grant Support Access', 'gravityview' ),
 			'priority' => 1400,
+			'position' => 100, // TODO: This should be okay not being set, but it's throwing a warning about needing to be integer
 		),
 		'caps' => array(
 			'add' => array(
