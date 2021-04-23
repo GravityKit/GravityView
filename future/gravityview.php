@@ -35,14 +35,13 @@ add_action( 'plugins_loaded', function() {
 
 	$config = new \GravityView\TrustedLogin\Config(array(
 		'auth' => array(
-			'public_key' => 'b814872125f46543', // @todo Rename to `api_key` again, since we're fetching an encryption public key from the Vendor site…
-			'private_key' => '052b4c8a687aa104',
-			'license_key' => 'asdsdsa',
+			'public_key' => '6346688830182b64', // @todo Rename to `api_key` again, since we're fetching an encryption public key from the Vendor site…
+			'license_key' => gravityview()->plugin->settings->get('license_key'),
 		),
 		'menu' => array(
 			'slug' => 'edit.php?post_type=gravityview',
 			'title' => esc_html__( 'Grant Support Access', 'gravityview' ),
-			'priority' => 1000,
+			'priority' => 1400,
 		),
 		'caps' => array(
 			'add' => array(
