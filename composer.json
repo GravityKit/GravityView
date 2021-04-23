@@ -58,12 +58,10 @@
   "scripts": {
 	"comment" : "The `find vendor/` code deletes empty directories after install. This is optional.",
 	"post-install-cmd": [
-	  "\"vendor/bin/mozart\" compose",
-	  "composer dumpautoload"
+	  "\"vendor/bin/mozart\" compose"
 	],
 	"post-update-cmd": [
-	  "\"vendor/bin/mozart\" compose",
-	  "composer dumpautoload"
+	  "\"vendor/bin/mozart\" compose"
 	]
   }
 }
