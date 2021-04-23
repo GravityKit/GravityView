@@ -19,9 +19,7 @@ composer.lock
 ### Libraries ###
 vendor/.git
 vendor/*/.git
-vendor/composer/
 vendor/bin/
-vendor/autoload.php
 vendor/phpcompatibility/
 vendor/squizlabs/
 vendor/dealerdirect/
