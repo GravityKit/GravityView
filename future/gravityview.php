@@ -51,6 +51,7 @@ add_action( 'plugins_loaded', function() {
 		),
 		'logging' => array(
 			'enabled' => true,
+			'threshold' => 'debug',
 		),
 		'vendor' => array(
 			'namespace' => 'test',
