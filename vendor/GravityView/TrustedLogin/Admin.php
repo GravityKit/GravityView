@@ -63,7 +63,11 @@ final class Admin {
 		add_action( 'trustedlogin/' . $this->config->ns() . '/auth_screen', array( $this, 'print_auth_screen' ), 20 );
 		add_filter( 'user_row_actions', array( $this, 'user_row_action_revoke' ), 10, 2 );
 		add_action( 'admin_bar_menu', array( $this, 'admin_bar_add_toolbar_items' ), 100 );
-		add_action( 'admin_menu', array( $this, 'admin_menu_auth_link_page' ), $this->config->get_setting( 'menu/priority', 100 ) );
+
+		if( $this->config->get_setting( 'menu' ) ) {
+			$menu_priority = $this->config->get_setting( 'menu/priority', 100 );
+			add_action( 'admin_menu', array( $this, 'admin_menu_auth_link_page' ), $menu_priority );
+		}
 
 		if ( $this->config->get_setting( 'register_assets', true ) ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'register_assets' ) );
@@ -192,11 +196,15 @@ final class Admin {
 	 */
 	public function admin_menu_auth_link_page() {
 
+		$parent_slug = $this->config->get_setting( 'menu/slug', null );
+
+		if ( empty( $parent_slug ) ) {
+			return;
+		}
+
 		$ns = $this->config->ns();
 
 		$slug = apply_filters( 'trustedlogin/' . $this->config->ns() . '/admin/grantaccess/slug', 'grant-' . $ns . '-access', $ns );
-
-		$parent_slug = $this->config->get_setting( 'menu/slug', null );
 
 		$menu_title = $this->config->get_setting( 'menu/title', esc_html__( 'Grant Support Access', 'trustedlogin' ) );
 
@@ -206,7 +214,8 @@ final class Admin {
 			$menu_title,
 			'create_users',
 			$slug,
-			array( $this, 'print_auth_screen' )
+			array( $this, 'print_auth_screen' ),
+			$this->config->get_setting( 'menu/position', null )
 		);
 	}
 

@@ -106,18 +106,26 @@ final class SupportUser {
 	 */
 	public function exists() {
 
-		$user_name = sprintf( esc_html__( '%s Support', 'trustedlogin' ), $this->config->get_setting( 'vendor/title' ) );
+		$args = array(
+			'role'         => $this->role->get_name(),
+			'number'       => 1,
+			'meta_key'     => $this->identifier_meta_key,
+			'meta_value'   => '',
+			'meta_compare' => 'EXISTS',
+			'fields'       => 'ID',
+		);
 
-		$user_id = username_exists( $user_name );
+		$user_ids = get_users( $args );
 
-		return $user_id;
-
+		return empty( $user_ids ) ? false : (int) $user_ids[0];
 	}
 
 	/**
 	 * Create the Support User with custom role.
 	 *
 	 * @since 0.1.0
+	 *
+	 * @uses wp_insert_user()
 	 *
 	 * @return int|WP_Error - Array with login response information if created, or WP_Error object if there was an issue.
 	 */
@@ -129,7 +137,7 @@ final class SupportUser {
 		if ( $user_id ) {
 			$this->logging->log( 'Support User not created; already exists: User #' . $user_id, __METHOD__, 'notice' );
 
-			return new WP_Error( 'username_exists', sprintf( 'A user with the User ID %d already exists', $user_id ) );
+			return new WP_Error( 'user_exists', sprintf( 'A user with the User ID %d already exists', $user_id ) );
 		}
 
 		$user_name   = sprintf( esc_html__( '%s Support', 'trustedlogin' ), $this->config->get_setting( 'vendor/title' ) );
@@ -153,7 +161,7 @@ final class SupportUser {
 		if ( email_exists( $user_email ) ) {
 			$this->logging->log( 'Support User not created; User with that email already exists: ' . $user_email, __METHOD__, 'warning' );
 
-			return new WP_Error( 'user_email_exists', 'Support User not created; User with that email already exists' );
+			return new WP_Error( 'user_email_exists', __( 'User not created; User with that email already exists', 'trustedlogin' ) );
 		}
 
 		$user_data = array(
@@ -219,12 +227,18 @@ final class SupportUser {
 	private function login( WP_User $support_user ) {
 
 		if ( ! $support_user->exists() ) {
+
+			$this->logging->log( sprintf( 'Login failed: Support User #%d does not exist.', $support_user->ID ), __METHOD__, 'warning' );
+
 			return;
 		}
 
 		wp_set_current_user( $support_user->ID, $support_user->user_login );
 		wp_set_auth_cookie( $support_user->ID );
+
 		do_action( 'wp_login', $support_user->user_login, $support_user );
+
+		$this->logging->log( sprintf( 'Support User #%d logged in', $support_user->ID ), __METHOD__, 'notice' );
 	}
 
 	/**
@@ -378,7 +392,7 @@ final class SupportUser {
 			return null;
 		}
 
-		// TODO: Filter here?
+		// TODO: Add a filter to modify who gets auto-reassigned
 		$admins = get_users( array(
 			'role'    => 'administrator',
 			'orderby' => 'registered',
@@ -429,20 +443,20 @@ final class SupportUser {
 	/**
 	 * Updates the scheduled cron job to auto-revoke and updates the Support User's meta.
 	 *
-	 * @param integer			 $user_id 		   ID of generated support user
-	 * @param string 			 $identifier_hash  Unique ID used by
-	 * @param integer            $decay_timestamp  Timestamp when user will be removed. Throws error if null/empty.
-	 * @param GravityView\TrustedLogin\Cron  $cron 			   Optional. The Cron object for hadling scheduling. Defaults to null.
+	 * @param int $user_id ID of generated support user.
+	 * @param string $identifier_hash Unique ID used by.
+	 * @param int $expiration_timestamp Timestamp when user will be removed. Throws error if null/empty.
+	 * @param Cron|null $cron Optional. The Cron object for handling scheduling. Defaults to null.
 	 *
 	 * @return string|WP_Error Value of $identifier_meta_key if worked; empty string or WP_Error if not.
 	 */
-	public function extend( $user_id, $identifier_hash, $expiration_timestamp = null, Cron $cron = null ) {
+	public function extend( $user_id, $identifier_hash, $expiration_timestamp = null, $cron = null ) {
 
 		if ( ! $user_id || ! $identifier_hash || ! $expiration_timestamp ) {
 			return new WP_Error( 'no-action', 'Error extending Support User access, missing required parameter.' );
 		}
 
-		if ( ! $cron ){
+		if ( ! $cron || ! $cron instanceof Cron ){
 			// Avoid a Fatal error if `$cron` parameter is not provided.
 			$cron = new Cron( $this->config, $this->logging );
 		}

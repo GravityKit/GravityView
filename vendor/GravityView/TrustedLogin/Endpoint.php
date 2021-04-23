@@ -230,7 +230,7 @@ class Endpoint {
 
 		$this->logging->log( "Endpoint {$endpoint} added.", __METHOD__, 'debug' );
 
-		if ( $endpoint && ! get_site_option( 'tl_permalinks_flushed' ) ) {
+		if ( ! get_site_option( 'tl_permalinks_flushed' ) ) {
 
 			flush_rewrite_rules( false );
 

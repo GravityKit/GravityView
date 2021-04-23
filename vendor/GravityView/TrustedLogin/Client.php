@@ -168,9 +168,7 @@ final class Client {
 
 		// If the user exists already, extend access
 		if ( $user_id = $this->support_user->exists() ) {
-
 			return $this->extend_access( $user_id );
-
 		}
 
 		timer_start();
@@ -296,7 +294,7 @@ final class Client {
 
 		do_action( 'trustedlogin/' . $this->config->ns() . '/access/created', array(
 			'url'    => get_site_url(),
-			'action' => 'create'
+			'action' => 'created'
 		) );
 
 		return $return_data;
@@ -331,7 +329,7 @@ final class Client {
 			return $extended;
 		}
 
-		$secret_id     = $this->endpoint->generate_secret_id( $identifier_hash );
+		$secret_id = $this->endpoint->generate_secret_id( $identifier_hash );
 
 		if ( is_wp_error( $secret_id ) ) {
 
@@ -342,18 +340,14 @@ final class Client {
 			return $secret_id;
 		}
 
-		$endpoint_hash = $this->endpoint->get_hash( $identifier_hash );
-
 		$timing_local = timer_stop( 0, 5 );
 
 		$return_data = array(
 			'type'       => 'extend',
 			'site_url'   => get_site_url(),
-			'endpoint'   => $endpoint_hash,
 			'identifier' => $identifier_hash,
 			'user_id'    => $user_id,
 			'expiry'     => $expiration_timestamp,
-			'access_key' => $secret_id,
 			'is_ssl'     => is_ssl(),
 			'timing'     => array(
 				'local'  => $timing_local,

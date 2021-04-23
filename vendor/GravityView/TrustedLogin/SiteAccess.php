@@ -94,7 +94,7 @@ class SiteAccess {
 
 		do_action( 'trustedlogin/' . $this->config->ns() . '/access/revoked', array(
 			'url'    => get_site_url(),
-			'action' => 'revoke',
+			'action' => 'revoked',
 		) );
 
 		return $site_revoked;

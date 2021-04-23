@@ -21,12 +21,12 @@ final class Config {
 
 	/**
 	 * @var array Default settings values
+	 * @link https://www.trustedlogin.com/configuration/ Read the configuration settings documentation
 	 * @since 0.9.6
 	 */
 	private $default_settings = array(
 		'auth' => array(
 			'public_key' => null, // @todo Rename to `api_key` again, since we're fetching an encryption public key from the Vendor site…
-			'private_key' => null,
 			'license_key' => null,
 		),
 		'caps' => array(
@@ -37,7 +37,7 @@ final class Config {
 		'logging' => array(
 			'enabled' => false,
 			'directory' => null,
-			'threshold' => 'debug',
+			'threshold' => 'notice',
 			'options' => array(
 				'extension'      => 'log',
 				'dateFormat'     => 'Y-m-d G:i:s.u',
@@ -51,13 +51,13 @@ final class Config {
 			'slug' => null,
 			'title' => null,
 			'priority' => null,
+			'position' => null,
 		),
 		'paths' => array(
 			'css' => null,
 			'js'  => null, // Default is defined in get_default_settings()
 		),
 		'reassign_posts' => true,
-		'registers_assets' => true,
 		'require_ssl' => true,
 		'role' => 'editor',
 		'vendor' => array(
@@ -137,8 +137,11 @@ final class Config {
 			$errors[] = new WP_Error( 'invalid_configuration', 'Namespace length must be shorter than 96 characters.' );
 		}
 
-		// TODO: Add namespace collision check?
+		if ( isset( $this->settings['vendor'][ 'email' ] ) && ! filter_var( $this->settings['vendor'][ 'email' ], FILTER_VALIDATE_EMAIL ) ) {
+			$errors[] = new WP_Error( 'invalid_configuration', 'An invalid `vendor/email` setting was passed to the GravityView\TrustedLogin Client.' );
+		}
 
+		// TODO: Add namespace collision check?
 		foreach ( array( 'webhook_url', 'vendor/support_url', 'vendor/website' ) as $settings_key ) {
 			$value = $this->get_setting( $settings_key, null, $this->settings );
 			$url   = wp_kses_bad_protocol( $value, array( 'http', 'https' ) );

@@ -49,6 +49,7 @@ final class Remote {
 
 	public function init() {
 		add_action( 'trustedlogin/' . $this->config->ns() . '/access/created', array( $this, 'maybe_send_webhook' ) );
+		add_action( 'trustedlogin/' . $this->config->ns() . '/access/extended', array( $this, 'maybe_send_webhook' ) );
 		add_action( 'trustedlogin/' . $this->config->ns() . '/access/revoked', array( $this, 'maybe_send_webhook' ) );
 	}
 

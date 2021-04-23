@@ -217,8 +217,8 @@ final class SecurityChecks {
 			'identifier' => $identifier,
 			'timestamp'  => time(),
 			'user_agent' => isset( $_SERVER['HTTP_USER_AGENT'] ) ? substr( $_SERVER['HTTP_USER_AGENT'], 0, 255 ) : '',
-			'user_ip'	 => $this->get_ip(),
-			'site_ur'	 => get_site_url(),
+			'user_ip'    => $this->get_ip(),
+			'site_url'   => get_site_url(),
 		);
 
 		$remote = new Remote( $this->config, $this->logging );

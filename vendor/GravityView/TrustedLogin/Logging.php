@@ -60,13 +60,22 @@ class Logging {
 			return false;
 		}
 
+		$logging_directory = null;
+
 		$configured_logging_dir = $config->get_setting( 'logging/directory', '' );
 
-		if( $configured_logging_dir ) {
-			return $this->check_directory( $configured_logging_dir );
+		if( ! empty( $configured_logging_dir ) ) {
+
+			$logging_directory = $this->check_directory( $configured_logging_dir );
+
+			if ( ! $logging_directory ) {
+				return false;
+			}
 		}
 
-		$logging_directory = $this->maybe_make_logging_directory();
+		if ( ! $logging_directory ) {
+			$logging_directory = $this->maybe_make_logging_directory();
+		}
 
 		// Directory cannot be found or created. Cannot log.
 		if( ! $logging_directory ) {
@@ -121,6 +130,7 @@ class Logging {
 	 */
 	private function check_directory( $dirpath ) {
 
+		$dirpath = (string) $dirpath;
 		$file_exists = file_exists( $dirpath );
 		$is_writable = wp_is_writable( $dirpath );
 
@@ -138,7 +148,6 @@ class Logging {
 			$this->log( 'The defined logging directory exists but could not be written to: ' . $dirpath, __METHOD__, 'error' );
 		}
 
-		// Then return early; respect the setting
 		return false;
 	}
 
