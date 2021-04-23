@@ -46,7 +46,10 @@ add_action( 'plugins_loaded', function() {
 		),
 		'caps' => array(
 			'add' => array(
-				'gform_full_access' => esc_html__( '', 'gravityview' ),
+				'gform_full_access' => esc_html__( 'Support will need to see and edit the forms, entries, and Gravity Forms settings to debug issues.', 'gravityview' ),
+			),
+			'remove' => array(
+				'manage_woocommerce' => esc_html__( 'We don\'t need to see your WooCommerce details to provide support.', 'gravityview' ),
 			),
 		),
 		'logging' => array(
