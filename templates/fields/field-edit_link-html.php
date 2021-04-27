@@ -46,17 +46,4 @@ $output = apply_filters( 'gravityview_entry_link', GravityView_API::replace_vari
 
 $href = GravityView_Edit_Entry::get_edit_link( $entry, $gravityview->view->ID, $post ? $post->ID : null );
 
-$link_atts['class'] = 'gravityview-fancybox';
-
-$fancybox_settings = array(
-	'type' => 'iframe',
-	'iframe' => array(
-		'preload' => false,
-	),
-);
-
-$link_atts['data-options'] = json_encode( $fancybox_settings );
-
-$href = add_query_arg( array( 'gv-iframe' => 'true' ), $href );
-
 echo gravityview_get_link( $href, $output, $link_atts );
