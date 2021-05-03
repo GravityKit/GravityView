@@ -71,6 +71,35 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 	}
 
 	/**
+	 * Replaces insecure file paths with secure file paths for WordPress media shortcode output
+	 *
+	 * The WordPress media shortcodes need to be passed insecure file paths so WordPress can parse the extension]
+	 * that is being rendered and properly generate the code. Once that shortcode is rendered, we then replace the
+	 * insecure file paths with the secure file paths used by Gravity Forms.
+	 *
+	 * @since 2.10.3
+	 *
+	 * @param string $rendered The output of the WordPress audio/video shortcodes.
+	 * @param string $insecure_file_path Insecure path to the file, showing the directory structure.
+	 * @param string $secure_file_path Secure file path using Gravity Forms rewrites.
+	 *
+	 * @return string HTML output with insecure file paths converted to secure.
+	 */
+	static private function replace_insecure_wp_shortcode_output( $rendered = '', $insecure_file_path = '', $secure_file_path = '' ) {
+
+		// The shortcode adds instance URL args: add_query_arg( '_', $instance, $atts[ $fallback ] )
+		// these break the path, since we already have "?" in the URL
+		$rendered = str_replace( '?_=', '&_=', $rendered );
+
+		$rendered = str_replace( esc_attr( $insecure_file_path ), esc_attr( $secure_file_path ), $rendered );
+		$rendered = str_replace( esc_html( $insecure_file_path ), esc_html( $secure_file_path ), $rendered );
+		$rendered = str_replace( esc_url( $insecure_file_path ), esc_url( $secure_file_path ), $rendered );
+		$rendered = str_replace( trim( $insecure_file_path ), trim( $secure_file_path ), $rendered );
+
+		return $rendered;
+	}
+
+	/**
 	 * Return an array of files prepared for output.
 	 *
 	 * Processes files by file type and generates unique output for each. Returns array for each file, with the following keys:
@@ -219,14 +248,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					$rendered = wp_audio_shortcode( $audio_settings );
 
 					if ( $is_secure ) {
-
-						// The shortcode adds instance URL args: add_query_arg( '_', $instance, $atts[ $fallback ] )
-						// these break the path, since we already have "?" in the URL
-						$rendered = str_replace( '?_=', '&_=', $rendered );
-
-						foreach ( array( 'esc_attr', 'esc_html', 'esc_url', 'trim' /** noop */ ) as $f ) {
-							$rendered = str_replace( $f( $insecure_file_path ), $f( $secure_file_path ), $rendered );
-						}
+						$rendered = self::replace_insecure_wp_shortcode_output( $rendered, $insecure_file_path, $secure_file_path );
 					}
 				}
 
@@ -255,14 +277,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					$rendered = wp_video_shortcode( $video_settings );
 
 					if ( $is_secure ) {
-
-						// The shortcode adds instance URL args: add_query_arg( '_', $instance, $atts[ $fallback ] )
-						// these break the path, since we already have "?" in the URL
-						$rendered = str_replace( '?_=', '&_=', $rendered );
-
-						foreach ( array( 'esc_attr', 'esc_html', 'esc_url', 'trim' /** noop */ ) as $f ) {
-							$rendered = str_replace( $f( $insecure_file_path ), $f( $secure_file_path ), $rendered );
-						}
+						$rendered = self::replace_insecure_wp_shortcode_output( $rendered, $insecure_file_path, $secure_file_path );
 					}
 				}
 
