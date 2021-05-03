@@ -110,9 +110,13 @@ class Blocks {
 		);
 
 		$views_list_array = array_map( function ( $view ) {
+
+			$post_title = empty( $view->post_title ) ? __('(no title)', 'gravityview') : $view->post_title;
+			$post_title = esc_html( sprintf('%s #%d', $post_title, $view->ID ) );
+
 			return array(
 				'value' => $view->ID,
-				'label' => $view->post_title,
+				'label' => $post_title,
 			);
 		}, $views );
 
