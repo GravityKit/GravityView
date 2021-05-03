@@ -798,6 +798,7 @@ function gv_get_query_args() {
 		'action',
 		'view_id',
 		'entry_id',
+		'pagenum',
 	);
 
 	/**

@@ -2,7 +2,7 @@
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
 Tested up to: 5.7
-Requires PHP: 5.3
+Requires PHP: 5.3.0
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -24,6 +24,22 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Added: Gutenberg content blocks to embed GravityView elements
+
+= 2.10.2.2 on April 19, 2021 =
+
+* Improved: Previous fix for an issue that affected HTML rendering of some posts and pages
+
+= 2.10.2.1 on April 13, 2021 =
+
+* Fixed: Issue introduced in Version 2.10.2 that affected HTML rendering of some posts and pages
+* Fixed: Undefined function error for sites running WordPress 4.x introduced in Version 2.10.2
+
+= 2.10.2 on April 12, 2021 =
+
+* Fixed: Using the GravityView shortcode inside a [reusable block](https://wordpress.org/news/2021/02/gutenberg-tutorial-reusable-blocks/) in the WordPress Editor would prevent CSS and JavaScript from loading
+* Fixed: "Open in new tab/window" checkbox is missing from Link to Single Entry and Link to Edit Entry links
+* Fixed: Searching while on a paginated search result fails; it shows no entries because the page number isn't removed
+* Fixed: Sorting by Entry ID resulted in a MySQL error
 
 = 2.10.1 on March 31, 2021 =
 

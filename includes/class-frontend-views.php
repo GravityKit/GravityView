@@ -342,17 +342,39 @@ class GravityView_frontend {
 			return;
 		}
 
+		$is_GV_post_type = 'gravityview' === get_post_type( $post );
+
 		// Calculate requested Views
-		$this->setGvOutputData( GravityView_View_Data::getInstance( $post ) );
+		$post_content = ! empty( $post->post_content ) ? $post->post_content : null;
+
+		if ( ! $is_GV_post_type && function_exists( 'parse_blocks' ) && preg_match_all( '/"ref":\d+/', $post_content ) ) {
+			$blocks = parse_blocks( $post_content );
+
+			foreach ( $blocks as $block ) {
+				if ( empty( $block['attrs']['ref'] ) ) {
+					continue;
+				}
+
+				$block_post = get_post( $block['attrs']['ref'] );
+
+				if ( $block_post ) {
+					$post_content .= $block_post->post_content;
+				}
+			}
+
+			$this->setGvOutputData( GravityView_View_Data::getInstance( $post_content ) );
+		} else {
+			$this->setGvOutputData( GravityView_View_Data::getInstance( $post ) );
+		}
 
 		// !important: we need to run this before getting single entry (to kick the advanced filter)
 		$this->set_context_view_id();
 
-		$this->setIsGravityviewPostType( get_post_type( $post ) === 'gravityview' );
+		$this->setIsGravityviewPostType( $is_GV_post_type );
 
-		$post_id = $this->getPostId() ? $this->getPostId() : (isset( $post ) ? $post->ID : null );
+		$post_id = $this->getPostId() ? $this->getPostId() : ( isset( $post ) ? $post->ID : null );
 		$this->setPostId( $post_id );
-		$post_has_shortcode = ! empty( $post->post_content ) ? gravityview_has_shortcode_r( $post->post_content, 'gravityview' ) : false;
+		$post_has_shortcode = $post_content ? gravityview_has_shortcode_r( $post_content, 'gravityview' ) : false;
 		$this->setPostHasShortcode( $this->isGravityviewPostType() ? null : ! empty( $post_has_shortcode ) );
 
 		// check if the View is showing search results (only for multiple entries View)
@@ -1188,7 +1210,7 @@ class GravityView_frontend {
 	 * @param int|string|array $sort_field_id Field used for sorting (`id` or `1.2`), or an array for multisorts
 	 * @param int $form_id GF Form ID
 	 *
-	 * @return string Possibly modified sorting ID
+	 * @return string|array Possibly modified sorting ID. Array if $sort_field_id is passed as array.
 	 */
 	public static function _override_sorting_id_by_field_type( $sort_field_id, $form_id ) {
 

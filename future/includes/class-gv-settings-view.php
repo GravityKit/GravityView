@@ -245,6 +245,7 @@ class View_Settings extends Settings {
 					'options'           => array(
 						'ASC'  => __( 'ASC', 'gravityview' ),
 						'DESC' => __( 'DESC', 'gravityview' ),
+						'RAND' => __( 'Random', 'gravityview' ),
 					),
 					'show_in_shortcode' => true,
 					'article'           => array(
@@ -535,10 +536,6 @@ class View_Settings extends Settings {
 				),
 			)
 		);
-
-		if ( version_compare( \GFCommon::$version, '2.3-beta-4', '>=' ) ) {
-			$default_settings['sort_direction']['options']['RAND'] = __( 'Random', 'gravityview' );
-		}
 
 		/**
 		 * @filter `gravityview_default_args` Modify the default settings for new Views
