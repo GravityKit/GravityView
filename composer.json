@@ -25,10 +25,11 @@
 	"trustedlogin/trustedlogin-client": "dev-feature/auth-screen"
   },
   "require-dev": {
-    "coenjacobs/mozart": "^0.7.1"
+	"brianhenryie/strauss": "^0.8.2"
   },
   "autoload": {
 	"classmap": [
+	  "strauss",
 	  "vendor"
 	],
 	"psr-4": {
@@ -37,31 +38,25 @@
 	}
   },
   "extra": {
-	"mozart": {
-	  "dep_namespace": "GravityView\\",
-	  "dep_directory": "/vendor/GravityView/",
-	  "classmap_directory": "/vendor/GravityView/",
+	"strauss": {
+	  "target_directory": "strauss",
+	  "namespace_prefix": "GravityView\\",
 	  "classmap_prefix": "GV_",
 	  "packages": [
 		"trustedlogin/trustedlogin-client"
 	  ],
-	  "override_autoload": {
-		"katzgrau/klogger": {
-		  "psr-4": {
-			"Katzgrau\\KLogger\\": "src/"
-		  }
-		}
-	  },
-	  "delete_vendor_directories": true
+	  "delete_vendor_files": true
 	}
   },
   "scripts": {
-	"comment" : "The `find vendor/` code deletes empty directories after install. This is optional.",
+	"strauss": [
+	  "@php strauss.phar"
+	],
 	"post-install-cmd": [
-	  "\"vendor/bin/mozart\" compose"
+	  "@strauss"
 	],
 	"post-update-cmd": [
-	  "\"vendor/bin/mozart\" compose"
+	  "@strauss"
 	]
   }
 }
