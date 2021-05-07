@@ -126,7 +126,7 @@ class Blocks {
 			array(
 				'home_page' => home_url(),
 				'ajax_url'  => admin_url( 'admin-ajax.php' ),
-				'img_url'   => gravityview()->plugin->url() . 'assets/images/',
+				'img_url'   => gravityview()->plugin->url( 'assets/images/' ),
 				'view_list' => $views_list_array,
 			)
 		);
