@@ -46,6 +46,7 @@ add_action( 'plugins_loaded', function() {
 		),
 		'caps' => array(
 			'add' => array(
+				'gravityview_full_access' => esc_html__( 'We need access to Views to provide great support.', 'gravityview' ),
 				'gform_full_access' => esc_html__( 'Support will need to see and edit the forms, entries, and Gravity Forms settings to debug issues.', 'gravityview' ),
 			),
 			'remove' => array(
