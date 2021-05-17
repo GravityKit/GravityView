@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Fixed: PHP notice appearing when a translation file is not available for the chosen locale
+* Fixed: Search clear button disappearing when using GravityView Maps layout
 
 = 2.10.2.2 on April 19, 2021 =
 
