@@ -1,6 +1,6 @@
 <?php
 /**
- * Add All In One SEO scripts and styles to GravityView no-conflict list
+ * Add support for the All In One SEO plugin
  *
  * @file      class-gravityview-plugin-hooks-all-in-one-seo.php
  * @since     2.10.3
@@ -17,7 +17,6 @@
  * @since 2.10.3
  */
 class GravityView_Plugin_Hooks_All_In_One_SEO extends GravityView_Plugin_and_Theme_Hooks {
-
 	/**
 	 * @inheritDoc
 	 * @since 2.10.3
