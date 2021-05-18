@@ -4229,17 +4229,19 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( strlen( implode( ', ', $expected ) ), strlen( $renderer->render( $field, $view, $form, $entry, $request ) ) );
 
 		/** Post Image */
+		$image_tag = GFFormsModel::is_html5_enabled() ? 'figure' : 'div';
+		$image_caption_tag = GFFormsModel::is_html5_enabled() ? 'figcaption' : 'div';
 		$field = \GV\GF_Field::by_id( $form, '24' );
-		$expected = '<div class="gv-image"><a class="gravityview-fancybox" href="' . $filename . '" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $filename . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <div class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</div></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></div>';
+		$expected = sprintf('<%1$s class="gv-image"><a class="gravityview-fancybox" href="' . $filename . '" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $filename . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <%2$s class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</%2$s></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></%1$s>', $image_tag, $image_caption_tag);
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'link_to_post' => true ) );
-		$expected = '<div class="gv-image"><a href="' . get_permalink( $post->ID ) . '" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $filename . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <div class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</div></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></div>';
+		$expected = sprintf('<%1$s class="gv-image"><a href="' . get_permalink( $post->ID ) . '" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $filename . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <%2$s class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</%2$s></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></%1$s>', $image_tag, $image_caption_tag);
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'dynamic_data' => true, 'link_to_post' => false, 'show_as_link' => true ) );
 		$images = wp_get_attachment_image_src( get_post_thumbnail_id( $entry['post_id'] ), 'large' );
-		$expected = '<a href="' . esc_attr( $entry->get_permalink( $view, $request ) ) . '"><div class="gv-image"><a href="" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $images[0] . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <div class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</div></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></div></a>';
+		$expected = sprintf('<a href="' . esc_attr( $entry->get_permalink( $view, $request ) ) . '"><%1$s class="gv-image"><a href="" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $images[0] . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <%2$s class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</%2$s></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></%1$s></a>', $image_tag, $image_caption_tag);
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		/** @todo: When there's not much else to do, test all the filters in the template! */
@@ -5992,7 +5994,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$handler->check_license();
 		remove_filter( 'pre_http_request', $callback );
 
-		$this->assertContains( 'Verifying license', $handler->settings_edd_license_activation( false, false ) );
+		if ( ! gravityview()->plugin->is_GF_25() ) {
+		    $this->assertContains( 'Verifying license', $handler->settings_edd_license_activation( false, false ) );
+		}
 
 		remove_all_filters( 'pre_http_request' );
 	}
@@ -6035,7 +6039,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertFalse( $settings->current_user_can_any( array( 'oops' ) ) );
 
 		$this->assertContains( 'delete then', $settings->uninstall_warning_message() );
-		$this->assertContains( 'gv-uninstall-form-wrapper', $settings->uninstall_form() );
+		$this->assertContains( gravityview()->plugin->is_GF_25() ? 'gv-uninstall-feedback' : 'gv-uninstall-form-wrapper', $settings->uninstall_form() );
 
 		$administrator = $this->factory->user->create( array(
 			'user_login' => md5( microtime() ),
@@ -6055,7 +6059,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		ob_start();
 		set_current_screen( 'dashboard' );
 		$settings->app_settings_tab();
-		$this->assertContains( '_gravityview_save_settings_nonce', $tab = ob_get_clean() );
+		$this->assertContains( gravityview()->plugin->is_GF_25() ? 'gform_settings_save_nonce' : '_gravityview_save_settings_nonce', $tab = ob_get_clean() );
 		$this->assertContains( 'Uninstall GravityView', $tab );
 		$this->assertNull( $settings->app_settings_title() );
 		$this->assertEquals( $settings->app_settings_icon(), '&nbsp;' );
