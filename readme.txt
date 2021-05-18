@@ -23,7 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 2.10.3 =
 
-* Added: Support for the [All in One SEO](https://en-ca.wordpress.org/plugins/all-in-one-seo-pack/) plugin
+* Added: Support for the [All in One SEO](https://wordpress.org/plugins/all-in-one-seo-pack/) plugin
 * Fixed: GravityView styles and scripts not loading when embedding View as a block shortcode in GeneratePress
 * Fixed: PHP notice appearing when a translation file is not available for the chosen locale
 * Fixed: Search clear button disappearing when using GravityView Maps layout
