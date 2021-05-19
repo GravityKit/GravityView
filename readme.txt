@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.10.3 =
+= 2.10.3 on May 19, 2021 =
 
 * Added: Support for the [All in One SEO](https://wordpress.org/plugins/all-in-one-seo-pack/) plugin
 * Fixed: GravityView styles and scripts not loading when embedding View as a block shortcode in GeneratePress
