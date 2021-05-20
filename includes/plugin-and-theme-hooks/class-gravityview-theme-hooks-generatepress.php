@@ -51,6 +51,8 @@ class GravityView_Theme_Hooks_GeneratePress extends GravityView_Plugin_and_Theme
 	 * @param string $block_content Gutenberg block content
 	 *
 	 * @return false|string
+	 *
+	 * @todo Once we stop using the legacy `GravityView_frontend::parse_content()` method to detect Views in post content, this code should either be dropped or promoted to some core class given its applicability to other themes/plugins
 	 */
 	public function detect_views_in_block_content( $block_content ) {
 		if ( ! class_exists( 'GV\View_Collection' ) || ! class_exists( 'GV\View' ) ) {
