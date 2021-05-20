@@ -17,6 +17,16 @@
  * @since 2.10.3
  */
 class GravityView_Theme_Hooks_GeneratePress extends GravityView_Plugin_and_Theme_Hooks {
+
+	/**
+	 * @inheritDoc
+	 * @since 1.15.2
+	 */
+	protected $content_meta_keys = array(
+		'_generate-sidebar-layout-meta',
+		'_generate-footer-widget-meta',
+	);
+
 	/**
 	 * @inheritDoc
 	 * @since 2.10.3
