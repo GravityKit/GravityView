@@ -11,7 +11,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.10.2\n"
+"Project-Id-Version: GravityView 2.10.3\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
@@ -216,7 +216,7 @@ msgstr "Lizenz prüfen"
 #: future/includes/class-gv-view.php:337 future/includes/class-gv-view.php:343
 #: future/includes/class-gv-view.php:366 future/includes/class-gv-view.php:371
 #: future/includes/class-gv-view.php:377 future/includes/class-gv-view.php:385
-#: includes/class-frontend-views.php:683
+#: includes/class-frontend-views.php:699
 msgid "You are not allowed to view this content."
 msgstr "Du kannst dir diesen Inhalt nicht ansehen"
 
@@ -240,13 +240,13 @@ msgstr ""
 "Stile werden in der Voransicht nicht geladen, der Inhalt wird aus diesem "
 "Grund etwas komisch aussehen. Keine Sorge!"
 
-#: future/includes/class-gv-plugin.php:646
+#: future/includes/class-gv-plugin.php:648
 #: includes/class-gravityview-entry-approval.php:456
 #: tests/unit-tests/GravityView_Uninstall_Test.php:191
 msgid "Disapproved the Entry for GravityView"
 msgstr "Den Eintrag für GravityView zurückgewiesen"
 
-#: future/includes/class-gv-plugin.php:647
+#: future/includes/class-gv-plugin.php:649
 #: includes/class-gravityview-entry-approval.php:450
 #: tests/unit-tests/GravityView_Uninstall_Test.php:192
 msgid "Approved the Entry for GravityView"
@@ -274,7 +274,7 @@ msgstr "Nur genehmigte Einträge anzeigen"
 #: future/includes/class-gv-renderer.php:134
 #: future/includes/class-gv-renderer.php:179
 #: future/includes/class-gv-renderer.php:235
-#: future/includes/class-gv-view.php:296 includes/class-frontend-views.php:633
+#: future/includes/class-gv-view.php:296 includes/class-frontend-views.php:649
 msgid "You can only see this message because you are able to edit this View."
 msgstr ""
 "Diese Meldung können Sie nur sehen, weil Sie diese Ansicht bearbeiten "
@@ -285,7 +285,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/view-configuration.php:11
 #: includes/admin/metaboxes/views/view-configuration.php:87
 #: includes/admin/metaboxes/views/view-configuration.php:88
-#: includes/class-frontend-views.php:621
+#: includes/class-frontend-views.php:637
 #: includes/class-gravityview-admin-bar.php:102
 #: includes/class-gravityview-entry-link-shortcode.php:233
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:144
@@ -296,25 +296,25 @@ msgid "Edit Entry"
 msgstr "Eintrag bearbeiten"
 
 #: future/includes/class-gv-renderer.php:159
-#: future/includes/class-gv-settings-view.php:408
+#: future/includes/class-gv-settings-view.php:409
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:145
 #: includes/admin/metaboxes/views/view-configuration.php:10
 #: includes/admin/metaboxes/views/view-configuration.php:62
 #: includes/admin/metaboxes/views/view-configuration.php:63
-#: includes/class-frontend-views.php:625
+#: includes/class-frontend-views.php:641
 msgid "Single Entry"
 msgstr "Einzelner Eintrag"
 
 #: future/includes/class-gv-renderer.php:163
-#: future/includes/class-gv-settings-view.php:407
+#: future/includes/class-gv-settings-view.php:408
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:137
 #: includes/admin/metaboxes/views/view-configuration.php:9
-#: includes/class-frontend-views.php:618
+#: includes/class-frontend-views.php:634
 msgid "Multiple Entries"
 msgstr "Mehrere Einträge"
 
 #: future/includes/class-gv-renderer.php:178
-#: includes/class-frontend-views.php:632
+#: includes/class-frontend-views.php:648
 msgid "Add fields to %s"
 msgstr "Felder zu %s hinzufügen"
 
@@ -806,12 +806,12 @@ msgid "By default, entries are sorted by Entry ID."
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:231
-#: future/includes/class-gv-settings-view.php:261
+#: future/includes/class-gv-settings-view.php:262
 msgid "Default"
 msgstr "Standard"
 
 #: future/includes/class-gv-settings-view.php:232
-#: future/includes/class-gv-settings-view.php:262
+#: future/includes/class-gv-settings-view.php:263
 #: includes/class-common.php:1408
 #: includes/fields/class-gravityview-field-date-created.php:29
 msgid "Date Created"
@@ -822,36 +822,40 @@ msgid "Sort direction"
 msgstr "Richtung"
 
 #: future/includes/class-gv-settings-view.php:246
-#: future/includes/class-gv-settings-view.php:277
+#: future/includes/class-gv-settings-view.php:278
 msgid "ASC"
 msgstr "aufsteigend"
 
 #: future/includes/class-gv-settings-view.php:247
-#: future/includes/class-gv-settings-view.php:278
+#: future/includes/class-gv-settings-view.php:279
 msgid "DESC"
 msgstr "absteigend"
 
-#: future/includes/class-gv-settings-view.php:256
+#: future/includes/class-gv-settings-view.php:248
+msgid "Random"
+msgstr "Zufällig"
+
+#: future/includes/class-gv-settings-view.php:257
 msgid "Sort by secondary field"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:272
+#: future/includes/class-gv-settings-view.php:273
 msgid "Secondary sort direction"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:288
+#: future/includes/class-gv-settings-view.php:289
 msgid "Enable sorting by column"
 msgstr "Sortierung nach Spalte aktivieren"
 
-#: future/includes/class-gv-settings-view.php:289
+#: future/includes/class-gv-settings-view.php:290
 msgid "Column Sorting"
 msgstr "Sortierung nach Spalte"
 
-#: future/includes/class-gv-settings-view.php:302
+#: future/includes/class-gv-settings-view.php:303
 msgid "Filter by Start Date"
 msgstr "Nach Erstellungsdatum filtern"
 
-#: future/includes/class-gv-settings-view.php:304
+#: future/includes/class-gv-settings-view.php:305
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
@@ -860,11 +864,11 @@ msgstr ""
 "werden unterstützt, zum Beispiel \"-1 week\" (-1 Woche) oder \"-1 month\" "
 "(-1 Monat)."
 
-#: future/includes/class-gv-settings-view.php:315
+#: future/includes/class-gv-settings-view.php:316
 msgid "Filter by End Date"
 msgstr "Nach Ablaufdatum filtern"
 
-#: future/includes/class-gv-settings-view.php:317
+#: future/includes/class-gv-settings-view.php:318
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
@@ -872,29 +876,29 @@ msgstr ""
 "Vor diesem Datum eingereichte Einträge anzeigen. Relative Datumsangaben "
 "werden unterstützt, zum Beispiel \"now\" (jetzt) oder \"-3 days\" (-3 Tage)."
 
-#: future/includes/class-gv-settings-view.php:328
+#: future/includes/class-gv-settings-view.php:329
 msgid "CSS Class"
 msgstr "CSS-Klasse"
 
-#: future/includes/class-gv-settings-view.php:329
+#: future/includes/class-gv-settings-view.php:330
 msgid "CSS class to add to the wrapping HTML container."
 msgstr ""
 "CSS-Klasse, welche dem umgebenden HTML-Container (Wrapper) hinzugefügt wird."
 
-#: future/includes/class-gv-settings-view.php:336
+#: future/includes/class-gv-settings-view.php:337
 msgid "Search Value"
 msgstr "Suchwert"
 
-#: future/includes/class-gv-settings-view.php:337
+#: future/includes/class-gv-settings-view.php:338
 msgid "Define a default search value for the View"
 msgstr "Legen Sie einen Standardsuchwert für die View fest"
 
-#: future/includes/class-gv-settings-view.php:344
+#: future/includes/class-gv-settings-view.php:345
 #: includes/widgets/search-widget/class-search-widget.php:269
 msgid "Search Field"
 msgstr "Suchfeld"
 
-#: future/includes/class-gv-settings-view.php:345
+#: future/includes/class-gv-settings-view.php:346
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
@@ -902,15 +906,15 @@ msgstr ""
 "Falls ein Suchwert gesetzt ist, können Sie ein spezifisches Feld festlegen, "
 "in dem gesucht wird. Ansonsten wird in allen Felder gesucht."
 
-#: future/includes/class-gv-settings-view.php:352
+#: future/includes/class-gv-settings-view.php:353
 msgid "Search Operator"
 msgstr "Suchoperator"
 
-#: future/includes/class-gv-settings-view.php:359
+#: future/includes/class-gv-settings-view.php:360
 msgid "Single Entry Title"
 msgstr "Einzeleintragstitel"
 
-#: future/includes/class-gv-settings-view.php:361
+#: future/includes/class-gv-settings-view.php:362
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and Single"
@@ -920,143 +924,139 @@ msgstr ""
 "Einstellung hier geändert werden. Ansonsten wird sich der Seitentitel bei "
 "den Views für mehrere und einzelne Einträge nicht ändern."
 
-#: future/includes/class-gv-settings-view.php:372
+#: future/includes/class-gv-settings-view.php:373
 msgid "Back Link Label"
 msgstr "Beschriftung Zurück-Link"
 
-#: future/includes/class-gv-settings-view.php:374
+#: future/includes/class-gv-settings-view.php:375
 msgid "The text of the link that returns to the multiple entries view."
 msgstr "Der Linktext für die Rückkehr zur Mehreintragsansicht."
 
-#: future/includes/class-gv-settings-view.php:377 includes/class-api.php:978
+#: future/includes/class-gv-settings-view.php:378 includes/class-api.php:978
 msgid "&larr; Go back"
 msgstr "&larr; zurück"
 
-#: future/includes/class-gv-settings-view.php:384
+#: future/includes/class-gv-settings-view.php:385
 msgid "Redirect After Editing"
 msgstr "Weiterleitung nach der Bearbeitung"
 
-#: future/includes/class-gv-settings-view.php:386
+#: future/includes/class-gv-settings-view.php:387
 msgid "The page to redirect to after editing an entry."
 msgstr ""
 "Die Seite, auf die nach der Bearbeitung eines Eintrags weitergeleitet werden"
 " soll."
 
-#: future/includes/class-gv-settings-view.php:390
+#: future/includes/class-gv-settings-view.php:391
 msgid "Stay on Edit Entry"
 msgstr "Bei Eintrag bearbeiten bleiben"
 
-#: future/includes/class-gv-settings-view.php:391
+#: future/includes/class-gv-settings-view.php:392
 msgid "Redirect to Single Entry"
 msgstr "Weiterleitung zu einzelnem Eintrag"
 
-#: future/includes/class-gv-settings-view.php:392
-#: future/includes/class-gv-settings-view.php:449
+#: future/includes/class-gv-settings-view.php:393
+#: future/includes/class-gv-settings-view.php:450
 msgid "Redirect to Multiple Entries"
 msgstr "Weiterleitung zu mehreren Einträgen"
 
-#: future/includes/class-gv-settings-view.php:393
-#: future/includes/class-gv-settings-view.php:450
+#: future/includes/class-gv-settings-view.php:394
+#: future/includes/class-gv-settings-view.php:451
 msgid "Redirect to URL"
 msgstr "Weiterleitung zu URL"
 
-#: future/includes/class-gv-settings-view.php:401
+#: future/includes/class-gv-settings-view.php:402
 msgid "Editing Returns To&hellip;"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:403
+#: future/includes/class-gv-settings-view.php:404
 msgid ""
 "After editing an entry or clicking Cancel, where should the user be sent?"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:409
+#: future/includes/class-gv-settings-view.php:410
 msgid "Other URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:419
+#: future/includes/class-gv-settings-view.php:420
 msgid "Edit Entry Redirect URL"
 msgstr "Weiterleitungs-URL für Eintrag bearbeiten"
 
-#: future/includes/class-gv-settings-view.php:421
+#: future/includes/class-gv-settings-view.php:422
 msgid "After editing an entry, the user will be taken to this URL."
 msgstr ""
 "Nach der Bearbeitung eines Eintrags wird der Benutzer zu dieser URL "
 "weitergeleitet."
 
-#: future/includes/class-gv-settings-view.php:430
+#: future/includes/class-gv-settings-view.php:431
 msgid "Enable Edit Locking"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:432
+#: future/includes/class-gv-settings-view.php:433
 msgid "Prevent multiple users from editing the same entry at the same time."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:443
+#: future/includes/class-gv-settings-view.php:444
 msgid "Redirect After Deleting"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:445
+#: future/includes/class-gv-settings-view.php:446
 msgid "The page to redirect to after deleting an entry."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:454
+#: future/includes/class-gv-settings-view.php:455
 msgid "Delete Entry Redirect URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:456
+#: future/includes/class-gv-settings-view.php:457
 msgid "After deleting an entry, the user will be taken to this URL."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:465
+#: future/includes/class-gv-settings-view.php:466
 msgid "Prevent Direct Access"
 msgstr "Verhindere den Zugang zum Verzeichnis"
 
-#: future/includes/class-gv-settings-view.php:467
+#: future/includes/class-gv-settings-view.php:468
 msgid "Only allow access to this View when embedded using the shortcode."
 msgstr "Erlaube Zugang zu dieser View nur bei Einbettung mit Shortcode"
 
-#: future/includes/class-gv-settings-view.php:478
+#: future/includes/class-gv-settings-view.php:479
 msgid "Prevent REST Access"
 msgstr "REST-Zugriff verhindern"
 
-#: future/includes/class-gv-settings-view.php:480
+#: future/includes/class-gv-settings-view.php:481
 msgid "Disable REST access to this View."
 msgstr "REST-Zugriff bei dieser Ansicht deaktivieren."
 
-#: future/includes/class-gv-settings-view.php:491
+#: future/includes/class-gv-settings-view.php:492
 msgid "Allow REST Access"
 msgstr "REST-Zugriff erlauben"
 
-#: future/includes/class-gv-settings-view.php:493
+#: future/includes/class-gv-settings-view.php:494
 msgid "Enable REST access to this View."
 msgstr "REST-Zugriff bei dieser Ansicht aktivieren."
 
-#: future/includes/class-gv-settings-view.php:503
+#: future/includes/class-gv-settings-view.php:504
 msgid "Allow Export"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:505
+#: future/includes/class-gv-settings-view.php:506
 msgid "Enable users to download data as a CSV or TSV file."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:508
+#: future/includes/class-gv-settings-view.php:509
 msgid ""
 "If enabled, entries can be exported for this View by adding \"/csv/\" or "
 "\"/tsv/\" to the View URL. Each configured field will be a column in the "
 "exported file."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:519
+#: future/includes/class-gv-settings-view.php:520
 msgid "Show all in file"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:521
+#: future/includes/class-gv-settings-view.php:522
 msgid "Do not limit the number of entries output in the file."
 msgstr ""
-
-#: future/includes/class-gv-settings-view.php:540
-msgid "Random"
-msgstr "Zufällig"
 
 #: future/includes/class-gv-shortcode-gravityview.php:106
 #: future/includes/class-gv-shortcode-gventry.php:134
@@ -2154,23 +2154,23 @@ msgstr "Liste von Änderungen"
 msgid "What&rsquo;s New"
 msgstr "Was gibt&rsquo;s Neues"
 
-#: includes/class-admin-welcome.php:523
+#: includes/class-admin-welcome.php:551
 msgid "View change history"
 msgstr "Änderungsverlauf ansehen"
 
-#: includes/class-admin-welcome.php:543
+#: includes/class-admin-welcome.php:571
 msgid "GravityView is brought to you by:"
 msgstr "GravityView wird herausgegeben von:"
 
-#: includes/class-admin-welcome.php:594
+#: includes/class-admin-welcome.php:622
 msgid "Contributors"
 msgstr "Beitragende Entwickler"
 
-#: includes/class-admin-welcome.php:621
+#: includes/class-admin-welcome.php:649
 msgid "Want to contribute?"
 msgstr "Wollen Sie mitwirken?"
 
-#: includes/class-admin-welcome.php:622
+#: includes/class-admin-welcome.php:650
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -2335,11 +2335,11 @@ msgstr ""
 msgid "Email hidden; Javascript is required."
 msgstr "E-Mail-Adresse verborgen; JavaScript ist erforderlich."
 
-#: includes/class-data.php:295
+#: includes/class-data.php:297
 msgid "The ID is required."
 msgstr "Die ID ist erfordert."
 
-#: includes/class-data.php:303
+#: includes/class-data.php:305
 msgid ""
 "You did not enter a number. The value entered should be a number, "
 "representing the ID of the post or page the View is embedded on."
@@ -2348,17 +2348,17 @@ msgstr ""
 "die der ID des Beitrages, oder Seite auf der die View eingebunden ist "
 "entspricht."
 
-#: includes/class-data.php:306
+#: includes/class-data.php:308
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:331
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:221
 msgid "Learn more&hellip;"
 msgstr "Erfahren Sie mehr&hellip;"
 
-#: includes/class-data.php:314
+#: includes/class-data.php:316
 msgid "There is no post or page with that ID."
 msgstr "Es besteht kein Beitrag, oder eine Seite mit dieser ID."
 
-#: includes/class-data.php:325
+#: includes/class-data.php:327
 msgid ""
 "The Post ID entered is not valid. You may have entered a post or page that "
 "does not contain the selected View. Make sure the post contains the "
@@ -2368,7 +2368,7 @@ msgstr ""
 "eine Seite eingegeben, die die ausgewählte View nicht enthält. Stellen Sie "
 "sicher, dass der Beitrag den folgenden Shortcode enthält: %s"
 
-#: includes/class-data.php:332
+#: includes/class-data.php:334
 msgid "The ID is already a View."
 msgstr "Die ID ist bereits eine View."
 
@@ -4574,7 +4574,7 @@ msgid "%sEdit the View settings%s or %sApprove entries%s"
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:176
-#: includes/class-frontend-views.php:630
+#: includes/class-frontend-views.php:646
 msgctxt ""
 "Displayed when a View is not configured. %s is replaced by the tab label"
 msgid "The %s layout has not been configured."
@@ -4724,12 +4724,12 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "Leer"
 
-#: includes/class-frontend-views.php:1432
+#: includes/class-frontend-views.php:1448
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr "Leeren"
 
-#: includes/class-frontend-views.php:1433
+#: includes/class-frontend-views.php:1449
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr "Zurücksetzen"
