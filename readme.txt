@@ -30,7 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Updates:__
 
-* Added: `gravityview/fields/custom/form` filter to modify form where content is being pulled from
+* Added: `gravityview/fields/custom/form` filter to modify form used as the source for View entries
 * Added: `gravityview/fields/custom/entry` filter to modify entry being displayed
 
 = 2.10.2.2 on April 19, 2021 =

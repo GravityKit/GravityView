@@ -278,13 +278,20 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
-                <h3>2.10.3 on May 19, 2021</h3>
+                <h3>2.10.3 on May 20, 2021</h3>
 
                 <ul>
-                    <li>Added: Support for the [All in One SEO](https://wordpress.org/plugins/all-in-one-seo-pack/) plugin</li>
+                    <li>Added: Support for the <a href="https://wordpress.org/plugins/all-in-one-seo-pack/">All in One SEO</a> plugin</li>
                     <li>Fixed: GravityView styles and scripts not loading when embedding View as a block shortcode in GeneratePress</li>
                     <li>Fixed: PHP notice appearing when a translation file is not available for the chosen locale</li>
                     <li>Fixed: Search clear button disappearing when using GravityView Maps layout</li>
+                </ul>
+
+                <p><strong>Developer Updates:</strong></p>
+
+                <ul>
+                    <li>Added: <code>gravityview/fields/custom/form</code> filter to modify form used as the source for View entries</li>
+                    <li>Added: <code>gravityview/fields/custom/entry</code> filter to modify entry being displayed</li>
                 </ul>
 
 				<h3>2.10.2.2 on April 19, 2021</h3>
