@@ -67,11 +67,23 @@ class LicenseTestCest {
 
 		$I->fillField( '#license_key', getenv( 'GRAVITYVIEW_KEY' ) );
 
-		$I->scrollTo( '#gform-settings-save' );
+		if ( gravityview()->plugin->is_GF_25() ) {
+			$I->performOn( '#edd-activate', [ 'click' => 'Activate License' ] );
 
-		$I->click( '#gform-settings-save' );
+			$I->waitForText( 'Licensed to:' );
 
-		$I->waitForText( 'The license key you entered has been saved, but not activated. Please activate the license.' );
+			$I->scrollTo( '#gform-settings-save' );
+
+			$I->click( '#gform-settings-save' );
+
+			$I->waitForText( 'Settings updated' );
+		} else {
+			$I->scrollTo( '#gform-settings-save' );
+
+			$I->click( '#gform-settings-save' );
+
+			$I->waitForText( 'The license key you entered has been saved, but not activated. Please activate the license.' );
+		}
 
 		$I->seeInField( '#license_key', getenv( 'GRAVITYVIEW_KEY' ) );
 	}

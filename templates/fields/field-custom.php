@@ -28,6 +28,24 @@ if ( ! class_exists( 'GFFormDisplay' ) ) {
 }
 
 /**
+ * @filter `gravityview/fields/custom/entry` Modify entry being displayed
+ *
+ * @param array $entry The current entry being displayed.
+ * @param array $form The current form the custom content is using.
+ * @param \GV\Template_Context The GravityView template context instance.
+ */
+$entry = apply_filters( 'gravityview/fields/custom/entry', $entry, $form, $gravityview );
+
+/**
+ * @filter `gravityview/fields/custom/form` Modify form that content is being pulled from
+ *
+ * @param array $form The current form the custom content is using.
+ * @param array $entry The current entry being displayed.
+ * @param \GV\Template_Context The GravityView template context instance.
+ */
+$form  = apply_filters( 'gravityview/fields/custom/form', $form, $entry, $gravityview );
+
+/**
  * @filter `gravityview/fields/custom/content_before` Modify Custom Content field output before Merge Tag processing
  * @since 1.6.2
  * @param string $content HTML content of field
