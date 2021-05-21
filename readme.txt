@@ -21,6 +21,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.10.3 on May 20, 2021 =
+
+* Added: Support for the [All in One SEO](https://wordpress.org/plugins/all-in-one-seo-pack/) plugin
+* Fixed: GravityView styles and scripts not loading when embedding View as a block shortcode in GeneratePress
+* Fixed: PHP notice appearing when a translation file is not available for the chosen locale
+* Fixed: Search clear button disappearing when using GravityView Maps layout
+
+__Developer Updates:__
+
+* Added: `gravityview/fields/custom/form` filter to modify form used as the source for View entries
+* Added: `gravityview/fields/custom/entry` filter to modify entry being displayed
+
 = 2.10.2.2 on April 19, 2021 =
 
 * Improved: Previous fix for an issue that affected HTML rendering of some posts and pages

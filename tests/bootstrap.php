@@ -123,6 +123,7 @@ class GV_Unit_Tests_Bootstrap {
 		}
 
 		require_once( GFCommon::get_base_path() . '/form_display.php' );
+		require_once( GFCommon::get_base_path() . '/tooltips.php' );
 
 		/** Enable the REST API */
 		add_action( 'gravityview/settings/defaults', function( $defaults ) {
