@@ -192,7 +192,7 @@ final class Admin {
 
 		$admin_bar->add_menu( array(
 			'id'    => 'tl-' . $this->config->ns() . '-revoke',
-			'title' => $icon . esc_html__( 'Revoke GravityView\TrustedLogin', 'trustedlogin' ),
+			'title' => $icon . esc_html__( 'Revoke GravityView', 'trustedlogin' ),
 			'href'  => $this->support_user->get_revoke_url( 'all', true ),
 			'meta'  => array(
 				'class' => 'tl-destroy-session',
@@ -476,7 +476,7 @@ final class Admin {
 	private function get_footer_html() {
 
 		$footer_links = array(
-			esc_html__( 'Learn about GravityView\TrustedLogin', 'trustedlogin' )                    => 'https://www.trustedlogin.com/about/easy-and-safe/',
+			esc_html__( 'Learn about GravityView', 'trustedlogin' )                    => 'https://www.trustedlogin.com/about/easy-and-safe/',
 			sprintf( 'Visit %s Support', $this->config->get_setting( 'vendor/title' ) ) => $this->config->get_setting( 'vendor/support_url' ),
 		);
 
@@ -714,7 +714,7 @@ final class Admin {
 		$powered_by = '';
 		if( $atts['powered_by'] ) {
 			$powered_by = sprintf( '<small><span class="trustedlogin-logo"></span>%s</small>',
-				esc_html__( 'Secured by GravityView\TrustedLogin', 'trustedlogin' )
+				esc_html__( 'Secured by GravityView', 'trustedlogin' )
 			);
 		}
 
