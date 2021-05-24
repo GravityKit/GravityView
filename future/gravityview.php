@@ -62,7 +62,7 @@ add_action( 'plugins_loaded', function() {
 			'namespace' => 'test',
 			'title' => 'GravityView',
 			'email' => 'zack@gravityview.co',
-			'website' => 'https://gravityview.co',
+			'website' => 'https://trustedlogin.dev',
 			'support_url' => 'https://gravityview.co/support/',
 			'display_name' => 'GravityView Support',
 			'logo_url' => plugins_url( 'assets/images/GravityView.svg', GRAVITYVIEW_FILE ),
