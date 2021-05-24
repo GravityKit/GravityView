@@ -6,21 +6,25 @@ namespace JsonMapper\Handler;
 
 use JsonMapper\Exception\ClassFactoryException;
 
-class ClassFactoryRegistry
+class FactoryRegistry
 {
     /** @var callable[] */
     private $factories = [];
 
-    public function loadNativePhpClassFactories(): self
+    public static function WithNativePhpClassesAdded(): self
     {
-        $this->addFactory(\DateTime::class, static function (string $value) {
+        $factory = new self();
+        $factory->addFactory(\DateTime::class, static function (string $value) {
             return new \DateTime($value);
         });
-        $this->addFactory(\DateTimeImmutable::class, static function (string $value) {
+        $factory->addFactory(\DateTimeImmutable::class, static function (string $value) {
             return new \DateTimeImmutable($value);
         });
+        $factory->addFactory(\stdClass::class, static function ($value) {
+            return (object) $value;
+        });
 
-        return $this;
+        return $factory;
     }
 
     public function addFactory(string $className, callable $factory): self
@@ -29,14 +33,14 @@ class ClassFactoryRegistry
             throw ClassFactoryException::forDuplicateClassname($className);
         }
 
-        $this->factories[$this->sanatizeClassName($className)] = $factory;
+        $this->factories[$this->sanitiseClassName($className)] = $factory;
 
         return $this;
     }
 
     public function hasFactory(string $className): bool
     {
-        return array_key_exists($this->sanatizeClassName($className), $this->factories);
+        return array_key_exists($this->sanitiseClassName($className), $this->factories);
     }
 
     /**
@@ -49,12 +53,12 @@ class ClassFactoryRegistry
             throw ClassFactoryException::forMissingClassname($className);
         }
 
-        $factory = $this->factories[$this->sanatizeClassName($className)];
+        $factory = $this->factories[$this->sanitiseClassName($className)];
 
         return $factory($params);
     }
 
-    private function sanatizeClassName(string $className): string
+    private function sanitiseClassName(string $className): string
     {
         /* Erase leading slash as ::class doesnt contain leading slash */
         if (strpos($className, '\\') === 0) {

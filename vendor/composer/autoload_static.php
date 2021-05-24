@@ -4,15 +4,15 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit650f3532801d93b576f39aa40eda9aae
+class ComposerStaticInit2b6f109d033aa2b97e6e0b9d2bf39225
 {
     public static $files = array (
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
-        '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
         'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
+        '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
@@ -264,6 +264,8 @@ class ComposerStaticInit650f3532801d93b576f39aa40eda9aae
         'BrianHenryIE\\Strauss\\Tests\\Issues\\MozartIssue93Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/MozartIssue93Test.php',
         'BrianHenryIE\\Strauss\\Tests\\Issues\\MozartIssue97Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/MozartIssue97Test.php',
         'BrianHenryIE\\Strauss\\Tests\\Issues\\MozartIssue99Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/MozartIssue99Test.php',
+        'BrianHenryIE\\Strauss\\Tests\\Issues\\StraussIssue11Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/StraussIssue11Test.php',
+        'BrianHenryIE\\Strauss\\Tests\\Issues\\StraussIssue8Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/StraussIssue8Test.php',
         'BrianHenryIE\\Strauss\\Tests\\Unit\\ChangeEnumeratorTest' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Unit/ChangeEnumeratorTest.php',
         'BrianHenryIE\\Strauss\\Tests\\Unit\\Composer\\ComposerPackageTest' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Unit/Composer/ComposerPackageTest.php',
         'BrianHenryIE\\Strauss\\Tests\\Unit\\Composer\\ProjectComposerPackageTest' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Unit/Composer/ProjectComposerPackageTest.php',
@@ -271,12 +273,10 @@ class ComposerStaticInit650f3532801d93b576f39aa40eda9aae
         'BrianHenryIE\\Strauss\\Tests\\Unit\\Console\\Commands\\ComposeTest' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Unit/Console/Commands/ComposeTest.php',
         'BrianHenryIE\\Strauss\\Tests\\Unit\\LicenserTest' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Unit/LicenserTest.php',
         'BrianHenryIE\\Strauss\\Tests\\Unit\\PrefixerTest' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Unit/PrefixerTest.php',
-        'ComposerAutoloaderInit650f3532801d93b576f39aa40eda9aae' => __DIR__ . '/..' . '/composer/autoload_real.php',
         'ComposerAutoloaderInitb5638313a52df4893eb45c04efdaa356' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/vendor/composer/autoload_real.php',
         'Composer\\Autoload\\AutoloadGenerator' => __DIR__ . '/..' . '/composer/composer/src/Composer/Autoload/AutoloadGenerator.php',
-        'Composer\\Autoload\\ClassLoader' => __DIR__ . '/..' . '/composer/ClassLoader.php',
+        'Composer\\Autoload\\ClassLoader' => __DIR__ . '/..' . '/composer/composer/src/Composer/Autoload/ClassLoader.php',
         'Composer\\Autoload\\ClassMapGenerator' => __DIR__ . '/..' . '/composer/composer/src/Composer/Autoload/ClassMapGenerator.php',
-        'Composer\\Autoload\\ComposerStaticInit650f3532801d93b576f39aa40eda9aae' => __DIR__ . '/..' . '/composer/autoload_static.php',
         'Composer\\Autoload\\ComposerStaticInitb5638313a52df4893eb45c04efdaa356' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/vendor/composer/autoload_static.php',
         'Composer\\CaBundle\\CaBundle' => __DIR__ . '/..' . '/composer/ca-bundle/src/CaBundle.php',
         'Composer\\Cache' => __DIR__ . '/..' . '/composer/composer/src/Composer/Cache.php',
@@ -576,7 +576,7 @@ class ComposerStaticInit650f3532801d93b576f39aa40eda9aae
         'JsonMapper\\Enums\\Visibility' => __DIR__ . '/..' . '/json-mapper/json-mapper/src/Enums/Visibility.php',
         'JsonMapper\\Exception\\BuilderException' => __DIR__ . '/..' . '/json-mapper/json-mapper/src/Exception/BuilderException.php',
         'JsonMapper\\Exception\\ClassFactoryException' => __DIR__ . '/..' . '/json-mapper/json-mapper/src/Exception/ClassFactoryException.php',
-        'JsonMapper\\Handler\\ClassFactoryRegistry' => __DIR__ . '/..' . '/json-mapper/json-mapper/src/Handler/ClassFactoryRegistry.php',
+        'JsonMapper\\Handler\\FactoryRegistry' => __DIR__ . '/..' . '/json-mapper/json-mapper/src/Handler/FactoryRegistry.php',
         'JsonMapper\\Handler\\PropertyMapper' => __DIR__ . '/..' . '/json-mapper/json-mapper/src/Handler/PropertyMapper.php',
         'JsonMapper\\Helpers\\ClassHelper' => __DIR__ . '/..' . '/json-mapper/json-mapper/src/Helpers/ClassHelper.php',
         'JsonMapper\\Helpers\\UseStatementHelper' => __DIR__ . '/..' . '/json-mapper/json-mapper/src/Helpers/UseStatementHelper.php',
@@ -599,15 +599,22 @@ class ComposerStaticInit650f3532801d93b576f39aa40eda9aae
         'JsonMapper\\Middleware\\TypedProperties' => __DIR__ . '/..' . '/json-mapper/json-mapper/src/Middleware/TypedProperties.php',
         'JsonMapper\\Parser\\UseNodeVisitor' => __DIR__ . '/..' . '/json-mapper/json-mapper/src/Parser/UseNodeVisitor.php',
         'JsonMapper\\Tests\\Benchmark\\Joke' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/benchmark/Joke.php',
-        'JsonMapper\\Tests\\Handler\\ClassFactoryRegistryTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Unit/Handler/ClassFactoryRegistryTest.php',
         'JsonMapper\\Tests\\Helpers\\AssertThatPropertyTrait' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Helpers/AssertThatPropertyTrait.php',
         'JsonMapper\\Tests\\Helpers\\PropertyAssertionChain' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Helpers/PropertyAssertionChain.php',
         'JsonMapper\\Tests\\Implementation\\ComplexObject' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/ComplexObject.php',
         'JsonMapper\\Tests\\Implementation\\IsCalledHandler' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/IsCalledHandler.php',
         'JsonMapper\\Tests\\Implementation\\IsCalledMiddleware' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/IsCalledMiddleware.php',
         'JsonMapper\\Tests\\Implementation\\JsonMapper' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/JsonMapper.php',
+        'JsonMapper\\Tests\\Implementation\\Models\\AbstractShape' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/Models/AbstractShape.php',
+        'JsonMapper\\Tests\\Implementation\\Models\\Circle' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/Models/Circle.php',
+        'JsonMapper\\Tests\\Implementation\\Models\\IShape' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/Models/IShape.php',
+        'JsonMapper\\Tests\\Implementation\\Models\\ShapeInstanceFactory' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/Models/ShapeInstanceFactory.php',
+        'JsonMapper\\Tests\\Implementation\\Models\\Square' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/Models/Square.php',
         'JsonMapper\\Tests\\Implementation\\Models\\User' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/Models/User.php',
         'JsonMapper\\Tests\\Implementation\\Models\\UserWithConstructor' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/Models/UserWithConstructor.php',
+        'JsonMapper\\Tests\\Implementation\\Models\\Wrappers\\AbstractShapeWrapper' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/Models/Wrappers/AbstractShapeWrapper.php',
+        'JsonMapper\\Tests\\Implementation\\Models\\Wrappers\\IShapeAware' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/Models/Wrappers/IShapeAware.php',
+        'JsonMapper\\Tests\\Implementation\\Models\\Wrappers\\IShapeWrapper' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/Models/Wrappers/IShapeWrapper.php',
         'JsonMapper\\Tests\\Implementation\\Php74\\Popo' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/Php74/Popo.php',
         'JsonMapper\\Tests\\Implementation\\Php74\\PopoWrapper' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/Php74/PopoWrapper.php',
         'JsonMapper\\Tests\\Implementation\\Php74\\Response' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/Php74/Response.php',
@@ -617,7 +624,22 @@ class ComposerStaticInit650f3532801d93b576f39aa40eda9aae
         'JsonMapper\\Tests\\Implementation\\PrivatePropertyWithoutSetter' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/PrivatePropertyWithoutSetter.php',
         'JsonMapper\\Tests\\Implementation\\SimpleObject' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/SimpleObject.php',
         'JsonMapper\\Tests\\Implementation\\UserWithConstructorParent' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Implementation/UserWithConstructorParent.php',
-        'JsonMapper\\Tests\\Integration\\JsonMapperTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/JsonMapperTest.php',
+        'JsonMapper\\Tests\\Integration\\FeatureSupportRenamingOfJsonPropertiesTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/FeatureSupportRenamingOfJsonPropertiesTest.php',
+        'JsonMapper\\Tests\\Integration\\FeatureSupportsDateTimeTypesTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/FeatureSupportsDateTimeTypesTest.php',
+        'JsonMapper\\Tests\\Integration\\FeatureSupportsMappingFromJsonArrayTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/FeatureSupportsMappingFromJsonArrayTest.php',
+        'JsonMapper\\Tests\\Integration\\FeatureSupportsMappingFromJsonStringTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/FeatureSupportsMappingFromJsonStringTest.php',
+        'JsonMapper\\Tests\\Integration\\FeatureSupportsMappingToArrayTypesTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/FeatureSupportsMappingToArrayTypesTest.php',
+        'JsonMapper\\Tests\\Integration\\FeatureSupportsMappingToInterfaceAndAbstractClassTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/FeatureSupportsMappingToInterfaceAndAbstractClassTest.php',
+        'JsonMapper\\Tests\\Integration\\FeatureSupportsMappingToMixedTypeTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/FeatureSupportsMappingToMixedTypeTest.php',
+        'JsonMapper\\Tests\\Integration\\FeatureSupportsMappingToNullableTypesTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/FeatureSupportsMappingToNullableTypesTest.php',
+        'JsonMapper\\Tests\\Integration\\FeatureSupportsMappingToPublicPropertiesTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/FeatureSupportsMappingToPublicPropertiesTest.php',
+        'JsonMapper\\Tests\\Integration\\FeatureSupportsMappingToPublicSettersTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/FeatureSupportsMappingToPublicSettersTest.php',
+        'JsonMapper\\Tests\\Integration\\FeatureSupportsMappingToStdClass' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/FeatureSupportsMappingToStdClass.php',
+        'JsonMapper\\Tests\\Integration\\FeatureSupportsNamespacesTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/FeatureSupportsNamespacesTest.php',
+        'JsonMapper\\Tests\\Integration\\FeatureSupportsTypedPropertiesTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/FeatureSupportsTypedPropertiesTest.php',
+        'JsonMapper\\Tests\\Integration\\FeatureSupportsUnionTypesTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/FeatureSupportsUnionTypesTest.php',
+        'JsonMapper\\Tests\\Integration\\FeatureSupportsUserDefinedClassesTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/FeatureSupportsUserDefinedClassesTest.php',
+        'JsonMapper\\Tests\\Integration\\FeatureSupportsVariadicSetterTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/FeatureSupportsVariadicSetterTest.php',
         'JsonMapper\\Tests\\Integration\\Middleware\\Attributes\\AttributeTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/Middleware/Attributes/AttributeTest.php',
         'JsonMapper\\Tests\\Integration\\Middleware\\CaseConversionTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/Middleware/CaseConversionTest.php',
         'JsonMapper\\Tests\\Integration\\Middleware\\DebuggerTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Integration/Middleware/DebuggerTest.php',
@@ -631,6 +653,7 @@ class ComposerStaticInit650f3532801d93b576f39aa40eda9aae
         'JsonMapper\\Tests\\Unit\\Enums\\VisibilityTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Unit/Enums/VisibilityTest.php',
         'JsonMapper\\Tests\\Unit\\Exception\\BuilderExceptionTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Unit/Exception/BuilderExceptionTest.php',
         'JsonMapper\\Tests\\Unit\\Exception\\ClassFactoryExceptionTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Unit/Exception/ClassFactoryExceptionTest.php',
+        'JsonMapper\\Tests\\Unit\\Handler\\FactoryRegistryTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Unit/Handler/FactoryRegistryTest.php',
         'JsonMapper\\Tests\\Unit\\Handler\\PropertyMapperTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Unit/Handler/PropertyMapperTest.php',
         'JsonMapper\\Tests\\Unit\\Helpers\\ClassHelperTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Unit/Helpers/ClassHelperTest.php',
         'JsonMapper\\Tests\\Unit\\Helpers\\UseStatementHelperTest' => __DIR__ . '/..' . '/json-mapper/json-mapper/tests/Unit/Helpers/UseStatementHelperTest.php',
@@ -837,6 +860,7 @@ class ComposerStaticInit650f3532801d93b576f39aa40eda9aae
         'ParagonIE_Sodium_Core_HSalsa20' => __DIR__ . '/..' . '/paragonie/sodium_compat/src/Core/HSalsa20.php',
         'ParagonIE_Sodium_Core_Poly1305' => __DIR__ . '/..' . '/paragonie/sodium_compat/src/Core/Poly1305.php',
         'ParagonIE_Sodium_Core_Poly1305_State' => __DIR__ . '/..' . '/paragonie/sodium_compat/src/Core/Poly1305/State.php',
+        'ParagonIE_Sodium_Core_Ristretto255' => __DIR__ . '/..' . '/paragonie/sodium_compat/src/Core/Ristretto255.php',
         'ParagonIE_Sodium_Core_Salsa20' => __DIR__ . '/..' . '/paragonie/sodium_compat/src/Core/Salsa20.php',
         'ParagonIE_Sodium_Core_SecretStream_State' => __DIR__ . '/..' . '/paragonie/sodium_compat/src/Core/SecretStream/State.php',
         'ParagonIE_Sodium_Core_SipHash' => __DIR__ . '/..' . '/paragonie/sodium_compat/src/Core/SipHash.php',
@@ -1324,9 +1348,9 @@ class ComposerStaticInit650f3532801d93b576f39aa40eda9aae
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit650f3532801d93b576f39aa40eda9aae::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit650f3532801d93b576f39aa40eda9aae::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit650f3532801d93b576f39aa40eda9aae::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit2b6f109d033aa2b97e6e0b9d2bf39225::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit2b6f109d033aa2b97e6e0b9d2bf39225::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit2b6f109d033aa2b97e6e0b9d2bf39225::$classMap;
 
         }, null, ClassLoader::class);
     }

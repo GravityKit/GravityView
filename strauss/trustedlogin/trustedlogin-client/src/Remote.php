@@ -7,7 +7,7 @@
  * @copyright 2020 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 07-May-2021 using Strauss.
+ * Modified by gravityview on 24-May-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -141,7 +141,7 @@ final class Remote {
 
 		$request_options = array(
 			'method'      => $method,
-			'timeout'     => 45,
+			'timeout'     => 15,
 			'httpversion' => '1.1',
 			'headers'     => $headers,
 		);
@@ -201,6 +201,68 @@ final class Remote {
 	}
 
 	/**
+	 * Translates response codes to more nuanced error descriptions specific to TrustedLogin.
+	 *
+	 * @param array|WP_Error $api_response Response from HTTP API
+	 *
+	 * @return int|WP_Error|null If valid response, the response code ID or null. If error, a WP_Error with a message description.
+	 */
+	static public function check_response_code( $api_response ) {
+
+		if ( is_wp_error( $api_response ) ) {
+			$response_code = $api_response->get_error_code();
+		} else {
+			$response_code = wp_remote_retrieve_response_code( $api_response );
+		}
+
+		switch ( $response_code ) {
+
+			// Successful response, but no sites found.
+			case 204:
+				return null;
+
+			// Unauthenticated
+			case 401:
+				return new WP_Error( 'unauthenticated', __( 'Authentication failed.', 'trustedlogin' ), $api_response );
+
+			// Unauthenticated
+			case 402:
+				return new WP_Error( 'account_error', __( 'TrustedLogin Account issue.', 'trustedlogin' ), $api_response );
+
+			// Problem with Token
+			case 403:
+				return new WP_Error( 'invalid_token', __( 'Invalid tokens.', 'trustedlogin' ), $api_response );
+
+			// the KV store was not found, possible issue with endpoint
+			case 404:
+				return new WP_Error( 'not_found', __( 'The TrustedLogin vendor was not found.', 'trustedlogin' ), $api_response );
+
+			// The site is a teapot.
+			case 418:
+				return new WP_Error( 'teapot', '🫖', $api_response );
+
+			// Server offline
+			case 500:
+			case 503:
+			case 'http_request_failed':
+				return new WP_Error( 'unavailable', __( 'The TrustedLogin site is not currently online.', 'trustedlogin' ), $api_response );
+
+			// Server error
+			case 501:
+			case 502:
+			case 522:
+				return new WP_Error( 'server_error', __( 'The TrustedLogin site is not currently available.', 'trustedlogin' ), $api_response );
+
+			// wp_remote_retrieve_response_code() couldn't parse the $api_response
+			case '':
+				return new WP_Error( 'invalid_response', __( 'Invalid response.', 'trustedlogin' ), $api_response );
+
+			default:
+				return (int) $response_code;
+		}
+	}
+
+	/**
 	 * API Response Handler
 	 *
 	 * @since 0.4.1
@@ -208,66 +270,29 @@ final class Remote {
 	 * @param array|WP_Error $api_response - the response from HTTP API
 	 * @param array $required_keys If the response JSON must have specific keys in it, pass them here
 	 *
-	 * @return array|WP_Error If successful response, returns array of JSON data. If failed, returns WP_Error.
+	 * @return array|WP_Error|null If successful response, returns array of JSON data. If failed, returns WP_Error. If
 	 */
 	public function handle_response( $api_response, $required_keys = array() ) {
 
-		if ( is_wp_error( $api_response ) ) {
+		$response_code = self::check_response_code( $api_response );
 
-			$this->logging->log( sprintf( 'Request error (Code %s): %s', $api_response->get_error_code(), $api_response->get_error_message() ), __METHOD__, 'error' );
-
-			return $api_response;
-		}
-
-		$this->logging->log( "Response: " . print_r( $api_response, true ), __METHOD__, 'debug' );
-
-		$response_body = wp_remote_retrieve_body( $api_response );
-
-		if ( 204 === wp_remote_retrieve_response_code( $api_response ) ) {
+		// Null means a successful response, but does not return any body content (204). We can return early.
+		if ( null === $response_code ) {
 			return null;
 		}
+
+		if ( is_wp_error( $response_code ) ) {
+			$this->logging->log( "Response code check failed: " . print_r( $response_code, true ), __METHOD__, 'error' );
+
+			return $response_code;
+		}
+
+		$response_body = wp_remote_retrieve_body( $api_response );
 
 		if ( empty( $response_body ) ) {
 			$this->logging->log( "Response body not set: " . print_r( $response_body, true ), __METHOD__, 'error' );
 
 			return new WP_Error( 'missing_response_body', __( 'The response was invalid.', 'trustedlogin' ), $api_response );
-		}
-
-		switch ( wp_remote_retrieve_response_code( $api_response ) ) {
-
-			// Unauthenticated
-			case 401:
-				return new WP_Error( 'unauthenticated', __( 'Authentication failed.', 'trustedlogin' ), $response_body );
-				break;
-
-			// Unauthenticated
-			case 402:
-				return new WP_Error( 'account_error', __( 'TrustedLogin Account issue.', 'trustedlogin' ), $response_body );
-				break;
-
-			// Problem with Token
-			case 403:
-				return new WP_Error( 'invalid_token', __( 'Invalid tokens.', 'trustedlogin' ), $response_body );
-				break;
-
-			// the KV store was not found, possible issue with endpoint
-			case 404:
-				return new WP_Error( 'not_found', __( 'The TrustedLogin vendor was not found.', 'trustedlogin' ), $response_body );
-				break;
-
-			// Server issue
-			case 500:
-				return new WP_Error( 'unavailable', __( 'The TrustedLogin site is not currently available.', 'trustedlogin' ), $response_body );
-				break;
-
-			case 501:
-				return new WP_Error( 'server_error', __( 'The TrustedLogin site is not currently available.', 'trustedlogin' ), $response_body );
-				break;
-
-			// wp_remote_retrieve_response_code() couldn't parse the $api_response
-			case '':
-				return new WP_Error( 'invalid_response', __( 'Invalid response.', 'trustedlogin' ), $response_body );
-				break;
 		}
 
 		$response_json = json_decode( $response_body, true );

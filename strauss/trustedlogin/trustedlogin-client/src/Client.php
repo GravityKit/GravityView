@@ -17,7 +17,7 @@
  * 2. Instantiate this class with a configuration array ({@see https://www.trustedlogin.com/configuration/} for more info)
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 07-May-2021 using Strauss.
+ * Modified by gravityview on 24-May-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -238,7 +238,7 @@ final class Client {
 
 			wp_delete_user( $support_user_id );
 
-			$did_setup->add_data( array( 'error_code' => 500 ) );
+			$secret_id->add_data( array( 'error_code' => 500 ) );
 
 			return $secret_id;
 		}
@@ -285,7 +285,7 @@ final class Client {
 
 		if ( is_wp_error( $created ) ) {
 
-			$this->logging->log( sprintf( 'There was an issue creating access (%s): %s', $created->get_error_code(), $created->get_error_message() ), __METHOD__, 'error', $created->get_error_data() );
+			$this->logging->log( sprintf( 'There was an issue creating access (%s): %s', $created->get_error_code(), $created->get_error_message() ), __METHOD__, 'error' );
 
 			$created->add_data( array( 'status_code' => 503 ) );
 
@@ -337,9 +337,9 @@ final class Client {
 
 		if ( is_wp_error( $secret_id ) ) {
 
-			wp_delete_user( $support_user_id );
+			wp_delete_user( $user_id );
 
-			$did_setup->add_data( array( 'error_code' => 500 ) );
+			$secret_id->add_data( array( 'error_code' => 500 ) );
 
 			return $secret_id;
 		}
@@ -377,18 +377,18 @@ final class Client {
 
 			$this->logging->log( 'There was an error updating TrustedLogin servers.', __METHOD__, 'error', $e );
 
-			wp_delete_user( $support_user_id );
+			wp_delete_user( $user_id );
 
 			return $exception_error;
 		}
 
 		if ( is_wp_error( $updated ) ) {
 
-			$this->logging->log( sprintf( 'There was an issue creating access (%s): %s', $updated->get_error_code(), $updated->get_error_message() ), __METHOD__, 'error', $updated->get_error_data() );
+			$this->logging->log( sprintf( 'There was an issue creating access (%s): %s', $updated->get_error_code(), $updated->get_error_message() ), __METHOD__, 'error' );
 
 			$updated->add_data( array( 'status_code' => 503 ) );
 
-			wp_delete_user( $support_user_id );
+			wp_delete_user( $user_id );
 
 			return $updated;
 		}

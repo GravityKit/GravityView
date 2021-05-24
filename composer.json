@@ -16,6 +16,11 @@
 	  "type": "github",
 	  "url":  "https://github.com/trustedlogin/trustedlogin-client.git",
 	  "no-api": true
+	},
+	{
+	  "type": "github",
+	  "url":  "https://github.com/BrianHenryIE/strauss.git",
+	  "no-api": true
 	}
   ],
   "require": {
@@ -25,7 +30,7 @@
 	"trustedlogin/trustedlogin-client": "dev-feature/auth-screen"
   },
   "require-dev": {
-	"brianhenryie/strauss": "^0.8.2"
+	"brianhenryie/strauss": "^0.8.7"
   },
   "autoload": {
 	"classmap": [

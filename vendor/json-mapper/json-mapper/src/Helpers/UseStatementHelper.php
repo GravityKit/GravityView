@@ -10,10 +10,16 @@ use PhpParser\ParserFactory;
 
 class UseStatementHelper
 {
+    private static $evaldCodeFileNameEnding = "eval()'d code";
+
     public static function getImports(\ReflectionClass $class): array
     {
+        if (!$class->isUserDefined()) {
+            return [];
+        }
+
         $filename = $class->getFileName();
-        if ($filename === false) {
+        if ($filename === false || substr($filename, -13) === self::$evaldCodeFileNameEnding) {
             throw new \RuntimeException("Class {$class->getName()} has no filename available");
         }
 
@@ -27,10 +33,11 @@ class UseStatementHelper
         }
 
         $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
-        $ast = $parser->parse($contents);
 
-        if ($ast === null) {
-            throw new \RuntimeException("Something went wrong when parsing {$class->getFileName()}");
+        try {
+            $ast = $parser->parse($contents);
+        } catch (\Throwable $e) {
+            throw new \RuntimeException("Something went wrong when parsing {$class->getFileName()}", 0, $e);
         }
 
         $traverser = new NodeTraverser();

@@ -158,4 +158,74 @@ class JsonMapperTest extends TestCase
 
         self::assertFalse($this->middleware->isCalled());
     }
+
+    /**
+     * @covers \JsonMapper\JsonMapper
+     */
+    public function testMapObjectFromStringWithInvalidJsonThrowsException(): void
+    {
+        $jsonMapper = new JsonMapper();
+
+        $this->expectException(\JsonException::class);
+        $jsonMapper->mapObjectFromString('abcdef...', new \stdClass());
+    }
+
+    /**
+     * @covers \JsonMapper\JsonMapper
+     */
+    public function testMapObjectFromStringWithJsonArrayThrowsException(): void
+    {
+        $jsonMapper = new JsonMapper();
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Provided string is not a json encoded object');
+        $jsonMapper->mapObjectFromString('[1,2,3]', new \stdClass());
+    }
+
+    /**
+     * @covers \JsonMapper\JsonMapper
+     */
+    public function testMapObjectFromStringWithJsonObjectCallsHandler(): void
+    {
+        $jsonMapper = new JsonMapper($this->handler);
+
+        $jsonMapper->mapObjectFromString('{}', new \stdClass());
+
+        self::assertTrue($this->handler->isCalled());
+    }
+
+    /**
+     * @covers \JsonMapper\JsonMapper
+     */
+    public function testMapArrayFromStringWithInvalidJsonThrowsException(): void
+    {
+        $jsonMapper = new JsonMapper();
+
+        $this->expectException(\JsonException::class);
+        $jsonMapper->mapArrayFromString('abcdef...', new \stdClass());
+    }
+
+    /**
+     * @covers \JsonMapper\JsonMapper
+     */
+    public function testMapArrayFromStringWithJsonObjectThrowsException(): void
+    {
+        $jsonMapper = new JsonMapper();
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Provided string is not a json encoded array');
+        $jsonMapper->mapArrayFromString('{"one": 1}', new \stdClass());
+    }
+
+    /**
+     * @covers \JsonMapper\JsonMapper
+     */
+    public function testMapArrayFromStringWithJsonArrayCallsHandler(): void
+    {
+        $jsonMapper = new JsonMapper($this->handler);
+
+        $jsonMapper->mapArrayFromString('[{"one": 1}]', new \stdClass());
+
+        self::assertTrue($this->handler->isCalled());
+    }
 }

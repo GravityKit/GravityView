@@ -103,6 +103,16 @@ $color-red: #c0461e !default;
 		background-size: (192px * 1.4) (108px * 1.4);
 	}
 
+	.tl-#{$namespace}-auth__response_error {
+		padding: 20px;
+		color: #23282D;
+		font-weight: 500;
+		vertical-align: top;
+		border: 2px solid #f9a87e;
+		background-color: #fef1ea;
+		border-radius: 5px;
+	}
+
 	.tl-#{$namespace}-auth__roles {
 
 		.tl-#{$namespace}-toggle {

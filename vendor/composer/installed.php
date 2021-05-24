@@ -13,12 +13,12 @@
   array (
     'brianhenryie/strauss' => 
     array (
-      'pretty_version' => '0.8.2',
-      'version' => '0.8.2.0',
+      'pretty_version' => '0.8.7',
+      'version' => '0.8.7.0',
       'aliases' => 
       array (
       ),
-      'reference' => '6e81c200a766944c934502542ca88d701efa8f0b',
+      'reference' => 'a0f87435c43fcdd634d39bd50efd73e2db8b160c',
     ),
     'composer/ca-bundle' => 
     array (
@@ -31,12 +31,12 @@
     ),
     'composer/composer' => 
     array (
-      'pretty_version' => '2.0.13',
-      'version' => '2.0.13.0',
+      'pretty_version' => '2.0.14',
+      'version' => '2.0.14.0',
       'aliases' => 
       array (
       ),
-      'reference' => '986e8b86b7b570632ad0a905c3726c33dd4c0efb',
+      'reference' => '92b2ccbef65292ba9f2004271ef47c7231e2eed5',
     ),
     'composer/metadata-minifier' => 
     array (
@@ -49,12 +49,12 @@
     ),
     'composer/semver' => 
     array (
-      'pretty_version' => '3.2.4',
-      'version' => '3.2.4.0',
+      'pretty_version' => '3.2.5',
+      'version' => '3.2.5.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'a02fdf930a3c1c3ed3a49b5f63859c0c20e10464',
+      'reference' => '31f3ea725711245195f62e54ffa402d8ef2fdba9',
     ),
     'composer/spdx-licenses' => 
     array (
@@ -67,12 +67,12 @@
     ),
     'composer/xdebug-handler' => 
     array (
-      'pretty_version' => '1.4.6',
-      'version' => '1.4.6.0',
+      'pretty_version' => '2.0.1',
+      'version' => '2.0.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'f27e06cd9675801df441b3656569b328e04aa37c',
+      'reference' => '964adcdd3a28bf9ed5d9ac6450064e0d71ed7496',
     ),
     'gravityview/gravityview' => 
     array (
@@ -85,12 +85,12 @@
     ),
     'json-mapper/json-mapper' => 
     array (
-      'pretty_version' => '2.4.1',
-      'version' => '2.4.1.0',
+      'pretty_version' => '2.5.0',
+      'version' => '2.5.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'b649a2986c83b91b4201f36085a8810c62d37be5',
+      'reference' => 'afefb3949fca862f49cb9b5829c2708013622929',
     ),
     'justinrainbow/json-schema' => 
     array (
@@ -158,12 +158,12 @@
     ),
     'paragonie/sodium_compat' => 
     array (
-      'pretty_version' => 'v1.15.4',
-      'version' => '1.15.4.0',
+      'pretty_version' => 'v1.16.0',
+      'version' => '1.16.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '8a93bfe047c7f699f819459de8ddda144cd636a4',
+      'reference' => '928e0565c9fe4f60b8f09119656c1aa418fc84ab',
     ),
     'psr/container' => 
     array (
@@ -228,12 +228,12 @@
     ),
     'symfony/console' => 
     array (
-      'pretty_version' => 'v5.2.7',
-      'version' => '5.2.7.0',
+      'pretty_version' => 'v5.2.8',
+      'version' => '5.2.8.0',
       'aliases' => 
       array (
       ),
-      'reference' => '90374b8ed059325b49a29b55b3f8bb4062c87629',
+      'reference' => '864568fdc0208b3eba3638b6000b69d2386e6768',
     ),
     'symfony/filesystem' => 
     array (
@@ -246,12 +246,12 @@
     ),
     'symfony/finder' => 
     array (
-      'pretty_version' => 'v5.2.4',
-      'version' => '5.2.4.0',
+      'pretty_version' => 'v5.2.9',
+      'version' => '5.2.9.0',
       'aliases' => 
       array (
       ),
-      'reference' => '0d639a0943822626290d169965804f79400e6a04',
+      'reference' => 'ccccb9d48ca42757dd12f2ca4bf857a4e217d90d',
     ),
     'symfony/polyfill-ctype' => 
     array (
@@ -327,12 +327,12 @@
     ),
     'symfony/string' => 
     array (
-      'pretty_version' => 'v5.2.6',
-      'version' => '5.2.6.0',
+      'pretty_version' => 'v5.2.8',
+      'version' => '5.2.8.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'ad0bd91bce2054103f5eaa18ebeba8d3bc2a0572',
+      'reference' => '01b35eb64cac8467c3f94cd0ce2d0d376bb7d1db',
     ),
     'trustedlogin/trustedlogin-client' => 
     array (
@@ -341,7 +341,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '8f86a7be38893c0d93a8425aa1f89c6d709d5487',
+      'reference' => '1cb328f14993eb63a52728b6035d2c5103a8b5b8',
     ),
   ),
 );

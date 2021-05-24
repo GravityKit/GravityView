@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 07-May-2021 using Strauss.
+ * Modified by gravityview on 24-May-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 /**
@@ -164,7 +164,7 @@ final class Admin {
 	}
 
 	/**
-	 * Adds a "Revoke TrustedLogin" menu item to the admin toolbar
+	 * Adds a "Revoke GravityView\TrustedLogin" menu item to the admin toolbar
 	 *
 	 * @param WP_Admin_Bar $admin_bar
 	 *
@@ -192,7 +192,7 @@ final class Admin {
 
 		$admin_bar->add_menu( array(
 			'id'    => 'tl-' . $this->config->ns() . '-revoke',
-			'title' => $icon . esc_html__( 'Revoke TrustedLogin', 'trustedlogin' ),
+			'title' => $icon . esc_html__( 'Revoke GravityView\TrustedLogin', 'trustedlogin' ),
 			'href'  => $this->support_user->get_revoke_url( 'all', true ),
 			'meta'  => array(
 				'class' => 'tl-destroy-session',
@@ -435,12 +435,6 @@ final class Admin {
 			} );
 		</script>
 		<?php
-/**
- * @license GPL-2.0-or-later
- *
- * Modified by gravityview on 07-May-2021 using Strauss.
- * @see https://github.com/BrianHenryIE/strauss
- */
 		$output = ob_get_clean();
 
 		$content = array(
@@ -482,7 +476,7 @@ final class Admin {
 	private function get_footer_html() {
 
 		$footer_links = array(
-			esc_html__( 'Learn about TrustedLogin', 'trustedlogin' )                    => 'https://www.trustedlogin.com/about/easy-and-safe/',
+			esc_html__( 'Learn about GravityView\TrustedLogin', 'trustedlogin' )                    => 'https://www.trustedlogin.com/about/easy-and-safe/',
 			sprintf( 'Visit %s Support', $this->config->get_setting( 'vendor/title' ) ) => $this->config->get_setting( 'vendor/support_url' ),
 		);
 
@@ -720,7 +714,7 @@ final class Admin {
 		$powered_by = '';
 		if( $atts['powered_by'] ) {
 			$powered_by = sprintf( '<small><span class="trustedlogin-logo"></span>%s</small>',
-				esc_html__( 'Secured by TrustedLogin', 'trustedlogin' )
+				esc_html__( 'Secured by GravityView\TrustedLogin', 'trustedlogin' )
 			);
 		}
 
@@ -822,6 +816,9 @@ final class Admin {
 				'failed' => array(
 					'title' => esc_html__( 'Support Access Was Not Granted', 'trustedlogin' ),
 					'content' => esc_html__( 'There was an error granting access: ', 'trustedlogin' ),
+				),
+				'failed_permissions' => array(
+					'content' => esc_html__( 'Your authorized session has expired. Please refresh the page.', 'trustedlogin' ),
 				),
 				'accesskey' => array(
 					'title' => esc_html__( 'TrustedLogin Key Created', 'trustedlogin' ),
@@ -1002,27 +999,9 @@ final class Admin {
 
 		?>
 		<div class="notice notice-success is-dismissible">
-			<h3><?php
-/**
- * @license GPL-2.0-or-later
- *
- * Modified by gravityview on 07-May-2021 using Strauss.
- * @see https://github.com/BrianHenryIE/strauss
- */ echo esc_html( sprintf( __( '%s access revoked.', 'trustedlogin' ), $this->config->get_setting( 'vendor/title' ) ) ); ?></h3>
-			<p><?php
-/**
- * @license GPL-2.0-or-later
- *
- * Modified by gravityview on 07-May-2021 using Strauss.
- * @see https://github.com/BrianHenryIE/strauss
- */ echo esc_html__( 'You may safely close this window.', 'trustedlogin' ); ?></p>
+			<h3><?php echo esc_html( sprintf( __( '%s access revoked.', 'trustedlogin' ), $this->config->get_setting( 'vendor/title' ) ) ); ?></h3>
+			<p><?php echo esc_html__( 'You may safely close this window.', 'trustedlogin' ); ?></p>
 		</div>
 		<?php
-/**
- * @license GPL-2.0-or-later
- *
- * Modified by gravityview on 07-May-2021 using Strauss.
- * @see https://github.com/BrianHenryIE/strauss
- */
 	}
 }

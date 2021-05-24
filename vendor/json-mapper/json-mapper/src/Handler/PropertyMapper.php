@@ -6,6 +6,7 @@ namespace JsonMapper\Handler;
 
 use JsonMapper\Enums\ScalarType;
 use JsonMapper\Enums\Visibility;
+use JsonMapper\Exception\ClassFactoryException;
 use JsonMapper\JsonMapperInterface;
 use JsonMapper\ValueObjects\Property;
 use JsonMapper\ValueObjects\PropertyMap;
@@ -14,17 +15,25 @@ use JsonMapper\Wrapper\ObjectWrapper;
 
 class PropertyMapper
 {
-    /** @var ClassFactoryRegistry */
+    /** @var FactoryRegistry */
     private $classFactoryRegistry;
+    /**@var FactoryRegistry */
+    private $nonInstantiableTypeResolver;
 
-    public function __construct(ClassFactoryRegistry $classFactoryRegistry = null)
-    {
+    public function __construct(
+        FactoryRegistry $classFactoryRegistry = null,
+        FactoryRegistry $nonInstantiableTypeResolver = null
+    ) {
         if ($classFactoryRegistry === null) {
-            $classFactoryRegistry = new ClassFactoryRegistry();
-            $classFactoryRegistry->loadNativePhpClassFactories();
+            $classFactoryRegistry = FactoryRegistry::WithNativePhpClassesAdded();
+        }
+
+        if ($nonInstantiableTypeResolver === null) {
+            $nonInstantiableTypeResolver = new FactoryRegistry();
         }
 
         $this->classFactoryRegistry = $classFactoryRegistry;
+        $this->nonInstantiableTypeResolver = $nonInstantiableTypeResolver;
     }
 
     public function __invoke(
@@ -142,10 +151,7 @@ class PropertyMapper
 
                 // Single existing class @todo how do you know it was the correct type?
                 if (class_exists($type->getType())) {
-                    $className = $type->getType();
-                    $instance = new $className();
-                    $mapper->mapObject($value, $instance);
-                    return $instance;
+                    return $this->mapToObject($type->getType(), $value, false, $mapper);
                 }
             }
         }
@@ -217,17 +223,34 @@ class PropertyMapper
     {
         if ($asArray) {
             return array_map(
-                static function ($v) use ($type, $mapper): object {
-                    $instance = new $type();
-                    $mapper->mapObject($v, $instance);
-                    return $instance;
+                function ($v) use ($type, $mapper): object {
+                    return $this->mapToObject($type, $v, false, $mapper);
                 },
                 (array) $value
             );
         }
 
+        $reflectionType = new \ReflectionClass($type);
+        if (!$reflectionType->isInstantiable()) {
+            return $this->resolveUnInstantiableType($type, $value, $mapper);
+        }
+
         $instance = new $type();
         $mapper->mapObject($value, $instance);
         return $instance;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private function resolveUnInstantiableType(string $type, $value, JsonMapperInterface $mapper): object
+    {
+        try {
+            $instance = $this->nonInstantiableTypeResolver->create($type, $value);
+            $mapper->mapObject($value, $instance);
+            return $instance;
+        } catch (ClassFactoryException $e) {
+            throw new \RuntimeException("Unable to resolve un-instantiable {$type} as no factory was registered", 0, $e);
+        }
     }
 }

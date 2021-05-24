@@ -2,7 +2,7 @@
 /**
  * @license MIT
  *
- * Modified by gravityview on 07-May-2021 using Strauss.
+ * Modified by gravityview on 24-May-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\Katzgrau\KLogger;
@@ -18,7 +18,7 @@ use Psr\Log\LogLevel;
  * Originally written for use with wpSearch
  *
  * Usage:
- * $log = new Katzgrau\KLogger\Logger('/var/log/', Psr\Log\LogLevel::INFO);
+ * $log = new GravityView\Katzgrau\KLogger\Logger('/var/log/', Psr\Log\LogLevel::INFO);
  * $log->info('Returned a million search results'); //Prints to the log file
  * $log->error('Oh dear.'); //Prints to the log file
  * $log->debug('x = 5'); //Prints nothing due to current severity threshhold

@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.5.0] - 2021-05-17
+### Added
+- Map to stdClass was added to allow for generic objects [PR#89](https://github.com/JsonMapper/JsonMapper/pull/89)
+- Map interfaces and abstract classes using factories [PR#84](https://github.com/JsonMapper/JsonMapper/pull/84)
+- Suggestions where added to the composer.json file to inform about the laravel and symfony libs we have available. [PR#90](https://github.com/JsonMapper/JsonMapper/pull/90)
+### Changed
+- Split integration test into smaller test cases divided by individual features [PR#91](https://github.com/JsonMapper/JsonMapper/pull/91)
+
 ## [2.4.1] - 2021-05-07
 ### Fixed
 - Namespace resolver merging replaces property instead of merging old and new property types [PR#86](https://github.com/JsonMapper/JsonMapper/pull/86)

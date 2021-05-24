@@ -39,8 +39,13 @@
 					settings.content = tl_obj.lang.status.error409.content;
 					break;
 
-				case 503: /** problem syncing to SaaS */
-				settings.title = tl_obj.lang.status.error.title;
+				case 500: /** problems syncing to SaaS */
+				case 501:
+				case 502:
+				case 503:
+				case 504:
+				case 522:
+					settings.title = tl_obj.lang.status.error.title;
 					settings.content = tl_obj.lang.status.error.content;
 					settings.icon = 'dashicons dashicons-external';
 					settings.escapeKey = 'close';
@@ -106,7 +111,7 @@
 
 			var $responseDiv = jQuery( '.' + dialogClass ).find( '.' + responseClass );
 
-			if ( 0 == $responseDiv.length ){
+			if ( 0 === $responseDiv.length ){
 				if ( tl_obj.debug ) {
 					console.log( responseClass + ' not found');
 				}
@@ -121,7 +126,7 @@
 			/**
 			 * Handle buttong actions/labels/etc to it's own function
 			 */
-			if ( 'error' == type ){
+			if ( 'error' === type ){
 				/**
 				 * TODO: Translate string
 				 **/
@@ -135,7 +140,7 @@
 
 			$button.addClass( 'disabled' );
 
-			if ( 'extend' == $button.data('access') ){
+			if ( 'extend' === $button.data('access') ){
 				outputStatus( tl_obj.lang.status.extending.content, 'pending' );
 			} else {
 				outputStatus( tl_obj.lang.status.pending.content, 'pending' );
@@ -181,8 +186,8 @@
 					if ( response.data.access_key ){
 						$( tl_obj.selector ).data('accesskey', response.data.access_key );
 					}
-				} else {
-					outputStatus( tl_obj.lang.status.failed.content + ' ' + response.responseJSON.data.message, 'error' );
+				} else if ( typeof response.data === 'object' ) {
+					outputStatus( tl_obj.lang.status.failed.content + ' ' + response.data.message, 'error' );
 				}
 
 			} ).fail( function ( response ) {
@@ -190,10 +195,15 @@
 				clearTimeout( secondStatus );
 
 				if ( tl_obj.debug ) {
-					console.log( response );
+					console.error( 'Request failed.', response );
 				}
 
-				outputStatus( tl_obj.lang.status.failed.content + ' ' + response.responseJSON.data.message, 'error' );
+				// User not logged-in
+				if ( response.responseText && '0' === response.responseText ) {
+					outputStatus( tl_obj.lang.status.failed_permissions.content, 'error' );
+				} else if ( typeof response.data === 'object' ) {
+					outputStatus( tl_obj.lang.status.failed.content + ' ' + response.data.message, 'error' );
+				}
 
 			} ).always( function( response ) {
 

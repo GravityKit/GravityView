@@ -7,6 +7,7 @@
         "JsonMapper",
         "middleware"
     ],
+    "homepage": "https://jsonmapper.net",
     "type": "library",
     "license": "MIT",
     "minimum-stability": "stable",
@@ -43,5 +44,17 @@
         "phpstan": "phpstan analyse",
         "unit-tests": "phpunit --testsuite unit --testdox --coverage-clover=build/logs/clover-unit-tests.xml",
         "integration-tests": "phpunit --testsuite integration --testdox --coverage-clover=build/logs/clover-integration-tests.xml"
+    },
+    "suggest": {
+        "json-mapper/laravel-package": "Use JsonMapper directly with Laravel",
+        "json-mapper/symfony-bundle": "Use JsonMapper directly with Symfony"
+    },
+    "support": {
+        "issues": "https://github.com/JsonMapper/JsonMapper/issues",
+        "source": "https://github.com/JsonMapper/JsonMapper",
+        "docs": "https://jsonmapper.net"
+    },
+    "config": {
+        "sort-packages": true
     }
 }
