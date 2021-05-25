@@ -48,10 +48,15 @@ add_action( 'plugins_loaded', function() {
 		'caps' => array(
 			'add' => array(
 				'gravityview_full_access' => esc_html__( 'We need access to Views to provide great support.', 'gravityview' ),
-				'gform_full_access' => esc_html__( 'Support will need to see and edit the forms, entries, and Gravity Forms settings to debug issues.', 'gravityview' ),
+				'gform_full_access' => esc_html__( 'We will need to see and edit the forms, entries, and Gravity Forms settings to debug issues.', 'gravityview' ),
+				'install_plugins' => esc_html__( 'We may need to manage plugins in order to debug conflicts on your site and add related GravityView functionality.', 'gravityview' ),
+				'update_plugins' => '',
+				'deactivate_plugins' => '',
+				'activate_plugins' => '',
 			),
 			'remove' => array(
-				'manage_woocommerce' => esc_html__( 'We don\'t need to see your WooCommerce details to provide support.', 'gravityview' ),
+				'manage_woocommerce' => sprintf( esc_html__( 'We don\'t need to see your %1$s details to provide support (if %1$s is enabled).', 'gravityview' ), 'WooCommerce' ),
+				'view_shop_reports'  => sprintf( esc_html__( 'We don\'t need to see your %1$s details to provide support (if %1$s is enabled).', 'gravityview' ), 'Easy Digital Downloads' ),
 			),
 		),
 		'logging' => array(
