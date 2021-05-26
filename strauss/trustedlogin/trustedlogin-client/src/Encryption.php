@@ -7,7 +7,7 @@
  * @copyright 2020 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 24-May-2021 using Strauss.
+ * Modified by gravityview on 26-May-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -21,9 +21,6 @@ use \Exception;
 use \WP_Error;
 use \Sodium;
 
-/**
- * The TrustedLogin all-in-one drop-in class.
- */
 final class Encryption {
 
 	/**
@@ -94,12 +91,12 @@ final class Encryption {
 		try {
 			$hash_bin = sodium_crypto_generichash( $string, '', 16 );
 			$hash     = sodium_bin2hex( $hash_bin );
-		} catch ( \SodiumException $exception ) {
+		} catch ( \SodiumException $e ) {
 			return new WP_Error(
 				'encryption_failed_generichash',
 				sprintf( 'Error while generating hash: %s (%s)', $e->getMessage(), $e->getCode() )
 			);
-		} catch ( \TypeError $exception ) {
+		} catch ( \TypeError $e ) {
 			return new WP_Error(
 				'encryption_failed_generichash_typeerror',
 				sprintf( 'Error while generating hash: %s (%s)', $e->getMessage(), $e->getCode() )

@@ -7,7 +7,7 @@
  * @copyright 2020 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 24-May-2021 using Strauss.
+ * Modified by gravityview on 26-May-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -252,7 +252,7 @@ final class Config {
 	 *
 	 * @return bool True: not null. False: null
 	 */
-	protected function is_not_null( $input ) {
+	public function is_not_null( $input ) {
 		return ! is_null( $input );
 	}
 

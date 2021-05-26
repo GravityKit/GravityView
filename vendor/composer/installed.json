@@ -1090,17 +1090,17 @@
         },
         {
             "name": "paragonie/sodium_compat",
-            "version": "v1.16.0",
-            "version_normalized": "1.16.0.0",
+            "version": "v1.16.1",
+            "version_normalized": "1.16.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/sodium_compat.git",
-                "reference": "928e0565c9fe4f60b8f09119656c1aa418fc84ab"
+                "reference": "2e856afe80bfc968b47da1f4a7e1ea8f03d06b38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/928e0565c9fe4f60b8f09119656c1aa418fc84ab",
-                "reference": "928e0565c9fe4f60b8f09119656c1aa418fc84ab",
+                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/2e856afe80bfc968b47da1f4a7e1ea8f03d06b38",
+                "reference": "2e856afe80bfc968b47da1f4a7e1ea8f03d06b38",
                 "shasum": ""
             },
             "require": {
@@ -1114,7 +1114,7 @@
                 "ext-libsodium": "PHP < 7.0: Better performance, password hashing (Argon2i), secure memory management (memzero), and better security.",
                 "ext-sodium": "PHP >= 7.0: Better performance, password hashing (Argon2i), secure memory management (memzero), and better security."
             },
-            "time": "2021-05-14T03:03:19+00:00",
+            "time": "2021-05-25T12:58:14+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1173,7 +1173,7 @@
             ],
             "support": {
                 "issues": "https://github.com/paragonie/sodium_compat/issues",
-                "source": "https://github.com/paragonie/sodium_compat/tree/v1.16.0"
+                "source": "https://github.com/paragonie/sodium_compat/tree/v1.16.1"
             },
             "install-path": "../paragonie/sodium_compat"
         },
@@ -2478,12 +2478,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/trustedlogin/trustedlogin-client.git",
-                "reference": "1cb328f14993eb63a52728b6035d2c5103a8b5b8"
+                "reference": "b183b22525d13ca47971589c188a2ef7a5a6e00f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trustedlogin/trustedlogin-client/zipball/1cb328f14993eb63a52728b6035d2c5103a8b5b8",
-                "reference": "1cb328f14993eb63a52728b6035d2c5103a8b5b8",
+                "url": "https://api.github.com/repos/trustedlogin/trustedlogin-client/zipball/b183b22525d13ca47971589c188a2ef7a5a6e00f",
+                "reference": "b183b22525d13ca47971589c188a2ef7a5a6e00f",
                 "shasum": ""
             },
             "require": {
@@ -2494,7 +2494,7 @@
                 "paragonie/sodium_compat": "^1.12",
                 "php": ">=5.3.0"
             },
-            "time": "2021-05-24T16:27:19+00:00",
+            "time": "2021-05-25T00:11:01+00:00",
             "type": "library",
             "installation-source": "source",
             "autoload": {

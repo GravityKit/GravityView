@@ -158,12 +158,12 @@
     ),
     'paragonie/sodium_compat' => 
     array (
-      'pretty_version' => 'v1.16.0',
-      'version' => '1.16.0.0',
+      'pretty_version' => 'v1.16.1',
+      'version' => '1.16.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '928e0565c9fe4f60b8f09119656c1aa418fc84ab',
+      'reference' => '2e856afe80bfc968b47da1f4a7e1ea8f03d06b38',
     ),
     'psr/container' => 
     array (
@@ -341,7 +341,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '1cb328f14993eb63a52728b6035d2c5103a8b5b8',
+      'reference' => 'b183b22525d13ca47971589c188a2ef7a5a6e00f',
     ),
   ),
 );

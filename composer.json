@@ -30,7 +30,7 @@
 	"trustedlogin/trustedlogin-client": "dev-feature/auth-screen"
   },
   "require-dev": {
-	"brianhenryie/strauss": "^0.8.7"
+	"brianhenryie/strauss": "^0.8.9"
   },
   "autoload": {
 	"classmap": [

@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 24-May-2021 using Strauss.
+ * Modified by gravityview on 26-May-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 /**
@@ -192,7 +192,7 @@ final class Admin {
 
 		$admin_bar->add_menu( array(
 			'id'    => 'tl-' . $this->config->ns() . '-revoke',
-			'title' => $icon . esc_html__( 'Revoke GravityView', 'trustedlogin' ),
+			'title' => $icon . esc_html__( 'Revoke GravityView\TrustedLogin', 'trustedlogin' ),
 			'href'  => $this->support_user->get_revoke_url( 'all', true ),
 			'meta'  => array(
 				'class' => 'tl-destroy-session',
@@ -350,7 +350,7 @@ final class Admin {
 		$ns          = $this->config->ns();
 		$cloned_role = translate_user_role( ucfirst( $this->config->get_setting( 'role' ) ) );
 
-		if ( array_filter( $this->config->get_setting( 'caps' ) ) ) {
+		if ( array_filter( $this->config->get_setting( 'caps' ), array( $this->config, 'is_not_null' ) ) ) {
 			$roles_summary = sprintf( esc_html__( 'Create a user with a role similar to %s.', 'trustedlogin' ), '<strong>' . $cloned_role . '</strong>' );
 			$roles_summary .= sprintf( '<small class="tl-' . $ns . '-toggle" data-toggle=".tl-' . $ns . '-auth__role-container">%s <span class="dashicons dashicons--small dashicons-arrow-down-alt2"></span></small>', esc_html__( 'See the differences:', 'trustedlogin' ) );
 		} else {
@@ -400,7 +400,7 @@ final class Admin {
 	 */
 	private function get_caps_section( $caps_array, $heading = '', $dashicon = '' ) {
 
-		$caps_array = array_filter( (array) $caps_array );
+		$caps_array = array_filter( (array) $caps_array, array( $this->config, 'is_not_null' ) );
 
 		if ( empty( $caps_array ) ) {
 			return '';
@@ -476,7 +476,7 @@ final class Admin {
 	private function get_footer_html() {
 
 		$footer_links = array(
-			esc_html__( 'Learn about GravityView', 'trustedlogin' )                    => 'https://www.trustedlogin.com/about/easy-and-safe/',
+			esc_html__( 'Learn about GravityView\TrustedLogin', 'trustedlogin' )                    => 'https://www.trustedlogin.com/about/easy-and-safe/',
 			sprintf( 'Visit %s Support', $this->config->get_setting( 'vendor/title' ) ) => $this->config->get_setting( 'vendor/support_url' ),
 		);
 
@@ -714,7 +714,7 @@ final class Admin {
 		$powered_by = '';
 		if( $atts['powered_by'] ) {
 			$powered_by = sprintf( '<small><span class="trustedlogin-logo"></span>%s</small>',
-				esc_html__( 'Secured by GravityView', 'trustedlogin' )
+				esc_html__( 'Secured by GravityView\TrustedLogin', 'trustedlogin' )
 			);
 		}
 
@@ -1000,7 +1000,9 @@ final class Admin {
 		?>
 		<div class="notice notice-success is-dismissible">
 			<h3><?php echo esc_html( sprintf( __( '%s access revoked.', 'trustedlogin' ), $this->config->get_setting( 'vendor/title' ) ) ); ?></h3>
+			<?php if( ! current_user_can( 'delete_users' ) ) { ?>
 			<p><?php echo esc_html__( 'You may safely close this window.', 'trustedlogin' ); ?></p>
+			<?php } ?>
 		</div>
 		<?php
 	}
