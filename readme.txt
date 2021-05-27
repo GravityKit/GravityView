@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.10.3.1 on May 27, 2021 =
+
+* Fixed: The "delete file" button was transparent in Edit Entry when running Gravity Forms 2.5 or newer
+* Security enhancements
+
 = 2.10.3 on May 20, 2021 =
 
 * Added: Support for the [All in One SEO](https://wordpress.org/plugins/all-in-one-seo-pack/) plugin

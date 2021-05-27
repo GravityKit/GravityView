@@ -10,6 +10,21 @@
 		#{$margin-left}: .5em;
 	}
 
+	// GF 2.5
+	.gravity-theme .gform_delete_file {
+		line-height: 1;
+		padding: .25em;
+		margin: 0 .25em;
+		background: var( --global-palette-btn-bg );
+		.dashicons {
+			margin: 0;
+			width: 20px;
+		}
+		&:hover {
+			background: var(--global-palette-btn-bg-hover);
+		}
+	}
+
 	.dashicons-dismiss {
 		color: #a10013;
 
