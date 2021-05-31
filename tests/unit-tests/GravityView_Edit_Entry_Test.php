@@ -2496,6 +2496,66 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+
+	public function test_validation_of_required_fields_with_conditional_logic() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$form = $this->factory->form->import_and_get( 'standard.json' );
+
+		$entry = $this->factory->entry->import_and_get( 'standard_entry.json', array(
+			'created_by' => $administrator,
+			'status' => 'active',
+			'form_id' => $form['id'],
+			'5' => 'text',
+			'8' => '',
+		) );
+
+		$form['fields'][7]->conditionalLogic = array(
+			'rules' => array(
+				array(
+					'fieldId' => '2.1',
+					'value' => 'choice 2',
+					'operator' => 'is',
+				),
+			),
+			'logicType' => 'all',
+			'actionType' => 'show',
+		);
+		$form['fields'][7]->isRequired = true;
+
+		\GFAPI::update_form( $form );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				// Excluding field ID 2
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '5',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '8',
+					),
+				),
+			),
+		) );
+
+		$_POST = array(
+			'input_5' => 'updated text',
+		);
+
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEmpty( $entry['8'] );
+		$this->assertContains('This field is required', $output);
+
+		$this->_reset_context();
+	}
 }
 
 /** The GF_User_Registration mock if not exists. */

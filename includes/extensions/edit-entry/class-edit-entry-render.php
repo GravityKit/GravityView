@@ -1746,6 +1746,15 @@ class GravityView_Edit_Entry_Render {
 			$is_required       = ! empty( $field->isRequired );
 			$failed_validation = ! empty( $field->failed_validation );
 
+			// Manually validate required fields as they can be skipped be skipped by GF's validation
+			// This can happen when the field is considered "hidden" (see `GFFormDisplay::validate`) due to unmet conditional logic
+			if ( $is_required && !$failed_validation && empty( $value ) ) {
+				$field->failed_validation  = true;
+				$field->validation_message = esc_html__( 'This field is required.', 'gravityview' );
+
+				continue;
+			}
+
 			switch ( $field_type ) {
 				case 'fileupload':
 				case 'post_image':
