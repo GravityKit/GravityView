@@ -4,15 +4,16 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit6e8e78835c64f029e30670c6cf33ac50
+class ComposerStaticInitd8899fafd6268d2920792d4acf51b08f
 {
     public static $files = array (
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
-        'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
         '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
+        'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
@@ -228,8 +229,8 @@ class ComposerStaticInit6e8e78835c64f029e30670c6cf33ac50
 
     public static $classMap = array (
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
+        'BrianHenryIE\\Strauss\\Autoload' => __DIR__ . '/..' . '/brianhenryie/strauss/src/Autoload.php',
         'BrianHenryIE\\Strauss\\ChangeEnumerator' => __DIR__ . '/..' . '/brianhenryie/strauss/src/ChangeEnumerator.php',
-        'BrianHenryIE\\Strauss\\Classmap' => __DIR__ . '/..' . '/brianhenryie/strauss/src/Classmap.php',
         'BrianHenryIE\\Strauss\\Cleanup' => __DIR__ . '/..' . '/brianhenryie/strauss/src/Cleanup.php',
         'BrianHenryIE\\Strauss\\Composer\\ComposerPackage' => __DIR__ . '/..' . '/brianhenryie/strauss/src/Composer/ComposerPackage.php',
         'BrianHenryIE\\Strauss\\Composer\\Extra\\StraussConfig' => __DIR__ . '/..' . '/brianhenryie/strauss/src/Composer/Extra/StraussConfig.php',
@@ -256,6 +257,7 @@ class ComposerStaticInit6e8e78835c64f029e30670c6cf33ac50
         'BrianHenryIE\\Strauss\\Tests\\Issues\\MozartIssue130Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/MozartIssue130Test.php',
         'BrianHenryIE\\Strauss\\Tests\\Issues\\MozartIssue13Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/MozartIssue13Test.php',
         'BrianHenryIE\\Strauss\\Tests\\Issues\\MozartIssue43Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/MozartIssue43Test.php',
+        'BrianHenryIE\\Strauss\\Tests\\Issues\\MozartIssue48Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/MozartIssue48Test.php',
         'BrianHenryIE\\Strauss\\Tests\\Issues\\MozartIssue62Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/MozartIssue62Test.php',
         'BrianHenryIE\\Strauss\\Tests\\Issues\\MozartIssue66Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/MozartIssue66Test.php',
         'BrianHenryIE\\Strauss\\Tests\\Issues\\MozartIssue86Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/MozartIssue86Test.php',
@@ -265,6 +267,8 @@ class ComposerStaticInit6e8e78835c64f029e30670c6cf33ac50
         'BrianHenryIE\\Strauss\\Tests\\Issues\\MozartIssue97Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/MozartIssue97Test.php',
         'BrianHenryIE\\Strauss\\Tests\\Issues\\MozartIssue99Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/MozartIssue99Test.php',
         'BrianHenryIE\\Strauss\\Tests\\Issues\\StraussIssue11Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/StraussIssue11Test.php',
+        'BrianHenryIE\\Strauss\\Tests\\Issues\\StraussIssue14Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/StraussIssue14Test.php',
+        'BrianHenryIE\\Strauss\\Tests\\Issues\\StraussIssue19Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/StraussIssue19Test.php',
         'BrianHenryIE\\Strauss\\Tests\\Issues\\StraussIssue8Test' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Issues/StraussIssue8Test.php',
         'BrianHenryIE\\Strauss\\Tests\\Unit\\ChangeEnumeratorTest' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Unit/ChangeEnumeratorTest.php',
         'BrianHenryIE\\Strauss\\Tests\\Unit\\Composer\\ComposerPackageTest' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Unit/Composer/ComposerPackageTest.php',
@@ -274,10 +278,12 @@ class ComposerStaticInit6e8e78835c64f029e30670c6cf33ac50
         'BrianHenryIE\\Strauss\\Tests\\Unit\\LicenserTest' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Unit/LicenserTest.php',
         'BrianHenryIE\\Strauss\\Tests\\Unit\\PrefixerTest' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Unit/PrefixerTest.php',
         'ComposerAutoloaderInitb5638313a52df4893eb45c04efdaa356' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/vendor/composer/autoload_real.php',
+        'ComposerAutoloaderInitd8899fafd6268d2920792d4acf51b08f' => __DIR__ . '/..' . '/composer/autoload_real.php',
         'Composer\\Autoload\\AutoloadGenerator' => __DIR__ . '/..' . '/composer/composer/src/Composer/Autoload/AutoloadGenerator.php',
-        'Composer\\Autoload\\ClassLoader' => __DIR__ . '/..' . '/composer/composer/src/Composer/Autoload/ClassLoader.php',
+        'Composer\\Autoload\\ClassLoader' => __DIR__ . '/..' . '/composer/ClassLoader.php',
         'Composer\\Autoload\\ClassMapGenerator' => __DIR__ . '/..' . '/composer/composer/src/Composer/Autoload/ClassMapGenerator.php',
         'Composer\\Autoload\\ComposerStaticInitb5638313a52df4893eb45c04efdaa356' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/vendor/composer/autoload_static.php',
+        'Composer\\Autoload\\ComposerStaticInitd8899fafd6268d2920792d4acf51b08f' => __DIR__ . '/..' . '/composer/autoload_static.php',
         'Composer\\CaBundle\\CaBundle' => __DIR__ . '/..' . '/composer/ca-bundle/src/CaBundle.php',
         'Composer\\Cache' => __DIR__ . '/..' . '/composer/composer/src/Composer/Cache.php',
         'Composer\\Command\\AboutCommand' => __DIR__ . '/..' . '/composer/composer/src/Composer/Command/AboutCommand.php',
@@ -548,23 +554,6 @@ class ComposerStaticInit6e8e78835c64f029e30670c6cf33ac50
         'Composer\\XdebugHandler\\Status' => __DIR__ . '/..' . '/composer/xdebug-handler/src/Status.php',
         'Composer\\XdebugHandler\\XdebugHandler' => __DIR__ . '/..' . '/composer/xdebug-handler/src/XdebugHandler.php',
         'Error' => __DIR__ . '/..' . '/paragonie/random_compat/lib/error_polyfill.php',
-        'GravityView\\Katzgrau\\KLogger\\Logger' => __DIR__ . '/../..' . '/strauss/katzgrau/klogger/src/Logger.php',
-        'GravityView\\TrustedLogin\\Admin' => __DIR__ . '/../..' . '/strauss/trustedlogin/trustedlogin-client/src/Admin.php',
-        'GravityView\\TrustedLogin\\Ajax' => __DIR__ . '/../..' . '/strauss/trustedlogin/trustedlogin-client/src/Ajax.php',
-        'GravityView\\TrustedLogin\\Button' => __DIR__ . '/../..' . '/strauss/trustedlogin/trustedlogin-client/src/Button.php',
-        'GravityView\\TrustedLogin\\Client' => __DIR__ . '/../..' . '/strauss/trustedlogin/trustedlogin-client/src/Client.php',
-        'GravityView\\TrustedLogin\\Config' => __DIR__ . '/../..' . '/strauss/trustedlogin/trustedlogin-client/src/Config.php',
-        'GravityView\\TrustedLogin\\Cron' => __DIR__ . '/../..' . '/strauss/trustedlogin/trustedlogin-client/src/Cron.php',
-        'GravityView\\TrustedLogin\\Encryption' => __DIR__ . '/../..' . '/strauss/trustedlogin/trustedlogin-client/src/Encryption.php',
-        'GravityView\\TrustedLogin\\Endpoint' => __DIR__ . '/../..' . '/strauss/trustedlogin/trustedlogin-client/src/Endpoint.php',
-        'GravityView\\TrustedLogin\\Envelope' => __DIR__ . '/../..' . '/strauss/trustedlogin/trustedlogin-client/src/Envelope.php',
-        'GravityView\\TrustedLogin\\Logging' => __DIR__ . '/../..' . '/strauss/trustedlogin/trustedlogin-client/src/Logging.php',
-        'GravityView\\TrustedLogin\\OptionKeys' => __DIR__ . '/../..' . '/strauss/trustedlogin/trustedlogin-client/src/OptionKeys.php',
-        'GravityView\\TrustedLogin\\Remote' => __DIR__ . '/../..' . '/strauss/trustedlogin/trustedlogin-client/src/Remote.php',
-        'GravityView\\TrustedLogin\\SecurityChecks' => __DIR__ . '/../..' . '/strauss/trustedlogin/trustedlogin-client/src/SecurityChecks.php',
-        'GravityView\\TrustedLogin\\SiteAccess' => __DIR__ . '/../..' . '/strauss/trustedlogin/trustedlogin-client/src/SiteAccess.php',
-        'GravityView\\TrustedLogin\\SupportRole' => __DIR__ . '/../..' . '/strauss/trustedlogin/trustedlogin-client/src/SupportRole.php',
-        'GravityView\\TrustedLogin\\SupportUser' => __DIR__ . '/../..' . '/strauss/trustedlogin/trustedlogin-client/src/SupportUser.php',
         'JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
         'JsonMapper\\Builders\\PropertyBuilder' => __DIR__ . '/..' . '/json-mapper/json-mapper/src/Builders/PropertyBuilder.php',
         'JsonMapper\\Cache\\ArrayCache' => __DIR__ . '/..' . '/json-mapper/json-mapper/src/Cache/ArrayCache.php',
@@ -1115,17 +1104,17 @@ class ComposerStaticInit6e8e78835c64f029e30670c6cf33ac50
         'Psr\\Container\\ContainerExceptionInterface' => __DIR__ . '/..' . '/psr/container/src/ContainerExceptionInterface.php',
         'Psr\\Container\\ContainerInterface' => __DIR__ . '/..' . '/psr/container/src/ContainerInterface.php',
         'Psr\\Container\\NotFoundExceptionInterface' => __DIR__ . '/..' . '/psr/container/src/NotFoundExceptionInterface.php',
-        'Psr\\Log\\AbstractLogger' => __DIR__ . '/../..' . '/strauss/psr/log/Psr/Log/AbstractLogger.php',
-        'Psr\\Log\\InvalidArgumentException' => __DIR__ . '/../..' . '/strauss/psr/log/Psr/Log/InvalidArgumentException.php',
-        'Psr\\Log\\LogLevel' => __DIR__ . '/../..' . '/strauss/psr/log/Psr/Log/LogLevel.php',
-        'Psr\\Log\\LoggerAwareInterface' => __DIR__ . '/../..' . '/strauss/psr/log/Psr/Log/LoggerAwareInterface.php',
-        'Psr\\Log\\LoggerAwareTrait' => __DIR__ . '/../..' . '/strauss/psr/log/Psr/Log/LoggerAwareTrait.php',
-        'Psr\\Log\\LoggerInterface' => __DIR__ . '/../..' . '/strauss/psr/log/Psr/Log/LoggerInterface.php',
-        'Psr\\Log\\LoggerTrait' => __DIR__ . '/../..' . '/strauss/psr/log/Psr/Log/LoggerTrait.php',
-        'Psr\\Log\\NullLogger' => __DIR__ . '/../..' . '/strauss/psr/log/Psr/Log/NullLogger.php',
-        'Psr\\Log\\Test\\DummyTest' => __DIR__ . '/../..' . '/strauss/psr/log/Psr/Log/Test/DummyTest.php',
-        'Psr\\Log\\Test\\LoggerInterfaceTest' => __DIR__ . '/../..' . '/strauss/psr/log/Psr/Log/Test/LoggerInterfaceTest.php',
-        'Psr\\Log\\Test\\TestLogger' => __DIR__ . '/../..' . '/strauss/psr/log/Psr/Log/Test/TestLogger.php',
+        'Psr\\Log\\AbstractLogger' => __DIR__ . '/..' . '/psr/log/Psr/Log/AbstractLogger.php',
+        'Psr\\Log\\InvalidArgumentException' => __DIR__ . '/..' . '/psr/log/Psr/Log/InvalidArgumentException.php',
+        'Psr\\Log\\LogLevel' => __DIR__ . '/..' . '/psr/log/Psr/Log/LogLevel.php',
+        'Psr\\Log\\LoggerAwareInterface' => __DIR__ . '/..' . '/psr/log/Psr/Log/LoggerAwareInterface.php',
+        'Psr\\Log\\LoggerAwareTrait' => __DIR__ . '/..' . '/psr/log/Psr/Log/LoggerAwareTrait.php',
+        'Psr\\Log\\LoggerInterface' => __DIR__ . '/..' . '/psr/log/Psr/Log/LoggerInterface.php',
+        'Psr\\Log\\LoggerTrait' => __DIR__ . '/..' . '/psr/log/Psr/Log/LoggerTrait.php',
+        'Psr\\Log\\NullLogger' => __DIR__ . '/..' . '/psr/log/Psr/Log/NullLogger.php',
+        'Psr\\Log\\Test\\DummyTest' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/DummyTest.php',
+        'Psr\\Log\\Test\\LoggerInterfaceTest' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/LoggerInterfaceTest.php',
+        'Psr\\Log\\Test\\TestLogger' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/TestLogger.php',
         'Psr\\SimpleCache\\CacheException' => __DIR__ . '/..' . '/psr/simple-cache/src/CacheException.php',
         'Psr\\SimpleCache\\CacheInterface' => __DIR__ . '/..' . '/psr/simple-cache/src/CacheInterface.php',
         'Psr\\SimpleCache\\InvalidArgumentException' => __DIR__ . '/..' . '/psr/simple-cache/src/InvalidArgumentException.php',
@@ -1152,12 +1141,15 @@ class ComposerStaticInit6e8e78835c64f029e30670c6cf33ac50
         'SplFixedArray' => __DIR__ . '/..' . '/paragonie/sodium_compat/src/PHP52/SplFixedArray.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'Symfony\\Component\\Console\\Application' => __DIR__ . '/..' . '/symfony/console/Application.php',
+        'Symfony\\Component\\Console\\Attribute\\AsCommand' => __DIR__ . '/..' . '/symfony/console/Attribute/AsCommand.php',
+        'Symfony\\Component\\Console\\CI\\GithubActionReporter' => __DIR__ . '/..' . '/symfony/console/CI/GithubActionReporter.php',
         'Symfony\\Component\\Console\\Color' => __DIR__ . '/..' . '/symfony/console/Color.php',
         'Symfony\\Component\\Console\\CommandLoader\\CommandLoaderInterface' => __DIR__ . '/..' . '/symfony/console/CommandLoader/CommandLoaderInterface.php',
         'Symfony\\Component\\Console\\CommandLoader\\ContainerCommandLoader' => __DIR__ . '/..' . '/symfony/console/CommandLoader/ContainerCommandLoader.php',
         'Symfony\\Component\\Console\\CommandLoader\\FactoryCommandLoader' => __DIR__ . '/..' . '/symfony/console/CommandLoader/FactoryCommandLoader.php',
         'Symfony\\Component\\Console\\Command\\Command' => __DIR__ . '/..' . '/symfony/console/Command/Command.php',
         'Symfony\\Component\\Console\\Command\\HelpCommand' => __DIR__ . '/..' . '/symfony/console/Command/HelpCommand.php',
+        'Symfony\\Component\\Console\\Command\\LazyCommand' => __DIR__ . '/..' . '/symfony/console/Command/LazyCommand.php',
         'Symfony\\Component\\Console\\Command\\ListCommand' => __DIR__ . '/..' . '/symfony/console/Command/ListCommand.php',
         'Symfony\\Component\\Console\\Command\\LockableTrait' => __DIR__ . '/..' . '/symfony/console/Command/LockableTrait.php',
         'Symfony\\Component\\Console\\Command\\SignalableCommandInterface' => __DIR__ . '/..' . '/symfony/console/Command/SignalableCommandInterface.php',
@@ -1321,7 +1313,6 @@ class ComposerStaticInit6e8e78835c64f029e30670c6cf33ac50
         'TrustedLoginUsersTest' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/tests/test-users.php',
         'TrustedLogin\\Admin' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Admin.php',
         'TrustedLogin\\Ajax' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Ajax.php',
-        'TrustedLogin\\Button' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Button.php',
         'TrustedLogin\\Client' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Client.php',
         'TrustedLogin\\Config' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Config.php',
         'TrustedLogin\\Cron' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Cron.php',
@@ -1348,9 +1339,9 @@ class ComposerStaticInit6e8e78835c64f029e30670c6cf33ac50
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit6e8e78835c64f029e30670c6cf33ac50::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit6e8e78835c64f029e30670c6cf33ac50::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit6e8e78835c64f029e30670c6cf33ac50::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd8899fafd6268d2920792d4acf51b08f::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd8899fafd6268d2920792d4acf51b08f::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitd8899fafd6268d2920792d4acf51b08f::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -34,7 +34,6 @@
   },
   "autoload": {
 	"classmap": [
-	  "strauss",
 	  "vendor"
 	],
 	"psr-4": {
@@ -44,13 +43,19 @@
   },
   "extra": {
 	"strauss": {
-	  "target_directory": "strauss",
+	  "target_directory": "trustedlogin",
 	  "namespace_prefix": "GravityView\\",
 	  "classmap_prefix": "GV_",
 	  "packages": [
 		"trustedlogin/trustedlogin-client"
 	  ],
-	  "delete_vendor_files": true
+	  "exclude_from_prefix": {
+		"packages": [
+		  "paragonie/random_compat",
+		  "paragonie/sodium_compat"
+		]
+	  },
+	  "delete_vendor_files": false
 	}
   },
   "scripts": {

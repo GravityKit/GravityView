@@ -32,7 +32,7 @@ add_action( 'plugins_loaded', 'gravityview', 1 );
 
 add_action( 'plugins_loaded', function() {
 	#include GRAVITYVIEW_DIR . 'vendor/autoload.php';
-	include GRAVITYVIEW_DIR . 'strauss/autoload.php';
+	include_once( GRAVITYVIEW_DIR . 'trustedlogin/autoload.php' );
 
 	$config = new \GravityView\TrustedLogin\Config(array(
 		'auth' => array(
