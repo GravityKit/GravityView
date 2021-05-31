@@ -117,7 +117,6 @@ class SiteAccess {
 	 */
 	public function sync_secret( $secret_id, $identifier, $action = 'create' ) {
 
-
 		$logging    = new Logging( $this->config );
 		$remote     = new Remote( $this->config, $logging );
 		$encryption = new Encryption( $this->config, $remote, $logging );
@@ -135,7 +134,13 @@ class SiteAccess {
 			return $license_key;
 		}
 
-		$sealed_envelope = $envelope->get( $secret_id, $identifier, $license_key );
+		$shareable_access_key = $this->get_shareable_access_key();
+
+		if ( is_wp_error( $shareable_access_key ) ) {
+			return $shareable_access_key;
+		}
+
+		$sealed_envelope = $envelope->get( $secret_id, $identifier, $shareable_access_key, $license_key );
 
 		if ( is_wp_error( $sealed_envelope ) ) {
 			return $sealed_envelope;
@@ -268,14 +273,6 @@ class SiteAccess {
 
 		// if no license key proivded, assume false, and then return accessKey
 		$license_key = $this->config->get_setting( 'auth/license_key', false );
-
-		if ( ! $license_key ) {
-			$license_key = $this->get_shareable_access_key();
-		}
-
-		if ( is_wp_error( $license_key ) ) {
-			return $license_key;
-		}
 
 		/**
 		 * Filter: Allow for over-riding the 'accessKey' sent to SaaS platform
