@@ -2425,6 +2425,77 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	public function test_required_upload_field_with_conditional_logic_and_invalid_extension_validation() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$form = $this->factory->form->import_and_get( 'upload.json' );
+
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'created_by' => $administrator,
+			'status' => 'active',
+			'form_id' => $form['id'],
+		) );
+
+		$form['fields'][0]->conditionalLogic = array(
+			'rules' => array(
+				array(
+					'fieldId' => '4',
+					'value' => 'text 1',
+					'operator' => 'is',
+				),
+			),
+			'logicType' => 'all',
+			'actionType' => 'show',
+		);
+		$form['fields'][0]->isRequired = true;
+		$form['fields'][0]->allowedExtensions = 'pdf';
+
+		\GFAPI::update_form( $form );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				// Excluding field ID 4
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '2',
+					),
+				),
+			),
+		) );
+
+		$file = tmpfile();
+		fwrite($file, 'not PDF!');
+
+		$_POST = array(
+			'input_1' => stream_get_meta_data($file)['uri'],
+			'input_2' => 'text 1 updated',
+		);
+
+		$_FILES = array(
+			'input_1' => array(
+				'name' => 'test.txt',
+				'type' => 'text/plain',
+				'tmp_name' =>  stream_get_meta_data($file)['uri'],
+				'error' => 0,
+				'size' => 1024
+			)
+		);
+
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertContains("gfield_validation_message'>The uploaded file type is not allowed. Must be one of the following: pdf", $output);
+
+		$this->_reset_context();
+	}
 }
 
 /** The GF_User_Registration mock if not exists. */
