@@ -1747,11 +1747,9 @@ class GravityView_Edit_Entry_Render {
 
 			// Validate always
 			switch ( $field_type ) {
-
-
 				case 'fileupload' :
+					$field->validate( RGFormsModel::get_field_value( $field ), $this->form );
 				case 'post_image':
-
 				    // in case nothing is uploaded but there are already files saved
 				    if( !empty( $field->failed_validation ) && !empty( $field->isRequired ) && !empty( $value ) ) {
 				        $field->failed_validation = false;
