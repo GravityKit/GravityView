@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Improved: Loading of plugin dependencies
 * Fixed: Field's required attribute was ignored in certain scenarios when using Edit Entry
 
 = 2.10.3.1 on May 27, 2021 =
