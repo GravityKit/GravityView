@@ -334,6 +334,9 @@ class SiteAccess {
 	 */
 	public function revoke( Remote $remote ) {
 
+		// Always delete the access key, regardless of whether there's an error later on.
+		delete_site_option( $this->sharable_access_key_option );
+
 		if ( ! $this->config->meets_ssl_requirement() ) {
 			$this->logging->log( 'Not notifying TrustedLogin about revoked site due to SSL requirements.', __METHOD__, 'info' );
 
@@ -355,8 +358,6 @@ class SiteAccess {
 		if ( is_wp_error( $response ) ) {
 			return $response;
 		}
-
-		delete_site_option( $this->sharable_access_key_option );
 
 		return true;
 	}
