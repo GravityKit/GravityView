@@ -1240,9 +1240,10 @@ class GravityView_Admin_Views {
 		    return;
 		}
 
-		wp_enqueue_code_editor( array( 'type' => 'text/html' ) )
+		wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
 
         wp_enqueue_script( 'jquery-ui-datepicker' );
+
         wp_enqueue_style( 'gravityview_views_datepicker', plugins_url('assets/css/admin-datepicker.css', GRAVITYVIEW_FILE), \GV\Plugin::$version );
 
         // Enqueue scripts
