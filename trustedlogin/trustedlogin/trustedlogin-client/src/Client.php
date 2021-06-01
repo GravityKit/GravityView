@@ -17,7 +17,7 @@
  * 2. Instantiate this class with a configuration array ({@see https://www.trustedlogin.com/configuration/} for more info)
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 31-May-2021 using Strauss.
+ * Modified by gravityview on 01-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;

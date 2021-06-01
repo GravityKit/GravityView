@@ -2,7 +2,7 @@
 /**
  * @license MIT
  *
- * Modified by gravityview on 31-May-2021 using Strauss.
+ * Modified by gravityview on 01-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\Katzgrau\KLogger;

@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 31-May-2021 using Strauss.
+ * Modified by gravityview on 01-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 /**
@@ -23,6 +23,11 @@ use \WP_User;
 use \WP_Admin_Bar;
 
 final class Admin {
+
+	/**
+	 * URL pointing to the "About TrustedLogin" page, shown below the Grant Access dialog
+	 */
+	const ABOUT_TL_URL = 'https://www.trustedlogin.com/about/easy-and-safe/';
 
 	/**
 	 * @var Config
@@ -130,10 +135,10 @@ final class Admin {
 			'all'
 		);
 
-		$registered = array_filter( $registered );
+		$registered_filtered = array_filter( $registered );
 
-		if ( 4 !== count( $registered ) ) {
-			$this->logging->log( 'Not all scripts and styles were registered: ' . print_r( $registered, true ), __METHOD__, 'error' );
+		if ( count( $registered ) !== count( $registered_filtered ) ) {
+			$this->logging->log( 'Not all scripts and styles were registered: ' . print_r( $registered_filtered, true ), __METHOD__, 'error' );
 		}
 
 	}
@@ -430,11 +435,10 @@ final class Admin {
 
 		if ( ! empty( $logo_url ) ) {
 			$logo_output = sprintf(
-				'<a href="%1$s" title="%2$s" target="_blank" rel="noreferrer noopener"><img src="%4$s" alt="%5$s" /></a>',
+				'<a href="%1$s" title="%2$s" target="_blank" rel="noreferrer noopener"><img src="%3$s" alt="%4$s" /></a>',
 				esc_url( $this->config->get_setting( 'vendor/website' ) ),
 				// translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
 				sprintf( 'Visit the %s website', $this->config->get_setting( 'vendor/title' ) ),
-				$this->config->ns(),
 				esc_attr( $this->config->get_setting( 'vendor/logo_url' ) ),
 				esc_attr( $this->config->get_setting( 'vendor/title' ) )
 			);
@@ -451,7 +455,7 @@ final class Admin {
 	private function get_footer_html() {
 
 		$footer_links = array(
-			esc_html__( 'Learn about TrustedLogin', 'trustedlogin' )                    => 'https://www.trustedlogin.com/about/easy-and-safe/',
+			esc_html__( 'Learn about TrustedLogin', 'trustedlogin' )                    => self::ABOUT_TL_URL,
 			sprintf( 'Visit %s Support', $this->config->get_setting( 'vendor/title' ) ) => $this->config->get_setting( 'vendor/support_url' ),
 		);
 
@@ -880,7 +884,7 @@ final class Admin {
 				<button id="tl-%1$s-copy" class="tl-%1$s-auth__accesskey_copy button button button-outline" aria-live="polite">%5$s</button>
 			</%6$s>',
 			/* %1$s */ sanitize_title( $this->config->ns() ),
-			/* %2$s */ esc_html__( ' Site access key:', 'trustedlogin'),
+			/* %2$s */ esc_html__( 'Site access key:', 'trustedlogin'),
 			/* %3$s */ esc_html__( 'Access Key', 'trustedlogin' ),
 			/* %4$s */ esc_attr( $this->site_access->get_access_key() ),
 			/* %5$s */ esc_html__( 'Copy', 'trustedlogin' ),
