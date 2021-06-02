@@ -278,6 +278,13 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>2.10.3.2 on June 2, 2021</h3>
+
+                <ul>
+                    <li>Improved: Loading of plugin dependencies</li>
+                    <li>Fixed: Field's required attribute was ignored in certain scenarios when using Edit Entry</li>
+                </ul>
+
                 <h3>2.10.3.1 on May 27, 2021</h3>
 
                 <ul>

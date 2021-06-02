@@ -1741,53 +1741,61 @@ class GravityView_Edit_Entry_Render {
 		$gv_valid = true;
 
 		foreach ( $validation_results['form']['fields'] as $key => &$field ) {
+			$value             = RGFormsModel::get_field_value( $field );
+			$field_type        = RGFormsModel::get_input_type( $field );
+			$is_required       = ! empty( $field->isRequired );
+			$failed_validation = ! empty( $field->failed_validation );
 
-			$value = RGFormsModel::get_field_value( $field );
-			$field_type = RGFormsModel::get_input_type( $field );
+			// Manually validate required fields as they can be skipped be skipped by GF's validation
+			// This can happen when the field is considered "hidden" (see `GFFormDisplay::validate`) due to unmet conditional logic
+			if ( $is_required && !$failed_validation && empty( $value ) ) {
+				$field->failed_validation  = true;
+				$field->validation_message = esc_html__( 'This field is required.', 'gravityview' );
 
-			// Validate always
+				continue;
+			}
+
 			switch ( $field_type ) {
-				case 'fileupload' :
-					$field->validate( RGFormsModel::get_field_value( $field ), $this->form );
+				case 'fileupload':
 				case 'post_image':
-				    // in case nothing is uploaded but there are already files saved
-				    if( !empty( $field->failed_validation ) && !empty( $field->isRequired ) && !empty( $value ) ) {
-				        $field->failed_validation = false;
-				        unset( $field->validation_message );
-				    }
+					// Clear "this field is required" validation result when no files were uploaded but already exist on the server
+					if ( $is_required && $failed_validation && ! empty( $value ) ) {
+						$field->failed_validation = false;
 
-				    // validate if multi file upload reached max number of files [maxFiles] => 2
-				    if( \GV\Utils::get( $field, 'maxFiles') && \GV\Utils::get( $field, 'multipleFiles') ) {
+						unset( $field->validation_message );
+					}
 
-				        $input_name = 'input_' . $field->id;
-				        //uploaded
-				        $file_names = isset( GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] ) ? GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] : array();
+					// Re-validate the field
+					$field->validate( $field, $this->form );
 
-				        //existent
-				        $entry = $this->get_entry();
-				        $value = NULL;
-				        if( isset( $entry[ $field->id ] ) ) {
-				            $value = json_decode( $entry[ $field->id ], true );
-				        }
+					// Validate if multi-file upload reached max number of files [maxFiles] => 2
+					if ( \GV\Utils::get( $field, 'maxFiles' ) && \GV\Utils::get( $field, 'multipleFiles' ) ) {
+						$input_name = 'input_' . $field->id;
+						//uploaded
+						$file_names = isset( GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] ) ? GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] : array();
 
-				        // count uploaded files and existent entry files
-				        $count_files = ( is_array( $file_names ) ? count( $file_names ) : 0 ) +
+						//existent
+						$entry = $this->get_entry();
+						$value = null;
+						if ( isset( $entry[ $field->id ] ) ) {
+							$value = json_decode( $entry[ $field->id ], true );
+						}
+
+						// count uploaded files and existent entry files
+						$count_files = ( is_array( $file_names ) ? count( $file_names ) : 0 ) +
 						               ( is_array( $value ) ? count( $value ) : 0 );
 
-				        if( $count_files > $field->maxFiles ) {
-				            $field->validation_message = __( 'Maximum number of files reached', 'gravityview' );
-				            $field->failed_validation = 1;
-				            $gv_valid = false;
+						if ( $count_files > $field->maxFiles ) {
+							$field->validation_message = __( 'Maximum number of files reached', 'gravityview' );
+							$field->failed_validation  = true;
+							$gv_valid                  = false;
 
-				            // in case of error make sure the newest upload files are removed from the upload input
-				            GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ] = null;
-				        }
+							// in case of error make sure the newest upload files are removed from the upload input
+							GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ] = null;
+						}
+					}
 
-				    }
-
-
-				    break;
-
+					break;
 			}
 
 			// This field has failed validation.

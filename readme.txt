@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.10.3.2 on June 2, 2021 =
+
+* Improved: Loading of plugin dependencies
+* Fixed: Field's required attribute was ignored in certain scenarios when using Edit Entry
+
 = 2.10.3.1 on May 27, 2021 =
 
 * Fixed: The "delete file" button was transparent in Edit Entry when running Gravity Forms 2.5 or newer

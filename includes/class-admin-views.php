@@ -43,12 +43,6 @@ class GravityView_Admin_Views {
 		add_action( 'gravityview_render_available_widgets', array( $this, 'render_available_widgets') );
 		add_action( 'gravityview_render_active_areas', array( $this, 'render_active_areas'), 10, 5 );
 
-		// Enqueue code editor and settings for manipulating HTML.
-		add_action('admin_enqueue_scripts', function() {
-
-		    $settings = wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
-		});
-
 		// @todo check if this hook is needed..
 		//add_action( 'gravityview_render_field_options', array( $this, 'render_field_options'), 10, 9 );
 
@@ -1246,7 +1240,10 @@ class GravityView_Admin_Views {
 		    return;
 		}
 
+		wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
+
         wp_enqueue_script( 'jquery-ui-datepicker' );
+
         wp_enqueue_style( 'gravityview_views_datepicker', plugins_url('assets/css/admin-datepicker.css', GRAVITYVIEW_FILE), \GV\Plugin::$version );
 
         // Enqueue scripts
