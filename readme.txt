@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop =
+= 2.10.3.2 on June 2, 2021 =
 
 * Improved: Loading of plugin dependencies
 * Fixed: Field's required attribute was ignored in certain scenarios when using Edit Entry
