@@ -11,7 +11,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.10.3\n"
+"Project-Id-Version: GravityView 2.10.3.2\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
@@ -345,7 +345,7 @@ msgstr "GravityView Einstellungen"
 #: future/includes/class-gv-settings-addon.php:284
 #: future/includes/class-gv-settings-addon.php:944
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:89
-#: includes/class-admin-views.php:486 includes/class-admin.php:165
+#: includes/class-admin-views.php:480 includes/class-admin.php:165
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -1134,7 +1134,7 @@ msgstr "Einen View auf Basis eines Gravity Forms Formular erstellen"
 
 #: future/includes/class-gv-view.php:298
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:224
-#: includes/class-admin-views.php:542
+#: includes/class-admin-views.php:536
 msgid "Data Source"
 msgstr "Datenquelle"
 
@@ -1636,7 +1636,7 @@ msgid "These widgets will be shown below entries."
 msgstr "Diese Widgets werden unter Einträgen angezeigt."
 
 #: includes/admin/metaboxes/views/view-configuration.php:43
-#: includes/class-admin-views.php:1142 includes/class-admin-views.php:1264
+#: includes/class-admin-views.php:1136 includes/class-admin-views.php:1261
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
 msgid "Close"
 msgstr "Schließen"
@@ -1705,7 +1705,7 @@ msgid "(no title)"
 msgstr "(kein Titel)"
 
 #: includes/class-admin-add-shortcode.php:135
-#: includes/class-admin-views.php:1265
+#: includes/class-admin-views.php:1262
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:282
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1132
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1260
@@ -1714,7 +1714,7 @@ msgid "Cancel"
 msgstr "Abbruch"
 
 #: includes/class-admin-add-shortcode.php:179
-#: includes/class-admin-views.php:1269
+#: includes/class-admin-views.php:1266
 msgid "Loading&hellip;"
 msgstr "Wird geladen &hellip;"
 
@@ -1920,55 +1920,55 @@ msgstr "Plugin-Deaktivierung fehlgeschlagen."
 msgid "Plugin activation failed."
 msgstr "Plugin-Aktivierung fehlgeschlagen."
 
-#: includes/class-admin-views.php:160
+#: includes/class-admin-views.php:154
 msgid "Filter Views by form"
 msgstr ""
 
-#: includes/class-admin-views.php:162
+#: includes/class-admin-views.php:156
 msgid "All forms"
 msgstr "Alle Formulare"
 
-#: includes/class-admin-views.php:174
+#: includes/class-admin-views.php:168
 msgid "Filter Views by layout"
 msgstr ""
 
-#: includes/class-admin-views.php:176
+#: includes/class-admin-views.php:170
 msgid "All layouts"
 msgstr ""
 
-#: includes/class-admin-views.php:177
+#: includes/class-admin-views.php:171
 msgid "Layouts"
 msgstr ""
 
-#: includes/class-admin-views.php:186
+#: includes/class-admin-views.php:180
 msgid "Form Presets"
 msgstr ""
 
-#: includes/class-admin-views.php:243 includes/class-admin-views.php:275
+#: includes/class-admin-views.php:237 includes/class-admin-views.php:269
 msgid "Create a View"
 msgstr "View erstellen"
 
-#: includes/class-admin-views.php:245 includes/class-admin-views.php:277
+#: includes/class-admin-views.php:239 includes/class-admin-views.php:271
 msgid "Create a View using this form as a data source"
 msgstr "Erstelle eine View mit diesem Formular als Datenquelle"
 
-#: includes/class-admin-views.php:262
+#: includes/class-admin-views.php:256
 msgid "No Title (View #%d)"
 msgstr "Kein Titel (View #%d)"
 
-#: includes/class-admin-views.php:291
+#: includes/class-admin-views.php:285
 msgid "Connected Views"
 msgstr "Verbundene Views"
 
-#: includes/class-admin-views.php:293
+#: includes/class-admin-views.php:287
 msgid "GravityView Views using this form as a data source"
 msgstr "GravityView Views verwenden dieses Formular als Datenquelle"
 
-#: includes/class-admin-views.php:361
+#: includes/class-admin-views.php:355
 msgid "CSS Merge Tags"
 msgstr "CSS-Merge-Tags"
 
-#: includes/class-admin-views.php:362
+#: includes/class-admin-views.php:356
 msgid ""
 "Developers: The CSS classes will be sanitized using the "
 "%ssanitize_title_with_dashes()%s function."
@@ -1976,91 +1976,91 @@ msgstr ""
 "Entwickler: Die CSS-Klassen werden über Funktion "
 "%ssanitize_title_with_dashes()%s sicherheitsgeprüft."
 
-#: includes/class-admin-views.php:429
+#: includes/class-admin-views.php:423
 msgid "Not connected."
 msgstr "Nicht verbunden."
 
-#: includes/class-admin-views.php:438
+#: includes/class-admin-views.php:432
 msgid "The connected form can not be found; it may no longer exist."
 msgstr ""
 "Das verbundene Formular wurde nicht gefunden; es könnte nicht mehr vorhanden"
 " sein."
 
-#: includes/class-admin-views.php:474
+#: includes/class-admin-views.php:468
 #: includes/class-gravityview-admin-bar.php:139
 msgid "Edit Form"
 msgstr "Formular bearbeiten"
 
-#: includes/class-admin-views.php:481
+#: includes/class-admin-views.php:475
 msgid "Entries"
 msgstr "Einträge"
 
-#: includes/class-admin-views.php:486
+#: includes/class-admin-views.php:480
 msgid "Edit settings for this form"
 msgstr "Einstellungen für dieses Formular bearbeiten"
 
-#: includes/class-admin-views.php:491
+#: includes/class-admin-views.php:485
 msgid "Preview Form"
 msgstr "Formular Vorschau"
 
-#: includes/class-admin-views.php:491
+#: includes/class-admin-views.php:485
 msgid "Preview this form"
 msgstr "Formularvorschau"
 
-#: includes/class-admin-views.php:731
+#: includes/class-admin-views.php:725
 msgid "Add All Form Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:732
+#: includes/class-admin-views.php:726
 msgid "Insert all the form fields at once."
 msgstr ""
 
-#: includes/class-admin-views.php:903
+#: includes/class-admin-views.php:897
 msgid "Add Widget"
 msgstr "Widget hinzufügen"
 
-#: includes/class-admin-views.php:905
+#: includes/class-admin-views.php:899
 msgid "Add Field"
 msgstr "Feld hinzufügen"
 
-#: includes/class-admin-views.php:962
+#: includes/class-admin-views.php:956
 msgid "Clear all fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1056
+#: includes/class-admin-views.php:1050
 #: includes/widgets/search-widget/class-search-widget.php:101
 msgid "Search Bar"
 msgstr "Suchleiste"
 
-#: includes/class-admin-views.php:1066
+#: includes/class-admin-views.php:1060
 #: includes/widgets/class-gravityview-widget-pagination-info.php:30
 msgid "Show Pagination Info"
 msgstr "Zeige Seitennummerierung"
 
-#: includes/class-admin-views.php:1072 includes/class-admin-views.php:1079
+#: includes/class-admin-views.php:1066 includes/class-admin-views.php:1073
 #: includes/widgets/class-gravityview-widget-page-links.php:25
 msgid "Page Links"
 msgstr "Seitenlinks"
 
-#: includes/class-admin-views.php:1145
+#: includes/class-admin-views.php:1139
 msgid "Filter Fields:"
 msgstr "Felder filtern:"
 
-#: includes/class-admin-views.php:1146
+#: includes/class-admin-views.php:1140
 msgid "Filter fields by name or label"
 msgstr "Felder nach Name oder Bezeichnung filtern"
 
-#: includes/class-admin-views.php:1157
+#: includes/class-admin-views.php:1151
 msgid "No fields were found matching the search."
 msgstr "Es wurden keine Felder gefunden, die der Suche entsprechen."
 
-#: includes/class-admin-views.php:1190
+#: includes/class-admin-views.php:1184
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 "Diese View ist unter Verwendung der %s Viewart konfiguriert, die deaktiviert"
 " ist."
 
-#: includes/class-admin-views.php:1191
+#: includes/class-admin-views.php:1185
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
@@ -2068,32 +2068,32 @@ msgstr ""
 "Die Daten sind nicht verloren; aktivieren Sie das Plug-In und die "
 "Konfiguration wird wieder erscheinen."
 
-#: includes/class-admin-views.php:1260
+#: includes/class-admin-views.php:1257
 msgid "Enter View name here"
 msgstr "Trage den Namen des Views hier ein"
 
-#: includes/class-admin-views.php:1261
+#: includes/class-admin-views.php:1258
 msgid "Reorder Search Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1262
+#: includes/class-admin-views.php:1259
 #: includes/widgets/search-widget/class-search-widget.php:267
 msgid "Add Search Field"
 msgstr "Füge Suchfeld hinzu"
 
-#: includes/class-admin-views.php:1263
+#: includes/class-admin-views.php:1260
 msgid "Remove Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1266
+#: includes/class-admin-views.php:1263
 msgid "Continue"
 msgstr "Fortfahren"
 
-#: includes/class-admin-views.php:1267
+#: includes/class-admin-views.php:1264
 msgid "Ok"
 msgstr "OK"
 
-#: includes/class-admin-views.php:1268
+#: includes/class-admin-views.php:1265
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
@@ -2101,11 +2101,11 @@ msgstr ""
 "Fehler beim Erstellen der View. Prüfen Sie die Einstellungen oder "
 "kontaktieren Sie den GravityView-Support."
 
-#: includes/class-admin-views.php:1270
+#: includes/class-admin-views.php:1267
 msgid "There was an error loading dynamic content."
 msgstr "Es ist ein Fehler beim Laden des dynamischen Inhaltes aufgetreten."
 
-#: includes/class-admin-views.php:1271
+#: includes/class-admin-views.php:1268
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
@@ -2113,7 +2113,7 @@ msgstr ""
 "Fehler beim Hinzufügen des Feldes. Bitte versuchen Sie es noch einmal oder "
 "kontaktieren Sie den GravityView-Support."
 
-#: includes/class-admin-views.php:1272
+#: includes/class-admin-views.php:1269
 msgid "Would you like to remove all fields in this zone?"
 msgstr ""
 
@@ -2154,23 +2154,23 @@ msgstr "Liste von Änderungen"
 msgid "What&rsquo;s New"
 msgstr "Was gibt&rsquo;s Neues"
 
-#: includes/class-admin-welcome.php:551
+#: includes/class-admin-welcome.php:565
 msgid "View change history"
 msgstr "Änderungsverlauf ansehen"
 
-#: includes/class-admin-welcome.php:571
+#: includes/class-admin-welcome.php:585
 msgid "GravityView is brought to you by:"
 msgstr "GravityView wird herausgegeben von:"
 
-#: includes/class-admin-welcome.php:622
+#: includes/class-admin-welcome.php:636
 msgid "Contributors"
 msgstr "Beitragende Entwickler"
 
-#: includes/class-admin-welcome.php:649
+#: includes/class-admin-welcome.php:663
 msgid "Want to contribute?"
 msgstr "Wollen Sie mitwirken?"
 
-#: includes/class-admin-welcome.php:650
+#: includes/class-admin-welcome.php:664
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -2585,7 +2585,7 @@ msgstr ""
 "Die Anfrage war ungültig. Lade die Seite neu und versuche es noch einmal."
 
 #: includes/class-gravityview-entry-approval.php:213
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2336
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2342
 msgid "You do not have permission to edit this entry."
 msgstr "Sie haben keine Berechtigung, um diesen Eintrag bearbeiten zu können."
 
@@ -2871,23 +2871,27 @@ msgid "This field is not editable; the post no longer exists."
 msgstr ""
 "Dieses Feld kann nicht bearbeitet werden; der Beitrag existiert nicht mehr."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1780
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1753
+msgid "This field is required."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1789
 msgid "Maximum number of files reached"
 msgstr "Maximale Anzahl an Dateien erreicht."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2330
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2336
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 "Der Link zum Bearbeiten des Eintrags ist ungültig; er könnte abgelaufen "
 "sein."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2340
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2346
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 "Sie können diesen Eintrag nicht bearbeiten, da er sich im Papierkorb "
 "befindet."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2380
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2386
 msgid "You do not have permission to edit this field."
 msgstr "Du hast nicht die Berechtigung dieses Feld zu bearbeiten."
 
@@ -4714,7 +4718,7 @@ msgctxt ""
 msgid "Manage Add-Ons"
 msgstr ""
 
-#: includes/class-admin-views.php:545
+#: includes/class-admin-views.php:539
 msgctxt "Column title that shows what template is being used for Views"
 msgid "Template"
 msgstr "Vorlage"
@@ -4833,7 +4837,7 @@ msgctxt ""
 msgid "Entry Updated. %sRedirecting to %s%s"
 msgstr "Eintrag aktualisiert. %sWeiterleitung zu %s%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2356
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2362
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr "Zurück"
