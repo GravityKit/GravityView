@@ -58,6 +58,8 @@ class GravityView_Delete_Entry_Admin {
 		GravityView_Render_Settings::render_setting_row( 'delete_redirect', $current_settings );
 
 		GravityView_Render_Settings::render_setting_row( 'delete_redirect_url', $current_settings );
+
+		GravityView_Render_Settings::render_setting_row( 'action_label_delete', $current_settings );
 	}
 
 	/**

@@ -301,8 +301,15 @@ final class GravityView_Delete_Entry {
 			'onclick' => self::get_confirm_dialog(),
 		);
 
-		echo gravityview_get_link( self::get_delete_link( $entry, $view_id, $post_id ), esc_attr__( 'Delete', 'gravityview' ), $attributes );
+		$View = \GV\View::by_id( $view_id );
 
+		$delete_label = __( 'Delete', 'Button label to delete an entry from the Edit Entry screen', 'gravityview' );
+
+		if ( $View ) {
+			$delete_label = $View->settings->get( 'action_label_delete', $delete_label );
+		}
+
+		echo gravityview_get_link( self::get_delete_link( $entry, $view_id, $post_id ), esc_html( $delete_label ), $attributes );
 	}
 
 	/**

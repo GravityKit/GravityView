@@ -39,23 +39,7 @@ if ( current_filter() === 'gform_next_button' ) {
 	 */
 	do_action( 'gravityview/edit-entry/publishing-action/before', $object->form, $object->entry, $object->view_id );
 
-
-	$labels = array(
-		'cancel'   => __( 'Cancel', 'gravityview' ),
-		'submit'   => __( 'Update', 'gravityview' ),
-		'next'     => __( 'Next', 'gravityview' ),
-		'previous' => __( 'Previous', 'gravityview' ),
-	);
-
-	/**
-	 * @filter `gravityview/edit_entry/button_labels` Modify the cancel/submit buttons' labels
-	 * @since 1.16.3
-	 * @param array $labels Default button labels associative array
-	 * @param array $form The Gravity Forms form
-	 * @param array $entry The Gravity Forms entry
-	 * @param int $view_id The current View ID
-	 */
-	$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $object->form, $object->entry, $object->view_id );
+	$labels = $object->get_action_labels();
 
 	if ( $object->show_previous_button ) {
 		$previous_tabindex = GFCommon::get_tabindex();
@@ -86,6 +70,9 @@ if ( current_filter() === 'gform_next_button' ) {
 
 	/**
 	 * @action `gravityview/edit-entry/publishing-action/after` Triggered after the submit buttons in the Edit Entry screen, inside the `<div id="publishing-action">` container.
+	 *
+	 * @used-by GravityView_Delete_Entry::add_delete_button()
+	 *
 	 * @since 1.5.1
      * @since 2.0.13 Added $post_id
 	 * @param array $form The Gravity Forms form
