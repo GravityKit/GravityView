@@ -444,7 +444,7 @@ class View_Settings extends Settings {
 					'merge_tags'        => 'force',
 				),
 				'action_label_next' => array(
-					'label'             => __( 'Next Page Text', 'gravityview' ),
+					'label'             => __( 'Next Page Button Text', 'gravityview' ),
 					'group'             => 'default',
 					'desc'              => __( 'Only shown when multi-page forms are enabled.', 'gravityview' ),
 					'type'              => 'text',
@@ -452,7 +452,7 @@ class View_Settings extends Settings {
 					'merge_tags'        => 'force',
 				),
 				'action_label_previous' => array(
-					'label'             => __( 'Previous Page Text', 'gravityview' ),
+					'label'             => __( 'Previous Page Button Text', 'gravityview' ),
 					'group'             => 'default',
 					'desc'              => __( 'Only shown when multi-page forms are enabled.', 'gravityview' ),
 					'type'              => 'text',
