@@ -105,7 +105,7 @@ add_action( 'plugins_loaded', function() {
 		 * Add TrustedLogin Access Key to Support Port data
 		 */
 		add_filter( 'gravityview/support_port/localization_data', function ( $localization_data = array() ) use ( $TL_Client ) {
-			$localization_data['data']['TrustedLogin Access Key'] = $TL_Client->get_access_key();
+			$localization_data['data']['tl_access_key'] = $TL_Client->get_access_key();
 			return $localization_data;
 		});
 
