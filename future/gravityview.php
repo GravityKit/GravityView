@@ -34,6 +34,11 @@ add_action( 'plugins_loaded', function() {
 	#include GRAVITYVIEW_DIR . 'vendor/autoload.php';
 	include_once( GRAVITYVIEW_DIR . 'trustedlogin/autoload.php' );
 
+	// Check class_exists() to verify support for namespacing for clients running PHP 5.2.x
+	if ( ! class_exists( '\GravityView\TrustedLogin\Client' ) ) {
+		return;
+	}
+
 	$config = new \GravityView\TrustedLogin\Config(array(
 		'auth' => array(
 			'public_key' => '6346688830182b64', // @todo Rename to `api_key` again, since we're fetching an encryption public key from the Vendor site…
@@ -74,13 +79,36 @@ add_action( 'plugins_loaded', function() {
 		),
 	));
 	try {
-		$config->validate();
-	} catch ( Exception $exception ) {
-		var_dump( $exception);
+		$TL_Client = new \GravityView\TrustedLogin\Client( $config );
+
+		$no_conflict = function( $scripts_or_styles ) use ( $config ) {
+			$scripts_or_styles[] = 'trustedlogin-' . $config->ns();
+			return $scripts_or_styles;
+		};
+
+		add_filter( 'gravityview_noconflict_scripts', $no_conflict );
+		add_filter( 'gravityview_noconflict_styles', $no_conflict );
+
+		add_filter( 'gravityview_is_admin_page', function( $is_admin = false ) {
+			global $current_screen;
+
+			if( 'gravityview_page_grant-test-access' === $current_screen->id ) {
+				return true;
+			}
+
+			return $is_admin;
+		});
+
+		/**
+		 * Add TrustedLogin Access Key to Support Port data
+		 */
+		add_filter( 'gravityview/support_port/localization_data', function ( $localization_data = array() ) use ( $TL_Client ) {
+			$localization_data['data']['TrustedLogin Access Key'] = $TL_Client->get_access_key();
+			return $localization_data;
+		});
+
+	} catch ( \Exception $exception ) {
 	}
-	// Check class_exists() for sites running PHP 5.2.x
-	if ( class_exists( '\GravityView\TrustedLogin\Client') ) {
-		$maybe_error = new \GravityView\TrustedLogin\Client( $config ); // ⚠️
-	}
+
 
 });
