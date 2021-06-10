@@ -94,7 +94,7 @@ class JsonFile
                     $realpathInfo = '';
                     $realpath = realpath($this->path);
                     if (false !== $realpath && $realpath !== $this->path) {
-                         $realpathInfo = ' (' . $realpath . ')';
+                        $realpathInfo = ' (' . $realpath . ')';
                     }
                     $this->io->writeError('Reading ' . $this->path . $realpathInfo);
                 }
@@ -185,7 +185,9 @@ class JsonFile
             self::validateSyntax($content, $this->path);
         }
 
+        $isComposerSchemaFile = false;
         if (null === $schemaFile) {
+            $isComposerSchemaFile = true;
             $schemaFile = __DIR__ . self::COMPOSER_SCHEMA_PATH;
         }
 
@@ -199,12 +201,13 @@ class JsonFile
         if ($schema === self::LAX_SCHEMA) {
             $schemaData->additionalProperties = true;
             $schemaData->required = array();
+        } elseif ($schema === self::STRICT_SCHEMA && $isComposerSchemaFile) {
+            $schemaData->additionalProperties = false;
+            $schemaData->required = array('name', 'description');
         }
 
         $validator = new Validator();
         $validator->check($data, $schemaData);
-
-        // TODO add more validation like check version constraints and such, perhaps build that into the arrayloader?
 
         if (!$validator->isValid()) {
             $errors = array();

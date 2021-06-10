@@ -21,6 +21,34 @@ class Platform
 {
     /** @var ?bool */
     private static $isVirtualBoxGuest = null;
+    /** @var ?bool */
+    private static $isWindowsSubsystemForLinux = null;
+
+    /**
+     * putenv() equivalent but updates the runtime global variables too
+     *
+     * @param  string $name
+     * @param  string $value
+     * @return void
+     */
+    public static function putEnv($name, $value)
+    {
+        $value = (string) $value;
+        putenv($name . '=' . $value);
+        $_SERVER[$name] = $_ENV[$name] = $value;
+    }
+
+    /**
+     * putenv('X') equivalent but updates the runtime global variables too
+     *
+     * @param  string $name
+     * @return void
+     */
+    public static function clearEnv($name)
+    {
+        putenv($name);
+        unset($_SERVER[$name], $_ENV[$name]);
+    }
 
     /**
      * Parses tildes and environment variables in paths.
@@ -65,6 +93,27 @@ class Platform
         }
 
         throw new \RuntimeException('Could not determine user directory');
+    }
+
+    /**
+     * @return bool Whether the host machine is running on the Windows Subsystem for Linux (WSL)
+     */
+    public static function isWindowsSubsystemForLinux()
+    {
+        if (null === self::$isWindowsSubsystemForLinux) {
+            self::$isWindowsSubsystemForLinux = false;
+
+            // while WSL will be hosted within windows, WSL itself cannot be windows based itself.
+            if (self::isWindows()) {
+                return self::$isWindowsSubsystemForLinux = false;
+            }
+
+            if (is_readable('/proc/version') && false !== stripos(file_get_contents('/proc/version'), 'microsoft')) {
+                return self::$isWindowsSubsystemForLinux = true;
+            }
+        }
+
+        return self::$isWindowsSubsystemForLinux;
     }
 
     /**

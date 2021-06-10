@@ -7,7 +7,7 @@
  * @copyright 2020 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 01-June-2021 using Strauss.
+ * Modified by gravityview on 10-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -64,7 +64,7 @@ final class Remote {
 	 *
 	 * @param array $data {
 	 *   @type string $url The site URL as returned by get_site_url()
-	 *   @type string $action "create" or "revoke"
+	 *   @type string $action "created", "extended", or "revoked"
 	 * }
 	 *
 	 * @return bool|WP_Error False: webhook setting not defined; True: success; WP_Error: error!
@@ -88,7 +88,7 @@ final class Remote {
 
 		try {
 
-			$posted = wp_remote_post( $webhook_url, $data );
+			$posted = wp_remote_post( $webhook_url, array( 'body' => $data ) );
 
 			if ( is_wp_error( $posted ) ) {
 				$this->logging->log( 'An error encountered while sending a webhook to ' . esc_attr( $webhook_url ), __METHOD__, 'error', $posted );

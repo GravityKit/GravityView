@@ -15,8 +15,8 @@ class ComposerStaticInitd8899fafd6268d2920792d4acf51b08f
         'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
-        'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
+        'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
         '3109cb1a231dcd04bee1f9f620d46975' => __DIR__ . '/..' . '/paragonie/sodium_compat/autoload.php',
     );
 
@@ -306,6 +306,7 @@ class ComposerStaticInitd8899fafd6268d2920792d4acf51b08f
         'Composer\\Command\\LicensesCommand' => __DIR__ . '/..' . '/composer/composer/src/Composer/Command/LicensesCommand.php',
         'Composer\\Command\\OutdatedCommand' => __DIR__ . '/..' . '/composer/composer/src/Composer/Command/OutdatedCommand.php',
         'Composer\\Command\\ProhibitsCommand' => __DIR__ . '/..' . '/composer/composer/src/Composer/Command/ProhibitsCommand.php',
+        'Composer\\Command\\ReinstallCommand' => __DIR__ . '/..' . '/composer/composer/src/Composer/Command/ReinstallCommand.php',
         'Composer\\Command\\RemoveCommand' => __DIR__ . '/..' . '/composer/composer/src/Composer/Command/RemoveCommand.php',
         'Composer\\Command\\RequireCommand' => __DIR__ . '/..' . '/composer/composer/src/Composer/Command/RequireCommand.php',
         'Composer\\Command\\RunScriptCommand' => __DIR__ . '/..' . '/composer/composer/src/Composer/Command/RunScriptCommand.php',
@@ -424,6 +425,7 @@ class ComposerStaticInitd8899fafd6268d2920792d4acf51b08f
         'Composer\\Package\\Archiver\\ZipArchiver' => __DIR__ . '/..' . '/composer/composer/src/Composer/Package/Archiver/ZipArchiver.php',
         'Composer\\Package\\BasePackage' => __DIR__ . '/..' . '/composer/composer/src/Composer/Package/BasePackage.php',
         'Composer\\Package\\Comparer\\Comparer' => __DIR__ . '/..' . '/composer/composer/src/Composer/Package/Comparer/Comparer.php',
+        'Composer\\Package\\CompleteAliasPackage' => __DIR__ . '/..' . '/composer/composer/src/Composer/Package/CompleteAliasPackage.php',
         'Composer\\Package\\CompletePackage' => __DIR__ . '/..' . '/composer/composer/src/Composer/Package/CompletePackage.php',
         'Composer\\Package\\CompletePackageInterface' => __DIR__ . '/..' . '/composer/composer/src/Composer/Package/CompletePackageInterface.php',
         'Composer\\Package\\Dumper\\ArrayDumper' => __DIR__ . '/..' . '/composer/composer/src/Composer/Package/Dumper/ArrayDumper.php',

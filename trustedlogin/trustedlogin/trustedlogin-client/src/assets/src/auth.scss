@@ -65,7 +65,7 @@ $color-red: #c0461e !default;
 		padding-top: $vertical-spacing / 2;
 		padding-bottom: $vertical-spacing / 2;
 		text-align: center;
-    }
+	}
 
 	.dashicons--small {
 		height: $small-icon-size;
@@ -91,16 +91,29 @@ $color-red: #c0461e !default;
 		font-size: 18px;
 		line-height: 1.375;
 		font-weight: bold;
-		text-shadow: $color-light-grey-200 0 0 3px;
 		transition: all 1s;
+
+		/** Simulate a stroke */
+		text-shadow:
+			-1px -1px 0 $color-light-grey-200,
+			1px -1px 0 $color-light-grey-200,
+			-1px 1px 0 $color-light-grey-200,
+			1px 1px 0 $color-light-grey-200,
+			0 0 3px $color-light-grey-200;
 	}
 
 	.tl-#{$namespace}-auth__response_pending {
-		padding: 120px 40px 0 40px;
+		padding: 140px 40px 0 40px;
 		width: 100%;
 		vertical-align: top;
-		background: url('https://i.gravityview.co/rEIncx+') center top no-repeat;
-		background-size: (192px * 1.4) (108px * 1.4);
+		background: url("../assets/loading.svg") center top no-repeat;
+		background-size: contain;
+
+		@media ( prefers-reduced-motion: reduce ) {
+			& {
+				background-image: url("../assets/lock.svg");
+			}
+		}
 	}
 
 	.tl-#{$namespace}-auth__response_error {
@@ -174,7 +187,7 @@ $color-red: #c0461e !default;
 	}
 
 	table {
-		margin-bottom: 36px;
+		margin-bottom: 24px;
 	}
 
 	h1 {
@@ -225,6 +238,33 @@ $color-red: #c0461e !default;
 		&:hover, &:focus {
 			color: $color-111;
 		}
+
+		&[rel=external]:after,
+		&[target=_blank]:after {
+			content: "\f504";
+			display: inline;
+			font: normal 1em/1 dashicons !important;
+			margin: 0 auto;
+			padding: 0;
+			position: relative;
+			text-align: center;
+			speak: none;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale
+		}
+	}
+
+	.notice {
+		h3 {
+			font-size: 1.2em;
+			line-height: 1.4;
+			margin: 12px 0 12px;
+		}
+
+		p {
+			font-size: 1em;
+			margin: 12px 0;
+		}
 	}
 
 	.tl-#{$namespace}-auth__logo {
@@ -236,6 +276,10 @@ $color-red: #c0461e !default;
 		img {
 			max-width: 50%;
 			max-height: 120px;
+		}
+
+		a:after {
+			content: ''; // Remove external icon
 		}
 	}
 

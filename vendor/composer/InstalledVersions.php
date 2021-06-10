@@ -45,21 +45,21 @@ private static $installed = array (
     ),
     'composer/ca-bundle' => 
     array (
-      'pretty_version' => '1.2.9',
-      'version' => '1.2.9.0',
+      'pretty_version' => '1.2.10',
+      'version' => '1.2.10.0',
       'aliases' => 
       array (
       ),
-      'reference' => '78a0e288fdcebf92aa2318a8d3656168da6ac1a5',
+      'reference' => '9fdb22c2e97a614657716178093cd1da90a64aa8',
     ),
     'composer/composer' => 
     array (
-      'pretty_version' => '2.0.14',
-      'version' => '2.0.14.0',
+      'pretty_version' => '2.1.3',
+      'version' => '2.1.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '92b2ccbef65292ba9f2004271ef47c7231e2eed5',
+      'reference' => 'fc5c4573aafce3a018eb7f1f8f91cea423970f2e',
     ),
     'composer/metadata-minifier' => 
     array (
@@ -368,12 +368,12 @@ private static $installed = array (
     ),
     'trustedlogin/trustedlogin-client' => 
     array (
-      'pretty_version' => 'dev-feature/auth-screen',
-      'version' => 'dev-feature/auth-screen',
+      'pretty_version' => 'dev-develop',
+      'version' => 'dev-develop',
       'aliases' => 
       array (
       ),
-      'reference' => 'e9dc87698eb3e5f3021c8d54742a181cb01c5166',
+      'reference' => 'b1c701c2ec854bf2ad1daa4f874cf32fd7847783',
     ),
   ),
 );

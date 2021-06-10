@@ -143,6 +143,12 @@ interface PackageInterface
     public function getSourceMirrors();
 
     /**
+     * @param  array|null $mirrors
+     * @return void
+     */
+    public function setSourceMirrors($mirrors);
+
+    /**
      * Returns the type of the distribution archive of this version, e.g. zip, tarball
      *
      * @return string The repository type
@@ -185,6 +191,12 @@ interface PackageInterface
     public function getDistMirrors();
 
     /**
+     * @param  array|null $mirrors
+     * @return void
+     */
+    public function setDistMirrors($mirrors);
+
+    /**
      * Returns the version of this package
      *
      * @return string version
@@ -207,7 +219,7 @@ interface PackageInterface
      * @param  int    $displayMode One of the DISPLAY_ constants on this interface determining display of references
      * @return string version
      *
-     * @psalm-param self::DISPLAY_SOURCE_REF_IF_DEV|self::DISPLAY_SOURCE_REF|self::DISPLAY_DIST_REF $displayMode
+     * @phpstan-param self::DISPLAY_SOURCE_REF_IF_DEV|self::DISPLAY_SOURCE_REF|self::DISPLAY_DIST_REF $displayMode
      */
     public function getFullPrettyVersion($truncate = true, $displayMode = self::DISPLAY_SOURCE_REF_IF_DEV);
 
@@ -270,7 +282,7 @@ interface PackageInterface
      * combination with this package.
      *
      * @return array An array of package suggestions with descriptions
-     * @psalm-return array<string, string>
+     * @phpstan-return array<string, string>
      */
     public function getSuggests();
 
@@ -283,7 +295,7 @@ interface PackageInterface
      * directories for autoloading using the type specified.
      *
      * @return array Mapping of autoloading rules
-     * @psalm-return array{psr-0?: array<string, string>, psr-4?: array<string, string>, classmap?: list<string>, files?: list<string>}
+     * @phpstan-return array{psr-0?: array<string, string>, psr-4?: array<string, string>, classmap?: list<string>, files?: list<string>}
      */
     public function getAutoload();
 
@@ -296,7 +308,7 @@ interface PackageInterface
      * directories for autoloading using the type specified.
      *
      * @return array Mapping of dev autoloading rules
-     * @psalm-return array{psr-0?: array<string, string>, psr-4?: array<string, string>, classmap?: list<string>, files?: list<string>}
+     * @phpstan-return array{psr-0?: array<string, string>, psr-4?: array<string, string>, classmap?: list<string>, files?: list<string>}
      */
     public function getDevAutoload();
 
@@ -358,20 +370,6 @@ interface PackageInterface
     public function getPrettyString();
 
     /**
-     * Returns default base filename for archive
-     *
-     * @return array
-     */
-    public function getArchiveName();
-
-    /**
-     * Returns a list of patterns to exclude from package archives
-     *
-     * @return array
-     */
-    public function getArchiveExcludes();
-
-    /**
      * @return bool
      */
     public function isDefaultBranch();
@@ -382,6 +380,13 @@ interface PackageInterface
      * @return array
      */
     public function getTransportOptions();
+
+    /**
+     * Configures the list of options to download package dist files
+     *
+     * @return void
+     */
+    public function setTransportOptions(array $options);
 
     /**
      * @param string $reference

@@ -17,6 +17,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
 use Symfony\Component\Process\Exception\RuntimeException;
 use React\Promise\Promise;
+use React\Promise\PromiseInterface;
 
 /**
  * @author Robert Schönthal <seroscho@googlemail.com>
@@ -37,7 +38,7 @@ class ProcessExecutor
     protected $io;
 
     /**
-     * @psalm-var array<int, array<string, mixed>>
+     * @phpstan-var array<int, array<string, mixed>>
      */
     private $jobs = array();
     private $runningJobs = 0;
@@ -141,9 +142,9 @@ class ProcessExecutor
     /**
      * starts a process on the commandline in async mode
      *
-     * @param  string  $command the command to execute
-     * @param  string  $cwd     the working directory
-     * @return Promise
+     * @param  string           $command the command to execute
+     * @param  string           $cwd     the working directory
+     * @return PromiseInterface
      */
     public function executeAsync($command, $cwd = null)
     {
@@ -259,9 +260,11 @@ class ProcessExecutor
             }
         } catch (\Exception $e) {
             call_user_func($job['reject'], $e);
+
             return;
         } catch (\Throwable $e) {
             call_user_func($job['reject'], $e);
+
             return;
         }
 
@@ -271,9 +274,11 @@ class ProcessExecutor
             $process->start();
         } catch (\Exception $e) {
             call_user_func($job['reject'], $e);
+
             return;
         } catch (\Throwable $e) {
             call_user_func($job['reject'], $e);
+
             return;
         }
     }
@@ -382,11 +387,17 @@ class ProcessExecutor
         }
     }
 
+    /**
+     * @return int the timeout in seconds
+     */
     public static function getTimeout()
     {
         return static::$timeout;
     }
 
+    /**
+     * @param int $timeout the timeout in seconds
+     */
     public static function setTimeout($timeout)
     {
         static::$timeout = $timeout;

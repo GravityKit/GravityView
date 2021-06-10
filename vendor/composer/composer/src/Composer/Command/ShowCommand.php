@@ -36,13 +36,11 @@ use Composer\Repository\RootPackageRepository;
 use Composer\Semver\Constraint\ConstraintInterface;
 use Composer\Semver\Semver;
 use Composer\Spdx\SpdxLicenses;
-use Composer\Util\Platform;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Terminal;
 
 /**
  * @author Robert Schönthal <seroscho@googlemail.com>
@@ -266,7 +264,13 @@ EOT
                 if ($input->getOption('latest')) {
                     $latestPackage = $this->findLatestPackage($package, $composer, $platformRepo, $input->getOption('minor-only'));
                 }
-                if ($input->getOption('outdated') && $input->getOption('strict') && $latestPackage && $latestPackage->getFullPrettyVersion() !== $package->getFullPrettyVersion() && !$latestPackage->isAbandoned()) {
+                if (
+                    $input->getOption('outdated')
+                    && $input->getOption('strict')
+                    && $latestPackage
+                    && $latestPackage->getFullPrettyVersion() !== $package->getFullPrettyVersion()
+                    && (!$latestPackage instanceof CompletePackageInterface || !$latestPackage->isAbandoned())
+                ) {
                     $exitCode = 1;
                 }
                 if ($input->getOption('path')) {
@@ -325,24 +329,6 @@ EOT
             $packageListFilter = $this->getRootRequires();
         }
 
-        if (class_exists('Symfony\Component\Console\Terminal')) {
-            $terminal = new Terminal();
-            $width = $terminal->getWidth();
-        } else {
-            // For versions of Symfony console before 3.2
-            list($width) = $this->getApplication()->getTerminalDimensions();
-        }
-        if (null === $width) {
-            // In case the width is not detected, we're probably running the command
-            // outside of a real terminal, use space without a limit
-            $width = PHP_INT_MAX;
-        }
-        if (Platform::isWindows()) {
-            $width--;
-        } else {
-            $width = max(80, $width);
-        }
-
         if ($input->getOption('path') && null === $composer) {
             $io->writeError('No composer.json found in the current directory, disabling "path" option');
             $input->setOption('path', false);
@@ -386,6 +372,7 @@ EOT
         $showMinorOnly = $input->getOption('minor-only');
         $ignoredPackages = array_map('strtolower', $input->getOption('ignore'));
         $indent = $showAllTypes ? '  ' : '';
+        /** @var PackageInterface[] $latestPackages */
         $latestPackages = array();
         $exitCode = 0;
         $viewData = array();
@@ -426,7 +413,7 @@ EOT
                         }
 
                         // Determine if Composer is checking outdated dependencies and if current package should trigger non-default exit code
-                        $packageIsUpToDate = $latestPackage && $latestPackage->getFullPrettyVersion() === $package->getFullPrettyVersion() && !$latestPackage->isAbandoned();
+                        $packageIsUpToDate = $latestPackage && $latestPackage->getFullPrettyVersion() === $package->getFullPrettyVersion() && (!$latestPackage instanceof CompletePackageInterface || !$latestPackage->isAbandoned());
                         $packageIsIgnored = \in_array($package->getPrettyName(), $ignoredPackages, true);
                         if ($input->getOption('outdated') && ($packageIsUpToDate || $packageIsIgnored)) {
                             continue;
@@ -454,7 +441,7 @@ EOT
                             $packageViewData['path'] = strtok(realpath($composer->getInstallationManager()->getInstallPath($package)), "\r\n");
                         }
 
-                        if ($latestPackage && $latestPackage->isAbandoned()) {
+                        if ($latestPackage instanceof CompletePackageInterface && $latestPackage->isAbandoned()) {
                             $replacement = is_string($latestPackage->getReplacementPackage())
                                 ? 'Use ' . $latestPackage->getReplacementPackage() . ' instead'
                                 : 'No replacement was suggested';
@@ -486,6 +473,26 @@ EOT
         if ('json' === $format) {
             $io->write(JsonFile::encode($viewData));
         } else {
+            if ($input->getOption('latest') && array_filter($viewData)) {
+                if (!$io->isDecorated()) {
+                    $io->writeError('Legend:');
+                    $io->writeError('! patch or minor release available - update recommended');
+                    $io->writeError('~ major release available - update possible');
+                    if (!$input->getOption('outdated')) {
+                        $io->writeError('= up to date version');
+                    }
+                } else {
+                    $io->writeError('<info>Color legend:</info>');
+                    $io->writeError('- <highlight>patch or minor</highlight> release available - update recommended');
+                    $io->writeError('- <comment>major</comment> release available - update possible');
+                    if (!$input->getOption('outdated')) {
+                        $io->writeError('- <info>up to date</info> version');
+                    }
+                }
+            }
+
+            $width = $this->getTerminalWidth();
+
             foreach ($viewData as $type => $packages) {
                 $nameLength = $viewMetaData[$type]['nameLength'];
                 $versionLength = $viewMetaData[$type]['versionLength'];
@@ -670,7 +677,7 @@ EOT
         }
         $io->write('<info>names</info>    : ' . implode(', ', $package->getNames()));
 
-        if ($latestPackage->isAbandoned()) {
+        if ($latestPackage instanceof CompletePackageInterface && $latestPackage->isAbandoned()) {
             $replacement = ($latestPackage->getReplacementPackage() !== null)
                 ? ' The author suggests using the ' . $latestPackage->getReplacementPackage(). ' package instead.'
                 : null;
@@ -836,7 +843,7 @@ EOT
             }
         }
 
-        if ($latestPackage->isAbandoned()) {
+        if ($latestPackage instanceof CompletePackageInterface && $latestPackage->isAbandoned()) {
             $json['replacement'] = $latestPackage->getReplacementPackage();
         }
 
@@ -1045,7 +1052,7 @@ EOT
         $tree = array(
             'name' => $package->getPrettyName(),
             'version' => $package->getPrettyVersion(),
-            'description' => $package->getDescription(),
+            'description' => $package instanceof CompletePackageInterface ? $package->getDescription() : '',
         );
 
         if ($children) {
@@ -1111,16 +1118,16 @@ EOT
     /**
      * Display a package tree
      *
-     * @param  string                  $name
-     * @param  PackageInterface|string $package
-     * @param  InstalledRepository     $installedRepo
-     * @param  RepositoryInterface     $remoteRepos
-     * @param  array                   $packagesInTree
+     * @param  string              $name
+     * @param  Link                $link
+     * @param  InstalledRepository $installedRepo
+     * @param  RepositoryInterface $remoteRepos
+     * @param  array               $packagesInTree
      * @return array
      */
     protected function addTree(
         $name,
-        $package,
+        Link $link,
         InstalledRepository $installedRepo,
         RepositoryInterface $remoteRepos,
         array $packagesInTree
@@ -1130,7 +1137,7 @@ EOT
             $installedRepo,
             $remoteRepos,
             $name,
-            $package->getPrettyConstraint() === 'self.version' ? $package->getConstraint() : $package->getPrettyConstraint()
+            $link->getPrettyConstraint() === 'self.version' ? $link->getConstraint() : $link->getPrettyConstraint()
         );
         if (is_object($package)) {
             $requires = $package->getRequires();

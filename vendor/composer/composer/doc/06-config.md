@@ -31,7 +31,7 @@ in the PHP include path.
 
 ## preferred-install
 
-Defaults to `auto` and can be any of `source`, `dist` or `auto`. This option
+Defaults to `dist` and can be any of `source`, `dist` or `auto`. This option
 allows you to set the install method Composer will prefer to use. Can
 optionally be a hash of patterns for more granular install preferences.
 
@@ -47,6 +47,16 @@ optionally be a hash of patterns for more granular install preferences.
     }
 }
 ```
+
+- `source` means Composer will install packages from their `source` if there
+  is one. This is typically a git clone or equivalent checkout of the version
+  control system the package uses. This is useful if you want to make a bugfix
+  to a project and get a local git clone of the dependency directly.
+- `auto` is the legacy behavior where Composer uses `source` automatically
+  for dev versions, and `dist` otherwise.
+- `dist` (the default as of Composer 2.1) means Composer installs from `dist`,
+  where possible. This is typically a zip file download, which is faster than
+  cloning the entire repository.
 
 > **Note:** Order matters. More specific patterns should be earlier than
 > more relaxed patterns. When mixing the string notation with the hash
@@ -76,6 +86,11 @@ of their API. Composer may prompt for credentials when needed, but these can als
 manually set. Read more on how to get an OAuth token for GitHub and cli syntax
 [here](articles/authentication-for-private-packages.md#github-oauth).
 
+## gitlab-domains
+
+Defaults to `["gitlab.com"]`. A list of domains of GitLab servers.
+This is used if you use the `gitlab` repository type.
+
 ## gitlab-oauth
 
 A list of domain names and oauth keys. For example using `{"gitlab.com":
@@ -98,6 +113,16 @@ gitlab.com the domain names must be also specified with the
 [`gitlab-domains`](06-config.md#gitlab-domains) option. The token must have
 `api` or `read_api` scope.
 Further info can also be found [here](articles/authentication-for-private-packages.md#gitlab-token)
+
+## gitlab-protocol
+
+A protocol to force use of when creating a repository URL for the `source`
+value of the package metadata. One of `git` or `http`. (`https` is treated
+as a synonym for `http`.) Helpful when working with projects referencing
+private repositories which will later be cloned in GitLab CI jobs with a
+[GitLab CI_JOB_TOKEN](https://docs.gitlab.com/ee/ci/variables/predefined_variables.html#predefined-variables-reference)
+using HTTP basic auth. By default, Composer will generate a git-over-SSH
+URL for private repositories and HTTP(S) only for public.
 
 ## disable-tls
 
@@ -188,9 +213,10 @@ versions. See also [COMPOSER_HOME](03-cli.md#composer-home).
 ## cache-dir
 
 Defaults to `C:\Users\<user>\AppData\Local\Composer` on Windows,
-`$XDG_CACHE_HOME/composer` on unix systems that follow the XDG Base Directory
-Specifications, and `$home/cache` on other unix systems. Stores all the caches
-used by Composer. See also [COMPOSER_HOME](03-cli.md#composer-home).
+`/Users/<user>/Library/Caches/composer` on macOS, `$XDG_CACHE_HOME/composer`
+on unix systems that follow the XDG Base Directory Specifications, and
+`$home/cache` on other unix systems. Stores all the caches used by Composer.
+See also [COMPOSER_HOME](03-cli.md#composer-home).
 
 ## cache-files-dir
 
@@ -227,11 +253,12 @@ Defaults to `false`. Whether to use the Composer cache in read-only mode.
 ## bin-compat
 
 Defaults to `auto`. Determines the compatibility of the binaries to be installed.
-If it is `auto` then Composer only installs .bat proxy files when on Windows. If
+If it is `auto` then Composer only installs .bat proxy files when on Windows or WSL. If
 set to `full` then both .bat files for Windows and scripts for Unix-based
 operating systems will be installed for each binary. This is mainly useful if you
-run Composer inside a linux VM but still want the .bat proxies available for use
-in the Windows host OS.
+run Composer inside a linux VM but still want the `.bat` proxies available for use
+in the Windows host OS. If set to `symlink` Composer will always symlink even on 
+Windows/WSL.
 
 ## prepend-autoloader
 
@@ -272,11 +299,6 @@ used for GitHub Enterprise setups.
 
 Defaults to `true`. If `false`, the OAuth tokens created to access the
 github API will have a date instead of the machine hostname.
-
-## gitlab-domains
-
-Defaults to `["gitlab.com"]`. A list of domains of GitLab servers.
-This is used if you use the `gitlab` repository type.
 
 ## use-github-api
 
@@ -334,5 +356,13 @@ file.
 Defaults to `php-only` which only checks the PHP version. Set to `true` to also
 check the presence of extension. If set to `false`, Composer will not create and
 require a `platform_check.php` file as part of the autoloader bootstrap.
+
+## secure-svn-domains
+
+Defaults to `[]`. Lists domains which should be trusted/marked as using a secure
+Subversion/SVN transport. By default svn:// protocol is seen as insecure and will
+throw, but you can set this config option to `["example.org"]` to allow using svn
+URLs on that hostname. This is a better/safer alternative to disabling `secure-http`
+altogether.
 
 &larr; [Repositories](05-repositories.md)  |  [Runtime](07-runtime.md) &rarr;

@@ -26,6 +26,11 @@ class Link
     const TYPE_PROVIDE = 'provides';
     const TYPE_CONFLICT = 'conflicts';
     const TYPE_REPLACE = 'replaces';
+    /**
+     * TODO should be marked private once 5.3 is dropped
+     * @private
+     */
+    const TYPE_UNKNOWN = 'relates to';
 
     /**
      * Will be converted into a constant once the min PHP version allows this
@@ -72,16 +77,15 @@ class Link
      *
      * @param string              $source
      * @param string              $target
-     * @param ConstraintInterface $constraint  Constraint applying to the target of this link
-     * @param string              $description Used to create a descriptive string representation
-     * @phpstan-param self::TYPE_* $description
-     * @param string|null $prettyConstraint
+     * @param ConstraintInterface $constraint       Constraint applying to the target of this link
+     * @param self::TYPE_*        $description      Used to create a descriptive string representation
+     * @param string|null         $prettyConstraint
      */
     public function __construct(
         $source,
         $target,
         ConstraintInterface $constraint,
-        $description = 'relates to',
+        $description = self::TYPE_UNKNOWN,
         $prettyConstraint = null
     ) {
         $this->source = strtolower($source);

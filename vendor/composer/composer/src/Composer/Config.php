@@ -28,9 +28,10 @@ class Config
     public static $defaultConfig = array(
         'process-timeout' => 300,
         'use-include-path' => false,
-        'preferred-install' => 'auto',
+        'preferred-install' => 'dist',
         'notify-on-install' => true,
         'github-protocols' => array('https', 'ssh', 'git'),
+        'gitlab-protocol' => null,
         'vendor-dir' => 'vendor',
         'bin-dir' => '{$vendor-dir}/bin',
         'cache-dir' => '{$home}/cache',
@@ -54,6 +55,7 @@ class Config
         'bitbucket-expose-hostname' => true,
         'disable-tls' => false,
         'secure-http' => true,
+        'secure-svn-domains' => array(),
         'cafile' => null,
         'capath' => null,
         'github-expose-hostname' => true,
@@ -313,9 +315,9 @@ class Config
             case 'bin-compat':
                 $value = $this->getComposerEnv('COMPOSER_BIN_COMPAT') ?: $this->config[$key];
 
-                if (!in_array($value, array('auto', 'full'))) {
+                if (!in_array($value, array('auto', 'full', 'symlink'))) {
                     throw new \RuntimeException(
-                        "Invalid value for 'bin-compat': {$value}. Expected auto, full"
+                        "Invalid value for 'bin-compat': {$value}. Expected auto, full or symlink"
                     );
                 }
 
@@ -474,8 +476,17 @@ class Config
 
         // Extract scheme and throw exception on known insecure protocols
         $scheme = parse_url($url, PHP_URL_SCHEME);
+        $hostname = parse_url($url, PHP_URL_HOST);
         if (in_array($scheme, array('http', 'git', 'ftp', 'svn'))) {
             if ($this->get('secure-http')) {
+                if ($scheme === 'svn') {
+                    if (in_array($hostname, $this->get('secure-svn-domains'), true)) {
+                        return;
+                    }
+
+                    throw new TransportException("Your configuration does not allow connections to $url. See https://getcomposer.org/doc/06-config.md#secure-svn-domains for details.");
+                }
+
                 throw new TransportException("Your configuration does not allow connections to $url. See https://getcomposer.org/doc/06-config.md#secure-http for details.");
             }
             if ($io) {

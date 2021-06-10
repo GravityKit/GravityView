@@ -2,8 +2,6 @@
     "$schema": "https://json-schema.org/draft-04/schema#",
     "title": "Package",
     "type": "object",
-    "additionalProperties": false,
-    "required": [ "name", "description" ],
     "properties": {
         "name": {
             "type": "string",
@@ -145,6 +143,10 @@
                         "type": "string"
                     }
                 },
+                "gitlab-protocol": {
+                    "enum": ["git", "http", "https"],
+                    "description": "A protocol to force use of when creating a repository URL for the `source` value of the package metadata. One of `git` or `http`. By default, Composer will generate a git URL for private repositories and http one for public repos."
+                },
                 "bearer": {
                     "type": "object",
                     "description": "A hash of domain name => bearer authentication token, for example {\"example.com\":\"<token>\"}.",
@@ -159,6 +161,13 @@
                 "secure-http": {
                     "type": "boolean",
                     "description": "Defaults to `true`. If set to true only HTTPS URLs are allowed to be downloaded via Composer. If you really absolutely need HTTP access to something then you can disable it, but using \"Let's Encrypt\" to get a free SSL certificate is generally a better alternative."
+                },
+                "secure-svn-domains": {
+                    "type": "array",
+                    "description": "A list of domains which should be trusted/marked as using a secure Subversion/SVN transport. By default svn:// protocol is seen as insecure and will throw. This is a better/safer alternative to disabling `secure-http` altogether.",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "cafile": {
                     "type": "string",
@@ -242,8 +251,8 @@
                     "description": "Whether to use the Composer cache in read-only mode."
                 },
                 "bin-compat": {
-                    "enum": ["auto", "full"],
-                    "description": "The compatibility of the binaries, defaults to \"auto\" (automatically guessed) and can be \"full\" (compatible with both Windows and Unix-based systems)."
+                    "enum": ["auto", "full", "symlink"],
+                    "description": "The compatibility of the binaries, defaults to \"auto\" (automatically guessed), can be \"full\" (compatible with both Windows and Unix-based systems) and \"symlink\" (symlink also for WSL)."
                 },
                 "discard-changes": {
                     "type": ["string", "boolean"],

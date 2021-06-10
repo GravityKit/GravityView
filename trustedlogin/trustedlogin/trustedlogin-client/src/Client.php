@@ -17,7 +17,7 @@
  * 2. Instantiate this class with a configuration array ({@see https://www.trustedlogin.com/configuration/} for more info)
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 01-June-2021 using Strauss.
+ * Modified by gravityview on 04-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -114,8 +114,7 @@ final class Client {
 			self::$valid_config = $config->validate();
 		} catch ( \Exception $exception ) {
 			self::$valid_config = false;
-
-			return $exception;
+			throw $exception;
 		}
 
 		$this->config = $config;
@@ -302,6 +301,13 @@ final class Client {
 		) );
 
 		return $return_data;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function get_access_key() {
+		return $this->site_access->get_access_key();
 	}
 
 	/**

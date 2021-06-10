@@ -13,6 +13,7 @@
 namespace Composer\Command;
 
 use Composer\DependencyResolver\Request;
+use Composer\Util\Filesystem;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -57,7 +58,8 @@ class RequireCommand extends InitCommand
                 new InputOption('dev', null, InputOption::VALUE_NONE, 'Add requirement to require-dev.'),
                 new InputOption('dry-run', null, InputOption::VALUE_NONE, 'Outputs the operations but will not execute anything (implicitly enables --verbose).'),
                 new InputOption('prefer-source', null, InputOption::VALUE_NONE, 'Forces installation from package sources when possible, including VCS information.'),
-                new InputOption('prefer-dist', null, InputOption::VALUE_NONE, 'Forces installation from package dist even for dev versions.'),
+                new InputOption('prefer-dist', null, InputOption::VALUE_NONE, 'Forces installation from package dist (default behavior).'),
+                new InputOption('prefer-install', null, InputOption::VALUE_REQUIRED, 'Forces installation from package dist|source|auto (auto chooses source for dev versions, dist for the rest).'),
                 new InputOption('fixed', null, InputOption::VALUE_NONE, 'Write fixed version to the composer.json.'),
                 new InputOption('no-suggest', null, InputOption::VALUE_NONE, 'DEPRECATED: This flag does not exist anymore.'),
                 new InputOption('no-progress', null, InputOption::VALUE_NONE, 'Do not output download progress.'),
@@ -118,9 +120,7 @@ EOT
 
             return 1;
         }
-        // check for readability by reading the file as is_readable can not be trusted on network-mounts
-        // see https://github.com/composer/composer/issues/8231 and https://bugs.php.net/bug.php?id=68926
-        if (!is_readable($this->file) && false === Silencer::call('file_get_contents', $this->file)) {
+        if (!Filesystem::isReadable($this->file)) {
             $io->writeError('<error>'.$this->file.' is not readable.</error>');
 
             return 1;
@@ -211,6 +211,29 @@ EOT
             $versionParser->parseConstraints($constraint);
         }
 
+        $inconsistentRequireKeys = $this->getInconsistentRequireKeys($requirements, $requireKey);
+        if (count($inconsistentRequireKeys) > 0) {
+            foreach ($inconsistentRequireKeys as $package) {
+                $io->warning(sprintf(
+                    '%s is currently present in the %s key and you ran the command %s the --dev flag, which would move it to the %s key.',
+                    $package,
+                    $removeKey,
+                    $input->getOption('dev') ? 'with' : 'without',
+                    $requireKey
+                ));
+            }
+
+            if ($io->isInteractive()) {
+                if (!$io->askConfirmation(sprintf('<info>Do you want to move %s?</info> [<comment>no</comment>]? ', count($inconsistentRequireKeys) > 1 ? 'these requirements' : 'this requirement'), false)) {
+                    if (!$io->askConfirmation(sprintf('<info>Do you want to re-run the command %s --dev?</info> [<comment>yes</comment>]? ', $input->getOption('dev') ? 'without' : 'with'), true)) {
+                        return 0;
+                    }
+
+                    list($requireKey, $removeKey) = array($removeKey, $requireKey);
+                }
+            }
+        }
+
         $sortPackages = $input->getOption('sort-packages') || $composer->getConfig()->get('sort-packages');
 
         $this->firstRequire = $this->newlyCreated;
@@ -247,11 +270,48 @@ EOT
         }
     }
 
+    private function getInconsistentRequireKeys(array $newRequirements, $requireKey)
+    {
+        $requireKeys = $this->getPackagesByRequireKey();
+        $inconsistentRequirements = array();
+        foreach ($requireKeys as $package => $packageRequireKey) {
+            if (!isset($newRequirements[$package])) {
+                continue;
+            }
+            if ($requireKey !== $packageRequireKey) {
+                $inconsistentRequirements[] = $package;
+            }
+        }
+
+        return $inconsistentRequirements;
+    }
+
+    private function getPackagesByRequireKey()
+    {
+        $composerDefinition = $this->json->read();
+        $require = array();
+        $requireDev = array();
+
+        if (isset($composerDefinition['require'])) {
+            $require = $composerDefinition['require'];
+        }
+
+        if (isset($composerDefinition['require-dev'])) {
+            $requireDev = $composerDefinition['require-dev'];
+        }
+
+        return array_merge(
+            array_fill_keys(array_keys($require), 'require'),
+            array_fill_keys(array_keys($requireDev), 'require-dev')
+        );
+    }
+
     private function doUpdate(InputInterface $input, OutputInterface $output, IOInterface $io, array $requirements, $requireKey, $removeKey)
     {
         // Update packages
         $this->resetComposer();
         $composer = $this->getComposer(true, $input->getOption('no-plugins'));
+        $composer->getEventDispatcher()->setRunScripts(!$input->getOption('no-scripts'));
 
         if ($input->getOption('dry-run')) {
             $rootPackage = $composer->getPackage();
@@ -295,14 +355,14 @@ EOT
         $install = Installer::create($io, $composer);
 
         $ignorePlatformReqs = $input->getOption('ignore-platform-reqs') ?: ($input->getOption('ignore-platform-req') ?: false);
+        list($preferSource, $preferDist) = $this->getPreferredInstallOptions($composer->getConfig(), $input);
 
         $install
             ->setDryRun($input->getOption('dry-run'))
             ->setVerbose($input->getOption('verbose'))
-            ->setPreferSource($input->getOption('prefer-source'))
-            ->setPreferDist($input->getOption('prefer-dist'))
+            ->setPreferSource($preferSource)
+            ->setPreferDist($preferDist)
             ->setDevMode($updateDevMode)
-            ->setRunScripts(!$input->getOption('no-scripts'))
             ->setOptimizeAutoloader($optimize)
             ->setClassMapAuthoritative($authoritative)
             ->setApcuAutoloader($apcu, $apcuPrefix)

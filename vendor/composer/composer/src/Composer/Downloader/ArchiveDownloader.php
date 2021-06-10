@@ -34,9 +34,7 @@ abstract class ArchiveDownloader extends FileDownloader
     public function install(PackageInterface $package, $path, $output = true)
     {
         if ($output) {
-            $this->io->writeError("  - " . InstallOperation::format($package).": Extracting archive");
-        } else {
-            $this->io->writeError('Extracting archive', false);
+            $this->io->writeError("  - " . InstallOperation::format($package) . $this->getInstallOperationAppendix($package, $path));
         }
 
         $vendorDir = $this->config->get('vendor-dir');
@@ -117,8 +115,8 @@ abstract class ArchiveDownloader extends FileDownloader
              * that the source directory gets merged into the target one if the target exists. Otherwise rename() by default would
              * put the source into the target e.g. src/ => target/src/ (assuming target exists) instead of src/ => target/
              *
-             * @param string $from Directory
-             * @param string $to Directory
+             * @param  string $from Directory
+             * @param  string $to   Directory
              * @return void
              */
             $renameRecursively = function ($from, $to) use ($filesystem, $getFolderContent, $package, &$renameRecursively) {
@@ -139,8 +137,16 @@ abstract class ArchiveDownloader extends FileDownloader
             };
 
             $renameAsOne = false;
-            if (!file_exists($path) || ($filesystem->isDirEmpty($path) && $filesystem->removeDirectory($path))) {
+            if (!file_exists($path)) {
                 $renameAsOne = true;
+            } elseif ($filesystem->isDirEmpty($path)) {
+                try {
+                    if ($filesystem->removeDirectoryPhp($path)) {
+                        $renameAsOne = true;
+                    }
+                } catch (\RuntimeException $e) {
+                    // ignore error, and simply do not renameAsOne
+                }
             }
 
             $contentDir = $getFolderContent($temporaryDir);
@@ -164,14 +170,25 @@ abstract class ArchiveDownloader extends FileDownloader
                 $renameRecursively($from, $path);
             }
 
-            $filesystem->removeDirectory($temporaryDir);
-            $self->removeCleanupPath($package, $temporaryDir);
-            $self->removeCleanupPath($package, $path);
+            $promise = $filesystem->removeDirectoryAsync($temporaryDir);
+
+            return $promise->then(function () use ($self, $package, $path, $temporaryDir) {
+                $self->removeCleanupPath($package, $temporaryDir);
+                $self->removeCleanupPath($package, $path);
+            });
         }, function ($e) use ($cleanup) {
             $cleanup();
 
             throw $e;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getInstallOperationAppendix(PackageInterface $package, $path)
+    {
+        return ': Extracting archive';
     }
 
     /**

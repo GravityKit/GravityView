@@ -17,7 +17,6 @@ use Composer\IO\IOInterface;
 use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Package\PackageInterface;
 use Composer\Util\Filesystem;
-use Composer\Installer\InstallationManager;
 use Composer\Util\Platform;
 use React\Promise\PromiseInterface;
 

@@ -24,8 +24,9 @@ use Composer\Installer\PackageEvent;
 use Composer\Installer\BinaryInstaller;
 use Composer\Util\ProcessExecutor;
 use Composer\Script\Event as ScriptEvent;
-use Composer\ClassLoader;
+use Composer\Autoload\ClassLoader;
 use Symfony\Component\Process\PhpExecutableFinder;
+use Symfony\Component\Process\ExecutableFinder;
 
 /**
  * The Event Dispatcher.
@@ -52,6 +53,8 @@ class EventDispatcher
     protected $process;
     /** @var array<string, array<int, array<callable|string>>> */
     protected $listeners = array();
+    /** @var bool */
+    protected $runScripts = true;
     /** @var list<string> */
     private $eventStack;
 
@@ -68,6 +71,18 @@ class EventDispatcher
         $this->io = $io;
         $this->process = $process ?: new ProcessExecutor($io);
         $this->eventStack = array();
+    }
+
+    /**
+     * Set whether script handlers are active or not
+     *
+     * @param bool $runScripts
+     */
+    public function setRunScripts($runScripts = true)
+    {
+        $this->runScripts = (bool) $runScripts;
+
+        return $this;
     }
 
     /**
@@ -246,9 +261,12 @@ class EventDispatcher
                     }
 
                     if (strpos($exec, '@putenv ') === 0) {
-                        putenv(substr($exec, 8));
-                        list($var, $value) = explode('=', substr($exec, 8), 2);
-                        $_SERVER[$var] = $value;
+                        if (false === strpos($exec, '=')) {
+                            Platform::clearEnv(substr($exec, 8));
+                        } else {
+                            list($var, $value) = explode('=', substr($exec, 8), 2);
+                            Platform::putEnv($var, $value);
+                        }
 
                         continue;
                     }
@@ -259,13 +277,21 @@ class EventDispatcher
                                 return str_replace('/', '\\', $path[0]);
                             }, $pathAndArgs);
                         }
+                        // match somename (not in quote, and not a qualified path) and if it is not a valid path from CWD then try to find it
+                        // in $PATH. This allows support for `@php foo` where foo is a binary name found in PATH but not an actual relative path
+                        $matched = preg_match('{^[^\'"\s/\\\\]+}', $pathAndArgs, $match);
+                        if ($matched && !file_exists($match[0])) {
+                            $finder = new ExecutableFinder;
+                            if ($pathToExec = $finder->find($match[0])) {
+                                $pathAndArgs = $pathToExec . substr($pathAndArgs, strlen($match[0]));
+                            }
+                        }
                         $exec = $this->getPhpExecCommand() . ' ' . $pathAndArgs;
                     } else {
                         $finder = new PhpExecutableFinder();
                         $phpPath = $finder->find(false);
                         if ($phpPath) {
-                            $_SERVER['PHP_BINARY'] = $phpPath;
-                            putenv('PHP_BINARY=' . $_SERVER['PHP_BINARY']);
+                            Platform::putEnv('PHP_BINARY', $phpPath);
                         }
 
                         if (Platform::isWindows()) {
@@ -409,7 +435,7 @@ class EventDispatcher
      */
     protected function getListeners(Event $event)
     {
-        $scriptListeners = $this->getScriptListeners($event);
+        $scriptListeners = $this->runScripts ? $this->getScriptListeners($event) : array();
 
         if (!isset($this->listeners[$event->getName()][0])) {
             $this->listeners[$event->getName()][0] = array();
@@ -529,8 +555,7 @@ class EventDispatcher
         if (is_dir($binDir)) {
             $binDir = realpath($binDir);
             if (isset($_SERVER[$pathStr]) && !preg_match('{(^|'.PATH_SEPARATOR.')'.preg_quote($binDir).'($|'.PATH_SEPARATOR.')}', $_SERVER[$pathStr])) {
-                $_SERVER[$pathStr] = $binDir.PATH_SEPARATOR.getenv($pathStr);
-                putenv($pathStr.'='.$_SERVER[$pathStr]);
+                Platform::putEnv($pathStr, $binDir.PATH_SEPARATOR.getenv($pathStr));
             }
         }
     }

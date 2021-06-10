@@ -27,7 +27,7 @@
     "php": ">=5.3",
     "ext-json": "*",
     "ext-openssl": "*",
-	"trustedlogin/trustedlogin-client": "dev-feature/auth-screen"
+	"trustedlogin/trustedlogin-client": "dev-develop"
   },
   "require-dev": {
 	"brianhenryie/strauss": "^0.8.9"

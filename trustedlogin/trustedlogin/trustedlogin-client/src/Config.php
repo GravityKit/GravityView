@@ -7,7 +7,7 @@
  * @copyright 2020 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 01-June-2021 using Strauss.
+ * Modified by gravityview on 10-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -22,6 +22,11 @@ use \Exception;
 use \WP_Error;
 
 final class Config {
+
+	/**
+	 * @var string[] These namespaces cannot be used, lest they result in confusion.
+	 */
+	private static $reserved_namespaces = array( 'trustedlogin', 'client', 'vendor', 'admin', 'wordpress' );
 
 	/**
 	 * @var array Default settings values
@@ -72,6 +77,7 @@ final class Config {
 			'support_url' => null,
 			'display_name' => null,
 			'logo_url' => null,
+			'about_live_access_url' => null,
 		),
 		'webhook_url' => null,
 	);
@@ -137,10 +143,17 @@ final class Config {
 			}
 		}
 
-		// This seems like a reasonable max limit on namespace length.
-		// @see https://developer.wordpress.org/reference/functions/set_transient/#more-information
-		if ( isset( $this->settings['vendor']['namespace'] ) && strlen( $this->settings['vendor']['namespace'] ) > 96 ) {
-			$errors[] = new WP_Error( 'invalid_configuration', 'Namespace length must be shorter than 96 characters.' );
+		if ( isset( $this->settings['vendor']['namespace'] ) ) {
+
+			// This seems like a reasonable max limit on namespace length.
+			// @see https://developer.wordpress.org/reference/functions/set_transient/#more-information
+			if ( strlen( $this->settings['vendor']['namespace'] ) > 96 ) {
+				$errors[] = new WP_Error( 'invalid_configuration', 'Namespace length must be shorter than 96 characters.' );
+			}
+
+			if ( in_array( strtolower( $this->settings['vendor']['namespace'] ), self::$reserved_namespaces, true ) ) {
+				$errors[] = new WP_Error( 'invalid_configuration', 'The defined namespace is reserved.' );
+			}
 		}
 
 		if ( isset( $this->settings['vendor'][ 'email' ] ) && ! filter_var( $this->settings['vendor'][ 'email' ], FILTER_VALIDATE_EMAIL ) ) {

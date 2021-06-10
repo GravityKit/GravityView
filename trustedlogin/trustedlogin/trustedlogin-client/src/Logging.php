@@ -7,7 +7,7 @@
  * @copyright 2020 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 01-June-2021 using Strauss.
+ * Modified by gravityview on 10-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -57,7 +57,7 @@ class Logging {
 	 */
 	private function setup_klogger( $config ) {
 
-		if ( ! class_exists( '\GravityView\Katzgrau\KLogger\Logger' ) ) {
+		if ( ! class_exists( 'GravityView\Katzgrau\KLogger\Logger' ) ) {
 
 			$this->log( 'KLogger not found.', __METHOD__, 'error' );
 

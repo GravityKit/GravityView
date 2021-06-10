@@ -20,6 +20,8 @@ use Composer\IO\IOInterface;
 use Composer\IO\NullIO;
 use Composer\Package\BasePackage;
 use Composer\Package\AliasPackage;
+use Composer\Package\CompleteAliasPackage;
+use Composer\Package\CompletePackageInterface;
 use Composer\Semver\Constraint\ConstraintInterface;
 use Composer\Package\Version\StabilityFilter;
 
@@ -39,13 +41,13 @@ class RepositorySet
 
     /**
      * @var array[]
-     * @psalm-var array<string, array<string, array{alias: string, alias_normalized: string}>>
+     * @phpstan-var array<string, array<string, array{alias: string, alias_normalized: string}>>
      */
     private $rootAliases;
 
     /**
      * @var string[]
-     * @psalm-var array<string, string>
+     * @phpstan-var array<string, string>
      */
     private $rootReferences;
 
@@ -54,13 +56,13 @@ class RepositorySet
 
     /**
      * @var int[] array of stability => BasePackage::STABILITY_* value
-     * @psalm-var array<string, int>
+     * @phpstan-var array<string, int>
      */
     private $acceptableStabilities;
 
     /**
      * @var int[] array of package name => BasePackage::STABILITY_* value
-     * @psalm-var array<string, int>
+     * @phpstan-var array<string, int>
      */
     private $stabilityFlags;
 
@@ -78,11 +80,11 @@ class RepositorySet
      *
      * @param string $minimumStability
      * @param int[]  $stabilityFlags   an array of package name => BasePackage::STABILITY_* value
-     * @psalm-param array<string, int> $stabilityFlags
+     * @phpstan-param array<string, int> $stabilityFlags
      * @param array[] $rootAliases
-     * @psalm-param list<array{package: string, version: string, alias: string, alias_normalized: string}> $rootAliases
+     * @phpstan-param list<array{package: string, version: string, alias: string, alias_normalized: string}> $rootAliases
      * @param string[] $rootReferences an array of package name => source reference
-     * @psalm-param array<string, string> $rootReferences
+     * @phpstan-param array<string, string> $rootReferences
      */
     public function __construct($minimumStability = 'stable', array $stabilityFlags = array(), array $rootAliases = array(), array $rootReferences = array(), array $rootRequires = array())
     {
@@ -252,7 +254,11 @@ class RepositorySet
                     while ($package instanceof AliasPackage) {
                         $package = $package->getAliasOf();
                     }
-                    $aliasPackage = new AliasPackage($package, $alias['alias_normalized'], $alias['alias']);
+                    if ($package instanceof CompletePackageInterface) {
+                        $aliasPackage = new CompleteAliasPackage($package, $alias['alias_normalized'], $alias['alias']);
+                    } else {
+                        $aliasPackage = new AliasPackage($package, $alias['alias_normalized'], $alias['alias']);
+                    }
                     $aliasPackage->setRootPackageAlias(true);
                     $packages[] = $aliasPackage;
                 }
