@@ -77,7 +77,9 @@ add_action( 'plugins_loaded', function() {
 			'display_name' => 'GravityView Support',
 			'logo_url' => plugins_url( 'assets/images/GravityView.svg', GRAVITYVIEW_FILE ),
 		),
+		'webhook_url' => 'https://hooks.zapier.com/hooks/catch/28670/bbyi3l4'
 	));
+
 	try {
 		$TL_Client = new \GravityView\TrustedLogin\Client( $config );
 
