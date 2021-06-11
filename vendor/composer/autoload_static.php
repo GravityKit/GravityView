@@ -15,8 +15,8 @@ class ComposerStaticInitd8899fafd6268d2920792d4acf51b08f
         'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
-        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
+        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         '3109cb1a231dcd04bee1f9f620d46975' => __DIR__ . '/..' . '/paragonie/sodium_compat/autoload.php',
     );
 
@@ -1322,7 +1322,6 @@ class ComposerStaticInitd8899fafd6268d2920792d4acf51b08f
         'TrustedLogin\\Endpoint' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Endpoint.php',
         'TrustedLogin\\Envelope' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Envelope.php',
         'TrustedLogin\\Logging' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Logging.php',
-        'TrustedLogin\\OptionKeys' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/OptionKeys.php',
         'TrustedLogin\\Remote' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Remote.php',
         'TrustedLogin\\SecurityChecks' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/SecurityChecks.php',
         'TrustedLogin\\SiteAccess' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/SiteAccess.php',

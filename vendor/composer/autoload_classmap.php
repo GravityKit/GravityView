@@ -1100,7 +1100,6 @@ return array(
     'TrustedLogin\\Endpoint' => $vendorDir . '/trustedlogin/trustedlogin-client/src/Endpoint.php',
     'TrustedLogin\\Envelope' => $vendorDir . '/trustedlogin/trustedlogin-client/src/Envelope.php',
     'TrustedLogin\\Logging' => $vendorDir . '/trustedlogin/trustedlogin-client/src/Logging.php',
-    'TrustedLogin\\OptionKeys' => $vendorDir . '/trustedlogin/trustedlogin-client/src/OptionKeys.php',
     'TrustedLogin\\Remote' => $vendorDir . '/trustedlogin/trustedlogin-client/src/Remote.php',
     'TrustedLogin\\SecurityChecks' => $vendorDir . '/trustedlogin/trustedlogin-client/src/SecurityChecks.php',
     'TrustedLogin\\SiteAccess' => $vendorDir . '/trustedlogin/trustedlogin-client/src/SiteAccess.php',

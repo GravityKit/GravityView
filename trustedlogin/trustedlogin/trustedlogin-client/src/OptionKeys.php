@@ -7,7 +7,7 @@
  * @copyright 2020 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 10-June-2021 using Strauss.
+ * Modified by gravityview on 11-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -62,24 +62,6 @@ final class OptionKeys {
 	}
 
 	public function init() {
-
-		$namespace = $this->config->ns();
-
-
-
-		/**
-		 * Filter: Sets the site option name for the Shareable accessKey if it's used
-		 *
-		 * @since 0.9.2
-		 *
-		 * @param string $sharable_accesskey_option
-		 * @param Config $config
-		 */
-		$this->sharable_access_key_option = apply_filters(
-			'trustedlogin/' . $namespace . '/options/sharable_accesskey',
-			'tl_' . $namespace . '_sharable_accesskey',
-			$this->config
-		);
 	}
 
 	/**

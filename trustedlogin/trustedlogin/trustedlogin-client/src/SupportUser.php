@@ -7,7 +7,7 @@
  * @copyright 2020 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 10-June-2021 using Strauss.
+ * Modified by gravityview on 11-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -49,15 +49,15 @@ final class SupportUser {
 
 	/**
 	 * @var string $identifier_meta_key The namespaced setting name for storing the unique identifier hash in user meta
-	 * @example tl_{vendor/namespace}_id
 	 * @since 0.7.0
+	 * @example tl_{vendor/namespace}_id
 	 */
 	private $identifier_meta_key;
 
 	/**
 	 * @var int $expires_meta_key The namespaced setting name for storing the timestamp the user expires
-	 * @example tl_{vendor/namespace}_expires
 	 * @since 0.7.0
+	 * @example tl_{vendor/namespace}_expires
 	 */
 	private $expires_meta_key;
 
@@ -71,9 +71,9 @@ final class SupportUser {
 	 * SupportUser constructor.
 	 */
 	public function __construct( Config $config, Logging $logging ) {
-		$this->config = $config;
+		$this->config  = $config;
 		$this->logging = $logging;
-		$this->role = new SupportRole( $config, $logging );
+		$this->role    = new SupportRole( $config, $logging );
 
 		$this->identifier_meta_key = 'tl_' . $config->ns() . '_id';
 		$this->expires_meta_key    = 'tl_' . $config->ns() . '_expires';
@@ -151,7 +151,7 @@ final class SupportUser {
 
 			$error_output = $role_exists->get_error_message();
 
-			if( $error_data = $role_exists->get_error_data() ) {
+			if ( $error_data = $role_exists->get_error_data() ) {
 				$error_output .= ' ' . print_r( $error_data, true );
 			}
 
@@ -205,6 +205,7 @@ final class SupportUser {
 		if ( empty( $support_user ) ) {
 
 			$this->logging->log( 'Support user not found at identifier ' . esc_attr( $identifier ), __METHOD__, 'notice' );
+
 			return new WP_Error( 'user_not_found', sprintf( 'Support user not found at identifier %s.', esc_attr( $identifier ) ) );
 		}
 
@@ -287,7 +288,7 @@ final class SupportUser {
 
 		$expiration = get_user_option( $this->expires_meta_key, $user->ID );
 
-		if( ! $expiration ) {
+		if ( ! $expiration ) {
 			return false;
 		}
 
@@ -323,8 +324,8 @@ final class SupportUser {
 	 * Deletes support user(s) with options to delete the TrustedLogin-created user role and endpoint as well
 	 *
 	 * @param string $identifier Unique Identifier of the user to delete, or 'all' to remove all support users.
-	 * @param bool   $delete_role Should the TrustedLogin-created user role be deleted also? Default: `true`
-	 * @param bool   $delete_endpoint Should the TrustedLogin endpoint for the site be deleted also? Default: `true`
+	 * @param bool $delete_role Should the TrustedLogin-created user role be deleted also? Default: `true`
+	 * @param bool $delete_endpoint Should the TrustedLogin endpoint for the site be deleted also? Default: `true`
 	 *
 	 * @return bool|WP_Error True: Successfully removed user and role; false: There are no support users; WP_Error: something went wrong.
 	 */
@@ -333,7 +334,7 @@ final class SupportUser {
 		if ( 'all' === $identifier ) {
 			$users = $this->get_all();
 		} else {
-			$user = $this->get( $identifier );
+			$user  = $this->get( $identifier );
 			$users = $user ? array( $user ) : null;
 		}
 
@@ -370,7 +371,7 @@ final class SupportUser {
 			}
 		}
 
-		if( $delete_role ) {
+		if ( $delete_role ) {
 			$this->role->delete();
 		}
 
@@ -392,7 +393,7 @@ final class SupportUser {
 	 */
 	private function get_reassign_user_id() {
 
-		if( ! $this->config->get_setting( 'reassign_posts' ) ) {
+		if ( ! $this->config->get_setting( 'reassign_posts' ) ) {
 			return null;
 		}
 
@@ -426,7 +427,7 @@ final class SupportUser {
 
 			$scheduled = $cron->schedule( $expiration_timestamp, $identifier_hash );
 
-			if( $scheduled ) {
+			if ( $scheduled ) {
 				update_user_option( $user_id, $this->expires_meta_key, $expiration_timestamp );
 			}
 		}
@@ -460,7 +461,7 @@ final class SupportUser {
 			return new WP_Error( 'no-action', 'Error extending Support User access, missing required parameter.' );
 		}
 
-		if ( ! $cron || ! $cron instanceof Cron ){
+		if ( ! $cron || ! $cron instanceof Cron ) {
 			// Avoid a Fatal error if `$cron` parameter is not provided.
 			$cron = new Cron( $this->config, $this->logging );
 		}
@@ -469,6 +470,7 @@ final class SupportUser {
 
 		if ( $rescheduled ) {
 			update_user_option( $user_id, $this->expires_meta_key, $expiration_timestamp );
+
 			return true;
 		}
 
@@ -516,7 +518,7 @@ final class SupportUser {
 	public function get_revoke_url( $user, $current_url = false ) {
 
 		// If "all", will revoke all support users.
-		if( 'all' === $user ) {
+		if ( 'all' === $user ) {
 			$identifier = 'all';
 		} else {
 			$identifier = $this->get_user_identifier( $user );

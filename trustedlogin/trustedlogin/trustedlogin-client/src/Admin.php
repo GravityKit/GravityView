@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 10-June-2021 using Strauss.
+ * Modified by gravityview on 11-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 /**
@@ -940,7 +940,7 @@ final class Admin {
 			'<%6$s class="tl-%1$s-auth__accesskey">
 				<label>
 					<h2>%2$s</h2>
-					<input type="text" value="%4$s" size="33" class="tl-%1$s-auth__accesskey_field code" aria-label="%3$s">
+					<input type="text" value="%4$s" size="64" class="tl-%1$s-auth__accesskey_field code" aria-label="%3$s">
 				</label>
 				<button id="tl-%1$s-copy" class="tl-%1$s-auth__accesskey_copy button button button-outline" aria-live="polite">%5$s</button>
 			</%6$s>',

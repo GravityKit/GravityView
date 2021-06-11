@@ -2,16 +2,13 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 10-June-2021 using Strauss.
+ * Modified by gravityview on 11-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
 namespace GravityView\TrustedLogin;
 
-use \Exception;
 use \WP_Error;
-use \WP_User;
-use \WP_Admin_Bar;
 
 class SiteAccess {
 
@@ -25,8 +22,6 @@ class SiteAccess {
 	 */
 	private $logging;
 
-	private $sharable_access_key_option;
-
 	/**
 	 * @var string The unique identifier of the site in TrustedLogin
 	 */
@@ -38,21 +33,6 @@ class SiteAccess {
 	public function __construct( Config $config, Logging $logging ) {
 		$this->config  = $config;
 		$this->logging = $logging;
-
-
-		/**
-		 * Filter: Sets the site option name for the Shareable accessKey if it's used
-		 *
-		 * @since 0.9.2
-		 *
-		 * @param string $sharable_accesskey_option
-		 * @param Config $config
-		 */
-		$this->sharable_access_key_option = apply_filters(
-			'trustedlogin/' . $this->config->ns() . '/options/sharable_access_key',
-			'tl_' . $this->config->ns() . '_sharable_access_key',
-			$this->config
-		);
 	}
 
 	/**
@@ -73,7 +53,7 @@ class SiteAccess {
 
 		if ( empty( $identifier ) ) {
 
-			$this->logging->log( "Missing the revoke access identifier.", __METHOD__, 'error' );
+			$this->logging->log( 'Missing the revoke access identifier.', __METHOD__, 'error' );
 
 			return false;
 		}
@@ -93,7 +73,7 @@ class SiteAccess {
 
 			// Couldn't sync to SaaS, this should/could be extended to add a cron-task to delayed update of SaaS DB
 			// TODO: extend to add a cron-task to delayed update of SaaS DB
-			$this->logging->log( "There was an issue syncing to SaaS. Failing silently.", __METHOD__, 'error' );
+			$this->logging->log( 'There was an issue syncing to SaaS. Failing silently.', __METHOD__, 'error' );
 
 			return $site_revoked;
 		}
@@ -111,7 +91,7 @@ class SiteAccess {
 	 *
 	 * @param string $secret_id The unique identifier for this TrustedLogin authorization. {@see Endpoint::generate_secret_id}
 	 * @param string $identifier The unique identifier for the WP_User created {@see SiteAccess::create_hash}
-	 * @param string $action     The type of sync this is. Options can be 'create', 'extend'.
+	 * @param string $action The type of sync this is. Options can be 'create', 'extend'.
 	 *
 	 * @return true|WP_Error True if successfully created secret on TrustedLogin servers; WP_Error if failed.
 	 */
@@ -122,14 +102,14 @@ class SiteAccess {
 		$remote     = new Remote( $this->config, $logging );
 		$encryption = new Encryption( $this->config, $remote, $logging );
 
-		if ( ! in_array( $action, array( 'create', 'extend' ) ) ){
+		if ( ! in_array( $action, array( 'create', 'extend' ) ) ) {
 			return new WP_Error( 'param_error', __( 'Unexpected action value', 'trustedlogin' ) );
 		}
 
 		// Ping SaaS and get back tokens.
 		$envelope = new Envelope( $this->config, $encryption );
 
-		$license_key = $this->get_license_key();
+		$license_key = $this->get_access_key();
 
 		if ( is_wp_error( $license_key ) ) {
 			return $license_key;
@@ -212,49 +192,34 @@ class SiteAccess {
 	}
 
 	/**
-	 * Gets the shareable accessKey, if it's been generated.
+	 * Gets the shareable accessKey
 	 *
-	 * For licensed plugins or themes, a customer's license key is the access key.
-	 * For plugins or themes without license keys, the accessKey is generated for the site.
+	 * - For licensed plugins or themes, a hashed customer's license key is the access key.
+	 * - For plugins or themes without license keys, the accessKey is generated for the site.
+	 *
+	 * @uses SiteAccess::get_license_key()
+	 * @uses SiteAccess::generate_access_key()
 	 *
 	 * @since 0.9.2
 	 *
-	 * @return string|null $access_key, if exists.
+	 * @return string|null $access_key, if exists. Either a hashed license key or a generated hash. If error occurs, returns null.
 	 */
 	public function get_access_key() {
 
-		$access_key = get_site_option( $this->sharable_access_key_option, false );
+		// If there's a license, return a hash of the license.
+		$license_key = $this->get_license_key( true );
 
-		if ( $access_key ) {
-			return $access_key;
+		if ( $license_key && ! is_wp_error( $license_key ) ) {
+			return $license_key;
 		}
 
-		return $this->config->get_setting( 'auth/license_key', null );
-	}
+		$generated_access_key = $this->generate_access_key();
 
-	/**
-	 * Checks if a license key is a shareable accessKey
-	 *
-	 * @since 0.9.2
-	 *
-	 * @todo This isn't being used. Hector, what's this for?
-	 *
-	 * @param string $license
-	 *
-	 * @return bool
-	 */
-	private function is_shareable_access_key( $license ) {
+		if ( ! $generated_access_key || is_wp_error( $generated_access_key ) ) {
+			return null;
+		}
 
-		/**
-		 * Filter: Allow for over-riding the shareable 'accessKey' prefix
-		 *
-		 * @since 0.9.2
-		 */
-		$access_key_prefix = apply_filters( 'trustedlogin/' . $this->config->ns() . '/access_key_prefix', 'TL.' );
-		$length            = strlen( $access_key_prefix );
-
-		return ( substr( $license, 0, $length ) === $access_key_prefix );
-
+		return $generated_access_key;
 	}
 
 	/**
@@ -262,20 +227,14 @@ class SiteAccess {
 	 *
 	 * @since 0.7.0
 	 *
+	 * @param bool $hashed Should the value be hashed using SHA256?
+	 *
 	 * @return string|WP_Error
 	 */
-	public function get_license_key() {
+	public function get_license_key( $hashed = false ) {
 
-		// if no license key proivded, assume false, and then return accessKey
-		$license_key = $this->config->get_setting( 'auth/license_key', false );
-
-		if ( ! $license_key ) {
-			$license_key = $this->get_shareable_access_key();
-		}
-
-		if ( is_wp_error( $license_key ) ) {
-			return $license_key;
-		}
+		// If no license key is provided
+		$license_key_config = $this->config->get_setting( 'auth/license_key', null );
 
 		/**
 		 * Filter: Allow for over-riding the 'accessKey' sent to SaaS platform
@@ -284,7 +243,21 @@ class SiteAccess {
 		 *
 		 * @param string|null $license_key
 		 */
-		$license_key = apply_filters( 'trustedlogin/' . $this->config->ns() . '/licence_key', $license_key );
+		$license_key = apply_filters( 'trustedlogin/' . $this->config->ns() . '/licence_key', $license_key_config );
+
+		if ( ! is_string( $license_key ) ) {
+
+			$this->logging->log( '', '', 'error', array(
+				'$license from Config'    => $license_key_config,
+				'$license after filter: ' => $license_key,
+			) );
+
+			return new WP_Error( 'invalid_license_key', 'License key was not a string.' );
+		}
+
+		if ( $hashed ) {
+			return hash( 'sha256', $license_key );
+		}
 
 		return $license_key;
 	}
@@ -298,7 +271,7 @@ class SiteAccess {
 	 *
 	 * @return  string|WP_Error  Access Key prepended with TL, or something went wrong.
 	 */
-	private function get_shareable_access_key() {
+	private function generate_access_key() {
 
 		$hash = Encryption::hash( get_site_url() . $this->config->get_setting( 'auth/public_key' ) );
 
@@ -313,12 +286,9 @@ class SiteAccess {
 		 */
 		$access_key_prefix = apply_filters( 'trustedlogin/' . $this->config->ns() . '/access_key_prefix', 'TL.' );
 
-		$length     = strlen( $access_key_prefix );
-		$access_key = $access_key_prefix . substr( $hash, $length );
+		$length = strlen( $access_key_prefix );
 
-		update_site_option( $this->sharable_access_key_option, $access_key );
-
-		return $access_key;
+		return $access_key_prefix . substr( $hash, $length );
 	}
 
 	public function revoke_by_identifier( $identifier ) {
@@ -333,9 +303,6 @@ class SiteAccess {
 	 * @return true|\WP_Error Was the sync to TrustedLogin successful
 	 */
 	public function revoke( Remote $remote ) {
-
-		// Always delete the access key, regardless of whether there's an error later on.
-		delete_site_option( $this->sharable_access_key_option );
 
 		if ( ! $this->config->meets_ssl_requirement() ) {
 			$this->logging->log( 'Not notifying TrustedLogin about revoked site due to SSL requirements.', __METHOD__, 'info' );
