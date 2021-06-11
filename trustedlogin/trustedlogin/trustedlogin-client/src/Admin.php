@@ -985,8 +985,10 @@ final class Admin {
 			$_user_creator    = $_user_creator_id ? get_user_by( 'id', $_user_creator_id ) : false;
 
 			$return .= '<tr>';
-			$return .= '<th scope="row"><a href="' . esc_url( admin_url( 'user-edit.php?user_id=' . $support_user->ID ) ) . '">';
+			$return .= '<th scope="row">';
+			$return .= '<a href="' . esc_url( admin_url( 'user-edit.php?user_id=' . $support_user->ID ) ) . '">';
 			$return .= sprintf( '%s (#%d)', esc_html( $support_user->display_name ), $support_user->ID );
+			$return .= '</a>';
 			$return .= '</th>';
 
 			$return .= '<td>' . sprintf( esc_html__( '%s ago', 'trustedlogin' ), human_time_diff( strtotime( $support_user->user_registered ) ) ) . '</td>';
