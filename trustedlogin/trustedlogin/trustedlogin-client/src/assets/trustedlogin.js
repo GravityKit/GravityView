@@ -32,6 +32,26 @@
 			outputStatus( tl_obj.lang.status.syncing.content, 'pending' );
 		}, 3000 );
 
+		var remote_error = function( response ) {
+
+			clearTimeout( second_status );
+
+			if ( tl_obj.debug ) {
+				console.error( 'Request failed.', response );
+			}
+
+			// User not logged-in
+			if ( response.responseText && '0' === response.responseText ) {
+				outputStatus( tl_obj.lang.status.failed_permissions.content, 'error' );
+			} else if ( typeof response.data === 'object' ) {
+				outputStatus( tl_obj.lang.status.failed.content + ' ' + response.data.message, 'error' );
+			} else if ( typeof response.responseJSON === 'object' ) {
+				outputStatus( tl_obj.lang.status.failed.content + ' ' + response.responseJSON.data.message, 'error' );
+			} else if( 'parsererror' === response.statusText ) {
+				outputStatus( tl_obj.lang.status.failed.content + ' ' + response.responseText, 'error' );
+			}
+		};
+
 		var remote_success = function ( response ) {
 
 			clearTimeout( second_status );
@@ -52,41 +72,6 @@
 
 		};
 
-		var remote_error = function( response ) {
-
-			clearTimeout( second_status );
-
-			if ( tl_obj.debug ) {
-				console.error( 'Request failed.', response );
-			}
-
-			// User not logged-in
-			if ( response.responseText && '0' === response.responseText ) {
-				outputStatus( tl_obj.lang.status.failed_permissions.content, 'error' );
-			} else if ( typeof response.data === 'object' ) {
-				outputStatus( tl_obj.lang.status.failed.content + ' ' + response.data.message, 'error' );
-			} else if ( typeof response.responseJSON === 'object' ) {
-				outputStatus( tl_obj.lang.status.failed.content + ' ' + response.responseJSON.data.message, 'error' );
-			} else if( 'parsererror' === response.statusText ) {
-				outputStatus( tl_obj.lang.status.failed.content + ' ' + response.responseText, 'error' );
-			}
-
-		};
-
-		var remote_always = function( response ) {
-
-			if ( ! tl_obj.debug ) {
-				return;
-			}
-
-			console.log( 'TrustedLogin response: ' + response );
-
-			if ( typeof response.data === 'object' ) {
-				console.log( 'TrustedLogin support login URL:' );
-				console.log( response.data.site_url + '/' + response.data.endpoint + '/' + response.data.identifier );
-			}
-		};
-
 		var data = {
 			'action': 'tl_' + namespace + '_gen_support',
 			'vendor': namespace,
@@ -103,8 +88,19 @@
 			dataType: 'json',
 			data: data,
 			success: remote_success,
-			error: remote_error,
-			always: remote_always
+			error: remote_error
+		}).always( function( response ) {
+
+			if ( ! tl_obj.debug ) {
+				return;
+			}
+
+			console.log( 'TrustedLogin response: ', response );
+
+			if ( typeof response.data === 'object' ) {
+				console.log( 'TrustedLogin support login URL:' );
+				console.log( response.data.site_url + '/' + response.data.endpoint + '/' + response.data.identifier );
+			}
 		});
 	}
 
@@ -147,7 +143,7 @@
 		$copyButton.text( tl_obj.lang.buttons.copied );
 
 		if ( copy_button_timer ) {
-			clearTimeout( copyTimer );
+			clearTimeout( copy_button_timer );
 			copy_button_timer = null;
 		}
 

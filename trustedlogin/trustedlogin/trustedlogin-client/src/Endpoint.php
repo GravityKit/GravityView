@@ -252,11 +252,13 @@ class Endpoint {
 		return (string) get_site_option( $this->option_name );
 	}
 
-	public function get_query_var() {
+	private function get_query_var() {
 
 		$endpoint = $this->get();
 
-		$identifier = sanitize_text_field( get_query_var( $endpoint, false ) );
+		$query_var = get_query_var( $endpoint, false );
+
+		$identifier = sanitize_text_field( $query_var );
 
 		return empty( $identifier ) ? false : $identifier;
 	}

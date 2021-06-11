@@ -92,13 +92,13 @@ final class SecurityChecks {
 			$identifier = Encryption::hash( $identifier );
 		}
 
-		$accesskey = $this->check_brute_force( $identifier );
+		$brute_force = $this->check_brute_force( $identifier );
 
-		if ( is_wp_error( $accesskey ) ) {
+		if ( is_wp_error( $brute_force ) ) {
 
 			$this->do_lockdown();
 
-			return $accesskey;
+			return $brute_force;
 		}
 
 		$approved = $this->check_approved_identifier( $identifier );
