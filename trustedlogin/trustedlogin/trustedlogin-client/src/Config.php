@@ -375,7 +375,7 @@ final class Config {
 		if ( isset( $array[ $prop ] ) ) {
 			$value = $array[ $prop ];
 		} else {
-			$value = '';
+			$value = $default;
 		}
 
 		$value_is_zero = 0 === $value;

@@ -43,6 +43,11 @@ class Endpoint {
 	private $support_user;
 
 	/**
+	 * @var SiteAccess
+	 */
+	private $site_access;
+
+	/**
 	 * @var Logging $logging
 	 */
 	private $logging;
@@ -55,6 +60,7 @@ class Endpoint {
 		$this->config = $config;
 		$this->logging = $logging;
 		$this->support_user = new SupportUser( $config, $logging );
+		$this->site_access = new SiteAccess( $config, $logging );
 
 		/**
 		 * Filter: Set endpoint setting name
@@ -204,14 +210,23 @@ class Endpoint {
 			$this->logging->log( 'Removing user failed: ' . $deleted_user->get_error_message(), __METHOD__, 'error' );
 		}
 
+		$revoked_site_in_saas = $this->site_access->revoke_access( $identifier );
+
+		if ( is_wp_error( $revoked_site_in_saas ) ) {
+			return; // Don't trigger `access_revoked` if anything fails.
+		}
+
 		$should_be_deleted = $this->support_user->get( $identifier );
 
 		if ( ! empty( $should_be_deleted ) ) {
 			$this->logging->log( 'User #' . $should_be_deleted->ID . ' was not removed', __METHOD__, 'error' );
-
-			return;
+			return; // Don't trigger `access_revoked` if anything fails.
 		}
 
+		/**
+		 * Only triggered when all access has been successfully revoked and no users exist with identifier $identifer.
+		 * @param string $identifier Unique TrustedLogin ID for the Support User
+		 */
 		do_action( 'trustedlogin/' . $this->config->ns() . '/admin/access_revoked', $identifier );
 	}
 

@@ -82,14 +82,14 @@ final class Encryption {
 	 *
 	 * @return string|WP_Error
 	 */
-	static public function hash( $string ) {
+	static public function hash( $string, $length = 16 ) {
 
 		if ( ! function_exists( 'sodium_crypto_generichash' ) ) {
 			return new WP_Error( 'sodium_crypto_generichash_not_available', 'sodium_crypto_generichash not available' );
 		}
 
 		try {
-			$hash_bin = sodium_crypto_generichash( $string, '', 16 );
+			$hash_bin = sodium_crypto_generichash( $string, '', (int) $length );
 			$hash     = sodium_bin2hex( $hash_bin );
 		} catch ( \TypeError $e ) {
 			return new WP_Error(
