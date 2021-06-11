@@ -25,7 +25,7 @@ return array(
    'GravityView\TrustedLogin\Remote' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/Remote.php',
    'GravityView\TrustedLogin\Config' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/Config.php',
    'GravityView\TrustedLogin\OptionKeys' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/OptionKeys.php',
-   'GravityView\GravityView\TrustedLogin\SiteAccess' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/SiteAccess.php',
+   'GravityView\TrustedLogin\SiteAccess' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/SiteAccess.php',
    'GravityView\TrustedLogin\Cron' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/Cron.php',
    'GravityView\TrustedLogin\SecurityChecks' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/SecurityChecks.php',
    'GravityView\TrustedLogin\Endpoint' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/Endpoint.php',

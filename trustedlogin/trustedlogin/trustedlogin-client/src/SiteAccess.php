@@ -4,12 +4,9 @@
  *
  * Modified by gravityview on 11-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
- *
- * Modified by gravityview on 11-June-2021 using Strauss.
- * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityView\GravityView\TrustedLogin;
+namespace GravityView\TrustedLogin;
 
 use \WP_Error;
 
