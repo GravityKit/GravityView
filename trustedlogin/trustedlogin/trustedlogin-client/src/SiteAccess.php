@@ -1,8 +1,13 @@
 <?php
 /**
- * @license GPL-2.0-or-later
+ * Class SiteAccess
  *
- * Modified by gravityview on 11-June-2021 using Strauss.
+ * @package GravityView\TrustedLogin\Client
+ *
+ * @copyright 2021 Katz Web Services, Inc.
+ *
+ * @license GPL-2.0-or-later
+ * Modified by gravityview on 17-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -23,11 +28,6 @@ class SiteAccess {
 	private $logging;
 
 	/**
-	 * @var string The unique identifier of the site in TrustedLogin
-	 */
-	private $identifier;
-
-	/**
 	 *
 	 */
 	public function __construct( Config $config, Logging $logging ) {
@@ -36,67 +36,15 @@ class SiteAccess {
 	}
 
 	/**
-	 * @param string $identifier The unique identifier of the site in TrustedLogin
-	 */
-	public function set_identifier( $identifier ) {
-		$this->identifier = (string) $identifier;
-	}
-
-	/**
-	 * Revoke access to a site
-	 *
-	 * @param string $identifier Unique ID or "all"
-	 *
-	 * @return bool|WP_Error True: Synced to SaaS. False: empty identifier. WP_Error: failed to revoke site in SaaS.
-	 */
-	public function revoke_access( $identifier = '' ) {
-
-		if ( empty( $identifier ) ) {
-
-			$this->logging->log( 'Missing the revoke access identifier.', __METHOD__, 'error' );
-
-			return false;
-		}
-
-		$Endpoint = new Endpoint( $this->config, $this->logging );
-
-		$endpoint_hash = $Endpoint->get_hash( $identifier );
-
-		$this->set_identifier( $endpoint_hash );
-
-		$Remote = new Remote( $this->config, $this->logging );
-
-		// Revoke site in SaaS
-		$site_revoked = $this->revoke( $Remote );
-
-		if ( is_wp_error( $site_revoked ) ) {
-
-			// Couldn't sync to SaaS, this should/could be extended to add a cron-task to delayed update of SaaS DB
-			// TODO: extend to add a cron-task to delayed update of SaaS DB
-			$this->logging->log( 'There was an issue syncing to SaaS. Failing silently.', __METHOD__, 'error' );
-
-			return $site_revoked;
-		}
-
-		do_action( 'trustedlogin/' . $this->config->ns() . '/access/revoked', array(
-			'url'    => get_site_url(),
-			'action' => 'revoked',
-		) );
-
-		return $site_revoked;
-	}
-
-	/**
 	 * Handles the syncing of newly generated support access to the TrustedLogin servers.
 	 *
 	 * @param string $secret_id The unique identifier for this TrustedLogin authorization. {@see Endpoint::generate_secret_id}
-	 * @param string $identifier The unique identifier for the WP_User created {@see SiteAccess::create_hash}
+	 * @param string $site_identifier_hash The unique identifier for the WP_User created {@see SiteAccess::create_hash}
 	 * @param string $action The type of sync this is. Options can be 'create', 'extend'.
 	 *
 	 * @return true|WP_Error True if successfully created secret on TrustedLogin servers; WP_Error if failed.
 	 */
-	public function sync_secret( $secret_id, $identifier, $action = 'create' ) {
-
+	public function sync_secret( $secret_id, $site_identifier_hash, $action = 'create' ) {
 
 		$logging    = new Logging( $this->config );
 		$remote     = new Remote( $this->config, $logging );
@@ -115,7 +63,7 @@ class SiteAccess {
 			return $access_key;
 		}
 
-		$sealed_envelope = $envelope->get( $secret_id, $identifier, $access_key );
+		$sealed_envelope = $envelope->get( $secret_id, $site_identifier_hash, $access_key );
 
 		if ( is_wp_error( $sealed_envelope ) ) {
 			return $sealed_envelope;
@@ -147,7 +95,9 @@ class SiteAccess {
 
 	/**
 	 * Generate a hash that is used to add two levels of security to the login URL:
-	 * The hash is stored as usermeta, and is used when generating $secret_id.
+	 * The hash is used when generating $secret_id.
+	 * It is also re-hashed and stored as usermeta.
+	 * It is also re-hashed and stored as usermeta.
 	 * Both parts are required to access the site.
 	 *
 	 * TODO: Move to Encryption?
@@ -289,11 +239,12 @@ class SiteAccess {
 	/**
 	 * Revoke a site in TrustedLogin
 	 *
+	 * @param string $secret_id ID of site secret identifier to be removed from TrustedLogin
 	 * @param Remote $remote
 	 *
 	 * @return true|\WP_Error Was the sync to TrustedLogin successful
 	 */
-	public function revoke( Remote $remote ) {
+	public function revoke( $secret_id, Remote $remote ) {
 
 		if ( ! $this->config->meets_ssl_requirement() ) {
 			$this->logging->log( 'Not notifying TrustedLogin about revoked site due to SSL requirements.', __METHOD__, 'info' );
@@ -305,7 +256,7 @@ class SiteAccess {
 			'publicKey' => $this->config->get_setting( 'auth/public_key' ),
 		);
 
-		$api_response = $remote->send( 'sites/' . $this->identifier, $body, 'DELETE' );
+		$api_response = $remote->send( 'sites/' . $secret_id, $body, 'DELETE' );
 
 		if ( is_wp_error( $api_response ) ) {
 			return $api_response;

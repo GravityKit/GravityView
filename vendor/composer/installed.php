@@ -228,12 +228,12 @@
     ),
     'symfony/console' => 
     array (
-      'pretty_version' => 'v5.3.0',
-      'version' => '5.3.0.0',
+      'pretty_version' => 'v5.3.2',
+      'version' => '5.3.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => '058553870f7809087fa80fa734704a21b9bcaeb2',
+      'reference' => '649730483885ff2ca99ca0560ef0e5f6b03f2ac1',
     ),
     'symfony/deprecation-contracts' => 
     array (
@@ -318,12 +318,12 @@
     ),
     'symfony/process' => 
     array (
-      'pretty_version' => 'v5.3.0',
-      'version' => '5.3.0.0',
+      'pretty_version' => 'v5.3.2',
+      'version' => '5.3.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => '53e36cb1c160505cdaf1ef201501669c4c317191',
+      'reference' => '714b47f9196de61a196d86c4bad5f09201b307df',
     ),
     'symfony/service-contracts' => 
     array (
@@ -336,12 +336,12 @@
     ),
     'symfony/string' => 
     array (
-      'pretty_version' => 'v5.3.0',
-      'version' => '5.3.0.0',
+      'pretty_version' => 'v5.3.2',
+      'version' => '5.3.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'a9a0f8b6aafc5d2d1c116dcccd1573a95153515b',
+      'reference' => '0732e97e41c0a590f77e231afc16a327375d50b0',
     ),
     'trustedlogin/trustedlogin-client' => 
     array (
@@ -350,7 +350,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'ff780a1caad595702b99898e2d4a1fd7a9c9d0d4',
+      'reference' => '6e9014ae77099a56a66cede0123d98d4f5b6bc72',
     ),
   ),
 );

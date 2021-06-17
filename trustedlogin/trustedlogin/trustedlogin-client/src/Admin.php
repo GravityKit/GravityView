@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 11-June-2021 using Strauss.
+ * Modified by gravityview on 17-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 /**
@@ -10,7 +10,7 @@
  *
  * @package GravityView\TrustedLogin\Client
  *
- * @copyright 2020 Katz Web Services, Inc.
+ * @copyright 2021 Katz Web Services, Inc.
  */
 namespace GravityView\TrustedLogin;
 
@@ -245,8 +245,9 @@ final class Admin {
 			'ns'               => $this->config->ns(),
 			'has_access_class' => $this->support_user->get_all() ? 'has-access' : 'grant-access',
 			'notices'          => $this->get_notices_html(),
-			'logo'             => $this->get_logo_html(),
+			'header'           => $this->get_header_html(),
 			'intro'            => $this->get_intro(),
+			'ref'			   => $this->get_reference_html(),
 			'details'          => $this->get_details_html(),
 			'button'           => $this->generate_button( 'size=hero&class=authlink button-primary', false ),
 			'footer'           => $this->get_footer_html(),
@@ -259,6 +260,37 @@ final class Admin {
 		return $output . $this->get_script();
 	}
 
+	private function get_header_html() {
+
+		if ( $this->is_login_screen() ) {
+			return '';
+		}
+
+		$header_template = '
+		<header class="tl-{{ns}}-auth__header">
+			<div class="tl-{{ns}}-auth__logo">{{logo}}</div>
+		</header>';
+
+		$variables = array(
+			'ns'   => $this->config->ns(),
+			'logo' => $this->get_logo_html(),
+		);
+
+		return $this->prepare_output( $header_template, $variables );
+	}
+
+	private function get_reference_html() {
+		$template =  '<div class="tl-{{ns}}-auth__ref"><p>{{site_url}}{{reference}}</p></div>';
+
+		$content = array(
+			'reference' => isset( $_GET['ref'] ) ? '<span class="tl-{{ns}}-auth__ref__middot">&middot;</span> Reference #' . $_GET['ref'] : '',
+			'ns' => $this->config->ns(),
+			'site_url' => esc_html( str_replace( array( 'https://', 'http://' ), '', get_site_url() ) ),
+		);
+
+		return $this->prepare_output( $template, $content );
+	}
+
 	/**
 	 * @return mixed|void
 	 */
@@ -266,11 +298,11 @@ final class Admin {
 
 		$auth_form_template = '
 <div class="tl-{{ns}}-auth tl-{{ns}}-{{has_access_class}}">
-	<header class="tl-{{ns}}-auth__header">
-		<div class="tl-{{ns}}-auth__logo">{{logo}}</div>
-		<h1>{{intro}}</h1>
-	</header>
+	{{header}}
 	<section class="tl-{{ns}}-auth__body">
+		<h2 class="tl-{{ns}}-auth__intro">{{intro}}</h2>
+		{{ref}}
+
 		<div class="tl-{{ns}}-auth__details">
 			{{details}}
 		</div>
@@ -307,9 +339,15 @@ final class Admin {
 				// translators: %1$s is replaced with the name of the software developer (e.g. "Acme Widgets"). %2$s is the amount of time remaining for access ("1 week")
 				$intro = sprintf( esc_html__( '%1$s has site access that expires in %2$s.', 'trustedlogin' ), $this->config->get_display_name(), $this->support_user->get_expiration( $access, true ) );
 			}
+			return $intro;
+		}
+
+		if ( $this->is_login_screen() ) {
+			// translators: %1$s is replaced with the name of the software developer (e.g. "Acme Widgets")
+			$intro = sprintf( esc_html__( '%1$s would like support access to this site.', 'trustedlogin' ), '<a href="'. esc_url( $this->config->get_setting( 'vendor/website' ) ) . '">' . $this->config->get_display_name() . '</a>' );
 		} else {
 			// translators: %1$s is replaced with the name of the software developer (e.g. "Acme Widgets")
-			$intro = sprintf( esc_html__( 'Grant %1$s access to your site.', 'trustedlogin' ), $this->config->get_display_name() );
+			$intro = sprintf( esc_html__( 'Grant %1$s access to this site.', 'trustedlogin' ), '<a href="' . esc_url( $this->config->get_setting( 'vendor/website' ) ) . '">' . $this->config->get_display_name() . '</a>' );
 		}
 
 		return $intro;
@@ -332,6 +370,7 @@ final class Admin {
 		}
 
 		$output_template = '
+			<p><span class="dashicons dashicons-info-outline dashicons--small"></span> This will allow <strong>{{name}}</strong> to:</p>
 			<div class="tl-{{ns}}-auth__roles">
 				<h2><span class="dashicons dashicons-admin-users dashicons--large"></span>{{roles_summary}}</h2>
 				{{caps}}
@@ -342,21 +381,22 @@ final class Admin {
 		';
 
 		// translators: %1$s and %3$s are replaced with HTML tags. %2$s is the amount of time that the login will be active for (e.g. "1 week")
-		$expire_summary = sprintf( esc_html__( 'Site access will %1$sauto-expire in %2$s%3$s.', 'trustedlogin' ), '<strong>', human_time_diff( 0, $this->config->get_setting( 'decay' ) ), '</strong>' );
-		$expire_desc    = '<small>' . esc_html__( 'You may revoke access at any time.', 'trustedlogin' ) . '</small>';
+		$expire_summary = sprintf( esc_html__( 'Access this site for %s.', 'trustedlogin' ), '<strong>' . human_time_diff( 0, $this->config->get_setting( 'decay' ) ) . '</strong>' );
+		$expire_desc    = '<small>' . sprintf( esc_html__( 'Access auto-expires in %s. You may revoke access at any time.', 'trustedlogin' ), human_time_diff( 0, $this->config->get_setting( 'decay' ) ) ) . '</small>';
 
 		$ns          = $this->config->ns();
 		$cloned_role = translate_user_role( ucfirst( $this->config->get_setting( 'role' ) ) );
 
 		if ( array_filter( $this->config->get_setting( 'caps' ), array( $this->config, 'is_not_null' ) ) ) {
 			$roles_summary = sprintf( esc_html__( 'Create a user with a role similar to %s.', 'trustedlogin' ), '<strong>' . $cloned_role . '</strong>' );
-			$roles_summary .= sprintf( '<small class="tl-' . $ns . '-toggle" data-toggle=".tl-' . $ns . '-auth__role-container">%s <span class="dashicons dashicons--small dashicons-arrow-down-alt2"></span></small>', esc_html__( 'See the differences:', 'trustedlogin' ) );
+			$roles_summary .= sprintf( '<small class="tl-' . $ns . '-toggle" data-toggle=".tl-' . $ns . '-auth__role-container">%s <span class="dashicons dashicons--small dashicons-arrow-down-alt2"></span></small>', esc_html__( 'View role capabilities', 'trustedlogin' ) );
 		} else {
 			$roles_summary = sprintf( esc_html__( 'Create a user with a role of %s.', 'trustedlogin' ), '<strong>' . $cloned_role . '</strong>' );
 		}
 
 		$content = array(
 			'ns'             => $ns,
+			'name'           => $this->config->get_display_name(),
 			'expire_summary' => $expire_summary,
 			'expire_desc'    => $expire_desc,
 			'roles_summary'  => $roles_summary,
@@ -378,7 +418,7 @@ final class Admin {
 
 		$caps = '';
 		$caps .= $this->get_caps_section( $added, __( 'Additional capabilities:', 'trustedlogin' ), 'dashicons-yes-alt' );
-		$caps .= $this->get_caps_section( $removed, __( 'Removed capabilities:', 'trustedlogin' ), 'dashicons-no' );
+		$caps .= $this->get_caps_section( $removed, __( 'Removed capabilities:', 'trustedlogin' ), 'dashicons-dismiss' );
 
 		if ( empty( $caps ) ) {
 			return $caps;
@@ -483,7 +523,7 @@ final class Admin {
 				'<a href="%1$s" title="%2$s" target="_blank" rel="noreferrer noopener"><img src="%3$s" alt="%4$s" /></a>',
 				esc_url( $this->config->get_setting( 'vendor/website' ) ),
 				// translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-				sprintf( 'Visit the %s website', $this->config->get_setting( 'vendor/title' ) ),
+				sprintf( 'Visit the %s website (opens in a new tab)', $this->config->get_setting( 'vendor/title' ) ),
 				esc_attr( $this->config->get_setting( 'vendor/logo_url' ) ),
 				esc_attr( $this->config->get_setting( 'vendor/title' ) )
 			);
@@ -646,6 +686,7 @@ final class Admin {
 			'lang'         => $this->translations(),
 			'debug'        => $this->logging->is_enabled(),
 			'selector'     => '.button-trustedlogin-' . $this->config->ns(),
+			'reference_id' => self::get_reference_id(),
 			'query_string' => esc_url( remove_query_arg( array(
 				Endpoint::REVOKE_SUPPORT_QUERY_PARAM,
 				'_wpnonce'
@@ -1035,7 +1076,10 @@ final class Admin {
 	 */
 	public function admin_notice_revoked() {
 
-		if ( ! did_action( 'trustedlogin/' . $this->config->ns() . '/admin/access_revoked' ) ) {
+		static $displayed_notice;
+
+		// Only show notice once
+		if ( $displayed_notice ) {
 			return;
 		}
 
@@ -1047,5 +1091,19 @@ final class Admin {
 			<?php } ?>
 		</div>
 		<?php
+
+		$displayed_notice = true;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public static function get_reference_id() {
+
+		if ( ! isset( $_GET['ref'] ) ) {
+			return null;
+		}
+
+		return esc_html( $_GET['ref'] );
 	}
 }

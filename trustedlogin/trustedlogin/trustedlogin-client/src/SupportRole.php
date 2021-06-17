@@ -4,10 +4,10 @@
  *
  * @package GravityView\TrustedLogin\SupportRole
  *
- * @copyright 2020 Katz Web Services, Inc.
+ * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 11-June-2021 using Strauss.
+ * Modified by gravityview on 17-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;

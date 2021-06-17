@@ -57,15 +57,7 @@
 			clearTimeout( second_status );
 
 			if ( response.success && typeof response.data == 'object' ) {
-				if ( response.data.is_ssl ){
-					location.href = tl_obj.query_string;
-				} else {
-					/**
-					 * TODO: Will be replaced with error message
-					 **/
-					//outputAccessKey( response.data.access_key, tl_obj );
-				}
-
+				location.href = tl_obj.query_string;
 			} else {
 				remote_error( response );
 			}
@@ -76,6 +68,7 @@
 			'action': 'tl_' + namespace + '_gen_support',
 			'vendor': namespace,
 			'_nonce': tl_obj._nonce,
+			'reference_id': tl_obj.reference_id,
 		};
 
 		if ( tl_obj.debug ) {

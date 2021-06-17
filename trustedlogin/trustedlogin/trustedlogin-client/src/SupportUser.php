@@ -4,10 +4,10 @@
  *
  * @package GravityView\TrustedLogin\Client
  *
- * @copyright 2020 Katz Web Services, Inc.
+ * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 11-June-2021 using Strauss.
+ * Modified by gravityview on 17-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -48,11 +48,18 @@ final class SupportUser {
 	public $role;
 
 	/**
-	 * @var string $identifier_meta_key The namespaced setting name for storing the unique identifier hash in user meta
+	 * @var string $user_identifier_meta_key The namespaced setting name for storing the unique identifier hash in user meta
 	 * @since 0.7.0
 	 * @example tl_{vendor/namespace}_id
 	 */
-	private $identifier_meta_key;
+	private $user_identifier_meta_key;
+
+	/**
+	 * @var string $site_hash_meta_key The namespaced setting name for storing the site identifier hash in user meta
+	 * @since 0.7.0
+	 * @example tl_{vendor/namespace}_site_hash
+	 */
+	private $site_hash_meta_key;
 
 	/**
 	 * @var int $expires_meta_key The namespaced setting name for storing the timestamp the user expires
@@ -75,9 +82,10 @@ final class SupportUser {
 		$this->logging = $logging;
 		$this->role    = new SupportRole( $config, $logging );
 
-		$this->identifier_meta_key = 'tl_' . $config->ns() . '_id';
-		$this->expires_meta_key    = 'tl_' . $config->ns() . '_expires';
-		$this->created_by_meta_key = 'tl_' . $config->ns() . '_created_by';
+		$this->user_identifier_meta_key = 'tl_' . $config->ns() . '_id';
+		$this->site_hash_meta_key       = 'tl_' . $config->ns() . '_site_hash';
+		$this->expires_meta_key         = 'tl_' . $config->ns() . '_expires';
+		$this->created_by_meta_key      = 'tl_' . $config->ns() . '_created_by';
 	}
 
 	/**
@@ -113,7 +121,7 @@ final class SupportUser {
 		$args = array(
 			'role'         => $this->role->get_name(),
 			'number'       => 1,
-			'meta_key'     => $this->identifier_meta_key,
+			'meta_key'     => $this->user_identifier_meta_key,
 			'meta_value'   => '',
 			'meta_compare' => 'EXISTS',
 			'fields'       => 'ID',
@@ -194,19 +202,19 @@ final class SupportUser {
 	/**
 	 * Logs in a support user, if any exist at $identifier and haven't expired yet
 	 *
-	 * @param string $identifier Unique Identifier for support user (stored in user meta)
+	 * @param string $user_identifier Unique identifier for support user before being hashed.
 	 *
 	 * @return true|WP_Error
 	 */
-	public function maybe_login( $identifier ) {
+	public function maybe_login( $user_identifier ) {
 
-		$support_user = $this->get( $identifier );
+		$support_user = $this->get( $user_identifier );
 
 		if ( empty( $support_user ) ) {
 
-			$this->logging->log( 'Support user not found at identifier ' . esc_attr( $identifier ), __METHOD__, 'notice' );
+			$this->logging->log( 'Support user not found at identifier ' . esc_attr( $user_identifier ), __METHOD__, 'notice' );
 
-			return new WP_Error( 'user_not_found', sprintf( 'Support user not found at identifier %s.', esc_attr( $identifier ) ) );
+			return new WP_Error( 'user_not_found', sprintf( 'Support user not found at identifier %s.', esc_attr( $user_identifier ) ) );
 		}
 
 		$expires = $this->get_expiration( $support_user );
@@ -216,7 +224,7 @@ final class SupportUser {
 
 			$this->logging->log( 'The user was supposed to expire on ' . $expires . '; revoking now.', __METHOD__, 'warning' );
 
-			$this->delete( $identifier, true, true );
+			$this->delete( $user_identifier, true, true );
 
 			return new WP_Error( 'access_expired', 'The user was supposed to expire on ' . $expires . '; revoking now.' );
 		}
@@ -251,26 +259,28 @@ final class SupportUser {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param string $identifier - Unique Identifier
+	 * @param string $user_identifier_or_hash
 	 *
 	 * @return WP_User|null WP_User if found; null if not
 	 */
-	public function get( $identifier = '' ) {
+	public function get( $user_identifier_or_hash = '' ) {
 
-		if ( empty( $identifier ) ) {
+		if ( empty( $user_identifier_or_hash ) ) {
 			return null;
 		}
 
+		$user_identifier_hash = $user_identifier_or_hash;
+
 		// When passed in the endpoint URL, the unique ID will be the raw value, not the hash.
-		if ( strlen( $identifier ) > 32 ) {
-			$identifier = Encryption::hash( $identifier );
+		if ( strlen( $user_identifier ) > 32 ) {
+			$user_identifier_hash = Encryption::hash( $user_identifier_or_hash );
 		}
 
 		$args = array(
 			'role'       => $this->role->get_name(),
 			'number'     => 1,
-			'meta_key'   => $this->identifier_meta_key,
-			'meta_value' => $identifier,
+			'meta_key'   => $this->user_identifier_meta_key,
+			'meta_value' => $user_identifier_hash,
 		);
 
 		$user = get_users( $args );
@@ -323,52 +333,43 @@ final class SupportUser {
 	/**
 	 * Deletes support user(s) with options to delete the TrustedLogin-created user role and endpoint as well
 	 *
-	 * @param string $identifier Unique Identifier of the user to delete, or 'all' to remove all support users.
-	 * @param bool $delete_role Should the TrustedLogin-created user role be deleted also? Default: `true`
-	 * @param bool $delete_endpoint Should the TrustedLogin endpoint for the site be deleted also? Default: `true`
+	 * @used-by SupportUser::maybe_login() Called when user access has expired, but the cron didn't run...
+	 * @used-by Client::revoke_access()
 	 *
-	 * @return bool|WP_Error True: Successfully removed user and role; false: There are no support users; WP_Error: something went wrong.
+	 * @param string $user_identifier Unique identifier of the user to delete.
+	 * @param bool $delete_role Should the TrustedLogin-created user role be deleted also? Default: `true`.
+	 * @param bool $delete_endpoint Should the TrustedLogin endpoint for the site be deleted also? Default: `true`.
+	 *
+	 * @return bool|WP_Error True: Successfully removed user and role; false: There are no support users matching $user_identifier; WP_Error: something went wrong.
 	 */
-	public function delete( $identifier = '', $delete_role = true, $delete_endpoint = true ) {
+	public function delete( $user_identifier = '', $delete_role = true, $delete_endpoint = true ) {
 
-		if ( 'all' === $identifier ) {
-			$users = $this->get_all();
-		} else {
-			$user  = $this->get( $identifier );
-			$users = $user ? array( $user ) : null;
-		}
+		require_once ABSPATH . 'wp-admin/includes/user.php'; // Needed for wp_delete_user()
 
-		if ( empty( $users ) ) {
+		$user = $this->get( $user_identifier );
+
+		if ( empty( $user ) ) {
 			return false;
 		}
 
-		$this->logging->log( count( $users ) . " support users found", __METHOD__, 'debug' );
-
-		// Needed for wp_delete_user()
-		require_once ABSPATH . 'wp-admin/includes/user.php';
-
 		$reassign_id_or_null = $this->get_reassign_user_id();
 
-		foreach ( $users as $_user ) {
-			$this->logging->log( "Processing user ID " . $_user->ID, __METHOD__, 'debug' );
+		if ( $delete_endpoint ) {
+			$Endpoint   = new Endpoint( $this->config, $this->logging );
+			$secret_ids = array();
+		}
 
-			$identifier = $this->get_user_identifier( $_user );
+		$this->logging->log( "Processing user ID " . $user->ID, __METHOD__, 'debug' );
 
-			if ( ! $identifier || is_wp_error( $identifier ) ) {
-				$this->logging->log( 'Identifier not found for: ' . $_user->ID . '; the user was NOT deleted.', __METHOD__, 'error' );
-				continue;
-			}
+		// Remove auto-cleanup hook
+		wp_clear_scheduled_hook( 'trustedlogin/' . $this->config->ns() . '/access/revoke', array( $user_identifier ) );
 
-			// Remove auto-cleanup hook
-			wp_clear_scheduled_hook( 'trustedlogin/' . $this->config->ns() . '/access/revoke', array( $identifier ) );
+		$deleted = wp_delete_user( $user->ID, $reassign_id_or_null );
 
-			$deleted = wp_delete_user( $_user->ID, $reassign_id_or_null );
-
-			if ( $deleted ) {
-				$this->logging->log( "User: " . $_user->ID . " deleted.", __METHOD__, 'info' );
-			} else {
-				$this->logging->log( "User: " . $_user->ID . " NOT deleted.", __METHOD__, 'error' );
-			}
+		if ( $deleted ) {
+			$this->logging->log( "User: " . $user->ID . " deleted.", __METHOD__, 'info' );
+		} else {
+			$this->logging->log( "User: " . $user->ID . " NOT deleted.", __METHOD__, 'error' );
 		}
 
 		if ( $delete_role ) {
@@ -377,11 +378,11 @@ final class SupportUser {
 
 		if ( $delete_endpoint ) {
 			$Endpoint = new Endpoint( $this->config, $this->logging );
-
 			$Endpoint->delete();
 		}
 
-		return $this->delete( $identifier );
+		// Re-run to make sure there were no race conditions
+		return $this->delete( $user_identifier );
 	}
 
 	/**
@@ -432,17 +433,18 @@ final class SupportUser {
 			}
 		}
 
-		$hash_of_identifier = Encryption::hash( $identifier_hash );
+		$user_identifier = Encryption::hash( $identifier_hash );
 
-		if ( is_wp_error( $hash_of_identifier ) ) {
-			return $hash_of_identifier;
+		if ( is_wp_error( $user_identifier ) ) {
+			return $user_identifier;
 		}
 
-		update_user_option( $user_id, $this->identifier_meta_key, $hash_of_identifier, true );
+		update_user_option( $user_id, $this->site_hash_meta_key, $identifier_hash, true );
+		update_user_option( $user_id, $this->user_identifier_meta_key, $user_identifier, true );
 		update_user_option( $user_id, $this->created_by_meta_key, get_current_user_id() );
 
 		// Make extra sure that the identifier was saved. Otherwise, things won't work!
-		return get_user_option( $this->identifier_meta_key, $user_id );
+		return get_user_option( $this->user_identifier_meta_key, $user_id );
 	}
 
 	/**
@@ -485,7 +487,7 @@ final class SupportUser {
 	 */
 	public function get_user_identifier( $user_id_or_object ) {
 
-		if ( empty( $this->identifier_meta_key ) ) {
+		if ( empty( $this->user_identifier_meta_key ) ) {
 			$this->logging->log( 'The meta key to identify users is not set.', __METHOD__, 'error' );
 
 			return new WP_Error( 'missing_meta_key', 'The SupportUser object has not been properly instantiated.' );
@@ -502,7 +504,34 @@ final class SupportUser {
 			return new WP_Error( 'invalid_type', '$user must be int or WP_User' );
 		}
 
-		return get_user_option( $this->identifier_meta_key, $user_id );
+		return get_user_option( $this->user_identifier_meta_key, $user_id );
+	}
+
+	/**
+	 * @param WP_User|int $user_id_or_object User ID or User object
+	 *
+	 * @return string|WP_Error User unique identifier if success; WP_Error if $user is not int or WP_User.
+	 */
+	public function get_site_hash( $user_id_or_object ) {
+
+		if ( empty( $this->site_hash_meta_key ) ) {
+			$this->logging->log( 'The constructor has not been properly instantiated; the site_hash_meta_key property is not set.', __METHOD__, 'error' );
+
+			return new WP_Error( 'missing_meta_key', 'The SupportUser object has not been properly instantiated.' );
+		}
+
+		if ( $user_id_or_object instanceof \WP_User ) {
+			$user_id = $user_id_or_object->ID;
+		} elseif ( is_int( $user_id_or_object ) ) {
+			$user_id = $user_id_or_object;
+		} else {
+
+			$this->logging->log( 'The $user_id_or_object value must be int or WP_User: ' . var_export( $user_id_or_object, true ), __METHOD__, 'error' );
+
+			return new WP_Error( 'invalid_type', '$user must be int or WP_User' );
+		}
+
+		return get_user_option( $this->site_hash_meta_key, $user_id );
 	}
 
 	/**
@@ -519,12 +548,12 @@ final class SupportUser {
 
 		// If "all", will revoke all support users.
 		if ( 'all' === $user ) {
-			$identifier = 'all';
+			$user_identifier = 'all';
 		} else {
-			$identifier = $this->get_user_identifier( $user );
+			$user_identifier = $this->get_user_identifier( $user );
 		}
 
-		if ( ! $identifier || is_wp_error( $identifier ) ) {
+		if ( ! $user_identifier || is_wp_error( $user_identifier ) ) {
 			return false;
 		}
 
@@ -536,7 +565,7 @@ final class SupportUser {
 
 		$revoke_url = add_query_arg( array(
 			Endpoint::REVOKE_SUPPORT_QUERY_PARAM => $this->config->ns(),
-			self::ID_QUERY_PARAM                 => $identifier,
+			self::ID_QUERY_PARAM                 => $user_identifier,
 			'_wpnonce'                           => wp_create_nonce( Endpoint::REVOKE_SUPPORT_QUERY_PARAM ),
 		), $base_page );
 

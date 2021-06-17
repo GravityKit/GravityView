@@ -4,10 +4,10 @@
  *
  * @package GravityView\TrustedLogin\Client
  *
- * @copyright 2020 Katz Web Services, Inc.
+ * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 11-June-2021 using Strauss.
+ * Modified by gravityview on 17-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -221,15 +221,15 @@ final class Remote {
 			case 204:
 				return null;
 
-			// Unauthenticated
+			case 400:
+				return new WP_Error( 'unable_to_verify', __( 'Unable to verify Pause Mode.', 'trustedlogin' ), $api_response );
+
 			case 401:
 				return new WP_Error( 'unauthenticated', __( 'Authentication failed.', 'trustedlogin' ), $api_response );
 
-			// Unauthenticated
 			case 402:
 				return new WP_Error( 'account_error', __( 'TrustedLogin Account issue.', 'trustedlogin' ), $api_response );
 
-			// Problem with Token
 			case 403:
 				return new WP_Error( 'invalid_token', __( 'Invalid tokens.', 'trustedlogin' ), $api_response );
 

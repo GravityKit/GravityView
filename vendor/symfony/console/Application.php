@@ -287,6 +287,10 @@ class Application implements ResetInterface
             $command = $this->find($alternative);
         }
 
+        if ($command instanceof LazyCommand) {
+            $command = $command->getCommand();
+        }
+
         $this->runningCommand = $command;
         $exitCode = $this->doRunCommand($command, $input, $output);
         $this->runningCommand = null;
@@ -798,7 +802,7 @@ class Application implements ResetInterface
         $this->doRenderThrowable($e, $output);
 
         if (null !== $this->runningCommand) {
-            $output->writeln(sprintf('<info>%s</info>', sprintf($this->runningCommand->getSynopsis(), $this->getName())), OutputInterface::VERBOSITY_QUIET);
+            $output->writeln(sprintf('<info>%s</info>', OutputFormatter::escape(sprintf($this->runningCommand->getSynopsis(), $this->getName()))), OutputInterface::VERBOSITY_QUIET);
             $output->writeln('', OutputInterface::VERBOSITY_QUIET);
         }
     }
