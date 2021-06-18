@@ -373,7 +373,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '6e9014ae77099a56a66cede0123d98d4f5b6bc72',
+      'reference' => '4b1c5e59514a0070cc7c66a04e3231dd141f4375',
     ),
   ),
 );

@@ -94,7 +94,7 @@ add_action( 'plugins_loaded', function() {
 		add_filter( 'gravityview_is_admin_page', function( $is_admin = false ) {
 			global $current_screen;
 
-			if( 'gravityview_page_grant-test-access' === $current_screen->id ) {
+			if( $current_screen && 'gravityview_page_grant-test-access' === $current_screen->id ) {
 				return true;
 			}
 

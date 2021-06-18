@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 17-June-2021 using Strauss.
+ * Modified by gravityview on 18-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -75,6 +75,58 @@ final class Encryption {
 			'tl_' . $this->config->ns() . '_public_key',
 			$this->config
 		);
+	}
+
+	/**
+	 * Generates a random hash 64 characters long.
+	 *
+	 * If random_bytes() and openssl_random_pseudo_bytes() don't exist, returns WP_Error with code generate_hash_failed.
+	 *
+	 * If random_bytes() does not exist and openssl_random_pseudo_bytes() is unable to return a strong result,
+	 * returns a WP_Error with code `openssl_not_strong_crypto`.
+	 *
+	 * @uses random_bytes
+	 * @uses openssl_random_pseudo_bytes Only used if random_bytes() does not exist.
+	 *
+	 * @return string|WP_Error 64-character random hash or a WP_Error object explaining what went wrong. See docblock.
+	 */
+	public function get_random_hash() {
+
+		$byte_length = 64;
+
+		$hash = false;
+
+		if ( function_exists( 'random_bytes' ) ) {
+			try {
+				$bytes = random_bytes( $byte_length );
+				$hash  = bin2hex( $bytes );
+			} catch ( \TypeError $e ) {
+				$this->logging->log( $e->getMessage(), __METHOD__, 'error' );
+			} catch ( \Error $e ) {
+				$this->logging->log( $e->getMessage(), __METHOD__, 'error' );
+			} catch ( \Exception $e ) {
+				$this->logging->log( $e->getMessage(), __METHOD__, 'error' );
+			}
+		} else {
+			$this->logging->log( 'This site does not have the random_bytes() function.', __METHOD__, 'debug' );
+		}
+
+		if ( $hash ) {
+			return $hash;
+		}
+
+		if ( ! function_exists( 'openssl_random_pseudo_bytes' ) ) {
+			return new WP_Error( 'generate_hash_failed', 'Could not generate a secure hash with random_bytes or openssl.' );
+		}
+
+		$crypto_strong = false;
+		$hash          = openssl_random_pseudo_bytes( $byte_length, $crypto_strong );
+
+		if ( ! $crypto_strong ) {
+			return new WP_Error( 'openssl_not_strong_crypto', 'Site could not generate a secure hash with OpenSSL.' );
+		}
+
+		return $hash;
 	}
 
 	/**

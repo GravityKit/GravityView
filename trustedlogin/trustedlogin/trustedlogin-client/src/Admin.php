@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 17-June-2021 using Strauss.
+ * Modified by gravityview on 18-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 /**
@@ -228,6 +228,15 @@ final class Admin {
 	 */
 	public function print_auth_screen() {
 		echo $this->get_auth_screen();
+	}
+
+	/**
+	 * Is this a login screen and should TrustedLogin override the login screen for the current namespace?
+	 *
+	 * @return bool
+	 */
+	private function is_login_screen() {
+		return did_action( 'login_init' ) && isset( $_GET['ns'] ) && $_GET['ns'] === $this->config->ns();
 	}
 
 	/**
