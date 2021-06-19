@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 18-June-2021 using Strauss.
+ * Modified by gravityview on 19-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -179,7 +179,7 @@ final class SupportUser {
 		$user_data = array(
 			'user_login'      => $user_name,
 			'user_url'        => $this->config->get_setting( 'vendor/website' ),
-			'user_pass'       => wp_generate_password( 64, true, true ),
+			'user_pass'       => Encryption::get_random_hash(),
 			'user_email'      => $user_email,
 			'role'            => $this->role->get_name(),
 			'display_name'    => $this->config->get_setting( 'vendor/display_name', '' ),
@@ -200,7 +200,9 @@ final class SupportUser {
 	}
 
 	/**
-	 * Logs in a support user, if any exist at $identifier and haven't expired yet
+	 * Logs in a support user, if any exist at $user_identifier and haven't expired yet
+	 *
+	 * If the user access has expired, deletes the user with {@see SupportUser::delete()}
 	 *
 	 * @param string $user_identifier Unique identifier for support user before being hashed.
 	 *
@@ -235,13 +237,15 @@ final class SupportUser {
 	}
 
 	/**
+	 * Processes login (with extra logging) and triggers the 'trustedlogin/{ns}/login' hook
+	 *
 	 * @param WP_User $support_user
 	 */
 	private function login( WP_User $support_user ) {
 
 		if ( ! $support_user->exists() ) {
 
-			$this->logging->log( sprintf( 'Login failed: Support User #%d does not exist.', $support_user->ID ), __METHOD__, 'warning' );
+			$this->logging->log( sprintf( 'Login failed: Support User #%d does not exist.', $support_user->ID ), __METHOD__, 'error' );
 
 			return;
 		}
@@ -252,6 +256,14 @@ final class SupportUser {
 		do_action( 'wp_login', $support_user->user_login, $support_user );
 
 		$this->logging->log( sprintf( 'Support User #%d logged in', $support_user->ID ), __METHOD__, 'notice' );
+
+		/**
+		 * Action run when TrustedLogin has logged-in
+		 */
+		do_action( 'trustedlogin/' . $this->config->ns() . '/logged_in', array(
+			'url' => get_site_url(),
+			'action' => 'logged_in',
+		) );
 	}
 
 	/**

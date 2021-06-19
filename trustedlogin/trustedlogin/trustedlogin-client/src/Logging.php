@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 18-June-2021 using Strauss.
+ * Modified by gravityview on 19-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -99,7 +99,7 @@ class Logging {
 			$default_options = array(
 				'extension'      => 'log',
 				'dateFormat'     => 'Y-m-d G:i:s.u',
-				'filename'       => sprintf( 'trustedlogin-debug-%s-%s', wp_date( 'Y-m-d' ), wp_hash( $filename_hash_data ) ),
+				'filename'       => sprintf( 'trustedlogin-client-debug-%s-%s', wp_date( 'Y-m-d' ), wp_hash( $filename_hash_data ) ),
 				'flushFrequency' => false,
 				'logFormat'      => false,
 				'appendContext'  => true,
@@ -170,6 +170,9 @@ class Logging {
 
 		// Directory exists; return early
 		if( file_exists( $log_dir ) ) {
+
+			$this->prevent_directory_browsing( $log_dir );
+
 			return $log_dir;
 		}
 

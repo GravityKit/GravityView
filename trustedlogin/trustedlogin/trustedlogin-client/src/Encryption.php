@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 18-June-2021 using Strauss.
+ * Modified by gravityview on 19-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -90,7 +90,7 @@ final class Encryption {
 	 *
 	 * @return string|WP_Error 64-character random hash or a WP_Error object explaining what went wrong. See docblock.
 	 */
-	public function get_random_hash() {
+	static public function get_random_hash() {
 
 		$byte_length = 64;
 

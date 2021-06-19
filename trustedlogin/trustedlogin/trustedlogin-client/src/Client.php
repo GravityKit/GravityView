@@ -18,7 +18,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 18-June-2021 using Strauss.
+ * Modified by gravityview on 19-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -207,7 +207,7 @@ final class Client {
 			return $support_user_id;
 		}
 
-		$site_identifier_hash = $this->encryption->get_random_hash();
+		$site_identifier_hash = Encryption::get_random_hash();
 
 		if ( is_wp_error( $site_identifier_hash ) ) {
 

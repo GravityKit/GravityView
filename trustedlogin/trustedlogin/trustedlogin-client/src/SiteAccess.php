@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 18-June-2021 using Strauss.
+ * Modified by gravityview on 19-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -26,6 +26,14 @@ class SiteAccess {
 	 * @var Logging $logging
 	 */
 	private $logging;
+
+	/**
+	 * @var string[] Valid action types to use when syncing to TrustedLogin.
+	 */
+	private static $sync_actions = array(
+		'create',
+		'extend'
+	);
 
 	/**
 	 *
@@ -50,7 +58,7 @@ class SiteAccess {
 		$remote     = new Remote( $this->config, $logging );
 		$encryption = new Encryption( $this->config, $remote, $logging );
 
-		if ( ! in_array( $action, array( 'create', 'extend' ) ) ) {
+		if ( ! in_array( $action, self::$sync_actions, true ) ) {
 			return new WP_Error( 'param_error', __( 'Unexpected action value', 'trustedlogin' ) );
 		}
 
@@ -182,10 +190,6 @@ class SiteAccess {
 		}
 
 		return $hash;
-	}
-
-	public function revoke_by_identifier( $identifier ) {
-
 	}
 
 	/**
