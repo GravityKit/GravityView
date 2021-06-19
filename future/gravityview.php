@@ -39,10 +39,12 @@ add_action( 'plugins_loaded', function() {
 		return;
 	}
 
+	$namespace = 'test';
+
 	$config = new \GravityView\TrustedLogin\Config(array(
 		'auth' => array(
 			'public_key' => '6346688830182b64', // @todo Rename to `api_key` again, since we're fetching an encryption public key from the Vendor site…
-			//'license_key' => gravityview()->plugin->settings->get('license_key'),
+			'license_key' => gravityview()->plugin->settings->get('license_key'),
 		),
 		'menu' => array(
 			'slug' => 'edit.php?post_type=gravityview',
@@ -69,7 +71,7 @@ add_action( 'plugins_loaded', function() {
 			'threshold' => 'debug',
 		),
 		'vendor' => array(
-			'namespace' => 'test',
+			'namespace' => $namespace,
 			'title' => 'GravityView',
 			'email' => 'zack@gravityview.co',
 			'website' => 'https://trustedlogin.dev',
@@ -91,10 +93,10 @@ add_action( 'plugins_loaded', function() {
 		add_filter( 'gravityview_noconflict_scripts', $no_conflict );
 		add_filter( 'gravityview_noconflict_styles', $no_conflict );
 
-		add_filter( 'gravityview_is_admin_page', function( $is_admin = false ) {
+		add_filter( 'gravityview_is_admin_page', function( $is_admin = false ) use ( $namespace ) {
 			global $current_screen;
 
-			if( $current_screen && 'gravityview_page_grant-test-access' === $current_screen->id ) {
+			if( $current_screen && 'gravityview_page_grant-' . $namespace . '-access' === $current_screen->id ) {
 				return true;
 			}
 
@@ -110,7 +112,7 @@ add_action( 'plugins_loaded', function() {
 		});
 
 	} catch ( \Exception $exception ) {
+		gravityview()->log->error( $exception->getMessage() );
 	}
-
 
 });
