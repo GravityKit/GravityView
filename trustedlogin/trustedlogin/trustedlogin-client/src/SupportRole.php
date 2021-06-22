@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 19-June-2021 using Strauss.
+ * Modified by gravityview on 22-June-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -17,10 +17,7 @@ if ( ! defined('ABSPATH') ) {
 	exit;
 }
 
-use \Exception;
-use \WP_Error;
-use \WP_User;
-use \WP_Admin_Bar;
+use WP_Error;
 
 final class SupportRole {
 
@@ -48,15 +45,11 @@ final class SupportRole {
 		'create_users',
 		'delete_users',
 		'edit_users',
+		'list_users',
 		'promote_users',
 		'delete_site',
 		'remove_users',
 	);
-
-	/**
-	 * @var string
-	 */
-	private $cloned_name;
 
 	/**
 	 * SupportUser constructor.
@@ -65,7 +58,6 @@ final class SupportRole {
 		$this->config = $config;
 		$this->logging = $logging;
 		$this->role_name = $this->set_name();
-		$this->cloned_name = $this->get_cloned_name();
 	}
 
 	/**
