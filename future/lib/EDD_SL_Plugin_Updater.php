@@ -586,6 +586,8 @@ class EDD_SL_Plugin_Updater {
 		$cache['value'] = json_decode( $cache['value'] );
 		if ( ! empty( $cache['value']->icons ) ) {
 			$cache['value']->icons = (array) $cache['value']->icons;
+		} elseif ( $cache['value'] ) {
+			$cache['value']->icons = array();
 		}
 
 		return $cache['value'];
