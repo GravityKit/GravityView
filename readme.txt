@@ -21,6 +21,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Broken translation file caused a fatal error in German `de_DE`
 = 2.10.3.2 on June 2, 2021 =
 
 * Improved: Loading of plugin dependencies
