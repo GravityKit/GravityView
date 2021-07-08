@@ -78,12 +78,13 @@ jQuery(function( $ ) {
 
 				$form.trigger( 'reset' );
 
-				$form.attr( 'data-form-changed', null ) // Clear the changed status
-					.find( '.gv-search-clear' ).text( gvGlobals.clear ); // Update the text of the button
+				$form.attr( 'data-form-changed', null ); // Clear the changed status
 
 				// If there's now no form field text, hide the reset button
 				if ( false === $form.hasClass( 'gv-is-search' ) ) {
 					$( '.gv-search-clear', $form ).hide( 100 );
+				} else {
+					$( '.gv-search-clear', $form ).text( gvGlobals.clear ); // Update the text of the button
 				}
 
 				return false;
