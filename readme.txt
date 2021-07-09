@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Fixed: Broken translation file caused a fatal error in German `de_DE`
+* Improved: Search widget clear/reset button behavior
 * Updated: Dutch translation (thanks René S.!) and German translation (thanks Aleksander K-W.!)
 
 = 2.10.3.2 on June 2, 2021 =
