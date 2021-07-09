@@ -12,7 +12,7 @@
  * globals jQuery
  */
 
-jQuery(function( $ ) {
+jQuery( function ( $ ) {
 	var gvFront = {
 		init: function () {
 			this.datepicker();
@@ -141,10 +141,10 @@ jQuery(function( $ ) {
 		multiclick_sort: function ( e ) {
 			if ( e.shiftKey ) {
 				e.preventDefault();
-				location.href = $( this ).data('multisort-href');
+				location.href = $( this ).data( 'multisort-href' );
 			}
 		}
 	};
 
 	gvFront.init();
-});
+} );
