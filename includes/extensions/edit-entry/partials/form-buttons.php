@@ -39,53 +39,43 @@ if ( current_filter() === 'gform_next_button' ) {
 	 */
 	do_action( 'gravityview/edit-entry/publishing-action/before', $object->form, $object->entry, $object->view_id );
 
-
-	$labels = array(
-		'cancel'   => __( 'Cancel', 'gravityview' ),
-		'submit'   => __( 'Update', 'gravityview' ),
-		'next'     => __( 'Next', 'gravityview' ),
-		'previous' => __( 'Previous', 'gravityview' ),
-	);
-
-	/**
-	 * @filter `gravityview/edit_entry/button_labels` Modify the cancel/submit buttons' labels
-	 * @since 1.16.3
-	 * @param array $labels Default button labels associative array
-	 * @param array $form The Gravity Forms form
-	 * @param array $entry The Gravity Forms entry
-	 * @param int $view_id The current View ID
-	 */
-	$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $object->form, $object->entry, $object->view_id );
+	$labels = $object->get_action_labels();
 
 	if ( $object->show_previous_button ) {
 		$previous_tabindex = GFCommon::get_tabindex();
+		$previous_label = GFCommon::replace_variables( $labels['previous'], $object->form, $object->entry );
 		?>
-		<input id="gform_previous_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-previous" type="submit" <?php echo $previous_tabindex; ?> value="<?php echo esc_attr( $labels['previous'] ); ?>" name="save" />
+		<input id="gform_previous_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-previous" type="submit" <?php echo $previous_tabindex; ?> value="<?php echo esc_attr( $previous_label ); ?>" name="save" />
 		<?php
 	}
 
 	if ( $object->show_next_button ) {
 		$next_tabindex    = GFCommon::get_tabindex();
+		$next_label = GFCommon::replace_variables( $labels['next'], $object->form, $object->entry );
 		?>
-		<input id="gform_next_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-next" type="submit" <?php echo $next_tabindex; ?> value="<?php echo esc_attr( $labels['next'] ); ?>" name="save" />
+		<input id="gform_next_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-next" type="submit" <?php echo $next_tabindex; ?> value="<?php echo esc_attr( $next_label ); ?>" name="save" />
 		<?php
 	}
 
 	if ( $object->show_update_button ) {
 		$update_tabindex  = GFCommon::get_tabindex();
+		$update_label = GFCommon::replace_variables( $labels['submit'], $object->form, $object->entry );
 		?>
-		<input id="gform_submit_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-update" type="submit" <?php echo $update_tabindex; ?> value="<?php echo esc_attr( $labels['submit'] ); ?>" name="save" />
+		<input id="gform_submit_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-update" type="submit" <?php echo $update_tabindex; ?> value="<?php echo esc_attr( $update_label ); ?>" name="save" />
 		<?php
 	}
 
 	$cancel_tabindex   = GFCommon::get_tabindex();
-
+	$cancel_label = GFCommon::replace_variables( $labels['cancel'], $object->form, $object->entry );
 	?>
-	<a class="btn btn-sm button button-small gv-button-cancel" <?php echo $cancel_tabindex; ?> href="<?php echo esc_url( $back_link ); ?>"><?php echo esc_attr( $labels['cancel'] ); ?></a>
+	<a class="btn btn-sm button button-small gv-button-cancel" <?php echo $cancel_tabindex; ?> href="<?php echo esc_url( $back_link ); ?>"><?php echo esc_attr( $cancel_label ); ?></a>
 	<?php
 
 	/**
 	 * @action `gravityview/edit-entry/publishing-action/after` Triggered after the submit buttons in the Edit Entry screen, inside the `<div id="publishing-action">` container.
+	 *
+	 * @used-by GravityView_Delete_Entry::add_delete_button()
+	 *
 	 * @since 1.5.1
      * @since 2.0.13 Added $post_id
 	 * @param array $form The Gravity Forms form
