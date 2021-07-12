@@ -43,29 +43,32 @@ if ( current_filter() === 'gform_next_button' ) {
 
 	if ( $object->show_previous_button ) {
 		$previous_tabindex = GFCommon::get_tabindex();
+		$previous_label = GFCommon::replace_variables( $labels['previous'], $object->form, $object->entry );
 		?>
-		<input id="gform_previous_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-previous" type="submit" <?php echo $previous_tabindex; ?> value="<?php echo esc_attr( $labels['previous'] ); ?>" name="save" />
+		<input id="gform_previous_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-previous" type="submit" <?php echo $previous_tabindex; ?> value="<?php echo esc_attr( $previous_label ); ?>" name="save" />
 		<?php
 	}
 
 	if ( $object->show_next_button ) {
 		$next_tabindex    = GFCommon::get_tabindex();
+		$next_label = GFCommon::replace_variables( $labels['next'], $object->form, $object->entry );
 		?>
-		<input id="gform_next_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-next" type="submit" <?php echo $next_tabindex; ?> value="<?php echo esc_attr( $labels['next'] ); ?>" name="save" />
+		<input id="gform_next_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-next" type="submit" <?php echo $next_tabindex; ?> value="<?php echo esc_attr( $next_label ); ?>" name="save" />
 		<?php
 	}
 
 	if ( $object->show_update_button ) {
 		$update_tabindex  = GFCommon::get_tabindex();
+		$update_label = GFCommon::replace_variables( $labels['submit'], $object->form, $object->entry );
 		?>
-		<input id="gform_submit_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-update" type="submit" <?php echo $update_tabindex; ?> value="<?php echo esc_attr( $labels['submit'] ); ?>" name="save" />
+		<input id="gform_submit_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-update" type="submit" <?php echo $update_tabindex; ?> value="<?php echo esc_attr( $update_label ); ?>" name="save" />
 		<?php
 	}
 
 	$cancel_tabindex   = GFCommon::get_tabindex();
-
+	$cancel_label = GFCommon::replace_variables( $labels['cancel'], $object->form, $object->entry );
 	?>
-	<a class="btn btn-sm button button-small gv-button-cancel" <?php echo $cancel_tabindex; ?> href="<?php echo esc_url( $back_link ); ?>"><?php echo esc_attr( $labels['cancel'] ); ?></a>
+	<a class="btn btn-sm button button-small gv-button-cancel" <?php echo $cancel_tabindex; ?> href="<?php echo esc_url( $back_link ); ?>"><?php echo esc_attr( $cancel_label ); ?></a>
 	<?php
 
 	/**

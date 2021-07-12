@@ -309,6 +309,8 @@ final class GravityView_Delete_Entry {
 			$delete_label = $View->settings->get( 'action_label_delete', $delete_label );
 		}
 
+		$delete_label = GFCommon::replace_variables( $delete_label, $form, $entry );
+
 		echo gravityview_get_link( self::get_delete_link( $entry, $view_id, $post_id ), esc_html( $delete_label ), $attributes );
 	}
 
