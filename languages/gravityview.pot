@@ -1103,24 +1103,24 @@ msgstr ""
 msgid "This View is not configured properly."
 msgstr ""
 
-#: future/lib/EDD_SL_Plugin_Updater.php:271
+#: future/lib/EDD_SL_Plugin_Updater.php:259
 #: includes/lib/EDD_SL_Plugin_Updater.php:265
 msgid "There is a new version of %1$s available. %2$sView version %3$s details%4$s."
 msgstr ""
 
-#: future/lib/EDD_SL_Plugin_Updater.php:279
+#: future/lib/EDD_SL_Plugin_Updater.php:267
 #: includes/lib/EDD_SL_Plugin_Updater.php:273
 msgid ""
 "There is a new version of %1$s available. %2$sView version %3$s details%4$s "
 "or %5$supdate now%6$s."
 msgstr ""
 
-#: future/lib/EDD_SL_Plugin_Updater.php:523
+#: future/lib/EDD_SL_Plugin_Updater.php:514
 #: includes/lib/EDD_SL_Plugin_Updater.php:517
 msgid "You do not have permission to install plugin updates"
 msgstr ""
 
-#: future/lib/EDD_SL_Plugin_Updater.php:523
+#: future/lib/EDD_SL_Plugin_Updater.php:514
 #: includes/class-gravityview-change-entry-creator.php:164
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:287
 #: includes/lib/EDD_SL_Plugin_Updater.php:517
