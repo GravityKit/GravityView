@@ -79,7 +79,7 @@ class GravityView_Field_Survey extends GravityView_Field {
 			$show_suffix = $input_id || empty( $field->field->gsurveyLikertEnableMultipleRows );
 
 			$likert_display_options = array(
-				'default' => __( 'Table (default Gravity Forms formatting)', 'gravityview' ),
+				'default' => __( 'A table (default Gravity Forms formatting)', 'gravityview' ),
 				'text' => __( 'Text value of the selected choice', 'gravityview' ) . ( $show_suffix ? '' : $multiple_rows_suffix ),
 			);
 
@@ -89,18 +89,13 @@ class GravityView_Field_Survey extends GravityView_Field {
 
 			$add_options['choice_display'] = array(
 				'type' => 'radio',
-				'label' => __( 'Show as', 'gravityview' ),
+				'label' => __( 'What should be displayed:', 'gravityview' ),
 				'options' => $likert_display_options,
-				'desc' => __( 'How would you like to display the likert survey response?', 'gravityview' ),
+				'desc' => '',
 				'group' => 'display',
 				'class' => 'block',
 				'value' => \GV\Utils::get( $field_options, 'score', 'default' ),
 				'merge_tags' => false,
-				'tooltip' => '',
-				'article' => array(
-					'id' => '5c9d338a2c7d3a1544617f9b',
-					'url' => 'https://docs.gravityview.co/article/570-sorting-by-multiple-columns',
-				),
 			);
 		}
 
