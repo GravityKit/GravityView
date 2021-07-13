@@ -13,7 +13,7 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 
 // An empty single column
 if ( '' === \GV\Utils::get( $gravityview->value, $gravityview->field->ID ) ) {
-	return;
+	return;  // Return early
 }
 
 /** @var \GF_Field $field */
@@ -29,7 +29,7 @@ switch ( $gravityview->field->field->inputType ) {
 	case 'select':
 	default:
 		echo $display_value;
-		return;
+		return;  // Return early
 	case 'checkbox':
 
 		// Display the <ul>
@@ -44,12 +44,12 @@ switch ( $gravityview->field->field->inputType ) {
 			 */
 			echo apply_filters( 'gravityview_field_tick', '<span class="dashicons dashicons-yes"></span>', $gravityview->entry, $field->as_configuration(), $gravityview );
 
-			return;
+			return; // Return early
 		}
 
 		echo RGFormsModel::get_choice_text( $field->field, $gravityview->value, $field->ID );
 
-		return;
+		return; // Return early
 	case 'likert':
 
 		if ( class_exists( 'GFSurvey' ) && is_callable( array('GFSurvey', 'get_instance') ) ) {
@@ -63,7 +63,7 @@ switch ( $gravityview->field->field->inputType ) {
 			// Default is the likert table; show it and return early.
 			if( $field->field->gsurveyLikertEnableMultipleRows && ! $input_id ) {
 				echo $display_value;
-				return;
+				return;  // Return early
 			}
 		}
 
