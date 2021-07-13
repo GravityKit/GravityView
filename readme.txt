@@ -35,6 +35,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 __Developer Updates:__
 
 * Updated: `templates/deprecated/fields/time.php` and `templates/fields/field-time-html.php` to include the commented `strtotime()` check
+* Fixed: `gravityview/search/sieve_choices` didn't filter by Created By
 
 = 2.10.3.2 on June 2, 2021 =
 
