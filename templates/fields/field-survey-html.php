@@ -11,108 +11,124 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
+// An empty single column
+if ( '' === \GV\Utils::get( $gravityview->value, $gravityview->field->ID ) ) {
+	return;
+}
+
 /** @var \GF_Field $field */
 $field = $gravityview->field;
 $display_value = $gravityview->display_value;
 $input_id = gravityview_get_input_id_from_id( $field->ID );
 
-// An empty single column
-if ( '' === \GV\Utils::get( $gravityview->value, $field->ID ) ) {
-	echo '';
-	return;
-}
-
-$input_value = $gravityview->value;
-
 switch ( $gravityview->field->field->inputType ) {
 	case 'text':
 	case 'textarea':
 	case 'radio':
-	case 'rating':
+	case 'rank':
+	default:
 		echo $display_value;
 		return;
 	case 'checkbox':
-		$input_value = gravityview_get_field_value( $gravityview->value, $field->ID, $display_value );
-		break;
+
+		// Display the <ul>
+		if ( ! $input_id ) {
+			echo $display_value;
+			return;
+		}
+
+		if ( 'tick' === $field->choice_display ) {
+			/**
+			 * Filter is defined in /templates/fields/field-checkbox-html.php
+			 */
+			echo apply_filters( 'gravityview_field_tick', '<span class="dashicons dashicons-yes"></span>', $gravityview->entry, $field->as_configuration(), $gravityview );
+
+			return;
+		}
+
+		echo RGFormsModel::get_choice_text( $field->field, $gravityview->value, $field->ID );
+
+		return;
 	case 'likert':
+
 		if ( class_exists( 'GFSurvey' ) && is_callable( array('GFSurvey', 'get_instance') ) ) {
 			wp_register_style( 'gsurvey_css', GFSurvey::get_instance()->get_base_url() . '/css/gsurvey.css' );
 			wp_print_styles( 'gsurvey_css' );
 		}
 
-		// Multiple Row survey fields are formatted with colon-separated information
-		if ( $input_id && false !== strpos( $gravityview->value[ $field->ID ], ':' ) ) {
-			list( $_likert_row, $input_value ) = explode( ':', $gravityview->value[ $field->ID ] );
-		}
-		break;
-}
+		// Gravity Forms-generated Likert table output
+		if ( 'default' === $field->choice_display ) {
 
-$display_values = array();
-$break_early = ! $field->gsurveyLikertEnableMultipleRows;
-foreach( $field->field->choices as $choice ) {
-
-	if ( $input_id && $input_value !== $choice['value'] ) {
-		continue;
-	}
-
-	// Back-compatibility with prior 'score' field setting
-	if ( ! empty( $field->score ) && isset( $choice['score'] ) ) {
-		$display_values[] = $choice['score'];
-		continue;
-	}
-
-	switch( $field->choice_display ) {
-		case 'text':
-		case 'label':
-			$display_values[] = RGFormsModel::get_choice_text( $field->field, $choice['value'], $input_value );
-			break;
-		case 'score':
-			$display_values[] = $choice['score'];
-			break;
-		case 'default':
-		default:
-
-			// Return early if displaying the parent field, not a single input
-			if ( ! $input_id ) {
+			// Default is the likert table; show it and return early.
+			if( $field->field->gsurveyLikertEnableMultipleRows && ! $input_id ) {
 				echo $display_value;
 				return;
 			}
+		}
 
-			switch( $gravityview->field->field->inputType ) {
+		// Force the non-multirow fields into the same formatting (row:column)
+		$raw_value = is_array( $gravityview->value ) ? $gravityview->value : array( $field->ID => ':' . $gravityview->value );
 
-				// When displaying a single input, render as if multiple rows were disabled
-				case 'likert':
+		$output_values = array();
+		foreach( $raw_value as $row => $row_values ) {
+			list( $_likert_row, $row_value ) = explode( ':', $row_values );
+
+			// If we're displaying a single row, don't include other row values
+			if ( $input_id && $row !== $field->ID ) {
+				continue;
+			}
+
+			switch( $field->choice_display ) {
+				case 'score':
+					$output_values[] = GravityView_Field_Survey::get_choice_score( $field->field, $row_value, $row );
+					break;
+				case 'text':
+					$output_values[] = RGFormsModel::get_choice_text( $field->field, $row_value, $row );
+					break;
+				case 'default':
+				default:
+					// When displaying a single input, render as if multiple rows were disabled
 					/** @var GF_Field_Likert $single_input_field */
 					$single_input_field                                  = clone $field->field;
 					$single_input_field->id                              = $field->ID;
 					$single_input_field->gsurveyLikertEnableMultipleRows = false;
-					$display_values[]                                    = $single_input_field->get_field_input( $gravityview->form, $choice['value'] );
-					break;
-				case 'checkbox':
-					/**
-					 * Filter is defined in /templates/fields/field-checkbox-html.php
-					 */
-					$display_values[] = apply_filters( 'gravityview_field_tick', '<span class="dashicons dashicons-yes"></span>', $gravityview->entry, $field->as_configuration(), $gravityview );
-					break;
-				default:
-					$display_values[] = $display_value;
+					$output_values[] = $single_input_field->get_field_input( $gravityview->form, $row_value );
 					break;
 			}
-			break;
-	}
+		}
 
-	if ( $break_early ) {
-		break;
-	}
+		/**
+		 * @filter `gravityview/template/field/survey/glue` The value used to separate multiple values in the Survey field output
+		 * @since 2.10.4
+		 *
+		 * @param[in,out] string The glue. Default: "; " (semicolon with a trailing space)
+		 * @param \GV\Template_Context The context.
+		 */
+		$glue = apply_filters( 'gravityview/template/field/survey/glue', '; ', $gravityview );
+
+		echo implode( $glue, $output_values );
+
+		return; // Return early
+
+	case 'rating':
+
+		if( 'stars' === $field->choice_display ) {
+
+			// Don't use __return_true because other code may also be using it.
+			$return_true = function() { return true; };
+
+			// Disable the stars from being clickable
+			add_filter( 'gform_is_form_editor', $return_true, 10000 );
+
+			/** @see GF_Field_Rating::get_field_input() */
+			echo $field->field->get_field_input( $gravityview->form->form, $gravityview->value );
+
+			remove_filter( 'gform_is_form_editor', $return_true );
+
+			return; // Return early
+		}
+
+		echo RGFormsModel::get_choice_text( $field->field, $gravityview->value, $input_id );
+
+		return;
 }
-
-/**
- * @filter `gravityview/template/field/survey/glue` The value used to separate multiple values in the Survey field output
- * @since 2.10.4
- *
- * @param[in,out] string The glue. Default: "; " (semicolon with a trailing space)
- * @param \GV\Template_Context The context.
- */
-$glue = apply_filters( 'gravityview/template/field/survey/glue', '; ', $gravityview );
-
-echo implode( $glue, $display_values );
