@@ -255,7 +255,7 @@ final class GravityView_Delete_Entry {
 				'gvid'     => $view_id,
 				'view_id'  => $view_id,
 			),
-			$base
+			remove_query_arg( 'message', $base )
 		);
 
 		$url = wp_nonce_url( $actionurl, 'delete_' . $entry_slug, 'delete' );
