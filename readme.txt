@@ -24,8 +24,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Added: Settings to customize "Update", "Cancel", and "Delete" button text in Edit Entry
-* Fixed: Broken translation file caused a fatal error in German `de_DE`
 * Improved: Search widget clear/reset button behavior
+* Improved: Allow unassigning an entry's Entry Creator when editing an entry
+* Fixed: Editing an entry in Gravity Forms that was created by a logged-out user forced an entry to be assigned to a user.
+* Fixed: Broken translation file caused a fatal error in German (`de_DE` localization)
 * Updated: Dutch translation (thanks René S.!) and German translation (thanks Aleksander K-W.!)
 
 = 2.10.3.2 on June 2, 2021 =
