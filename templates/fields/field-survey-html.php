@@ -26,6 +26,7 @@ switch ( $gravityview->field->field->inputType ) {
 	case 'textarea':
 	case 'radio':
 	case 'rank':
+	case 'select':
 	default:
 		echo $display_value;
 		return;
