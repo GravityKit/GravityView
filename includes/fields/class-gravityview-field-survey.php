@@ -32,15 +32,56 @@ class GravityView_Field_Survey extends GravityView_Field {
 
 		$field = \GV\GF_Field::by_id( \GV\GF_Form::by_id( $form_id ), $field_id );
 
+
+		$input_id = gravityview_get_input_id_from_id( $field_id );
 		$add_options = array();
 
-		if ( $field->field->inputType === 'likert' && $field->field->gsurveyLikertEnableScoring ) {
-			$add_options['score'] = array(
-				'type' => 'checkbox',
-				'label' => __( 'Show score', 'gravityview' ),
-				'desc' => __( 'Display likert score as a simple number.', 'gravityview' ),
-				'value' => false,
+		$glue = apply_filters( 'gravityview/template/field/survey/glue', '; ' );
+		$multiple_rows_suffix = sprintf( _x( ' (separated by %s)', 'text added to a label if multiple rows are enabled for the field)', 'gravityview' ), esc_html( trim( $glue ) ) );
+
+		if ( 'likert' === $field->field->inputType ) {
+
+			$show_suffix = $input_id || empty( $field->field->gsurveyLikertEnableMultipleRows );
+
+			$likert_display_options = array(
+				'default' => __( 'Table (default Gravity Forms formatting)', 'gravityview' ),
+				'text' => __( 'Text value of the selected choice', 'gravityview' ) . ( $show_suffix ? '' : $multiple_rows_suffix ),
+			);
+
+			if( $field->field->gsurveyLikertEnableScoring ) {
+				$likert_display_options['score'] = __( 'Score value of the selected choice', 'gravityview' ) . ( $show_suffix ? '' : $multiple_rows_suffix );
+			}
+
+			$add_options['choice_display'] = array(
+				'type' => 'radio',
+				'label' => __( 'Show as', 'gravityview' ),
+				'options' => $likert_display_options,
+				'desc' => __( 'How would you like to display the likert survey response?', 'gravityview' ),
+				'group' => 'display',
+				'class' => 'block',
+				'value' => \GV\Utils::get( $field_options, 'score', 'default' ),
 				'merge_tags' => false,
+				'tooltip' => '',
+				'article' => array(
+					'id' => '5c9d338a2c7d3a1544617f9b',
+					'url' => 'https://docs.gravityview.co/article/570-sorting-by-multiple-columns',
+				),
+			);
+		}
+
+		if( 'checkbox' === $field->field->inputType && $input_id ) {
+			$field_options['choice_display'] = array(
+				'type'    => 'radio',
+				'class'   => 'vertical',
+				'label'   => __( 'What should be displayed:', 'gravityview' ),
+				'value'   => 'tick',
+				'desc'    => '',
+				'choices' => array(
+					'tick' => __( 'A check mark, if the input is checked', 'gravityview' ),
+					'label' => __( 'Label of the input', 'gravityview' ),
+				),
+				'group'   => 'display',
+				'priority' => 100,
 			);
 		}
 
