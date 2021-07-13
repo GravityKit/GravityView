@@ -21,7 +21,7 @@ jQuery( function ( $ ) {
 				$( this ).attr( 'data-state', $( this ).serialize() );
 			} );
 
-			$( '.gv-widget-search' ).on( 'keyup', this.form_changed );
+			$( '.gv-widget-search' ).on( 'keyup, change', this.form_changed );
 
 			// Logic for the "search entries" field
 			$( '.gv-widget-search .gv-search-field-search_all input[type=search]' ).on( 'search', function ( e ) {
