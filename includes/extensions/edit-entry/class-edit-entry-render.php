@@ -310,6 +310,9 @@ class GravityView_Edit_Entry_Render {
 
 		// Sack is required for images
 		wp_print_scripts( array( 'sack', 'gform_gravityforms', 'gravityview-fe-view' ) );
+
+		// File download/delete icons
+		wp_enqueue_style( 'gform_admin_icons' );
 	}
 
 
