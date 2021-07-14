@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Settings to customize "Update", "Cancel", and "Delete" button text in Edit Entry
 * Improved: Search widget clear/reset button behavior
 * Improved: Allow unassigning an entry's Entry Creator when editing an entry
+* Improved: When editing an entry, clicking the "Cancel" button will take you to the prior browser page rather than a specific URL
 * Fixed: Time fields that had `0` for hour and minute would display the current time instead of midnight
 * Fixed: Delete Entry links did not work when custom entry slugs were enabled
 * Fixed: Editing an entry in Gravity Forms that was created by a logged-out user forced an entry to be assigned to a user
