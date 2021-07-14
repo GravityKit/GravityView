@@ -93,7 +93,7 @@ switch ( $gravityview->field->field->inputType ) {
 					$single_input_field                                  = clone $field->field;
 					$single_input_field->id                              = $field->ID;
 					$single_input_field->gsurveyLikertEnableMultipleRows = false;
-					$output_values[] = $single_input_field->get_field_input( array( 'form_id' => $field->form_id ), $row_value );
+					$output_values[] = $single_input_field->get_field_input( array( 'id' => $field->form_id ), $row_value );
 					break;
 			}
 		}
@@ -122,7 +122,7 @@ switch ( $gravityview->field->field->inputType ) {
 			add_filter( 'gform_is_form_editor', $return_true, 10000 );
 
 			/** @see GF_Field_Rating::get_field_input() */
-			echo $field->field->get_field_input( array( 'form_id' => $field->form_id ), $gravityview->value );
+			echo $field->field->get_field_input( array( 'id' => $field->form_id ), $gravityview->value );
 
 			remove_filter( 'gform_is_form_editor', $return_true );
 
