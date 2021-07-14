@@ -607,7 +607,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertContains( 'link to edit this entry is not valid', ob_get_clean() );
 
 		$_GET['edit'] = wp_create_nonce( $render::$nonce_key ); /** @todo: also test gravityview/edit_entry/verify_nonce */
-		ob_start() && $render->init( $data );
+		ob_start() && $render->init( $data, null, \GV\View::from_post( $view ));
 		$this->assertContains( 'gv-edit-entry-wrapper', ob_get_clean() );
 
 		/** So this is the basic emulation of viewing the edit entry. Let's try something more complex: */
@@ -625,7 +625,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			return $form;
 		}, 9999, 3 );
 		$_this->disable_action_1 = true;
-		ob_start() && $render->init( $data ); ob_get_clean();
+		ob_start() && $render->init( $data, null, \GV\View::from_post( $view ) ); ob_get_clean();
 
 		/** Great, now how about some saving? The default form. Although we should be testing specific forms as well. */
 		$_POST = array(

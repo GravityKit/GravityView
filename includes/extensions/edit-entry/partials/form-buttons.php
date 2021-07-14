@@ -23,6 +23,7 @@ if ( current_filter() === 'gform_next_button' ) {
     /**
      * @filter `gravityview/edit_entry/cancel_link` Modify the cancel button link URL
      * @since 1.11.1
+     * @since 2.11 The cancel link now uses history.back() so the $back_link URL matters less.
      * @param string $back_link Existing URL of the Cancel link
      * @param array $form The Gravity Forms form
      * @param array $entry The Gravity Forms entry
@@ -68,7 +69,7 @@ if ( current_filter() === 'gform_next_button' ) {
 	$cancel_tabindex   = GFCommon::get_tabindex();
 	$cancel_label = GFCommon::replace_variables( $labels['cancel'], $object->form, $object->entry );
 	?>
-	<a class="btn btn-sm button button-small gv-button-cancel" <?php echo $cancel_tabindex; ?> href="<?php echo esc_url( $back_link ); ?>"><?php echo esc_attr( $cancel_label ); ?></a>
+	<a class="btn btn-sm button button-small gv-button-cancel" onclick="history.back(); return false;" <?php echo $cancel_tabindex; ?> href="<?php echo esc_url( $back_link ); ?>"><?php echo esc_attr( $cancel_label ); ?></a>
 	<?php
 
 	/**
