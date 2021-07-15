@@ -28,8 +28,11 @@ class GravityView_Delete_Entry_Admin {
 			return;
 		}
 
-		// Add Delete Entry settings to View Settings Metabox.
+		// Add Delete Entry settings to Delete Entry Settings Metabox.
 		add_action( 'gravityview/metaboxes/delete_entry', array( $this, 'view_settings_metabox' ) );
+
+		// Add Delete Entry settings to Edit Entry Settings Metabox.
+		add_action( 'gravityview/metaboxes/edit_entry', array( $this, 'view_settings_edit_entry_metabox' ), 20 );
 
 		// For the Delete Entry Link, you don't want visible to all users.
 		add_filter( 'gravityview_field_visibility_caps', array( $this, 'modify_visibility_caps' ), 10, 5 );
@@ -58,6 +61,18 @@ class GravityView_Delete_Entry_Admin {
 		GravityView_Render_Settings::render_setting_row( 'delete_redirect', $current_settings );
 
 		GravityView_Render_Settings::render_setting_row( 'delete_redirect_url', $current_settings );
+
+	}
+
+	/**
+	 * Renders settings relating to Delete Entry that should appear in the Edit Entry metabox
+	 *
+	 * @since 2.11
+	 *
+	 * @param $current_settings
+	 */
+	public function view_settings_edit_entry_metabox( $current_settings ) {
+		GravityView_Render_Settings::render_setting_row( 'action_label_delete', $current_settings );
 	}
 
 	/**

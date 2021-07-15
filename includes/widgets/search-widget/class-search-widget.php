@@ -1390,7 +1390,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$updated_field['key'] = 'created_by';
 					$updated_field['name'] = 'gv_by';
 					$updated_field['value'] = $this->rgget_or_rgpost( 'gv_by' );
-					$updated_field['choices'] = self::get_created_by_choices( $view );
 					break;
 
 				case 'is_approved':
@@ -1590,6 +1589,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$filter['value'] = array( 'start' => '', 'end' => '' );
 		}
 
+		if ( 'created_by' === $field['field'] ) {
+			$filter['choices'] = self::get_created_by_choices( $context->view );
+			$filter['type'] = 'created_by';
+		}
+
 		if ( ! empty( $filter['choices'] ) ) {
 			/**
 			 * @filter `gravityview/search/sieve_choices` Only output used choices for this field.
@@ -1631,7 +1635,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			return $filter; // @todo Populate plugins might give us empty choices
 		}
 
-		if ( ! is_numeric( $filter['key'] ) ) {
+		// Allow only created_by and field-ids to be sieved.
+		if ( 'created_by' !== $filter['key'] && ! is_numeric( $filter['key'] ) ) {
 			return $filter;
 		}
 
@@ -1639,20 +1644,27 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		global $wpdb;
 
-		$table = GFFormsModel::get_entry_meta_table_name();
+		$entry_table_name = GFFormsModel::get_entry_table_name();
+		$entry_meta_table_name = GFFormsModel::get_entry_meta_table_name();
 
 		$key_like = $wpdb->esc_like( $filter['key'] ) . '.%';
 
 		switch ( \GV\Utils::get( $filter, 'type' ) ):
 			case 'post_category':
 				$choices = $wpdb->get_col( $wpdb->prepare(
-					"SELECT DISTINCT SUBSTRING_INDEX(meta_value, ':', 1) FROM $table WHERE (meta_key LIKE %s OR meta_key = %d) AND form_id = %d",
+					"SELECT DISTINCT SUBSTRING_INDEX(meta_value, ':', 1) FROM $entry_meta_table_name WHERE (meta_key LIKE %s OR meta_key = %d) AND form_id = %d",
 					$key_like, $filter['key'], $form_id
+				) );
+				break;
+			case 'created_by':
+				$choices = $wpdb->get_col( $wpdb->prepare(
+					"SELECT DISTINCT created_by FROM $entry_table_name WHERE form_id = %d",
+					$form_id
 				) );
 				break;
 			default:
 				$choices = $wpdb->get_col( $wpdb->prepare(
-					"SELECT DISTINCT meta_value FROM $table WHERE (meta_key LIKE %s OR meta_key = %d) AND form_id = %d",
+					"SELECT DISTINCT meta_value FROM $entry_meta_table_name WHERE (meta_key LIKE %s OR meta_key = %d) AND form_id = %d",
 					$key_like, $filter['key'], $form_id
 				) );
 
