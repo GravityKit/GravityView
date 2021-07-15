@@ -11,11 +11,6 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-// An empty single column
-if ( '' === \GV\Utils::get( $gravityview->value, $gravityview->field->ID ) ) {
-	return;  // Return early
-}
-
 /** @var \GF_Field $field */
 $field = $gravityview->field;
 $display_value = $gravityview->display_value;
