@@ -116,6 +116,10 @@ class gravityview extends \GV\Shortcode {
 
 		$is_admin_and_can_view = $view->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap('gravityview_moderate_entries', $view->ID );
 
+		$custom_entry_slug = apply_filters( 'gravityview_custom_entry_slug', false );
+		$custom_entry_slug_allow_id = apply_filters( 'gravityview_custom_entry_slug_allow_id', false );
+		$ids = explode( ',', get_query_var( \GV\Entry::get_endpoint_name() ) );
+
 		/**
 		 * View details.
 		 */
@@ -141,7 +145,10 @@ class gravityview extends \GV\Shortcode {
 				return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
 			}
 
-			if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $entry->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
+			// Is this entry allowed to be accessed by the entry ID?
+			$allowed_id = ( $custom_entry_slug_allow_id && in_array( $entry->ID, $ids ) );
+
+			if ( ! $allowed_id && $custom_entry_slug && ! in_array( $entry->slug, $ids ) ) {
 				gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $entry->ID ) );
 				return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
 			}
@@ -175,7 +182,10 @@ class gravityview extends \GV\Shortcode {
 					return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
 				}
 
-				if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $e->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
+				// Is this entry allowed to be accessed by the entry ID?
+				$allowed_id = ( $custom_entry_slug_allow_id && in_array( $e->ID, $ids ) );
+
+				if ( ! $allowed_id && $custom_entry_slug && ! in_array( $e->slug, $ids ) ) {
 					gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $e->ID ) );
 					return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
 				}
