@@ -38,7 +38,7 @@ switch ( $gravityview->field->field->inputType ) {
 			return;
 		}
 
-		if ( 'tick' === $choice_display ) {
+		if ( 'tick' === $choice_display || 'default' === $choice_display ) {
 			/**
 			 * Filter is defined in /templates/fields/field-checkbox-html.php
 			 */
