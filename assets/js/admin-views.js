@@ -949,7 +949,7 @@
 						closeAutocompletion();
 						$textarea.focus();
 					}
-				} )
+				} );
 
 				editor.codemirror.on( 'mousedown', function () {
 					closeAutocompletion();
