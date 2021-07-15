@@ -26,7 +26,7 @@ jQuery( function ( $ ) {
 			// Logic for the "search entries" field
 			$( '.gv-widget-search .gv-search-field-search_all input[type=search]' ).on( 'search', function ( e ) {
 				$( e.target ).parents( 'form' ).trigger( 'keyup' );
-			} )
+			} );
 
 			$( '.gv-search-clear' ).on( 'click', this.clear_search );
 
