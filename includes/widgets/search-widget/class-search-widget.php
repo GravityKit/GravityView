@@ -357,6 +357,20 @@ class GravityView_Widget_Search extends \GV\Widget {
 				'text' => esc_html__( 'Is Starred', 'gravityview' ),
 				'type' => 'boolean',
 			),
+			'is_read' => array(
+				'text' => esc_html__( 'Is Read', 'gravityview' ),
+				'type' => 'select',
+				'choices' => array(
+					array(
+						'text' => __( 'Read', 'gravityview' ),
+						'value' => '1',
+					),
+					array(
+						'text' => __( 'Unread', 'gravityview' ),
+						'value' => '0',
+					),
+				),
+			),
 		);
 
 		if ( gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
