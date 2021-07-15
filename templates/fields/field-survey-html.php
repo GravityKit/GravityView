@@ -67,7 +67,7 @@ switch ( $gravityview->field->field->inputType ) {
 
 		$output_values = array();
 		foreach( $raw_value as $row => $row_values ) {
-			list( $_likert_row, $row_value ) = explode( ':', $row_values );
+			list( $_likert_row, $row_value ) = array_pad( explode( ':', $row_values ), 2, '' );
 
 			// If we're displaying a single row, don't include other row values
 			if ( $input_id && $row !== $field->ID ) {
