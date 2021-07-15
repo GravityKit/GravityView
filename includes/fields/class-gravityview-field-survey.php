@@ -87,6 +87,13 @@ class GravityView_Field_Survey extends GravityView_Field {
 				$likert_display_options['score'] = __( 'Score value of the selected choice', 'gravityview' ) . ( $show_suffix ? '' : $multiple_rows_suffix );
 			}
 
+			// Maintain for back-compatibility
+			$add_options['score'] = array(
+				'type' => 'hidden',
+				'value' => '',
+				'group' => 'display',
+			);
+
 			$add_options['choice_display'] = array(
 				'type' => 'radio',
 				'label' => __( 'What should be displayed:', 'gravityview' ),
@@ -94,7 +101,7 @@ class GravityView_Field_Survey extends GravityView_Field {
 				'desc' => '',
 				'group' => 'display',
 				'class' => 'block',
-				'value' => \GV\Utils::get( $field_options, 'score', 'default' ),
+				'value' => 'default',
 				'merge_tags' => false,
 			);
 		}

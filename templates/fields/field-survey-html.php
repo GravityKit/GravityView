@@ -11,10 +11,15 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-/** @var \GF_Field $field */
+/** @var \GV\Field $field */
 $field = $gravityview->field;
 $display_value = $gravityview->display_value;
 $input_id = gravityview_get_input_id_from_id( $field->ID );
+
+// Backward compatibility for the `score` field setting checkbox before migrating to `choice_display` radio
+$default_display = $field->score ? 'score' : 'default';
+
+$choice_display = \GV\Utils::get( $field, 'choice_display', $default_display );
 
 switch ( $gravityview->field->field->inputType ) {
 	case 'text':
@@ -33,7 +38,7 @@ switch ( $gravityview->field->field->inputType ) {
 			return;
 		}
 
-		if ( 'tick' === $field->choice_display ) {
+		if ( 'tick' === $choice_display ) {
 			/**
 			 * Filter is defined in /templates/fields/field-checkbox-html.php
 			 */
@@ -53,7 +58,7 @@ switch ( $gravityview->field->field->inputType ) {
 		}
 
 		// Gravity Forms-generated Likert table output
-		if ( 'default' === $field->choice_display ) {
+		if ( 'default' === $choice_display || empty( $choice_display ) ) {
 
 			// Default is the likert table; show it and return early.
 			if( $field->field->gsurveyLikertEnableMultipleRows && ! $input_id ) {
@@ -74,7 +79,7 @@ switch ( $gravityview->field->field->inputType ) {
 				continue;
 			}
 
-			switch( $field->choice_display ) {
+			switch( $choice_display ) {
 				case 'score':
 					$output_values[] = GravityView_Field_Survey::get_choice_score( $field->field, $row_value, $row );
 					break;
@@ -108,7 +113,7 @@ switch ( $gravityview->field->field->inputType ) {
 
 	case 'rating':
 
-		if( 'stars' === $field->choice_display ) {
+		if( 'stars' === $choice_display ) {
 
 			// Don't use __return_true because other code may also be using it.
 			$return_true = function() { return true; };

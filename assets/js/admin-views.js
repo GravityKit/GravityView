@@ -1011,6 +1011,37 @@
 			var show_details = viewConfiguration.getCookieVal( show_details_cookie );
 
 			viewConfiguration.toggleFieldDetails( dialog, show_details );
+
+			viewConfiguration.migrateSurveyScore( dialog );
+		},
+
+		/**
+		 * Migrate Likert fields with [score] to [choice_display]
+		 * @since 2.11
+		 * @param {jQuery} $dialog
+		 */
+		migrateSurveyScore: function ( $dialog ) {
+
+			// Only process on Survey fields
+			if ( 0 === $dialog.parents('[data-inputtype="survey"]').length ) {
+				return;
+			}
+
+			var $score = $dialog.find( '.gv-setting-container-score input' );
+
+			if ( ! $score ) {
+				return;
+			}
+
+			if ( 0 === $score.val() * 1 ) {
+				return;
+			}
+
+			$dialog
+				.find( '.gv-setting-container-choice_display input[value="score"]' )
+				.trigger('click') // Update the choice
+				.trigger('focus') // Highlight the selected choice
+			;
 		},
 
 		/**
