@@ -2907,7 +2907,7 @@ msgstr "To pole nie jest edytowalne; wpis już nie istnieje."
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1753
 msgid "This field is required."
-msgstr ""
+msgstr "To pole jest wymagane."
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1789
 msgid "Maximum number of files reached"

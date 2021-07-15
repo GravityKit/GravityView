@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # Zachary Katz <zack@katz.co>, 2019
-# franckt, 2021
+# mypan.eu, 2021
 # d4612589015893c3847c952c7b6b32a3_acd8610 <d2f1a6b51307b9cecd23acf3420d6c6e_326297>, 2021
 # a270031086f2a0d3514bc0cb507b48f6, 2021
 # 
@@ -2877,7 +2877,7 @@ msgstr "Ce champ n'est pas modifiable; le poste n'existe plus."
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1753
 msgid "This field is required."
-msgstr ""
+msgstr "Ce champ est requis."
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1789
 msgid "Maximum number of files reached"

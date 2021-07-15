@@ -2698,7 +2698,7 @@ msgstr "此字段不可编辑;后不再存在。"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1753
 msgid "This field is required."
-msgstr ""
+msgstr "此字段为必填项。"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1789
 msgid "Maximum number of files reached"
