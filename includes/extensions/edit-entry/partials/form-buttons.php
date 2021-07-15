@@ -68,8 +68,14 @@ if ( current_filter() === 'gform_next_button' ) {
 
 	$cancel_tabindex   = GFCommon::get_tabindex();
 	$cancel_label = GFCommon::replace_variables( $labels['cancel'], $object->form, $object->entry );
+
+	// If the entry has been edited, history.back() will keep pointing to the Edit Entry screen. Go back before editing, please!
+	// On first visit, will be history.go(-1) because (0 + 1 * -1).
+	// After updating twice, history.go(-3) because (2 + 1 * -1)
+	$update_count = (int) \GV\Utils::_POST( 'update_count', 0 );
+	$cancel_onclick = 'history.go(' . ( $update_count + 1 ) * -1 . '); return false;';
 	?>
-	<a class="btn btn-sm button button-small gv-button-cancel" onclick="history.back(); return false;" <?php echo $cancel_tabindex; ?> href="<?php echo esc_url( $back_link ); ?>"><?php echo esc_attr( $cancel_label ); ?></a>
+	<a class="btn btn-sm button button-small gv-button-cancel" onclick="<?php echo esc_attr( $cancel_onclick ); ?>" <?php echo $cancel_tabindex; ?> href="<?php echo esc_url( $back_link ); ?>"><?php echo esc_attr( $cancel_label ); ?></a>
 	<?php
 
 	/**
@@ -85,8 +91,8 @@ if ( current_filter() === 'gform_next_button' ) {
      * @param int $post_id The current Post ID
 	 */
 	do_action( 'gravityview/edit-entry/publishing-action/after', $object->form, $object->entry, $object->view_id, $object->post_id );
-
 	?>
+	<input type='hidden' name='update_count' value='<?php echo $update_count + 1; ?>'/>
 	<input type="hidden" name="action" value="update" />
 	<input type="hidden" name="lid" value="<?php echo esc_attr( $object->entry['id'] ); ?>" />
 </div>
