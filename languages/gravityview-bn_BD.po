@@ -2778,7 +2778,7 @@ msgstr ""
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1753
 msgid "This field is required."
-msgstr ""
+msgstr "ঘরটি অবশ্যই পূরণ করতে হবে."
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1789
 msgid "Maximum number of files reached"
