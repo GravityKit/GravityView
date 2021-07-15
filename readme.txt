@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 5.3.0
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -21,27 +21,33 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop =
+= 2.11 on July 15, 2021 =
 
 * Added: Settings to customize "Update", "Cancel", and "Delete" button text in Edit Entry
+* Improved: Much better Gravity Forms Survey Add-On integration! [Learn more in the release announcement](https://gravityview.co/gravityview-2-11/).
+	- Ratings can be displayed as text or stars
+	- Multi-row Likert fields can be shown as Text or Score
+	- Improved display of a single row from a multi-row Likert field
+	- Single checkbox inputs are now supported
 * Improved: Search widget clear/reset button behavior
 * Improved: Allow unassigning an entry's Entry Creator when editing an entry
 * Improved: When editing an entry, clicking the "Cancel" button will take you to the prior browser page rather than a specific URL
 * Improved: Conditionally update "Clear Search" button text in the Search Bar
-* Fixed: Time fields that had `0` for hour and minute would display the current time instead of midnight
+* Fixed: When Time fields were submitted with a single `0` for hour and minute inputs, instead of displaying midnight (`0:0`), it would display the current time
 * Fixed: Delete Entry links did not work when custom entry slugs were enabled
 * Fixed: Editing an entry in Gravity Forms that was created by a logged-out user forced an entry to be assigned to a user
-* Fixed: Broken translation file caused a fatal error in German (`de_DE` localization)
 * Fixed: Missing download/delete icons for file upload field in Edit Entry when running Gravity Forms ≥ 2.5.6.4
+* Fixed: A broken German translation file caused a fatal error (only for the `de_DE` localization)
 * Updated: Dutch translation (thanks René S.!) and German translation (thanks Aleksander K-W.!)
 
 __Developer Updates:__
 
+* Added: `gravityview/template/field/survey/glue` filter to modify how the multi-row Likert field values are combined. Default: `; `
 * Modified: `templates/deprecated/fields/time.php` and `templates/fields/field-time-html.php` to include the commented `strtotime()` check
 * Modified: `includes/extensions/edit-entry/partials/form-buttons.php` to add Cancel button enhancements
 * Fixed: `gravityview/search/sieve_choices` didn't filter by Created By
 * Fixed: `\GV\Utils::get()` didn't properly support properties available using PHP magic methods. Now supports overriding using the `__isset()` magic method.
-* Updated: EDD auto-updates library
+* Updated: EDD auto-updates library to version 1.8
 
 = 2.10.3.2 on June 2, 2021 =
 

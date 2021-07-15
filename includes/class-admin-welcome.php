@@ -257,18 +257,28 @@ class GravityView_Welcome {
 
 			<div class="feature-section col two-col has-2-columns is-fullwidth">
 				<div class="column col col-2">
-					<p>We&rsquo;ve revamped the GravityView admin. It&rsquo;s easier to use, better organized, and it looks great!</p>
-					<h4>Here&rsquo;s a tour of the top 5 new features in 2.10:</h4>
-					<ol class="ol-decimal">
-						<li>A new field picker has a grid and list mode for browsing or quick selection.</li>
-						<li>The Field Details section comes in really handy while building a View</li>
-						<li>Custom Content field has a code editor built-in!</li>
-						<li>Export TSV and CSV</li>
-						<li>We&rsquo;re bundling a brand-new lightbox script!</li>
-					</ol>
+					<div class='media-container'><img alt='A likert survey'
+													  src="<?php echo plugins_url( 'assets/images/screenshots/likert.png', GRAVITYVIEW_FILE ); ?>"
+													  style='border: none'></div>
+					<h4>Improved Survey Add-On Integration</h4>
+					<p>Improved: Much better Gravity Forms Survey Add-On integration!</p>
+					<ul class="ul-disc">
+						<li>Ratings can be displayed as text or stars</li>
+						<li>Multi-row Likert fields can be shown as Text or Score</li>
+						<li>Improved display of a single row from a multi-row Likert field</li>
+						<li>Single checkbox inputs are now supported</li>
+					</ul>
+					<p><a href='https://gravityview.co/gravityview-2-11/' class="button button-primary button-large">Learn more in the release announcement.</a></p>
 				</div>
 				<div class="column col col-2 last">
-					<iframe src="https://player.vimeo.com/video/521626074" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+					<div class='media-container'><img alt='Edit Entry settings'
+													  src="<?php echo plugins_url( 'assets/images/screenshots/edit-entry-settings.png', GRAVITYVIEW_FILE ); ?>"
+													  style='border: none'></div>
+					<h4>Additional Edit Entry Configurations</h4>
+					<p>In the Edit Entry settings, you now have the ability to change the button text for the 'Update',
+						'Cancel', and 'Delete' buttons. Merge Tags are also supported! That means you can show data from
+						the entry you're updating in the button text itself. For example, you can set the button text to
+						show the name of the person's profile you're updating (like "Update Shawna's Profile").</p>
 				</div>
 			</div>
 
@@ -278,7 +288,63 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
-                <h3>2.10.3.2 on June 2, 2021</h3>
+
+				<h3>2.11 on July 15, 2021</h3>
+
+				<ul>
+					<li>Added: Settings to customize 'Update', 'Cancel', and 'Delete' button text in Edit Entry</li>
+					<li>Improved: Much better Gravity Forms Survey Add-On integration! <a
+								href='https://gravityview.co/gravityview-2-11/'>Learn more in the release
+							announcement</a>
+						<ul>
+							<li>Ratings can be displayed as text or stars</li>
+							<li>Multi-row Likert fields can be shown as Text or Score</li>
+							<li>Improved display of a single row from a multi-row Likert field</li>
+							<li>Single checkbox inputs are now supported</li>
+						</ul>
+					</li>
+					<li>Improved: Search widget clear/reset button behavior</li>
+					<li>Improved: Allow unassigning an entry's Entry Creator when editing an entry</li>
+					<li>Improved: When editing an entry, clicking the "Cancel" button will take you to the prior browser
+						page rather than a specific URL
+					</li>
+					<li>Improved: Conditionally update "Clear Search" button text in the Search Bar</li>
+					<li>Fixed: When Time fields were submitted with a single <code>0</code> for hour and minute inputs,
+						instead of displaying midnight (<code>0:0</code>), it would display the current time
+					</li>
+					<li>Fixed: Delete Entry links did not work when custom entry slugs were enabled</li>
+					<li>Fixed: Editing an entry in Gravity Forms that was created by a logged-out user forced an entry
+						to be assigned to a user
+					</li>
+					<li>Fixed: Missing download/delete icons for file upload field in Edit Entry when running Gravity
+						Forms ≥ 2.5.6.4
+					</li>
+					<li>Fixed: A broken German translation file caused a fatal error (only for the <code>de_DE</code>
+						localization)
+					</li>
+					<li>Updated: Dutch translation (thanks René S.!) and German translation (thanks Aleksander K-W.!)
+					</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: <code>gravityview/template/field/survey/glue</code> filter to modify how the multi-row
+						Likert field values are combined. Default: <code>;</code></li>
+					<li>Modified: <code>templates/deprecated/fields/time.php</code> and <code>templates/fields/field-time-html.php</code>
+						to include the commented <code>strtotime()</code> check
+					</li>
+					<li>Modified: <code>includes/extensions/edit-entry/partials/form-buttons.php</code> to add Cancel
+						button enhancements
+					</li>
+					<li>Fixed: <code>gravityview/search/sieve_choices</code> didn't filter by Created By</li>
+					<li>Fixed: <code>\GV\Utils::get()</code> didn't properly support properties available using PHP
+						magic methods. Now supports overriding using the <code>__isset()</code> magic method.
+					</li>
+					<li>Updated: EDD auto-updates library to version 1.8</li>
+				</ul>
+
+				<h3>2.10.3.2 on June 2, 2021</h3>
 
                 <ul>
                     <li>Improved: Loading of plugin dependencies</li>
