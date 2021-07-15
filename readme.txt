@@ -37,6 +37,7 @@ __Developer Updates:__
 
 * Updated: `templates/deprecated/fields/time.php` and `templates/fields/field-time-html.php` to include the commented `strtotime()` check
 * Fixed: `gravityview/search/sieve_choices` didn't filter by Created By
+* Fixed: ``\GV\Utils::get()` didn't properly support properties available using PHP magic methods. Now supports overriding using the `__isset()` magic method.
 
 = 2.10.3.2 on June 2, 2021 =
 
