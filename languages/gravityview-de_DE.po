@@ -8,7 +8,7 @@
 # Hubert Test <hubert@trash-mail.com>, 2021
 # Aleksander Kracht-Winter <ma.kracht.winter@gmail.com>, 2021
 # Zachary Katz <zack@katz.co>, 2021
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView 2.10.3.2\n"

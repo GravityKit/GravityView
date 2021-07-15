@@ -7,7 +7,7 @@
 # Erik van Beek <erik@aiwos.nl>, 2021
 # Thom, 2021
 # René Serier <rene@aiwos.com>, 2021
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView 2.10.3.2\n"
