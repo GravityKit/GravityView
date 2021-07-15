@@ -65,14 +65,11 @@ class GravityView_Field_Survey extends GravityView_Field {
 		}
 
 		$field = \GV\GF_Field::by_id( \GV\GF_Form::by_id( $form_id ), $field_id );
-
-
 		$input_id = gravityview_get_input_id_from_id( $field_id );
 		$add_options = array();
 
 		$glue = apply_filters( 'gravityview/template/field/survey/glue', '; ' );
 		$multiple_rows_suffix = sprintf( _x( ' (separated by %s)', 'text added to a label if multiple rows are enabled for the field)', 'gravityview' ), esc_html( trim( $glue ) ) );
-		$show_suffix = (bool) $input_id;
 
 		if ( 'likert' === $field->field->inputType ) {
 
