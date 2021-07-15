@@ -40,7 +40,7 @@ __Developer Updates:__
 * Modified: `templates/deprecated/fields/time.php` and `templates/fields/field-time-html.php` to include the commented `strtotime()` check
 * Modified: `includes/extensions/edit-entry/partials/form-buttons.php` to add Cancel button enhancements
 * Fixed: `gravityview/search/sieve_choices` didn't filter by Created By
-* Fixed: ``\GV\Utils::get()` didn't properly support properties available using PHP magic methods. Now supports overriding using the `__isset()` magic method.
+* Fixed: `\GV\Utils::get()` didn't properly support properties available using PHP magic methods. Now supports overriding using the `__isset()` magic method.
 * Updated: EDD auto-updates library
 
 = 2.10.3.2 on June 2, 2021 =
