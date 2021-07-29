@@ -875,9 +875,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			/**
 			 * @filter `gravityview_search_operator` Modify the search operator for the field (contains, is, isnot, etc)
+			 * @since 2.0 Added $view parameter
 			 * @param string $operator Existing search operator
 			 * @param array $filter array with `key`, `value`, `operator`, `type` keys
-			 * @since develop
 			 * @param \GV\View $view The View we're operating on.
 			 */
 			$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter, $view );

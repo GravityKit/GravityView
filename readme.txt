@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.12 on July 29, 2021 =
+
+* Fixed: Add latest Yoast SEO scripts to the No-Conflict approved list
+* Fixed: Updating an entry with a multi-file upload field may erase existing contents when using Gravity Forms 2.5.8
+
 = 2.11 on July 15, 2021 =
 
 * Added: Settings to customize "Update", "Cancel", and "Delete" button text in Edit Entry

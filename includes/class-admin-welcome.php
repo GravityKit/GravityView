@@ -288,6 +288,12 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>2.12 on July 29, 2021</h3>
+
+                <ul>
+                    <li>Fixed: Add latest Yoast SEO scripts to the No-Conflict approved list</li>
+                    <li>Fixed: Updating an entry with a multi-file upload field may erase existing contents when using Gravity Forms 2.5.8</li>
+                </ul>
 
 				<h3>2.11 on July 15, 2021</h3>
 
