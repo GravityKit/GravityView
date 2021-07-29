@@ -1637,23 +1637,24 @@ class GravityView_Edit_Entry_Render {
 
 				    }
 
-				    if ( \GV\Utils::get( $field, "multipleFiles" ) ) {
+					if ( \GV\Utils::get( $field, 'multipleFiles' ) ) {
+						// If there are fresh uploads, process and merge them.
+						// Otherwise, use the passed values, which should be json-encoded array of URLs
+						if ( isset( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] ) ) {
+							$value = empty( $value ) ? '[]' : $value;
+							$value = stripslashes_deep( $value );
+							$value = GFFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'], array() );
+						} else if ( GFCommon::is_json( $value ) ) {
+							// Existing file; let GF derive the value from the `$_gf_uploaded_files` object (see `\GF_Field_FileUpload::get_multifile_value()`)
+							global $_gf_uploaded_files;
 
-				        // If there are fresh uploads, process and merge them.
-				        // Otherwise, use the passed values, which should be json-encoded array of URLs
-				        if( isset( GFFormsModel::$uploaded_files[$form_id][$input_name] ) ) {
-				            $value = empty( $value ) ? '[]' : $value;
-				            $value = stripslashes_deep( $value );
-				            $value = GFFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'], array());
-				        }
-
-				    } else {
-
-				        // A file already exists when editing an entry
-				        // We set this to solve issue when file upload fields are required.
-				        GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] = $value;
-
-				    }
+							$_gf_uploaded_files[ $input_name ] = $value;
+						}
+					} else {
+						// A file already exists when editing an entry
+						// We set this to solve issue when file upload fields are required.
+						GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] = $value;
+					}
 
 				    $this->entry[ $input_name ] = $value;
 				    $_POST[ $input_name ] = $value;
