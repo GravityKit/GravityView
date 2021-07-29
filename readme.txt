@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Add latest Yoast SEO scripts to the No-Conflict approved list
+
 = 2.11 on July 15, 2021 =
 
 * Added: Settings to customize "Update", "Cancel", and "Delete" button text in Edit Entry
