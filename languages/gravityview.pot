@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.11\n"
+"Project-Id-Version: GravityView 2.12\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -914,7 +914,7 @@ msgstr ""
 #: future/includes/class-gv-settings-view.php:451
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1137
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1265
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2496
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2497
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:75
 msgid "Next"
 msgstr ""
@@ -926,7 +926,7 @@ msgstr ""
 #: future/includes/class-gv-settings-view.php:459
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1138
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1266
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2497
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2498
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:76
 msgid "Previous"
 msgstr ""
@@ -2058,23 +2058,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:631
+#: includes/class-admin-welcome.php:637
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:651
+#: includes/class-admin-welcome.php:657
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:702
+#: includes/class-admin-welcome.php:708
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:729
+#: includes/class-admin-welcome.php:735
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:730
+#: includes/class-admin-welcome.php:736
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -2451,7 +2451,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:213
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2345
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2346
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
@@ -2700,23 +2700,23 @@ msgstr ""
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1756
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1757
 msgid "This field is required."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1792
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1793
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2339
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2340
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2349
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2350
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2389
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2390
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -4408,13 +4408,13 @@ msgid "duplicate entries"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:435
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2495
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2496
 msgctxt "Button to update an entry the user is editing"
 msgid "Update"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:443
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2494
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2495
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
 msgstr ""
@@ -4617,7 +4617,7 @@ msgctxt ""
 msgid "Entry Updated. %sRedirecting to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2365
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2366
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
