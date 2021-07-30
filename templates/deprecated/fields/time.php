@@ -13,6 +13,11 @@ $gv_field = $gravityview_view->getCurrentField();
 /** @type string $value Raw time value */
 $value = \GV\Utils::_GET( 'value', \GV\Utils::get( $gv_field, 'value' ) );
 
+// strtotime() fails at "00:00 am"; it returns false instead of midnight.
+if ( false !== strpos( $value, '00:00' ) ) {
+	$value = '00:00';
+}
+
 /** @type string $field_id ID of the field being displayed */
 $field_id = \GV\Utils::_GET( 'field_id', \GV\Utils::get( $gv_field, 'field_id' ) );
 

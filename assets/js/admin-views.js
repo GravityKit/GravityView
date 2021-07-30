@@ -175,7 +175,7 @@
 
 					var was_closed = $( '.gv-field-details', $dialog ).hasClass('gv-field-details--closed');
 
-					viewConfiguration.toggleFieldDetails( was_closed );
+					viewConfiguration.toggleFieldDetails( $dialog, was_closed );
 
 					// When toggled, set a new cookie
 					$.cookie( 'gv-field-details-expanded', was_closed, { path: gvGlobals.admin_cookiepath } );
@@ -949,7 +949,7 @@
 						closeAutocompletion();
 						$textarea.focus();
 					}
-				} )
+				} );
 
 				editor.codemirror.on( 'mousedown', function () {
 					closeAutocompletion();
@@ -1010,16 +1010,48 @@
 
 			var show_details = viewConfiguration.getCookieVal( show_details_cookie );
 
-			viewConfiguration.toggleFieldDetails( show_details );
+			viewConfiguration.toggleFieldDetails( dialog, show_details );
+
+			viewConfiguration.migrateSurveyScore( dialog );
+		},
+
+		/**
+		 * Migrate Likert fields with [score] to [choice_display]
+		 * @since 2.11
+		 * @param {jQuery} $dialog
+		 */
+		migrateSurveyScore: function ( $dialog ) {
+
+			// Only process on Survey fields
+			if ( 0 === $dialog.parents('[data-inputtype="survey"]').length ) {
+				return;
+			}
+
+			var $score = $dialog.find( '.gv-setting-container-score input' );
+
+			if ( ! $score ) {
+				return;
+			}
+
+			if ( 0 === $score.val() * 1 ) {
+				return;
+			}
+
+			$dialog
+				.find( '.gv-setting-container-choice_display input[value="score"]' )
+				.trigger('click') // Update the choice
+				.trigger('focus') // Highlight the selected choice
+			;
 		},
 
 		/**
 		 * Toggle visibility for field details
 		 * @since 2.10
+		 * @param {jQuery}  $dialog The open dialog
 		 * @param {boolean} show_details Whether to show the field details or not
 		 */
-		toggleFieldDetails: function ( show_details ) {
-			$( '.gv-dialog:visible' )
+		toggleFieldDetails: function ( $dialog, show_details ) {
+			$dialog
 				.find( '.gv-field-details' ).toggleClass( 'gv-field-details--closed', ! show_details ).end()
 				.find( '.gv-field-details--toggle .dashicons' )
 				.toggleClass( 'dashicons-arrow-down', !! show_details )

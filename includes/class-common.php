@@ -647,17 +647,21 @@ class GVCommon {
 
 		/**
 		 * If we're using custom entry slugs, we do a meta value search
-		 * instead of doing a straightup ID search.
+		 * instead of doing a straight-up ID search.
 		 */
 		if ( $custom_slug ) {
 			// Search for IDs matching $entry_id_or_slug
 			$entry_id = self::get_entry_id_from_slug( $entry_id_or_slug );
 		}
 
+		// The custom slug search found something; return early.
+		if ( $entry_id ) {
+			return $entry_id;
+		}
+
 		// If custom slug is off, search using the entry ID
-		// ID allow ID access is on, also use entry ID as a backup
+		// If allow ID access is on, also use entry ID as a backup
 		if ( false === $custom_slug || true === $custom_slug_id_access ) {
-			// Search for IDs matching $entry_slug
 			$entry_id = $entry_id_or_slug;
 		}
 

@@ -82,7 +82,7 @@ class Utils {
 				return $array[ $key ];
 			}
 		} else if ( is_object( $array ) ) {
-			if ( property_exists( $array, $key ) ) {
+			if ( isset( $array->$key ) ) {
 				return $array->$key;
 			}
 		}

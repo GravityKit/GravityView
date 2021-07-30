@@ -4,10 +4,10 @@
 # Rafael de Menezes Ehlers, 2018
 # 3d06e0ffc7f5c27a181838c1f8507783_779e202, 2018
 # David Decker <deckerweb.mobil@gmail.com>, 2019
-# Zachary Katz <zack@katz.co>, 2019
-# Aleksander Kracht-Winter <ma.kracht.winter@gmail.com>, 2020
 # 51e9a0e47a09553c8936a69fa7ff4660_e256b99 <761a490eef3a67745ac96b33e59e6f4e_199793>, 2021
 # Hubert Test <hubert@trash-mail.com>, 2021
+# Aleksander Kracht-Winter <ma.kracht.winter@gmail.com>, 2021
+# Zachary Katz <zack@katz.co>, 2021
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
-"Last-Translator: Hubert Test <hubert@trash-mail.com>, 2021\n"
+"Last-Translator: Zachary Katz <zack@katz.co>, 2021\n"
 "Language-Team: German (Germany) (https://www.transifex.com/katzwebservices/teams/18775/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2873,7 +2873,7 @@ msgstr ""
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1753
 msgid "This field is required."
-msgstr ""
+msgstr "Dieses Feld wird ben&ouml;tigt"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1789
 msgid "Maximum number of files reached"
@@ -4866,8 +4866,8 @@ msgctxt "HTML link pointing to WordPress article on oEmbed"
 msgid ""
 "Automatically convert oEmbed URLs into embedded content (%slearn more%s)."
 msgstr ""
-"Konvertiert oEmbed-URLs automatisch in eingebettete Inhalte (%erfahren Sie "
-"mehr%)."
+"Konvertiert oEmbed-URLs automatisch in eingebettete Inhalte (%serfahren Sie "
+"mehr%s)."
 
 #: includes/fields/class-gravityview-field-other-entries.php:70
 msgctxt "%s replaced with a formatted 0"

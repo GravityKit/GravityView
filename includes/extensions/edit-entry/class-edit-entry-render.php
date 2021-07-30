@@ -310,6 +310,9 @@ class GravityView_Edit_Entry_Render {
 
 		// Sack is required for images
 		wp_print_scripts( array( 'sack', 'gform_gravityforms', 'gravityview-fe-view' ) );
+
+		// File download/delete icons
+		wp_enqueue_style( 'gform_admin_icons' );
 	}
 
 
@@ -1634,23 +1637,24 @@ class GravityView_Edit_Entry_Render {
 
 				    }
 
-				    if ( \GV\Utils::get( $field, "multipleFiles" ) ) {
+					if ( \GV\Utils::get( $field, 'multipleFiles' ) ) {
+						// If there are fresh uploads, process and merge them.
+						// Otherwise, use the passed values, which should be json-encoded array of URLs
+						if ( isset( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] ) ) {
+							$value = empty( $value ) ? '[]' : $value;
+							$value = stripslashes_deep( $value );
+							$value = GFFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'], array() );
+						} else if ( GFCommon::is_json( $value ) ) {
+							// Existing file; let GF derive the value from the `$_gf_uploaded_files` object (see `\GF_Field_FileUpload::get_multifile_value()`)
+							global $_gf_uploaded_files;
 
-				        // If there are fresh uploads, process and merge them.
-				        // Otherwise, use the passed values, which should be json-encoded array of URLs
-				        if( isset( GFFormsModel::$uploaded_files[$form_id][$input_name] ) ) {
-				            $value = empty( $value ) ? '[]' : $value;
-				            $value = stripslashes_deep( $value );
-				            $value = GFFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'], array());
-				        }
-
-				    } else {
-
-				        // A file already exists when editing an entry
-				        // We set this to solve issue when file upload fields are required.
-				        GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] = $value;
-
-				    }
+							$_gf_uploaded_files[ $input_name ] = $value;
+						}
+					} else {
+						// A file already exists when editing an entry
+						// We set this to solve issue when file upload fields are required.
+						GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] = $value;
+					}
 
 				    $this->entry[ $input_name ] = $value;
 				    $_POST[ $input_name ] = $value;
@@ -2478,6 +2482,33 @@ class GravityView_Edit_Entry_Render {
 		return $field_value;
 	}
 
+	/**
+	 * Returns labels for the action links on Edit Entry
+	 *
+	 * @since 2.10.4
+	 *
+	 * @return array `cancel`, `submit`, `next`, `previous` array keys with associated labels.
+	 */
+	public function get_action_labels() {
 
+		$labels = array(
+			'cancel'   => $this->view->settings->get( 'action_label_cancel', _x( 'Cancel', 'Shown when the user decides not to edit an entry', 'gravityview' ) ),
+			'submit'   => $this->view->settings->get( 'action_label_update', _x( 'Update', 'Button to update an entry the user is editing', 'gravityview' ) ),
+			'next'     => $this->view->settings->get( 'action_label_next', __( 'Next', 'Show the next page in a multi-page form', 'gravityview' ) ),
+			'previous' => $this->view->settings->get( 'action_label_previous', __( 'Previous', 'Show the previous page in a multi-page form', 'gravityview' ) ),
+		);
+
+		/**
+		 * @filter `gravityview/edit_entry/button_labels` Modify the cancel/submit buttons' labels
+		 * @since 1.16.3
+		 * @param array $labels Default button labels associative array
+		 * @param array $form The Gravity Forms form
+		 * @param array $entry The Gravity Forms entry
+		 * @param int $view_id The current View ID
+		 */
+		$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $this->form, $this->entry, $this->view_id );
+
+		return (array) $labels;
+	}
 
 } //end class
