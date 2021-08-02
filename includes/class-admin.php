@@ -7,7 +7,7 @@ class GravityView_Admin {
 		if( ! is_admin() ) { return; }
 
 		// If Gravity Forms isn't active or compatibile, stop loading
-		if( false === GravityView_Compatibility::is_valid() ) {
+		if( false === gravityview()->plugin->is_compatible() ) {
 			return;
 		}
 
