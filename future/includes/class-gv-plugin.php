@@ -121,7 +121,7 @@ final class Plugin {
 		/**
 		 * Load translations.
 		 */
-		add_action( 'init', array( $this, 'load_textdomain' ) );
+		$this->load_textdomain();
 
 		/**
 		 * Load some frontend-related legacy files.
@@ -269,7 +269,7 @@ final class Plugin {
 	}
 
 	/**
-	 * Load the translations.
+	 * Load the translations on `init`.
 	 *
 	 * Order of look-ups:
 	 *
@@ -281,6 +281,11 @@ final class Plugin {
 	 * @return void
 	 */
 	public function load_textdomain() {
+
+		// Sanity check.
+		if ( ! function_exists( 'is_textdomain_loaded' ) ) {
+			return;
+		}
 
 		$domain = 'gravityview';
 
