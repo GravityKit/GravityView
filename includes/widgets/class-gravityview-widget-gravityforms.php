@@ -23,7 +23,7 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 		);
 
 		$settings = array(
-			'form_id' => array(
+			'widget_form_id' => array(
 				'type' => 'select',
 				'label' => __( 'Form to display', 'gravityview' ),
 				'value' => '',
@@ -121,7 +121,7 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 			return;
 		}
 
-		$form_id = \GV\Utils::get( $widget_args, 'form_id' );
+		$form_id = \GV\Utils::get( $widget_args, 'widget_form_id', \GV\Utils::get( $widget_args, 'form_id' ) );
 
 		if ( empty( $form_id ) ) {
 			return;
