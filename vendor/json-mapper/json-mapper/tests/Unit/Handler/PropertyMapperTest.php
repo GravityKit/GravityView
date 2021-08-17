@@ -175,7 +175,7 @@ class PropertyMapperTest extends TestCase
 
         $propertyMapper->__invoke($json, $wrapped, $propertyMap, $jsonMapper);
 
-        self::assertEquals(2, count($object->getChildren()));
+        self::assertCount(2, $object->getChildren());
     }
 
     /**
@@ -219,7 +219,7 @@ class PropertyMapperTest extends TestCase
         $json = (object) ['user' => (object) ['id' => 1234, 'name' => 'John Doe']];
         $object = new UserWithConstructorParent();
         $wrapped = new ObjectWrapper($object);
-        $classFactoryRegistry = FactoryRegistry::WithNativePhpClassesAdded();
+        $classFactoryRegistry = FactoryRegistry::withNativePhpClassesAdded();
         $classFactoryRegistry->addFactory(
             UserWithConstructor::class,
             static function ($params) {
@@ -253,7 +253,7 @@ class PropertyMapperTest extends TestCase
         ]];
         $object = new UserWithConstructorParent();
         $wrapped = new ObjectWrapper($object);
-        $classFactoryRegistry = FactoryRegistry::WithNativePhpClassesAdded();
+        $classFactoryRegistry = FactoryRegistry::withNativePhpClassesAdded();
         $classFactoryRegistry->addFactory(
             UserWithConstructor::class,
             static function ($params) {
@@ -291,7 +291,7 @@ class PropertyMapperTest extends TestCase
         ]];
         $object = new UserWithConstructorParent();
         $wrapped = new ObjectWrapper($object);
-        $classFactoryRegistry = FactoryRegistry::WithNativePhpClassesAdded();
+        $classFactoryRegistry = FactoryRegistry::withNativePhpClassesAdded();
         $classFactoryRegistry->addFactory(
             UserWithConstructor::class,
             static function ($params) {

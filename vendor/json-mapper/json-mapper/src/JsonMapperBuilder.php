@@ -67,34 +67,46 @@ class JsonMapperBuilder
         }
 
         $this->jsonMapperClassName = $jsonMapperClassName;
+
         return $this;
     }
 
     public function withPropertyMapper(PropertyMapper $propertyMapper): JsonMapperBuilder
     {
         $this->propertyMapper = $propertyMapper;
+
         return $this;
     }
 
     public function withDefaultCache(CacheInterface $defaultCache): JsonMapperBuilder
     {
         $this->defaultCache = $defaultCache;
+
         return $this;
     }
 
     public function withDocBlockAnnotationsMiddleware(?CacheInterface $cache = null): JsonMapperBuilder
     {
-        return $this->withMiddleware(new DocBlockAnnotations($cache ?: clone $this->defaultCache), DocBlockAnnotations::class);
+        return $this->withMiddleware(
+            new DocBlockAnnotations($cache ?: $this->defaultCache),
+            DocBlockAnnotations::class
+        );
     }
 
     public function withNamespaceResolverMiddleware(?CacheInterface $cache = null): JsonMapperBuilder
     {
-        return $this->withMiddleware(new NamespaceResolver($cache ?: clone $this->defaultCache), NamespaceResolver::class);
+        return $this->withMiddleware(
+            new NamespaceResolver($cache ?: $this->defaultCache),
+            NamespaceResolver::class
+        );
     }
 
     public function withTypedPropertiesMiddleware(?CacheInterface $cache = null): JsonMapperBuilder
     {
-        return $this->withMiddleware(new TypedProperties($cache ?: clone $this->defaultCache), TypedProperties::class);
+        return $this->withMiddleware(
+            new TypedProperties($cache ?: $this->defaultCache),
+            TypedProperties::class
+        );
     }
 
     public function withAttributesMiddleware(): JsonMapperBuilder
@@ -107,9 +119,14 @@ class JsonMapperBuilder
         return $this->withMiddleware(new Rename(...$mapping), Rename::class);
     }
 
-    public function withCaseConversionMiddleware(TextNotation $searchSeparator, TextNotation $replacementSeparator): JsonMapperBuilder
-    {
-        return $this->withMiddleware(new CaseConversion($searchSeparator, $replacementSeparator), CaseConversion::class);
+    public function withCaseConversionMiddleware(
+        TextNotation $searchSeparator,
+        TextNotation $replacementSeparator
+    ): JsonMapperBuilder {
+        return $this->withMiddleware(
+            new CaseConversion($searchSeparator, $replacementSeparator),
+            CaseConversion::class
+        );
     }
 
     public function withDebuggerMiddleware(LoggerInterface $logger): JsonMapperBuilder
@@ -117,8 +134,10 @@ class JsonMapperBuilder
         return $this->withMiddleware(new Debugger($logger), Debugger::class);
     }
 
-    public function withFinalCallbackMiddleware(callable $callback, bool $onlyApplyCallBackOnTopLevel = true): JsonMapperBuilder
-    {
+    public function withFinalCallbackMiddleware(
+        callable $callback,
+        bool $onlyApplyCallBackOnTopLevel = true
+    ): JsonMapperBuilder {
         return $this->withMiddleware(new FinalCallback($callback, $onlyApplyCallBackOnTopLevel), FinalCallback::class);
     }
 

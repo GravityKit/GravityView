@@ -43,7 +43,7 @@ add_action( 'plugins_loaded', function() {
 
 	$config = new \GravityView\TrustedLogin\Config(array(
 		'auth' => array(
-			'public_key' => '6346688830182b64', // @todo Rename to `api_key` again, since we're fetching an encryption public key from the Vendor site…
+			'api_key' => '6346688830182b64',
 			'license_key' => gravityview()->plugin->settings->get('license_key'),
 		),
 		'menu' => array(
@@ -73,13 +73,16 @@ add_action( 'plugins_loaded', function() {
 		'vendor' => array(
 			'namespace' => $namespace,
 			'title' => 'GravityView',
-			'email' => 'zack@gravityview.co',
+			'email' => 'zack+{hash}@gravityview.co',
 			'website' => 'https://trustedlogin.dev',
 			'support_url' => 'https://gravityview.co/support/',
-			'display_name' => 'GravityView',
+			'display_name' => 'GravityView Support',
 			'logo_url' => plugins_url( 'assets/images/GravityView.svg', GRAVITYVIEW_FILE ),
 		),
-		'webhook_url' => 'https://hooks.zapier.com/hooks/catch/28670/bbyi3l4'
+		'paths' => array(
+			'css' => '/wp-content/plugins/trustedlogin-client/src/assets/trustedlogin.css',
+		),
+		'webhook_url' => 'https://hooks.zapier.com/hooks/catch/28670/bbyi3l4',
 	));
 
 	try {

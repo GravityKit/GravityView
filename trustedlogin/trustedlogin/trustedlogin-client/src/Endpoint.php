@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 22-June-2021 using Strauss.
+ * Modified by gravityview on 17-August-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -87,7 +87,6 @@ class Endpoint {
 		}
 
 		add_action( 'template_redirect', array( $this, 'maybe_login_support' ), 99 );
-		add_action( 'admin_init', array( $this, 'maybe_revoke_support' ), 100 );
 		add_action( 'init', array( $this, 'maybe_revoke_support' ), 100 );
 	}
 

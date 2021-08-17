@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 22-June-2021 using Strauss.
+ * Modified by gravityview on 17-August-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -134,7 +134,7 @@ final class Remote {
 		$headers = array(
 			'Accept'        => 'application/json',
 			'Content-Type'  => 'application/json',
-			'Authorization' => 'Bearer ' . $this->config->get_setting( 'auth/public_key' ),
+			'Authorization' => 'Bearer ' . $this->config->get_setting( 'auth/api_key' ),
 		);
 
 		if ( ! empty( $additional_headers ) ) {
@@ -224,6 +224,7 @@ final class Remote {
 				return null;
 
 			case 400:
+			case 423:
 				return new WP_Error( 'unable_to_verify', __( 'Unable to verify Pause Mode.', 'trustedlogin' ), $api_response );
 
 			case 401:

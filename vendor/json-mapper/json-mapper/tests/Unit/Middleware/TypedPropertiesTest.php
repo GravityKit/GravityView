@@ -14,6 +14,7 @@ use JsonMapper\Tests\Implementation\Php80;
 use JsonMapper\Tests\Implementation\SimpleObject;
 use JsonMapper\ValueObjects\PropertyMap;
 use JsonMapper\Wrapper\ObjectWrapper;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\CacheInterface;
 
@@ -98,8 +99,8 @@ class TypedPropertiesTest extends TestCase
         $objectWrapper->method('getName')->willReturn(__METHOD__);
         $objectWrapper->expects(self::never())->method('getReflectedObject');
         $cache = $this->createMock(CacheInterface::class);
-        $cache->method('has')->with(__METHOD__)->willReturn(true);
-        $cache->method('get')->with(__METHOD__)->willReturn($propertyMap);
+        $cache->method('has')->with(Assert::stringContains(__METHOD__))->willReturn(true);
+        $cache->method('get')->with(Assert::stringContains(__METHOD__))->willReturn($propertyMap);
         $middleware = new TypedProperties($cache);
         $jsonMapper = $this->createMock(JsonMapperInterface::class);
 

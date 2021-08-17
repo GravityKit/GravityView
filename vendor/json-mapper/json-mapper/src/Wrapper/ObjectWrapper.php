@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace JsonMapper\Wrapper;
 
+use JsonMapper\Exception\TypeError;
+
 class ObjectWrapper
 {
     /** @var object */
@@ -11,12 +13,18 @@ class ObjectWrapper
     /** @var \ReflectionClass */
     private $reflectedObject;
 
-    public function __construct(object $object)
+    /** @param object $object */
+    public function __construct($object)
     {
+        if (!is_object($object)) {
+            throw TypeError::forObjectArgument(__METHOD__, $object, 1);
+        }
+
         $this->object = $object;
     }
 
-    public function getObject(): object
+    /** @return object */
+    public function getObject()
     {
         return $this->object;
     }

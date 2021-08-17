@@ -12,6 +12,13 @@ jobs:
     strategy:
       matrix:
         include:
+          - php: 7.1
+            allow_fail: false
+            name: 'PHP 7.1 with latest deps'
+          - php: 7.1
+            allow_fail: false
+            composer_update_flags: '--prefer-lowest --prefer-stable'
+            name: 'PHP 7.1 with lowest stable deps'
           - php: 7.2
             allow_fail: false
             name: 'PHP 7.2 with latest deps'

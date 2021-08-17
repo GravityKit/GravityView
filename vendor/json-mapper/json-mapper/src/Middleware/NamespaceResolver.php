@@ -17,7 +17,7 @@ use Psr\SimpleCache\CacheInterface;
 
 class NamespaceResolver extends AbstractMiddleware
 {
-    /** @var CacheInterface|null */
+    /** @var CacheInterface */
     private $cache;
 
     public function __construct(CacheInterface $cache = null)

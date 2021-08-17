@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 22-June-2021 using Strauss.
+ * Modified by gravityview on 17-August-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -152,7 +152,6 @@ final class SupportUser {
 			return new WP_Error( 'user_exists', sprintf( 'A user with the User ID %d already exists', $user_id ) );
 		}
 
-		$user_name   = sprintf( esc_html__( '%s Support', 'trustedlogin' ), $this->config->get_setting( 'vendor/title' ) );
 		$role_exists = $this->role->create();
 
 		if ( is_wp_error( $role_exists ) ) {
@@ -170,17 +169,22 @@ final class SupportUser {
 
 		$user_email = $this->config->get_setting( 'vendor/email' );
 
-		if ( email_exists( $user_email ) ) {
-			$this->logging->log( 'Support User not created; User with that email already exists: ' . $user_email, __METHOD__, 'warning' );
+		if ( defined( 'LOGGED_IN_KEY' ) && defined( 'NONCE_KEY' ) ) {
+			// The hash doesn't need to be secure, just persistent.
+			$user_email = str_replace( '{hash}', sha1( LOGGED_IN_KEY . NONCE_KEY ), $user_email );
+		}
 
-			return new WP_Error( 'user_email_exists', __( 'User not created; User with that email already exists', 'trustedlogin' ) );
+		if ( email_exists( $user_email ) ) {
+			$this->logging->log( 'Support User not created; a user with that email already exists: ' . $user_email, __METHOD__, 'warning' );
+
+			return new WP_Error( 'email_exists', __( 'User not created; User with that email already exists', 'trustedlogin' ) );
 		}
 
 		$user_data = array(
-			'user_login'      => $user_name,
 			'user_url'        => $this->config->get_setting( 'vendor/website' ),
-			'user_pass'       => Encryption::get_random_hash(),
+			'user_login'      => $this->generate_unique_username(),
 			'user_email'      => $user_email,
+			'user_pass'       => Encryption::get_random_hash( $this->logging ),
 			'role'            => $this->role->get_name(),
 			'display_name'    => $this->config->get_setting( 'vendor/display_name', '' ),
 			'user_registered' => date( 'Y-m-d H:i:s', time() ),
@@ -197,6 +201,28 @@ final class SupportUser {
 		$this->logging->log( 'Support User #' . $new_user_id, __METHOD__, 'info' );
 
 		return $new_user_id;
+	}
+
+	/**
+	 * Always return a unique username
+	 *
+	 * @return string Username, with possible number trailing, if clashes exist.
+	 */
+	private function generate_unique_username() {
+
+		$username = sprintf( esc_html__( '%s Support', 'trustedlogin' ), $this->config->get_setting( 'vendor/title' ) );
+
+		if ( ! username_exists( $username ) ) {
+			return $username;
+		}
+
+		$i = 1;
+		$new_username = $username;
+		while( username_exists( $new_username ) ) {
+			$new_username = sprintf( '%s %d', $username, $i + 1 );
+		}
+
+		return $new_username;
 	}
 
 	/**
@@ -219,7 +245,7 @@ final class SupportUser {
 			return new WP_Error( 'user_not_found', sprintf( 'Support user not found at identifier %s.', esc_attr( $user_identifier ) ) );
 		}
 
-		$expires = $this->get_expiration( $support_user );
+		$expires = $this->get_expiration( $support_user, false, true );
 
 		// This user has expired, but the cron didn't run...
 		if ( $expires && time() > (int) $expires ) {
@@ -301,12 +327,15 @@ final class SupportUser {
 	}
 
 	/**
+	 * Returns the expiration for user access as either a human-readable string or timestamp.
+	 *
 	 * @param WP_User $user
 	 * @param bool $human_readable Whether to show expiration as a human_time_diff()-formatted string. Default: false.
+	 * @param bool $gmt Whether to use GMT timestamp in the human-readable result. Not used if $human_readable is false. Default: false.
 	 *
 	 * @return int|string|false False if no expiration is set. Expiration timestamp if $human_readable is false. Time diff if $human_readable is true.
 	 */
-	public function get_expiration( WP_User $user, $human_readable = false ) {
+	public function get_expiration( WP_User $user, $human_readable = false, $gmt = false ) {
 
 		$expiration = get_user_option( $this->expires_meta_key, $user->ID );
 
@@ -314,7 +343,7 @@ final class SupportUser {
 			return false;
 		}
 
-		return $human_readable ? human_time_diff( time(), $expiration ) : $expiration;
+		return $human_readable ? human_time_diff( current_time( 'timestamp', $gmt ), $expiration ) : $expiration;
 	}
 
 	/**
@@ -337,9 +366,25 @@ final class SupportUser {
 			'role' => $this->role->get_name(),
 		);
 
-		$support_users = get_users( $args );
+		return get_users( $args );
+	}
 
-		return $support_users;
+
+	/**
+	 * Returns the first support user active on the site, if any.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return WP_User|null
+	 */
+	public function get_first() {
+		$support_users = $this->get_all();
+
+		if( $support_users ) {
+			return $support_users[0];
+		}
+
+		return null;
 	}
 
 	/**

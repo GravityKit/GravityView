@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 22-June-2021 using Strauss.
+ * Modified by gravityview on 17-August-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -38,10 +38,9 @@ final class Envelope {
 	private $encryption;
 
 	/**
-	 * @var string Public key set in software (not Vendor-provided public key)
-	 * @todo Rename to `api_key` again.
+	 * @var string API key set in software.
 	 */
-	private $public_key;
+	private $api_key;
 
 	/**
 	 * Envelope constructor.
@@ -51,7 +50,7 @@ final class Envelope {
 	 */
 	public function __construct( Config $config, Encryption $encryption ) {
 		$this->config     = $config;
-		$this->public_key = $this->config->get_setting( 'auth/public_key' );
+		$this->api_key = $this->config->get_setting( 'auth/api_key' );
 		$this->encryption = $encryption;
 	}
 
@@ -114,7 +113,7 @@ final class Envelope {
 			'secretId'   	  => $secret_id,
 			'identifier' 	  => $encrypted_identifier,
 			'siteUrl'    	  => get_site_url(),
-			'publicKey'  	  => $this->public_key,
+			'publicKey'  	  => $this->api_key,
 			'accessKey'  	  => $access_key,
 			'wpUserId'   	  => get_current_user_id(),
 			'expiresAt'       => $this->config->get_expiration_timestamp( null, true ),

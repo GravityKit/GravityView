@@ -24,9 +24,13 @@ class Rename extends AbstractMiddleware
         $this->mapping[] = new Mapping($class, $from, $to);
     }
 
-    public function handle(\stdClass $json, ObjectWrapper $object, PropertyMap $propertyMap, JsonMapperInterface $mapper): void
-    {
-        $mapping = array_filter($this->mapping, function ($map) use ($object) {
+    public function handle(
+        \stdClass $json,
+        ObjectWrapper $object,
+        PropertyMap $propertyMap,
+        JsonMapperInterface $mapper
+    ): void {
+        $mapping = array_filter($this->mapping, static function ($map) use ($object) {
             return $map->getClass() === get_class($object->getObject());
         });
         foreach ($mapping as $map) {

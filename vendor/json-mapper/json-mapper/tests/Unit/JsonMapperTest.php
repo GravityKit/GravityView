@@ -228,4 +228,72 @@ class JsonMapperTest extends TestCase
 
         self::assertTrue($this->handler->isCalled());
     }
+
+    /**
+     * @covers \JsonMapper\JsonMapper
+     */
+    public function testMapObjectWithInvalidObjectThrowsTypeException(): void
+    {
+        $jsonMapper = new JsonMapper($this->handler);
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(sprintf(
+            '%s::mapObject(): Argument #2 ($object) must be of type object, string given, called in %s on line %d',
+            get_class($jsonMapper),
+            __FILE__,
+            __LINE__ + 2
+        ));
+        $jsonMapper->mapObject(new \stdClass(), '');
+    }
+
+    /**
+     * @covers \JsonMapper\JsonMapper
+     */
+    public function testMapObjectFromStringWithInvalidObjectThrowsTypeException(): void
+    {
+        $jsonMapper = new JsonMapper($this->handler);
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(sprintf(
+            '%s::mapObjectFromString(): Argument #2 ($object) must be of type object, string given, called in %s on line %d',
+            get_class($jsonMapper),
+            __FILE__,
+            __LINE__ + 2
+        ));
+        $jsonMapper->mapObjectFromString('', '');
+    }
+
+    /**
+     * @covers \JsonMapper\JsonMapper
+     */
+    public function testMapArrayWithInvalidObjectThrowsTypeException(): void
+    {
+        $jsonMapper = new JsonMapper($this->handler);
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(sprintf(
+            '%s::mapArray(): Argument #2 ($object) must be of type object, string given, called in %s on line %d',
+            get_class($jsonMapper),
+            __FILE__,
+            __LINE__ + 2
+        ));
+        $jsonMapper->mapArray([], '');
+    }
+
+    /**
+     * @covers \JsonMapper\JsonMapper
+     */
+    public function testMapArrayFromStringWithInvalidObjectThrowsTypeException(): void
+    {
+        $jsonMapper = new JsonMapper($this->handler);
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(sprintf(
+            '%s::mapArrayFromString(): Argument #2 ($object) must be of type object, string given, called in %s on line %d',
+            get_class($jsonMapper),
+            __FILE__,
+            __LINE__ + 2
+        ));
+        $jsonMapper->mapArrayFromString('', '');
+    }
 }

@@ -1074,7 +1074,8 @@ abstract class PrettyPrinterAbstract
              . ($modifiers & Stmt\Class_::MODIFIER_PRIVATE   ? 'private '   : '')
              . ($modifiers & Stmt\Class_::MODIFIER_STATIC    ? 'static '    : '')
              . ($modifiers & Stmt\Class_::MODIFIER_ABSTRACT  ? 'abstract '  : '')
-             . ($modifiers & Stmt\Class_::MODIFIER_FINAL     ? 'final '     : '');
+             . ($modifiers & Stmt\Class_::MODIFIER_FINAL     ? 'final '     : '')
+             . ($modifiers & Stmt\Class_::MODIFIER_READONLY  ? 'readonly '  : '');
     }
 
     /**
@@ -1123,7 +1124,8 @@ abstract class PrettyPrinterAbstract
         for ($i = 0; $i < 256; $i++) {
             // Since PHP 7.1 The lower range is 0x80. However, we also want to support code for
             // older versions.
-            $this->labelCharMap[chr($i)] = $i >= 0x7f || ctype_alnum($i);
+            $chr = chr($i);
+            $this->labelCharMap[$chr] = $i >= 0x7f || ctype_alnum($chr);
         }
     }
 

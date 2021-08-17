@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 22-June-2021 using Strauss.
+ * Modified by gravityview on 17-August-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -82,7 +82,14 @@ final class Ajax {
 			wp_send_json_error( array( 'message' => 'Verification issue: Request could not be verified. Please reload the page.' ) );
 		}
 
-		$client = new Client( $this->config );
+		if ( ! current_user_can( 'create_users' ) ) {
+
+			$this->logging->log( 'Current user does not have `create_users` capability when trying to grant access.', __METHOD__, 'warning' );
+
+			wp_send_json_error( array( 'message' => 'You do not have the ability to create users.' ) );
+		}
+
+		$client = new Client( $this->config, false );
 
 		$response = $client->grant_access();
 

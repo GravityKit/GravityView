@@ -12,7 +12,7 @@
     "license": "MIT",
     "minimum-stability": "stable",
     "require": {
-        "php": "^7.2 || ^8.0",
+        "php": "^7.1 || ^8.0",
         "ext-json": "*",
         "myclabs/php-enum": "^1.7",
         "nikic/php-parser": "^4.10",
@@ -24,7 +24,7 @@
         "squizlabs/php_codesniffer": "^3.5",
         "phpstan/phpstan": "^0.12.14",
         "php-coveralls/php-coveralls": "^2.4",
-        "phpunit/phpunit": "^8.5 || ^9.0",
+        "phpunit/phpunit": "^7.5 || ^8.5 || ^9.0",
         "guzzlehttp/guzzle": "^6.5 || ^7.0",
         "phpstan/phpstan-phpunit": "^0.12.17"
     },

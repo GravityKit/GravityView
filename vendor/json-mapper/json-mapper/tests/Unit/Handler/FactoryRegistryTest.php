@@ -92,7 +92,7 @@ class FactoryRegistryTest extends TestCase
      */
     public function testWithNativePhpClassesAddedAddsFactoriesForNativeClasses(): void
     {
-        $classFactoryRegistry = FactoryRegistry::WithNativePhpClassesAdded();
+        $classFactoryRegistry = FactoryRegistry::withNativePhpClassesAdded();
 
         self::assertTrue($classFactoryRegistry->hasFactory(\DateTime::class));
         self::assertTrue($classFactoryRegistry->hasFactory(\DateTimeImmutable::class));

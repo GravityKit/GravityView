@@ -21,6 +21,7 @@ return array(
    'GravityView\TrustedLogin\SupportUser' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/SupportUser.php',
    'GravityView\TrustedLogin\Encryption' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/Encryption.php',
    'GravityView\TrustedLogin\Envelope' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/Envelope.php',
+   'GravityView\TrustedLogin\ClientException' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/ClientException.php',
    'GravityView\TrustedLogin\Ajax' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/Ajax.php',
    'GravityView\TrustedLogin\Remote' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/Remote.php',
    'GravityView\TrustedLogin\Config' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/Config.php',
@@ -31,5 +32,6 @@ return array(
    'GravityView\TrustedLogin\Endpoint' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/Endpoint.php',
    'GravityView\TrustedLogin\Admin' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/Admin.php',
    'GravityView\TrustedLogin\Logging' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/Logging.php',
+   'GravityView\TrustedLogin\ConfigException' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/ConfigException.php',
    'GravityView\TrustedLogin\Client' => $trustedlogin . '/trustedlogin/trustedlogin-client/src/Client.php',
 );

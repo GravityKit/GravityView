@@ -18,7 +18,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 22-June-2021 using Strauss.
+ * Modified by gravityview on 17-August-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -30,8 +30,6 @@ if ( ! defined('ABSPATH') ) {
 
 use \Exception;
 use \WP_Error;
-use \WP_User;
-use \WP_Admin_Bar;
 
 /**
  * The TrustedLogin all-in-one drop-in class.
@@ -95,11 +93,6 @@ final class Client {
 	private $site_access;
 
 	/**
-	 * @var Encryption
-	 */
-	private $encryption;
-
-	/**
 	 * TrustedLogin constructor.
 	 *
 	 * @see https://docs.trustedlogin.com/ for more information
@@ -107,16 +100,23 @@ final class Client {
 	 * @param Config $config
 	 * @param bool $init Whether to initialize everything on instantiation
 	 *
-	 * @returns Client|\Exception
+	 * @throws Exception If initializing is prevented via constants or the configuration isn't valid, throws exception.
+	 *
+	 * @returns void If no errors, returns void. Otherwise, throws exceptions.
 	 */
 	public function __construct( Config $config, $init = true ) {
+
+		$should_initialize = $this->should_init( $config );
+
+		if ( ! $should_initialize ) {
+			throw new \Exception( 'TrustedLogin was prevented from loading by constants defined on the site.', 403 );
+		}
 
 		try {
 			self::$valid_config = $config->validate();
 		} catch ( \Exception $exception ) {
 			self::$valid_config = false;
-
-			return $exception;
+			throw $exception;
 		}
 
 		$this->config = $config;
@@ -137,11 +137,38 @@ final class Client {
 
 		$this->site_access = new SiteAccess( $this->config, $this->logging );
 
-		$this->encryption = new Encryption( $this->config, $this->remote, $this->logging );
-
 		if ( $init ) {
 			$this->init();
 		}
+	}
+
+	/**
+	 * Should the Client fully initialize?
+	 *
+	 * @param Config $config
+	 *
+	 * @return bool
+	 */
+	private function should_init( Config $config ) {
+
+		// Disables all TL clients.
+		if ( defined( 'TRUSTEDLOGIN_DISABLE' ) && TRUSTEDLOGIN_DISABLE ) {
+			return false;
+		}
+
+		$ns = $config->ns();
+
+		// Namespace isn't set; allow Config
+		if( empty( $ns ) ) {
+			return true;
+		}
+
+		// Disables namespaced client if `TRUSTEDLOGIN_DISABLE_{NS}` is defined and truthy.
+		if ( defined( 'TRUSTEDLOGIN_DISABLE_' . strtoupper( $ns ) ) && constant( 'TRUSTEDLOGIN_DISABLE_' . strtoupper( $ns ) ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -161,9 +188,14 @@ final class Client {
 	 *
 	 * @see SiteAccess::get_access_key()
 	 *
-	 * @return string|null
+	 * @return string|null|WP_Error
 	 */
 	public function get_access_key() {
+
+		if ( ! self::$valid_config ) {
+			return new WP_Error( 'invalid_configuration', 'TrustedLogin has not been properly configured or instantiated.', array( 'error_code' => 424 ) );
+		}
+
 		return $this->site_access->get_access_key();
 	}
 
@@ -207,7 +239,7 @@ final class Client {
 			return $support_user_id;
 		}
 
-		$site_identifier_hash = Encryption::get_random_hash();
+		$site_identifier_hash = Encryption::get_random_hash( $this->logging );
 
 		if ( is_wp_error( $site_identifier_hash ) ) {
 

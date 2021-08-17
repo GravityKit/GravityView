@@ -18,6 +18,16 @@
 		return false;
 	} );
 
+	/**
+	 * Adds a hidden <span> for screen readers alerting them that the link will open a new window.
+	 */
+	$( '.tl-' + namespace + '-auth' ).find( 'a[target=_blank]' ).each( function () {
+		$( this ).append( $( '<span>', {
+			'class': 'screen-reader-text',
+			'text': tl_obj.lang.a11y.opens_new_window
+		} ) );
+	} );
+
 	function grantAccess( $button ){
 
 		$button.addClass( 'disabled' );
@@ -126,14 +136,32 @@
 	}
 
 	/**
+	 * Select the text of an input field on click
+	 * @param  {jQueryEvent}    e     [description]
+	 * @return {[type]}          [description]
+	 */
+	$( '#tl-' + namespace + '-access-key', $tl_container ).on( 'click', function ( e ) {
+		e.preventDefault();
+
+		$( this ).trigger('focus').trigger('select');
+
+		return false;
+	} );
+
+	/**
 	 * Used for copy-to-clipboard functionality
 	 */
 	$( '.tl-' + namespace +'-auth__accesskey_copy', $tl_container ).on( 'click', function() {
 		var $copyButton = $( this );
+		var $copyText = $( this ).find('span');
 
 		copyToClipboard( $( '.tl-' + namespace + '-auth__accesskey_field' ).val() );
 
-		$copyButton.text( tl_obj.lang.buttons.copied );
+		wp.a11y.speak( tl_obj.lang.a11y.copied_text, 'assertive' );
+
+		$copyText.text( tl_obj.lang.buttons.copied ).removeClass( 'screen-reader-text' );
+
+		$copyButton.addClass( 'tl-' + namespace + '-auth__copied' );
 
 		if ( copy_button_timer ) {
 			clearTimeout( copy_button_timer );
@@ -141,7 +169,9 @@
 		}
 
 		copy_button_timer = setTimeout( function () {
-			$copyButton.text( tl_obj.lang.buttons.copy );
+			$copyButton.removeClass( 'tl-' + namespace + '-auth__copied' );
+
+			$copyText.text( tl_obj.lang.buttons.copy ).addClass( 'screen-reader-text' );
 		}, 2000 );
 	} );
 
@@ -151,7 +181,7 @@
 		$body.append( $temp );
 		$temp.val( copyText ).select();
 		document.execCommand( 'copy' );
-		$temp.remove()
+		$temp.remove();
 
 		if ( tl_obj.debug ) {
 			console.log( 'Copied to clipboard', copyText );

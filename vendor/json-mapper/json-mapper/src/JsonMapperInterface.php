@@ -20,11 +20,15 @@ interface JsonMapperInterface
 
     public function removeByName(string $remove): self;
 
-    public function mapObject(\stdClass $json, object $object): void;
+    /** @param object $object */
+    public function mapObject(\stdClass $json, $object): void;
 
-    public function mapArray(array $json, object $object): array;
+    /** @param object $object */
+    public function mapArray(array $json, $object): array;
 
-    public function mapObjectFromString(string $jsonString, object $object): void;
+    /** @param object $object */
+    public function mapObjectFromString(string $jsonString, $object): void;
 
-    public function mapArrayFromString(string $jsonStrings, object $object): array;
+    /** @param object $object */
+    public function mapArrayFromString(string $jsonStrings, $object): array;
 }

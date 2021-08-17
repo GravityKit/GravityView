@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 22-June-2021 using Strauss.
+ * Modified by gravityview on 17-August-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -39,10 +39,10 @@ final class Encryption {
 	private $logging;
 
 	/**
-	 * @var string $public_key_option Where the plugin should store the public key for encrypting data
+	 * @var string $vendor_public_key_option Where the plugin should store the public key for encrypting data
 	 * @since 0.5.0
 	 */
-	private $public_key_option;
+	private $vendor_public_key_option;
 
 	/**
 	 * @var string Endpoint path to Vendor public key.
@@ -67,12 +67,12 @@ final class Encryption {
 		 *
 		 * @since 0.5.0
 		 *
-		 * @param string $public_key_option
+		 * @param string $vendor_public_key_option
 		 * @param Config $config
 		 */
-		$this->public_key_option = apply_filters(
-			'trustedlogin/' . $this->config->ns() . '/options/public_key',
-			'tl_' . $this->config->ns() . '_public_key',
+		$this->vendor_public_key_option = apply_filters(
+			'trustedlogin/' . $this->config->ns() . '/options/vendor_public_key',
+			'tl_' . $this->config->ns() . '_vendor_public_key',
 			$this->config
 		);
 	}
@@ -88,9 +88,11 @@ final class Encryption {
 	 * @uses random_bytes
 	 * @uses openssl_random_pseudo_bytes Only used if random_bytes() does not exist.
 	 *
+	 * @param Logging The logging object to use
+	 *
 	 * @return string|WP_Error 64-character random hash or a WP_Error object explaining what went wrong. See docblock.
 	 */
-	static public function get_random_hash() {
+	static public function get_random_hash( $logging ) {
 
 		$byte_length = 64;
 
@@ -101,14 +103,14 @@ final class Encryption {
 				$bytes = random_bytes( $byte_length );
 				$hash  = bin2hex( $bytes );
 			} catch ( \TypeError $e ) {
-				$this->logging->log( $e->getMessage(), __METHOD__, 'error' );
+				$logging->log( $e->getMessage(), __METHOD__, 'error' );
 			} catch ( \Error $e ) {
-				$this->logging->log( $e->getMessage(), __METHOD__, 'error' );
+				$logging->log( $e->getMessage(), __METHOD__, 'error' );
 			} catch ( \Exception $e ) {
-				$this->logging->log( $e->getMessage(), __METHOD__, 'error' );
+				$logging->log( $e->getMessage(), __METHOD__, 'error' );
 			}
 		} else {
-			$this->logging->log( 'This site does not have the random_bytes() function.', __METHOD__, 'debug' );
+			$logging->log( 'This site does not have the random_bytes() function.', __METHOD__, 'debug' );
 		}
 
 		if ( $hash ) {
@@ -175,10 +177,10 @@ final class Encryption {
 	 *
 	 * @return string|WP_Error  If found, it returns the publicKey, if not a WP_Error
 	 */
-	public function get_public_key() {
+	public function get_vendor_public_key() {
 
 		// Already stored as transient
-		$public_key = get_site_transient( $this->public_key_option );
+		$public_key = get_site_transient( $this->vendor_public_key_option );
 
 		if ( $public_key ) {
 			// Documented below
@@ -195,8 +197,8 @@ final class Encryption {
 			return $remote_key;
 		}
 
-		// Store Vendor public key in the DB for ten minutes
-		$saved = set_site_transient( $this->public_key_option, $remote_key, 60 * 10 );
+		// Attempt to store Vendor public key in the DB for ten minutes (may be overridden by caching plugins)
+		$saved = set_site_transient( $this->vendor_public_key_option, $remote_key, 60 * 10 );
 
 		if ( ! $saved ) {
 			$this->logging->log( 'Public key not saved after being fetched remotely.', __METHOD__, 'notice' );
@@ -207,10 +209,10 @@ final class Encryption {
 		 *
 		 * @since 0.5.0
 		 *
-		 * @param string $public_key
+		 * @param string $vendor_public_key
 		 * @param Config $config
 		 */
-		return apply_filters( 'trustedlogin/' . $this->config->ns() . '/public_key', $remote_key, $this->config );
+		return apply_filters( 'trustedlogin/' . $this->config->ns() . '/vendor_public_key', $remote_key, $this->config );
 	}
 
 	/**
@@ -282,7 +284,7 @@ final class Encryption {
 			return new WP_Error( 'sodium_crypto_secretbox_not_available', 'lib_sodium not available' );
 		}
 
-		$bob_public_key = $this->get_public_key();
+		$bob_public_key = $this->get_vendor_public_key();
 
 		if ( is_wp_error( $bob_public_key ) ) {
 			return $bob_public_key;

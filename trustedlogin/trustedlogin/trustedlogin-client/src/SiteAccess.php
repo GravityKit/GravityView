@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 22-June-2021 using Strauss.
+ * Modified by gravityview on 17-August-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -183,7 +183,7 @@ class SiteAccess {
 	 */
 	private function generate_access_key() {
 
-		$hash = Encryption::hash( get_site_url() . $this->config->get_setting( 'auth/public_key' ), 32 );
+		$hash = Encryption::hash( get_site_url() . $this->config->get_setting( 'auth/api_key' ), 32 );
 
 		if ( is_wp_error( $hash ) ) {
 			return $hash;
@@ -209,7 +209,7 @@ class SiteAccess {
 		}
 
 		$body = array(
-			'publicKey' => $this->config->get_setting( 'auth/public_key' ),
+			'publicKey' => $this->config->get_setting( 'auth/api_key' ),
 		);
 
 		$api_response = $remote->send( 'sites/' . $secret_id, $body, 'DELETE' );

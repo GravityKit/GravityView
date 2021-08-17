@@ -35,8 +35,9 @@ class DocBlockAnnotations extends AbstractMiddleware
 
     private function fetchPropertyMapForObject(ObjectWrapper $object): PropertyMap
     {
-        if ($this->cache->has($object->getName())) {
-            return $this->cache->get($object->getName());
+        $cacheKey = sprintf('%s::Cache::%s', __CLASS__, $object->getName());
+        if ($this->cache->has($cacheKey)) {
+            return $this->cache->get($cacheKey);
         }
 
         $properties = $object->getReflectedObject()->getProperties();
@@ -86,7 +87,7 @@ class DocBlockAnnotations extends AbstractMiddleware
             $intermediatePropertyMap->addProperty($property);
         }
 
-        $this->cache->set($object->getName(), $intermediatePropertyMap);
+        $this->cache->set($cacheKey, $intermediatePropertyMap);
 
         return $intermediatePropertyMap;
     }

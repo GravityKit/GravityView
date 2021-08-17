@@ -177,17 +177,18 @@ EOT
 
         $finder = new ExecutableFinder;
         $hasSystemUnzip = (bool) $finder->find('unzip');
-        if (Platform::isWindows()) {
-            $hasSystem7zip = (bool) $finder->find('7z', null, array('C:\Program Files\7-Zip'));
-            $windows7z = ', ' . ($hasSystem7zip ? '<comment>7-Zip present</comment>' : '<comment>7-Zip not available</comment>');
-        } else {
-            $windows7z = '';
+        $bin7zip = '';
+        if ($hasSystem7zip = (bool) $finder->find('7z', null, array('C:\Program Files\7-Zip'))) {
+            $bin7zip = '7z';
+        }
+        if (!Platform::isWindows() && !$hasSystem7zip && $hasSystem7zip = (bool) $finder->find('7zz')) {
+            $bin7zip = '7zz';
         }
 
         $io->write(
             'zip: ' . (extension_loaded('zip') ? '<comment>extension present</comment>' : '<comment>extension not loaded</comment>')
             . ', ' . ($hasSystemUnzip ? '<comment>unzip present</comment>' : '<comment>unzip not available</comment>')
-            . $windows7z
+            . ', ' . ($hasSystem7zip ? '<comment>7-Zip present ('.$bin7zip.')</comment>' : '<comment>7-Zip not available</comment>')
         );
 
         return $this->exitCode;
@@ -413,7 +414,7 @@ EOT
     }
 
     /**
-     * @param bool|string|\Exception $result
+     * @param bool|string|string[]|\Exception $result
      */
     private function outputResult($result)
     {

@@ -1,3 +1,19 @@
+### [2.1.5] 2021-07-23
+
+  * Fixed `create-project` creating a `php:` directory in the directory it was executed in (#10020, #10021)
+  * Fixed curl downloader to respect default_socket_timeout if it is bigger than our default 300s (#10018)
+
+### [2.1.4] 2021-07-22
+
+  * Fixed PHP 8.1 deprecation warnings (#10008)
+  * Fixed support for working within UNC/WSL paths on Windows (#9993)
+  * Fixed 7-zip support to also be looked up on Linux/macOS as 7z or 7zz (#9951)
+  * Fixed repositories' `only`/`exclude` properties to avoid matching names as sub-strings of full package names (#10001)
+  * Fixed open_basedir regression from #9855
+  * Fixed schema errors being reported incorrectly in some conditions (#9986)
+  * Fixed `archive` command not working with async archive extraction
+  * Fixed `init` command being able to generate an invalid composer.json (#9986)
+
 ### [2.1.3] 2021-06-09
 
   * Add "symlink" option for "bin-compat" config to force symlinking even on WSL/Windows (#9959)
@@ -1217,6 +1233,8 @@
 
   * Initial release
 
+[2.1.5]: https://github.com/composer/composer/compare/2.1.4...2.1.5
+[2.1.4]: https://github.com/composer/composer/compare/2.1.3...2.1.4
 [2.1.3]: https://github.com/composer/composer/compare/2.1.2...2.1.3
 [2.1.2]: https://github.com/composer/composer/compare/2.1.1...2.1.2
 [2.1.1]: https://github.com/composer/composer/compare/2.1.0...2.1.1

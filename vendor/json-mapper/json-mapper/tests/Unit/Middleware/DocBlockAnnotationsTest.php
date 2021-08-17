@@ -12,6 +12,7 @@ use JsonMapper\Tests\Helpers\AssertThatPropertyTrait;
 use JsonMapper\Tests\Implementation\ComplexObject;
 use JsonMapper\ValueObjects\PropertyMap;
 use JsonMapper\Wrapper\ObjectWrapper;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\CacheInterface;
 
@@ -119,8 +120,8 @@ class DocBlockAnnotationsTest extends TestCase
         $objectWrapper->method('getName')->willReturn(__METHOD__);
         $objectWrapper->expects(self::never())->method('getReflectedObject');
         $cache = $this->createMock(CacheInterface::class);
-        $cache->method('has')->with(__METHOD__)->willReturn(true);
-        $cache->method('get')->with(__METHOD__)->willReturn($propertyMap);
+        $cache->method('has')->with(Assert::stringContains(__METHOD__))->willReturn(true);
+        $cache->method('get')->with(Assert::stringContains(__METHOD__))->willReturn($propertyMap);
         $middleware = new DocBlockAnnotations($cache);
         $jsonMapper = $this->createMock(JsonMapperInterface::class);
 

@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 22-June-2021 using Strauss.
+ * Modified by gravityview on 17-August-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -112,7 +112,7 @@ final class Cron {
 
 		$this->logging->log( 'Running cron job to disable user. ID: ' . $identifier_hash, __METHOD__, 'notice' );
 
-		$Client = new Client( $this->config );
+		$Client = new Client( $this->config, false );
 
 		$Client->revoke_access( $identifier_hash );
 	}

@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.0] - 2021-07-15
+### Added 
+- Support PHP 7.1 [PR#97](https://github.com/JsonMapper/JsonMapper/pull/97)
+
+## [2.5.1] - 2021-07-06
+### Fixed
+- Preserve cache keys uniqueness within a single cache instance [PR#95](https://github.com/JsonMapper/JsonMapper/pull/95)
+
 ## [2.5.0] - 2021-05-17
 ### Added
 - Map to stdClass was added to allow for generic objects [PR#89](https://github.com/JsonMapper/JsonMapper/pull/89)

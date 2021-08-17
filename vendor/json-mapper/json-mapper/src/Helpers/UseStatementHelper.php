@@ -10,6 +10,7 @@ use PhpParser\ParserFactory;
 
 class UseStatementHelper
 {
+    /** @var string */
     private static $evaldCodeFileNameEnding = "eval()'d code";
 
     public static function getImports(\ReflectionClass $class): array
