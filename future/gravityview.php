@@ -79,9 +79,6 @@ add_action( 'plugins_loaded', function() {
 			'display_name' => 'GravityView Support',
 			'logo_url' => plugins_url( 'assets/images/GravityView.svg', GRAVITYVIEW_FILE ),
 		),
-		'paths' => array(
-			'css' => '/wp-content/plugins/trustedlogin-client/src/assets/trustedlogin.css',
-		),
 		'webhook_url' => 'https://hooks.zapier.com/hooks/catch/28670/bbyi3l4',
 	));
 
