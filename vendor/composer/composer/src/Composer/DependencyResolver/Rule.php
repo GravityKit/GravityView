@@ -76,6 +76,9 @@ abstract class Rule
         return $this->reasonData;
     }
 
+    /**
+     * @return ?string
+     */
     public function getRequiredPackage()
     {
         $reason = $this->getReason();
@@ -91,6 +94,8 @@ abstract class Rule
         if ($reason === self::RULE_PACKAGE_REQUIRES) {
             return $this->reasonData->getTarget();
         }
+
+        return null;
     }
 
     public function setType($type)

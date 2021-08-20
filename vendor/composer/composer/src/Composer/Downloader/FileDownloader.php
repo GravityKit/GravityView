@@ -142,7 +142,7 @@ class FileDownloader implements DownloaderInterface, ChangeReportInterface
 
         $accept = null;
         $reject = null;
-        $download = function () use ($io, $output, $httpDownloader, $cache, $cacheKeyGenerator, $eventDispatcher, $package, $fileName, &$urls, &$accept, &$reject) {
+        $download = function () use ($io, $output, $httpDownloader, $cache, $cacheKeyGenerator, $eventDispatcher, $package, $fileName, &$urls, &$accept, &$reject, $self) {
             /** @var array{base: string, processed: string, cacheKey: string} $url */
             $url = reset($urls);
             $index = key($urls);
@@ -167,6 +167,12 @@ class FileDownloader implements DownloaderInterface, ChangeReportInterface
             if ($cache && (!$checksum || $checksum === $cache->sha1($cacheKey)) && $cache->copyTo($cacheKey, $fileName)) {
                 if ($output) {
                     $io->writeError("  - Loading <info>" . $package->getName() . "</info> (<comment>" . $package->getFullPrettyVersion() . "</comment>) from cache", true, IOInterface::VERY_VERBOSE);
+                }
+                // mark the file as having been written in cache even though it is only read from cache, so that if
+                // the cache is corrupt the archive will be deleted and the next attempt will re-download it
+                // see https://github.com/composer/composer/issues/10028
+                if (!$cache->isReadOnly()) {
+                    $self->lastCacheWrites[$package->getName()] = $cacheKey;
                 }
                 $result = \React\Promise\resolve($fileName);
             } else {

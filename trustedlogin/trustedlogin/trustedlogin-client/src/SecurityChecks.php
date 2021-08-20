@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 17-August-2021 using Strauss.
+ * Modified by gravityview on 20-August-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -75,11 +75,13 @@ final class SecurityChecks {
 	 *
 	 * Multiple security checks are performed, including brute-force and known-attacker-list checks
 	 *
-	 * @param string $user_identifier The identifier provided via {@see SupportUser::maybe_login()}
+	 * @param string $passed_user_identifier The identifier provided via {@see SupportUser::maybe_login()}
 	 *
 	 * @return true|WP_Error True if identifier passes checks. WP_Error if not.
 	 */
-	public function verify( $user_identifier ) {
+	public function verify( $passed_user_identifier = '' ) {
+
+		$user_identifier = $passed_user_identifier;
 
 		if ( $this->in_lockdown() ){
 
@@ -89,8 +91,8 @@ final class SecurityChecks {
 		}
 
 		// When passed in the endpoint URL, the unique ID will be the raw value, not the hash.
-		if ( strlen( $user_identifier ) > 32 ) {
-			$user_identifier = Encryption::hash( $user_identifier );
+		if ( strlen( $passed_user_identifier ) > 32 ) {
+			$user_identifier = Encryption::hash( $passed_user_identifier );
 		}
 
 		$brute_force = $this->check_brute_force( $user_identifier );
@@ -102,7 +104,11 @@ final class SecurityChecks {
 			return $brute_force;
 		}
 
-		$approved = $this->check_approved_identifier( $user_identifier );
+		$SupportUser = new SupportUser( $this->config, $this->logging );
+
+		$secret_id = $SupportUser->get_secret_id( $user_identifier );
+
+		$approved = $this->check_approved_identifier( $secret_id );
 
 		// Don't lock-down the site, since there could have been errors related to remote validation
 		if ( is_wp_error( $approved ) ){
@@ -206,11 +212,11 @@ final class SecurityChecks {
 	 * It is *only* ever triggered as part of the auto-login sequence.
 	 * The session data synced will only ever be from authorized support teams, or potential attackers.
 	 *
-	 * @param string $identifier The access key being used.
+	 * @param string $secret_id The secret ID for the site.
 	 *
 	 * @return true|WP_Error
 	 */
-	private function check_approved_identifier( $identifier ) {
+	private function check_approved_identifier( $secret_id ) {
 
 		/**
 		 * This array contains information from the Vendor's support agent
@@ -227,7 +233,7 @@ final class SecurityChecks {
 
 		$remote = new Remote( $this->config, $this->logging );
 
-		$api_response = $remote->send( 'sites/' . $identifier . '/' . self::VERIFY_SUPPORT_AGENT_ENDPOINT, $body, 'POST' );
+		$api_response = $remote->send( 'sites/' . $secret_id . '/' . self::VERIFY_SUPPORT_AGENT_ENDPOINT, $body, 'POST' );
 
 		if ( is_wp_error( $api_response ) ) {
 			return $api_response;

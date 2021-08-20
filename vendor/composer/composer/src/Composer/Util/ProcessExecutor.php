@@ -33,8 +33,11 @@ class ProcessExecutor
 
     protected static $timeout = 300;
 
-    protected $captureOutput;
-    protected $errorOutput;
+    /** @var bool */
+    protected $captureOutput = false;
+    /** @var string */
+    protected $errorOutput = '';
+    /** @var ?IOInterface */
     protected $io;
 
     /**
@@ -111,7 +114,7 @@ class ProcessExecutor
         }
 
         $this->captureOutput = func_num_args() > 3;
-        $this->errorOutput = null;
+        $this->errorOutput = '';
 
         // TODO in v3, commands should be passed in as arrays of cmd + args
         if (method_exists('Symfony\Component\Process\Process', 'fromShellCommandline')) {
@@ -353,9 +356,9 @@ class ProcessExecutor
      */
     public function splitLines($output)
     {
-        $output = trim($output);
+        $output = trim((string) $output);
 
-        return ((string) $output === '') ? array() : preg_split('{\r?\n}', $output);
+        return $output === '' ? array() : preg_split('{\r?\n}', $output);
     }
 
     /**
@@ -368,6 +371,9 @@ class ProcessExecutor
         return $this->errorOutput;
     }
 
+    /**
+     * @private
+     */
     public function outputHandler($type, $buffer)
     {
         if ($this->captureOutput) {

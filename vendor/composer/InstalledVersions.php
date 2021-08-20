@@ -54,12 +54,12 @@ private static $installed = array (
     ),
     'composer/composer' => 
     array (
-      'pretty_version' => '2.1.5',
-      'version' => '2.1.5.0',
+      'pretty_version' => '2.1.6',
+      'version' => '2.1.6.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'ac679902e9f66b85a8f9d8c1c88180f609a8745d',
+      'reference' => 'e5cac5f9d2354d08b67f1d21c664ae70d748c603',
     ),
     'composer/metadata-minifier' => 
     array (
@@ -136,12 +136,12 @@ private static $installed = array (
     ),
     'league/flysystem' => 
     array (
-      'pretty_version' => '1.1.4',
-      'version' => '1.1.4.0',
+      'pretty_version' => '1.1.5',
+      'version' => '1.1.5.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'f3ad69181b8afed2c9edf7be5a2918144ff4ea32',
+      'reference' => '18634df356bfd4119fe3d6156bdb990c414c14ea',
     ),
     'league/mime-type-detection' => 
     array (
@@ -242,12 +242,12 @@ private static $installed = array (
     ),
     'seld/phar-utils' => 
     array (
-      'pretty_version' => '1.1.1',
-      'version' => '1.1.1.0',
+      'pretty_version' => '1.1.2',
+      'version' => '1.1.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => '8674b1d84ffb47cc59a101f5d5a3b61e87d23796',
+      'reference' => '749042a2315705d2dfbbc59234dd9ceb22bf3ff0',
     ),
     'symfony/console' => 
     array (
@@ -372,8 +372,9 @@ private static $installed = array (
       'version' => 'dev-develop',
       'aliases' => 
       array (
+        0 => '9999999-dev',
       ),
-      'reference' => '450bc49447d6baa3cf0963f21aa877fb813c184d',
+      'reference' => 'af13626587667856375173ece5857ceab0eddf62',
     ),
   ),
 );

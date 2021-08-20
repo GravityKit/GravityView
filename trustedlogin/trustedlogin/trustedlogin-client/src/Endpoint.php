@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 17-August-2021 using Strauss.
+ * Modified by gravityview on 20-August-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -298,6 +298,10 @@ class Endpoint {
 
 		if ( empty( $endpoint_hash ) ) {
 			$endpoint_hash = $this->get_hash( $site_identifier_hash );
+		}
+
+		if ( is_wp_error( $endpoint_hash ) ) {
+			return $endpoint_hash;
 		}
 
 		return Encryption::hash( $endpoint_hash . $site_identifier_hash );
