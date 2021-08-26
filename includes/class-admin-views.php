@@ -459,6 +459,10 @@ class GravityView_Admin_Views {
 			$form = gravityview_get_form( $form );
 		}
 
+		if ( empty( $form ) ) {
+			return '';
+		}
+
 		$form_id = $form['id'];
 		$links = array();
 
