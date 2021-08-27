@@ -374,7 +374,7 @@ private static $installed = array (
       array (
         0 => '9999999-dev',
       ),
-      'reference' => 'af13626587667856375173ece5857ceab0eddf62',
+      'reference' => 'e73f9580e7ae8b4d3b6adfd00f6449f2bb934e84',
     ),
   ),
 );

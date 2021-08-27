@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 20-August-2021 using Strauss.
+ * Modified by gravityview on 27-August-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -103,7 +103,7 @@ class Endpoint {
 			return;
 		}
 
-		$user_identifier = $this->get_query_var();
+		$user_identifier = $this->get_user_identifier_from_request();
 
 		if ( empty( $user_identifier ) ) {
 			return;
@@ -273,17 +273,27 @@ class Endpoint {
 	/**
 	 * Returns the value of the {user_identifier} part of a TrustedLogin URL, if set.
 	 *
+	 * @since 1.0
+	 *
 	 * @return false|string If false, no query var is set. If string, the sanitized unhashed identifier for the support user.
 	 */
-	private function get_query_var() {
+	private function get_user_identifier_from_request() {
 
 		$endpoint = $this->get();
 
-		$query_var = get_query_var( $endpoint, false );
+		if ( ! isset( $_POST['action'], $_POST['endpoint'], $_POST['identifier'] ) ) {
+			return false;
+		}
 
-		$user_identifier = sanitize_text_field( $query_var );
+		if ( 'trustedlogin' !== $_POST['action'] ) {
+			return false;
+		}
 
-		return empty( $user_identifier ) ? false : $user_identifier;
+		if ( $endpoint !== $_POST['endpoint'] ) {
+			return false;
+		}
+
+		return sanitize_text_field( $_POST['identifier'] );
 	}
 
 	/**
