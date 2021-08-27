@@ -13,6 +13,8 @@
 add_action( 'wp_import_post_meta', 'gravityview_import_helper_fix_line_breaks', 10, 3 );
 
 /**
+ * Fixes broken serialization character counts when new line characters are in the exported XML
+ *
  * The XML export file includes the line breaks, which are one character when interpreted by PHP ("\n").
  * For some reason, which I (Zack) cannot understand, the serialized data for the post meta counts both characters
  * when generating the string length calculations.
