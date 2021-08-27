@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= [WIP] 2.12.1 =
+
+* Fixed: Importing [exported Views](https://docs.gravityview.co/article/119-importing-and-exporting-configured-views) fails when Custom Content or [DIY Layout](https://gravityview.co/extensions/diy-layout/) fields are configured with line breaks.
+
 = 2.12 on July 29, 2021 =
 
 * Fixed: Add latest Yoast SEO scripts to the No-Conflict approved list
