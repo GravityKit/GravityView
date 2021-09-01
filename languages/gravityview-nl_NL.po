@@ -4,9 +4,9 @@
 # Zachary Katz <zack@katz.co>, 2019
 # Desiree Graste <desiree@mamamentje.nl>, 2020
 # leooosterloo <leo@pronamic.nl>, 2021
-# Erik van Beek <erik@aiwos.nl>, 2021
 # Thom, 2021
 # René Serier <rene@aiwos.com>, 2021
+# Erik van Beek <erik@aiwos.nl>, 2021
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
-"Last-Translator: René Serier <rene@aiwos.com>, 2021\n"
+"Last-Translator: Erik van Beek <erik@aiwos.nl>, 2021\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/katzwebservices/teams/18775/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2672,7 +2672,7 @@ msgstr ""
 #: includes/extensions/duplicate-entry/class-duplicate-entry.php:240
 #: includes/extensions/duplicate-entry/class-duplicate-entry.php:262
 msgid "Duplicate Entry"
-msgstr ""
+msgstr "Inzending Dupliceren"
 
 #: includes/extensions/duplicate-entry/class-duplicate-entry.php:214
 msgid "Allow the following users to duplicate the entry:"
@@ -2707,7 +2707,7 @@ msgstr ""
 
 #: includes/extensions/duplicate-entry/class-duplicate-entry.php:777
 msgid "The entry was successfully duplicated."
-msgstr ""
+msgstr "De inzending is succesvol gedupliceerd."
 
 #: includes/extensions/duplicate-entry/class-duplicate-entry.php:821
 msgid "Duplicate"
@@ -2715,11 +2715,11 @@ msgstr "Dupliceer"
 
 #: includes/extensions/duplicate-entry/class-duplicate-entry.php:845
 msgid "Entry duplicated."
-msgstr ""
+msgstr "Inzending gedupliceerd."
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:83
 msgid "Link to Edit Entry"
-msgstr ""
+msgstr "Link naar Inzending Bewerken"
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:85
 msgid "A link to edit the entry. Visible based on View settings."
@@ -3187,19 +3187,19 @@ msgstr "Beschrijving"
 
 #: includes/fields/class-gravityview-field-created-by.php:144
 msgid "First Name"
-msgstr ""
+msgstr "Voornaam"
 
 #: includes/fields/class-gravityview-field-created-by.php:145
 msgid "Last Name"
-msgstr ""
+msgstr "Achternaam"
 
 #: includes/fields/class-gravityview-field-created-by.php:148
 msgid "First and Last Name"
-msgstr ""
+msgstr "Voor- en achternaam"
 
 #: includes/fields/class-gravityview-field-created-by.php:149
 msgid "Last and First Name"
-msgstr ""
+msgstr "Achter- en voornaam"
 
 #: includes/fields/class-gravityview-field-creditcard.php:21
 msgid "Credit Card"
@@ -3314,7 +3314,7 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-entry-link.php:34
 msgid "Link to Single Entry"
-msgstr ""
+msgstr "Link naar enkele inzending"
 
 #: includes/fields/class-gravityview-field-entry-link.php:35
 msgid "A dedicated link to the single entry with customizable text."
@@ -3833,7 +3833,7 @@ msgstr "Converteert URI, www, FTP en e-mailadressen naar HTML-links"
 
 #: includes/fields/class-gravityview-field-textarea.php:58
 msgid "Display as HTML"
-msgstr ""
+msgstr "Toon als HTML"
 
 #: includes/fields/class-gravityview-field-textarea.php:59
 msgid ""
@@ -4098,7 +4098,7 @@ msgstr "Elk veld zal als een kolom in de tabel worden getoond."
 
 #: includes/presets/default-table/class-gravityview-default-template-table.php:105
 msgid "Add Table Column"
-msgstr ""
+msgstr "Kolom toevoegen"
 
 #: includes/presets/event-listings/class-gravityview-preset-event-listings.php:24
 msgid "Event Listings"
@@ -4600,17 +4600,17 @@ msgstr "Uitschakelen"
 #: future/includes/class-gv-settings-view.php:174
 msgctxt "an action that admins can perform"
 msgid "edit entries"
-msgstr ""
+msgstr "bewerk inzendingen"
 
 #: future/includes/class-gv-settings-view.php:201
 msgctxt "an action that admins can perform"
 msgid "delete entries"
-msgstr ""
+msgstr "verwijder inzendingen"
 
 #: future/includes/class-gv-settings-view.php:214
 msgctxt "an action that admins can perform"
 msgid "duplicate entries"
-msgstr ""
+msgstr "dupliceer inzendingen"
 
 #: future/includes/class-gv-view.php:142
 msgctxt "Post Type General Name"
@@ -4794,7 +4794,7 @@ msgstr ""
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:224
 msgctxt "Referring to the user who is currently editing a locked entry"
 msgid "the person who is editing the entry"
-msgstr ""
+msgstr "de persoon die de inzending aan het bewerken is"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1184
 msgctxt "Replacements are HTML"

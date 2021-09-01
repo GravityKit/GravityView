@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.12\n"
+"Project-Id-Version: GravityView 2.12.1\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -145,14 +145,14 @@ msgid ""
 msgstr ""
 
 #: future/includes/class-gv-license-handler.php:426
-#: future/includes/class-gv-settings-addon.php:1376
+#: future/includes/class-gv-settings-addon.php:1381
 msgid "You don't have the ability to edit plugin settings."
 msgstr ""
 
 #: future/includes/class-gv-license-handler.php:427
 #: future/includes/class-gv-license-handler.php:548
 #: future/includes/class-gv-license-handler.php:562
-#: future/includes/class-gv-settings-addon.php:1130
+#: future/includes/class-gv-settings-addon.php:1135
 msgid "Verifying license&hellip;"
 msgstr ""
 
@@ -216,13 +216,13 @@ msgid ""
 "look strange. Don't be concerned!"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:648
+#: future/includes/class-gv-plugin.php:647
 #: includes/class-gravityview-entry-approval.php:456
 #: tests/unit-tests/GravityView_Uninstall_Test.php:191
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:649
+#: future/includes/class-gv-plugin.php:648
 #: includes/class-gravityview-entry-approval.php:450
 #: tests/unit-tests/GravityView_Uninstall_Test.php:192
 msgid "Approved the Entry for GravityView"
@@ -311,14 +311,14 @@ msgid "Update Settings"
 msgstr ""
 
 #: future/includes/class-gv-settings-addon.php:243
-#: future/includes/class-gv-settings-addon.php:1177
+#: future/includes/class-gv-settings-addon.php:1182
 msgid "GravityView Settings"
 msgstr ""
 
 #: future/includes/class-gv-settings-addon.php:284
-#: future/includes/class-gv-settings-addon.php:944
+#: future/includes/class-gv-settings-addon.php:949
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:89
-#: includes/class-admin-views.php:480 includes/class-admin.php:165
+#: includes/class-admin-views.php:484 includes/class-admin.php:165
 msgid "Settings"
 msgstr ""
 
@@ -399,168 +399,168 @@ msgid ""
 "comments, email us: support@gravityview.co"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:772
+#: future/includes/class-gv-settings-addon.php:777
 msgid ""
 "Your GravityView license %s. This means you&rsquo;re missing out on updates "
 "and support! %sActivate your license%s or %sget a license here%s."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:782
+#: future/includes/class-gv-settings-addon.php:787
 msgid "Inactive License"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:790
+#: future/includes/class-gv-settings-addon.php:795
 msgid "Expired License"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:791
+#: future/includes/class-gv-settings-addon.php:796
 msgid "has expired"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:795
+#: future/includes/class-gv-settings-addon.php:800
 msgid "Invalid License"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:796
+#: future/includes/class-gv-settings-addon.php:801
 msgid "is invalid"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:799
+#: future/includes/class-gv-settings-addon.php:804
 msgid "is inactive"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:800
-#: future/includes/class-gv-settings-addon.php:809
+#: future/includes/class-gv-settings-addon.php:805
+#: future/includes/class-gv-settings-addon.php:814
 msgid "Activate your license key below."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:808
+#: future/includes/class-gv-settings-addon.php:813
 msgid "has not been activated"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:957
+#: future/includes/class-gv-settings-addon.php:962
 msgid "Required"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:979
+#: future/includes/class-gv-settings-addon.php:984
 msgid "Support Email"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:980
+#: future/includes/class-gv-settings-addon.php:985
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:989
+#: future/includes/class-gv-settings-addon.php:994
 msgid "Show Support Port?"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1002
+#: future/includes/class-gv-settings-addon.php:1007
 msgid ""
 "The Support Port provides quick access to how-to articles and tutorials. "
 "For administrators, it also makes it easy to contact support."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1002
+#: future/includes/class-gv-settings-addon.php:1007
 msgid "The Support Port looks like this."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1003
+#: future/includes/class-gv-settings-addon.php:1008
 msgid "Show the Support Port on GravityView pages?"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1008
+#: future/includes/class-gv-settings-addon.php:1013
 msgid "No-Conflict Mode"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1021
+#: future/includes/class-gv-settings-addon.php:1026
 msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
 "themes."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1021
+#: future/includes/class-gv-settings-addon.php:1026
 msgid "If your Edit View tabs are ugly, enable this setting."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1030
+#: future/includes/class-gv-settings-addon.php:1035
 msgid "REST API"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1043
+#: future/includes/class-gv-settings-addon.php:1048
 msgid ""
 "Enable View and Entry access via the REST API? Regular per-View "
 "restrictions apply (private, password protected, etc.)."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1044
+#: future/includes/class-gv-settings-addon.php:1049
 msgid "If you are unsure, choose the Disable setting."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1049
+#: future/includes/class-gv-settings-addon.php:1054
 msgid "Display \"Powered By\" Link"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1053
+#: future/includes/class-gv-settings-addon.php:1058
 msgid "Display a \"Powered by GravityView\" link"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1058
+#: future/includes/class-gv-settings-addon.php:1063
 msgid ""
 "When enabled, a \"Powered by GravityView\" link will be displayed below "
 "Views. Help us spread the word!"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1065
+#: future/includes/class-gv-settings-addon.php:1070
 msgid "Affiliate ID"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1066
+#: future/includes/class-gv-settings-addon.php:1071
 msgid ""
 "Earn money when people clicking your links become GravityView customers. <a "
 "href=\"%s\" rel=\"external\">Register as an affiliate</a>!"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1074
+#: future/includes/class-gv-settings-addon.php:1079
 msgid "Become a Beta Tester"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1079
+#: future/includes/class-gv-settings-addon.php:1084
 msgid "Show me beta versions if they are available."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1084
+#: future/includes/class-gv-settings-addon.php:1089
 msgid ""
 "You will have early access to the latest GravityView features and "
 "improvements. There may be bugs! If you encounter an issue, help make "
 "GravityView better by reporting it!"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1127
+#: future/includes/class-gv-settings-addon.php:1132
 msgid "License Key"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1128
+#: future/includes/class-gv-settings-addon.php:1133
 msgid ""
 "Enter the license key that was sent to you on purchase. This enables plugin "
 "updates &amp; support."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1149
+#: future/includes/class-gv-settings-addon.php:1154
 msgid "The license key is defined by your site's configuration file."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1154
+#: future/includes/class-gv-settings-addon.php:1159
 msgid "You are running GravityView version %s"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1159
+#: future/includes/class-gv-settings-addon.php:1164
 msgid "GravityView License"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1410
+#: future/includes/class-gv-settings-addon.php:1415
 msgid ""
 "The license key you entered has been saved, but not activated. Please "
 "activate the license."
@@ -1089,7 +1089,7 @@ msgstr ""
 
 #: future/includes/class-gv-view.php:298
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:224
-#: includes/class-admin-views.php:536
+#: includes/class-admin-views.php:540
 msgid "Data Source"
 msgstr ""
 
@@ -1567,7 +1567,7 @@ msgid "These widgets will be shown below entries."
 msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:43
-#: includes/class-admin-views.php:1136 includes/class-admin-views.php:1261
+#: includes/class-admin-views.php:1140 includes/class-admin-views.php:1265
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
 msgid "Close"
 msgstr ""
@@ -1634,7 +1634,7 @@ msgid "(no title)"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:135
-#: includes/class-admin-views.php:1262
+#: includes/class-admin-views.php:1266
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:282
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1135
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1263
@@ -1642,7 +1642,7 @@ msgid "Cancel"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:179
-#: includes/class-admin-views.php:1266
+#: includes/class-admin-views.php:1270
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -1900,126 +1900,126 @@ msgstr ""
 msgid "The connected form can not be found; it may no longer exist."
 msgstr ""
 
-#: includes/class-admin-views.php:468
+#: includes/class-admin-views.php:472
 #: includes/class-gravityview-admin-bar.php:139
 msgid "Edit Form"
 msgstr ""
 
-#: includes/class-admin-views.php:475
+#: includes/class-admin-views.php:479
 msgid "Entries"
 msgstr ""
 
-#: includes/class-admin-views.php:480
+#: includes/class-admin-views.php:484
 msgid "Edit settings for this form"
 msgstr ""
 
-#: includes/class-admin-views.php:485
+#: includes/class-admin-views.php:489
 msgid "Preview Form"
 msgstr ""
 
-#: includes/class-admin-views.php:485
+#: includes/class-admin-views.php:489
 msgid "Preview this form"
 msgstr ""
 
-#: includes/class-admin-views.php:725
+#: includes/class-admin-views.php:729
 msgid "Add All Form Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:726
+#: includes/class-admin-views.php:730
 msgid "Insert all the form fields at once."
 msgstr ""
 
-#: includes/class-admin-views.php:897
+#: includes/class-admin-views.php:901
 msgid "Add Widget"
 msgstr ""
 
-#: includes/class-admin-views.php:899
+#: includes/class-admin-views.php:903
 msgid "Add Field"
 msgstr ""
 
-#: includes/class-admin-views.php:956
+#: includes/class-admin-views.php:960
 msgid "Clear all fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1050
+#: includes/class-admin-views.php:1054
 #: includes/widgets/search-widget/class-search-widget.php:101
 msgid "Search Bar"
 msgstr ""
 
-#: includes/class-admin-views.php:1060
+#: includes/class-admin-views.php:1064
 #: includes/widgets/class-gravityview-widget-pagination-info.php:30
 msgid "Show Pagination Info"
 msgstr ""
 
-#: includes/class-admin-views.php:1066 includes/class-admin-views.php:1073
+#: includes/class-admin-views.php:1070 includes/class-admin-views.php:1077
 #: includes/widgets/class-gravityview-widget-page-links.php:25
 msgid "Page Links"
 msgstr ""
 
-#: includes/class-admin-views.php:1139
+#: includes/class-admin-views.php:1143
 msgid "Filter Fields:"
 msgstr ""
 
-#: includes/class-admin-views.php:1140
+#: includes/class-admin-views.php:1144
 msgid "Filter fields by name or label"
 msgstr ""
 
-#: includes/class-admin-views.php:1151
+#: includes/class-admin-views.php:1155
 msgid "No fields were found matching the search."
 msgstr ""
 
-#: includes/class-admin-views.php:1184
+#: includes/class-admin-views.php:1188
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:1185
+#: includes/class-admin-views.php:1189
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1257
+#: includes/class-admin-views.php:1261
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:1258
+#: includes/class-admin-views.php:1262
 msgid "Reorder Search Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1259
+#: includes/class-admin-views.php:1263
 #: includes/widgets/search-widget/class-search-widget.php:267
 msgid "Add Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1260
+#: includes/class-admin-views.php:1264
 msgid "Remove Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1263
+#: includes/class-admin-views.php:1267
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:1264
+#: includes/class-admin-views.php:1268
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:1265
+#: includes/class-admin-views.php:1269
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1267
+#: includes/class-admin-views.php:1271
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1268
+#: includes/class-admin-views.php:1272
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:1269
+#: includes/class-admin-views.php:1273
 msgid "Would you like to remove all fields in this zone?"
 msgstr ""
 
@@ -2058,23 +2058,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:637
+#: includes/class-admin-welcome.php:648
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:657
+#: includes/class-admin-welcome.php:668
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:708
+#: includes/class-admin-welcome.php:719
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:735
+#: includes/class-admin-welcome.php:746
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:736
+#: includes/class-admin-welcome.php:747
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -4362,32 +4362,32 @@ msgctxt "A scale from 0 (bad) to 10 (good)"
 msgid "%s (\"Not at all likely\") to %s (\"Extremely likely\")"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:994
+#: future/includes/class-gv-settings-addon.php:999
 msgctxt "Setting: Show or Hide"
 msgid "Show"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:998
+#: future/includes/class-gv-settings-addon.php:1003
 msgctxt "Setting: Show or Hide"
 msgid "Hide"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1013
+#: future/includes/class-gv-settings-addon.php:1018
 msgctxt "Setting: On or off"
 msgid "On"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1017
+#: future/includes/class-gv-settings-addon.php:1022
 msgctxt "Setting: On or off"
 msgid "Off"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1035
+#: future/includes/class-gv-settings-addon.php:1040
 msgctxt "Setting: Enable or Disable"
 msgid "Enable"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1039
+#: future/includes/class-gv-settings-addon.php:1044
 msgctxt "Setting: Enable or Disable"
 msgid "Disable"
 msgstr ""
@@ -4501,7 +4501,7 @@ msgctxt ""
 msgid "Manage Add-Ons"
 msgstr ""
 
-#: includes/class-admin-views.php:539
+#: includes/class-admin-views.php:543
 msgctxt "Column title that shows what template is being used for Views"
 msgid "Template"
 msgstr ""
