@@ -119,9 +119,9 @@ final class Plugin {
 	private function __construct() {
 
 		/**
-		 * Load translations.
+		 * Load translations. Must be priority 1.
 		 */
-		add_action( 'init', array( $this, 'load_textdomain' ) );
+		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ), 1 );
 
 		/**
 		 * Load some frontend-related legacy files.
@@ -269,7 +269,7 @@ final class Plugin {
 	}
 
 	/**
-	 * Load the translations.
+	 * Load the translations on `plugins_loaded`.
 	 *
 	 * Order of look-ups:
 	 *
@@ -281,7 +281,6 @@ final class Plugin {
 	 * @return void
 	 */
 	public function load_textdomain() {
-
 		$domain = 'gravityview';
 
 		// 1. /wp-content/languages/plugins/gravityview-{locale}.mo (loaded by WordPress Core)

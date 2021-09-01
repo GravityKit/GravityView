@@ -21,6 +21,15 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.12.1 on September 1, 2021 =
+
+* Fixed: The Gravity Forms widget in the View editor would always use the source form of the View
+* Fixed: The field picker didn't use available translations
+* Fixed: Importing [exported Views](https://docs.gravityview.co/article/119-importing-and-exporting-configured-views) failed when Custom Content or [DIY Layout](https://gravityview.co/extensions/diy-layout/) fields included line breaks.
+* Fixed: When first installing GravityView, the message was for an invalid license instead of inactive.
+* Fixed: The "Affiliate ID" setting would not toggle properly when loading GravityView settings. [P.S. — Become an affiliate and earn money referring GravityView!](https://gravityview.co/account/affiliates/#about-the-program)
+* Tweak: Changed the icon of the Presets preview
+
 = 2.12 on July 29, 2021 =
 
 * Fixed: Add latest Yoast SEO scripts to the No-Conflict approved list
