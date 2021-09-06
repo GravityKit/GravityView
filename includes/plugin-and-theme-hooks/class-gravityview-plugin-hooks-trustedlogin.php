@@ -23,7 +23,7 @@ class GravityView_Plugin_Hooks_TrustedLogin extends GravityView_Plugin_and_Theme
 
 	const TRUSTEDLOGIN_NAMESPACE = 'test';
 
-	const TRUSTEDLOGIN_API_KEY = '6346688830182b64';
+	const TRUSTEDLOGIN_API_KEY = '07abf14e66223832';
 
 	const TRUSTEDLOGIN_CLASS_NAME = '\GravityView\TrustedLogin\Client';
 
