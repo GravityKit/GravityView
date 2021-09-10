@@ -39,7 +39,7 @@ class FinalCallback implements MiddlewareInterface
             self::$nestingLevel--;
 
             if (! $this->onlyApplyCallBackOnTopLevel || self::$nestingLevel === 0) {
-                call_user_func($this->callback, $json, $object, $map, $mapper);
+                \call_user_func($this->callback, $json, $object, $map, $mapper);
             }
         };
     }

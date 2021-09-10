@@ -28,25 +28,25 @@ class ScalarType extends Enum
     protected const MIXED = 'mixed';
 
     /**
-     * @param string|bool|int|float $value
+     * @param string|bool|int|float $input
      * @return string|bool|int|float
      */
-    public function cast($value)
+    public function cast($input)
     {
-        if ($this->equals(self::MIXED())) {
-            return $value;
+        if ($this->value === self::MIXED) {
+            return $input;
         }
-        if ($this->equals(self::STRING())) {
-            return (string) $value;
+        if ($this->value === self::STRING) {
+            return (string) $input;
         }
-        if ($this->equals(self::BOOLEAN()) || $this->equals(self::BOOL())) {
-            return (bool) $value;
+        if ($this->value === self::BOOLEAN || $this->value === self::BOOL) {
+            return (bool) $input;
         }
-        if ($this->equals(self::INTEGER()) || $this->equals(self::INT())) {
-            return (int) $value;
+        if ($this->value === self::INTEGER || $this->value === self::INT) {
+            return (int) $input;
         }
-        if ($this->equals(self::DOUBLE()) || $this->equals(self::FLOAT())) {
-            return (float) $value;
+        if ($this->value === self::DOUBLE || $this->value === self::FLOAT) {
+            return (float) $input;
         }
 
         throw new \LogicException("Missing {$this->value} in cast method");

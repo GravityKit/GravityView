@@ -28,14 +28,14 @@ class NullCache implements CacheInterface
 
     public function getMultiple($keys, $default = null)
     {
-        if (! is_iterable($keys)) {
+        if (! \is_iterable($keys)) {
             throw InvalidArgumentException::forCacheKey($keys);
         }
 
         $keys = (array) $keys;
-        $values = array_fill(0, count($keys), $default);
+        $values = \array_fill(0, count($keys), $default);
 
-        return (array) array_combine($keys, $values);
+        return (array) \array_combine($keys, $values);
     }
 
     public function setMultiple($values, $ttl = null): bool

@@ -20,15 +20,15 @@ class UseStatementHelper
         }
 
         $filename = $class->getFileName();
-        if ($filename === false || substr($filename, -13) === self::$evaldCodeFileNameEnding) {
+        if ($filename === false || \substr($filename, -13) === self::$evaldCodeFileNameEnding) {
             throw new \RuntimeException("Class {$class->getName()} has no filename available");
         }
 
-        if (!is_readable($filename)) {
+        if (! \is_readable($filename)) {
             throw new \RuntimeException("Unable to read {$class->getFileName()}");
         }
 
-        $contents = file_get_contents($filename);
+        $contents = \file_get_contents($filename);
         if ($contents === false) {
             throw new \RuntimeException("Unable to read {$class->getFileName()}");
         }

@@ -35,7 +35,7 @@ class DocBlockAnnotations extends AbstractMiddleware
 
     private function fetchPropertyMapForObject(ObjectWrapper $object): PropertyMap
     {
-        $cacheKey = sprintf('%s::Cache::%s', __CLASS__, $object->getName());
+        $cacheKey = \sprintf('%s::Cache::%s', __CLASS__, $object->getName());
         if ($this->cache->has($cacheKey)) {
             return $this->cache->get($cacheKey);
         }
@@ -56,9 +56,9 @@ class DocBlockAnnotations extends AbstractMiddleware
                 continue;
             }
 
-            $types = explode('|', $annotations->getVar());
-            $nullable = in_array('null', $types, true);
-            $types = array_filter($types, static function (string $type) {
+            $types = \explode('|', $annotations->getVar());
+            $nullable = \in_array('null', $types, true);
+            $types = \array_filter($types, static function (string $type) {
                 return $type !== 'null';
             });
 
@@ -68,17 +68,17 @@ class DocBlockAnnotations extends AbstractMiddleware
                 ->setVisibility(Visibility::fromReflectionProperty($property));
 
             /* A union type that has one of its types defined as array is to complex to understand */
-            if (in_array('array', $types, true)) {
+            if (\in_array('array', $types, true)) {
                 $property = $builder->addType('mixed', true)->build();
                 $intermediatePropertyMap->addProperty($property);
                 continue;
             }
 
             foreach ($types as $type) {
-                $type = trim($type);
-                $isArray = substr($type, -2) === '[]';
+                $type = \trim($type);
+                $isArray = \substr($type, -2) === '[]';
                 if ($isArray) {
-                    $type = substr($type, 0, -2);
+                    $type = \substr($type, 0, -2);
                 }
                 $builder->addType($type, $isArray);
             }
@@ -96,15 +96,15 @@ class DocBlockAnnotations extends AbstractMiddleware
     {
         // Strip away the start "/**' and ending "*/"
         if (strpos($docBlock, '/**') === 0) {
-            $docBlock = substr($docBlock, 3);
+            $docBlock = \substr($docBlock, 3);
         }
         if (substr($docBlock, -2) === '*/') {
-            $docBlock = substr($docBlock, 0, -2);
+            $docBlock = \substr($docBlock, 0, -2);
         }
-        $docBlock = trim($docBlock);
+        $docBlock = \trim($docBlock);
 
         $var = null;
-        if (preg_match_all(self::DOC_BLOCK_REGEX, $docBlock, $matches)) {
+        if (\preg_match_all(self::DOC_BLOCK_REGEX, $docBlock, $matches)) {
             for ($x = 0, $max = count($matches[0]); $x < $max; $x++) {
                 if ($matches['name'][$x] === 'var') {
                     $var = $matches['value'][$x];

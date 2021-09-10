@@ -43,7 +43,8 @@
         "phpcbf": "phpcbf src tests",
         "phpstan": "phpstan analyse",
         "unit-tests": "phpunit --testsuite unit --testdox --coverage-clover=build/logs/clover-unit-tests.xml",
-        "integration-tests": "phpunit --testsuite integration --testdox --coverage-clover=build/logs/clover-integration-tests.xml"
+        "integration-tests": "phpunit --testsuite integration --testdox --coverage-clover=build/logs/clover-integration-tests.xml",
+        "benchmarks": "phpbench run tests/benchmark --report=default"
     },
     "suggest": {
         "json-mapper/laravel-package": "Use JsonMapper directly with Laravel",

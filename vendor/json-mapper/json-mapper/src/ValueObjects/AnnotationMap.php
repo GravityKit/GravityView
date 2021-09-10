@@ -22,12 +22,12 @@ class AnnotationMap
 
     public function hasVar(): bool
     {
-        return ! is_null($this->var);
+        return ! \is_null($this->var);
     }
 
     public function getVar(): string
     {
-        if (is_null($this->var)) {
+        if (\is_null($this->var)) {
             throw new \Exception('Annotation map doesnt contain valid value for var');
         }
         return $this->var;
@@ -40,12 +40,12 @@ class AnnotationMap
 
     public function hasReturn(): bool
     {
-        return ! is_null($this->return);
+        return ! \is_null($this->return);
     }
 
     public function getReturn(): string
     {
-        if (is_null($this->return)) {
+        if (\is_null($this->return)) {
             throw new \Exception('Annotation map doesnt contain valid value for return');
         }
         return $this->return;

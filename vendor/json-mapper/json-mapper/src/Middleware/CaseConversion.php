@@ -32,7 +32,7 @@ class CaseConversion extends AbstractMiddleware
             return;
         }
 
-        $keys = array_keys((array) $json);
+        $keys = \array_keys((array) $json);
         foreach ($keys as $key) {
             $replacementKey = $this->getReplacementKey($key);
 
@@ -65,11 +65,11 @@ class CaseConversion extends AbstractMiddleware
     {
         switch ($this->replacementSeparator) {
             case TextNotation::STUDLY_CAPS():
-                return ucfirst($key);
+                return \ucfirst($key);
             case TextNotation::UNDERSCORE():
-                return strtolower((string) preg_replace('/(?<!^)[A-Z]/', '_$0', $key));
+                return \strtolower((string) \preg_replace('/(?<!^)[A-Z]/', '_$0', $key));
             case TextNotation::KEBAB_CASE():
-                return strtolower((string) preg_replace('/(?<!^)[A-Z]/', '-$0', $key));
+                return \strtolower((string) \preg_replace('/(?<!^)[A-Z]/', '-$0', $key));
             case TextNotation::CAMEL_CASE():
             default:
                 return $key;
@@ -80,11 +80,11 @@ class CaseConversion extends AbstractMiddleware
     {
         switch ($this->replacementSeparator) {
             case TextNotation::CAMEL_CASE():
-                return lcfirst($key);
+                return \lcfirst($key);
             case TextNotation::UNDERSCORE():
-                return strtolower((string) preg_replace('/(?<!^)[A-Z]/', '_$0', $key));
+                return \strtolower((string) \preg_replace('/(?<!^)[A-Z]/', '_$0', $key));
             case TextNotation::KEBAB_CASE():
-                return strtolower((string) preg_replace('/(?<!^)[A-Z]/', '-$0', $key));
+                return \strtolower((string) \preg_replace('/(?<!^)[A-Z]/', '-$0', $key));
             case TextNotation::STUDLY_CAPS():
             default:
                 return $key;
@@ -95,11 +95,11 @@ class CaseConversion extends AbstractMiddleware
     {
         switch ($this->replacementSeparator) {
             case TextNotation::STUDLY_CAPS():
-                return ucfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))));
+                return \ucfirst(\str_replace(' ', '', \ucwords(\str_replace('_', ' ', $key))));
             case TextNotation::CAMEL_CASE():
-                return lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))));
+                return lcfirst(\str_replace(' ', '', \ucwords(\str_replace('_', ' ', $key))));
             case TextNotation::KEBAB_CASE():
-                return str_replace('_', '-', $key);
+                return \str_replace('_', '-', $key);
             case TextNotation::UNDERSCORE():
             default:
                 return $key;
@@ -110,11 +110,11 @@ class CaseConversion extends AbstractMiddleware
     {
         switch ($this->replacementSeparator) {
             case TextNotation::STUDLY_CAPS():
-                return ucfirst(str_replace(' ', '', ucwords(str_replace('-', ' ', $key))));
+                return \ucfirst(\str_replace(' ', '', \ucwords(\str_replace('-', ' ', $key))));
             case TextNotation::CAMEL_CASE():
-                return lcfirst(str_replace(' ', '', ucwords(str_replace('-', ' ', $key))));
+                return \lcfirst(\str_replace(' ', '', \ucwords(\str_replace('-', ' ', $key))));
             case TextNotation::UNDERSCORE():
-                return str_replace('-', '_', $key);
+                return \str_replace('-', '_', $key);
             case TextNotation::KEBAB_CASE():
             default:
                 return $key;

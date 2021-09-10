@@ -30,8 +30,8 @@ class Rename extends AbstractMiddleware
         PropertyMap $propertyMap,
         JsonMapperInterface $mapper
     ): void {
-        $mapping = array_filter($this->mapping, static function ($map) use ($object) {
-            return $map->getClass() === get_class($object->getObject());
+        $mapping = \array_filter($this->mapping, static function ($map) use ($object) {
+            return $map->getClass() === \get_class($object->getObject());
         });
         foreach ($mapping as $map) {
             $from = $map->getFrom();

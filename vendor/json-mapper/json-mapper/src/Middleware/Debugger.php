@@ -28,8 +28,8 @@ class Debugger extends AbstractMiddleware
         $this->logger->debug(
             'Current state attributes passed through JsonMapper middleware',
             [
-                'json' => json_encode($json),
-                'object' => get_class($object->getObject()),
+                'json' => \json_encode($json),
+                'object' => \get_class($object->getObject()),
                 'propertyMap' => $propertyMap->toString()
             ]
         );

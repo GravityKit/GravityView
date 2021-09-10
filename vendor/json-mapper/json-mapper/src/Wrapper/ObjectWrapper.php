@@ -16,7 +16,7 @@ class ObjectWrapper
     /** @param object $object */
     public function __construct($object)
     {
-        if (!is_object($object)) {
+        if (! \is_object($object)) {
             throw TypeError::forObjectArgument(__METHOD__, $object, 1);
         }
 

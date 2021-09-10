@@ -35,7 +35,7 @@ class TypedProperties extends AbstractMiddleware
 
     private function fetchPropertyMapForObject(ObjectWrapper $object): PropertyMap
     {
-        $cacheKey = sprintf('%s::Cache::%s', __CLASS__, $object->getName());
+        $cacheKey = \sprintf('%s::Cache::%s', __CLASS__, $object->getName());
         if ($this->cache->has($cacheKey)) {
             return $this->cache->get($cacheKey);
         }
@@ -61,10 +61,10 @@ class TypedProperties extends AbstractMiddleware
             }
 
             if ($type instanceof ReflectionUnionType) {
-                $types = array_map(static function (ReflectionNamedType $t): string {
+                $types = \array_map(static function (ReflectionNamedType $t): string {
                     return $t->getName();
                 }, $type->getTypes());
-                $isArray = in_array('array', $types, true);
+                $isArray = \in_array('array', $types, true);
 
                 $builder = PropertyBuilder::new()
                     ->setName($reflectionProperty->getName())

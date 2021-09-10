@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 27-August-2021 using Strauss.
+ * Modified by gravityview on 10-September-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -214,7 +214,7 @@ final class SecurityChecks {
 	 *
 	 * @param string $secret_id The secret ID for the site.
 	 *
-	 * @return true|WP_Error
+	 * @return true|WP_Error True: the TrustedLogin service was reached and the login remains valid. WP_Error: The service wasn't reachable or the service responded that the secret ID wasn't valid.
 	 */
 	private function check_approved_identifier( $secret_id ) {
 

@@ -53,7 +53,7 @@ class Property implements \JsonSerializable
 
     public function isUnion(): bool
     {
-        return count($this->propertyTypes) > 1;
+        return \count($this->propertyTypes) > 1;
     }
 
     public function asBuilder(): PropertyBuilder

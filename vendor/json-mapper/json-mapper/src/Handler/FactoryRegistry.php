@@ -40,7 +40,7 @@ class FactoryRegistry
 
     public function hasFactory(string $className): bool
     {
-        return array_key_exists($this->sanitiseClassName($className), $this->factories);
+        return \array_key_exists($this->sanitiseClassName($className), $this->factories);
     }
 
     /**
@@ -61,8 +61,8 @@ class FactoryRegistry
     private function sanitiseClassName(string $className): string
     {
         /* Erase leading slash as ::class doesnt contain leading slash */
-        if (strpos($className, '\\') === 0) {
-            $className = substr($className, 1);
+        if (\strpos($className, '\\') === 0) {
+            $className = \substr($className, 1);
         }
 
         return $className;

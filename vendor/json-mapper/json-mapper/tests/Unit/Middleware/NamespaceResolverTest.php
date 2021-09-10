@@ -152,7 +152,7 @@ class NamespaceResolverTest extends TestCase
         $object = new ComplexObject();
         $property = PropertyBuilder::new()
             ->setName('child')
-            ->addType('SimpleObject[]', false)
+            ->addType('SimpleObject', true)
             ->setVisibility(Visibility::PRIVATE())
             ->setIsNullable(false)
             ->build();
@@ -164,7 +164,7 @@ class NamespaceResolverTest extends TestCase
 
         self::assertTrue($propertyMap->hasProperty('child'));
         $this->assertThatProperty($propertyMap->getProperty('child'))
-            ->onlyHasType(SimpleObject::class . '[]', false);
+            ->onlyHasType(SimpleObject::class, true);
     }
 
     /**

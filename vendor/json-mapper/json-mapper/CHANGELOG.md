@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.7.0] - 2021-08-31
+### Fixed
+- Correctly map types for array type with reused internal classname withing same namespace [PR#103](https://github.com/JsonMapper/JsonMapper/pull/103)
+### Changed
+- Invoke PHP native functions with fq namespace to improve speed. [PR#100](https://github.com/JsonMapper/JsonMapper/pull/100)
+
 ## [2.6.0] - 2021-07-15
 ### Added 
 - Support PHP 7.1 [PR#97](https://github.com/JsonMapper/JsonMapper/pull/97)

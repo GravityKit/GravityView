@@ -47,7 +47,7 @@ class ArrayCache implements CacheInterface
 
         $values = [];
         $keys = (array) $keys;
-        array_walk($keys, function ($key) use ($default, &$values) {
+        \array_walk($keys, function ($key) use ($default, &$values) {
             $values[$key] = $this->cache[$key] ?? $default;
         });
 
@@ -56,14 +56,14 @@ class ArrayCache implements CacheInterface
 
     public function setMultiple($values, $ttl = null): bool
     {
-        if (! is_iterable($values)) {
+        if (! \is_iterable($values)) {
             throw InvalidArgumentException::forCacheKey($values);
         }
 
         $values = (array) $values;
         self::ensureKeyArgumentIsValidSetOfKeys(array_keys($values));
 
-        $this->cache = array_merge($this->cache, $values);
+        $this->cache = \array_merge($this->cache, $values);
 
         return true;
     }
@@ -73,7 +73,7 @@ class ArrayCache implements CacheInterface
         self::ensureKeyArgumentIsValidSetOfKeys($keys);
 
         $keys = (array) $keys;
-        array_walk($keys, function ($key) {
+        \array_walk($keys, function ($key) {
             unset($this->cache[$key]);
         });
 
@@ -87,7 +87,7 @@ class ArrayCache implements CacheInterface
     {
         self::ensureKeyArgumentIsValidSingleKey($key);
 
-        return array_key_exists($key, $this->cache);
+        return \array_key_exists($key, $this->cache);
     }
 
     /**
@@ -95,7 +95,7 @@ class ArrayCache implements CacheInterface
      */
     private static function ensureKeyArgumentIsValidSingleKey($key): void
     {
-        if (is_string($key)) {
+        if (\is_string($key)) {
             return;
         }
 
@@ -107,12 +107,12 @@ class ArrayCache implements CacheInterface
      */
     private static function ensureKeyArgumentIsValidSetOfKeys($keys): void
     {
-        if (! is_iterable($keys)) {
+        if (! \is_iterable($keys)) {
             throw InvalidArgumentException::forCacheKey($keys);
         }
 
         $keys = (array) $keys;
-        array_walk($keys, static function ($key) {
+        \array_walk($keys, static function ($key) {
             self::ensureKeyArgumentIsValidSingleKey($key);
         });
     }
