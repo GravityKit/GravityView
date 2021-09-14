@@ -43,7 +43,10 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 			}
 		</style>
 		<script>
-			Fancybox.bind(".gravityview-fancybox", <?php echo $settings; ?>);
+			// Fancybox 4 does not require jQuery.
+			if ( window.Fancybox ){
+				Fancybox.bind(".gravityview-fancybox", <?php echo $settings; ?>);
+			}
 		</script>
 		<?php
 
@@ -59,7 +62,6 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	protected function default_settings() {
 
 		$defaults = array(
-				// 'groupAll'=>true,
 				'animationEffect' => 'fade',
 				'toolbar'         => true,
 				'closeExisting'   => true,
@@ -92,15 +94,15 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	 * @inheritDoc
 	 */
 	public function enqueue_scripts() {
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_register_script( self::$script_slug, plugins_url( 'assets/lib/fancybox/dist/fancybox.umd.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GV_PLUGIN_VERSION );
+		// Fancybox 4 does not require jQuery and does not have a minified version by default.
+		wp_register_script( self::$script_slug, plugins_url( 'assets/lib/fancybox/dist/fancybox.umd.js', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function enqueue_styles() {
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		// Fancybox 4 does not have a minified version by default.
 		wp_register_style( self::$style_slug, plugins_url( 'assets/lib/fancybox/dist/fancybox.css', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 	}
 
