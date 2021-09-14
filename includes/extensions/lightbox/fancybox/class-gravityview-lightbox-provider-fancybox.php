@@ -43,7 +43,6 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 			}
 		</style>
 		<script>
-			// Fancybox 4 does not require jQuery.
 			if ( window.Fancybox ){
 				Fancybox.bind(".gravityview-fancybox", <?php echo $settings; ?>);
 			}
@@ -94,7 +93,6 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	 * @inheritDoc
 	 */
 	public function enqueue_scripts() {
-		// Fancybox 4 does not require jQuery and does not have a minified version by default.
 		wp_register_script( self::$script_slug, plugins_url( 'assets/lib/fancybox/dist/fancybox.umd.js', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 	}
 
@@ -102,7 +100,6 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	 * @inheritDoc
 	 */
 	public function enqueue_styles() {
-		// Fancybox 4 does not have a minified version by default.
 		wp_register_style( self::$style_slug, plugins_url( 'assets/lib/fancybox/dist/fancybox.css', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 	}
 
