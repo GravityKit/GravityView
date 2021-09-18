@@ -155,17 +155,9 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 		}
 
 		$file_path = \GV\Utils::get( $additional_details, 'file_path' );
-
+		
 		if ( false !== strpos( $file_path, 'gv-iframe' ) ) {
-
-			$fancybox_settings = array(
-				'type' => 'iframe',
-				'iframe' => array(
-					'preload' => false,
-				),
-			);
-
-			$link_atts['data-options'] = json_encode( $fancybox_settings );
+			$link_atts['data-type'] = 'pdf';
 		}
 
 		return $link_atts;
