@@ -1,0 +1,8 @@
+$namespace: 'gravityview';
+
+@import "../../../trustedlogin/trustedlogin/trustedlogin-client/src/assets/src/auth";
+@import "../../../trustedlogin/trustedlogin/trustedlogin-client/src/assets/src/buttons";
+
+#trustedlogin .hidden {
+	display: none;
+}

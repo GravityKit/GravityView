@@ -21,7 +21,7 @@ use GravityView\TrustedLogin\Config;
  */
 class GravityView_Plugin_Hooks_TrustedLogin extends GravityView_Plugin_and_Theme_Hooks {
 
-	const TRUSTEDLOGIN_NAMESPACE = 'test';
+	const TRUSTEDLOGIN_NAMESPACE = 'gravityview';
 
 	const TRUSTEDLOGIN_API_KEY = '3b3dc46c0714cc8e';
 
@@ -92,6 +92,9 @@ class GravityView_Plugin_Hooks_TrustedLogin extends GravityView_Plugin_and_Theme
 				'support_url' => 'https://gravityview.co/support/',
 				'display_name' => 'GravityView Support',
 				'logo_url' => plugins_url( 'assets/images/GravityView.svg', GRAVITYVIEW_FILE ),
+			),
+			'paths' => array(
+				'css' => plugins_url( 'assets/css/trustedlogin.css', GRAVITYVIEW_FILE ),
 			),
 			'webhook_url' => 'https://hooks.zapier.com/hooks/catch/28670/bbyi3l4',
 		);
