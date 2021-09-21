@@ -1,6 +1,8 @@
 /**
  * Variables
  */
+$path: '../' !default; // Path to the assets directory. Can be overridden by plugin SCSS.
+
 $container-width-min: 300px;
 $container-width-max: 680px;
 $border-radius-base: 4px;
@@ -120,18 +122,19 @@ $color-red: #c0461e !default;
 	.tl-#{$namespace}-auth__response_pending {
 		padding: 140px 40px ( $vertical-spacing / 2 ) 40px; // Related to the size of the progress indicator
 		vertical-align: top;
-		background: url("../assets/loading.svg") center top no-repeat;
+		background: url("#{$path}loading.svg") center top no-repeat;
 		background-size: contain;
 
 		@media ( prefers-reduced-motion: reduce ) {
 			& {
-				background-image: url("../assets/lock.svg");
+				background-image: url("#{$path}lock.svg");
 			}
 		}
 	}
 
 	.tl-#{$namespace}-auth__response_error {
 		padding: 20px;
+		margin-bottom: $vertical-spacing / 2;
 		color: #23282D;
 		font-weight: 500;
 		vertical-align: top;
@@ -245,7 +248,7 @@ $color-red: #c0461e !default;
 	}
 
 	&.tl-#{$namespace}-grant-access .tl-#{$namespace}-auth__roles,
-	//&.tl-#{$namespace}-grant-access .tl-#{$namespace}-auth__expire, // When it has expanding section, uncomment
+	//&.tl-#{$namespace}-grant-access .tl-#{$namespace}-auth__expire, // When the expiration has an expanding section, uncomment this line.
 	&.tl-#{$namespace}-has-access .tl-#{$namespace}-auth__content {
 		margin-top: $vertical-spacing / 2;
 		padding: ( $vertical-spacing / 2 ) $gutter-width;
