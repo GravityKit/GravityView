@@ -9,7 +9,7 @@
  * @link      https://gravityview.co
  * @copyright Copyright 2021, Katz Web Services, Inc.
  *
- * @since 1.15.2
+ * @since 2.13
  */
 
 use GravityView\TrustedLogin\Client;
@@ -17,14 +17,23 @@ use GravityView\TrustedLogin\Config;
 
 /**
  * @inheritDoc
- * @since 2.11
+ * @since 2.13
  */
 class GravityView_Plugin_Hooks_TrustedLogin extends GravityView_Plugin_and_Theme_Hooks {
 
+	/**
+	 * @var string The TL namespace. Used to differentiate admin pages, hook names, CSS, JS. Unique per-plugin.
+	 */
 	const TRUSTEDLOGIN_NAMESPACE = 'gravityview';
 
+	/**
+	 * @var string The public API key from TrustedLogin.
+	 */
 	const TRUSTEDLOGIN_API_KEY = '3b3dc46c0714cc8e';
 
+	/**
+	 * The full namespaced class name for the TL Client class.
+	 */
 	const TRUSTEDLOGIN_CLASS_NAME = '\GravityView\TrustedLogin\Client';
 
 	/**
@@ -33,14 +42,13 @@ class GravityView_Plugin_Hooks_TrustedLogin extends GravityView_Plugin_and_Theme
 	static private $TL_Client;
 
 	/**
-	 * Always run this!
+	 * This function always exists, so we will always run this class!
 	 * @var string
 	 */
 	public $function_name = 'gravityview';
 
 	/**
 	 * @inheritDoc
-	 * @since 1.15.2
 	 */
 	protected $style_handles = array(
 		'trustedlogin-' . GravityView_Plugin_Hooks_TrustedLogin::TRUSTEDLOGIN_NAMESPACE,
@@ -48,12 +56,18 @@ class GravityView_Plugin_Hooks_TrustedLogin extends GravityView_Plugin_and_Theme
 
 	/**
 	 * @inheritDoc
-	 * @since 1.15.2
 	 */
 	protected $script_handles = array(
 		'trustedlogin-' . GravityView_Plugin_Hooks_TrustedLogin::TRUSTEDLOGIN_NAMESPACE,
 	);
 
+	/**
+	 * Returns the configuration array passed to TrustedLogin
+	 *
+	 * @see TrustedLogin\Config
+	 *
+	 * @return array The configuration array for GravityView
+	 */
 	private function get_trustedlogin_config() {
 		return array(
 			'auth' => array(
@@ -100,16 +114,6 @@ class GravityView_Plugin_Hooks_TrustedLogin extends GravityView_Plugin_and_Theme
 		);
 	}
 
-	public function filter_is_admin_page( $is_admin = false ) {
-		global $current_screen;
-
-		if( $current_screen && 'gravityview_page_grant-' . self::TRUSTEDLOGIN_NAMESPACE . '-access' === $current_screen->id ) {
-			return true;
-		}
-
-		return $is_admin;
-	}
-
 	protected function add_hooks() {
 		parent::add_hooks();
 
@@ -134,7 +138,28 @@ class GravityView_Plugin_Hooks_TrustedLogin extends GravityView_Plugin_and_Theme
 	}
 
 	/**
+	 * Adds TrustedLogin "Grant Access" to the list of GravityView admin pages (for loading scripts, etc.)
+	 *
+	 * @param false $is_admin
+	 *
+	 * @return bool
+	 */
+	public function filter_is_admin_page( $is_admin = false ) {
+		global $current_screen;
+
+		if( $current_screen && 'gravityview_page_grant-' . self::TRUSTEDLOGIN_NAMESPACE . '-access' === $current_screen->id ) {
+			return true;
+		}
+
+		return (bool) $is_admin;
+	}
+
+	/**
 	 * Adds the TrustedLogin Access Key to shared Support Port data.
+	 *
+	 * @param array $localization_data Array of data passed to the Support Port.
+	 *
+	 * @return array the support port data array with `tl_access_key` key set to the site access key.
 	 */
 	public function add_localization_data( $localization_data = array() ) {
 
