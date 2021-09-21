@@ -51,16 +51,19 @@ class FileDownloader implements DownloaderInterface, ChangeReportInterface
     protected $httpDownloader;
     /** @var Filesystem */
     protected $filesystem;
-    /** @var Cache */
+    /** @var ?Cache */
     protected $cache;
-    /** @var EventDispatcher */
+    /** @var ?EventDispatcher */
     protected $eventDispatcher;
     /** @var ProcessExecutor */
     protected $process;
     /**
      * @private this is only public for php 5.3 support in closures
+     *
+     * @var array<string, string> Map of package name to cache key
      */
     public $lastCacheWrites = array();
+    /** @var array<string, string[]> Map of package name to list of paths */
     private $additionalCleanupPaths = array();
 
     /**

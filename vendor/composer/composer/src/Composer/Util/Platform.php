@@ -108,7 +108,12 @@ class Platform
                 return self::$isWindowsSubsystemForLinux = false;
             }
 
-            if (!ini_get('open_basedir') && is_readable('/proc/version') && false !== stripos(file_get_contents('/proc/version'), 'microsoft')) {
+            if (
+                !ini_get('open_basedir')
+                && is_readable('/proc/version')
+                && false !== stripos(Silencer::call('file_get_contents', '/proc/version'), 'microsoft')
+                && !file_exists('/.dockerenv') // docker running inside WSL should not be seen as WSL
+            ) {
                 return self::$isWindowsSubsystemForLinux = true;
             }
         }
@@ -142,6 +147,10 @@ class Platform
         return \strlen($str);
     }
 
+    /**
+     * @param  ?resource $fd Open file descriptor or null to default to STDOUT
+     * @return bool
+     */
     public static function isTty($fd = null)
     {
         if ($fd === null) {
@@ -170,6 +179,9 @@ class Platform
         return $stat ? 0020000 === ($stat['mode'] & 0170000) : false;
     }
 
+    /**
+     * @return void
+     */
     public static function workaroundFilesystemIssues()
     {
         if (self::isVirtualBoxGuest()) {

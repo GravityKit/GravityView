@@ -31,12 +31,12 @@
     ),
     'composer/composer' => 
     array (
-      'pretty_version' => '2.1.6',
-      'version' => '2.1.6.0',
+      'pretty_version' => '2.1.8',
+      'version' => '2.1.8.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'e5cac5f9d2354d08b67f1d21c664ae70d748c603',
+      'reference' => '24d38e9686092de05214cafa187dc282a5d89497',
     ),
     'composer/metadata-minifier' => 
     array (
@@ -140,12 +140,12 @@
     ),
     'nikic/php-parser' => 
     array (
-      'pretty_version' => 'v4.12.0',
-      'version' => '4.12.0.0',
+      'pretty_version' => 'v4.13.0',
+      'version' => '4.13.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '6608f01670c3cc5079e18c1dab1104e002579143',
+      'reference' => '50953a2691a922aa1769461637869a0a2faa3f53',
     ),
     'paragonie/random_compat' => 
     array (

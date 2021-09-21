@@ -43,13 +43,25 @@ class Compiler
             unlink($pharFile);
         }
 
-        $process = new Process('git log --pretty="%H" -n1 HEAD', __DIR__);
+        // TODO in v2.3 always call with an array
+        if (method_exists('Symfony\Component\Process\Process', 'fromShellCommandline')) {
+            $process = new Process(array('git', 'log', '--pretty="%H"', '-n1', 'HEAD'), __DIR__);
+        } else {
+            // @phpstan-ignore-next-line
+            $process = new Process('git log --pretty="%H" -n1 HEAD', __DIR__);
+        }
         if ($process->run() != 0) {
             throw new \RuntimeException('Can\'t run git log. You must ensure to run compile from composer git repository clone and that git binary is available.');
         }
         $this->version = trim($process->getOutput());
 
-        $process = new Process('git log -n1 --pretty=%ci HEAD', __DIR__);
+        // TODO in v2.3 always call with an array
+        if (method_exists('Symfony\Component\Process\Process', 'fromShellCommandline')) {
+            $process = new Process(array('git', 'log', '-n1', '--pretty=%ci', 'HEAD'), __DIR__);
+        } else {
+            // @phpstan-ignore-next-line
+            $process = new Process('git log -n1 --pretty=%ci HEAD', __DIR__);
+        }
         if ($process->run() != 0) {
             throw new \RuntimeException('Can\'t run git log. You must ensure to run compile from composer git repository clone and that git binary is available.');
         }
@@ -57,7 +69,13 @@ class Compiler
         $this->versionDate = new \DateTime(trim($process->getOutput()));
         $this->versionDate->setTimezone(new \DateTimeZone('UTC'));
 
-        $process = new Process('git describe --tags --exact-match HEAD');
+        // TODO in v2.3 always call with an array
+        if (method_exists('Symfony\Component\Process\Process', 'fromShellCommandline')) {
+            $process = new Process(array('git', 'describe', '--tags', '--exact-match', 'HEAD'), __DIR__);
+        } else {
+            // @phpstan-ignore-next-line
+            $process = new Process('git describe --tags --exact-match HEAD');
+        }
         if ($process->run() == 0) {
             $this->version = trim($process->getOutput());
         } else {
@@ -282,6 +300,11 @@ if (extension_loaded('apc') && filter_var(ini_get('apc.enable_cli'), FILTER_VALI
         fwrite(STDERR, 'Warning: APC <= 3.0.12 may cause fatal errors when running composer commands.'.PHP_EOL);
         fwrite(STDERR, 'Update APC, or set apc.enable_cli or apc.cache_by_default to 0 in your php.ini.'.PHP_EOL);
     }
+}
+
+if (!class_exists('Phar')) {
+    echo 'PHP\'s phar extension is missing. Composer requires it to run. Enable the extension or recompile php without --disable-phar then try again.' . PHP_EOL;
+    exit(1);
 }
 
 Phar::mapPhar('composer.phar');

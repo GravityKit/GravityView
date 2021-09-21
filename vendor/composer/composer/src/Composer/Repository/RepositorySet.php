@@ -21,6 +21,7 @@ use Composer\IO\NullIO;
 use Composer\Package\BasePackage;
 use Composer\Package\AliasPackage;
 use Composer\Package\CompleteAliasPackage;
+use Composer\Package\CompletePackage;
 use Composer\Package\CompletePackageInterface;
 use Composer\Semver\Constraint\ConstraintInterface;
 use Composer\Package\Version\StabilityFilter;
@@ -56,16 +57,20 @@ class RepositorySet
 
     /**
      * @var int[] array of stability => BasePackage::STABILITY_* value
-     * @phpstan-var array<string, int>
+     * @phpstan-var array<string, BasePackage::STABILITY_*>
      */
     private $acceptableStabilities;
 
     /**
      * @var int[] array of package name => BasePackage::STABILITY_* value
-     * @phpstan-var array<string, int>
+     * @phpstan-var array<string, BasePackage::STABILITY_*>
      */
     private $stabilityFlags;
 
+    /**
+     * @var ConstraintInterface[]
+     * @phpstan-var array<string, ConstraintInterface>
+     */
     private $rootRequires;
 
     /** @var bool */
@@ -80,11 +85,13 @@ class RepositorySet
      *
      * @param string $minimumStability
      * @param int[]  $stabilityFlags   an array of package name => BasePackage::STABILITY_* value
-     * @phpstan-param array<string, int> $stabilityFlags
+     * @phpstan-param array<string, BasePackage::STABILITY_*> $stabilityFlags
      * @param array[] $rootAliases
      * @phpstan-param list<array{package: string, version: string, alias: string, alias_normalized: string}> $rootAliases
      * @param string[] $rootReferences an array of package name => source reference
      * @phpstan-param array<string, string> $rootReferences
+     * @param ConstraintInterface[] $rootRequires an array of package name => constraint from the root package
+     * @phpstan-param array<string, ConstraintInterface> $rootRequires
      */
     public function __construct($minimumStability = 'stable', array $stabilityFlags = array(), array $rootAliases = array(), array $rootReferences = array(), array $rootRequires = array())
     {
@@ -111,6 +118,10 @@ class RepositorySet
         $this->allowInstalledRepositories = $allow;
     }
 
+    /**
+     * @return ConstraintInterface[] an array of package name => constraint from the root package, platform requirements excluded
+     * @phpstan-return array<string, ConstraintInterface>
+     */
     public function getRootRequires()
     {
         return $this->rootRequires;
@@ -192,6 +203,12 @@ class RepositorySet
         return $result;
     }
 
+    /**
+     * @param  string   $packageName
+     *
+     * @return array[] an array with the provider name as key and value of array('name' => '...', 'description' => '...', 'type' => '...')
+     * @phpstan-return array<string, array{name: string, description: string, type: string}>
+     */
     public function getProviders($packageName)
     {
         $providers = array();
@@ -204,6 +221,13 @@ class RepositorySet
         return $providers;
     }
 
+    /**
+     * Check for each given package name whether it would be accepted by this RepositorySet in the given $stability
+     *
+     * @param  string[] $names
+     * @param  string   $stability one of 'stable', 'RC', 'beta', 'alpha' or 'dev'
+     * @return bool
+     */
     public function isPackageAcceptable($names, $stability)
     {
         return StabilityFilter::isPackageAcceptable($this->acceptableStabilities, $this->stabilityFlags, $names, $stability);
@@ -254,7 +278,7 @@ class RepositorySet
                     while ($package instanceof AliasPackage) {
                         $package = $package->getAliasOf();
                     }
-                    if ($package instanceof CompletePackageInterface) {
+                    if ($package instanceof CompletePackage) {
                         $aliasPackage = new CompleteAliasPackage($package, $alias['alias_normalized'], $alias['alias']);
                     } else {
                         $aliasPackage = new AliasPackage($package, $alias['alias_normalized'], $alias['alias']);

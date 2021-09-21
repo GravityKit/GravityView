@@ -38,10 +38,15 @@ use Composer\Util\Silencer;
  */
 class RequireCommand extends InitCommand
 {
+    /** @var bool */
     private $newlyCreated;
+    /** @var bool */
     private $firstRequire;
+    /** @var JsonFile */
     private $json;
+    /** @var string */
     private $file;
+    /** @var string */
     private $composerBackup;
     /** @var string file name */
     private $lock;
@@ -320,7 +325,7 @@ EOT
                 'require-dev' => $rootPackage->getDevRequires(),
             );
             $loader = new ArrayLoader();
-            $newLinks = $loader->parseLinks($rootPackage->getName(), $rootPackage->getPrettyVersion(), BasePackage::$supportedLinkTypes[$requireKey]['description'], $requirements);
+            $newLinks = $loader->parseLinks($rootPackage->getName(), $rootPackage->getPrettyVersion(), BasePackage::$supportedLinkTypes[$requireKey]['method'], $requirements);
             $links[$requireKey] = array_merge($links[$requireKey], $newLinks);
             foreach ($requirements as $package => $constraint) {
                 unset($links[$removeKey][$package]);

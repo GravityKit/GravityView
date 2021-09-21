@@ -2,13 +2,15 @@
 
 namespace PhpParser\Node;
 
-class UnionType extends ComplexType
+use PhpParser\NodeAbstract;
+
+class IntersectionType extends ComplexType
 {
     /** @var (Identifier|Name)[] Types */
     public $types;
 
     /**
-     * Constructs a union type.
+     * Constructs an intersection type.
      *
      * @param (Identifier|Name)[] $types      Types
      * @param array               $attributes Additional attributes
@@ -21,8 +23,8 @@ class UnionType extends ComplexType
     public function getSubNodeNames() : array {
         return ['types'];
     }
-    
+
     public function getType() : string {
-        return 'UnionType';
+        return 'IntersectionType';
     }
 }

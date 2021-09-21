@@ -36,16 +36,19 @@ class JsonFile
 
     const COMPOSER_SCHEMA_PATH = '/../../../res/composer-schema.json';
 
+    /** @var string */
     private $path;
+    /** @var ?HttpDownloader */
     private $httpDownloader;
+    /** @var ?IOInterface */
     private $io;
 
     /**
      * Initializes json file reader/parser.
      *
      * @param  string                    $path           path to a lockfile
-     * @param  HttpDownloader            $httpDownloader required for loading http/https json files
-     * @param  IOInterface               $io
+     * @param  ?HttpDownloader           $httpDownloader required for loading http/https json files
+     * @param  ?IOInterface              $io
      * @throws \InvalidArgumentException
      */
     public function __construct($path, HttpDownloader $httpDownloader = null, IOInterface $io = null)
@@ -291,7 +294,7 @@ class JsonFile
     /**
      * Parses json string and returns hash.
      *
-     * @param string $json json string
+     * @param ?string $json json string
      * @param string $file the json file
      *
      * @throws ParsingException
@@ -300,7 +303,7 @@ class JsonFile
     public static function parseJson($json, $file = null)
     {
         if (null === $json) {
-            return;
+            return null;
         }
         $data = json_decode($json, true);
         if (null === $data && JSON_ERROR_NONE !== json_last_error()) {

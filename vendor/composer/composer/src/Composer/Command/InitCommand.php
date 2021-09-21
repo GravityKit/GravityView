@@ -43,10 +43,10 @@ use Symfony\Component\Console\Helper\FormatterHelper;
  */
 class InitCommand extends BaseCommand
 {
-    /** @var CompositeRepository */
+    /** @var ?CompositeRepository */
     protected $repos;
 
-    /** @var array */
+    /** @var array<string, string> */
     private $gitConfig;
 
     /** @var RepositorySet[] */
@@ -705,10 +705,11 @@ EOT
         $finder = new ExecutableFinder();
         $gitBin = $finder->find('git');
 
-        // TODO in v3 always call with an array
+        // TODO in v2.3 always call with an array
         if (method_exists('Symfony\Component\Process\Process', 'fromShellCommandline')) {
             $cmd = new Process(array($gitBin, 'config', '-l'));
         } else {
+            // @phpstan-ignore-next-line
             $cmd = new Process(sprintf('%s config -l', ProcessExecutor::escape($gitBin)));
         }
         $cmd->run();

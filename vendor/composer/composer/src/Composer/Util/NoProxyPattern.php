@@ -264,8 +264,8 @@ class NoProxyPattern
     /**
      * Returns the binary network mask mapped to IPv6
      *
-     * @param string $prefix CIDR prefix-length
-     * @param int    $size   Byte size of in_addr
+     * @param int $prefix CIDR prefix-length
+     * @param int $size   Byte size of in_addr
      *
      * @return string
      */
@@ -274,7 +274,7 @@ class NoProxyPattern
         $mask = '';
 
         if ($ones = floor($prefix / 8)) {
-            $mask = str_repeat(chr(255), $ones);
+            $mask = str_repeat(chr(255), (int) $ones);
         }
 
         if ($remainder = $prefix % 8) {
@@ -291,7 +291,7 @@ class NoProxyPattern
      *
      * @param string $rangeIp IP in_addr
      * @param int    $size    Byte size of in_addr
-     * @param string $prefix  CIDR prefix-length
+     * @param int    $prefix  CIDR prefix-length
      *
      * @return string[] network in_addr, binary mask
      */
@@ -420,6 +420,8 @@ class NoProxyPattern
      * @param string $int
      * @param int    $min
      * @param int    $max
+     *
+     * @return bool
      */
     private function validateInt($int, $min, $max)
     {

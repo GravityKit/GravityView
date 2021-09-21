@@ -25,15 +25,25 @@ use Composer\Util\Http\Response;
  */
 class GitHubDriver extends VcsDriver
 {
+    /** @var string */
     protected $owner;
+    /** @var string */
     protected $repository;
+    /** @var array<string, string> Map of tag name to identifier */
     protected $tags;
+    /** @var array<string, string> Map of branch name to identifier */
     protected $branches;
+    /** @var string */
     protected $rootIdentifier;
+    /** @var mixed[] */
     protected $repoData;
-    protected $hasIssues;
+    /** @var bool */
+    protected $hasIssues = false;
+    /** @var bool */
     protected $isPrivate = false;
+    /** @var bool */
     private $isArchived = false;
+    /** @var array<int, array{type: string, url: string}>|false|null */
     private $fundingInfo;
 
     /**
@@ -565,6 +575,10 @@ class GitHubDriver extends VcsDriver
     protected function getNextPage(Response $response)
     {
         $header = $response->getHeader('link');
+        
+        if (!$header) {
+            return;
+        }
 
         $links = explode(',', $header);
         foreach ($links as $link) {

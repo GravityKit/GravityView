@@ -14,18 +14,18 @@ namespace Composer\DependencyResolver;
 
 use Composer\Package\BasePackage;
 use Composer\Package\Link;
+use Composer\Semver\Constraint\ConstraintInterface;
 
 /**
  * @author Nils Adermann <naderman@naderman.de>
  */
 class GenericRule extends Rule
 {
+    /** @var int[] */
     protected $literals;
 
     /**
-     * @param array                     $literals
-     * @param int|null                  $reason     A RULE_* constant describing the reason for generating this rule
-     * @param Link|BasePackage|int|null $reasonData
+     * @param int[]                           $literals
      */
     public function __construct(array $literals, $reason, $reasonData)
     {

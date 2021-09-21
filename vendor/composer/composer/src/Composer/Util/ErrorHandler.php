@@ -21,6 +21,7 @@ use Composer\IO\IOInterface;
  */
 class ErrorHandler
 {
+    /** @var ?IOInterface */
     private static $io;
 
     /**
@@ -52,8 +53,12 @@ class ErrorHandler
         }
 
         if (self::$io) {
-            // ignore symfony/* deprecation warnings about return types
+            // ignore symfony/* deprecation warnings
+            // TODO remove in 2.3
             if (preg_match('{^Return type of Symfony\\\\.*ReturnTypeWillChange}is', $message)) {
+                return true;
+            }
+            if (strpos(strtr($file, '\\', '/'), 'vendor/symfony/') !== false) {
                 return true;
             }
 

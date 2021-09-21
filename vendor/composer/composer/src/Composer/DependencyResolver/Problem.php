@@ -18,6 +18,7 @@ use Composer\Package\RootPackageInterface;
 use Composer\Repository\RepositorySet;
 use Composer\Repository\LockArrayRepository;
 use Composer\Semver\Constraint\Constraint;
+use Composer\Semver\Constraint\ConstraintInterface;
 use Composer\Package\Version\VersionParser;
 
 /**
@@ -29,16 +30,17 @@ class Problem
 {
     /**
      * A map containing the id of each rule part of this problem as a key
-     * @var array
+     * @var array<string, true>
      */
     protected $reasonSeen;
 
     /**
      * A set of reasons for the problem, each is a rule or a root require and a rule
-     * @var array
+     * @var array<int, array<int, Rule>>
      */
     protected $reasons = array();
 
+    /** @var int */
     protected $section = 0;
 
     /**
@@ -459,7 +461,7 @@ class Problem
     /**
      * Turns a constraint into text usable in a sentence describing a request
      *
-     * @param  \Composer\Semver\Constraint\ConstraintInterface $constraint
+     * @param  ?ConstraintInterface $constraint
      * @return string
      */
     protected static function constraintToText($constraint)

@@ -47,7 +47,7 @@ class InstallationManager
     private $loop;
     /** @var IOInterface */
     private $io;
-    /** @var EventDispatcher */
+    /** @var ?EventDispatcher */
     private $eventDispatcher;
     /** @var bool */
     private $outputProgress;
@@ -179,6 +179,7 @@ class InstallationManager
      */
     public function execute(InstalledRepositoryInterface $repo, array $operations, $devMode = true, $runScripts = true)
     {
+        /** @var PromiseInterface[] */
         $cleanupPromises = array();
 
         $loop = $this->loop;
@@ -510,7 +511,7 @@ class InstallationManager
             }
 
             $installer = $this->getInstaller($targetType);
-            $promise->then(function () use ($installer, $repo, $target) {
+            $promise = $promise->then(function () use ($installer, $repo, $target) {
                 return $installer->install($repo, $target);
             });
         }

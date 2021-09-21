@@ -17,6 +17,7 @@ use Composer\IO\IOInterface;
 use Composer\Package\AliasPackage;
 use Composer\Package\BasePackage;
 use Composer\Package\CompleteAliasPackage;
+use Composer\Package\CompletePackage;
 use Composer\Package\CompletePackageInterface;
 use Composer\Package\PackageInterface;
 use Composer\Package\Version\StabilityFilter;
@@ -38,10 +39,12 @@ class PoolBuilder
 {
     /**
      * @var int[]
+     * @phpstan-var array<string, BasePackage::STABILITY_*>
      */
     private $acceptableStabilities;
     /**
      * @var int[]
+     * @phpstan-var array<string, BasePackage::STABILITY_*>
      */
     private $stabilityFlags;
     /**
@@ -55,7 +58,7 @@ class PoolBuilder
      */
     private $rootReferences;
     /**
-     * @var EventDispatcher
+     * @var ?EventDispatcher
      */
     private $eventDispatcher;
     /**
@@ -91,7 +94,9 @@ class PoolBuilder
      * @phpstan-var list<PackageInterface>
      */
     private $unacceptableFixedOrLockedPackages = array();
+    /** @var string[] */
     private $updateAllowList = array();
+    /** @var array<string, string> */
     private $skippedLoad = array();
 
     /**
@@ -101,6 +106,8 @@ class PoolBuilder
      *
      * Packages get cleared from this list if they get unlocked as in that case
      * we need to actually load them
+     *
+     * @var array<string, true>
      */
     private $maxExtendedReqs = array();
     /**
@@ -109,6 +116,7 @@ class PoolBuilder
      */
     private $updateAllowWarned = array();
 
+    /** @var int */
     private $indexCounter = 0;
 
     /**
@@ -340,7 +348,7 @@ class PoolBuilder
         }
     }
 
-    private function loadPackage(Request $request, PackageInterface $package, $propagateUpdate = true)
+    private function loadPackage(Request $request, BasePackage $package, $propagateUpdate = true)
     {
         $index = $this->indexCounter++;
         $this->packages[$index] = $package;
@@ -370,7 +378,7 @@ class PoolBuilder
             } else {
                 $basePackage = $package;
             }
-            if ($basePackage instanceof CompletePackageInterface) {
+            if ($basePackage instanceof CompletePackage) {
                 $aliasPackage = new CompleteAliasPackage($basePackage, $alias['alias_normalized'], $alias['alias']);
             } else {
                 $aliasPackage = new AliasPackage($basePackage, $alias['alias_normalized'], $alias['alias']);
