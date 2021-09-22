@@ -767,7 +767,12 @@ HTML;
 			$license_key    = $this->get( 'license_key' );
 		}
 
-		$license_id = empty( $license_key ) ? 'license' : $license_key;
+		if ( empty( $license_key ) ) {
+			$license_id = 'license';
+			$license_status = '';
+		} else {
+			$license_id = $license_key;
+		}
 
 		$message = esc_html__( 'Your GravityView license %s. This means you&rsquo;re missing out on updates and support! %sActivate your license%s or %sget a license here%s.', 'gravityview' );
 

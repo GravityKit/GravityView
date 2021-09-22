@@ -15,6 +15,11 @@ $field_id = $gravityview->field->ID;
 $field = $gravityview->field->field;
 $value = $gravityview->value;
 
+// strtotime() fails at "00:00 am"; it returns false instead of midnight.
+if ( false !== strpos( $value, '00:00' ) ) {
+	$value = '00:00';
+}
+
 $output = '';
 
 if ( '' !== $value ) {

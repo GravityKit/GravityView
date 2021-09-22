@@ -1,0 +1,4679 @@
+# Copyright (C) 2021 GravityView
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: GravityView 2.10.3.2\n"
+"Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
+"POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
+"PO-Revision-Date: 2018-04-30 22:20+0000\n"
+"Language-Team: Spanish (Latin America) (https://www.transifex.com/katzwebservices/teams/18775/es_419/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es_419\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: grunt-wp-i18n 0.5.4\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Textdomain-Support: yes\n"
+
+#: future/includes/class-gv-extension.php:217
+msgid "Could not activate the %s Extension; GravityView is not active."
+msgstr ""
+
+#: future/includes/class-gv-extension.php:219
+msgid "The %s Extension requires GravityView Version %s or newer."
+msgstr ""
+
+#: future/includes/class-gv-extension.php:221
+msgid ""
+"The %s Extension requires PHP Version %s or newer. Please ask your host to "
+"upgrade your server's PHP."
+msgstr ""
+
+#: future/includes/class-gv-extension.php:223
+msgid ""
+"The %s Extension is not compatible with this version of GravityView. Please "
+"update the Extension to the latest version."
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:262
+msgid "License Details:"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:286
+msgid "Renew on: %s"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:287
+msgid "Access your GravityView account"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:288
+msgid "This development site does not count toward license activation limits"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:289
+msgid "Unlimited"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:293
+msgid "License level: %s"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:295
+msgid "Activations: %d of %s sites"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:335
+msgid "Upgrades available:"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:350
+msgid "Get access to Extensions"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:354
+msgid "Get access to Entry Importer and other Premium plugins"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:412
+msgid "Status"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:413
+msgid "There was an error processing the request."
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:414
+msgid ""
+"Could not deactivate the license. The license key you attempted to "
+"deactivate may not be active or valid."
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:415
+#: future/includes/class-gv-license-handler.php:416
+msgid "The license key is valid, but it has not been activated for this site."
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:417
+msgid "Invalid: this license has reached its activation limit."
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:417
+msgid ""
+"You can manage license activations %son your GravityView account page%s."
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:418
+msgid "The license has been deactivated."
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:419
+msgid "The license key is valid and active."
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:420
+msgid ""
+"This license key is disabled. For updates and support, %spurchase a new "
+"license%s."
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:421
+#: future/includes/class-gv-license-handler.php:423
+msgid "The license key entered is invalid."
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:422
+msgid "This license key does not have access to this plugin."
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:424
+msgid "This license key has been revoked."
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:425
+msgid ""
+"This license key has expired. %sRenew your license on the GravityView "
+"website%s to receive updates and support."
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:426
+#: future/includes/class-gv-settings-addon.php:1376
+msgid "You don't have the ability to edit plugin settings."
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:427
+#: future/includes/class-gv-license-handler.php:548
+#: future/includes/class-gv-license-handler.php:562
+#: future/includes/class-gv-settings-addon.php:1130
+msgid "Verifying license&hellip;"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:428
+#: future/includes/class-gv-license-handler.php:547
+msgid "Activate License"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:429
+#: future/includes/class-gv-license-handler.php:554
+msgid "Deactivate License"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:430
+msgid "Verify License"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:555
+msgid "Deactivating license&hellip;"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:561
+msgid "Check License"
+msgstr ""
+
+#: future/includes/class-gv-oembed.php:88
+#: future/includes/class-gv-oembed.php:212
+#: future/includes/class-gv-oembed.php:217
+#: future/includes/class-gv-oembed.php:223
+#: future/includes/class-gv-shortcode-gravityview.php:113
+#: future/includes/class-gv-shortcode-gravityview.php:141
+#: future/includes/class-gv-shortcode-gravityview.php:146
+#: future/includes/class-gv-shortcode-gravityview.php:152
+#: future/includes/class-gv-shortcode-gravityview.php:175
+#: future/includes/class-gv-shortcode-gravityview.php:180
+#: future/includes/class-gv-shortcode-gravityview.php:186
+#: future/includes/class-gv-shortcode-gravityview.php:194
+#: future/includes/class-gv-view.php:318 future/includes/class-gv-view.php:332
+#: future/includes/class-gv-view.php:337 future/includes/class-gv-view.php:343
+#: future/includes/class-gv-view.php:366 future/includes/class-gv-view.php:371
+#: future/includes/class-gv-view.php:377 future/includes/class-gv-view.php:385
+#: includes/class-frontend-views.php:699
+msgid "You are not allowed to view this content."
+msgstr ""
+
+#: future/includes/class-gv-oembed.php:173
+msgid "Embed Entry %d"
+msgstr ""
+
+#: future/includes/class-gv-oembed.php:175
+msgid "This entry will be displayed as it is configured in View %d"
+msgstr ""
+
+#: future/includes/class-gv-oembed.php:194
+msgid "This will look better when it is embedded."
+msgstr ""
+
+#: future/includes/class-gv-oembed.php:195
+msgid ""
+"Styles don't get loaded when being previewed, so the content below will look"
+" strange. Don't be concerned!"
+msgstr ""
+
+#: future/includes/class-gv-plugin.php:648
+#: includes/class-gravityview-entry-approval.php:456
+#: tests/unit-tests/GravityView_Uninstall_Test.php:191
+msgid "Disapproved the Entry for GravityView"
+msgstr ""
+
+#: future/includes/class-gv-plugin.php:649
+#: includes/class-gravityview-entry-approval.php:450
+#: tests/unit-tests/GravityView_Uninstall_Test.php:192
+msgid "Approved the Entry for GravityView"
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:123
+msgid "Hide this notice"
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:127
+msgid ""
+"The \"Show only approved entries\" setting is enabled, so only entries that "
+"have been approved are displayed."
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:128
+msgid "Learn about entry approval."
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:132
+#: future/includes/class-gv-settings-view.php:88
+msgid "Show only approved entries"
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:134
+#: future/includes/class-gv-renderer.php:179
+#: future/includes/class-gv-renderer.php:235
+#: future/includes/class-gv-view.php:296 includes/class-frontend-views.php:649
+msgid "You can only see this message because you are able to edit this View."
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:155
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:153
+#: includes/admin/metaboxes/views/view-configuration.php:11
+#: includes/admin/metaboxes/views/view-configuration.php:87
+#: includes/admin/metaboxes/views/view-configuration.php:88
+#: includes/class-frontend-views.php:637
+#: includes/class-gravityview-admin-bar.php:102
+#: includes/class-gravityview-entry-link-shortcode.php:233
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:144
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1082
+#: includes/extensions/edit-entry/fields/edit_link.php:14
+#: templates/fields/field-edit_link-html.php:38
+msgid "Edit Entry"
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:159
+#: future/includes/class-gv-settings-view.php:409
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:145
+#: includes/admin/metaboxes/views/view-configuration.php:10
+#: includes/admin/metaboxes/views/view-configuration.php:62
+#: includes/admin/metaboxes/views/view-configuration.php:63
+#: includes/class-frontend-views.php:641
+msgid "Single Entry"
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:163
+#: future/includes/class-gv-settings-view.php:408
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:137
+#: includes/admin/metaboxes/views/view-configuration.php:9
+#: includes/class-frontend-views.php:634
+msgid "Multiple Entries"
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:178
+#: includes/class-frontend-views.php:648
+msgid "Add fields to %s"
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:233
+msgid ""
+"GravityView will not work correctly on this page because of the URL Slug."
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:234
+msgid "Please <a href=\"%s\">read this article</a> for more information."
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:199
+#: future/includes/class-gv-settings-addon.php:415
+msgid "Uninstall GravityView"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:221
+#: future/includes/class-gv-settings-addon.php:707
+msgid "Update Settings"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:243
+#: future/includes/class-gv-settings-addon.php:1177
+msgid "GravityView Settings"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:284
+#: future/includes/class-gv-settings-addon.php:944
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:89
+#: includes/class-admin-views.php:480 includes/class-admin.php:165
+msgid "Settings"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:331
+msgid ""
+"If you delete then re-install GravityView, it will be like installing "
+"GravityView for the first time."
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:332
+msgid ""
+"Delete all Views, GravityView entry approval status, GravityView-generated "
+"entry notes (including approval and entry creator changes), and GravityView "
+"plugin settings."
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:348
+msgid "I am going to continue using GravityView"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:351
+msgid "I no longer need GravityView"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:354
+msgid "The plugin doesn't work"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:357
+msgid "I found a better plugin"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:358
+msgid "What plugin you are using, and why?"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:361
+msgid "Other"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:466
+msgid ""
+"There was an error sharing your feedback. Sorry! Please email us at "
+"support@gravityview.co"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:472
+msgid "Why did you uninstall GravityView?"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:482
+msgid "Comments"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:483
+msgid "Please share your thoughts about GravityView"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:486
+msgid "How likely are you to recommend GravityView?"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:500
+msgid "Please follow up with me about my feedback"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:507
+msgid "Send Us Your Feedback"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:512
+msgid "Thank you for using GravityView!"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:514
+msgid ""
+"Your feedback helps us improve GravityView. If you have any questions or "
+"comments, email us: support@gravityview.co"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:772
+msgid ""
+"Your GravityView license %s. This means you&rsquo;re missing out on updates "
+"and support! %sActivate your license%s or %sget a license here%s."
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:782
+msgid "Inactive License"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:790
+msgid "Expired License"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:791
+msgid "has expired"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:795
+msgid "Invalid License"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:796
+msgid "is invalid"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:799
+msgid "is inactive"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:800
+#: future/includes/class-gv-settings-addon.php:809
+msgid "Activate your license key below."
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:808
+msgid "has not been activated"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:957
+msgid "Required"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:979
+msgid "Support Email"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:980
+msgid ""
+"In order to provide responses to your support requests, please provide your "
+"email address."
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:989
+msgid "Show Support Port?"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1002
+msgid ""
+"The Support Port provides quick access to how-to articles and tutorials. For"
+" administrators, it also makes it easy to contact support."
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1002
+msgid "The Support Port looks like this."
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1003
+msgid "Show the Support Port on GravityView pages?"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1008
+msgid "No-Conflict Mode"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1021
+msgid ""
+"Set this to ON to prevent extraneous scripts and styles from being printed "
+"on GravityView admin pages, reducing conflicts with other plugins and "
+"themes."
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1021
+msgid "If your Edit View tabs are ugly, enable this setting."
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1030
+msgid "REST API"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1043
+msgid ""
+"Enable View and Entry access via the REST API? Regular per-View restrictions"
+" apply (private, password protected, etc.)."
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1044
+msgid "If you are unsure, choose the Disable setting."
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1049
+msgid "Display \"Powered By\" Link"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1053
+msgid "Display a \"Powered by GravityView\" link"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1058
+msgid ""
+"When enabled, a \"Powered by GravityView\" link will be displayed below "
+"Views. Help us spread the word!"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1065
+msgid "Affiliate ID"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1066
+msgid ""
+"Earn money when people clicking your links become GravityView customers. <a "
+"href=\"%s\" rel=\"external\">Register as an affiliate</a>!"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1074
+msgid "Become a Beta Tester"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1079
+msgid "Show me beta versions if they are available."
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1084
+msgid ""
+"You will have early access to the latest GravityView features and "
+"improvements. There may be bugs! If you encounter an issue, help make "
+"GravityView better by reporting it!"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1127
+msgid "License Key"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1128
+msgid ""
+"Enter the license key that was sent to you on purchase. This enables plugin "
+"updates &amp; support."
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1149
+msgid "The license key is defined by your site's configuration file."
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1154
+msgid "You are running GravityView version %s"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1159
+msgid "GravityView License"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1410
+msgid ""
+"The license key you entered has been saved, but not activated. Please "
+"activate the license."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:52
+msgid "View ID"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:60
+msgid "Number of entries per page"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:68
+msgid "Offset entries starting from"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:76
+msgid "Enable lightbox for images"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:80
+msgid ""
+"If enabled, images will open full-size in a \"lightbox\". A lightbox "
+"displays images and videos by filling the screen and dimming out the rest of"
+" the web page."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:91
+msgid ""
+"By default, only approved entries are displayed in a View. When enabled, "
+"this setting prevents unapproved or disapproved entries from appearing in "
+"results. If disabled, entries with all approval statuses will be visible, "
+"including disapproved entries."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:101
+msgid "\"No Results\" Text"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:107 includes/class-api.php:322
+#: includes/class-gravityview-entry-list.php:107
+msgid "No entries match your request."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:113
+msgid "\"No Search Results\" Text"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:119 includes/class-api.php:314
+msgid "This search returned no results."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:125
+msgid "Show all entries to administrators"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:126
+msgid "Administrators will be able to see entries with any approval status."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:127
+msgid ""
+"Logged-out visitors and non-administrators will only see approved entries, "
+"while administrators will see entries with all statuses. This makes it "
+"easier for administrators to moderate entries from a View."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:135
+msgid "Hide View data until search is performed"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:138
+msgid ""
+"When enabled it will only show any View entries after a search is performed."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:147
+#: future/includes/class-gv-settings-view.php:156
+msgid "Hide empty fields"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:150
+#: future/includes/class-gv-settings-view.php:159
+msgid ""
+"When enabled, empty fields will be not be displayed. If disabled, fields and"
+" their labels will be displayed with no content."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:165
+msgid "Feeds"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:172
+msgid "Allow User Edit"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:174
+msgid "Allow logged-in users to edit entries they created."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:174
+#: future/includes/class-gv-settings-view.php:201
+#: future/includes/class-gv-settings-view.php:214
+msgid "Administrators are able to %s regardless of this setting."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:176
+msgid ""
+"Display \"Edit Entry\" fields to non-administrator users if they created the"
+" entry. Edit Entry fields will always be displayed to site administrators."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:185
+msgid "Unapprove Entries After Edit"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:188
+msgid ""
+"When an entry is edited by a non-administrator, reset the approval status to"
+" \"Unapproved\"."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:189
+msgid ""
+"If the \"Show only approved entries\" setting is enabled, the entry will "
+"need to be re-approved by an administrator before it is shown in the View."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:199
+msgid "Allow User Delete"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:201
+msgid "Allow logged-in users to delete entries they created."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:203
+msgid ""
+"Display \"Delete Entry\" fields to non-administrator users if they created "
+"the entry. Delete Entry fields will always be displayed to site "
+"administrators."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:212
+msgid "Allow User Duplicate"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:214
+msgid "Allow logged-in users to duplicate entries they created."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:216
+msgid ""
+"Display \"Duplicate Entry\" fields to non-administrator users if they "
+"created the entry. Duplicate Entry fields will always be displayed to site "
+"administrators."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:225
+msgid "Sort by field"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:227
+msgid "By default, entries are sorted by Entry ID."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:231
+#: future/includes/class-gv-settings-view.php:262
+msgid "Default"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:232
+#: future/includes/class-gv-settings-view.php:263
+#: includes/class-common.php:1408
+#: includes/fields/class-gravityview-field-date-created.php:29
+msgid "Date Created"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:241
+msgid "Sort direction"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:246
+#: future/includes/class-gv-settings-view.php:278
+msgid "ASC"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:247
+#: future/includes/class-gv-settings-view.php:279
+msgid "DESC"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:248
+msgid "Random"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:257
+msgid "Sort by secondary field"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:273
+msgid "Secondary sort direction"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:289
+msgid "Enable sorting by column"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:290
+msgid "Column Sorting"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:303
+msgid "Filter by Start Date"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:305
+msgid ""
+"Show entries submitted after this date. Supports relative dates, such as "
+"\"-1 week\" or \"-1 month\"."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:316
+msgid "Filter by End Date"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:318
+msgid ""
+"Show entries submitted before this date. Supports relative dates, such as "
+"\"now\" or \"-3 days\"."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:329
+msgid "CSS Class"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:330
+msgid "CSS class to add to the wrapping HTML container."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:337
+msgid "Search Value"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:338
+msgid "Define a default search value for the View"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:345
+#: includes/widgets/search-widget/class-search-widget.php:269
+msgid "Search Field"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:346
+msgid ""
+"If Search Value is set, you can define a specific field to search in. "
+"Otherwise, all fields will be searched."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:353
+msgid "Search Operator"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:360
+msgid "Single Entry Title"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:362
+msgid ""
+"When viewing a single entry, change the title of the page to this setting. "
+"Otherwise, the title will not change between the Multiple Entries and Single"
+" Entry views."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:373
+msgid "Back Link Label"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:375
+msgid "The text of the link that returns to the multiple entries view."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:378 includes/class-api.php:978
+msgid "&larr; Go back"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:385
+msgid "Redirect After Editing"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:387
+msgid "The page to redirect to after editing an entry."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:391
+msgid "Stay on Edit Entry"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:392
+msgid "Redirect to Single Entry"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:393
+#: future/includes/class-gv-settings-view.php:450
+msgid "Redirect to Multiple Entries"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:394
+#: future/includes/class-gv-settings-view.php:451
+msgid "Redirect to URL"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:402
+msgid "Editing Returns To&hellip;"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:404
+msgid ""
+"After editing an entry or clicking Cancel, where should the user be sent?"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:410
+msgid "Other URL"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:420
+msgid "Edit Entry Redirect URL"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:422
+msgid "After editing an entry, the user will be taken to this URL."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:431
+msgid "Enable Edit Locking"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:433
+msgid "Prevent multiple users from editing the same entry at the same time."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:444
+msgid "Redirect After Deleting"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:446
+msgid "The page to redirect to after deleting an entry."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:455
+msgid "Delete Entry Redirect URL"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:457
+msgid "After deleting an entry, the user will be taken to this URL."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:466
+msgid "Prevent Direct Access"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:468
+msgid "Only allow access to this View when embedded using the shortcode."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:479
+msgid "Prevent REST Access"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:481
+msgid "Disable REST access to this View."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:492
+msgid "Allow REST Access"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:494
+msgid "Enable REST access to this View."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:504
+msgid "Allow Export"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:506
+msgid "Enable users to download data as a CSV or TSV file."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:509
+msgid ""
+"If enabled, entries can be exported for this View by adding \"/csv/\" or "
+"\"/tsv/\" to the View URL. Each configured field will be a column in the "
+"exported file."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:520
+msgid "Show all in file"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:522
+msgid "Do not limit the number of entries output in the file."
+msgstr ""
+
+#: future/includes/class-gv-shortcode-gravityview.php:106
+#: future/includes/class-gv-shortcode-gventry.php:134
+#: future/includes/class-gv-shortcode-gvfield.php:136
+#: future/includes/class-gv-view.php:294
+msgid ""
+"This View is not configured properly. Start by <a href=\"%s\">selecting a "
+"form</a>."
+msgstr ""
+
+#: future/includes/class-gv-shortcode-gventry.php:189
+msgid "Entry Updated"
+msgstr ""
+
+#: future/includes/class-gv-view.php:145
+msgid "Parent View:"
+msgstr ""
+
+#: future/includes/class-gv-view.php:146
+msgid "All Views"
+msgstr ""
+
+#: future/includes/class-gv-view.php:148
+msgid "Add New View"
+msgstr ""
+
+#: future/includes/class-gv-view.php:149
+msgid "New View"
+msgstr ""
+
+#: future/includes/class-gv-view.php:150
+#: includes/class-gravityview-admin-bar.php:138
+msgid "Edit View"
+msgstr ""
+
+#: future/includes/class-gv-view.php:151
+msgid "Update View"
+msgstr ""
+
+#: future/includes/class-gv-view.php:152
+msgid "Search Views"
+msgstr ""
+
+#: future/includes/class-gv-view.php:154 includes/class-admin.php:68
+msgid "No Views found in Trash"
+msgstr ""
+
+#: future/includes/class-gv-view.php:155
+msgid "Filter Views list"
+msgstr ""
+
+#: future/includes/class-gv-view.php:156
+msgid "Views list navigation"
+msgstr ""
+
+#: future/includes/class-gv-view.php:157
+msgid "Views list"
+msgstr ""
+
+#: future/includes/class-gv-view.php:158
+msgid "See Views"
+msgstr ""
+
+#: future/includes/class-gv-view.php:159
+msgid "View Attributes"
+msgstr ""
+
+#: future/includes/class-gv-view.php:162
+msgid "view"
+msgstr ""
+
+#: future/includes/class-gv-view.php:163
+msgid "Create views based on a Gravity Forms form"
+msgstr ""
+
+#: future/includes/class-gv-view.php:298
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:224
+#: includes/class-admin-views.php:536
+msgid "Data Source"
+msgstr ""
+
+#: future/includes/class-gv-view.php:306
+msgid ""
+"This View is in the Trash. You can <a href=\"%s\">restore the View here</a>."
+msgstr ""
+
+#: future/includes/class-gv-widget.php:159
+#: includes/admin/class.render.settings.php:79
+msgid "Custom CSS Class:"
+msgstr ""
+
+#: future/includes/class-gv-widget.php:160
+msgid "This class will be added to the widget container"
+msgstr ""
+
+#: future/includes/class-gv-widget.php:210
+msgid "Top"
+msgstr ""
+
+#: future/includes/class-gv-widget.php:211
+msgid "Left"
+msgstr ""
+
+#: future/includes/class-gv-widget.php:211
+msgid "Right"
+msgstr ""
+
+#: future/includes/rest/class-gv-rest-route.php:178
+msgid "Must set route name in subclass."
+msgstr ""
+
+#: future/includes/rest/class-gv-rest-route.php:196
+msgid "Must set route sub type in subclass."
+msgstr ""
+
+#: future/includes/rest/class-gv-rest-route.php:385
+msgid "Endpoint Not Yet Implemented."
+msgstr ""
+
+#: future/includes/rest/class-gv-rest-views-route.php:58
+#: includes/class-admin.php:70
+msgid "No Views found."
+msgstr ""
+
+#: future/includes/rest/class-gv-rest-views-route.php:274
+msgid "No Entries found."
+msgstr ""
+
+#: future/includes/rest/class-gv-rest-views-route.php:371
+#: future/includes/rest/class-gv-rest-views-route.php:426
+#: future/includes/rest/class-gv-rest-views-route.php:441
+#: future/includes/rest/class-gv-rest-views-route.php:445
+#: future/includes/rest/class-gv-rest-views-route.php:455
+msgid "You are not allowed to access this content."
+msgstr ""
+
+#: future/includes/rest/class-gv-rest-views-route.php:443
+msgid "This View is not configured properly."
+msgstr ""
+
+#: future/lib/EDD_SL_Plugin_Updater.php:271
+#: includes/lib/EDD_SL_Plugin_Updater.php:265
+msgid ""
+"There is a new version of %1$s available. %2$sView version %3$s details%4$s."
+msgstr ""
+
+#: future/lib/EDD_SL_Plugin_Updater.php:279
+#: includes/lib/EDD_SL_Plugin_Updater.php:273
+msgid ""
+"There is a new version of %1$s available. %2$sView version %3$s details%4$s "
+"or %5$supdate now%6$s."
+msgstr ""
+
+#: future/lib/EDD_SL_Plugin_Updater.php:523
+#: includes/lib/EDD_SL_Plugin_Updater.php:517
+msgid "You do not have permission to install plugin updates"
+msgstr ""
+
+#: future/lib/EDD_SL_Plugin_Updater.php:523
+#: includes/class-gravityview-change-entry-creator.php:164
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:287
+#: includes/lib/EDD_SL_Plugin_Updater.php:517
+msgid "Error"
+msgstr ""
+
+#: future/loader.php:22
+msgid ""
+"GravityView requires PHP Version %s or newer. You're using Version %s. "
+"Please ask your host to upgrade your server's PHP."
+msgstr ""
+
+#: future/loader.php:27 includes/class-gravityview-compatibility.php:200
+msgid ""
+"%sGravityView requires PHP Version %s or newer.%s \n"
+"\n"
+"You're using Version %s. Please ask your host to upgrade your server's PHP."
+msgstr ""
+
+#: includes/admin/class-gravityview-admin-view-field.php:19
+msgid "Admin Label: %s"
+msgstr ""
+
+#: includes/admin/class-gravityview-admin-view-field.php:31
+msgid "Parent: %s"
+msgstr ""
+
+#: includes/admin/class-gravityview-admin-view-field.php:36
+msgid "Type: %s"
+msgstr ""
+
+#: includes/admin/class-gravityview-admin-view-field.php:41
+msgid "Field ID: %s"
+msgstr ""
+
+#: includes/admin/class-gravityview-admin-view-field.php:52
+msgid "Form ID: %s"
+msgstr ""
+
+#: includes/admin/class-gravityview-admin-view-item.php:152
+msgid "Configure %s Settings"
+msgstr ""
+
+#: includes/admin/class-gravityview-admin-view-item.php:153
+msgid "Remove %s"
+msgstr ""
+
+#: includes/admin/class-gravityview-admin-view-item.php:154
+#: includes/admin/class-gravityview-admin-view-item.php:256
+msgid "This field links to the Single Entry"
+msgstr ""
+
+#: includes/admin/class-gravityview-admin-view-item.php:155
+#: includes/admin/class-gravityview-admin-view-item.php:261
+msgid "This field has modified visibility"
+msgstr ""
+
+#: includes/admin/class-gravityview-admin-view-item.php:202
+msgid "Add \"%s\""
+msgstr ""
+
+#: includes/admin/class-gravityview-admin-view-item.php:203
+#: includes/fields/class-gravityview-field-gravatar.php:173
+msgid "Field: %s"
+msgstr ""
+
+#: includes/admin/class-gravityview-admin-view-item.php:209
+msgid ""
+"The field connected to \"%s\" was deleted from the form. The associated "
+"entry data no longer exists."
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:79
+msgid "Click %s icon for additional information."
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:80
+#: includes/class-admin-installer.php:507
+msgid "Learn More"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:138
+msgid "GravityView Support"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:139
+msgid "Search GravityView Docs"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:140
+msgid ""
+"Your search timed out. Please double-check your internet connection and try "
+"again."
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:142
+msgid "Contact Support"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:143
+msgid "Attach a screenshot or file"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:144
+msgid "The maximum file size is 10 MB"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:145
+msgid "Your Name"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:146
+msgid "Please enter your name"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:147
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:424
+msgid "Email address"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:148
+msgid "Please enter a valid email address"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:149
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:426
+msgid "Subject"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:151
+msgid "How can we help you?"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:153
+msgid "Message sent!"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:154
+msgid ""
+"Thanks for reaching out! Someone from the GravityView team will get back to "
+"you soon."
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:155
+msgid "Need Help?"
+msgstr ""
+
+#. translators: "Support Port" can be translated as "Support Portal" or
+#. "Support Window"
+#: includes/admin/class-gravityview-support-port.php:340
+#: includes/admin/class-gravityview-support-port.php:346
+msgid "GravityView Support Port"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:351
+msgid "Show GravityView Support Port when on a GravityView-related page"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:62
+msgid "Show Label"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:69
+msgid "Custom Label:"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:80
+msgid "This class will be added to the field container"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:90
+msgid "Make visible only to logged-in users?"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:97
+msgid "Make visible for:"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:111
+msgid "Percent Width"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:112
+msgid "Leave blank for column width to be based on the field content."
+msgstr ""
+
+#: includes/admin/class.render.settings.php:222
+msgid "Any Logged-In User"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:223
+msgid "Author Or Higher"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:224
+msgid "Can View Gravity Forms Entries"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:225
+msgid "Editor Or Higher"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:226
+msgid "Can Edit Gravity Forms Entries"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:227
+msgid "Administrator"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:231
+msgid "Multisite Super Admin"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:306
+msgid "%s Settings"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:375
+msgid "Field Details"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:381
+msgid "Field ID"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:393
+msgid "Form"
+msgstr ""
+
+#: includes/admin/entry-list.php:70
+msgid "Edit this entry"
+msgstr ""
+
+#: includes/admin/entry-list.php:70
+msgid "Edit"
+msgstr ""
+
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:81
+msgid "Choose a View Type"
+msgstr ""
+
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:84
+msgid "Layout"
+msgstr ""
+
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:129
+#: includes/class-admin-add-shortcode.php:117
+msgid "View Settings"
+msgstr ""
+
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:161
+#: includes/class-gravityview-entry-link-shortcode.php:236
+#: includes/extensions/delete-entry/class-delete-entry-admin.php:120
+#: includes/extensions/delete-entry/class-delete-entry-admin.php:152
+#: includes/extensions/delete-entry/class-delete-entry-admin.php:194
+#: includes/extensions/delete-entry/fields/delete_link.php:19
+#: templates/fields/field-delete_link-html.php:38
+#: templates/fields/field-duplicate_link-html.php:38
+msgid "Delete Entry"
+msgstr ""
+
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:169
+msgid "Filter &amp; Sort"
+msgstr ""
+
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:177
+msgid "Permissions"
+msgstr ""
+
+#: includes/admin/metaboxes/views/data-source.php:29
+msgid "Where would you like the data to come from for this View?"
+msgstr ""
+
+#: includes/admin/metaboxes/views/data-source.php:36
+msgid "Use a Form Preset"
+msgstr ""
+
+#: includes/admin/metaboxes/views/data-source.php:39
+msgid "or use an existing form"
+msgstr ""
+
+#: includes/admin/metaboxes/views/data-source.php:46
+#: includes/class-gravityview-html-elements.php:38
+#: includes/widgets/class-gravityview-widget-gravityforms.php:72
+msgid "list of forms"
+msgstr ""
+
+#: includes/admin/metaboxes/views/data-source.php:55
+msgid "Switch View"
+msgstr ""
+
+#: includes/admin/metaboxes/views/data-source.php:55
+msgid "Switch View Type"
+msgstr ""
+
+#: includes/admin/metaboxes/views/data-source.php:59
+#: includes/admin/metaboxes/views/data-source.php:64
+#: includes/admin/metaboxes/views/data-source.php:69
+msgid "Attention"
+msgstr ""
+
+#: includes/admin/metaboxes/views/data-source.php:60
+msgid ""
+"Changing the form will reset your field configuration. Changes will be "
+"permanent once you save the View."
+msgstr ""
+
+#: includes/admin/metaboxes/views/data-source.php:65
+msgid ""
+"Changing the View Type will reset your field configuration. Changes will be "
+"permanent once you save the View."
+msgstr ""
+
+#: includes/admin/metaboxes/views/data-source.php:70
+msgid ""
+"Using a preset will reset your field configuration. Changes will be "
+"permanent once you save the View."
+msgstr ""
+
+#: includes/admin/metaboxes/views/data-source.php:75
+msgid "GravityView requires Javascript to be enabled."
+msgstr ""
+
+#: includes/admin/metaboxes/views/select-template.php:34
+msgid "Install Layout"
+msgstr ""
+
+#: includes/admin/metaboxes/views/select-template.php:34
+msgid "Activate & Select Layout"
+msgstr ""
+
+#: includes/admin/metaboxes/views/select-template.php:53
+#: includes/admin/metaboxes/views/select-template.php:66
+msgid "This layout is included in the %s license."
+msgstr ""
+
+#: includes/admin/metaboxes/views/select-template.php:59
+msgid "Buy Now"
+msgstr ""
+
+#: includes/admin/metaboxes/views/select-template.php:62
+msgid "View a live demo of this layout"
+msgstr ""
+
+#: includes/admin/metaboxes/views/select-template.php:62
+msgid "Try a demo"
+msgstr ""
+
+#: includes/admin/metaboxes/views/select-template.php:72
+#: includes/fields/class-gravityview-field-select.php:27
+#: includes/widgets/search-widget/class-search-widget.php:223
+msgid "Select"
+msgstr ""
+
+#: includes/admin/metaboxes/views/select-template.php:74
+msgid "View a live demo of this preset"
+msgstr ""
+
+#: includes/admin/metaboxes/views/shortcode-hint.php:12
+msgid "Embed Shortcode"
+msgstr ""
+
+#: includes/admin/metaboxes/views/shortcode-hint.php:15
+msgid "Add this shortcode to a post or page to embed this view."
+msgstr ""
+
+#: includes/admin/metaboxes/views/view-configuration.php:9
+#: includes/admin/metaboxes/views/view-configuration.php:10
+#: includes/admin/metaboxes/views/view-configuration.php:11
+msgid "%s Layout"
+msgstr ""
+
+#: includes/admin/metaboxes/views/view-configuration.php:18
+msgid "Top Widgets"
+msgstr ""
+
+#: includes/admin/metaboxes/views/view-configuration.php:18
+msgid "These widgets will be shown above entries."
+msgstr ""
+
+#: includes/admin/metaboxes/views/view-configuration.php:22
+msgid "Entries Fields"
+msgstr ""
+
+#: includes/admin/metaboxes/views/view-configuration.php:22
+msgid "These fields will be shown for each entry."
+msgstr ""
+
+#: includes/admin/metaboxes/views/view-configuration.php:30
+msgid "Bottom Widgets"
+msgstr ""
+
+#: includes/admin/metaboxes/views/view-configuration.php:30
+msgid "These widgets will be shown below entries."
+msgstr ""
+
+#: includes/admin/metaboxes/views/view-configuration.php:43
+#: includes/class-admin-views.php:1136 includes/class-admin-views.php:1261
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
+msgid "Close"
+msgstr ""
+
+#: includes/admin/metaboxes/views/view-configuration.php:62
+#: includes/admin/metaboxes/views/view-configuration.php:87
+msgid "Note: %s"
+msgstr ""
+
+#: includes/admin/metaboxes/views/view-configuration.php:62
+#: includes/admin/metaboxes/views/view-configuration.php:87
+msgid "No fields link to the %s layout."
+msgstr ""
+
+#: includes/admin/metaboxes/views/view-configuration.php:63
+#: includes/admin/metaboxes/views/view-configuration.php:88
+msgid "Learn how to link to %s"
+msgstr ""
+
+#: includes/admin/metaboxes/views/view-configuration.php:66
+msgid "These fields will be shown in Single Entry layout."
+msgstr ""
+
+#: includes/admin/metaboxes/views/view-configuration.php:91
+msgid "Fields shown when editing an entry."
+msgstr ""
+
+#: includes/admin/metaboxes/views/view-configuration.php:91
+msgid "If not configured, all form fields will be displayed."
+msgstr ""
+
+#: includes/class-admin-add-shortcode.php:64
+#: includes/class-admin-add-shortcode.php:134
+msgid "Insert View"
+msgstr ""
+
+#: includes/class-admin-add-shortcode.php:64
+msgid "Add View"
+msgstr ""
+
+#: includes/class-admin-add-shortcode.php:98
+msgid "Embed a View"
+msgstr ""
+
+#: includes/class-admin-add-shortcode.php:99
+msgid ""
+"Use this form to embed a View into this %s. %sLearn more about using "
+"shortcodes.%s"
+msgstr ""
+
+#: includes/class-admin-add-shortcode.php:102
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:297
+msgid "Select a View"
+msgstr ""
+
+#: includes/class-admin-add-shortcode.php:105
+msgid "&mdash; Select a View to Insert &mdash;"
+msgstr ""
+
+#: includes/class-admin-add-shortcode.php:108
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:303
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:193
+msgid "(no title)"
+msgstr ""
+
+#: includes/class-admin-add-shortcode.php:135
+#: includes/class-admin-views.php:1262
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:282
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1132
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1260
+#: includes/extensions/edit-entry/partials/form-buttons.php:44
+msgid "Cancel"
+msgstr ""
+
+#: includes/class-admin-add-shortcode.php:179
+#: includes/class-admin-views.php:1266
+msgid "Loading&hellip;"
+msgstr ""
+
+#: includes/class-admin-add-shortcode.php:180
+msgid "Please select a View"
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:152
+msgid "GravityView Fields"
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:153
+msgid ""
+"Allow administrators to approve or reject entries and users to opt-in or "
+"opt-out of their entries being displayed."
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:174
+msgid "Approve/Reject"
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:181
+msgid "User Opt-In"
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:205
+msgid "Approved? (Admin-only)"
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:207
+msgid "Approved?"
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:227
+msgid "Show Entry on Website"
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:229
+msgid "Opt-In"
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:237
+msgid "Yes, display my entry on the website"
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:340
+msgid "%d entries"
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:340
+msgid "1 entry"
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:345
+msgid "%s approved."
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:349
+msgid "%s unapproved."
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:353
+msgid "%s disapproved."
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:509
+msgid "Show entry in directory view?"
+msgstr ""
+
+#: includes/class-admin-installer.php:102
+msgid "Plugins that extend GravityView and Gravity Forms functionality."
+msgstr ""
+
+#: includes/class-admin-installer.php:106
+#: includes/class-admin-installer.php:287
+#: includes/class-admin-installer.php:306
+msgid "GravityView Extensions and Plugins"
+msgstr ""
+
+#: includes/class-admin-installer.php:127
+msgid ""
+"Your license %s. Do you want access to these plugins? %sActivate your "
+"license%s or %sget a license here%s."
+msgstr ""
+
+#: includes/class-admin-installer.php:289
+msgid ""
+"Extensions and plugins data cannot be loaded at the moment. Please try again"
+" later."
+msgstr ""
+
+#: includes/class-admin-installer.php:308
+msgid ""
+"The following plugins extend GravityView and Gravity Forms functionality:"
+msgstr ""
+
+#: includes/class-admin-installer.php:310
+msgid "Refresh"
+msgstr ""
+
+#: includes/class-admin-installer.php:323
+msgid "GravityView Layouts"
+msgstr ""
+
+#: includes/class-admin-installer.php:325
+msgid "GravityView Extensions"
+msgstr ""
+
+#: includes/class-admin-installer.php:327
+msgid "Gravity Forms Add-Ons"
+msgstr ""
+
+#: includes/class-admin-installer.php:329
+msgid "GravityView Labs"
+msgstr ""
+
+#: includes/class-admin-installer.php:331
+msgid "Friends of GravityView"
+msgstr ""
+
+#: includes/class-admin-installer.php:391
+msgid "Visit the plugin page"
+msgstr ""
+
+#: includes/class-admin-installer.php:395
+msgid "Plugin status: %s"
+msgstr ""
+
+#: includes/class-admin-installer.php:473
+#: includes/presets/register-default-templates.php:66
+#: includes/presets/register-default-templates.php:77
+#: includes/presets/register-default-templates.php:88
+msgid "All Access"
+msgstr ""
+
+#: includes/class-admin-installer.php:473
+msgid "Core + Extensions"
+msgstr ""
+
+#: includes/class-admin-installer.php:479
+msgid "Active %s License is Required."
+msgstr ""
+
+#: includes/class-admin-installer.php:488
+msgid "Purchase Now for %s"
+msgstr ""
+
+#: includes/class-admin-installer.php:498
+msgid "Upgrade to %s for Access"
+msgstr ""
+
+#: includes/class-admin-installer.php:506
+msgid "Coming Soon"
+msgstr ""
+
+#: includes/class-admin-installer.php:525
+msgid "Not Installed"
+msgstr ""
+
+#: includes/class-admin-installer.php:526
+msgid "Install"
+msgstr ""
+
+#: includes/class-admin-installer.php:533
+#: includes/class-admin-installer.php:647
+msgid "Inactive"
+msgstr ""
+
+#: includes/class-admin-installer.php:534
+#: includes/class-admin-installer.php:648
+msgid "Activate"
+msgstr ""
+
+#: includes/class-admin-installer.php:542
+#: includes/class-admin-installer.php:646
+msgid "Active"
+msgstr ""
+
+#: includes/class-admin-installer.php:543
+#: includes/class-admin-installer.php:649
+msgid "Deactivate"
+msgstr ""
+
+#: includes/class-admin-installer.php:596
+msgid "Plugin activation failed: %s"
+msgstr ""
+
+#: includes/class-admin-installer.php:619
+#: includes/class-admin-installer.php:645
+msgid "Plugin deactivation failed."
+msgstr ""
+
+#: includes/class-admin-installer.php:644
+msgid "Plugin activation failed."
+msgstr ""
+
+#: includes/class-admin-views.php:154
+msgid "Filter Views by form"
+msgstr ""
+
+#: includes/class-admin-views.php:156
+msgid "All forms"
+msgstr ""
+
+#: includes/class-admin-views.php:168
+msgid "Filter Views by layout"
+msgstr ""
+
+#: includes/class-admin-views.php:170
+msgid "All layouts"
+msgstr ""
+
+#: includes/class-admin-views.php:171
+msgid "Layouts"
+msgstr ""
+
+#: includes/class-admin-views.php:180
+msgid "Form Presets"
+msgstr ""
+
+#: includes/class-admin-views.php:237 includes/class-admin-views.php:269
+msgid "Create a View"
+msgstr ""
+
+#: includes/class-admin-views.php:239 includes/class-admin-views.php:271
+msgid "Create a View using this form as a data source"
+msgstr ""
+
+#: includes/class-admin-views.php:256
+msgid "No Title (View #%d)"
+msgstr ""
+
+#: includes/class-admin-views.php:285
+msgid "Connected Views"
+msgstr ""
+
+#: includes/class-admin-views.php:287
+msgid "GravityView Views using this form as a data source"
+msgstr ""
+
+#: includes/class-admin-views.php:355
+msgid "CSS Merge Tags"
+msgstr ""
+
+#: includes/class-admin-views.php:356
+msgid ""
+"Developers: The CSS classes will be sanitized using the "
+"%ssanitize_title_with_dashes()%s function."
+msgstr ""
+
+#: includes/class-admin-views.php:423
+msgid "Not connected."
+msgstr ""
+
+#: includes/class-admin-views.php:432
+msgid "The connected form can not be found; it may no longer exist."
+msgstr ""
+
+#: includes/class-admin-views.php:468
+#: includes/class-gravityview-admin-bar.php:139
+msgid "Edit Form"
+msgstr ""
+
+#: includes/class-admin-views.php:475
+msgid "Entries"
+msgstr ""
+
+#: includes/class-admin-views.php:480
+msgid "Edit settings for this form"
+msgstr ""
+
+#: includes/class-admin-views.php:485
+msgid "Preview Form"
+msgstr ""
+
+#: includes/class-admin-views.php:485
+msgid "Preview this form"
+msgstr ""
+
+#: includes/class-admin-views.php:725
+msgid "Add All Form Fields"
+msgstr ""
+
+#: includes/class-admin-views.php:726
+msgid "Insert all the form fields at once."
+msgstr ""
+
+#: includes/class-admin-views.php:897
+msgid "Add Widget"
+msgstr ""
+
+#: includes/class-admin-views.php:899
+msgid "Add Field"
+msgstr ""
+
+#: includes/class-admin-views.php:956
+msgid "Clear all fields"
+msgstr ""
+
+#: includes/class-admin-views.php:1050
+#: includes/widgets/search-widget/class-search-widget.php:101
+msgid "Search Bar"
+msgstr ""
+
+#: includes/class-admin-views.php:1060
+#: includes/widgets/class-gravityview-widget-pagination-info.php:30
+msgid "Show Pagination Info"
+msgstr ""
+
+#: includes/class-admin-views.php:1066 includes/class-admin-views.php:1073
+#: includes/widgets/class-gravityview-widget-page-links.php:25
+msgid "Page Links"
+msgstr ""
+
+#: includes/class-admin-views.php:1139
+msgid "Filter Fields:"
+msgstr ""
+
+#: includes/class-admin-views.php:1140
+msgid "Filter fields by name or label"
+msgstr ""
+
+#: includes/class-admin-views.php:1151
+msgid "No fields were found matching the search."
+msgstr ""
+
+#: includes/class-admin-views.php:1184
+msgid "This View is configured using the %s View type, which is disabled."
+msgstr ""
+
+#: includes/class-admin-views.php:1185
+msgid ""
+"The data is not lost; re-activate the associated plugin and the "
+"configuration will re-appear."
+msgstr ""
+
+#: includes/class-admin-views.php:1257
+msgid "Enter View name here"
+msgstr ""
+
+#: includes/class-admin-views.php:1258
+msgid "Reorder Search Fields"
+msgstr ""
+
+#: includes/class-admin-views.php:1259
+#: includes/widgets/search-widget/class-search-widget.php:267
+msgid "Add Search Field"
+msgstr ""
+
+#: includes/class-admin-views.php:1260
+msgid "Remove Search Field"
+msgstr ""
+
+#: includes/class-admin-views.php:1263
+msgid "Continue"
+msgstr ""
+
+#: includes/class-admin-views.php:1264
+msgid "Ok"
+msgstr ""
+
+#: includes/class-admin-views.php:1265
+msgid ""
+"Error while creating the View for you. Check the settings or contact "
+"GravityView support."
+msgstr ""
+
+#: includes/class-admin-views.php:1267
+msgid "There was an error loading dynamic content."
+msgstr ""
+
+#: includes/class-admin-views.php:1268
+msgid ""
+"Error while adding the field. Please try again or contact GravityView "
+"support."
+msgstr ""
+
+#: includes/class-admin-views.php:1269
+msgid "Would you like to remove all fields in this zone?"
+msgstr ""
+
+#: includes/class-admin-welcome.php:54
+msgid "GravityView: Getting Started"
+msgstr ""
+
+#: includes/class-admin-welcome.php:55 includes/class-admin-welcome.php:141
+msgid "Getting Started"
+msgstr ""
+
+#: includes/class-admin-welcome.php:64 includes/class-admin-welcome.php:65
+msgid "Changelog"
+msgstr ""
+
+#: includes/class-admin-welcome.php:74 includes/class-admin-welcome.php:75
+#: includes/class-admin-welcome.php:147
+msgid "Credits"
+msgstr ""
+
+#: includes/class-admin-welcome.php:136
+msgid "Welcome to GravityView %s"
+msgstr ""
+
+#: includes/class-admin-welcome.php:137
+msgid ""
+"Thank you for installing GravityView. Beautifully display your Gravity Forms"
+" entries."
+msgstr ""
+
+#: includes/class-admin-welcome.php:144
+msgid "List of Changes"
+msgstr ""
+
+#: includes/class-admin-welcome.php:278
+msgid "What&rsquo;s New"
+msgstr ""
+
+#: includes/class-admin-welcome.php:565
+msgid "View change history"
+msgstr ""
+
+#: includes/class-admin-welcome.php:585
+msgid "GravityView is brought to you by:"
+msgstr ""
+
+#: includes/class-admin-welcome.php:636
+msgid "Contributors"
+msgstr ""
+
+#: includes/class-admin-welcome.php:663
+msgid "Want to contribute?"
+msgstr ""
+
+#: includes/class-admin-welcome.php:664
+msgid ""
+"If you want to contribute to the code, %syou can on Github%s. If your "
+"contributions are accepted, you will be thanked here."
+msgstr ""
+
+#: includes/class-admin.php:77
+msgid ""
+"%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n"
+"\n"
+"If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
+msgstr ""
+
+#: includes/class-admin.php:79
+msgid "There are no active Views"
+msgstr ""
+
+#: includes/class-admin.php:105
+msgid "The form connected to this View no longer exists."
+msgstr ""
+
+#: includes/class-admin.php:106
+msgid "Select another form as the data source for this View."
+msgstr ""
+
+#: includes/class-admin.php:108
+msgid "The connected form is in the trash."
+msgstr ""
+
+#: includes/class-admin.php:109
+msgid "Restore the form from the trash"
+msgstr ""
+
+#: includes/class-admin.php:110
+msgid "or select another form."
+msgstr ""
+
+#: includes/class-admin.php:169
+msgid "Support"
+msgstr ""
+
+#: includes/class-admin.php:214
+msgid "A new form was created for this View: \"%s\""
+msgstr ""
+
+#: includes/class-admin.php:215
+msgid ""
+"%sThere are no entries for the new form, so the View will also be empty.%s To start collecting entries, you can add submissions through %sthe preview form%s and also embed the form on a post or page using this code: %s\n"
+"\n"
+"\t\t\t\t\tYou can %sedit the form%s in Gravity Forms and the updated fields will be available here. Don&rsquo;t forget to %scustomize the form settings%s.\n"
+"\t\t\t\t\t"
+msgstr ""
+
+#. translators: %s and %s are HTML tags linking to the View on the website
+#: includes/class-admin.php:228 includes/class-admin.php:230
+#: includes/class-admin.php:233
+msgid "View updated. %sView on website.%s"
+msgstr ""
+
+#: includes/class-admin.php:231
+msgid "View deleted."
+msgstr ""
+
+#. translators: %s: date and time of the revision
+#: includes/class-admin.php:235
+msgid "View restored to revision from %s"
+msgstr ""
+
+#. translators: %s and %s are HTML tags linking to the View on the website
+#: includes/class-admin.php:237
+msgid "View published. %sView on website.%s"
+msgstr ""
+
+#. translators: %s and %s are HTML tags linking to the View on the website
+#: includes/class-admin.php:239
+msgid "View saved. %sView on website.%s"
+msgstr ""
+
+#: includes/class-admin.php:240
+msgid "View submitted."
+msgstr ""
+
+#. translators: Date and time the View is scheduled to be published
+#: includes/class-admin.php:243
+msgid "View scheduled for: %1$s."
+msgstr ""
+
+#. translators: Publish box date format, see http:php.net/date
+#: includes/class-admin.php:245
+msgid "M j, Y @ G:i"
+msgstr ""
+
+#. translators: %s and %s are HTML tags linking to the View on the website
+#: includes/class-admin.php:248
+msgid "View draft updated. %sView on website.%s"
+msgstr ""
+
+#: includes/class-admin.php:254
+msgid "%s View updated."
+msgid_plural "%s Views updated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-admin.php:255
+msgid "%s View not updated, somebody is editing it."
+msgid_plural "%s Views not updated, somebody is editing them."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-admin.php:256
+msgid "%s View permanently deleted."
+msgid_plural "%s Views permanently deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-admin.php:257
+msgid "%s View moved to the Trash."
+msgid_plural "%s Views moved to the Trash."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-admin.php:258
+msgid "%s View restored from the Trash."
+msgid_plural "%s Views restored from the Trash."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-api.php:1399
+msgid "Map It"
+msgstr ""
+
+#: includes/class-common.php:352
+#: includes/fields/class-gravityview-field-post-id.php:28
+msgid "Post ID"
+msgstr ""
+
+#. translators: %s: relative time from now, used for generic date comparisons.
+#. "1 day ago", or "20 seconds ago"
+#: includes/class-common.php:1011
+msgid "%s ago"
+msgstr ""
+
+#: includes/class-common.php:1365
+msgid "Default (Entry ID)"
+msgstr ""
+
+#: includes/class-common.php:1412
+#: includes/fields/class-gravityview-field-date-updated.php:31
+msgid "Date Updated"
+msgstr ""
+
+#: includes/class-common.php:1538
+msgid "Email hidden; Javascript is required."
+msgstr ""
+
+#: includes/class-data.php:297
+msgid "The ID is required."
+msgstr ""
+
+#: includes/class-data.php:305
+msgid ""
+"You did not enter a number. The value entered should be a number, "
+"representing the ID of the post or page the View is embedded on."
+msgstr ""
+
+#: includes/class-data.php:308
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:331
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:221
+msgid "Learn more&hellip;"
+msgstr ""
+
+#: includes/class-data.php:316
+msgid "There is no post or page with that ID."
+msgstr ""
+
+#: includes/class-data.php:327
+msgid ""
+"The Post ID entered is not valid. You may have entered a post or page that "
+"does not contain the selected View. Make sure the post contains the "
+"following shortcode: %s"
+msgstr ""
+
+#: includes/class-data.php:334
+msgid "The ID is already a View."
+msgstr ""
+
+#: includes/class-debug-bar.php:94
+msgid "Warnings"
+msgstr ""
+
+#: includes/class-debug-bar.php:103
+msgid "Logs"
+msgstr ""
+
+#: includes/class-gravityview-admin-bar.php:104
+msgid "Edit Entry %s"
+msgstr ""
+
+#: includes/class-gravityview-admin-bar.php:143
+msgid "Edit Form #%d"
+msgstr ""
+
+#: includes/class-gravityview-admin-duplicate-view.php:241
+msgid "Clone"
+msgstr ""
+
+#: includes/class-gravityview-admin-duplicate-view.php:242
+msgid "Clone this View"
+msgstr ""
+
+#: includes/class-gravityview-admin-duplicate-view.php:247
+msgid "New Draft"
+msgstr ""
+
+#: includes/class-gravityview-admin-duplicate-view.php:247
+msgid "Clone View"
+msgstr ""
+
+#: includes/class-gravityview-admin-duplicate-view.php:248
+msgid "Copy as a new draft View"
+msgstr ""
+
+#: includes/class-gravityview-admin-duplicate-view.php:329
+msgid "No post to duplicate has been supplied!"
+msgstr ""
+
+#: includes/class-gravityview-admin-duplicate-view.php:336
+msgid "You don't have permission to copy this View."
+msgstr ""
+
+#: includes/class-gravityview-admin-duplicate-view.php:357
+msgid "Copy creation failed, could not find original View with ID #%d"
+msgstr ""
+
+#: includes/class-gravityview-admin-notices.php:204
+msgid "Dismiss"
+msgstr ""
+
+#: includes/class-gravityview-change-entry-creator.php:88
+msgid "Search by ID, login, email, or name."
+msgstr ""
+
+#: includes/class-gravityview-change-entry-creator.php:168
+msgid "Success"
+msgstr ""
+
+#: includes/class-gravityview-change-entry-creator.php:292
+msgid "Changed entry creator from %s to %s"
+msgstr ""
+
+#: includes/class-gravityview-change-entry-creator.php:312
+msgid "Change Entry Creator:"
+msgstr ""
+
+#: includes/class-gravityview-compatibility.php:176
+msgid ""
+"You are seeing this notice because you are an administrator. Other users of "
+"the site will see nothing."
+msgstr ""
+
+#: includes/class-gravityview-compatibility.php:215
+msgid ""
+"%sGravityView will soon require PHP Version %s.%s \n"
+"\n"
+"You're using Version %s. Please ask your host to upgrade your server's PHP."
+msgstr ""
+
+#: includes/class-gravityview-compatibility.php:242
+msgid ""
+"%sGravityView requires WordPress %s or newer.%s \n"
+"\n"
+"You're using Version %s. Please upgrade your WordPress installation."
+msgstr ""
+
+#: includes/class-gravityview-compatibility.php:255
+msgid ""
+"%sGravityView will soon require WordPress %s%s \n"
+"\n"
+"You're using Version %s. Please upgrade your WordPress installation."
+msgstr ""
+
+#. translators: first placeholder is the future required version of Gravity
+#. Forms. The second placeholder is the current version of Gravity Forms.
+#: includes/class-gravityview-compatibility.php:286
+msgid ""
+"In the future, GravityView will require Gravity Forms Version %s or newer."
+msgstr ""
+
+#. translators: the placeholder is the required version of Gravity Forms.
+#: includes/class-gravityview-compatibility.php:291
+msgid "GravityView requires Gravity Forms Version %s or newer."
+msgstr ""
+
+#. translators: the placeholder is the current version of Gravity Forms.
+#: includes/class-gravityview-compatibility.php:299
+msgid ""
+"You're using Version %s. Please update your Gravity Forms or purchase a "
+"license."
+msgstr ""
+
+#. translators: In this context, "get" means purchase
+#: includes/class-gravityview-compatibility.php:302
+msgid "Get the Latest Gravity Forms"
+msgstr ""
+
+#: includes/class-gravityview-compatibility.php:350
+msgid ""
+"%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
+"Forms%s to use the GravityView plugin."
+msgstr ""
+
+#: includes/class-gravityview-compatibility.php:359
+msgid ""
+"%sGravityView requires Gravity Forms to be installed in order to run "
+"properly. %sGet Gravity Forms%s - starting at $59%s%s"
+msgstr ""
+
+#: includes/class-gravityview-compatibility.php:379
+msgid "Potential Conflict"
+msgstr ""
+
+#: includes/class-gravityview-compatibility.php:380
+msgid ""
+"GravityView and Gravity Forms Directory are both active. This may cause "
+"problems. If you experience issues, disable the Gravity Forms Directory "
+"plugin."
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-status.php:56
+msgid "Disapproved"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-status.php:57
+msgid "Disapprove"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-status.php:58
+msgid "Entry not approved for directory viewing. Click to approve this entry."
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-status.php:62
+msgid "Approved"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-status.php:63
+msgid "Approve"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-status.php:64
+#: includes/class-gravityview-entry-approval-status.php:65
+msgid "Entry approved for directory viewing. Click to disapprove this entry."
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-status.php:69
+msgid "Unapproved"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-status.php:70
+msgid "Reset Approval"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-status.php:71
+msgid "Entry not yet reviewed. Click to approve this entry."
+msgstr ""
+
+#: includes/class-gravityview-entry-approval.php:186
+#: includes/class-gravityview-entry-approval.php:195
+#: includes/class-gravityview-entry-approval.php:204
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:432
+msgid "The request was invalid. Refresh the page and try again."
+msgstr ""
+
+#: includes/class-gravityview-entry-approval.php:213
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2342
+msgid "You do not have permission to edit this entry."
+msgstr ""
+
+#: includes/class-gravityview-entry-approval.php:453
+msgid "Reset Entry approval for GravityView"
+msgstr ""
+
+#: includes/class-gravityview-entry-link-shortcode.php:239
+#: includes/fields/class-gravityview-field-entry-link.php:80
+#: templates/deprecated/fields/entry_link.php:16
+#: templates/fields/field-entry_link-html.php:27
+msgid "View Details"
+msgstr ""
+
+#: includes/class-gravityview-html-elements.php:78
+msgid "Select a field"
+msgstr ""
+
+#: includes/class-gravityview-powered-by.php:50
+msgid "Powered by GravityView"
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry-admin.php:118
+msgid "Delete Link Text"
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry-admin.php:126
+msgid "Allow the following users to delete the entry:"
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry-admin.php:196
+msgid "A link to delete the entry. Respects the Delete Entry permissions."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:304
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:417
+msgid "Delete"
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:364
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:428
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:459
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:470
+msgid "The entry does not exist."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:491
+msgid "Moving the entry to the trash failed."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:601
+msgid "Are you sure you want to delete this entry? This cannot be undone."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:628
+msgid "The link to delete this entry is not valid; it may have expired."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:632
+msgid "You do not have permission to delete this entry."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:637
+msgid "The entry is already in the trash."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:639
+msgid "You cannot delete the entry; it is already in the trash."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:781
+msgid "There was an error deleting the entry: %s"
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:785
+msgid "The entry was successfully moved to the trash."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:788
+msgid "The entry was successfully deleted."
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:206
+msgid "Duplicate Link Text"
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:208
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:240
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:262
+msgid "Duplicate Entry"
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:214
+msgid "Allow the following users to duplicate the entry:"
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:242
+msgid ""
+"A link to duplicate the entry. Respects the Duplicate Entry permissions."
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:494
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:534
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:866
+msgid "There was an error duplicating the entry."
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:594
+msgid "Are you sure you want to duplicate this entry?"
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:629
+msgid "The link to duplicate this entry is not valid; it may have expired."
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:633
+msgid "You do not have permission to duplicate this entry."
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:773
+msgid "There was an error duplicating the entry: %s"
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:777
+msgid "The entry was successfully duplicated."
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:821
+msgid "Duplicate"
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:845
+msgid "Entry duplicated."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:83
+msgid "Link to Edit Entry"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:85
+msgid "A link to edit the entry. Visible based on View settings."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:142
+msgid "Edit Link Text"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:150
+#: includes/fields/class-gravityview-field.php:449
+msgid "Open link in a new tab or window?"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:169
+msgid "Limiting Edit Access"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:170
+msgid ""
+"Change this setting if you don't want the user who created the entry to be "
+"able to edit this field."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:201
+msgid "Make field editable to:"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:70
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:283
+msgid "You now have control"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:76
+msgid "Your request has been sent to %s."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:78
+msgid "Your request has been sent."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:232
+msgid "Take Over"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:233
+msgid "Request Control"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:250
+msgid "Reject Request"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:277
+msgid ""
+"This entry is currently locked. Click on the \"Request Control\" button to "
+"let %s know you'd like to take over."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:278
+msgid "%s is currently editing this entry"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:279
+msgid "%s has taken over and is currently editing this entry."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:280
+msgid "%s has requested permission to take over control of this entry."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:281
+msgid "Accept"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:284
+msgid "Pending"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:285
+msgid "No response"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:286
+msgid "Request again"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:288
+msgid "Your request was rejected"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1133
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1261
+#: includes/extensions/edit-entry/partials/form-buttons.php:45
+msgid "Update"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1134
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1262
+#: includes/extensions/edit-entry/partials/form-buttons.php:46
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:75
+msgid "Next"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1135
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1263
+#: includes/extensions/edit-entry/partials/form-buttons.php:47
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:76
+msgid "Previous"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1156
+msgid "There was a problem with your submission."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1156
+msgid "Errors have been highlighted below."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1163
+msgid "Entry Updated."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1200
+msgid "Entry Updated. %sReturn to Entry%s"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1415
+msgid "You don&rsquo;t have permission to edit this post."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1422
+msgid "This field is not editable; the post no longer exists."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1753
+msgid "This field is required."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1789
+msgid "Maximum number of files reached"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2336
+msgid "The link to edit this entry is not valid; it may have expired."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2346
+msgid "You cannot edit the entry; it is in the trash."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2386
+msgid "You do not have permission to edit this field."
+msgstr ""
+
+#: includes/extensions/edit-entry/partials/inline-javascript.php:9
+msgid ""
+"Would you like to permanently delete this file? 'Cancel' to stop. 'OK' to "
+"delete"
+msgstr ""
+
+#: includes/extensions/edit-entry/partials/inline-javascript.php:19
+msgid "Ajax error while deleting field."
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:104
+msgid "Entry Notes"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:106
+msgid "Display, add, and delete notes for an entry."
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:372
+msgid "Note Settings"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:376
+msgid "Display notes?"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:379
+msgid "Display notes to users who are not logged-in?"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:383
+msgid "Enable adding notes?"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:386
+msgid "Allow emailing notes?"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:390
+msgid "Allow deleting notes?"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:414
+msgid "Add Note"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:415
+msgid "Note added."
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:416
+msgid "Note Content"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:418
+msgid "Are you sure you want to delete the selected notes?"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:419
+msgid "Notes for this entry"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:420
+msgid "Toggle all notes"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:421
+msgid "There are no notes."
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:422
+msgid "Processing&hellip;"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:423
+msgid "Other email address"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:427
+msgid "Email subject"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:428
+msgid "New entry note"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:429
+msgid "This note was sent from {url}"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:430
+msgid "Also email this note to"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:431
+msgid "There was an error adding the note."
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:434
+msgid "You don't have the ability to delete notes."
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:435
+msgid "You don't have the ability to add notes."
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:475
+msgid "added on {date_created_formatted}"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:557
+msgid "The note is empty."
+msgstr ""
+
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:77
+msgid "The requested content cannot be loaded. Please try again later."
+msgstr ""
+
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:78
+msgid "Start slideshow"
+msgstr ""
+
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:79
+msgid "Pause slideshow"
+msgstr ""
+
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:80
+msgid "Full screen"
+msgstr ""
+
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:81
+msgid "Thumbnails"
+msgstr ""
+
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:82
+msgid "Download"
+msgstr ""
+
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:83
+msgid "Share"
+msgstr ""
+
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:84
+msgid "Zoom"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-address.php:32
+msgid "Address"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-address.php:294
+msgid "Show Map Link:"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-address.php:295
+msgid "Display a \"Map It\" link below the address"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-approval.php:27
+msgid "Approve Entries"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-approval.php:29
+msgid "Approve and reject entries from the View."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-calculation.php:23
+msgid "Calculation"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-captcha.php:21
+msgid "CAPTCHA"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-checkbox.php:27
+#: includes/widgets/search-widget/class-search-widget.php:226
+#: includes/widgets/search-widget/class-search-widget.php:227
+msgid "Checkbox"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-checkbox.php:54
+#: includes/fields/class-gravityview-field-multiselect.php:55
+#: includes/fields/class-gravityview-field-radio.php:50
+#: includes/fields/class-gravityview-field-select.php:54
+msgid "This input has a label and a value. What should be displayed?"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-checkbox.php:57
+#: includes/fields/class-gravityview-field-checkbox.php:65
+msgid "A check mark, if the input is checked"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-checkbox.php:58
+#: includes/fields/class-gravityview-field-multiselect.php:57
+#: includes/fields/class-gravityview-field-radio.php:52
+#: includes/fields/class-gravityview-field-select.php:56
+msgid "Value of the input"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-checkbox.php:59
+#: includes/fields/class-gravityview-field-checkbox.php:66
+#: includes/fields/class-gravityview-field-multiselect.php:58
+#: includes/fields/class-gravityview-field-radio.php:53
+#: includes/fields/class-gravityview-field-select.php:57
+msgid "Label of the input"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-checkbox.php:73
+#: includes/fields/class-gravityview-field-consent.php:109
+#: includes/fields/class-gravityview-field-multiselect.php:54
+#: includes/fields/class-gravityview-field-radio.php:49
+#: includes/fields/class-gravityview-field-select.php:53
+msgid "What should be displayed:"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-consent.php:28
+msgid "Consent"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-consent.php:113
+msgid "Consent image with description"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-consent.php:114
+msgid "Consent image"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-consent.php:115
+msgid "Consent description"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:23
+msgid "Created By (User)"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:24
+msgid "Details of the logged-in user who created the entry (if any)."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:25
+msgid "Submitted by:"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:43
+msgid "Entry Creator: Display Name"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:47
+#: includes/fields/class-gravityview-field-gravatar.php:159
+msgid "Entry Creator: Email"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:51
+msgid "Entry Creator: Username"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:55
+msgid "Entry Creator: User ID"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:59
+msgid "Entry Creator: Roles"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:131
+msgid "User Format"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:132
+msgid "How should the User information be displayed?"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:135
+msgid "User ID # (Example: 426)"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:136
+msgid "Username (Example: \"nostromo\")"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:137
+msgid "Display Name (Example: \"Ellen Ripley\")"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:138
+msgid "User Email (Example: \"ellen@gravityview.co\")"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:139
+msgid "User Registered (Example: \"2019-10-18 08:30:11\")"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:142
+msgid "User nickname"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:143
+msgid "Description"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:144
+msgid "First Name"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:145
+msgid "Last Name"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:148
+msgid "First and Last Name"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-created-by.php:149
+msgid "Last and First Name"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-creditcard.php:21
+msgid "Credit Card"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-currency.php:27
+msgid "Currency"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-custom.php:36
+#: includes/fields/class-gravityview-field-custom.php:77
+#: includes/widgets/class-gravityview-widget-custom-content.php:32
+#: includes/widgets/class-gravityview-widget-custom-content.php:47
+msgid "Custom Content"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-custom.php:37
+msgid "Insert custom text or HTML."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-custom.php:78
+msgid ""
+"Enter text or HTML. Also supports shortcodes. You can show or hide data "
+"using the %s shortcode (%slearn more%s)."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-custom.php:78
+msgid "Click the arrow icon next to the content area to add %sMerge Tags%s."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-custom.php:89
+#: includes/widgets/class-gravityview-widget-custom-content.php:41
+msgid "Automatically add paragraphs to content"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-custom.php:90
+#: includes/widgets/class-gravityview-widget-custom-content.php:42
+msgid ""
+"Wrap each block of text in an HTML paragraph tag (recommended for text)."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-custom.php:97
+msgid "Render oEmbeds"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-custom.php:106
+msgid "Admin Label"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-custom.php:107
+msgid ""
+"A label that is only shown in the GravityView View configuration screen."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-date-created.php:31
+msgid "The date the entry was created."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-date-updated.php:33
+msgid "The date the entry was last updated."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-date.php:27
+#: includes/widgets/search-widget/class-search-widget.php:222
+msgid "Date"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-email.php:26
+msgid "Email"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-email.php:43
+msgid "Link the Email Address"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-email.php:44
+msgid "Clicking the link will generate a new email."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-email.php:49
+msgid "Email Subject"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-email.php:51
+msgid "Set the default email subject line."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-email.php:58
+msgid "Email Body"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-email.php:60
+msgid "Set the default email content."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-email.php:69
+msgid "Encrypt Email Address"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-email.php:70
+msgid ""
+"Make it harder for spammers to get email addresses from your entries. Email "
+"addresses will not be visible with Javascript disabled."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-entry-link.php:34
+msgid "Link to Single Entry"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-entry-link.php:35
+msgid "A dedicated link to the single entry with customizable text."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-entry-link.php:78
+#: includes/fields/class-gravityview-field-source-url.php:48
+#: includes/fields/class-gravityview-field-website.php:45
+msgid "Link Text:"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-fileupload.php:23
+msgid "File Upload"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-fileupload.php:37
+msgid "Display as a Link:"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-fileupload.php:38
+msgid "Display the uploaded files as links, rather than embedded content."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-fileupload.php:45
+msgid "Custom Width:"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-fileupload.php:46
+msgid "Override the default image width (250)."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gquiz_score.php:21
+msgid "Quiz Score"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gquiz_score.php:34
+msgid "Show Max Score?"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gquiz_score.php:35
+msgid ""
+"Display score as the a fraction: \"[score]/[max score]\". If unchecked, will"
+" display score."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:24
+msgid "Gravatar"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:25
+msgid ""
+"A Gravatar is an image that represents a person online based on their email."
+" Powered by gravatar.com."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:112
+msgid "Email to Use"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:114
+msgid "Which email should be used to generate the Gravatar?"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:121
+#: includes/fields/class-gravityview-field-gravatar.php:122
+msgid "Default Image"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:122
+msgid "Choose the default image to be shown when an email has no Gravatar."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:122
+msgid "Read more about %s"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:125
+msgid "Silhouetted Person"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:126
+msgid "Gravatar Icon"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:127
+msgid "Abstract Geometric Patterns"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:128
+msgid "Monster Faces"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:129
+msgid "Arcade-style Faces"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:130
+msgid "Robot Faces"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:131
+msgid "Transparent Image"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravatar.php:138
+msgid "Size in Pixels"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-hidden.php:23
+msgid "Hidden"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-html.php:26
+msgid "HTML"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-id.php:24
+#: includes/widgets/search-widget/class-search-widget.php:349
+msgid "Entry ID"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-id.php:25
+msgid "The unique ID of the entry."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-ip.php:24
+msgid "User IP"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-ip.php:25
+msgid "The IP Address of the user who created the entry."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-approved.php:42
+#: includes/fields/class-gravityview-field-is-approved.php:125
+#: includes/widgets/search-widget/class-search-widget.php:364
+msgid "Approval Status"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-approved.php:43
+msgid "Display the entry's current approval status."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-approved.php:44
+msgid "Approval:"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-approved.php:178
+msgid "Approved Label"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-approved.php:179
+msgid "If the entry is approved, display this value"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-approved.php:185
+msgid "Disapproved Label"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-approved.php:186
+msgid "If the entry is not approved, display this value"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-approved.php:192
+msgid "Unapproved Label"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-approved.php:193
+msgid ""
+"If the entry has not yet been approved or disapproved, display this value"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-fulfilled.php:37
+msgid "Is Fulfilled"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-fulfilled.php:38
+msgid "Indicates if the entry or order has been fulfilled."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-fulfilled.php:96
+msgid "Not Fulfilled"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-fulfilled.php:100
+msgid "Fulfilled"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-starred.php:29
+msgid "Entry Star"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-starred.php:30
+#: includes/widgets/search-widget/class-search-widget.php:357
+msgid "Is Starred"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-starred.php:31
+msgid "Display the entry's \"star\" status."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-starred.php:147
+msgid "There was an error updating the entry."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-list.php:41
+#: includes/presets/default-list/class-gravityview-default-template-list.php:16
+msgid "List"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-multiselect.php:28
+msgid "Multi Select"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-name.php:24
+msgid "Name"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-number.php:30
+msgid "Number"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-number.php:38
+msgid "Format number?"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-number.php:39
+msgid "Display numbers with thousands separators."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-number.php:46
+msgid "Decimals"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-number.php:47
+msgid ""
+"Precision of the number of decimal places. Leave blank to use existing "
+"precision."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-other-entries.php:29
+msgid "Other Entries"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-other-entries.php:30
+msgid "Display other entries created by the entry creator."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-other-entries.php:51
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:344
+msgid "Entry link text (required)"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-other-entries.php:52
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:250
+msgid "Entry #{entry_id}"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-other-entries.php:59
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:351
+msgid "Text or HTML to display after the link (optional)"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-other-entries.php:60
+msgid "This content will be displayed below each entry link."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-other-entries.php:69
+msgid "Entries to Display"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-other-entries.php:70
+msgid "What is the maximum number of entries that should be shown?"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-other-entries.php:79
+msgid "Hide if no entries"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-other-entries.php:80
+msgid "Don't display this field if the entry creator has no other entries"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-other-entries.php:87
+msgid "No Entries Text"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-other-entries.php:88
+msgid ""
+"The text that is shown if the entry creator has no other entries (and \"Hide"
+" if no entries\" is disabled)."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-other-entries.php:89
+msgid "This user has no other entries."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-page.php:22
+msgid "Page"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-password.php:20
+msgid "Password"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-payment-amount.php:29
+msgid "Payment Amount"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-payment-date.php:31
+msgid "Payment Date"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-payment-date.php:32
+msgid "The date the payment was received."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-payment-method.php:29
+msgid "Payment Method"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-payment-method.php:30
+msgid "The way the entry was paid for (ie \"Credit Card\", \"PayPal\", etc.)"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-payment-status.php:27
+msgid "Payment Status"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-payment-status.php:28
+msgid ""
+"The current payment status of the entry (ie \"Processing\", \"Failed\", "
+"\"Cancelled\", \"Approved\")."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-phone.php:24
+msgid "Phone"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-phone.php:49
+msgid "Make Phone Number Clickable"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-phone.php:50
+msgid "Allow dialing a number by clicking it?"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-pipe_recorder.php:19
+msgid "Pipe Recorder"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-pipe_recorder.php:33
+msgid "Display as embedded"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-pipe_recorder.php:34
+msgid "Display the video in a player, rather than a direct link to the video."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-category.php:23
+msgid "Post Category"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-content.php:23
+msgid "Post Content"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-custom-field.php:29
+msgid "Post Custom Field"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-excerpt.php:23
+msgid "Post Excerpt"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-image.php:22
+msgid "Post Image"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-tags.php:26
+msgid "Post Tags"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-title.php:27
+msgid "Post Title"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-quiz.php:17
+msgid "Quiz"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-quiz.php:30
+msgid "Show Answer Explanation?"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-quiz.php:31
+msgid "If the field has an answer explanation, show it?"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-radio.php:23
+msgid "Radio Buttons"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-section.php:24
+msgid "Section"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-sequence.php:41
+msgid "Number Sequence"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-sequence.php:42
+msgid "Display a sequential result number for each entry."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-sequence.php:69
+msgid "Result Number"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-sequence.php:89
+msgid "Reverse the order of the result numbers"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-sequence.php:90
+msgid ""
+"Output the number sequence in descending order. If enabled, numbers will "
+"count down from high to low."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-sequence.php:103
+msgid "First Number in the Sequence"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-sequence.php:104
+msgid ""
+"For each entry, the displayed number will increase by one. When displaying "
+"ten entries, the first entry will display \"1\", and the last entry will "
+"show \"10\"."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-sequence.php:110
+msgid "Reverse the order of the number sequence (high to low)"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-source-url.php:24
+msgid "Source URL"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-source-url.php:25
+msgid "The URL of the page where the form was submitted."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-source-url.php:41
+msgid "Link to URL:"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-source-url.php:42
+msgid "Display as a link to the Source URL"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-source-url.php:49
+msgid "Customize the link text. If empty, the link text will be the URL."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-survey.php:21
+msgid "Survey"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-survey.php:40
+msgid "Show score"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-survey.php:41
+msgid "Display likert score as a simple number."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-text.php:23
+msgid "Single Line Text"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-textarea.php:26
+msgid "Paragraph Text"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-textarea.php:42
+msgid "Maximum words shown"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-textarea.php:43
+msgid ""
+"Enter the number of words to be shown. If specified it truncates the text. "
+"Leave it blank if you want to show the full text."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-textarea.php:50
+msgid "Convert text URLs to HTML links"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-textarea.php:51
+msgid "Converts URI, www, FTP, and email addresses in HTML links"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-textarea.php:58
+msgid "Display as HTML"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-textarea.php:59
+msgid ""
+"If enabled, safe HTML will be displayed and unsafe or unrecognized HTML tags"
+" will be stripped. If disabled, the field value will be displayed as text."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-time.php:61
+msgid "Time"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-total.php:27
+msgid "Total"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-transaction-id.php:29
+msgid "Transaction ID"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-transaction-type.php:39
+msgid "Transaction Type"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-transaction-type.php:40
+msgid "The type of the order: one-time payment or subscription"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-transaction-type.php:97
+msgid "One-Time Payment"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-transaction-type.php:101
+msgid "Subscription"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-unsubscribe.php:20
+#: includes/fields/class-gravityview-field-unsubscribe.php:205
+msgid "Unsubscribe"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-unsubscribe.php:21
+msgid "Unsubscribe from a Payment-based entry."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-unsubscribe.php:68
+msgid "Allow admins to unsubscribe"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-unsubscribe.php:69
+msgid "Allow users with `gravityforms_edit_entries` to cancel subscriptions"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-website.php:27
+msgid "Website"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-website.php:46
+msgid "Define custom link text. Leave blank to display the URL"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-website.php:55
+msgid "Shorten Link Display"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-website.php:56
+msgid "Only show the domain for a URL instead of the whole link."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-website.php:57
+msgid "Don&rsquo;t show the full URL, only show the domain."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-workflow_current_status_timestamp.php:24
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:135
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:162
+msgid "Workflow Current Status Timestamp"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-workflow_final_status.php:18
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:119
+msgid "Workflow Status"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-workflow_step.php:18
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:114
+msgid "Workflow Step"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-workflow_step.php:61
+msgid "Workflow Complete"
+msgstr ""
+
+#: includes/fields/class-gravityview-field.php:412
+msgid "Link to the post"
+msgstr ""
+
+#: includes/fields/class-gravityview-field.php:413
+msgid "Link to the post created by the entry."
+msgstr ""
+
+#: includes/fields/class-gravityview-field.php:420
+msgid "Link to the category or tag"
+msgstr ""
+
+#: includes/fields/class-gravityview-field.php:421
+msgid ""
+"Link to the current category or tag. \"Link to single entry\" must be "
+"unchecked."
+msgstr ""
+
+#: includes/fields/class-gravityview-field.php:428
+msgid "Use the live post data"
+msgstr ""
+
+#: includes/fields/class-gravityview-field.php:429
+msgid "Instead of using the entry data, instead use the current post data."
+msgstr ""
+
+#: includes/fields/class-gravityview-field.php:436
+msgid "Override Date Format"
+msgstr ""
+
+#: includes/fields/class-gravityview-field.php:437
+msgid "Define how the date is displayed (using %sthe PHP date format%s)"
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:54
+msgid "Quiz Score Total"
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:56
+msgid "Displays the number of correct Quiz answers the user submitted."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:60
+msgid "Quiz Percentage Grade"
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:62
+msgid "Displays the percentage of correct Quiz answers the user submitted."
+msgstr ""
+
+#. translators: This is a field type used by the Gravity Forms Quiz Addon. "A"
+#. is 100-90, "B" is 89-80, "C" is 79-70, etc.
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:67
+msgid "Quiz Letter Grade"
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:69
+msgid ""
+"Displays the Grade the user achieved based on Letter Grading configured in "
+"the Quiz Settings."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:73
+msgid "Quiz Pass/Fail"
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:75
+msgid ""
+"Displays either Passed or Failed based on the Pass/Fail settings configured "
+"in the Quiz Settings."
+msgstr ""
+
+#: includes/presets/business-data/class-gravityview-preset-business-data.php:24
+msgid "Business Data"
+msgstr ""
+
+#: includes/presets/business-data/class-gravityview-preset-business-data.php:25
+msgid "Display business information in a table."
+msgstr ""
+
+#: includes/presets/business-listings/class-gravityview-preset-business-listings.php:24
+msgid "Business Listings"
+msgstr ""
+
+#: includes/presets/business-listings/class-gravityview-preset-business-listings.php:25
+msgid "Display business profiles."
+msgstr ""
+
+#: includes/presets/default-edit/class-gravityview-default-template-edit.php:26
+msgid "Edit Table"
+msgstr ""
+
+#: includes/presets/default-edit/class-gravityview-default-template-edit.php:27
+#: includes/presets/default-table/class-gravityview-default-template-table.php:28
+msgid "Display items in a table view."
+msgstr ""
+
+#: includes/presets/default-edit/class-gravityview-default-template-edit.php:45
+msgid "Visible Edit Fields"
+msgstr ""
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:17
+msgid "Display items in a listing view."
+msgstr ""
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:27
+#: includes/presets/default-table/class-gravityview-default-template-table.php:42
+msgid "Link to single entry"
+msgstr ""
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:40
+msgid "Listing Title"
+msgstr ""
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:45
+msgid "Subheading"
+msgstr ""
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:46
+msgid "Data placed here will be bold."
+msgstr ""
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:52
+msgid "Image"
+msgstr ""
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:53
+msgid "Leave empty to remove."
+msgstr ""
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:59
+msgid "Other Fields"
+msgstr ""
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:60
+msgid "Below the subheading, a good place for description and other data."
+msgstr ""
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:68
+msgid "Footer Left"
+msgstr ""
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:75
+msgid "Footer Right"
+msgstr ""
+
+#: includes/presets/default-table/class-gravityview-default-template-table.php:27
+msgid "Table"
+msgstr ""
+
+#: includes/presets/default-table/class-gravityview-default-template-table.php:55
+msgid "Visible Table Columns"
+msgstr ""
+
+#: includes/presets/default-table/class-gravityview-default-template-table.php:56
+msgid "Each field will be displayed as a column in the table."
+msgstr ""
+
+#: includes/presets/default-table/class-gravityview-default-template-table.php:105
+msgid "Add Table Column"
+msgstr ""
+
+#: includes/presets/event-listings/class-gravityview-preset-event-listings.php:24
+msgid "Event Listings"
+msgstr ""
+
+#: includes/presets/event-listings/class-gravityview-preset-event-listings.php:25
+msgid "Present a list of your events."
+msgstr ""
+
+#: includes/presets/issue-tracker/class-gravityview-preset-issue-tracker.php:24
+msgid "Issue Tracker"
+msgstr ""
+
+#: includes/presets/issue-tracker/class-gravityview-preset-issue-tracker.php:25
+msgid "Manage issues and their statuses."
+msgstr ""
+
+#: includes/presets/job-board/class-gravityview-preset-job-board.php:24
+msgid "Job Board"
+msgstr ""
+
+#: includes/presets/job-board/class-gravityview-preset-job-board.php:25
+msgid "Post available jobs in a simple job board."
+msgstr ""
+
+#: includes/presets/profiles/class-gravityview-preset-profiles.php:24
+msgid "People Profiles"
+msgstr ""
+
+#: includes/presets/profiles/class-gravityview-preset-profiles.php:25
+msgid "List people with individual profiles."
+msgstr ""
+
+#: includes/presets/register-default-templates.php:61
+msgid "DataTables Table"
+msgstr ""
+
+#: includes/presets/register-default-templates.php:62
+msgid "Display items in a dynamic table powered by DataTables."
+msgstr ""
+
+#: includes/presets/register-default-templates.php:72
+msgid "Map"
+msgstr ""
+
+#: includes/presets/register-default-templates.php:73
+msgid "Display entries on a map."
+msgstr ""
+
+#: includes/presets/register-default-templates.php:84
+msgid "A flexible, powerful layout for designers & developers."
+msgstr ""
+
+#: includes/presets/resume-board/class-gravityview-preset-resume-board.php:24
+msgid "Resume Board"
+msgstr ""
+
+#: includes/presets/resume-board/class-gravityview-preset-resume-board.php:25
+msgid "Allow job-seekers to post their resumes."
+msgstr ""
+
+#: includes/presets/staff-profiles/class-gravityview-preset-staff-profiles.php:24
+msgid "Staff Profiles"
+msgstr ""
+
+#: includes/presets/staff-profiles/class-gravityview-preset-staff-profiles.php:25
+msgid "List members of your team."
+msgstr ""
+
+#: includes/presets/website-showcase/class-gravityview-preset-website-showcase.php:24
+msgid "Website Showcase"
+msgstr ""
+
+#: includes/presets/website-showcase/class-gravityview-preset-website-showcase.php:25
+msgid "Feature submitted websites with screenshots."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-custom-content.php:22
+msgid "Insert custom text or HTML as a widget"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-custom-content.php:33
+msgid "Enter text or HTML. Also supports shortcodes."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:18
+msgid "Display a Gravity Forms form."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:28
+msgid "Form to display"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:34
+msgid "Show form title?"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:39
+msgid "Show form description?"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:44
+msgid "Enable AJAX"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:51
+msgid "Field value parameters"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:52
+msgid "Learn how to dynamically populate a field."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:59
+msgid "Gravity Forms"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-page-links.php:16
+msgid "Links to multiple pages of results."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-page-links.php:21
+msgid "Show each page number"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-page-links.php:22
+msgid "Show every page number instead of summary (eg: 1 2 3 ... 8 »)"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-page-size.php:24
+msgid "Allow users to modify the number of results shown per page."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-page-size.php:37
+#: includes/widgets/class-gravityview-widget-page-size.php:95
+msgid "Page Size"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-page-size.php:97
+msgid "Results Per Page"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-pagination-info.php:21
+msgid "Summary of the number of visible entries out of the total results."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-pagination-info.php:59
+msgid "Displaying %1$s - %2$s of %3$s"
+msgstr ""
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:25
+msgid "Displays the results of Poll Fields that exist in the form."
+msgstr ""
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:35
+msgid "Display Percentages"
+msgstr ""
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:38
+msgid ""
+"Display results percentages as part of results? Supported values are: true, "
+"false. Defaults to \"true\"."
+msgstr ""
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:41
+msgid "Display Counts"
+msgstr ""
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:44
+msgid ""
+"Display number of times each choice has been selected when displaying "
+"results? Supported values are: true, false. Defaults to \"true\"."
+msgstr ""
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:48
+msgid "Style"
+msgstr ""
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:49
+msgid ""
+"The Polls Add-On currently supports 4 built in styles: red, green, orange, "
+"blue. Defaults to \"green\"."
+msgstr ""
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:52
+msgid "Green"
+msgstr ""
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:53
+msgid "Blue"
+msgstr ""
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:54
+msgid "Red"
+msgstr ""
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:55
+msgid "Orange"
+msgstr ""
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:65
+msgid "Poll Results"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:35
+msgid "Search form for searching entries."
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:48
+msgid "Search Layout"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:51
+msgid "Horizontal"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:52
+msgid "Vertical"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:57
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:226
+msgid "Show Clear button"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:58
+msgid ""
+"When a search is performed, display a button that removes all search values."
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:70
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:232
+msgid "Search Mode"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:71
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:241
+msgid "Should search results match all search fields, or any?"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:75
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:235
+msgid "Match Any Fields"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:76
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:239
+msgid "Match All Fields"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:221
+msgid "Text"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:224
+msgid "Select (multiple values)"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:225
+msgid "Radio"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:228
+msgid "Links"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:229
+msgid "Date range"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:266
+msgid "No search fields configured yet."
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:268
+msgid "Label"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:270
+msgid "Input Type"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:271
+msgid ""
+"There was an error loading searchable fields. Save the View or refresh the "
+"page to fix this issue."
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:341
+msgid "Search Everything"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:345
+msgid "Entry Date"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:353
+msgid "Entry Creator"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:1509
+msgid "Search Entries:"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:1512
+msgid "Filter by date:"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:1515
+msgid "Entry ID:"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:1753
+msgid "Clear"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:1819
+msgid "Show a different month"
+msgstr ""
+
+#: includes/widgets/search-widget/templates/search-field-date_range.php:20
+#: includes/widgets/search-widget/templates/search-field-entry_date.php:20
+msgid "Start date"
+msgstr ""
+
+#: includes/widgets/search-widget/templates/search-field-date_range.php:21
+#: includes/widgets/search-widget/templates/search-field-entry_date.php:21
+msgid "End date"
+msgstr ""
+
+#: includes/widgets/search-widget/templates/search-field-link.php:21
+msgid "Show only:"
+msgstr ""
+
+#: includes/widgets/search-widget/templates/search-field-submit.php:33
+msgid "Search"
+msgstr ""
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:15
+msgid "GravityView Recent Entries"
+msgstr ""
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:18
+msgid "Display the most recent entries for a View"
+msgstr ""
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:246
+msgid "Recent Entries"
+msgstr ""
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:260
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:170
+msgid "Title:"
+msgstr ""
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:289
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:180
+msgid "Please select a View to search."
+msgstr ""
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:299
+msgid "&mdash; Select a View as Entries Source &mdash;"
+msgstr ""
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:327
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:217
+msgid "If Embedded, Page ID:"
+msgstr ""
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:330
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:220
+msgid ""
+"To have a search performed on an embedded View, enter the ID of the post or "
+"page where the View is embedded."
+msgstr ""
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:337
+msgid "Number of entries to show:"
+msgstr ""
+
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:14
+msgid "A search form for a specific GravityView."
+msgstr ""
+
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:21
+msgid "GravityView Search"
+msgstr ""
+
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:143
+msgid ""
+"This widget is not configurable from this screen. Please configure it on the"
+" %sWidgets page%s."
+msgstr ""
+
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:188
+msgid "View:"
+msgstr ""
+
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:190
+msgid "&mdash; Select a View &mdash;"
+msgstr ""
+
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:248
+msgid "Searchable fields:"
+msgstr ""
+
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:249
+msgid "Search Fields"
+msgstr ""
+
+#: templates/deprecated/fields/gquiz_grade.php:24
+#: templates/fields/field-gquiz_grade-html.php:28
+msgid "Letter"
+msgstr ""
+
+#: templates/deprecated/fields/gquiz_is_pass.php:27
+#: templates/fields/field-gquiz_is_pass-html.php:32
+msgid "Pass/Fail"
+msgstr ""
+
+#: templates/fields/field-pipe_recorder-html.php:20
+msgid "Your browser does not support the video tag."
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:294
+msgctxt "1: Customer name; 2: Customer email"
+msgid "Licensed to: %1$s (%2$s)"
+msgstr ""
+
+#: future/includes/class-gv-license-handler.php:341
+msgctxt "1: GravityView upgrade name, 2: Cost of upgrade"
+msgid "Upgrade to %1$s for %2$s"
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:130
+msgctxt "Replacements are HTML links"
+msgid "%sEdit the View settings%s or %sApprove entries%s"
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:176
+#: includes/class-frontend-views.php:646
+msgctxt ""
+"Displayed when a View is not configured. %s is replaced by the tab label"
+msgid "The %s layout has not been configured."
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:496
+msgctxt "A scale from 0 (bad) to 10 (good)"
+msgid "%s (\"Not at all likely\") to %s (\"Extremely likely\")"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:994
+msgctxt "Setting: Show or Hide"
+msgid "Show"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:998
+msgctxt "Setting: Show or Hide"
+msgid "Hide"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1013
+msgctxt "Setting: On or off"
+msgid "On"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1017
+msgctxt "Setting: On or off"
+msgid "Off"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1035
+msgctxt "Setting: Enable or Disable"
+msgid "Enable"
+msgstr ""
+
+#: future/includes/class-gv-settings-addon.php:1039
+msgctxt "Setting: Enable or Disable"
+msgid "Disable"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:174
+msgctxt "an action that admins can perform"
+msgid "edit entries"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:201
+msgctxt "an action that admins can perform"
+msgid "delete entries"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:214
+msgctxt "an action that admins can perform"
+msgid "duplicate entries"
+msgstr ""
+
+#: future/includes/class-gv-view.php:142
+msgctxt "Post Type General Name"
+msgid "Views"
+msgstr ""
+
+#: future/includes/class-gv-view.php:143
+msgctxt "Post Type Singular Name"
+msgid "View"
+msgstr ""
+
+#: future/includes/class-gv-view.php:144
+msgctxt "Menu name"
+msgid "Views"
+msgstr ""
+
+#: future/includes/class-gv-view.php:147
+msgctxt "View Item"
+msgid "View"
+msgstr ""
+
+#: includes/admin/class-gravityview-admin-view-item.php:163
+msgctxt "Label in field picker for empty label"
+msgid "Field #%s (No Label)"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:141
+msgctxt "a support form search has returned empty for the following word"
+msgid "No results found for"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:150
+msgctxt ""
+"Error shown when submitting support request and there is no subject provided"
+msgid "Please enter a subject"
+msgstr ""
+
+#: includes/admin/class-gravityview-support-port.php:152
+msgctxt ""
+"Error shown when submitting support request and there is no message provided"
+msgid "Please enter a message"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:26
+msgctxt "Denotes the name under which certain field settings are grouped"
+msgid "Field"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:27
+msgctxt "Denotes the name under which certain field settings are grouped"
+msgid "Display"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:28
+msgctxt "Denotes the name under which certain field settings are grouped"
+msgid "Label"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:29
+msgctxt "Denotes the name under which certain field settings are grouped"
+msgid "Visibility"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:30
+msgctxt "Denotes the name under which certain field settings are grouped"
+msgid "Advanced"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:31
+msgctxt "Denotes the name under which certain field settings are grouped"
+msgid "Default"
+msgstr ""
+
+#: includes/admin/class.render.settings.php:387
+msgctxt "The type of field being configured (eg: \"Single Line Text\")"
+msgid "Type"
+msgstr ""
+
+#: includes/class-admin-installer.php:100
+msgctxt ""
+"Extensions are WordPress plugins that add functionality to GravityView and "
+"Gravity Forms"
+msgid "Manage Add-Ons"
+msgstr ""
+
+#: includes/class-admin-views.php:539
+msgctxt "Column title that shows what template is being used for Views"
+msgid "Template"
+msgstr ""
+
+#: includes/class-debug-bar.php:175
+msgctxt "Debugging output data is empty."
+msgid "Empty"
+msgstr ""
+
+#: includes/class-frontend-views.php:1448
+msgctxt "Clear all data from the form"
+msgid "Clear"
+msgstr ""
+
+#: includes/class-frontend-views.php:1449
+msgctxt "Reset the search form to the state that existed on page load"
+msgid "Reset"
+msgstr ""
+
+#: includes/class-gravityview-admin-bar.php:142
+msgctxt "Edit View with the ID of %d"
+msgid "Edit View #%d"
+msgstr ""
+
+#: includes/class-gravityview-change-entry-creator.php:169
+msgctxt ""
+"First parameter: Success or error of the action. Second: User ID number"
+msgid "%s: Assigned User ID #%d as the entry creator."
+msgstr ""
+
+#: includes/class-gravityview-change-entry-creator.php:278
+msgctxt ""
+"The name and the ID of users who initiated changes to entry ownership"
+msgid "%s (ID #%d)"
+msgstr ""
+
+#: includes/class-gravityview-change-entry-creator.php:280
+msgctxt ""
+"To show that the entry was unassigned from an actual user to no user."
+msgid "No User"
+msgstr ""
+
+#: includes/class-gravityview-change-entry-creator.php:322
+msgctxt "No user assigned to the entry"
+msgid "No User"
+msgstr ""
+
+#: includes/class-gravityview-change-entry-creator.php:342
+msgctxt "%d is replaced with user count %s is replaced with \"user\" or \"users\""
+msgid "Use the input above to search the remaining %d %s."
+msgstr ""
+
+#: includes/class-gravityview-entry-approval.php:117
+msgctxt "The title for an event in a notifications drop down list."
+msgid "Entry is approved"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval.php:118
+msgctxt "The title for an event in a notifications drop down list."
+msgid "Entry is disapproved"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval.php:119
+msgctxt "The title for an event in a notifications drop down list."
+msgid "Entry approval is reset"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval.php:120
+msgctxt "The title for an event in a notifications drop down list."
+msgid "Entry approval is changed"
+msgstr ""
+
+#: includes/class-gravityview-html-elements.php:120
+msgctxt "all dropdown items"
+msgid "All"
+msgstr ""
+
+#: includes/class-gravityview-html-elements.php:121
+msgctxt "no dropdown items"
+msgid "None"
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry-admin.php:88
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:296
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:115
+msgctxt "User capability"
+msgid "Entry Creator"
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:859
+msgctxt "Error message links to logging page"
+msgid "Check the GravityView logs for more information."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:224
+msgctxt "Referring to the user who is currently editing a locked entry"
+msgid "the person who is editing the entry"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1184
+msgctxt "Replacements are HTML"
+msgid "Entry Updated. %sReturning to Entry%s"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1189
+msgctxt ""
+"Replacement 1 is HTML. Replacement 2 is the title of the page where the user"
+" will be taken. Replacement 3 is HTML."
+msgid "Entry Updated. %sReturning to %s%s"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1195
+msgctxt ""
+"Replacement 1 is HTML. Replacement 2 is the URL where the user will be "
+"taken. Replacement 3 is HTML."
+msgid "Entry Updated. %sRedirecting to %s%s"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2362
+msgctxt "Link shown when invalid Edit Entry link is clicked"
+msgid "Go back."
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:373
+msgctxt "%s is opening and closing HTML link"
+msgid ""
+"Only users with specific capabilities will be able to view, add and delete "
+"notes. %sRead more%s."
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:425
+msgctxt "Example email address used as a placeholder"
+msgid "you@example.com"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:433
+msgctxt "Message to display when submitting a note without content."
+msgid "Note cannot be blank."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-custom.php:98
+msgctxt "HTML link pointing to WordPress article on oEmbed"
+msgid ""
+"Automatically convert oEmbed URLs into embedded content (%slearn more%s)."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-other-entries.php:70
+msgctxt "%s replaced with a formatted 0"
+msgid "Set to %s for no maximum."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:108
+msgctxt "Gravity Flow Workflow Step Status"
+msgid "Status: %s"
+msgstr ""
+
+#: includes/presets/register-default-templates.php:83
+msgctxt "DIY means \"Do It Yourself\""
+msgid "DIY"
+msgstr ""
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:26
+msgctxt "The string placeholders are for emphasis HTML"
+msgid ""
+"Note: this will display poll results for %sall form entries%s, not only the "
+"entries displayed in the View."
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:1814
+msgctxt "Close calendar"
+msgid "Close"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:1815
+msgctxt "Previous month in calendar"
+msgid "Prev"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:1816
+msgctxt "Next month in calendar"
+msgid "Next"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:1817
+msgctxt "Today in calendar"
+msgid "Today"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:1818
+msgctxt "Week in calendar"
+msgid "Week"
+msgstr ""
+
+#: templates/deprecated/fields/gquiz_grade.php:25
+#: templates/deprecated/fields/gquiz_is_pass.php:28
+#: templates/fields/field-gquiz_grade-html.php:29
+#: templates/fields/field-gquiz_is_pass-html.php:33
+msgctxt "%s is the current Quiz field type (\"Letter\" or \"Pass/Fail\")"
+msgid "%s grading is disabled for this form. %sChange the setting%s"
+msgstr ""
+
+#: templates/deprecated/fields/post_image.php:108
+#: templates/fields/field-post_image-html.php:113
+msgctxt "Post Image field title heading"
+msgid "Title:"
+msgstr ""
+
+#: templates/deprecated/fields/post_image.php:114
+#: templates/fields/field-post_image-html.php:119
+msgctxt "Post Image field caption heading"
+msgid "Caption:"
+msgstr ""
+
+#: templates/deprecated/fields/post_image.php:120
+#: templates/fields/field-post_image-html.php:125
+msgctxt "Post Image field description heading"
+msgid "Description:"
+msgstr ""

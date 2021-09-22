@@ -244,6 +244,42 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * Make sure user meta works
+	 */
+	function test_gv_shortcode_for_user_meta() {
+		// @todo Fix test once gvlogic changes are made
+		$this->markTestSkipped();
+
+		$this->expected_deprecated[] = 'WP_User->id';
+
+		$administrator = $this->factory->user->create( array(
+				'user_login' => md5( microtime() ),
+				'user_email' => md5( microtime() ) . '@gravityview.tests',
+				'first_name' => 'Example',
+				'last_name'  => 'Crow',
+				'role' => 'administrator' )
+		);
+
+		add_user_meta( $administrator, 'custom_user_meta', 'Super Custom' );
+
+		wp_set_current_user( 0 );
+
+		$this->assertEquals( '', GFCommon::replace_variables_prepopulate( '{user:first_name}' ) );
+		$this->assertEquals( '', do_shortcode( '[gvlogic if="1" equals="1"]{user:custom_user_meta}[/gvlogic]' ) );
+
+		wp_set_current_user( $administrator );
+
+
+		// $current_user->get("ID") returns false, which gets replaced with empty string.
+		$this->assertEquals( 'Example', GFCommon::replace_variables_prepopulate( '{user:first_name}' ) );
+		$this->assertEquals( 'Super Custom', GFCommon::replace_variables_prepopulate( '{user:custom_user_meta}' ) );
+
+		$this->assertEquals( 'Example', do_shortcode( '[gvlogic if="{user:first_name}"]{user:first_name}[else]Not correct![/gvlogic]' ) );
+		$this->assertEquals( 'Example', do_shortcode( '[gvlogic if="1" equals="1"]{user:first_name}[else]Not correct![/gvlogic]' ) );
+		$this->assertEquals( 'Super Custom', do_shortcode( '[gvlogic if="1" equals="1"]{user:custom_user_meta}[else]Not correct![/gvlogic]' ) );
+	}
+
+	/**
 	 * Make sure a basic "logged-in" check works
 	 */
 	function test_gv_shortcode_for_user_id_logged_in() {
