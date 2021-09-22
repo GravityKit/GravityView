@@ -161,9 +161,10 @@ class GravityView_Plugin_Hooks_TrustedLogin extends GravityView_Plugin_and_Theme
 	/**
 	 * Adds TrustedLogin "Grant Access" to the list of GravityView admin pages (for loading scripts, etc.)
 	 *
-	 * @param false $is_admin
+	 * @param string|bool $is_page If false, no. If string, the name of the page (`single`, `settings`, or `views`).
+	 * @param string $hook The name of the page to check against. Is passed to the method.
 	 *
-	 * @return bool
+	 * @return string|bool
 	 */
 	public function filter_is_admin_page( $is_admin = false ) {
 		global $current_screen;
@@ -172,7 +173,7 @@ class GravityView_Plugin_Hooks_TrustedLogin extends GravityView_Plugin_and_Theme
 			return true;
 		}
 
-		return (bool) $is_admin;
+		return $is_admin;
 	}
 
 	/**
