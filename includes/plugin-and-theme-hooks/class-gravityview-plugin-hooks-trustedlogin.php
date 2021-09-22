@@ -128,6 +128,8 @@ class GravityView_Plugin_Hooks_TrustedLogin extends GravityView_Plugin_and_Theme
 
 		add_filter( 'gravityview/support_port/localization_data', array( $this, 'add_localization_data' ) );
 
+		add_action( 'trustedlogin/' . self::TRUSTEDLOGIN_NAMESPACE . '/logging/log', array( $this, 'log' ), 10, 4 );
+
 		$config = new Config( self::get_trustedlogin_config() );
 
 		try {
@@ -135,6 +137,25 @@ class GravityView_Plugin_Hooks_TrustedLogin extends GravityView_Plugin_and_Theme
 		} catch ( \Exception $exception ) {
 			gravityview()->log->error( $exception->getMessage() );
 		}
+	}
+
+	/**
+	 * Override TrustedLogin logging with GravityView's logging system.
+	 *
+	 * @internal Once GravityView requires PHP 7.1, this will be a private method and we'll use Closure::fromCallable().
+	 * @since 2.13
+	 * @see https://github.com/php-fig/log/blob/master/Psr/Log/LogLevel.php for log levels
+	 *
+	 * @param string $message Message to log.
+	 * @param string $method Method where the log was called
+	 * @param string $level PSR-3 log level
+	 * @param \WP_Error|\Exception|mixed $data Optional. Error data. Ignored if $message is WP_Error.
+	 */
+	public function log( $message, $method = '', $level = 'debug', $data = array() ) {
+
+		$data['method'] = $method;
+
+		gravityview()->log->{$level}( $message, $data );
 	}
 
 	/**
