@@ -139,7 +139,7 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 
 			unset( GFFormDisplay::$submission[ $form_id ] );
 
-			gravity_form( $form_id, ! empty( $description ), ! empty( $title ) );
+			gravity_form( $form_id, ! empty( $title ), ! empty( $description ), false, $field_values, $ajax );
 		}
 	}
 
