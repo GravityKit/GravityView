@@ -2450,7 +2450,7 @@
 	};
 
 	// Enable inserting GF merge tags into WP's CodeMirror
-	$( window ).load( function() {
+	$( window ).on( 'load', function() {
 		var _sendToEditor = window.send_to_editor;
 
 		window.send_to_editor = function( val ) {

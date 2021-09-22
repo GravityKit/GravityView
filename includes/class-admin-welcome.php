@@ -288,6 +288,17 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.12.1 on September 1, 2021</h3>
+
+				<ul>
+					<li>Fixed: The Gravity Forms widget in the View editor would always use the source form of the View</li>
+					<li>Fixed: The field picker didn't use available translations</li>
+					<li>Fixed: Importing <a href="https://docs.gravityview.co/article/119-importing-and-exporting-configured-views">exported Views</a> failed when Custom Content or <a href="https://gravityview.co/extensions/diy-layout/">DIY Layout</a> fields included line breaks.</li>
+					<li>Fixed: When first installing GravityView, the message was for an invalid license instead of inactive.</li>
+					<li>Fixed: The "Affiliate ID" setting would not toggle properly when loading GravityView settings. <a href="https://gravityview.co/account/affiliates/#about-the-program">P.S. — Become an affiliate and earn money referring GravityView!</a></li>
+					<li>Tweak: Changed the icon of the Presets preview</li>
+				</ul>
+
                 <h3>2.12 on July 29, 2021</h3>
 
                 <ul>

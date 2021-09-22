@@ -8,6 +8,7 @@
 # Hubert Test <hubert@trash-mail.com>, 2021
 # Aleksander Kracht-Winter <ma.kracht.winter@gmail.com>, 2021
 # Zachary Katz <zack@katz.co>, 2021
+# Michael Eppers <michael@proper.de>, 2021
 # 
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>, 2021\n"
+"Last-Translator: Michael Eppers <michael@proper.de>, 2021\n"
 "Language-Team: German (Germany) (https://www.transifex.com/katzwebservices/teams/18775/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -75,7 +76,7 @@ msgstr "Diese Entwicklungsseite zählt nicht zu ihrem Lizenzaktivierungslimit."
 
 #: future/includes/class-gv-license-handler.php:289
 msgid "Unlimited"
-msgstr ""
+msgstr "Unbeschränkt"
 
 #: future/includes/class-gv-license-handler.php:293
 msgid "License level: %s"
@@ -144,6 +145,8 @@ msgid ""
 "This license key is disabled. For updates and support, %spurchase a new "
 "license%s."
 msgstr ""
+"Die Lizenz ist nicht aktiviert. Um Aktualisierungen und Support zu "
+"erhalten., %skaufe eine neue Lizenz.%s."
 
 #: future/includes/class-gv-license-handler.php:421
 #: future/includes/class-gv-license-handler.php:423
@@ -152,7 +155,7 @@ msgstr "Der eingegeben Lizenz Schlüssel ist ungültig."
 
 #: future/includes/class-gv-license-handler.php:422
 msgid "This license key does not have access to this plugin."
-msgstr ""
+msgstr "Dieser Lizenzschlüssel gewährt keinen Zugriff zu dieser Erweiterung."
 
 #: future/includes/class-gv-license-handler.php:424
 msgid "This license key has been revoked."
@@ -254,7 +257,7 @@ msgstr "Den Eintrag für GravityView genehmigt"
 
 #: future/includes/class-gv-renderer.php:123
 msgid "Hide this notice"
-msgstr ""
+msgstr "Diese Nachricht verbergen"
 
 #: future/includes/class-gv-renderer.php:127
 msgid ""
@@ -322,6 +325,8 @@ msgstr "Felder zu %s hinzufügen"
 msgid ""
 "GravityView will not work correctly on this page because of the URL Slug."
 msgstr ""
+"GravityView wird wegen des URL Slugs auf dieser Seite nicht korrekt "
+"funktionieren."
 
 #: future/includes/class-gv-renderer.php:234
 msgid "Please <a href=\"%s\">read this article</a> for more information."
@@ -2329,7 +2334,7 @@ msgstr ""
 #: includes/class-common.php:1412
 #: includes/fields/class-gravityview-field-date-updated.php:31
 msgid "Date Updated"
-msgstr ""
+msgstr "Aktualisierungs-Datum"
 
 #: includes/class-common.php:1538
 msgid "Email hidden; Javascript is required."
@@ -4679,7 +4684,7 @@ msgstr "Bitte gib eine Nachricht ein"
 #: includes/admin/class.render.settings.php:26
 msgctxt "Denotes the name under which certain field settings are grouped"
 msgid "Field"
-msgstr ""
+msgstr "Feld"
 
 #: includes/admin/class.render.settings.php:27
 msgctxt "Denotes the name under which certain field settings are grouped"
