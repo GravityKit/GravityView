@@ -137,8 +137,7 @@
 
 	/**
 	 * Select the text of an input field on click
-	 * @param  {jQueryEvent}    e     [description]
-	 * @return {[type]}          [description]
+	 * @param  {jQueryEvent} e
 	 */
 	$( '#tl-' + namespace + '-access-key', $tl_container ).on( 'click', function ( e ) {
 		e.preventDefault();
@@ -146,6 +145,18 @@
 		$( this ).trigger('focus').trigger('select');
 
 		return false;
+	} );
+
+	/**
+	 * Expand and collapse toggling sections based on the target's [data-toggle] attribute.
+	 * @param  {jQueryEvent} e
+	 */
+	$( '.tl-' + namespace + '-toggle' ).on( 'click', function ( e ) {
+		e.preventDefault();
+
+		$( this ).find( '.dashicons' ).toggleClass( 'dashicons-arrow-down-alt2' ).toggleClass( 'dashicons-arrow-up-alt2' );
+
+		$( $( this ).data( 'toggle' ) ).toggleClass( 'hidden' );
 	} );
 
 	/**

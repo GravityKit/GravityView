@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 21-September-2021 using Strauss.
+ * Modified by gravityview on 22-September-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 /**
@@ -127,7 +127,7 @@ final class Admin {
 		$registered['trustedlogin-js'] = wp_register_script(
 			'trustedlogin-' . $this->config->ns(),
 			$this->config->get_setting( 'paths/js' ),
-			array( 'wp-a11y' ),
+			array( 'jquery', 'wp-a11y' ),
 			Client::VERSION,
 			true
 		);
@@ -411,7 +411,7 @@ final class Admin {
 
 		$output = $this->prepare_output( $auth_screen_template, $content );
 
-		return $output . $this->get_script();
+		return $output;
 	}
 
 	private function get_header_html() {
@@ -592,27 +592,6 @@ final class Admin {
 		return $output;
 	}
 
-	private function get_script() {
-		ob_start();
-		?>
-		<script>
-			jQuery( document ).ready( function ( $ ) {
-				$( '.tl-{{ns}}-toggle' ).on( 'click', function () {
-					$( this ).find( '.dashicons' ).toggleClass( 'dashicons-arrow-down-alt2' ).toggleClass( 'dashicons-arrow-up-alt2' );
-					$( $( this ).data( 'toggle' ) ).toggleClass( 'hidden' );
-				} );
-			} );
-		</script>
-		<?php
-		$output = ob_get_clean();
-
-		$content = array(
-			'ns' => $this->config->ns(),
-		);
-
-		return $this->prepare_output( $output, $content, false );
-	}
-
 	/**
 	 * Generates HTML for notices about current server environment perhaps not being accessible.
 	 * @return string
@@ -677,9 +656,22 @@ final class Admin {
 	 */
 	private function get_footer_html() {
 
+		$support_url = $this->config->get_setting( 'vendor/support_url' );
+
+		if ( $reference_id = self::get_reference_id() ) {
+
+			$support_args = array(
+				'tl'  => Client::VERSION,
+				'ref' => $reference_id,
+				'ns'  => $this->config->ns(),
+			);
+
+			$support_url = add_query_arg( $support_args, $support_url );
+		}
+
 		$footer_links = array(
-			esc_html__( 'Learn about TrustedLogin', 'trustedlogin' )                    => self::ABOUT_TL_URL,
-			sprintf( 'Visit %s support', $this->config->get_setting( 'vendor/title' ) ) => $this->config->get_setting( 'vendor/support_url' ),
+			esc_html__( 'Learn about TrustedLogin', 'trustedlogin' )                   => self::ABOUT_TL_URL,
+			sprintf( 'Visit %s support', $this->config->get_setting( 'vendor/title' ) ) => $support_url,
 		);
 
 		/**
