@@ -65,7 +65,7 @@ class Endpoint {
 		/**
 		 * Filter: Set endpoint setting name
 		 *
-		 * @since 0.3.0
+		 * @since 1.0.0
 		 *
 		 * @param string
 		 * @param Config $config
@@ -94,7 +94,7 @@ class Endpoint {
 	/**
 	 * Check if the endpoint is hit and has a valid identifier before automatically logging in support agent
 	 *
-	 * @since 0.3.0
+	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
@@ -167,7 +167,7 @@ class Endpoint {
 	 * Hooked Action to maybe revoke support if $_REQUEST[ SupportUser::ID_QUERY_PARAM ] == {namespace}
 	 * Can optionally check for $_REQUEST[ SupportUser::ID_QUERY_PARAM ] for revoking a specific user by their identifier
 	 *
-	 * @since 0.2.1
+	 * @since 1.0.0
 	 */
 	public function maybe_revoke_support() {
 
@@ -233,7 +233,7 @@ class Endpoint {
 	 *
 	 * @see Endpoint::init() Called via `init` hook
 	 *
-	 * @since 0.3.0
+	 * @since 1.0.0
 	 */
 	public function add() {
 
@@ -274,7 +274,7 @@ class Endpoint {
 	/**
 	 * Returns the value of the {user_identifier} part of a TrustedLogin URL, if set.
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 *
 	 * @return false|string If false, no query var is set. If string, the sanitized unhashed identifier for the support user.
 	 */

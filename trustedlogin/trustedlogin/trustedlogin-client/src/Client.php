@@ -38,9 +38,9 @@ final class Client {
 
 	/**
 	 * @var string The current drop-in file version
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
-	const VERSION = '0.9.6';
+	const VERSION = '1.0.0';
 
 	/**
 	 * @var Config
@@ -308,7 +308,7 @@ final class Client {
 		if ( ! $this->config->meets_ssl_requirement() ) {
 			// TODO: If fails test, return WP_Error instead
 			// TODO: Write test for this
-			return new WP_Error( 'fails_ssl_requirement', __( 'TODO', 'gravityview' ) );
+			return new WP_Error( 'fails_ssl_requirement', __( 'TODO', 'trustedlogin' ) );
 		}
 
 		timer_start();
@@ -412,7 +412,7 @@ final class Client {
 		if ( ! $this->config->meets_ssl_requirement() ) {
 			// TODO: If fails test, return WP_Error instead
 			// TODO: Write test for this
-			return new WP_Error( 'fails_ssl_requirement', __( 'TODO', 'gravityview' ) );
+			return new WP_Error( 'fails_ssl_requirement', __( 'TODO', 'trustedlogin' ) );
 		}
 
 		timer_start();
@@ -515,7 +515,7 @@ final class Client {
 
 		if ( ! empty( $should_be_deleted ) ) {
 			$this->logging->log( 'User #' . $should_be_deleted->ID . ' was not removed', __METHOD__, 'error' );
-			return new WP_Error( 'support_user_not_deleted', __( 'The support user was not deleted.', 'gravityview' ) );
+			return new WP_Error( 'support_user_not_deleted', __( 'The support user was not deleted.', 'trustedlogin' ) );
 		}
 
 		/**
@@ -532,7 +532,7 @@ final class Client {
 	/**
 	 * Adds PLAINTEXT metadata to the envelope, including reference ID.
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 *
 	 * @param array $metadata
 	 *
@@ -552,7 +552,7 @@ final class Client {
 	/**
 	 * Gets the reference ID passed to the $_REQUEST using `reference_id` or `ref` keys.
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 *
 	 * @return string|null Sanitized reference ID (escaped with esc_html) if exists. NULL if not.
 	 */

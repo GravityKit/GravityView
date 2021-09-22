@@ -14,7 +14,7 @@
     },
 	{
 	  "type": "github",
-	  "url":  "https://github.com/trustedlogin/trustedlogin-client.git",
+	  "url":  "https://github.com/trustedlogin/client.git",
 	  "no-api": true
 	},
 	{
@@ -27,7 +27,7 @@
     "php": ">=5.3",
     "ext-json": "*",
     "ext-openssl": "*",
-	"trustedlogin/trustedlogin-client": "dev-develop"
+	"trustedlogin/trustedlogin-client": "*"
   },
   "require-dev": {
 	"brianhenryie/strauss": "^0.8.9"

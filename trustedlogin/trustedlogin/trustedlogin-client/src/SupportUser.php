@@ -49,28 +49,28 @@ final class SupportUser {
 
 	/**
 	 * @var string $user_identifier_meta_key The namespaced setting name for storing the unique identifier hash in user meta
-	 * @since 0.7.0
+	 * @since 1.0.0
 	 * @example tl_{vendor/namespace}_id
 	 */
 	private $user_identifier_meta_key;
 
 	/**
 	 * @var string $site_hash_meta_key The namespaced setting name for storing the site identifier hash in user meta
-	 * @since 0.7.0
+	 * @since 1.0.0
 	 * @example tl_{vendor/namespace}_site_hash
 	 */
 	private $site_hash_meta_key;
 
 	/**
 	 * @var int $expires_meta_key The namespaced setting name for storing the timestamp the user expires
-	 * @since 0.7.0
+	 * @since 1.0.0
 	 * @example tl_{vendor/namespace}_expires
 	 */
 	private $expires_meta_key;
 
 	/**
 	 * @var int $created_by_meta_key The ID of the user who created the TrustedLogin access
-	 * @since 0.9.7
+	 * @since 1.0.0
 	 */
 	private $created_by_meta_key;
 
@@ -135,7 +135,7 @@ final class SupportUser {
 	/**
 	 * Create the Support User with custom role.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @uses wp_insert_user()
 	 *
@@ -177,7 +177,7 @@ final class SupportUser {
 		if ( email_exists( $user_email ) ) {
 			$this->logging->log( 'Support User not created; a user with that email already exists: ' . $user_email, __METHOD__, 'warning' );
 
-			return new WP_Error( 'email_exists', __( 'User not created; User with that email already exists', 'gravityview' ) );
+			return new WP_Error( 'email_exists', __( 'User not created; User with that email already exists', 'trustedlogin' ) );
 		}
 
 		$user_data = array(
@@ -210,7 +210,7 @@ final class SupportUser {
 	 */
 	private function generate_unique_username() {
 
-		$username = sprintf( esc_html__( '%s Support', 'gravityview' ), $this->config->get_setting( 'vendor/title' ) );
+		$username = sprintf( esc_html__( '%s Support', 'trustedlogin' ), $this->config->get_setting( 'vendor/title' ) );
 
 		if ( ! username_exists( $username ) ) {
 			return $username;
@@ -321,7 +321,7 @@ final class SupportUser {
 	/**
 	 * Helper Function: Get the generated support user(s).
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $user_identifier_or_hash
 	 *
@@ -375,7 +375,7 @@ final class SupportUser {
 	/**
 	 * Get all users with the support role
 	 *
-	 * @since 0.7.0
+	 * @since 1.0.0
 	 *
 	 * @return WP_User[]
 	 */
@@ -471,7 +471,7 @@ final class SupportUser {
 	/**
 	 * Get the ID of the best-guess appropriate admin user
 	 *
-	 * @since 0.7.0
+	 * @since 1.0.0
 	 *
 	 * @return int|null User ID if there are admins, null if not
 	 */

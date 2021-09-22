@@ -39,7 +39,7 @@ final class SupportRole {
 
 	/**
 	 * @var array These capabilities will never be allowed for users created by TrustedLogin
-	 * @since 0.9.6
+	 * @since 1.0.0
 	 */
 	static $prevented_caps = array(
 		'create_users',
@@ -105,8 +105,8 @@ final class SupportRole {
 	/**
 	 * Creates the custom Support Role if it doesn't already exist
 	 *
-	 * @since 0.1.0
-	 * @since 0.9.2 removed excluded_caps from generated role
+	 * @since 1.0.0
+	 * @since 1.0.0 removed excluded_caps from generated role
 	 *
 	 * @param string $new_role_slug    The slug for the new role (optional). Default: {@see SupportRole::get_name()}
 	 * @param string $clone_role_slug  The slug for the role to clone (optional). Default: {@see SupportRole::get_cloned_name()}.
@@ -162,7 +162,7 @@ final class SupportRole {
 		/**
 		 * @filter trustedlogin/{namespace}/support_role/display_name Modify the display name of the created support role
 		 */
-		$role_display_name = apply_filters( 'trustedlogin/' . $this->config->ns() . '/support_role/display_name', sprintf( esc_html__( '%s Support', 'gravityview' ), $this->config->get_setting( 'vendor/title' ) ), $this );
+		$role_display_name = apply_filters( 'trustedlogin/' . $this->config->ns() . '/support_role/display_name', sprintf( esc_html__( '%s Support', 'trustedlogin' ), $this->config->get_setting( 'vendor/title' ) ), $this );
 
 		$new_role = add_role( $new_role_slug, $role_display_name, $capabilities );
 

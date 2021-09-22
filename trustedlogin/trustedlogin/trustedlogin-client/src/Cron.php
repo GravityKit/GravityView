@@ -102,7 +102,7 @@ final class Cron {
 	/**
 	 * Hooked Action: Revokes access for a specific support user
 	 *
-	 * @since 0.2.1
+	 * @since 1.0.0
 	 *
 	 * @param string $identifier_hash Identifier hash for the user associated with the cron job
 	 * @todo

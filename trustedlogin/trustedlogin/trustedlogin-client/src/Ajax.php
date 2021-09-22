@@ -51,7 +51,7 @@ final class Ajax {
 	/**
 	 * AJAX handler for maybe generating a Support User
 	 *
-	 * @since 0.2.0
+	 * @since 1.0.0
 	 *
 	 * @return void Sends a JSON success or error message based on what happens
 	 */

@@ -235,7 +235,7 @@ class Logging {
 		/**
 		 * Filter: Whether debug logging is enabled in TrustedLogin Client
 		 *
-		 * @since 0.4.2
+		 * @since 1.0.0
 		 *
 		 * @param bool $debug_mode Default: false
 		 */
