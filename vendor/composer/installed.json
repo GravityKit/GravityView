@@ -2551,12 +2551,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/trustedlogin/trustedlogin-client.git",
-                "reference": "782a66823423ea8503bd90a777d830b0b41b4216"
+                "reference": "58d383d320d1789a8fcafa4ded78529ed9c828e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trustedlogin/trustedlogin-client/zipball/782a66823423ea8503bd90a777d830b0b41b4216",
-                "reference": "782a66823423ea8503bd90a777d830b0b41b4216",
+                "url": "https://api.github.com/repos/trustedlogin/trustedlogin-client/zipball/58d383d320d1789a8fcafa4ded78529ed9c828e9",
+                "reference": "58d383d320d1789a8fcafa4ded78529ed9c828e9",
                 "shasum": ""
             },
             "require": {
@@ -2567,7 +2567,7 @@
                 "paragonie/sodium_compat": "^1.12",
                 "php": ">=5.3.0"
             },
-            "time": "2021-09-22T13:40:42+00:00",
+            "time": "2021-09-22T18:30:44+00:00",
             "default-branch": true,
             "type": "library",
             "installation-source": "source",

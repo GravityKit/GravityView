@@ -287,7 +287,7 @@ final class Client {
 			return $secret_id;
 		}
 
-		$reference_id = ( isset( $_POST['ref'] ) ? esc_html( $_POST['ref'] ) : null );
+		$reference_id = self::get_reference_id();
 
 		$timing_local = timer_stop( 0, 5 );
 
@@ -315,7 +315,11 @@ final class Client {
 
 		try {
 
+			add_filter( 'trustedlogin/' . $this->config->ns() . '/envelope/meta', array( $this, 'add_meta_to_envelope' ) );
+
 			$created = $this->site_access->sync_secret( $secret_id, $site_identifier_hash, 'create' );
+
+			remove_filter( 'trustedlogin/' . $this->config->ns() . '/envelope/meta', array( $this, 'add_meta_to_envelope' ) );
 
 		} catch ( Exception $e ) {
 
@@ -415,7 +419,11 @@ final class Client {
 
 		try {
 
+			add_filter( 'trustedlogin/' . $this->config->ns() . '/envelope/meta', array( $this, 'add_meta_to_envelope' ) );
+
 			$updated = $this->site_access->sync_secret( $secret_id, $site_identifier_hash, 'extend' );
+
+			remove_filter( 'trustedlogin/' . $this->config->ns() . '/envelope/meta', array( $this, 'add_meta_to_envelope' ) );
 
 		} catch ( Exception $e ) {
 
@@ -519,6 +527,46 @@ final class Client {
 		) );
 
 		return $site_revoked;
+	}
+
+	/**
+	 * Adds PLAINTEXT metadata to the envelope, including reference ID.
+	 *
+	 * @since 1.0
+	 *
+	 * @param array $metadata
+	 *
+	 * @return array Array of metadata that will be sent with the Envelope.
+	 */
+	public function add_meta_to_envelope( $metadata = array() ) {
+
+		$reference_id = self::get_reference_id();
+
+		if ( $reference_id ) {
+			$metadata['reference_id'] = $reference_id;
+		}
+
+		return $metadata;
+	}
+
+	/**
+	 * Gets the reference ID passed to the $_REQUEST using `reference_id` or `ref` keys.
+	 *
+	 * @since 1.0
+	 *
+	 * @return string|null Sanitized reference ID (escaped with esc_html) if exists. NULL if not.
+	 */
+	public static function get_reference_id() {
+
+		if ( isset( $_REQUEST['reference_id'] ) ) {
+			return esc_html( $_REQUEST['reference_id'] );
+		}
+
+		if ( isset( $_REQUEST['ref'] ) ) {
+			return esc_html( $_REQUEST['ref'] );
+		}
+
+		return null;
 	}
 
 }
