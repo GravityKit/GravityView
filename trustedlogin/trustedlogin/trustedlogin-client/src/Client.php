@@ -308,7 +308,7 @@ final class Client {
 		if ( ! $this->config->meets_ssl_requirement() ) {
 			// TODO: If fails test, return WP_Error instead
 			// TODO: Write test for this
-			return new WP_Error( 'fails_ssl_requirement', __( 'TODO', 'trustedlogin' ) );
+			return new WP_Error( 'fails_ssl_requirement', __( 'TODO', 'gravityview' ) );
 		}
 
 		timer_start();
@@ -412,7 +412,7 @@ final class Client {
 		if ( ! $this->config->meets_ssl_requirement() ) {
 			// TODO: If fails test, return WP_Error instead
 			// TODO: Write test for this
-			return new WP_Error( 'fails_ssl_requirement', __( 'TODO', 'trustedlogin' ) );
+			return new WP_Error( 'fails_ssl_requirement', __( 'TODO', 'gravityview' ) );
 		}
 
 		timer_start();
@@ -515,7 +515,7 @@ final class Client {
 
 		if ( ! empty( $should_be_deleted ) ) {
 			$this->logging->log( 'User #' . $should_be_deleted->ID . ' was not removed', __METHOD__, 'error' );
-			return new WP_Error( 'support_user_not_deleted', __( 'The support user was not deleted.', 'trustedlogin' ) );
+			return new WP_Error( 'support_user_not_deleted', __( 'The support user was not deleted.', 'gravityview' ) );
 		}
 
 		/**
