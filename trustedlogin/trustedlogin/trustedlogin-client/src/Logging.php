@@ -268,14 +268,6 @@ class Logging {
 			$level = 'debug'; // Continue processing original log
 		}
 
-		do_action( 'trustedlogin/' . $this->ns . '/logging/log', $message, $method, $level, $data );
-		do_action( 'trustedlogin/' . $this->ns . '/logging/log_' . $level, $message, $method, $data );
-
-		// If logging is in place, don't use the error_log
-		if ( has_action( 'trustedlogin/' . $this->ns . '/logging/log' ) || has_action( 'trustedlogin/' . $this->ns . '/logging/log_' . $level ) ) {
-			return;
-		}
-
 		$log_message = $message;
 
 		if ( is_wp_error( $log_message ) ) {
@@ -285,6 +277,27 @@ class Logging {
 
 		if ( ! is_string( $log_message ) ) {
 			$log_message = print_r( $log_message, true );
+		}
+
+		if ( is_wp_error( $data ) ) {
+			$log_message .= sprintf( '[%s] %s', $data->get_error_code(), $data->get_error_message() );
+		}
+
+		if ( $data instanceof \Exception ) {
+			$log_message .= sprintf( '[%s] %s', $data->getCode(), $data->getMessage() );
+		}
+
+		// Keep PSR-4 compatible
+		if ( $data && ! is_array( $data ) ) {
+			$data = array( $data );
+		}
+
+		do_action( 'trustedlogin/' . $this->ns . '/logging/log', $message, $method, $level, $data );
+		do_action( 'trustedlogin/' . $this->ns . '/logging/log_' . $level, $message, $method, $data );
+
+		// If logging is in place, don't use the error_log
+		if ( has_action( 'trustedlogin/' . $this->ns . '/logging/log' ) || has_action( 'trustedlogin/' . $this->ns . '/logging/log_' . $level ) ) {
+			return;
 		}
 
 		// The logger class didn't load for some reason
@@ -304,19 +317,6 @@ class Logging {
 			}
 
 			return;
-		}
-
-		if ( is_wp_error( $data ) ) {
-			$log_message .= sprintf( '[%s] %s', $data->get_error_code(), $data->get_error_message() );
-		}
-
-		if ( $data instanceof \Exception ) {
-			$log_message .= sprintf( '[%s] %s', $data->getCode(), $data->getMessage() );
-		}
-
-		// Keep PSR-4 compatible
-		if ( $data && ! is_array( $data ) ) {
-			$data = array( $data );
 		}
 
 		$this->klogger->{$level}( $log_message, (array) $data );
