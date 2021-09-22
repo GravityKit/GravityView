@@ -59,7 +59,8 @@
 		
 		if ( maybeDT.length > 0 ){
 			$( '.gv-datatables' ).on( 'draw.dt',self.add_toggle_approval_trigger);
-			$(window).on( 'gravityview-datatables/event/responsive', self.add_toggle_approval_trigger);
+
+			$( window ).on( 'gravityview-datatables/event/responsive', self.add_toggle_approval_trigger );
 		} else {
 			self.add_toggle_approval_trigger();
 		}
