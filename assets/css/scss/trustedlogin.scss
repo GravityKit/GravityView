@@ -1,10 +1,10 @@
 $namespace: 'gravityview';
 
 // Path to SVG images
-$path: '../../trustedlogin/trustedlogin/trustedlogin-client/src/assets/';
+$path: '../../trustedlogin/trustedlogin/client/src/assets/';
 
-@import "../../../trustedlogin/trustedlogin/trustedlogin-client/src/assets/src/auth";
-@import "../../../trustedlogin/trustedlogin/trustedlogin-client/src/assets/src/buttons";
+@import "../../../trustedlogin/trustedlogin/client/src/assets/src/auth";
+@import "../../../trustedlogin/trustedlogin/client/src/assets/src/buttons";
 
 #trustedlogin .hidden {
 	display: none;
