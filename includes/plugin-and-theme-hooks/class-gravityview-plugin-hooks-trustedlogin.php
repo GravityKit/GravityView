@@ -96,7 +96,7 @@ class GravityView_Plugin_Hooks_TrustedLogin extends GravityView_Plugin_and_Theme
 			),
 			'logging' => array(
 				'enabled' => true,
-				'threshold' => 'debug',
+				'threshold' => 'warning',
 			),
 			'vendor' => array(
 				'namespace' => self::TRUSTEDLOGIN_NAMESPACE,
