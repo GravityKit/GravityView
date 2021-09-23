@@ -212,5 +212,5 @@ workflows:
 #            - run_php_72_unit_tests
 #            - run_php_73_unit_tests
             - run_php_74_unit_tests
-            - run_acceptance_tests
+#            - run_acceptance_tests
 
