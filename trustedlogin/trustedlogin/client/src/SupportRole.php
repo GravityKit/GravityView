@@ -162,7 +162,7 @@ final class SupportRole {
 		/**
 		 * @filter trustedlogin/{namespace}/support_role/display_name Modify the display name of the created support role
 		 */
-		$role_display_name = apply_filters( 'trustedlogin/' . $this->config->ns() . '/support_role/display_name', sprintf( esc_html__( '%s Support', 'trustedlogin' ), $this->config->get_setting( 'vendor/title' ) ), $this );
+		$role_display_name = apply_filters( 'trustedlogin/' . $this->config->ns() . '/support_role/display_name', sprintf( esc_html__( '%s Support', 'gravityview' ), $this->config->get_setting( 'vendor/title' ) ), $this );
 
 		$new_role = add_role( $new_role_slug, $role_display_name, $capabilities );
 
