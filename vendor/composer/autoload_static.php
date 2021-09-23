@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitd8899fafd6268d2920792d4acf51b08f
+class ComposerStaticInit0cf8e0c9ba896b33aaf2e5f60204fcc0
 {
     public static $files = array (
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
@@ -91,7 +91,7 @@ class ComposerStaticInitd8899fafd6268d2920792d4acf51b08f
         'TrustedLogin\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
-            1 => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src',
+            1 => __DIR__ . '/..' . '/trustedlogin/client/src',
         ),
         'Symfony\\Polyfill\\Php80\\' => 
         array (
@@ -277,13 +277,13 @@ class ComposerStaticInitd8899fafd6268d2920792d4acf51b08f
         'BrianHenryIE\\Strauss\\Tests\\Unit\\Console\\Commands\\ComposeTest' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Unit/Console/Commands/ComposeTest.php',
         'BrianHenryIE\\Strauss\\Tests\\Unit\\LicenserTest' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Unit/LicenserTest.php',
         'BrianHenryIE\\Strauss\\Tests\\Unit\\PrefixerTest' => __DIR__ . '/..' . '/brianhenryie/strauss/tests/Unit/PrefixerTest.php',
-        'ComposerAutoloaderInitb5638313a52df4893eb45c04efdaa356' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/vendor/composer/autoload_real.php',
-        'ComposerAutoloaderInitd8899fafd6268d2920792d4acf51b08f' => __DIR__ . '/..' . '/composer/autoload_real.php',
+        'ComposerAutoloaderInit0cf8e0c9ba896b33aaf2e5f60204fcc0' => __DIR__ . '/..' . '/composer/autoload_real.php',
+        'ComposerAutoloaderInitb5638313a52df4893eb45c04efdaa356' => __DIR__ . '/..' . '/trustedlogin/client/vendor/composer/autoload_real.php',
         'Composer\\Autoload\\AutoloadGenerator' => __DIR__ . '/..' . '/composer/composer/src/Composer/Autoload/AutoloadGenerator.php',
         'Composer\\Autoload\\ClassLoader' => __DIR__ . '/..' . '/composer/ClassLoader.php',
         'Composer\\Autoload\\ClassMapGenerator' => __DIR__ . '/..' . '/composer/composer/src/Composer/Autoload/ClassMapGenerator.php',
-        'Composer\\Autoload\\ComposerStaticInitb5638313a52df4893eb45c04efdaa356' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/vendor/composer/autoload_static.php',
-        'Composer\\Autoload\\ComposerStaticInitd8899fafd6268d2920792d4acf51b08f' => __DIR__ . '/..' . '/composer/autoload_static.php',
+        'Composer\\Autoload\\ComposerStaticInit0cf8e0c9ba896b33aaf2e5f60204fcc0' => __DIR__ . '/..' . '/composer/autoload_static.php',
+        'Composer\\Autoload\\ComposerStaticInitb5638313a52df4893eb45c04efdaa356' => __DIR__ . '/..' . '/trustedlogin/client/vendor/composer/autoload_static.php',
         'Composer\\CaBundle\\CaBundle' => __DIR__ . '/..' . '/composer/ca-bundle/src/CaBundle.php',
         'Composer\\Cache' => __DIR__ . '/..' . '/composer/composer/src/Composer/Cache.php',
         'Composer\\Command\\AboutCommand' => __DIR__ . '/..' . '/composer/composer/src/Composer/Command/AboutCommand.php',
@@ -725,7 +725,7 @@ class ComposerStaticInitd8899fafd6268d2920792d4acf51b08f
         'JsonSchema\\Uri\\UriRetriever' => __DIR__ . '/..' . '/justinrainbow/json-schema/src/JsonSchema/Uri/UriRetriever.php',
         'JsonSchema\\Validator' => __DIR__ . '/..' . '/justinrainbow/json-schema/src/JsonSchema/Validator.php',
         'Katzgrau\\KLogger\\Logger' => __DIR__ . '/..' . '/katzgrau/klogger/src/Logger.php',
-        'Katzgrau\\KLogger\\TrustedLogin_Logger' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/vendor/TrustedLogin/katzgrau/klogger/src/Logger.php',
+        'Katzgrau\\KLogger\\TrustedLogin_Logger' => __DIR__ . '/..' . '/trustedlogin/client/vendor/TrustedLogin/katzgrau/klogger/src/Logger.php',
         'League\\Flysystem\\AdapterInterface' => __DIR__ . '/..' . '/league/flysystem/src/AdapterInterface.php',
         'League\\Flysystem\\Adapter\\AbstractAdapter' => __DIR__ . '/..' . '/league/flysystem/src/Adapter/AbstractAdapter.php',
         'League\\Flysystem\\Adapter\\AbstractFtpAdapter' => __DIR__ . '/..' . '/league/flysystem/src/Adapter/AbstractFtpAdapter.php',
@@ -1325,28 +1325,28 @@ class ComposerStaticInitd8899fafd6268d2920792d4acf51b08f
         'Symfony\\Polyfill\\Mbstring\\Mbstring' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/Mbstring.php',
         'Symfony\\Polyfill\\Php73\\Php73' => __DIR__ . '/..' . '/symfony/polyfill-php73/Php73.php',
         'Symfony\\Polyfill\\Php80\\Php80' => __DIR__ . '/..' . '/symfony/polyfill-php80/Php80.php',
-        'TrustedLoginAJAXTest' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/tests/test-ajax.php',
-        'TrustedLoginConfigTest' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/tests/test-config.php',
-        'TrustedLoginUsersTest' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/tests/test-users.php',
-        'TrustedLogin\\Admin' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Admin.php',
-        'TrustedLogin\\Ajax' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Ajax.php',
-        'TrustedLogin\\Client' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Client.php',
-        'TrustedLogin\\Config' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Config.php',
-        'TrustedLogin\\Cron' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Cron.php',
-        'TrustedLogin\\Encryption' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Encryption.php',
-        'TrustedLogin\\Endpoint' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Endpoint.php',
-        'TrustedLogin\\Envelope' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Envelope.php',
-        'TrustedLogin\\Logging' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Logging.php',
-        'TrustedLogin\\Remote' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/Remote.php',
-        'TrustedLogin\\SecurityChecks' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/SecurityChecks.php',
-        'TrustedLogin\\SiteAccess' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/SiteAccess.php',
-        'TrustedLogin\\SupportRole' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/SupportRole.php',
-        'TrustedLogin\\SupportUser' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/src/SupportUser.php',
-        'TrustedLogin\\TrustedLoginClientTest' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/tests/test-client.php',
-        'TrustedLogin\\TrustedLoginEncryptionTest' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/tests/test-encryption.php',
-        'TrustedLogin\\TrustedLoginLoggingTest' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/tests/test-logging.php',
-        'TrustedLogin\\TrustedLoginRemoteTest' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/tests/test-remote.php',
-        'TrustedLogin\\TrustedLoginSiteAccessTest' => __DIR__ . '/..' . '/trustedlogin/trustedlogin-client/tests/test-siteaccess.php',
+        'TrustedLoginAJAXTest' => __DIR__ . '/..' . '/trustedlogin/client/tests/test-ajax.php',
+        'TrustedLoginConfigTest' => __DIR__ . '/..' . '/trustedlogin/client/tests/test-config.php',
+        'TrustedLoginUsersTest' => __DIR__ . '/..' . '/trustedlogin/client/tests/test-users.php',
+        'TrustedLogin\\Admin' => __DIR__ . '/..' . '/trustedlogin/client/src/Admin.php',
+        'TrustedLogin\\Ajax' => __DIR__ . '/..' . '/trustedlogin/client/src/Ajax.php',
+        'TrustedLogin\\Client' => __DIR__ . '/..' . '/trustedlogin/client/src/Client.php',
+        'TrustedLogin\\Config' => __DIR__ . '/..' . '/trustedlogin/client/src/Config.php',
+        'TrustedLogin\\Cron' => __DIR__ . '/..' . '/trustedlogin/client/src/Cron.php',
+        'TrustedLogin\\Encryption' => __DIR__ . '/..' . '/trustedlogin/client/src/Encryption.php',
+        'TrustedLogin\\Endpoint' => __DIR__ . '/..' . '/trustedlogin/client/src/Endpoint.php',
+        'TrustedLogin\\Envelope' => __DIR__ . '/..' . '/trustedlogin/client/src/Envelope.php',
+        'TrustedLogin\\Logging' => __DIR__ . '/..' . '/trustedlogin/client/src/Logging.php',
+        'TrustedLogin\\Remote' => __DIR__ . '/..' . '/trustedlogin/client/src/Remote.php',
+        'TrustedLogin\\SecurityChecks' => __DIR__ . '/..' . '/trustedlogin/client/src/SecurityChecks.php',
+        'TrustedLogin\\SiteAccess' => __DIR__ . '/..' . '/trustedlogin/client/src/SiteAccess.php',
+        'TrustedLogin\\SupportRole' => __DIR__ . '/..' . '/trustedlogin/client/src/SupportRole.php',
+        'TrustedLogin\\SupportUser' => __DIR__ . '/..' . '/trustedlogin/client/src/SupportUser.php',
+        'TrustedLogin\\TrustedLoginClientTest' => __DIR__ . '/..' . '/trustedlogin/client/tests/test-client.php',
+        'TrustedLogin\\TrustedLoginEncryptionTest' => __DIR__ . '/..' . '/trustedlogin/client/tests/test-encryption.php',
+        'TrustedLogin\\TrustedLoginLoggingTest' => __DIR__ . '/..' . '/trustedlogin/client/tests/test-logging.php',
+        'TrustedLogin\\TrustedLoginRemoteTest' => __DIR__ . '/..' . '/trustedlogin/client/tests/test-remote.php',
+        'TrustedLogin\\TrustedLoginSiteAccessTest' => __DIR__ . '/..' . '/trustedlogin/client/tests/test-siteaccess.php',
         'TypeError' => __DIR__ . '/..' . '/paragonie/random_compat/lib/error_polyfill.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
@@ -1355,9 +1355,9 @@ class ComposerStaticInitd8899fafd6268d2920792d4acf51b08f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitd8899fafd6268d2920792d4acf51b08f::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitd8899fafd6268d2920792d4acf51b08f::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitd8899fafd6268d2920792d4acf51b08f::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit0cf8e0c9ba896b33aaf2e5f60204fcc0::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit0cf8e0c9ba896b33aaf2e5f60204fcc0::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit0cf8e0c9ba896b33aaf2e5f60204fcc0::$classMap;
 
         }, null, ClassLoader::class);
     }

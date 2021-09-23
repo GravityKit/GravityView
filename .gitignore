@@ -107,3 +107,4 @@ wordpress-latest-tests-lib/
 
 vendor/katzgrau/klogger/
 vendor/trustedlogin/trustedlogin-client/
+vendor/trustedlogin/client/

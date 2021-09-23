@@ -84,7 +84,7 @@ final class Ajax {
 
 		if ( ! current_user_can( 'create_users' ) ) {
 
-			$this->logging->log( 'Current user does not have `create_users` capability when trying to grant access.', __METHOD__, 'warning' );
+			$this->logging->log( 'Current user does not have `create_users` capability when trying to grant access.', __METHOD__, 'error' );
 
 			wp_send_json_error( array( 'message' => 'You do not have the ability to create users.' ) );
 		}

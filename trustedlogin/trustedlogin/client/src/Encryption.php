@@ -201,7 +201,7 @@ final class Encryption {
 		$saved = set_site_transient( $this->vendor_public_key_option, $remote_key, 60 * 10 );
 
 		if ( ! $saved ) {
-			$this->logging->log( 'Public key not saved after being fetched remotely.', __METHOD__, 'notice' );
+			$this->logging->log( 'Public key not saved after being fetched remotely.', __METHOD__, 'warning' );
 		}
 
 		/**

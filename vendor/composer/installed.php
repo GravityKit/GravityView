@@ -343,15 +343,14 @@
       ),
       'reference' => '8d224396e28d30f81969f083a58763b8b9ceb0a5',
     ),
-    'trustedlogin/trustedlogin-client' => 
+    'trustedlogin/client' => 
     array (
-      'pretty_version' => 'dev-develop',
-      'version' => 'dev-develop',
+      'pretty_version' => 'dev-main',
+      'version' => 'dev-main',
       'aliases' => 
       array (
-        0 => '9999999-dev',
       ),
-      'reference' => 'fa634b63f8c3477d16dca22c71087195df2acf3c',
+      'reference' => '29a89b30640722772c8baec40ec3f933ff40a115',
     ),
   ),
 );

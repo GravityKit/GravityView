@@ -177,7 +177,7 @@ final class SupportUser {
 		if ( email_exists( $user_email ) ) {
 			$this->logging->log( 'Support User not created; a user with that email already exists: ' . $user_email, __METHOD__, 'warning' );
 
-			return new WP_Error( 'email_exists', __( 'User not created; User with that email already exists', 'trustedlogin' ) );
+			return new WP_Error( 'email_exists', esc_html__( 'User not created; User with that email already exists', 'trustedlogin' ) );
 		}
 
 		$user_data = array(

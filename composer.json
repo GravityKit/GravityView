@@ -27,7 +27,7 @@
     "php": ">=5.3",
     "ext-json": "*",
     "ext-openssl": "*",
-	"trustedlogin/trustedlogin-client": "*"
+	"trustedlogin/client": "dev-main"
   },
   "require-dev": {
 	"brianhenryie/strauss": "^0.8.9"
@@ -47,7 +47,7 @@
 	  "namespace_prefix": "GravityView\\",
 	  "classmap_prefix": "GV_",
 	  "packages": [
-		"trustedlogin/trustedlogin-client"
+		"trustedlogin/client"
 	  ],
 	  "exclude_from_prefix": {
 		"packages": [
