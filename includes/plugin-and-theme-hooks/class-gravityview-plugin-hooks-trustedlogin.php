@@ -102,7 +102,7 @@ class GravityView_Plugin_Hooks_TrustedLogin extends GravityView_Plugin_and_Theme
 				'namespace' => self::TRUSTEDLOGIN_NAMESPACE,
 				'title' => 'GravityView',
 				'email' => 'zack+{hash}@gravityview.co',
-				'website' => 'https://trustedlogin.dev',
+				'website' => 'https://gravityview.co',
 				'support_url' => 'https://gravityview.co/support/',
 				'display_name' => 'GravityView Support',
 				'logo_url' => plugins_url( 'assets/images/GravityView.svg', GRAVITYVIEW_FILE ),
