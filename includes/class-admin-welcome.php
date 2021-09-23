@@ -257,28 +257,24 @@ class GravityView_Welcome {
 
 			<div class="feature-section col two-col has-2-columns is-fullwidth">
 				<div class="column col col-2">
-					<div class='media-container'><img alt='A likert survey'
-													  src="<?php echo plugins_url( 'assets/images/screenshots/likert.png', GRAVITYVIEW_FILE ); ?>"
-													  style='border: none'></div>
-					<h4>Improved Survey Add-On Integration</h4>
-					<p>Improved: Much better Gravity Forms Survey Add-On integration!</p>
-					<ul class="ul-disc">
-						<li>Ratings can be displayed as text or stars</li>
-						<li>Multi-row Likert fields can be shown as Text or Score</li>
-						<li>Improved display of a single row from a multi-row Likert field</li>
-						<li>Single checkbox inputs are now supported</li>
-					</ul>
-					<p><a href='https://gravityview.co/gravityview-2-11/' class="button button-primary button-large">Learn more in the release announcement.</a></p>
+					<div class='media-container'>
+						<a href="https://www.trustedlogin.com"><img alt='TrustedLogin Logo'
+										src="<?php echo plugins_url( 'assets/images/screenshots/trustedlogin-logo.png', GRAVITYVIEW_FILE ); ?>"
+										style='border: none'></a>
+					</div>
+					<h3>Integration with TrustedLogin</h3>
+					<p><a href="https://www.trustedlogin.com">TrustedLogin</a> is the best way for you to easily &amp; securely grant access to plugins, themes, agencies, and hosts.</p>
+					<p>TrustedLogin is easy, secure, and will result in faster support times! And it&rsquo;s brought to you by the creators of GravityView.</p>
+					<p><a href="https://www.trustedlogin.com/about/easy-and-safe/" class="button button-primary button-large" target="_blank">Learn More About TrustedLogin<span class="screen-reader-text"> (This link opens in a new window)</span></a></p>
 				</div>
 				<div class="column col col-2 last">
-					<div class='media-container'><img alt='Edit Entry settings'
-													  src="<?php echo plugins_url( 'assets/images/screenshots/edit-entry-settings.png', GRAVITYVIEW_FILE ); ?>"
-													  style='border: none'></div>
-					<h4>Additional Edit Entry Configurations</h4>
-					<p>In the Edit Entry settings, you now have the ability to change the button text for the 'Update',
-						'Cancel', and 'Delete' buttons. Merge Tags are also supported! That means you can show data from
-						the entry you're updating in the button text itself. For example, you can set the button text to
-						show the name of the person's profile you're updating (like "Update Shawna's Profile").</p>
+					<div class='media-container'>
+						<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=grant-gravityview-access' ) ); ?>"><img alt='TrustedLogin Grant Support Access page'
+							 src="<?php echo plugins_url( 'assets/images/screenshots/trustedlogin-auth-screen.png', GRAVITYVIEW_FILE ); ?>"
+							 style='border: none'></a>
+					</div>
+					<h3>New <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=grant-gravityview-access' ) ); ?>">Grant Support Access</a> Page</h3>
+					<p>If you reach out to GravityView support and we need access to your site in order to assist with a support ticket, we&rsquo;ll now ask you to click the new "Grant Support Access" link in the sidebar.</p>
 				</div>
 			</div>
 
@@ -287,6 +283,21 @@ class GravityView_Welcome {
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
+
+				<h3>2.13 on September 23, 2021</h3>
+
+				<ul>
+					<li>Added: Integrated with TrustedLogin, the easiest
+						&amp; most secure way to grant access to your website. <a
+								href='https://www.trustedlogin.com/about/easy-and-safe/'>Learn more about
+							TrustedLogin</a>.
+						<ul>
+							<li>Need to share access with support? Click the new 'Grant Support Access' link in the
+								'Views' menu.
+							</li>
+						</ul>
+					</li>
+				</ul>
 
 				<h3>2.12.1 on September 1, 2021</h3>
 
