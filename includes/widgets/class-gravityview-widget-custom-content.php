@@ -42,6 +42,13 @@ class GravityView_Widget_Custom_Content extends \GV\Widget {
 				'tooltip' => __( 'Wrap each block of text in an HTML paragraph tag (recommended for text).', 'gravityview' ),
 				'value' => '',
 			),
+			'admin_label' => array(
+				'type' => 'text',
+				'class' => 'widefat',
+				'label' => __( 'Admin Label', 'gravityview' ),
+				'desc' => __( 'A label that is only shown in the GravityView View configuration screen.', 'gravityview' ),
+				'value' => '',
+			),
 		);
 
 		parent::__construct( __( 'Custom Content', 'gravityview' ) , 'custom_content', $default_values, $settings );
