@@ -1,0 +1,141 @@
+.button-trustedlogin-#{$namespace} {
+	position: relative;
+	text-align: center;
+
+	margin-bottom: 28px; // 24px logo + 4px gap
+
+	.dashicons {
+		vertical-align: middle;
+		margin: 0 .25em;
+	}
+
+	small {
+		text-align: center;
+		position: absolute;
+		bottom: -24px;
+		left: 0;
+		width: 100%;
+		display: block;
+		font-size: 11px;
+		line-height: 15px;
+		padding-top: 5px;
+		vertical-align: middle;
+		opacity: .8;
+		transition: opacity .2s;
+	}
+
+	&:hover small {
+		opacity: 1;
+	}
+
+	&:active small {
+		padding-top: 4px;
+	}
+
+	&.button-primary small {
+		text-shadow: none;
+		box-shadow: none;
+		color: #333;
+	}
+
+}
+
+.trustedlogin-logo {
+	display: inline-block;
+	margin-right: .175rem;
+	vertical-align: middle;
+
+	height: 18px;
+	width: 12px;
+
+	background: transparent url("data:image/svg+xml,%3c%3fxml version='1.0' encoding='UTF-8'%3f%3e%3csvg enable-background='new 0 0 139.3 220.7' version='1.1' viewBox='0 0 139.3 220.7' xml:space='preserve' xmlns='http://www.w3.org/2000/svg'%3e%3cstyle type='text/css'%3e .st0%7bfill:%231099D6%3b%7d .st1%7bfill:%231B2B59%3b%7d .st2%7bfill:white%3b%7d%3c/style%3e%3cpath class='st0' d='M70.7%2c0C44.1%2c0%2c22.5%2c21.6%2c22.5%2c48.1V88h20.6V48.1c0-15.2%2c12.3-27.5%2c27.5-27.5c15.1%2c0%2c27.5%2c12.3%2c27.5%2c27.5V88 h20.6V48.1C118.8%2c21.6%2c97.2%2c0%2c70.7%2c0z'/%3e%3cpath class='st1' d='m70.7 75.3c-38.5 0-69.7 4.9-69.7 10.8v79.8c0 38.5 47.5 54.8 69.7 54.8s69.7-16.3 69.7-54.8v-79.8c-0.1-5.9-31.3-10.8-69.7-10.8z'/%3e%3cpath class='st2' d='m70.7 95.6c-23 0-42.5 15.3-48.9 36.2h14.8c5.8-13.1 18.9-22.3 34.1-22.3 20.5 0 37.2 16.7 37.2 37.2s-16.7 37.2-37.2 37.2c-15.2 0-28.3-9.2-34.1-22.3h-14.8c6.4 20.9 25.9 36.2 48.9 36.2 28.2 0 51.1-22.9 51.1-51.1-0.1-28.2-23-51.1-51.1-51.1z'/%3e%3cpath class='st2' d='m90.3 144.3l-28.4-16.3c-2.2-1.3-4-0.2-4 2.3v9.8h-56.9v13h56.9v9.8c0 2.5 1.8 3.6 4 2.3l28.3-16.4c2.3-1.1 2.3-3.2 0.1-4.5z'/%3e%3c/svg%3e");
+	background-position: top left;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+.trustedlogin-logo-large {
+	display: inline-block;
+	margin-right: .25em;
+	vertical-align: bottom;
+
+	height: 36px;
+	width: 29px;
+
+	background: transparent url("data:image/svg+xml,%3c%3fxml version='1.0' encoding='UTF-8'%3f%3e%3csvg enable-background='new 0 0 139.3 220.7' version='1.1' viewBox='0 0 139.3 220.7' xml:space='preserve' xmlns='http://www.w3.org/2000/svg'%3e%3cstyle type='text/css'%3e .st0%7bfill:%231099D6%3b%7d .st1%7bfill:%231B2B59%3b%7d .st2%7bfill:white%3b%7d%3c/style%3e%3cpath class='st0' d='M70.7%2c0C44.1%2c0%2c22.5%2c21.6%2c22.5%2c48.1V88h20.6V48.1c0-15.2%2c12.3-27.5%2c27.5-27.5c15.1%2c0%2c27.5%2c12.3%2c27.5%2c27.5V88 h20.6V48.1C118.8%2c21.6%2c97.2%2c0%2c70.7%2c0z'/%3e%3cpath class='st1' d='m70.7 75.3c-38.5 0-69.7 4.9-69.7 10.8v79.8c0 38.5 47.5 54.8 69.7 54.8s69.7-16.3 69.7-54.8v-79.8c-0.1-5.9-31.3-10.8-69.7-10.8z'/%3e%3cpath class='st2' d='m70.7 95.6c-23 0-42.5 15.3-48.9 36.2h14.8c5.8-13.1 18.9-22.3 34.1-22.3 20.5 0 37.2 16.7 37.2 37.2s-16.7 37.2-37.2 37.2c-15.2 0-28.3-9.2-34.1-22.3h-14.8c6.4 20.9 25.9 36.2 48.9 36.2 28.2 0 51.1-22.9 51.1-51.1-0.1-28.2-23-51.1-51.1-51.1z'/%3e%3cpath class='st2' d='m90.3 144.3l-28.4-16.3c-2.2-1.3-4-0.2-4 2.3v9.8h-56.9v13h56.9v9.8c0 2.5 1.8 3.6 4 2.3l28.3-16.4c2.3-1.1 2.3-3.2 0.1-4.5z'/%3e%3c/svg%3e");
+	background-position: top left;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+/**
+ * Hero
+ */
+.button-trustedlogin-#{$namespace}.button-hero {
+
+	display: block;
+	box-sizing: border-box;
+	text-align: center;
+	margin-left: $gutter-width * 2;
+	margin-right: $gutter-width * 2;
+
+	margin-bottom: $vertical-spacing; //39px; // 33px logo + 6px gap
+
+	small {
+		padding-top: 6px;
+		font-size: 13px;
+		line-height: 26px;
+		bottom: -33px;
+	}
+
+	&:active small {
+		padding-top: 5px;
+	}
+
+	.trustedlogin-logo {
+		height: 24px;
+		width: 18px;
+	}
+}
+
+/**
+ * Large
+ */
+.button-trustedlogin-#{$namespace}.button-large {
+
+	margin-bottom: 32px; // 28px logo + 4px gap
+
+	small {
+		line-height: 21px;
+		font-size: 12px;
+		bottom: -28px;
+	}
+
+	&:active small {
+		padding-top: 4px;
+	}
+
+	.trustedlogin-logo {
+		height: 21px;
+		width: 14px;
+	}
+}
+
+/**
+ * Small
+ */
+.button-trustedlogin-#{$namespace}.button-small {
+
+	margin-bottom: 24px!important; // 20px logo + 4px gap
+
+	small {
+		line-height: 18px;
+		font-size: 11px;
+		bottom: -20px;
+	}
+
+	.trustedlogin-logo {
+		height: 15px;
+		width: 10px;
+	}
+}

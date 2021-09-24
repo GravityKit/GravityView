@@ -37,7 +37,7 @@ class View_Renderer extends Renderer {
 		/**
 		 * @filter `gravityview_template_slug_{$template_id}` Modify the template slug about to be loaded in directory views.
 		 * @since 1.6
-		 * @param deprecated
+		 * @deprecated
 		 * @see The `gravityview_get_template_id` filter
 		 * @param string $slug Default: 'table'
 		 * @param string $view The current view context: directory.

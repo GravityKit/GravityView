@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.12.1\n"
+"Project-Id-Version: GravityView 2.13\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -1569,6 +1569,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/view-configuration.php:43
 #: includes/class-admin-views.php:1140 includes/class-admin-views.php:1265
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
+#: trustedlogin/trustedlogin/client/src/Admin.php:995
 msgid "Close"
 msgstr ""
 
@@ -1638,6 +1639,7 @@ msgstr ""
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:282
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1135
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1263
+#: trustedlogin/trustedlogin/client/src/Admin.php:996
 msgid "Cancel"
 msgstr ""
 
@@ -2000,6 +2002,7 @@ msgid "Continue"
 msgstr ""
 
 #: includes/class-admin-views.php:1268
+#: trustedlogin/trustedlogin/client/src/Admin.php:993
 msgid "Ok"
 msgstr ""
 
@@ -2054,27 +2057,27 @@ msgstr ""
 msgid "List of Changes"
 msgstr ""
 
-#: includes/class-admin-welcome.php:288
+#: includes/class-admin-welcome.php:284
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:648
+#: includes/class-admin-welcome.php:659
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:668
+#: includes/class-admin-welcome.php:679
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:719
+#: includes/class-admin-welcome.php:730
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:746
+#: includes/class-admin-welcome.php:757
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:747
+#: includes/class-admin-welcome.php:758
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -3824,6 +3827,34 @@ msgid ""
 "in the Quiz Settings."
 msgstr ""
 
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:79
+#: trustedlogin/trustedlogin/client/src/Admin.php:209
+msgid "Grant Support Access"
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:85
+msgid "We need access to Views to provide great support."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:86
+msgid ""
+"We will need to see and edit the forms, entries, and Gravity Forms settings "
+"to debug issues."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:87
+msgid ""
+"We may need to manage plugins in order to debug conflicts on your site and "
+"add related GravityView functionality."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:93
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:94
+msgid ""
+"We don't need to see your %1$s details to provide support (if %1$s is "
+"enabled)."
+msgstr ""
+
 #: includes/presets/business-data/class-gravityview-preset-business-data.php:24
 msgid "Business Data"
 msgstr ""
@@ -4334,6 +4365,319 @@ msgstr ""
 
 #: templates/fields/field-pipe_recorder-html.php:20
 msgid "Your browser does not support the video tag."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:114
+#: trustedlogin/trustedlogin/client/src/Admin.php:346
+msgid "Revoke Access"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:180
+msgid "Revoke TrustedLogin"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:333
+msgid "Unknown (User #%d)"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:373
+#: trustedlogin/trustedlogin/client/src/Admin.php:929
+msgid "Secured by TrustedLogin"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:456
+msgid "Reference #%s"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:471
+#. translators: %1$s is replaced with the name of the software developer (e.g.
+#. "Acme Widgets"). %2$s is the amount of time remaining for access ("1 week")
+msgid "%1$s has site access that expires in %2$s."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:479
+#. translators: %1$s is replaced with the name of the software developer (e.g.
+#. "Acme Widgets")
+msgid "%1$s would like support access to this site."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:482
+#. translators: %1$s is replaced with the name of the software developer (e.g.
+#. "Acme Widgets")
+msgid "Grant %1$s access to this site."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:515
+#. translators: %1$s and %3$s are replaced with HTML tags. %2$s is the amount
+#. of time that the login will be active for (e.g. "1 week")
+msgid "Access this site for %s."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:516
+msgid "Access auto-expires in %s. You may revoke access at any time."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:522
+msgid "Create a user with a role similar to %s."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:523
+msgid "View role capabilities"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:525
+msgid "Create a user with a role of %s."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:551
+msgid "Additional capabilities:"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:552
+msgid "Removed capabilities:"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:620
+msgid "%s support may not be able to access this site."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:621
+msgid ""
+"This website is running in a local development environment. To provide "
+"support, we must be able to access your site using a publicly-accessible "
+"URL."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:623
+msgid "Learn more."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:673
+#. translators: %s is replaced with the name of the software developer (e.g.
+#. "Acme Widgets")
+msgid "Learn about TrustedLogin"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:870
+msgid "Grant %s Access"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:871
+msgid "Extend %s Access"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:974
+msgid "Could not create TrustedLogin access."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:980
+msgid "The user details could not be sent to %1$s automatically."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:984
+msgid ""
+"Please <a href=\"%1$s\" target=\"_blank\">click here</a> to go to the %2$s "
+"support site"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:992
+msgid "Confirm"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:994
+msgid "Go to %1$s support site"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:997
+msgid "Revoke %1$s support access"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:998
+#: trustedlogin/trustedlogin/client/src/Admin.php:1142
+msgid "Copy"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:999
+msgid "Copied!"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1002
+msgid "(This link opens in a new window.)"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1003
+msgid "The access key has been copied to your clipboard."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1007
+msgid "Support access granted"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1009
+msgid "A temporary support user has been created, and sent to %1$s support."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1014
+msgid "Generating & encrypting secure support access for %1$s"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1017
+msgid "Extending support access for %1$s by %2$s"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1020
+msgid "Sending encrypted access to %1$s."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1023
+msgid "Error syncing support user to %1$s"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1034
+msgid "Action Cancelled"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1036
+msgid "A support account for %1$s was not created."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1041
+msgid "Support Access Was Not Granted"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1042
+msgid "There was an error granting access: "
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1045
+msgid "Your authorized session has expired. Please refresh the page."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1048
+msgid "TrustedLogin Key Created"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1050
+msgid "Share this TrustedLogin Key with %1$s to give them secure access:"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1056
+msgid "The TrustedLogin vendor could not be found."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1061
+msgid "%1$s Support user already exists"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1066
+msgid ""
+"A support user for %1$s already exists. You may revoke this support access "
+"from your <a href=\"%2$s\" target=\"_blank\">Users list</a>."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1106
+msgid "No %s users exist."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1139
+msgid "Site access key:"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1140
+msgid "Access Key"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1144
+msgid "Copy the access key to your clipboard"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1183
+msgid "%s access revoked."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1185
+msgid "You may safely close this window."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Client.php:309
+#: trustedlogin/trustedlogin/client/src/Client.php:411
+msgid "TrustedLogin requires a secure connection using HTTPS."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Client.php:514
+msgid "The support user was not deleted."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Encryption.php:255
+msgid "Encryption key could not be fetched, Vendor site returned 404."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:228
+msgid "Unable to verify Pause Mode."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:231
+msgid "Authentication failed."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:234
+msgid "TrustedLogin account issue."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:237
+msgid "Invalid tokens."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:241
+msgid "The TrustedLogin vendor was not found."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:251
+msgid "The TrustedLogin site is not currently online."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:257
+msgid "The TrustedLogin site is not currently available."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:261
+#: trustedlogin/trustedlogin/client/src/Remote.php:304
+msgid "Invalid response."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:298
+msgid "The response was invalid."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:322
+msgid "Invalid response. Missing key: %s"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/SecurityChecks.php:90
+msgid "TrustedLogin temporarily disabled."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/SecurityChecks.php:118
+msgid ""
+"There was an issue verifying the user identifier with TrustedLogin, "
+"aborting login. (%s)"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/SiteAccess.php:62
+msgid "Unexpected action value"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/SiteAccess.php:93
+msgid "Could not sync to TrustedLogin server"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/SupportRole.php:165
+#: trustedlogin/trustedlogin/client/src/SupportUser.php:213
+msgid "%s Support"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/SupportUser.php:180
+msgid "User not created; User with that email already exists"
 msgstr ""
 
 #: future/includes/class-gv-license-handler.php:294

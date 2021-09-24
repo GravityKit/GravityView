@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.13 on September 23, 2021 =
+
+* Added: Integrated with TrustedLogin, the easiest & most secure way to grant access to your website. [Learn more about TrustedLogin](https://www.trustedlogin.com/about/easy-and-safe/).
+	- Need to share access with support? Click the new "Grant Support Access" link in the "Views" menu.
+
 = 2.12.1 on September 1, 2021 =
 
 * Fixed: The Gravity Forms widget in the View editor would always use the source form of the View

@@ -121,6 +121,10 @@ function gravityview_import_helper_restore_line_breaks( $post_id, $key, $value )
 		return;
 	}
 
+	if ( empty( $value ) || ! is_string( $value ) ) {
+		return;
+	}
+
 	if ( false === strpos( $value, "\n\n" ) ) {
 		return;
 	}

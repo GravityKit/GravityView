@@ -5,20 +5,68 @@
   "keywords": ["gravityview", "gravity view", "gravity forms directory", "gravity forms"],
   "homepage": "https://gravityview.co/",
   "license": "GPL-2.0+",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "repositories": [
     {
       "type": "vcs",
       "url": "https://github.com/katzwebservices/standalone-phpenkoder"
-    }
+    },
+	{
+	  "type": "github",
+	  "url":  "https://github.com/trustedlogin/client.git",
+	  "no-api": true
+	},
+	{
+	  "type": "github",
+	  "url":  "https://github.com/BrianHenryIE/strauss.git",
+	  "no-api": true
+	}
   ],
   "require": {
     "php": ">=5.3",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-openssl": "*",
+	"trustedlogin/client": "dev-main"
   },
   "require-dev": {
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
-    "lucatume/wp-browser": "2.2.24",
-    "phpcompatibility/phpcompatibility-wp": "*",
-    "wp-coding-standards/wpcs": "*"
+	"brianhenryie/strauss": "^0.8.9"
+  },
+  "autoload": {
+	"classmap": [
+	  "vendor"
+	],
+	"psr-4": {
+	  "TrustedLogin\\": "src/",
+	  "KatzGrau\\KLogger\\": "src/"
+	}
+  },
+  "extra": {
+	"strauss": {
+	  "target_directory": "trustedlogin",
+	  "namespace_prefix": "GravityView\\",
+	  "classmap_prefix": "GV_",
+	  "packages": [
+		"trustedlogin/client"
+	  ],
+	  "exclude_from_prefix": {
+		"packages": [
+		  "paragonie/random_compat",
+		  "paragonie/sodium_compat"
+		]
+	  },
+	  "delete_vendor_files": false
+	}
+  },
+  "scripts": {
+	"strauss": [
+	  "@php strauss.phar"
+	],
+	"post-install-cmd": [
+	  "@strauss"
+	],
+	"post-update-cmd": [
+	  "@strauss"
+	]
   }
 }

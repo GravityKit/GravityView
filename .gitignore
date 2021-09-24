@@ -19,9 +19,7 @@ composer.lock
 ### Libraries ###
 vendor/.git
 vendor/*/.git
-vendor/composer/
 vendor/bin/
-vendor/autoload.php
 vendor/phpcompatibility/
 vendor/squizlabs/
 vendor/dealerdirect/
@@ -107,3 +105,6 @@ phpunit/
 wordpress-51-tests-lib/
 wordpress-latest-tests-lib/
 
+vendor/katzgrau/klogger/
+vendor/trustedlogin/trustedlogin-client/
+vendor/trustedlogin/client/
