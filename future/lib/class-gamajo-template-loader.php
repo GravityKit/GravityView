@@ -72,13 +72,6 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 		protected $plugin_template_directory = 'templates';
 
 		/**
-		 * Internal use only: Store located template paths.
-		 *
-		 * @var array
-		 */
-		private $template_path_cache = array();
-
-		/**
 		 * Internal use only: Store variable names used for template data.
 		 *
 		 * Means unset_template_data() can remove all custom references from $wp_query.
@@ -220,15 +213,15 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 		 * @return string The template filename if one is located.
 		 */
 		public function locate_template( $template_names, $load = false, $require_once = true ) {
+			static $template_path_cache = array();
 
-			// Use $template_names as a cache key - either first element of array or the variable itself if it's a string.
-			$cache_key = is_array( $template_names ) ? $template_names[0] : $template_names;
+			// Generate a fast hash of the template names for unique lookup
+			$cache_key = md5( json_encode( $template_names ) );
 
 			// If the key is in the cache array, we've already located this file.
-			if ( isset( $this->template_path_cache[ $cache_key ] ) ) {
-				$located = $this->template_path_cache[ $cache_key ];
+			if ( isset( $template_path_cache[ $this->filter_prefix ][ $cache_key ] ) ) {
+				$located = $template_path_cache[ $this->filter_prefix ][ $cache_key ];
 			} else {
-
 				// No file found yet.
 				$located = false;
 
@@ -246,10 +239,15 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 						if ( file_exists( $template_path . $template_name ) ) {
 							$located = $template_path . $template_name;
 							// Store the template path in the cache.
-							$this->template_path_cache[ $cache_key ] = $located;
+							$template_path_cache[ $this->filter_prefix ][ $cache_key ] = $located;
 							break 2;
 						}
 					}
+				}
+
+				// The templates weren't found; don't look this up again.
+				if( ! $located ) {
+					$template_path_cache[ $this->filter_prefix ][ $cache_key ] = false;
 				}
 			}
 
@@ -302,7 +300,9 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 			// Sort the file paths based on priority.
 			ksort( $file_paths, SORT_NUMERIC );
 
-			return $file_paths = array_map( 'trailingslashit', $file_paths );
+			$file_paths = array_map( 'trailingslashit', $file_paths );
+
+			return $file_paths;
 		}
 
 		/**

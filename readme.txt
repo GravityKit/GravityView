@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Improved: Views now load faster due to improved template caching.
+
 = 2.13 on September 23, 2021 =
 
 * Added: Integrated with TrustedLogin, the easiest & most secure way to grant access to your website. [Learn more about TrustedLogin](https://www.trustedlogin.com/about/easy-and-safe/).
