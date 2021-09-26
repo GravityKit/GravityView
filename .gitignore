@@ -13,9 +13,6 @@
 *.sublime-project
 *.sublime-workspace
 
-### Composer ###
-composer.lock
-
 ### Libraries ###
 vendor/.git
 vendor/*/.git
