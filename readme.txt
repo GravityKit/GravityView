@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop =
+= 2.13.1 on September 27, 2021 =
 
 * Improved: Views now load faster due to improved template caching.
 * Added: Ability to configure an "Admin Label" for Custom Content widgets. This makes it easier to see your widget configuration a glance.
