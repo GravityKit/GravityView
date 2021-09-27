@@ -257,12 +257,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/trustedlogin/client.git",
-                "reference": "29a89b30640722772c8baec40ec3f933ff40a115"
+                "reference": "caf95a6e7b2c388332c11a7be90b8fa154abd60c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trustedlogin/client/zipball/29a89b30640722772c8baec40ec3f933ff40a115",
-                "reference": "29a89b30640722772c8baec40ec3f933ff40a115",
+                "url": "https://api.github.com/repos/trustedlogin/client/zipball/caf95a6e7b2c388332c11a7be90b8fa154abd60c",
+                "reference": "caf95a6e7b2c388332c11a7be90b8fa154abd60c",
                 "shasum": ""
             },
             "require": {
@@ -273,7 +273,6 @@
                 "paragonie/sodium_compat": "^1.12",
                 "php": ">=5.3.0"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -297,7 +296,7 @@
                 "security",
                 "support"
             ],
-            "time": "2021-09-23T19:22:21+00:00"
+            "time": "2021-09-27T15:59:19+00:00"
         }
     ],
     "packages-dev": [

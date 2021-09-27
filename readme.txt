@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Improved: Views now load faster due to improved template caching.
 * Added: Ability to configure an "Admin Label" for Custom Content widgets. This makes it easier to see your widget configuration a glance.
+* Fixed: Issue where non-support users may see a "Revoke TrustedLogin" admin bar link.
 
 = 2.13 on September 23, 2021 =
 
