@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 23-September-2021 using Strauss.
+ * Modified by gravityview on 27-September-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 /**
@@ -162,6 +162,18 @@ final class Admin {
 		}
 
 		if ( ! $admin_bar instanceof WP_Admin_Bar ) {
+			return;
+		}
+
+		$current_user = wp_get_current_user();
+
+		if ( ! $current_user || ! $current_user->exists() ) {
+			return;
+		}
+
+		$has_expiration = $this->support_user->get_expiration( $current_user );
+
+		if ( ! $has_expiration ) {
 			return;
 		}
 

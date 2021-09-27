@@ -6,8 +6,8 @@
  * @author    Gary Jones
  * @link      http://github.com/GaryJones/Gamajo-Template-Loader
  * @copyright 2013 Gary Jones
- * @license   GPL-2.0+
- * @version   1.3.0
+ * @license   GPL-2.0-or-later
+ * @version   1.3.1
  */
 
 namespace GV;
@@ -72,13 +72,6 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 		protected $plugin_template_directory = 'templates';
 
 		/**
-		 * Internal use only: Store located template paths.
-		 *
-		 * @var array
-		 */
-		private $template_path_cache = array();
-
-		/**
 		 * Internal use only: Store variable names used for template data.
 		 *
 		 * Means unset_template_data() can remove all custom references from $wp_query.
@@ -87,7 +80,7 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 		 *
 		 * @var array
 		 */
-		private $template_data_var_names = array('data');
+		private $template_data_var_names = array( 'data' );
 
 		/**
 		 * Clean up template data.
@@ -106,7 +99,6 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 		 * @param string $slug Template slug.
 		 * @param string $name Optional. Template variation name. Default null.
 		 * @param bool   $load Optional. Whether to load template. Default true.
-		 *
 		 * @return string
 		 */
 		public function get_template_part( $slug, $name = null, $load = true ) {
@@ -134,7 +126,6 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 		 * @param mixed  $data     Custom data for the template.
 		 * @param string $var_name Optional. Variable under which the custom data is available in the template.
 		 *                         Default is 'data'.
-		 *
 		 * @return Gamajo_Template_Loader
 		 */
 		public function set_template_data( $data, $var_name = 'data' ) {
@@ -142,8 +133,8 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 
 			$wp_query->query_vars[ $var_name ] = (object) $data;
 
-			// Add $var_name to custom variable store if not default value
-			if( $var_name !== 'data' ) {
+			// Add $var_name to custom variable store if not default value.
+			if ( 'data' !== $var_name ) {
 				$this->template_data_var_names[] = $var_name;
 			}
 
@@ -162,13 +153,13 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 		public function unset_template_data() {
 			global $wp_query;
 
-			// Remove any duplicates from the custom variable store
+			// Remove any duplicates from the custom variable store.
 			$custom_var_names = array_unique( $this->template_data_var_names );
 
-			// Remove each custom data reference from $wp_query
+			// Remove each custom data reference from $wp_query.
 			foreach ( $custom_var_names as $var ) {
-				if ( isset( $wp_query->query_vars[$var] ) ) {
-					unset( $wp_query->query_vars[$var] );
+				if ( isset( $wp_query->query_vars[ $var ] ) ) {
+					unset( $wp_query->query_vars[ $var ] );
 				}
 			}
 
@@ -182,7 +173,6 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 		 *
 		 * @param string $slug Template slug.
 		 * @param string $name Template variation name.
-		 *
 		 * @return array
 		 */
 		protected function get_template_file_names( $slug, $name ) {
@@ -220,19 +210,18 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 		 * @param bool         $load           If true the template file will be loaded if it is found.
 		 * @param bool         $require_once   Whether to require_once or require. Default true.
 		 *                                     Has no effect if $load is false.
-		 *
 		 * @return string The template filename if one is located.
 		 */
 		public function locate_template( $template_names, $load = false, $require_once = true ) {
+			static $template_path_cache = array();
 
-			// Use $template_names as a cache key - either first element of array or the variable itself if it's a string
-			$cache_key = is_array( $template_names ) ? $template_names[0] : $template_names;
+			// Generate a fast hash of the template names for unique lookup
+			$cache_key = md5( json_encode( $template_names ) );
 
 			// If the key is in the cache array, we've already located this file.
-			if ( isset( $this->template_path_cache[$cache_key] ) ) {
-				$located = $this->template_path_cache[$cache_key];
+			if ( isset( $template_path_cache[ $this->filter_prefix ][ $cache_key ] ) ) {
+				$located = $template_path_cache[ $this->filter_prefix ][ $cache_key ];
 			} else {
-
 				// No file found yet.
 				$located = false;
 
@@ -249,11 +238,16 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 					foreach ( $template_paths as $template_path ) {
 						if ( file_exists( $template_path . $template_name ) ) {
 							$located = $template_path . $template_name;
-							// Store the template path in the cache
-							$this->template_path_cache[$cache_key] = $located;
+							// Store the template path in the cache.
+							$template_path_cache[ $this->filter_prefix ][ $cache_key ] = $located;
 							break 2;
 						}
 					}
+				}
+
+				// The templates weren't found; don't look this up again.
+				if( ! $located ) {
+					$template_path_cache[ $this->filter_prefix ][ $cache_key ] = false;
 				}
 			}
 
@@ -306,7 +300,9 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 			// Sort the file paths based on priority.
 			ksort( $file_paths, SORT_NUMERIC );
 
-			return $file_paths = array_map( 'trailingslashit', $file_paths );
+			$file_paths = array_map( 'trailingslashit', $file_paths );
+
+			return $file_paths;
 		}
 
 		/**

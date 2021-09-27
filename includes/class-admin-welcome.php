@@ -284,6 +284,16 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.13.1 on September 27, 2021</h3>
+
+				<ul>
+					<li>Improved: Views now load faster due to improved template caching.</li>
+					<li>Added: Ability to configure an 'Admin Label' for Custom Content widgets. This makes it easier to
+						see your widget configuration a glance.
+					</li>
+					<li>Fixed: Issue where non-support users may see a 'Revoke TrustedLogin' admin bar link.</li>
+				</ul>
+
 				<h3>2.13 on September 23, 2021</h3>
 
 				<ul>
