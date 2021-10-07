@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 __Developer Updates:__
 
 * Updated: [TrustedLogin Client](https://github.com/trustedlogin/client) to Version 1.0.2
+* Modified: Added Code Snippets CSS file to No Conflict allowlist
 = 2.13.1 on September 27, 2021 =
 
 * Improved: Views now load faster due to improved template caching.
