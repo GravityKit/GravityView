@@ -7,13 +7,13 @@
  * @link      https://gravityview.co
  * @copyright Copyright 2021, Katz Web Services, Inc.
  *
- * @since 2.14
+ * @since 2.13.2
  */
 
 /**
  * Handles interactions between GravityView and Gravity Forms' Bulk Actions menu on the Entries screen.
  *
- * @since 2.14
+ * @since 2.13.2
  */
 class GravityView_Bulk_Actions {
 
@@ -22,7 +22,6 @@ class GravityView_Bulk_Actions {
 
 	/**
 	 * @var array Set the prefixes here instead of spread across the class
-	 * @since 1.17
 	 */
 	private static $bulk_action_prefixes = array(
 		'approve' => 'gvapprove',
@@ -41,28 +40,13 @@ class GravityView_Bulk_Actions {
 			// capture bulk actions
 			add_action( 'gform_loaded', array( $this, 'process_bulk_action' ) );
 		}
-
-		add_filter( 'gform_entry_list_bulk_actions', array( $this, 'filter_bulk_actions'), 10, 2 );
 	}
-
-	public function filter_bulk_actions( $actions, $form_id = '' ) {
-
-		$gv_actions = self::get_bulk_actions( $form_id );
-
-		foreach( $gv_actions as $group_name => $group_actions ) {
-			foreach( $group_actions as $gv_action ) {
-				$actions[ $group_name . '[' . $gv_action['value'] . ']' ] = $gv_action['label'];
-			}
-		}
-
-		return $actions;
-	}
-
 
 	/**
 	 * Get the Bulk Action submitted value if it is a GravityView Approve/Unapprove action
 	 *
 	 * @since 1.17.1
+	 * @since 2.13.2 Moved to GravityView_Bulk_Actions class.
 	 *
 	 * @return string|false If the bulk action was GravityView Approve/Unapprove, return the full string (gvapprove-16, gvunapprove-16). Otherwise, return false.
 	 */
