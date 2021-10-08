@@ -119,7 +119,6 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 		$atts['data-caption']          = null;
 		$atts['data-options']          = null;
 		$atts['data-filter']           = null;
-		$atts['data-type']             = null;
 
 		return $atts;
 	}
@@ -156,16 +155,12 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 
 		$file_path = \GV\Utils::get( $additional_details, 'file_path' );
 
+		/**
+		 * For file types that require IFRAME, declare `pdf` media type.
+		 * @see https://fancyapps.com/docs/ui/fancybox#media-types
+		 */
 		if ( false !== strpos( $file_path, 'gv-iframe' ) ) {
-
-			$fancybox_settings = array(
-				'type' => 'iframe',
-				'iframe' => array(
-					'preload' => false,
-				),
-			);
-
-			$link_atts['data-options'] = json_encode( $fancybox_settings );
+			$link_atts['data-type'] = 'pdf';
 		}
 
 		return $link_atts;
