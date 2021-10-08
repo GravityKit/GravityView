@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.13.1\n"
+"Project-Id-Version: GravityView 2.13.2\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -318,7 +318,7 @@ msgstr ""
 #: future/includes/class-gv-settings-addon.php:284
 #: future/includes/class-gv-settings-addon.php:949
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:89
-#: includes/class-admin-views.php:484 includes/class-admin.php:165
+#: includes/class-admin-views.php:484 includes/class-admin.php:166
 msgid "Settings"
 msgstr ""
 
@@ -1569,7 +1569,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/view-configuration.php:43
 #: includes/class-admin-views.php:1140 includes/class-admin-views.php:1265
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
-#: trustedlogin/trustedlogin/client/src/Admin.php:1007
+#: trustedlogin/trustedlogin/client/src/Admin.php:1001
 msgid "Close"
 msgstr ""
 
@@ -1639,7 +1639,7 @@ msgstr ""
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:282
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1135
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1263
-#: trustedlogin/trustedlogin/client/src/Admin.php:1008
+#: trustedlogin/trustedlogin/client/src/Admin.php:1002
 msgid "Cancel"
 msgstr ""
 
@@ -1652,65 +1652,45 @@ msgstr ""
 msgid "Please select a View"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:152
+#: includes/class-admin-approve-entries.php:149
 msgid "GravityView Fields"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:153
+#: includes/class-admin-approve-entries.php:150
 msgid ""
 "Allow administrators to approve or reject entries and users to opt-in or "
 "opt-out of their entries being displayed."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:174
+#: includes/class-admin-approve-entries.php:171
 msgid "Approve/Reject"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:181
+#: includes/class-admin-approve-entries.php:178
 msgid "User Opt-In"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:205
+#: includes/class-admin-approve-entries.php:202
 msgid "Approved? (Admin-only)"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:207
+#: includes/class-admin-approve-entries.php:204
 msgid "Approved?"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:227
+#: includes/class-admin-approve-entries.php:224
 msgid "Show Entry on Website"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:229
+#: includes/class-admin-approve-entries.php:226
 msgid "Opt-In"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:237
+#: includes/class-admin-approve-entries.php:234
 msgid "Yes, display my entry on the website"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:340
-msgid "%d entries"
-msgstr ""
-
-#: includes/class-admin-approve-entries.php:340
-msgid "1 entry"
-msgstr ""
-
-#: includes/class-admin-approve-entries.php:345
-msgid "%s approved."
-msgstr ""
-
-#: includes/class-admin-approve-entries.php:349
-msgid "%s unapproved."
-msgstr ""
-
-#: includes/class-admin-approve-entries.php:353
-msgid "%s disapproved."
-msgstr ""
-
-#: includes/class-admin-approve-entries.php:509
+#: includes/class-admin-approve-entries.php:399
 msgid "Show entry in directory view?"
 msgstr ""
 
@@ -2002,7 +1982,7 @@ msgid "Continue"
 msgstr ""
 
 #: includes/class-admin-views.php:1268
-#: trustedlogin/trustedlogin/client/src/Admin.php:1005
+#: trustedlogin/trustedlogin/client/src/Admin.php:999
 msgid "Ok"
 msgstr ""
 
@@ -2061,23 +2041,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:669
+#: includes/class-admin-welcome.php:694
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:689
+#: includes/class-admin-welcome.php:714
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:740
+#: includes/class-admin-welcome.php:765
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:767
+#: includes/class-admin-welcome.php:792
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:768
+#: includes/class-admin-welcome.php:793
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -2115,15 +2095,15 @@ msgstr ""
 msgid "or select another form."
 msgstr ""
 
-#: includes/class-admin.php:169
+#: includes/class-admin.php:170
 msgid "Support"
 msgstr ""
 
-#: includes/class-admin.php:214
+#: includes/class-admin.php:215
 msgid "A new form was created for this View: \"%s\""
 msgstr ""
 
-#: includes/class-admin.php:215
+#: includes/class-admin.php:216
 msgid ""
 "%sThere are no entries for the new form, so the View will also be empty.%s "
 "To start collecting entries, you can add submissions through %sthe preview "
@@ -2135,75 +2115,75 @@ msgid ""
 "\t\t\t\t\t"
 msgstr ""
 
-#: includes/class-admin.php:228 includes/class-admin.php:230
-#: includes/class-admin.php:233
+#: includes/class-admin.php:229 includes/class-admin.php:231
+#: includes/class-admin.php:234
 #. translators: %s and %s are HTML tags linking to the View on the website
 msgid "View updated. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:231
+#: includes/class-admin.php:232
 msgid "View deleted."
 msgstr ""
 
-#: includes/class-admin.php:235
+#: includes/class-admin.php:236
 #. translators: %s: date and time of the revision
 msgid "View restored to revision from %s"
 msgstr ""
 
-#: includes/class-admin.php:237
+#: includes/class-admin.php:238
 #. translators: %s and %s are HTML tags linking to the View on the website
 msgid "View published. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:239
+#: includes/class-admin.php:240
 #. translators: %s and %s are HTML tags linking to the View on the website
 msgid "View saved. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:240
+#: includes/class-admin.php:241
 msgid "View submitted."
 msgstr ""
 
-#: includes/class-admin.php:243
+#: includes/class-admin.php:244
 #. translators: Date and time the View is scheduled to be published
 msgid "View scheduled for: %1$s."
 msgstr ""
 
-#: includes/class-admin.php:245
+#: includes/class-admin.php:246
 #. translators: Publish box date format, see http:php.net/date
 msgid "M j, Y @ G:i"
 msgstr ""
 
-#: includes/class-admin.php:248
+#: includes/class-admin.php:249
 #. translators: %s and %s are HTML tags linking to the View on the website
 msgid "View draft updated. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:254
+#: includes/class-admin.php:255
 msgid "%s View updated."
 msgid_plural "%s Views updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:255
+#: includes/class-admin.php:256
 msgid "%s View not updated, somebody is editing it."
 msgid_plural "%s Views not updated, somebody is editing them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:256
+#: includes/class-admin.php:257
 msgid "%s View permanently deleted."
 msgid_plural "%s Views permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:257
+#: includes/class-admin.php:258
 msgid "%s View moved to the Trash."
 msgid_plural "%s Views moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:258
+#: includes/class-admin.php:259
 msgid "%s View restored from the Trash."
 msgid_plural "%s Views restored from the Trash."
 msgstr[0] ""
@@ -2318,6 +2298,26 @@ msgstr ""
 
 #: includes/class-gravityview-admin-notices.php:204
 msgid "Dismiss"
+msgstr ""
+
+#: includes/class-gravityview-bulk-actions.php:133
+msgid "%d entries"
+msgstr ""
+
+#: includes/class-gravityview-bulk-actions.php:133
+msgid "1 entry"
+msgstr ""
+
+#: includes/class-gravityview-bulk-actions.php:138
+msgid "%s approved."
+msgstr ""
+
+#: includes/class-gravityview-bulk-actions.php:142
+msgid "%s unapproved."
+msgstr ""
+
+#: includes/class-gravityview-bulk-actions.php:146
+msgid "%s disapproved."
 msgstr ""
 
 #: includes/class-gravityview-change-entry-creator.php:88
@@ -3830,7 +3830,7 @@ msgid ""
 msgstr ""
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:79
-#: trustedlogin/trustedlogin/client/src/Admin.php:221
+#: trustedlogin/trustedlogin/client/src/Admin.php:215
 msgid "Grant Support Access"
 msgstr ""
 
@@ -4370,234 +4370,234 @@ msgid "Your browser does not support the video tag."
 msgstr ""
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:114
-#: trustedlogin/trustedlogin/client/src/Admin.php:358
+#: trustedlogin/trustedlogin/client/src/Admin.php:352
 msgid "Revoke Access"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:192
+#: trustedlogin/trustedlogin/client/src/Admin.php:186
 msgid "Revoke TrustedLogin"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:345
+#: trustedlogin/trustedlogin/client/src/Admin.php:339
 msgid "Unknown (User #%d)"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:385
-#: trustedlogin/trustedlogin/client/src/Admin.php:941
+#: trustedlogin/trustedlogin/client/src/Admin.php:379
+#: trustedlogin/trustedlogin/client/src/Admin.php:935
 msgid "Secured by TrustedLogin"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:468
+#: trustedlogin/trustedlogin/client/src/Admin.php:462
 msgid "Reference #%s"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:483
+#: trustedlogin/trustedlogin/client/src/Admin.php:477
 #. translators: %1$s is replaced with the name of the software developer (e.g.
 #. "Acme Widgets"). %2$s is the amount of time remaining for access ("1 week")
 msgid "%1$s has site access that expires in %2$s."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:491
+#: trustedlogin/trustedlogin/client/src/Admin.php:485
 #. translators: %1$s is replaced with the name of the software developer (e.g.
 #. "Acme Widgets")
 msgid "%1$s would like support access to this site."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:494
+#: trustedlogin/trustedlogin/client/src/Admin.php:488
 #. translators: %1$s is replaced with the name of the software developer (e.g.
 #. "Acme Widgets")
 msgid "Grant %1$s access to this site."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:527
+#: trustedlogin/trustedlogin/client/src/Admin.php:521
 #. translators: %1$s and %3$s are replaced with HTML tags. %2$s is the amount
 #. of time that the login will be active for (e.g. "1 week")
 msgid "Access this site for %s."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:528
+#: trustedlogin/trustedlogin/client/src/Admin.php:522
 msgid "Access auto-expires in %s. You may revoke access at any time."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:534
+#: trustedlogin/trustedlogin/client/src/Admin.php:528
 msgid "Create a user with a role similar to %s."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:535
+#: trustedlogin/trustedlogin/client/src/Admin.php:529
 msgid "View role capabilities"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:537
+#: trustedlogin/trustedlogin/client/src/Admin.php:531
 msgid "Create a user with a role of %s."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:563
+#: trustedlogin/trustedlogin/client/src/Admin.php:557
 msgid "Additional capabilities:"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:564
+#: trustedlogin/trustedlogin/client/src/Admin.php:558
 msgid "Removed capabilities:"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:632
+#: trustedlogin/trustedlogin/client/src/Admin.php:626
 msgid "%s support may not be able to access this site."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:633
+#: trustedlogin/trustedlogin/client/src/Admin.php:627
 msgid ""
 "This website is running in a local development environment. To provide "
 "support, we must be able to access your site using a publicly-accessible "
 "URL."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:635
+#: trustedlogin/trustedlogin/client/src/Admin.php:629
 msgid "Learn more."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:685
+#: trustedlogin/trustedlogin/client/src/Admin.php:679
 #. translators: %s is replaced with the name of the software developer (e.g.
 #. "Acme Widgets")
 msgid "Learn about TrustedLogin"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:882
+#: trustedlogin/trustedlogin/client/src/Admin.php:876
 msgid "Grant %s Access"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:883
+#: trustedlogin/trustedlogin/client/src/Admin.php:877
 msgid "Extend %s Access"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:986
+#: trustedlogin/trustedlogin/client/src/Admin.php:980
 msgid "Could not create TrustedLogin access."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:992
+#: trustedlogin/trustedlogin/client/src/Admin.php:986
 msgid "The user details could not be sent to %1$s automatically."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:996
+#: trustedlogin/trustedlogin/client/src/Admin.php:990
 msgid ""
 "Please <a href=\"%1$s\" target=\"_blank\">click here</a> to go to the %2$s "
 "support site"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1004
+#: trustedlogin/trustedlogin/client/src/Admin.php:998
 msgid "Confirm"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1006
+#: trustedlogin/trustedlogin/client/src/Admin.php:1000
 msgid "Go to %1$s support site"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1009
+#: trustedlogin/trustedlogin/client/src/Admin.php:1003
 msgid "Revoke %1$s support access"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1010
-#: trustedlogin/trustedlogin/client/src/Admin.php:1154
+#: trustedlogin/trustedlogin/client/src/Admin.php:1004
+#: trustedlogin/trustedlogin/client/src/Admin.php:1148
 msgid "Copy"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1011
+#: trustedlogin/trustedlogin/client/src/Admin.php:1005
 msgid "Copied!"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1014
+#: trustedlogin/trustedlogin/client/src/Admin.php:1008
 msgid "(This link opens in a new window.)"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1015
+#: trustedlogin/trustedlogin/client/src/Admin.php:1009
 msgid "The access key has been copied to your clipboard."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1019
+#: trustedlogin/trustedlogin/client/src/Admin.php:1013
 msgid "Support access granted"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1021
+#: trustedlogin/trustedlogin/client/src/Admin.php:1015
 msgid "A temporary support user has been created, and sent to %1$s support."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1026
+#: trustedlogin/trustedlogin/client/src/Admin.php:1020
 msgid "Generating & encrypting secure support access for %1$s"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1029
+#: trustedlogin/trustedlogin/client/src/Admin.php:1023
 msgid "Extending support access for %1$s by %2$s"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1032
+#: trustedlogin/trustedlogin/client/src/Admin.php:1026
 msgid "Sending encrypted access to %1$s."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1035
+#: trustedlogin/trustedlogin/client/src/Admin.php:1029
 msgid "Error syncing support user to %1$s"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1046
+#: trustedlogin/trustedlogin/client/src/Admin.php:1040
 msgid "Action Cancelled"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1048
+#: trustedlogin/trustedlogin/client/src/Admin.php:1042
 msgid "A support account for %1$s was not created."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1053
+#: trustedlogin/trustedlogin/client/src/Admin.php:1047
 msgid "Support Access Was Not Granted"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1054
+#: trustedlogin/trustedlogin/client/src/Admin.php:1048
 msgid "There was an error granting access: "
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1057
+#: trustedlogin/trustedlogin/client/src/Admin.php:1051
 msgid "Your authorized session has expired. Please refresh the page."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1060
+#: trustedlogin/trustedlogin/client/src/Admin.php:1054
 msgid "TrustedLogin Key Created"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1062
+#: trustedlogin/trustedlogin/client/src/Admin.php:1056
 msgid "Share this TrustedLogin Key with %1$s to give them secure access:"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1068
+#: trustedlogin/trustedlogin/client/src/Admin.php:1062
 msgid "The TrustedLogin vendor could not be found."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1073
+#: trustedlogin/trustedlogin/client/src/Admin.php:1067
 msgid "%1$s Support user already exists"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1078
+#: trustedlogin/trustedlogin/client/src/Admin.php:1072
 msgid ""
 "A support user for %1$s already exists. You may revoke this support access "
 "from your <a href=\"%2$s\" target=\"_blank\">Users list</a>."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1118
+#: trustedlogin/trustedlogin/client/src/Admin.php:1112
 msgid "No %s users exist."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1151
+#: trustedlogin/trustedlogin/client/src/Admin.php:1145
 msgid "Site access key:"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1152
+#: trustedlogin/trustedlogin/client/src/Admin.php:1146
 msgid "Access Key"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1156
+#: trustedlogin/trustedlogin/client/src/Admin.php:1150
 msgid "Copy the access key to your clipboard"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1195
+#: trustedlogin/trustedlogin/client/src/Admin.php:1189
 msgid "%s access revoked."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1197
+#: trustedlogin/trustedlogin/client/src/Admin.php:1191
 msgid "You may safely close this window."
 msgstr ""
 
@@ -4606,7 +4606,7 @@ msgstr ""
 msgid "TrustedLogin requires a secure connection using HTTPS."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Client.php:514
+#: trustedlogin/trustedlogin/client/src/Client.php:515
 msgid "The support user was not deleted."
 msgstr ""
 
@@ -4674,11 +4674,11 @@ msgid "Could not sync to TrustedLogin server"
 msgstr ""
 
 #: trustedlogin/trustedlogin/client/src/SupportRole.php:165
-#: trustedlogin/trustedlogin/client/src/SupportUser.php:213
+#: trustedlogin/trustedlogin/client/src/SupportUser.php:241
 msgid "%s Support"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/SupportUser.php:180
+#: trustedlogin/trustedlogin/client/src/SupportUser.php:208
 msgid "User not created; User with that email already exists"
 msgstr ""
 
