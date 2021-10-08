@@ -43,8 +43,8 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 			}
 		</style>
 		<script>
-			if ( window.jQuery ) {
-				jQuery( '.gravityview-fancybox' ).fancybox(<?php echo $settings; ?>);
+			if ( window.Fancybox ){
+				Fancybox.bind(".gravityview-fancybox", <?php echo $settings; ?>);
 			}
 		</script>
 		<?php
@@ -93,16 +93,14 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	 * @inheritDoc
 	 */
 	public function enqueue_scripts() {
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_register_script( self::$script_slug, plugins_url( 'assets/lib/fancybox/dist/jquery.fancybox' . $min . '.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GV_PLUGIN_VERSION );
+		wp_register_script( self::$script_slug, plugins_url( 'assets/lib/fancybox/dist/fancybox.umd.js', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function enqueue_styles() {
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_register_style( self::$style_slug, plugins_url( 'assets/lib/fancybox/dist/jquery.fancybox' . $min . '.css', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
+		wp_register_style( self::$style_slug, plugins_url( 'assets/lib/fancybox/dist/fancybox.css', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 	}
 
 	/**
@@ -121,7 +119,6 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 		$atts['data-caption']          = null;
 		$atts['data-options']          = null;
 		$atts['data-filter']           = null;
-		$atts['data-type']             = null;
 
 		return $atts;
 	}
@@ -158,16 +155,12 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 
 		$file_path = \GV\Utils::get( $additional_details, 'file_path' );
 
+		/**
+		 * For file types that require IFRAME, declare `pdf` media type.
+		 * @see https://fancyapps.com/docs/ui/fancybox#media-types
+		 */
 		if ( false !== strpos( $file_path, 'gv-iframe' ) ) {
-
-			$fancybox_settings = array(
-				'type' => 'iframe',
-				'iframe' => array(
-					'preload' => false,
-				),
-			);
-
-			$link_atts['data-options'] = json_encode( $fancybox_settings );
+			$link_atts['data-type'] = 'pdf';
 		}
 
 		return $link_atts;
