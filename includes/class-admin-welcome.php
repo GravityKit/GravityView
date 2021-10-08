@@ -284,6 +284,31 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.13.2 on October 7, 2021</h3>
+
+				<ul>
+					<li>Fixed: Entry Approval not working when using DataTables in responsive mode (requires DataTables
+						2.4.9 or newer).
+					</li>
+					<li>Modified: Refined the capabilities assigned to GravityView support when access is granted using
+						TrustedLogin. Now our support will be able to debug theme-related issues and use the <a
+								href='https://wordpress.org/plugins/code-snippets/'>Code Snippets</a> plugin.
+					</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Updated: Upgraded to <a href='https://fancyapps.com/docs/ui/fancybox'>Fancybox 4</a>.</li>
+					<li>Updated: <a href='https://github.com/trustedlogin/client'>TrustedLogin Client</a> to Version
+						1.0.2.
+					</li>
+					<li>Modified: Added Code Snippets CSS file to No Conflict allow list.</li>
+					<li>Modified: Moved internal (but public) method <code>GravityView_Admin_ApproveEntries::process_bulk_action</code>
+						to new <code>GravityView_Bulk_Actions</code> class.
+					</li>
+				</ul>
+
 				<h3>2.13.1 on September 27, 2021</h3>
 
 				<ul>

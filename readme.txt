@@ -21,11 +21,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.13.2 on October 7, 2021 =
+
+* Fixed: Entry Approval not working when using DataTables in responsive mode (requires DataTables 2.4.9 or newer).
+* Modified: Refined the capabilities assigned to GravityView support when access is granted using TrustedLogin. Now our support will be able to debug theme-related issues and use the [Code Snippets](https://wordpress.org/plugins/code-snippets/) plugin.
 
 __Developer Updates:__
 
-* Updated: [TrustedLogin Client](https://github.com/trustedlogin/client) to Version 1.0.2
-* Modified: Added Code Snippets CSS file to No Conflict allowlist
+* Updated: Upgraded to [Fancybox 4](https://fancyapps.com/docs/ui/fancybox).
+* Updated: [TrustedLogin Client](https://github.com/trustedlogin/client) to Version 1.0.2.
+* Modified: Added Code Snippets CSS file to No Conflict allow list.
+* Modified: Moved internal (but public) method `GravityView_Admin_ApproveEntries::process_bulk_action` to new `GravityView_Bulk_Actions` class.
+
 = 2.13.1 on September 27, 2021 =
 
 * Improved: Views now load faster due to improved template caching.
