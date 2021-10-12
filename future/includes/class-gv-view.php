@@ -1324,7 +1324,7 @@ class View implements \ArrayAccess {
 				 * @param \GV\Request $request The request object
 				 */
 				do_action_ref_array( 'gravityview/view/query', array( &$query, $this, $request ) );
-//!d(Utils::gf_query_debug( $query ) );
+
 				gravityview()->log->debug( 'GF_Query parameters: ', array( 'data' => Utils::gf_query_debug( $query ) ) );
 
 				/**
