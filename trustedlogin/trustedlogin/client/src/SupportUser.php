@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 27-September-2021 using Strauss.
+ * Modified by gravityview on 07-October-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -130,6 +130,34 @@ final class SupportUser {
 		$user_ids = get_users( $args );
 
 		return empty( $user_ids ) ? false : (int) $user_ids[0];
+	}
+
+	/**
+	 * Returns whether the support user exists and has an expiration time in the future.
+	 *
+	 * @since 1.0.2
+	 *
+	 * @return bool True: Support user exists and has an expiration time in the future. False: Any of those things aren't true.
+	 */
+	public function is_active( $passed_user = null ) {
+
+		$current_user = is_a( $passed_user, '\WP_User') ? $passed_user : wp_get_current_user();
+
+		if ( ! $current_user || ! $current_user->exists() ) {
+			return false;
+		}
+
+		$expiration = $this->get_expiration( $current_user, false, true );
+
+		if ( ! $expiration ) {
+			return false;
+		}
+
+		if( time() > (int) $expiration ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -271,10 +299,12 @@ final class SupportUser {
 			return new WP_Error( 'user_not_found', sprintf( 'Support user not found at identifier %s.', esc_attr( $user_identifier ) ) );
 		}
 
-		$expires = $this->get_expiration( $support_user, false, true );
+		$is_active = $this->is_active( $support_user );
 
 		// This user has expired, but the cron didn't run...
-		if ( $expires && time() > (int) $expires ) {
+		if ( ! $is_active ) {
+
+			$expires = $this->get_expiration( $support_user, false, true );
 
 			$this->logging->log( 'The user was supposed to expire on ' . $expires . '; revoking now.', __METHOD__, 'warning' );
 
@@ -543,7 +573,7 @@ final class SupportUser {
 	public function extend( $user_id, $identifier_hash, $expiration_timestamp = null, $cron = null ) {
 
 		if ( ! $user_id || ! $identifier_hash || ! $expiration_timestamp ) {
-			return new WP_Error( 'no-action', 'Error extending Support User access, missing required parameter.' );
+			return new WP_Error( 'missing_action_parameter', 'Error extending Support User access, missing required parameter.' );
 		}
 
 		if ( ! $cron || ! $cron instanceof Cron ) {
@@ -559,7 +589,7 @@ final class SupportUser {
 			return true;
 		}
 
-		return new WP_Error( 'extend-failed', 'Error rescheduling cron task' );
+		return new WP_Error( 'extend_failed', 'Error rescheduling cron task' );
 
 	}
 

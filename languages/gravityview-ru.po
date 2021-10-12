@@ -8,7 +8,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.10.3.2\n"
+"Project-Id-Version: GravityView 2.13.2\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
@@ -163,14 +163,14 @@ msgstr ""
 "GravityView %s для получения обновлений и поддержки."
 
 #: future/includes/class-gv-license-handler.php:426
-#: future/includes/class-gv-settings-addon.php:1376
+#: future/includes/class-gv-settings-addon.php:1381
 msgid "You don't have the ability to edit plugin settings."
 msgstr "У вас нет возможности редактировать настройки плагина."
 
 #: future/includes/class-gv-license-handler.php:427
 #: future/includes/class-gv-license-handler.php:548
 #: future/includes/class-gv-license-handler.php:562
-#: future/includes/class-gv-settings-addon.php:1130
+#: future/includes/class-gv-settings-addon.php:1135
 msgid "Verifying license&hellip;"
 msgstr "Проверить лицензию &hellip;"
 
@@ -237,13 +237,13 @@ msgstr ""
 "Стили не загружены в предварительном просмотре, поэтому содержание может "
 "выглядеть не так, как ожидалось. Не переживайте! "
 
-#: future/includes/class-gv-plugin.php:648
+#: future/includes/class-gv-plugin.php:647
 #: includes/class-gravityview-entry-approval.php:456
 #: tests/unit-tests/GravityView_Uninstall_Test.php:191
 msgid "Disapproved the Entry for GravityView"
 msgstr "Запись отклонена для GravityView"
 
-#: future/includes/class-gv-plugin.php:649
+#: future/includes/class-gv-plugin.php:648
 #: includes/class-gravityview-entry-approval.php:450
 #: tests/unit-tests/GravityView_Uninstall_Test.php:192
 msgid "Approved the Entry for GravityView"
@@ -285,8 +285,8 @@ msgstr ""
 #: includes/class-frontend-views.php:637
 #: includes/class-gravityview-admin-bar.php:102
 #: includes/class-gravityview-entry-link-shortcode.php:233
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:144
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1082
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:148
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1085
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 #: templates/fields/field-edit_link-html.php:38
 msgid "Edit Entry"
@@ -339,14 +339,14 @@ msgid "Update Settings"
 msgstr "Обновить настройки"
 
 #: future/includes/class-gv-settings-addon.php:243
-#: future/includes/class-gv-settings-addon.php:1177
+#: future/includes/class-gv-settings-addon.php:1182
 msgid "GravityView Settings"
 msgstr "Настройки GravityView"
 
 #: future/includes/class-gv-settings-addon.php:284
-#: future/includes/class-gv-settings-addon.php:944
+#: future/includes/class-gv-settings-addon.php:949
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:89
-#: includes/class-admin-views.php:480 includes/class-admin.php:165
+#: includes/class-admin-views.php:484 includes/class-admin.php:166
 msgid "Settings"
 msgstr "Настройки"
 
@@ -436,7 +436,7 @@ msgstr ""
 "Ваш отзыв поможет нам улучшить GravityView. Если у вас есть вопросы или "
 "комментарии, пишите нам на адрес support@gravityview.co"
 
-#: future/includes/class-gv-settings-addon.php:772
+#: future/includes/class-gv-settings-addon.php:777
 msgid ""
 "Your GravityView license %s. This means you&rsquo;re missing out on updates "
 "and support! %sActivate your license%s or %sget a license here%s."
@@ -445,59 +445,59 @@ msgstr ""
 "обновления и поддержку! %sАктивируйте вашу лицензию%s или %sкупите новую "
 "здесь%s."
 
-#: future/includes/class-gv-settings-addon.php:782
+#: future/includes/class-gv-settings-addon.php:787
 msgid "Inactive License"
 msgstr "Неактивная лицензия"
 
-#: future/includes/class-gv-settings-addon.php:790
+#: future/includes/class-gv-settings-addon.php:795
 msgid "Expired License"
 msgstr "Просроченная лицензия"
 
-#: future/includes/class-gv-settings-addon.php:791
+#: future/includes/class-gv-settings-addon.php:796
 msgid "has expired"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:795
+#: future/includes/class-gv-settings-addon.php:800
 msgid "Invalid License"
 msgstr "Неверная лицензия"
 
-#: future/includes/class-gv-settings-addon.php:796
+#: future/includes/class-gv-settings-addon.php:801
 msgid "is invalid"
 msgstr "неверная"
 
-#: future/includes/class-gv-settings-addon.php:799
+#: future/includes/class-gv-settings-addon.php:804
 msgid "is inactive"
 msgstr "неактивная"
 
-#: future/includes/class-gv-settings-addon.php:800
-#: future/includes/class-gv-settings-addon.php:809
+#: future/includes/class-gv-settings-addon.php:805
+#: future/includes/class-gv-settings-addon.php:814
 msgid "Activate your license key below."
 msgstr "Активируйте ваш лицензионный ключ."
 
-#: future/includes/class-gv-settings-addon.php:808
+#: future/includes/class-gv-settings-addon.php:813
 msgid "has not been activated"
 msgstr "не была активирована"
 
-#: future/includes/class-gv-settings-addon.php:957
+#: future/includes/class-gv-settings-addon.php:962
 msgid "Required"
 msgstr "Обязательно"
 
-#: future/includes/class-gv-settings-addon.php:979
+#: future/includes/class-gv-settings-addon.php:984
 msgid "Support Email"
 msgstr "Email службы поддержки"
 
-#: future/includes/class-gv-settings-addon.php:980
+#: future/includes/class-gv-settings-addon.php:985
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
 msgstr ""
 "Для рассмотрения вашего запроса, пожалуйста, укажите свой email адрес."
 
-#: future/includes/class-gv-settings-addon.php:989
+#: future/includes/class-gv-settings-addon.php:994
 msgid "Show Support Port?"
 msgstr "Показать портал поддержки?"
 
-#: future/includes/class-gv-settings-addon.php:1002
+#: future/includes/class-gv-settings-addon.php:1007
 msgid ""
 "The Support Port provides quick access to how-to articles and tutorials. For"
 " administrators, it also makes it easy to contact support."
@@ -505,19 +505,19 @@ msgstr ""
 "Портал поддержки предоставляет доступ к документации и обучающим материалам."
 " Для администраторов это также возможность обратиться в службу поддержки."
 
-#: future/includes/class-gv-settings-addon.php:1002
+#: future/includes/class-gv-settings-addon.php:1007
 msgid "The Support Port looks like this."
 msgstr "Портал поддержки выглядит так."
 
-#: future/includes/class-gv-settings-addon.php:1003
+#: future/includes/class-gv-settings-addon.php:1008
 msgid "Show the Support Port on GravityView pages?"
 msgstr "Показывать портал поддержки на страницах GravityView?"
 
-#: future/includes/class-gv-settings-addon.php:1008
+#: future/includes/class-gv-settings-addon.php:1013
 msgid "No-Conflict Mode"
 msgstr "Режим предотвращения конфликтов"
 
-#: future/includes/class-gv-settings-addon.php:1021
+#: future/includes/class-gv-settings-addon.php:1026
 msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
@@ -526,16 +526,16 @@ msgstr ""
 "Если включено, предотвращает возможные конфликты со сторонними скриптами и "
 "стилями на административных страницах GravityView."
 
-#: future/includes/class-gv-settings-addon.php:1021
+#: future/includes/class-gv-settings-addon.php:1026
 msgid "If your Edit View tabs are ugly, enable this setting."
 msgstr ""
 "Если редактируемое представление выглядит ужасно, включите эту настройку."
 
-#: future/includes/class-gv-settings-addon.php:1030
+#: future/includes/class-gv-settings-addon.php:1035
 msgid "REST API"
 msgstr "REST API"
 
-#: future/includes/class-gv-settings-addon.php:1043
+#: future/includes/class-gv-settings-addon.php:1048
 msgid ""
 "Enable View and Entry access via the REST API? Regular per-View restrictions"
 " apply (private, password protected, etc.)."
@@ -543,43 +543,43 @@ msgstr ""
 "Включить просмотр и доступ к записи через REST API? Действуют обычные "
 "ограничения на просмотр (закрытые, защищенные паролем и т.д.)."
 
-#: future/includes/class-gv-settings-addon.php:1044
+#: future/includes/class-gv-settings-addon.php:1049
 msgid "If you are unsure, choose the Disable setting."
 msgstr "Если вы не уверены, выберите Отключить настройку."
 
-#: future/includes/class-gv-settings-addon.php:1049
+#: future/includes/class-gv-settings-addon.php:1054
 msgid "Display \"Powered By\" Link"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1053
+#: future/includes/class-gv-settings-addon.php:1058
 msgid "Display a \"Powered by GravityView\" link"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1058
+#: future/includes/class-gv-settings-addon.php:1063
 msgid ""
 "When enabled, a \"Powered by GravityView\" link will be displayed below "
 "Views. Help us spread the word!"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1065
+#: future/includes/class-gv-settings-addon.php:1070
 msgid "Affiliate ID"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1066
+#: future/includes/class-gv-settings-addon.php:1071
 msgid ""
 "Earn money when people clicking your links become GravityView customers. <a "
 "href=\"%s\" rel=\"external\">Register as an affiliate</a>!"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1074
+#: future/includes/class-gv-settings-addon.php:1079
 msgid "Become a Beta Tester"
 msgstr "Стать бета-тестером"
 
-#: future/includes/class-gv-settings-addon.php:1079
+#: future/includes/class-gv-settings-addon.php:1084
 msgid "Show me beta versions if they are available."
 msgstr "Покажите мне бета-версии, если они доступны."
 
-#: future/includes/class-gv-settings-addon.php:1084
+#: future/includes/class-gv-settings-addon.php:1089
 msgid ""
 "You will have early access to the latest GravityView features and "
 "improvements. There may be bugs! If you encounter an issue, help make "
@@ -589,11 +589,11 @@ msgstr ""
 "Могут быть ошибки! Если вы столкнулись с проблемой, помогите улучшить "
 "GravityView, сообщив об этом!"
 
-#: future/includes/class-gv-settings-addon.php:1127
+#: future/includes/class-gv-settings-addon.php:1132
 msgid "License Key"
 msgstr "Лицензионный ключ"
 
-#: future/includes/class-gv-settings-addon.php:1128
+#: future/includes/class-gv-settings-addon.php:1133
 msgid ""
 "Enter the license key that was sent to you on purchase. This enables plugin "
 "updates &amp; support."
@@ -601,19 +601,19 @@ msgstr ""
 "Введите лицензионный ключ, полученный при покупке. Это позволит обновлять "
 "плагин и пользоваться службой поддержки."
 
-#: future/includes/class-gv-settings-addon.php:1149
+#: future/includes/class-gv-settings-addon.php:1154
 msgid "The license key is defined by your site's configuration file."
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1154
+#: future/includes/class-gv-settings-addon.php:1159
 msgid "You are running GravityView version %s"
 msgstr "Вы используете GravityView версии %s"
 
-#: future/includes/class-gv-settings-addon.php:1159
+#: future/includes/class-gv-settings-addon.php:1164
 msgid "GravityView License"
 msgstr ""
 
-#: future/includes/class-gv-settings-addon.php:1410
+#: future/includes/class-gv-settings-addon.php:1415
 msgid ""
 "The license key you entered has been saved, but not activated. Please "
 "activate the license."
@@ -806,7 +806,7 @@ msgstr "По умолчанию"
 
 #: future/includes/class-gv-settings-view.php:232
 #: future/includes/class-gv-settings-view.php:263
-#: includes/class-common.php:1408
+#: includes/class-common.php:1412
 #: includes/fields/class-gravityview-field-date-created.php:29
 msgid "Date Created"
 msgstr "Дата создания"
@@ -944,12 +944,12 @@ msgid "Redirect to Single Entry"
 msgstr "Перенаправление на одиночную запись"
 
 #: future/includes/class-gv-settings-view.php:393
-#: future/includes/class-gv-settings-view.php:450
+#: future/includes/class-gv-settings-view.php:490
 msgid "Redirect to Multiple Entries"
 msgstr "Перенаправление на несколько записей"
 
 #: future/includes/class-gv-settings-view.php:394
-#: future/includes/class-gv-settings-view.php:451
+#: future/includes/class-gv-settings-view.php:491
 msgid "Redirect to URL"
 msgstr "Перенаправление на URL"
 
@@ -976,75 +976,123 @@ msgstr ""
 "После редактирования записи пользователь будет перенаправлен на этот URL."
 
 #: future/includes/class-gv-settings-view.php:431
+msgid "Update Button Text"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:439
+msgid "Cancel Link Text"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:447
+msgid "Next Page Button Text"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:449
+#: future/includes/class-gv-settings-view.php:457
+msgid "Only shown when multi-page forms are enabled."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:451
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1137
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1265
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2497
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:75
+msgid "Next"
+msgstr "Следующий"
+
+#: future/includes/class-gv-settings-view.php:455
+msgid "Previous Page Button Text"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:459
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1138
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1266
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2498
+#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:76
+msgid "Previous"
+msgstr "Предыдущий"
+
+#: future/includes/class-gv-settings-view.php:463
+#: includes/extensions/delete-entry/class-delete-entry-admin.php:133
+msgid "Delete Link Text"
+msgstr "Удалить текст ссылки"
+
+#: future/includes/class-gv-settings-view.php:467
+#: includes/extensions/delete-entry/class-delete-entry.php:306
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:417
+msgid "Delete"
+msgstr "Удалить"
+
+#: future/includes/class-gv-settings-view.php:471
 msgid "Enable Edit Locking"
 msgstr "Разрешить блокировку изменения"
 
-#: future/includes/class-gv-settings-view.php:433
+#: future/includes/class-gv-settings-view.php:473
 msgid "Prevent multiple users from editing the same entry at the same time."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:444
+#: future/includes/class-gv-settings-view.php:484
 msgid "Redirect After Deleting"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:446
+#: future/includes/class-gv-settings-view.php:486
 msgid "The page to redirect to after deleting an entry."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:455
+#: future/includes/class-gv-settings-view.php:495
 msgid "Delete Entry Redirect URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:457
+#: future/includes/class-gv-settings-view.php:497
 msgid "After deleting an entry, the user will be taken to this URL."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:466
+#: future/includes/class-gv-settings-view.php:506
 msgid "Prevent Direct Access"
 msgstr "Запретить прямой доступ"
 
-#: future/includes/class-gv-settings-view.php:468
+#: future/includes/class-gv-settings-view.php:508
 msgid "Only allow access to this View when embedded using the shortcode."
 msgstr ""
 "Доступ к представлению разрешен только тогда, когда использован этот "
 "шорткод."
 
-#: future/includes/class-gv-settings-view.php:479
+#: future/includes/class-gv-settings-view.php:519
 msgid "Prevent REST Access"
 msgstr "Предотвращение REST-доступа"
 
-#: future/includes/class-gv-settings-view.php:481
+#: future/includes/class-gv-settings-view.php:521
 msgid "Disable REST access to this View."
 msgstr "Отключите доступ REST к этому представлению."
 
-#: future/includes/class-gv-settings-view.php:492
+#: future/includes/class-gv-settings-view.php:532
 msgid "Allow REST Access"
 msgstr "Разрешить доступ к REST"
 
-#: future/includes/class-gv-settings-view.php:494
+#: future/includes/class-gv-settings-view.php:534
 msgid "Enable REST access to this View."
 msgstr "Включите к этому просмотру REST-доступ."
 
-#: future/includes/class-gv-settings-view.php:504
+#: future/includes/class-gv-settings-view.php:544
 msgid "Allow Export"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:506
+#: future/includes/class-gv-settings-view.php:546
 msgid "Enable users to download data as a CSV or TSV file."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:509
+#: future/includes/class-gv-settings-view.php:549
 msgid ""
 "If enabled, entries can be exported for this View by adding \"/csv/\" or "
 "\"/tsv/\" to the View URL. Each configured field will be a column in the "
 "exported file."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:520
+#: future/includes/class-gv-settings-view.php:560
 msgid "Show all in file"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:522
+#: future/includes/class-gv-settings-view.php:562
 msgid "Do not limit the number of entries output in the file."
 msgstr ""
 
@@ -1124,7 +1172,7 @@ msgstr "Создать представление на основе формы G
 
 #: future/includes/class-gv-view.php:298
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:224
-#: includes/class-admin-views.php:536
+#: includes/class-admin-views.php:540
 msgid "Data Source"
 msgstr "Источник данных"
 
@@ -1187,7 +1235,7 @@ msgstr "Вам не разрешен доступ к этому содержан
 msgid "This View is not configured properly."
 msgstr "Это представление не настроено должным образом."
 
-#: future/lib/EDD_SL_Plugin_Updater.php:271
+#: future/lib/EDD_SL_Plugin_Updater.php:259
 #: includes/lib/EDD_SL_Plugin_Updater.php:265
 msgid ""
 "There is a new version of %1$s available. %2$sView version %3$s details%4$s."
@@ -1195,7 +1243,7 @@ msgstr ""
 "Новая версия %1$s доступна. %2$sУзнать подробности о новой версии %3$s здесь"
 " %4$s."
 
-#: future/lib/EDD_SL_Plugin_Updater.php:279
+#: future/lib/EDD_SL_Plugin_Updater.php:267
 #: includes/lib/EDD_SL_Plugin_Updater.php:273
 msgid ""
 "There is a new version of %1$s available. %2$sView version %3$s details%4$s "
@@ -1204,12 +1252,12 @@ msgstr ""
 "Новая версия %1$s доступна. %2$sУзнать подробности о новой версии %3$s здесь"
 " %4$s или %5$sобновить сейчас %6$s."
 
-#: future/lib/EDD_SL_Plugin_Updater.php:523
+#: future/lib/EDD_SL_Plugin_Updater.php:514
 #: includes/lib/EDD_SL_Plugin_Updater.php:517
 msgid "You do not have permission to install plugin updates"
 msgstr "У вас нет полномочий устанавилвать обновления плагина"
 
-#: future/lib/EDD_SL_Plugin_Updater.php:523
+#: future/lib/EDD_SL_Plugin_Updater.php:514
 #: includes/class-gravityview-change-entry-creator.php:164
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:287
 #: includes/lib/EDD_SL_Plugin_Updater.php:517
@@ -1473,9 +1521,9 @@ msgstr "Посмотреть настройки"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:161
 #: includes/class-gravityview-entry-link-shortcode.php:236
-#: includes/extensions/delete-entry/class-delete-entry-admin.php:120
-#: includes/extensions/delete-entry/class-delete-entry-admin.php:152
-#: includes/extensions/delete-entry/class-delete-entry-admin.php:194
+#: includes/extensions/delete-entry/class-delete-entry-admin.php:135
+#: includes/extensions/delete-entry/class-delete-entry-admin.php:167
+#: includes/extensions/delete-entry/class-delete-entry-admin.php:209
 #: includes/extensions/delete-entry/fields/delete_link.php:19
 #: templates/fields/field-delete_link-html.php:38
 #: templates/fields/field-duplicate_link-html.php:38
@@ -1624,8 +1672,9 @@ msgid "These widgets will be shown below entries."
 msgstr "Эти виджеты будут показаны под записями."
 
 #: includes/admin/metaboxes/views/view-configuration.php:43
-#: includes/class-admin-views.php:1136 includes/class-admin-views.php:1261
+#: includes/class-admin-views.php:1140 includes/class-admin-views.php:1265
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
+#: trustedlogin/trustedlogin/client/src/Admin.php:1001
 msgid "Close"
 msgstr "Закрыть"
 
@@ -1693,16 +1742,16 @@ msgid "(no title)"
 msgstr "(без названия)"
 
 #: includes/class-admin-add-shortcode.php:135
-#: includes/class-admin-views.php:1262
+#: includes/class-admin-views.php:1266
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:282
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1132
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1260
-#: includes/extensions/edit-entry/partials/form-buttons.php:44
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1135
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1263
+#: trustedlogin/trustedlogin/client/src/Admin.php:1002
 msgid "Cancel"
 msgstr "Отмена"
 
 #: includes/class-admin-add-shortcode.php:179
-#: includes/class-admin-views.php:1266
+#: includes/class-admin-views.php:1270
 msgid "Loading&hellip;"
 msgstr "Загрузка&hellip;"
 
@@ -1710,11 +1759,11 @@ msgstr "Загрузка&hellip;"
 msgid "Please select a View"
 msgstr "Пожалуйста, выберите представление"
 
-#: includes/class-admin-approve-entries.php:152
+#: includes/class-admin-approve-entries.php:149
 msgid "GravityView Fields"
 msgstr "Поля GravityView"
 
-#: includes/class-admin-approve-entries.php:153
+#: includes/class-admin-approve-entries.php:150
 msgid ""
 "Allow administrators to approve or reject entries and users to opt-in or "
 "opt-out of their entries being displayed."
@@ -1722,55 +1771,35 @@ msgstr ""
 "Разрешить администраторам одобрять или отклонять добавление и удаление "
 "записей пользователями."
 
-#: includes/class-admin-approve-entries.php:174
+#: includes/class-admin-approve-entries.php:171
 msgid "Approve/Reject"
 msgstr "Одобрить/Отклонить"
 
-#: includes/class-admin-approve-entries.php:181
+#: includes/class-admin-approve-entries.php:178
 msgid "User Opt-In"
 msgstr "Пользователь добавил"
 
-#: includes/class-admin-approve-entries.php:205
+#: includes/class-admin-approve-entries.php:202
 msgid "Approved? (Admin-only)"
 msgstr "Одобрить? (Только для администраторов)"
 
-#: includes/class-admin-approve-entries.php:207
+#: includes/class-admin-approve-entries.php:204
 msgid "Approved?"
 msgstr "Одобрить?"
 
-#: includes/class-admin-approve-entries.php:227
+#: includes/class-admin-approve-entries.php:224
 msgid "Show Entry on Website"
 msgstr "Показывать запись на сайте"
 
-#: includes/class-admin-approve-entries.php:229
+#: includes/class-admin-approve-entries.php:226
 msgid "Opt-In"
 msgstr "Новые записи"
 
-#: includes/class-admin-approve-entries.php:237
+#: includes/class-admin-approve-entries.php:234
 msgid "Yes, display my entry on the website"
 msgstr "Да, показывать мою запись на сайте"
 
-#: includes/class-admin-approve-entries.php:340
-msgid "%d entries"
-msgstr "%d записей"
-
-#: includes/class-admin-approve-entries.php:340
-msgid "1 entry"
-msgstr "1 запись"
-
-#: includes/class-admin-approve-entries.php:345
-msgid "%s approved."
-msgstr "%s одобрено."
-
-#: includes/class-admin-approve-entries.php:349
-msgid "%s unapproved."
-msgstr "%s не принято."
-
-#: includes/class-admin-approve-entries.php:353
-msgid "%s disapproved."
-msgstr "%s отклонено."
-
-#: includes/class-admin-approve-entries.php:509
+#: includes/class-admin-approve-entries.php:399
 msgid "Show entry in directory view?"
 msgstr "Показывать запись в представлении?"
 
@@ -1974,80 +2003,80 @@ msgstr "Не подключено."
 msgid "The connected form can not be found; it may no longer exist."
 msgstr "Подключенная форма не найдена, возможно, она больше не существует."
 
-#: includes/class-admin-views.php:468
+#: includes/class-admin-views.php:472
 #: includes/class-gravityview-admin-bar.php:139
 msgid "Edit Form"
 msgstr "Редактировать форму"
 
-#: includes/class-admin-views.php:475
+#: includes/class-admin-views.php:479
 msgid "Entries"
 msgstr "Записи"
 
-#: includes/class-admin-views.php:480
+#: includes/class-admin-views.php:484
 msgid "Edit settings for this form"
 msgstr "Редактировать настройки для этой формы"
 
-#: includes/class-admin-views.php:485
+#: includes/class-admin-views.php:489
 msgid "Preview Form"
 msgstr "Предварительный показ формы"
 
-#: includes/class-admin-views.php:485
+#: includes/class-admin-views.php:489
 msgid "Preview this form"
 msgstr "Посмотреть эту форму"
 
-#: includes/class-admin-views.php:725
+#: includes/class-admin-views.php:729
 msgid "Add All Form Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:726
+#: includes/class-admin-views.php:730
 msgid "Insert all the form fields at once."
 msgstr ""
 
-#: includes/class-admin-views.php:897
+#: includes/class-admin-views.php:901
 msgid "Add Widget"
 msgstr "Добавить виджет"
 
-#: includes/class-admin-views.php:899
+#: includes/class-admin-views.php:903
 msgid "Add Field"
 msgstr "Добавить поле"
 
-#: includes/class-admin-views.php:956
+#: includes/class-admin-views.php:960
 msgid "Clear all fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1050
+#: includes/class-admin-views.php:1054
 #: includes/widgets/search-widget/class-search-widget.php:101
 msgid "Search Bar"
 msgstr "Строка поиска"
 
-#: includes/class-admin-views.php:1060
+#: includes/class-admin-views.php:1064
 #: includes/widgets/class-gravityview-widget-pagination-info.php:30
 msgid "Show Pagination Info"
 msgstr "Показать информацию разбития на страницы"
 
-#: includes/class-admin-views.php:1066 includes/class-admin-views.php:1073
+#: includes/class-admin-views.php:1070 includes/class-admin-views.php:1077
 #: includes/widgets/class-gravityview-widget-page-links.php:25
 msgid "Page Links"
 msgstr "Ссылки на страницы"
 
-#: includes/class-admin-views.php:1139
+#: includes/class-admin-views.php:1143
 msgid "Filter Fields:"
 msgstr "Поля фильтра:"
 
-#: includes/class-admin-views.php:1140
+#: includes/class-admin-views.php:1144
 msgid "Filter fields by name or label"
 msgstr "Поля фильтра по имени или метке"
 
-#: includes/class-admin-views.php:1151
+#: includes/class-admin-views.php:1155
 msgid "No fields were found matching the search."
 msgstr "Не найдено полей, соответствующих запросу."
 
-#: includes/class-admin-views.php:1184
+#: includes/class-admin-views.php:1188
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 "Это представление использует тип %s, который в данный момент запрещен."
 
-#: includes/class-admin-views.php:1185
+#: includes/class-admin-views.php:1189
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
@@ -2055,32 +2084,33 @@ msgstr ""
 "Данные не потеряны. Повторно активируйте плагин, и настройки будут "
 "восстановлены."
 
-#: includes/class-admin-views.php:1257
+#: includes/class-admin-views.php:1261
 msgid "Enter View name here"
 msgstr "Укажите название представления здесь"
 
-#: includes/class-admin-views.php:1258
+#: includes/class-admin-views.php:1262
 msgid "Reorder Search Fields"
 msgstr "Изменить порядок полей поиска"
 
-#: includes/class-admin-views.php:1259
+#: includes/class-admin-views.php:1263
 #: includes/widgets/search-widget/class-search-widget.php:267
 msgid "Add Search Field"
 msgstr "Добавить поле поиска"
 
-#: includes/class-admin-views.php:1260
+#: includes/class-admin-views.php:1264
 msgid "Remove Search Field"
 msgstr "Удалить поле поиска"
 
-#: includes/class-admin-views.php:1263
+#: includes/class-admin-views.php:1267
 msgid "Continue"
 msgstr "Продолжить"
 
-#: includes/class-admin-views.php:1264
+#: includes/class-admin-views.php:1268
+#: trustedlogin/trustedlogin/client/src/Admin.php:999
 msgid "Ok"
 msgstr "Ок"
 
-#: includes/class-admin-views.php:1265
+#: includes/class-admin-views.php:1269
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
@@ -2088,11 +2118,11 @@ msgstr ""
 "Ошибка при создании представления. Проверьте настройки или свяжитесь со "
 "службой поддержки."
 
-#: includes/class-admin-views.php:1267
+#: includes/class-admin-views.php:1271
 msgid "There was an error loading dynamic content."
 msgstr "Ошибки загрузки динамического контента."
 
-#: includes/class-admin-views.php:1268
+#: includes/class-admin-views.php:1272
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
@@ -2100,7 +2130,7 @@ msgstr ""
 "Ошибка добавления поля. Пожалуйста, попробуйте еще раз или свяжитесь со "
 "службой поддержки."
 
-#: includes/class-admin-views.php:1269
+#: includes/class-admin-views.php:1273
 msgid "Would you like to remove all fields in this zone?"
 msgstr ""
 
@@ -2137,27 +2167,27 @@ msgstr ""
 msgid "List of Changes"
 msgstr "Список изменений"
 
-#: includes/class-admin-welcome.php:278
+#: includes/class-admin-welcome.php:284
 msgid "What&rsquo;s New"
 msgstr "Что&rsquo;s нового"
 
-#: includes/class-admin-welcome.php:565
+#: includes/class-admin-welcome.php:694
 msgid "View change history"
 msgstr "Посмотреть историю изменений"
 
-#: includes/class-admin-welcome.php:585
+#: includes/class-admin-welcome.php:714
 msgid "GravityView is brought to you by:"
 msgstr "Плагин GravityView разработан:"
 
-#: includes/class-admin-welcome.php:636
+#: includes/class-admin-welcome.php:765
 msgid "Contributors"
 msgstr "Помощники"
 
-#: includes/class-admin-welcome.php:663
+#: includes/class-admin-welcome.php:792
 msgid "Want to contribute?"
 msgstr "Хотите помочь?"
 
-#: includes/class-admin-welcome.php:664
+#: includes/class-admin-welcome.php:793
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -2200,15 +2230,15 @@ msgstr "Восстановить форму из корзины"
 msgid "or select another form."
 msgstr "или выберите другую форму."
 
-#: includes/class-admin.php:169
+#: includes/class-admin.php:170
 msgid "Support"
 msgstr "Поддержка"
 
-#: includes/class-admin.php:214
+#: includes/class-admin.php:215
 msgid "A new form was created for this View: \"%s\""
 msgstr "Новая форма была создана для представления: \"%s\""
 
-#: includes/class-admin.php:215
+#: includes/class-admin.php:216
 msgid ""
 "%sThere are no entries for the new form, so the View will also be empty.%s To start collecting entries, you can add submissions through %sthe preview form%s and also embed the form on a post or page using this code: %s\n"
 "\n"
@@ -2221,50 +2251,50 @@ msgstr ""
 "\t\t\t\t\t"
 
 #. translators: %s and %s are HTML tags linking to the View on the website
-#: includes/class-admin.php:228 includes/class-admin.php:230
-#: includes/class-admin.php:233
+#: includes/class-admin.php:229 includes/class-admin.php:231
+#: includes/class-admin.php:234
 msgid "View updated. %sView on website.%s"
 msgstr "Представление обновлено. %sПосмотреть на сайте.%s"
 
-#: includes/class-admin.php:231
+#: includes/class-admin.php:232
 msgid "View deleted."
 msgstr "Представление удалено."
 
 #. translators: %s: date and time of the revision
-#: includes/class-admin.php:235
+#: includes/class-admin.php:236
 msgid "View restored to revision from %s"
 msgstr "Представление восстановлено из версии %s"
 
 #. translators: %s and %s are HTML tags linking to the View on the website
-#: includes/class-admin.php:237
+#: includes/class-admin.php:238
 msgid "View published. %sView on website.%s"
 msgstr "Представление опубликовано. %sПосмотреть на сайте.%s"
 
 #. translators: %s and %s are HTML tags linking to the View on the website
-#: includes/class-admin.php:239
+#: includes/class-admin.php:240
 msgid "View saved. %sView on website.%s"
 msgstr "Представление сохранено. %sПосмотреть на сайте.%s"
 
-#: includes/class-admin.php:240
+#: includes/class-admin.php:241
 msgid "View submitted."
 msgstr "Представление подтверждено."
 
 #. translators: Date and time the View is scheduled to be published
-#: includes/class-admin.php:243
+#: includes/class-admin.php:244
 msgid "View scheduled for: %1$s."
 msgstr "Посмотреть подтверждения для: %1$s."
 
 #. translators: Publish box date format, see http:php.net/date
-#: includes/class-admin.php:245
+#: includes/class-admin.php:246
 msgid "M j, Y @ G:i"
 msgstr "M j, Y @ G:i"
 
 #. translators: %s and %s are HTML tags linking to the View on the website
-#: includes/class-admin.php:248
+#: includes/class-admin.php:249
 msgid "View draft updated. %sView on website.%s"
 msgstr "Черновик обновлен. %sПосмотреть на сайте.%s"
 
-#: includes/class-admin.php:254
+#: includes/class-admin.php:255
 msgid "%s View updated."
 msgid_plural "%s Views updated."
 msgstr[0] "%s представление обновлено."
@@ -2272,7 +2302,7 @@ msgstr[1] "%s представления обновлено."
 msgstr[2] "%s представлений обновлено."
 msgstr[3] "%s представлений обновлено."
 
-#: includes/class-admin.php:255
+#: includes/class-admin.php:256
 msgid "%s View not updated, somebody is editing it."
 msgid_plural "%s Views not updated, somebody is editing them."
 msgstr[0] "%s представление не обновлено. Кто-то их редактирует."
@@ -2280,7 +2310,7 @@ msgstr[1] "%s представлений не обновлено. Кто-то и
 msgstr[2] "%s представлений не обновлено. Кто-то их редактирует."
 msgstr[3] "%s представлений не обновлено. Кто-то их редактирует."
 
-#: includes/class-admin.php:256
+#: includes/class-admin.php:257
 msgid "%s View permanently deleted."
 msgid_plural "%s Views permanently deleted."
 msgstr[0] "%s представлений полностью удалено."
@@ -2288,7 +2318,7 @@ msgstr[1] "%s представления полностью удалено."
 msgstr[2] "%s представлений полностью удалено."
 msgstr[3] "%s представление полностью удалено."
 
-#: includes/class-admin.php:257
+#: includes/class-admin.php:258
 msgid "%s View moved to the Trash."
 msgid_plural "%s Views moved to the Trash."
 msgstr[0] "%s представление перемещено в корзину."
@@ -2296,7 +2326,7 @@ msgstr[1] "%s представления перемещены в корзину.
 msgstr[2] "%s представлений перемещены в корзину."
 msgstr[3] "%s представлений перемещены в корзину."
 
-#: includes/class-admin.php:258
+#: includes/class-admin.php:259
 msgid "%s View restored from the Trash."
 msgid_plural "%s Views restored from the Trash."
 msgstr[0] "%s представление восстановлено из корзины."
@@ -2315,20 +2345,20 @@ msgstr "ID поста"
 
 #. translators: %s: relative time from now, used for generic date comparisons.
 #. "1 day ago", or "20 seconds ago"
-#: includes/class-common.php:1011
+#: includes/class-common.php:1015
 msgid "%s ago"
 msgstr "%s назад"
 
-#: includes/class-common.php:1365
+#: includes/class-common.php:1369
 msgid "Default (Entry ID)"
 msgstr ""
 
-#: includes/class-common.php:1412
+#: includes/class-common.php:1416
 #: includes/fields/class-gravityview-field-date-updated.php:31
 msgid "Date Updated"
 msgstr "Дата обновления"
 
-#: includes/class-common.php:1538
+#: includes/class-common.php:1542
 msgid "Email hidden; Javascript is required."
 msgstr "Email скрыт; необходим Javascript."
 
@@ -2418,6 +2448,26 @@ msgstr "Создание копии не завершено. Не могу на�
 #: includes/class-gravityview-admin-notices.php:204
 msgid "Dismiss"
 msgstr "Завершить"
+
+#: includes/class-gravityview-bulk-actions.php:133
+msgid "%d entries"
+msgstr "%d записей"
+
+#: includes/class-gravityview-bulk-actions.php:133
+msgid "1 entry"
+msgstr "1 запись"
+
+#: includes/class-gravityview-bulk-actions.php:138
+msgid "%s approved."
+msgstr "%s одобрено."
+
+#: includes/class-gravityview-bulk-actions.php:142
+msgid "%s unapproved."
+msgstr "%s не принято."
+
+#: includes/class-gravityview-bulk-actions.php:146
+msgid "%s disapproved."
+msgstr "%s отклонено."
 
 #: includes/class-gravityview-change-entry-creator.php:88
 msgid "Search by ID, login, email, or name."
@@ -2572,7 +2622,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr "Запрос неверный. Обновите страницу и попробуйте снова."
 
 #: includes/class-gravityview-entry-approval.php:213
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2342
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2346
 msgid "You do not have permission to edit this entry."
 msgstr "У вас нет полномочий для редактирования записи."
 
@@ -2595,65 +2645,56 @@ msgstr "Выберите поле"
 msgid "Powered by GravityView"
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry-admin.php:118
-msgid "Delete Link Text"
-msgstr "Удалить текст ссылки"
-
-#: includes/extensions/delete-entry/class-delete-entry-admin.php:126
+#: includes/extensions/delete-entry/class-delete-entry-admin.php:141
 msgid "Allow the following users to delete the entry:"
 msgstr "Разрешить следующим пользователям удалять записи:"
 
-#: includes/extensions/delete-entry/class-delete-entry-admin.php:196
+#: includes/extensions/delete-entry/class-delete-entry-admin.php:211
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
 msgstr "Ссылка для удаления записи. В соответствии с правами на удаление."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:304
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:417
-msgid "Delete"
-msgstr "Удалить"
-
-#: includes/extensions/delete-entry/class-delete-entry.php:364
+#: includes/extensions/delete-entry/class-delete-entry.php:373
 #: includes/extensions/duplicate-entry/class-duplicate-entry.php:428
 #: includes/extensions/duplicate-entry/class-duplicate-entry.php:459
 #: includes/extensions/duplicate-entry/class-duplicate-entry.php:470
 msgid "The entry does not exist."
 msgstr "Запись не существует."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:491
+#: includes/extensions/delete-entry/class-delete-entry.php:500
 msgid "Moving the entry to the trash failed."
 msgstr "Не удалось переместить запись в корзину."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:601
+#: includes/extensions/delete-entry/class-delete-entry.php:610
 msgid "Are you sure you want to delete this entry? This cannot be undone."
 msgstr ""
 "Вы уверены, что хотите полностью удалить запись? Изменение необратимо."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:628
+#: includes/extensions/delete-entry/class-delete-entry.php:637
 msgid "The link to delete this entry is not valid; it may have expired."
 msgstr ""
 "Неверная ссылка на удаление записи. Возможно, закончился срок действия."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:632
+#: includes/extensions/delete-entry/class-delete-entry.php:641
 msgid "You do not have permission to delete this entry."
 msgstr "У вас нет полномочий для удаления этой записи."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:637
+#: includes/extensions/delete-entry/class-delete-entry.php:646
 msgid "The entry is already in the trash."
 msgstr "Запись уже находится в корзине."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:639
+#: includes/extensions/delete-entry/class-delete-entry.php:648
 msgid "You cannot delete the entry; it is already in the trash."
 msgstr "Вы не можете удалить эту запись. Она уже находится в корзине."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:781
+#: includes/extensions/delete-entry/class-delete-entry.php:790
 msgid "There was an error deleting the entry: %s"
 msgstr "Ошибка при удалении записи: %s"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:785
+#: includes/extensions/delete-entry/class-delete-entry.php:794
 msgid "The entry was successfully moved to the trash."
 msgstr "Запись успешно перемещена в корзину."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:788
+#: includes/extensions/delete-entry/class-delete-entry.php:797
 msgid "The entry was successfully deleted."
 msgstr "Запись успешно удалена."
 
@@ -2712,30 +2753,30 @@ msgstr "Дублировать"
 msgid "Entry duplicated."
 msgstr "Запись дублирована."
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:83
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:87
 msgid "Link to Edit Entry"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:85
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:89
 msgid "A link to edit the entry. Visible based on View settings."
 msgstr ""
 "Ссылка на редактирование записи. Ее видимость настраивается в настройках "
 "представления."
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:142
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:146
 msgid "Edit Link Text"
 msgstr "Текст ссылки для редактирования"
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:150
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:154
 #: includes/fields/class-gravityview-field.php:449
 msgid "Open link in a new tab or window?"
 msgstr "Открыть ссылку в новой вкладке или окне?"
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:169
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:173
 msgid "Limiting Edit Access"
 msgstr "Ограниченный доступ к редактированию"
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:170
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:174
 msgid ""
 "Change this setting if you don't want the user who created the entry to be "
 "able to edit this field."
@@ -2743,7 +2784,7 @@ msgstr ""
 "Включите, если вы хотите, чтобы пользователь, создавший запись, не мог "
 "редактировать это поле."
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:201
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:205
 msgid "Make field editable to:"
 msgstr "Разрешить редактировать поле для:"
 
@@ -2810,67 +2851,52 @@ msgstr "Запросить снова"
 msgid "Your request was rejected"
 msgstr "Ваш запрос отклонен"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1133
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1261
-#: includes/extensions/edit-entry/partials/form-buttons.php:45
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1136
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1264
 msgid "Update"
 msgstr "Обновить"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1134
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1262
-#: includes/extensions/edit-entry/partials/form-buttons.php:46
-#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:75
-msgid "Next"
-msgstr "Следующий"
-
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1135
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1263
-#: includes/extensions/edit-entry/partials/form-buttons.php:47
-#: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:76
-msgid "Previous"
-msgstr "Предыдущий"
-
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1156
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1159
 msgid "There was a problem with your submission."
 msgstr "Есть проблемы с вашим утверждением."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1156
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1159
 msgid "Errors have been highlighted below."
 msgstr "Ошибки выделены ниже."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1163
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1166
 msgid "Entry Updated."
 msgstr "Запись обновлена."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1200
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1203
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "Запись обновлена. %sВернуться к записи%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1415
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1418
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr "У вас нет прав на редактирование."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1422
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1425
 msgid "This field is not editable; the post no longer exists."
 msgstr "Это поле не может быть отредактировано. Данный пост не существует."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1753
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1757
 msgid "This field is required."
 msgstr "Это поле обязательно к заполнению."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1789
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1793
 msgid "Maximum number of files reached"
 msgstr "Достигнуто максимально возможное количество файлов"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2336
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2340
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "Неверная ссылка для редактирования. Возможно, истек срок действия."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2346
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2350
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "Вы не можете редактировать эту запись. Она перемещена в корзину."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2386
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2390
 msgid "You do not have permission to edit this field."
 msgstr "У вас нет полномочий редактировать это поле."
 
@@ -3065,6 +3091,7 @@ msgstr "Это поле ввода имеет название и значени
 
 #: includes/fields/class-gravityview-field-checkbox.php:57
 #: includes/fields/class-gravityview-field-checkbox.php:65
+#: includes/fields/class-gravityview-field-survey.php:114
 msgid "A check mark, if the input is checked"
 msgstr "Отметить, если отмечено в поле ввода"
 
@@ -3088,6 +3115,9 @@ msgstr "Название поля ввода"
 #: includes/fields/class-gravityview-field-multiselect.php:54
 #: includes/fields/class-gravityview-field-radio.php:49
 #: includes/fields/class-gravityview-field-select.php:53
+#: includes/fields/class-gravityview-field-survey.php:96
+#: includes/fields/class-gravityview-field-survey.php:110
+#: includes/fields/class-gravityview-field-survey.php:126
 msgid "What should be displayed:"
 msgstr "Что будет показано:"
 
@@ -3203,7 +3233,7 @@ msgstr "Валюта"
 #: includes/fields/class-gravityview-field-custom.php:36
 #: includes/fields/class-gravityview-field-custom.php:77
 #: includes/widgets/class-gravityview-widget-custom-content.php:32
-#: includes/widgets/class-gravityview-widget-custom-content.php:47
+#: includes/widgets/class-gravityview-widget-custom-content.php:54
 msgid "Custom Content"
 msgstr "Произвольное содержание"
 
@@ -3241,10 +3271,12 @@ msgid "Render oEmbeds"
 msgstr "Оформить oEmbeds"
 
 #: includes/fields/class-gravityview-field-custom.php:106
+#: includes/widgets/class-gravityview-widget-custom-content.php:48
 msgid "Admin Label"
 msgstr "Название для администратора"
 
 #: includes/fields/class-gravityview-field-custom.php:107
+#: includes/widgets/class-gravityview-widget-custom-content.php:49
 msgid ""
 "A label that is only shown in the GravityView View configuration screen."
 msgstr ""
@@ -3791,13 +3823,23 @@ msgstr "Настроить текст ссылки. Если оставить п
 msgid "Survey"
 msgstr "Опрос"
 
-#: includes/fields/class-gravityview-field-survey.php:40
-msgid "Show score"
-msgstr "Показать результат"
+#: includes/fields/class-gravityview-field-survey.php:79
+msgid "A table (default Gravity Forms formatting)"
+msgstr ""
 
-#: includes/fields/class-gravityview-field-survey.php:41
-msgid "Display likert score as a simple number."
-msgstr "Показывает счет шкалы Ликерта в виде простого числа."
+#: includes/fields/class-gravityview-field-survey.php:80
+#: includes/fields/class-gravityview-field-survey.php:115
+#: includes/fields/class-gravityview-field-survey.php:130
+msgid "Text value of the selected choice"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-survey.php:84
+msgid "Score value of the selected choice"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-survey.php:131
+msgid "Stars (default Gravity Forms formatting)"
+msgstr ""
 
 #: includes/fields/class-gravityview-field-text.php:23
 msgid "Single Line Text"
@@ -3999,6 +4041,34 @@ msgid ""
 "Displays either Passed or Failed based on the Pass/Fail settings configured "
 "in the Quiz Settings."
 msgstr "Показывать, пройден или нет тест, на основе настроек теста."
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:79
+#: trustedlogin/trustedlogin/client/src/Admin.php:215
+msgid "Grant Support Access"
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:85
+msgid "We need access to Views to provide great support."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:86
+msgid ""
+"We will need to see and edit the forms, entries, and Gravity Forms settings "
+"to debug issues."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:87
+msgid ""
+"We may need to manage plugins in order to debug conflicts on your site and "
+"add related GravityView functionality."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:93
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:94
+msgid ""
+"We don't need to see your %1$s details to provide support (if %1$s is "
+"enabled)."
+msgstr ""
 
 #: includes/presets/business-data/class-gravityview-preset-business-data.php:24
 msgid "Business Data"
@@ -4402,23 +4472,23 @@ msgstr "Дата записи"
 msgid "Entry Creator"
 msgstr "Создатель записи"
 
-#: includes/widgets/search-widget/class-search-widget.php:1509
+#: includes/widgets/search-widget/class-search-widget.php:1508
 msgid "Search Entries:"
 msgstr "Поиск записей:"
 
-#: includes/widgets/search-widget/class-search-widget.php:1512
+#: includes/widgets/search-widget/class-search-widget.php:1511
 msgid "Filter by date:"
 msgstr "Фильтр по дате:"
 
-#: includes/widgets/search-widget/class-search-widget.php:1515
+#: includes/widgets/search-widget/class-search-widget.php:1514
 msgid "Entry ID:"
 msgstr "ID записи:"
 
-#: includes/widgets/search-widget/class-search-widget.php:1753
+#: includes/widgets/search-widget/class-search-widget.php:1765
 msgid "Clear"
 msgstr "Очистить"
 
-#: includes/widgets/search-widget/class-search-widget.php:1819
+#: includes/widgets/search-widget/class-search-widget.php:1831
 msgid "Show a different month"
 msgstr "Показать другой месяц"
 
@@ -4530,6 +4600,319 @@ msgstr "Прошел/Не прошел"
 msgid "Your browser does not support the video tag."
 msgstr "Ваш браузер не поддерживает видеотег."
 
+#: trustedlogin/trustedlogin/client/src/Admin.php:114
+#: trustedlogin/trustedlogin/client/src/Admin.php:352
+msgid "Revoke Access"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:186
+msgid "Revoke TrustedLogin"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:339
+msgid "Unknown (User #%d)"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:379
+#: trustedlogin/trustedlogin/client/src/Admin.php:935
+msgid "Secured by TrustedLogin"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:462
+msgid "Reference #%s"
+msgstr ""
+
+#. translators: %1$s is replaced with the name of the software developer (e.g.
+#. "Acme Widgets"). %2$s is the amount of time remaining for access ("1 week")
+#: trustedlogin/trustedlogin/client/src/Admin.php:477
+msgid "%1$s has site access that expires in %2$s."
+msgstr ""
+
+#. translators: %1$s is replaced with the name of the software developer (e.g.
+#. "Acme Widgets")
+#: trustedlogin/trustedlogin/client/src/Admin.php:485
+msgid "%1$s would like support access to this site."
+msgstr ""
+
+#. translators: %1$s is replaced with the name of the software developer (e.g.
+#. "Acme Widgets")
+#: trustedlogin/trustedlogin/client/src/Admin.php:488
+msgid "Grant %1$s access to this site."
+msgstr ""
+
+#. translators: %1$s and %3$s are replaced with HTML tags. %2$s is the amount
+#. of time that the login will be active for (e.g. "1 week")
+#: trustedlogin/trustedlogin/client/src/Admin.php:521
+msgid "Access this site for %s."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:522
+msgid "Access auto-expires in %s. You may revoke access at any time."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:528
+msgid "Create a user with a role similar to %s."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:529
+msgid "View role capabilities"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:531
+msgid "Create a user with a role of %s."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:557
+msgid "Additional capabilities:"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:558
+msgid "Removed capabilities:"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:626
+msgid "%s support may not be able to access this site."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:627
+msgid ""
+"This website is running in a local development environment. To provide "
+"support, we must be able to access your site using a publicly-accessible "
+"URL."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:629
+msgid "Learn more."
+msgstr ""
+
+#. translators: %s is replaced with the name of the software developer (e.g.
+#. "Acme Widgets")
+#: trustedlogin/trustedlogin/client/src/Admin.php:679
+msgid "Learn about TrustedLogin"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:876
+msgid "Grant %s Access"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:877
+msgid "Extend %s Access"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:980
+msgid "Could not create TrustedLogin access."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:986
+msgid "The user details could not be sent to %1$s automatically."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:990
+msgid ""
+"Please <a href=\"%1$s\" target=\"_blank\">click here</a> to go to the %2$s "
+"support site"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:998
+msgid "Confirm"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1000
+msgid "Go to %1$s support site"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1003
+msgid "Revoke %1$s support access"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1004
+#: trustedlogin/trustedlogin/client/src/Admin.php:1148
+msgid "Copy"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1005
+msgid "Copied!"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1008
+msgid "(This link opens in a new window.)"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1009
+msgid "The access key has been copied to your clipboard."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1013
+msgid "Support access granted"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1015
+msgid "A temporary support user has been created, and sent to %1$s support."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1020
+msgid "Generating & encrypting secure support access for %1$s"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1023
+msgid "Extending support access for %1$s by %2$s"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1026
+msgid "Sending encrypted access to %1$s."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1029
+msgid "Error syncing support user to %1$s"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1040
+msgid "Action Cancelled"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1042
+msgid "A support account for %1$s was not created."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1047
+msgid "Support Access Was Not Granted"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1048
+msgid "There was an error granting access: "
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1051
+msgid "Your authorized session has expired. Please refresh the page."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1054
+msgid "TrustedLogin Key Created"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1056
+msgid "Share this TrustedLogin Key with %1$s to give them secure access:"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1062
+msgid "The TrustedLogin vendor could not be found."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1067
+msgid "%1$s Support user already exists"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1072
+msgid ""
+"A support user for %1$s already exists. You may revoke this support access "
+"from your <a href=\"%2$s\" target=\"_blank\">Users list</a>."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1112
+msgid "No %s users exist."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1145
+msgid "Site access key:"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1146
+msgid "Access Key"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1150
+msgid "Copy the access key to your clipboard"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1189
+msgid "%s access revoked."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Admin.php:1191
+msgid "You may safely close this window."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Client.php:309
+#: trustedlogin/trustedlogin/client/src/Client.php:411
+msgid "TrustedLogin requires a secure connection using HTTPS."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Client.php:515
+msgid "The support user was not deleted."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Encryption.php:255
+msgid "Encryption key could not be fetched, Vendor site returned 404."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:228
+msgid "Unable to verify Pause Mode."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:231
+msgid "Authentication failed."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:234
+msgid "TrustedLogin account issue."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:237
+msgid "Invalid tokens."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:241
+msgid "The TrustedLogin vendor was not found."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:251
+msgid "The TrustedLogin site is not currently online."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:257
+msgid "The TrustedLogin site is not currently available."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:261
+#: trustedlogin/trustedlogin/client/src/Remote.php:304
+msgid "Invalid response."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:298
+msgid "The response was invalid."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/Remote.php:322
+msgid "Invalid response. Missing key: %s"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/SecurityChecks.php:90
+msgid "TrustedLogin temporarily disabled."
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/SecurityChecks.php:118
+msgid ""
+"There was an issue verifying the user identifier with TrustedLogin, aborting"
+" login. (%s)"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/SiteAccess.php:62
+msgid "Unexpected action value"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/SiteAccess.php:93
+msgid "Could not sync to TrustedLogin server"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/SupportRole.php:165
+#: trustedlogin/trustedlogin/client/src/SupportUser.php:241
+msgid "%s Support"
+msgstr ""
+
+#: trustedlogin/trustedlogin/client/src/SupportUser.php:208
+msgid "User not created; User with that email already exists"
+msgstr ""
+
 #: future/includes/class-gv-license-handler.php:294
 msgctxt "1: Customer name; 2: Customer email"
 msgid "Licensed to: %1$s (%2$s)"
@@ -4557,32 +4940,32 @@ msgctxt "A scale from 0 (bad) to 10 (good)"
 msgid "%s (\"Not at all likely\") to %s (\"Extremely likely\")"
 msgstr "%s (\"Маловероятно\") to %s (\"Очень вероятно\")"
 
-#: future/includes/class-gv-settings-addon.php:994
+#: future/includes/class-gv-settings-addon.php:999
 msgctxt "Setting: Show or Hide"
 msgid "Show"
 msgstr "Показать"
 
-#: future/includes/class-gv-settings-addon.php:998
+#: future/includes/class-gv-settings-addon.php:1003
 msgctxt "Setting: Show or Hide"
 msgid "Hide"
 msgstr "Скрыть"
 
-#: future/includes/class-gv-settings-addon.php:1013
+#: future/includes/class-gv-settings-addon.php:1018
 msgctxt "Setting: On or off"
 msgid "On"
 msgstr "Вкл"
 
-#: future/includes/class-gv-settings-addon.php:1017
+#: future/includes/class-gv-settings-addon.php:1022
 msgctxt "Setting: On or off"
 msgid "Off"
 msgstr "Выкл"
 
-#: future/includes/class-gv-settings-addon.php:1035
+#: future/includes/class-gv-settings-addon.php:1040
 msgctxt "Setting: Enable or Disable"
 msgid "Enable"
 msgstr "Включить"
 
-#: future/includes/class-gv-settings-addon.php:1039
+#: future/includes/class-gv-settings-addon.php:1044
 msgctxt "Setting: Enable or Disable"
 msgid "Disable"
 msgstr "Выключить"
@@ -4601,6 +4984,18 @@ msgstr "удалить записи"
 msgctxt "an action that admins can perform"
 msgid "duplicate entries"
 msgstr "дублировать записи"
+
+#: future/includes/class-gv-settings-view.php:435
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2496
+msgctxt "Button to update an entry the user is editing"
+msgid "Update"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:443
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2495
+msgctxt "Shown when the user decides not to edit an entry"
+msgid "Cancel"
+msgstr ""
 
 #: future/includes/class-gv-view.php:142
 msgctxt "Post Type General Name"
@@ -4686,7 +5081,7 @@ msgctxt ""
 msgid "Manage Add-Ons"
 msgstr ""
 
-#: includes/class-admin-views.php:539
+#: includes/class-admin-views.php:543
 msgctxt "Column title that shows what template is being used for Views"
 msgid "Template"
 msgstr "Шаблон"
@@ -4729,12 +5124,12 @@ msgctxt ""
 msgid "No User"
 msgstr "Пользователь не найден"
 
-#: includes/class-gravityview-change-entry-creator.php:322
+#: includes/class-gravityview-change-entry-creator.php:321
 msgctxt "No user assigned to the entry"
 msgid "No User"
 msgstr "Пользователь не найден"
 
-#: includes/class-gravityview-change-entry-creator.php:342
+#: includes/class-gravityview-change-entry-creator.php:343
 msgctxt "%d is replaced with user count %s is replaced with \"user\" or \"users\""
 msgid "Use the input above to search the remaining %d %s."
 msgstr ""
@@ -4769,9 +5164,9 @@ msgctxt "no dropdown items"
 msgid "None"
 msgstr "Нечего"
 
-#: includes/extensions/delete-entry/class-delete-entry-admin.php:88
+#: includes/extensions/delete-entry/class-delete-entry-admin.php:103
 #: includes/extensions/duplicate-entry/class-duplicate-entry.php:296
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:115
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:119
 msgctxt "User capability"
 msgid "Entry Creator"
 msgstr "Создатель записи"
@@ -4786,26 +5181,26 @@ msgctxt "Referring to the user who is currently editing a locked entry"
 msgid "the person who is editing the entry"
 msgstr "пользователь, редактирующий запись"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1184
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1187
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %sReturning to Entry%s"
 msgstr "Запись обновлена. %sВозвращаясь к записи%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1189
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1192
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the title of the page where the user"
 " will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sReturning to %s%s"
 msgstr "Запись обновлена. %sВозвращаясь к %s%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1195
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1198
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the URL where the user will be "
 "taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sRedirecting to %s%s"
 msgstr "Запись обновлена. %sПеренаправление на %s%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2362
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2366
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr "Назад"
@@ -4842,6 +5237,11 @@ msgctxt "%s replaced with a formatted 0"
 msgid "Set to %s for no maximum."
 msgstr ""
 
+#: includes/fields/class-gravityview-field-survey.php:72
+msgctxt "text added to a label if multiple rows are enabled for the field)"
+msgid " (separated by %s)"
+msgstr ""
+
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:108
 msgctxt "Gravity Flow Workflow Step Status"
 msgid "Status: %s"
@@ -4861,27 +5261,27 @@ msgstr ""
 "Примечание: будут показаны результаты опроса для %sвсех записей%s, а не "
 "только тех, которые вы видите в представлении."
 
-#: includes/widgets/search-widget/class-search-widget.php:1814
+#: includes/widgets/search-widget/class-search-widget.php:1826
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "Закрыть"
 
-#: includes/widgets/search-widget/class-search-widget.php:1815
+#: includes/widgets/search-widget/class-search-widget.php:1827
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr "Предыдущий"
 
-#: includes/widgets/search-widget/class-search-widget.php:1816
+#: includes/widgets/search-widget/class-search-widget.php:1828
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr "Следующий"
 
-#: includes/widgets/search-widget/class-search-widget.php:1817
+#: includes/widgets/search-widget/class-search-widget.php:1829
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr "Сегодня"
 
-#: includes/widgets/search-widget/class-search-widget.php:1818
+#: includes/widgets/search-widget/class-search-widget.php:1830
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr "Неделя"
