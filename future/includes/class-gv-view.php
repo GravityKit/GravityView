@@ -1324,7 +1324,7 @@ class View implements \ArrayAccess {
 				 * @param \GV\Request $request The request object
 				 */
 				do_action_ref_array( 'gravityview/view/query', array( &$query, $this, $request ) );
-
+//!d(Utils::gf_query_debug( $query ) );
 				gravityview()->log->debug( 'GF_Query parameters: ', array( 'data' => Utils::gf_query_debug( $query ) ) );
 
 				/**
@@ -1580,5 +1580,16 @@ class View implements \ArrayAccess {
 			return $raw_post->{$key};
 		}
 		return isset( $this->{$key} ) ? $this->{$key} : null;
+	}
+
+	/**
+	 * Return associated WP post
+	 *
+	 * @since 2.13.2
+	 *
+	 * @return \WP_Post|null
+	 */
+	public function get_post() {
+		return $this->post ? $this->post : null;
 	}
 }
