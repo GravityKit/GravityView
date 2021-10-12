@@ -80,6 +80,7 @@ class GravityView_Plugin_Hooks_TrustedLogin extends GravityView_Plugin_and_Theme
 				'priority' => 1400,
 				'position' => 100, // TODO: This should be okay not being set, but it's throwing a warning about needing to be integer
 			),
+			'role' => 'administrator',
 			'caps' => array(
 				'add' => array(
 					'gravityview_full_access' => esc_html__( 'We need access to Views to provide great support.', 'gravityview' ),
@@ -132,10 +133,40 @@ class GravityView_Plugin_Hooks_TrustedLogin extends GravityView_Plugin_and_Theme
 
 		$config = new Config( self::get_trustedlogin_config() );
 
+		add_filter( 'code_snippets_cap', array( $this, 'filter_code_snippets_cap' ) );
+		add_filter( 'code_snippets_network_cap', array( $this, 'filter_code_snippets_cap' ) );
+
 		try {
 			self::$TL_Client = new Client( $config );
 		} catch ( \Exception $exception ) {
 			gravityview()->log->error( $exception->getMessage() );
+		}
+	}
+
+	/**
+	 * Modifies the capability required to access snippets created by the Code Snippets plugin.
+	 *
+	 * @see https://wordpress.org/plugins/code-snippets/
+	 *
+	 * @param $default_cap
+	 *
+	 * @return string If current user is a TrustedLogin support user, returns name of their role. Otherwise, returns original capability.
+	 */
+	public function filter_code_snippets_cap( $default_cap ) {
+
+		try {
+			$config      = new Config( self::get_trustedlogin_config() );
+			$logging     = new \GravityView\TrustedLogin\Logging( $config );
+			$SupportUser = new \GravityView\TrustedLogin\SupportUser( $config, $logging );
+
+			// If the support user isn't active, don't modify
+			if ( ! $SupportUser->is_active() ) {
+				return $default_cap;
+			}
+
+			return $SupportUser->role->get_name();
+		} catch ( Exception $exception ) {
+			return $default_cap;
 		}
 	}
 
