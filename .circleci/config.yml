@@ -7,7 +7,7 @@ anchors:
   default_job_config: &default_job_config
     working_directory: /home/circleci/plugin
     machine:
-      image: ubuntu-2004:202008-01
+      image: ubuntu-1604:202007-01
 
   test_job_config: &test_job_config
     <<: *context
@@ -199,8 +199,8 @@ workflows:
 #          <<: *test_job_config
       - run_php_74_unit_tests:
           <<: *test_job_config
-      - run_acceptance_tests:
-          <<: *context
+#      - run_acceptance_tests:
+#          <<: *context
       - build_package_release:
           <<: *context
           requires:
@@ -212,5 +212,5 @@ workflows:
 #            - run_php_72_unit_tests
 #            - run_php_73_unit_tests
             - run_php_74_unit_tests
-            - run_acceptance_tests
+#            - run_acceptance_tests
 
