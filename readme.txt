@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.13.3 on October 14, 2021 =
+
+* Fixed: Edit Entry would not accept zero as a value for a Number field marked as required
+
 = 2.13.2 on October 7, 2021 =
 
 * Fixed: Entry Approval not working when using DataTables in responsive mode (requires DataTables 2.4.9 or newer).
