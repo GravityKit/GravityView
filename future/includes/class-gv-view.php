@@ -1581,4 +1581,15 @@ class View implements \ArrayAccess {
 		}
 		return isset( $this->{$key} ) ? $this->{$key} : null;
 	}
+
+	/**
+	 * Return associated WP post
+	 *
+	 * @since 2.13.2
+	 *
+	 * @return \WP_Post|null
+	 */
+	public function get_post() {
+		return $this->post ? $this->post : null;
+	}
 }
