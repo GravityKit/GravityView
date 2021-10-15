@@ -284,15 +284,21 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.13.3 on October 14, 2021</h3>
+
+				<ul>
+					<li>Fixed: Edit Entry would not accept zero as a value for a Number field marked as required</li>
+					<li>Modified: Refined the capabilities assigned to GravityView support when access is granted using
+						TrustedLogin. Now our support will be able to debug theme-related issues and use the <a
+								href='https://wordpress.org/plugins/code-snippets/'>Code Snippets</a> plugin.
+					</li>
+				</ul>
+
 				<h3>2.13.2 on October 7, 2021</h3>
 
 				<ul>
 					<li>Fixed: Entry Approval not working when using DataTables in responsive mode (requires DataTables
 						2.4.9 or newer).
-					</li>
-					<li>Modified: Refined the capabilities assigned to GravityView support when access is granted using
-						TrustedLogin. Now our support will be able to debug theme-related issues and use the <a
-								href='https://wordpress.org/plugins/code-snippets/'>Code Snippets</a> plugin.
 					</li>
 				</ul>
 

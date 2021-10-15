@@ -24,11 +24,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = 2.13.3 on October 14, 2021 =
 
 * Fixed: Edit Entry would not accept zero as a value for a Number field marked as required
+* Modified: Refined the capabilities assigned to GravityView support when access is granted using TrustedLogin. Now our support will be able to debug theme-related issues and use the [Code Snippets](https://wordpress.org/plugins/code-snippets/) plugin.
 
 = 2.13.2 on October 7, 2021 =
 
 * Fixed: Entry Approval not working when using DataTables in responsive mode (requires DataTables 2.4.9 or newer).
-* Modified: Refined the capabilities assigned to GravityView support when access is granted using TrustedLogin. Now our support will be able to debug theme-related issues and use the [Code Snippets](https://wordpress.org/plugins/code-snippets/) plugin.
 
 __Developer Updates:__
 
