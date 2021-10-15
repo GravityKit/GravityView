@@ -5,10 +5,10 @@
 # 3d06e0ffc7f5c27a181838c1f8507783_779e202, 2018
 # David Decker <deckerweb.mobil@gmail.com>, 2019
 # 51e9a0e47a09553c8936a69fa7ff4660_e256b99 <761a490eef3a67745ac96b33e59e6f4e_199793>, 2021
-# Hubert Test <hubert@trash-mail.com>, 2021
 # Aleksander Kracht-Winter <ma.kracht.winter@gmail.com>, 2021
-# Zachary Katz <zack@katz.co>, 2021
 # Michael Eppers <michael@proper.de>, 2021
+# Zachary Katz <zack@katz.co>, 2021
+# Hubert Test <hubert@trash-mail.com>, 2021
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
-"Last-Translator: Michael Eppers <michael@proper.de>, 2021\n"
+"Last-Translator: Hubert Test <hubert@trash-mail.com>, 2021\n"
 "Language-Team: German (Germany) (https://www.transifex.com/katzwebservices/teams/18775/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4765,7 +4765,7 @@ msgstr ""
 #: trustedlogin/trustedlogin/client/src/Admin.php:1004
 #: trustedlogin/trustedlogin/client/src/Admin.php:1148
 msgid "Copy"
-msgstr ""
+msgstr "Kopieren"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1005
 msgid "Copied!"
@@ -5026,13 +5026,13 @@ msgstr ""
 #: includes/extensions/edit-entry/class-edit-entry-render.php:2496
 msgctxt "Button to update an entry the user is editing"
 msgid "Update"
-msgstr ""
+msgstr "Aktualisieren"
 
 #: future/includes/class-gv-settings-view.php:443
 #: includes/extensions/edit-entry/class-edit-entry-render.php:2495
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: future/includes/class-gv-view.php:142
 msgctxt "Post Type General Name"

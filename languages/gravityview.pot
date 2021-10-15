@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.13.2\n"
+"Project-Id-Version: GravityView 2.13.3\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -2041,23 +2041,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:694
+#: includes/class-admin-welcome.php:700
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:714
+#: includes/class-admin-welcome.php:720
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:765
+#: includes/class-admin-welcome.php:771
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:792
+#: includes/class-admin-welcome.php:798
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:793
+#: includes/class-admin-welcome.php:799
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -3834,24 +3834,24 @@ msgstr ""
 msgid "Grant Support Access"
 msgstr ""
 
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:85
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:86
 msgid "We need access to Views to provide great support."
 msgstr ""
 
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:86
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:87
 msgid ""
 "We will need to see and edit the forms, entries, and Gravity Forms settings "
 "to debug issues."
 msgstr ""
 
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:87
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:88
 msgid ""
 "We may need to manage plugins in order to debug conflicts on your site and "
 "add related GravityView functionality."
 msgstr ""
 
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:93
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:94
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:95
 msgid ""
 "We don't need to see your %1$s details to provide support (if %1$s is "
 "enabled)."
