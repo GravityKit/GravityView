@@ -4996,13 +4996,13 @@ msgstr ""
 #: includes/extensions/edit-entry/class-edit-entry-render.php:2496
 msgctxt "Button to update an entry the user is editing"
 msgid "Update"
-msgstr ""
+msgstr "Mettre à jour"
 
 #: future/includes/class-gv-settings-view.php:443
 #: includes/extensions/edit-entry/class-edit-entry-render.php:2495
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
-msgstr ""
+msgstr "Annuler"
 
 #: future/includes/class-gv-view.php:142
 msgctxt "Post Type General Name"

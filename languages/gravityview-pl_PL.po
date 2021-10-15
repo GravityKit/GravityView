@@ -4792,7 +4792,7 @@ msgstr ""
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:998
 msgid "Confirm"
-msgstr ""
+msgstr "Potwierdź"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1000
 msgid "Go to %1$s support site"
@@ -4805,7 +4805,7 @@ msgstr ""
 #: trustedlogin/trustedlogin/client/src/Admin.php:1004
 #: trustedlogin/trustedlogin/client/src/Admin.php:1148
 msgid "Copy"
-msgstr ""
+msgstr "Kopiuj"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1005
 msgid "Copied!"
@@ -5066,13 +5066,13 @@ msgstr "duplikuj pozycje"
 #: includes/extensions/edit-entry/class-edit-entry-render.php:2496
 msgctxt "Button to update an entry the user is editing"
 msgid "Update"
-msgstr ""
+msgstr "Aktualizuj"
 
 #: future/includes/class-gv-settings-view.php:443
 #: includes/extensions/edit-entry/class-edit-entry-render.php:2495
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
-msgstr ""
+msgstr "Anuluj"
 
 #: future/includes/class-gv-view.php:142
 msgctxt "Post Type General Name"

@@ -4792,7 +4792,7 @@ msgstr ""
 #: includes/extensions/edit-entry/class-edit-entry-render.php:2495
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
-msgstr ""
+msgstr "Peru"
 
 #: future/includes/class-gv-view.php:142
 msgctxt "Post Type General Name"

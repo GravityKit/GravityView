@@ -4,8 +4,8 @@
 # Zachary Katz <zack@katz.co>, 2019
 # Desiree Graste <desiree@mamamentje.nl>, 2020
 # leooosterloo <leo@pronamic.nl>, 2021
-# Thom, 2021
 # René Serier <rene@aiwos.com>, 2021
+# Thom, 2021
 # Erik van Beek <erik@aiwos.nl>, 2021
 # 
 msgid ""
@@ -4738,7 +4738,7 @@ msgstr ""
 #: trustedlogin/trustedlogin/client/src/Admin.php:1004
 #: trustedlogin/trustedlogin/client/src/Admin.php:1148
 msgid "Copy"
-msgstr ""
+msgstr "Kopiëren"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1005
 msgid "Copied!"
@@ -4999,13 +4999,13 @@ msgstr "dupliceer inzendingen"
 #: includes/extensions/edit-entry/class-edit-entry-render.php:2496
 msgctxt "Button to update an entry the user is editing"
 msgid "Update"
-msgstr ""
+msgstr "Bijwerken"
 
 #: future/includes/class-gv-settings-view.php:443
 #: includes/extensions/edit-entry/class-edit-entry-render.php:2495
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
-msgstr ""
+msgstr "Annuleren"
 
 #: future/includes/class-gv-view.php:142
 msgctxt "Post Type General Name"

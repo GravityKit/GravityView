@@ -4643,7 +4643,7 @@ msgstr ""
 #: trustedlogin/trustedlogin/client/src/Admin.php:1004
 #: trustedlogin/trustedlogin/client/src/Admin.php:1148
 msgid "Copy"
-msgstr ""
+msgstr "Copiar"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1005
 msgid "Copied!"
@@ -4904,13 +4904,13 @@ msgstr ""
 #: includes/extensions/edit-entry/class-edit-entry-render.php:2496
 msgctxt "Button to update an entry the user is editing"
 msgid "Update"
-msgstr ""
+msgstr "Actualizar"
 
 #: future/includes/class-gv-settings-view.php:443
 #: includes/extensions/edit-entry/class-edit-entry-render.php:2495
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
-msgstr ""
+msgstr "Anular"
 
 #: future/includes/class-gv-view.php:142
 msgctxt "Post Type General Name"
