@@ -21,6 +21,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+__Developer Updates:__
+
+* Added: `gravityview/edit_entry/cancel_onclick` filter to modify the "Back" link `onclick` HTML attribute
+	- Modified: `/includes/extensions/edit-entry/partials/form-buttons.php` file to add the filter
+
 = 2.13.3 on October 14, 2021 =
 
 * Fixed: Edit Entry would not accept zero as a value for a Number field marked as required
