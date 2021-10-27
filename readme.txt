@@ -23,6 +23,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Fixed: View scripts and styles would not load when manually outputting the contents of the `[gravityview]` shortcode
+
 __Developer Updates:__
 
 * Added: `gravityview/edit_entry/cancel_onclick` filter to modify the "Back" link `onclick` HTML attribute

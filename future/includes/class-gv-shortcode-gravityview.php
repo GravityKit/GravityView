@@ -56,6 +56,16 @@ class gravityview extends \GV\Shortcode {
 			return '';
 		}
 
+		$gv_view_data = \GravityView_View_Data::getInstance();
+
+		if ( ! $gv_view_data->views->contains( $view->ID ) ) {
+			$gv_view_data->views->add( $view );
+
+			$post = get_post( $view->ID );
+
+			do_action( 'gravityview_datatables_scripts_styles', array(), array(), $post );
+		}
+
 		gravityview()->views->set( $view );
 
 		/**
