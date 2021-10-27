@@ -86,6 +86,7 @@ class GravityView_frontend {
 
 	private function initialize() {
 		add_action( 'wp', array( $this, 'parse_content'), 11 );
+		add_filter( 'render_block', array( $this, 'detect_views_in_block_content' ) );
 		add_filter( 'parse_query', array( $this, 'parse_query_fix_frontpage' ), 10 );
 		add_action( 'template_redirect', array( $this, 'set_entry_data'), 1 );
 
@@ -327,6 +328,37 @@ class GravityView_frontend {
 			// reset the is_singular flag after our updated code above
 			$query->is_singular = $query->is_single || $query->is_page || $query->is_attachment;
 		}
+	}
+
+	/**
+	 * Detect GV Views in parsed Gutenberg block content
+	 *
+	 * @since 2.13.4
+	 *
+	 * @see   \WP_Block::render()
+	 *
+	 * @param string $block_content Gutenberg block content
+	 *
+	 * @return false|string
+	 *
+	 * @todo Once we stop using the legacy `GravityView_frontend::parse_content()` method to detect Views in post content, this code should either be dropped or promoted to some core class given its applicability to other themes/plugins
+	 */
+	public function detect_views_in_block_content( $block_content ) {
+		if ( ! class_exists( 'GV\View_Collection' ) || ! class_exists( 'GV\View' ) ) {
+			return $block_content;
+		}
+
+		$gv_view_data = GravityView_View_Data::getInstance();
+
+		$views = \GV\View_Collection::from_content( $block_content );
+
+		foreach ( $views->all() as $view ) {
+			if ( ! $gv_view_data->views->contains( $view->ID ) ) {
+				$gv_view_data->views->add( $view );
+			}
+		}
+
+		return $block_content;
 	}
 
 	/**
