@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Updates:__
 
+* Added: `gravityview/shortcode/before-processing` action that runs before the GravityView shortcode is processed
 * Added: `gravityview/edit_entry/cancel_onclick` filter to modify the "Back" link `onclick` HTML attribute
 	- Modified: `/includes/extensions/edit-entry/partials/form-buttons.php` file to add the filter
 
