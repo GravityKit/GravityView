@@ -2,7 +2,7 @@
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
 Tested up to: 5.8
-Requires PHP: 5.3.0
+Requires PHP: 5.6.30
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -20,6 +20,16 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.13.4 on November 4, 2021 =
+
+* Fixed: View scripts and styles would not load when manually outputting the contents of the `[gravityview]` shortcode
+
+__Developer Updates:__
+
+* Added: `gravityview/shortcode/before-processing` action that runs before the GravityView shortcode is processed
+* Added: `gravityview/edit_entry/cancel_onclick` filter to modify the "Back" link `onclick` HTML attribute
+	- Modified: `/includes/extensions/edit-entry/partials/form-buttons.php` file to add the filter
 
 = 2.13.3 on October 14, 2021 =
 
