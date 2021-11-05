@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop =
+= 2.13.4 on November 4, 2021 =
 
 * Fixed: View scripts and styles would not load when manually outputting the contents of the `[gravityview]` shortcode
 

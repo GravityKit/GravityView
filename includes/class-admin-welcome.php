@@ -284,6 +284,30 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.13.4 on November 4, 2021</h3>
+
+				<ul>
+					<li>Fixed: View scripts and styles would not load when manually outputting the contents of the
+						<code>[gravityview]</code> shortcode
+					</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: <code>gravityview/shortcode/before-processing</code> action that runs before the
+						GravityView shortcode is processed
+					</li>
+					<li>Added: <code>gravityview/edit_entry/cancel_onclick</code> filter to modify the 'Back' link
+						<code>onclick</code> HTML attribute
+						<ul>
+							<li>Modified: <code>/includes/extensions/edit-entry/partials/form-buttons.php</code> file to
+								add the filter
+							</li>
+						</ul>
+					</li>
+				</ul>
+
 				<h3>2.13.3 on October 14, 2021</h3>
 
 				<ul>
