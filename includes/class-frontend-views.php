@@ -1221,6 +1221,10 @@ class GravityView_frontend {
 			}
 		}
 
+		if ( ! class_exists( 'GravityView_View' ) ) {
+			gravityview()->plugin->include_legacy_frontend( true );
+		}
+
 		GravityView_View::getInstance()->setSorting( $sorting );
 
 		gravityview()->log->debug( '[updateViewSorting] Sort Criteria : ', array( 'data' => $sorting ) );

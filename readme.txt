@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Recent Entries widget would cause a fatal error on WP 5.8 or newer
+
 = 2.13.4 on November 4, 2021 =
 
 * Fixed: View scripts and styles would not load when manually outputting the contents of the `[gravityview]` shortcode
