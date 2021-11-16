@@ -1,0 +1,42 @@
+# Used by Probot Settings: https://probot.github.io/apps/settings/
+repository:
+  description: Adds, moves, and removes widgets; lists sidebars.
+labels:
+  - name: bug
+    color: fc2929
+  - name: scope:documentation
+    color: 0e8a16
+  - name: scope:testing
+    color: 5319e7
+  - name: good-first-issue
+    color: eb6420
+  - name: help-wanted
+    color: 159818
+  - name: maybelater
+    color: c2e0c6
+  - name: state:unconfirmed
+    color: bfe5bf
+  - name: state:unsupported
+    color: bfe5bf
+  - name: wontfix
+    color: c2e0c6
+  - name: command:widget
+    color: c5def5
+  - name: command:widget-add
+    color: c5def5
+  - name: command:widget-deactivate
+    color: c5def5
+  - name: command:widget-delete
+    color: c5def5
+  - name: command:widget-list
+    color: c5def5
+  - name: command:widget-move
+    color: c5def5
+  - name: command:widget-reset
+    color: c5def5
+  - name: command:widget-update
+    color: c5def5
+  - name: command:sidebar
+    color: c5def5
+  - name: command:sidebar-list
+    color: c5def5

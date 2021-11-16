@@ -4,14 +4,21 @@ declare(strict_types=1);
 
 namespace JsonMapper\Tests\Unit\Middleware;
 
+use Exception;
 use JsonMapper\Builders\PropertyBuilder;
 use JsonMapper\Cache\NullCache;
 use JsonMapper\Enums\Visibility;
+use JsonMapper\JsonMapperBuilder;
 use JsonMapper\JsonMapperInterface;
+use JsonMapper\Middleware\DocBlockAnnotations;
 use JsonMapper\Middleware\NamespaceResolver;
 use JsonMapper\Tests\Helpers\AssertThatPropertyTrait;
 use JsonMapper\Tests\Implementation\ComplexObject;
+use JsonMapper\Tests\Implementation\Models\NamespaceAliasObject;
+use JsonMapper\Tests\Implementation\Models\NamespaceObject;
+use JsonMapper\Tests\Implementation\Models\Sub\AnotherValueHolder;
 use JsonMapper\Tests\Implementation\Models\User;
+use JsonMapper\Tests\Implementation\Models\ValueHolder;
 use JsonMapper\Tests\Implementation\SimpleObject;
 use JsonMapper\ValueObjects\PropertyMap;
 use JsonMapper\Wrapper\ObjectWrapper;
@@ -183,5 +190,47 @@ class NamespaceResolverTest extends TestCase
         $jsonMapper = $this->createMock(JsonMapperInterface::class);
 
         $middleware->handle(new \stdClass(), $objectWrapper, $propertyMap, $jsonMapper);
+    }
+
+    /**
+     * @covers \JsonMapper\Middleware\NamespaceResolver
+     */
+    public function testReturnsCorrectNamespaceWhenOtherClassHasPartialMatch(): void
+    {
+        $object = new NamespaceObject();
+        $input = (object) [
+            'valueHolder' => (object) ['value' => 'loremipsum1'],
+            'anotherValueHolder' => (object) ['value' => 'loremipsum2']
+        ];
+        $mapper = JsonMapperBuilder::new()
+            ->withMiddleware(new DocBlockAnnotations(new NullCache()))
+            ->withMiddleware(new NamespaceResolver(new NullCache()))
+            ->build();
+
+        $mapper->mapObject($input, $object);
+
+        self::assertInstanceOf(AnotherValueHolder::class, $object->anotherValueHolder);
+        self::assertInstanceOf(ValueHolder::class, $object->valueHolder);
+    }
+
+    /**
+     * @covers \JsonMapper\Middleware\NamespaceResolver
+     */
+    public function testReturnsCorrectNamespaceWhenAliasProvidedForUse(): void
+    {
+        $object = new NamespaceAliasObject();
+        $input = (object) [
+            'valueHolder' => (object) ['value' => 'loremipsum1'],
+            'anotherValueHolder' => (object) ['value' => 'loremipsum2']
+        ];
+        $mapper = JsonMapperBuilder::new()
+            ->withMiddleware(new DocBlockAnnotations(new NullCache()))
+            ->withMiddleware(new NamespaceResolver(new NullCache()))
+            ->build();
+
+        $mapper->mapObject($input, $object);
+
+        self::assertInstanceOf(AnotherValueHolder::class, $object->anotherValueHolder);
+        self::assertInstanceOf(ValueHolder::class, $object->valueHolder);
     }
 }

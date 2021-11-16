@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * Registers the `{{machine_name}}` taxonomy,
+ * for use with {{post_types}}.
+ */
+function {{machine_name}}_init() {
+{{output}}
+}
+
+add_action( 'init', '{{machine_name}}_init' );
+
+/**
+ * Sets the post updated messages for the `{{machine_name}}` taxonomy.
+ *
+ * @param  array $messages Post updated messages.
+ * @return array Messages for the `{{machine_name}}` taxonomy.
+ */
+function {{machine_name}}_updated_messages( $messages ) {
+
+	$messages['{{slug}}'] = [
+		0 => '', // Unused. Messages start at index 1.
+		1 => __( '{{label_ucfirst}} added.', '{{textdomain}}' ),
+		2 => __( '{{label_ucfirst}} deleted.', '{{textdomain}}' ),
+		3 => __( '{{label_ucfirst}} updated.', '{{textdomain}}' ),
+		4 => __( '{{label_ucfirst}} not added.', '{{textdomain}}' ),
+		5 => __( '{{label_ucfirst}} not updated.', '{{textdomain}}' ),
+		6 => __( '{{label_plural_ucfirst}} deleted.', '{{textdomain}}' ),
+	];
+
+	return $messages;
+}
+
+add_filter( 'term_updated_messages', '{{machine_name}}_updated_messages' );

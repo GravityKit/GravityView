@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 07-October-2021 using Strauss.
+ * Modified by gravityview on 16-November-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -87,7 +87,7 @@ final class SecurityChecks {
 
 			$this->logging->log( 'Site is in lockdown mode, aborting login.', __METHOD__, 'error' );
 
-			return new WP_Error( 'in_lockdown', __( 'TrustedLogin temporarily disabled.' , 'gravityview') );
+			return new WP_Error( 'in_lockdown', __( 'TrustedLogin temporarily disabled.' , 'trustedlogin') );
 		}
 
 		// When passed in the endpoint URL, the unique ID will be the raw value, not the hash.
@@ -115,7 +115,7 @@ final class SecurityChecks {
 
 			$this->logging->log(
 				sprintf(
-					__( 'There was an issue verifying the user identifier with TrustedLogin, aborting login. (%s)', 'gravityview' ),
+					__( 'There was an issue verifying the user identifier with TrustedLogin, aborting login. (%s)', 'trustedlogin' ),
 					$approved->get_error_message()
 				),
 				__METHOD__,

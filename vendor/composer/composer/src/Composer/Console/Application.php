@@ -117,7 +117,7 @@ class Application extends BaseApplication
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {
@@ -129,7 +129,7 @@ class Application extends BaseApplication
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function doRun(InputInterface $input, OutputInterface $output)
     {
@@ -196,10 +196,10 @@ class Application extends BaseApplication
                 // not a composer command, so try loading plugin ones
                 false === $commandName
                 // list command requires plugin commands to show them
-                || in_array($commandName, array('', 'list'), true)
+                || in_array($commandName, array('', 'list', 'help'), true)
             );
 
-        if ($mayNeedPluginCommand && !$this->disablePluginsByDefault && !$this->hasPluginCommands && 'global' !== $commandName) {
+        if ($mayNeedPluginCommand && !$this->disablePluginsByDefault && !$this->hasPluginCommands) {
             try {
                 foreach ($this->getPluginCommands() as $command) {
                     if ($this->has($command->getName())) {
@@ -368,9 +368,9 @@ class Application extends BaseApplication
     }
 
     /**
-     * {@inheritDoc}
+     * @return void
      */
-    private function hintCommonErrors($exception)
+    private function hintCommonErrors(\Exception $exception)
     {
         $io = $this->getIO();
 
@@ -451,6 +451,8 @@ class Application extends BaseApplication
 
     /**
      * Removes the cached composer instance
+     *
+     * @return void
      */
     public function resetComposer()
     {
@@ -468,6 +470,9 @@ class Application extends BaseApplication
         return $this->io;
     }
 
+    /**
+     * @return string
+     */
     public function getHelp()
     {
         return self::$logo . parent::getHelp();
@@ -517,7 +522,7 @@ class Application extends BaseApplication
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getLongVersion()
     {
@@ -535,7 +540,7 @@ class Application extends BaseApplication
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function getDefaultInputDefinition()
     {
@@ -548,6 +553,9 @@ class Application extends BaseApplication
         return $definition;
     }
 
+    /**
+     * @return Command\BaseCommand[]
+     */
     private function getPluginCommands()
     {
         $commands = array();

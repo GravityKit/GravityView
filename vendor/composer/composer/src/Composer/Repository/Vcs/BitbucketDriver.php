@@ -51,7 +51,7 @@ abstract class BitbucketDriver extends VcsDriver
     protected $vcsType;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function initialize()
     {
@@ -72,7 +72,7 @@ abstract class BitbucketDriver extends VcsDriver
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getUrl()
     {
@@ -120,7 +120,7 @@ abstract class BitbucketDriver extends VcsDriver
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getComposerInformation($identifier)
     {
@@ -194,7 +194,7 @@ abstract class BitbucketDriver extends VcsDriver
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getFileContent($file, $identifier)
     {
@@ -221,7 +221,7 @@ abstract class BitbucketDriver extends VcsDriver
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getChangeDate($identifier)
     {
@@ -248,7 +248,7 @@ abstract class BitbucketDriver extends VcsDriver
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getSource($identifier)
     {
@@ -260,7 +260,7 @@ abstract class BitbucketDriver extends VcsDriver
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getDist($identifier)
     {
@@ -279,7 +279,7 @@ abstract class BitbucketDriver extends VcsDriver
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getTags()
     {
@@ -323,7 +323,7 @@ abstract class BitbucketDriver extends VcsDriver
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getBranches()
     {
@@ -393,9 +393,9 @@ abstract class BitbucketDriver extends VcsDriver
                 }
 
                 if (!$this->io->isInteractive() && $fetchingRepoData) {
-                    if ($this->attemptCloneFallback()) {
-                        return new Response(array('url' => 'dummy'), 200, array(), 'null');
-                    }
+                    $this->attemptCloneFallback();
+
+                    return new Response(array('url' => 'dummy'), 200, array(), 'null');
                 }
             }
 
@@ -412,6 +412,9 @@ abstract class BitbucketDriver extends VcsDriver
 
     /**
      * @phpstan-impure
+     *
+     * @return true
+     * @throws \RuntimeException
      */
     protected function attemptCloneFallback()
     {
@@ -437,7 +440,7 @@ abstract class BitbucketDriver extends VcsDriver
     abstract protected function setupFallbackDriver($url);
 
     /**
-     * @param  array $cloneLinks
+     * @param  array<array{name: string, href: string}> $cloneLinks
      * @return void
      */
     protected function parseCloneUrls(array $cloneLinks)
@@ -452,7 +455,7 @@ abstract class BitbucketDriver extends VcsDriver
     }
 
     /**
-     * @return array|null
+     * @return (array{name: string}&mixed[])|null
      */
     protected function getMainBranchData()
     {

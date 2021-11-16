@@ -7,6 +7,7 @@ namespace JsonMapper\Tests\Unit\Handler;
 use JsonMapper\Builders\PropertyBuilder;
 use JsonMapper\Cache\NullCache;
 use JsonMapper\Enums\Visibility;
+use JsonMapper\Exception\TypeError;
 use JsonMapper\Handler\FactoryRegistry;
 use JsonMapper\Handler\PropertyMapper;
 use JsonMapper\JsonMapperFactory;
@@ -19,6 +20,7 @@ use JsonMapper\Tests\Implementation\Models\Square;
 use JsonMapper\Tests\Implementation\Models\User;
 use JsonMapper\Tests\Implementation\Models\UserWithConstructor;
 use JsonMapper\Tests\Implementation\Models\Wrappers\IShapeWrapper;
+use JsonMapper\Tests\Implementation\Php81\BlogPost;
 use JsonMapper\Tests\Implementation\Popo;
 use JsonMapper\Tests\Implementation\PrivatePropertyWithoutSetter;
 use JsonMapper\Tests\Implementation\SimpleObject;
@@ -633,6 +635,88 @@ class PropertyMapperTest extends TestCase
         $propertyMapper->__invoke($json, $wrapped, $propertyMap, $jsonMapper);
 
         self::assertEquals(new Square(5, 6), $object->shape);
+    }
+
+    /**
+     * @covers \JsonMapper\Handler\PropertyMapper
+     * @requires PHP >= 8.1
+     */
+    public function testItCanMapEnumType(): void
+    {
+        $json = (object) ['status' => 'draft'];
+        $object = new \JsonMapper\Tests\Implementation\Php81\BlogPost();
+        $wrapped = new ObjectWrapper($object);
+        $property = PropertyBuilder::new()
+            ->setName('status')
+            ->setIsNullable(false)
+            ->setVisibility(Visibility::PUBLIC())
+            ->addType(\JsonMapper\Tests\Implementation\Php81\Status::class, false)
+            ->build();
+        $propertyMap = new PropertyMap();
+        $propertyMap->addProperty($property);
+        $expected = new BlogPost();
+        $expected->status = \JsonMapper\Tests\Implementation\Php81\Status::DRAFT;
+
+        $propertyMapper = new PropertyMapper();
+        $jsonMapper = (new JsonMapperFactory())->create($propertyMapper, new DocBlockAnnotations(new NullCache()));
+
+        $propertyMapper->__invoke($json, $wrapped, $propertyMap, $jsonMapper);
+
+        self::assertEquals($expected, $object);
+    }
+
+    /**
+     * @covers \JsonMapper\Handler\PropertyMapper
+     * @requires PHP >= 8.1
+     */
+    public function testItCanMapEnumArrayType(): void
+    {
+        $json = (object) ['historicStates' => ['draft', 'published']];
+        $object = new \JsonMapper\Tests\Implementation\Php81\BlogPost();
+        $wrapped = new ObjectWrapper($object);
+        $property = PropertyBuilder::new()
+            ->setName('historicStates')
+            ->setIsNullable(false)
+            ->setVisibility(Visibility::PUBLIC())
+            ->addType(\JsonMapper\Tests\Implementation\Php81\Status::class, true)
+            ->build();
+        $propertyMap = new PropertyMap();
+        $propertyMap->addProperty($property);
+        $expected = new BlogPost();
+        $expected->historicStates = [
+            \JsonMapper\Tests\Implementation\Php81\Status::DRAFT,
+            \JsonMapper\Tests\Implementation\Php81\Status::PUBLISHED
+        ];
+
+        $propertyMapper = new PropertyMapper();
+        $jsonMapper = (new JsonMapperFactory())->create($propertyMapper, new DocBlockAnnotations(new NullCache()));
+
+        $propertyMapper->__invoke($json, $wrapped, $propertyMap, $jsonMapper);
+
+        self::assertEquals($expected, $object);
+    }
+
+    /**
+     * @covers \JsonMapper\Handler\PropertyMapper
+     */
+    public function testItThrowsExceptionForNonExistingClass(): void
+    {
+        $property = PropertyBuilder::new()
+            ->setName('child')
+            ->addType("\Some\Non\Existing\Class", false)
+            ->setIsNullable(false)
+            ->setVisibility(Visibility::PRIVATE())
+            ->build();
+        $propertyMap = new PropertyMap();
+        $propertyMap->addProperty($property);
+        $json = (object) ['child' => (object) ['name' => __FUNCTION__]];
+        $object = new ComplexObject();
+        $wrapped = new ObjectWrapper($object);
+        $propertyMapper = new PropertyMapper();
+        $jsonMapper = (new JsonMapperFactory())->create($propertyMapper, new DocBlockAnnotations(new NullCache()));
+
+        $this->expectException(TypeError::class);
+        $propertyMapper->__invoke($json, $wrapped, $propertyMap, $jsonMapper);
     }
 
     public function scalarValueDataTypes(): array

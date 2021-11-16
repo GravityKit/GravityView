@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JsonMapper\Tests\Unit\Parser;
 
+use JsonMapper\Parser\Import;
 use JsonMapper\Parser\UseNodeVisitor;
 use JsonMapper\Tests\Implementation\ComplexObject;
 use JsonMapper\Tests\Implementation\SimpleObject;
@@ -21,9 +22,12 @@ class UseNodeVisitorTest extends TestCase
     public function testKeepsSingleImportsFromNodeForRetrieval(): void
     {
         $visitor = new UseNodeVisitor();
-        $uses = [\DateTime::class, \stdClass::class];
-        $node = new Use_(array_map(static function ($use) {
-            return new UseUse(new Name($use));
+        $uses = [
+            new Import(\DateTime::class, null),
+            new Import(\stdClass::class, null)
+        ];
+        $node = new Use_(array_map(static function (Import $use) {
+            return new UseUse(new Name($use->getImport()));
         }, $uses));
 
         $result = $visitor->enterNode($node);
@@ -48,6 +52,6 @@ class UseNodeVisitorTest extends TestCase
         $imports = $visitor->getImports();
 
         self::assertNull($result);
-        self::assertEquals([ComplexObject::class, SimpleObject::class], $imports);
+        self::assertEquals([New Import(ComplexObject::class, null), new Import(SimpleObject::class, null)], $imports);
     }
 }

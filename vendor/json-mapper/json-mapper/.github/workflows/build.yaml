@@ -50,11 +50,11 @@ jobs:
             php_ini: 'xdebug.coverage_enable=On'
             name: 'PHP 8.0 with lowest stable deps'
           - php: 8.1
-            allow_fail: true
+            allow_fail: false
             php_ini: 'xdebug.coverage_enable=On'
             name: 'PHP 8.1 with latest deps'
           - php: 8.1
-            allow_fail: true
+            allow_fail: false
             composer_update_flags: '--prefer-lowest --prefer-stable'
             php_ini: 'xdebug.coverage_enable=On'
             name: 'PHP 8.1 with lowest stable deps'

@@ -6,7 +6,7 @@ namespace JsonMapper;
 
 interface JsonMapperInterface
 {
-    public function setPropertyMapper(callable $handler): JsonMapperInterface;
+    public function setPropertyMapper(callable $propertyMapper): JsonMapperInterface;
 
     public function push(callable $middleware, string $name = ''): self;
 
@@ -27,8 +27,8 @@ interface JsonMapperInterface
     public function mapArray(array $json, $object): array;
 
     /** @param object $object */
-    public function mapObjectFromString(string $jsonString, $object): void;
+    public function mapObjectFromString(string $json, $object): void;
 
     /** @param object $object */
-    public function mapArrayFromString(string $jsonStrings, $object): array;
+    public function mapArrayFromString(string $json, $object): array;
 }

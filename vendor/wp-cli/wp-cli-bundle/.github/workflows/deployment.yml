@@ -1,0 +1,248 @@
+name: Deployment
+
+on:
+  push:
+    branches:
+      - master
+      - release-**
+
+jobs:
+
+  build: #---------------------------------------------------------------------
+    name: Build Phar
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: mysql, zip, imagick
+          coverage: none
+          tools: composer
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Use Composer cache
+        uses: actions/cache@master
+        with:
+          path: ${{ steps['composer-cache'].outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-dev --no-progress --no-interaction
+
+      - name: Store WP-CLI version
+        run: |
+          CLI_VERSION=$(head -n 1 vendor/wp-cli/wp-cli/VERSION)
+          if [[ $CLI_VERSION == *"-alpha"* ]]
+          then
+          	GIT_HASH=$(git rev-parse HEAD)
+          	GIT_SHORT_HASH=${GIT_HASH:0:7}
+          	CLI_VERSION="$CLI_VERSION-$GIT_SHORT_HASH"
+          fi
+          echo "CLI_VERSION=$CLI_VERSION" > $GITHUB_ENV
+          echo "$CLI_VERSION" > cli_version.txt
+
+      - name: Upload WP-CLI version
+        uses: actions/upload-artifact@v2
+        with:
+          name: cli_version
+          path: cli_version.txt
+
+      - name: Build the Phar file
+        run: php -dphar.readonly=0 utils/make-phar.php wp-cli.phar --version=$CLI_VERSION
+
+      - name: Upload built Phar file
+        uses: actions/upload-artifact@v2
+        with:
+          name: wp-cli-phar
+          path: wp-cli.phar
+
+  test: #----------------------------------------------------------------------
+    name: Functional - WP ${{ matrix.wp }} on PHP ${{ matrix.php }} with MySQL ${{ matrix.mysql }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0']
+        wp: ['latest']
+        mysql: ['8.0']
+        include:
+          - php: '5.6'
+            wp: 'trunk'
+            mysql: '8.0'
+          - php: '5.6'
+            wp: 'trunk'
+            mysql: '5.7'
+          - php: '5.6'
+            wp: 'trunk'
+            mysql: '5.6'
+          - php: '7.4'
+            wp: 'trunk'
+            mysql: '8.0'
+          - php: '8.0'
+            wp: 'trunk'
+            mysql: '8.0'
+          - php: '8.0'
+            wp: 'trunk'
+            mysql: '5.7'
+          - php: '8.0'
+            wp: 'trunk'
+            mysql: '5.6'
+          - php: '5.6'
+            wp: '3.7'
+            mysql: '5.6'
+    runs-on: ubuntu-20.04
+    env:
+      WP_CLI_BIN_DIR: /tmp/wp-cli-phar
+    needs: [build]
+
+    services:
+      mysql:
+        image: mysql:${{ matrix.mysql }}
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=wp_cli_test --entrypoint sh mysql:${{ matrix.mysql }} -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
+
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v2
+
+      - name: Install Ghostscript
+        run: |
+          sudo apt-get update
+          sudo apt-get install ghostscript -y
+
+      - name: Set up PHP envirnoment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '${{ matrix.php }}'
+          extensions: imagick, mysql, zip
+          coverage: none
+          tools: composer
+
+      - name: Get Composer cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Use Composer cache
+        uses: actions/cache@master
+        with:
+          path: ${{ steps['composer-cache'].outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Change ImageMagick policy to allow pdf->png conversion.
+        run: |
+          sudo sed -i 's/^.*policy.*coder.*none.*PDF.*//' /etc/ImageMagick-6/policy.xml
+
+      - name: Install dependencies
+        run: COMPOSER_ROOT_VERSION=dev-master composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Download built Phar file
+        uses: actions/download-artifact@v2
+        with:
+          name: wp-cli-phar
+
+      - name: Prepare built Phar file for Behat tests
+        run: |
+          mkdir -p $WP_CLI_BIN_DIR
+          mv wp-cli.phar $WP_CLI_BIN_DIR/wp
+          chmod +x $WP_CLI_BIN_DIR/wp
+
+      - name: Start MySQL server
+        run: sudo systemctl start mysql
+
+      - name: Configure DB environment
+        run: |
+          export MYSQL_HOST=127.0.0.1
+          export MYSQL_TCP_PORT=${{ job.services.mysql.ports['3306'] }}
+          echo "WP_CLI_TEST_DBROOTUSER=root" >> $GITHUB_ENV
+          echo "WP_CLI_TEST_DBROOTPASS=root" >> $GITHUB_ENV
+          echo "WP_CLI_TEST_DBUSER=wp_cli_test" >> $GITHUB_ENV
+          echo "WP_CLI_TEST_DBPASS=password1" >> $GITHUB_ENV
+          echo "WP_CLI_TEST_DBHOST=$MYSQL_HOST:$MYSQL_TCP_PORT" >> $GITHUB_ENV
+
+      - name: Prepare test database
+        run: composer prepare-tests
+
+      - name: Check Behat environment
+        run: WP_CLI_TEST_DEBUG_BEHAT_ENV=1 composer behat
+
+      - name: Run Behat
+        env:
+          WP_VERSION: '${{ matrix.wp }}'
+        run: composer behat || composer behat-rerun
+
+  deploy: #-----------------------------------------------------------------------
+    name: Deployment
+    runs-on: ubuntu-latest
+    needs: [build, test]
+
+    steps:
+      - name: Check out builds repository
+        uses: actions/checkout@v2
+        with:
+          repository: wp-cli/builds
+          token: ${{ secrets.ACTIONS_BOT }}
+
+      - name: Download WP-CLI version
+        uses: actions/download-artifact@v2
+        with:
+          name: cli_version
+
+      - name: Set new nightly version
+        run: |
+          cat cli_version.txt > phar/NIGHTLY_VERSION
+
+      - name: Download built Phar file
+        uses: actions/download-artifact@v2
+        with:
+          name: wp-cli-phar
+
+      - name: Set file name for release branch
+        if: ${{ contains(github.ref, 'release') }}
+        run: |
+          echo 'FILENAME=wp-cli-release.phar' > $GITHUB_ENV
+
+      - name: Set file name for master branch
+        if: ${{ contains(github.ref, 'master') }}
+        run: |
+          echo 'FILENAME=wp-cli-nightly.phar' > $GITHUB_ENV
+
+      - name: Move built Phar file into correct location
+        run: |
+          mv wp-cli.phar phar/$FILENAME
+
+      - name: Make built Phar executable
+        run: |
+          chmod +x phar/$FILENAME
+
+      - name : Create hashes
+        run: |
+          md5sum phar/$FILENAME | cut -d ' ' -f 1 > phar/$FILENAME.md5
+          sha512sum phar/$FILENAME | cut -d ' ' -f 1 > phar/$FILENAME.sha512
+
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add phar/$FILENAME phar/$FILENAME.md5 phar/$FILENAME.sha512 phar/NIGHTLY_VERSION
+          git commit -m "phar build: $GITHUB_REPOSITORY@$GITHUB_SHA"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.ACTIONS_BOT }}
+          branch: gh-pages
+          repository: wp-cli/builds

@@ -40,6 +40,14 @@ class Git
         $this->filesystem = $fs;
     }
 
+    /**
+     * @param callable    $commandCallable
+     * @param string      $url
+     * @param string|null $cwd
+     * @param bool        $initialClone
+     *
+     * @return void
+     */
     public function runCommand($commandCallable, $url, $cwd, $initialClone = false)
     {
         // Ensure we are allowed to use this URL by config
@@ -98,6 +106,7 @@ class Git
         $command = call_user_func($commandCallable, $url);
 
         $auth = null;
+        $credentials = array();
         if ($bypassSshForGitHub || 0 !== $this->process->execute($command, $ignoredOutput, $cwd)) {
             $errorMsg = $this->process->getErrorOutput();
             // private github repository without ssh key access, try https with auth
@@ -121,6 +130,7 @@ class Git
                         return;
                     }
 
+                    $credentials = array(rawurlencode($auth['username']), rawurlencode($auth['password']));
                     $errorMsg = $this->process->getErrorOutput();
                 }
             } elseif (preg_match('{^https://(bitbucket\.org)/(.*?)(?:\.git)?$}i', $url, $match)) { //bitbucket oauth
@@ -155,6 +165,7 @@ class Git
                         return;
                     }
 
+                    $credentials = array(rawurlencode($auth['username']), rawurlencode($auth['password']));
                     $errorMsg = $this->process->getErrorOutput();
                 } else { // Falling back to ssh
                     $sshUrl = 'git@bitbucket.org:' . $match[2] . '.git';
@@ -196,6 +207,7 @@ class Git
                         return;
                     }
 
+                    $credentials = array(rawurlencode($auth['username']), rawurlencode($auth['password']));
                     $errorMsg = $this->process->getErrorOutput();
                 }
             } elseif ($this->isAuthenticationFailure($url, $match)) { // private non-github/gitlab/bitbucket repo that failed to authenticate
@@ -236,6 +248,7 @@ class Git
                         return;
                     }
 
+                    $credentials = array(rawurlencode($auth['username']), rawurlencode($auth['password']));
                     $errorMsg = $this->process->getErrorOutput();
                 }
             }
@@ -244,10 +257,20 @@ class Git
                 $this->filesystem->removeDirectory($origCwd);
             }
 
+            if (count($credentials) > 0) {
+                $command = $this->maskCredentials($command, $credentials);
+                $errorMsg = $this->maskCredentials($errorMsg, $credentials);
+            }
             $this->throwException('Failed to execute ' . $command . "\n\n" . $errorMsg, $url);
         }
     }
 
+    /**
+     * @param string $url
+     * @param string $dir
+     *
+     * @return bool
+     */
     public function syncMirror($url, $dir)
     {
         if (getenv('COMPOSER_DISABLE_NETWORK') && getenv('COMPOSER_DISABLE_NETWORK') !== 'prime') {
@@ -286,6 +309,13 @@ class Git
         return true;
     }
 
+    /**
+     * @param string $url
+     * @param string $dir
+     * @param string $ref
+     *
+     * @return bool
+     */
     public function fetchRefOrSyncMirror($url, $dir, $ref)
     {
         if ($this->checkRefIsInMirror($dir, $ref)) {
@@ -299,6 +329,9 @@ class Git
         return false;
     }
 
+    /**
+     * @return string
+     */
     public static function getNoShowSignatureFlag(ProcessExecutor $process)
     {
         $gitVersion = self::getVersion($process);
@@ -309,6 +342,12 @@ class Git
         return '';
     }
 
+    /**
+     * @param string $dir
+     * @param string $ref
+     *
+     * @return bool
+     */
     private function checkRefIsInMirror($dir, $ref)
     {
         if (is_dir($dir) && 0 === $this->process->execute('git rev-parse --git-dir', $output, $dir) && trim($output) === '.') {
@@ -322,6 +361,12 @@ class Git
         return false;
     }
 
+    /**
+     * @param string   $url
+     * @param string[] $match
+     *
+     * @return bool
+     */
     private function isAuthenticationFailure($url, &$match)
     {
         if (!preg_match('{^(https?://)([^/]+)(.*)$}i', $url, $match)) {
@@ -346,6 +391,9 @@ class Git
         return false;
     }
 
+    /**
+     * @return void
+     */
     public static function cleanEnv()
     {
         if (PHP_VERSION_ID < 50400 && ini_get('safe_mode') && false === strpos(ini_get('safe_mode_allowed_env_vars'), 'GIT_ASKPASS')) {
@@ -374,16 +422,28 @@ class Git
         Platform::clearEnv('DYLD_LIBRARY_PATH');
     }
 
+    /**
+     * @return non-empty-string
+     */
     public static function getGitHubDomainsRegex(Config $config)
     {
         return '(' . implode('|', array_map('preg_quote', $config->get('github-domains'))) . ')';
     }
 
+    /**
+     * @return non-empty-string
+     */
     public static function getGitLabDomainsRegex(Config $config)
     {
         return '(' . implode('|', array_map('preg_quote', $config->get('gitlab-domains'))) . ')';
     }
 
+    /**
+     * @param non-empty-string $message
+     * @param string           $url
+     *
+     * @return never
+     */
     private function throwException($message, $url)
     {
         // git might delete a directory when it fails and php will not know
@@ -411,5 +471,30 @@ class Git
         }
 
         return self::$version;
+    }
+
+    /**
+     * @param string   $error
+     * @param string[] $credentials
+     *
+     * @return string
+     */
+    private function maskCredentials($error, array $credentials)
+    {
+        $maskedCredentials = array();
+
+        foreach ($credentials as $credential) {
+            if (in_array($credential, array('private-token', 'x-token-auth', 'oauth2', 'gitlab-ci-token', 'x-oauth-basic'))) {
+                $maskedCredentials[] = $credential;
+            } elseif (strlen($credential) > 6) {
+                $maskedCredentials[] = substr($credential, 0, 3) . '...' . substr($credential, -3);
+            } elseif (strlen($credential) > 3) {
+                $maskedCredentials[] = substr($credential, 0, 3) . '...';
+            } else {
+                $maskedCredentials[] = 'XXX';
+            }
+        }
+
+        return str_replace($credentials, $maskedCredentials, $error);
     }
 }

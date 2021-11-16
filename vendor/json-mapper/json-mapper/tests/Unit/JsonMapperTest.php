@@ -80,6 +80,18 @@ class JsonMapperTest extends TestCase
     /**
      * @covers \JsonMapper\JsonMapper
      */
+    public function testWithoutHandlerThrowsExceptionWhenMappingObject(): void
+    {
+        $jsonMapper = new JsonMapper();
+
+        $this->expectException(\RuntimeException::class);
+
+        $jsonMapper->mapObject(new \stdClass(), new \stdClass());
+    }
+
+    /**
+     * @covers \JsonMapper\JsonMapper
+     */
     public function testPushedMiddlewareIsInvokedWhenMappingObject(): void
     {
         $jsonMapper = new JsonMapper(new PropertyMapper());

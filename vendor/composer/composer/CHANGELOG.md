@@ -1,3 +1,36 @@
+### [2.1.12] 2021-11-09
+
+  * Fixed issues in proxied binary files relying on __FILE__ / __DIR__ on php <8 (#10261)
+  * Fixed 9999999-dev being shown in some cases by the `show` command (#10260)
+  * Fixed GitHub Actions output escaping regression on PHP 8.1 (#10250)
+
+### [2.1.11] 2021-11-02
+
+  * Fixed issues in proxied binary files when using declare() on php <8 (#10249)
+  * Fixed GitHub Actions output escaping issues (#10243)
+
+### [2.1.10] 2021-10-29
+
+  * Added type annotations to all classes, which may have an effect on CI/static analysis for people using Composer as a dependency (#10159)
+  * Fixed CurlDownloader requesting gzip encoding even when no gzip support is present (#10153)
+  * Fixed regression in 2.1.6 where the help command was not working for plugin commands (#10147)
+  * Fixed warning showing when an invalid cache dir is configured but unused (#10125)
+  * Fixed `require` command reverting changes even though dependency resolution succeeded when something fails in scripts for example (#10118)
+  * Fixed `require` not finding the right package version when some newly required extension is missing from the system (#10167)
+  * Fixed proxied binary file issues, now using output buffering (e1dbd65aff)
+  * Fixed and improved error reporting in several edge cases (#9804, #10136, #10163, #10224, #10209)
+  * Fixed some more Windows CLI parameter escaping edge cases
+
+### [2.1.9] 2021-10-05
+
+  * Security: Fixed command injection vulnerability on Windows (GHSA-frqg-7g38-6gcf / CVE-2021-41116)
+  * Fixed classmap parsing with a new class parser which does not rely on regexes anymore (#10107)
+  * Fixed inline git credentials showing up in output in some conditions (#10115)
+  * Fixed support for running updates while offline as long as the cache contains enough information (#10116)
+  * Fixed `show --all foo/bar` which as of 2.0.0 was not showing all versions anymore but only the installed one (#10095)
+  * Fixed VCS repos ignoring some versions silently when the API rate limit is reached (#10132)
+  * Fixed CA bundle to remove the expired Let's Encrypt root CA
+
 ### [2.1.8] 2021-09-15
 
   * Fixed regression in 2.1.7 when parsing classmaps in files containing invalid Unicode (#10102)
@@ -319,6 +352,10 @@
   * Fixed package ordering when autoloading and especially when loading plugins, to make sure dependencies are loaded before their dependents
   * Fixed suggest output being very spammy, it now is only one line long and shows more rarely
   * Fixed conflict rules like e.g. >=5 from matching dev-master, as it is not normalized to 9999999-dev internally anymore
+
+### [1.10.23] 2021-10-05
+
+  * Security: Fixed command injection vulnerability on Windows (GHSA-frqg-7g38-6gcf / CVE-2021-41116)
 
 ### [1.10.22] 2021-04-27
 
@@ -1260,6 +1297,10 @@
 
   * Initial release
 
+[2.1.12]: https://github.com/composer/composer/compare/2.1.11...2.1.12
+[2.1.11]: https://github.com/composer/composer/compare/2.1.10...2.1.11
+[2.1.10]: https://github.com/composer/composer/compare/2.1.9...2.1.10
+[2.1.9]: https://github.com/composer/composer/compare/2.1.8...2.1.9
 [2.1.8]: https://github.com/composer/composer/compare/2.1.7...2.1.8
 [2.1.7]: https://github.com/composer/composer/compare/2.1.6...2.1.7
 [2.1.6]: https://github.com/composer/composer/compare/2.1.5...2.1.6
@@ -1290,6 +1331,7 @@
 [2.0.0-alpha3]: https://github.com/composer/composer/compare/2.0.0-alpha2...2.0.0-alpha3
 [2.0.0-alpha2]: https://github.com/composer/composer/compare/2.0.0-alpha1...2.0.0-alpha2
 [2.0.0-alpha1]: https://github.com/composer/composer/compare/1.10.7...2.0.0-alpha1
+[1.10.23]: https://github.com/composer/composer/compare/1.10.22...1.10.23
 [1.10.22]: https://github.com/composer/composer/compare/1.10.21...1.10.22
 [1.10.21]: https://github.com/composer/composer/compare/1.10.20...1.10.21
 [1.10.20]: https://github.com/composer/composer/compare/1.10.19...1.10.20

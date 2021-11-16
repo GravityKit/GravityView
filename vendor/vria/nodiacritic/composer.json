@@ -1,0 +1,30 @@
+{
+    "name": "vria/nodiacritic",
+    "type": "library",
+    "description": "Tiny helper function that removes all diacritical signs from characters",
+    "keywords": ["string", "text", "filter", "diacritic", "accent"],
+    "homepage": "https://github.com/vria/nodiacritic",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Riabchenko Vlad",
+            "email": "contact@vria.eu",
+			"homepage": "http://vria.eu"
+        }
+    ],
+	"support": {
+		"email": "contact@vria.eu",
+		"issues": "https://github.com/vria/nodiacritic/issues"
+	},
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.8.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "VRia\\Utils\\": "src/"
+        }
+    }
+}

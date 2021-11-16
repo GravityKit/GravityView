@@ -11,6 +11,8 @@ use MyCLabs\Enum\Enum;
  * @method static TextNotation CAMEL_CASE()
  * @method static TextNotation UNDERSCORE()
  * @method static TextNotation KEBAB_CASE()
+ *
+ * @psalm-immutable
  */
 class TextNotation extends Enum
 {

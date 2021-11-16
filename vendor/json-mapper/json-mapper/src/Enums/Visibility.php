@@ -10,6 +10,8 @@ use MyCLabs\Enum\Enum;
  * @method static Visibility PUBLIC()
  * @method static Visibility PROTECTED()
  * @method static Visibility PRIVATE()
+ *
+ * @psalm-immutable
  */
 class Visibility extends Enum
 {

@@ -15,7 +15,6 @@ namespace Composer\Package\Loader;
 use Composer\Package\BasePackage;
 use Composer\Config;
 use Composer\IO\IOInterface;
-use Composer\Package\Package;
 use Composer\Package\RootAliasPackage;
 use Composer\Repository\RepositoryFactory;
 use Composer\Package\Version\VersionGuesser;
@@ -58,11 +57,15 @@ class RootPackageLoader extends ArrayLoader
     }
 
     /**
+     * @inheritDoc
+     *
      * @template PackageClass of RootPackage
-     * @param  array                        $config package data
-     * @param  class-string<PackageClass>   $class  FQCN to be instantiated
-     * @param  string                       $cwd    cwd of the root package to be used to guess the version if it is not provided
+     *
+     * @param string|null $cwd
+     *
      * @return RootPackage|RootAliasPackage
+     *
+     * @phpstan-param class-string<PackageClass> $class
      */
     public function load(array $config, $class = 'Composer\Package\RootPackage', $cwd = null)
     {
@@ -183,6 +186,12 @@ class RootPackageLoader extends ArrayLoader
         return $package;
     }
 
+    /**
+     * @param array<string, string>                                                                  $requires
+     * @param list<array{package: string, version: string, alias: string, alias_normalized: string}> $aliases
+     *
+     * @return list<array{package: string, version: string, alias: string, alias_normalized: string}>
+     */
     private function extractAliases(array $requires, array $aliases)
     {
         foreach ($requires as $reqName => $reqVersion) {
@@ -203,10 +212,20 @@ class RootPackageLoader extends ArrayLoader
 
     /**
      * @internal
+     *
+     * @param array<string, string> $requires
+     * @param string                $minimumStability
+     * @param array<string, int>    $stabilityFlags
+     *
+     * @return array<string, int>
+     *
+     * @phpstan-param array<string, BasePackage::STABILITY_*> $stabilityFlags
+     * @phpstan-return array<string, BasePackage::STABILITY_*>
      */
     public static function extractStabilityFlags(array $requires, $minimumStability, array $stabilityFlags)
     {
         $stabilities = BasePackage::$stabilities;
+        /** @var int $minimumStability */
         $minimumStability = $stabilities[$minimumStability];
         foreach ($requires as $reqName => $reqVersion) {
             $constraints = array();
@@ -259,6 +278,11 @@ class RootPackageLoader extends ArrayLoader
 
     /**
      * @internal
+     *
+     * @param array<string, string> $requires
+     * @param array<string, string> $references
+     *
+     * @return array<string, string>
      */
     public static function extractReferences(array $requires, array $references)
     {

@@ -1,0 +1,82 @@
+{
+    "name": "wp-cli/language-command",
+    "type": "wp-cli-package",
+    "description": "Installs, activates, and manages language packs.",
+    "homepage": "https://github.com/wp-cli/language-command",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Bachhuber",
+            "email": "daniel@runcommand.io",
+            "homepage": "https://runcommand.io"
+        }
+    ],
+    "require": {
+        "wp-cli/wp-cli": "^2.5"
+    },
+    "require-dev": {
+        "wp-cli/db-command": "^1.3 || ^2",
+        "wp-cli/entity-command": "^1.3 || ^2",
+        "wp-cli/extension-command": "^1.2 || ^2",
+        "wp-cli/wp-cli-tests": "^3.0.11"
+    },
+    "config": {
+        "process-timeout": 7200,
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.x-dev"
+        },
+        "bundled": true,
+        "commands": [
+            "language",
+            "language core",
+            "language core activate",
+            "language core is-installed",
+            "language core install",
+            "language core list",
+            "language core uninstall",
+            "language core update",
+            "language plugin",
+            "language plugin is-installed",
+            "language plugin install",
+            "language plugin list",
+            "language plugin uninstall",
+            "language plugin update",
+            "language theme",
+            "language theme is-installed",
+            "language theme install",
+            "language theme list",
+            "language theme uninstall",
+            "language theme update"
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        },
+        "files": [
+            "language-command.php"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "behat": "run-behat-tests",
+        "behat-rerun": "rerun-behat-tests",
+        "lint": "run-linter-tests",
+        "phpcs": "run-phpcs-tests",
+        "phpunit": "run-php-unit-tests",
+        "prepare-tests": "install-package-tests",
+        "test": [
+            "@lint",
+            "@phpcs",
+            "@phpunit",
+            "@behat"
+        ]
+    },
+    "support": {
+        "issues": "https://github.com/wp-cli/language-command/issues"
+    }
+}
