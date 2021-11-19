@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Fixed: JavaScript error when trying to edit entry's creator
 * Fixed: Recent Entries widget would cause a fatal error on WP 5.8 or newer
 
 = 2.13.4 on November 4, 2021 =
