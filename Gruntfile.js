@@ -4,12 +4,15 @@ module.exports = function(grunt) {
 	// npm install --save-dev load-grunt-tasks
 	require('load-grunt-tasks')(grunt);
 
+	const sass = require('node-sass');
+
 	grunt.initConfig({
 
 		pkg: grunt.file.readJSON('package.json'),
 
 		sass: {
 			options: {
+				implementation: sass,
 				outputStyle: 'compressed',
 				sourceMap: false
 			},
@@ -17,7 +20,7 @@ module.exports = function(grunt) {
 				files: [{
 		          expand: true,
 		          cwd: 'assets/css/scss',
-		          src: ['*.scss','!admin-merge-tags.scss','!admin-tooltips.scss','!admin-metabox-panel.scss','!admin-metabox.scss','!admin-members-plugin.scss'],
+		          src: ['*.scss','!admin-merge-tags.scss','!admin-tooltips.scss','!admin-metabox-panel.scss','!admin-metabox.scss','!admin-members-plugin.scss','!variables.scss'],
 		          dest: 'assets/css',
 		          ext: '.css'
 		      }]
@@ -261,7 +264,7 @@ module.exports = function(grunt) {
 		addtextdomain: {
 			options: {
 				textdomain: 'gravityview',    // Project text domain.
-				updateDomains: [ 'gravityview', 'gravity-view', 'gravityforms', 'edd_sl', 'edd', 'easy-digital-downloads' ]  // List of text domains to replace.
+				updateDomains: [ 'gravityview', 'gravity-view', 'gravityforms', 'edd_sl', 'edd', 'easy-digital-downloads', 'trustedlogin' ]  // List of text domains to replace.
 			},
 			target: {
 				files: {

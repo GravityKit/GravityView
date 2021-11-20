@@ -11,8 +11,7 @@ class GravityView_GF_Entries_List {
 		add_action( 'gform_entries_first_column_actions', array( $this, 'add_edit_link' ), 10, 5 );
 
 		// Add script to enable edit link
-		add_action( 'admin_head-forms_page_gf_entries', array( $this, 'add_edit_script') );
-
+		add_action( 'admin_head', array( $this, 'add_edit_script') );
 	}
 
 	/**
@@ -25,8 +24,13 @@ class GravityView_GF_Entries_List {
 	 */
 	public function add_edit_script() {
 
-		// We're on a single entry page, or at least not the Entries page.
-		if( !empty( $_GET['view'] ) && $_GET['view'] !== 'entries' ) { return; }
+		if ( ! class_exists( 'GFForms' ) ) {
+			return;
+		}
+
+		if ( ! in_array( GFForms::get_page(), array( 'entry_list', 'entry_detail' ) ) ) {
+			return;
+		}
 	?>
 		<script>
 		jQuery( document ).ready( function( $ ) {

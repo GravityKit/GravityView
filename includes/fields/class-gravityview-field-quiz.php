@@ -1,6 +1,6 @@
 <?php
 /**
- * @file class-gravityview-field-gquiz_score.php
+ * @file class-gravityview-field-gquiz.php
  * @package GravityView
  * @subpackage includes\fields
  */
@@ -10,6 +10,8 @@ class GravityView_Field_Quiz extends GravityView_Field {
 	var $name = 'quiz';
 
 	var $group = 'advanced';
+
+	var $icon = 'dashicons-forms';
 
 	public function __construct() {
 		$this->label = esc_html__( 'Quiz', 'gravityview' );

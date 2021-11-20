@@ -27,7 +27,7 @@
 				.on( 'gv-edd-deactivated', GV_EDD.deactivated )
 				.on( 'gv-edd-inactive gv-edd-other', GV_EDD.other )
 				.on( 'click', 'a[rel*=external]', GV_EDD.open_external_links )
-				.on( 'change', '#gform-settings', GV_EDD.toggle_checkboxes )
+				.on( 'change gv-init', GV_EDD.toggle_checkboxes )
 				.trigger( 'gv-init' );
 
 		},

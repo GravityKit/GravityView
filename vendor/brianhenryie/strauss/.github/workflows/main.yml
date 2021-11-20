@@ -1,0 +1,63 @@
+name: Lint and test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['7.4', '8.0']
+    name: PHP ${{ matrix.php }} tests
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install PHP
+        uses: shivammathur/setup-php@2.11.0
+        with:
+          php-version: ${{ matrix.php }}
+      - name: Debugging
+        run: |
+          php --version
+          php -m
+          composer --version
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-suggest --no-progress
+      - name: Run tests
+        run: vendor/bin/phpunit --printer mheap\\GithubActionsReporter\\Printer
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint project files
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: composer, cs2pr
+
+      - name: Debugging
+        run: |
+          php --version
+          php -m
+          composer --version
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-suggest --no-progress
+
+      - name: Run validate
+        run: vendor/bin/phpcs -q -n --report=checkstyle | cs2pr
+
+      - name: Commit PHPCBF changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "PHPCBF"

@@ -106,10 +106,11 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $post );
 
+		$year_and_one_day_ago = (int) date( 'L' ) ? '367 days' : '366 days';
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
 			'status' => 'active',
-			'3' => date( 'Y-m-d H:i:s', strtotime( '-367 days' ) ),
+			'3' => date( 'Y-m-d H:i:s', strtotime( "-${year_and_one_day_ago}" ) ),
 		) );
 
 		global $post;
@@ -121,7 +122,7 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="3" /]' => '1',
 			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="3" format="%y years" /]' => '1 years',
 			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="3" format="%y year(s) %m months %d day(s)" /]' => '1 year(s) 0 months 1 day(s)',
-			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="3" format="%a days" /]' => '367 days',
+			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="3" format="%a days" /]' => $year_and_one_day_ago,
 			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="30" /]' => 'Error: Field value not specified.',
 			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="30" hide_errors="1" /]' => '',
 			'[gv_age_2_0 entry_id="9999999" /]' => 'Error: Entry not found',
@@ -610,9 +611,11 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 		$upload_url = GFFormsModel::get_upload_url( $form['id'] );
 
+		$file = $upload_url . '/one.jpg';
+
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'5' => json_encode( array( $file = $upload_url . '/one.jpg' ) ),
+			'5' => json_encode( array( $file ) ),
 		) );
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
@@ -634,18 +637,18 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 		$output = $renderer->render( $field, $view, $form, $entry, $request );
 
-		$secure_file = $field->field->get_download_url( $file );
+		$secure_link = $field->field->get_download_url($file);
 
-		$expected = '<img src="' . $secure_file . '" width="250" class="gv-image gv-field-id-5" />';
+		$expected = sprintf(
+			'<a class="gravityview-fancybox" data-fancybox="%s" href="%s" rel="gv-field-%d-5-%d"><img src="' . $secure_link . '" width="250" class="gv-image gv-field-id-5" /></a>',
+			'gallery-' . sprintf( "%s-%s-%s", $form->ID, $field->ID, $entry->get_slug() ),
+			esc_attr( $secure_link ),
+			$form->ID,
+			$entry->ID
+		);
 
 		$this->assertEquals( $expected, $output );
 
-		add_filter( 'gravityview/fields/fileupload/allow_insecure_lightbox', '__return_true' ); /** ALARM! ALARM!! */
-
-		$output = $renderer->render( $field, $view, $form, $entry, $request );
-
-		$expected = sprintf( '<a class="thickbox" href="%s" rel="gv-field-%d-5-%d"><img src="' . $file . '" width="250" class="gv-image gv-field-id-5" /></a>', esc_attr( $file ), $form->ID, $entry->ID );
-		$this->assertEquals( $expected, $output );
 	}
 
 	/**

@@ -23,30 +23,46 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 
 		$correct = array(
 			'if="4" is="4"',
+			'if="4" is="3||4"',
 			'if="4" equals="4"',
+			'if="4" equals="3||4||5"',
 			'if="4" isnot="3"',
 			'if="carbon" contains="car"',
+			'if="carbon" contains="car||bon"',
+			'if="carbon" contains="car&&bon"',
 			'if="carbon" starts_with="car"',
+			'if="carbon" starts_with="c||car"',
 			'if="carbon" ends_with="bon"',
+			'if="carbon" ends_with="n||bon"',
 			'if="4" greater_than="1"',
+			'if="4" greater_than="1&&2"',
 			'if="4" greater_than_or_is="1"',
+			'if="4" greater_than_or_is="1&&2&&3&&4"',
 			'if="4" greater_than_or_equals="1"',
+			'if="4" greater_than_or_equals="4"',
+			'if="4" greater_than_or_equals="1&&2&&3&&4"',
+			'if="4" less_than_or_equals="5"',
 			'if="1"',
 		);
 
 		foreach ( $correct as $i => $true_statement ) {
-			$this->assertEquals( 'Correct a' . $i, do_shortcode( '['.$shortcode.' ' . $true_statement .' else="Incorrect a' . $i .'"]Correct a' . $i .'[/'.$shortcode.']') );
-			$this->assertEquals( 'Correct b' . $i, do_shortcode( '['.$shortcode.' ' . $true_statement .']Correct b' . $i .'[else]Incorrect b' . $i .'[/'.$shortcode.']') );
+			$this->assertEquals( 'Correct a' . $i, do_shortcode( '['.$shortcode.' ' . $true_statement .' else="Incorrect a' . $i .'"]Correct a' . $i .'[/'.$shortcode.']'), $true_statement );
+			$this->assertEquals( 'Correct b' . $i, do_shortcode( '['.$shortcode.' ' . $true_statement .']Correct b' . $i .'[else]Incorrect b' . $i .'[/'.$shortcode.']'), $true_statement );
 		}
 
 
 		$incorrect = array(
 			'if="4" is="2"',
 			'if="4" equals="asd"',
+			'if="4" equals="asd||feigegieng"',
 			'if="4" isnot="4"',
+			'if="4" isnot="4||5||6"',
+			'if="4" isnot="4&&5&&6"',
+			'if="carbon" contains="donkey"',
+			'if="carbon" contains="donkey||egg custard"',
 			'if="carbon" contains="donkey"',
 			'if="carbon" starts_with="dandy"',
-			'if="carbon" ends_with="lion"',
+			'if="carbon" ends_with="lion||flower"',
 			'if="4" greater_than="400"',
 			'if="4" greater_than_or_is="400"',
 			'if="4" greater_than_or_equals="400"',
@@ -225,6 +241,43 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 		$this->assertEquals( esc_html( $esc_html_string ), $value );
 
 		unset( $_GET['example'] );
+	}
+
+	/**
+	 * Make sure user meta works
+	 */
+	function test_gv_shortcode_for_user_meta() {
+
+		// @todo Fix test once gvlogic changes are made
+		$this->markTestSkipped();
+
+		$this->expected_deprecated[] = 'WP_User->id';
+
+		$administrator = $this->factory->user->create( array(
+				'user_login' => md5( microtime() ),
+				'user_email' => md5( microtime() ) . '@gravityview.tests',
+				'first_name' => 'Example',
+				'last_name'  => 'Crow',
+				'role' => 'administrator' )
+		);
+
+		add_user_meta( $administrator, 'custom_user_meta', 'Super Custom' );
+
+		wp_set_current_user( 0 );
+
+		$this->assertEquals( '', GFCommon::replace_variables_prepopulate( '{user:first_name}' ) );
+		$this->assertEquals( '', do_shortcode( '[gvlogic if="1" equals="1"]{user:custom_user_meta}[/gvlogic]' ) );
+
+		wp_set_current_user( $administrator );
+
+
+		// $current_user->get("ID") returns false, which gets replaced with empty string.
+		$this->assertEquals( 'Example', GFCommon::replace_variables_prepopulate( '{user:first_name}' ) );
+		$this->assertEquals( 'Super Custom', GFCommon::replace_variables_prepopulate( '{user:custom_user_meta}' ) );
+
+		$this->assertEquals( 'Example', do_shortcode( '[gvlogic if="{user:first_name}"]{user:first_name}[else]Not correct![/gvlogic]' ) );
+		$this->assertEquals( 'Example', do_shortcode( '[gvlogic if="1" equals="1"]{user:first_name}[else]Not correct![/gvlogic]' ) );
+		$this->assertEquals( 'Super Custom', do_shortcode( '[gvlogic if="1" equals="1"]{user:custom_user_meta}[else]Not correct![/gvlogic]' ) );
 	}
 
 	/**

@@ -112,6 +112,7 @@ final class Core {
 		}
 
 		/** Require critical legacy core files. @todo Deprecate */
+		require_once $this->plugin->dir( 'includes/import-functions.php' );
 		require_once $this->plugin->dir( 'includes/helper-functions.php' );
 		require_once $this->plugin->dir( 'includes/class-common.php');
 		require_once $this->plugin->dir( 'includes/connector-functions.php');
@@ -243,9 +244,9 @@ final class Core {
 		do_action( 'gravityview/loaded' );
 	}
 
-	private function __clone() { }
+	public function __clone() { }
 
-	private function __wakeup() { }
+	public function __wakeup() { }
 
 	/**
 	 * Wrapper magic.

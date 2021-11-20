@@ -119,9 +119,9 @@ final class Plugin {
 	private function __construct() {
 
 		/**
-		 * Load translations.
+		 * Load translations. Must be priority 1.
 		 */
-		add_action( 'init', array( $this, 'load_textdomain' ) );
+		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ), 1 );
 
 		/**
 		 * Load some frontend-related legacy files.
@@ -235,6 +235,7 @@ final class Plugin {
 		include_once $this->dir( 'includes/extensions/delete-entry/class-delete-entry.php' );
 		include_once $this->dir( 'includes/extensions/duplicate-entry/class-duplicate-entry.php' );
 		include_once $this->dir( 'includes/extensions/entry-notes/class-gravityview-field-notes.php' );
+		include_once $this->dir( 'includes/extensions/lightbox/class-gravityview-lightbox.php' );
 
 		// Load WordPress Widgets
 		include_once $this->dir( 'includes/wordpress-widgets/register-wordpress-widgets.php' );
@@ -268,7 +269,7 @@ final class Plugin {
 	}
 
 	/**
-	 * Load the translations.
+	 * Load the translations on `plugins_loaded`.
 	 *
 	 * Order of look-ups:
 	 *
@@ -280,7 +281,6 @@ final class Plugin {
 	 * @return void
 	 */
 	public function load_textdomain() {
-
 		$domain = 'gravityview';
 
 		// 1. /wp-content/languages/plugins/gravityview-{locale}.mo (loaded by WordPress Core)
@@ -302,6 +302,8 @@ final class Plugin {
 		if ( $loaded ) {
 			return;
 		}
+
+		$locale = apply_filters( 'plugin_locale', ( ( function_exists('get_user_locale') && is_admin() ) ? get_user_locale() : get_locale() ), 'gravityview' );
 
 		gravityview()->log->error( sprintf( 'Unable to load textdomain for %s locale.', $locale ) );
 	}
@@ -676,9 +678,9 @@ final class Plugin {
 		delete_site_transient( 'gravityview_related_plugins' );
 	}
 
-	private function __clone() {
+	public function __clone() {
 	}
 
-	private function __wakeup() {
+	public function __wakeup() {
 	}
 }

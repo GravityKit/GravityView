@@ -12,19 +12,25 @@
  * globals jQuery
  */
 
-jQuery(function( $ ) {
-
+jQuery( function ( $ ) {
 	var gvFront = {
-
 		init: function () {
 			this.datepicker();
 
-			$( '.gv-widget-search' ).on( 'keypress change', this.form_changed );
+			$( '.gv-widget-search' ).each( function () {
+				$( this ).attr( 'data-state', $( this ).serialize() );
+			} );
+
+			$( '.gv-widget-search' ).on( 'keyup, change', this.form_changed );
+
+			// Logic for the "search entries" field
+			$( '.gv-widget-search .gv-search-field-search_all input[type=search]' ).on( 'search', function ( e ) {
+				$( e.target ).parents( 'form' ).trigger( 'keyup' );
+			} );
 
 			$( '.gv-search-clear' ).on( 'click', this.clear_search );
 
 			$( 'a.gv-sort' ).on( 'click', this.multiclick_sort );
-
 		},
 
 		/**
@@ -35,17 +41,17 @@ jQuery(function( $ ) {
 		 * @param e jQuery Event
 		 */
 		form_changed: function ( e ) {
+			var $form = $( e.target ).hasClass( 'gv-widget-search' ) ? $( e.target ) : $( e.target ).parents( 'form' );
 
-			// Only trigger change on characters, not Shift or Command/Alt
-			if ( e.type === 'keypress' && (
-				e.which === 0 || e.ctrlKey || e.metaKey || e.altKey
-				) ) {
-				return;
+			if ( $form.serialize() === $form.attr( 'data-state' ) ) {
+				if ( $form.hasClass( 'gv-is-search' ) ) {
+					$( '.gv-search-clear', $( this ) ).text( gvGlobals.clear );
+				} else {
+					$( '.gv-search-clear', $( this ) ).fadeOut( 100 );
+				}
+			} else {
+				$( '.gv-search-clear', $( this ) ).text( gvGlobals.reset ).fadeIn( 100 );
 			}
-
-			$( this ).attr( 'data-form-changed', '1' );
-
-			$( '.gv-search-clear', $( this ) ).text( gvGlobals.reset ).fadeIn( 100 );
 		},
 
 		/**
@@ -58,18 +64,13 @@ jQuery(function( $ ) {
 		 * @returns {boolean}
 		 */
 		clear_search: function ( e ) {
-
 			var $form = $( this ).parents( 'form' );
-			var changed = ( $form.attr( 'data-form-changed' ) === '1' );
+			var changed = ( $form.attr( 'data-state' ) !== $form.serialize() );
 
 			// Handle an existing search
-			if ( $form.hasClass( 'gv-is-search' ) ) {
-
+			if ( $form.hasClass( 'gv-is-search' ) && !changed ) {
 				// If there are no changes, submit the form
-				if ( !changed ) {
-					return true;
-				}
-
+				return true;
 			}
 
 			// If the form has been changed, just reset the data
@@ -78,12 +79,11 @@ jQuery(function( $ ) {
 
 				$form.trigger( 'reset' );
 
-				$form.attr( 'data-form-changed', null ) // Clear the changed status
-					.find( '.gv-search-clear' ).text( gvGlobals.clear ); // Update the text of the button
-
 				// If there's now no form field text, hide the reset button
 				if ( false === $form.hasClass( 'gv-is-search' ) ) {
 					$( '.gv-search-clear', $form ).hide( 100 );
+				} else {
+					$( '.gv-search-clear', $form ).text( gvGlobals.clear ); // Update the text of the button
 				}
 
 				return false;
@@ -96,10 +96,8 @@ jQuery(function( $ ) {
 		 * Generate the datepicker for GV date fields
 		 */
 		datepicker: function () {
-
 			// If datepicker is loaded
 			if ( jQuery.fn.datepicker ) {
-
 				$( '.gv-datepicker' ).each( function () {
 					var element = jQuery( this );
 					var image = "";
@@ -116,7 +114,6 @@ jQuery(function( $ ) {
 
 					// Process custom date formats
 					if ( !gvGlobals.datepicker.dateFormat ) {
-
 						var format = "mm/dd/yy";
 
 						if ( element.hasClass( "mdy" ) )
@@ -144,12 +141,10 @@ jQuery(function( $ ) {
 		multiclick_sort: function ( e ) {
 			if ( e.shiftKey ) {
 				e.preventDefault();
-				location.href = $( this ).data('multisort-href');
+				location.href = $( this ).data( 'multisort-href' );
 			}
 		}
-
 	};
 
 	gvFront.init();
-
-});
+} );

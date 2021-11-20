@@ -56,6 +56,24 @@ class gravityview extends \GV\Shortcode {
 			return '';
 		}
 
+		$post = get_post( $view->ID );
+
+		$gv_view_data = \GravityView_View_Data::getInstance();
+
+		if ( ! $gv_view_data->views->contains( $view->ID ) ) {
+			$gv_view_data->views->add( $view );
+		}
+
+		/**
+		 * @action `gravityview/shortcode/before-processing` Runs before the GV shortcode is processed; can be used to load additional scripts/styles
+		 *
+		 * @since  2.13.4
+		 *
+		 * @param \GV\View $view GV View
+		 * @param \WP_Post $post Associated WP post
+		 */
+		do_action( 'gravityview/shortcode/before-processing', $view, $post );
+
 		gravityview()->views->set( $view );
 
 		/**

@@ -98,6 +98,23 @@ final class GravityView_Delete_Entry {
 
 		add_filter( 'gravityview/field/is_visible', array( $this, 'maybe_not_visible' ), 10, 3 );
 
+		add_filter( 'gravityview/api/reserved_query_args', array( $this, 'add_reserved_arg' ) );
+	}
+
+	/**
+	 * Adds "delete" to the list of internal reserved query args
+	 *
+	 * @since 2.10
+	 *
+	 * @param array $args Existing reserved args
+	 *
+	 * @return array
+	 */
+	public function add_reserved_arg( $args ) {
+
+		$args[] = 'delete';
+
+		return $args;
 	}
 
 	/**
@@ -220,6 +237,17 @@ final class GravityView_Delete_Entry {
 		// Use the slug instead of the ID for consistent security
 		$entry_slug = $gv_entry->get_slug();
 
+		/**
+		 * @filter `gravityview/delete-entry/add_query_args` Modify whether to include passed $_GET parameters to the end of the url
+		 * @since 2.10
+		 * @param bool $add_query_params Whether to include passed $_GET parameters to the end of the Delete Link URL. Default: true.
+		 */
+		$add_query_args = apply_filters( 'gravityview/delete-entry/add_query_args', true );
+
+		if ( $add_query_args ) {
+			$base = add_query_arg( gv_get_query_args(), $base );
+		}
+
 		$actionurl = add_query_arg(
 			array(
 				'action'   => 'delete',
@@ -227,7 +255,7 @@ final class GravityView_Delete_Entry {
 				'gvid'     => $view_id,
 				'view_id'  => $view_id,
 			),
-			$base
+			remove_query_arg( 'message', $base )
 		);
 
 		$url = wp_nonce_url( $actionurl, 'delete_' . $entry_slug, 'delete' );
@@ -273,8 +301,17 @@ final class GravityView_Delete_Entry {
 			'onclick' => self::get_confirm_dialog(),
 		);
 
-		echo gravityview_get_link( self::get_delete_link( $entry, $view_id, $post_id ), esc_attr__( 'Delete', 'gravityview' ), $attributes );
+		$View = \GV\View::by_id( $view_id );
 
+		$delete_label = __( 'Delete', 'Button label to delete an entry from the Edit Entry screen', 'gravityview' );
+
+		if ( $View ) {
+			$delete_label = $View->settings->get( 'action_label_delete', $delete_label );
+		}
+
+		$delete_label = GFCommon::replace_variables( $delete_label, $form, $entry );
+
+		echo gravityview_get_link( self::get_delete_link( $entry, $view_id, $post_id ), esc_html( $delete_label ), $attributes );
 	}
 
 	/**

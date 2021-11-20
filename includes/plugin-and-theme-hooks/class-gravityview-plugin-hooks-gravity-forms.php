@@ -27,6 +27,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms extends GravityView_Plugin_and_Them
 	protected $style_handles = array(
 		'gform_tooltip',
 		'gform_font_awesome',
+		'gform_admin_icons',
 	);
 
 	/**

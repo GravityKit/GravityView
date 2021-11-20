@@ -67,6 +67,10 @@ class GravityView_Edit_Entry_Admin {
 		GravityView_Render_Settings::render_setting_row( 'edit_redirect', $current_settings );
 
 		GravityView_Render_Settings::render_setting_row( 'edit_redirect_url', $current_settings );
+
+		GravityView_Render_Settings::render_setting_row( 'action_label_update', $current_settings );
+
+		GravityView_Render_Settings::render_setting_row( 'action_label_cancel', $current_settings );
 	}
 
     /**
@@ -80,7 +84,7 @@ class GravityView_Edit_Entry_Admin {
         if( $zone !== 'edit' ) {
 
             $entry_default_fields['edit_link'] = array(
-                'label' => __('Edit Entry', 'gravityview'),
+                'label' => __('Link to Edit Entry', 'gravityview'),
                 'type' => 'edit_link',
                 'desc'	=> __('A link to edit the entry. Visible based on View settings.', 'gravityview'),
                 'icon' => 'dashicons-welcome-write-blog',
@@ -145,6 +149,14 @@ class GravityView_Edit_Entry_Admin {
             'merge_tags' => true,
         );
 
+	    $add_option['new_window'] = array(
+		    'type' => 'checkbox',
+		    'label' => __( 'Open link in a new tab or window?', 'gravityview' ),
+		    'value' => false,
+		    'group' => 'display',
+		    'priority' => 1300,
+	    );
+
         return array_merge( $add_option, $field_options );
     }
 
@@ -181,16 +193,6 @@ class GravityView_Edit_Entry_Admin {
 
         // We only want to modify the settings for the edit context
         if( 'edit' !== $context ) {
-
-            /**
-             * @since 1.8.4
-             */
-            $field_options['new_window'] = array(
-                'type' => 'checkbox',
-                'label' => __( 'Open link in a new tab or window?', 'gravityview' ),
-                'value' => false,
-            );
-
             return $field_options;
         }
 
@@ -205,6 +207,7 @@ class GravityView_Edit_Entry_Admin {
                 'tooltip' => 'allow_edit_cap',
                 'class' => 'widefat',
                 'value' => 'read', // Default: entry creator
+                'group' => 'visibility',
             ),
         );
 

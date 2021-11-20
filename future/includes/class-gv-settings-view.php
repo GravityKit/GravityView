@@ -245,6 +245,7 @@ class View_Settings extends Settings {
 					'options'           => array(
 						'ASC'  => __( 'ASC', 'gravityview' ),
 						'DESC' => __( 'DESC', 'gravityview' ),
+						'RAND' => __( 'Random', 'gravityview' ),
 					),
 					'show_in_shortcode' => true,
 					'article'           => array(
@@ -392,6 +393,10 @@ class View_Settings extends Settings {
 						'1' => __( 'Redirect to Multiple Entries', 'gravityview' ),
 						'2' => __( 'Redirect to URL', 'gravityview' ),
 					),
+					'article'           => array(
+						'id' => '5e9a3e0c2c7d3a7e9aeb2efb',
+						'url' => 'https://docs.gravityview.co/article/707-view-settings-redirect-after-editing',
+					),
 				),
 				'edit_return_context' => array(
 					'label'             => __( 'Editing Returns To&hellip;', 'gravityview' ),
@@ -420,6 +425,46 @@ class View_Settings extends Settings {
 					'value'             => '',
 					'placeholder'       => 'https://www.example.com/landing-page/',
 					'requires'          => 'edit_redirect=2',
+					'merge_tags'        => 'force',
+				),
+				'action_label_update' => array(
+					'label'             => __( 'Update Button Text', 'gravityview' ),
+					'group'             => 'default',
+					'desc'              => '',
+					'type'              => 'text',
+					'value'             => _x( 'Update', 'Button to update an entry the user is editing', 'gravityview' ),
+					'merge_tags'        => 'force',
+				),
+				'action_label_cancel' => array(
+					'label'             => __( 'Cancel Link Text', 'gravityview' ),
+					'group'             => 'default',
+					'desc'              => '',
+					'type'              => 'text',
+					'value'             => _x( 'Cancel', 'Shown when the user decides not to edit an entry', 'gravityview' ),
+					'merge_tags'        => 'force',
+				),
+				'action_label_next' => array(
+					'label'             => __( 'Next Page Button Text', 'gravityview' ),
+					'group'             => 'default',
+					'desc'              => __( 'Only shown when multi-page forms are enabled.', 'gravityview' ),
+					'type'              => 'text',
+					'value'             => __( 'Next', 'Show the next page in a multi-page form', 'gravityview' ),
+					'merge_tags'        => 'force',
+				),
+				'action_label_previous' => array(
+					'label'             => __( 'Previous Page Button Text', 'gravityview' ),
+					'group'             => 'default',
+					'desc'              => __( 'Only shown when multi-page forms are enabled.', 'gravityview' ),
+					'type'              => 'text',
+					'value'             => __( 'Previous', 'Show the previous page in a multi-page form', 'gravityview' ),
+					'merge_tags'        => 'force',
+				),
+				'action_label_delete' => array(
+					'label'             => __( 'Delete Link Text', 'gravityview' ),
+					'group'             => 'default',
+					'desc'              => '',
+					'type'              => 'text',
+					'value'             => __( 'Delete', 'Button label to delete an entry from the Edit Entry screen', 'gravityview' ),
 					'merge_tags'        => 'force',
 				),
 				'edit_locking' => array(
@@ -532,10 +577,6 @@ class View_Settings extends Settings {
 			)
 		);
 
-		if ( version_compare( \GFCommon::$version, '2.3-beta-4', '>=' ) ) {
-			$default_settings['sort_direction']['options']['RAND'] = __( 'Random', 'gravityview' );
-		}
-
 		/**
 		 * @filter `gravityview_default_args` Modify the default settings for new Views
 		 * @param[in,out] array $default_args Array of default args.
@@ -558,7 +599,7 @@ class View_Settings extends Settings {
 			}
 			return $defaults;
 
-			// But sometimes, we want all the details.
+		// But sometimes, we want all the details.
 		} else {
 			foreach ( $default_settings as $key => $value ) {
 

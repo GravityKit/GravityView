@@ -7,7 +7,7 @@ class GravityView_Admin {
 		if( ! is_admin() ) { return; }
 
 		// If Gravity Forms isn't active or compatibile, stop loading
-		if( false === GravityView_Compatibility::is_valid() ) {
+		if( false === gravityview()->plugin->is_compatible() ) {
 			return;
 		}
 
@@ -65,9 +65,9 @@ class GravityView_Admin {
 	public static function no_views_text() {
 
 		if ( isset( $_REQUEST['post_status'] ) && 'trash' === $_REQUEST['post_status'] ) {
-			return __( 'No Views found in Trash', 'gravityview' );
+			return esc_html__( 'No Views found in Trash', 'gravityview' );
 		} elseif( ! empty( $_GET['s'] ) ) {
-			return __( 'No Views found.', 'gravityview' );
+			return esc_html__( 'No Views found.', 'gravityview' );
 		}
 
 		// Floaty the Astronaut says "oi"
@@ -140,6 +140,7 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-installer.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/class-gravityview-bulk-actions.php' );
 
 		/**
 		 * @action `gravityview_include_backend_actions` Triggered after all GravityView admin files are loaded

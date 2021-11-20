@@ -2,7 +2,7 @@ FROM php:7.4-cli
 
 # Install required system packages
 RUN apt-get update && \
-    apt-get -y install iputils-ping default-mysql-client sudo nano less zip unzip zlib1g-dev libzip-dev libpng-dev --no-install-recommends && \
+    apt-get -y install git iputils-ping default-mysql-client sudo nano less zip unzip zlib1g-dev libzip-dev libpng-dev --no-install-recommends && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -14,7 +14,6 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN curl -sS https://getcomposer.org/installer | php -- \
         --filename=composer \
         --install-dir=/usr/local/bin
-RUN composer global require --optimize-autoloader "hirak/prestissimo"
 
 # Add WP-CLI
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar

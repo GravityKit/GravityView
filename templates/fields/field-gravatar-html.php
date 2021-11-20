@@ -3,7 +3,7 @@
  * Gravatar field output for HTML rendering
  *
  * @global \GV\Template_Context $gravityview
- * @since TODO
+ * @since 2.8
  */
 
 if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {

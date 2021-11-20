@@ -671,6 +671,7 @@ HTML;
 			'no-conflict-mode'     => '1',
 			'support_port'         => '1',
 			'flexbox_search'       => '1',
+			'lightbox'             => 'fancybox',
 			'rest_api'             => '0',
 			'beta'                 => '0',
 			'powered_by'           => '0',
@@ -766,7 +767,12 @@ HTML;
 			$license_key    = $this->get( 'license_key' );
 		}
 
-		$license_id = empty( $license_key ) ? 'license' : $license_key;
+		if ( empty( $license_key ) ) {
+			$license_id = 'license';
+			$license_status = '';
+		} else {
+			$license_id = $license_key;
+		}
 
 		$message = esc_html__( 'Your GravityView license %s. This means you&rsquo;re missing out on updates and support! %sActivate your license%s or %sget a license here%s.', 'gravityview' );
 
@@ -876,23 +882,30 @@ HTML;
 
 		$styles = parent::styles();
 
+		$deps = array(
+			'gform_admin',
+			'gaddon_form_settings_css',
+			'gform_font_awesome',
+		);
+
+		// This file was removed from 2.5
+		if( ! gravityview()->plugin->is_GF_25() ) {
+			$deps[] = 'gform_tooltip';
+		}
+
 		$styles[] = array(
-				'handle'  => 'gravityview_settings',
-				'src'     => plugins_url( 'assets/css/admin-settings.css', GRAVITYVIEW_FILE ),
-				'version' => Plugin::$version,
-				'deps'    => array(
-						'gform_admin',
-						'gaddon_form_settings_css',
-						'gform_tooltip',
-						'gform_font_awesome',
+			'handle'  => 'gravityview_settings',
+			'src'     => plugins_url( 'assets/css/admin-settings.css', GRAVITYVIEW_FILE ),
+			'version' => Plugin::$version,
+			'deps'    => $deps,
+			'enqueue' => array(
+				array(
+					'admin_page' => array(
+						'app_settings',
+						'plugin_settings',
+					),
 				),
-				'enqueue' => array(
-						array(
-								'admin_page' => array(
-										'app_settings',
-								),
-						),
-				),
+			),
 		);
 
 		return $styles;

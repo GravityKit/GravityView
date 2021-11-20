@@ -108,6 +108,11 @@ class Renderer {
 			),
 		) );
 
+		// There aren't any entries to show!
+		if ( empty( $count ) ) {
+			return;
+		}
+
 		$notice_title = _n(
 			esc_html__( 'There is an unapproved entry that is not being shown.', 'gravityview' ),
 			esc_html__( 'There are %s unapproved entries that are not being shown.', 'gravityview' ),
@@ -137,7 +142,7 @@ class Renderer {
 	/**
 	 * Check empty configuration.
 	 *
-	 * @since 2.9.5
+	 * @since 2.10
 	 *
 	 * @param \GV\Template_Context $gravityview The $gravityview template object.
 	 *
