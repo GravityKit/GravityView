@@ -41,10 +41,13 @@ class GravityView_PHPFilterSort_Test extends GV_UnitTestCase {
         ) ) );
 
 		foreach ( range( 1, 25 ) as $i ) {
-		    $this->factory->entry->create_and_get( array(
+
+			$s = sprintf( '[%d] Some text in a textarea (%s)', $i, wp_generate_password( 12 ) );
+
+			$this->factory->entry->create_and_get( array(
 				'form_id' => $form['id'],
 				'status' => 'active',
-				'16' => $s = sprintf( '[%d] Some text in a textarea (%s)', $i, wp_generate_password( 12 ) ),
+				'16' => $s,
 			) );
 		}
 
@@ -242,7 +245,7 @@ class GravityView_PHPFilterSort_Test extends GV_UnitTestCase {
 		$view->fields = \GV\Field_Collection::from_configuration( $fields );
 
         $entries = $view->get_entries( new GV\Frontend_Request() );
-		
+
 		$this->assertEquals( array( '1', '1', '1.2', '2.11', '3', '10', '11', '21', '120', '121', 'wud', 'wud' ), $entries->pluck( 1 ) );
 
 		$_GET = array(
