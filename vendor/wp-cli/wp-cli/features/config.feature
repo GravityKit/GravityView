@@ -32,8 +32,12 @@ Feature: Have a config file
     When I run `wp core is-installed`
     Then STDOUT should be empty
 
-    When I run `wp` from 'wp-content'
-    Then STDOUT should not be empty
+    # TODO: Throwing deprecations with PHP 8.1+ and WP < 5.9
+    When I try `wp` from 'wp-content'
+    Then STDOUT should contain:
+      """
+      wp <command>
+      """
 
   Scenario: WP in a subdirectory
     Given a WP installation in 'foo'
@@ -102,25 +106,28 @@ Feature: Have a config file
         - core multisite-convert
       """
 
-    When I run `WP_CLI_CONFIG_PATH=config.yml wp`
+    # TODO: Throwing deprecations with PHP 8.1+ and WP < 5.9
+    When I try `WP_CLI_CONFIG_PATH=config.yml wp`
     Then STDOUT should not contain:
       """
       eval-file
       """
 
     When I try `WP_CLI_CONFIG_PATH=config.yml wp help eval-file`
-    Then STDERR should be:
+    Then STDERR should contain:
       """
       Error: The 'eval-file' command has been disabled from the config file.
       """
 
-    When I run `WP_CLI_CONFIG_PATH=config.yml wp core`
+    # TODO: Throwing deprecations with PHP 8.1+ and WP < 5.9
+    When I try `WP_CLI_CONFIG_PATH=config.yml wp core`
     Then STDOUT should not contain:
       """
       or: wp core multisite-convert
       """
 
-    When I run `WP_CLI_CONFIG_PATH=config.yml wp help core`
+    # TODO: Throwing deprecations with PHP 8.1+ and WP < 5.9
+    When I try `WP_CLI_CONFIG_PATH=config.yml wp help core`
     Then STDOUT should not contain:
       """
       multisite-convert
@@ -479,51 +486,51 @@ Feature: Have a config file
       """
     And a wp-config.php file:
       """
-<?php
-if ( file_exists( __DIR__ . '/local-dev.php' ) ) {
-  require_once __DIR__ . '/local-dev.php';
-}
+      <?php
+      if ( file_exists( __DIR__ . '/local-dev.php' ) ) {
+        require_once __DIR__ . '/local-dev.php';
+      }
 
-// ** MySQL settings ** //
-/** The name of the database for WordPress */
-define('DB_NAME', 'wp_cli_test');
+      // ** MySQL settings ** //
+      /** The name of the database for WordPress */
+      define('DB_NAME', 'wp_cli_test');
 
-/** MySQL database username */
-define('DB_USER', '{DB_USER}');
+      /** MySQL database username */
+      define('DB_USER', '{DB_USER}');
 
-/** MySQL database password */
-define('DB_PASSWORD', '{DB_PASSWORD}');
+      /** MySQL database password */
+      define('DB_PASSWORD', '{DB_PASSWORD}');
 
-/** MySQL hostname */
-define('DB_HOST', '{DB_HOST}');
+      /** MySQL hostname */
+      define('DB_HOST', '{DB_HOST}');
 
-/** Database Charset to use in creating database tables. */
-define('DB_CHARSET', 'utf8');
+      /** Database Charset to use in creating database tables. */
+      define('DB_CHARSET', 'utf8');
 
-/** The Database Collate type. Don't change this if in doubt. */
-define('DB_COLLATE', '');
+      /** The Database Collate type. Don't change this if in doubt. */
+      define('DB_COLLATE', '');
 
-$table_prefix = 'wp_';
+      $table_prefix = 'wp_';
 
-define( 'WP_ALLOW_MULTISITE', true );
-define('MULTISITE', true);
-define('SUBDOMAIN_INSTALL', false);
-$base = '/';
-if ( ! defined( 'DOMAIN_CURRENT_SITE' ) ) {
-  define('DOMAIN_CURRENT_SITE', 'example.com');
-}
-define('PATH_CURRENT_SITE', '/');
-define('SITE_ID_CURRENT_SITE', 1);
-define('BLOG_ID_CURRENT_SITE', 1);
+      define( 'WP_ALLOW_MULTISITE', true );
+      define('MULTISITE', true);
+      define('SUBDOMAIN_INSTALL', false);
+      $base = '/';
+      if ( ! defined( 'DOMAIN_CURRENT_SITE' ) ) {
+        define('DOMAIN_CURRENT_SITE', 'example.com');
+      }
+      define('PATH_CURRENT_SITE', '/');
+      define('SITE_ID_CURRENT_SITE', 1);
+      define('BLOG_ID_CURRENT_SITE', 1);
 
-/* That's all, stop editing! Happy publishing. */
+      /* That's all, stop editing! Happy publishing. */
 
-/** Absolute path to the WordPress directory. */
-if ( !defined('ABSPATH') )
-  define('ABSPATH', dirname(__FILE__) . '/');
+      /** Absolute path to the WordPress directory. */
+      if ( !defined('ABSPATH') )
+        define('ABSPATH', dirname(__FILE__) . '/');
 
-/** Sets up WordPress vars and included files. */
-require_once(ABSPATH . 'wp-settings.php');
+      /** Sets up WordPress vars and included files. */
+      require_once(ABSPATH . 'wp-settings.php');
       """
 
     When I try `wp option get home`
@@ -535,5 +542,5 @@ require_once(ABSPATH . 'wp-settings.php');
     When I run `wp option get home --url=example.com`
     Then STDOUT should be:
       """
-      http://example.com
+      https://example.com
       """

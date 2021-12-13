@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 16-November-2021 using Strauss.
+ * Modified by gravityview on 13-December-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -104,10 +104,10 @@ final class Envelope {
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param array  $meta_data
+		 * @param array  $metadata
 		 * @param Config $config Current TrustedLogin configuration
 		 */
-		$meta_data = apply_filters( 'trustedlogin/' . $this->config->ns() . '/envelope/meta', array(), $this->config );
+		$metadata = apply_filters( 'trustedlogin/' . $this->config->ns() . '/envelope/meta', array(), $this->config );
 
 		return array(
 			'secretId'   	  => $secret_id,
@@ -120,7 +120,7 @@ final class Envelope {
 			'version'    	  => Client::VERSION,
 			'nonce'		 	  => \sodium_bin2hex( $nonce ),
 			'clientPublicKey' => \sodium_bin2hex( $e_keys->publicKey ),
-			'metaData'		  => $meta_data,
+			'metaData'		  => $metadata,
 		);
 	}
 

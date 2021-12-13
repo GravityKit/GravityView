@@ -9,6 +9,17 @@ This projects adheres to [Keep a CHANGELOG](http://keepachangelog.com/) and uses
 
 _Nothing yet._
 
+## [1.0.3] - 2021-11-23
+
+### Changed
+* General housekeeping.
+
+### Fixed
+* The failure message thrown for the `assertIsClosedResource()` and `assertIsNotClosedResource()` assertions will now be more informative, most notably, when the value under test _is_ a closed resource. PR [#65], props [Alain Schlesser] for reporting.
+
+[#65]: https://github.com/Yoast/PHPUnit-Polyfills/pull/65
+
+
 ## [1.0.2] - 2021-10-03
 
 As of version 2.15.0 of the `shivammathur/setup-php` action for GitHub Actions, the PHPUnit Polyfills can be installed directly from this action using the `tools` key.
@@ -17,7 +28,7 @@ As of version 2.15.0 of the `shivammathur/setup-php` action for GitHub Actions, 
 * README: FAQ section about installing and using the library via the `shivammathur/setup-php` action. PR [#52]
 
 ### Changed
-* README: minor textual clarifications and improvements. PRs [#52], [$54], props [Pierre Gordon].
+* README: minor textual clarifications and improvements. PRs [#52], [#54], props [Pierre Gordon].
 * General housekeeping.
 
 ### Fixed
@@ -100,15 +111,16 @@ Initial release.
 
 
 [Unreleased]: https://github.com/Yoast/PHPUnit-Polyfills/compare/main...HEAD
+[1.0.3]: https://github.com/Yoast/PHPUnit-Polyfills/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/Yoast/PHPUnit-Polyfills/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/Yoast/PHPUnit-Polyfills/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/Yoast/PHPUnit-Polyfills/compare/0.2.0...1.0.0
 [0.2.0]: https://github.com/Yoast/PHPUnit-Polyfills/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/Yoast/PHPUnit-Polyfills/compare/e8f8b7a73737aa9a5974bd9c73d2bd8d09f69873...0.1.0
 
+[Alain Schlesser]: https://github.com/schlessera
 [Gary Jones]: https://github.com/GaryJones
 [Marc Siegrist]: https://github.com/mergeMarc
 [Mark Baker]: https://github.com/MarkBaker
 [Pascal Birchler]: https://github.com/swissspidy
 [Pierre Gordon]: https://github.com/pierlon
-

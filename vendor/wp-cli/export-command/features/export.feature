@@ -313,6 +313,25 @@ Feature: Export content.
       <![CDATA[Pear Post]]>
       """
 
+    When I run `wp export --post_type=post --category={PEAR_TERM_ID}`
+    And save STDOUT 'Writing to file %s' as {EXPORT_FILE}
+    Then the {EXPORT_FILE} file should contain:
+      """
+      <category domain="category" nicename="pear"><![CDATA[Pear]]></category>
+      """
+    And the {EXPORT_FILE} file should contain:
+      """
+      <![CDATA[Pear Post]]>
+      """
+    And the {EXPORT_FILE} file should not contain:
+      """
+      <category domain="category" nicename="apple"><![CDATA[Apple]]></category>
+      """
+    And the {EXPORT_FILE} file should not contain:
+      """
+      <![CDATA[Apple Post]]>
+      """
+
     When I run `wp site empty --yes`
     Then STDOUT should not be empty
 
@@ -328,11 +347,11 @@ Feature: Export content.
     When I run `wp post list --post_type=post`
     Then STDOUT should contain:
       """
-      Apple Post
+      Pear Post
       """
     And STDOUT should not contain:
       """
-      Pear Post
+      Apple Post
       """
 
   Scenario: Export posts from a given author

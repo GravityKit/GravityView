@@ -1461,7 +1461,7 @@ class DB_Command extends WP_CLI_Command {
 	 *
 	 * ## OPTIONS
 	 *
-	 * [<table>]
+	 * <table>
 	 * : Name of the database table.
 	 *
 	 * [--format]
@@ -1513,7 +1513,7 @@ class DB_Command extends WP_CLI_Command {
 
 		$format = Utils\get_flag_value( $assoc_args, 'format' );
 
-		Utils\wp_get_table_names( [ $args[0] ], [] );
+		Utils\wp_get_table_names( [ $args[0] ], [ 'all-tables' => true ] );
 
 		$columns = $wpdb->get_results(
 			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Asserted to be a valid table name through wp_get_table_names.

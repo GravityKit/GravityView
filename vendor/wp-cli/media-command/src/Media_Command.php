@@ -655,7 +655,7 @@ class Media_Command extends WP_CLI_Command {
 		// Note: zero-length string returned if no metadata, for instance if PDF or non-standard image (eg an SVG).
 		$metadata = wp_get_attachment_metadata( $att_id );
 
-		$image_sizes = $this->get_intermediate_image_sizes_for_attachment( $fullsizepath, $is_pdf, $metadata );
+		$image_sizes = $this->get_intermediate_image_sizes_for_attachment( $fullsizepath, $is_pdf, $metadata, $att_id );
 
 		// First check if no applicable editor currently available (non-destructive - ie old thumbnails not removed).
 		if ( is_wp_error( $image_sizes ) && 'image_no_editor' === $image_sizes->get_error_code() ) {
@@ -738,7 +738,7 @@ class Media_Command extends WP_CLI_Command {
 
 	// Like WP's get_intermediate_image_sizes(), but removes sizes that won't be generated for a particular attachment due to its being on or below their thresholds,
 	// and returns associative array with size name => width/height entries, resolved to crop values if applicable.
-	private function get_intermediate_image_sizes_for_attachment( $fullsizepath, $is_pdf, $metadata ) {
+	private function get_intermediate_image_sizes_for_attachment( $fullsizepath, $is_pdf, $metadata, $att_id ) {
 
 		// Need to get width, height of attachment for image_resize_dimensions().
 		$editor = wp_get_image_editor( $fullsizepath );
@@ -754,7 +754,7 @@ class Media_Command extends WP_CLI_Command {
 		unset( $editor );
 
 		$sizes = array();
-		foreach ( $this->get_intermediate_sizes( $is_pdf, $metadata ) as $name => $size ) {
+		foreach ( $this->get_intermediate_sizes( $is_pdf, $metadata, $att_id ) as $name => $size ) {
 			// Need to check destination and original width or height differ before calling image_resize_dimensions(), otherwise it will return non-false.
 			$dims = image_resize_dimensions( $width, $height, $size['width'], $size['height'], $size['crop'] );
 			if ( ( $width !== $size['width'] || $height !== $size['height'] ) && $dims ) {
@@ -769,7 +769,7 @@ class Media_Command extends WP_CLI_Command {
 	}
 
 	// Like WP's get_intermediate_image_sizes(), but returns associative array with name => size info entries (and caters for PDFs also).
-	private function get_intermediate_sizes( $is_pdf, $metadata ) {
+	private function get_intermediate_sizes( $is_pdf, $metadata, $att_id ) {
 		if ( $is_pdf ) {
 			// Copied from wp_generate_attachment_metadata() in "wp-admin/includes/image.php".
 			$fallback_sizes = array(
@@ -824,8 +824,13 @@ class Media_Command extends WP_CLI_Command {
 
 		// Check here that not PDF (as filter not applied in core if is) and `$metadata` is array (as may not be and filter only applied in core when is).
 		if ( ! $is_pdf && is_array( $metadata ) ) {
-			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Calling native WordPress hook.
-			$sizes = apply_filters( 'intermediate_image_sizes_advanced', $sizes, $metadata );
+			if ( Utils\wp_version_compare( '5.3', '>=' ) ) {
+				// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Calling native WordPress hook.
+				$sizes = apply_filters( 'intermediate_image_sizes_advanced', $sizes, $metadata, $att_id );
+			} else {
+				// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Calling native WordPress hook.
+				$sizes = apply_filters( 'intermediate_image_sizes_advanced', $sizes, $metadata );
+			}
 		}
 
 		return $sizes;

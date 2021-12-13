@@ -91,7 +91,7 @@ class Export_Command extends WP_CLI_Command {
 	 * [--author=<author>]
 	 * : Export only posts by this author. Can be either user login or user ID.
 	 *
-	 * [--category=<name>]
+	 * [--category=<name|id>]
 	 * : Export only posts in this category.
 	 *
 	 * [--post_status=<status>]
@@ -409,6 +409,10 @@ class Export_Command extends WP_CLI_Command {
 	private function check_category( $category ) {
 		if ( null === $category ) {
 			return true;
+		}
+
+		if ( is_numeric( $category ) ) {
+			$category = (int) $category;
 		}
 
 		$term = category_exists( $category );

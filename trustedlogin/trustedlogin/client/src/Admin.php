@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 16-November-2021 using Strauss.
+ * Modified by gravityview on 13-December-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 /**
@@ -204,22 +204,39 @@ final class Admin {
 
 		$parent_slug = $this->config->get_setting( 'menu/slug', null );
 
-		if ( empty( $parent_slug ) ) {
+		// When false, there will be no menus added.
+		if ( false === $parent_slug ) {
 			return;
 		}
 
 		$ns = $this->config->ns();
 
-		$slug = apply_filters( 'trustedlogin/' . $this->config->ns() . '/admin/grantaccess/slug', 'grant-' . $ns . '-access', $ns );
+		$menu_slug = apply_filters( 'trustedlogin/' . $this->config->ns() . '/admin/menu/menu_slug', 'grant-' . $ns . '-access' );
 
 		$menu_title = $this->config->get_setting( 'menu/title', esc_html__( 'Grant Support Access', 'trustedlogin' ) );
+
+		// If empty (null or empty string), add top-level menu
+		if ( empty( $parent_slug ) ) {
+
+			add_menu_page(
+				$menu_title,
+				$menu_title,
+				'create_users',
+				$menu_slug,
+				array( $this, 'print_auth_screen' ),
+				$this->config->get_setting( 'menu/icon_url', '' ),
+				$this->config->get_setting( 'menu/position', null )
+			);
+
+			return;
+		}
 
 		add_submenu_page(
 			$parent_slug,
 			$menu_title,
 			$menu_title,
 			'create_users',
-			$slug,
+			$menu_slug,
 			array( $this, 'print_auth_screen' ),
 			$this->config->get_setting( 'menu/position', null )
 		);
@@ -411,9 +428,8 @@ final class Admin {
 		 * Filter trustedlogin/{ns}/template/auth
 		 *
 		 * @param string $output_template The Auth form HTML
-		 * @param string $ns The namespace of the plugin initializing TrustedLogin.
 		 */
-		$auth_screen_template = apply_filters( 'trustedlogin/' . $this->config->ns() . '/template/auth', $auth_screen_template, $this->config->ns() );
+		$auth_screen_template = apply_filters( 'trustedlogin/' . $this->config->ns() . '/template/auth', $auth_screen_template );
 
 		$output = $this->prepare_output( $auth_screen_template, $content );
 
@@ -688,9 +704,8 @@ final class Admin {
 		 * @since 1.0.0
 		 *
 		 * @param array Array of links to show in auth footer (Key is anchor text; Value is URL)
-		 * @param string $ns Namespace of the plugin initializing TrustedLogin
 		 **/
-		$footer_links = apply_filters( 'trustedlogin/' . $this->config->ns() . '/template/auth/footer_links', $footer_links, $this->config->ns() );
+		$footer_links = apply_filters( 'trustedlogin/' . $this->config->ns() . '/template/auth/footer_links', $footer_links );
 
 		$footer_links_output = '';
 		foreach ( $footer_links as $text => $link ) {
@@ -972,12 +987,13 @@ final class Admin {
 		 * ```
 		 *
 		 * @param array $url_query_args {
-		 *
 		 * @type string $message What error should be sent to the support system.
+		 * @type string|null $ref A sanitized reference ID, if passed. Otherwise, null.
 		 * }
 		 */
 		$query_args = apply_filters( 'trustedlogin/' . $this->config->ns() . '/support_url/query_args', array(
-				'message' => __( 'Could not create TrustedLogin access.', 'trustedlogin' )
+				'message' => __( 'Could not create TrustedLogin access.', 'trustedlogin' ),
+				'ref' => Client::get_reference_id(),
 			)
 		);
 

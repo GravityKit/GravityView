@@ -741,6 +741,23 @@ class MakePotCommand extends WP_CLI_Command {
 					}
 				);
 
+				$unique_comments = array();
+
+				// Remove duplicate comments.
+				$comments = array_filter(
+					$comments,
+					function ( $comment ) use ( &$unique_comments ) {
+						/** @var ParsedComment|string $comment */
+						if ( in_array( ( $comment instanceof ParsedComment ? $comment->getComment() : $comment ), $unique_comments, true ) ) {
+							return null;
+						}
+
+						$unique_comments[] = ( $comment instanceof ParsedComment ? $comment->getComment() : $comment );
+
+						return $comment;
+					}
+				);
+
 				$comments_count = count( $comments );
 
 				if ( $comments_count > 1 ) {

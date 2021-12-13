@@ -2210,7 +2210,7 @@ Displays a success message if the post does exist.
 **EXAMPLES**
 
     # The post exists.
-    $ wp post exists 1
+    $ wp post exists 1337
     Success: Post with ID 1337 exists.
     $ echo $?
     0
@@ -2354,8 +2354,8 @@ Gets a list of posts.
 wp post list [--<field>=<value>] [--field=<field>] [--fields=<fields>] [--format=<format>]
 ~~~
 
-Display posts based on all arguments supported by
-[WP_Query()](https://developer.wordpress.org/reference/classes/wp_query/).
+Display posts based on all arguments supported by [WP_Query()](https://developer.wordpress.org/reference/classes/wp_query/).
+Only shows post types marked as post by default.
 
 **OPTIONS**
 
@@ -2447,6 +2447,14 @@ These fields are optionally available:
     | 3  | Lorem Ipsum  | lorem-ipsum | 2016-06-01 14:34:36 | publish     |
     | 1  | Hello world! | hello-world | 2016-06-01 14:31:12 | publish     |
     +----+--------------+-------------+---------------------+-------------+
+
+    # List given post by a specific author
+    $ wp post list --author=2
+    +----+-------------------+-------------------+---------------------+-------------+
+    | ID | post_title        | post_name         | post_date           | post_status |
+    +----+-------------------+-------------------+---------------------+-------------+
+    | 14 | New documentation | new-documentation | 2021-06-18 21:05:11 | publish     |
+    +----+-------------------+-------------------+---------------------+-------------+
 
 
 

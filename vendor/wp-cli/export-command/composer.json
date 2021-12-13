@@ -19,9 +19,9 @@
         "wp-cli/db-command": "^1.3 || ^2",
         "wp-cli/entity-command": "^1.3 || ^2",
         "wp-cli/extension-command": "^1.2 || ^2",
-        "wp-cli/media-command": "^1 || ^2",
         "wp-cli/import-command": "^1 || ^2",
-        "wp-cli/wp-cli-tests": "^3.0.11"
+        "wp-cli/media-command": "^1 || ^2",
+        "wp-cli/wp-cli-tests": "^3.1"
     },
     "config": {
         "process-timeout": 7200,

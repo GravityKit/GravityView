@@ -40,3 +40,13 @@ Feature: Display information about a given table.
       """
       Couldn't find any tables matching: wp_foobar
       """
+
+  Scenario: Display information about a non default WordPress table
+    Given a WP install
+    And I run `wp db query "CREATE TABLE not_wp ( date DATE NOT NULL, awesome_stuff TEXT, PRIMARY KEY (date) );;"`
+
+    When I try `wp db columns not_wp`
+    Then STDOUT should be a table containing rows:
+      | Field         | Type       | Null | Key | Default | Extra |
+      | date          | date       | NO   | PRI |         |       |
+      | awesome_stuff | text       | YES  |     |         |       |

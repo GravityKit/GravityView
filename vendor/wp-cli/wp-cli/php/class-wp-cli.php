@@ -231,11 +231,16 @@ class WP_CLI {
 	 * * `before_invoke:<command>` - Just before a command is invoked.
 	 * * `after_invoke:<command>` - Just after a command is invoked.
 	 * * `find_command_to_run_pre` - Just before WP-CLI finds the command to run.
+	 * * `before_registering_contexts` (1) - Before the contexts are registered.
 	 * * `before_wp_load` - Just before the WP load process begins.
 	 * * `before_wp_config_load` - After wp-config.php has been located.
 	 * * `after_wp_config_load` - After wp-config.php has been loaded into scope.
 	 * * `after_wp_load` - Just after the WP load process has completed.
-	 * * `before_run_command` - Just before the command is executed.
+	 * * `before_run_command` (3) - Just before the command is executed.
+	 *
+	 * The parentheses behind the hook name denote the number of arguments
+	 * being passed into the hook. For such hooks, the callback should return
+	 * the first argument again, making them work like a WP filter.
 	 *
 	 * WP-CLI commands can create their own hooks with `WP_CLI::do_hook()`.
 	 *
@@ -285,21 +290,23 @@ class WP_CLI {
 	 * @access public
 	 * @category Registration
 	 *
-	 * @param string $when Identifier for the hook.
-	 * @param mixed ... Optional. Arguments that will be passed onto the
-	 *                  callback provided by `WP_CLI::add_hook()`.
-	 * @return null
+	 * @param string $when    Identifier for the hook.
+	 * @param mixed  ...$args Optional. Arguments that will be passed onto the
+	 *                        callback provided by `WP_CLI::add_hook()`.
+	 * @return null|mixed Returns the first optional argument if optional
+	 *                    arguments were passed, otherwise returns null.
 	 */
-	public static function do_hook( $when ) {
-
-		$args = func_num_args() > 1
-			? array_slice( func_get_args(), 1 )
-			: [];
-
+	public static function do_hook( $when, ...$args ) {
 		self::$hooks_passed[ $when ] = $args;
 
+		$has_args = count( $args ) > 0;
+
 		if ( ! isset( self::$hooks[ $when ] ) ) {
-			return;
+			if ( $has_args ) {
+				return $args[0];
+			}
+
+			return null;
 		}
 
 		self::debug(
@@ -320,8 +327,22 @@ class WP_CLI {
 				),
 				'hooks'
 			);
-			call_user_func_array( $callback, $args );
+
+			if ( $has_args ) {
+				$return_value = $callback( ...$args );
+				if ( isset( $return_value ) ) {
+					$args[0] = $return_value;
+				}
+			} else {
+				$callback();
+			}
 		}
+
+		if ( $has_args ) {
+			return $args[0];
+		}
+
+		return null;
 	}
 
 	/**
@@ -550,15 +571,14 @@ class WP_CLI {
 		// Reattach commands attached to namespace to real command.
 		$subcommand_name  = (array) $leaf_name;
 		$existing_command = $command->find_subcommand( $subcommand_name );
-		if ( $existing_command instanceof CommandNamespace ) {
-			$subcommands = $existing_command->get_subcommands();
-			if ( ! empty( $subcommands )
-				&& ( $leaf_command instanceof CompositeCommand
-					|| $leaf_command->can_have_subcommands ) ) {
-				foreach ( $subcommands as $subname => $subcommand ) {
-					$leaf_command->add_subcommand( $subname, $subcommand );
-				}
+		if ( $existing_command instanceof CompositeCommand && $existing_command->can_have_subcommands() ) {
+			if ( $leaf_command instanceof CommandNamespace || ! $leaf_command->can_have_subcommands() ) {
+				$command_to_keep = $existing_command;
+			} else {
+				$command_to_keep = $leaf_command;
 			}
+
+			self::merge_sub_commands( $command_to_keep, $existing_command, $leaf_command );
 		}
 
 		/** @var Dispatcher\Subcommand|Dispatcher\CompositeCommand|Dispatcher\CommandNamespace $leaf_command */
@@ -631,6 +651,28 @@ class WP_CLI {
 
 		self::do_hook( "after_add_command:{$name}" );
 		return true;
+	}
+
+	/**
+	 * Merge the sub-commands of two commands into a single command to keep.
+	 *
+	 * @param CompositeCommand $command_to_keep Command to merge the sub commands into. This is typically one of the
+	 *                                          two others.
+	 * @param CompositeCommand $old_command     Command that was already registered.
+	 * @param CompositeCommand $new_command     New command that is being added.
+	 */
+	private static function merge_sub_commands(
+		CompositeCommand $command_to_keep,
+		CompositeCommand $old_command,
+		CompositeCommand $new_command
+	) {
+		foreach ( $old_command->get_subcommands() as $subname => $subcommand ) {
+			$command_to_keep->add_subcommand( $subname, $subcommand, false );
+		}
+
+		foreach ( $new_command->get_subcommands() as $subname => $subcommand ) {
+			$command_to_keep->add_subcommand( $subname, $subcommand, true );
+		}
 	}
 
 	/**

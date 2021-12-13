@@ -15,20 +15,21 @@ use WP_Error;
 /**
  * Performs the execution of a command.
  *
- * @property-read string $global_config_path
- * @property-read string $project_config_path
- * @property-read array  $config
- * @property-read array  $extra_config
- * @property-read string $alias
- * @property-read array  $aliases
- * @property-read array  $arguments
- * @property-read array  $assoc_args
- * @property-read array  $runtime_config
- * @property-read bool   $colorize
- * @property-read array  $early_invoke
- * @property-read string $global_config_path_debug
- * @property-read string $project_config_path_debug
- * @property-read array  $required_files
+ * @property-read string         $global_config_path
+ * @property-read string         $project_config_path
+ * @property-read array          $config
+ * @property-read array          $extra_config
+ * @property-read ContextManager $context_manager
+ * @property-read string         $alias
+ * @property-read array          $aliases
+ * @property-read array          $arguments
+ * @property-read array          $assoc_args
+ * @property-read array          $runtime_config
+ * @property-read bool           $colorize
+ * @property-read array          $early_invoke
+ * @property-read string         $global_config_path_debug
+ * @property-read string         $project_config_path_debug
+ * @property-read array          $required_files
  *
  * @package WP_CLI
  */
@@ -39,6 +40,8 @@ class Runner {
 
 	private $config;
 	private $extra_config;
+
+	private $context_manager;
 
 	private $alias;
 
@@ -64,6 +67,10 @@ class Runner {
 		}
 
 		return $this->$key;
+	}
+
+	public function register_context_manager( ContextManager $context_manager ) {
+		$this->context_manager = $context_manager;
 	}
 
 	/**
@@ -1148,6 +1155,15 @@ class Runner {
 			);
 		}
 
+		/*
+		 * Set the MySQLi error reporting off because WordPress handles its own.
+		 * This is due to the default value change from `MYSQLI_REPORT_OFF`
+		 * to `MYSQLI_REPORT_ERROR|MYSQLI_REPORT_STRICT` in PHP 8.1.
+		 */
+		if ( function_exists( 'mysqli_report' ) ) {
+			mysqli_report( 0 ); // phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysqli_report
+		}
+
 		// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound -- Declaring WP native constants.
 
 		if ( $this->cmd_starts_with( [ 'core', 'is-installed' ] )
@@ -1164,7 +1180,7 @@ class Runner {
 
 			// We really need a URL here
 			if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
-				$url = 'http://example.com';
+				$url = 'https://example.com';
 				WP_CLI::set_url( $url );
 			}
 
@@ -1208,6 +1224,9 @@ class Runner {
 		}
 
 		$wp_cli_is_loaded = true;
+
+		// Handle --context flag.
+		$this->context_manager->switch_context( $this->config );
 
 		WP_CLI::debug( 'Begin WordPress load', 'bootstrap' );
 		WP_CLI::do_hook( 'before_wp_load' );
@@ -1573,7 +1592,27 @@ class Runner {
 			}
 		);
 
-		// Don't apply set_url_scheme in get_site_url()
+		// Don't apply set_url_scheme in get_home_url() or get_site_url().
+		WP_CLI::add_wp_hook(
+			'home_url',
+			static function ( $url, $path, $scheme, $blog_id ) {
+				if ( empty( $blog_id ) || ! is_multisite() ) {
+					$url = get_option( 'home' );
+				} else {
+					switch_to_blog( $blog_id );
+					$url = get_option( 'home' );
+					restore_current_blog();
+				}
+
+				if ( $path && is_string( $path ) ) {
+					$url .= '/' . ltrim( $path, '/' );
+				}
+
+				return $url;
+			},
+			0,
+			4
+		);
 		WP_CLI::add_wp_hook(
 			'site_url',
 			static function ( $url, $path, $scheme, $blog_id ) {
@@ -1584,9 +1623,11 @@ class Runner {
 					$url = get_option( 'siteurl' );
 					restore_current_blog();
 				}
+
 				if ( $path && is_string( $path ) ) {
 					$url .= '/' . ltrim( $path, '/' );
 				}
+
 				return $url;
 			},
 			0,

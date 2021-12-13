@@ -378,7 +378,7 @@ class User_Command extends CommandWithDBObject {
 		$user->user_registered = Utils\get_flag_value(
 			$assoc_args,
 			'user_registered',
-			strftime( '%F %T', current_time( 'timestamp' ) ) // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp
+			date_format( date_create(), '%F %T' )
 		);
 
 		$user->display_name = Utils\get_flag_value( $assoc_args, 'display_name', false );
@@ -957,7 +957,7 @@ class User_Command extends CommandWithDBObject {
 			$defaults = [
 				'role'            => get_option( 'default_role' ),
 				'user_pass'       => wp_generate_password(),
-				'user_registered' => strftime( '%F %T', time() ),
+				'user_registered' => date_format( date_create(), '%F %T' ),
 				'display_name'    => false,
 			];
 			$new_user = array_merge( $defaults, $new_user );

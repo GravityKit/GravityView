@@ -58,9 +58,15 @@ class PotGenerator extends PoGenerator {
 			}
 
 			if ( $translation->hasExtractedComments() ) {
+				$unique_comments = array();
+
 				/** @var ParsedComment|string $comment */
 				foreach ( $translation->getExtractedComments() as $comment ) {
-					$lines[] = '#. ' . ( $comment instanceof ParsedComment ? $comment->getComment() : $comment );
+					$comment = ( $comment instanceof ParsedComment ? $comment->getComment() : $comment );
+					if ( ! in_array( $comment, $unique_comments, true ) ) {
+						$lines[]           = '#. ' . $comment;
+						$unique_comments[] = $comment;
+					}
 				}
 			}
 

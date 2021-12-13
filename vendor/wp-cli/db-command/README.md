@@ -839,12 +839,12 @@ Available size formats include:
 Displays information about a given table.
 
 ~~~
-wp db columns [<table>] [--format]
+wp db columns <table> [--format]
 ~~~
 
 **OPTIONS**
 
-	[<table>]
+	<table>
 		Name of the database table.
 
 	[--format]

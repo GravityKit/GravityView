@@ -145,7 +145,7 @@ if the source directory is detected as either a plugin or theme.
 Extract JavaScript strings from PO files and add them to individual JSON files.
 
 ~~~
-wp i18n make-json <source> [<destination>] [--purge] [--update-mo-files] [--pretty-print]
+wp i18n make-json <source> [<destination>] [--purge] [--update-mo-files] [--pretty-print] [--use-map=<paths_or_maps>]
 ~~~
 
 For JavaScript internationalization purposes, WordPress requires translations to be split up into
@@ -172,6 +172,10 @@ about WordPress JavaScript internationalization.
 	[--pretty-print]
 		Pretty-print resulting JSON files.
 
+	[--use-map=<paths_or_maps>]
+		Whether to use a mapping file for the strings, as a JSON value, array to specify multiple.
+		Each element can either be a string (file path) or object (map).
+
 **EXAMPLES**
 
     # Create JSON files for all PO files in the languages directory
@@ -179,6 +183,15 @@ about WordPress JavaScript internationalization.
 
     # Create JSON files for my-plugin-de_DE.po and leave the PO file untouched.
     $ wp i18n make-json my-plugin-de_DE.po /tmp --no-purge
+
+    # Create JSON files with mapping
+    $ wp i18n make-json languages --use-map=build/map.json
+
+    # Create JSON files with multiple mappings
+    $ wp i18n make-json languages '--use-map=["build/map.json","build/map2.json"]'
+
+    # Create JSON files with object mapping
+    $ wp i18n make-json languages '--use-map={"source/index.js":"build/index.js"}'
 
 ## Installing
 

@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 16-November-2021 using Strauss.
+ * Modified by gravityview on 13-December-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -62,14 +62,14 @@ class SiteAccess {
 			return new WP_Error( 'param_error', __( 'Unexpected action value', 'trustedlogin' ) );
 		}
 
-		// Ping SaaS and get back tokens.
-		$envelope = new Envelope( $this->config, $encryption );
-
 		$access_key = $this->get_access_key();
 
 		if ( is_wp_error( $access_key ) ) {
 			return $access_key;
 		}
+
+		// Ping SaaS and get back tokens.
+		$envelope = new Envelope( $this->config, $encryption );
 
 		$sealed_envelope = $envelope->get( $secret_id, $site_identifier_hash, $access_key );
 

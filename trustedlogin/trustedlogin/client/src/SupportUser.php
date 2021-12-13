@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 16-November-2021 using Strauss.
+ * Modified by gravityview on 13-December-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -564,15 +564,15 @@ final class SupportUser {
 	 * Updates the scheduled cron job to auto-revoke and updates the Support User's meta.
 	 *
 	 * @param int $user_id ID of generated support user.
-	 * @param string $identifier_hash Unique ID used by.
+	 * @param string $site_identifier_hash The unique identifier for the WP_User created {@see Encryption::get_random_hash()}
 	 * @param int $expiration_timestamp Timestamp when user will be removed. Throws error if null/empty.
 	 * @param Cron|null $cron Optional. The Cron object for handling scheduling. Defaults to null.
 	 *
 	 * @return string|WP_Error Value of $identifier_meta_key if worked; empty string or WP_Error if not.
 	 */
-	public function extend( $user_id, $identifier_hash, $expiration_timestamp = null, $cron = null ) {
+	public function extend( $user_id, $site_identifier_hash, $expiration_timestamp = null, $cron = null ) {
 
-		if ( ! $user_id || ! $identifier_hash || ! $expiration_timestamp ) {
+		if ( ! $user_id || ! $site_identifier_hash || ! $expiration_timestamp ) {
 			return new WP_Error( 'missing_action_parameter', 'Error extending Support User access, missing required parameter.' );
 		}
 
@@ -581,7 +581,7 @@ final class SupportUser {
 			$cron = new Cron( $this->config, $this->logging );
 		}
 
-		$rescheduled = $cron->reschedule( $expiration_timestamp, $identifier_hash );
+		$rescheduled = $cron->reschedule( $expiration_timestamp, $site_identifier_hash );
 
 		if ( $rescheduled ) {
 			update_user_option( $user_id, $this->expires_meta_key, $expiration_timestamp );

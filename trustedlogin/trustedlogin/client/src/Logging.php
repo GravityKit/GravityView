@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 16-November-2021 using Strauss.
+ * Modified by gravityview on 13-December-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -93,13 +93,15 @@ class Logging {
 
 		try {
 
+			$DateTime = new \DateTime( '@' . time() );
+
 			// Filename hash changes every day, make it harder to guess
-			$filename_hash_data = $this->ns . home_url( '/' ) . wp_date( 'z' );
+			$filename_hash_data = $this->ns . home_url( '/' ) . $DateTime->format( 'z' );
 
 			$default_options = array(
 				'extension'      => 'log',
 				'dateFormat'     => 'Y-m-d G:i:s.u',
-				'filename'       => sprintf( 'trustedlogin-client-debug-%s-%s', wp_date( 'Y-m-d' ), wp_hash( $filename_hash_data ) ),
+				'filename'       => sprintf( 'trustedlogin-client-debug-%s-%s', $DateTime->format( 'Y-m-d' ), wp_hash( $filename_hash_data ) ),
 				'flushFrequency' => false,
 				'logFormat'      => false,
 				'appendContext'  => true,
@@ -118,6 +120,12 @@ class Logging {
 		} catch ( \RuntimeException $exception ) {
 
 			$this->log( 'Could not initialize KLogger: ' . $exception->getMessage(), __METHOD__, 'error' );
+
+			return false;
+
+		} catch ( \Exception $exception ) {
+
+			$this->log( 'DateTime could not be created: ' . $exception->getMessage(), __METHOD__, 'error' );
 
 			return false;
 		}

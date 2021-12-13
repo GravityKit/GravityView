@@ -10,7 +10,7 @@ Quick links: [Using](#using) | [Installing](#installing) | [Contributing](#contr
 ## Using
 
 ~~~
-wp export [--dir=<dirname>] [--stdout] [--skip_comments] [--max_file_size=<MB>] [--start_date=<date>] [--end_date=<date>] [--post_type=<post-type>] [--post_type__not_in=<post-type>] [--post__in=<pid>] [--with_attachments] [--start_id=<pid>] [--max_num_posts=<num>] [--author=<author>] [--category=<name>] [--post_status=<status>] [--filename_format=<format>]
+wp export [--dir=<dirname>] [--stdout] [--skip_comments] [--max_file_size=<MB>] [--start_date=<date>] [--end_date=<date>] [--post_type=<post-type>] [--post_type__not_in=<post-type>] [--post__in=<pid>] [--with_attachments] [--start_id=<pid>] [--max_num_posts=<num>] [--author=<author>] [--category=<name|id>] [--post_status=<status>] [--filename_format=<format>]
 ~~~
 
 Generates one or more WXR files containing authors, terms, posts,
@@ -70,7 +70,7 @@ comments, and attachments. WXR files do not include site configuration
 	[--author=<author>]
 		Export only posts by this author. Can be either user login or user ID.
 
-	[--category=<name>]
+	[--category=<name|id>]
 		Export only posts in this category.
 
 	[--post_status=<status>]
