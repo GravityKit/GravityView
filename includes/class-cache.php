@@ -257,7 +257,7 @@ class GravityView_Cache {
 	}
 
 	/**
-	 * @deprecated 2.9 {@see GravityView_Cache::blocklist_add()}
+	 * @deprecated 2.14 {@see GravityView_Cache::blocklist_add()}
 	 *
 	 * @param  int|array $form_ids Form IDs to force to be updated
 	 *
@@ -291,7 +291,7 @@ class GravityView_Cache {
 	}
 
 	/**
-	 * @deprecated 2.9 {@see GravityView_Cache::blocklist_remove()}
+	 * @deprecated 2.14 {@see GravityView_Cache::blocklist_remove()}
 	 *
 	 * @param  int|array $form_ids Form IDs to add
 	 *
@@ -307,7 +307,7 @@ class GravityView_Cache {
 	 *
 	 * @param  int|array $form_ids Form IDs to check if in blocklist
 	 *
-	 * @deprecated 2.9 Use {@see GravityView_Cache::in_blocklist()}
+	 * @deprecated 2.14 Use {@see GravityView_Cache::in_blocklist()}
 	 *
 	 * @return bool
 	 */
