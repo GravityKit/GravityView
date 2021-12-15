@@ -26,6 +26,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: JavaScript error when trying to edit entry's creator
 * Fixed: Recent Entries widget would cause a fatal error on WP 5.8 or newer
 
+__Developer Updates:__
+
+We renamed all instances of `blacklist` to `blocklist` and `whitelist` to `allowlist`. All methods and filters have been deprecated using `apply_filters_deprecated()` and `_deprecated_function()`. [See a complete list of modified methods and filters](https://docs.gravityview.co/article/816-renamed-filters-methods-in-2-14).
+
 = 2.13.4 on November 4, 2021 =
 
 * Fixed: View scripts and styles would not load when manually outputting the contents of the `[gravityview]` shortcode
