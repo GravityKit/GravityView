@@ -38,10 +38,12 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 		 */
 		$field_options = array(
 			'show_as_link' => array(
-				'type'    => 'checkbox',
-				'label'   => __( 'Link to single entry', 'gravityview' ),
-				'value'   => false,
-				'context' => 'directory'
+				'type'     => 'checkbox',
+				'label'    => __( 'Link to single entry', 'gravityview' ),
+				'value'    => false,
+				'context'  => 'directory',
+				'priority' => 1190,
+				'group'    => 'display',
 			),
 		);
 

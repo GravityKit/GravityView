@@ -1,0 +1,28 @@
+# Used by Probot Settings: https://probot.github.io/apps/settings/
+repository:
+  description: Provides internationalization tools for WordPress projects.
+labels:
+  - name: bug
+    color: fc2929
+  - name: scope:documentation
+    color: 0e8a16
+  - name: scope:testing
+    color: 5319e7
+  - name: good-first-issue
+    color: eb6420
+  - name: help-wanted
+    color: 159818
+  - name: maybelater
+    color: c2e0c6
+  - name: state:unconfirmed
+    color: bfe5bf
+  - name: state:unsupported
+    color: bfe5bf
+  - name: wontfix
+    color: c2e0c6
+  - name: command:i18n
+    color: c5def5
+  - name: command:i18n-make-pot
+    color: c5def5
+  - name: command:i18n-make-json
+    color: c5def5

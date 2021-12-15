@@ -1,0 +1,62 @@
+# Used by Probot Settings: https://probot.github.io/apps/settings/
+repository:
+  description: Installs, activates, and manages language packs.
+labels:
+  - name: bug
+    color: fc2929
+  - name: scope:documentation
+    color: 0e8a16
+  - name: scope:testing
+    color: 5319e7
+  - name: good-first-issue
+    color: eb6420
+  - name: help-wanted
+    color: 159818
+  - name: maybelater
+    color: c2e0c6
+  - name: state:unconfirmed
+    color: bfe5bf
+  - name: state:unsupported
+    color: bfe5bf
+  - name: wontfix
+    color: c2e0c6
+  - name: command:language
+    color: c5def5
+  - name: command:language-core
+    color: c5def5
+  - name: command:language-core-activate
+    color: c5def5
+  - name: command:language-core-is-installed
+    color: c5def5
+  - name: command:language-core-install
+    color: c5def5
+  - name: command:language-core-list
+    color: c5def5
+  - name: command:language-core-uninstall
+    color: c5def5
+  - name: command:language-core-update
+    color: c5def5
+  - name: command:language-plugin
+    color: c5def5
+  - name: command:language-plugin-is-installed
+    color: c5def5
+  - name: command:language-plugin-install
+    color: c5def5
+  - name: command:language-plugin-list
+    color: c5def5
+  - name: command:language-plugin-uninstall
+    color: c5def5
+  - name: command:language-plugin-update
+    color: c5def5
+  - name: command:language-theme
+    color: c5def5
+  - name: command:language-theme-is-installed
+    color: c5def5
+  - name: command:language-theme-install
+    color: c5def5
+  - name: command:language-theme-list
+    color: c5def5
+  - name: command:language-theme-uninstall
+    color: c5def5
+  - name: command:language-theme-update
+    color: c5def5

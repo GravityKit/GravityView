@@ -97,7 +97,7 @@ class GravityView_Admin_Installer {
 	 */
 	public function add_admin_menu() {
 
-	    $menu_text = _x( 'Extensions', 'Extensions are WordPress plugins that add functionality to GravityView and Gravity Forms', 'gravityview' );
+	    $menu_text = _x( 'Manage Add-Ons', 'Extensions are WordPress plugins that add functionality to GravityView and Gravity Forms', 'gravityview' );
 
 		$menu_text = sprintf( '<span title="%s" style="margin: 0">%s</span>', esc_attr__( 'Plugins that extend GravityView and Gravity Forms functionality.', 'gravityview' ), $menu_text );
 
@@ -130,13 +130,18 @@ class GravityView_Admin_Installer {
 	/**
 	 * Get an array of plugins with textdomains as keys
 	 *
+	 * @since 2.1
+	 * @since 2.10 Added $textdomain argument. Converted to static method. Made method public (from protected).
+	 *
+	 * @param string $textdomain If set, only return plugins that have a matching textdomain.
+	 *
 	 * @return array {
-	 * @type string $path Path to the plugin
-	 * @type string $version What version is the plugin
-	 * @type bool $activated Is the plugin activated
+	 * @type string $path Path to the plugin.
+	 * @type string $version What version is the plugin.
+	 * @type bool $activated Is the plugin activated.
 	 * }
 	 */
-	protected function get_wp_plugins_data() {
+	static public function get_wp_plugins_data( $textdomain = null ) {
 
 		$wp_plugins = array();
 
@@ -155,7 +160,7 @@ class GravityView_Admin_Installer {
 			);
 		}
 
-		return $wp_plugins;
+		return is_null( $textdomain ) ? $wp_plugins : \GV\Utils::get( $wp_plugins, $textdomain, array() );
 	}
 
 	/**
@@ -204,7 +209,7 @@ class GravityView_Admin_Installer {
 
 		$downloads_data = get_site_transient( self::DOWNLOADS_DATA_TRANSIENT );
 
-		if ( $downloads_data ) {
+		if ( $downloads_data && ! isset( $_GET['cache'] ) ) {
 			return $downloads_data;
 		}
 
@@ -302,7 +307,9 @@ class GravityView_Admin_Installer {
 
             <h2><?php esc_html_e( 'The following plugins extend GravityView and Gravity Forms functionality:', 'gravityview' ); ?></h2>
 
-            <div class="wp-header-end"></div>
+			<a class="button button-secondary gv-admin-installer-refresh-link" href="<?php echo add_query_arg(array( 'cache' => 1 ) ); ?>"><i class="dashicons dashicons-update" style="margin-top: .2em"></i> <?php esc_html_e( 'Refresh', 'gravityview' ); ?></a>
+
+			<hr class="wp-header-end" />
 
             <div class="gv-admin-installer-notice notice inline error hidden is-dismissible">
                 <p><!-- Contents will be replaced by JavaScript if there is an error --></p>
@@ -311,24 +318,57 @@ class GravityView_Admin_Installer {
             <div class="gv-admin-installer-container">
 				<?php
 
-				$wp_plugins = $this->get_wp_plugins_data();
+				$wp_plugins = self::get_wp_plugins_data();
 
-				foreach ( $downloads_data as $extension ) {
+				$this->render_section( 'views', esc_html__( 'GravityView Layouts', 'gravityview' ), $downloads_data, $wp_plugins );
 
-					if ( empty( $extension['info'] ) ) {
-						continue;
-					}
+				$this->render_section( 'extensions', esc_html__( 'GravityView Extensions', 'gravityview' ), $downloads_data, $wp_plugins );
 
-					if ( 'gravityview' === \GV\Utils::get( $extension, 'info/slug' ) ) {
-						continue;
-					}
+				$this->render_section(  'plugins', esc_html__( 'Gravity Forms Add-Ons', 'gravityview' ), $downloads_data, $wp_plugins );
 
-					$this->render_download( $extension, $wp_plugins );
-				}
+				$this->render_section(  'labs', esc_html__( 'GravityView Labs', 'gravityview' ), $downloads_data, $wp_plugins );
+
+				$this->render_section(  'friends', esc_html__( 'Friends of GravityView', 'gravityview' ), $downloads_data, $wp_plugins );
 				?>
             </div>
         </div>
 		<?php
+	}
+
+	/**
+	 * Renders each category of download (Add-Ons, Extensions, Layouts)
+	 *
+	 * @since 2.10
+	 *
+	 * @param string $section_slug The slug to display downloads from (based on the category slug on gravityview.co)
+	 * @param string $heading The section heading text ("GravityView Layouts", "GravityView Extensions", "Gravity Forms Add-Ons")
+	 * @param array $downloads_data Downloads data from gravityview.co EDD API {@see get_downloads_data}
+	 * @param array $wp_plugins All active plugins, as returned by {@see \get_plugins()}
+	 */
+	private function render_section( $section_slug, $heading, $downloads_data, $wp_plugins = array() ) {
+
+		ob_start();
+
+		foreach ( $downloads_data as $download ) {
+
+			if ( $section_slug !== \GV\Utils::get( $download, 'info/category/0/slug' ) && $section_slug !== \GV\Utils::get( $download, 'info/category/1/slug' ) ) {
+				continue;
+			}
+
+			if ( empty( $download['info'] ) ) {
+				continue;
+			}
+
+			$this->render_download( $download, $wp_plugins );
+		}
+
+		$output = ob_get_clean();
+		$output = trim( $output );
+
+		if ( ! empty( $output ) ) {
+			echo '<div class="gv-admin-installer-section"><h3>' . esc_html( $heading ) . '</h3></div>';
+			echo $output;
+		}
 	}
 
 	/**
@@ -340,7 +380,6 @@ class GravityView_Admin_Installer {
 	 * @return void
 	 */
 	protected function render_download( $download, $wp_plugins ) {
-
 
         $details = $this->get_download_display_details( $download, $wp_plugins );
 
@@ -358,10 +397,12 @@ class GravityView_Admin_Installer {
                     </div>
 			        <?php } ?>
 
+					<?php if ( 'gravityview' !== $download_info['slug'] ) { ?>
                     <a data-status="<?php echo esc_attr( $details['status'] ); ?>" data-plugin-path="<?php echo esc_attr( $details['plugin_path'] ); ?>" href="<?php echo esc_url( $details['href'] ); ?>" class="button <?php echo esc_attr( $details['button_class'] ); ?>" title="<?php echo esc_attr( $details['button_title'] ); ?>">
                         <span class="title"><?php echo esc_html( $details['button_label'] ); ?></span>
                         <?php if( $details['spinner'] ) { ?><span class="spinner"></span><?php } ?>
                     </a>
+					<?php } ?>
                 </div>
 
                 <div class="addon-excerpt"><?php
@@ -386,6 +427,8 @@ class GravityView_Admin_Installer {
 	/**
      * Generates details array for the download to keep the render_download() method a bit tidier
      *
+	 * @since 2.10 Allow managing installed add-ons whether or not the user's license shows they have access.
+	 *
 	 * @param array $download Single download, as returned by {@see get_downloads_data}
 	 * @param array $wp_plugins All active plugins, as returned by {@see get_plugins()}
 	 *
@@ -433,8 +476,9 @@ class GravityView_Admin_Installer {
 		if( ! $is_active  && empty( $base_price ) ) {
 			$spinner      = false;
 			$status_label = '';
-			$button_class = 'disabled disabled-license';
 			$button_label = sprintf( __( 'Active %s License is Required.', 'gravityview' ), $required_license );
+			$href         = $download_info['link'];
+			$button_class = 'button-primary';
 		}
 
 		// No access with the current license level, and the download is available to purchase
@@ -483,24 +527,30 @@ class GravityView_Admin_Installer {
 
 		}
 
-		// Access and the plugin is installed but not active
-		elseif ( false === $wp_plugin['activated'] ) {
+		// The plugin is installed but not active
+		if ( false === \GV\Utils::get( $wp_plugin, 'activated' ) ) {
 			$status = 'inactive';
 			$status_label = __( 'Inactive', 'gravityview' );
 			$button_label = __( 'Activate', 'gravityview' );
 			$plugin_path = $wp_plugin['path'];
-
+			$button_class = 'button-secondary';
 		}
-
-		// Access and the plugin is installed and active
-		else {
-
+		// The plugin is installed and active
+		elseif ( ! empty( $wp_plugin['path'] ) ) {
 			$plugin_path = $wp_plugin['path'];
 			$status = 'active';
 			$status_label = __( 'Active', 'gravityview' );
 			$button_label = __( 'Deactivate', 'gravityview' );
-
+			$button_class = 'button-secondary';
 		}
+
+		$license_key = gravityview()->plugin->settings->get( 'license_key', '' );
+
+		if ( '#' !== $href ) {
+			$href = add_query_arg( array( 'license_key' => $license_key ), $href );
+		}
+
+		$download_info['link'] = add_query_arg( array( 'license_key' => $license_key ), $download_info['link'] );
 
 		return compact( 'download_info','plugin_path', 'status', 'status_label', 'button_title', 'button_class', 'button_label', 'href', 'spinner', 'item_class', 'required_license', 'is_active' );
     }

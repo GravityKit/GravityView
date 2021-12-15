@@ -6,7 +6,9 @@
  */
 class GV_Unit_Tests_Bootstrap {
 
-	/** @var \GV_Unit_Tests_Bootstrap instance */
+	/**
+	 * @var \GV_Unit_Tests_Bootstrap $instance
+	 */
 	protected static $instance = null;
 
 	/** @var string directory where wordpress-tests-lib is installed */
@@ -50,6 +52,10 @@ class GV_Unit_Tests_Bootstrap {
 		$this->tests_dir    = dirname( __FILE__ );
 		$this->plugin_dir   = dirname( $this->tests_dir );
 		$this->wp_tests_dir = getenv( 'WP_TESTS_DIR' ) ? getenv( 'WP_TESTS_DIR' ) : '/tmp/wordpress-tests-lib';
+
+		if ( ! defined( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH' ) ) {
+			define( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH', $this->plugin_dir . '/vendor/yoast/phpunit-polyfills' );
+		}
 
 		// load test function so tests_add_filter() is available
 		require_once $this->wp_tests_dir . '/includes/functions.php';
@@ -121,6 +127,7 @@ class GV_Unit_Tests_Bootstrap {
 		}
 
 		require_once( GFCommon::get_base_path() . '/form_display.php' );
+		require_once( GFCommon::get_base_path() . '/tooltips.php' );
 
 		/** Enable the REST API */
 		add_action( 'gravityview/settings/defaults', function( $defaults ) {

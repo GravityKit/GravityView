@@ -26,7 +26,9 @@ class GravityView_Default_Template_List extends GravityView_Template {
 				'type'    => 'checkbox',
 				'label'   => __( 'Link to single entry', 'gravityview' ),
 				'value'   => false,
-				'context' => 'directory'
+				'context' => 'directory',
+				'priority' => 1190,
+				'group'    => 'display',
 			),
 		);
 

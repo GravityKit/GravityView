@@ -5,7 +5,7 @@
  * @since 1.11
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2015, Katz Web Services, Inc.
  */
@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
 class GravityView_Edit_Entry_User_Registration {
 
 	/**
-	 * @var GravityView_Edit_Entry
+	 * @var GravityView_Edit_Entry $loader
 	 */
     protected $loader;
 
@@ -80,7 +80,6 @@ class GravityView_Edit_Entry_User_Registration {
 	        return;
         }
 
-        /** @var GF_User_Registration $gf_user_registration */
         $gf_user_registration = GF_User_Registration::get_instance();
 
         $entry = GFAPI::get_entry( $entry_id );
@@ -105,6 +104,12 @@ class GravityView_Edit_Entry_User_Registration {
 	    	if( ! $gf_user_registration->is_feed_condition_met( $config, $form, $entry ) ) {
 			    return;
 		    }
+	    }
+
+	    // Do not update user if the user hasn't been registered (happens when manual activation is enabled in User Registration feed)
+	    $username = \GV\Utils::get( $config, 'meta/username', null );
+	    if ( ! isset( $entry[ $username ] ) || ! get_user_by( 'login', $entry[ $username ] ) ) {
+		    return;
 	    }
 
         // The priority is set to 3 so that default priority (10) will still override it
@@ -136,7 +141,6 @@ class GravityView_Edit_Entry_User_Registration {
 	 */
     public function get_feed_configuration( $entry, $form ) {
 
-	    /** @var GF_User_Registration $gf_user_registration */
 	    $gf_user_registration = GF_User_Registration::get_instance();
 
 	    $config = $gf_user_registration->get_single_submission_feed( $entry, $form );

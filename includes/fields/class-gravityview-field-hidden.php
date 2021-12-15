@@ -17,6 +17,8 @@ class GravityView_Field_Hidden extends GravityView_Field {
 
 	var $group = 'standard';
 
+	var $icon = 'dashicons-hidden';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Hidden', 'gravityview' );
 
@@ -48,7 +50,7 @@ class GravityView_Field_Hidden extends GravityView_Field {
 	 */
 	function edit_entry_fix_hidden_fields( $fields ) {
 
-		/** @var GF_Field $field */
+		/** @type GF_Field $field */
 		foreach( $fields as &$field ) {
 
 			if ( 'hidden' === $field->type ) {

@@ -10,36 +10,38 @@ settings:
 modules:
   config:
     WPDb:
-      dsn: 'mysql:host=mysql;dbname=wordpress'
-      user: wordpress
-      password: wordpress
+      dsn: 'mysql:host=%MYSQL_HOST%;dbname=%MYSQL_DATABASE%'
+      user: '%MYSQL_USER%'
+      password: '%MYSQL_PASSWORD%'
+      originalUrl: 'http://%WP_URL%'
       dump: 'tests/acceptance/_data/wordpress.sql'
       populate: true
       cleanup: true
       reconnect: false
-      url: 'http://wordpress'
+      url: 'http://%WP_URL%'
       tablePrefix: 'wp_'
     WPWebDriver:
       host: chrome
-      url: 'http://wordpress'
+      url: 'http://%WP_URL%'
+      originalUrl: 'http://%WP_URL%'
       browser: chrome
       port: 4444
       window_size: '1024x768'
       restart: true
       wait: 0
-      adminUsername: admin
-      adminPassword: admin
+      adminUsername: '%WP_ADMIN_USER%'
+      adminPassword: '%WP_ADMIN_PASS%'
       adminPath: /wp-admin
     WPCLI:
-      path: /wp-core
+      path: '%WP_FOLDER%'
       throw: true
     WPLoader:
       loadOnly: true
-      wpRootFolder: /wp-core
-      dbName: wordpress
-      dbHost: mysql
-      dbUser: wordpress
-      dbPassword: wordpress
+      wpRootFolder: '%WP_FOLDER%'
+      dbName: '%MYSQL_DATABASE%'
+      dbHost: '%MYSQL_HOST%'
+      dbUser: '%MYSQL_USER%'
+      dbPassword: '%MYSQL_PASSWORD%'
   enabled:
     - WPDb
     - WPLoader

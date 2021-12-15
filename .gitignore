@@ -13,15 +13,10 @@
 *.sublime-project
 *.sublime-workspace
 
-### Composer ###
-composer.lock
-
 ### Libraries ###
 vendor/.git
 vendor/*/.git
-vendor/composer/
 vendor/bin/
-vendor/autoload.php
 vendor/phpcompatibility/
 vendor/squizlabs/
 vendor/dealerdirect/
@@ -75,6 +70,11 @@ assets/lib/flexibility/*
 !assets/lib/flexibility/*.js
 !assets/lib/flexibility/*.json
 
+assets/lib/fancybox/*
+!assets/lib/fancybox/dist
+!assets/lib/fancybox/dist/*.js
+!assets/lib/fancybox/dist/*.css
+
 # Unit tests
 /tmp
 /tests/bin/tmp
@@ -91,3 +91,17 @@ docs/html
 
 # VIM
 *.swp
+
+# environment file (used for local unit tests)
+.env
+
+# docker files and folders used for local unit tests
+docker-compose.yml
+docker-unit-tests.sh
+phpunit/
+wordpress-51-tests-lib/
+wordpress-latest-tests-lib/
+
+vendor/katzgrau/klogger/
+vendor/trustedlogin/trustedlogin-client/
+vendor/trustedlogin/client/

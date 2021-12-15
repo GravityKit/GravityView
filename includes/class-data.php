@@ -49,69 +49,71 @@ class GravityView_View_Data {
 	 *      - String of content that may include GravityView shortcode
 	 *      - Number representing the Post ID or View ID
 	 *
-	 * @param mixed $passed_post See method description
+	 * @param WP_Post|WP_Post[]|array|string|int|null $passed_post See method description
 	 *
 	 * @deprecated
 	 * @see \GV\View_Collection::from_post and \GV\Shortcode::parse
 	 *
 	 * @return int|null|array ID of the View. If there are multiple views in the content, array of IDs parsed.
 	 */
-	public function maybe_get_view_id( $passed_post ) {
+	public function maybe_get_view_id( $passed_post = null ) {
+
+		if ( empty( $passed_post ) ) {
+			return null;
+		}
+
 		$ids = array();
 
-		if ( ! empty( $passed_post ) ) {
+		if ( is_numeric( $passed_post ) ) {
+			$passed_post = get_post( $passed_post );
+		}
 
-			if ( is_numeric( $passed_post ) ) {
-				$passed_post = get_post( $passed_post );
+		// Convert WP_Posts into WP_Posts[] array
+		if ( $passed_post instanceof WP_Post ) {
+			$passed_post = array( $passed_post );
+		}
+
+		if ( is_array( $passed_post ) ) {
+
+			foreach ( $passed_post as &$post ) {
+				$views = \GV\View_Collection::from_post( $post );
+				foreach ( $views->all() as $view ) {
+					$ids []= $view->ID;
+
+					/** And as a side-effect... add each view to the global scope. */
+					if ( ! $this->views->contains( $view->ID ) ) {
+						$this->views->add( $view );
+					}
+				}
 			}
 
-			// Convert WP_Posts into WP_Posts[] array
-			if ( $passed_post instanceof WP_Post ) {
-				$passed_post = array( $passed_post );
-			}
+		} else {
 
-			if ( is_array( $passed_post ) ) {
-
-				foreach ( $passed_post as &$post ) {
-					$views = \GV\View_Collection::from_post( $post );
-					foreach ( $views->all() as $view ) {
-						$ids []= $view->ID;
+			if ( is_string( $passed_post ) ) {
+				$shortcodes = \GV\Shortcode::parse( $passed_post );
+				foreach ( $shortcodes as $shortcode ) {
+					if ( $shortcode->name == 'gravityview' && !empty( $shortcode->atts['id'] ) ) {
+						$ids []= $shortcode->atts['id'];
 
 						/** And as a side-effect... add each view to the global scope. */
-						if ( ! $this->views->contains( $view->ID ) ) {
-							$this->views->add( $view );
+						if ( ! $this->views->contains( $shortcode->atts['id'] ) && \GV\View::exists( $shortcode->atts['id'] ) ) {
+							$this->views->add( $shortcode->atts['id'] );
 						}
 					}
 				}
-
 			} else {
-
-				if ( is_string( $passed_post ) ) {
-					$shortcodes = \GV\Shortcode::parse( $passed_post );
-					foreach ( $shortcodes as $shortcode ) {
-						if ( $shortcode->name == 'gravityview' && !empty( $shortcode->atts['id'] ) ) {
-							$ids []= $shortcode->atts['id'];
-
-							/** And as a side-effect... add each view to the global scope. */
-							if ( ! $this->views->contains( $shortcode->atts['id'] ) && \GV\View::exists( $shortcode->atts['id'] ) ) {
-								$this->views->add( $shortcode->atts['id'] );
-							}
-						}
-					}
-				} else {
-					$id = $this->get_id_from_atts( $passed_post );
-					$ids[] = intval( $id );
-				}
+				$id = $this->get_id_from_atts( $passed_post );
+				$ids[] = intval( $id );
 			}
 		}
 
-		if( empty($ids) ) {
-			return NULL;
+		if ( empty( $ids ) ) {
+			return null;
 		}
 
 		// If it's just one ID, return that.
 		// Otherwise, return array of IDs
-		return ( sizeof( $ids ) === 1 ) ? $ids[0] : $ids;
+		return ( count( $ids ) === 1 ) ? $ids[0] : $ids;
 	}
 
 	/**
@@ -159,6 +161,11 @@ class GravityView_View_Data {
 		} elseif ( $atts ) {
 			$view->settings->update( $atts );
 		}
+
+		if ( ! $view ) {
+			return false;
+		}
+
 		return $view->as_data();
 	}
 

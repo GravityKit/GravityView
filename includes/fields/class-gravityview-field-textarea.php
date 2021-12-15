@@ -20,6 +20,8 @@ class GravityView_Field_Textarea extends GravityView_Field {
 
 	var $group = 'standard';
 
+	var $icon = 'dashicons-editor-paragraph';
+
 	public function __construct() {
 		$this->label = esc_html__( 'Paragraph Text', 'gravityview' );
 		parent::__construct();
@@ -30,6 +32,8 @@ class GravityView_Field_Textarea extends GravityView_Field {
 		if( 'edit' === $context ) {
 			return $field_options;
 		}
+
+		unset( $field_options['show_as_link'] );
 
 		$field_options['trim_words'] = array(
 			'type' => 'number',

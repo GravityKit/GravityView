@@ -112,6 +112,7 @@ final class Core {
 		}
 
 		/** Require critical legacy core files. @todo Deprecate */
+		require_once $this->plugin->dir( 'includes/import-functions.php' );
 		require_once $this->plugin->dir( 'includes/helper-functions.php' );
 		require_once $this->plugin->dir( 'includes/class-common.php');
 		require_once $this->plugin->dir( 'includes/connector-functions.php');
@@ -228,6 +229,9 @@ final class Core {
 		/** Magic. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-wrappers.php' );
 
+
+		require_once $this->plugin->dir( 'includes/class-gravityview-powered-by.php' );
+
 		/** Cache busting. */
 		add_action( 'clean_post_cache', '\GV\View::_flush_cache' );
 
@@ -240,9 +244,9 @@ final class Core {
 		do_action( 'gravityview/loaded' );
 	}
 
-	private function __clone() { }
+	public function __clone() { }
 
-	private function __wakeup() { }
+	public function __wakeup() { }
 
 	/**
 	 * Wrapper magic.

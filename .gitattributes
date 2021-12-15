@@ -1,29 +1,37 @@
 # Items to ignore when downloading a zip
 
 # Files
+.bowerrc export-ignore
+.coveralls.yml export-ignore
+.editorconfig export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
 .gitmodules export-ignore
-.editorconfig export-ignore
-Gruntfile.js export-ignore
-package.json export-ignore
-phpunit.xml export-ignore
-phpunit.xml.dist export-ignore
-phpcs.ruleset.xml export-ignore
-readme.md export-ignore
-Rakefile export-ignore
 .scrutinizer.yml export-ignore
 .travis.yml export-ignore
-.bowerrc export-ignore
-.coveralls.yml export-ignore
+bower.json export-ignore
+codeception.dist.yml export-ignore
+composer.json export-ignore
+composer.lock export-ignore
+Gruntfile.js export-ignore
+package.json export-ignore
+phpcs.ruleset.xml export-ignore
+phpcs.xml.dist export-ignore
+phpunit.xml export-ignore
+phpunit.xml.dist export-ignore
+Rakefile export-ignore
+readme.md export-ignore
+strauss.phar export-ignore
 
 # Folders
-
+/.circleci export-ignore
+/.github export-ignore
 /.idea export-ignore
 /.tx export-ignore
-/node_modules export-ignore
+/assets/css/scss export-ignore
 /docs export-ignore
 /docs/* export-ignore
+/node_modules export-ignore
 /tests export-ignore
 /tests/* export-ignore
 /tests/unit-tests/* export-ignore

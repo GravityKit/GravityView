@@ -103,12 +103,10 @@ class GravityView_Cache {
 	 */
 	public function entry_status_changed( $lead_id, $property_value = '', $previous_value = '' ) {
 
-		/** @var array $entry */
 		$entry = GFAPI::get_entry( $lead_id );
 
 		if ( is_wp_error( $entry ) ) {
 
-			/** @var WP_Error $entry */
 			gravityview()->log->error( 'Could not retrieve entry {entry_id} to delete it: {error}', array( 'entry_id' => $lead_id, 'error' => $entry->get_error_message() ) );
 
 			return;
@@ -234,11 +232,6 @@ class GravityView_Cache {
 
 		$form_ids = is_array( $form_ids ) ? $form_ids : array( $form_ids );
 
-		gravityview()->log->debug( 'Adding form IDs to cache blocklist', array( 'data' => array(
-			'$form_ids'  => $form_ids,
-			'$blocklist' => $blocklist
-		) ) );
-
 		// Add the passed form IDs
 		$blocklist = array_merge( (array) $blocklist, $form_ids );
 
@@ -248,7 +241,16 @@ class GravityView_Cache {
 		// Remove empty items from blocklist
 		$blocklist = array_filter( $blocklist );
 
-		return update_option( self::BLOCKLIST_OPTION_NAME, $blocklist );
+		$updated = update_option( self::BLOCKLIST_OPTION_NAME, $blocklist );
+
+		if ( false !== $updated ) {
+			gravityview()->log->debug( 'Added form IDs to cache blocklist', array( 'data' => array(
+				'$form_ids'  => $form_ids,
+				'$blacklist' => $blocklist
+			) ) );
+		}
+
+		return $updated;
 	}
 
 	/**
@@ -259,7 +261,7 @@ class GravityView_Cache {
 	 * @return bool Whether the removal was successful
 	 */
 	public function blacklist_add( $form_ids ) {
-		_deprecated_function( __METHOD__, '2.9', 'GravityView_Cache::blocklist_add()' );
+		_deprecated_function( __METHOD__, '2.14', 'GravityView_Cache::blocklist_add()' );
 		return $this->blocklist_remove( $form_ids );
 	}
 
@@ -392,8 +394,10 @@ class GravityView_Cache {
 	 *
 	 * Cache time defaults to 1 week
 	 *
-	 * @param [type] $content     [description]
-	 * @param [type] $filter_name Name used to modify the cache time. Will be set to `gravityview_cache_time_{$filter_name}`.
+	 * @param mixed $content     [description]
+	 * @param string $filter_name Name used to modify the cache time. Will be set to `gravityview_cache_time_{$filter_name}`.
+	 *
+	 * @return bool If $content is not set, false. Otherwise, returns true if transient was set and false if not.
 	 */
 	public function set( $content, $filter_name = '' ) {
 
@@ -426,7 +430,7 @@ class GravityView_Cache {
 	 *
 	 * @param  int|array $form_ids Form IDs to delete
 	 *
-	 * @return [type]           [description]
+	 * @return void
 	 */
 	public function delete( $form_ids = NULL ) {
 		global $wpdb;
@@ -444,12 +448,7 @@ class GravityView_Cache {
 
 			$key = '_transient_gv-cache-';
 
-			// WordPress 4.0+
-			if ( is_callable( array( $wpdb, 'esc_like' ) ) ) {
-				$key = $wpdb->esc_like( $key );
-			} else {
-				$key = like_escape( $key );
-			}
+			$key = $wpdb->esc_like( $key );
 
 			$form_id = intval( $form_id );
 

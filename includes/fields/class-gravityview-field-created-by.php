@@ -11,14 +11,17 @@ class GravityView_Field_Created_By extends GravityView_Field {
 
 	var $is_searchable = true;
 
-	var $search_operators = array( 'is', 'isnot' );
+	var $search_operators = array( 'is', 'isnot', 'in', 'not_in' );
 
 	var $group = 'meta';
 
 	var $_custom_merge_tag = 'created_by';
 
+	var $icon = 'dashicons-admin-users';
+
 	public function __construct() {
-		$this->label = esc_html__( 'Created By', 'gravityview' );
+		$this->label = esc_html__( 'Created By (User)', 'gravityview' );
+		$this->description = __('Details of the logged-in user who created the entry (if any).', 'gravityview');
 		$this->default_search_label = __( 'Submitted by:', 'gravityview' );
 		parent::__construct();
 	}
@@ -136,7 +139,7 @@ class GravityView_Field_Created_By extends GravityView_Field {
 				'user_registered' => __( 'User Registered (Example: "2019-10-18 08:30:11")', 'gravityview' ),
 
 				// meta
-				'nickname' => __( 'User nickname', 'gravityview' ),
+				'nickname' => ucwords( __( 'User nickname', 'gravityview' ) ),
 				'description' => __( 'Description', 'gravityview' ),
 				'first_name' => __( 'First Name', 'gravityview' ),
 				'last_name' => __( 'Last Name', 'gravityview' ),

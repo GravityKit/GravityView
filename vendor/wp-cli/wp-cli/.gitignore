@@ -1,0 +1,13 @@
+.DS_Store
+config.yml
+PHAR_BUILD_VERSION
+/cache
+/packages
+/vendor
+/*.phar
+.*.swp
+*.log
+phpunit.xml
+phpcs.xml
+.phpcs.xml
+composer.lock

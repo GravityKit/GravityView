@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -18,7 +18,6 @@ class GravityView_API {
 	 *
 	 * @deprecated Use \GV\Field::get_label()
 	 *
-	 * @access public
 	 * @static
 	 * @param array $field GravityView field array
 	 * @param array $entry Gravity Forms entry array
@@ -151,7 +150,6 @@ class GravityView_API {
 	/**
 	 * Fetch Field class
 	 *
-	 * @access public
 	 * @static
 	 * @param mixed $field
 	 * @return string
@@ -202,7 +200,6 @@ class GravityView_API {
 	 *
 	 * @since 1.11
 	 *
-	 * @access public
 	 * @static
 	 * @param array $field GravityView field array passed to gravityview_field_output()
 	 * @param array $form Gravity Forms form array, if set.
@@ -234,7 +231,6 @@ class GravityView_API {
 	 *
 	 * @deprecated Use \GV\Field_Template::render() or the more low-level \GV\Field::get_value()
 	 *
-	 * @access public
 	 * @param array $entry
 	 * @param array $field
 	 * @return null|string
@@ -411,6 +407,11 @@ class GravityView_API {
 						$post_id = $context->view ? $context->view->ID : false;
 					}
 				} else {
+
+					if ( ! class_exists( 'GravityView_View' ) ) {
+						gravityview()->plugin->include_legacy_frontend( true );
+					}
+
 					/** @deprecated path of execution */
 					$gravityview_view = GravityView_View::getInstance();
 
@@ -631,10 +632,11 @@ class GravityView_API {
 	 *
 	 * @since 1.7.3 Added $add_directory_args parameter
 	 * @since 2.7.2 Added $view_id parameter
+	 * @since 2.10  Added $_GET args to links by default. Use `gravityview/entry_link/add_query_args` filter to override.
 	 *
-	 * @param  array|int $entry   Entry array or entry ID
-	 * @param  int|null $post_id If wanting to define the parent post, pass a post ID
-	 * @param boolean $add_directory_args True: Add args to help return to directory; False: only include args required to get to entry
+	 * @param  array|int $entry   Entry array or entry ID.
+	 * @param  int|null $post_id If wanting to define the parent post, pass a post ID.
+	 * @param boolean $add_directory_args True: Add args to help return to directory; False: only include args required to get to entry.
 	 * @param int $view_id
 	 *
 	 * @return string Link to the entry with the directory parent slug, or empty string if embedded post or View doesn't exist
@@ -694,9 +696,20 @@ class GravityView_API {
 			unset( $gv_entry );
 		}
 
-		if ( get_option('permalink_structure') && !is_preview() ) {
+		$args = array();
 
-			$args = array();
+		/**
+		 * @filter `gravityview/entry_link/add_query_args` Modify whether to include passed $_GET parameters to the end of the url
+		 * @since 2.10
+		 * @param bool $add_query_params Whether to include passed $_GET parameters to the end of the Entry Link URL. Default: true.
+		 */
+		$add_query_args = apply_filters( 'gravityview/entry_link/add_query_args', true );
+
+		if ( $add_query_args ) {
+			$args = gv_get_query_args();
+		}
+
+		if ( get_option('permalink_structure') && ! is_preview() ) {
 
 			/**
 			 * Make sure the $directory_link doesn't contain any query otherwise it will break when adding the entry slug.
@@ -710,7 +723,7 @@ class GravityView_API {
 
 		} else {
 
-			$args = array( $query_arg_name => $entry_slug );
+			$args[] = array( $query_arg_name => $entry_slug );
 		}
 
 		/**
@@ -749,6 +762,57 @@ class GravityView_API {
 	}
 
 
+}
+
+/**
+ * Returns query parameters from $_GET with reserved internal GravityView keys removed
+ *
+ * @uses stripslashes_deep() $_GET is passed through stripslashes_deep().
+ * @uses urldecode_deep() $_GET is passed through urldecode_deep().
+ *
+ * Important: The return value of gv_get_query_args() is not escaped by default. Output should be
+ * late-escaped with esc_url() or similar to help prevent vulnerability to cross-site scripting
+ * (XSS) attacks.
+ *
+ * @since 2.10
+ *
+ * @return array
+ */
+function gv_get_query_args() {
+
+	$passed_get = isset( $_GET ) ? $_GET : array();
+
+	$passed_get = stripslashes_deep( $passed_get );
+	$passed_get = urldecode_deep( $passed_get );
+
+	if ( empty( $passed_get ) ) {
+		return array();
+	}
+
+	$query_args = $passed_get;
+
+	$reserved_args = array(
+		'entry',
+		'gvid',
+		'status',
+		'action',
+		'view_id',
+		'entry_id',
+		'pagenum',
+	);
+
+	/**
+	 * @filter `gravityview/api/reserved_query_args` Modify the URL arguments that should not be used because they are internal to GravityView
+	 * @since 2.10
+	 * @param array $reserved_args Array of URL query keys that should not be used except internally.
+	 */
+	$reserved_args = apply_filters( 'gravityview/api/reserved_query_args', $reserved_args );
+
+	foreach ( $reserved_args as $reserved_arg ) {
+		unset( $query_args[ $reserved_arg ] );
+	}
+
+	return $query_args;
 }
 
 
@@ -811,6 +875,10 @@ function gv_container_class( $passed_css_class = '', $echo = true, $context = nu
 
 	if ( 0 === $total_entries ) {
 		$default_css_class .= ' gv-container-no-results';
+	}
+
+	if ( $context instanceof \GV\Template_Context && $context->view ) {
+		$default_css_class .= ' ' . $context->view->settings->get( 'class', '' );
 	}
 
 	$css_class = trim( $passed_css_class . ' '. $default_css_class );

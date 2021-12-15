@@ -35,6 +35,8 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 
 	public $_custom_merge_tag = 'approval_status';
 
+	public $icon = 'dashicons-yes-alt';
+
 	public function __construct() {
 
 		$this->label = esc_html__( 'Approval Status', 'gravityview' );
@@ -48,25 +50,21 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 
 	private function add_hooks() {
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ), 10, 3 );
-
-		add_filter( 'gravityview_field_entry_value_is_approved_pre_link', array( $this, 'filter_field_value' ), 10, 4 );
 	}
 
 	/**
 	 * Convert entry approval status value to label in the field output. Uses labels from the field setting.
 	 *
-	 * @since 1.18
+	 * @since 2.10
 	 *
-	 * @param string $output HTML value output
-	 * @param array  $entry The GF entry array
-	 * @param array  $field_settings Settings for the particular GV field
-	 * @param array  $field Field array, as fetched from GravityView_View::getCurrentField()
+	 * @param string $approval_status Status to pass to {@see GravityView_Entry_Approval_Status::maybe_convert_status}
+	 * @param bool   $html Whether to return HTML or plaintext string value
 	 *
 	 * @return string The field setting label for the current status. Uses defaults, if not configured.
 	 */
-	public function filter_field_value( $output = '', $entry = array(), $field_settings = array(), $gv_field_output = array() ) {
+	public static function get_output( $approval_status = '', $field_settings = array(), $html = false ) {
 
-		$status = GravityView_Entry_Approval_Status::maybe_convert_status( $output );
+		$status = GravityView_Entry_Approval_Status::maybe_convert_status( $approval_status );
 		$status_key = GravityView_Entry_Approval_Status::get_key( $status );
 
 		// "approved_label", "unapproved_label", "disapproved_label" setting keys
@@ -77,6 +75,10 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 		$value = \GV\Utils::get( $field_settings, $field_setting_key, $default_label );
 		if ( empty( $value ) ) {
 			$value = $default_label;
+		}
+
+		if ( ! $html ) {
+			return $value;
 		}
 
 		return sprintf( '<span class="gv-approval-%s">%s</span>', esc_attr( $status_key ), $value );

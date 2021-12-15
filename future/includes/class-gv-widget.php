@@ -12,6 +12,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * An interface that most GravityView widgets would want to adhere to and inherit from.
  */
 abstract class Widget {
+
 	/**
 	 * Widget admin label
 	 * @var string
@@ -25,7 +26,7 @@ abstract class Widget {
 	protected $widget_description = '';
 
 	/**
-	 * Widget details, shown in the widget lightbox
+	 * Widget details, shown in the widget modal
 	 * @since 1.8
 	 * @var  string
 	 */
@@ -85,6 +86,8 @@ abstract class Widget {
 	 * @var \GV\Settings
 	 */
 	public $configuration;
+
+	public $icon;
 
 	/**
 	 * Constructor.
@@ -152,11 +155,12 @@ abstract class Widget {
 
 		if ( $enable_custom_class ) {
 			$settings['custom_class'] = array(
-				'type' => 'text',
-				'label' => __( 'Custom CSS Class:', 'gravityview' ),
-				'desc' => __( 'This class will be added to the widget container', 'gravityview' ),
-				'value' => '',
+				'type'       => 'text',
+				'label'      => __( 'Custom CSS Class:', 'gravityview' ),
+				'desc'       => __( 'This class will be added to the widget container', 'gravityview' ),
+				'value'      => '',
 				'merge_tags' => true,
+				'class'      => 'widefat code',
 			);
 		}
 
@@ -238,6 +242,7 @@ abstract class Widget {
 			'label' => $this->widget_label ,
 			'description' => $this->widget_description,
 			'subtitle' => $this->widget_subtitle,
+			'icon' => $this->icon,
 			'class' => get_called_class(),
 		);
 
@@ -306,7 +311,6 @@ abstract class Widget {
 		global $post;
 
 		if ( ! is_object( $post ) || empty( $post->post_content ) || ! Shortcode::parse( $post->post_content ) ) {
-			gravityview()->log->debug( 'No shortcode present; not adding render_frontend shortcode.' );
 			add_shortcode( $this->shortcode_name, '__return_null' );
 			return;
 		}

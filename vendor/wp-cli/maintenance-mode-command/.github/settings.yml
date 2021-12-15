@@ -1,0 +1,32 @@
+# Used by Probot Settings: https://probot.github.io/apps/settings/
+repository:
+  description: Activates, deactivates or checks the status of the maintenance mode of a site.
+labels:
+  - name: bug
+    color: fc2929
+  - name: scope:documentation
+    color: 0e8a16
+  - name: scope:testing
+    color: 5319e7
+  - name: good-first-issue
+    color: eb6420
+  - name: help-wanted
+    color: 159818
+  - name: maybelater
+    color: c2e0c6
+  - name: state:unconfirmed
+    color: bfe5bf
+  - name: state:unsupported
+    color: bfe5bf
+  - name: wontfix
+    color: c2e0c6
+  - name: command:maintenance-mode
+    color: c5def5
+  - name: command:maintenance-mode-activate
+    color: c5def5
+  - name: command:maintenance-mode-deactivate
+    color: c5def5
+  - name: command:maintenance-mode-status
+    color: c5def5
+  - name: command:maintenance-mode-is-active
+    color: c5def5

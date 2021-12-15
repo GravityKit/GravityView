@@ -10,6 +10,21 @@
 		#{$margin-left}: .5em;
 	}
 
+	// GF 2.5
+	.gravity-theme .gform_delete_file {
+		line-height: 1;
+		padding: .25em;
+		margin: 0 .25em;
+		background: var( --global-palette-btn-bg );
+		.dashicons {
+			margin: 0;
+			width: 20px;
+		}
+		&:hover {
+			background: var(--global-palette-btn-bg-hover);
+		}
+	}
+
 	.dashicons-dismiss {
 		color: #a10013;
 
@@ -26,4 +41,21 @@
 		}
 	}
 
+	// GF 2.5.6.4
+	.ginput_preview_control {
+		bottom: -0.25rem;
+		display: inline-block;
+		font-size: 1.25rem;
+		outline: none;
+		position: relative;
+		text-decoration: none;
+
+		&.gform-icon--circle-arrow-down {
+			color: #22a753;
+		}
+
+		&.gform-icon--circle-delete {
+			color: #dd301d;
+		}
+	}
 }

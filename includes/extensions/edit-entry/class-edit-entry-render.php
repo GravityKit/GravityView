@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
@@ -209,7 +209,7 @@ class GravityView_Edit_Entry_Render {
 	public function is_edit_entry() {
 
 		$is_edit_entry =
-			( GravityView_frontend::is_single_entry() || ( ! empty( gravityview()->request->is_entry() ) ) )
+			( GravityView_frontend::is_single_entry() || gravityview()->request->is_entry() )
 			&& ( ! empty( $_GET['edit'] ) );
 
 		return ( $is_edit_entry || $this->is_edit_entry_submission() );
@@ -310,6 +310,9 @@ class GravityView_Edit_Entry_Render {
 
 		// Sack is required for images
 		wp_print_scripts( array( 'sack', 'gform_gravityforms', 'gravityview-fe-view' ) );
+
+		// File download/delete icons
+		wp_enqueue_style( 'gform_admin_icons' );
 	}
 
 
@@ -366,8 +369,8 @@ class GravityView_Edit_Entry_Render {
 			unset( $this->entry['date_created'] );
 
 			/**
-			 * @action `gravityview/edit_entry/before_update` Perform an action after the entry has been updated using Edit Entry
-			 * @since develop
+			 * @action `gravityview/edit_entry/before_update` Perform an action before the entry has been updated using Edit Entry
+			 * @since 2.1
 			 * @param array $form Gravity Forms form array
 			 * @param string $entry_id Numeric ID of the entry that is being updated
 			 * @param GravityView_Edit_Entry_Render $this This object
@@ -634,13 +637,12 @@ class GravityView_Edit_Entry_Render {
 
 		$form = $this->filter_conditional_logic( $this->form );
 
-	    /** @var GF_Field $field */
+	    /** @type GF_Field $field */
 		foreach( $form['fields'] as $k => &$field ) {
 
 			/**
 			 * Remove the fields with calculation formulas before save to avoid conflicts with GF logic
 			 * @since 1.16.3
-			 * @var GF_Field $field
 			 */
 			if( $field->has_calculation() ) {
 				unset( $form['fields'][ $k ] );
@@ -1635,23 +1637,24 @@ class GravityView_Edit_Entry_Render {
 
 				    }
 
-				    if ( \GV\Utils::get( $field, "multipleFiles" ) ) {
+					if ( \GV\Utils::get( $field, 'multipleFiles' ) ) {
+						// If there are fresh uploads, process and merge them.
+						// Otherwise, use the passed values, which should be json-encoded array of URLs
+						if ( isset( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] ) ) {
+							$value = empty( $value ) ? '[]' : $value;
+							$value = stripslashes_deep( $value );
+							$value = GFFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'], array() );
+						} else if ( GFCommon::is_json( $value ) ) {
+							// Existing file; let GF derive the value from the `$_gf_uploaded_files` object (see `\GF_Field_FileUpload::get_multifile_value()`)
+							global $_gf_uploaded_files;
 
-				        // If there are fresh uploads, process and merge them.
-				        // Otherwise, use the passed values, which should be json-encoded array of URLs
-				        if( isset( GFFormsModel::$uploaded_files[$form_id][$input_name] ) ) {
-				            $value = empty( $value ) ? '[]' : $value;
-				            $value = stripslashes_deep( $value );
-				            $value = GFFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'], array());
-				        }
-
-				    } else {
-
-				        // A file already exists when editing an entry
-				        // We set this to solve issue when file upload fields are required.
-				        GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] = $value;
-
-				    }
+							$_gf_uploaded_files[ $input_name ] = $value;
+						}
+					} else {
+						// A file already exists when editing an entry
+						// We set this to solve issue when file upload fields are required.
+						GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] = $value;
+					}
 
 				    $this->entry[ $input_name ] = $value;
 				    $_POST[ $input_name ] = $value;
@@ -1725,8 +1728,13 @@ class GravityView_Edit_Entry_Render {
 	 * fields. This goes through all the fields and if they're an invalid post field, we
 	 * set them as valid. If there are still issues, we'll return false.
 	 *
-	 * @param  [type] $validation_results [description]
-	 * @return [type]                     [description]
+	 * @param  $validation_results {
+	 *   @type bool $is_valid
+	 *   @type array $form
+	 *   @type int $failed_validation_page The page number which has failed validation.
+	 * }
+	 *
+	 * @return array
 	 */
 	public function custom_validation( $validation_results ) {
 
@@ -1737,55 +1745,61 @@ class GravityView_Edit_Entry_Render {
 		$gv_valid = true;
 
 		foreach ( $validation_results['form']['fields'] as $key => &$field ) {
+			$value             = RGFormsModel::get_field_value( $field );
+			$field_type        = RGFormsModel::get_input_type( $field );
+			$is_required       = ! empty( $field->isRequired );
+			$failed_validation = ! empty( $field->failed_validation );
 
-			$value = RGFormsModel::get_field_value( $field );
-			$field_type = RGFormsModel::get_input_type( $field );
+			// Manually validate required fields as they can be skipped be skipped by GF's validation
+			// This can happen when the field is considered "hidden" (see `GFFormDisplay::validate`) due to unmet conditional logic
+			if ( $is_required && !$failed_validation && rgblank( $value ) ) {
+				$field->failed_validation  = true;
+				$field->validation_message = esc_html__( 'This field is required.', 'gravityview' );
 
-			// Validate always
+				continue;
+			}
+
 			switch ( $field_type ) {
-
-
-				case 'fileupload' :
+				case 'fileupload':
 				case 'post_image':
+					// Clear "this field is required" validation result when no files were uploaded but already exist on the server
+					if ( $is_required && $failed_validation && ! empty( $value ) ) {
+						$field->failed_validation = false;
 
-				    // in case nothing is uploaded but there are already files saved
-				    if( !empty( $field->failed_validation ) && !empty( $field->isRequired ) && !empty( $value ) ) {
-				        $field->failed_validation = false;
-				        unset( $field->validation_message );
-				    }
+						unset( $field->validation_message );
+					}
 
-				    // validate if multi file upload reached max number of files [maxFiles] => 2
-				    if( \GV\Utils::get( $field, 'maxFiles') && \GV\Utils::get( $field, 'multipleFiles') ) {
+					// Re-validate the field
+					$field->validate( $field, $this->form );
 
-				        $input_name = 'input_' . $field->id;
-				        //uploaded
-				        $file_names = isset( GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] ) ? GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] : array();
+					// Validate if multi-file upload reached max number of files [maxFiles] => 2
+					if ( \GV\Utils::get( $field, 'maxFiles' ) && \GV\Utils::get( $field, 'multipleFiles' ) ) {
+						$input_name = 'input_' . $field->id;
+						//uploaded
+						$file_names = isset( GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] ) ? GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] : array();
 
-				        //existent
-				        $entry = $this->get_entry();
-				        $value = NULL;
-				        if( isset( $entry[ $field->id ] ) ) {
-				            $value = json_decode( $entry[ $field->id ], true );
-				        }
+						//existent
+						$entry = $this->get_entry();
+						$value = null;
+						if ( isset( $entry[ $field->id ] ) ) {
+							$value = json_decode( $entry[ $field->id ], true );
+						}
 
-				        // count uploaded files and existent entry files
-				        $count_files = ( is_array( $file_names ) ? count( $file_names ) : 0 ) +
+						// count uploaded files and existent entry files
+						$count_files = ( is_array( $file_names ) ? count( $file_names ) : 0 ) +
 						               ( is_array( $value ) ? count( $value ) : 0 );
 
-				        if( $count_files > $field->maxFiles ) {
-				            $field->validation_message = __( 'Maximum number of files reached', 'gravityview' );
-				            $field->failed_validation = 1;
-				            $gv_valid = false;
+						if ( $count_files > $field->maxFiles ) {
+							$field->validation_message = __( 'Maximum number of files reached', 'gravityview' );
+							$field->failed_validation  = true;
+							$gv_valid                  = false;
 
-				            // in case of error make sure the newest upload files are removed from the upload input
-				            GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ] = null;
-				        }
+							// in case of error make sure the newest upload files are removed from the upload input
+							GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ] = null;
+						}
+					}
 
-				    }
-
-
-				    break;
-
+					break;
 			}
 
 			// This field has failed validation.
@@ -1834,7 +1848,7 @@ class GravityView_Edit_Entry_Render {
 				// if here then probably we are facing the validation 'At least one field must be filled out'
 				if( GFFormDisplay::is_empty( $field, $this->form_id  ) && empty( $field->isRequired ) ) {
 				    unset( $field->validation_message );
-	                $field->validation_message = false;
+					$field->failed_validation = false;
 				    continue;
 				}
 
@@ -2468,6 +2482,33 @@ class GravityView_Edit_Entry_Render {
 		return $field_value;
 	}
 
+	/**
+	 * Returns labels for the action links on Edit Entry
+	 *
+	 * @since 2.10.4
+	 *
+	 * @return array `cancel`, `submit`, `next`, `previous` array keys with associated labels.
+	 */
+	public function get_action_labels() {
 
+		$labels = array(
+			'cancel'   => $this->view->settings->get( 'action_label_cancel', _x( 'Cancel', 'Shown when the user decides not to edit an entry', 'gravityview' ) ),
+			'submit'   => $this->view->settings->get( 'action_label_update', _x( 'Update', 'Button to update an entry the user is editing', 'gravityview' ) ),
+			'next'     => $this->view->settings->get( 'action_label_next', __( 'Next', 'Show the next page in a multi-page form', 'gravityview' ) ),
+			'previous' => $this->view->settings->get( 'action_label_previous', __( 'Previous', 'Show the previous page in a multi-page form', 'gravityview' ) ),
+		);
+
+		/**
+		 * @filter `gravityview/edit_entry/button_labels` Modify the cancel/submit buttons' labels
+		 * @since 1.16.3
+		 * @param array $labels Default button labels associative array
+		 * @param array $form The Gravity Forms form
+		 * @param array $entry The Gravity Forms entry
+		 * @param int $view_id The current View ID
+		 */
+		$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $this->form, $this->entry, $this->view_id );
+
+		return (array) $labels;
+	}
 
 } //end class

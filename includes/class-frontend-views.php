@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -86,6 +86,7 @@ class GravityView_frontend {
 
 	private function initialize() {
 		add_action( 'wp', array( $this, 'parse_content'), 11 );
+		add_filter( 'render_block', array( $this, 'detect_views_in_block_content' ) );
 		add_filter( 'parse_query', array( $this, 'parse_query_fix_frontpage' ), 10 );
 		add_action( 'template_redirect', array( $this, 'set_entry_data'), 1 );
 
@@ -330,6 +331,37 @@ class GravityView_frontend {
 	}
 
 	/**
+	 * Detect GV Views in parsed Gutenberg block content
+	 *
+	 * @since 2.13.4
+	 *
+	 * @see   \WP_Block::render()
+	 *
+	 * @param string $block_content Gutenberg block content
+	 *
+	 * @return false|string
+	 *
+	 * @todo Once we stop using the legacy `GravityView_frontend::parse_content()` method to detect Views in post content, this code should either be dropped or promoted to some core class given its applicability to other themes/plugins
+	 */
+	public function detect_views_in_block_content( $block_content ) {
+		if ( ! class_exists( 'GV\View_Collection' ) || ! class_exists( 'GV\View' ) ) {
+			return $block_content;
+		}
+
+		$gv_view_data = GravityView_View_Data::getInstance();
+
+		$views = \GV\View_Collection::from_content( $block_content );
+
+		foreach ( $views->all() as $view ) {
+			if ( ! $gv_view_data->views->contains( $view->ID ) ) {
+				$gv_view_data->views->add( $view );
+			}
+		}
+
+		return $block_content;
+	}
+
+	/**
 	 * Read the $post and process the View data inside
 	 * @param  array  $wp Passed in the `wp` hook. Not used.
 	 * @return void
@@ -342,17 +374,39 @@ class GravityView_frontend {
 			return;
 		}
 
+		$is_GV_post_type = 'gravityview' === get_post_type( $post );
+
 		// Calculate requested Views
-		$this->setGvOutputData( GravityView_View_Data::getInstance( $post ) );
+		$post_content = ! empty( $post->post_content ) ? $post->post_content : null;
+
+		if ( ! $is_GV_post_type && function_exists( 'parse_blocks' ) && preg_match_all( '/"ref":\d+/', $post_content ) ) {
+			$blocks = parse_blocks( $post_content );
+
+			foreach ( $blocks as $block ) {
+				if ( empty( $block['attrs']['ref'] ) ) {
+					continue;
+				}
+
+				$block_post = get_post( $block['attrs']['ref'] );
+
+				if ( $block_post ) {
+					$post_content .= $block_post->post_content;
+				}
+			}
+
+			$this->setGvOutputData( GravityView_View_Data::getInstance( $post_content ) );
+		} else {
+			$this->setGvOutputData( GravityView_View_Data::getInstance( $post ) );
+		}
 
 		// !important: we need to run this before getting single entry (to kick the advanced filter)
 		$this->set_context_view_id();
 
-		$this->setIsGravityviewPostType( get_post_type( $post ) === 'gravityview' );
+		$this->setIsGravityviewPostType( $is_GV_post_type );
 
-		$post_id = $this->getPostId() ? $this->getPostId() : (isset( $post ) ? $post->ID : null );
+		$post_id = $this->getPostId() ? $this->getPostId() : ( isset( $post ) ? $post->ID : null );
 		$this->setPostId( $post_id );
-		$post_has_shortcode = ! empty( $post->post_content ) ? gravityview_has_shortcode_r( $post->post_content, 'gravityview' ) : false;
+		$post_has_shortcode = $post_content ? gravityview_has_shortcode_r( $post_content, 'gravityview' ) : false;
 		$this->setPostHasShortcode( $this->isGravityviewPostType() ? null : ! empty( $post_has_shortcode ) );
 
 		// check if the View is showing search results (only for multiple entries View)
@@ -429,6 +483,11 @@ class GravityView_frontend {
 	 */
 	public function single_entry_title( $passed_title, $passed_post_id = null ) {
 		global $post;
+
+		// Since this is a public method, it can be called outside of the plugin. Don't assume things have been loaded properly.
+		if ( ! class_exists( '\GV\Entry' ) ) {
+			return $passed_title;
+		}
 
 		$gventry = gravityview()->request->is_entry();
 
@@ -547,7 +606,6 @@ class GravityView_frontend {
 	 *
 	 * @deprecated Use \GV\View::content() instead.
 	 *
-	 * @access public
 	 * @static
 	 * @param mixed $content
 	 * @return string Add the View output into View CPT content
@@ -632,7 +690,6 @@ class GravityView_frontend {
 	/**
 	 * Core function to render a View based on a set of arguments
 	 *
-	 * @access public
 	 * @static
 	 * @param array $passed_args {
 	 *
@@ -705,7 +762,7 @@ class GravityView_frontend {
 			if ( ! empty( $args[ $key ] ) ) {
 
 				// Get a timestamp and see if it's a valid date format
-				$date = strtotime( $args[ $key ] );
+				$date = strtotime( $args[ $key ], GFCommon::get_local_timestamp() );
 
 				// The date was invalid
 				if ( empty( $date ) ) {
@@ -719,7 +776,7 @@ class GravityView_frontend {
 
 				if( ! empty( $search_criteria[ $key ] ) ) {
 
-					$search_date = strtotime( $search_criteria[ $key ] );
+					$search_date = strtotime( $search_criteria[ $key ], GFCommon::get_local_timestamp() );
 
 					// The search is for entries before the start date defined by the settings
 					switch ( $key ) {
@@ -732,7 +789,7 @@ class GravityView_frontend {
 							 *
 							 * @see GFFormsModel::get_date_range_where
 							 */
-							$datetime_format               = gravityview_is_valid_datetime( $args[ $key ] ) ? 'Y-m-d' : 'Y-m-d H:i:s';
+							$datetime_format               = gravityview_is_valid_datetime( $args[ $key ] ) ? 'Y-m-d' : $datetime_format;
 							$search_is_outside_view_bounds = ( $search_date > $date );
 							break;
 						case 'start_date':
@@ -919,7 +976,6 @@ class GravityView_frontend {
 	 *
 	 *
 	 * @uses  gravityview_get_entries()
-	 * @access public
 	 * @param array $args\n
 	 *   - $id - View id
 	 *   - $page_size - Page
@@ -1165,6 +1221,10 @@ class GravityView_frontend {
 			}
 		}
 
+		if ( ! class_exists( 'GravityView_View' ) ) {
+			gravityview()->plugin->include_legacy_frontend( true );
+		}
+
 		GravityView_View::getInstance()->setSorting( $sorting );
 
 		gravityview()->log->debug( '[updateViewSorting] Sort Criteria : ', array( 'data' => $sorting ) );
@@ -1186,7 +1246,7 @@ class GravityView_frontend {
 	 * @param int|string|array $sort_field_id Field used for sorting (`id` or `1.2`), or an array for multisorts
 	 * @param int $form_id GF Form ID
 	 *
-	 * @return string Possibly modified sorting ID
+	 * @return string|array Possibly modified sorting ID. Array if $sort_field_id is passed as array.
 	 */
 	public static function _override_sorting_id_by_field_type( $sort_field_id, $form_id ) {
 
@@ -1324,7 +1384,6 @@ class GravityView_frontend {
 	/**
 	 * Register styles and scripts
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public function add_scripts_and_styles() {
@@ -1359,16 +1418,12 @@ class GravityView_frontend {
 
 					global $wp_filter;
 
-					if ( ! empty( $wp_filter[ 'gravity_view_lightbox_script' ] ) ) {
-						gravityview()->log->warning( 'gravity_view_lightbox_script filter is deprecated use gravityview_lightbox_script instead' );
-					}
-
 					/**
 					 * @filter `gravity_view_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
 					 * @deprecated 2.5.1 Naming. See `gravityview_lightbox_script` instead.
 					 */
-					$js_dependency = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
+					$js_dependency = apply_filters_deprecated( 'gravity_view_lightbox_script', array( 'thickbox' ), '2.5.1', 'gravityview_lightbox_script' );
 
 					/**
 					 * @filter `gravityview_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
@@ -1376,19 +1431,15 @@ class GravityView_frontend {
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
 					 * @param \GV\View The View.
 					 */
-					apply_filters( 'gravityview_lightbox_script', $js_dependency, $view );
+					$js_dependency = apply_filters( 'gravityview_lightbox_script', $js_dependency, $view );
 					$js_dependencies[] = $js_dependency;
-
-					if ( ! empty( $wp_filter[ 'gravity_view_lightbox_style' ] ) ) {
-						gravityview()->log->warning( 'gravity_view_lightbox_style filter is deprecated use gravityview_lightbox_style instead' );
-					}
 
 					/**
 					 * @filter `gravity_view_lightbox_style` Modify the lightbox CSS slug. Default: `thickbox`
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of its CSS file here.
 					 * @deprecated 2.5.1 Naming. See `gravityview_lightbox_style` instead.
 					 */
-					$css_dependency = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
+					$css_dependency = apply_filters_deprecated( 'gravity_view_lightbox_style', array( 'thickbox' ), '2.5.1', 'gravityview_lightbox_style' );
 
 					/**
 					 * @filter `gravityview_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`

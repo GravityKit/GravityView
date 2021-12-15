@@ -3,7 +3,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	https://gravityview.co
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:             2.8.1
+ * Version:             2.13.4
  * Author:            	GravityView
  * Author URI:        	https://gravityview.co
  * Text Domain:       	gravityview
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * The plugin version.
  */
-define( 'GV_PLUGIN_VERSION', '2.8.1' );
+define( 'GV_PLUGIN_VERSION', '2.13.4' );
 
 /**
  * Full path to the GravityView file
@@ -45,29 +45,35 @@ define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
 define( 'GV_MIN_GF_VERSION', '2.3' );
 
 /**
+ * GravityView will soon require at least this version of Gravity Forms to function properly.
+ * @since 1.19.4
+ */
+define( 'GV_FUTURE_MIN_GF_VERSION', '2.4' );
+
+/**
  * GravityView requires at least this version of WordPress to function properly.
  * @since 1.12
  */
 define( 'GV_MIN_WP_VERSION', '4.7.0' );
 
 /**
+ * GravityView will soon require at least this version of WordPress to function properly.
+ * @since 2.9.3
+ */
+define( 'GV_FUTURE_MIN_WP_VERSION', '4.9.16' );
+
+/**
  * GravityView requires at least this version of PHP to function properly.
  * @since 1.12
  */
-define( 'GV_MIN_PHP_VERSION', '5.3.0' );
+define( 'GV_MIN_PHP_VERSION', '5.6.30' );
 
 /**
  * GravityView will require this version of PHP soon. False if no future PHP version changes are planned.
  * @since 1.19.2
  * @var string|false
  */
-define( 'GV_FUTURE_MIN_PHP_VERSION', '5.6.20' );
-
-/**
- * GravityView will soon require at least this version of Gravity Forms to function properly.
- * @since 1.19.4
- */
-define( 'GV_FUTURE_MIN_GF_VERSION', '2.4' );
+define( 'GV_FUTURE_MIN_PHP_VERSION', '7.2' );
 
 /**
  * The future is here and now.
@@ -139,7 +145,6 @@ final class GravityView_Plugin {
 	/**
 	 * Plugin activate function.
 	 *
-	 * @access public
 	 * @static
 	 * @return void
 	 */
@@ -151,7 +156,6 @@ final class GravityView_Plugin {
 	/**
 	 * Plugin deactivate function.
 	 *
-	 * @access public
 	 * @deprecated see \GV\Plugin::deactivate()
 	 * @return void
 	 */
@@ -188,7 +192,6 @@ final class GravityView_Plugin {
 	 *
 	 * @deprecated Use \GV\Plugin::load_textdomain()
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public function load_plugin_textdomain() {
@@ -213,7 +216,6 @@ final class GravityView_Plugin {
 	 *
 	 * @since 1.17 Added $force param
 	 *
-	 * @access public
 	 *
 	 * @param bool $force Whether to force loading
 	 *

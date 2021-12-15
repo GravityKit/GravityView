@@ -215,7 +215,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		$instance['post_id'] = empty( $instance['post_id'] ) ? '' : intval( $instance['post_id'] );
 
-		$is_valid_embed_id = GravityView_View_Data::is_valid_embed_id( $instance['post_id'], $instance['view_id'] );
+		$is_valid_embed_id = GravityView_View_Data::is_valid_embed_id( $instance['post_id'], $instance['view_id'], true );
 
 		//check if post_id is a valid post with embedded View
 		$instance['error_post_id'] = is_wp_error( $is_valid_embed_id ) ? $is_valid_embed_id->get_error_message() : NULL;

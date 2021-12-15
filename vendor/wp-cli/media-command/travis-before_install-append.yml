@@ -1,0 +1,2 @@
+  - bash bin/install-imagick.sh
+  - php -m

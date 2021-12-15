@@ -10,13 +10,15 @@ class GravityView_Field_Workflow_Current_Status_Timestamp extends GravityView_Fi
 
 	var $name = 'workflow_current_status_timestamp';
 
-	var $group = 'meta';
+	public $group = 'add-ons';
 
 	var $contexts = array( 'multiple', 'single' );
 
 	var $entry_meta_key = 'workflow_current_status_timestamp';
 
 	var $is_numeric = true;
+
+	public $icon = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMS43IDExLjIiPjxwYXRoIGQ9Ik0xNC43IDUuOWwtNy00Yy0xLjItLjctMi41LS44LTMuNy0uMy0xLjcuNy0yLjYgMS45LTIuNyAzLjYtLjEgMS41LjQgMi43IDEuNCAzLjcgMS4xIDEuMSAyLjYgMS40IDQuMy45LjIgMCAuNS0uMiAxLjEtLjQuMi0uMS4zLS4xLjQtLjEuMyAwIC41LjEuNi40LjEuMyAwIC41LS4zLjctMS4yLjctMi40LjktMy44LjgtMS4zLS4yLTIuNS0uNy0zLjQtMS42Qy41IDguNS0uMSA3LjEgMCA1LjVjLjEtMi40IDEuMi00IDMuMy01QzQuNS0uMSA1LjgtLjIgNy4yLjJjLjIuMS42LjIgMS4yLjZsNyAzLjkuNC0uNi44IDIuMS0yLjIuMy4zLS42em0tNy44LS41bDcgNGMxLjIuNyAyLjUuOCAzLjcuMyAxLjctLjcgMi42LTEuOSAyLjgtMy42LjEtMS40LS40LTIuNi0xLjUtMy43cy0yLjUtMS40LTQuMy0xYy0uNC4xLS44LjMtMS4xLjRsLS40LjFjLS4zIDAtLjUtLjEtLjYtLjQtLjEtLjMgMC0uNS4zLS43IDEuMS0uNyAyLjQtLjkgMy44LS44IDEuNC4yIDIuNS43IDMuNCAxLjcgMS4yIDEuMiAxLjcgMi41IDEuNiA0LjEtLjEgMi4zLTEuMiA0LTMuMyA1LTEuNC42LTIuNy42LTMuOS4yLS4zLS4xLS43LS4zLTEuMS0uNWwtNy0zLjktLjQuNUw1LjEgNWwyLjItLjMtLjQuN3oiLz48L3N2Zz4=';
 
 	public function __construct() {
 		$this->label = esc_html__( 'Workflow Current Status Timestamp', 'gravityview' );

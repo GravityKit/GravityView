@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -16,7 +16,6 @@ use GV\View;
 /**
  * Returns the form object for a given Form ID.
  * @see GVCommon::get_form()
- * @access public
  * @param mixed $form_id
  * @return mixed False: no form ID specified or Gravity Forms isn't active. Array: Form returned from Gravity Forms
  */
@@ -59,7 +58,6 @@ function gravityview_get_forms( $active = true, $trash = false, $order_by = 'dat
  * Return array of fields' id and label, for a given Form ID
  *
  * @see GVCommon::get_form_fields()
- * @access public
  * @param string|array $form_id (default: '') or $form object
  * @return array
  */
@@ -94,7 +92,6 @@ function gravityview_get_entry_ids( $form_id, $search_criteria = array() ) {
  *
  * @see  GFAPI::get_entries()
  * @see GFFormsModel::get_field_filters_where()
- * @access public
  * @param int|array $form_ids The ID of the form or an array IDs of the Forms. Zero for all forms.
  * @param mixed $passed_criteria (default: null)
  * @param mixed &$total (default: null)
@@ -109,7 +106,6 @@ function gravityview_get_entries( $form_ids = null, $passed_criteria = null, &$t
  *
  * Since 1.4, supports custom entry slugs. The way that GravityView fetches an entry based on the custom slug is by searching `gravityview_unique_id` meta. The `$entry_slug` is fetched by getting the current query var set by `is_single_entry()`
  *
- * @access public
  *
  * @since 1.4 Supports custom entry slugs
  * @since 2.6 Added $view parameter
@@ -127,7 +123,6 @@ function gravityview_get_entry( $entry_slug, $force_allow_ids = false, $check_en
 /**
  * Retrieve the label of a given field id (for a specific form)
  *
- * @access public
  * @param mixed $form
  * @param mixed $field_id
  * @return string
@@ -146,7 +141,6 @@ function gravityview_get_field_label( $form, $field_id, $field_value = '' ) {
  *
  * @uses GVCommon::get_field
  * @see GFFormsModel::get_field
- * @access public
  * @param array|int $form Form array or ID
  * @param string|int $field_id
  * @return GF_Field|null Returns NULL if field with ID $field_id doesn't exist.
@@ -337,7 +331,6 @@ function gravityview_set_directory_widgets( $post_id, $widgets = array() ) {
 /**
  * Render dropdown (select) with the list of sortable fields from a form ID
  *
- * @access public
  * @param  int $formid Form ID
  * @param string $current Field ID of field used to sort
  * @return string         html
@@ -361,7 +354,6 @@ function gravityview_get_field_type(  $form = null , $field_id = '' ) {
 /**
  * Theme function to get a GravityView view
  *
- * @access public
  * @param string $view_id (default: '')
  * @param array $atts (default: array())
  * @return string HTML of the output. Empty string if $view_id is empty.
@@ -382,7 +374,6 @@ function get_gravityview( $view_id = '', $atts = array() ) {
 /**
  * Theme function to render a GravityView view
  *
- * @access public
  * @param string $view_id (default: '')
  * @param array $atts (default: array())
  * @return void

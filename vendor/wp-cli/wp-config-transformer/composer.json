@@ -1,0 +1,23 @@
+{
+    "name": "wp-cli/wp-config-transformer",
+    "description": "Programmatically edit a wp-config.php file.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Frankie Jarrett",
+            "email": "fjarrett@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.29"
+    },
+    "require-dev": {
+        "composer/composer": ">=1.5.6 <1.7.0 || ^1.7.1 || ^2.0.0",
+        "phpunit/phpunit": "^6.5.5 || ^7.0.0",
+        "wp-coding-standards/wpcs": "^0.14.0 || ^1.0.0 || ^2.0.0"
+    },
+    "autoload": {
+        "files": [ "src/WPConfigTransformer.php" ]
+    }
+}

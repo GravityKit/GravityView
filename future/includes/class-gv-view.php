@@ -224,15 +224,19 @@ class View implements \ArrayAccess {
 		global $wp_rewrite;
 
 		$slug = apply_filters( 'gravityview_slug', 'view' );
-		$rule = array( sprintf( '%s/([^/]+)/csv/?', $slug ), 'index.php?gravityview=$matches[1]&csv=1', 'top' );
+		$slug = ( '/' !== $wp_rewrite->front ) ? sprintf( '%s/%s', trim( $wp_rewrite->front, '/' ), $slug ) : $slug;
+		$csv_rule = array( sprintf( '%s/([^/]+)/csv/?', $slug ), 'index.php?gravityview=$matches[1]&csv=1', 'top' );
+		$tsv_rule = array( sprintf( '%s/([^/]+)/tsv/?', $slug ), 'index.php?gravityview=$matches[1]&tsv=1', 'top' );
 
 		add_filter( 'query_vars', function( $query_vars ) {
 			$query_vars[] = 'csv';
+			$query_vars[] = 'tsv';
 			return $query_vars;
 		} );
 
-		if ( ! isset( $wp_rewrite->extra_rules_top[ $rule[0] ] ) ) {
-			call_user_func_array( 'add_rewrite_rule', $rule );
+		if ( ! isset( $wp_rewrite->extra_rules_top[ $csv_rule[0] ] ) ) {
+			call_user_func_array( 'add_rewrite_rule', $csv_rule );
+			call_user_func_array( 'add_rewrite_rule', $tsv_rule );
 		}
 	}
 
@@ -286,13 +290,22 @@ class View implements \ArrayAccess {
 					 * ...apart from a nice message if the user can do anything about it.
 					 */
 					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-						return __( sprintf( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
+
+						$title = sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
+
+						$message = esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
+
+						$image =  sprintf( '<img alt="%s" src="%s" style="margin-top: 10px;" />', esc_attr__( 'Data Source', 'gravityview' ), esc_url( plugins_url( 'assets/images/screenshots/data-source.png', GRAVITYVIEW_FILE ) ) );
+
+						return \GVCommon::generate_notice( '<h3>' . $title . '</h3>' . wpautop( $message . $image ), 'notice' );
 					}
 					break;
 				case 'in_trash':
 
 					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-						return __( sprintf( 'This View is in the Trash. You can <a href="%s">restore the View here</a>.', esc_url( get_edit_post_link( $view->ID, false ) ) ), 'gravityview' );
+						$notice = sprintf( __( 'This View is in the Trash. You can <a href="%s">restore the View here</a>.', 'gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
+
+						return \GVCommon::generate_notice( '<h3>' . $notice . '</h3>', 'notice', array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID );
 					}
 
 					return ''; // Do not show
@@ -917,7 +930,6 @@ class View implements \ArrayAccess {
 	 */
 	public function get_entries( $request = null ) {
 		$entries = new \GV\Entry_Collection();
-
 		if ( $this->form ) {
 			$parameters = $this->settings->as_atts();
 
@@ -926,6 +938,7 @@ class View implements \ArrayAccess {
 			 * This allows us to fake it till we make it.
 			 */
 			if ( ! empty( $parameters['sort_field'] ) && is_array( $parameters['sort_field'] ) ) {
+				$has_multisort = true;
 				$parameters['sort_field'] = reset( $parameters['sort_field'] );
 				if ( ! empty( $parameters['sort_direction'] ) && is_array( $parameters['sort_direction'] ) ) {
 					$parameters['sort_direction'] = reset( $parameters['sort_direction'] );
@@ -980,18 +993,385 @@ class View implements \ArrayAccess {
 				gravityview()->log->notice( 'search_criteria/field_filters is not empty, third-party code may be using legacy search_criteria filters.' );
 			}
 
-			$entries = $this->form->get_entries( $this )
-				->filter( \GV\GF_Entry_Filter::from_search_criteria( $parameters['search_criteria'] ) )
-				->offset( $this->settings->get( 'offset' ) )
-				->limit( $parameters['paging']['page_size'] )
-				->page( $page );
+			if ( gravityview()->plugin->supports( Plugin::FEATURE_GFQUERY ) ) {
 
+				$query_class = $this->get_query_class();
 
-			if ( ! empty( $parameters['sorting'] ) && ! empty( $parameters['sorting']['key'] ) ) {
-				$field = new \GV\Field();
-				$field->ID = $parameters['sorting']['key'];
-				$direction = strtolower( $parameters['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
-				$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction ) );
+				/** @type \GF_Query $query */
+				$query = new $query_class( $this->form->ID, $parameters['search_criteria'], Utils::get( $parameters, 'sorting' ) );
+
+				/**
+				 * Apply multisort.
+				 */
+				if ( ! empty( $has_multisort ) ) {
+					$atts = $this->settings->as_atts();
+
+					$view_setting_sort_field_ids = \GV\Utils::get( $atts, 'sort_field', array() );
+					$view_setting_sort_directions = \GV\Utils::get( $atts, 'sort_direction', array() );
+
+					$has_sort_query_param = ! empty( $_GET['sort'] ) && is_array( $_GET['sort'] );
+
+					if( $has_sort_query_param ) {
+						$has_sort_query_param = array_filter( array_values( $_GET['sort'] ) );
+					}
+
+					if ( $this->settings->get( 'sort_columns' ) && $has_sort_query_param ) {
+						$sort_field_ids = array_keys( $_GET['sort'] );
+						$sort_directions = array_values( $_GET['sort'] );
+					} else {
+						$sort_field_ids = $view_setting_sort_field_ids;
+						$sort_directions = $view_setting_sort_directions;
+					}
+
+					$skip_first = false;
+
+					foreach ( (array) $sort_field_ids as $key => $sort_field_id ) {
+
+						if ( ! $skip_first && ! $has_sort_query_param ) {
+							$skip_first = true; // Skip the first one, it's already in the query
+							continue;
+						}
+
+						$sort_field_id = \GravityView_frontend::_override_sorting_id_by_field_type( $sort_field_id, $this->form->ID );
+						$sort_direction = strtoupper( \GV\Utils::get( $sort_directions, $key, 'ASC' ) );
+
+						if ( ! empty( $sort_field_id ) ) {
+							$order = new \GF_Query_Column( $sort_field_id, $this->form->ID );
+							if ( 'id' !== $sort_field_id && \GVCommon::is_field_numeric( $this->form->ID, $sort_field_id ) ) {
+								$order = \GF_Query_Call::CAST( $order, defined( 'GF_Query::TYPE_DECIMAL' ) ? \GF_Query::TYPE_DECIMAL : \GF_Query::TYPE_SIGNED );
+							}
+
+							$query->order( $order, $sort_direction );
+						}
+					}
+				}
+
+				/**
+				 * Merge time subfield sorts.
+				 */
+				add_filter( 'gform_gf_query_sql', $gf_query_timesort_sql_callback = function( $sql ) use ( &$query ) {
+					$q = $query->_introspect();
+					$orders = array();
+
+					$merged_time = false;
+
+					foreach ( $q['order'] as $oid => $order ) {
+						if ( $order[0] instanceof \GF_Query_Column ) {
+							$column = $order[0];
+						} else if ( $order[0] instanceof \GF_Query_Call ) {
+							if ( count( $order[0]->columns ) != 1 || ! $order[0]->columns[0] instanceof \GF_Query_Column ) {
+								$orders[ $oid ] = $order;
+								continue; // Need something that resembles a single sort
+							}
+							$column = $order[0]->columns[0];
+						}
+
+						if ( ( ! $field = \GFAPI::get_field( $column->source, $column->field_id ) ) || $field->type !== 'time' ) {
+							$orders[ $oid ] = $order;
+							continue; // Not a time field
+						}
+
+						if ( ! class_exists( '\GV\Mocks\GF_Query_Call_TIMESORT' ) ) {
+							require_once gravityview()->plugin->dir( 'future/_mocks.timesort.php' );
+						}
+
+						$orders[ $oid ] = array(
+							new \GV\Mocks\GF_Query_Call_TIMESORT( 'timesort', array( $column, $sql ) ),
+							$order[1] // Mock it!
+						);
+
+						$merged_time = true;
+					}
+
+					if ( $merged_time ) {
+						/**
+						 * ORDER again.
+						 */
+						if ( ! empty( $orders ) && $_orders = $query->_order_generate( $orders ) ) {
+							$sql['order'] = 'ORDER BY ' . implode( ', ', $_orders );
+						}
+					}
+
+					return $sql;
+				} );
+
+				$query->limit( $parameters['paging']['page_size'] )
+					->offset( ( ( $page - 1 ) * $parameters['paging']['page_size'] ) + $this->settings->get( 'offset' ) );
+
+				/**
+				 * Any joins?
+				 */
+				if ( gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) && count( $this->joins ) ) {
+
+					$is_admin_and_can_view = $this->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap( 'gravityview_moderate_entries', $this->ID );
+
+					foreach ( $this->joins as $join ) {
+						$query = $join->as_query_join( $query );
+
+						if ( $this->settings->get( 'multiple_forms_disable_null_joins' ) ) {
+
+							// Disable NULL outputs
+							$condition = new \GF_Query_Condition(
+								new \GF_Query_Column( $join->join_on_column->ID, $join->join_on->ID ),
+								\GF_Query_Condition::NEQ,
+								new \GF_Query_Literal( '' )
+							);
+
+							$query_parameters = $query->_introspect();
+
+							$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
+						}
+
+						/**
+						 * This is a temporary stub filter, until GF_Query supports NULL conditions.
+						 * Do not use! This filter will be removed.
+						 */
+						if ( defined( 'GF_Query_Condition::NULL' ) ) {
+							$is_null_condition_native = true;
+						} else {
+							$is_null_condition_class = apply_filters( 'gravityview/query/is_null_condition', null );
+							$is_null_condition_native = false;
+						}
+
+						// Filter to active entries only
+						$condition = new \GF_Query_Condition(
+							new \GF_Query_Column( 'status', $join->join_on->ID ),
+							\GF_Query_Condition::EQ,
+							new \GF_Query_Literal( 'active' )
+						);
+
+						if ( $is_null_condition_native ) {
+							$condition = \GF_Query_Condition::_or( $condition, new \GF_Query_Condition(
+								new \GF_Query_Column( 'status', $join->join_on->ID ),
+								\GF_Query_Condition::IS,
+								\GF_Query_Condition::NULL
+							) );
+						} else if ( ! is_null( $is_null_condition_class ) ) {
+							$condition = \GF_Query_Condition::_or( $condition, new $is_null_condition_class(
+								new \GF_Query_Column( 'status', $join->join_on->ID )
+							) );
+						}
+
+						$q = $query->_introspect();
+						$query->where( \GF_Query_Condition::_and( $q['where'], $condition ) );
+
+						if ( $this->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
+
+							// Show only approved joined entries
+							$condition = new \GF_Query_Condition(
+								new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
+								\GF_Query_Condition::EQ,
+								new \GF_Query_Literal( \GravityView_Entry_Approval_Status::APPROVED )
+							);
+
+							if ( $is_null_condition_native ) {
+								$condition = \GF_Query_Condition::_or( $condition, new \GF_Query_Condition(
+									new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
+									\GF_Query_Condition::IS,
+									\GF_Query_Condition::NULL
+								) );
+							} else if ( ! is_null( $is_null_condition_class ) ) {
+								$condition = \GF_Query_Condition::_or( $condition, new $is_null_condition_class(
+									new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID )
+								) );
+							}
+
+							$query_parameters = $query->_introspect();
+
+							$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
+						}
+					}
+
+				/**
+				 * Unions?
+				 */
+				} else if ( gravityview()->plugin->supports( Plugin::FEATURE_UNIONS ) && count( $this->unions ) ) {
+					$query_parameters = $query->_introspect();
+
+					$unions_sql = array();
+
+					/**
+					 * @param \GF_Query_Condition $condition
+					 * @param array $fields
+					 * @param $recurse
+					 *
+					 * @return \GF_Query_Condition
+					 */
+					$where_union_substitute = function( $condition, $fields, $recurse ) {
+						if ( $condition->expressions ) {
+							$conditions = array();
+
+							foreach ( $condition->expressions as $_condition ) {
+								$conditions[] = $recurse( $_condition, $fields, $recurse );
+							}
+
+							return call_user_func_array(
+								array( '\GF_Query_Condition', $condition->operator == 'AND' ? '_and' : '_or' ),
+								$conditions
+							);
+						}
+
+						if ( ! ( $condition->left && $condition->left instanceof \GF_Query_Column ) || ( ! $condition->left->is_entry_column() && ! $condition->left->is_meta_column() ) ) {
+							return new \GF_Query_Condition(
+								new \GF_Query_Column( $fields[ $condition->left->field_id ]->ID ),
+								$condition->operator,
+								$condition->right
+							);
+						}
+
+						return $condition;
+					};
+
+					foreach ( $this->unions as $form_id => $fields ) {
+
+						// Build a new query for every unioned form
+						$query_class = $this->get_query_class();
+
+						/** @type \GF_Query|\GF_Patched_Query $q */
+						$q = new $query_class( $form_id );
+
+						// Copy the WHERE clauses but substitute the field_ids to the respective ones
+						$q->where( $where_union_substitute( $query_parameters['where'], $fields, $where_union_substitute ) );
+
+						// Copy the ORDER clause and substitute the field_ids to the respective ones
+						foreach ( $query_parameters['order'] as $order ) {
+							list( $column, $_order ) = $order;
+
+							if ( $column && $column instanceof \GF_Query_Column ) {
+								if ( ! $column->is_entry_column() && ! $column->is_meta_column() ) {
+									$column = new \GF_Query_Column( $fields[ $column->field_id ]->ID );
+								}
+
+								$q->order( $column, $_order );
+							}
+						}
+
+						add_filter( 'gform_gf_query_sql', $gf_query_sql_callback = function( $sql ) use ( &$unions_sql ) {
+							// Remove SQL_CALC_FOUND_ROWS as it's not needed in UNION clauses
+							$select = 'UNION ALL ' . str_replace( 'SQL_CALC_FOUND_ROWS ', '', $sql['select'] );
+
+							// Record the SQL
+							$unions_sql[] = array(
+								// Remove columns, we'll rebuild them
+								'select'  => preg_replace( '#DISTINCT (.*)#', 'DISTINCT ', $select ),
+								'from'    => $sql['from'],
+								'join'    => $sql['join'],
+								'where'   => $sql['where'],
+								// Remove order and limit
+							);
+
+							// Return empty query, no need to call the database
+							return array();
+						} );
+
+						do_action_ref_array( 'gravityview/view/query', array( &$q, $this, $request ) );
+
+						$q->get(); // Launch
+
+						remove_filter( 'gform_gf_query_sql', $gf_query_sql_callback );
+					}
+
+					add_filter( 'gform_gf_query_sql', $gf_query_sql_callback = function( $sql ) use ( $unions_sql ) {
+						// Remove SQL_CALC_FOUND_ROWS as it's not needed in UNION clauses
+						$sql['select'] = str_replace( 'SQL_CALC_FOUND_ROWS ', '', $sql['select'] );
+
+						// Remove columns, we'll rebuild them
+						preg_match( '#DISTINCT (`[motc]\d+`.`.*?`)#', $sql['select'], $select_match );
+						$sql['select'] = preg_replace( '#DISTINCT (.*)#', 'DISTINCT ', $sql['select'] );
+
+						$unions = array();
+
+						// Transform selected columns to shared alias names
+						$column_to_alias = function( $column ) {
+							$column = str_replace( '`', '', $column );
+							return '`' . str_replace( '.', '_', $column ) . '`';
+						};
+
+						// Add all the order columns into the selects, so we can order by the whole union group
+						preg_match_all( '#(`[motc]\d+`.`.*?`)#', $sql['order'], $order_matches );
+
+						$columns = array(
+							sprintf( '%s AS %s', $select_match[1], $column_to_alias( $select_match[1] ) )
+						);
+
+						foreach ( array_slice( $order_matches, 1 ) as $match ) {
+							$columns[] = sprintf( '%s AS %s', $match[0], $column_to_alias( $match[0] ) );
+
+							// Rewrite the order columns to the shared aliases
+							$sql['order'] = str_replace( $match[0], $column_to_alias( $match[0] ), $sql['order'] );
+						}
+
+						$columns = array_unique( $columns );
+
+						// Add the columns to every UNION
+						foreach ( $unions_sql as $union_sql ) {
+							$union_sql['select'] .= implode( ', ', $columns );
+							$unions []= implode( ' ', $union_sql );
+						}
+
+						// Add the columns to the main SELECT, but only grab the entry id column
+						$sql['select'] = 'SELECT SQL_CALC_FOUND_ROWS t1_id FROM (' . $sql['select'] . implode( ', ', $columns );
+						$sql['order'] = implode( ' ', $unions ) . ') AS u ' . $sql['order'];
+
+						return $sql;
+					} );
+				}
+
+				/**
+				 * @action `gravityview/view/query` Override the \GF_Query before the get() call.
+				 * @param \GF_Query $query The current query object reference
+				 * @param \GV\View $this The current view object
+				 * @param \GV\Request $request The request object
+				 */
+				do_action_ref_array( 'gravityview/view/query', array( &$query, $this, $request ) );
+
+				gravityview()->log->debug( 'GF_Query parameters: ', array( 'data' => Utils::gf_query_debug( $query ) ) );
+
+				/**
+				 * Map from Gravity Forms entries arrays to an Entry_Collection.
+				 */
+				if ( count( $this->joins ) ) {
+					foreach ( $query->get() as $entry ) {
+						$entries->add(
+							Multi_Entry::from_entries( array_map( '\GV\GF_Entry::from_entry', $entry ) )
+						);
+					}
+				} else {
+					array_map( array( $entries, 'add' ), array_map( '\GV\GF_Entry::from_entry', $query->get() ) );
+				}
+
+				if ( isset( $gf_query_sql_callback ) ) {
+					remove_action( 'gform_gf_query_sql', $gf_query_sql_callback );
+				}
+
+				if ( isset( $gf_query_timesort_sql_callback ) ) {
+					remove_action( 'gform_gf_query_sql', $gf_query_timesort_sql_callback );
+				}
+
+				/**
+				 * Add total count callback.
+				 */
+				$entries->add_count_callback( function() use ( $query ) {
+					return $query->total_found;
+				} );
+			} else {
+				$entries = $this->form->entries
+					->filter( \GV\GF_Entry_Filter::from_search_criteria( $parameters['search_criteria'] ) )
+					->offset( $this->settings->get( 'offset' ) )
+					->limit( $parameters['paging']['page_size'] )
+					->page( $page );
+
+				if ( ! empty( $parameters['sorting'] ) && is_array( $parameters['sorting'] && ! isset( $parameters['sorting']['key'] ) ) ) {
+					// Pluck off multisort arrays
+					$parameters['sorting'] = $parameters['sorting'][0];
+				}
+
+				if ( ! empty( $parameters['sorting'] ) && ! empty( $parameters['sorting']['key'] ) ) {
+					$field = new \GV\Field();
+					$field->ID = $parameters['sorting']['key'];
+					$direction = strtolower( $parameters['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
+					$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction ) );
+				}
 			}
 		}
 
@@ -1012,46 +1392,56 @@ class View implements \ArrayAccess {
 	 * @return void
 	 */
 	public static function template_redirect() {
+
+		$is_csv = get_query_var( 'csv' );
+		$is_tsv = get_query_var( 'tsv' );
+
 		/**
 		 * CSV output.
 		 */
-		if ( ! get_query_var( 'csv' ) ) {
+		if ( ! $is_csv && ! $is_tsv ) {
 			return;
 		}
 
-		if ( ! $view = gravityview()->request->is_view() ) {
+		$view = gravityview()->request->is_view();
+
+		if ( ! $view ) {
 			return;
 		}
 
-		if ( is_wp_error( $error = $view->can_render( array( 'csv' ) ) ) ) {
-			gravityview()->log->error( 'Not rendering CSV: ' . $error->get_error_message() );
+		$error_csv = $view->can_render( array( 'csv' ) );
+
+		if ( is_wp_error( $error_csv ) ) {
+			gravityview()->log->error( 'Not rendering CSV or TSV: ' . $error_csv->get_error_message() );
 			return;
 		}
+
+		$file_type = $is_csv ? 'csv' : 'tsv';
 
 		/**
-		 * Modify the name of the generated CSV file. Name will be sanitized using sanitize_file_name() before output.
+		 * @filter `gravityview/output/{csv|tsv}/filename` Modify the name of the generated CSV or TSV file. Name will be sanitized using sanitize_file_name() before output.
 		 * @see sanitize_file_name()
 		 * @since 2.1
-		 * @param string   $filename File name used when downloading a CSV. Default is "{View title}.csv"
+		 * @param string   $filename File name used when downloading a CSV or TSV. Default is "{View title}.csv" or "{View title}.tsv"
 		 * @param \GV\View $view Current View being rendered
 		 */
-		$filename = apply_filters( 'gravityview/output/csv/filename', get_the_title( $view->post ), $view );
+		$filename = apply_filters( 'gravityview/output/' . $file_type . '/filename', get_the_title( $view->post ), $view );
 
 		if ( ! defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
-			header( sprintf( 'Content-Disposition: attachment;filename="%s.csv"', sanitize_file_name( $filename ) ) );
+			header( sprintf( 'Content-Disposition: attachment;filename="%s.' . $file_type . '"', sanitize_file_name( $filename ) ) );
 			header( 'Content-Transfer-Encoding: binary' );
-			header( 'Content-Type: text/csv' );
+			header( 'Content-Type: text/' . $file_type );
 		}
 
 		ob_start();
-		$csv = fopen( 'php://output', 'w' );
+		$csv_or_tsv = fopen( 'php://output', 'w' );
 
 		/**
 		 * Add da' BOM if GF uses it
 		 * @see GFExport::start_export()
 		 */
 		if ( apply_filters( 'gform_include_bom_export_entries', true, $view->form ? $view->form->form : null ) ) {
-			fputs( $csv, "\xef\xbb\xbf" );
+			fputs( $csv_or_tsv, "\xef\xbb\xbf" );
 		}
 
 		if ( $view->settings->get( 'csv_nolimit' ) ) {
@@ -1100,20 +1490,38 @@ class View implements \ArrayAccess {
 				}
 			}
 
+			// If not "tsv" then use comma
+			$delimiter = ( 'tsv' === $file_type ) ? "\t" : ',';
+
 			if ( ! $headers_done ) {
-				$headers_done = fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), array_values( $headers ) ) );
+				$headers_done = fputcsv( $csv_or_tsv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), array_values( $headers ) ), $delimiter );
 			}
 
-			fputcsv( $csv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), $return ) );
+			fputcsv( $csv_or_tsv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), $return ), $delimiter );
 		}
 
-		fflush( $csv );
+		fflush( $csv_or_tsv );
 
 		echo rtrim( ob_get_clean() );
 
 		if ( ! defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
 			exit;
 		}
+	}
+
+	/**
+	 * Return the query class for this View.
+	 *
+	 * @return string The class name.
+	 */
+	public function get_query_class() {
+		/**
+		 * @filter `gravityview/query/class`
+		 * @param[in,out] string The query class. Default: GF_Query.
+		 * @param \GV\View $this The View.
+		 */
+		$query_class = apply_filters( 'gravityview/query/class', '\GF_Query', $this );
+		return $query_class;
 	}
 
 	/**
@@ -1158,7 +1566,7 @@ class View implements \ArrayAccess {
 
 				return $caps;
 			case 'edit_post':
-				if ( get_post_type( array_pop( $args ) ) == 'gravityview' ) {
+				if ( 'gravityview' === get_post_type( array_pop( $args ) ) ) {
 					return self::restrict( $caps, 'edit_gravityview', $user_id, $args );
 				}
 		endswitch;
@@ -1172,5 +1580,16 @@ class View implements \ArrayAccess {
 			return $raw_post->{$key};
 		}
 		return isset( $this->{$key} ) ? $this->{$key} : null;
+	}
+
+	/**
+	 * Return associated WP post
+	 *
+	 * @since 2.13.2
+	 *
+	 * @return \WP_Post|null
+	 */
+	public function get_post() {
+		return $this->post ? $this->post : null;
 	}
 }

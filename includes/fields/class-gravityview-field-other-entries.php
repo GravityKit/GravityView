@@ -21,6 +21,8 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 
 	var $group = 'gravityview';
 
+	var $icon = 'dashicons-admin-page';
+
 	private $context;
 
 	public function __construct() {
@@ -49,6 +51,7 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 			'label' => __( 'Entry link text (required)', 'gravityview' ),
 			'value' => __('Entry #{entry_id}', 'gravityview'),
 			'merge_tags' => 'force',
+			'group' => 'field',
 		);
 
 		$new_options['after_link'] = array(
@@ -58,14 +61,17 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 			'value' => '',
 			'merge_tags' => 'force',
 			'class' => 'widefat code',
+			'group' => 'field',
 		);
 
 		$new_options['page_size'] = array(
 			'type'  => 'number',
 			'label' => __( 'Entries to Display', 'gravityview' ),
-			'desc'  => __( 'What is the maximum number of entries that should be shown?', 'gravityview' ),
+			'desc'  => __( 'What is the maximum number of entries that should be shown?', 'gravityview' ) . ' ' . sprintf( _x( 'Set to %s for no maximum.', '%s replaced with a formatted 0', 'gravityview' ), '<code>0</code>' ),
 			'value' => '10',
 			'merge_tags' => false,
+			'min'   => 0,
+			'group' => 'field',
 		);
 
 		$new_options['no_entries_hide'] = array(
@@ -73,6 +79,7 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 			'label' => __( 'Hide if no entries', 'gravityview' ),
 			'desc'  => __( 'Don\'t display this field if the entry creator has no other entries', 'gravityview' ),
 			'value' => false,
+			'group' => 'visibility',
 		);
 
 		$new_options['no_entries_text'] = array(
@@ -80,6 +87,9 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 			'label' => __( 'No Entries Text', 'gravityview' ),
 			'desc'  => __( 'The text that is shown if the entry creator has no other entries (and "Hide if no entries" is disabled).', 'gravityview' ),
 			'value' => __( 'This user has no other entries.', 'gravityview' ),
+			'class' => 'widefat',
+			'requires' => 'no_entries_hide',
+			'group' => 'visibility',
 		);
 
 		return $new_options + $field_options;

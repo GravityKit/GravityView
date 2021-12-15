@@ -75,7 +75,7 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 	 * Parameters and criteria are pretty much the same thing here, just
 	 *  different naming, where `$parameters` are the initial parameters
 	 *  calculated for hte view, and `$criteria` are the filtered ones
-	 *  retrieved via `GVCommon::calculate_get_entries_criteria`.
+	 *  retrieved via \GVCommon::calculate_get_entries_criteria()
 	 */
 	$criteria = \GVCommon::calculate_get_entries_criteria( $parameters, $form->ID );
 
@@ -113,7 +113,7 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 		/**
 		 * GF_Query does not subtract the offset, we have to subtract it ourselves.
 		 */
-		$count = $entries->total();
+		$count = $entries->total() - ( gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ? $view->settings->get( 'offset' ) : 0 );
 		$entries = array_map( function( $e ) { return $e->as_entry(); }, $entries->all() );
 	}
 
@@ -545,7 +545,7 @@ final class Legacy_Context {
 	/**
 	 * Hydrates the legacy context globals as needed.
 	 *
-	 * @see self::push() for format.
+	 * @see Legacy_Context::push() for format.
 	 *
 	 * @return void
 	 */
@@ -770,18 +770,6 @@ add_action( 'gravityview/template/after', function( $gravityview = null ) {
 		global $wp_filter;
 
 		if ( empty( $wp_filter['gravityview_after'] ) ) {
-			return;
-		}
-
-		/** WordPress 4.6 and lower compatibility, when WP_Hook classes were still absent. */
-		if ( is_array( $wp_filter['gravityview_after'] ) ) {
-			if ( ! empty( $wp_filter['gravityview_after'][10] ) ) {
-				foreach ( $wp_filter['gravityview_after'][10] as $function_key => $callback ) {
-					if ( strpos( $function_key, 'context_not_configured_warning' ) ) {
-						unset( $wp_filter['gravityview_after'][10][ $function_key ] );
-					}
-				}
-			}
 			return;
 		}
 

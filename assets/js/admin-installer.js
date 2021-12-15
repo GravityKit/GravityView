@@ -4,11 +4,11 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
+ * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2018, Katz Web Services, Inc.
  *
- * @since 2.0.x
+ * @since 2.1
  */
 
 ( function ( $ ) {
@@ -29,6 +29,13 @@
 					installUrl = $( this ).attr( 'href' );
 
 				var performAction = function () {
+
+					if ( '#' === pluginPath && installUrl.length ) {
+						$( item ).attr( 'rel', 'external noreferrer noopener' );
+						window.location = installUrl;
+						return defer.resolve();
+					}
+
 					$( '.gv-admin-installer-container a.button' ).addClass( 'disabled' );
 					$( item ).find( '.spinner' ).show();
 
