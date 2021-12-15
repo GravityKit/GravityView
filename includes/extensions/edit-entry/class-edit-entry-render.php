@@ -1950,13 +1950,13 @@ class GravityView_Edit_Entry_Render {
 
 		$edit_fields = array();
 
-		$field_type_blacklist = $this->loader->get_field_blacklist( $this->entry );
+		$field_type_blocklist = $this->loader->get_field_blocklist( $this->entry );
 
 		if ( empty( $configured_fields ) && apply_filters( 'gravityview/features/paged-edit', false ) ) {
-			$field_type_blacklist = array_diff( $field_type_blacklist, array( 'page' ) );
+			$field_type_blocklist = array_diff( $field_type_blocklist, array( 'page' ) );
 		}
 
-		// First, remove blacklist or calculation fields
+		// First, remove blocklist or calculation fields
 		foreach ( $fields as $key => $field ) {
 
 			// Remove the fields that have calculation properties and keep them to be used later
@@ -1966,7 +1966,7 @@ class GravityView_Edit_Entry_Render {
 				// don't remove the calculation fields on form render.
 			}
 
-			if( in_array( $field->type, $field_type_blacklist ) ) {
+			if( in_array( $field->type, $field_type_blocklist ) ) {
 				unset( $fields[ $key ] );
 			}
 		}

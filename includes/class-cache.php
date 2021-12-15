@@ -246,7 +246,7 @@ class GravityView_Cache {
 		if ( false !== $updated ) {
 			gravityview()->log->debug( 'Added form IDs to cache blocklist', array( 'data' => array(
 				'$form_ids'  => $form_ids,
-				'$blacklist' => $blocklist
+				'$blocklist' => $blocklist
 			) ) );
 		}
 
@@ -295,7 +295,7 @@ class GravityView_Cache {
 	 * @return bool Whether the removal was successful
 	 */
 	public function blacklist_remove( $form_ids ) {
-		_deprecated_function( __METHOD__, '2.9', 'GravityView_Cache::blocklist_remove()' );
+		_deprecated_function( __METHOD__, '2.14', 'GravityView_Cache::blocklist_remove()' );
 		return $this->blocklist_remove( $form_ids );
 	}
 
@@ -309,7 +309,7 @@ class GravityView_Cache {
 	 * @return bool
 	 */
 	public function in_blacklist( $form_ids = NULL ) {
-		_deprecated_function( __METHOD__, '2.9', 'GravityView_Cache::in_blocklist()' );
+		_deprecated_function( __METHOD__, '2.14', 'GravityView_Cache::in_blocklist()' );
 		return $this->in_blocklist( $form_ids );
 	}
 

@@ -156,7 +156,7 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 
 		$GVCache = new GravityView_Cache();
 
-		// Remove the form from the blacklist
+		// Remove the form from the blocklist
 		$GVCache->blocklist_remove( $this->form_id );
 
 		// Make sure form isn't in cache blocklist
@@ -176,7 +176,7 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 			}
 		}
 
-		// Now that the entry has been updated, the form should be in the blacklist
+		// Now that the entry has been updated, the form should be in the blocklist
 		$this->assertTrue( $GVCache->in_blocklist( $this->form_id ) );
 
 		// Invalid Entry ID

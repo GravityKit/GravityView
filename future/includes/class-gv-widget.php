@@ -349,15 +349,13 @@ abstract class Widget {
 		);
 
 		/**
-		 * @filter `gravityview/widget/hide_until_searched/whitelist` Some widgets have got to stay shown.
-		 * @param[in,out] string[] $whitelist The widget IDs that have to be shown by default.
-		 * @deprecated 2.9 In favor of allowlist.
+		 * @deprecated 2.14 In favor of allowlist.
 		 */
-		$allowlist = apply_filters_deprecated( 'gravityview/widget/hide_until_searched/whitelist', array( $allowlist ), '2.9', 'gravityview/widget/hide_until_searched/allowlist' );
+		$allowlist = apply_filters_deprecated( 'gravityview/widget/hide_until_searched/whitelist', array( $allowlist ), '2.14', 'gravityview/widget/hide_until_searched/allowlist' );
 
 		/**
 		 * @filter `gravityview/widget/hide_until_searched/allowlist` Some widgets have got to stay shown.
-		 * @since 2.9
+		 * @since 2.14
 		 * @param[in,out] string[] $allowlist The widget IDs that have to be shown by default.
 		 */
 		$allowlist = apply_filters( 'gravityview/widget/hide_until_searched/allowlist', $allowlist );

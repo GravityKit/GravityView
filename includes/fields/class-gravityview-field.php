@@ -141,7 +141,7 @@ abstract class GravityView_Field {
 		 */
 		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 6 );
 
-		add_filter( 'gravityview/sortable/field_blacklist', array( $this, '_filter_sortable_fields' ), 1 );
+		add_filter( 'gravityview/sortable/field_blocklist', array( $this, '_filter_sortable_fields' ), 1 );
 
 		if( $this->entry_meta_key ) {
 			add_filter( 'gform_entry_meta', array( $this, 'add_entry_meta' ) );

@@ -300,8 +300,11 @@ class GravityView_Admin_Views {
 	/**
 	 * List the field types without presentation properties (on a View context)
 	 *
+	 * @since 2.14
+	 *
 	 * @param array $array Existing field types to add to a blocklist
 	 * @param string|null $context Context for the blocklist. Default: NULL.
+	 *
 	 * @return array Default blocklist fields merged with existing blocklist fields
 	 */
 	public function default_field_blocklist( $array = array(), $context = NULL ) {
@@ -319,10 +322,10 @@ class GravityView_Admin_Views {
 	}
 
 	/**
-	 * @deprecated 2.9
+	 * @deprecated 2.14
 	 */
 	public function default_field_blacklist( $array, $context ) {
-		_deprecated_function( __METHOD__, '2.9', 'GravityView_Admin_Views::default_field_blocklist' );
+		_deprecated_function( __METHOD__, '2.14', 'GravityView_Admin_Views::default_field_blocklist' );
 		$this->default_field_blocklist( $array, $context );
 	}
 
