@@ -5,6 +5,9 @@
  */
 class GravityView_Cache {
 
+	/** @deprecated 2.14 - use BLOCKLIST_OPTION_NAME instead! */
+	const BLACKLIST_OPTION_NAME = 'gravityview_cache_blocklist';
+
 	const BLOCKLIST_OPTION_NAME = 'gravityview_cache_blocklist';
 
 	/**
