@@ -340,20 +340,27 @@ abstract class Widget {
 	 * @return boolean True: render frontend; False: don't render frontend
 	 */
 	public function pre_render_frontend() {
+
 		/**
 		 * Assume shown regardless of hide_until_search setting.
 		 */
-		$whitelist = array(
+		$allowlist = array(
 			'custom_content',
 		);
 
 		/**
-		 * @filter `gravityview/widget/hide_until_searched/whitelist` Some widgets have got to stay shown.
-		 * @param[in,out] string[] $whitelist The widget IDs that have to be shown by default.
+		 * @deprecated 2.14 In favor of allowlist.
 		 */
-		$whitelist = apply_filters( 'gravityview/widget/hide_until_searched/whitelist', $whitelist );
+		$allowlist = apply_filters_deprecated( 'gravityview/widget/hide_until_searched/whitelist', array( $allowlist ), '2.14', 'gravityview/widget/hide_until_searched/allowlist' );
 
-		if ( ( $view = gravityview()->views->get() ) && ! in_array( $this->get_widget_id(), $whitelist ) ) {
+		/**
+		 * @filter `gravityview/widget/hide_until_searched/allowlist` Some widgets have got to stay shown.
+		 * @since 2.14
+		 * @param[in,out] string[] $allowlist The widget IDs that have to be shown by default.
+		 */
+		$allowlist = apply_filters( 'gravityview/widget/hide_until_searched/allowlist', $allowlist );
+
+		if ( ( $view = gravityview()->views->get() ) && ! in_array( $this->get_widget_id(), $allowlist ) ) {
 			$hide_until_searched = $view->settings->get( 'hide_until_searched' );
 		} else {
 			$hide_until_searched = false;

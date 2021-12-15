@@ -1376,10 +1376,14 @@ class GVCommon {
 
 		if ( ! empty( $fields ) ) {
 
-			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'list', 'textarea' ), null );
+			$blocklist_field_types = array( 'list', 'textarea' );
+
+			$blocklist_field_types = apply_filters_deprecated( 'gravityview_blacklist_field_types', array( $blocklist_field_types, null ), '2.14', 'gravityview_blocklist_field_types' );
+
+			$blocklist_field_types = apply_filters( 'gravityview_blocklist_field_types', $blocklist_field_types, null );
 
 			foreach ( $fields as $id => $field ) {
-				if ( in_array( $field['type'], $blacklist_field_types ) ) {
+				if ( in_array( $field['type'], $blocklist_field_types ) ) {
 					continue;
 				}
 
@@ -1393,7 +1397,7 @@ class GVCommon {
 	/**
 	 *
 	 * @param int $formid Gravity Forms form ID
-	 * @param array $blacklist Field types to exclude
+	 * @param array $blocklist Field types to exclude
 	 *
 	 * @since 1.8
 	 *
@@ -1401,7 +1405,7 @@ class GVCommon {
 	 *
 	 * @return array
 	 */
-	public static function get_sortable_fields_array( $formid, $blacklist = array( 'list', 'textarea' ) ) {
+	public static function get_sortable_fields_array( $formid, $blocklist = array( 'list', 'textarea' ) ) {
 
 		// Get fields with sub-inputs and no parent
 		$fields = self::get_form_fields( $formid, true, false );
@@ -1419,12 +1423,16 @@ class GVCommon {
 
         $fields = $date_created + $fields;
 
-		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', $blacklist, NULL );
+		$blocklist_field_types = $blocklist;
+
+		$blocklist_field_types = apply_filters_deprecated( 'gravityview_blacklist_field_types', array( $blocklist_field_types, null ), '2.14', 'gravityview_blocklist_field_types' );
+
+		$blocklist_field_types = apply_filters( 'gravityview_blocklist_field_types', $blocklist_field_types, null );
 
 		// TODO: Convert to using array_filter
 		foreach( $fields as $id => $field ) {
 
-			if( in_array( $field['type'], $blacklist_field_types ) ) {
+			if( in_array( $field['type'], $blocklist_field_types ) ) {
 				unset( $fields[ $id ] );
 			}
 

@@ -65,7 +65,7 @@ final class GravityView_Duplicate_Entry {
 		// Handle duplicate action in the backend
 		add_action( 'gform_pre_entry_list', array( $this, 'maybe_duplicate_list' ) );
 
-		add_filter( 'gravityview/sortable/field_blacklist', array( $this, '_filter_sortable_fields' ), 1 );
+		add_filter( 'gravityview/sortable/field_blocklist', array( $this, '_filter_sortable_fields' ), 1 );
 
 		add_filter( 'gravityview/field/is_visible', array( $this, 'maybe_not_visible' ), 10, 3 );
 

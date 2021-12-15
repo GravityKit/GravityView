@@ -1230,13 +1230,13 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertCount( 2, $entries );
 
 		$_GET['filter_16'] = 'hello';
-		$_GET['filter_16|op'] = '!='; // Override doesn't work, as '!=' is not in whitelist
+		$_GET['filter_16|op'] = '!='; // Override doesn't work, as '!=' is not in allowlist
 		$entries = $view->get_entries()->fetch()->all();
 		$this->assertCount( 2, $entries );
 		$this->assertEquals( $hello['id'], $entries[0]['id'] );
 		$this->assertEquals( $hello_world['id'], $entries[1]['id'] );
 
-		add_filter( 'gravityview/search/operator_whitelist', $callback = function() {
+		add_filter( 'gravityview/search/operator_allowlist', $callback = function() {
 			return array( '!=' );
 		} );
 
@@ -1245,7 +1245,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( $world['id'], $entries[0]['id'] );
 		$this->assertEquals( $hello_world['id'], $entries[1]['id'] );
 
-		remove_filter( 'gravityview/search/operator_whitelist', $callback );
+		remove_filter( 'gravityview/search/operator_allowlist', $callback );
 
 		$_GET = array();
 	}
@@ -1400,7 +1400,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
-		add_filter( $filter = 'gravityview/search/searchable_fields/whitelist', $callback = function( $fields, $view, $with_full ) {
+		add_filter( $filter = 'gravityview/search/searchable_fields/allowlist', $callback = function( $fields, $view, $with_full ) {
 			if ( $with_full ) {
 				return array(
 					array(
@@ -1412,8 +1412,6 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			} else {
 				return array( '16' );
 			}
-
-			return $fields;
 		}, 10, 3 );
 
 		$search_criteria = array(

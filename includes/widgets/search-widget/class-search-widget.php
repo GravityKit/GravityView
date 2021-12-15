@@ -276,7 +276,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	}
 
 	/**
-	 * Add admin script to the no-conflict scripts whitelist
+	 * Add admin script to the no-conflict scripts allowlist
 	 * @param array $allowed Scripts allowed in no-conflict mode
 	 * @return array Scripts allowed in no-conflict mode, plus the search widget script
 	 */
@@ -385,11 +385,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		if ( ! empty( $fields ) ) {
 
-			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'fileupload', 'post_image', 'post_id', 'section' ), null );
+			$blocklist_field_types = apply_filters( 'gravityview_blocklist_field_types', array( 'fileupload', 'post_image', 'post_id', 'section' ), null );
 
 			foreach ( $fields as $id => $field ) {
 
-				if ( in_array( $field['type'], $blacklist_field_types ) ) {
+				if ( in_array( $field['type'], $blocklist_field_types ) ) {
 					continue;
 				}
 
@@ -542,14 +542,22 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		/**
-		 * @filter `gravityview/search/searchable_fields/whitelist` Modifies the fields able to be searched using the Search Bar
 		 * @since 2.5.1
+		 * @depecated 2.14
+		 */
+		$searchable_fields = apply_filters_deprecated( 'gravityview/search/searchable_fields/whitelist', array( $searchable_fields, $view, $with_full_field ), '2.14', 'gravityview/search/searchable_fields/allowlist' );
+
+		/**
+		 * @filter `gravityview/search/searchable_fields/allowlist` Modifies the fields able to be searched using the Search Bar
+		 * @since 2.14
 		 *
 		 * @param array $searchable_fields Array of GravityView-formatted fields or only the field ID? Example: [ '1.2', 'created_by' ]
 		 * @param \GV\View $view Object of View being searched.
 		 * @param bool $with_full_field Does $searchable_fields contain the full field array or just field ID? Default: false (just field ID)
 		 */
-		return apply_filters( 'gravityview/search/searchable_fields/whitelist', $searchable_fields, $view, $with_full_field );
+		$searchable_fields = apply_filters( 'gravityview/search/searchable_fields/allowlist', $searchable_fields, $view, $with_full_field );
+
+		return $searchable_fields;
 	}
 
 	/** --- Frontend --- */
@@ -1987,7 +1995,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 *
 	 * @param array  $get     Where to look for the operator.
 	 * @param string $key     The filter key to look for.
-	 * @param array  $allowed The allowed operators (whitelist).
+	 * @param array  $allowed The allowed operators (allowlist).
 	 * @param string $default The default operator.
 	 *
 	 * @return string The operator.
@@ -1996,11 +2004,17 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$operator = \GV\Utils::get( $get, "$key|op", $default );
 
 		/**
-		 * @filter `gravityview/search/operator_whitelist` An array of allowed operators for a field.
-		 * @param[in,out] string[] A whitelist of allowed operators.
+		 * @depecated 2.14
+		 */
+		$allowed = apply_filters_deprecated( 'gravityview/search/operator_whitelist', array( $allowed, $key ), '2.14', 'gravityview/search/operator_allowlist' );
+
+		/**
+		 * @filter `gravityview/search/operator_allowlist` An array of allowed operators for a field.
+		 * @since 2.14
+		 * @param[in,out] string[] An allowlist of operators.
 		 * @param string The filter name.
 		 */
-		$allowed = apply_filters( 'gravityview/search/operator_whitelist', $allowed, $key );
+		$allowed = apply_filters( 'gravityview/search/operator_allowlist', $allowed, $key );
 
 		if ( ! in_array( $operator, $allowed, true ) ) {
 			$operator = $default;

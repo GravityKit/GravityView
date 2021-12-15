@@ -23,8 +23,8 @@ class GravityView_Admin_Views {
 	function __construct() {
 		add_action( 'save_post', array( $this, 'save_postdata' ) );
 
-		// set the blacklist field types across the entire plugin
-		add_filter( 'gravityview_blacklist_field_types', array( $this, 'default_field_blacklist' ), 10, 2 );
+		// set the blocklist field types across the entire plugin
+		add_filter( 'gravityview_blocklist_field_types', array( $this, 'default_field_blocklist' ), 10, 2 );
 
 		// Tooltips
 		add_filter( 'gform_tooltips', array( $this, 'tooltips') );
@@ -300,11 +300,14 @@ class GravityView_Admin_Views {
 	/**
 	 * List the field types without presentation properties (on a View context)
 	 *
-	 * @param array $array Existing field types to add to a blacklist
-	 * @param string|null $context Context for the blacklist. Default: NULL.
-	 * @return array Default blacklist fields merged with existing blacklist fields
+	 * @since 2.14
+	 *
+	 * @param array $array Existing field types to add to a blocklist
+	 * @param string|null $context Context for the blocklist. Default: NULL.
+	 *
+	 * @return array Default blocklist fields merged with existing blocklist fields
 	 */
-	function default_field_blacklist( $array = array(), $context = NULL ) {
+	public function default_field_blocklist( $array = array(), $context = NULL ) {
 
 		$add = array( 'captcha', 'page' );
 
@@ -316,6 +319,14 @@ class GravityView_Admin_Views {
 		$return = array_merge( $array, $add );
 
 		return $return;
+	}
+
+	/**
+	 * @deprecated 2.14
+	 */
+	public function default_field_blacklist( $array, $context ) {
+		_deprecated_function( __METHOD__, '2.14', 'GravityView_Admin_Views::default_field_blocklist' );
+		$this->default_field_blocklist( $array, $context );
 	}
 
 	/**
@@ -670,17 +681,23 @@ class GravityView_Admin_Views {
 		$form = ( is_string( $form ) && preg_match( '/^preset_/', $form ) ) ? GravityView_Ajax::pre_get_form_fields( $form ) : $form;
 
 		/**
-		 * @filter  `gravityview_blacklist_field_types` Modify the types of fields that shouldn't be shown in a View.
-		 * @param[in,out] array $blacklist_field_types Array of field types to block for this context.
-		 * @param[in] string $context View context ('single', 'directory', or 'edit')
+		 * @deprecated 2.9
 		 */
-		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array(), $context );
+		$blocklist_field_types = apply_filters_deprecated( 'gravityview_blocklist_field_types', array( array(), $context ), '2.14', 'gravityview_blocklist_field_types' );
 
-		if ( ! is_array( $blacklist_field_types ) ) {
+		/**
+		 * @filter  `gravityview_blocklist_field_types` Modify the types of fields that shouldn't be shown in a View.
+		 * @param[in,out] array $blocklist_field_types Array of field types which are not proper to be shown for the $context.
+		 * @param[in] string $context View context ('single', 'directory', or 'edit').
+		 * @since 2.9
+		 */
+		$blocklist_field_types = apply_filters( 'gravityview_blocklist_field_types', $blocklist_field_types, $context );
 
-		    gravityview()->log->error( '$blacklist_field_types is not an array', array( 'data' => print_r( $blacklist_field_types, true ) ) );
+		if ( ! is_array( $blocklist_field_types ) ) {
 
-			$blacklist_field_types = array();
+		    gravityview()->log->error( '$blocklist_field_types is not an array', array( 'data' => print_r( $blocklist_field_types, true ) ) );
+
+			$blocklist_field_types = array();
 		}
 
 		$fields = $this->get_available_fields( $form, $context );
@@ -691,7 +708,7 @@ class GravityView_Admin_Views {
 
 			foreach( $fields as $id => $details ) {
 
-				if( in_array( $details['type'], (array) $blacklist_field_types ) ) {
+				if( in_array( $details['type'], (array) $blocklist_field_types ) ) {
 					continue;
 				}
 

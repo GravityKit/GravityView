@@ -87,7 +87,7 @@ class GravityView_Edit_Entry {
         // Make sure this hook is run for non-admins
         add_action( 'wp_ajax_rg_delete_file', array( 'GFForms', 'delete_file') );
 
-        add_filter( 'gravityview_blacklist_field_types', array( $this, 'modify_field_blacklist' ), 10, 2 );
+        add_filter( 'gravityview_blocklist_field_types', array( $this, 'modify_field_blocklist' ), 10, 2 );
 
         // add template path to check for field
         add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
@@ -245,32 +245,63 @@ class GravityView_Edit_Entry {
     }
 
 	/**
-	 * Edit mode doesn't allow certain field types.
-	 * @param  array $fields  Existing blacklist fields
+	 * @depecated 2.14 Use {@see GravityView_Edit_Entry::modify_field_blocklist()}
+	 *
+	 * @param  array $fields  Existing blocklist fields
 	 * @param  string|null $context Context
-	 * @return array          If not edit context, original field blacklist. Otherwise, blacklist including post fields.
+	 *
+	 * @return array          If not edit context, original field blocklist. Otherwise, blocklist including post fields.
 	 */
 	public function modify_field_blacklist( $fields = array(), $context = NULL ) {
+		_deprecated_function( __METHOD__, '2.14', 'GravityView_Edit_Entry::modify_field_blocklist()' );
+		return $this->modify_field_blocklist( $fields, $context );
+	}
+
+	/**
+	 * Edit mode doesn't allow certain field types.
+	 *
+	 * @since 2.14
+	 *
+	 * @param  array $fields  Existing blocklist fields
+	 * @param  string|null $context Context
+	 *
+	 * @return array          If not edit context, original field blocklist. Otherwise, blocklist including post fields.
+	 */
+	public function modify_field_blocklist( $fields = array(), $context = NULL ) {
 
 		if( empty( $context ) || $context !== 'edit' ) {
 			return $fields;
 		}
 
-		$add_fields = $this->get_field_blacklist();
+		$add_fields = $this->get_field_blocklist();
 
 		return array_merge( $fields, $add_fields );
 	}
 
 	/**
-	 * Returns array of field types that should not be displayed in Edit Entry
+	 * @depecated 2.14 Use {@see GravityView_Edit_Entry::get_field_blocklist()}
 	 *
 	 * @since 1.20
 	 *
 	 * @param array $entry Gravity Forms entry array
 	 *
-	 * @return array Blacklist of field types
+	 * @return array Blocklist of field types
 	 */
-	function get_field_blacklist( $entry = array() ) {
+	public function get_field_blacklist( $entry = array() ) {
+		_deprecated_function( __METHOD__, '2.14', 'GravityView_Edit_Entry::get_field_blocklist()' );
+		return $this->get_field_blocklist( $entry );
+	}
+
+	/**
+	 * Returns array of field types that should not be displayed in Edit Entry
+	 *
+	 * @since 2.14
+	 *
+	 * @param array $entry Gravity Forms entry array
+	 *
+	 * @return array Blocklist of field types
+	 */
+	function get_field_blocklist( $entry = array() ) {
 
 		$fields = array(
 			'page',
@@ -286,12 +317,17 @@ class GravityView_Edit_Entry {
 		);
 
 		/**
-		 * @filter `gravityview/edit_entry/field_blacklist` Array of fields that should not be displayed in Edit Entry
-		 * @since 1.20
-		 * @param array $fields Blacklist field type array
-		 * @param array $entry Gravity Forms entry array
+		 * @depecated 2.14
 		 */
-		$fields = apply_filters( 'gravityview/edit_entry/field_blacklist', $fields, $entry );
+		$fields = apply_filters_deprecated( 'gravityview/edit_entry/field_blacklist', array( $fields, $entry ), '2.14', 'gravityview/edit_entry/field_blocklist' );
+
+		/**
+		 * @filter `gravityview/edit_entry/field_blocklist` Array of fields that should not be displayed in Edit Entry
+		 * @since 1.20
+		 * @param string[] $fields Array of field type or meta key names (eg: `[ "captcha", "payment_status" ]` ).
+		 * @param array $entry Gravity Forms entry array.
+		 */
+		$fields = apply_filters( 'gravityview/edit_entry/field_blocklist', $fields, $entry );
 
 		return $fields;
 	}

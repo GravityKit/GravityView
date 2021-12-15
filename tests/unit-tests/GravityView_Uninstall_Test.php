@@ -136,7 +136,7 @@ class GravityView_Uninstall_Test extends GV_UnitTestCase {
 		$options = array(
 			'gravityformsaddon_gravityview_app_settings',
 			'gravityformsaddon_gravityview_version',
-			'gravityview_cache_blacklist',
+			'gravityview_cache_blocklist',
 		);
 
 		foreach( $options as $option ) {
@@ -236,7 +236,7 @@ class GravityView_Uninstall_Test extends GV_UnitTestCase {
 	 */
 	function _set_up_expected_options() {
 		update_option( 'gravityformsaddon_gravityview_version', 1 );
-		update_option( 'gravityview_cache_blacklist', 1 );
+		update_option( 'gravityview_cache_blocklist', 1 );
 
 		set_transient( 'gravityview_edd-activate_valid', 1 );
 		set_transient( 'gravityview_edd-deactivate_valid', 1 );

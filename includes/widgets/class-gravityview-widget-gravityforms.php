@@ -54,7 +54,7 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 			),
 		);
 
-		add_filter( 'gravityview/widget/hide_until_searched/whitelist', array( $this, 'add_to_allowlist' ) );
+		add_filter( 'gravityview/widget/hide_until_searched/allowlist', array( $this, 'add_to_allowlist' ) );
 
 		parent::__construct( __( 'Gravity Forms', 'gravityview' ) , 'gravityforms', $default_values, $settings );
 	}
