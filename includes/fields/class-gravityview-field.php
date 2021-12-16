@@ -101,7 +101,15 @@ abstract class GravityView_Field {
 	public $contexts = array( 'single', 'multiple', 'edit', 'export' );
 
 	/**
-	 * @var string An icon that represents the field type in the field picker
+	 * @var string An icon that represents the field type in the field picker.
+	 *
+	 * Supports these icon formats:
+	 * - Gravity Forms icon class: The string starts with "gform-icon". Note: the site must be running GF 2.5+. No need to also pass "gform-icon".
+	 * - Dashicons: The string starts with "dashicons". No need to also pass "dashicons".
+	 * - Inline SVG: Starts with "data:"
+	 * - If not matching those formats, the value will be used as a CSS class in a `<i>` element.
+	 *
+	 * @see GravityView_Admin_View_Item::getOutput
 	 */
 	public $icon = 'dashicons-admin-generic';
 
