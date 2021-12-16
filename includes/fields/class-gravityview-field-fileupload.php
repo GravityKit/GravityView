@@ -197,6 +197,15 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			// If pathinfo() gave us the extension of the file, run the switch statement using that.
 			$extension = empty( $file_path_info['extension'] ) ? NULL : strtolower( $file_path_info['extension'] );
+
+			/**
+			 * @filter `gravityview/fields/fileupload/extension` Modify the file extension before it's used in display logic
+			 * @since 2.13.5
+			 * @param string $extension The extension of the file, as parsed by `pathinfo()`.
+			 * @param string $file_path Path to the file uploaded by Gravity Forms.
+			 */
+			$extension = apply_filters( 'gravityview/fields/fileupload/extension', $extension, $file_path );
+
 			$basename = $file_path_info['basename'];
 
 			// Get the secure download URL
