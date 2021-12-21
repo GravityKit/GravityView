@@ -238,7 +238,7 @@ class GravityView_Edit_Entry_Render {
 	    $this->entry = $entries[0];
 
 		self::$original_form = GFAPI::get_form( $this->entry['form_id'] );
-		$this->form = $gravityview_view->getForm();
+		$this->form = self::$original_form;
 		$this->form_id = $this->entry['form_id'];
 		$this->view_id = $gravityview_view->getViewId();
 		$this->post_id = \GV\Utils::get( $post, 'ID', null );
