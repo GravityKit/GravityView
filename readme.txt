@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Added: `{is_starred}` Merge Tag. [Learn more about using `{is_starred}`](https://docs.gravityview.co/article/820-the-isstarred-merge-tag)
 * Fixed: JavaScript error when trying to edit entry's creator
 * Fixed: Recent Entries widget would cause a fatal error on WP 5.8 or newer
 
