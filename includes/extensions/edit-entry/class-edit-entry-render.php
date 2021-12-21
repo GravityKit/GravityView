@@ -319,7 +319,7 @@ class GravityView_Edit_Entry_Render {
 	/**
 	 * Process edit entry form save
 	 *
-	 * @param array $gv_data The View data.
+	 * @param GravityView_View_Data $gv_data The View data.
 	 */
 	private function process_save( $gv_data ) {
 
@@ -1139,7 +1139,7 @@ class GravityView_Edit_Entry_Render {
 		 * @param bool $enable_paged_edit Should paged editing be supported?
 		 * @param array $form The current form connected to the entry being edited
 		 */
-		$enable_paged_edit = apply_filters( 'gravityview/features/paged-edit', false, $this->form );
+		$enable_paged_edit = apply_filters( 'gravityview/features/paged-edit', $this->view->settings->get( 'paged_edit', 0 ), $this->form );
 
 		if ( GFCommon::has_pages( $this->form ) && $enable_paged_edit ) {
 			$labels = array(
@@ -1264,8 +1264,7 @@ class GravityView_Edit_Entry_Render {
 		$this->show_next_button = false;
 		$this->show_previous_button = false;
 
-		// TODO: Verify multiple-page forms
-		if ( GFCommon::has_pages( $this->form ) && apply_filters( 'gravityview/features/paged-edit', false ) ) {
+		if ( GFCommon::has_pages( $this->form ) && apply_filters( 'gravityview/features/paged-edit', $this->view->settings->get( 'paged_edit', 0 ) ) ) {
 			if ( intval( $page_number = \GV\Utils::_POST( 'gform_source_page_number_' . $this->form['id'], 0 ) ) ) {
 
 				$labels = array(
@@ -1961,7 +1960,7 @@ class GravityView_Edit_Entry_Render {
 
 		$field_type_blocklist = $this->loader->get_field_blocklist( $this->entry );
 
-		if ( empty( $configured_fields ) && apply_filters( 'gravityview/features/paged-edit', false ) ) {
+		if ( empty( $configured_fields ) && apply_filters( 'gravityview/features/paged-edit', $this->view->settings->get( 'paged_edit', 0 ) ) ) {
 			$field_type_blocklist = array_diff( $field_type_blocklist, array( 'page' ) );
 		}
 
