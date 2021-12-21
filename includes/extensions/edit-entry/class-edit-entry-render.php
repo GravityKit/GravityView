@@ -1132,7 +1132,16 @@ class GravityView_Edit_Entry_Render {
 			return;
 		}
 
-		if ( GFCommon::has_pages( $this->form ) && apply_filters( 'gravityview/features/paged-edit', false ) ) {
+		/**
+		 * @filter `gravityview/features/paged-edit`
+		 * @since 2.5
+		 * @since 2.14 Added the $form argument
+		 * @param bool $enable_paged_edit Should paged editing be supported?
+		 * @param array $form The current form connected to the entry being edited
+		 */
+		$enable_paged_edit = apply_filters( 'gravityview/features/paged-edit', false, $this->form );
+
+		if ( GFCommon::has_pages( $this->form ) && $enable_paged_edit ) {
 			$labels = array(
 				'cancel'   => __( 'Cancel', 'gravityview' ),
 				'submit'   => __( 'Update', 'gravityview' ),
