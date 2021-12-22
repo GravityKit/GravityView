@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 13-December-2021 using Strauss.
+ * Modified by gravityview on 22-December-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -252,7 +252,7 @@ final class Encryption {
 		if ( is_wp_error( $response_json ) ) {
 
 			if ( 'not_found' == $response_json->get_error_code() ){
-				return new WP_Error( 'not_found', __( 'Encryption key could not be fetched, Vendor site returned 404.', 'trustedlogin' ) );
+				return new WP_Error( 'not_found', __( 'Encryption key could not be fetched, Vendor site returned 404.', 'gravityview' ) );
 			}
 
 			return $response_json;

@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 13-December-2021 using Strauss.
+ * Modified by gravityview on 22-December-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -59,7 +59,7 @@ class SiteAccess {
 		$encryption = new Encryption( $this->config, $remote, $logging );
 
 		if ( ! in_array( $action, self::$sync_actions, true ) ) {
-			return new WP_Error( 'param_error', __( 'Unexpected action value', 'trustedlogin' ) );
+			return new WP_Error( 'param_error', __( 'Unexpected action value', 'gravityview' ) );
 		}
 
 		$access_key = $this->get_access_key();
@@ -90,7 +90,7 @@ class SiteAccess {
 		}
 
 		if ( empty( $response_json['success'] ) ) {
-			return new WP_Error( 'sync_error', __( 'Could not sync to TrustedLogin server', 'trustedlogin' ) );
+			return new WP_Error( 'sync_error', __( 'Could not sync to TrustedLogin server', 'gravityview' ) );
 		}
 
 		do_action( 'trustedlogin/' . $this->config->ns() . '/secret/synced', array(

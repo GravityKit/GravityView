@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.13.4\n"
+"Project-Id-Version: GravityView 2.14\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "MIME-Version: 1.0\n"
@@ -318,7 +318,7 @@ msgstr ""
 #: future/includes/class-gv-settings-addon.php:284
 #: future/includes/class-gv-settings-addon.php:949
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:89
-#: includes/class-admin-views.php:484 includes/class-admin.php:166
+#: includes/class-admin-views.php:495 includes/class-admin.php:166
 msgid "Settings"
 msgstr ""
 
@@ -735,7 +735,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:232
 #: future/includes/class-gv-settings-view.php:263
-#: includes/class-common.php:1412
+#: includes/class-common.php:1416
 #: includes/fields/class-gravityview-field-date-created.php:29
 msgid "Date Created"
 msgstr ""
@@ -912,9 +912,9 @@ msgid "Only shown when multi-page forms are enabled."
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:451
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1137
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1265
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2497
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1148
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1274
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2506
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:75
 msgid "Next"
 msgstr ""
@@ -924,9 +924,9 @@ msgid "Previous Page Button Text"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:459
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1138
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1266
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2498
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1149
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1275
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2507
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:76
 msgid "Previous"
 msgstr ""
@@ -1089,7 +1089,7 @@ msgstr ""
 
 #: future/includes/class-gv-view.php:298
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:224
-#: includes/class-admin-views.php:540
+#: includes/class-admin-views.php:551
 msgid "Data Source"
 msgstr ""
 
@@ -1097,24 +1097,24 @@ msgstr ""
 msgid "This View is in the Trash. You can <a href=\"%s\">restore the View here</a>."
 msgstr ""
 
-#: future/includes/class-gv-widget.php:159
+#: future/includes/class-gv-widget.php:170
 #: includes/admin/class.render.settings.php:79
 msgid "Custom CSS Class:"
 msgstr ""
 
-#: future/includes/class-gv-widget.php:160
+#: future/includes/class-gv-widget.php:171
 msgid "This class will be added to the widget container"
 msgstr ""
 
-#: future/includes/class-gv-widget.php:210
+#: future/includes/class-gv-widget.php:221
 msgid "Top"
 msgstr ""
 
-#: future/includes/class-gv-widget.php:211
+#: future/includes/class-gv-widget.php:222
 msgid "Left"
 msgstr ""
 
-#: future/includes/class-gv-widget.php:211
+#: future/includes/class-gv-widget.php:222
 msgid "Right"
 msgstr ""
 
@@ -1567,9 +1567,9 @@ msgid "These widgets will be shown below entries."
 msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:43
-#: includes/class-admin-views.php:1140 includes/class-admin-views.php:1265
+#: includes/class-admin-views.php:1157 includes/class-admin-views.php:1282
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
-#: trustedlogin/trustedlogin/client/src/Admin.php:1001
+#: trustedlogin/trustedlogin/client/src/Admin.php:1017
 msgid "Close"
 msgstr ""
 
@@ -1635,16 +1635,16 @@ msgid "(no title)"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:135
-#: includes/class-admin-views.php:1266
+#: includes/class-admin-views.php:1283
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:282
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1135
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1263
-#: trustedlogin/trustedlogin/client/src/Admin.php:1002
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1146
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1272
+#: trustedlogin/trustedlogin/client/src/Admin.php:1018
 msgid "Cancel"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:179
-#: includes/class-admin-views.php:1270
+#: includes/class-admin-views.php:1287
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -1864,145 +1864,145 @@ msgstr ""
 msgid "GravityView Views using this form as a data source"
 msgstr ""
 
-#: includes/class-admin-views.php:355
+#: includes/class-admin-views.php:366
 msgid "CSS Merge Tags"
 msgstr ""
 
-#: includes/class-admin-views.php:356
+#: includes/class-admin-views.php:367
 msgid ""
 "Developers: The CSS classes will be sanitized using the "
 "%ssanitize_title_with_dashes()%s function."
 msgstr ""
 
-#: includes/class-admin-views.php:423
+#: includes/class-admin-views.php:434
 msgid "Not connected."
 msgstr ""
 
-#: includes/class-admin-views.php:432
+#: includes/class-admin-views.php:443
 msgid "The connected form can not be found; it may no longer exist."
 msgstr ""
 
-#: includes/class-admin-views.php:472
+#: includes/class-admin-views.php:483
 #: includes/class-gravityview-admin-bar.php:139
 msgid "Edit Form"
 msgstr ""
 
-#: includes/class-admin-views.php:479
+#: includes/class-admin-views.php:490
 msgid "Entries"
 msgstr ""
 
-#: includes/class-admin-views.php:484
+#: includes/class-admin-views.php:495
 msgid "Edit settings for this form"
 msgstr ""
 
-#: includes/class-admin-views.php:489
+#: includes/class-admin-views.php:500
 msgid "Preview Form"
 msgstr ""
 
-#: includes/class-admin-views.php:489
+#: includes/class-admin-views.php:500
 msgid "Preview this form"
 msgstr ""
 
-#: includes/class-admin-views.php:729
+#: includes/class-admin-views.php:746
 msgid "Add All Form Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:730
+#: includes/class-admin-views.php:747
 msgid "Insert all the form fields at once."
 msgstr ""
 
-#: includes/class-admin-views.php:901
+#: includes/class-admin-views.php:918
 msgid "Add Widget"
 msgstr ""
 
-#: includes/class-admin-views.php:903
+#: includes/class-admin-views.php:920
 msgid "Add Field"
 msgstr ""
 
-#: includes/class-admin-views.php:960
+#: includes/class-admin-views.php:977
 msgid "Clear all fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1054
+#: includes/class-admin-views.php:1071
 #: includes/widgets/search-widget/class-search-widget.php:101
 msgid "Search Bar"
 msgstr ""
 
-#: includes/class-admin-views.php:1064
+#: includes/class-admin-views.php:1081
 #: includes/widgets/class-gravityview-widget-pagination-info.php:30
 msgid "Show Pagination Info"
 msgstr ""
 
-#: includes/class-admin-views.php:1070 includes/class-admin-views.php:1077
+#: includes/class-admin-views.php:1087 includes/class-admin-views.php:1094
 #: includes/widgets/class-gravityview-widget-page-links.php:25
 msgid "Page Links"
 msgstr ""
 
-#: includes/class-admin-views.php:1143
+#: includes/class-admin-views.php:1160
 msgid "Filter Fields:"
 msgstr ""
 
-#: includes/class-admin-views.php:1144
+#: includes/class-admin-views.php:1161
 msgid "Filter fields by name or label"
 msgstr ""
 
-#: includes/class-admin-views.php:1155
+#: includes/class-admin-views.php:1172
 msgid "No fields were found matching the search."
 msgstr ""
 
-#: includes/class-admin-views.php:1188
+#: includes/class-admin-views.php:1205
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:1189
+#: includes/class-admin-views.php:1206
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1261
+#: includes/class-admin-views.php:1278
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:1262
+#: includes/class-admin-views.php:1279
 msgid "Reorder Search Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1263
+#: includes/class-admin-views.php:1280
 #: includes/widgets/search-widget/class-search-widget.php:267
 msgid "Add Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1264
+#: includes/class-admin-views.php:1281
 msgid "Remove Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1267
+#: includes/class-admin-views.php:1284
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:1268
-#: trustedlogin/trustedlogin/client/src/Admin.php:999
+#: includes/class-admin-views.php:1285
+#: trustedlogin/trustedlogin/client/src/Admin.php:1015
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:1269
+#: includes/class-admin-views.php:1286
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1271
+#: includes/class-admin-views.php:1288
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1272
+#: includes/class-admin-views.php:1289
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:1273
+#: includes/class-admin-views.php:1290
 msgid "Would you like to remove all fields in this zone?"
 msgstr ""
 
@@ -2041,23 +2041,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:724
+#: includes/class-admin-welcome.php:467
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:744
+#: includes/class-admin-welcome.php:487
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:795
+#: includes/class-admin-welcome.php:538
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:822
+#: includes/class-admin-welcome.php:565
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:823
+#: includes/class-admin-welcome.php:566
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -2208,12 +2208,12 @@ msgstr ""
 msgid "Default (Entry ID)"
 msgstr ""
 
-#: includes/class-common.php:1416
+#: includes/class-common.php:1420
 #: includes/fields/class-gravityview-field-date-updated.php:31
 msgid "Date Updated"
 msgstr ""
 
-#: includes/class-common.php:1542
+#: includes/class-common.php:1550
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -2454,7 +2454,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:213
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2346
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2355
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
@@ -2593,7 +2593,7 @@ msgid "Edit Link Text"
 msgstr ""
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:154
-#: includes/fields/class-gravityview-field.php:449
+#: includes/fields/class-gravityview-field.php:457
 msgid "Open link in a new tab or window?"
 msgstr ""
 
@@ -2674,52 +2674,52 @@ msgstr ""
 msgid "Your request was rejected"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1136
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1264
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1147
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1273
 msgid "Update"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1159
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1170
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1159
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1170
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1166
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1177
 msgid "Entry Updated."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1203
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1214
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1418
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1427
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1425
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1434
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1757
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1766
 msgid "This field is required."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1793
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1802
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2340
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2349
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2350
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2359
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2390
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2399
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -2873,11 +2873,11 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-address.php:294
+#: includes/fields/class-gravityview-field-address.php:293
 msgid "Show Map Link:"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-address.php:295
+#: includes/fields/class-gravityview-field-address.php:294
 msgid "Display a \"Map It\" link below the address"
 msgstr ""
 
@@ -3757,37 +3757,37 @@ msgstr ""
 msgid "Workflow Complete"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:412
+#: includes/fields/class-gravityview-field.php:420
 msgid "Link to the post"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:413
+#: includes/fields/class-gravityview-field.php:421
 msgid "Link to the post created by the entry."
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:420
+#: includes/fields/class-gravityview-field.php:428
 msgid "Link to the category or tag"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:421
+#: includes/fields/class-gravityview-field.php:429
 msgid ""
 "Link to the current category or tag. \"Link to single entry\" must be "
 "unchecked."
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:428
+#: includes/fields/class-gravityview-field.php:436
 msgid "Use the live post data"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:429
+#: includes/fields/class-gravityview-field.php:437
 msgid "Instead of using the entry data, instead use the current post data."
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:436
+#: includes/fields/class-gravityview-field.php:444
 msgid "Override Date Format"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:437
+#: includes/fields/class-gravityview-field.php:445
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
 msgstr ""
 
@@ -3830,7 +3830,7 @@ msgid ""
 msgstr ""
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:79
-#: trustedlogin/trustedlogin/client/src/Admin.php:215
+#: trustedlogin/trustedlogin/client/src/Admin.php:216
 msgid "Grant Support Access"
 msgstr ""
 
@@ -4245,23 +4245,23 @@ msgstr ""
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1508
+#: includes/widgets/search-widget/class-search-widget.php:1519
 msgid "Search Entries:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1511
+#: includes/widgets/search-widget/class-search-widget.php:1522
 msgid "Filter by date:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1514
+#: includes/widgets/search-widget/class-search-widget.php:1525
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1765
+#: includes/widgets/search-widget/class-search-widget.php:1776
 msgid "Clear"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1831
+#: includes/widgets/search-widget/class-search-widget.php:1842
 msgid "Show a different month"
 msgstr ""
 
@@ -4370,7 +4370,7 @@ msgid "Your browser does not support the video tag."
 msgstr ""
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:114
-#: trustedlogin/trustedlogin/client/src/Admin.php:352
+#: trustedlogin/trustedlogin/client/src/Admin.php:369
 msgid "Revoke Access"
 msgstr ""
 
@@ -4378,226 +4378,226 @@ msgstr ""
 msgid "Revoke TrustedLogin"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:339
+#: trustedlogin/trustedlogin/client/src/Admin.php:356
 msgid "Unknown (User #%d)"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:379
-#: trustedlogin/trustedlogin/client/src/Admin.php:935
+#: trustedlogin/trustedlogin/client/src/Admin.php:396
+#: trustedlogin/trustedlogin/client/src/Admin.php:950
 msgid "Secured by TrustedLogin"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:462
+#: trustedlogin/trustedlogin/client/src/Admin.php:478
 msgid "Reference #%s"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:477
+#: trustedlogin/trustedlogin/client/src/Admin.php:493
 #. translators: %1$s is replaced with the name of the software developer (e.g.
 #. "Acme Widgets"). %2$s is the amount of time remaining for access ("1 week")
 msgid "%1$s has site access that expires in %2$s."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:485
+#: trustedlogin/trustedlogin/client/src/Admin.php:501
 #. translators: %1$s is replaced with the name of the software developer (e.g.
 #. "Acme Widgets")
 msgid "%1$s would like support access to this site."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:488
+#: trustedlogin/trustedlogin/client/src/Admin.php:504
 #. translators: %1$s is replaced with the name of the software developer (e.g.
 #. "Acme Widgets")
 msgid "Grant %1$s access to this site."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:521
+#: trustedlogin/trustedlogin/client/src/Admin.php:537
 #. translators: %1$s and %3$s are replaced with HTML tags. %2$s is the amount
 #. of time that the login will be active for (e.g. "1 week")
 msgid "Access this site for %s."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:522
+#: trustedlogin/trustedlogin/client/src/Admin.php:538
 msgid "Access auto-expires in %s. You may revoke access at any time."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:528
+#: trustedlogin/trustedlogin/client/src/Admin.php:544
 msgid "Create a user with a role similar to %s."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:529
+#: trustedlogin/trustedlogin/client/src/Admin.php:545
 msgid "View role capabilities"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:531
+#: trustedlogin/trustedlogin/client/src/Admin.php:547
 msgid "Create a user with a role of %s."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:557
+#: trustedlogin/trustedlogin/client/src/Admin.php:573
 msgid "Additional capabilities:"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:558
+#: trustedlogin/trustedlogin/client/src/Admin.php:574
 msgid "Removed capabilities:"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:626
+#: trustedlogin/trustedlogin/client/src/Admin.php:642
 msgid "%s support may not be able to access this site."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:627
+#: trustedlogin/trustedlogin/client/src/Admin.php:643
 msgid ""
 "This website is running in a local development environment. To provide "
 "support, we must be able to access your site using a publicly-accessible "
 "URL."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:629
+#: trustedlogin/trustedlogin/client/src/Admin.php:645
 msgid "Learn more."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:679
+#: trustedlogin/trustedlogin/client/src/Admin.php:695
 #. translators: %s is replaced with the name of the software developer (e.g.
 #. "Acme Widgets")
 msgid "Learn about TrustedLogin"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:876
+#: trustedlogin/trustedlogin/client/src/Admin.php:891
 msgid "Grant %s Access"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:877
+#: trustedlogin/trustedlogin/client/src/Admin.php:892
 msgid "Extend %s Access"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:980
+#: trustedlogin/trustedlogin/client/src/Admin.php:995
 msgid "Could not create TrustedLogin access."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:986
+#: trustedlogin/trustedlogin/client/src/Admin.php:1002
 msgid "The user details could not be sent to %1$s automatically."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:990
+#: trustedlogin/trustedlogin/client/src/Admin.php:1006
 msgid ""
 "Please <a href=\"%1$s\" target=\"_blank\">click here</a> to go to the %2$s "
 "support site"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:998
+#: trustedlogin/trustedlogin/client/src/Admin.php:1014
 msgid "Confirm"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1000
+#: trustedlogin/trustedlogin/client/src/Admin.php:1016
 msgid "Go to %1$s support site"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1003
+#: trustedlogin/trustedlogin/client/src/Admin.php:1019
 msgid "Revoke %1$s support access"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1004
-#: trustedlogin/trustedlogin/client/src/Admin.php:1148
+#: trustedlogin/trustedlogin/client/src/Admin.php:1020
+#: trustedlogin/trustedlogin/client/src/Admin.php:1164
 msgid "Copy"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1005
+#: trustedlogin/trustedlogin/client/src/Admin.php:1021
 msgid "Copied!"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1008
+#: trustedlogin/trustedlogin/client/src/Admin.php:1024
 msgid "(This link opens in a new window.)"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1009
+#: trustedlogin/trustedlogin/client/src/Admin.php:1025
 msgid "The access key has been copied to your clipboard."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1013
+#: trustedlogin/trustedlogin/client/src/Admin.php:1029
 msgid "Support access granted"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1015
+#: trustedlogin/trustedlogin/client/src/Admin.php:1031
 msgid "A temporary support user has been created, and sent to %1$s support."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1020
+#: trustedlogin/trustedlogin/client/src/Admin.php:1036
 msgid "Generating & encrypting secure support access for %1$s"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1023
+#: trustedlogin/trustedlogin/client/src/Admin.php:1039
 msgid "Extending support access for %1$s by %2$s"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1026
+#: trustedlogin/trustedlogin/client/src/Admin.php:1042
 msgid "Sending encrypted access to %1$s."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1029
+#: trustedlogin/trustedlogin/client/src/Admin.php:1045
 msgid "Error syncing support user to %1$s"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1040
+#: trustedlogin/trustedlogin/client/src/Admin.php:1056
 msgid "Action Cancelled"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1042
+#: trustedlogin/trustedlogin/client/src/Admin.php:1058
 msgid "A support account for %1$s was not created."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1047
+#: trustedlogin/trustedlogin/client/src/Admin.php:1063
 msgid "Support Access Was Not Granted"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1048
+#: trustedlogin/trustedlogin/client/src/Admin.php:1064
 msgid "There was an error granting access: "
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1051
+#: trustedlogin/trustedlogin/client/src/Admin.php:1067
 msgid "Your authorized session has expired. Please refresh the page."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1054
+#: trustedlogin/trustedlogin/client/src/Admin.php:1070
 msgid "TrustedLogin Key Created"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1056
+#: trustedlogin/trustedlogin/client/src/Admin.php:1072
 msgid "Share this TrustedLogin Key with %1$s to give them secure access:"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1062
+#: trustedlogin/trustedlogin/client/src/Admin.php:1078
 msgid "The TrustedLogin vendor could not be found."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1067
+#: trustedlogin/trustedlogin/client/src/Admin.php:1083
 msgid "%1$s Support user already exists"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1072
+#: trustedlogin/trustedlogin/client/src/Admin.php:1088
 msgid ""
 "A support user for %1$s already exists. You may revoke this support access "
 "from your <a href=\"%2$s\" target=\"_blank\">Users list</a>."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1112
+#: trustedlogin/trustedlogin/client/src/Admin.php:1128
 msgid "No %s users exist."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1145
+#: trustedlogin/trustedlogin/client/src/Admin.php:1161
 msgid "Site access key:"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1146
+#: trustedlogin/trustedlogin/client/src/Admin.php:1162
 msgid "Access Key"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1150
+#: trustedlogin/trustedlogin/client/src/Admin.php:1166
 msgid "Copy the access key to your clipboard"
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1189
+#: trustedlogin/trustedlogin/client/src/Admin.php:1205
 msgid "%s access revoked."
 msgstr ""
 
-#: trustedlogin/trustedlogin/client/src/Admin.php:1191
+#: trustedlogin/trustedlogin/client/src/Admin.php:1207
 msgid "You may safely close this window."
 msgstr ""
 
@@ -4754,13 +4754,13 @@ msgid "duplicate entries"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:435
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2496
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2505
 msgctxt "Button to update an entry the user is editing"
 msgid "Update"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:443
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2495
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2504
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
 msgstr ""
@@ -4847,7 +4847,7 @@ msgctxt ""
 msgid "Manage Add-Ons"
 msgstr ""
 
-#: includes/class-admin-views.php:543
+#: includes/class-admin-views.php:554
 msgctxt "Column title that shows what template is being used for Views"
 msgid "Template"
 msgstr ""
@@ -4857,12 +4857,12 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr ""
 
-#: includes/class-frontend-views.php:1480
+#: includes/class-frontend-views.php:1484
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-frontend-views.php:1481
+#: includes/class-frontend-views.php:1485
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""
@@ -4944,26 +4944,26 @@ msgctxt "Referring to the user who is currently editing a locked entry"
 msgid "the person who is editing the entry"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1187
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1198
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %sReturning to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1192
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1203
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the title of the page where the "
 "user will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sReturning to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1198
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1209
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the URL where the user will be "
 "taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sRedirecting to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2366
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2375
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
@@ -5017,27 +5017,27 @@ msgid ""
 "entries displayed in the View."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1826
+#: includes/widgets/search-widget/class-search-widget.php:1837
 msgctxt "Close calendar"
 msgid "Close"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1827
+#: includes/widgets/search-widget/class-search-widget.php:1838
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1828
+#: includes/widgets/search-widget/class-search-widget.php:1839
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1829
+#: includes/widgets/search-widget/class-search-widget.php:1840
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1830
+#: includes/widgets/search-widget/class-search-widget.php:1841
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
