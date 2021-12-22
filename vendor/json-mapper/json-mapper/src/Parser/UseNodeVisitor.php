@@ -10,7 +10,7 @@ use PhpParser\Node\Stmt;
 
 class UseNodeVisitor extends NodeVisitorAbstract
 {
-    /** @var array|string[] */
+    /** @var Import[] */
     private $imports = [];
 
     /**
@@ -20,17 +20,18 @@ class UseNodeVisitor extends NodeVisitorAbstract
     {
         if ($node instanceof Stmt\Use_) {
             foreach ($node->uses as $use) {
-                $this->imports[] = $use->name->toString();
+                $this->imports[] = new Import($use->name->toString(), \is_null($use->alias) ? null : $use->alias->name);
             }
         } elseif ($node instanceof Stmt\GroupUse) {
             foreach ($node->uses as $use) {
-                $this->imports[] = $node->prefix . '\\' . $use->name;
+                $this->imports[] = new Import("{$node->prefix}\\{$use->name}", \is_null($use->alias) ? null : $use->alias->name);
             }
         }
 
         return null;
     }
 
+    /** @return Import[] */
     public function getImports(): array
     {
         return $this->imports;

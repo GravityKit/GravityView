@@ -18,7 +18,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 07-October-2021 using Strauss.
+ * Modified by gravityview on 13-December-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -306,7 +306,7 @@ final class Client {
 		);
 
 		if ( ! $this->config->meets_ssl_requirement() ) {
-			return new WP_Error( 'fails_ssl_requirement', esc_html__( 'TrustedLogin requires a secure connection using HTTPS.', 'gravityview' ) );
+			return new WP_Error( 'fails_ssl_requirement', esc_html__( 'TrustedLogin requires a secure connection using HTTPS.', 'trustedlogin' ) );
 		}
 
 		timer_start();
@@ -408,7 +408,7 @@ final class Client {
 		);
 
 		if ( ! $this->config->meets_ssl_requirement() ) {
-			return new WP_Error( 'fails_ssl_requirement', esc_html__( 'TrustedLogin requires a secure connection using HTTPS.', 'gravityview' ) );
+			return new WP_Error( 'fails_ssl_requirement', esc_html__( 'TrustedLogin requires a secure connection using HTTPS.', 'trustedlogin' ) );
 		}
 
 		timer_start();
@@ -512,7 +512,7 @@ final class Client {
 
 		if ( ! empty( $should_be_deleted ) ) {
 			$this->logging->log( 'User #' . $should_be_deleted->ID . ' was not removed', __METHOD__, 'error' );
-			return new WP_Error( 'support_user_not_deleted', esc_html__( 'The support user was not deleted.', 'gravityview' ) );
+			return new WP_Error( 'support_user_not_deleted', esc_html__( 'The support user was not deleted.', 'trustedlogin' ) );
 		}
 
 		/**

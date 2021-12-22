@@ -31,7 +31,7 @@ class GravityView_Field_Product extends GravityView_Field {
 	 */
 	public function __construct() {
 
-		add_filter( 'gravityview/edit_entry/field_blacklist', array( $this, 'edit_entry_field_blacklist' ), 10, 2 );
+		add_filter( 'gravityview/edit_entry/field_blocklist', array( $this, 'edit_entry_field_blocklist' ), 10, 2 );
 
 		add_action( 'gravityview/edit_entry/after_update', array( $this, 'clear_product_info_cache' ), 10, 3 );
 
@@ -66,22 +66,30 @@ class GravityView_Field_Product extends GravityView_Field {
 	}
 
 	/**
-	 * Maybe add Product fields to the Edit Entry blacklist
+	 * @depecated 2.14
+	 */
+	public function edit_entry_field_blacklist( $blocklist = array(), $entry = array() ) {
+		_deprecated_function( __METHOD__, '2.14', 'GravityView_Field_Product::edit_entry_field_blocklist' );
+		return $this->edit_entry_field_blocklist( $blocklist, $entry );
+	}
+
+	/**
+	 * Maybe add Product fields to the Edit Entry blocklist
 	 *
 	 * @since 1.20
 	 *
-	 * @param array $blacklist Array of field types not to be shown in the Edit Entry form
+	 * @param array $blocklist Array of field types not to be shown in the Edit Entry form
 	 * @param array $entry Gravity Forms entry array
 	 *
-	 * @return array Blacklist with product field types added, if should not be shown
+	 * @return array Blocklist with product field types added, if should not be shown
 	 */
-	public function edit_entry_field_blacklist( $blacklist = array(), $entry = array() ) {
+	public function edit_entry_field_blocklist( $blocklist = array(), $entry = array() ) {
 
 		if ( $this->should_hide_product_fields( $entry ) ) {
-			$blacklist = array_merge( $blacklist, GVCommon::get_product_field_types() );
+			$blocklist = array_merge( $blocklist, GVCommon::get_product_field_types() );
 		}
 
-		return $blacklist;
+		return $blocklist;
 	}
 
 	/**

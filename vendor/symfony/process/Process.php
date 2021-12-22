@@ -71,7 +71,6 @@ class Process implements \IteratorAggregate
     private $incrementalErrorOutputOffset = 0;
     private $tty = false;
     private $pty;
-    private $options = ['suppress_errors' => true, 'bypass_shell' => true];
 
     private $useFileHandles = false;
     /** @var PipesInterface */
@@ -138,10 +137,14 @@ class Process implements \IteratorAggregate
      *
      * @throws LogicException When proc_open is not installed
      */
-    public function __construct(array $command, string $cwd = null, array $env = null, $input = null, ?float $timeout = 60)
+    public function __construct($command, string $cwd = null, array $env = null, $input = null, ?float $timeout = 60)
     {
         if (!\function_exists('proc_open')) {
             throw new LogicException('The Process class relies on proc_open, which is not available on your PHP installation.');
+        }
+
+        if (!\is_array($command)) {
+            @trigger_error(sprintf('Passing a command as string when creating a "%s" instance is deprecated since Symfony 4.2, pass it as an array of its arguments instead, or use the "Process::fromShellCommandline()" constructor if you need features provided by the shell.', __CLASS__), \E_USER_DEPRECATED);
         }
 
         $this->commandline = $command;
@@ -210,11 +213,7 @@ class Process implements \IteratorAggregate
 
     public function __destruct()
     {
-        if ($this->options['create_new_console'] ?? false) {
-            $this->processPipes->close();
-        } else {
-            $this->stop(0);
-        }
+        $this->stop(0);
     }
 
     public function __clone()
@@ -321,7 +320,10 @@ class Process implements \IteratorAggregate
             $commandline = $this->replacePlaceholders($commandline, $env);
         }
 
+        $options = ['suppress_errors' => true];
+
         if ('\\' === \DIRECTORY_SEPARATOR) {
+            $options['bypass_shell'] = true;
             $commandline = $this->prepareWindowsCommandLine($commandline, $env);
         } elseif (!$this->useFileHandles && $this->isSigchildEnabled()) {
             // last exit code is output on the fourth pipe and caught to work around --enable-sigchild
@@ -338,7 +340,7 @@ class Process implements \IteratorAggregate
 
         $envPairs = [];
         foreach ($env as $k => $v) {
-            if (false !== $v) {
+            if (false !== $v && 'argc' !== $k && 'argv' !== $k) {
                 $envPairs[] = $k.'='.$v;
             }
         }
@@ -347,7 +349,7 @@ class Process implements \IteratorAggregate
             throw new RuntimeException(sprintf('The provided cwd "%s" does not exist.', $this->cwd));
         }
 
-        $this->process = @proc_open($commandline, $descriptors, $this->processPipes->pipes, $this->cwd, $envPairs, $this->options);
+        $this->process = @proc_open($commandline, $descriptors, $this->processPipes->pipes, $this->cwd, $envPairs, $options);
 
         if (!\is_resource($this->process)) {
             throw new RuntimeException('Unable to launch a new process.');
@@ -509,7 +511,7 @@ class Process implements \IteratorAggregate
      * @throws RuntimeException In case --enable-sigchild is activated and the process can't be killed
      * @throws RuntimeException In case of failure
      */
-    public function signal(int $signal)
+    public function signal($signal)
     {
         $this->doSignal($signal, true);
 
@@ -621,7 +623,7 @@ class Process implements \IteratorAggregate
      * @return \Generator
      */
     #[\ReturnTypeWillChange]
-    public function getIterator(int $flags = 0)
+    public function getIterator($flags = 0)
     {
         $this->readPipesForOutput(__FUNCTION__, false);
 
@@ -912,7 +914,7 @@ class Process implements \IteratorAggregate
      *
      * @return int|null The exit-code of the process or null if it's not running
      */
-    public function stop(float $timeout = 10, int $signal = null)
+    public function stop($timeout = 10, $signal = null)
     {
         $timeoutMicro = microtime(true) + $timeout;
         if ($this->isRunning()) {
@@ -990,6 +992,24 @@ class Process implements \IteratorAggregate
     }
 
     /**
+     * Sets the command line to be executed.
+     *
+     * @param string|array $commandline The command to execute
+     *
+     * @return $this
+     *
+     * @deprecated since Symfony 4.2.
+     */
+    public function setCommandLine($commandline)
+    {
+        @trigger_error(sprintf('The "%s()" method is deprecated since Symfony 4.2.', __METHOD__), \E_USER_DEPRECATED);
+
+        $this->commandline = $commandline;
+
+        return $this;
+    }
+
+    /**
      * Gets the process timeout (max. runtime).
      *
      * @return float|null The timeout in seconds or null if it's disabled
@@ -1014,11 +1034,13 @@ class Process implements \IteratorAggregate
      *
      * To disable the timeout, set this value to null.
      *
+     * @param int|float|null $timeout The timeout in seconds
+     *
      * @return $this
      *
      * @throws InvalidArgumentException if the timeout is negative
      */
-    public function setTimeout(?float $timeout)
+    public function setTimeout($timeout)
     {
         $this->timeout = $this->validateTimeout($timeout);
 
@@ -1026,16 +1048,18 @@ class Process implements \IteratorAggregate
     }
 
     /**
-     * Sets the process idle timeout (max. time since last output) in seconds.
+     * Sets the process idle timeout (max. time since last output).
      *
      * To disable the timeout, set this value to null.
+     *
+     * @param int|float|null $timeout The timeout in seconds
      *
      * @return $this
      *
      * @throws LogicException           if the output is disabled
      * @throws InvalidArgumentException if the timeout is negative
      */
-    public function setIdleTimeout(?float $timeout)
+    public function setIdleTimeout($timeout)
     {
         if (null !== $timeout && $this->outputDisabled) {
             throw new LogicException('Idle timeout can not be set while the output is disabled.');
@@ -1049,11 +1073,13 @@ class Process implements \IteratorAggregate
     /**
      * Enables or disables the TTY mode.
      *
+     * @param bool $tty True to enabled and false to disable
+     *
      * @return $this
      *
      * @throws RuntimeException In case the TTY mode is not supported
      */
-    public function setTty(bool $tty)
+    public function setTty($tty)
     {
         if ('\\' === \DIRECTORY_SEPARATOR && $tty) {
             throw new RuntimeException('TTY mode is not supported on Windows platform.');
@@ -1063,7 +1089,7 @@ class Process implements \IteratorAggregate
             throw new RuntimeException('TTY mode requires /dev/tty to be read/writable.');
         }
 
-        $this->tty = $tty;
+        $this->tty = (bool) $tty;
 
         return $this;
     }
@@ -1081,11 +1107,13 @@ class Process implements \IteratorAggregate
     /**
      * Sets PTY mode.
      *
+     * @param bool $bool
+     *
      * @return $this
      */
-    public function setPty(bool $bool)
+    public function setPty($bool)
     {
-        $this->pty = $bool;
+        $this->pty = (bool) $bool;
 
         return $this;
     }
@@ -1119,9 +1147,11 @@ class Process implements \IteratorAggregate
     /**
      * Sets the current working directory.
      *
+     * @param string $cwd The new working directory
+     *
      * @return $this
      */
-    public function setWorkingDirectory(string $cwd)
+    public function setWorkingDirectory($cwd)
     {
         $this->cwd = $cwd;
 
@@ -1141,25 +1171,12 @@ class Process implements \IteratorAggregate
     /**
      * Sets the environment variables.
      *
-     * Each environment variable value should be a string.
-     * If it is an array, the variable is ignored.
-     * If it is false or null, it will be removed when
-     * env vars are otherwise inherited.
-     *
-     * That happens in PHP when 'argv' is registered into
-     * the $_ENV array for instance.
-     *
-     * @param array $env The new environment variables
+     * @param array<string|\Stringable> $env The new environment variables
      *
      * @return $this
      */
     public function setEnv(array $env)
     {
-        // Process can not handle env values that are arrays
-        $env = array_filter($env, function ($value) {
-            return !\is_array($value);
-        });
-
         $this->env = $env;
 
         return $this;
@@ -1198,6 +1215,26 @@ class Process implements \IteratorAggregate
     }
 
     /**
+     * Sets whether environment variables will be inherited or not.
+     *
+     * @param bool $inheritEnv
+     *
+     * @return $this
+     *
+     * @deprecated since Symfony 4.4, env variables are always inherited
+     */
+    public function inheritEnvironmentVariables($inheritEnv = true)
+    {
+        @trigger_error(sprintf('The "%s()" method is deprecated since Symfony 4.4, env variables are always inherited.', __METHOD__), \E_USER_DEPRECATED);
+
+        if (!$inheritEnv) {
+            throw new InvalidArgumentException('Not inheriting environment variables is not supported.');
+        }
+
+        return $this;
+    }
+
+    /**
      * Performs a check between the timeout definition and the time the process started.
      *
      * In case you run a background process (with the start method), you should
@@ -1221,44 +1258,6 @@ class Process implements \IteratorAggregate
             $this->stop(0);
 
             throw new ProcessTimedOutException($this, ProcessTimedOutException::TYPE_IDLE);
-        }
-    }
-
-    /**
-     * @throws LogicException in case process is not started
-     */
-    public function getStartTime(): float
-    {
-        if (!$this->isStarted()) {
-            throw new LogicException('Start time is only available after process start.');
-        }
-
-        return $this->starttime;
-    }
-
-    /**
-     * Defines options to pass to the underlying proc_open().
-     *
-     * @see https://php.net/proc_open for the options supported by PHP.
-     *
-     * Enabling the "create_new_console" option allows a subprocess to continue
-     * to run after the main process exited, on both Windows and *nix
-     */
-    public function setOptions(array $options)
-    {
-        if ($this->isRunning()) {
-            throw new RuntimeException('Setting options while the process is running is not possible.');
-        }
-
-        $defaultOptions = $this->options;
-        $existingOptions = ['blocking_pipes', 'create_process_group', 'create_new_console'];
-
-        foreach ($options as $key => $value) {
-            if (!\in_array($key, $existingOptions)) {
-                $this->options = $defaultOptions;
-                throw new LogicException(sprintf('Invalid option "%s" passed to "%s()". Supported options are "%s".', $key, __METHOD__, implode('", "', $existingOptions)));
-            }
-            $this->options[$key] = $value;
         }
     }
 
@@ -1349,7 +1348,7 @@ class Process implements \IteratorAggregate
      *
      * @param bool $blocking Whether to use a blocking read call
      */
-    protected function updateStatus(bool $blocking)
+    protected function updateStatus($blocking)
     {
         if (self::STATUS_STARTED !== $this->status) {
             return;
@@ -1659,20 +1658,9 @@ class Process implements \IteratorAggregate
 
     private function getDefaultEnv(): array
     {
-        $env = [];
+        $env = getenv();
+        $env = array_intersect_key($env, $_SERVER) ?: $env;
 
-        foreach ($_SERVER as $k => $v) {
-            if (\is_string($v) && false !== $v = getenv($k)) {
-                $env[$k] = $v;
-            }
-        }
-
-        foreach ($_ENV as $k => $v) {
-            if (\is_string($v)) {
-                $env[$k] = $v;
-            }
-        }
-
-        return $env;
+        return $_ENV + $env;
     }
 }

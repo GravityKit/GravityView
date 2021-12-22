@@ -5,7 +5,10 @@
  */
 class GravityView_Cache {
 
-	const BLACKLIST_OPTION_NAME = 'gravityview_cache_blacklist';
+	/** @deprecated 2.14 - use BLOCKLIST_OPTION_NAME instead! */
+	const BLACKLIST_OPTION_NAME = 'gravityview_cache_blocklist';
+
+	const BLOCKLIST_OPTION_NAME = 'gravityview_cache_blocklist';
 
 	/**
 	 * Form ID, or array of Form IDs
@@ -65,7 +68,7 @@ class GravityView_Cache {
 		add_action( 'gravityview-expired-transients', array( $this, 'delete_expired_transients' ) );
 
 		// Trigger this when you need to prevent any results from being cached with forms that have been modified
-		add_action( 'gravityview_clear_form_cache', array( $this, 'blacklist_add' ) );
+		add_action( 'gravityview_clear_form_cache', array( $this, 'blocklist_add' ) );
 
 		/**
 		 * @since 1.14
@@ -91,7 +94,7 @@ class GravityView_Cache {
 	/**
 	 * Force refreshing a cache when an entry is deleted.
 	 *
-	 * The `gform_delete_lead` action is called before the lead is deleted; we fetch the entry to find out the form ID so it can be added to the blacklist.
+	 * The `gform_delete_lead` action is called before the lead is deleted; we fetch the entry to find out the form ID so it can be added to the blocklist.
 	 *
 	 * @since  1.5.1
 	 *
@@ -112,13 +115,13 @@ class GravityView_Cache {
 			return;
 		}
 
-		gravityview()->log->debug( 'adding form {form_id} to blacklist because entry #{lead_id} was deleted', array( 'form_id' => $entry['form_id'], 'entry_id' => $lead_id, 'data' => array( 'value' => $property_value, 'previous' => $previous_value ) ) );
+		gravityview()->log->debug( 'adding form {form_id} to blocklist because entry #{lead_id} was deleted', array( 'form_id' => $entry['form_id'], 'entry_id' => $lead_id, 'data' => array( 'value' => $property_value, 'previous' => $previous_value ) ) );
 
-		$this->blacklist_add( $entry['form_id'] );
+		$this->blocklist_add( $entry['form_id'] );
 	}
 
 	/**
-	 * When an entry is updated, add the entry's form to the cache blacklist
+	 * When an entry is updated, add the entry's form to the cache blocklist
 	 *
 	 * @param  array $form GF form array
 	 * @param  int $lead_id Entry ID
@@ -127,13 +130,13 @@ class GravityView_Cache {
 	 */
 	public function entry_updated( $form, $lead_id ) {
 
-		gravityview()->log->debug(' adding form {form_id} to blacklist because entry #{entry_id} was updated', array( 'form_id' => $form['id'], 'entry_id' => $lead_id ) );
+		gravityview()->log->debug(' adding form {form_id} to blocklist because entry #{entry_id} was updated', array( 'form_id' => $form['id'], 'entry_id' => $lead_id ) );
 
-		$this->blacklist_add( $form['id'] );
+		$this->blocklist_add( $form['id'] );
 	}
 
 	/**
-	 * When an entry is created, add the entry's form to the cache blacklist
+	 * When an entry is created, add the entry's form to the cache blocklist
 	 *
 	 * We don't want old caches; when an entry is added, we want to clear the cache.
 	 *
@@ -144,9 +147,9 @@ class GravityView_Cache {
 	 */
 	public function entry_created( $entry, $form ) {
 
-		gravityview()->log->debug( 'adding form {form_id} to blacklist because entry #{entry_id} was created', array( 'form_id' => $form['id'], 'entry_id' => $entry['id'] ) );
+		gravityview()->log->debug( 'adding form {form_id} to blocklist because entry #{entry_id} was created', array( 'form_id' => $form['id'], 'entry_id' => $entry['id'] ) );
 
-		$this->blacklist_add( $form['id'] );
+		$this->blocklist_add( $form['id'] );
 	}
 
 	/**
@@ -162,9 +165,9 @@ class GravityView_Cache {
 			return;
 		}
 
-		gravityview()->log->debug( 'adding form {form_id} to blacklist because entry #{entry_id} was added', array( 'form_id' => $form['id'], 'entry_id' => $entry['id'] ) );
+		gravityview()->log->debug( 'adding form {form_id} to blocklist because entry #{entry_id} was added', array( 'form_id' => $form['id'], 'entry_id' => $entry['id'] ) );
 
-		$this->blacklist_add( $form['id'] );
+		$this->blocklist_add( $form['id'] );
 	}
 
 	/**
@@ -220,35 +223,33 @@ class GravityView_Cache {
 	}
 
 	/**
-	 * Add form IDs to a "blacklist" to force the cache to be refreshed
-	 *
-	 *
+	 * Add form IDs to a "blocklist" to force the cache to be refreshed
 	 *
 	 * @param  int|array $form_ids Form IDs to force to be updated
 	 *
 	 * @return boolean           False if value was not updated and true if value was updated.
 	 */
-	public function blacklist_add( $form_ids ) {
+	public function blocklist_add( $form_ids ) {
 
-		$blacklist = get_option( self::BLACKLIST_OPTION_NAME, array() );
+		$blocklist = get_option( self::BLOCKLIST_OPTION_NAME, array() );
 
 		$form_ids = is_array( $form_ids ) ? $form_ids : array( $form_ids );
 
 		// Add the passed form IDs
-		$blacklist = array_merge( (array) $blacklist, $form_ids );
+		$blocklist = array_merge( (array) $blocklist, $form_ids );
 
 		// Don't duplicate
-		$blacklist = array_unique( $blacklist );
+		$blocklist = array_unique( $blocklist );
 
-		// Remove empty items from blacklist
-		$blacklist = array_filter( $blacklist );
+		// Remove empty items from blocklist
+		$blocklist = array_filter( $blocklist );
 
-		$updated = update_option( self::BLACKLIST_OPTION_NAME, $blacklist );
+		$updated = update_option( self::BLOCKLIST_OPTION_NAME, $blocklist );
 
 		if ( false !== $updated ) {
-			gravityview()->log->debug( 'Added form IDs to cache blacklist', array( 'data' => array(
+			gravityview()->log->debug( 'Added form IDs to cache blocklist', array( 'data' => array(
 				'$form_ids'  => $form_ids,
-				'$blacklist' => $blacklist
+				'$blocklist' => $blocklist
 			) ) );
 		}
 
@@ -256,54 +257,91 @@ class GravityView_Cache {
 	}
 
 	/**
-	 * Remove Form IDs from blacklist
+	 * @deprecated 2.14 {@see GravityView_Cache::blocklist_add()}
 	 *
-	 * @param  int|array $form_ids Form IDs to add
+	 * @param  int|array $form_ids Form IDs to force to be updated
 	 *
-	 * @return boolean           Whether the removal was successful
+	 * @return bool Whether the removal was successful
 	 */
-	public function blacklist_remove( $form_ids ) {
+	public function blacklist_add( $form_ids ) {
+		_deprecated_function( __METHOD__, '2.14', 'GravityView_Cache::blocklist_add()' );
+		return $this->blocklist_remove( $form_ids );
+	}
 
-		$blacklist = get_option( self::BLACKLIST_OPTION_NAME, array() );
+	/**
+	 * Remove Form IDs from blocklist
+	 *
+	 * @param  int|array $form_ids Form IDs to remove
+	 *
+	 * @return bool Whether the removal was successful
+	 */
+	public function blocklist_remove( $form_ids ) {
 
-		$updated_list = array_diff( $blacklist, (array) $form_ids );
+		$blocklist = get_option( self::BLOCKLIST_OPTION_NAME, array() );
 
-		gravityview()->log->debug( 'Removing form IDs from cache blacklist', array( 'data' => array(
+		$updated_list = array_diff( $blocklist, (array) $form_ids );
+
+		gravityview()->log->debug( 'Removing form IDs from cache blocklist', array( 'data' => array(
 			'$form_ids'     => $form_ids,
-			'$blacklist'    => $blacklist,
+			'$blocklist'    => $blocklist,
 			'$updated_list' => $updated_list
 		) ) );
 
-		return update_option( self::BLACKLIST_OPTION_NAME, $updated_list );
+		return update_option( self::BLOCKLIST_OPTION_NAME, $updated_list );
 	}
 
+	/**
+	 * @deprecated 2.14 {@see GravityView_Cache::blocklist_remove()}
+	 *
+	 * @param  int|array $form_ids Form IDs to add
+	 *
+	 * @return bool Whether the removal was successful
+	 */
+	public function blacklist_remove( $form_ids ) {
+		_deprecated_function( __METHOD__, '2.14', 'GravityView_Cache::blocklist_remove()' );
+		return $this->blocklist_remove( $form_ids );
+	}
 
 	/**
-	 * Is a form ID in the cache blacklist
+	 * Is a form ID in the cache blocklist?
 	 *
-	 * @param  int|array $form_ids Form IDs to check if in blacklist
+	 * @param  int|array $form_ids Form IDs to check if in blocklist
+	 *
+	 * @deprecated 2.14 Use {@see GravityView_Cache::in_blocklist()}
 	 *
 	 * @return bool
 	 */
-	function in_blacklist( $form_ids = NULL ) {
+	public function in_blacklist( $form_ids = NULL ) {
+		_deprecated_function( __METHOD__, '2.14', 'GravityView_Cache::in_blocklist()' );
+		return $this->in_blocklist( $form_ids );
+	}
 
-		$blacklist = get_option( self::BLACKLIST_OPTION_NAME, array() );
+	/**
+	 * Is a form ID in the cache blocklist
+	 *
+	 * @param  int|array $form_ids Form IDs to check if in blocklist
+	 *
+	 * @return bool
+	 */
+	public function in_blocklist( $form_ids = NULL ) {
+
+		$blocklist = get_option( self::BLOCKLIST_OPTION_NAME, array() );
 
 		// Use object var if exists
 		$form_ids = is_null( $form_ids ) ? $this->form_ids : $form_ids;
 
 		if ( empty( $form_ids ) ) {
 
-			gravityview()->log->debug( 'Did not add form to blacklist; empty form ID', array( 'data' => $form_ids ) );
+			gravityview()->log->debug( 'Did not add form to blocklist; empty form ID', array( 'data' => $form_ids ) );
 
 			return false;
 		}
 
 		foreach ( (array) $form_ids as $form_id ) {
 
-			if ( in_array( $form_id, $blacklist ) ) {
+			if ( in_array( $form_id, $blocklist ) ) {
 
-				gravityview()->log->debug( 'Form #{form_id} is in the cache blacklist', array( 'form_id' => $form_id ) );
+				gravityview()->log->debug( 'Form #{form_id} is in the cache blocklist', array( 'form_id' => $form_id ) );
 
 				return true;
 			}
@@ -538,13 +576,13 @@ class GravityView_Cache {
 		}
 
 		// Has the form been flagged as having changed items in it?
-		if ( $this->in_blacklist() || ! $use_cache ) {
+		if ( $this->in_blocklist() || ! $use_cache ) {
 
 			// Delete caches for all items with form IDs XYZ
 			$this->delete( $this->form_ids );
 
 			// Remove the form from
-			$this->blacklist_remove( $this->form_ids );
+			$this->blocklist_remove( $this->form_ids );
 
 		}
 

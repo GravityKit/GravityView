@@ -14,19 +14,20 @@
     "require": {
         "php": "^7.1 || ^8.0",
         "ext-json": "*",
-        "myclabs/php-enum": "^1.7",
-        "nikic/php-parser": "^4.10",
+        "myclabs/php-enum": "~1.7.0",
+        "nikic/php-parser": "^4.13",
         "psr/log": "^1.1",
         "psr/simple-cache": "^1.0",
         "symfony/polyfill-php73": "^1.18"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "^3.5",
-        "phpstan/phpstan": "^0.12.14",
-        "php-coveralls/php-coveralls": "^2.4",
-        "phpunit/phpunit": "^7.5 || ^8.5 || ^9.0",
         "guzzlehttp/guzzle": "^6.5 || ^7.0",
-        "phpstan/phpstan-phpunit": "^0.12.17"
+        "php-coveralls/php-coveralls": "^2.4",
+        "phpstan/phpstan": "^0.12.14",
+        "phpstan/phpstan-phpunit": "^0.12.17",
+        "phpunit/phpunit": "^7.5 || ^8.5 || ^9.0",
+        "squizlabs/php_codesniffer": "^3.5",
+        "vimeo/psalm": "^4.10"
     },
     "autoload": {
         "psr-4": {
@@ -42,6 +43,7 @@
         "phpcs": "phpcs src tests",
         "phpcbf": "phpcbf src tests",
         "phpstan": "phpstan analyse",
+        "psalm": "psalm",
         "unit-tests": "phpunit --testsuite unit --testdox --coverage-clover=build/logs/clover-unit-tests.xml",
         "integration-tests": "phpunit --testsuite integration --testdox --coverage-clover=build/logs/clover-integration-tests.xml",
         "benchmarks": "phpbench run tests/benchmark --report=default"

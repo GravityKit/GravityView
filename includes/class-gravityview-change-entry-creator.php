@@ -40,7 +40,7 @@ class GravityView_Change_Entry_Creator {
 
 		add_action( 'plugins_loaded', array( $this, 'prevent_conflicts' ) );
 
-		// Enqueue and whitelist selectWoo UI assets
+		// Enqueue and allow selectWoo UI assets
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_selectwoo_assets' ) );
 		add_filter( 'gform_noconflict_scripts', array( $this, 'register_gform_noconflict' ) );
 		add_filter( 'gform_noconflict_styles', array( $this, 'register_gform_noconflict' ) );
@@ -353,7 +353,7 @@ class GravityView_Change_Entry_Creator {
 	}
 
 	/**
-	 * Whitelist UI assets
+	 * Allow UI assets
 	 *
 	 * @param array $assets
 	 *

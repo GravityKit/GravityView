@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 07-October-2021 using Strauss.
+ * Modified by gravityview on 13-December-2021 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -184,7 +184,7 @@ final class Encryption {
 
 		if ( $public_key ) {
 			// Documented below
-			return apply_filters( 'trustedlogin/' . $this->config->ns() . '/public_key', $public_key, $this->config );
+			return apply_filters( 'trustedlogin/' . $this->config->ns() . '/vendor_public_key', $public_key, $this->config );
 		}
 
 		// Fetch a key from Vendor site
@@ -252,7 +252,7 @@ final class Encryption {
 		if ( is_wp_error( $response_json ) ) {
 
 			if ( 'not_found' == $response_json->get_error_code() ){
-				return new WP_Error( 'not_found', __( 'Encryption key could not be fetched, Vendor site returned 404.', 'gravityview' ) );
+				return new WP_Error( 'not_found', __( 'Encryption key could not be fetched, Vendor site returned 404.', 'trustedlogin' ) );
 			}
 
 			return $response_json;
@@ -349,7 +349,7 @@ final class Encryption {
 	 * @return object|WP_Error $alice_keys or WP_Error if there's any issues.
 	 *   $alice_keys = [
 	 *      'publicKey'  =>  (string)  The public key.
-	 *      'privatekey' =>  (string)  The private key.
+	 *      'privateKey' =>  (string)  The private key.
 	 *   ]
 	 */
 	public function generate_keys() {

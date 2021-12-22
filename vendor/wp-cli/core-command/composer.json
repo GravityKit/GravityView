@@ -1,0 +1,74 @@
+{
+    "name": "wp-cli/core-command",
+    "type": "wp-cli-package",
+    "description": "Downloads, installs, updates, and manages a WordPress installation.",
+    "homepage": "https://github.com/wp-cli/core-command",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Bachhuber",
+            "email": "daniel@runcommand.io",
+            "homepage": "https://runcommand.io"
+        }
+    ],
+    "require": {
+        "composer/semver": "^1.4 || ^2 || ^3",
+        "wp-cli/wp-cli": "^2.5"
+    },
+    "require-dev": {
+        "wp-cli/checksum-command": "^1 || ^2",
+        "wp-cli/db-command": "^1.3 || ^2",
+        "wp-cli/entity-command": "^1.3 || ^2",
+        "wp-cli/extension-command": "^1.2 || ^2",
+        "wp-cli/wp-cli-tests": "^3.0.11"
+    },
+    "config": {
+        "process-timeout": 7200,
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.x-dev"
+        },
+        "bundled": true,
+        "commands": [
+            "core",
+            "core check-update",
+            "core download",
+            "core install",
+            "core is-installed",
+            "core multisite-convert",
+            "core multisite-install",
+            "core update",
+            "core update-db",
+            "core version"
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        },
+        "files": [
+            "core-command.php"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "behat": "run-behat-tests",
+        "behat-rerun": "rerun-behat-tests",
+        "lint": "run-linter-tests",
+        "phpcs": "run-phpcs-tests",
+        "phpunit": "run-php-unit-tests",
+        "prepare-tests": "install-package-tests",
+        "test": [
+            "@lint",
+            "@phpcs",
+            "@phpunit",
+            "@behat"
+        ]
+    },
+    "support": {
+        "issues": "https://github.com/wp-cli/core-command/issues"
+    }
+}

@@ -60,7 +60,7 @@ class FactoryRegistry
 
     private function sanitiseClassName(string $className): string
     {
-        /* Erase leading slash as ::class doesnt contain leading slash */
+        /* Erase leading slash as ::class doesn't contain leading slash */
         if (\strpos($className, '\\') === 0) {
             $className = \substr($className, 1);
         }

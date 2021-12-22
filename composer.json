@@ -30,7 +30,7 @@
 	"trustedlogin/client": "dev-main"
   },
   "require-dev": {
-	"brianhenryie/strauss": "^0.8.9",
+	"brianhenryie/strauss": "^0.8.10",
 	"lucatume/wp-browser": "^2.4",
 	"codeception/module-asserts": "^1.0",
 	"codeception/module-phpbrowser": "^1.0",
@@ -38,7 +38,8 @@
 	"codeception/module-db": "^1.0",
 	"codeception/module-filesystem": "^1.0",
 	"codeception/module-cli": "^1.0",
-	"codeception/util-universalframework": "^1.0"
+	"codeception/util-universalframework": "^1.0",
+    "yoast/phpunit-polyfills": "^1.0"
   },
   "autoload": {
 	"classmap": [

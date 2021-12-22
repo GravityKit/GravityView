@@ -1,0 +1,42 @@
+# Used by Probot Settings: https://probot.github.io/apps/settings/
+repository:
+  description: Downloads, installs, updates, and manages a WordPress installation.
+labels:
+  - name: bug
+    color: fc2929
+  - name: scope:documentation
+    color: 0e8a16
+  - name: scope:testing
+    color: 5319e7
+  - name: good-first-issue
+    color: eb6420
+  - name: help-wanted
+    color: 159818
+  - name: maybelater
+    color: c2e0c6
+  - name: state:unconfirmed
+    color: bfe5bf
+  - name: state:unsupported
+    color: bfe5bf
+  - name: wontfix
+    color: c2e0c6
+  - name: command:core
+    color: c5def5
+  - name: command:core-check-update
+    color: c5def5
+  - name: command:core-download
+    color: c5def5
+  - name: command:core-install
+    color: c5def5
+  - name: command:core-is-installed
+    color: c5def5
+  - name: command:core-multisite-convert
+    color: c5def5
+  - name: command:core-multisite-install
+    color: c5def5
+  - name: command:core-update
+    color: c5def5
+  - name: command:core-update-db
+    color: c5def5
+  - name: command:core-version
+    color: c5def5

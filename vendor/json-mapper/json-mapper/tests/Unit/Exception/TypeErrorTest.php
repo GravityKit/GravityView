@@ -14,7 +14,7 @@ class TypeErrorTest extends TestCase
      */
     public function testForObjectArgumentReturnsExpectedException(): void
     {
-        $e = $this->createTypeError(__METHOD__, '', 1);
+        $e = $this->createTypeError(__METHOD__, 'object', '', 1, '$object');
 
         self::assertEquals(
             sprintf(
@@ -27,8 +27,8 @@ class TypeErrorTest extends TestCase
         );
     }
 
-    private function createTypeError(string $method, $object, int $argumentNumber): TypeError
+    private function createTypeError(string $method, string $expectedType, $argument, int $argumentNumber, string $argumentName): TypeError
     {
-        return TypeError::forObjectArgument($method, $object, $argumentNumber);
+        return TypeError::forArgument($method, $expectedType, $argument, $argumentNumber, $argumentName);
     }
 }

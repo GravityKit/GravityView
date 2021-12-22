@@ -7,6 +7,7 @@ namespace JsonMapper\Handler;
 use JsonMapper\Enums\ScalarType;
 use JsonMapper\Enums\Visibility;
 use JsonMapper\Exception\ClassFactoryException;
+use JsonMapper\Exception\TypeError;
 use JsonMapper\JsonMapperInterface;
 use JsonMapper\ValueObjects\Property;
 use JsonMapper\ValueObjects\PropertyMap;
@@ -105,7 +106,7 @@ class PropertyMapper
         if (\count($property->getPropertyTypes()) > 1) {
             foreach ($property->getPropertyTypes() as $type) {
                 if (\is_array($value) && $type->isArray()) {
-                    $copy = (array) $value;
+                    $copy = $value;
                     $firstValue = \array_shift($copy);
 
                     /* Array of scalar values */
@@ -113,14 +114,14 @@ class PropertyMapper
                         $scalarType = new ScalarType($type->getType());
                         return \array_map(static function ($v) use ($scalarType) {
                             return $scalarType->cast($v);
-                        }, (array) $value);
+                        }, $value);
                     }
 
                     // Array of registered class @todo how do you know it was the correct type?
                     if ($this->classFactoryRegistry->hasFactory($type->getType())) {
                         return \array_map(function ($v) use ($type) {
                             return $this->classFactoryRegistry->create($type->getType(), $v);
-                        }, (array) $value);
+                        }, $value);
                     }
 
                     // Array of existing class @todo how do you know it was the correct type?
@@ -132,7 +133,7 @@ class PropertyMapper
                                 $mapper->mapObject($v, $instance);
                                 return $instance;
                             },
-                            (array) $value
+                            $value
                         );
                     }
 
@@ -151,7 +152,7 @@ class PropertyMapper
 
                 // Single existing class @todo how do you know it was the correct type?
                 if (\class_exists($type->getType())) {
-                    return $this->mapToObject($type->getType(), $value, false, $mapper);
+                    return $this->mapToObject($type->getType(), $value, $mapper);
                 }
             }
         }
@@ -166,7 +167,17 @@ class PropertyMapper
         }
 
         if (ScalarType::isValid($type->getType())) {
-            return $this->mapToScalarValue($type->getType(), $value, $type->isArray());
+            if ($type->isArray()) {
+                return $this->mapToArrayOfScalarValue($type->getType(), $value);
+            }
+            return $this->mapToScalarValue($type->getType(), $value);
+        }
+
+        if (PHP_VERSION_ID >= 80100 && enum_exists($type->getType())) {
+            if ($type->isArray()) {
+                return $this->mapToArrayOfEnum($type->getType(), $value);
+            }
+            return $this->mapToEnum($type->getType(), $value);
         }
 
         if ($this->classFactoryRegistry->hasFactory($type->getType())) {
@@ -178,11 +189,16 @@ class PropertyMapper
             return $this->classFactoryRegistry->create($type->getType(), $value);
         }
 
-        return $this->mapToObject($type->getType(), $value, $type->isArray(), $mapper);
+        if ($type->isArray()) {
+            return $this->mapToArrayOfObjects($type->getType(), $value, $mapper);
+        }
+
+        return $this->mapToObject($type->getType(), $value, $mapper);
     }
 
     /**
      * @param mixed $value
+     * @psalm-assert-if-true scalar $value
      */
     private function propertyTypeAndValueTypeAreScalarAndSameType(PropertyType $type, $value): bool
     {
@@ -200,34 +216,61 @@ class PropertyMapper
 
     /**
      * @param mixed $value
-     * @return string|bool|int|float|string[]|bool[]|int[]|float[]
+     * @return string|bool|int|float
      */
-    private function mapToScalarValue(string $type, $value, bool $asArray)
+    private function mapToScalarValue(string $type, $value)
     {
         $scalar = new ScalarType($type);
-
-        if ($asArray) {
-            return \array_map(static function ($v) use ($scalar) {
-                return $scalar->cast($v);
-            }, (array) $value);
-        }
 
         return $scalar->cast($value);
     }
 
     /**
      * @param mixed $value
-     * @return object|object[]
+     * @return string[]|bool[]|int[]|float[]
      */
-    private function mapToObject(string $type, $value, bool $asArray, JsonMapperInterface $mapper)
+    private function mapToArrayOfScalarValue(string $type, $value): array
     {
-        if ($asArray) {
-            return \array_map(
-                function ($v) use ($type, $mapper) {
-                    return $this->mapToObject($type, $v, false, $mapper);
-                },
-                (array) $value
-            );
+        $scalar = new ScalarType($type);
+        return \array_map(static function ($v) use ($scalar) {
+            return $scalar->cast($v);
+        }, (array) $value);
+    }
+
+    /**
+     * @template T
+     * @psalm-param class-string<T> $type
+     * @param mixed $value
+     * @return T
+     */
+    private function mapToEnum(string $type, $value)
+    {
+        return call_user_func("{$type}::from", $value);
+    }
+
+    /**
+     * @template T
+     * @psalm-param class-string<T> $type
+     * @param mixed $value
+     * @return T[]
+     */
+    private function mapToArrayOfEnum(string $type, $value): array
+    {
+        return \array_map(function ($val) use ($type) {
+            return $this->mapToEnum($type, $val);
+        }, (array) $value);
+    }
+
+    /**
+     * @template T
+     * @psalm-param class-string<T> $type
+     * @param mixed $value
+     * @return T
+     */
+    private function mapToObject(string $type, $value, JsonMapperInterface $mapper)
+    {
+        if (! class_exists($type) && ! interface_exists($type)) {
+            throw TypeError::forArgument(__METHOD__, 'class-string', $type, 1, '$type');
         }
 
         $reflectionType = new \ReflectionClass($type);
@@ -238,6 +281,20 @@ class PropertyMapper
         $instance = new $type();
         $mapper->mapObject($value, $instance);
         return $instance;
+    }
+
+    /**
+     * @param mixed $value
+     * @return object[]
+     */
+    private function mapToArrayOfObjects(string $type, $value, JsonMapperInterface $mapper): array
+    {
+        return \array_map(
+            function ($val) use ($type, $mapper) {
+                return $this->mapToObject($type, $val, $mapper);
+            },
+            (array) $value
+        );
     }
 
     /**

@@ -386,6 +386,8 @@ class GravityView_Merge_Tags {
 			return $text;
 		}
 
+		$text = self::replace_is_starred( $text, $form, $entry, $url_encode, $esc_html );
+
 		$text = self::replace_site_url( $text, $form, $entry, $url_encode, $esc_html );
 
 		$text = self::replace_get_variables( $text, $form, $entry, $url_encode );
@@ -395,6 +397,28 @@ class GravityView_Merge_Tags {
 		$text = self::replace_entry_link( $text, $form, $entry, $url_encode, $esc_html );
 
 		return $text;
+	}
+
+	/**
+	 * Add a {is_starred} Merge Tag
+	 *
+	 * @since 2.14
+	 *
+	 * @param string $original_text Text to replace
+	 * @param array $form Gravity Forms form array
+	 * @param array $entry Entry array
+	 * @param bool $url_encode Whether to URL-encode output
+	 * @param bool $esc_html Indicates if the esc_html function should be applied.
+	 *
+	 * @return string Original text, if no {site_url} Merge Tags found, otherwise text with Merge Tag replaced
+	 */
+	public static function replace_is_starred( $original_text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
+
+		if ( false === strpos( $original_text, '{is_starred}' ) ) {
+			return $original_text;
+		}
+
+		return str_replace( '{is_starred}', rgar( $entry, 'is_starred' ), $original_text );
 	}
 
 	/**

@@ -87,6 +87,17 @@ abstract class Widget {
 	 */
 	public $configuration;
 
+	/**
+	 * @var string An icon that represents the widget type in the widget picker.
+	 *
+	 * Supports these icon formats:
+	 * - Gravity Forms icon class: The string starts with "gform-icon". Note: the site must be running GF 2.5+. No need to also pass "gform-icon".
+	 * - Dashicons: The string starts with "dashicons". No need to also pass "dashicons".
+	 * - Inline SVG: Starts with "data:"
+	 * - If not matching those formats, the value will be used as a CSS class in a `<i>` element.
+	 *
+	 * @see GravityView_Admin_View_Item::getOutput
+	 */
 	public $icon;
 
 	/**
@@ -340,20 +351,27 @@ abstract class Widget {
 	 * @return boolean True: render frontend; False: don't render frontend
 	 */
 	public function pre_render_frontend() {
+
 		/**
 		 * Assume shown regardless of hide_until_search setting.
 		 */
-		$whitelist = array(
+		$allowlist = array(
 			'custom_content',
 		);
 
 		/**
-		 * @filter `gravityview/widget/hide_until_searched/whitelist` Some widgets have got to stay shown.
-		 * @param[in,out] string[] $whitelist The widget IDs that have to be shown by default.
+		 * @deprecated 2.14 In favor of allowlist.
 		 */
-		$whitelist = apply_filters( 'gravityview/widget/hide_until_searched/whitelist', $whitelist );
+		$allowlist = apply_filters_deprecated( 'gravityview/widget/hide_until_searched/whitelist', array( $allowlist ), '2.14', 'gravityview/widget/hide_until_searched/allowlist' );
 
-		if ( ( $view = gravityview()->views->get() ) && ! in_array( $this->get_widget_id(), $whitelist ) ) {
+		/**
+		 * @filter `gravityview/widget/hide_until_searched/allowlist` Some widgets have got to stay shown.
+		 * @since 2.14
+		 * @param[in,out] string[] $allowlist The widget IDs that have to be shown by default.
+		 */
+		$allowlist = apply_filters( 'gravityview/widget/hide_until_searched/allowlist', $allowlist );
+
+		if ( ( $view = gravityview()->views->get() ) && ! in_array( $this->get_widget_id(), $allowlist ) ) {
 			$hide_until_searched = $view->settings->get( 'hide_until_searched' );
 		} else {
 			$hide_until_searched = false;

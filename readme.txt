@@ -21,6 +21,21 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.14 on December 21, 2021 =
+
+This would be a minor version update (2.13.5), except that we renamed many functions. See "Developer Updates" for this release below.
+
+* Added: `{is_starred}` Merge Tag. [Learn more about using `{is_starred}`](https://docs.gravityview.co/article/820-the-isstarred-merge-tag)
+* Fixed: Media files uploaded to Dropbox were not properly embedded
+* Fixed: JavaScript error when trying to edit entry's creator
+* Fixed: Recent Entries widget would cause a fatal error on WP 5.8 or newer
+* Fixed: When using Multiple Forms, editing an entry in a joined form now works properly if the "Edit Entry" tab has not been configured
+* Fixed: View settings not hiding automatically on page load
+
+__Developer Updates:__
+
+We renamed all instances of `blacklist` to `blocklist` and `whitelist` to `allowlist`. All methods and filters have been deprecated using `apply_filters_deprecated()` and `_deprecated_function()`. [See a complete list of modified methods and filters](https://docs.gravityview.co/article/816-renamed-filters-methods-in-2-14).
+
 = 2.13.4 on November 4, 2021 =
 
 * Fixed: View scripts and styles would not load when manually outputting the contents of the `[gravityview]` shortcode

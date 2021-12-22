@@ -15,6 +15,8 @@ use MyCLabs\Enum\Enum;
  * @method static ScalarType DOUBLE()
  * @method static ScalarType FLOAT()
  * @method static ScalarType MIXED()
+ *
+ * @psalm-immutable
  */
 class ScalarType extends Enum
 {

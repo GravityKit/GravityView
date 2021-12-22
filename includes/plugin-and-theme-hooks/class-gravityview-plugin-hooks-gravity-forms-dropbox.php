@@ -29,6 +29,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Dropbox extends GravityView_Plugin_
 	protected function add_hooks() {
 		parent::add_hooks();
 
+		add_filter( 'gravityview/fields/fileupload/extension', array( $this, 'filter_file_path' ) );
 		add_filter( 'gravityview/fields/fileupload/file_path', array( $this, 'filter_file_path' ), 10, 3 );
 	}
 
@@ -37,18 +38,17 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Dropbox extends GravityView_Plugin_
 	 *
 	 * @since 1.22.3
 	 *
-	 * @param string $file_path
-	 * @param array $file_path_info
-	 * @param array $field_settings
+	 * @param string $string Original string (file path or extension)
 	 *
-	 * @return string File path, with Dropbox URLs modified
+	 * @return string File path or extension, with Dropbox URLs modified
 	 */
-	function filter_file_path( $file_path = '', $file_path_info = array(), $field_settings = array() ) {
+	function filter_file_path( $string = '' ) {
 
-		$file_path = str_replace('www.dropbox.com', 'dl.dropboxusercontent.com', $file_path );
-		$file_path = str_replace( '?dl=0', '', $file_path );
+		$output = $string;
+		$output = str_replace('www.dropbox.com', 'dl.dropboxusercontent.com', $output );
+		$output = str_replace( '?dl=0', '', $output );
 
-		return $file_path;
+		return $output;
 	}
 }
 

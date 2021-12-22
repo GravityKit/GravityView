@@ -238,7 +238,7 @@ class GravityView_Edit_Entry_Render {
 	    $this->entry = $entries[0];
 
 		self::$original_form = GFAPI::get_form( $this->entry['form_id'] );
-		$this->form = $gravityview_view->getForm();
+		$this->form = self::$original_form;
 		$this->form_id = $this->entry['form_id'];
 		$this->view_id = $gravityview_view->getViewId();
 		$this->post_id = \GV\Utils::get( $post, 'ID', null );
@@ -1128,99 +1128,108 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private function maybe_print_message() {
 
-		if ( \GV\Utils::_POST( 'action' ) === 'update' ) {
+		if ( \GV\Utils::_POST( 'action' ) !== 'update' ) {
+			return;
+		}
 
-			if ( GFCommon::has_pages( $this->form ) && apply_filters( 'gravityview/features/paged-edit', false ) ) {
-				$labels = array(
-					'cancel'   => __( 'Cancel', 'gravityview' ),
-					'submit'   => __( 'Update', 'gravityview' ),
-					'next'     => __( 'Next', 'gravityview' ),
-					'previous' => __( 'Previous', 'gravityview' ),
-				);
+		/**
+		 * @filter `gravityview/features/paged-edit`
+		 * @since 2.5
+		 * @since 2.14 Added the $form argument
+		 * @param bool $enable_paged_edit Should paged editing be supported?
+		 * @param array $form The current form connected to the entry being edited
+		 */
+		$enable_paged_edit = apply_filters( 'gravityview/features/paged-edit', false, $this->form );
 
-				/**
-				* @filter `gravityview/edit_entry/button_labels` Modify the cancel/submit buttons' labels
-				* @since 1.16.3
-				* @param array $labels Default button labels associative array
-				* @param array $form The Gravity Forms form
-				* @param array $entry The Gravity Forms entry
-				* @param int $view_id The current View ID
-				*/
-				$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $this->form, $this->entry, $this->view_id );
+		if ( GFCommon::has_pages( $this->form ) && $enable_paged_edit ) {
+			$labels = array(
+				'cancel'   => __( 'Cancel', 'gravityview' ),
+				'submit'   => __( 'Update', 'gravityview' ),
+				'next'     => __( 'Next', 'gravityview' ),
+				'previous' => __( 'Previous', 'gravityview' ),
+			);
 
-				$this->is_paged_submitted = \GV\Utils::_POST( 'save' ) === $labels['submit'];
+			/**
+			* @filter `gravityview/edit_entry/button_labels` Modify the cancel/submit buttons' labels
+			* @since 1.16.3
+			* @param array $labels Default button labels associative array
+			* @param array $form The Gravity Forms form
+			* @param array $entry The Gravity Forms entry
+			* @param int $view_id The current View ID
+			*/
+			$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $this->form, $this->entry, $this->view_id );
+
+			$this->is_paged_submitted = \GV\Utils::_POST( 'save' ) === $labels['submit'];
+		}
+
+		$back_link = remove_query_arg( array( 'page', 'view', 'edit' ) );
+
+		if( ! $this->is_valid ){
+
+			// Keeping this compatible with Gravity Forms.
+			$validation_message = "<div class='validation_error'>" . __('There was a problem with your submission.', 'gravityview') . " " . __('Errors have been highlighted below.', 'gravityview') . "</div>";
+			$message = apply_filters("gform_validation_message_{$this->form['id']}", apply_filters("gform_validation_message", $validation_message, $this->form), $this->form);
+
+			echo GVCommon::generate_notice( $message , 'gv-error' );
+
+		} elseif ( false === $this->is_paged_submitted ) {
+			// Paged form that hasn't been submitted on the last page yet
+			$entry_updated_message = sprintf( esc_attr__( 'Entry Updated.', 'gravityview' ), '<a href="' . esc_url( $back_link ) . '">', '</a>' );
+
+			/**
+			 * @filter `gravityview/edit_entry/page/success` Modify the edit entry success message on pages
+			 * @since develop
+			 * @param string $entry_updated_message Existing message
+			 * @param int $view_id View ID
+			 * @param array $entry Gravity Forms entry array
+			 */
+			$message = apply_filters( 'gravityview/edit_entry/page/success', $entry_updated_message , $this->view_id, $this->entry );
+
+			echo GVCommon::generate_notice( $message );
+		} else {
+			$view = \GV\View::by_id( $this->view_id );
+			$edit_redirect = $view->settings->get( 'edit_redirect' );
+			$edit_redirect_url = $view->settings->get( 'edit_redirect_url' );
+
+			switch ( $edit_redirect ) {
+
+				case '0':
+					$redirect_url = $back_link;
+					$entry_updated_message = sprintf( esc_attr_x('Entry Updated. %sReturning to Entry%s', 'Replacements are HTML', 'gravityview'), '<a href="'. esc_url( $redirect_url ) .'">', '</a>' );
+					break;
+
+				case '1':
+					$redirect_url = $directory_link = GravityView_API::directory_link();
+					$entry_updated_message = sprintf( esc_attr_x('Entry Updated. %sReturning to %s%s', 'Replacement 1 is HTML. Replacement 2 is the title of the page where the user will be taken. Replacement 3 is HTML.','gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $view->post_title ), '</a>' );
+					break;
+
+				case '2':
+					$redirect_url = $edit_redirect_url;
+					$redirect_url = GFCommon::replace_variables( $redirect_url, $this->form, $this->entry, false, false, false, 'text' );
+					$entry_updated_message = sprintf( esc_attr_x('Entry Updated. %sRedirecting to %s%s', 'Replacement 1 is HTML. Replacement 2 is the URL where the user will be taken. Replacement 3 is HTML.','gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $edit_redirect_url ), '</a>' );
+					break;
+
+				case '':
+				default:
+					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'. esc_url( $back_link ) .'">', '</a>' );
+					break;
 			}
 
-			$back_link = remove_query_arg( array( 'page', 'view', 'edit' ) );
-
-			if( ! $this->is_valid ){
-
-				// Keeping this compatible with Gravity Forms.
-				$validation_message = "<div class='validation_error'>" . __('There was a problem with your submission.', 'gravityview') . " " . __('Errors have been highlighted below.', 'gravityview') . "</div>";
-				$message = apply_filters("gform_validation_message_{$this->form['id']}", apply_filters("gform_validation_message", $validation_message, $this->form), $this->form);
-
-				echo GVCommon::generate_notice( $message , 'gv-error' );
-
-			} elseif ( false === $this->is_paged_submitted ) {
-				// Paged form that hasn't been submitted on the last page yet
-				$entry_updated_message = sprintf( esc_attr__( 'Entry Updated.', 'gravityview' ), '<a href="' . esc_url( $back_link ) . '">', '</a>' );
-
-				/**
-				 * @filter `gravityview/edit_entry/page/success` Modify the edit entry success message on pages
-				 * @since develop
-				 * @param string $entry_updated_message Existing message
-				 * @param int $view_id View ID
-				 * @param array $entry Gravity Forms entry array
-				 */
-				$message = apply_filters( 'gravityview/edit_entry/page/success', $entry_updated_message , $this->view_id, $this->entry );
-
-				echo GVCommon::generate_notice( $message );
-			} else {
-				$view = \GV\View::by_id( $this->view_id );
-				$edit_redirect = $view->settings->get( 'edit_redirect' );
-				$edit_redirect_url = $view->settings->get( 'edit_redirect_url' );
-
-				switch ( $edit_redirect ) {
-
-                    case '0':
-	                    $redirect_url = $back_link;
-	                    $entry_updated_message = sprintf( esc_attr_x('Entry Updated. %sReturning to Entry%s', 'Replacements are HTML', 'gravityview'), '<a href="'. esc_url( $redirect_url ) .'">', '</a>' );
-                        break;
-
-                    case '1':
-	                    $redirect_url = $directory_link = GravityView_API::directory_link();
-	                    $entry_updated_message = sprintf( esc_attr_x('Entry Updated. %sReturning to %s%s', 'Replacement 1 is HTML. Replacement 2 is the title of the page where the user will be taken. Replacement 3 is HTML.','gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $view->post_title ), '</a>' );
-	                    break;
-
-                    case '2':
-	                    $redirect_url = $edit_redirect_url;
-	                    $redirect_url = GFCommon::replace_variables( $redirect_url, $this->form, $this->entry, false, false, false, 'text' );
-	                    $entry_updated_message = sprintf( esc_attr_x('Entry Updated. %sRedirecting to %s%s', 'Replacement 1 is HTML. Replacement 2 is the URL where the user will be taken. Replacement 3 is HTML.','gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $edit_redirect_url ), '</a>' );
-                        break;
-
-                    case '':
-                    default:
-					    $entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'. esc_url( $back_link ) .'">', '</a>' );
-                        break;
-				}
-
-				if ( isset( $redirect_url ) ) {
-					$entry_updated_message .= sprintf( '<script>window.location.href = %s;</script><noscript><meta http-equiv="refresh" content="0;URL=%s" /></noscript>', json_encode( $redirect_url ), esc_attr( $redirect_url ) );
-				}
-
-				/**
-				 * @filter `gravityview/edit_entry/success` Modify the edit entry success message (including the anchor link)
-				 * @since 1.5.4
-				 * @param string $entry_updated_message Existing message
-				 * @param int $view_id View ID
-				 * @param array $entry Gravity Forms entry array
-				 * @param string $back_link URL to return to the original entry. @since 1.6
-				 */
-				$message = apply_filters( 'gravityview/edit_entry/success', $entry_updated_message , $this->view_id, $this->entry, $back_link );
-
-				echo GVCommon::generate_notice( $message );
+			if ( isset( $redirect_url ) ) {
+				$entry_updated_message .= sprintf( '<script>window.location.href = %s;</script><noscript><meta http-equiv="refresh" content="0;URL=%s" /></noscript>', json_encode( $redirect_url ), esc_attr( $redirect_url ) );
 			}
 
+			/**
+			 * @filter `gravityview/edit_entry/success` Modify the edit entry success message (including the anchor link)
+			 * @since 1.5.4
+			 * @param string $entry_updated_message Existing message
+			 * @param int $view_id View ID
+			 * @param array $entry Gravity Forms entry array
+			 * @param string $back_link URL to return to the original entry. @since 1.6
+			 */
+			$message = apply_filters( 'gravityview/edit_entry/success', $entry_updated_message , $this->view_id, $this->entry, $back_link );
+
+			echo GVCommon::generate_notice( $message );
 		}
 	}
 
@@ -1950,13 +1959,13 @@ class GravityView_Edit_Entry_Render {
 
 		$edit_fields = array();
 
-		$field_type_blacklist = $this->loader->get_field_blacklist( $this->entry );
+		$field_type_blocklist = $this->loader->get_field_blocklist( $this->entry );
 
 		if ( empty( $configured_fields ) && apply_filters( 'gravityview/features/paged-edit', false ) ) {
-			$field_type_blacklist = array_diff( $field_type_blacklist, array( 'page' ) );
+			$field_type_blocklist = array_diff( $field_type_blocklist, array( 'page' ) );
 		}
 
-		// First, remove blacklist or calculation fields
+		// First, remove blocklist or calculation fields
 		foreach ( $fields as $key => $field ) {
 
 			// Remove the fields that have calculation properties and keep them to be used later
@@ -1966,7 +1975,7 @@ class GravityView_Edit_Entry_Render {
 				// don't remove the calculation fields on form render.
 			}
 
-			if( in_array( $field->type, $field_type_blacklist ) ) {
+			if( in_array( $field->type, $field_type_blocklist ) ) {
 				unset( $fields[ $key ] );
 			}
 		}

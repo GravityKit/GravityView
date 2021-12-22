@@ -165,6 +165,8 @@
 				.on( 'dblclick', ".gv-fields:not(.gv-nonexistent-form-field)", vcfg.openFieldSettings )
 
 				// Update checkbox visibility when having dependency checkboxes
+				.on( 'gravityview/loaded', vcfg.toggleCheckboxes )
+
 				.on( 'change', ".gv-setting-list, #gravityview_settings, .gv-dialog-options", vcfg.toggleCheckboxes )
 
 				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )

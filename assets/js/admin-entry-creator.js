@@ -15,44 +15,44 @@
 ( function( $ ) {
 	'use strict';
 
-	// Custom AJAX adapter that returns predefined results when select element is first initialized and when search input field is cleared
-	// Adapted from https://github.com/select2/select2/issues/3828
-	$.fn.selectWoo.amd.define( 'select2/data/extended-ajax', [ './ajax', './tags', '../utils', 'module', 'jquery' ], function( AjaxAdapter, Tags, Utils, module, $ ) {
-		function ExtendedAjaxAdapter( $element, options ) {
-			this.minimumInputLength = options.get( 'minimumInputLength' );
-			this.defaultResults = options.get( 'defaultResults' );
-			ExtendedAjaxAdapter.__super__.constructor.call( this, $element, options );
-		}
-
-		Utils.Extend( ExtendedAjaxAdapter, AjaxAdapter );
-
-		// Override original query function to support default results
-		var originalQuery = AjaxAdapter.prototype.query;
-
-		ExtendedAjaxAdapter.prototype.query = function( params, callback ) {
-			var defaultResults = ( typeof this.defaultResults == 'function' ) ? this.defaultResults.call( this ) : this.defaultResults;
-			if ( defaultResults && defaultResults.length && ( ! params.term || params.term.length < this.minimumInputLength ) ) {
-				var data = { results: defaultResults };
-				var processedResults = this.processResults( data, params );
-				callback( processedResults );
-			} else if ( params.term && params.term.length >= this.minimumInputLength ) {
-				originalQuery.call( this, params, callback );
-			} else {
-				this.trigger( 'results:message', {
-					message: 'inputTooShort',
-					args: {
-						minimum: this.minimumInputLength,
-						input: '',
-						params: params,
-					},
-				} );
-			}
-		};
-
-		return ExtendedAjaxAdapter;
-	} );
-
 	$( document ).on( 'ready', function() {
+		// Custom AJAX adapter that returns predefined results when select element is first initialized and when search input field is cleared
+		// Adapted from https://github.com/select2/select2/issues/3828
+		$.fn.selectWoo.amd.define( 'select2/data/extended-ajax', [ './ajax', './tags', '../utils', 'module', 'jquery' ], function( AjaxAdapter, Tags, Utils, module, $ ) {
+			function ExtendedAjaxAdapter( $element, options ) {
+				this.minimumInputLength = options.get( 'minimumInputLength' );
+				this.defaultResults = options.get( 'defaultResults' );
+				ExtendedAjaxAdapter.__super__.constructor.call( this, $element, options );
+			}
+
+			Utils.Extend( ExtendedAjaxAdapter, AjaxAdapter );
+
+			// Override original query function to support default results
+			var originalQuery = AjaxAdapter.prototype.query;
+
+			ExtendedAjaxAdapter.prototype.query = function( params, callback ) {
+				var defaultResults = ( typeof this.defaultResults == 'function' ) ? this.defaultResults.call( this ) : this.defaultResults;
+				if ( defaultResults && defaultResults.length && ( ! params.term || params.term.length < this.minimumInputLength ) ) {
+					var data = { results: defaultResults };
+					var processedResults = this.processResults( data, params );
+					callback( processedResults );
+				} else if ( params.term && params.term.length >= this.minimumInputLength ) {
+					originalQuery.call( this, params, callback );
+				} else {
+					this.trigger( 'results:message', {
+						message: 'inputTooShort',
+						args: {
+							minimum: this.minimumInputLength,
+							input: '',
+							params: params,
+						},
+					} );
+				}
+			};
+
+			return ExtendedAjaxAdapter;
+		} );
+
 		var gv_nonce = $( '#gv_entry_creator_nonce' ).val();
 		var $select = $( '#change_created_by' );
 

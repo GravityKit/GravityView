@@ -28,7 +28,7 @@ class GravityView_Field_Total extends GravityView_Field {
 
 		add_action( 'gravityview/edit_entry/after_update', array( $this, 'edit_entry_recalculate_totals' ), 10, 3 );
 
-		add_filter( 'gravityview_blacklist_field_types', array( $this, 'add_to_blacklist' ), 10, 2 );
+		add_filter( 'gravityview_blocklist_field_types', array( $this, 'add_to_blocklist' ), 10, 2 );
 
 		parent::__construct();
 	}
@@ -47,20 +47,20 @@ class GravityView_Field_Total extends GravityView_Field {
 	 *
 	 * @todo Support Total fields in Edit Entry configuration
 	 *
-	 * @param array $blacklist Array of field types not able to be added to Edit Entry
+	 * @param array $blocklist Array of field types not able to be added to Edit Entry
 	 * @param  string|null $context Context
 	 *
-	 * @return array Blacklist, with "total" added. If not edit context, original field blacklist. Otherwise, blacklist including total.
+	 * @return array Blocklist, with "total" added. If not edit context, original field blocklist. Otherwise, blocklist including total.
 	 */
-	public function add_to_blacklist( $blacklist = array(), $context = NULL  ){
+	public function add_to_blocklist( $blocklist = array(), $context = NULL  ){
 
 		if( empty( $context ) || $context !== 'edit' ) {
-			return $blacklist;
+			return $blocklist;
 		}
 
-		$blacklist[] = 'total';
+		$blocklist[] = 'total';
 
-		return $blacklist;
+		return $blocklist;
 	}
 
 	/**

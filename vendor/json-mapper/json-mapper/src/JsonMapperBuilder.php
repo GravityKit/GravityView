@@ -59,6 +59,7 @@ class JsonMapperBuilder
         return $mapper;
     }
 
+    /** @psalm-param class-string $jsonMapperClassName */
     public function withJsonMapperClassName(string $jsonMapperClassName): JsonMapperBuilder
     {
         $reflectedClass = new \ReflectionClass($jsonMapperClassName);

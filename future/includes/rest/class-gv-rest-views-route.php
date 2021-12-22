@@ -118,7 +118,7 @@ class Views_Route extends Route {
 		}
 
 		/**
-		 * @filter `gravityview/rest/entry/fields` Whitelist more entry fields that are output in regular REST requests.
+		 * @filter `gravityview/rest/entry/fields` Allow more entry fields that are output in regular REST requests.
 		 * @param[in,out] array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the view.
 		 * @param \GV\View $view The view.
 		 * @param \GV\Entry $entry The entry.
@@ -140,7 +140,7 @@ class Views_Route extends Route {
 		$return = array();
 
 		$renderer = new \GV\Field_Renderer();
-		
+
 		$used_ids = array();
 
 		foreach ( $allowed as $field ) {

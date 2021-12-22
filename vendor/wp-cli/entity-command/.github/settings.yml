@@ -1,0 +1,318 @@
+# Used by Probot Settings: https://probot.github.io/apps/settings/
+repository:
+  description: Manage WordPress comments, menus, options, posts, sites, terms, and users.
+labels:
+  - name: bug
+    color: fc2929
+  - name: scope:documentation
+    color: 0e8a16
+  - name: scope:testing
+    color: 5319e7
+  - name: good-first-issue
+    color: eb6420
+  - name: help-wanted
+    color: 159818
+  - name: maybelater
+    color: c2e0c6
+  - name: state:unconfirmed
+    color: bfe5bf
+  - name: state:unsupported
+    color: bfe5bf
+  - name: wontfix
+    color: c2e0c6
+  - name: command:comment
+    color: c5def5
+  - name: command:comment-approve
+    color: c5def5
+  - name: command:comment-count
+    color: c5def5
+  - name: command:comment-create
+    color: c5def5
+  - name: command:comment-delete
+    color: c5def5
+  - name: command:comment-exists
+    color: c5def5
+  - name: command:comment-generate
+    color: c5def5
+  - name: command:comment-get
+    color: c5def5
+  - name: command:comment-list
+    color: c5def5
+  - name: command:comment-meta
+    color: c5def5
+  - name: command:comment-meta-add
+    color: c5def5
+  - name: command:comment-meta-delete
+    color: c5def5
+  - name: command:comment-meta-get
+    color: c5def5
+  - name: command:comment-meta-list
+    color: c5def5
+  - name: command:comment-meta-patch
+    color: c5def5
+  - name: command:comment-meta-pluck
+    color: c5def5
+  - name: command:comment-meta-update
+    color: c5def5
+  - name: command:comment-recount
+    color: c5def5
+  - name: command:comment-spam
+    color: c5def5
+  - name: command:comment-status
+    color: c5def5
+  - name: command:comment-trash
+    color: c5def5
+  - name: command:comment-unapprove
+    color: c5def5
+  - name: command:comment-unspam
+    color: c5def5
+  - name: command:comment-untrash
+    color: c5def5
+  - name: command:comment-update
+    color: c5def5
+  - name: command:menu
+    color: c5def5
+  - name: command:menu-create
+    color: c5def5
+  - name: command:menu-delete
+    color: c5def5
+  - name: command:menu-item
+    color: c5def5
+  - name: command:menu-item-add-custom
+    color: c5def5
+  - name: command:menu-item-add-post
+    color: c5def5
+  - name: command:menu-item-add-term
+    color: c5def5
+  - name: command:menu-item-delete
+    color: c5def5
+  - name: command:menu-item-list
+    color: c5def5
+  - name: command:menu-item-update
+    color: c5def5
+  - name: command:menu-list
+    color: c5def5
+  - name: command:menu-location
+    color: c5def5
+  - name: command:menu-location-assign
+    color: c5def5
+  - name: command:menu-location-list
+    color: c5def5
+  - name: command:menu-location-remove
+    color: c5def5
+  - name: command:network-meta
+    color: c5def5
+  - name: command:network-meta-add
+    color: c5def5
+  - name: command:network-meta-delete
+    color: c5def5
+  - name: command:network-meta-get
+    color: c5def5
+  - name: command:network-meta-list
+    color: c5def5
+  - name: command:network-meta-patch
+    color: c5def5
+  - name: command:network-meta-pluck
+    color: c5def5
+  - name: command:network-meta-update
+    color: c5def5
+  - name: command:option
+    color: c5def5
+  - name: command:option-add
+    color: c5def5
+  - name: command:option-delete
+    color: c5def5
+  - name: command:option-get
+    color: c5def5
+  - name: command:option-list
+    color: c5def5
+  - name: command:option-patch
+    color: c5def5
+  - name: command:option-pluck
+    color: c5def5
+  - name: command:option-update
+    color: c5def5
+  - name: command:post
+    color: c5def5
+  - name: command:post-create
+    color: c5def5
+  - name: command:post-delete
+    color: c5def5
+  - name: command:post-edit
+    color: c5def5
+  - name: command:post-generate
+    color: c5def5
+  - name: command:post-get
+    color: c5def5
+  - name: command:post-list
+    color: c5def5
+  - name: command:post-meta
+    color: c5def5
+  - name: command:post-meta-add
+    color: c5def5
+  - name: command:post-meta-delete
+    color: c5def5
+  - name: command:post-meta-get
+    color: c5def5
+  - name: command:post-meta-list
+    color: c5def5
+  - name: command:post-meta-patch
+    color: c5def5
+  - name: command:post-meta-pluck
+    color: c5def5
+  - name: command:post-meta-update
+    color: c5def5
+  - name: command:post-term
+    color: c5def5
+  - name: command:post-term-add
+    color: c5def5
+  - name: command:post-term-list
+    color: c5def5
+  - name: command:post-term-remove
+    color: c5def5
+  - name: command:post-term-set
+    color: c5def5
+  - name: command:post-update
+    color: c5def5
+  - name: command:post-type
+    color: c5def5
+  - name: command:post-type-get
+    color: c5def5
+  - name: command:post-type-list
+    color: c5def5
+  - name: command:site
+    color: c5def5
+  - name: command:site-activate
+    color: c5def5
+  - name: command:site-archive
+    color: c5def5
+  - name: command:site-create
+    color: c5def5
+  - name: command:site-deactivate
+    color: c5def5
+  - name: command:site-delete
+    color: c5def5
+  - name: command:site-empty
+    color: c5def5
+  - name: command:site-list
+    color: c5def5
+  - name: command:site-mature
+    color: c5def5
+  - name: command:site-option
+    color: c5def5
+  - name: command:site-private
+    color: c5def5
+  - name: command:site-public
+    color: c5def5
+  - name: command:site-spam
+    color: c5def5
+  - name: command:site-unarchive
+    color: c5def5
+  - name: command:site-unmature
+    color: c5def5
+  - name: command:site-unspam
+    color: c5def5
+  - name: command:taxonomy
+    color: c5def5
+  - name: command:taxonomy-get
+    color: c5def5
+  - name: command:taxonomy-list
+    color: c5def5
+  - name: command:term
+    color: c5def5
+  - name: command:term-create
+    color: c5def5
+  - name: command:term-delete
+    color: c5def5
+  - name: command:term-generate
+    color: c5def5
+  - name: command:term-get
+    color: c5def5
+  - name: command:term-list
+    color: c5def5
+  - name: command:term-meta
+    color: c5def5
+  - name: command:term-meta-add
+    color: c5def5
+  - name: command:term-meta-delete
+    color: c5def5
+  - name: command:term-meta-get
+    color: c5def5
+  - name: command:term-meta-list
+    color: c5def5
+  - name: command:term-meta-patch
+    color: c5def5
+  - name: command:term-meta-pluck
+    color: c5def5
+  - name: command:term-meta-update
+    color: c5def5
+  - name: command:term-recount
+    color: c5def5
+  - name: command:term-update
+    color: c5def5
+  - name: command:user
+    color: c5def5
+  - name: command:user-add-cap
+    color: c5def5
+  - name: command:user-add-role
+    color: c5def5
+  - name: command:user-create
+    color: c5def5
+  - name: command:user-delete
+    color: c5def5
+  - name: command:user-generate
+    color: c5def5
+  - name: command:user-get
+    color: c5def5
+  - name: command:user-import-csv
+    color: c5def5
+  - name: command:user-list
+    color: c5def5
+  - name: command:user-list-caps
+    color: c5def5
+  - name: command:user-meta
+    color: c5def5
+  - name: command:user-meta-add
+    color: c5def5
+  - name: command:user-meta-delete
+    color: c5def5
+  - name: command:user-meta-get
+    color: c5def5
+  - name: command:user-meta-list
+    color: c5def5
+  - name: command:user-meta-patch
+    color: c5def5
+  - name: command:user-meta-pluck
+    color: c5def5
+  - name: command:user-meta-update
+    color: c5def5
+  - name: command:user-remove-cap
+    color: c5def5
+  - name: command:user-remove-role
+    color: c5def5
+  - name: command:user-reset-password
+    color: c5def5
+  - name: command:user-session
+    color: c5def5
+  - name: command:user-session-destroy
+    color: c5def5
+  - name: command:user-session-list
+    color: c5def5
+  - name: command:user-set-role
+    color: c5def5
+  - name: command:user-spam
+    color: c5def5
+  - name: command:user-term
+    color: c5def5
+  - name: command:user-term-add
+    color: c5def5
+  - name: command:user-term-list
+    color: c5def5
+  - name: command:user-term-remove
+    color: c5def5
+  - name: command:user-term-set
+    color: c5def5
+  - name: command:user-unspam
+    color: c5def5
+  - name: command:user-update
+    color: c5def5

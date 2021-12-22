@@ -17,7 +17,7 @@ class ObjectWrapper
     public function __construct($object)
     {
         if (! \is_object($object)) {
-            throw TypeError::forObjectArgument(__METHOD__, $object, 1);
+            throw TypeError::forArgument(__METHOD__, 'object', $object, 1, '$object');
         }
 
         $this->object = $object;

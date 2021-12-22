@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace JsonMapper\Dto;
 
+/**
+ * @psalm-immutable
+ */
 class NamedMiddleware
 {
     /** @var callable */

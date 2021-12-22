@@ -1221,6 +1221,10 @@ class GravityView_frontend {
 			}
 		}
 
+		if ( ! class_exists( 'GravityView_View' ) ) {
+			gravityview()->plugin->include_legacy_frontend( true );
+		}
+
 		GravityView_View::getInstance()->setSorting( $sorting );
 
 		gravityview()->log->debug( '[updateViewSorting] Sort Criteria : ', array( 'data' => $sorting ) );
@@ -1621,13 +1625,19 @@ class GravityView_frontend {
 		);
 
 		/**
-		 * @filter `gravityview/sortable/field_blacklist` Modify what fields should never be sortable.
+		 * @depecated 2.14
 		 * @since 1.7
-		 * @param[in,out] array $not_sortable Array of field types that aren't sortable
-		 * @param string $field_type Field type to check whether the field is sortable
-		 * @param array $form Gravity Forms form
 		 */
-		$not_sortable = apply_filters( 'gravityview/sortable/field_blacklist', $not_sortable, $field_type, $form );
+		$not_sortable = apply_filters_deprecated( 'gravityview/sortable/field_blacklist', array( $not_sortable, $field_type, $form ), '2.14', 'gravityview/sortable/field_blocklist' );
+
+		/**
+		 * @filter `gravityview/sortable/field_blocklist` Modify what fields should never be sortable.
+		 * @since 2.14
+		 * @param[in,out] array $not_sortable Array of field types that aren't sortable.
+		 * @param string $field_type Field type to check whether the field is sortable.
+		 * @param array $form Gravity Forms form.
+		 */
+		$not_sortable = apply_filters( 'gravityview/sortable/field_blocklist', $not_sortable, $field_type, $form );
 
 		if ( in_array( $field_type, $not_sortable ) ) {
 			return false;

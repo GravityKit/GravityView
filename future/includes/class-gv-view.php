@@ -1464,7 +1464,7 @@ class View implements \ArrayAccess {
 			$return = array();
 
 			/**
-			 * @filter `gravityview/csv/entry/fields` Whitelist more entry fields by ID that are output in CSV requests.
+			 * @filter `gravityview/csv/entry/fields` Allowlist more entry fields by ID that are output in CSV requests.
 			 * @param[in,out] array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the View.
 			 * @param \GV\View $view The view.
 			 * @param \GV\Entry $entry WordPress representation of the item.

@@ -671,6 +671,7 @@ final class Plugin {
 		 * Options.
 		 */
 		delete_option( 'gravityview_cache_blacklist' );
+		delete_option( 'gravityview_cache_blocklist' );
 		delete_option( 'gv_version_upgraded_from' );
 		delete_transient( 'gravityview_edd-activate_valid' );
 		delete_transient( 'gravityview_edd-deactivate_valid' );

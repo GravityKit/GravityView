@@ -261,7 +261,6 @@ class GravityView_Field_Address extends GravityView_Field {
 			case 3:
 				$input_type = 'city';
 				break;
-				break;
 			case 4:
 				$input_type = 'state';
 				break;

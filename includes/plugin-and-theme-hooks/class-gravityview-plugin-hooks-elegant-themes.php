@@ -86,7 +86,7 @@ class GravityView_Theme_Hooks_Elegant_Themes extends GravityView_Plugin_and_Them
 		foreach ( $sidebars_widgets[ $matches[1] ] as $widgets ) {
 			if (
 				/**
-				 * Blacklisted widgets.
+				 * Blocklisted widgets.
 				 */
 				strpos( $widgets, 'gravityview_search' ) === 0 ||
 				strpos( $widgets, 'gv_recent_entries' ) === 0
