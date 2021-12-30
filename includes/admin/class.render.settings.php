@@ -104,6 +104,16 @@ class GravityView_Render_Settings {
 				),
 			);
 
+			if ( 'directory' === $context ) {
+				$field_options['new_window'] = array(
+					'type'     => 'checkbox',
+					'label'    => __( 'Open link in a new tab or window?', 'gravityview' ),
+					'value'    => false,
+					'group'    => 'display',
+					'priority' => 1300,
+				);
+			}
+
 			// Match Table as well as DataTables
 			if( $is_table_layout && 'directory' === $context ) {
 				$field_options['width'] = array(
