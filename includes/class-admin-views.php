@@ -683,7 +683,7 @@ class GravityView_Admin_Views {
 		/**
 		 * @deprecated 2.9
 		 */
-		$blocklist_field_types = apply_filters_deprecated( 'gravityview_blocklist_field_types', array( array(), $context ), '2.14', 'gravityview_blocklist_field_types' );
+		$blocklist_field_types = apply_filters_deprecated( 'gravityview_blacklist_field_types', array( array(), $context ), '2.14', 'gravityview_blocklist_field_types' );
 
 		/**
 		 * @filter  `gravityview_blocklist_field_types` Modify the types of fields that shouldn't be shown in a View.

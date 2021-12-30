@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.14.0.1 on December 30, 2021 =
+
+Fixed: Deprecated filter message when adding fields to the View
+
 = 2.14 on December 21, 2021 =
 
 This would be a minor version update (2.13.5), except that we renamed many functions. See "Developer Updates" for this release below.
