@@ -2136,7 +2136,7 @@
 			$post.data( 'gv-valid', false );
 
 			if ( $post.data( 'gv-serialized' ) ) {
-				// Guard against double seralization/remove attempts
+				// Guard against double serialization/remove attempts
 				serialized_data = $post.data( 'gv-serialized' );
 			} else {
 				// Get all the fields where the `name` attribute start with `fields`
@@ -2146,7 +2146,7 @@
 				serialized_data = $fields.serialize();
 
 				// Remove the fields from the $_POSTed data
-				$fields.remove();
+				$fields.prop( 'disabled', true );
 
 				$post.data( 'gv-serialized', serialized_data );
 			}
