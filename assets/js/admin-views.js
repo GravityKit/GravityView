@@ -2145,7 +2145,7 @@
 				// Serialize the data
 				serialized_data = $fields.serialize();
 
-				// Remove the fields from the $_POSTed data
+				// Don't include the fields in the $_POSTed data
 				$fields.prop( 'disabled', true );
 
 				$post.data( 'gv-serialized', serialized_data );
@@ -2153,13 +2153,15 @@
 
 			// Also exclude these fields from $_POST...
 			$post.find( ':input[name=gv_fields]' ).prop( 'disabled', true );
+
+			// ...instead, add a single field to the form that contains all the data.
 			$post.append( $( '<input/>', {
 				'name': 'gv_fields',
 				'value': serialized_data,
 				'type': 'hidden'
 			} ) );
 
-			// make sure the "slow" browsers did append all the serialized data to the form
+			// Make sure slow browsers did append all the serialized data to the form
 			setTimeout( function () {
 
 				$post.data( 'gv-valid', true );
