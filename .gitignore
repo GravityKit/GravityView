@@ -24,7 +24,6 @@ wpcs/
 
 ### Node ###
 node_modules/*
-package-lock.json
 
 ### CodeKit ####
 .sass-cache
