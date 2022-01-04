@@ -2151,8 +2151,8 @@
 				$post.data( 'gv-serialized', serialized_data );
 			}
 
-			// Add a field to the form that contains all the data.
-			$post.find( ':input[name=gv_fields]' ).remove();
+			// Also exclude these fields from $_POST...
+			$post.find( ':input[name=gv_fields]' ).prop( 'disabled', true );
 			$post.append( $( '<input/>', {
 				'name': 'gv_fields',
 				'value': serialized_data,
