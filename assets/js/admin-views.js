@@ -1146,6 +1146,7 @@
 
 			viewGeneralSettings.metaboxObj.show();
 			viewConfiguration.toggleDropMessage();
+			viewConfiguration.init_tooltips();
 
 			$( document ).trigger( 'gv_admin_views_showViewConfig' );
 		},
@@ -1465,6 +1466,11 @@
 		},
 
 		init_tooltips: function (el) {
+
+			// Already initialized.
+			if ( 0 === $( el || '.gv-add-field' ).not( ':ui-tooltip' ).length ) {
+				return;
+			}
 
 			$( el || ".gv-add-field" ).tooltip( {
 				show:    150,
