@@ -1147,7 +1147,6 @@
 			viewGeneralSettings.metaboxObj.show();
 			viewConfiguration.toggleDropMessage();
 			viewConfiguration.init_droppables();
-			viewConfiguration.init_tooltips();
 
 			$( document ).trigger( 'gv_admin_views_showViewConfig' );
 		},
