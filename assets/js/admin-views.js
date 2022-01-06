@@ -1146,7 +1146,6 @@
 
 			viewGeneralSettings.metaboxObj.show();
 			viewConfiguration.toggleDropMessage();
-			viewConfiguration.init_droppables();
 
 			$( document ).trigger( 'gv_admin_views_showViewConfig' );
 		},
@@ -1847,12 +1846,17 @@
 		},
 
 		// Sortables and droppables
-		init_droppables: function () {
+		init_droppables: function ( panel ) {
+
+			// Already initialized.
+			if( $( panel ).find( ".active-drop-field" ).sortable( 'instance' ) ) {
+				return;
+			}
 
 			var vcfg = viewConfiguration;
 
 			// widgets
-			$( '#directory-fields, #single-fields' ).find( ".active-drop-widget" ).sortable( {
+			$( panel ).find( ".active-drop-widget" ).sortable( {
 				placeholder: "fields-placeholder",
 				items: '> .gv-fields',
 				distance: 2,
@@ -1880,17 +1884,17 @@
 			} );
 
 			//fields
-			$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-field" ).sortable( {
+			$( panel ).find( ".active-drop-field" ).sortable( {
 				placeholder: "fields-placeholder",
 				items: '> .gv-fields',
 				distance: 2,
 				revert: 75,
 				connectWith: ".active-drop-field",
 				start: function( event, ui ) {
-					$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-container-field" ).addClass('is-receivable');
+					$( panel ).find( ".active-drop-container-field" ).addClass('is-receivable');
 				},
 				stop: function( event, ui ) {
-					$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-container-field" ).removeClass('is-receivable');
+					$( panel ).find( ".active-drop-container-field" ).removeClass('is-receivable');
 				},
 				receive: function ( event, ui ) {
 					// Check if field comes from another active area and if so, update name attributes.
@@ -2434,9 +2438,14 @@
 			active: activate_tab,
 			hide: false,
 			show: false,
+			create: function ( event, ui ) {
+				viewConfiguration.init_droppables( ui.panel );
+			},
 			activate: function ( event, ui ) {
 				// When the tab is activated, set a new cookie
 				$.cookie( cookie_key, ui.newTab.index(), { path: gvGlobals.cookiepath } );
+
+				viewConfiguration.init_droppables( ui.newPanel );
 
 				$( 'body' ).trigger( 'gravityview/tabs-ready' );
 			}
