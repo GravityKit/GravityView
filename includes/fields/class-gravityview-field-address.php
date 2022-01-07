@@ -295,12 +295,18 @@ class GravityView_Field_Address extends GravityView_Field {
 			'value'      => true,
 			'merge_tags' => false,
 			'group'      => 'display',
-			'priority'   => 100,
+			'priority'   => 98,
 		);
 
-		$this->add_field_support( 'new_window', $add_options );
-
-		$add_options['new_window']['requires'] = 'show_map_link';
+		$add_options['show_map_link_new_window'] = array(
+			'type'       => 'checkbox',
+			'label'      => __( 'Open Map link in a new tab or window?', 'gravityview' ),
+			'value'      => false,
+			'merge_tags' => false,
+			'group'      => 'display',
+			'requires'   => 'show_map_link',
+			'priority'   => 99,
+		);
 
 		return $add_options + $field_options;
 	}
