@@ -104,16 +104,6 @@ class GravityView_Render_Settings {
 				),
 			);
 
-			if ( 'directory' === $context ) {
-				$field_options['new_window'] = array(
-					'type'     => 'checkbox',
-					'label'    => __( 'Open link in a new tab or window?', 'gravityview' ),
-					'value'    => false,
-					'group'    => 'display',
-					'priority' => 1300,
-				);
-			}
-
 			// Match Table as well as DataTables
 			if( $is_table_layout && 'directory' === $context ) {
 				$field_options['width'] = array(
@@ -155,6 +145,18 @@ class GravityView_Render_Settings {
 		 * @param[in]  int         $form_id     The form ID. {@since 2.5}
 		 */
 		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
+
+		if ( 'directory' === $context && isset( $field_options['show_as_link'] ) && ! isset( $field_options['new_window'] ) ) {
+			$field_options['new_window'] = array(
+				'type'     => 'checkbox',
+				'label'    => __( 'Open link in a new tab or window?', 'gravityview' ),
+				'value'    => false,
+				'context'  => 'directory',
+				'requires' => 'show_as_link',
+				'priority' => 101,
+				'group'    => 'display',
+			);
+		}
 
 		if ( $grouped ) {
 
