@@ -856,8 +856,9 @@
 					vcfg.setupFieldDetails( thisDialog );
 					vcfg.setupCodeMirror( thisDialog );
 
-					$( '#directory-fields, #single-fields' ).find( ".active-drop-widget" ).sortable( 'disable' );
-					$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-field" ).sortable('disable');
+					$( '.ui-widget-content[aria-hidden="false"]' )
+						.find( ".active-drop-widget" ).sortable( 'disable' ).end()
+						.find( ".active-drop-field" ).sortable('disable');
 
 					return true;
 				},
@@ -883,8 +884,9 @@
 						$( this ).remove();
 					} );
 
-					$( '#directory-fields, #single-fields' ).find( ".active-drop-widget" ).sortable( 'enable' );
-					$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-field" ).sortable('enable');
+					$( '.ui-widget-content[aria-hidden="false"]' )
+						.find( ".active-drop-widget" ).sortable( 'enable' ).end()
+						.find( ".active-drop-field" ).sortable('enable');
 
 					$( 'body' ).trigger( 'gravityview/dialog-closed', thisDialog );
 				},
