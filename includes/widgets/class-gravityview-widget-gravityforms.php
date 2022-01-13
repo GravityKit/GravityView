@@ -77,7 +77,7 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 		}
 
 		// Inside GV's widget AJAX request
-		$doing_ajax = defined( 'DOING_AJAX' ) && 'gv_field_options' === \GV\Utils::_POST( 'action' );
+		$doing_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX && 'gv_field_options' === \GV\Utils::_POST( 'action' );
 
 		/**
 		 * gravityview_get_forms() is currently running too early as widgets_init runs before init and
