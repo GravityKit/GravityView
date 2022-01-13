@@ -158,7 +158,8 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 				// Replace merge tags in the content
 				foreach ( $field_data as $key => $field_datum ) {
-					$field_data[ $key ] = GravityView_Merge_Tags::replace_variables( $field_datum, $form, $entry->as_entry(), false, false );
+					$entry_data = $entry ? $entry->as_entry() : array();
+					$field_data[ $key ] = GravityView_Merge_Tags::replace_variables( $field_datum, $form, $entry_data, false, false );
 				}
 
 				$field_data['cssClass'] = \GV\Utils::get( $edit_field, 'custom_class' );
