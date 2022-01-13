@@ -57,12 +57,12 @@ class GravityView_Field_Workflow_Final_Status extends GravityView_Field {
 	 * @since 1.17.3
 	 *
 	 * @param array $search_fields
-	 * @param GravityView_Widget_Search $widget
+	 * @param GravityView_Widget_Search|null $widget
 	 * @param array $widget_args
 	 *
 	 * @return array
 	 */
-	function modify_search_filters( $search_fields = array(), GravityView_Widget_Search $widget, $widget_args = array() ) {
+	function modify_search_filters( $search_fields = array(), GravityView_Widget_Search $widget = null, $widget_args = array() ) {
 
 		foreach ( $search_fields as & $search_field ) {
 			if ( $this->name === \GV\Utils::get( $search_field, 'key' ) ) {

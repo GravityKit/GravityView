@@ -148,7 +148,7 @@ class GravityView_Field_Workflow_Step extends GravityView_Field {
 	 *
 	 * @return array
 	 */
-	function modify_frontend_search_fields( $search_fields = array(), GravityView_Widget_Search $widget, $widget_args = array() ) {
+	function modify_frontend_search_fields( $search_fields = array(), GravityView_Widget_Search $widget = null, $widget_args = array() ) {
 
 		foreach ( $search_fields as & $search_field ) {
 

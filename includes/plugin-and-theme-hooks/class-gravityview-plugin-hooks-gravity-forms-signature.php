@@ -70,7 +70,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Signature extends GravityView_Plugi
 	 *
 	 * @return string Empty string forces Gravity Forms to use the $_POST values
 	 */
-	function edit_entry_field_input( $field_content = '', $field, $value = '', $lead_id = 0, $form_id = 0 ) {
+	function edit_entry_field_input( $field_content = '', $field = null, $value = '', $lead_id = 0, $form_id = 0 ) {
 
 		$context = function_exists('gravityview_get_context') ? gravityview_get_context() : '';
 
