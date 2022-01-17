@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+Fixed: Error activating on sites that use the Danish language
+
 = 2.14.0.1 on December 30, 2021 =
 
 Fixed: Deprecated filter message when adding fields to the View

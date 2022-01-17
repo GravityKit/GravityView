@@ -75,7 +75,7 @@ msgstr "Licens niveau: %s"
 
 #: future/includes/class-gv-license-handler.php:295
 msgid "Activations: %d of %s sites"
-msgstr "Aktiveringer: % af %s websteder"
+msgstr "Aktiveringer: %d af %s websteder"
 
 #: future/includes/class-gv-license-handler.php:335
 msgid "Upgrades available:"
@@ -2164,9 +2164,9 @@ msgid ""
 "\n"
 "If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
 msgstr ""
-"%sDu har ingen aktive views. Lad os gå i gang med at lave et!%s\n"
+"%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n"
 "\n"
-"Hvis du føler dig helt fortabt og har brug for hjæIp til at komme i gang, skal du prøve %sKom i gang%s siden."
+"If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
 
 #: includes/class-admin.php:79
 msgid "There are no active Views"
