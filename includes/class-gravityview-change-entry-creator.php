@@ -281,12 +281,18 @@ class GravityView_Change_Entry_Creator {
 
 			if ( ! empty( $originally_created_by ) ) {
 				$originally_created_by_user_data = get_userdata( $originally_created_by );
-				$original_name                   = sprintf( $user_format, $originally_created_by_user_data->display_name, $originally_created_by_user_data->ID );
+
+				$original_name = ! empty( $originally_created_by_user_data ) ?
+					sprintf( $user_format, $originally_created_by_user_data->display_name, $originally_created_by_user_data->ID ) :
+					esc_attr_x( 'Deleted User', 'To show that the entry was created by a no longer existing user.', 'gravityview' );
 			}
 
 			if ( ! empty( $created_by ) ) {
 				$created_by_user_data = get_userdata( $created_by );
-				$created_by_name      = sprintf( $user_format, $created_by_user_data->display_name, $created_by_user_data->ID );
+
+				$created_by_name = ! empty( $created_by_user_data ) ?
+					sprintf( $user_format, $created_by_user_data->display_name, $created_by_user_data->ID ) :
+					esc_attr_x( 'Deleted User', 'To show that the entry was created by a no longer existing user.', 'gravityview' );
 			}
 
 			GravityView_Entry_Notes::add_note( $entry_id, $current_user->ID, $user_data->display_name, sprintf( __( 'Changed entry creator from %s to %s', 'gravityview' ), $original_name, $created_by_name ), 'note' );
