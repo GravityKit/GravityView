@@ -321,7 +321,7 @@ class GravityView_Change_Entry_Creator {
 		$output .= '<option value="0" ' . selected( true, empty( $entry_creator_user_id ), false ) . '> &mdash; ' . esc_attr_x( 'No User', 'No user assigned to the entry', 'gravityview' ) . ' &mdash; </option>';
 
 		// Always show the entry creator, even when the user isn't included within the pagination limits
-		if ( ! empty( $entry_creator_user_id ) ) {
+		if ( ! empty( $entry_creator_user_id ) && ! empty( $entry_creator_user ) ) {
 			$output .= '<option value="' . $entry_creator_user->ID . '" selected="selected">' . esc_attr( $entry_creator_user->display_name . ' (' . $entry_creator_user->user_nicename . ')' ) . '</option>';
 		}
 

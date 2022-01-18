@@ -23,7 +23,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
-Fixed: Error activating on sites that use the Danish language
+* Fixed: PHP notice when editing an entry in Gravity Forms that was created by user that no longer exists
+* Fixed: Error activating on sites that use the Danish language
 
 = 2.14.0.1 on December 30, 2021 =
 
