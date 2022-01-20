@@ -438,9 +438,9 @@ class Views_Route extends Route {
 				case 'not_public':
 				case 'embed_only':
 				case 'no_direct_access':
-					return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+					return new \WP_Error( 'rest_forbidden_access_denied', __( 'You are not allowed to access this content.', 'gravityview' ) );
 				case 'no_form_attached':
-					return new \WP_Error( 'rest_forbidden', __( 'This View is not configured properly.', 'gravityview' ) );
+					return new \WP_Error( 'rest_forbidden_no_form_attached', __( 'This View is not configured properly.', 'gravityview' ) );
 				default:
 					return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
 			}
