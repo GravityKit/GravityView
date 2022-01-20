@@ -1052,10 +1052,13 @@
 		 * Toggle visibility for field details
 		 * @since 2.10
 		 * @param {jQuery}  $dialog The open dialog
-		 * @param {boolean} show_details Whether to show the field details or not
+		 * @param {boolean|string} show_details Whether to show the field details or not
 		 */
 		toggleFieldDetails: function ( $dialog, show_details ) {
-			$dialog
+
+			$parent = $dialog.parent();
+
+			$parent
 				.find( '.gv-field-details' ).toggleClass( 'gv-field-details--closed', ! show_details ).end()
 				.find( '.gv-field-details--toggle .dashicons' )
 				.toggleClass( 'dashicons-arrow-down', !! show_details )
