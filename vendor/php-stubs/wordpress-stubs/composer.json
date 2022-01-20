@@ -1,0 +1,32 @@
+{
+    "name": "php-stubs/wordpress-stubs",
+    "description": "WordPress function and class declaration stubs for static analysis.",
+    "keywords": [
+        "wordpress",
+        "static analysis",
+        "phpstan"
+    ],
+    "homepage": "https://github.com/php-stubs/wordpress-stubs",
+    "license": "MIT",
+    "replace": {
+        "giacocorsiglia/wordpress-stubs": "*"
+    },
+    "require-dev": {
+        "php": "~7.1",
+        "giacocorsiglia/stubs-generator": "^0.5.0"
+    },
+    "suggest": {
+        "szepeviktor/phpstan-wordpress": "WordPress extensions for PHPStan",
+        "paragonie/sodium_compat": "Pure PHP implementation of libsodium",
+        "symfony/polyfill-php73": "Symfony polyfill backporting some PHP 7.3+ features to lower PHP versions"
+    },
+    "minimum-stability": "stable",
+    "scripts": {
+        "post-install-cmd": "@composer --working-dir=source/ update --no-interaction --no-suggest",
+        "post-update-cmd" : "@composer --working-dir=source/ update --no-interaction --no-suggest",
+        "cleanup": "git status --short --ignored | sed -n -e 's#^!! ##p' | xargs -r rm -vrf"
+    },
+    "scripts-descriptions": {
+        "cleanup": "Remove all ignored files."
+    }
+}
