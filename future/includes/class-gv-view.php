@@ -1061,6 +1061,9 @@ class View implements \ArrayAccess {
 				$merged_time = false;
 
 				foreach ( $q['order'] as $oid => $order ) {
+
+					$column = null;
+
 					if ( $order[0] instanceof \GF_Query_Column ) {
 						$column = $order[0];
 					} else if ( $order[0] instanceof \GF_Query_Call ) {
@@ -1071,7 +1074,7 @@ class View implements \ArrayAccess {
 						$column = $order[0]->columns[0];
 					}
 
-					if ( ( ! $field = \GFAPI::get_field( $column->source, $column->field_id ) ) || $field->type !== 'time' ) {
+					if ( ! $column || ( ! $field = \GFAPI::get_field( $column->source, $column->field_id ) ) || $field->type !== 'time' ) {
 						$orders[ $oid ] = $order;
 						continue; // Not a time field
 					}

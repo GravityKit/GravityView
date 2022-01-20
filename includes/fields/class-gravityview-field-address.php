@@ -10,14 +10,19 @@
  */
 class GravityView_Field_Address extends GravityView_Field {
 
+	/** @inheritDoc  */
 	var $name = 'address';
 
+	/** @inheritDoc  */
 	var $group = 'advanced';
 
+	/** @inheritDoc  */
 	var $is_numeric = false;
 
+	/** @inheritDoc  */
 	var $is_searchable = true;
 
+	/** @inheritDoc  */
 	var $search_operators = array( 'is', 'isnot', 'contains' );
 
 	/**
@@ -26,6 +31,7 @@ class GravityView_Field_Address extends GravityView_Field {
 	 */
 	var $icon = 'dashicons-location-alt';
 
+	/** @inheritDoc  */
 	var $_gf_field_class_name = 'GF_Field_Address';
 
 	public function __construct() {
