@@ -70,6 +70,9 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts_and_styles' ) );
 
+		// Make sure scripts are registered for FSE themes
+		add_action( 'gravityview/template/before', array( $this, 'register_scripts_and_styles' ) );
+
 		add_action( 'gravityview/field/approval/load_scripts', array( $this, 'enqueue_and_localize_script' ) );
 
 		add_action( 'gravityview_datatables_scripts_styles',  array( $this, 'enqueue_and_localize_script' ) );
@@ -138,6 +141,11 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	 * @return void
 	 */
 	function register_scripts_and_styles() {
+
+		if ( wp_script_is( 'gravityview-field-approval' ) ) {
+			return;
+		}
+
 		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		wp_register_script( 'gravityview-field-approval', GRAVITYVIEW_URL . 'assets/js/field-approval'.$script_debug.'.js', array( 'jquery' ), GravityView_Plugin::version, true );

@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.6.30
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Fixed: PHP notice when editing an entry in Gravity Forms that was created by user that no longer exists
 * Fixed: Error activating on sites that use the Danish language
+* Fixed: Entry approval scripts not loading properly when using Full Site Editing themes in WordPress 5.9
 
 = 2.14.0.1 on December 30, 2021 =
 
