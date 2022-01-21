@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Improved: The Members plugin now works with No-Conflict Mode enabled
 * Fixed: PHP notice when editing an entry in Gravity Forms that was created by user that no longer exists
 * Fixed: Error activating on sites that use the Danish language
 * Fixed: Entry approval scripts not loading properly when using Full Site Editing themes in WordPress 5.9
