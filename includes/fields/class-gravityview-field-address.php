@@ -306,7 +306,7 @@ class GravityView_Field_Address extends GravityView_Field {
 
 		$add_options['show_map_link_new_window'] = array(
 			'type'       => 'checkbox',
-			'label'      => __( 'Open Map link in a new tab or window?', 'gravityview' ),
+			'label'      => __( 'Open map link in a new tab or window?', 'gravityview' ),
 			'value'      => false,
 			'merge_tags' => false,
 			'group'      => 'display',
