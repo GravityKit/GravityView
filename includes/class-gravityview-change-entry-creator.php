@@ -281,12 +281,18 @@ class GravityView_Change_Entry_Creator {
 
 			if ( ! empty( $originally_created_by ) ) {
 				$originally_created_by_user_data = get_userdata( $originally_created_by );
-				$original_name                   = sprintf( $user_format, $originally_created_by_user_data->display_name, $originally_created_by_user_data->ID );
+
+				$original_name = ! empty( $originally_created_by_user_data ) ?
+					sprintf( $user_format, $originally_created_by_user_data->display_name, $originally_created_by_user_data->ID ) :
+					esc_attr_x( 'Deleted User', 'To show that the entry was created by a no longer existing user.', 'gravityview' );
 			}
 
 			if ( ! empty( $created_by ) ) {
 				$created_by_user_data = get_userdata( $created_by );
-				$created_by_name      = sprintf( $user_format, $created_by_user_data->display_name, $created_by_user_data->ID );
+
+				$created_by_name = ! empty( $created_by_user_data ) ?
+					sprintf( $user_format, $created_by_user_data->display_name, $created_by_user_data->ID ) :
+					esc_attr_x( 'Deleted User', 'To show that the entry was created by a no longer existing user.', 'gravityview' );
 			}
 
 			GravityView_Entry_Notes::add_note( $entry_id, $current_user->ID, $user_data->display_name, sprintf( __( 'Changed entry creator from %s to %s', 'gravityview' ), $original_name, $created_by_name ), 'note' );
@@ -321,7 +327,7 @@ class GravityView_Change_Entry_Creator {
 		$output .= '<option value="0" ' . selected( true, empty( $entry_creator_user_id ), false ) . '> &mdash; ' . esc_attr_x( 'No User', 'No user assigned to the entry', 'gravityview' ) . ' &mdash; </option>';
 
 		// Always show the entry creator, even when the user isn't included within the pagination limits
-		if ( ! empty( $entry_creator_user_id ) ) {
+		if ( ! empty( $entry_creator_user_id ) && ! empty( $entry_creator_user ) ) {
 			$output .= '<option value="' . $entry_creator_user->ID . '" selected="selected">' . esc_attr( $entry_creator_user->display_name . ' (' . $entry_creator_user->user_nicename . ')' ) . '</option>';
 		}
 

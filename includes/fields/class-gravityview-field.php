@@ -109,6 +109,7 @@ abstract class GravityView_Field {
 	 * - Inline SVG: Starts with "data:"
 	 * - If not matching those formats, the value will be used as a CSS class in a `<i>` element.
 	 *
+	 * @since 2.8.1
 	 * @see GravityView_Admin_View_Item::getOutput
 	 */
 	public $icon = 'dashicons-admin-generic';
@@ -328,7 +329,7 @@ abstract class GravityView_Field {
 	 *
 	 * @return array Modified merge tags
 	 */
-	public function _filter_gform_custom_merge_tags( $custom_merge_tags = array(), $form_id, $fields = array(), $element_id = '' ) {
+	public function _filter_gform_custom_merge_tags( $custom_merge_tags = array(), $form_id = 0, $fields = array(), $element_id = '' ) {
 
 		$form = GVCommon::get_form( $form_id );
 
@@ -468,7 +469,13 @@ abstract class GravityView_Field {
 		return apply_filters( 'gravityview_field_support_options', $options );
 	}
 
-	function add_field_support( $key = '', &$field_options ) {
+	/**
+	 * @param string $key
+	 * @param array $field_options
+	 *
+	 * @return array
+	 */
+	function add_field_support( $key, &$field_options ) {
 
 		$options = $this->field_support_options();
 

@@ -856,8 +856,9 @@
 					vcfg.setupFieldDetails( thisDialog );
 					vcfg.setupCodeMirror( thisDialog );
 
-					$( '#directory-fields, #single-fields' ).find( ".active-drop-widget" ).sortable( 'disable' );
-					$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-field" ).sortable('disable');
+					$( '.ui-widget-content[aria-hidden="false"]' )
+						.find( ".active-drop-widget" ).sortable( 'disable' ).end()
+						.find( ".active-drop-field" ).sortable('disable');
 
 					return true;
 				},
@@ -883,8 +884,9 @@
 						$( this ).remove();
 					} );
 
-					$( '#directory-fields, #single-fields' ).find( ".active-drop-widget" ).sortable( 'enable' );
-					$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-field" ).sortable('enable');
+					$( '.ui-widget-content[aria-hidden="false"]' )
+						.find( ".active-drop-widget" ).sortable( 'enable' ).end()
+						.find( ".active-drop-field" ).sortable('enable');
 
 					$( 'body' ).trigger( 'gravityview/dialog-closed', thisDialog );
 				},
@@ -1050,10 +1052,13 @@
 		 * Toggle visibility for field details
 		 * @since 2.10
 		 * @param {jQuery}  $dialog The open dialog
-		 * @param {boolean} show_details Whether to show the field details or not
+		 * @param {boolean|string} show_details Whether to show the field details or not
 		 */
 		toggleFieldDetails: function ( $dialog, show_details ) {
-			$dialog
+
+			$parent = $dialog.parent();
+
+			$parent
 				.find( '.gv-field-details' ).toggleClass( 'gv-field-details--closed', ! show_details ).end()
 				.find( '.gv-field-details--toggle .dashicons' )
 				.toggleClass( 'dashicons-arrow-down', !! show_details )
@@ -1146,7 +1151,6 @@
 
 			viewGeneralSettings.metaboxObj.show();
 			viewConfiguration.toggleDropMessage();
-			viewConfiguration.init_droppables();
 			viewConfiguration.init_tooltips();
 
 			$( document ).trigger( 'gv_admin_views_showViewConfig' );
@@ -1467,6 +1471,11 @@
 		},
 
 		init_tooltips: function (el) {
+
+			// Already initialized.
+			if ( 0 === $( el || '.gv-add-field' ).not( ':ui-tooltip' ).length ) {
+				return;
+			}
 
 			$( el || ".gv-add-field" ).tooltip( {
 				show:    150,
@@ -1848,12 +1857,17 @@
 		},
 
 		// Sortables and droppables
-		init_droppables: function () {
+		init_droppables: function ( panel ) {
+
+			// Already initialized.
+			if( $( panel ).find( ".active-drop-field" ).sortable( 'instance' ) ) {
+				return;
+			}
 
 			var vcfg = viewConfiguration;
 
 			// widgets
-			$( '#directory-fields, #single-fields' ).find( ".active-drop-widget" ).sortable( {
+			$( panel ).find( ".active-drop-widget" ).sortable( {
 				placeholder: "fields-placeholder",
 				items: '> .gv-fields',
 				distance: 2,
@@ -1881,17 +1895,17 @@
 			} );
 
 			//fields
-			$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-field" ).sortable( {
+			$( panel ).find( ".active-drop-field" ).sortable( {
 				placeholder: "fields-placeholder",
 				items: '> .gv-fields',
 				distance: 2,
 				revert: 75,
 				connectWith: ".active-drop-field",
 				start: function( event, ui ) {
-					$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-container-field" ).addClass('is-receivable');
+					$( panel ).find( ".active-drop-container-field" ).addClass('is-receivable');
 				},
 				stop: function( event, ui ) {
-					$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-container-field" ).removeClass('is-receivable');
+					$( panel ).find( ".active-drop-container-field" ).removeClass('is-receivable');
 				},
 				receive: function ( event, ui ) {
 					// Check if field comes from another active area and if so, update name attributes.
@@ -2136,7 +2150,7 @@
 			$post.data( 'gv-valid', false );
 
 			if ( $post.data( 'gv-serialized' ) ) {
-				// Guard against double seralization/remove attempts
+				// Guard against double serialization/remove attempts
 				serialized_data = $post.data( 'gv-serialized' );
 			} else {
 				// Get all the fields where the `name` attribute start with `fields`
@@ -2145,21 +2159,23 @@
 				// Serialize the data
 				serialized_data = $fields.serialize();
 
-				// Remove the fields from the $_POSTed data
-				$fields.remove();
+				// Don't include the fields in the $_POSTed data
+				$fields.prop( 'disabled', true );
 
 				$post.data( 'gv-serialized', serialized_data );
 			}
 
-			// Add a field to the form that contains all the data.
-			$post.find( ':input[name=gv_fields]' ).remove();
+			// Also exclude these fields from $_POST...
+			$post.find( ':input[name=gv_fields]' ).prop( 'disabled', true );
+
+			// ...instead, add a single field to the form that contains all the data.
 			$post.append( $( '<input/>', {
 				'name': 'gv_fields',
 				'value': serialized_data,
 				'type': 'hidden'
 			} ) );
 
-			// make sure the "slow" browsers did append all the serialized data to the form
+			// Make sure slow browsers did append all the serialized data to the form
 			setTimeout( function () {
 
 				$post.data( 'gv-valid', true );
@@ -2433,9 +2449,14 @@
 			active: activate_tab,
 			hide: false,
 			show: false,
+			create: function ( event, ui ) {
+				viewConfiguration.init_droppables( ui.panel );
+			},
 			activate: function ( event, ui ) {
 				// When the tab is activated, set a new cookie
 				$.cookie( cookie_key, ui.newTab.index(), { path: gvGlobals.cookiepath } );
+
+				viewConfiguration.init_droppables( ui.newPanel );
 
 				$( 'body' ).trigger( 'gravityview/tabs-ready' );
 			}

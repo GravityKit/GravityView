@@ -1,0 +1,13 @@
+{
+    "require": {
+        "php": "~7.1",
+        "ext-gettext": "*",
+        "ext-hash": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-openssl": "*",
+        "ext-sodium": "*",
+        "johnpbloch/wordpress": "5.8.2"
+    },
+    "minimum-stability": "stable"
+}

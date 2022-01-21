@@ -384,7 +384,7 @@ class GravityView_Render_Settings {
 
 			$item_details .= '
 			<div class="gv-field-details--container">
-				<label class="gv-field-details--toggle">' . esc_html__( 'Field Details', 'gravityview' ) .' <i class="dashicons dashicons-arrow-down"></i></label>
+				<label class="gv-field-details--toggle">' . esc_html__( 'Field Details', 'gravityview' ) .' <i class="dashicons dashicons-arrow-right"></i></label>
 				<section class="gv-field-details gv-field-details--closed">';
 
 				if ( $field_id && is_numeric( $field_id ) ) {

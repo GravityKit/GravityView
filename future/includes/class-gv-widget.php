@@ -217,9 +217,33 @@ abstract class Widget {
 	 * @return array The default areas where widgets can be rendered.
 	 */
 	public static function get_default_widget_areas() {
+
 		$default_areas = array(
-			array( '1-1' => array( array( 'areaid' => 'top', 'title' => __( 'Top', 'gravityview' ) , 'subtitle' => '' ) ) ),
-			array( '1-2' => array( array( 'areaid' => 'left', 'title' => __( 'Left', 'gravityview' ) , 'subtitle' => '' ) ), '2-2' => array( array( 'areaid' => 'right', 'title' => __( 'Right', 'gravityview' ) , 'subtitle' => '' ) ) ),
+			array(
+				'1-1' => array(
+					   array(
+						   'areaid' => 'top',
+						   'title' => __( 'Top', 'gravityview' ) ,
+						   'subtitle' => ''
+					   ),
+				   ),
+				),
+			array(
+				'1-2' => array(
+					array(
+						'areaid' => 'left',
+						'title' => __( 'Left', 'gravityview' ) ,
+						'subtitle' => ''
+					),
+				),
+				'2-2' => array(
+					array(
+						'areaid' => 'right',
+						'title' => __( 'Right', 'gravityview' ) ,
+						'subtitle' => ''
+					),
+				),
+			),
 		);
 
 		/**
