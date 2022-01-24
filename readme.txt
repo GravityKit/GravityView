@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Tested with WordPress 5.9
 * Improved: The Members plugin now works with No-Conflict Mode enabled
+* Fixed: Gravity Forms widget used in the View editor would initialize on all admin pages
 * Fixed: PHP notice when editing an entry in Gravity Forms that was created by user that no longer exists
 * Fixed: Error activating on sites that use the Danish language
 * Fixed: Improved performance when saving Views with many fields
