@@ -284,6 +284,37 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.14.1 on January 24, 2022</h3>
+
+				<ul>
+					<li>Tested with WordPress 5.9</li>
+					<li>Improved: The Members plugin now works with No-Conflict Mode enabled</li>
+					<li>Fixed: PHP notice when editing an entry in Gravity Forms that was created by user that no longer
+						exists
+					</li>
+					<li>Fixed: Error activating on sites that use the Danish language</li>
+					<li>Fixed: Improved performance when saving Views with many fields</li>
+					<li>Fixed: Improved performance when loading the Edit View screen when a View has many fields</li>
+					<li>Fixed: Entry approval scripts not loading properly when using Full Site Editing themes in
+						WordPress 5.9
+					</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Modified: Refactored drag &amp; drop in the View editor to improve performance: we only
+						initialize drag &amp; drop on the active tab instead of globally.
+						<ul>
+							<li>Added: <code>gravityview/tab-ready</code> jQuery trigger to <code>body</code> when each
+								GravityView tab is ready (drag &amp; drop initialized). <a
+										href='https://gist.github.com/zackkatz/a2844e9f6b68879e79ba7d6f66ba0850'>See
+									example of binding to this event</a>.
+							</li>
+						</ul>
+					</li>
+				</ul>
+
 				<h3>2.14 on December 21, 2021</h3>
 
 				<p>This would be a minor version update (2.13.5), except that we renamed many functions. See 'Developer

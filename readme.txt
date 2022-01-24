@@ -21,11 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop =
+= 2.14.1 on January 24, 2022 =
 
+* Tested with WordPress 5.9
 * Improved: The Members plugin now works with No-Conflict Mode enabled
 * Fixed: PHP notice when editing an entry in Gravity Forms that was created by user that no longer exists
 * Fixed: Error activating on sites that use the Danish language
+* Fixed: Improved performance when saving Views with many fields
+* Fixed: Improved performance when loading the Edit View screen when a View has many fields
 * Fixed: Entry approval scripts not loading properly when using Full Site Editing themes in WordPress 5.9
 
 __Developer Updates:__
