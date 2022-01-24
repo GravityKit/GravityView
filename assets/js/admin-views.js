@@ -2451,6 +2451,11 @@
 			show: false,
 			create: function ( event, ui ) {
 				viewConfiguration.init_droppables( ui.panel );
+
+				/** @since 2.14.1 */
+				$( 'body' ).trigger( 'gravityview/tab-ready', ui.panel );
+
+				$( 'body' ).trigger( 'gravityview/tabs-ready' );
 			},
 			activate: function ( event, ui ) {
 				// When the tab is activated, set a new cookie
@@ -2458,7 +2463,8 @@
 
 				viewConfiguration.init_droppables( ui.newPanel );
 
-				$( 'body' ).trigger( 'gravityview/tabs-ready' );
+				/** @since 2.14.1 */
+				$( 'body' ).trigger( 'gravityview/tab-ready', ui.newPanel );
 			}
 		} );
 

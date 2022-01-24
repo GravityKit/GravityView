@@ -28,6 +28,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Error activating on sites that use the Danish language
 * Fixed: Entry approval scripts not loading properly when using Full Site Editing themes in WordPress 5.9
 
+__Developer Updates:__
+
+* Modified: Refactored drag & drop in the View editor to improve performance: we only initialize drag & drop on the active tab instead of globally.
+	* Added: `gravityview/tab-ready` jQuery trigger to `body` when each GravityView tab is ready (drag & drop initialized). [See example of binding to this event](https://gist.github.com/zackkatz/a2844e9f6b68879e79ba7d6f66ba0850).
+
 = 2.14.0.1 on December 30, 2021 =
 
 Fixed: Deprecated filter message when adding fields to the View
