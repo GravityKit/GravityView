@@ -785,6 +785,7 @@ $gv-overlay-index: 10000;
 	position: absolute;
 	z-index: $gv-overlay-index + 1 !important;
 	overflow: visible; // Allow GF tooltips to overflow modal window
+	user-select: auto;
 }
 
 .gv-overlay {
@@ -895,6 +896,10 @@ hr {
 	padding: 4px 8px 8px;
 	position: relative;
 	transition: all 200ms;
+
+	// Prevent text selection; speeds up clicks on mobile
+	// and also prevents selection when double-clicking
+	user-select: none;
 
 	.drop-message {
 		color: #6D7883;
