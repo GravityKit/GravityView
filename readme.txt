@@ -24,7 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = 2.14.1 on January 24, 2022 =
 
 * Tested with WordPress 5.9
-* Improved: The Members plugin now works with No-Conflict Mode enabled
+* Improved: The [Members plugin](https://wordpress.org/plugins/members/) now works with No-Conflict Mode enabled
 * Improved: Performance when saving Views with many fields
 * Improved: Performance when loading the Edit View screen when a View has many fields
 * Fixed: Gravity Forms widget used in the View editor would initialize on all admin pages

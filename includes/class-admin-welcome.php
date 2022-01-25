@@ -288,13 +288,14 @@ class GravityView_Welcome {
 
 				<ul>
 					<li>Tested with WordPress 5.9</li>
-					<li>Improved: The Members plugin now works with No-Conflict Mode enabled</li>
+					<li>Improved: The <a href="https://wordpress.org/plugins/members/">Members plugin</a> now works with No-Conflict Mode enabled</li>
+					<li>Improved: Performance when saving Views with many fields</li>
+					<li>Improved: Performance when loading the Edit View screen when a View has many fields</li>
+					<li>Fixed: Gravity Forms widget used in the View editor would initialize on all admin pages</li>
 					<li>Fixed: PHP notice when editing an entry in Gravity Forms that was created by user that no longer
 						exists
 					</li>
 					<li>Fixed: Error activating on sites that use the Danish language</li>
-					<li>Fixed: Improved performance when saving Views with many fields</li>
-					<li>Fixed: Improved performance when loading the Edit View screen when a View has many fields</li>
 					<li>Fixed: Entry approval scripts not loading properly when using Full Site Editing themes in
 						WordPress 5.9
 					</li>
