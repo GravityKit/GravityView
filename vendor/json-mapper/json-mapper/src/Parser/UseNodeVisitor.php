@@ -24,7 +24,10 @@ class UseNodeVisitor extends NodeVisitorAbstract
             }
         } elseif ($node instanceof Stmt\GroupUse) {
             foreach ($node->uses as $use) {
-                $this->imports[] = new Import("{$node->prefix}\\{$use->name}", \is_null($use->alias) ? null : $use->alias->name);
+                $this->imports[] = new Import(
+                    "{$node->prefix}\\{$use->name}",
+                    \is_null($use->alias) ? null : $use->alias->name
+                );
             }
         }
 

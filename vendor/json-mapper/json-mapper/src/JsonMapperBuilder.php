@@ -21,9 +21,14 @@ use JsonMapper\Middleware\TypedProperties;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 
+/**
+ * @template T of \JsonMapper\JsonMapperInterface
+ */
 class JsonMapperBuilder
 {
-    /** @var string string */
+    /**
+     * @psalm-var class-string<T>
+     */
     protected $jsonMapperClassName = JsonMapper::class;
     /** @var PropertyMapper */
     protected $propertyMapper;
@@ -59,7 +64,7 @@ class JsonMapperBuilder
         return $mapper;
     }
 
-    /** @psalm-param class-string $jsonMapperClassName */
+    /** @psalm-param class-string<T> $jsonMapperClassName */
     public function withJsonMapperClassName(string $jsonMapperClassName): JsonMapperBuilder
     {
         $reflectedClass = new \ReflectionClass($jsonMapperClassName);

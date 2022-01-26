@@ -341,6 +341,31 @@ Feature: Manage WordPress plugins
       | akismet            | active   | akismet/akismet.php                       |
       | wordpress-importer | inactive | wordpress-importer/wordpress-importer.php |
 
+  Scenario: Flag `--skip-update-check` skips update check when running `wp plugin list`
+    Given a WP install
+
+    When I run `wp plugin install wordpress-importer --version=0.2`
+    Then STDOUT should contain:
+      """
+      Plugin installed successfully.
+      """
+
+    When I run `wp plugin list --fields=name,status,update --status=inactive`
+    Then STDOUT should be a table containing rows:
+      | name               | status   | update    |
+      | wordpress-importer | inactive | available |
+
+    When I run `wp transient delete update_plugins --network`
+    Then STDOUT should be:
+      """
+      Success: Transient deleted.
+      """
+
+    When I run `wp plugin list --fields=name,status,update --status=inactive --skip-update-check`
+    Then STDOUT should be a table containing rows:
+      | name               | status   | update   |
+      | wordpress-importer | inactive | none     |
+
   Scenario: Install a plugin when directory doesn't yet exist
     Given a WP install
 

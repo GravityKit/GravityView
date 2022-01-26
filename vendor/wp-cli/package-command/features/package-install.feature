@@ -96,7 +96,7 @@ Feature: Install WP-CLI packages
     When I run `wp package uninstall yoast/wp-cli-faker`
     Then STDOUT should contain:
       """
-      Removing require statement
+      Removing require statement for package 'yoast/wp-cli-faker' from
       """
     And STDOUT should contain:
       """
@@ -137,7 +137,7 @@ Feature: Install WP-CLI packages
       """
 
     When I try `wp package install git@github.com:wp-cli.git`
-    Then STDERR should be:
+    Then STDERR should contain:
       """
       Error: Couldn't parse package name from expected path '<name>/<package>'.
       """
@@ -176,7 +176,7 @@ Feature: Install WP-CLI packages
     When I run `wp package uninstall wp-cli/google-sitemap-generator-cli`
     Then STDOUT should contain:
       """
-      Removing require statement from
+      Removing require statement for package 'wp-cli/google-sitemap-generator-cli' from
       """
     Then STDOUT should contain:
       """
@@ -310,7 +310,7 @@ Feature: Install WP-CLI packages
     When I run `wp package uninstall wp-cli-test/github-test-command`
     Then STDOUT should contain:
       """
-      Removing require statement from
+      Removing require statement for package 'wp-cli-test/github-test-command' from
       """
     And STDOUT should contain:
       """
@@ -361,7 +361,7 @@ Feature: Install WP-CLI packages
     When I run `wp package uninstall wp-cli-test/github-test-command`
     Then STDOUT should contain:
       """
-      Removing require statement from
+      Removing require statement for package 'wp-cli-test/github-test-command' from
       """
     And STDOUT should contain:
       """
@@ -419,7 +419,7 @@ Feature: Install WP-CLI packages
     When I run `wp package uninstall wp-cli-test/github-test-command`
     Then STDOUT should contain:
       """
-      Removing require statement from
+      Removing require statement for package 'wp-cli-test/github-test-command' from
       """
     And STDOUT should contain:
       """
@@ -470,7 +470,7 @@ Feature: Install WP-CLI packages
     When I run `wp package uninstall wp-cli-test/github-test-command`
     Then STDOUT should contain:
       """
-      Removing require statement from
+      Removing require statement for package 'wp-cli-test/github-test-command' from
       """
     And STDOUT should contain:
       """
@@ -521,7 +521,7 @@ Feature: Install WP-CLI packages
     When I run `wp package uninstall wp-cli-test/github-test-command`
     Then STDOUT should contain:
       """
-      Removing require statement from
+      Removing require statement for package 'wp-cli-test/github-test-command' from
       """
     And STDOUT should contain:
       """
@@ -539,9 +539,12 @@ Feature: Install WP-CLI packages
     Given an empty directory
 
     # Install and uninstall with case-sensitive name
-    When I run `wp package install GeekPress/wp-rocket-cli`
-    Then STDERR should be empty
-    And STDOUT should match /Installing package (?:GeekPress|geekpress)\/wp-rocket-cli \(dev-master\)/
+    When I try `wp package install GeekPress/wp-rocket-cli`
+    Then STDERR should contain:
+      """
+      Warning: Package name mismatch...Updating from git name 'GeekPress/wp-rocket-cli' to composer.json name 'wp-media/wp-rocket-cli'.
+      """
+    And STDOUT should match /Installing package wp-media\/wp-rocket-cli \(dev-trunk\)/
     # This path is sometimes changed on Macs to prefix with /private
     And STDOUT should contain:
       """
@@ -555,12 +558,12 @@ Feature: Install WP-CLI packages
       """
       Success: Package installed.
       """
-    And the contents of the {PACKAGE_PATH}composer.json file should match /("?:GeekPress|geekpress)\/wp-rocket-cli"/
+    And the contents of the {PACKAGE_PATH}composer.json file should match /"wp-media\/wp-rocket-cli"/
 
     When I run `wp package list --fields=name`
     Then STDOUT should be a table containing rows:
-      | name                    |
-      | GeekPress/wp-rocket-cli |
+      | name                   |
+      | wp-media/wp-rocket-cli |
 
     When I run `wp help rocket`
     Then STDOUT should contain:
@@ -568,14 +571,18 @@ Feature: Install WP-CLI packages
       wp rocket
       """
 
-    When I run `wp package uninstall GeekPress/wp-rocket-cli`
+    When I try `wp package uninstall GeekPress/wp-rocket-cli`
     Then STDOUT should contain:
       """
-      Removing require statement from
+      Removing require statement for package 'wp-media/wp-rocket-cli' from
       """
     And STDOUT should contain:
       """
       Success: Uninstalled package.
+      """
+    And STDERR should contain:
+      """
+      Warning: Package name mismatch...Updating from git name 'GeekPress/wp-rocket-cli' to composer.json name 'wp-media/wp-rocket-cli'.
       """
     And the {PACKAGE_PATH}composer.json file should not contain:
       """
@@ -604,7 +611,7 @@ Feature: Install WP-CLI packages
     When I run `wp package list --fields=name`
     Then STDOUT should be a table containing rows:
       | name                    |
-      | GeekPress/wp-rocket-cli |
+      | geekpress/wp-rocket-cli |
 
     When I run `wp help rocket`
     Then STDOUT should contain:
@@ -615,7 +622,7 @@ Feature: Install WP-CLI packages
     When I run `wp package uninstall geekpress/wp-rocket-cli`
     Then STDOUT should contain:
       """
-      Removing require statement from
+      Removing require statement for package 'geekpress/wp-rocket-cli' from
       """
     And STDOUT should contain:
       """
@@ -687,7 +694,7 @@ Feature: Install WP-CLI packages
     When I run `wp package install google-sitemap-generator-cli.zip`
     Then STDOUT should contain:
       """
-      Installing package wp-cli/google-sitemap-generator-cli (dev-master)
+      Installing package wp-cli/google-sitemap-generator-cli
       """
     # This path is sometimes changed on Macs to prefix with /private
     And STDOUT should contain:
@@ -718,7 +725,7 @@ Feature: Install WP-CLI packages
     When I run `wp package uninstall wp-cli/google-sitemap-generator-cli`
     Then STDOUT should contain:
       """
-      Removing require statement from
+      Removing require statement for package 'wp-cli/google-sitemap-generator-cli' from
       """
     And STDOUT should contain:
       """
@@ -782,7 +789,7 @@ Feature: Install WP-CLI packages
     When I run `wp package uninstall capitalwpcli/examplecommand`
     Then STDOUT should contain:
       """
-      Removing require statement from
+      Removing require statement for package 'capitalwpcli/examplecommand' from
       """
     And STDOUT should contain:
       """
@@ -837,7 +844,7 @@ Feature: Install WP-CLI packages
     When I run `wp package uninstall wp-cli/google-sitemap-generator-cli`
     Then STDOUT should contain:
       """
-      Removing require statement from
+      Removing require statement for package 'wp-cli/google-sitemap-generator-cli' from
       """
     And STDOUT should contain:
       """
@@ -894,7 +901,7 @@ Feature: Install WP-CLI packages
     When I run `wp package install path-command`
     Then STDOUT should contain:
       """
-      Installing package wp-cli/community-command (dev-master)
+      Installing package wp-cli/community-command
       """
     # This path is sometimes changed on Macs to prefix with /private
     And STDOUT should contain:
@@ -925,7 +932,7 @@ Feature: Install WP-CLI packages
     When I run `wp package uninstall wp-cli/community-command`
     Then STDOUT should contain:
       """
-      Removing require statement from
+      Removing require statement for package 'wp-cli/community-command' from
       """
     And STDOUT should contain:
       """
@@ -1004,7 +1011,7 @@ Feature: Install WP-CLI packages
     When I run `wp package uninstall wp-cli/community-command`
     Then STDOUT should contain:
       """
-      Removing require statement from
+      Removing require statement for package 'wp-cli/community-command' from
       """
     And STDOUT should contain:
       """

@@ -29,7 +29,7 @@ class Debugger extends AbstractMiddleware
             'Current state attributes passed through JsonMapper middleware',
             [
                 'json' => \json_encode($json),
-                'object' => \get_class($object->getObject()),
+                'object' => $object->getName(),
                 'propertyMap' => $propertyMap->toString()
             ]
         );

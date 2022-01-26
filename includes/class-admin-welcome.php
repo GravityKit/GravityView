@@ -284,6 +284,44 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.14.1 on January 25, 2022</h3>
+
+				<ul>
+					<li>Tested with WordPress 5.9</li>
+					<li>Improved: The <a href='https://wordpress.org/plugins/members/'>Members plugin</a> now works with
+						No-Conflict Mode enabled
+					</li>
+					<li>Improved: Performance when saving Views with many fields</li>
+					<li>Improved: Performance when loading the Edit View screen when a View has many fields</li>
+					<li>Fixed: Gravity Forms widget used in the View editor would initialize on all admin pages</li>
+					<li>Fixed: PHP notice when editing an entry in Gravity Forms that was created by user that no longer
+						exists
+					</li>
+					<li>Fixed: Error activating on sites that use the Danish language</li>
+					<li>Fixed: Entry approval scripts not loading properly when using Full Site Editing themes in
+						WordPress 5.9
+					</li>
+					<li>Updated: TrustedLogin client to Version 1.2, which now supports logins for WordPress Multisite
+						installations
+					</li>
+					<li>Updated: Polish translation. Thanks, Dariusz!</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Modified: Refactored drag &amp; drop in the View editor to improve performance: we only
+						initialize drag &amp; drop on the active tab instead of globally.
+						<ul>
+							<li>Added: <code>gravityview/tab-ready</code> jQuery trigger to <code>body</code> when each
+								GravityView tab is ready (drag &amp; drop initialized). <a
+										href='https://gist.github.com/zackkatz/a2844e9f6b68879e79ba7d6f66ba0850'>See
+									example of binding to this event</a>.
+							</li>
+						</ul>
+					</li>
+				</ul>
+
 				<h3>2.14 on December 21, 2021</h3>
 
 				<p>This would be a minor version update (2.13.5), except that we renamed many functions. See 'Developer
@@ -388,79 +426,6 @@ class GravityView_Welcome {
 							</li>
 						</ul>
 					</li>
-				</ul>
-
-				<h3>2.12.1 on September 1, 2021</h3>
-
-				<ul>
-					<li>Fixed: The Gravity Forms widget in the View editor would always use the source form of the View</li>
-					<li>Fixed: The field picker didn't use available translations</li>
-					<li>Fixed: Importing <a href="https://docs.gravityview.co/article/119-importing-and-exporting-configured-views">exported Views</a> failed when Custom Content or <a href="https://gravityview.co/extensions/diy-layout/">DIY Layout</a> fields included line breaks.</li>
-					<li>Fixed: When first installing GravityView, the message was for an invalid license instead of inactive.</li>
-					<li>Fixed: The "Affiliate ID" setting would not toggle properly when loading GravityView settings. <a href="https://gravityview.co/account/affiliates/#about-the-program">P.S. — Become an affiliate and earn money referring GravityView!</a></li>
-					<li>Tweak: Changed the icon of the Presets preview</li>
-				</ul>
-
-                <h3>2.12 on July 29, 2021</h3>
-
-                <ul>
-                    <li>Fixed: Add latest Yoast SEO scripts to the No-Conflict approved list</li>
-                    <li>Fixed: Updating an entry with a multi-file upload field may erase existing contents when using Gravity Forms 2.5.8</li>
-                </ul>
-
-				<h3>2.11 on July 15, 2021</h3>
-
-				<ul>
-					<li>Added: Settings to customize 'Update', 'Cancel', and 'Delete' button text in Edit Entry</li>
-					<li>Improved: Much better Gravity Forms Survey Add-On integration! <a
-								href='https://gravityview.co/gravityview-2-11/'>Learn more in the release
-							announcement</a>
-						<ul>
-							<li>Ratings can be displayed as text or stars</li>
-							<li>Multi-row Likert fields can be shown as Text or Score</li>
-							<li>Improved display of a single row from a multi-row Likert field</li>
-							<li>Single checkbox inputs are now supported</li>
-						</ul>
-					</li>
-					<li>Improved: Search widget clear/reset button behavior</li>
-					<li>Improved: Allow unassigning an entry's Entry Creator when editing an entry</li>
-					<li>Improved: When editing an entry, clicking the "Cancel" button will take you to the prior browser
-						page rather than a specific URL
-					</li>
-					<li>Improved: Conditionally update "Clear Search" button text in the Search Bar</li>
-					<li>Fixed: When Time fields were submitted with a single <code>0</code> for hour and minute inputs,
-						instead of displaying midnight (<code>0:0</code>), it would display the current time
-					</li>
-					<li>Fixed: Delete Entry links did not work when custom entry slugs were enabled</li>
-					<li>Fixed: Editing an entry in Gravity Forms that was created by a logged-out user forced an entry
-						to be assigned to a user
-					</li>
-					<li>Fixed: Missing download/delete icons for file upload field in Edit Entry when running Gravity
-						Forms ≥ 2.5.6.4
-					</li>
-					<li>Fixed: A broken German translation file caused a fatal error (only for the <code>de_DE</code>
-						localization)
-					</li>
-					<li>Updated: Dutch translation (thanks René S.!) and German translation (thanks Aleksander K-W.!)
-					</li>
-				</ul>
-
-				<p><strong>Developer Updates:</strong></p>
-
-				<ul>
-					<li>Added: <code>gravityview/template/field/survey/glue</code> filter to modify how the multi-row
-						Likert field values are combined. Default: <code>;</code></li>
-					<li>Modified: <code>templates/deprecated/fields/time.php</code> and <code>templates/fields/field-time-html.php</code>
-						to include the commented <code>strtotime()</code> check
-					</li>
-					<li>Modified: <code>includes/extensions/edit-entry/partials/form-buttons.php</code> to add Cancel
-						button enhancements
-					</li>
-					<li>Fixed: <code>gravityview/search/sieve_choices</code> didn't filter by Created By</li>
-					<li>Fixed: <code>\GV\Utils::get()</code> didn't properly support properties available using PHP
-						magic methods. Now supports overriding using the <code>__isset()</code> magic method.
-					</li>
-					<li>Updated: EDD auto-updates library to version 1.8</li>
 				</ul>
 
 				<p style="text-align: center;">

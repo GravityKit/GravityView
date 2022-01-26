@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.6.30
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -20,6 +20,24 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.14.1 on January 25, 2022 =
+
+* Tested with WordPress 5.9
+* Improved: The [Members plugin](https://wordpress.org/plugins/members/) now works with No-Conflict Mode enabled
+* Improved: Performance when saving Views with many fields
+* Improved: Performance when loading the Edit View screen when a View has many fields
+* Fixed: Gravity Forms widget used in the View editor would initialize on all admin pages
+* Fixed: PHP notice when editing an entry in Gravity Forms that was created by user that no longer exists
+* Fixed: Error activating on sites that use the Danish language
+* Fixed: Entry approval scripts not loading properly when using Full Site Editing themes in WordPress 5.9
+* Updated: TrustedLogin client to Version 1.2, which now supports logins for WordPress Multisite installations
+* Updated: Polish translation. Thanks, Dariusz!
+
+__Developer Updates:__
+
+* Modified: Refactored drag & drop in the View editor to improve performance: we only initialize drag & drop on the active tab instead of globally.
+	* Added: `gravityview/tab-ready` jQuery trigger to `body` when each GravityView tab is ready (drag & drop initialized). [See example of binding to this event](https://gist.github.com/zackkatz/a2844e9f6b68879e79ba7d6f66ba0850).
 
 = 2.14.0.1 on December 30, 2021 =
 

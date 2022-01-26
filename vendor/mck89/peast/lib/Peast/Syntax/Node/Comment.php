@@ -187,6 +187,7 @@ class Comment extends Node
      * 
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $ret = parent::jsonSerialize();

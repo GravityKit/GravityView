@@ -17,6 +17,7 @@ use Composer\Downloader\TransportException;
 use Composer\Json\JsonFile;
 use Composer\Cache;
 use Composer\IO\IOInterface;
+use Composer\Pcre\Preg;
 use Composer\Util\GitHub;
 use Composer\Util\Http\Response;
 
@@ -58,7 +59,7 @@ class GitHubDriver extends VcsDriver
      */
     public function initialize()
     {
-        preg_match('#^(?:(?:https?|git)://([^/]+)/|git@([^:]+):/?)([^/]+)/(.+?)(?:\.git|/)?$#', $this->url, $match);
+        Preg::match('#^(?:(?:https?|git)://([^/]+)/|git@([^:]+):/?)([^/]+)/(.+?)(?:\.git|/)?$#', $this->url, $match);
         $this->owner = $match[3];
         $this->repository = $match[4];
         $this->originUrl = strtolower(!empty($match[1]) ? $match[1] : $match[2]);
@@ -227,20 +228,20 @@ class GitHubDriver extends VcsDriver
 
         $result = array();
         $key = null;
-        foreach (preg_split('{\r?\n}', $funding) as $line) {
+        foreach (Preg::split('{\r?\n}', $funding) as $line) {
             $line = trim($line);
-            if (preg_match('{^(\w+)\s*:\s*(.+)$}', $line, $match)) {
-                if (preg_match('{^\[(.*)\](?:\s*#.*)?$}', $match[2], $match2)) {
-                    foreach (array_map('trim', preg_split('{[\'"]?\s*,\s*[\'"]?}', $match2[1])) as $item) {
+            if (Preg::isMatch('{^(\w+)\s*:\s*(.+)$}', $line, $match)) {
+                if (Preg::isMatch('{^\[(.*)\](?:\s*#.*)?$}', $match[2], $match2)) {
+                    foreach (array_map('trim', Preg::split('{[\'"]?\s*,\s*[\'"]?}', $match2[1])) as $item) {
                         $result[] = array('type' => $match[1], 'url' => trim($item, '"\' '));
                     }
-                } elseif (preg_match('{^([^#].*?)(\s+#.*)?$}', $match[2], $match2)) {
+                } elseif (Preg::isMatch('{^([^#].*?)(\s+#.*)?$}', $match[2], $match2)) {
                     $result[] = array('type' => $match[1], 'url' => trim($match2[1], '"\' '));
                 }
                 $key = null;
-            } elseif (preg_match('{^(\w+)\s*:\s*#\s*$}', $line, $match)) {
+            } elseif (Preg::isMatch('{^(\w+)\s*:\s*#\s*$}', $line, $match)) {
                 $key = $match[1];
-            } elseif ($key && preg_match('{^-\s*(.+)(\s+#.*)?$}', $line, $match)) {
+            } elseif ($key && Preg::isMatch('{^-\s*(.+)(\s+#.*)?$}', $line, $match)) {
                 $result[] = array('type' => $key, 'url' => trim($match[1], '"\' '));
             }
         }
@@ -322,18 +323,20 @@ class GitHubDriver extends VcsDriver
             return $this->gitDriver->getTags();
         }
         if (null === $this->tags) {
-            $this->tags = array();
+            $tags = array();
             $resource = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/tags?per_page=100';
 
             do {
                 $response = $this->getContents($resource);
                 $tagsData = $response->decodeJson();
                 foreach ($tagsData as $tag) {
-                    $this->tags[$tag['name']] = $tag['commit']['sha'];
+                    $tags[$tag['name']] = $tag['commit']['sha'];
                 }
 
                 $resource = $this->getNextPage($response);
             } while ($resource);
+
+            $this->tags = $tags;
         }
 
         return $this->tags;
@@ -348,7 +351,7 @@ class GitHubDriver extends VcsDriver
             return $this->gitDriver->getBranches();
         }
         if (null === $this->branches) {
-            $this->branches = array();
+            $branches = array();
             $resource = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/git/refs/heads?per_page=100';
 
             do {
@@ -357,12 +360,14 @@ class GitHubDriver extends VcsDriver
                 foreach ($branchData as $branch) {
                     $name = substr($branch['ref'], 11);
                     if ($name !== 'gh-pages') {
-                        $this->branches[$name] = $branch['object']['sha'];
+                        $branches[$name] = $branch['object']['sha'];
                     }
                 }
 
                 $resource = $this->getNextPage($response);
             } while ($resource);
+
+            $this->branches = $branches;
         }
 
         return $this->branches;
@@ -373,12 +378,12 @@ class GitHubDriver extends VcsDriver
      */
     public static function supports(IOInterface $io, Config $config, $url, $deep = false)
     {
-        if (!preg_match('#^((?:https?|git)://([^/]+)/|git@([^:]+):/?)([^/]+)/(.+?)(?:\.git|/)?$#', $url, $matches)) {
+        if (!Preg::isMatch('#^((?:https?|git)://([^/]+)/|git@([^:]+):/?)([^/]+)/(.+?)(?:\.git|/)?$#', $url, $matches)) {
             return false;
         }
 
         $originUrl = !empty($matches[2]) ? $matches[2] : $matches[3];
-        if (!in_array(strtolower(preg_replace('{^www\.}i', '', $originUrl)), $config->get('github-domains'))) {
+        if (!in_array(strtolower(Preg::replace('{^www\.}i', '', $originUrl)), $config->get('github-domains'))) {
             return false;
         }
 
@@ -604,7 +609,7 @@ class GitHubDriver extends VcsDriver
 
         $links = explode(',', $header);
         foreach ($links as $link) {
-            if (preg_match('{<(.+?)>; *rel="next"}', $link, $match)) {
+            if (Preg::isMatch('{<(.+?)>; *rel="next"}', $link, $match)) {
                 return $match[1];
             }
         }

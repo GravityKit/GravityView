@@ -146,6 +146,21 @@ Feature: Manage WordPress users
     Then STDERR should not be empty
     And the return code should be 1
 
+  @require-wp-4.0
+  Scenario: Trying to delete super admin
+    Given a WP multisite install
+
+    When I run `wp user create bobjones bob@example.com --role=author --porcelain`
+    And save STDOUT as {BOB_ID}
+
+    When I run `wp super-admin add {BOB_ID}`
+    And I try `wp user delete bobjones --network --yes`
+    Then STDERR should be:
+      """
+      Warning: Failed deleting user {BOB_ID}. The user is a super admin.
+      """
+    And the return code should be 1
+
   Scenario: Create new users on multisite
     Given a WP multisite install
 
@@ -383,8 +398,8 @@ Feature: Manage WordPress users
     When I run `wp user list --include=1,2 --field=url`
     Then STDOUT should be:
       """
-      http://example.com/?author=1
-      http://example.com/?author=2
+      https://example.com/?author=1
+      https://example.com/?author=2
       """
 
   Scenario: Get user with email as login

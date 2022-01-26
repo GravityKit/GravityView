@@ -148,13 +148,24 @@ class Taxonomy_Command extends WP_CLI_Command {
 	public function list_( $args, $assoc_args ) {
 		$formatter = $this->get_formatter( $assoc_args );
 
+		// Check if it's strict mode or not.
+		$strict = Utils\get_flag_value( $assoc_args, 'strict', false );
+
+		unset( $assoc_args['strict'] );
+
 		if ( isset( $assoc_args['object_type'] ) ) {
 			$assoc_args['object_type'] = array( $assoc_args['object_type'] );
+			$taxonomy_object           = $assoc_args['object_type'];
+		} else {
+			$taxonomy_object = get_post_types();
 		}
 
 		$fields     = $formatter->fields;
-		$taxonomies = get_taxonomies( $assoc_args, 'objects' );
-		$counts     = [];
+		$taxonomies = ( isset( $taxonomy_object ) && ! $strict )
+			? get_object_taxonomies( $taxonomy_object, 'objects' )
+			: get_taxonomies( $assoc_args, 'objects' );
+
+		$counts = [];
 
 		if ( count( $taxonomies ) > 0 && in_array( 'count', $fields, true ) ) {
 			$counts = $this->get_counts( wp_list_pluck( $taxonomies, 'name' ) );

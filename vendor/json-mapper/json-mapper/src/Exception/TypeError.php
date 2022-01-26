@@ -7,8 +7,13 @@ namespace JsonMapper\Exception;
 class TypeError extends \TypeError
 {
     /** @param mixed $argument */
-    public static function forArgument(string $method, string $expectedType, $argument, int $argumentNumber, string $argumentName): TypeError
-    {
+    public static function forArgument(
+        string $method,
+        string $expectedType,
+        $argument,
+        int $argumentNumber,
+        string $argumentName
+    ): TypeError {
         $trace = \debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
         return new TypeError(\sprintf(
             '%s(): Argument #%d (%s) must be of type %s, %s given, called in %s on line %d',

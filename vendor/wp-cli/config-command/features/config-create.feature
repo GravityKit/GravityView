@@ -23,12 +23,32 @@ Feature: Create a wp-config file
       """
       define( 'WP_DEBUG_LOG', true );
       """
+
     When I run `wp core config {CORE_CONFIG_SETTINGS} --extra-php < wp-config-extra.php`
     Then the wp-config.php file should contain:
       """
       'AUTH_SALT',
       """
     And the wp-config.php file should contain:
+      """
+      define( 'WP_DEBUG_LOG', true );
+      """
+
+    When I try the previous command again
+    Then the return code should be 1
+    And STDERR should not be empty
+
+    Given a wp-config-extra.php file:
+      """
+      define( 'WP_DEBUG_LOG', true );
+      """
+
+    When I run `wp core config {CORE_CONFIG_SETTINGS} --config-file='wp-custom-config.php' --extra-php < wp-config-extra.php`
+    Then the wp-custom-config.php file should contain:
+      """
+      'AUTH_SALT',
+      """
+    And the wp-custom-config.php file should contain:
       """
       define( 'WP_DEBUG_LOG', true );
       """
@@ -50,10 +70,11 @@ Feature: Create a wp-config file
   Scenario: No wp-config.php and WPLANG
     Given an empty directory
     And WP files
-    Given a wp-config-extra.php file:
+    And a wp-config-extra.php file:
       """
       define( 'WP_DEBUG_LOG', true );
       """
+
     When I run `wp core config {CORE_CONFIG_SETTINGS} --extra-php < wp-config-extra.php`
     Then the wp-config.php file should not contain:
       """
@@ -93,7 +114,7 @@ Feature: Create a wp-config file
     When I run `wp core config {CORE_CONFIG_SETTINGS}`
     Then the wp-config.php file should contain:
       """
-      define('AUTH_SALT',
+      define( 'AUTH_SALT',
       """
 
   Scenario: Define WPLANG when running WP < 4.0
@@ -123,3 +144,31 @@ Feature: Create a wp-config file
       """
       define( 'WPLANG', 'ja' );
       """
+
+    When I run `wp core config {CORE_CONFIG_SETTINGS} --config-file=wp-custom-config.php --locale=ja --force`
+    Then the return code should be 0
+    And STDOUT should contain:
+      """
+      Success: Generated 'wp-custom-config.php' file.
+      """
+    And the wp-custom-config.php file should contain:
+      """
+      define( 'WPLANG', 'ja' );
+      """
+
+  Scenario: Values are properly escaped to avoid creating invalid config files
+    Given an empty directory
+    And WP files
+
+    When I run `wp config create --skip-check --dbname=somedb --dbuser=someuser --dbpass="PasswordWith'SingleQuotes'"`
+    Then the wp-config.php file should contain:
+      """
+      define( 'DB_PASSWORD', 'PasswordWith\'SingleQuotes\'' )
+      """
+
+    When I run `wp config get DB_PASSWORD`
+    Then STDOUT should be:
+      """
+      PasswordWith'SingleQuotes'
+      """
+

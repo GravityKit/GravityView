@@ -31,7 +31,7 @@ Architecture: all
 Maintainer: Alain Schlesser <alain.schlesser@gmail.com>
 Section: php
 Priority: optional
-Depends: php5-cli (>= 5.6) | php-cli | php7-cli, php5-mysql | php5-mysqlnd | php7.0-mysql | php7.1-mysql | php7.2-mysql | php7.3-mysql, mysql-client | mariadb-client
+Depends: php5-cli (>= 5.6) | php-cli | php7-cli, php5-mysql | php5-mysqlnd | php7.0-mysql | php7.1-mysql | php7.2-mysql | php7.3-mysql | php7.4-mysql | php8.0-mysql, mysql-client | mariadb-client
 Homepage: http://wp-cli.org/
 Description: wp-cli is a set of command-line tools for managing
  WordPress installations. You can update plugins, set up multisite
@@ -41,6 +41,12 @@ EOF
 }
 
 set -e
+
+# Download the binary if needed
+if [ ! -f "wp-cli.phar" ]; then
+	wget -nv -O wp-cli.phar "$PHAR"
+	chmod +x wp-cli.phar
+fi
 
 # deb's dir
 if ! [ -d "$DIR" ]; then
@@ -58,7 +64,7 @@ fi
 # copyright
 if ! [ -r usr/share/doc/php-wpcli/copyright ]; then
     mkdir -p usr/share/doc/php-wpcli &> /dev/null
-    wget -nv -O usr/share/doc/php-wpcli/copyright https://github.com/wp-cli/wp-cli/raw/master/LICENSE
+    wget -nv -O usr/share/doc/php-wpcli/copyright https://github.com/wp-cli/wp-cli/raw/main/LICENSE
 fi
 
 # changelog
@@ -71,9 +77,8 @@ fi
 # content dirs
 [ -d usr/bin ] || mkdir -p usr/bin
 
-# download current version
-wget -nv -O usr/bin/wp "$PHAR" || die 3 "Phar download failure"
-chmod +x usr/bin/wp || die 4 "chmod failure"
+# move phar
+mv ../wp-cli.phar usr/bin/wp
 
 # get version
 WPCLI_VER="$(usr/bin/wp cli version | cut -d " " -f 2)"

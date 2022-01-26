@@ -63,7 +63,7 @@ Feature: Manage WordPress installation
     When I run `wp eval 'echo home_url();'`
     Then STDOUT should be:
       """
-      http://localhost:8001
+      https://localhost:8001
       """
 
   Scenario: Install WordPress by prompting for the admin email and password

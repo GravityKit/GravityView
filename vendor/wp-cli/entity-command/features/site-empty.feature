@@ -71,7 +71,7 @@ Feature: Empty a WordPress site of its data
     When I run `wp site empty --yes`
     Then STDOUT should be:
       """
-      Success: The site at 'http://example.com' was emptied.
+      Success: The site at 'https://example.com' was emptied.
       """
     And the wp-content/uploads/large-image.jpg file should exist
 
@@ -119,9 +119,9 @@ Feature: Empty a WordPress site of its data
     Then STDOUT should be empty
 
     When I run `wp --url=example.com/foo site empty --uploads --yes`
-    Then STDOUT should be:
+    Then STDOUT should contain:
       """
-      Success: The site at 'http://example.com/foo' was emptied.
+      ://example.com/foo' was emptied.
       """
     And the wp-content/uploads/sites/2/large-image.jpg file should not exist
 

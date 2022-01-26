@@ -3,27 +3,27 @@ Feature: Install WordPress plugins
   Scenario: Branch names should be removed from Github projects
     Given a WP install
 
-    When I run `wp plugin install https://github.com/runcommand/one-time-login/archive/master.zip --activate`
+    When I run `wp plugin install https://github.com/wp-cli-test/generic-example-plugin/archive/refs/heads/master.zip --activate`
     Then STDOUT should contain:
       """
       Downloading install
       """
     And STDOUT should contain:
       """
-      package from https://github.com/runcommand/one-time-login/archive/master.zip
+      package from https://github.com/wp-cli-test/generic-example-plugin/archive/refs/heads/master.zip
       """
     And STDOUT should contain:
       """
-      Renamed Github-based project from 'one-time-login-master' to 'one-time-login'.
+      Renamed Github-based project from 'generic-example-plugin-master' to 'generic-example-plugin'.
       """
     And STDOUT should contain:
       """
       Plugin installed successfully.
       """
-    And the wp-content/plugins/one-time-login directory should exist
-    And the wp-content/plugins/one-time-login-master directory should not exist
+    And the wp-content/plugins/generic-example-plugin directory should exist
+    And the wp-content/plugins/generic-example-plugin-master directory should not exist
 
-    When I try `wp plugin install https://github.com/runcommand/one-time-login/archive/master.zip`
+    When I try `wp plugin install https://github.com/wp-cli-test/generic-example-plugin/archive/refs/heads/master.zip`
     Then STDERR should contain:
       """
       Warning: Destination folder already exists
@@ -32,17 +32,17 @@ Feature: Install WordPress plugins
       """
       Error: No plugins installed.
       """
-    And the wp-content/plugins/one-time-login directory should exist
-    And the wp-content/plugins/one-time-login-master directory should not exist
+    And the wp-content/plugins/generic-example-plugin directory should exist
+    And the wp-content/plugins/generic-example-plugin-master directory should not exist
     And the return code should be 1
 
-    When I run `wp plugin install https://github.com/runcommand/one-time-login/archive/master.zip --force`
+    When I run `wp plugin install https://github.com/wp-cli-test/generic-example-plugin/archive/refs/heads/master.zip --force`
     Then STDOUT should contain:
       """
       Plugin updated successfully.
       """
-    And the wp-content/plugins/one-time-login directory should exist
-    And the wp-content/plugins/one-time-login-master directory should not exist
+    And the wp-content/plugins/generic-example-plugin directory should exist
+    And the wp-content/plugins/generic-example-plugin-master directory should not exist
 
     # However if the plugin slug ('modern-framework') does not match the project name then it's downloaded to wrong directory.
     When I run `wp plugin install https://github.com/Miller-Media/modern-wordpress/archive/master.zip`
@@ -58,16 +58,16 @@ Feature: Install WordPress plugins
   Scenario: Don't attempt to rename ZIPs uploaded to GitHub's releases page
     Given a WP install
 
-    When I run `wp plugin install https://github.com/danielbachhuber/one-time-login/releases/download/v0.1.2/one-time-login.0.1.2.zip`
+    When I run `wp plugin install https://github.com/wp-cli-test/generic-example-plugin/releases/download/v0.1.0/generic-example-plugin.0.1.0.zip`
     Then STDOUT should contain:
       """
       Plugin installed successfully.
       """
     And STDOUT should not contain:
       """
-      Renamed Github-based project from 'one-time-login.0.1.2' to 'one-time-login'.
+      Renamed Github-based project from 'generic-example-plugin-0.1.0' to 'generic-example-plugin'.
       """
-    And the wp-content/plugins/one-time-login directory should exist
+    And the wp-content/plugins/generic-example-plugin directory should exist
 
   Scenario: Don't attempt to rename ZIPs coming from a GitHub raw source
     Given a WP install

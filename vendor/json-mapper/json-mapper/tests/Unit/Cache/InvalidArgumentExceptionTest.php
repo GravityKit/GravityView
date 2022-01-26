@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 class InvalidArgumentExceptionTest extends TestCase
 {
-
     /**
      * @covers \JsonMapper\Cache\InvalidArgumentException
      */

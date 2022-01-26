@@ -13,7 +13,9 @@
 namespace Composer;
 
 use Composer\IO\IOInterface;
+use Composer\Pcre\Preg;
 use Composer\Util\Filesystem;
+use Composer\Util\Platform;
 use Composer\Util\Silencer;
 use Symfony\Component\Finder\Finder;
 
@@ -84,7 +86,7 @@ class Cache
      */
     public static function isUsable($path)
     {
-        return !preg_match('{(^|[\\\\/])(\$null|nul|NUL|/dev/null)([\\\\/]|$)}', $path);
+        return !Preg::isMatch('{(^|[\\\\/])(\$null|nul|NUL|/dev/null)([\\\\/]|$)}', $path);
     }
 
     /**
@@ -123,7 +125,7 @@ class Cache
     public function read($file)
     {
         if ($this->isEnabled()) {
-            $file = preg_replace('{[^'.$this->allowlist.']}i', '-', $file);
+            $file = Preg::replace('{[^'.$this->allowlist.']}i', '-', $file);
             if (file_exists($this->root . $file)) {
                 $this->io->writeError('Reading '.$this->root . $file.' from cache', true, IOInterface::DEBUG);
 
@@ -143,7 +145,7 @@ class Cache
     public function write($file, $contents)
     {
         if ($this->isEnabled() && !$this->readOnly) {
-            $file = preg_replace('{[^'.$this->allowlist.']}i', '-', $file);
+            $file = Preg::replace('{[^'.$this->allowlist.']}i', '-', $file);
 
             $this->io->writeError('Writing '.$this->root . $file.' into cache', true, IOInterface::DEBUG);
 
@@ -152,7 +154,7 @@ class Cache
                 return file_put_contents($tempFileName, $contents) !== false && rename($tempFileName, $this->root . $file);
             } catch (\ErrorException $e) {
                 $this->io->writeError('<warning>Failed to write into cache: '.$e->getMessage().'</warning>', true, IOInterface::DEBUG);
-                if (preg_match('{^file_put_contents\(\): Only ([0-9]+) of ([0-9]+) bytes written}', $e->getMessage(), $m)) {
+                if (Preg::isMatch('{^file_put_contents\(\): Only ([0-9]+) of ([0-9]+) bytes written}', $e->getMessage(), $m)) {
                     // Remove partial file.
                     unlink($tempFileName);
 
@@ -187,7 +189,7 @@ class Cache
     public function copyFrom($file, $source)
     {
         if ($this->isEnabled() && !$this->readOnly) {
-            $file = preg_replace('{[^'.$this->allowlist.']}i', '-', $file);
+            $file = Preg::replace('{[^'.$this->allowlist.']}i', '-', $file);
             $this->filesystem->ensureDirectoryExists(dirname($this->root . $file));
 
             if (!file_exists($source)) {
@@ -213,7 +215,7 @@ class Cache
     public function copyTo($file, $target)
     {
         if ($this->isEnabled()) {
-            $file = preg_replace('{[^'.$this->allowlist.']}i', '-', $file);
+            $file = Preg::replace('{[^'.$this->allowlist.']}i', '-', $file);
             if (file_exists($this->root . $file)) {
                 try {
                     touch($this->root . $file, filemtime($this->root . $file), time());
@@ -242,7 +244,7 @@ class Cache
         }
 
         self::$cacheCollected = true;
-        if (getenv('COMPOSER_TEST_SUITE')) {
+        if (Platform::getEnv('COMPOSER_TEST_SUITE')) {
             return false;
         }
 
@@ -261,7 +263,7 @@ class Cache
     public function remove($file)
     {
         if ($this->isEnabled()) {
-            $file = preg_replace('{[^'.$this->allowlist.']}i', '-', $file);
+            $file = Preg::replace('{[^'.$this->allowlist.']}i', '-', $file);
             if (file_exists($this->root . $file)) {
                 return $this->filesystem->unlink($this->root . $file);
             }
@@ -279,6 +281,23 @@ class Cache
             $this->filesystem->emptyDirectory($this->root);
 
             return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $file
+     * @return int|false
+     * @phpstan-return int<0, max>|false
+     */
+    public function getAge($file)
+    {
+        if ($this->isEnabled()) {
+            $file = Preg::replace('{[^'.$this->allowlist.']}i', '-', $file);
+            if (file_exists($this->root . $file) && ($mtime = filemtime($this->root . $file)) !== false) {
+                return abs(time() - $mtime);
+            }
         }
 
         return false;
@@ -328,7 +347,7 @@ class Cache
     public function sha1($file)
     {
         if ($this->isEnabled()) {
-            $file = preg_replace('{[^'.$this->allowlist.']}i', '-', $file);
+            $file = Preg::replace('{[^'.$this->allowlist.']}i', '-', $file);
             if (file_exists($this->root . $file)) {
                 return sha1_file($this->root . $file);
             }
@@ -345,7 +364,7 @@ class Cache
     public function sha256($file)
     {
         if ($this->isEnabled()) {
-            $file = preg_replace('{[^'.$this->allowlist.']}i', '-', $file);
+            $file = Preg::replace('{[^'.$this->allowlist.']}i', '-', $file);
             if (file_exists($this->root . $file)) {
                 return hash_file('sha256', $this->root . $file);
             }

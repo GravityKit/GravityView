@@ -52,16 +52,17 @@ abstract class BaseCommand extends Command
     /**
      * @param  bool              $required
      * @param  bool|null         $disablePlugins
+     * @param  bool|null         $disableScripts
      * @throws \RuntimeException
      * @return Composer|null
      */
-    public function getComposer($required = true, $disablePlugins = null)
+    public function getComposer($required = true, $disablePlugins = null, $disableScripts = null)
     {
         if (null === $this->composer) {
             $application = $this->getApplication();
             if ($application instanceof Application) {
                 /* @var $application    Application */
-                $this->composer = $application->getComposer($required, $disablePlugins);
+                $this->composer = $application->getComposer($required, $disablePlugins, $disableScripts);
             /** @phpstan-ignore-next-line */
             } elseif ($required) {
                 throw new \RuntimeException(
@@ -140,9 +141,15 @@ abstract class BaseCommand extends Command
     {
         // initialize a plugin-enabled Composer instance, either local or global
         $disablePlugins = $input->hasParameterOption('--no-plugins');
-        $composer = $this->getComposer(false, $disablePlugins);
+        $disableScripts = $input->hasParameterOption('--no-scripts');
+        if ($this instanceof SelfUpdateCommand) {
+            $disablePlugins = true;
+            $disableScripts = true;
+        }
+
+        $composer = $this->getComposer(false, $disablePlugins, $disableScripts);
         if (null === $composer) {
-            $composer = Factory::createGlobal($this->getIO(), $disablePlugins);
+            $composer = Factory::createGlobal($this->getIO(), $disablePlugins, $disableScripts);
         }
         if ($composer) {
             $preCommandRunEvent = new PreCommandRunEvent(PluginEvents::PRE_COMMAND_RUN, $input, $this->getName());
@@ -151,6 +158,12 @@ abstract class BaseCommand extends Command
 
         if (true === $input->hasParameterOption(array('--no-ansi')) && $input->hasOption('no-progress')) {
             $input->setOption('no-progress', true);
+        }
+
+        if (true == $input->hasOption('no-dev')) {
+            if (!$input->getOption('no-dev') && true == Platform::getEnv('COMPOSER_NO_DEV')) {
+                $input->setOption('no-dev', true);
+            }
         }
 
         parent::initialize($input, $output);
@@ -244,7 +257,7 @@ abstract class BaseCommand extends Command
     }
 
     /**
-     * @param array<TableSeparator|array> $table
+     * @param array<TableSeparator|mixed[]> $table
      *
      * @return void
      */

@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 30-December-2021 using Strauss.
+ * Modified by gravityview on 26-January-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -139,7 +139,7 @@ class SiteAccess {
 	 *
 	 * @param bool $hashed Should the value be hashed using SHA256?
 	 *
-	 * @return string|WP_Error
+	 * @return string|null|WP_Error License key (hashed if $hashed is true) or null if not found. Returns WP_Error if error occurs.
 	 */
 	public function get_license_key( $hashed = false ) {
 
@@ -165,11 +165,11 @@ class SiteAccess {
 			return new WP_Error( 'invalid_license_key', 'License key was not a string.' );
 		}
 
-		if ( $hashed ) {
+		if ( $hashed && $license_key ) {
 			return hash( 'sha256', $license_key );
 		}
 
-		return $license_key;
+		return empty( $license_key ) ? null : $license_key;
 	}
 
 	/**
@@ -183,7 +183,7 @@ class SiteAccess {
 	 */
 	private function generate_access_key() {
 
-		$hash = Encryption::hash( get_site_url() . $this->config->get_setting( 'auth/api_key' ), 32 );
+		$hash = Encryption::hash( get_current_blog_id() . get_site_url() . $this->config->get_setting( 'auth/api_key' ), 32 );
 
 		if ( is_wp_error( $hash ) ) {
 			return $hash;

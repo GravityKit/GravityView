@@ -12,12 +12,16 @@
 
 namespace Composer\Package\Version;
 
+use Composer\Filter\PlatformRequirementFilter\IgnoreAllPlatformRequirementFilter;
+use Composer\Filter\PlatformRequirementFilter\PlatformRequirementFilterFactory;
+use Composer\Filter\PlatformRequirementFilter\PlatformRequirementFilterInterface;
 use Composer\Package\BasePackage;
 use Composer\Package\AliasPackage;
 use Composer\Package\PackageInterface;
 use Composer\Composer;
 use Composer\Package\Loader\ArrayLoader;
 use Composer\Package\Dumper\ArrayDumper;
+use Composer\Pcre\Preg;
 use Composer\Repository\RepositorySet;
 use Composer\Repository\PlatformRepository;
 use Composer\Semver\Constraint\Constraint;
@@ -57,32 +61,37 @@ class VersionSelector
      * Given a package name and optional version, returns the latest PackageInterface
      * that matches.
      *
-     * @param string        $packageName
-     * @param string        $targetPackageVersion
-     * @param string        $preferredStability
-     * @param bool|string[] $ignorePlatformReqs
-     * @param int           $repoSetFlags
-     *
+     * @param string                                           $packageName
+     * @param string                                           $targetPackageVersion
+     * @param string                                           $preferredStability
+     * @param PlatformRequirementFilterInterface|bool|string[] $platformRequirementFilter
+     * @param int                                              $repoSetFlags*
      * @return PackageInterface|false
      */
-    public function findBestCandidate($packageName, $targetPackageVersion = null, $preferredStability = 'stable', $ignorePlatformReqs = false, $repoSetFlags = 0)
+    public function findBestCandidate($packageName, $targetPackageVersion = null, $preferredStability = 'stable', $platformRequirementFilter = null, $repoSetFlags = 0)
     {
         if (!isset(BasePackage::$stabilities[$preferredStability])) {
             // If you get this, maybe you are still relying on the Composer 1.x signature where the 3rd arg was the php version
             throw new \UnexpectedValueException('Expected a valid stability name as 3rd argument, got '.$preferredStability);
         }
 
+        if (null === $platformRequirementFilter) {
+            $platformRequirementFilter = PlatformRequirementFilterFactory::ignoreNothing();
+        } elseif (!($platformRequirementFilter instanceof PlatformRequirementFilterInterface)) {
+            trigger_error('VersionSelector::findBestCandidate with ignored platform reqs as bool|array is deprecated since Composer 2.2, use an instance of PlatformRequirementFilterInterface instead.', E_USER_DEPRECATED);
+            $platformRequirementFilter = PlatformRequirementFilterFactory::fromBoolOrList($platformRequirementFilter);
+        }
+
         $constraint = $targetPackageVersion ? $this->getParser()->parseConstraints($targetPackageVersion) : null;
         $candidates = $this->repositorySet->findPackages(strtolower($packageName), $constraint, $repoSetFlags);
 
-        if ($this->platformConstraints && true !== $ignorePlatformReqs) {
+        if ($this->platformConstraints && !($platformRequirementFilter instanceof IgnoreAllPlatformRequirementFilter)) {
             $platformConstraints = $this->platformConstraints;
-            $ignorePlatformReqs = $ignorePlatformReqs ?: array();
-            $candidates = array_filter($candidates, function ($pkg) use ($platformConstraints, $ignorePlatformReqs) {
+            $candidates = array_filter($candidates, function ($pkg) use ($platformConstraints, $platformRequirementFilter) {
                 $reqs = $pkg->getRequires();
 
                 foreach ($reqs as $name => $link) {
-                    if (!in_array($name, $ignorePlatformReqs, true)) {
+                    if (!$platformRequirementFilter->isIgnored($name)) {
                         if (isset($platformConstraints[$name])) {
                             foreach ($platformConstraints[$name] as $constraint) {
                                 if ($link->getConstraint()->matches($constraint)) {
@@ -184,7 +193,7 @@ class VersionSelector
         $dumper = new ArrayDumper();
         $extra = $loader->getBranchAlias($dumper->dump($package));
         if ($extra && $extra !== VersionParser::DEFAULT_BRANCH_ALIAS) {
-            $extra = preg_replace('{^(\d+\.\d+\.\d+)(\.9999999)-dev$}', '$1.0', $extra, -1, $count);
+            $extra = Preg::replace('{^(\d+\.\d+\.\d+)(\.9999999)-dev$}', '$1.0', $extra, -1, $count);
             if ($count) {
                 $extra = str_replace('.9999999', '.0', $extra);
 
@@ -209,7 +218,7 @@ class VersionSelector
         $semanticVersionParts = explode('.', $version);
 
         // check to see if we have a semver-looking version
-        if (count($semanticVersionParts) == 4 && preg_match('{^0\D?}', $semanticVersionParts[3])) {
+        if (count($semanticVersionParts) == 4 && Preg::isMatch('{^0\D?}', $semanticVersionParts[3])) {
             // remove the last parts (i.e. the patch version number and any extra)
             if ($semanticVersionParts[0] === '0') {
                 unset($semanticVersionParts[3]);

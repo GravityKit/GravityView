@@ -36,7 +36,15 @@ Feature: Install WP-CLI packages
     When I try `{PHAR_PATH} package install path-command`
     Then STDOUT should contain:
       """
-      wp-cli/community-command dev-master requires wp-cli/wp-cli >=0.24.0
+      Your requirements could not be resolved to an installable set of packages.
+      """
+    And STDOUT should contain:
+      """
+      wp-cli/community-command dev-
+      """
+    And STDOUT should contain:
+      """
+      require wp-cli/wp-cli >=0.24.0
       """
     And STDERR should contain:
       """

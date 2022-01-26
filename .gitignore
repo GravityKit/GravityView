@@ -24,7 +24,6 @@ wpcs/
 
 ### Node ###
 node_modules/*
-package-lock.json
 
 ### CodeKit ####
 .sass-cache
@@ -78,6 +77,7 @@ assets/lib/fancybox/*
 # Unit tests
 /tmp
 /tests/bin/tmp
+phpstan.neon
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/

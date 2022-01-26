@@ -31,7 +31,7 @@ class Rename extends AbstractMiddleware
         JsonMapperInterface $mapper
     ): void {
         $mapping = \array_filter($this->mapping, static function ($map) use ($object) {
-            return $map->getClass() === \get_class($object->getObject());
+            return $map->getClass() === $object->getName();
         });
         foreach ($mapping as $map) {
             $from = $map->getFrom();

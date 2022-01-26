@@ -4,8 +4,6 @@ Peast
 [![Latest Stable Version](https://poser.pugx.org/mck89/peast/v/stable)](https://packagist.org/packages/mck89/peast)
 [![Total Downloads](https://poser.pugx.org/mck89/peast/downloads)](https://packagist.org/packages/mck89/peast)
 [![License](https://poser.pugx.org/mck89/peast/license)](https://packagist.org/packages/mck89/peast)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3d1890ff93944890833ff0b5d17d50d6)](https://www.codacy.com/app/marcomarchi89/peast?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mck89/peast&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/3d1890ff93944890833ff0b5d17d50d6)](https://www.codacy.com/app/marcomarchi89/peast?utm_source=github.com&utm_medium=referral&utm_content=mck89/peast&utm_campaign=Badge_Coverage)
 [![Build Status](https://travis-ci.org/mck89/peast.svg?branch=master)](https://travis-ci.org/mck89/peast)
 
 

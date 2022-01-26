@@ -354,5 +354,4 @@ class WPConfigTransformer {
 
 		return true;
 	}
-
 }

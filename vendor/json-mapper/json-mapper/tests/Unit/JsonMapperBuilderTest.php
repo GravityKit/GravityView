@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JsonMapper\Tests\Unit;
 
+use JsonMapper\Builders\PropertyMapperBuilder;
 use JsonMapper\Dto\NamedMiddleware;
 use JsonMapper\Enums\TextNotation;
 use JsonMapper\Exception\BuilderException;
@@ -64,7 +65,7 @@ class JsonMapperBuilderTest extends TestCase
     /** @covers \JsonMapper\JsonMapperBuilder */
     public function testItCanBuildWithCustomPropertyMapper(): void
     {
-        $propertyMapper = new PropertyMapper();
+        $propertyMapper = PropertyMapperBuilder::new()->build();
         /** @var JsonMapper $instance */
         $instance = JsonMapperBuilder::new()
             ->withJsonMapperClassName(JsonMapper::class)

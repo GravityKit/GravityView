@@ -28,7 +28,7 @@ Feature: Search through the database
     Then STDOUT should contain:
       """
       wp_options:option_value
-      1:http://example.com
+      1:https://example.com
       """
     And STDOUT should not contain:
       """
@@ -44,7 +44,7 @@ Feature: Search through the database
     Then STDOUT should contain:
       """
       wp_options:option_value
-      1:http://example.com
+      1:https://example.com
       """
     And STDOUT should not contain:
       """
@@ -279,6 +279,7 @@ Feature: Search through the database
       """
     And the return code should be 0
 
+  @require-wp-4.0
   Scenario: Search on a multisite install
     Given a WP multisite install
     And I run `wp site create --slug=foo`
@@ -312,7 +313,7 @@ Feature: Search through the database
     Then STDOUT should contain:
       """
       wp_options:option_value
-      1:http://example.com
+      1:https://example.com
       """
     And STDOUT should not contain:
       """
@@ -336,7 +337,7 @@ Feature: Search through the database
     Then STDOUT should contain:
       """
       wp_options:option_value
-      1:http://example.com
+      1:https://example.com
       """
     And STDOUT should not contain:
       """
@@ -364,7 +365,7 @@ Feature: Search through the database
     And STDOUT should contain:
       """
       wp_2_options:option_value
-      1:http://example.com/foo
+      1:https://example.com/foo
       """
     And STDOUT should not contain:
       """
@@ -384,12 +385,12 @@ Feature: Search through the database
     Then STDOUT should contain:
       """
       wp_options:option_value
-      1:http://example.com
+      1:https://example.com
       """
     And STDOUT should contain:
       """
       wp_2_options:option_value
-      1:http://example.com/foo
+      1:https://example.com/foo
       """
     And STDOUT should not contain:
       """
@@ -409,7 +410,7 @@ Feature: Search through the database
     Then STDOUT should contain:
       """
       wp_options:option_value
-      1:http://example.com
+      1:https://example.com
       """
     And STDOUT should not contain:
       """
@@ -433,12 +434,12 @@ Feature: Search through the database
     Then STDOUT should contain:
       """
       wp_options:option_value
-      1:http://example.com
+      1:https://example.com
       """
     And STDOUT should contain:
       """
       wp_2_options:option_value
-      1:http://example.com/foo
+      1:https://example.com/foo
       """
     And STDOUT should contain:
       """
@@ -460,7 +461,7 @@ Feature: Search through the database
     Then STDOUT should contain:
       """
       wp_options:option_value
-      1:http://example.com
+      1:https://example.com
       """
     And STDOUT should not contain:
       """
@@ -488,7 +489,7 @@ Feature: Search through the database
     And STDOUT should contain:
       """
       wp_2_options:option_value
-      1:http://example.com/foo
+      1:https://example.com/foo
       """
     And STDOUT should not contain:
       """
@@ -509,12 +510,12 @@ Feature: Search through the database
     Then STDOUT should contain:
       """
       wp_options:option_value
-      1:http://example.com
+      1:https://example.com
       """
     And STDOUT should contain:
       """
       wp_2_options:option_value
-      1:http://example.com/foo
+      1:https://example.com/foo
       """
     And STDOUT should contain:
       """
@@ -537,12 +538,12 @@ Feature: Search through the database
     Then STDOUT should contain:
       """
       wp_options:option_value
-      1:http://example.com
+      1:https://example.com
       """
     And STDOUT should contain:
       """
       wp_2_options:option_value
-      1:http://example.com/foo
+      1:https://example.com/foo
       """
     And STDOUT should contain:
       """
@@ -712,7 +713,7 @@ Feature: Search through the database
     Then STDOUT should contain:
       """
       wp_options:option_value
-      1:http://example.com
+      1:https://example.com
       """
     And STDOUT should not contain:
       """
@@ -868,31 +869,31 @@ Feature: Search through the database
     Then STDOUT should contain:
       """
       wp_options:option_value
-      1:http://example.com
+      1:https://example.com
       wp_options:option_value
-      2:http://example.com
+      2:https://example.com
       """
 
     When I run `wp db search example.com --table_column_once`
     Then STDOUT should contain:
       """
       wp_options:option_value
-      1:http://example.com
-      2:http://example.com
+      1:https://example.com
+      2:https://example.com
       """
 
     When I run `wp db search example.com --one_line`
     Then STDOUT should contain:
       """
-      wp_options:option_value:1:http://example.com
-      wp_options:option_value:2:http://example.com
+      wp_options:option_value:1:https://example.com
+      wp_options:option_value:2:https://example.com
       """
 
     When I run `wp db search example.com --table_column_once --one_line`
     Then STDOUT should contain:
       """
-      wp_options:option_value:1:http://example.com
-      wp_options:option_value:2:http://example.com
+      wp_options:option_value:1:https://example.com
+      wp_options:option_value:2:https://example.com
       """
 
     When I run `wp db search example.com --all-tables --before_context=0 --after_context=0 --matches_only`
@@ -920,35 +921,35 @@ Feature: Search through the database
     Then STDOUT should strictly contain:
       """
       [32;1mwp_options:option_value[0m
-      [33;1m1[0m:http://[43m[30mexample.com[0m
+      [33;1m1[0m:https://[43m[30mexample.com[0m
       """
 
     When I run `SHELL_PIPE=0 wp db search example.com --table_column_color=%r --id_color=%g --match_color=%b`
     Then STDOUT should strictly contain:
       """
       [31mwp_options:option_value[0m
-      [32m1[0m:http://[34mexample.com[0m
+      [32m1[0m:https://[34mexample.com[0m
       """
 
     When I run `SHELL_PIPE=0 wp db search example.com --table_column_color=%r`
     Then STDOUT should strictly contain:
       """
       [31mwp_options:option_value[0m
-      [33;1m1[0m:http://[43m[30mexample.com[0m
+      [33;1m1[0m:https://[43m[30mexample.com[0m
       """
 
     When I run `SHELL_PIPE=0 wp db search example.com --id_color=%g`
     Then STDOUT should strictly contain:
       """
       [32;1mwp_options:option_value[0m
-      [32m1[0m:http://[43m[30mexample.com[0m
+      [32m1[0m:https://[43m[30mexample.com[0m
       """
 
     When I run `SHELL_PIPE=0 wp db search example.com --match_color=%b`
     Then STDOUT should strictly contain:
       """
       [32;1mwp_options:option_value[0m
-      [33;1m1[0m:http://[34mexample.com[0m
+      [33;1m1[0m:https://[34mexample.com[0m
       """
 
     When I run `SHELL_PIPE=0 wp db search example.com --before_context=0 --after_context=0`

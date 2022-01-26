@@ -6,16 +6,20 @@ Feature: Manage WP-CLI packages
     When I run `wp package browse`
     Then STDOUT should contain:
       """
-      danielbachhuber/wp-cli-reset-post-date-command
+      runcommand/hook
       """
 
-    When I run `wp package install danielbachhuber/wp-cli-reset-post-date-command`
+    When I run `wp package install runcommand/hook`
     Then STDERR should be empty
 
-    When I run `wp help reset-post-date`
+    When I run `wp help hook`
     Then STDERR should be empty
+    And STDOUT should contain:
+      """
+      List callbacks registered to a given action or filter.
+      """
 
-    When I try `wp --skip-packages --debug help reset-post-date`
+    When I try `wp --skip-packages --debug help hook`
     Then STDERR should contain:
       """
       Debug (bootstrap): Skipped loading packages.
@@ -28,16 +32,16 @@ Feature: Manage WP-CLI packages
     When I run `wp package list`
     Then STDOUT should contain:
       """
-      danielbachhuber/wp-cli-reset-post-date-command
+      runcommand/hook
       """
 
-    When I run `wp package uninstall danielbachhuber/wp-cli-reset-post-date-command`
+    When I run `wp package uninstall runcommand/hook`
     Then STDERR should be empty
 
     When I run `wp package list`
     Then STDOUT should not contain:
       """
-      danielbachhuber/wp-cli-reset-post-date-command
+      runcommand/hook
       """
 
   Scenario: Run package commands early, before any bad code can break them
@@ -60,20 +64,20 @@ Feature: Manage WP-CLI packages
   @require-php-7.2 @broken
   Scenario: Revert the WP-CLI packages composer.json when fail to install/uninstall a package due to memory limit
     Given an empty directory
-    When I try `{INVOKE_WP_CLI_WITH_PHP_ARGS--dmemory_limit=10M -ddisable_functions=ini_set} package install danielbachhuber/wp-cli-reset-post-date-command`
+    When I try `{INVOKE_WP_CLI_WITH_PHP_ARGS--dmemory_limit=10M -ddisable_functions=ini_set} package install runcommand/hook`
     Then the return code should not be 0
     And STDERR should contain:
       """
       Reverted composer.json.
       """
 
-    When I run `wp package install danielbachhuber/wp-cli-reset-post-date-command`
+    When I run `wp package install runcommand/hook`
     Then STDOUT should contain:
       """
       Success: Package installed.
       """
 
-    When I try `{INVOKE_WP_CLI_WITH_PHP_ARGS--dmemory_limit=10M -ddisable_functions=ini_set} package uninstall danielbachhuber/wp-cli-reset-post-date-command`
+    When I try `{INVOKE_WP_CLI_WITH_PHP_ARGS--dmemory_limit=10M -ddisable_functions=ini_set} package uninstall runcommand/hook`
     Then the return code should not be 0
     And STDERR should contain:
       """
@@ -85,7 +89,7 @@ Feature: Manage WP-CLI packages
     Then the {RUN_DIR}/mypackages/composer.json file should exist
     And save the {RUN_DIR}/mypackages/composer.json file as {MYPACKAGES_COMPOSER_JSON}
 
-    When I try `WP_CLI_PACKAGES_DIR={RUN_DIR}/mypackages {INVOKE_WP_CLI_WITH_PHP_ARGS--dmemory_limit=10M -ddisable_functions=ini_set} package install danielbachhuber/wp-cli-reset-post-date-command`
+    When I try `WP_CLI_PACKAGES_DIR={RUN_DIR}/mypackages {INVOKE_WP_CLI_WITH_PHP_ARGS--dmemory_limit=10M -ddisable_functions=ini_set} package install runcommand/hook`
     Then the return code should not be 0
     And STDERR should contain:
       """
@@ -118,7 +122,7 @@ Feature: Manage WP-CLI packages
       """
     And STDOUT should be empty
 
-    When I try `WP_CLI_PACKAGES_DIR={RUN_DIR}/packages-bad-json wp package install danielbachhuber/wp-cli-reset-post-date-command`
+    When I try `WP_CLI_PACKAGES_DIR={RUN_DIR}/packages-bad-json wp package install runcommand/hook`
     Then the return code should be 1
     And STDERR should contain:
       """
@@ -162,7 +166,7 @@ Feature: Manage WP-CLI packages
       """
     And save the {RUN_DIR}/packages-no-such-package/composer.json file as {NO_SUCH_PACKAGE_COMPOSER_JSON}
 
-    When I try `WP_CLI_PACKAGES_DIR={RUN_DIR}/packages-no-such-package wp package install danielbachhuber/wp-cli-reset-post-date-command`
+    When I try `WP_CLI_PACKAGES_DIR={RUN_DIR}/packages-no-such-package wp package install runcommand/hook`
     Then the return code should be 1
     And STDERR should contain:
       """

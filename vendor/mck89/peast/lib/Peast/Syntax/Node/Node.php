@@ -180,6 +180,7 @@ abstract class Node implements \JSONSerializable
      * 
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $ret = array();

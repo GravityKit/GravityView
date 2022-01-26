@@ -2,6 +2,8 @@ Feature: Search / replace with file export
 
   Scenario: Search / replace export to STDOUT
     Given a WP install
+    And I run `echo ' '`
+    And save STDOUT as {SPACE}
 
     When I run `wp search-replace example.com example.net --export`
     Then STDOUT should contain:
@@ -11,13 +13,13 @@ Feature: Search / replace with file export
       """
     And STDOUT should contain:
       """
-      ('1', 'siteurl', 'http://example.net', 'yes'),
+      ('1', 'siteurl', 'https://example.net', 'yes'),
       """
 
     When I run `wp option get home`
     Then STDOUT should be:
       """
-      http://example.com
+      https://example.com
       """
 
     When I run `wp search-replace example.com example.net --skip-tables=wp_options --export`
@@ -47,15 +49,15 @@ Feature: Search / replace with file export
     When I run `wp search-replace example.com example.net --skip-columns=option_value --export`
     Then STDOUT should contain:
       """
-      INSERT INTO `wp_options` (`option_id`, `option_name`, `option_value`, `autoload`) VALUES 
-    ('1', 'siteurl', 'http://example.com', 'yes'),
+      INSERT INTO `wp_options` (`option_id`, `option_name`, `option_value`, `autoload`) VALUES{SPACE}
+    ('1', 'siteurl', 'https://example.com', 'yes'),
       """
 
     When I run `wp search-replace example.com example.net --skip-columns=option_value --export --export_insert_size=1`
     Then STDOUT should contain:
       """
-      ('1', 'siteurl', 'http://example.com', 'yes');
-    INSERT INTO `wp_options` (`option_id`, `option_name`, `option_value`, `autoload`) VALUES 
+      ('1', 'siteurl', 'https://example.com', 'yes');
+    INSERT INTO `wp_options` (`option_id`, `option_name`, `option_value`, `autoload`) VALUES{SPACE}
       """
 
     When I run `wp search-replace foo bar --export | tail -n 1`
@@ -71,13 +73,13 @@ Feature: Search / replace with file export
     When I run `wp option get home`
     Then STDOUT should be:
       """
-      http://example.net
+      https://example.net
       """
 
   Scenario: Search / replace export to file
     Given a WP install
     And I run `wp post generate --count=100`
-    And I run `wp option add example_url http://example.com`
+    And I run `wp option add example_url https://example.com`
 
     When I run `wp search-replace example.com example.net --export=wordpress.sql`
     Then STDOUT should contain:
@@ -96,7 +98,7 @@ Feature: Search / replace with file export
     When I run `wp option get home`
     Then STDOUT should be:
       """
-      http://example.com
+      https://example.com
       """
 
     When I run `wp site empty --yes`
@@ -112,13 +114,13 @@ Feature: Search / replace with file export
     When I run `wp option get home`
     Then STDOUT should be:
       """
-      http://example.net
+      https://example.net
       """
 
     When I run `wp option get example_url`
     Then STDOUT should be:
       """
-      http://example.net
+      https://example.net
       """
 
     When I run `wp post list --format=count`

@@ -15,6 +15,7 @@ composer.json export-ignore
 composer.lock export-ignore
 Gruntfile.js export-ignore
 package.json export-ignore
+package-lock.json export-ignore
 phpcs.ruleset.xml export-ignore
 phpcs.xml.dist export-ignore
 phpunit.xml export-ignore

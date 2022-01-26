@@ -1383,14 +1383,15 @@ function gravityview_get_files_array( $value, $gv_class = '', $context = null ) 
  *
  * The address should be plain text with new line (`\n`) or `<br />` line breaks separating sections
  *
+ * @since 2.14.1 Added $atts parameter
+ *
  * @todo use GF's field get_export_value() instead
  *
  * @see https://gravityview.co/support/documentation/201608159 Read how to modify the link
  * @param  string $address Address
  * @return string          URL of link to map of address
  */
-function gravityview_get_map_link( $address ) {
-
+function gravityview_get_map_link( $address, $atts = array() ) {
 	$address_qs = str_replace( array( '<br />', "\n" ), ' ', $address ); // Replace \n with spaces
 	$address_qs = urlencode( $address_qs );
 
@@ -1398,7 +1399,14 @@ function gravityview_get_map_link( $address ) {
 
 	$link_text = esc_html__( 'Map It', 'gravityview' );
 
-	$link = gravityview_get_link( $url, $link_text, 'class=map-it-link' );
+	$atts = array_merge(
+		array(
+			'class' => 'map-it-link'
+		),
+		$atts
+	);
+
+	$link = gravityview_get_link( $url, $link_text, $atts );
 
 	/**
 	 * @filter `gravityview_map_link` Modify the map link generated. You can use a different mapping service, for example.

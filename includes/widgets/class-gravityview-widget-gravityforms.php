@@ -77,19 +77,19 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 		}
 
 		// Inside GV's widget AJAX request
-		$doing_ajax = defined( 'DOING_AJAX' ) && 'gv_field_options' === \GV\Utils::_POST( 'action' );
+		$doing_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX && 'gv_field_options' === \GV\Utils::_POST( 'action' );
 
-		/**
-		 * gravityview_get_forms() is currently running too early as widgets_init runs before init and
-		 * when most Gravity Forms plugins register their own fields like GP Terms of Service.
-		 */
-		if( $doing_ajax || ( \GV\Admin_Request::is_admin() && ! GFForms::is_gravity_page() ) ) {
+		if ( $doing_ajax || \GV\Admin_Request::is_admin( '', 'multiple' ) ) {
+			global $wpdb;
 
-			// check for available gravity forms
-			$forms = gravityview_get_forms();
+			$table = GFFormsModel::get_form_table_name();
 
-			foreach ( $forms as $form ) {
-				$choices[ $form['id'] ] = $form['title'];
+			$results = $wpdb->get_results( "SELECT id, title FROM ${table} WHERE is_active = 1" );
+
+			if ( ! empty( $results ) ) {
+				foreach ( $results as $form ) {
+					$choices[ $form->id ] = $form->title;
+				}
 			}
 		}
 

@@ -250,8 +250,8 @@ Feature: Manage WordPress posts
     When I run `wp post url 1 {POST_ID}`
     Then STDOUT should be:
       """
-      http://example.com/?p=1
-      http://example.com/?p={POST_ID}
+      https://example.com/?p=1
+      https://example.com/?p={POST_ID}
       """
 
   Scenario: Update a post from file or STDIN

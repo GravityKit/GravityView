@@ -134,6 +134,7 @@ class TemplateLiteral extends Node implements Expression
      * 
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $ret = parent::jsonSerialize();

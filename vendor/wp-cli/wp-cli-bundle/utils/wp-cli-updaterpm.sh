@@ -6,7 +6,7 @@
 # DATE          :2017-07-12
 # AUTHOR        :Viktor Szépe <viktor@szepe.net>
 # LICENSE       :The MIT License (MIT)
-# URL           :https://github.com/wp-cli/wp-cli-bundle/tree/master/utils
+# URL           :https://github.com/wp-cli/wp-cli-bundle/tree/main/utils
 # BASH-VERSION  :4.2+
 # DEPENDS       :apt-get install rpm rpmlint php-cli
 
@@ -29,17 +29,20 @@ if ! hash php rpm; then
     die 1 "Missing RPM build tools"
 fi
 
+# Download the binary if needed
+if [ ! -f "wp-cli.phar" ]; then
+	wget -nv -O wp-cli.phar "$PHAR_URL"
+	chmod +x wp-cli.phar
+fi
+
 if ! [ -d "$SOURCE_DIR" ]; then
     mkdir "$SOURCE_DIR" || die 2 "Cannot create directory here: ${PWD}"
 fi
 
 pushd "$SOURCE_DIR" > /dev/null
 
-# Download the binary
-wget -nv -O wp-cli.phar "$PHAR_URL"
-chmod +x wp-cli.phar
-
-# Copy spec file
+# Move files
+mv ../wp-cli.phar wp-cli.phar
 cp ../wp-cli-rpm.spec wp-cli.spec
 
 # Replace version placeholder

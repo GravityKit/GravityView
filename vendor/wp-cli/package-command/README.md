@@ -29,15 +29,15 @@ Learn how to create your own command from the
 
     # List installed packages
     $ wp package list
-    +-----------------------+------------------------------------------+---------+------------+
-    | name                  | description                              | authors | version    |
-    +-----------------------+------------------------------------------+---------+------------+
-    | wp-cli/server-command | Start a development server for WordPress |         | dev-master |
-    +-----------------------+------------------------------------------+---------+------------+
+    +-----------------------+------------------------------------------+---------+----------+
+    | name                  | description                              | authors | version  |
+    +-----------------------+------------------------------------------+---------+----------+
+    | wp-cli/server-command | Start a development server for WordPress |         | dev-main |
+    +-----------------------+------------------------------------------+---------+----------+
 
     # Install the latest development version of the package
     $ wp package install wp-cli/server-command
-    Installing package wp-cli/server-command (dev-master)
+    Installing package wp-cli/server-command (dev-main)
     Updating /home/person/.wp-cli/packages/composer.json to require the package...
     Using Composer to install the package...
     ---
@@ -111,17 +111,17 @@ There are no optionally available fields.
       name: 10up/mu-migration
       description: A set of WP-CLI commands to support the migration of single WordPress instances to multisite
       authors: Nícholas André
-      version: dev-master, dev-develop
+      version: dev-main, dev-develop
     aaemnnosttv/wp-cli-dotenv-command:
       name: aaemnnosttv/wp-cli-dotenv-command
       description: Dotenv commands for WP-CLI
       authors: Evan Mattson
-      version: v0.1, v0.1-beta.1, v0.2, dev-master, dev-dev, dev-develop, dev-tests/behat
+      version: v0.1, v0.1-beta.1, v0.2, dev-main, dev-dev, dev-develop, dev-tests/behat
     aaemnnosttv/wp-cli-http-command:
       name: aaemnnosttv/wp-cli-http-command
       description: WP-CLI command for using the WordPress HTTP API
       authors: Evan Mattson
-      version: dev-master
+      version: dev-main
 
 
 
@@ -219,11 +219,11 @@ These fields are optionally available:
 **EXAMPLES**
 
     $ wp package list
-    +-----------------------+------------------------------------------+---------+------------+
-    | name                  | description                              | authors | version    |
-    +-----------------------+------------------------------------------+---------+------------+
-    | wp-cli/server-command | Start a development server for WordPress |         | dev-master |
-    +-----------------------+------------------------------------------+---------+------------+
+    +-----------------------+------------------------------------------+---------+----------+
+    | name                  | description                              | authors | version  |
+    +-----------------------+------------------------------------------+---------+----------+
+    | wp-cli/server-command | Start a development server for WordPress |         | dev-main |
+    +-----------------------+------------------------------------------+---------+----------+
 
 
 
@@ -258,13 +258,16 @@ wp package update
 Uninstalls a WP-CLI package.
 
 ~~~
-wp package uninstall <name>
+wp package uninstall <name> [--insecure]
 ~~~
 
 **OPTIONS**
 
 	<name>
 		Name of the package to uninstall.
+
+	[--insecure]
+		Retry downloads without certificate validation if TLS handshake fails. Note: This makes the request vulnerable to a MITM attack.
 
 **EXAMPLES**
 

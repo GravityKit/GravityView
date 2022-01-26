@@ -1083,6 +1083,9 @@ class Plugin_Command extends \WP_CLI\CommandWithUpgrade {
 	 *   - must-use
 	 * ---
 	 *
+	 * [--skip-update-check]
+	 * : If set, the plugin update check will be skipped.
+	 *
 	 * ## AVAILABLE FIELDS
 	 *
 	 * These fields will be displayed by default for each plugin:

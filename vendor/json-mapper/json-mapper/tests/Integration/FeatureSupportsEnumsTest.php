@@ -17,7 +17,7 @@ class FeatureSupportsEnumsTest extends TestCase
     /**
      * @requires PHP >= 8.1
      */
-    public function testItCanMapAnArrayUsingAVariadicSetter(): void
+    public function testItCanMapAnEnumType(): void
     {
         // Arrange
         $mapper = (new JsonMapperFactory())->bestFit();

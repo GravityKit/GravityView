@@ -6,5 +6,4 @@ namespace JsonMapper\Exception;
 
 class PhpFileParseException extends \Exception
 {
-
 }

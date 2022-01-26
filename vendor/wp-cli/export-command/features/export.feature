@@ -400,11 +400,11 @@ Feature: Export content.
     When I run `wp user delete {JOHN_USER_ID} {JANE_USER_ID} --yes`
     Then STDOUT should contain:
       """
-      Success: Removed user {JOHN_USER_ID} from http://example.com.
+      Success: Removed user {JOHN_USER_ID} from https://example.com.
       """
     And STDOUT should contain:
       """
-      Success: Removed user {JANE_USER_ID} from http://example.com.
+      Success: Removed user {JANE_USER_ID} from https://example.com.
       """
 
     When I run `wp post list --post_type=post --format=count`

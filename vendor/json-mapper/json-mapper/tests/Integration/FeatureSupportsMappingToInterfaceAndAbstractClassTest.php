@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JsonMapper\Tests\Integration;
 
+use JsonMapper\Builders\PropertyMapperBuilder;
 use JsonMapper\Handler\FactoryRegistry;
 use JsonMapper\Handler\PropertyMapper;
 use JsonMapper\JsonMapperBuilder;
@@ -28,10 +29,13 @@ class FeatureSupportsMappingToInterfaceAndAbstractClassTest extends TestCase
     {
         $interfaceResolver = new FactoryRegistry();
         $interfaceResolver->addFactory($className, new ShapeInstanceFactory());
+        $propertyMapper = PropertyMapperBuilder::new()
+            ->withNonInstantiableTypeResolver($interfaceResolver)
+            ->build();
         $mapper = JsonMapperBuilder::new()
             ->withDocBlockAnnotationsMiddleware()
             ->withNamespaceResolverMiddleware()
-            ->withPropertyMapper(new PropertyMapper(null, $interfaceResolver))
+            ->withPropertyMapper($propertyMapper)
             ->build();
 
         $mapper->mapObjectFromString('{"shape": {"type": "square", "width": 5, "length": 6}}', $object);

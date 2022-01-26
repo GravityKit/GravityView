@@ -15,6 +15,7 @@ namespace Composer\Util;
 use Composer\Config;
 use Composer\IO\IOInterface;
 use Composer\Downloader\TransportException;
+use Composer\Pcre\Preg;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
@@ -91,6 +92,20 @@ class AuthHelper
             $message = "\n";
 
             $rateLimited = $gitHubUtil->isRateLimited($headers);
+            $requiresSso = $gitHubUtil->requiresSso($headers);
+
+            if ($requiresSso) {
+                $ssoUrl = $gitHubUtil->getSsoUrl($headers);
+                $message = 'GitHub API token requires SSO authorization. Authorize this token at ' . $ssoUrl . "\n";
+                $this->io->writeError($message);
+                if (!$this->io->isInteractive()) {
+                    throw new TransportException('Could not authenticate against ' . $origin, 403);
+                }
+                $this->io->ask('After authorizing your token, confirm that you would like to retry the request');
+
+                return array('retry' => true, 'storeAuth' => $storeAuth);
+            }
+
             if ($rateLimited) {
                 $rateLimit = $gitHubUtil->getRateLimit($headers);
                 if ($this->io->hasAuthentication($origin)) {
@@ -209,7 +224,7 @@ class AuthHelper
                 $headers[] = 'Authorization: Bearer '.$auth['username'];
             } elseif ('github.com' === $origin && 'x-oauth-basic' === $auth['password']) {
                 // only add the access_token if it is actually a github API URL
-                if (preg_match('{^https?://api\.github\.com/}', $url)) {
+                if (Preg::isMatch('{^https?://api\.github\.com/}', $url)) {
                     $headers[] = 'Authorization: token '.$auth['username'];
                     $authenticationDisplayMessage = 'Using GitHub token authentication';
                 }

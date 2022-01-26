@@ -53,7 +53,7 @@ or review it on [GitHub](https://github.com/composer/getcomposer.org/blob/main/w
 if you wish to know more about the inner workings of the installer. The source
 is plain PHP.
 
-There are in short, two ways to install Composer. Locally as part of your
+There are, in short, two ways to install Composer. Locally as part of your
 project, or globally as a system wide executable.
 
 #### Locally
@@ -99,7 +99,7 @@ you can use `~/.local/bin` instead which is available by default on some
 Linux distributions.
 
 > **Note:** If the above fails due to permissions, you may need to run it again
-> with sudo.
+> with `sudo`.
 
 > **Note:** On some versions of macOS the `/usr` directory does not exist by
 > default. If you receive the error "/usr/local/bin/composer: No such file or

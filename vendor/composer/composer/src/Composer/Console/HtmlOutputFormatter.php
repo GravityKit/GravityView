@@ -12,6 +12,7 @@
 
 namespace Composer\Console;
 
+use Composer\Pcre\Preg;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
@@ -60,7 +61,7 @@ class HtmlOutputFormatter extends OutputFormatter
     }
 
     /**
-     * @param string $message
+     * @param ?string $message
      *
      * @return string
      */
@@ -70,6 +71,7 @@ class HtmlOutputFormatter extends OutputFormatter
 
         $clearEscapeCodes = '(?:39|49|0|22|24|25|27|28)';
 
+        // TODO in 2.3 replace with Closure::fromCallable and then use Preg::replaceCallback
         return preg_replace_callback("{\033\[([0-9;]+)m(.*?)\033\[(?:".$clearEscapeCodes.";)*?".$clearEscapeCodes."m}s", array($this, 'formatHtml'), $formatted);
     }
 
@@ -82,12 +84,12 @@ class HtmlOutputFormatter extends OutputFormatter
     {
         $out = '<span style="';
         foreach (explode(';', $matches[1]) as $code) {
-            if (isset(self::$availableForegroundColors[$code])) {
-                $out .= 'color:'.self::$availableForegroundColors[$code].';';
-            } elseif (isset(self::$availableBackgroundColors[$code])) {
-                $out .= 'background-color:'.self::$availableBackgroundColors[$code].';';
-            } elseif (isset(self::$availableOptions[$code])) {
-                switch (self::$availableOptions[$code]) {
+            if (isset(self::$availableForegroundColors[(int) $code])) {
+                $out .= 'color:'.self::$availableForegroundColors[(int) $code].';';
+            } elseif (isset(self::$availableBackgroundColors[(int) $code])) {
+                $out .= 'background-color:'.self::$availableBackgroundColors[(int) $code].';';
+            } elseif (isset(self::$availableOptions[(int) $code])) {
+                switch (self::$availableOptions[(int) $code]) {
                     case 'bold':
                         $out .= 'font-weight:bold;';
                         break;

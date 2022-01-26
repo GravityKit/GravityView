@@ -207,14 +207,14 @@ Feature: Do global search/replace
     And a setup-theme-mod.php file:
       """
       <?php
-      set_theme_mod( 'header_image_data', (object) array( 'url' => 'http://subdomain.example.com/foo.jpg' ) );
+      set_theme_mod( 'header_image_data', (object) array( 'url' => 'https://subdomain.example.com/foo.jpg' ) );
       """
     And I run `wp eval-file setup-theme-mod.php`
 
     When I run `wp theme mod get header_image_data`
     Then STDOUT should be a table containing rows:
-      | key               | value                                              |
-      | header_image_data | {"url":"http:\/\/subdomain.example.com\/foo.jpg"}  |
+      | key               | value                                               |
+      | header_image_data | {"url":"https:\/\/subdomain.example.com\/foo.jpg"}  |
 
     When I run `wp search-replace subdomain.example.com example.com --no-recurse-objects`
     Then STDOUT should be a table containing rows:
@@ -228,32 +228,32 @@ Feature: Do global search/replace
 
     When I run `wp theme mod get header_image_data`
     Then STDOUT should be a table containing rows:
-      | key               | value                                           |
-      | header_image_data | {"url":"http:\/\/example.com\/foo.jpg"}  |
+      | key               | value                                     |
+      | header_image_data | {"url":"https:\/\/example.com\/foo.jpg"}  |
 
   Scenario: Search and replace with quoted strings
     Given a WP install
 
-    When I run `wp post create --post_content='<a href="http://apple.com">Apple</a>' --porcelain`
+    When I run `wp post create --post_content='<a href="https://apple.com">Apple</a>' --porcelain`
     Then save STDOUT as {POST_ID}
 
     When I run `wp post get {POST_ID} --field=content`
     Then STDOUT should be:
       """
-      <a href="http://apple.com">Apple</a>
+      <a href="https://apple.com">Apple</a>
       """
 
-    When I run `wp search-replace '<a href="http://apple.com">Apple</a>' '<a href="http://google.com">Google</a>' --dry-run`
+    When I run `wp search-replace '<a href="https://apple.com">Apple</a>' '<a href="https://google.com">Google</a>' --dry-run`
     Then STDOUT should be a table containing rows:
       | Table      | Column       | Replacements | Type       |
       | wp_posts   | post_content | 1            | SQL        |
 
-    When I run `wp search-replace '<a href="http://apple.com">Apple</a>' '<a href="http://google.com">Google</a>'`
+    When I run `wp search-replace '<a href="https://apple.com">Apple</a>' '<a href="https://google.com">Google</a>'`
     Then STDOUT should be a table containing rows:
       | Table      | Column       | Replacements | Type       |
       | wp_posts   | post_content | 1            | SQL        |
 
-    When I run `wp search-replace '<a href="http://google.com">Google</a>' '<a href="http://apple.com">Apple</a>' --dry-run`
+    When I run `wp search-replace '<a href="https://google.com">Google</a>' '<a href="https://apple.com">Apple</a>' --dry-run`
     Then STDOUT should contain:
       """
       1 replacement to be made.
@@ -262,7 +262,7 @@ Feature: Do global search/replace
     When I run `wp post get {POST_ID} --field=content`
     Then STDOUT should be:
       """
-      <a href="http://google.com">Google</a>
+      <a href="https://google.com">Google</a>
       """
 
   Scenario: Search and replace with the same terms
@@ -303,16 +303,16 @@ Feature: Do global search/replace
       | wp_posts | guid   | 20           | SQL  |
 
     Examples:
-      | replacement          | flags     |
-      | {SITEURL}/subdir     |           |
-      | http://newdomain.com |           |
-      | http://newdomain.com | --dry-run |
+      | replacement           | flags     |
+      | {SITEURL}/subdir      |           |
+      | https://newdomain.com |           |
+      | https://newdomain.com | --dry-run |
 
   Scenario Outline: Choose replacement method (PHP or MySQL/MariaDB) given proper flags or data.
     Given a WP install
     And I run `wp option get siteurl`
     And save STDOUT as {SITEURL}
-    When I run `wp search-replace <flags> {SITEURL} http://wordpress.org`
+    When I run `wp search-replace <flags> {SITEURL} https://wordpress.org`
 
     Then STDOUT should be a table containing rows:
       | Table      | Column       | Replacements | Type       |
@@ -357,7 +357,7 @@ Feature: Do global search/replace
     When I run `wp option get home`
     Then STDOUT should be:
       """
-      http://example.com
+      https://example.com
       """
 
     When I run `wp search-replace 'EXAMPLE.com' 'BAXAMPLE.com' wp_options --regex --regex-flags=i`
@@ -368,13 +368,13 @@ Feature: Do global search/replace
     When I run `wp option get home`
     Then STDOUT should be:
       """
-      http://BAXAMPLE.com
+      https://BAXAMPLE.com
       """
 
   Scenario: Search replace with a regex delimiter
     Given a WP install
 
-    When I run `wp search-replace 'HTTP://EXAMPLE.COM' 'http://example.jp/' wp_options --regex --regex-flags=i --regex-delimiter='#'`
+    When I run `wp search-replace 'HTTPS://EXAMPLE.COM' 'https://example.jp/' wp_options --regex --regex-flags=i --regex-delimiter='#'`
     Then STDOUT should be a table containing rows:
       | Table      | Column       | Replacements | Type       |
       | wp_options | option_value | 2            | PHP        |
@@ -382,10 +382,10 @@ Feature: Do global search/replace
     When I run `wp option get home`
     Then STDOUT should be:
       """
-      http://example.jp
+      https://example.jp
       """
 
-    When I run `wp search-replace 'http://example.jp/' 'http://example.com/' wp_options --regex-delimiter='/'`
+    When I run `wp search-replace 'https://example.jp/' 'https://example.com/' wp_options --regex-delimiter='/'`
     Then STDOUT should be a table containing rows:
       | Table      | Column       | Replacements | Type       |
       | wp_options | option_value | 2            | PHP        |
@@ -393,13 +393,13 @@ Feature: Do global search/replace
     When I run `wp option get home`
     Then STDOUT should be:
       """
-      http://example.com
+      https://example.com
       """
 
-    When I try `wp search-replace 'HTTP://EXAMPLE.COM' 'http://example.jp/' wp_options --regex --regex-flags=i --regex-delimiter='1'`
+    When I try `wp search-replace 'HTTPS://EXAMPLE.COM' 'https://example.jp/' wp_options --regex --regex-flags=i --regex-delimiter='1'`
     Then STDERR should be:
       """
-      Error: The regex '1HTTP://EXAMPLE.COM1i' fails.
+      Error: The regex '1HTTPS://EXAMPLE.COM1i' fails.
       preg_match(): Delimiter must not be alphanumeric or backslash.
       """
     And the return code should be 1

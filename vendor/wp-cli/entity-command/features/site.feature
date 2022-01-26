@@ -20,7 +20,7 @@ Feature: Manage sites in a multisite installation
     When I run `wp site list --fields=blog_id,url`
     Then STDOUT should be a table containing rows:
       | blog_id | url                       |
-      | 1       | http://example.com/       |
+      | 1       | https://example.com/       |
       | 2       | http://first.example.com/ |
 
     When I run `wp site list --format=ids`
@@ -44,18 +44,20 @@ Feature: Manage sites in a multisite installation
     When I run `wp site create --slug=first --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {SITE_ID}
+    And I run `wp site list --site__in={SITE_ID} --field=url | sed -e's,^\(.*\)://.*,\1,g'`
+    And save STDOUT as {SCHEME}
 
     When I run `wp site list --fields=blog_id,url`
     Then STDOUT should be a table containing rows:
-      | blog_id | url                       |
-      | 1       | http://example.com/       |
-      | 2       | http://example.com/first/ |
+      | blog_id | url                           |
+      | 1       | https://example.com/          |
+      | 2       | {SCHEME}://example.com/first/ |
 
     When I run `wp site list --field=url`
     Then STDOUT should be:
       """
-      http://example.com/
-      http://example.com/first/
+      https://example.com/
+      {SCHEME}://example.com/first/
       """
 
     When I try `wp site delete 1`
@@ -69,7 +71,7 @@ Feature: Manage sites in a multisite installation
     When I run `wp site delete {SITE_ID} --yes`
     Then STDOUT should be:
       """
-      Success: The site at 'http://example.com/first/' was deleted.
+      Success: The site at '{SCHEME}://example.com/first/' was deleted.
       """
 
     When I try the previous command again
@@ -81,32 +83,38 @@ Feature: Manage sites in a multisite installation
     When I run `wp site create --slug=first --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {SITE_ID}
+    And I run `wp site list --site__in={SITE_ID} --field=url | sed -e's,^\(.*\)://.*,\1,g'`
+    And save STDOUT as {SCHEME}
 
     When I run `wp site list --fields=blog_id,url`
     Then STDOUT should be a table containing rows:
-      | blog_id | url                       |
-      | 1       | http://example.com/       |
-      | 2       | http://example.com/first/ |
+      | blog_id | url                           |
+      | 1       | https://example.com/          |
+      | 2       | {SCHEME}://example.com/first/ |
 
     When I run `wp site list --field=url --blog_id=2`
     Then STDOUT should be:
       """
-      http://example.com/first/
+      {SCHEME}://example.com/first/
       """
 
   Scenario: Delete a site by slug
     Given a WP multisite install
 
     When I run `wp site create --slug=first`
-    Then STDOUT should be:
+    Then STDOUT should contain:
       """
-      Success: Site 2 created: http://example.com/first/
+      Success: Site 2 created: http
+      """
+    And STDOUT should contain:
+      """
+      ://example.com/first/
       """
 
     When I run `wp site delete --slug=first --yes`
-    Then STDOUT should be:
+    Then STDOUT should contain:
       """
-      Success: The site at 'http://example.com/first/' was deleted.
+      ://example.com/first/' was deleted.
       """
 
     When I try the previous command again
@@ -118,22 +126,26 @@ Feature: Manage sites in a multisite installation
     When I run `wp site create --slug=first --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {SITE_ID}
+    And I run `wp site list --site__in={SITE_ID} --field=url | sed -e's,^\(.*\)://.*,\1,g'`
+    And save STDOUT as {SCHEME}
 
     When I run `wp site url {SITE_ID}`
     Then STDOUT should be:
       """
-      http://example.com/first/
+      {SCHEME}://example.com/first/
       """
 
     When I run `wp site create --slug=second --porcelain`
     Then STDOUT should be a number
     And save STDOUT as {SECOND_ID}
+    And I run `wp site list --site__in={SECOND_ID} --field=url | sed -e's,^\(.*\)://.*,\1,g'`
+    And save STDOUT as {SECOND_SCHEME}
 
     When I run `wp site url {SECOND_ID} {SITE_ID}`
     Then STDOUT should be:
       """
-      http://example.com/second/
-      http://example.com/first/
+      {SECOND_SCHEME}://example.com/second/
+      {SCHEME}://example.com/first/
       """
 
   Scenario: Archive/unarchive a site
@@ -413,9 +425,9 @@ Feature: Manage sites in a multisite installation
       """
 
     When I run `wp --url=example.com/first option get home`
-    Then STDOUT should be:
+    Then STDOUT should contain:
       """
-      http://example.com/first
+      ://example.com/first
       """
 
   Scenario: Create site with title containing slash

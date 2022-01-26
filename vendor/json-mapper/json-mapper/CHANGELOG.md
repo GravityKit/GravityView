@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.10.0] - 2022-01-16
+### Added
+- Support was added for strict scalar casting [PR#119](https://github.com/JsonMapper/JsonMapper/pull/119) Thanks to [template-provider](https://github.com/template-provider) for reporting the issue
+- All **Map** functions now return the mapped object(s) and uses [Psalm](https://psalm.dev) to assist with autocompletion. [PR#122](https://github.com/JsonMapper/JsonMapper/pull/122)
+### Fixed
+- Replace duplicates in middleware with object wrapper calls. [PR#123](https://github.com/JsonMapper/JsonMapper/pull/123)
+- Correct code style issues. [PR#124](https://github.com/JsonMapper/JsonMapper/pull/124)
+- Return empty array for union type with an array type when value is an empty array. [PR#125](https://github.com/JsonMapper/JsonMapper/pull/125) Thanks to [template-provider](https://github.com/template-provider) for reporting the issue
+
 ## [2.9.1] - 2021-11-12
 ### Fixed
 - Namespace resolving improved to include imports from parent classes [PR#117](https://github.com/JsonMapper/JsonMapper/pull/117) Thanks to [template-provider](https://github.com/template-provider) for reporting the issue

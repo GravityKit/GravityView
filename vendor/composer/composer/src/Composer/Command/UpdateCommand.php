@@ -14,9 +14,11 @@ namespace Composer\Command;
 
 use Composer\Composer;
 use Composer\DependencyResolver\Request;
+use Composer\Filter\PlatformRequirementFilter\PlatformRequirementFilterFactory;
 use Composer\Installer;
 use Composer\IO\IOInterface;
 use Composer\Package\Loader\RootPackageLoader;
+use Composer\Pcre\Preg;
 use Composer\Plugin\CommandEvent;
 use Composer\Plugin\PluginEvents;
 use Composer\Package\Version\VersionParser;
@@ -57,7 +59,6 @@ class UpdateCommand extends BaseCommand
                 new InputOption('lock', null, InputOption::VALUE_NONE, 'Overwrites the lock file hash to suppress warning about the lock file being out of date without updating package versions. Package metadata like mirrors and URLs are updated if they changed.'),
                 new InputOption('no-install', null, InputOption::VALUE_NONE, 'Skip the install step after updating the composer.lock file.'),
                 new InputOption('no-autoloader', null, InputOption::VALUE_NONE, 'Skips autoloader generation'),
-                new InputOption('no-scripts', null, InputOption::VALUE_NONE, 'Skips the execution of all scripts defined in composer.json file.'),
                 new InputOption('no-suggest', null, InputOption::VALUE_NONE, 'DEPRECATED: This flag does not exist anymore.'),
                 new InputOption('no-progress', null, InputOption::VALUE_NONE, 'Do not output download progress.'),
                 new InputOption('with-dependencies', 'w', InputOption::VALUE_NONE, 'Update also dependencies of packages in the argument list, except those which are root requirements.'),
@@ -122,8 +123,7 @@ EOT
             $io->writeError('<warning>You are using the deprecated option "--no-suggest". It has no effect and will break in Composer 3.</warning>');
         }
 
-        $composer = $this->getComposer(true, $input->getOption('no-plugins'));
-        $composer->getEventDispatcher()->setRunScripts(!$input->getOption('no-scripts'));
+        $composer = $this->getComposer(true, $input->getOption('no-plugins'), $input->getOption('no-scripts'));
 
         if (!HttpDownloader::isCurlEnabled()) {
             $io->writeError('<warning>Composer is operating significantly slower than normal because you do not have the PHP curl extension enabled.</warning>');
@@ -135,7 +135,7 @@ EOT
         // extract --with shorthands from the allowlist
         if ($packages) {
             $allowlistPackagesWithRequirements = array_filter($packages, function ($pkg) {
-                return preg_match('{\S+[ =:]\S+}', $pkg) > 0;
+                return Preg::isMatch('{\S+[ =:]\S+}', $pkg);
             });
             foreach ($this->formatRequirements($allowlistPackagesWithRequirements) as $package => $constraint) {
                 $reqs[$package] = $constraint;
@@ -143,7 +143,7 @@ EOT
 
             // replace the foo/bar:req by foo/bar in the allowlist
             foreach ($allowlistPackagesWithRequirements as $package) {
-                $packageName = preg_replace('{^([^ =:]+)[ =:].*$}', '$1', $package);
+                $packageName = Preg::replace('{^([^ =:]+)[ =:].*$}', '$1', $package);
                 $index = array_search($package, $packages);
                 $packages[$index] = $packageName;
             }
@@ -236,7 +236,7 @@ EOT
             ->setUpdateMirrors($updateMirrors)
             ->setUpdateAllowList($packages)
             ->setUpdateAllowTransitiveDependencies($updateAllowTransitiveDependencies)
-            ->setIgnorePlatformRequirements($ignorePlatformReqs)
+            ->setPlatformRequirementFilter(PlatformRequirementFilterFactory::fromBoolOrList($ignorePlatformReqs))
             ->setPreferStable($input->getOption('prefer-stable'))
             ->setPreferLowest($input->getOption('prefer-lowest'))
         ;

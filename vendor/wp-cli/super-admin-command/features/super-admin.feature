@@ -2,6 +2,7 @@ Feature: Manage super admins associated with a multisite instance
 
   Scenario: Add, list, and remove super admins.
     Given a WP multisite installation
+
     When I run `wp user create superadmin superadmin@example.com`
     And I run `wp super-admin list`
     Then STDOUT should be:
@@ -232,3 +233,103 @@ Feature: Manage super admins associated with a multisite instance
 
     When I run `wp super-admin list`
     Then STDERR should be empty
+
+  Scenario: Hooks should be firing as expected
+    Given a WP multisite installation
+    And a wp-content/mu-plugins/test-hooks.php file:
+      """
+      <?php
+      add_action( 'grant_super_admin', static function () {
+        WP_CLI::log( 'grant_super_admin hook was fired.' );
+      });
+      add_action( 'granted_super_admin', static function () {
+        WP_CLI::log( 'granted_super_admin hook was fired.' );
+      });
+      add_action( 'revoke_super_admin', static function () {
+        WP_CLI::log( 'revoke_super_admin hook was fired.' );
+      });
+      add_action( 'revoked_super_admin', static function () {
+        WP_CLI::log( 'revoked_super_admin hook was fired.' );
+      });
+      """
+
+    When I run `wp user create superadmin superadmin@example.com`
+    And I run `wp super-admin add superadmin`
+    Then STDOUT should contain:
+      """
+      grant_super_admin hook was fired.
+      """
+    And STDOUT should contain:
+      """
+      granted_super_admin hook was fired.
+      """
+
+    When I try `wp super-admin add superadmin`
+    Then STDOUT should contain:
+      """
+      grant_super_admin hook was fired.
+      """
+    And STDOUT should not contain:
+      """
+      granted_super_admin hook was fired.
+      """
+
+    When I run `wp super-admin remove admin`
+    Then STDOUT should contain:
+      """
+      revoke_super_admin hook was fired.
+      """
+    And STDOUT should contain:
+      """
+      revoked_super_admin hook was fired.
+      """
+
+    When I try `wp super-admin add noadmin`
+    Then STDOUT should not contain:
+      """
+      grant_super_admin hook was fired.
+      """
+    And STDOUT should not contain:
+      """
+      granted_super_admin hook was fired.
+      """
+
+    When I try `wp super-admin add admin noadmin`
+    Then STDOUT should contain:
+      """
+      grant_super_admin hook was fired.
+      """
+    And STDOUT should not contain:
+      """
+      granted_super_admin hook was fired.
+      """
+
+    When I try `wp super-admin remove noadmin`
+    Then STDOUT should not contain:
+      """
+      revoke_super_admin hook was fired.
+      """
+    And STDOUT should not contain:
+      """
+      revoked_super_admin hook was fired.
+      """
+
+    When I try `wp super-admin remove admin admin@example.com noadmin superadmin`
+    Then STDOUT should contain:
+      """
+      revoke_super_admin hook was fired.
+      """
+    And STDOUT should contain:
+      """
+      revoked_super_admin hook was fired.
+      """
+
+    When I try `wp super-admin remove superadmin`
+    Then STDOUT should contain:
+      """
+      revoke_super_admin hook was fired.
+      """
+    And STDOUT should not contain:
+      """
+      revoked_super_admin hook was fired.
+      """

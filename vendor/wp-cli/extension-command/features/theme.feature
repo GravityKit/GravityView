@@ -85,6 +85,13 @@ Feature: Manage WordPress themes
     When I run `wp theme activate p2`
     Then STDOUT should not be empty
 
+    # Ensure no other themes interfere with update.
+    When I run `wp theme list --status=inactive --field=name | xargs wp theme delete`
+    Then STDOUT should contain:
+      """
+      Success: Deleted
+      """
+
     When I run `wp theme install p2 --version=1.4.1 --force`
     Then STDOUT should not be empty
 
@@ -120,19 +127,29 @@ Feature: Manage WordPress themes
 
     When I run `wp theme install p2 --version=1.4.1 --force`
     Then STDOUT should contain:
-      """"
+      """
       Downloading install
-      """"
+      """
     And STDOUT should contain:
-      """"
+      """
       package from https://downloads.wordpress.org/theme/p2.1.4.1.zip...
-      """"
+      """
+
+    When I run `wp theme activate p2`
+    Then STDOUT should not be empty
+
+    # Ensure no other themes interfere with update.
+    When I run `wp theme list --status=inactive --field=name | xargs wp theme delete`
+    Then STDOUT should contain:
+      """
+      Success: Deleted
+      """
 
     When I run `wp theme status p2`
     Then STDOUT should contain:
-      """"
+      """
       Update available
-      """"
+      """
 
     When I run `wp theme update --all --exclude=p2 | grep 'Skipped'`
     Then STDOUT should contain:
@@ -142,9 +159,9 @@ Feature: Manage WordPress themes
 
     When I run `wp theme status p2`
     Then STDOUT should contain:
-      """"
+      """
       Update available
-      """"
+      """
 
   Scenario: Get the path of an installed theme
     Given a WP install
@@ -177,6 +194,31 @@ Feature: Manage WordPress themes
       """
     And STDOUT should be empty
     And the return code should be 0
+
+  Scenario: Flag `--skip-update-check` skips update check when running `wp theme list`
+    Given a WP install
+
+    When I run `wp theme install astra --version=1.0.0`
+    Then STDOUT should contain:
+      """
+      Theme installed successfully.
+      """
+
+    When I run `wp theme list --fields=name,status,update`
+    Then STDOUT should be a table containing rows:
+      | name  | status   | update    |
+      | astra | inactive | available |
+
+    When I run `wp transient delete update_themes --network`
+    Then STDOUT should be:
+      """
+      Success: Transient deleted.
+      """
+
+    When I run `wp theme list --fields=name,status,update --skip-update-check`
+    Then STDOUT should be a table containing rows:
+      | name  | status   | update |
+      | astra | inactive | none   |
 
   Scenario: Install a theme when the theme directory doesn't yet exist
     Given a WP install

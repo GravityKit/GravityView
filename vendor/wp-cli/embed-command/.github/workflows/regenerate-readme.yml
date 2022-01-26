@@ -8,7 +8,7 @@ on:
     paths-ignore:
       - 'features/**'
       - 'README.md'
-      
+
 # Cancels all previous workflow runs for the same branch that have not yet completed.
 concurrency:
   # The concurrency group contains the workflow name and the branch name.
@@ -30,6 +30,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check existence of composer.json file
         id: check_composer_file
@@ -39,7 +41,7 @@ jobs:
 
       - name: Install Composer dependencies & cache dependencies
         if: steps.check_composer_file.outputs.files_exists == 'true'
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
         env:
           COMPOSER_ROOT_VERSION: 'dev-master'
 

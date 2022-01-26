@@ -52,6 +52,6 @@ class UseNodeVisitorTest extends TestCase
         $imports = $visitor->getImports();
 
         self::assertNull($result);
-        self::assertEquals([New Import(ComplexObject::class, null), new Import(SimpleObject::class, null)], $imports);
+        self::assertEquals([new Import(ComplexObject::class, null), new Import(SimpleObject::class, null)], $imports);
     }
 }

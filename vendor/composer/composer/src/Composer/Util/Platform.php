@@ -12,6 +12,8 @@
 
 namespace Composer\Util;
 
+use Composer\Pcre\Preg;
+
 /**
  * Platform helper for uniform platform-specific tests.
  *
@@ -23,6 +25,24 @@ class Platform
     private static $isVirtualBoxGuest = null;
     /** @var ?bool */
     private static $isWindowsSubsystemForLinux = null;
+
+    /**
+     * getenv() equivalent but reads from the runtime global variables first
+     *
+     * @param  string $name
+     * @return string|false
+     */
+    public static function getEnv($name)
+    {
+        if (array_key_exists($name, $_SERVER)) {
+            return (string) $_SERVER[$name];
+        }
+        if (array_key_exists($name, $_ENV)) {
+            return (string) $_ENV[$name];
+        }
+
+        return getenv($name);
+    }
 
     /**
      * putenv() equivalent but updates the runtime global variables too
@@ -58,17 +78,17 @@ class Platform
      */
     public static function expandPath($path)
     {
-        if (preg_match('#^~[\\/]#', $path)) {
+        if (Preg::isMatch('#^~[\\/]#', $path)) {
             return self::getUserDirectory() . substr($path, 1);
         }
 
-        return preg_replace_callback('#^(\$|(?P<percent>%))(?P<var>\w++)(?(percent)%)(?P<path>.*)#', function ($matches) {
+        return Preg::replaceCallback('#^(\$|(?P<percent>%))(?P<var>\w++)(?(percent)%)(?P<path>.*)#', function ($matches) {
             // Treat HOME as an alias for USERPROFILE on Windows for legacy reasons
             if (Platform::isWindows() && $matches['var'] == 'HOME') {
-                return (getenv('HOME') ?: getenv('USERPROFILE')) . $matches['path'];
+                return (Platform::getEnv('HOME') ?: Platform::getEnv('USERPROFILE')) . $matches['path'];
             }
 
-            return getenv($matches['var']) . $matches['path'];
+            return Platform::getEnv($matches['var']) . $matches['path'];
         }, $path);
     }
 
@@ -78,11 +98,11 @@ class Platform
      */
     public static function getUserDirectory()
     {
-        if (false !== ($home = getenv('HOME'))) {
+        if (false !== ($home = self::getEnv('HOME'))) {
             return $home;
         }
 
-        if (self::isWindows() && false !== ($home = getenv('USERPROFILE'))) {
+        if (self::isWindows() && false !== ($home = self::getEnv('USERPROFILE'))) {
             return $home;
         }
 
@@ -159,7 +179,7 @@ class Platform
 
         // detect msysgit/mingw and assume this is a tty because detection
         // does not work correctly, see https://github.com/composer/composer/issues/9690
-        if (in_array(strtoupper(getenv('MSYSTEM') ?: ''), array('MINGW32', 'MINGW64'), true)) {
+        if (in_array(strtoupper(self::getEnv('MSYSTEM') ?: ''), array('MINGW32', 'MINGW64'), true)) {
             return true;
         }
 
@@ -211,7 +231,7 @@ class Platform
                 }
             }
 
-            if (getenv('COMPOSER_RUNTIME_ENV') === 'virtualbox') {
+            if (self::getEnv('COMPOSER_RUNTIME_ENV') === 'virtualbox') {
                 return self::$isVirtualBoxGuest = true;
             }
 

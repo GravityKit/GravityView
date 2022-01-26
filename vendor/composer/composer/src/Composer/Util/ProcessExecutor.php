@@ -13,6 +13,7 @@
 namespace Composer\Util;
 
 use Composer\IO\IOInterface;
+use Composer\Pcre\Preg;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\RuntimeException;
 use React\Promise\Promise;
@@ -101,18 +102,7 @@ class ProcessExecutor
      */
     private function doExecute($command, $cwd, $tty, &$output = null)
     {
-        if ($this->io && $this->io->isDebug()) {
-            $safeCommand = preg_replace_callback('{://(?P<user>[^:/\s]+):(?P<password>[^@\s/]+)@}i', function ($m) {
-                // if the username looks like a long (12char+) hex string, or a modern github token (e.g. ghp_xxx) we obfuscate that
-                if (preg_match('{^([a-f0-9]{12,}|gh[a-z]_[a-zA-Z0-9_]+)$}', $m['user'])) {
-                    return '://***:***@';
-                }
-
-                return '://'.$m['user'].':***@';
-            }, $command);
-            $safeCommand = preg_replace("{--password (.*[^\\\\]\') }", '--password \'***\' ', $safeCommand);
-            $this->io->writeError('Executing command ('.($cwd ?: 'CWD').'): '.$safeCommand);
-        }
+        $this->outputCommandRun($command, $cwd, false);
 
         // TODO in 2.2, these two checks can be dropped as Symfony 4+ supports them out of the box
         // make sure that null translate to the proper directory in case the dir is a symlink
@@ -248,17 +238,7 @@ class ProcessExecutor
         $command = $job['command'];
         $cwd = $job['cwd'];
 
-        if ($this->io && $this->io->isDebug()) {
-            $safeCommand = preg_replace_callback('{://(?P<user>[^:/\s]+):(?P<password>[^@\s/]+)@}i', function ($m) {
-                if (preg_match('{^[a-f0-9]{12,}$}', $m['user'])) {
-                    return '://***:***@';
-                }
-
-                return '://'.$m['user'].':***@';
-            }, $command);
-            $safeCommand = preg_replace("{--password (.*[^\\\\]\') }", '--password \'***\' ', $safeCommand);
-            $this->io->writeError('Executing async command ('.($cwd ?: 'CWD').'): '.$safeCommand);
-        }
+        $this->outputCommandRun($command, $cwd, true);
 
         // TODO in 2.2, these two checks can be dropped as Symfony 4+ supports them out of the box
         // make sure that null translate to the proper directory in case the dir is a symlink
@@ -341,6 +321,8 @@ class ProcessExecutor
                 if (!$job['process']->isRunning()) {
                     call_user_func($job['resolve'], $job['process']);
                 }
+
+                $job['process']->checkTimeout();
             }
 
             if ($this->runningJobs < $this->maxJobs) {
@@ -384,7 +366,7 @@ class ProcessExecutor
     {
         $output = trim((string) $output);
 
-        return $output === '' ? array() : preg_split('{\r?\n}', $output);
+        return $output === '' ? array() : Preg::split('{\r?\n}', $output);
     }
 
     /**
@@ -454,6 +436,33 @@ class ProcessExecutor
     }
 
     /**
+     * @param string  $command
+     * @param ?string $cwd
+     * @param bool    $async
+     * @return void
+     */
+    private function outputCommandRun($command, $cwd, $async)
+    {
+        if (null === $this->io || !$this->io->isDebug()) {
+            return;
+        }
+
+        $safeCommand = Preg::replaceCallback('{://(?P<user>[^:/\s]+):(?P<password>[^@\s/]+)@}i', function ($m) {
+            // if the username looks like a long (12char+) hex string, or a modern github token (e.g. ghp_xxx) we obfuscate that
+            if (Preg::isMatch('{^([a-f0-9]{12,}|gh[a-z]_[a-zA-Z0-9_]+)$}', $m['user'])) {
+                return '://***:***@';
+            }
+            if (Preg::isMatch('{^[a-f0-9]{12,}$}', $m['user'])) {
+                return '://***:***@';
+            }
+
+            return '://'.$m['user'].':***@';
+        }, $command);
+        $safeCommand = Preg::replace("{--password (.*[^\\\\]\') }", '--password \'***\' ', $safeCommand);
+        $this->io->writeError('Executing'.($async ? ' async' : '').' command ('.($cwd ?: 'CWD').'): '.$safeCommand);
+    }
+
+    /**
      * Escapes a string to be used as a shell argument for Symfony Process.
      *
      * This method expects cmd.exe to be started with the /V:ON option, which
@@ -482,20 +491,20 @@ class ProcessExecutor
         $argument = strtr($argument, "\n", ' ');
 
         $quote = strpbrk($argument, " \t") !== false;
-        $argument = preg_replace('/(\\\\*)"/', '$1$1\\"', $argument, -1, $dquotes);
-        $meta = $dquotes || preg_match('/%[^%]+%|![^!]+!/', $argument);
+        $argument = Preg::replace('/(\\\\*)"/', '$1$1\\"', $argument, -1, $dquotes);
+        $meta = $dquotes || Preg::isMatch('/%[^%]+%|![^!]+!/', $argument);
 
         if (!$meta && !$quote) {
             $quote = strpbrk($argument, '^&|<>()') !== false;
         }
 
         if ($quote) {
-            $argument = '"'.preg_replace('/(\\\\*)$/', '$1$1', $argument).'"';
+            $argument = '"'.Preg::replace('/(\\\\*)$/', '$1$1', $argument).'"';
         }
 
         if ($meta) {
-            $argument = preg_replace('/(["^&|<>()%])/', '^$1', $argument);
-            $argument = preg_replace('/(!)/', '^^$1', $argument);
+            $argument = Preg::replace('/(["^&|<>()%])/', '^$1', $argument);
+            $argument = Preg::replace('/(!)/', '^^$1', $argument);
         }
 
         return $argument;

@@ -40,15 +40,15 @@ use WP_CLI\PackageManagerEventSubscriber;
  *
  *     # List installed packages
  *     $ wp package list
- *     +-----------------------+------------------------------------------+---------+------------+
- *     | name                  | description                              | authors | version    |
- *     +-----------------------+------------------------------------------+---------+------------+
- *     | wp-cli/server-command | Start a development server for WordPress |         | dev-master |
- *     +-----------------------+------------------------------------------+---------+------------+
+ *     +-----------------------+------------------------------------------+---------+----------+
+ *     | name                  | description                              | authors | version  |
+ *     +-----------------------+------------------------------------------+---------+----------+
+ *     | wp-cli/server-command | Start a development server for WordPress |         | dev-main |
+ *     +-----------------------+------------------------------------------+---------+----------+
  *
  *     # Install the latest development version of the package
  *     $ wp package install wp-cli/server-command
- *     Installing package wp-cli/server-command (dev-master)
+ *     Installing package wp-cli/server-command (dev-main)
  *     Updating /home/person/.wp-cli/packages/composer.json to require the package...
  *     Using Composer to install the package...
  *     ---
@@ -79,6 +79,8 @@ class Package_Command extends WP_CLI_Command {
 
 	const PACKAGE_INDEX_URL = 'https://wp-cli.org/package-index/';
 	const SSL_CERTIFICATE   = '/rmccue/requests/library/Requests/Transport/cacert.pem';
+
+	const DEFAULT_DEV_BRANCH_CONSTRAINTS = 'dev-main || dev-master || dev-trunk';
 
 	private $version_selector = false;
 
@@ -145,17 +147,17 @@ class Package_Command extends WP_CLI_Command {
 	 *       name: 10up/mu-migration
 	 *       description: A set of WP-CLI commands to support the migration of single WordPress instances to multisite
 	 *       authors: Nícholas André
-	 *       version: dev-master, dev-develop
+	 *       version: dev-main, dev-develop
 	 *     aaemnnosttv/wp-cli-dotenv-command:
 	 *       name: aaemnnosttv/wp-cli-dotenv-command
 	 *       description: Dotenv commands for WP-CLI
 	 *       authors: Evan Mattson
-	 *       version: v0.1, v0.1-beta.1, v0.2, dev-master, dev-dev, dev-develop, dev-tests/behat
+	 *       version: v0.1, v0.1-beta.1, v0.2, dev-main, dev-dev, dev-develop, dev-tests/behat
 	 *     aaemnnosttv/wp-cli-http-command:
 	 *       name: aaemnnosttv/wp-cli-http-command
 	 *       description: WP-CLI command for using the WordPress HTTP API
 	 *       authors: Evan Mattson
-	 *       version: dev-master
+	 *       version: dev-main
 	 */
 	public function browse( $_, $assoc_args ) {
 		$this->set_composer_auth_env_var();
@@ -218,12 +220,15 @@ class Package_Command extends WP_CLI_Command {
 		$this->set_composer_auth_env_var();
 		$git_package = false;
 		$dir_package = false;
-		$version     = 'dev-master';
+		$version     = '';
 		if ( $this->is_git_repository( $package_name ) ) {
+			if ( '' === $version ) {
+				$version = "dev-{$this->get_github_default_branch( $package_name, $insecure )}";
+			}
 			$git_package = $package_name;
-			preg_match( '#([^:\/]+\/[^\/]+)\.git#', $package_name, $matches );
-			if ( ! empty( $matches[1] ) ) {
-				$package_name = $this->check_git_package_name( $matches[1], $package_name, '', $insecure );
+			$matches     = [];
+			if ( preg_match( '#([^:\/]+\/[^\/]+)\.git#', $package_name, $matches ) ) {
+				$package_name = $this->check_git_package_name( $matches[1], $package_name, $version, $insecure );
 			} else {
 				WP_CLI::error( "Couldn't parse package name from expected path '<name>/<package>'." );
 			}
@@ -291,6 +296,11 @@ class Package_Command extends WP_CLI_Command {
 			if ( is_string( $package ) ) {
 				if ( $this->is_git_repository( $package ) ) {
 					$git_package = $package;
+
+					if ( '' === $version ) {
+						$version = "dev-{$this->get_github_default_branch( $package_name, $insecure )}";
+					}
+
 					if ( '@stable' === $version ) {
 						$tag     = $this->get_github_latest_release_tag( $package_name, $insecure );
 						$version = $this->guess_version_constraint_from_tag( $tag );
@@ -307,6 +317,10 @@ class Package_Command extends WP_CLI_Command {
 			$package_name = function_exists( 'mb_strtolower' )
 				? mb_strtolower( $package_name )
 				: strtolower( $package_name );
+		}
+
+		if ( '' === $version ) {
+			$version = self::DEFAULT_DEV_BRANCH_CONSTRAINTS;
 		}
 
 		WP_CLI::log( sprintf( 'Installing package %s (%s)', $package_name, $version ) );
@@ -434,11 +448,11 @@ class Package_Command extends WP_CLI_Command {
 	 * ## EXAMPLES
 	 *
 	 *     $ wp package list
-	 *     +-----------------------+------------------------------------------+---------+------------+
-	 *     | name                  | description                              | authors | version    |
-	 *     +-----------------------+------------------------------------------+---------+------------+
-	 *     | wp-cli/server-command | Start a development server for WordPress |         | dev-master |
-	 *     +-----------------------+------------------------------------------+---------+------------+
+	 *     +-----------------------+------------------------------------------+---------+----------+
+	 *     | name                  | description                              | authors | version  |
+	 *     +-----------------------+------------------------------------------+---------+----------+
+	 *     | wp-cli/server-command | Start a development server for WordPress |         | dev-main |
+	 *     +-----------------------+------------------------------------------+---------+----------+
 	 *
 	 * @subcommand list
 	 */
@@ -537,6 +551,9 @@ class Package_Command extends WP_CLI_Command {
 	 * <name>
 	 * : Name of the package to uninstall.
 	 *
+	 * [--insecure]
+	 * : Retry downloads without certificate validation if TLS handshake fails. Note: This makes the request vulnerable to a MITM attack.
+	 *
 	 * ## EXAMPLES
 	 *
 	 *     $ wp package uninstall wp-cli/server-command
@@ -545,15 +562,26 @@ class Package_Command extends WP_CLI_Command {
 	 *     Regenerating Composer autoload.
 	 *     Success: Uninstalled package.
 	 */
-	public function uninstall( $args ) {
+	public function uninstall( $args, $assoc_args ) {
 		list( $package_name ) = $args;
+
+		$insecure = (bool) Utils\get_flag_value( $assoc_args, 'insecure', false );
 
 		$this->set_composer_auth_env_var();
 		$package = $this->get_installed_package_by_name( $package_name );
 		if ( false === $package ) {
-			WP_CLI::error( 'Package not installed.' );
+			$package_name = $this->get_package_by_shortened_identifier( $package_name );
+			if ( false === $package_name ) {
+				WP_CLI::error( 'Package not installed.' );
+			}
+			$version = "dev-{$this->get_github_default_branch( $package_name, $insecure )}";
+			$matches = [];
+			if ( preg_match( '#^(?:https?://github\.com/|git@github\.com:)(?<repo_name>.*?).git$#', $package_name, $matches ) ) {
+				$package_name = $this->check_git_package_name( $matches['repo_name'], $package_name, $version, $insecure );
+			}
+		} else {
+			$package_name = $package->getPrettyName(); // Make sure package name is what's in composer.json.
 		}
-		$package_name = $package->getPrettyName(); // Make sure package name is what's in composer.json.
 
 		// Read the WP-CLI packages composer.json and do some initial error checking.
 		list( $json_path, $composer_backup, $composer_backup_decoded ) = $this->get_composer_json_path_backup_decoded();
@@ -563,7 +591,7 @@ class Package_Command extends WP_CLI_Command {
 		$this->register_revert_shutdown_function( $json_path, $composer_backup, $revert );
 
 		// Remove the 'require' from composer.json.
-		WP_CLI::log( sprintf( 'Removing require statement from %s', $json_path ) );
+		WP_CLI::log( sprintf( 'Removing require statement for package \'%s\' from %s', $package_name, $json_path ) );
 		$manipulator = new JsonManipulator( $composer_backup );
 		$manipulator->removeSubNode( 'require', $package_name, true /*caseInsensitive*/ );
 
@@ -778,7 +806,8 @@ class Package_Command extends WP_CLI_Command {
 	 * and then falls back to the corresponding GitHub URL.
 	 *
 	 * @param string $package_name Name of the package to get.
-	 * @param bool   $insecure Whether to insecurely retry downloads that failed TLS handshake.
+	 * @param bool   $insecure     Optional. Whether to insecurely retry downloads that failed TLS handshake. Defaults
+	 *                             to false.
 	 */
 	private function get_package_by_shortened_identifier( $package_name, $insecure = false ) {
 		// Check the package index first, so we don't break existing behavior.
@@ -890,7 +919,7 @@ class Package_Command extends WP_CLI_Command {
 			WP_CLI::error( sprintf( "Invalid package: no name in composer.json file '%s'.", $composer_file ) );
 		}
 		$package_name = $composer_data['name'];
-		$version      = 'dev-master';
+		$version      = self::DEFAULT_DEV_BRANCH_CONSTRAINTS;
 		if ( ! empty( $composer_data['version'] ) ) {
 			$version = $composer_data['version'];
 		}
@@ -1067,20 +1096,29 @@ class Package_Command extends WP_CLI_Command {
 	 * Checks that `$package_name` matches the name in composer.json at Github.com, and return corrected value if not.
 	 *
 	 * @param string $package_name Package name to check.
-	 * @param string $version      Optional. Package version. Default 'master'.
-	 * @param bool   $insecure     Optional. Whether to insecurely retry downloads that failed TLS handshake.
+	 * @param string $version      Optional. Package version. Defaults to empty string.
+	 * @param bool   $insecure     Optional. Whether to insecurely retry downloads that failed TLS handshake. Defaults
+	 *                             to false.
 	 */
 	private function check_github_package_name( $package_name, $version = '', $insecure = false ) {
+		$github_token = getenv( 'GITHUB_TOKEN' ); // Use GITHUB_TOKEN if available to avoid authorization failures or rate-limiting.
+		$headers      = $github_token ? [ 'Authorization' => 'token ' . $github_token ] : [];
+		$options      = [ 'insecure' => $insecure ];
+
 		// Generate raw git URL of composer.json file.
-		$raw_content_url = 'https://raw.githubusercontent.com/' . $package_name . '/' . $this->get_raw_git_version( $version ) . '/composer.json';
-		$github_token    = getenv( 'GITHUB_TOKEN' ); // Use GITHUB_TOKEN if available to avoid authorization failures or rate-limiting.
-		$headers         = $github_token ? [ 'Authorization' => 'token ' . $github_token ] : [];
-		$options         = [ 'insecure' => $insecure ];
+		$raw_content_url = "https://raw.githubusercontent.com/{$package_name}/{$this->get_raw_git_version( $version )}/composer.json";
 
 		$response = Utils\http_request( 'GET', $raw_content_url, null /*data*/, $headers, $options );
 		if ( 20 !== (int) substr( $response->status_code, 0, 2 ) ) {
 			// Could not get composer.json. Possibly private so warn and return best guess from input (always xxx/xxx).
-			WP_CLI::warning( sprintf( "Couldn't download composer.json file from '%s' (HTTP code %d). Presuming package name is '%s'.", $raw_content_url, $response->status_code, $package_name ) );
+			WP_CLI::warning(
+				sprintf(
+					"Couldn't download composer.json file from '%s' (HTTP code %d). Presuming package name is '%s'.",
+					$raw_content_url,
+					$response->status_code,
+					$package_name
+				)
+			);
 			return $package_name;
 		}
 
@@ -1101,6 +1139,7 @@ class Package_Command extends WP_CLI_Command {
 			WP_CLI::warning( sprintf( "Package name mismatch...Updating from git name '%s' to composer.json name '%s'.", $package_name, $package_name_on_repo ) );
 			$package_name = $package_name_on_repo;
 		}
+
 		return $package_name;
 	}
 
@@ -1108,9 +1147,10 @@ class Package_Command extends WP_CLI_Command {
 	 * Checks that `$package_name` matches the name in composer.json at the corresponding upstream repository, and return corrected value if not.
 	 *
 	 * @param string $package_name Package name to check.
-	 * @param string $urrl         URL to fetch the package from.
-	 * @param string $version      Optional. Package version. Default 'master'.
-	 * @param bool   $insecure     Optional. Whether to insecurely retry downloads that failed TLS handshake.
+	 * @param string $url          URL to fetch the package from.
+	 * @param string $version      Optional. Package version. Defaults to empty string.
+	 * @param bool   $insecure     Optional. Whether to insecurely retry downloads that failed TLS handshake. Defaults
+	 *                             to false.
 	 */
 	private function check_git_package_name( $package_name, $url = '', $version = '', $insecure = false ) {
 		if ( $url && ( strpos( $url, '://gitlab.com/' ) !== false ) || ( strpos( $url, 'git@gitlab.com:' ) !== false ) ) {
@@ -1124,8 +1164,9 @@ class Package_Command extends WP_CLI_Command {
 	 * Checks that `$package_name` matches the name in composer.json at GitLab.com, and return corrected value if not.
 	 *
 	 * @param string $package_name Package name to check.
-	 * @param string $version      Optional. Package version. Default 'master'.
-	 * @param bool   $insecure     Optional. Whether to insecurely retry downloads that failed TLS handshake.
+	 * @param string $version      Optional. Package version. Defaults to empty string.
+	 * @param bool   $insecure     Optional. Whether to insecurely retry downloads that failed TLS handshake. Defaults
+	 *                             to false.
 	 */
 	private function check_gitlab_package_name( $package_name, $version = '', $insecure = false ) {
 		// Generate raw git URL of composer.json file.
@@ -1174,10 +1215,10 @@ class Package_Command extends WP_CLI_Command {
 	}
 
 	/**
-	 * Get the version to use for raw github request. Very basic.
+	 * Get the version to use for raw GitHub request. Very basic.
 	 *
 	 * @string $version Package version.
-	 * @string Version to use for github request.
+	 * @string Version to use for GitHub request.
 	 */
 	private function get_raw_git_version( $version ) {
 		if ( '' === $version ) {
@@ -1357,5 +1398,60 @@ class Package_Command extends WP_CLI_Command {
 	 */
 	private function is_composer_v2() {
 		return version_compare( Composer::getVersion(), '2.0.0', '>=' );
+	}
+
+	/**
+	 * Try to retrieve default branch via GitHub API.
+	 *
+	 * @param string $package_name GitHub package name to retrieve the default branch from.
+	 * @param bool   $insecure     Optional. Whether to insecurely retry downloads that failed TLS handshake. Defaults
+	 *                             to false.
+	 * @return string Default branch, or 'master' if it could not be retrieved.
+	 */
+	private function get_github_default_branch( $package_name, $insecure = false ) {
+		$github_token = getenv( 'GITHUB_TOKEN' ); // Use GITHUB_TOKEN if available to avoid authorization failures or rate-limiting.
+		$headers      = $github_token ? [ 'Authorization' => 'token ' . $github_token ] : [];
+		$options      = [ 'insecure' => $insecure ];
+
+		$matches = [];
+		if ( preg_match( '#^(?:https?://github\.com/|git@github\.com:)(?<repo_name>.*?).git$#', $package_name, $matches ) ) {
+			$package_name = $matches['repo_name'];
+		}
+
+		$github_api_repo_url = "https://api.github.com/repos/{$package_name}";
+		$response            = Utils\http_request( 'GET', $github_api_repo_url, null /*data*/, $headers, $options );
+		if ( 20 !== (int) substr( $response->status_code, 0, 2 ) ) {
+			WP_CLI::warning(
+				sprintf(
+					"Couldn't fetch default branch for package '%s' (HTTP code %d). Presuming default branch is 'master'.",
+					$package_name,
+					$response->status_code
+				)
+			);
+			return 'master';
+		}
+
+		$package_data = json_decode( $response->body );
+
+		if ( JSON_ERROR_NONE !== json_last_error() ) {
+			WP_CLI::warning( "Couldn't fetch default branch for package '%s' (failed to decode JSON response). Presuming default branch is 'master'." );
+			return 'master';
+		}
+
+		$default_branch = $package_data->default_branch;
+
+		if ( ! is_string( $default_branch ) || empty( $default_branch ) ) {
+			WP_CLI::warning(
+				sprintf(
+					"Couldn't fetch default branch for package '%s'. Presuming default branch is 'master'.",
+					$package_name
+				)
+			);
+			return 'master';
+		}
+
+		WP_CLI::debug( "Detected package default branch: {$default_branch}", 'packages' );
+
+		return $default_branch;
 	}
 }

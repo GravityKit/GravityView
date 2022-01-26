@@ -15,8 +15,10 @@ namespace Composer\Command;
 use Composer\DependencyResolver\Operation\InstallOperation;
 use Composer\DependencyResolver\Operation\UninstallOperation;
 use Composer\DependencyResolver\Transaction;
+use Composer\Filter\PlatformRequirementFilter\PlatformRequirementFilterFactory;
 use Composer\Package\AliasPackage;
 use Composer\Package\BasePackage;
+use Composer\Pcre\Preg;
 use Composer\Plugin\CommandEvent;
 use Composer\Plugin\PluginEvents;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,7 +44,6 @@ class ReinstallCommand extends BaseCommand
                 new InputOption('prefer-dist', null, InputOption::VALUE_NONE, 'Forces installation from package dist (default behavior).'),
                 new InputOption('prefer-install', null, InputOption::VALUE_REQUIRED, 'Forces installation from package dist|source|auto (auto chooses source for dev versions, dist for the rest).'),
                 new InputOption('no-autoloader', null, InputOption::VALUE_NONE, 'Skips autoloader generation'),
-                new InputOption('no-scripts', null, InputOption::VALUE_NONE, 'Skips the execution of all scripts defined in composer.json file.'),
                 new InputOption('no-progress', null, InputOption::VALUE_NONE, 'Do not output download progress.'),
                 new InputOption('optimize-autoloader', 'o', InputOption::VALUE_NONE, 'Optimize autoloader during autoloader dump'),
                 new InputOption('classmap-authoritative', 'a', InputOption::VALUE_NONE, 'Autoload classes from the classmap only. Implicitly enables `--optimize-autoloader`.'),
@@ -71,8 +72,7 @@ EOT
     {
         $io = $this->getIO();
 
-        $composer = $this->getComposer(true, $input->getOption('no-plugins'));
-        $composer->getEventDispatcher()->setRunScripts(!$input->getOption('no-scripts'));
+        $composer = $this->getComposer(true, $input->getOption('no-plugins'), $input->getOption('no-scripts'));
 
         $localRepo = $composer->getRepositoryManager()->getLocalRepository();
         $packagesToReinstall = array();
@@ -81,7 +81,7 @@ EOT
             $patternRegexp = BasePackage::packageNameToRegexp($pattern);
             $matched = false;
             foreach ($localRepo->getCanonicalPackages() as $package) {
-                if (preg_match($patternRegexp, $package->getName())) {
+                if (Preg::isMatch($patternRegexp, $package->getName())) {
                     $matched = true;
                     $packagesToReinstall[] = $package;
                     $packageNamesToReinstall[] = $package->getName();
@@ -158,7 +158,7 @@ EOT
             $generator = $composer->getAutoloadGenerator();
             $generator->setClassMapAuthoritative($authoritative);
             $generator->setApcu($apcu, $apcuPrefix);
-            $generator->setIgnorePlatformRequirements($ignorePlatformReqs);
+            $generator->setPlatformRequirementFilter(PlatformRequirementFilterFactory::fromBoolOrList($ignorePlatformReqs));
             $generator->dump($config, $localRepo, $package, $installationManager, 'composer', $optimize);
         }
 

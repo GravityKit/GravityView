@@ -14,6 +14,7 @@ namespace Composer\Repository;
 
 use Composer\Package\PackageInterface;
 use Composer\Package\BasePackage;
+use Composer\Pcre\Preg;
 
 /**
  * Filters which packages are seen as canonical on this repo by loadPackages
@@ -40,17 +41,13 @@ class FilterRepository implements RepositoryInterface
             if (!is_array($options['only'])) {
                 throw new \InvalidArgumentException('"only" key for repository '.$repo->getRepoName().' should be an array');
             }
-            $this->only = '{^(?:'.implode('|', array_map(function ($val) {
-                return BasePackage::packageNameToRegexp($val, '%s');
-            }, $options['only'])) .')$}iD';
+            $this->only = BasePackage::packageNamesToRegexp($options['only']);
         }
         if (isset($options['exclude'])) {
             if (!is_array($options['exclude'])) {
                 throw new \InvalidArgumentException('"exclude" key for repository '.$repo->getRepoName().' should be an array');
             }
-            $this->exclude = '{^(?:'.implode('|', array_map(function ($val) {
-                return BasePackage::packageNameToRegexp($val, '%s');
-            }, $options['exclude'])) .')$}iD';
+            $this->exclude = BasePackage::packageNamesToRegexp($options['exclude']);
         }
         if ($this->exclude && $this->only) {
             throw new \InvalidArgumentException('Only one of "only" and "exclude" can be specified for repository '.$repo->getRepoName());
@@ -206,9 +203,9 @@ class FilterRepository implements RepositoryInterface
         }
 
         if ($this->only) {
-            return (bool) preg_match($this->only, $name);
+            return Preg::isMatch($this->only, $name);
         }
 
-        return !preg_match($this->exclude, $name);
+        return !Preg::isMatch($this->exclude, $name);
     }
 }

@@ -765,6 +765,8 @@ Feature: WP-CLI Commands
       require:
         - custom-cmd.php
       """
+    And I run `echo ' '`
+    And save STDOUT as {SPACE}
 
     When I run `wp help foo`
     Then STDOUT should contain:
@@ -779,9 +781,9 @@ Feature: WP-CLI Commands
 
       SYNOPSIS
 
-        wp foo 
+        wp foo{SPACE}
 
-      EXAMPLES 
+      EXAMPLES{SPACE}
 
         # Run the custom foo command
 
@@ -1280,19 +1282,19 @@ Feature: WP-CLI Commands
       """
     And I run `wp plugin activate test-cli`
 
-    When I run `wp`
+    # TODO: Throwing deprecations with PHP 8.1+ and WP < 5.9
+    When I try `wp`
     Then STDOUT should contain:
       """
       test-command
       """
-    And STDERR should be empty
 
-    When I run `wp help test-command`
+    # TODO: Throwing deprecations with PHP 8.1+ and WP < 5.9
+    When I try `wp help test-command`
     Then STDOUT should contain:
       """
       sub-command
       """
-    And STDERR should be empty
 
     When I run `wp test-command sub-command`
     Then STDOUT should contain:
@@ -1329,19 +1331,19 @@ Feature: WP-CLI Commands
       WP_CLI::add_command( 'test-command', 'TestCommand' );
       """
 
-    When I run `wp`
+    # TODO: Throwing deprecations with PHP 8.1+ and WP < 5.9
+    When I try `wp`
     Then STDOUT should contain:
       """
       test-command
       """
-    And STDERR should be empty
 
-    When I run `wp help test-command`
+    # TODO: Throwing deprecations with PHP 8.1+ and WP < 5.9
+    When I try `wp help test-command`
     Then STDOUT should contain:
       """
       sub-command
       """
-    And STDERR should be empty
 
     When I run `wp test-command sub-command`
     Then STDOUT should contain:
@@ -1380,19 +1382,19 @@ Feature: WP-CLI Commands
       });
       """
 
-    When I run `wp`
+    # TODO: Throwing deprecations with PHP 8.1+ and WP < 5.9
+    When I try `wp`
     Then STDOUT should contain:
       """
       test-command
       """
-    And STDERR should be empty
 
-    When I run `wp help test-command`
+    # TODO: Throwing deprecations with PHP 8.1+ and WP < 5.9
+    When I try `wp help test-command`
     Then STDOUT should contain:
       """
       sub-command
       """
-    And STDERR should be empty
 
     When I run `wp test-command sub-command`
     Then STDOUT should contain:
@@ -1653,13 +1655,15 @@ Feature: WP-CLI Commands
         - test-cmd.php
       """
 
-    When I run `wp help core`
+    # TODO: Throwing deprecations with PHP 8.1+ and WP < 5.9
+    When I try `wp help core`
     Then STDOUT should contain:
       """
       custom-subcommand
       """
 
-    When I run `wp core`
+    # TODO: Throwing deprecations with PHP 8.1+ and WP < 5.9
+    When I try `wp core`
     Then STDOUT should contain:
       """
       usage:

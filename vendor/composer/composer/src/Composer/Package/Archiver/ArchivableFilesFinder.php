@@ -12,6 +12,7 @@
 
 namespace Composer\Package\Archiver;
 
+use Composer\Pcre\Preg;
 use Composer\Util\Filesystem;
 use FilesystemIterator;
 use Symfony\Component\Finder\Finder;
@@ -49,7 +50,6 @@ class ArchivableFilesFinder extends \FilterIterator
             $filters = array();
         } else {
             $filters = array(
-                new HgExcludeFilter($sources),
                 new GitExcludeFilter($sources),
                 new ComposerExcludeFilter($sources, $excludes),
             );
@@ -62,7 +62,7 @@ class ArchivableFilesFinder extends \FilterIterator
                 return false;
             }
 
-            $relativePath = preg_replace(
+            $relativePath = Preg::replace(
                 '#^'.preg_quote($sources, '#').'#',
                 '',
                 $fs->normalizePath($file->getRealPath())
@@ -84,7 +84,8 @@ class ArchivableFilesFinder extends \FilterIterator
             ->in($sources)
             ->filter($filter)
             ->ignoreVCS(true)
-            ->ignoreDotFiles(false);
+            ->ignoreDotFiles(false)
+            ->sortByName();
 
         parent::__construct($this->finder->getIterator());
     }

@@ -3,34 +3,31 @@
 
 
 
-#### *public static* make($class, $params = null, $testCase = null) 
+#### *public static* make($class, array $params = Array ( ) , $testCase = null) 
 Instantiates a class without executing a constructor.
 Properties and methods can be set as a second parameter.
 Even protected and private properties can be set.
 
-``` php
+```php
 <?php
 Stub::make('User');
 Stub::make('User', ['name' => 'davert']);
-?>
 ```
 
 Accepts either name of class or object of that class
 
-``` php
+```php
 <?php
 Stub::make(new User, ['name' => 'davert']);
-?>
 ```
 
 To replace method provide it's name as a key in second parameter
 and it's return value or callback function as parameter
 
-``` php
+```php
 <?php
 Stub::make('User', ['save' => function () { return true; }]);
 Stub::make('User', ['save' => true]);
-?>
 ```
 
 **To create a mock, pass current testcase name as last argument:**
@@ -42,53 +39,47 @@ Stub::make('User', [
 ], $this);
 ```
 
- * `param mixed` $class - A class to be mocked
+ * template RealInstanceType of object
+ * `param class-string<RealInstanceType>|RealInstanceType|callable(): class-string<RealInstanceType>` $class - A class to be mocked
  * `param array` $params - properties and methods to set
- * `param bool|\PHPUnit\Framework\TestCase` $testCase
+ * `param bool|PHPUnitTestCase` $testCase
 
- * return object - mock
- * throws \RuntimeException when class does not exist
- * throws \Exception
+ * return PHPUnitMockObject&RealInstanceType - mock
+ * throws RuntimeException when class does not exist
+ * throws Exception
 
-#### *public static* factory($class, $num = null, $params = null) 
+#### *public static* factory($class, $num = 1, array $params = Array ( ) ) 
 Creates $num instances of class through `Stub::make`.
 
  * `param mixed` $class
- * `param int` $num
- * `param array` $params
+ * throws Exception
 
- * return array
- * throws \Exception
-
-#### *public static* makeEmptyExcept($class, $method, $params = null, $testCase = null) 
+#### *public static* makeEmptyExcept($class, $method, array $params = Array ( ) , $testCase = null) 
 Instantiates class having all methods replaced with dummies except one.
 Constructor is not triggered.
 Properties and methods can be replaced.
 Even protected and private properties can be set.
 
-``` php
+```php
 <?php
 Stub::makeEmptyExcept('User', 'save');
 Stub::makeEmptyExcept('User', 'save', ['name' => 'davert']);
-?>
 ```
 
 Accepts either name of class or object of that class
 
-``` php
+```php
 <?php
 * Stub::makeEmptyExcept(new User, 'save');
-?>
 ```
 
 To replace method provide it's name as a key in second parameter
 and it's return value or callback function as parameter
 
-``` php
+```php
 <?php
 Stub::makeEmptyExcept('User', 'save', ['isValid' => function () { return true; }]);
 Stub::makeEmptyExcept('User', 'save', ['isValid' => true]);
-?>
 ```
 
 **To create a mock, pass current testcase name as last argument:**
@@ -99,22 +90,22 @@ Stub::makeEmptyExcept('User', 'validate', [
      'save' => \Codeception\Stub\Expected::once()
 ], $this);
 ```
-
- * `param mixed` $class
+ * template
+ * `param class-string<RealInstanceType>|RealInstanceType|callable(): class-string<RealInstanceType>` $class - A class to be mocked
  * `param string` $method
  * `param array` $params
- * `param bool|\PHPUnit\Framework\TestCase` $testCase
+ * `param bool|PHPUnitTestCase` $testCase
 
- * return object
- * throws \Exception
+ * return PHPUnitMockObject&RealInstanceType
+ * throws Exception
 
-#### *public static* makeEmpty($class, $params = null, $testCase = null) 
+#### *public static* makeEmpty($class, array $params = Array ( ) , $testCase = null) 
 Instantiates class having all methods replaced with dummies.
 Constructor is not triggered.
 Properties and methods can be set as a second parameter.
 Even protected and private properties can be set.
 
-``` php
+```php
 <?php
 Stub::makeEmpty('User');
 Stub::makeEmpty('User', ['name' => 'davert']);
@@ -122,7 +113,7 @@ Stub::makeEmpty('User', ['name' => 'davert']);
 
 Accepts either name of class or object of that class
 
-``` php
+```php
 <?php
 Stub::makeEmpty(new User, ['name' => 'davert']);
 ```
@@ -130,10 +121,10 @@ Stub::makeEmpty(new User, ['name' => 'davert']);
 To replace method provide it's name as a key in second parameter
 and it's return value or callback function as parameter
 
-``` php
+```php
 <?php
 Stub::makeEmpty('User', ['save' => function () { return true; }]);
-Stub::makeEmpty('User', ['save' => true));
+Stub::makeEmpty('User', ['save' => true]);
 ```
 
 **To create a mock, pass current testcase name as last argument:**
@@ -145,51 +136,47 @@ Stub::makeEmpty('User', [
 ], $this);
 ```
 
- * `param mixed` $class
- * `param array` $params
- * `param bool|\PHPUnit\Framework\TestCase` $testCase
+ * template RealInstanceType of object
+ * `param class-string<RealInstanceType>|RealInstanceType|callable(): class-string<RealInstanceType>` $class - A class to be mocked
+ * `param bool|PHPUnitTestCase` $testCase
 
- * return object
- * throws \Exception
+ * return PHPUnitMockObject&RealInstanceType
+ * throws Exception
 
-#### *public static* copy($obj, $params = null) 
+#### *public static* copy($obj, array $params = Array ( ) ) 
 Clones an object and redefines it's properties (even protected and private)
 
  * `param`       $obj
  * `param array` $params
-
  * return mixed
- * throws \Exception
+ * throws Exception
 
-#### *public static* construct($class, $constructorParams = null, $params = null, $testCase = null) 
+#### *public static* construct($class, array $constructorParams = Array ( ) , array $params = Array ( ) , $testCase = null) 
 Instantiates a class instance by running constructor.
 Parameters for constructor passed as second argument
 Properties and methods can be set in third argument.
 Even protected and private properties can be set.
 
-``` php
+```php
 <?php
 Stub::construct('User', ['autosave' => false]);
 Stub::construct('User', ['autosave' => false], ['name' => 'davert']);
-?>
 ```
 
 Accepts either name of class or object of that class
 
-``` php
+```php
 <?php
-Stub::construct(new User, ['autosave' => false), ['name' => 'davert']);
-?>
+Stub::construct(new User, ['autosave' => false], ['name' => 'davert']);
 ```
 
 To replace method provide it's name as a key in third parameter
 and it's return value or callback function as parameter
 
-``` php
+```php
 <?php
 Stub::construct('User', [], ['save' => function () { return true; }]);
 Stub::construct('User', [], ['save' => true]);
-?>
 ```
 
 **To create a mock, pass current testcase name as last argument:**
@@ -201,29 +188,28 @@ Stub::construct('User', [], [
 ], $this);
 ```
 
- * `param mixed` $class
- * `param array` $constructorParams
- * `param array` $params
- * `param bool|\PHPUnit\Framework\TestCase` $testCase
+ * template RealInstanceType of object
+ * `param class-string<RealInstanceType>|RealInstanceType|callable(): class-string<RealInstanceType>` $class - A class to be mocked
+ * `param bool|PHPUnitTestCase` $testCase
 
- * return object
- * throws \Exception
+ * return PHPUnitMockObject&RealInstanceType
+ * throws Exception
 
-#### *public static* constructEmpty($class, $constructorParams = null, $params = null, $testCase = null) 
+#### *public static* constructEmpty($class, array $constructorParams = Array ( ) , array $params = Array ( ) , $testCase = null) 
 Instantiates a class instance by running constructor with all methods replaced with dummies.
 Parameters for constructor passed as second argument
 Properties and methods can be set in third argument.
 Even protected and private properties can be set.
 
-``` php
+```php
 <?php
 Stub::constructEmpty('User', ['autosave' => false]);
-Stub::constructEmpty('User', ['autosave' => false), ['name' => 'davert']);
+Stub::constructEmpty('User', ['autosave' => false], ['name' => 'davert']);
 ```
 
 Accepts either name of class or object of that class
 
-``` php
+```php
 <?php
 Stub::constructEmpty(new User, ['autosave' => false], ['name' => 'davert']);
 ```
@@ -231,7 +217,7 @@ Stub::constructEmpty(new User, ['autosave' => false], ['name' => 'davert']);
 To replace method provide it's name as a key in third parameter
 and it's return value or callback function as parameter
 
-``` php
+```php
 <?php
 Stub::constructEmpty('User', [], ['save' => function () { return true; }]);
 Stub::constructEmpty('User', [], ['save' => true]);
@@ -246,42 +232,41 @@ Stub::constructEmpty('User', [], [
 ], $this);
 ```
 
- * `param mixed` $class
+ * template RealInstanceType of object
+ * `param class-string<RealInstanceType>|RealInstanceType|callable(): class-string<RealInstanceType>` $class - A class to be mocked
  * `param array` $constructorParams
  * `param array` $params
- * `param bool|\PHPUnit\Framework\TestCase` $testCase
+ * `param bool|PHPUnitTestCase` $testCase
 
- * return object
+ * return PHPUnitMockObject&RealInstanceType
+ * throws ReflectionException
 
-#### *public static* constructEmptyExcept($class, $method, $constructorParams = null, $params = null, $testCase = null) 
+#### *public static* constructEmptyExcept($class, $method, array $constructorParams = Array ( ) , array $params = Array ( ) , $testCase = null) 
 Instantiates a class instance by running constructor with all methods replaced with dummies, except one.
 Parameters for constructor passed as second argument
 Properties and methods can be set in third argument.
 Even protected and private properties can be set.
 
-``` php
+```php
 <?php
 Stub::constructEmptyExcept('User', 'save');
 Stub::constructEmptyExcept('User', 'save', ['autosave' => false], ['name' => 'davert']);
-?>
 ```
 
 Accepts either name of class or object of that class
 
-``` php
+```php
 <?php
 Stub::constructEmptyExcept(new User, 'save', ['autosave' => false], ['name' => 'davert']);
-?>
 ```
 
 To replace method provide it's name as a key in third parameter
 and it's return value or callback function as parameter
 
-``` php
+```php
 <?php
 Stub::constructEmptyExcept('User', 'save', [], ['save' => function () { return true; }]);
 Stub::constructEmptyExcept('User', 'save', [], ['save' => true]);
-?>
 ```
 
 **To create a mock, pass current testcase name as last argument:**
@@ -293,36 +278,31 @@ Stub::constructEmptyExcept('User', 'save', [], [
 ], $this);
 ```
 
- * `param mixed` $class
- * `param string` $method
- * `param array` $constructorParams
- * `param array` $params
- * `param bool|\PHPUnit\Framework\TestCase` $testCase
+ * template RealInstanceType of object
+ * `param class-string<RealInstanceType>|RealInstanceType|callable(): class-string<RealInstanceType>` $class - A class to be mocked
+ * `param bool|PHPUnitTestCase` $testCase
 
- * return object
+ * return PHPUnitMockObject&RealInstanceType
+ * throws ReflectionException
 
 #### *public static* update($mock, array $params) 
 Replaces properties of current stub
 
- * `param \PHPUnit\Framework\MockObject\MockObject` $mock
+ * `param PHPUnitMockObject|object` $mock
  * `param array` $params
-
- * return mixed
- * throws \LogicException
+ * return object
+throws LogicException
 
 #### *public static* consecutive() 
 Stubbing a method call to return a list of values in the specified order.
 
-``` php
+```php
 <?php
-$user = Stub::make('User', array('getName' => Stub::consecutive('david', 'emma', 'sam', 'amy')));
+$user = Stub::make('User', ['getName' => Stub::consecutive('david', 'emma', 'sam', 'amy')]);
 $user->getName(); //david
 $user->getName(); //emma
 $user->getName(); //sam
 $user->getName(); //amy
-?>
 ```
-
- * return ConsecutiveMap
 
 

@@ -6,6 +6,7 @@ namespace JsonMapper\Tests\Integration\Middleware\Attributes;
 
 use JsonMapper\Cache\NullCache;
 use JsonMapper\Handler\PropertyMapper;
+use JsonMapper\JsonMapperBuilder;
 use JsonMapper\JsonMapperFactory;
 use JsonMapper\Middleware\Attributes\Attributes;
 use JsonMapper\Middleware\TypedProperties;
@@ -21,11 +22,10 @@ class AttributeTest extends TestCase
     public function testAttributesMiddlewareDoesMapFrom(): void
     {
         $cache = new NullCache();
-        $mapper = (new JsonMapperFactory())->create(
-            new PropertyMapper(),
-            new Attributes(),
-            new TypedProperties($cache)
-        );
+        $mapper = JsonMapperBuilder::new()
+            ->withAttributesMiddleware()
+            ->withTypedPropertiesMiddleware($cache)
+            ->build();
         $object = new AttributePopo();
         $json = '{"Identifier": 42, "UserName": "John Doe"}';
 

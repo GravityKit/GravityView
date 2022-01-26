@@ -1,5 +1,7 @@
 <?php
 
+use WP_CLI\Utils;
+
 if ( ! class_exists( 'WP_CLI' ) ) {
 	return;
 }
@@ -63,26 +65,36 @@ WP_CLI::add_command(
 	'Term_Meta_Command',
 	array(
 		'before_invoke' => function() {
-			if ( \WP_CLI\Utils\wp_version_compare( '4.4', '<' ) ) {
+			if ( Utils\wp_version_compare( '4.4', '<' ) ) {
 				WP_CLI::error( 'Requires WordPress 4.4 or greater.' );
 			}
 		},
 	)
 );
 WP_CLI::add_command( 'user', 'User_Command' );
+WP_CLI::add_command(
+	'user application-password',
+	'User_Application_Password_Command',
+	array(
+		'before_invoke' => function() {
+			if ( Utils\wp_version_compare( '5.6', '<' ) ) {
+				WP_CLI::error( 'Requires WordPress 5.6 or greater.' );
+			}
+		},
+	)
+);
 WP_CLI::add_command( 'user meta', 'User_Meta_Command' );
 WP_CLI::add_command(
 	'user session',
 	'User_Session_Command',
 	array(
 		'before_invoke' => function() {
-			if ( \WP_CLI\Utils\wp_version_compare( '4.0', '<' ) ) {
+			if ( Utils\wp_version_compare( '4.0', '<' ) ) {
 				WP_CLI::error( 'Requires WordPress 4.0 or greater.' );
 			}
 		},
 	)
 );
-
 WP_CLI::add_command( 'user term', 'User_Term_Command' );
 
 if ( class_exists( 'WP_CLI\Dispatcher\CommandNamespace' ) ) {

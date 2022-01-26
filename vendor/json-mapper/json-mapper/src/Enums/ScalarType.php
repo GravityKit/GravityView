@@ -28,29 +28,4 @@ class ScalarType extends Enum
     protected const DOUBLE = 'double';
     protected const FLOAT = 'float';
     protected const MIXED = 'mixed';
-
-    /**
-     * @param string|bool|int|float $input
-     * @return string|bool|int|float
-     */
-    public function cast($input)
-    {
-        if ($this->value === self::MIXED) {
-            return $input;
-        }
-        if ($this->value === self::STRING) {
-            return (string) $input;
-        }
-        if ($this->value === self::BOOLEAN || $this->value === self::BOOL) {
-            return (bool) $input;
-        }
-        if ($this->value === self::INTEGER || $this->value === self::INT) {
-            return (int) $input;
-        }
-        if ($this->value === self::DOUBLE || $this->value === self::FLOAT) {
-            return (float) $input;
-        }
-
-        throw new \LogicException("Missing {$this->value} in cast method");
-    }
 }

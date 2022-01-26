@@ -18,9 +18,7 @@ class Attributes extends AbstractMiddleware
         PropertyMap $propertyMap,
         JsonMapperInterface $mapper
     ): void {
-        $reflectionClass = new ReflectionClass($object->getObject());
-
-        foreach ($reflectionClass->getProperties() as $property) {
+        foreach ($object->getReflectedObject()->getProperties() as $property) {
             $attributes = $property->getAttributes(MapFrom::class);
 
             foreach ($attributes as $attribute) {

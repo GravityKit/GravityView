@@ -206,6 +206,19 @@ class LazyCollection implements CanBeEscapedWhenCastToString, Enumerable
     }
 
     /**
+     * Determine if an item is not contained in the enumerable.
+     *
+     * @param  mixed  $key
+     * @param  mixed  $operator
+     * @param  mixed  $value
+     * @return bool
+     */
+    public function doesntContain($key, $operator = null, $value = null)
+    {
+        return ! $this->contains(...func_get_args());
+    }
+
+    /**
      * Cross join the given iterables, returning all possible permutations.
      *
      * @param  array  ...$arrays
@@ -1273,6 +1286,17 @@ class LazyCollection implements CanBeEscapedWhenCastToString, Enumerable
     public function sortKeysDesc($options = SORT_REGULAR)
     {
         return $this->passthru('sortKeysDesc', func_get_args());
+    }
+
+    /**
+     * Sort the collection keys using a callback.
+     *
+     * @param  callable  $callback
+     * @return static
+     */
+    public function sortKeysUsing(callable $callback)
+    {
+        return $this->passthru('sortKeysUsing', func_get_args());
     }
 
     /**

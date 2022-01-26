@@ -27,8 +27,13 @@ class TypeErrorTest extends TestCase
         );
     }
 
-    private function createTypeError(string $method, string $expectedType, $argument, int $argumentNumber, string $argumentName): TypeError
-    {
+    private function createTypeError(
+        string $method,
+        string $expectedType,
+        $argument,
+        int $argumentNumber,
+        string $argumentName
+    ): TypeError {
         return TypeError::forArgument($method, $expectedType, $argument, $argumentNumber, $argumentName);
     }
 }

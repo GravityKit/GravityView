@@ -4,6 +4,7 @@ on:
   pull_request:
   push:
     branches:
+      - main
       - master
 
 # Cancels all previous workflow runs for the same branch that have not yet completed.
@@ -39,12 +40,14 @@ jobs:
           php-version: '${{ matrix.php }}'
           coverage: none
           tools: composer,cs2pr
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Composer dependencies & cache dependencies
         if: steps.check_files.outputs.files_exists == 'true'
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
         env:
-          COMPOSER_ROOT_VERSION: 'dev-master'
+          COMPOSER_ROOT_VERSION: 'dev-main'
 
       - name: Setup problem matcher to provide annotations for PHPUnit
         if: steps.check_files.outputs.files_exists == 'true'
@@ -120,6 +123,8 @@ jobs:
           extensions: gd, imagick, mysql, zip
           coverage: none
           tools: composer
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Change ImageMagick policy to allow pdf->png conversion.
         if: steps.check_files.outputs.files_exists == 'true'
@@ -128,9 +133,9 @@ jobs:
 
       - name: Install Composer dependencies & cache dependencies
         if: steps.check_files.outputs.files_exists == 'true'
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
         env:
-          COMPOSER_ROOT_VERSION: 'dev-master'
+          COMPOSER_ROOT_VERSION: 'dev-main'
 
       - name: Start MySQL server
         if: steps.check_files.outputs.files_exists == 'true'

@@ -2,7 +2,7 @@
 /**
  * @license MIT
  *
- * Modified by gravityview on 30-December-2021 using Strauss.
+ * Modified by gravityview on 26-January-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 

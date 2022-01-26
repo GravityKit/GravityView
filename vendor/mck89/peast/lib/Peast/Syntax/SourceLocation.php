@@ -82,6 +82,7 @@ class SourceLocation implements \JSONSerializable
      * 
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return array(

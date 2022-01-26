@@ -18,7 +18,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 30-December-2021 using Strauss.
+ * Modified by gravityview on 26-January-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -40,7 +40,7 @@ final class Client {
 	 * @var string The current drop-in file version
 	 * @since 1.0.0
 	 */
-	const VERSION = '1.0.2';
+	const VERSION = '1.2';
 
 	/**
 	 * @var Config
@@ -345,6 +345,7 @@ final class Client {
 
 		do_action( 'trustedlogin/' . $this->config->ns() . '/access/created', array(
 			'url'    => get_site_url(),
+			'ns' => $this->config->ns(),
 			'action' => 'created',
 			'ref' => $reference_id,
 		) );
@@ -447,6 +448,7 @@ final class Client {
 
 		do_action( 'trustedlogin/' . $this->config->ns() . '/access/extended', array(
 			'url'    => get_site_url(),
+			'ns' => $this->config->ns(),
 			'action' => 'extended',
 			'ref' => self::get_reference_id(),
 		) );
@@ -520,6 +522,7 @@ final class Client {
 		 */
 		do_action( 'trustedlogin/' . $this->config->ns() . '/access/revoked', array(
 			'url'    => get_site_url(),
+			'ns' => $this->config->ns(),
 			'action' => 'revoked',
 		) );
 

@@ -24,6 +24,37 @@ helper is available:
 }
 ```
 
+## allow-plugins
+
+Defaults to `null` (allow all plugins implicitly) for backwards compatibility until July 2022.
+At that point the default will become `{}` and plugins will not load anymore unless allowed.
+
+As of Composer 2.2.0, the `allow-plugins` option adds a layer of security
+allowing you to restrict which Composer plugins are able to execute code during
+a Composer run.
+
+When a new plugin is first activated, which is not yet listed in the config option,
+Composer will print a warning. If you run Composer interactively it will
+prompt you to decide if you want to execute the plugin or not.
+
+Use this setting to allow only packages you trust to execute code. Set it to
+an object with package name patterns as keys. The values are **true** to allow
+and **false** to disallow while suppressing further warnings and prompts.
+
+```json
+{
+    "config": {
+        "allow-plugins": {
+            "third-party/required-plugin": true,
+            "my-organization/*": true,
+            "unnecessary/plugin": false
+        }
+    }
+}
+```
+
+You can also set the config option itself to `false` to disallow all plugins, or `true` to allow all plugins to run (NOT recommended).
+
 ## use-include-path
 
 Defaults to `false`. If `true`, the Composer autoloader will also look for classes
@@ -33,7 +64,7 @@ in the PHP include path.
 
 Defaults to `dist` and can be any of `source`, `dist` or `auto`. This option
 allows you to set the install method Composer will prefer to use. Can
-optionally be a hash of patterns for more granular install preferences.
+optionally be an object with package name patterns for keys for more granular install preferences.
 
 ```json
 {
@@ -62,6 +93,19 @@ optionally be a hash of patterns for more granular install preferences.
 > more relaxed patterns. When mixing the string notation with the hash
 > configuration in global and package configurations the string notation
 > is translated to a `*` package pattern.
+
+## use-parent-dir
+
+When running Composer in a directory where there is no composer.json, if there
+is one present in a directory above Composer will by default ask you whether
+you want to use that directory's composer.json instead.
+
+If you always want to answer yes to this prompt, you can set this config value
+to `true`. To never be prompted, set it to `false`. The default is `"prompt"`.
+
+> **Note:** This config must be set in your global user-wide config for it
+> to work. Use for example `php composer.phar config --global use-parent-dir true`
+> to set it.
 
 ## store-auths
 
@@ -191,6 +235,9 @@ you may ignore it instead by passing `--ignore-platform-req=ext-foo` to `update`
 extensions as if you ignore one now and a new package you add a month later also
 requires it, you may introduce issues in production unknowingly.
 
+If you have an extension installed locally but *not* on production, you may want
+to artificially hide it from Composer using `{"ext-foo": false}`.
+
 ## vendor-dir
 
 Defaults to `vendor`. You can install dependencies into a different directory if
@@ -206,8 +253,8 @@ into this directory.
 
 Defaults to `C:\Users\<user>\AppData\Roaming\Composer` on Windows,
 `$XDG_DATA_HOME/composer` on unix systems that follow the XDG Base Directory
-Specifications, and `$home` on other unix systems. Right now it is only
-used for storing past composer.phar files to be able to rollback to older
+Specifications, and `$COMPOSER_HOME` on other unix systems. Right now it is only
+used for storing past composer.phar files to be able to roll back to older
 versions. See also [COMPOSER_HOME](03-cli.md#composer-home).
 
 ## cache-dir
@@ -215,8 +262,8 @@ versions. See also [COMPOSER_HOME](03-cli.md#composer-home).
 Defaults to `C:\Users\<user>\AppData\Local\Composer` on Windows,
 `/Users/<user>/Library/Caches/composer` on macOS, `$XDG_CACHE_HOME/composer`
 on unix systems that follow the XDG Base Directory Specifications, and
-`$home/cache` on other unix systems. Stores all the caches used by Composer.
-See also [COMPOSER_HOME](03-cli.md#composer-home).
+`$COMPOSER_HOME/cache` on other unix systems. Stores all the caches used by
+Composer. See also [COMPOSER_HOME](03-cli.md#composer-home).
 
 ## cache-files-dir
 
@@ -257,8 +304,8 @@ If it is `auto` then Composer only installs .bat proxy files when on Windows or 
 set to `full` then both .bat files for Windows and scripts for Unix-based
 operating systems will be installed for each binary. This is mainly useful if you
 run Composer inside a linux VM but still want the `.bat` proxies available for use
-in the Windows host OS. If set to `symlink` Composer will always symlink even on
-Windows/WSL.
+in the Windows host OS. If set to `proxy` Composer will only create bash/Unix-style
+proxy files and no .bat files even on Windows/WSL.
 
 ## prepend-autoloader
 

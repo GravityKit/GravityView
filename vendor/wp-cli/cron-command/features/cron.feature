@@ -2,7 +2,7 @@ Feature: Manage WP-Cron events and schedules
 
   Background:
     Given a WP install
-    And I run `wp config set DISABLE_WP_CRON false --raw --type=constant --anchor='// ** MySQL settings - You can get this info from your web host ** //'`
+    And I run `wp config set DISABLE_WP_CRON false --raw --type=constant --anchor="if ( ! defined( 'DISABLE_WP_CRON' ) )"`
 
   Scenario: Scheduling and then deleting an event
     When I run `wp cron event schedule wp_cli_test_event_1 '+1 hour 5 minutes' --0=banana`
@@ -190,11 +190,38 @@ Feature: Manage WP-Cron events and schedules
       | hourly | 3600     |
 
   Scenario: Testing WP-Cron
-    When I try `wp cron test`
-    Then STDERR should not contain:
+    Given a php.ini file:
+      """
+      error_log = {RUN_DIR}/server.log
+      log_errors = on
+      """
+    And I launch in the background `wp server --host=localhost --port=8080 --config=php.ini`
+    And a wp-content/mu-plugins/set_cron_site_url.php file:
+      """
+      <?php
+      add_filter( 'cron_request', static function ( $cron_request_array ) {
+        $cron_request_array['url']               = 'http://localhost:8080';
+        $cron_request_array['args']['sslverify'] = false;
+        return $cron_request_array;
+      } );
+      """
+
+    When I run `wp cron event schedule wp_cli_test_event_1 '+1 hour 5 minutes' --0=banana`
+    Then STDOUT should contain:
+      """
+      Success: Scheduled event with hook 'wp_cli_test_event_1'
+      """
+
+    When I run `wp cron test`
+    Then STDOUT should contain:
+      """
+      Success: WP-Cron spawning is working as expected.
+      """
+    And STDERR should not contain:
       """
       Error:
       """
+    And the {RUN_DIR}/server.log file should not exist
 
   Scenario: Run multiple cron events
     When I try `wp cron event run`
@@ -305,7 +332,7 @@ Feature: Manage WP-Cron events and schedules
     When I run `wp option get home`
     Then STDOUT should be:
       """
-      http://example.com
+      https://example.com
       """
 
   Scenario: Listing duplicated cron events

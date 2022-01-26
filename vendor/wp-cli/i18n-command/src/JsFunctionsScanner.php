@@ -118,11 +118,13 @@ final class JsFunctionsScanner extends GettextJsFunctionsScanner {
 						'Expression' === substr( $argument->getType(), -strlen( 'Expression' ) )
 					) {
 						$args[] = ''; // The value doesn't matter as it's unused.
+						continue;
 					}
 
 					if ( 'Literal' === $argument->getType() ) {
 						/** @var Node\Literal $argument */
 						$args[] = $argument->getValue();
+						continue;
 					}
 
 					if ( 'TemplateLiteral' === $argument->getType() && 0 === count( $argument->getExpressions() ) ) {
@@ -132,7 +134,12 @@ final class JsFunctionsScanner extends GettextJsFunctionsScanner {
 						// Since there are no expressions within the TemplateLiteral, there is only one TemplateElement.
 						$parts  = $argument->getParts();
 						$args[] = $parts[0]->getValue();
+						continue;
 					}
+
+					// If we reach this, an unsupported argument type has been encountered.
+					// Do not try to parse this function call at all.
+					return;
 				}
 
 				switch ( $functions[ $callee['name'] ] ) {

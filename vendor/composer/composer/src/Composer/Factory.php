@@ -56,17 +56,17 @@ class Factory
      */
     protected static function getHomeDir()
     {
-        $home = getenv('COMPOSER_HOME');
+        $home = Platform::getEnv('COMPOSER_HOME');
         if ($home) {
             return $home;
         }
 
         if (Platform::isWindows()) {
-            if (!getenv('APPDATA')) {
+            if (!Platform::getEnv('APPDATA')) {
                 throw new \RuntimeException('The APPDATA or COMPOSER_HOME environment variable must be set for composer to run correctly');
             }
 
-            return rtrim(strtr(getenv('APPDATA'), '\\', '/'), '/') . '/Composer';
+            return rtrim(strtr(Platform::getEnv('APPDATA'), '\\', '/'), '/') . '/Composer';
         }
 
         $userDir = self::getUserDir();
@@ -74,7 +74,7 @@ class Factory
 
         if (self::useXdg()) {
             // XDG Base Directory Specifications
-            $xdgConfig = getenv('XDG_CONFIG_HOME');
+            $xdgConfig = Platform::getEnv('XDG_CONFIG_HOME');
             if (!$xdgConfig) {
                 $xdgConfig = $userDir . '/.config';
             }
@@ -101,18 +101,18 @@ class Factory
      */
     protected static function getCacheDir($home)
     {
-        $cacheDir = getenv('COMPOSER_CACHE_DIR');
+        $cacheDir = Platform::getEnv('COMPOSER_CACHE_DIR');
         if ($cacheDir) {
             return $cacheDir;
         }
 
-        $homeEnv = getenv('COMPOSER_HOME');
+        $homeEnv = Platform::getEnv('COMPOSER_HOME');
         if ($homeEnv) {
             return $homeEnv . '/cache';
         }
 
         if (Platform::isWindows()) {
-            if ($cacheDir = getenv('LOCALAPPDATA')) {
+            if ($cacheDir = Platform::getEnv('LOCALAPPDATA')) {
                 $cacheDir .= '/Composer';
             } else {
                 $cacheDir = $home . '/cache';
@@ -136,7 +136,7 @@ class Factory
         }
 
         if (self::useXdg()) {
-            $xdgCache = getenv('XDG_CACHE_HOME') ?: $userDir . '/.cache';
+            $xdgCache = Platform::getEnv('XDG_CACHE_HOME') ?: $userDir . '/.cache';
 
             return $xdgCache . '/composer';
         }
@@ -150,7 +150,7 @@ class Factory
      */
     protected static function getDataDir($home)
     {
-        $homeEnv = getenv('COMPOSER_HOME');
+        $homeEnv = Platform::getEnv('COMPOSER_HOME');
         if ($homeEnv) {
             return $homeEnv;
         }
@@ -161,7 +161,7 @@ class Factory
 
         $userDir = self::getUserDir();
         if ($home !== $userDir . '/.composer' && self::useXdg()) {
-            $xdgData = getenv('XDG_DATA_HOME') ?: $userDir . '/.local/share';
+            $xdgData = Platform::getEnv('XDG_DATA_HOME') ?: $userDir . '/.local/share';
 
             return $xdgData . '/composer';
         }
@@ -186,7 +186,7 @@ class Factory
             'home' => $home,
             'cache-dir' => self::getCacheDir($home),
             'data-dir' => self::getDataDir($home),
-        )));
+        )), Config::SOURCE_DEFAULT);
 
         // load global config
         $file = new JsonFile($config->get('home').'/config.json');
@@ -194,7 +194,7 @@ class Factory
             if ($io && $io->isDebug()) {
                 $io->writeError('Loading config file ' . $file->getPath());
             }
-            $config->merge($file->read());
+            $config->merge($file->read(), $file->getPath());
         }
         $config->setConfigSource(new JsonConfigSource($file));
 
@@ -220,12 +220,12 @@ class Factory
             if ($io && $io->isDebug()) {
                 $io->writeError('Loading config file ' . $file->getPath());
             }
-            $config->merge(array('config' => $file->read()));
+            $config->merge(array('config' => $file->read()), $file->getPath());
         }
         $config->setAuthConfigSource(new JsonConfigSource($file, true));
 
         // load COMPOSER_AUTH environment variable if set
-        if ($composerAuthEnv = getenv('COMPOSER_AUTH')) {
+        if ($composerAuthEnv = Platform::getEnv('COMPOSER_AUTH')) {
             $authData = json_decode($composerAuthEnv, true);
 
             if (null === $authData) {
@@ -236,7 +236,7 @@ class Factory
                 if ($io && $io->isDebug()) {
                     $io->writeError('Loading auth config from COMPOSER_AUTH');
                 }
-                $config->merge(array('config' => $authData));
+                $config->merge(array('config' => $authData), 'COMPOSER_AUTH');
             }
         }
 
@@ -248,7 +248,7 @@ class Factory
      */
     public static function getComposerFile()
     {
-        return trim(getenv('COMPOSER')) ?: './composer.json';
+        return trim(Platform::getEnv('COMPOSER')) ?: './composer.json';
     }
 
     /**
@@ -294,13 +294,14 @@ class Factory
      * @param  array<string, mixed>|string|null  $localConfig    either a configuration array or a filename to read from, if null it will
      *                                                           read from the default filename
      * @param  bool                              $disablePlugins Whether plugins should not be loaded
+     * @param  bool                              $disableScripts Whether scripts should not be run
      * @param  string|null                       $cwd
      * @param  bool                              $fullLoad       Whether to initialize everything or only main project stuff (used when loading the global composer)
      * @throws \InvalidArgumentException
      * @throws \UnexpectedValueException
      * @return Composer
      */
-    public function createComposer(IOInterface $io, $localConfig = null, $disablePlugins = false, $cwd = null, $fullLoad = true)
+    public function createComposer(IOInterface $io, $localConfig = null, $disablePlugins = false, $cwd = null, $fullLoad = true, $disableScripts = false)
     {
         $cwd = $cwd ?: (string) getcwd();
 
@@ -309,6 +310,7 @@ class Factory
             $localConfig = static::getComposerFile();
         }
 
+        $localConfigSource = Config::SOURCE_UNKNOWN;
         if (is_string($localConfig)) {
             $composerFile = $localConfig;
 
@@ -340,11 +342,12 @@ class Factory
             }
 
             $localConfig = $file->read();
+            $localConfigSource = $file->getPath();
         }
 
         // Load config and override with local config/auth config
         $config = static::createConfig($io, $cwd);
-        $config->merge($localConfig);
+        $config->merge($localConfig, $localConfigSource);
         if (isset($composerFile)) {
             $io->writeError('Loading config file ' . $composerFile .' ('.realpath($composerFile).')', true, IOInterface::DEBUG);
             $config->setConfigSource(new JsonConfigSource(new JsonFile(realpath($composerFile), null, $io)));
@@ -352,7 +355,7 @@ class Factory
             $localAuthFile = new JsonFile(dirname(realpath($composerFile)) . '/auth.json', null, $io);
             if ($localAuthFile->exists()) {
                 $io->writeError('Loading config file ' . $localAuthFile->getPath(), true, IOInterface::DEBUG);
-                $config->merge(array('config' => $localAuthFile->read()));
+                $config->merge(array('config' => $localAuthFile->read()), $localAuthFile->getPath());
                 $config->setAuthConfigSource(new JsonConfigSource($localAuthFile, true));
             }
         }
@@ -380,6 +383,7 @@ class Factory
 
         // initialize event dispatcher
         $dispatcher = new EventDispatcher($composer, $io, $process);
+        $dispatcher->setRunScripts(!$disableScripts);
         $composer->setEventDispatcher($dispatcher);
 
         // initialize repository manager
@@ -426,7 +430,7 @@ class Factory
         if ($fullLoad) {
             $globalComposer = null;
             if (realpath($config->get('home')) !== $cwd) {
-                $globalComposer = $this->createGlobalComposer($io, $config, $disablePlugins);
+                $globalComposer = $this->createGlobalComposer($io, $config, $disablePlugins, $disableScripts);
             }
 
             $pm = $this->createPluginManager($io, $composer, $globalComposer, $disablePlugins);
@@ -458,13 +462,14 @@ class Factory
     /**
      * @param  IOInterface   $io             IO instance
      * @param  bool          $disablePlugins Whether plugins should not be loaded
+     * @param  bool          $disableScripts Whether scripts should not be executed
      * @return Composer|null
      */
-    public static function createGlobal(IOInterface $io, $disablePlugins = false)
+    public static function createGlobal(IOInterface $io, $disablePlugins = false, $disableScripts = false)
     {
         $factory = new static();
 
-        return $factory->createGlobalComposer($io, static::createConfig($io), $disablePlugins, true);
+        return $factory->createGlobalComposer($io, static::createConfig($io), $disablePlugins, $disableScripts, true);
     }
 
     /**
@@ -485,15 +490,16 @@ class Factory
 
     /**
      * @param bool $disablePlugins
+     * @param bool $disableScripts
      * @param bool $fullLoad
      *
      * @return Composer|null
      */
-    protected function createGlobalComposer(IOInterface $io, Config $config, $disablePlugins, $fullLoad = false)
+    protected function createGlobalComposer(IOInterface $io, Config $config, $disablePlugins, $disableScripts, $fullLoad = false)
     {
         $composer = null;
         try {
-            $composer = $this->createComposer($io, $config->get('home') . '/composer.json', $disablePlugins, $config->get('home'), $fullLoad);
+            $composer = $this->createComposer($io, $config->get('home') . '/composer.json', $disablePlugins, $config->get('home'), $fullLoad, $disableScripts);
         } catch (\Exception $e) {
             $io->writeError('Failed to initialize global composer: '.$e->getMessage(), true, IOInterface::DEBUG);
         }
@@ -592,7 +598,7 @@ class Factory
     protected function createDefaultInstallers(Installer\InstallationManager $im, Composer $composer, IOInterface $io, ProcessExecutor $process = null)
     {
         $fs = new Filesystem($process);
-        $binaryInstaller = new Installer\BinaryInstaller($io, rtrim($composer->getConfig()->get('bin-dir'), '/'), $composer->getConfig()->get('bin-compat'), $fs);
+        $binaryInstaller = new Installer\BinaryInstaller($io, rtrim($composer->getConfig()->get('bin-dir'), '/'), $composer->getConfig()->get('bin-compat'), $fs, rtrim($composer->getConfig()->get('vendor-dir'), '/'));
 
         $im->addInstaller(new Installer\LibraryInstaller($io, $composer, null, $fs, $binaryInstaller));
         $im->addInstaller(new Installer\PluginInstaller($io, $composer, $fs, $binaryInstaller));
@@ -627,13 +633,14 @@ class Factory
      * @param  mixed       $config         either a configuration array or a filename to read from, if null it will read from
      *                                     the default filename
      * @param  bool        $disablePlugins Whether plugins should not be loaded
+     * @param  bool        $disableScripts Whether scripts should not be run
      * @return Composer
      */
-    public static function create(IOInterface $io, $config = null, $disablePlugins = false)
+    public static function create(IOInterface $io, $config = null, $disablePlugins = false, $disableScripts = false)
     {
         $factory = new static();
 
-        return $factory->createComposer($io, $config, $disablePlugins);
+        return $factory->createComposer($io, $config, $disablePlugins, null, true, $disableScripts);
     }
 
     /**
@@ -713,7 +720,7 @@ class Factory
      */
     private static function getUserDir()
     {
-        $home = getenv('HOME');
+        $home = Platform::getEnv('HOME');
         if (!$home) {
             throw new \RuntimeException('The HOME or COMPOSER_HOME environment variable must be set for composer to run correctly');
         }

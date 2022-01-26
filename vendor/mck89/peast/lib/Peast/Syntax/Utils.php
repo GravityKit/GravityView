@@ -34,7 +34,7 @@ class Utils
         if ($str === "") {
             return array();
         }
-        $ret = preg_split('//u', $str, null, PREG_SPLIT_NO_EMPTY);
+        $ret = preg_split('//u', $str, -1, PREG_SPLIT_NO_EMPTY);
         if (preg_last_error() === PREG_BAD_UTF8_ERROR) {
             if (!$strictEncoding) {
                 $str = mb_convert_encoding($str, 'UTF-8', 'UTF-8');

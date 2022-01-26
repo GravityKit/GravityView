@@ -4,6 +4,7 @@ Feature: Perform database operations
     Given an empty directory
     And WP files
     And wp-config.php
+    And I run `wp config set WP_DEBUG true --type=constant --raw`
     And a session_no file:
       """
       n
@@ -11,16 +12,6 @@ Feature: Perform database operations
     And a session_yes file:
       """
       y
-      """
-    And a wp-debug.php file:
-      """
-      <?php
-      define( 'WP_DEBUG', true );
-      """
-    And a wp-cli.yml file:
-      """
-      require:
-        - wp-debug.php
       """
 
     When I try `wp option get home`
@@ -65,16 +56,7 @@ Feature: Perform database operations
     Given an empty directory
     And WP files
     And wp-config.php
-    And a wp-debug.php file:
-      """
-      <?php
-      define( 'WP_DEBUG', true );
-      """
-    And a wp-cli.yml file:
-      """
-      require:
-        - wp-debug.php
-      """
+    And I run `wp config set WP_DEBUG true --type=constant --raw`
 
     When I try `wp option get home`
     Then STDOUT should be empty

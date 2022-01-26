@@ -631,13 +631,13 @@ They can be concatenated. For instance, the default match color of black on a mu
     wp_options:option_value
     1:http://wordpress-develop.dev
     wp_options:option_value
-    1:http://example.com/foo
+    1:https://example.com/foo
         ...
 
     # Search through a multisite database on the subsite 'foo' for the 'example.com' string
     $ wp db search example.com --url=example.com/foo
     wp_2_comments:comment_author_url
-    1:http://example.com/
+    1:https://example.com/
     wp_2_options:option_value
         ...
 

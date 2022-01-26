@@ -1,6 +1,7 @@
 {
     "name": "wp-cli/wp-config-transformer",
     "description": "Programmatically edit a wp-config.php file.",
+    "homepage": "https://github.com/wp-cli/wp-config-transformer",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -9,15 +10,39 @@
             "email": "fjarrett@gmail.com"
         }
     ],
+    "config": {
+        "process-timeout": 7200,
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
     "require": {
-        "php": ">=5.3.29"
+        "php": "^5.6 || ^7.0 || ^8.0"
     },
     "require-dev": {
-        "composer/composer": ">=1.5.6 <1.7.0 || ^1.7.1 || ^2.0.0",
-        "phpunit/phpunit": "^6.5.5 || ^7.0.0",
-        "wp-coding-standards/wpcs": "^0.14.0 || ^1.0.0 || ^2.0.0"
+        "wp-cli/wp-cli-tests": "^3.1"
     },
     "autoload": {
         "files": [ "src/WPConfigTransformer.php" ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "behat": "run-behat-tests",
+        "behat-rerun": "rerun-behat-tests",
+        "lint": "run-linter-tests",
+        "phpcs": "run-phpcs-tests",
+        "phpunit": "run-php-unit-tests",
+        "prepare-tests": "install-package-tests",
+        "test": [
+            "@lint",
+            "@phpcs",
+            "@phpunit",
+            "@behat"
+        ]
+    },
+    "support": {
+        "issues": "https://github.com/wp-cli/wp-config-transformer/issues"
     }
 }

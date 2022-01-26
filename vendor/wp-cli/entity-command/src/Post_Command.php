@@ -323,6 +323,16 @@ class Post_Command extends CommandWithDBObject {
 	 *     # Update a post with multiple meta values.
 	 *     $ wp post update 123 --meta_input='{"key1":"value1","key2":"value2"}'
 	 *     Success: Updated post 123.
+	 *
+	 *     # Update multiple posts at once.
+	 *     $ wp post update 123 456 --post_author=789
+	 *     Success: Updated post 123.
+	 *     Success: Updated post 456.
+	 *
+	 *     # Update all posts of a given post type at once.
+	 *     $ wp post update $(wp post list --post_type=page --format=ids) --post_author=123
+	 *     Success: Updated post 123.
+	 *     Success: Updated post 456.
 	 */
 	public function update( $args, $assoc_args ) {
 

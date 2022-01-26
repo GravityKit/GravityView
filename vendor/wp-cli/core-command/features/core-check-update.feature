@@ -2,6 +2,7 @@ Feature: Check for more recent versions
 
   Scenario: Check for update via Version Check API
     Given a WP install
+    And I try `wp theme install twentytwenty --activate`
 
     When I run `wp core download --version=4.4 --force`
     Then STDOUT should not be empty
@@ -42,6 +43,7 @@ Feature: Check for more recent versions
 
   Scenario: No minor updates for an unlocalized WordPress release
     Given a WP install
+    And I try `wp theme install twentytwenty --activate`
 
     # If current WP_VERSION is nightly, trunk or old then from checksums might not exist, so STDERR may or may not be empty.
     When I try `wp core download --version=4.0 --locale=es_ES --force`

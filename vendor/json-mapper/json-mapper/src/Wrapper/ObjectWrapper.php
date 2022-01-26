@@ -10,7 +10,7 @@ class ObjectWrapper
 {
     /** @var object */
     private $object;
-    /** @var \ReflectionClass */
+    /** @var \ReflectionClass|null */
     private $reflectedObject;
 
     /** @param object $object */

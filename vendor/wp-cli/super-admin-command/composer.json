@@ -20,11 +20,14 @@
     },
     "config": {
         "process-timeout": 7200,
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.x-dev"
+            "dev-main": "2.x-dev"
         },
         "bundled": true,
         "commands": [

@@ -131,21 +131,21 @@ Feature: Manage WordPress terms
     When I run `wp term url category {TERM_ID}`
     Then STDOUT should be:
       """
-      http://example.com/?cat=2
+      https://example.com/?cat=2
       """
 
     When I run `wp term url category {TERM_ID} {SECOND_TERM_ID}`
     Then STDOUT should be:
       """
-      http://example.com/?cat=2
-      http://example.com/?cat=3
+      https://example.com/?cat=2
+      https://example.com/?cat=3
       """
 
     When I run `wp term url category {SECOND_TERM_ID} {TERM_ID}`
     Then STDOUT should be:
       """
-      http://example.com/?cat=3
-      http://example.com/?cat=2
+      https://example.com/?cat=3
+      https://example.com/?cat=2
       """
 
   Scenario: Make sure WordPress receives the slashed data it expects

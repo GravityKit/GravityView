@@ -301,7 +301,7 @@ Returns exit code 0 when installed, 1 when uninstalled.
 Gets a list of plugins.
 
 ~~~
-wp plugin list [--<field>=<value>] [--field=<field>] [--fields=<fields>] [--format=<format>] [--status=<status>]
+wp plugin list [--<field>=<value>] [--field=<field>] [--fields=<fields>] [--format=<format>] [--status=<status>] [--skip-update-check]
 ~~~
 
 Displays a list of the plugins installed on the site with activation
@@ -342,6 +342,9 @@ Use `--status=dropin` to list installed dropins (e.g. `object-cache.php`).
 		  - inactive
 		  - must-use
 		---
+
+	[--skip-update-check]
+		If set, the plugin update check will be skipped.
 
 **AVAILABLE FIELDS**
 
@@ -977,7 +980,7 @@ Returns exit code 0 when installed, 1 when uninstalled.
 Gets a list of themes.
 
 ~~~
-wp theme list [--<field>=<value>] [--field=<field>] [--fields=<fields>] [--format=<format>] [--status=<status>]
+wp theme list [--<field>=<value>] [--field=<field>] [--fields=<fields>] [--format=<format>] [--status=<status>] [--skip-update-check]
 ~~~
 
 **OPTIONS**
@@ -1011,6 +1014,9 @@ wp theme list [--<field>=<value>] [--field=<field>] [--fields=<fields>] [--forma
 		  - parent
 		  - inactive
 		---
+
+	[--skip-update-check]
+		If set, the theme update check will be skipped.
 
 **AVAILABLE FIELDS**
 

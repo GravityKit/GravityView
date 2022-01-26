@@ -368,7 +368,7 @@ class Site_Command extends CommandWithDBObject {
 	 * : Title of the new site. Default: prettified slug.
 	 *
 	 * [--email=<email>]
-	 * : Email for Admin user. User will be created if none exists. Assignement to Super Admin if not included.
+	 * : Email for admin user. User will be created if none exists. Assignment to super admin if not included.
 	 *
 	 * [--network_id=<network-id>]
 	 * : Network to associate new site with. Defaults to current network (typically 1).
@@ -422,7 +422,7 @@ class Site_Command extends CommandWithDBObject {
 			}
 		}
 
-		// Check for valid email, if not, use the first Super Admin found
+		// Check for valid email, if not, use the first super admin found
 		// Probably a more efficient way to do this so we dont query for the
 		// User twice if super admin
 		$email = sanitize_email( $email );

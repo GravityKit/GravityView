@@ -16,12 +16,12 @@ class Preg
     const ARRAY_MSG = '$subject as an array is not supported. You can use \'foreach\' instead.';
 
     /**
-     * @param string   $pattern
+     * @param non-empty-string   $pattern
      * @param string   $subject
      * @param array<string|null> $matches Set by method
      * @param int      $flags PREG_UNMATCHED_AS_NULL, only available on PHP 7.2+
      * @param int      $offset
-     * @return int
+     * @return 0|1
      */
     public static function match($pattern, $subject, &$matches = null, $flags = 0, $offset = 0)
     {
@@ -38,14 +38,14 @@ class Preg
     }
 
     /**
-     * Runs preg_match_all with PREG_OFFSET_CAPTURE
+     * Runs preg_match with PREG_OFFSET_CAPTURE
      *
-     * @param string   $pattern
+     * @param non-empty-string   $pattern
      * @param string   $subject
      * @param array<int|string, array{string|null, int}> $matches Set by method
      * @param int      $flags PREG_UNMATCHED_AS_NULL, only available on PHP 7.2+
      * @param int      $offset
-     * @return int
+     * @return 0|1
      *
      * @phpstan-param array<int|string, array{string|null, int<-1, max>}> $matches
      */
@@ -60,12 +60,12 @@ class Preg
     }
 
     /**
-     * @param string   $pattern
+     * @param non-empty-string   $pattern
      * @param string   $subject
      * @param array<int|string, list<string|null>> $matches Set by method
      * @param int      $flags PREG_UNMATCHED_AS_NULL, only available on PHP 7.2+
      * @param int      $offset
-     * @return int
+     * @return 0|positive-int
      */
     public static function matchAll($pattern, $subject, &$matches = null, $flags = 0, $offset = 0)
     {
@@ -88,12 +88,12 @@ class Preg
     /**
      * Runs preg_match_all with PREG_OFFSET_CAPTURE
      *
-     * @param string   $pattern
+     * @param non-empty-string   $pattern
      * @param string   $subject
      * @param array<int|string, list<array{string|null, int}>> $matches Set by method
      * @param int      $flags PREG_UNMATCHED_AS_NULL, only available on PHP 7.2+
      * @param int      $offset
-     * @return int
+     * @return 0|positive-int
      *
      * @phpstan-param array<int|string, list<array{string|null, int<-1, max>}>> $matches
      */
@@ -221,7 +221,6 @@ class Preg
             throw PcreException::fromFunction('preg_split', $pattern);
         }
 
-        // @phpstan-ignore-next-line See https://github.com/phpstan/phpstan/issues/6155
         return $result;
     }
 
@@ -243,7 +242,7 @@ class Preg
     }
 
     /**
-     * @param string   $pattern
+     * @param non-empty-string   $pattern
      * @param string   $subject
      * @param array<string|null> $matches Set by method
      * @param int      $flags PREG_UNMATCHED_AS_NULL, only available on PHP 7.2+
@@ -256,7 +255,7 @@ class Preg
     }
 
     /**
-     * @param string   $pattern
+     * @param non-empty-string   $pattern
      * @param string   $subject
      * @param array<int|string, list<string|null>> $matches Set by method
      * @param int      $flags PREG_UNMATCHED_AS_NULL, only available on PHP 7.2+
@@ -269,9 +268,9 @@ class Preg
     }
 
     /**
-     * Runs preg_match_all with PREG_OFFSET_CAPTURE
+     * Runs preg_match with PREG_OFFSET_CAPTURE
      *
-     * @param string   $pattern
+     * @param non-empty-string   $pattern
      * @param string   $subject
      * @param array<int|string, array{string|null, int}> $matches Set by method
      * @param int      $flags PREG_UNMATCHED_AS_NULL, only available on PHP 7.2+
@@ -288,7 +287,7 @@ class Preg
     /**
      * Runs preg_match_all with PREG_OFFSET_CAPTURE
      *
-     * @param string   $pattern
+     * @param non-empty-string   $pattern
      * @param string   $subject
      * @param array<int|string, list<array{string|null, int}>> $matches Set by method
      * @param int      $flags PREG_UNMATCHED_AS_NULL, only available on PHP 7.2+

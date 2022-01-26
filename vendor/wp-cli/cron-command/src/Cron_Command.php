@@ -50,7 +50,7 @@ class Cron_Command extends WP_CLI_Command {
 		if ( 200 === $code ) {
 			WP_CLI::success( 'WP-Cron spawning is working as expected.' );
 		} else {
-			WP_CLI::warning( sprintf( 'WP-Cron spawn succeeded but returned HTTP status code: %1$s %2$s', $code, $message ) );
+			WP_CLI::error( sprintf( 'WP-Cron spawn returned HTTP status code: %1$s %2$s', $code, $message ) );
 		}
 
 	}

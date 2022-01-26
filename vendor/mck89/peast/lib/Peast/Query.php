@@ -90,6 +90,7 @@ class Query implements \IteratorAggregate, \Countable
      *
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return $this->matches->count();
@@ -114,6 +115,7 @@ class Query implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new \ArrayIterator($this->matches->getNodes());

@@ -12,6 +12,7 @@
 
 namespace Composer\Command;
 
+use Composer\Pcre\Preg;
 use Composer\Util\Filesystem;
 use Composer\Util\Platform;
 use Composer\Util\Silencer;
@@ -77,6 +78,7 @@ class ConfigCommand extends BaseCommand
                 new InputOption('json', 'j', InputOption::VALUE_NONE, 'JSON decode the setting value, to be used with extra.* keys'),
                 new InputOption('merge', 'm', InputOption::VALUE_NONE, 'Merge the setting value with the current value, to be used with extra.* keys in combination with --json'),
                 new InputOption('append', null, InputOption::VALUE_NONE, 'When adding a repository, append it (lowest priority) to the existing ones instead of prepending it (highest priority)'),
+                new InputOption('source', null, InputOption::VALUE_NONE, 'Display where the config value is loaded from'),
                 new InputArgument('setting-key', null, 'Setting key'),
                 new InputArgument('setting-value', InputArgument::IS_ARRAY, 'Setting value'),
             ))
@@ -212,8 +214,8 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Open file in editor
-        if ($input->getOption('editor')) {
-            $editor = escapeshellcmd(getenv('EDITOR'));
+        if (true === $input->getOption('editor')) {
+            $editor = escapeshellcmd(Platform::getEnv('EDITOR'));
             if (!$editor) {
                 if (Platform::isWindows()) {
                     $editor = 'notepad';
@@ -233,20 +235,20 @@ EOT
             return 0;
         }
 
-        if (!$input->getOption('global')) {
-            $this->config->merge($this->configFile->read());
-            $this->config->merge(array('config' => $this->authConfigFile->exists() ? $this->authConfigFile->read() : array()));
+        if (false === $input->getOption('global')) {
+            $this->config->merge($this->configFile->read(), $this->configFile->getPath());
+            $this->config->merge(array('config' => $this->authConfigFile->exists() ? $this->authConfigFile->read() : array()), $this->authConfigFile->getPath());
         }
 
         // List the configuration of the file settings
-        if ($input->getOption('list')) {
-            $this->listConfiguration($this->config->all(), $this->config->raw(), $output);
+        if (true === $input->getOption('list')) {
+            $this->listConfiguration($this->config->all(), $this->config->raw(), $output, null, (bool) $input->getOption('source'));
 
             return 0;
         }
 
         $settingKey = $input->getArgument('setting-key');
-        if (!$settingKey || !is_string($settingKey)) {
+        if (!is_string($settingKey)) {
             return 0;
         }
 
@@ -260,7 +262,7 @@ EOT
             $properties = array('name', 'type', 'description', 'homepage', 'version', 'minimum-stability', 'prefer-stable', 'keywords', 'license', 'extra');
             $rawData = $this->configFile->read();
             $data = $this->config->all();
-            if (preg_match('/^repos?(?:itories)?(?:\.(.+))?/', $settingKey, $matches)) {
+            if (Preg::isMatch('/^repos?(?:itories)?(?:\.(.+))?/', $settingKey, $matches)) {
                 if (!isset($matches[1]) || $matches[1] === '') {
                     $value = isset($data['repositories']) ? $data['repositories'] : array();
                 } else {
@@ -305,7 +307,12 @@ EOT
                 $value = json_encode($value);
             }
 
-            $this->getIO()->write($value, true, IOInterface::QUIET);
+            $sourceOfConfigValue = '';
+            if ($input->getOption('source')) {
+                $sourceOfConfigValue = ' (' . $this->config->getSourceOfValue($settingKey) . ')';
+            }
+
+            $this->getIO()->write($value . $sourceOfConfigValue, true, IOInterface::QUIET);
 
             return 0;
         }
@@ -384,7 +391,7 @@ EOT
             'cache-files-ttl' => array('is_numeric', 'intval'),
             'cache-files-maxsize' => array(
                 function ($val) {
-                    return preg_match('/^\s*([0-9.]+)\s*(?:([kmg])(?:i?b)?)?\s*$/i', $val) > 0;
+                    return Preg::isMatch('/^\s*([0-9.]+)\s*(?:([kmg])(?:i?b)?)?\s*$/i', $val);
                 },
                 function ($val) {
                     return $val;
@@ -439,6 +446,7 @@ EOT
             'github-expose-hostname' => array($booleanValidator, $booleanNormalizer),
             'htaccess-protect' => array($booleanValidator, $booleanNormalizer),
             'lock' => array($booleanValidator, $booleanNormalizer),
+            'allow-plugins' => array($booleanValidator, $booleanNormalizer),
             'platform-check' => array(
                 function ($val) {
                     return in_array($val, array('php-only', 'true', 'false', '1', '0'), true);
@@ -446,6 +454,18 @@ EOT
                 function ($val) {
                     if ('php-only' === $val) {
                         return 'php-only';
+                    }
+
+                    return $val !== 'false' && (bool)$val;
+                },
+            ),
+            'use-parent-dir' => array(
+                function ($val) {
+                    return in_array($val, array('true', 'false', 'prompt'), true);
+                },
+                function ($val) {
+                    if ('prompt' === $val) {
+                        return 'prompt';
                     }
 
                     return $val !== 'false' && (bool) $val;
@@ -517,7 +537,7 @@ EOT
             return 0;
         }
         // handle preferred-install per-package config
-        if (preg_match('/^preferred-install\.(.+)/', $settingKey, $matches)) {
+        if (Preg::isMatch('/^preferred-install\.(.+)/', $settingKey, $matches)) {
             if ($input->getOption('unset')) {
                 $this->configSource->removeConfigSetting($settingKey);
 
@@ -530,6 +550,28 @@ EOT
             }
 
             $this->configSource->addConfigSetting($settingKey, $values[0]);
+
+            return 0;
+        }
+
+        // handle allow-plugins config setting elements true or false to add/remove
+        if (Preg::isMatch('{^allow-plugins\.([a-zA-Z0-9/*-]+)}', $settingKey, $matches)) {
+            if ($input->getOption('unset')) {
+                $this->configSource->removeConfigSetting($settingKey);
+
+                return 0;
+            }
+
+            if (true !== $booleanValidator($values[0])) {
+                throw new \RuntimeException(sprintf(
+                    '"%s" is an invalid value',
+                    $values[0]
+                ));
+            }
+
+            $normalizedValue = $booleanNormalizer($values[0]);
+
+            $this->configSource->addConfigSetting($settingKey, $normalizedValue);
 
             return 0;
         }
@@ -589,7 +631,7 @@ EOT
         );
 
         if ($input->getOption('global') && (isset($uniqueProps[$settingKey]) || isset($multiProps[$settingKey]) || strpos($settingKey, 'extra.') === 0)) {
-            throw new \InvalidArgumentException('The '.$settingKey.' property can not be set in the global config.json file. Use `composer global config` to apply changes to the global composer.json');
+            throw new \InvalidArgumentException('The ' . $settingKey . ' property can not be set in the global config.json file. Use `composer global config` to apply changes to the global composer.json');
         }
         if ($input->getOption('unset') && (isset($uniqueProps[$settingKey]) || isset($multiProps[$settingKey]))) {
             $this->configSource->removeProperty($settingKey);
@@ -608,7 +650,7 @@ EOT
         }
 
         // handle repositories
-        if (preg_match('/^repos?(?:itories)?\.(.+)/', $settingKey, $matches)) {
+        if (Preg::isMatch('/^repos?(?:itories)?\.(.+)/', $settingKey, $matches)) {
             if ($input->getOption('unset')) {
                 $this->configSource->removeRepository($matches[1]);
 
@@ -644,7 +686,7 @@ EOT
         }
 
         // handle extra
-        if (preg_match('/^extra\.(.+)/', $settingKey, $matches)) {
+        if (Preg::isMatch('/^extra\.(.+)/', $settingKey, $matches)) {
             if ($input->getOption('unset')) {
                 $this->configSource->removeProperty($settingKey);
 
@@ -671,7 +713,7 @@ EOT
         }
 
         // handle suggest
-        if (preg_match('/^suggest\.(.+)/', $settingKey, $matches)) {
+        if (Preg::isMatch('/^suggest\.(.+)/', $settingKey, $matches)) {
             if ($input->getOption('unset')) {
                 $this->configSource->removeProperty($settingKey);
 
@@ -691,14 +733,14 @@ EOT
         }
 
         // handle platform
-        if (preg_match('/^platform\.(.+)/', $settingKey, $matches)) {
+        if (Preg::isMatch('/^platform\.(.+)/', $settingKey, $matches)) {
             if ($input->getOption('unset')) {
                 $this->configSource->removeConfigSetting($settingKey);
 
                 return 0;
             }
 
-            $this->configSource->addConfigSetting($settingKey, $values[0]);
+            $this->configSource->addConfigSetting($settingKey, $values[0] === 'false' ?  false : $values[0]);
 
             return 0;
         }
@@ -711,7 +753,7 @@ EOT
         }
 
         // handle auth
-        if (preg_match('/^(bitbucket-oauth|github-oauth|gitlab-oauth|gitlab-token|http-basic|bearer)\.(.+)/', $settingKey, $matches)) {
+        if (Preg::isMatch('/^(bitbucket-oauth|github-oauth|gitlab-oauth|gitlab-token|http-basic|bearer)\.(.+)/', $settingKey, $matches)) {
             if ($input->getOption('unset')) {
                 $this->authConfigSource->removeConfigSetting($matches[1].'.'.$matches[2]);
                 $this->configSource->removeConfigSetting($matches[1].'.'.$matches[2]);
@@ -746,7 +788,7 @@ EOT
         }
 
         // handle script
-        if (preg_match('/^scripts\.(.+)/', $settingKey, $matches)) {
+        if (Preg::isMatch('/^scripts\.(.+)/', $settingKey, $matches)) {
             if ($input->getOption('unset')) {
                 $this->configSource->removeProperty($settingKey);
 
@@ -820,13 +862,14 @@ EOT
     /**
      * Display the contents of the file in a pretty formatted way
      *
-     * @param array<array|bool|string> $contents
-     * @param array<array|string>      $rawContents
-     * @param string|null              $k
+     * @param array<mixed[]|bool|string> $contents
+     * @param array<mixed[]|string>      $rawContents
+     * @param string|null                $k
+     * @param bool                       $showSource
      *
      * @return void
      */
-    protected function listConfiguration(array $contents, array $rawContents, OutputInterface $output, $k = null)
+    protected function listConfiguration(array $contents, array $rawContents, OutputInterface $output, $k = null, $showSource = false)
     {
         $origK = $k;
         $io = $this->getIO();
@@ -838,8 +881,8 @@ EOT
             $rawVal = isset($rawContents[$key]) ? $rawContents[$key] : null;
 
             if (is_array($value) && (!is_numeric(key($value)) || ($key === 'repositories' && null === $k))) {
-                $k .= preg_replace('{^config\.}', '', $key . '.');
-                $this->listConfiguration($value, $rawVal, $output, $k);
+                $k .= Preg::replace('{^config\.}', '', $key . '.');
+                $this->listConfiguration($value, $rawVal, $output, $k, $showSource);
                 $k = $origK;
 
                 continue;
@@ -857,10 +900,14 @@ EOT
                 $value = var_export($value, true);
             }
 
+            $source = '';
+            if ($showSource) {
+                $source = ' (' . $this->config->getSourceOfValue($k . $key) . ')';
+            }
             if (is_string($rawVal) && $rawVal != $value) {
-                $io->write('[<comment>' . $k . $key . '</comment>] <info>' . $rawVal . ' (' . $value . ')</info>', true, IOInterface::QUIET);
+                $io->write('[<comment>' . $k . $key . '</comment>] <info>' . $rawVal . ' (' . $value . ')</info>' . $source, true, IOInterface::QUIET);
             } else {
-                $io->write('[<comment>' . $k . $key . '</comment>] <info>' . $value . '</info>', true, IOInterface::QUIET);
+                $io->write('[<comment>' . $k . $key . '</comment>] <info>' . $value . '</info>' . $source, true, IOInterface::QUIET);
             }
         }
     }

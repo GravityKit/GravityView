@@ -1,4 +1,5 @@
 <?php
+
 use WP_CLI\Fetchers\User as UserFetcher;
 
 /**
@@ -23,9 +24,9 @@ use WP_CLI\Fetchers\User as UserFetcher;
  */
 class Super_Admin_Command extends WP_CLI_Command {
 
-	private $fields = array(
+	private $fields = [
 		'user_login',
-	);
+	];
 
 	public function __construct() {
 		$this->fetcher = new UserFetcher();
@@ -66,7 +67,7 @@ class Super_Admin_Command extends WP_CLI_Command {
 				WP_CLI::line( $user_login );
 			}
 		} else {
-			$output_users = array();
+			$output_users = [];
 			foreach ( $super_admins as $user_login ) {
 				$output_user = new stdClass();
 
@@ -97,20 +98,25 @@ class Super_Admin_Command extends WP_CLI_Command {
 		$successes = 0;
 		$errors    = 0;
 		$users     = $this->fetcher->get_many( $args );
+
 		if ( count( $users ) !== count( $args ) ) {
 			$errors = count( $args ) - count( $users );
 		}
-		$user_logins      = wp_list_pluck( $users, 'user_login' );
+
 		$super_admins     = self::get_admins();
 		$num_super_admins = count( $super_admins );
 
-		foreach ( $user_logins as $user_login ) {
-			if ( in_array( $user_login, $super_admins, true ) ) {
-				WP_CLI::warning( "User '{$user_login}' already has super-admin capabilities." );
+		$new_super_admins = [];
+		foreach ( $users as $user ) {
+			do_action( 'grant_super_admin', (int) $user->ID ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+
+			if ( in_array( $user->user_login, $super_admins, true ) ) {
+				WP_CLI::warning( "User '{$user->user_login}' already has super-admin capabilities." );
 				continue;
 			}
 
-			$super_admins[] = $user_login;
+			$new_super_admins[] = $user->ID;
+			$super_admins[]     = $user->user_login;
 			$successes++;
 		}
 
@@ -134,6 +140,10 @@ class Super_Admin_Command extends WP_CLI_Command {
 				WP_CLI::error( 'Site options update failed.' );
 			}
 		}
+
+		foreach ( $new_super_admins as $user_id ) {
+			do_action( 'granted_super_admin', (int) $user_id ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		}
 	}
 
 	/**
@@ -150,14 +160,21 @@ class Super_Admin_Command extends WP_CLI_Command {
 	 *     Success: Revoked super-admin capabilities.
 	 */
 	public function remove( $args, $_ ) {
+		$users             = $this->fetcher->get_many( $args );
+		$user_logins       = $users ? array_values( array_unique( wp_list_pluck( $users, 'user_login' ) ) ) : [];
+		$user_logins_count = count( $user_logins );
+
+		$user_ids = [];
+		foreach ( $users as $user ) {
+			$user_ids[ $user->user_login ] = $user->ID;
+
+			do_action( 'revoke_super_admin', (int) $user->ID ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		}
+
 		$super_admins = self::get_admins();
 		if ( ! $super_admins ) {
 			WP_CLI::error( 'No super admins to revoke super-admin privileges from.' );
 		}
-
-		$users             = $this->fetcher->get_many( $args );
-		$user_logins       = $users ? array_values( array_unique( wp_list_pluck( $users, 'user_login' ) ) ) : array();
-		$user_logins_count = count( $user_logins );
 
 		if ( $user_logins_count < count( $args ) ) {
 			$flipped_user_logins = array_flip( $user_logins );
@@ -168,7 +185,7 @@ class Super_Admin_Command extends WP_CLI_Command {
 				array_unique(
 					array_filter(
 						$args,
-						function ( $v ) use ( $flipped_user_logins ) {
+						static function ( $v ) use ( $flipped_user_logins ) {
 							// Exclude numeric and email-like logins (login names can be email-like but ignore this given the circumstances).
 							return ! isset( $flipped_user_logins[ $v ] ) && ! is_numeric( $v ) && ! is_email( $v );
 						}
@@ -199,10 +216,29 @@ class Super_Admin_Command extends WP_CLI_Command {
 			$msg .= ' There are no remaining super admins.';
 		}
 		WP_CLI::success( $msg );
+
+		$removed_logins = array_intersect( $user_logins, $super_admins );
+
+		foreach ( $removed_logins as $user_login ) {
+			$user_id = null;
+
+			if ( array_key_exists( $user_login, $user_ids ) ) {
+				$user_id = $user_ids[ $user_login ];
+			} else {
+				$user = get_user_by( 'login', $user_login );
+				if ( $user instanceof WP_User ) {
+					$user_id = $user->ID;
+				}
+			}
+
+			if ( null !== $user_id ) {
+				do_action( 'revoked_super_admin', (int) $user_ids[ $user_login ] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			}
+		}
 	}
 
 	private static function get_admins() {
 		// We don't use get_super_admins() because we don't want to mess with the global
-		return (array) get_site_option( 'site_admins', array( 'admin' ) );
+		return (array) get_site_option( 'site_admins', [ 'admin' ] );
 	}
 }

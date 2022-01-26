@@ -3,7 +3,7 @@ wp-cli/scaffold-command
 
 Generates code for post types, taxonomies, blocks, plugins, child themes, etc.
 
-[![Testing](https://github.com/wp-cli/scaffold-command/actions/workflows/testing.yml/badge.svg)](https://github.com/wp-cli/scaffold-command/actions/workflows/testing.yml) [![Build Status](https://travis-ci.org/wp-cli/scaffold-command.svg?branch=master)](https://travis-ci.org/wp-cli/scaffold-command)
+[![Testing](https://github.com/wp-cli/scaffold-command/actions/workflows/testing.yml/badge.svg)](https://github.com/wp-cli/scaffold-command/actions/workflows/testing.yml)
 
 Quick links: [Using](#using) | [Installing](#installing) | [Contributing](#contributing) | [Support](#support)
 

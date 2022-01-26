@@ -1213,7 +1213,13 @@ EOT;
 				if ( $dry_run ) {
 					$cmd .= ' --dry-run';
 				}
-				$process = WP_CLI::runcommand( $cmd, [ 'return' => 'all' ] );
+				$process = WP_CLI::runcommand(
+					$cmd,
+					[
+						'return'     => 'all',
+						'exit_error' => false,
+					]
+				);
 				if ( 0 === (int) $process->return_code ) {
 					// See if we can parse the stdout
 					if ( preg_match( '#Success: (.+)#', $process->stdout, $matches ) ) {
@@ -1366,7 +1372,69 @@ EOT;
 			return;
 		}
 
-		$files_to_remove = array_diff( array_keys( $old_checksums ), array_keys( $new_checksums ) );
+		// Compare the files from the old version and the new version in a case-insensitive manner,
+		// to prevent files being incorrectly deleted on systems with case-insensitive filesystems
+		// when core changes the case of filenames.
+		// The main logic for this was taken from the Joomla project and adapted for WP.
+		// See: https://github.com/joomla/joomla-cms/blob/bb5368c7ef9c20270e6e9fcc4b364cd0849082a5/administrator/components/com_admin/script.php#L8158
+
+		$old_filepaths = array_keys( $old_checksums );
+		$new_filepaths = array_keys( $new_checksums );
+
+		$new_filepaths = array_combine( array_map( 'strtolower', $new_filepaths ), $new_filepaths );
+
+		$old_filepaths_to_check = array_diff( $old_filepaths, $new_filepaths );
+
+		foreach ( $old_filepaths_to_check as $old_filepath_to_check ) {
+			$old_realpath = realpath( ABSPATH . $old_filepath_to_check );
+
+			// On Unix without incorrectly cased file.
+			if ( false === $old_realpath ) {
+				continue;
+			}
+
+			$lowercase_old_filepath_to_check = strtolower( $old_filepath_to_check );
+
+			if ( ! array_key_exists( $lowercase_old_filepath_to_check, $new_filepaths ) ) {
+				$files_to_remove[] = $old_filepath_to_check;
+				continue;
+			}
+
+			// We are now left with only the files that are similar from old to new except for their case.
+
+			$old_basename      = basename( $old_realpath );
+			$new_filepath      = $new_filepaths[ $lowercase_old_filepath_to_check ];
+			$expected_basename = basename( $new_filepath );
+			$new_realpath      = realpath( ABSPATH . $new_filepath );
+			$new_basename      = basename( $new_realpath );
+
+			// On Windows or Unix with only the incorrectly cased file.
+			if ( $new_basename !== $expected_basename ) {
+				WP_CLI::debug( "Renaming file '{$old_filepath_to_check}' => '{$new_filepath}'", 'core' );
+
+				rename( ABSPATH . $old_filepath_to_check, ABSPATH . $old_filepath_to_check . '.tmp' );
+				rename( ABSPATH . $old_filepath_to_check . '.tmp', ABSPATH . $new_filepath );
+
+				continue;
+			}
+
+			// There might still be an incorrectly cased file on other OS than Windows.
+			if ( basename( $old_filepath_to_check ) === $old_basename ) {
+				// Check if case-insensitive file system, eg on OSX.
+				if ( fileinode( $old_realpath ) === fileinode( $new_realpath ) ) {
+					// Check deeper because even realpath or glob might not return the actual case.
+					if ( ! in_array( $expected_basename, scandir( dirname( $new_realpath ) ), true ) ) {
+						WP_CLI::debug( "Renaming file '{$old_filepath_to_check}' => '{$new_filepath}'", 'core' );
+
+						rename( ABSPATH . $old_filepath_to_check, ABSPATH . $old_filepath_to_check . '.tmp' );
+						rename( ABSPATH . $old_filepath_to_check . '.tmp', ABSPATH . $new_filepath );
+					}
+				} else {
+					// On Unix with both files: Delete the incorrectly cased file.
+					$files_to_remove[] = $old_filepath_to_check;
+				}
+			}
+		}
 
 		if ( ! empty( $files_to_remove ) ) {
 			WP_CLI::log( 'Cleaning up files...' );

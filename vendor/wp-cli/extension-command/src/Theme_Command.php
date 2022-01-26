@@ -832,6 +832,9 @@ class Theme_Command extends CommandWithUpgrade {
 	 *   - inactive
 	 * ---
 	 *
+	 * [--skip-update-check]
+	 * : If set, the theme update check will be skipped.
+	 *
 	 * ## AVAILABLE FIELDS
 	 *
 	 * These fields will be displayed by default for each theme:

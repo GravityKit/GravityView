@@ -42,7 +42,7 @@ Feature: Manage WordPress options
     When I run `wp option list`
     Then STDOUT should contain:
       """
-      home	http://example.com
+      home	https://example.com
       """
 
     When I run `wp option add auto_opt --autoload=no 'bar'`

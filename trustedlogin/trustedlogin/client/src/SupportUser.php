@@ -7,13 +7,13 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 30-December-2021 using Strauss.
+ * Modified by gravityview on 26-January-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
 
 // Exit if accessed directly
-if ( ! defined('ABSPATH') ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -141,7 +141,7 @@ final class SupportUser {
 	 */
 	public function is_active( $passed_user = null ) {
 
-		$current_user = is_a( $passed_user, '\WP_User') ? $passed_user : wp_get_current_user();
+		$current_user = is_a( $passed_user, '\WP_User' ) ? $passed_user : wp_get_current_user();
 
 		if ( ! $current_user || ! $current_user->exists() ) {
 			return false;
@@ -153,7 +153,7 @@ final class SupportUser {
 			return false;
 		}
 
-		if( time() > (int) $expiration ) {
+		if ( time() > (int) $expiration ) {
 			return false;
 		}
 
@@ -199,7 +199,7 @@ final class SupportUser {
 
 		if ( defined( 'LOGGED_IN_KEY' ) && defined( 'NONCE_KEY' ) ) {
 			// The hash doesn't need to be secure, just persistent.
-			$user_email = str_replace( '{hash}', sha1( LOGGED_IN_KEY . NONCE_KEY ), $user_email );
+			$user_email = str_replace( '{hash}', sha1( LOGGED_IN_KEY . NONCE_KEY . get_current_blog_id() ), $user_email );
 		}
 
 		if ( email_exists( $user_email ) ) {
@@ -244,9 +244,9 @@ final class SupportUser {
 			return $username;
 		}
 
-		$i = 1;
+		$i            = 1;
 		$new_username = $username;
-		while( username_exists( $new_username ) ) {
+		while ( username_exists( $new_username ) ) {
 			$new_username = sprintf( '%s %d', $username, $i + 1 );
 		}
 
@@ -343,7 +343,7 @@ final class SupportUser {
 		 * Action run when TrustedLogin has logged-in
 		 */
 		do_action( 'trustedlogin/' . $this->config->ns() . '/logged_in', array(
-			'url' => get_site_url(),
+			'url'    => get_site_url(),
 			'action' => 'logged_in',
 		) );
 	}
@@ -436,7 +436,7 @@ final class SupportUser {
 	public function get_first() {
 		$support_users = $this->get_all();
 
-		if( $support_users ) {
+		if ( $support_users ) {
 			return $support_users[0];
 		}
 
@@ -467,22 +467,27 @@ final class SupportUser {
 
 		$reassign_id_or_null = $this->get_reassign_user_id();
 
-		if ( $delete_endpoint ) {
-			$Endpoint   = new Endpoint( $this->config, $this->logging );
-			$secret_ids = array();
-		}
-
-		$this->logging->log( "Processing user ID " . $user->ID, __METHOD__, 'debug' );
+		$this->logging->log( 'Processing user ID ' . $user->ID, __METHOD__, 'debug' );
 
 		// Remove auto-cleanup hook
 		wp_clear_scheduled_hook( 'trustedlogin/' . $this->config->ns() . '/access/revoke', array( $user_identifier ) );
 
+		// Delete first using wp_delete_user() to allow for reassignment of posts
 		$deleted = wp_delete_user( $user->ID, $reassign_id_or_null );
 
+		// Also delete the user from the all sites on the WP Multisite network
+		$wpmu_deleted = \function_exists( 'wpmu_delete_user' ) ? wpmu_delete_user( $user->ID ) : false;
+
 		if ( $deleted ) {
-			$this->logging->log( "User: " . $user->ID . " deleted.", __METHOD__, 'info' );
+			$message = 'User: ' . $user->ID . ' deleted.';
+
+			if ( $wpmu_deleted ) {
+				$message .= ' Also deleted from the Multisite network.';
+			}
+
+			$this->logging->log( $message, __METHOD__, 'info' );
 		} else {
-			$this->logging->log( "User: " . $user->ID . " NOT deleted.", __METHOD__, 'error' );
+			$this->logging->log( 'User: ' . $user->ID . ' was NOT deleted.', __METHOD__, 'error' );
 		}
 
 		if ( $delete_role ) {
@@ -652,12 +657,13 @@ final class SupportUser {
 	 *
 	 * @uses SupportUser::get_user_identifier()
 	 *
+	 * @since 1.1 Removed second parameter $current_url.
+	 *
 	 * @param WP_User|int|string $user User object, user ID, or "all". If "all", will revoke all users.
-	 * @param bool $current_url Optional. Whether to generate link to current URL, with revoke parameters added. Default: false.
 	 *
 	 * @return string|false Unsanitized nonce URL to revoke support user. If not able to retrieve user identifier, returns false.
 	 */
-	public function get_revoke_url( $user, $current_url = false ) {
+	public function get_revoke_url( $user ) {
 
 		// If "all", will revoke all support users.
 		if ( 'all' === $user ) {
@@ -670,17 +676,11 @@ final class SupportUser {
 			return false;
 		}
 
-		if ( $current_url ) {
-			$base_page = site_url( add_query_arg( array() ) );
-		} else {
-			$base_page = admin_url( 'users.php' );
-		}
-
 		$revoke_url = add_query_arg( array(
 			Endpoint::REVOKE_SUPPORT_QUERY_PARAM => $this->config->ns(),
 			self::ID_QUERY_PARAM                 => $user_identifier,
 			'_wpnonce'                           => wp_create_nonce( Endpoint::REVOKE_SUPPORT_QUERY_PARAM ),
-		), $base_page );
+		), admin_url() );
 
 		$this->logging->log( "revoke_url: $revoke_url", __METHOD__, 'debug' );
 

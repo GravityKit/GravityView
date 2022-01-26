@@ -1799,6 +1799,8 @@ Feature: Generate a POT file of a WordPress project
       (0, _i18n._x)( 'babel-i18n._x', 'babel-i18n._x_context', 'foo-plugin' );
 
       eval( "__( 'Hello Eval World', 'foo-plugin' );" );
+
+      __( `This is a ${ bug }`, 'foo-plugin' );
       """
 
     When I run `wp i18n make-pot foo-plugin`
@@ -1907,6 +1909,10 @@ Feature: Generate a POT file of a WordPress project
     And the foo-plugin/foo-plugin.pot file should not contain:
       """
       msgid "wrong-domain"
+      """
+    And the foo-plugin/foo-plugin.pot file should not contain:
+      """
+      msgid "foo-plugin"
       """
 
   Scenario: Ignores dynamic import in JavaScript file.
@@ -2444,6 +2450,8 @@ Feature: Generate a POT file of a WordPress project
       __( 'wrong-domain', 'wrong-domain' );
 
       __( 'Hello JS' );
+
+      __( `This is a ${ bug }`, 'do-not-import-me' );
       """
 
     When I run `wp i18n make-pot foo-plugin foo-plugin.pot --domain=bar --ignore-domain`
@@ -2476,6 +2484,10 @@ Feature: Generate a POT file of a WordPress project
     And the foo-plugin.pot file should contain:
       """
       msgid "Hello JS"
+      """
+    And the foo-plugin.pot file should not contain:
+      """
+      msgid "do-not-import-me"
       """
 
   Scenario: Associates comments with the right source string

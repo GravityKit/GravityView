@@ -67,7 +67,7 @@
 		<exclude-pattern>*/src/Post(_Meta|_Term|_Type)?_Command\.php$</exclude-pattern>
 		<exclude-pattern>*/src/Site(_Meta|_Option)?_Command\.php$</exclude-pattern>
 		<exclude-pattern>*/src/Term(_Meta)?_Command\.php$</exclude-pattern>
-		<exclude-pattern>*/src/User(_Meta|_Session|_Term)?_Command\.php$</exclude-pattern>
+		<exclude-pattern>*/src/User(_Application_Password|_Meta|_Session|_Term)?_Command\.php$</exclude-pattern>
 	</rule>
 
 	<!-- Whitelisting to provide backward compatibility to classes possibly extending this class. -->

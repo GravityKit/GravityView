@@ -197,7 +197,7 @@ Avoid redirects to alternative 404 pages.
 If your repository only has a small number of packages, and you want to avoid
 the 404-requests, you can also specify an `"available-packages"` key in
 `packages.json` which should be an array with all the package names that your
-repository contain. Alternatively you can specify an
+repository contains. Alternatively you can specify an
 `"available-package-patterns"` key which is an array of package name patterns
 (with `*` matching any string, e.g. `vendor/*` would make Composer look up
 every matching package name in this repository).
@@ -299,12 +299,33 @@ described [above](#packages).
 These fields are optional. You probably don't need them for your own custom
 repository.
 
-#### stream options
+#### cURL or stream options
 
-The `packages.json` file is loaded using a PHP stream. You can set extra
-options on that stream using the `options` parameter. You can set any valid
-PHP stream context option. See [Context options and
-parameters](https://php.net/manual/en/context.php) for more information.
+The repository is accessed either using cURL (Composer 2 with ext-curl enabled)
+or PHP streams. You can set extra options using the `options` parameter. For
+PHP streams, you can set any valid PHP stream context option. See [Context
+options and parameters](https://php.net/manual/en/context.php) for more
+information. When cURL is used, only a limited set of `http` and `ssl` options
+can be configured.
+
+```json
+{
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://example.org",
+            "options": {
+                "http": {
+                    "timeout": 60
+                }
+            }
+        }
+    ],
+    "require": {
+        "acme/package": "^1.0"
+    }
+}
+```
 
 ### VCS
 
@@ -321,8 +342,9 @@ project to use the patched version. If the library is on GitHub (this is the
 case most of the time), you can fork it there and push your changes to
 your fork. After that you update the project's `composer.json`. All you have
 to do is add your fork as a repository and update the version constraint to
-point to your custom branch. In `composer.json`, you should prefix your custom
-branch name with `"dev-"`. For version constraint naming conventions see
+point to your custom branch. In `composer.json` only, you should prefix your
+custom branch name with `"dev-"` (without making it part of the actual branch
+name). For version constraint naming conventions see
 [Libraries](02-libraries.md) for more information.
 
 Example assuming you patched monolog to fix a bug in the `bugfix` branch:
@@ -362,7 +384,7 @@ For more information [see the aliases article](articles/aliases.md).
 #### Using private repositories
 
 Exactly the same solution allows you to work with your private repositories at
-GitHub and BitBucket:
+GitHub and Bitbucket:
 
 ```json
 {
@@ -392,16 +414,16 @@ The following are supported:
 
 To get packages from these systems you need to have their respective clients
 installed. That can be inconvenient. And for this reason there is special
-support for GitHub and BitBucket that use the APIs provided by these sites, to
+support for GitHub and Bitbucket that use the APIs provided by these sites, to
 fetch the packages without having to install the version control system. The
 VCS repository provides `dist`s for them that fetch the packages as zips.
 
 * **GitHub:** [github.com](https://github.com) (Git)
-* **BitBucket:** [bitbucket.org](https://bitbucket.org) (Git and Mercurial)
+* **Bitbucket:** [bitbucket.org](https://bitbucket.org) (Git)
 
 The VCS driver to be used is detected automatically based on the URL. However,
-should you need to specify one for whatever reason, you can use `git-bitbucket`,
-`hg-bitbucket`, `github`, `gitlab`, `perforce`, `fossil`, `git`, `svn` or `hg`
+should you need to specify one for whatever reason, you can use `bitbucket`,
+`github`, `gitlab`, `perforce`, `fossil`, `git`, `svn` or `hg`
 as the repository type instead of `vcs`.
 
 If you set the `no-api` key to `true` on a github repository it will clone the
@@ -412,10 +434,11 @@ attempt to use github's zip files.
 Please note:
 * **To let Composer choose which driver to use** the repository type needs to be defined as "vcs"
 * **If you already used a private repository**, this means Composer should have cloned it in cache. If you want to install the same package with drivers, remember to launch the command `composer clearcache` followed by the command `composer update` to update Composer cache and install the package from dist.
+* VCS driver `git-bitbucket` is deprecated in favor of `bitbucket`
 
-#### BitBucket Driver Configuration
+#### Bitbucket Driver Configuration
 
-> **Note that the repository endpoint for BitBucket needs to be https rather than git.**
+> **Note that the repository endpoint for Bitbucket needs to be https rather than git.**
 
 After setting up your bitbucket repository, you will also need to
 [set up authentication](articles/authentication-for-private-packages.md#bitbucket-oauth).
@@ -445,7 +468,7 @@ repository like this:
 If you have no branches or tags directory you can disable them entirely by
 setting the `branches-path` or `tags-path` to `false`.
 
-If the package is in a sub-directory, e.g. `/trunk/foo/bar/composer.json` and
+If the package is in a subdirectory, e.g. `/trunk/foo/bar/composer.json` and
 `/tags/1.0/foo/bar/composer.json`, then you can make Composer access it by
 setting the `"package-path"` option to the sub-directory, in this example it
 would be `"package-path": "foo/bar/"`.

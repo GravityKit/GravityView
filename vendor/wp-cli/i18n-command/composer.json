@@ -12,7 +12,7 @@
     ],
     "require": {
         "gettext/gettext": "^4.8",
-        "mck89/peast": "^1.13.9",
+        "mck89/peast": "^1.13.11",
         "wp-cli/wp-cli": "^2.5"
     },
     "require-dev": {
@@ -24,11 +24,14 @@
     },
     "config": {
         "process-timeout": 7200,
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.x-dev"
+            "dev-main": "2.x-dev"
         },
         "bundled": true,
         "commands": [

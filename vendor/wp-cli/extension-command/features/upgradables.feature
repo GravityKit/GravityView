@@ -90,8 +90,12 @@ Feature: Manage WordPress themes and plugins
       """
     And the {SUITE_CACHE_DIR}/<type>/<item>-{NEW_VERSION}.zip file should exist
 
-    When I run `wp <type> update --all`
-    Then STDOUT should not be empty
+    # This can throw warnings about versions being higher than expected.
+    When I try `wp <type> update --all 2>&1`
+    Then STDOUT should contain:
+      """
+      updated
+      """
 
     When I run `wp <type> status <item>`
     Then STDOUT should not contain:

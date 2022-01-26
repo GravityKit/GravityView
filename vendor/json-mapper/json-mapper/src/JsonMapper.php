@@ -90,8 +90,7 @@ class JsonMapper implements JsonMapperInterface
         return $this;
     }
 
-    /** @param object $object */
-    public function mapObject(\stdClass $json, $object): void
+    public function mapObject(\stdClass $json, $object)
     {
         if (! \is_object($object)) {
             throw TypeError::forArgument(__METHOD__, 'object', $object, 2, '$object');
@@ -101,9 +100,10 @@ class JsonMapper implements JsonMapperInterface
 
         $handler = $this->resolve();
         $handler($json, new ObjectWrapper($object), $propertyMap, $this);
+
+        return $object;
     }
 
-    /** @param object $object */
     public function mapArray(array $json, $object): array
     {
         if (! \is_object($object)) {
@@ -119,8 +119,7 @@ class JsonMapper implements JsonMapperInterface
         return $results;
     }
 
-    /** @param object $object */
-    public function mapObjectFromString(string $json, $object): void
+    public function mapObjectFromString(string $json, $object)
     {
         if (! \is_object($object)) {
             throw TypeError::forArgument(__METHOD__, 'object', $object, 2, '$object');
@@ -133,9 +132,10 @@ class JsonMapper implements JsonMapperInterface
         }
 
         $this->mapObject($data, $object);
+
+        return $object;
     }
 
-    /** @param object $object */
     public function mapArrayFromString(string $json, $object): array
     {
         if (! \is_object($object)) {
