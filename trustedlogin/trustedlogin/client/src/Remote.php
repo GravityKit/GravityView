@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 30-December-2021 using Strauss.
+ * Modified by gravityview on 26-January-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityView\TrustedLogin;
@@ -64,7 +64,9 @@ final class Remote {
 	 * @since 1.0.0
 	 *
 	 * @param array $data {
+	 *
 	 *   @type string $url The site URL as returned by get_site_url()
+	 *   @type string $ns Namespace of the plugin
 	 *   @type string $action "created", "extended", "logged_in", or "revoked"
 	 *   @type string $ref (Optional) Support ticket Reference ID
 	 * }

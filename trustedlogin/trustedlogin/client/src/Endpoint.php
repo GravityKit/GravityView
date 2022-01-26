@@ -7,9 +7,10 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 30-December-2021 using Strauss.
+ * Modified by gravityview on 26-January-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
+
 namespace GravityView\TrustedLogin;
 
 use \Exception;
@@ -28,6 +29,20 @@ class Endpoint {
 	 * @var string Site option used to track whether permalinks have been flushed.
 	 */
 	const PERMALINK_FLUSH_OPTION_NAME = 'tl_permalinks_flushed';
+
+	/**
+	 * @var string Expected value of $_POST['action'] before adding the endpoint and starting a login flow.
+	 */
+	const POST_ACTION_VALUE = 'trustedlogin';
+
+	/** @var string The $_POST key in the TrustedLogin request related to the action being performed. */
+	const POST_ACTION_KEY = 'action';
+
+	/** @var string The $_POST key in the TrustedLogin request that contains the value of the expected endpoint. */
+	const POST_ENDPOINT_KEY = 'endpoint';
+
+	/** @var string The $_POST key in the TrustedLogin request related to the action being performed. */
+	const POST_IDENTIFIER_KEY = 'identifier';
 
 	/**
 	 * @var Config $config
@@ -58,8 +73,8 @@ class Endpoint {
 	 */
 	public function __construct( Config $config, Logging $logging ) {
 
-		$this->config = $config;
-		$this->logging = $logging;
+		$this->config       = $config;
+		$this->logging      = $logging;
 		$this->support_user = new SupportUser( $config, $logging );
 
 		/**
@@ -100,11 +115,27 @@ class Endpoint {
 	 */
 	public function maybe_login_support() {
 
+		// The user's already logged-in; don't override that login.
 		if ( is_user_logged_in() ) {
 			return;
 		}
 
-		$user_identifier = $this->get_user_identifier_from_request();
+		$request = $this->get_trustedlogin_request();
+
+		// Not a TrustedLogin request.
+		if ( ! $request ) {
+			return;
+		}
+
+		$endpoint = $this->get();
+
+		// The expected endpoint doesn't match the one in the request.
+		if ( $endpoint !== $request[ self::POST_ENDPOINT_KEY ] ) {
+			return;
+		}
+
+		// The sanitized, unhashed identifier for the support user.
+		$user_identifier = $request[ self::POST_IDENTIFIER_KEY ];
 
 		if ( empty( $user_identifier ) ) {
 			return;
@@ -122,7 +153,7 @@ class Endpoint {
 		// Before logging-in support, let's make sure the site isn't locked-down or that this request is flagged
 		$is_verified = $security_checks->verify( $user_identifier );
 
-		if ( ! $is_verified || is_wp_error( $is_verified ) ){
+		if ( ! $is_verified || is_wp_error( $is_verified ) ) {
 
 			/**
 			 * Runs after the identifier fails security checks
@@ -183,7 +214,7 @@ class Endpoint {
 			return;
 		}
 
-		$verify_nonce = wp_verify_nonce( $_REQUEST['_wpnonce' ], self::REVOKE_SUPPORT_QUERY_PARAM );
+		$verify_nonce = wp_verify_nonce( $_REQUEST['_wpnonce'], self::REVOKE_SUPPORT_QUERY_PARAM );
 
 		if ( ! $verify_nonce ) {
 			$this->logging->log( 'Removing user failed: Nonce expired (Nonce value: ' . $verify_nonce . ')', __METHOD__, 'error' );
@@ -218,11 +249,13 @@ class Endpoint {
 
 		if ( ! empty( $should_be_deleted ) ) {
 			$this->logging->log( 'User #' . $should_be_deleted->ID . ' was not removed', __METHOD__, 'error' );
+
 			return; // Don't trigger `access_revoked` if anything fails.
 		}
 
 		/**
 		 * Only triggered when all access has been successfully revoked and no users exist with identifier $identifer.
+		 *
 		 * @param string $user_identifier Unique TrustedLogin ID for the Support User or "all"
 		 */
 		do_action( 'trustedlogin/' . $this->config->ns() . '/admin/access_revoked', $user_identifier );
@@ -231,11 +264,16 @@ class Endpoint {
 	/**
 	 * Hooked Action: Add a unique endpoint to WP if a support agent exists
 	 *
+	 * @since 1.0.0
 	 * @see Endpoint::init() Called via `init` hook
 	 *
-	 * @since 1.0.0
 	 */
 	public function add() {
+
+		// Only add the endpoint if a TrustedLogin request is being made.
+		if ( ! $this->get_trustedlogin_request() ) {
+			return;
+		}
 
 		$endpoint = $this->get();
 
@@ -272,29 +310,32 @@ class Endpoint {
 	}
 
 	/**
-	 * Returns the value of the {user_identifier} part of a TrustedLogin URL, if set.
+	 * Returns sanitized data from a TrustedLogin login $_POST request.
 	 *
-	 * @since 1.0.0
+	 * Note: This is not a security check. It is only used to determine whether the request contains the expected keys.
 	 *
-	 * @return false|string If false, no query var is set. If string, the sanitized unhashed identifier for the support user.
+	 * @since 1.1
+	 *
+	 * @return false|array{action:string, endpoint:string, identifier: string} If false, the request is not from TrustedLogin. If the request is from TrustedLogin, an array with the posted keys, santiized.
 	 */
-	private function get_user_identifier_from_request() {
+	private function get_trustedlogin_request() {
 
-		$endpoint = $this->get();
-
-		if ( ! isset( $_POST['action'], $_POST['endpoint'], $_POST['identifier'] ) ) {
+		if ( ! isset( $_POST[ self::POST_ACTION_KEY ], $_POST[ self::POST_ENDPOINT_KEY ], $_POST[ self::POST_IDENTIFIER_KEY ] ) ) {
 			return false;
 		}
 
-		if ( 'trustedlogin' !== $_POST['action'] ) {
+		if ( self::POST_ACTION_VALUE !== $_POST[ self::POST_ACTION_KEY ] ) {
 			return false;
 		}
 
-		if ( $endpoint !== $_POST['endpoint'] ) {
-			return false;
-		}
+		$_sanitized_post_data = array_map( 'sanitize_text_field', $_POST );
 
-		return sanitize_text_field( $_POST['identifier'] );
+		// Return only the expected keys.
+		return array(
+			self::POST_ACTION_KEY => $_sanitized_post_data[ self::POST_ACTION_KEY ],
+			self::POST_ENDPOINT_KEY => $_sanitized_post_data[ self::POST_ENDPOINT_KEY ],
+			self::POST_IDENTIFIER_KEY => $_sanitized_post_data[ self::POST_IDENTIFIER_KEY ],
+		);
 	}
 
 	/**
@@ -338,9 +379,9 @@ class Endpoint {
 	 */
 	public function update( $endpoint ) {
 
-		$updated = update_option( $this->option_name, $endpoint, true );
+		$updated = update_site_option( $this->option_name, $endpoint );
 
-		update_option( self::PERMALINK_FLUSH_OPTION_NAME, 0 );
+		update_site_option( self::PERMALINK_FLUSH_OPTION_NAME, 0 );
 
 		return $updated;
 	}
@@ -352,7 +393,7 @@ class Endpoint {
 	public function delete() {
 
 		if ( ! get_site_option( $this->option_name ) ) {
-			$this->logging->log( "Endpoint not deleted because it does not exist.", __METHOD__, 'info' );
+			$this->logging->log( 'Endpoint not deleted because it does not exist.', __METHOD__, 'info' );
 
 			return;
 		}
@@ -361,8 +402,8 @@ class Endpoint {
 
 		flush_rewrite_rules( false );
 
-		update_option( self::PERMALINK_FLUSH_OPTION_NAME, 0 );
+		update_site_option( self::PERMALINK_FLUSH_OPTION_NAME, 0 );
 
-		$this->logging->log( "Endpoint removed & rewrites flushed", __METHOD__, 'info' );
+		$this->logging->log( 'Endpoint removed & rewrites flushed', __METHOD__, 'info' );
 	}
 }

@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 30-December-2021 using Strauss.
+ * Modified by gravityview on 26-January-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 /**
@@ -184,7 +184,7 @@ final class Admin {
 		$admin_bar->add_menu( array(
 			'id'    => 'tl-' . $this->config->ns() . '-revoke',
 			'title' => $icon . esc_html__( 'Revoke TrustedLogin', 'gravityview' ),
-			'href'  => $this->support_user->get_revoke_url( 'all', true ),
+			'href'  => $this->support_user->get_revoke_url( 'all' ),
 			'meta'  => array(
 				'class' => 'tl-destroy-session',
 			),
