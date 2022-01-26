@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # Zachary Katz <zack@katz.co>, 2021
-# Dariusz Zielonka <info@dariusz-zielonka.pl>, 2021
+# Dariusz Zielonka <info@dariusz-zielonka.pl>, 2022
 # 
 msgid ""
 msgstr ""
@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
-"Last-Translator: Dariusz Zielonka <info@dariusz-zielonka.pl>, 2021\n"
+"Last-Translator: Dariusz Zielonka <info@dariusz-zielonka.pl>, 2022\n"
 "Language-Team: Polish (Poland) (https://www.transifex.com/katzwebservices/teams/18775/pl_PL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1008,20 +1008,20 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:431
 msgid "Update Button Text"
-msgstr ""
+msgstr "Aktualizuj tekst przycisku"
 
 #: future/includes/class-gv-settings-view.php:439
 msgid "Cancel Link Text"
-msgstr ""
+msgstr "Anuluj tekst łącza"
 
 #: future/includes/class-gv-settings-view.php:447
 msgid "Next Page Button Text"
-msgstr ""
+msgstr "Tekst przycisku następnej strony"
 
 #: future/includes/class-gv-settings-view.php:449
 #: future/includes/class-gv-settings-view.php:457
 msgid "Only shown when multi-page forms are enabled."
-msgstr ""
+msgstr "Wyświetlane tylko wtedy, gdy włączone są formularze wielostronicowe."
 
 #: future/includes/class-gv-settings-view.php:451
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1137
@@ -1033,7 +1033,7 @@ msgstr "Następny"
 
 #: future/includes/class-gv-settings-view.php:455
 msgid "Previous Page Button Text"
-msgstr ""
+msgstr "Tekst przycisku poprzedniej strony"
 
 #: future/includes/class-gv-settings-view.php:459
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1138
@@ -1740,7 +1740,7 @@ msgstr "Dowiedz się, jak połączyć się z %s"
 
 #: includes/admin/metaboxes/views/view-configuration.php:66
 msgid "These fields will be shown in Single Entry layout."
-msgstr "Pola te będą widoczne w układzie Pojedynczej pozycji"
+msgstr "Pola te będą widoczne w układzie Pojedynczej pozycji."
 
 #: includes/admin/metaboxes/views/view-configuration.php:91
 msgid "Fields shown when editing an entry."
@@ -1900,7 +1900,7 @@ msgstr "Dodatki Gravity Forms"
 
 #: includes/class-admin-installer.php:329
 msgid "GravityView Labs"
-msgstr ""
+msgstr "GravityView Labs"
 
 #: includes/class-admin-installer.php:331
 msgid "Friends of GravityView"
@@ -3885,21 +3885,21 @@ msgstr "Ankieta"
 
 #: includes/fields/class-gravityview-field-survey.php:79
 msgid "A table (default Gravity Forms formatting)"
-msgstr ""
+msgstr "Tabela (domyślne formatowanie Gravity Forms)"
 
 #: includes/fields/class-gravityview-field-survey.php:80
 #: includes/fields/class-gravityview-field-survey.php:115
 #: includes/fields/class-gravityview-field-survey.php:130
 msgid "Text value of the selected choice"
-msgstr ""
+msgstr "Wartość tekstowa zaznaczonego wyboru"
 
 #: includes/fields/class-gravityview-field-survey.php:84
 msgid "Score value of the selected choice"
-msgstr ""
+msgstr "Wartość punktowa wybranego wyboru"
 
 #: includes/fields/class-gravityview-field-survey.php:131
 msgid "Stars (default Gravity Forms formatting)"
-msgstr ""
+msgstr "Gwiazdki (domyślne formatowanie Gravity Forms)"
 
 #: includes/fields/class-gravityview-field-text.php:23
 msgid "Single Line Text"
@@ -4117,23 +4117,27 @@ msgstr ""
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:79
 #: trustedlogin/trustedlogin/client/src/Admin.php:215
 msgid "Grant Support Access"
-msgstr ""
+msgstr "Przyznaj zdalny dostęp"
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:85
 msgid "We need access to Views to provide great support."
-msgstr ""
+msgstr "Potrzebujemy dostępu do widoków, aby zapewnić wsparcie."
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:86
 msgid ""
 "We will need to see and edit the forms, entries, and Gravity Forms settings "
 "to debug issues."
 msgstr ""
+"Będziemy musieli zobaczyć i edytować formularze, wpisy i ustawienia Gravity "
+"Forms, aby rozwiązać problemy."
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:87
 msgid ""
 "We may need to manage plugins in order to debug conflicts on your site and "
 "add related GravityView functionality."
 msgstr ""
+"Możemy być zmuszeni do zarządzania wtyczkami w celu usunięcia konfliktów na "
+"Twojej stronie i dodania powiązanej funkcjonalności GravityView."
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:93
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-trustedlogin.php:94
@@ -4141,6 +4145,8 @@ msgid ""
 "We don't need to see your %1$s details to provide support (if %1$s is "
 "enabled)."
 msgstr ""
+"Nie musimy widzieć szczegółów %1$s użytkownika, aby zapewnić wsparcie (jeśli"
+" włączono opcję %1$s)."
 
 #: includes/presets/business-data/class-gravityview-preset-business-data.php:24
 msgid "Business Data"
@@ -4680,76 +4686,78 @@ msgstr "Twoja przeglądarka nie obsługuje tagu wideo."
 #: trustedlogin/trustedlogin/client/src/Admin.php:114
 #: trustedlogin/trustedlogin/client/src/Admin.php:352
 msgid "Revoke Access"
-msgstr ""
+msgstr "Cofnij dostęp"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:186
 msgid "Revoke TrustedLogin"
-msgstr ""
+msgstr "Cofnij TrustedLogin"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:339
 msgid "Unknown (User #%d)"
-msgstr ""
+msgstr "Nieznany (Użytkownik #%d)"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:379
 #: trustedlogin/trustedlogin/client/src/Admin.php:935
 msgid "Secured by TrustedLogin"
-msgstr ""
+msgstr "Zabezpieczone przez TrustedLogin"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:462
 msgid "Reference #%s"
-msgstr ""
+msgstr "Referencja #%s"
 
 #. translators: %1$s is replaced with the name of the software developer (e.g.
 #. "Acme Widgets"). %2$s is the amount of time remaining for access ("1 week")
 #: trustedlogin/trustedlogin/client/src/Admin.php:477
 msgid "%1$s has site access that expires in %2$s."
-msgstr ""
+msgstr "%1$s ma dostęp do witryny, który wygasa w %2$s."
 
 #. translators: %1$s is replaced with the name of the software developer (e.g.
 #. "Acme Widgets")
 #: trustedlogin/trustedlogin/client/src/Admin.php:485
 msgid "%1$s would like support access to this site."
-msgstr ""
+msgstr "%1$s chciałby uzyskać dostęp do tej witryny."
 
 #. translators: %1$s is replaced with the name of the software developer (e.g.
 #. "Acme Widgets")
 #: trustedlogin/trustedlogin/client/src/Admin.php:488
 msgid "Grant %1$s access to this site."
-msgstr ""
+msgstr "Przyznaj %1$s dostęp do tej strony."
 
 #. translators: %1$s and %3$s are replaced with HTML tags. %2$s is the amount
 #. of time that the login will be active for (e.g. "1 week")
 #: trustedlogin/trustedlogin/client/src/Admin.php:521
 msgid "Access this site for %s."
-msgstr ""
+msgstr "Dostęp do tej strony dla %s."
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:522
 msgid "Access auto-expires in %s. You may revoke access at any time."
 msgstr ""
+"Dostęp wygasa automatycznie za %s. Możesz cofnąć dostęp w dowolnym momencie."
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:528
 msgid "Create a user with a role similar to %s."
-msgstr ""
+msgstr "Utwórz użytkownika o roli podobnej do %s."
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:529
 msgid "View role capabilities"
-msgstr ""
+msgstr "Wyświetlanie uprawnień roli"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:531
 msgid "Create a user with a role of %s."
-msgstr ""
+msgstr "Utwórz użytkownika o roli %s."
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:557
 msgid "Additional capabilities:"
-msgstr ""
+msgstr "Dodatkowe uprawnienia:"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:558
 msgid "Removed capabilities:"
-msgstr ""
+msgstr "Usunięte uprawnienia:"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:626
 msgid "%s support may not be able to access this site."
 msgstr ""
+"%s wsparcie techniczne może nie być w stanie uzyskać dostępu do tej witryny."
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:627
 msgid ""
@@ -4757,38 +4765,43 @@ msgid ""
 "support, we must be able to access your site using a publicly-accessible "
 "URL."
 msgstr ""
+"Ta witryna jest uruchomiona w lokalnym środowisku programistycznym. Aby "
+"zapewnić wsparcie, musimy mieć możliwość dostępu do Twojej witryny za pomocą"
+" publicznie dostępnego adresu URL."
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:629
 msgid "Learn more."
-msgstr ""
+msgstr "Dowiedz się więcej."
 
 #. translators: %s is replaced with the name of the software developer (e.g.
 #. "Acme Widgets")
 #: trustedlogin/trustedlogin/client/src/Admin.php:679
 msgid "Learn about TrustedLogin"
-msgstr ""
+msgstr "Dowiedz się więcej o TrustedLogin"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:876
 msgid "Grant %s Access"
-msgstr ""
+msgstr "Przyznaj %s Dostęp"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:877
 msgid "Extend %s Access"
-msgstr ""
+msgstr "Rozszerz %s Dostęp"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:980
 msgid "Could not create TrustedLogin access."
-msgstr ""
+msgstr "Nie można utworzyć dostępu TrustedLogin."
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:986
 msgid "The user details could not be sent to %1$s automatically."
-msgstr ""
+msgstr "Dane użytkownika nie mogły zostać automatycznie wysłane do %1$s."
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:990
 msgid ""
 "Please <a href=\"%1$s\" target=\"_blank\">click here</a> to go to the %2$s "
 "support site"
 msgstr ""
+"<a href=\"%1$s\" target=\"_blank\">Kliknij tutaj</a>, aby przejść do strony "
+"wsparcia %2$s"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:998
 msgid "Confirm"
@@ -4796,11 +4809,11 @@ msgstr "Potwierdź"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1000
 msgid "Go to %1$s support site"
-msgstr ""
+msgstr "Przejdź do strony wsparcia %1$s"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1003
 msgid "Revoke %1$s support access"
-msgstr ""
+msgstr "Cofnij %1$s dostęp dla wsparcia"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1004
 #: trustedlogin/trustedlogin/client/src/Admin.php:1148
@@ -4809,186 +4822,199 @@ msgstr "Kopiuj"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1005
 msgid "Copied!"
-msgstr ""
+msgstr "Skopiowano!"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1008
 msgid "(This link opens in a new window.)"
-msgstr ""
+msgstr "(Ten link otwiera się w nowym oknie)"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1009
 msgid "The access key has been copied to your clipboard."
-msgstr ""
+msgstr "Klucz dostępu został skopiowany do schowka."
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1013
 msgid "Support access granted"
-msgstr ""
+msgstr "Przyznano dostęp pomocy technicznej"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1015
 msgid "A temporary support user has been created, and sent to %1$s support."
 msgstr ""
+"Utworzono tymczasowego użytkownika pomocy technicznej i wysłano go do działu"
+" pomocy technicznej %1$s."
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1020
 msgid "Generating & encrypting secure support access for %1$s"
 msgstr ""
+"Generowanie i szyfrowanie bezpiecznego dostępu do pomocy technicznej dla "
+"%1$s"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1023
 msgid "Extending support access for %1$s by %2$s"
-msgstr ""
+msgstr "Rozszerzenie dostępu dla wsparcia dla %1$s przez %2$s"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1026
 msgid "Sending encrypted access to %1$s."
-msgstr ""
+msgstr "Wysyłanie zaszyfrowanego dostępu do %1$s."
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1029
 msgid "Error syncing support user to %1$s"
-msgstr ""
+msgstr "Błąd synchronizacji użytkownika wsparcia do %1$s"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1040
 msgid "Action Cancelled"
-msgstr ""
+msgstr "Działanie anulowane"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1042
 msgid "A support account for %1$s was not created."
-msgstr ""
+msgstr "Konto pomocy technicznej dla %1$s nie zostało utworzone."
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1047
 msgid "Support Access Was Not Granted"
-msgstr ""
+msgstr "Nie przyznano dostępu do pomocy technicznej"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1048
 msgid "There was an error granting access: "
-msgstr ""
+msgstr "Wystąpił błąd w przyznaniu dostępu"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1051
 msgid "Your authorized session has expired. Please refresh the page."
-msgstr ""
+msgstr "Twoja autoryzowana sesja wygasła. Proszę odświeżyć stronę."
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1054
 msgid "TrustedLogin Key Created"
-msgstr ""
+msgstr "Utworzono klucz TrustedLogin"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1056
 msgid "Share this TrustedLogin Key with %1$s to give them secure access:"
 msgstr ""
+"Udostępnij ten klucz TrustedLogin %1$s, aby zapewnić im bezpieczny dostęp:"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1062
 msgid "The TrustedLogin vendor could not be found."
-msgstr ""
+msgstr "Nie można znaleźć dostawcy TrustedLogin."
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1067
 msgid "%1$s Support user already exists"
-msgstr ""
+msgstr "Użytkownik wsparcia %1$s już istnieje"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1072
 msgid ""
 "A support user for %1$s already exists. You may revoke this support access "
 "from your <a href=\"%2$s\" target=\"_blank\">Users list</a>."
 msgstr ""
+"Użytkownik wsparcia dla %1$s już istnieje. Możesz cofnąć ten dostęp do "
+"wsparcia z <a href=\"%2$s\" target=\"_blank\">listy użytkowników</a>."
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1112
 msgid "No %s users exist."
-msgstr ""
+msgstr "Nie ma użytkowników %s."
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1145
 msgid "Site access key:"
-msgstr ""
+msgstr "Klucz dostępu do witryny:"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1146
 msgid "Access Key"
-msgstr ""
+msgstr "Klucz dostępu"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1150
 msgid "Copy the access key to your clipboard"
-msgstr ""
+msgstr "Skopiuj klucz dostępu do schowka"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1189
 msgid "%s access revoked."
-msgstr ""
+msgstr "%s dostęp cofnięty."
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1191
 msgid "You may safely close this window."
-msgstr ""
+msgstr "Możesz bezpiecznie zamknąć to okno."
 
 #: trustedlogin/trustedlogin/client/src/Client.php:309
 #: trustedlogin/trustedlogin/client/src/Client.php:411
 msgid "TrustedLogin requires a secure connection using HTTPS."
 msgstr ""
+"TrustedLogin wymaga bezpiecznego połączenia za pomocą protokołu HTTPS."
 
 #: trustedlogin/trustedlogin/client/src/Client.php:515
 msgid "The support user was not deleted."
-msgstr ""
+msgstr "Użytkownik wsparcia nie został usunięty."
 
 #: trustedlogin/trustedlogin/client/src/Encryption.php:255
 msgid "Encryption key could not be fetched, Vendor site returned 404."
 msgstr ""
+"Klucz szyfrowania nie mógł zostać pobrany, strona sprzedawcy zwróciła 404."
 
 #: trustedlogin/trustedlogin/client/src/Remote.php:228
 msgid "Unable to verify Pause Mode."
-msgstr ""
+msgstr "Nie można zweryfikować trybu wstrzymania."
 
 #: trustedlogin/trustedlogin/client/src/Remote.php:231
 msgid "Authentication failed."
-msgstr ""
+msgstr "Uwierzytelnienie nie powiodło się."
 
 #: trustedlogin/trustedlogin/client/src/Remote.php:234
 msgid "TrustedLogin account issue."
-msgstr ""
+msgstr "Problem z kontem TrustedLogin."
 
 #: trustedlogin/trustedlogin/client/src/Remote.php:237
 msgid "Invalid tokens."
-msgstr ""
+msgstr "Nieprawidłowe tokeny."
 
 #: trustedlogin/trustedlogin/client/src/Remote.php:241
 msgid "The TrustedLogin vendor was not found."
-msgstr ""
+msgstr "Nie znaleziono dostawcy TrustedLogin."
 
 #: trustedlogin/trustedlogin/client/src/Remote.php:251
 msgid "The TrustedLogin site is not currently online."
-msgstr ""
+msgstr "Strona TrustedLogin nie jest obecnie dostępna online."
 
 #: trustedlogin/trustedlogin/client/src/Remote.php:257
 msgid "The TrustedLogin site is not currently available."
-msgstr ""
+msgstr "Strona TrustedLogin nie jest obecnie dostępna."
 
 #: trustedlogin/trustedlogin/client/src/Remote.php:261
 #: trustedlogin/trustedlogin/client/src/Remote.php:304
 msgid "Invalid response."
-msgstr ""
+msgstr "Nieprawidłowa odpowiedź."
 
 #: trustedlogin/trustedlogin/client/src/Remote.php:298
 msgid "The response was invalid."
-msgstr ""
+msgstr "Odpowiedź była nieprawidłowa."
 
 #: trustedlogin/trustedlogin/client/src/Remote.php:322
 msgid "Invalid response. Missing key: %s"
-msgstr ""
+msgstr "Nieprawidłowa odpowiedź. Brakujący klucz: %s"
 
 #: trustedlogin/trustedlogin/client/src/SecurityChecks.php:90
 msgid "TrustedLogin temporarily disabled."
-msgstr ""
+msgstr "TrustedLogin tymczasowo wyłączony."
 
 #: trustedlogin/trustedlogin/client/src/SecurityChecks.php:118
 msgid ""
 "There was an issue verifying the user identifier with TrustedLogin, aborting"
 " login. (%s)"
 msgstr ""
+"Wystąpił problem z weryfikacją identyfikatora użytkownika za pomocą "
+"TrustedLogin, przerywam logowanie. (%s)"
 
 #: trustedlogin/trustedlogin/client/src/SiteAccess.php:62
 msgid "Unexpected action value"
-msgstr ""
+msgstr "Nieoczekiwana wartość działania"
 
 #: trustedlogin/trustedlogin/client/src/SiteAccess.php:93
 msgid "Could not sync to TrustedLogin server"
-msgstr ""
+msgstr "Nie można zsynchronizować się z serwerem TrustedLogin"
 
 #: trustedlogin/trustedlogin/client/src/SupportRole.php:165
 #: trustedlogin/trustedlogin/client/src/SupportUser.php:241
 msgid "%s Support"
-msgstr ""
+msgstr "%s Wsparcie"
 
 #: trustedlogin/trustedlogin/client/src/SupportUser.php:208
 msgid "User not created; User with that email already exists"
 msgstr ""
+"Użytkownik nie został utworzony; Użytkownik o tym adresie e-mail już "
+"istnieje"
 
 #: future/includes/class-gv-license-handler.php:294
 msgctxt "1: Customer name; 2: Customer email"
@@ -5317,7 +5343,7 @@ msgstr "Ustaw na %s by wyłączyć wartość maksimum."
 #: includes/fields/class-gravityview-field-survey.php:72
 msgctxt "text added to a label if multiple rows are enabled for the field)"
 msgid " (separated by %s)"
-msgstr ""
+msgstr " (oddzielone przez %s)"
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:108
 msgctxt "Gravity Flow Workflow Step Status"

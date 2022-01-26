@@ -31,6 +31,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: PHP notice when editing an entry in Gravity Forms that was created by user that no longer exists
 * Fixed: Error activating on sites that use the Danish language
 * Fixed: Entry approval scripts not loading properly when using Full Site Editing themes in WordPress 5.9
+* Updated: TrustedLogin client to Version 1.2, which now supports logins for WordPress Multisite installations
+* Updated: Polish translation. Thanks, Dariusz!
 
 __Developer Updates:__
 
