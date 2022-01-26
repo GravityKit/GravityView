@@ -7,11 +7,11 @@
 If you are using the plugin on a live site, please purchase a valid license from the [website](https://gravityview.co/?utm_source=github&utm_medium=readme&utm_campaign=readme). We cannot provide support to anyone that does not hold a valid license key.
 
 ----------
-#### Installation Instructions
+### Installation Instructions
 
 To install the plugin, clone this repo to your WordPress plugins folder and activate it. Alternatively, you can download [the latest release](https://github.com/gravityview/GravityView/releases) to your WordPress plugins folder and then activate it.
 
-#### For Developers
+### For Developers
 
 If you wish to make changes to the plugin, you need to install developer dependencies. First, a couple of prerequisites:
 
@@ -35,7 +35,7 @@ To compile/minimize UI assets, use the following commands:
 
 The plugin uses [PHPUnit](https://phpunit.de/) as part of the development process. We offer preconfigured Docker containers and a custom Bash script to facilitate running tests against multiple PHP and WordPress versions in a predictable environment. Visit our [Tooling](https://github.com/gravityview/Tooling/blob/main/docker-unit-tests/) repo for information regarding how to configure and run tests.   
 
-### Acceptance Tests
+#### Acceptance Tests
 
 The plugin uses [Codeception](https://codeception.com/) for acceptance testing. To configure and run tests:
 
@@ -50,7 +50,7 @@ See [Codeception commands reference](https://codeception.com/docs/reference/Comm
 
 ----------
 
-#### Acknowledgements
+### Acknowledgements
 
 We are thankful to the following services and open source software that help enhance our plugin:
 
