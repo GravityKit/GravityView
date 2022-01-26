@@ -25,9 +25,9 @@ Next, install dependencies:
 1. Run `composer install` to install Composer dependencies
 2. Run `npm install` to install Node.js dependencies
  
-To compile/minimize UI assets, use the following commands:
+To compile/minify UI assets, use the following commands:
 
-1. `grunt sass` & `grunt postcss` to compile/minimize CSS files
+1. `grunt sass` & `grunt postcss` to compile and minify CSS files
 2. `grunt uglify` to minify JavaScript files
 3. `grunt imagemin` to minify images
 
