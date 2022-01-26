@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView 2.14.1\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
-"POT-Creation-Date: 2022-01-26 02:29:30+00:00\n"
+"POT-Creation-Date: 2022-01-26 03:32:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -257,8 +257,8 @@ msgstr ""
 #: future/includes/class-gv-renderer.php:155
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:153
 #: includes/admin/metaboxes/views/view-configuration.php:11
-#: includes/admin/metaboxes/views/view-configuration.php:97
-#: includes/admin/metaboxes/views/view-configuration.php:98
+#: includes/admin/metaboxes/views/view-configuration.php:87
+#: includes/admin/metaboxes/views/view-configuration.php:88
 #: includes/class-frontend-views.php:669
 #: includes/class-gravityview-admin-bar.php:102
 #: includes/class-gravityview-entry-link-shortcode.php:233
@@ -1549,14 +1549,10 @@ msgid "%s Layout"
 msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:18
-#: includes/admin/metaboxes/views/view-configuration.php:66
-#: includes/admin/metaboxes/views/view-configuration.php:101
 msgid "Top Widgets"
 msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:18
-#: includes/admin/metaboxes/views/view-configuration.php:66
-#: includes/admin/metaboxes/views/view-configuration.php:101
 msgid "These widgets will be shown above entries."
 msgstr ""
 
@@ -1569,8 +1565,6 @@ msgid "These fields will be shown for each entry."
 msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:30
-#: includes/admin/metaboxes/views/view-configuration.php:80
-#: includes/admin/metaboxes/views/view-configuration.php:113
 msgid "Bottom Widgets"
 msgstr ""
 
@@ -1579,36 +1573,36 @@ msgid "These widgets will be shown below entries."
 msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:43
-#: includes/class-admin-views.php:1166 includes/class-admin-views.php:1291
+#: includes/class-admin-views.php:1157 includes/class-admin-views.php:1282
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
 #: trustedlogin/trustedlogin/client/src/Admin.php:1017
 msgid "Close"
 msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:62
-#: includes/admin/metaboxes/views/view-configuration.php:97
+#: includes/admin/metaboxes/views/view-configuration.php:87
 msgid "Note: %s"
 msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:62
-#: includes/admin/metaboxes/views/view-configuration.php:97
+#: includes/admin/metaboxes/views/view-configuration.php:87
 msgid "No fields link to the %s layout."
 msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:63
-#: includes/admin/metaboxes/views/view-configuration.php:98
+#: includes/admin/metaboxes/views/view-configuration.php:88
 msgid "Learn how to link to %s"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:70
+#: includes/admin/metaboxes/views/view-configuration.php:66
 msgid "These fields will be shown in Single Entry layout."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:105
+#: includes/admin/metaboxes/views/view-configuration.php:91
 msgid "Fields shown when editing an entry."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:105
+#: includes/admin/metaboxes/views/view-configuration.php:91
 msgid "If not configured, all form fields will be displayed."
 msgstr ""
 
@@ -1647,7 +1641,7 @@ msgid "(no title)"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:135
-#: includes/class-admin-views.php:1292
+#: includes/class-admin-views.php:1283
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:282
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1146
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1272
@@ -1656,7 +1650,7 @@ msgid "Cancel"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:179
-#: includes/class-admin-views.php:1296
+#: includes/class-admin-views.php:1287
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -1935,86 +1929,86 @@ msgstr ""
 msgid "Clear all fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1096
+#: includes/class-admin-views.php:1071
 #: includes/widgets/search-widget/class-search-widget.php:101
 msgid "Search Bar"
 msgstr ""
 
-#: includes/class-admin-views.php:1106
+#: includes/class-admin-views.php:1081
 #: includes/widgets/class-gravityview-widget-pagination-info.php:30
 msgid "Show Pagination Info"
 msgstr ""
 
-#: includes/class-admin-views.php:1112 includes/class-admin-views.php:1119
+#: includes/class-admin-views.php:1087 includes/class-admin-views.php:1094
 #: includes/widgets/class-gravityview-widget-page-links.php:25
 msgid "Page Links"
 msgstr ""
 
-#: includes/class-admin-views.php:1169
+#: includes/class-admin-views.php:1160
 msgid "Filter Fields:"
 msgstr ""
 
-#: includes/class-admin-views.php:1170
+#: includes/class-admin-views.php:1161
 msgid "Filter fields by name or label"
 msgstr ""
 
-#: includes/class-admin-views.php:1181
+#: includes/class-admin-views.php:1172
 msgid "No fields were found matching the search."
 msgstr ""
 
-#: includes/class-admin-views.php:1214
+#: includes/class-admin-views.php:1205
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:1215
+#: includes/class-admin-views.php:1206
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1287
+#: includes/class-admin-views.php:1278
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:1288
+#: includes/class-admin-views.php:1279
 msgid "Reorder Search Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1289
+#: includes/class-admin-views.php:1280
 #: includes/widgets/search-widget/class-search-widget.php:267
 msgid "Add Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1290
+#: includes/class-admin-views.php:1281
 msgid "Remove Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1293
+#: includes/class-admin-views.php:1284
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:1294
+#: includes/class-admin-views.php:1285
 #: trustedlogin/trustedlogin/client/src/Admin.php:1015
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:1295
+#: includes/class-admin-views.php:1286
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1297
+#: includes/class-admin-views.php:1288
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1298
+#: includes/class-admin-views.php:1289
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:1299
+#: includes/class-admin-views.php:1290
 msgid "Would you like to remove all fields in this zone?"
 msgstr ""
 
@@ -2053,23 +2047,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:499
+#: includes/class-admin-welcome.php:432
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:519
+#: includes/class-admin-welcome.php:452
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:570
+#: includes/class-admin-welcome.php:503
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:597
+#: includes/class-admin-welcome.php:530
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:598
+#: includes/class-admin-welcome.php:531
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
