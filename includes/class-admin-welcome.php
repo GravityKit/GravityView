@@ -284,7 +284,7 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
-				<h3>2.14.1 on January 26, 2022</h3>
+				<h3>2.14.1 on January 25, 2022</h3>
 
 				<ul>
 					<li>Tested with WordPress 5.9</li>

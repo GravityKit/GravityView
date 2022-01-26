@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.14.1 on January 26, 2022 =
+= 2.14.1 on January 25, 2022 =
 
 * Tested with WordPress 5.9
 * Improved: The [Members plugin](https://wordpress.org/plugins/members/) now works with No-Conflict Mode enabled
