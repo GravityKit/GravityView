@@ -1,0 +1,73 @@
+{
+    "name": "wp-cli/embed-command",
+    "type": "wp-cli-package",
+    "description": "Inspects oEmbed providers, clears embed cache, and more.",
+    "homepage": "https://github.com/wp-cli/embed-command",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pascal Birchler",
+            "homepage": "https://pascalbirchler.com/"
+        }
+    ],
+    "require": {
+        "wp-cli/wp-cli": "^2.5"
+    },
+    "require-dev": {
+        "wp-cli/entity-command": "^1.3 || ^2",
+        "wp-cli/wp-cli-tests": "^3.1"
+    },
+    "config": {
+        "process-timeout": 7200,
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "2.x-dev"
+        },
+        "bundled": true,
+        "commands": [
+            "embed",
+            "embed fetch",
+            "embed provider",
+            "embed provider list",
+            "embed provider match",
+            "embed handler",
+            "embed handler list",
+            "embed cache",
+            "embed cache clear",
+            "embed cache find",
+            "embed cache trigger"
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "WP_CLI\\Embeds\\": "src/"
+        },
+        "files": [
+            "embed-command.php"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "behat": "run-behat-tests",
+        "behat-rerun": "rerun-behat-tests",
+        "lint": "run-linter-tests",
+        "phpcs": "run-phpcs-tests",
+        "phpunit": "run-php-unit-tests",
+        "prepare-tests": "install-package-tests",
+        "test": [
+            "@lint",
+            "@phpcs",
+            "@phpunit",
+            "@behat"
+        ]
+    },
+    "support": {
+        "issues": "https://github.com/wp-cli/embed-command/issues"
+    }
+}

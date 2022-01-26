@@ -1,0 +1,70 @@
+{
+    "name": "wp-cli/i18n-command",
+    "type": "wp-cli-package",
+    "description": "Provides internationalization tools for WordPress projects.",
+    "homepage": "https://github.com/wp-cli/i18n-command",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pascal Birchler",
+            "homepage": "https://pascalbirchler.com/"
+        }
+    ],
+    "require": {
+        "gettext/gettext": "^4.8",
+        "mck89/peast": "^1.13.11",
+        "wp-cli/wp-cli": "^2.5"
+    },
+    "require-dev": {
+        "wp-cli/scaffold-command": "^1.2 || ^2",
+        "wp-cli/wp-cli-tests": "^3.1"
+    },
+    "suggest": {
+        "ext-mbstring": "Used for calculating include/exclude matches in code extraction"
+    },
+    "config": {
+        "process-timeout": 7200,
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "2.x-dev"
+        },
+        "bundled": true,
+        "commands": [
+            "i18n",
+            "i18n make-pot",
+            "i18n make-json"
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "WP_CLI\\I18n\\": "src/"
+        },
+        "files": [
+            "i18n-command.php"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "behat": "run-behat-tests",
+        "behat-rerun": "rerun-behat-tests",
+        "lint": "run-linter-tests",
+        "phpcs": "run-phpcs-tests",
+        "phpunit": "run-php-unit-tests",
+        "prepare-tests": "install-package-tests",
+        "test": [
+            "@lint",
+            "@phpcs",
+            "@phpunit",
+            "@behat"
+        ]
+    },
+    "support": {
+        "issues": "https://github.com/wp-cli/i18n-command/issues"
+    }
+}

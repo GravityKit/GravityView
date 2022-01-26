@@ -1,0 +1,80 @@
+{
+    "name": "wp-cli/db-command",
+    "type": "wp-cli-package",
+    "description": "Performs basic database operations using credentials stored in wp-config.php.",
+    "homepage": "https://github.com/wp-cli/db-command",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Bachhuber",
+            "email": "daniel@runcommand.io",
+            "homepage": "https://runcommand.io"
+        }
+    ],
+    "require": {
+        "wp-cli/wp-cli": "^2.5"
+    },
+    "require-dev": {
+        "wp-cli/entity-command": "^1.3 || ^2",
+        "wp-cli/wp-cli-tests": "^3.1"
+    },
+    "config": {
+        "process-timeout": 7200,
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.x-dev"
+        },
+        "bundled": true,
+        "commands": [
+            "db",
+            "db clean",
+            "db create",
+            "db drop",
+            "db reset",
+            "db check",
+            "db optimize",
+            "db prefix",
+            "db repair",
+            "db cli",
+            "db query",
+            "db export",
+            "db import",
+            "db search",
+            "db tables",
+            "db size",
+            "db columns"
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        },
+        "files": [
+            "db-command.php"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "behat": "run-behat-tests",
+        "behat-rerun": "rerun-behat-tests",
+        "lint": "run-linter-tests",
+        "phpcs": "run-phpcs-tests",
+        "phpunit": "run-php-unit-tests",
+        "prepare-tests": "install-package-tests",
+        "test": [
+            "@lint",
+            "@phpcs",
+            "@phpunit",
+            "@behat"
+        ]
+    },
+    "support": {
+        "issues": "https://github.com/wp-cli/db-command/issues"
+    }
+}

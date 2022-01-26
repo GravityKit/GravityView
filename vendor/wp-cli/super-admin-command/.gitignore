@@ -1,0 +1,11 @@
+.DS_Store
+.phpcs.xml
+phpunit.xml
+phpcs.xml
+wp-cli.local.yml
+node_modules/
+vendor/
+*.zip
+*.tar.gz
+composer.lock
+*.log

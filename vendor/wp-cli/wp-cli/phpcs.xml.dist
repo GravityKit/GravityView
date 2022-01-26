@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<ruleset name="WP-CLI">
+	<description>Custom ruleset for WP-CLI</description>
+
+	<!--
+	#############################################################################
+	COMMAND LINE ARGUMENTS
+	For help understanding this file: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml
+	For help using PHPCS: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage
+	#############################################################################
+	-->
+
+	<!-- What to scan. -->
+	<file>.</file>
+
+	<!-- Ignoring select files/folders.
+		 https://github.com/squizlabs/PHP_CodeSniffer/wiki/Advanced-Usage#ignoring-files-and-folders -->
+	<exclude-pattern>*/tests/data/*</exclude-pattern>
+
+	<!-- Show progress. -->
+	<arg value="p"/>
+
+	<!-- Strip the filepaths down to the relevant bit. -->
+	<arg name="basepath" value="./"/>
+
+	<!-- Check up to 8 files simultaneously. -->
+	<arg name="parallel" value="8"/>
+
+	<!--
+	#############################################################################
+	USE THE WP_CLI_CS RULESET
+	#############################################################################
+	-->
+
+	<rule ref="WP_CLI_CS">
+		<!-- The `while` control structure is the only one where assignments in conditions are mostly valid. -->
+		<exclude name="WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition"/>
+
+		<!-- This is a bug in PHPCS. A fix for which has been pulled already and is expected to be
+			 merged in PHPCS 3.5.0. Once this repos upgrades to that version, this exclusion
+			 should be removed. -->
+		<exclude name="PSR2.Namespaces.NamespaceDeclaration.BlankLineAfter"/>
+	</rule>
+
+	<!--
+	#############################################################################
+	PROJECT SPECIFIC CONFIGURATION FOR SNIFFS
+	#############################################################################
+	-->
+
+	<!-- For help understanding the `testVersion` configuration setting:
+		 https://github.com/PHPCompatibility/PHPCompatibility#sniffing-your-code-for-compatibility-with-specific-php-versions -->
+	<config name="testVersion" value="5.6-"/>
+
+	<!-- Verify that everything in the global namespace is either namespaced or prefixed.
+		 The default prefixes `WP_CLI` (for namespaces and classes) and `wpcli` (for variables) are inherited
+		 from the ruleset. This adds one additional allowed prefix specifically for hooks (though
+		 not automatically limited to them).
+		 See: https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#naming-conventions-prefix-everything-in-the-global-namespace -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array" extend="true">
+				<element value="cli_"/><!-- Hooks. -->
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Whitelist the Utils\mysql_host_to_cli_args() method.
+		 See: https://github.com/phpcompatibility/phpcompatibility#phpcompatibility-specific-options -->
+	<rule ref="PHPCompatibility.Extensions.RemovedExtensions">
+		<properties>
+			<property name="functionWhitelist" type="array">
+				<element value="mysql_host_to_cli_args"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Allow for back-compat conversion comments to be explained in logical shorthand.
+		 See: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Customisable-Sniff-Properties#squizphpcommentedoutcode -->
+	<rule ref="Squiz.PHP.CommentedOutCode">
+		<properties>
+			<property name="maxPercentage" value="45"/>
+		</properties>
+	</rule>
+
+	<!--
+	#############################################################################
+	SELECTIVE EXCLUSIONS
+	#############################################################################
+	-->
+
+	<!-- Exclude existing classes from the prefix rule as it would break BC to prefix them now. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound">
+		<exclude-pattern>*/php/commands/src/CLI_(Cache_)?Command\.php$</exclude-pattern>
+		<exclude-pattern>*/php/commands/src/Help_Command\.php$</exclude-pattern>
+		<exclude-pattern>*/utils/contrib-list\.php$</exclude-pattern>
+	</rule>
+
+	<!-- Exclude existing classes from the prefix rule as it would break BC to prefix them now. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound">
+		<exclude-pattern>php/wp-settings-cli\.php$</exclude-pattern>
+	</rule>
+
+	<!-- These are all to do with file-system related tests. Just ignore them. -->
+	<rule ref="WordPress.WP.CapitalPDangit">
+		<exclude-pattern>*/tests/test-(extractor|utils)\.php$</exclude-pattern>
+	</rule>
+
+	<!-- Allow for select data providers for tests to use single-line associative arrays. -->
+	<rule ref="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound">
+		<exclude-pattern>*/tests/test-(process|utils)\.php$</exclude-pattern>
+	</rule>
+
+	<!-- This is a procedural stand-alone file that is never loaded in a WordPress context,
+		 so this file does not have to comply with WP naming conventions. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<exclude-pattern>*/utils/get-package-require-from-composer\.php$</exclude-pattern>
+	</rule>
+
+</ruleset>

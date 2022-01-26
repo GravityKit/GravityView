@@ -1,0 +1,103 @@
+{
+    "name": "wp-cli/extension-command",
+    "type": "wp-cli-package",
+    "description": "Manages plugins and themes, including installs, activations, and updates.",
+    "homepage": "https://github.com/wp-cli/extension-command",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Bachhuber",
+            "email": "daniel@runcommand.io",
+            "homepage": "https://runcommand.io"
+        },
+        {
+            "name": "Alain Schlesser",
+            "email": "alain.schlesser@gmail.com",
+            "homepage": "https://www.alainschlesser.com"
+        }
+    ],
+    "require": {
+        "composer/semver": "^1.4 || ^2 || ^3",
+        "wp-cli/wp-cli": "^2.5.1"
+    },
+    "require-dev": {
+        "wp-cli/cache-command": "^2.0",
+        "wp-cli/entity-command": "^1.3 || ^2",
+        "wp-cli/scaffold-command": "^1.2 || ^2",
+        "wp-cli/wp-cli-tests": "^3.1"
+    },
+    "config": {
+        "process-timeout": 7200,
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.x-dev"
+        },
+        "bundled": true,
+        "commands": [
+            "plugin",
+            "plugin activate",
+            "plugin deactivate",
+            "plugin delete",
+            "plugin get",
+            "plugin install",
+            "plugin is-installed",
+            "plugin list",
+            "plugin path",
+            "plugin search",
+            "plugin status",
+            "plugin toggle",
+            "plugin uninstall",
+            "plugin update",
+            "theme",
+            "theme activate",
+            "theme delete",
+            "theme disable",
+            "theme enable",
+            "theme get",
+            "theme install",
+            "theme is-installed",
+            "theme list",
+            "theme mod",
+            "theme mod get",
+            "theme mod set",
+            "theme mod remove",
+            "theme path",
+            "theme search",
+            "theme status",
+            "theme update",
+            "theme mod list"
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        },
+        "files": [
+            "extension-command.php"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "behat": "run-behat-tests",
+        "behat-rerun": "rerun-behat-tests",
+        "lint": "run-linter-tests",
+        "phpcs": "run-phpcs-tests",
+        "phpunit": "run-php-unit-tests",
+        "prepare-tests": "install-package-tests",
+        "test": [
+            "@lint",
+            "@phpcs",
+            "@phpunit",
+            "@behat"
+        ]
+    },
+    "support": {
+        "issues": "https://github.com/wp-cli/extension-command/issues"
+    }
+}
