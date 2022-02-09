@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Gravity Forms widget icon not showing
+* Fixed: Gravity Forms widget not displaying available forms when the View is saved
+
 = 2.14.1 on January 25, 2022 =
 
 * Tested with WordPress 5.9
