@@ -16,6 +16,13 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 	protected $show_on_single = true;
 
 	function __construct() {
+		// Initialize widget only when editing a View or performing widget AJAX action
+		$doing_ajax   = defined( 'DOING_AJAX' ) && DOING_AJAX && 'gv_field_options' === \GV\Utils::_POST( 'action' );
+		$editing_view = 'edit' === \GV\Utils::_GET( 'action' ) && 'gravityview' === get_post_type( \GV\Utils::_GET( 'post' ) );
+
+		if ( ! $doing_ajax && ! $editing_view ) {
+			return;
+		}
 
 		$this->widget_description = __('Display a Gravity Forms form.', 'gravityview' );
 
@@ -69,7 +76,6 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 	 * @return array Array with key set to Form ID => Form Title, with `0` as default placeholder.
 	 */
 	private function _get_form_choices() {
-
 		$choices = array(
 			0 => '&mdash; ' . esc_html__( 'list of forms', 'gravityview' ) . '&mdash;',
 		);
@@ -78,20 +84,15 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 			return $choices;
 		}
 
-		// Inside GV's widget AJAX request
-		$doing_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX && 'gv_field_options' === \GV\Utils::_POST( 'action' );
+		global $wpdb;
 
-		if ( $doing_ajax || \GV\Admin_Request::is_admin( '', 'multiple' ) ) {
-			global $wpdb;
+		$table = GFFormsModel::get_form_table_name();
 
-			$table = GFFormsModel::get_form_table_name();
+		$results = $wpdb->get_results( "SELECT id, title FROM ${table} WHERE is_active = 1" );
 
-			$results = $wpdb->get_results( "SELECT id, title FROM ${table} WHERE is_active = 1" );
-
-			if ( ! empty( $results ) ) {
-				foreach ( $results as $form ) {
-					$choices[ $form->id ] = $form->title;
-				}
+		if ( ! empty( $results ) ) {
+			foreach ( $results as $form ) {
+				$choices[ $form->id ] = $form->title;
 			}
 		}
 
