@@ -19,8 +19,9 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 		// Initialize widget in the frontend or when editing a View/performing widget AJAX action
 		$doing_ajax   = defined( 'DOING_AJAX' ) && DOING_AJAX && 'gv_field_options' === \GV\Utils::_POST( 'action' );
 		$editing_view = 'edit' === \GV\Utils::_GET( 'action' ) && 'gravityview' === get_post_type( \GV\Utils::_GET( 'post' ) );
+		$is_frontend  = gravityview()->request->is_frontend();
 
-		if ( ! $doing_ajax && ! $editing_view && ! gravityview()->request::is_frontend() ) {
+		if ( ! $doing_ajax && ! $editing_view && ! $is_frontend ) {
 			return;
 		}
 
