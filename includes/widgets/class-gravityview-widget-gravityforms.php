@@ -16,11 +16,11 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 	protected $show_on_single = true;
 
 	function __construct() {
-		// Initialize widget only when editing a View or performing widget AJAX action
+		// Initialize widget in the frontend or when editing a View/performing widget AJAX action
 		$doing_ajax   = defined( 'DOING_AJAX' ) && DOING_AJAX && 'gv_field_options' === \GV\Utils::_POST( 'action' );
 		$editing_view = 'edit' === \GV\Utils::_GET( 'action' ) && 'gravityview' === get_post_type( \GV\Utils::_GET( 'post' ) );
 
-		if ( ! $doing_ajax && ! $editing_view ) {
+		if ( ! $doing_ajax && ! $editing_view && ! gravityview()->request::is_frontend() ) {
 			return;
 		}
 
