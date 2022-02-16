@@ -99,6 +99,10 @@ class Renderer {
 			if ( ! $updated ) {
 				gravityview()->log->error( 'Could not update View settings => Show only approved' );
 			}
+			global $wp;
+			if( wp_redirect( home_url( $wp->request ), 302 ) ) {
+				exit;
+			}
 			return;
 		}
 
