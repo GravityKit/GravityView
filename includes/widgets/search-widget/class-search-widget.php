@@ -740,7 +740,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			if ( gv_empty( $value, false, false ) || ( is_array( $value ) && count( $value ) === 1 && gv_empty( $value[0], false, false ) ) ) {
-				continue;
+				if ( is_array( $value ) ) {
+					continue;
+				}
+
+				$value = '';
 			}
 
 			if ( strpos( $key, '|op' ) !== false ) {
@@ -831,7 +835,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$extra_conditions = array();
 		$mode = 'any';
 
-		foreach ( $search_criteria['field_filters'] as &$filter ) {
+		foreach ( $search_criteria['field_filters'] as $key => &$filter ) {
 			if ( ! is_array( $filter ) ) {
 				if ( in_array( strtolower( $filter ), array( 'any', 'all' ) ) ) {
 					$mode = $filter;
@@ -892,6 +896,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 * @param \GV\View $view The View we're operating on.
 			 */
 			$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter, $view );
+
+			if ( 'is' !== $filter['operator'] && '' === $filter['value'] ) {
+				unset( $search_criteria['field_filters'][ $key ] );
+			}
 		}
 
 		if ( ! empty( $search_criteria['start_date'] ) || ! empty( $search_criteria['end_date'] ) ) {
