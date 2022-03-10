@@ -753,6 +753,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$filter_key = $this->convert_request_key_to_filter_key( $key );
 
+			if ( '' === $value ) {
+				$field = GFAPI::get_field( $view->form->ID, $filter_key );
+
+				// GF_Query casts Number field values to decimal, which may return unexpected result when the value is blank.
+				if ( $field && 'number' === $field->type ) {
+					$value = '-' . PHP_INT_MAX;
+				}
+			}
+
 			if ( ! $filter = $this->prepare_field_filter( $filter_key, $value, $view, $searchable_field_objects, $get ) ) {
 				continue;
 			}

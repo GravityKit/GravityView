@@ -1628,6 +1628,10 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( 1, $view->get_entries()->count() );
 
+		$_GET = array( 'filter_9' => '', 'mode' => 'all' );
+
+		$this->assertEquals( 0, $view->get_entries()->count() );
+
 		remove_all_filters('gravityview_search_operator');
 
 		$_GET = array();
