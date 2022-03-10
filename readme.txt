@@ -23,6 +23,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Fixed: Search widget would cause a fatal error when the Number field is used with the "is" operator
+* Fixed: Search widget returning incorrect results when a field value is blank and the operator is set to "is"
 * Fixed: Gravity Forms widget icon not showing
 * Fixed: Gravity Forms widget not displaying available forms when the View is saved
 
