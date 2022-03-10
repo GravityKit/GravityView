@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Fixed: Potential fatal error on PHP 8 when exporting View entries in CSV and TSV formats
 * Fixed: Gravity Forms widget icon not showing
 * Fixed: Gravity Forms widget not displaying available forms when the View is saved
 
