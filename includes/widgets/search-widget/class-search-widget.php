@@ -940,6 +940,25 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$search_conditions[] = $search_condition;
 				} else {
 					$left = $search_condition->left;
+
+					// When casting a column value to a certain type (e.g., happens with the Number field), GF_Query_Column is wrapped in a GF_Query_Call class.
+					if ( $left instanceof GF_Query_Call ) {
+						try {
+							$reflectionProperty = new \ReflectionProperty( $left, '_parameters' );
+							$reflectionProperty->setAccessible( true );
+
+							$value = $reflectionProperty->getValue( $left );
+
+							if ( ! empty( $value[0] ) && $value[0] instanceof GF_Query_Column ) {
+								$left = $value[0];
+							} else {
+								continue;
+							}
+						} catch ( ReflectionException $e ) {
+							continue;
+						}
+					}
+
 					$alias = $query->_alias( $left->field_id, $left->source, $left->is_entry_column() ? 't' : 'm' );
 
 					if ( $view->joins && $left->field_id == GF_Query_Column::META ) {

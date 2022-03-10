@@ -1573,4 +1573,63 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$_GET = array();
 	}
+
+	public function test_search_with_number_field() {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id'     => $form['id'],
+			'template_id' => 'table',
+			'fields'      => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false )  => array(
+						'id'    => '9',
+						'label' => 'Number',
+					),
+				),
+			),
+			'settings'    => array(
+				'show_only_approved' => false,
+			),
+			'widgets'     => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id'            => 'search_bar',
+						'search_fields' => json_encode( array(
+								array(
+									'field' => '9',
+								),
+							)
+						),
+					),
+				)
+			),
+		) );
+
+		$view = \GV\View::from_post( $post );
+
+		foreach ( array(1,5,7,10) as $number ) {
+			$this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'status'  => 'active',
+				'9'     => $number,
+			) );
+		}
+
+		// "is" operator
+		add_filter( 'gravityview_search_operator', function () {
+			return 'is';
+		} );
+
+		$_GET = array( 'filter_9' => '5', 'mode' => 'all' );
+
+		$this->assertEquals( 1, $view->get_entries()->count() );
+
+		remove_all_filters('gravityview_search_operator');
+
+		$_GET = array();
+	}
 }
