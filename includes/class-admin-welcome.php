@@ -290,6 +290,15 @@ class GravityView_Welcome {
 					<li>Fixed: Empty values in search widget fields may return incorrect results</li>
 				</ul>
 
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>
+						Added: <code>gravityview/search/ignore-empty-values</code> filter to control strict matching of empty field values
+					</li>
+
+				</ul>
+
 				<h3>2.14.2 on March 10, 2022</h3>
 
 				<ul>
