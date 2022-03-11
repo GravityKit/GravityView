@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop =
+= 2.14.2.1 on March 11, 2022 =
 
 * Fixed: Empty values in search widget fields may return incorrect results
 

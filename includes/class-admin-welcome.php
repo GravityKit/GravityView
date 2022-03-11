@@ -284,6 +284,12 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.14.2.1 on March 11, 2022</h3>
+
+				<ul>
+					<li>Fixed: Empty values in search widget fields may return incorrect results</li>
+				</ul>
+
 				<h3>2.14.2 on March 10, 2022</h3>
 
 				<ul>
