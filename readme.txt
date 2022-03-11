@@ -27,7 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Updates:__
 
-Added: `gravityview/search/ignore-empty-field-values` filter to control strict matching of empty field values
+Added: `gravityview/search/ignore-empty-values` filter to control strict matching of empty field values
 
 = 2.14.2 on March 10, 2022 =
 

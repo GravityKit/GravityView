@@ -749,14 +749,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			if ( gv_empty( $value, false, false ) || ( is_array( $value ) && count( $value ) === 1 && gv_empty( $value[0], false, false ) ) ) {
 				/**
-				 * @filter `gravityview/search/ignore-empty-field-values` Filter to control if empty field values should be ignored or strictly matched (default: true)
+				 * @filter `gravityview/search/ignore-empty-values` Filter to control if empty field values should be ignored or strictly matched (default: true)
 				 * @since  2.14.2.1
 				 * @param bool $ignore_empty_values
 				 * @param int|null $filter_key
 				 * @param int|null $view_id
 				 * @param int|null $form_id
 				 */
-				$ignore_empty_values = apply_filters( 'gravityview/search/ignore-empty-field-values', true, $filter_key, $view_id, $form_id );
+				$ignore_empty_values = apply_filters( 'gravityview/search/ignore-empty-values', true, $filter_key, $view_id, $form_id );
 
 				if ( is_array( $value ) || $ignore_empty_values ) {
 					continue;

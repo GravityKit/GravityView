@@ -1564,7 +1564,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		} );
 
 		// do not ignore empty values
-		add_filter( 'gravityview/search/ignore-empty-field-values', '__return_false');
+		add_filter( 'gravityview/search/ignore-empty-values', '__return_false');
 
 		$this->assertEquals( 0, $view->get_entries()->count() );
 
@@ -1628,7 +1628,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		} );
 
 		// do not ignore empty values
-		add_filter( 'gravityview/search/ignore-empty-field-values', '__return_false');
+		add_filter( 'gravityview/search/ignore-empty-values', '__return_false');
 
 		$_GET = array( 'filter_9' => '5', 'mode' => 'all' );
 
