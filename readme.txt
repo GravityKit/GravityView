@@ -21,6 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.14.2.1 on March 11, 2022 =
+
+* Fixed: Empty values in search widget fields may return incorrect results
+
+__Developer Updates:__
+
+Added: `gravityview/search/ignore-empty-values` filter to control strict matching of empty field values
+
 = 2.14.2 on March 10, 2022 =
 
 * Fixed: Potential fatal error on PHP 8 when exporting View entries in CSV and TSV formats

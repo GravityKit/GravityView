@@ -1494,7 +1494,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$_GET = array();
 	}
 
-	public function test_search_with_empty_values() {
+	public function test_search_with_strict_empty_value_matching() {
 		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
 			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
 		}
@@ -1563,6 +1563,9 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			return 'is';
 		} );
 
+		// do not ignore empty values
+		add_filter( 'gravityview/search/ignore-empty-values', '__return_false');
+
 		$this->assertEquals( 0, $view->get_entries()->count() );
 
 		$_GET = array( 'filter_8_3' => 'Alice', 'filter_8_6' => 'Alice', 'mode' => 'all' );
@@ -1623,6 +1626,9 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		add_filter( 'gravityview_search_operator', function () {
 			return 'is';
 		} );
+
+		// do not ignore empty values
+		add_filter( 'gravityview/search/ignore-empty-values', '__return_false');
 
 		$_GET = array( 'filter_9' => '5', 'mode' => 'all' );
 

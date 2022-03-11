@@ -589,6 +589,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		$view = \GV\View::by_id( \GV\Utils::get( $args, 'id' ) );
+		$view_id = $view ? $view->ID : null;
+		$form_id = $view ? $view->form->ID : null;
 
 		gravityview()->log->debug( 'Requested $_{method}: ', array( 'method' => $this->search_method, 'data' => $get ) );
 
@@ -735,26 +737,36 @@ class GravityView_Widget_Search extends \GV\Widget {
 				continue;
 			}
 
-			if ( $trim_search_value ) {
-				$value = is_array( $value ) ? array_map( 'trim', $value ) : trim( $value );
-			}
-
-			if ( gv_empty( $value, false, false ) || ( is_array( $value ) && count( $value ) === 1 && gv_empty( $value[0], false, false ) ) ) {
-				if ( is_array( $value ) ) {
-					continue;
-				}
-
-				$value = '';
-			}
-
 			if ( strpos( $key, '|op' ) !== false ) {
 				continue; // This is an operator
 			}
 
 			$filter_key = $this->convert_request_key_to_filter_key( $key );
 
-			if ( '' === $value ) {
-				$field = GFAPI::get_field( $view->form->ID, $filter_key );
+			if ( $trim_search_value ) {
+				$value = is_array( $value ) ? array_map( 'trim', $value ) : trim( $value );
+			}
+
+			if ( gv_empty( $value, false, false ) || ( is_array( $value ) && count( $value ) === 1 && gv_empty( $value[0], false, false ) ) ) {
+				/**
+				 * @filter `gravityview/search/ignore-empty-values` Filter to control if empty field values should be ignored or strictly matched (default: true)
+				 * @since  2.14.2.1
+				 * @param bool $ignore_empty_values
+				 * @param int|null $filter_key
+				 * @param int|null $view_id
+				 * @param int|null $form_id
+				 */
+				$ignore_empty_values = apply_filters( 'gravityview/search/ignore-empty-values', true, $filter_key, $view_id, $form_id );
+
+				if ( is_array( $value ) || $ignore_empty_values ) {
+					continue;
+				}
+
+				$value = '';
+			}
+
+			if ( $form_id && '' === $value ) {
+				$field = GFAPI::get_field( $form_id, $filter_key );
 
 				// GF_Query casts Number field values to decimal, which may return unexpected result when the value is blank.
 				if ( $field && 'number' === $field->type ) {
