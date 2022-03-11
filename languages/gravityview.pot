@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.14.1\n"
+"Project-Id-Version: GravityView 2.14.2\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
-"POT-Creation-Date: 2022-01-26 03:32:39+00:00\n"
+"POT-Creation-Date: 2022-03-11 03:00:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1459,7 +1459,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/data-source.php:46
 #: includes/class-gravityview-html-elements.php:38
-#: includes/widgets/class-gravityview-widget-gravityforms.php:72
+#: includes/widgets/class-gravityview-widget-gravityforms.php:81
 msgid "list of forms"
 msgstr ""
 
@@ -2047,23 +2047,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:432
+#: includes/class-admin-welcome.php:442
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:452
+#: includes/class-admin-welcome.php:462
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:503
+#: includes/class-admin-welcome.php:513
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:530
+#: includes/class-admin-welcome.php:540
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:531
+#: includes/class-admin-welcome.php:541
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -4036,35 +4036,35 @@ msgstr ""
 msgid "Enter text or HTML. Also supports shortcodes."
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-gravityforms.php:18
+#: includes/widgets/class-gravityview-widget-gravityforms.php:28
 msgid "Display a Gravity Forms form."
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-gravityforms.php:28
+#: includes/widgets/class-gravityview-widget-gravityforms.php:38
 msgid "Form to display"
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-gravityforms.php:34
+#: includes/widgets/class-gravityview-widget-gravityforms.php:44
 msgid "Show form title?"
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-gravityforms.php:39
+#: includes/widgets/class-gravityview-widget-gravityforms.php:49
 msgid "Show form description?"
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-gravityforms.php:44
+#: includes/widgets/class-gravityview-widget-gravityforms.php:54
 msgid "Enable AJAX"
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-gravityforms.php:51
+#: includes/widgets/class-gravityview-widget-gravityforms.php:61
 msgid "Field value parameters"
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-gravityforms.php:52
+#: includes/widgets/class-gravityview-widget-gravityforms.php:62
 msgid "Learn how to dynamically populate a field."
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-gravityforms.php:59
+#: includes/widgets/class-gravityview-widget-gravityforms.php:69
 msgid "Gravity Forms"
 msgstr ""
 
@@ -4250,23 +4250,23 @@ msgstr ""
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1519
+#: includes/widgets/search-widget/class-search-widget.php:1555
 msgid "Search Entries:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1522
+#: includes/widgets/search-widget/class-search-widget.php:1558
 msgid "Filter by date:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1525
+#: includes/widgets/search-widget/class-search-widget.php:1561
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1776
+#: includes/widgets/search-widget/class-search-widget.php:1812
 msgid "Clear"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1842
+#: includes/widgets/search-widget/class-search-widget.php:1878
 msgid "Show a different month"
 msgstr ""
 
@@ -5028,27 +5028,27 @@ msgid ""
 "entries displayed in the View."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1837
+#: includes/widgets/search-widget/class-search-widget.php:1873
 msgctxt "Close calendar"
 msgid "Close"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1838
+#: includes/widgets/search-widget/class-search-widget.php:1874
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1839
+#: includes/widgets/search-widget/class-search-widget.php:1875
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1840
+#: includes/widgets/search-widget/class-search-widget.php:1876
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1841
+#: includes/widgets/search-widget/class-search-widget.php:1877
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""

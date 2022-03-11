@@ -1,11 +1,15 @@
 # Copyright (C) 2021 GravityView
 # This file is distributed under the GPLv2 or later.
+# Translators:
+# Damir Badzic <sultanbadza@gmail.com>, 2022
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView 2.13.2\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
+"Last-Translator: Damir Badzic <sultanbadza@gmail.com>, 2022\n"
 "Language-Team: Bosnian (https://www.transifex.com/katzwebservices/teams/18775/bs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -243,7 +247,7 @@ msgstr ""
 #: future/includes/class-gv-renderer.php:132
 #: future/includes/class-gv-settings-view.php:88
 msgid "Show only approved entries"
-msgstr ""
+msgstr "Prikaži samo odobrene unose"
 
 #: future/includes/class-gv-renderer.php:134
 #: future/includes/class-gv-renderer.php:179
@@ -567,19 +571,19 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:52
 msgid "View ID"
-msgstr ""
+msgstr "ID pregleda"
 
 #: future/includes/class-gv-settings-view.php:60
 msgid "Number of entries per page"
-msgstr ""
+msgstr "Broj unosa po stranici"
 
 #: future/includes/class-gv-settings-view.php:68
 msgid "Offset entries starting from"
-msgstr ""
+msgstr "Istup unosa počev od"
 
 #: future/includes/class-gv-settings-view.php:76
 msgid "Enable lightbox for images"
-msgstr ""
+msgstr "Omogući lightbox za slike"
 
 #: future/includes/class-gv-settings-view.php:80
 msgid ""
@@ -615,11 +619,13 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:125
 msgid "Show all entries to administrators"
-msgstr ""
+msgstr "Prikaži sve unose administratorima"
 
 #: future/includes/class-gv-settings-view.php:126
 msgid "Administrators will be able to see entries with any approval status."
 msgstr ""
+"Administratori će biti u mogućnosti da vide unose sa bilo kojim statusom "
+"odobrenja."
 
 #: future/includes/class-gv-settings-view.php:127
 msgid ""
@@ -627,20 +633,25 @@ msgid ""
 "while administrators will see entries with all statuses. This makes it "
 "easier for administrators to moderate entries from a View."
 msgstr ""
+"Neprijavljeni posjetioci i neadministratori će vidjeti samo odobrene unose, "
+"dok će administratori vidjeti unose sa bilo kojim statusom. Ovo lakše "
+"omogućava administratorima da ispravljaju unose iz Pregleda."
 
 #: future/includes/class-gv-settings-view.php:135
 msgid "Hide View data until search is performed"
-msgstr ""
+msgstr "Sakrij podatke Pregleda dok se vrši pretraga"
 
 #: future/includes/class-gv-settings-view.php:138
 msgid ""
 "When enabled it will only show any View entries after a search is performed."
 msgstr ""
+"Kada je omogućeno prikazivati će bilo koji unos Pregleda samo nakon što se "
+"pretraga obavi."
 
 #: future/includes/class-gv-settings-view.php:147
 #: future/includes/class-gv-settings-view.php:156
 msgid "Hide empty fields"
-msgstr ""
+msgstr "Sakrij prazna polja."
 
 #: future/includes/class-gv-settings-view.php:150
 #: future/includes/class-gv-settings-view.php:159
@@ -655,11 +666,12 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:172
 msgid "Allow User Edit"
-msgstr ""
+msgstr "Dozvoli promjene korisnicima"
 
 #: future/includes/class-gv-settings-view.php:174
 msgid "Allow logged-in users to edit entries they created."
 msgstr ""
+"Dozvoli prijavljenim korisnicima da mijenjaju unose koje su napravili."
 
 #: future/includes/class-gv-settings-view.php:174
 #: future/includes/class-gv-settings-view.php:201
@@ -672,6 +684,9 @@ msgid ""
 "Display \"Edit Entry\" fields to non-administrator users if they created the"
 " entry. Edit Entry fields will always be displayed to site administrators."
 msgstr ""
+"Prikaži polje \"Uredi unos\" korisnicima koji nisu administratori ako su oni"
+" napravili unos. Polje \"Uredi unos\" će uvijek biti prikazano "
+"administratorima stranice."
 
 #: future/includes/class-gv-settings-view.php:185
 msgid "Unapprove Entries After Edit"
@@ -691,11 +706,11 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:199
 msgid "Allow User Delete"
-msgstr ""
+msgstr "Dozvoli brisanje korisnicima"
 
 #: future/includes/class-gv-settings-view.php:201
 msgid "Allow logged-in users to delete entries they created."
-msgstr ""
+msgstr "Dozvoli prijavljenim korisnicima da brišu unose koje su napravili."
 
 #: future/includes/class-gv-settings-view.php:203
 msgid ""
@@ -703,6 +718,9 @@ msgid ""
 "the entry. Delete Entry fields will always be displayed to site "
 "administrators."
 msgstr ""
+"Prikaži polje \"Izbriši unos\" korisnicima koji nisu administratori ako su "
+"oni napravili unos. Polje \"Izbriši unos\" će uvijek biti prikazano "
+"administratorima stranice."
 
 #: future/includes/class-gv-settings-view.php:212
 msgid "Allow User Duplicate"
@@ -721,7 +739,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:225
 msgid "Sort by field"
-msgstr ""
+msgstr "Poredaj po polju."
 
 #: future/includes/class-gv-settings-view.php:227
 msgid "By default, entries are sorted by Entry ID."
@@ -730,32 +748,32 @@ msgstr ""
 #: future/includes/class-gv-settings-view.php:231
 #: future/includes/class-gv-settings-view.php:262
 msgid "Default"
-msgstr ""
+msgstr "Zadano"
 
 #: future/includes/class-gv-settings-view.php:232
 #: future/includes/class-gv-settings-view.php:263
 #: includes/class-common.php:1412
 #: includes/fields/class-gravityview-field-date-created.php:29
 msgid "Date Created"
-msgstr ""
+msgstr "Datum kreiranja"
 
 #: future/includes/class-gv-settings-view.php:241
 msgid "Sort direction"
-msgstr ""
+msgstr "Pravac redanja"
 
 #: future/includes/class-gv-settings-view.php:246
 #: future/includes/class-gv-settings-view.php:278
 msgid "ASC"
-msgstr ""
+msgstr "UZL"
 
 #: future/includes/class-gv-settings-view.php:247
 #: future/includes/class-gv-settings-view.php:279
 msgid "DESC"
-msgstr ""
+msgstr "SIL"
 
 #: future/includes/class-gv-settings-view.php:248
 msgid "Random"
-msgstr ""
+msgstr "Nasumično"
 
 #: future/includes/class-gv-settings-view.php:257
 msgid "Sort by secondary field"
@@ -767,58 +785,64 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:289
 msgid "Enable sorting by column"
-msgstr ""
+msgstr "Dozvoli redanje po koloni"
 
 #: future/includes/class-gv-settings-view.php:290
 msgid "Column Sorting"
-msgstr ""
+msgstr "Redanje po koloni"
 
 #: future/includes/class-gv-settings-view.php:303
 msgid "Filter by Start Date"
-msgstr ""
+msgstr "Filtriraj po datumu početka"
 
 #: future/includes/class-gv-settings-view.php:305
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
 msgstr ""
+"Prikazi unose podnesene nakon ovog datuma. Podržava i relativne datume (na "
+"engleskom jeziku), kao što su \"-1 week\" ili \"-1 month\"."
 
 #: future/includes/class-gv-settings-view.php:316
 msgid "Filter by End Date"
-msgstr ""
+msgstr "Filtriraj po datumu završetka"
 
 #: future/includes/class-gv-settings-view.php:318
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
 msgstr ""
+"Prikaži unose podnesene prije ovog datuma. Podržava i relativne datume (na "
+"engleskom jeziku), kao što su \"now\" ili \"-3 days\"."
 
 #: future/includes/class-gv-settings-view.php:329
 msgid "CSS Class"
-msgstr ""
+msgstr "CSS Class"
 
 #: future/includes/class-gv-settings-view.php:330
 msgid "CSS class to add to the wrapping HTML container."
-msgstr ""
+msgstr "CSS klasa koja se dodaje u HTML container."
 
 #: future/includes/class-gv-settings-view.php:337
 msgid "Search Value"
-msgstr ""
+msgstr "Vrijednost pretrage"
 
 #: future/includes/class-gv-settings-view.php:338
 msgid "Define a default search value for the View"
-msgstr ""
+msgstr "Definiši zadanu vrijednost pretrage za Pregled"
 
 #: future/includes/class-gv-settings-view.php:345
 #: includes/widgets/search-widget/class-search-widget.php:269
 msgid "Search Field"
-msgstr ""
+msgstr "Polje za pretragu"
 
 #: future/includes/class-gv-settings-view.php:346
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
 msgstr ""
+"Ako je \"Vrijednost pretrage\" unesena, možete definisati posebno polje za "
+"pretragu. U suprotnom, sva polja će se pretraživati."
 
 #: future/includes/class-gv-settings-view.php:353
 msgid "Search Operator"
@@ -826,7 +850,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:360
 msgid "Single Entry Title"
-msgstr ""
+msgstr "Naslov pojedinačnog unosa"
 
 #: future/includes/class-gv-settings-view.php:362
 msgid ""
@@ -834,14 +858,17 @@ msgid ""
 "Otherwise, the title will not change between the Multiple Entries and Single"
 " Entry views."
 msgstr ""
+"Kada se pregleda pojedinačni unos, promijeni naslov na stranici za ovu "
+"postavku. U suprotnom, naslov se neće mijenjati između Pregleda višestrukih "
+"unosa i pojedinačnih unosa."
 
 #: future/includes/class-gv-settings-view.php:373
 msgid "Back Link Label"
-msgstr ""
+msgstr "Oznaka za povratnu poveznicu"
 
 #: future/includes/class-gv-settings-view.php:375
 msgid "The text of the link that returns to the multiple entries view."
-msgstr ""
+msgstr "Tekst poveznice koja vraća na pregled višestrukih unosa."
 
 #: future/includes/class-gv-settings-view.php:378 includes/class-api.php:978
 msgid "&larr; Go back"
@@ -968,11 +995,12 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:506
 msgid "Prevent Direct Access"
-msgstr ""
+msgstr "Spriječi direktan pristup"
 
 #: future/includes/class-gv-settings-view.php:508
 msgid "Only allow access to this View when embedded using the shortcode."
 msgstr ""
+"Dozvoli pristup samo ovom Pregledu kada je ugrađeno koristeći shortcode."
 
 #: future/includes/class-gv-settings-view.php:519
 msgid "Prevent REST Access"
@@ -1028,64 +1056,64 @@ msgstr ""
 
 #: future/includes/class-gv-view.php:145
 msgid "Parent View:"
-msgstr ""
+msgstr "Matični Pregled"
 
 #: future/includes/class-gv-view.php:146
 msgid "All Views"
-msgstr ""
+msgstr "Svi Pregledi"
 
 #: future/includes/class-gv-view.php:148
 msgid "Add New View"
-msgstr ""
+msgstr "Dodaj novi Pregled"
 
 #: future/includes/class-gv-view.php:149
 msgid "New View"
-msgstr ""
+msgstr "Novi Pregled"
 
 #: future/includes/class-gv-view.php:150
 #: includes/class-gravityview-admin-bar.php:138
 msgid "Edit View"
-msgstr ""
+msgstr "Uredi Pregled."
 
 #: future/includes/class-gv-view.php:151
 msgid "Update View"
-msgstr ""
+msgstr "Ažuriraj Pregled."
 
 #: future/includes/class-gv-view.php:152
 msgid "Search Views"
-msgstr ""
+msgstr "Pretraži Pregled."
 
 #: future/includes/class-gv-view.php:154 includes/class-admin.php:68
 msgid "No Views found in Trash"
-msgstr ""
+msgstr "Nema Pregleda u Otpacima."
 
 #: future/includes/class-gv-view.php:155
 msgid "Filter Views list"
-msgstr ""
+msgstr "Filtriraj listu Pregleda"
 
 #: future/includes/class-gv-view.php:156
 msgid "Views list navigation"
-msgstr ""
+msgstr "Navigacija liste Pregleda"
 
 #: future/includes/class-gv-view.php:157
 msgid "Views list"
-msgstr ""
+msgstr "Lista Pregleda"
 
 #: future/includes/class-gv-view.php:158
 msgid "See Views"
-msgstr ""
+msgstr "Vidi Preglede"
 
 #: future/includes/class-gv-view.php:159
 msgid "View Attributes"
-msgstr ""
+msgstr "Vidi atribute"
 
 #: future/includes/class-gv-view.php:162
 msgid "view"
-msgstr ""
+msgstr "pregled"
 
 #: future/includes/class-gv-view.php:163
 msgid "Create views based on a Gravity Forms form"
-msgstr ""
+msgstr "Kreiraj preglede bazirane na formi Gravity Forms"
 
 #: future/includes/class-gv-view.php:298
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:224
@@ -1101,7 +1129,7 @@ msgstr ""
 #: future/includes/class-gv-widget.php:159
 #: includes/admin/class.render.settings.php:79
 msgid "Custom CSS Class:"
-msgstr ""
+msgstr "Prilagođena CSS klasa:"
 
 #: future/includes/class-gv-widget.php:160
 msgid "This class will be added to the widget container"
@@ -1109,15 +1137,15 @@ msgstr ""
 
 #: future/includes/class-gv-widget.php:210
 msgid "Top"
-msgstr ""
+msgstr "Vrh"
 
 #: future/includes/class-gv-widget.php:211
 msgid "Left"
-msgstr ""
+msgstr "Lijevo"
 
 #: future/includes/class-gv-widget.php:211
 msgid "Right"
-msgstr ""
+msgstr "Desno"
 
 #: future/includes/rest/class-gv-rest-route.php:178
 msgid "Must set route name in subclass."
@@ -1182,6 +1210,8 @@ msgid ""
 "GravityView requires PHP Version %s or newer. You're using Version %s. "
 "Please ask your host to upgrade your server's PHP."
 msgstr ""
+"GravityView zahtjeva PHP verziju %s ili noviju. Vi koristite %s verziju. "
+"Zamolite vaš hosting da nadograde PHP na vašem serveru."
 
 #: future/loader.php:27 includes/class-gravityview-compatibility.php:200
 msgid ""
@@ -1189,10 +1219,13 @@ msgid ""
 "\n"
 "You're using Version %s. Please ask your host to upgrade your server's PHP."
 msgstr ""
+"%s GravityView zahtjeva PHP verziju %s ili noviju. %s\n"
+"\n"
+"Vi koristite verziju %s. Zamolite vaš hosting da nadograde PHP na vašem serveru."
 
 #: includes/admin/class-gravityview-admin-view-field.php:19
 msgid "Admin Label: %s"
-msgstr ""
+msgstr "Oznaka Admina: %s"
 
 #: includes/admin/class-gravityview-admin-view-field.php:31
 msgid "Parent: %s"
@@ -1200,11 +1233,11 @@ msgstr ""
 
 #: includes/admin/class-gravityview-admin-view-field.php:36
 msgid "Type: %s"
-msgstr ""
+msgstr "Tip: %s"
 
 #: includes/admin/class-gravityview-admin-view-field.php:41
 msgid "Field ID: %s"
-msgstr ""
+msgstr "ID polja: %s"
 
 #: includes/admin/class-gravityview-admin-view-field.php:52
 msgid "Form ID: %s"
@@ -1212,16 +1245,16 @@ msgstr ""
 
 #: includes/admin/class-gravityview-admin-view-item.php:152
 msgid "Configure %s Settings"
-msgstr ""
+msgstr "Podesite postavke %s"
 
 #: includes/admin/class-gravityview-admin-view-item.php:153
 msgid "Remove %s"
-msgstr ""
+msgstr "Izbrišite %s"
 
 #: includes/admin/class-gravityview-admin-view-item.php:154
 #: includes/admin/class-gravityview-admin-view-item.php:256
 msgid "This field links to the Single Entry"
-msgstr ""
+msgstr "Polje povezuje na pojedinačni unos"
 
 #: includes/admin/class-gravityview-admin-view-item.php:155
 #: includes/admin/class-gravityview-admin-view-item.php:261
@@ -1254,65 +1287,69 @@ msgstr ""
 
 #: includes/admin/class-gravityview-support-port.php:138
 msgid "GravityView Support"
-msgstr ""
+msgstr "Podrška za GravityView"
 
 #: includes/admin/class-gravityview-support-port.php:139
 msgid "Search GravityView Docs"
-msgstr ""
+msgstr "Pretražite GravityView dokumente"
 
 #: includes/admin/class-gravityview-support-port.php:140
 msgid ""
 "Your search timed out. Please double-check your internet connection and try "
 "again."
 msgstr ""
+"Vaša pretraga je istekla. Molimo vas provjerite vašu internet konekciju pa "
+"pokušajte ponovo."
 
 #: includes/admin/class-gravityview-support-port.php:142
 msgid "Contact Support"
-msgstr ""
+msgstr "Kontaktirajte Podršku"
 
 #: includes/admin/class-gravityview-support-port.php:143
 msgid "Attach a screenshot or file"
-msgstr ""
+msgstr "Ubaci isječak ekrana ili datoteku"
 
 #: includes/admin/class-gravityview-support-port.php:144
 msgid "The maximum file size is 10 MB"
-msgstr ""
+msgstr "Maksimalna veličina datoteke je 10 MB"
 
 #: includes/admin/class-gravityview-support-port.php:145
 msgid "Your Name"
-msgstr ""
+msgstr "Vaše ime"
 
 #: includes/admin/class-gravityview-support-port.php:146
 msgid "Please enter your name"
-msgstr ""
+msgstr "Molimo vas da unesete vaše ime"
 
 #: includes/admin/class-gravityview-support-port.php:147
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:424
 msgid "Email address"
-msgstr ""
+msgstr "Email adresa"
 
 #: includes/admin/class-gravityview-support-port.php:148
 msgid "Please enter a valid email address"
-msgstr ""
+msgstr "Molimo vas ukucajte ispravnu email adresu"
 
 #: includes/admin/class-gravityview-support-port.php:149
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:426
 msgid "Subject"
-msgstr ""
+msgstr "Naslov"
 
 #: includes/admin/class-gravityview-support-port.php:151
 msgid "How can we help you?"
-msgstr ""
+msgstr "Kako vam možemo pomoći?"
 
 #: includes/admin/class-gravityview-support-port.php:153
 msgid "Message sent!"
-msgstr ""
+msgstr "Poruka poslana!"
 
 #: includes/admin/class-gravityview-support-port.php:154
 msgid ""
 "Thanks for reaching out! Someone from the GravityView team will get back to "
 "you soon."
 msgstr ""
+"Hvala vam na kontaktiranju! Neko iz GravityView tima će vam se uskoro "
+"javiti."
 
 #: includes/admin/class-gravityview-support-port.php:155
 msgid "Need Help?"
@@ -1323,67 +1360,70 @@ msgstr ""
 #: includes/admin/class-gravityview-support-port.php:340
 #: includes/admin/class-gravityview-support-port.php:346
 msgid "GravityView Support Port"
-msgstr ""
+msgstr "Portal GravityView Podrške"
 
 #: includes/admin/class-gravityview-support-port.php:351
 msgid "Show GravityView Support Port when on a GravityView-related page"
 msgstr ""
+"Prikaži portal GravityView podrške kada ste na stranici koja je povezana sa "
+"GravityView"
 
 #: includes/admin/class.render.settings.php:62
 msgid "Show Label"
-msgstr ""
+msgstr "Prikaži oznaku"
 
 #: includes/admin/class.render.settings.php:69
 msgid "Custom Label:"
-msgstr ""
+msgstr "Prilagođena oznaka:"
 
 #: includes/admin/class.render.settings.php:80
 msgid "This class will be added to the field container"
-msgstr ""
+msgstr "Ova klasa će biti dodana u container polja"
 
 #: includes/admin/class.render.settings.php:90
 msgid "Make visible only to logged-in users?"
-msgstr ""
+msgstr "Učini vidljivim samo prijavljenim korisnicima?"
 
 #: includes/admin/class.render.settings.php:97
 msgid "Make visible for:"
-msgstr ""
+msgstr "Prikaži vidljivim za:"
 
 #: includes/admin/class.render.settings.php:111
 msgid "Percent Width"
-msgstr ""
+msgstr "Procenat širine"
 
 #: includes/admin/class.render.settings.php:112
 msgid "Leave blank for column width to be based on the field content."
 msgstr ""
+"Ostavni prazno za širinu kolone koja će biti bazirana na sadržaju polja."
 
 #: includes/admin/class.render.settings.php:222
 msgid "Any Logged-In User"
-msgstr ""
+msgstr "Bilo koji prijavljeni korisnik"
 
 #: includes/admin/class.render.settings.php:223
 msgid "Author Or Higher"
-msgstr ""
+msgstr "Autor ili više"
 
 #: includes/admin/class.render.settings.php:224
 msgid "Can View Gravity Forms Entries"
-msgstr ""
+msgstr "Može vidjeti unose u Gravity Forms"
 
 #: includes/admin/class.render.settings.php:225
 msgid "Editor Or Higher"
-msgstr ""
+msgstr "Urednik ili više"
 
 #: includes/admin/class.render.settings.php:226
 msgid "Can Edit Gravity Forms Entries"
-msgstr ""
+msgstr "Može uređivati unose u Gravity Forms"
 
 #: includes/admin/class.render.settings.php:227
 msgid "Administrator"
-msgstr ""
+msgstr "Administrator"
 
 #: includes/admin/class.render.settings.php:231
 msgid "Multisite Super Admin"
-msgstr ""
+msgstr "Super Admin na više stranica"
 
 #: includes/admin/class.render.settings.php:306
 msgid "%s Settings"
@@ -4844,7 +4884,7 @@ msgstr ""
 #: includes/admin/class.render.settings.php:31
 msgctxt "Denotes the name under which certain field settings are grouped"
 msgid "Default"
-msgstr ""
+msgstr "Zadano"
 
 #: includes/admin/class.render.settings.php:387
 msgctxt "The type of field being configured (eg: \"Single Line Text\")"
