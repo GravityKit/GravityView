@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop =
+= 2.14.2 on March 10, 2022 =
 
 * Fixed: Potential fatal error on PHP 8 when exporting View entries in CSV and TSV formats
 * Fixed: Search widget would cause a fatal error when the Number field is used with the "is" operator
