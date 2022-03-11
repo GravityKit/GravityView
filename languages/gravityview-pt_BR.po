@@ -5,6 +5,7 @@
 # Rennan Motta Berbel <blackcomputer.info@gmail.com>, 2021
 # Rafael de Menezes Ehlers, 2021
 # Marlos Piccinelli <marlosvinicius.info@gmail.com>, 2021
+# luistinygod <luis@gomo.pt>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2018-05-08 22:37:16+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
-"Last-Translator: Marlos Piccinelli <marlosvinicius.info@gmail.com>, 2021\n"
+"Last-Translator: luistinygod <luis@gomo.pt>, 2022\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/katzwebservices/teams/18775/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3157,7 +3158,7 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-created-by.php:143
 msgid "Description"
-msgstr ""
+msgstr "Descrição"
 
 #: includes/fields/class-gravityview-field-created-by.php:144
 msgid "First Name"
@@ -4144,11 +4145,12 @@ msgstr "Liste pessoas em seus perfis individuais."
 
 #: includes/presets/register-default-templates.php:61
 msgid "DataTables Table"
-msgstr ""
+msgstr "Tabela DataTables"
 
 #: includes/presets/register-default-templates.php:62
 msgid "Display items in a dynamic table powered by DataTables."
 msgstr ""
+"Mostrar entradas numa tabela dinâmica, suportada pelo plugin DataTables."
 
 #: includes/presets/register-default-templates.php:72
 msgid "Map"
@@ -4678,7 +4680,7 @@ msgstr ""
 #: trustedlogin/trustedlogin/client/src/Admin.php:1004
 #: trustedlogin/trustedlogin/client/src/Admin.php:1148
 msgid "Copy"
-msgstr ""
+msgstr "Copiar"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1005
 msgid "Copied!"
@@ -5107,7 +5109,7 @@ msgstr ""
 #: includes/class-gravityview-html-elements.php:120
 msgctxt "all dropdown items"
 msgid "All"
-msgstr ""
+msgstr "Tudo"
 
 #: includes/class-gravityview-html-elements.php:121
 msgctxt "no dropdown items"
