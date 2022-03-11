@@ -50,7 +50,7 @@ if ( $field->enableColumns && false !== $column_id ) {
 
 	$output = array();
 	foreach ( $value as $column ) {
-		$output[] = implode( ',', $column );
+		$output[] = is_array($column) ? implode( ',', $column ) : $column;
 	}
 
 	echo implode( $glue, $output );
