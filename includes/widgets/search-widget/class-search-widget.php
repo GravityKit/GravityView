@@ -589,6 +589,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		$view = \GV\View::by_id( \GV\Utils::get( $args, 'id' ) );
+		$view_id = $view ? $view->ID : null;
+		$form_id = $view ? $view->form->ID : null;
 
 		gravityview()->log->debug( 'Requested $_{method}: ', array( 'method' => $this->search_method, 'data' => $get ) );
 
@@ -735,6 +737,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 				continue;
 			}
 
+			if ( strpos( $key, '|op' ) !== false ) {
+				continue; // This is an operator
+			}
+
+			$filter_key = $this->convert_request_key_to_filter_key( $key );
+
 			if ( $trim_search_value ) {
 				$value = is_array( $value ) ? array_map( 'trim', $value ) : trim( $value );
 			}
@@ -744,9 +752,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 				 * @filter `gravityview/search/ignore-empty-field-values` Filter to control if empty field values should be ignored or strictly matched (default: true)
 				 * @since  2.14.2.1
 				 * @param bool $ignore_empty_values
+				 * @param int|null $filter_key
+				 * @param int|null $view_id
 				 * @param int|null $form_id
 				 */
-				$ignore_empty_values = apply_filters( 'gravityview/search/ignore-empty-field-values', true, $view ? $view->form->ID : null );
+				$ignore_empty_values = apply_filters( 'gravityview/search/ignore-empty-field-values', true, $filter_key, $view_id, $form_id );
 
 				if ( is_array( $value ) || $ignore_empty_values ) {
 					continue;
@@ -755,14 +765,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$value = '';
 			}
 
-			if ( strpos( $key, '|op' ) !== false ) {
-				continue; // This is an operator
-			}
-
-			$filter_key = $this->convert_request_key_to_filter_key( $key );
-
-			if ( $view && '' === $value ) {
-				$field = GFAPI::get_field( $view->form->ID, $filter_key );
+			if ( $form_id && '' === $value ) {
+				$field = GFAPI::get_field( $form_id, $filter_key );
 
 				// GF_Query casts Number field values to decimal, which may return unexpected result when the value is blank.
 				if ( $field && 'number' === $field->type ) {
