@@ -740,7 +740,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			if ( gv_empty( $value, false, false ) || ( is_array( $value ) && count( $value ) === 1 && gv_empty( $value[0], false, false ) ) ) {
-				if ( is_array( $value ) ) {
+				/**
+				 * @filter `gravityview/search/ignore-empty-field-values` Filter to control if empty field values should be ignored or strictly matched (default: true)
+				 * @since  2.14.2.1
+				 * @param bool $ignore_empty_values
+				 * @param int|null $form_id
+				 */
+				$ignore_empty_values = apply_filters( 'gravityview/search/ignore-empty-field-values', true, $view ? $view->form->ID : null );
+
+				if ( is_array( $value ) || $ignore_empty_values ) {
 					continue;
 				}
 
@@ -753,7 +761,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$filter_key = $this->convert_request_key_to_filter_key( $key );
 
-			if ( '' === $value ) {
+			if ( $view && '' === $value ) {
 				$field = GFAPI::get_field( $view->form->ID, $filter_key );
 
 				// GF_Query casts Number field values to decimal, which may return unexpected result when the value is blank.
