@@ -740,7 +740,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			if ( gv_empty( $value, false, false ) || ( is_array( $value ) && count( $value ) === 1 && gv_empty( $value[0], false, false ) ) ) {
-				continue;
+				if ( is_array( $value ) ) {
+					continue;
+				}
+
+				$value = '';
 			}
 
 			if ( strpos( $key, '|op' ) !== false ) {
@@ -748,6 +752,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			$filter_key = $this->convert_request_key_to_filter_key( $key );
+
+			if ( '' === $value ) {
+				$field = GFAPI::get_field( $view->form->ID, $filter_key );
+
+				// GF_Query casts Number field values to decimal, which may return unexpected result when the value is blank.
+				if ( $field && 'number' === $field->type ) {
+					$value = '-' . PHP_INT_MAX;
+				}
+			}
 
 			if ( ! $filter = $this->prepare_field_filter( $filter_key, $value, $view, $searchable_field_objects, $get ) ) {
 				continue;
@@ -831,7 +844,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$extra_conditions = array();
 		$mode = 'any';
 
-		foreach ( $search_criteria['field_filters'] as &$filter ) {
+		foreach ( $search_criteria['field_filters'] as $key => &$filter ) {
 			if ( ! is_array( $filter ) ) {
 				if ( in_array( strtolower( $filter ), array( 'any', 'all' ) ) ) {
 					$mode = $filter;
@@ -892,6 +905,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 * @param \GV\View $view The View we're operating on.
 			 */
 			$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter, $view );
+
+			if ( 'is' !== $filter['operator'] && '' === $filter['value'] ) {
+				unset( $search_criteria['field_filters'][ $key ] );
+			}
 		}
 
 		if ( ! empty( $search_criteria['start_date'] ) || ! empty( $search_criteria['end_date'] ) ) {
@@ -932,6 +949,25 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$search_conditions[] = $search_condition;
 				} else {
 					$left = $search_condition->left;
+
+					// When casting a column value to a certain type (e.g., happens with the Number field), GF_Query_Column is wrapped in a GF_Query_Call class.
+					if ( $left instanceof GF_Query_Call ) {
+						try {
+							$reflectionProperty = new \ReflectionProperty( $left, '_parameters' );
+							$reflectionProperty->setAccessible( true );
+
+							$value = $reflectionProperty->getValue( $left );
+
+							if ( ! empty( $value[0] ) && $value[0] instanceof GF_Query_Column ) {
+								$left = $value[0];
+							} else {
+								continue;
+							}
+						} catch ( ReflectionException $e ) {
+							continue;
+						}
+					}
+
 					$alias = $query->_alias( $left->field_id, $left->source, $left->is_entry_column() ? 't' : 'm' );
 
 					if ( $view->joins && $left->field_id == GF_Query_Column::META ) {

@@ -21,6 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 2.14.2 on March 10, 2022 =
+
+* Fixed: Potential fatal error on PHP 8 when exporting View entries in CSV and TSV formats
+* Fixed: Search widget would cause a fatal error when the Number field is used with the "is" operator
+* Fixed: Search widget returning incorrect results when a field value is blank and the operator is set to "is"
+* Fixed: Gravity Forms widget icon not showing
+* Fixed: Gravity Forms widget not displaying available forms when the View is saved
+
 = 2.14.1 on January 25, 2022 =
 
 * Tested with WordPress 5.9
