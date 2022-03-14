@@ -37,7 +37,7 @@ __Developer Updates:__
 
 __Developer Updates:__
 
-Added: `gravityview/search/ignore-empty-values` filter to control strict matching of empty field values
+* Added: `gravityview/search/ignore-empty-values` filter to control strict matching of empty field values
 
 = 2.14.2 on March 10, 2022 =
 
