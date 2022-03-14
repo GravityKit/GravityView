@@ -21,6 +21,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= [2.14.3 WIP] =
+
+* Fixed: Images hosted on Dropbox sometimes would not display properly on the Safari browser. Thanks, Kevin M. Dean!
+
+__Developer Updates:__
+
+* Added: `GravityView_Image::get_image_extensions()` static method to fetch full list of extension types interpreted as images by GravityView.
 = 2.14.2.1 on March 11, 2022 =
 
 * Fixed: Empty values in search widget fields may return incorrect results
