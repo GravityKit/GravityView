@@ -105,9 +105,9 @@ class GravityView_Image {
 
 		/**
 		 * @filter `gravityview_image_extensions` Extensions that GravityView recognizes as valid images to be shown in an `img` tag
-		 * @param array $image_exts Default: `['jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico']`
+		 * @param array $image_exts Default: `['jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico', 'webp']`
 		 */
-		$image_exts = apply_filters( 'gravityview_image_extensions', array( 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico' ) );
+		$image_exts = apply_filters( 'gravityview_image_extensions', array( 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico', 'webp' ) );
 
 		return (array) $image_exts;
 	}
