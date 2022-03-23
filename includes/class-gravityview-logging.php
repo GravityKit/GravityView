@@ -3,7 +3,9 @@
 final class GravityView_Logging {
 
 	private static $errors = array();
+	private static $errors_hash = array();
 	private static $notices = array();
+	private static $notices_hash = array();
 
 	function __construct() {
 
@@ -87,11 +89,14 @@ final class GravityView_Logging {
 
 		$notice = array(
 			'message' => $function( $message, true ),
-			'data' => $data,
+			'data'    => $data,
 		);
 
-		if( !in_array( $notice, self::$notices ) ) {
-			self::$notices[] = $notice;
+		$hash = md5( json_encode( $notice ) );
+
+		if ( ! isset( self::$notices_hash[ $hash ] ) ) {
+			self::$notices[]             = $notice;
+			self::$notices_hash[ $hash ] = true;
 		}
 
 		if ( class_exists("GFLogging") ) {
@@ -110,8 +115,11 @@ final class GravityView_Logging {
 			'backtrace' => function_exists( 'wp_debug_backtrace_summary' ) ? wp_debug_backtrace_summary( null, 3 ) : '',
 		);
 
-		if( !in_array( $error, self::$errors ) ) {
-			self::$errors[] = $error;
+		$hash = md5( json_encode( $error ) );
+
+		if ( ! isset( self::$errors_hash[ $hash ] ) ) {
+			self::$errors[]             = $error;
+			self::$errors_hash[ $hash ] = true;
 		}
 
 		if ( class_exists("GFLogging") ) {

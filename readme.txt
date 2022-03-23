@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = [2.14.3 WIP] =
 
 * Added: Support for displaying WebP images
+* Improved: Internal logging of notices and errors
 * Fixed: Images hosted on Dropbox sometimes would not display properly on the Safari browser. Thanks, Kevin M. Dean!
 
 __Developer Updates:__
