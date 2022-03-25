@@ -1667,7 +1667,9 @@ class GVCommon {
 			$final_atts['href'] = $href;
 		}
 
-		$final_atts['href'] = esc_url_raw( $href );
+		if ( isset( $final_atts['href'] ) ) {
+			$final_atts['href'] = esc_url_raw( $final_atts['href'] );
+		}
 
 		/**
 		 * Fix potential security issue with target=_blank
