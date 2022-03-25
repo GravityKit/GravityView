@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 5.9
+Tested up to: 5.9.2
 Requires PHP: 5.6.30
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= [2.14.3 WIP] =
+= 2.14.3 on March 24, 2022 =
 
 * Added: Support for displaying WebP images
 * Improved: Internal logging of notices and errors
