@@ -37,11 +37,49 @@ class Renderer {
 			return;
 		}
 
+		self::disable_show_only_approved_entries( $gravityview );
+
 		self::maybe_print_reserved_slugs_notice( $gravityview );
 
 		self::maybe_print_configuration_notice( $gravityview );
 
 		self::maybe_print_entry_approval_notice( $gravityview );
+	}
+
+
+	/**
+	 * Disable the "Show only approved entries" setting, hence displaying all entries on the View
+	 *
+	 * @since 2.14.3
+	 *
+	 * @param \GV\Template_Context $gravityview The $gravityview template object.
+	 *
+	 * @return void
+	 */
+	private static function disable_show_only_approved_entries( $gravityview ) {
+
+		if ( isset( $_GET['disable_setting'] ) && wp_verify_nonce( $_GET['gv-setting'], 'setting' ) ) {
+
+			$settings = get_post_meta( $gravityview->view->ID, '_gravityview_template_settings', true );		
+			
+			if ( empty( $settings['show_only_approved'] )) {
+				return;
+			}
+			
+			$settings['show_only_approved'] = 0;
+			$updated = update_post_meta( $gravityview->view->ID, '_gravityview_template_settings',  $settings );	
+			
+			if ( ! $updated ) {
+				gravityview()->log->error( 'Could not update View settings => Show only approved' );
+				return;
+			} 
+			
+			if( wp_safe_redirect( home_url(add_query_arg( array()))) ) {
+				exit();
+			}
+
+			return;
+		}
 	}
 
 	/**
@@ -88,21 +126,6 @@ class Renderer {
 
 		// The user has already dismissed the notice
 		if ( get_user_meta( $current_user->ID, $user_meta_key, true ) ) {
-			return;
-		}
-
-		// Disable this setting, hence displaying all entries on the View
-		if ( isset( $_GET['disable_setting'] ) && wp_verify_nonce( $_GET['gv-setting'], 'setting' ) ) {
-			$settings = get_post_meta( $gravityview->view->ID, '_gravityview_template_settings', true );
-			$settings['show_only_approved'] = 0;
-			$updated = update_post_meta( $gravityview->view->ID, '_gravityview_template_settings',  $settings );
-			if ( ! $updated ) {
-				gravityview()->log->error( 'Could not update View settings => Show only approved' );
-			}
-			global $wp;
-			if( wp_redirect( home_url( $wp->request ), 302 ) ) {
-				exit;
-			}
 			return;
 		}
 
