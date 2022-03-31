@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 5.9
+Tested up to: 5.9.2
 Requires PHP: 5.6.30
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -20,6 +20,33 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.14.3 on March 24, 2022 =
+
+* Added: Support for displaying WebP images
+* Improved: Internal logging of notices and errors
+* Fixed: Images hosted on Dropbox sometimes would not display properly on the Safari browser. Thanks, Kevin M. Dean!
+
+__Developer Updates:__
+
+* Added: `GravityView_Image::get_image_extensions()` static method to fetch full list of extension types interpreted as images by GravityView.
+* Added: `webp` as a valid image extension
+
+= 2.14.2.1 on March 11, 2022 =
+
+* Fixed: Empty values in search widget fields may return incorrect results
+
+__Developer Updates:__
+
+* Added: `gravityview/search/ignore-empty-values` filter to control strict matching of empty field values
+
+= 2.14.2 on March 10, 2022 =
+
+* Fixed: Potential fatal error on PHP 8 when exporting View entries in CSV and TSV formats
+* Fixed: Search widget would cause a fatal error when the Number field is used with the "is" operator
+* Fixed: Search widget returning incorrect results when a field value is blank and the operator is set to "is"
+* Fixed: Gravity Forms widget icon not showing
+* Fixed: Gravity Forms widget not displaying available forms when the View is saved
 
 = 2.14.1 on January 25, 2022 =
 

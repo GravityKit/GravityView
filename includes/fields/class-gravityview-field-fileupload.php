@@ -302,7 +302,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				$field_settings['link_to_file'] = true;
 
 			// Images
-			} else if ( in_array( $extension, array( 'jpg', 'jpeg', 'jpe', 'gif', 'png' ) ) ) {
+			} else if ( in_array( $extension, GravityView_Image::get_image_extensions() ) ) {
 				$width = \GV\Utils::get( $field_settings, 'image_width', 250 );
 				$image_atts = array(
 					'src'   => $file_path,
@@ -334,6 +334,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				unset( $gv_entry );
 
 				if ( $lightbox && empty( $field_settings['show_as_link'] ) ) {
+
 					$lightbox_link_atts = array(
 						'rel'   => sprintf( "%s-%s", $gv_class, $entry_slug ),
 						'class' => '',

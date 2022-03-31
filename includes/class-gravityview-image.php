@@ -89,13 +89,27 @@ class GravityView_Image {
 
 		$info = pathinfo( $this->src );
 
-		/**
-		 * @filter `gravityview_image_extensions` Extensions that GravityView recognizes as valid images to be shown in an `img` tag
-		 * @param array $image_exts Default: `['jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico']`
-		 */
-		$image_exts = apply_filters( 'gravityview_image_extensions', array( 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico' ));
+		$image_exts = self::get_image_extensions();
 
 		return isset( $info['extension'] ) && in_array( strtolower( $info['extension'] ), $image_exts);
+	}
+
+	/**
+	 * Returns an array of file extensions recognized by GravityView as images.
+	 *
+	 * @since 2.14.3
+	 *
+	 * @return array
+	 */
+	public static function get_image_extensions() {
+
+		/**
+		 * @filter `gravityview_image_extensions` Extensions that GravityView recognizes as valid images to be shown in an `img` tag
+		 * @param array $image_exts Default: `['jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico', 'webp']`
+		 */
+		$image_exts = apply_filters( 'gravityview_image_extensions', array( 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico', 'webp' ) );
+
+		return (array) $image_exts;
 	}
 
 	/**

@@ -1,5 +1,0 @@
-{
-  "src/index.js": true,
-  "src/other.js": [5],
-  "src/valid.js": "string"
-}

@@ -284,6 +284,46 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.14.3 on March 24, 2022</h3>
+
+				<ul>
+					<li>Added: Support for displaying WebP images</li>
+					<li>Improved: Internal logging of notices and errors</li>
+					<li>Fixed: Images hosted on Dropbox sometimes would not display properly on the Safari browser. Thanks, Kevin M. Dean!</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: <code>GravityView_Image::get_image_extensions()</code> static method to fetch full list of extension types interpreted as images by GravityView.</li>
+					<li>Added: <code>webp</code> as a valid image extension</li>
+				</ul>
+
+				<h3>2.14.2.1 on March 11, 2022</h3>
+
+				<ul>
+					<li>Fixed: Empty values in search widget fields may return incorrect results</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>
+						Added: <code>gravityview/search/ignore-empty-values</code> filter to control strict matching of empty field values
+					</li>
+
+				</ul>
+
+				<h3>2.14.2 on March 10, 2022</h3>
+
+				<ul>
+					<li>Fixed: Potential fatal error on PHP 8 when exporting View entries in CSV and TSV formats</li>
+					<li>Fixed: Search widget would cause a fatal error when the Number field is used with the "is" operator</li>
+					<li>Fixed: Search widget returning incorrect results when a field value is blank and the operator is set to "is"</li>
+					<li>Fixed: Gravity Forms widget icon not showing</li>
+					<li>Fixed: Gravity Forms widget not displaying available forms when the View is saved</li>
+				</ul>
+
 				<h3>2.14.1 on January 25, 2022</h3>
 
 				<ul>

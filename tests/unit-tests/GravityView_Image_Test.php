@@ -162,7 +162,7 @@ class GravityView_Image_Test extends GV_UnitTestCase {
 	 */
 	function get_extensions( $group = 'all' ) {
 
-		$valid_extensions = array( 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico' );
+		$valid_extensions = array( 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico', 'webp' );
 		$invalid_extensions = array( 'nope', 'wontwork', 'notimage', 'ursilly' );
 		$all_extensions = array_merge( $valid_extensions, $invalid_extensions );
 
