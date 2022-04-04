@@ -748,14 +748,6 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			$this->assertEquals( $count['count'], $view->get_entries()->count() );
 		}
 
-		/** Show all. */
-		foreach ( $counts as $count ) {
-			$_GET = array(
-				'input_is_approved' => $count['filter']
-			);
-			$this->assertEquals( $count['count'], $view->get_entries()->count() );
-		}
-
 		$_GET = array();
 	}
 
@@ -1251,12 +1243,6 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
 
 		$_GET['filter_payment_date'] = '11/20/2020';
-		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
-
-		$_GET['input_payment_date'] = '12/20/2020';
-		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
-
-		$_GET['input_payment_date'] = '11/20/2020';
 		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
 		$_GET = array();
