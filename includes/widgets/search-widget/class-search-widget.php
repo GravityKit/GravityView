@@ -1623,18 +1623,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 		// get searched value from $_GET/$_POST (string or array)
 		$value = $this->rgget_or_rgpost( $name );
 
-		// Add support for `input_` prefix as well as `filter_` prefix
-		if ( '' === $value ) {
-			$name_input = 'input_' . str_replace( '.', '_', $field['field'] );
-
-			$value_input = $this->rgget_or_rgpost( $name_input );
-
-			if ( '' !== $value_input ) {
-				$name = $name_input;
-				$value = $value_input;
-			}
-		}
-
 		// get form field details
 		$form_field = gravityview_get_field( $form, $field['field'] );
 
