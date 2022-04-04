@@ -733,7 +733,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		// get the other search filters
 		foreach ( $get as $key => $value ) {
-			if ( 0 !== strpos( $key, 'filter_' ) ) {
+			if ( 0 !== strpos( $key, 'filter_' ) && 0 !== strpos( $key, 'input_' ) ) {
 				continue;
 			}
 
@@ -1045,7 +1045,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 */
 	private function convert_request_key_to_filter_key( $key ) {
 
-		$field_id = str_replace( 'filter_', '', $key );
+		$field_id = str_replace( array( 'filter_', 'input_' ), '', $key );
 
 		// calculates field_id, removing 'filter_' and for '_' for advanced fields ( like name or checkbox )
 		if ( preg_match('/^[0-9_]+$/ism', $field_id ) ) {
