@@ -519,7 +519,7 @@ class View implements \ArrayAccess {
 		$joins = array();
 
 		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
-			gravityview()->log->error( 'Cannot get joined forms; joins feature not supported.' );
+			gravityview()->log->info( 'Cannot get joined forms; joins feature not supported.' );
 			return $joins;
 		}
 
@@ -569,7 +569,7 @@ class View implements \ArrayAccess {
 		$forms = array();
 
 		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
-			gravityview()->log->error( 'Cannot get joined forms; joins feature not supported.' );
+			gravityview()->log->info( 'Cannot get joined forms; joins feature not supported.' );
 			return $forms;
 		}
 

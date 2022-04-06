@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+== develop ==
+
+* Fixed: If View does not support joined forms, do not log as an error
+
 = 2.14.3 on March 24, 2022 =
 
 * Added: Support for displaying WebP images
