@@ -82,10 +82,10 @@ class GravityView_Edit_Entry {
     private function add_hooks() {
 
         // Add front-end access to Gravity Forms delete file action
-        add_action( 'wp_ajax_nopriv_rg_delete_file', array( 'GFForms', 'delete_file') );
+        add_action( 'wp_ajax_nopriv_rg_delete_file', array( $this, 'delete_file') );
 
         // Make sure this hook is run for non-admins
-        add_action( 'wp_ajax_rg_delete_file', array( 'GFForms', 'delete_file') );
+        add_action( 'wp_ajax_rg_delete_file', array( $this, 'delete_file') );
 
         add_filter( 'gravityview_blocklist_field_types', array( $this, 'modify_field_blocklist' ), 10, 2 );
 
@@ -418,8 +418,23 @@ class GravityView_Edit_Entry {
         return (bool) $user_can_edit;
     }
 
+	/**
+	 * Deletes a file.
+	 *
+	 * @since  2.14.4
+	 *
+	 * @uses   GFForms::delete_file()
+	 */
+	public function delete_file() {
+		add_filter( 'user_has_cap', function ( $caps ) {
+			$caps['gravityforms_delete_entries'] = true;
 
+			return $caps;
 
+		} );
+
+		GFForms::delete_file();
+	}
 } // end class
 
 //add_action( 'plugins_loaded', array('GravityView_Edit_Entry', 'getInstance'), 6 );

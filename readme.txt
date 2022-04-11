@@ -25,6 +25,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Fixed: If View does not support joined forms, do not log as an error
 
+= develop =
+
+* Fixed: Deleting a file when editing an entry as a non-administrator user on Gravity Forms 2.6.1 would result in a server error
+
 = 2.14.3 on March 24, 2022 =
 
 * Added: Support for displaying WebP images
