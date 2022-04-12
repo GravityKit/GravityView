@@ -1349,16 +1349,24 @@ class GravityView_Admin_Views {
 				'jquery-ui-droppable',
 				'jquery-ui-sortable',
 				'jquery-ui-tooltip',
+				'jquery-ui-autocomplete',
 				'gravityview_views_scripts',
 				'gravityview-support',
 				'gravityview-jquery-cookie',
 				'gravityview_views_datepicker',
 				'gravityview_gf_tooltip',
-				'sack',
 				'gform_gravityforms',
 				'gform_forms',
 				'gform_form_admin',
-				'jquery-ui-autocomplete',
+				'gform_simplebar',
+				'gform_promises_polyfill',
+				'gform_gravityforms_utils',
+				'gform_gravityforms_admin_components',
+				'gform_gravityforms',
+				'gform_gravityforms_libraries',
+				'gform_gravityforms_admin_vendors',
+				'gform_gravityforms_admin',
+				'sack',
 			);
 
 		} elseif ( preg_match( '/style/ism', $filter ) ) {
@@ -1370,6 +1378,8 @@ class GravityView_Admin_Views {
 				'gravityview_global',
 				'gravityview_views_datepicker',
 				'gravityview_gf_tooltip',
+				'gform_admin_components',
+				'gform_admin_css_utilities',
 			);
 		}
 
