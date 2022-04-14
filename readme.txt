@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Fixed: Deleting a file when editing an entry as a non-administrator user on Gravity Forms 2.6.1 would result in a server error
+* Fixed: When The Events Calendar Pro plugin is active, Views became un-editable
 
 = 2.14.3 on March 24, 2022 =
 
