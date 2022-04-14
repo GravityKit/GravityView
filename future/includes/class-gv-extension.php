@@ -319,6 +319,7 @@ abstract class Extension {
 	            'php_version' => phpversion(),
 	            'wp_version' => get_bloginfo( 'version' ),
 	            'gv_version' => \GV\Plugin::$version,
+	            'environment' => function_exists( 'wp_get_environment_type' ) ? wp_get_environment_type() : 'production',
           	),
         );
 	}

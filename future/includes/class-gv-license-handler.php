@@ -99,6 +99,10 @@ class License_Handler {
 			'language'  => get_locale(),
 			'url'       => home_url(),
 		    'beta'      => $this->settings->get( 'beta' ),
+			'php_version' => phpversion(),
+			'wp_version' => get_bloginfo( 'version' ),
+			'gv_version' => \GV\Plugin::$version,
+			'environment' => function_exists( 'wp_get_environment_type' ) ? wp_get_environment_type() : 'production',
 		);
 
 		if ( ! empty( $action ) ) {
