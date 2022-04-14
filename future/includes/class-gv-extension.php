@@ -315,8 +315,11 @@ abstract class Extension {
             	'license'	=> \GV\Utils::get( $license, 'license_key', \GV\Utils::get( $license, 'license', null ) ),
 	            'item_id'   => $this->_item_id, // The ID of the download on _remote_update_url
             	'item_name' => $this->_title,  // name of this plugin
-            	'author' 	=> strip_tags( $this->_author )  // author of this plugin
-          	)
+            	'author' 	=> strip_tags( $this->_author ),  // author of this plugin
+	            'php_version' => phpversion(),
+	            'wp_version' => get_bloginfo( 'version' ),
+	            'gv_version' => \GV\Plugin::$version,
+          	),
         );
 	}
 
