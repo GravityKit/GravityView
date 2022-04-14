@@ -52,6 +52,10 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 
 	public function widget( $args, $instance ) {
 
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			return false;
+		}
+
 		// Don't show unless a View ID has been set.
 		if( empty( $instance['view_id'] ) ) {
 
