@@ -206,7 +206,7 @@ class GravityView_Admin_No_Conflict {
 		//unregistering scripts
 		$registered = array();
 		foreach( $wp_objects->registered as $handle => $script_registration ){
-			if( in_array( $handle, $required_objects ) ){
+			if( in_array( $handle, $required_objects ) || preg_match( $allow_regex, $handle ) ){
 				$registered[ $handle ] = $script_registration;
 			}
 		}
