@@ -57,7 +57,7 @@ class License_Handler {
 			$this->settings = gravityview()->plugin->settings;
 		}
 
-		add_action( 'admin_init', array( $this, 'setup_edd' ), 0 );
+		add_action( 'init', array( $this, 'setup_edd' ), 0 );
 		add_action( 'wp_ajax_gravityview_license', array( $this, 'license_call' ) );
 		add_action( 'admin_init', array( $this, 'refresh_license_status' ) );
 		add_action( 'admin_init', array( $this, 'check_license' ) );
@@ -99,6 +99,10 @@ class License_Handler {
 			'language'  => get_locale(),
 			'url'       => home_url(),
 		    'beta'      => $this->settings->get( 'beta' ),
+			'php_version' => phpversion(),
+			'wp_version' => get_bloginfo( 'version' ),
+			'gv_version' => \GV\Plugin::$version,
+			'environment' => function_exists( 'wp_get_environment_type' ) ? wp_get_environment_type() : 'production',
 		);
 
 		if ( ! empty( $action ) ) {
@@ -121,7 +125,18 @@ class License_Handler {
 			require_once gravityview()->plugin->dir( 'future/lib/EDD_SL_Plugin_Updater.php' );
 		}
 
-		// setup the updater
+		// If doing ajax, get outta here.
+		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX && 'update-plugin' !== Utils::_POST('action') ) )  {
+			return;
+		}
+
+		// To support auto-updates, this needs to run during the wp_version_check cron job for privileged users.
+		$doing_cron = defined( 'DOING_CRON' ) && DOING_CRON;
+		if ( ! current_user_can( 'manage_options' ) && ! $doing_cron ) {
+			return;
+		}
+
+		// Set up the updater.
 		$this->EDD_SL_Plugin_Updater = new EDD_SL_Plugin_Updater(
 			self::url,
 			GRAVITYVIEW_FILE,
@@ -621,7 +636,6 @@ class License_Handler {
 	 * Check the GravityView license information
 	 *
 	 * @since 1.19.3
-	 * @param bool $force Whether to force checking license, even if AJAX
 	 *
 	 * @return void
 	 */
