@@ -23,17 +23,21 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == develop ==
 
-* Fixed: If View does not support joined forms, do not log as an error
 
 = develop =
 
 * Added: Search Bar support for [Chained Selects Add-On](https://www.gravityforms.com/add-ons/chained-selects/) fields
 * Improved: Plugin updater script now supports auto-updates and better supports multisite installations
+* Improved: If a View does not support joined forms, log as a notice, not an error
 * Fixed: Deleting a file when editing an entry as a non-administrator user on Gravity Forms 2.6.1 would result in a server error
 * Fixed: When The Events Calendar Pro plugin is active, Views became un-editable
 
 __Developer Updates:
 
+* Added: Search URLs now support `input_{field ID}` formats as well as `filter_{field ID}`; the following will both be treated the same:
+	- `/view/example/?filter_3=SEARCH`
+	- `/view/example/?input_3=SEARCH`
+* Modified: Allow non-admin users with "edit entry" permissions to delete uploaded files
 * Updated: EDD_SL_Plugin_Updater script to version 1.9.1
 
 = 2.14.3 on March 24, 2022 =
