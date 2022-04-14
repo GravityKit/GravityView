@@ -241,4 +241,4 @@ class GravityView_Admin_No_Conflict {
 	}
 }
 
-new GravityView_Admin_No_Conflict;new GravityView_Admin_No_Conflict;
+new GravityView_Admin_No_Conflict;
