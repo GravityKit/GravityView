@@ -57,7 +57,7 @@ class License_Handler {
 			$this->settings = gravityview()->plugin->settings;
 		}
 
-		add_action( 'admin_init', array( $this, 'setup_edd' ), 0 );
+		add_action( 'init', array( $this, 'setup_edd' ), 0 );
 		add_action( 'wp_ajax_gravityview_license', array( $this, 'license_call' ) );
 		add_action( 'admin_init', array( $this, 'refresh_license_status' ) );
 		add_action( 'admin_init', array( $this, 'check_license' ) );
@@ -636,7 +636,6 @@ class License_Handler {
 	 * Check the GravityView license information
 	 *
 	 * @since 1.19.3
-	 * @param bool $force Whether to force checking license, even if AJAX
 	 *
 	 * @return void
 	 */
