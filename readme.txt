@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Improved: Plugin updater script now supports auto-updates and better supports multisite installations
 * Fixed: Deleting a file when editing an entry as a non-administrator user on Gravity Forms 2.6.1 would result in a server error
 * Fixed: When The Events Calendar Pro plugin is active, Views became un-editable
 

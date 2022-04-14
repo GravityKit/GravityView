@@ -290,8 +290,14 @@ abstract class Extension {
 	 */
 	public function settings() {
 
-		// If doing ajax, get outta here
+		// If doing ajax, get outta here.
 		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX && 'update-plugin' !== Utils::_POST('action') ) )  {
+			return;
+		}
+
+		// To support auto-updates, this needs to run during the wp_version_check cron job for privileged users.
+		$doing_cron = defined( 'DOING_CRON' ) && DOING_CRON;
+		if ( ! current_user_can( 'manage_options' ) && ! $doing_cron ) {
 			return;
 		}
 

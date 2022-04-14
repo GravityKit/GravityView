@@ -121,7 +121,18 @@ class License_Handler {
 			require_once gravityview()->plugin->dir( 'future/lib/EDD_SL_Plugin_Updater.php' );
 		}
 
-		// setup the updater
+		// If doing ajax, get outta here.
+		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX && 'update-plugin' !== Utils::_POST('action') ) )  {
+			return;
+		}
+
+		// To support auto-updates, this needs to run during the wp_version_check cron job for privileged users.
+		$doing_cron = defined( 'DOING_CRON' ) && DOING_CRON;
+		if ( ! current_user_can( 'manage_options' ) && ! $doing_cron ) {
+			return;
+		}
+
+		// Set up the updater.
 		$this->EDD_SL_Plugin_Updater = new EDD_SL_Plugin_Updater(
 			self::url,
 			GRAVITYVIEW_FILE,
