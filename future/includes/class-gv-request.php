@@ -273,7 +273,7 @@ abstract class Request {
 		}
 
 		foreach ( $get as $key => $value ) {
-			if ( preg_match('/^filter_(([0-9_]+)|'. implode( '|', $meta ) .')$/sm', $key ) ) {
+			if ( preg_match('/^(filter|input)_(([0-9_]+)|'. implode( '|', $meta ) .')$/sm', $key ) ) {
 				$has_field_key = true;
 				break;
 			}
