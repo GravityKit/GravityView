@@ -58,27 +58,23 @@ class Renderer {
 	 */
 	private static function disable_show_only_approved_entries( $gravityview ) {
 
-		if ( isset( $_GET['disable_setting'] ) && wp_verify_nonce( $_GET['gv-setting'], 'setting' ) ) {
-
-			$settings = get_post_meta( $gravityview->view->ID, '_gravityview_template_settings', true );		
-			
-			if ( empty( $settings['show_only_approved'] )) {
-				return;
-			}
-			
-			$settings['show_only_approved'] = 0;
-			$updated = update_post_meta( $gravityview->view->ID, '_gravityview_template_settings',  $settings );	
-			
-			if ( ! $updated ) {
-				gravityview()->log->error( 'Could not update View settings => Show only approved' );
-				return;
-			} 
-			
-			if( wp_safe_redirect( home_url(add_query_arg( array()))) ) {
-				exit();
-			}
-
+		if ( ! isset( $_GET['disable_setting'] ) || ! wp_verify_nonce( $_GET['gv-setting'], 'setting' ) ) {
 			return;
+		}
+
+		$settings = $gravityview->view->settings->all();
+
+		$settings['show_only_approved'] = 0;
+
+		$updated = update_post_meta( $gravityview->view->ID, '_gravityview_template_settings',  $settings );
+
+		if ( ! $updated ) {
+			gravityview()->log->error( 'Could not update View settings => Show only approved' );
+			return;
+		}
+
+		if ( wp_safe_redirect( home_url( add_query_arg( array() ) ) ) ) {
+			exit();
 		}
 	}
 
