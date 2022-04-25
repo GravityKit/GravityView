@@ -73,7 +73,11 @@ class Renderer {
 			return;
 		}
 
-		if ( wp_safe_redirect( home_url( add_query_arg( array() ) ) ) ) {
+		$current_path = add_query_arg( array() );
+
+		$redirect_url = home_url( $current_path );
+
+		if ( wp_safe_redirect( $redirect_url ) ) {
 			exit();
 		}
 	}
