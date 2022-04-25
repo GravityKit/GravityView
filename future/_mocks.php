@@ -81,7 +81,7 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
 
 	do_action( 'gravityview_log_debug', '[gravityview_get_entries] Final Parameters', $criteria );
 
-	/** ...and all the (now deprectated) filters that usually follow `gravityview_get_entries` */
+	/** ...and all the (now deprecated) filters that usually follow `gravityview_get_entries` */
 
 	/**
 	 * @deprecated
@@ -450,7 +450,7 @@ final class Legacy_Context {
 	}
 
 	/**
-	 * Unserializes a saved configuration. Modifies the global state.
+	 * Deserializes a saved configuration. Modifies the global state.
 	 *
 	 * @param array $data Saved configuration from self::freeze()
 	 */

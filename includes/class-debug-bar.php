@@ -1,5 +1,9 @@
 <?php
 
+if ( ! class_exists( 'Debug_Bar_Panel' ) ) {
+	return;
+}
+
 /**
  * Show debugging information in concert with the excellent {@link http://wordpress.org/plugins/debug-bar/ Debug Bar plugin}
  *

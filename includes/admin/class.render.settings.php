@@ -121,7 +121,7 @@ class GravityView_Render_Settings {
 
 		// Remove suffix ":" from the labels to standardize style. Using trim() instead of rtrim() for i18n.
 		foreach ( $field_options as $key => $field_option ) {
-			$field_options[ $key ]['label'] = trim( $field_options[ $key ]['label'], ':' );
+			$field_options[ $key ]['label'] = trim( $field_option['label'], ':' );
 		}
 
 		/**
