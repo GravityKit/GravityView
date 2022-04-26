@@ -29,6 +29,8 @@ class GravityView_Admin_Views {
 		// Tooltips
 		add_filter( 'gform_tooltips', array( $this, 'tooltips') );
 
+		add_filter( 'admin_body_class', array( $this, 'add_gf_version_css_class' ) );
+
 		// adding styles and scripts
 		add_action( 'admin_enqueue_scripts', array( 'GravityView_Admin_Views', 'add_scripts_and_styles'), 999 );
 		add_filter( 'gform_noconflict_styles', array( $this, 'register_no_conflict') );
@@ -59,6 +61,35 @@ class GravityView_Admin_Views {
 		add_action( 'pre_get_posts', array( $this, 'filter_pre_get_posts' ) );
 
 		add_filter( 'gravityview/support_port/localization_data', array( $this, 'suggest_support_articles' ) );
+	}
+
+	/**
+	 * Allow targeting different versions of Gravity Forms using CSS selectors.
+	 *
+	 * Adds specific version class: `.gf-version-2.6.1.3` as well as point updates: `.gf-minor-version-2.6`.
+	 *
+	 * @internal Do not rely on this remaining public.
+	 * @since 2.14.4
+	 *
+	 * @param string $class Existing body class for the WordPress admin.
+	 *
+	 * @return string Original with two classes added. If GFForms isn't available, returns original string.
+	 */
+	public function add_gf_version_css_class( $class ) {
+
+		if ( ! class_exists( 'GFForms' ) || empty( GFForms::$version ) ) {
+			return $class;
+		}
+
+		$class .= ' gf-version-' . esc_attr( GFForms::$version );
+
+		$major_version = explode( '.', GFForms::$version );
+
+		if ( 2 <= sizeof( $major_version ) ) {
+			$class .= ' gf-minor-version-' . esc_attr( $major_version[0] . '.' . $major_version[1] );
+		}
+
+		return $class;
 	}
 
 	/**
