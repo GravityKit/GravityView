@@ -2485,7 +2485,7 @@
 		window.send_to_editor = function( val ) {
 			var $el = $( '#' + window.wpActiveEditor );
 
-			if ( ! $el.hasClass( 'codemirror' ) ) {
+			if ( ! $el.hasClass( 'codemirror' ) && _sendToEditor ) {
 				return _sendToEditor( val );
 			}
 
@@ -2493,6 +2493,24 @@
 			var cursorPosition = codeMirror.getCursor();
 			codeMirror.replaceRange( val, window.wp.CodeMirror.Pos( cursorPosition.line, cursorPosition.ch ) );
 		};
-	} );
 
+		/**
+		 * This is to make Gravity Forms 2.6 work with CodeMirror.
+		 */
+		$( '.all-merge-tags .gform-dropdown__trigger' ).on( 'click.gravityforms', function( e ) {
+
+			// Always make sure the active editor is set.
+			// This can also be overridden by other plugins (like Members), so make a backup.
+			var _activeEditorBackup = window.wpActiveEditor;
+
+			window.wpActiveEditor = $( e.currentTarget ).parentsUntil('.gv-setting-container').find( 'textarea' ).attr('id');
+
+			if ( window.wpActiveEditor ) {
+				window.send_to_editor( $( this ).data( 'value' ) );
+			}
+
+			// Restore prior active editor
+			window.wpActiveEditor = _activeEditorBackup;
+		} );
+	} );
 }(jQuery));
