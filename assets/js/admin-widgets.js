@@ -40,8 +40,10 @@ jQuery(function( $ ) {
 		 */
 		modified: function ( e, widget ) {
 
+			var $id_base = $( widget ).find( 'input.id_base' );
+
 			// Recent Entries widget
-			if ( $( widget ).has( '.gv-recent-entries-select-view' ) ) {
+			if ( 'gv_recent_entries' === $id_base.val() ) {
 				$( widget ).find( '.gv-recent-entries-select-view' ).trigger( 'refresh' );
 			}
 		},
