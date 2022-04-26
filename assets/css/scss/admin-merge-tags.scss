@@ -5,17 +5,28 @@
 */
 
 @import "gf-admin-custom-properties";
-@import "gf-merge-tags";
+@import "gf-merge-tags-2-6";
 
 .all-merge-tags {
 	top: auto;
+}
 
-	&.right {
-		right: 10px;
-		left: auto;
+.gf-minor-version-2-6 {
+	.all-merge-tags {
+		&.right {
+			right: 10px;
+			left: auto;
+		}
+
+		&.left {
+			right: auto;
+			left: 10px;
+		}
 	}
-	&.left {
-		right: auto;
-		left: 10px;
-	}
+}
+
+// Version 2.5 supported 2.4 functionality; we used the 2.4 styles in 2.5
+.gf-minor-version-2-5,
+.gf-minor-version-2-4 {
+	@import "gf-merge-tags-legacy";
 }
