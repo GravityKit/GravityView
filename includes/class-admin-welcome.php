@@ -284,6 +284,33 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.14.4 on April 26, 2022</h3>
+
+				<ul>
+					<li>Added: Search Bar support for the <a href='https://www.gravityforms.com/add-ons/chained-selects/'>Chained Selects</a> field type</li>
+					<li>Improved: Plugin updater script now supports auto-updates and better supports multisite installations</li>
+					<li>Improved: If a View does not support joined forms, log as a notice, not an error</li>
+					<li>Fixed: Deleting a file when editing an entry as a non-administrator user on Gravity Forms 2.6.1 results in a server error</li>
+					<li>Fixed: When The Events Calendar Pro plugin is active, Views became un-editable</li>
+					<li>Tweak: Additional translation strings related to View editing</li>
+				</ul>
+
+				<p>Note: We will be requiring Gravity Forms 2.5 in the near future; please upgrade!</p>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: Search URLs now support <code>input_{field ID}</code> formats as well as <code>filter_{field
+							ID}</code>; the following will both be treated the same:
+						<ul>
+							<li><code>/view/example/?filter_3=SEARCH</code></li>
+							<li><code>/view/example/?input_3=SEARCH</code></li>
+						</ul>
+					</li>
+					<li>Modified: Allow non-admin users with 'edit entry' permissions to delete uploaded files</li>
+					<li>Updated: EDD<em>SL</em>Plugin_Updater script to version 1.9.1</li>
+				</ul>
+
 				<h3>2.14.3 on March 24, 2022</h3>
 
 				<ul>

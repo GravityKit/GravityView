@@ -32,7 +32,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 Note: We will be requiring Gravity Forms 2.5 in the near future; please upgrade!
 
-__Developer Updates:
+__Developer Updates:__
 
 * Added: Search URLs now support `input_{field ID}` formats as well as `filter_{field ID}`; the following will both be treated the same:
 	- `/view/example/?filter_3=SEARCH`
