@@ -238,9 +238,9 @@
 			}
 
 			//add table and header
-			table = gvSearchWidget.addTable();
+			var table = gvSearchWidget.addTable();
 
-			if( fields && fields.length === 0 ) {
+			if( ! fields || typeof fields === 'undefined' || fields.length === 0 ) {
 				gvSearchWidget.addRow( table, null, null );
 			} else {
 				gvSearchWidget.populateRows( table, fields );
@@ -289,6 +289,11 @@
 		 * @param  {string} fields JSON fields configuration
 		 */
 		populateRows: function( table, fields ) {
+
+			if ( ! fields ) {
+				return;
+			}
+
 			var rows = JSON.parse( fields ),
 				pos = null;
 
