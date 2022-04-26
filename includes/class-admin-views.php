@@ -81,12 +81,12 @@ class GravityView_Admin_Views {
 			return $class;
 		}
 
-		$class .= ' gf-version-' . esc_attr( GFForms::$version );
+		$class .= ' gf-version-' . str_replace( '.', '-', GFForms::$version );
 
 		$major_version = explode( '.', GFForms::$version );
 
 		if ( 2 <= sizeof( $major_version ) ) {
-			$class .= ' gf-minor-version-' . esc_attr( $major_version[0] . '.' . $major_version[1] );
+			$class .= ' gf-minor-version-' . esc_attr( $major_version[0] . '-' . $major_version[1] );
 		}
 
 		return $class;
