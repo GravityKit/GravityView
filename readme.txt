@@ -24,11 +24,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = develop =
 
 * Added: Search Bar support for [Chained Selects Add-On](https://www.gravityforms.com/add-ons/chained-selects/) fields
+* Added: Additional translation strings related to View editing
 * Improved: Plugin updater script now supports auto-updates and better supports multisite installations
 * Improved: If a View does not support joined forms, log as a notice, not an error
 * Fixed: Deleting a file when editing an entry as a non-administrator user on Gravity Forms 2.6.1 would result in a server error
 * Fixed: When The Events Calendar Pro plugin is active, Views became un-editable
-* Added: Additional translation strings related to View editing
+
+We will be requiring Gravity Forms 2.5 in the near future; please upgrade!
 
 __Developer Updates:
 
