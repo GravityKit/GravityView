@@ -157,6 +157,10 @@ class View implements \ArrayAccess {
 			'items_list'            => __( 'Views list', 'gravityview' ),
 			'view_items'            => __( 'See Views', 'gravityview' ),
 			'attributes'            => __( 'View Attributes', 'gravityview' ),
+			'item_updated'             => __( 'View updated.', 'gravityview' ),
+			'item_published'           => __( 'View published.', 'gravityview' ),
+			'item_reverted_to_draft'   => __( 'View reverted to draft.', 'gravityview' ),
+			'item_scheduled'           => __( 'View scheduled.', 'gravityview' ),
 		);
 		$args = array(
 			'label'               => __( 'view', 'gravityview' ),
