@@ -1373,30 +1373,6 @@ class GravityView_Admin_Views {
 		if ( preg_match( '/script/ism', $filter ) ) {
 
 			$allowed_dependencies = array(
-				'jquery-ui-core',
-				'jquery-ui-dialog',
-				'jquery-ui-tabs',
-				'jquery-ui-draggable',
-				'jquery-ui-droppable',
-				'jquery-ui-sortable',
-				'jquery-ui-tooltip',
-				'jquery-ui-autocomplete',
-				'gravityview_views_scripts',
-				'gravityview-support',
-				'gravityview-jquery-cookie',
-				'gravityview_views_datepicker',
-				'gravityview_gf_tooltip',
-				'gform_gravityforms',
-				'gform_forms',
-				'gform_form_admin',
-				'gform_simplebar',
-				'gform_promises_polyfill',
-				'gform_gravityforms_utils',
-				'gform_gravityforms_admin_components',
-				'gform_gravityforms',
-				'gform_gravityforms_libraries',
-				'gform_gravityforms_admin_vendors',
-				'gform_gravityforms_admin',
 				'sack',
 			);
 
@@ -1405,12 +1381,6 @@ class GravityView_Admin_Views {
 			$allowed_dependencies = array(
 				'dashicons',
 				'wp-jquery-ui-dialog',
-				'gravityview_views_styles',
-				'gravityview_global',
-				'gravityview_views_datepicker',
-				'gravityview_gf_tooltip',
-				'gform_admin_components',
-				'gform_admin_css_utilities',
 			);
 		}
 

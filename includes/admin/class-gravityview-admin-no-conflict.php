@@ -188,6 +188,7 @@ class GravityView_Admin_No_Conflict {
 			'gf_',
 			'gravityforms',
 			'gform_',
+			'jquery-ui-',
 		);
 
 		$allow_regex = '/' . implode( '|', $allow_prefixes ) . '/ism';
