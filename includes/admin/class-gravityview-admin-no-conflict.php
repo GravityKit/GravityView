@@ -191,7 +191,7 @@ class GravityView_Admin_No_Conflict {
 			'jquery-ui-',
 		);
 
-		$allow_regex = '/' . implode( '|', $allow_prefixes ) . '/ism';
+		$allow_regex = '/^' . implode( '|', $allow_prefixes ) . '/ism';
 
 		//reset queue
 		$queue = array();
