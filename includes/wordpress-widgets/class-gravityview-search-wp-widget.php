@@ -217,14 +217,14 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		}
 		?>
 
-		<div>
+		<p>
 			<label for="<?php echo $this->get_field_id('post_id'); ?>"><?php esc_html_e( 'If Embedded, Page ID:', 'gravityview' ); ?></label>
 			<input class="code" size="3" id="<?php echo $this->get_field_id('post_id'); ?>" name="<?php echo $this->get_field_name('post_id'); ?>" type="text" value="<?php echo esc_attr( $post_id ); ?>" />
-			<p class="description"><?php
+			<span class="howto"><?php
 				esc_html_e('To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded.', 'gravityview' );
 				echo ' '.gravityview_get_link('https://docs.gravityview.co/article/222-the-search-widget', __('Learn more&hellip;', 'gravityview' ), 'target=_blank' );
-				?></p>
-		</div>
+				?></span>
+		</p>
 
 		<p>
 			<label for="<?php echo $this->get_field_id('search_clear'); ?>"><?php esc_html_e( 'Show Clear button', 'gravityview' ); ?>:</label>
@@ -232,7 +232,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 			<input id="<?php echo $this->get_field_id('search_clear'); ?>" name="<?php echo $this->get_field_name('search_clear'); ?>" type="checkbox" class="checkbox" value="1" <?php checked( $search_clear, 1, true ); ?>>
 		</p>
 
-		<div>
+		<p>
 			<label><?php esc_html_e( 'Search Mode', 'gravityview' ); ?>:</label>
 			<label for="<?php echo $this->get_field_id('search_mode'); ?>_any">
 				<input id="<?php echo $this->get_field_id('search_mode'); ?>_any" name="<?php echo $this->get_field_name('search_mode'); ?>" type="radio" class="radio" value="any" <?php checked( $search_mode, 'any', true ); ?>>
@@ -242,8 +242,8 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 				<input id="<?php echo $this->get_field_id('search_mode'); ?>_all" name="<?php echo $this->get_field_name('search_mode'); ?>" type="radio" class="radio" value="all" <?php checked( $search_mode, 'all', true ); ?>>
 				<?php esc_html_e( 'Match All Fields', 'gravityview' ); ?>
 			</label>
-			<p class="description"><?php esc_html_e('Should search results match all search fields, or any?', 'gravityview' ); ?></p
-		</div>
+			<span class="howto"><?php esc_html_e('Should search results match all search fields, or any?', 'gravityview' ); ?></span
+		</p>
 
 		<hr />
 

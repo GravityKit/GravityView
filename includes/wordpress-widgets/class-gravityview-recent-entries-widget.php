@@ -327,21 +327,21 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		}
 		?>
 
-		<div>
+		<p>
 			<label for="<?php echo $this->get_field_id('post_id'); ?>"><?php esc_html_e( 'If Embedded, Page ID:', 'gravityview' ); ?></label>
 			<input class="code" size="3" id="<?php echo $this->get_field_id('post_id'); ?>" name="<?php echo $this->get_field_name('post_id'); ?>" type="text" value="<?php echo esc_attr( $instance['post_id'] ); ?>" />
-			<p class="description"><?php
+			<span class="howto"><?php
 				esc_html_e('To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded.', 'gravityview' );
 				echo ' '.gravityview_get_link('https://docs.gravityview.co/article/222-the-search-widget', __('Learn more&hellip;', 'gravityview' ), 'target=_blank' );
-				?></p>
-		</div>
+				?></span>
+		</p>
 
-		<div>
+		<p>
 			<label for="<?php echo $this->get_field_id( 'limit' ); ?>">
 				<span><?php _e( 'Number of entries to show:', 'gravityview' ); ?></span>
 			</label>
 			<input class="code" id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="number" value="<?php echo intval( $instance['limit'] ); ?>" size="3" />
-		</div>
+		</p>
 
 		<p>
 			<label for="<?php echo $this->get_field_id( 'link_format' ); ?>">
