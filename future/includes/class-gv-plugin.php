@@ -237,6 +237,9 @@ final class Plugin {
 		include_once $this->dir( 'includes/extensions/entry-notes/class-gravityview-field-notes.php' );
 		include_once $this->dir( 'includes/extensions/lightbox/class-gravityview-lightbox.php' );
 
+		include_once $this->dir( 'includes/extensions/unique-id/class-gf-field-unique-id.php' );
+		include_once $this->dir( 'includes/extensions/unique-id/class-gf-field-unique-id-connector.php' );
+
 		// Load WordPress Widgets
 		include_once $this->dir( 'includes/wordpress-widgets/register-wordpress-widgets.php' );
 
