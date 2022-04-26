@@ -71,9 +71,17 @@
 			// Refresh widget searchable settings after saving or adding the widget
 			// Bind to document because WP triggers document, not body
 			$(document)
-				.on( 'widget-added widget-updated', gvSearchWidget.refreshWidget )
+				.on( 'widget-added', gvSearchWidget.refreshWidget )
+				.on( 'widget-synced widget-updated', function () {
+
+				} )
+				.on( 'click', 'body .edit-widgets-header__actions .is-primary', function ( ) {
+					gvSearchWidget.saveWidget();
+				} )
 				// [View] If submitting a View by hitting enter inside a Widget, make sure it saves
-				.on( 'submit', 'form#post', gvSearchWidget.updateOnClose );
+				.on( 'submit', 'form#post', gvSearchWidget.updateOnClose )
+				.on( 'submit', 'form.form', gvSearchWidget.updateOnClose )
+				.on( 'mousedown', '.edit-widgets-header__actions .is-primary', gvSearchWidget.updateOnClose );
 		},
 
 		/**
@@ -107,6 +115,8 @@
 			var target = $(e.target),
 				widget, widgetId;
 
+			console.log( 'openWidget', { e,  target } );
+
 			if( target.parents('.widget-top').length && ! target.parents('#available-widgets').length ) {
 				e.preventDefault();
 				widget = $(e.target).closest('div.widget');
@@ -126,6 +136,8 @@
 		 * @param  {jQuery} widget jQuery widget DOM
 		 */
 		refreshWidget: function( e, widget ) {
+
+			console.log( 'refreshWidget', { e,  widget, gvSearchWidget } );
 
 			if( $( widget ).hasClass('open') ) {
 				gvSearchWidget.widgetTarget = $( widget ).find( 'div.'+ gvSearchWidget.wrapClass );
@@ -259,6 +271,9 @@
 			gvSearchWidget.widgetTarget.find('table tbody').sortable({
 				start: function( event, ui ) {
 					$( ui.item ).removeClass( 'alt' );
+				},
+				stop: function( event, ui ) {
+					$( gvSearchWidget.widgetTarget ).parents('form').trigger( 'change' );
 				}
 			});
 
@@ -631,6 +646,7 @@
 		 * Update config on widget Save
 		 */
 		saveWidget: function() {
+			alert( 'save' );
 			gvSearchWidget.resetWidgetTarget( $(this) );
 			gvSearchWidget.updateOnClose();
 		},
@@ -640,6 +656,8 @@
 		 * @param {jQuery} e Event
 		 */
 		updateOnClose: function( e ) {
+
+			console.log( e.type );
 
 			var configs = [];
 
@@ -656,9 +674,12 @@
 				configs.push( row );
 			});
 
+			console.log( configs );
+
 			// save
 			$( '.gv-search-fields-value', gvSearchWidget.widgetTarget ).val( JSON.stringify( configs ) );
 
+			console.log( $( '.gv-search-fields-value' ) );
 		},
 
 		/** Reset on View Change */
