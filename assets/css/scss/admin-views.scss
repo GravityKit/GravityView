@@ -405,6 +405,11 @@ $gv-overlay-index: 10000;
 			font-weight: normal !important;
 		}
 
+		// 2.6 field groups in the Merge Tag dropdowns inside View Settings
+		.gform-dropdown--merge-tags .gform-dropdown__group-text {
+			font-weight: 500!important;
+		}
+
 		select[multiple] {
 			display: block;
 			max-width: 100%;
@@ -1552,7 +1557,7 @@ $dialog-button-padding: 5px;
 
 			// 2.6 field groups in the Merge Tag dropdown
 			.gform-dropdown__group-text {
-				font-weight: 500;
+				font-weight: 500!important;
 			}
 		}
 
