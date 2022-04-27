@@ -1808,12 +1808,18 @@
 
 				if ( window.gfMergeTags ) {
 
-					if ( gfMergeTags.hasOwnProperty('destroy') ) {
+					if ( window.hasOwnProperty( 'constructor' ) ) {
+
+						// Re-initialize Merge Tags for 2.6+
+						// (Hopefully temporary until GF exposes a method publicly.
+						document.dispatchEvent( new Event( 'DOMContentLoaded' ) );
+
+					} else if ( gfMergeTags.hasOwnProperty( 'destroy' ) ) {
 
 						// 2.3 re-init
 						$merge_tag_supported.each( function () {
 							new gfMergeTagsObj( form, $( this ) );
-						});
+						} );
 
 					} else {
 
