@@ -25,6 +25,11 @@
 	}
 }
 
+// Fix issue with huge padding at the bottom of the merge tag picker.
+.simplebar-placeholder {
+	display: none;
+}
+
 // Version 2.5 supported 2.4 functionality; we used the 2.4 styles in 2.5
 .gf-minor-version-2-5,
 .gf-minor-version-2-4 {
