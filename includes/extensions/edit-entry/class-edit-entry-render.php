@@ -1409,7 +1409,7 @@ class GravityView_Edit_Entry_Render {
 	 *
 	 * @return string If error, the error message. If no error, blank string (modify_edit_field_input() runs next)
 	 */
-	public function verify_user_can_edit_post( $field_content = '', $field, $value, $lead_id = 0, $form_id ) {
+	public function verify_user_can_edit_post( $field_content = '', $field = null, $value = '', $lead_id = 0, $form_id = 0 ) {
 
 		if( ! GFCommon::is_post_field( $field ) ) {
 			return $field_content;
@@ -1453,7 +1453,7 @@ class GravityView_Edit_Entry_Render {
 	 *
 	 * @return mixed
 	 */
-	public function modify_edit_field_input( $field_content = '', $field, $value, $lead_id = 0, $form_id ) {
+	public function modify_edit_field_input( $field_content = '', $field = null, $value = '', $lead_id = 0, $form_id = 0 ) {
 
 		$gv_field = GravityView_Fields::get_associated_field( $field );
 

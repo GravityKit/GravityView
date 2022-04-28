@@ -776,7 +776,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 			if( 'custom' === $to && $include_custom ) {
 				$to = $email_data['gv-note-to-custom'];
-				gravityview()->log->debug( 'Sending note to a custom email address: {to}' . array( 'to' => $to ) );
+				gravityview()->log->debug( 'Sending note to a custom email address: {to}', array( 'to' => $to ) );
 			}
 
 			if ( ! GFCommon::is_valid_email_list( $to ) ) {

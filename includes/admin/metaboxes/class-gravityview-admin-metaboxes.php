@@ -212,6 +212,14 @@ class GravityView_Admin_Metaboxes {
 	 */
 	private function get_data_source_header( $post_id ) {
 
+		/**
+		 * This method is running before GravityView's been fully set up; likely being called by another plugin.
+		 * @see https://github.com/gravityview/GravityView/issues/1684
+		 */
+		if ( ! class_exists( 'GravityView_Admin_Views' ) ) {
+			return __( 'Data Source', 'gravityview' );
+		}
+
 		//current value
 		$current_form = gravityview_get_form_id( $post_id );
 

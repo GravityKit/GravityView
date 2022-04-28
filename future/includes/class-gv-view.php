@@ -139,25 +139,30 @@ class View implements \ArrayAccess {
 
 		/** Register Custom Post Type - gravityview */
 		$labels = array(
-			'name'                => _x( 'Views', 'Post Type General Name', 'gravityview' ),
-			'singular_name'       => _x( 'View', 'Post Type Singular Name', 'gravityview' ),
-			'menu_name'           => _x( 'Views', 'Menu name', 'gravityview' ),
-			'parent_item_colon'   => __( 'Parent View:', 'gravityview' ),
-			'all_items'           => __( 'All Views', 'gravityview' ),
-			'view_item'           => _x( 'View', 'View Item', 'gravityview' ),
-			'add_new_item'        => __( 'Add New View', 'gravityview' ),
-			'add_new'             => __( 'New View', 'gravityview' ),
-			'edit_item'           => __( 'Edit View', 'gravityview' ),
-			'update_item'         => __( 'Update View', 'gravityview' ),
-			'search_items'        => __( 'Search Views', 'gravityview' ),
-			'not_found'           => \GravityView_Admin::no_views_text(),
-			'not_found_in_trash'  => __( 'No Views found in Trash', 'gravityview' ),
-			'filter_items_list'     => __( 'Filter Views list', 'gravityview' ),
-			'items_list_navigation' => __( 'Views list navigation', 'gravityview' ),
-			'items_list'            => __( 'Views list', 'gravityview' ),
-			'view_items'            => __( 'See Views', 'gravityview' ),
-			'attributes'            => __( 'View Attributes', 'gravityview' ),
+			'name'                   => _x( 'Views', 'Post Type General Name', 'gravityview' ),
+			'singular_name'          => _x( 'View', 'Post Type Singular Name', 'gravityview' ),
+			'menu_name'              => _x( 'Views', 'Menu name', 'gravityview' ),
+			'parent_item_colon'      => __( 'Parent View:', 'gravityview' ),
+			'all_items'              => __( 'All Views', 'gravityview' ),
+			'view_item'              => _x( 'View', 'View Item', 'gravityview' ),
+			'add_new_item'           => __( 'Add New View', 'gravityview' ),
+			'add_new'                => __( 'New View', 'gravityview' ),
+			'edit_item'              => __( 'Edit View', 'gravityview' ),
+			'update_item'            => __( 'Update View', 'gravityview' ),
+			'search_items'           => __( 'Search Views', 'gravityview' ),
+			'not_found'              => \GravityView_Admin::no_views_text(),
+			'not_found_in_trash'     => __( 'No Views found in Trash', 'gravityview' ),
+			'filter_items_list'      => __( 'Filter Views list', 'gravityview' ),
+			'items_list_navigation'  => __( 'Views list navigation', 'gravityview' ),
+			'items_list'             => __( 'Views list', 'gravityview' ),
+			'view_items'             => __( 'See Views', 'gravityview' ),
+			'attributes'             => __( 'View Attributes', 'gravityview' ),
+			'item_updated'           => __( 'View updated.', 'gravityview' ),
+			'item_published'         => __( 'View published.', 'gravityview' ),
+			'item_reverted_to_draft' => __( 'View reverted to draft.', 'gravityview' ),
+			'item_scheduled'         => __( 'View scheduled.', 'gravityview' ),
 		);
+
 		$args = array(
 			'label'               => __( 'view', 'gravityview' ),
 			'description'         => __( 'Create views based on a Gravity Forms form', 'gravityview' ),
@@ -519,7 +524,7 @@ class View implements \ArrayAccess {
 		$joins = array();
 
 		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
-			gravityview()->log->error( 'Cannot get joined forms; joins feature not supported.' );
+			gravityview()->log->info( 'Cannot get joined forms; joins feature not supported.' );
 			return $joins;
 		}
 
@@ -569,7 +574,7 @@ class View implements \ArrayAccess {
 		$forms = array();
 
 		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
-			gravityview()->log->error( 'Cannot get joined forms; joins feature not supported.' );
+			gravityview()->log->info( 'Cannot get joined forms; joins feature not supported.' );
 			return $forms;
 		}
 
