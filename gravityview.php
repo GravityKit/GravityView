@@ -60,7 +60,7 @@ define( 'GV_MIN_WP_VERSION', '4.7.0' );
  * GravityView will soon require at least this version of WordPress to function properly.
  * @since 2.9.3
  */
-define( 'GV_FUTURE_MIN_WP_VERSION', '4.9.16' );
+define( 'GV_FUTURE_MIN_WP_VERSION', '5.3' );
 
 /**
  * GravityView requires at least this version of PHP to function properly.

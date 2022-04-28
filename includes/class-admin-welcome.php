@@ -280,7 +280,7 @@ class GravityView_Welcome {
 					<li>Tweak: Additional translation strings related to View editing</li>
 				</ul>
 
-				<p>Note: We will be requiring Gravity Forms 2.5 in the near future; please upgrade!</p>
+				<p>Note: We will be requiring Gravity Forms 2.5 and WordPress 5.3 in the near future; please upgrade!</p>
 
 				<p><strong>Developer Updates:</strong></p>
 

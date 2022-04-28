@@ -31,7 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: When The Events Calendar Pro plugin is active, Views became un-editable
 * Tweak: Additional translation strings related to View editing
 
-Note: We will be requiring Gravity Forms 2.5 in the near future; please upgrade!
+Note: We will be requiring Gravity Forms 2.5 and WordPress 5.3 in the near future; please upgrade!
 
 __Developer Updates:__
 
