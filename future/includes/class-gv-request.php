@@ -33,7 +33,7 @@ abstract class Request {
 		/**
 		 * @filter `gravityview/request/is_renderable` Is this request renderable?
 		 * @since 2.5.2
-		 * @param[in,out] boolean $is_renderable Huh?
+		 * @param boolean $is_renderable Huh?
 		 * @param \GV\Request $this This.
 		 */
 		return apply_filters( 'gravityview/request/is_renderable', $is_renderable, $this );

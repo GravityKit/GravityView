@@ -485,7 +485,7 @@ final class GravityView_Duplicate_Entry {
 		/**
 		 * @filter `gravityview/entry/duplicate/details` Modify the new entry details before it's created.
 		 * @since 2.5
-		 * @param[in,out] array $row The entry details
+		 * @param array $row The entry details
 		 * @param array $entry The original entry
 		 */
 		$row = apply_filters( 'gravityview/entry/duplicate/details', $row, $entry );
@@ -520,7 +520,7 @@ final class GravityView_Duplicate_Entry {
 
 		/**
 		 * @filter `gravityview/entry/duplicate/meta` Modify the new entry meta details.
-		 * @param[in,out] array $save_this_meta The duplicate meta. Use/add meta_key, meta_value, item_index.
+		 * @param array $save_this_meta The duplicate meta. Use/add meta_key, meta_value, item_index.
 		 * @param array $row The duplicated entry
 		 * @param array $entry The original entry
 		 */
@@ -808,7 +808,7 @@ final class GravityView_Duplicate_Entry {
 
 		/**
 		 * @filter `gravityview/duplicate/backend/enable` Disables the duplicate link on the backend.
-		 * @param[in,out] boolean $enable True by default. Enabled.
+		 * @param boolean $enable True by default. Enabled.
 		 * @param int $form_id The form ID.
 		 */
 		if ( ! apply_filters( 'gravityview/duplicate/backend/enable', true, $form_id ) ) {

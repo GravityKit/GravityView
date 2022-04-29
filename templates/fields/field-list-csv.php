@@ -37,7 +37,7 @@ if ( $field->enableColumns && false !== $column_id ) {
 	 * @filter `gravityview/template/field/csv/glue` The value used to separate multiple values in the CSV export
 	 * @since 2.4.2
 	 *
-	 * @param[in,out] string The glue. Default: ";" (semicolon)
+	 * @param string The glue. Default: ";" (semicolon)
 	 * @param \GV\Template_Context The context.
 	 */
 	$glue = apply_filters( 'gravityview/template/field/csv/glue', ";", $gravityview );
