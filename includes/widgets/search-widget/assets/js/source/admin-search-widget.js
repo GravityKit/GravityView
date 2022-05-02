@@ -197,6 +197,8 @@
 
 				gvSearchWidget.updateWidgetConfig();
 
+				gvSearchWidget.triggerWidgetChange( table );
+
 				gvSearchWidget.styleRow( table );
 			});
 
@@ -262,6 +264,10 @@
 				},
 				stop: function ( event, ui ) {
 					$( ui.item ).find( '.cell-add-remove' ).toggle();
+
+					gvSearchWidget.updateWidgetConfig( ui.item );
+
+					gvSearchWidget.triggerWidgetChange( ui.item );
 				}
 			});
 
@@ -272,6 +278,13 @@
 			$gvloading.remove();
 		},
 
+		/**
+		 * Triggers change on the widget thus enabling the save/update buttons
+		 * @param  {{jQuery DOM object}} el
+		 */
+		triggerWidgetChange: function ( el ) {
+			$( el ).parents( '.widget-content' ).find( 'p input' ).trigger( 'change' );
+		},
 
 		/**
 		 * Add alt classes on table sort
@@ -383,6 +396,8 @@
 				$( this ).find( 'select.gv-search-fields, input.gv-search-labels, select.gv-search-inputs' ).on( 'change keyup', gvSearchWidget.updateWidgetConfig );
 
 				gvSearchWidget.updateWidgetConfig();
+
+				gvSearchWidget.triggerWidgetChange( this );
 
 				// Fade in
 				$(this).show().removeClass('hide-if-js');
