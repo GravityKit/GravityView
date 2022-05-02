@@ -1737,8 +1737,14 @@ $dialog-button-padding: 5px;
     }
 }
 
-.wp-block-legacy-widget .cell-add-remove {
-    width: 70px !important;
+.wp-block-legacy-widget {
+    .cell-add-remove {
+        width: 70px !important;
+    }
+
+    .howto {
+        font-size: small;
+    }
 }
 
 // Only modify GV post type
