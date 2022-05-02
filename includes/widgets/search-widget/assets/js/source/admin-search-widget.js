@@ -256,8 +256,12 @@
 			gvSearchWidget.toggleSearchMode();
 
 			gvSearchWidget.widgetTarget.find('table tbody').sortable({
-				start: function( event, ui ) {
+				start: function ( event, ui ) {
 					$( ui.item ).removeClass( 'alt' );
+					$( ui.item ).find( '.cell-add-remove' ).toggle();
+				},
+				stop: function ( event, ui ) {
+					$( ui.item ).find( '.cell-add-remove' ).toggle();
 				}
 			});
 
