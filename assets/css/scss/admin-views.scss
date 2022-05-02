@@ -1694,9 +1694,6 @@ $dialog-button-padding: 5px;
 
 		.cell-sort,
 		.cell-add-remove {
-
-			//width: 40px;
-
 			button {
 				@extend .gv-reset-button-style;
 
@@ -1721,10 +1718,9 @@ $dialog-button-padding: 5px;
 				}
 
 				.dashicons-dismiss {
-					margin-top: 2px;
-					font-size: 17px;
-					height: 17px;
-					width: 17px;
+					font-size: 20px;
+					height: 20px;
+					width: 20px;
 					color: $dismiss-red;
 				}
 			}
@@ -1734,11 +1730,15 @@ $dialog-button-padding: 5px;
 			width: 24px;
 		}
 
-	  	.cell-add-remove {
-		  width: 50px;
-		}
+        .cell-add-remove {
+            display: flex;
+            width: 50px;
+        }
+    }
+}
 
-	}
+.wp-block-legacy-widget .cell-add-remove {
+    width: 70px !important;
 }
 
 // Only modify GV post type
