@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Styling of form settings dropdowns on the Gravity Forms "Forms" page
+
 = 2.14.4 on April 27, 2022 =
 
 * Added: Search Bar support for the [Chained Selects](https://www.gravityforms.com/add-ons/chained-selects/) field type

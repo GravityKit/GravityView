@@ -1839,7 +1839,7 @@
 		 */
 		refresh_merge_tags: function() {
 			// GF 2.6+
-			if ( window.gform?.instances?.mergeTags ) {
+			if ( window.gform && window.gform.instances && window.gform.mergeTags ) {
 				// Remove existing merge tags, since otherwise GF will add another
 				$( '.all-merge-tags' ).remove();
 

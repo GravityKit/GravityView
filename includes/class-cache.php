@@ -588,8 +588,8 @@ class GravityView_Cache {
 
 		/**
 		 * @filter `gravityview_use_cache` Modify whether to use the cache or not
-		 * @param[out,in]  boolean $use_cache Previous setting
-		 * @param[out] GravityView_Cache $this The GravityView_Cache object
+		 * @param  boolean $use_cache Previous setting
+		 * @param GravityView_Cache $this The GravityView_Cache object
 		 */
 		$use_cache = apply_filters( 'gravityview_use_cache', $use_cache, $this );
 

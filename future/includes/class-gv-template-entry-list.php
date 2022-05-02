@@ -35,9 +35,9 @@ class Entry_List_Template extends Entry_Template {
 
 		$renderer = new Field_Renderer();
 		$source = is_numeric( $field->ID ) ? ( GF_Form::by_id( $field->form_id ) ? : $this->view->form ) : new Internal_Source();
-		
+
 		$value = $renderer->render( $field, $this->view, $source, $entry, $this->request );
-		
+
 		$context = Template_Context::from_template( $this, compact( 'field', 'entry' ) );
 
 		/**
@@ -49,7 +49,7 @@ class Entry_List_Template extends Entry_Template {
 		/**
 		 * @filter `gravityview/template/field/label` Override the field label.
 		 * @since 2.0
-		 * @param[in,out] string $label The label to override.
+		 * @param string $label The label to override.
 		 * @param \GV\Template_Context $context The context.
 		 */
 		$label = apply_filters( 'gravityview/template/field/label', $label, $context );

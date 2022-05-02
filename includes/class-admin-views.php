@@ -718,8 +718,8 @@ class GravityView_Admin_Views {
 
 		/**
 		 * @filter  `gravityview_blocklist_field_types` Modify the types of fields that shouldn't be shown in a View.
-		 * @param[in,out] array $blocklist_field_types Array of field types which are not proper to be shown for the $context.
-		 * @param[in] string $context View context ('single', 'directory', or 'edit').
+		 * @param array $blocklist_field_types Array of field types which are not proper to be shown for the $context.
+		 * @param string $context View context ('single', 'directory', or 'edit').
 		 * @since 2.9
 		 */
 		$blocklist_field_types = apply_filters( 'gravityview_blocklist_field_types', $blocklist_field_types, $context );
@@ -894,7 +894,7 @@ class GravityView_Admin_Views {
 
 		/**
 		 * @filter `gravityview/admin/available_fields` Modify the available fields that can be used in a View.
-		 * @param[in,out] array $fields The fields.
+		 * @param array $fields The fields.
 		 * @param  string|array $form form_ID or form object
 		 * @param  string $zone Either 'single', 'directory', 'header', 'footer'
 		 */
@@ -1130,7 +1130,7 @@ class GravityView_Admin_Views {
 
 				/**
 				 * @filter `gravityview/view/widgets/default` Modify the default widgets for new Views
-				 * @param[in,out] array $widgets A Widget configuration array
+				 * @param array $widgets A Widget configuration array
 				 * @param string $zone The widget zone that's being requested
 				 * @param int $post_id The auto-draft post ID
 				 */

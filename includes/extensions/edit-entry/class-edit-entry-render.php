@@ -1992,7 +1992,7 @@ class GravityView_Edit_Entry_Render {
 				 * @filter `gravityview/edit_entry/render_hidden_field`
 				 * @see https://docs.gravityview.co/article/678-edit-entry-hidden-fields-field-visibility
 				 * @since 2.7
-				 * @param[in,out] bool $render_hidden_field Whether to render this Hidden field in HTML. Default: true
+				 * @param bool $render_hidden_field Whether to render this Hidden field in HTML. Default: true
 				 * @param GF_Field $field The field to possibly remove
 				 */
 				$render_hidden_field = apply_filters( 'gravityview/edit_entry/render_hidden_field', true, $field );

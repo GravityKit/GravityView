@@ -799,7 +799,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			 * @filter `gravityview/field/notes/email_content` Modify the values passed when sending a note email
 			 * @see GVCommon::send_email
 			 * @since 1.17
-			 * @param[in,out] array $email_settings Values being passed to the GVCommon::send_email() method: 'from', 'to', 'bcc', 'reply_to', 'subject', 'message', 'from_name', 'message_format', 'entry', 'email_footer'
+			 * @param array $email_settings Values being passed to the GVCommon::send_email() method: 'from', 'to', 'bcc', 'reply_to', 'subject', 'message', 'from_name', 'message_format', 'entry', 'email_footer'
 			 */
 			$email_content = apply_filters( 'gravityview/field/notes/email_content', compact( 'from', 'to', 'bcc', 'reply_to', 'subject', 'message', 'from_name', 'message_format', 'entry', 'email_footer' ) );
 
