@@ -1,24 +1,20 @@
 <?php
 /**
- * Display the number field type
+ * Display the number field type.
  *
  * @since 1.13
- *
- * @package GravityView
- * @subpackage GravityView/templates/fields
  */
-
 $gravityview_view = GravityView_View::getInstance();
 
 /**
- * @var double|int|string $value
- * @var double|int|string $display_value
+ * @var float|int|string $value
+ * @var float|int|string $display_value
  */
-extract( $gravityview_view->getCurrentField() );
+extract($gravityview_view->getCurrentField());
 
-if( $value !== '' && !empty( $field_settings['number_format'] ) ) {
-	$decimals = ( isset( $field_settings['decimals'] ) && $field_settings['decimals'] !== '' ) ? $field_settings['decimals'] : '';
-	echo gravityview_number_format( $value, $decimals );
+if ($value !== '' && !empty($field_settings['number_format'])) {
+    $decimals = (isset($field_settings['decimals']) && $field_settings['decimals'] !== '') ? $field_settings['decimals'] : '';
+    echo gravityview_number_format($value, $decimals);
 } else {
-	echo $display_value;
+    echo $display_value;
 }

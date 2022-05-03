@@ -1,71 +1,78 @@
 <?php
 
-if ( ! class_exists( 'Debug_Bar_Panel' ) ) {
-	return;
+if (!class_exists('Debug_Bar_Panel')) {
+    return;
 }
 
 /**
- * Show debugging information in concert with the excellent {@link http://wordpress.org/plugins/debug-bar/ Debug Bar plugin}
+ * Show debugging information in concert with the excellent {@link http://wordpress.org/plugins/debug-bar/ Debug Bar plugin}.
  *
  * @file /includes/class.debug-bar.php
+ *
  * @since 2.2.4
  */
-class GravityView_Debug_Bar extends Debug_Bar_Panel {
+class GravityView_Debug_Bar extends Debug_Bar_Panel
+{
+    public $warnings = null;
 
-	var $warnings = NULL;
+    public $notices = null;
 
-	var $notices = NULL;
+    public $_visible = true;
 
-	var $_visible = true;
+    /**
+     * Only show if WP_DEBUG is running. Set the title of the panel.
+     *
+     * @return void
+     */
+    public function init()
+    {
+        $icon = is_admin() ? '<i class="icon gv-icon-astronaut-head"></i>&nbsp;' : null;
+        $this->title($icon.__('GravityView', 'gravityview'));
+    }
 
-	/**
-	 * Only show if WP_DEBUG is running. Set the title of the panel.
-	 * @return void
-	 */
-	function init() {
+    public function get_warnings()
+    {
+        if (is_null($this->warnings)) {
+            $this->warnings = GravityView_Logging::get_errors();
+        }
 
-		$icon = is_admin() ? '<i class="icon gv-icon-astronaut-head"></i>&nbsp;' : NULL;
-		$this->title( $icon . __('GravityView', 'gravityview') );
-	}
+        return $this->warnings;
+    }
 
-	function get_warnings() {
+    public function get_notices()
+    {
+        if (is_null($this->notices)) {
+            $this->notices = GravityView_Logging::get_notices();
+        }
 
-		if( is_null( $this->warnings ) ) {
-			$this->warnings = GravityView_Logging::get_errors();
-		}
+        return $this->notices;
+    }
 
-		return $this->warnings;
-	}
+    public function prerender()
+    {
+        $this->set_visible();
+    }
 
-	function get_notices() {
+    /**
+     * Should the panel be shown? If there are notices or warnings, yes.
+     *
+     * @param bool $visible {@internal Leave here for compatibility with the Debug_Bar_Panel parent class}
+     *
+     * @return void
+     */
+    public function set_visible($visible = false)
+    {
+        $this->_visible = (count($this->get_notices()) || count($this->get_warnings()));
+    }
 
-		if( is_null( $this->notices ) ) {
-			$this->notices = GravityView_Logging::get_notices();
-		}
-
-		return $this->notices;
-	}
-
-	function prerender() {
-		$this->set_visible();
-	}
-
-	/**
-	 * Should the panel be shown? If there are notices or warnings, yes.
-	 * @param boolean $visible {@internal Leave here for compatibility with the Debug_Bar_Panel parent class}
-	 * @return void
-	 */
-	function set_visible( $visible = false ) {
-		$this->_visible = ( count( $this->get_notices() ) || count( $this->get_warnings() ) );
-	}
-
-	/**
-	 * Render the panel HTML
-	 * @return string Panel output
-	 */
-	function render() {
-
-		$output = "
+    /**
+     * Render the panel HTML.
+     *
+     * @return string Panel output
+     */
+    public function render()
+    {
+        $output = "
 		<style type='text/css'>
 			#debug-bar-gravityview { padding:10px 2%; width: 96%; }
 				#debug-bar-gravityview * { clear: none; }
@@ -88,104 +95,116 @@ class GravityView_Debug_Bar extends Debug_Bar_Panel {
 		</style>
 		<div id='debug-bar-gravityview'>";
 
-		$output .= '<img src="'.plugins_url('assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignright" alt="" width="100" height="132" />';
+        $output .= '<img src="'.plugins_url('assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE).'" class="alignright" alt="" width="100" height="132" />';
 
+        $warnings = $this->get_warnings();
+        $notices = $this->get_notices();
 
-		$warnings = $this->get_warnings();
-		$notices = $this->get_notices();
+        if (count($warnings)) {
+            $output .= '<h3><span>'.__('Warnings', 'gravityview').'</span></h3>';
+            $output .= '<ol>';
+            foreach ($warnings as $key => $notice) {
+                if (empty($notice['message'])) {
+                    continue;
+                }
+                $output .= '<li><a href="#'.sanitize_html_class('gv-warning-'.$key).'">'.strip_tags($notice['message']).'</a></li>';
+            }
+            $output .= '</ol><hr />';
+        }
+        if (count($notices)) {
+            $output .= '<h3><span>'.__('Logs', 'gravityview').'</span></h3>';
+            $output .= '<ol>';
+            foreach ($notices as $key => $notice) {
+                if (empty($notice['message'])) {
+                    continue;
+                }
+                $output .= '<li><a href="#'.sanitize_html_class('gv-notice-'.$key).'">'.strip_tags($notice['message']).'</a></li>';
+            }
+            $output .= '</ol><hr />';
+        }
 
-		if(count($warnings)) {
-			$output .= '<h3><span>'.__('Warnings', 'gravityview').'</span></h3>';
-			$output .= '<ol>';
-			foreach ( $warnings as $key => $notice) {
-				if(empty($notice['message'])) { continue; }
-				$output .= '<li><a href="#'.sanitize_html_class( 'gv-warning-' . $key ).'">'.strip_tags($notice['message']).'</a></li>';
-			}
-			$output .= '</ol><hr />';
-		}
-		if(count($notices)) {
-			$output .= '<h3><span>'.__('Logs', 'gravityview').'</span></h3>';
-			$output .= '<ol>';
-			foreach ( $notices as $key => $notice) {
-				if(empty($notice['message'])) { continue; }
-				$output .= '<li><a href="#'.sanitize_html_class( 'gv-notice-' . $key ).'">'.strip_tags($notice['message']).'</a></li>';
-			}
-			$output .= '</ol><hr />';
-		}
+        if (count($warnings)) {
+            $output .= '<h3>Warnings</h3>';
+            $output .= '<ol class="debug-bar-php-list">';
+            foreach ($warnings as $key => $notice) {
+                $output .= $this->render_item($notice, 'gv-warning-'.$key);
+            }
+            $output .= '</ol>';
+        }
 
-		if ( count( $warnings ) ) {
-			$output .= '<h3>Warnings</h3>';
-			$output .= '<ol class="debug-bar-php-list">';
-			foreach ( $warnings as $key => $notice) { $output .= $this->render_item( $notice, 'gv-warning-'  . $key ); }
-			$output .= '</ol>';
-		}
+        if (count($notices)) {
+            $output .= '<h3>Notices</h3>';
+            $output .= '<ol class="debug-bar-php-list">';
+            foreach ($notices as $key => $notice) {
+                $output .= $this->render_item($notice, 'gv-notice-'.$key);
+            }
+            $output .= '</ol>';
+        }
 
-		if ( count( $notices ) ) {
-			$output .= '<h3>Notices</h3>';
-			$output .= '<ol class="debug-bar-php-list">';
-			foreach ( $notices as $key => $notice) { $output .= $this->render_item( $notice, 'gv-notice-' . $key ); }
-			$output .= '</ol>';
-		}
+        $output .= '</div>';
 
-		$output .= "</div>";
+        echo $output;
+    }
 
-		echo $output;
-	}
+    /**
+     * Apply esc_html() to an array.
+     *
+     * @param string|array $item Unescaped
+     *
+     * @return string Escaped HTML
+     */
+    public function esc_html_recursive($item)
+    {
+        if (is_object($item)) {
+            foreach ($item as $key => $value) {
+                $item->{$key} = $this->esc_html_recursive($value);
+            }
+        } elseif (is_array($item)) {
+            foreach ($item as $key => $value) {
+                $item[$key] = $this->esc_html_recursive($value);
+            }
+        } else {
+            $item = esc_html($item);
+        }
 
-	/**
-	 * Apply esc_html() to an array
-	 * @param  string|array $item Unescaped
-	 * @return string       Escaped HTML
-	 */
-	function esc_html_recursive($item) {
-		if(is_object($item)) {
-			foreach($item as $key => $value) {
-				$item->{$key} = $this->esc_html_recursive($value);
-			}
-		} else if(is_array($item)) {
-			foreach($item as $key => $value) {
-				$item[$key] = $this->esc_html_recursive($value);
-			}
-		} else {
-			$item = esc_html($item);
-		}
-		return $item;
-	}
+        return $item;
+    }
 
+    /**
+     * Render each log item.
+     *
+     * @param array  $notice `message`, `description`, `content`
+     * @param string $anchor The anchor ID for the item
+     *
+     * @return string HTML output
+     */
+    public function render_item($notice, $anchor = '')
+    {
+        $output = '';
 
-	/**
-	 * Render each log item
-	 * @param  array $notice `message`, `description`, `content`
-	 * @param  string $anchor The anchor ID for the item
-	 * @return string         HTML output
-	 */
-	function render_item( $notice, $anchor = '' ) {
+        if (!empty($notice['message'])) {
+            $output .= '<a id="'.sanitize_html_class($anchor).'"></a>';
+            $output .= "<li class='debug-bar-php-notice'>";
+        }
 
-		$output = '';
+        $output .= '<div class="clear"></div>';
 
-		if(!empty($notice['message'])) {
-			$output .= '<a id="'.sanitize_html_class( $anchor ).'"></a>';
-			$output .= "<li class='debug-bar-php-notice'>";
-		}
+        // Title
+        $output .= '<div class="gravityview-debug-bar-title">'.esc_attr($notice['message']).'</div>';
 
-		$output .= '<div class="clear"></div>';
+        // Debugging Output
+        if (empty($notice['data'])) {
+            if (!is_null($notice['data'])) {
+                $output .= '<em>'._x('Empty', 'Debugging output data is empty.', 'gravityview').'</em>';
+            }
+        } else {
+            $output .= sprintf('<pre>%s</pre>', print_r($this->esc_html_recursive($notice['data']), true));
+        }
 
-		// Title
-		$output .= '<div class="gravityview-debug-bar-title">'.esc_attr( $notice['message'] ).'</div>';
+        if (!empty($notice['message'])) {
+            $output .= '</li>';
+        }
 
-		// Debugging Output
-		if( empty( $notice['data'] ) ) {
-			if( !is_null( $notice['data'] ) ) {
-				$output .= '<em>'._x('Empty', 'Debugging output data is empty.', 'gravityview' ).'</em>';
-			}
-		} else {
-			$output .= sprintf( '<pre>%s</pre>', print_r($this->esc_html_recursive( $notice['data'] ), true) );
-		}
-
-		if(!empty($notice['message'])) {
-			$output .= '</li>';
-		}
-
-		return $output;
-	}
+        return $output;
+    }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Display a note, without editing options
+ * Display a note, without editing options.
  *
  * @since 1.17
  */

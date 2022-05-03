@@ -1,28 +1,26 @@
 <?php
 /**
  * @file class-gravityview-field-text.php
- * @package GravityView
- * @subpackage includes\fields
  */
+class GravityView_Field_Text extends GravityView_Field
+{
+    public $name = 'text';
 
-class GravityView_Field_Text extends GravityView_Field {
+    public $_gf_field_class_name = 'GF_Field_Text';
 
-	var $name = 'text';
+    public $is_searchable = true;
 
-	var $_gf_field_class_name = 'GF_Field_Text';
+    public $search_operators = ['contains', 'is', 'isnot', 'starts_with', 'ends_with'];
 
-	var $is_searchable = true;
+    public $group = 'standard';
 
-	var $search_operators = array( 'contains', 'is', 'isnot', 'starts_with', 'ends_with' );
+    public $icon = 'dashicons-editor-textcolor';
 
-	var $group = 'standard';
-
-	var $icon = 'dashicons-editor-textcolor';
-
-	public function __construct() {
-		$this->label = esc_html__( 'Single Line Text', 'gravityview' );
-		parent::__construct();
-	}
+    public function __construct()
+    {
+        $this->label = esc_html__('Single Line Text', 'gravityview');
+        parent::__construct();
+    }
 }
 
-new GravityView_Field_Text;
+new GravityView_Field_Text();

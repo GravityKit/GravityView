@@ -1,6 +1,6 @@
 <?php
 /**
- * Display note details, in both editing and non-editing modes
+ * Display note details, in both editing and non-editing modes.
  *
  * @since 1.17
  */

@@ -1,34 +1,33 @@
 <?php
 /**
  * @file class-gravityview-field-transaction-id.php
- * @package GravityView
- * @subpackage includes\fields
+ *
  * @since 1.16
  */
+class GravityView_Field_Transaction_ID extends GravityView_Field
+{
+    public $name = 'transaction_id';
 
-class GravityView_Field_Transaction_ID extends GravityView_Field {
+    public $is_searchable = true;
 
-	var $name = 'transaction_id';
+    public $is_numeric = true;
 
-	var $is_searchable = true;
+    public $search_operators = ['is', 'isnot', 'starts_with', 'ends_with'];
 
-	var $is_numeric = true;
+    public $group = 'pricing';
 
-	var $search_operators = array( 'is', 'isnot', 'starts_with', 'ends_with'  );
+    public $_custom_merge_tag = 'transaction_id';
 
-	var $group = 'pricing';
+    public $icon = 'dashicons-cart';
 
-	var $_custom_merge_tag = 'transaction_id';
-
-	var $icon = 'dashicons-cart';
-
-	/**
-	 * GravityView_Field_Payment_Amount constructor.
-	 */
-	public function __construct() {
-		$this->label = esc_html__( 'Transaction ID', 'gravityview' );
-		parent::__construct();
-	}
+    /**
+     * GravityView_Field_Payment_Amount constructor.
+     */
+    public function __construct()
+    {
+        $this->label = esc_html__('Transaction ID', 'gravityview');
+        parent::__construct();
+    }
 }
 
-new GravityView_Field_Transaction_ID;
+new GravityView_Field_Transaction_ID();

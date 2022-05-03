@@ -1,159 +1,155 @@
 <?php
 /**
  * @file class-gravityview-field-created-by.php
- * @package GravityView
- * @subpackage includes\fields
  */
+class GravityView_Field_Created_By extends GravityView_Field
+{
+    public $name = 'created_by';
 
-class GravityView_Field_Created_By extends GravityView_Field {
+    public $is_searchable = true;
 
-	var $name = 'created_by';
+    public $search_operators = ['is', 'isnot', 'in', 'not_in'];
 
-	var $is_searchable = true;
+    public $group = 'meta';
 
-	var $search_operators = array( 'is', 'isnot', 'in', 'not_in' );
+    public $_custom_merge_tag = 'created_by';
 
-	var $group = 'meta';
+    public $icon = 'dashicons-admin-users';
 
-	var $_custom_merge_tag = 'created_by';
+    public function __construct()
+    {
+        $this->label = esc_html__('Created By (User)', 'gravityview');
+        $this->description = __('Details of the logged-in user who created the entry (if any).', 'gravityview');
+        $this->default_search_label = __('Submitted by:', 'gravityview');
+        parent::__construct();
+    }
 
-	var $icon = 'dashicons-admin-users';
+    /**
+     * Add custom merge tags to merge tag options.
+     *
+     * @since 1.16
+     *
+     * @param array      $form   GF Form array
+     * @param GF_Field[] $fields Array of fields in the form
+     *
+     * @return array Modified merge tags
+     */
+    protected function custom_merge_tags($form = [], $fields = [])
+    {
+        $merge_tags = [
+            [
+                'label' => __('Entry Creator: Display Name', 'gravityview'),
+                'tag'   => '{created_by:display_name}',
+            ],
+            [
+                'label' => __('Entry Creator: Email', 'gravityview'),
+                'tag'   => '{created_by:user_email}',
+            ],
+            [
+                'label' => __('Entry Creator: Username', 'gravityview'),
+                'tag'   => '{created_by:user_login}',
+            ],
+            [
+                'label' => __('Entry Creator: User ID', 'gravityview'),
+                'tag'   => '{created_by:ID}',
+            ],
+            [
+                'label' => __('Entry Creator: Roles', 'gravityview'),
+                'tag'   => '{created_by:roles}',
+            ],
+        ];
 
-	public function __construct() {
-		$this->label = esc_html__( 'Created By (User)', 'gravityview' );
-		$this->description = __('Details of the logged-in user who created the entry (if any).', 'gravityview');
-		$this->default_search_label = __( 'Submitted by:', 'gravityview' );
-		parent::__construct();
-	}
+        return $merge_tags;
+    }
 
-	/**
-	 * Add custom merge tags to merge tag options
-	 *
-	 * @since 1.16
-	 *
-	 * @param array $form GF Form array
-	 * @param GF_Field[] $fields Array of fields in the form
-	 *
-	 * @return array Modified merge tags
-	 */
-	protected function custom_merge_tags( $form = array(), $fields = array() ) {
+    /**
+     * Exactly like Gravity Forms' User Meta functionality, but instead shows information on the user who created the entry
+     * instead of the currently logged-in user.
+     *
+     * @see https://docs.gravityview.co/article/281-the-createdby-merge-tag Read how to use the `{created_by}` merge tag
+     * @since 1.16
+     *
+     * @param array  $matches    Array of Merge Tag matches found in text by preg_match_all
+     * @param string $text       Text to replace
+     * @param array  $form       Gravity Forms form array
+     * @param array  $entry      Entry array
+     * @param bool   $url_encode Whether to URL-encode output
+     * @param bool   $esc_html   Whether to apply `esc_html()` to output
+     *
+     * @return string Text, with user variables replaced, if they existed
+     */
+    public function replace_merge_tag($matches = [], $text = '', $form = [], $entry = [], $url_encode = false, $esc_html = false)
+    {
 
-		$merge_tags = array(
-			array(
-				'label' => __('Entry Creator: Display Name', 'gravityview'),
-				'tag' => '{created_by:display_name}'
-			),
-			array(
-				'label' => __('Entry Creator: Email', 'gravityview'),
-				'tag' => '{created_by:user_email}'
-			),
-			array(
-				'label' => __('Entry Creator: Username', 'gravityview'),
-				'tag' => '{created_by:user_login}'
-			),
-			array(
-				'label' => __('Entry Creator: User ID', 'gravityview'),
-				'tag' => '{created_by:ID}'
-			),
-			array(
-				'label' => __('Entry Creator: Roles', 'gravityview'),
-				'tag' => '{created_by:roles}'
-			),
-		);
+        // If there are no matches OR the Entry `created_by` isn't set or is 0 (no user)
+        if (empty($matches) || empty($entry['created_by'])) {
+            return $text;
+        }
 
-		return $merge_tags;
-	}
+        // Get the creator of the entry
+        $entry_creator = new WP_User($entry['created_by']);
 
-	/**
-	 * Exactly like Gravity Forms' User Meta functionality, but instead shows information on the user who created the entry
-	 * instead of the currently logged-in user.
-	 *
-	 * @see https://docs.gravityview.co/article/281-the-createdby-merge-tag Read how to use the `{created_by}` merge tag
-	 *
-	 * @since 1.16
-	 *
-	 * @param array $matches Array of Merge Tag matches found in text by preg_match_all
-	 * @param string $text Text to replace
-	 * @param array $form Gravity Forms form array
-	 * @param array $entry Entry array
-	 * @param bool $url_encode Whether to URL-encode output
-	 * @param bool $esc_html Whether to apply `esc_html()` to output
-	 *
-	 * @return string Text, with user variables replaced, if they existed
-	 */
-	public function replace_merge_tag( $matches = array(), $text = '', $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
+        foreach ($matches as $match) {
+            $full_tag = $match[0];
+            $property = $match[1];
 
-		// If there are no matches OR the Entry `created_by` isn't set or is 0 (no user)
-		if( empty( $matches ) || empty( $entry['created_by'] ) ) {
-			return $text;
-		}
+            switch ($property) {
+                case '':
+                    $value = $entry_creator->ID;
+                    break;
+                /** @since 1.13.2 */
+                case 'roles':
+                    $value = implode(', ', $entry_creator->roles);
+                    break;
+                default:
+                    $value = $entry_creator->get($property);
+            }
 
-		// Get the creator of the entry
-		$entry_creator = new WP_User( $entry['created_by'] );
+            $value = $url_encode ? urlencode($value) : $value;
 
-		foreach ( $matches as $match ) {
+            $value = $esc_html ? esc_html($value) : $value;
 
-			$full_tag = $match[0];
-			$property = $match[1];
+            $text = str_replace($full_tag, $value, $text);
+        }
 
-			switch( $property ) {
-				case '':
-					$value = $entry_creator->ID;
-					break;
-				/** @since 1.13.2 */
-				case 'roles':
-					$value = implode( ', ', $entry_creator->roles );
-					break;
-				default:
-					$value = $entry_creator->get( $property );
-			}
+        unset($entry_creator);
 
-			$value = $url_encode ? urlencode( $value ) : $value;
+        return $text;
+    }
 
-			$value = $esc_html ? esc_html( $value ) : $value;
+    public function field_options($field_options, $template_id, $field_id, $context, $input_type, $form_id)
+    {
+        if ('edit' === $context) {
+            return $field_options;
+        }
 
-			$text = str_replace( $full_tag, $value, $text );
-		}
+        $field_options['name_display'] = [
+            'type'    => 'select',
+            'label'   => __('User Format', 'gravityview'),
+            'desc'    => __('How should the User information be displayed?', 'gravityview'),
+            'choices' => [
+                // column
+                'ID'              => __('User ID # (Example: 426)', 'gravityview'),
+                'user_login'      => __('Username (Example: "nostromo")', 'gravityview'),
+                'display_name'    => __('Display Name (Example: "Ellen Ripley")', 'gravityview'),
+                'user_email'      => __('User Email (Example: "ellen@gravityview.co")', 'gravityview'),
+                'user_registered' => __('User Registered (Example: "2019-10-18 08:30:11")', 'gravityview'),
 
-		unset( $entry_creator );
+                // meta
+                'nickname'    => ucwords(__('User nickname', 'gravityview')),
+                'description' => __('Description', 'gravityview'),
+                'first_name'  => __('First Name', 'gravityview'),
+                'last_name'   => __('Last Name', 'gravityview'),
 
-		return $text;
-	}
+                // misc
+                'first_last_name' => __('First and Last Name', 'gravityview'),
+                'last_first_name' => __('Last and First Name', 'gravityview'),
+            ],
+            'value' => 'display_name',
+        ];
 
-	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
-
-		if( 'edit' === $context ) {
-			return $field_options;
-		}
-
-		$field_options['name_display'] = array(
-			'type' => 'select',
-			'label' => __( 'User Format', 'gravityview' ),
-			'desc' => __( 'How should the User information be displayed?', 'gravityview' ),
-			'choices' => array(
-				// column
-				'ID' => __( 'User ID # (Example: 426)', 'gravityview' ),
-				'user_login' => __( 'Username (Example: "nostromo")', 'gravityview' ),
-				'display_name' => __( 'Display Name (Example: "Ellen Ripley")', 'gravityview' ),
-				'user_email' => __( 'User Email (Example: "ellen@gravityview.co")', 'gravityview' ),
-				'user_registered' => __( 'User Registered (Example: "2019-10-18 08:30:11")', 'gravityview' ),
-
-				// meta
-				'nickname' => ucwords( __( 'User nickname', 'gravityview' ) ),
-				'description' => __( 'Description', 'gravityview' ),
-				'first_name' => __( 'First Name', 'gravityview' ),
-				'last_name' => __( 'Last Name', 'gravityview' ),
-
-				// misc
-				'first_last_name' => __( 'First and Last Name', 'gravityview' ),
-				'last_first_name' => __( 'Last and First Name', 'gravityview' ),
-			),
-			'value' => 'display_name'
-		);
-
-		return $field_options;
-	}
-
+        return $field_options;
+    }
 }
 
-new GravityView_Field_Created_By;
+new GravityView_Field_Created_By();

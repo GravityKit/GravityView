@@ -1,9 +1,7 @@
 <?php
 /**
- * Display above the entries loop when using a list layout
+ * Display above the entries loop when using a list layout.
  *
- * @package GravityView
- * @subpackage GravityView/templates
  *
  * @global GravityView_View $this
  */

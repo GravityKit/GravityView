@@ -3,6 +3,7 @@
  * @license MIT
  *
  * Modified by gravityview on 28-April-2022 using Strauss.
+ *
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -33,7 +34,7 @@ interface LoggerInterface
      *
      * @return void
      */
-    public function emergency($message, array $context = array());
+    public function emergency($message, array $context = []);
 
     /**
      * Action must be taken immediately.
@@ -46,7 +47,7 @@ interface LoggerInterface
      *
      * @return void
      */
-    public function alert($message, array $context = array());
+    public function alert($message, array $context = []);
 
     /**
      * Critical conditions.
@@ -58,7 +59,7 @@ interface LoggerInterface
      *
      * @return void
      */
-    public function critical($message, array $context = array());
+    public function critical($message, array $context = []);
 
     /**
      * Runtime errors that do not require immediate action but should typically
@@ -69,7 +70,7 @@ interface LoggerInterface
      *
      * @return void
      */
-    public function error($message, array $context = array());
+    public function error($message, array $context = []);
 
     /**
      * Exceptional occurrences that are not errors.
@@ -82,7 +83,7 @@ interface LoggerInterface
      *
      * @return void
      */
-    public function warning($message, array $context = array());
+    public function warning($message, array $context = []);
 
     /**
      * Normal but significant events.
@@ -92,7 +93,7 @@ interface LoggerInterface
      *
      * @return void
      */
-    public function notice($message, array $context = array());
+    public function notice($message, array $context = []);
 
     /**
      * Interesting events.
@@ -104,7 +105,7 @@ interface LoggerInterface
      *
      * @return void
      */
-    public function info($message, array $context = array());
+    public function info($message, array $context = []);
 
     /**
      * Detailed debug information.
@@ -114,7 +115,7 @@ interface LoggerInterface
      *
      * @return void
      */
-    public function debug($message, array $context = array());
+    public function debug($message, array $context = []);
 
     /**
      * Logs with an arbitrary level.
@@ -123,9 +124,9 @@ interface LoggerInterface
      * @param string  $message
      * @param mixed[] $context
      *
-     * @return void
-     *
      * @throws \GravityView\Psr\Log\InvalidArgumentException
+     *
+     * @return void
      */
-    public function log($level, $message, array $context = array());
+    public function log($level, $message, array $context = []);
 }

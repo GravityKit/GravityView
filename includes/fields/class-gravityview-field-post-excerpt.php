@@ -1,41 +1,39 @@
 <?php
 /**
  * @file class-gravityview-field-post-excerpt.php
- * @package GravityView
- * @subpackage includes\fields
  */
+class GravityView_Post_Excerpt extends GravityView_Field
+{
+    public $name = 'post_excerpt';
 
-class GravityView_Post_Excerpt extends GravityView_Field {
+    public $is_searchable = true;
 
-	var $name = 'post_excerpt';
+    public $search_operators = ['contains', 'is', 'isnot', 'starts_with', 'ends_with'];
 
-	var $is_searchable = true;
+    public $_gf_field_class_name = 'GF_Field_Post_Excerpt';
 
-	var $search_operators = array( 'contains', 'is', 'isnot', 'starts_with', 'ends_with' );
+    public $group = 'post';
 
-	var $_gf_field_class_name = 'GF_Field_Post_Excerpt';
+    public $icon = 'dashicons-format-quote';
 
-	var $group = 'post';
+    public function __construct()
+    {
+        $this->label = esc_html__('Post Excerpt', 'gravityview');
+        parent::__construct();
+    }
 
-	var $icon = 'dashicons-format-quote';
+    public function field_options($field_options, $template_id, $field_id, $context, $input_type, $form_id)
+    {
+        unset($field_options['show_as_link']);
 
-	public function __construct() {
-		$this->label = esc_html__( 'Post Excerpt', 'gravityview' );
-		parent::__construct();
-	}
+        if ('edit' === $context) {
+            return $field_options;
+        }
 
-	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
+        $this->add_field_support('dynamic_data', $field_options);
 
-		unset( $field_options['show_as_link'] );
-
-		if( 'edit' === $context ) {
-			return $field_options;
-		}
-
-		$this->add_field_support('dynamic_data', $field_options );
-
-		return $field_options;
-	}
+        return $field_options;
+    }
 }
 
-new GravityView_Post_Excerpt;
+new GravityView_Post_Excerpt();

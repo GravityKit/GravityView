@@ -1,163 +1,176 @@
 <?php
 /**
- * Welcome Page Class
+ * Welcome Page Class.
  *
- * @package   GravityView
  * @author    Zack Katz <zack@gravityview.co>
+ *
  * @link      https://gravityview.co
+ *
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if (!defined('ABSPATH')) {
+    exit;
+}
 
 /**
- * GravityView_Welcome Class
+ * GravityView_Welcome Class.
  *
  * A general class for About page.
  *
  * @since 1.0
  */
-class GravityView_Welcome {
+class GravityView_Welcome
+{
+    /**
+     * @var string The capability users should have to view the page
+     */
+    public $minimum_capability = 'gravityview_getting_started';
 
-	/**
-	 * @var string The capability users should have to view the page
-	 */
-	public $minimum_capability = 'gravityview_getting_started';
+    /**
+     * Get things started.
+     *
+     * @since 1.0
+     */
+    public function __construct()
+    {
+        add_action('admin_menu', [$this, 'admin_menus'], 200);
+        add_action('admin_head', [$this, 'admin_head']);
+        add_action('admin_init', [$this, 'welcome']);
+        add_filter('gravityview_is_admin_page', [$this, 'is_dashboard_page'], 10, 2);
+    }
 
-	/**
-	 * Get things started
-	 *
-	 * @since 1.0
-	 */
-	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'admin_menus'), 200 );
-		add_action( 'admin_head', array( $this, 'admin_head' ) );
-		add_action( 'admin_init', array( $this, 'welcome'    ) );
-		add_filter( 'gravityview_is_admin_page', array( $this, 'is_dashboard_page'), 10, 2 );
-	}
+    /**
+     * Register the Dashboard Pages which are later hidden but these pages
+     * are used to render the Welcome pages.
+     *
+     * @since 1.0
+     *
+     * @return void
+     */
+    public function admin_menus()
+    {
 
-	/**
-	 * Register the Dashboard Pages which are later hidden but these pages
-	 * are used to render the Welcome pages.
-	 *
-	 * @since 1.0
-	 * @return void
-	 */
-	public function admin_menus() {
+        // Add help page to GravityView menu
+        add_submenu_page(
+            'edit.php?post_type=gravityview',
+            __('GravityView: Getting Started', 'gravityview'),
+            __('Getting Started', 'gravityview'),
+            $this->minimum_capability,
+            'gv-getting-started',
+            [$this, 'getting_started_screen']
+        );
 
-		// Add help page to GravityView menu
-		add_submenu_page(
-			'edit.php?post_type=gravityview',
-			__('GravityView: Getting Started', 'gravityview'),
-			__('Getting Started', 'gravityview'),
-			$this->minimum_capability,
-			'gv-getting-started',
-			array( $this, 'getting_started_screen' )
-		);
+        // Changelog Page
+        add_submenu_page(
+            'edit.php?post_type=gravityview',
+            __('Changelog', 'gravityview'),
+            __('Changelog', 'gravityview'),
+            $this->minimum_capability,
+            'gv-changelog',
+            [$this, 'changelog_screen']
+        );
 
-		// Changelog Page
-		add_submenu_page(
-			'edit.php?post_type=gravityview',
-			__( 'Changelog', 'gravityview' ),
-			__( 'Changelog', 'gravityview' ),
-			$this->minimum_capability,
-			'gv-changelog',
-			array( $this, 'changelog_screen' )
-		);
+        // Credits Page
+        add_submenu_page(
+            'edit.php?post_type=gravityview',
+            __('Credits', 'gravityview'),
+            __('Credits', 'gravityview'),
+            $this->minimum_capability,
+            'gv-credits',
+            [$this, 'credits_screen']
+        );
+    }
 
-		// Credits Page
-		add_submenu_page(
-			'edit.php?post_type=gravityview',
-			__( 'Credits', 'gravityview' ),
-			__( 'Credits', 'gravityview' ),
-			$this->minimum_capability,
-			'gv-credits',
-			array( $this, 'credits_screen' )
-		);
+    /**
+     * Is this page a GV dashboard page?
+     *
+     * @return bool $is_page   True: yep; false: nope
+     */
+    public function is_dashboard_page($is_page = false, $hook = null)
+    {
+        global $plugin_page;
 
-	}
+        if ($is_page) {
+            return $is_page;
+        }
 
-	/**
-	 * Is this page a GV dashboard page?
-	 *
-	 * @return boolean  $is_page   True: yep; false: nope
-	 */
-	public function is_dashboard_page($is_page = false, $hook = NULL) {
-		global $plugin_page;
+        return in_array($plugin_page, ['gv-about', 'gv-credits', 'gv-getting-started']);
+    }
 
-		if($is_page) { return $is_page; }
+    /**
+     * Hide Individual Dashboard Pages.
+     *
+     * @since 1.0
+     *
+     * @return void
+     */
+    public function admin_head()
+    {
+        global $plugin_page;
 
-		return in_array( $plugin_page, array( 'gv-about', 'gv-credits', 'gv-getting-started' ) );
-	}
+        remove_submenu_page('edit.php?post_type=gravityview', 'gv-credits');
+        remove_submenu_page('edit.php?post_type=gravityview', 'gv-changelog');
 
-	/**
-	 * Hide Individual Dashboard Pages
-	 *
-	 * @since 1.0
-	 * @return void
-	 */
-	public function admin_head() {
-		global $plugin_page;
-
-		remove_submenu_page( 'edit.php?post_type=gravityview', 'gv-credits' );
-		remove_submenu_page( 'edit.php?post_type=gravityview', 'gv-changelog' );
-
-		if( !$this->is_dashboard_page() ) { return; }
-
-		?>
+        if (!$this->is_dashboard_page()) {
+            return;
+        } ?>
 		<style type="text/css" media="screen" xmlns="http://www.w3.org/1999/html">
 		/*<![CDATA[*/
 		.update-nag { display: none; }
 		/*]]>*/
 		</style>
 		<?php
-	}
+    }
 
-	/**
-	 * Navigation tabs
-	 *
-	 * @since 1.0
-	 * @return void
-	 */
-	public function tabs() {
-		global $plugin_page;
+    /**
+     * Navigation tabs.
+     *
+     * @since 1.0
+     *
+     * @return void
+     */
+    public function tabs()
+    {
+        global $plugin_page;
 
-		// Don't fetch -beta, etc.
-		list( $display_version ) = explode( '-', GravityView_Plugin::version );
+        // Don't fetch -beta, etc.
+        list($display_version) = explode('-', GravityView_Plugin::version);
 
-		$selected = !empty( $plugin_page ) ? $plugin_page : 'gv-getting-started';
+        $selected = !empty($plugin_page) ? $plugin_page : 'gv-getting-started';
 
-		echo gravityview_get_floaty( 132 );
-		?>
+        echo gravityview_get_floaty(132); ?>
 
-		<h1><?php printf( esc_html__( 'Welcome to GravityView %s', 'gravityview' ), $display_version ); ?></h1>
-		<div class="about-text"><?php esc_html_e( 'Thank you for installing GravityView. Beautifully display your Gravity Forms entries.', 'gravityview' ); ?></div>
+		<h1><?php printf(esc_html__('Welcome to GravityView %s', 'gravityview'), $display_version); ?></h1>
+		<div class="about-text"><?php esc_html_e('Thank you for installing GravityView. Beautifully display your Gravity Forms entries.', 'gravityview'); ?></div>
 
 		<h2 class="nav-tab-wrapper clear">
-			<a class="nav-tab <?php echo $selected == 'gv-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-getting-started', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
-				<?php _e( "Getting Started", 'gravityview' ); ?>
+			<a class="nav-tab <?php echo $selected == 'gv-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url(admin_url(add_query_arg(['page' => 'gv-getting-started', 'post_type' => 'gravityview'], 'edit.php'))); ?>">
+				<?php _e('Getting Started', 'gravityview'); ?>
 			</a>
-			<a class="nav-tab <?php echo $selected == 'gv-changelog' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-changelog', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
-				<?php _e( "List of Changes", 'gravityview' ); ?>
+			<a class="nav-tab <?php echo $selected == 'gv-changelog' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url(admin_url(add_query_arg(['page' => 'gv-changelog', 'post_type' => 'gravityview'], 'edit.php'))); ?>">
+				<?php _e('List of Changes', 'gravityview'); ?>
 			</a>
-			<a class="nav-tab <?php echo $selected == 'gv-credits' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-credits', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
-				<?php _e( 'Credits', 'gravityview' ); ?>
+			<a class="nav-tab <?php echo $selected == 'gv-credits' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url(admin_url(add_query_arg(['page' => 'gv-credits', 'post_type' => 'gravityview'], 'edit.php'))); ?>">
+				<?php _e('Credits', 'gravityview'); ?>
 			</a>
 		</h2>
 		<?php
-	}
+    }
 
-	/**
-	 * Render About Screen
-	 *
-	 * @since 1.0
-	 * @return void
-	 */
-	public function getting_started_screen() {
-	?>
+    /**
+     * Render About Screen.
+     *
+     * @since 1.0
+     *
+     * @return void
+     */
+    public function getting_started_screen()
+    {
+        ?>
 		<div class="wrap about-wrap">
 			<?php $this->tabs(); ?>
 		</div>
@@ -204,7 +217,7 @@ class GravityView_Welcome {
 					<p>Embed Views using the "Add Shortcode" button above your content editor. <a href="https://docs.gravityview.co/article/73-using-the-shortcode">Learn how to use the <code>[gravityview]</code> shortcode.</a></p>
 				</div>
 				<div class="col column">
-					<img src="<?php echo plugins_url( 'assets/images/screenshots/shortcode-block.png', GRAVITYVIEW_FILE ); ?>" alt="Screenshot of the Shortcode block" />
+					<img src="<?php echo plugins_url('assets/images/screenshots/shortcode-block.png', GRAVITYVIEW_FILE); ?>" alt="Screenshot of the Shortcode block" />
 				</div>
 			</div>
 
@@ -214,7 +227,7 @@ class GravityView_Welcome {
 					<p>Views don&rsquo;t need to be embedded in a post or page, but you can if you want. Embed Views using the "Add View" button above your content editor.</p>
 				</div>
 				<div class="col column">
-					<img src="<?php echo plugins_url( 'assets/images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" alt="Screenshot of Add View button" />
+					<img src="<?php echo plugins_url('assets/images/screenshots/add-view-button.png', GRAVITYVIEW_FILE); ?>" alt="Screenshot of Add View button" />
 				</div>
 			</div>
 
@@ -234,23 +247,23 @@ class GravityView_Welcome {
 					</ul>
 				</div>
 				<div class="col column">
-					<img src="<?php echo plugins_url( 'assets/images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" />
+					<img src="<?php echo plugins_url('assets/images/screenshots/add-field.png', GRAVITYVIEW_FILE); ?>" alt="Add a field dialog box" />
 				</div>
 			</div>
 		</div>
 		<?php
-	}
+    }
 
-
-	/**
-	 * Render Changelog Screen
-	 *
-	 * @since 1.0.1
-	 * @return void
-	 */
-	public function changelog_screen() {
-
-	?>
+    /**
+     * Render Changelog Screen.
+     *
+     * @since 1.0.1
+     *
+     * @return void
+     */
+    public function changelog_screen()
+    {
+        ?>
 		<div class="wrap about-wrap">
 
 			<?php $this->tabs(); ?>
@@ -258,7 +271,7 @@ class GravityView_Welcome {
 			<div class="changelog point-releases" style="margin-top: 3em; border-bottom: 0">
 
 				<div class="headline-feature" style="max-width: 100%">
-					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
+					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e('What&rsquo;s New', 'gravityview'); ?></h2>
 				</div>
 
 				<h3>2.14.4 on April 27, 2022</h3>
@@ -483,7 +496,7 @@ class GravityView_Welcome {
 				</ul>
 
 				<p style="text-align: center;">
-					<a href="https://gravityview.co/changelog/" class="aligncenter button button-primary button-hero" style="margin: 0 auto; display: inline-block; text-transform: capitalize"><?php esc_html_e( 'View change history', 'gravityview' ); ?></a>
+					<a href="https://gravityview.co/changelog/" class="aligncenter button button-primary button-hero" style="margin: 0 auto; display: inline-block; text-transform: capitalize"><?php esc_html_e('View change history', 'gravityview'); ?></a>
 				</p>
 
 				<div class="clear"></div>
@@ -491,19 +504,20 @@ class GravityView_Welcome {
 
 		</div>
 	<?php
-	}
+    }
 
-	/**
-	 * Render Credits Screen
-	 *
-	 * @since 1.0
-	 * @return void
-	 */
-	public function credits_screen() { ?>
+    /**
+     * Render Credits Screen.
+     *
+     * @since 1.0
+     *
+     * @return void
+     */
+    public function credits_screen() { ?>
 		<div class="wrap about-wrap">
 
 			<?php $this->tabs(); ?>
-			<p class="about-description"><?php _e( 'GravityView is brought to you by:', 'gravityview' ); ?></p>
+			<p class="about-description"><?php _e('GravityView is brought to you by:', 'gravityview'); ?></p>
 
 			<style>
 				.feature-section h3 a {
@@ -528,25 +542,25 @@ class GravityView_Welcome {
 				<div class="col">
 					<h3>Zack Katz <a href="https://twitter.com/zackkatz"><span class="dashicons dashicons-twitter" title="Follow Zack on Twitter"></span></a> <a href="https://katz.co" title="View Zack&rsquo;s website"><span class="dashicons dashicons-admin-site"></span></a></h3>
 					<h4 style="font-weight:0; margin-top:0">Project Lead &amp; Developer</h4>
-					<p><img alt="Zack Katz" style="float:left; margin: 0 15px 10px 0;" src="<?php echo plugins_url( 'assets/images/zack.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Zack has been developing integrations with Gravity Forms since 2009. He runs GravityView and lives with his wife (and cat) in <a href="https://wikipedia.org/wiki/Denver">Denver, Colorado</a>.</p>
+					<p><img alt="Zack Katz" style="float:left; margin: 0 15px 10px 0;" src="<?php echo plugins_url('assets/images/zack.jpg', GRAVITYVIEW_FILE); ?>" width="94" height="94" />Zack has been developing integrations with Gravity Forms since 2009. He runs GravityView and lives with his wife (and cat) in <a href="https://wikipedia.org/wiki/Denver">Denver, Colorado</a>.</p>
 				</div>
 
 				<div class="col">
 					<h3>Rafael Ehlers <a href="https://twitter.com/rafaehlers" title="Follow Rafael on Twitter"><span class="dashicons dashicons-twitter"></span></a> <a href="https://heropress.com/essays/journey-resilience/" title="View Rafael&rsquo;s WordPress Journey"><span class="dashicons dashicons-admin-site"></span></a></h3>
 					<h4 style="font-weight:0; margin-top:0">Project Manager, Support Lead &amp; Customer&nbsp;Advocate</h4>
-					<p><img alt="Rafael Ehlers" style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/rafael.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Rafael helps guide GravityView development priorities and keep us on track. He&rsquo;s the face of our customer support and helps customers get the most out of the product. Rafael hails from <a href="https://wikipedia.org/wiki/Porto_Alegre">Porto Alegre, Brazil</a>.</p>
+					<p><img alt="Rafael Ehlers" style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url('assets/images/rafael.jpg', GRAVITYVIEW_FILE); ?>" width="94" height="94" />Rafael helps guide GravityView development priorities and keep us on track. He&rsquo;s the face of our customer support and helps customers get the most out of the product. Rafael hails from <a href="https://wikipedia.org/wiki/Porto_Alegre">Porto Alegre, Brazil</a>.</p>
 				</div>
 
 				<div class="col">
 					<h3>Vlad K.</h3>
 					<h4 style="font-weight:0; margin-top:0">Core Developer</h4>
-					<p><img alt="Vlad K." style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/vlad.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Vlad, while being the &ldquo;new kid on the block&rdquo; at GravityView, is not new to WordPress, having previously worked on the top newsletter plugin. He&rsquo;s a full-stack developer who focuses on GravityView's user-facing code in the Dashboard and front end. Vlad comes from Russia and lives in Canada.</p>
+					<p><img alt="Vlad K." style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url('assets/images/vlad.jpg', GRAVITYVIEW_FILE); ?>" width="94" height="94" />Vlad, while being the &ldquo;new kid on the block&rdquo; at GravityView, is not new to WordPress, having previously worked on the top newsletter plugin. He&rsquo;s a full-stack developer who focuses on GravityView's user-facing code in the Dashboard and front end. Vlad comes from Russia and lives in Canada.</p>
 				</div>
 
 				<div class="col">
 					<h3>Rafael Bennemann <a href="https://twitter.com/rafaelbe" title="Follow Rafael on Twitter"><span class="dashicons dashicons-twitter"></span></a></h3>
 					<h4 style="font-weight:0; margin-top:0">Support Specialist</h4>
-					<p><img alt="Rafael Bennemann" style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/rafaelb.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Rafael dedicated most of his adult life to helping people and companies take their ideas to the web, first as a developer and now as a Customer Advocate at GravityView. He will do his best to help you too, all the while sipping a <a href="https://en.wikipedia.org/wiki/Spritz_Veneziano">Spritz Veneziano</a> in Northern Italy, where he currently lives with his family.</p>
+					<p><img alt="Rafael Bennemann" style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url('assets/images/rafaelb.jpg', GRAVITYVIEW_FILE); ?>" width="94" height="94" />Rafael dedicated most of his adult life to helping people and companies take their ideas to the web, first as a developer and now as a Customer Advocate at GravityView. He will do his best to help you too, all the while sipping a <a href="https://en.wikipedia.org/wiki/Spritz_Veneziano">Spritz Veneziano</a> in Northern Italy, where he currently lives with his family.</p>
 				</div>
 			</div>
 
@@ -554,7 +568,7 @@ class GravityView_Welcome {
 
 			<div class="feature-section">
 				<div>
-					<h2><?php esc_attr_e( 'Contributors', 'gravityview' ); ?></h2>
+					<h2><?php esc_attr_e('Contributors', 'gravityview'); ?></h2>
 
 					<ul class="wp-people-group">
 						<li class="wp-person">Core &amp; Extension development by <a href="http://tinygod.pt" class="block">Luis Godinho</a>, <a href="https://codeseekah.com" class="block">Gennady Kovshenin</a>, and <a href="https://mrcasual.com" class="block">Vlad K.</a></li>
@@ -581,8 +595,8 @@ class GravityView_Welcome {
 						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, <a href="https://github.com/mgratch">@mgratch</a>, <a href="https://github.com/ViewFromTheBox">@ViewFromTheBox</a>, <a href="https://github.com/stevehenty">@stevehenty</a>, <a href="https://github.com/naomicbush">@naomicbush</a>, and <a href="https://github.com/mrcasual">@mrcasual</a></li>
 					</ul>
 
-					<h4><?php esc_attr_e( 'Want to contribute?', 'gravityview' ); ?></h4>
-					<p><?php echo sprintf( esc_attr__( 'If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here.', 'gravityview'), '<a href="https://github.com/gravityview/GravityView">', '</a>' ); ?></p>
+					<h4><?php esc_attr_e('Want to contribute?', 'gravityview'); ?></h4>
+					<p><?php echo sprintf(esc_attr__('If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here.', 'gravityview'), '<a href="https://github.com/gravityview/GravityView">', '</a>'); ?></p>
 				</div>
 			</div>
 
@@ -610,49 +624,58 @@ class GravityView_Welcome {
 
 		</div>
 	<?php
-	}
+    }
 
+    /**
+     * Sends user to the Welcome page on first activation of GravityView as well as each
+     * time GravityView is upgraded to a new version.
+     *
+     * @since 1.0
+     *
+     * @return void
+     */
+    public function welcome()
+    {
+        global $plugin_page;
 
-	/**
-	 * Sends user to the Welcome page on first activation of GravityView as well as each
-	 * time GravityView is upgraded to a new version
-	 *
-	 * @since 1.0
-	 * @return void
-	 */
-	public function welcome() {
-		global $plugin_page;
+        // Bail if we're just editing the plugin
+        if ($plugin_page === 'plugin-editor.php') {
+            return;
+        }
 
-		// Bail if we're just editing the plugin
-		if( $plugin_page === 'plugin-editor.php' ) { return; }
+        // Bail if no activation redirect
+        if (!get_transient('_gv_activation_redirect')) {
+            return;
+        }
 
-		// Bail if no activation redirect
-		if ( ! get_transient( '_gv_activation_redirect' ) ) { return; }
+        // Delete the redirect transient
+        delete_transient('_gv_activation_redirect');
 
-		// Delete the redirect transient
-		delete_transient( '_gv_activation_redirect' );
+        $upgrade = get_option('gv_version_upgraded_from');
 
-		$upgrade = get_option( 'gv_version_upgraded_from' );
+        // Don't do anything if they've already seen the new version info
+        if ($upgrade === GravityView_Plugin::version) {
+            return;
+        }
 
-		// Don't do anything if they've already seen the new version info
-		if( $upgrade === GravityView_Plugin::version ) {
-			return;
-		}
+        // Add "Upgraded From" Option
+        update_option('gv_version_upgraded_from', GravityView_Plugin::version);
 
-		// Add "Upgraded From" Option
-		update_option( 'gv_version_upgraded_from', GravityView_Plugin::version );
+        // Bail if activating from network, or bulk
+        if (is_network_admin() || isset($_GET['activate-multi'])) {
+            return;
+        }
 
-		// Bail if activating from network, or bulk
-		if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) { return; }
-
-		// First time install
-		if( ! $upgrade ) {
-			wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ) ); exit;
-		}
-		// Update
-		else {
-			wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-changelog' ) ); exit;
-		}
-	}
+        // First time install
+        if (!$upgrade) {
+            wp_safe_redirect(admin_url('edit.php?post_type=gravityview&page=gv-getting-started'));
+            exit;
+        }
+        // Update
+        else {
+            wp_safe_redirect(admin_url('edit.php?post_type=gravityview&page=gv-changelog'));
+            exit;
+        }
+    }
 }
-new GravityView_Welcome;
+new GravityView_Welcome();

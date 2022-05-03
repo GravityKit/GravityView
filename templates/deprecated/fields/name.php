@@ -1,17 +1,13 @@
 <?php
 /**
- * Display the name field type
- *
- * @package GravityView
- * @subpackage GravityView/templates/fields
+ * Display the name field type.
  */
-
 $gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->getCurrentField() );
+extract($gravityview_view->getCurrentField());
 
-if ( floatval( $field_id ) != intval( $field_id ) ) {
-	echo esc_html( gravityview_get_field_value( $entry, $field_id, $display_value ) );
+if (floatval($field_id) != intval($field_id)) {
+    echo esc_html(gravityview_get_field_value($entry, $field_id, $display_value));
 } else {
-	echo gravityview_get_field_value( $entry, $field_id, $display_value );
+    echo gravityview_get_field_value($entry, $field_id, $display_value);
 }

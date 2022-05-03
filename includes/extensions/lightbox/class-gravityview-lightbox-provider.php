@@ -5,195 +5,210 @@
  *
  * @internal Currently internal; not ready for public usage.
  */
-abstract class GravityView_Lightbox_Provider {
+abstract class GravityView_Lightbox_Provider
+{
+    public static $slug;
 
-	public static $slug;
+    public static $script_slug;
 
-	public static $script_slug;
+    public static $style_slug;
 
-	public static $style_slug;
+    /**
+     * Adds actions and that modify GravityView to use this lightbox provider.
+     */
+    public function add_hooks()
+    {
+        add_filter('gravityview_lightbox_script', [$this, 'filter_lightbox_script'], 1000);
+        add_filter('gravityview_lightbox_style', [$this, 'filter_lightbox_style'], 1000);
 
-	/**
-	 * Adds actions and that modify GravityView to use this lightbox provider
-	 */
-	public function add_hooks() {
-		add_filter( 'gravityview_lightbox_script', array( $this, 'filter_lightbox_script' ), 1000 );
-		add_filter( 'gravityview_lightbox_style', array( $this, 'filter_lightbox_style' ), 1000 );
+        add_filter('gravityview/fields/fileupload/link_atts', [$this, 'fileupload_link_atts'], 10, 4);
+        add_filter('gravityview/get_link/allowed_atts', [$this, 'allowed_atts']);
 
-		add_filter( 'gravityview/fields/fileupload/link_atts', array( $this, 'fileupload_link_atts' ), 10, 4 );
-		add_filter( 'gravityview/get_link/allowed_atts', array( $this, 'allowed_atts' ) );
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
 
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts') );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles') );
+        add_action('gravityview/template/after', [$this, 'print_scripts']);
 
-		add_action( 'gravityview/template/after', array( $this, 'print_scripts' ) );
+        add_action('wp_footer', [$this, 'output_footer']);
+    }
 
-		add_action( 'wp_footer', array( $this, 'output_footer' ) );
-	}
+    /**
+     * Prints scripts for lightbox after a View is rendered.
+     *
+     * @since 2.10.1
+     *
+     * @param GV\Template_Context $gravityview
+     *
+     * @return void
+     */
+    public function print_scripts($gravityview)
+    {
+        if (!self::is_active($gravityview)) {
+            return;
+        }
 
+        wp_print_scripts(static::$script_slug);
+        wp_print_styles(static::$script_slug);
+    }
 
-	/**
-	 * Prints scripts for lightbox after a View is rendered
-	 *
-	 * @since 2.10.1
-	 *
-	 * @param GV\Template_Context $gravityview
-	 *
-	 * @return void
-	 */
-	public function print_scripts( $gravityview ) {
+    /**
+     * Returns whether the provider is active for this View.
+     *
+     * @since 2.10.1
+     *
+     * @param GV\Template_Context $gravityview
+     *
+     * @return bool true: yes! false: no!
+     */
+    protected static function is_active($gravityview)
+    {
+        $lightbox = $gravityview->view->settings->get('lightbox');
 
-		if ( ! self::is_active( $gravityview ) ) {
-			return;
-		}
+        if (!$lightbox) {
+            return false;
+        }
 
-		wp_print_scripts( static::$script_slug );
-		wp_print_styles( static::$script_slug );
-	}
+        $provider = gravityview()->plugin->settings->get('lightbox');
 
-	/**
-	 * Returns whether the provider is active for this View
-	 *
-	 * @since 2.10.1
-	 *
-	 * @param GV\Template_Context $gravityview
-	 *
-	 * @return bool true: yes! false: no!
-	 */
-	protected static function is_active( $gravityview ) {
+        if (static::$slug !== $provider) {
+            return false;
+        }
 
-		$lightbox = $gravityview->view->settings->get( 'lightbox' );
+        return true;
+    }
 
-		if ( ! $lightbox ) {
-			return false;
-		}
+    /**
+     * Removes actions that were added by {@see GravityView_Lightbox_Provider::add_hooks}.
+     *
+     * @internal Do not call directly. Instead, use:
+     *
+     * <code>
+     * do_action( 'gravityview/lightbox/provider', 'slug' );
+     * </code>
+     */
+    public function remove_hooks()
+    {
+        remove_filter('gravityview_lightbox_script', [$this, 'filter_lightbox_script'], 1000);
+        remove_filter('gravityview_lightbox_style', [$this, 'filter_lightbox_style'], 1000);
 
-		$provider = gravityview()->plugin->settings->get( 'lightbox' );
+        remove_filter('gravityview/fields/fileupload/link_atts', [$this, 'fileupload_link_atts'], 10);
+        remove_filter('gravityview/get_link/allowed_atts', [$this, 'allowed_atts']);
 
-		if ( static::$slug !== $provider ) {
-			return false;
-		}
+        remove_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
+        remove_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
 
-		return true;
-	}
+        remove_action('wp_footer', [$this, 'output_footer']);
+    }
 
-	/**
-	 * Removes actions that were added by {@see GravityView_Lightbox_Provider::add_hooks}
-	 * @internal Do not call directly. Instead, use:
-	 *
-	 * <code>
-	 * do_action( 'gravityview/lightbox/provider', 'slug' );
-	 * </code>
-	 */
-	public function remove_hooks() {
-		remove_filter( 'gravityview_lightbox_script', array( $this, 'filter_lightbox_script' ), 1000 );
-		remove_filter( 'gravityview_lightbox_style', array( $this, 'filter_lightbox_style' ), 1000 );
+    /**
+     * Modifies the name of the stylesheet to be enqueued when loading thickbox.
+     *
+     * @param string $script
+     *
+     * @return string
+     */
+    public function filter_lightbox_script($script = 'thickbox')
+    {
+        return static::$script_slug;
+    }
 
-		remove_filter( 'gravityview/fields/fileupload/link_atts', array( $this, 'fileupload_link_atts' ), 10 );
-		remove_filter( 'gravityview/get_link/allowed_atts', array( $this, 'allowed_atts' ) );
+    /**
+     * Modifies the name of the stylesheet to be enqueued when loading thickbox.
+     *
+     * @param string $style
+     *
+     * @return string
+     */
+    public function filter_lightbox_style($style = 'thickbox')
+    {
+        return static::$style_slug;
+    }
 
-		remove_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts') );
-		remove_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles') );
+    /**
+     * Get default settings for the script.
+     *
+     * @return array
+     */
+    protected function default_settings()
+    {
+        return [];
+    }
 
-		remove_action( 'wp_footer', array( $this, 'output_footer' ) );
-	}
+    /**
+     * Get the settings for the JavaScript, with filter applied.
+     *
+     * @internal
+     *
+     * @return mixed|void
+     */
+    protected function get_settings()
+    {
+        $settings = static::default_settings();
 
-	/**
-	 * Modifies the name of the stylesheet to be enqueued when loading thickbox
-	 *
-	 * @param string $script
-	 *
-	 * @return string
-	 */
-	public function filter_lightbox_script( $script = 'thickbox' ) {
-		return static::$script_slug;
-	}
+        return apply_filters('gravityview/lightbox/provider/'.static::$slug.'/settings', $settings);
+    }
 
-	/**
-	 * Modifies the name of the stylesheet to be enqueued when loading thickbox
-	 *
-	 * @param string $style
-	 *
-	 * @return string
-	 */
-	public function filter_lightbox_style( $style = 'thickbox' ) {
-		return static::$style_slug;
-	}
+    /**
+     * Output raw HTML in the wp_footer().
+     *
+     * @internal
+     */
+    public function output_footer()
+    {
+    }
 
-	/**
-	 * Get default settings for the script
-	 *
-	 * @return array
-	 */
-	protected function default_settings() {
-		return array();
-	}
+    /**
+     * Enqueue scripts for the lightbox.
+     *
+     * @internal
+     */
+    public function enqueue_scripts()
+    {
+    }
 
-	/**
-	 * Get the settings for the JavaScript, with filter applied
-	 *
-	 * @internal
-	 *
-	 * @return mixed|void
-	 */
-	protected function get_settings() {
-		$settings = static::default_settings();
+    /**
+     * Enqueue styles for the lightbox.
+     *
+     * @internal
+     */
+    public function enqueue_styles()
+    {
+    }
 
-		return apply_filters( 'gravityview/lightbox/provider/' . static::$slug . '/settings', $settings );
-	}
+    /**
+     * Modify the attributes allowed in an anchor tag generated by GravityView.
+     *
+     * @internal
+     *
+     * @param array $atts Attributes allowed in an anchor <a> tag.
+     *
+     * @return array
+     */
+    public function allowed_atts($atts = [])
+    {
+        return $atts;
+    }
 
-	/**
-	 * Output raw HTML in the wp_footer()
-	 *
-	 * @internal
-	 */
-	public function output_footer() {}
-
-	/**
-	 * Enqueue scripts for the lightbox
-	 *
-	 * @internal
-	 */
-	public function enqueue_scripts() {}
-
-	/**
-	 * Enqueue styles for the lightbox
-	 *
-	 * @internal
-	 */
-	public function enqueue_styles() {}
-
-	/**
-	 * Modify the attributes allowed in an anchor tag generated by GravityView
-	 *
-	 * @internal
-	 *
-	 * @param array $atts Attributes allowed in an anchor <a> tag.
-	 *
-	 * @return array
-	 */
-	public function allowed_atts( $atts = array() ) {
-		return $atts;
-	}
-
-	/**
-	 * Modified File Upload field links to use lightbox
-	 *
-	 * @since 2.10.1 Added $insecure_file_path
-	 * @internal
-	 *
-	 * @param array|string $link_atts Array or attributes string.
-	 * @param array $field_compat Current GravityView field.
-	 * @param \GV\Template_Context|null $context The context.
-	 * @param array $additional_details Array of additional details about the file. {
-	 * @type string $file_path URL to file.
-	 * @type string $insecure_file_path URL to insecure file.
-	 * }
-	 *
-	 * @return mixed
-	 */
-	public function fileupload_link_atts( $link_atts, $field_compat = array(), $context = null, $additional_details = null ) {
-		return $link_atts;
-	}
-
+    /**
+     * Modified File Upload field links to use lightbox.
+     *
+     * @since 2.10.1 Added $insecure_file_path
+     *
+     * @internal
+     *
+     * @param array|string              $link_atts          Array or attributes string.
+     * @param array                     $field_compat       Current GravityView field.
+     * @param \GV\Template_Context|null $context            The context.
+     * @param array                     $additional_details Array of additional details about the file. {
+     *
+     * @var string $file_path URL to file.
+     * @var string $insecure_file_path URL to insecure file.
+     *             }
+     *
+     * @return mixed
+     */
+    public function fileupload_link_atts($link_atts, $field_compat = [], $context = null, $additional_details = null)
+    {
+        return $link_atts;
+    }
 }

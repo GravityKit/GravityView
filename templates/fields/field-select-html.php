@@ -3,12 +3,13 @@
  * The default select field output template.
  *
  * @global \GV\Template_Context $gravityview
+ *
  * @since 2.0
  */
+if (!isset($gravityview) || empty($gravityview->template)) {
+    gravityview()->log->error('{file} template loaded without context', ['file' => __FILE__]);
 
-if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
-	gravityview()->log->error( '{file} template loaded without context', array( 'file' => __FILE__ ) );
-	return;
+    return;
 }
 
 $field = $gravityview->field->field;
@@ -18,19 +19,23 @@ $field_settings = $gravityview->field->as_configuration();
 
 /**
  * @filter `gravityview/fields/select/output_label` Override whether to show the value or the label of a Select field
+ *
  * @since 1.5.2
- * @param bool $show_label True: Show the label of the Choice; False: show the value of the Choice. Default: `false`
- * @param array $entry GF Entry
- * @param GF_Field_Select $field Gravity Forms Select field
+ *
+ * @param bool            $show_label True: Show the label of the Choice; False: show the value of the Choice. Default: `false`
+ * @param array           $entry      GF Entry
+ * @param GF_Field_Select $field      Gravity Forms Select field
+ *
  * @since 2.0
+ *
  * @param \GV\Template_Context $gravityview The context
  */
-$show_label = apply_filters( 'gravityview/fields/select/output_label', ( 'label' === \GV\Utils::get( $field_settings, 'choice_display' ) ), $entry, $field, $gravityview );
+$show_label = apply_filters('gravityview/fields/select/output_label', ('label' === \GV\Utils::get($field_settings, 'choice_display')), $entry, $field, $gravityview);
 
-if ( $show_label && ! empty( $field->choices ) && is_array( $field->choices ) && '' !== $display_value ) {
-	$output = RGFormsModel::get_choice_text( $field, $display_value );
+if ($show_label && !empty($field->choices) && is_array($field->choices) && '' !== $display_value) {
+    $output = RGFormsModel::get_choice_text($field, $display_value);
 } else {
-	$output = $display_value;
+    $output = $display_value;
 }
 
 echo $output;

@@ -1,9 +1,10 @@
 <?php
+
 namespace GV;
 
 /** If this file is called directly, abort. */
-if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
-	die();
+if (!defined('GRAVITYVIEW_DIR')) {
+    exit();
 }
 
 /**
@@ -25,8 +26,9 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * For now we use the Gravity Forms backend for this, since developing an ORM
  *  will take us another year :)
  */
-abstract class Entry_Filter {
+abstract class Entry_Filter
+{
 }
 
 /** Load implementations. */
-require gravityview()->plugin->dir( 'future/includes/class-gv-collection-entry-filter-gravityforms.php' );
+require gravityview()->plugin->dir('future/includes/class-gv-collection-entry-filter-gravityforms.php');

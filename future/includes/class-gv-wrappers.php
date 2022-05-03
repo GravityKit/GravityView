@@ -1,4 +1,5 @@
 <?php
+
 namespace GV\Wrappers;
 
 /**
@@ -12,85 +13,87 @@ namespace GV\Wrappers;
 /**
  * The views magic wrapper.
  */
-class views {
+class views
+{
+    /**
+     * @var \GV\View An internal View keeper.
+     */
+    private $view = null;
 
-	/**
-	 * @var \GV\View An internal View keeper.
-	 */
-	private $view = null;
+    /**
+     * Gets a View.
+     *
+     * Doesn't care what you provide it. Will try to find
+     *  out what you need from the current context, from the supplied
+     *  args, etc.
+     *
+     * @param string|int|array|\GV\View|\WP_Post|null Anything goes.
+     *
+     * @return \GV\View|null The detected View.
+     */
+    public function get($view = null)
+    {
 
-	/**
-	 * Gets a View.
-	 *
-	 * Doesn't care what you provide it. Will try to find
-	 *  out what you need from the current context, from the supplied
-	 *  args, etc.
-	 *
-	 * @param string|int|array|\GV\View|\WP_Post|null Anything goes.
-	 *
-	 * @return \GV\View|null The detected View.
-	 */
-	public function get( $view = null ) {
+        /**
+         * By View.
+         */
+        if ($view instanceof \GV\View && $view->ID) {
+            return $this->get($view->ID);
+        }
 
-		/**
-		 * By View.
-		 */
-		if ( $view instanceof \GV\View && $view->ID ) {
-			return $this->get( $view->ID );
-		}
+        /**
+         * By View ID.
+         */
+        if (is_numeric($view)) {
+            return \GV\View::by_id($view);
+        }
 
-		/** 
-		 * By View ID.
-		 */
-		if ( is_numeric( $view ) ) {
-			return \GV\View::by_id( $view );
-		}
+        /**
+         * By post object.
+         */
+        if ($view instanceof \WP_Post) {
+            return \GV\View::from_post($view);
+        }
 
-		/** 
-		 * By post object.
-		 */
-		if ( $view instanceof \WP_Post ) {
-			return \GV\View::from_post( $view );
-		}
+        /**
+         * By array.
+         */
+        if (is_array($view) && !empty($view['id'])) {
+            return $this->get($view['id']);
+        }
 
-		/**
-		 * By array.
-		 */
-		if ( is_array( $view ) && ! empty( $view['id'] ) ) {
-			return $this->get( $view['id'] );
-		}
+        /**
+         * From various contexts.
+         */
+        if (is_null($view)) {
+            if (gravityview()->request->is_renderable() && $view = gravityview()->request->is_view()) {
+                return $view;
+            }
 
-		/**
-		 * From various contexts.
-		 */
-		if ( is_null( $view ) ) {
-			if ( gravityview()->request->is_renderable() && $view = gravityview()->request->is_view() ) {
-				return $view;
-			}
+            global $post;
 
-			global $post;
+            if ($post instanceof \WP_Post && $post->post_type == 'gravityview') {
+                return $this->get($post);
+            }
 
-			if ( $post instanceof \WP_Post && $post->post_type == 'gravityview' ) {
-				return $this->get( $post );
-			}
+            /**
+             * Final fallback.
+             */
+            return $this->view;
+        }
 
-			/**
-			 * Final fallback.
-			 */
-			return $this->view;
-		}
+        return null;
+    }
 
-		return null;
-	}
-
-	/**
-	 * Mock the internal pointer.
-	 *
-	 * @param \GV\View $view The View to supply on fallback in ::get()
-	 *
-	 * @return void
-	 */
-	public function set( $view ) {
-		$this->view = $view;
-	}
+    /**
+     * Mock the internal pointer.
+     *
+     * @param \GV\View $view The View to supply on fallback in ::get()
+     *
+     * @return void
+     */
+    public function set($view)
+    {
+        $this->view = $view;
+    }
 }

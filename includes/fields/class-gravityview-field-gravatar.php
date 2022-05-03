@@ -1,182 +1,182 @@
 <?php
 /**
  * @file class-gravityview-field-gravatar.php
- * @package GravityView
- * @subpackage includes\fields
  */
 
 /**
  * @since 2.8
  */
-class GravityView_Field_Gravatar extends GravityView_Field {
+class GravityView_Field_Gravatar extends GravityView_Field
+{
+    public $name = 'gravatar';
 
-	var $name = 'gravatar';
+    public $is_searchable = false;
 
-	var $is_searchable = false;
+    public $group = 'gravityview';
 
-	var $group = 'gravityview';
+    public $contexts = ['single', 'multiple', 'export'];
 
-	var $contexts = array( 'single', 'multiple', 'export' );
+    public $icon = 'dashicons-id';
 
-	var $icon = 'dashicons-id';
+    public function __construct()
+    {
+        $this->label = esc_html__('Gravatar', 'gravityview');
+        $this->description = esc_html__('A Gravatar is an image that represents a person online based on their email. Powered by gravatar.com.', 'gravityview');
 
-	public function __construct() {
-		$this->label = esc_html__( 'Gravatar', 'gravityview' );
-		$this->description = esc_html__( 'A Gravatar is an image that represents a person online based on their email. Powered by gravatar.com.', 'gravityview' );
+        $this->add_hooks();
 
-		$this->add_hooks();
+        parent::__construct();
+    }
 
-		parent::__construct();
-	}
+    /**
+     * Add filters for this field.
+     */
+    public function add_hooks()
+    {
+        add_filter('gravityview_entry_default_fields', [$this, 'add_default_field'], 10, 3);
+    }
 
-	/**
-	 * Add filters for this field
-	 */
-	public function add_hooks() {
-		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ), 10, 3 );
-	}
+    /**
+     * Add this field to the default fields in the GV field picker.
+     *
+     * @param array        $entry_default_fields Array of fields shown by default
+     * @param string|array $form                 form_ID or form object
+     * @param string       $zone                 Either 'single', 'directory', 'edit', 'header', 'footer'
+     *
+     * @return array
+     */
+    public function add_default_field($entry_default_fields = [], $form = [], $zone = '')
+    {
+        if ('edit' === $zone) {
+            return $entry_default_fields;
+        }
 
-	/**
-	 * Add this field to the default fields in the GV field picker
-	 *
-	 * @param array $entry_default_fields Array of fields shown by default
-	 * @param string|array $form form_ID or form object
-	 * @param string $zone Either 'single', 'directory', 'edit', 'header', 'footer'
-	 *
-	 * @return array
-	 */
-	function add_default_field( $entry_default_fields = array(), $form = array(), $zone = '' ) {
+        $entry_default_fields[$this->name] = [
+            'label' => $this->label,
+            'desc'  => $this->description,
+            'type'  => $this->name,
+            'icon'  => 'dashicons-id',
+        ];
 
-		if ( 'edit' === $zone ) {
-			return $entry_default_fields;
-		}
+        return $entry_default_fields;
+    }
 
-		$entry_default_fields[ $this->name ] = array(
-			'label' => $this->label,
-			'desc'  => $this->description,
-			'type'  => $this->name,
-			'icon'  => 'dashicons-id',
-		);
+    /**
+     * Get the email address to use, based on field settings.
+     *
+     * @internal May change in the future! Don't rely on this.
+     *
+     * @param array $field_settings
+     * @param array $entry          Gravity Forms entry
+     *
+     * @return string Email address from field or from entry creator
+     */
+    public static function get_email($field_settings, $entry)
+    {
 
-		return $entry_default_fields;
-	}
+        // There was no logged in user.
+        switch ($field_settings['email_field']) {
+            case 'created_by_email':
 
-	/**
-	 * Get the email address to use, based on field settings
-	 *
-	 * @internal May change in the future! Don't rely on this.
-	 *
-	 * @param array $field_settings
-	 * @param array $entry Gravity Forms entry
-	 *
-	 * @return string Email address from field or from entry creator
-	 */
-	static public function get_email( $field_settings, $entry ) {
+                $created_by = \GV\Utils::get($entry, 'created_by', null);
 
-		// There was no logged in user.
-		switch ( $field_settings['email_field'] ) {
-			case 'created_by_email':
+                if (empty($created_by)) {
+                    return '';
+                }
 
-				$created_by = \GV\Utils::get( $entry, 'created_by', null );
+                $user = get_user_by('id', $created_by);
 
-				if ( empty( $created_by ) ) {
-					return '';
-				}
+                $email = $user->user_email;
+                break;
+            default:
+                $field_id = \GV\Utils::get($field_settings, 'email_field');
+                $email = rgar($entry, $field_id);
+                break;
+        }
 
-				$user = get_user_by( 'id', $created_by );
+        return $email;
+    }
 
-				$email = $user->user_email;
-				break;
-			default:
-				$field_id = \GV\Utils::get( $field_settings, 'email_field' );
-				$email    = rgar( $entry, $field_id );
-				break;
-		}
+    /**
+     * @inheritDoc
+     */
+    public function field_options($field_options, $template_id, $field_id, $context, $input_type, $form_id)
+    {
+        if ('edit' === $context) {
+            return $field_options;
+        }
 
-		return $email;
-	}
+        unset($field_options['new_window']);
 
-	/**
-	 * @inheritDoc
-	 */
-	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
+        $field_options['email_field'] = [
+            'type'    => 'select',
+            'label'   => __('Email to Use', 'gravityview'),
+            'value'   => 'created_by_email',
+            'desc'    => __('Which email should be used to generate the Gravatar?', 'gravityview'),
+            'choices' => $this->_get_email_field_choices($form_id),
+            'group'   => 'display',
+        ];
 
-		if ( 'edit' === $context ) {
-			return $field_options;
-		}
+        $field_options['default'] = [
+            'type'    => 'select',
+            'label'   => __('Default Image', 'gravityview'),
+            'desc'    => __('Choose the default image to be shown when an email has no Gravatar.', 'gravityview').' <a href="https://en.gravatar.com/site/implement/images/">'.esc_html(sprintf(__('Read more about %s', 'gravityview'), __('Default Image', 'gravityview'))).'</a>',
+            'value'   => get_option('avatar_default', 'mystery'),
+            'choices' => [
+                'mystery'          => __('Silhouetted Person', 'gravityview'),
+                'gravatar_default' => __('Gravatar Icon', 'gravityview'),
+                'identicon'        => __('Abstract Geometric Patterns', 'gravityview'),
+                'monsterid'        => __('Monster Faces', 'gravityview'),
+                'retro'            => __('Arcade-style Faces', 'gravityview'),
+                'robohash'         => __('Robot Faces', 'gravityview'),
+                'blank'            => __('Transparent Image', 'gravityview'),
+            ],
+            'group' => 'display',
+        ];
 
-		unset( $field_options['new_window'] );
+        $field_options['size'] = [
+            'type'       => 'number',
+            'label'      => __('Size in Pixels', 'gravityview'),
+            'value'      => 80,
+            'max'        => 2048,
+            'min'        => 1,
+            'merge_tags' => false,
+            'group'      => 'display',
+        ];
 
-		$field_options['email_field'] = array(
-			'type'    => 'select',
-			'label'   => __( 'Email to Use', 'gravityview' ),
-			'value'   => 'created_by_email',
-			'desc'    => __( 'Which email should be used to generate the Gravatar?', 'gravityview' ),
-			'choices' => $this->_get_email_field_choices( $form_id ),
-			'group' => 'display',
-		);
+        return $field_options;
+    }
 
-		$field_options['default'] = array(
-			'type'    => 'select',
-			'label'   => __( 'Default Image', 'gravityview' ),
-			'desc'    => __( 'Choose the default image to be shown when an email has no Gravatar.', 'gravityview' ) . ' <a href="https://en.gravatar.com/site/implement/images/">' . esc_html( sprintf( __( 'Read more about %s', 'gravityview' ), __( 'Default Image', 'gravityview' ) ) ) . '</a>',
-			'value'   => get_option( 'avatar_default', 'mystery' ),
-			'choices' => array(
-				'mystery'          => __( 'Silhouetted Person', 'gravityview' ),
-				'gravatar_default' => __( 'Gravatar Icon', 'gravityview' ),
-				'identicon'        => __( 'Abstract Geometric Patterns', 'gravityview' ),
-				'monsterid'        => __( 'Monster Faces', 'gravityview' ),
-				'retro'            => __( 'Arcade-style Faces', 'gravityview' ),
-				'robohash'         => __( 'Robot Faces', 'gravityview' ),
-				'blank'            => __( 'Transparent Image', 'gravityview' ),
-			),
-			'group' => 'display',
-		);
+    /**
+     * Get email fields for the form, as well as default choices.
+     *
+     * @param int $form_id ID of the form to fetch fields for
+     *
+     * @return array Array keys are field IDs and value is field label
+     */
+    private function _get_email_field_choices($form_id = 0)
+    {
+        $field_choices = [
+            'created_by_email' => __('Entry Creator: Email', 'gravityview'),
+        ];
 
-		$field_options['size'] = array(
-			'type'  => 'number',
-			'label' => __( 'Size in Pixels', 'gravityview' ),
-			'value' => 80,
-			'max'   => 2048,
-			'min'   => 1,
-			'merge_tags' => false,
-			'group' => 'display',
-		);
+        $form = GFAPI::get_form($form_id);
 
-		return $field_options;
-	}
+        if (!$form) {
+            return $field_choices;
+        }
 
-	/**
-	 * Get email fields for the form, as well as default choices
-	 *
-	 * @param int $form_id ID of the form to fetch fields for
-	 *
-	 * @return array Array keys are field IDs and value is field label
-	 */
-	private function _get_email_field_choices( $form_id = 0 ) {
+        $email_fields = GFAPI::get_fields_by_type($form, ['email']);
 
-		$field_choices = array(
-			'created_by_email' => __( 'Entry Creator: Email', 'gravityview' ),
-		);
+        foreach ($email_fields as $email_field) {
+            $email_field_id = $email_field['id'];
+            $email_field_label = GVCommon::get_field_label($form, $email_field_id);
+            $email_field_label = sprintf(__('Field: %s', 'gravityview'), $email_field_label);
+            $field_choices[$email_field_id] = esc_html($email_field_label);
+        }
 
-		$form = GFAPI::get_form( $form_id );
-
-		if ( ! $form ) {
-			return $field_choices;
-		}
-
-		$email_fields = GFAPI::get_fields_by_type( $form, array( 'email' ) );
-
-		foreach ( $email_fields as $email_field ) {
-			$email_field_id                   = $email_field['id'];
-			$email_field_label                = GVCommon::get_field_label( $form, $email_field_id );
-			$email_field_label                = sprintf( __( 'Field: %s', 'gravityview' ), $email_field_label );
-			$field_choices[ $email_field_id ] = esc_html( $email_field_label );
-		}
-
-		return $field_choices;
-	}
-
+        return $field_choices;
+    }
 }
 
-new GravityView_Field_Gravatar;
+new GravityView_Field_Gravatar();

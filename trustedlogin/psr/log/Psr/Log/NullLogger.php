@@ -3,6 +3,7 @@
  * @license MIT
  *
  * Modified by gravityview on 28-April-2022 using Strauss.
+ *
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -25,11 +26,11 @@ class NullLogger extends AbstractLogger
      * @param string $message
      * @param array  $context
      *
-     * @return void
-     *
      * @throws \GravityView\Psr\Log\InvalidArgumentException
+     *
+     * @return void
      */
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = [])
     {
         // noop
     }

@@ -1,27 +1,24 @@
 <?php
 /**
  * @file class-gravityview-field-captcha.php
- * @package GravityView
- * @subpackage includes\fields
  */
+class GravityView_Field_Captcha extends GravityView_Field
+{
+    public $name = 'captcha';
 
-class GravityView_Field_Captcha extends GravityView_Field {
+    public $is_searchable = false;
 
-	var $name = 'captcha';
+    public $_gf_field_class_name = 'GF_Field_CAPTCHA';
 
-	var $is_searchable = false;
+    public $group = 'advanced';
 
-	var $_gf_field_class_name = 'GF_Field_CAPTCHA';
+    public $icon = 'dashicons-shield-alt';
 
-	var $group = 'advanced';
-
-	var $icon = 'dashicons-shield-alt';
-
-	public function __construct() {
-		$this->label = esc_html__( 'CAPTCHA', 'gravityview' );
-		parent::__construct();
-	}
-
+    public function __construct()
+    {
+        $this->label = esc_html__('CAPTCHA', 'gravityview');
+        parent::__construct();
+    }
 }
 
-new GravityView_Field_Captcha;
+new GravityView_Field_Captcha();

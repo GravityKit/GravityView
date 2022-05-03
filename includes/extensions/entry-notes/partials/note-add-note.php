@@ -1,16 +1,17 @@
 <?php
 /**
- * Display a note, without editing options
+ * Display a note, without editing options.
  *
  * @since 1.17
  */
 
 /**
  * @action `gravityview/field/notes/scripts` Print scripts and styles required for the Notes field
+ *
  * @see GravityView_Field_Notes::enqueue_scripts
  * @since 1.17
  */
-do_action( 'gravityview/field/notes/scripts' );
+do_action('gravityview/field/notes/scripts');
 ?>
 <form method="post" class="gv-note-add">
 	<div>

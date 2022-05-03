@@ -1,66 +1,68 @@
 <?php
 /**
  * @file class-gravityview-field-workflow_current_status_timestamp.php
+ *
  * @since develop
- * @package GravityView
- * @subpackage includes\fields
  */
+class GravityView_Field_Workflow_Current_Status_Timestamp extends GravityView_Field
+{
+    public $name = 'workflow_current_status_timestamp';
 
-class GravityView_Field_Workflow_Current_Status_Timestamp extends GravityView_Field {
+    public $group = 'add-ons';
 
-	var $name = 'workflow_current_status_timestamp';
+    public $contexts = ['multiple', 'single'];
 
-	public $group = 'add-ons';
+    public $entry_meta_key = 'workflow_current_status_timestamp';
 
-	var $contexts = array( 'multiple', 'single' );
+    public $is_numeric = true;
 
-	var $entry_meta_key = 'workflow_current_status_timestamp';
+    public $icon = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMS43IDExLjIiPjxwYXRoIGQ9Ik0xNC43IDUuOWwtNy00Yy0xLjItLjctMi41LS44LTMuNy0uMy0xLjcuNy0yLjYgMS45LTIuNyAzLjYtLjEgMS41LjQgMi43IDEuNCAzLjcgMS4xIDEuMSAyLjYgMS40IDQuMy45LjIgMCAuNS0uMiAxLjEtLjQuMi0uMS4zLS4xLjQtLjEuMyAwIC41LjEuNi40LjEuMyAwIC41LS4zLjctMS4yLjctMi40LjktMy44LjgtMS4zLS4yLTIuNS0uNy0zLjQtMS42Qy41IDguNS0uMSA3LjEgMCA1LjVjLjEtMi40IDEuMi00IDMuMy01QzQuNS0uMSA1LjgtLjIgNy4yLjJjLjIuMS42LjIgMS4yLjZsNyAzLjkuNC0uNi44IDIuMS0yLjIuMy4zLS42em0tNy44LS41bDcgNGMxLjIuNyAyLjUuOCAzLjcuMyAxLjctLjcgMi42LTEuOSAyLjgtMy42LjEtMS40LS40LTIuNi0xLjUtMy43cy0yLjUtMS40LTQuMy0xYy0uNC4xLS44LjMtMS4xLjRsLS40LjFjLS4zIDAtLjUtLjEtLjYtLjQtLjEtLjMgMC0uNS4zLS43IDEuMS0uNyAyLjQtLjkgMy44LS44IDEuNC4yIDIuNS43IDMuNCAxLjcgMS4yIDEuMiAxLjcgMi41IDEuNiA0LjEtLjEgMi4zLTEuMiA0LTMuMyA1LTEuNC42LTIuNy42LTMuOS4yLS4zLS4xLS43LS4zLTEuMS0uNWwtNy0zLjktLjQuNUw1LjEgNWwyLjItLjMtLjQuN3oiLz48L3N2Zz4=';
 
-	var $is_numeric = true;
+    public function __construct()
+    {
+        $this->label = esc_html__('Workflow Current Status Timestamp', 'gravityview');
+        $this->add_hooks();
+        parent::__construct();
+    }
 
-	public $icon = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMS43IDExLjIiPjxwYXRoIGQ9Ik0xNC43IDUuOWwtNy00Yy0xLjItLjctMi41LS44LTMuNy0uMy0xLjcuNy0yLjYgMS45LTIuNyAzLjYtLjEgMS41LjQgMi43IDEuNCAzLjcgMS4xIDEuMSAyLjYgMS40IDQuMy45LjIgMCAuNS0uMiAxLjEtLjQuMi0uMS4zLS4xLjQtLjEuMyAwIC41LjEuNi40LjEuMyAwIC41LS4zLjctMS4yLjctMi40LjktMy44LjgtMS4zLS4yLTIuNS0uNy0zLjQtMS42Qy41IDguNS0uMSA3LjEgMCA1LjVjLjEtMi40IDEuMi00IDMuMy01QzQuNS0uMSA1LjgtLjIgNy4yLjJjLjIuMS42LjIgMS4yLjZsNyAzLjkuNC0uNi44IDIuMS0yLjIuMy4zLS42em0tNy44LS41bDcgNGMxLjIuNyAyLjUuOCAzLjcuMyAxLjctLjcgMi42LTEuOSAyLjgtMy42LjEtMS40LS40LTIuNi0xLjUtMy43cy0yLjUtMS40LTQuMy0xYy0uNC4xLS44LjMtMS4xLjRsLS40LjFjLS4zIDAtLjUtLjEtLjYtLjQtLjEtLjMgMC0uNS4zLS43IDEuMS0uNyAyLjQtLjkgMy44LS44IDEuNC4yIDIuNS43IDMuNCAxLjcgMS4yIDEuMiAxLjcgMi41IDEuNiA0LjEtLjEgMi4zLTEuMiA0LTMuMyA1LTEuNC42LTIuNy42LTMuOS4yLS4zLS4xLS43LS4zLTEuMS0uNWwtNy0zLjktLjQuNUw1LjEgNWwyLjItLjMtLjQuN3oiLz48L3N2Zz4=';
+    public function add_hooks()
+    {
+        add_filter('gravityview_field_entry_value_workflow_current_status_timestamp', [$this, 'modify_entry_value_workflow_current_status_timestamp'], 10, 4);
+    }
 
-	public function __construct() {
-		$this->label = esc_html__( 'Workflow Current Status Timestamp', 'gravityview' );
-		$this->add_hooks();
-		parent::__construct();
-	}
+    /**
+     * Convert a timestamp into a nice format.
+     *
+     * @param string $output         HTML value output
+     * @param array  $entry          The GF entry array
+     * @param array  $field_settings Settings for the particular GV field,
+     * @param array  $field          Current field being displayed
+     *
+     * @since 1.17
+     *
+     * @return string If Gravity Flow not found, or entry not processed yet, returns initial value. Otherwise, returns name of workflow step.
+     */
+    public function modify_entry_value_workflow_current_status_timestamp($output, $entry, $field_settings, $field)
+    {
+        $timestamp = gform_get_meta($entry['id'], 'workflow_current_status_timestamp');
 
-	function add_hooks() {
-		add_filter( 'gravityview_field_entry_value_workflow_current_status_timestamp', array( $this, 'modify_entry_value_workflow_current_status_timestamp' ), 10, 4 );
-	}
+        if (!$timestamp) {
+            return $timestamp;
+        }
 
-	/**
-	 * Convert a timestamp into a nice format.
-	 *
-	 * @param string $output HTML value output
-	 * @param array  $entry The GF entry array
-	 * @param  array $field_settings Settings for the particular GV field,
-	 * @param array $field Current field being displayed
-	 *
-	 * @since 1.17
-	 *
-	 * @return string If Gravity Flow not found, or entry not processed yet, returns initial value. Otherwise, returns name of workflow step.
-	 */
-	function modify_entry_value_workflow_current_status_timestamp( $output, $entry, $field_settings, $field ) {
-		$timestamp = gform_get_meta( $entry['id'], 'workflow_current_status_timestamp' );
+        return GVCommon::format_date(date('Y-m-d H:i:s', $timestamp), 'format='.\GV\Utils::get($field_settings, 'date_display'));
+    }
 
-		if ( ! $timestamp ) {
-			return $timestamp;
-		}
+    public function field_options($field_options, $template_id, $field_id, $context, $input_type, $form_id)
+    {
+        if ($context == 'edit') {
+            return $field_options;
+        }
 
-		return GVCommon::format_date( date( 'Y-m-d H:i:s', $timestamp ), 'format=' . \GV\Utils::get( $field_settings, 'date_display' ) );
-	}
+        $this->add_field_support('date_display', $field_options);
 
-	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
-		if ( $context == 'edit' ) {
-			return $field_options;
-		}
-
-		$this->add_field_support( 'date_display', $field_options );
-
-		return $field_options;
-	}
+        return $field_options;
+    }
 }
 
-new GravityView_Field_Workflow_Current_Status_Timestamp;
+new GravityView_Field_Workflow_Current_Status_Timestamp();

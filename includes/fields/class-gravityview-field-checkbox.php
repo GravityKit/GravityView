@@ -1,87 +1,86 @@
 <?php
 /**
  * @file class-gravityview-field-checkbox.php
- * @package GravityView
- * @subpackage includes\fields
  */
+class GravityView_Field_Checkbox extends GravityView_Field
+{
+    public $name = 'checkbox';
 
-class GravityView_Field_Checkbox extends GravityView_Field {
+    public $is_searchable = true;
 
-	var $name = 'checkbox';
+    /**
+     * @see GFCommon::get_field_filter_settings Gravity Forms suggests checkboxes should just be "is"
+     *
+     * @var array
+     */
+    public $search_operators = ['is', 'in', 'not in', 'isnot', 'contains'];
 
-	var $is_searchable = true;
+    public $_gf_field_class_name = 'GF_Field_Checkbox';
 
-	/**
-	 * @see GFCommon::get_field_filter_settings Gravity Forms suggests checkboxes should just be "is"
-	 * @var array
-	 */
-	var $search_operators = array( 'is', 'in', 'not in', 'isnot', 'contains' );
+    public $group = 'standard';
 
-	var $_gf_field_class_name = 'GF_Field_Checkbox';
+    public $icon = 'dashicons-yes';
 
-	var $group = 'standard';
+    public function __construct()
+    {
+        $this->label = esc_html__('Checkbox', 'gravityview');
+        parent::__construct();
+    }
 
-	var $icon = 'dashicons-yes';
+    /**
+     * Add `choice_display` setting to the field.
+     *
+     * @param array  $field_options
+     * @param string $template_id
+     * @param string $field_id
+     * @param string $context
+     * @param string $input_type
+     *
+     * @since 1.17
+     *
+     * @return array
+     */
+    public function field_options($field_options, $template_id, $field_id, $context, $input_type, $form_id)
+    {
 
-	public function __construct() {
-		$this->label = esc_html__( 'Checkbox', 'gravityview' );
-		parent::__construct();
-	}
+        // Set the $_field_id var
+        $field_options = parent::field_options($field_options, $template_id, $field_id, $context, $input_type, $form_id);
 
-	/**
-	 * Add `choice_display` setting to the field
-	 *
-	 * @param array $field_options
-	 * @param string $template_id
-	 * @param string $field_id
-	 * @param string $context
-	 * @param string $input_type
-	 *
-	 * @since 1.17
-	 *
-	 * @return array
-	 */
-	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
+        // It's the parent field, not an input
+        if (floor($field_id) === floatval($field_id)) {
+            return $field_options;
+        }
 
-		// Set the $_field_id var
-		$field_options = parent::field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id );
+        if ($this->is_choice_value_enabled()) {
+            $desc = esc_html__('This input has a label and a value. What should be displayed?', 'gravityview');
+            $default = 'value';
+            $choices = [
+                'tick'  => __('A check mark, if the input is checked', 'gravityview'),
+                'value' => __('Value of the input', 'gravityview'),
+                'label' => __('Label of the input', 'gravityview'),
+            ];
+        } else {
+            $desc = '';
+            $default = 'tick';
+            $choices = [
+                'tick'  => __('A check mark, if the input is checked', 'gravityview'),
+                'label' => __('Label of the input', 'gravityview'),
+            ];
+        }
 
-		// It's the parent field, not an input
-		if( floor( $field_id ) === floatval( $field_id ) ) {
-			return $field_options;
-		}
+        $field_options['choice_display'] = [
+            'type'     => 'radio',
+            'class'    => 'vertical',
+            'label'    => __('What should be displayed:', 'gravityview'),
+            'value'    => $default,
+            'desc'     => $desc,
+            'choices'  => $choices,
+            'group'    => 'display',
+            'priority' => 100,
+        ];
 
-		if( $this->is_choice_value_enabled() ) {
-
-			$desc = esc_html__( 'This input has a label and a value. What should be displayed?', 'gravityview' );
-			$default = 'value';
-			$choices = array(
-				'tick' => __( 'A check mark, if the input is checked', 'gravityview' ),
-				'value' => __( 'Value of the input', 'gravityview' ),
-				'label' => __( 'Label of the input', 'gravityview' ),
-			);
-		} else {
-			$desc = '';
-			$default = 'tick';
-			$choices = array(
-				'tick' => __( 'A check mark, if the input is checked', 'gravityview' ),
-				'label' => __( 'Label of the input', 'gravityview' ),
-			);
-		}
-
-		$field_options['choice_display'] = array(
-			'type'    => 'radio',
-			'class'   => 'vertical',
-			'label'   => __( 'What should be displayed:', 'gravityview' ),
-			'value'   => $default,
-			'desc'    => $desc,
-			'choices' => $choices,
-			'group'   => 'display',
-			'priority' => 100,
-		);
-
-		return $field_options;
-	}
+        return $field_options;
+    }
 }
 
-new GravityView_Field_Checkbox;
+new GravityView_Field_Checkbox();

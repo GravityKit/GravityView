@@ -1,157 +1,163 @@
 <?php
 
-final class GravityView_Logging {
+final class GravityView_Logging
+{
+    private static $errors = [];
+    private static $errors_hash = [];
+    private static $notices = [];
+    private static $notices_hash = [];
 
-	private static $errors = array();
-	private static $errors_hash = array();
-	private static $notices = array();
-	private static $notices_hash = array();
+    public function __construct()
+    {
+        add_action('gravityview_log_error', [$this, 'log_error'], 10, 2);
 
-	function __construct() {
+        add_action('gravityview_log_debug', [$this, 'log_debug'], 10, 2);
 
-		add_action( 'gravityview_log_error', array( $this, 'log_error'), 10, 2 );
+        // Enable debug with Gravity Forms Logging Add-on
+        add_filter('gform_logging_supported', [$this, 'enable_gform_logging']);
 
-		add_action( 'gravityview_log_debug', array( $this, 'log_debug'), 10, 2 );
+        // Load Debug Bar integration
+        add_filter('debug_bar_panels', [$this, 'add_debug_bar']);
+    }
 
-		// Enable debug with Gravity Forms Logging Add-on
-	    add_filter( 'gform_logging_supported', array( $this, 'enable_gform_logging' ) );
+    /**
+     * Add integration with the Debug Bar plugin. It's awesome.
+     *
+     * @see http://wordpress.org/plugins/debug-bar/
+     */
+    public function add_debug_bar($panels)
+    {
+        if (!class_exists('Debug_Bar_Panel')) {
+            return;
+        }
 
-	    // Load Debug Bar integration
-	    add_filter( 'debug_bar_panels', array( $this, 'add_debug_bar' ) );
+        if (!class_exists('GravityView_Debug_Bar')) {
+            include_once GRAVITYVIEW_DIR.'includes/class-debug-bar.php';
+        }
 
-	}
+        $panels[] = new GravityView_Debug_Bar();
 
-	/**
-	 * Add integration with the Debug Bar plugin. It's awesome.
-	 *
-	 * @see http://wordpress.org/plugins/debug-bar/
-	 */
-	public function add_debug_bar( $panels ) {
+        return $panels;
+    }
 
-		if ( ! class_exists( 'Debug_Bar_Panel' ) ) {
-			return;
-		}
+    /**
+     * Enables debug with Gravity Forms logging add-on.
+     *
+     * @param array $supported_plugins List of plugins
+     */
+    public function enable_gform_logging($supported_plugins)
+    {
+        $supported_plugins['gravityview'] = 'GravityView';
 
-		if ( ! class_exists( 'GravityView_Debug_Bar' ) ) {
-			include_once( GRAVITYVIEW_DIR . 'includes/class-debug-bar.php' );
-		}
+        return $supported_plugins;
+    }
 
-		$panels[] = new GravityView_Debug_Bar;
+    /**
+     * @static
+     *
+     * @return array Array of notices (with `message`, `data`, and `backtrace` keys), if any
+     */
+    public static function get_notices()
+    {
+        return self::$notices;
+    }
 
-		return $panels;
-	}
+    /**
+     * @static
+     *
+     * @return array Array of errors (with `message`, `data`, and `backtrace` keys), if any
+     */
+    public static function get_errors()
+    {
+        return self::$errors;
+    }
 
-	/**
-	 * Enables debug with Gravity Forms logging add-on
-	 * @param array $supported_plugins List of plugins
-	 */
-	public function enable_gform_logging( $supported_plugins ) {
-	    $supported_plugins['gravityview'] = 'GravityView';
-	    return $supported_plugins;
-	}
+    /**
+     * Get the name of the function to print messages for debugging.
+     *
+     * This is necessary because `ob_start()` doesn't allow `print_r()` inside it.
+     *
+     * @return string "print_r" or "var_export"
+     */
+    public static function get_print_function()
+    {
+        if (ob_get_level() > 0) {
+            $function = 'var_export';
+        } else {
+            $function = 'print_r';
+        }
 
-	/**
-	 * @static
-	 * @return array Array of notices (with `message`, `data`, and `backtrace` keys), if any
-	 */
-	public static function get_notices() {
-		return self::$notices;
-	}
+        return $function;
+    }
 
-	/**
-	 * @static
-	 * @return array Array of errors (with `message`, `data`, and `backtrace` keys), if any
-	 */
-	public static function get_errors() {
-		return self::$errors;
-	}
+    public static function log_debug($message = '', $data = null)
+    {
+        $function = self::get_print_function();
 
-	/**
-	 * Get the name of the function to print messages for debugging
-	 *
-	 * This is necessary because `ob_start()` doesn't allow `print_r()` inside it.
-	 *
-	 * @return string "print_r" or "var_export"
-	 */
-	static function get_print_function() {
-		if( ob_get_level() > 0 ) {
-			$function = 'var_export';
-		} else {
-			$function = 'print_r';
-		}
+        $notice = [
+            'message' => $function($message, true),
+            'data'    => $data,
+        ];
 
-		return $function;
-	}
+        $hash = md5(json_encode($notice));
 
-	static function log_debug( $message = '', $data = null ) {
+        if (!isset(self::$notices_hash[$hash])) {
+            self::$notices[] = $notice;
+            self::$notices_hash[$hash] = true;
+        }
 
-		$function = self::get_print_function();
+        if (class_exists('GFLogging')) {
+            GFLogging::include_logger();
+            GFLogging::log_message('gravityview', $function($message, true).$function($data, true), KLogger::DEBUG);
+        }
+    }
 
-		$notice = array(
-			'message' => $function( $message, true ),
-			'data'    => $data,
-		);
+    public static function log_error($message = '', $data = null)
+    {
+        $function = self::get_print_function();
 
-		$hash = md5( json_encode( $notice ) );
+        $error = [
+            'message'   => $message,
+            'data'      => $data,
+            'backtrace' => function_exists('wp_debug_backtrace_summary') ? wp_debug_backtrace_summary(null, 3) : '',
+        ];
 
-		if ( ! isset( self::$notices_hash[ $hash ] ) ) {
-			self::$notices[]             = $notice;
-			self::$notices_hash[ $hash ] = true;
-		}
+        $hash = md5(json_encode($error));
 
-		if ( class_exists("GFLogging") ) {
-			GFLogging::include_logger();
-	        GFLogging::log_message( 'gravityview', $function( $message, true ) . $function($data, true), KLogger::DEBUG );
-	    }
-	}
+        if (!isset(self::$errors_hash[$hash])) {
+            self::$errors[] = $error;
+            self::$errors_hash[$hash] = true;
+        }
 
-	static function log_error( $message = '', $data = null  ) {
+        if (class_exists('GFLogging')) {
+            GFLogging::include_logger();
+            GFLogging::log_message('gravityview', $function($message, true).$function($error, true), KLogger::ERROR);
+        }
+    }
 
-		$function = self::get_print_function();
+    /**
+     * Check whether a plugin is active.
+     *
+     * @param string $plugin
+     *
+     * @since 2.5.1
+     *
+     * @param string $plugin The slug for the plugin used when setting up logging (default: "gravityview")
+     *
+     * @return bool
+     */
+    public static function is_logging_active($plugin = 'gravityview')
+    {
+        if (!class_exists('GFLogging')) {
+            return false;
+        }
 
-		$error = array(
-			'message' => $message,
-			'data' => $data,
-			'backtrace' => function_exists( 'wp_debug_backtrace_summary' ) ? wp_debug_backtrace_summary( null, 3 ) : '',
-		);
+        GFLogging::include_logger();
 
-		$hash = md5( json_encode( $error ) );
+        $plugin_setting = GFLogging::get_instance()->get_plugin_setting($plugin);
 
-		if ( ! isset( self::$errors_hash[ $hash ] ) ) {
-			self::$errors[]             = $error;
-			self::$errors_hash[ $hash ] = true;
-		}
-
-		if ( class_exists("GFLogging") ) {
-		    GFLogging::include_logger();
-		    GFLogging::log_message( 'gravityview', $function ( $message, true ) . $function ( $error, true), KLogger::ERROR );
-		}
-	}
-
-	/**
-	 * Check whether a plugin is active
-	 *
-	 * @param string $plugin
-	 *
-	 * @since 2.5.1
-	 *
-	 * @param string $plugin The slug for the plugin used when setting up logging (default: "gravityview")
-	 *
-	 * @return bool
-	 */
-	static function is_logging_active( $plugin = 'gravityview' ) {
-
-		if( ! class_exists( 'GFLogging') ) {
-			return false;
-		}
-
-		GFLogging::include_logger();
-
-		$plugin_setting = GFLogging::get_instance()->get_plugin_setting( $plugin );
-
-		return ! rgempty( 'enable', $plugin_setting );
-	}
-
+        return !rgempty('enable', $plugin_setting);
+    }
 }
 
-new GravityView_Logging;
+new GravityView_Logging();

@@ -1,30 +1,29 @@
 <?php
 /**
  * @file class-gravityview-field-id.php
+ *
  * @since 2.10
- * @subpackage includes\fields
- * @package GravityView
  */
+class GravityView_Field_IP extends GravityView_Field
+{
+    public $name = 'ip';
 
-class GravityView_Field_IP extends GravityView_Field {
+    public $is_searchable = true;
 
-	var $name = 'ip';
+    public $search_operators = ['is', 'isnot', 'contains'];
 
-	var $is_searchable = true;
+    public $group = 'meta';
 
-	var $search_operators = array( 'is', 'isnot', 'contains' );
+    public $icon = 'dashicons-laptop';
 
-	var $group = 'meta';
+    public $is_numeric = true;
 
-	var $icon = 'dashicons-laptop';
-
-	var $is_numeric = true;
-
-	public function __construct() {
-		$this->label       = __( 'User IP', 'gravityview' );
-		$this->description = __( 'The IP Address of the user who created the entry.', 'gravityview' );
-		parent::__construct();
-	}
+    public function __construct()
+    {
+        $this->label = __('User IP', 'gravityview');
+        $this->description = __('The IP Address of the user who created the entry.', 'gravityview');
+        parent::__construct();
+    }
 }
 
-new GravityView_Field_IP;
+new GravityView_Field_IP();

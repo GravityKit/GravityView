@@ -1,75 +1,74 @@
 <?php
 
-
 /**
- * Widget to display pagination info
+ * Widget to display pagination info.
  *
  * @extends GravityView_Widget
  */
-class GravityView_Widget_Pagination_Info extends \GV\Widget {
+class GravityView_Widget_Pagination_Info extends \GV\Widget
+{
+    public $icon = 'dashicons-info';
 
-	public $icon = 'dashicons-info';
+    /**
+     * Does this get displayed on a single entry?
+     *
+     * @var bool
+     */
+    protected $show_on_single = false;
 
-	/**
-	 * Does this get displayed on a single entry?
-	 * @var boolean
-	 */
-	protected $show_on_single = false;
+    public function __construct()
+    {
+        $this->widget_description = __('Summary of the number of visible entries out of the total results.', 'gravityview');
 
-	function __construct() {
+        $default_values = [
+            'header' => 1,
+            'footer' => 1,
+        ];
 
-		$this->widget_description = __('Summary of the number of visible entries out of the total results.', 'gravityview' );
+        $settings = [];
 
-		$default_values = array(
-			'header' => 1,
-			'footer' => 1,
-		);
+        parent::__construct(__('Show Pagination Info', 'gravityview'), 'page_info', $default_values, $settings);
+    }
 
-		$settings = array();
+    public function render_frontend($widget_args, $content = '', $context = '')
+    {
+        $gravityview_view = GravityView_View::getInstance();
 
-		parent::__construct( __( 'Show Pagination Info', 'gravityview' ) , 'page_info', $default_values, $settings );
-	}
+        if (!$this->pre_render_frontend()) {
+            return;
+        }
 
-	public function render_frontend( $widget_args, $content = '', $context = '') {
-		$gravityview_view = GravityView_View::getInstance();
+        if (!empty($widget_args['title'])) {
+            echo $widget_args['title'];
+        }
 
-		if( !$this->pre_render_frontend() ) {
-			return;
-		}
+        $pagination_counts = $gravityview_view->getPaginationCounts();
 
-		if( !empty( $widget_args['title'] ) ) {
-			echo $widget_args['title'];
-		}
+        $total = $first = $last = null;
 
-		$pagination_counts = $gravityview_view->getPaginationCounts();
+        $output = '';
 
-		$total = $first = $last = null;
+        if (!empty($pagination_counts)) {
+            $first = $pagination_counts['first'];
+            $last = $pagination_counts['last'];
+            $total = $pagination_counts['total'];
 
-		$output = '';
+            $class = !empty($widget_args['custom_class']) ? $widget_args['custom_class'] : '';
+            $class = gravityview_sanitize_html_class($class);
 
-		if( ! empty( $pagination_counts ) ) {
+            $output = '<div class="gv-widget-pagination '.$class.'"><p>'.sprintf(__('Displaying %1$s - %2$s of %3$s', 'gravityview'), number_format_i18n($first), number_format_i18n($last), number_format_i18n($total)).'</p></div>';
+        }
 
-			$first = $pagination_counts['first'];
-			$last = $pagination_counts['last'];
-			$total = $pagination_counts['total'];
-
-			$class = !empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
-			$class = gravityview_sanitize_html_class( $class );
-
-			$output = '<div class="gv-widget-pagination '.$class.'"><p>'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravityview' ), number_format_i18n( $first ), number_format_i18n( $last ), number_format_i18n( $total ) ) . '</p></div>';
-		}
-
-		/**
-		 * @filter `gravityview_pagination_output` Modify the pagination widget output
-		 * @param string $output HTML output
-		 * @param int $first First entry #
-		 * @param int $last Last entry #
-		 * @param int $total Total entries #
-		 */
-		echo apply_filters( 'gravityview_pagination_output', $output, $first, $last, $total );
-
-	}
-
+        /**
+         * @filter `gravityview_pagination_output` Modify the pagination widget output
+         *
+         * @param string $output HTML output
+         * @param int    $first  First entry #
+         * @param int    $last   Last entry #
+         * @param int    $total  Total entries #
+         */
+        echo apply_filters('gravityview_pagination_output', $output, $first, $last, $total);
+    }
 }
 
-new GravityView_Widget_Pagination_Info;
+new GravityView_Widget_Pagination_Info();

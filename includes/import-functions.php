@@ -3,17 +3,18 @@
  * Functions related to importing exported Views.
  *
  * @since 2.12.1
+ *
  * @license   GPL2+
  * @author    GravityView <hello@gravityview.co>
+ *
  * @link      http://gravityview.co
+ *
  * @copyright Copyright 2021, Katz Web Services, Inc.
- * @package   GravityView
  */
-
-add_action( 'wp_import_post_meta', 'gravityview_import_helper_fix_line_breaks', 10, 3 );
+add_action('wp_import_post_meta', 'gravityview_import_helper_fix_line_breaks', 10, 3);
 
 /**
- * Fixes broken serialization character counts when new line characters are in the exported XML
+ * Fixes broken serialization character counts when new line characters are in the exported XML.
  *
  * The XML export file includes the line breaks, which are one character when interpreted by PHP ("\n").
  * For some reason, which I (Zack) cannot understand, the serialized data for the post meta counts both characters
@@ -41,96 +42,95 @@ add_action( 'wp_import_post_meta', 'gravityview_import_helper_fix_line_breaks', 
  * @since 2.12.1
  *
  * @param array $postmeta Copy of $post['postmeta'] to be filtered.
- * @param int $post_id
+ * @param int   $post_id
  * @param array $post
  *
  * @return array Modified array, if GravityView
  */
-function gravityview_import_helper_fix_line_breaks( $postmeta = array(), $post_id = 0, $post = array() ) {
+function gravityview_import_helper_fix_line_breaks($postmeta = [], $post_id = 0, $post = [])
+{
+    if (empty($post['postmeta'])) {
+        return $postmeta;
+    }
 
-	if ( empty( $post['postmeta'] ) ) {
-		return $postmeta;
-	}
+    if ('gravityview' !== $post['post_type']) {
+        return $postmeta;
+    }
 
-	if ( 'gravityview' !== $post['post_type'] ) {
-		return $postmeta;
-	}
+    $keys_to_fix = [
+        '_gravityview_directory_fields',
+        '_gravityview_directory_widgets',
+    ];
 
-	$keys_to_fix = array(
-		'_gravityview_directory_fields',
-		'_gravityview_directory_widgets',
-	);
+    $performed_fix = false;
 
-	$performed_fix = false;
+    foreach ($postmeta as &$meta) {
+        $key = $meta['key'];
 
-	foreach ( $postmeta as &$meta ) {
-		$key = $meta['key'];
+        if (!in_array($key, $keys_to_fix, true)) {
+            continue;
+        }
 
-		if ( ! in_array( $key, $keys_to_fix, true ) ) {
-			continue;
-		}
+        $is_valid_serialized_data = maybe_unserialize($meta['value']);
 
-		$is_valid_serialized_data = maybe_unserialize( $meta['value'] );
+        // The values are not corrupted serialized data. No need to fix.
+        if (false !== $is_valid_serialized_data) {
+            continue;
+        }
 
-		// The values are not corrupted serialized data. No need to fix.
-		if ( false !== $is_valid_serialized_data ) {
-			continue;
-		}
+        $meta['value'] = str_replace("\n", "\n\n", $meta['value']);
 
-		$meta['value'] = str_replace( "\n", "\n\n", $meta['value'] );
+        $performed_fix = true;
+    }
 
-		$performed_fix = true;
-	}
+    // Leave a note that this modification has been done. We'll use it later.
+    if ($performed_fix) {
+        $postmeta[] = [
+            'key'   => '_gravityview_fixed_import_serialization',
+            'value' => 1,
+        ];
+    }
 
-	// Leave a note that this modification has been done. We'll use it later.
-	if ( $performed_fix ) {
-		$postmeta[] = array(
-			'key'   => '_gravityview_fixed_import_serialization',
-			'value' => 1,
-		);
-	}
-
-	return $postmeta;
+    return $postmeta;
 }
 
-add_action( 'import_post_meta', 'gravityview_import_helper_restore_line_breaks', 10, 3 );
+add_action('import_post_meta', 'gravityview_import_helper_restore_line_breaks', 10, 3);
 
 /**
  * Restores the single new line for imported Views that have been modified.
  *
  * @since 2.12.1
- *
  * @see gravityview_import_helper_fix_line_breaks()
  *
- * @param int $post_id
+ * @param int    $post_id
  * @param string $key
- * @param mixed $value
+ * @param mixed  $value
  */
-function gravityview_import_helper_restore_line_breaks( $post_id, $key, $value ) {
+function gravityview_import_helper_restore_line_breaks($post_id, $key, $value)
+{
+    $keys_to_fix = [
+        '_gravityview_directory_fields',
+        '_gravityview_directory_widgets',
+    ];
 
-	$keys_to_fix = array(
-		'_gravityview_directory_fields',
-		'_gravityview_directory_widgets',
-	);
+    if (!in_array($key, $keys_to_fix, true)) {
+        return;
+    }
 
-	if ( ! in_array( $key, $keys_to_fix, true ) ) {
-		return;
-	}
+    if (false === get_post_meta($post_id, '_gravityview_fixed_import_serialization')) {
+        return;
+    }
 
-	if ( false === get_post_meta( $post_id, '_gravityview_fixed_import_serialization' ) ) {
-		return;
-	}
+    if (empty($value) || !is_string($value)) {
+        return;
+    }
 
-	if ( empty( $value ) || ! is_string( $value ) ) {
-		return;
-	}
+    if (false === strpos($value, "\n\n")) {
+        return;
+    }
 
-	if ( false === strpos( $value, "\n\n" ) ) {
-		return;
-	}
+    // Restore the single new line.
+    $updated_value = str_replace("\n\n", "\n", $value);
 
-	// Restore the single new line.
-	$updated_value = str_replace( "\n\n", "\n", $value );
-
-	update_post_meta( $updated_value, $key, $updated_value );
+    update_post_meta($updated_value, $key, $updated_value);
 }

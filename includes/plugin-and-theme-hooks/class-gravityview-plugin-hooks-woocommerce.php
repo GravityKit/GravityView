@@ -1,12 +1,14 @@
 <?php
 /**
- * Add WooCommerce scripts and styles to GravityView no-conflict list
+ * Add WooCommerce scripts and styles to GravityView no-conflict list.
  *
  * @file      class-gravityview-plugin-hooks-woocommerce.php
- * @package   GravityView
+ *
  * @license   GPL2+
  * @author    GravityView <hello@gravityview.co>
+ *
  * @link      http://gravityview.co
+ *
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @since 1.15.2
@@ -15,16 +17,15 @@
 /**
  * @inheritDoc
  */
-class GravityView_Plugin_Hooks_WooCommerce extends GravityView_Plugin_and_Theme_Hooks {
-
-	/**
-	 * @inheritDoc
-	 */
-	protected $style_handles = array(
-		'woocommerce_admin_menu_styles',
-		'woocommerce_admin_styles',
-	);
-
+class GravityView_Plugin_Hooks_WooCommerce extends GravityView_Plugin_and_Theme_Hooks
+{
+    /**
+     * @inheritDoc
+     */
+    protected $style_handles = [
+        'woocommerce_admin_menu_styles',
+        'woocommerce_admin_styles',
+    ];
 }
 
-new GravityView_Plugin_Hooks_WooCommerce;
+new GravityView_Plugin_Hooks_WooCommerce();

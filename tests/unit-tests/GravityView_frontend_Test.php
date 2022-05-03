@@ -1,230 +1,230 @@
 <?php
 
-defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
+defined('DOING_GRAVITYVIEW_TESTS') || exit;
 
 /**
  * @group frontend
  */
-class GravityView_frontend_Test extends GV_UnitTestCase {
+class GravityView_frontend_Test extends GV_UnitTestCase
+{
+    /**
+     * @covers GravityView_frontend::process_search_dates()
+     */
+    public function test_process_search_dates()
+    {
+        $date_range_2014 = [
+            'start_date' => '2014-01-01',
+            'end_date'   => '2014-12-31',
+        ];
 
+        $date_range_june_2015 = [
+            'start_date' => '2015-06-01',
+            'end_date'   => '2015-06-30',
+        ];
 
-	/**
-	 * @covers GravityView_frontend::process_search_dates()
-	 */
-	public function test_process_search_dates() {
+        $date_range_2015 = [
+            'start_date' => '2015-01-01',
+            'end_date'   => '2015-12-31',
+        ];
 
-		$date_range_2014 = array(
-			'start_date' => '2014-01-01',
-			'end_date' => '2014-12-31',
-		);
+        $search_dates = GravityView_frontend::process_search_dates([], $date_range_2015);
+        $this->assertEquals($date_range_2015, $search_dates, 'No View settings to override; use the passed array');
 
-		$date_range_june_2015 = array(
-			'start_date' => '2015-06-01',
-			'end_date' => '2015-06-30',
-		);
+        $search_dates = GravityView_frontend::process_search_dates($date_range_2014, $date_range_2015);
+        $this->assertEquals([
+            'start_date' => $date_range_2015['start_date'],
+            'end_date'   => $date_range_2014['end_date'],
+        ], $search_dates, 'The start date is after the end date, which logs a GravityView error but doesn\'t throw any exceptions. This is expected behavior.');
 
-		$date_range_2015 = array(
-			'start_date' => '2015-01-01',
-			'end_date' => '2015-12-31',
-		);
+        $search_dates = GravityView_frontend::process_search_dates($date_range_2015, $date_range_june_2015);
+        $this->assertEquals($date_range_june_2015, $search_dates, 'The 2015 June passed values are all inside 2015 View settings. Use the passed values.');
 
-		$search_dates = GravityView_frontend::process_search_dates( array(), $date_range_2015 );
-		$this->assertEquals( $date_range_2015, $search_dates, 'No View settings to override; use the passed array' );
+        $now = time();
 
+        $yesterday = date('Y-m-d H:i:s', strtotime('yesterday', $now));
+        $three_days_ago_ymd = date('Y-m-d', strtotime('3 days ago', $now));
+        $one_month_ago = date('Y-m-d H:i:s', strtotime('-1 month', $now));
 
-		$search_dates = GravityView_frontend::process_search_dates( $date_range_2014, $date_range_2015 );
-		$this->assertEquals( array(
-			'start_date' => $date_range_2015['start_date'],
-			'end_date' => $date_range_2014['end_date'],
-		), $search_dates, 'The start date is after the end date, which logs a GravityView error but doesn\'t throw any exceptions. This is expected behavior.' );
+        $relative_dates = [
+            'start_date' => date('Y-m-d H:i:s', strtotime('-1 month', $now)),
+            'end_date'   => date('Y-m-d H:i:s', strtotime('yesterday', $now)),
+        ];
 
-		$search_dates = GravityView_frontend::process_search_dates( $date_range_2015, $date_range_june_2015 );
-		$this->assertEquals( $date_range_june_2015, $search_dates, 'The 2015 June passed values are all inside 2015 View settings. Use the passed values.' );
+        $search_dates = GravityView_frontend::process_search_dates($relative_dates);
+        $this->assertEquals(['start_date' => $one_month_ago, 'end_date' => $yesterday], $search_dates, 'Make sure the relative dates are formatted in Y-m-d H:i:s format');
 
-		$now = time();
+        $search_dates = GravityView_frontend::process_search_dates($relative_dates, ['end_date' => $three_days_ago_ymd]);
+        $this->assertEquals(['start_date' => $one_month_ago, 'end_date' => $three_days_ago_ymd], $search_dates, 'end_date overridden');
+    }
 
-		$yesterday = date( 'Y-m-d H:i:s', strtotime( 'yesterday', $now ) );
-		$three_days_ago_ymd = date( 'Y-m-d', strtotime( '3 days ago', $now ) );
-		$one_month_ago = date( 'Y-m-d H:i:s', strtotime( '-1 month', $now ) );
+    /**
+     * @covers GravityView_frontend::process_search_dates()
+     */
+    public function test_process_search_dates_with_timezone_offset()
+    {
+        // Test relative dates using WP timezone offset
+        if (!function_exists('runkit7_function_copy') || !function_exists('runkit7_function_redefine')) {
+            $this->markTestSkipped('Relative dates test with WP timezone offset requires runkit7_function_redefine(), which requires PHP 7.');
+        }
 
-		$relative_dates = array(
-			'start_date' => date( 'Y-m-d H:i:s', strtotime( '-1 month', $now ) ),
-			'end_date' => date( 'Y-m-d H:i:s', strtotime( 'yesterday', $now ) )
-		);
+        $server_date = 1603292400; // October 21, 2020 3:00:00 PM GMT
 
-		$search_dates = GravityView_frontend::process_search_dates( $relative_dates );
-		$this->assertEquals( array( 'start_date' => $one_month_ago, 'end_date' => $yesterday ), $search_dates, 'Make sure the relative dates are formatted in Y-m-d H:i:s format' );
+        // Copy original functions
+        runkit7_function_copy('time', 'time_original');
+        runkit7_function_copy('strtotime', 'strtotime_original');
 
-		$search_dates = GravityView_frontend::process_search_dates( $relative_dates, array( 'end_date' => $three_days_ago_ymd ) );
-		$this->assertEquals( array( 'start_date' => $one_month_ago, 'end_date' => $three_days_ago_ymd ), $search_dates, 'end_date overridden' );
-	}
+        // Redefine time() to return static server time
+        runkit7_function_redefine('time', '', "return {$server_date};");
 
-	/**
-	 * @covers GravityView_frontend::process_search_dates()
-	 */
-	public function test_process_search_dates_with_timezone_offset() {
-		# Test relative dates using WP timezone offset
-		if ( ! function_exists( 'runkit7_function_copy' ) || !function_exists( 'runkit7_function_redefine' ) ) {
-			$this->markTestSkipped('Relative dates test with WP timezone offset requires runkit7_function_redefine(), which requires PHP 7.');
-		}
+        // Redefine strtotime to use server time by default unless a timestamp is specified
+        runkit7_function_redefine('strtotime', '', '$args = func_get_args(); return !empty($args[1]) ? strtotime_original($args[0], $args[1]) : strtotime_original($args[0], '.$server_date.');');
 
-		$server_date = 1603292400; // October 21, 2020 3:00:00 PM GMT
+        $relative_date_strings = [
+            'plus_two_hours' => '+2 hours',
+            'yesterday'      => 'yesterday',
+            'tomorrow'       => 'tomorrow',
+            'today'          => 'today',
+            'three_days_ago' => '3 days ago',
+            'one_month_ago'  => '-1 month',
+        ];
 
-		# Copy original functions
-		runkit7_function_copy( 'time', 'time_original' );
-		runkit7_function_copy( 'strtotime', 'strtotime_original' );
+        $server_date_relative = [
+            'plus_two_hours' => '2020-10-21 17:00:00',
+            'yesterday'      => '2020-10-20 00:00:00',
+            'tomorrow'       => '2020-10-22 00:00:00',
+            'today'          => '2020-10-21 00:00:00',
+            'three_days_ago' => '2020-10-18 15:00:00',
+            'one_month_ago'  => '2020-09-21 15:00:00',
+        ];
 
-		# Redefine time() to return static server time
-		runkit7_function_redefine( 'time', '', "return {$server_date};" );
+        foreach ($relative_date_strings as $key => $string) {
+            $result = GravityView_frontend::process_search_dates(['start_date' => $string]);
+            $this->assertEquals(['start_date' => $server_date_relative[$key]], $result);
+        }
 
-		# Redefine strtotime to use server time by default unless a timestamp is specified
-		runkit7_function_redefine( 'strtotime', '', '$args = func_get_args(); return !empty($args[1]) ? strtotime_original($args[0], $args[1]) : strtotime_original($args[0], ' . $server_date . ');' );
+        // Let's set the GMT offset to +10 hours (Australia/Brisbane where our "today" is their "tomorrow")
+        update_option('gmt_offset', '10');
 
-		$relative_date_strings = array(
-			'plus_two_hours' => '+2 hours',
-			'yesterday'      => 'yesterday',
-			'tomorrow'       => 'tomorrow',
-			'today'          => 'today',
-			'three_days_ago' => '3 days ago',
-			'one_month_ago'  => '-1 month',
-		);
+        $wp_date_relative = [
+            'plus_two_hours' => '2020-10-22 03:00:00',
+            'today'          => '2020-10-22 00:00:00',
+            'tomorrow'       => '2020-10-23 00:00:00',
+            'yesterday'      => '2020-10-21 00:00:00',
+            'three_days_ago' => '2020-10-19 01:00:00',
+            'one_month_ago'  => '2020-09-22 01:00:00',
+        ];
 
-		$server_date_relative = array(
-			'plus_two_hours' => '2020-10-21 17:00:00',
-			'yesterday'      => '2020-10-20 00:00:00',
-			'tomorrow'       => '2020-10-22 00:00:00',
-			'today'          => '2020-10-21 00:00:00',
-			'three_days_ago' => '2020-10-18 15:00:00',
-			'one_month_ago'  => '2020-09-21 15:00:00',
-		);
+        foreach ($relative_date_strings as $key => $string) {
+            $result = GravityView_frontend::process_search_dates(['start_date' => $string]);
+            $this->assertEquals(['start_date' => $wp_date_relative[$key]], $result);
+        }
 
-		foreach ( $relative_date_strings as $key => $string ) {
-			$result = GravityView_frontend::process_search_dates( array( 'start_date' => $string ) );
-			$this->assertEquals( array( 'start_date' => $server_date_relative[ $key ] ), $result );
-		}
+        // Revert back to original function definitions/timezone
+        runkit7_function_remove('time');
+        runkit7_function_remove('strtotime');
+        runkit7_function_copy('time_original', 'time');
+        runkit7_function_copy('strtotime_original', 'strtotime');
+        update_option('gmt_offset', '0');
+    }
 
-		// Let's set the GMT offset to +10 hours (Australia/Brisbane where our "today" is their "tomorrow")
-		update_option( 'gmt_offset', '10' );
+    /**
+     * @covers GravityView_frontend::get_search_criteria()
+     */
+    public function test_get_search_criteria()
+    {
 
-		$wp_date_relative = array(
-			'plus_two_hours' => '2020-10-22 03:00:00',
-			'today'          => '2020-10-22 00:00:00',
-			'tomorrow'       => '2020-10-23 00:00:00',
-			'yesterday'      => '2020-10-21 00:00:00',
-			'three_days_ago' => '2020-10-19 01:00:00',
-			'one_month_ago'  => '2020-09-22 01:00:00',
-		);
+        /** Just an empty test. */
+        $this->assertEquals([
+            'field_filters' => [], 'status' => 'active',
+        ], GravityView_frontend::get_search_criteria([], 1));
 
-		foreach ( $relative_date_strings as $key => $string ) {
-			$result = GravityView_frontend::process_search_dates( array( 'start_date' => $string ) );
-			$this->assertEquals( array( 'start_date' => $wp_date_relative[ $key ] ), $result );
-		}
+        /** Make sure searching is locked if implicit search_value is given. */
+        $criteria = GravityView_frontend::get_search_criteria(['search_value' => 'hello', 'search_field' => '1'], 1);
 
-		# Revert back to original function definitions/timezone
-		runkit7_function_remove( 'time' );
-		runkit7_function_remove( 'strtotime' );
-		runkit7_function_copy( 'time_original', 'time' );
-		runkit7_function_copy( 'strtotime_original', 'strtotime' );
-		update_option( 'gmt_offset', '0' );
-	}
+        $this->assertEquals('all', $criteria['field_filters']['mode']);
+    }
 
-	/**
-	 * @covers GravityView_frontend::get_search_criteria()
-	 */
-	public function test_get_search_criteria() {
+    /**
+     * @covers GravityView_frontend::single_entry_title()
+     */
+    public function test_single_entry_title()
+    {
 
-		/** Just an empty test. */
-		$this->assertEquals( array(
-			'field_filters' => array(), 'status' => 'active'
-		), GravityView_frontend::get_search_criteria( array(), 1 ) );
+        // We test check_entry_display elsewhere
+        add_filter('gravityview/single/title/check_entry_display', '__return_false');
 
-		/** Make sure searching is locked if implicit search_value is given. */
-		$criteria = GravityView_frontend::get_search_criteria( array( 'search_value' => 'hello', 'search_field' => '1' ), 1 );
+        $form = $this->factory->form->create_and_get();
+        $_entry = $this->factory->entry->create_and_get(['form_id' => $form['id']]);
+        $_view = $this->factory->view->create_and_get(['form_id' => $form['id']]);
 
-		$this->assertEquals( 'all', $criteria['field_filters']['mode'] );
-	}
+        $view = \GV\View::from_post($_view);
+        $entry = \GV\GF_Entry::by_id($_entry['id']);
 
-	/**
-	 * @covers GravityView_frontend::single_entry_title()
-	 */
-	public function test_single_entry_title() {
+        global $post;
 
-		// We test check_entry_display elsewhere
-		add_filter( 'gravityview/single/title/check_entry_display', '__return_false' );
+        $post = $_view;
 
-		$form = $this->factory->form->create_and_get();
-		$_entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
-		$_view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+        gravityview()->request = new \GV\Mock_Request();
+        gravityview()->request->returns['is_view'] = $view;
+        gravityview()->request->returns['is_entry'] = $entry;
 
-		$view = \GV\View::from_post( $_view );
-		$entry = \GV\GF_Entry::by_id( $_entry['id'] );
+        $view->settings->set('single_title', '{:1} is the title');
 
-		global $post;
+        $outside_loop = GravityView_frontend::getInstance()->single_entry_title('Original Title');
+        $this->assertEquals('Original Title', $outside_loop, 'we are outside the loop; this should return the original');
 
-		$post = $_view;
+        add_filter('gravityview/single/title/out_loop', '__return_true');
 
-		gravityview()->request = new \GV\Mock_Request();
-		gravityview()->request->returns['is_view'] = $view;
-		gravityview()->request->returns['is_entry'] = $entry;
+        $no_post_id = GravityView_frontend::getInstance()->single_entry_title('Original Title');
+        $this->assertEquals('Original Title', $no_post_id, 'We did not pass a $post ID; this should return the original');
 
-		$view->settings->set( 'single_title', '{:1} is the title' );
+        $different_ids = GravityView_frontend::getInstance()->single_entry_title('Original Title', ($_view->ID + 1));
+        $this->assertEquals('Original Title', $different_ids, 'The global $post ID and the passed post id are different; this should return the original');
 
-		$outside_loop = GravityView_frontend::getInstance()->single_entry_title( 'Original Title' );
-		$this->assertEquals( 'Original Title', $outside_loop, 'we are outside the loop; this should return the original' );
+        $should_work = GravityView_frontend::getInstance()->single_entry_title('Original Title', $_view->ID);
+        $this->assertEquals(sprintf('%s is the title', $_entry['1']), $should_work);
 
-		add_filter( 'gravityview/single/title/out_loop', '__return_true' );
+        $single_entry_title = GravityView_frontend::getInstance()->single_entry_title('Original Title', $_view->ID);
+        $this->assertEquals(sprintf('%s is the title', $_entry['1']), $single_entry_title);
 
-		$no_post_id = GravityView_frontend::getInstance()->single_entry_title( 'Original Title' );
-		$this->assertEquals( 'Original Title', $no_post_id, 'We did not pass a $post ID; this should return the original' );
+        $form2 = $this->factory->form->create_and_get();
+        $_entry2 = $this->factory->entry->create_and_get(['form_id' => $form2['id']]);
+        $_view2 = $this->factory->view->create_and_get(['form_id' => $form2['id']]);
+        $view2 = \GV\View::from_post($_view2);
+        $view2->settings->set('single_title', '{:1} is the title for two');
 
-		$different_ids = GravityView_frontend::getInstance()->single_entry_title( 'Original Title', ( $_view->ID + 1 ) );
-		$this->assertEquals( 'Original Title', $different_ids, 'The global $post ID and the passed post id are different; this should return the original' );
+        gravityview()->request = new \GV\Mock_Request();
+        gravityview()->request->returns['is_view'] = false;
+        gravityview()->request->returns['is_entry'] = $entry;
 
-		$should_work = GravityView_frontend::getInstance()->single_entry_title( 'Original Title', $_view->ID );
-		$this->assertEquals( sprintf( '%s is the title', $_entry['1'] ), $should_work );
+        global $post;
+        $post = $this->factory->post->create_and_get([
+            'post_content' => '[gravityview id="'.$view->ID.'"][gravityview id="'.$view2->ID.'"]',
+        ]);
 
-		$single_entry_title = GravityView_frontend::getInstance()->single_entry_title( 'Original Title', $_view->ID );
-		$this->assertEquals( sprintf( '%s is the title', $_entry['1'] ), $single_entry_title );
+        $single_entry_title = GravityView_frontend::getInstance()->single_entry_title('Original Title No GVID', $post->ID);
+        $this->assertEquals('Original Title No GVID', $single_entry_title, 'The post has two Views but no GVID; should return original');
 
-		$form2 = $this->factory->form->create_and_get();
-		$_entry2 = $this->factory->entry->create_and_get( array( 'form_id' => $form2['id'] ) );
-		$_view2 = $this->factory->view->create_and_get( array( 'form_id' => $form2['id'] ) );
-		$view2 = \GV\View::from_post( $_view2 );
-		$view2->settings->set( 'single_title', '{:1} is the title for two' );
+        $_GET = [
+            'gvid' => $view->ID,
+        ];
+        $entry_1_should_win = GravityView_frontend::getInstance()->single_entry_title('Original Title Entry 1', $post->ID);
+        $this->assertEquals(sprintf('%s is the title', $_entry['1']), $entry_1_should_win);
 
-		gravityview()->request = new \GV\Mock_Request();
-		gravityview()->request->returns['is_view'] = false;
-		gravityview()->request->returns['is_entry'] = $entry;
+        $_GET = [
+            'gvid' => $view2->ID,
+        ];
+        $entry_2_should_win = GravityView_frontend::getInstance()->single_entry_title('Original Title Entry 2', $post->ID);
+        $this->assertEquals(sprintf('%s is the title for two', $_entry2['1']), $entry_2_should_win);
 
-		global $post;
-		$post = $this->factory->post->create_and_get( array(
-			'post_content' => '[gravityview id="' . $view->ID . '"][gravityview id="' . $view2->ID . '"]'
-		) );
+        $post_id = $post->ID;
+        unset($post);
+        $_GET = [];
+        $single_entry_title = GravityView_frontend::getInstance()->single_entry_title('Original Title', $post_id);
+        $this->assertEquals('Original Title', $single_entry_title, 'There is no global $post and no GVID; should return original');
 
-		$single_entry_title = GravityView_frontend::getInstance()->single_entry_title( 'Original Title No GVID', $post->ID );
-		$this->assertEquals( 'Original Title No GVID', $single_entry_title, 'The post has two Views but no GVID; should return original' );
-
-		$_GET = array(
-			'gvid' => $view->ID
-		);
-		$entry_1_should_win = GravityView_frontend::getInstance()->single_entry_title( 'Original Title Entry 1', $post->ID );
-		$this->assertEquals( sprintf( '%s is the title', $_entry['1'] ), $entry_1_should_win );
-
-		$_GET = array(
-			'gvid' => $view2->ID
-		);
-		$entry_2_should_win = GravityView_frontend::getInstance()->single_entry_title( 'Original Title Entry 2', $post->ID );
-		$this->assertEquals( sprintf( '%s is the title for two', $_entry2['1'] ), $entry_2_should_win );
-
-		$post_id = $post->ID;
-		unset( $post );
-		$_GET = array();
-		$single_entry_title = GravityView_frontend::getInstance()->single_entry_title( 'Original Title', $post_id );
-		$this->assertEquals( 'Original Title', $single_entry_title, 'There is no global $post and no GVID; should return original' );
-
-		remove_filter( 'gravityview/single/title/out_loop', '__return_true' );
-		remove_filter( 'gravityview/single/title/check_entry_display', '__return_false' );
-		$_GET = array();
-	}
-
+        remove_filter('gravityview/single/title/out_loop', '__return_true');
+        remove_filter('gravityview/single/title/check_entry_display', '__return_false');
+        $_GET = [];
+    }
 }
