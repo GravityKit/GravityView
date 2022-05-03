@@ -1,247 +1,269 @@
 <?php
 /**
- * GravityView Admin notices
+ * GravityView Admin notices.
  *
- * @package   GravityView
  * @license   GPL2+
  * @author    GravityView <hello@gravityview.co>
+ *
  * @link      http://gravityview.co
+ *
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @since 1.12
  */
 
 /**
- * When the plugin is activated, flush dismissed notices
+ * When the plugin is activated, flush dismissed notices.
+ *
  * @since 1.15.1
  */
-register_activation_hook( GRAVITYVIEW_FILE, array( 'GravityView_Admin_Notices', 'flush_dismissed_notices' ) );
+register_activation_hook(GRAVITYVIEW_FILE, ['GravityView_Admin_Notices', 'flush_dismissed_notices']);
 
 /**
- * Handle displaying and storing of admin notices for GravityView
+ * Handle displaying and storing of admin notices for GravityView.
+ *
  * @since 1.12
  */
-class GravityView_Admin_Notices {
+class GravityView_Admin_Notices
+{
+    /**
+     * @var array
+     */
+    private static $admin_notices = [];
 
-	/**
-	 * @var array
-	 */
-	static private $admin_notices = array();
+    private static $dismissed_notices = [];
 
-	static private $dismissed_notices = array();
+    public function __construct()
+    {
+        $this->add_hooks();
+    }
 
-	function __construct() {
+    public function add_hooks()
+    {
+        add_action('network_admin_notices', [$this, 'dismiss_notice'], 50);
+        add_action('admin_notices', [$this, 'dismiss_notice'], 50);
+        add_action('admin_notices', [$this, 'admin_notice'], 100);
+        add_action('network_admin_notices', [$this, 'admin_notice'], 100);
+    }
 
-		$this->add_hooks();
-	}
+    /**
+     * Clear out the dismissed notices when the plugin gets activated.
+     *
+     * @see register_activation_hook
+     * @since 1.15.1
+     *
+     * @return void
+     */
+    public static function flush_dismissed_notices()
+    {
+        delete_transient('gravityview_dismissed_notices');
+    }
 
-	function add_hooks() {
-		add_action( 'network_admin_notices', array( $this, 'dismiss_notice' ), 50 );
-		add_action( 'admin_notices', array( $this, 'dismiss_notice' ), 50 );
-		add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
-		add_action( 'network_admin_notices', array( $this, 'admin_notice' ), 100 );
-	}
+    /**
+     * Dismiss a GravityView notice - stores the dismissed notices for 16 weeks.
+     *
+     * @since 1.12
+     *
+     * @return void
+     */
+    public function dismiss_notice()
+    {
 
-	/**
-	 * Clear out the dismissed notices when the plugin gets activated
-	 * @see register_activation_hook
-	 * @since 1.15.1
-	 * @return void
-	 */
-	static public function flush_dismissed_notices() {
-		delete_transient( 'gravityview_dismissed_notices' );
-	}
+        // No dismiss sent
+        if (empty($_GET['gv-dismiss']) || empty($_GET['notice'])) {
+            return;
+        }
 
-	/**
-	 * Dismiss a GravityView notice - stores the dismissed notices for 16 weeks
-	 * @since 1.12
-	 * @return void
-	 */
-	public function dismiss_notice() {
+        // Invalid nonce
+        if (!wp_verify_nonce($_GET['gv-dismiss'], 'dismiss')) {
+            return;
+        }
 
-		// No dismiss sent
-		if( empty( $_GET['gv-dismiss'] ) || empty( $_GET['notice'] ) ) {
-			return;
-		}
+        $notice_id = esc_attr($_GET['notice']);
 
-		// Invalid nonce
-		if( !wp_verify_nonce( $_GET['gv-dismiss'], 'dismiss' ) ) {
-			return;
-		}
+        //don't display a message if use has dismissed the message for this version
+        $dismissed_notices = (array) get_transient('gravityview_dismissed_notices');
 
-		$notice_id = esc_attr( $_GET['notice'] );
+        $dismissed_notices[] = $notice_id;
 
-		//don't display a message if use has dismissed the message for this version
-		$dismissed_notices = (array)get_transient( 'gravityview_dismissed_notices' );
+        $dismissed_notices = array_unique($dismissed_notices);
 
-		$dismissed_notices[] = $notice_id;
+        // Remind users every week
+        set_transient('gravityview_dismissed_notices', $dismissed_notices, WEEK_IN_SECONDS);
+    }
 
-		$dismissed_notices = array_unique( $dismissed_notices );
+    /**
+     * Has the notice been dismissed already in the admin?
+     *
+     * If the passed notice array has a `dismiss` key, the notice is dismissable. If it's dismissable,
+     * we check against other notices that have already been dismissed.
+     *
+     * @since 1.12
+     * @see GravityView_Admin_Notices::dismiss_notice()
+     * @see GravityView_Admin_Notices::add_notice()
+     *
+     * @param string $notice Notice array, set using `add_notice()`.
+     *
+     * @return bool True: show notice; False: hide notice
+     */
+    private function is_notice_dismissed($notice)
+    {
 
-		// Remind users every week
-		set_transient( 'gravityview_dismissed_notices', $dismissed_notices, WEEK_IN_SECONDS );
+        // There are no dismissed notices.
+        if (empty(self::$dismissed_notices)) {
+            return false;
+        }
 
-	}
+        // Has the
+        $is_dismissed = !empty($notice['dismiss']) && in_array($notice['dismiss'], self::$dismissed_notices);
 
-	/**
-	 * Has the notice been dismissed already in the admin?
-	 *
-	 * If the passed notice array has a `dismiss` key, the notice is dismissable. If it's dismissable,
-	 * we check against other notices that have already been dismissed.
-	 * @since 1.12
-	 * @see GravityView_Admin_Notices::dismiss_notice()
-	 * @see GravityView_Admin_Notices::add_notice()
-	 * @param  string $notice            Notice array, set using `add_notice()`.
-	 * @return boolean                   True: show notice; False: hide notice
-	 */
-	private function is_notice_dismissed( $notice ) {
+        return $is_dismissed ? true : false;
+    }
 
-		// There are no dismissed notices.
-		if( empty( self::$dismissed_notices ) ) {
-			return false;
-		}
+    /**
+     * Get admin notices.
+     *
+     * @since 1.12
+     *
+     * @return array
+     */
+    public static function get_notices()
+    {
+        return self::$admin_notices;
+    }
 
-		// Has the
-		$is_dismissed = !empty( $notice['dismiss'] ) && in_array( $notice['dismiss'], self::$dismissed_notices );
+    /**
+     * Handle whether to display notices in Multisite based on plugin activation status.
+     *
+     * @uses \GV\Plugin::is_network_activated
+     *
+     * @since 1.12
+     *
+     * @return bool True: show the notices; false: don't show
+     */
+    private function check_show_multisite_notices()
+    {
+        if (!is_multisite()) {
+            return true;
+        }
 
-		return $is_dismissed ? true : false;
-	}
+        // It's network activated but the user can't manage network plugins; they can't do anything about it.
+        if (gravityview()->plugin->is_network_activated() && !is_main_site()) {
+            return false;
+        }
 
-	/**
-	 * Get admin notices
-	 * @since 1.12
-	 * @return array
-	 */
-	public static function get_notices() {
-		return self::$admin_notices;
-	}
+        // or they don't have admin capabilities
+        if (!is_super_admin()) {
+            return false;
+        }
 
-	/**
-	 * Handle whether to display notices in Multisite based on plugin activation status
-	 *
-	 * @uses \GV\Plugin::is_network_activated
-	 *
-	 * @since 1.12
-	 *
-	 * @return bool True: show the notices; false: don't show
-	 */
-	private function check_show_multisite_notices() {
+        return true;
+    }
 
-		if( ! is_multisite() ) {
-			return true;
-		}
+    /**
+     * Outputs the admin notices generated by the plugin.
+     *
+     * @uses GVCommon::has_cap()
+     *
+     * @since 1.12
+     *
+     * @return void
+     */
+    public function admin_notice()
+    {
 
-		// It's network activated but the user can't manage network plugins; they can't do anything about it.
-		if ( gravityview()->plugin->is_network_activated() && ! is_main_site() ) {
-			return false;
-		}
+        /**
+         * @filter `gravityview/admin/notices` Modify the notices displayed in the admin
+         *
+         * @since 1.12
+         */
+        $notices = apply_filters('gravityview/admin/notices', self::$admin_notices);
 
-		// or they don't have admin capabilities
-		if( ! is_super_admin() ) {
-			return false;
-		}
+        if (empty($notices) || !$this->check_show_multisite_notices()) {
+            return;
+        }
 
-		return true;
-	}
+        //don't display a message if use has dismissed the message for this version
+        // TODO: Use get_user_meta instead of get_transient
+        self::$dismissed_notices = isset($_GET['show-dismissed-notices']) ? [] : (array) get_transient('gravityview_dismissed_notices');
 
-	/**
-	 * Outputs the admin notices generated by the plugin
-	 *
-	 * @uses GVCommon::has_cap()
-	 * @since 1.12
-	 *
-	 * @return void
-	 */
-	public function admin_notice() {
+        $output = '';
 
-		/**
-		 * @filter `gravityview/admin/notices` Modify the notices displayed in the admin
-		 * @since 1.12
-		 */
-		$notices = apply_filters( 'gravityview/admin/notices', self::$admin_notices );
+        foreach ($notices as $notice) {
 
-		if( empty( $notices ) || ! $this->check_show_multisite_notices() ) {
-			return;
-		}
+            // If the user doesn't have the capability to see the warning
+            if (isset($notice['cap']) && false === GVCommon::has_cap($notice['cap'])) {
+                gravityview()->log->debug('Notice not shown because user does not have the capability to view it.', ['data' => $notice]);
+                continue;
+            }
 
-		//don't display a message if use has dismissed the message for this version
-		// TODO: Use get_user_meta instead of get_transient
-		self::$dismissed_notices = isset( $_GET['show-dismissed-notices'] ) ? array() : (array)get_transient( 'gravityview_dismissed_notices' );
+            if (true === $this->is_notice_dismissed($notice)) {
+                gravityview()->log->debug('Notice not shown because the notice has already been dismissed.', ['data' => $notice]);
+                continue;
+            }
 
-		$output = '';
+            $output .= '<div id="message" style="position:relative" class="notice '.gravityview_sanitize_html_class($notice['class']).'">';
 
-		foreach( $notices as $notice ) {
+            // Too cute to leave out.
+            $output .= gravityview_get_floaty();
 
-			// If the user doesn't have the capability to see the warning
-			if( isset( $notice['cap'] ) && false === GVCommon::has_cap( $notice['cap'] ) ) {
-				gravityview()->log->debug( 'Notice not shown because user does not have the capability to view it.', array( 'data' => $notice ) );
-				continue;
-			}
+            if (!empty($notice['title'])) {
+                $output .= '<h3>'.esc_html($notice['title']).'</h3>';
+            }
 
-			if( true === $this->is_notice_dismissed( $notice ) ) {
-				gravityview()->log->debug( 'Notice not shown because the notice has already been dismissed.', array( 'data' => $notice ) );
-				continue;
-			}
+            $message = isset($notice['message']) ? $notice['message'] : '';
 
-			$output .= '<div id="message" style="position:relative" class="notice '. gravityview_sanitize_html_class( $notice['class'] ).'">';
+            if (!empty($notice['dismiss'])) {
+                $dismiss = esc_attr($notice['dismiss']);
 
-			// Too cute to leave out.
-			$output .= gravityview_get_floaty();
+                $url = esc_url(add_query_arg(['gv-dismiss' => wp_create_nonce('dismiss'), 'notice' => $dismiss]));
 
-			if( !empty( $notice['title'] ) ) {
-				$output .= '<h3>'.esc_html( $notice['title'] ) .'</h3>';
-			}
+                $align = is_rtl() ? 'alignleft' : 'alignright';
+                $message .= '<a href="'.$url.'" data-notice="'.$dismiss.'" class="'.$align.' button button-link">'.esc_html__('Dismiss', 'gravityview').'</a></p>';
+            }
 
-			$message = isset( $notice['message'] ) ? $notice['message'] : '';
+            $output .= wpautop($message);
 
-			if( !empty( $notice['dismiss'] ) ) {
+            $output .= '<div class="clear"></div>';
+            $output .= '</div>';
+        }
 
-				$dismiss = esc_attr($notice['dismiss']);
+        echo $output;
 
-				$url = esc_url( add_query_arg( array( 'gv-dismiss' => wp_create_nonce( 'dismiss' ), 'notice' => $dismiss ) ) );
+        unset($output, $align, $message, $notices);
 
-				$align = is_rtl() ? 'alignleft' : 'alignright';
-				$message .= '<a href="'.$url.'" data-notice="'.$dismiss.'" class="' . $align . ' button button-link">'.esc_html__('Dismiss', 'gravityview' ).'</a></p>';
-			}
+        //reset the notices handler
+        self::$admin_notices = [];
+    }
 
-			$output .= wpautop( $message );
+    /**
+     * Add a notice to be displayed in the admin.
+     *
+     * @since 1.12 Moved from {@see GravityView_Admin::add_notice() }
+     * @since 1.15.1 Allows for `cap` key, passing capability required to show the message
+     *
+     * @param array $notice {
+     *
+     *      @var string       $class    HTML class to be used for the notice. Default: 'error'
+     *      @var string       $message  Notice message, not escaped. Allows HTML.
+     *      @var string       $dismiss  Unique key used to determine whether the notice has been dismissed. Set to false if not dismissable.
+     *      @var string|array $cap      The capability or caps required for an user to see the notice
+     * }
+     *
+     * @return void
+     */
+    public static function add_notice($notice = [])
+    {
+        if (!isset($notice['message'])) {
+            gravityview()->log->error('Notice not set', ['data' => $notice]);
 
-			$output .= '<div class="clear"></div>';
-			$output .= '</div>';
+            return;
+        }
 
-		}
+        $notice['class'] = empty($notice['class']) ? 'error' : $notice['class'];
 
-		echo $output;
-
-		unset( $output, $align, $message, $notices );
-
-		//reset the notices handler
-		self::$admin_notices = array();
-	}
-
-	/**
-	 * Add a notice to be displayed in the admin.
-	 * @since 1.12 Moved from {@see GravityView_Admin::add_notice() }
-	 * @since 1.15.1 Allows for `cap` key, passing capability required to show the message
-	 * @param array $notice {
-	 *      @type string       $class    HTML class to be used for the notice. Default: 'error'
-	 *      @type string       $message  Notice message, not escaped. Allows HTML.
-	 *      @type string       $dismiss  Unique key used to determine whether the notice has been dismissed. Set to false if not dismissable.
-	 *      @type string|array $cap      The capability or caps required for an user to see the notice
-	 * }
-	 * @return void
-	 */
-	public static function add_notice( $notice = array() ) {
-
-		if( !isset( $notice['message'] ) ) {
-			gravityview()->log->error( 'Notice not set', array( 'data' => $notice ) );
-			return;
-		}
-
-		$notice['class'] = empty( $notice['class'] ) ? 'error' : $notice['class'];
-
-		self::$admin_notices[] = $notice;
-	}
+        self::$admin_notices[] = $notice;
+    }
 }
 
-new GravityView_Admin_Notices;
+new GravityView_Admin_Notices();

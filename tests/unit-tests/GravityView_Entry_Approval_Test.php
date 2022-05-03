@@ -1,247 +1,243 @@
 <?php
 
-defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
+defined('DOING_GRAVITYVIEW_TESTS') || exit;
 
 /**
  * @since 1.18
  * @group approval
  */
-class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
+class GravityView_Entry_Approval_Test extends GV_UnitTestCase
+{
+    private $entries = [];
+
+    private $form = [];
+
+    private $form_id = 0;
+
+    public function setUp()
+    {
+        parent::setUp();
 
-	private $entries = array();
+        $this->form = $this->factory->form->create_and_get();
 
-	private $form = array();
+        $this->form_id = $this->form['id'];
 
-	private $form_id = 0;
+        $this->entries = $this->factory->entry->create_many(10, ['form_id' => $this->form_id, 'date_created' => '2013-11-28 11:00', '1' => 'Second Choice', '2.2' => 'Second Choice', '8' => '1', '13.6' => 'Spain']);
+    }
 
-	public function setUp() {
-		parent::setUp();
+    /**
+     * @covers GravityView_Entry_Approval::add_approval_notification_events
+     */
+    public function test_add_approval_notification_events()
+    {
+        $events = apply_filters('gform_notification_events', []);
 
-		$this->form = $this->factory->form->create_and_get();
+        $this->assertArrayHasKey('gravityview/approve_entries/approved', $events);
+        $this->assertArrayHasKey('gravityview/approve_entries/disapproved', $events);
+        $this->assertArrayHasKey('gravityview/approve_entries/unapproved', $events);
+        $this->assertArrayHasKey('gravityview/approve_entries/updated', $events);
+    }
 
-		$this->form_id = $this->form['id'];
+    /**
+     * @covers GravityView_Entry_Approval::_send_notifications()
+     * @covers GravityView_Entry_Approval::_trigger_notifications()
+     */
+    public function test_send_notifications()
+    {
+        $this->assertTrue(!did_action('gform_notification'));
 
-		$this->entries = $this->factory->entry->create_many( 10, array( 'form_id' => $this->form_id, 'date_created' => '2013-11-28 11:00', '1' => 'Second Choice', '2.2' => 'Second Choice', '8' => '1', '13.6' => 'Spain' ) );
-	}
+        do_action('gravityview/approve_entries/disapproved', 0);
 
-	/**
-	 * @covers GravityView_Entry_Approval::add_approval_notification_events
-	 */
-	public function test_add_approval_notification_events() {
+        $this->assertTrue(!did_action('gform_notification'), 'Filter should not have run because entry ID was invalid.');
 
-		$events = apply_filters( 'gform_notification_events', array() );
+        $notifications = [
+            [
+                'name'  => 'Approved',
+                'id'    => 1,
+                'event' => 'gravityview/approve_entries/approved',
+            ],
+            [
+                'name'  => 'Disapproved',
+                'id'    => 2,
+                'event' => 'gravityview/approve_entries/disapproved',
+            ],
+            [
+                'name'  => 'Unapproved',
+                'id'    => 3,
+                'event' => 'gravityview/approve_entries/unapproved',
+            ],
+            [
+                'name'  => 'Updated',
+                'id'    => 4,
+                'event' => 'gravityview/approve_entries/updated',
+            ],
+        ];
 
-		$this->assertArrayHasKey( 'gravityview/approve_entries/approved', $events );
-		$this->assertArrayHasKey( 'gravityview/approve_entries/disapproved', $events );
-		$this->assertArrayHasKey( 'gravityview/approve_entries/unapproved', $events );
-		$this->assertArrayHasKey( 'gravityview/approve_entries/updated', $events );
-	}
+        $test_form = $this->factory->form->create_and_get(['notifications' => $notifications]);
+        $test_entry = $this->factory->entry->create_and_get(['form_id' => $test_form['id']]);
 
-	/**
-	 * @covers GravityView_Entry_Approval::_send_notifications()
-	 * @covers GravityView_Entry_Approval::_trigger_notifications()
-	 */
-	public function test_send_notifications() {
+        $this->assertTrue(is_array($test_entry), 'Entry was not created properly');
 
+        $triggered_notifications = [];
 
-		$this->assertTrue( ! did_action( 'gform_notification' ) );
+        $test_object = &$this;
 
-		do_action( 'gravityview/approve_entries/disapproved', 0 );
+        foreach ($notifications as $test_notification) {
+            $filter_notification = function ($notification, $form, $lead) use ($test_notification, $test_form, $test_entry, &$triggered_notifications, $test_object) {
+                $test_object->assertSame($notification, $test_notification);
+                $test_object->assertSame($lead, $test_entry);
+                $test_object->assertSame($form, $test_form);
+                $triggered_notifications[] = $test_notification;
 
-		$this->assertTrue( ! did_action( 'gform_notification' ), 'Filter should not have run because entry ID was invalid.' );
+                return $notification;
+            };
 
-		$notifications = array(
-			array(
-				'name'  => 'Approved',
-				'id'    => 1,
-				'event' => 'gravityview/approve_entries/approved',
-			),
-			array(
-				'name'  => 'Disapproved',
-				'id'    => 2,
-				'event' => 'gravityview/approve_entries/disapproved',
-			),
-			array(
-				'name'  => 'Unapproved',
-				'id'    => 3,
-				'event' => 'gravityview/approve_entries/unapproved',
-			),
-			array(
-				'name'  => 'Updated',
-				'id'    => 4,
-				'event' => 'gravityview/approve_entries/updated',
-			),
-		);
+            add_filter('gform_notification', $filter_notification, 10, 3);
 
-		$test_form  = $this->factory->form->create_and_get( array( 'notifications' => $notifications ) );
-		$test_entry = $this->factory->entry->create_and_get( array( 'form_id' => $test_form['id'] ) );
+            do_action($test_notification['event'], $test_entry['id']);
 
-		$this->assertTrue( is_array( $test_entry ), 'Entry was not created properly' );
+            remove_filter('gform_notification', $filter_notification);
+        }
 
-		$triggered_notifications = array();
+        unset($test_object);
 
-		$test_object = & $this;
+        $this->assertSame($notifications, $triggered_notifications);
+    }
 
-		foreach( $notifications as $test_notification ) {
+    /**
+     * @covers GravityView_Entry_Approval::after_submission
+     */
+    public function test_after_submission()
+    {
+        $args = ['form_id' => $this->form_id, 'date_created' => '2013-11-28 11:00', '1' => 'Second Choice', '2.2' => 'Second Choice', '8' => '1', '13.6' => 'Spain'];
 
-			$filter_notification = function( $notification, $form, $lead ) use ( $test_notification, $test_form, $test_entry, & $triggered_notifications, $test_object ) {
-				$test_object->assertSame( $notification, $test_notification );
-				$test_object->assertSame( $lead, $test_entry );
-				$test_object->assertSame( $form, $test_form );
-				$triggered_notifications[] = $test_notification;
-				return $notification;
-			};
+        $entry = $this->factory->entry->create_and_get($args);
 
-			add_filter( 'gform_notification', $filter_notification, 10, 3 );
+        $GravityView_Entry_Approval = new GravityView_Entry_Approval();
 
-			do_action( $test_notification['event'], $test_entry['id'] );
+        $this->assertEquals('', gform_get_meta($entry['id'], GravityView_Entry_Approval::meta_key), 'entry status should not be set, entry created via API');
 
-			remove_filter( 'gform_notification', $filter_notification );
-		}
+        $GravityView_Entry_Approval->after_submission($entry, $this->form);
 
-		unset( $test_object );
+        $this->assertEquals(GravityView_Entry_Approval_Status::UNAPPROVED, (int) gform_get_meta($entry['id'], GravityView_Entry_Approval::meta_key), 'entry status should be set to unapproved');
 
-		$this->assertSame( $notifications, $triggered_notifications );
-	}
+        gform_delete_meta($entry['id'], GravityView_Entry_Approval::meta_key); // Reset
 
-	/**
-	 * @covers GravityView_Entry_Approval::after_submission
-	 */
-	public function test_after_submission() {
+        add_filter('gravityview/approve_entries/after_submission/default_status', function () {
+            return 'NOT A VALID APPROVAL STATUS, MATE';
+        });
 
-		$args = array( 'form_id' => $this->form_id, 'date_created' => '2013-11-28 11:00', '1' => 'Second Choice', '2.2' => 'Second Choice', '8' => '1', '13.6' => 'Spain' );
+        $GravityView_Entry_Approval->after_submission($entry, $this->form);
 
-		$entry = $this->factory->entry->create_and_get( $args );
+        $this->assertEquals(GravityView_Entry_Approval_Status::UNAPPROVED, (int) gform_get_meta($entry['id'], GravityView_Entry_Approval::meta_key), 'entry status should be set to default (unapproved) since invalid filter value');
 
-		$GravityView_Entry_Approval = new GravityView_Entry_Approval;
+        remove_all_filters('gravityview/approve_entries/after_submission/default_status');
 
-		$this->assertEquals( '', gform_get_meta( $entry['id'], GravityView_Entry_Approval::meta_key ), 'entry status should not be set, entry created via API' );
+        gform_delete_meta($entry['id'], GravityView_Entry_Approval::meta_key); // Reset
 
-		$GravityView_Entry_Approval->after_submission( $entry, $this->form );
+        add_filter('gravityview/approve_entries/after_submission/default_status', function () {
+            return GravityView_Entry_Approval_Status::APPROVED;
+        });
 
-		$this->assertEquals( GravityView_Entry_Approval_Status::UNAPPROVED, (int) gform_get_meta( $entry['id'], GravityView_Entry_Approval::meta_key ), 'entry status should be set to unapproved' );
+        $GravityView_Entry_Approval->after_submission($entry, $this->form);
 
-		gform_delete_meta( $entry['id'], GravityView_Entry_Approval::meta_key ); // Reset
+        $this->assertEquals(GravityView_Entry_Approval_Status::APPROVED, (int) gform_get_meta($entry['id'], GravityView_Entry_Approval::meta_key), 'entry status should be set to approved because filter');
 
-		add_filter( 'gravityview/approve_entries/after_submission/default_status', function() {
-			return 'NOT A VALID APPROVAL STATUS, MATE';
-		});
+        remove_all_filters('gravityview/approve_entries/after_submission/default_status');
+    }
 
-		$GravityView_Entry_Approval->after_submission( $entry, $this->form );
+    /**
+     * @since 1.18
+     * @covers GravityView_Entry_Approval::update_approved
+     * @covers GravityView_Cache::in_blocklist()
+     */
+    public function test_update_approved()
+    {
+        $GVCache = new GravityView_Cache();
 
-		$this->assertEquals( GravityView_Entry_Approval_Status::UNAPPROVED, (int) gform_get_meta( $entry['id'], GravityView_Entry_Approval::meta_key ), 'entry status should be set to default (unapproved) since invalid filter value' );
+        // Remove the form from the blocklist
+        $GVCache->blocklist_remove($this->form_id);
 
-		remove_all_filters( 'gravityview/approve_entries/after_submission/default_status' );
+        // Make sure form isn't in cache blocklist
+        $this->assertFalse($GVCache->in_blocklist($this->form_id));
 
+        $statuses = GravityView_Entry_Approval_Status::get_all();
 
-		gform_delete_meta( $entry['id'], GravityView_Entry_Approval::meta_key ); // Reset
+        foreach ($this->entries as $entry_id) {
 
-		add_filter( 'gravityview/approve_entries/after_submission/default_status', function() {
-			return GravityView_Entry_Approval_Status::APPROVED;
-		});
+            // Default: Unapproved
+            $this->assertEquals(GravityView_Entry_Approval_Status::UNAPPROVED, GravityView_Entry_Approval::get_entry_status($entry_id, 'value'));
 
-		$GravityView_Entry_Approval->after_submission( $entry, $this->form );
+            // Set, then check, the status
+            foreach ($statuses as $status) {
+                GravityView_Entry_Approval::update_approved($entry_id, $status['value'], $this->form_id);
+                $this->assertEquals($status['value'], GravityView_Entry_Approval::get_entry_status($entry_id, 'value'));
+            }
+        }
 
-		$this->assertEquals( GravityView_Entry_Approval_Status::APPROVED, (int) gform_get_meta( $entry['id'], GravityView_Entry_Approval::meta_key ), 'entry status should be set to approved because filter' );
+        // Now that the entry has been updated, the form should be in the blocklist
+        $this->assertTrue($GVCache->in_blocklist($this->form_id));
 
-		remove_all_filters( 'gravityview/approve_entries/after_submission/default_status' );
-	}
+        // Invalid Entry ID
+        $this->assertFalse(GravityView_Entry_Approval::update_approved(rand(100000, 1000000000), GravityView_Entry_Approval_Status::APPROVED, $this->form_id), 'Should have returned false; Invalid entry ID');
+    }
 
-	/**
-	 * @since 1.18
-	 * @covers GravityView_Entry_Approval::update_approved
-	 * @covers GravityView_Cache::in_blocklist()
-	 */
-	public function test_update_approved() {
+    /**
+     * @covers GravityView_Entry_Approval::add_approval_status_updated_note
+     */
+    public function test_add_approval_status_updated_note()
+    {
+        $add_approval_status = new ReflectionMethod('GravityView_Entry_Approval', 'add_approval_status_updated_note');
 
-		$GVCache = new GravityView_Cache();
+        // It was private; let's make it public
+        $add_approval_status->setAccessible(true);
 
-		// Remove the form from the blocklist
-		$GVCache->blocklist_remove( $this->form_id );
+        $entry_id = array_pop($this->entries);
 
-		// Make sure form isn't in cache blocklist
-		$this->assertFalse( $GVCache->in_blocklist( $this->form_id ) );
+        $entry_note_id = $add_approval_status->invoke(new GravityView_Entry_Approval(), $entry_id, GravityView_Entry_Approval_Status::APPROVED);
 
-		$statuses = GravityView_Entry_Approval_Status::get_all();
+        $this->assertTrue(is_int($entry_note_id), 'The entry ID was not an integer, which is should have been');
 
-		foreach ( $this->entries as $entry_id ) {
+        // Prevent note from being added
+        add_filter('gravityview/approve_entries/add-note', '__return_false');
 
-			// Default: Unapproved
-			$this->assertEquals( GravityView_Entry_Approval_Status::UNAPPROVED, GravityView_Entry_Approval::get_entry_status( $entry_id, 'value' ) );
+        $entry_note_response = $add_approval_status->invoke(new GravityView_Entry_Approval(), $entry_id, GravityView_Entry_Approval_Status::APPROVED);
 
-			// Set, then check, the status
-			foreach ( $statuses as $status ) {
-				GravityView_Entry_Approval::update_approved( $entry_id, $status['value'], $this->form_id );
-				$this->assertEquals( $status['value'], GravityView_Entry_Approval::get_entry_status( $entry_id, 'value' ) );
-			}
-		}
+        $this->assertFalse($entry_note_response, 'the "gravityview/approve_entries/add-note" filter did not work to prevent the entry from being added');
 
-		// Now that the entry has been updated, the form should be in the blocklist
-		$this->assertTrue( $GVCache->in_blocklist( $this->form_id ) );
+        remove_filter('gravityview/approve_entries/add-note', '__return_false');
+    }
 
-		// Invalid Entry ID
-		$this->assertFalse( GravityView_Entry_Approval::update_approved( rand( 100000, 1000000000 ), GravityView_Entry_Approval_Status::APPROVED, $this->form_id ), 'Should have returned false; Invalid entry ID' );
-	}
+    /**
+     * @covers GravityView_Entry_Approval::update_bulk
+     */
+    public function test_update_bulk()
+    {
+        wp_set_current_user(0);
 
-	/**
-	 * @covers GravityView_Entry_Approval::add_approval_status_updated_note
-	 */
-	public function test_add_approval_status_updated_note() {
+        // Logged-out user doesn't have caps
+        $this->assertNull(GravityView_Entry_Approval::update_bulk($this->entries, GravityView_Entry_Approval_Status::APPROVED, $this->form_id), 'Should have returned NULL; there is no logged-in user, so they should have failed the has_cap() test');
 
-		$add_approval_status = new ReflectionMethod( 'GravityView_Entry_Approval', 'add_approval_status_updated_note' );
+        // Invalid status
+        $this->assertNull(GravityView_Entry_Approval::update_bulk($this->entries, 'TOTALLY INVALID', $this->form_id), 'Should have returned NULL; Invalid status');
 
-		// It was private; let's make it public
-		$add_approval_status->setAccessible( true );
+        // Logged-in admin
+        $this->factory->user->create_and_set(['role' => 'administrator']);
 
-		$entry_id = array_pop( $this->entries );
+        // Now check bulk editing each status value
+        $statuses = GravityView_Entry_Approval_Status::get_all();
 
-		$entry_note_id = $add_approval_status->invoke( new GravityView_Entry_Approval, $entry_id, GravityView_Entry_Approval_Status::APPROVED );
+        foreach ($statuses as $status) {
+            $updated = GravityView_Entry_Approval::update_bulk($this->entries, $status['value'], $this->form_id);
 
-		$this->assertTrue( is_int( $entry_note_id ), 'The entry ID was not an integer, which is should have been' );
+            $this->assertTrue($updated, 'update_bulk returned false');
 
-		// Prevent note from being added
-		add_filter( 'gravityview/approve_entries/add-note', '__return_false' );
+            foreach ($this->entries as $entry) {
+                $this->assertEquals($status['value'], GravityView_Entry_Approval::get_entry_status($entry, 'value'));
+            }
+        }
 
-		$entry_note_response = $add_approval_status->invoke( new GravityView_Entry_Approval, $entry_id, GravityView_Entry_Approval_Status::APPROVED );
-
-		$this->assertFalse( $entry_note_response, 'the "gravityview/approve_entries/add-note" filter did not work to prevent the entry from being added' );
-
-		remove_filter( 'gravityview/approve_entries/add-note', '__return_false' );
-	}
-
-
-	/**
-	 * @covers GravityView_Entry_Approval::update_bulk
-	 */
-	public function test_update_bulk() {
-
-		wp_set_current_user( 0 );
-
-		// Logged-out user doesn't have caps
-		$this->assertNull( GravityView_Entry_Approval::update_bulk( $this->entries, GravityView_Entry_Approval_Status::APPROVED, $this->form_id ), 'Should have returned NULL; there is no logged-in user, so they should have failed the has_cap() test' );
-
-		// Invalid status
-		$this->assertNull( GravityView_Entry_Approval::update_bulk( $this->entries, 'TOTALLY INVALID', $this->form_id ), 'Should have returned NULL; Invalid status' );
-
-		// Logged-in admin
-		$this->factory->user->create_and_set( array( 'role' => 'administrator' ) );
-
-		// Now check bulk editing each status value
-		$statuses = GravityView_Entry_Approval_Status::get_all();
-
-		foreach ( $statuses as $status ) {
-
-			$updated = GravityView_Entry_Approval::update_bulk( $this->entries, $status['value'], $this->form_id );
-
-			$this->assertTrue( $updated, 'update_bulk returned false' );
-
-			foreach ( $this->entries as $entry ) {
-				$this->assertEquals( $status['value'], GravityView_Entry_Approval::get_entry_status( $entry, 'value' ) );
-			}
-		}
-
-		// Invalid Entry IDs
-		$this->assertFalse( GravityView_Entry_Approval::update_bulk( range( 20000, 20010 ), GravityView_Entry_Approval_Status::APPROVED, $this->form_id ), 'Should have returned false; Invalid entry IDs' );
-	}
-
+        // Invalid Entry IDs
+        $this->assertFalse(GravityView_Entry_Approval::update_bulk(range(20000, 20010), GravityView_Entry_Approval_Status::APPROVED, $this->form_id), 'Should have returned false; Invalid entry IDs');
+    }
 }

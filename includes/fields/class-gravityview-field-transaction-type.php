@@ -1,109 +1,112 @@
 <?php
 /**
  * @file class-gravityview-field-transaction-type.php
- * @package GravityView
- * @subpackage includes\fields
+ *
  * @since 1.16
  */
+class GravityView_Field_Transaction_Type extends GravityView_Field
+{
+    public $name = 'transaction_type';
 
-class GravityView_Field_Transaction_Type extends GravityView_Field {
+    public $is_searchable = true;
 
-	var $name = 'transaction_type';
+    public $is_numeric = true;
 
-	var $is_searchable = true;
+    public $search_operators = ['is', 'isnot', 'in', 'not in'];
 
-	var $is_numeric = true;
+    public $group = 'pricing';
 
-	var $search_operators = array( 'is', 'isnot', 'in', 'not in' );
+    public $_custom_merge_tag = 'transaction_type';
 
-	var $group = 'pricing';
+    public $icon = 'dashicons-cart';
 
-	var $_custom_merge_tag = 'transaction_type';
+    /**
+     * @var int One-time payments are stored by Gravity Forms in the database as `1`
+     */
+    const ONE_TIME_PAYMENT = 1;
 
-	var $icon = 'dashicons-cart';
+    /**
+     * @var int Subscriptions are stored by Gravity Forms in the database as `2`
+     */
+    const SUBSCRIPTION = 2;
 
-	/**
-	 * @var int One-time payments are stored by Gravity Forms in the database as `1`
-	 */
-	const ONE_TIME_PAYMENT = 1;
+    /**
+     * GravityView_Field_Transaction_Type constructor.
+     */
+    public function __construct()
+    {
+        $this->label = esc_html__('Transaction Type', 'gravityview');
+        $this->description = esc_html__('The type of the order: one-time payment or subscription', 'gravityview');
 
-	/**
-	 * @var int Subscriptions are stored by Gravity Forms in the database as `2`
-	 */
-	const SUBSCRIPTION = 2;
+        add_filter('gravityview_field_entry_value_'.$this->name.'_pre_link', [$this, 'get_content'], 10, 4);
+        add_filter('gravityview/field/transaction_type/value', [$this, 'get_value'], 10);
 
-	/**
-	 * GravityView_Field_Transaction_Type constructor.
-	 */
-	public function __construct() {
-		$this->label = esc_html__( 'Transaction Type', 'gravityview' );
-		$this->description = esc_html__( 'The type of the order: one-time payment or subscription', 'gravityview' );
+        parent::__construct();
+    }
 
-		add_filter( 'gravityview_field_entry_value_' . $this->name . '_pre_link', array( $this, 'get_content' ), 10, 4 );
-		add_filter( 'gravityview/field/transaction_type/value', array( $this, 'get_value' ), 10 );
+    /**
+     * Filter the value of the field.
+     *
+     * @todo Consider how to add to parent class
+     *
+     * @since 1.16
+     *
+     * @param string $output         HTML value output
+     * @param array  $entry          The GF entry array
+     * @param array  $field_settings Settings for the particular GV field
+     * @param array  $field          Current field being displayed
+     *
+     * @return string values for this field based on the numeric values used by Gravity Forms
+     */
+    public function get_content($output, $entry = [], $field_settings = [], $field = [])
+    {
 
-		parent::__construct();
-	}
+        /** Overridden by a template. */
+        if (!empty($field['field_path'])) {
+            return $output;
+        }
 
-	/**
-	 * Filter the value of the field
-	 *
-	 * @todo Consider how to add to parent class
-	 *
-	 * @since 1.16
-	 *
-	 * @param string $output HTML value output
-	 * @param array  $entry The GF entry array
-	 * @param  array $field_settings Settings for the particular GV field
-	 * @param array $field Current field being displayed
-	 *
-	 * @return String values for this field based on the numeric values used by Gravity Forms
-	 */
-	public function get_content( $output, $entry = array(), $field_settings = array(), $field = array() ) {
+        return $this->get_string_from_value($output);
+    }
 
-		/** Overridden by a template. */
-		if( ! empty( $field['field_path'] ) ) { return $output; }
+    /**
+     * Filter the value of the field (future).
+     *
+     * @since 2.0
+     *
+     * @param mixed $value The value in.
+     *
+     * @return mixed The value out.
+     */
+    public function get_value($value)
+    {
+        return $this->get_string_from_value($value);
+    }
 
-		return $this->get_string_from_value( $output );
-	}
+    /**
+     * Get the string output based on the numeric value used by Gravity Forms.
+     *
+     * @since 1.16
+     *
+     * @param int|string $value Number value for the field
+     *
+     * @return string Based on $value; `1`: "One-Time Payment"; `2`: "Subscription"
+     */
+    private function get_string_from_value($value)
+    {
+        switch (intval($value)) {
+            case self::ONE_TIME_PAYMENT:
+            default:
+                $return = __('One-Time Payment', 'gravityview');
+                break;
 
-	/**
-	 * Filter the value of the field (future)
-	 *
-	 * @since 2.0
-	 *
-	 * @param mixed $value The value in.
-	 *
-	 * @return mixed The value out.
-	 */
-	public function get_value( $value ) {
-		return $this->get_string_from_value( $value );
-	}
+            case self::SUBSCRIPTION:
+                $return = __('Subscription', 'gravityview');
+                break;
+        }
 
-	/**
-	 * Get the string output based on the numeric value used by Gravity Forms
-	 *
-	 * @since 1.16
-	 *
-	 * @param int|string $value Number value for the field
-	 *
-	 * @return string Based on $value; `1`: "One-Time Payment"; `2`: "Subscription"
-	 */
-	private function get_string_from_value( $value ) {
-
-		switch ( intval( $value ) ) {
-			case self::ONE_TIME_PAYMENT:
-			default:
-				$return = __('One-Time Payment', 'gravityview');
-				break;
-
-			case self::SUBSCRIPTION:
-				$return = __('Subscription', 'gravityview');
-				break;
-		}
-
-		return $return;
-	}
+        return $return;
+    }
 }
 
-new GravityView_Field_Transaction_Type;
+new GravityView_Field_Transaction_Type();

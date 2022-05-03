@@ -1,136 +1,138 @@
 <?php
 
-defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
+defined('DOING_GRAVITYVIEW_TESTS') || exit;
 
-class GravityView_Ajax_Test extends GV_UnitTestCase {
+class GravityView_Ajax_Test extends GV_UnitTestCase
+{
+    /**
+     * @var GravityView_Ajax
+     */
+    public $AJAX;
 
-	/**
-	 * @var GravityView_Ajax
-	 */
-	var $AJAX;
+    /**
+     * @var GravityView_Preset_Business_Data
+     */
+    public $GravityView_Preset_Business_Data;
 
-	/**
-	 * @var GravityView_Preset_Business_Data
-	 */
-	var $GravityView_Preset_Business_Data;
+    public function setUp()
+    {
+        parent::setUp();
 
-	function setUp() {
+        $this->AJAX = new GravityView_Ajax();
+        $this->create_test_nonce();
+        $this->GravityView_Preset_Business_Data = new GravityView_Preset_Business_Data();
 
-		parent::setUp();
+        require_once GFCommon::get_base_path().'/export.php';
+    }
 
-		$this->AJAX = new GravityView_Ajax;
-		$this->create_test_nonce();
-		$this->GravityView_Preset_Business_Data = new GravityView_Preset_Business_Data;
+    /**
+     * Set a valid "gravityview_ajaxviews" $_POST['nonce'] value.
+     *
+     * @see GravityView_Ajax::check_ajax_nonce()
+     */
+    public function create_test_nonce()
+    {
+        $_POST['nonce'] = wp_create_nonce('gravityview_ajaxviews');
+    }
 
-		require_once( GFCommon::get_base_path() . '/export.php' );
-	}
+    /**
+     * @covers GravityView_Ajax::pre_get_form_fields()
+     * @group gvajax
+     * @covers GravityView_Ajax::get_available_fields_html
+     */
+    public function test_get_available_fields_html()
+    {
+        $_POST['template_id'] = $this->GravityView_Preset_Business_Data->template_id;
 
-	/**
-	 * Set a valid "gravityview_ajaxviews" $_POST['nonce'] value
-	 * @see GravityView_Ajax::check_ajax_nonce()
-	 */
-	function create_test_nonce() {
-		$_POST['nonce'] = wp_create_nonce( 'gravityview_ajaxviews' );
-	}
+        // Test form generation and default context
+        add_action('gravityview_render_available_fields', [$this, 'get_available_fields_html_DEFAULT'], 10, 2);
+        $this->AJAX->get_available_fields_html();
+        remove_action('gravityview_render_available_fields', [$this, 'get_available_fields_html_DEFAULT'], 10);
 
-	/**
-	 * @covers GravityView_Ajax::pre_get_form_fields()
-	 * @group gvajax
-	 * @covers GravityView_Ajax::get_available_fields_html
-	 */
-	function test_get_available_fields_html() {
+        // Test SINGLE context being set
+        $_POST['context'] = 'single';
+        add_action('gravityview_render_available_fields', [$this, 'get_available_fields_html_SINGLE_CONTEXT'], 10, 2);
+        $this->AJAX->get_available_fields_html();
+        remove_action('gravityview_render_available_fields', [$this, 'get_available_fields_html_SINGLE_CONTEXT'], 10);
 
-		$_POST['template_id'] = $this->GravityView_Preset_Business_Data->template_id;
+        // Test EDIT context being set
+        $_POST['context'] = 'edit';
+        add_action('gravityview_render_available_fields', [$this, 'get_available_fields_html_EDIT_CONTEXT'], 10, 2);
+        $this->AJAX->get_available_fields_html();
+        remove_action('gravityview_render_available_fields', [$this, 'get_available_fields_html_EDIT_CONTEXT'], 10);
 
-		// Test form generation and default context
-		add_action( 'gravityview_render_available_fields', array( $this, 'get_available_fields_html_DEFAULT' ), 10, 2 );
-		$this->AJAX->get_available_fields_html();
-		remove_action( 'gravityview_render_available_fields', array( $this, 'get_available_fields_html_DEFAULT' ), 10 );
+        $this->assertTrue(true, 'This test is not actually risky; it is powered by filters. Prevent a risky warning.');
+    }
 
-		// Test SINGLE context being set
-		$_POST['context'] = 'single';
-		add_action( 'gravityview_render_available_fields', array( $this, 'get_available_fields_html_SINGLE_CONTEXT' ), 10, 2 );
-		$this->AJAX->get_available_fields_html();
-		remove_action( 'gravityview_render_available_fields', array( $this, 'get_available_fields_html_SINGLE_CONTEXT' ), 10 );
+    /**
+     * @param array  $form
+     * @param string $context
+     */
+    public function get_available_fields_html_DEFAULT($form, $context)
+    {
+        $this->assertEquals(GravityView_Ajax::pre_get_form_fields($this->GravityView_Preset_Business_Data->template_id), $form);
 
-		// Test EDIT context being set
-		$_POST['context'] = 'edit';
-		add_action( 'gravityview_render_available_fields', array( $this, 'get_available_fields_html_EDIT_CONTEXT' ), 10, 2 );
-		$this->AJAX->get_available_fields_html();
-		remove_action( 'gravityview_render_available_fields', array( $this, 'get_available_fields_html_EDIT_CONTEXT' ), 10 );
+        // When not defined, default to directory
+        $this->assertEquals('directory', $context);
+    }
 
-		$this->assertTrue( true, 'This test is not actually risky; it is powered by filters. Prevent a risky warning.' );
-	}
+    /**
+     * @param array  $form
+     * @param string $context
+     */
+    public function get_available_fields_html_SINGLE_CONTEXT($form, $context)
+    {
 
+        // When not defined, default to directory
+        $this->assertEquals('single', $context);
+    }
 
+    /**
+     * @param array  $form
+     * @param string $context
+     */
+    public function get_available_fields_html_EDIT_CONTEXT($form, $context)
+    {
 
-	/**
-	 * @param array $form
-	 * @param string $context
-	 */
-	function get_available_fields_html_DEFAULT( $form, $context ) {
+        // When not defined, default to directory
+        $this->assertEquals('edit', $context);
+    }
 
-		$this->assertEquals( GravityView_Ajax::pre_get_form_fields( $this->GravityView_Preset_Business_Data->template_id ), $form );
+    /**
+     * @covers GravityView_Ajax::pre_get_form_fields()
+     * @group gvajax
+     */
+    public function test_pre_get_form_fields()
+    {
+        $imported_form = $this->AJAX->import_form($this->GravityView_Preset_Business_Data->settings['preset_form']);
 
-		// When not defined, default to directory
-		$this->assertEquals( 'directory', $context );
-	}
+        $not_imported_form = GravityView_Ajax::pre_get_form_fields($this->GravityView_Preset_Business_Data->template_id);
 
-	/**
-	 * @param array $form
-	 * @param string $context
-	 */
-	function get_available_fields_html_SINGLE_CONTEXT( $form, $context ) {
+        // We don't test exact equality, since the import_form will return GF_Field objects for field items, and other
+        // differences. We just want to make sure most stuff matches close enough to suggest it's working!
+        $this->assertEquals(count($imported_form['fields']), count($not_imported_form['fields']));
+        $this->assertEquals($imported_form['title'], $not_imported_form['title']);
+    }
 
-		// When not defined, default to directory
-		$this->assertEquals( 'single', $context );
-	}
+    /**
+     * @covers GravityView_Ajax::import_form()
+     * @group gvajax
+     */
+    public function test_import_form()
+    {
+        /** @define "GRAVITYVIEW_DIR" "../../" */
+        $forms = $this->AJAX->import_form($this->GravityView_Preset_Business_Data->settings['preset_form']);
 
-	/**
-	 * @param array $form
-	 * @param string $context
-	 */
-	function get_available_fields_html_EDIT_CONTEXT( $form, $context ) {
+        $this->assertNotEmpty($forms);
+        $this->assertEquals('GravityView - Business Data', $forms['title']);
+        $this->assertEquals(14, sizeof($forms['fields']));
 
-		// When not defined, default to directory
-		$this->assertEquals( 'edit', $context );
-	}
+        $GravityView_Preset_Business_Listings = new GravityView_Preset_Business_Listings();
 
-	/**
-	 * @covers GravityView_Ajax::pre_get_form_fields()
-	 * @group gvajax
-	 */
-	function test_pre_get_form_fields() {
+        $forms = $this->AJAX->import_form($GravityView_Preset_Business_Listings->settings['preset_form']);
 
-		$imported_form = $this->AJAX->import_form( $this->GravityView_Preset_Business_Data->settings['preset_form'] );
-
-		$not_imported_form = GravityView_Ajax::pre_get_form_fields( $this->GravityView_Preset_Business_Data->template_id );
-
-		// We don't test exact equality, since the import_form will return GF_Field objects for field items, and other
-		// differences. We just want to make sure most stuff matches close enough to suggest it's working!
-		$this->assertEquals( count( $imported_form['fields'] ), count( $not_imported_form['fields'] ) );
-		$this->assertEquals( $imported_form['title'], $not_imported_form['title'] );
-	}
-
-	/**
-	 * @covers GravityView_Ajax::import_form()
-	 * @group gvajax
-	 */
-	function test_import_form() {
-		/** @define "GRAVITYVIEW_DIR" "../../" */
-
-		$forms = $this->AJAX->import_form( $this->GravityView_Preset_Business_Data->settings['preset_form'] );
-
-		$this->assertNotEmpty( $forms );
-		$this->assertEquals( 'GravityView - Business Data', $forms['title'] );
-		$this->assertEquals( 14, sizeof( $forms['fields'] ) );
-
-		$GravityView_Preset_Business_Listings = new GravityView_Preset_Business_Listings;
-
-		$forms = $this->AJAX->import_form( $GravityView_Preset_Business_Listings->settings['preset_form'] );
-
-		$this->assertNotEmpty( $forms );
-		$this->assertEquals( 'GravityView - Business Listing', $forms['title'] );
-		$this->assertEquals( 13, sizeof( $forms['fields'] ) );
-	}
+        $this->assertNotEmpty($forms);
+        $this->assertEquals('GravityView - Business Listing', $forms['title']);
+        $this->assertEquals(13, sizeof($forms['fields']));
+    }
 }

@@ -1,42 +1,39 @@
 <?php
 /**
  * @file class-gravityview-field-gquiz.php
- * @package GravityView
- * @subpackage includes\fields
  */
+class GravityView_Field_Quiz extends GravityView_Field
+{
+    public $name = 'quiz';
 
-class GravityView_Field_Quiz extends GravityView_Field {
+    public $group = 'advanced';
 
-	var $name = 'quiz';
+    public $icon = 'dashicons-forms';
 
-	var $group = 'advanced';
+    public function __construct()
+    {
+        $this->label = esc_html__('Quiz', 'gravityview');
+        parent::__construct();
+    }
 
-	var $icon = 'dashicons-forms';
+    public function field_options($field_options, $template_id, $field_id, $context, $input_type, $form_id)
+    {
+        if ('edit' === $context) {
+            return $field_options;
+        }
 
-	public function __construct() {
-		$this->label = esc_html__( 'Quiz', 'gravityview' );
-		parent::__construct();
-	}
+        $new_fields = [
+            'quiz_show_explanation' => [
+                'type'       => 'checkbox',
+                'label'      => __('Show Answer Explanation?', 'gravityview'),
+                'desc'       => __('If the field has an answer explanation, show it?', 'gravityview'),
+                'value'      => false,
+                'merge_tags' => false,
+            ],
+        ];
 
-	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
-
-		if( 'edit' === $context ) {
-			return $field_options;
-		}
-
-		$new_fields = array(
-			'quiz_show_explanation' => array(
-				'type' => 'checkbox',
-				'label' => __( 'Show Answer Explanation?', 'gravityview' ),
-				'desc' => __('If the field has an answer explanation, show it?', 'gravityview'),
-				'value' => false,
-				'merge_tags' => false,
-			),
-		);
-
-		return $new_fields + $field_options;
-	}
-
+        return $new_fields + $field_options;
+    }
 }
 
-new GravityView_Field_Quiz;
+new GravityView_Field_Quiz();

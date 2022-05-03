@@ -4,13 +4,13 @@
  *
  * @global \GV\Template_Context $gravityview
  */
+if (!isset($gravityview) || empty($gravityview->template)) {
+    gravityview()->log->error('{file} template loaded without context', ['file' => __FILE__]);
 
-if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
-	gravityview()->log->error( '{file} template loaded without context', array( 'file' => __FILE__ ) );
-	return;
+    return;
 }
 
 ?>
-	<?php gravityview_footer( $gravityview ); ?>
+	<?php gravityview_footer($gravityview); ?>
 </div>
-<?php gravityview_after( $gravityview ); ?>
+<?php gravityview_after($gravityview); ?>

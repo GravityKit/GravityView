@@ -1,32 +1,31 @@
 <?php
 /**
  * @file class-gravityview-field-currency.php
- * @package GravityView
- * @subpackage includes\fields
+ *
  * @since 1.16
  */
+class GravityView_Field_Currency extends GravityView_Field
+{
+    public $name = 'currency';
 
-class GravityView_Field_Currency extends GravityView_Field {
+    public $is_searchable = true;
 
-	var $name = 'currency';
+    public $is_numeric = true;
 
-	var $is_searchable = true;
+    public $search_operators = ['is', 'isnot'];
 
-	var $is_numeric = true;
+    public $group = 'pricing';
 
-	var $search_operators = array( 'is', 'isnot' );
+    public $_custom_merge_tag = 'currency';
 
-	var $group = 'pricing';
-
-	var $_custom_merge_tag = 'currency';
-
-	/**
-	 * GravityView_Field_Currency constructor.
-	 */
-	public function __construct() {
-		$this->label = esc_html__( 'Currency', 'gravityview' );
-		parent::__construct();
-	}
+    /**
+     * GravityView_Field_Currency constructor.
+     */
+    public function __construct()
+    {
+        $this->label = esc_html__('Currency', 'gravityview');
+        parent::__construct();
+    }
 }
 
-new GravityView_Field_Currency;
+new GravityView_Field_Currency();

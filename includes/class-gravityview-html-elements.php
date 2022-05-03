@@ -1,175 +1,177 @@
 <?php
 /**
- * GravityView HTML elements that are commonly used
+ * GravityView HTML elements that are commonly used.
  *
  * Thanks to EDD
+ *
  * @see https://github.com/easydigitaldownloads/easy-digital-downloads/blob/master/includes/class-edd-html-elements.php
  *
- * @package   GravityView
  * @license   GPL2+
  * @author    GravityView <hello@gravityview.co>
+ *
  * @link      http://gravityview.co
+ *
  * @copyright Copyright 2016, Katz Web Services, Inc.
+ *
  * @since     1.22.1
  */
+class GravityView_HTML_Elements
+{
+    /**
+     * Renders an HTML Dropdown of all the Products (Downloads).
+     *
+     * @since 1.22.1
+     *
+     * @param array $args Arguments for the dropdown
+     *
+     * @return string $output Dropdown of forms
+     */
+    public function form_dropdown($args = [])
+    {
+        $defaults = [
+            'active'           => true,
+            'trash'            => false,
+            'options'          => [],
+            'exclude'          => [],
+            'name'             => 'gravityview_form_id',
+            'id'               => 'gravityview_form_id',
+            'class'            => '',
+            'multiple'         => false,
+            'selected'         => 0,
+            'show_option_none' => sprintf('&mdash; %s &mdash;', esc_html__('list of forms', 'gravityview')),
+            'data'             => ['search-type' => 'form'],
+        ];
 
-class GravityView_HTML_Elements {
+        $args = wp_parse_args($args, $defaults);
 
+        $forms = gravityview_get_forms((bool) $args['active'], (bool) $args['trash']);
 
-	/**
-	 * Renders an HTML Dropdown of all the Products (Downloads)
-	 *
-	 * @since 1.22.1
-	 * @param array $args Arguments for the dropdown
-	 * @return string $output Dropdown of forms
-	 */
-	public function form_dropdown( $args = array() ) {
+        if ([] === $args['options']) {
+            foreach ($forms as $form) {
+                if (in_array($form['id'], $args['exclude'])) {
+                    continue;
+                }
 
-		$defaults = array(
-			'active'      => true,
-			'trash'       => false,
-			'options'     => array(),
-			'exclude'     => array(),
-			'name'        => 'gravityview_form_id',
-			'id'          => 'gravityview_form_id',
-			'class'       => '',
-			'multiple'    => false,
-			'selected'    => 0,
-			'show_option_none' => sprintf( '&mdash; %s &mdash;', esc_html__( 'list of forms', 'gravityview' ) ),
-			'data'        => array( 'search-type' => 'form' ),
-		);
+                $args['options'][$form['id']] = esc_html($form['title']);
+            }
+        }
 
-		$args = wp_parse_args( $args, $defaults );
+        $output = $this->select($args);
 
-		$forms = gravityview_get_forms( (bool) $args['active'], (bool) $args['trash'] );
+        return $output;
+    }
 
-		if( array() === $args['options'] ) {
-			foreach ( $forms as $form ) {
+    /**
+     * Renders an HTML Dropdown of all the fields in a form.
+     *
+     * @param array $args Arguments for the dropdown
+     *
+     * @return string $output Product dropdown
+     */
+    public function field_dropdown($args = [])
+    {
+        $defaults = [
+            'form_id'          => 0,
+            'options'          => [],
+            'name'             => 'gravityview_form_fields',
+            'id'               => 'gravityview_form_fields',
+            'class'            => '',
+            'multiple'         => false,
+            'selected'         => 0,
+            'show_option_none' => __('Select a field', 'gravityview'),
+            'data'             => ['search-type' => 'form'],
+        ];
 
-				if ( in_array( $form['id'], $args['exclude'] ) ) {
-					continue;
-				}
+        $args = wp_parse_args($args, $defaults);
 
-				$args['options'][ $form['id'] ] = esc_html( $form['title'] );
-			}
-		}
+        if (empty($args['form_id'])) {
+            return '';
+        }
 
-		$output = $this->select( $args );
+        $fields = GVCommon::get_sortable_fields_array($args['form_id']);
 
-		return $output;
-	}
+        if ([] === $args['options']) {
+            foreach ($fields as $field_id => $field) {
+                $args['options'][$field_id] = esc_html($field['label']);
+            }
+        }
 
-	/**
-	 * Renders an HTML Dropdown of all the fields in a form
-	 *
-	 * @param array $args Arguments for the dropdown
-	 * @return string $output Product dropdown
-	 */
-	public function field_dropdown( $args = array() ) {
+        $output = $this->select($args);
 
-		$defaults = array(
-			'form_id'     => 0,
-			'options'     => array(),
-			'name'        => 'gravityview_form_fields',
-			'id'          => 'gravityview_form_fields',
-			'class'       => '',
-			'multiple'    => false,
-			'selected'    => 0,
-			'show_option_none' => __( 'Select a field', 'gravityview' ),
-			'data'        => array( 'search-type' => 'form' ),
-		);
+        return $output;
+    }
 
-		$args = wp_parse_args( $args, $defaults );
+    /**
+     * Renders an HTML Dropdown.
+     *
+     * @since 1.22.1
+     *
+     * @param array $args
+     *
+     * @return string
+     */
+    public function select($args = [])
+    {
+        $defaults = [
+            'options'          => [],
+            'name'             => null,
+            'class'            => '',
+            'id'               => '',
+            'selected'         => 0,
+            'placeholder'      => null,
+            'multiple'         => false,
+            'disabled'         => false,
+            'show_option_all'  => _x('All', 'all dropdown items', 'gravityview'),
+            'show_option_none' => _x('None', 'no dropdown items', 'gravityview'),
+            'data'             => [],
+        ];
 
-		if( empty( $args['form_id'] ) ) {
-			return '';
-		}
+        $args = wp_parse_args($args, $defaults);
 
-		$fields = GVCommon::get_sortable_fields_array( $args['form_id'] );
+        $data_elements = '';
+        foreach ($args['data'] as $key => $value) {
+            $data_elements .= ' data-'.esc_attr($key).'="'.esc_attr($value).'"';
+        }
 
-		if( array() === $args['options'] ) {
-			foreach ( $fields as $field_id => $field ) {
-				$args['options'][ $field_id ] = esc_html( $field['label'] );
-			}
-		}
+        if ($args['multiple']) {
+            $multiple = ' MULTIPLE';
+        } else {
+            $multiple = '';
+        }
 
-		$output = $this->select( $args );
+        if ($args['placeholder']) {
+            $placeholder = $args['placeholder'];
+        } else {
+            $placeholder = '';
+        }
 
-		return $output;
-	}
+        $disabled = $args['disabled'] ? ' disabled="disabled"' : '';
+        $class = implode(' ', array_map('sanitize_html_class', explode(' ', $args['class'])));
+        $output = '<select name="'.esc_attr($args['name']).'" id="'.esc_attr(str_replace('-', '_', $args['id'])).'" class="gravityview-select '.$class.'"'.$multiple.$disabled.' data-placeholder="'.$placeholder.'"'.$data_elements.'>';
 
-	/**
-	 * Renders an HTML Dropdown
-	 *
-	 * @since 1.22.1
-	 *
-	 * @param array $args
-	 *
-	 * @return string
-	 */
-	public function select( $args = array() ) {
-		$defaults = array(
-			'options'          => array(),
-			'name'             => null,
-			'class'            => '',
-			'id'               => '',
-			'selected'         => 0,
-			'placeholder'      => null,
-			'multiple'         => false,
-			'disabled'         => false,
-			'show_option_all'  => _x( 'All', 'all dropdown items', 'gravityview' ),
-			'show_option_none' => _x( 'None', 'no dropdown items', 'gravityview' ),
-			'data'             => array(),
-		);
+        if (!empty($args['options'])) {
+            if ($args['show_option_none']) {
+                if ($args['multiple']) {
+                    $selected = selected(true, in_array(-1, $args['selected']), false);
+                } else {
+                    $selected = selected($args['selected'], -1, false);
+                }
+                $output .= '<option value="-1"'.$selected.'>'.esc_html($args['show_option_none']).'</option>';
+            }
 
-		$args = wp_parse_args( $args, $defaults );
+            foreach ($args['options'] as $key => $option) {
+                if ($args['multiple'] && is_array($args['selected'])) {
+                    $selected = selected(true, in_array($key, $args['selected'], true), false);
+                } else {
+                    $selected = selected($args['selected'], $key, false);
+                }
 
-		$data_elements = '';
-		foreach ( $args['data'] as $key => $value ) {
-			$data_elements .= ' data-' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
-		}
+                $output .= '<option value="'.esc_attr($key).'"'.$selected.'>'.esc_html($option).'</option>';
+            }
+        }
 
-		if( $args['multiple'] ) {
-			$multiple = ' MULTIPLE';
-		} else {
-			$multiple = '';
-		}
+        $output .= '</select>';
 
-		if( $args['placeholder'] ) {
-			$placeholder = $args['placeholder'];
-		} else {
-			$placeholder = '';
-		}
-
-		$disabled = $args['disabled'] ? ' disabled="disabled"' : '';
-		$class  = implode( ' ', array_map( 'sanitize_html_class', explode( ' ', $args['class'] ) ) );
-		$output = '<select name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( str_replace( '-', '_', $args['id'] ) ) . '" class="gravityview-select ' . $class . '"' . $multiple . $disabled . ' data-placeholder="' . $placeholder . '"'. $data_elements . '>';
-
-		if ( ! empty( $args['options'] ) ) {
-
-			if ( $args['show_option_none'] ) {
-				if( $args['multiple'] ) {
-					$selected = selected( true, in_array( -1, $args['selected'] ), false );
-				} else {
-					$selected = selected( $args['selected'], -1, false );
-				}
-				$output .= '<option value="-1"' . $selected . '>' . esc_html( $args['show_option_none'] ) . '</option>';
-			}
-
-			foreach( $args['options'] as $key => $option ) {
-
-				if( $args['multiple'] && is_array( $args['selected'] ) ) {
-					$selected = selected( true, in_array( $key, $args['selected'], true ), false );
-				} else {
-					$selected = selected( $args['selected'], $key, false );
-				}
-
-				$output .= '<option value="' . esc_attr( $key ) . '"' . $selected . '>' . esc_html( $option ) . '</option>';
-			}
-		}
-
-		$output .= '</select>';
-
-		return $output;
-	}
+        return $output;
+    }
 }

@@ -1,26 +1,24 @@
 <?php
 /**
  * @file class-gravityview-field-creditcard.php
- * @package GravityView
- * @subpackage includes\fields
  */
+class GravityView_Field_CreditCard extends GravityView_Field
+{
+    public $name = 'creditcard';
 
-class GravityView_Field_CreditCard extends GravityView_Field {
+    public $is_searchable = false;
 
-	var $name = 'creditcard';
+    public $_gf_field_class_name = 'GF_Field_CreditCard';
 
-	var $is_searchable = false;
+    public $group = 'payment';
 
-	var $_gf_field_class_name = 'GF_Field_CreditCard';
+    public $icon = 'dashicons-cart';
 
-	var $group = 'payment';
-
-	var $icon = 'dashicons-cart';
-
-	public function __construct() {
-		$this->label = esc_html__( 'Credit Card', 'gravityview' );
-		parent::__construct();
-	}
+    public function __construct()
+    {
+        $this->label = esc_html__('Credit Card', 'gravityview');
+        parent::__construct();
+    }
 }
 
-new GravityView_Field_CreditCard;
+new GravityView_Field_CreditCard();

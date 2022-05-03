@@ -1,33 +1,37 @@
 <?php
+
 namespace GV;
 
 /** If this file is called directly, abort. */
-if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
-	die();
+if (!defined('GRAVITYVIEW_DIR')) {
+    exit();
 }
 
 /**
  * Describes log levels.
  */
-class LogLevel {
+class LogLevel
+{
     const EMERGENCY = 'emergency';
-    const ALERT     = 'alert';
-    const CRITICAL  = 'critical';
-    const ERROR     = 'error';
-    const WARNING   = 'warning';
-    const NOTICE    = 'notice';
-    const INFO      = 'info';
-    const DEBUG     = 'debug';
+    const ALERT = 'alert';
+    const CRITICAL = 'critical';
+    const ERROR = 'error';
+    const WARNING = 'warning';
+    const NOTICE = 'notice';
+    const INFO = 'info';
+    const DEBUG = 'debug';
 }
 
 /**
  * The \GV\Logger abstract class.
  *
  * Provides logging facilities in line with PSR-3 Standard.
+ *
  * @see https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
  * @see https://github.com/php-fig/log/blob/master/Psr/Log/AbstractLogger.php
  */
-abstract class Logger /** @todo extends Psr\Log\AbstractLogger */ {
+abstract class Logger /** @todo extends Psr\Log\AbstractLogger */
+{
     /**
      * System is unusable.
      *
@@ -36,7 +40,7 @@ abstract class Logger /** @todo extends Psr\Log\AbstractLogger */ {
      *
      * @return void
      */
-    public function emergency($message, array $context = array())
+    public function emergency($message, array $context = [])
     {
         $this->log(LogLevel::EMERGENCY, $message, $context);
     }
@@ -52,7 +56,7 @@ abstract class Logger /** @todo extends Psr\Log\AbstractLogger */ {
      *
      * @return void
      */
-    public function alert($message, array $context = array())
+    public function alert($message, array $context = [])
     {
         $this->log(LogLevel::ALERT, $message, $context);
     }
@@ -67,7 +71,7 @@ abstract class Logger /** @todo extends Psr\Log\AbstractLogger */ {
      *
      * @return void
      */
-    public function critical($message, array $context = array())
+    public function critical($message, array $context = [])
     {
         $this->log(LogLevel::CRITICAL, $message, $context);
     }
@@ -81,7 +85,7 @@ abstract class Logger /** @todo extends Psr\Log\AbstractLogger */ {
      *
      * @return void
      */
-    public function error($message, array $context = array())
+    public function error($message, array $context = [])
     {
         $this->log(LogLevel::ERROR, $message, $context);
     }
@@ -97,7 +101,7 @@ abstract class Logger /** @todo extends Psr\Log\AbstractLogger */ {
      *
      * @return void
      */
-    public function warning($message, array $context = array())
+    public function warning($message, array $context = [])
     {
         $this->log(LogLevel::WARNING, $message, $context);
     }
@@ -110,7 +114,7 @@ abstract class Logger /** @todo extends Psr\Log\AbstractLogger */ {
      *
      * @return void
      */
-    public function notice($message, array $context = array())
+    public function notice($message, array $context = [])
     {
         $this->log(LogLevel::NOTICE, $message, $context);
     }
@@ -125,7 +129,7 @@ abstract class Logger /** @todo extends Psr\Log\AbstractLogger */ {
      *
      * @return void
      */
-    public function info($message, array $context = array())
+    public function info($message, array $context = [])
     {
         $this->log(LogLevel::INFO, $message, $context);
     }
@@ -138,28 +142,30 @@ abstract class Logger /** @todo extends Psr\Log\AbstractLogger */ {
      *
      * @return void
      */
-    public function debug($message, array $context = array())
+    public function debug($message, array $context = [])
     {
         $this->log(LogLevel::DEBUG, $message, $context);
     }
 
-	/**
-	 * Bake the context into { } placeholders in the message.
+    /**
+     * Bake the context into { } placeholders in the message.
+     *
      * @param string $message
      * @param array  $context
      *
      * @return string The baked message;
-	 */
-	protected function interpolate( $message, $context ) {
-		foreach ( $context as $key => $val ) {
-			if ( strpos( $message, "{{$key}}" ) !== false ) {
-				$message = str_replace( "{{$key}}", $val, $message );
-			}
-		}
+     */
+    protected function interpolate($message, $context)
+    {
+        foreach ($context as $key => $val) {
+            if (strpos($message, "{{$key}}") !== false) {
+                $message = str_replace("{{$key}}", $val, $message);
+            }
+        }
 
-		return $message;
-	}
+        return $message;
+    }
 }
 
 /** Load implementations. */
-require gravityview()->plugin->dir( 'future/includes/class-gv-logger-wp-action.php' );
+require gravityview()->plugin->dir('future/includes/class-gv-logger-wp-action.php');

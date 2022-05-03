@@ -1,105 +1,103 @@
 <?php
 
 /**
- * Widget to add custom content
+ * Widget to add custom content.
  *
  * @since 1.5.4
  *
  * @extends GravityView_Widget
  */
-class GravityView_Widget_Custom_Content extends \GV\Widget {
+class GravityView_Widget_Custom_Content extends \GV\Widget
+{
+    public $icon = 'dashicons-editor-code';
 
-	public $icon = 'dashicons-editor-code';
+    /**
+     * Does this get displayed on a single entry?
+     *
+     * @var bool
+     */
+    protected $show_on_single = false;
 
-	/**
-	 * Does this get displayed on a single entry?
-	 * @var boolean
-	 */
-	protected $show_on_single = false;
+    public function __construct()
+    {
+        $this->widget_description = __('Insert custom text or HTML as a widget', 'gravityview');
 
-	function __construct() {
+        $default_values = [
+            'header' => 1,
+            'footer' => 1,
+        ];
 
-		$this->widget_description = __('Insert custom text or HTML as a widget', 'gravityview' );
+        $settings = [
+            'content' => [
+                'type'            => 'textarea',
+                'label'           => __('Custom Content', 'gravityview'),
+                'desc'            => __('Enter text or HTML. Also supports shortcodes.', 'gravityview'),
+                'value'           => '',
+                'class'	          => 'code',
+                'merge_tags'      => false,
+                'show_all_fields' => true, // Show the `{all_fields}` and `{pricing_fields}` merge tags
+            ],
+            'wpautop' => [
+                'type'    => 'checkbox',
+                'label'   => __('Automatically add paragraphs to content', 'gravityview'),
+                'tooltip' => __('Wrap each block of text in an HTML paragraph tag (recommended for text).', 'gravityview'),
+                'value'   => '',
+            ],
+            'admin_label' => [
+                'type'  => 'text',
+                'class' => 'widefat',
+                'label' => __('Admin Label', 'gravityview'),
+                'desc'  => __('A label that is only shown in the GravityView View configuration screen.', 'gravityview'),
+                'value' => '',
+            ],
+        ];
 
-		$default_values = array(
-			'header' => 1,
-			'footer' => 1,
-		);
+        parent::__construct(__('Custom Content', 'gravityview'), 'custom_content', $default_values, $settings);
+    }
 
-		$settings = array(
-			'content' => array(
-				'type' => 'textarea',
-				'label' => __( 'Custom Content', 'gravityview' ),
-				'desc' => __( 'Enter text or HTML. Also supports shortcodes.', 'gravityview' ),
-				'value' => '',
-				'class'	=> 'code',
-				'merge_tags' => false,
-				'show_all_fields' => true, // Show the `{all_fields}` and `{pricing_fields}` merge tags
-			),
-			'wpautop' => array(
-				'type' => 'checkbox',
-				'label' => __( 'Automatically add paragraphs to content', 'gravityview' ),
-				'tooltip' => __( 'Wrap each block of text in an HTML paragraph tag (recommended for text).', 'gravityview' ),
-				'value' => '',
-			),
-			'admin_label' => array(
-				'type' => 'text',
-				'class' => 'widefat',
-				'label' => __( 'Admin Label', 'gravityview' ),
-				'desc' => __( 'A label that is only shown in the GravityView View configuration screen.', 'gravityview' ),
-				'value' => '',
-			),
-		);
+    public function render_frontend($widget_args, $content = '', $context = '')
+    {
+        if (!$this->pre_render_frontend()) {
+            return;
+        }
 
-		parent::__construct( __( 'Custom Content', 'gravityview' ) , 'custom_content', $default_values, $settings );
-	}
+        if (!empty($widget_args['title'])) {
+            echo $widget_args['title'];
+        }
 
-	public function render_frontend( $widget_args, $content = '', $context = '') {
+        // Make sure the class is loaded in DataTables
+        if (!class_exists('GFFormDisplay')) {
+            include_once GFCommon::get_base_path().'/form_display.php';
+        }
 
-		if( !$this->pre_render_frontend() ) {
-			return;
-		}
+        $widget_args['content'] = trim(rtrim(\GV\Utils::get($widget_args, 'content')));
 
-		if( !empty( $widget_args['title'] ) ) {
-			echo $widget_args['title'];
-		}
+        // No custom content
+        if (empty($widget_args['content'])) {
+            gravityview()->log->debug('No content.');
 
+            return;
+        }
 
-		// Make sure the class is loaded in DataTables
-		if( !class_exists( 'GFFormDisplay' ) ) {
-			include_once( GFCommon::get_base_path() . '/form_display.php' );
-		}
+        // Add paragraphs?
+        if (!empty($widget_args['wpautop'])) {
+            $widget_args['content'] = wpautop($widget_args['content']);
+        }
 
-		$widget_args['content'] = trim( rtrim( \GV\Utils::get( $widget_args, 'content' ) ) );
+        $content = $widget_args['content'];
 
-		// No custom content
-		if( empty( $widget_args['content'] ) ) {
-			gravityview()->log->debug( 'No content.' );
-			return;
-		}
+        $content = GravityView_Merge_Tags::replace_variables($content, [], [], false, true, false);
 
-		// Add paragraphs?
-		if( !empty( $widget_args['wpautop'] ) ) {
-			$widget_args['content'] = wpautop( $widget_args['content'] );
-		}
+        // Enqueue scripts needed for Gravity Form display, if form shortcode exists.
+        // Also runs `do_shortcode()`
+        $content = GFCommon::gform_do_shortcode($content);
 
-		$content = $widget_args['content'];
+        // Add custom class
+        $class = !empty($widget_args['custom_class']) ? $widget_args['custom_class'] : '';
+        $class = gravityview_sanitize_html_class($class);
 
-		$content = GravityView_Merge_Tags::replace_variables( $content, array(), array(), false, true, false );
-
-		// Enqueue scripts needed for Gravity Form display, if form shortcode exists.
-		// Also runs `do_shortcode()`
-		$content = GFCommon::gform_do_shortcode( $content );
-
-
-		// Add custom class
-		$class = !empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
-		$class = gravityview_sanitize_html_class( $class );
-
-		echo '<div class="gv-widget-custom-content '.$class.'">'. $content .'</div>';
-
-	}
-
+        echo '<div class="gv-widget-custom-content '.$class.'">'.$content.'</div>';
+    }
 }
 
-new GravityView_Widget_Custom_Content;
+new GravityView_Widget_Custom_Content();

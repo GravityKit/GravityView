@@ -1,58 +1,57 @@
 <?php
 /**
  * @file class-gravityview-field-number.php
- * @package GravityView
- * @subpackage includes\fields
+ *
  * @since 1.13
  */
 
 /**
- * Add custom options for number fields
+ * Add custom options for number fields.
  *
  * @since 1.13
  */
-class GravityView_Field_Number extends GravityView_Field {
+class GravityView_Field_Number extends GravityView_Field
+{
+    public $name = 'number';
 
-	var $name = 'number';
+    public $is_searchable = true;
 
-	var $is_searchable = true;
+    public $search_operators = ['is', 'isnot', 'greater_than', 'less_than'];
 
-	var $search_operators = array( 'is', 'isnot', 'greater_than', 'less_than' );
+    /** @see GF_Field_Number */
+    public $_gf_field_class_name = 'GF_Field_Number';
 
-	/** @see GF_Field_Number */
-	var $_gf_field_class_name = 'GF_Field_Number';
+    public $group = 'standard';
 
-	var $group = 'standard';
+    public $icon = 'dashicons-editor-ol';
 
-	var $icon = 'dashicons-editor-ol';
+    public function __construct()
+    {
+        $this->label = esc_html__('Number', 'gravityview');
+        parent::__construct();
+    }
 
-	public function __construct() {
-		$this->label = esc_html__( 'Number', 'gravityview' );
-		parent::__construct();
-	}
+    public function field_options($field_options, $template_id, $field_id, $context, $input_type, $form_id)
+    {
+        $field_options['number_format'] = [
+            'type'  => 'checkbox',
+            'label' => __('Format number?', 'gravityview'),
+            'desc'  => __('Display numbers with thousands separators.', 'gravityview'),
+            'value' => false,
+            'group' => 'field',
+        ];
 
-	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
+        $field_options['decimals'] = [
+            'type'       => 'number',
+            'label'      => __('Decimals', 'gravityview'),
+            'desc'       => __('Precision of the number of decimal places. Leave blank to use existing precision.', 'gravityview'),
+            'value'      => '',
+            'merge_tags' => false,
+            'group'      => 'field',
+        ];
 
-		$field_options['number_format'] = array(
-			'type' => 'checkbox',
-			'label' => __( 'Format number?', 'gravityview' ),
-			'desc' => __('Display numbers with thousands separators.', 'gravityview'),
-			'value' => false,
-			'group' => 'field',
-		);
-
-		$field_options['decimals'] = array(
-			'type' => 'number',
-			'label' => __( 'Decimals', 'gravityview' ),
-			'desc' => __('Precision of the number of decimal places. Leave blank to use existing precision.', 'gravityview'),
-			'value' => '',
-			'merge_tags' => false,
-			'group' => 'field',
-		);
-
-		return $field_options;
-	}
-
+        return $field_options;
+    }
 }
 
-new GravityView_Field_Number;
+new GravityView_Field_Number();

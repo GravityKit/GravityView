@@ -1,90 +1,90 @@
 <?php
 
-class LicenseTestCest {
+class LicenseTestCest
+{
+    public function _before(AcceptanceTester $I)
+    {
+        $I->loginAsAdmin();
+    }
 
-	public function _before( AcceptanceTester $I ) {
+    public function checkLicense(AcceptanceTester $I)
+    {
+        $I->wantTo('Check for valid and invalid licenses');
 
-		$I->loginAsAdmin();
-	}
+        $I->goToPluginPage('settings');
 
-	public function checkLicense( AcceptanceTester $I ) {
+        $I->waitForText('GravityView Settings');
 
-		$I->wantTo( 'Check for valid and invalid licenses' );
+        $I->fillField('#license_key', 'invalid license');
 
-		$I->goToPluginPage( 'settings' );
+        $I->performOn('#edd-check', ['click' => 'Check License']);
 
-		$I->waitForText( 'GravityView Settings' );
+        $I->waitForText('The license key entered is invalid');
 
-		$I->fillField( '#license_key', 'invalid license' );
+        $I->fillField('#license_key', getenv('GRAVITYVIEW_KEY'));
 
-		$I->performOn( '#edd-check', [ 'click' => 'Check License' ] );
+        $I->performOn('#edd-check', ['click' => 'Check License']);
 
-		$I->waitForText( 'The license key entered is invalid' );
+        $I->waitForText('License level');
+    }
 
-		$I->fillField( '#license_key', getenv( 'GRAVITYVIEW_KEY' ) );
+    public function activateDeactivateLicense(AcceptanceTester $I)
+    {
+        $I->wantTo('Activate/deactivate valid and invalid licenses');
 
-		$I->performOn( '#edd-check', [ 'click' => 'Check License' ] );
+        $I->goToPluginPage('settings');
 
-		$I->waitForText( 'License level' );
-	}
+        $I->waitForText('GravityView Settings');
 
-	public function activateDeactivateLicense( AcceptanceTester $I ) {
+        $I->fillField('#license_key', 'invalid license');
 
-		$I->wantTo( 'Activate/deactivate valid and invalid licenses' );
+        $I->performOn('#edd-activate', ['click' => 'Activate License']);
 
-		$I->goToPluginPage( 'settings' );
+        $I->waitForText('The license key entered is invalid.');
 
-		$I->waitForText( 'GravityView Settings' );
+        $I->fillField('#license_key', getenv('GRAVITYVIEW_KEY'));
 
-		$I->fillField( '#license_key', 'invalid license' );
+        $I->performOn('#edd-activate', ['click' => 'Activate License']);
 
-		$I->performOn( '#edd-activate', [ 'click' => 'Activate License' ] );
+        $I->waitForText('Licensed to:');
 
-		$I->waitForText( 'The license key entered is invalid.' );
+        $I->see('License level:');
 
-		$I->fillField( '#license_key', getenv( 'GRAVITYVIEW_KEY' ) );
+        $I->see('Activations:');
 
-		$I->performOn( '#edd-activate', [ 'click' => 'Activate License' ] );
+        $I->performOn('#edd-deactivate', ['click' => 'Deactivate License']);
 
-		$I->waitForText( 'Licensed to:' );
+        $I->waitForText('The license has been deactivated.');
+    }
 
-		$I->see( 'License level:' );
+    public function saveLicense(AcceptanceTester $I)
+    {
+        $I->wantTo('Save license');
 
-		$I->see( 'Activations:' );
+        $I->goToPluginPage('settings');
 
-		$I->performOn( '#edd-deactivate', [ 'click' => 'Deactivate License' ] );
+        $I->waitForText('GravityView Settings');
 
-		$I->waitForText( 'The license has been deactivated.' );
-	}
+        $I->fillField('#license_key', getenv('GRAVITYVIEW_KEY'));
 
-	public function saveLicense( AcceptanceTester $I ) {
+        if (gravityview()->plugin->is_GF_25()) {
+            $I->performOn('#edd-activate', ['click' => 'Activate License']);
 
-		$I->wantTo( 'Save license' );
+            $I->waitForText('Licensed to:');
 
-		$I->goToPluginPage( 'settings' );
+            $I->scrollTo('#gform-settings-save');
 
-		$I->waitForText( 'GravityView Settings' );
+            $I->click('#gform-settings-save');
 
-		$I->fillField( '#license_key', getenv( 'GRAVITYVIEW_KEY' ) );
+            $I->waitForText('Settings updated');
+        } else {
+            $I->scrollTo('#gform-settings-save');
 
-		if ( gravityview()->plugin->is_GF_25() ) {
-			$I->performOn( '#edd-activate', [ 'click' => 'Activate License' ] );
+            $I->click('#gform-settings-save');
 
-			$I->waitForText( 'Licensed to:' );
+            $I->waitForText('The license key you entered has been saved, but not activated. Please activate the license.');
+        }
 
-			$I->scrollTo( '#gform-settings-save' );
-
-			$I->click( '#gform-settings-save' );
-
-			$I->waitForText( 'Settings updated' );
-		} else {
-			$I->scrollTo( '#gform-settings-save' );
-
-			$I->click( '#gform-settings-save' );
-
-			$I->waitForText( 'The license key you entered has been saved, but not activated. Please activate the license.' );
-		}
-
-		$I->seeInField( '#license_key', getenv( 'GRAVITYVIEW_KEY' ) );
-	}
+        $I->seeInField('#license_key', getenv('GRAVITYVIEW_KEY'));
+    }
 }

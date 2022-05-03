@@ -1,28 +1,26 @@
 <?php
 /**
  * @file class-gravityview-field-chainedselect.php
- * @package GravityView
- * @subpackage includes\fields
  */
+class GravityView_Field_Chained_Select extends GravityView_Field
+{
+    public $name = 'chainedselect';
 
-class GravityView_Field_Chained_Select extends GravityView_Field {
+    public $is_searchable = true;
 
-	var $name = 'chainedselect';
+    public $search_operators = ['is', 'isnot'];
 
-	var $is_searchable = true;
+    public $_gf_field_class_name = 'GF_Field_ChainedSelect';
 
-	var $search_operators = array( 'is', 'isnot' );
+    public $group = 'add-ons';
 
-	var $_gf_field_class_name = 'GF_Field_ChainedSelect';
+    public $icon = 'dashicons-admin-links';
 
-	var $group = 'add-ons';
-
-	var $icon = 'dashicons-admin-links';
-
-	public function __construct() {
-		$this->label = esc_html__( 'Chained Select', 'gravityview' );
-		parent::__construct();
-	}
+    public function __construct()
+    {
+        $this->label = esc_html__('Chained Select', 'gravityview');
+        parent::__construct();
+    }
 }
 
-new GravityView_Field_Chained_Select;
+new GravityView_Field_Chained_Select();

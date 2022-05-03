@@ -1,75 +1,75 @@
 <?php
 /**
  * @file class-gravityview-field-website.php
- * @package GravityView
- * @subpackage includes\fields
  */
 
 /**
- * Add custom options for date fields
+ * Add custom options for date fields.
  */
-class GravityView_Field_Website extends GravityView_Field {
+class GravityView_Field_Website extends GravityView_Field
+{
+    public $name = 'website';
 
-	var $name = 'website';
+    public $is_searchable = true;
 
-	var $is_searchable = true;
+    public $search_operators = ['is', 'isnot', 'contains', 'starts_with', 'ends_with'];
 
-	var $search_operators = array( 'is', 'isnot', 'contains', 'starts_with', 'ends_with' );
+    /** @see GF_Field_Website */
+    public $_gf_field_class_name = 'GF_Field_Website';
 
-	/** @see GF_Field_Website */
-	var $_gf_field_class_name = 'GF_Field_Website';
+    public $group = 'advanced';
 
-	var $group = 'advanced';
+    public $icon = 'dashicons-admin-links';
 
-	var $icon = 'dashicons-admin-links';
+    public function __construct()
+    {
+        $this->label = esc_html__('Website', 'gravityview');
+        parent::__construct();
+    }
 
-	public function __construct() {
-		$this->label = esc_html__( 'Website', 'gravityview' );
-		parent::__construct();
-	}
+    public function field_options($field_options, $template_id, $field_id, $context, $input_type, $form_id)
+    {
 
-	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
+        // It makes no sense to use this as the link.
+        unset($field_options['show_as_link']);
 
-		// It makes no sense to use this as the link.
-		unset( $field_options['show_as_link'] );
+        if ('edit' === $context) {
+            return $field_options;
+        }
 
-		if( 'edit' === $context ) {
-			return $field_options;
-		}
+        /**
+         * @since 1.8
+         */
+        $field_options['anchor_text'] = [
+            'type'       => 'text',
+            'label'      => __('Link Text:', 'gravityview'),
+            'desc'       => __('Define custom link text. Leave blank to display the URL', 'gravityview'),
+            'value'      => '',
+            'merge_tags' => 'force',
+            'priority'   => 1000,
+        ];
 
-		/**
-		 * @since 1.8
-		 */
-		$field_options['anchor_text'] = array(
-			'type' => 'text',
-			'label' => __( 'Link Text:', 'gravityview' ),
-			'desc' => __( 'Define custom link text. Leave blank to display the URL', 'gravityview' ),
-			'value' => '',
-			'merge_tags' => 'force',
-			'priority' => 1000,
-		);
+        $field_options['truncatelink'] = [
+            'type'     => 'checkbox',
+            'value'    => true,
+            'label'    => __('Shorten Link Display', 'gravityview'),
+            'tooltip'  => __('Only show the domain for a URL instead of the whole link.', 'gravityview'),
+            'desc'     => __('Don&rsquo;t show the full URL, only show the domain.', 'gravityview'),
+            'priority' => 1500,
+        ];
 
-		$field_options['truncatelink'] = array(
-			'type' => 'checkbox',
-			'value' => true,
-			'label' => __( 'Shorten Link Display', 'gravityview' ),
-			'tooltip' => __( 'Only show the domain for a URL instead of the whole link.', 'gravityview' ),
-			'desc' => __( 'Don&rsquo;t show the full URL, only show the domain.', 'gravityview' ),
-			'priority' => 1500,
-		);
+        $this->add_field_support('new_window', $field_options);
 
-		$this->add_field_support( 'new_window', $field_options );
+        /**
+         * Set default to opening in new links for back-compatibility with Version 1.5.1.
+         *
+         * @link https://github.com/gravityview/GravityView/commit/e12e76e2d032754227728d41e65103042d4f75ec
+         */
+        $field_options['new_window']['value'] = true;
+        $field_options['new_window']['priority'] = 2000;
 
-		/**
-		 * Set default to opening in new links for back-compatibility with Version 1.5.1
-		 * @link https://github.com/gravityview/GravityView/commit/e12e76e2d032754227728d41e65103042d4f75ec
-		 */
-		$field_options['new_window']['value'] = true;
-		$field_options['new_window']['priority'] = 2000;
-
-		return $field_options;
-	}
-
+        return $field_options;
+    }
 }
 
-new GravityView_Field_Website;
+new GravityView_Field_Website();

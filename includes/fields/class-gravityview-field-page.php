@@ -1,27 +1,25 @@
 <?php
 /**
  * @file class-gravityview-field-page.php
- * @package GravityView
- * @subpackage includes\fields
  */
+class GravityView_Field_Page extends GravityView_Field
+{
+    public $name = 'page';
 
-class GravityView_Field_Page extends GravityView_Field {
+    public $is_searchable = false;
 
-	var $name = 'page';
+    /** @see GF_Field_Page */
+    public $_gf_field_class_name = 'GF_Field_Page';
 
-	var $is_searchable = false;
+    public $group = 'standard';
 
-	/** @see GF_Field_Page */
-	var $_gf_field_class_name = 'GF_Field_Page';
+    public $icon = 'dashicons-media-text';
 
-	var $group = 'standard';
-
-	var $icon = 'dashicons-media-text';
-
-	public function __construct() {
-		$this->label = esc_html__( 'Page', 'gravityview' );
-		parent::__construct();
-	}
+    public function __construct()
+    {
+        $this->label = esc_html__('Page', 'gravityview');
+        parent::__construct();
+    }
 }
 
-new GravityView_Field_Page;
+new GravityView_Field_Page();

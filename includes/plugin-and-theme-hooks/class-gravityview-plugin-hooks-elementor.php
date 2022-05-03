@@ -1,12 +1,14 @@
 <?php
 /**
- * Add Elegant Themes compatibility to GravityView (Divi theme)
+ * Add Elegant Themes compatibility to GravityView (Divi theme).
  *
  * @file      class-gravityview-theme-hooks-elegant-themes.php
- * @package   GravityView
+ *
  * @license   GPL2+
  * @author    GravityView <hello@gravityview.co>
+ *
  * @link      http://gravityview.co
+ *
  * @copyright Copyright 2016', Katz Web Services, Inc.
  *
  * @since 1.17.2
@@ -14,18 +16,19 @@
 
 /**
  * @inheritDoc
+ *
  * @since 1.17.2
  */
-class GravityView_Theme_Hooks_Elementor extends GravityView_Plugin_and_Theme_Hooks {
+class GravityView_Theme_Hooks_Elementor extends GravityView_Plugin_and_Theme_Hooks
+{
+    /**
+     * @inheritDoc
+     *
+     * @since 1.17.2
+     */
+    protected $constant_name = 'ELEMENTOR_VERSION';
 
-	/**
-	 * @inheritDoc
-	 * @since 1.17.2
-	 */
-	protected $constant_name = 'ELEMENTOR_VERSION';
-
-	protected $content_meta_keys = array( '_elementor_data' );
-
+    protected $content_meta_keys = ['_elementor_data'];
 }
 
-new GravityView_Theme_Hooks_Elementor;
+new GravityView_Theme_Hooks_Elementor();

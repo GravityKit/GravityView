@@ -1,43 +1,41 @@
 <?php
 /**
  * @file class-gravityview-field-fileupload.php
- * @package GravityView
- * @subpackage includes\fields
  */
+class GravityView_Field_Pipe_Recorder extends GravityView_Field
+{
+    public $name = 'pipe_recorder';
 
-class GravityView_Field_Pipe_Recorder extends GravityView_Field {
+    public $_gf_field_class_name = 'GF_Field_Pipe_Recorder';
 
-	var $name = 'pipe_recorder';
+    public $is_searchable = false;
 
-	var $_gf_field_class_name = 'GF_Field_Pipe_Recorder';
+    public $group = 'advanced';
 
-	var $is_searchable = false;
+    public function __construct()
+    {
+        $this->label = esc_html__('Pipe Recorder', 'gravityview');
+        parent::__construct();
+    }
 
-	var $group = 'advanced';
+    public function field_options($field_options, $template_id, $field_id, $context, $input_type, $form_id)
+    {
+        unset($field_options['search_filter']);
 
-	public function __construct() {
-		$this->label = esc_html__( 'Pipe Recorder', 'gravityview' );
-		parent::__construct();
-	}
+        if ('edit' === $context) {
+            return $field_options;
+        }
 
-	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
+        $add_options['embed'] = [
+            'type'       => 'checkbox',
+            'label'      => __('Display as embedded', 'gravityview'),
+            'desc'       => __('Display the video in a player, rather than a direct link to the video.', 'gravityview'),
+            'value'      => true,
+            'merge_tags' => false,
+        ];
 
-		unset( $field_options['search_filter'] );
-
-		if ( 'edit' === $context ) {
-			return $field_options;
-		}
-
-		$add_options['embed'] = array(
-			'type' => 'checkbox',
-			'label' => __( 'Display as embedded', 'gravityview' ),
-			'desc' => __( 'Display the video in a player, rather than a direct link to the video.', 'gravityview' ),
-			'value' => true,
-			'merge_tags' => false,
-		);
-
-		return $add_options + $field_options;
-	}
+        return $add_options + $field_options;
+    }
 }
 
-new GravityView_Field_Pipe_Recorder;
+new GravityView_Field_Pipe_Recorder();

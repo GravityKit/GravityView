@@ -1,207 +1,211 @@
 <?php
 
 /**
- * Widget to add custom content
+ * Widget to add custom content.
  *
  * @since 1.8
  *
  * @extends GravityView_Widget
  */
-class GravityView_Widget_Poll extends GravityView_Widget {
+class GravityView_Widget_Poll extends GravityView_Widget
+{
+    /**
+     * Does this get displayed on a single entry?
+     *
+     * @var bool
+     */
+    protected $show_on_single = false;
 
-	/**
-	 * Does this get displayed on a single entry?
-	 * @var boolean
-	 */
-	protected $show_on_single = false;
+    /**
+     * @todo add support for specifying poll field to display (via AJAX in field settings)
+     *
+     * @since 1.8
+     */
+    public function __construct()
+    {
+        $this->widget_id = 'poll';
+        $this->widget_description = __('Displays the results of Poll Fields that exist in the form.', 'gravityview');
+        $this->widget_subtitle = sprintf(_x('Note: this will display poll results for %sall form entries%s, not only the entries displayed in the View.', 'The string placeholders are for emphasis HTML', 'gravityview'), '<em>', '</em>');
 
-	/**
-	 * @todo add support for specifying poll field to display (via AJAX in field settings)
-	 * @since 1.8
-	 */
-	function __construct() {
+        $default_values = [
+            'header' => 1,
+            'footer' => 1,
+        ];
 
-		$this->widget_id = 'poll';
-		$this->widget_description = __('Displays the results of Poll Fields that exist in the form.', 'gravityview' );
-		$this->widget_subtitle = sprintf( _x('Note: this will display poll results for %sall form entries%s, not only the entries displayed in the View.', 'The string placeholders are for emphasis HTML', 'gravityview' ), '<em>', '</em>' );
+        $settings = [
+            'percentages' => [
+                'label'   => __('Display Percentages', 'gravityview'),
+                'type'    => 'checkbox',
+                'value'   => true,
+                'tooltip' => __('Display results percentages as part of results? Supported values are: true, false. Defaults to "true".', 'gravityview'),
+            ],
+            'counts' => [
+                'label'   => __('Display Counts', 'gravityview'),
+                'type'    => 'checkbox',
+                'value'   => true,
+                'tooltip' => __('Display number of times each choice has been selected when displaying results? Supported values are: true, false. Defaults to "true".', 'gravityview'),
+            ],
+            'style' => [
+                'type'    => 'select',
+                'label'   => __('Style', 'gravityview'),
+                'tooltip' => __('The Polls Add-On currently supports 4 built in styles: red, green, orange, blue. Defaults to "green".', 'gravityview'),
+                'value'   => 'green',
+                'choices' => [
+                    'green'  => __('Green', 'gravityview'),
+                    'blue'   => __('Blue', 'gravityview'),
+                    'red'    => __('Red', 'gravityview'),
+                    'orange' => __('Orange', 'gravityview'),
+                ],
+            ],
+        ];
 
-		$default_values = array(
-			'header' => 1,
-			'footer' => 1,
-		);
+        if (!$this->is_registered()) {
+            // frontend - add template path
+            add_filter('gravityview_template_paths', [$this, 'add_template_path']);
+        }
 
-		$settings = array(
-			'percentages' => array(
-				'label' => __('Display Percentages', 'gravityview'),
-				'type' => 'checkbox',
-				'value' => true,
-				'tooltip' => __( 'Display results percentages as part of results? Supported values are: true, false. Defaults to "true".', 'gravityview' ),
-			),
-			'counts' => array(
-				'label' => __('Display Counts', 'gravityview'),
-				'type' => 'checkbox',
-				'value' => true,
-				'tooltip' => __( 'Display number of times each choice has been selected when displaying results? Supported values are: true, false. Defaults to "true".', 'gravityview' ),
-			),
-			'style' => array(
-				'type' => 'select',
-				'label' => __('Style', 'gravityview'),
-				'tooltip' => __( 'The Polls Add-On currently supports 4 built in styles: red, green, orange, blue. Defaults to "green".', 'gravityview' ),
-				'value' => 'green',
-				'choices' => array(
-					'green' => __('Green', 'gravityview'),
-					'blue' => __('Blue', 'gravityview'),
-					'red' => __('Red', 'gravityview'),
-					'orange' => __('Orange', 'gravityview'),
-				),
-			),
-		);
+        parent::__construct(__('Poll Results', 'gravityview'), null, $default_values, $settings);
+    }
 
-		if ( ! $this->is_registered() ) {
-			// frontend - add template path
-			add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
-		}
+    /**
+     * Include this extension templates path.
+     *
+     * @since 1.8
+     *
+     * @param array $file_paths List of template paths ordered
+     */
+    public function add_template_path($file_paths)
+    {
+        $index = 126;
 
-		parent::__construct( __( 'Poll Results', 'gravityview' ) , null, $default_values, $settings );
-	}
+        // Index 100 is the default GravityView template path.
+        $file_paths[$index] = plugin_dir_path(__FILE__).'templates/';
 
-	/**
-	 * Include this extension templates path
-	 * @since 1.8
-	 * @param array $file_paths List of template paths ordered
-	 */
-	function add_template_path( $file_paths ) {
+        return $file_paths;
+    }
 
-		$index = 126;
+    /**
+     * Load the scripts and styles needed for the display of the poll widget.
+     *
+     * @since 1.8
+     */
+    private function enqueue_scripts_and_styles()
+    {
+        $GFPolls = GFPolls::get_instance();
 
-		// Index 100 is the default GravityView template path.
-		$file_paths[ $index ] = plugin_dir_path( __FILE__ ) . 'templates/';
+        wp_enqueue_script('gpoll_js', $GFPolls->get_base_url().'/js/gpoll.js', ['jquery'], $GFPolls->_version);
 
-		return $file_paths;
-	}
+        $GFPolls->localize_scripts();
 
-	/**
-	 * Load the scripts and styles needed for the display of the poll widget
-	 *
-	 * @since 1.8
-	 */
-	private function enqueue_scripts_and_styles() {
+        wp_enqueue_style('gpoll_css', $GFPolls->get_base_url().'/css/gpoll.css', null, $GFPolls->_version);
+    }
 
-		$GFPolls = GFPolls::get_instance();
+    /**
+     * @inheritDoc
+     *
+     * @since 1.8
+     */
+    public function pre_render_frontend()
+    {
+        if (!class_exists('GFPolls')) {
+            gravityview()->log->error('Poll Widget not displayed; the Poll Addon is not loaded');
 
-		wp_enqueue_script('gpoll_js', $GFPolls->get_base_url() . '/js/gpoll.js', array('jquery'), $GFPolls->_version);
+            return false;
+        }
 
-		$GFPolls->localize_scripts();
+        $view = gravityview()->views->get();
 
-		wp_enqueue_style('gpoll_css', $GFPolls->get_base_url() . '/css/gpoll.css', null, $GFPolls->_version);
-	}
+        $poll_fields = [$view->form->form['id'] => GFCommon::get_fields_by_type($view->form, ['poll'])];
 
-	/**
-	 * @inheritDoc
-	 *
-	 * @since 1.8
-	 */
-	public function pre_render_frontend() {
+        foreach ($view->joins as $join) {
+            $poll_fields[$join->join_on->form['id']] = GFCommon::get_fields_by_type($join->join_on->form, ['poll']);
+        }
 
-		if( ! class_exists('GFPolls') ) {
+        $poll_fields = array_filter($poll_fields);
 
-			gravityview()->log->error( 'Poll Widget not displayed; the Poll Addon is not loaded' );
+        if (empty($poll_fields)) {
+            gravityview()->log->error('Poll Widget not displayed; there are no poll fields for the form');
 
-			return false;
-		}
+            return false;
+        }
 
-		$view = gravityview()->views->get();
+        $this->poll_fields = $poll_fields;
 
-		$poll_fields = array( $view->form->form['id'] => GFCommon::get_fields_by_type( $view->form, array( 'poll' ) ) );
+        return parent::pre_render_frontend();
+    }
 
-		foreach ( $view->joins as $join ) {
-			$poll_fields[ $join->join_on->form['id'] ] = GFCommon::get_fields_by_type( $join->join_on->form, array( 'poll' ) );
-		}
+    /**
+     * Get the display settings for the Poll widget.
+     *
+     * @param array $widget_settings Settings for the Poll widget
+     *
+     * @return array Final poll widget settings
+     */
+    public function get_frontend_settings($widget_settings)
+    {
+        $default_settings = [
+            'field'       => 0,
+            'style'       => 'green',
+            'percentages' => true,
+            'counts'      => true,
+        ];
 
-		$poll_fields = array_filter( $poll_fields );
+        $settings = wp_parse_args($widget_settings, $default_settings);
 
-		if ( empty ( $poll_fields ) ) {
-			gravityview()->log->error( 'Poll Widget not displayed; there are no poll fields for the form' );
-			return false;
-		}
+        /**
+         * @filter `gravityview/widget/poll/settings` Modify display settings for the poll widget
+         *
+         * @since 1.8
+         *
+         * @param array $settings Settings with `field`, `style`, `percentages` and `counts` keys
+         */
+        $settings = apply_filters('gravityview/widget/poll/settings', $settings);
 
-		$this->poll_fields = $poll_fields;
+        return $settings;
+    }
 
-		return parent::pre_render_frontend();
-	}
+    /**
+     * Render the widget.
+     *
+     * @see https://www.gravityhelp.com/documentation/article/polls-add-on/
+     * @since 1.8
+     */
+    public function render_frontend($widget_args, $content = '', $context = '')
+    {
+        if (!$this->pre_render_frontend()) {
+            return;
+        }
 
-	/**
-	 * Get the display settings for the Poll widget
-	 *
-	 * @param array $widget_settings Settings for the Poll widget
-	 *
-	 * @return array Final poll widget settings
-	 */
-	function get_frontend_settings( $widget_settings ) {
+        // Make sure the class is loaded in DataTables
+        if (!class_exists('GFFormDisplay')) {
+            include_once GFCommon::get_base_path().'/form_display.php';
+        }
 
-		$default_settings = array(
-			'field' => 0,
-			'style' => 'green',
-			'percentages' => true,
-			'counts' => true,
-		);
+        $this->enqueue_scripts_and_styles();
 
-		$settings = wp_parse_args( $widget_settings, $default_settings );
+        $settings = $this->get_frontend_settings($widget_args);
 
-		/**
-		 * @filter `gravityview/widget/poll/settings` Modify display settings for the poll widget
-		 * @since 1.8
-		 * @param array $settings Settings with `field`, `style`, `percentages` and `counts` keys
-		 */
-		$settings = apply_filters( 'gravityview/widget/poll/settings', $settings );
+        $percentages = empty($settings['percentages']) ? 'false' : 'true';
 
-		return $settings;
-	}
+        $counts = empty($settings['counts']) ? 'false' : 'true';
 
-	/**
-	 * Render the widget
-	 *
-	 * @see https://www.gravityhelp.com/documentation/article/polls-add-on/
-	 *
-	 * @since 1.8
-	 */
-	public function render_frontend( $widget_args, $content = '', $context = '' ) {
+        if (!empty($settings['field'])) {
+            $merge_tag = sprintf('{gpoll: field="%d" style="%s" percentages="%s" counts="%s"}', $settings['field'], $settings['style'], $percentages, $counts);
+        } else {
+            $merge_tag = sprintf('{all_poll_results: style="%s" percentages="%s" counts="%s"}', $settings['style'], $percentages, $counts);
+        }
 
-		if( ! $this->pre_render_frontend() ) {
-			return;
-		}
+        $gravityview_view = GravityView_View::getInstance();
 
-		// Make sure the class is loaded in DataTables
-		if( !class_exists( 'GFFormDisplay' ) ) {
-			include_once( GFCommon::get_base_path() . '/form_display.php' );
-		}
+        $gravityview_view->poll_merge_tag = $merge_tag;
 
-		$this->enqueue_scripts_and_styles();
+        $gravityview_view->poll_settings = $settings;
+        $gravityview_view->poll_fields = $this->poll_fields;
 
-		$settings = $this->get_frontend_settings( $widget_args );
+        $gravityview_view->render('widget', 'poll', false);
 
-		$percentages = empty( $settings['percentages'] ) ? 'false' : 'true';
-
-		$counts = empty( $settings['counts'] ) ? 'false' : 'true';
-
-		if( !empty( $settings['field'] ) ) {
-			$merge_tag = sprintf( '{gpoll: field="%d" style="%s" percentages="%s" counts="%s"}', $settings['field'], $settings['style'], $percentages, $counts );
-		} else {
-			$merge_tag = sprintf( '{all_poll_results: style="%s" percentages="%s" counts="%s"}', $settings['style'], $percentages, $counts );
-		}
-
-		$gravityview_view = GravityView_View::getInstance();
-
-		$gravityview_view->poll_merge_tag = $merge_tag;
-
-		$gravityview_view->poll_settings = $settings;
-		$gravityview_view->poll_fields = $this->poll_fields;
-
-		$gravityview_view->render('widget', 'poll', false );
-
-		unset( $gravityview_view->poll_merge_tag, $gravityview_view->poll_settings, $gravityview_view->poll_form, $gravityview_view->poll_fields );
-	}
-
+        unset($gravityview_view->poll_merge_tag, $gravityview_view->poll_settings, $gravityview_view->poll_form, $gravityview_view->poll_fields);
+    }
 }
 
-new GravityView_Widget_Poll;
+new GravityView_Widget_Poll();

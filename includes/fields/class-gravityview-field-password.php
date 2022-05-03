@@ -1,130 +1,128 @@
 <?php
 /**
  * @file class-gravityview-field-password.php
- * @package GravityView
- * @subpackage includes\fields
  */
+class GravityView_Field_Password extends GravityView_Field
+{
+    public $name = 'password';
 
-class GravityView_Field_Password extends GravityView_Field {
+    public $is_searchable = false;
 
-	var $name = 'password';
+    /** @see GF_Field_Password */
+    public $_gf_field_class_name = 'GF_Field_Password';
 
-	var $is_searchable = false;
+    public $group = 'advanced';
 
-	/** @see GF_Field_Password */
-	var $_gf_field_class_name = 'GF_Field_Password';
+    public function __construct()
+    {
+        $this->label = esc_html__('Password', 'gravityview');
 
-	var $group = 'advanced';
+        $this->add_hooks();
 
-	public function __construct() {
-		$this->label = esc_html__( 'Password', 'gravityview' );
+        parent::__construct();
 
-		$this->add_hooks();
+        add_filter('gravityview/field/password/value', [$this, 'get_value'], 10, 6);
+    }
 
-		parent::__construct();
-	
-		add_filter( 'gravityview/field/password/value', array( $this, 'get_value' ), 10, 6 );
-	}
+    /**
+     * Filter the value of the field, future.
+     *
+     * @since 2.0
+     *
+     * @param mixed       $value   The value of the field.
+     * @param \GV\Field   $field   The field as seen by future.
+     * @param \GV\View    $view    The view requested in.
+     * @param \GV\Source  $source  The data source (form).
+     * @param \GV\Entry   $entry   The entry.
+     * @param \GV\Request $request The request context.
+     *
+     * @return mixed $value The filtered value.
+     */
+    public function get_value($value, $field, $view, $source, $entry, $request)
+    {
+        /** Passwords should never be exposed. */
+        return '';
+    }
 
-	/**
-	 * Filter the value of the field, future.
-	 *
-	 * @since 2.0
-	 *
-	 * @param mixed			$value	The value of the field.
-	 * @param \GV\Field		$field	The field as seen by future.
-	 * @param \GV\View		$view	The view requested in.
-	 * @param \GV\Source	$source The data source (form).
-	 * @param \GV\Entry		$entry	The entry.
-	 * @param \GV\Request	$request The request context.
-	 *
-	 * @return mixed $value The filtered value.
-	 */
-	public function get_value( $value, $field, $view, $source, $entry, $request ) {
-		/** Passwords should never be exposed. */
-		return '';
-	}
+    /**
+     * Add filters to modify the front-end label and the Add Field label.
+     *
+     * @since 1.17
+     *
+     * @return void
+     */
+    public function add_hooks()
+    {
+        add_filter('gravityview/common/get_form_fields', [$this, 'add_form_fields'], 10, 3);
 
+        add_filter('gravityview/template/field_label', [$this, 'field_label'], 10, 4);
+    }
 
-	/**
-	 * Add filters to modify the front-end label and the Add Field label
-	 *
-	 * @since 1.17
-	 *
-	 * @return void
-	 */
-	function add_hooks() {
-		add_filter( 'gravityview/common/get_form_fields', array( $this, 'add_form_fields' ), 10, 3 );
+    /**
+     * Use the GV Admin Field label for the Password field instead of the per-input setting.
+     *
+     * @since 1.17
+     *
+     * @param string $label Field label HTML
+     * @param array  $field GravityView field array
+     * @param array  $form  Gravity Forms form array
+     * @param array  $entry Gravity Forms entry array
+     *
+     * @return string If a custom field label isn't set, return the field label for the password field
+     */
+    public function field_label($label = '', $field = [], $form = [], $entry = [])
+    {
 
-		add_filter( 'gravityview/template/field_label', array( $this, 'field_label' ), 10, 4 );
-	}
+        // If using a custom label, no need to fetch the parent label
+        if (!is_numeric($field['id']) || !empty($field['custom_label'])) {
+            return $label;
+        }
 
-	/**
-	 * Use the GV Admin Field label for the Password field instead of the per-input setting
-	 *
-	 * @since 1.17
-	 *
-	 * @param string $label Field label HTML
-	 * @param array $field GravityView field array
-	 * @param array $form Gravity Forms form array
-	 * @param array $entry Gravity Forms entry array
-	 *
-	 * @return string If a custom field label isn't set, return the field label for the password field
-	 */
-	function field_label( $label = '', $field = array(), $form = array(), $entry = array() ){
+        $field_object = GFFormsModel::get_field($form, $field['id']);
 
-		// If using a custom label, no need to fetch the parent label
-		if( ! is_numeric( $field['id'] ) || ! empty( $field['custom_label'] ) ) {
-			return $label;
-		}
+        if ($field_object && 'password' === $field_object->type) {
+            $label = $field['label'];
+        }
 
-		$field_object = GFFormsModel::get_field( $form, $field['id'] );
+        return $label;
+    }
 
-		if( $field_object && 'password' === $field_object->type ) {
-			$label = $field['label'];
-		}
+    /**
+     * If a form has list fields, add the columns to the field picker.
+     *
+     * @since 1.17
+     *
+     * @param array $fields               Associative array of fields, with keys as field type
+     * @param array $form                 GF Form array
+     * @param bool  $include_parent_field Whether to include the parent field when getting a field with inputs
+     *
+     * @return array $fields with list field columns added, if exist. Unmodified if form has no list fields.
+     */
+    public function add_form_fields($fields = [], $form = [], $include_parent_field = true)
+    {
+        foreach ($fields as $key => $field) {
+            if ('password' === $field['type']) {
 
-		return $label;
-	}
+                // The Enter Password input
+                if (floor($key) === floatval($key)) {
+                    if (!empty($field['parent'])) {
+                        $field['label'] = $field['parent']->label;
+                        $field['adminOnly'] = $field['parent']->adminOnly;
+                        $field['adminLabel'] = $field['parent']->adminLabel;
+                        // Don't show as a child input
+                        unset($field['parent']);
+                    }
 
-	/**
-	 * If a form has list fields, add the columns to the field picker
-	 *
-	 * @since 1.17
-	 *
-	 * @param array $fields Associative array of fields, with keys as field type
-	 * @param array $form GF Form array
-	 * @param bool $include_parent_field Whether to include the parent field when getting a field with inputs
-	 *
-	 * @return array $fields with list field columns added, if exist. Unmodified if form has no list fields.
-	 */
-	function add_form_fields( $fields = array(), $form = array(), $include_parent_field = true ) {
+                    $fields[$key] = $field;
+                } else {
+                    // The Confirm Password input
+                    unset($fields[$key]);
+                }
+            }
+        }
 
-		foreach ( $fields as $key => $field ) {
-			if( 'password' === $field['type'] ) {
-
-				// The Enter Password input
-				if( floor( $key ) === floatval( $key ) ) {
-
-					if( ! empty( $field['parent'] ) ) {
-						$field['label']      = $field['parent']->label;
-						$field['adminOnly']  = $field['parent']->adminOnly;
-						$field['adminLabel'] = $field['parent']->adminLabel;
-						// Don't show as a child input
-						unset( $field['parent'] );
-					}
-
-					$fields[ $key ] = $field;
-				} else {
-					// The Confirm Password input
-					unset( $fields[ $key ] );
-				}
-			}
-		}
-
-		return $fields;
-	}
-
+        return $fields;
+    }
 }
 
-new GravityView_Field_Password;
+new GravityView_Field_Password();

@@ -1,30 +1,27 @@
 <?php
 /**
  * @file class-gravityview-field-name.php
- * @package GravityView
- * @subpackage includes\fields
  */
+class GravityView_Field_Name extends GravityView_Field
+{
+    public $name = 'name';
 
-class GravityView_Field_Name extends GravityView_Field {
+    /** @see GF_Field_Name */
+    public $_gf_field_class_name = 'GF_Field_Name';
 
-	var $name = 'name';
+    public $group = 'advanced';
 
-	/** @see GF_Field_Name */
-	var $_gf_field_class_name = 'GF_Field_Name';
+    public $search_operators = ['is', 'isnot', 'contains'];
 
-	var $group = 'advanced';
+    public $is_searchable = true;
 
-	public $search_operators = array( 'is', 'isnot', 'contains' );
+    public $icon = 'dashicons-admin-users';
 
-	var $is_searchable = true;
-
-	var $icon = 'dashicons-admin-users';
-
-	public function __construct() {
-		$this->label = esc_html__( 'Name', 'gravityview' );
-		parent::__construct();
-	}
-
+    public function __construct()
+    {
+        $this->label = esc_html__('Name', 'gravityview');
+        parent::__construct();
+    }
 }
 
-new GravityView_Field_Name;
+new GravityView_Field_Name();

@@ -1,43 +1,42 @@
 <?php
 /**
  * @file class-gravityview-field-id.php
+ *
  * @since 2.10
- * @subpackage includes\fields
- * @package GravityView
  */
+class GravityView_Field_ID extends GravityView_Field
+{
+    public $name = 'id';
 
-class GravityView_Field_ID extends GravityView_Field {
+    public $is_searchable = true;
 
-	var $name = 'id';
+    public $search_operators = ['is', 'isnot', 'greater_than', 'less_than', 'in', 'not_in'];
 
-	var $is_searchable = true;
+    public $group = 'meta';
 
-	var $search_operators = array( 'is', 'isnot', 'greater_than', 'less_than', 'in', 'not_in' );
+    public $icon = 'dashicons-code-standards';
 
-	var $group = 'meta';
+    public $is_numeric = true;
 
-	var $icon = 'dashicons-code-standards';
+    public function __construct()
+    {
+        $this->label = esc_html__('Entry ID', 'gravityview');
+        $this->description = __('The unique ID of the entry.', 'gravityview');
+        parent::__construct();
+    }
 
-	var $is_numeric = true;
+    public function field_options($field_options, $template_id, $field_id, $context, $input_type, $form_id)
+    {
+        if ('edit' === $context) {
+            return $field_options;
+        }
 
-	public function __construct() {
-		$this->label       = esc_html__( 'Entry ID', 'gravityview' );
-		$this->description = __( 'The unique ID of the entry.', 'gravityview' );
-		parent::__construct();
-	}
+        if ('single' === $context) {
+            unset($field_options['new_window']);
+        }
 
-	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
-
-		if ( 'edit' === $context ) {
-			return $field_options;
-		}
-
-		if ( 'single' === $context ) {
-			unset( $field_options['new_window'] );
-		}
-
-		return $field_options;
-	}
+        return $field_options;
+    }
 }
 
-new GravityView_Field_ID;
+new GravityView_Field_ID();

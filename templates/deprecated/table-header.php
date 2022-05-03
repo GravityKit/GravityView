@@ -1,9 +1,7 @@
 <?php
 /**
- * Display above the entries loop when using a table layout
+ * Display above the entries loop when using a table layout.
  *
- * @package GravityView
- * @subpackage GravityView/templates
  *
  * @global GravityView_View $this
  */
@@ -16,15 +14,15 @@
 		<tr>
 			<?php
 
-				// Make sure this wasn't overridden by search
-				$this->setTemplatePartSlug('table');
+                // Make sure this wasn't overridden by search
+                $this->setTemplatePartSlug('table');
 
-				$this->renderZone( 'columns', array(
-					'markup' => '<th id="{{ field_id }}" class="{{class}}" style="{{width:style}}">{{label}}</th>',
-					'hide_empty' => false, // Always show <th>
-				));
+                $this->renderZone('columns', [
+                    'markup'     => '<th id="{{ field_id }}" class="{{class}}" style="{{width:style}}">{{label}}</th>',
+                    'hide_empty' => false, // Always show <th>
+                ]);
 
-			?>
+            ?>
 		</tr>
 	</thead>
 

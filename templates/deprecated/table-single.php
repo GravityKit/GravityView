@@ -1,9 +1,7 @@
 <?php
 /**
- * Display a single entry when using a table template
+ * Display a single entry when using a table template.
  *
- * @package GravityView
- * @subpackage GravityView/templates
  *
  * @global GravityView_View $this
  */
@@ -12,25 +10,25 @@
 
 <p class="gv-back-link"><?php echo gravityview_back_link(); ?></p>
 
-<div class="<?php gv_container_class( 'gv-table-view gv-table-container gv-table-single-container' ); ?>">
+<div class="<?php gv_container_class('gv-table-view gv-table-container gv-table-single-container'); ?>">
 	<table class="gv-table-view-content">
-		<?php if( $this->getFields('single_table-columns') ) { ?>
+		<?php if ($this->getFields('single_table-columns')) { ?>
 			<thead>
 				<?php gravityview_header(); ?>
 			</thead>
 			<tbody>
 				<?php
 
-					$markup = '
+                    $markup = '
 						<tr id="{{ field_id }}" class="{{class}}">
 							<th scope="row">{{label}}</th>
 							<td>{{value}}</td>
 						</tr>';
 
-					$this->renderZone( 'columns', array(
-						'markup' => $markup,
-					));
-			?>
+                    $this->renderZone('columns', [
+                        'markup' => $markup,
+                    ]);
+            ?>
 			</tbody>
 			<tfoot>
 				<?php gravityview_footer(); ?>

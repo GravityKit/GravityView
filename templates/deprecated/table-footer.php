@@ -1,9 +1,7 @@
 <?php
 /**
- * Display below the entries loop when using a table layout
+ * Display below the entries loop when using a table layout.
  *
- * @package GravityView
- * @subpackage GravityView/templates
  *
  * @global GravityView_View $this
  */
@@ -12,12 +10,12 @@
 		<tr>
 			<?php
 
-			$this->renderZone( 'columns', array(
-				'markup' => '<th id="{{ field_id }}" class="{{class}}">{{label}}</th>',
-				'hide_empty' => false, // Always show <th>
-			));
+            $this->renderZone('columns', [
+                'markup'     => '<th id="{{ field_id }}" class="{{class}}">{{label}}</th>',
+                'hide_empty' => false, // Always show <th>
+            ]);
 
-			?>
+            ?>
 		</tr>
 		<?php gravityview_footer(); ?>
 	</tfoot>

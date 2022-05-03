@@ -1,60 +1,59 @@
 <?php
 /**
  * @file class-gravityview-field-calculation.php
- * @package GravityView
- * @subpackage includes\fields
  */
+class GravityView_Field_Calculation extends GravityView_Field
+{
+    public $name = 'calculation';
 
-class GravityView_Field_Calculation extends GravityView_Field {
+    public $is_searchable = false;
 
-	var $name = 'calculation';
+    public $group = 'pricing';
 
-	var $is_searchable = false;
+    public $_gf_field_class_name = 'GF_Field_Calculation';
 
-	var $group = 'pricing';
+    /**
+     * GravityView_Field_Calculation constructor.
+     */
+    public function __construct()
+    {
+        $this->label = esc_html__('Calculation', 'gravityview');
 
-	var $_gf_field_class_name = 'GF_Field_Calculation';
+        add_filter('gravityview_blocklist_field_types', [$this, 'blocklist_field_types'], 10, 2);
 
-	/**
-	 * GravityView_Field_Calculation constructor.
-	 */
-	public function __construct() {
+        parent::__construct();
+    }
 
-		$this->label = esc_html__( 'Calculation', 'gravityview' );
+    /**
+     * @depecated 2.14
+     */
+    public function blacklist_field_types($field_types = [], $context = '')
+    {
+        _deprecated_function(__METHOD__, '2.14', 'GravityView_Field_Calculation::blocklist_field_types');
 
-		add_filter( 'gravityview_blocklist_field_types', array( $this, 'blocklist_field_types' ), 10, 2 );
+        return $this->blocklist_field_types($field_types, $context);
+    }
 
-		parent::__construct();
-	}
+    /**
+     * Don't show the Calculation field in field picker.
+     *
+     * @since 2.14
+     *
+     * @param array  $field_types Array of field types
+     * @param string $context
+     *
+     * @return array Field types with calculation added, if not Edit Entry context
+     */
+    public function blocklist_field_types($field_types = [], $context = '')
+    {
 
-	/**
-	 * @depecated 2.14
-	 */
-	public function blacklist_field_types( $field_types = array(), $context = '' ) {
-		_deprecated_function( __METHOD__, '2.14', 'GravityView_Field_Calculation::blocklist_field_types' );
-		return $this->blocklist_field_types( $field_types, $context );
-	}
+        // Allow Calculation field in Edit Entry
+        if ('edit' !== $context) {
+            $field_types[] = $this->name;
+        }
 
-
-	/**
-	 * Don't show the Calculation field in field picker
-	 *
-	 * @since 2.14
-	 *
-	 * @param array $field_types Array of field types
-	 * @param string $context
-	 *
-	 * @return array Field types with calculation added, if not Edit Entry context
-	 */
-	public function blocklist_field_types( $field_types = array(), $context = '' ) {
-
-		// Allow Calculation field in Edit Entry
-		if( 'edit' !== $context ) {
-			$field_types[] = $this->name;
-		}
-
-		return $field_types;
-	}
+        return $field_types;
+    }
 }
 
-new GravityView_Field_Calculation;
+new GravityView_Field_Calculation();
