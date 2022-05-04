@@ -237,7 +237,7 @@ EOD;
 			'{hide_notice}'                 => esc_html__( 'Hide this notice', 'gravityview' ),
 			'{hide_notice_link}'            => esc_url( $dismiss_notice_link ),
 			'{message}'                     => esc_html( wptexturize( __( 'The "Show only approved entries" setting is enabled, so only entries that have been approved are displayed.', 'gravityview' ) ) ),
-			'{learn_more}'                  => esc_html__( 'Learn more about entry approval.', 'gravityview' ),
+			'{learn_more}'                  => esc_html__( 'Learn about entry approval.', 'gravityview' ),
 			'{learn_more_link}'             => 'https://docs.gravityview.co/article/490-entry-approval-gravity-forms',
 			'{disable_setting}'             => esc_html( wptexturize( __( 'Disable the "Show only approved entries" setting for this View', 'gravityview' ) ) ),
 			'{disable_setting_description}' => esc_html( wptexturize( __( 'Click to immediately disable the "Show only approved entries" setting. All entry statuses will be shown.', 'gravityview' ) ) ),
