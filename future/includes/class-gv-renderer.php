@@ -230,7 +230,7 @@ EOD;
 		) ), 'setting', 'gv-setting' );
 
 		$placeholders = array(
-			'{dom_id}'                      => sprintf( 'gv-notice-approve-entries-%d', esc_html( $gravityview->view->ID ) ),
+			'{dom_id}'                      => sprintf( 'gv-notice-approve-entries-%d', $gravityview->view->ID ),
 			'{float_dir}'                   => $float_dir,
 			'{notice_title}'                => esc_html( $notice_title ),
 			'{title_new_window}'            => esc_attr__( 'This link opens in a new window.', 'gravityview' ),
