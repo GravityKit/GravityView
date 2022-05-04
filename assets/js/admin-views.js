@@ -256,6 +256,23 @@
 			if( gvGlobals.passed_form_id ) {
 				vcfg.gvSelectForm.trigger( 'change' );
 			}
+
+			// Enable inserting GF merge tags into WP's CodeMirror
+			var _sendToEditor = window.send_to_editor;
+
+			window.send_to_editor = function ( val ) {
+				var $el = $( '#' + window.wpActiveEditor );
+
+				if ( !$el.hasClass( 'codemirror' ) && _sendToEditor ) {
+					return _sendToEditor( val );
+				}
+
+				var codeMirror = $el.next( '.CodeMirror' )[ 0 ].CodeMirror;
+				var cursorPosition = codeMirror.getCursor();
+				codeMirror.replaceRange( val, window.wp.CodeMirror.Pos( cursorPosition.line, cursorPosition.ch ) );
+			};
+
+			$( 'div .gform-dropdown__trigger' ).on( 'click.gravityforms', vcfg.sendMergeTagValueToCodemirrorEditor );
 		},
 
 		getCookieVal: function ( cookie ) {
@@ -903,6 +920,7 @@
 		 * @param {jQuery} dialog
 		 */
 		setupCodeMirror: function ( dialog ) {
+			var vcfg = viewConfiguration;
 
 			$( 'textarea.code', dialog ).each( function () {
 				var editor = wp.codeEditor.initialize( $( this ), {
@@ -918,7 +936,9 @@
 				var initialEditorCursorPos = editor.codemirror.getCursor();
 
 				// Move merge tag before before CodeMirror in DOM to fix floating issue
-				$textarea.parent().find( '.all-merge-tags' ).insertBefore( $textarea );
+				$textarea.parent().find( '.all-merge-tags' ).detach().insertBefore( $textarea );
+
+				$textarea.parent().find( 'div .gform-dropdown__trigger' ).on( 'click.gravityforms', vcfg.sendMergeTagValueToCodemirrorEditor );
 
 				// Set up Merge Tag autocomplete
 				$textarea.autocomplete( {
@@ -996,6 +1016,27 @@
 					closeAutocompletion();
 				} );
 			} );
+		},
+
+		/**
+		 * Event handler that inserts the merge tag value (data-value property) to WP's CodeMirror
+		 *
+		 * @since 2.14.4
+		 * @param {jQueryEvent} e
+		 */
+		sendMergeTagValueToCodemirrorEditor: function ( e ) {
+			// Always make sure the active editor is set.
+			// This can also be overridden by other plugins (like Members), so make a backup.
+			var _activeEditorBackup = window.wpActiveEditor;
+
+			window.wpActiveEditor = $( e.currentTarget ).parentsUntil( '.gv-setting-container' ).find( 'textarea' ).attr( 'id' );
+
+			if ( window.wpActiveEditor ) {
+				window.send_to_editor( $( this ).data( 'value' ) );
+			}
+
+			// Restore prior active editor
+			window.wpActiveEditor = _activeEditorBackup;
 		},
 
 		/**
@@ -1797,9 +1838,16 @@
 		 * @since 1.22.1
 		 */
 		refresh_merge_tags: function() {
+			// GF 2.6+
+			if ( window.gform && window.gform.instances && window.gform.mergeTags ) {
+				// Remove existing merge tags, since otherwise GF will add another
+				$( '.all-merge-tags' ).remove();
 
-			// Remove existing merge tags, since otherwise GF will add another
-			$( '.all-merge-tags' ).remove();
+				// Until GF provides access to a method to initialize merge tags, we need to re-trigger the DOMContentLoaded event
+				document.dispatchEvent( new Event( 'DOMContentLoaded' ) );
+
+				return;
+			}
 
 			$merge_tag_supported = $('.merge-tag-support');
 
@@ -1808,12 +1856,12 @@
 
 				if ( window.gfMergeTags ) {
 
-					if ( gfMergeTags.hasOwnProperty('destroy') ) {
+					if ( gfMergeTags.hasOwnProperty( 'destroy' ) ) {
 
 						// 2.3 re-init
 						$merge_tag_supported.each( function () {
 							new gfMergeTagsObj( form, $( this ) );
-						});
+						} );
 
 					} else {
 
@@ -2477,22 +2525,4 @@
 		removeTooltips: viewConfiguration.remove_tooltips,
 		showDialog: viewConfiguration.showDialog,
 	};
-
-	// Enable inserting GF merge tags into WP's CodeMirror
-	$( window ).on( 'load', function() {
-		var _sendToEditor = window.send_to_editor;
-
-		window.send_to_editor = function( val ) {
-			var $el = $( '#' + window.wpActiveEditor );
-
-			if ( ! $el.hasClass( 'codemirror' ) ) {
-				return _sendToEditor( val );
-			}
-
-			var codeMirror = $el.next( '.CodeMirror' )[ 0 ].CodeMirror;
-			var cursorPosition = codeMirror.getCursor();
-			codeMirror.replaceRange( val, window.wp.CodeMirror.Pos( cursorPosition.line, cursorPosition.ch ) );
-		};
-	} );
-
 }(jQuery));

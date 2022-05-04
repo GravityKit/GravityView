@@ -97,6 +97,10 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 			return;
 		}
 
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			return false;
+		}
+
 		$args['id']        = ( isset( $args['id'] ) ) ? $args['id'] : 'gv_recent_entries';
 		$instance['title'] = ( isset( $instance['title'] ) ) ? $instance['title'] : '';
 

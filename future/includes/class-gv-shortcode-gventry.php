@@ -191,7 +191,7 @@ class gventry extends \GV\Shortcode {
 				/**
 				 * @filter `gravityview/shortcodes/gventry/edit/success` Modify the edit entry success message in [gventry].
 				 * @since develop
-				 * @param[in,out] string $message The message.
+				 * @param string $message The message.
 				 * @param \GV\View $view The View.
 				 * @param \GV\Entry $entry The entry.
 				 * @param array $atts The attributes.

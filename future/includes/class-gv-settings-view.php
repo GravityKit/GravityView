@@ -35,14 +35,14 @@ class View_Settings extends Settings {
 	 * @since 2.0
 	 *
 	 * @return array The default settings along with their values.
-	 *      @param[out] string $label Setting label shown in admin
-	 *      @param[out] string $type Gravity Forms field type
-	 *      @param[out] string $group The field group the setting is associated with. Default: "default"
-	 *      @param[out] mixed  $value The default value for the setting
-	 *      @param[out] string $tooltip Tooltip displayed for the setting
-	 *      @param[out] boolean $show_in_shortcode Whether to show the setting in the shortcode configuration modal
-	 *      @param[out] array  $options Array of values to use when generating select, multiselect, radio, or checkboxes fields
-	 *      @param[out] boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
+	 *      @param string $label Setting label shown in admin
+	 *      @param string $type Gravity Forms field type
+	 *      @param string $group The field group the setting is associated with. Default: "default"
+	 *      @param mixed  $value The default value for the setting
+	 *      @param string $tooltip Tooltip displayed for the setting
+	 *      @param boolean $show_in_shortcode Whether to show the setting in the shortcode configuration modal
+	 *      @param array  $options Array of values to use when generating select, multiselect, radio, or checkboxes fields
+	 *      @param boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
 	 */
 	public static function defaults( $detailed = false, $group = null ) {
 
@@ -579,7 +579,7 @@ class View_Settings extends Settings {
 
 		/**
 		 * @filter `gravityview_default_args` Modify the default settings for new Views
-		 * @param[in,out] array $default_args Array of default args.
+		 * @param array $default_args Array of default args.
 		 * @deprecated
 		 * @see filter `gravityview/view/settings/defaults`
 		 */
@@ -587,7 +587,7 @@ class View_Settings extends Settings {
 
 		/**
 		 * @filter `gravityview/view/defaults` Modify the default settings for new Views
-		 * @param[in,out] array $default_settings Array of default settings.
+		 * @param array $default_settings Array of default settings.
 		 */
 		$default_settings = apply_filters( 'gravityview/view/settings/defaults', $default_settings );
 

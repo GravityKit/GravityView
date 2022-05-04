@@ -25,7 +25,7 @@ class GravityView_Post_Types {
 	 * @return void
 	 */
 	public static function init_post_types() {
-		return \GV\View::register_post_type();
+		\GV\View::register_post_type();
 	}
 
 	/**
@@ -36,7 +36,7 @@ class GravityView_Post_Types {
 	 * @return void
 	 */
 	public static function init_rewrite() {
-		return \GV\Entry::add_rewrite_endpoint();
+		\GV\Entry::add_rewrite_endpoint();
 	}
 
 	/**

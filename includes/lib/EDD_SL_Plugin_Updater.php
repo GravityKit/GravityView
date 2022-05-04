@@ -1,6 +1,7 @@
 <?php
 /**
  * @deprecated Use \GV\EDD_SL_Plugin_Updater
+ * @see \GV\EDD_SL_Plugin_Updater
  */
 if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
 	if ( class_exists( '\GV\EDD_SL_Plugin_Updater' ) ) {

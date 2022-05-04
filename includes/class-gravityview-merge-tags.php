@@ -330,10 +330,10 @@ class GravityView_Merge_Tags {
 		 * Useful where you want to process variables yourself. We do this in the Math Extension.
 		 * @since 1.13
 		 *
-		 * @param[in,out] boolean $do_replace_variables True: yes, replace variables for this text; False: do not replace variables.
-		 * @param[in] string $text       Text to replace variables in
-		 * @param[in]  array      $form        GF Form array
-		 * @param[in]  array      $entry        GF Entry array
+		 * @param boolean $do_replace_variables True: yes, replace variables for this text; False: do not replace variables.
+		 * @param string $text       Text to replace variables in
+		 * @param  array      $form        GF Form array
+		 * @param  array      $entry        GF Entry array
 		 */
 		$do_replace_variables = apply_filters( 'gravityview/merge_tags/do_replace_variables', true, $text, $form, $entry );
 
@@ -689,8 +689,8 @@ class GravityView_Merge_Tags {
 			/**
 			 * @filter `gravityview/merge_tags/get/glue/` Modify the glue used to convert an array of `{get}` values from an array to string
 			 * @since 1.15
-			 * @param[in,out] string $glue String used to `implode()` $_GET values Default: ', '
-			 * @param[in] string $property The current name of the $_GET parameter being combined
+			 * @param string $glue String used to `implode()` $_GET values Default: ', '
+			 * @param string $property The current name of the $_GET parameter being combined
 			 */
 			$glue = apply_filters( 'gravityview/merge_tags/get/glue/', ', ', $property );
 
@@ -712,10 +712,10 @@ class GravityView_Merge_Tags {
 
 			/**
 			 * @filter `gravityview/merge_tags/get/esc_html/{url parameter name}` Modify the value of the `{get}` replacement before being used
-			 * @param[in,out] string $value Value that will replace `{get}`
-			 * @param[in] string $text Text that contains `{get}` (before replacement)
-			 * @param[in] array $form Gravity Forms form array
-			 * @param[in] array $entry Entry array
+			 * @param string $value Value that will replace `{get}`
+			 * @param string $text Text that contains `{get}` (before replacement)
+			 * @param array $form Gravity Forms form array
+			 * @param array $entry Entry array
 			 */
 			$value = apply_filters('gravityview/merge_tags/get/value/' . $property, $value, $text, $form, $entry );
 

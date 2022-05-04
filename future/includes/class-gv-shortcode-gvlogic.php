@@ -337,7 +337,7 @@ class gvlogic extends \GV\Shortcode {
 		 *
 		 * @since 2.5
 		 *
-		 * @param[in,out] array $atts The logic attributes.
+		 * @param array $atts The logic attributes.
 		 */
 		return apply_filters( 'gravityview/gvlogic/atts', $atts );
 	}

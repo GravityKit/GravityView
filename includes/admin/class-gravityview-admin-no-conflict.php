@@ -183,10 +183,20 @@ class GravityView_Admin_No_Conflict {
 		 */
 		$required_objects = apply_filters( "gravityview_noconflict_{$type}", $required_objects );
 
+		$allow_prefixes = array(
+			'gravityview',
+			'gf_',
+			'gravityforms',
+			'gform_',
+			'jquery-ui-',
+		);
+
+		$allow_regex = '/^' . implode( '|', $allow_prefixes ) . '/ism';
+
 		//reset queue
 		$queue = array();
 		foreach( $wp_objects->queue as $object ) {
-			if( in_array( $object, $required_objects ) || preg_match('/gravityview|gf_|gravityforms/ism', $object ) ) {
+			if( in_array( $object, $required_objects ) || preg_match( $allow_regex, $object ) ) {
 				$queue[] = $object;
 			}
 		}
@@ -197,7 +207,7 @@ class GravityView_Admin_No_Conflict {
 		//unregistering scripts
 		$registered = array();
 		foreach( $wp_objects->registered as $handle => $script_registration ){
-			if( in_array( $handle, $required_objects ) ){
+			if( in_array( $handle, $required_objects ) || preg_match( $allow_regex, $handle ) ){
 				$registered[ $handle ] = $script_registration;
 			}
 		}

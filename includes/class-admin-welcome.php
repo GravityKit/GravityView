@@ -255,34 +255,48 @@ class GravityView_Welcome {
 
 			<?php $this->tabs(); ?>
 
-			<div class="feature-section col two-col has-2-columns is-fullwidth">
-				<div class="column col col-2">
-					<div class='media-container'>
-						<a href="https://www.trustedlogin.com"><img alt='TrustedLogin Logo'
-										src="<?php echo plugins_url( 'assets/images/screenshots/trustedlogin-logo.png', GRAVITYVIEW_FILE ); ?>"
-										style='border: none'></a>
-					</div>
-					<h3>Integration with TrustedLogin</h3>
-					<p><a href="https://www.trustedlogin.com">TrustedLogin</a> is the best way for you to easily &amp; securely grant access to plugins, themes, agencies, and hosts.</p>
-					<p>TrustedLogin is easy, secure, and will result in faster support times! And it&rsquo;s brought to you by the creators of GravityView.</p>
-					<p><a href="https://www.trustedlogin.com/about/easy-and-safe/" class="button button-primary button-large" target="_blank">Learn More About TrustedLogin<span class="screen-reader-text"> (This link opens in a new window)</span></a></p>
-				</div>
-				<div class="column col col-2 last">
-					<div class='media-container'>
-						<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=grant-gravityview-access' ) ); ?>"><img alt='TrustedLogin Grant Support Access page'
-							 src="<?php echo plugins_url( 'assets/images/screenshots/trustedlogin-auth-screen.png', GRAVITYVIEW_FILE ); ?>"
-							 style='border: none'></a>
-					</div>
-					<h3>New <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=grant-gravityview-access' ) ); ?>">Grant Support Access</a> Page</h3>
-					<p>If you reach out to GravityView support and we need access to your site in order to assist with a support ticket, we&rsquo;ll now ask you to click the new "Grant Support Access" link in the sidebar.</p>
-				</div>
-			</div>
-
 			<div class="changelog point-releases" style="margin-top: 3em; border-bottom: 0">
 
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
+
+				<h3>2.14.4 on April 27, 2022</h3>
+
+				<ul>
+					<li>Added: Search Bar support for the <a
+								href='https://www.gravityforms.com/add-ons/chained-selects/'>Chained Selects</a> field
+						type
+					</li>
+					<li>Improved: Plugin updater script now supports auto-updates and better supports multisite
+						installations
+					</li>
+					<li>Improved: If a View does not support joined forms, log as a notice, not an error</li>
+					<li>Fixed: Merge Tag picker behavior when using Gravity Forms 2.6</li>
+					<li>Fixed: Deleting a file when editing an entry as a non-administrator user on Gravity Forms 2.6.1
+						results in a server error
+					</li>
+					<li>Fixed: When The Events Calendar Pro plugin is active, Views became un-editable</li>
+					<li>Tweak: Additional translation strings related to View editing</li>
+				</ul>
+
+				<p>Note: We will be requiring Gravity Forms 2.5 and WordPress 5.3 in the near future; please upgrade!</p>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: Search URLs now support <code>input_{field ID}</code> formats as well as <code>filter_{field
+							ID}</code>; the following will both be treated the same:
+						<ul>
+							<li><code>/view/example/?filter_3=SEARCH</code></li>
+							<li><code>/view/example/?input_3=SEARCH</code></li>
+						</ul>
+					</li>
+					<li>Added: In the admin, CSS classes are now added to the <code>body</code> tag based on Gravity
+						Forms version. See <code>GravityView_Admin_Views::add_gf_version_css_class()</code></li>
+					<li>Modified: Allow non-admin users with 'edit entry' permissions to delete uploaded files</li>
+					<li>Updated: EDD<em>SL</em>Plugin_Updater script to version 1.9.1</li>
+				</ul>
 
 				<h3>2.14.3 on March 24, 2022</h3>
 

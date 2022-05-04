@@ -687,8 +687,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 * `date_created` is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php). \n
 			 * This is for backward compatibility before \GF_Query started to automatically apply the timezone offset.
 			 * @since 1.12
-			 * @param[out,in] boolean $adjust_tz  Use timezone-adjusted datetime? If true, adjusts date based on blog's timezone setting. If false, uses UTC setting. Default is `false`.
-			 * @param[in] string $context Where the filter is being called from. `search` in this case.
+			 * @param boolean $adjust_tz  Use timezone-adjusted datetime? If true, adjusts date based on blog's timezone setting. If false, uses UTC setting. Default is `false`.
+			 * @param string $context Where the filter is being called from. `search` in this case.
 			 */
 			$adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', false, 'search' );
 
@@ -733,7 +733,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		// get the other search filters
 		foreach ( $get as $key => $value ) {
-			if ( 0 !== strpos( $key, 'filter_' ) ) {
+			if ( 0 !== strpos( $key, 'filter_' ) && 0 !== strpos( $key, 'input_' ) ) {
 				continue;
 			}
 
@@ -799,7 +799,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		/**
 		 * @filter `gravityview/search/mode` Set the Search Mode (`all` or `any`)
 		 * @since 1.5.1
-		 * @param[out,in] string $mode Search mode (`any` vs `all`)
+		 * @param string $mode Search mode (`any` vs `all`)
 		 */
 		$search_criteria['field_filters']['mode'] = apply_filters( 'gravityview/search/mode', $mode );
 
@@ -1045,7 +1045,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 */
 	private function convert_request_key_to_filter_key( $key ) {
 
-		$field_id = str_replace( 'filter_', '', $key );
+		$field_id = str_replace( array( 'filter_', 'input_' ), '', $key );
 
 		// calculates field_id, removing 'filter_' and for '_' for advanced fields ( like name or checkbox )
 		if ( preg_match('/^[0-9_]+$/ism', $field_id ) ) {
@@ -1540,7 +1540,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		/**
 		 * @filter `gravityview/widget/search/form/action` Override the search URL.
-		 * @param[in,out] string $action Where the form submits to.
+		 * @param string $action Where the form submits to.
 		 *
 		 * Further parameters will be added once adhoc context is added.
 		 * Use gravityview()->request until then.
@@ -1594,9 +1594,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 		/**
 		 * @filter `gravityview_search_field_label` Modify the label for a search field. Supports returning HTML
 		 * @since 1.17.3 Added $field parameter
-		 * @param[in,out] string $label Existing label text, sanitized.
-		 * @param[in] array $form_field Gravity Forms field array, as returned by `GFFormsModel::get_field()`
-		 * @param[in] array $field Field setting as sent by the GV configuration - has `field`, `input` (input type), and `label` keys
+		 * @param string $label Existing label text, sanitized.
+		 * @param array $form_field Gravity Forms field array, as returned by `GFFormsModel::get_field()`
+		 * @param array $field Field setting as sent by the GV configuration - has `field`, `input` (input type), and `label` keys
 		 */
 		$label = apply_filters( 'gravityview_search_field_label', esc_attr( $label ), $form_field, $field );
 
@@ -1656,7 +1656,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		if ( ! empty( $filter['choices'] ) ) {
 			/**
 			 * @filter `gravityview/search/sieve_choices` Only output used choices for this field.
-			 * @param[in,out] bool Yes or no.
+			 * @param bool Yes or no.
 			 * @param array $field The field configuration.
 			 * @param \GV\Context The context.
 			 */
@@ -1667,7 +1667,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		/**
 		 * @filter `gravityview/search/filter_details` Filter the output filter details for the Search widget.
-		 * @param[in,out] array $filter The filter details
+		 * @param array $filter The filter details
 		 * @param array $field The search field configuration
 		 * @param \GV\Context The context
 		 * @since develop
@@ -2059,7 +2059,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		/**
 		 * @filter `gravityview/search/operator_allowlist` An array of allowed operators for a field.
 		 * @since 2.14
-		 * @param[in,out] string[] An allowlist of operators.
+		 * @param string[] An allowlist of operators.
 		 * @param string The filter name.
 		 */
 		$allowed = apply_filters( 'gravityview/search/operator_allowlist', $allowed, $key );
@@ -2098,7 +2098,7 @@ class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Cond
 
 		/**
 		 * @filter `gravityview/widgets/search/created_by/user_meta_fields` Filter the user meta fields to search.
-		 * @param[in,out] array The user meta fields.
+		 * @param array The user meta fields.
 		 * @param \GV\View $view The view.
 		 */
 		$user_meta_fields = apply_filters( 'gravityview/widgets/search/created_by/user_meta_fields', $user_meta_fields, $this->view );
@@ -2109,7 +2109,7 @@ class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Cond
 
 		/**
 		 * @filter `gravityview/widgets/search/created_by/user_fields` Filter the user fields to search.
-		 * @param[in,out] array The user fields.
+		 * @param array The user fields.
 		 * @param \GV\View $view The view.
 		 */
 		$user_fields = apply_filters( 'gravityview/widgets/search/created_by/user_fields', $user_fields, $this->view );

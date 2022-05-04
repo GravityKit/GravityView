@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 5.9.2
+Tested up to: 5.9.3
 Requires PHP: 5.6.30
 Stable tag: trunk
 Contributors: The GravityView Team
@@ -20,6 +20,31 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= develop =
+
+* Fixed: Styling of form settings dropdowns on the Gravity Forms "Forms" page
+
+= 2.14.4 on April 27, 2022 =
+
+* Added: Search Bar support for the [Chained Selects](https://www.gravityforms.com/add-ons/chained-selects/) field type
+* Improved: Plugin updater script now supports auto-updates and better supports multisite installations
+* Improved: If a View does not support joined forms, log as a notice, not an error
+* Fixed: Merge Tag picker behavior when using Gravity Forms 2.6
+* Fixed: Deleting a file when editing an entry as a non-administrator user on Gravity Forms 2.6.1 results in a server error
+* Fixed: When The Events Calendar Pro plugin is active, Views became un-editable
+* Tweak: Additional translation strings related to View editing
+
+Note: We will be requiring Gravity Forms 2.5 and WordPress 5.3 in the near future; please upgrade!
+
+__Developer Updates:__
+
+* Added: Search URLs now support `input_{field ID}` formats as well as `filter_{field ID}`; the following will both be treated the same:
+	- `/view/example/?filter_3=SEARCH`
+	- `/view/example/?input_3=SEARCH`
+* Added: In the admin, CSS classes are now added to the `body` tag based on Gravity Forms version. See `GravityView_Admin_Views::add_gf_version_css_class()`
+* Modified: Allow non-admin users with "edit entry" permissions to delete uploaded files
+* Updated: EDD_SL_Plugin_Updater script to version 1.9.1
 
 = 2.14.3 on March 24, 2022 =
 

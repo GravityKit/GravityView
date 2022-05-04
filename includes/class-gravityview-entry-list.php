@@ -275,7 +275,7 @@ class GravityView_Entry_List {
 
 		/**
 		 * @filter `gravityview/entry-list/link` The link to this other entry now.
-		 * @param[in,out] string $link The link.
+		 * @param string $link The link.
 		 * @param array $entry The entry.
 		 * @param \GravityView_Entry_List $this The current entry list object.
 		 */

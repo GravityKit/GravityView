@@ -33,7 +33,7 @@ abstract class Request {
 		/**
 		 * @filter `gravityview/request/is_renderable` Is this request renderable?
 		 * @since 2.5.2
-		 * @param[in,out] boolean $is_renderable Huh?
+		 * @param boolean $is_renderable Huh?
 		 * @param \GV\Request $this This.
 		 */
 		return apply_filters( 'gravityview/request/is_renderable', $is_renderable, $this );
@@ -273,7 +273,7 @@ abstract class Request {
 		}
 
 		foreach ( $get as $key => $value ) {
-			if ( preg_match('/^filter_(([0-9_]+)|'. implode( '|', $meta ) .')$/sm', $key ) ) {
+			if ( preg_match('/^(filter|input)_(([0-9_]+)|'. implode( '|', $meta ) .')$/sm', $key ) ) {
 				$has_field_key = true;
 				break;
 			}

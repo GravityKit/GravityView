@@ -290,8 +290,14 @@ abstract class Extension {
 	 */
 	public function settings() {
 
-		// If doing ajax, get outta here
+		// If doing ajax, get outta here.
 		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX && 'update-plugin' !== Utils::_POST('action') ) )  {
+			return;
+		}
+
+		// To support auto-updates, this needs to run during the wp_version_check cron job for privileged users.
+		$doing_cron = defined( 'DOING_CRON' ) && DOING_CRON;
+		if ( ! current_user_can( 'manage_options' ) && ! $doing_cron ) {
 			return;
 		}
 
@@ -309,7 +315,11 @@ abstract class Extension {
             	'license'	=> \GV\Utils::get( $license, 'license_key', \GV\Utils::get( $license, 'license', null ) ),
 	            'item_id'   => $this->_item_id, // The ID of the download on _remote_update_url
             	'item_name' => $this->_title,  // name of this plugin
-            	'author' 	=> strip_tags( $this->_author )  // author of this plugin
+            	'author' 	=> strip_tags( $this->_author ),  // author of this plugin
+	            'php_version' => phpversion(),
+	            'wp_version' => get_bloginfo( 'version' ),
+	            'gv_version' => \GV\Plugin::$version,
+	            'environment' => function_exists( 'wp_get_environment_type' ) ? wp_get_environment_type() : 'production',
           	)
         );
 	}

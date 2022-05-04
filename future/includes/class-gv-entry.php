@@ -63,7 +63,7 @@ abstract class Entry {
 	public static function get_endpoint_name() {
 		/**
 		 * @filter `gravityview_directory_endpoint` Change the slug used for single entries
-		 * @param[in,out] string $endpoint Slug to use when accessing single entry. Default: `entry`
+		 * @param string $endpoint Slug to use when accessing single entry. Default: `entry`
 		 */
 		$endpoint = apply_filters( 'gravityview_directory_endpoint', 'entry' );
 
@@ -216,7 +216,7 @@ abstract class Entry {
 		/**
 		 * @filter `gravityview/entry/slug` Modify the entry URL slug as needed.
 		 * @since 2.2.1
-		 * @param[in,out] string $entry_slug The slug, sanitized with sanitize_title()
+		 * @param string $entry_slug The slug, sanitized with sanitize_title()
 		 * @param null|\GV\Entry $this The entry object.
 		 * @param null|\GV\View $view The view object.
 		 * @param null|\GV\Request $request The request.

@@ -103,7 +103,7 @@ class GVCommon {
 
 		/**
 		 * @filter `gravityview/get_all_views/params` Modify the parameters sent to get all views.
-		 * @param[in,out]  array $params Array of parameters to pass to `get_posts()`
+		 * @param  array $params Array of parameters to pass to `get_posts()`
 		 */
 		$views_params = apply_filters( 'gravityview/get_all_views/params', $params );
 
