@@ -117,7 +117,11 @@ class Renderer {
 		$current_user  = wp_get_current_user();
 		$user_meta_key = '_gv_dismissed_entry_approval_notice' . $gravityview->view->ID;
 
-		if ( isset( $_GET['gv-dismiss'] ) && wp_verify_nonce( $_GET['gv-dismiss'], 'dismiss' ) ) {
+
+		$dismiss_nonce_name = 'gv-dismiss';
+		$dismiss_nonce_action = 'gv-dismiss-no-entries-' . $gravityview->view->ID;
+
+		if ( isset( $_GET[ $dismiss_nonce_name ] ) && wp_verify_nonce( $_GET[ $dismiss_nonce_name ], $dismiss_nonce_action ) ) {
 			add_user_meta( $current_user->ID, $user_meta_key, 1 ); // Prevent user from seeing this again for this View
 			return;
 		}
@@ -161,13 +165,14 @@ class Renderer {
 		$message_strings = array(
 			'<h3>' . sprintf( $notice_title, number_format_i18n( $count ) ) . $hide_link . '</h3>',
 			esc_html__( 'The "Show only approved entries" setting is enabled, so only entries that have been approved are displayed.', 'gravityview' ),
-			sprintf( '<a href="%s">%s</a>', esc_url( wp_nonce_url( add_query_arg( array( 'disable_setting' => 'show_only_approved_' . $gravityview->view->ID ) ), 'setting', 'gv-setting' ) ), esc_html__( 'Click here to disable this setting.', 'gravityview' ) ),
 			"\n\n",
 			sprintf( esc_html_x( '%sLearn about entry approval%s or %sApprove entries%s', 'Replacements are HTML links', 'gravityview' ), '<a href="https://docs.gravityview.co/article/490-entry-approval-gravity-forms" style="font-weight: bold;">', '</a>', '<a href="' . esc_url( admin_url( 'admin.php?page=gf_entries&id=' . $gravityview->view->form->ID ) ) . '" style="font-weight: bold;">', '</a>' ),
 			"\n\n",
 			sprintf( '<img alt="%s" src="%s" style="padding: 10px 0; max-width: 550px;" />', esc_html__( 'Show only approved entries', 'gravityview' ), esc_url( plugins_url( 'assets/images/screenshots/entry-approval.png', GRAVITYVIEW_FILE ) ) ),
 			"\n\n",
 			esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' ),
+
+		$dismiss_notice_link = wp_nonce_url( add_query_arg( array() ), $dismiss_nonce_action, $dismiss_nonce_name );
 		);
 
 		$notice = wpautop( implode( ' ', $message_strings ) );
