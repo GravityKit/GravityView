@@ -73,9 +73,7 @@ class Renderer {
 			return;
 		}
 
-		$current_path = add_query_arg( array() );
-
-		$redirect_url = home_url( $current_path );
+		$redirect_url = home_url( remove_query_arg( array( 'disable_setting', 'gv-setting' ) ) );
 
 		if ( wp_safe_redirect( $redirect_url ) ) {
 			exit();
