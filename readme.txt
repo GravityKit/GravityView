@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Added: A link that allows administrators to disable the "Show only approved entries" View setting from the front-end
 * Fixed: Styling of form settings dropdowns on the Gravity Forms "Forms" page
 
 = 2.14.4 on April 27, 2022 =
