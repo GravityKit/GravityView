@@ -115,8 +115,8 @@ class Renderer {
 		}
 
 		$current_user  = wp_get_current_user();
-		$user_meta_key = '_gv_dismissed_entry_approval_notice' . $gravityview->view->ID;
 
+		$user_meta_key = '_gv_dismissed_entry_approval_notice_' . $gravityview->view->ID;
 
 		$dismiss_nonce_name = 'gv-dismiss';
 		$dismiss_nonce_action = 'gv-dismiss-no-entries-' . $gravityview->view->ID;
