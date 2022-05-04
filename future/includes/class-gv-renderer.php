@@ -153,29 +153,107 @@ class Renderer {
 			return;
 		}
 
+		$message_template = <<<EOD
+<style>
+#{dom_id}-hide-notice {
+	float: {float_dir};
+	font-size: 1rem;
+	font-weight: normal;
+}
+#{dom_id} div {
+	margin: 1em 0;
+}
+#{dom_id} hr {
+	border: none;
+	border-bottom: 1px solid #ddd;
+	margin: 0 0 10px;
+}
+#{dom_id} .gv-notice-message {
+ margin: 1em 0;
+ padding: 0;
+ font-size: 1.2rem;
+ font-weight: normal;
+}
+#{dom_id} span.gv-notice-description {
+	display: block;
+	font-weight: normal;
+	font-style: italic;
+}
+#{dom_id} .gv-notice-admin-message {
+	display: block;
+	text-align:center;
+	clear: both;
+}
+#{dom_id} img {
+	display: block;
+	margin: 10px 20px;
+	max-width: 550px;
+	float: {float_dir};
+}
+#{dom_id} .dashicons-no-alt {
+	font-size: 1.2em;
+	height: 1.2em;
+	width: 1em;
+}
+#{dom_id} .dashicons-external {
+	font-size: .8em;
+	height: .8em;
+	width: .8em;
+	line-height: .8em;
+}
+</style>
+<div id="{dom_id}">
+	<h3>{notice_title}<span id="{dom_id}-hide-notice"><a href="{hide_notice_link}" role="button">{hide_notice} <span class="dashicons dashicons-no-alt"></span></span></a></h3>
+
+	<p class="gv-notice-message">{screenshot} {message} <a href="{learn_more_link}" rel="external" target="_blank">{learn_more} <span class="dashicons dashicons-external" title="{title_new_window}"></span></a></p>
+
+	<hr />
+
+	<div><a href="{disable_setting_link}">{disable_setting}</a> <span class="gv-notice-description">{disable_setting_description}</span></div>
+	<div><a href="{approve_entries_link}">{approve_entries}</a> <span class="gv-notice-description">{approve_entries_description}</span></div>
+
+	<p class="gv-notice-admin-message"><em>{admin_message}</em></p>
+</div>
+EOD;
+
 		$notice_title = _n(
 			esc_html__( 'There is an unapproved entry that is not being shown.', 'gravityview' ),
-			esc_html__( 'There are %s unapproved entries that are not being shown.', 'gravityview' ),
+			sprintf( esc_html__( 'There are %s unapproved entries that are not being shown.', 'gravityview' ), number_format_i18n( $count ) ),
 			$count
 		);
 
 		$float_dir = is_rtl() ? 'left' : 'right';
-		$hide_link = sprintf( '<a href="%s" style="float: ' . $float_dir . '; font-size: 1rem" role="button">%s</a>', esc_url( wp_nonce_url( add_query_arg( array( 'notice' => 'no_entries_' . $gravityview->view->ID ) ), 'dismiss', 'gv-dismiss' ) ), esc_html__( 'Hide this notice', 'gravityview' ) );
-
-		$message_strings = array(
-			'<h3>' . sprintf( $notice_title, number_format_i18n( $count ) ) . $hide_link . '</h3>',
-			esc_html__( 'The "Show only approved entries" setting is enabled, so only entries that have been approved are displayed.', 'gravityview' ),
-			"\n\n",
-			sprintf( esc_html_x( '%sLearn about entry approval%s or %sApprove entries%s', 'Replacements are HTML links', 'gravityview' ), '<a href="https://docs.gravityview.co/article/490-entry-approval-gravity-forms" style="font-weight: bold;">', '</a>', '<a href="' . esc_url( admin_url( 'admin.php?page=gf_entries&id=' . $gravityview->view->form->ID ) ) . '" style="font-weight: bold;">', '</a>' ),
-			"\n\n",
-			sprintf( '<img alt="%s" src="%s" style="padding: 10px 0; max-width: 550px;" />', esc_html__( 'Show only approved entries', 'gravityview' ), esc_url( plugins_url( 'assets/images/screenshots/entry-approval.png', GRAVITYVIEW_FILE ) ) ),
-			"\n\n",
-			esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' ),
 
 		$dismiss_notice_link = wp_nonce_url( add_query_arg( array() ), $dismiss_nonce_action, $dismiss_nonce_name );
+
+		$disable_setting_link = wp_nonce_url( add_query_arg( array(
+			'disable_setting' => 'show_only_approved_' . $gravityview->view->ID
+		) ), 'setting', 'gv-setting' );
+
+		$placeholders = array(
+			'{dom_id}'                      => sprintf( 'gv-notice-approve-entries-%d', esc_html( $gravityview->view->ID ) ),
+			'{float_dir}'                   => $float_dir,
+			'{notice_title}'                => esc_html( $notice_title ),
+			'{title_new_window}'            => esc_attr__( 'This link opens in a new window.', 'gravityview' ),
+			'{hide_notice}'                 => esc_html__( 'Hide this notice', 'gravityview' ),
+			'{hide_notice_link}'            => esc_url( $dismiss_notice_link ),
+			'{message}'                     => esc_html( wptexturize( __( 'The "Show only approved entries" setting is enabled, so only entries that have been approved are displayed.', 'gravityview' ) ) ),
+			'{learn_more}'                  => esc_html__( 'Learn more about entry approval.', 'gravityview' ),
+			'{learn_more_link}'             => 'https://docs.gravityview.co/article/490-entry-approval-gravity-forms',
+			'{disable_setting}'             => esc_html( wptexturize( __( 'Disable the "Show only approved entries" setting for this View', 'gravityview' ) ) ),
+			'{disable_setting_description}' => esc_html( wptexturize( __( 'Click to immediately disable the "Show only approved entries" setting. All entry statuses will be shown.', 'gravityview' ) ) ),
+			'{disable_setting_link}'        => esc_url( $disable_setting_link ),
+			'{approve_entries}'             => esc_html__( 'Manage entry approval', 'gravityview' ),
+			'{approve_entries_description}' => esc_html__( 'Go to the Gravity Forms entries screen to moderate entry approval.', 'gravityview' ),
+			'{approve_entries_link}'        => esc_url( admin_url( 'admin.php?page=gf_entries&id=' . $gravityview->view->form->ID ) ),
+			'{screenshot}'                  => sprintf( '<img alt="%s" src="%s" />', esc_attr__( 'Show only approved entries', 'gravityview' ), esc_url( plugins_url( 'assets/images/screenshots/entry-approval.png', GRAVITYVIEW_FILE ) ) ),
+			'{admin_message}'               => sprintf( esc_html__( 'Note: %s', 'gravityview' ), esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' ) ),
 		);
 
-		$notice = wpautop( implode( ' ', $message_strings ) );
+		$notice = strtr( $message_template, $placeholders );
+
+		// Needed for the external link and close icons
+		wp_print_styles( 'dashicons' );
 
 		echo \GVCommon::generate_notice( $notice, 'warning', 'edit_gravityview', $gravityview->view->ID );
 	}
