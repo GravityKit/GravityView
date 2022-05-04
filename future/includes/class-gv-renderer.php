@@ -131,9 +131,8 @@ class Renderer {
 			return;
 		}
 
-		$form = $gravityview->view->form;
-
-		if ( ! $form ) {
+		// No form is attached to this View for some reason; there are no entries to display.
+		if ( empty( $gravityview->view->form ) ) {
 			return;
 		}
 
