@@ -265,6 +265,7 @@ class GravityView_Welcome {
 
 				<ul>
 					<li>Added: A link that allows administrators to disable the "Show only approved entries" View setting from the front-end</li>
+					<li>Fixed: Configuring new Search Bar WordPress widgets wasn't working in WordPress 5.8+</li>
 					<li>Fixed: Styling of form settings dropdowns on the Gravity Forms "Forms" page</li>
 				</ul>
 
